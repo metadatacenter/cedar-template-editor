@@ -1,0 +1,58 @@
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>AngularJS Form Builder</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
+
+    <!-- build:css({.tmp,app}) styles/main.css -->
+	<link rel="stylesheet" href="css/style.css">
+	<!-- endbuild -->
+
+  </head>
+  <body ng-app="angularjsFormBuilderApp">
+        <div class="container-narrow">
+            <div class="masthead" ng-controller="HeaderCtrl" >
+                <ul class="nav nav-pills pull-right">
+                    <li ng-class="{active: ($location.path() == '/') }"><a href="#/">Home</a></li>
+                    <li ng-class="{active: ($location.path() == '/forms/create') }"><a href="#/forms/create">Create a Form</a></li>
+                    <li ng-class="{active: ($location.path() == '/forms/1/view') }"><a href="#/forms/1/view">View Example Form</a></li>
+                </ul>
+                <h3 class="muted">angularjs-form-builder</h3>
+            </div>
+
+            <hr>
+
+            <div class="content" ng-view=""></div>
+
+            <hr>
+            <div class="footer">
+            </div>
+        </div>
+
+        <!-- build:js scripts/plugins.js -->
+        <script src="bower_components/jquery/jquery.js"></script>
+        <script src="bower_components/angular/angular.js"></script>
+        <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
+        <!--<script src="bower_components/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>-->
+        <!-- endbuild -->
+
+        <!-- build:js/modules scripts/modules.js -->
+        <script src="bower_components/angular-route/angular-route.js"></script>
+        <script src="bower_components/angular-resource/angular-resource.js"></script>
+        <script src="bower_components/angular-ui/build/angular-ui.js"></script>
+
+        <!-- build:js({.tmp,app}) scripts/scripts.js -->
+        <script src="scripts/app.js"></script>
+        <script src="scripts/controllers/main.js"></script>
+        <script src="scripts/controllers/create.js"></script>
+        <script src="scripts/controllers/view.js"></script>
+        <script src="scripts/controllers/header.js"></script>
+        <script src="scripts/services/form-service.js"></script>
+        <script src="scripts/directives/form-directive.js"></script>
+        <script src="scripts/directives/field-directive.js"></script>
+        <script src="lib/ui-bootstrap-tpls-0.4.0.min.js"></script>
+        <!-- endbuild -->
+  </body>
+</html>
