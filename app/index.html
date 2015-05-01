@@ -1,58 +1,90 @@
-<html>
+<!doctype html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9" lang=""> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang=""> <!--<![endif]-->
   <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>AngularJS Form Builder</title>
-    <meta name="description" content="">
-    <meta name="viewport" content="width=device-width">
+      <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+      <title>Project Cedar</title>
+      <meta name="description" content="">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <!-- build:css({.tmp,app}) styles/main.css -->
-	<link rel="stylesheet" href="css/style.css">
-	<!-- endbuild -->
+      <link rel="stylesheet" href="css/style.css">
 
+      <script src="js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script>
   </head>
   <body ng-app="angularjsFormBuilderApp">
-        <div class="container-narrow">
-            <div class="masthead" ng-controller="HeaderCtrl" >
-                <ul class="nav nav-pills pull-right">
-                    <li ng-class="{active: ($location.path() == '/') }"><a href="#/">Home</a></li>
-                    <li ng-class="{active: ($location.path() == '/forms/create') }"><a href="#/forms/create">Create a Form</a></li>
-                    <li ng-class="{active: ($location.path() == '/forms/1/view') }"><a href="#/forms/1/view">View Example Form</a></li>
-                </ul>
-                <h3 class="muted">angularjs-form-builder</h3>
-            </div>
+    <!--[if lt IE 8]>
+        <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+    <![endif]-->
+  <nav class="navbar navbar-inverse" role="navigation">
+    <div class="container" ng-controller="HeaderCtrl">
+      <div class="navbar-header">
+        <p class="page-title">Element Editor</p>
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="#">Cedar</a>
+      </div>
+      <div id="navbar" class="navbar-collapse collapse">
+        <ul class="nav pull-right">
+          <li ng-class="{active: ($location.path() == '/') }"><a href="#/">Dashboard</a></li>
+          <li ng-class="{active: ($location.path() == '/forms/create') }"><a href="#/forms/create">Element Creator</a></li>
+          <li ng-class="{active: ($location.path() == '/forms/create') }"><a href="#/forms/create">Template Creator</a></li>
+          <li ng-class="{active: ($location.path() == '/forms/1/view') }"><a href="#/forms/1/view">View Example Form</a></li>
+        </ul>
+      </div><!--/.navbar-collapse -->
+    </div>
+  </nav>
 
-            <hr>
+  <div class="container">
+    <!-- Example row of columns -->
+    <div class="row">
+      <div class="col-md-4">
+        <h2>Heading</h2>
+        <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
+        <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
+      </div>
+      <div class="col-md-4">
+        <h2>Heading</h2>
+        <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
+        <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
+     </div>
+      <div class="col-md-4">
+        <h2>Heading</h2>
+        <p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
+        <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
+      </div>
+    </div>
+    <div class="angular-application-contents" ng-view=""></div>
+  </div> <!-- /container -->        
+  
+  <!-- build:js scripts/plugins.js -->
+  <script src="bower_components/jquery/jquery.js"></script>
+  <script src="bower_components/angular/angular.js"></script>
+  <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
+  <script src="bower_components/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+  <!-- endbuild -->
 
-            <div class="content" ng-view=""></div>
+  <!-- build:js/modules scripts/modules.js -->
+  <script src="bower_components/angular-route/angular-route.js"></script>
+  <script src="bower_components/angular-resource/angular-resource.js"></script>
+  <script src="bower_components/angular-ui/build/angular-ui.js"></script>
 
-            <hr>
-            <div class="footer">
-            </div>
-        </div>
-
-        <!-- build:js scripts/plugins.js -->
-        <script src="bower_components/jquery/jquery.js"></script>
-        <script src="bower_components/angular/angular.js"></script>
-        <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
-        <!--<script src="bower_components/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>-->
-        <!-- endbuild -->
-
-        <!-- build:js/modules scripts/modules.js -->
-        <script src="bower_components/angular-route/angular-route.js"></script>
-        <script src="bower_components/angular-resource/angular-resource.js"></script>
-        <script src="bower_components/angular-ui/build/angular-ui.js"></script>
-
-        <!-- build:js({.tmp,app}) scripts/scripts.js -->
-        <script src="scripts/app.js"></script>
-        <script src="scripts/controllers/main.js"></script>
-        <script src="scripts/controllers/create.js"></script>
-        <script src="scripts/controllers/view.js"></script>
-        <script src="scripts/controllers/header.js"></script>
-        <script src="scripts/services/form-service.js"></script>
-        <script src="scripts/directives/form-directive.js"></script>
-        <script src="scripts/directives/field-directive.js"></script>
-        <script src="lib/ui-bootstrap-tpls-0.4.0.min.js"></script>
-        <!-- endbuild -->
+  <!-- build:js({.tmp,app}) scripts/scripts.js -->
+  <script src="scripts/app.js"></script>
+  <script src="scripts/controllers/main.js"></script>
+  <script src="scripts/controllers/create.js"></script>
+  <script src="scripts/controllers/view.js"></script>
+  <script src="scripts/controllers/header.js"></script>
+  <script src="scripts/services/form-service.js"></script>
+  <script src="scripts/directives/form-directive.js"></script>
+  <script src="scripts/directives/field-directive.js"></script>
+  <script src="lib/ui-bootstrap-tpls-0.4.0.min.js"></script>
+  <!-- endbuild -->
   </body>
 </html>

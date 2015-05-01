@@ -1,14 +1,19 @@
 // Import Bootstrap LESS library
 @import '../bower_components/bootstrap-less/less/bootstrap.less';
+
+// Import local LESS files
+@import 'fonts.less';
+
+// Overriding Bootstrap library variables
+@grid-float-breakpoint:999999px;
+
+// Definint local variables
+@header-text-color:#fff;
 /*
 ==========
 === Inherited Styling
 ==========
 */
-html, body {
-  margin: 20px 0px;
-}
-
 body {
     background: #fafafa;
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -85,3 +90,20 @@ body {
 === MJD Custom Code
 ==========
 */
+
+.container {
+  width:@container-tablet;
+}
+
+.navbar {
+  color:@header-text-color;
+
+  .page-title {
+    float:right;
+    padding-top:15px;
+  }
+  .navbar-toggle {
+    border-radius:0;
+    border:none;
+  }
+}
