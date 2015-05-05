@@ -25,17 +25,23 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-[class^="cedar-svg-"]:before,
-[class*=" cedar-svg-"]:before {
-  font-family: "project-cedar" !important;
-  font-style: normal !important;
-  font-weight: normal !important;
-  font-variant: normal !important;
-  text-transform: none !important;
-  speak: none;
-  line-height: 1;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+[class^="cedar-svg-"],
+[class*=" cedar-svg-"] {
+  display:inline-block;
+  transform: translate(0px, 7px);
+
+  &:before {
+    font-family: "project-cedar" !important;
+    font-style: normal !important;
+    font-weight: normal !important;
+    font-variant: normal !important;
+    text-transform: none !important;
+    speak: none;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-size:22px;
+  }
 }
 
 .cedar-svg-audio-visual:before {
@@ -76,4 +82,7 @@
 }
 .cedar-svg-text:before {
   content: "m";
+}
+.cedar-svg-element:before {
+  content: "n";
 }

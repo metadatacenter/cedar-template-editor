@@ -9,20 +9,23 @@
       <title>Project Cedar</title>
       <meta name="description" content="">
       <meta name="viewport" content="width=device-width, initial-scale=1">
+      <base href="/">
 
       <link rel="stylesheet" href="css/style.css">
-
-      <script src="js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script>
+      
+      <script src="//use.typekit.net/aph5zap.js"></script>
+      <script>try{Typekit.load();}catch(e){}</script>
+      <!--<script src="js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script>-->
   </head>
   <body ng-app="angularjsFormBuilderApp">
     <!--[if lt IE 8]>
         <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
-  <nav class="navbar navbar-inverse" role="navigation">
+  <nav class="navbar" role="navigation">
     <div class="container" ng-controller="HeaderCtrl">
       <div class="navbar-header">
-        <p class="page-title">Element Editor</p>
-        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+        <p id="page-title" class="ng-cloak">{{pageTitle}}</p>
+        <button type="button" cedar-navbar class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
           <span class="sr-only">Toggle navigation</span>
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
@@ -32,36 +35,16 @@
       </div>
       <div id="navbar" class="navbar-collapse collapse">
         <ul class="nav pull-right">
-          <li ng-class="{active: ($location.path() == '/') }"><a href="#/">Dashboard</a></li>
-          <li ng-class="{active: ($location.path() == '/forms/create') }"><a href="#/forms/create">Element Creator</a></li>
-          <li ng-class="{active: ($location.path() == '/forms/create') }"><a href="#/forms/create">Template Creator</a></li>
-          <li ng-class="{active: ($location.path() == '/forms/1/view') }"><a href="#/forms/1/view">View Example Form</a></li>
+          <li ng-class="{active: ($location.path() == '/') }"><a href="/">Dashboard</a></li>
+          <li ng-class="{active: ($location.path() == '/elements/create') }"><a href="elements/create">Element Creator</a></li>
+          <li ng-class="{active: ($location.path() == '/templates/create') }"><a href="templates/create">Template Creator</a></li>
+          <li ng-class="{active: ($location.path() == '/templates/1/view') }"><a href="templates/1/view">View Example Form</a></li>
         </ul>
       </div><!--/.navbar-collapse -->
     </div>
   </nav>
 
-  <div class="container">
-    <!-- Example row of columns -->
-    <div class="row">
-      <div class="col-md-4">
-        <h2>Heading</h2>
-        <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-        <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
-      </div>
-      <div class="col-md-4">
-        <h2>Heading</h2>
-        <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-        <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
-     </div>
-      <div class="col-md-4">
-        <h2>Heading</h2>
-        <p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
-        <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
-      </div>
-    </div>
-    <div class="angular-application-contents" ng-view=""></div>
-  </div> <!-- /container -->        
+  <div id="angular-views-entry" ng-view=""></div>
   
   <!-- build:js scripts/plugins.js -->
   <script src="bower_components/jquery/jquery.js"></script>
@@ -77,13 +60,17 @@
 
   <!-- build:js({.tmp,app}) scripts/scripts.js -->
   <script src="scripts/app.js"></script>
-  <script src="scripts/controllers/main.js"></script>
-  <script src="scripts/controllers/create.js"></script>
+  <script src="scripts/rootscope.js"></script>
+  <script src="scripts/controllers/dashboard.js"></script>
+  <script src="scripts/controllers/create-element.js"></script>
+  <script src="scripts/controllers/create-template.js"></script>
   <script src="scripts/controllers/view.js"></script>
   <script src="scripts/controllers/header.js"></script>
   <script src="scripts/services/form-service.js"></script>
   <script src="scripts/directives/form-directive.js"></script>
   <script src="scripts/directives/field-directive.js"></script>
+  <script src="scripts/directives/cedar-close-navbar.js"></script>
+  <script src="scripts/directives/with-floating-label.js"></script>
   <script src="lib/ui-bootstrap-tpls-0.4.0.min.js"></script>
   <!-- endbuild -->
   </body>

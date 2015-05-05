@@ -2,18 +2,22 @@
 
 var angularApp = angular.module('angularjsFormBuilderApp', ['ui.bootstrap', 'ngRoute']);
 
-angularApp.config(function ($routeProvider) {
+angularApp.config(function ($routeProvider, $locationProvider) {
 
     $routeProvider
         .when('/', {
-            templateUrl: 'views/main.html',
-            controller: 'MainCtrl'
+            templateUrl: 'views/dashboard.html',
+            controller: 'DashboardController'
         })
-        .when('/forms/create', {
-            templateUrl: 'views/create.html',
-            controller: 'CreateCtrl'
+        .when('/elements/create', {
+            templateUrl: 'views/create-element.html',
+            controller: 'CreateElementController'
         })
-        .when('/forms/:id/view', {
+        .when('/templates/create', {
+            templateUrl: 'views/create-template.html',
+            controller: 'CreateTemplateController'
+        })
+        .when('/templates/:id/view', {
             templateUrl: 'views/view.html',
             controller: 'ViewCtrl'
         })
@@ -21,6 +25,9 @@ angularApp.config(function ($routeProvider) {
             redirectTo: '/'
         });
 
-}).run(['$rootScope',  function() {}]);
+    // use the HTML5 History API
+    $locationProvider.html5Mode(true);
+
+});
 
 

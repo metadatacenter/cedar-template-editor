@@ -1,6 +1,9 @@
 'use strict';
 
-angularApp.controller('CreateCtrl', function ($scope, $dialog, FormService) {
+angularApp.controller('CreateElementController', function ($rootScope, $scope, $dialog, FormService) {
+
+    // set Page Title variable when this controller is active
+    $rootScope.pageTitle = 'Element Creator';
 
     // preview form mode
     $scope.previewMode = false;

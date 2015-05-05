@@ -1,17 +1,18 @@
 // Include gulp & gulp plugins
-var gulp 					= require('gulp'),
-		jshint 				= require('gulp-jshint'),
-		less 					= require('gulp-less'),
-		stylish 			= require('jshint-stylish'),
-		autoprefixer 	= require('gulp-autoprefixer'),
-		gutil 				= require('gulp-util'),
-		plumber 			= require('gulp-plumber'),
-		rename				= require('gulp-rename'),
-		uglify				= require('gulp-uglify'),
-		minifyCSS			= require('gulp-minify-css'),
-		connect 			= require('gulp-connect'),
-		htmlreplace 	= require('gulp-html-replace'),
-		ngAnnotate 		= require('gulp-ng-annotate');
+var gulp 								= require('gulp'),
+		jshint 							= require('gulp-jshint'),
+		less 								= require('gulp-less'),
+		stylish 						= require('jshint-stylish'),
+		autoprefixer 				= require('gulp-autoprefixer'),
+		gutil 							= require('gulp-util'),
+		plumber 						= require('gulp-plumber'),
+		rename							= require('gulp-rename'),
+		uglify							= require('gulp-uglify'),
+		minifyCSS						= require('gulp-minify-css'),
+		connect 						= require('gulp-connect'),
+		htmlreplace 				= require('gulp-html-replace'),
+		ngAnnotate 					= require('gulp-ng-annotate'),
+		historyApiFallback 	= require('connect-history-api-fallback');
 
 
 // Creating error handling exception using gulp-util
@@ -60,8 +61,11 @@ gulp.task('less', function() {
 gulp.task('server', function() {
   connect.server({
     root: 'app',
-    port: 3000,
-    livereload: true
+    port: 4200,
+    livereload: true,
+    middleware: function(connect, opt) {
+      return [ historyApiFallback ];
+    }
   });
 });
 

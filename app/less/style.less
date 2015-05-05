@@ -7,8 +7,28 @@
 // Overriding Bootstrap library variables
 @grid-float-breakpoint:999999px;
 
-// Definint local variables
+// Definine local variables
 @header-text-color:#fff;
+@header-bg-color:#056046;
+@brand-primary:#339933;
+@white:#fff;
+
+// Definine local mixins
+.activ-grotest-regular {
+  font-family: 'aktiv-grotesk-std';
+  font-weight:400;
+}
+
+.activ-grotest-bold {
+  font-family: 'aktiv-grotesk-std';
+  font-weight:700;
+}
+
+.ff-tisa-web-pro {
+  font-family: 'ff-tisa-web-pro';
+  font-weight:400;
+}
+
 /*
 ==========
 === Inherited Styling
@@ -16,7 +36,7 @@
 */
 body {
     background: #fafafa;
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-family: 'aktiv-grotesk-std', 'Helvetica Neue', Helvetica, Arial, sans-serif;
     color: #333;
 }
 
@@ -93,17 +113,144 @@ body {
 
 .container {
   width:@container-tablet;
+  position:relative;
 }
 
 .navbar {
   color:@header-text-color;
+  background-color:@header-bg-color;
+  margin-bottom:0;
 
-  .page-title {
+  #page-title {
     float:right;
     padding-top:15px;
+    width:115px;
   }
+
   .navbar-toggle {
     border-radius:0;
     border:none;
+
+    &:hover,
+    &:focus {
+      background-color:@brand-primary;
+    }
+
+    .icon-bar {
+      background-color:@white;
+    }
+  }
+
+  .navbar-brand {
+    border-bottom:2px solid @white;
+  }
+
+  #navbar {
+    position:absolute;
+    right:0;
+    z-index:1;
+    background-color:@white;
+    margin-top:1px;
+  }
+}
+
+.template-header {
+  width:100%;
+  background-color:@header-bg-color;
+  padding:60px 0 20px 0;
+
+  .form-control {
+    border:none;
+    background-color:transparent;
+    box-shadow:none;
+    border-bottom:2px solid @brand-primary;
+    border-radius:0;
+    color:@white;
+
+    &:before {
+      font-family: "project-cedar" !important;
+      content: "n";
+      display:block;
+    }
+  }
+
+  .floating-label {
+    font-size:16px;
+    top:5px;
+  }
+
+  #element-name {
+
+    .cedar-svg-element {
+      position:absolute;
+      color:@brand-primary;
+    }
+
+    .form-control {
+      padding-left:30px;
+    }
+
+    .form-control ~ .floating-label {
+      left:30px;
+    }
+
+    .form-control:focus ~ .floating-label,
+    .form-control:not(.empty) ~ .floating-label {
+      left:0;
+    }
+  }
+}
+
+.template-body {
+  padding:20px 0;
+}
+
+.floating-label-wrapper {
+  position: relative;
+}
+
+.floating-label {
+  color: @white;
+  //font-size: 14px;
+  position: absolute;
+  pointer-events: none;
+  left: 12px;
+  top: 7px;
+  transition: 0.2s ease all;
+  opacity: 0;
+}
+.form-control:focus ~ .floating-label,
+.form-control:not(.empty) ~ .floating-label {
+  top: -15px;
+  left: 0;
+  font-size: 11px;
+  opacity: 0.6;
+}
+
+.form-control.empty ~ .floating-label  {
+  opacity: 1;
+}
+textarea { resize: none; }
+textarea ~ .form-control-highlight {
+  margin-top: -11px;
+}
+
+.left-sidebar {
+
+  .element-menu {
+    margin:0;
+    padding:0;
+
+    > li {
+      list-style:none;
+
+      a {
+        display:block;
+        padding:10px;
+        border-top:1px solid #ccc;
+        border-left:1px solid #ccc;
+        border-right:1px solid #ccc;
+      }
+    }
   }
 }
