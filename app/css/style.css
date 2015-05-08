@@ -6588,16 +6588,15 @@ button.close {
   font-family: 'ff-tisa-web-pro';
   font-weight: 400;
 }
+.link-transition {
+  -webkit-transition: all 0.3s 0.1s;
+          transition: all 0.3s 0.1s;
+}
 /*
 ==========
 === Inherited Styling
 ==========
 */
-body {
-  background: #fafafa;
-  font-family: 'aktiv-grotesk-std', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  color: #333;
-}
 /* Custom container */
 .container-narrow {
   margin: 0 auto;
@@ -6658,9 +6657,28 @@ body {
 === MJD Custom Code
 ==========
 */
+body {
+  background: #f9f9fb;
+  font-family: 'aktiv-grotesk-std', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  color: #333;
+}
+a {
+  -webkit-transition: all 0.3s 0.1s;
+          transition: all 0.3s 0.1s;
+  cursor: pointer;
+}
+i {
+  -webkit-transition: all 0.3s 0.1s;
+          transition: all 0.3s 0.1s;
+}
 .container {
   width: 750px;
   position: relative;
+}
+@media (min-width: 992px) {
+  .container {
+    width: 952px;
+  }
 }
 .navbar {
   color: #ffffff;
@@ -6669,12 +6687,14 @@ body {
 }
 .navbar #page-title {
   float: right;
-  padding-top: 15px;
-  width: 115px;
+  padding-top: 27px;
+  padding-right: 20px;
 }
 .navbar .navbar-toggle {
   border-radius: 0;
   border: none;
+  margin-top: 21px;
+  margin-right: 0;
 }
 .navbar .navbar-toggle:hover,
 .navbar .navbar-toggle:focus {
@@ -6684,7 +6704,16 @@ body {
   background-color: #ffffff;
 }
 .navbar .navbar-brand {
-  border-bottom: 2px solid #ffffff;
+  background-image: url(../img/cedar-logo.png);
+  background-repeat: no-repeat;
+  width: 116px;
+  height: 30px;
+  margin-top: 25px;
+  font: 0/0 a;
+  color: transparent;
+  text-shadow: none;
+  background-color: transparent;
+  border: 0;
 }
 .navbar #navbar {
   position: absolute;
@@ -6697,6 +6726,12 @@ body {
   width: 100%;
   background-color: #056046;
   padding: 60px 0 20px 0;
+}
+.template-header .left-sidebar {
+  padding-left: 0;
+}
+.template-header .right-body {
+  padding-right: 0;
 }
 .template-header .form-control {
   border: none;
@@ -6730,7 +6765,10 @@ body {
   left: 0;
 }
 .template-body {
-  padding: 20px 0;
+  padding: 30px 0;
+}
+.left-sidebar {
+  padding-left: 0;
 }
 .floating-label-wrapper {
   position: relative;
@@ -6745,6 +6783,9 @@ body {
           transition: 0.2s ease all;
   opacity: 0;
 }
+.form-control.empty ~ .floating-label {
+  opacity: 1;
+}
 .form-control:focus ~ .floating-label,
 .form-control:not(.empty) ~ .floating-label {
   top: -15px;
@@ -6752,14 +6793,16 @@ body {
   font-size: 11px;
   opacity: 0.6;
 }
-.form-control.empty ~ .floating-label {
-  opacity: 1;
-}
 textarea {
   resize: none;
 }
 textarea ~ .form-control-highlight {
   margin-top: -11px;
+}
+p.add-item {
+  font-size: 18px;
+  color: #339933;
+  padding-left: 15px;
 }
 .left-sidebar .element-menu {
   margin: 0;
@@ -6770,8 +6813,68 @@ textarea ~ .form-control-highlight {
 }
 .left-sidebar .element-menu > li a {
   display: block;
-  padding: 10px;
-  border-top: 1px solid #ccc;
-  border-left: 1px solid #ccc;
-  border-right: 1px solid #ccc;
+  padding: 15px 15px 19px;
+  border-top: 1px solid #ddd;
+  border-left: 1px solid #ddd;
+  border-right: 1px solid #ddd;
+  text-transform: uppercase;
+  color: #000000;
+  text-decoration: none;
+}
+.left-sidebar .element-menu > li a i {
+  color: #339933;
+}
+@media (min-width: 992px) {
+  .left-sidebar .element-menu > li a i {
+    padding-right: 20px;
+  }
+}
+.left-sidebar .element-menu > li a:hover {
+  background-color: #339933;
+  color: #ffffff;
+}
+.left-sidebar .element-menu > li a:hover i {
+  color: #ffffff;
+}
+.left-sidebar .element-menu > li:last-of-type a {
+  border-bottom: 1px solid #ddd;
+}
+.left-sidebar .more-items {
+  margin-top: 30px;
+}
+.left-sidebar .more-items .btn-more-items {
+  border-radius: 0;
+  padding: 15px 15px 19px;
+  background-color: #fbfbfc;
+  width: 100%;
+  border: 1px solid #ddd;
+  text-align: left;
+  text-transform: uppercase;
+  position: relative;
+}
+.left-sidebar .more-items .btn-more-items .fa-angle-down {
+  position: absolute;
+  right: 15px;
+  top: 10px;
+  color: #339933;
+}
+.left-sidebar .more-items .dropdown-menu {
+  box-shadow: none;
+  border: none;
+  width: 100%;
+  position: relative;
+  background-color: transparent;
+}
+.left-sidebar .more-items .dropdown-menu li:first-of-type a {
+  border-top: none;
+}
+.left-sidebar .more-items.open .fa-angle-down {
+  -webkit-transform: rotate(180deg);
+      -ms-transform: rotate(180deg);
+          transform: rotate(180deg);
+}
+.right-body .empty-text {
+  border: 1px dashed #ddd;
+  text-align: center;
+  padding: 150px 0;
 }

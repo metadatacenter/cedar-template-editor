@@ -12,6 +12,8 @@
 @header-bg-color:#056046;
 @brand-primary:#339933;
 @white:#fff;
+@black:#000;
+@container-cedar-medium:952px;
 
 // Definine local mixins
 .activ-grotest-regular {
@@ -29,18 +31,15 @@
   font-weight:400;
 }
 
+.link-transition {
+  transition: all 0.3s 0.1s;
+}
+
 /*
 ==========
 === Inherited Styling
 ==========
 */
-body {
-    background: #fafafa;
-    font-family: 'aktiv-grotesk-std', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    color: #333;
-}
-
-
 /* Custom container */
 .container-narrow {
   margin: 0 auto;
@@ -111,9 +110,28 @@ body {
 ==========
 */
 
+body {
+  background: #f9f9fb;
+  font-family: 'aktiv-grotesk-std', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  color: #333;
+}
+
+a {
+  .link-transition;
+  cursor:pointer;
+}
+
+i {
+  .link-transition;
+}
+
 .container {
   width:@container-tablet;
   position:relative;
+
+  @media(min-width:@screen-md-min) {
+    width:@container-cedar-medium;
+  }
 }
 
 .navbar {
@@ -123,13 +141,15 @@ body {
 
   #page-title {
     float:right;
-    padding-top:15px;
-    width:115px;
+    padding-top:27px;
+    padding-right:20px;
   }
 
   .navbar-toggle {
     border-radius:0;
     border:none;
+    margin-top:21px;
+    margin-right:0;
 
     &:hover,
     &:focus {
@@ -142,7 +162,12 @@ body {
   }
 
   .navbar-brand {
-    border-bottom:2px solid @white;
+    background-image:url(../img/cedar-logo.png);
+    background-repeat:no-repeat;
+    width:116px;
+    height:30px;
+    margin-top:25px;
+    .text-hide();
   }
 
   #navbar {
@@ -158,6 +183,14 @@ body {
   width:100%;
   background-color:@header-bg-color;
   padding:60px 0 20px 0;
+
+  .left-sidebar {
+    padding-left:0;
+  }
+
+  .right-body {
+    padding-right:0;
+  }
 
   .form-control {
     border:none;
@@ -202,7 +235,11 @@ body {
 }
 
 .template-body {
-  padding:20px 0;
+  padding:30px 0;
+}
+
+.left-sidebar {
+  padding-left:0;
 }
 
 .floating-label-wrapper {
@@ -219,6 +256,11 @@ body {
   transition: 0.2s ease all;
   opacity: 0;
 }
+
+.form-control.empty ~ .floating-label  {
+  opacity: 1;
+}
+
 .form-control:focus ~ .floating-label,
 .form-control:not(.empty) ~ .floating-label {
   top: -15px;
@@ -227,12 +269,15 @@ body {
   opacity: 0.6;
 }
 
-.form-control.empty ~ .floating-label  {
-  opacity: 1;
-}
 textarea { resize: none; }
 textarea ~ .form-control-highlight {
   margin-top: -11px;
+}
+
+p.add-item {
+  font-size:18px;
+  color:@brand-primary;
+  padding-left:15px;
 }
 
 .left-sidebar {
@@ -246,11 +291,85 @@ textarea ~ .form-control-highlight {
 
       a {
         display:block;
-        padding:10px;
-        border-top:1px solid #ccc;
-        border-left:1px solid #ccc;
-        border-right:1px solid #ccc;
+        padding:15px 15px 19px;
+        border-top:1px solid #ddd;
+        border-left:1px solid #ddd;
+        border-right:1px solid #ddd;
+        text-transform:uppercase;
+        color:@black;
+        text-decoration:none;
+
+        i {
+          color:@brand-primary;
+          @media(min-width:@screen-md-min) {
+            padding-right:20px;
+          }
+        }
+
+        &:hover {
+          background-color:@brand-primary;
+          color:@white;
+
+          i {
+            color:@white;
+          }
+        }
+      }
+
+      &:last-of-type {
+        a {
+          border-bottom:1px solid #ddd;
+        }
       }
     }
   }
+
+  .more-items {
+    margin-top:30px;
+
+    .btn-more-items {
+      border-radius:0;
+      padding:15px 15px 19px;
+      background-color:#fbfbfc;
+      width:100%;
+      border:1px solid #ddd;
+      text-align:left;
+      text-transform:uppercase;
+      position:relative;
+
+      .fa-angle-down {
+        position:absolute;
+        right:15px;
+        top:10px;
+        color:@brand-primary;
+      }
+    }
+
+    .dropdown-menu {
+      box-shadow:none;
+      border:none;
+      width:100%;
+      position:relative;
+      background-color:transparent;
+
+      li:first-of-type a {
+        border-top:none;
+      }
+    }
+
+    &.open .fa-angle-down {
+      transform:rotate(180deg);
+    }
+
+  }
+}
+
+.right-body {
+
+  .empty-text {
+    border:1px dashed #ddd;
+    text-align:center;
+    padding:150px 0;
+  }
+  
 }

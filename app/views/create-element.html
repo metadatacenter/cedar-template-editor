@@ -30,7 +30,8 @@
   <div class="container">
     <div class="row">
       <div class="left-sidebar col-sm-3">
-        <ul class="element-menu">
+        <p class="add-item">Add Item</p>
+        <ul class="element-menu" role="menu">
           <li class="item"><a ng-click="addElement()"><i class="cedar-svg-text"></i>Text</a></li>
           <li class="item"><a ng-click="addElement()"><i class="cedar-svg-paragraph"></i>Paragraph</a></li>
           <li class="item"><a ng-click="addElement()"><i class="cedar-svg-multiple-choice"></i>Multiple Choice</a></li>
@@ -38,9 +39,28 @@
           <li class="item"><a ng-click="addElement()"><i class="cedar-svg-date"></i>Date</a></li>
           <li class="item"><a ng-click="addElement()"><i class="cedar-svg-element"></i>Add an Element</a></li>
         </ul>
+
+        <div class="more-items">
+          <button type="button" class="btn btn-more-items dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+            More Items <i class="fa fa-angle-down fa-2x"></i>
+          </button>
+          <ul class="dropdown-menu element-menu" role="menu">
+            <li class="item"><a ng-click="addElement()"><i class="cedar-svg-list"></i>Pick from a list</a></li>
+            <li class="item"><a ng-click="addElement()"><i class="cedar-svg-controll-term"></i>Controlled Term</a></li>
+            <li class="item"><a ng-click="addElement()"><i class="cedar-svg-audio-visual"></i>Audio Visual</a></li>
+            <li class="item"><a ng-click="addElement()"><i class="cedar-svg-numeric"></i>Numeric</a></li>
+            <li class="item"><a ng-click="addElement()"><i class="cedar-svg-phone"></i>Phone</a></li>
+            <li class="item"><a ng-click="addElement()"><i class="cedar-svg-section-break"></i>Section Break</a></li>
+            <li class="item"><a ng-click="addElement()"><i class="cedar-svg-page-break"></i>Page Break</a></li>
+            <li class="item"><a ng-click="addElement()"><i class="cedar-svg-location"></i>Location</a></li>
+          </ul>
+        </div>
+
       </div> <!-- /.left-sidebar -->
       <div class="right-body col-sm-9">
-        <p>All the important stuff goes in here!!!</p>
+        <div class="empty-text">
+          <p>Add element or item.</p>
+        </div>
       </div> <!-- /.right-body -->
     </div> <!-- /.row -->
   </div> <!-- /.container -->
