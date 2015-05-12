@@ -31,33 +31,30 @@ angularApp.controller('CreateElementController', function ($rootScope, $scope, $
 
     // create new field button click
     $scope.addNewField = function(fieldType){
-        console.log(fieldType);
+      // incr field_id counter
+      $scope.addField.lastAddedID++;
 
-        // incr field_id counter
-        $scope.addField.lastAddedID++;
+      var newField = {
+        "field_id" : $scope.addField.lastAddedID,
+        "field_title" : "New field - " + ($scope.addField.lastAddedID),
+        "field_type" : fieldType,
+        "field_value" : "",
+        "field_required" : true,
+	      "field_disabled" : false
+      };
 
-        var newField = {
-          "field_id" : $scope.addField.lastAddedID,
-          "field_title" : "New field - " + ($scope.addField.lastAddedID),
-          "field_type" : fieldType,
-          "field_value" : "",
-          "field_required" : true,
-		      "field_disabled" : false
-        };
-
-        // put newField into fields array
-        $scope.element.fields.push(newField);
-        console.log($scope.element.fields);
+      // put newField into fields array
+      $scope.element.fields.push(newField);
     }
 
     // deletes particular field on button click
     $scope.deleteField = function (field_id){
-        for(var i = 0; i < $scope.element.fields.length; i++){
-            if($scope.element.fields[i].field_id == field_id){
-                $scope.element.fields.splice(i, 1);
-                break;
-            }
+      for(var i = 0; i < $scope.element.fields.length; i++){
+        if($scope.element.fields[i].field_id == field_id){
+          $scope.element.fields.splice(i, 1);
+          break;
         }
+      }
     }
 
     // add new option to the field
