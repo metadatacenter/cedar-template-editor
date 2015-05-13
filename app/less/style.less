@@ -183,9 +183,9 @@ i {
   #navbar {
     position:absolute;
     right:0;
-    z-index:1;
+    z-index:2;
     background-color:@white;
-    margin-top:1px;
+    margin-top:18px;
   }
 }
 
@@ -416,13 +416,15 @@ section.dashboard-elements {
     width:100%;
     color:@white;
     background-color:@brand-primary;
-    font-size:15px;
+    font-size:14px;
     text-transform:uppercase;
     border-radius:0;
     text-align:left;
-    padding:18px 12px;
+    padding:20px 12px 18px 12px;
     margin-top:20px;
+    margin-bottom:20px;
     max-width:255px;
+    position:relative;
     .link-transition;
 
     &:hover {
@@ -430,18 +432,14 @@ section.dashboard-elements {
     }
 
     @media(min-width:@screen-md-min) {
-      padding:18px 12px 18px 40px; 
+      padding:18px 12px 18px 30px; 
+      font-size:16px;
     }
 
-    .fa-plus {
-      float:right;
-      transform:translateY(-1px);
-      border-radius: 50%;
-      height: 22px;
-      width: 22px;
-      border: 2px solid #fff;
-      padding: 3px 0 0 4px;
-      font-size: 13px;
+    i.cedar-svg-plus {
+      position:absolute;
+      right:12px;
+      top:10px;
     }
   }
 
@@ -520,7 +518,7 @@ section.dashboard-elements {
       margin-left:10px;
       margin-right:10px;
       margin-bottom:30px;
-      float:left;
+      float:left; 
       width: calc(~"50% - 20px");
       border:1px solid #ddd;
       text-align:center;

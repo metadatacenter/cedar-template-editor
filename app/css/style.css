@@ -6576,6 +6576,9 @@ button.close {
 .cedar-svg-element:before {
   content: "n";
 }
+.cedar-svg-plus:before {
+  content: "o";
+}
 .cedar-svg-pencil:before {
   content: "p";
 }
@@ -6750,9 +6753,9 @@ i {
 .navbar #navbar {
   position: absolute;
   right: 0;
-  z-index: 1;
+  z-index: 2;
   background-color: #ffffff;
-  margin-top: 1px;
+  margin-top: 18px;
 }
 .template-header {
   width: 100%;
@@ -6956,13 +6959,15 @@ section.dashboard-elements .btn-create-new {
   width: 100%;
   color: #ffffff;
   background-color: #339933;
-  font-size: 15px;
+  font-size: 14px;
   text-transform: uppercase;
   border-radius: 0;
   text-align: left;
-  padding: 18px 12px;
+  padding: 20px 12px 18px 12px;
   margin-top: 20px;
+  margin-bottom: 20px;
   max-width: 255px;
+  position: relative;
   -webkit-transition: all 0.3s 0.1s;
           transition: all 0.3s 0.1s;
 }
@@ -6971,20 +6976,14 @@ section.dashboard-elements .btn-create-new:hover {
 }
 @media (min-width: 992px) {
   section.dashboard-elements .btn-create-new {
-    padding: 18px 12px 18px 40px;
+    padding: 18px 12px 18px 30px;
+    font-size: 16px;
   }
 }
-section.dashboard-elements .btn-create-new .fa-plus {
-  float: right;
-  -webkit-transform: translateY(-1px);
-      -ms-transform: translateY(-1px);
-          transform: translateY(-1px);
-  border-radius: 50%;
-  height: 22px;
-  width: 22px;
-  border: 2px solid #fff;
-  padding: 3px 0 0 4px;
-  font-size: 13px;
+section.dashboard-elements .btn-create-new i.cedar-svg-plus {
+  position: absolute;
+  right: 12px;
+  top: 10px;
 }
 section.dashboard-elements .dash-header {
   width: 100%;

@@ -4,7 +4,8 @@ angularApp.directive('resizeHeight', function ($window) {
 
   function link($scope, $element, attrs) {
 
-    var widthCalc;
+    var widthCalc,
+        resizeTimer;
 
     $scope.onResizeFunction = function() {
       widthCalc = $element.width();
@@ -15,7 +16,12 @@ angularApp.directive('resizeHeight', function ($window) {
     $scope.onResizeFunction();
 
     angular.element($window).bind('resize', function() {
-      $scope.onResizeFunction();
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(function() {
+
+        // Run code here, resizing has "stopped"
+        $scope.onResizeFunction();  
+      }, 250);
     });
   }
 
