@@ -21,6 +21,10 @@ angularApp.config(function ($routeProvider, $locationProvider) {
             templateUrl: 'views/view.html',
             controller: 'ViewCtrl'
         })
+        .when('/templates/runtime', {
+            templateUrl: 'views/runtime.html',
+            controller: 'RuntimeController'
+        })
         .otherwise({
             redirectTo: '/'
         });

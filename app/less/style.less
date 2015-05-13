@@ -14,6 +14,7 @@
 @brand-primary-hover:#338833;
 @white:#fff;
 @black:#000;
+@gray:#999;
 @container-cedar-medium:952px;
 
 // Definine local mixins
@@ -106,9 +107,9 @@
 }
 
 /*
-==========
+================================================
 === MJD Custom Code
-==========
+================================================
 */
 
 body {
@@ -193,9 +194,23 @@ i {
   width:100%;
   background-color:@header-bg-color;
   padding:60px 0 20px 0;
+  min-height:130px;
 
   .left-sidebar {
-    padding-left:0;
+
+    h2.runtime-template-name {
+      color:@white;
+      font-size:18px;
+      margin:0;
+
+      @media(min-width:@screen-sm-min) {
+        font-size:22px;
+      }
+    }
+
+    @media(min-width:@screen-sm-min) {
+      padding-left:0;
+    }
   }
 
   .right-body {
@@ -220,6 +235,7 @@ i {
   .floating-label {
     font-size:16px;
     top:5px;
+    color:@white;
   }
 
   #element-name {
@@ -246,10 +262,20 @@ i {
 
 .template-body {
   padding:30px 0;
+
+  .right-body {
+    padding-top:30px;
+
+    @media(min-width:@screen-sm-min) {
+      padding-top:35px;
+    }
+  }
 }
 
 .left-sidebar {
-  padding-left:0;
+  @media(min-width:@screen-sm-min) {
+    padding-left:0;
+  }
 }
 
 .floating-label-wrapper {
@@ -257,7 +283,7 @@ i {
 }
 
 .floating-label {
-  color: @white;
+  color:@gray;
   //font-size: 14px;
   position: absolute;
   pointer-events: none;
@@ -301,7 +327,7 @@ p.add-item {
 
       a {
         display:block;
-        padding:15px 15px 19px;
+        padding:14px 15px 18px;
         border-top:1px solid #ddd;
         border-left:1px solid #ddd;
         border-right:1px solid #ddd;
@@ -311,8 +337,9 @@ p.add-item {
 
         i {
           color:@brand-primary;
+          padding-right:5px;
           @media(min-width:@screen-md-min) {
-            padding-right:20px;
+            padding-right:10px;
           }
         }
 
@@ -347,6 +374,14 @@ p.add-item {
       text-transform:uppercase;
       position:relative;
 
+      @media(min-width:@screen-sm-min) {
+        font-size:13px;
+      }
+
+      @media(min-width:@screen-md-min) {
+        font-size:14px;
+      }
+
       .fa-angle-down {
         position:absolute;
         right:15px;
@@ -364,6 +399,10 @@ p.add-item {
 
       li:first-of-type a {
         border-top:none;
+      }
+
+      li a {
+        white-space:inherit;
       }
     }
 
@@ -383,7 +422,11 @@ p.add-item {
   }
 }
 
-// Dashboard
+/*
+================================================
+=== Dashboard Template
+================================================
+*/
 section.dashboard-elements {
   .clearfix;
   padding-top:75px;
@@ -614,6 +657,47 @@ section.dashboard-elements {
           opacity:1;
         }
       }
+    }
+  }
+}
+
+/*
+================================================
+=== Form Template Fields
+================================================
+*/
+.template-body form {
+
+  .form-group {
+    margin-bottom:40px;
+
+    .form-control {
+      border-radius:0;
+      border-color:#ddd;
+      box-shadow:none;
+      height:60px;
+      padding-top:20px;
+      font-size:16px;
+      color:@black;
+
+      &.empty ~ .floating-label {
+        top:25px;
+      }
+
+      &:focus ~ .floating-label, 
+      &:not(.empty) ~ .floating-label {
+        top:10px;
+        left:8px;
+        color:#bcbcc3;
+      }
+
+      &:not(.empty):not(:focus) ~ .floating-label {
+        color:@brand-primary;
+      }
+    }
+
+    textarea.form-control {
+      height:auto;
     }
   }
 }

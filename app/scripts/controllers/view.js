@@ -8,6 +8,7 @@ var ViewCtrl = angularApp.controller('ViewCtrl', function ($rootScope, $scope, F
     $scope.form = {};
 	// read form with given id
 	FormService.form($routeParams.id).then(function(form) {
+		//console.log(form);
 		$scope.form = form;
 	});
 });

@@ -2515,7 +2515,7 @@ output {
   padding-top: 7px;
   font-size: 14px;
   line-height: 1.42857143;
-  color: #555555;
+  color: #999999;
 }
 .form-control {
   display: block;
@@ -2524,7 +2524,7 @@ output {
   padding: 6px 12px;
   font-size: 14px;
   line-height: 1.42857143;
-  color: #555555;
+  color: #999999;
   background-color: #ffffff;
   background-image: none;
   border: 1px solid #cccccc;
@@ -3759,7 +3759,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
   font-size: 14px;
   font-weight: normal;
   line-height: 1;
-  color: #555555;
+  color: #999999;
   text-align: center;
   background-color: #eeeeee;
   border: 1px solid #cccccc;
@@ -3892,7 +3892,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
 .nav-tabs > li.active > a,
 .nav-tabs > li.active > a:hover,
 .nav-tabs > li.active > a:focus {
-  color: #555555;
+  color: #999999;
   background-color: #ffffff;
   border: 1px solid #dddddd;
   border-bottom-color: transparent;
@@ -6677,9 +6677,9 @@ button.close {
   font-size: smaller;
 }
 /*
-==========
+================================================
 === MJD Custom Code
-==========
+================================================
 */
 body {
   background: #f9f9fb;
@@ -6761,9 +6761,22 @@ i {
   width: 100%;
   background-color: #056046;
   padding: 60px 0 20px 0;
+  min-height: 130px;
 }
-.template-header .left-sidebar {
-  padding-left: 0;
+.template-header .left-sidebar h2.runtime-template-name {
+  color: #ffffff;
+  font-size: 18px;
+  margin: 0;
+}
+@media (min-width: 768px) {
+  .template-header .left-sidebar h2.runtime-template-name {
+    font-size: 22px;
+  }
+}
+@media (min-width: 768px) {
+  .template-header .left-sidebar {
+    padding-left: 0;
+  }
 }
 .template-header .right-body {
   padding-right: 0;
@@ -6784,6 +6797,7 @@ i {
 .template-header .floating-label {
   font-size: 16px;
   top: 5px;
+  color: #ffffff;
 }
 .template-header #element-name .cedar-svg-element {
   position: absolute;
@@ -6802,14 +6816,24 @@ i {
 .template-body {
   padding: 30px 0;
 }
-.left-sidebar {
-  padding-left: 0;
+.template-body .right-body {
+  padding-top: 30px;
+}
+@media (min-width: 768px) {
+  .template-body .right-body {
+    padding-top: 35px;
+  }
+}
+@media (min-width: 768px) {
+  .left-sidebar {
+    padding-left: 0;
+  }
 }
 .floating-label-wrapper {
   position: relative;
 }
 .floating-label {
-  color: #ffffff;
+  color: #999999;
   position: absolute;
   pointer-events: none;
   left: 12px;
@@ -6848,7 +6872,7 @@ p.add-item {
 }
 .left-sidebar .element-menu > li a {
   display: block;
-  padding: 15px 15px 19px;
+  padding: 14px 15px 18px;
   border-top: 1px solid #ddd;
   border-left: 1px solid #ddd;
   border-right: 1px solid #ddd;
@@ -6858,10 +6882,11 @@ p.add-item {
 }
 .left-sidebar .element-menu > li a i {
   color: #339933;
+  padding-right: 5px;
 }
 @media (min-width: 992px) {
   .left-sidebar .element-menu > li a i {
-    padding-right: 20px;
+    padding-right: 10px;
   }
 }
 .left-sidebar .element-menu > li a:hover {
@@ -6887,6 +6912,16 @@ p.add-item {
   text-transform: uppercase;
   position: relative;
 }
+@media (min-width: 768px) {
+  .left-sidebar .more-items .btn-more-items {
+    font-size: 13px;
+  }
+}
+@media (min-width: 992px) {
+  .left-sidebar .more-items .btn-more-items {
+    font-size: 14px;
+  }
+}
 .left-sidebar .more-items .btn-more-items .fa-angle-down {
   position: absolute;
   right: 15px;
@@ -6903,6 +6938,9 @@ p.add-item {
 .left-sidebar .more-items .dropdown-menu li:first-of-type a {
   border-top: none;
 }
+.left-sidebar .more-items .dropdown-menu li a {
+  white-space: inherit;
+}
 .left-sidebar .more-items.open .fa-angle-down {
   -webkit-transform: rotate(180deg);
       -ms-transform: rotate(180deg);
@@ -6913,6 +6951,11 @@ p.add-item {
   text-align: center;
   padding: 150px 0;
 }
+/*
+================================================
+=== Dashboard Template
+================================================
+*/
 section.dashboard-elements {
   padding-top: 75px;
   padding-bottom: 50px;
@@ -7178,4 +7221,36 @@ section.dashboard-elements .margin-reset-row .template-item .back-panel .edit-op
 }
 section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   opacity: 1;
+}
+/*
+================================================
+=== Form Template Fields
+================================================
+*/
+.template-body form .form-group {
+  margin-bottom: 40px;
+}
+.template-body form .form-group .form-control {
+  border-radius: 0;
+  border-color: #ddd;
+  box-shadow: none;
+  height: 60px;
+  padding-top: 20px;
+  font-size: 16px;
+  color: #000000;
+}
+.template-body form .form-group .form-control.empty ~ .floating-label {
+  top: 25px;
+}
+.template-body form .form-group .form-control:focus ~ .floating-label,
+.template-body form .form-group .form-control:not(.empty) ~ .floating-label {
+  top: 10px;
+  left: 8px;
+  color: #bcbcc3;
+}
+.template-body form .form-group .form-control:not(.empty):not(:focus) ~ .floating-label {
+  color: #339933;
+}
+.template-body form .form-group textarea.form-control {
+  height: auto;
 }
