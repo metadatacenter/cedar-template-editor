@@ -416,11 +416,11 @@ section.dashboard-elements {
     width:100%;
     color:@white;
     background-color:@brand-primary;
-    font-size:14px;
+    font-size:16px;
     text-transform:uppercase;
     border-radius:0;
     text-align:left;
-    padding:20px 12px 18px 12px;
+    padding:20px 12px 18px 40px;
     margin-top:20px;
     margin-bottom:20px;
     max-width:255px;
@@ -431,8 +431,13 @@ section.dashboard-elements {
       background-color:@brand-primary-hover;
     }
 
+    @media(min-width:@screen-sm-min) {
+      padding:20px 12px 18px 12px;
+      font-size:14px;
+    }
+
     @media(min-width:@screen-md-min) {
-      padding:18px 12px 18px 30px; 
+      padding:18px 12px 18px 25px; 
       font-size:16px;
     }
 

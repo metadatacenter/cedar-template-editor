@@ -6959,11 +6959,11 @@ section.dashboard-elements .btn-create-new {
   width: 100%;
   color: #ffffff;
   background-color: #339933;
-  font-size: 14px;
+  font-size: 16px;
   text-transform: uppercase;
   border-radius: 0;
   text-align: left;
-  padding: 20px 12px 18px 12px;
+  padding: 20px 12px 18px 40px;
   margin-top: 20px;
   margin-bottom: 20px;
   max-width: 255px;
@@ -6974,9 +6974,15 @@ section.dashboard-elements .btn-create-new {
 section.dashboard-elements .btn-create-new:hover {
   background-color: #338833;
 }
+@media (min-width: 768px) {
+  section.dashboard-elements .btn-create-new {
+    padding: 20px 12px 18px 12px;
+    font-size: 14px;
+  }
+}
 @media (min-width: 992px) {
   section.dashboard-elements .btn-create-new {
-    padding: 18px 12px 18px 30px;
+    padding: 18px 12px 18px 25px;
     font-size: 16px;
   }
 }
