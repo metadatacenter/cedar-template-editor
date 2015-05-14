@@ -18,12 +18,12 @@
 @container-cedar-medium:952px;
 
 // Definine local mixins
-.activ-grotest-regular {
+.activ-grotesk-regular {
   font-family: 'aktiv-grotesk-std';
   font-weight:400;
 }
 
-.activ-grotest-bold {
+.activ-grotesk-bold {
   font-family: 'aktiv-grotesk-std';
   font-weight:700;
 }
@@ -455,7 +455,7 @@ section.dashboard-elements {
   }
 
   .btn-create-new {
-    .activ-grotest-bold;
+    .activ-grotesk-bold;
     width:100%;
     color:@white;
     background-color:@brand-primary;
@@ -545,7 +545,7 @@ section.dashboard-elements {
       float:right;
       margin:0;
       transform:translateY(8px);
-      .activ-grotest-bold;
+      .activ-grotesk-bold;
       color:@brand-primary;
       cursor:pointer;
       text-transform:uppercase;
@@ -740,7 +740,7 @@ section.dashboard-elements {
     }
 
     .warning-text {
-      .activ-grotest-regular;
+      .activ-grotesk-regular;
       font-style:italic;
       font-size:13px;
       position:absolute;
@@ -753,25 +753,50 @@ section.dashboard-elements {
       display:block;
     }
 
-    .btn-file {
-      position: relative;
-      overflow: hidden;
-    }
-    
-    .btn-file input[type=file] {
-      position: absolute;
-      top: 0;
-      right: 0;
-      min-width: 100%;
-      min-height: 100%;
-      font-size: 100px;
-      text-align: right;
-      filter: alpha(opacity=0);
-      opacity: 0;
-      outline: none;
-      background: white;
-      cursor: inherit;
-      display: block;
+    .additional-options {
+      padding-top:20px;
+      padding-left:10px;
+
+      span.or {
+        .activ-grotesk-bold;
+        color:#999;
+        text-transform:uppercase;
+        font-size:11px;
+        padding-right:10px;
+      }
+
+      .btn-file {
+        position: relative;
+        overflow: hidden;
+        background-color:@brand-primary;
+        border-radius:0;
+        color:@white;
+        .activ-grotesk-regular;
+        border:none;
+        vertical-align:middle;
+        text-transform:uppercase;
+        padding:18px 30px;
+
+        &:hover {
+          background-color:@brand-primary-hover;
+        }
+      }
+
+      .btn-file input[type="file"] {
+        position: absolute;
+        top: 0;
+        right: 0;
+        min-width: 100%;
+        min-height: 100%;
+        font-size: 100px;
+        text-align: right;
+        filter: alpha(opacity=0);
+        opacity: 0;
+        outline: none;
+        background: white;
+        cursor: inherit;
+        display: block;
+      }
     }
   }
 }
@@ -787,7 +812,7 @@ section.dashboard-elements {
     background-color:@brand-primary;
     color:@white;
     text-transform:uppercase;
-    .activ-grotest-regular;
+    .activ-grotesk-regular;
     font-size:16px;
     .link-transition;
     padding:18px 0;
@@ -811,7 +836,7 @@ section.dashboard-elements {
       color:@brand-primary;
       background-color:transparent;
       font-size:14px;
-      .activ-grotest-bold;
+      .activ-grotesk-bold;
       padding:18px 0;
 
       @media(min-width:@screen-md-min) {
@@ -832,7 +857,7 @@ section.dashboard-elements {
 
 // Override Bootstrap popover styles
 .popover {
-  .activ-grotest-regular;
+  .activ-grotesk-regular;
   font-size:12px;
   border-color:@brand-primary;
   color:#999;
@@ -865,7 +890,7 @@ section.dashboard-elements {
       }
 
       a > .prev {
-        .activ-grotest-bold;
+        .activ-grotesk-bold;
         font-weight:bold;
         color:@brand-primary;
 
@@ -880,7 +905,7 @@ section.dashboard-elements {
       }
 
       a > .next {
-        .activ-grotest-bold;
+        .activ-grotesk-bold;
         font-weight:bold;
         color:@brand-primary;
 

@@ -6609,11 +6609,11 @@ button.close {
 .cedar-svg-warning:before {
   content: "y";
 }
-.activ-grotest-regular {
+.activ-grotesk-regular {
   font-family: 'aktiv-grotesk-std';
   font-weight: 400;
 }
-.activ-grotest-bold {
+.activ-grotesk-bold {
   font-family: 'aktiv-grotesk-std';
   font-weight: 700;
 }
@@ -7311,11 +7311,35 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
 .template-body form .form-group .ng-invalid ~ .warning-text {
   display: block;
 }
-.template-body form .form-group .btn-file {
+.template-body form .form-group .additional-options {
+  padding-top: 20px;
+  padding-left: 10px;
+}
+.template-body form .form-group .additional-options span.or {
+  font-family: 'aktiv-grotesk-std';
+  font-weight: 700;
+  color: #999;
+  text-transform: uppercase;
+  font-size: 11px;
+  padding-right: 10px;
+}
+.template-body form .form-group .additional-options .btn-file {
   position: relative;
   overflow: hidden;
+  background-color: #339933;
+  border-radius: 0;
+  color: #ffffff;
+  font-family: 'aktiv-grotesk-std';
+  font-weight: 400;
+  border: none;
+  vertical-align: middle;
+  text-transform: uppercase;
+  padding: 18px 30px;
 }
-.template-body form .form-group .btn-file input[type=file] {
+.template-body form .form-group .additional-options .btn-file:hover {
+  background-color: #338833;
+}
+.template-body form .form-group .additional-options .btn-file input[type="file"] {
   position: absolute;
   top: 0;
   right: 0;
