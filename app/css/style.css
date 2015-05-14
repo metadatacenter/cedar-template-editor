@@ -7263,6 +7263,11 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
 .template-body form .form-group textarea.form-control {
   height: auto;
 }
+.template-body form .form-group input[type=number]::-webkit-inner-spin-button,
+.template-body form .form-group input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
 .template-body form .form-group .input-indicator-icons {
   position: absolute;
   top: 10px;
@@ -7275,9 +7280,13 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
 .template-body form .form-group .input-indicator-icons .cedar-svg-help-circle {
   color: rgba(51, 51, 51, 0.24);
   display: none;
+  cursor: pointer;
 }
 .template-body form .form-group .input-indicator-icons .cedar-svg-warning {
   color: #dfbd00;
+  display: none;
+}
+.template-body form .form-group .empty.ng-invalid ~ .input-indicator-icons .cedar-svg-help-circle {
   display: none;
 }
 .template-body form .form-group .empty ~ .input-indicator-icons .cedar-svg-help-circle {
@@ -7288,4 +7297,136 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
 }
 .template-body form .form-group .ng-invalid ~ .input-indicator-icons .cedar-svg-warning {
   display: block;
+}
+.template-body form .form-group .warning-text {
+  font-family: 'aktiv-grotesk-std';
+  font-weight: 400;
+  font-style: italic;
+  font-size: 13px;
+  position: absolute;
+  left: 10px;
+  bottom: -25px;
+  display: none;
+}
+.template-body form .form-group .ng-invalid ~ .warning-text {
+  display: block;
+}
+.edit-actions {
+  border-top: 1px solid #ddd;
+  padding: 30px 0;
+  text-align: center;
+}
+.edit-actions .btn {
+  display: inline-block;
+  border-radius: 0;
+  background-color: #339933;
+  color: #ffffff;
+  text-transform: uppercase;
+  font-family: 'aktiv-grotesk-std';
+  font-weight: 400;
+  font-size: 16px;
+  -webkit-transition: all 0.3s 0.1s;
+          transition: all 0.3s 0.1s;
+  padding: 18px 0;
+  width: 32.6%;
+  border: none;
+}
+@media (min-width: 768px) {
+  .edit-actions .btn {
+    width: 185px;
+  }
+}
+@media (min-width: 992px) {
+  .edit-actions .btn {
+    padding: 18px 0;
+    width: 220px;
+  }
+}
+.edit-actions .btn:hover {
+  background-color: #338833;
+}
+.edit-actions .btn.btn-clear {
+  color: #339933;
+  background-color: transparent;
+  font-size: 14px;
+  font-family: 'aktiv-grotesk-std';
+  font-weight: 700;
+  padding: 18px 0;
+}
+@media (min-width: 992px) {
+  .edit-actions .btn.btn-clear {
+    width: 125px;
+  }
+}
+@media (min-width: 992px) {
+  .edit-actions .btn.btn-clear {
+    padding: 18px 0;
+    width: 160px;
+  }
+}
+.edit-actions .btn.btn-clear:hover {
+  color: #338833;
+}
+.popover {
+  font-family: 'aktiv-grotesk-std';
+  font-weight: 400;
+  font-size: 12px;
+  border-color: #339933;
+  color: #999;
+  background-color: #f9f9fb;
+}
+.popover.left {
+  margin-left: -15px;
+  margin-top: -2px;
+}
+.popover.left > .arrow {
+  border-left-color: #339933;
+}
+.pagination-container {
+  width: 100%;
+  text-align: center;
+}
+.pagination-container .pagination {
+  margin: 30px 0;
+}
+.pagination-container .pagination li.active span {
+  background-color: transparent;
+  border: none;
+  color: #339933;
+}
+.pagination-container .pagination li a > .prev {
+  font-family: 'aktiv-grotesk-std';
+  font-weight: 700;
+  font-weight: bold;
+  color: #339933;
+}
+.pagination-container .pagination li a > .prev:hover {
+  color: #338833;
+}
+.pagination-container .pagination li a > .prev i {
+  padding-right: 5px;
+  font-weight: bold;
+}
+.pagination-container .pagination li a > .next {
+  font-family: 'aktiv-grotesk-std';
+  font-weight: 700;
+  font-weight: bold;
+  color: #339933;
+}
+.pagination-container .pagination li a > .next:hover {
+  color: #338833;
+}
+.pagination-container .pagination li a > .next i {
+  padding-left: 5px;
+  font-weight: bold;
+}
+.pagination-container .pagination li a {
+  color: #666;
+  border: none;
+  background-color: transparent;
+  border-radius: 0;
+  padding: 6px 24px;
+}
+.pagination-container .pagination li a:hover {
+  color: #338833;
 }

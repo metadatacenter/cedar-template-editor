@@ -39,21 +39,63 @@
         <form id="sample-form-1" data-toggle="validator" role="form">
           <div class="form-group floating-label-wrapper">
             <input type="text" class="form-control" id="textfield1" placeholder="Textfield #1" aria-label="field-description-1" ng-model="model1"  with-floating-label>
-            <div class="input-indicator-icons" input-indicator-icons></div>
+            <div class="input-indicator-icons">
+              <i class="cedar-svg-help-circle" data-container="body" data-toggle="popover" data-placement="left" data-content="This is the sample help text for Textfield #1"></i>
+              <i class="cedar-svg-check-circle"></i>
+              <i class="cedar-svg-warning"></i>
+            </div><!-- /.input-indicator-icons -->
           </div><!-- /.form-group -->
           <div class="form-group floating-label-wrapper">
             <textarea class="form-control" rows="5" id="comment" placeholder="Textarea #1" aria-label="field-description-2" ng-model="model2" with-floating-label></textarea>
-            <div class="input-indicator-icons" input-indicator-icons></div>
+            <div class="input-indicator-icons">
+              <i class="cedar-svg-help-circle" data-container="body" data-toggle="popover" data-placement="left" data-content="This is the sample help text for Textarea #1"></i>
+              <i class="cedar-svg-check-circle"></i>
+              <i class="cedar-svg-warning"></i>
+            </div><!-- /.input-indicator-icons -->
           </div><!-- /.form-group -->
           <div class="form-group floating-label-wrapper">
             <input type="text" class="form-control" id="textfield2" placeholder="Textfield #2" aria-label="field-description-3" ng-model="model3"  with-floating-label>
-            <div class="input-indicator-icons" input-indicator-icons></div>
+            <div class="input-indicator-icons">
+              <i class="cedar-svg-help-circle" data-container="body" data-toggle="popover" data-placement="left" data-content="This is the sample help text for Textfield #2, that also has a lot of content inside of the popover."></i>
+              <i class="cedar-svg-check-circle"></i>
+              <i class="cedar-svg-warning"></i>
+            </div><!-- /.input-indicator-icons -->
           </div><!-- /.form-group -->
           <div class="form-group floating-label-wrapper">
             <input type="email" class="form-control" id="emailfield1" placeholder="Email #1" aria-label="field-description-4" ng-model="model4"  data-error="Bruh, that email address is invalid" with-floating-label>
-            <div class="input-indicator-icons" input-indicator-icons></div>
+            <span class="warning-text">This text appears when the current input contents are invalid.</span>
+            <div class="input-indicator-icons">
+              <i class="cedar-svg-help-circle" data-container="body" data-toggle="popover" data-placement="left" data-content="This is the sample help text for Email #1"></i>
+              <i class="cedar-svg-check-circle"></i>
+              <i class="cedar-svg-warning"></i>
+            </div><!-- /.input-indicator-icons -->
+          </div><!-- /.form-group -->
+          <div class="form-group floating-label-wrapper">
+            <input type="number" class="form-control" id="telephone1" placeholder="Telephone Number" aria-label="field-description-5" ng-model="model5" ng-minlength="10"  integer with-floating-label>
+            <div class="input-indicator-icons">
+              <i class="cedar-svg-help-circle" data-container="body" data-toggle="popover" data-placement="left" data-content="Please enter a phone number here, the minimum length is 10 digits."></i>
+              <i class="cedar-svg-check-circle"></i>
+              <i class="cedar-svg-warning"></i>
+            </div><!-- /.input-indicator-icons -->
           </div><!-- /.form-group -->
         </form>
+        <div class="pagination-container">
+          <ul class="pagination">
+            <li><a href="#"><span class="prev"><i class="fa fa-lg fa-angle-left"></i>Previous</span></a></li>
+            <li class="active"><span>1</span></li>
+            <li><a href="#">2</a></li>
+            <li><a href="#">3</a></li>
+            <li><a href="#">4</a></li>
+            <li><a href="#">...</a></li>
+            <li><a href="#">9</a></li>
+            <li><a href="#"><span class="next">Next<i class="fa fa-lg fa-angle-right"></i></span></a></li>
+          </ul>
+        </div><!-- /.pagination-container -->
+        <div class="edit-actions">
+          <button type="button" class="btn btn-save">Save</button>
+          <button type="button" class="btn btn-clear">Cear Form</button>
+          <button type="button" class="btn btn-submit">Submit</button>
+        </div><!-- /.edit-actions -->
       </div> <!-- /.right-body -->
     </div> <!-- /.row -->
   </div> <!-- /.container -->
