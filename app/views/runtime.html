@@ -36,16 +36,23 @@
 
       </div> <!-- /.left-sidebar -->
       <div class="right-body col-sm-9">
-        <form name="" id="">
+        <form id="sample-form-1" data-toggle="validator" role="form">
           <div class="form-group floating-label-wrapper">
             <input type="text" class="form-control" id="textfield1" placeholder="Textfield #1" aria-label="field-description-1" ng-model="model1"  with-floating-label>
-          </div>
+            <div class="input-indicator-icons" input-indicator-icons></div>
+          </div><!-- /.form-group -->
           <div class="form-group floating-label-wrapper">
             <textarea class="form-control" rows="5" id="comment" placeholder="Textarea #1" aria-label="field-description-2" ng-model="model2" with-floating-label></textarea>
-          </div>
+            <div class="input-indicator-icons" input-indicator-icons></div>
+          </div><!-- /.form-group -->
           <div class="form-group floating-label-wrapper">
-            <input type="text" class="form-control" id="textfield2" placeholder="Textfield #2" aria-label="field-description-2" ng-model="model3"  with-floating-label>
-          </div>
+            <input type="text" class="form-control" id="textfield2" placeholder="Textfield #2" aria-label="field-description-3" ng-model="model3"  with-floating-label>
+            <div class="input-indicator-icons" input-indicator-icons></div>
+          </div><!-- /.form-group -->
+          <div class="form-group floating-label-wrapper">
+            <input type="email" class="form-control" id="emailfield1" placeholder="Email #1" aria-label="field-description-4" ng-model="model4"  data-error="Bruh, that email address is invalid" with-floating-label>
+            <div class="input-indicator-icons" input-indicator-icons></div>
+          </div><!-- /.form-group -->
         </form>
       </div> <!-- /.right-body -->
     </div> <!-- /.row -->
