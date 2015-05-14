@@ -7311,6 +7311,25 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
 .template-body form .form-group .ng-invalid ~ .warning-text {
   display: block;
 }
+.template-body form .form-group .btn-file {
+  position: relative;
+  overflow: hidden;
+}
+.template-body form .form-group .btn-file input[type=file] {
+  position: absolute;
+  top: 0;
+  right: 0;
+  min-width: 100%;
+  min-height: 100%;
+  font-size: 100px;
+  text-align: right;
+  filter: alpha(opacity=0);
+  opacity: 0;
+  outline: none;
+  background: white;
+  cursor: inherit;
+  display: block;
+}
 .edit-actions {
   border-top: 1px solid #ddd;
   padding: 30px 0;

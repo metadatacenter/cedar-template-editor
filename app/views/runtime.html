@@ -72,11 +72,33 @@
           </div><!-- /.form-group -->
           <div class="form-group floating-label-wrapper">
             <input type="number" class="form-control" id="telephone1" placeholder="Telephone Number" aria-label="field-description-5" ng-model="model5" ng-minlength="10"  integer with-floating-label>
+            <span class="warning-text">Enter a valid phone number. Integers only, minimum 10 digits.</span>
             <div class="input-indicator-icons">
               <i class="cedar-svg-help-circle" data-container="body" data-toggle="popover" data-placement="left" data-content="Please enter a phone number here, the minimum length is 10 digits."></i>
               <i class="cedar-svg-check-circle"></i>
               <i class="cedar-svg-warning"></i>
             </div><!-- /.input-indicator-icons -->
+          </div><!-- /.form-group -->
+          <div class="form-group floating-label-wrapper">
+            <input type="number" class="form-control" id="numeric1" placeholder="Numeric/Currency Field" aria-label="field-description-6" ng-model="model6" ng-minlength="5" ng-maxlength="20"  integer with-floating-label>
+            <span class="warning-text">Enter a valid number. Integers only, minimum 10 digits, maximum 20 digits.</span>
+            <div class="input-indicator-icons">
+              <i class="cedar-svg-help-circle" data-container="body" data-toggle="popover" data-placement="left" data-content="Please enter a phone number here, the minimum length is 10 digits."></i>
+              <i class="cedar-svg-check-circle"></i>
+              <i class="cedar-svg-warning"></i>
+            </div><!-- /.input-indicator-icons -->
+          </div><!-- /.form-group -->
+          <div class="form-group floating-label-wrapper">
+            <input type="text" class="form-control" id="audiovisual" placeholder="Enter an embed code" aria-label="field-description-7" ng-model="model7" with-floating-label>
+            <div class="input-indicator-icons">
+              <i class="cedar-svg-help-circle" data-container="body" data-toggle="popover" data-placement="left" data-content="Paste embed code or upload file please."></i>
+              <i class="cedar-svg-check-circle"></i>
+              <i class="cedar-svg-warning"></i>
+            </div><!-- /.input-indicator-icons -->
+            <span class="or">or</span>
+            <span class="btn btn-file">
+                Browse <input type="file">
+            </span>
           </div><!-- /.form-group -->
         </form>
         <div class="pagination-container">
