@@ -1,11 +1,27 @@
-<div class="field row">
-    <div class="span2">{{field.field_title}}:</div>
-    <div class="span4">
-		<input type="text" 
-			ng-model="field.field_value" 
-			value="{{field.field_value}}" 
-			ng-required="field.field_required"
-			ng-disabled="field.field_disabled">
-        <span class="required-error" ng-show="field.field_required && !field.field_value">* required</span>
-    </div>
-</div>
+<div class="input-type-container">
+	<p class="type-label"><i class="cedar-svg-text"></i>Text</p>
+	<div class="form-group floating-label-wrapper">
+	  <input type="text" class="form-control" id="textfield1" placeholder="Textfield" aria-label="field-description-1" ng-model="field.field_value"  with-floating-label disabled>
+	</div><!-- /.form-group -->
+	<div class="configuration-options">
+		<div class="toggle-options">
+			<div class="toggle-controlled-term">
+				<i class="cedar-svg-controll-term"></i>
+			</div>
+			<div class="checkbox checkbox-inline">
+	      <input type="checkbox" id="required" value="option1">
+	      <label for="required">Required</label>
+	    </div><!-- /.checkbox-inline -->
+	    <div class="checkbox checkbox-inline">
+	      <input type="checkbox" id="advanced" value="option1">
+	      <label for="advanced">Advanced</label>
+	    </div><!-- /.checkbox-inline -->
+	   </div><!-- /.toggle-options -->
+		<div class="form-group floating-label-wrapper">
+		  <input type="text" class="form-control" id="placeholder" placeholder="Enter Placeholder Text" aria-label="field-placeholder" ng-model="field.field_placeholder"  with-floating-label>
+		</div><!-- /.form-group -->
+		<div class="form-group floating-label-wrapper">
+		  <input type="text" class="form-control" id="error-message" placeholder="Enter Error Message" aria-label="field-error-message" ng-model="field.field_errorMessage"  with-floating-label>
+		</div><!-- /.form-group -->
+	</div><!-- /.configuration-options -->
+</div><!-- /.input-type-container -->

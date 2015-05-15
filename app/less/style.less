@@ -822,6 +822,13 @@ section.dashboard-elements {
     .input-group-addon {
       border-radius:0;
       background-color:@white;
+      cursor:pointer;
+
+      &:hover {
+        i {
+          color:@brand-primary;
+        }
+      }
     }
 
     .bootstrap-datetimepicker-widget ~ .input-group-addon i {
@@ -982,3 +989,63 @@ section.dashboard-elements {
     }
   }
 }
+
+/*
+================================================
+=== Field Definition Partials
+================================================
+*/
+.input-type-container {
+
+  p.type-label {
+    width:100%;
+    text-align:right;
+    .activ-grotesk-regular;
+    text-transform:uppercase;
+    color:@black;
+    margin-bottom:15px;
+
+    i {
+      color:@brand-primary;
+    }
+  }
+
+  .configuration-options {
+    padding-top:20px;
+    border-top:1px dashed #ddd;
+
+    .toggle-options {
+      padding-bottom:30px;
+
+      .toggle-controlled-term {
+        display:inline-block;
+        vertical-align:middle;
+        padding-left:10px;
+        padding-right:30px;
+        cursor:pointer;
+
+        i {
+          color:@brand-primary;
+          transform:translate(0px,4px);
+
+          &:before {
+            font-size:30px;
+          }
+        }
+
+        &:hover {
+          i {
+            color:@brand-primary-hover;
+          }
+        }
+      }
+    }
+
+    .form-group {
+      margin-bottom:15px;
+    }
+  }
+}
+
+
+

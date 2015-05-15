@@ -7875,6 +7875,10 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
 .template-body form .date-group .input-group-addon {
   border-radius: 0;
   background-color: #ffffff;
+  cursor: pointer;
+}
+.template-body form .date-group .input-group-addon:hover i {
+  color: #339933;
 }
 .template-body form .date-group .bootstrap-datetimepicker-widget ~ .input-group-addon i {
   color: #339933;
@@ -8012,4 +8016,50 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
 }
 .pagination-container .pagination li a:hover {
   color: #338833;
+}
+/*
+================================================
+=== Field Definition Partials
+================================================
+*/
+.input-type-container p.type-label {
+  width: 100%;
+  text-align: right;
+  font-family: 'aktiv-grotesk-std';
+  font-weight: 400;
+  text-transform: uppercase;
+  color: #000000;
+  margin-bottom: 15px;
+}
+.input-type-container p.type-label i {
+  color: #339933;
+}
+.input-type-container .configuration-options {
+  padding-top: 20px;
+  border-top: 1px dashed #ddd;
+}
+.input-type-container .configuration-options .toggle-options {
+  padding-bottom: 30px;
+}
+.input-type-container .configuration-options .toggle-options .toggle-controlled-term {
+  display: inline-block;
+  vertical-align: middle;
+  padding-left: 10px;
+  padding-right: 30px;
+  cursor: pointer;
+}
+.input-type-container .configuration-options .toggle-options .toggle-controlled-term i {
+  color: #339933;
+  -webkit-transform: translate(0px, 4px);
+      -ms-transform: translate(0px, 4px);
+          transform: translate(0px, 4px);
+}
+.input-type-container .configuration-options .toggle-options .toggle-controlled-term i:before {
+  font-size: 30px;
+}
+.input-type-container .configuration-options .toggle-options .toggle-controlled-term:hover i {
+  color: #338833;
+}
+.input-type-container .configuration-options .form-group {
+  margin-bottom: 15px;
 }
