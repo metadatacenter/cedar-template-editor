@@ -6616,7 +6616,7 @@ button.close {
   display: inline-block;
   vertical-align: middle;
   position: relative;
-  padding-left: 10px;
+  padding-left: 20px;
   font-family: 'aktiv-grotesk-std';
   font-weight: 400;
 }
@@ -6689,7 +6689,9 @@ button.close {
   display: inline-block;
   vertical-align: middle;
   position: relative;
-  padding-left: 5px;
+  padding-left: 20px;
+  font-family: 'aktiv-grotesk-std';
+  font-weight: 400;
 }
 .radio label::before {
   content: "";
@@ -6698,6 +6700,7 @@ button.close {
   width: 17px;
   height: 17px;
   left: 0;
+  top: 2px;
   margin-left: -20px;
   border: 2px solid #999;
   border-radius: 50%;
@@ -6712,7 +6715,7 @@ button.close {
   width: 13px;
   height: 13px;
   left: 2px;
-  top: 2px;
+  top: 4px;
   margin-left: -20px;
   border-radius: 50%;
   background-color: #999999;
