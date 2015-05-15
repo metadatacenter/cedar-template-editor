@@ -7,6 +7,9 @@
 // Import Bootstrap Checkbox Awesomeness
 @import 'awesome-bootstrap-checkbox.less';
 
+// Import Bootstrap Datepicker Styles
+@import '../bower_components/eonasdan-bootstrap-datetimepicker/src/less/_bootstrap-datetimepicker.less';
+
 // Overriding Bootstrap library variables
 @grid-float-breakpoint:999999px;
 
@@ -294,6 +297,7 @@ i {
   top: 7px;
   transition: 0.2s ease all;
   opacity: 0;
+  z-index:2;
 }
 
 .form-control.empty ~ .floating-label  {
@@ -301,7 +305,8 @@ i {
 }
 
 .form-control:focus ~ .floating-label,
-.form-control:not(.empty) ~ .floating-label {
+.form-control:not(.empty) ~ .floating-label,
+.form-control.ng-invalid ~ .floating-label {
   top: -15px;
   left: 0;
   font-size: 11px;
@@ -688,7 +693,8 @@ section.dashboard-elements {
       }
 
       &:focus ~ .floating-label, 
-      &:not(.empty) ~ .floating-label {
+      &:not(.empty) ~ .floating-label,
+      &.ng-invalid ~ .floating-label {
         top:10px;
         left:8px;
         color:#bcbcc3;
@@ -802,6 +808,46 @@ section.dashboard-elements {
       }
     }
   }
+
+  .date-group {
+
+    .date-label {
+      display:block;
+      padding-bottom:5px;
+      font-size:12px;
+      text-transform:uppercase;
+      .activ-grotesk-bold;
+    }
+
+    .input-group-addon {
+      border-radius:0;
+      background-color:@white;
+    }
+
+    .bootstrap-datetimepicker-widget ~ .input-group-addon i {
+      color:@brand-primary;
+    }
+
+    &.range {
+
+      .input-group {
+        padding-bottom:10px;
+        float:left;
+
+        @media(min-width:@screen-sm-min) {
+          width: calc(~"50% - 10px");
+
+          &:first-of-type {
+            margin-right:10px;
+          }
+
+          &:last-of-type {
+            margin-left:10px;
+          }
+        }
+      }
+    }
+  }
 }
 
 .edit-actions {
@@ -823,7 +869,7 @@ section.dashboard-elements {
     border:none;
 
     @media(min-width:@screen-sm-min) {
-      width:185px;
+      width:175px;
     }
 
     @media(min-width:@screen-md-min) {
