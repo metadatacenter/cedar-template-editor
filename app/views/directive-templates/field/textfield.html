@@ -1,7 +1,7 @@
 <div class="input-type-container">
 	<p class="type-label"><i class="cedar-svg-text"></i>Text</p>
 	<div class="form-group floating-label-wrapper">
-	  <input type="text" class="form-control" id="textfield1" placeholder="Textfield" aria-label="field-description-1" ng-model="field.field_value"  with-floating-label disabled>
+	  <input type="text" class="form-control" id="placeholder" placeholder="Enter Placeholder Text" aria-label="field-placeholder" ng-model="field.field_placeholder"  with-floating-label>
 	</div><!-- /.form-group -->
 	<div class="configuration-options">
 		<div class="toggle-options">
@@ -13,15 +13,27 @@
 	      <label for="required">Required</label>
 	    </div><!-- /.checkbox-inline -->
 	    <div class="checkbox checkbox-inline">
-	      <input type="checkbox" id="advanced" value="option1">
+	      <input type="checkbox" id="advanced" value="option1" data-toggle="collapse" data-target=".advanced-options">
 	      <label for="advanced">Advanced</label>
 	    </div><!-- /.checkbox-inline -->
 	   </div><!-- /.toggle-options -->
-		<div class="form-group floating-label-wrapper">
-		  <input type="text" class="form-control" id="placeholder" placeholder="Enter Placeholder Text" aria-label="field-placeholder" ng-model="field.field_placeholder"  with-floating-label>
-		</div><!-- /.form-group -->
-		<div class="form-group floating-label-wrapper">
-		  <input type="text" class="form-control" id="error-message" placeholder="Enter Error Message" aria-label="field-error-message" ng-model="field.field_errorMessage"  with-floating-label>
-		</div><!-- /.form-group -->
+	   <div class="advanced-options collapse">
+	   	<div class="form-group validation-pattern floating-label-wrapper">
+			  <input type="text" class="form-control" id="expression" placeholder="Expression" aria-label="field-expression" ng-model="field.field_expression"  with-floating-label>
+			</div><!-- /.form-group -->
+			<div class="form-group validation-pattern">
+				<select class="form-control" select-picker>
+				  <option value="matches">Matches</option>
+				  <option value="greater-than">Greater Than</option>
+				  <option value="less-than">Less Than</option>
+				</select>
+			</div><!-- /.form-group -->
+			<div class="form-group validation-pattern floating-label-wrapper">
+			  <input type="text" class="form-control" id="pattern" placeholder="Pattern" aria-label="field-pattern" ng-model="field.field_patter"  with-floating-label>
+			</div><!-- /.form-group -->
+			<div class="form-group floating-label-wrapper">
+			  <input type="text" class="form-control" id="error-message" placeholder="Enter Error Message" aria-label="field-error-message" ng-model="field.field_errorMessage"  with-floating-label>
+			</div><!-- /.form-group -->
+		</div><!-- /.advanced-options -->
 	</div><!-- /.configuration-options -->
 </div><!-- /.input-type-container -->

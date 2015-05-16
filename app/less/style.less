@@ -10,6 +10,9 @@
 // Import Bootstrap Datepicker Styles
 @import '../bower_components/eonasdan-bootstrap-datetimepicker/src/less/_bootstrap-datetimepicker.less';
 
+// Import Bootstrap Select Styles
+@import '../bower_components/bootstrap-select/less/bootstrap-select.less';
+
 // Overriding Bootstrap library variables
 @grid-float-breakpoint:999999px;
 
@@ -1041,9 +1044,40 @@ section.dashboard-elements {
       }
     }
 
+    .advanced-options {
+
+      .form-group {
+        float:left;
+        width:100%;
+      }
+
+      .validation-pattern {
+
+        @media(min-width:@screen-sm-min) {
+          width:33%;
+
+          &:nth-of-type(2) {
+            padding:0 10px;
+          }
+        }
+      }
+    }
+
     .form-group {
       margin-bottom:15px;
     }
+  }
+}
+
+// Bootstrap Select Picker
+.bootstrap-select {
+  padding-top:0 !important;
+
+  .btn-select-picker {
+    border-radius:0;
+    background-color:transparent;
+    border-color:#ddd;
+    height:60px;
   }
 }
 

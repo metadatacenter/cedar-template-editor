@@ -24,7 +24,7 @@
     display: inline-block;
     vertical-align: middle;
     position: relative;
-    padding-left: 20px;
+    padding-left: 5px;
     .activ-grotesk-regular;
 
     &::before{
@@ -37,7 +37,7 @@
       margin-left: -20px;
       border: 1px solid #999;
       border-radius:0;
-      background-color: #999;
+      background-color: transparent;
       .transition(~"border 0.15s ease-in-out, color 0.15s ease-in-out");
       margin-top:2px;
     }
@@ -54,6 +54,14 @@
       padding-top: 4px;
       font-size: 11px;
       color: @input-color;
+    }
+  }
+
+  &.checkbox-primary label {
+    padding-left:20px;
+
+    &:before {
+      background-color:#999;
     }
   }
 

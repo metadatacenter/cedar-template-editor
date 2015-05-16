@@ -1,5 +1,5 @@
 /*!
- * Bootstrap-select v1.6.4 (http://silviomoreto.github.io/bootstrap-select)
+ * Bootstrap-select v1.6.5 (http://silviomoreto.github.io/bootstrap-select)
  *
  * Copyright 2013-2015 bootstrap-select
  * Licensed under MIT (https://github.com/silviomoreto/bootstrap-select/blob/master/LICENSE)
@@ -9,7 +9,7 @@
   width: 220px \0;
   /*IE9 and below*/
 }
-.bootstrap-select > .btn {
+.bootstrap-select > .dropdown-toggle {
   width: 100%;
   padding-right: 25px;
 }
@@ -23,7 +23,7 @@
 .bootstrap-select:not([class*="col-"]):not([class*="form-control"]):not(.input-group-btn) {
   width: 220px;
 }
-.bootstrap-select .btn:focus {
+.bootstrap-select .dropdown-toggle:focus {
   outline: thin dotted #333333 !important;
   outline: 5px auto -webkit-focus-ring-color !important;
   outline-offset: -2px;
@@ -36,6 +36,9 @@
 .bootstrap-select.form-control:not([class*="col-"]) {
   width: 100%;
 }
+.bootstrap-select.form-control.input-group-btn {
+  z-index: auto;
+}
 .bootstrap-select.btn-group:not(.input-group-btn),
 .bootstrap-select.btn-group[class*="col-"] {
   float: none;
@@ -44,7 +47,7 @@
 }
 .bootstrap-select.btn-group.dropdown-menu-right,
 .bootstrap-select.btn-group[class*="col-"].dropdown-menu-right,
-.row-fluid .bootstrap-select.btn-group[class*="col-"].dropdown-menu-right {
+.row .bootstrap-select.btn-group[class*="col-"].dropdown-menu-right {
   float: right;
 }
 .form-inline .bootstrap-select.btn-group,
@@ -65,20 +68,20 @@
 .bootstrap-select.btn-group > .disabled:focus {
   outline: none !important;
 }
-.bootstrap-select.btn-group .btn .filter-option {
+.bootstrap-select.btn-group .dropdown-toggle .filter-option {
   display: inline-block;
   overflow: hidden;
   width: 100%;
   text-align: left;
 }
-.bootstrap-select.btn-group .btn .caret {
+.bootstrap-select.btn-group .dropdown-toggle .caret {
   position: absolute;
   top: 50%;
   right: 12px;
   margin-top: -2px;
   vertical-align: middle;
 }
-.bootstrap-select.btn-group[class*="col-"] .btn {
+.bootstrap-select.btn-group[class*="col-"] .dropdown-toggle {
   width: 100%;
 }
 .bootstrap-select.btn-group .dropdown-menu {
@@ -90,6 +93,7 @@
 }
 .bootstrap-select.btn-group .dropdown-menu.inner {
   position: static;
+  float: none;
   border: 0;
   padding: 0;
   margin: 0;
@@ -100,10 +104,8 @@
 .bootstrap-select.btn-group .dropdown-menu li {
   position: relative;
 }
-.bootstrap-select.btn-group .dropdown-menu li:not(.disabled) a:hover small,
-.bootstrap-select.btn-group .dropdown-menu li:not(.disabled) a:focus small,
-.bootstrap-select.btn-group .dropdown-menu li.active:not(.disabled) a small {
-  color: rgba(100, 177, 216, 0.4);
+.bootstrap-select.btn-group .dropdown-menu li.active small {
+  color: #fff;
 }
 .bootstrap-select.btn-group .dropdown-menu li.disabled a {
   cursor: not-allowed;
@@ -146,10 +148,10 @@
   background: #f5f5f5;
   margin: 0 5px;
 }
-.bootstrap-select.btn-group.fit-width .btn .filter-option {
+.bootstrap-select.btn-group.fit-width .dropdown-toggle .filter-option {
   position: static;
 }
-.bootstrap-select.btn-group.fit-width .btn .caret {
+.bootstrap-select.btn-group.fit-width .dropdown-toggle .caret {
   position: static;
   top: auto;
   margin-top: -1px;
@@ -163,7 +165,7 @@
 .bootstrap-select.btn-group.show-tick .dropdown-menu li a span.text {
   margin-right: 34px;
 }
-.bootstrap-select.show-menu-arrow.open > .btn {
+.bootstrap-select.show-menu-arrow.open > .dropdown-toggle {
   z-index: 1036;
 }
 .bootstrap-select.show-menu-arrow .dropdown-toggle:before {
@@ -243,7 +245,7 @@
   width: 100%;
 }
 .mobile-device {
-  position: absolute;
+  position: absolute !important;
   top: 0;
   left: 0;
   display: block !important;
