@@ -20,9 +20,15 @@ angularApp.directive('fieldDirective', function($http, $compile) {
             'checkbox',
             'date',
             'dropdown',
-            'hidden',
-            'password',
-            'radio'
+            'radio',
+            'list',
+            'audio-visual',
+            'numeric',
+            'phone-number',
+            'section-break',
+            'page-break',
+            'location',
+            'control-term'
         ]
 
         if (__indexOf.call(supported_fields, type) >= 0) {
@@ -42,9 +48,8 @@ angularApp.directive('fieldDirective', function($http, $compile) {
     return {
         template: '<div>{{field}}</div>',
         restrict: 'E',
-        scope: {
-            field: '='
-        },
+        scope: false,
+        transclude: true,
         link: linker
     };
 });

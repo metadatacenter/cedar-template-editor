@@ -41,6 +41,38 @@ angularApp.service('FormService', function FormService($http) {
             {
                 name : 'hidden',
                 value : 'Hidden'
+            },
+            {
+                name : 'list',
+                value : 'Pick from a List'
+            },
+            {
+                name : 'numeric',
+                value : 'Numeric'
+            },
+            {
+                name : 'audio-visual',
+                value : 'Audio/Visual'
+            },
+            {
+                name : 'phone-number',
+                value : 'Phone Number'
+            },
+            {
+                name : 'section-break',
+                value : 'Section Break'
+            },
+            {
+                name : 'page-break',
+                value : 'Page Break'
+            },
+            {
+                name : 'location',
+                value : 'Location'
+            },
+            {
+                name : 'control-term',
+                value : 'Control Term'
             }
         ],
         form:function (id) {

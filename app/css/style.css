@@ -8293,16 +8293,64 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   cursor: pointer;
 }
 .input-type-container .configuration-options .toggle-options .toggle-controlled-term i {
-  color: #339933;
   -webkit-transform: translate(0px, 4px);
       -ms-transform: translate(0px, 4px);
           transform: translate(0px, 4px);
+}
+.input-type-container .configuration-options .toggle-options .toggle-controlled-term i:not(.collapsed) {
+  color: #339933;
 }
 .input-type-container .configuration-options .toggle-options .toggle-controlled-term i:before {
   font-size: 30px;
 }
 .input-type-container .configuration-options .toggle-options .toggle-controlled-term:hover i {
   color: #338833;
+}
+.input-type-container .configuration-options .toggle-options .save-options {
+  float: right;
+}
+.input-type-container .configuration-options .toggle-options .save-options .add,
+.input-type-container .configuration-options .toggle-options .save-options .remove {
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+  display: inline-block;
+  margin: 0 10px;
+  -webkit-transition: all 0.3s 0.1s;
+          transition: all 0.3s 0.1s;
+  cursor: pointer;
+}
+.input-type-container .configuration-options .toggle-options .save-options .add i,
+.input-type-container .configuration-options .toggle-options .save-options .remove i {
+  color: #ffffff;
+  font-size: 18px;
+}
+.input-type-container .configuration-options .toggle-options .save-options .add {
+  background-color: #339933;
+}
+.input-type-container .configuration-options .toggle-options .save-options .add:hover {
+  background-color: #338833;
+}
+.input-type-container .configuration-options .toggle-options .save-options .add i {
+  -webkit-transform: translate(13px, 12px);
+      -ms-transform: translate(13px, 12px);
+          transform: translate(13px, 12px);
+}
+.input-type-container .configuration-options .toggle-options .save-options .remove {
+  background-color: #333;
+}
+.input-type-container .configuration-options .toggle-options .save-options .remove:hover {
+  background-color: #000000;
+}
+.input-type-container .configuration-options .toggle-options .save-options .remove i {
+  -webkit-transform: translate(13px, 11px);
+      -ms-transform: translate(13px, 11px);
+          transform: translate(13px, 11px);
+}
+.input-type-container .configuration-options .advanced-options {
+  float: left;
+  width: 100%;
+  clear: both;
 }
 .input-type-container .configuration-options .advanced-options .form-group {
   float: left;
@@ -8316,6 +8364,11 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
     padding: 0 10px;
   }
 }
+.input-type-container .configuration-options .controll-term-options {
+  float: left;
+  width: 100%;
+  clear: both;
+}
 .input-type-container .configuration-options .form-group {
   margin-bottom: 15px;
 }
@@ -8327,4 +8380,21 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   background-color: transparent;
   border-color: #ddd;
   height: 60px;
+}
+.bootstrap-select .caret {
+  background-image: url(../img/primary-angle-down.png);
+  background-repeat: no-repeat;
+  width: 15px;
+  height: 10px;
+  border: none;
+  -webkit-transition: -webkit-transform 0.3s 0s;
+          transition: transform 0.3s 0s;
+  -webkit-transform: rotate(0deg);
+      -ms-transform: rotate(0deg);
+          transform: rotate(0deg);
+}
+.bootstrap-select.open .caret {
+  -webkit-transform: rotate(180deg);
+      -ms-transform: rotate(180deg);
+          transform: rotate(180deg);
 }
