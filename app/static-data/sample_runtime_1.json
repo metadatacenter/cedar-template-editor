@@ -1,120 +1,137 @@
 {
-  "form_id" : "1",
-  "form_name" : "My Test Form",
-  "form_fields" : {
-      "1" : {
-          "field_id" : 1,
-          "field_title" : "First Name",
-          "field_type" : "textfield",
-          "field_value" : "John",
-          "field_required" : true,
-          "field_disabled" : false
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "@context": "http://metadatacenter.org/schemas/",
+  "@id": "basic_study_design",
+  "@type": "BasicStudyDesign",
+  "title": "Basic study design",
+  "type": "object",
+  "description": "Basic example of a template to describe a study",
+  "properties": {
+    "brief_title_element": {
+      "$schema": "http://json-schema.org/draft-04/schema#",
+      "@id": "http://metadatacenter.org/schemas/brief_title_element",
+      "@type": "",
+      "title": "Brief title element",
+      "type": "object",
+      "description": "The lead title for this element",
+      "properties": {
+        "brief_title": {
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "@id": "http://metadatacenter.org/schemas/brief_title",
+          "@type": "http://semanticscience.org/resource/SIO_000185",
+          "type": "object",
+          "properties": {
+            "item_value": {
+              "type": "string",
+              "input_type": "textfield",
+              "title": "Brief title",
+              "description": "The title of the study"
+            }
+          },
+          "required": [
+            "item_value"
+          ],
+          "additionalProperties": false
+        },
+        "description_text": {
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "@id": "http://metadatacenter.org/schemas/description_text",
+          "@type": "http://semanticscience.org/resource/SIO_000185",
+          "type": "object",
+          "properties": {
+            "item_value": {
+              "type": "string",
+              "input_type": "textarea",
+              "title": "Description title",
+              "description": "The long description text for the property"
+            }
+          },
+          "required": [
+            "item_value"
+          ],
+          "additionalProperties": false
+        }
       },
-      "2" : {
-          "field_id" : 2,
-          "field_title" : "Last Name",
-          "field_type" : "textfield",
-          "field_value" : "Doe",
-          "field_required" : true,
-          "field_disabled" : false
+      "required": [
+        "full_name",
+        "institution"
+      ],
+      "additionalProperties": false
+    },
+    "principal_investigator": {
+      "$schema": "http://json-schema.org/draft-04/schema#",
+      "@id": "http://metadatacenter.org/schemas/principal_investigator",
+      "@type": "http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C19924",
+      "title": "Principal Investigator",
+      "type": "object",
+      "description": "The lead researcher for the study",
+      "properties": {
+        "full_name": {
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "@id": "http://metadatacenter.org/schemas/full_name",
+          "@type": "http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C25191",
+          "type": "object",
+          "properties": {
+            "item_value": {
+              "type": "string",
+              "input_type": "textfield",
+              "title": "Full name",
+              "description": "Whole name, including first name, middle name, and last name"
+            }
+          },
+          "required": [
+            "item_value"
+          ],
+          "additionalProperties": false
+        },
+        "email_address": {
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "@id": "http://metadatacenter.org/schemas/email_address",
+          "@type": "http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C25191",
+          "type": "object",
+          "properties": {
+            "item_value": {
+              "type": "string",
+              "input_type": "email",
+              "title": "Email Address",
+              "description": "Please enter your email address",
+              "warning_text": "Please enter a valid email address, please."
+            }
+          },
+          "required": [
+            "item_value"
+          ],
+          "additionalProperties": false
+        },
+        "institution": {
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "@id": "http://metadatacenter.org/schemas/institution",
+          "@type": "http://purl.bioontology.org/ontology/SNOMEDCT/385437003",
+          "type": "object",
+          "properties": {
+            "item_value": {
+              "type": "string",
+              "input_type": "textarea",
+              "title": "Institution",
+              "description": "An established society, corporation, foundation or other organization founded and united for a specific purpose"
+            }
+          },
+          "required": [
+            "item_value"
+          ],
+          "additionalProperties": false
+        }
       },
-      "3" : {
-          "field_id" : 3,
-          "field_title" : "Gender",
-          "field_type" : "radio",
-          "field_value" : "2",
-          "field_required" : true,
-          "field_disabled" : false,
-          "field_options" : [
-              {
-                  "option_id" : 1,
-                  "option_title" : "Male",
-                  "option_value" : 1
-              },
-              {
-                  "option_id" : 2,
-                  "option_title" : "Female",
-                  "option_value" : 2
-              }
-          ]
-      },
-      "4" : {
-          "field_id" : 4,
-          "field_title" : "Email Address",
-          "field_type" : "email",
-          "field_value" : "test@example.com",
-          "field_required" : true,
-          "field_disabled" : false
-      },
-      "5" : {
-          "field_id" : 5,
-          "field_title" : "Password",
-          "field_type" : "password",
-          "field_value" : "",
-          "field_required" : true,
-          "field_disabled" : false
-      },
-      "6" : {
-          "field_id" : 6,
-          "field_title" : "Birth Date",
-          "field_type" : "date",
-          "field_value" : "01.21.1980",
-          "field_required" : true,
-          "field_disabled" : false
-      },
-      "7" : {
-          "field_id" : 7,
-          "field_title" : "Your browser",
-          "field_type" : "dropdown",
-          "field_value" : "2",
-          "field_required" : false,
-          "field_disabled" : false,
-          "field_options" : [
-              {
-                  "option_id" : 1,
-                  "option_title" : "-- Please Select --"    ,
-                  "option_value" : 1
-              },
-              {
-                  "option_id" : 2,
-                  "option_title" : "Internet Explorer" ,
-                  "option_value" : 2
-              },
-              {
-                  "option_id" : 3,
-                  "option_title" : "Google Chrome" ,
-                  "option_value" : 3
-              },
-              {
-                  "option_id" : 4,
-                  "option_title" : "Mozilla Firefox" ,
-                  "option_value" : 4
-              }
-          ]
-      },
-      "8" : {
-          "field_id" : 8,
-          "field_title" : "Additional Comments",
-          "field_type" : "textarea",
-          "field_value" : "Please type here..",
-          "field_required" : false,
-          "field_disabled" : false
-      },
-      "9" : {
-          "field_id" : 9,
-          "field_title" : "I accept the terms and conditions.",
-          "field_type" : "checkbox",
-          "field_value" : "0",
-          "field_required" : true,
-          "field_disabled" : false
-      },
-      "10" : {
-          "field_id" : 10,
-          "field_title" : "I have a secret.",
-          "field_type" : "hidden",
-          "field_value" : "X",
-          "field_required" : false,
-          "field_disabled" : false
-      }
-  }
+      "required": [
+        "full_name",
+        "institution"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "brief_title",
+    "principal_investigator"
+  ],
+  "additionalProperties": false
 }
