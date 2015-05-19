@@ -37,7 +37,7 @@ angularApp.controller('CreateElementController', function ($rootScope, $scope, $
       var newField = {
         "field_id" : $scope.addField.lastAddedID,
         "field_title" : "New field - " + ($scope.addField.lastAddedID),
-        "field_type" : fieldType,
+        "input_type" : fieldType,
         "field_value" : "",
         "field_required" : true,
 	      "field_disabled" : false

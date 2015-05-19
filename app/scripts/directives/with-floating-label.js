@@ -7,8 +7,11 @@ angularApp.directive('withFloatingLabel', function () {
       //append floating label template
       $element.after(template);
       
-      //remove placeholder  
-      $element.removeAttr('placeholder');
+      //remove placeholder after set by Angular binding
+      attrs.$observe('placeholder', function() {
+        //console.log($element.attr('placeholder'));
+        $element.removeAttr('placeholder');
+      });
       
       //hide label tag assotiated with given input
       //document.querySelector('label[for="' +  attrs.id +  '"]').style.display = 'none';

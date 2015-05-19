@@ -7651,11 +7651,13 @@ p.add-item {
     padding-right: 10px;
   }
 }
-.left-sidebar .element-menu > li a:hover {
+.left-sidebar .element-menu > li a:hover,
+.left-sidebar .element-menu > li a.active {
   background-color: #339933;
   color: #ffffff;
 }
-.left-sidebar .element-menu > li a:hover i {
+.left-sidebar .element-menu > li a:hover i,
+.left-sidebar .element-menu > li a.active i {
   color: #ffffff;
 }
 .left-sidebar .element-menu > li:last-of-type a {

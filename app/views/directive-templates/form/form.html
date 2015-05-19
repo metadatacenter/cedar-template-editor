@@ -1,31 +1,29 @@
-<h2>{{ form.form_name }}</h2>
-
 <div ng-show="!form.submitted">
-    <div class="field row">
-        <div class="span2">Form ID:</div>
-        <div class="span4">{{ form.form_id }}</div>
+  <form name="myForm" id="myForm">
+    <div ng-repeat="(key, value) in form.properties">
+      <element-directive element="value"> </element-directive>
     </div>
-    <form name="myForm" id="myForm">
-        <div ng-repeat="field in form.form_fields">
-            <field-directive field="field" context="render">
-
-            </field-directive>
-        </div>
-    </form>
+  </form>
 
 
-    <div class="form-actions">
-        <p class="text-center">
-            <button class="btn btn-success right" type="button" ng-disabled="!myForm.$valid" ng-click="submit()"><i class="icon-edit icon-white"></i> Submit Form</button>
-            <button class="btn btn-danger right" type="button" ng-click="cancel()"><i class="icon-remove icon-white"></i> Cancel</button>
-        </p>
-    </div>
+  <!-- <div class="form-actions">
+    <p class="text-center">
+      <button class="btn btn-success right" type="button" ng-disabled="!myForm.$valid" ng-click="submit()"><i class="icon-edit icon-white"></i> Submit Form</button>
+      <button class="btn btn-danger right" type="button" ng-click="cancel()"><i class="icon-remove icon-white"></i> Cancel</button>
+    </p>
+  </div> -->
+
+  <div class="edit-actions">
+    <button type="button" class="btn btn-save">Save</button>
+    <button type="button" class="btn btn-clear">Cear Form</button>
+    <button type="button" class="btn btn-submit">Submit</button>
+  </div><!-- /.edit-actions -->
 </div>
 
 <div ng-show="form.submitted">
-    <h3>Submitted Data</h3>
-    <div ng-repeat="field in form.form_fields">
-        Field Title: {{ field.field_title }} <br>
-        Field Value: {{ field.field_value }} <br><br>
-    </div>
+  <h3>Submitted Data</h3>
+  <div ng-repeat="field in form.form_fields">
+    Field Title: {{ field.field_title }} <br>
+    Field Value: {{ field.field_value }} <br><br>
+  </div>
 </div>

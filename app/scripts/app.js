@@ -19,7 +19,7 @@ angularApp.config(function ($routeProvider, $locationProvider) {
         })
         .when('/templates/runtime/:id', {
             templateUrl: 'views/view.html',
-            controller: 'ViewCtrl'
+            controller: 'RuntimeController'
         })
         .when('/templates/runtime', {
             templateUrl: 'views/runtime.html',

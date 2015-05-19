@@ -1,13 +1,16 @@
 'use strict';
 
-var ViewCtrl = angularApp.controller('RuntimeController', function ($rootScope, $scope, FormService, $routeParams, $document) {
+var ViewCtrl = angularApp.controller('RuntimeController', function ($rootScope, $scope, FormService, $routeParams, $location, $document) {
 
 	// set Page Title variable when this controller is active
-	$rootScope.pageTitle = 'Template Runtime';
+	$rootScope.pageTitle = 'Runtime Template';
+
+	// Giving $scope access to window.location for checking active state
+	$scope.$location = $location;
 
 	$scope.init = function() {
 		// Enabling Bootstrap Popovers for help text button
-		angular.element('[data-toggle="popover"]').popover();
+		//angular.element('[data-toggle="popover"]').popover(); // Moved into field-directive.js
 
 		$document.on('click', function(e) {
       // Check if Popovers exist and close on click anywhere but the popover toggle icon

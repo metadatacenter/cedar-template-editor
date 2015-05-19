@@ -40,7 +40,8 @@
           <li ng-class="{active: ($location.path() == '/') }"><a href="/">Dashboard</a></li>
           <li ng-class="{active: ($location.path() == '/elements/create') }"><a href="elements/create">Element Creator</a></li>
           <li ng-class="{active: ($location.path() == '/templates/create') }"><a href="templates/create">Template Creator</a></li>
-          <li ng-class="{active: ($location.path() == '/templates/runtime') }"><a href="templates/runtime">Template Runtime</a></li>
+          <li ng-class="{active: ($location.path() == '/templates/runtime') }"><a href="templates/runtime">Static Runtime</a></li>
+          <li ng-class="{active: ($location.path() == '/templates/runtime/1') }"><a href="templates/runtime/1">Dynamic Runtime</a></li>
         </ul>
       </div><!--/.navbar-collapse -->
     </div>
@@ -70,9 +71,9 @@
   <script src="scripts/controllers/create-template.js"></script>
   <script src="scripts/controllers/header.js"></script>
   <script src="scripts/controllers/runtime.js"></script>
-  <script src="scripts/controllers/view.js"></script>
   <script src="scripts/services/form-service.js"></script>
   <script src="scripts/directives/form-directive.js"></script>
+  <script src="scripts/directives/element-directive.js"></script>
   <script src="scripts/directives/field-directive.js"></script>
   <script src="scripts/directives/cedar-close-navbar.js"></script>
   <script src="scripts/directives/with-floating-label.js"></script>

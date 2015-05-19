@@ -2,8 +2,6 @@
 
 angularApp.service('FormService', function FormService($http) {
 
-    var url = '/static-data/sample_forms.json';
-
     return {
         fields:[
             {
@@ -76,15 +74,13 @@ angularApp.service('FormService', function FormService($http) {
             }
         ],
         form: function (id) {
-            // $http returns a promise, which has a then function, which also returns a promise
-            var promise = $http.get(url).then(function (response) {
-              // The then function here is an opportunity to modify the response
-              console.log(response);
-              // The return value gets picked up by the then in the controller.
-              if(response.data.form_id == id) {
-                return response.data;
-              }
-            });
+          // $http returns a promise, which has a then function, which also returns a promise
+          var promise = $http.get('/static-data/sample_runtime_'+id+'.json').then(function (response) {
+            // The then function here is an opportunity to modify the response
+            //console.log(response);
+            // The return value gets picked up by the then fn in the controller.
+            return response.data;
+          });
 
             // Return the promise to the controller
             return promise;

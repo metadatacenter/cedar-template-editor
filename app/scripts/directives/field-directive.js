@@ -11,7 +11,6 @@ var __indexOf = [].indexOf || function(item) {
 angularApp.directive('fieldDirective', function($http, $compile) {
 
     var getTemplateUrl = function(field, context) {
-        var type = field.field_type;
         var templateUrl = './views/directive-templates/field-'+context+'/';
         var supported_fields = [
             'textfield',
@@ -31,8 +30,8 @@ angularApp.directive('fieldDirective', function($http, $compile) {
             'control-term'
         ]
 
-        if (__indexOf.call(supported_fields, type) >= 0) {
-            return templateUrl += type + '.html';
+        if (__indexOf.call(supported_fields, field.input_type) >= 0) {
+            return templateUrl += field.input_type + '.html';
         }
     }
 
@@ -42,6 +41,9 @@ angularApp.directive('fieldDirective', function($http, $compile) {
         $http.get(templateUrl).success(function(data) {
             element.html(data);
             $compile(element.contents())(scope);
+            
+            //Initializing Bootstrap Popover fn for each item loaded
+            angular.element('[data-toggle="popover"]').popover();
         });
     }
 
