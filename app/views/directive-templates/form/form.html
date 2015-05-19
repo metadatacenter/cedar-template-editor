@@ -1,6 +1,6 @@
 <div ng-show="!form.submitted">
   <form name="myForm" id="myForm">
-    <div ng-repeat="(key, value) in form.properties">
+    <div class="form-element" ng-repeat="(key, value) in form.properties">
       <element-directive element="value"> </element-directive>
     </div>
   </form>

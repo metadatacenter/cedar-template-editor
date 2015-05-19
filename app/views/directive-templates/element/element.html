@@ -1,5 +1,5 @@
 <!-- {{element}} -->
-<div ng-repeat="(key, value) in element.properties">
+<div ng-repeat="(key, value) in element.properties" ng-cloak>
 <!-- {{key | json}} -->
 	<field-directive field="value.properties.item_value" context="render">
 	</field-directive>

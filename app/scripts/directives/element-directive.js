@@ -3,7 +3,7 @@
 angularApp.directive('elementDirective', function () {
     return {
         templateUrl: './views/directive-templates/element/element.html',
-        restrict: 'E',
+        restrict: 'EA',
         scope: {
             element:'='
         }
