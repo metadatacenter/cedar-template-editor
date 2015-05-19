@@ -10,9 +10,9 @@ var __indexOf = [].indexOf || function(item) {
 
 angularApp.directive('fieldDirective', function($http, $compile) {
 
-    var getTemplateUrl = function(field) {
+    var getTemplateUrl = function(field, context) {
         var type = field.field_type;
-        var templateUrl = './views/directive-templates/field/';
+        var templateUrl = './views/directive-templates/field-'+context+'/';
         var supported_fields = [
             'textfield',
             'email',
@@ -38,7 +38,7 @@ angularApp.directive('fieldDirective', function($http, $compile) {
 
     var linker = function(scope, element) {
         // GET template content from path
-        var templateUrl = getTemplateUrl(scope.field);
+        var templateUrl = getTemplateUrl(scope.field, scope.context);
         $http.get(templateUrl).success(function(data) {
             element.html(data);
             $compile(element.contents())(scope);
@@ -47,8 +47,12 @@ angularApp.directive('fieldDirective', function($http, $compile) {
 
     return {
         template: '<div>{{field}}</div>',
-        restrict: 'E',
-        scope: false,
+        restrict: 'EA',
+        scope: {
+            context: '@context',
+            field: '=',
+            delete: '&'
+        },
         transclude: true,
         link: linker
     };

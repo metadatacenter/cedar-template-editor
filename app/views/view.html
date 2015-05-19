@@ -1,13 +1,55 @@
-<div class="container">
-	<form-directive form="form"></form-directive><hr>
+<div class="template-header">
+  <div class="container">
+    <div class="row">
+      <div class="left-sidebar col-sm-12">
+        <h2 class="runtime-template-name">Sample Template #1</h2>
+      </div> <!-- /.left-sidebar -->
+    </div> <!-- /.row -->
+  </div> <!-- /.container -->
+</div> <!-- /.template-header -->
 
-	<div class="text-center">
-		<a class="btn btn-small btn-primary" ng-show="!showJson" ng-click="showJson = true">Show form json object</a>
-		<a class="btn btn-small btn-inverse" ng-show="showJson" ng-click="showJson = false">Hide form json object</a><br><br>
-	</div>
+<div class="template-body">
+  <div class="container">
+    <div class="row">
+      <div class="left-sidebar col-sm-3">
+        <p class="add-item">Templates</p>
+        <ul class="element-menu" role="menu">
+          <li class="item"><a><i class="cedar-svg-metadata"></i>Sample Template #1</a></li>
+          <li class="item"><a><i class="cedar-svg-metadata"></i>Sample Template #2</a></li>
+          <li class="item"><a><i class="cedar-svg-metadata"></i>Sample Template #3</a></li>
+          <li class="item"><a><i class="cedar-svg-metadata"></i>Sample Template #4</a></li>
+          <li class="item"><a><i class="cedar-svg-metadata"></i>Sample Template #5 that has a really long title</a></li>
+        </ul>
 
-	<div ng-show="showJson">
-		<h4>Form object:</h4>
-		<pre>{{ form | json }}</pre>
-	</div>
-</div> <!-- /.container -->
+        <div class="more-items hidden-xs">
+          <button type="button" class="btn btn-more-items dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+            More Templates <i class="fa fa-angle-down fa-2x"></i>
+          </button>
+          <ul class="dropdown-menu element-menu" role="menu">
+            <li class="item"><a><i class="cedar-svg-metadata"></i>Sample Template #6</a></li>
+            <li class="item"><a><i class="cedar-svg-metadata"></i>Sample Template #7</a></li>
+            <li class="item"><a><i class="cedar-svg-metadata"></i>Sample Template #8</a></li>
+            <li class="item"><a><i class="cedar-svg-metadata"></i>Sample Template #9</a></li>
+            <li class="item"><a><i class="cedar-svg-metadata"></i>Sample Template #10 that also has a really long title</a></li>
+          </ul>
+        </div>
+
+      </div> <!-- /.left-sidebar -->
+      <div class="right-body col-sm-9">
+       <!-- <form id="sample-form-1" data-toggle="validator" role="form"></form> -->
+        <form-directive form="form"></form-directive><hr>
+
+				<div class="text-center">
+					<a class="btn btn-small btn-primary" ng-show="!showJson" ng-click="showJson = true">Show form json object</a>
+					<a class="btn btn-small btn-inverse" ng-show="showJson" ng-click="showJson = false">Hide form json object</a><br><br>
+				</div>
+
+				<div ng-show="showJson">
+					<h4>Form object:</h4>
+					<pre>{{ form | json }}</pre>
+				</div>
+      </div> <!-- /.right-body -->
+    </div> <!-- /.row -->
+  </div> <!-- /.container -->
+</div> <!-- /.template-body -->
+	

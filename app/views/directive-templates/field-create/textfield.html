@@ -1,7 +1,7 @@
-<div id="paragraph-{{field.field_id}}" class="input-type-container">
-	<p class="type-label"><i class="cedar-svg-paragraph"></i>Paragraph</p>
+<div id="textfield-{{field.field_id}}" class="input-type-container">
+	<p class="type-label"><i class="cedar-svg-text"></i>Text</p>
 	<div class="form-group floating-label-wrapper">
-	  <textarea rows="5" class="form-control" id="placeholder-{{field.field_id}}" placeholder="Enter Placeholder Text" aria-label="field-placeholder" ng-model="field.field_placeholder"  with-floating-label></textarea>
+	  <input type="text" class="form-control" id="placeholder-{{field.field_id}}" placeholder="Enter Placeholder Text" aria-label="field-placeholder" ng-model="field.field_placeholder"  with-floating-label>
 	</div><!-- /.form-group -->
 	<div class="configuration-options">
 		<div class="toggle-options">
@@ -20,7 +20,7 @@
 	    	<div class="add">
 	    		<i class="fa fa-plus"></i>
 	    	</div>
-	    	<div class="remove" ng-click="deleteField(field.field_id)">
+	    	<div class="remove" ng-click="delete()">
 	    		<i class="fa fa-times"></i>
 	    	</div>
 	    </div><!-- /.save-options -->

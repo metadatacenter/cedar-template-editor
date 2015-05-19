@@ -62,7 +62,7 @@
         </div>
         <form name="myForm" id="myForm">
           <div ng-repeat="field in element.fields">
-            <field-directive field="field">
+            <field-directive field="field" context="create" delete="deleteField(field.field_id)">
             </field-directive>
             <!--{{field.field_type}}-->
           </div>

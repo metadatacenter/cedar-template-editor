@@ -17,7 +17,7 @@ angularApp.config(function ($routeProvider, $locationProvider) {
             templateUrl: 'views/create-template.html',
             controller: 'CreateTemplateController'
         })
-        .when('/templates/:id/view', {
+        .when('/templates/runtime/:id', {
             templateUrl: 'views/view.html',
             controller: 'ViewCtrl'
         })

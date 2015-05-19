@@ -15,6 +15,13 @@ var ViewCtrl = angularApp.controller('RuntimeController', function ($rootScope, 
       	angular.element('[data-toggle="popover"]').popover('hide');
       }
     });
+
+    $scope.form = {};
+		// read form with given id
+		FormService.form($routeParams.id).then(function(form) {
+			//console.log(form);
+			$scope.form = form;
+		});
 	};
 
 	$scope.init();

@@ -2,7 +2,7 @@
 
 angularApp.service('FormService', function FormService($http) {
 
-    var formsJsonPath = './static-data/sample_forms.json';
+    var url = '/static-data/sample_forms.json';
 
     return {
         fields:[
@@ -75,15 +75,19 @@ angularApp.service('FormService', function FormService($http) {
                 value : 'Control Term'
             }
         ],
-        form:function (id) {
+        form: function (id) {
             // $http returns a promise, which has a then function, which also returns a promise
-            return $http.get(formsJsonPath).then(function (response) {
-                var requestedForm = {};
-                angular.forEach(response.data, function (form) {
-                    if (form.form_id == id) requestedForm = form;
-                });
-                return requestedForm;
+            var promise = $http.get(url).then(function (response) {
+              // The then function here is an opportunity to modify the response
+              console.log(response);
+              // The return value gets picked up by the then in the controller.
+              if(response.data.form_id == id) {
+                return response.data;
+              }
             });
+
+            // Return the promise to the controller
+            return promise;
         },
         forms: function() {
             return $http.get(formsJsonPath).then(function (response) {
