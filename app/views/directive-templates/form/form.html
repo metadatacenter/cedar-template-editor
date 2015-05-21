@@ -1,5 +1,5 @@
 <div ng-show="!form.submitted">
-  <form name="myForm" id="myForm">
+  <form name="{{form.title}}" id="">
     <!--Loop through top level "properties" parameter in form element and call element-directive with contents -->
     <div ng-repeat="(index, object) in formFields">
       <field-directive field="object.field" model="object.model" directory="render"></field-directive>
