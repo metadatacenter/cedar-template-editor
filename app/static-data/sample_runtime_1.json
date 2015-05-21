@@ -1,128 +1,111 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "@context": "http://metadatacenter.org/schemas/",
-  "@id": "basic_study_design",
-  "@type": "BasicStudyDesign",
+  "@id": "http://metadatacenter.org/schemas/basic_study_design",
   "title": "Basic study design",
-  "type": "object",
   "description": "Basic example of a template to describe a study",
+  "type": "object",
   "properties": {
-    "brief_title_element": {
+    "@context": {
+      "type": [
+        "object",
+        "string",
+        "array",
+        "null"
+      ]
+    },
+    "@id": {
+      "type": "string",
+      "format": "uri"
+    },
+    "@type": {
+      "enum": [
+        "http://metadatacenter.org/schemas/BasicStudyDesign"
+      ]
+    },
+    "brief_title": {
       "$schema": "http://json-schema.org/draft-04/schema#",
-      "@id": "http://metadatacenter.org/schemas/brief_title_element",
-      "@type": "",
-      "title": "Brief title element",
+      "@id": "http://metadatacenter.org/schemas/brief_title",
       "type": "object",
-      "description": "The lead title for this element",
       "properties": {
-        "brief_title": {
-          "$schema": "http://json-schema.org/draft-04/schema#",
-          "@id": "http://metadatacenter.org/schemas/brief_title",
-          "@type": "http://semanticscience.org/resource/SIO_000185",
-          "type": "object",
-          "properties": {
-            "item_value": {
-              "type": "string",
-              "input_type": "textfield",
-              "title": "Brief title",
-              "description": "The title of the study"
-            }
-          },
-          "required": [
-            "item_value"
-          ],
-          "additionalProperties": false
+        "@type": {
+          "enum": [
+            "http://semanticscience.org/resource/SIO_000185"
+          ]
         },
-        "description_text": {
-          "$schema": "http://json-schema.org/draft-04/schema#",
-          "@id": "http://metadatacenter.org/schemas/description_text",
-          "@type": "http://semanticscience.org/resource/SIO_000185",
-          "type": "object",
-          "properties": {
-            "item_value": {
-              "type": "string",
-              "input_type": "textarea",
-              "title": "Description title",
-              "description": "The long description text for the property"
-            }
-          },
-          "required": [
-            "item_value"
-          ],
-          "additionalProperties": false
+        "value": {
+          "type": "string",
+          "title": "Brief title",
+          "description": "The title of the study",
+          "input_type": "textfield"
         }
       },
       "required": [
-        "full_name",
-        "institution"
+        "@type",
+        "value"
       ],
       "additionalProperties": false
     },
     "principal_investigator": {
       "$schema": "http://json-schema.org/draft-04/schema#",
       "@id": "http://metadatacenter.org/schemas/principal_investigator",
-      "@type": "http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C19924",
       "title": "Principal Investigator",
       "type": "object",
       "description": "The lead researcher for the study",
       "properties": {
+        "@type": {
+          "enum": [
+            "http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C19924"
+          ]
+        },
         "full_name": {
           "$schema": "http://json-schema.org/draft-04/schema#",
           "@id": "http://metadatacenter.org/schemas/full_name",
-          "@type": "http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C25191",
           "type": "object",
           "properties": {
-            "item_value": {
+            "@type": {
+              "enum": [
+                "http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C25191"
+              ]
+            },
+            "value": {
               "type": "string",
-              "input_type": "textfield",
               "title": "Full name",
-              "description": "Whole name, including first name, middle name, and last name"
+              "description": "Whole name, including first name, middle name, and last name",
+              "input_type": "textfield"
             }
           },
           "required": [
-            "item_value"
-          ],
-          "additionalProperties": false
-        },
-        "email_address": {
-          "$schema": "http://json-schema.org/draft-04/schema#",
-          "@id": "http://metadatacenter.org/schemas/email_address",
-          "@type": "http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C25191",
-          "type": "object",
-          "properties": {
-            "item_value": {
-              "type": "string",
-              "input_type": "email",
-              "title": "Email Address",
-              "description": "Please enter your email address",
-              "warning_text": "Please enter a valid email address, please."
-            }
-          },
-          "required": [
-            "item_value"
+            "@type",
+            "value"
           ],
           "additionalProperties": false
         },
         "institution": {
           "$schema": "http://json-schema.org/draft-04/schema#",
           "@id": "http://metadatacenter.org/schemas/institution",
-          "@type": "http://purl.bioontology.org/ontology/SNOMEDCT/385437003",
           "type": "object",
           "properties": {
-            "item_value": {
+            "@type": {
+              "enum": [
+                "http://purl.bioontology.org/ontology/SNOMEDCT/385437003"
+              ]
+            },
+            "value": {
               "type": "string",
-              "input_type": "textarea",
               "title": "Institution",
-              "description": "An established society, corporation, foundation or other organization founded and united for a specific purpose"
+              "description": "An established society, corporation, foundation or other organization founded and united for a specific purpose",
+              "input_type": "textarea"
             }
           },
           "required": [
-            "item_value"
+            "@type",
+            "value"
           ],
           "additionalProperties": false
         }
       },
       "required": [
+        "@type",
         "full_name",
         "institution"
       ],
@@ -130,8 +113,11 @@
     }
   },
   "required": [
+    "@context",
+    "@id",
+    "@type",
     "brief_title",
     "principal_investigator"
   ],
-  "additionalProperties": false
+  "additionalProperties" : false
 }

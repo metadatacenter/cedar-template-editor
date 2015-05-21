@@ -1,8 +1,24 @@
 <div ng-show="!form.submitted">
   <form name="myForm" id="myForm">
-    <div class="form-element" ng-repeat="(key, value) in form.properties">
-      <element-directive element="value"> </element-directive>
-    </div>
+    <!--Loop through top level "properties" parameter in form element and call element-directive with contents -->
+    <div class="form-element" ng-repeat="(key, property) in form.properties" ng-if="ignoreKey(key)" ng-init="updateModel(key)">
+      <!-- <element-directive element="element"> </element-directive> -->
+      {{key}}
+      <div class="form-element-embedded" ng-repeat="(index, element) in property.properties" ng-if="ignoreKey(index)" ng-init="updateModel(index, key)">
+        {{key}} | {{index}}
+        <div ng-if="index == 'value'">
+          <field-directive field="element" directory="render" context=></field-directive>
+        </div>
+
+        <div class="field-level"ng-repeat="(i, field) in element.properties" ng-if="ignoreKey(i)" ng-init="updateModel(i, index, key)">
+          {{key}} | {{index}} | {{i}}
+          <div ng-if="i == 'value'">
+            {{field}}
+            <field-directive field="field" directory="render"></field-directive>  
+          </div>
+        </div>
+      </div><!-- /.form-element-embedded -->
+    </div><!-- /.form-element -->
   </form>
 
 
@@ -16,7 +32,7 @@
   <div class="edit-actions">
     <button type="button" class="btn btn-save">Save</button>
     <button type="button" class="btn btn-clear">Cear Form</button>
-    <button type="button" class="btn btn-submit">Submit</button>
+    <button type="button" class="btn btn-submit" ng-click="submitData()">Submit</button>
   </div><!-- /.edit-actions -->
 </div>
 
