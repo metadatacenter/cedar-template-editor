@@ -8129,6 +8129,22 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
 .template-body form .date-group .bootstrap-datetimepicker-widget ~ .input-group-addon i {
   color: #339933;
 }
+.template-body form .date-group.range:before,
+.template-body form .date-group.range:after {
+  content: " ";
+  display: table;
+}
+.template-body form .date-group.range:after {
+  clear: both;
+}
+.template-body form .date-group.range:before,
+.template-body form .date-group.range:after {
+  content: " ";
+  display: table;
+}
+.template-body form .date-group.range:after {
+  clear: both;
+}
 .template-body form .date-group.range .input-group {
   padding-bottom: 10px;
   float: left;

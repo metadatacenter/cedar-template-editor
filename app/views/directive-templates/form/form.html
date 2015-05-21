@@ -7,18 +7,18 @@
   </form>
 
   <div class="edit-actions">
-    <button type="button" class="btn btn-save">Save</button>
-    <button type="button" class="btn btn-clear">Cear Form</button>
-    <button type="button" class="btn btn-submit" ng-click="updateModel()">Submit</button>
+    <button type="button" class="btn btn-save disabled">Save</button>
+    <button type="button" class="btn btn-clear disabled">Cear Form</button>
+    <button type="button" class="btn btn-submit disabled" ng-click="updateModel()">Submit</button>
   </div><!-- /.edit-actions -->
 </div>
 
 <hr>
 
 <div class="text-center">
-  <a class="btn btn-small btn-primary" ng-show="!showRender" ng-click="showRender = true">Show json render object</a>
+  <a class="btn btn-small btn-primary" ng-show="!showRender" ng-click="showRender = true; showOtput = false">Show json render object</a>
   <a class="btn btn-small btn-primary" ng-show="showRender" ng-click="showRender = false">Hide json render object</a>
-  <a class="btn btn-small btn-primary" ng-show="!showOutput" ng-click="showOutput = true">Show json render object</a>
+  <a class="btn btn-small btn-primary" ng-show="!showOutput" ng-click="showOutput = true; showRender = false">Show json render object</a>
   <a class="btn btn-small btn-primary" ng-show="showOutput" ng-click="showOutput = false">Hide json render object</a>
 </div>
 

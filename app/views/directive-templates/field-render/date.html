@@ -1,7 +1,8 @@
 <div class="form-group date-group floating-label-wrapper">
-  <span class="date-label">Select a date</span>
+<!-- {{model}} -->
+  <span class="date-label">{{field.title}}</span>
   <div class='input-group' date-time-picker>
-    <input type='text' class="form-control" placeholder="MM / DD / YYYY" with-floating-label/>
+    <input type='text' class="form-control" placeholder="MM / DD / YYYY" aria-label="{{field.description}}" ng-model="model.value"with-floating-label/>
     <span class="input-group-addon">
         <i class="fa fa-calendar fa-2x"></i>
     </span>
@@ -10,7 +11,7 @@
 <div class="form-group date-group range floating-label-wrapper">
   <span class="date-label">Select a date range</span>
   <div class='input-group' date-time-picker>
-    <input type='text' class="form-control" placeholder="MM / DD / YYYY" with-floating-label/>
+    <input type='text' class="form-control" placeholder="MM / DD / YYYY" aria-label="{{field.description}}" ng-model="model.value"with-floating-label/>
     <span class="input-group-addon">
         <i class="fa fa-calendar fa-2x"></i>
     </span>

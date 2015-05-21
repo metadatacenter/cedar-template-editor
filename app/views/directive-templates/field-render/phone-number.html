@@ -1,8 +1,9 @@
 <div class="form-group floating-label-wrapper">
-  <input type="number" class="form-control" id="telephone1" placeholder="Telephone Number" aria-label="field-description-5" ng-model="model5" ng-minlength="10"  integer with-floating-label>
-  <span class="warning-text">Enter a valid phone number. Integers only, minimum 10 digits.</span>
+<!-- {{model}} -->
+  <input type="number" class="form-control" id="telephone1" placeholder="{{field.title}}" aria-label="{{field.description}}" ng-model="model.value" ng-minlength="{{field.min_length}}"  integer with-floating-label>
+  <span class="warning-text">{{field.warning_text}}</span>
   <div class="input-indicator-icons">
-    <i class="cedar-svg-help-circle" data-container="body" data-toggle="popover" data-placement="left" data-content="Please enter a phone number here, the minimum length is 10 digits."></i>
+    <i class="cedar-svg-help-circle" data-container="body" data-toggle="popover" data-placement="left" data-content="{{field.description}}"></i>
     <i class="cedar-svg-check-circle"></i>
     <i class="cedar-svg-warning"></i>
   </div><!-- /.input-indicator-icons -->
