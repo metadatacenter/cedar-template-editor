@@ -60,13 +60,28 @@
         <div class="empty-text" ng-show="!element.fields.length">
           <p>Add element or item.</p>
         </div>
-        <form name="myForm" id="myForm">
+        <form name="{{element.name}}" id="{{element.id}}">
           <div ng-repeat="field in element.fields">
             <field-directive field="field" directory="create" delete="deleteField(field.field_id)">
             </field-directive>
             <!--{{field.field_type}}-->
           </div>
         </form>
+
+
+        <div id="json-model-binding-example-section">
+          <hr>
+          <div class="text-center">
+            <a class="btn btn-small btn-primary" ng-show="!showRender" ng-click="showRender = true">Hide Element Object</a>
+            <a class="btn btn-small btn-primary" ng-show="showRender" ng-click="showRender = false">Show Element Object</a>
+          </div>
+          <hr>
+          <div ng-hide="showRender">
+            <pre>{{ element | json }}</pre>
+          </div>
+        </div> <!-- /#json-model-binding-example-section -->
+
+
       </div> <!-- /.right-body -->
     </div> <!-- /.row -->
   </div> <!-- /.container -->

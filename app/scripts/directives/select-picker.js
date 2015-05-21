@@ -6,6 +6,8 @@ angularApp.directive('selectPicker', function () {
     link: function ($scope, $element, attrs) {
     	$element.selectpicker({
         style: 'btn-select-picker',
+        iconBase: 'fa',
+    		tickIcon: 'fa-check',
       });
     }
   };

@@ -7455,6 +7455,9 @@ i {
   -webkit-transition: all 0.3s 0.1s;
           transition: all 0.3s 0.1s;
 }
+.btn {
+  border-radius: 0;
+}
 .container {
   position: relative;
 }
@@ -7999,7 +8002,7 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   border-color: #ddd;
   box-shadow: none;
   height: 60px;
-  padding-top: 20px;
+  padding-top: 22px;
   font-size: 16px;
   color: #000000;
 }
@@ -8415,4 +8418,7 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   -webkit-transform: rotate(180deg);
       -ms-transform: rotate(180deg);
           transform: rotate(180deg);
+}
+.bootstrap-select .fa-check.check-mark {
+  color: #339933;
 }
