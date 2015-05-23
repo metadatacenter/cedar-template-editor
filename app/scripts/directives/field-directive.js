@@ -53,8 +53,8 @@ angularApp.directive('fieldDirective', function($http, $compile) {
         scope: {
             directory: '@',
             field: '=',
-            model: '=',
-            delete: '&'
+            delete: '&',
+            add: '&'
         },
         transclude: true,
         link: linker

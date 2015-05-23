@@ -2,42 +2,98 @@
 
 angularApp.controller('CreateElementController', function ($rootScope, $scope, $dialog, FormService) {
 
-    // set Page Title variable when this controller is active
+    // Set page title variable when this controller is active
     $rootScope.pageTitle = 'Element Creator';
 
-    // new element
-    $scope.element = {};
-    $scope.element.id = 1;
-    $scope.element.fields = [];
+    // Create empty element object
+    $scope.element = {
+      "$schema": "",
+      "@id": "",
+      "title": "",
+      "type": "object",
+      "description": "",
+      "properties": {
+        "@type": {
+          "enum": []
+        }
+      },
+      "required": [
+        "@type"
+      ],
+      "additionalProperties": false
+    };
 
     // add new field drop-down:
     $scope.addField = {};
     $scope.addField.lastAddedID = 0;
 
-    // create new field button click
-    $scope.addNewField = function(fieldType){
+    // Create staging area to create/edit fields before they get added to the element
+    $scope.staging = {};
+
+    // Simple function to check if an object is empty
+    $scope.isEmpty = function(obj) {
+      return Object.keys(obj).length;
+    };
+
+    // Helper function
+    $scope.underscoreText = function(string) {
+      return string.replace(/ +/g,"_").toLowerCase();
+    };
+
+    // Add new field into staging area
+    $scope.addFieldToStaging = function(fieldType){
       // incr field_id counter
       $scope.addField.lastAddedID++;
 
-      var newField = {
-        "id" : $scope.addField.lastAddedID,
-        "title" : "",
-        "description": "",
-        "input_type" : fieldType,
-        "required" : false,
+      var field = {
+
+        "$schema": "",
+        "@id": "",
+        "type": "object",
+        "properties": {
+          "@type": {
+            "enum": []
+          },
+          "value": {
+            "type": "string",
+            "id" : $scope.addField.lastAddedID,
+            "title" : "",
+            "description": "",
+            "input_type" : fieldType,
+            "required" : false,
+          }
+        },
+        "required": [
+          "@type",
+          "value"
+        ],
+        "additionalProperties": false
       };
 
-      // put newField into fields array
-      $scope.element.fields.push(newField);
+      // put field into fields staging object
+      $scope.staging[field.properties.value.id] = field;
     }
 
-    // deletes particular field on button click
-    $scope.deleteField = function (field_id){
-      for(var i = 0; i < $scope.element.fields.length; i++){
-        if($scope.element.fields[i].field_id == field_id){
-          $scope.element.fields.splice(i, 1);
-          break;
-        }
+    // Add newly configured field to the Element object
+    $scope.addFieldToElement = function(field) {
+      // Converting title for irregular character handling
+      var underscoreTitle = $scope.underscoreText(field.properties.value.title);
+
+      $scope.element.properties[underscoreTitle] = field;
+    };
+
+    // Delete field from $scope.staging object and also $scope.element.properties object
+    $scope.deleteField = function (field){
+
+      var value = field.properties.value,
+          underscoreTitle = $scope.underscoreText(value.title);
+
+      // Remove field instance from the staging area
+      delete $scope.staging[value.id];
+
+      // If field has been added to the element.properties object, remove this also
+      if($scope.element.properties[underscoreTitle]) {
+        delete $scope.element.properties[underscoreTitle];
       }
     }
 

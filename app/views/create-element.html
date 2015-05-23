@@ -6,7 +6,7 @@
           <i class="cedar-svg-element"></i>
           <form>
             <div class="form-group floating-label-wrapper">
-              <input type="text" class="form-control" id="element-name" placeholder="Element Name" aria-label="Element Name" ng-model="element.name"  with-floating-label>
+              <input type="text" class="form-control" id="element-name" placeholder="Element Name" aria-label="Element Name" ng-model="element.title"  with-floating-label>
             </div>
           </form>
         </div>
@@ -30,11 +30,11 @@
       <div class="left-sidebar col-sm-3">
         <p class="add-item">Add Item</p>
         <ul class="element-menu" role="menu">
-          <li class="item"><a ng-click="addNewField('textfield')"><i class="cedar-svg-text"></i>Text</a></li>
-          <li class="item"><a ng-click="addNewField('textarea')"><i class="cedar-svg-paragraph"></i>Paragraph</a></li>
-          <li class="item"><a ng-click="addNewField('radio')"><i class="cedar-svg-multiple-choice"></i>Multiple Choice</a></li>
-          <li class="item"><a ng-click="addNewField('checkbox')"><i class="cedar-svg-checkbox"></i>Checkbox</a></li>
-          <li class="item"><a ng-click="addNewField('date')"><i class="cedar-svg-date"></i>Date</a></li>
+          <li class="item"><a ng-click="addFieldToStaging('textfield')"><i class="cedar-svg-text"></i>Text</a></li>
+          <li class="item"><a ng-click="addFieldToStaging('textarea')"><i class="cedar-svg-paragraph"></i>Paragraph</a></li>
+          <li class="item"><a ng-click="addFieldToStaging('radio')"><i class="cedar-svg-multiple-choice"></i>Multiple Choice</a></li>
+          <li class="item"><a ng-click="addFieldToStaging('checkbox')"><i class="cedar-svg-checkbox"></i>Checkbox</a></li>
+          <li class="item"><a ng-click="addFieldToStaging('date')"><i class="cedar-svg-date"></i>Date</a></li>
           <li class="item"><a ng-click="addElement()"><i class="cedar-svg-element"></i>Add an Element</a></li>
         </ul>
 
@@ -43,26 +43,26 @@
             More Items <i class="fa fa-angle-down fa-2x"></i>
           </button>
           <ul class="dropdown-menu element-menu" role="menu">
-            <li class="item"><a ng-click="addNewField('email')"><i class="cedar-svg-text"></i>Email</a></li>
-            <li class="item"><a ng-click="addNewField('list')"><i class="cedar-svg-list"></i>Pick from a list</a></li>
-            <li class="item"><a ng-click="addNewField('control-term')"><i class="cedar-svg-controll-term"></i>Controlled Term</a></li>
-            <li class="item"><a ng-click="addNewField('audio-visual')"><i class="cedar-svg-audio-visual"></i>Audio Visual</a></li>
-            <li class="item"><a ng-click="addNewField('numeric')"><i class="cedar-svg-numeric"></i>Numeric</a></li>
-            <li class="item"><a ng-click="addNewField('phone-number')"><i class="cedar-svg-phone"></i>Phone</a></li>
-            <li class="item"><a ng-click="addNewField('section-break')"><i class="cedar-svg-section-break"></i>Section Break</a></li>
-            <li class="item"><a ng-click="addNewField('page-break')"><i class="cedar-svg-page-break"></i>Page Break</a></li>
-            <li class="item"><a ng-click="addNewField('location')"><i class="cedar-svg-location"></i>Location</a></li>
+            <li class="item"><a ng-click="addFieldToStaging('email')"><i class="cedar-svg-text"></i>Email</a></li>
+            <li class="item"><a ng-click="addFieldToStaging('list')"><i class="cedar-svg-list"></i>Pick from a list</a></li>
+            <li class="item"><a ng-click="addFieldToStaging('control-term')"><i class="cedar-svg-controll-term"></i>Controlled Term</a></li>
+            <li class="item"><a ng-click="addFieldToStaging('audio-visual')"><i class="cedar-svg-audio-visual"></i>Audio Visual</a></li>
+            <li class="item"><a ng-click="addFieldToStaging('numeric')"><i class="cedar-svg-numeric"></i>Numeric</a></li>
+            <li class="item"><a ng-click="addFieldToStaging('phone-number')"><i class="cedar-svg-phone"></i>Phone</a></li>
+            <li class="item"><a ng-click="addFieldToStaging('section-break')"><i class="cedar-svg-section-break"></i>Section Break</a></li>
+            <li class="item"><a ng-click="addFieldToStaging('page-break')"><i class="cedar-svg-page-break"></i>Page Break</a></li>
+            <li class="item"><a ng-click="addFieldToStaging('location')"><i class="cedar-svg-location"></i>Location</a></li>
           </ul>
         </div>
 
       </div> <!-- /.left-sidebar -->
       <div class="right-body col-sm-9">
-        <div class="empty-text" ng-show="!element.fields.length">
+        <div class="empty-text" ng-hide="isEmpty(staging)">
           <p>Add element or item.</p>
         </div>
         <form name="{{element.name}}" id="{{element.id}}">
-          <div ng-repeat="field in element.fields">
-            <field-directive field="field" directory="create" delete="deleteField(field.field_id)">
+          <div ng-repeat="field in staging">
+            <field-directive field="field.properties.value" directory="create" delete="deleteField(field)" add="addFieldToElement(field)">
             </field-directive>
             <!--{{field.field_type}}-->
           </div>
@@ -86,136 +86,3 @@
     </div> <!-- /.row -->
   </div> <!-- /.container -->
 </div> <!-- /.template-body -->
-
-
-
-
-
-
-<!-- <h1>Create a new element</h1> <br>
-<blockquote>
-    <p>Select field type you want to add to the form below and click on 'Add Field' button. Don't forget to set field properties. After you finish creating the form, you can preview the form by clicking Preview Form button.</p>
-</blockquote>
-
-<div class="well">
-    <div class="form-fields" ng-hide="previewMode">
-        <div class="form-properties">
-            <h3>Form Properties</h3>
-            <div class="row">
-                <div class="span2">Form ID: </div>
-                <div class="span4"><input type="text" name="form-id" ng-disabled="true" ng-model="form.form_id"></div>
-            </div>
-            <div class="row">
-                <div class="span2">Form Name:</div>
-                <div class="span4"><input type="text" name="form-name" ng-disabled="previewMode" ng-model="form.form_name"></div>
-            </div>
-        </div>
-
-        <hr>
-
-        <h3>Fields</h3>
-        <div class="add-field">
-            <select ng-model="addField.new" ng-options="type.name as type.value for type in addField.types"></select>
-            <button type="submit" class="btn" ng-click="addNewField()"><i class="icon-plus"></i> Add Field</button>
-        </div>
-        <hr>
-        <p ng-show="form.form_fields.length == 0">No fields added yet.</p>
-        <accordion close-others="accordion.oneAtATime">
-            <accordion-group heading="{{field.field_title}}" ng-repeat="field in form.form_fields">
-
-                <div class="accordion-edit">
-                    <button class="btn btn-danger pull-right" type="button" ng-click="deleteField(field.field_id)"><i class="icon-trash icon-white"></i> Delete</button>
-
-                    <div class="row">
-                        <div class="span2">Field ID: </div>
-                        <div class="span4">{{field.field_id}}</div>
-                    </div>
-                    <div class="row">
-                        <div class="span2">Field Type:</div>
-                        <div class="span4">{{field.field_type}}</div>
-                    </div>
-
-                    <div class="clear"></div> <hr>
-
-                    <div class="row">
-                        <div class="span2">Field Title:</div>
-                        <div class="span4"><input type="text" ng-model="field.field_title" value="{{field.field_title}}"></div>
-                    </div>
-                    <div class="row">
-                        <div class="span2">Field Default Value:</div>
-                        <div class="span4"><input type="text" ng-model="field.field_value" value="{{field.field_value}}"></div>
-                    </div>
-                    <div class="row" ng-show="showAddOptions(field)">
-                        <div class="span2">Field Options:</div>
-                        <div class="span6">
-                            <div ng-repeat="option in field.field_options">
-                                <input type="text" ng-model="option.option_title" value="{{option.option_title}}">
-                                <a class="btn btn-danger btn-mini right" type="button" ng-click="deleteOption(field, option)"><i class="icon-minus icon-white"></i></a>
-                                <span class="label label-inverse">Value: {{ option.option_value }}</span>
-                            </div>
-                            <button class="btn btn-primary btn-small" type="button" ng-click="addOption(field)"><i class="icon-plus icon-white"></i> Add Option</button>
-                        </div>
-                    </div>
-
-					<div class="clear"></div> <hr>
-
-                    <div class="row">
-                        <div class="span2">Required:</div>
-                        <div class="span4">
-                            <label>
-                                <input type="radio" ng-value="true" ng-selected ng-model="field.field_required"/>
-                                &nbsp; Yes
-                            </label>
-                            <label>
-                                <input type="radio" ng-value="false" ng-model="field.field_required"/>
-                                &nbsp; No
-                            </label>
-                        </div>
-                    </div>
-					
-					<div class="clear"></div> <hr>
-
-					<div class="row">
-						<div class="span2">Disabled:</div>
-                        <div class="span4">
-                            <label>
-                                <input type="radio" ng-value="true" ng-selected ng-model="field.field_disabled"/>
-                                &nbsp; Yes
-                            </label>
-                            <label>
-                                <input type="radio" ng-value="false" ng-model="field.field_disabled"/>
-                                &nbsp; No
-                            </label>
-                        </div>
-                    </div>
-                </div>
-            </accordion-group>
-        </accordion>
-
-        <p class="text-center">
-            <button class="btn btn-primary right" type="button" ng-click="previewOn()"><i class="icon-eye-open icon-white"></i> Preview Form</button>
-            <button class="btn btn-danger right" type="button" ng-click="reset()"><i class="icon-refresh icon-white"></i> Reset</button>
-        </p>
-
-        <br><hr>
-
-		<div class="text-center">
-			<a class="btn btn-small btn-primary" ng-show="!showJson" ng-click="showJson = true">Show form json object</a>
-			<a class="btn btn-small btn-inverse" ng-show="showJson" ng-click="showJson = false">Hide form json object</a><br><br>
-		</div>
-
-        <div ng-show="showJson">
-            <h4>Form object content:</h4>
-            <pre>{{ form | json }}</pre>
-        </div>
-    </div>
-
-    <div class="form-fields-preview" ng-show="previewMode">
-        <form-directive form="previewForm"></form-directive>
-
-        <p class="text-center">
-            <button class="btn btn-primary btn-large right" type="button" ng-click="previewOff()"><i class="icon-arrow-left icon-white"></i> Back to Create Mode</button>
-        </p>
-    </div>
-</div> -->
-
