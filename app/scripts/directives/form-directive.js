@@ -1,16 +1,8 @@
 'use strict';
 
-var pattern = /^@/i;
-
-angularApp.directive('formDirective', function () {
+angularApp.directive('formDirective', function ($rootScope) {
   return {
     controller: function($scope){
-
-      // Returning false if the object key value in the properties object is of json-ld type '@'
-      $scope.ignoreKey = function(key) {
-        var result = pattern.test(key);
-        return !result;
-      }
 
       // Initializing the empty model to submit data to
       $scope.model = {
@@ -22,7 +14,7 @@ angularApp.directive('formDirective', function () {
       $scope.parseForm = function(form) {
         // Loop through form.properties object looking for Elements
         angular.forEach(form.properties, function(value, key) {
-          if ($scope.ignoreKey(key)) {
+          if ($rootScope.ignoreKey(key)) {
             // Elements found marked as [key]
             $scope.model[key] = {};
             // The 'value' property is how we distinguish if this is a field level element or an embedded element
@@ -32,7 +24,7 @@ angularApp.directive('formDirective', function () {
             } else {
               // Not field level, loop through next set of properties looking for 'value' property
               angular.forEach(value.properties, function(subvalue, subkey) {
-                if ($scope.ignoreKey(subkey)) {
+                if ($rootScope.ignoreKey(subkey)) {
                   // Elements found marked as [subkey], embedding within existing [key] paramter
                   $scope.model[key][subkey] = {};
                   // Check if we've found field level properties object

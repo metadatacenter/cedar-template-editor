@@ -1,0 +1,136 @@
+{
+  "$schema": "",
+  "@id": "",
+  "title": "Contact Information",
+  "type": "object",
+  "description": "Sample element consisting of contact fields",
+  "properties": {
+    "@type": {
+      "enum": []
+    },
+    "first_name": {
+      "$schema": "",
+      "@id": "",
+      "type": "object",
+      "properties": {
+        "@type": {
+          "enum": []
+        },
+        "value": {
+          "type": "string",
+          "id": "8bc8da84-64c8-496c-8ef6-b97de498fd59",
+          "title": "First Name",
+          "description": "Please enter your first name",
+          "input_type": "textfield",
+          "required": true,
+          "created_at": 1432678567369
+        }
+      },
+      "required": [
+        "@type",
+        "value"
+      ],
+      "additionalProperties": false
+    },
+    "last_name": {
+      "$schema": "",
+      "@id": "",
+      "type": "object",
+      "properties": {
+        "@type": {
+          "enum": []
+        },
+        "value": {
+          "type": "string",
+          "id": "b0d45a1e-0370-4ac1-8338-77d9359e6c05",
+          "title": "Last Name",
+          "description": "Please enter your last name",
+          "input_type": "textfield",
+          "required": true,
+          "created_at": 1432678602995
+        }
+      },
+      "required": [
+        "@type",
+        "value"
+      ],
+      "additionalProperties": false
+    },
+    "email_address": {
+      "$schema": "",
+      "@id": "",
+      "type": "object",
+      "properties": {
+        "@type": {
+          "enum": []
+        },
+        "value": {
+          "type": "string",
+          "id": "df98b119-c3b6-4d20-8e1d-be5fc4baa3fc",
+          "title": "Email Address",
+          "description": "Please provide a valid email address",
+          "input_type": "email",
+          "required": false,
+          "created_at": 1432678623726
+        }
+      },
+      "required": [
+        "@type",
+        "value"
+      ],
+      "additionalProperties": false
+    },
+    "phone_number": {
+      "$schema": "",
+      "@id": "",
+      "type": "object",
+      "properties": {
+        "@type": {
+          "enum": []
+        },
+        "value": {
+          "type": "string",
+          "id": "b44dbd62-85e3-4877-b564-03191008ca7f",
+          "title": "Phone Number",
+          "description": "Please provide a phone number you can be reached at. Include area code.",
+          "input_type": "phone-number",
+          "required": true,
+          "created_at": 1432678646399
+        }
+      },
+      "required": [
+        "@type",
+        "value"
+      ],
+      "additionalProperties": false
+    },
+    "background_information_(optional)": {
+      "$schema": "",
+      "@id": "",
+      "type": "object",
+      "properties": {
+        "@type": {
+          "enum": []
+        },
+        "value": {
+          "type": "string",
+          "id": "3537908a-d498-4f74-813d-844ae3b92cee",
+          "title": "Background Information (Optional)",
+          "description": "If you would like, please tell us a little about yourself",
+          "input_type": "textarea",
+          "required": false,
+          "created_at": 1432678682106
+        }
+      },
+      "required": [
+        "@type",
+        "value"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "@type"
+  ],
+  "additionalProperties": false
+}

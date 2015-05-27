@@ -75,7 +75,7 @@ angularApp.service('FormService', function FormService($http) {
         ],
         form: function (id) {
           // $http returns a promise, which has a then function, which also returns a promise
-          var promise = $http.get('/static-data/sample_runtime_'+id+'.json').then(function (response) {
+          var promise = $http.get('/static-data/forms/sample_runtime_'+id+'.json').then(function (response) {
             // The then function here is an opportunity to modify the response
             //console.log(response);
             // The return value gets picked up by the then fn in the controller.

@@ -3,7 +3,7 @@ angularApp.directive('withFloatingLabel', function () {
     restrict: 'A',
     link: function ($scope, $element, attrs) {
       var template = '<div class="floating-label">' + attrs.placeholder +'</div>';
-      
+
       //append floating label template
       $element.after(template);
       

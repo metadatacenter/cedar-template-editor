@@ -251,7 +251,7 @@ i {
     color:@white;
   }
 
-  #element-name {
+  #element-name-container {
 
     .cedar-svg-element {
       position:absolute;
@@ -333,7 +333,8 @@ p.add-item {
 
 .left-sidebar {
 
-  .element-menu {
+  .element-menu,
+  .item-menu {
     margin:0;
     padding:0;
 
@@ -365,6 +366,19 @@ p.add-item {
 
           i {
             color:@white;
+          }
+        }
+
+        &.disabled {
+          color:#ccc;
+          cursor:not-allowed;
+
+          i {
+            color:#ccc;
+          }
+
+          &:hover {
+            background-color:transparent;
           }
         }
       }
@@ -412,6 +426,7 @@ p.add-item {
       width:100%;
       position:relative;
       background-color:transparent;
+      margin-bottom:30px;
 
       li:first-of-type a {
         border-top:none;
@@ -1012,11 +1027,17 @@ section.dashboard-elements {
     .activ-grotesk-regular;
     text-transform:uppercase;
     color:@black;
-    margin-bottom:15px;
+    margin-bottom:20px;
 
     i {
       color:@brand-primary;
     }
+  }
+
+  &.section-break > p.type-label {
+    border-bottom:1px solid #ddd;
+    padding-bottom:20px;
+    margin-bottom:30px;
   }
 
   .configuration-options {

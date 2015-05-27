@@ -1,0 +1,62 @@
+{
+  "$schema": "",
+  "@id": "",
+  "title": "Principal Investigator",
+  "type": "object",
+  "description": "The lead researcher for the study",
+  "properties": {
+    "@type": {
+      "enum": []
+    },
+    "full_name": {
+      "$schema": "",
+      "@id": "",
+      "type": "object",
+      "properties": {
+        "@type": {
+          "enum": []
+        },
+        "value": {
+          "type": "string",
+          "id": "e146e007-6698-407a-9e53-bc4c7860f374",
+          "title": "Full Name",
+          "description": "Whole name, including first name, middle name, and last name",
+          "input_type": "textfield",
+          "required": false
+        }
+      },
+      "required": [
+        "@type",
+        "value"
+      ],
+      "additionalProperties": false
+    },
+    "institution": {
+      "$schema": "",
+      "@id": "",
+      "type": "object",
+      "properties": {
+        "@type": {
+          "enum": []
+        },
+        "value": {
+          "type": "string",
+          "id": "dbfa4aa1-8759-41f0-9829-a6c4c2cbd7c5",
+          "title": "Institution",
+          "description": "An established society, corporation, foundation or other organization founded and united for a specific purpose",
+          "input_type": "textfield",
+          "required": false
+        }
+      },
+      "required": [
+        "@type",
+        "value"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "@type"
+  ],
+  "additionalProperties": false
+}

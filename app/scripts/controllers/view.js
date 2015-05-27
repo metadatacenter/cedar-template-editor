@@ -1,6 +1,6 @@
 'use strict';
 
-var ViewCtrl = angularApp.controller('ViewCtrl', function ($rootScope, $scope, FormService, $routeParams, $location, $document) {
+angularApp.controller('ViewCtrl', function ($rootScope, $scope, FormService, $routeParams, $location, $document) {
 
 	// set Page Title variable when this controller is active
 	$rootScope.pageTitle = 'Runtime';

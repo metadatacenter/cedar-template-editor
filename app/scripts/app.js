@@ -1,6 +1,6 @@
 'use strict';
 
-var angularApp = angular.module('angularjsFormBuilderApp', ['ui.bootstrap', 'ngRoute']);
+var angularApp = angular.module('angularJsCedarApplication', ['ui.bootstrap', 'ngRoute', 'cedarFilters']);
 
 angularApp.config(function ($routeProvider, $locationProvider) {
 

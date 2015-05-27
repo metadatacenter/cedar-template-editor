@@ -1,9 +1,21 @@
-<div id="page-break-{{field.id}}" class="input-type-container">
+<div id="page-break-{{field.id}}" class="input-type-container section-break">
   <p class="type-label"><i class="cedar-svg-page-break"></i>Page Break</p>
   <div class="form-group floating-label-wrapper">
-    <input type="text" class="form-control" id="page-break-title-{{field.id}}" placeholder="Enter Page Break Title" aria-label="Enter Page Break Title" ng-model="field.title"  with-floating-label>
+    <input type="text" class="form-control" id="page-break-name-{{field.id}}" placeholder="Page Name (Optional)" aria-label="Page Name (Optional)" ng-model="field.title"  with-floating-label>
   </div><!-- /.form-group -->
   <div class="form-group floating-label-wrapper">
-    <input type="text" class="form-control" id="page-break-description-{{field.id}}" placeholder="Enter Page Break Description" aria-label="Enter Page Break Description" ng-model="field.description"  with-floating-label>
+    <input type="text" class="form-control" id="page-break-description-{{field.id}}" placeholder="Page Description (Optional)" aria-label="Page Description (Optional)" ng-model="field.description"  with-floating-label>
   </div><!-- /.form-group -->
+  <div class="configuration-options">
+  	<div class="toggle-options">
+		  <div class="save-options">
+		  	<div class="add" ng-click="add()">
+		  		<i class="fa fa-plus"></i>
+		  	</div>
+		  	<div class="remove" ng-click="delete()">
+		  		<i class="fa fa-times"></i>
+		  	</div>
+		  </div><!-- /.save-options -->
+		</div><!-- /.toggle-options -->
+	</div><!-- /.configuration-options -->
 </div><!-- /.input-type-container -->
