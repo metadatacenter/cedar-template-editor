@@ -7562,19 +7562,31 @@ i {
   top: 5px;
   color: #ffffff;
 }
-.template-header #element-name-container .cedar-svg-element {
+.template-header #element-name-container .cedar-svg-element,
+.template-header #element-controlled-term-container .cedar-svg-element,
+.template-header #element-name-container .cedar-svg-controll-term,
+.template-header #element-controlled-term-container .cedar-svg-controll-term {
   position: absolute;
   color: #339933;
 }
-.template-header #element-name-container .form-control {
+.template-header #element-name-container .form-control,
+.template-header #element-controlled-term-container .form-control {
   padding-left: 30px;
 }
-.template-header #element-name-container .form-control ~ .floating-label {
+.template-header #element-name-container .form-control ~ .floating-label,
+.template-header #element-controlled-term-container .form-control ~ .floating-label {
   left: 30px;
 }
 .template-header #element-name-container .form-control:focus ~ .floating-label,
-.template-header #element-name-container .form-control:not(.empty) ~ .floating-label {
+.template-header #element-controlled-term-container .form-control:focus ~ .floating-label,
+.template-header #element-name-container .form-control:not(.empty) ~ .floating-label,
+.template-header #element-controlled-term-container .form-control:not(.empty) ~ .floating-label {
   left: 0;
+}
+.template-header #element-name-container .element-controlled-term,
+.template-header #element-controlled-term-container .element-controlled-term {
+  margin-top: 20px;
+  margin-bottom: 5px;
 }
 .template-body {
   padding: 30px 0;
@@ -8360,18 +8372,21 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   float: right;
 }
 .input-type-container .configuration-options .toggle-options .save-options .add,
-.input-type-container .configuration-options .toggle-options .save-options .remove {
+.input-type-container .configuration-options .toggle-options .save-options .remove,
+.input-type-container .configuration-options .toggle-options .save-options .edit {
   height: 40px;
   width: 40px;
   border-radius: 50%;
   display: inline-block;
+  vertical-align: middle;
   margin: 0 10px;
   -webkit-transition: all 0.3s 0.1s;
           transition: all 0.3s 0.1s;
   cursor: pointer;
 }
 .input-type-container .configuration-options .toggle-options .save-options .add i,
-.input-type-container .configuration-options .toggle-options .save-options .remove i {
+.input-type-container .configuration-options .toggle-options .save-options .remove i,
+.input-type-container .configuration-options .toggle-options .save-options .edit i {
   color: #ffffff;
   font-size: 18px;
 }
@@ -8385,6 +8400,18 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   -webkit-transform: translate(13px, 12px);
       -ms-transform: translate(13px, 12px);
           transform: translate(13px, 12px);
+}
+.input-type-container .configuration-options .toggle-options .save-options .edit {
+  display: none;
+  background-color: #ccc;
+}
+.input-type-container .configuration-options .toggle-options .save-options .edit:hover {
+  background-color: #999;
+}
+.input-type-container .configuration-options .toggle-options .save-options .edit i {
+  -webkit-transform: translate(10px, 9px);
+      -ms-transform: translate(10px, 9px);
+          transform: translate(10px, 9px);
 }
 .input-type-container .configuration-options .toggle-options .save-options .remove {
   background-color: #333;

@@ -251,9 +251,11 @@ i {
     color:@white;
   }
 
-  #element-name-container {
+  #element-name-container,
+  #element-controlled-term-container {
 
-    .cedar-svg-element {
+    .cedar-svg-element,
+    .cedar-svg-controll-term {
       position:absolute;
       color:@brand-primary;
     }
@@ -269,6 +271,11 @@ i {
     .form-control:focus ~ .floating-label,
     .form-control:not(.empty) ~ .floating-label {
       left:0;
+    }
+
+    .element-controlled-term {
+      margin-top:20px;
+      margin-bottom:5px;
     }
   }
 }
@@ -1078,11 +1085,13 @@ section.dashboard-elements {
         float:right;
 
         .add,
-        .remove {
+        .remove,
+        .edit {
           height:40px;
           width:40px;
           border-radius:50%;
           display:inline-block;
+          vertical-align:middle;
           margin:0 10px;
           .link-transition;
           cursor:pointer;
@@ -1102,6 +1111,19 @@ section.dashboard-elements {
 
           i {
             transform:translate(13px, 12px);
+          }
+        }
+
+        .edit {
+          display:none;
+          background-color:#ccc;
+
+          &:hover {
+            background-color:#999;
+          }
+
+          i {
+            transform:translate(10px, 9px);
           }
         }
 

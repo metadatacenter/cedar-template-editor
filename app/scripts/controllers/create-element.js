@@ -12,6 +12,7 @@ angularApp.controller('CreateElementController', function ($rootScope, $scope, $
   $scope.element = {
     "$schema": "",
     "@id": "",
+    "@type": "",
     "title": "",
     "type": "object",
     "description": "",
@@ -104,6 +105,17 @@ angularApp.controller('CreateElementController', function ($rootScope, $scope, $
     // If field has been added to the element.properties object, remove this also
     if($scope.element.properties[underscoreTitle]) {
       delete $scope.element.properties[underscoreTitle];
+    }
+  };
+
+  // Empty $scope object used to store values that get converted to json-ld counterparts on the $scope.element object
+  $scope.volatile = {};
+  // Helper function for converting values to json-ld '@' keys
+  $scope.convertVolatile = function() {
+    for (var key in $scope.volatile) {
+      if ($scope.volatile.hasOwnProperty(key)) {
+        $scope.element['@' + key] = $scope.volatile[key];
+      }
     }
   };
 

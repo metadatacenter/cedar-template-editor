@@ -4,21 +4,28 @@
       <div class="left-sidebar col-sm-3">
         <div id="element-name-container">
           <i class="cedar-svg-element"></i>
-          <form>
-            <div class="form-group floating-label-wrapper">
-              <input type="text" class="form-control" id="element-name" placeholder="Element Name" aria-label="Element Name" ng-model="element.title"  with-floating-label>
-            </div>
-          </form>
+          <div class="form-group floating-label-wrapper">
+            <input type="text" class="form-control" id="element-name" placeholder="Element Name" aria-label="Element Name" ng-model="element.title"  with-floating-label>
+          </div>
         </div>
       </div> <!-- /.left-sidebar -->
       <div class="right-body col-sm-9">
         <div id="element-description-container">
-          <form>
-            <div class="form-group floating-label-wrapper">
-              <input type="text" class="form-control" id="element-description" placeholder="Element Description" aria-label="Element Description" ng-model="element.description"  with-floating-label>
-            </div>
-          </form>
+          <div class="form-group floating-label-wrapper">
+            <input type="text" class="form-control" id="element-description" placeholder="Element Description" aria-label="Element Description" ng-model="element.description"  with-floating-label>
+          </div>
         </div>
+      </div> <!-- /.right-body -->
+    </div> <!-- /.row -->
+    <div class="row">
+      <div class="left-sidebar col-sm-3"></div> <!-- /.left-sidebar -->
+      <div class="right-body col-sm-9">
+        <div id="element-controlled-term-container">
+          <i class="cedar-svg-controll-term"></i>
+          <div class="form-group floating-label-wrapper element-controlled-term">
+            <input type="text" class="form-control" id="textfield1" placeholder="Controlled Term (Optional)" aria-label="Control Term Default Value" ng-model="volatile.type" ng-change="convertVolatile()"  with-floating-label>
+          </div><!-- /.form-group -->
+        </div> <!-- /#element-controlled-term-container -->
       </div> <!-- /.right-body -->
     </div> <!-- /.row -->
   </div> <!-- /.container -->
