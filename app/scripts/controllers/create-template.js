@@ -1,6 +1,6 @@
 'use strict';
 
-angularApp.controller('CreateTemplateController', function ($rootScope, $scope, FormService, $http) {
+angularApp.controller('CreateTemplateController', function ($rootScope, $scope, $http) {
 
   // Set Page Title variable when this controller is active
   $rootScope.pageTitle = 'Template Creator';

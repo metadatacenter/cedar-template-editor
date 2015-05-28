@@ -1,6 +1,6 @@
 'use strict';
 
-angularApp.controller('CreateElementController', function ($rootScope, $scope, $dialog, FormService, $http) {
+angularApp.controller('CreateElementController', function ($rootScope, $scope, $http) {
 
   // Set page title variable when this controller is active
   $rootScope.pageTitle = 'Element Creator';
