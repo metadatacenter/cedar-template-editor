@@ -13,16 +13,12 @@
   </div><!-- /.edit-actions -->
 </div>
 
-<hr>
-
-<div class="text-center">
+<div class="text-center" style="padding-top:20px; padding-bottom:20px;">
   <a class="btn btn-small btn-primary" ng-show="!showRender" ng-click="showRender = true; showOtput = false">Show Form Render JSON</a>
   <a class="btn btn-small btn-primary" ng-show="showRender" ng-click="showRender = false">Hide Form Render JSON</a>
   <a class="btn btn-small btn-primary" ng-show="!showOutput" ng-click="showOutput = true; showRender = false">Show Data Output JSON</a>
   <a class="btn btn-small btn-primary" ng-show="showOutput" ng-click="showOutput = false">Hide Data Output JSON</a>
 </div>
-
-<hr>
 
 <div ng-show="showRender">
   <pre>{{ form | json }}</pre>
@@ -31,13 +27,3 @@
 <div ng-show="showOutput">
   <pre>{{ model | json }}</pre>
 </div>
-
-<!-- <form name="{{form.title}}" id="{{form.guid}}"> -->
-  <!--Loop through top level "properties" parameter in form element and call element-directive with contents -->
-  <!-- <div ng-repeat="(index, element) in formFieldsObject">
-    {{index}}
-    <div ng-repeat="(i, field) in element">
-      <field-directive field="field.field" model="field.model" directory="render"></field-directive>
-    </div>
-  </div> -->
-<!--/form> -->

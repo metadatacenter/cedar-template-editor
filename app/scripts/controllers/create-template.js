@@ -8,7 +8,7 @@ angularApp.controller('CreateTemplateController', function ($rootScope, $scope, 
   // Create staging area to create/edit fields before they get added to $scope.form.properties
   $scope.staging = {};
 
-  // Temporary variable on $scope used to tell if any elements or fields have been added to the form yet
+  // $scope variable used to tell if any elements or fields have been added to the form yet
   $scope.anyProperties = false;
 
   // Create empty $scope.form object
@@ -47,7 +47,36 @@ angularApp.controller('CreateTemplateController', function ($rootScope, $scope, 
   };
 
   // Add new field into $scope.staging object
-  $scope.addFieldToStaging = function(fieldType) {};
+  $scope.addFieldToStaging = function(fieldType) {
+
+    var field = {
+      "$schema": "http://json-schema.org/draft-04/schema#",
+      "@id": "",
+      "type": "object",
+      "properties": {
+        "@type": {
+          "enum": []
+        },
+        "value": {
+          "type": "string",
+          "id" : $rootScope.generateGUID(),
+          "title" : "",
+          "description": "",
+          "input_type" : fieldType,
+          "required" : false,
+          "created_at": Date.now()
+        }
+      },
+      "required": [
+        "@type",
+        "value"
+      ],
+      "additionalProperties": false
+    };
+
+    // put field into fields staging object
+    $scope.staging[field.properties.value.id] = field;
+  };
 
   // Add newly configured field to the the $scope.form.properties object
   $scope.addFieldToForm = function(field) {

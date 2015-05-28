@@ -6649,7 +6649,7 @@ button.close {
   color: #999999;
 }
 .checkbox.checkbox-primary label {
-  padding-left: 20px;
+  padding-left: 10px;
 }
 .checkbox.checkbox-primary label:before {
   background-color: #999;
@@ -6695,7 +6695,7 @@ button.close {
   display: inline-block;
   vertical-align: middle;
   position: relative;
-  padding-left: 20px;
+  padding-left: 10px;
   font-family: 'aktiv-grotesk-std';
   font-weight: 400;
 }
@@ -7599,6 +7599,24 @@ i {
     padding-top: 35px;
   }
 }
+.template-body .right-body .btn-preview-form {
+  border-radius: 0;
+  padding: 11px 15px 12px;
+  color: #ffffff;
+  display: inline-block;
+  border: none;
+  text-align: left;
+  text-transform: uppercase;
+  position: relative;
+  margin-bottom: 20px;
+  background-color: #338833;
+}
+.template-body .right-body .btn-preview-form.collapsed {
+  background-color: #339933;
+}
+.template-body .right-body .btn-preview-form:focus {
+  outline: none;
+}
 .template-body .right-body #form-item-config-section,
 .template-body .right-body #form-preview-section {
   padding-bottom: 30px;
@@ -7624,6 +7642,10 @@ i {
   vertical-align: middle;
   border-top: 1px solid #339933;
   width: calc(50% - 105px);
+}
+.template-body .right-body #form-item-config-section .form-preview,
+.template-body .right-body #form-preview-section .form-preview {
+  padding-top: 15px;
 }
 @media (min-width: 768px) {
   .left-sidebar {
@@ -7755,6 +7777,10 @@ p.add-item {
   right: 15px;
   top: 10px;
   color: #339933;
+}
+.left-sidebar .more-items .btn-more-items:focus {
+  outline: none;
+  box-shadow: none;
 }
 .left-sidebar .more-items .dropdown-menu {
   box-shadow: none;

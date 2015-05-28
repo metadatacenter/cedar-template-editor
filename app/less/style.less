@@ -290,6 +290,27 @@ i {
       padding-top:35px;
     }
 
+    .btn-preview-form {
+      border-radius:0;
+      padding:11px 15px 12px;
+      color:@white;
+      display:inline-block;
+      border:none;
+      text-align:left;
+      text-transform:uppercase;
+      position:relative;
+      margin-bottom:20px;
+      background-color:@brand-primary-hover;
+
+      &.collapsed {
+        background-color:@brand-primary;
+      }
+
+      &:focus {
+        outline:none;
+      }
+    }
+
     #form-item-config-section,
     #form-preview-section {
       padding-bottom:30px;
@@ -314,6 +335,10 @@ i {
           border-top:1px solid @brand-primary;
           width: calc(~"50% - 105px");
         }
+      }
+
+      .form-preview {
+        padding-top:15px;
       }
     }
   }
@@ -451,6 +476,11 @@ p.add-item {
         right:15px;
         top:10px;
         color:@brand-primary;
+      }
+
+      &:focus {
+        outline:none;
+        box-shadow:none;
       }
     }
 

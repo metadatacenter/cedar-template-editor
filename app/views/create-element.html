@@ -73,31 +73,33 @@
       </div> <!-- /.left-sidebar -->
 
       <div class="right-body col-sm-9">
-        <div class="empty-text" ng-hide="isEmpty(staging)">
-          <p>Add element or item.</p>
-        </div>
-        <form name="{{element.name}}" id="{{element.id}}">
-          <div ng-repeat="field in staging | orderObjectBy: 'properties.value.created_at'">
-            <field-directive field="field.properties.value" directory="create" delete="deleteField(field)" add="addFieldToElement(field)">
-            </field-directive>
-            <!--{{field.field_type}}-->
+        <div id="form-preview-section">
+          <div class="checkbox checkbox-primary">
+            <input type="checkbox" id="checkbox1" data-toggle="collapse" data-target=".form-preview">
+            <label for="checkbox1">Preview Element</label>
           </div>
-        </form>
+          <div class="form-preview collapse">
+            <div class="empty-text" ng-hide="anyProperties">
+              <p>Add an element or create a new field item in order to preview form.</p>
+            </div>
+            <form-preview form="element"></form-preview>
+          </div><!-- /.form-preview -->
+        </div> <!-- /#form-preview-section -->
 
-
-        <div id="json-model-binding-example-section">
-          <hr>
-          <div class="text-center">
-            <a class="btn btn-small btn-primary" ng-show="!showRender" ng-click="showRender = true">Hide Element JSON Object</a>
-            <a class="btn btn-small btn-primary" ng-show="showRender" ng-click="showRender = false">Show Element JSON Object</a>
+        <div id="form-item-config-section">
+          <div class="heading-label">
+            <hr><span class="section-break">Item Configuration</span><hr>
           </div>
-          <hr>
-          <div ng-hide="showRender">
-            <pre>{{ element | json }}</pre>
+          <div class="empty-text" ng-hide="isEmpty(staging)">
+            <p>Create a new field item, or add an existing element.</p>
           </div>
-        </div> <!-- /#json-model-binding-example-section -->
-
-
+          <form name="{{form.title}}" id="{{form.guid}}">
+            <div ng-repeat="field in staging | orderObjectBy: 'properties.value.created_at'">
+              <field-directive field="field.properties.value" directory="create" delete="deleteField(field)" add="addFieldToElement(field)">
+              </field-directive>
+            </div>
+          </form>
+        </div> <!-- /#form-item-config-section -->
       </div> <!-- /.right-body -->
     </div> <!-- /.row -->
   </div> <!-- /.container -->
