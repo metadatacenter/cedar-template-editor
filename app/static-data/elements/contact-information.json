@@ -2,6 +2,7 @@
   "$schema": "",
   "@id": "",
   "title": "Contact Information",
+  "guid": "34cc0dbf-9aee-4d1a-b8b7-ad385a38228e",
   "type": "object",
   "description": "Sample element consisting of contact fields",
   "properties": {
@@ -104,7 +105,7 @@
       ],
       "additionalProperties": false
     },
-    "background_information_(optional)": {
+    "background_information_optional": {
       "$schema": "",
       "@id": "",
       "type": "object",

@@ -1,129 +1,77 @@
 'use strict';
 
-angularApp.controller('CreateTemplateController', function ($rootScope, $scope, $dialog, FormService) {
+angularApp.controller('CreateTemplateController', function ($rootScope, $scope, FormService, $http) {
 
-    // set Page Title variable when this controller is active
-    $rootScope.pageTitle = 'Template Creator';
+  // Set Page Title variable when this controller is active
+  $rootScope.pageTitle = 'Template Creator';
 
-    // preview form mode
-    $scope.previewMode = false;
+  // Create staging area to create/edit fields before they get added to $scope.form.properties
+  $scope.staging = {};
 
-    // new form
-    $scope.form = {};
-    $scope.form.form_id = 1;
-    $scope.form.form_name = 'My Form';
-    $scope.form.form_fields = [];
+  // Temporary variable on $scope used to tell if any elements or fields have been added to the form yet
+  $scope.anyProperties = false;
 
-    // previewForm - for preview purposes, form will be copied into this
-    // otherwise, actual form might get manipulated in preview mode
-    $scope.previewForm = {};
+  // Create empty $scope.form object
+  $scope.form = {
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "@id": "",
+    "title": "",
+    "description": "",
+    "guid": $rootScope.generateGUID(),
+    "type": "object",
+    "properties": {
+      "@context": {
+        "type": [
+          "object",
+          "string",
+          "array",
+          "null"
+        ]
+      },
+      "@id": {
+        "type": "string",
+        "format": "uri"
+      },
+      "@type": {
+        "enum": [
+          "http://metadatacenter.org/schemas/BasicStudyDesign"
+        ]
+      }
+    },
+    "required": [
+      "@context",
+      "@id",
+      "@type"
+    ],
+    "additionalProperties" : false
+  };
 
-    // add new field drop-down:
-    $scope.addField = {};
-    $scope.addField.types = FormService.fields;
-    $scope.addField.new = $scope.addField.types[0].name;
-    $scope.addField.lastAddedID = 0;
+  // Add new field into $scope.staging object
+  $scope.addFieldToStaging = function(fieldType) {};
 
-    // accordion settings
-    $scope.accordion = {}
-    $scope.accordion.oneAtATime = true;
+  // Add newly configured field to the the $scope.form.properties object
+  $scope.addFieldToForm = function(field) {
 
-    // create new field button click
-    $scope.addNewField = function(){
+    // Change anyProperties boolean now that a field has been added to the form
+    $scope.anyProperties = true;
+  };
 
-        // incr field_id counter
-        $scope.addField.lastAddedID++;
+  // Add existing element into the $scope.form.properties object
+  $scope.addExistingElement = function(element) {
+    // Fetch existing element json data
+    return $http.get('/static-data/elements/'+element+'.json').then(function(response) {
+      // Convert response.data.title string to an acceptable object key string
+      var titleKey = $rootScope.underscoreText(response.data.title);
+      // Embed existing element into $scope.form.properties object
+      $scope.form.properties[titleKey] = response.data;
+      // Change anyProperties boolean now that an element has been added to the form
+      $scope.anyProperties = true;
+    });
+  };
 
-        var newField = {
-            "field_id" : $scope.addField.lastAddedID,
-            "field_title" : "New field - " + ($scope.addField.lastAddedID),
-            "field_type" : $scope.addField.new,
-            "field_value" : "",
-            "field_required" : true,
-			"field_disabled" : false
-        };
+  // Delete field from $scope.staging object and also $scope.form.properties object
+  $scope.deleteField = function() {};
 
-        // put newField into fields array
-        $scope.form.form_fields.push(newField);
-    }
-
-    // deletes particular field on button click
-    $scope.deleteField = function (field_id){
-        for(var i = 0; i < $scope.form.form_fields.length; i++){
-            if($scope.form.form_fields[i].field_id == field_id){
-                $scope.form.form_fields.splice(i, 1);
-                break;
-            }
-        }
-    }
-
-    // add new option to the field
-    $scope.addOption = function (field){
-        if(!field.field_options)
-            field.field_options = new Array();
-
-        var lastOptionID = 0;
-
-        if(field.field_options[field.field_options.length-1])
-            lastOptionID = field.field_options[field.field_options.length-1].option_id;
-
-        // new option's id
-        var option_id = lastOptionID + 1;
-
-        var newOption = {
-            "option_id" : option_id,
-            "option_title" : "Option " + option_id,
-            "option_value" : option_id
-        };
-
-        // put new option into field_options array
-        field.field_options.push(newOption);
-    }
-
-    // delete particular option
-    $scope.deleteOption = function (field, option){
-        for(var i = 0; i < field.field_options.length; i++){
-            if(field.field_options[i].option_id == option.option_id){
-                field.field_options.splice(i, 1);
-                break;
-            }
-        }
-    }
-
-
-    // preview form
-    $scope.previewOn = function(){
-        if($scope.form.form_fields == null || $scope.form.form_fields.length == 0) {
-            var title = 'Error';
-            var msg = 'No fields added yet, please add fields to the form before preview.';
-            var btns = [{result:'ok', label: 'OK', cssClass: 'btn-primary'}];
-
-            $dialog.messageBox(title, msg, btns).open();
-        }
-        else {
-            $scope.previewMode = !$scope.previewMode;
-            $scope.form.submitted = false;
-            angular.copy($scope.form, $scope.previewForm);
-        }
-    }
-
-    // hide preview form, go back to create mode
-    $scope.previewOff = function(){
-        $scope.previewMode = !$scope.previewMode;
-        $scope.form.submitted = false;
-    }
-
-    // decides whether field options block will be shown (true for dropdown and radio fields)
-    $scope.showAddOptions = function (field){
-        if(field.field_type == "radio" || field.field_type == "dropdown")
-            return true;
-        else
-            return false;
-    }
-
-    // deletes all the fields
-    $scope.reset = function (){
-        $scope.form.form_fields.splice(0, $scope.form.form_fields.length);
-        $scope.addField.lastAddedID = 0;
-    }
+  // Reverts to empty form and removes all previously added fields/elements
+  $scope.reset = function() {};
 });

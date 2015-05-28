@@ -8,14 +8,18 @@ angularApp.controller('CreateElementController', function ($rootScope, $scope, $
   // Create staging area to create/edit fields before they get added to the element
   $scope.staging = {};
 
+  // Empty $scope object used to store values that get converted to their json-ld counterparts on the $scope.element object
+  $scope.volatile = {};
+
   // Create empty element object
   $scope.element = {
-    "$schema": "",
+    "$schema": "http://json-schema.org/draft-04/schema#",
     "@id": "",
     "@type": "",
     "title": "",
-    "type": "object",
     "description": "",
+    "guid": $rootScope.generateGUID(),
+    "type": "object",
     "properties": {
       "@type": {
         "enum": []
@@ -27,23 +31,12 @@ angularApp.controller('CreateElementController', function ($rootScope, $scope, $
     "additionalProperties": false
   };
 
-  // Generating a RFC4122 version 4 compliant GUID
-  $scope.generateGUID = function() {
-    var d = Date.now();
-    var guid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-        var r = (d + Math.random()*16)%16 | 0;
-        d = Math.floor(d/16);
-        return (c=='x' ? r : (r&0x3|0x8)).toString(16);
-    });
-    return guid;
-  };
-
   // Add new field into staging area
   $scope.addFieldToStaging = function(fieldType){
 
     var field = {
 
-      "$schema": "",
+      "$schema": "http://json-schema.org/draft-04/schema#",
       "@id": "",
       "type": "object",
       "properties": {
@@ -52,7 +45,7 @@ angularApp.controller('CreateElementController', function ($rootScope, $scope, $
         },
         "value": {
           "type": "string",
-          "id" : $scope.generateGUID(),
+          "id" : $rootScope.generateGUID(),
           "title" : "",
           "description": "",
           "input_type" : fieldType,
@@ -75,12 +68,12 @@ angularApp.controller('CreateElementController', function ($rootScope, $scope, $
   $scope.addFieldToElement = function(field) {
     // Converting title for irregular character handling
     var underscoreTitle = $rootScope.underscoreText(field.properties.value.title);
-
+    // Adding field to the element.properties object
     $scope.element.properties[underscoreTitle] = field;
   };
 
   // Add existing element to the element object
-  $scope.embedExistingElement = function(element) {
+  $scope.addExistingElement = function(element) {
     // Fetch existing element json data
     return $http.get('/static-data/elements/'+element+'.json').then(function(response) {
       // Loop through properties object skipping json-LD schematics and grab each field
@@ -108,9 +101,7 @@ angularApp.controller('CreateElementController', function ($rootScope, $scope, $
     }
   };
 
-  // Empty $scope object used to store values that get converted to json-ld counterparts on the $scope.element object
-  $scope.volatile = {};
-  // Helper function for converting values to json-ld '@' keys
+  // Helper function for converting $scope.volatile values to json-ld '@' keys
   $scope.convertVolatile = function() {
     for (var key in $scope.volatile) {
       if ($scope.volatile.hasOwnProperty(key)) {

@@ -289,6 +289,33 @@ i {
     @media(min-width:@screen-sm-min) {
       padding-top:35px;
     }
+
+    #form-item-config-section,
+    #form-preview-section {
+      padding-bottom:30px;
+
+      .heading-label {
+        padding-bottom:30px;
+
+        span.section-break {
+          color:@brand-primary;
+          font-size:18px;
+          text-transform:uppercase;
+          display:inline-block;
+          vertical-align:middle;
+          padding:0 10px;
+          width:210px;
+          text-align:center;
+        }
+
+        hr {
+          display:inline-block;
+          vertical-align:middle;
+          border-top:1px solid @brand-primary;
+          width: calc(~"50% - 105px");
+        }
+      }
+    }
   }
 }
 

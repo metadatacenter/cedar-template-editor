@@ -1,5 +1,5 @@
 <div ng-show="!form.submitted">
-  <form name="{{form.title}}" id="">
+  <form name="{{form.title}}" id="{{form.guid}}">
     <!--Loop through top level "properties" parameter in form element and call element-directive with contents -->
     <div ng-repeat="(index, object) in formFields">
       <field-directive field="object.field" model="object.model" directory="render"></field-directive>
@@ -16,10 +16,10 @@
 <hr>
 
 <div class="text-center">
-  <a class="btn btn-small btn-primary" ng-show="!showRender" ng-click="showRender = true; showOtput = false">Show json render object</a>
-  <a class="btn btn-small btn-primary" ng-show="showRender" ng-click="showRender = false">Hide json render object</a>
-  <a class="btn btn-small btn-primary" ng-show="!showOutput" ng-click="showOutput = true; showRender = false">Show json render object</a>
-  <a class="btn btn-small btn-primary" ng-show="showOutput" ng-click="showOutput = false">Hide json render object</a>
+  <a class="btn btn-small btn-primary" ng-show="!showRender" ng-click="showRender = true; showOtput = false">Show Form Render JSON</a>
+  <a class="btn btn-small btn-primary" ng-show="showRender" ng-click="showRender = false">Hide Form Render JSON</a>
+  <a class="btn btn-small btn-primary" ng-show="!showOutput" ng-click="showOutput = true; showRender = false">Show Data Output JSON</a>
+  <a class="btn btn-small btn-primary" ng-show="showOutput" ng-click="showOutput = false">Hide Data Output JSON</a>
 </div>
 
 <hr>
@@ -32,10 +32,12 @@
   <pre>{{ model | json }}</pre>
 </div>
 
-<div ng-show="form.submitted">
-  <h3>Submitted Data</h3>
-  <div ng-repeat="field in form.form_fields">
-    Field Title: {{ field.field_title }} <br>
-    Field Value: {{ field.field_value }} <br><br>
-  </div>
-</div>
+<!-- <form name="{{form.title}}" id="{{form.guid}}"> -->
+  <!--Loop through top level "properties" parameter in form element and call element-directive with contents -->
+  <!-- <div ng-repeat="(index, element) in formFieldsObject">
+    {{index}}
+    <div ng-repeat="(i, field) in element">
+      <field-directive field="field.field" model="field.model" directory="render"></field-directive>
+    </div>
+  </div> -->
+<!--/form> -->

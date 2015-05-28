@@ -13,7 +13,7 @@ angularApp.run(['$rootScope',  function($rootScope) {
     // Tranform string to become object key
     $rootScope.underscoreText = function(string) {
       return string
-        .replace(/'|"/g,'')
+        .replace(/'|"|(|)/g,'')
         .replace(/ +/g,"_")
         .toLowerCase();
     };
@@ -24,5 +24,16 @@ angularApp.run(['$rootScope',  function($rootScope) {
           result = pattern.test(key);
           
       return !result;
+    };
+
+    // Generating a RFC4122 version 4 compliant GUID
+    $rootScope.generateGUID = function() {
+      var d = Date.now();
+      var guid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+          var r = (d + Math.random()*16)%16 | 0;
+          d = Math.floor(d/16);
+          return (c=='x' ? r : (r&0x3|0x8)).toString(16);
+      });
+      return guid;
     };
 }]);

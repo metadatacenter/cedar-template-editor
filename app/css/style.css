@@ -7599,6 +7599,32 @@ i {
     padding-top: 35px;
   }
 }
+.template-body .right-body #form-item-config-section,
+.template-body .right-body #form-preview-section {
+  padding-bottom: 30px;
+}
+.template-body .right-body #form-item-config-section .heading-label,
+.template-body .right-body #form-preview-section .heading-label {
+  padding-bottom: 30px;
+}
+.template-body .right-body #form-item-config-section .heading-label span.section-break,
+.template-body .right-body #form-preview-section .heading-label span.section-break {
+  color: #339933;
+  font-size: 18px;
+  text-transform: uppercase;
+  display: inline-block;
+  vertical-align: middle;
+  padding: 0 10px;
+  width: 210px;
+  text-align: center;
+}
+.template-body .right-body #form-item-config-section .heading-label hr,
+.template-body .right-body #form-preview-section .heading-label hr {
+  display: inline-block;
+  vertical-align: middle;
+  border-top: 1px solid #339933;
+  width: calc(50% - 105px);
+}
 @media (min-width: 768px) {
   .left-sidebar {
     padding-left: 0;
