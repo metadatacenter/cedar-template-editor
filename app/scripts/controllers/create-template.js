@@ -83,6 +83,14 @@ angularApp.controller('CreateTemplateController', function ($rootScope, $scope, 
 
     // Change anyProperties boolean now that a field has been added to the form
     $scope.anyProperties = true;
+
+    // Converting title for irregular character handling
+    var underscoreTitle = $rootScope.underscoreText(field.properties.value.title);
+    // Adding field to the element.properties object
+    $scope.form.properties[underscoreTitle] = field;
+
+    // Lastly, remove this field from the $scope.staging object
+    delete $scope.staging[field.properties.value.id];
   };
 
   // Add existing element into the $scope.form.properties object

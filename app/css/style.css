@@ -7647,6 +7647,56 @@ i {
 .template-body .right-body #form-preview-section .form-preview {
   padding-top: 15px;
 }
+.template-body .right-body .preview-group {
+  display: inline-block;
+  vertical-align: middle;
+  width: calc(100% - 65px);
+}
+.template-body .right-body .preview-edit-options {
+  display: inline-block;
+  vertical-align: middle;
+  margin-bottom: 40px;
+}
+.template-body .right-body .preview-edit-options .remove,
+.template-body .right-body .preview-edit-options .edit {
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+  display: inline-block;
+  vertical-align: middle;
+  margin: 0 10px;
+  -webkit-transition: all 0.3s 0.1s;
+          transition: all 0.3s 0.1s;
+  cursor: pointer;
+}
+.template-body .right-body .preview-edit-options .remove i,
+.template-body .right-body .preview-edit-options .edit i {
+  color: #ffffff;
+  font-size: 18px;
+}
+.template-body .right-body .preview-edit-options .edit {
+  display: none;
+  background-color: #ccc;
+}
+.template-body .right-body .preview-edit-options .edit:hover {
+  background-color: #999;
+}
+.template-body .right-body .preview-edit-options .edit i {
+  -webkit-transform: translate(10px, 9px);
+      -ms-transform: translate(10px, 9px);
+          transform: translate(10px, 9px);
+}
+.template-body .right-body .preview-edit-options .remove {
+  background-color: #333;
+}
+.template-body .right-body .preview-edit-options .remove:hover {
+  background-color: #000000;
+}
+.template-body .right-body .preview-edit-options .remove i {
+  -webkit-transform: translate(13px, 11px);
+      -ms-transform: translate(13px, 11px);
+          transform: translate(13px, 11px);
+}
 @media (min-width: 768px) {
   .left-sidebar {
     padding-left: 0;

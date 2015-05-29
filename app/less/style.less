@@ -341,6 +341,60 @@ i {
         padding-top:15px;
       }
     }
+
+    .preview-group {
+      display:inline-block;
+      vertical-align:middle;
+      width: calc(~"100% - 65px");
+    }
+
+    .preview-edit-options {
+      display:inline-block;
+      vertical-align:middle;
+      margin-bottom:40px;
+
+      .remove,
+      .edit {
+        height:40px;
+        width:40px;
+        border-radius:50%;
+        display:inline-block;
+        vertical-align:middle;
+        margin:0 10px;
+        .link-transition;
+        cursor:pointer;
+
+        i {
+          color:@white;
+          font-size:18px;
+        }
+      }
+
+      .edit {
+        display:none;
+        background-color:#ccc;
+
+        &:hover {
+          background-color:#999;
+        }
+
+        i {
+          transform:translate(10px, 9px);
+        }
+      }
+
+      .remove {
+        background-color:#333;
+
+        &:hover {
+          background-color:@black;
+        }
+
+        i {
+          transform:translate(13px, 11px);
+        }
+      }
+    }
   }
 }
 

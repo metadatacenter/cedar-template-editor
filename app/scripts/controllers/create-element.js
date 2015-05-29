@@ -96,7 +96,7 @@ angularApp.controller('CreateElementController', function ($rootScope, $scope, $
     });
   };
 
-  // Delete field from $scope.staging object and also $scope.element.properties object
+  // Delete field from $scope.staging object
   $scope.deleteField = function (field){
 
     var value = field.properties.value,
@@ -104,11 +104,6 @@ angularApp.controller('CreateElementController', function ($rootScope, $scope, $
 
     // Remove field instance from $scope.staging
     delete $scope.staging[value.id];
-
-    // If field has been added to the $scope.element.properties object, remove this also
-    if($scope.element.properties[underscoreTitle]) {
-      delete $scope.element.properties[underscoreTitle];
-    }
   };
 
   // Helper function for converting $scope.volatile values to json-ld '@' keys
