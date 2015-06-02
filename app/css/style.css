@@ -7458,6 +7458,9 @@ i {
 .btn {
   border-radius: 0;
 }
+.btn.diabled {
+  cursor: not-allowed;
+}
 .container {
   position: relative;
 }
@@ -7619,7 +7622,7 @@ i {
 }
 .template-body .right-body #form-item-config-section,
 .template-body .right-body #form-preview-section {
-  padding-bottom: 30px;
+  padding-bottom: 40px;
 }
 .template-body .right-body #form-item-config-section .heading-label,
 .template-body .right-body #form-preview-section .heading-label {
@@ -8574,6 +8577,71 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
 .input-type-container .configuration-options .form-group {
   margin-bottom: 15px;
 }
+/*
+================================================
+=== Template Builder Actions
+================================================
+*/
+.template-actions {
+  padding-top: 40px;
+  border-top: 1px solid #ddd;
+}
+.template-actions .favorite {
+  float: left;
+  padding-top: 17px;
+  cursor: pointer;
+}
+.template-actions .favorite span {
+  text-transform: uppercase;
+  vertical-align: middle;
+}
+.template-actions .favorite i {
+  padding-right: 10px;
+  -webkit-transition: all 0.3s 0.1s;
+          transition: all 0.3s 0.1s;
+  color: rgba(51, 51, 51, 0.43);
+}
+.template-actions .favorite.true i {
+  color: #339933;
+}
+.template-actions .clear-save {
+  float: right;
+}
+.template-actions .clear-save .btn {
+  text-transform: uppercase;
+  padding: 25px 40px;
+  border: none;
+  -webkit-transition: all 0.3s 0.1s;
+          transition: all 0.3s 0.1s;
+}
+.template-actions .clear-save .btn:focus {
+  outline: none;
+  box-shadow: none;
+}
+.template-actions .clear-save .btn.btn-clear {
+  color: #339933;
+  background-color: transparent;
+  font-family: 'aktiv-grotesk-std';
+  font-weight: 700;
+}
+.template-actions .clear-save .btn.btn-clear:hover,
+.template-actions .clear-save .btn.btn-clear:focus {
+  color: #338833;
+}
+.template-actions .clear-save .btn.btn-save {
+  color: #ffffff;
+  background-color: #339933;
+  font-size: 16px;
+}
+.template-actions .clear-save .btn.btn-save:hover,
+.template-actions .clear-save .btn.btn-save:focus {
+  background-color: #338833;
+}
+/*
+================================================
+=== Bootstrap Select Picker
+================================================
+*/
 .bootstrap-select {
   padding-top: 0 !important;
 }

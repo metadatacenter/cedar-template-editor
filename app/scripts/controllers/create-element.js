@@ -36,11 +36,10 @@ angularApp.controller('CreateElementController', function ($rootScope, $scope, $
     return  Object.keys($scope.element.properties).length > 1 ? false : true;
   };
 
-  // Add new field into staging area
+  // Add new field into $scope.staging object
   $scope.addFieldToStaging = function(fieldType){
 
     var field = {
-
       "$schema": "http://json-schema.org/draft-04/schema#",
       "@id": "",
       "type": "object",
@@ -85,19 +84,15 @@ angularApp.controller('CreateElementController', function ($rootScope, $scope, $
     // Fetch existing element json data
     return $http.get('/static-data/elements/'+element+'.json').then(function(response) {
       // Add existing element to the $scope.element.properties object with it's title converted to an object key
-      var underscoreTitle = $rootScope.underscoreText(response.data.title);
-      $scope.element.properties[underscoreTitle] = response.data;
+      var titleKey = $rootScope.underscoreText(response.data.title);
+      $scope.element.properties[titleKey] = response.data;
     });
   };
 
   // Delete field from $scope.staging object
   $scope.deleteField = function (field){
-
-    var value = field.properties.value,
-        underscoreTitle = $rootScope.underscoreText(value.title);
-
     // Remove field instance from $scope.staging
-    delete $scope.staging[value.id];
+    delete $scope.staging[field.properties.value.id];
   };
 
   // Helper function for converting $scope.volatile values to json-ld '@' keys

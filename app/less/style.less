@@ -138,6 +138,10 @@ i {
 
 .btn {
   border-radius:0;
+
+  &.diabled {
+    cursor:not-allowed;
+  }
 }
 
 .container {
@@ -313,7 +317,7 @@ i {
 
     #form-item-config-section,
     #form-preview-section {
-      padding-bottom:30px;
+      padding-bottom:40px;
 
       .heading-label {
         padding-bottom:30px;
@@ -1315,7 +1319,82 @@ section.dashboard-elements {
   }
 }
 
-// Bootstrap Select Picker
+/*
+================================================
+=== Template Builder Actions
+================================================
+*/
+.template-actions {
+  padding-top:40px;
+  border-top:1px solid #ddd;
+
+  .favorite {
+    float:left;
+    padding-top:17px;
+    cursor:pointer;
+
+    span {
+      text-transform:uppercase;
+      vertical-align:middle;
+    }
+
+    i {
+      padding-right:10px;
+      .link-transition;
+      color:rgba(51,51,51,0.43);
+    }
+
+    &.true {
+      i {
+        color:@brand-primary;
+      }
+    }
+  }
+
+  .clear-save {
+    float:right;
+
+    .btn {
+      text-transform:uppercase;
+      padding:25px 40px;
+      border:none;
+      .link-transition;
+
+      &:focus {
+        outline:none;
+        box-shadow:none;
+      }
+
+      &.btn-clear {
+        color:@brand-primary;
+        background-color:transparent;
+        .activ-grotesk-bold;
+
+        &:hover,
+        &:focus {
+          color:@brand-primary-hover;
+        }
+      }
+
+      &.btn-save {
+        color:@white;
+        background-color:@brand-primary;
+        font-size:16px;
+
+        &:hover,
+        &:focus {
+          background-color:@brand-primary-hover;
+        }
+      }
+    }
+  }
+}
+
+/*
+================================================
+=== Bootstrap Select Picker
+================================================
+*/
 .bootstrap-select {
   padding-top:0 !important;
 

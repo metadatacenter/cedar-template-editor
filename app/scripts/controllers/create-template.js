@@ -8,9 +8,6 @@ angularApp.controller('CreateTemplateController', function ($rootScope, $scope, 
   // Create staging area to create/edit fields before they get added to $scope.form.properties
   $scope.staging = {};
 
-  // $scope variable used to tell if any elements or fields have been added to the form yet
-  $scope.anyProperties = false;
-
   // Create empty $scope.form object
   $scope.form = {
     "$schema": "http://json-schema.org/draft-04/schema#",
@@ -44,6 +41,11 @@ angularApp.controller('CreateTemplateController', function ($rootScope, $scope, 
       "@type"
     ],
     "additionalProperties" : false
+  };
+
+  // Return true if form.properties object only contains default values
+  $scope.isPropertiesEmpty = function() {
+    return  Object.keys($scope.form.properties).length > 3 ? false : true;
   };
 
   // Add new field into $scope.staging object
@@ -80,10 +82,6 @@ angularApp.controller('CreateTemplateController', function ($rootScope, $scope, 
 
   // Add newly configured field to the the $scope.form.properties object
   $scope.addFieldToForm = function(field) {
-
-    // Change anyProperties boolean now that a field has been added to the form
-    $scope.anyProperties = true;
-
     // Converting title for irregular character handling
     var underscoreTitle = $rootScope.underscoreText(field.properties.value.title);
     // Adding field to the element.properties object
@@ -101,14 +99,22 @@ angularApp.controller('CreateTemplateController', function ($rootScope, $scope, 
       var titleKey = $rootScope.underscoreText(response.data.title);
       // Embed existing element into $scope.form.properties object
       $scope.form.properties[titleKey] = response.data;
-      // Change anyProperties boolean now that an element has been added to the form
-      $scope.anyProperties = true;
     });
   };
 
-  // Delete field from $scope.staging object and also $scope.form.properties object
-  $scope.deleteField = function() {};
+  // Delete field from $scope.staging object
+  $scope.deleteField = function (field){
+    // Remove field instance from $scope.staging
+    delete $scope.staging[field.properties.value.id];
+  };
 
   // Reverts to empty form and removes all previously added fields/elements
   $scope.reset = function() {};
+
+  // Setting $scope variable to toggle for whether this template is a favorite
+  $scope.favorite = false;
+
+  $scope.toggleFavorite = function() {
+    $scope.favorite = $scope.favorite === true ? false : true;
+  }
 });
