@@ -11,9 +11,6 @@ angularApp.controller('CreateElementController', function ($rootScope, $scope, $
   // Empty $scope object used to store values that get converted to their json-ld counterparts on the $scope.element object
   $scope.volatile = {};
 
-  // $scope variable used to tell if any elements or fields have been added to the form yet
-  $scope.anyProperties = false;
-
   // Create empty element object
   $scope.element = {
     "$schema": "http://json-schema.org/draft-04/schema#",
@@ -32,6 +29,10 @@ angularApp.controller('CreateElementController', function ($rootScope, $scope, $
       "@type"
     ],
     "additionalProperties": false
+  };
+
+  $scope.isPropertiesEmpty = function() {
+  return  Object.keys($scope.element.properties).length > 1 ? false : true;
   };
 
   // Add new field into staging area
@@ -69,10 +70,6 @@ angularApp.controller('CreateElementController', function ($rootScope, $scope, $
 
   // Add newly configured field to the element object
   $scope.addFieldToElement = function(field) {
-
-    // Change anyProperties boolean now that a field has been added to the form
-    $scope.anyProperties = true;
-
     // Converting title for irregular character handling
     var underscoreTitle = $rootScope.underscoreText(field.properties.value.title);
     // Adding field to the element.properties object
@@ -84,9 +81,6 @@ angularApp.controller('CreateElementController', function ($rootScope, $scope, $
 
   // Add existing element to the element object
   $scope.addExistingElement = function(element) {
-    // Change anyProperties boolean now that a field has been added to the form
-    $scope.anyProperties = true;
-    
     // Fetch existing element json data
     return $http.get('/static-data/elements/'+element+'.json').then(function(response) {
       // Add existing element to the $scope.element.properties object with it's title converted to an object key

@@ -31,5 +31,5 @@ angular.module('cedarFilters', [])
   .filter('keyToTitle', function() {
     return function(input) {
       return input.replace(/_/g,' ').toUpperCase();
-    }
-  })
+    };
+  });

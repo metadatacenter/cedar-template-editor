@@ -79,7 +79,7 @@
             <label for="checkbox1">Preview Element</label>
           </div>
           <div class="form-preview collapse">
-            <div class="empty-text" ng-hide="anyProperties">
+            <div class="empty-text" ng-show="isPropertiesEmpty()">
               <p>Add an element or create a new field item in order to preview form.</p>
             </div>
             <form-preview form="element"></form-preview>
