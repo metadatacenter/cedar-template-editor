@@ -3,9 +3,6 @@
 angularApp.directive('formPreview', function ($rootScope) {
   return {
     controller: function($scope){
-      
-      // $scope.formFields array to loop through to call field-directive -- keeping temporarily
-      //$scope.formFields = [];
 
       // $scope.formFields object to loop through to call field-directive
       $scope.formFields = {};
@@ -48,27 +45,17 @@ angularApp.directive('formPreview', function ($rootScope) {
 
         // This params object is how we will render input fields from the object of parameters
         fieldObject.field = params;
-
-        // Old aray implementation of $scope.formFields - holding onto for now just in case
-        // var position = $scope.formFields.map(function(e) { return e.field.id; }).indexOf(params.id);
-        // if (position === -1) {
-        //   $scope.formFields.push(fieldObject);
-        // }
-
-        // Add field to $scope.formFields if it does not yet exist
-        if ( !$scope.formFields.hasOwnProperty(key) ) {
-          $scope.formFields[key] = fieldObject;
-        }
         
-        // if (parentKey !== undefined) {
-        //   $scope.formFieldsObject[parentKey] = $scope.formFieldsObject[parentKey] || [];
-        //   $scope.formFieldsObject[parentKey].push(fieldObject);
-        // } else {
-        //   $scope.formFieldsObject[key] = $scope.formFieldsObject[key] || [];
-        //   $scope.formFieldsObject[key].push(fieldObject);
-        // }
-        //console.log($scope.formFieldsObject); still needs work, duplicate entries are being created
-
+        if (parentKey !== undefined) {
+          // If these are nested fields the parent key will be the element they belong to,
+          // this element key is needed for proper grouping in the rendering preview
+          $scope.formFields[parentKey] = $scope.formFields[parentKey] || {};
+          $scope.formFields[parentKey][key] = fieldObject.field;
+        } else {
+          // These are field level objects with no parent element grouping
+          $scope.formFields[key] = $scope.formFields[key] || {};
+          $scope.formFields[key] = fieldObject.field;
+        }
       };
 
       // Using Angular's $watch function to call $sceop.parseForm on form.properties initial population and on update
@@ -76,7 +63,7 @@ angularApp.directive('formPreview', function ($rootScope) {
         $scope.parseForm($scope.form);
       }, true);
     },
-    templateUrl: './views/directive-templates/form/form-preview.html',
+    templateUrl: './views/directive-templates/form-preview.html',
     restrict: 'EA',
     scope: {
         form:'=',

@@ -60,7 +60,7 @@ angularApp.directive('formDirective', function ($rootScope) {
         $scope.parseForm($scope.form);
       }, true);
     },
-    templateUrl: './views/directive-templates/form/form.html',
+    templateUrl: './views/directive-templates/form-render.html',
     restrict: 'E',
     scope: {
         form:'='

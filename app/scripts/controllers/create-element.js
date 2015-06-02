@@ -84,15 +84,14 @@ angularApp.controller('CreateElementController', function ($rootScope, $scope, $
 
   // Add existing element to the element object
   $scope.addExistingElement = function(element) {
+    // Change anyProperties boolean now that a field has been added to the form
+    $scope.anyProperties = true;
+    
     // Fetch existing element json data
     return $http.get('/static-data/elements/'+element+'.json').then(function(response) {
-      // Loop through properties object skipping json-LD schematics and grab each field
-      angular.forEach(response.data.properties, function(object, key) {
-        if ($rootScope.ignoreKey(key)) {
-          // Add each field from existing element to new element staging area
-          $scope.staging[object.properties.value.id] = object;
-        }
-      });
+      // Add existing element to the $scope.element.properties object with it's title converted to an object key
+      var underscoreTitle = $rootScope.underscoreText(response.data.title);
+      $scope.element.properties[underscoreTitle] = response.data;
     });
   };
 

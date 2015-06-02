@@ -363,6 +363,7 @@ i {
         margin:0 10px;
         .link-transition;
         cursor:pointer;
+        text-align:left;
 
         i {
           color:@white;
@@ -392,6 +393,34 @@ i {
 
         i {
           transform:translate(13px, 11px);
+        }
+      }
+    }
+
+    .element-group {
+      display:inline-block;
+      vertical-align:middle;
+      width:100%;
+      padding-right:65px;
+      border-bottom:2px dashed #ddd;
+      margin-bottom:30px;
+
+      .element-header {
+        margin-right:-65px;
+        text-align:right;
+
+        .element-name-label {
+          margin-bottom:20px;
+
+          i {
+            color:@brand-primary;
+            padding-right:10px;
+          }
+        }
+
+        .preview-edit-options {
+
+          margin-bottom:0;
         }
       }
     }

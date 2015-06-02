@@ -27,4 +27,9 @@ angular.module('cedarFilters', [])
       }
       return filtered;
     };
-  });
+  })
+  .filter('keyToTitle', function() {
+    return function(input) {
+      return input.replace(/_/g,' ').toUpperCase();
+    }
+  })

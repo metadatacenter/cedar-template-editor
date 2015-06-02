@@ -59,11 +59,11 @@ angularApp.directive('fieldDirective', function($http, $compile, $document) {
     template: '<div>{{field}}</div>',
     restrict: 'EA',
     scope: {
-        directory: '@',
-        field: '=',
-        model: '=',
-        delete: '&',
-        add: '&'
+      directory: '@',
+      field: '=',
+      model: '=',
+      delete: '&',
+      add: '&'
     },
     transclude: true,
     link: linker

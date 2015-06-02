@@ -1,0 +1,21 @@
+<form name="{{form.title}}" id="{{form.guid}}">
+
+  <!--Loop through top level "properties" in form element either field or element directive with property -->
+  <div ng-repeat="(key, object) in formFields">
+    <span ng-if="object.input_type">
+      <field-directive field="object" model="object.model" directory="preview" delete="removeField(key)"></field-directive>
+    </span>
+    <div class="element-group" ng-if="!object.input_type">
+      <element-directive element="object" key="key" delete="removeField(key)"></element-directive>
+    </div>
+  </div>
+</form>
+
+<div class="text-right" style="padding-top:20px; padding-bottom:20px;">
+  <a class="btn btn-small btn-primary" ng-show="!showRender" ng-click="showRender = true; showOtput = false">Show Render JSON</a>
+  <a class="btn btn-small btn-primary" ng-show="showRender" ng-click="showRender = false">Hide Render JSON</a>
+</div>
+
+<div ng-show="showRender">
+  <pre>{{ form | json }}</pre>
+</div>
