@@ -80,7 +80,7 @@
           </div>
           <div class="form-preview collapse">
             <div class="empty-text" ng-show="isPropertiesEmpty()">
-              <p>Add an element or create a new field item in order to preview form.</p>
+              <p>Add an existing element or create a new field item in order to preview form.</p>
             </div>
             <form-preview form="element"></form-preview>
           </div><!-- /.form-preview -->
@@ -91,7 +91,7 @@
             <hr><span class="section-break">Item Configuration</span><hr>
           </div>
           <div class="empty-text" ng-hide="isEmpty(staging)">
-            <p>Create a new field item, or add an existing element.</p>
+            <p>Create a new field item.</p>
           </div>
           <form name="{{form.title}}" id="{{form.guid}}">
             <div ng-repeat="field in staging | orderObjectBy: 'properties.value.created_at'">

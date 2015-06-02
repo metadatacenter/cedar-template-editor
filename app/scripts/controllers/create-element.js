@@ -31,8 +31,9 @@ angularApp.controller('CreateElementController', function ($rootScope, $scope, $
     "additionalProperties": false
   };
 
+  // Return true if element.properties object only contains default values
   $scope.isPropertiesEmpty = function() {
-  return  Object.keys($scope.element.properties).length > 1 ? false : true;
+    return  Object.keys($scope.element.properties).length > 1 ? false : true;
   };
 
   // Add new field into staging area
