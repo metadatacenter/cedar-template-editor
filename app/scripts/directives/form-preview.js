@@ -17,6 +17,7 @@ angularApp.directive('formPreview', function ($rootScope) {
 
       $scope.parseForm = function(form) {
         // Loop through form.properties object looking for Elements
+        
         angular.forEach(form.properties, function(value, key) {
           if ($rootScope.ignoreKey(key)) {
             // The 'value' property is how we distinguish if this is a field level element or an embedded element
@@ -31,12 +32,24 @@ angularApp.directive('formPreview', function ($rootScope) {
                   if(subvalue.properties.hasOwnProperty('value')) {
                     // Field level reached, create new object in $scope.formFields;
                     $scope.fieldLevelReached(subkey, subvalue.properties.value, key);
+                  } else {
+                    // Case for element with embedded elements - third level of nesting 
+                    angular.forEach(subvalue.properties, function(tertiaryValue, tertiaryKey) {
+                      if ($rootScope.ignoreKey(tertiaryKey)) {
+                        // Check if we've found field level properties object
+                        if (tertiaryValue.properties.hasOwnProperty('value')) {
+                          // Field level reached, create new object in $scope.formFields;
+                          $scope.fieldLevelReached(tertiaryKey, tertiaryValue.properties.value, subkey);
+                        }
+                      }
+                    });
                   }
                 }
               });
             }
           }
         });
+
       };
 
       $scope.fieldLevelReached = function(key, params, parentKey) {
@@ -56,6 +69,7 @@ angularApp.directive('formPreview', function ($rootScope) {
           $scope.formFields[key] = $scope.formFields[key] || {};
           $scope.formFields[key] = fieldObject.field;
         }
+        //console.log($scope.formFields);
       };
 
       // Using Angular's $watch function to call $sceop.parseForm on form.properties initial population and on update
