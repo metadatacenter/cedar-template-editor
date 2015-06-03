@@ -411,10 +411,13 @@ i {
 
       .element-header {
         margin-right:-65px;
-        text-align:right;
+        min-width:100%;
+        position:relative;
 
         .element-name-label {
-          margin-bottom:20px;
+          margin-bottom:25px;
+          text-align:left;
+          display:inline-block;
 
           i {
             color:@brand-primary;
@@ -423,7 +426,8 @@ i {
         }
 
         .preview-edit-options {
-
+          float:right;
+          margin-top:-4px;
           margin-bottom:0;
         }
       }

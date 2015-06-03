@@ -7711,16 +7711,21 @@ i {
 }
 .template-body .right-body .element-group .element-header {
   margin-right: -65px;
-  text-align: right;
+  min-width: 100%;
+  position: relative;
 }
 .template-body .right-body .element-group .element-header .element-name-label {
-  margin-bottom: 20px;
+  margin-bottom: 25px;
+  text-align: left;
+  display: inline-block;
 }
 .template-body .right-body .element-group .element-header .element-name-label i {
   color: #339933;
   padding-right: 10px;
 }
 .template-body .right-body .element-group .element-header .preview-edit-options {
+  float: right;
+  margin-top: -4px;
   margin-bottom: 0;
 }
 @media (min-width: 768px) {
