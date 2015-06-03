@@ -109,7 +109,14 @@ angularApp.controller('CreateTemplateController', function ($rootScope, $scope, 
   };
 
   // Reverts to empty form and removes all previously added fields/elements
-  $scope.reset = function() {};
+  $scope.reset = function() {
+    angular.forEach($scope.form.properties, function(value, key) {
+      if ($rootScope.ignoreKey(key)) {
+        delete $scope.form.properties[key];  
+        delete $scope.$$childHead.formFields[key];
+      }
+    });
+  };
 
   // Setting $scope variable to toggle for whether this template is a favorite
   $scope.favorite = false;
