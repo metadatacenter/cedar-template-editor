@@ -7887,6 +7887,10 @@ p.add-item {
   text-align: center;
   padding: 150px 0;
 }
+.right-body .extra-label-context {
+  font-family: 'aktiv-grotesk-std';
+  font-weight: 700;
+}
 /*
 ================================================
 === Dashboard Template
@@ -8263,6 +8267,8 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   vertical-align: middle;
   text-transform: uppercase;
   padding: 18px 30px;
+  -webkit-transition: all 0.3s 0.1s;
+          transition: all 0.3s 0.1s;
 }
 .template-body form .form-group .additional-options .btn-file:hover {
   background-color: #338833;
@@ -8394,7 +8400,7 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   font-size: 12px;
   border-color: #339933;
   color: #999;
-  background-color: #f9f9fb;
+  background-color: transparent;
 }
 .popover.left {
   margin-left: -15px;
@@ -8581,6 +8587,68 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
 }
 .input-type-container .configuration-options .form-group {
   margin-bottom: 15px;
+}
+.options-wrapper {
+  width: 100%;
+}
+.options-wrapper:before,
+.options-wrapper:after {
+  content: " ";
+  display: table;
+}
+.options-wrapper:after {
+  clear: both;
+}
+.options-wrapper:before,
+.options-wrapper:after {
+  content: " ";
+  display: table;
+}
+.options-wrapper:after {
+  clear: both;
+}
+.options-wrapper .multiple-container {
+  width: 50%;
+  float: left;
+  border-right: 1px solid rgba(102, 102, 102, 0.2);
+  padding-right: 25px;
+  padding-top: 10px;
+}
+.options-wrapper .multiple-container .radio label,
+.options-wrapper .multiple-container .checkbox label {
+  width: 100%;
+}
+.options-wrapper .multiple-container .radio label .form-group,
+.options-wrapper .multiple-container .checkbox label .form-group {
+  -webkit-transform: translate(0, -15px);
+      -ms-transform: translate(0, -15px);
+          transform: translate(0, -15px);
+}
+.options-wrapper .multiple-container .add-another {
+  text-transform: uppercase;
+  cursor: pointer;
+  -webkit-transition: all 0.3s 0.1s;
+          transition: all 0.3s 0.1s;
+}
+.options-wrapper .multiple-container .add-another i {
+  padding-right: 10px;
+  color: #339933;
+  -webkit-transition: all 0.3s 0.1s;
+          transition: all 0.3s 0.1s;
+}
+.options-wrapper .multiple-container .add-another:hover {
+  color: #338833;
+}
+.options-wrapper .multiple-container .add-another:hover i {
+  color: #338833;
+}
+.options-wrapper p.instructions {
+  float: left;
+  width: 50%;
+  text-align: center;
+  color: #000000;
+  font-style: italic;
+  padding-top: 50px;
 }
 /*
 ================================================

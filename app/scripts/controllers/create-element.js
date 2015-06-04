@@ -64,8 +64,28 @@ angularApp.controller('CreateElementController', function ($rootScope, $scope, $
       "additionalProperties": false
     }
 
+    // If fieldtype can have multiple options, additional parameters on field object are necessary
+    var optionInputs = ["radio", "checkbox", "list"];
+
+    if (optionInputs.indexOf(fieldType) > -1) {
+      field.properties.value.options = [
+        {
+          "text": ""
+        }
+      ];
+    }
+
     // put field into fields staging object
     $scope.staging[field.properties.value.id] = field;
+  };
+
+  $scope.addOption = function(field) {
+    //console.log(field.properties.value);
+    var emptyOption = {
+      "text": ""
+    };
+
+    field.properties.value.options.push(emptyOption);
   };
 
   // Add newly configured field to the element object

@@ -606,6 +606,11 @@ p.add-item {
     text-align:center;
     padding:150px 0;
   }
+
+  .extra-label-context {
+
+    .activ-grotesk-bold;
+  }
 }
 
 /*
@@ -963,6 +968,7 @@ section.dashboard-elements {
         vertical-align:middle;
         text-transform:uppercase;
         padding:18px 30px;
+        .link-transition;
 
         &:hover {
           background-color:@brand-primary-hover;
@@ -1096,7 +1102,7 @@ section.dashboard-elements {
   font-size:12px;
   border-color:@brand-primary;
   color:#999;
-  background-color:#f9f9fb;
+  background-color:transparent;
 
   &.left {
     margin-left:-15px;
@@ -1320,6 +1326,56 @@ section.dashboard-elements {
     .form-group {
       margin-bottom:15px;
     }
+  }
+}
+.options-wrapper {
+  width:100%;
+  .clearfix();
+
+  .multiple-container {
+    width:50%;
+    float:left;
+    border-right:1px solid rgba(102,102,102,0.2);
+    padding-right:25px;
+    padding-top:10px;
+
+    .radio label,
+    .checkbox label {
+      width:100%;
+
+      .form-group {
+        transform:translate(0, -15px);
+      }
+    } 
+
+    .add-another {
+      text-transform:uppercase;
+      cursor:pointer;
+      .link-transition;
+
+      i {
+        padding-right:10px;
+        color:@brand-primary;
+        .link-transition;
+      }
+
+      &:hover {
+        color:@brand-primary-hover;
+
+        i {
+         color:@brand-primary-hover; 
+        }
+      }
+    }
+  }
+
+  p.instructions {
+    float:left;
+    width:50%;
+    text-align:center;
+    color:@black;
+    font-style:italic;
+    padding-top:50px;
   }
 }
 

@@ -1,14 +1,7 @@
-<div class="form-group">
+<p class="extra-label-context">{{field.title}}</p>
+<div class="form-group" ng-repeat="(index, value) in field.options">
   <div class="checkbox checkbox-primary">
-    <input type="checkbox" id="checkbox1">
-    <label for="checkbox1">Checkbox Option #1</label>
-  </div><!-- ./checkbox -->
-  <div class="checkbox checkbox-primary">
-    <input type="checkbox" id="checkbox2">
-    <label for="checkbox2">Checkbox Option #2</label>
-  </div><!-- ./checkbox -->
-  <div class="checkbox checkbox-primary">
-    <input type="checkbox" id="checkbox3">
-    <label for="checkbox3">Checkbox Option #3</label>
+    <input type="checkbox" id="checkbox{{index}}" ng-model="model.value[index]" value="{{field.options[index]['text']}}" ng-checked="field.default_option[index]">
+    <label for="checkbox{{index}}">{{field.options[index]['text']}}</label>
   </div><!-- ./checkbox -->
 </div><!-- /.form-group -->

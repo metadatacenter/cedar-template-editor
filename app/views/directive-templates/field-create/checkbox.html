@@ -1,6 +1,29 @@
 <div id="textfield-{{field.field_id}}" class="input-type-container">
-    <p class="type-label"><i class="cedar-svg-checkbox"></i>Checkbox</p>
-        Checkbox TBD
+
+  <p class="type-label"><i class="cedar-svg-checkbox"></i>Checkbox</p>
+
+  <div class="form-group">
+    <div class="form-group floating-label-wrapper">
+      <input type="text" class="form-control" id="placeholder-{{field.id}}" placeholder="Enter Field Description" aria-label="Enter Field Description" ng-model="field.title"  with-floating-label>
+    </div><!-- /.form-group -->
+    <div class="options-wrapper">
+      <div class="multiple-container">
+        <span ng-repeat="(index, value) in field.options">
+          <div class="checkbox checkbox-primary">
+            <input type="checkbox" id="checkbox{{index}}" name="checkbox-{{field.id}}" ng-model="field.default_option[index]" value="{{field.options[index]['text']}}">
+            <label for="checkbox{{index}}">
+              <div class="form-group floating-label-wrapper">
+                <input type="text" class="form-control" id="placeholder-{{field.id}}" placeholder="Enter Option" aria-label="Enter Option" ng-model="field.options[index]['text']"  with-floating-label>
+              </div><!-- /.form-group -->
+            </label> 
+          </div><!-- /.checkbox -->
+        </span>
+        <p class="add-another" ng-click="option()"><i class="cedar-svg-plus"></i>Add Another</p>
+      </div><!-- /.multiple-container -->
+      <p class="instructions">Click choice to set as default</p>
+    </div><!-- /.options-wrapper -->
+  </div><!-- /.form-group -->
+
   <div class="configuration-options" ng-include="'views/partials/configuration-options.html'">
   </div><!-- /.configuration-options -->
 </div><!-- /.input-type-container -->

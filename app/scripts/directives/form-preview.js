@@ -1,11 +1,25 @@
 'use strict';
 
-angularApp.directive('formPreview', function ($rootScope) {
+angularApp.directive('formPreview', function ($rootScope, $document, $timeout) {
   return {
     controller: function($scope){
 
       // $scope.formFields object to loop through to call field-directive
       $scope.formFields = {};
+
+      $scope.addPopover = function() {
+        //Initializing Bootstrap Popover fn for each item loaded
+        $timeout(function() {
+          angular.element('[data-toggle="popover"]').popover();
+        }, 1000);
+      };
+
+      $document.on('click', function(e) {
+        // Check if Popovers exist and close on click anywhere but the popover toggle icon
+        if( angular.element(e.target).data('toggle') !== 'popover' && angular.element('.popover').length ) {
+          angular.element('[data-toggle="popover"]').popover('hide');
+        }
+      });
 
       $scope.removeField = function(key) {
         // Remove selected field from $scope.formFields
@@ -75,6 +89,7 @@ angularApp.directive('formPreview', function ($rootScope) {
       // Using Angular's $watch function to call $sceop.parseForm on form.properties initial population and on update
       $scope.$watch('form.properties', function () {
         $scope.parseForm($scope.form);
+        $scope.addPopover();
       }, true);
     },
     templateUrl: './views/directive-templates/form-preview.html',

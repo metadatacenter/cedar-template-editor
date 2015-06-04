@@ -43,16 +43,6 @@ angularApp.directive('fieldDirective', function($http, $compile, $document) {
       element.html(data);
       $compile(element.contents())(scope);
     });
-
-    //Initializing Bootstrap Popover fn for each item loaded
-    angular.element('[data-toggle="popover"]').popover();
-
-    $document.on('click', function(e) {
-      // Check if Popovers exist and close on click anywhere but the popover toggle icon
-      if( angular.element(e.target).data('toggle') !== 'popover' && angular.element('.popover').length ) {
-        angular.element('[data-toggle="popover"]').popover('hide');
-      }
-    });
   }
 
   return {
@@ -63,7 +53,8 @@ angularApp.directive('fieldDirective', function($http, $compile, $document) {
       field: '=',
       model: '=',
       delete: '&',
-      add: '&'
+      add: '&',
+      option: '&'
     },
     transclude: true,
     link: linker

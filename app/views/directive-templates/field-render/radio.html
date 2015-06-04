@@ -1,18 +1,9 @@
-<div class="form-group">
+<p class="extra-label-context">{{field.title}}</p>
+<div class="form-group" ng-repeat="(index, value) in field.options" ng-init="model.value=field.default_option">
   <div class="radio radio-primary">
-    <input type="radio" name="radio2" id="radio1" value="option1">
-    <label for="radio1">Radio Button Option #100</label>
-  </div><!-- /.radio -->
-  <div class="radio radio-primary">
-    <input type="radio" name="radio2" id="radio2" value="option2">
-    <label for="radio2">Radio Button Option #101</label>
-  </div><!-- /.radio -->
-  <div class="radio radio-primary">
-    <input type="radio" name="radio2" id="radio3" value="option2">
-    <label for="radio3">Radio Button Option #103</label>
-  </div><!-- /.radio -->
-  <div class="radio radio-primary">
-    <input type="radio" name="radio2" id="radio4" value="option2" checked>
-    <label for="radio4">Radio Button Option #104</label>
+    <input type="radio" id="radio{{index}}" name="radio-{{field.id}}" ng-model="model.value" value="{{field.options[index]['text']}}">
+    <label for="radio{{index}}">{{field.options[index]['text']}}</label> 
   </div><!-- /.radio -->
 </div><!-- /.form-group -->
+
+<!-- option-{{index}} -->
