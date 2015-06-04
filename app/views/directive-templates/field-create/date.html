@@ -1,6 +1,19 @@
-<div id="textfield-{{field.field_id}}" class="input-type-container">
-    <p class="type-label"><i class="cedar-svg-date"></i>Date</p>
-        Date TBD
+<div id="date-{{field.field_id}}" class="input-type-container">
+  <p class="type-label"><i class="cedar-svg-date"></i>Date</p>
+  
+  <div class="date-type-toggle">
+    <div class="single-date d-option" ng-click="field.date_type = 'single-date'" ng-class="{active: field.date_type == 'single-date'}">
+      <span>Date</span>
+    </div>
+    <div class="date-range d-option" ng-click="field.date_type = 'date-range'" ng-class="{active: field.date_type == 'date-range'}">
+      <span>Date Range</span>
+    </div>
+  </div> <!-- /.date-type-toggle -->
+
+  <div class="form-group floating-label-wrapper">
+    <input type="text" class="form-control" id="placeholder-{{field.id}}" placeholder="Enter Field Title" aria-label="Enter Field Title" ng-model="field.title"  with-floating-label>
+  </div><!-- /.form-group -->
+
   <div class="configuration-options" ng-include="'views/partials/configuration-options.html'">
   </div><!-- /.configuration-options -->
 </div><!-- /.input-type-container -->

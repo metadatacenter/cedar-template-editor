@@ -1001,6 +1001,7 @@ section.dashboard-elements {
       font-size:12px;
       text-transform:uppercase;
       .activ-grotesk-bold;
+      color:#666;
     }
 
     .input-group-addon {
@@ -1037,6 +1038,41 @@ section.dashboard-elements {
             margin-left:10px;
           }
         }
+      }
+    }
+  }
+
+  .date-field-title {
+    color:#666;
+    margin-bottom:20px;
+  }
+
+  .date-type-toggle {
+    text-align:center;
+    width:240px;
+    margin:0 auto;
+    margin-bottom:40px;
+    .clearfix();
+
+    .d-option {
+      width:50%;
+      float:left;
+      padding-bottom:7px;
+      border-bottom:5px solid;
+      border-color:#ddd;
+      cursor:pointer;
+      .link-transition;
+
+      span {
+        text-transform:uppercase;
+        .activ-grotesk-bold;
+        font-size:12px;
+        color:#666;
+      }
+
+      &.active,
+      &:hover {
+        border-color:@brand-primary;
       }
     }
   }
@@ -1317,7 +1353,7 @@ section.dashboard-elements {
       }
     }
 
-    .controll-term-options {
+    .controlled-term-options {
       float:left;
       width:100%;
       clear:both;
@@ -1463,6 +1499,11 @@ section.dashboard-elements {
     background-color:transparent;
     border-color:#ddd;
     height:60px;
+
+    &:focus {
+      outline:none !important;
+      box-shadow:none;
+    }
   }
 
   .caret {

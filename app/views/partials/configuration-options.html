@@ -27,7 +27,7 @@
 	  <input type="text" class="form-control" placeholder="Expression" aria-label="Advanced - Enter Expression" ng-model="field.advanced.expression"  with-floating-label>
 	</div><!-- /.form-group -->
 	<div class="form-group validation-pattern">
-		<select class="form-control" multiple data-max-options="" ng-model="field.advanced.condition" select-picker>
+		<select class="form-control" multiple data-max-options="1" ng-model="field.advanced.condition" select-picker>
 		  <option value="matches">Matches</option>
 		  <option value="greater-than">Greater Than</option>
 		  <option value="less-than">Less Than</option>
@@ -40,11 +40,11 @@
 	  <input type="text" class="form-control" placeholder="Enter Error Message" aria-label="Advanced - Enter Error Message" ng-model="field.advanced.error_message"  with-floating-label>
 	</div><!-- /.form-group -->
 </div><!-- /.advanced-options -->
-<div id="control-options-{{field.id}}" class="controll-term-options collapse">
+<div id="control-options-{{field.id}}" class="controlled-term-options collapse">
  	<div class="form-group floating-label-wrapper">
 	  <input type="text" class="form-control" placeholder="Value Source" aria-label="Control Term Value Source" ng-model="field.control_term.value_source"  with-floating-label>
 	</div><!-- /.form-group -->
 	<div class="form-group floating-label-wrapper">
-	  <input type="text" class="form-control" placeholder="Control Term ID" aria-label="Control Term ID" ng-model="field.control_term.id"  with-floating-label>
+	  <input type="text" class="form-control" placeholder="Controlled Term ID" aria-label="Control Term ID" ng-model="field.control_term.id"  with-floating-label>
 	</div><!-- /.form-group -->
 </div><!-- /.controll-term-options -->

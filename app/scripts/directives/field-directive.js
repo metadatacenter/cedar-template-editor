@@ -26,8 +26,7 @@ angularApp.directive('fieldDirective', function($http, $compile, $document) {
           'phone-number',
           'section-break',
           'page-break',
-          'location',
-          'control-term'
+          'controlled-term'
         ];
 
     if (__indexOf.call(supported_fields, field.input_type) >= 0) {
