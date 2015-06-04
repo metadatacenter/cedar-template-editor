@@ -76,8 +76,29 @@ angularApp.controller('CreateTemplateController', function ($rootScope, $scope, 
       "additionalProperties": false
     };
 
+    // If fieldtype can have multiple options, additional parameters on field object are necessary
+    var optionInputs = ["radio", "checkbox", "list"];
+
+    if (optionInputs.indexOf(fieldType) > -1) {
+      field.properties.value.options = [
+        {
+          "text": ""
+        }
+      ];
+    }
+
     // put field into fields staging object
     $scope.staging[field.properties.value.id] = field;
+  };
+
+  // Function to add additional options for radio, checkbox, and list fieldTypes
+  $scope.addOption = function(field) {
+    //console.log(field.properties.value);
+    var emptyOption = {
+      "text": ""
+    };
+
+    field.properties.value.options.push(emptyOption);
   };
 
   // Add newly configured field to the the $scope.form.properties object

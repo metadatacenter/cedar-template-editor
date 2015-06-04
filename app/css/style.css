@@ -8295,7 +8295,7 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   text-transform: uppercase;
   font-family: 'aktiv-grotesk-std';
   font-weight: 700;
-  color: #666;
+  color: #666a;
 }
 .template-body form .date-group .input-group-addon {
   border-radius: 0;
@@ -8698,6 +8698,18 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   font-style: italic;
   padding-top: 50px;
 }
+.pick-list .multiple-container {
+  width: 100%;
+  border-right: none;
+}
+.pick-list .multiple-container .checkbox {
+  position: absolute;
+  right: 0;
+  top: 10px;
+}
+.pick-list .multiple-container .checkbox input[type="checkbox"] {
+  cursor: pointer;
+}
 /*
 ================================================
 === Template Builder Actions
@@ -8775,6 +8787,12 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
 .bootstrap-select .btn-select-picker:focus {
   outline: none !important;
   box-shadow: none;
+}
+.bootstrap-select .dropdown-menu li a {
+  padding: 8px 20px;
+}
+.bootstrap-select .dropdown-menu li a:hover {
+  background-color: rgba(80, 178, 80, 0.2);
 }
 .bootstrap-select .caret {
   background-image: url(../img/primary-angle-down.png);

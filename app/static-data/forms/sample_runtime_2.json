@@ -1,0 +1,225 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "@id": "",
+  "title": "",
+  "description": "",
+  "guid": "a32a6256-49b4-4c3c-bbbc-24da62719b14",
+  "type": "object",
+  "properties": {
+    "@context": {
+      "type": [
+        "object",
+        "string",
+        "array",
+        "null"
+      ]
+    },
+    "@id": {
+      "type": "string",
+      "format": "uri"
+    },
+    "@type": {
+      "enum": [
+        "http://metadatacenter.org/schemas/BasicStudyDesign"
+      ]
+    },
+    "dsfsadf": {
+      "$schema": "http://json-schema.org/draft-04/schema#",
+      "@id": "",
+      "type": "object",
+      "properties": {
+        "@type": {
+          "enum": []
+        },
+        "value": {
+          "type": "string",
+          "id": "a1062485-5ee6-433f-ae21-ac998aea4eea",
+          "title": "dsfsadf",
+          "description": "",
+          "input_type": "list",
+          "required": false,
+          "created_at": 1433452470913,
+          "options": [
+            {
+              "text": "sdfsda"
+            },
+            {
+              "text": "sdfsad"
+            },
+            {
+              "text": "sadfa"
+            }
+          ]
+        }
+      },
+      "required": [
+        "@type",
+        "value"
+      ],
+      "additionalProperties": false
+    },
+    "sdfads": {
+      "$schema": "http://json-schema.org/draft-04/schema#",
+      "@id": "",
+      "type": "object",
+      "properties": {
+        "@type": {
+          "enum": []
+        },
+        "value": {
+          "type": "string",
+          "id": "7cf9d41a-824c-4c8a-993f-a4772e2d6308",
+          "title": "sdfads",
+          "description": "",
+          "input_type": "checkbox",
+          "required": false,
+          "created_at": 1433452492963,
+          "options": [
+            {
+              "text": "sdfasdfa"
+            },
+            {
+              "text": "sadfasddfdffffffffff"
+            }
+          ],
+          "default_option": {
+            "1": true
+          }
+        }
+      },
+      "required": [
+        "@type",
+        "value"
+      ],
+      "additionalProperties": false
+    },
+    "principal_investigator": {
+      "$schema": "",
+      "@id": "",
+      "title": "Principal Investigator",
+      "guid": "fb056461-a80d-4ac2-a1ea-6501aa34d34d",
+      "type": "object",
+      "description": "The lead researcher for the study",
+      "properties": {
+        "@type": {
+          "enum": []
+        },
+        "full_name": {
+          "$schema": "",
+          "@id": "",
+          "type": "object",
+          "properties": {
+            "@type": {
+              "enum": []
+            },
+            "value": {
+              "type": "string",
+              "id": "e146e007-6698-407a-9e53-bc4c7860f374",
+              "title": "Full Name",
+              "description": "Whole name, including first name, middle name, and last name",
+              "input_type": "textfield",
+              "required": false,
+              "created_at": 1432678567334
+            }
+          },
+          "required": [
+            "@type",
+            "value"
+          ],
+          "additionalProperties": false
+        },
+        "institution": {
+          "$schema": "",
+          "@id": "",
+          "type": "object",
+          "properties": {
+            "@type": {
+              "enum": []
+            },
+            "value": {
+              "type": "string",
+              "id": "dbfa4aa1-8759-41f0-9829-a6c4c2cbd7c5",
+              "title": "Institution",
+              "description": "An established society, corporation, foundation or other organization founded and united for a specific purpose",
+              "input_type": "textfield",
+              "required": false,
+              "created_at": 1432678567100
+            }
+          },
+          "required": [
+            "@type",
+            "value"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "@type"
+      ],
+      "additionalProperties": false
+    },
+    "aaron": {
+      "$schema": "http://json-schema.org/draft-04/schema#",
+      "@id": "",
+      "type": "object",
+      "properties": {
+        "@type": {
+          "enum": []
+        },
+        "value": {
+          "type": "string",
+          "id": "2eef43f1-c56f-4e2a-884c-63b6891ecd4a",
+          "title": "aaron",
+          "description": "sfsdkjdfsaljdfsakl;fsda",
+          "input_type": "audio-visual",
+          "required": true,
+          "created_at": 1433452520824
+        }
+      },
+      "required": [
+        "@type",
+        "value"
+      ],
+      "additionalProperties": false
+    },
+    "aarons_radio_field": {
+      "$schema": "http://json-schema.org/draft-04/schema#",
+      "@id": "",
+      "type": "object",
+      "properties": {
+        "@type": {
+          "enum": []
+        },
+        "value": {
+          "type": "string",
+          "id": "7d79ca9a-5035-42a5-a9a2-2aee40638d17",
+          "title": "Aaron's radio field",
+          "description": "",
+          "input_type": "radio",
+          "required": false,
+          "created_at": 1433452537143,
+          "options": [
+            {
+              "text": "sadfjkdsal;djkasl;"
+            },
+            {
+              "text": "safdsaasdfdsafas"
+            }
+          ],
+          "default_option": "safdsaasdfdsafas"
+        }
+      },
+      "required": [
+        "@type",
+        "value"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "@context",
+    "@id",
+    "@type"
+  ],
+  "additionalProperties": false
+}

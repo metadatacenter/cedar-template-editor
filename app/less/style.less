@@ -1001,7 +1001,7 @@ section.dashboard-elements {
       font-size:12px;
       text-transform:uppercase;
       .activ-grotesk-bold;
-      color:#666;
+      color:#666a;
     }
 
     .input-group-addon {
@@ -1415,6 +1415,21 @@ section.dashboard-elements {
   }
 }
 
+.pick-list .multiple-container {
+  width:100%;
+  border-right:none;
+
+  .checkbox {
+    position:absolute;
+    right:0;
+    top:10px;
+
+    input[type="checkbox"] {
+      cursor:pointer;
+    }
+  }
+}
+
 /*
 ================================================
 === Template Builder Actions
@@ -1503,6 +1518,14 @@ section.dashboard-elements {
     &:focus {
       outline:none !important;
       box-shadow:none;
+    }
+  }
+
+  .dropdown-menu li a {
+    padding:8px 20px;
+
+    &:hover {
+      background-color:rgba(80,178,80,0.2);
     }
   }
 
