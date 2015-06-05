@@ -14,7 +14,6 @@ var gulp 								= require('gulp'),
 		ngAnnotate 					= require('gulp-ng-annotate'),
 		historyApiFallback 	= require('connect-history-api-fallback');
 
-
 // Creating error handling exception using gulp-util
 var onError = function (err) {  
   gutil.beep();
@@ -47,15 +46,15 @@ gulp.task('less', function() {
 // Minify CSS files
 // gulp.task('minifyCSS', function() {
 // 	return gulp.src('css/*')
-// 		.pipe(minifyCSS())
+// 	  .pipe(minifyCSS())
 // 		.pipe(gulp.dest('build/style.min.css'));
 // });
 
 // Support AngularJS dependency injection for minified file
 // gulp.task('angular', function () {
-//     return gulp.src('app/scripts/app.js')
-//         .pipe(ngAnnotate())
-//         .pipe(gulp.dest('dist/js'));
+//  return gulp.src('app/scripts/app.js')
+//    .pipe(ngAnnotate())
+//    .pipe(gulp.dest('dist/js'));
 // });
 
 gulp.task('server', function() {
@@ -76,17 +75,17 @@ gulp.task('html', function () {
 
 // gulp.task('compress', function() {
 //   return gulp.src('scripts/*.js')
-//     .pipe(uglify())
-//     .pipe(gulp.dest('dist/js'));
+//    .pipe(uglify())
+//    .pipe(gulp.dest('dist/js'));
 // });
 
 // gulp.task('htmlreplace', function() {
 //   gulp.src('index.html')
 //     .pipe(htmlreplace({
-//         'css': 'dist/css/styles.css',
-//         'js/plugins': 'dist/js/plugins.js',
-//         'js/modules': 'dist/js/modules.js'
-//         'js/angular': 'dist/js/angular-scripts.js'
+//      'css': 'dist/css/styles.css',
+//      'js/plugins': 'dist/js/plugins.js',
+//      'js/modules': 'dist/js/modules.js'
+//      'js/angular': 'dist/js/angular-scripts.js'
 //     }))
 //     .pipe(gulp.dest('build/'));
 // });
