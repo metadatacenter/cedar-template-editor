@@ -2,7 +2,7 @@
   <div class="container">
     <div class="row">
       <div class="left-sidebar col-sm-12">
-        <h2 class="runtime-template-name">Sample Static Runtime Template</h2>
+        <h2 class="runtime-template-name" ng-cloak>{{form.title}}</h2>
       </div> <!-- /.left-sidebar -->
     </div> <!-- /.row -->
   </div> <!-- /.container -->
@@ -14,11 +14,11 @@
       <div class="left-sidebar col-sm-3">
         <p class="add-item">Templates</p>
         <ul class="element-menu" role="menu">
-          <li class="item"><a><i class="cedar-svg-metadata"></i>Sample Template #1</a></li>
-          <li class="item"><a><i class="cedar-svg-metadata"></i>Sample Template #2</a></li>
-          <li class="item"><a><i class="cedar-svg-metadata"></i>Sample Template #3</a></li>
-          <li class="item"><a><i class="cedar-svg-metadata"></i>Sample Template #4</a></li>
-          <li class="item"><a><i class="cedar-svg-metadata"></i>Sample Template #5 that has a really long title</a></li>
+          <li class="item"><a ng-class="{active: $location.path() == '/templates/runtime/1' }" href="templates/runtime/1"><i class="cedar-svg-metadata"></i>Basic Study Design</a></li>
+          <li class="item"><a ng-class="{active: $location.path() == '/templates/runtime/2' }" href="templates/runtime/2"><i class="cedar-svg-metadata"></i>Basic Complete Fields</a></li>
+          <li class="item"><a class="disabled"><i class="cedar-svg-metadata"></i>Sample Template #3</a></li>
+          <li class="item"><a class="disabled"><i class="cedar-svg-metadata"></i>Sample Template #4</a></li>
+          <li class="item"><a class="disabled"><i class="cedar-svg-metadata"></i>Sample Template #5 that has a really long title</a></li>
         </ul>
 
         <div class="more-items hidden-xs">
@@ -26,174 +26,21 @@
             More Templates <i class="fa fa-angle-down fa-2x"></i>
           </button>
           <ul class="dropdown-menu element-menu" role="menu">
-            <li class="item"><a><i class="cedar-svg-metadata"></i>Sample Template #6</a></li>
-            <li class="item"><a><i class="cedar-svg-metadata"></i>Sample Template #7</a></li>
-            <li class="item"><a><i class="cedar-svg-metadata"></i>Sample Template #8</a></li>
-            <li class="item"><a><i class="cedar-svg-metadata"></i>Sample Template #9</a></li>
-            <li class="item"><a><i class="cedar-svg-metadata"></i>Sample Template #10 that also has a really long title</a></li>
+            <li class="item"><a class="disabled"><i class="cedar-svg-metadata"></i>Sample Template #6</a></li>
+            <li class="item"><a class="disabled"><i class="cedar-svg-metadata"></i>Sample Template #7</a></li>
+            <li class="item"><a class="disabled"><i class="cedar-svg-metadata"></i>Sample Template #8</a></li>
+            <li class="item"><a class="disabled"><i class="cedar-svg-metadata"></i>Sample Template #9</a></li>
+            <li class="item"><a class="disabled"><i class="cedar-svg-metadata"></i>Sample Template #10 that also has a really long title</a></li>
           </ul>
         </div>
 
       </div> <!-- /.left-sidebar -->
       <div class="right-body col-sm-9">
-        <form id="sample-form-1" data-toggle="validator" role="form">
-          <div class="form-group floating-label-wrapper">
-            <input type="text" class="form-control" id="textfield1" placeholder="Textfield #1" aria-label="field-description-1" ng-model="model1"  with-floating-label>
-            <div class="input-indicator-icons">
-              <i class="cedar-svg-help-circle" data-container="body" data-toggle="popover" data-placement="left" data-content="This is the sample help text for Textfield #1"></i>
-              <i class="cedar-svg-check-circle"></i>
-              <i class="cedar-svg-warning"></i>
-            </div><!-- /.input-indicator-icons -->
-          </div><!-- /.form-group -->
-          <div class="form-group floating-label-wrapper">
-            <textarea class="form-control" rows="5" id="comment" placeholder="Textarea #1" aria-label="field-description-2" ng-model="model2" with-floating-label></textarea>
-            <div class="input-indicator-icons">
-              <i class="cedar-svg-help-circle" data-container="body" data-toggle="popover" data-placement="left" data-content="This is the sample help text for Textarea #1"></i>
-              <i class="cedar-svg-check-circle"></i>
-              <i class="cedar-svg-warning"></i>
-            </div><!-- /.input-indicator-icons -->
-          </div><!-- /.form-group -->
-          <div class="form-group floating-label-wrapper">
-            <input type="text" class="form-control" id="textfield2" placeholder="Textfield #2" aria-label="field-description-3" ng-model="model3"  with-floating-label>
-            <div class="input-indicator-icons">
-              <i class="cedar-svg-help-circle" data-container="body" data-toggle="popover" data-placement="left" data-content="This is the sample help text for Textfield #2, that also has a lot of content inside of the popover."></i>
-              <i class="cedar-svg-check-circle"></i>
-              <i class="cedar-svg-warning"></i>
-            </div><!-- /.input-indicator-icons -->
-          </div><!-- /.form-group -->
-          <div class="form-group floating-label-wrapper">
-            <input type="email" class="form-control" id="emailfield1" placeholder="Email #1" aria-label="field-description-4" ng-model="model4"  data-error="Bruh, that email address is invalid" with-floating-label>
-            <span class="warning-text">This text appears when the current input contents are invalid.</span>
-            <div class="input-indicator-icons">
-              <i class="cedar-svg-help-circle" data-container="body" data-toggle="popover" data-placement="left" data-content="This is the sample help text for Email #1"></i>
-              <i class="cedar-svg-check-circle"></i>
-              <i class="cedar-svg-warning"></i>
-            </div><!-- /.input-indicator-icons -->
-          </div><!-- /.form-group -->
-          <div class="form-group floating-label-wrapper">
-            <input type="number" class="form-control" id="telephone1" placeholder="Telephone Number" aria-label="field-description-5" ng-model="model5" ng-minlength="10"  integer with-floating-label>
-            <span class="warning-text">Enter a valid phone number. Integers only, minimum 10 digits.</span>
-            <div class="input-indicator-icons">
-              <i class="cedar-svg-help-circle" data-container="body" data-toggle="popover" data-placement="left" data-content="Please enter a phone number here, the minimum length is 10 digits."></i>
-              <i class="cedar-svg-check-circle"></i>
-              <i class="cedar-svg-warning"></i>
-            </div><!-- /.input-indicator-icons -->
-          </div><!-- /.form-group -->
-          <div class="form-group floating-label-wrapper">
-            <input type="number" class="form-control" id="numeric1" placeholder="Numeric/Currency Field" aria-label="field-description-6" ng-model="model6" ng-minlength="5" ng-maxlength="20"  integer with-floating-label>
-            <span class="warning-text">Enter a valid number. Integers only, minimum 10 digits, maximum 20 digits.</span>
-            <div class="input-indicator-icons">
-              <i class="cedar-svg-help-circle" data-container="body" data-toggle="popover" data-placement="left" data-content="Please enter a phone number here, the minimum length is 10 digits."></i>
-              <i class="cedar-svg-check-circle"></i>
-              <i class="cedar-svg-warning"></i>
-            </div><!-- /.input-indicator-icons -->
-          </div><!-- /.form-group -->
-          <div class="form-group floating-label-wrapper">
-            <input type="text" class="form-control" id="audiovisual" placeholder="Enter an embed code" aria-label="field-description-7" ng-model="model7" with-floating-label>
-            <div class="input-indicator-icons">
-              <i class="cedar-svg-help-circle" data-container="body" data-toggle="popover" data-placement="left" data-content="Paste embed code or upload file please."></i>
-              <i class="cedar-svg-check-circle"></i>
-              <i class="cedar-svg-warning"></i>
-            </div><!-- /.input-indicator-icons -->
-            <div class="additional-options">
-              <span class="or">or</span>
-              <span class="file-input btn btn-primary btn-file">Upload File<input type="file" multiple></span>
-            </div>
-          </div><!-- /.form-group -->
-          <div class="form-group">
-            <div class="checkbox checkbox-primary">
-              <input type="checkbox" id="checkbox1">
-              <label for="checkbox1">Checkbox Option #1</label>
-            </div><!-- ./checkbox -->
-            <div class="checkbox checkbox-primary">
-              <input type="checkbox" id="checkbox2">
-              <label for="checkbox2">Checkbox Option #2</label>
-            </div><!-- ./checkbox -->
-            <div class="checkbox checkbox-primary">
-              <input type="checkbox" id="checkbox3">
-              <label for="checkbox3">Checkbox Option #3</label>
-            </div><!-- ./checkbox -->
-          </div><!-- /.form-group -->
-          <div class="form-group">
-            <div class="radio radio-primary">
-              <input type="radio" name="radio2" id="radio1" value="option1">
-              <label for="radio1">Radio Button Option #100</label>
-            </div><!-- /.radio -->
-            <div class="radio radio-primary">
-              <input type="radio" name="radio2" id="radio2" value="option2">
-              <label for="radio2">Radio Button Option #101</label>
-            </div><!-- /.radio -->
-            <div class="radio radio-primary">
-              <input type="radio" name="radio2" id="radio3" value="option2">
-              <label for="radio3">Radio Button Option #103</label>
-            </div><!-- /.radio -->
-            <div class="radio radio-primary">
-              <input type="radio" name="radio2" id="radio4" value="option2" checked>
-              <label for="radio4">Radio Button Option #104</label>
-            </div><!-- /.radio -->
-          </div><!-- /.form-group -->
-          <div class="form-group">
-            <div class="checkbox checkbox-circle checkbox-primary">
-              <input type="checkbox" id="checkbox4">
-              <label for="checkbox4">Pick from a List #1</label>
-            </div><!-- ./checkbox -->
-            <div class="checkbox checkbox-circle checkbox-primary">
-              <input type="checkbox" id="checkbox5">
-              <label for="checkbox5">Pick from a List #2</label>
-            </div><!-- ./checkbox -->
-            <div class="checkbox checkbox-circle checkbox-primary">
-              <input type="checkbox" id="checkbox6">
-              <label for="checkbox6">Pick from a List #3</label>
-            </div><!-- ./checkbox -->
-            <div class="checkbox checkbox-circle checkbox-primary">
-              <input type="checkbox" id="checkbox7">
-              <label for="checkbox7">Pick from a List #4</label>
-            </div><!-- ./checkbox -->
-          </div><!-- /.form-group -->
-          <div class="form-group date-group floating-label-wrapper">
-            <span class="date-label">Select a date</span>
-            <div class='input-group' date-time-picker>
-              <input type='text' class="form-control" placeholder="MM / DD / YYYY" with-floating-label/>
-              <span class="input-group-addon">
-                  <i class="fa fa-calendar fa-2x"></i>
-              </span>
-            </div>
-          </div><!-- /.form-group -->
-          <div class="form-group date-group range floating-label-wrapper">
-            <span class="date-label">Select a date range</span>
-            <div class='input-group' date-time-picker>
-              <input type='text' class="form-control" placeholder="MM / DD / YYYY" with-floating-label/>
-              <span class="input-group-addon">
-                  <i class="fa fa-calendar fa-2x"></i>
-              </span>
-            </div>
-            <div class='input-group' date-time-picker>
-              <input type='text' class="form-control" placeholder="MM / DD / YYYY" with-floating-label/>
-              <span class="input-group-addon">
-                  <i class="fa fa-calendar fa-2x"></i>
-              </span>
-            </div>
-          </div><!-- /.form-group -->
-        </form>
-        <div class="pagination-container">
-          <ul class="pagination">
-            <li><a href="#"><span class="prev"><i class="fa fa-lg fa-angle-left"></i>Previous</span></a></li>
-            <li class="active"><span>1</span></li>
-            <li><a href="#">2</a></li>
-            <li><a href="#">3</a></li>
-            <li><a href="#">4</a></li>
-            <li><a href="#">...</a></li>
-            <li><a href="#">9</a></li>
-            <li><a href="#"><span class="next">Next<i class="fa fa-lg fa-angle-right"></i></span></a></li>
-          </ul>
-        </div><!-- /.pagination-container -->
-        <div class="edit-actions">
-          <button type="button" class="btn btn-save">Save</button>
-          <button type="button" class="btn btn-clear">Clear Form</button>
-          <button type="button" class="btn btn-submit">Submit</button>
-        </div><!-- /.edit-actions -->
+      
+        <form-directive form="form"></form-directive>
 
       </div> <!-- /.right-body -->
     </div> <!-- /.row -->
   </div> <!-- /.container -->
 </div> <!-- /.template-body -->
+	

@@ -3,7 +3,7 @@
   "@id": "",
   "title": "",
   "description": "",
-  "guid": "a32a6256-49b4-4c3c-bbbc-24da62719b14",
+  "guid": "14641541-a76d-4ee4-8993-e614293cb779",
   "type": "object",
   "properties": {
     "@context": {
@@ -23,7 +23,7 @@
         "http://metadatacenter.org/schemas/BasicStudyDesign"
       ]
     },
-    "dsfsadf": {
+    "simple_textfield_#1": {
       "$schema": "http://json-schema.org/draft-04/schema#",
       "@id": "",
       "type": "object",
@@ -33,23 +33,12 @@
         },
         "value": {
           "type": "string",
-          "id": "a1062485-5ee6-433f-ae21-ac998aea4eea",
-          "title": "dsfsadf",
-          "description": "",
-          "input_type": "list",
+          "id": "881565de-6a1d-4472-b477-1afda929913f",
+          "title": "Simple Textfield #1",
+          "description": "This is my simple textfield",
+          "input_type": "textfield",
           "required": false,
-          "created_at": 1433452470913,
-          "options": [
-            {
-              "text": "sdfsda"
-            },
-            {
-              "text": "sdfsad"
-            },
-            {
-              "text": "sadfa"
-            }
-          ]
+          "created_at": 1433523975365
         }
       },
       "required": [
@@ -58,7 +47,7 @@
       ],
       "additionalProperties": false
     },
-    "sdfads": {
+    "simple_paragraph_field": {
       "$schema": "http://json-schema.org/draft-04/schema#",
       "@id": "",
       "type": "object",
@@ -68,22 +57,92 @@
         },
         "value": {
           "type": "string",
-          "id": "7cf9d41a-824c-4c8a-993f-a4772e2d6308",
-          "title": "sdfads",
+          "id": "fe49b9c8-76a6-4b72-8188-987145983943",
+          "title": "Simple Paragraph Field",
+          "description": "This is my simple paragraph field",
+          "input_type": "textarea",
+          "required": false,
+          "created_at": 1433523992574
+        }
+      },
+      "required": [
+        "@type",
+        "value"
+      ],
+      "additionalProperties": false
+    },
+    "simple_radio_button_field": {
+      "$schema": "http://json-schema.org/draft-04/schema#",
+      "@id": "",
+      "type": "object",
+      "properties": {
+        "@type": {
+          "enum": []
+        },
+        "value": {
+          "type": "string",
+          "id": "a5c319ff-9e85-4eef-82aa-0aa485e0cc97",
+          "title": "Simple Radio Button Field",
+          "description": "",
+          "input_type": "radio",
+          "required": false,
+          "created_at": 1433524005025,
+          "options": [
+            {
+              "text": "Option #1"
+            },
+            {
+              "text": "Option #2"
+            },
+            {
+              "text": "Option #3"
+            },
+            {
+              "text": "Option #4"
+            }
+          ],
+          "default_option": "Option #3"
+        }
+      },
+      "required": [
+        "@type",
+        "value"
+      ],
+      "additionalProperties": false
+    },
+    "simple_checkbox_field_#1": {
+      "$schema": "http://json-schema.org/draft-04/schema#",
+      "@id": "",
+      "type": "object",
+      "properties": {
+        "@type": {
+          "enum": []
+        },
+        "value": {
+          "type": "string",
+          "id": "b7bc8c85-db4e-45f2-bbf4-af51f529a6ac",
+          "title": "Simple Checkbox Field #1",
           "description": "",
           "input_type": "checkbox",
           "required": false,
-          "created_at": 1433452492963,
+          "created_at": 1433524035954,
           "options": [
             {
-              "text": "sdfasdfa"
+              "text": "Checkbox 1"
             },
             {
-              "text": "sadfasddfdffffffffff"
+              "text": "Checkbox 2"
+            },
+            {
+              "text": "Checkbox 3"
+            },
+            {
+              "text": "Checkbox 4"
             }
           ],
           "default_option": {
-            "1": true
+            "2": true,
+            "3": true
           }
         }
       },
@@ -93,72 +152,7 @@
       ],
       "additionalProperties": false
     },
-    "principal_investigator": {
-      "$schema": "",
-      "@id": "",
-      "title": "Principal Investigator",
-      "guid": "fb056461-a80d-4ac2-a1ea-6501aa34d34d",
-      "type": "object",
-      "description": "The lead researcher for the study",
-      "properties": {
-        "@type": {
-          "enum": []
-        },
-        "full_name": {
-          "$schema": "",
-          "@id": "",
-          "type": "object",
-          "properties": {
-            "@type": {
-              "enum": []
-            },
-            "value": {
-              "type": "string",
-              "id": "e146e007-6698-407a-9e53-bc4c7860f374",
-              "title": "Full Name",
-              "description": "Whole name, including first name, middle name, and last name",
-              "input_type": "textfield",
-              "required": false,
-              "created_at": 1432678567334
-            }
-          },
-          "required": [
-            "@type",
-            "value"
-          ],
-          "additionalProperties": false
-        },
-        "institution": {
-          "$schema": "",
-          "@id": "",
-          "type": "object",
-          "properties": {
-            "@type": {
-              "enum": []
-            },
-            "value": {
-              "type": "string",
-              "id": "dbfa4aa1-8759-41f0-9829-a6c4c2cbd7c5",
-              "title": "Institution",
-              "description": "An established society, corporation, foundation or other organization founded and united for a specific purpose",
-              "input_type": "textfield",
-              "required": false,
-              "created_at": 1432678567100
-            }
-          },
-          "required": [
-            "@type",
-            "value"
-          ],
-          "additionalProperties": false
-        }
-      },
-      "required": [
-        "@type"
-      ],
-      "additionalProperties": false
-    },
-    "aaron": {
+    "simple_date_input_field_#1": {
       "$schema": "http://json-schema.org/draft-04/schema#",
       "@id": "",
       "type": "object",
@@ -168,12 +162,13 @@
         },
         "value": {
           "type": "string",
-          "id": "2eef43f1-c56f-4e2a-884c-63b6891ecd4a",
-          "title": "aaron",
-          "description": "sfsdkjdfsaljdfsakl;fsda",
-          "input_type": "audio-visual",
-          "required": true,
-          "created_at": 1433452520824
+          "id": "3f729bae-ae21-404a-8cb9-0df1bfb4c2a3",
+          "title": "Simple Date Input Field #1",
+          "description": "",
+          "input_type": "date",
+          "required": false,
+          "created_at": 1433524064381,
+          "date_type": "single-date"
         }
       },
       "required": [
@@ -182,7 +177,7 @@
       ],
       "additionalProperties": false
     },
-    "aarons_radio_field": {
+    "simple_date_field_#2": {
       "$schema": "http://json-schema.org/draft-04/schema#",
       "@id": "",
       "type": "object",
@@ -192,21 +187,177 @@
         },
         "value": {
           "type": "string",
-          "id": "7d79ca9a-5035-42a5-a9a2-2aee40638d17",
-          "title": "Aaron's radio field",
+          "id": "a346adfd-d355-4af7-b302-0f9a3c6871df",
+          "title": "Simple Date Field #2",
           "description": "",
-          "input_type": "radio",
+          "input_type": "date",
           "required": false,
-          "created_at": 1433452537143,
+          "created_at": 1433524082467,
+          "date_type": "date-range"
+        }
+      },
+      "required": [
+        "@type",
+        "value"
+      ],
+      "additionalProperties": false
+    },
+    "simple_email_address_field_#1": {
+      "$schema": "http://json-schema.org/draft-04/schema#",
+      "@id": "",
+      "type": "object",
+      "properties": {
+        "@type": {
+          "enum": []
+        },
+        "value": {
+          "type": "string",
+          "id": "01b8bd47-f5d3-489d-a03a-5b10467e4855",
+          "title": "Simple Email address Field #1",
+          "description": "This is the help text for simple email address field #1",
+          "input_type": "email",
+          "required": false,
+          "created_at": 1433524095784
+        }
+      },
+      "required": [
+        "@type",
+        "value"
+      ],
+      "additionalProperties": false
+    },
+    "simple_pick_from_a_list_field": {
+      "$schema": "http://json-schema.org/draft-04/schema#",
+      "@id": "",
+      "type": "object",
+      "properties": {
+        "@type": {
+          "enum": []
+        },
+        "value": {
+          "type": "string",
+          "id": "59c7d3c4-d4a8-4602-8bae-5b9a57166855",
+          "title": "Simple Pick from a List field",
+          "description": "",
+          "input_type": "list",
+          "required": false,
+          "created_at": 1433524154974,
           "options": [
             {
-              "text": "sadfjkdsal;djkasl;"
+              "text": "This is the first option"
             },
             {
-              "text": "safdsaasdfdsafas"
+              "text": "This is the second option"
+            },
+            {
+              "text": "Option 3"
+            },
+            {
+              "text": "Option 4"
+            },
+            {
+              "text": "Option 5 of the pick from a list"
             }
           ],
-          "default_option": "safdsaasdfdsafas"
+          "default_option": {
+            "4": true
+          }
+        }
+      },
+      "required": [
+        "@type",
+        "value"
+      ],
+      "additionalProperties": false
+    },
+    "audio_visual_field_sample": {
+      "$schema": "http://json-schema.org/draft-04/schema#",
+      "@id": "",
+      "type": "object",
+      "properties": {
+        "@type": {
+          "enum": []
+        },
+        "value": {
+          "type": "string",
+          "id": "78bf17ba-4f0f-4dbb-8625-f61baaab5b47",
+          "title": "Audio Visual Field Sample",
+          "description": "Help text for the audio/visual field sample",
+          "input_type": "audio-visual",
+          "required": false,
+          "created_at": 1433524190870
+        }
+      },
+      "required": [
+        "@type",
+        "value"
+      ],
+      "additionalProperties": false
+    },
+    "simple_numeric_field_type": {
+      "$schema": "http://json-schema.org/draft-04/schema#",
+      "@id": "",
+      "type": "object",
+      "properties": {
+        "@type": {
+          "enum": []
+        },
+        "value": {
+          "type": "string",
+          "id": "ab3b962f-9c77-4716-b310-959246462a15",
+          "title": "Simple Numeric Field Type",
+          "description": "Helptext for simple numeric field type",
+          "input_type": "numeric",
+          "required": false,
+          "created_at": 1433524212215
+        }
+      },
+      "required": [
+        "@type",
+        "value"
+      ],
+      "additionalProperties": false
+    },
+    "sample_phone_number_field": {
+      "$schema": "http://json-schema.org/draft-04/schema#",
+      "@id": "",
+      "type": "object",
+      "properties": {
+        "@type": {
+          "enum": []
+        },
+        "value": {
+          "type": "string",
+          "id": "2e0e2a99-37ac-433e-82b6-b602f2bca832",
+          "title": "Sample Phone Number Field",
+          "description": "Please only use numbers and do not use any special characters or hyphens",
+          "input_type": "phone-number",
+          "required": false,
+          "created_at": 1433524229507
+        }
+      },
+      "required": [
+        "@type",
+        "value"
+      ],
+      "additionalProperties": false
+    },
+    "sample_section_break_field_type": {
+      "$schema": "http://json-schema.org/draft-04/schema#",
+      "@id": "",
+      "type": "object",
+      "properties": {
+        "@type": {
+          "enum": []
+        },
+        "value": {
+          "type": "string",
+          "id": "53b0ade2-f239-4cf2-bd7e-9241f2934bab",
+          "title": "Sample Section Break Field type",
+          "description": "This is the helper description for the section break field type",
+          "input_type": "section-break",
+          "required": false,
+          "created_at": 1433524257819
         }
       },
       "required": [

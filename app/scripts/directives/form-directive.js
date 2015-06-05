@@ -1,6 +1,6 @@
 'use strict';
 
-angularApp.directive('formDirective', function ($rootScope) {
+angularApp.directive('formDirective', function ($rootScope, $document, $timeout) {
   return {
     controller: function($scope){
 
@@ -10,6 +10,20 @@ angularApp.directive('formDirective', function ($rootScope) {
       };
       // Initializing array to loop through to call field-directive
       $scope.formFields = [];
+
+      $scope.addPopover = function() {
+        //Initializing Bootstrap Popover fn for each item loaded
+        $timeout(function() {
+          angular.element('[data-toggle="popover"]').popover();
+        }, 1000);
+      };
+
+      $document.on('click', function(e) {
+        // Check if Popovers exist and close on click anywhere but the popover toggle icon
+        if( angular.element(e.target).data('toggle') !== 'popover' && angular.element('.popover').length ) {
+          angular.element('[data-toggle="popover"]').popover('hide');
+        }
+      });
 
       $scope.parseForm = function(form) {
         // Loop through form.properties object looking for Elements
@@ -58,6 +72,7 @@ angularApp.directive('formDirective', function ($rootScope) {
       // Using Angular's $watch function to call $sceop.parseForm on form.properties initial population and on update
       $scope.$watch('form.properties', function () {
         $scope.parseForm($scope.form);
+        $scope.addPopover();
       }, true);
     },
     templateUrl: './views/directive-templates/form-render.html',

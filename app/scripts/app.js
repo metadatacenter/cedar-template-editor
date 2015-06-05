@@ -18,11 +18,11 @@ angularApp.config(function ($routeProvider, $locationProvider) {
             controller: 'CreateTemplateController'
         })
         .when('/templates/runtime/:id', {
-            templateUrl: 'views/view.html',
+            templateUrl: 'views/runtime.html',
             controller: 'RuntimeController'
         })
         .when('/templates/runtime', {
-            templateUrl: 'views/runtime.html',
+            templateUrl: 'views/runtime-static.html',
             controller: 'RuntimeController'
         })
         .otherwise({

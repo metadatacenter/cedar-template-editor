@@ -18,10 +18,9 @@ angularApp.directive('dateTimePicker', function () {
           clear: 'fa fa-trash',
 				}
 			}).on('dp.change', function() {
-				
-				if( inputElement.hasClass('empty') ) {
-					inputElement.removeClass('empty');
-				}
+        // Each time the date-time-picker date is changed trigger change function
+        // ngModel listens for "input" event, so need to let Angular know to listen for when change event happens
+				inputElement.trigger('input');
 			});
     }
   };
