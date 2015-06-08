@@ -35,8 +35,8 @@
           <!-- <li class="item"><a ng-click="addExistingElement('random')"><i class="cedar-svg-element"></i>Random</a></li> -->
         </ul>
 
-        <div class="more-items">
-          <button type="button" class="btn btn-more-items dropdown-toggle" data-toggle="dropdown" data-target=".item-menu" aria-expanded="false">More Elements <i class="fa fa-angle-down fa-2x"></i>
+        <div class="more-items" dropdown>
+          <button type="button" class="btn btn-more-items dropdown-toggle" data-toggle="dropdown" data-target=".item-menu" aria-expanded="false" dropdown-toggle>More Elements <i class="fa fa-angle-down fa-2x"></i>
           </button>
           <ul class="dropdown-menu item-menu" role="menu">
             <li class="item"><a class="disabled" ng-click=""><i class="cedar-svg-element"></i>Element Name</a></li>
@@ -47,9 +47,9 @@
           </ul>
         </div>
 
-        <div class="more-items">
+        <div class="more-items" dropdown>
           <p class="add-item">Add Item</p>
-          <button type="button" class="btn btn-more-items dropdown-toggle" data-toggle="dropdown" data-target=".element-menu" aria-expanded="false">All Items <i class="fa fa-angle-down fa-2x"></i>
+          <button type="button" class="btn btn-more-items dropdown-toggle" data-toggle="dropdown" data-target=".element-menu" aria-expanded="false" dropdown-toggle>All Items <i class="fa fa-angle-down fa-2x"></i>
           </button>
           <ul class="dropdown-menu element-menu" role="menu">
             <li class="item"><a ng-click="addFieldToStaging('textfield')"><i class="cedar-svg-text"></i>Text</a></li>
