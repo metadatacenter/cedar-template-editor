@@ -1,6 +1,6 @@
 'use strict';
 
-angularApp.controller('RuntimeController', function ($rootScope, $scope, FormService, $routeParams, $location, $document) {
+angularApp.controller('RuntimeController', function ($rootScope, $scope, FormService, $routeParams, $location) {
 
 	// set Page Title variable when this controller is active
 	$rootScope.pageTitle = 'Runtime Template';
@@ -8,24 +8,16 @@ angularApp.controller('RuntimeController', function ($rootScope, $scope, FormSer
 	// Giving $scope access to window.location for checking active state
 	$scope.$location = $location;
 
-	$scope.init = function() {
-		// Enabling Bootstrap Popovers for help text button
-		//angular.element('[data-toggle="popover"]').popover(); // Moved into field-directive.js
+  $scope.form = {};
 
-		$document.on('click', function(e) {
-      // Check if Popovers exist and close on click anywhere but the popover toggle icon
-      if( angular.element(e.target).data('toggle') !== 'popover' && angular.element('.popover').length ) {
-      	angular.element('[data-toggle="popover"]').popover('hide');
-      }
-    });
-
-    $scope.form = {};
-		// read form with given id
+  // Get/read form with given id from $routeParams
+  $scope.getForm = function() {
 		FormService.form($routeParams.id).then(function(form) {
-			//console.log(form);
 			$scope.form = form;
 		});
 	};
-
-	$scope.init();
+	
+	if ($routeParams.id) {
+		$scope.getForm();
+	}
 });

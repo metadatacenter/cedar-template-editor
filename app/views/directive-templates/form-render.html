@@ -1,17 +1,16 @@
-<div ng-show="!form.submitted">
-  <form name="{{form.title}}" id="{{form.guid}}">
-    <!--Loop through top level "properties" parameter in form element and call element-directive with contents -->
-    <div ng-repeat="(index, object) in formFields">
-      <field-directive field="object.field" model="object.model" directory="render"></field-directive>
-    </div>
-  </form>
+<form name="{{form.title}}" id="{{form.guid}}">
+  <!--Loop through top level "properties" parameter in form element and call element-directive with contents -->
+  <div ng-repeat="(index, object) in formFields">
+    <field-directive field="object.field" model="object.model" directory="render"></field-directive>
+  </div>
 
-  <div class="edit-actions">
+  <div class="edit-actions" ng-show="$root.isEmpty(form)">
     <button type="button" class="btn btn-save disabled">Save</button>
     <button type="button" class="btn btn-clear disabled">Cear Form</button>
     <button type="button" class="btn btn-submit disabled">Submit</button>
   </div><!-- /.edit-actions -->
-</div>
+</form>
+
 
 <div class="text-center" style="padding-top:20px; padding-bottom:20px;">
   <a class="btn btn-small btn-primary" ng-show="!showRender" ng-click="showRender = true; showOtput = false">Show Form Render JSON</a>

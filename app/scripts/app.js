@@ -17,12 +17,12 @@ angularApp.config(function ($routeProvider, $locationProvider) {
             templateUrl: 'views/create-template.html',
             controller: 'CreateTemplateController'
         })
-        .when('/templates/runtime/:id', {
+        .when('/templates/runtime', {
             templateUrl: 'views/runtime.html',
             controller: 'RuntimeController'
         })
-        .when('/templates/runtime', {
-            templateUrl: 'views/runtime-static.html',
+        .when('/templates/runtime/:id', {
+            templateUrl: 'views/runtime.html',
             controller: 'RuntimeController'
         })
         .otherwise({
