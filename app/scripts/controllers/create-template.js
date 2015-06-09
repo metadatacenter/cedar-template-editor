@@ -139,10 +139,13 @@ angularApp.controller('CreateTemplateController', function ($rootScope, $scope, 
 
   // Reverts to empty form and removes all previously added fields/elements
   $scope.reset = function() {
+    // Reset both the form formFields object and formFieldsOrder array to empty 
+    $scope.$$childTail.formFields = {};
+    $scope.$$childTail.formFieldsOrder = [];
+    // Loop through $scope.form.properties object and delete each field leaving default json-ld syntax in place
     angular.forEach($scope.form.properties, function(value, key) {
       if ($rootScope.ignoreKey(key)) {
         delete $scope.form.properties[key];  
-        delete $scope.$$childHead.formFields[key];
       }
     });
   };
