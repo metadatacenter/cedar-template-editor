@@ -6,6 +6,7 @@ angularApp.directive('formPreview', function ($rootScope, $document, $timeout) {
 
       // $scope.formFields object to loop through to call field-directive
       $scope.formFields = {};
+      $scope.formFieldsOrder = [];
 
       $scope.addPopover = function() {
         //Initializing Bootstrap Popover fn for each item loaded
@@ -27,6 +28,13 @@ angularApp.directive('formPreview', function ($rootScope, $document, $timeout) {
 
         // Remove selected field from the $scope.form object itself also
         delete $scope.form.properties[key];
+
+        // Remove selected field instance from the $scope.formFieldsOrder array also
+        var index = $scope.formFieldsOrder.indexOf(key);
+        if (index > -1) {
+          console.log(index);
+          $scope.formFieldsOrder.splice(index, 1);
+        }
       };
 
       $scope.parseForm = function(form) {
@@ -78,12 +86,23 @@ angularApp.directive('formPreview', function ($rootScope, $document, $timeout) {
           // this element key is needed for proper grouping in the rendering preview
           $scope.formFields[parentKey] = $scope.formFields[parentKey] || {};
           $scope.formFields[parentKey][key] = fieldObject.field;
+
+          // $scope.formFieldsOrder will be used for sorting order of $scope.formFields
+          if ($scope.formFieldsOrder.indexOf(parentKey) == -1) {
+            $scope.formFieldsOrder.push(parentKey);
+          }
         } else {
           // These are field level objects with no parent element grouping
           $scope.formFields[key] = $scope.formFields[key] || {};
           $scope.formFields[key] = fieldObject.field;
+
+          // $scope.formFieldsOrder will be used for sorting order of $scope.formFields
+          if ($scope.formFieldsOrder.indexOf(key) == -1) {
+            $scope.formFieldsOrder.push(key);
+          }
         }
         //console.log($scope.formFields);
+        //console.log($scope.formFieldsOrder);
       };
 
       // Using Angular's $watch function to call $sceop.parseForm on form.properties initial population and on update

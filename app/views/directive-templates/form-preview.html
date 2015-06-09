@@ -1,13 +1,15 @@
 <form name="{{form.title}}" id="{{form.guid}}">
-
+<!-- <pre>{{ formFieldsOrder | json }}</pre> -->
   <!--Loop through top level "properties" in form element either field or element directive with property -->
-  <div ng-repeat="(key, object) in formFields">
-    <span ng-if="object.input_type">
-      <field-directive field="object" model="object.model" directory="preview" delete="removeField(key)"></field-directive>
+  <div ng-repeat="field in formFieldsOrder">
+    <span ng-if="formFields[field]">
+      <span ng-if="formFields[field].input_type">
+        <field-directive field="formFields[field]" model="formFields[field].model" directory="preview" delete="removeField(field)"></field-directive>
+      </span>
+      <div class="element-group" ng-if="!formFields[field].input_type">
+        <element-directive element="formFields[field]" key="field" delete="removeField(field)"></element-directive>
+      </div>
     </span>
-    <div class="element-group" ng-if="!object.input_type">
-      <element-directive element="object" key="key" delete="removeField(key)"></element-directive>
-    </div>
   </div>
 </form>
 
