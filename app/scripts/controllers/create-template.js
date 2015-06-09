@@ -8,12 +8,20 @@ angularApp.controller('CreateTemplateController', function ($rootScope, $scope, 
   // Create staging area to create/edit fields before they get added to $scope.form.properties
   $scope.staging = {};
 
+  // Setting $scope variable to toggle for whether this template is a favorite
+  $scope.favorite = false;
+  $scope.toggleFavorite = function() {
+    $scope.favorite = $scope.favorite === true ? false : true;
+    $scope.form.favorite = $scope.favorite;
+  }
+
   // Create empty $scope.form object
   $scope.form = {
     "$schema": "http://json-schema.org/draft-04/schema#",
     "@id": "",
     "title": "",
     "description": "",
+    "favorite": $scope.favorite,
     "guid": $rootScope.generateGUID(),
     "type": "object",
     "properties": {
@@ -138,11 +146,4 @@ angularApp.controller('CreateTemplateController', function ($rootScope, $scope, 
       }
     });
   };
-
-  // Setting $scope variable to toggle for whether this template is a favorite
-  $scope.favorite = false;
-
-  $scope.toggleFavorite = function() {
-    $scope.favorite = $scope.favorite === true ? false : true;
-  }
 });
