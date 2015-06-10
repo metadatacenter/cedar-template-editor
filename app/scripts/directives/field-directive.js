@@ -45,7 +45,7 @@ angularApp.directive('fieldDirective', function($http, $compile, $document) {
   }
 
   return {
-    template: '<div>{{field}}</div>',
+    template: '<div ng-bind="field"></div>',
     restrict: 'EA',
     scope: {
       directory: '@',
