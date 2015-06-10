@@ -101,6 +101,15 @@
             </div>
           </form>
         </div> <!-- /#form-item-config-section -->
+        <div class="element-actions">
+          <div class="favorite {{favorite}}" ng-click="toggleFavorite()">
+            <i class="cedar-svg-flag"></i><span>Favorite</span>
+          </div>
+          <div class="clear-save">
+            <button type="button" class="btn btn-clear" ng-click="reset()">Clear</button>
+            <button type="button" class="btn btn-save" ng-click="store()">Save Element</button>
+          </div>
+        </div> <!-- /.template-actions -->
       </div> <!-- /.right-body -->
     </div> <!-- /.row -->
   </div> <!-- /.container -->

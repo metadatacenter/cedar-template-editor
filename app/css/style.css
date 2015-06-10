@@ -8712,6 +8712,66 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
 }
 /*
 ================================================
+=== Element Builder Actions
+================================================
+*/
+.element-actions {
+  padding-top: 40px;
+  border-top: 1px solid #ddd;
+}
+.element-actions .favorite {
+  float: left;
+  padding-top: 17px;
+  cursor: pointer;
+}
+.element-actions .favorite span {
+  text-transform: uppercase;
+  vertical-align: middle;
+}
+.element-actions .favorite i {
+  padding-right: 10px;
+  -webkit-transition: all 0.3s 0.1s;
+          transition: all 0.3s 0.1s;
+  color: rgba(51, 51, 51, 0.43);
+}
+.element-actions .favorite.true i {
+  color: #339933;
+}
+.element-actions .clear-save {
+  float: right;
+}
+.element-actions .clear-save .btn {
+  text-transform: uppercase;
+  padding: 25px 40px;
+  border: none;
+  -webkit-transition: all 0.3s 0.1s;
+          transition: all 0.3s 0.1s;
+}
+.element-actions .clear-save .btn:focus {
+  outline: none;
+  box-shadow: none;
+}
+.element-actions .clear-save .btn.btn-clear {
+  color: #339933;
+  background-color: transparent;
+  font-family: 'aktiv-grotesk-std';
+  font-weight: 700;
+}
+.element-actions .clear-save .btn.btn-clear:hover,
+.element-actions .clear-save .btn.btn-clear:focus {
+  color: #338833;
+}
+.element-actions .clear-save .btn.btn-save {
+  color: #ffffff;
+  background-color: #339933;
+  font-size: 16px;
+}
+.element-actions .clear-save .btn.btn-save:hover,
+.element-actions .clear-save .btn.btn-save:focus {
+  background-color: #338833;
+}
+/*
+================================================
 === Template Builder Actions
 ================================================
 */

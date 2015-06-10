@@ -125,4 +125,20 @@ angularApp.controller('CreateElementController', function ($rootScope, $scope, $
     }
   };
 
+  // Reverts to empty form and removes all previously added fields/elements
+  $scope.reset = function() {
+    console.log("I am calling reset()");
+    //angular.forEach($scope.form.properties, function(value, key) {
+    //  if ($rootScope.ignoreKey(key)) {
+    //    delete $scope.form.properties[key];
+    //    delete $scope.$$childHead.formFields[key];
+    //  }
+    //});
+  };
+
+  // Reverts to empty form and removes all previously added fields/elements
+  $scope.store = function() {
+    console.log($scope.element);
+  };
+
 });
