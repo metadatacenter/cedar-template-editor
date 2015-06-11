@@ -92,7 +92,7 @@
             <p>Create a new field item.</p>
           </div>
           <form name="{{form.title}}" id="{{form.guid}}">
-            <div ng-repeat="field in staging | orderObjectBy: 'properties.value.created_at'">
+            <div ng-repeat="field in staging | orderObjectBy: 'properties.value.created_at'" class="animate-fade">
               <field-directive field="field.properties.value" directory="create" delete="deleteField(field, staging)" add="addFieldToForm(field)" option="addOption(field)">
               </field-directive>
             </div>

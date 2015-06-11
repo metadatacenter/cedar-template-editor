@@ -1,6 +1,6 @@
 'use strict';
 
-var angularApp = angular.module('angularJsCedarApplication', ['ui.bootstrap', 'ngRoute', 'cedarFilters']);
+var angularApp = angular.module('angularJsCedarApplication', ['ui.bootstrap', 'ngRoute', 'ngAnimate', 'cedarFilters']);
 
 angularApp.config(function ($routeProvider, $locationProvider) {
 
