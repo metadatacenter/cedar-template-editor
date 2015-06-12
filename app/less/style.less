@@ -1,6 +1,9 @@
 // Import Bootstrap LESS library
 @import '../bower_components/bootstrap-less/less/bootstrap.less';
 
+// Import FontAwesome LESS library
+@import '../bower_components/fontawesome/less/font-awesome.less';
+
 // Import local LESS files
 @import 'fonts.less';
 
@@ -1617,6 +1620,43 @@ section.dashboard-elements {
   .fa-check.check-mark {
     color:@brand-primary;
   }
+}
+
+/*
+================================================
+=== Angular ngAnimate Definitions
+================================================
+*/
+
+/* The base CSS styles for the animation property */
+.animate-fade.ng-enter,
+.animate-fade.ng-leave {
+  transition:0.5s ease-in all;
+}
+
+/* The starting CSS styles for the enter animation */
+.animate-fade.ng-enter,
+.animate-fade.ng-leave.ng-leave-active {
+  opacity:0;
+}
+
+/* The finishing CSS styles for the enter animation */
+.animate-fade.ng-enter.ng-enter-active,
+.animate-fade.ng-leave {
+  opacity:1;
+}
+
+.empty-text {
+  transition:0.5s ease-in all;
+  opacity:1;
+  height:auto;
+  padding:150px 0;
+}
+
+.empty-text.ng-hide {
+  opacity:0;
+  height:0;
+  padding:0;
 }
 
 

@@ -12,7 +12,6 @@
       <base href="/">
       <link href="favicon.ico" rel="icon" type="image/x-icon" />
 
-      <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
       <link rel="stylesheet" href="css/style.css">
       
       <script src="//use.typekit.net/aph5zap.js"></script>
@@ -39,7 +38,7 @@
           <li ng-class="{active: ($location.path() == '/') }"><a href="/">Dashboard</a></li>
           <li ng-class="{active: ($location.path() == '/elements/create') }"><a href="elements/create">Element Creator</a></li>
           <li ng-class="{active: ($location.path() == '/templates/create') }"><a href="templates/create">Template Creator</a></li>
-          <li ng-class="{active: ($location.path() == '/templates/runtime/1') }"><a href="templates/runtime/1">Runtime</a></li>
+          <li ng-class="{active: ($location.path() == '/templates/runtime') }"><a href="templates/runtime">Runtime</a></li>
         </ul>
       </div><!--/.navbar-collapse -->
     </div>
@@ -51,6 +50,7 @@
   <script src="bower_components/jquery/jquery.js"></script>
   <script src="bower_components/angular/angular.js"></script>
   <script src="bower_components/angular-route/angular-route.js"></script>
+  <script src="bower_components/angular-animate/angular-animate.js"></script>
   <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
   <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
   <script src="bower_components/moment/min/moment.min.js"></script>

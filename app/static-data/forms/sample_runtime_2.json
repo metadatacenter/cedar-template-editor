@@ -1,7 +1,7 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
   "@id": "",
-  "title": "",
+  "title": "Basic Complete Fields",
   "description": "",
   "guid": "14641541-a76d-4ee4-8993-e614293cb779",
   "type": "object",

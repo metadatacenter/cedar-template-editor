@@ -3,6 +3,7 @@
   "@id": "http://metadatacenter.org/schemas/basic_study_design",
   "title": "Basic study design",
   "description": "Basic example of a template to describe a study",
+  "guid": "9044e02a-e3f1-4aaf-9bcb-f94250949d4d",
   "type": "object",
   "properties": {
     "@context": {
