@@ -1,0 +1,20 @@
+[
+	{
+		"title": "Principal Investigator",
+	  "guid": "fb056461-a80d-4ac2-a1ea-6501aa34d34d",
+	  "description": "The lead researcher for the study",
+	  "favorite": true
+	},
+	{
+		"title": "Contact Information",
+  	"guid": "34cc0dbf-9aee-4d1a-b8b7-ad385a38228e",
+  	"description": "Sample element consisting of contact fields",
+  	"favorite": true
+	},
+	{
+		"title": "Combination Fields",
+	  "description": "Element composed of smaller elements, plus single additional textfields",
+	  "guid": "1ad2dc01-4049-4b7b-b06d-47a04d1262de",
+	  "favorite": false
+	}
+]
