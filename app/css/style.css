@@ -10316,6 +10316,10 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
 === Field Definition Partials
 ================================================
 */
+.input-type-container {
+  clear: both;
+  padding-top: 15px;
+}
 .input-type-container p.type-label {
   width: 100%;
   text-align: right;
@@ -10328,17 +10332,28 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
 .input-type-container p.type-label i {
   color: #339933;
 }
-.input-type-container.section-break > p.type-label {
-  border-bottom: 1px solid #ddd;
-  padding-bottom: 20px;
-  margin-bottom: 30px;
-}
 .input-type-container .configuration-options {
   padding-top: 20px;
   border-top: 1px dashed #ddd;
 }
 .input-type-container .configuration-options .toggle-options {
   padding-bottom: 30px;
+}
+.input-type-container .configuration-options .toggle-options:before,
+.input-type-container .configuration-options .toggle-options:after {
+  content: " ";
+  display: table;
+}
+.input-type-container .configuration-options .toggle-options:after {
+  clear: both;
+}
+.input-type-container .configuration-options .toggle-options:before,
+.input-type-container .configuration-options .toggle-options:after {
+  content: " ";
+  display: table;
+}
+.input-type-container .configuration-options .toggle-options:after {
+  clear: both;
 }
 .input-type-container .configuration-options .toggle-options .toggle-controlled-term {
   display: inline-block;
