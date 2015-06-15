@@ -1,5 +1,4 @@
 <form name="{{form.title}}" id="{{form.guid}}">
-<!-- <pre>{{ formFieldsOrder | json }}</pre> -->
   <!--Loop through top level "properties" in form element either field or element directive with property -->
   <div ng-repeat="field in formFieldsOrder" class="animate-fade">
     <span ng-if="formFields[field]">
@@ -7,7 +6,7 @@
         <field-directive field="formFields[field]" model="formFields[field].model" directory="preview" delete="removeField(field)"></field-directive>
       </span>
       <div class="element-group" ng-if="!formFields[field].input_type">
-        <element-directive element="formFields[field]" key="field" delete="removeField(field)"></element-directive>
+        <element-directive element="formFields[field]" key="field" delete="removeField(field)" preview="true"></element-directive>
       </div>
     </span>
   </div>

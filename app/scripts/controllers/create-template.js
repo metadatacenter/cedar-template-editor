@@ -1,6 +1,6 @@
 'use strict';
 
-angularApp.controller('CreateTemplateController', function ($rootScope, $scope, $http) {
+angularApp.controller('CreateTemplateController', function ($rootScope, $scope, $http, $q) {
 
   // Set Page Title variable when this controller is active
   $rootScope.pageTitle = 'Template Creator';
@@ -23,6 +23,7 @@ angularApp.controller('CreateTemplateController', function ($rootScope, $scope, 
     "description": "",
     "favorite": $scope.favorite,
     "guid": $rootScope.generateGUID(),
+    "pages": [],
     "type": "object",
     "properties": {
       "@context": {
@@ -147,6 +148,36 @@ angularApp.controller('CreateTemplateController', function ($rootScope, $scope, 
       if ($rootScope.ignoreKey(key)) {
         delete $scope.form.properties[key];  
       }
+    });
+  };
+
+  $scope.addToPages = function() {
+    var orderArray = [],
+        dimension = 0;
+    // Return promise so $scope.saveTemplate can submit $scope.form once $scope.form.pages array is properly filled
+    return $q(function(resolve, reject) {
+      // loop through $scope.$$childTail.formFieldsOrder and build pages array
+      angular.forEach($scope.$$childTail.formFieldsOrder, function(field, index) {
+        // If item added is of type Page Break, jump into next page array for storage of following fields
+        if ($scope.form.properties[field].properties.value && $scope.form.properties[field].properties.value.input_type == 'page-break') {
+          dimension ++;
+        }
+        // Push field key into page array
+        orderArray[dimension] = orderArray[dimension] || [];
+        orderArray[dimension].push(field);
+      });
+      // Resolve promise
+      resolve(orderArray);
+    });
+  };
+
+  $scope.saveTemplate = function() {
+    $scope.addToPages().then(function(result) {
+      // Assigning array returned from $scope.addToPages to $scope.form.pages property
+      $scope.form.pages = result;
+      // Console.log full working form example on save
+      console.log($scope.form);
+      // Database service save() call could go here
     });
   };
 });

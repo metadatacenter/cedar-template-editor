@@ -405,12 +405,15 @@ i {
     }
 
     .element-group {
-      display:inline-block;
-      vertical-align:middle;
       width:100%;
-      padding-right:65px;
       border-bottom:2px dashed #ddd;
       margin-bottom:30px;
+
+      &:not(.full) {
+        padding-right:65px;
+        display:inline-block;
+        vertical-align:middle;
+      }
 
       .element-header {
         margin-right:-65px;
@@ -1220,6 +1223,8 @@ section.dashboard-elements {
 ================================================
 */
 .input-type-container {
+  clear:both;
+  padding-top:15px;
 
   p.type-label {
     width:100%;
@@ -1235,9 +1240,9 @@ section.dashboard-elements {
   }
 
   &.section-break > p.type-label {
-    border-bottom:1px solid #ddd;
-    padding-bottom:20px;
-    margin-bottom:30px;
+    // border-bottom:1px solid #ddd;
+    // padding-bottom:20px;
+    // margin-bottom:30px;
   }
 
   .configuration-options {
@@ -1246,6 +1251,7 @@ section.dashboard-elements {
 
     .toggle-options {
       padding-bottom:30px;
+      .clearfix();
 
       .toggle-controlled-term {
         display:inline-block;

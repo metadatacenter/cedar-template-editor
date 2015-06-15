@@ -32,14 +32,12 @@ angularApp.directive('formPreview', function ($rootScope, $document, $timeout) {
         // Remove selected field instance from the $scope.formFieldsOrder array also
         var index = $scope.formFieldsOrder.indexOf(key);
         if (index > -1) {
-          console.log(index);
           $scope.formFieldsOrder.splice(index, 1);
         }
       };
 
       $scope.parseForm = function(form) {
         // Loop through form.properties object looking for Elements
-        
         angular.forEach(form.properties, function(value, key) {
           if ($rootScope.ignoreKey(key)) {
             // The 'value' property is how we distinguish if this is a field level element or an embedded element
@@ -71,21 +69,15 @@ angularApp.directive('formPreview', function ($rootScope, $document, $timeout) {
             }
           }
         });
-
       };
 
       $scope.fieldLevelReached = function(key, params, parentKey) {
-        // Create new empty object to stuff with properties
-        var fieldObject = {};
-
-        // This params object is how we will render input fields from the object of parameters
-        fieldObject.field = params;
         
         if (parentKey !== undefined) {
           // If these are nested fields the parent key will be the element they belong to,
           // this element key is needed for proper grouping in the rendering preview
           $scope.formFields[parentKey] = $scope.formFields[parentKey] || {};
-          $scope.formFields[parentKey][key] = fieldObject.field;
+          $scope.formFields[parentKey][key] = params;
 
           // $scope.formFieldsOrder will be used for sorting order of $scope.formFields
           if ($scope.formFieldsOrder.indexOf(parentKey) == -1) {
@@ -94,15 +86,13 @@ angularApp.directive('formPreview', function ($rootScope, $document, $timeout) {
         } else {
           // These are field level objects with no parent element grouping
           $scope.formFields[key] = $scope.formFields[key] || {};
-          $scope.formFields[key] = fieldObject.field;
+          $scope.formFields[key] = params;
 
           // $scope.formFieldsOrder will be used for sorting order of $scope.formFields
           if ($scope.formFieldsOrder.indexOf(key) == -1) {
             $scope.formFieldsOrder.push(key);
           }
         }
-        //console.log($scope.formFields);
-        //console.log($scope.formFieldsOrder);
       };
 
       // Using Angular's $watch function to call $sceop.parseForm on form.properties initial population and on update
