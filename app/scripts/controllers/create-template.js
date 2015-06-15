@@ -17,7 +17,7 @@ angularApp.controller('CreateTemplateController', function ($rootScope, $scope, 
 
   // Create empty $scope.form object
   $scope.form = {
-    "$schema": "http://json-schema.org/draft-04/schema#",
+    "_$schema": "http://json-schema.org/draft-04/schema#",
     "@id": "",
     "title": "",
     "description": "",
@@ -60,7 +60,7 @@ angularApp.controller('CreateTemplateController', function ($rootScope, $scope, 
   $scope.addFieldToStaging = function(fieldType) {
 
     var field = {
-      "$schema": "http://json-schema.org/draft-04/schema#",
+      "_$schema": "http://json-schema.org/draft-04/schema#",
       "@id": "",
       "type": "object",
       "properties": {

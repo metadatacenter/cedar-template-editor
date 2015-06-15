@@ -1,5 +1,5 @@
 {
-  "$schema": "http://json-schema.org/draft-04/schema#",
+  "_$schema": "http://json-schema.org/draft-04/schema#",
   "@id": "",
   "title": "Basic Complete Fields",
   "description": "",
@@ -24,7 +24,7 @@
       ]
     },
     "simple_textfield_#1": {
-      "$schema": "http://json-schema.org/draft-04/schema#",
+      "_$schema": "http://json-schema.org/draft-04/schema#",
       "@id": "",
       "type": "object",
       "properties": {
@@ -48,7 +48,7 @@
       "additionalProperties": false
     },
     "simple_paragraph_field": {
-      "$schema": "http://json-schema.org/draft-04/schema#",
+      "_$schema": "http://json-schema.org/draft-04/schema#",
       "@id": "",
       "type": "object",
       "properties": {
@@ -72,7 +72,7 @@
       "additionalProperties": false
     },
     "simple_radio_button_field": {
-      "$schema": "http://json-schema.org/draft-04/schema#",
+      "_$schema": "http://json-schema.org/draft-04/schema#",
       "@id": "",
       "type": "object",
       "properties": {
@@ -111,7 +111,7 @@
       "additionalProperties": false
     },
     "simple_checkbox_field_#1": {
-      "$schema": "http://json-schema.org/draft-04/schema#",
+      "_$schema": "http://json-schema.org/draft-04/schema#",
       "@id": "",
       "type": "object",
       "properties": {
@@ -153,7 +153,7 @@
       "additionalProperties": false
     },
     "simple_date_input_field_#1": {
-      "$schema": "http://json-schema.org/draft-04/schema#",
+      "_$schema": "http://json-schema.org/draft-04/schema#",
       "@id": "",
       "type": "object",
       "properties": {
@@ -178,7 +178,7 @@
       "additionalProperties": false
     },
     "simple_date_field_#2": {
-      "$schema": "http://json-schema.org/draft-04/schema#",
+      "_$schema": "http://json-schema.org/draft-04/schema#",
       "@id": "",
       "type": "object",
       "properties": {
@@ -203,7 +203,7 @@
       "additionalProperties": false
     },
     "simple_email_address_field_#1": {
-      "$schema": "http://json-schema.org/draft-04/schema#",
+      "_$schema": "http://json-schema.org/draft-04/schema#",
       "@id": "",
       "type": "object",
       "properties": {
@@ -227,7 +227,7 @@
       "additionalProperties": false
     },
     "simple_pick_from_a_list_field": {
-      "$schema": "http://json-schema.org/draft-04/schema#",
+      "_$schema": "http://json-schema.org/draft-04/schema#",
       "@id": "",
       "type": "object",
       "properties": {
@@ -271,7 +271,7 @@
       "additionalProperties": false
     },
     "audio_visual_field_sample": {
-      "$schema": "http://json-schema.org/draft-04/schema#",
+      "_$schema": "http://json-schema.org/draft-04/schema#",
       "@id": "",
       "type": "object",
       "properties": {
@@ -295,7 +295,7 @@
       "additionalProperties": false
     },
     "simple_numeric_field_type": {
-      "$schema": "http://json-schema.org/draft-04/schema#",
+      "_$schema": "http://json-schema.org/draft-04/schema#",
       "@id": "",
       "type": "object",
       "properties": {
@@ -319,7 +319,7 @@
       "additionalProperties": false
     },
     "sample_phone_number_field": {
-      "$schema": "http://json-schema.org/draft-04/schema#",
+      "_$schema": "http://json-schema.org/draft-04/schema#",
       "@id": "",
       "type": "object",
       "properties": {
@@ -343,7 +343,7 @@
       "additionalProperties": false
     },
     "sample_section_break_field_type": {
-      "$schema": "http://json-schema.org/draft-04/schema#",
+      "_$schema": "http://json-schema.org/draft-04/schema#",
       "@id": "",
       "type": "object",
       "properties": {

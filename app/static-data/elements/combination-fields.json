@@ -1,5 +1,5 @@
 {
-  "$schema": "http://json-schema.org/draft-04/schema#",
+  "_$schema": "http://json-schema.org/draft-04/schema#",
   "@id": "",
   "@type": "",
   "title": "Combination Fields",
@@ -11,7 +11,7 @@
       "enum": []
     },
     "principal_investigator": {
-      "$schema": "",
+      "_$schema": "",
       "@id": "",
       "title": "Principal Investigator",
       "guid": "fb056461-a80d-4ac2-a1ea-6501aa34d34d",
@@ -22,7 +22,7 @@
           "enum": []
         },
         "full_name": {
-          "$schema": "",
+          "_$schema": "",
           "@id": "",
           "type": "object",
           "properties": {
@@ -46,7 +46,7 @@
           "additionalProperties": false
         },
         "institution": {
-          "$schema": "",
+          "_$schema": "",
           "@id": "",
           "type": "object",
           "properties": {
@@ -76,7 +76,7 @@
       "additionalProperties": false
     },
     "contact_information": {
-      "$schema": "",
+      "_$schema": "",
       "@id": "",
       "title": "Contact Information",
       "guid": "34cc0dbf-9aee-4d1a-b8b7-ad385a38228e",
@@ -87,7 +87,7 @@
           "enum": []
         },
         "first_name": {
-          "$schema": "",
+          "_$schema": "",
           "@id": "",
           "type": "object",
           "properties": {
@@ -111,7 +111,7 @@
           "additionalProperties": false
         },
         "last_name": {
-          "$schema": "",
+          "_$schema": "",
           "@id": "",
           "type": "object",
           "properties": {
@@ -135,7 +135,7 @@
           "additionalProperties": false
         },
         "email_address": {
-          "$schema": "",
+          "_$schema": "",
           "@id": "",
           "type": "object",
           "properties": {
@@ -159,7 +159,7 @@
           "additionalProperties": false
         },
         "phone_number": {
-          "$schema": "",
+          "_$schema": "",
           "@id": "",
           "type": "object",
           "properties": {
@@ -183,7 +183,7 @@
           "additionalProperties": false
         },
         "background_information_optional": {
-          "$schema": "",
+          "_$schema": "",
           "@id": "",
           "type": "object",
           "properties": {
@@ -213,7 +213,7 @@
       "additionalProperties": false
     },
     "textfield_#1": {
-      "$schema": "http://json-schema.org/draft-04/schema#",
+      "_$schema": "http://json-schema.org/draft-04/schema#",
       "@id": "",
       "type": "object",
       "properties": {
