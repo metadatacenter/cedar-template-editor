@@ -1,7 +1,14 @@
 <form name="{{form.title}}" id="{{form.guid}}">
   <!--Loop through top level "properties" parameter in form element and call element-directive with contents -->
-  <div ng-repeat="(index, object) in formFields" class="animate-fade">
-    <field-directive field="object.field" model="object.model" directory="render"></field-directive>
+  <div ng-repeat="item in formFieldsOrder" class="animate-fade">
+    <span ng-if="formFields[item]">
+      <span ng-if="formFields[item].input_type">
+        <field-directive field="formFields[item]" model="formFields[item].model" directory="render"></field-directive>
+      </span>
+      <div class="element-group full" ng-if="!formFields[item].input_type">
+        <element-directive element="formFields[item]" key="item" preview="false"></element-directive>
+      </div>
+    </span>
   </div>
 
   <div class="edit-actions" ng-show="$root.isEmpty(form)">

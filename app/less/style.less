@@ -405,12 +405,15 @@ i {
     }
 
     .element-group {
-      display:inline-block;
-      vertical-align:middle;
       width:100%;
-      padding-right:65px;
       border-bottom:2px dashed #ddd;
       margin-bottom:30px;
+
+      &:not(.full) {
+        padding-right:65px;
+        display:inline-block;
+        vertical-align:middle;
+      }
 
       .element-header {
         margin-right:-65px;

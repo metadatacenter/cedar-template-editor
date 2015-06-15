@@ -9508,12 +9508,14 @@ i {
           transform: translate(13px, 11px);
 }
 .template-body .right-body .element-group {
-  display: inline-block;
-  vertical-align: middle;
   width: 100%;
-  padding-right: 65px;
   border-bottom: 2px dashed #ddd;
   margin-bottom: 30px;
+}
+.template-body .right-body .element-group:not(.full) {
+  padding-right: 65px;
+  display: inline-block;
+  vertical-align: middle;
 }
 .template-body .right-body .element-group .element-header {
   margin-right: -65px;

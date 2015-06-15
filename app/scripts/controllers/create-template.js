@@ -174,10 +174,10 @@ angularApp.controller('CreateTemplateController', function ($rootScope, $scope, 
   $scope.saveTemplate = function() {
     $scope.addToPages().then(function(result) {
       // Assigning array returned from $scope.addToPages to $scope.form.pages property
-      console.log(result);
       $scope.form.pages = result;
-      // Now call save function which reaches out to backend service
-      // Database service call could go here
+      // Console.log full working form example on save
+      console.log($scope.form);
+      // Database service save() call could go here
     });
   };
 });
