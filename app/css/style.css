@@ -10256,7 +10256,7 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   font-size: 12px;
   border-color: #339933;
   color: #999;
-  background-color: transparent;
+  background-color: #ffffff;
 }
 .popover.left {
   margin-left: -15px;

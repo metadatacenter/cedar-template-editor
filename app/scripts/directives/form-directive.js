@@ -105,11 +105,16 @@ angularApp.directive('formDirective', function ($rootScope, $document, $timeout)
         }
       };
 
-      // Using Angular's $watch function to call $scope.parseForm on form.properties initial population and on update
+      // Angular's $watch function to call $scope.parseForm on form.properties initial population and on update
       $scope.$watch('form.properties', function () {
         $scope.parseForm($scope.form);
         $scope.addPopover();
       }, true);
+
+      // Angular $watch function to run the Bootstrap Popover initialization on new form elements when they load
+      $scope.$watch('page', function () {
+        $scope.addPopover();
+      });
     }
   };
 });
