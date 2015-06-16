@@ -2,8 +2,13 @@
 
 angularApp.directive('formDirective', function ($rootScope, $document, $timeout) {
   return {
-    controller: function($scope){
-
+    templateUrl: './views/directive-templates/form-render.html',
+    restrict: 'E',
+    scope: {
+      page:'=',
+      form:'='
+    },
+    controller: function($scope) {
       // Initializing the empty model to submit data to
       $scope.model = {
         "@context": {}
@@ -105,11 +110,6 @@ angularApp.directive('formDirective', function ($rootScope, $document, $timeout)
         $scope.parseForm($scope.form);
         $scope.addPopover();
       }, true);
-    },
-    templateUrl: './views/directive-templates/form-render.html',
-    restrict: 'E',
-    scope: {
-        form:'='
     }
   };
 });

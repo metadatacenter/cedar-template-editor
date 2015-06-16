@@ -16,7 +16,7 @@
         <ul class="element-menu" role="menu">
           <li class="item"><a ng-class="{active: $location.path() == '/templates/runtime/9044e02a-e3f1-4aaf-9bcb-f94250949d4d' }" href="templates/runtime/9044e02a-e3f1-4aaf-9bcb-f94250949d4d"><i class="cedar-svg-metadata"></i>Basic Study Design</a></li>
           <li class="item"><a ng-class="{active: $location.path() == '/templates/runtime/14641541-a76d-4ee4-8993-e614293cb779' }" href="templates/runtime/14641541-a76d-4ee4-8993-e614293cb779"><i class="cedar-svg-metadata"></i>Basic Complete Fields</a></li>
-          <li class="item"><a class="disabled"><i class="cedar-svg-metadata"></i>Sample Template #3</a></li>
+          <li class="item"><a ng-class="{active: $location.path() == '/templates/runtime/ec0741ab-986c-43f7-b9ba-3994bc9a668d' }" href="templates/runtime/ec0741ab-986c-43f7-b9ba-3994bc9a668d"><i class="cedar-svg-metadata"></i>Basic Paging Example Form</a></li>
           <li class="item"><a class="disabled"><i class="cedar-svg-metadata"></i>Sample Template #4</a></li>
           <li class="item"><a class="disabled"><i class="cedar-svg-metadata"></i>Sample Template #5 that has a really long title</a></li>
         </ul>
@@ -36,8 +36,21 @@
 
       </div> <!-- /.left-sidebar -->
       <div class="right-body col-sm-9">
-      
-        <form-directive form="form"></form-directive>
+        <form-directive form="form" page="currentPage"></form-directive>
+
+        <div ng-if="form.pages.length > 1" class="pagination-container">
+          <ul class="pagination">
+            <li ng-if="pageIndex > 0"><a ng-click="previousPage()"><span class="prev"><i class="fa fa-lg fa-angle-left"></i>Previous</span></a></li>
+            <li ng-repeat="(index, value) in form.pages" ng-class="{active: index == pageIndex}"><a ng-click="setCurrentPage(index)">{{index + 1}}</a></li>
+            <li ng-if="pageIndex < (form.pages.length - 1)"><a ng-click="nextPage()"><span class="next">Next<i class="fa fa-lg fa-angle-right"></i></span></a></li>
+          </ul>
+        </div><!-- /.pagination-container -->
+
+        <div class="edit-actions" ng-show="$root.isEmpty(form)">
+          <button type="button" class="btn btn-save" ng-click="saveForm()">Save</button>
+          <button type="button" class="btn btn-clear disabled">Cear Form</button>
+          <button type="button" class="btn btn-submit" ng-click="submitForm()">Submit</button>
+        </div><!-- /.edit-actions -->
 
       </div> <!-- /.right-body -->
     </div> <!-- /.row -->
