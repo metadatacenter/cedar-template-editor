@@ -1,6 +1,6 @@
 'use strict';
 
-angularApp.controller('CreateElementController', function ($rootScope, $scope, $http) {
+angularApp.controller('CreateElementController', function($rootScope, $scope, $http) {
 
   // Set page title variable when this controller is active
   $rootScope.pageTitle = 'Element Creator';
@@ -13,7 +13,7 @@ angularApp.controller('CreateElementController', function ($rootScope, $scope, $
 
   // Create empty element object
   $scope.element = {
-    "$schema": "http://json-schema.org/draft-04/schema#",
+    "_$schema": "http://json-schema.org/draft-04/schema#",
     "@id": "",
     "@type": "",
     "title": "",
@@ -33,14 +33,14 @@ angularApp.controller('CreateElementController', function ($rootScope, $scope, $
 
   // Return true if element.properties object only contains default values
   $scope.isPropertiesEmpty = function() {
-    return  Object.keys($scope.element.properties).length > 1 ? false : true;
+    return Object.keys($scope.element.properties).length > 1 ? false : true;
   };
 
   // Add new field into $scope.staging object
-  $scope.addFieldToStaging = function(fieldType){
+  $scope.addFieldToStaging = function(fieldType) {
 
     var field = {
-      "$schema": "http://json-schema.org/draft-04/schema#",
+      "_$schema": "http://json-schema.org/draft-04/schema#",
       "@id": "",
       "type": "object",
       "properties": {
@@ -49,11 +49,11 @@ angularApp.controller('CreateElementController', function ($rootScope, $scope, $
         },
         "value": {
           "type": "string",
-          "id" : $rootScope.generateGUID(),
-          "title" : "",
+          "id": $rootScope.generateGUID(),
+          "title": "",
           "description": "",
-          "input_type" : fieldType,
-          "required" : false,
+          "input_type": fieldType,
+          "required": false,
           "created_at": Date.now()
         }
       },
@@ -77,6 +77,7 @@ angularApp.controller('CreateElementController', function ($rootScope, $scope, $
 
     // put field into fields staging object
     $scope.staging[field.properties.value.id] = field;
+
   };
 
   // Function to add additional options for radio, checkbox, and list fieldTypes
@@ -101,17 +102,21 @@ angularApp.controller('CreateElementController', function ($rootScope, $scope, $
   };
 
   // Add existing element to the element object
+  //$scope.addExistingElement = function(element) {
+  //  // Fetch existing element json data
+  //  return $http.get('/static-data/elements/' + element + '.json').then(function(response) {
+  //    // Add existing element to the $scope.element.properties object with it's title converted to an object key
+  //    var titleKey = $rootScope.underscoreText(response.data.title);
+  //    $scope.element.properties[titleKey] = response.data;
+  //  });
+  //};
   $scope.addExistingElement = function(element) {
-    // Fetch existing element json data
-    return $http.get('/static-data/elements/'+element+'.json').then(function(response) {
-      // Add existing element to the $scope.element.properties object with it's title converted to an object key
-      var titleKey = $rootScope.underscoreText(response.data.title);
-      $scope.element.properties[titleKey] = response.data;
-    });
+    // Embed existing element into $scope.form.properties object
+    $scope.element.properties[element.title] = element;
   };
 
   // Delete field from $scope.staging object
-  $scope.deleteField = function (field){
+  $scope.deleteField = function(field) {
     // Remove field instance from $scope.staging
     delete $scope.staging[field.properties.value.id];
   };
@@ -125,9 +130,38 @@ angularApp.controller('CreateElementController', function ($rootScope, $scope, $
     }
   };
 
+  // Load existing elements from database
+  $scope.loadElements = function() {
+    $http.get('http://localhost:9000/template_elements').
+      success(function(data) {
+        $scope.elements = data;
+      }).
+      error(function(data, status, headers, config) {
+        // Do something
+      });
+  }
+
+  // Existing elements
+  $scope.loadElements();
+
+  // Alerts
+  $scope.resetAlerts = function() {
+    $scope.alerts = [];
+  }
+
+  $scope.addAlert = function(type, msg) {
+    $scope.alerts.push({type: type, msg: msg});
+  };
+
+  $scope.closeAlert = function(index) {
+    $scope.alerts.splice(index, 1);
+  };
+
   // Reverts to empty form and removes all previously added fields/elements
   $scope.reset = function() {
-    console.log("I am calling reset()");
+    $scope.resetAlerts();
+    $scope.addAlert('success', 'The element has been cleared.');
+    //console.log("I am calling reset()");
     //angular.forEach($scope.form.properties, function(value, key) {
     //  if ($rootScope.ignoreKey(key)) {
     //    delete $scope.form.properties[key];
@@ -138,7 +172,25 @@ angularApp.controller('CreateElementController', function ($rootScope, $scope, $
 
   // Reverts to empty form and removes all previously added fields/elements
   $scope.store = function() {
-    console.log($scope.element);
+    $scope.resetAlerts();
+    // Check that the element name is not empty
+    if ($scope.element.title.length == 0) {
+      $scope.addAlert('danger', 'Please provide an Element Name');
+    }
+    else {
+      //console.log($scope.element);
+      var json = angular.toJson($scope.element);
+      console.log(json);
+      $http.post('http://localhost:9000/template_elements', json).
+        success(function(data) {
+          $scope.addAlert('success', 'The element \"' + data.title + '\" has been created.');
+          // Reload all elements
+          $scope.loadElements();
+        }).
+        error(function(data, status, headers, config) {
+          $scope.addAlert('danger', "Problem creating the element.");
+        });
+    }
   };
 
 });
