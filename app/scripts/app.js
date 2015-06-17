@@ -13,6 +13,10 @@ angularApp.config(function ($routeProvider, $locationProvider) {
             templateUrl: 'views/create-element.html',
             controller: 'CreateElementController'
         })
+        .when('/elements/edit/:id', {
+            templateUrl: 'views/create-element.html',
+            controller: 'CreateElementController'
+        })
         .when('/templates/create', {
             templateUrl: 'views/create-template.html',
             controller: 'CreateTemplateController'

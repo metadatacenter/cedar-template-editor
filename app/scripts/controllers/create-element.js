@@ -1,6 +1,6 @@
 'use strict';
 
-angularApp.controller('CreateElementController', function ($rootScope, $scope, $http) {
+angularApp.controller('CreateElementController', function ($rootScope, $scope, $http, $routeParams) {
 
   // Set page title variable when this controller is active
   $rootScope.pageTitle = 'Element Creator';
@@ -11,25 +11,33 @@ angularApp.controller('CreateElementController', function ($rootScope, $scope, $
   // Empty $scope object used to store values that get converted to their json-ld counterparts on the $scope.element object
   $scope.volatile = {};
 
-  // Create empty element object
-  $scope.element = {
-    "$schema": "http://json-schema.org/draft-04/schema#",
-    "@id": "",
-    "@type": "",
-    "title": "",
-    "description": "",
-    "guid": $rootScope.generateGUID(),
-    "type": "object",
-    "properties": {
-      "@type": {
-        "enum": []
-      }
-    },
-    "required": [
-      "@type"
-    ],
-    "additionalProperties": false
-  };
+  // Load existing element if $routeParams.id parameter is supplied
+  if ($routeParams.id) {
+    // Fetch existing element and assign to $scope.element property
+    return $http.get('/static-data/elements/'+$routeParams.id+'.json').then(function(response) {
+      $scope.element = response.data;
+    });
+  } else {
+    // If we're not loading an existing element then let's create a new empty $scope.element property
+    $scope.element = {
+      "$schema": "http://json-schema.org/draft-04/schema#",
+      "@id": "",
+      "@type": "",
+      "title": "",
+      "description": "",
+      "guid": $rootScope.generateGUID(),
+      "type": "object",
+      "properties": {
+        "@type": {
+          "enum": []
+        }
+      },
+      "required": [
+        "@type"
+      ],
+      "additionalProperties": false
+    };
+  }
 
   // Return true if element.properties object only contains default values
   $scope.isPropertiesEmpty = function() {
