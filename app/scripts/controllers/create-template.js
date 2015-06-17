@@ -121,15 +121,33 @@ angularApp.controller('CreateTemplateController', function ($rootScope, $scope, 
   };
 
   // Add existing element into the $scope.form.properties object
+  //$scope.addExistingElement = function(element) {
+  //  // Fetch existing element json data
+  //  return $http.get('/static-data/elements/'+element+'.json').then(function(response) {
+  //    // Convert response.data.title string to an acceptable object key string
+  //    var titleKey = $rootScope.underscoreText(response.data.title);
+  //    // Embed existing element into $scope.form.properties object
+  //    $scope.form.properties[titleKey] = response.data;
+  //  });
+  //};
   $scope.addExistingElement = function(element) {
-    // Fetch existing element json data
-    return $http.get('/static-data/elements/'+element+'.json').then(function(response) {
-      // Convert response.data.title string to an acceptable object key string
-      var titleKey = $rootScope.underscoreText(response.data.title);
-      // Embed existing element into $scope.form.properties object
-      $scope.form.properties[titleKey] = response.data;
-    });
+    // Embed existing element into $scope.form.properties object
+    $scope.form.properties[element.title] = element;
   };
+
+  // Function to load existing elements from database
+  $scope.loadElements = function() {
+    $http.get('http://localhost:9000/template_elements').
+      success(function(data) {
+        $scope.elements = data;
+      }).
+      error(function(data, status, headers, config) {
+        // Do something
+      });
+  }
+
+  // Load existing elements
+  $scope.loadElements();
 
   // Delete field from $scope.staging object
   $scope.deleteField = function (field){
