@@ -1,6 +1,6 @@
 'use strict';
 
-angularApp.controller('CreateTemplateController', function ($rootScope, $scope, $http, $q, $routeParams) {
+angularApp.controller('CreateTemplateController', function ($rootScope, $scope, $q, $routeParams, FormService) {
 
   // Set Page Title variable when this controller is active
   $rootScope.pageTitle = 'Template Creator';
@@ -12,8 +12,8 @@ angularApp.controller('CreateTemplateController', function ($rootScope, $scope, 
   // Load existing form if $routeParams.id parameter is supplied
   if ($routeParams.id) {
     // Fetch existing form and assign to $scope.form property
-    return $http.get('/static-data/forms/'+$routeParams.id+'.json').then(function(response) {
-      $scope.form = response.data;
+    FormService.form($routeParams.id).then(function(response) {
+      $scope.form = response;
     });
   } else {
     // If we're not loading an existing form then let's create a new empty $scope.form property
@@ -56,7 +56,9 @@ angularApp.controller('CreateTemplateController', function ($rootScope, $scope, 
 
   // Return true if form.properties object only contains default values
   $scope.isPropertiesEmpty = function() {
-    return  Object.keys($scope.form.properties).length > 3 ? false : true;
+    if ($scope.form) {
+      return  Object.keys($scope.form.properties).length > 3 ? false : true;
+    }
   };
 
   // Add new field into $scope.staging object
@@ -126,11 +128,11 @@ angularApp.controller('CreateTemplateController', function ($rootScope, $scope, 
   // Add existing element into the $scope.form.properties object
   $scope.addExistingElement = function(element) {
     // Fetch existing element json data
-    return $http.get('/static-data/elements/'+element+'.json').then(function(response) {
+    FormService.element(element).then(function(response) {
       // Convert response.data.title string to an acceptable object key string
-      var titleKey = $rootScope.underscoreText(response.data.title);
+      var titleKey = $rootScope.underscoreText(response.title);
       // Embed existing element into $scope.form.properties object
-      $scope.form.properties[titleKey] = response.data;
+      $scope.form.properties[titleKey] = response;
     });
   };
 
