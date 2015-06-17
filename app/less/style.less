@@ -234,7 +234,19 @@ i {
   }
 
   .right-body {
-    padding-right:0;
+
+    @media(min-width:@screen-sm-min) {
+      padding-right:0;
+    }
+
+    #element-description-container  > .form-group {
+      margin-top:20px;
+      margin-bottom:0;
+      @media(min-width:@screen-sm-min) {
+        margin-top:0px;
+        margin-bottom:inherit;
+      }
+    }
   }
 
   .form-control {
@@ -782,12 +794,16 @@ section.dashboard-elements {
       .cedar-svg {
         color:@brand-primary;
         position: absolute;
-        top: 40%;
+        top: 25%;
         left:50%;
         transform: translate(-50%, -50%);
 
         &:before {
           font-size:50px;
+        }
+
+        @media(min-width:@screen-xs-min) {
+          top:40%;
         }
       }
 
@@ -824,6 +840,14 @@ section.dashboard-elements {
           color:@white;
           padding:25px 15px;
           margin:0;
+          font-size:11px;
+
+          @media(min-width:@screen-xs-min) {
+            font-size:12px;
+          }
+          @media(min-width:@screen-sm-min) {
+            font-size:14px;
+          }
         }
 
         .edit-options {
