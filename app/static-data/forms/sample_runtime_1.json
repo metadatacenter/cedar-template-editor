@@ -1,5 +1,5 @@
 {
-  "_$schema": "http://json-schema.org/draft-04/schema#",
+  "$schema": "http://json-schema.org/draft-04/schema#",
   "@id": "http://metadatacenter.org/schemas/basic_study_design",
   "title": "Basic study design",
   "description": "Basic example of a template to describe a study",
@@ -24,7 +24,7 @@
       ]
     },
     "brief_title": {
-      "_$schema": "http://json-schema.org/draft-04/schema#",
+      "$schema": "http://json-schema.org/draft-04/schema#",
       "@id": "http://metadatacenter.org/schemas/brief_title",
       "type": "object",
       "properties": {
@@ -47,7 +47,7 @@
       "additionalProperties": false
     },
     "principal_investigator": {
-      "_$schema": "http://json-schema.org/draft-04/schema#",
+      "$schema": "http://json-schema.org/draft-04/schema#",
       "@id": "http://metadatacenter.org/schemas/principal_investigator",
       "title": "Principal Investigator",
       "type": "object",
@@ -59,7 +59,7 @@
           ]
         },
         "full_name": {
-          "_$schema": "http://json-schema.org/draft-04/schema#",
+          "$schema": "http://json-schema.org/draft-04/schema#",
           "@id": "http://metadatacenter.org/schemas/full_name",
           "type": "object",
           "properties": {
@@ -82,7 +82,7 @@
           "additionalProperties": false
         },
         "institution": {
-          "_$schema": "http://json-schema.org/draft-04/schema#",
+          "$schema": "http://json-schema.org/draft-04/schema#",
           "@id": "http://metadatacenter.org/schemas/institution",
           "type": "object",
           "properties": {

@@ -13,7 +13,7 @@ angularApp.controller('CreateElementController', function($rootScope, $scope, $h
 
   // Create empty element object
   $scope.element = {
-    "_$schema": "http://json-schema.org/draft-04/schema#",
+    "$schema": "http://json-schema.org/draft-04/schema#",
     "@id": "",
     "@type": "",
     "title": "",
@@ -40,7 +40,7 @@ angularApp.controller('CreateElementController', function($rootScope, $scope, $h
   $scope.addFieldToStaging = function(fieldType) {
 
     var field = {
-      "_$schema": "http://json-schema.org/draft-04/schema#",
+      "$schema": "http://json-schema.org/draft-04/schema#",
       "@id": "",
       "type": "object",
       "properties": {

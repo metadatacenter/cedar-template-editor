@@ -1,5 +1,5 @@
 {
-  "_$schema": "",
+  "$schema": "",
   "@id": "",
   "title": "Contact Information",
   "guid": "34cc0dbf-9aee-4d1a-b8b7-ad385a38228e",
@@ -10,7 +10,7 @@
       "enum": []
     },
     "first_name": {
-      "_$schema": "",
+      "$schema": "",
       "@id": "",
       "type": "object",
       "properties": {
@@ -34,7 +34,7 @@
       "additionalProperties": false
     },
     "last_name": {
-      "_$schema": "",
+      "$schema": "",
       "@id": "",
       "type": "object",
       "properties": {
@@ -58,7 +58,7 @@
       "additionalProperties": false
     },
     "email_address": {
-      "_$schema": "",
+      "$schema": "",
       "@id": "",
       "type": "object",
       "properties": {
@@ -82,7 +82,7 @@
       "additionalProperties": false
     },
     "phone_number": {
-      "_$schema": "",
+      "$schema": "",
       "@id": "",
       "type": "object",
       "properties": {
@@ -106,7 +106,7 @@
       "additionalProperties": false
     },
     "background_information_optional": {
-      "_$schema": "",
+      "$schema": "",
       "@id": "",
       "type": "object",
       "properties": {
