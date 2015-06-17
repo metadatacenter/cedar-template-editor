@@ -1,0 +1,75 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "@id": "",
+  "@type": "",
+  "title": "Birth Date",
+  "description": "Simple element to select date of birth",
+  "guid": "f6529be3-2e80-42bd-90fe-d3a33813c4d0",
+  "type": "object",
+  "properties": {
+    "@type": {
+      "enum": []
+    },
+    "are_you_18_years_or_older?": {
+      "$schema": "http://json-schema.org/draft-04/schema#",
+      "@id": "",
+      "type": "object",
+      "properties": {
+        "@type": {
+          "enum": []
+        },
+        "value": {
+          "type": "string",
+          "id": "14cccf8e-4a1b-4b61-bf4d-26ac4720146d",
+          "title": "Are you 18 years or older?",
+          "description": "",
+          "input_type": "checkbox",
+          "required": false,
+          "created_at": 1434581647731,
+          "options": [
+            {
+              "text": "Yes"
+            }
+          ],
+          "model": {
+            "value": {}
+          }
+        }
+      },
+      "required": [
+        "@type",
+        "value"
+      ],
+      "additionalProperties": false
+    },
+    "please_select_your_date_of_birth": {
+      "$schema": "http://json-schema.org/draft-04/schema#",
+      "@id": "",
+      "type": "object",
+      "properties": {
+        "@type": {
+          "enum": []
+        },
+        "value": {
+          "type": "string",
+          "id": "05df4a88-b290-4d42-ba0c-71a86840fcdf",
+          "title": "Please select your date of birth",
+          "description": "",
+          "input_type": "date",
+          "required": true,
+          "created_at": 1434581734129,
+          "date_type": "single-date"
+        }
+      },
+      "required": [
+        "@type",
+        "value"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "@type"
+  ],
+  "additionalProperties": false
+}
