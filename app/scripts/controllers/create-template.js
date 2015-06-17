@@ -1,56 +1,58 @@
 'use strict';
 
-angularApp.controller('CreateTemplateController', function ($rootScope, $scope, $http, $q) {
+angularApp.controller('CreateTemplateController', function ($rootScope, $scope, $http, $q, $routeParams) {
 
   // Set Page Title variable when this controller is active
   $rootScope.pageTitle = 'Template Creator';
-
   // Create staging area to create/edit fields before they get added to $scope.form.properties
   $scope.staging = {};
-
-  // Setting $scope variable to toggle for whether this template is a favorite
+  // Setting default false flag for $scope.favorite
   $scope.favorite = false;
-  $scope.toggleFavorite = function() {
-    $scope.favorite = $scope.favorite === true ? false : true;
-    $scope.form.favorite = $scope.favorite;
-  }
 
-  // Create empty $scope.form object
-  $scope.form = {
-    "$schema": "http://json-schema.org/draft-04/schema#",
-    "@id": "",
-    "title": "",
-    "description": "",
-    "favorite": $scope.favorite,
-    "guid": $rootScope.generateGUID(),
-    "pages": [],
-    "type": "object",
-    "properties": {
-      "@context": {
-        "type": [
-          "object",
-          "string",
-          "array",
-          "null"
-        ]
+  // Load existing form if $routeParams.id parameter is supplied
+  if ($routeParams.id) {
+    // Fetch existing form and assign to $scope.form property
+    return $http.get('/static-data/forms/'+$routeParams.id+'.json').then(function(response) {
+      $scope.form = response.data;
+    });
+  } else {
+    // If we're not loading an existing form then let's create a new empty $scope.form property
+    $scope.form = {
+      "$schema": "http://json-schema.org/draft-04/schema#",
+      "@id": "",
+      "title": "",
+      "description": "",
+      "favorite": $scope.favorite,
+      "guid": $rootScope.generateGUID(),
+      "pages": [],
+      "type": "object",
+      "properties": {
+        "@context": {
+          "type": [
+            "object",
+            "string",
+            "array",
+            "null"
+          ]
+        },
+        "@id": {
+          "type": "string",
+          "format": "uri"
+        },
+        "@type": {
+          "enum": [
+            "http://metadatacenter.org/schemas/BasicStudyDesign"
+          ]
+        }
       },
-      "@id": {
-        "type": "string",
-        "format": "uri"
-      },
-      "@type": {
-        "enum": [
-          "http://metadatacenter.org/schemas/BasicStudyDesign"
-        ]
-      }
-    },
-    "required": [
-      "@context",
-      "@id",
-      "@type"
-    ],
-    "additionalProperties" : false
-  };
+      "required": [
+        "@context",
+        "@id",
+        "@type"
+      ],
+      "additionalProperties" : false
+    };
+  }
 
   // Return true if form.properties object only contains default values
   $scope.isPropertiesEmpty = function() {
@@ -180,4 +182,10 @@ angularApp.controller('CreateTemplateController', function ($rootScope, $scope, 
       // Database service save() call could go here
     });
   };
+
+  // Setting $scope variable to toggle for whether this template is a favorite
+  $scope.toggleFavorite = function() {
+    $scope.favorite = $scope.favorite === true ? false : true;
+    $scope.form.favorite = $scope.favorite;
+  }
 });

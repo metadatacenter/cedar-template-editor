@@ -80,7 +80,7 @@
             <div class="empty-text" ng-show="isPropertiesEmpty()">
               <p>Add an element or create a new field item in order to preview form.</p>
             </div>
-            <form-preview form="form"></form-preview>
+            <form-preview form="form" ng-if="form"></form-preview>
           </div><!-- /.form-preview -->
         </div> <!-- /#form-preview-section -->
 

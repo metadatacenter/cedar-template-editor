@@ -9896,6 +9896,9 @@ section.dashboard-elements .margin-reset-row .template-item {
     width: calc(33.33333333% - 20px);
   }
 }
+section.dashboard-elements .margin-reset-row .template-item a {
+  text-decoration: none;
+}
 section.dashboard-elements .margin-reset-row .template-item .cedar-svg {
   color: #339933;
   position: absolute;
