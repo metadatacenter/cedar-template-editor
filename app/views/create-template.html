@@ -40,7 +40,7 @@
           <button type="button" class="btn btn-more-items dropdown-toggle" data-toggle="dropdown" data-target=".item-menu" aria-expanded="false" dropdown-toggle>More Elements <i class="fa fa-angle-down fa-2x"></i>
           </button>
           <ul class="dropdown-menu item-menu" role="menu">
-            <li class="item" ng-repeat="e in elements track by $index" ng-show="$index > 4"><a ng-click="addExistingElement(e)"><i class="cedar-svg-element"></i>{{e.title}}</a></li>
+            <li class="item" ng-repeat="e in elements track by $index" ng-if="$index > 4"><a ng-click="addExistingElement(e)"><i class="cedar-svg-element"></i>{{e.title}}</a></li>
             <!--<li class="item"><a class="disabled" ng-click=""><i class="cedar-svg-element"></i>Element Name</a></li>-->
           </ul>
         </div>
