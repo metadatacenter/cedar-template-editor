@@ -131,8 +131,9 @@ angularApp.controller('CreateTemplateController', function ($rootScope, $scope, 
   //  });
   //};
   $scope.addExistingElement = function(element) {
+    var titleKey = $rootScope.underscoreText(element.title);
     // Embed existing element into $scope.form.properties object
-    $scope.form.properties[element.title] = element;
+    $scope.form.properties[titleKey] = element;
   };
 
   // Function to load existing elements from database
@@ -148,6 +149,19 @@ angularApp.controller('CreateTemplateController', function ($rootScope, $scope, 
 
   // Load existing elements
   $scope.loadElements();
+
+  // Alerts
+  $scope.resetAlerts = function() {
+    $scope.alerts = [];
+  }
+
+  $scope.addAlert = function(type, msg) {
+    $scope.alerts.push({type: type, msg: msg});
+  };
+
+  $scope.closeAlert = function(index) {
+    $scope.alerts.splice(index, 1);
+  };
 
   // Delete field from $scope.staging object
   $scope.deleteField = function (field){
@@ -167,4 +181,25 @@ angularApp.controller('CreateTemplateController', function ($rootScope, $scope, 
       }
     });
   };
+
+  // Stores the template into the database
+  $scope.store = function() {
+    $scope.resetAlerts();
+    // Check that the element name is not empty
+    if ($scope.form.title.length == 0) {
+      $scope.addAlert('danger', 'Please provide a name for the Template.');
+    }
+    else {
+      var json = angular.toJson($scope.form);
+      console.log(json);
+      $http.post('http://localhost:9000/templates', json).
+        success(function(data) {
+          $scope.addAlert('success', 'The template \"' + data.title + '\" has been created.');
+        }).
+        error(function(data, status, headers, config) {
+          $scope.addAlert('danger', "Problem creating the template.");
+        });
+    }
+  };
+  
 });
