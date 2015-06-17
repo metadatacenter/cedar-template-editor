@@ -9,6 +9,11 @@ angularApp.controller('CreateTemplateController', function ($rootScope, $scope, 
   // Setting default false flag for $scope.favorite
   $scope.favorite = false;
 
+  // Using form service to load list of existing elements to embed into new form
+  FormService.elementList().then(function(response) {
+    $scope.elementList = response;
+  });
+
   // Load existing form if $routeParams.id parameter is supplied
   if ($routeParams.id) {
     // Fetch existing form and assign to $scope.form property

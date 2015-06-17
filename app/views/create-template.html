@@ -30,8 +30,7 @@
       <div class="left-sidebar col-sm-3">
         <p class="add-item">Add Element</p>
         <ul class="element-menu" role="menu">
-          <li class="item"><a ng-click="addExistingElement('fb056461-a80d-4ac2-a1ea-6501aa34d34d')"><i class="cedar-svg-element"></i>Principal Investigator</a></li>
-          <li class="item"><a ng-click="addExistingElement('34cc0dbf-9aee-4d1a-b8b7-ad385a38228e')"><i class="cedar-svg-element"></i>Contact Information</a></li>
+          <li ng-repeat="element in elementList" class="item"><a ng-click="addExistingElement(element.guid)"><i class="cedar-svg-element"></i>{{element.title}}</a></li>
         </ul>
 
         <div class="more-items" dropdown>

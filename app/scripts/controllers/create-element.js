@@ -11,6 +11,11 @@ angularApp.controller('CreateElementController', function ($rootScope, $scope, $
   // Empty $scope object used to store values that get converted to their json-ld counterparts on the $scope.element object
   $scope.volatile = {};
 
+  // Using form service to load list of existing elements to embed into new element
+  FormService.elementList().then(function(response) {
+    $scope.elementList = response;
+  });
+
   // Load existing element if $routeParams.id parameter is supplied
   if ($routeParams.id) {
     // Fetch existing element and assign to $scope.element property
