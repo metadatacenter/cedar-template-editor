@@ -111,8 +111,9 @@ angularApp.controller('CreateElementController', function($rootScope, $scope, $h
   //  });
   //};
   $scope.addExistingElement = function(element) {
+    var titleKey = $rootScope.underscoreText(element.title);
     // Embed existing element into $scope.form.properties object
-    $scope.element.properties[element.title] = element;
+    $scope.element.properties[titleKey] = element;
   };
 
   // Delete field from $scope.staging object
@@ -170,12 +171,12 @@ angularApp.controller('CreateElementController', function($rootScope, $scope, $h
     //});
   };
 
-  // Reverts to empty form and removes all previously added fields/elements
+  // Stores the element into the database
   $scope.store = function() {
     $scope.resetAlerts();
     // Check that the element name is not empty
     if ($scope.element.title.length == 0) {
-      $scope.addAlert('danger', 'Please provide an Element Name');
+      $scope.addAlert('danger', 'Please provide a name for the Element.');
     }
     else {
       //console.log($scope.element);
