@@ -1,59 +1,69 @@
 'use strict';
 
-angularApp.controller('CreateTemplateController', function ($rootScope, $scope, $http) {
+angularApp.controller('CreateTemplateController', function ($rootScope, $scope, $q, $routeParams, FormService) {
 
   // Set Page Title variable when this controller is active
   $rootScope.pageTitle = 'Template Creator';
-
   // Create staging area to create/edit fields before they get added to $scope.form.properties
   $scope.staging = {};
-
-  // Setting $scope variable to toggle for whether this template is a favorite
+  // Setting default false flag for $scope.favorite
   $scope.favorite = false;
-  $scope.toggleFavorite = function() {
-    $scope.favorite = $scope.favorite === true ? false : true;
-    $scope.form.favorite = $scope.favorite;
-  }
 
-  // Create empty $scope.form object
-  $scope.form = {
-    "$schema": "http://json-schema.org/draft-04/schema#",
-    "@id": "",
-    "title": "",
-    "description": "",
-    "favorite": $scope.favorite,
-    "guid": $rootScope.generateGUID(),
-    "type": "object",
-    "properties": {
-      "@context": {
-        "type": [
-          "object",
-          "string",
-          "array",
-          "null"
-        ]
+  // Using form service to load list of existing elements to embed into new form
+  FormService.elementList().then(function(response) {
+    $scope.elementList = response;
+  });
+
+  // Load existing form if $routeParams.id parameter is supplied
+  if ($routeParams.id) {
+    // Fetch existing form and assign to $scope.form property
+    FormService.form($routeParams.id).then(function(response) {
+      $scope.form = response;
+    });
+  } else {
+    // If we're not loading an existing form then let's create a new empty $scope.form property
+    $scope.form = {
+      "$schema": "http://json-schema.org/draft-04/schema#",
+      "@id": "",
+      "title": "",
+      "description": "",
+      "favorite": $scope.favorite,
+      "guid": $rootScope.generateGUID(),
+      "pages": [],
+      "type": "object",
+      "properties": {
+        "@context": {
+          "type": [
+            "object",
+            "string",
+            "array",
+            "null"
+          ]
+        },
+        "@id": {
+          "type": "string",
+          "format": "uri"
+        },
+        "@type": {
+          "enum": [
+            "http://metadatacenter.org/schemas/BasicStudyDesign"
+          ]
+        }
       },
-      "@id": {
-        "type": "string",
-        "format": "uri"
-      },
-      "@type": {
-        "enum": [
-          "http://metadatacenter.org/schemas/BasicStudyDesign"
-        ]
-      }
-    },
-    "required": [
-      "@context",
-      "@id",
-      "@type"
-    ],
-    "additionalProperties" : false
-  };
+      "required": [
+        "@context",
+        "@id",
+        "@type"
+      ],
+      "additionalProperties" : false
+    };
+  }
 
   // Return true if form.properties object only contains default values
   $scope.isPropertiesEmpty = function() {
-    return  Object.keys($scope.form.properties).length > 3 ? false : true;
+    if ($scope.form) {
+      return  Object.keys($scope.form.properties).length > 3 ? false : true;
+    }
   };
 
   // Add new field into $scope.staging object
@@ -123,11 +133,11 @@ angularApp.controller('CreateTemplateController', function ($rootScope, $scope, 
   // Add existing element into the $scope.form.properties object
   $scope.addExistingElement = function(element) {
     // Fetch existing element json data
-    return $http.get('/static-data/elements/'+element+'.json').then(function(response) {
+    FormService.element(element).then(function(response) {
       // Convert response.data.title string to an acceptable object key string
-      var titleKey = $rootScope.underscoreText(response.data.title);
+      var titleKey = $rootScope.underscoreText(response.title);
       // Embed existing element into $scope.form.properties object
-      $scope.form.properties[titleKey] = response.data;
+      $scope.form.properties[titleKey] = response;
     });
   };
 
@@ -139,14 +149,33 @@ angularApp.controller('CreateTemplateController', function ($rootScope, $scope, 
 
   // Reverts to empty form and removes all previously added fields/elements
   $scope.reset = function() {
-    // Reset both the form formFields object and formFieldsOrder array to empty 
-    $scope.$$childTail.formFields = {};
-    $scope.$$childTail.formFieldsOrder = [];
     // Loop through $scope.form.properties object and delete each field leaving default json-ld syntax in place
     angular.forEach($scope.form.properties, function(value, key) {
       if ($rootScope.ignoreKey(key)) {
         delete $scope.form.properties[key];  
       }
     });
+    // Broadcast the reset event which will trigger the emptying of formFields formFieldsOrder 
+    $scope.$broadcast('resetForm');
   };
+
+  // Setting $scope variable to toggle for whether this template is a favorite
+  $scope.toggleFavorite = function() {
+    $scope.favorite = $scope.favorite === true ? false : true;
+    $scope.form.favorite = $scope.favorite;
+  };
+
+  $scope.saveTemplate = function() {
+    // Broadcast the initialize Page Array event which will trigger the creation of the $scope.form 'pages' array 
+    $scope.$broadcast('initPageArray');
+  };
+
+  // Event listener for when the pages array is finished building
+  $scope.$on('finishPageArray', function(event, orderArray) {
+    // Assigning array returned to $scope.form.pages property
+    $scope.form.pages = orderArray;
+    // Console.log full working form example on save
+    console.log($scope.form);
+    // Database service save() call could go here
+  });
 });

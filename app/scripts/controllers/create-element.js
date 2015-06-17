@@ -1,6 +1,6 @@
 'use strict';
 
-angularApp.controller('CreateElementController', function ($rootScope, $scope, $http) {
+angularApp.controller('CreateElementController', function ($rootScope, $scope, $routeParams, FormService) {
 
   // Set page title variable when this controller is active
   $rootScope.pageTitle = 'Element Creator';
@@ -11,29 +11,44 @@ angularApp.controller('CreateElementController', function ($rootScope, $scope, $
   // Empty $scope object used to store values that get converted to their json-ld counterparts on the $scope.element object
   $scope.volatile = {};
 
-  // Create empty element object
-  $scope.element = {
-    "$schema": "http://json-schema.org/draft-04/schema#",
-    "@id": "",
-    "@type": "",
-    "title": "",
-    "description": "",
-    "guid": $rootScope.generateGUID(),
-    "type": "object",
-    "properties": {
-      "@type": {
-        "enum": []
-      }
-    },
-    "required": [
-      "@type"
-    ],
-    "additionalProperties": false
-  };
+  // Using form service to load list of existing elements to embed into new element
+  FormService.elementList().then(function(response) {
+    $scope.elementList = response;
+  });
+
+  // Load existing element if $routeParams.id parameter is supplied
+  if ($routeParams.id) {
+    // Fetch existing element and assign to $scope.element property
+    FormService.element($routeParams.id).then(function(response) {
+      $scope.element = response;
+    });
+  } else {
+    // If we're not loading an existing element then let's create a new empty $scope.element property
+    $scope.element = {
+      "$schema": "http://json-schema.org/draft-04/schema#",
+      "@id": "",
+      "@type": "",
+      "title": "",
+      "description": "",
+      "guid": $rootScope.generateGUID(),
+      "type": "object",
+      "properties": {
+        "@type": {
+          "enum": []
+        }
+      },
+      "required": [
+        "@type"
+      ],
+      "additionalProperties": false
+    };
+  }
 
   // Return true if element.properties object only contains default values
   $scope.isPropertiesEmpty = function() {
-    return  Object.keys($scope.element.properties).length > 1 ? false : true;
+    if ($scope.form) {
+      return  Object.keys($scope.element.properties).length > 1 ? false : true;
+    }
   };
 
   // Add new field into $scope.staging object
@@ -103,10 +118,10 @@ angularApp.controller('CreateElementController', function ($rootScope, $scope, $
   // Add existing element to the element object
   $scope.addExistingElement = function(element) {
     // Fetch existing element json data
-    return $http.get('/static-data/elements/'+element+'.json').then(function(response) {
+    FormService.element(element).then(function(response) {
       // Add existing element to the $scope.element.properties object with it's title converted to an object key
-      var titleKey = $rootScope.underscoreText(response.data.title);
-      $scope.element.properties[titleKey] = response.data;
+      var titleKey = $rootScope.underscoreText(response.title);
+      $scope.element.properties[titleKey] = response;
     });
   };
 

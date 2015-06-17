@@ -1,7 +1,8 @@
 <div class="element-header">
   <p class="element-name-label"><i class="cedar-svg-element"></i>{{key | keyToTitle}}</p>
-  <div class="preview-edit-options" ng-include="'views/partials/preview-edit-options.html'"></div>
+  <div ng-if="preview" class="preview-edit-options" ng-include="'views/partials/preview-edit-options.html'"></div>
 </div>
-<div ng-repeat="(key, field) in element">
+<div ng-repeat="field in element">
+	<!-- {{field}} -->
   <field-directive field="field" model="field.model" directory="render"></field-directive>
 </div>

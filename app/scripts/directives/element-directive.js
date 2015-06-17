@@ -7,7 +7,8 @@ angularApp.directive('elementDirective', function () {
     scope: {
       key:'=',
       element:'=',
-      delete: '&'
+      delete: '&',
+      preview: '='
     }
   };
 });

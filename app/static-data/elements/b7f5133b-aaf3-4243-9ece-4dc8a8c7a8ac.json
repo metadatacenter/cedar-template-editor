@@ -1,0 +1,99 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "@id": "",
+  "@type": "",
+  "title": "Identify Person",
+  "description": "Simple person identifier element",
+  "guid": "b7f5133b-aaf3-4243-9ece-4dc8a8c7a8ac",
+  "type": "object",
+  "properties": {
+    "@type": {
+      "enum": []
+    },
+    "first_name": {
+      "$schema": "http://json-schema.org/draft-04/schema#",
+      "@id": "",
+      "type": "object",
+      "properties": {
+        "@type": {
+          "enum": []
+        },
+        "value": {
+          "type": "string",
+          "id": "53bf8fc3-ca33-4744-a174-1d11aa37bdd7",
+          "title": "First Name",
+          "description": "Enter your first name",
+          "input_type": "textfield",
+          "required": false,
+          "created_at": 1434581473679
+        }
+      },
+      "required": [
+        "@type",
+        "value"
+      ],
+      "additionalProperties": false
+    },
+    "last_name": {
+      "$schema": "http://json-schema.org/draft-04/schema#",
+      "@id": "",
+      "type": "object",
+      "properties": {
+        "@type": {
+          "enum": []
+        },
+        "value": {
+          "type": "string",
+          "id": "72e0c98b-f3ad-4bd1-a932-6f98908340c0",
+          "title": "Last Name",
+          "description": "Enter your last name",
+          "input_type": "textfield",
+          "required": false,
+          "created_at": 1434581482240
+        }
+      },
+      "required": [
+        "@type",
+        "value"
+      ],
+      "additionalProperties": false
+    },
+    "gender": {
+      "$schema": "http://json-schema.org/draft-04/schema#",
+      "@id": "",
+      "type": "object",
+      "properties": {
+        "@type": {
+          "enum": []
+        },
+        "value": {
+          "type": "string",
+          "id": "a8295954-8a42-4812-adfb-87916fbe4c60",
+          "title": "Gender",
+          "description": "",
+          "input_type": "radio",
+          "required": false,
+          "created_at": 1434581509363,
+          "options": [
+            {
+              "text": "Male"
+            },
+            {
+              "text": "Female"
+            }
+          ],
+          "model": {}
+        }
+      },
+      "required": [
+        "@type",
+        "value"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "@type"
+  ],
+  "additionalProperties": false
+}

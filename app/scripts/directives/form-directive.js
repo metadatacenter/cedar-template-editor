@@ -2,14 +2,22 @@
 
 angularApp.directive('formDirective', function ($rootScope, $document, $timeout) {
   return {
-    controller: function($scope){
-
+    templateUrl: './views/directive-templates/form-render.html',
+    restrict: 'E',
+    scope: {
+      page:'=',
+      form:'='
+    },
+    controller: function($scope) {
       // Initializing the empty model to submit data to
       $scope.model = {
         "@context": {}
       };
-      // Initializing array to loop through to call field-directive
-      $scope.formFields = [];
+
+      // $scope.formFields object to loop through to call field-directive
+      $scope.formFields = {};
+      // $scope.formFieldsOrder array to loop over for proper ordering of items/elements
+      $scope.formFieldsOrder = [];
 
       $scope.addPopover = function() {
         //Initializing Bootstrap Popover fn for each item loaded
@@ -45,6 +53,20 @@ angularApp.directive('formDirective', function ($rootScope, $document, $timeout)
                   if(subvalue.properties.hasOwnProperty('value')) {
                     // Field level reached, create new object in $scope.formFields;
                     $scope.fieldLevelReached(subkey, subvalue.properties.value, key);
+                  } else {
+                    // Case for element with embedded elements - third level of nesting 
+                    angular.forEach(subvalue.properties, function(tertiaryValue, tertiaryKey) {
+                      if ($rootScope.ignoreKey(tertiaryKey)) {
+                        // Elements found marked as [tertiaryKey], embedding within existing [parentKey]
+                        // and [key] paramters
+                        $scope.model[key][subkey][tertiaryKey] = {};
+                        // Check if we've found field level properties object
+                        if (tertiaryValue.properties.hasOwnProperty('value')) {
+                          // Field level reached, create new object in $scope.formFields;
+                          $scope.fieldLevelReached(tertiaryKey, tertiaryValue.properties.value, subkey);
+                        }
+                      }
+                    });
                   }
                 }
               });
@@ -54,31 +76,45 @@ angularApp.directive('formDirective', function ($rootScope, $document, $timeout)
       };
 
       $scope.fieldLevelReached = function(key, params, parentKey) {
-        // Create new empty object to stuff with properties
-        var fieldObject = {};
-        // Binding newly created fieldObject model to the $scope.model object for Angular's 2 way binding
-        fieldObject.model = $scope.model[key];
-
-        // If field element is nested within a parent element, we need an additional layer of definition
+        
         if (parentKey !== undefined) {
-          fieldObject.model = $scope.model[parentKey][key];
-        }
+          // If these are nested fields the parent key will be the element they belong to,
+          // this element key is needed for proper grouping in the rendering preview
+          $scope.formFields[parentKey] = $scope.formFields[parentKey] || {};
+          $scope.formFields[parentKey][key] = params;
 
-        // This params object is how we will render input fields from the object of parameters
-        fieldObject.field = params;
-        $scope.formFields.push(fieldObject);
+          // Binding $scope.model to local model for output serialization with proper element nesting
+          $scope.model[parentKey][key] = params.model;
+
+          // $scope.formFieldsOrder will be used for sorting order of $scope.formFields
+          if ($scope.formFieldsOrder.indexOf(parentKey) == -1) {
+            $scope.formFieldsOrder.push(parentKey);
+          }
+        } else {
+          // These are field level objects with no parent element grouping
+          $scope.formFields[key] = $scope.formFields[key] || {};
+          $scope.formFields[key] = params;
+
+          // Binding $scope.model to local model for output serialization
+          $scope.model[key] = params.model;
+
+          // $scope.formFieldsOrder will be used for sorting order of $scope.formFields
+          if ($scope.formFieldsOrder.indexOf(key) == -1) {
+            $scope.formFieldsOrder.push(key);
+          }
+        }
       };
 
-      // Using Angular's $watch function to call $sceop.parseForm on form.properties initial population and on update
+      // Angular's $watch function to call $scope.parseForm on form.properties initial population and on update
       $scope.$watch('form.properties', function () {
         $scope.parseForm($scope.form);
         $scope.addPopover();
       }, true);
-    },
-    templateUrl: './views/directive-templates/form-render.html',
-    restrict: 'E',
-    scope: {
-        form:'='
+
+      // Angular $watch function to run the Bootstrap Popover initialization on new form elements when they load
+      $scope.$watch('page', function () {
+        $scope.addPopover();
+      });
     }
   };
 });

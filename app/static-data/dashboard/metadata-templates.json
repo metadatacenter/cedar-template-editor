@@ -12,9 +12,9 @@
   	"favorite": true
 	},
 	{
-		"title": "Advanced study design",
-	  "description": "Advanced example of a template to describe a study",
-	  "guid": "1a5630de-b1f2-44b0-9079-4361bb99e998",
+		"title": "Basic Paging Example Form",
+	  "description": "Sample form with paging included",
+	  "guid": "ec0741ab-986c-43f7-b9ba-3994bc9a668d",
 	  "favorite": false
 	}
 ]
