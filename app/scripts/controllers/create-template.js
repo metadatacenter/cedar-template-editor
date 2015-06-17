@@ -144,50 +144,33 @@ angularApp.controller('CreateTemplateController', function ($rootScope, $scope, 
 
   // Reverts to empty form and removes all previously added fields/elements
   $scope.reset = function() {
-    // Reset both the form formFields object and formFieldsOrder array to empty 
-    $scope.$$childTail.formFields = {};
-    $scope.$$childTail.formFieldsOrder = [];
     // Loop through $scope.form.properties object and delete each field leaving default json-ld syntax in place
     angular.forEach($scope.form.properties, function(value, key) {
       if ($rootScope.ignoreKey(key)) {
         delete $scope.form.properties[key];  
       }
     });
-  };
-
-  $scope.addToPages = function() {
-    var orderArray = [],
-        dimension = 0;
-    // Return promise so $scope.saveTemplate can submit $scope.form once $scope.form.pages array is properly filled
-    return $q(function(resolve, reject) {
-      // loop through $scope.$$childTail.formFieldsOrder and build pages array
-      angular.forEach($scope.$$childTail.formFieldsOrder, function(field, index) {
-        // If item added is of type Page Break, jump into next page array for storage of following fields
-        if ($scope.form.properties[field].properties.value && $scope.form.properties[field].properties.value.input_type == 'page-break') {
-          dimension ++;
-        }
-        // Push field key into page array
-        orderArray[dimension] = orderArray[dimension] || [];
-        orderArray[dimension].push(field);
-      });
-      // Resolve promise
-      resolve(orderArray);
-    });
-  };
-
-  $scope.saveTemplate = function() {
-    $scope.addToPages().then(function(result) {
-      // Assigning array returned from $scope.addToPages to $scope.form.pages property
-      $scope.form.pages = result;
-      // Console.log full working form example on save
-      console.log($scope.form);
-      // Database service save() call could go here
-    });
+    // Broadcast the reset event which will trigger the emptying of formFields formFieldsOrder 
+    $scope.$broadcast('resetForm');
   };
 
   // Setting $scope variable to toggle for whether this template is a favorite
   $scope.toggleFavorite = function() {
     $scope.favorite = $scope.favorite === true ? false : true;
     $scope.form.favorite = $scope.favorite;
-  }
+  };
+
+  $scope.saveTemplate = function() {
+    // Broadcast the initialize Page Array event which will trigger the creation of the $scope.form 'pages' array 
+    $scope.$broadcast('initPageArray');
+  };
+
+  // Event listener for when the pages array is finished building
+  $scope.$on('finishPageArray', function(event, orderArray) {
+    // Assigning array returned to $scope.form.pages property
+    $scope.form.pages = orderArray;
+    // Console.log full working form example on save
+    console.log($scope.form);
+    // Database service save() call could go here
+  });
 });

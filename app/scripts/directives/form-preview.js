@@ -95,6 +95,30 @@ angularApp.directive('formPreview', function ($rootScope, $document, $timeout) {
         }
       };
 
+      // Listening for event from parent $scope to reset the form
+      $scope.$on('resetForm', function (event) {
+        $scope.formFields = {};
+        $scope.formFieldsOrder = [];
+      });
+
+      // Listening for event from parent $scope to reset the form
+      $scope.$on('initPageArray', function (event) {
+        var orderArray = [],
+            dimension = 0;
+        // loop through $scope.formFieldsOrder and build pages array
+        angular.forEach($scope.formFieldsOrder, function(field, index) {
+          // If item added is of type Page Break, jump into next page array for storage of following fields
+          if ($scope.form.properties[field].properties.value && $scope.form.properties[field].properties.value.input_type == 'page-break') {
+            dimension ++;
+          }
+          // Push field key into page array
+          orderArray[dimension] = orderArray[dimension] || [];
+          orderArray[dimension].push(field);
+        });
+        // $emit properly formatted pages array back to parent $scope as orderArray
+        $scope.$emit('finishPageArray', orderArray);
+      });
+
       // Using Angular's $watch function to call $sceop.parseForm on form.properties initial population and on update
       $scope.$watch('form.properties', function () {
         $scope.parseForm($scope.form);
