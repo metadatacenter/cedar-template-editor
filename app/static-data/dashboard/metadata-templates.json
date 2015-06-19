@@ -16,5 +16,11 @@
 	  "description": "Sample form with paging included",
 	  "guid": "ec0741ab-986c-43f7-b9ba-3994bc9a668d",
 	  "favorite": false
+	},
+	{
+		"title": "Research Team",
+	  "description": "Sample template for research team embedding",
+	  "guid": "fd7f7062-93b6-435e-9d81-a050ab30158c",
+	  "favorite": false
 	}
 ]

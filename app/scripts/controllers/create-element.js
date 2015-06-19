@@ -46,10 +46,11 @@ angularApp.controller('CreateElementController', function ($rootScope, $scope, $
 
   // Return true if element.properties object only contains default values
   $scope.isPropertiesEmpty = function() {
-    if ($scope.form) {
+    if ($scope.element) {
       return  Object.keys($scope.element.properties).length > 1 ? false : true;
     }
   };
+  $scope.isPropertiesEmpty();
 
   // Add new field into $scope.staging object
   $scope.addFieldToStaging = function(fieldType){
