@@ -358,6 +358,21 @@ i {
 
       .form-preview {
         padding-top:15px;
+
+        p.type-label {
+          width: 100%;
+          text-align: right;
+          font-family: 'aktiv-grotesk-std';
+          font-weight: 400;
+          text-transform: uppercase;
+          color:@black;
+          margin-bottom:0;
+          transform:translateY(25px);
+
+          i {
+            color:@brand-primary;
+          }
+        }
       }
     }
 
@@ -630,11 +645,6 @@ p.add-item {
     border:1px dashed #ddd;
     text-align:center;
     padding:150px 0;
-  }
-
-  .extra-label-context {
-
-    .activ-grotesk-bold;
   }
 }
 
@@ -1038,11 +1048,12 @@ section.dashboard-elements {
 
     .date-label {
       display:block;
-      padding-bottom:5px;
+      padding-bottom:7px;
+      padding-left:5px;
       font-size:12px;
       text-transform:uppercase;
       .activ-grotesk-bold;
-      color:#666a;
+      color:#999;
     }
 
     .input-group-addon {
@@ -1083,9 +1094,31 @@ section.dashboard-elements {
     }
   }
 
-  .date-field-title {
-    color:#666;
+  .date-field-title,
+  .extra-label-context {
+    color:@black;
+    font-size:20px;
     margin-bottom:20px;
+  }
+
+  h3.section-title {
+    text-transform:uppercase;
+    font-size:24px;
+    color:@brand-primary;
+    border-top:1px solid #ddd;
+    padding-top:60px;
+    margin-top:0;
+
+    &.page-title {
+      border-top:none;
+      padding-top:0;
+    }
+  }
+
+  p.section-body {
+    font-size:16px;
+    line-height:28px;
+    margin-bottom:25px;
   }
 
   .date-type-toggle {

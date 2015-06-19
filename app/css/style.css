@@ -8458,7 +8458,7 @@ button.close {
   padding-left: 10px;
 }
 .checkbox.checkbox-primary label:before {
-  background-color: #999;
+  background-color: #ccc;
 }
 .checkbox input[type="checkbox"] {
   opacity: 0;
@@ -8514,7 +8514,7 @@ button.close {
   left: 0;
   top: 2px;
   margin-left: -20px;
-  border: 2px solid #999;
+  border: 1px solid #999;
   border-radius: 50%;
   background-color: #ccc;
   -webkit-transition: border 0.15s ease-in-out;
@@ -8524,10 +8524,10 @@ button.close {
   display: inline-block;
   position: absolute;
   content: " ";
-  width: 13px;
-  height: 13px;
-  left: 2px;
-  top: 4px;
+  width: 15px;
+  height: 15px;
+  left: 1px;
+  top: 3px;
   margin-left: -20px;
   border-radius: 50%;
   background-color: #999999;
@@ -9468,6 +9468,23 @@ i {
 .template-body .right-body #form-preview-section .form-preview {
   padding-top: 15px;
 }
+.template-body .right-body #form-item-config-section .form-preview p.type-label,
+.template-body .right-body #form-preview-section .form-preview p.type-label {
+  width: 100%;
+  text-align: right;
+  font-family: 'aktiv-grotesk-std';
+  font-weight: 400;
+  text-transform: uppercase;
+  color: #000000;
+  margin-bottom: 0;
+  -webkit-transform: translateY(25px);
+      -ms-transform: translateY(25px);
+          transform: translateY(25px);
+}
+.template-body .right-body #form-item-config-section .form-preview p.type-label i,
+.template-body .right-body #form-preview-section .form-preview p.type-label i {
+  color: #339933;
+}
 .template-body .right-body .preview-group {
   display: inline-block;
   vertical-align: middle;
@@ -9712,10 +9729,6 @@ p.add-item {
   border: 1px dashed #ddd;
   text-align: center;
   padding: 150px 0;
-}
-.right-body .extra-label-context {
-  font-family: 'aktiv-grotesk-std';
-  font-weight: 700;
 }
 /*
 ================================================
@@ -10135,12 +10148,13 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
 }
 .template-body form .date-group .date-label {
   display: block;
-  padding-bottom: 5px;
+  padding-bottom: 7px;
+  padding-left: 5px;
   font-size: 12px;
   text-transform: uppercase;
   font-family: 'aktiv-grotesk-std';
   font-weight: 700;
-  color: #666a;
+  color: #999;
 }
 .template-body form .date-group .input-group-addon {
   border-radius: 0;
@@ -10184,9 +10198,28 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
     margin-left: 10px;
   }
 }
-.template-body form .date-field-title {
-  color: #666;
+.template-body form .date-field-title,
+.template-body form .extra-label-context {
+  color: #000000;
+  font-size: 20px;
   margin-bottom: 20px;
+}
+.template-body form h3.section-title {
+  text-transform: uppercase;
+  font-size: 24px;
+  color: #339933;
+  border-top: 1px solid #ddd;
+  padding-top: 60px;
+  margin-top: 0;
+}
+.template-body form h3.section-title.page-title {
+  border-top: none;
+  padding-top: 0;
+}
+.template-body form p.section-body {
+  font-size: 16px;
+  line-height: 28px;
+  margin-bottom: 25px;
 }
 .template-body form .date-type-toggle {
   text-align: center;

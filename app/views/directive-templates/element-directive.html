@@ -2,7 +2,7 @@
   <p class="element-name-label"><i class="cedar-svg-element"></i>{{key | keyToTitle}}</p>
   <div ng-if="preview" class="preview-edit-options" ng-include="'views/partials/preview-edit-options.html'"></div>
 </div>
-
+	{{model}}
 <div ng-repeat="(key, field) in element">
 
 	<field-directive ng-if="field.input_type" field="field" model="field.model" directory="render"></field-directive>
