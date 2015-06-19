@@ -1,21 +1,6 @@
 'use strict';
 
-function sortByKey(array, key) {
-  return array.sort(function(a, b) {
-      var x = a[key]; var y = b[key];
-      return ((x < y) ? -1 : ((x > y) ? 1 : 0));
-  });
-}
-
-function sortBoolean(array, bool) {
-  return array.sort(function(a, b) {
-    var x = a[bool],
-        y = b[bool];
-    return ((x == y) ? -1 : ((x == true) ? -1 : 1));
-  });
-}
-
-angularApp.controller('DashboardController', function ($rootScope, $scope, $http) {
+angularApp.controller('DashboardController', function ($rootScope, $scope, FormService) {
 
 	// set Page Title variable when this controller is active
 	$rootScope.pageTitle = 'Dashboard';
@@ -26,10 +11,10 @@ angularApp.controller('DashboardController', function ($rootScope, $scope, $http
 
   // Define function to make async request to location of json objects and assign proper
   // scope array with returned list of data
-  $scope.getDefaults = function(fileName, scopeArray) {
-    $http.get('/static-data/dashboard/' + fileName + '.json').then(function(response) {
+  $scope.getDefaults = function(type, scopeArray) {
+    FormService[type]().then(function(response) {
       // Sort by the 'favorites' boolean parameter
-      var sortFavorites = sortBoolean(response.data, 'favorite');
+      var sortFavorites = $rootScope.sortBoolean(response, 'favorite');
       // Slicing the top 3 out into new array and returning to the template
       $scope[scopeArray] = sortFavorites.slice(0,3);
     }).catch(function(err) {
@@ -37,6 +22,6 @@ angularApp.controller('DashboardController', function ($rootScope, $scope, $http
     });
   };
   // Call getDefaults with parameters
-  $scope.getDefaults('metadata-templates', 'templateDefaults');
-  $scope.getDefaults('template-elements', 'elementDefaults');
+  $scope.getDefaults('formList', 'templateDefaults');
+  $scope.getDefaults('elementList', 'elementDefaults');
 });
