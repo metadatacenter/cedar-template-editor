@@ -9534,19 +9534,25 @@ i {
   min-width: 100%;
   position: relative;
 }
-.template-body .right-body .element-group .element-header .element-name-label {
-  margin-bottom: 25px;
-  text-align: left;
-  display: inline-block;
-}
-.template-body .right-body .element-group .element-header .element-name-label i {
-  color: #339933;
-  padding-right: 10px;
-}
 .template-body .right-body .element-group .element-header .preview-edit-options {
   float: right;
   margin-top: -4px;
   margin-bottom: 0;
+}
+.template-body .right-body .element-group .element-name-label {
+  margin-bottom: 25px;
+  text-align: left;
+  display: inline-block;
+}
+.template-body .right-body .element-group .element-name-label i {
+  color: #339933;
+  padding-right: 10px;
+}
+.template-body .right-body .element-group .nested-element {
+  border: 1px dashed #ddd;
+  padding: 10px;
+  margin-top: 15px;
+  margin-bottom: 15px;
 }
 @media (min-width: 768px) {
   .left-sidebar {

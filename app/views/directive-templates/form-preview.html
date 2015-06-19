@@ -1,5 +1,5 @@
 <form name="{{form.title}}" id="{{form.guid}}">
-  <!--Loop through top level "properties" in form element either field or element directive with property -->
+  <!--Loop through "formFieldsOrder" in form and call either field or element directive with property -->
   <div ng-repeat="field in formFieldsOrder" class="animate-fade">
     <span ng-if="formFields[field]">
       <span ng-if="formFields[field].input_type">

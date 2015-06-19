@@ -26,6 +26,13 @@ angularApp.service('FormService', function FormService($http) {
       }).catch(function(err) {
         console.log(err);
       });
+    },
+    formList: function() {
+      return $http.get('/static-data/dashboard/metadata-templates.json').then(function(response) {
+        return response.data;
+      }).catch(function(err) {
+        console.log(err);
+      });
     }
   };
 });

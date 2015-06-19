@@ -8,6 +8,11 @@ angularApp.controller('RuntimeController', function ($rootScope, $scope, FormSer
 	// Giving $scope access to window.location for checking active state
 	$scope.$location = $location;
 
+	// Using form service to load list of existing elements to embed into new element
+  FormService.formList().then(function(response) {
+    $scope.formList = response;
+  });
+
 	// Create empty form object
 	// Create empty currentPage array
 	// Default to page 1 on load (array index 0)
