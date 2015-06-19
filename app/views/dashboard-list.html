@@ -1,0 +1,42 @@
+<div class="container">
+	<div class="row">
+		<section id="dashboard-list" class="dashboard-elements">
+			<div class="col-sm-3">
+				<h2 class="section-title" ng-bind="sectionTitle"></h2>
+				<a href="{{itemType}}/create" class="btn btn-create-new">Create New <i class="cedar-svg-plus"></i></a>
+			</div>
+			<div class="col-sm-9">
+				<div class="dash-header">
+					<div class="input-group">
+			      <input type="text" class="form-control" placeholder="Search" aria-label="Search">
+			      <span class="input-group-btn">
+			        <button class="btn btn-default" type="button"><i class="fa fa-search"></i></button>
+			      </span>
+			    </div>
+				</div>
+				<div class="margin-reset-row">
+					<div class="template-item" ng-repeat="item in itemList" resize-height>
+						<a ng-href="{{itemType}}/edit/{{item.guid}}">
+							<i class="cedar-svg cedar-svg-metadata"></i>
+							<p class="name">{{item.title}}</p>
+							<div class="state-indication" ng-if="item.favorite">
+								<i class="cedar-svg-flag"></i>
+							</div>
+							<div class="back-panel">
+								<p class="description">{{item.description}}</p>
+								<div class="edit-options">
+									<span class="edit">
+										<i class="cedar-svg-pencil"></i>
+									</span>
+									<span class="remove">
+										<i class="cedar-svg-remove"></i>
+									</span>
+								</div>
+							</div><!-- ./back-panel -->
+						</a>
+					</div> <!-- /.template-item -->
+				</div> <!-- /.margin-reset-row -->
+			</div> <!-- /.col-sm-9 -->
+		</section>
+	</div> <!-- /.row -->
+</div> <!-- /.container -->
