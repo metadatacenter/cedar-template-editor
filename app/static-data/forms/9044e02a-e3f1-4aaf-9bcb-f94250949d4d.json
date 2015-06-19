@@ -55,6 +55,7 @@
       "title": "Principal Investigator",
       "type": "object",
       "description": "The lead researcher for the study",
+      "guid": "fb056461-a80d-4ac2-a1ea-6501aa34d34d",
       "properties": {
         "@type": {
           "enum": [
