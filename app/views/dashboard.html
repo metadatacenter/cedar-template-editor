@@ -11,7 +11,7 @@
 				</div>
 				<div class="margin-reset-row">
 					<div class="template-item" ng-repeat="template in templateDefaults" resize-height>
-						<a ng-href="templates/edit/{{template.guid}}">
+						<a ng-href="templates/edit/{{template._id.$oid}}">
 							<i class="cedar-svg cedar-svg-metadata"></i>
 							<p class="name">{{template.title}}</p>
 							<div class="state-indication" ng-if="template.favorite">
@@ -44,7 +44,7 @@
 				</div>
 				<div class="margin-reset-row">
 					<div class="template-item" ng-repeat="element in elementDefaults"resize-height>
-						<a ng-href="elements/edit/{{element.guid}}">
+						<a ng-href="elements/edit/{{element._id.$oid}}">
 							<i class="cedar-svg cedar-svg-element"></i>
 							<p class="name">{{element.title}}</p>
 							<div class="state-indication" ng-if="element.favorite">
