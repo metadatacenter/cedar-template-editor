@@ -8,14 +8,14 @@
 			<div class="col-sm-9">
 				<div class="dash-header">
 					<div class="input-group">
-			      <input type="text" class="form-control" placeholder="Search" aria-label="Search">
+			      <input type="text" class="form-control" placeholder="Search" aria-label="Search" ng-model="searchText">
 			      <span class="input-group-btn">
 			        <button class="btn btn-default" type="button"><i class="fa fa-search"></i></button>
 			      </span>
 			    </div>
 				</div>
 				<div class="margin-reset-row">
-					<div class="template-item" ng-repeat="item in itemList" resize-height>
+					<div class="template-item" ng-repeat="item in itemList | filter:searchText" resize-height>
 						<a ng-href="{{itemType}}/edit/{{item.guid}}">
 							<i class="cedar-svg cedar-svg-metadata"></i>
 							<p class="name">{{item.title}}</p>
