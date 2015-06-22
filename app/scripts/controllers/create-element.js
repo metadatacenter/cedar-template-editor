@@ -183,6 +183,9 @@ angularApp.controller('CreateElementController', function ($rootScope, $scope, $
     if ($scope.element.title.length == 0) {
       $scope.addAlert('danger', 'Please provide a name for the element.');
     }
+    if ($scope.element.description.length == 0) {
+      $scope.addAlert('danger', 'Please provide a short description for the element.');
+    }
     else {
       FormService.saveElement($scope.element).then(function(response) {
         $scope.addAlert('success', 'The element \"' + response.data.title + '\" has been created.');

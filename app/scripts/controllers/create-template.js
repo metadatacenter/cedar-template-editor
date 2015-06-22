@@ -214,6 +214,9 @@ angularApp.controller('CreateTemplateController', function ($rootScope, $scope, 
     if ($scope.form.title.length == 0) {
       $scope.addAlert('danger', 'Please provide a name for the template.');
     }
+    if ($scope.form.description.length == 0) {
+      $scope.addAlert('danger', 'Please provide a short description for the template.');
+    }
     else {
       FormService.saveTemplate($scope.form).then(function(response) {
         $scope.addAlert('success', 'The template \"' + response.data.title + '\" has been created.');
