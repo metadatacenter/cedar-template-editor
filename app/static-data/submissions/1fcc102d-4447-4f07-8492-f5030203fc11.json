@@ -1,0 +1,286 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "@id": "",
+  "title": "Research Team",
+  "description": "Sample template for research team embedding",
+  "favorite": true,
+  "guid": "fd7f7062-93b6-435e-9d81-a050ab30158c",
+  "pages": [
+    [
+      "research_team",
+      "principal_investigator"
+    ]
+  ],
+  "type": "object",
+  "properties": {
+    "@context": {
+      "type": [
+        "object",
+        "string",
+        "array",
+        "null"
+      ]
+    },
+    "@id": {
+      "type": "string",
+      "format": "uri"
+    },
+    "@type": {
+      "enum": [
+        "http://metadatacenter.org/schemas/BasicStudyDesign"
+      ]
+    },
+    "research_team": {
+      "$schema": "http://json-schema.org/draft-04/schema#",
+      "@id": "",
+      "@type": "",
+      "title": "Research Team",
+      "description": "Sample element to demonstrate embedding two levels deep",
+      "guid": "967f7ad0-d591-47de-9811-85519ac00f19",
+      "type": "object",
+      "properties": {
+        "@type": {
+          "enum": []
+        },
+        "principal_researcher": {
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "@id": "",
+          "@type": "",
+          "title": "Principal Researcher",
+          "description": "Sample element to demonstrate embedding",
+          "guid": "43223c86-1347-482f-8644-e3411b4aae80",
+          "type": "object",
+          "properties": {
+            "@type": {
+              "enum": []
+            },
+            "name": {
+              "$schema": "http://json-schema.org/draft-04/schema#",
+              "@id": "",
+              "@type": "",
+              "title": "Name",
+              "description": "Simple name element",
+              "guid": "29bc63ea-3a61-4a27-b9cb-e5c02dcac4cd",
+              "type": "object",
+              "properties": {
+                "@type": {
+                  "enum": []
+                },
+                "first_name": {
+                  "$schema": "http://json-schema.org/draft-04/schema#",
+                  "@id": "",
+                  "type": "object",
+                  "properties": {
+                    "@type": {
+                      "enum": []
+                    },
+                    "value": {
+                      "type": "string",
+                      "id": "4973ae2b-d782-4e03-a8d2-2d749217c86d",
+                      "title": "First Name",
+                      "description": "enter your first name",
+                      "input_type": "textfield",
+                      "required": false,
+                      "created_at": 1434671113752,
+                      "model": {
+                        "value": "Dexter"
+                      }
+                    }
+                  },
+                  "required": [
+                    "@type",
+                    "value"
+                  ],
+                  "additionalProperties": false
+                },
+                "last_name": {
+                  "$schema": "http://json-schema.org/draft-04/schema#",
+                  "@id": "",
+                  "type": "object",
+                  "properties": {
+                    "@type": {
+                      "enum": []
+                    },
+                    "value": {
+                      "type": "string",
+                      "id": "f379bd53-7c21-4709-90c6-c90006ab52b6",
+                      "title": "Last Name",
+                      "description": "Enter your last name",
+                      "input_type": "textfield",
+                      "required": false,
+                      "created_at": 1434671124438,
+                      "model": {
+                        "value": "Cope"
+                      }
+                    }
+                  },
+                  "required": [
+                    "@type",
+                    "value"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "required": [
+                "@type"
+              ],
+              "additionalProperties": false
+            },
+            "address": {
+              "$schema": "http://json-schema.org/draft-04/schema#",
+              "@id": "",
+              "@type": "",
+              "title": "Address",
+              "description": "Simple address element",
+              "guid": "eb426c1e-e256-4192-86b6-c1ad3091a077",
+              "type": "object",
+              "properties": {
+                "@type": {
+                  "enum": []
+                },
+                "street": {
+                  "$schema": "http://json-schema.org/draft-04/schema#",
+                  "@id": "",
+                  "type": "object",
+                  "properties": {
+                    "@type": {
+                      "enum": []
+                    },
+                    "value": {
+                      "type": "string",
+                      "id": "5a9c02c5-51c0-46ca-bea2-be274eca7b08",
+                      "title": "Street",
+                      "description": "enter your street name",
+                      "input_type": "textfield",
+                      "required": false,
+                      "created_at": 1434671275070,
+                      "model": {
+                        "value": "3137 Oakland Road"
+                      }
+                    }
+                  },
+                  "required": [
+                    "@type",
+                    "value"
+                  ],
+                  "additionalProperties": false
+                },
+                "city": {
+                  "$schema": "http://json-schema.org/draft-04/schema#",
+                  "@id": "",
+                  "type": "object",
+                  "properties": {
+                    "@type": {
+                      "enum": []
+                    },
+                    "value": {
+                      "type": "string",
+                      "id": "ac511c62-96ef-41dd-bed3-704e6280682a",
+                      "title": "City",
+                      "description": "Please enter your city name",
+                      "input_type": "textfield",
+                      "required": false,
+                      "created_at": 1434671285225,
+                      "model": {
+                        "value": "Bethlehem"
+                      }
+                    }
+                  },
+                  "required": [
+                    "@type",
+                    "value"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "required": [
+                "@type"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "@type"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "@type"
+      ],
+      "additionalProperties": false
+    },
+    "principal_investigator": {
+      "$schema": "",
+      "@id": "",
+      "title": "Principal Investigator",
+      "guid": "fb056461-a80d-4ac2-a1ea-6501aa34d34d",
+      "type": "object",
+      "description": "The lead researcher for the study",
+      "properties": {
+        "@type": {
+          "enum": []
+        },
+        "full_name": {
+          "$schema": "",
+          "@id": "",
+          "type": "object",
+          "properties": {
+            "@type": {
+              "enum": []
+            },
+            "value": {
+              "type": "string",
+              "id": "e146e007-6698-407a-9e53-bc4c7860f374",
+              "title": "Full Name",
+              "description": "Whole name, including first name, middle name, and last name",
+              "input_type": "textfield",
+              "required": false,
+              "created_at": 1432678567334
+            }
+          },
+          "required": [
+            "@type",
+            "value"
+          ],
+          "additionalProperties": false
+        },
+        "institution": {
+          "$schema": "",
+          "@id": "",
+          "type": "object",
+          "properties": {
+            "@type": {
+              "enum": []
+            },
+            "value": {
+              "type": "string",
+              "id": "dbfa4aa1-8759-41f0-9829-a6c4c2cbd7c5",
+              "title": "Institution",
+              "description": "An established society, corporation, foundation or other organization founded and united for a specific purpose",
+              "input_type": "textfield",
+              "required": false,
+              "created_at": 1432678567100
+            }
+          },
+          "required": [
+            "@type",
+            "value"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "@type"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "@context",
+    "@id",
+    "@type"
+  ],
+  "additionalProperties": false,
+  "submission_id": "1fcc102d-4447-4f07-8492-f5030203fc11"
+}

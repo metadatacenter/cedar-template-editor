@@ -9893,6 +9893,7 @@ section.dashboard-elements .dash-header .see-all {
 }
 section.dashboard-elements .dash-header .see-all:hover {
   color: #338833;
+  text-decoration: none;
 }
 section.dashboard-elements .margin-reset-row {
   margin-left: -10px;

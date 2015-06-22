@@ -1,0 +1,26 @@
+[
+	{
+		"title": "Basic study design",
+		"guid": "9044e02a-e3f1-4aaf-9bcb-f94250949d4d",
+  	"description": "Basic example of a template to describe a study",
+	  "submission_id": "d7909bad-f45a-48dc-b416-fc38add84b4b"
+	},
+	{
+		"title": "Basic Complete Fields",
+  	"description": "Basic example of a template with one of each field type",
+  	"guid": "14641541-a76d-4ee4-8993-e614293cb779",
+  	"submission_id": "d7c35a8e-f6da-4e04-97c9-3d2b0a6276d0"
+	},
+	{
+		"title": "Basic Paging Example Form",
+	  "description": "Sample form with paging included",
+	  "guid": "ec0741ab-986c-43f7-b9ba-3994bc9a668d",
+	  "submission_id": "770d2c9c-9bac-40f1-bdf0-3e6a3b393f9a"
+	},
+	{
+		"title": "Research Team",
+	  "description": "Sample template for research team embedding",
+	  "guid": "fd7f7062-93b6-435e-9d81-a050ab30158c",
+	  "submission_id": "1fcc102d-4447-4f07-8492-f5030203fc11"
+	}
+]

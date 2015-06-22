@@ -31,9 +31,22 @@ angularApp.controller('RuntimeController', function ($rootScope, $scope, FormSer
 			$scope.initializePagination(form.pages);
 		});
 	};
-	
-	// Only loading form if given an ID in the $routeParams.id url path
-	if ($routeParams.id) {
+
+	// Get/read submission with given submission_id from $routeParams
+  $scope.getSubmission = function() {
+		FormService.submission($routeParams.submission_id).then(function(form) {
+			// Assing returned form object from FormService to $scope.form
+			$scope.form = form;
+			// $scope.initializePagination kicks off paging with form.pages array
+			$scope.initializePagination(form.pages);
+		});
+	};
+
+	if ($routeParams.id && $routeParams.submission_id) {
+		// Load the form with existing submission information via $routeParams.submission_id url parameter
+		$scope.getSubmission();
+	} else if ($routeParams.id && !$routeParams.submission_id) {
+		// Loading empty form if given an ID in the $routeParams.id url path
 		$scope.getForm();
 	}
 
@@ -86,7 +99,13 @@ angularApp.controller('RuntimeController', function ($rootScope, $scope, FormSer
 			$scope.addAlert('danger', "Problem saving the populated template.");
 			console.log(err);
 		});
-	};
+	}
+
+	// Placeholder function to display rendered form with model input
+	//$scope.saveForm = function() {
+	//	$scope.form['submission_id'] = $rootScope.generateGUID();
+	//	console.log($scope.form);
+	//};
 
 	// Placeholder function to log form serialization output
 	$scope.submitForm = function() {
