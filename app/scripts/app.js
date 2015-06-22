@@ -33,7 +33,7 @@ angularApp.config(function ($routeProvider, $locationProvider) {
             templateUrl: 'views/runtime.html',
             controller: 'RuntimeController'
         })
-        .when('/templates/runtime/:id', {
+        .when('/templates/runtime/:id/:submission_id?', {
             templateUrl: 'views/runtime.html',
             controller: 'RuntimeController'
         })
