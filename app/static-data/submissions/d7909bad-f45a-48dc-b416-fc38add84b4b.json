@@ -1,0 +1,141 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "@id": "http://metadatacenter.org/schemas/basic_study_design",
+  "title": "Basic study design",
+  "description": "Basic example of a template to describe a study",
+  "guid": "9044e02a-e3f1-4aaf-9bcb-f94250949d4d",
+  "pages": [
+    [
+      "brief_title",
+      "principal_investigator"
+    ]
+  ],
+  "type": "object",
+  "properties": {
+    "@context": {
+      "type": [
+        "object",
+        "string",
+        "array",
+        "null"
+      ]
+    },
+    "@id": {
+      "type": "string",
+      "format": "uri"
+    },
+    "@type": {
+      "enum": [
+        "http://metadatacenter.org/schemas/BasicStudyDesign"
+      ]
+    },
+    "brief_title": {
+      "$schema": "http://json-schema.org/draft-04/schema#",
+      "@id": "http://metadatacenter.org/schemas/brief_title",
+      "type": "object",
+      "properties": {
+        "@type": {
+          "enum": [
+            "http://semanticscience.org/resource/SIO_000185"
+          ]
+        },
+        "value": {
+          "type": "string",
+          "title": "Brief title",
+          "description": "The title of the study",
+          "input_type": "textfield",
+          "model": {
+            "value": "Example brief title"
+          }
+        }
+      },
+      "required": [
+        "@type",
+        "value"
+      ],
+      "additionalProperties": false
+    },
+    "principal_investigator": {
+      "$schema": "http://json-schema.org/draft-04/schema#",
+      "@id": "http://metadatacenter.org/schemas/principal_investigator",
+      "title": "Principal Investigator",
+      "type": "object",
+      "description": "The lead researcher for the study",
+      "guid": "fb056461-a80d-4ac2-a1ea-6501aa34d34d",
+      "properties": {
+        "@type": {
+          "enum": [
+            "http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C19924"
+          ]
+        },
+        "full_name": {
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "@id": "http://metadatacenter.org/schemas/full_name",
+          "type": "object",
+          "properties": {
+            "@type": {
+              "enum": [
+                "http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C25191"
+              ]
+            },
+            "value": {
+              "type": "string",
+              "title": "Full name",
+              "description": "Whole name, including first name, middle name, and last name",
+              "input_type": "textfield",
+              "model": {
+                "value": "John Doe"
+              }
+            }
+          },
+          "required": [
+            "@type",
+            "value"
+          ],
+          "additionalProperties": false
+        },
+        "institution": {
+          "$schema": "http://json-schema.org/draft-04/schema#",
+          "@id": "http://metadatacenter.org/schemas/institution",
+          "type": "object",
+          "properties": {
+            "@type": {
+              "enum": [
+                "http://purl.bioontology.org/ontology/SNOMEDCT/385437003"
+              ]
+            },
+            "value": {
+              "type": "string",
+              "title": "Institution",
+              "description": "An established society, corporation, foundation or other organization founded and united for a specific purpose",
+              "input_type": "textarea",
+              "model": {
+                "value": "Sample institution name"
+              }
+            }
+          },
+          "required": [
+            "@type",
+            "value"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "@type",
+        "full_name",
+        "institution"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "@context",
+    "@id",
+    "@type",
+    "brief_title",
+    "principal_investigator"
+  ],
+  "additionalProperties": false,
+  "submission_id": "d7909bad-f45a-48dc-b416-fc38add84b4b"
+}

@@ -8,6 +8,7 @@ angularApp.controller('DashboardController', function ($rootScope, $scope, FormS
 	// Create $scope arrays to load defaults elements/templates into
   $scope.elementDefaults = [];
   $scope.templateDefaults = [];
+  $scope.submissionDefaults = [];
 
   // Define function to make async request to location of json objects and assign proper
   // scope array with returned list of data
@@ -24,4 +25,14 @@ angularApp.controller('DashboardController', function ($rootScope, $scope, FormS
   // Call getDefaults with parameters
   $scope.getDefaults('formList', 'templateDefaults');
   $scope.getDefaults('elementList', 'elementDefaults');
+
+  // Submissions have a bit different requirements so they get their own function
+  $scope.getSubmissions = function() {
+    FormService.submissionList().then(function(response) {
+      $scope.submissionDefaults = response;
+    }).catch(function(err) {
+      console.log(err);
+    });
+  };
+  $scope.getSubmissions();
 });

@@ -1,0 +1,411 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "@id": "",
+  "title": "Basic Complete Fields",
+  "description": "",
+  "guid": "14641541-a76d-4ee4-8993-e614293cb779",
+  "pages": [
+    [
+      "simple_textfield_#1",
+      "simple_paragraph_field",
+      "simple_radio_button_field",
+      "simple_checkbox_field_#1",
+      "simple_date_input_field_#1",
+      "simple_date_field_#2",
+      "simple_email_address_field_#1",
+      "simple_pick_from_a_list_field",
+      "audio_visual_field_sample",
+      "simple_numeric_field_type",
+      "sample_phone_number_field",
+      "sample_section_break_field_type"
+    ]
+  ],
+  "type": "object",
+  "properties": {
+    "@context": {
+      "type": [
+        "object",
+        "string",
+        "array",
+        "null"
+      ]
+    },
+    "@id": {
+      "type": "string",
+      "format": "uri"
+    },
+    "@type": {
+      "enum": [
+        "http://metadatacenter.org/schemas/BasicStudyDesign"
+      ]
+    },
+    "simple_textfield_#1": {
+      "$schema": "http://json-schema.org/draft-04/schema#",
+      "@id": "",
+      "type": "object",
+      "properties": {
+        "@type": {
+          "enum": []
+        },
+        "value": {
+          "type": "string",
+          "id": "881565de-6a1d-4472-b477-1afda929913f",
+          "title": "Simple Textfield #1",
+          "description": "This is my simple textfield",
+          "input_type": "textfield",
+          "required": false,
+          "created_at": 1433523975365,
+          "model": {
+            "value": "This is a title field"
+          }
+        }
+      },
+      "required": [
+        "@type",
+        "value"
+      ],
+      "additionalProperties": false
+    },
+    "simple_paragraph_field": {
+      "$schema": "http://json-schema.org/draft-04/schema#",
+      "@id": "",
+      "type": "object",
+      "properties": {
+        "@type": {
+          "enum": []
+        },
+        "value": {
+          "type": "string",
+          "id": "fe49b9c8-76a6-4b72-8188-987145983943",
+          "title": "Simple Paragraph Field",
+          "description": "This is my simple paragraph field",
+          "input_type": "textarea",
+          "required": false,
+          "created_at": 1433523992574,
+          "model": {
+            "value": "This is a paragraph field"
+          }
+        }
+      },
+      "required": [
+        "@type",
+        "value"
+      ],
+      "additionalProperties": false
+    },
+    "simple_radio_button_field": {
+      "$schema": "http://json-schema.org/draft-04/schema#",
+      "@id": "",
+      "type": "object",
+      "properties": {
+        "@type": {
+          "enum": []
+        },
+        "value": {
+          "type": "string",
+          "id": "a5c319ff-9e85-4eef-82aa-0aa485e0cc97",
+          "title": "Simple Radio Button Field",
+          "description": "",
+          "input_type": "radio",
+          "required": false,
+          "created_at": 1433524005025,
+          "options": [
+            {
+              "text": "Option #1"
+            },
+            {
+              "text": "Option #2"
+            },
+            {
+              "text": "Option #3"
+            },
+            {
+              "text": "Option #4"
+            }
+          ],
+          "default_option": "Option #3",
+          "model": {
+            "value": "Option #2"
+          }
+        }
+      },
+      "required": [
+        "@type",
+        "value"
+      ],
+      "additionalProperties": false
+    },
+    "simple_checkbox_field_#1": {
+      "$schema": "http://json-schema.org/draft-04/schema#",
+      "@id": "",
+      "type": "object",
+      "properties": {
+        "@type": {
+          "enum": []
+        },
+        "value": {
+          "type": "string",
+          "id": "b7bc8c85-db4e-45f2-bbf4-af51f529a6ac",
+          "title": "Simple Checkbox Field #1",
+          "description": "",
+          "input_type": "checkbox",
+          "required": false,
+          "created_at": 1433524035954,
+          "options": [
+            {
+              "text": "Checkbox 1"
+            },
+            {
+              "text": "Checkbox 2"
+            },
+            {
+              "text": "Checkbox 3"
+            },
+            {
+              "text": "Checkbox 4"
+            }
+          ],
+          "default_option": {
+            "2": true,
+            "3": true
+          },
+          "model": {
+            "value": {
+              "2": true,
+              "3": true
+            }
+          }
+        }
+      },
+      "required": [
+        "@type",
+        "value"
+      ],
+      "additionalProperties": false
+    },
+    "simple_date_input_field_#1": {
+      "$schema": "http://json-schema.org/draft-04/schema#",
+      "@id": "",
+      "type": "object",
+      "properties": {
+        "@type": {
+          "enum": []
+        },
+        "value": {
+          "type": "string",
+          "id": "3f729bae-ae21-404a-8cb9-0df1bfb4c2a3",
+          "title": "Simple Date Input Field #1",
+          "description": "",
+          "input_type": "date",
+          "required": false,
+          "created_at": 1433524064381,
+          "date_type": "single-date"
+        }
+      },
+      "required": [
+        "@type",
+        "value"
+      ],
+      "additionalProperties": false
+    },
+    "simple_date_field_#2": {
+      "$schema": "http://json-schema.org/draft-04/schema#",
+      "@id": "",
+      "type": "object",
+      "properties": {
+        "@type": {
+          "enum": []
+        },
+        "value": {
+          "type": "string",
+          "id": "a346adfd-d355-4af7-b302-0f9a3c6871df",
+          "title": "Simple Date Field #2",
+          "description": "",
+          "input_type": "date",
+          "required": false,
+          "created_at": 1433524082467,
+          "date_type": "date-range"
+        }
+      },
+      "required": [
+        "@type",
+        "value"
+      ],
+      "additionalProperties": false
+    },
+    "simple_email_address_field_#1": {
+      "$schema": "http://json-schema.org/draft-04/schema#",
+      "@id": "",
+      "type": "object",
+      "properties": {
+        "@type": {
+          "enum": []
+        },
+        "value": {
+          "type": "string",
+          "id": "01b8bd47-f5d3-489d-a03a-5b10467e4855",
+          "title": "Simple Email address Field #1",
+          "description": "This is the help text for simple email address field #1",
+          "input_type": "email",
+          "required": false,
+          "created_at": 1433524095784,
+          "model": {
+            "value": "john@google.com"
+          }
+        }
+      },
+      "required": [
+        "@type",
+        "value"
+      ],
+      "additionalProperties": false
+    },
+    "simple_pick_from_a_list_field": {
+      "$schema": "http://json-schema.org/draft-04/schema#",
+      "@id": "",
+      "type": "object",
+      "properties": {
+        "@type": {
+          "enum": []
+        },
+        "value": {
+          "type": "string",
+          "id": "59c7d3c4-d4a8-4602-8bae-5b9a57166855",
+          "title": "Simple Pick from a List field",
+          "description": "",
+          "input_type": "list",
+          "required": false,
+          "created_at": 1433524154974,
+          "options": [
+            {
+              "text": "This is the first option"
+            },
+            {
+              "text": "This is the second option"
+            },
+            {
+              "text": "Option 3"
+            },
+            {
+              "text": "Option 4"
+            },
+            {
+              "text": "Option 5 of the pick from a list"
+            }
+          ],
+          "default_option": {
+            "4": true
+          }
+        }
+      },
+      "required": [
+        "@type",
+        "value"
+      ],
+      "additionalProperties": false
+    },
+    "audio_visual_field_sample": {
+      "$schema": "http://json-schema.org/draft-04/schema#",
+      "@id": "",
+      "type": "object",
+      "properties": {
+        "@type": {
+          "enum": []
+        },
+        "value": {
+          "type": "string",
+          "id": "78bf17ba-4f0f-4dbb-8625-f61baaab5b47",
+          "title": "Audio Visual Field Sample",
+          "description": "Help text for the audio/visual field sample",
+          "input_type": "audio-visual",
+          "required": false,
+          "created_at": 1433524190870
+        }
+      },
+      "required": [
+        "@type",
+        "value"
+      ],
+      "additionalProperties": false
+    },
+    "simple_numeric_field_type": {
+      "$schema": "http://json-schema.org/draft-04/schema#",
+      "@id": "",
+      "type": "object",
+      "properties": {
+        "@type": {
+          "enum": []
+        },
+        "value": {
+          "type": "string",
+          "id": "ab3b962f-9c77-4716-b310-959246462a15",
+          "title": "Simple Numeric Field Type",
+          "description": "Helptext for simple numeric field type",
+          "input_type": "numeric",
+          "required": false,
+          "created_at": 1433524212215
+        }
+      },
+      "required": [
+        "@type",
+        "value"
+      ],
+      "additionalProperties": false
+    },
+    "sample_phone_number_field": {
+      "$schema": "http://json-schema.org/draft-04/schema#",
+      "@id": "",
+      "type": "object",
+      "properties": {
+        "@type": {
+          "enum": []
+        },
+        "value": {
+          "type": "string",
+          "id": "2e0e2a99-37ac-433e-82b6-b602f2bca832",
+          "title": "Sample Phone Number Field",
+          "description": "Please only use numbers and do not use any special characters or hyphens",
+          "input_type": "phone-number",
+          "required": false,
+          "created_at": 1433524229507
+        }
+      },
+      "required": [
+        "@type",
+        "value"
+      ],
+      "additionalProperties": false
+    },
+    "sample_section_break_field_type": {
+      "$schema": "http://json-schema.org/draft-04/schema#",
+      "@id": "",
+      "type": "object",
+      "properties": {
+        "@type": {
+          "enum": []
+        },
+        "value": {
+          "type": "string",
+          "id": "53b0ade2-f239-4cf2-bd7e-9241f2934bab",
+          "title": "Sample Section Break Field type",
+          "description": "This is the helper description for the section break field type",
+          "input_type": "section-break",
+          "required": false,
+          "created_at": 1433524257819
+        }
+      },
+      "required": [
+        "@type",
+        "value"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "@context",
+    "@id",
+    "@type"
+  ],
+  "additionalProperties": false,
+  "submission_id": "d7c35a8e-f6da-4e04-97c9-3d2b0a6276d0"
+}
