@@ -44,9 +44,13 @@
         </div><!-- /.pagination-container -->
 
         <div class="edit-actions" ng-show="$root.isEmpty(form)">
-          <button type="button" class="btn btn-save" ng-click="saveForm()">Save</button>
+          <div>
+            <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</alert>
+          </div>
+          <!--<button type="button" class="btn btn-save" ng-click="saveForm()">Save</button>-->
+          <button type="button" class="btn btn-save" ng-click="savePopulatedTemplate()">Save</button>
           <button type="button" class="btn btn-clear disabled">Clear Form</button>
-          <button type="button" class="btn btn-submit" ng-click="submitForm()">Submit</button>
+          <button type="button" class="btn btn-submit disabled" ng-click="submitForm()">Submit</button>
         </div><!-- /.edit-actions -->
 
       </div> <!-- /.right-body -->

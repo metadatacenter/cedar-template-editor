@@ -1,6 +1,6 @@
 'use strict';
 
-angularApp.controller('RuntimeController', function ($rootScope, $scope, FormService, $routeParams, $location, $http) {
+angularApp.controller('RuntimeController', function ($rootScope, $scope, FormService, $routeParams, $location) {
 
 	// set Page Title variable when this controller is active
 	$rootScope.pageTitle = 'Runtime Template';
@@ -62,9 +62,30 @@ angularApp.controller('RuntimeController', function ($rootScope, $scope, FormSer
 		$scope.currentPage = $scope.pagesArray[$scope.pageIndex];
 	};
 
-	// Placeholder function to display rendered form with model input
-	$scope.saveForm = function() {
-		console.log($scope.form);
+	// Alerts
+	$scope.resetAlerts = function() {
+		$scope.alerts = [];
+	}
+
+	$scope.addAlert = function(type, msg) {
+		$scope.alerts.push({type: type, msg: msg});
+	};
+
+	$scope.closeAlert = function(index) {
+		$scope.alerts.splice(index, 1);
+	};
+
+	// Stores the data (populated template) into the database
+	$scope.savePopulatedTemplate = function() {
+		$scope.resetAlerts();
+		// The child will be in charge of assigning a value to $scope.model (see form-directive.js)
+		$scope.submitForm();
+		FormService.savePopulatedTemplate($scope.model).then(function(response) {
+			$scope.addAlert('success', 'The populated template has been saved.');
+		}).catch(function(err) {
+			$scope.addAlert('danger', "Problem saving the populated template.");
+			console.log(err);
+		});
 	};
 
 	// Placeholder function to log form serialization output
