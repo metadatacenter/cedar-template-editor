@@ -47,7 +47,7 @@ angularApp.service('FormService', function FormService($http) {
     },
     // POPULATED TEMPLATES OPERATIONS
     savePopulatedTemplate: function(populatedTemplate) {
-      return $http.post('http://localhost:9000/template_instances', angular.toJson(element));
+      return $http.post('http://localhost:9000/template_instances', angular.toJson(populatedTemplate));
     }
   };
 });
