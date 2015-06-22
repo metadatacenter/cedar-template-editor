@@ -2,7 +2,6 @@
   <p class="element-name-label"><i class="cedar-svg-element"></i>{{key | keyToTitle}}</p>
   <div ng-if="preview" class="preview-edit-options" ng-include="'views/partials/preview-edit-options.html'"></div>
 </div>
-
 <div ng-repeat="(key, field) in element">
 
 	<field-directive ng-if="field.input_type" field="field" model="field.model" directory="render"></field-directive>
@@ -10,17 +9,24 @@
 	<div ng-if="!field.input_type" class="nested-element">
 		<p class="element-name-label"><i class="cedar-svg-element"></i>{{key | keyToTitle}}</p>
 
-		<div ng-repeat="(index, nestedField) in field">
+		<div ng-repeat="(nestedKey, nestedField) in field">
 			<field-directive ng-if="nestedField.input_type" field="nestedField" model="nestedField.model" directory="render"></field-directive>
 
 			<div ng-if="!nestedField.input_type" class="nested-element">
-				<p class="element-name-label"><i class="cedar-svg-element"></i>{{index | keyToTitle}}</p>
+				<p class="element-name-label"><i class="cedar-svg-element"></i>{{nestedKey | keyToTitle}}</p>
 				
-				<div ng-repeat="(item, doubleNestedField) in nestedField">
-					<field-directive ng-if="doubleNestedField.input_type" field="doubleNestedField" model="doubleNestedField.model" directory="render"></field-directive>					
-				</div>
-			</div>
+				<div ng-repeat="(doubleNestedKey, doubleNestedField) in nestedField">
+					<field-directive ng-if="doubleNestedField.input_type" field="doubleNestedField" model="doubleNestedField.model" directory="render"></field-directive>
 
+					<div ng-if="!doubleNestedField.input_type" class="nested-element">
+						<p class="element-name-label"><i class="cedar-svg-element"></i>{{doubleNestedKey | keyToTitle}}</p>
+
+						<div ng-repeat="(tripleNestedKey, tripleNestedField) in doubleNestedField">
+							<field-directive ng-if="tripleNestedField.input_type" field="tripleNestedField" model="tripleNestedField.model" directory="render"></field-directive>
+						</div>
+					</div><!-- /.nested-element-->		
+				</div>
+			</div><!-- /.nested-element-->
 		</div>
-	</div>
+	</div><!-- /.nested-element-->
 </div>

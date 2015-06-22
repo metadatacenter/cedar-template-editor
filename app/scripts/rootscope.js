@@ -36,4 +36,13 @@ angularApp.run(['$rootScope',  function($rootScope) {
       });
       return guid;
     };
+
+    // Sorting function that moves boolean values with true to the front of the sort
+    $rootScope.sortBoolean = function(array, bool) {
+      return array.sort(function(a, b) {
+        var x = a[bool],
+            y = b[bool];
+        return ((x == y) ? -1 : ((x == true) ? -1 : 1));
+      });
+    }
 }]);

@@ -69,6 +69,6 @@ angularApp.controller('RuntimeController', function ($rootScope, $scope, FormSer
 
 	// Placeholder function to log form serialization output
 	$scope.submitForm = function() {
-		console.log($scope.$$childTail.model);
+		$scope.$broadcast('submitForm');
 	};
 });

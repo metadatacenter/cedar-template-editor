@@ -27,7 +27,7 @@
 		"title": "Birth Date",
 	  "description": "Simple element to select date of birth",
 	  "guid": "f6529be3-2e80-42bd-90fe-d3a33813c4d0",
-	  "favorite": false
+	  "favorite": true
 	},
 	{
 		"title": "Name",
@@ -52,5 +52,11 @@
 	  "description": "Sample element to demonstrate embedding two levels deep",
 	  "guid": "967f7ad0-d591-47de-9811-85519ac00f19",
 	  "favorite": true
+	},
+	{
+		"title": "Research Department",
+	  "description": "Sample research embedding 4th level",
+	  "guid": "b36ef787-a553-489c-ab7a-ca9c61324f34",
+	  "favorite": false
 	}
 ]

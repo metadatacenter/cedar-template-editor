@@ -9,6 +9,10 @@ angularApp.config(function ($routeProvider, $locationProvider) {
             templateUrl: 'views/dashboard.html',
             controller: 'DashboardController'
         })
+        .when('/:type/list', {
+            templateUrl: 'views/dashboard-list.html',
+            controller: 'DashboardListController'
+        })
         .when('/elements/create', {
             templateUrl: 'views/create-element.html',
             controller: 'CreateElementController'
