@@ -1,0 +1,66 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "@id": "",
+  "@type": "",
+  "title": "Name",
+  "description": "Simple name element",
+  "guid": "29bc63ea-3a61-4a27-b9cb-e5c02dcac4cd",
+  "type": "object",
+  "properties": {
+    "@type": {
+      "enum": []
+    },
+    "first_name": {
+      "$schema": "http://json-schema.org/draft-04/schema#",
+      "@id": "",
+      "type": "object",
+      "properties": {
+        "@type": {
+          "enum": []
+        },
+        "value": {
+          "type": "string",
+          "id": "4973ae2b-d782-4e03-a8d2-2d749217c86d",
+          "title": "First Name",
+          "description": "enter your first name",
+          "input_type": "textfield",
+          "required": false,
+          "created_at": 1434671113752
+        }
+      },
+      "required": [
+        "@type",
+        "value"
+      ],
+      "additionalProperties": false
+    },
+    "last_name": {
+      "$schema": "http://json-schema.org/draft-04/schema#",
+      "@id": "",
+      "type": "object",
+      "properties": {
+        "@type": {
+          "enum": []
+        },
+        "value": {
+          "type": "string",
+          "id": "f379bd53-7c21-4709-90c6-c90006ab52b6",
+          "title": "Last Name",
+          "description": "Enter your last name",
+          "input_type": "textfield",
+          "required": false,
+          "created_at": 1434671124438
+        }
+      },
+      "required": [
+        "@type",
+        "value"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "@type"
+  ],
+  "additionalProperties": false
+}

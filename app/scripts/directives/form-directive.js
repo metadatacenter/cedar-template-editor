@@ -2,14 +2,22 @@
 
 angularApp.directive('formDirective', function ($rootScope, $document, $timeout) {
   return {
-    controller: function($scope){
-
+    templateUrl: './views/directive-templates/form-render.html',
+    restrict: 'E',
+    scope: {
+      page:'=',
+      form:'='
+    },
+    controller: function($scope) {
       // Initializing the empty model to submit data to
       $scope.model = {
         "@context": {}
       };
-      // Initializing array to loop through to call field-directive
-      $scope.formFields = [];
+
+      // $scope.formFields object to loop through to call field-directive
+      $scope.formFields = {};
+      // $scope.formFieldsOrder array to loop over for proper ordering of items/elements
+      $scope.formFieldsOrder = [];
 
       $scope.addPopover = function() {
         //Initializing Bootstrap Popover fn for each item loaded
@@ -25,60 +33,43 @@ angularApp.directive('formDirective', function ($rootScope, $document, $timeout)
         }
       });
 
-      $scope.parseForm = function(form) {
-        // Loop through form.properties object looking for Elements
-        angular.forEach(form.properties, function(value, key) {
-          if ($rootScope.ignoreKey(key)) {
-            // Elements found marked as [key]
-            $scope.model[key] = {};
-            // The 'value' property is how we distinguish if this is a field level element or an embedded element
-            if(value.properties.hasOwnProperty('value')) {
-              // Field level reached, create new object in $scope.formFields;
-              $scope.fieldLevelReached(key, value.properties.value);
+      $scope.pushIntoOrder = function(key, parentKey) {
+        // If parent key does not exist
+        // and key does not exist in the array
+        if (!parentKey && $scope.formFieldsOrder.indexOf(key) == -1) {
+          $scope.formFieldsOrder.push(key);
+          //console.log($scope.formFieldsOrder);
+        }
+      };
+
+      $scope.parseForm = function(iterator, parentObject, parentKey) {
+        angular.forEach(iterator, function(value, name) {
+          if ($rootScope.ignoreKey(name)) {
+            if (value.hasOwnProperty('guid')) {
+              // Acknowledge position and nesting
+              parentObject[name] = {};
+              $scope.pushIntoOrder(name, parentKey);
+              // Indication of nested element or nested fields reached, recursively call function
+              $scope.parseForm(value.properties, parentObject[name], name);
             } else {
-              // Not field level, loop through next set of properties looking for 'value' property
-              angular.forEach(value.properties, function(subvalue, subkey) {
-                if ($rootScope.ignoreKey(subkey)) {
-                  // Elements found marked as [subkey], embedding within existing [key] paramter
-                  $scope.model[key][subkey] = {};
-                  // Check if we've found field level properties object
-                  if(subvalue.properties.hasOwnProperty('value')) {
-                    // Field level reached, create new object in $scope.formFields;
-                    $scope.fieldLevelReached(subkey, subvalue.properties.value, key);
-                  }
-                }
-              });
+              // Field level reached, assign to $scope.formFields object 
+              parentObject[name] = value.properties.value;
+              $scope.pushIntoOrder(name, parentKey);
             }
           }
         });
       };
 
-      $scope.fieldLevelReached = function(key, params, parentKey) {
-        // Create new empty object to stuff with properties
-        var fieldObject = {};
-        // Binding newly created fieldObject model to the $scope.model object for Angular's 2 way binding
-        fieldObject.model = $scope.model[key];
-
-        // If field element is nested within a parent element, we need an additional layer of definition
-        if (parentKey !== undefined) {
-          fieldObject.model = $scope.model[parentKey][key];
-        }
-
-        // This params object is how we will render input fields from the object of parameters
-        fieldObject.field = params;
-        $scope.formFields.push(fieldObject);
-      };
-
-      // Using Angular's $watch function to call $sceop.parseForm on form.properties initial population and on update
+      // Angular's $watch function to call $scope.parseForm on form.properties initial population and on update
       $scope.$watch('form.properties', function () {
-        $scope.parseForm($scope.form);
         $scope.addPopover();
+        $scope.parseForm($scope.form.properties, $scope.formFields);
       }, true);
-    },
-    templateUrl: './views/directive-templates/form-render.html',
-    restrict: 'E',
-    scope: {
-        form:'='
+
+      // Angular $watch function to run the Bootstrap Popover initialization on new form elements when they load
+      $scope.$watch('page', function () {
+        $scope.addPopover();
+      });
     }
   };
 });

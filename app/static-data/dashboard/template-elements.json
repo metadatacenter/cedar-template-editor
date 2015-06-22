@@ -16,5 +16,41 @@
 	  "description": "Element composed of smaller elements, plus single additional textfields",
 	  "guid": "1ad2dc01-4049-4b7b-b06d-47a04d1262de",
 	  "favorite": false
+	},
+	{
+		"title": "Identify Person",
+	  "description": "Simple person identifier element",
+	  "guid": "b7f5133b-aaf3-4243-9ece-4dc8a8c7a8ac",
+	  "favorite": false
+	},
+	{
+		"title": "Birth Date",
+	  "description": "Simple element to select date of birth",
+	  "guid": "f6529be3-2e80-42bd-90fe-d3a33813c4d0",
+	  "favorite": false
+	},
+	{
+		"title": "Name",
+	  "description": "Simple name element",
+	  "guid": "29bc63ea-3a61-4a27-b9cb-e5c02dcac4cd",
+	  "favorite": false
+	},
+	{
+		"title": "Address",
+	  "description": "Simple address element",
+	  "guid": "eb426c1e-e256-4192-86b6-c1ad3091a077",
+	  "favorite": false
+	},
+	{
+		"title": "Principal Researcher",
+	  "description": "Sample element to demonstrate embedding",
+	  "guid": "43223c86-1347-482f-8644-e3411b4aae80",
+	  "favorite": false
+	},
+	{
+		"title": "Research Team",
+	  "description": "Sample element to demonstrate embedding two levels deep",
+	  "guid": "967f7ad0-d591-47de-9811-85519ac00f19",
+	  "favorite": true
 	}
 ]

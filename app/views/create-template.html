@@ -30,10 +30,7 @@
       <div class="left-sidebar col-sm-3">
         <p class="add-item">Add Element</p>
         <ul class="element-menu" role="menu">
-          <li class="item" ng-repeat="e in elements track by $index" ng-if="$index <= 4"><a ng-click="addExistingElement(e)"><i class="cedar-svg-element"></i>{{e.title}}</a></li>
-          <!--<li class="item"><a ng-click="addExistingElement('principal-investigator')"><i class="cedar-svg-element"></i>Principal Investigator</a></li>-->
-          <!--<li class="item"><a ng-click="addExistingElement('contact-information')"><i class="cedar-svg-element"></i>Contact Information</a></li>-->
-          <!-- <li class="item"><a ng-click="addExistingElement('random')"><i class="cedar-svg-element"></i>Random</a></li> -->
+          <li ng-repeat="element in elementList" class="item"><a ng-click="addExistingElement(element)"><i class="cedar-svg-element"></i>{{element.title}}</a></li>
         </ul>
 
         <div class="more-items" dropdown>
@@ -62,7 +59,7 @@
             <li class="item"><a ng-click="addFieldToStaging('numeric')"><i class="cedar-svg-numeric"></i>Numeric</a></li>
             <li class="item"><a ng-click="addFieldToStaging('phone-number')"><i class="cedar-svg-phone"></i>Phone</a></li>
             <li class="item"><a ng-click="addFieldToStaging('section-break')"><i class="cedar-svg-section-break"></i>Section Break</a></li>
-            <li class="item"><a class="disabled" ng-click=""><i class="cedar-svg-page-break"></i>Page Break</a></li>
+            <li class="item"><a ng-click="addFieldToStaging('page-break')"><i class="cedar-svg-page-break"></i>Page Break</a></li>
             <!-- <li class="item"><a class="disabled" ng-click=""><i class="cedar-svg-location"></i>Location</a></li> -->
           </ul>
         </div>
@@ -70,15 +67,15 @@
 
       <div class="right-body col-sm-9">
         <div id="form-preview-section">
-          <div class="checkbox checkbox-primary">
-            <input type="checkbox" id="checkbox1" checked="true" data-toggle="collapse" data-target=".form-preview">
-            <label for="checkbox1">Preview Template</label>
-          </div>
+          <!--<div class="checkbox checkbox-primary">-->
+            <!--<input type="checkbox" id="checkbox1" checked="true" data-toggle="collapse" data-target=".form-preview">-->
+            <!--<label for="checkbox1">Preview Template</label>-->
+          <!--</div>-->
           <div class="form-preview collapse in">
             <div class="empty-text" ng-show="isPropertiesEmpty()">
               <p>Add an element or create a new field item in order to preview form.</p>
             </div>
-            <form-preview form="form"></form-preview>
+            <form-preview form="form" ng-if="form"></form-preview>
           </div><!-- /.form-preview -->
         </div> <!-- /#form-preview-section -->
 
@@ -105,8 +102,7 @@
           </div>
           <div class="clear-save">
             <button type="button" class="btn btn-clear" ng-click="reset()">Clear</button>
-            <!--<button type="button" class="btn btn-save disabled">Save Template</button>-->
-            <button type="button" class="btn btn-save" ng-click="store()">Save Template</button>
+            <button type="button" class="btn btn-save" ng-click="saveTemplate()">Save Template</button>
           </div>
         </div> <!-- /.template-actions -->
       </div> <!-- /.right-body -->

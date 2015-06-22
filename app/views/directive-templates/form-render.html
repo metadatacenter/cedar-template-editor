@@ -1,16 +1,16 @@
 <form name="{{form.title}}" id="{{form.guid}}">
-  <!--Loop through top level "properties" parameter in form element and call element-directive with contents -->
-  <div ng-repeat="(index, object) in formFields" class="animate-fade">
-    <field-directive field="object.field" model="object.model" directory="render"></field-directive>
+  <!--Loop through top level "page" parameter in form element and call element-directive or field-directive with contents -->
+  <div ng-repeat="item in page" class="animate-fade">
+    <span ng-if="formFields[item]">
+      <span ng-if="formFields[item].input_type">
+        <field-directive field="formFields[item]" model="formFields[item].model" directory="render"></field-directive>
+      </span>
+      <div class="element-group full" ng-if="!formFields[item].input_type">
+        <element-directive element="formFields[item]" key="item" preview="false"></element-directive>
+      </div>
+    </span>
   </div>
-
-  <div class="edit-actions" ng-show="$root.isEmpty(form)">
-    <button type="button" class="btn btn-save disabled">Save</button>
-    <button type="button" class="btn btn-clear disabled">Clear Form</button>
-    <button type="button" class="btn btn-submit disabled">Submit</button>
-  </div><!-- /.edit-actions -->
 </form>
-
 
 <div class="text-center" style="padding-top:20px; padding-bottom:20px;">
   <a class="btn btn-small btn-primary" ng-show="!showRender" ng-click="showRender = true; showOtput = false">Show Form Render JSON</a>

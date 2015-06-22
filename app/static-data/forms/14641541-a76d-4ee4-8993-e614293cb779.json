@@ -4,6 +4,9 @@
   "title": "Basic Complete Fields",
   "description": "",
   "guid": "14641541-a76d-4ee4-8993-e614293cb779",
+  "pages": [
+    ["simple_textfield_#1", "simple_paragraph_field", "simple_radio_button_field", "simple_checkbox_field_#1", "simple_date_input_field_#1", "simple_date_field_#2", "simple_email_address_field_#1", "simple_pick_from_a_list_field", "audio_visual_field_sample", "simple_numeric_field_type", "sample_phone_number_field", "sample_section_break_field_type"]
+  ],
   "type": "object",
   "properties": {
     "@context": {

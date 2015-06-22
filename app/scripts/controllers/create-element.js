@@ -1,6 +1,6 @@
 'use strict';
 
-angularApp.controller('CreateElementController', function($rootScope, $scope, $http) {
+angularApp.controller('CreateElementController', function ($rootScope, $scope, $routeParams, FormService) {
 
   // Set page title variable when this controller is active
   $rootScope.pageTitle = 'Element Creator';
@@ -11,30 +11,46 @@ angularApp.controller('CreateElementController', function($rootScope, $scope, $h
   // Empty $scope object used to store values that get converted to their json-ld counterparts on the $scope.element object
   $scope.volatile = {};
 
-  // Create empty element object
-  $scope.element = {
-    "$schema": "http://json-schema.org/draft-04/schema#",
-    "@id": "",
-    "@type": "",
-    "title": "",
-    "description": "",
-    "guid": $rootScope.generateGUID(),
-    "type": "object",
-    "properties": {
-      "@type": {
-        "enum": []
-      }
-    },
-    "required": [
-      "@type"
-    ],
-    "additionalProperties": false
-  };
+  // Using form service to load list of existing elements to embed into new element
+  FormService.elementList().then(function(response) {
+    $scope.elementList = response;
+  });
+
+  // Load existing element if $routeParams.id parameter is supplied
+  if ($routeParams.id) {
+    // Fetch existing element and assign to $scope.element property
+    FormService.element($routeParams.id).then(function(response) {
+      $scope.element = response;
+    });
+  } else {
+    // If we're not loading an existing element then let's create a new empty $scope.element property
+    $scope.element = {
+      "$schema": "http://json-schema.org/draft-04/schema#",
+      "@id": "",
+      "@type": "",
+      "title": "",
+      "description": "",
+      "guid": $rootScope.generateGUID(),
+      "type": "object",
+      "properties": {
+        "@type": {
+          "enum": []
+        }
+      },
+      "required": [
+        "@type"
+      ],
+      "additionalProperties": false
+    };
+  }
 
   // Return true if element.properties object only contains default values
   $scope.isPropertiesEmpty = function() {
-    return Object.keys($scope.element.properties).length > 1 ? false : true;
+    if ($scope.element) {
+      return  Object.keys($scope.element.properties).length > 1 ? false : true;
+    }
   };
+  $scope.isPropertiesEmpty();
 
   // Add new field into $scope.staging object
   $scope.addFieldToStaging = function(fieldType) {
@@ -111,9 +127,12 @@ angularApp.controller('CreateElementController', function($rootScope, $scope, $h
   //  });
   //};
   $scope.addExistingElement = function(element) {
-    var titleKey = $rootScope.underscoreText(element.title);
-    // Embed existing element into $scope.form.properties object
-    $scope.element.properties[titleKey] = element;
+    // Fetch existing element json data
+    //FormService.element(element).then(function(response) {
+      // Add existing element to the $scope.element.properties object with it's title converted to an object key
+      var titleKey = $rootScope.underscoreText(element.title);
+      $scope.element.properties[titleKey] = element;
+    //});
   };
 
   // Delete field from $scope.staging object
@@ -130,20 +149,6 @@ angularApp.controller('CreateElementController', function($rootScope, $scope, $h
       }
     }
   };
-
-  // Load existing elements from database
-  $scope.loadElements = function() {
-    $http.get('http://localhost:9000/template_elements').
-      success(function(data) {
-        $scope.elements = data;
-      }).
-      error(function(data, status, headers, config) {
-        // Do something
-      });
-  }
-
-  // Existing elements
-  $scope.loadElements();
 
   // Alerts
   $scope.resetAlerts = function() {
@@ -172,25 +177,24 @@ angularApp.controller('CreateElementController', function($rootScope, $scope, $h
   };
 
   // Stores the element into the database
-  $scope.store = function() {
+  $scope.saveElement = function() {
     $scope.resetAlerts();
     // Check that the element name is not empty
     if ($scope.element.title.length == 0) {
-      $scope.addAlert('danger', 'Please provide a name for the Element.');
+      $scope.addAlert('danger', 'Please provide a name for the element.');
     }
     else {
-      //console.log($scope.element);
-      var json = angular.toJson($scope.element);
-      console.log(json);
-      $http.post('http://localhost:9000/template_elements', json).
-        success(function(data) {
-          $scope.addAlert('success', 'The element \"' + data.title + '\" has been created.');
-          // Reload all elements
-          $scope.loadElements();
-        }).
-        error(function(data, status, headers, config) {
-          $scope.addAlert('danger', "Problem creating the element.");
+      FormService.saveElement($scope.element).then(function(response) {
+        $scope.addAlert('success', 'The element \"' + response.data.title + '\" has been created.');
+        // Reload element list
+        FormService.elementList().then(function(response) {
+          $scope.elementList = response;
         });
+      }).catch(function(err) {
+        $scope.addAlert('danger', "Problem creating the element.");
+        console.log(err);
+      });
+
     }
   };
 
