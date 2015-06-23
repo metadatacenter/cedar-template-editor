@@ -35,8 +35,8 @@ angularApp.controller('DashboardListController', function ($rootScope, $scope, F
 
   $scope.listSubmissions = function() {
     // set Page Title variable when this is active
-    $rootScope.pageTitle = 'Submissions Listing';
-    $scope.sectionTitle = 'Data Submission';
+    $rootScope.pageTitle = 'Populated Templates';
+    $scope.sectionTitle = 'Populated Templates';
     $scope.createLink = '/templates/runtime';
     // Retrieve list of form submissions using FormService
     FormService.populatedTemplatesList().then(function(response) {
@@ -44,7 +44,6 @@ angularApp.controller('DashboardListController', function ($rootScope, $scope, F
       $scope.submissions = response;
     });
   };
-
 
   switch($routeParams.type) {
     case 'elements':
@@ -56,5 +55,34 @@ angularApp.controller('DashboardListController', function ($rootScope, $scope, F
     case 'submissions':
       $scope.listSubmissions();
       break;
+  }
+
+  // Remove template, element or populated template
+  $scope.remove = function(id) {
+    switch ($routeParams.type) {
+      case 'elements':
+        FormService.removeElement(id).then(function(response) {
+          $scope.listElements();
+        }).catch(function(err) {
+          console.log(err);
+        });
+        break;
+      case 'templates':
+        FormService.removeTemplate(id).then(function(response) {
+          // Reload templates
+          $scope.listTemplates();
+        }).catch(function(err) {
+          console.log(err);
+        });
+        break;
+      case 'submissions':
+        FormService.removePopulatedTemplate(id).then(function(response) {
+          // Reload populated templates
+          $scope.listSubmissions();
+        }).catch(function(err) {
+          console.log(err);
+        });
+        break;
+    }
   }
 });

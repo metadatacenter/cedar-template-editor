@@ -23,6 +23,9 @@ angularApp.service('FormService', function FormService($http) {
         console.log(err);
       });
     },
+    removeElement: function(id) {
+      return $http.delete('http://localhost:9000/template_elements/' + id);
+    },
     // TEMPLATES OPERATIONS
     form: function (id) {
       // $http returns a promise, which has a then function, which also returns a promise
@@ -45,6 +48,9 @@ angularApp.service('FormService', function FormService($http) {
         console.log(err);
       });
     },
+    removeTemplate: function(id) {
+      return $http.delete('http://localhost:9000/templates/' + id);
+    },
     // POPULATED TEMPLATES OPERATIONS
     populatedTemplate: function (id) {
       return $http.get('http://localhost:9000/template_instances/'+id).then(function (response) {
@@ -64,5 +70,8 @@ angularApp.service('FormService', function FormService($http) {
         console.log(err);
       });
     },
+    removePopulatedTemplate: function(id) {
+      return $http.delete('http://localhost:9000/template_instances/' + id);
+    }
   };
 });

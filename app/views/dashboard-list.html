@@ -16,44 +16,49 @@
 				</div>
 				<div class="margin-reset-row">
 					<div class="template-item" ng-repeat="item in itemList | filter:{title:searchText}" resize-height>
-						<a ng-href="{{itemType}}/edit/{{item._id.$oid}}">
-							<i class="cedar-svg cedar-svg-metadata"></i>
-							<p class="name">{{item.title}}</p>
-							<div class="state-indication" ng-if="item.favorite">
-								<i class="cedar-svg-flag"></i>
-							</div>
-							<div class="back-panel">
-								<p class="description">{{item.description}}</p>
-								<div class="edit-options">
+						<i class="cedar-svg cedar-svg-metadata"></i>
+						<p class="name">{{item.title}}</p>
+						<div class="state-indication" ng-if="item.favorite">
+							<i class="cedar-svg-flag"></i>
+						</div>
+						<div class="back-panel">
+							<p class="description">{{item.description}}</p>
+							<div class="edit-options">
+								<a ng-href="{{itemType}}/edit/{{item._id.$oid}}">
 									<span class="edit">
 										<i class="cedar-svg-pencil"></i>
 									</span>
+								</a>
+								<a ng-click="remove(item._id.$oid)">
 									<span class="remove">
 										<i class="cedar-svg-remove"></i>
 									</span>
-								</div>
-							</div><!-- ./back-panel -->
+								</a>
+							</div>
+						</div><!-- ./back-panel -->
 						</a>
 					</div> <!-- /.template-item elements/templates -->
-
 					<div class="template-item" ng-repeat="item in submissions | filter:{title:searchText}" resize-height>
-						<a ng-href="templates/runtime/{{item._id.$oid}}/{{item.submission_id}}">
-							<i class="cedar-svg cedar-svg-metadata"></i>
-							<p class="name">{{item.title}}</p>
-							<div class="state-indication" ng-if="item.favorite">
-								<i class="cedar-svg-progress"></i>
-							</div>
-							<div class="back-panel">
-								<p class="description">{{item.submission_id}}</p>
-								<div class="edit-options">
+						<i class="cedar-svg cedar-svg-metadata"></i>
+						<p class="name">{{item.title}}</p>
+						<div class="state-indication" ng-if="item.favorite">
+							<i class="cedar-svg-progress"></i>
+						</div>
+						<div class="back-panel">
+							<p class="description">{{item.description}}</p>
+							<div class="edit-options">
+								<a ng-href="templates/runtime/{{item.template_id}}/{{item._id.$oid}}">
 									<span class="edit">
 										<i class="cedar-svg-pencil"></i>
 									</span>
+								</a>
+								<a ng-click="remove(item._id.$oid)">
 									<span class="remove">
 										<i class="cedar-svg-remove"></i>
 									</span>
-								</div>
-							</div><!-- ./back-panel -->
+								</a>
+							</div>
+						</div><!-- ./back-panel -->
 						</a>
 					</div> <!-- /.template-item elements/templates -->
 				</div> <!-- /.margin-reset-row -->

@@ -2,10 +2,10 @@
 
 angularApp.controller('DashboardController', function ($rootScope, $scope, FormService) {
 
-	// set Page Title variable when this controller is active
-	$rootScope.pageTitle = 'Dashboard';
+  // set Page Title variable when this controller is active
+  $rootScope.pageTitle = 'Dashboard';
 
-	// Create $scope arrays to load defaults elements/templates into
+  // Create $scope arrays to load defaults elements/templates into
   $scope.elementDefaults = [];
   $scope.templateDefaults = [];
   $scope.submissionDefaults = [];
@@ -35,4 +35,32 @@ angularApp.controller('DashboardController', function ($rootScope, $scope, FormS
     });
   };
   $scope.getSubmissions();
+
+  // Remove template
+  $scope.removeTemplate = function(id) {
+    FormService.removeTemplate(id).then(function(response) {
+      // Reload templates
+      $scope.getDefaults('formList', 'templateDefaults');
+    }).catch(function(err) {
+      console.log(err);
+    });
+  }
+  // Remove element
+  $scope.removeElement = function(id) {
+    FormService.removeElement(id).then(function(response) {
+      // Reload elements
+      $scope.getDefaults('elementList', 'elementDefaults');
+    }).catch(function(err) {
+      console.log(err);
+    });
+  }
+  // Remove populated template
+  $scope.removePopulatedTemplate = function(id) {
+    FormService.removePopulatedTemplate(id).then(function(response) {
+      // Reload populated templates
+      $scope.getSubmissions();
+    }).catch(function(err) {
+      console.log(err);
+    });
+  }
 });

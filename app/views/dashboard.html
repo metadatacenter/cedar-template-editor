@@ -11,24 +11,26 @@
 				</div>
 				<div class="margin-reset-row">
 					<div class="template-item" ng-repeat="template in templateDefaults" resize-height>
-						<a ng-href="templates/edit/{{template._id.$oid}}">
-							<i class="cedar-svg cedar-svg-metadata"></i>
-							<p class="name">{{template.title}}</p>
-							<div class="state-indication" ng-if="template.favorite">
-								<i class="cedar-svg-flag"></i>
-							</div>
-							<div class="back-panel">
-								<p class="description">{{template.description}}</p>
-								<div class="edit-options">
+						<i class="cedar-svg cedar-svg-metadata"></i>
+						<p class="name">{{template.title}}</p>
+						<div class="state-indication" ng-if="template.favorite">
+							<i class="cedar-svg-flag"></i>
+						</div>
+						<div class="back-panel">
+							<p class="description">{{template.description}}</p>
+							<div class="edit-options">
+								<a ng-href="templates/edit/{{template._id.$oid}}">
 									<span class="edit">
 										<i class="cedar-svg-pencil"></i>
 									</span>
+								</a>
+								<a ng-click="removeTemplate(template._id.$oid)">
 									<span class="remove">
 										<i class="cedar-svg-remove"></i>
 									</span>
-								</div>
-							</div><!-- ./back-panel -->
-						</a>
+								</a>
+							</div>
+						</div><!-- ./back-panel -->
 					</div> <!-- /.template-item -->
 				</div> <!-- /.margin-reset-row -->
 			</div> <!-- /.col-sm-9 -->
@@ -44,23 +46,26 @@
 				</div>
 				<div class="margin-reset-row">
 					<div class="template-item" ng-repeat="element in elementDefaults"resize-height>
-						<a ng-href="elements/edit/{{element._id.$oid}}">
-							<i class="cedar-svg cedar-svg-element"></i>
-							<p class="name">{{element.title}}</p>
-							<div class="state-indication" ng-if="element.favorite">
-								<i class="cedar-svg-flag"></i>
-							</div>
-							<div class="back-panel">
-								<p class="description">{{element.description}}</p>
-								<div class="edit-options">
+						<i class="cedar-svg cedar-svg-element"></i>
+						<p class="name">{{element.title}}</p>
+						<div class="state-indication" ng-if="element.favorite">
+							<i class="cedar-svg-flag"></i>
+						</div>
+						<div class="back-panel">
+							<p class="description">{{element.description}}</p>
+							<div class="edit-options">
+								<a ng-href="elements/edit/{{element._id.$oid}}">
 									<span class="edit">
 										<i class="cedar-svg-pencil"></i>
 									</span>
+								</a>
+								<a ng-click="removeElement(element._id.$oid)">
 									<span class="remove">
 										<i class="cedar-svg-remove"></i>
 									</span>
-								</div>
-							</div><!-- ./back-panel -->
+								</a>
+							</div>
+						</div><!-- ./back-panel -->
 						</a>
 					</div> <!-- /.template-item -->
 				</div> <!-- /.margin-reset-row -->
@@ -78,24 +83,26 @@
 				</div>
 				<div class="margin-reset-row">
 					<div class="template-item" ng-repeat="submission in submissionDefaults" resize-height>
-						<!--<a ng-href="templates/runtime/{{submission.guid}}/{{submission.submission_id}}">-->
-							<a ng-href="templates/runtime/{{submission.guid}}/{{submission._id.$oid}}">
-							<i class="cedar-svg cedar-svg-submission"></i>
-							<p class="name">{{submission.title}}</p>
-							<div class="state-indication">
-								<i class="cedar-svg-progress"></i>
-							</div>
-							<div class="back-panel">
-								<p class="description">{{submission.submission_id}}</p>
-								<div class="edit-options">
+						<i class="cedar-svg cedar-svg-submission"></i>
+						<p class="name">{{submission.title}}</p>
+						<div class="state-indication">
+							<i class="cedar-svg-progress"></i>
+						</div>
+						<div class="back-panel">
+							<p class="description">{{submission.description}}</p>
+							<div class="edit-options">
+								<a ng-href="templates/runtime/{{submission.template_id}}/{{submission._id.$oid}}">
 									<span class="edit">
 										<i class="cedar-svg-pencil"></i>
 									</span>
+								</a>
+								<a ng-click="removePopulatedTemplate(submission._id.$oid)">
 									<span class="remove">
 										<i class="cedar-svg-remove"></i>
 									</span>
-								</div>
-							</div><!-- ./back-panel -->
+								</a>
+							</div>
+						</div><!-- ./back-panel -->
 						</a>
 					</div> <!-- /.template-item -->
 				</div> <!-- /.margin-reset-row -->
