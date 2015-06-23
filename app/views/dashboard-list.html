@@ -15,8 +15,8 @@
 			    </div>
 				</div>
 				<div class="margin-reset-row">
-					<div class="template-item" ng-repeat="item in itemList | filter:searchText" resize-height>
-						<a ng-href="{{itemType}}/edit/{{item.guid}}">
+					<div class="template-item" ng-repeat="item in itemList | filter:{title:searchText}" resize-height>
+						<a ng-href="{{itemType}}/edit/{{item._id.$oid}}">
 							<i class="cedar-svg cedar-svg-metadata"></i>
 							<p class="name">{{item.title}}</p>
 							<div class="state-indication" ng-if="item.favorite">
@@ -36,8 +36,8 @@
 						</a>
 					</div> <!-- /.template-item elements/templates -->
 
-					<div class="template-item" ng-repeat="item in submissions | filter:searchText" resize-height>
-						<a ng-href="templates/runtime/{{item.guid}}/{{item.submission_id}}">
+					<div class="template-item" ng-repeat="item in submissions | filter:{title:searchText}" resize-height>
+						<a ng-href="templates/runtime/{{item._id.$oid}}/{{item.submission_id}}">
 							<i class="cedar-svg cedar-svg-metadata"></i>
 							<p class="name">{{item.title}}</p>
 							<div class="state-indication" ng-if="item.favorite">
