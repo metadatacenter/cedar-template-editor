@@ -28,7 +28,7 @@ angularApp.controller('DashboardController', function ($rootScope, $scope, FormS
 
   // Submissions have a bit different requirements so they get their own function
   $scope.getSubmissions = function() {
-    FormService.submissionList().then(function(response) {
+    FormService.populatedTemplatesList().then(function(response) {
       $scope.submissionDefaults = response;
     }).catch(function(err) {
       console.log(err);

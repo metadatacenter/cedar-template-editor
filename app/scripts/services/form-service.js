@@ -46,8 +46,23 @@ angularApp.service('FormService', function FormService($http) {
       });
     },
     // POPULATED TEMPLATES OPERATIONS
+    populatedTemplate: function (id) {
+      return $http.get('http://localhost:9000/template_instances/'+id).then(function (response) {
+        return response.data;
+      }).catch(function(err) {
+        console.log(err);
+      });
+    },
     savePopulatedTemplate: function(populatedTemplate) {
       return $http.post('http://localhost:9000/template_instances', angular.toJson(populatedTemplate));
-    }
+    },
+    populatedTemplatesList: function() {
+      //return $http.get('/static-data/dashboard/metadata-templates.json').then(function(response) {
+      return $http.get('http://localhost:9000/template_instances').then(function(response) {
+        return response.data;
+      }).catch(function(err) {
+        console.log(err);
+      });
+    },
   };
 });

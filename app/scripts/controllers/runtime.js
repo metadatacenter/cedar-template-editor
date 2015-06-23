@@ -34,7 +34,7 @@ angularApp.controller('RuntimeController', function ($rootScope, $scope, FormSer
 
 	// Get/read submission with given submission_id from $routeParams
   $scope.getSubmission = function() {
-		FormService.submission($routeParams.submission_id).then(function(form) {
+		FormService.populatedTemplate($routeParams.submission_id).then(function(form) {
 			// Assing returned form object from FormService to $scope.form
 			$scope.form = form;
 			// $scope.initializePagination kicks off paging with form.pages array

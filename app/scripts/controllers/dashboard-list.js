@@ -39,7 +39,7 @@ angularApp.controller('DashboardListController', function ($rootScope, $scope, F
     $scope.sectionTitle = 'Data Submission';
     $scope.createLink = '/templates/runtime';
     // Retrieve list of form submissions using FormService
-    FormService.submissionList().then(function(response) {
+    FormService.populatedTemplatesList().then(function(response) {
       // Return list of submissions from FormService
       $scope.submissions = response;
     });

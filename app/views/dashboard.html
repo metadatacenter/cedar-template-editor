@@ -68,7 +68,7 @@
 		</section>
 		<section id="data-submission" class="dashboard-elements">
 			<div class="col-sm-3">
-				<h2 class="section-title">Data Submission</h2>
+				<h2 class="section-title">POPULATED TEMPLATES</h2>
 				<!-- <p class="instructions">Choose a template to fill out.</p> -->
 				<a href="templates/runtime" class="btn btn-create-new">Fill Out Template</a>
 			</div>
@@ -78,7 +78,8 @@
 				</div>
 				<div class="margin-reset-row">
 					<div class="template-item" ng-repeat="submission in submissionDefaults" resize-height>
-						<a ng-href="templates/runtime/{{submission.guid}}/{{submission.submission_id}}">
+						<!--<a ng-href="templates/runtime/{{submission.guid}}/{{submission.submission_id}}">-->
+							<a ng-href="templates/runtime/{{submission.guid}}/{{submission._id.$oid}}">
 							<i class="cedar-svg cedar-svg-submission"></i>
 							<p class="name">{{submission.title}}</p>
 							<div class="state-indication">
