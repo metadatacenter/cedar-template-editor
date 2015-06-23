@@ -93,7 +93,12 @@ angularApp.controller('RuntimeController', function ($rootScope, $scope, FormSer
 		$scope.resetAlerts();
 		// The child will be in charge of assigning a value to $scope.model (see form-directive.js)
 		$scope.submitForm();
-		FormService.savePopulatedTemplate($scope.model).then(function(response) {
+		// TODO: The following lines store the template filled out with data. We should save the data ($scope.model) separated from the template
+		// Create a new property to store the id of the template. The _id property will store the populated Template id
+		$scope.form.template_id = $scope.form._id;
+		delete $scope.form._id;
+		FormService.savePopulatedTemplate($scope.form).then(function(response) {
+		//FormService.savePopulatedTemplate($scope.model).then(function(response) {
 			$scope.addAlert('success', 'The populated template has been saved.');
 		}).catch(function(err) {
 			$scope.addAlert('danger', "Problem saving the populated template.");
