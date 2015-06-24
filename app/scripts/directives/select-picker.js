@@ -3,15 +3,14 @@ angularApp.directive('selectPicker', function ($timeout) {
   return {
     restrict: 'A',
     scope: {
-      defaults: '='
+      field: '='
     },
     link: function ($scope, $element, attrs) {
 
       var default_array = [];
-
       // If default select options have been set
-      if ($scope.defaults) {
-        var default_options = $scope.defaults;
+      if ($scope.field.default_option) {
+        var default_options = $scope.field.default_option;
 
         for (var property in default_options) {
           if (default_options.hasOwnProperty(property)) {
@@ -19,6 +18,8 @@ angularApp.directive('selectPicker', function ($timeout) {
             default_array.push(property);
           }
         }
+        $scope.field.model = $scope.field.model || {};
+        $scope.field.model['value'] = default_array;
       }
 
       $timeout(function() {
