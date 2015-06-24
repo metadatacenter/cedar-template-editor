@@ -9,7 +9,7 @@ angularApp.directive('selectPicker', function ($timeout) {
 
       var default_array = [];
       // If default select options have been set
-      if ($scope.field.default_option) {
+      if ($scope.field && $scope.field.default_option) {
         var default_options = $scope.field.default_option;
 
         for (var property in default_options) {
