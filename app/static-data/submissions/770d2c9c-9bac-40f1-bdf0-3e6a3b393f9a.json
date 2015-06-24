@@ -204,7 +204,10 @@
           "input_type": "date",
           "required": false,
           "created_at": 1434409366813,
-          "date_type": "single-date"
+          "date_type": "single-date",
+          "model": {
+            "value": "06/02/2015 1:10 PM"
+          }
         }
       },
       "required": [

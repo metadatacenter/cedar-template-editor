@@ -12,7 +12,7 @@
             <input type="text" class="form-control" id="placeholder-{{field.id}}" placeholder="Enter List Option" aria-label="Enter Option" ng-model="field.options[index]['text']"  with-floating-label>
 
             <div class="checkbox checkbox-primary checkbox-circle">
-	            <input type="checkbox" id="checkbox{{index}}" name="checkbox-{{field.id}}" ng-model="field.default_option[index]" value="{{field.options[index]['text']}}">
+	            <input type="checkbox" id="checkbox{{index}}" name="checkbox-{{field.id}}" ng-model="field.default_option[value.text]">
 	            <label for="checkbox{{index}}"></label> 
 	          </div><!-- /.checkbox -->
           </div><!-- /.form-group -->
