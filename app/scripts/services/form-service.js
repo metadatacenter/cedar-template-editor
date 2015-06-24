@@ -23,6 +23,9 @@ angularApp.service('FormService', function FormService($http) {
         console.log(err);
       });
     },
+    updateElement: function(id, element) {
+      return $http.put('http://localhost:9000/template_elements/'+ id, angular.toJson(element));
+    },
     removeElement: function(id) {
       return $http.delete('http://localhost:9000/template_elements/' + id);
     },
@@ -48,6 +51,9 @@ angularApp.service('FormService', function FormService($http) {
         console.log(err);
       });
     },
+    updateTemplate: function(id, template) {
+      return $http.put('http://localhost:9000/templates/'+ id, angular.toJson(template));
+    },
     removeTemplate: function(id) {
       return $http.delete('http://localhost:9000/templates/' + id);
     },
@@ -69,6 +75,9 @@ angularApp.service('FormService', function FormService($http) {
       }).catch(function(err) {
         console.log(err);
       });
+    },
+    updatePopulatedTemplate: function(id, populatedTemplate) {
+      return $http.put('http://localhost:9000/template_instances/'+ id, angular.toJson(populatedTemplate));
     },
     removePopulatedTemplate: function(id) {
       return $http.delete('http://localhost:9000/template_instances/' + id);
