@@ -166,13 +166,13 @@
             }
           ],
           "default_option": {
-            "2": true,
-            "3": true
+            "Checkbox 3": true,
+            "Checkbox 4": true
           },
           "model": {
             "value": {
-              "2": true,
-              "3": true
+              "Checkbox 3": true,
+              "Checkbox 4": true
             }
           }
         }
@@ -199,7 +199,10 @@
           "input_type": "date",
           "required": false,
           "created_at": 1433524064381,
-          "date_type": "single-date"
+          "date_type": "single-date",
+          "model": {
+            "value": "06/24/2015 9:22 AM"
+          }
         }
       },
       "required": [
@@ -224,7 +227,13 @@
           "input_type": "date",
           "required": false,
           "created_at": 1433524082467,
-          "date_type": "date-range"
+          "date_type": "date-range",
+          "model": {
+            "value": {
+              "start": "06/22/2015 9:22 AM",
+              "end": "06/27/2015 9:22 AM"
+            }
+          }
         }
       },
       "required": [
@@ -294,7 +303,7 @@
             }
           ],
           "default_option": {
-            "4": true
+            "Option 4": true
           }
         }
       },
