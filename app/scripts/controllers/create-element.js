@@ -187,17 +187,30 @@ angularApp.controller('CreateElementController', function ($rootScope, $scope, $
       $scope.addAlert('danger', 'Please provide a short description for the element.');
     }
     else {
-      FormService.saveElement($scope.element).then(function(response) {
-        $scope.addAlert('success', 'The element \"' + response.data.title + '\" has been created.');
-        // Reload element list
-        FormService.elementList().then(function(response) {
-          $scope.elementList = response;
+      // Save element
+      if ($routeParams.id == undefined) {
+        FormService.saveElement($scope.element).then(function(response) {
+          $scope.addAlert('success', 'The element \"' + response.data.title + '\" has been created.');
+          // Reload element list
+          FormService.elementList().then(function(response) {
+            $scope.elementList = response;
+          });
+        }).catch(function(err) {
+          $scope.addAlert('danger', "Problem creating the element.");
+          console.log(err);
         });
-      }).catch(function(err) {
-        $scope.addAlert('danger', "Problem creating the element.");
-        console.log(err);
-      });
-
+      }
+      // Update element
+      else {
+        var id = $scope.element._id.$oid;
+        delete $scope.element._id;
+        FormService.updateElement(id, $scope.element).then(function(response) {
+          $scope.addAlert('success', 'The element \"' + response.data.title + '\" has been updated.');
+        }).catch(function(err) {
+          $scope.addAlert('danger', "Problem updating the element.");
+          console.log(err);
+        });
+      }
     }
   };
 

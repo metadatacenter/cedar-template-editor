@@ -218,13 +218,26 @@ angularApp.controller('CreateTemplateController', function ($rootScope, $scope, 
       $scope.addAlert('danger', 'Please provide a short description for the template.');
     }
     else {
-      FormService.saveTemplate($scope.form).then(function(response) {
-        $scope.addAlert('success', 'The template \"' + response.data.title + '\" has been created.');
-      }).catch(function(err) {
-        $scope.addAlert('danger', "Problem creating the template.");
-        console.log(err);
-      });
-
+      // Save template
+      if ($routeParams.id == undefined) {
+        FormService.saveTemplate($scope.form).then(function(response) {
+          $scope.addAlert('success', 'The template \"' + response.data.title + '\" has been created.');
+        }).catch(function(err) {
+          $scope.addAlert('danger', "Problem creating the template.");
+          console.log(err);
+        });
+      }
+      // Update template
+      else {
+        var id = $scope.form._id.$oid;
+        delete $scope.form._id;
+        FormService.updateTemplate(id, $scope.form).then(function(response) {
+          $scope.addAlert('success', 'The template \"' + response.data.title + '\" has been updated.');
+        }).catch(function(err) {
+          $scope.addAlert('danger', "Problem updating the template.");
+          console.log(err);
+        });
+      }
     }
   };
 
