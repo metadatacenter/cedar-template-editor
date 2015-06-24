@@ -13,17 +13,22 @@
   </div>
 </form>
 
-<div class="text-center" style="padding-top:20px; padding-bottom:20px;">
-  <a class="btn btn-small btn-primary" ng-show="!showRender" ng-click="showRender = true; showOtput = false">Show Form Render JSON</a>
-  <a class="btn btn-small btn-primary" ng-show="showRender" ng-click="showRender = false">Hide Form Render JSON</a>
-  <a class="btn btn-small btn-primary" ng-show="!showOutput" ng-click="showOutput = true; showRender = false">Show Data Output JSON</a>
-  <a class="btn btn-small btn-primary" ng-show="showOutput" ng-click="showOutput = false">Hide Data Output JSON</a>
+<div class="text-right" style="padding-top:20px; padding-bottom:20px;">
+  <!--<a class="btn btn-small btn-primary" ng-show="!showRender" ng-click="showRender = true; showOtput = false">Show Form Render JSON</a>-->
+  <!--<a class="btn btn-small btn-primary" ng-show="showRender" ng-click="showRender = false">Hide Form Render JSON</a>-->
+  <!--<a class="btn btn-small btn-primary" ng-show="!showOutput" ng-click="showOutput = true; showRender = false">Show Data Output JSON</a>-->
+  <!--<a class="btn btn-small btn-primary" ng-show="showOutput" ng-click="showOutput = false">Hide Data Output JSON</a>-->
+
+  <a ng-click="showRender = !showRender">Show Template JSON</a><br />
+  <a ng-click="showOutput = !showOutput">Show Output JSON</a>
 </div>
 
 <div ng-show="showRender">
+  <h5>Template JSON</h5>
   <pre>{{ form | json }}</pre>
 </div>
 
 <div ng-show="showOutput">
+  <h5>Output JSON</h5>
   <pre>{{ model | json }}</pre>
 </div>

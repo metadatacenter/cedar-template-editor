@@ -79,19 +79,19 @@
           <!--</div>-->
           <div class="form-preview collapse in">
             <div class="empty-text" ng-show="isPropertiesEmpty()">
-              <p>Add an existing element or create a new field item in order to preview form.</p>
+              <p>Add an existing element or create a new item.</p>
             </div>
             <form-preview form="element" ng-if="element"></form-preview>
           </div><!-- /.form-preview -->
         </div> <!-- /#form-preview-section -->
 
         <div id="form-item-config-section">
-          <div class="heading-label">
-            <hr><span class="section-break">Item Configuration</span><hr>
-          </div>
-          <div class="empty-text" ng-hide="isEmpty(staging)">
-            <p>Create a new field item.</p>
-          </div>
+          <!--<div class="heading-label">-->
+            <!--<hr><span class="section-break">Item Configuration</span><hr>-->
+          <!--</div>-->
+          <!--<div class="empty-text" ng-hide="isEmpty(staging)">-->
+            <!--<p>Create a new field item.</p>-->
+          <!--</div>-->
           <form name="{{form.title}}" id="{{form.guid}}">
             <div ng-repeat="field in staging | orderObjectBy: 'properties.value.created_at'" class="animate-fade">
               <field-directive field="field.properties.value" directory="create" delete="deleteField(field)" add="addFieldToElement(field)" option="addOption(field)">

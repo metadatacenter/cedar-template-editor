@@ -13,8 +13,9 @@
 </form>
 
 <div class="text-right" style="padding-top:20px; padding-bottom:20px;">
-  <a class="btn btn-small btn-primary" ng-show="!showRender" ng-click="showRender = true; showOtput = false">Show Render JSON</a>
-  <a class="btn btn-small btn-primary" ng-show="showRender" ng-click="showRender = false">Hide Render JSON</a>
+  <!--<a ng-show="!showRender" ng-click="showRender = true">Show JSON</a>-->
+  <!--<a ng-show="showRender" ng-click="showRender = false">Hide JSON</a>-->
+  <a ng-click="showRender = !showRender">Show JSON</a>
 </div>
 
 <div ng-show="showRender">
