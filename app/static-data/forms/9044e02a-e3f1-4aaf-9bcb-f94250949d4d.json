@@ -40,7 +40,8 @@
           "type": "string",
           "title": "Brief title",
           "description": "The title of the study",
-          "input_type": "textfield"
+          "input_type": "textfield",
+          "required": true
         }
       },
       "required": [
@@ -76,7 +77,8 @@
               "type": "string",
               "title": "Full name",
               "description": "Whole name, including first name, middle name, and last name",
-              "input_type": "textfield"
+              "input_type": "textfield",
+              "required": true
             }
           },
           "required": [
@@ -99,7 +101,8 @@
               "type": "string",
               "title": "Institution",
               "description": "An established society, corporation, foundation or other organization founded and united for a specific purpose",
-              "input_type": "textarea"
+              "input_type": "textarea",
+              "required": true
             }
           },
           "required": [

@@ -130,4 +130,13 @@ angularApp.controller('RuntimeController', function ($rootScope, $scope, FormSer
 	$scope.submitForm = function() {
 		$scope.$broadcast('submitForm');
 	};
+
+	// Initialize array for fields left empty that fail validation
+	$scope.failedValidation = [];
+	// Event listener waiting for validationVail $emit from field-directive.js
+	$scope.$on('validationFail', function (event, args) {
+		if ($scope.failedValidation.indexOf(args) == -1) {
+			$scope.failedValidation.push(args);
+		}
+	});
 });

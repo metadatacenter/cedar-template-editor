@@ -19,6 +19,8 @@ angularApp.directive('formDirective', function ($rootScope, $document, $timeout)
       // $scope.formFieldsOrder array to loop over for proper ordering of items/elements
       $scope.formFieldsOrder = [];
 
+      $scope.checkSubmission = false;
+
       $scope.addPopover = function() {
         //Initializing Bootstrap Popover fn for each item loaded
         $timeout(function() {
@@ -78,8 +80,13 @@ angularApp.directive('formDirective', function ($rootScope, $document, $timeout)
       // Watching for the 'submitForm' event to be $broadcast from parent 'RuntimeController'
       $scope.$on('submitForm', function (event) {
         console.log('submitting form...');
+
         // Make the model (populated template) available to the parent
         $scope.$parent.model = $scope.model;
+
+        console.log($scope.model);
+        $scope.checkSubmission = true;
+
       });
     }
   };

@@ -33,6 +33,12 @@
 
       </div> <!-- /.left-sidebar -->
       <div class="right-body col-sm-9">
+        <div ng-if="failedValidation.length" class="alert alert-danger" role="alert">
+          <p>The following fields are required:</p>
+          <ul>
+            <li ng-repeat="field in failedValidation">{{field}}</li>
+          </ul>
+        </div>
         <form-directive form="form" page="currentPage"></form-directive>
 
         <div ng-if="form.pages.length > 1" class="pagination-container">

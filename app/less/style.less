@@ -50,75 +50,6 @@
 }
 
 /*
-==========
-=== Inherited Styling
-==========
-*/
-/* Custom container */
-.container-narrow {
-  margin: 0 auto;
-  max-width: 700px;
-}
-.container-narrow  hr {
-  margin: 30px 0;
-}
-
-/* Main marketing message and sign up button */
-.jumbotron {
-  margin: 60px 0;
-  text-align: center;
-}
-.jumbotron h1 {
-  font-size: 72px;
-  line-height: 1;
-}
-.jumbotron .btn {
-  font-size: 21px;
-  padding: 14px 24px;
-}
-
-/* Supporting marketing content */
-.marketing {
-  margin: 60px 0;
-}
-.marketing p, .marketing h4 {
-  margin-top: 28px;
-}
-
-.add-field {
-  text-align: center;
-}
-
-.add-field select {
-  margin-bottom: 0px;
-}
-
-.form-fields .accordion-group{
-  border: 1px solid #AAAAAA;
-}
-
-.form-fields .accordion-heading{
-  background-color: #E2E2E2;
-}
-
-.accordion-edit div, .field div{
-  line-height: 35px;
-}
-
-.form-properties .row {
-  line-height: 35px;
-}
-
-.form-field-label {
-  display: inline;
-}
-
-.required-error {
-  color:red;
-  font-size: smaller;
-}
-
-/*
 ================================================
 === MJD Custom Code
 ================================================
@@ -926,6 +857,7 @@ section.dashboard-elements {
       padding-top:22px;
       font-size:16px;
       color:@black;
+      transition:border-color 0.3s linear;
 
       &.empty ~ .floating-label {
         top:25px;
@@ -941,6 +873,14 @@ section.dashboard-elements {
 
       &:not(.empty):not(:focus) ~ .floating-label {
         color:@brand-primary;
+        &:after {
+          color:@brand-primary;
+        }
+      }
+
+      &.required ~ .floating-label:after {
+        content: '*';
+        color:red;
       }
     }
 
@@ -1046,6 +986,20 @@ section.dashboard-elements {
         cursor: inherit;
         display: block;
       }
+    }
+  }
+
+  .required > .extra-label-context:after {
+    content: '*';
+    color:red;
+    display:inline-block;
+    vertical-align:top;
+    font-size:14px;
+  }
+
+  &.validate {
+    .required.empty {
+      //border-color:red;
     }
   }
 
@@ -1155,6 +1109,10 @@ section.dashboard-elements {
       }
     }
   }
+}
+
+.alert {
+  border-radius:0;
 }
 
 .edit-actions {
