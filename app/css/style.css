@@ -10100,6 +10100,13 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   cursor: inherit;
   display: block;
 }
+.template-body form .required > .extra-label-context:after {
+  content: '*';
+  color: red;
+  display: inline-block;
+  vertical-align: top;
+  font-size: 14px;
+}
 .template-body form .date-group .date-label {
   display: block;
   padding-bottom: 7px;
