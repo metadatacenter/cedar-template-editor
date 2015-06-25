@@ -71,10 +71,10 @@
       <div class="right-body col-sm-9">
         <div id="form-preview-section">
           <div class="checkbox checkbox-primary">
-            <input type="checkbox" id="checkbox1" data-toggle="collapse" data-target=".form-preview">
+            <input type="checkbox" id="checkbox1" data-toggle="collapse" data-target=".form-preview" ng-checked="formPreview">
             <label for="checkbox1">Preview Form</label>
           </div>
-          <div class="form-preview collapse">
+          <div class="form-preview collapse" ng-class="formPreview ? 'collapse in' : 'collapse'">
             <div class="empty-text" ng-show="isPropertiesEmpty()">
               <p>Add an element or create a new field item in order to preview form.</p>
             </div>
@@ -96,6 +96,7 @@
             </div>
           </form>
         </div> <!-- /#form-item-config-section -->
+
         <div class="template-actions">
           <div class="favorite {{favorite}}" ng-click="toggleFavorite()">
             <i class="cedar-svg-flag"></i><span>Favorite</span>
@@ -105,6 +106,7 @@
             <button type="button" class="btn btn-save" ng-click="saveTemplate()">Save Template</button>
           </div>
         </div> <!-- /.template-actions -->
+        
       </div> <!-- /.right-body -->
     </div> <!-- /.row -->
   </div> <!-- /.container -->
