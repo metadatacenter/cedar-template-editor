@@ -34,13 +34,20 @@ angularApp.directive('fieldDirective', function($http, $compile, $document) {
     }
   };
 
-  var linker = function(scope, element) {
+  var linker = function($scope, $element, attrs) {
+    // When form submit event is fired, check field for simple validation
+    $scope.$on('submitForm', function (event) {
+      // If field is required and is empty, emit failed Validation event
+      if ($scope.field.required && $scope.model == undefined) {
+        $scope.$emit('validationFail', $scope.field.title);
+      }
+    });
     // GET template content from path
-    var templateUrl = getTemplateUrl(scope.field, scope.directory);
+    var templateUrl = getTemplateUrl($scope.field, $scope.directory);
     
     $http.get(templateUrl).success(function(data) {
-      element.html(data);
-      $compile(element.contents())(scope);
+      $element.html(data);
+      $compile($element.contents())($scope);
     });
   }
 
@@ -56,6 +63,7 @@ angularApp.directive('fieldDirective', function($http, $compile, $document) {
       option: '&'
     },
     transclude: true,
+    replace: true,
     link: linker
   };
 });
