@@ -1,14 +1,16 @@
-<p class="extra-label-context">{{field.title}}</p>
-<div class="form-group" ng-repeat="(index, value) in field.options">
+<div ng-class="{'required': field.required}">
+	<p class="extra-label-context">{{field.title}}</p>
+	<div class="form-group" ng-repeat="(index, value) in field.options">
 
-  <div ng-if="field.default_option" class="radio radio-primary" ng-init="field.model.value=field.default_option">
-    <input type="radio" id="radio{{index}}" name="radio-{{field.id}}" ng-model="field.model.value" value="{{field.options[index]['text']}}">
-    <label for="radio{{index}}">{{field.options[index]['text']}}</label> 
-  </div><!-- /.radio -->
+	  <div ng-if="field.default_option" class="radio radio-primary" ng-init="field.model.value=field.default_option">
+	    <input type="radio" id="radio{{index}}" name="radio-{{field.id}}" ng-model="field.model.value" value="{{field.options[index]['text']}}">
+	    <label for="radio{{index}}">{{field.options[index]['text']}}</label> 
+	  </div><!-- /.radio -->
 
-  <div ng-if="!field.default_option" class="radio radio-primary">
-    <input type="radio" id="radio{{index}}" name="radio-{{field.id}}" ng-model="field.model.value" value="{{field.options[index]['text']}}">
-    <label for="radio{{index}}">{{field.options[index]['text']}}</label> 
-  </div><!-- /.radio -->
+	  <div ng-if="!field.default_option" class="radio radio-primary">
+	    <input type="radio" id="radio{{index}}" name="radio-{{field.id}}" ng-model="field.model.value" value="{{field.options[index]['text']}}">
+	    <label for="radio{{index}}">{{field.options[index]['text']}}</label> 
+	  </div><!-- /.radio -->
 
-</div><!-- /.form-group -->
+	</div><!-- /.form-group -->
+</div>

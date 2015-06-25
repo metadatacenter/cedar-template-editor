@@ -989,6 +989,14 @@ section.dashboard-elements {
     }
   }
 
+  .required > .extra-label-context:after {
+    content: '*';
+    color:red;
+    display:inline-block;
+    vertical-align:top;
+    font-size:14px;
+  }
+
   &.validate {
     .required.empty {
       //border-color:red;
