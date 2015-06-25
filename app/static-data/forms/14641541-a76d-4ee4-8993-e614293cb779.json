@@ -40,7 +40,7 @@
           "title": "Simple Textfield #1",
           "description": "This is my simple textfield",
           "input_type": "textfield",
-          "required": false,
+          "required": true,
           "created_at": 1433523975365
         }
       },
@@ -64,7 +64,7 @@
           "title": "Simple Paragraph Field",
           "description": "This is my simple paragraph field",
           "input_type": "textarea",
-          "required": false,
+          "required": true,
           "created_at": 1433523992574
         }
       },
@@ -88,7 +88,7 @@
           "title": "Simple Radio Button Field",
           "description": "",
           "input_type": "radio",
-          "required": false,
+          "required": true,
           "created_at": 1433524005025,
           "options": [
             {
@@ -127,7 +127,7 @@
           "title": "Simple Checkbox Field #1",
           "description": "",
           "input_type": "checkbox",
-          "required": false,
+          "required": true,
           "created_at": 1433524035954,
           "options": [
             {
@@ -169,7 +169,7 @@
           "title": "Simple Date Input Field #1",
           "description": "",
           "input_type": "date",
-          "required": false,
+          "required": true,
           "created_at": 1433524064381,
           "date_type": "single-date"
         }
@@ -194,7 +194,7 @@
           "title": "Simple Date Field #2",
           "description": "",
           "input_type": "date",
-          "required": false,
+          "required": true,
           "created_at": 1433524082467,
           "date_type": "date-range"
         }
@@ -219,7 +219,7 @@
           "title": "Simple Email address Field #1",
           "description": "This is the help text for simple email address field #1",
           "input_type": "email",
-          "required": false,
+          "required": true,
           "created_at": 1433524095784
         }
       },
@@ -243,7 +243,7 @@
           "title": "Simple Pick from a List field",
           "description": "",
           "input_type": "list",
-          "required": false,
+          "required": true,
           "created_at": 1433524154974,
           "options": [
             {
@@ -287,7 +287,7 @@
           "title": "Audio Visual Field Sample",
           "description": "Help text for the audio/visual field sample",
           "input_type": "audio-visual",
-          "required": false,
+          "required": true,
           "created_at": 1433524190870
         }
       },
@@ -311,7 +311,7 @@
           "title": "Simple Numeric Field Type",
           "description": "Helptext for simple numeric field type",
           "input_type": "numeric",
-          "required": false,
+          "required": true,
           "created_at": 1433524212215
         }
       },
@@ -335,7 +335,7 @@
           "title": "Sample Phone Number Field",
           "description": "Please only use numbers and do not use any special characters or hyphens",
           "input_type": "phone-number",
-          "required": false,
+          "required": true,
           "created_at": 1433524229507
         }
       },
@@ -359,7 +359,7 @@
           "title": "Sample Section Break Field type",
           "description": "This is the helper description for the section break field type",
           "input_type": "section-break",
-          "required": false,
+          "required": true,
           "created_at": 1433524257819
         }
       },

@@ -9183,66 +9183,6 @@ button.close {
           transition: all 0.3s 0.1s;
 }
 /*
-==========
-=== Inherited Styling
-==========
-*/
-/* Custom container */
-.container-narrow {
-  margin: 0 auto;
-  max-width: 700px;
-}
-.container-narrow hr {
-  margin: 30px 0;
-}
-/* Main marketing message and sign up button */
-.jumbotron {
-  margin: 60px 0;
-  text-align: center;
-}
-.jumbotron h1 {
-  font-size: 72px;
-  line-height: 1;
-}
-.jumbotron .btn {
-  font-size: 21px;
-  padding: 14px 24px;
-}
-/* Supporting marketing content */
-.marketing {
-  margin: 60px 0;
-}
-.marketing p,
-.marketing h4 {
-  margin-top: 28px;
-}
-.add-field {
-  text-align: center;
-}
-.add-field select {
-  margin-bottom: 0px;
-}
-.form-fields .accordion-group {
-  border: 1px solid #AAAAAA;
-}
-.form-fields .accordion-heading {
-  background-color: #E2E2E2;
-}
-.accordion-edit div,
-.field div {
-  line-height: 35px;
-}
-.form-properties .row {
-  line-height: 35px;
-}
-.form-field-label {
-  display: inline;
-}
-.required-error {
-  color: red;
-  font-size: smaller;
-}
-/*
 ================================================
 === MJD Custom Code
 ================================================
@@ -10041,6 +9981,8 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   padding-top: 22px;
   font-size: 16px;
   color: #000000;
+  -webkit-transition: border-color 0.3s linear;
+          transition: border-color 0.3s linear;
 }
 .template-body form .form-group .form-control.empty ~ .floating-label {
   top: 25px;
@@ -10054,6 +9996,13 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
 }
 .template-body form .form-group .form-control:not(.empty):not(:focus) ~ .floating-label {
   color: #339933;
+}
+.template-body form .form-group .form-control:not(.empty):not(:focus) ~ .floating-label:after {
+  color: #339933;
+}
+.template-body form .form-group .form-control.required ~ .floating-label:after {
+  content: '*';
+  color: red;
 }
 .template-body form .form-group textarea.form-control {
   height: auto;
@@ -10268,6 +10217,9 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
 .template-body form .date-type-toggle .d-option.active,
 .template-body form .date-type-toggle .d-option:hover {
   border-color: #339933;
+}
+.alert {
+  border-radius: 0;
 }
 .edit-actions {
   border-top: 1px solid #ddd;

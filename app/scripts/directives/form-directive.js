@@ -19,6 +19,8 @@ angularApp.directive('formDirective', function ($rootScope, $document, $timeout)
       // $scope.formFieldsOrder array to loop over for proper ordering of items/elements
       $scope.formFieldsOrder = [];
 
+      $scope.checkSubmission = false;
+
       $scope.addPopover = function() {
         //Initializing Bootstrap Popover fn for each item loaded
         $timeout(function() {
@@ -79,6 +81,7 @@ angularApp.directive('formDirective', function ($rootScope, $document, $timeout)
       $scope.$on('submitForm', function (event) {
         console.log('submitting form...');
         console.log($scope.model);
+        $scope.checkSubmission = true;
       });
     }
   };

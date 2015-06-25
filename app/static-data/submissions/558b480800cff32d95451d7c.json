@@ -1,0 +1,402 @@
+{
+  "@id": "",
+  "title": "Person",
+  "description": "A template with information about a particular person",
+  "favorite": false,
+  "guid": "9347531f-6932-445d-93c4-803393a6e666",
+  "pages": [
+    [
+      "name",
+      "biography",
+      "sex",
+      "hobbies",
+      "birth_date",
+      "email_address",
+      "country_of_origin",
+      "number_of_children",
+      "phone_number",
+      "availability"
+    ]
+  ],
+  "type": "object",
+  "properties": {
+    "@context": {
+      "type": [
+        "object",
+        "string",
+        "array",
+        "null"
+      ]
+    },
+    "@id": {
+      "type": "string",
+      "format": "uri"
+    },
+    "@type": {
+      "enum": [
+        "http://metadatacenter.org/schemas/BasicStudyDesign"
+      ]
+    },
+    "name": {
+      "@id": "",
+      "type": "object",
+      "properties": {
+        "@type": {
+          "enum": []
+        },
+        "value": {
+          "type": "string",
+          "id": "a5e2b0cc-9983-4f32-9a3c-172491c83ae3",
+          "title": "Name",
+          "description": "",
+          "input_type": "textfield",
+          "required": false,
+          "created_at": {
+            "$numberLong": "1435190973550"
+          },
+          "model": {
+            "value": "John"
+          }
+        }
+      },
+      "required": [
+        "@type",
+        "value"
+      ],
+      "additionalProperties": false,
+      "$schema": "http://json-schema.org/draft-04/schema#"
+    },
+    "biography": {
+      "@id": "",
+      "type": "object",
+      "properties": {
+        "@type": {
+          "enum": []
+        },
+        "value": {
+          "type": "string",
+          "id": "26c2449f-2f00-473a-80a0-a12b4dbf253c",
+          "title": "Biography",
+          "description": "",
+          "input_type": "textarea",
+          "required": false,
+          "created_at": {
+            "$numberLong": "1435191012317"
+          },
+          "model": {
+            "value": "This is a biography"
+          }
+        }
+      },
+      "required": [
+        "@type",
+        "value"
+      ],
+      "additionalProperties": false,
+      "$schema": "http://json-schema.org/draft-04/schema#"
+    },
+    "sex": {
+      "@id": "",
+      "type": "object",
+      "properties": {
+        "@type": {
+          "enum": []
+        },
+        "value": {
+          "type": "string",
+          "id": "329f5ebb-d7b5-4ba8-b5c9-db28feaebebe",
+          "title": "Sex",
+          "description": "",
+          "input_type": "radio",
+          "required": false,
+          "created_at": {
+            "$numberLong": "1435191020912"
+          },
+          "options": [
+            {
+              "text": "Male"
+            },
+            {
+              "text": "Female"
+            }
+          ],
+          "model": {
+            "value": "Male"
+          }
+        }
+      },
+      "required": [
+        "@type",
+        "value"
+      ],
+      "additionalProperties": false,
+      "$schema": "http://json-schema.org/draft-04/schema#"
+    },
+    "hobbies": {
+      "@id": "",
+      "type": "object",
+      "properties": {
+        "@type": {
+          "enum": []
+        },
+        "value": {
+          "type": "string",
+          "id": "9b2b1502-3eab-42bc-bf9b-7009942ad520",
+          "title": "Hobbies",
+          "description": "",
+          "input_type": "checkbox",
+          "required": false,
+          "created_at": {
+            "$numberLong": "1435191097075"
+          },
+          "options": [
+            {
+              "text": "Photography"
+            },
+            {
+              "text": "Reading"
+            },
+            {
+              "text": "Hiking"
+            }
+          ],
+          "model": {
+            "value": {
+              "Photography": true,
+              "Reading": false,
+              "Hiking": true
+            }
+          }
+        }
+      },
+      "required": [
+        "@type",
+        "value"
+      ],
+      "additionalProperties": false,
+      "$schema": "http://json-schema.org/draft-04/schema#"
+    },
+    "birth_date": {
+      "@id": "",
+      "type": "object",
+      "properties": {
+        "@type": {
+          "enum": []
+        },
+        "value": {
+          "type": "string",
+          "id": "82f680e8-19e3-40a8-9833-110e5f917a23",
+          "title": "Birth date",
+          "description": "",
+          "input_type": "date",
+          "required": false,
+          "created_at": {
+            "$numberLong": "1435191148836"
+          },
+          "date_type": "single-date",
+          "model": {
+            "value": "06/08/2015 5:15 PM"
+          }
+        }
+      },
+      "required": [
+        "@type",
+        "value"
+      ],
+      "additionalProperties": false,
+      "$schema": "http://json-schema.org/draft-04/schema#"
+    },
+    "email_address": {
+      "@id": "",
+      "type": "object",
+      "properties": {
+        "@type": {
+          "enum": []
+        },
+        "value": {
+          "type": "string",
+          "id": "7bcf5727-f01f-4ff1-a24c-bfc78914cfcb",
+          "title": "Email address",
+          "description": "",
+          "input_type": "email",
+          "required": false,
+          "created_at": {
+            "$numberLong": "1435191157870"
+          },
+          "model": {
+            "value": "john@acme.com"
+          }
+        }
+      },
+      "required": [
+        "@type",
+        "value"
+      ],
+      "additionalProperties": false,
+      "$schema": "http://json-schema.org/draft-04/schema#"
+    },
+    "country_of_origin": {
+      "@id": "",
+      "type": "object",
+      "properties": {
+        "@type": {
+          "enum": []
+        },
+        "value": {
+          "type": "string",
+          "id": "2d174cff-d429-466e-a0a2-a34abbc57144",
+          "title": "Country of origin",
+          "description": "",
+          "input_type": "radio",
+          "required": false,
+          "created_at": {
+            "$numberLong": "1435191172360"
+          },
+          "options": [
+            {
+              "text": "USA"
+            },
+            {
+              "text": "Canada"
+            },
+            {
+              "text": "Other"
+            }
+          ],
+          "model": {
+            "value": "USA"
+          }
+        }
+      },
+      "required": [
+        "@type",
+        "value"
+      ],
+      "additionalProperties": false,
+      "$schema": "http://json-schema.org/draft-04/schema#"
+    },
+    "number_of_children": {
+      "@id": "",
+      "type": "object",
+      "properties": {
+        "@type": {
+          "enum": []
+        },
+        "value": {
+          "type": "string",
+          "id": "d4ed9dd9-a765-4de6-912b-6c9b83813bb6",
+          "title": "Number of children",
+          "description": "",
+          "input_type": "numeric",
+          "required": false,
+          "created_at": {
+            "$numberLong": "1435191277074"
+          },
+          "model": {
+            "value": 2
+          }
+        }
+      },
+      "required": [
+        "@type",
+        "value"
+      ],
+      "additionalProperties": false,
+      "$schema": "http://json-schema.org/draft-04/schema#"
+    },
+    "phone_number": {
+      "@id": "",
+      "type": "object",
+      "properties": {
+        "@type": {
+          "enum": []
+        },
+        "value": {
+          "type": "string",
+          "id": "4a39e7af-2468-4578-843c-15b3f02a4080",
+          "title": "Phone number",
+          "description": "",
+          "input_type": "phone-number",
+          "required": false,
+          "created_at": {
+            "$numberLong": "1435191286581"
+          },
+          "model": {
+            "value": 655655655
+          }
+        }
+      },
+      "required": [
+        "@type",
+        "value"
+      ],
+      "additionalProperties": false,
+      "$schema": "http://json-schema.org/draft-04/schema#"
+    },
+    "availability": {
+      "@id": "",
+      "type": "object",
+      "properties": {
+        "@type": {
+          "enum": []
+        },
+        "value": {
+          "type": "string",
+          "id": "afb0a74e-a423-4f5d-b739-579ff83fe95f",
+          "title": "Availability",
+          "description": "",
+          "input_type": "list",
+          "required": false,
+          "created_at": 1435248405726,
+          "options": [
+            {
+              "text": "Monday"
+            },
+            {
+              "text": "Tuesday"
+            },
+            {
+              "text": "Wednesday"
+            },
+            {
+              "text": "Thursday"
+            },
+            {
+              "text": "Friday"
+            },
+            {
+              "text": "Saturday"
+            },
+            {
+              "text": "Sunday"
+            }
+          ],
+          "model": {
+            "value": [
+              "Tuesday",
+              "Thursday",
+              "Saturday"
+            ]
+          }
+        }
+      },
+      "required": [
+        "@type",
+        "value"
+      ],
+      "additionalProperties": false,
+      "$schema": "http://json-schema.org/draft-04/schema#"
+    }
+  },
+  "required": [
+    "@context",
+    "@id",
+    "@type"
+  ],
+  "additionalProperties": false,
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "template_id": {
+    "$oid": "558b480800cff32d95451d7c"
+  },
+  "submission_id": "558b480800cff32d95451d7c"
+}

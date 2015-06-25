@@ -1,6 +1,6 @@
 <div class="form-group floating-label-wrapper">
 	<!-- {{model}} -->
-  <input type="email" class="form-control" id="emailfield1" placeholder="{{field.title}}" aria-label="{{field.description}}" ng-model="model.value" with-floating-label>
+  <input type="email" class="form-control" ng-class="{'required': field.required}" id="emailfield1" placeholder="{{field.title}}" aria-label="{{field.description}}" ng-model="model.value" with-floating-label>
   <span class="warning-text">{{field.warning_text}}</span>
   <div class="input-indicator-icons">
     <i class="cedar-svg-help-circle" data-container="body" data-toggle="popover" data-placement="left" data-content="{{field.description}}"></i>

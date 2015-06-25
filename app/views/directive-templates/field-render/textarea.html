@@ -1,6 +1,6 @@
 <div class="form-group floating-label-wrapper">
 	<!-- {{model}} -->
-  <textarea class="form-control" rows="5" id="comment" placeholder="{{field.title}}" aria-label="{{field.description}}" ng-model="model.value" with-floating-label></textarea>
+  <textarea rows="5" id="comment" class="form-control" ng-class="{'required': field.required}" placeholder="{{field.title}}" aria-label="{{field.description}}" ng-model="model.value" with-floating-label></textarea>
   <div class="input-indicator-icons">
     <i class="cedar-svg-help-circle" data-container="body" data-toggle="popover" data-placement="left" data-content="{{field.description}}"></i>
     <i class="cedar-svg-check-circle"></i>

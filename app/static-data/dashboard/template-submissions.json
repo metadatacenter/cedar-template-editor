@@ -22,5 +22,11 @@
 	  "description": "Sample template for research team embedding",
 	  "guid": "fd7f7062-93b6-435e-9d81-a050ab30158c",
 	  "submission_id": "1fcc102d-4447-4f07-8492-f5030203fc11"
+	},
+	{
+		"title": "Person",
+	  "description": "A template with information about a particular person",
+	  "guid": "9347531f-6932-445d-93c4-803393a6e666",
+	  "submission_id": "558b480800cff32d95451d7c"
 	}
 ]
