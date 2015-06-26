@@ -1128,6 +1128,17 @@ section.dashboard-elements {
     }
   }
 
+  .required-text {
+    font-style:italic;
+
+    &:before {
+      content: '*';
+      display:inline-block;
+      vertical-align:top;
+      color:red;
+    }
+  }
+
   &.runtime {
     .element-name-label .cedar-svg-element {
       //color:orange;

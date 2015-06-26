@@ -10243,6 +10243,15 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
 .template-body form .date-type-toggle .d-option:hover {
   border-color: #339933;
 }
+.template-body form .required-text {
+  font-style: italic;
+}
+.template-body form .required-text:before {
+  content: '*';
+  display: inline-block;
+  vertical-align: top;
+  color: red;
+}
 .alert {
   border-radius: 0;
 }
