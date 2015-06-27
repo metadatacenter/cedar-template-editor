@@ -74,10 +74,10 @@
       <div class="right-body col-sm-9">
         <div id="form-preview-section">
           <!--<div class="checkbox checkbox-primary">-->
-            <!--<input type="checkbox" id="checkbox1" data-toggle="collapse" data-target=".form-preview" ng-checked="formPreview">>-->
-            <!--<label for="checkbox1">Preview Element</label>-->
-          </div>
-          <!--<div class="form-preview collapse" ng-class="formPreview ? 'collapse in' : 'collapse'">-->
+            <!--<input type="checkbox" id="checkbox-for-preview" checked = "true" data-toggle="collapse" data-target=".form-preview">-->
+            <!--<label for="checkbox-for-preview">Preview Element</label>-->
+          <!--</div>-->
+          <div class="form-preview collapse in">
             <div class="empty-text" ng-show="isPropertiesEmpty()">
               <p>Add an existing element or create a new item.</p>
             </div>
@@ -99,6 +99,7 @@
             </div>
           </form>
         </div> <!-- /#form-item-config-section -->
+
         <div class="element-actions">
           <div>
             <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</alert>
