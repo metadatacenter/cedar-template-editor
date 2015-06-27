@@ -158,28 +158,6 @@ angularApp.controller('CreateTemplateController', function ($rootScope, $scope, 
     $scope.$broadcast('resetForm');
   };
 
-//<<<<<<< HEAD
-//  // Stores the template into the database
-//  $scope.store = function() {
-//    $scope.resetAlerts();
-//    // Check that the element name is not empty
-//    if ($scope.form.title.length == 0) {
-//      $scope.addAlert('danger', 'Please provide a name for the Template.');
-//    }
-//    else {
-//      var json = angular.toJson($scope.form);
-//      console.log(json);
-//      $http.post('http://localhost:9000/templates', json).
-//        success(function(data) {
-//          $scope.addAlert('success', 'The template \"' + data.title + '\" has been created.');
-//        }).
-//        error(function(data, status, headers, config) {
-//          $scope.addAlert('danger', "Problem creating the template.");
-//        });
-//    }
-//  };
-//
-//=======
   // Setting $scope variable to toggle for whether this template is a favorite
   $scope.toggleFavorite = function() {
     $scope.favorite = $scope.favorite === true ? false : true;
