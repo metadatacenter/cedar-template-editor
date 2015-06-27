@@ -1,6 +1,6 @@
 <div ng-class="{'required': field.required}">
 	<p class="extra-label-context">{{field.title}}</p>
-	<div class="form-group" ng-repeat="(index, value) in field.options">
+	<div class="form-group checkbox-item" ng-repeat="(index, value) in field.options">
 
 	  <div ng-if="field.default_option" class="checkbox checkbox-primary" ng-init="field.model.value[value.text]=field.default_option[value.text]">
 	    <input type="checkbox" id="checkbox{{index}}" ng-model="field.model.value[value.text]" ng-checked="field.default_option[value.text]">

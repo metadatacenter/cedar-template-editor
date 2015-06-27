@@ -4,12 +4,14 @@ angularApp.controller('CreateElementController', function ($rootScope, $scope, $
 
   // Set page title variable when this controller is active
   $rootScope.pageTitle = 'Element Creator';
-
   // Create staging area to create/edit fields before they get added to the element
   $scope.staging = {};
-
+  // Setting default false flag for $scope.favorite
+  $scope.favorite = false;
   // Empty $scope object used to store values that get converted to their json-ld counterparts on the $scope.element object
   $scope.volatile = {};
+  // Seting form preview setting to false by default
+  $scope.formPreview = false;
 
   // Using form service to load list of existing elements to embed into new element
   FormService.elementList().then(function(response) {
@@ -21,6 +23,8 @@ angularApp.controller('CreateElementController', function ($rootScope, $scope, $
     // Fetch existing element and assign to $scope.element property
     FormService.element($routeParams.id).then(function(response) {
       $scope.element = response;
+      // Set form preview to true so the preview is viewable onload
+      $scope.formPreview = true;
     });
   } else {
     // If we're not loading an existing element then let's create a new empty $scope.element property
@@ -31,6 +35,7 @@ angularApp.controller('CreateElementController', function ($rootScope, $scope, $
       "title": "",
       "description": "",
       "guid": $rootScope.generateGUID(),
+      "favorite": $scope.favorite,
       "type": "object",
       "properties": {
         "@type": {
@@ -165,19 +170,27 @@ angularApp.controller('CreateElementController', function ($rootScope, $scope, $
 
   // Reverts to empty form and removes all previously added fields/elements
   $scope.reset = function() {
-    $scope.resetAlerts();
-    $scope.addAlert('success', 'The element has been cleared.');
-    //console.log("I am calling reset()");
-    //angular.forEach($scope.form.properties, function(value, key) {
-    //  if ($rootScope.ignoreKey(key)) {
-    //    delete $scope.form.properties[key];
-    //    delete $scope.$$childHead.formFields[key];
-    //  }
-    //});
+    // Loop through $scope.element.properties object and delete each field leaving default json-ld syntax in place
+    angular.forEach($scope.element.properties, function(value, key) {
+      if ($rootScope.ignoreKey(key)) {
+        delete $scope.element.properties[key];
+      }
+    });
+    // Broadcast the reset event which will trigger the emptying of formFields formFieldsOrder
+    $scope.$broadcast('resetForm');
+  };
+
+  // Setting $scope variable to toggle for whether this template is a favorite
+  $scope.toggleFavorite = function() {
+    $scope.favorite = $scope.favorite === true ? false : true;
+    $scope.element.favorite = $scope.favorite;
   };
 
   // Stores the element into the database
   $scope.saveElement = function() {
+    // Here you could $scope.$broadcast an event down to the field level to do any requirements checking
+    // to make sure the fields are created properly
+    // Database service save() call could go here, if type checks are passed
     $scope.resetAlerts();
     // Check that the element name is not empty
     if ($scope.element.title.length == 0) {
@@ -212,6 +225,6 @@ angularApp.controller('CreateElementController', function ($rootScope, $scope, $
         });
       }
     }
-  };
+  }
 
 });

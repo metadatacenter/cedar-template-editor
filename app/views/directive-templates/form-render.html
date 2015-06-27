@@ -1,4 +1,4 @@
-<form name="{{form.title}}" id="{{form.guid}}" ng-class="{'validate': checkSubmission}">
+<form name="{{form.title}}" id="{{form.guid}}" class="runtime" ng-class="{'validate': checkSubmission}">
   <!--Loop through top level "page" parameter in form element and call element-directive or field-directive with contents -->
   <div ng-repeat="item in page" class="animate-fade">
     <span ng-if="formFields[item]">
@@ -11,6 +11,7 @@
       </div>
     </span>
   </div>
+  <p ng-if="page.length" class="required-text">Required</p>
 </form>
 
 <div class="text-right" style="padding-top:20px; padding-bottom:20px;">
@@ -18,16 +19,13 @@
   <!--<a class="btn btn-small btn-primary" ng-show="showRender" ng-click="showRender = false">Hide Form Render JSON</a>-->
   <!--<a class="btn btn-small btn-primary" ng-show="!showOutput" ng-click="showOutput = true; showRender = false">Show Data Output JSON</a>-->
   <!--<a class="btn btn-small btn-primary" ng-show="showOutput" ng-click="showOutput = false">Hide Data Output JSON</a>-->
-
   <a ng-click="showRender = !showRender">Show Template JSON</a><br />
   <a ng-click="showOutput = !showOutput">Show Output JSON</a>
 </div>
-
 <div ng-show="showRender">
   <h5>Template JSON</h5>
   <pre>{{ form | json }}</pre>
 </div>
-
 <div ng-show="showOutput">
   <h5>Output JSON</h5>
   <pre>{{ model | json }}</pre>

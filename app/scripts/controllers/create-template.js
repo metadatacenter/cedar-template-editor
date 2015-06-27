@@ -8,6 +8,8 @@ angularApp.controller('CreateTemplateController', function ($rootScope, $scope, 
   $scope.staging = {};
   // Setting default false flag for $scope.favorite
   $scope.favorite = false;
+  // Seting form preview setting to false by default
+  $scope.formPreview = false;
 
   // Using form service to load list of existing elements to embed into new form
   FormService.elementList().then(function(response) {
@@ -19,6 +21,8 @@ angularApp.controller('CreateTemplateController', function ($rootScope, $scope, 
     // Fetch existing form and assign to $scope.form property
     FormService.form($routeParams.id).then(function(response) {
       $scope.form = response;
+      // Set form preview to true so the preview is viewable onload
+      $scope.formPreview = true;
     });
   } else {
     // If we're not loading an existing form then let's create a new empty $scope.form property

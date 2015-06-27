@@ -21,6 +21,7 @@ angularApp.controller('RuntimeController', function ($rootScope, $scope, FormSer
   $scope.currentPage = [],
   $scope.pageIndex = 0,
   $scope.pagesArray = [];
+  $scope.form.title = 'Fill out Template';
 
   // Get/read form with given id from $routeParams
   $scope.getForm = function() {

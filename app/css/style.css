@@ -9170,6 +9170,10 @@ button.close {
   font-family: 'aktiv-grotesk-std';
   font-weight: 400;
 }
+.activ-grotesk-medium {
+  font-family: 'aktiv-grotesk-std';
+  font-weight: 500;
+}
 .activ-grotesk-bold {
   font-family: 'aktiv-grotesk-std';
   font-weight: 700;
@@ -9279,6 +9283,7 @@ i {
   color: #ffffff;
   font-size: 18px;
   margin: 0;
+  font-weight: 400;
 }
 @media (min-width: 768px) {
   .template-header .left-sidebar h2.runtime-template-name {
@@ -9325,6 +9330,8 @@ i {
 }
 .template-header #element-name-container .cedar-svg-element,
 .template-header #element-controlled-term-container .cedar-svg-element,
+.template-header #element-name-container .cedar-svg-metadata,
+.template-header #element-controlled-term-container .cedar-svg-metadata,
 .template-header #element-name-container .cedar-svg-controll-term,
 .template-header #element-controlled-term-container .cedar-svg-controll-term {
   position: absolute;
@@ -9418,13 +9425,6 @@ i {
   color: #000000;
   margin-bottom: 20px;
 }
-.template-body .right-body #form-item-config-section .form-preview p.type-label.translate,
-.template-body .right-body #form-preview-section .form-preview p.type-label.translate {
-  margin-bottom: 0;
-  -webkit-transform: translateY(25px);
-      -ms-transform: translateY(25px);
-          transform: translateY(25px);
-}
 .template-body .right-body #form-item-config-section .form-preview p.type-label i,
 .template-body .right-body #form-preview-section .form-preview p.type-label i {
   color: #339933;
@@ -9436,7 +9436,7 @@ i {
 }
 .template-body .right-body .preview-edit-options {
   display: inline-block;
-  vertical-align: middle;
+  vertical-align: top;
   margin-bottom: 40px;
 }
 .template-body .right-body .preview-edit-options .remove,
@@ -9580,6 +9580,10 @@ p.add-item {
 .left-sidebar .item-menu > li a i {
   color: #339933;
   padding-right: 5px;
+  float: left;
+  -webkit-transform: translate(0px, 0px);
+      -ms-transform: translate(0px, 0px);
+          transform: translate(0px, 0px);
 }
 @media (min-width: 992px) {
   .left-sidebar .element-menu > li a i,
@@ -9721,7 +9725,7 @@ section.dashboard-elements p.instructions {
 }
 section.dashboard-elements .btn-create-new {
   font-family: 'aktiv-grotesk-std';
-  font-weight: 700;
+  font-weight: 500;
   width: 100%;
   color: #ffffff;
   background-color: #339933;
@@ -9817,23 +9821,29 @@ section.dashboard-elements .dash-header .input-group .input-group-btn .btn:hover
 section.dashboard-elements .dash-header .input-group .input-group-btn .btn:focus i {
   color: #339933;
 }
-section.dashboard-elements .dash-header .see-all {
+section.dashboard-elements .dash-header .see-all,
+section.dashboard-elements .dash-header .back {
   float: right;
   margin: 0;
   -webkit-transform: translateY(8px);
       -ms-transform: translateY(8px);
           transform: translateY(8px);
   font-family: 'aktiv-grotesk-std';
-  font-weight: 700;
+  font-weight: 500;
   color: #339933;
   cursor: pointer;
   text-transform: uppercase;
   -webkit-transition: all 0.3s 0.1s;
           transition: all 0.3s 0.1s;
 }
-section.dashboard-elements .dash-header .see-all:hover {
+section.dashboard-elements .dash-header .see-all:hover,
+section.dashboard-elements .dash-header .back:hover {
   color: #338833;
   text-decoration: none;
+}
+section.dashboard-elements .dash-header .see-all i,
+section.dashboard-elements .dash-header .back i {
+  color: rgba(51, 51, 51, 0.43);
 }
 section.dashboard-elements .margin-reset-row {
   margin-left: -10px;
@@ -9908,7 +9918,11 @@ section.dashboard-elements .margin-reset-row .template-item .state-indication {
   right: 10px;
   bottom: 10px;
 }
-section.dashboard-elements .margin-reset-row .template-item .state-indication i {
+section.dashboard-elements .margin-reset-row .template-item .state-indication .cedar-svg-complete,
+section.dashboard-elements .margin-reset-row .template-item .state-indication .cedar-svg-flag {
+  color: #339933;
+}
+section.dashboard-elements .margin-reset-row .template-item .state-indication .cedar-svg-progress {
   color: rgba(51, 51, 51, 0.43);
 }
 section.dashboard-elements .margin-reset-row .template-item .back-panel {
@@ -9972,6 +9986,10 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
 */
 .template-body form .form-group {
   margin-bottom: 40px;
+}
+.template-body form .form-group.radio-item,
+.template-body form .form-group.checkbox-item {
+  margin-bottom: 30px;
 }
 .template-body form .form-group .form-control {
   border-radius: 0;
@@ -10114,7 +10132,7 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   font-size: 12px;
   text-transform: uppercase;
   font-family: 'aktiv-grotesk-std';
-  font-weight: 700;
+  font-weight: 500;
   color: #999;
 }
 .template-body form .date-group .input-group-addon {
@@ -10217,7 +10235,7 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
 .template-body form .date-type-toggle .d-option span {
   text-transform: uppercase;
   font-family: 'aktiv-grotesk-std';
-  font-weight: 700;
+  font-weight: 500;
   font-size: 12px;
   color: #666;
 }
@@ -10225,12 +10243,21 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
 .template-body form .date-type-toggle .d-option:hover {
   border-color: #339933;
 }
+.template-body form .required-text {
+  font-style: italic;
+}
+.template-body form .required-text:before {
+  content: '*';
+  display: inline-block;
+  vertical-align: top;
+  color: red;
+}
 .alert {
   border-radius: 0;
 }
 .edit-actions {
   border-top: 1px solid #ddd;
-  padding: 30px 0;
+  padding: 50px 0;
   text-align: center;
 }
 .edit-actions .btn {
@@ -10248,15 +10275,9 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   width: 32.6%;
   border: none;
 }
-@media (min-width: 768px) {
-  .edit-actions .btn {
-    width: 175px;
-  }
-}
 @media (min-width: 992px) {
   .edit-actions .btn {
     padding: 18px 0;
-    width: 220px;
   }
 }
 .edit-actions .btn:hover {
@@ -10267,18 +10288,12 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   background-color: transparent;
   font-size: 14px;
   font-family: 'aktiv-grotesk-std';
-  font-weight: 700;
+  font-weight: 500;
   padding: 18px 0;
 }
 @media (min-width: 992px) {
   .edit-actions .btn.btn-clear {
-    width: 125px;
-  }
-}
-@media (min-width: 992px) {
-  .edit-actions .btn.btn-clear {
     padding: 18px 0;
-    width: 160px;
   }
 }
 .edit-actions .btn.btn-clear:hover {

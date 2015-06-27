@@ -1,7 +1,7 @@
 angularApp.run(['$rootScope',  function($rootScope) {
 	
     // Define global pageTitle variable for use
-    $rootScope.pageTitle;
+    //$rootScope.pageTitle;
 
     // Global utility functions
 
@@ -42,7 +42,7 @@ angularApp.run(['$rootScope',  function($rootScope) {
       return array.sort(function(a, b) {
         var x = a[bool],
             y = b[bool];
-        return ((x == y) ? -1 : ((x == true) ? -1 : 1));
+        return ((x == y) ? -1 : ((x === true) ? -1 : 1));
       });
-    }
+    };
 }]);

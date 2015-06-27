@@ -35,6 +35,11 @@
   font-weight:400;
 }
 
+.activ-grotesk-medium {
+  font-family: 'aktiv-grotesk-std';
+  font-weight:500;
+}
+
 .activ-grotesk-bold {
   font-family: 'aktiv-grotesk-std';
   font-weight:700;
@@ -153,6 +158,7 @@ i {
       color:@white;
       font-size:18px;
       margin:0;
+      font-weight:400;
 
       @media(min-width:@screen-sm-min) {
         font-size:22px;
@@ -205,6 +211,7 @@ i {
   #element-controlled-term-container {
 
     .cedar-svg-element,
+    .cedar-svg-metadata,
     .cedar-svg-controll-term {
       position:absolute;
       color:@brand-primary;
@@ -299,11 +306,6 @@ i {
           color:@black;
           margin-bottom:20px;
 
-          &.translate {
-            margin-bottom:0;
-            transform:translateY(25px);
-          }
-
           i {
             color:@brand-primary;
           }
@@ -319,7 +321,7 @@ i {
 
     .preview-edit-options {
       display:inline-block;
-      vertical-align:middle;
+      vertical-align:top;
       margin-bottom:40px;
 
       .remove,
@@ -479,6 +481,8 @@ p.add-item {
         i {
           color:@brand-primary;
           padding-right:5px;
+          float:left;
+          transform: translate(0px, 0px);
           @media(min-width:@screen-md-min) {
             padding-right:10px;
           }
@@ -616,7 +620,7 @@ section.dashboard-elements {
   }
 
   .btn-create-new {
-    .activ-grotesk-bold;
+    .activ-grotesk-medium;
     width:100%;
     color:@white;
     background-color:@brand-primary;
@@ -702,11 +706,12 @@ section.dashboard-elements {
       }
     }
 
-    .see-all {
+    .see-all,
+    .back {
       float:right;
       margin:0;
       transform:translateY(8px);
-      .activ-grotesk-bold;
+      .activ-grotesk-medium;
       color:@brand-primary;
       cursor:pointer;
       text-transform:uppercase;
@@ -715,6 +720,10 @@ section.dashboard-elements {
       &:hover {
         color:@brand-primary-hover;
         text-decoration:none;
+      }
+
+      i {
+        color:rgba(51, 51, 51, 0.43);
       }
     }
   }
@@ -775,8 +784,12 @@ section.dashboard-elements {
         right:10px;
         bottom:10px;
 
-        i {
-          color:rgba(51,51,51,0.43);
+        .cedar-svg-complete,
+        .cedar-svg-flag {
+          color:@brand-primary;
+        }
+        .cedar-svg-progress {
+          color:rgba(51, 51, 51, 0.43);
         }
       }
 
@@ -848,6 +861,11 @@ section.dashboard-elements {
 
   .form-group {
     margin-bottom:40px;
+
+    &.radio-item,
+    &.checkbox-item {
+      margin-bottom:30px;
+    }
 
     .form-control {
       border-radius:0;
@@ -1011,7 +1029,7 @@ section.dashboard-elements {
       padding-left:5px;
       font-size:12px;
       text-transform:uppercase;
-      .activ-grotesk-bold;
+      .activ-grotesk-medium;
       color:#999;
     }
 
@@ -1098,7 +1116,7 @@ section.dashboard-elements {
 
       span {
         text-transform:uppercase;
-        .activ-grotesk-bold;
+        .activ-grotesk-medium;
         font-size:12px;
         color:#666;
       }
@@ -1109,6 +1127,23 @@ section.dashboard-elements {
       }
     }
   }
+
+  .required-text {
+    font-style:italic;
+
+    &:before {
+      content: '*';
+      display:inline-block;
+      vertical-align:top;
+      color:red;
+    }
+  }
+
+  &.runtime {
+    .element-name-label .cedar-svg-element {
+      //color:orange;
+    }
+  }
 }
 
 .alert {
@@ -1117,7 +1152,7 @@ section.dashboard-elements {
 
 .edit-actions {
   border-top:1px solid #ddd;
-  padding:30px 0;
+  padding:50px 0;
   text-align:center;
 
   .btn {
@@ -1133,13 +1168,8 @@ section.dashboard-elements {
     width:32.6%;
     border:none;
 
-    @media(min-width:@screen-sm-min) {
-      width:175px;
-    }
-
     @media(min-width:@screen-md-min) {
       padding:18px 0;
-      width:220px;
     }
 
     &:hover {
@@ -1150,16 +1180,11 @@ section.dashboard-elements {
       color:@brand-primary;
       background-color:transparent;
       font-size:14px;
-      .activ-grotesk-bold;
+      .activ-grotesk-medium;
       padding:18px 0;
 
       @media(min-width:@screen-md-min) {
-        width:125px;
-      }
-
-      @media(min-width:@screen-md-min) {
         padding:18px 0;
-        width:160px;
       }
 
       &:hover {

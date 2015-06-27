@@ -3,7 +3,7 @@
     <div class="row">
       <div class="left-sidebar col-sm-3">
         <div id="element-name-container">
-          <i class="cedar-svg-element"></i>
+          <i class="cedar-svg-metadata"></i>
           <form>
             <div class="form-group floating-label-wrapper">
               <input type="text" class="form-control" id="template-name" placeholder="Template Name" aria-label="Template Name" ng-model="form.title"  with-floating-label>
@@ -68,9 +68,10 @@
       <div class="right-body col-sm-9">
         <div id="form-preview-section">
           <!--<div class="checkbox checkbox-primary">-->
-            <!--<input type="checkbox" id="checkbox1" checked="true" data-toggle="collapse" data-target=".form-preview">-->
-            <!--<label for="checkbox1">Preview Template</label>-->
+            <!--<input type="checkbox" id="checkbox1" data-toggle="collapse" data-target=".form-preview" ng-checked="formPreview">-->
+            <!--<label for="checkbox1">Preview Form</label>-->
           <!--</div>-->
+          <!--<div class="form-preview collapse" ng-class="formPreview ? 'collapse in' : 'collapse'">-->
           <div class="form-preview collapse in">
             <div class="empty-text" ng-show="isPropertiesEmpty()">
               <p>Add an existing element or create a new item.</p>
@@ -93,6 +94,7 @@
             </div>
           </form>
         </div> <!-- /#form-item-config-section -->
+
         <div class="template-actions">
           <div>
             <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</alert>
@@ -105,6 +107,7 @@
             <button type="button" class="btn btn-save" ng-click="saveTemplate()">Save Template</button>
           </div>
         </div> <!-- /.template-actions -->
+        
       </div> <!-- /.right-body -->
     </div> <!-- /.row -->
   </div> <!-- /.container -->
