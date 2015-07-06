@@ -1,11 +1,5 @@
 module("support", { teardown: moduleTeardown });
 
-test("boxModel", function() {
-	expect( 1 );
-
-	equal( jQuery.support.boxModel, document.compatMode === "CSS1Compat" , "jQuery.support.boxModel is sort of tied to quirks mode but unstable since 1.8" );
-});
-
 test( "zoom of doom (#13089)", function() {
 	expect( 1 );
 
@@ -18,33 +12,23 @@ test( "zoom of doom (#13089)", function() {
 if ( jQuery.css ) {
 	testIframeWithCallback( "body background is not lost if set prior to loading jQuery (#9239)", "support/bodyBackground.html", function( color, support ) {
 		expect( 2 );
-		var i,
-			passed = true,
-			okValue = {
+			var okValue = {
 				"#000000": true,
 				"rgb(0, 0, 0)": true
 			};
 		ok( okValue[ color ], "color was not reset (" + color + ")" );
 
-		for ( i in jQuery.support ) {
-			if ( jQuery.support[ i ] !== support[ i ] ) {
-				passed = false;
-				strictEqual( jQuery.support[ i ], support[ i ], "Support property " + i + " is different" );
-			}
-		}
-		for ( i in support ) {
-			if ( !( i in jQuery.support ) ) {
-				passed = false;
-				strictEqual( jQuery.support[ i ], support[ i ], "Unexpected property: " + i );
-			}
-		}
-
-		ok( passed, "Same support properties" );
+		deepEqual( jQuery.extend( {}, support ), jQuery.support, "Same support properties" );
 	});
 }
 
+testIframeWithCallback( "A non-1 zoom on body doesn't cause WebKit to fail box-sizing test", "support/boxSizing.html", function( boxSizing ) {
+	expect( 1 );
+	equal( boxSizing, jQuery.support.boxSizing, "box-sizing properly detected on page with non-1 body zoom" );
+});
+
 testIframeWithCallback( "A background on the testElement does not cause IE8 to crash (#9823)", "support/testElementCrash.html", function() {
-	expect(1);
+	expect( 1 );
 	ok( true, "IE8 does not crash" );
 });
 
@@ -86,12 +70,11 @@ testIframeWithCallback( "box-sizing does not affect jQuery.support.shrinkWrapBlo
 			"radioValue":true,
 			"checkClone":true,
 			"appendChecked":true,
-			"boxModel":true,
 			"reliableHiddenOffsets":true,
 			"ajax":true,
 			"cors":true,
-			"doesNotIncludeMarginInBodyOffset":true,
-			"clearCloneStyle": true
+			"clearCloneStyle": true,
+			"ownLast": false
 		};
 	} else if ( /opera.*version\/12\.1/i.test( userAgent ) ) {
 		expected = {
@@ -120,12 +103,11 @@ testIframeWithCallback( "box-sizing does not affect jQuery.support.shrinkWrapBlo
 			"radioValue":false,
 			"checkClone":true,
 			"appendChecked":true,
-			"boxModel":true,
 			"reliableHiddenOffsets":true,
 			"ajax":true,
 			"cors":true,
-			"doesNotIncludeMarginInBodyOffset":true,
-			"clearCloneStyle": true
+			"clearCloneStyle": true,
+			"ownLast": false
 		};
 	} else if ( /msie 10\.0/i.test( userAgent ) ) {
 		expected = {
@@ -154,12 +136,11 @@ testIframeWithCallback( "box-sizing does not affect jQuery.support.shrinkWrapBlo
 			"radioValue":false,
 			"checkClone":true,
 			"appendChecked":true,
-			"boxModel":true,
 			"reliableHiddenOffsets":true,
 			"ajax":true,
 			"cors":true,
-			"doesNotIncludeMarginInBodyOffset":true,
-			"clearCloneStyle": false
+			"clearCloneStyle": false,
+			"ownLast": false
 		};
 	} else if ( /msie 9\.0/i.test( userAgent ) ) {
 		expected = {
@@ -188,12 +169,11 @@ testIframeWithCallback( "box-sizing does not affect jQuery.support.shrinkWrapBlo
 			"radioValue":false,
 			"checkClone":true,
 			"appendChecked":true,
-			"boxModel":true,
 			"reliableHiddenOffsets":true,
 			"ajax":true,
 			"cors":false,
-			"doesNotIncludeMarginInBodyOffset":true,
-			"clearCloneStyle": false
+			"clearCloneStyle": false,
+			"ownLast": false
 		};
 	} else if ( /msie 8\.0/i.test( userAgent ) ) {
 		expected = {
@@ -222,25 +202,22 @@ testIframeWithCallback( "box-sizing does not affect jQuery.support.shrinkWrapBlo
 			"radioValue":false,
 			"checkClone":true,
 			"appendChecked":true,
-			"boxModel":true,
 			"reliableHiddenOffsets":false,
 			"ajax":true,
 			"cors":false,
-			"doesNotIncludeMarginInBodyOffset":true,
-			"clearCloneStyle": true
+			"clearCloneStyle": true,
+			"ownLast": true
 		};
 	} else if ( /msie 7\.0/i.test( userAgent ) ) {
 		expected = {
 			"ajax": true,
 			"appendChecked": false,
-			"boxModel": true,
 			"changeBubbles": false,
 			"checkClone": false,
 			"checkOn": true,
 			"cors": false,
 			"cssFloat": false,
 			"deleteExpando": false,
-			"doesNotIncludeMarginInBodyOffset": true,
 			"enctype": true,
 			"focusinBubbles": true,
 			"getSetAttribute": false,
@@ -261,7 +238,8 @@ testIframeWithCallback( "box-sizing does not affect jQuery.support.shrinkWrapBlo
 			"submitBubbles": false,
 			"tbody": false,
 			"style": false,
-			"clearCloneStyle": true
+			"clearCloneStyle": true,
+			"ownLast": true
 		};
 	} else if ( /msie 6\.0/i.test( userAgent ) ) {
 		expected = {
@@ -290,12 +268,11 @@ testIframeWithCallback( "box-sizing does not affect jQuery.support.shrinkWrapBlo
 			"radioValue":false,
 			"checkClone":false,
 			"appendChecked":false,
-			"boxModel":true,
 			"reliableHiddenOffsets":false,
 			"ajax":true,
 			"cors":false,
-			"doesNotIncludeMarginInBodyOffset":true,
-			"clearCloneStyle": true
+			"clearCloneStyle": true,
+			"ownLast": true
 		};
 	} else if ( /5\.1\.1 safari/i.test( userAgent ) ) {
 		expected = {
@@ -324,12 +301,11 @@ testIframeWithCallback( "box-sizing does not affect jQuery.support.shrinkWrapBlo
 			"radioValue":true,
 			"checkClone":false,
 			"appendChecked":false,
-			"boxModel":true,
 			"reliableHiddenOffsets":true,
 			"ajax":true,
 			"cors":true,
-			"doesNotIncludeMarginInBodyOffset":true,
-			"clearCloneStyle": true
+			"clearCloneStyle": true,
+			"ownLast": false
 		};
 	} else if ( /firefox/i.test( userAgent ) ) {
 		expected = {
@@ -358,18 +334,17 @@ testIframeWithCallback( "box-sizing does not affect jQuery.support.shrinkWrapBlo
 			"radioValue":true,
 			"checkClone":true,
 			"appendChecked":true,
-			"boxModel":true,
 			"reliableHiddenOffsets":true,
 			"ajax":true,
 			"cors":true,
-			"doesNotIncludeMarginInBodyOffset":true,
-			"clearCloneStyle": true
+			"clearCloneStyle": true,
+			"ownLast": false
 		};
 	}
 
 	if ( expected ) {
 		test("Verify that the support tests resolve as expected per browser", function() {
-			expect( 31 );
+			expect( 30 );
 
 			for ( var i in expected ) {
 				if ( jQuery.ajax || i !== "ajax" && i !== "cors" ) {
@@ -382,3 +357,14 @@ testIframeWithCallback( "box-sizing does not affect jQuery.support.shrinkWrapBlo
 	}
 
 })();
+
+// Support: Safari 5.1
+// Shameless browser-sniff, but Safari 5.1 mishandles CSP
+if ( !( typeof navigator !== "undefined" &&
+	(/ AppleWebKit\/\d.*? Version\/(\d+)/.exec(navigator.userAgent) || [])[1] < 6 ) ) {
+
+	testIframeWithCallback( "Check CSP (https://developer.mozilla.org/en-US/docs/Security/CSP) restrictions", "support/csp.php", function( support ) {
+		expect( 1 );
+		deepEqual( jQuery.extend( {}, support ), jQuery.support, "No violations of CSP polices" );
+	});
+}

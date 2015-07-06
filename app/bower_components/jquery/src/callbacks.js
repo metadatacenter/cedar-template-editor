@@ -145,6 +145,7 @@ jQuery.Callbacks = function( options ) {
 			// Remove all callbacks from the list
 			empty: function() {
 				list = [];
+				firingLength = 0;
 				return this;
 			},
 			// Have the list do nothing anymore
@@ -170,9 +171,9 @@ jQuery.Callbacks = function( options ) {
 			},
 			// Call all callbacks with the given context and arguments
 			fireWith: function( context, args ) {
-				args = args || [];
-				args = [ context, args.slice ? args.slice() : args ];
 				if ( list && ( !fired || stack ) ) {
+					args = args || [];
+					args = [ context, args.slice ? args.slice() : args ];
 					if ( firing ) {
 						stack.push( args );
 					} else {

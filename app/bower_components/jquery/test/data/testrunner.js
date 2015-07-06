@@ -10,13 +10,13 @@ jQuery.each( [ jQuery.expando, "getInterface", "Packages", "java", "netscape" ],
 
 // Expose Sizzle for Sizzle's selector tests
 // We remove Sizzle's globalization in jQuery
-var Sizzle = Sizzle || jQuery.find;
+var Sizzle = Sizzle || jQuery.find,
 
 // Allow subprojects to test against their own fixtures
-var qunitModule = QUnit.module,
+	qunitModule = QUnit.module,
 	qunitTest = QUnit.test;
 
-function testSubproject( label, url, risTests ) {
+this.testSubproject = function( label, url, risTests ) {
 	var sub, fixture, fixtureHTML,
 		fixtureReplaced = false;
 
@@ -132,11 +132,11 @@ function testSubproject( label, url, risTests ) {
 			fn.apply( this, arguments );
 		};
 	}
-}
+};
 
 // Register globals for cleanup and the cleanup code itself
 // Explanation at http://perfectionkills.com/understanding-delete/#ie_bugs
-var Globals = (function() {
+this.Globals = (function() {
 	var globals = {};
 	return {
 		register: function( name ) {
@@ -172,11 +172,11 @@ var Globals = (function() {
 	// instead of asserting every time a test has leaked sometime in the past
 	var oldCacheLength = 0,
 		oldFragmentsLength = 0,
-		oldTimersLength = 0,
 		oldActive = 0,
 
 		expectedDataKeys = {},
 
+		splice = [].splice,
 		reset = QUnit.reset,
 		ajaxSettings = jQuery.ajaxSettings;
 
@@ -280,6 +280,20 @@ var Globals = (function() {
 		// Reset data register
 		expectedDataKeys = {};
 
+		// Check for (and clean up, if possible) incomplete animations/requests/etc.
+		if ( jQuery.timers && jQuery.timers.length !== 0 ) {
+			equal( jQuery.timers.length, 0, "No timers are still running" );
+			splice.call( jQuery.timers, 0, jQuery.timers.length );
+			jQuery.fx.stop();
+		}
+		if ( jQuery.active !== undefined && jQuery.active !== oldActive ) {
+			equal( jQuery.active, oldActive, "No AJAX requests are still active" );
+			if ( ajaxTest.abort ) {
+				ajaxTest.abort("active requests");
+			}
+			oldActive = jQuery.active;
+		}
+
 		// Allow QUnit.reset to clean up any attached elements before checking for leaks
 		QUnit.reset();
 
@@ -303,17 +317,6 @@ var Globals = (function() {
 			equal( fragmentsLength, oldFragmentsLength, "No unit tests leak memory in jQuery.fragments" );
 			oldFragmentsLength = fragmentsLength;
 		}
-		if ( jQuery.timers && jQuery.timers.length !== oldTimersLength ) {
-			equal( jQuery.timers.length, oldTimersLength, "No timers are still running" );
-			oldTimersLength = jQuery.timers.length;
-		}
-		if ( jQuery.active !== undefined && jQuery.active !== oldActive ) {
-			equal( jQuery.active, 0, "No AJAX requests are still active" );
-			if ( ajaxTest.abort ) {
-				ajaxTest.abort("active requests");
-			}
-			oldActive = jQuery.active;
-		}
 	};
 
 	QUnit.done(function() {
@@ -334,7 +337,7 @@ var Globals = (function() {
 		} else {
 			delete jQuery.ajaxSettings;
 		}
-		
+
 		// Cleanup globals
 		Globals.cleanup();
 
