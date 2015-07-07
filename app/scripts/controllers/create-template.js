@@ -127,9 +127,9 @@ angularApp.controller('CreateTemplateController', function ($rootScope, $scope, 
   // Add newly configured field to the the $scope.form.properties object
   $scope.addFieldToForm = function(field) {
     // Setting return value from $scope.checkFieldConditions to array which will display error messages if any
-    $scope.errorMessages = $scope.checkFieldConditions(field.properties.value);
+    $scope.stagingErrorMessages = $scope.checkFieldConditions(field.properties.value);
 
-    if ($scope.errorMessages.length == 0) {
+    if ($scope.stagingErrorMessages.length == 0) {
       // Converting title for irregular character handling
       var underscoreTitle = $rootScope.underscoreText(field.properties.value.title);
       // Adding field to the element.properties object
@@ -180,6 +180,10 @@ angularApp.controller('CreateTemplateController', function ($rootScope, $scope, 
   $scope.deleteField = function (field){
     // Remove field instance from $scope.staging
     delete $scope.staging[field.properties.value.id];
+    // Empty the Error Messages array if present
+    if ($scope.stagingErrorMessages) {
+      $scope.stagingErrorMessages = [];
+    }
   };
 
   // Reverts to empty form and removes all previously added fields/elements

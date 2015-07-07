@@ -89,8 +89,8 @@
           <div class="heading-label">
             <hr><span class="section-break">Item Configuration</span><hr>
           </div>
-          <div ng-if="errorMessages.length" class="alert alert-danger" role="alert">
-            <p ng-repeat="message in errorMessages"><i class="fa fa-exclamation-triangle"></i>{{message}}</p>
+          <div ng-if="stagingErrorMessages.length" class="alert alert-danger" role="alert">
+            <p ng-repeat="message in stagingErrorMessages"><i class="fa fa-exclamation-triangle"></i>{{message}}</p>
           </div>
           <div class="empty-text" ng-hide="isEmpty(staging)">
             <p>Create a new field item.</p>

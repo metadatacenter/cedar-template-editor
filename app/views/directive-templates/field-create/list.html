@@ -1,6 +1,15 @@
 <div id="list-{{field.id}}" class="input-type-container pick-list">
   <p class="type-label"><i class="cedar-svg-list"></i>Pick from a list</p>
   
+  <div class="type-toggle list" ng-init="field.selection_type = 'single'">
+    <div class="single-date d-option" ng-click="field.selection_type = 'single'" ng-class="{active: field.selection_type == 'single'}">
+      <span>Single Selection</span>
+    </div>
+    <div class="date-range d-option" ng-click="field.selection_type = 'multiple'" ng-class="{active: field.selection_type == 'multiple'}">
+      <span>Multiple Selection</span>
+    </div>
+  </div> <!-- /.date-type-toggle -->
+
   <div class="form-group">
     <div class="form-group floating-label-wrapper">
       <input type="text" class="form-control" id="placeholder-{{field.id}}" placeholder="Enter Field Title" aria-label="Enter Field Title" ng-model="field.title"  with-floating-label>

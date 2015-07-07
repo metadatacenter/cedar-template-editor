@@ -167,6 +167,10 @@ angularApp.controller('CreateElementController', function ($rootScope, $scope, $
   $scope.deleteField = function (field){
     // Remove field instance from $scope.staging
     delete $scope.staging[field.properties.value.id];
+    // Empty the Error Messages array if present
+    if ($scope.stagingErrorMessages) {
+      $scope.stagingErrorMessages = [];
+    }
   };
 
   // Helper function for converting $scope.volatile values to json-ld '@' keys

@@ -10206,29 +10206,28 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   line-height: 28px;
   margin-bottom: 25px;
 }
-.template-body form .date-type-toggle {
+.template-body form .type-toggle {
   text-align: center;
-  width: 240px;
   margin: 0 auto;
   margin-bottom: 40px;
 }
-.template-body form .date-type-toggle:before,
-.template-body form .date-type-toggle:after {
+.template-body form .type-toggle:before,
+.template-body form .type-toggle:after {
   content: " ";
   display: table;
 }
-.template-body form .date-type-toggle:after {
+.template-body form .type-toggle:after {
   clear: both;
 }
-.template-body form .date-type-toggle:before,
-.template-body form .date-type-toggle:after {
+.template-body form .type-toggle:before,
+.template-body form .type-toggle:after {
   content: " ";
   display: table;
 }
-.template-body form .date-type-toggle:after {
+.template-body form .type-toggle:after {
   clear: both;
 }
-.template-body form .date-type-toggle .d-option {
+.template-body form .type-toggle .d-option {
   width: 50%;
   float: left;
   padding-bottom: 7px;
@@ -10238,16 +10237,22 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   -webkit-transition: all 0.3s 0.1s;
           transition: all 0.3s 0.1s;
 }
-.template-body form .date-type-toggle .d-option span {
+.template-body form .type-toggle .d-option span {
   text-transform: uppercase;
   font-family: 'aktiv-grotesk-std';
   font-weight: 500;
   font-size: 12px;
   color: #666;
 }
-.template-body form .date-type-toggle .d-option.active,
-.template-body form .date-type-toggle .d-option:hover {
+.template-body form .type-toggle .d-option.active,
+.template-body form .type-toggle .d-option:hover {
   border-color: #339933;
+}
+.template-body form .type-toggle.date {
+  width: 240px;
+}
+.template-body form .type-toggle.list {
+  width: 300px;
 }
 .template-body form .required-text {
   font-style: italic;
