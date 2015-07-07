@@ -10,8 +10,8 @@
       <div class="multiple-container">
         <span ng-repeat="(index, value) in field.options">
           <div class="checkbox checkbox-primary">
-            <input type="checkbox" id="checkbox{{index}}" name="checkbox-{{field.id}}" ng-model="field.default_option[value.text]" value="{{field.options[index]['text']}}">
-            <label for="checkbox{{index}}">
+            <input type="checkbox" id="checkbox-{{field.id}}-{{index}}" name="checkbox-{{field.id}}" ng-model="field.default_option[value.text]" value="{{field.options[index]['text']}}">
+            <label for="checkbox-{{field.id}}-{{index}}">
               <div class="form-group floating-label-wrapper">
                 <input type="text" class="form-control" id="placeholder-{{field.id}}" placeholder="Enter Option" aria-label="Enter Option" ng-model="field.options[index]['text']"  with-floating-label>
               </div><!-- /.form-group -->
