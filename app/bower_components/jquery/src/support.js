@@ -1,17 +1,19 @@
-jQuery.support = (function( support ) {
+jQuery.support = (function() {
 
-	var all, a, input, select, fragment, opt, eventName, isSupported, i,
+	var support, all, a,
+		input, select, fragment,
+		opt, eventName, isSupported, i,
 		div = document.createElement("div");
 
 	// Setup
 	div.setAttribute( "className", "t" );
 	div.innerHTML = "  <link/><table></table><a href='/a'>a</a><input type='checkbox'/>";
 
-	// Finish early in limited (non-browser) environments
-	all = div.getElementsByTagName("*") || [];
+	// Support tests won't run in some limited or non-browser environments
+	all = div.getElementsByTagName("*");
 	a = div.getElementsByTagName("a")[ 0 ];
-	if ( !a || !a.style || !all.length ) {
-		return support;
+	if ( !all || !a || !all.length ) {
+		return {};
 	}
 
 	// First batch of tests
@@ -20,60 +22,64 @@ jQuery.support = (function( support ) {
 	input = div.getElementsByTagName("input")[ 0 ];
 
 	a.style.cssText = "top:1px;float:left;opacity:.5";
+	support = {
+		// Test setAttribute on camelCase class. If it works, we need attrFixes when doing get/setAttribute (ie6/7)
+		getSetAttribute: div.className !== "t",
 
-	// Test setAttribute on camelCase class. If it works, we need attrFixes when doing get/setAttribute (ie6/7)
-	support.getSetAttribute = div.className !== "t";
+		// IE strips leading whitespace when .innerHTML is used
+		leadingWhitespace: div.firstChild.nodeType === 3,
 
-	// IE strips leading whitespace when .innerHTML is used
-	support.leadingWhitespace = div.firstChild.nodeType === 3;
+		// Make sure that tbody elements aren't automatically inserted
+		// IE will insert them into empty tables
+		tbody: !div.getElementsByTagName("tbody").length,
 
-	// Make sure that tbody elements aren't automatically inserted
-	// IE will insert them into empty tables
-	support.tbody = !div.getElementsByTagName("tbody").length;
+		// Make sure that link elements get serialized correctly by innerHTML
+		// This requires a wrapper element in IE
+		htmlSerialize: !!div.getElementsByTagName("link").length,
 
-	// Make sure that link elements get serialized correctly by innerHTML
-	// This requires a wrapper element in IE
-	support.htmlSerialize = !!div.getElementsByTagName("link").length;
+		// Get the style information from getAttribute
+		// (IE uses .cssText instead)
+		style: /top/.test( a.getAttribute("style") ),
 
-	// Get the style information from getAttribute
-	// (IE uses .cssText instead)
-	support.style = /top/.test( a.getAttribute("style") );
+		// Make sure that URLs aren't manipulated
+		// (IE normalizes it by default)
+		hrefNormalized: a.getAttribute("href") === "/a",
 
-	// Make sure that URLs aren't manipulated
-	// (IE normalizes it by default)
-	support.hrefNormalized = a.getAttribute("href") === "/a";
+		// Make sure that element opacity exists
+		// (IE uses filter instead)
+		// Use a regex to work around a WebKit issue. See #5145
+		opacity: /^0.5/.test( a.style.opacity ),
 
-	// Make sure that element opacity exists
-	// (IE uses filter instead)
-	// Use a regex to work around a WebKit issue. See #5145
-	support.opacity = /^0.5/.test( a.style.opacity );
+		// Verify style float existence
+		// (IE uses styleFloat instead of cssFloat)
+		cssFloat: !!a.style.cssFloat,
 
-	// Verify style float existence
-	// (IE uses styleFloat instead of cssFloat)
-	support.cssFloat = !!a.style.cssFloat;
+		// Check the default checkbox/radio value ("" on WebKit; "on" elsewhere)
+		checkOn: !!input.value,
 
-	// Check the default checkbox/radio value ("" on WebKit; "on" elsewhere)
-	support.checkOn = !!input.value;
+		// Make sure that a selected-by-default option has a working selected property.
+		// (WebKit defaults to false instead of true, IE too, if it's in an optgroup)
+		optSelected: opt.selected,
 
-	// Make sure that a selected-by-default option has a working selected property.
-	// (WebKit defaults to false instead of true, IE too, if it's in an optgroup)
-	support.optSelected = opt.selected;
+		// Tests for enctype support on a form (#6743)
+		enctype: !!document.createElement("form").enctype,
 
-	// Tests for enctype support on a form (#6743)
-	support.enctype = !!document.createElement("form").enctype;
+		// Makes sure cloning an html5 element does not cause problems
+		// Where outerHTML is undefined, this still works
+		html5Clone: document.createElement("nav").cloneNode( true ).outerHTML !== "<:nav></:nav>",
 
-	// Makes sure cloning an html5 element does not cause problems
-	// Where outerHTML is undefined, this still works
-	support.html5Clone = document.createElement("nav").cloneNode( true ).outerHTML !== "<:nav></:nav>";
+		// jQuery.support.boxModel DEPRECATED in 1.8 since we don't support Quirks Mode
+		boxModel: document.compatMode === "CSS1Compat",
 
-	// Will be defined later
-	support.inlineBlockNeedsLayout = false;
-	support.shrinkWrapBlocks = false;
-	support.pixelPosition = false;
-	support.deleteExpando = true;
-	support.noCloneEvent = true;
-	support.reliableMarginRight = true;
-	support.boxSizingReliable = true;
+		// Will be defined later
+		deleteExpando: true,
+		noCloneEvent: true,
+		inlineBlockNeedsLayout: false,
+		shrinkWrapBlocks: false,
+		reliableMarginRight: true,
+		boxSizingReliable: true,
+		pixelPosition: false
+	};
 
 	// Make sure checked status is properly cloned
 	input.checked = true;
@@ -127,7 +133,7 @@ jQuery.support = (function( support ) {
 	}
 
 	// Support: IE<9 (lack submit/change bubble), Firefox 17+ (lack focusin event)
-	// Beware of CSP restrictions (https://developer.mozilla.org/en/Security/CSP)
+	// Beware of CSP restrictions (https://developer.mozilla.org/en/Security/CSP), test/csp.php
 	for ( i in { submit: true, change: true, focusin: true }) {
 		div.setAttribute( eventName = "on" + i, "t" );
 
@@ -137,13 +143,6 @@ jQuery.support = (function( support ) {
 	div.style.backgroundClip = "content-box";
 	div.cloneNode( true ).style.backgroundClip = "";
 	support.clearCloneStyle = div.style.backgroundClip === "content-box";
-
-	// Support: IE<9
-	// Iteration over object's inherited properties before its own.
-	for ( i in jQuery( support ) ) {
-		break;
-	}
-	support.ownLast = i !== "0";
 
 	// Run tests that need a body at doc ready
 	jQuery(function() {
@@ -180,15 +179,11 @@ jQuery.support = (function( support ) {
 		// Check if empty table cells still have offsetWidth/Height
 		support.reliableHiddenOffsets = isSupported && ( tds[ 0 ].offsetHeight === 0 );
 
-		// Check box-sizing and margin behavior.
+		// Check box-sizing and margin behavior
 		div.innerHTML = "";
 		div.style.cssText = "box-sizing:border-box;-moz-box-sizing:border-box;-webkit-box-sizing:border-box;padding:1px;border:1px;display:block;width:4px;margin-top:1%;position:absolute;top:1%;";
-
-		// Workaround failing boxSizing test due to offsetWidth returning wrong value
-		// with some non-1 values of body zoom, ticket #13543
-		jQuery.swap( body, body.style.zoom != null ? { zoom: 1 } : {}, function() {
-			support.boxSizing = div.offsetWidth === 4;
-		});
+		support.boxSizing = ( div.offsetWidth === 4 );
+		support.doesNotIncludeMarginInBodyOffset = ( body.offsetTop !== 1 );
 
 		// Use window.getComputedStyle because jsdom on node.js will break without it.
 		if ( window.getComputedStyle ) {
@@ -242,5 +237,5 @@ jQuery.support = (function( support ) {
 	all = select = fragment = opt = a = input = null;
 
 	return support;
-})({});
+})();
 

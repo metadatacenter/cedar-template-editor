@@ -193,6 +193,25 @@ jQuery.each( [ "ajaxStart", "ajaxStop", "ajaxComplete", "ajaxError", "ajaxSucces
 	};
 });
 
+jQuery.each( [ "get", "post" ], function( i, method ) {
+	jQuery[ method ] = function( url, data, callback, type ) {
+		// shift arguments if data argument was omitted
+		if ( jQuery.isFunction( data ) ) {
+			type = type || callback;
+			callback = data;
+			data = undefined;
+		}
+
+		return jQuery.ajax({
+			url: url,
+			type: method,
+			dataType: type,
+			data: data,
+			success: callback
+		});
+	};
+});
+
 jQuery.extend({
 
 	// Counter for holding the number of active queries
@@ -238,8 +257,7 @@ jQuery.extend({
 
 		responseFields: {
 			xml: "responseXML",
-			text: "responseText",
-			json: "responseJSON"
+			text: "responseText"
 		},
 
 		// Data converters
@@ -247,7 +265,7 @@ jQuery.extend({
 		converters: {
 
 			// Convert anything to text
-			"* text": String,
+			"* text": window.String,
 
 			// Text to html (true = no transformation)
 			"text html": true,
@@ -426,8 +444,8 @@ jQuery.extend({
 			parts = rurl.exec( s.url.toLowerCase() );
 			s.crossDomain = !!( parts &&
 				( parts[ 1 ] !== ajaxLocParts[ 1 ] || parts[ 2 ] !== ajaxLocParts[ 2 ] ||
-					( parts[ 3 ] || ( parts[ 1 ] === "http:" ? "80" : "443" ) ) !==
-						( ajaxLocParts[ 3 ] || ( ajaxLocParts[ 1 ] === "http:" ? "80" : "443" ) ) )
+					( parts[ 3 ] || ( parts[ 1 ] === "http:" ? 80 : 443 ) ) !=
+						( ajaxLocParts[ 3 ] || ( ajaxLocParts[ 1 ] === "http:" ? 80 : 443 ) ) )
 			);
 		}
 
@@ -588,19 +606,13 @@ jQuery.extend({
 			// Set readyState
 			jqXHR.readyState = status > 0 ? 4 : 0;
 
-			// Determine if successful
-			isSuccess = status >= 200 && status < 300 || status === 304;
-
 			// Get response data
 			if ( responses ) {
 				response = ajaxHandleResponses( s, jqXHR, responses );
 			}
 
-			// Convert no matter what (that way responseXXX fields are always set)
-			response = ajaxConvert( s, response, jqXHR, isSuccess );
-
 			// If successful, handle type chaining
-			if ( isSuccess ) {
+			if ( status >= 200 && status < 300 || status === 304 ) {
 
 				// Set the If-Modified-Since and/or If-None-Match header, if in ifModified mode.
 				if ( s.ifModified ) {
@@ -615,18 +627,21 @@ jQuery.extend({
 				}
 
 				// if no content
-				if ( status === 204 || s.type === "HEAD" ) {
+				if ( status === 204 ) {
+					isSuccess = true;
 					statusText = "nocontent";
 
 				// if not modified
 				} else if ( status === 304 ) {
+					isSuccess = true;
 					statusText = "notmodified";
 
 				// If we have data, let's convert it
 				} else {
-					statusText = response.state;
-					success = response.data;
-					error = response.error;
+					isSuccess = ajaxConvert( s, response );
+					statusText = isSuccess.state;
+					success = isSuccess.data;
+					error = isSuccess.error;
 					isSuccess = !error;
 				}
 			} else {
@@ -676,42 +691,32 @@ jQuery.extend({
 		return jqXHR;
 	},
 
-	getJSON: function( url, data, callback ) {
-		return jQuery.get( url, data, callback, "json" );
-	},
-
 	getScript: function( url, callback ) {
 		return jQuery.get( url, undefined, callback, "script" );
+	},
+
+	getJSON: function( url, data, callback ) {
+		return jQuery.get( url, data, callback, "json" );
 	}
 });
 
-jQuery.each( [ "get", "post" ], function( i, method ) {
-	jQuery[ method ] = function( url, data, callback, type ) {
-		// shift arguments if data argument was omitted
-		if ( jQuery.isFunction( data ) ) {
-			type = type || callback;
-			callback = data;
-			data = undefined;
-		}
-
-		return jQuery.ajax({
-			url: url,
-			type: method,
-			dataType: type,
-			data: data,
-			success: callback
-		});
-	};
-});
-
 /* Handles responses to an ajax request:
+ * - sets all responseXXX fields accordingly
  * - finds the right dataType (mediates between content-type and expected dataType)
  * - returns the corresponding response
  */
 function ajaxHandleResponses( s, jqXHR, responses ) {
 	var firstDataType, ct, finalDataType, type,
 		contents = s.contents,
-		dataTypes = s.dataTypes;
+		dataTypes = s.dataTypes,
+		responseFields = s.responseFields;
+
+	// Fill responseXXX fields
+	for ( type in responseFields ) {
+		if ( type in responses ) {
+			jqXHR[ responseFields[type] ] = responses[ type ];
+		}
+	}
 
 	// Remove auto dataType and get content-type in the process
 	while( dataTypes[ 0 ] === "*" ) {
@@ -760,14 +765,19 @@ function ajaxHandleResponses( s, jqXHR, responses ) {
 	}
 }
 
-/* Chain conversions given the request and the original response
- * Also sets the responseXXX fields on the jqXHR instance
- */
-function ajaxConvert( s, response, jqXHR, isSuccess ) {
-	var conv2, current, conv, tmp, prev,
+// Chain conversions given the request and the original response
+function ajaxConvert( s, response ) {
+	var conv2, current, conv, tmp,
 		converters = {},
+		i = 0,
 		// Work with a copy of dataTypes in case we need to modify it for conversion
-		dataTypes = s.dataTypes.slice();
+		dataTypes = s.dataTypes.slice(),
+		prev = dataTypes[ 0 ];
+
+	// Apply the dataFilter if provided
+	if ( s.dataFilter ) {
+		response = s.dataFilter( response, s.dataType );
+	}
 
 	// Create converters map with lowercased keys
 	if ( dataTypes[ 1 ] ) {
@@ -776,32 +786,14 @@ function ajaxConvert( s, response, jqXHR, isSuccess ) {
 		}
 	}
 
-	current = dataTypes.shift();
+	// Convert to each sequential dataType, tolerating list modification
+	for ( ; (current = dataTypes[++i]); ) {
 
-	// Convert to each sequential dataType
-	while ( current ) {
-
-		if ( s.responseFields[ current ] ) {
-			jqXHR[ s.responseFields[ current ] ] = response;
-		}
-
-		// Apply the dataFilter if provided
-		if ( !prev && isSuccess && s.dataFilter ) {
-			response = s.dataFilter( response, s.dataType );
-		}
-
-		prev = current;
-		current = dataTypes.shift();
-
-		if ( current ) {
-
-			// There's only work to do if current dataType is non-auto
-			if ( current === "*" ) {
-
-				current = prev;
+		// There's only work to do if current dataType is non-auto
+		if ( current !== "*" ) {
 
 			// Convert response if prev dataType is non-auto and differs from current
-			} else if ( prev !== "*" && prev !== current ) {
+			if ( prev !== "*" && prev !== current ) {
 
 				// Seek a direct converter
 				conv = converters[ prev + " " + current ] || converters[ "* " + current ];
@@ -811,7 +803,7 @@ function ajaxConvert( s, response, jqXHR, isSuccess ) {
 					for ( conv2 in converters ) {
 
 						// If conv2 outputs current
-						tmp = conv2.split( " " );
+						tmp = conv2.split(" ");
 						if ( tmp[ 1 ] === current ) {
 
 							// If prev can be converted to accepted input
@@ -825,8 +817,9 @@ function ajaxConvert( s, response, jqXHR, isSuccess ) {
 								// Otherwise, insert the intermediate dataType
 								} else if ( converters[ conv2 ] !== true ) {
 									current = tmp[ 0 ];
-									dataTypes.unshift( tmp[ 1 ] );
+									dataTypes.splice( i--, 0, current );
 								}
+
 								break;
 							}
 						}
@@ -837,7 +830,7 @@ function ajaxConvert( s, response, jqXHR, isSuccess ) {
 				if ( conv !== true ) {
 
 					// Unless errors are allowed to bubble, catch and return them
-					if ( conv && s[ "throws" ] ) {
+					if ( conv && s["throws"] ) {
 						response = conv( response );
 					} else {
 						try {
@@ -848,6 +841,9 @@ function ajaxConvert( s, response, jqXHR, isSuccess ) {
 					}
 				}
 			}
+
+			// Update prev for next iteration
+			prev = current;
 		}
 	}
 

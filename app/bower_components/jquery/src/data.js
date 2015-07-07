@@ -6,8 +6,9 @@ function internalData( elem, name, data, pvt /* Internal Use Only */ ){
 		return;
 	}
 
-	var ret, thisCache,
+	var thisCache, ret,
 		internalKey = jQuery.expando,
+		getByName = typeof name === "string",
 
 		// We have to handle DOM nodes and JS objects differently because IE6-7
 		// can't GC object references properly across the DOM-JS boundary
@@ -23,7 +24,7 @@ function internalData( elem, name, data, pvt /* Internal Use Only */ ){
 
 	// Avoid doing any more work than we need to when trying to get data on an
 	// object that has no data at all
-	if ( (!id || !cache[id] || (!pvt && !cache[id].data)) && data === undefined && typeof name === "string" ) {
+	if ( (!id || !cache[id] || (!pvt && !cache[id].data)) && getByName && data === undefined ) {
 		return;
 	}
 
@@ -31,16 +32,20 @@ function internalData( elem, name, data, pvt /* Internal Use Only */ ){
 		// Only DOM nodes need a new unique ID for each element since their data
 		// ends up in the global cache
 		if ( isNode ) {
-			id = elem[ internalKey ] = core_deletedIds.pop() || jQuery.guid++;
+			elem[ internalKey ] = id = core_deletedIds.pop() || jQuery.guid++;
 		} else {
 			id = internalKey;
 		}
 	}
 
 	if ( !cache[ id ] ) {
-		// Avoid exposing jQuery metadata on plain JS objects when the object
+		cache[ id ] = {};
+
+		// Avoids exposing jQuery metadata on plain JS objects when the object
 		// is serialized using JSON.stringify
-		cache[ id ] = isNode ? {} : { toJSON: jQuery.noop };
+		if ( !isNode ) {
+			cache[ id ].toJSON = jQuery.noop;
+		}
 	}
 
 	// An object can be passed to jQuery.data instead of a key/value pair; this gets
@@ -72,7 +77,7 @@ function internalData( elem, name, data, pvt /* Internal Use Only */ ){
 
 	// Check for both converted-to-camel and non-converted data property names
 	// If a data property was specified
-	if ( typeof name === "string" ) {
+	if ( getByName ) {
 
 		// First Try to find as-is property data
 		ret = thisCache[ name ];
@@ -95,7 +100,7 @@ function internalRemoveData( elem, name, pvt ) {
 		return;
 	}
 
-	var thisCache, i,
+	var i, l, thisCache,
 		isNode = elem.nodeType,
 
 		// See jQuery.data for more information
@@ -140,14 +145,13 @@ function internalRemoveData( elem, name, pvt ) {
 				name = name.concat( jQuery.map( name, jQuery.camelCase ) );
 			}
 
-			i = name.length;
-			while ( i-- ) {
+			for ( i = 0, l = name.length; i < l; i++ ) {
 				delete thisCache[ name[i] ];
 			}
 
 			// If there is no data left in the cache, we want to continue
 			// and let the cache object itself get destroyed
-			if ( pvt ? !isEmptyDataObject(thisCache) : !jQuery.isEmptyObject(thisCache) ) {
+			if ( !( pvt ? isEmptyDataObject : jQuery.isEmptyObject )( thisCache ) ) {
 				return;
 			}
 		}
@@ -169,9 +173,7 @@ function internalRemoveData( elem, name, pvt ) {
 		jQuery.cleanData( [ elem ], true );
 
 	// Use delete when supported for expandos or `cache` is not a window per isWindow (#10080)
-	/* jshint eqeqeq: false */
 	} else if ( jQuery.support.deleteExpando || cache != cache.window ) {
-		/* jshint eqeqeq: true */
 		delete cache[ id ];
 
 	// When all else fails, null
@@ -183,13 +185,17 @@ function internalRemoveData( elem, name, pvt ) {
 jQuery.extend({
 	cache: {},
 
+	// Unique for each copy of jQuery on the page
+	// Non-digits removed to match rinlinejQuery
+	expando: "jQuery" + ( core_version + Math.random() ).replace( /\D/g, "" ),
+
 	// The following elements throw uncatchable exceptions if you
 	// attempt to add expando properties to them.
 	noData: {
-		"applet": true,
 		"embed": true,
 		// Ban all objects except for Flash (which handle expandos)
-		"object": "clsid:D27CDB6E-AE6D-11cf-96B8-444553540000"
+		"object": "clsid:D27CDB6E-AE6D-11cf-96B8-444553540000",
+		"applet": true
 	},
 
 	hasData: function( elem ) {
@@ -231,12 +237,9 @@ jQuery.extend({
 jQuery.fn.extend({
 	data: function( key, value ) {
 		var attrs, name,
-			data = null,
+			elem = this[0],
 			i = 0,
-			elem = this[0];
-
-		// Special expections of .data basically thwart jQuery.access,
-		// so implement the relevant behavior ourselves
+			data = null;
 
 		// Gets all values
 		if ( key === undefined ) {
@@ -248,7 +251,7 @@ jQuery.fn.extend({
 					for ( ; i < attrs.length; i++ ) {
 						name = attrs[i].name;
 
-						if ( name.indexOf("data-") === 0 ) {
+						if ( !name.indexOf( "data-" ) ) {
 							name = jQuery.camelCase( name.slice(5) );
 
 							dataAttr( elem, name, data[ name ] );
@@ -268,16 +271,17 @@ jQuery.fn.extend({
 			});
 		}
 
-		return arguments.length > 1 ?
+		return jQuery.access( this, function( value ) {
 
-			// Sets one value
+			if ( value === undefined ) {
+				// Try to fetch any internally stored data first
+				return elem ? dataAttr( elem, key, jQuery.data( elem, key ) ) : null;
+			}
+
 			this.each(function() {
 				jQuery.data( this, key, value );
-			}) :
-
-			// Gets one value
-			// Try to fetch any internally stored data first
-			elem ? dataAttr( elem, key, jQuery.data( elem, key ) ) : null;
+			});
+		}, null, value, arguments.length > 1, null, true );
 	},
 
 	removeData: function( key ) {

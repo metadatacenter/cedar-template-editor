@@ -1,19 +1,14 @@
 {
-	"boss": true,
 	"curly": true,
-	"eqeqeq": true,
-	"eqnull": true,
 	"expr": true,
-	"immed": true,
-	"noarg": true,
-	"onevar": true,
 	"quotmark": "double",
-	"smarttabs": true,
 	"trailing": true,
 	"undef": true,
-	"unused": true,
+	"maxerr": 100,
 
+	"eqnull": true,
 	"evil": true,
+	"smarttabs": true,
 	"sub": true,
 
 	"browser": true,
@@ -56,5 +51,5 @@
 		"$",
 		"original$",
 		"externalHost"
-	]
+  ]
 }

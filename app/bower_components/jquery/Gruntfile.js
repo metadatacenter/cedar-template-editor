@@ -7,46 +7,31 @@ module.exports = function( grunt ) {
 			"dist/jquery.min.map",
 			"dist/jquery.min.js"
 		],
-		gzip = require("gzip-js"),
 		readOptionalJSON = function( filepath ) {
 			var data = {};
 			try {
 				data = grunt.file.readJSON( filepath );
 			} catch(e) {}
 			return data;
-		},
-		srcHintOptions = readOptionalJSON("src/.jshintrc");
-
-	// The concatenated file won't pass onevar
-	// But our modules can
-	delete srcHintOptions.onevar;
+		};
 
 	grunt.initConfig({
 		pkg: grunt.file.readJSON("package.json"),
 		dst: readOptionalJSON("dist/.destination.json"),
 		compare_size: {
-			files: [ "dist/jquery.js", "dist/jquery.min.js" ],
-			options: {
-				compress: {
-					gz: function( contents ) {
-						return gzip.zip( contents, {} ).length;
-					}
-				},
-				cache: "dist/.sizecache.json"
-			}
+			files: distpaths
 		},
 		selector: {
-			destFile: "src/selector-sizzle.js",
+			destFile: "src/selector.js",
 			apiFile: "src/sizzle-jquery.js",
-			srcFile: "src/sizzle/dist/sizzle.js"
+			srcFile: "src/sizzle/sizzle.js"
 		},
 		build: {
-			all: {
+			all:{
 				dest: "dist/jquery.js",
 				src: [
 					"src/intro.js",
 					"src/core.js",
-					"src/selector-sizzle.js",
 					"src/callbacks.js",
 					"src/deferred.js",
 					"src/support.js",
@@ -54,9 +39,10 @@ module.exports = function( grunt ) {
 					"src/queue.js",
 					"src/attributes.js",
 					"src/event.js",
+					"src/selector.js",
 					"src/traversing.js",
 					"src/manipulation.js",
-					{ flag: "wrap", src: "src/wrap.js" },
+
 					{ flag: "css", src: "src/css.js" },
 					"src/serialize.js",
 					{ flag: "event-alias", src: "src/event-alias.js" },
@@ -78,7 +64,9 @@ module.exports = function( grunt ) {
 		jshint: {
 			dist: {
 				src: [ "dist/jquery.js" ],
-				options: srcHintOptions
+				options: {
+					jshintrc: "src/.jshintrc"
+				}
 			},
 			grunt: {
 				src: [ "Gruntfile.js" ],
@@ -105,52 +93,23 @@ module.exports = function( grunt ) {
 			tasks: "dev"
 		},
 
-		"pre-uglify": {
-			all: {
-				files: {
-					"dist/jquery.pre-min.js": [ "dist/jquery.js" ]
-				},
-				options: {
-					banner: "\n\n\n\n\n\n\n\n\n\n" + // banner line size must be preserved
-						"/*! jQuery v<%= pkg.version %> | " +
-						"(c) 2005, 2013 jQuery Foundation, Inc. | " +
-						"jquery.org/license\n" +
-						"//@ sourceMappingURL=jquery.min.map\n" +
-						"*/\n"
-				}
-			}
-		},
 		uglify: {
 			all: {
 				files: {
-					"dist/jquery.min.js": [ "dist/jquery.pre-min.js" ]
+					"dist/jquery.min.js": [ "dist/jquery.js" ]
 				},
 				options: {
-					// Keep our hard-coded banner
-					preserveComments: "some",
+					banner: "/*! jQuery v<%= pkg.version %> | (c) 2005, 2012 jQuery Foundation, Inc. | jquery.org/license */",
 					sourceMap: "dist/jquery.min.map",
-					sourceMappingURL: "jquery.min.map",
-					report: "min",
-					beautify: {
-						ascii_only: true
-					},
 					compress: {
 						hoist_funs: false,
 						join_vars: false,
 						loops: false,
 						unused: false
+					},
+					beautify: {
+						ascii_only: true
 					}
-				}
-			}
-		},
-		"post-uglify": {
-			all: {
-				files: {
-					"dist/jquery.min.map.tmp": [ "dist/jquery.min.map" ],
-					"dist/jquery.min.js.tmp": [ "dist/jquery.min.js" ]
-				},
-				options: {
-					tempFiles: [ "dist/jquery.min.map.tmp", "dist/jquery.min.js.tmp", "dist/jquery.pre-min.js" ]
 				}
 			}
 		}
@@ -159,8 +118,7 @@ module.exports = function( grunt ) {
 	grunt.registerTask( "testswarm", function( commit, configFile ) {
 		var jobName,
 			testswarm = require( "testswarm" ),
-			runs = {},
-			done = this.async(),
+			testUrls = [],
 			pull = /PR-(\d+)/.exec( commit ),
 			config = grunt.file.readJSON( configFile ).jquery,
 			tests = grunt.config([ this.name, "tests" ]);
@@ -174,35 +132,27 @@ module.exports = function( grunt ) {
 		}
 
 		tests.forEach(function( test ) {
-			runs[test] = config.testUrl + commit + "/test/index.html?module=" + test;
+			testUrls.push( config.testUrl + commit + "/test/index.html?module=" + test );
 		});
 
-		testswarm.createClient( {
+		testswarm({
 			url: config.swarmUrl,
 			pollInterval: 10000,
-			timeout: 1000 * 60 * 30
-		} )
-		.addReporter( testswarm.reporters.cli )
-		.auth( {
-			id: config.authUsername,
-			token: config.authToken
-		})
-		.addjob(
-			{
-				name: jobName,
-				runs: runs,
-				runMax: config.runMax,
-				browserSets: config.browserSets
-			}, function( err, passed ) {
-				if ( err ) {
-					grunt.log.error( err );
-				}
-				done( passed );
-			}
-		);
+			timeout: 1000 * 60 * 30,
+			done: this.async()
+		}, {
+			authUsername: config.authUsername,
+			authToken: config.authToken,
+			jobName: jobName,
+			runMax: config.runMax,
+			"runNames[]": tests,
+			"runUrls[]": testUrls,
+			"browserSets[]": config.browserSets
+		});
 	});
 
-	grunt.registerTask( "selector", "Build Sizzle-based selector module", function() {
+	// Build src/selector.js
+	grunt.registerTask( "selector", "Build src/selector.js", function() {
 
 		var cfg = grunt.config("selector"),
 			name = cfg.destFile,
@@ -246,7 +196,7 @@ module.exports = function( grunt ) {
 		// Rejoin the pieces
 		compiled = parts.join("");
 
-		grunt.verbose.writeln("Injected " + cfg.apiFile + " into " + cfg.srcFile);
+		grunt.verbose.write("Injected sizzle-jquery.js into sizzle.js");
 
 		// Write concatenated source to file, and ensure newline-only termination
 		grunt.file.write( name, compiled.replace( /\x0d\x0a/g, "\x0a" ) );
@@ -259,6 +209,7 @@ module.exports = function( grunt ) {
 		// Otherwise, print a success message.
 		grunt.log.writeln( "File '" + name + "' created." );
 	});
+
 
 	// Special "alias" task to make custom build creation less grawlix-y
 	grunt.registerTask( "custom", function() {
@@ -278,8 +229,8 @@ module.exports = function( grunt ) {
 		grunt.log.writeln( "Creating custom build...\n" );
 
 		grunt.util.spawn({
-			grunt: true,
-			args: [ "build:*:*:" + modules, "pre-uglify", "uglify", "dist" ]
+			cmd: process.platform === "win32" ? "grunt.cmd" : "grunt",
+			args: [ "build:*:*:" + modules, "uglify", "dist" ]
 		}, function( err, result ) {
 			if ( err ) {
 				grunt.verbose.error();
@@ -294,6 +245,7 @@ module.exports = function( grunt ) {
 	});
 
 	// Special concat/build task to handle various jQuery build requirements
+	//
 	grunt.registerMultiTask(
 		"build",
 		"Concatenate source (include/exclude modules with +/- flags), embed date/version",
@@ -382,36 +334,23 @@ module.exports = function( grunt ) {
 				var flag = filepath.flag,
 						specified = false,
 						omit = false,
-						messages = [];
+						message = "";
 
 				if ( flag ) {
 					if ( excluded[ flag ] !== undefined ) {
-						messages.push([
-							( "Excluding " + flag ).red,
-							( "(" + filepath.src + ")" ).grey
-						]);
+						message = ( "Excluding " + flag ).red;
 						specified = true;
-						omit = !filepath.alt;
-						if ( !omit ) {
-							flag += " alternate";
-							filepath.src = filepath.alt;
-						}
-					}
-					if ( excluded[ flag ] === undefined ) {
-						messages.push([
-							( "Including " + flag ).green,
-							( "(" + filepath.src + ")" ).grey
-						]);
+						omit = true;
+					} else {
+						message = ( "Including " + flag ).green;
 
 						// If this module was actually specified by the
-						// builder, then set the flag to include it in the
+						// builder, then st the flag to include it in the
 						// output list
 						if ( modules[ "+" + flag ] ) {
 							specified = true;
 						}
 					}
-
-					filepath = filepath.src;
 
 					// Only display the inclusion/exclusion list when handling
 					// an explicit list.
@@ -419,10 +358,13 @@ module.exports = function( grunt ) {
 					// Additionally, only display modules that have been specified
 					// by the user
 					if ( explicit && specified ) {
-						messages.forEach(function( message ) {
-							grunt.log.writetableln( [ 27, 30 ], message );
-						});
+						grunt.log.writetableln([ 27, 30 ], [
+							message,
+							( "(" + filepath.src + ")").grey
+						]);
 					}
+
+					filepath = filepath.src;
 				}
 
 				if ( !omit ) {
@@ -433,8 +375,16 @@ module.exports = function( grunt ) {
 			// Embed Version
 			// Embed Date
 			compiled = compiled.replace( /@VERSION/g, version )
-				// yyyy-mm-ddThh:mmZ
-				.replace( /@DATE/g, ( new Date() ).toISOString().replace( /:\d+\.\d+Z$/, "Z" ) );
+				.replace( "@DATE", function () {
+					var date = new Date();
+
+					// YYYY-MM-DD
+					return [
+						date.getFullYear(),
+						date.getMonth() + 1,
+						date.getDate()
+					].join( "-" );
+				});
 
 			// Write concatenated source to file
 			grunt.file.write( name, compiled );
@@ -450,11 +400,11 @@ module.exports = function( grunt ) {
 
 	// Process files for distribution
 	grunt.registerTask( "dist", function() {
-		var stored, flags, paths, fs, nonascii;
+		var flags, paths, stored;
 
 		// Check for stored destination paths
 		// ( set in dist/.destination.json )
-		stored = Object.keys( grunt.config( "dst" ) );
+		stored = Object.keys( grunt.config("dst") );
 
 		// Allow command line input as well
 		flags = Object.keys( this.flags );
@@ -465,11 +415,11 @@ module.exports = function( grunt ) {
 		});
 
 		// Ensure the dist files are pure ASCII
-		fs = require( "fs" );
-		nonascii = false;
+		var fs = require("fs"),
+			nonascii = false;
 
 		distpaths.forEach(function( filename ) {
-			var i, c,
+			var i, c, map,
 				text = fs.readFileSync( filename, "utf8" );
 
 			// Ensure files use only \n for line endings, not \r\n
@@ -497,17 +447,19 @@ module.exports = function( grunt ) {
 			if ( /\.map$/.test( filename ) ) {
 				text = text.replace( /"dist\//g, "\"" );
 				fs.writeFileSync( filename, text, "utf-8" );
-
-			// Use our hard-coded sourceMap directive instead of the autogenerated one (#13274; #13776)
 			} else if ( /\.min\.js$/.test( filename ) ) {
-				i = 0;
-				text = text.replace( /(?:\/\*|)\n?\/\/@\s*sourceMappingURL=.*(\n\*\/|)/g,
-					function( match ) {
-						if ( i++ ) {
-							return "";
-						}
-						return match;
+				// Wrap sourceMap directive in multiline comments (#13274)
+				text = text.replace( /\n?(\/\/@\s*sourceMappingURL=)(.*)/,
+					function( _, directive, path ) {
+						map = "\n" + directive + path.replace( /^dist\//, "" );
+						return "";
 					});
+				if ( map ) {
+					text = text.replace( /(^\/\*[\w\W]*?)\s*\*\/|$/,
+						function( _, comment ) {
+							return ( comment || "\n/*" ) + map + "\n*/";
+						});
+				}
 				fs.writeFileSync( filename, text, "utf-8" );
 			}
 
@@ -528,56 +480,6 @@ module.exports = function( grunt ) {
 		return !nonascii;
 	});
 
-	// Work around grunt-contrib-uglify sourceMap issues (jQuery #13776)
-	grunt.registerMultiTask( "pre-uglify", function() {
-		var banner = this.options().banner;
-
-		this.files.forEach(function( mapping ) {
-			// Join src
-			var input = mapping.src.map(function( file ) {
-				var contents = grunt.file.read( file );
-
-				// Strip banners
-				return contents
-					// Remove the main jQuery banner, it'll be replaced by the new banner anyway.
-					.replace( /^\/\*!(?:.|\n)*?\*\/\n?/g, "" )
-					// Strip other banners preserving line count.
-					.replace( /^\/\*!(?:.|\n)*?\*\/\n?/gm, function ( match ) {
-						return match.replace( /[^\n]/gm, "" );
-					});
-			}).join("\n");
-
-			// Write temp file (with optional banner)
-			grunt.file.write( mapping.dest, ( banner || "" ) + input );
-		});
-	});
-
-	// Change the map file to point back to jquery.js instead of jquery.pre-min.js.
-	// The problem is caused by the pre-uglify task.
-	// Also, remove temporary files.
-	grunt.registerMultiTask( "post-uglify", function() {
-		var fs = require( "fs" );
-
-		this.files.forEach(function( mapping ) {
-			var mapFileName = mapping.src[ 0 ];
-
-			// Rename the file to a temporary name.
-			fs.renameSync( mapFileName, mapping.dest);
-			grunt.file.write( mapFileName, grunt.file.read( mapping.dest )
-				// The uglify task erroneously prepends dist/ to file names.
-				.replace( /"dist\//g, "\"" )
-				// Refer to the source jquery.js, not the temporary jquery.pre-min.js.
-				.replace( /\.pre-min\./g, "." )
-				// There's already a pragma at the beginning of the file, remove the one at the end.
-				.replace( /\/\/@ sourceMappingURL=jquery\.min\.map$/g, "" ));
-		});
-
-		// Remove temporary files.
-		this.options().tempFiles.forEach(function( fileName ) {
-			fs.unlink( fileName );
-		});
-	});
-
 	// Load grunt tasks from NPM packages
 	grunt.loadNpmTasks("grunt-compare-size");
 	grunt.loadNpmTasks("grunt-git-authors");
@@ -587,7 +489,7 @@ module.exports = function( grunt ) {
 	grunt.loadNpmTasks("grunt-contrib-uglify");
 
 	// Default grunt
-	grunt.registerTask( "default", [ "update_submodules", "selector", "build:*:*", "jshint", "pre-uglify", "uglify", "post-uglify", "dist:*", "compare_size" ] );
+	grunt.registerTask( "default", [ "update_submodules", "selector", "build:*:*", "jshint", "uglify", "dist:*" ] );
 
 	// Short list as a high frequency watch task
 	grunt.registerTask( "dev", [ "selector", "build:*:*", "jshint" ] );
