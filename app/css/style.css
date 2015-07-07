@@ -10012,11 +10012,17 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   left: 8px;
   color: #bcbcc3;
 }
-.template-body form .form-group .form-control:not(.empty):not(:focus) ~ .floating-label {
+.template-body form .form-group .form-control:not(.empty):not(:focus):not(.ng-invalid) ~ .floating-label {
   color: #339933;
 }
-.template-body form .form-group .form-control:not(.empty):not(:focus) ~ .floating-label:after {
+.template-body form .form-group .form-control:not(.empty):not(:focus):not(.ng-invalid) ~ .floating-label:after {
   color: #339933;
+}
+.template-body form .form-group .form-control.ng-invalid:not(.empty):not(:focus) ~ .floating-label {
+  color: #dfbd00;
+}
+.template-body form .form-group .form-control.ng-invalid:not(.empty):not(:focus) ~ .floating-label:after {
+  color: #dfbd00;
 }
 .template-body form .form-group .form-control.required ~ .floating-label:after {
   content: '*';
@@ -10254,6 +10260,12 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
 }
 .alert {
   border-radius: 0;
+}
+.alert p {
+  margin-bottom: 5px;
+}
+.alert i {
+  padding-right: 10px;
 }
 .edit-actions {
   border-top: 1px solid #ddd;

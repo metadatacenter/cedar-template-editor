@@ -108,7 +108,8 @@ angularApp.controller('CreateTemplateController', function ($rootScope, $scope, 
         }
       ];
     }
-
+    // empty staging object (only one field should be configurable at a time)
+    $scope.staging = {};
     // put field into fields staging object
     $scope.staging[field.properties.value.id] = field;
   };
@@ -125,13 +126,43 @@ angularApp.controller('CreateTemplateController', function ($rootScope, $scope, 
 
   // Add newly configured field to the the $scope.form.properties object
   $scope.addFieldToForm = function(field) {
-    // Converting title for irregular character handling
-    var underscoreTitle = $rootScope.underscoreText(field.properties.value.title);
-    // Adding field to the element.properties object
-    $scope.form.properties[underscoreTitle] = field;
+    // Setting return value from $scope.checkFieldConditions to array which will display error messages if any
+    $scope.errorMessages = $scope.checkFieldConditions(field.properties.value);
 
-    // Lastly, remove this field from the $scope.staging object
-    delete $scope.staging[field.properties.value.id];
+    if ($scope.errorMessages.length == 0) {
+      // Converting title for irregular character handling
+      var underscoreTitle = $rootScope.underscoreText(field.properties.value.title);
+      // Adding field to the element.properties object
+      $scope.form.properties[underscoreTitle] = field;
+      // Lastly, remove this field from the $scope.staging object
+      delete $scope.staging[field.properties.value.id];
+    }
+  };
+
+  $scope.checkFieldConditions = function(field) {
+    // Empty array to push 'error messages' into
+    var unmetConditions = [],
+        extraConditionInputs = ['checkbox', 'radio', 'list'];
+
+    // Field title is already required, if it's empty create error message
+    if (!field.title.length) {
+      unmetConditions.push('"Enter Field Title" input cannot be left empty.'); 
+    }
+    // If field is within multiple choice field types
+    if (extraConditionInputs.indexOf(field.input_type) !== -1 ) {
+      angular.forEach(field.options, function(value, index) {
+        // If any 'option' title text is left empty, create error message
+        if (!value.text.length) {
+          unmetConditions.push('"Enter Option" input cannot be left empty.');
+        }
+      });
+    }
+    // If field type is 'radio' or 'pick from a list' there must be more than one option created
+    if ((field.input_type == 'radio' || field.input_type == 'list') && field.options && (field.options.length <= 1)) {
+      unmetConditions.push('Multiple Choice fields must have at least two possible options');
+    }
+    // Return array of error messages
+    return unmetConditions;
   };
 
   // Add existing element into the $scope.form.properties object
@@ -170,8 +201,21 @@ angularApp.controller('CreateTemplateController', function ($rootScope, $scope, 
   };
 
   $scope.saveTemplate = function() {
-    // Broadcast the initialize Page Array event which will trigger the creation of the $scope.form 'pages' array 
-    $scope.$broadcast('initPageArray');
+    // First check to make sure Template Name, Template Description are not blank
+    $scope.templateErrorMessages = [];
+    // If Template Name is blank, produce error message
+    if (!$scope.form.title.length) {
+      $scope.templateErrorMessages.push('Template Name input cannot be left empty.');
+    }
+    // If Template Description is blank, produce error message
+    if (!$scope.form.description.length) {
+      $scope.templateErrorMessages.push('Template Description input cannot be left empty.');
+    }
+    // If there are no Template level error messages
+    if ($scope.templateErrorMessages.length == 0) {
+      // Broadcast the initialize Page Array event which will trigger the creation of the $scope.form 'pages' array 
+      $scope.$broadcast('initPageArray'); 
+    }
   };
 
   // Event listener for when the pages array is finished building

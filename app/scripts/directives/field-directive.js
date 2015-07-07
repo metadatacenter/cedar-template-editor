@@ -18,7 +18,7 @@ angularApp.directive('fieldDirective', function($http, $compile, $document) {
           'textarea',
           'checkbox',
           'date',
-          'dropdown',
+          'location',
           'radio',
           'list',
           'audio-visual',
@@ -37,11 +37,16 @@ angularApp.directive('fieldDirective', function($http, $compile, $document) {
   var linker = function($scope, $element, attrs) {
     // When form submit event is fired, check field for simple validation
     $scope.$on('submitForm', function (event) {
-      // If field is required and is empty, emit failed Validation event
+      // If field is required and is empty, emit failed emptyRequiredField event
       if ($scope.field.required && $scope.model == undefined) {
-        $scope.$emit('validationFail', $scope.field.title);
+        $scope.$emit('emptyRequiredField', $scope.field.title);
       }
     });
+
+    // Checking each field to see if required, will trigger flag for use to see there is required fields
+    if ($scope.field.required) {
+      $scope.$emit('formHasRequiredFields');
+    }
     // GET template content from path
     var templateUrl = getTemplateUrl($scope.field, $scope.directory);
     

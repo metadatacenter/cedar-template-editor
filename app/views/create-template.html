@@ -69,6 +69,9 @@
       </div> <!-- /.left-sidebar -->
 
       <div class="right-body col-sm-9">
+        <div ng-if="templateErrorMessages.length" class="alert alert-danger" role="alert">
+          <p ng-repeat="message in templateErrorMessages"><i class="fa fa-exclamation-triangle"></i>{{message}}</p>
+        </div>
         <div id="form-preview-section">
           <div class="checkbox checkbox-primary">
             <input type="checkbox" id="checkbox1" data-toggle="collapse" data-target=".form-preview" ng-checked="formPreview">
@@ -85,6 +88,9 @@
         <div id="form-item-config-section">
           <div class="heading-label">
             <hr><span class="section-break">Item Configuration</span><hr>
+          </div>
+          <div ng-if="errorMessages.length" class="alert alert-danger" role="alert">
+            <p ng-repeat="message in errorMessages"><i class="fa fa-exclamation-triangle"></i>{{message}}</p>
           </div>
           <div class="empty-text" ng-hide="isEmpty(staging)">
             <p>Create a new field item.</p>

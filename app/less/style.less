@@ -889,10 +889,17 @@ section.dashboard-elements {
         color:#bcbcc3;
       }
 
-      &:not(.empty):not(:focus) ~ .floating-label {
+      &:not(.empty):not(:focus):not(.ng-invalid) ~ .floating-label {
         color:@brand-primary;
         &:after {
           color:@brand-primary;
+        }
+      }
+
+      &.ng-invalid:not(.empty):not(:focus) ~ .floating-label {
+        color:#dfbd00;
+        &:after {
+          color:#dfbd00;
         }
       }
 
@@ -1148,6 +1155,14 @@ section.dashboard-elements {
 
 .alert {
   border-radius:0;
+
+  p {
+    margin-bottom:5px;
+  }
+  
+  i {
+    padding-right:10px;
+  }
 }
 
 .edit-actions {

@@ -21,7 +21,6 @@ angularApp.controller('RuntimeController', function ($rootScope, $scope, FormSer
   $scope.currentPage = [],
   $scope.pageIndex = 0,
   $scope.pagesArray = [];
-  $scope.form.title = 'Fill out Template';
 
   // Get/read form with given id from $routeParams
   $scope.getForm = function() {
@@ -87,12 +86,12 @@ angularApp.controller('RuntimeController', function ($rootScope, $scope, FormSer
 		$scope.$broadcast('submitForm');
 	};
 
-	// Initialize array for fields left empty that fail validation
-	$scope.failedValidation = [];
-	// Event listener waiting for validationVail $emit from field-directive.js
-	$scope.$on('validationFail', function (event, args) {
-		if ($scope.failedValidation.indexOf(args) == -1) {
-			$scope.failedValidation.push(args);
+	// Initialize array for required fields left empty that fail required empty check
+	$scope.emptyRequiredFields = [];
+	// Event listener waiting for emptyRequiredField $emit from field-directive.js
+	$scope.$on('emptyRequiredField', function (event, args) {
+		if ($scope.emptyRequiredFields.indexOf(args) == -1) {
+			$scope.emptyRequiredFields.push(args);
 		}
 	});
 });

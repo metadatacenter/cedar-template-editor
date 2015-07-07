@@ -1,7 +1,14 @@
 <div ng-class="{'required': field.required}">
 	<p class="extra-label-context">{{field.title}}</p>
 	<div class="form-group validation-pattern" ng-class="{'required': field.required}">
-		<select class="form-control" multiple data-max-options="" title="Please select one or more options..." ng-model="model.value" defaults="field.default_option" select-picker field="field">
+		<select class="form-control" 
+						multiple 
+						data-max-options="" 
+						field="field"
+						title="Please select one or more options..." 
+						ng-model="model.value" 
+						defaults="field.default_option" 
+						select-picker>
 		  <option ng-repeat="(index, value) in field.options" value="{{field.options[index]['text']}}">{{field.options[index]['text']}}</option>
 		</select>
 	</div><!-- /.form-group -->

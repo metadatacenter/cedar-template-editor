@@ -71,6 +71,9 @@
       </div> <!-- /.left-sidebar -->
 
       <div class="right-body col-sm-9">
+        <div ng-if="elementErrorMessages.length" class="alert alert-danger" role="alert">
+          <p ng-repeat="message in elementErrorMessages"><i class="fa fa-exclamation-triangle"></i>{{message}}</p>
+        </div>
         <div id="form-preview-section">
           <div class="checkbox checkbox-primary">
             <input type="checkbox" id="checkbox1" data-toggle="collapse" data-target=".form-preview" ng-checked="formPreview">>
@@ -88,11 +91,14 @@
           <div class="heading-label">
             <hr><span class="section-break">Item Configuration</span><hr>
           </div>
+          <div ng-if="stagingErrorMessages.length" class="alert alert-danger" role="alert">
+            <p ng-repeat="message in stagingErrorMessages"><i class="fa fa-exclamation-triangle"></i>{{message}}</p>
+          </div>
           <div class="empty-text" ng-hide="isEmpty(staging)">
             <p>Create a new field item.</p>
           </div>
           <form name="{{form.title}}" id="{{form.guid}}">
-            <div ng-repeat="field in staging | orderObjectBy: 'properties.value.created_at'" class="animate-fade">
+            <div ng-repeat="field in staging" class="animate-fade">
               <field-directive field="field.properties.value" directory="create" delete="deleteField(field)" add="addFieldToElement(field)" option="addOption(field)">
               </field-directive>
             </div>

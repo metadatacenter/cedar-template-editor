@@ -78,10 +78,14 @@ angularApp.directive('formDirective', function ($rootScope, $document, $timeout)
       });
 
       // Watching for the 'submitForm' event to be $broadcast from parent 'RuntimeController'
-      $scope.$on('submitForm', function (event) {
+      $scope.$on('submitForm', function(event) {
         console.log('submitting form...');
         console.log($scope.model);
         $scope.checkSubmission = true;
+      });
+
+      $scope.$on('formHasRequiredFields', function(event) {
+        $scope.form.requiredFields = true;
       });
     }
   };

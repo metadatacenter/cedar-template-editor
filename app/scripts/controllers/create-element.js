@@ -96,6 +96,8 @@ angularApp.controller('CreateElementController', function ($rootScope, $scope, $
       ];
     }
 
+    // empty staging object (only one field should be configurable at a time)
+    $scope.staging = {};
     // put field into fields staging object
     $scope.staging[field.properties.value.id] = field;
   };
@@ -112,13 +114,43 @@ angularApp.controller('CreateElementController', function ($rootScope, $scope, $
 
   // Add newly configured field to the element object
   $scope.addFieldToElement = function(field) {
-    // Converting title for irregular character handling
-    var underscoreTitle = $rootScope.underscoreText(field.properties.value.title);
-    // Adding field to the element.properties object
-    $scope.element.properties[underscoreTitle] = field;
+    // Setting return value from $scope.checkFieldConditions to array which will display error messages if any
+    $scope.stagingErrorMessages = $scope.checkFieldConditions(field.properties.value);
 
-    // Lastly, remove this field from the $scope.staging object
-    delete $scope.staging[field.properties.value.id];
+    if ($scope.stagingErrorMessages.length == 0) {
+      // Converting title for irregular character handling
+      var underscoreTitle = $rootScope.underscoreText(field.properties.value.title);
+      // Adding field to the element.properties object
+      $scope.element.properties[underscoreTitle] = field;
+      // Lastly, remove this field from the $scope.staging object
+      delete $scope.staging[field.properties.value.id];
+    }
+  };
+
+  $scope.checkFieldConditions = function(field) {
+    // Empty array to push 'error messages' into
+    var unmetConditions = [],
+        extraConditionInputs = ['checkbox', 'radio', 'list'];
+
+    // Field title is already required, if it's empty create error message
+    if (!field.title.length) {
+      unmetConditions.push('"Enter Field Title" input cannot be left empty.'); 
+    }
+    // If field is within multiple choice field types
+    if (extraConditionInputs.indexOf(field.input_type) !== -1 ) {
+      angular.forEach(field.options, function(value, index) {
+        // If any 'option' title text is left empty, create error message
+        if (!value.text.length) {
+          unmetConditions.push('"Enter Option" input cannot be left empty.');
+        }
+      });
+    }
+    // If field type is 'radio' or 'pick from a list' there must be more than one option created
+    if ((field.input_type == 'radio' || field.input_type == 'list') && field.options && (field.options.length <= 1)) {
+      unmetConditions.push('Multiple Choice fields must have at least two possible options');
+    }
+    // Return array of error messages
+    return unmetConditions;
   };
 
   // Add existing element to the element object
@@ -165,13 +197,23 @@ angularApp.controller('CreateElementController', function ($rootScope, $scope, $
   };
 
   $scope.saveTemplate = function() {
-    // Here you could $scope.$broadcast an event down to the field level to do any requirements checking
-    // to make sure the fields are created properly
-    // Database service save() call could go here, if type checks are passed
-
-    // Console.log full working form example on save, just to show demonstration of something happening
-    console.log('saving element...');
-    console.log($scope.element);
+    // First check to make sure Element Name, Element Description are not blank
+    $scope.elementErrorMessages = [];
+    // If Element Name is blank, produce error message
+    if (!$scope.element.title.length) {
+      $scope.elementErrorMessages.push('Element Name input cannot be left empty.');
+    }
+    // If Element Description is blank, produce error message
+    if (!$scope.element.description.length) {
+      $scope.elementErrorMessages.push('Element Description input cannot be left empty.');
+    }
+    // If there are no Element level error messages
+    if ($scope.elementErrorMessages.length == 0) {
+      // Console.log full working form example on save, just to show demonstration of something happening
+      console.log('saving element...');
+      console.log($scope.element);
+      // Database service save() call could go here, if type checks are passed
+    }
   };
 
 });
