@@ -150,10 +150,11 @@ angularApp.controller('CreateTemplateController', function ($rootScope, $scope, 
     }
     // If field is within multiple choice field types
     if (extraConditionInputs.indexOf(field.input_type) !== -1 ) {
+      var optionMessage = '"Enter Option" input cannot be left empty.';
       angular.forEach(field.options, function(value, index) {
         // If any 'option' title text is left empty, create error message
-        if (!value.text.length) {
-          unmetConditions.push('"Enter Option" input cannot be left empty.');
+        if (!value.text.length && unmetConditions.indexOf(optionMessage) == -1) {
+          unmetConditions.push(optionMessage);
         }
       });
     }

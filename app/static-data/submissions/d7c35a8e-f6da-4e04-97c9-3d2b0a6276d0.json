@@ -285,6 +285,7 @@
           "input_type": "list",
           "required": false,
           "created_at": 1433524154974,
+          "selection_type": "single",
           "options": [
             {
               "text": "This is the first option"
