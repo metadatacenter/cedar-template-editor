@@ -67,11 +67,6 @@
 
       <div class="right-body col-sm-9">
         <div id="form-preview-section">
-          <!--<div class="checkbox checkbox-primary">-->
-            <!--<input type="checkbox" id="checkbox1" data-toggle="collapse" data-target=".form-preview" ng-checked="formPreview">-->
-            <!--<label for="checkbox1">Preview Form</label>-->
-          <!--</div>-->
-          <!--<div class="form-preview collapse" ng-class="formPreview ? 'collapse in' : 'collapse'">-->
           <div class="form-preview collapse in">
             <div class="empty-text" ng-show="isPropertiesEmpty()">
               <p>Add an existing element or create a new item.</p>
@@ -81,12 +76,6 @@
         </div> <!-- /#form-preview-section -->
 
         <div id="form-item-config-section">
-          <!--<div class="heading-label">-->
-            <!--<hr><span class="section-break">Item Configuration</span><hr>-->
-          <!--</div>-->
-          <!--<div class="empty-text" ng-hide="isEmpty(staging)">-->
-            <!--<p>Create a new field item.</p>-->
-          <!--</div>-->
           <form name="{{form.title}}" id="{{form.guid}}">
             <div ng-repeat="field in staging | orderObjectBy: 'properties.value.created_at'" class="animate-fade">
               <field-directive field="field.properties.value" directory="create" delete="deleteField(field, staging)" add="addFieldToForm(field)" option="addOption(field)">
@@ -96,8 +85,14 @@
         </div> <!-- /#form-item-config-section -->
 
         <div class="template-actions">
-          <div>
-            <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</alert>
+          <div ng-if="stagingErrorMessages.length" class="alert alert-danger" role="alert">
+            <p ng-repeat="message in stagingErrorMessages"><i class="fa fa-exclamation-triangle"></i>{{message}}</p>
+          </div>
+          <div ng-if="templateErrorMessages.length" class="alert alert-danger" role="alert">
+            <p ng-repeat="message in templateErrorMessages"><i class="fa fa-exclamation-triangle"></i>{{message}}</p>
+          </div>
+          <div ng-if="templateSuccessMessages.length" class="alert alert-success" role="alert">
+            <p ng-repeat="message in templateSuccessMessages"><i class="fa fa-check"></i>{{message}}</p>
           </div>
           <div class="favorite {{favorite}}" ng-click="toggleFavorite()">
             <i class="cedar-svg-flag"></i><span>Favorite</span>

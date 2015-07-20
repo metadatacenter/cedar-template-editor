@@ -3,12 +3,20 @@
 	<div class="form-group radio-item" ng-repeat="(index, value) in field.options">
 
 	  <div ng-if="field.default_option" class="radio radio-primary" ng-init="field.model.value=field.default_option">
-	    <input type="radio" id="radio{{index}}" name="radio-{{field.id}}" ng-model="field.model.value" value="{{field.options[index]['text']}}">
+	    <input 	type="radio" 
+	    				id="radio{{index}}" 
+	    				name="radio-{{field.id}}" 
+	    				ng-model="field.model.value" 
+	    				value="{{field.options[index]['text']}}">
 	    <label for="radio{{index}}">{{field.options[index]['text']}}</label> 
 	  </div><!-- /.radio -->
 
 	  <div ng-if="!field.default_option" class="radio radio-primary">
-	    <input type="radio" id="radio{{index}}" name="radio-{{field.id}}" ng-model="field.model.value" value="{{field.options[index]['text']}}">
+	    <input 	type="radio" 
+	    				id="radio{{index}}" 
+	    				name="radio-{{field.id}}" 
+	    				ng-model="field.model.value" 
+	    				value="{{field.options[index]['text']}}">
 	    <label for="radio{{index}}">{{field.options[index]['text']}}</label> 
 	  </div><!-- /.radio -->
 

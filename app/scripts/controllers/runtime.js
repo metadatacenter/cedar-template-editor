@@ -21,7 +21,6 @@ angularApp.controller('RuntimeController', function ($rootScope, $scope, FormSer
   $scope.currentPage = [],
   $scope.pageIndex = 0,
   $scope.pagesArray = [];
-  $scope.form.title = 'Fill out Template';
 
   // Get/read form with given id from $routeParams
   $scope.getForm = function() {
@@ -76,22 +75,10 @@ angularApp.controller('RuntimeController', function ($rootScope, $scope, FormSer
 		$scope.currentPage = $scope.pagesArray[$scope.pageIndex];
 	};
 
-	// Alerts
-	$scope.resetAlerts = function() {
-		$scope.alerts = [];
-	}
-
-	$scope.addAlert = function(type, msg) {
-		$scope.alerts.push({type: type, msg: msg});
-	};
-
-	$scope.closeAlert = function(index) {
-		$scope.alerts.splice(index, 1);
-	};
-
 	// Stores the data (populated template) into the database
 	$scope.savePopulatedTemplate = function() {
-		$scope.resetAlerts();
+		$scope.runtimeErrorMessages = [];
+		$scope.runtimeSuccessMessages = [];
 		// The child will be in charge of assigning a value to $scope.model (see form-directive.js)
 		$scope.submitForm();
 		// Save populated template
@@ -101,10 +88,9 @@ angularApp.controller('RuntimeController', function ($rootScope, $scope, FormSer
 			$scope.form.template_id = $scope.form._id;
 			delete $scope.form._id;
 			FormService.savePopulatedTemplate($scope.form).then(function(response) {
-				//FormService.savePopulatedTemplate($scope.model).then(function(response) {
-				$scope.addAlert('success', 'The populated template has been saved.');
+				$scope.runtimeSuccessMessages.push('The populated template has been saved.');
 			}).catch(function(err) {
-				$scope.addAlert('danger', "Problem saving the populated template.");
+				$scope.runtimeErrorMessages.push('Problem saving the populated template.');
 				console.log(err);
 			});
 		}
@@ -113,9 +99,9 @@ angularApp.controller('RuntimeController', function ($rootScope, $scope, FormSer
 			var id = $scope.form._id.$oid;
 			delete $scope.form._id;
 			FormService.updatePopulatedTemplate(id, $scope.form).then(function(response) {
-				$scope.addAlert('success', 'The populated template has been updated.');
+				$scope.runtimeSuccessMessages.push('The populated template has been updated.');
 			}).catch(function(err) {
-				$scope.addAlert('danger', "Problem updating the populated template.");
+				$scope.runtimeErrorMessages.push('Problem updating the populated template.');
 				console.log(err);
 			});
 		}
@@ -132,12 +118,12 @@ angularApp.controller('RuntimeController', function ($rootScope, $scope, FormSer
 		$scope.$broadcast('submitForm');
 	};
 
-	// Initialize array for fields left empty that fail validation
-	$scope.failedValidation = [];
-	// Event listener waiting for validationVail $emit from field-directive.js
-	$scope.$on('validationFail', function (event, args) {
-		if ($scope.failedValidation.indexOf(args) == -1) {
-			$scope.failedValidation.push(args);
+	// Initialize array for required fields left empty that fail required empty check
+	$scope.emptyRequiredFields = [];
+	// Event listener waiting for emptyRequiredField $emit from field-directive.js
+	$scope.$on('emptyRequiredField', function (event, args) {
+		if ($scope.emptyRequiredFields.indexOf(args) == -1) {
+			$scope.emptyRequiredFields.push(args);
 		}
 	});
 });

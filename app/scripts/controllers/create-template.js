@@ -1,6 +1,6 @@
 'use strict';
 
-angularApp.controller('CreateTemplateController', function ($rootScope, $scope, $q, $routeParams, FormService) {
+angularApp.controller('CreateTemplateController', function($rootScope, $scope, $q, $routeParams, FormService) {
 
   // Set Page Title variable when this controller is active
   $rootScope.pageTitle = 'Template Creator';
@@ -59,14 +59,14 @@ angularApp.controller('CreateTemplateController', function ($rootScope, $scope, 
         "@id",
         "@type"
       ],
-      "additionalProperties" : false
+      "additionalProperties": false
     };
   }
 
   // Return true if form.properties object only contains default values
   $scope.isPropertiesEmpty = function() {
     if ($scope.form) {
-      return  Object.keys($scope.form.properties).length > 3 ? false : true;
+      return Object.keys($scope.form.properties).length > 3 ? false : true;
     }
   };
 
@@ -83,11 +83,11 @@ angularApp.controller('CreateTemplateController', function ($rootScope, $scope, 
         },
         "value": {
           "type": "string",
-          "id" : $rootScope.generateGUID(),
-          "title" : "",
+          "id": $rootScope.generateGUID(),
+          "title": "",
           "description": "",
-          "input_type" : fieldType,
-          "required" : false,
+          "input_type": fieldType,
+          "required": false,
           "created_at": Date.now()
         }
       },
@@ -108,7 +108,8 @@ angularApp.controller('CreateTemplateController', function ($rootScope, $scope, 
         }
       ];
     }
-
+    // empty staging object (only one field should be configurable at a time)
+    $scope.staging = {};
     // put field into fields staging object
     $scope.staging[field.properties.value.id] = field;
   };
@@ -125,29 +126,64 @@ angularApp.controller('CreateTemplateController', function ($rootScope, $scope, 
 
   // Add newly configured field to the the $scope.form.properties object
   $scope.addFieldToForm = function(field) {
-    // Converting title for irregular character handling
-    var underscoreTitle = $rootScope.underscoreText(field.properties.value.title);
-    // Adding field to the element.properties object
-    $scope.form.properties[underscoreTitle] = field;
+    // Setting return value from $scope.checkFieldConditions to array which will display error messages if any
+    $scope.stagingErrorMessages = $scope.checkFieldConditions(field.properties.value);
 
-    // Lastly, remove this field from the $scope.staging object
-    delete $scope.staging[field.properties.value.id];
+    if ($scope.stagingErrorMessages.length == 0) {
+      // Converting title for irregular character handling
+      var underscoreTitle = $rootScope.underscoreText(field.properties.value.title);
+      // Adding field to the element.properties object
+      $scope.form.properties[underscoreTitle] = field;
+      // Lastly, remove this field from the $scope.staging object
+      delete $scope.staging[field.properties.value.id];
+    }
+  };
+
+  $scope.checkFieldConditions = function(field) {
+    // Empty array to push 'error messages' into
+    var unmetConditions = [],
+      extraConditionInputs = ['checkbox', 'radio', 'list'];
+
+    // Field title is already required, if it's empty create error message
+    if (!field.title.length) {
+      unmetConditions.push('"Enter Field Title" input cannot be left empty.');
+    }
+    // If field is within multiple choice field types
+    if (extraConditionInputs.indexOf(field.input_type) !== -1) {
+      var optionMessage = '"Enter Option" input cannot be left empty.';
+      angular.forEach(field.options, function(value, index) {
+        // If any 'option' title text is left empty, create error message
+        if (!value.text.length && unmetConditions.indexOf(optionMessage) == -1) {
+          unmetConditions.push(optionMessage);
+        }
+      });
+    }
+    // If field type is 'radio' or 'pick from a list' there must be more than one option created
+    if ((field.input_type == 'radio' || field.input_type == 'list') && field.options && (field.options.length <= 1)) {
+      unmetConditions.push('Multiple Choice fields must have at least two possible options');
+    }
+    // Return array of error messages
+    return unmetConditions;
   };
 
   $scope.addExistingElement = function(element) {
     // Fetch existing element json data
     //FormService.element(element).then(function(response) {
-      // Convert response.data.title string to an acceptable object key string
-      var titleKey = $rootScope.underscoreText(element.title);
-      // Embed existing element into $scope.form.properties object
-      $scope.form.properties[titleKey] = element;
+    // Convert response.data.title string to an acceptable object key string
+    var titleKey = $rootScope.underscoreText(element.title);
+    // Embed existing element into $scope.form.properties object
+    $scope.form.properties[titleKey] = element;
     //});
   };
 
   // Delete field from $scope.staging object
-  $scope.deleteField = function (field){
+  $scope.deleteField = function(field) {
     // Remove field instance from $scope.staging
     delete $scope.staging[field.properties.value.id];
+    // Empty the Error Messages array if present
+    if ($scope.stagingErrorMessages) {
+      $scope.stagingErrorMessages = [];
+    }
   };
 
   // Reverts to empty form and removes all previously added fields/elements
@@ -155,7 +191,7 @@ angularApp.controller('CreateTemplateController', function ($rootScope, $scope, 
     // Loop through $scope.form.properties object and delete each field leaving default json-ld syntax in place
     angular.forEach($scope.form.properties, function(value, key) {
       if ($rootScope.ignoreKey(key)) {
-        delete $scope.form.properties[key];  
+        delete $scope.form.properties[key];
       }
     });
     // Broadcast the reset event which will trigger the emptying of formFields formFieldsOrder 
@@ -168,44 +204,29 @@ angularApp.controller('CreateTemplateController', function ($rootScope, $scope, 
     $scope.form.favorite = $scope.favorite;
   };
 
-  // Alerts
-  $scope.resetAlerts = function() {
-    $scope.alerts = [];
-  };
-
-  $scope.addAlert = function(type, msg) {
-    $scope.alerts.push({type: type, msg: msg});
-  };
-
-  $scope.closeAlert = function(index) {
-    $scope.alerts.splice(index, 1);
-  }
-
-  //$scope.saveTemplate = function() {
-  //  // Broadcast the initialize Page Array event which will trigger the creation of the $scope.form 'pages' array
-  //  $scope.$broadcast('initPageArray');
-  //};
-
   // Stores the template into the database
   $scope.saveTemplate = function() {
-    // Broadcast the initialize Page Array event which will trigger the creation of the $scope.form 'pages' array
-    $scope.$broadcast('initPageArray');
-    // Reset alerts
-    $scope.resetAlerts();
-    // Check that the template name is not empty
-    if ($scope.form.title.length == 0) {
-      $scope.addAlert('danger', 'Please provide a name for the template.');
+    // First check to make sure Template Name, Template Description are not blank
+    $scope.templateErrorMessages = [];
+    $scope.templateSuccessMessages = [];
+    // If Template Name is blank, produce error message
+    if (!$scope.form.title.length) {
+      $scope.templateErrorMessages.push('Template Name input cannot be left empty.');
     }
-    if ($scope.form.description.length == 0) {
-      $scope.addAlert('danger', 'Please provide a short description for the template.');
+    // If Template Description is blank, produce error message
+    if (!$scope.form.description.length) {
+      $scope.templateErrorMessages.push('Template Description input cannot be left empty.');
     }
-    else {
+    // If there are no Template level error messages
+    if ($scope.templateErrorMessages.length == 0) {
+      // Broadcast the initialize Page Array event which will trigger the creation of the $scope.form 'pages' array
+      $scope.$broadcast('initPageArray');
       // Save template
       if ($routeParams.id == undefined) {
         FormService.saveTemplate($scope.form).then(function(response) {
-          $scope.addAlert('success', 'The template \"' + response.data.title + '\" has been created.');
+          $scope.templateSuccessMessages.push('The template \"' + response.data.title + '\" has been created.');
         }).catch(function(err) {
-          $scope.addAlert('danger', "Problem creating the template.");
+          $scope.templateErrorMessages.push('Problem creating the template.');
           console.log(err);
         });
       }
@@ -214,9 +235,9 @@ angularApp.controller('CreateTemplateController', function ($rootScope, $scope, 
         var id = $scope.form._id.$oid;
         delete $scope.form._id;
         FormService.updateTemplate(id, $scope.form).then(function(response) {
-          $scope.addAlert('success', 'The template \"' + response.data.title + '\" has been updated.');
+          $scope.templateSuccessMessages.push('The template \"' + response.data.title + '\" has been updated.');
         }).catch(function(err) {
-          $scope.addAlert('danger', "Problem updating the template.");
+          $scope.templateErrorMessages.push('Problem updating the template.');
           console.log(err);
         });
       }

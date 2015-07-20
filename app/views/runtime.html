@@ -2,7 +2,8 @@
   <div class="container">
     <div class="row">
       <div class="left-sidebar col-sm-12">
-        <h2 class="runtime-template-name" ng-bind="form.title"></h2>
+        <h2 ng-if="form.title" class="runtime-template-name" ng-bind="form.title"></h2>
+        <h2 ng-if="!form.title" class="runtime-template-name">Fill Out a Template</h2>
       </div> <!-- /.left-sidebar -->
     </div> <!-- /.row -->
   </div> <!-- /.container -->
@@ -50,15 +51,22 @@
               <li ng-repeat="field in failedValidation">{{field}}</li>
             </ul>
           </div>
-          <div>
-            <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</alert>
+          <div ng-if="emptyRequiredFields.length" class="alert alert-danger" role="alert">
+            <p><i class="fa fa-exclamation-triangle"></i>The following fields are required:</p>
+            <ul>
+              <li ng-repeat="field in emptyRequiredFields">{{field}}</li>
+            </ul>
           </div>
-          <!--<button type="button" class="btn btn-save" ng-click="saveForm()">Save</button>-->
+          <div ng-if="runtimeErrorMessages.length" class="alert alert-danger" role="alert">
+            <p ng-repeat="message in runtimeErrorMessages"><i class="fa fa-exclamation-triangle"></i>{{message}}</p>
+          </div>
+          <div ng-if="runtimeSuccessMessages.length" class="alert alert-success" role="alert">
+            <p ng-repeat="message in runtimeSuccessMessages"><i class="fa fa-check"></i>{{message}}</p>
+          </div>
           <button type="button" class="btn btn-save" ng-click="savePopulatedTemplate()">Save</button>
           <button type="button" class="btn btn-clear disabled">Clear Form</button>
           <button type="button" class="btn btn-submit disabled" ng-click="submitForm()">Submit</button>
         </div><!-- /.edit-actions -->
-
       </div> <!-- /.right-body -->
     </div> <!-- /.row -->
   </div> <!-- /.container -->
