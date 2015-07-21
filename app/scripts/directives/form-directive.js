@@ -49,6 +49,8 @@ angularApp.directive('formDirective', function ($rootScope, $document, $timeout)
             if (value.hasOwnProperty('guid')) {
               // Handle position and nesting within $scope.formFields
               parentObject[name] = {};
+              // Push 'order' array through into parse object
+              parentObject[name]['order'] = value.order;
               // Handle position and nesting within $scope.model
               parentModel[name] = {};
               // Place top level element into $scope.formFieldsOrder
