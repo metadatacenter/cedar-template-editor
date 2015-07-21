@@ -5,6 +5,7 @@
   "guid": "34cc0dbf-9aee-4d1a-b8b7-ad385a38228e",
   "type": "object",
   "description": "Sample element consisting of contact fields",
+  "order":["last_name", "email_address", "background_information_optional", "first_name", "phone_number"],
   "properties": {
     "@type": {
       "enum": []

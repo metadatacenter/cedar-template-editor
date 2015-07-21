@@ -5,6 +5,7 @@
   "title": "Birth Date",
   "description": "Simple element to select date of birth",
   "guid": "f6529be3-2e80-42bd-90fe-d3a33813c4d0",
+  "order": ["are_you_18_years_or_older?", "please_select_your_date_of_birth"],
   "type": "object",
   "properties": {
     "@type": {
