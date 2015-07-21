@@ -47,6 +47,7 @@
       "@id": "",
       "title": "Principal Investigator",
       "guid": "fb056461-a80d-4ac2-a1ea-6501aa34d34d",
+      "order": ["institution", "full_name"],
       "type": "object",
       "description": "The lead researcher for the study",
       "properties": {
@@ -257,6 +258,7 @@
       "@id": "",
       "title": "Contact Information",
       "guid": "34cc0dbf-9aee-4d1a-b8b7-ad385a38228e",
+      "order": ["last_name", "email_address", "background_information_optional", "first_name", "phone_number"],
       "type": "object",
       "description": "Sample element consisting of contact fields",
       "properties": {
