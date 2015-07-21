@@ -48,7 +48,6 @@ angularApp.directive('formPreview', function ($rootScope, $document, $timeout) {
         // and key does not exist in the array
         if (!parentKey && $scope.formFieldsOrder.indexOf(key) == -1) {
           $scope.formFieldsOrder.push(key);
-          //console.log($scope.formFieldsOrder);
         }
       };
 
@@ -58,6 +57,8 @@ angularApp.directive('formPreview', function ($rootScope, $document, $timeout) {
             if (value.hasOwnProperty('guid')) {
               // Acknowledge position and nesting
               parentObject[name] = {};
+              // Push 'order' array through into parse object
+              parentObject[name]['order'] = value.order;
               $scope.pushIntoOrder(name, parentKey);
               // Indication of nested element or nested fields reached, recursively call function
               $scope.parseForm(value.properties, parentObject[name], name);
