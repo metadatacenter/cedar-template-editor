@@ -7,7 +7,13 @@ angularApp.directive('formPreview', function ($rootScope, $document, $timeout) {
       // $scope.formFields object to loop through to call field-directive
       $scope.formFields = {};
       // $scope.formFieldsOrder array to loop over for proper ordering of items/elements
-      $scope.formFieldsOrder = [];
+      if ($scope.form.order.length) {
+        // If form already has order array, set iterator to existing array (loading pre-existing element)
+        $scope.formFieldsOrder = $scope.form.order;
+      } else {
+        // form has no order array, (ie. loading a new instance, with no existing fields)
+        $scope.formFieldsOrder = [];
+      }
 
       $scope.addPopover = function() {
         //Initializing Bootstrap Popover fn for each item loaded
@@ -68,6 +74,12 @@ angularApp.directive('formPreview', function ($rootScope, $document, $timeout) {
       $scope.$on('resetForm', function (event) {
         $scope.formFields = {};
         $scope.formFieldsOrder = [];
+        $scope.$emit('finishOrderArray', $scope.formFieldsOrder);
+      });
+
+      // Listening for event from parent $scope to build the element order array
+      $scope.$on('initOrderArray', function (event) {
+        $scope.$emit('finishOrderArray', $scope.formFieldsOrder);
       });
 
       // Listening for event from parent $scope to reset the form
@@ -88,7 +100,7 @@ angularApp.directive('formPreview', function ($rootScope, $document, $timeout) {
         $scope.$emit('finishPageArray', orderArray);
       });
 
-      // Using Angular's $watch function to call $sceop.parseForm on form.properties initial population and on update
+      // Using Angular's $watch function to call $scope.parseForm on form.properties initial population and on update
       $scope.$watch('form.properties', function () {
         $scope.addPopover();
         $scope.parseForm($scope.form.properties, $scope.formFields);
