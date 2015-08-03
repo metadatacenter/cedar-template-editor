@@ -5,6 +5,7 @@
   "title": "Name",
   "description": "Simple name element",
   "guid": "29bc63ea-3a61-4a27-b9cb-e5c02dcac4cd",
+  "order": ["last_name", "first_name"],
   "type": "object",
   "properties": {
     "@type": {

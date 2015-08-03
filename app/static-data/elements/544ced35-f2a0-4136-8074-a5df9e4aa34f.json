@@ -5,6 +5,7 @@
   "title": "E6",
   "description": "Element 6th level",
   "guid": "544ced35-f2a0-4136-8074-a5df9e4aa34f",
+  "order": ["e6"],
   "type": "object",
   "properties": {
     "@type": {
@@ -19,6 +20,7 @@
       "title": "E6",
       "description": "",
       "guid": "963980ec-9a53-463f-9d0d-90ad5ed21995",
+      "order": ["e5"],
       "type": "object",
       "properties": {
         "@type": {
@@ -33,6 +35,7 @@
           "title": "E5",
           "description": "",
           "guid": "a881cd59-61a8-4922-9601-833073189b56",
+          "order": ["e4"],
           "type": "object",
           "properties": {
             "@type": {
@@ -47,6 +50,7 @@
               "title": "E4",
               "description": "",
               "guid": "b2662270-c002-4fce-9a8b-1570ff646c88",
+              "order": ["e4_checkbox", "e3"],
               "type": "object",
               "properties": {
                 "@type": {
@@ -61,6 +65,7 @@
                   "title": "E3",
                   "description": "",
                   "guid": "066835f8-9e5c-4e8b-bbfc-c48fb98acefb",
+                  "order": ["e2", "e1"],
                   "type": "object",
                   "properties": {
                     "@type": {
@@ -75,6 +80,7 @@
                       "title": "E1",
                       "description": "",
                       "guid": "8c9c3dfe-5a85-4798-9318-2ba8b4dddf4d",
+                      "order": ["e1a", "e1b"],
                       "type": "object",
                       "properties": {
                         "@type": {
@@ -148,6 +154,7 @@
                       "title": "E2",
                       "description": "",
                       "guid": "47139840-708d-4126-b99d-fe97ba3626af",
+                      "order": ["e2b", "e2a", "e2list"],
                       "type": "object",
                       "properties": {
                         "@type": {
@@ -219,6 +226,7 @@
                               "description": "",
                               "input_type": "list",
                               "required": false,
+                              "selection_type": "single",
                               "created_at": {
                                 "$numberLong": "1434992710888"
                               },

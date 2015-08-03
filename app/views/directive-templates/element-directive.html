@@ -3,7 +3,10 @@
 
 	<div ng-if="!field.input_type" class="nested-element">
 		<p class="element-name-label"><i class="cedar-svg-element"></i>{{key | keyToTitle}}</p>
-		<div ng-repeat="(key, field) in field" ng-include="'nestedElement'"></div>
+		<div ng-repeat="key in field['order']">
+			<span ng-if="field[key]" ng-init="field = field[key]" ng-include="'nestedElement'"></span>
+		</div>
+
 	</div>
 </script>
 
@@ -12,4 +15,6 @@
   <div ng-if="preview" class="preview-edit-options" ng-include="'views/partials/preview-edit-options.html'"></div>
 </div>
 
-<div ng-repeat="(key, field) in element" ng-include="'nestedElement'"></div>
+<div ng-repeat="key in element['order']">
+	<span ng-if="element[key]" ng-init="field = element[key]" ng-include="'nestedElement'"></span>
+</div>

@@ -36,6 +36,7 @@ angularApp.controller('CreateElementController', function ($rootScope, $scope, $
       "description": "",
       "guid": $rootScope.generateGUID(),
       "favorite": $scope.favorite,
+      "order": [],
       "type": "object",
       "properties": {
         "@type": {
@@ -225,6 +226,8 @@ angularApp.controller('CreateElementController', function ($rootScope, $scope, $
     }
     // If there are no Element level error messages
     if ($scope.elementErrorMessages.length == 0) {
+      // Build element 'order' array via $broadcast call
+      $scope.$broadcast('initOrderArray');
       // Console.log full working form example on save, just to show demonstration of something happening
       console.log('saving element...');
       console.log($scope.element);
@@ -254,5 +257,10 @@ angularApp.controller('CreateElementController', function ($rootScope, $scope, $
       }
     }
   }
+
+  // Build $scope.element.order array
+  $scope.$on('finishOrderArray', function(event, orderArray) {
+    $scope.element.order = orderArray;
+  })
 
 });

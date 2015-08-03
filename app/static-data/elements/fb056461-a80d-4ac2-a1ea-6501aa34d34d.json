@@ -2,9 +2,10 @@
   "$schema": "",
   "@id": "",
   "title": "Principal Investigator",
-  "guid": "fb056461-a80d-4ac2-a1ea-6501aa34d34d",
-  "type": "object",
   "description": "The lead researcher for the study",
+  "guid": "fb056461-a80d-4ac2-a1ea-6501aa34d34d",
+  "order": ["institution", "full_name"],
+  "type": "object",
   "properties": {
     "@type": {
       "enum": []

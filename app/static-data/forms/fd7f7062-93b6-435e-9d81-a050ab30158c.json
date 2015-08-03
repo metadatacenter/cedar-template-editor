@@ -37,6 +37,7 @@
       "title": "Research Team",
       "description": "Sample element to demonstrate embedding two levels deep",
       "guid": "967f7ad0-d591-47de-9811-85519ac00f19",
+      "order":["principal_researcher"],
       "type": "object",
       "properties": {
         "@type": {
@@ -49,6 +50,7 @@
           "title": "Principal Researcher",
           "description": "Sample element to demonstrate embedding",
           "guid": "43223c86-1347-482f-8644-e3411b4aae80",
+          "order":["address", "name"],
           "type": "object",
           "properties": {
             "@type": {
@@ -61,6 +63,7 @@
               "title": "Name",
               "description": "Simple name element",
               "guid": "29bc63ea-3a61-4a27-b9cb-e5c02dcac4cd",
+              "order":["last_name", "first_name"],
               "type": "object",
               "properties": {
                 "@type": {
@@ -127,6 +130,7 @@
               "title": "Address",
               "description": "Simple address element",
               "guid": "eb426c1e-e256-4192-86b6-c1ad3091a077",
+              "order":["street", "city"],
               "type": "object",
               "properties": {
                 "@type": {
@@ -203,6 +207,7 @@
       "@id": "",
       "title": "Principal Investigator",
       "guid": "fb056461-a80d-4ac2-a1ea-6501aa34d34d",
+      "order": ["institution", "full_name"],
       "type": "object",
       "description": "The lead researcher for the study",
       "properties": {

@@ -5,6 +5,7 @@
   "title": "Address",
   "description": "Simple address element",
   "guid": "eb426c1e-e256-4192-86b6-c1ad3091a077",
+  "order": ["street", "city"],
   "type": "object",
   "properties": {
     "@type": {

@@ -5,6 +5,7 @@
   "title": "Identify Person",
   "description": "Simple person identifier element",
   "guid": "b7f5133b-aaf3-4243-9ece-4dc8a8c7a8ac",
+  "order": ["last_name", "gender", "first_name"],
   "type": "object",
   "properties": {
     "@type": {
