@@ -34,7 +34,7 @@ angularApp.controller('CreateElementController', function ($rootScope, $scope, $
       "@type": "",
       "title": "",
       "description": "",
-      "guid": $rootScope.generateGUID(),
+      //"guid": $rootScope.generateGUID(),
       "favorite": $scope.favorite,
       "order": [],
       "type": "object",
@@ -71,7 +71,7 @@ angularApp.controller('CreateElementController', function ($rootScope, $scope, $
         },
         "value": {
           "type": "string",
-          "id": $rootScope.generateGUID(),
+          //"id": $rootScope.generateGUID(),
           "title": "",
           "description": "",
           "input_type": fieldType,

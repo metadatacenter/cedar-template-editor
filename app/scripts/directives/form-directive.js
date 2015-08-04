@@ -46,7 +46,8 @@ angularApp.directive('formDirective', function ($rootScope, $document, $timeout)
       $scope.parseForm = function(iterator, parentObject, parentModel, parentKey) {
         angular.forEach(iterator, function(value, name) {
           if ($rootScope.ignoreKey(name)) {
-            if (value.hasOwnProperty('guid')) {
+            if (value.hasOwnProperty('_id')) {
+            //if (value.hasOwnProperty('guid')) {
               // Handle position and nesting within $scope.formFields
               parentObject[name] = {};
               // Push 'order' array through into parse object

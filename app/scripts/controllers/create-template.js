@@ -32,7 +32,7 @@ angularApp.controller('CreateTemplateController', function($rootScope, $scope, $
       "title": "",
       "description": "",
       "favorite": $scope.favorite,
-      "guid": $rootScope.generateGUID(),
+      //"guid": $rootScope.generateGUID(),
       "pages": [],
       "type": "object",
       "properties": {
@@ -83,7 +83,7 @@ angularApp.controller('CreateTemplateController', function($rootScope, $scope, $
         },
         "value": {
           "type": "string",
-          "id": $rootScope.generateGUID(),
+          //"id": $rootScope.generateGUID(),
           "title": "",
           "description": "",
           "input_type": fieldType,
