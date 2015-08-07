@@ -36,14 +36,7 @@ angularApp.controller('CreateTemplateController', function($rootScope, $scope, $
       "pages": [],
       "type": "object",
       "properties": {
-        "@context": {
-          "type": [
-            "object",
-            "string",
-            "array",
-            "null"
-          ]
-        },
+        "@context": {},
         "@id": {
           "type": "string",
           "format": "uri"
@@ -137,6 +130,8 @@ angularApp.controller('CreateTemplateController', function($rootScope, $scope, $
       var underscoreTitle = $rootScope.underscoreText(field.info.title);
       // Adding field to the element.properties object
       $scope.form.properties[underscoreTitle] = field;
+      // Adding context information
+      $scope.form.properties["@context"][underscoreTitle] = "blablabla";
       // Lastly, remove this field from the $scope.staging object
       delete $scope.staging[field.info.id];
     }

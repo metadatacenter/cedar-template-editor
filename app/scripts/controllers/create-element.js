@@ -66,6 +66,18 @@ angularApp.controller('CreateElementController', function ($rootScope, $scope, $
       "@id": "",
       "type": "object",
       "properties": {
+        "@context": {
+          "properties": {
+            "value": {
+              "enum": ["https://schema.org/value"]
+            },
+            "info": {
+              "enum": ["http://schema.org/additionalProperty"]
+            }
+          },
+          "required": ["value"],
+          "additionalProperties": false
+        },
         "@type": {
           "enum": []
         },
@@ -131,7 +143,7 @@ angularApp.controller('CreateElementController', function ($rootScope, $scope, $
       // Converting title for irregular character handling
       var underscoreTitle = $rootScope.underscoreText(field.properties.info.title);
       // Adding field to the element.properties object
-      $scope.element.properties[underscoreTitle] = field.properties;
+      $scope.element.properties[underscoreTitle] = field;
       // Lastly, remove this field from the $scope.staging object
       delete $scope.staging[field.properties.info.id];
     }
