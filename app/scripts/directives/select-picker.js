@@ -11,7 +11,7 @@ angularApp.directive('selectPicker', function ($timeout) {
 
       if ($scope.field && $scope.field.model) {
         // If returning to an already populated select list field, load selections
-        default_array = $scope.field.model.value;
+        default_array = $scope.field.model;
 
       } else if ($scope.field && $scope.field.default_option) {
         // If default select options have been set for an empty field

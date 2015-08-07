@@ -2,11 +2,10 @@
   <!--Loop through top level "page" parameter in form element and call element-directive or field-directive with contents -->
   <div ng-repeat="item in page" class="animate-fade">
     <span ng-if="formFields[item]">
-      <span ng-if="formFields[item].input_type">
-
+      <span ng-if="formFields[item].info.input_type">
         <field-directive field="formFields[item]" model="formFields[item].model" directory="render"></field-directive>
       </span>
-      <div class="element-group full" ng-if="!formFields[item].input_type">
+      <div class="element-group full" ng-if="!formFields[item].info.input_type">
         <element-directive element="formFields[item]" key="item" preview="false"></element-directive>
       </div>
     </span>

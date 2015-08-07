@@ -77,8 +77,8 @@
 
         <div id="form-item-config-section">
           <form name="{{form.title}}" id="{{form.guid}}">
-            <div ng-repeat="field in staging | orderObjectBy: 'properties.value.created_at'" class="animate-fade">
-              <field-directive field="field.properties.value" directory="create" delete="deleteField(field, staging)" add="addFieldToForm(field)" option="addOption(field)">
+            <div ng-repeat="field in staging | orderObjectBy: 'properties.created_at'" class="animate-fade">
+              <field-directive field="field.properties" directory="create" delete="deleteField(field, staging)" add="addFieldToForm(field)" option="addOption(field)">
               </field-directive>
             </div>
           </form>

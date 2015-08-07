@@ -8,7 +8,7 @@
 						data-max-options="1"
 						field="field"
 						title="Please select one of the options..." 
-						ng-model="model.value" 
+						ng-model="model"
 						defaults="field.default_option" 
 						select-picker>
 		  <option ng-repeat="(index, value) in field.options" value="{{field.options[index]['text']}}">{{field.options[index]['text']}}</option>
@@ -22,7 +22,7 @@
 						multiple 
 						field="field"
 						title="Please select one or more options..." 
-						ng-model="model.value" 
+						ng-model="model"
 						defaults="field.default_option" 
 						select-picker>
 		  <option ng-repeat="(index, value) in field.options" value="{{field.options[index]['text']}}">{{field.options[index]['text']}}</option>

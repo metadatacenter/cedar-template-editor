@@ -29,8 +29,8 @@ angularApp.directive('fieldDirective', function($http, $compile, $document) {
           'controlled-term'
         ];
 
-    if (__indexOf.call(supported_fields, field.input_type) >= 0) {
-        return templateUrl += field.input_type + '.html';
+    if (__indexOf.call(supported_fields, field.info.input_type) >= 0) {
+        return templateUrl += field.info.input_type + '.html';
     }
   };
 
@@ -38,13 +38,13 @@ angularApp.directive('fieldDirective', function($http, $compile, $document) {
     // When form submit event is fired, check field for simple validation
     $scope.$on('submitForm', function (event) {
       // If field is required and is empty, emit failed emptyRequiredField event
-      if ($scope.field.required && $scope.model == undefined) {
-        $scope.$emit('emptyRequiredField', $scope.field.title);
+      if ($scope.field.info.required && $scope.model == undefined) {
+        $scope.$emit('emptyRequiredField', $scope.field.info.title);
       }
     });
 
     // Checking each field to see if required, will trigger flag for use to see there is required fields
-    if ($scope.field.required) {
+    if ($scope.field.info.required) {
       $scope.$emit('formHasRequiredFields');
     }
     // GET template content from path

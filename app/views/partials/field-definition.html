@@ -1,18 +1,18 @@
 <div class="form-group floating-label-wrapper">
   <input 	type="text" 
   				class="form-control" 
-  				id="placeholder-{{field.id}}" 
+  				id="placeholder-{{field.info.id}}"
   				placeholder="Enter Field Title" 
   				aria-label="Enter Field Title" 
-  				ng-model="field.title"  
+  				ng-model="field.info.title"
   				with-floating-label>
 </div><!-- /.form-group -->
 <div class="form-group floating-label-wrapper">
   <input 	type="text" 
   				class="form-control" 
-  				id="help-text-{{field.id}}" 
+  				id="help-text-{{field.info.id}}"
   				placeholder="Enter Field Description (Help Text)" 
   				aria-label="Enter Field Description (Help Text)" 
-  				ng-model="field.description"
+  				ng-model="field.info.description"
   				with-floating-label>
 </div><!-- /.form-group -->

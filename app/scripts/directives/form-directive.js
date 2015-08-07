@@ -60,9 +60,9 @@ angularApp.directive('formDirective', function ($rootScope, $document, $timeout)
               $scope.parseForm(value.properties, parentObject[name], parentModel[name], name);
             } else {
               // Field level reached, assign to $scope.formFields object 
-              parentObject[name] = value.properties.value;
+              parentObject[name] = value;
               // Assign field instance model to $scope.model 
-              parentModel[name] = value.properties.value.model;
+              parentModel[name] = value.model;
               // Place field into $scope.formFieldsOrder
               $scope.pushIntoOrder(name, parentKey);
             }

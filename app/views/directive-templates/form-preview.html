@@ -2,10 +2,10 @@
   <!--Loop through "formFieldsOrder" in form and call either field or element directive with property -->
   <div ng-repeat="field in formFieldsOrder" class="animate-fade">
     <span ng-if="formFields[field]">
-      <span ng-if="formFields[field].input_type">
+      <span ng-if="formFields[field].info.input_type">
         <field-directive field="formFields[field]" model="formFields[field].model" directory="preview" delete="removeField(field)"></field-directive>
       </span>
-      <div class="element-group" ng-if="!formFields[field].input_type">
+      <div class="element-group" ng-if="!formFields[field].info.input_type">
         <element-directive element="formFields[field]" key="field" delete="removeField(field)" preview="true"></element-directive>
       </div>
     </span>

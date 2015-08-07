@@ -1,14 +1,14 @@
 <div class="form-group floating-label-wrapper">
   <input 	type="text" 
   				class="form-control" 
-  				ng-class="{'required': field.required}" 
+  				ng-class="{'required': field.info.required}"
   				id="textfield1"
-  				placeholder="{{field.title}}" 
-  				aria-label="{{field.description}}" 
-  				ng-model="model.value"
+  				placeholder="{{field.info.title}}"
+  				aria-label="{{field.info.description}}"
+  				ng-model="model"
   				with-floating-label>
   <div class="input-indicator-icons">
-    <i class="cedar-svg-help-circle" data-container="body" data-toggle="popover" data-placement="left" data-content="{{field.description}}"></i>
+    <i class="cedar-svg-help-circle" data-container="body" data-toggle="popover" data-placement="left" data-content="{{field.info.description}}"></i>
     <i class="cedar-svg-check-circle"></i>
     <i class="cedar-svg-warning"></i>
   </div><!-- /.input-indicator-icons -->

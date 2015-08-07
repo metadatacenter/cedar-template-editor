@@ -65,7 +65,7 @@ angularApp.directive('formPreview', function ($rootScope, $document, $timeout) {
               $scope.parseForm(value.properties, parentObject[name], name);
             } else {
               // Field level reached, assign to $scope.formFields object 
-              parentObject[name] = value.properties.value;
+              parentObject[name] = value;
               $scope.pushIntoOrder(name, parentKey);
             }
           }
@@ -91,7 +91,7 @@ angularApp.directive('formPreview', function ($rootScope, $document, $timeout) {
         // loop through $scope.formFieldsOrder and build pages array
         angular.forEach($scope.formFieldsOrder, function(field, index) {
           // If item added is of type Page Break, jump into next page array for storage of following fields
-          if ($scope.form.properties[field].properties.value && $scope.form.properties[field].properties.value.input_type == 'page-break') {
+          if ($scope.form.properties[field].info && $scope.form.properties[field].info.input_type == 'page-break') {
             dimension ++;
           }
           // Push field key into page array

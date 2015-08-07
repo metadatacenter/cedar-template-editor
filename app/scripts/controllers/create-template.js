@@ -81,14 +81,16 @@ angularApp.controller('CreateTemplateController', function($rootScope, $scope, $
         "@type": {
           "enum": []
         },
-        "value": {
-          "type": "string",
-          //"id": $rootScope.generateGUID(),
+        "info" : {
           "title": "",
+          "id": $rootScope.generateGUID(),
           "description": "",
           "input_type": fieldType,
           "required": false,
           "created_at": Date.now()
+        },
+        "value": {
+          "type": "string"
         }
       },
       "required": [
@@ -102,7 +104,7 @@ angularApp.controller('CreateTemplateController', function($rootScope, $scope, $
     var optionInputs = ["radio", "checkbox", "list"];
 
     if (optionInputs.indexOf(fieldType) > -1) {
-      field.properties.value.options = [
+      field.properties.options = [
         {
           "text": ""
         }
@@ -111,7 +113,7 @@ angularApp.controller('CreateTemplateController', function($rootScope, $scope, $
     // empty staging object (only one field should be configurable at a time)
     $scope.staging = {};
     // put field into fields staging object
-    $scope.staging[field.properties.value.id] = field;
+    $scope.staging[field.properties.info.id] = field;
   };
 
   // Function to add additional options for radio, checkbox, and list fieldTypes
@@ -121,21 +123,22 @@ angularApp.controller('CreateTemplateController', function($rootScope, $scope, $
       "text": ""
     };
 
-    field.properties.value.options.push(emptyOption);
+    field.properties.options.push(emptyOption);
   };
 
   // Add newly configured field to the the $scope.form.properties object
   $scope.addFieldToForm = function(field) {
+    field = field.properties;
     // Setting return value from $scope.checkFieldConditions to array which will display error messages if any
-    $scope.stagingErrorMessages = $scope.checkFieldConditions(field.properties.value);
+    $scope.stagingErrorMessages = $scope.checkFieldConditions(field);
 
     if ($scope.stagingErrorMessages.length == 0) {
       // Converting title for irregular character handling
-      var underscoreTitle = $rootScope.underscoreText(field.properties.value.title);
+      var underscoreTitle = $rootScope.underscoreText(field.info.title);
       // Adding field to the element.properties object
       $scope.form.properties[underscoreTitle] = field;
       // Lastly, remove this field from the $scope.staging object
-      delete $scope.staging[field.properties.value.id];
+      delete $scope.staging[field.info.id];
     }
   };
 
@@ -145,11 +148,11 @@ angularApp.controller('CreateTemplateController', function($rootScope, $scope, $
       extraConditionInputs = ['checkbox', 'radio', 'list'];
 
     // Field title is already required, if it's empty create error message
-    if (!field.title.length) {
+    if (!field.info.title.length) {
       unmetConditions.push('"Enter Field Title" input cannot be left empty.');
     }
     // If field is within multiple choice field types
-    if (extraConditionInputs.indexOf(field.input_type) !== -1) {
+    if (extraConditionInputs.indexOf(field.info.input_type) !== -1) {
       var optionMessage = '"Enter Option" input cannot be left empty.';
       angular.forEach(field.options, function(value, index) {
         // If any 'option' title text is left empty, create error message
@@ -159,7 +162,7 @@ angularApp.controller('CreateTemplateController', function($rootScope, $scope, $
       });
     }
     // If field type is 'radio' or 'pick from a list' there must be more than one option created
-    if ((field.input_type == 'radio' || field.input_type == 'list') && field.options && (field.options.length <= 1)) {
+    if ((field.info.input_type == 'radio' || field.info.input_type == 'list') && field.options && (field.options.length <= 1)) {
       unmetConditions.push('Multiple Choice fields must have at least two possible options');
     }
     // Return array of error messages
@@ -179,7 +182,7 @@ angularApp.controller('CreateTemplateController', function($rootScope, $scope, $
   // Delete field from $scope.staging object
   $scope.deleteField = function(field) {
     // Remove field instance from $scope.staging
-    delete $scope.staging[field.properties.value.id];
+    delete $scope.staging[field.properties.info.id];
     // Empty the Error Messages array if present
     if ($scope.stagingErrorMessages) {
       $scope.stagingErrorMessages = [];
