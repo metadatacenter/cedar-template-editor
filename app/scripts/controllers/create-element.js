@@ -7,7 +7,7 @@ angularApp.controller('CreateElementController', function ($rootScope, $scope, $
   // Create staging area to create/edit fields before they get added to the element
   $scope.staging = {};
   // Setting default false flag for $scope.favorite
-  $scope.favorite = false;
+  //$scope.favorite = false;
   // Empty $scope object used to store values that get converted to their json-ld counterparts on the $scope.element object
   $scope.volatile = {};
   // Seting form preview setting to false by default
@@ -35,7 +35,7 @@ angularApp.controller('CreateElementController', function ($rootScope, $scope, $
       "title": "",
       "description": "",
       //"guid": $rootScope.generateGUID(),
-      "favorite": $scope.favorite,
+      //"favorite": $scope.favorite,
       "order": [],
       "type": "object",
       "properties": {
@@ -226,10 +226,10 @@ angularApp.controller('CreateElementController', function ($rootScope, $scope, $
   };
 
   // Setting $scope variable to toggle for whether this template is a favorite
-  $scope.toggleFavorite = function() {
-    $scope.favorite = $scope.favorite === true ? false : true;
-    $scope.element.favorite = $scope.favorite;
-  };
+  //$scope.toggleFavorite = function() {
+  //  $scope.favorite = $scope.favorite === true ? false : true;
+  //  $scope.element.favorite = $scope.favorite;
+  //};
 
   // Stores the element into the database
   $scope.saveElement = function() {

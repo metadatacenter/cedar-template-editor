@@ -7,7 +7,7 @@ angularApp.controller('CreateTemplateController', function($rootScope, $scope, $
   // Create staging area to create/edit fields before they get added to $scope.form.properties
   $scope.staging = {};
   // Setting default false flag for $scope.favorite
-  $scope.favorite = false;
+  //$scope.favorite = false;
   // Seting form preview setting to false by default
   $scope.formPreview = false;
 
@@ -31,7 +31,7 @@ angularApp.controller('CreateTemplateController', function($rootScope, $scope, $
       "@id": "",
       "title": "",
       "description": "",
-      "favorite": $scope.favorite,
+      //"favorite": $scope.favorite,
       //"guid": $rootScope.generateGUID(),
       "pages": [],
       "type": "object",
@@ -197,10 +197,10 @@ angularApp.controller('CreateTemplateController', function($rootScope, $scope, $
   };
 
   // Setting $scope variable to toggle for whether this template is a favorite
-  $scope.toggleFavorite = function() {
-    $scope.favorite = $scope.favorite === true ? false : true;
-    $scope.form.favorite = $scope.favorite;
-  };
+  //$scope.toggleFavorite = function() {
+  //  $scope.favorite = $scope.favorite === true ? false : true;
+  //  $scope.form.favorite = $scope.favorite;
+  //};
 
   // Stores the template into the database
   $scope.saveTemplate = function() {
