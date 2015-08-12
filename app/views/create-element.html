@@ -5,14 +5,14 @@
         <div id="element-name-container">
           <i class="cedar-svg-element"></i>
           <div class="form-group floating-label-wrapper">
-            <input type="text" class="form-control" id="element-name" placeholder="Element Name" aria-label="Element Name" ng-model="element.title"  with-floating-label>
+            <input type="text" class="form-control" id="element-name" placeholder="Element Name" aria-label="Element Name" ng-model="element.properties.info.title" with-floating-label>
           </div>
         </div>
       </div> <!-- /.left-sidebar -->
       <div class="right-body col-sm-9">
         <div id="element-description-container">
           <div class="form-group floating-label-wrapper">
-            <input type="text" class="form-control" id="element-description" placeholder="Element Description" aria-label="Element Description" ng-model="element.description" with-floating-label>
+            <input type="text" class="form-control" id="element-description" placeholder="Element Description" aria-label="Element Description" ng-model="element.properties.info.description" with-floating-label>
           </div>
         </div>
       </div> <!-- /.right-body -->
@@ -66,7 +66,7 @@
           </button>
           <ul class="dropdown-menu element-menu" role="menu">
             <!--<li ng-repeat="element in elementList" class="item"><a ng-click="addExistingElement(element.guid)"><i class="cedar-svg-element"></i>{{element.title}}</a></li>-->
-            <li ng-repeat="element in elementList" class="item"><a ng-click="addExistingElement(element)"><i class="cedar-svg-element"></i>{{element.title}}</a></li>
+            <li ng-repeat="element in elementList" class="item"><a ng-click="addExistingElement(element)"><i class="cedar-svg-element"></i>{{element.properties.info.title}}</a></li>
           </ul>
         </div>
       </div> <!-- /.left-sidebar -->
@@ -85,7 +85,7 @@
           <div ng-if="stagingErrorMessages.length" class="alert alert-danger" role="alert">
             <p ng-repeat="message in stagingErrorMessages"><i class="fa fa-exclamation-triangle"></i>{{message}}</p>
           </div>
-          <form name="{{form.title}}" id="{{form.guid}}">
+          <form name="{{form.properties.info.title}}" id="{{form.guid}}">
             <div ng-repeat="field in staging" class="animate-fade">
               <field-directive field="field.properties" directory="create" delete="deleteField(field)" add="addFieldToElement(field)" option="addOption(field)">
               </field-directive>

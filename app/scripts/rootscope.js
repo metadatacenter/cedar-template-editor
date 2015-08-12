@@ -1,48 +1,114 @@
-angularApp.run(['$rootScope',  function($rootScope) {
-	
-    // Define global pageTitle variable for use
-    //$rootScope.pageTitle;
+angularApp.run(['$rootScope', function($rootScope) {
 
-    // Global utility functions
+  // Define global pageTitle variable for use
+  //$rootScope.pageTitle;
 
-    // Simple function to check if an object is empty
-    $rootScope.isEmpty = function(obj) {
-      return Object.keys(obj).length;
+  // Templates and Template Elements base paths
+  $rootScope.templatesBase = "http://metadatacenter.org/templates/";
+  $rootScope.elementsBase = "http://metadatacenter.org/elements/";
+
+  // Schemas (classes and properties) base path
+  // Classes use Pascal casing (e.g. StudyType)
+  // Properties use Camel casing (e.g. hasName)
+  $rootScope.schemasBase = "http://metadatacenter.org/schemas/";
+
+  // Global utility functions
+
+  // Simple function to check if an object is empty
+  $rootScope.isEmpty = function(obj) {
+    return Object.keys(obj).length;
+  };
+
+  // Tranform string to become object key
+  $rootScope.underscoreText = function(string) {
+    return string
+      .replace(/'|"|(|)/g, '')
+      .replace(/ +/g, "_")
+      .toLowerCase();
+  };
+
+  // Transform string to Pascal case
+  $rootScope.toCamelCase = function(string) {
+    return string.replace(/(?:^\w|[A-Z]|\b\w)/g, function(letter, index) {
+      return index == 0 ? letter.toLowerCase() : letter.toUpperCase();
+    }).replace(/\s+/g, '');
+  }
+
+  // Capitalize first letter
+  $rootScope.capitalizeFirst = function(string) {
+    string = string.toLowerCase();
+    return string.substring(0,1).toUpperCase() + string.substring(1);
+  }
+
+  // Returning true if the object key value in the properties object is of json-ld type '@' or if it corresponds to any of the reserved fields
+  $rootScope.ignoreKey = function(key) {
+    //var pattern = /^@/i,
+    var pattern = /(^@)|(^info$)/i,
+      result = pattern.test(key);
+
+    return result;
+  };
+
+  // Generating a RFC4122 version 4 compliant GUID
+  $rootScope.generateGUID = function() {
+    var d = Date.now();
+    var guid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+      var r = (d + Math.random() * 16) % 16 | 0;
+      d = Math.floor(d / 16);
+      return (c == 'x' ? r : (r & 0x3 | 0x8)).toString(16);
+    });
+    return guid;
+  };
+
+  // Sorting function that moves boolean values with true to the front of the sort
+  $rootScope.sortBoolean = function(array, bool) {
+    return array.sort(function(a, b) {
+      var x = a[bool],
+        y = b[bool];
+      return ((x == y) ? -1 : ((x === true) ? -1 : 1));
+    });
+  };
+
+  // Function that generates a basic field definition
+  $rootScope.generateField = function(fieldType) {
+    var field = {
+      "$schema": "http://json-schema.org/draft-04/schema#",
+      "@id": $rootScope.elementsBase + $rootScope.generateGUID(),
+      "type": "object",
+      "properties": {
+        "@context": {
+          "properties": {
+            "value": {
+              "enum": ["https://schema.org/value"]
+            },
+            "info": {
+              "enum": ["http://schema.org/additionalProperty"]
+            }
+          },
+          "required": ["value"],
+          "additionalProperties": false
+        },
+        "@type": {
+          "enum": [""]
+        },
+        "info": {
+          "title": "",
+          "id": $rootScope.generateGUID(),
+          "description": "",
+          "input_type": fieldType,
+          "required": false,
+          "created_at": Date.now()
+        },
+        "value": {
+          "type": "string",
+        }
+      },
+      "required": [
+        "value"
+      ],
+      "additionalProperties": false
     };
+    return field;
+  };
 
-    // Tranform string to become object key
-    $rootScope.underscoreText = function(string) {
-      return string
-        .replace(/'|"|(|)/g,'')
-        .replace(/ +/g,"_")
-        .toLowerCase();
-    };
-
-    // Returning false if the object key value in the properties object is of json-ld type '@'
-    $rootScope.ignoreKey = function(key) {
-      var pattern = /^@/i,
-          result = pattern.test(key);
-          
-      return !result;
-    };
-
-    // Generating a RFC4122 version 4 compliant GUID
-    $rootScope.generateGUID = function() {
-      var d = Date.now();
-      var guid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-          var r = (d + Math.random()*16)%16 | 0;
-          d = Math.floor(d/16);
-          return (c=='x' ? r : (r&0x3|0x8)).toString(16);
-      });
-      return guid;
-    };
-
-    // Sorting function that moves boolean values with true to the front of the sort
-    $rootScope.sortBoolean = function(array, bool) {
-      return array.sort(function(a, b) {
-        var x = a[bool],
-            y = b[bool];
-        return ((x == y) ? -1 : ((x === true) ? -1 : 1));
-      });
-    };
 }]);

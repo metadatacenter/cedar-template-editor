@@ -8,7 +8,7 @@ angularApp.controller('CreateTemplateController', function($rootScope, $scope, $
   $scope.staging = {};
   // Setting default false flag for $scope.favorite
   //$scope.favorite = false;
-  // Seting form preview setting to false by default
+  // Setting form preview setting to false by default
   $scope.formPreview = false;
 
   // Using form service to load list of existing elements to embed into new form
@@ -28,7 +28,7 @@ angularApp.controller('CreateTemplateController', function($rootScope, $scope, $
     // If we're not loading an existing form then let's create a new empty $scope.form property
     $scope.form = {
       "$schema": "http://json-schema.org/draft-04/schema#",
-      "@id": "",
+      "@id": $rootScope.templatesBase + $rootScope.generateGUID(),
       "title": "",
       "description": "",
       //"favorite": $scope.favorite,
@@ -42,56 +42,42 @@ angularApp.controller('CreateTemplateController', function($rootScope, $scope, $
           "format": "uri"
         },
         "@type": {
-          "enum": [
-            "http://metadatacenter.org/schemas/BasicStudyDesign"
-          ]
-        }
+          "enum": [""]
+        },
+        "info": {
+          "title": "",
+          "description": "",
+        },
       },
       "required": [
-        "@context",
-        "@id",
-        "@type"
+        "@id"
       ],
       "additionalProperties": false
     };
   }
 
   // Return true if form.properties object only contains default values
+  //$scope.isPropertiesEmpty = function() {
+  //  if ($scope.form) {
+  //    return Object.keys($scope.form.properties).length > 3 ? false : true;
+  //  }
+  //};
   $scope.isPropertiesEmpty = function() {
-    if ($scope.form) {
-      return Object.keys($scope.form.properties).length > 3 ? false : true;
+    if (!angular.isUndefined($scope.form)) {
+      var keys = Object.keys($scope.form.properties);
+      for (var i = 0; i < keys.length; i++) {
+        if ($rootScope.ignoreKey(keys[i]) == false) {
+          return false;
+        }
+      }
+      return true;
     }
   };
 
   // Add new field into $scope.staging object
   $scope.addFieldToStaging = function(fieldType) {
 
-    var field = {
-      "$schema": "http://json-schema.org/draft-04/schema#",
-      "@id": "",
-      "type": "object",
-      "properties": {
-        "@type": {
-          "enum": []
-        },
-        "info" : {
-          "title": "",
-          "id": $rootScope.generateGUID(),
-          "description": "",
-          "input_type": fieldType,
-          "required": false,
-          "created_at": Date.now()
-        },
-        "value": {
-          "type": "string"
-        }
-      },
-      "required": [
-        "@type",
-        "value"
-      ],
-      "additionalProperties": false
-    };
+    var field = $rootScope.generateField(fieldType);
 
     // If fieldtype can have multiple options, additional parameters on field object are necessary
     var optionInputs = ["radio", "checkbox", "list"];
@@ -107,6 +93,7 @@ angularApp.controller('CreateTemplateController', function($rootScope, $scope, $
     $scope.staging = {};
     // put field into fields staging object
     $scope.staging[field.properties.info.id] = field;
+
   };
 
   // Function to add additional options for radio, checkbox, and list fieldTypes
@@ -121,19 +108,18 @@ angularApp.controller('CreateTemplateController', function($rootScope, $scope, $
 
   // Add newly configured field to the the $scope.form.properties object
   $scope.addFieldToForm = function(field) {
-    field = field.properties;
     // Setting return value from $scope.checkFieldConditions to array which will display error messages if any
-    $scope.stagingErrorMessages = $scope.checkFieldConditions(field);
+    $scope.stagingErrorMessages = $scope.checkFieldConditions(field.properties);
 
     if ($scope.stagingErrorMessages.length == 0) {
       // Converting title for irregular character handling
-      var underscoreTitle = $rootScope.underscoreText(field.info.title);
+      var underscoreTitle = $rootScope.underscoreText(field.properties.info.title);
       // Adding field to the element.properties object
       $scope.form.properties[underscoreTitle] = field;
       // Adding context information
-      $scope.form.properties["@context"][underscoreTitle] = "blablabla";
+      $scope.form.properties["@context"][underscoreTitle] = $rootScope.schemasBase + $rootScope.toCamelCase(field.properties.info.title);
       // Lastly, remove this field from the $scope.staging object
-      delete $scope.staging[field.info.id];
+      delete $scope.staging[field.properties.info.id];
     }
   };
 
@@ -168,7 +154,7 @@ angularApp.controller('CreateTemplateController', function($rootScope, $scope, $
     // Fetch existing element json data
     //FormService.element(element).then(function(response) {
     // Convert response.data.title string to an acceptable object key string
-    var titleKey = $rootScope.underscoreText(element.title);
+    var titleKey = $rootScope.underscoreText(element.properties.info.title);
     // Embed existing element into $scope.form.properties object
     $scope.form.properties[titleKey] = element;
     //});
@@ -188,7 +174,7 @@ angularApp.controller('CreateTemplateController', function($rootScope, $scope, $
   $scope.reset = function() {
     // Loop through $scope.form.properties object and delete each field leaving default json-ld syntax in place
     angular.forEach($scope.form.properties, function(value, key) {
-      if ($rootScope.ignoreKey(key)) {
+      if (!$rootScope.ignoreKey(key)) {
         delete $scope.form.properties[key];
       }
     });
@@ -208,11 +194,11 @@ angularApp.controller('CreateTemplateController', function($rootScope, $scope, $
     $scope.templateErrorMessages = [];
     $scope.templateSuccessMessages = [];
     // If Template Name is blank, produce error message
-    if (!$scope.form.title.length) {
+    if (!$scope.form.properties.info.title.length) {
       $scope.templateErrorMessages.push('Template Name input cannot be left empty.');
     }
     // If Template Description is blank, produce error message
-    if (!$scope.form.description.length) {
+    if (!$scope.form.properties.info.description.length) {
       $scope.templateErrorMessages.push('Template Description input cannot be left empty.');
     }
     // If there are no Template level error messages
@@ -222,7 +208,7 @@ angularApp.controller('CreateTemplateController', function($rootScope, $scope, $
       // Save template
       if ($routeParams.id == undefined) {
         FormService.saveTemplate($scope.form).then(function(response) {
-          $scope.templateSuccessMessages.push('The template \"' + response.data.title + '\" has been created.');
+          $scope.templateSuccessMessages.push('The template \"' + response.data.properties.info.title + '\" has been created.');
         }).catch(function(err) {
           $scope.templateErrorMessages.push('Problem creating the template.');
           console.log(err);
@@ -233,7 +219,7 @@ angularApp.controller('CreateTemplateController', function($rootScope, $scope, $
         var id = $scope.form._id.$oid;
         delete $scope.form._id;
         FormService.updateTemplate(id, $scope.form).then(function(response) {
-          $scope.templateSuccessMessages.push('The template \"' + response.data.title + '\" has been updated.');
+          $scope.templateSuccessMessages.push('The template \"' + response.data.properties.info.title + '\" has been updated.');
         }).catch(function(err) {
           $scope.templateErrorMessages.push('Problem updating the template.');
           console.log(err);
@@ -249,6 +235,22 @@ angularApp.controller('CreateTemplateController', function($rootScope, $scope, $
     // Console.log full working form example on save
     console.log($scope.form);
     // Database service save() call could go here
+  });
+
+  // This function watches for changes in the properties.info.title field and autogenerates the schema title and description fields
+  $scope.$watch('form.properties.info.title', function(v){
+    if (!angular.isUndefined($scope.form)) {
+      var title = $scope.form.properties.info.title;
+      if (title.length > 0) {
+        $scope.form.title = $rootScope.capitalizeFirst($scope.form.properties.info.title) + ' template schema';
+        $scope.form.description = $rootScope.capitalizeFirst($scope.form.properties.info.title) + ' template schema autogenerated by the CEDAR Template Editor';
+      }
+      else {
+        $scope.form.title = "";
+        $scope.form.description = "";
+
+      }
+    }
   });
 
 });

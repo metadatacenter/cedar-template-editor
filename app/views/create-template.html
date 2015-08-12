@@ -6,16 +6,16 @@
           <i class="cedar-svg-metadata"></i>
           <form>
             <div class="form-group floating-label-wrapper">
-              <input type="text" class="form-control" id="template-name" placeholder="Template Name" aria-label="Template Name" ng-model="form.title"  with-floating-label>
+              <input type="text" class="form-control" id="template-name" placeholder="Template Name" aria-label="Template Name" ng-model="form.properties.info.title"  with-floating-label>
             </div>
           </form>
         </div>
       </div> <!-- /.left-sidebar -->
       <div class="right-body col-sm-9">
-        <div id="elemenet-description-container">
+        <div id="element-description-container">
           <form>
             <div class="form-group floating-label-wrapper">
-              <input type="text" class="form-control" id="template-description" placeholder="Template Description" aria-label="Template Description" ng-model="form.description"  with-floating-label>
+              <input type="text" class="form-control" id="template-description" placeholder="Template Description" aria-label="Template Description" ng-model="form.properties.info.description"  with-floating-label>
             </div>
           </form>
         </div>
@@ -30,14 +30,14 @@
       <div class="left-sidebar col-sm-3">
         <p class="add-item">Add Element</p>
         <ul class="element-menu" role="menu">
-          <li ng-repeat="element in elementList" class="item"><a ng-click="addExistingElement(element)"><i class="cedar-svg-element"></i>{{element.title}}</a></li>
+          <li ng-repeat="element in elementList" class="item"><a ng-click="addExistingElement(element)"><i class="cedar-svg-element"></i>{{element.properties.info.title}}</a></li>
         </ul>
 
         <div class="more-items" dropdown>
           <button type="button" class="btn btn-more-items dropdown-toggle" data-toggle="dropdown" data-target=".item-menu" aria-expanded="false" dropdown-toggle>More Elements <i class="fa fa-angle-down fa-2x"></i>
           </button>
           <ul class="dropdown-menu item-menu" role="menu">
-            <li class="item" ng-repeat="e in elements track by $index" ng-if="$index > 4"><a ng-click="addExistingElement(e)"><i class="cedar-svg-element"></i>{{e.title}}</a></li>
+            <li class="item" ng-repeat="e in elements track by $index" ng-if="$index > 4"><a ng-click="addExistingElement(e)"><i class="cedar-svg-element"></i>{{e.properties.info.title}}</a></li>
             <!--<li class="item"><a class="disabled" ng-click=""><i class="cedar-svg-element"></i>Element Name</a></li>-->
           </ul>
         </div>
@@ -76,7 +76,7 @@
         </div> <!-- /#form-preview-section -->
 
         <div id="form-item-config-section">
-          <form name="{{form.title}}" id="{{form.guid}}">
+          <form name="{{form.properties.info.title}}" id="{{form.guid}}">
             <div ng-repeat="field in staging | orderObjectBy: 'properties.created_at'" class="animate-fade">
               <field-directive field="field.properties" directory="create" delete="deleteField(field, staging)" add="addFieldToForm(field)" option="addOption(field)">
               </field-directive>

@@ -10,7 +10,7 @@ angularApp.controller('CreateElementController', function ($rootScope, $scope, $
   //$scope.favorite = false;
   // Empty $scope object used to store values that get converted to their json-ld counterparts on the $scope.element object
   $scope.volatile = {};
-  // Seting form preview setting to false by default
+  // Setting form preview setting to false by default
   $scope.formPreview = false;
 
   // Using form service to load list of existing elements to embed into new element
@@ -30,7 +30,7 @@ angularApp.controller('CreateElementController', function ($rootScope, $scope, $
     // If we're not loading an existing element then let's create a new empty $scope.element property
     $scope.element = {
       "$schema": "http://json-schema.org/draft-04/schema#",
-      "@id": "",
+      "@id": $rootScope.elementsBase + $rootScope.generateGUID(),
       "@type": "",
       "title": "",
       "description": "",
@@ -40,8 +40,12 @@ angularApp.controller('CreateElementController', function ($rootScope, $scope, $
       "type": "object",
       "properties": {
         "@type": {
-          "enum": []
-        }
+          "enum": [""]
+        },
+        "info": {
+          "title": "",
+          "description": "",
+        },
       },
       "required": [
         "@type"
@@ -51,60 +55,27 @@ angularApp.controller('CreateElementController', function ($rootScope, $scope, $
   }
 
   // Return true if element.properties object only contains default values
+  //$scope.isPropertiesEmpty = function() {
+  //  if ($scope.element) {
+  //    return Object.keys($scope.element.properties).length > 1 ? false : true;
+  //  }
+  //};
   $scope.isPropertiesEmpty = function() {
-    if ($scope.element) {
-      return  Object.keys($scope.element.properties).length > 1 ? false : true;
+    if (!angular.isUndefined($scope.element)) {
+      var keys = Object.keys($scope.element.properties);
+      for (var i = 0; i < keys.length; i++) {
+        if ($rootScope.ignoreKey(keys[i]) == false) {
+          return false;
+        }
+      }
+      return true;
     }
   };
-  $scope.isPropertiesEmpty();
 
   // Add new field into $scope.staging object
   $scope.addFieldToStaging = function(fieldType) {
 
-    var field = {
-      "$schema": "http://json-schema.org/draft-04/schema#",
-      "@id": "",
-      "type": "object",
-      "properties": {
-        "@context": {
-          "properties": {
-            "value": {
-              "enum": ["https://schema.org/value"]
-            },
-            "info": {
-              "enum": ["http://schema.org/additionalProperty"]
-            }
-          },
-          "required": ["value"],
-          "additionalProperties": false
-        },
-        "@type": {
-          "enum": []
-        },
-        "info": {
-          "title" : "",
-          "id": $rootScope.generateGUID(),
-          "description": "",
-          "input_type": fieldType,
-          "required": false,
-          "created_at": Date.now()
-        },
-        "value": {
-            "type": "string",
-        //  "id": $rootScope.generateGUID(),
-        //  //"title": "",
-        //  "description": "",
-        //  "input_type": fieldType,
-        //  "required": false,
-        //  "created_at": Date.now()
-        }
-      },
-      "required": [
-        "@type",
-        "value"
-      ],
-      "additionalProperties": false
-    };
+    var field = $rootScope.generateField(fieldType);
 
     // If fieldtype can have multiple options, additional parameters on field object are necessary
     var optionInputs = ["radio", "checkbox", "list"];
@@ -189,7 +160,7 @@ angularApp.controller('CreateElementController', function ($rootScope, $scope, $
     // Fetch existing element json data
     //FormService.element(element).then(function(response) {
       // Add existing element to the $scope.element.properties object with it's title converted to an object key
-      var titleKey = $rootScope.underscoreText(element.title);
+      var titleKey = $rootScope.underscoreText(element.properties.info.title);
       $scope.element.properties[titleKey] = element;
     //});
   };
@@ -217,7 +188,7 @@ angularApp.controller('CreateElementController', function ($rootScope, $scope, $
   $scope.reset = function() {
     // Loop through $scope.element.properties object and delete each field leaving default json-ld syntax in place
     angular.forEach($scope.element.properties, function(value, key) {
-      if ($rootScope.ignoreKey(key)) {
+      if (!$rootScope.ignoreKey(key)) {
         delete $scope.element.properties[key];
       }
     });
@@ -237,11 +208,11 @@ angularApp.controller('CreateElementController', function ($rootScope, $scope, $
     $scope.elementErrorMessages = [];
     $scope.elementSuccessMessages = [];
     // If Element Name is blank, produce error message
-    if (!$scope.element.title.length) {
+    if (!$scope.element.properties.info.title.length) {
       $scope.elementErrorMessages.push('Element Name input cannot be left empty.');
     }
     // If Element Description is blank, produce error message
-    if (!$scope.element.description.length) {
+    if (!$scope.element.properties.info.description.length) {
       $scope.elementErrorMessages.push('Element Description input cannot be left empty.');
     }
     // If there are no Element level error messages
@@ -252,9 +223,10 @@ angularApp.controller('CreateElementController', function ($rootScope, $scope, $
       console.log('saving element...');
       console.log($scope.element);
       // Save element
+      // Check if the element is already stored into the DB
       if ($routeParams.id == undefined) {
         FormService.saveElement($scope.element).then(function(response) {
-          $scope.elementSuccessMessages.push('The element \"' + response.data.title + '\" has been created.');
+          $scope.elementSuccessMessages.push('The element \"' + response.data.properties.info.title + '\" has been created.');
           // Reload element list
           FormService.elementList().then(function(response) {
             $scope.elementList = response;
@@ -281,6 +253,22 @@ angularApp.controller('CreateElementController', function ($rootScope, $scope, $
   // Build $scope.element.order array
   $scope.$on('finishOrderArray', function(event, orderArray) {
     $scope.element.order = orderArray;
-  })
+  });
+
+  // This function watches for changes in the properties.info.title field and autogenerates the schema title and description fields
+  $scope.$watch('element.properties.info.title', function(v){
+    if (!angular.isUndefined($scope.element)) {
+      var title = $scope.element.properties.info.title;
+      if (title.length > 0) {
+        $scope.element.title = $rootScope.capitalizeFirst(title) + ' element schema';
+        $scope.element.description = $rootScope.capitalizeFirst(title) + ' element schema autogenerated by the CEDAR Template Editor';
+      }
+      else {
+        $scope.element.title = "";
+        $scope.element.description = "";
+
+      }
+    }
+  });
 
 });
