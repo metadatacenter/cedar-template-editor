@@ -5,7 +5,7 @@ angularApp.run(['$rootScope', function($rootScope) {
 
   // Templates and Template Elements base paths
   $rootScope.templatesBase = "http://metadatacenter.org/templates/";
-  $rootScope.elementsBase = "http://metadatacenter.org/elements/";
+  $rootScope.elementsBase = "http://metadatacenter.org/template_elements/";
 
   // Schemas (classes and properties) base path
   // Classes use Pascal casing (e.g. StudyType)
