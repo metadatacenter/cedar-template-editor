@@ -37,7 +37,7 @@ angularApp.controller('DashboardListController', function ($rootScope, $scope, F
     // set Page Title variable when this is active
     $rootScope.pageTitle = 'Populated Templates';
     $scope.sectionTitle = 'Populated Templates';
-    $scope.createLink = '/templates/runtime';
+    $scope.createLink = '/instances/create';
     // Retrieve list of form submissions using FormService
     FormService.populatedTemplatesList().then(function(response) {
       // Return list of submissions from FormService
