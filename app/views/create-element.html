@@ -87,7 +87,7 @@
           </div>
           <form name="{{form.properties.info.title}}" id="{{form.guid}}">
             <div ng-repeat="field in staging" class="animate-fade">
-              <field-directive field="field.properties" directory="create" delete="deleteField(field)" add="addFieldToElement(field)" option="addOption(field)">
+              <field-directive field="field" directory="create" delete="deleteField(field)" add="addFieldToElement(field)" option="addOption(field)">
               </field-directive>
             </div>
           </form>

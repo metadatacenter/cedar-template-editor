@@ -19,12 +19,12 @@
 						<div class="back-panel">
 							<p class="description">{{template.properties.info.description}}</p>
 							<div class="edit-options">
-								<a ng-href="templates/edit/{{template._id.$oid}}">
+								<a ng-href="templates/edit/{{template['@id']}}">
 									<span class="edit">
 										<i class="cedar-svg-pencil"></i>
 									</span>
 								</a>
-								<a ng-click="removeTemplate(template._id.$oid)">
+								<a ng-click="removeTemplate(template['@id'])">
 									<span class="remove">
 										<i class="cedar-svg-remove"></i>
 									</span>
@@ -54,12 +54,12 @@
 						<div class="back-panel">
 							<p class="description">{{element.properties.info.description}}</p>
 							<div class="edit-options">
-								<a ng-href="elements/edit/{{element._id.$oid}}">
+								<a ng-href="elements/edit/{{element['@id']}}">
 									<span class="edit">
 										<i class="cedar-svg-pencil"></i>
 									</span>
 								</a>
-								<a ng-click="removeElement(element._id.$oid)">
+								<a ng-click="removeElement(element['@id'])">
 									<span class="remove">
 										<i class="cedar-svg-remove"></i>
 									</span>
@@ -75,7 +75,7 @@
 			<div class="col-sm-3">
 				<h2 class="section-title">POPULATED TEMPLATES</h2>
 				<!-- <p class="instructions">Choose a template to fill out.</p> -->
-				<a href="templates/runtime" class="btn btn-create-new">Fill Out Template</a>
+				<a href="instances/create" class="btn btn-create-new">Fill Out Template</a>
 			</div>
 			<div class="col-sm-9">
 				<div class="dash-header">
@@ -89,14 +89,14 @@
 							<i class="cedar-svg-progress"></i>
 						</div>
 						<div class="back-panel">
-							<p class="description">{{submission._id.$oid}}</p>
+							<p class="description">{{submission['@id']}}</p>
 							<div class="edit-options">
-								<a ng-href="templates/runtime/{{submission.template_id}}/{{submission._id.$oid}}">
+								<a ng-href="instances/edit/{{submission['@id']}}">
 									<span class="edit">
 										<i class="cedar-svg-pencil"></i>
 									</span>
 								</a>
-								<a ng-click="removePopulatedTemplate(submission._id.$oid)">
+								<a ng-click="removePopulatedTemplate(submission['@id'])">
 									<span class="remove">
 										<i class="cedar-svg-remove"></i>
 									</span>

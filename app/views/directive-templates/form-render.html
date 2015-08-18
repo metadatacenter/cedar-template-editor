@@ -1,9 +1,9 @@
-<form name="{{form.properties.info.title}}" id="{{form.guid}}" class="runtime" ng-class="{'validate': checkSubmission}" novalidate angular-validator>
+<form name="{{form.properties.info.title}}" id="{{form['@id']}}" class="runtime" ng-class="{'validate': checkSubmission}" novalidate angular-validator>
   <!--Loop through top level "page" parameter in form element and call element-directive or field-directive with contents -->
   <div ng-repeat="item in page" class="animate-fade">
     <span ng-if="formFields[item]">
       <span ng-if="formFields[item].properties.info.input_type">
-        <field-directive field="formFields[item].properties" model="formFields[item].model" directory="render"></field-directive>
+        <field-directive field="formFields[item]" model="formFields[item].properties.info.model.value" directory="render"></field-directive>
       </span>
       <div class="element-group full" ng-if="!formFields[item].properties.info.input_type">
         <element-directive element="formFields[item]" key="item" preview="false"></element-directive>

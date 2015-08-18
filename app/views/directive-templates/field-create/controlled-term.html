@@ -1,13 +1,13 @@
-<div id="controlled-term-{{field.id}}" class="input-type-container">
+<div id="controlled-term-{{field['@id']}}" class="input-type-container">
   <p class="type-label"><i class="cedar-svg-controll-term"></i>Controlled Term</p>
   <div class="form-group floating-label-wrapper">
-	  <input type="text" class="form-control" id="placeholder-{{field.id}}" placeholder="Enter Field Title" aria-label="Enter Field Title" ng-model="field.title"  with-floating-label>
+	  <input type="text" class="form-control" id="placeholder-{{field['@id']}}" placeholder="Enter Field Title" aria-label="Enter Field Title" ng-model="field.properties.info.title"  with-floating-label>
 	</div><!-- /.form-group -->
   <div class="form-group floating-label-wrapper">
-	  <input type="text" class="form-control" id="placeholder-{{field.id}}" placeholder="Value Source" aria-label="Value Source" ng-model="field.value_source"  with-floating-label>
+	  <input type="text" class="form-control" id="placeholder-{{field['@id']}}" placeholder="Value Source" aria-label="Value Source" ng-model="field.properties.info.value_source"  with-floating-label>
 	</div><!-- /.form-group -->
 	<div class="form-group floating-label-wrapper">
-	  <input type="text" class="form-control" id="help-text-{{field.id}}" placeholder="Controlled Term ID" aria-label="Controlled Term ID" ng-model="field.controlled_term_id"  with-floating-label>
+	  <input type="text" class="form-control" id="help-text-{{field['@id']}}" placeholder="Controlled Term ID" aria-label="Controlled Term ID" ng-model="field.properties.info.controlled_term_id"  with-floating-label>
 	</div><!-- /.form-group --> 
   <div class="configuration-options" ng-include="'views/partials/configuration-options.html'">
   </div><!-- /.configuration-options -->

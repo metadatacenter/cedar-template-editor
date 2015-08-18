@@ -1,14 +1,14 @@
 <div class="form-group floating-label-wrapper">
   <input  type="text" 
           class="form-control" 
-          ng-class="{'required': field.required}" 
+          ng-class="{'required': field.properties.info.required}"
           id="audiovisual" 
-          placeholder="{{field.title}}" 
-          aria-label="{{field.description}}" 
-          ng-model="model.value" 
+          placeholder="{{field.properties.info.title}}"
+          aria-label="{{field.properties.info.description}}"
+          ng-model="field.properties.info.model.value"
           with-floating-label>
   <div class="input-indicator-icons">
-    <i class="cedar-svg-help-circle" data-container="body" data-toggle="popover" data-placement="left" data-content="{{field.description}}"></i>
+    <i class="cedar-svg-help-circle" data-container="body" data-toggle="popover" data-placement="left" data-content="{{field.properties.info.description}}"></i>
     <i class="cedar-svg-check-circle"></i>
     <i class="cedar-svg-warning"></i>
   </div><!-- /.input-indicator-icons -->

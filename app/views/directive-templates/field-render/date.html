@@ -1,14 +1,14 @@
 <!-- {{field}} -->
-<p class="date-field-title">{{field.title}}</p>
-<div class="form-group date-group floating-label-wrapper" ng-if="field.date_type == 'single-date'">
+<p class="date-field-title">{{field.properties.info.title}}</p>
+<div class="form-group date-group floating-label-wrapper" ng-if="field.properties.info.date_type == 'single-date'">
   <span class="date-label">Select a date</span>
   <div class='input-group' date-time-picker>
     <input  type="text" 
             class="form-control" 
-            ng-class="{'required': field.required}" 
+            ng-class="{'required': field.properties.info.required}"
             placeholder="MM / DD / YYYY" 
             aria-label="Select a date" 
-            ng-model="field.model.value"
+            ng-model="field.properties.info.model.value"
             with-floating-label/>
     <span class="input-group-addon">
         <i class="fa fa-calendar fa-2x"></i>
@@ -16,15 +16,15 @@
   </div>
 </div><!-- /.form-group -->
 
-<div class="form-group date-group range floating-label-wrapper" ng-if="field.date_type == 'date-range'">
+<div class="form-group date-group range floating-label-wrapper" ng-if="field.properties.info.date_type == 'date-range'">
   <span class="date-label">Select a date range</span>
   <div class='input-group' date-time-picker>
     <input  type="text" 
             class="form-control" 
-            ng-class="{'required': field.required}" 
+            ng-class="{'required': field.properties.info.required}"
             placeholder="MM / DD / YYYY" 
             aria-label="Select a start date" 
-            ng-model="field.model.value.start" 
+            ng-model="field.properties.info.model.value.start"
             with-floating-label/>
     <span class="input-group-addon">
         <i class="fa fa-calendar fa-2x"></i>
@@ -33,10 +33,10 @@
   <div class='input-group' date-time-picker>
     <input  type="text" 
             class="form-control" 
-            ng-class="{'required': field.required}" 
+            ng-class="{'required': field.properties.info.required}"
             placeholder="MM / DD / YYYY" 
             aria-label="Select a end date" 
-            ng-model="field.model.value.end" 
+            ng-model="field.properties.info.model.value.end"
             with-floating-label/>
     <span class="input-group-addon">
         <i class="fa fa-calendar fa-2x"></i>

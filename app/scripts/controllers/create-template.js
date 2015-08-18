@@ -28,7 +28,7 @@ angularApp.controller('CreateTemplateController', function($rootScope, $scope, $
     // If we're not loading an existing form then let's create a new empty $scope.form property
     $scope.form = {
       "$schema": "http://json-schema.org/draft-04/schema#",
-      "@id": $rootScope.templatesBase + $rootScope.generateGUID(),
+      "@id": $rootScope.idBasePath + $rootScope.generateGUID(),
       "title": "",
       "description": "",
       //"favorite": $scope.favorite,
@@ -83,7 +83,7 @@ angularApp.controller('CreateTemplateController', function($rootScope, $scope, $
     var optionInputs = ["radio", "checkbox", "list"];
 
     if (optionInputs.indexOf(fieldType) > -1) {
-      field.properties.options = [
+      field.properties.info.options = [
         {
           "text": ""
         }
@@ -92,7 +92,7 @@ angularApp.controller('CreateTemplateController', function($rootScope, $scope, $
     // empty staging object (only one field should be configurable at a time)
     $scope.staging = {};
     // put field into fields staging object
-    $scope.staging[field.properties.info.id] = field;
+    $scope.staging[field['@id']] = field;
 
   };
 
@@ -103,7 +103,7 @@ angularApp.controller('CreateTemplateController', function($rootScope, $scope, $
       "text": ""
     };
 
-    field.properties.options.push(emptyOption);
+    field.properties.info.options.push(emptyOption);
   };
 
   // Add newly configured field to the the $scope.form.properties object
@@ -119,7 +119,7 @@ angularApp.controller('CreateTemplateController', function($rootScope, $scope, $
       // Adding context information
       $scope.form.properties["@context"][underscoreTitle] = $rootScope.schemasBase + $rootScope.toCamelCase(field.properties.info.title);
       // Lastly, remove this field from the $scope.staging object
-      delete $scope.staging[field.properties.info.id];
+      delete $scope.staging[field['@id']];
     }
   };
 
@@ -163,7 +163,7 @@ angularApp.controller('CreateTemplateController', function($rootScope, $scope, $
   // Delete field from $scope.staging object
   $scope.deleteField = function(field) {
     // Remove field instance from $scope.staging
-    delete $scope.staging[field.properties.info.id];
+    delete $scope.staging[field['@id']];
     // Empty the Error Messages array if present
     if ($scope.stagingErrorMessages) {
       $scope.stagingErrorMessages = [];
@@ -216,8 +216,8 @@ angularApp.controller('CreateTemplateController', function($rootScope, $scope, $
       }
       // Update template
       else {
-        var id = $scope.form._id.$oid;
-        delete $scope.form._id;
+        var id = $scope.form['@id'];
+        delete $scope.form['@id'];
         FormService.updateTemplate(id, $scope.form).then(function(response) {
           $scope.templateSuccessMessages.push('The template \"' + response.data.properties.info.title + '\" has been updated.');
         }).catch(function(err) {

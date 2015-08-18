@@ -17,7 +17,7 @@ angularApp.config(function ($routeProvider, $locationProvider) {
             templateUrl: 'views/create-element.html',
             controller: 'CreateElementController'
         })
-        .when('/elements/edit/:id', {
+        .when('/elements/edit/:id*', {
             templateUrl: 'views/create-element.html',
             controller: 'CreateElementController'
         })
@@ -25,18 +25,35 @@ angularApp.config(function ($routeProvider, $locationProvider) {
             templateUrl: 'views/create-template.html',
             controller: 'CreateTemplateController'
         })
-        .when('/templates/edit/:id', {
+        .when('/templates/edit/:id*', {
             templateUrl: 'views/create-template.html',
             controller: 'CreateTemplateController'
         })
-        .when('/templates/runtime', {
+        .when('/instances/create', {
             templateUrl: 'views/runtime.html',
             controller: 'RuntimeController'
         })
-        .when('/templates/runtime/:id/:submission_id?', {
+        .when('/instances/create/:template_id*?', {
             templateUrl: 'views/runtime.html',
             controller: 'RuntimeController'
         })
+        .when('/instances/edit/:id*', {
+            templateUrl: 'views/runtime.html',
+            controller: 'RuntimeController'
+        })
+        //.when('/templates/runtime', {
+        //    templateUrl: 'views/runtime.html',
+        //    controller: 'RuntimeController'
+        //})
+        //.when('/templates/runtime/:id/:submission_id?', {
+        //.when('/templates/runtime/:id*/submissions/:submission_id', {
+        //    templateUrl: 'views/runtime.html',
+        //    controller: 'RuntimeController'
+        //})
+        //.when('/templates/runtime/:id*', {
+        //  templateUrl: 'views/runtime.html',
+        //  controller: 'RuntimeController'
+        //})
         .otherwise({
             redirectTo: '/'
         });

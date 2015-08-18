@@ -6,7 +6,7 @@ angularApp.service('FormService', function FormService($http) {
     // ELEMENTS OPERATIONS
     element: function(id) {
       //return $http.get('/static-data/elements/'+id+'.json').then(function(response) {
-      return $http.get('http://localhost:9000/template_elements/'+id).then(function (response) {
+      return $http.get('http://localhost:9000/template_elements/' + encodeURIComponent(id)).then(function (response) {
         return response.data;
       }).catch(function(err) {
         console.log(err);
@@ -24,16 +24,16 @@ angularApp.service('FormService', function FormService($http) {
       });
     },
     updateElement: function(id, element) {
-      return $http.put('http://localhost:9000/template_elements/'+ id, angular.toJson(element));
+      return $http.put('http://localhost:9000/template_elements/' + encodeURIComponent(id), angular.toJson(element));
     },
     removeElement: function(id) {
-      return $http.delete('http://localhost:9000/template_elements/' + id);
+      return $http.delete('http://localhost:9000/template_elements/' + encodeURIComponent(id));
     },
     // TEMPLATES OPERATIONS
     form: function (id) {
       // $http returns a promise, which has a then function, which also returns a promise
       //return $http.get('/static-data/forms/'+id+'.json').then(function (response) {
-      return $http.get('http://localhost:9000/templates/'+id).then(function (response) {
+      return $http.get('http://localhost:9000/templates/' + encodeURIComponent(id)).then(function (response) {
         // The return value gets picked up by the then fn in the controller.
         return response.data;
       }).catch(function(err) {
@@ -52,14 +52,14 @@ angularApp.service('FormService', function FormService($http) {
       });
     },
     updateTemplate: function(id, template) {
-      return $http.put('http://localhost:9000/templates/'+ id, angular.toJson(template));
+      return $http.put('http://localhost:9000/templates/'+ encodeURIComponent(id), angular.toJson(template));
     },
     removeTemplate: function(id) {
-      return $http.delete('http://localhost:9000/templates/' + id);
+      return $http.delete('http://localhost:9000/templates/' + encodeURIComponent(id));
     },
     // POPULATED TEMPLATES OPERATIONS
     populatedTemplate: function (id) {
-      return $http.get('http://localhost:9000/template_instances/'+id).then(function (response) {
+      return $http.get('http://localhost:9000/template_instances/' + encodeURIComponent(id)).then(function (response) {
         return response.data;
       }).catch(function(err) {
         console.log(err);
@@ -77,10 +77,10 @@ angularApp.service('FormService', function FormService($http) {
       });
     },
     updatePopulatedTemplate: function(id, populatedTemplate) {
-      return $http.put('http://localhost:9000/template_instances/'+ id, angular.toJson(populatedTemplate));
+      return $http.put('http://localhost:9000/template_instances/'+ encodeURIComponent(id), angular.toJson(populatedTemplate));
     },
     removePopulatedTemplate: function(id) {
-      return $http.delete('http://localhost:9000/template_instances/' + id);
+      return $http.delete('http://localhost:9000/template_instances/' + encodeURIComponent(id));
     }
   };
 });

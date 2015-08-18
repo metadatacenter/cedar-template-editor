@@ -1,14 +1,14 @@
 <div class="toggle-options">
 	<div class="toggle-controlled-term">
-		<i class="cedar-svg-controll-term collapsed" data-toggle="collapse" data-target="#control-options-{{field.info.id}}"></i>
+		<i class="cedar-svg-controll-term collapsed" data-toggle="collapse" data-target="#control-options-{{field['@id']}}"></i>
 	</div>
 	<div class="checkbox checkbox-inline">
-    <input type="checkbox" id="required-{{field.info.id}}" ng-model="field.info.required">
-    <label for="required-{{field.info.id}}">Required</label>
+    <input type="checkbox" id="required-{{field['@id']}}" ng-model="field.properties.info.required">
+    <label for="required-{{field['@id']}}">Required</label>
   </div><!-- /.checkbox-inline -->
   <div class="checkbox checkbox-inline">
-    <input type="checkbox" id="advanced-{{field.info.id}}" value="option1" data-toggle="collapse" data-target="#advanced-options-{{field.info.id}}">
-    <label for="advanced-{{field.info.id}}">Advanced</label>
+    <input type="checkbox" id="advanced-{{field['@id']}}" value="option1" data-toggle="collapse" data-target="#advanced-options-{{field['@id']}}">
+    <label for="advanced-{{field['@id']}}">Advanced</label>
   </div><!-- /.checkbox-inline -->
   <div class="save-options">
   	<div class="add" ng-click="add()">
@@ -22,29 +22,29 @@
   	</div>
   </div><!-- /.save-options -->
 </div><!-- /.toggle-options -->
-<div id="advanced-options-{{field.info.id}}"class="advanced-options collapse">
+<div id="advanced-options-{{field['@id']}}"class="advanced-options collapse">
  	<div class="form-group validation-pattern floating-label-wrapper">
-	  <input type="text" class="form-control" placeholder="Expression" aria-label="Advanced - Enter Expression" ng-model="field.advanced.expression"  with-floating-label>
+	  <input type="text" class="form-control" placeholder="Expression" aria-label="Advanced - Enter Expression" ng-model="field.properties.info.advanced.expression"  with-floating-label>
 	</div><!-- /.form-group -->
 	<div class="form-group validation-pattern">
-		<select class="form-control" multiple data-max-options="1" title="Select validation" ng-model="field.advanced.condition" select-picker>
+		<select class="form-control" multiple data-max-options="1" title="Select validation" ng-model="field.properties.info.advanced.condition" select-picker>
 		  <option value="matches">Matches</option>
 		  <option value="greater-than">Greater Than</option>
 		  <option value="less-than">Less Than</option>
 		</select>
 	</div><!-- /.form-group -->
 	<div class="form-group validation-pattern floating-label-wrapper">
-	  <input type="text" class="form-control" placeholder="Pattern" aria-label="Advanced - Enter Pattern" ng-model="field.advanced.pattern"  with-floating-label>
+	  <input type="text" class="form-control" placeholder="Pattern" aria-label="Advanced - Enter Pattern" ng-model="field.properties.info.advanced.pattern"  with-floating-label>
 	</div><!-- /.form-group -->
 	<div class="form-group floating-label-wrapper">
-	  <input type="text" class="form-control" placeholder="Enter Error Message" aria-label="Advanced - Enter Error Message" ng-model="field.advanced.error_message"  with-floating-label>
+	  <input type="text" class="form-control" placeholder="Enter Error Message" aria-label="Advanced - Enter Error Message" ng-model="field.properties.info.advanced.error_message"  with-floating-label>
 	</div><!-- /.form-group -->
 </div><!-- /.advanced-options -->
-<div id="control-options-{{field.info.id}}" class="controlled-term-options collapse">
+<div id="control-options-{{field['@id']}}" class="controlled-term-options collapse">
  	<div class="form-group floating-label-wrapper">
-	  <input type="text" class="form-control" placeholder="Value Source" aria-label="Control Term Value Source" ng-model="field.control_term.value_source"  with-floating-label>
+	  <input type="text" class="form-control" placeholder="Value Source" aria-label="Control Term Value Source" ng-model="field.properties.info.control_term.value_source"  with-floating-label>
 	</div><!-- /.form-group -->
 	<div class="form-group floating-label-wrapper">
-	  <input type="text" class="form-control" placeholder="Controlled Term ID" aria-label="Control Term ID" ng-model="field.control_term.id"  with-floating-label>
+	  <input type="text" class="form-control" placeholder="Controlled Term ID" aria-label="Control Term ID" ng-model="field.properties.info.control_term.id"  with-floating-label>
 	</div><!-- /.form-group -->
 </div><!-- /.controll-term-options -->

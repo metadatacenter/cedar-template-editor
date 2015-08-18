@@ -32,4 +32,19 @@ angular.module('cedarFilters', [])
     return function(input) {
       return input.replace(/_/g,' ').toUpperCase();
     };
+  //})
+  //.filter('encodeURI', function() {
+  //  return function(input) {
+  //    return encodeURIComponent(input);
+  //  };
+  //})
+  //.filter('doubleEncodeURI', function() {
+  //  return function(input) {
+  //    return encodeURIComponent(encodeURIComponent(input));
+  //  };
+  //})
+  //.filter('decodeURI', function() {
+  //  return function(input) {
+  //    return decodeURIComponent(input);
+  //  };
   });

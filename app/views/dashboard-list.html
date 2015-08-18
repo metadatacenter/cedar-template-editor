@@ -25,12 +25,12 @@
 						<div class="back-panel">
 							<p class="description">{{item.properties.info.description}}</p>
 							<div class="edit-options">
-								<a ng-href="{{itemType}}/edit/{{item._id.$oid}}">
+								<a ng-href="{{itemType}}/edit/{{item['@id']}}">
 									<span class="edit">
 										<i class="cedar-svg-pencil"></i>
 									</span>
 								</a>
-								<a ng-click="remove(item._id.$oid)">
+								<a ng-click="remove(item['@id'])">
 									<span class="remove">
 										<i class="cedar-svg-remove"></i>
 									</span>
@@ -46,14 +46,14 @@
 							<i class="cedar-svg-progress"></i>
 						</div>
 						<div class="back-panel">
-							<p class="description">{{item._id.$oid}}</p>
+							<p class="description">{{item['@id']}}</p>
 							<div class="edit-options">
-								<a ng-href="templates/runtime/{{item.template_id}}/{{item._id.$oid}}">
+								<a ng-href="templates/runtime/{{item.template_id}}/{{item['@id']}}">
 									<span class="edit">
 										<i class="cedar-svg-pencil"></i>
 									</span>
 								</a>
-								<a ng-click="remove(item._id.$oid)">
+								<a ng-click="remove(item['@id'])">
 									<span class="remove">
 										<i class="cedar-svg-remove"></i>
 									</span>

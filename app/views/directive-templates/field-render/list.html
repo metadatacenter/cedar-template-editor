@@ -1,31 +1,31 @@
-<div ng-class="{'required': field.required}">
-	<p class="extra-label-context">{{field.title}}</p>
-	<div 	ng-if="field.selection_type == 'single'" 
+<div ng-class="{'required': field.properties.info.required}">
+	<p class="extra-label-context">{{field.properties.info.title}}</p>
+	<div 	ng-if="field.properties.info.selection_type == 'single'"
 				class="form-group validation-pattern" 
-				ng-class="{'required': field.required}">
+				ng-class="{'required': field.properties.info.required}">
 		<select	class="form-control" 
 						multiple
 						data-max-options="1"
 						field="field"
 						title="Please select one of the options..." 
-						ng-model="model"
-						defaults="field.default_option" 
+						ng-model="field.properties.info.model.value"
+						defaults="field.properties.info.default_option"
 						select-picker>
-		  <option ng-repeat="(index, value) in field.options" value="{{field.options[index]['text']}}">{{field.options[index]['text']}}</option>
+		  <option ng-repeat="(index, value) in field.properties.info.options" value="{{field.properties.info.options[index]['text']}}">{{field.properties.info.options[index]['text']}}</option>
 		</select>
 	</div><!-- /.form-group -->
 
-	<div 	ng-if="field.selection_type == 'multiple'" 
+	<div 	ng-if="field.properties.info.selection_type == 'multiple'"
 				class="form-group validation-pattern" 
-				ng-class="{'required': field.required}">
+				ng-class="{'required': field.properties.info.required}">
 		<select	class="form-control" 
 						multiple 
 						field="field"
 						title="Please select one or more options..." 
-						ng-model="model"
-						defaults="field.default_option" 
+						ng-model="field.properties.info.model.value"
+						defaults="field.properties.info.default_option"
 						select-picker>
-		  <option ng-repeat="(index, value) in field.options" value="{{field.options[index]['text']}}">{{field.options[index]['text']}}</option>
+		  <option ng-repeat="(index, value) in field.properties.info.options" value="{{field.properties.info.options[index]['text']}}">{{field.properties.info.options[index]['text']}}</option>
 		</select>
 	</div><!-- /.form-group -->
 </div>

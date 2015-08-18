@@ -30,7 +30,7 @@ angularApp.controller('CreateElementController', function ($rootScope, $scope, $
     // If we're not loading an existing element then let's create a new empty $scope.element property
     $scope.element = {
       "$schema": "http://json-schema.org/draft-04/schema#",
-      "@id": $rootScope.elementsBase + $rootScope.generateGUID(),
+      "@id": $rootScope.idBasePath + $rootScope.generateGUID(),
       "@type": "",
       "title": "",
       "description": "",
@@ -81,7 +81,7 @@ angularApp.controller('CreateElementController', function ($rootScope, $scope, $
     var optionInputs = ["radio", "checkbox", "list"];
 
     if (optionInputs.indexOf(fieldType) > -1) {
-      field.properties.options = [
+      field.properties.info.options = [
         {
           "text": ""
         }
@@ -91,7 +91,7 @@ angularApp.controller('CreateElementController', function ($rootScope, $scope, $
     // empty staging object (only one field should be configurable at a time)
     $scope.staging = {};
     // put field into fields staging object
-    $scope.staging[field.properties.info.id] = field;
+    $scope.staging[field['@id']] = field;
 
   };
 
@@ -102,7 +102,7 @@ angularApp.controller('CreateElementController', function ($rootScope, $scope, $
       "text": ""
     };
 
-    field.properties.options.push(emptyOption);
+    field.properties.info.options.push(emptyOption);
   };
 
   // Add newly configured field to the element object
@@ -116,7 +116,7 @@ angularApp.controller('CreateElementController', function ($rootScope, $scope, $
       // Adding field to the element.properties object
       $scope.element.properties[underscoreTitle] = field;
       // Lastly, remove this field from the $scope.staging object
-      delete $scope.staging[field.properties.info.id];
+      delete $scope.staging[field['@id']];
     }
   };
 
@@ -129,10 +129,11 @@ angularApp.controller('CreateElementController', function ($rootScope, $scope, $
     if (!field.info.title.length) {
       unmetConditions.push('"Enter Field Title" input cannot be left empty.'); 
     }
+
     // If field is within multiple choice field types
     if (extraConditionInputs.indexOf(field.info.input_type) !== -1 ) {
       var optionMessage = '"Enter Option" input cannot be left empty.';
-      angular.forEach(field.options, function(value, index) {
+      angular.forEach(field.info.options, function(value, index) {
         // If any 'option' title text is left empty, create error message
         if (!value.text.length && unmetConditions.indexOf(optionMessage) == -1) {
           unmetConditions.push(optionMessage);
@@ -140,7 +141,7 @@ angularApp.controller('CreateElementController', function ($rootScope, $scope, $
       });
     }
     // If field type is 'radio' or 'pick from a list' there must be more than one option created
-    if ((field.info.input_type == 'radio' || field.info.input_type == 'list') && field.options && (field.options.length <= 1)) {
+    if ((field.info.input_type == 'radio' || field.info.input_type == 'list') && field.info.options && (field.info.options.length <= 1)) {
       unmetConditions.push('Multiple Choice fields must have at least two possible options');
     }
     // Return array of error messages
@@ -168,7 +169,7 @@ angularApp.controller('CreateElementController', function ($rootScope, $scope, $
   // Delete field from $scope.staging object
   $scope.deleteField = function(field) {
     // Remove field instance from $scope.staging
-    delete $scope.staging[field.info.id];
+    delete $scope.staging[field['@id']];
     // Empty the Error Messages array if present
     if ($scope.stagingErrorMessages) {
       $scope.stagingErrorMessages = [];
@@ -238,8 +239,8 @@ angularApp.controller('CreateElementController', function ($rootScope, $scope, $
       }
       // Update element
       else {
-        var id = $scope.element._id.$oid;
-        delete $scope.element._id;
+        var id = $scope.element['@id'];
+        delete $scope.element['@id'];
         FormService.updateElement(id, $scope.element).then(function(response) {
           $scope.elementSuccessMessages.push('The element \"' + response.data.title + '\" has been updated.');
         }).catch(function(err) {

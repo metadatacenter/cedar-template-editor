@@ -22,32 +22,37 @@ angularApp.controller('RuntimeController', function ($rootScope, $scope, FormSer
   $scope.pageIndex = 0,
   $scope.pagesArray = [];
 
-  // Get/read form with given id from $routeParams
-  $scope.getForm = function() {
-		FormService.form($routeParams.id).then(function(form) {
-			// Assing returned form object from FormService to $scope.form
+	// Get/read form with given id from $routeParams
+	$scope.getForm = function() {
+		FormService.form($routeParams.template_id).then(function(form) {
+			// Assign returned form object from FormService to $scope.form
 			$scope.form = form;
+			// The template @id will be stored in a field template_id
+			$scope.form.template_id = $scope.form['@id'];
+			delete $scope.form['@id'];
 			// $scope.initializePagination kicks off paging with form.pages array
 			$scope.initializePagination(form.pages);
 		});
 	};
 
 	// Get/read submission with given submission_id from $routeParams
-  $scope.getSubmission = function() {
-		FormService.populatedTemplate($routeParams.submission_id).then(function(form) {
-			// Assing returned form object from FormService to $scope.form
+	$scope.getSubmission = function() {
+		FormService.populatedTemplate($routeParams.id).then(function(form) {
+			// Assign returned form object from FormService to $scope.form
 			$scope.form = form;
 			// $scope.initializePagination kicks off paging with form.pages array
 			$scope.initializePagination(form.pages);
 		});
 	};
 
-	if ($routeParams.id && $routeParams.submission_id) {
-		// Load the form with existing submission information via $routeParams.submission_id url parameter
-		$scope.getSubmission();
-	} else if ($routeParams.id && !$routeParams.submission_id) {
-		// Loading empty form if given an ID in the $routeParams.id url path
+	// Create new instance
+	if (!angular.isUndefined($routeParams.template_id)) {
 		$scope.getForm();
+	}
+	// Edit existing instance
+	if (!angular.isUndefined($routeParams.id)) {
+		// Loading empty form if given an ID in the $routeParams.id url path
+		$scope.getSubmission();
 	}
 
 	// Inject pages array from FormService into $scope variable
@@ -81,12 +86,9 @@ angularApp.controller('RuntimeController', function ($rootScope, $scope, FormSer
 		$scope.runtimeSuccessMessages = [];
 		// The child will be in charge of assigning a value to $scope.model (see form-directive.js)
 		$scope.submitForm();
-		// Save populated template
-		if ($routeParams.submission_id == undefined) {
-			// TODO: The following lines store the template filled out with data. We should save the data ($scope.model) separated from the template
-			// Create a new property (template_id) to store the id of the template. The _id property will store the populated template id
-			$scope.form.template_id = $scope.form._id;
-			delete $scope.form._id;
+		// Save instance
+		if ($scope.form['@id'] == undefined) {
+			$scope.form['@id'] = $rootScope.idBasePath + $rootScope.generateGUID(),
 			FormService.savePopulatedTemplate($scope.form).then(function(response) {
 				$scope.runtimeSuccessMessages.push('The populated template has been saved.');
 			}).catch(function(err) {
@@ -94,10 +96,9 @@ angularApp.controller('RuntimeController', function ($rootScope, $scope, FormSer
 				console.log(err);
 			});
 		}
-		// Update populated template
+		// Update instance
 		else {
-			var id = $scope.form._id.$oid;
-			delete $scope.form._id;
+			var id = $scope.form['@id'];
 			FormService.updatePopulatedTemplate(id, $scope.form).then(function(response) {
 				$scope.runtimeSuccessMessages.push('The populated template has been updated.');
 			}).catch(function(err) {

@@ -1,18 +1,18 @@
 <div class="form-group floating-label-wrapper">
   <input 	type="text" 
   				class="form-control" 
-  				id="placeholder-{{field.info.id}}"
+  				id="placeholder-{{field['@id']}}"
   				placeholder="Enter Field Title" 
   				aria-label="Enter Field Title" 
-  				ng-model="field.info.title"
+  				ng-model="field.properties.info.title"
   				with-floating-label>
 </div><!-- /.form-group -->
 <div class="form-group floating-label-wrapper">
   <input 	type="text" 
   				class="form-control" 
-  				id="help-text-{{field.info.id}}"
+  				id="help-text-{{field['@id']}}"
   				placeholder="Enter Field Description (Help Text)" 
   				aria-label="Enter Field Description (Help Text)" 
-  				ng-model="field.info.description"
+  				ng-model="field.properties.info.description"
   				with-floating-label>
 </div><!-- /.form-group -->

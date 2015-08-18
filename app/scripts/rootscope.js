@@ -3,14 +3,13 @@ angularApp.run(['$rootScope', function($rootScope) {
   // Define global pageTitle variable for use
   //$rootScope.pageTitle;
 
-  // Templates and Template Elements base paths
-  $rootScope.templatesBase = "http://metadatacenter.org/templates/";
-  $rootScope.elementsBase = "http://metadatacenter.org/template_elements/";
+  // Templates, Template Elements and Instances base paths
+  $rootScope.idBasePath = "https://repo.metadatacenter.org/";
 
   // Schemas (classes and properties) base path
   // Classes use Pascal casing (e.g. StudyType)
   // Properties use Camel casing (e.g. hasName)
-  $rootScope.schemasBase = "http://metadatacenter.org/schemas/";
+  $rootScope.schemasBase = "https://metadatacenter.org/schemas/";
 
   // Global utility functions
 
@@ -73,7 +72,7 @@ angularApp.run(['$rootScope', function($rootScope) {
   $rootScope.generateField = function(fieldType) {
     var field = {
       "$schema": "http://json-schema.org/draft-04/schema#",
-      "@id": $rootScope.elementsBase + $rootScope.generateGUID(),
+      "@id": $rootScope.idBasePath + $rootScope.generateGUID(),
       "type": "object",
       "properties": {
         "@context": {
@@ -93,7 +92,7 @@ angularApp.run(['$rootScope', function($rootScope) {
         },
         "info": {
           "title": "",
-          "id": $rootScope.generateGUID(),
+          //"id": $rootScope.generateGUID(),
           "description": "",
           "input_type": fieldType,
           "required": false,

@@ -1,17 +1,17 @@
-<div id="date-{{field.id}}" class="input-type-container">
+<div id="date-{{field['@id']}}" class="input-type-container">
   <p class="type-label"><i class="cedar-svg-date"></i>Date</p>
   
-  <div class="type-toggle date" ng-init="field.date_type = 'single-date'">
-    <div class="single-date d-option" ng-click="field.date_type = 'single-date'" ng-class="{active: field.date_type == 'single-date'}">
+  <div class="type-toggle date" ng-init="field.properties.info.date_type = 'single-date'">
+    <div class="single-date d-option" ng-click="field.properties.info.date_type = 'single-date'" ng-class="{active: field.properties.info.date_type == 'single-date'}">
       <span>Date</span>
     </div>
-    <div class="date-range d-option" ng-click="field.date_type = 'date-range'" ng-class="{active: field.date_type == 'date-range'}">
+    <div class="date-range d-option" ng-click="field.properties.info.date_type = 'date-range'" ng-class="{active: field.properties.info.date_type == 'date-range'}">
       <span>Date Range</span>
     </div>
   </div> <!-- /.date-type-toggle -->
 
   <div class="form-group floating-label-wrapper">
-    <input type="text" class="form-control" id="placeholder-{{field.id}}" placeholder="Enter Field Title" aria-label="Enter Field Title" ng-model="field.title"  with-floating-label>
+    <input type="text" class="form-control" id="placeholder-{{field['@id']}}" placeholder="Enter Field Title" aria-label="Enter Field Title" ng-model="field.properties.info.title"  with-floating-label>
   </div><!-- /.form-group -->
 
   <div class="configuration-options" ng-include="'views/partials/configuration-options.html'">
