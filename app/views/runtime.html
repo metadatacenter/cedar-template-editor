@@ -13,25 +13,26 @@
   <div class="container">
     <div class="row">
       <div class="left-sidebar col-sm-3">
-        <p class="add-item">Templates</p>
-        <ul class="element-menu" role="menu">
-          <!--<li ng-repeat="form in formList" class="item"><a ng-class="{active: $location.path() == '/templates/runtime/{{form.guid}}'}" ng-href="/templates/runtime/{{form.guid}}"><i class="cedar-svg-metadata"></i>{{form.title}}</a></li>-->
-          <li ng-repeat="form in formList" class="item"><a ng-class="{active: $location.path() == '/instances/create/' + form['@id']}" ng-href="/instances/create/{{form['@id']}}"><i class="cedar-svg-metadata"></i>{{form.properties.info.title}}</a></li>
-        </ul>
-
-        <div class="more-items hidden-xs">
-          <button type="button" class="btn btn-more-items dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-            More Templates <i class="fa fa-angle-down fa-2x"></i>
-          </button>
-          <ul class="dropdown-menu element-menu" role="menu">
-            <li class="item"><a class="disabled"><i class="cedar-svg-metadata"></i>Sample Template #6</a></li>
-            <li class="item"><a class="disabled"><i class="cedar-svg-metadata"></i>Sample Template #7</a></li>
-            <li class="item"><a class="disabled"><i class="cedar-svg-metadata"></i>Sample Template #8</a></li>
-            <li class="item"><a class="disabled"><i class="cedar-svg-metadata"></i>Sample Template #9</a></li>
-            <li class="item"><a class="disabled"><i class="cedar-svg-metadata"></i>Sample Template #10 that also has a really long title</a></li>
+        <div class="sidebar-inner" sticky-directive>
+          <p class="add-item">Templates</p>
+          <ul class="element-menu" role="menu">
+            <!--<li ng-repeat="form in formList" class="item"><a ng-class="{active: $location.path() == '/templates/runtime/{{form.guid}}'}" ng-href="/templates/runtime/{{form.guid}}"><i class="cedar-svg-metadata"></i>{{form.title}}</a></li>-->
+            <li ng-repeat="form in formList" class="item"><a ng-class="{active: $location.path() == '/instances/create/' + form['@id']}" ng-href="/instances/create/{{form['@id']}}"><i class="cedar-svg-metadata"></i>{{form.properties.info.title}}</a></li>
           </ul>
-        </div>
 
+          <div class="more-items hidden-xs">
+            <button type="button" class="btn btn-more-items dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+              More Templates <i class="fa fa-angle-down fa-2x"></i>
+            </button>
+            <ul class="dropdown-menu element-menu" role="menu">
+              <li class="item"><a class="disabled"><i class="cedar-svg-metadata"></i>Sample Template #6</a></li>
+              <li class="item"><a class="disabled"><i class="cedar-svg-metadata"></i>Sample Template #7</a></li>
+              <li class="item"><a class="disabled"><i class="cedar-svg-metadata"></i>Sample Template #8</a></li>
+              <li class="item"><a class="disabled"><i class="cedar-svg-metadata"></i>Sample Template #9</a></li>
+              <li class="item"><a class="disabled"><i class="cedar-svg-metadata"></i>Sample Template #10 that also has a really long title</a></li>
+            </ul>
+          </div>
+        </div> <!-- /.sticky-list -->
       </div> <!-- /.left-sidebar -->
       <div class="right-body col-sm-9">
         <form-directive form="form" page="currentPage"></form-directive>
