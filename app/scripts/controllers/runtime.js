@@ -17,6 +17,7 @@ angularApp.controller('RuntimeController', function ($rootScope, $scope, FormSer
 	// Create empty currentPage array
 	// Default to page 1 on load (array index 0)
 	// Create empty pages Array
+	// Create empty instance object
   $scope.form = {},
   $scope.currentPage = [],
   $scope.pageIndex = 0,
@@ -28,9 +29,7 @@ angularApp.controller('RuntimeController', function ($rootScope, $scope, FormSer
 		FormService.form($routeParams.template_id).then(function(form) {
 			// Assign returned form object from FormService to $scope.form
 			$scope.form = form;
-			// The template @id will be stored in a field template_id
-			$scope.instance.template_id = $scope.form['@id'];
-			delete $scope.form['@id'];
+			//delete $scope.form['@id'];
 			// $scope.initializePagination kicks off paging with form.pages array
 			$scope.initializePagination(form.pages);
 		});
@@ -39,16 +38,14 @@ angularApp.controller('RuntimeController', function ($rootScope, $scope, FormSer
 	// Get/read submission with given submission_id from $routeParams
 	$scope.getSubmission = function() {
 		FormService.populatedTemplate($routeParams.id).then(function(response) {
-			// Model data already exists, assign available data (mainly template_id and @id)
-			$scope.instance = response;
+			// $broadcast existing model data down to form-directive.js child $scope
+			$scope.$broadcast('loadExistingModel', response)
 			// Get and load the template document this instance will populate from (will be blank form template)
 			FormService.form(response.template_id).then(function(form) {
 				// Assign returned form object from FormService to $scope.form
 				$scope.form = form;
 				// $scope.initializePagination kicks off paging with form.pages array
 				$scope.initializePagination(form.pages);
-				// $broadcast existing model data down to form-directive.js
-				$scope.$broadcast('loadExistingModel', $scope.instance.model);
 			});
 		});
 	};
@@ -92,15 +89,15 @@ angularApp.controller('RuntimeController', function ($rootScope, $scope, FormSer
 	$scope.savePopulatedTemplate = function() {
 		$scope.runtimeErrorMessages = [];
 		$scope.runtimeSuccessMessages = [];
-		// The child will be in charge of assigning a value to $scope.model (see form-directive.js)
+		// The child will be in charge of assigning a value (or updated values) to $scope.instance (in form-directive.js)
 		$scope.submitForm();
-		// Assign $scope.model object that's been passed from form-directive.js to $scope.instance.model
-		$scope.instance.model = $scope.model;
 
-		// Save instance
+		// Create instance
 		if ($scope.instance['@id'] == undefined) {
+			// '@id' and 'template_id' haven't been populated yet, create now
 			$scope.instance['@id'] = $rootScope.idBasePath + $rootScope.generateGUID();
-
+			$scope.instance['template_id'] = $routeParams.template_id;
+			// Make create instance call
 			FormService.savePopulatedTemplate($scope.instance).then(function(response) {
 				$scope.runtimeSuccessMessages.push('The populated template has been saved.');
 			}).catch(function(err) {

@@ -54,7 +54,7 @@ angularApp.directive('formPreview', function ($rootScope, $document, $timeout) {
       $scope.parseForm = function(iterator, parentObject, parentKey) {
         angular.forEach(iterator, function(value, name) {
           if (!$rootScope.ignoreKey(name)) {
-            if (value.hasOwnProperty('_id')) {
+            if (value.hasOwnProperty('order')) {
             //if (value.hasOwnProperty('guid')) {
               // Acknowledge position and nesting
               parentObject[name] = {};
