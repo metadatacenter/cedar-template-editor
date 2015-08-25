@@ -10,9 +10,16 @@ angularApp.directive('formDirective', function ($rootScope, $document, $timeout)
     },
     controller: function($scope) {
       // Initializing the empty model to submit data to
-      $scope.model = {
-        "@context": {}
-      };
+      // $scope.model = {
+      //   "@context": {}
+      // };
+      $scope.model = $scope.model || {"@context": {}};
+      console.log($scope.model);
+
+      $scope.$on('loadExistingModel', function(event, existingModel) {
+        console.log(existingModel);
+        $scope.model = existingModel;
+      });
 
       // $scope.formFields object to loop through to call field-directive
       $scope.formFields = {};
@@ -46,6 +53,7 @@ angularApp.directive('formDirective', function ($rootScope, $document, $timeout)
       $scope.parseForm = function(iterator, parentObject, parentModel, parentKey) {
         angular.forEach(iterator, function(value, name) {
           if (!$rootScope.ignoreKey(name)) {
+            console.log(value);
             if (value.hasOwnProperty('_id')) {
             //if (value.hasOwnProperty('guid')) {
               // Handle position and nesting within $scope.formFields
@@ -61,8 +69,12 @@ angularApp.directive('formDirective', function ($rootScope, $document, $timeout)
             } else {
               // Field level reached, assign to $scope.formFields object 
               parentObject[name] = value;
-              // Assign field instance model to $scope.model 
-              parentModel[name] = value.model;
+              // Assign field instance model to $scope.model
+              if (!parentModel[name]) {
+                parentModel[name] = value.model;
+              }
+              console.log(parentModel);
+              //parentModel[name] = value.model;
               // Place field into $scope.formFieldsOrder
               $scope.pushIntoOrder(name, parentKey);
             }
@@ -86,8 +98,7 @@ angularApp.directive('formDirective', function ($rootScope, $document, $timeout)
 
         // Make the model (populated template) available to the parent
         $scope.$parent.model = $scope.model;
-
-        console.log($scope.model);
+        //console.log($scope.model);
         $scope.checkSubmission = true;
 
       });

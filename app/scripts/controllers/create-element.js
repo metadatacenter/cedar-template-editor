@@ -227,6 +227,7 @@ angularApp.controller('CreateElementController', function ($rootScope, $scope, $
       // Check if the element is already stored into the DB
       if ($routeParams.id == undefined) {
         FormService.saveElement($scope.element).then(function(response) {
+          console.log(response);
           $scope.elementSuccessMessages.push('The element \"' + response.data.properties.info.title + '\" has been created.');
           // Reload element list
           FormService.elementList().then(function(response) {
