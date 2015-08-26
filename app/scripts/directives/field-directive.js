@@ -35,6 +35,9 @@ angularApp.directive('fieldDirective', function($http, $compile, $document) {
   };
 
   var linker = function($scope, $element, attrs) {
+    // Assigning $scope.model to object by default to help child scopes assign values to it
+    $scope.model = $scope.model || {};
+
     // When form submit event is fired, check field for simple validation
     $scope.$on('submitForm', function (event) {
       // If field is required and is empty, emit failed emptyRequiredField event
@@ -49,7 +52,6 @@ angularApp.directive('fieldDirective', function($http, $compile, $document) {
     }
     // GET template content from path
     var templateUrl = getTemplateUrl($scope.field, $scope.directory);
-    
     $http.get(templateUrl).success(function(data) {
       $element.html(data);
       $compile($element.contents())($scope);
