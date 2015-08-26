@@ -12,7 +12,8 @@ var gulp 								= require('gulp'),
 		connect 						= require('gulp-connect'),
 		htmlreplace 				= require('gulp-html-replace'),
 		ngAnnotate 					= require('gulp-ng-annotate'),
-		historyApiFallback 	= require('connect-history-api-fallback');
+		historyApiFallback 	= require('connect-history-api-fallback'),
+		Proxy = require('gulp-connect-proxy');
 
 // Creating error handling exception using gulp-util
 var onError = function (err) {  
@@ -63,7 +64,10 @@ gulp.task('server', function() {
     port: 4200,
     livereload: true,
     middleware: function(connect, opt) {
-      return [ historyApiFallback ];
+    	//console.log(opt);
+    	opt.route = '/proxy';
+      var proxy = new Proxy(opt);
+      return [proxy, historyApiFallback];
     }
   });
 });
