@@ -6,17 +6,10 @@ angularApp.directive('formDirective', function ($rootScope, $document, $timeout)
     restrict: 'E',
     scope: {
       page:'=',
-      form:'='
+      form:'=',
+      model: '='
     },
     controller: function($scope) {
-      // Initializing the empty model to submit data to
-      $scope.model = $scope.model || {"@context": {}, "@type": {}};
-      // If this is an 'update' operation, load existing $scope.model;
-      $scope.$on('loadExistingModel', function(event, existingModel) {
-        $scope.model = existingModel;
-        console.log($scope.model);
-      });
-
       // $scope.formFields object to loop through to call field-directive
       $scope.formFields = {};
       // $scope.formFieldsOrder array to loop over for proper ordering of items/elements
@@ -47,7 +40,6 @@ angularApp.directive('formDirective', function ($rootScope, $document, $timeout)
       };
 
       $scope.parseForm = function(iterator, parentObject, parentModel, parentKey) {
-        //console.log(iterator);
         angular.forEach(iterator, function(value, name) {
           if (!$rootScope.ignoreKey(name)) {
             // We can tell we've reached an element level by its 'order' property
@@ -60,7 +52,6 @@ angularApp.directive('formDirective', function ($rootScope, $document, $timeout)
               if (parentModel[name] == undefined) {
                 parentModel[name] = {};
               }
-              console.log(parentModel[name]);
               // Place top level element into $scope.formFieldsOrder
               $scope.pushIntoOrder(name, parentKey);
               // Indication of nested element or nested fields reached, recursively call function
@@ -72,7 +63,6 @@ angularApp.directive('formDirective', function ($rootScope, $document, $timeout)
               if (parentModel[name] == undefined) {
                 parentModel[name] = value.model;
               }
-              console.log(parentModel[name]);
               // Place field into $scope.formFieldsOrder
               $scope.pushIntoOrder(name, parentKey);
             }
