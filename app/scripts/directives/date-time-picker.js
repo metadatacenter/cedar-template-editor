@@ -4,7 +4,8 @@ angularApp.directive('dateTimePicker', function () {
 
     restrict: 'A',
     link: function ($scope, $element, attrs) {
-    	var inputElement = $element.children('.form-control');
+      // Assign variable to actual input element
+      var inputElement = $element.children('.form-control');
 
       $element.datetimepicker({
 				icons: 	{
