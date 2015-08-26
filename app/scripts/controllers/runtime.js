@@ -22,14 +22,16 @@ angularApp.controller('RuntimeController', function ($rootScope, $scope, FormSer
   $scope.currentPage = [],
   $scope.pageIndex = 0,
   $scope.pagesArray = [],
-  $scope.instance = {};
+  $scope.instance = {
+  	'@context': {},
+  	'@type': {}
+  };
 
 	// Get/read form with given id from $routeParams
 	$scope.getForm = function() {
 		FormService.form($routeParams.template_id).then(function(form) {
 			// Assign returned form object from FormService to $scope.form
 			$scope.form = form;
-			//delete $scope.form['@id'];
 			// $scope.initializePagination kicks off paging with form.pages array
 			$scope.initializePagination(form.pages);
 		});
@@ -38,8 +40,9 @@ angularApp.controller('RuntimeController', function ($rootScope, $scope, FormSer
 	// Get/read submission with given submission_id from $routeParams
 	$scope.getSubmission = function() {
 		FormService.populatedTemplate($routeParams.id).then(function(response) {
-			// $broadcast existing model data down to form-directive.js child $scope
-			$scope.$broadcast('loadExistingModel', response)
+			// FormService.populatedTemplate returns an existing instance, assign it to our local $scope.instance
+			$scope.instance = response;
+			//$scope.$broadcast('loadExistingModel', response);
 			// Get and load the template document this instance will populate from (will be blank form template)
 			FormService.form(response.template_id).then(function(form) {
 				// Assign returned form object from FormService to $scope.form
@@ -47,6 +50,8 @@ angularApp.controller('RuntimeController', function ($rootScope, $scope, FormSer
 				// $scope.initializePagination kicks off paging with form.pages array
 				$scope.initializePagination(form.pages);
 			});
+		}).catch(function(err) {
+			$scope.runtimeErrorMessages.push('Problem retrieving the populated template instance.');
 		});
 	};
 
@@ -115,12 +120,6 @@ angularApp.controller('RuntimeController', function ($rootScope, $scope, FormSer
 			});
 		}
 	}
-
-	// Placeholder function to display rendered form with model input
-	//$scope.saveForm = function() {
-	//	$scope.form['submission_id'] = $rootScope.generateGUID();
-	//	console.log($scope.form);
-	//};
 
 	// Placeholder function to log form serialization output
 	$scope.submitForm = function() {
