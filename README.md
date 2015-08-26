@@ -24,6 +24,10 @@ Install gulp:
 
 2) Install gulp in your project devDependencies: `$ npm install --save-dev gulp`
 
+Install all the project dependencies:
+
+`$ npm install`
+
 ## Running the web application
 
 Go to the project's root folder and execute `$ gulp`
