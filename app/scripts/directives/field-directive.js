@@ -1,19 +1,11 @@
 'use strict';
 
-// coffeescript's for in loop
-var __indexOf = [].indexOf || function(item) {
-  for (var i = 0, l = this.length; i < l; i++) {
-    if (i in this && this[i] === item) return i;
-  }
-  return -1;
-};
-
 angularApp.directive('fieldDirective', function($http, $compile, $document) {
 
   var linker = function($scope, $element, attrs) {
-    // If we using this field-directive to 'render' and not 'preview' && this model is undefined
+    // If we use this field-directive to 'render' and not 'preview' && this model is undefined
     if ($scope.directory == 'render' && $scope.model == undefined) {
-      // Assign $scope.model to object by default to help child scopes assign values to it
+      // Assign $scope.model to object by default to help child field scopes easily assign values to it
       $scope.model = {};
     }
 

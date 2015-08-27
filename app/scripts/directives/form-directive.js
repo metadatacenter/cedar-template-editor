@@ -14,7 +14,7 @@ angularApp.directive('formDirective', function ($rootScope, $document, $timeout)
       $scope.formFields = {};
       // $scope.formFieldsOrder array to loop over for proper ordering of items/elements
       $scope.formFieldsOrder = [];
-
+      // Initializaing checkSubmission as false
       $scope.checkSubmission = false;
 
       $scope.addPopover = function() {
@@ -48,7 +48,7 @@ angularApp.directive('formDirective', function ($rootScope, $document, $timeout)
               parentObject[name] = {};
               // Push 'order' array through into parse object
               parentObject[name]['order'] = value.order;
-              // Handle position and nesting within $scope.model
+              // Handle position and nesting within $scope.model if it does not exist
               if (parentModel[name] == undefined) {
                 parentModel[name] = {};
               }
@@ -59,7 +59,7 @@ angularApp.directive('formDirective', function ($rootScope, $document, $timeout)
             } else {
               // Field level reached, assign to $scope.formFields object 
               parentObject[name] = value;
-              // Assign field instance model to $scope.model
+              // Assign field instance model to $scope.model only if it does not exist
               if (parentModel[name] == undefined) {
                 parentModel[name] = value.model;
               }

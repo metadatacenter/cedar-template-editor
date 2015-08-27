@@ -1,6 +1,7 @@
 'use strict';
 
 angularApp.service('FormService', function FormService($http) {
+  // uncomment next line to use hosted cedar-template-server, gulp-connect-proxy will proxy all calls behind route '/proxy'
   //var apiService = 'http://localhost:4200/proxy/cedar-dev1.stanford.edu:8888';
   var apiService = 'http://localhost:9000';
   return {
