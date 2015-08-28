@@ -7,7 +7,7 @@ angularApp.directive('formPreview', function ($rootScope, $document, $timeout) {
       // $scope.formFields object to loop through to call field-directive
       $scope.formFields = {};
       // $scope.formFieldsOrder array to loop over for proper ordering of items/elements
-      if ($scope.form.order) {
+      if ($scope.form.order && $scope.form.order.length) {
         // If form already has order array, set iterator to existing array (loading pre-existing element)
         $scope.formFieldsOrder = $scope.form.order;
       } else {

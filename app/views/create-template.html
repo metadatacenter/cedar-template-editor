@@ -28,41 +28,43 @@
   <div class="container">
     <div class="row">
       <div class="left-sidebar col-sm-3">
-        <p class="add-item">Add Element</p>
-        <ul class="element-menu" role="menu">
-          <li ng-repeat="element in elementList" class="item"><a ng-click="addExistingElement(element)"><i class="cedar-svg-element"></i>{{element.properties.info.title}}</a></li>
-        </ul>
-
-        <div class="more-items" dropdown>
-          <button type="button" class="btn btn-more-items dropdown-toggle" data-toggle="dropdown" data-target=".item-menu" aria-expanded="false" dropdown-toggle>More Elements <i class="fa fa-angle-down fa-2x"></i>
-          </button>
-          <ul class="dropdown-menu item-menu" role="menu">
-            <li class="item" ng-repeat="e in elements track by $index" ng-if="$index > 4"><a ng-click="addExistingElement(e)"><i class="cedar-svg-element"></i>{{e.properties.info.title}}</a></li>
-            <!--<li class="item"><a class="disabled" ng-click=""><i class="cedar-svg-element"></i>Element Name</a></li>-->
+        <div class="sidebar-inner" sticky-directive>
+          <p class="add-item">Add Element</p>
+          <ul class="element-menu" role="menu">
+            <li ng-repeat="element in elementList" class="item"><a ng-click="addExistingElement(element)"><i class="cedar-svg-element"></i>{{element.properties.info.title}}</a></li>
           </ul>
-        </div>
 
-        <div class="more-items" dropdown>
-          <p class="add-item">Add Item</p>
-          <button type="button" class="btn btn-more-items dropdown-toggle" data-toggle="dropdown" data-target=".element-menu" aria-expanded="false" dropdown-toggle>All Items <i class="fa fa-angle-down fa-2x"></i>
-          </button>
-          <ul class="dropdown-menu element-menu" role="menu">
-            <li class="item"><a ng-click="addFieldToStaging('textfield')"><i class="cedar-svg-text"></i>Text</a></li>
-            <li class="item"><a ng-click="addFieldToStaging('textarea')"><i class="cedar-svg-paragraph"></i>Paragraph</a></li>
-            <li class="item"><a ng-click="addFieldToStaging('radio')"><i class="cedar-svg-multiple-choice"></i>Multiple Choice</a></li>
-            <li class="item"><a ng-click="addFieldToStaging('checkbox')"><i class="cedar-svg-checkbox"></i>Checkbox</a></li>
-            <li class="item"><a ng-click="addFieldToStaging('date')"><i class="cedar-svg-date"></i>Date</a></li>
-            <li class="item"><a ng-click="addFieldToStaging('email')"><i class="cedar-svg-text"></i>Email</a></li>
-            <li class="item"><a ng-click="addFieldToStaging('list')"><i class="cedar-svg-list"></i>Pick from a list</a></li>
-            <!-- <li class="item"><a ng-click="addFieldToStaging('controlled-term')"><i class="cedar-svg-controll-term"></i>Controlled Term</a></li> -->
-            <li class="item"><a ng-click="addFieldToStaging('audio-visual')"><i class="cedar-svg-audio-visual"></i>Audio Visual</a></li>
-            <li class="item"><a ng-click="addFieldToStaging('numeric')"><i class="cedar-svg-numeric"></i>Numeric</a></li>
-            <li class="item"><a ng-click="addFieldToStaging('phone-number')"><i class="cedar-svg-phone"></i>Phone</a></li>
-            <li class="item"><a ng-click="addFieldToStaging('section-break')"><i class="cedar-svg-section-break"></i>Section Break</a></li>
-            <li class="item"><a ng-click="addFieldToStaging('page-break')"><i class="cedar-svg-page-break"></i>Page Break</a></li>
-            <!-- <li class="item"><a class="disabled" ng-click=""><i class="cedar-svg-location"></i>Location</a></li> -->
-          </ul>
-        </div>
+          <div class="more-items" dropdown>
+            <button type="button" class="btn btn-more-items dropdown-toggle" data-toggle="dropdown" data-target=".item-menu" aria-expanded="false" dropdown-toggle>More Elements <i class="fa fa-angle-down fa-2x"></i>
+            </button>
+            <ul class="dropdown-menu item-menu" role="menu">
+              <li class="item" ng-repeat="e in elements track by $index" ng-if="$index > 4"><a ng-click="addExistingElement(e)"><i class="cedar-svg-element"></i>{{e.properties.info.title}}</a></li>
+              <!--<li class="item"><a class="disabled" ng-click=""><i class="cedar-svg-element"></i>Element Name</a></li>-->
+            </ul>
+          </div>
+
+          <div class="more-items" dropdown>
+            <p class="add-item">Add Item</p>
+            <button type="button" class="btn btn-more-items dropdown-toggle" data-toggle="dropdown" data-target=".element-menu" aria-expanded="false" dropdown-toggle>All Items <i class="fa fa-angle-down fa-2x"></i>
+            </button>
+            <ul class="dropdown-menu element-menu" role="menu">
+              <li class="item"><a ng-click="addFieldToStaging('textfield')"><i class="cedar-svg-text"></i>Text</a></li>
+              <li class="item"><a ng-click="addFieldToStaging('textarea')"><i class="cedar-svg-paragraph"></i>Paragraph</a></li>
+              <li class="item"><a ng-click="addFieldToStaging('radio')"><i class="cedar-svg-multiple-choice"></i>Multiple Choice</a></li>
+              <li class="item"><a ng-click="addFieldToStaging('checkbox')"><i class="cedar-svg-checkbox"></i>Checkbox</a></li>
+              <li class="item"><a ng-click="addFieldToStaging('date')"><i class="cedar-svg-date"></i>Date</a></li>
+              <li class="item"><a ng-click="addFieldToStaging('email')"><i class="cedar-svg-text"></i>Email</a></li>
+              <li class="item"><a ng-click="addFieldToStaging('list')"><i class="cedar-svg-list"></i>Pick from a list</a></li>
+              <!-- <li class="item"><a ng-click="addFieldToStaging('controlled-term')"><i class="cedar-svg-controll-term"></i>Controlled Term</a></li> -->
+              <li class="item"><a ng-click="addFieldToStaging('audio-visual')"><i class="cedar-svg-audio-visual"></i>Audio Visual</a></li>
+              <li class="item"><a ng-click="addFieldToStaging('numeric')"><i class="cedar-svg-numeric"></i>Numeric</a></li>
+              <li class="item"><a ng-click="addFieldToStaging('phone-number')"><i class="cedar-svg-phone"></i>Phone</a></li>
+              <li class="item"><a ng-click="addFieldToStaging('section-break')"><i class="cedar-svg-section-break"></i>Section Break</a></li>
+              <li class="item"><a ng-click="addFieldToStaging('page-break')"><i class="cedar-svg-page-break"></i>Page Break</a></li>
+              <!-- <li class="item"><a class="disabled" ng-click=""><i class="cedar-svg-location"></i>Location</a></li> -->
+            </ul>
+          </div>
+        </div> <!-- /.sticky-list -->
       </div> <!-- /.left-sidebar -->
 
       <div class="right-body col-sm-9">
