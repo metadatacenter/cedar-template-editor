@@ -1,11 +1,10 @@
 <script type="text/ng-template" id="nestedElement">
-	<field-directive ng-if="field.properties.info.input_type" field="field" model="model[key]" directory="render"></field-directive>
-
+	<field-directive ng-if="field.properties.info.input_type" field="field" model="model" directory="render"></field-directive>
 	<div ng-if="!field.properties.info.input_type" class="nested-element">
 
 		<p class="element-name-label"><i class="cedar-svg-element"></i>{{key | keyToTitle}}</p>
 		<div ng-repeat="key in field['order']">
-			<span ng-if="field[key]" ng-init="field = field[key]" ng-include="'nestedElement'"></span>
+			<span ng-if="field[key]" ng-init="field = field[key]; model = model[key]" ng-include="'nestedElement'"></span>
 		</div>
 	</div>
 </script>
@@ -16,5 +15,5 @@
 </div>
 
 <div ng-repeat="key in element['order']">
-	<span ng-if="element[key]" ng-init="field = element[key]" ng-include="'nestedElement'"></span>
+	<span ng-if="element[key]" ng-init="field = element[key]; model = model[key]" ng-include="'nestedElement'"></span>
 </div>

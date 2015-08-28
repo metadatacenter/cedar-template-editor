@@ -3,11 +3,6 @@
 angularApp.directive('fieldDirective', function($http, $compile, $document) {
 
   var linker = function($scope, $element, attrs) {
-    // If we use this field-directive to 'render' and not 'preview' && this model is undefined
-    if ($scope.directory == 'render' && $scope.model == undefined) {
-      // Assign $scope.model to object by default to help child field scopes easily assign values to it
-      $scope.model = {};
-    }
 
     // When form submit event is fired, check field for simple validation
     $scope.$on('submitForm', function (event) {

@@ -6,7 +6,6 @@
         <field-directive field="formFields[item]" model="model[item]" directory="render"></field-directive>
       </span>
       <div class="element-group full" ng-if="!formFields[item].properties.info.input_type">
-        <!-- <pre>{{formFields[item] | json}}</pre> -->
         <element-directive element="formFields[item]" key="item" preview="false" model="model[item]"></element-directive>
       </div>
     </span>

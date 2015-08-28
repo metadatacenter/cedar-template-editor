@@ -59,9 +59,9 @@ angularApp.directive('formDirective', function ($rootScope, $document, $timeout)
             } else {
               // Field level reached, assign to $scope.formFields object 
               parentObject[name] = value;
-              // Assign field instance model to $scope.model only if it does not exist
+              // Assign empty field instance model to $scope.model only if it does not exist
               if (parentModel[name] == undefined) {
-                parentModel[name] = value.model;
+                parentModel[name] = {};
               }
               // Place field into $scope.formFieldsOrder
               $scope.pushIntoOrder(name, parentKey);
