@@ -17,19 +17,21 @@ angularApp.controller('RuntimeController', function ($rootScope, $scope, FormSer
 	// Create empty currentPage array
 	// Default to page 1 on load (array index 0)
 	// Create empty pages Array
+	// Create empty instance object
   $scope.form = {},
   $scope.currentPage = [],
   $scope.pageIndex = 0,
-  $scope.pagesArray = [];
+  $scope.pagesArray = [],
+  $scope.instance = {
+  	'@context': {},
+  	'@type': {}
+  };
 
 	// Get/read form with given id from $routeParams
 	$scope.getForm = function() {
 		FormService.form($routeParams.template_id).then(function(form) {
 			// Assign returned form object from FormService to $scope.form
 			$scope.form = form;
-			// The template @id will be stored in a field template_id
-			$scope.form.template_id = $scope.form['@id'];
-			delete $scope.form['@id'];
 			// $scope.initializePagination kicks off paging with form.pages array
 			$scope.initializePagination(form.pages);
 		});
@@ -37,11 +39,19 @@ angularApp.controller('RuntimeController', function ($rootScope, $scope, FormSer
 
 	// Get/read submission with given submission_id from $routeParams
 	$scope.getSubmission = function() {
-		FormService.populatedTemplate($routeParams.id).then(function(form) {
-			// Assign returned form object from FormService to $scope.form
-			$scope.form = form;
-			// $scope.initializePagination kicks off paging with form.pages array
-			$scope.initializePagination(form.pages);
+		FormService.populatedTemplate($routeParams.id).then(function(response) {
+			// FormService.populatedTemplate returns an existing instance, assign it to our local $scope.instance
+			$scope.instance = response;
+			//$scope.$broadcast('loadExistingModel', response);
+			// Get and load the template document this instance will populate from (will be blank form template)
+			FormService.form(response.template_id).then(function(form) {
+				// Assign returned form object from FormService to $scope.form
+				$scope.form = form;
+				// $scope.initializePagination kicks off paging with form.pages array
+				$scope.initializePagination(form.pages);
+			});
+		}).catch(function(err) {
+			$scope.runtimeErrorMessages.push('Problem retrieving the populated template instance.');
 		});
 	};
 
@@ -84,12 +94,16 @@ angularApp.controller('RuntimeController', function ($rootScope, $scope, FormSer
 	$scope.savePopulatedTemplate = function() {
 		$scope.runtimeErrorMessages = [];
 		$scope.runtimeSuccessMessages = [];
-		// The child will be in charge of assigning a value to $scope.model (see form-directive.js)
+		// The child will be in charge of assigning a value (or updated values) to $scope.instance (in form-directive.js)
 		$scope.submitForm();
-		// Save instance
-		if ($scope.form['@id'] == undefined) {
-			$scope.form['@id'] = $rootScope.idBasePath + $rootScope.generateGUID(),
-			FormService.savePopulatedTemplate($scope.form).then(function(response) {
+
+		// Create instance
+		if ($scope.instance['@id'] == undefined) {
+			// '@id' and 'template_id' haven't been populated yet, create now
+			$scope.instance['@id'] = $rootScope.idBasePath + $rootScope.generateGUID();
+			$scope.instance['template_id'] = $routeParams.template_id;
+			// Make create instance call
+			FormService.savePopulatedTemplate($scope.instance).then(function(response) {
 				$scope.runtimeSuccessMessages.push('The populated template has been saved.');
 			}).catch(function(err) {
 				$scope.runtimeErrorMessages.push('Problem saving the populated template.');
@@ -98,8 +112,7 @@ angularApp.controller('RuntimeController', function ($rootScope, $scope, FormSer
 		}
 		// Update instance
 		else {
-			var id = $scope.form['@id'];
-			FormService.updatePopulatedTemplate(id, $scope.form).then(function(response) {
+			FormService.updatePopulatedTemplate($scope.instance['@id'], $scope.instance).then(function(response) {
 				$scope.runtimeSuccessMessages.push('The populated template has been updated.');
 			}).catch(function(err) {
 				$scope.runtimeErrorMessages.push('Problem updating the populated template.');
@@ -108,15 +121,9 @@ angularApp.controller('RuntimeController', function ($rootScope, $scope, FormSer
 		}
 	}
 
-	// Placeholder function to display rendered form with model input
-	//$scope.saveForm = function() {
-	//	$scope.form['submission_id'] = $rootScope.generateGUID();
-	//	console.log($scope.form);
-	//};
-
 	// Placeholder function to log form serialization output
 	$scope.submitForm = function() {
-		$scope.$broadcast('submitForm');
+		return $scope.$broadcast('submitForm');
 	};
 
 	// Initialize array for required fields left empty that fail required empty check

@@ -8,7 +8,8 @@ angularApp.directive('elementDirective', function () {
       key:'=',
       element:'=',
       delete: '&',
-      preview: '='
+      preview: '=',
+      model: '='
     }
   };
 });

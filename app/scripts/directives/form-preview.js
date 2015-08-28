@@ -54,7 +54,7 @@ angularApp.directive('formPreview', function ($rootScope, $document, $timeout) {
       $scope.parseForm = function(iterator, parentObject, parentKey) {
         angular.forEach(iterator, function(value, name) {
           if (!$rootScope.ignoreKey(name)) {
-            if (value.hasOwnProperty('_id')) {
+            if (value.hasOwnProperty('order')) {
             //if (value.hasOwnProperty('guid')) {
               // Acknowledge position and nesting
               parentObject[name] = {};
@@ -91,7 +91,7 @@ angularApp.directive('formPreview', function ($rootScope, $document, $timeout) {
         // loop through $scope.formFieldsOrder and build pages array
         angular.forEach($scope.formFieldsOrder, function(field, index) {
           // If item added is of type Page Break, jump into next page array for storage of following fields
-          if ($scope.form.properties[field].info && $scope.form.properties[field].info.input_type == 'page-break') {
+          if ($scope.form.properties[field].properties.info && $scope.form.properties[field].properties.info.input_type == 'page-break') {
             dimension ++;
           }
           // Push field key into page array
