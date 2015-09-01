@@ -34,11 +34,19 @@ angularApp.controller('CreateElementController', function ($rootScope, $scope, $
       "@type": "",
       "title": "",
       "description": "",
-      //"guid": $rootScope.generateGUID(),
       //"favorite": $scope.favorite,
       "order": [],
       "type": "object",
       "properties": {
+        "@context": {
+          "properties": {
+            "value": {
+              "enum": ["https://schema.org/value"]
+            },
+          },
+          "required": ["value"],
+          "additionalProperties": false
+        },
         "@type": {
           "enum": [""]
         },
@@ -48,7 +56,6 @@ angularApp.controller('CreateElementController', function ($rootScope, $scope, $
         },
       },
       "required": [
-        "@type"
       ],
       "additionalProperties": false
     };
