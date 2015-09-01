@@ -36,7 +36,15 @@ angularApp.controller('CreateTemplateController', function($rootScope, $scope, $
       "pages": [],
       "type": "object",
       "properties": {
-        "@context": {},
+        "@context": {
+          "properties": {
+            "value": {
+              "enum": ["https://schema.org/value"]
+            },
+          },
+          "required": ["value"],
+          "additionalProperties": false
+        },
         "@id": {
           "type": "string",
           "format": "uri"
