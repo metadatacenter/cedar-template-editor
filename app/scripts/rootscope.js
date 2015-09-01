@@ -75,18 +75,6 @@ angularApp.run(['$rootScope', function($rootScope) {
       "@id": $rootScope.idBasePath + $rootScope.generateGUID(),
       "type": "object",
       "properties": {
-        "@context": {
-          "properties": {
-            "value": {
-              "enum": ["https://schema.org/value"]
-            },
-            "info": {
-              "enum": ["http://schema.org/additionalProperty"]
-            }
-          },
-          "required": ["value"],
-          "additionalProperties": false
-        },
         "@type": {
           "enum": [""]
         },
