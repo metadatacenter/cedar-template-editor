@@ -42,7 +42,7 @@ angularApp.run(['$rootScope', function($rootScope) {
   // Returning true if the object key value in the properties object is of json-ld type '@' or if it corresponds to any of the reserved fields
   $rootScope.ignoreKey = function(key) {
     //var pattern = /^@/i,
-    var pattern = /(^@)|(^info$)/i,
+    var pattern = /(^@)|(^info$)|(^template_id$)/i,
       result = pattern.test(key);
 
     return result;

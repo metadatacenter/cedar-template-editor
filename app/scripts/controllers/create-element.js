@@ -55,8 +55,7 @@ angularApp.controller('CreateElementController', function ($rootScope, $scope, $
           "description": "",
         },
       },
-      "required": [
-      ],
+      //"required": [],
       "additionalProperties": false
     };
   }

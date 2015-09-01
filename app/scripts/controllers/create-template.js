@@ -44,13 +44,17 @@ angularApp.controller('CreateTemplateController', function($rootScope, $scope, $
         "@type": {
           "enum": [""]
         },
+        "template_id" : {
+          "type": "string",
+          "format": "uri"
+        },
         "info": {
           "title": "",
           "description": "",
         },
       },
       "required": [
-        "@id"
+        "@id", "template_id"
       ],
       "additionalProperties": false
     };
