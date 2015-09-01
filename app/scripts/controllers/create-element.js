@@ -171,6 +171,7 @@ angularApp.controller('CreateElementController', function ($rootScope, $scope, $
   $scope.addExistingElement = function(element) {
     // Fetch existing element json data
     //FormService.element(element).then(function(response) {
+
     // Add existing element to the $scope.element.properties object with it's title converted to an object key
     var titleKey = $rootScope.underscoreText(element.properties.info.title);
     // Adding corresponding property type to @context
@@ -178,6 +179,7 @@ angularApp.controller('CreateElementController', function ($rootScope, $scope, $
     $scope.element.properties["@context"].properties[titleKey].enum =
       new Array($rootScope.schemasBase + titleKey);
     $scope.element.properties["@context"].required.push(titleKey);
+
     // Add existing element to the $scope.element.properties object
     $scope.element.properties[titleKey] = element;
     //});

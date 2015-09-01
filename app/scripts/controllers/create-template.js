@@ -126,10 +126,13 @@ angularApp.controller('CreateTemplateController', function($rootScope, $scope, $
     if ($scope.stagingErrorMessages.length == 0) {
       // Converting title for irregular character handling
       var underscoreTitle = $rootScope.underscoreText(field.properties.info.title);
+      // Adding corresponding property type to @context
+      $scope.form.properties["@context"].properties[underscoreTitle] = {};
+      $scope.form.properties["@context"].properties[underscoreTitle].enum =
+        new Array($rootScope.schemasBase + underscoreTitle);
+      $scope.form.properties["@context"].required.push(underscoreTitle);
       // Adding field to the element.properties object
       $scope.form.properties[underscoreTitle] = field;
-      // Adding context information
-      $scope.form.properties["@context"][underscoreTitle] = $rootScope.schemasBase + $rootScope.toCamelCase(field.properties.info.title);
       // Lastly, remove this field from the $scope.staging object
       delete $scope.staging[field['@id']];
     }
@@ -167,6 +170,15 @@ angularApp.controller('CreateTemplateController', function($rootScope, $scope, $
     //FormService.element(element).then(function(response) {
     // Convert response.data.title string to an acceptable object key string
     var titleKey = $rootScope.underscoreText(element.properties.info.title);
+
+    // Add existing element to the $scope.element.properties object with it's title converted to an object key
+    var titleKey = $rootScope.underscoreText(element.properties.info.title);
+    // Adding corresponding property type to @context
+    $scope.form.properties["@context"].properties[titleKey] = {};
+    $scope.form.properties["@context"].properties[titleKey].enum =
+      new Array($rootScope.schemasBase + titleKey);
+    $scope.form.properties["@context"].required.push(titleKey);
+
     // Embed existing element into $scope.form.properties object
     $scope.form.properties[titleKey] = element;
     //});
