@@ -30,6 +30,10 @@ angularApp.directive('formPreview', function ($rootScope, $document, $timeout) {
       });
 
       $scope.removeField = function(key) {
+        // Remove selected field from @context
+        delete $scope.form.properties['@context'].properties[key];
+        $scope.form.properties["@context"].required.splice($scope.form.properties["@context"].required.indexOf(key), 1);
+
         // Remove selected field from $scope.formFields
         delete $scope.formFields[key];
 

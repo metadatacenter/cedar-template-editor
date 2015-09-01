@@ -11,6 +11,8 @@ angularApp.run(['$rootScope', function($rootScope) {
   // Properties use Camel casing (e.g. hasName)
   $rootScope.schemasBase = "https://metadatacenter.org/schemas/";
 
+  $rootScope.defaultPropertiesBase = $rootScope.schemasBase;
+
   // Global utility functions
 
   // Simple function to check if an object is empty

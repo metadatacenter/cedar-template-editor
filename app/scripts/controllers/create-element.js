@@ -119,6 +119,11 @@ angularApp.controller('CreateElementController', function ($rootScope, $scope, $
     if ($scope.stagingErrorMessages.length == 0) {
       // Converting title for irregular character handling
       var underscoreTitle = $rootScope.underscoreText(field.properties.info.title);
+      // Adding corresponding property type to @context
+      $scope.element.properties["@context"].properties[underscoreTitle] = {};
+      $scope.element.properties["@context"].properties[underscoreTitle].enum =
+        new Array($rootScope.schemasBase + underscoreTitle);
+      $scope.element.properties["@context"].required.push(underscoreTitle);
       // Adding field to the element.properties object
       $scope.element.properties[underscoreTitle] = field;
       // Lastly, remove this field from the $scope.staging object
@@ -166,9 +171,15 @@ angularApp.controller('CreateElementController', function ($rootScope, $scope, $
   $scope.addExistingElement = function(element) {
     // Fetch existing element json data
     //FormService.element(element).then(function(response) {
-      // Add existing element to the $scope.element.properties object with it's title converted to an object key
-      var titleKey = $rootScope.underscoreText(element.properties.info.title);
-      $scope.element.properties[titleKey] = element;
+    // Add existing element to the $scope.element.properties object with it's title converted to an object key
+    var titleKey = $rootScope.underscoreText(element.properties.info.title);
+    // Adding corresponding property type to @context
+    $scope.element.properties["@context"].properties[titleKey] = {};
+    $scope.element.properties["@context"].properties[titleKey].enum =
+      new Array($rootScope.schemasBase + titleKey);
+    $scope.element.properties["@context"].required.push(titleKey);
+    // Add existing element to the $scope.element.properties object
+    $scope.element.properties[titleKey] = element;
     //});
   };
 
