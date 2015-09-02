@@ -72,6 +72,16 @@ angularApp.run(['$rootScope', function($rootScope) {
 
   // Function that generates a basic field definition
   $rootScope.generateField = function(fieldType) {
+    var valueType = "string";
+    if (fieldType == "numeric") {
+      valueType = "number";
+    }
+    else if (fieldType == "checkbox") {
+      valueType = "boolean";
+    }
+    else if (fieldType == "list") {
+      valueType = "array";
+    }
     var field = {
       "$schema": "http://json-schema.org/draft-04/schema#",
       "@id": $rootScope.idBasePath + $rootScope.generateGUID(),
@@ -89,7 +99,7 @@ angularApp.run(['$rootScope', function($rootScope) {
           "created_at": Date.now()
         },
         "value": {
-          "type": "string",
+          "type": valueType,
         }
       },
       "required": [
