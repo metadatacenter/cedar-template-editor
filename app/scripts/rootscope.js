@@ -88,7 +88,9 @@ angularApp.run(['$rootScope', function($rootScope) {
       "type": "object",
       "properties": {
         "@type": {
-          "enum": [""]
+          "type": "string",
+          "format" : "uri"
+          //"enum": [""]
         },
         "info": {
           "title": "",

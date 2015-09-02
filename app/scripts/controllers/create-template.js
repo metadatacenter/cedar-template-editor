@@ -50,7 +50,9 @@ angularApp.controller('CreateTemplateController', function($rootScope, $scope, $
           "format": "uri"
         },
         "@type": {
-          "enum": [""]
+          "type": "string",
+          "format" : "uri"
+          //"enum": [""]
         },
         "template_id" : {
           "type": "string",

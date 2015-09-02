@@ -48,7 +48,9 @@ angularApp.controller('CreateElementController', function ($rootScope, $scope, $
           "additionalProperties": false
         },
         "@type": {
-          "enum": [""]
+          "type": "string",
+          "format" : "uri"
+          //"enum": [""]
         },
         "info": {
           "title": "",
