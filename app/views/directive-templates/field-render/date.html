@@ -5,7 +5,7 @@
   <div class='input-group' date-time-picker>
     <input  type="text" 
             class="form-control" 
-            ng-class="{'required': field.properties.info.required}"
+            ng-class="{'required': field.properties.info.required_value}"
             placeholder="MM / DD / YYYY" 
             aria-label="Select a date" 
             ng-model="model.value"
@@ -21,7 +21,7 @@
   <div class='input-group' date-time-picker>
     <input  type="text" 
             class="form-control" 
-            ng-class="{'required': field.properties.info.required}"
+            ng-class="{'required': field.properties.info.required_value}"
             placeholder="MM / DD / YYYY" 
             aria-label="Select a start date" 
             ng-model="model.value.start"
@@ -33,7 +33,7 @@
   <div class='input-group' date-time-picker>
     <input  type="text" 
             class="form-control" 
-            ng-class="{'required': field.properties.info.required}"
+            ng-class="{'required': field.properties.info.required_value}"
             placeholder="MM / DD / YYYY" 
             aria-label="Select a end date" 
             ng-model="model.value.end"

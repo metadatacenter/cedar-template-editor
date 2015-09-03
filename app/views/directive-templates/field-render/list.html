@@ -1,8 +1,8 @@
-<div ng-class="{'required': field.properties.info.required}">
+<div ng-class="{'required': field.properties.info.required_value}">
 	<p class="extra-label-context">{{field.properties.info.title}}</p>
 	<div 	ng-if="field.properties.info.selection_type == 'single'"
 				class="form-group validation-pattern" 
-				ng-class="{'required': field.properties.info.required}">
+				ng-class="{'required': field.properties.info.required_value}">
 		<select	class="form-control" 
 						multiple
 						data-max-options="1"
@@ -17,7 +17,7 @@
 
 	<div 	ng-if="field.properties.info.selection_type == 'multiple'"
 				class="form-group validation-pattern" 
-				ng-class="{'required': field.properties.info.required}">
+				ng-class="{'required': field.properties.info.required_value}">
 		<select	class="form-control" 
 						multiple 
 						field="field"

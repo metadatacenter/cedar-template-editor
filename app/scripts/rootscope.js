@@ -97,7 +97,7 @@ angularApp.run(['$rootScope', function($rootScope) {
           //"id": $rootScope.generateGUID(),
           "description": "",
           "input_type": fieldType,
-          "required": false,
+          "required_value": false,
           "created_at": Date.now()
         },
         "value": {
