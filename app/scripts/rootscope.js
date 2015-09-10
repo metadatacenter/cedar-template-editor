@@ -112,4 +112,13 @@ angularApp.run(['$rootScope', function($rootScope) {
     return field;
   };
 
+  // Function that generates the @context for an instance from the schema @context
+  $rootScope.generateInstanceContext = function(schemaContext) {
+    var context = {};
+    angular.forEach(schemaContext.properties, function(value, key) {
+      context[key] = value.enum[0];
+    });
+   return context;
+  }
+
 }]);

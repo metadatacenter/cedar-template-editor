@@ -41,7 +41,11 @@ angularApp.directive('formDirective', function ($rootScope, $document, $timeout)
 
       $scope.parseForm = function(iterator, parentObject, parentModel, parentKey) {
         angular.forEach(iterator, function(value, name) {
-          if (!$rootScope.ignoreKey(name)) {
+          // Add context information
+          if (name == '@context') {
+            parentModel['@context'] = $rootScope.generateInstanceContext(value);
+          }
+          else if (!$rootScope.ignoreKey(name)) {
             // We can tell we've reached an element level by its 'order' property
             if (value.hasOwnProperty('order')) {
               // Handle position and nesting within $scope.formFields
