@@ -31,7 +31,7 @@ angularApp.controller('CreateElementController', function ($rootScope, $scope, $
     $scope.element = {
       "$schema": "http://json-schema.org/draft-04/schema#",
       "@id": $rootScope.idBasePath + $rootScope.generateGUID(),
-      "@type": "",
+      //"@type": "",
       "title": "",
       "description": "",
       //"favorite": $scope.favorite,
