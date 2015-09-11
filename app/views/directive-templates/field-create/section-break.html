@@ -1,10 +1,10 @@
-<div id="section-break-{{field['@id']}}" class="input-type-container section-break">
+<div id="section-break-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}" class="input-type-container section-break">
   <p class="type-label"><i class="cedar-svg-section-break"></i>Section Break</p>
   <div class="form-group floating-label-wrapper">
-    <input type="text" class="form-control" id="section-break-name-{{field['@id']}}" placeholder="Section Name (Optional)" aria-label="Section Name (Optional)" ng-model="field.properties.info.title"  with-floating-label>
+    <input type="text" class="form-control" id="section-break-name-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}" placeholder="Section Name (Optional)" aria-label="Section Name (Optional)" ng-model="field.properties.info.title"  with-floating-label>
   </div><!-- /.form-group -->
   <div class="form-group floating-label-wrapper">
-    <input type="text" class="form-control" id="section-break-description-{{field['@id']}}" placeholder="Section Description (Optional)" aria-label="Section Description (Optional)" ng-model="field.properties.info.description"  with-floating-label>
+    <input type="text" class="form-control" id="section-break-description-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}" placeholder="Section Description (Optional)" aria-label="Section Description (Optional)" ng-model="field.properties.info.description"  with-floating-label>
   </div><!-- /.form-group -->
   <div class="configuration-options">
   	<div class="toggle-options">

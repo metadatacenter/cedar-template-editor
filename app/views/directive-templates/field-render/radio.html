@@ -4,7 +4,7 @@
 		<div ng-if="model.value" class="radio radio-primary">
 	    <input 	type="radio" 
 	    				id="radio{{index}}" 
-	    				name="radio-{{field['@id']}}"
+	    				name="radio-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}"
 	    				ng-model="model.value"
 	    				value="{{field.properties.info.options[index]['text']}}">
 	    <label for="radio{{index}}">{{field.properties.info.options[index]['text']}}</label>
@@ -12,7 +12,7 @@
 	  <div ng-if="field.properties.info.default_option && !model.value" class="radio radio-primary" ng-init="model.value=field.properties.info.default_option">
 	    <input 	type="radio" 
 	    				id="radio{{index}}" 
-	    				name="radio-{{field['@id']}}"
+	    				name="radio-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}"
 	    				ng-model="model.value"
 	    				value="{{field.properties.info.options[index]['text']}}">
 	    <label for="radio{{index}}">{{field.properties.info.options[index]['text']}}</label>
@@ -21,7 +21,7 @@
 	  <div ng-if="!field.properties.info.default_option" class="radio radio-primary">
 	    <input 	type="radio" 
 	    				id="radio{{index}}" 
-	    				name="radio-{{field['@id']}}"
+	    				name="radio-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}"
 	    				ng-model="model.value"
 	    				value="{{field.properties.info.options[index]['text']}}">
 	    <label for="radio{{index}}">{{field.properties.info.options[index]['text']}}</label>

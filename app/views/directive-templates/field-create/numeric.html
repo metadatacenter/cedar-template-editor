@@ -1,4 +1,4 @@
-<div id="numeric-{{field['@id']}}" class="input-type-container">
+<div id="numeric-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}" class="input-type-container">
 	<p class="type-label"><i class="cedar-svg-numeric"></i>Numeric</p>
 	<div class="definition-inputs" ng-include="'views/partials/field-definition.html'"></div><!-- /.definition-inputs -->
 	<div class="configuration-options" ng-include="'views/partials/configuration-options.html'">
