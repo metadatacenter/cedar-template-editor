@@ -126,13 +126,29 @@ angularApp.run(['$rootScope', function($rootScope) {
     return field;
   };
 
-  // Function that generates the @context for an instance from the schema @context
+  // Function that generates the @context for an instance, based on the schema @context definition
   $rootScope.generateInstanceContext = function(schemaContext) {
     var context = {};
     angular.forEach(schemaContext.properties, function(value, key) {
       context[key] = value.enum[0];
     });
    return context;
+  }
+
+  // Function that generates the @type for an instance, based on the schema @type definition
+  $rootScope.generateInstanceType = function(schemaType) {
+    // If there is no type defined at the schema level
+    if (schemaType.oneOf[0].enum.length == 0) {
+      return null;
+    }
+    // If only one type has been defined, a string is returned
+    else if (schemaType.oneOf[0].enum.length == 1) {
+      return schemaType.oneOf[0].enum[0];
+    }
+    // If more than one types have been defined for the template/element/field, an array is returned
+    else {
+      return schemaType.oneOf[0].enum;
+    }
   }
 
 }]);

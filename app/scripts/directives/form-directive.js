@@ -41,11 +41,18 @@ angularApp.directive('formDirective', function ($rootScope, $document, $timeout)
 
       $scope.parseForm = function(iterator, parentObject, parentModel, parentKey) {
         angular.forEach(iterator, function(value, name) {
-          // Add context information
+          // Add @context information to instance
           if (name == '@context') {
             parentModel['@context'] = $rootScope.generateInstanceContext(value);
           }
-          else if (!$rootScope.ignoreKey(name)) {
+          // Add @type information to instance
+          else if (name == '@type') {
+            var type = $rootScope.generateInstanceType(value);
+            if (type != null)
+              parentModel['@type'] = type;
+          }
+
+          if (!$rootScope.ignoreKey(name)) {
             // We can tell we've reached an element level by its 'order' property
             if (value.hasOwnProperty('order')) {
               // Handle position and nesting within $scope.formFields
@@ -61,7 +68,7 @@ angularApp.directive('formDirective', function ($rootScope, $document, $timeout)
               // Indication of nested element or nested fields reached, recursively call function
               $scope.parseForm(value.properties, parentObject[name], parentModel[name], name);
             } else {
-              // Field level reached, assign to $scope.formFields object 
+              // Field level reached, assign to $scope.formFields object
               parentObject[name] = value;
               // Assign empty field instance model to $scope.model only if it does not exist
               if (parentModel[name] == undefined) {
@@ -69,6 +76,13 @@ angularApp.directive('formDirective', function ($rootScope, $document, $timeout)
               }
               // Place field into $scope.formFieldsOrder
               $scope.pushIntoOrder(name, parentKey);
+
+              // Add @type information to instance at the field level
+              if (!angular.isUndefined(value.properties['@type'])) {
+                var type = $rootScope.generateInstanceType(value.properties['@type']);
+                if (type != null)
+                  parentModel[name]['@type'] = type;
+              }
             }
           }
         });
