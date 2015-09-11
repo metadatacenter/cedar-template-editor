@@ -48,16 +48,29 @@ angularApp.controller('CreateElementController', function ($rootScope, $scope, $
           "additionalProperties": false
         },
         "@type": {
-          "type": "string",
-          "format" : "uri"
-          //"enum": [""]
+          "oneOf": [
+            {
+              "type": "string",
+              "format": "uri",
+              "enum": []
+            },
+            {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "type": "string",
+                "format": "uri",
+                "enum": []
+              },
+              "uniqueItems": true
+            }
+          ]
         },
         "info": {
           "title": "",
           "description": "",
         },
       },
-      //"required": [],
       "additionalProperties": false
     };
   }
