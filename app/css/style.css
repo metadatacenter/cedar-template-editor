@@ -10268,6 +10268,7 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
 }
 .alert {
   border-radius: 0;
+  text-align: left;
 }
 .alert p {
   margin-bottom: 5px;
