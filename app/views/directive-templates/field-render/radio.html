@@ -1,7 +1,7 @@
 <div ng-class="{'required': field.properties.info.required}">
 	<p class="extra-label-context">{{field.properties.info.title}}</p>
 	<div class="form-group radio-item" ng-repeat="(index, value) in field.properties.info.options">
-		<div ng-if="model.value" class="radio radio-primary">
+		<div class="radio radio-primary">
 	    <input 	type="radio" 
 	    				id="radio{{index}}" 
 	    				name="radio-{{field['@id']}}"
@@ -9,23 +9,5 @@
 	    				value="{{field.properties.info.options[index]['text']}}">
 	    <label for="radio{{index}}">{{field.properties.info.options[index]['text']}}</label>
 	  </div><!-- /.radio -->
-	  <div ng-if="field.properties.info.default_option && !model.value" class="radio radio-primary" ng-init="model.value=field.properties.info.default_option">
-	    <input 	type="radio" 
-	    				id="radio{{index}}" 
-	    				name="radio-{{field['@id']}}"
-	    				ng-model="model.value"
-	    				value="{{field.properties.info.options[index]['text']}}">
-	    <label for="radio{{index}}">{{field.properties.info.options[index]['text']}}</label>
-	  </div><!-- /.radio -->
-
-	  <div ng-if="!field.properties.info.default_option" class="radio radio-primary">
-	    <input 	type="radio" 
-	    				id="radio{{index}}" 
-	    				name="radio-{{field['@id']}}"
-	    				ng-model="model.value"
-	    				value="{{field.properties.info.options[index]['text']}}">
-	    <label for="radio{{index}}">{{field.properties.info.options[index]['text']}}</label>
-	  </div><!-- /.radio -->
-
 	</div><!-- /.form-group -->
 </div>

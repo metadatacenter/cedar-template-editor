@@ -2,29 +2,12 @@
 	<p class="extra-label-context">{{field.properties.info.title}}</p>
 	<div class="form-group checkbox-item" ng-repeat="(index, value) in field.properties.info.options">
 
-	  <div ng-if="model.value" class="checkbox checkbox-primary">
+	  <div class="checkbox checkbox-primary">
 	    <input 	type="checkbox" 
 	    				id="checkbox{{index}}" 
 	    				ng-model="model.value[value.text]"
 	    				ng-checked="model.value[value.text]">
 	    <label for="checkbox{{index}}">{{field.properties.info.options[index]['text']}}</label>
 	  </div><!-- ./checkbox -->
-
-	  <div ng-if="field.properties.info.default_option && !model.value" class="checkbox checkbox-primary" ng-init="model.value[value.text]=field.properties.info.default_option[value.text]">
-	    <input 	type="checkbox" 
-	    				id="checkbox{{index}}" 
-	    				ng-model="model.value[value.text]"
-	    				ng-checked="model.value[value.text]">
-	    <label for="checkbox{{index}}">{{field.properties.info.options[index]['text']}}</label>
-	  </div><!-- ./checkbox -->
-
-	  <div ng-if="!field.properties.info.default_option" class="checkbox checkbox-primary">
-	    <input 	type="checkbox" 
-	    				id="checkbox{{index}}" 
-	    				ng-model="model.value[value.text]"
-	    				ng-checked="model.value[value.text]">
-	    <label for="checkbox{{index}}">{{field.properties.info.options[index]['text']}}</label>
-	  </div><!-- ./checkbox -->
-
 	</div><!-- /.form-group -->
 </div>
