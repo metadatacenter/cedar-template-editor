@@ -1,14 +1,14 @@
 <div class="toggle-options">
 	<div class="toggle-controlled-term">
-		<i class="cedar-svg-controll-term collapsed" data-toggle="collapse" data-target="#control-options-{{field['@id']}}"></i>
+		<i class="cedar-svg-controll-term collapsed" data-toggle="collapse" data-target="#control-options-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}"></i>
 	</div>
 	<div class="checkbox checkbox-inline">
-    <input type="checkbox" id="required-{{field['@id']}}" ng-model="field.properties.info.required_value">
-    <label for="required-{{field['@id']}}">Required</label>
+    <input type="checkbox" id="required-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}" ng-model="field.properties.info.required_value">
+    <label for="required-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}">Required</label>
   </div><!-- /.checkbox-inline -->
   <div class="checkbox checkbox-inline">
-    <input type="checkbox" id="advanced-{{field['@id']}}" value="option1" data-toggle="collapse" data-target="#advanced-options-{{field['@id']}}">
-    <label for="advanced-{{field['@id']}}">Advanced</label>
+    <input type="checkbox" id="advanced-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}" value="option1" data-toggle="collapse" data-target="#advanced-options-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}">
+    <label for="advanced-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}">Advanced</label>
   </div><!-- /.checkbox-inline -->
   <div class="save-options">
   	<div class="add" ng-click="add()">
@@ -22,7 +22,7 @@
   	</div>
   </div><!-- /.save-options -->
 </div><!-- /.toggle-options -->
-<div id="advanced-options-{{field['@id']}}"class="advanced-options collapse">
+<div id="advanced-options-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}"class="advanced-options collapse">
  	<div class="form-group validation-pattern floating-label-wrapper">
 	  <input type="text" class="form-control" placeholder="Expression" aria-label="Advanced - Enter Expression" ng-model="field.properties.info.advanced.expression"  with-floating-label>
 	</div><!-- /.form-group -->
@@ -40,11 +40,21 @@
 	  <input type="text" class="form-control" placeholder="Enter Error Message" aria-label="Advanced - Enter Error Message" ng-model="field.properties.info.advanced.error_message"  with-floating-label>
 	</div><!-- /.form-group -->
 </div><!-- /.advanced-options -->
-<div id="control-options-{{field['@id']}}" class="controlled-term-options collapse">
- 	<div class="form-group floating-label-wrapper">
-	  <input type="text" class="form-control" placeholder="Value Source" aria-label="Control Term Value Source" ng-model="field.properties.info.control_term.value_source"  with-floating-label>
+<div id="control-options-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}" class="controlled-term-options collapse">
+ 	<!--<div class="form-group floating-label-wrapper">-->
+	  <!--<input type="text" class="form-control" placeholder="Value Source" aria-label="Control Term Value Source" ng-model="field.properties.info.control_term.value_source"  with-floating-label>-->
+	<!--</div>&lt;!&ndash; /.form-group &ndash;&gt;-->
+	<div class="form-group floating-label-wrapper">
+		<!-- Here ng-model and ng-change are used in combination to bind 2 different models to the Controlled Term ID input field (source: http://stackoverflow.com/questions/13890331/how-to-bind-2-models-to-one-input-field-in-angular) -->
+	  <input type="url" class="form-control" placeholder="Controlled Term ID 1" aria-label="Control Term ID 1" ng-model="field.properties['@type'].oneOf[0].enum[0]"
+					 ng-change="field.properties['@type'].oneOf[1].items.enum[0]=field.properties['@type'].oneOf[0].enum[0]" with-floating-label>
 	</div><!-- /.form-group -->
 	<div class="form-group floating-label-wrapper">
-	  <input type="text" class="form-control" placeholder="Controlled Term ID" aria-label="Control Term ID" ng-model="field.properties.info.control_term.id"  with-floating-label>
+		<input type="url" class="form-control" placeholder="Controlled Term ID 2" aria-label="Control Term ID 2" ng-model="field.properties['@type'].oneOf[0].enum[1]"
+					 ng-change="field.properties['@type'].oneOf[1].items.enum[1]=field.properties['@type'].oneOf[0].enum[1]" ng-disabled="!field.properties['@type'].oneOf[0].enum[0].length" with-floating-label>
 	</div><!-- /.form-group -->
-</div><!-- /.controll-term-options -->
+	<div class="form-group floating-label-wrapper">
+	<input type="url" class="form-control" placeholder="Controlled Term ID 3" aria-label="Control Term ID 3" ng-model="field.properties['@type'].oneOf[0].enum[2]"
+				 ng-change="field.properties['@type'].oneOf[1].items.enum[2]=field.properties['@type'].oneOf[0].enum[2]" ng-disabled="!field.properties['@type'].oneOf[0].enum[1].length" with-floating-label>
+	</div><!-- /.form-group -->
+</div><!-- /.controlled-term-options -->

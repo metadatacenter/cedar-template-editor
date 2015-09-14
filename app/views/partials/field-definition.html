@@ -1,7 +1,7 @@
 <div class="form-group floating-label-wrapper">
   <input 	type="text" 
   				class="form-control" 
-  				id="placeholder-{{field['@id']}}"
+  				id="placeholder-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}"
   				placeholder="Enter Field Title" 
   				aria-label="Enter Field Title" 
   				ng-model="field.properties.info.title"
@@ -10,7 +10,7 @@
 <div class="form-group floating-label-wrapper">
   <input 	type="text" 
   				class="form-control" 
-  				id="help-text-{{field['@id']}}"
+  				id="help-text-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}"
   				placeholder="Enter Field Description (Help Text)" 
   				aria-label="Enter Field Description (Help Text)" 
   				ng-model="field.properties.info.description"

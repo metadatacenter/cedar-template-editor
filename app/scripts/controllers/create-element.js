@@ -31,7 +31,7 @@ angularApp.controller('CreateElementController', function ($rootScope, $scope, $
     $scope.element = {
       "$schema": "http://json-schema.org/draft-04/schema#",
       "@id": $rootScope.idBasePath + $rootScope.generateGUID(),
-      "@type": "",
+      //"@type": "",
       "title": "",
       "description": "",
       //"favorite": $scope.favorite,
@@ -48,16 +48,29 @@ angularApp.controller('CreateElementController', function ($rootScope, $scope, $
           "additionalProperties": false
         },
         "@type": {
-          "type": "string",
-          "format" : "uri"
-          //"enum": [""]
+          "oneOf": [
+            {
+              "type": "string",
+              "format": "uri",
+              "enum": []
+            },
+            {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "type": "string",
+                "format": "uri",
+                "enum": []
+              },
+              "uniqueItems": true
+            }
+          ]
         },
         "info": {
           "title": "",
           "description": "",
         },
       },
-      //"required": [],
       "additionalProperties": false
     };
   }

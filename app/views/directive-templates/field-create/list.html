@@ -1,4 +1,4 @@
-<div id="list-{{field['@id']}}" class="input-type-container pick-list">
+<div id="list-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}" class="input-type-container pick-list">
   <p class="type-label"><i class="cedar-svg-list"></i>Pick from a list</p>
 
   <div class="type-toggle list" ng-init="field.properties.info.selection_type = 'single'">
@@ -12,17 +12,17 @@
 
   <div class="form-group">
     <div class="form-group floating-label-wrapper">
-      <input type="text" class="form-control" id="placeholder-{{field['@id']}}" placeholder="Enter Field Title" aria-label="Enter Field Title" ng-model="field.properties.info.title"  with-floating-label>
+      <input type="text" class="form-control" id="placeholder-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}" placeholder="Enter Field Title" aria-label="Enter Field Title" ng-model="field.properties.info.title"  with-floating-label>
     </div><!-- /.form-group -->
     <div class="options-wrapper">
       <div class="multiple-container">
         <span ng-repeat="(index, value) in field.properties.info.options">
         	<div class="form-group floating-label-wrapper">
-            <input type="text" class="form-control" id="placeholder-{{field['@id']}}" placeholder="Enter Option" aria-label="Enter Option" ng-model="field.properties.info.options[index]['text']"  with-floating-label>
+            <input type="text" class="form-control" id="placeholder-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}" placeholder="Enter Option" aria-label="Enter Option" ng-model="field.properties.info.options[index]['text']"  with-floating-label>
 
             <div class="checkbox checkbox-primary checkbox-circle">
-	            <input type="checkbox" id="checkbox-{{field['@id']}}-{{index}}" name="checkbox-{{field['@id']}}" ng-model="field.properties.info.default_option[value.text]">
-	            <label for="checkbox-{{field['@id']}}-{{index}}"></label> 
+	            <input type="checkbox" id="checkbox-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}-{{index}}" name="checkbox-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}" ng-model="field.properties.info.default_option[value.text]">
+	            <label for="checkbox-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}-{{index}}"></label>
 	          </div><!-- /.checkbox -->
           </div><!-- /.form-group -->
         </span>

@@ -23,8 +23,8 @@ angularApp.controller('RuntimeController', function ($rootScope, $scope, FormSer
   $scope.pageIndex = 0,
   $scope.pagesArray = [],
   $scope.instance = {
-  	'@context': {},
-  	'@type': {}
+  	//'@context': {},
+  	//'@type': {}
   };
 
 	// Get/read form with given id from $routeParams
