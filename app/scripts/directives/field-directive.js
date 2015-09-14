@@ -23,7 +23,6 @@ angularApp.directive('fieldDirective', function($http, $compile, $document) {
     if (field.required) {
       $scope.$emit('formHasRequiredFields');
     }
-
     // If a default value is set from the field item configuration, set $scope.model to its value
     if ($scope.directory == 'render' && ['radio', 'checkbox'].indexOf(field.input_type) != -1) {
       if (!$scope.model['value'] && field.default_option) {

@@ -11,6 +11,8 @@ angularApp.run(['$rootScope', function($rootScope) {
   // Properties use Camel casing (e.g. hasName)
   $rootScope.schemasBase = "https://metadatacenter.org/schemas/";
 
+  $rootScope.defaultPropertiesBase = $rootScope.schemasBase;
+
   // Global utility functions
 
   // Simple function to check if an object is empty
@@ -42,7 +44,7 @@ angularApp.run(['$rootScope', function($rootScope) {
   // Returning true if the object key value in the properties object is of json-ld type '@' or if it corresponds to any of the reserved fields
   $rootScope.ignoreKey = function(key) {
     //var pattern = /^@/i,
-    var pattern = /(^@)|(^info$)/i,
+    var pattern = /(^@)|(^info$)|(^template_id$)/i,
       result = pattern.test(key);
 
     return result;
@@ -70,36 +72,36 @@ angularApp.run(['$rootScope', function($rootScope) {
 
   // Function that generates a basic field definition
   $rootScope.generateField = function(fieldType) {
+    var valueType = "string";
+    if (fieldType == "numeric") {
+      valueType = "number";
+    }
+    else if (fieldType == "checkbox") {
+      valueType = "boolean";
+    }
+    else if (fieldType == "list") {
+      valueType = "array";
+    }
     var field = {
       "$schema": "http://json-schema.org/draft-04/schema#",
       "@id": $rootScope.idBasePath + $rootScope.generateGUID(),
       "type": "object",
       "properties": {
-        "@context": {
-          "properties": {
-            "value": {
-              "enum": ["https://schema.org/value"]
-            },
-            "info": {
-              "enum": ["http://schema.org/additionalProperty"]
-            }
-          },
-          "required": ["value"],
-          "additionalProperties": false
-        },
         "@type": {
-          "enum": [""]
+          "type": "string",
+          "format" : "uri"
+          //"enum": [""]
         },
         "info": {
           "title": "",
           //"id": $rootScope.generateGUID(),
           "description": "",
           "input_type": fieldType,
-          "required": false,
+          "required_value": false,
           "created_at": Date.now()
         },
         "value": {
-          "type": "string",
+          "type": valueType,
         }
       },
       "required": [
