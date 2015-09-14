@@ -1,63 +1,44 @@
 'use strict';
 
-// coffeescript's for in loop
-var __indexOf = [].indexOf || function(item) {
-  for (var i = 0, l = this.length; i < l; i++) {
-    if (i in this && this[i] === item) return i;
-  }
-  return -1;
-};
-
 angularApp.directive('fieldDirective', function($http, $compile, $document) {
 
-  var getTemplateUrl = function(field, directory) {
-    var templateUrl = './views/directive-templates/field-'+directory+'/',
-        supported_fields = [
-          'textfield',
-          'email',
-          'textarea',
-          'checkbox',
-          'date',
-          'location',
-          'radio',
-          'list',
-          'audio-visual',
-          'numeric',
-          'phone-number',
-          'section-break',
-          'page-break',
-          'controlled-term'
-        ];
-
-    if (__indexOf.call(supported_fields, field.properties.info.input_type) >= 0) {
-        return templateUrl += field.properties.info.input_type + '.html';
-    }
-  };
-
   var linker = function($scope, $element, attrs) {
+
     // When form submit event is fired, check field for simple validation
     $scope.$on('submitForm', function (event) {
       // If field is required and is empty, emit failed emptyRequiredField event
-      if ($scope.field.properties.info.required && $scope.model == undefined) {
-        $scope.$emit('emptyRequiredField', $scope.field.properties.info.title);
+      if ($scope.field.properties.info.required && !$scope.model['value']) {
+        // add this field instance the the emptyRequiredField array
+        $scope.$emit('emptyRequiredField', ['add', $scope.field.properties.info.title]);
+      }
+      // If field is required and is not empty, check to see if it needs to be removed from empty fields array
+      if ($scope.field.properties.info.required && $scope.model['value']) {
+        //remove from emptyRequiredField array
+        $scope.$emit('emptyRequiredField', ['remove', $scope.field.properties.info.title]);
       }
     });
 
+    var field = $scope.field.properties.info
     // Checking each field to see if required, will trigger flag for use to see there is required fields
-    if ($scope.field.properties.info.required) {
+    if (field.required) {
       $scope.$emit('formHasRequiredFields');
     }
-    // GET template content from path
-    var templateUrl = getTemplateUrl($scope.field, $scope.directory);
-    
-    $http.get(templateUrl).success(function(data) {
-      $element.html(data);
-      $compile($element.contents())($scope);
-    });
+
+    // If a default value is set from the field item configuration, set $scope.model to its value
+    if ($scope.directory == 'render' && ['radio', 'checkbox'].indexOf(field.input_type) != -1) {
+      if (!$scope.model['value'] && field.default_option) {
+        $scope.model['value'] = field.default_option;
+      }
+    }
+
+    // Retrive appropriate field template file
+    $scope.getTemplateUrl = function() {
+      return './views/directive-templates/field-' + $scope.directory + '/' + $scope.field.properties.info.input_type + '.html';
+    }
   }
 
   return {
-    template: '<div ng-bind="field"></div>',
+    template : '<div ng-include="getTemplateUrl()"></div>',
     restrict: 'EA',
     scope: {
       directory: '@',
@@ -67,7 +48,6 @@ angularApp.directive('fieldDirective', function($http, $compile, $document) {
       add: '&',
       option: '&'
     },
-    transclude: true,
     replace: true,
     link: linker
   };

@@ -6,19 +6,15 @@ angularApp.directive('formDirective', function ($rootScope, $document, $timeout)
     restrict: 'E',
     scope: {
       page:'=',
-      form:'='
+      form:'=',
+      model: '='
     },
     controller: function($scope) {
-      // Initializing the empty model to submit data to
-      $scope.model = {
-        "@context": {}
-      };
-
       // $scope.formFields object to loop through to call field-directive
       $scope.formFields = {};
       // $scope.formFieldsOrder array to loop over for proper ordering of items/elements
       $scope.formFieldsOrder = [];
-
+      // Initializaing checkSubmission as false
       $scope.checkSubmission = false;
 
       $scope.addPopover = function() {
@@ -46,14 +42,16 @@ angularApp.directive('formDirective', function ($rootScope, $document, $timeout)
       $scope.parseForm = function(iterator, parentObject, parentModel, parentKey) {
         angular.forEach(iterator, function(value, name) {
           if (!$rootScope.ignoreKey(name)) {
-            if (value.hasOwnProperty('_id')) {
-            //if (value.hasOwnProperty('guid')) {
+            // We can tell we've reached an element level by its 'order' property
+            if (value.hasOwnProperty('order')) {
               // Handle position and nesting within $scope.formFields
               parentObject[name] = {};
               // Push 'order' array through into parse object
               parentObject[name]['order'] = value.order;
-              // Handle position and nesting within $scope.model
-              parentModel[name] = {};
+              // Handle position and nesting within $scope.model if it does not exist
+              if (parentModel[name] == undefined) {
+                parentModel[name] = {};
+              }
               // Place top level element into $scope.formFieldsOrder
               $scope.pushIntoOrder(name, parentKey);
               // Indication of nested element or nested fields reached, recursively call function
@@ -61,8 +59,10 @@ angularApp.directive('formDirective', function ($rootScope, $document, $timeout)
             } else {
               // Field level reached, assign to $scope.formFields object 
               parentObject[name] = value;
-              // Assign field instance model to $scope.model 
-              parentModel[name] = value.model;
+              // Assign empty field instance model to $scope.model only if it does not exist
+              if (parentModel[name] == undefined) {
+                parentModel[name] = {};
+              }
               // Place field into $scope.formFieldsOrder
               $scope.pushIntoOrder(name, parentKey);
             }
@@ -82,14 +82,9 @@ angularApp.directive('formDirective', function ($rootScope, $document, $timeout)
 
       // Watching for the 'submitForm' event to be $broadcast from parent 'RuntimeController'
       $scope.$on('submitForm', function(event) {
-        console.log('submitting form...');
-
         // Make the model (populated template) available to the parent
-        $scope.$parent.model = $scope.model;
-
-        console.log($scope.model);
+        $scope.$parent.instance = $scope.model;
         $scope.checkSubmission = true;
-
       });
 
       $scope.$on('formHasRequiredFields', function(event) {
