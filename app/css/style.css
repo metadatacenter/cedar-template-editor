@@ -9564,6 +9564,15 @@ p.add-item {
   margin: 0;
   padding: 0;
 }
+@media (min-width: 768px) {
+  .left-sidebar .element-menu,
+  .left-sidebar .item-menu {
+    max-height: 266px;
+    overflow: scroll;
+    border-top: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+  }
+}
 .left-sidebar .element-menu > li,
 .left-sidebar .item-menu > li {
   list-style: none;
@@ -9620,9 +9629,11 @@ p.add-item {
 .left-sidebar .item-menu > li a.disabled:hover {
   background-color: transparent;
 }
-.left-sidebar .element-menu > li:last-of-type a,
-.left-sidebar .item-menu > li:last-of-type a {
-  border-bottom: 1px solid #ddd;
+@media (min-width: 768px) {
+  .left-sidebar .element-menu > li:first-of-type a,
+  .left-sidebar .item-menu > li:first-of-type a {
+    border-top: none;
+  }
 }
 .left-sidebar .more-items {
   margin-top: 30px;
@@ -9659,11 +9670,13 @@ p.add-item {
 }
 .left-sidebar .more-items .dropdown-menu {
   box-shadow: none;
-  border: none;
   width: 100%;
   position: relative;
   background-color: transparent;
   margin-bottom: 30px;
+  border-top: none;
+  border-left: none;
+  border-right: none;
 }
 .left-sidebar .more-items .dropdown-menu li:first-of-type a {
   border-top: none;
@@ -10801,4 +10814,19 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   opacity: 0;
   height: 0;
   padding: 0;
+}
+/*
+================================================
+=== Sticky left menu
+================================================
+*/
+.sidebar-inner {
+  padding-top: 0px;
+  -webkit-transition: padding-top 0.3s ease-in;
+          transition: padding-top 0.3s ease-in;
+}
+.sidebar-inner.sticky {
+  position: fixed;
+  top: 0px;
+  padding-top: 20px;
 }

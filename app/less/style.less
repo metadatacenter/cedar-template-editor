@@ -467,6 +467,13 @@ p.add-item {
     margin:0;
     padding:0;
 
+    @media(min-width:@screen-sm-min) {
+      max-height:266px;
+      overflow:scroll;
+      border-top:1px solid #ddd;
+      border-bottom:1px solid #ddd;
+    }
+
     > li {
       list-style:none;
 
@@ -514,9 +521,9 @@ p.add-item {
         }
       }
 
-      &:last-of-type {
-        a {
-          border-bottom:1px solid #ddd;
+      &:first-of-type a {
+        @media(min-width:@screen-sm-min) {
+          border-top:none
         }
       }
     }
@@ -558,11 +565,13 @@ p.add-item {
 
     .dropdown-menu {
       box-shadow:none;
-      border:none;
       width:100%;
       position:relative;
       background-color:transparent;
       margin-bottom:30px;
+      border-top:none;
+      border-left:none;
+      border-right:none;
 
       li:first-of-type a {
         border-top:none;
@@ -1750,6 +1759,22 @@ section.dashboard-elements {
   opacity:0;
   height:0;
   padding:0;
+}
+
+/*
+================================================
+=== Sticky left menu
+================================================
+*/
+.sidebar-inner {
+  padding-top:0px;
+  transition:padding-top 0.3s ease-in;
+
+  &.sticky {
+    position:fixed;
+    top:0px;
+    padding-top:20px;  
+  }
 }
 
 
