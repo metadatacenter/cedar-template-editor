@@ -7,12 +7,12 @@ angularApp.directive('fieldDirective', function($http, $compile, $document) {
     // When form submit event is fired, check field for simple validation
     $scope.$on('submitForm', function (event) {
       // If field is required and is empty, emit failed emptyRequiredField event
-      if ($scope.field.properties.info.required && !$scope.model['value']) {
+      if ($scope.field.properties.info.required_value && !$scope.model['value']) {
         // add this field instance the the emptyRequiredField array
         $scope.$emit('emptyRequiredField', ['add', $scope.field.properties.info.title]);
       }
       // If field is required and is not empty, check to see if it needs to be removed from empty fields array
-      if ($scope.field.properties.info.required && $scope.model['value']) {
+      if ($scope.field.properties.info.required_value && $scope.model['value']) {
         //remove from emptyRequiredField array
         $scope.$emit('emptyRequiredField', ['remove', $scope.field.properties.info.title]);
       }
