@@ -89,6 +89,67 @@
           </form>
         </div> <!-- /#form-item-config-section -->
 
+
+
+
+        <div id="cardinality-options"class="cardinality-options collapse" style="margin-top:-40px">
+        	<div class="form-group validation-pattern" style="width:300px;display:inline-block;margin-right:20px;height:60px;background-color#fff">
+        		<select ng-model="minItems" class="form-control" multiple data-max-options="1" title="Min" select-picker>
+        		  <option value="1">1</option>
+        		  <option value="2">2</option>
+        		  <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+              <option value="6">6</option>
+              <option value="7">7</option>
+              <option value="8">8</option>
+        		</select>
+        	</div><!-- /.form-group -->
+
+        	<div class="form-group validation-pattern"style="width:300px;height:60px;display:inline-block;background-color:#fff">
+        		<select ng-model="maxItems" class="form-control" multiple data-max-options="1" title="Max" select-picker>
+        			<option value="N">N</option>
+              <option value="1">1</option>
+        		  <option value="2">2</option>
+        		  <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+              <option value="6">6</option>
+              <option value="7">7</option>
+              <option value="8">8</option>
+        		</select>
+        	</div><!-- /.form-group -->
+
+
+          <!-- Cardinality Staging Area -->
+          <div id="form-item-config-section-staging">
+            <h4>Cardinaltiy Staging</h4>
+            Min: {{minItems}} - Max: {{maxItems}} - Total: {{numCardItems}}
+
+
+            <div class="add" ng-click="addCard()" style="display: inline-block;padding: 10px;background-color:#339933;border-radius: 50%;width: 35px;height: 36px;text-align: center;margin: 5px;color: white;cursor:pointer">
+          		<i class="fa fa-plus"></i>
+          	</div>
+            <span ng-click="addCard()" style="cursor:pointer">Add Field</span>
+
+
+            <!-- <div ng-if="stagingErrorMessages.length" class="alert alert-danger" role="alert">
+              <p ng-repeat="message in stagingErrorMessages"><i class="fa fa-exclamation-triangle"></i>{{message}}</p>
+            </div> -->
+            <form name="{{form.properties.info.title}}-staging" id="cardStage">
+              <div ng-repeat="field in cardStaging" class="animate-fade">
+                <field-directive field="field" directory="create" delete="deleteField(field)" add="addFieldToElement(field)" option="addOption(field)">
+                </field-directive>
+              </div>
+            </form>
+          </div> <!-- /#form-item-config-section -->
+
+
+        </div><!-- /.cardinatliy-options -->
+
+
+
+
         <div class="element-actions">
           <div ng-if="elementErrorMessages.length" class="alert alert-danger" role="alert">
             <p ng-repeat="message in elementErrorMessages"><i class="fa fa-exclamation-triangle"></i>{{message}}</p>

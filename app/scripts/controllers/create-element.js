@@ -6,12 +6,20 @@ angularApp.controller('CreateElementController', function ($rootScope, $scope, $
   $rootScope.pageTitle = 'Element Creator';
   // Create staging area to create/edit fields before they get added to the element
   $scope.staging = {};
+  // Create staging area for cardinaltiy
+  $scope.cardStaging = {};
   // Setting default false flag for $scope.favorite
   //$scope.favorite = false;
   // Empty $scope object used to store values that get converted to their json-ld counterparts on the $scope.element object
   $scope.volatile = {};
   // Setting form preview setting to false by default
   $scope.formPreview = false;
+
+  // Min/max items cardinatliy
+  $scope.minItems = 0;
+  $scope.maxItems = 0;
+  $scope.numCardItems = 0;
+
 
   // Using form service to load list of existing elements to embed into new element
   FormService.elementList().then(function(response) {
@@ -27,6 +35,7 @@ angularApp.controller('CreateElementController', function ($rootScope, $scope, $
       $scope.formPreview = true;
     });
   } else {
+    console.log('creating empty scope element property');
     // If we're not loading an existing element then let's create a new empty $scope.element property
     $scope.element = {
       "$schema": "http://json-schema.org/draft-04/schema#",
@@ -36,6 +45,8 @@ angularApp.controller('CreateElementController', function ($rootScope, $scope, $
       "description": "",
       //"favorite": $scope.favorite,
       "order": [],
+      "minItems": 1,
+      "maxItems": "N",
       "type": "object",
       "properties": {
         "@context": {
@@ -75,6 +86,9 @@ angularApp.controller('CreateElementController', function ($rootScope, $scope, $
     };
   }
 
+
+
+
   // Return true if element.properties object only contains default values
   //$scope.isPropertiesEmpty = function() {
   //  if ($scope.element) {
@@ -86,15 +100,18 @@ angularApp.controller('CreateElementController', function ($rootScope, $scope, $
       var keys = Object.keys($scope.element.properties);
       for (var i = 0; i < keys.length; i++) {
         if ($rootScope.ignoreKey(keys[i]) == false) {
+          console.log('properties not empty');
           return false;
         }
       }
+      console.log('properties empty');
       return true;
     }
   };
 
   // Add new field into $scope.staging object
   $scope.addFieldToStaging = function(fieldType) {
+    console.log('addFieldToStaging - ' + fieldType);
 
     var field = $rootScope.generateField(fieldType);
 
@@ -109,16 +126,17 @@ angularApp.controller('CreateElementController', function ($rootScope, $scope, $
       ];
     }
 
+    $scope.resetCardinaltiy();
+
     // empty staging object (only one field should be configurable at a time)
     $scope.staging = {};
     // put field into fields staging object
     $scope.staging[field['@id']] = field;
-
   };
 
   // Function to add additional options for radio, checkbox, and list fieldTypes
   $scope.addOption = function(field) {
-    //console.log(field.properties.value);
+    console.log('addOption (field): ' + JSON.stringify(field.properties.value, null, 2));
     var emptyOption = {
       "text": ""
     };
@@ -128,6 +146,8 @@ angularApp.controller('CreateElementController', function ($rootScope, $scope, $
 
   // Add newly configured field to the element object
   $scope.addFieldToElement = function(field) {
+
+    console.log('addFieldToElement ' + JSON.stringify(field, null, 2));
     // Setting return value from $scope.checkFieldConditions to array which will display error messages if any
     $scope.stagingErrorMessages = $scope.checkFieldConditions(field.properties);
 
@@ -153,7 +173,7 @@ angularApp.controller('CreateElementController', function ($rootScope, $scope, $
 
     // Field title is already required, if it's empty create error message
     if (!field.info.title.length) {
-      unmetConditions.push('"Enter Field Title" input cannot be left empty.'); 
+      unmetConditions.push('"Enter Field Title" input cannot be left empty.');
     }
 
     // If field is within multiple choice field types
@@ -184,6 +204,7 @@ angularApp.controller('CreateElementController', function ($rootScope, $scope, $
   //  });
   //};
   $scope.addExistingElement = function(element) {
+    console.log('adding existing element: ' + element);
     // Fetch existing element json data
     //FormService.element(element).then(function(response) {
 
@@ -305,6 +326,71 @@ angularApp.controller('CreateElementController', function ($rootScope, $scope, $
 
       }
     }
+  });
+
+  /**
+   * Add a new field item to the cardinaltiy staging area
+   * @return {[type]} [description]
+   */
+  $scope.addCard = function() {
+    if ($scope.numCardItems >= $scope.maxItems) {
+      alert('max items reached');
+      return;
+    } else {
+      var cardStage = angular.element( document.querySelector( '#cardStage' ) );
+      var currentMarkup = angular.element( document.querySelector( '[ng-include]' ) );
+
+      cardStage.append(currentMarkup);
+      $scope.numCardItems++;
+    }
+  };
+
+  /**
+   * Set the minimum value of the field items within the tempalte
+   * @param  {number} newValue - The minimum number of field items
+   * @return {bool}            - Success
+   */
+  $scope.setMinCardinality = function(newValue) {
+    var cardStage = angular.element( document.querySelector( '#cardStage' ) );
+    cardStage.html('');
+    $scope.element.cardMin = newValue;
+
+    // duplicate the field markup: x * newValue
+    var currentMarkup = angular.element( document.querySelector( '[ng-include]' ) );
+    for (var i=0; i < newValue; i++) {
+      cardStage.append(currentMarkup.html());
+    }
+    $scope.numCardItems = newValue; // set updated number of card items being staged
+    $scope.maxItems = $scope.minItems; // set max to be = (or greater) than min
+  };
+
+  // clear the card stage
+  $scope.resetCardinaltiy = function() {
+    $scope.minItems = 0;
+    $scope.maxItems = 0;
+    $scope.numCardItems = 0;
+    var cardStage = angular.element( document.querySelector( '#cardStage' ) );
+    cardStage.html('');
+  }
+
+  // watch for changes to min cardinatliy
+  $scope.$watch('minItems', function(newValue) {
+    if (newValue == undefined)
+      return; // exit if value not set
+
+    $scope.element.minItems = newValue;
+    $scope.setMinCardinality(newValue);
+  });
+
+  // watch for changes to max cardinaltiy
+  $scope.$watch('maxItems', function(newValue) {
+    if (newValue == undefined)
+      return; // exit if value not set
+
+    if (newValue < $scope.minItems) {
+      alert('Please pick a value greater than or equal to ' + ($scope.minItems));
+    }
+    $scope.element.maxItems = newValue;
   });
 
 });

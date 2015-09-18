@@ -10,6 +10,12 @@
     <input type="checkbox" id="advanced-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}" value="option1" data-toggle="collapse" data-target="#advanced-options-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}">
     <label for="advanced-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}">Advanced</label>
   </div><!-- /.checkbox-inline -->
+
+	<div class="checkbox checkbox-inline">
+    <input type="checkbox" id="cardinality-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}" value="option1" data-toggle="collapse" data-target="#cardinality-options">
+    <label for="cardinality-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}">Cardinality</label>
+  </div><!-- /.checkbox-inline -->
+
   <div class="save-options">
   	<div class="add" ng-click="add()">
   		<i class="fa fa-plus"></i>
@@ -40,6 +46,9 @@
 	  <input type="text" class="form-control" placeholder="Enter Error Message" aria-label="Advanced - Enter Error Message" ng-model="field.properties.info.advanced.error_message"  with-floating-label>
 	</div><!-- /.form-group -->
 </div><!-- /.advanced-options -->
+
+
+
 <div id="control-options-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}" class="controlled-term-options collapse">
  	<!--<div class="form-group floating-label-wrapper">-->
 	  <!--<input type="text" class="form-control" placeholder="Value Source" aria-label="Control Term Value Source" ng-model="field.properties.info.control_term.value_source"  with-floating-label>-->
