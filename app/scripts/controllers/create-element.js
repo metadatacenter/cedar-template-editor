@@ -19,7 +19,10 @@ angularApp.controller('CreateElementController', function ($rootScope, $scope, $
   $scope.minItems = 0;
   $scope.maxItems = 0;
   $scope.numCardItems = 0;
-  $scope.numItems = 1; // multi list tracking
+  $scope.numItems = 0; // multi list tracking
+  $scope.thisGUID = 0;
+
+  var titleList = [];
 
   $scope.elementID = $rootScope.idBasePath + $rootScope.generateGUID();
 
@@ -38,14 +41,26 @@ angularApp.controller('CreateElementController', function ($rootScope, $scope, $
     });
   } else {
 
+    var initElement = {
+      // "f1": {
 
-    $scope.elements = {
-      "f1": {
+        // "$schema": "http://json-schema.org/draft-04/schema#",
+        // "@id": $rootScope.idBasePath + $rootScope.generateGUID(),
+
         "type": "array",
         "items" : [],
-        "minItems" : 0,
-        "maxItems" : 0
-      }
+        "minItems" : 1,
+        "maxItems" : 1
+      // }
+    };
+
+    $scope.elements = {
+      // "f1": {
+      //   "type": "array",
+      //   "items" : [],
+      //   "minItems" : 0,
+      //   "maxItems" : 0
+      // }
     };
 
     // If we're not loading an existing element then let's create a new empty $scope.element property
@@ -57,8 +72,6 @@ angularApp.controller('CreateElementController', function ($rootScope, $scope, $
       "description": "",
       //"favorite": $scope.favorite,
       "order": [],
-      "minItems": 1,
-      "maxItems": "N",
       "type": "object",
       "properties": {
         "@context": {
@@ -120,14 +133,8 @@ angularApp.controller('CreateElementController', function ($rootScope, $scope, $
 
   // Add new field into $scope.staging object
   $scope.addFieldToStaging = function(fieldType) {
-    // if ($scope.numItems > 1) {
-      $scope.elements['f' + ($scope.numItems + 1)] = angular.copy($scope.staging);
-    // }
-    console.log("elements" + JSON.stringify($scope.elements))
-
-
+    console.log("elements before" + JSON.stringify($scope.elements,null,2))
     var field = $rootScope.generateField(fieldType);
-
     // If fieldtype can have multiple options, additional parameters on field object are necessary
     var optionInputs = ["@fio", "checkbox", "list"];
 
@@ -139,13 +146,24 @@ angularApp.controller('CreateElementController', function ($rootScope, $scope, $
       ];
     }
 
-    $scope.resetCardinaltiy();
-
     // empty staging object (only one field should be configurable at a time)
     $scope.staging = {};
     // put field into fields staging object
     $scope.staging[field['@id']] = field;
   };
+
+
+  /**
+   * Add an empty element json array to our elements list
+   */
+  $scope.addInitElement = function(title) {
+    console.log('num items: ' + $scope.numItems );
+    $scope.numItems++;
+    // $scope.elements['f' + ($scope.numItems)] = angular.copy(initElement);
+    $scope.elements[title] = angular.copy(initElement);
+  }
+
+
 
   // Function to add additional options for @fio, checkbox, and list fieldTypes
   $scope.addOption = function(field) {
@@ -173,11 +191,20 @@ angularApp.controller('CreateElementController', function ($rootScope, $scope, $
       // Adding field to the element.properties object
       $scope.element.properties[underscoreTitle] = field;
 
+      titleList.push(underscoreTitle);
+      console.log('test: ' + JSON.stringify(underscoreTitle,null,2));
 
-      // $scope.elements['f' + $scope.numItems].items = angular.copy($scope.element);
-      $scope.numItems++;
-      // console.log('elements: ' + JSON.stringify($scope.elements,null,2));
 
+      $scope.addInitElement(underscoreTitle);
+
+      // console.log('staging: ' + JSON.stringify($scope.staging,null,2));
+      // $scope.elements['f' + $scope.numItems].maxItems = $scope.maxItems;
+      // $scope.elements['f' + $scope.numItems].minItems = $scope.minItems;
+      // $scope.elements['f' + ($scope.numItems)].items = angular.copy($scope.staging);
+
+      $scope.elements[underscoreTitle].maxItems = $scope.maxItems;
+      $scope.elements[underscoreTitle].minItems = $scope.minItems;
+      $scope.elements[underscoreTitle].items = angular.copy($scope.staging);
 
       // Lastly, remove this field from the $scope.staging object
       delete $scope.staging[field['@id']];
@@ -223,8 +250,8 @@ angularApp.controller('CreateElementController', function ($rootScope, $scope, $
   //  });
   //};
   $scope.addExistingElement = function(element) {
-    console.log('adding existing element: ' + element);
-    // Fetch existing element json data
+    console.log('ading existing element: ' + JSON.stringify(element,null,2));
+    // Fetch existingelement json data
     //FormService.element(element).then(function(response) {
 
     // Add existing element to the $scope.element.properties object with it's title converted to an object key
@@ -238,6 +265,8 @@ angularApp.controller('CreateElementController', function ($rootScope, $scope, $
     // Add existing element to the $scope.element.properties object
     $scope.element.properties[titleKey] = element;
     //});
+
+    console.log('scope element: ' + JSON.stringify($scope.element,null,2));
   };
 
   // Delete field from $scope.staging object
@@ -296,13 +325,27 @@ angularApp.controller('CreateElementController', function ($rootScope, $scope, $
       $scope.$broadcast('initOrderArray');
       // Console.log full working form example on save, just to show demonstration of something happening
       console.log('saving element...');
-      console.log($scope.element);
+      console.log(JSON.stringify($scope.element,null,2));
       // Save element
       // Check if the element is already stored into the DB
       if ($routeParams.id == undefined) {
 
-        FormService.saveElement($scope.elements).then(function(response) {
-        // FormService.saveElement($scope.element).then(function(response) {
+
+    //////////
+        // remove old fields
+        for (var i=0; i < titleList.length; i++) {
+          delete $scope.element.properties[titleList[i]];
+          console.log('deleted: ' + titleList[i]);
+        }
+        // merge new elements structure to the properties object
+        $scope.element.properties = $rootScope.merge($scope.element.properties, $scope.elements);
+        console.log(JSON.stringify($scope.element.properties,null,2));
+    //////////
+
+        console.log('element: ' + JSON.stringify($scope.element,null,2));
+
+        // FormService.saveElement($scope.elements).then(function(response) {
+        FormService.saveElement($scope.element).then(function(response) {
           console.log(response);
           $scope.elementSuccessMessages.push('The element \"' + response.data.properties.info.title + '\" has been created.');
           // Reload element list
@@ -334,50 +377,19 @@ angularApp.controller('CreateElementController', function ($rootScope, $scope, $
   });
 
   // This function watches for changes in the properties.info.title field and autogenerates the schema title and description fields
-  $scope.$watch('element.properties.info.title', function(v){
-    if (!angular.isUndefined($scope.element)) {
-      var title = $scope.element.properties.info.title;
-      if (title.length > 0) {
-        $scope.element.title = $rootScope.capitalizeFirst(title) + ' element schema';
-        $scope.element.description = $rootScope.capitalizeFirst(title) + ' element schema autogenerated by the CEDAR Template Editor';
-      }
-      else {
-        $scope.element.title = "";
-        $scope.element.description = "";
-
-      }
-    }
-  });
-
-
-
-  // clear the card stage
-  $scope.resetCardinaltiy = function() {
-    $scope.minItems = 0;
-    $scope.maxItems = 0;
-    $scope.numCardItems = 0;
-    var cardStage = angular.element( document.querySelector( '#cardStage' ) );
-    cardStage.html('');
-  }
-
-  // watch for changes to min cardinatliy
-  $scope.$watch('minItems', function(newValue) {
-    if (newValue == undefined)
-      return; // exit if value not set
-
-    $scope.elements['f' + $scope.numItems].minItems = $scope.minItems;
-  });
-
-  // watch for changes to max cardinaltiy
-  $scope.$watch('maxItems', function(newValue) {
-    if (newValue == undefined)
-      return; // exit if value not set
-
-    if (newValue < $scope.minItems) {
-      alert('Please pick a value greater than or equal to ' + ($scope.minItems));
-      return;
-    }
-    $scope.elements['f' + $scope.numItems].maxItems = newValue;
-  });
+  // $scope.$watch('element.properties.info.title', function(v){
+  //   if (!angular.isUndefined($scope.element)) {
+  //     var title = $scope.element.properties.info.title;
+  //     if (title.length > 0) {
+  //       $scope.element.title = $rootScope.capitalizeFirst(title) + ' element schema';
+  //       $scope.element.description = $rootScope.capitalizeFirst(title) + ' element schema autogenerated by the CEDAR Template Editor';
+  //     }
+  //     else {
+  //       $scope.element.title = "";
+  //       $scope.element.description = "";
+  //
+  //     }
+  //   }
+  // });
 
 });

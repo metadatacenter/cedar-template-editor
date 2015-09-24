@@ -18,7 +18,7 @@ angularApp.directive('fieldDirective', function($http, $compile, $document) {
       }
     });
 
-    var field = $scope.field.properties.info
+    var field = $scope.field.f.items.properties.info
     // Checking each field to see if required, will trigger flag for use to see there is required fields
     if (field.required) {
       $scope.$emit('formHasRequiredFields');
@@ -32,7 +32,7 @@ angularApp.directive('fieldDirective', function($http, $compile, $document) {
 
     // Retrive appropriate field template file
     $scope.getTemplateUrl = function() {
-      return './views/directive-templates/field-' + $scope.directory + '/' + $scope.field.properties.info.input_type + '.html';
+      return './views/directive-templates/field-' + $scope.directory + '/' + $scope.field.f.items.properties.info.input_type + '.html';
     }
   }
 

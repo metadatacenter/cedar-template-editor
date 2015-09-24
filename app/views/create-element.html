@@ -37,6 +37,18 @@
 <div class="template-body">
   <div class="container">
     <div class="row">
+
+      <div class="text-right" style="padding-top:20px; padding-bottom:20px;">
+        <a ng-click="showRender = !showRender">Show Elements JSON</a>
+        <br/>
+        <a ng-click="addInitElement()">Add Empty</a>
+      </div>
+      
+      <div ng-show="showRender">
+        <pre>Elements({{numItems}}): {{ elements | json }}</pre>
+        <pre>Staging: {{ staging | json }}</pre>
+      </div>
+
       <div class="left-sidebar col-sm-3">
         <div class="sidebar-inner" sticky-directive>
           <p class="add-item">Add Item</p>
@@ -74,7 +86,9 @@
             <div class="empty-text" ng-show="isPropertiesEmpty()">
               <p>Add an existing element or create a new item.</p>
             </div>
+            <!-- <h1>Preview</h1> -->
             <form-preview form="element" ng-if="element"></form-preview>
+            <!-- <h1>End Preview</h1> -->
           </div><!-- /.form-preview -->
         </div> <!-- /#form-preview-section -->
 
