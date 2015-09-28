@@ -19,6 +19,12 @@ angularApp.directive('fieldDirective', function($http, $compile, $document) {
     });
 
     var field = $scope.field.properties.info
+
+
+    var minItems = $scope.field.minItems;
+    var maxItems = $scope.field.maxItems;
+    var scope = $scope;
+
     // Checking each field to see if required, will trigger flag for use to see there is required fields
     if (field.required) {
       $scope.$emit('formHasRequiredFields');
@@ -43,6 +49,9 @@ angularApp.directive('fieldDirective', function($http, $compile, $document) {
       directory: '@',
       field: '=',
       model: '=',
+      scope: '=',
+      minItems: '=',
+      maxItems: '=',
       delete: '&',
       add: '&',
       option: '&'

@@ -78,8 +78,8 @@ angularApp.directive('formDirective', function ($rootScope, $document, $timeout)
               $scope.pushIntoOrder(name, parentKey);
 
               // Add @type information to instance at the field level
-              if (!angular.isUndefined(value.properties['@type'])) {
-                var type = $rootScope.generateInstanceType(value.properties['@type']);
+              if (!angular.isUndefined(value.items.properties['@type'])) {
+                var type = $rootScope.generateInstanceType(value.items.properties['@type']);
                 if (type != null)
                   parentModel[name]['@type'] = type;
               }

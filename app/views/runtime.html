@@ -38,8 +38,17 @@
       <div class="right-body col-sm-9">
 
 
+      <pre ng-show="showMulti">multi: {{formListMulti | json}}</pre>
       <a ng-click="showMulti = !showMulti">Show Multi Element JSON</a>
       <pre ng-show="showMulti"><h2>formList multi</h2> {{ formListMulti | json}}</pre>
+
+
+    <br/>
+      <a ng-click="showForms = !showForms">form in formlist</a>
+
+      <div ng-show="showForms">
+        <pre ng-repeat="form in formList">{{ form | json}}</pre>
+      </div>
 
 
         <form-directive form="form" page="currentPage" model="instance"></form-directive>

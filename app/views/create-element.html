@@ -43,7 +43,7 @@
         <br/>
         <a ng-click="addInitElement()">Add Empty</a>
       </div>
-      
+
       <div ng-show="showRender">
         <pre>Elements({{numItems}}): {{ elements | json }}</pre>
         <pre>Staging: {{ staging | json }}</pre>
@@ -107,7 +107,7 @@
 
         <!-- Cardinaltiy Options -->
         <div id="cardinality-options"class="cardinality-options collapse" style="margin-top:-40px">
-        	<div class="form-group validation-pattern" style="width:300px;display:inline-block;margin-right:20px;height:60px;background-color#fff">
+        	<div class="form-group validation-pattern" style="width:330px;display:inline-block;margin-right:20px;height:60px;background-color:#fff">
         		<select ng-model="minItems" class="form-control" data-max-options="1" title="Min" select-picker>
         		  <option value="1">1</option>
         		  <option value="2">2</option>
@@ -120,7 +120,7 @@
         		</select>
         	</div><!-- /.form-group -->
 
-        	<div class="form-group validation-pattern"style="width:300px;height:60px;display:inline-block;background-color:#fff">
+        	<div class="form-group validation-pattern"style="width:330px;height:60px;display:inline-block;vertical-align:top;background-color:#fff">
         		<select ng-model="maxItems" class="form-control" title="Max" select-picker>
               <option value="1">1</option>
         		  <option value="2">2</option>

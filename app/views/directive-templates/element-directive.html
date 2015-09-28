@@ -14,6 +14,8 @@
   <div ng-if="preview" class="preview-edit-options" ng-include="'views/partials/preview-edit-options.html'"></div>
 </div>
 
+
+<!-- <h6>element: {{element | json }}</h6> -->
 <div ng-repeat="key in element['order']">
 	<span ng-if="element[key]" ng-init="field = element[key]; model = model[key]" ng-include="'nestedElement'"></span>
 </div>

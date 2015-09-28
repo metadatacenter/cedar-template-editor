@@ -127,15 +127,14 @@ angularApp.run(['$rootScope', function($rootScope) {
     };
 
 
-    
+
     return field;
   };
 
 
   // merge objects - angular.merge() is available in angular 1.4+ but breaks this appcliation
   $rootScope.merge = function(obj1,obj2) { // Our merge function
-    console.log('Merging: ' + JSON.stringify(obj1,null,2) + ' and ' + JSON.stringify(obj2,null,2));
-
+    // console.log('Merging: ' + JSON.stringify(obj1,null,2) + ' and ' + JSON.stringify(obj2,null,2));
     var result = {}; // return result
     for(var i in obj1){      // for every property in obj1
         if((i in obj2) && (typeof obj1[i] === "object") && (i !== null)){
@@ -178,4 +177,7 @@ angularApp.run(['$rootScope', function($rootScope) {
     }
   }
 
+  $rootScope.console = function(txt, label) {
+    console.log(label + ' ' + JSON.stringify(txt,null,2));
+  }
 }]);

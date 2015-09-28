@@ -1,11 +1,17 @@
+<h6>form</h6>
 <form name="{{form.properties.info.title}}" id="{{form['@id']}}" class="runtime" ng-class="{'validate': checkSubmission}" novalidate angular-validator>
   <!--Loop through top level "page" parameter in form element and call element-directive or field-directive with contents -->
   <div ng-repeat="item in page" class="animate-fade">
+    <h6>item:{{item}}</h6>
+    <h6>page:{{page}}</h6>
+
     <span ng-if="formFields[item]">
       <span ng-if="formFields[item].properties.info.input_type">
+        <h6>field</h6>
         <field-directive field="formFields[item]" model="model[item]" directory="render"></field-directive>
       </span>
       <div class="element-group full" ng-if="!formFields[item].properties.info.input_type">
+        <h6>elem</h6>
         <element-directive element="formFields[item]" key="item" preview="false" model="model[item]"></element-directive>
       </div>
     </span>
