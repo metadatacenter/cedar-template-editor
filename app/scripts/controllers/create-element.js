@@ -304,9 +304,5 @@ angularApp.controller('CreateElementController', function ($rootScope, $scope, $
       }
     }
   });
-
-  $scope.prueba = function() {
-    console.log($scope.field.properties['@type'].oneOf[0].enum);
-  }
-
+  
 });
