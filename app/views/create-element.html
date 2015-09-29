@@ -22,10 +22,10 @@
       <div class="right-body col-sm-9">
         <div id="element-controlled-term-container">
           <i class="cedar-svg-controll-term"></i>
-          <div class="form-group floating-label-wrapper element-controlled-term">
+          <div class="form-group floating-label-wrapper element-controlled-term" ng-controller="TermsController" ng-model="enumTemp">
             <!-- Here ng-model and ng-change are used in combination to bind 2 different models to the Controlled Term ID input field (source: http://stackoverflow.com/questions/13890331/how-to-bind-2-models-to-one-input-field-in-angular) -->
-            <input type="url" class="form-control" id="textfield1" placeholder="Controlled Term (Optional)" aria-label="Control Term Default Value" ng-model="element.properties['@type'].oneOf[0].enum[0]"
-                   ng-change="element.properties['@type'].oneOf[1].items.enum[0]=element.properties['@type'].oneOf[0].enum[0]" with-floating-label>
+            <input type="url" class="form-control" id="textfield1" placeholder="Controlled Term (Optional)" aria-label="Control Term Default Value" ng-model="enumTemp[0]"
+                   ng-change="updateEnum(element.properties)" with-floating-label>
           </div><!-- /.form-group -->
         </div> <!-- /#element-controlled-term-container -->
       </div> <!-- /.right-body -->

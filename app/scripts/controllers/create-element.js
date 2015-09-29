@@ -51,16 +51,14 @@ angularApp.controller('CreateElementController', function ($rootScope, $scope, $
           "oneOf": [
             {
               "type": "string",
-              "format": "uri",
-              "enum": []
+              "format": "uri"
             },
             {
               "type": "array",
               "minItems": 1,
               "items": {
                 "type": "string",
-                "format": "uri",
-                "enum": []
+                "format": "uri"
               },
               "uniqueItems": true
             }
@@ -306,5 +304,9 @@ angularApp.controller('CreateElementController', function ($rootScope, $scope, $
       }
     }
   });
+
+  $scope.prueba = function() {
+    console.log($scope.field.properties['@type'].oneOf[0].enum);
+  }
 
 });

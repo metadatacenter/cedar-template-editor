@@ -91,16 +91,16 @@ angularApp.run(['$rootScope', function($rootScope) {
           "oneOf": [
             {
               "type": "string",
-              "format": "uri",
-              "enum": []
+              "format": "uri"//,
+              //"enum": []
             },
             {
               "type": "array",
               "minItems": 1,
               "items": {
                 "type": "string",
-                "format": "uri",
-                "enum": []
+                "format": "uri"//,
+                //"enum": []
               },
               "uniqueItems": true
             }
