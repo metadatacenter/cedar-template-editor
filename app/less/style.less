@@ -27,6 +27,7 @@
 @white:#fff;
 @black:#000;
 @gray:#999;
+@gray2:#f4f4f7;
 @container-cedar-medium:952px;
 
 // Definine local mixins
@@ -301,13 +302,12 @@ i {
 
         p.type-label {
           width: 100%;
-          text-align: right;
+          text-align: left;
           font-family: 'aktiv-grotesk-std';
           font-weight: 400;
           text-transform: uppercase;
           color:@black;
-          margin-bottom:20px;
-
+          margin-bottom:6px;
           i {
             color:@brand-primary;
           }
@@ -319,6 +319,7 @@ i {
       display:inline-block;
       vertical-align:middle;
       width: calc(~"100% - 65px");
+      padding-left: 22px;
     }
 
     .preview-edit-options {
@@ -333,7 +334,7 @@ i {
         border-radius:50%;
         display:inline-block;
         vertical-align:middle;
-        margin:0 10px;
+        margin:0px 10px 0px 11px;
         .link-transition;
         cursor:pointer;
         text-align:left;
@@ -372,8 +373,11 @@ i {
 
     .element-group {
       width:100%;
-      border-bottom:2px dashed #ddd;
-      margin-bottom:30px;
+      //border-bottom:2px dashed #ddd;
+      border:1px solid #ddd;
+      padding:14px 14px 12px 16px;
+      margin-bottom:16px;
+      background-color:@gray2;
 
       &:not(.full) {
         padding-right:65px;
@@ -405,10 +409,9 @@ i {
       }
 
       .nested-element {
-        border:1px dashed #ddd;
-        padding:10px;
-        margin-top:15px;
-        margin-bottom:15px;
+        border:1px solid #ddd;
+        padding:0px 14px 0px 14px;
+        margin-bottom:16px;
       }
     }
   }
@@ -871,11 +874,11 @@ section.dashboard-elements {
 .template-body form {
 
   .form-group {
-    margin-bottom:40px;
+    margin-bottom:14px;
 
     &.radio-item,
     &.checkbox-item {
-      margin-bottom:30px;
+      margin-bottom:10px;
 
       .radio:nth-of-type(2) {
         //display:none;
@@ -886,20 +889,21 @@ section.dashboard-elements {
       border-radius:0;
       border-color:#ddd;
       box-shadow:none;
-      height:60px;
-      padding-top:22px;
-      font-size:16px;
+      height:40px;
+      padding-bottom:0px;
+      padding-top:16px;
+      font-size:14px;
       color:@black;
       transition:border-color 0.3s linear;
 
       &.empty ~ .floating-label {
-        top:25px;
+        top:12px;
       }
 
       &:focus ~ .floating-label, 
       &:not(.empty) ~ .floating-label,
       &.ng-invalid ~ .floating-label {
-        top:10px;
+        top:4px;
         left:8px;
         color:#bcbcc3;
       }
@@ -930,8 +934,8 @@ section.dashboard-elements {
 
     input[type=number]::-webkit-inner-spin-button, 
     input[type=number]::-webkit-outer-spin-button { 
-      -webkit-appearance: none; 
-      margin: 0; 
+      -webkit-appearance: none;
+      margin: 0px;
     }
 
     .input-indicator-icons {
@@ -956,15 +960,19 @@ section.dashboard-elements {
 
     .empty.ng-invalid ~ .input-indicator-icons .cedar-svg-help-circle {
       display:none;
+      margin-top: -7px;
     }
     .empty ~ .input-indicator-icons .cedar-svg-help-circle {
       display:block;
+      margin-top: -7px;
     }
     .ng-valid:not(.empty) ~ .input-indicator-icons .cedar-svg-check-circle {
       display:block;
+      margin-top: -7px;
     }
     .ng-invalid ~ .input-indicator-icons .cedar-svg-warning {
       display:block;
+      margin-top: -7px;
     }
 
     .warning-text {
@@ -1056,6 +1064,7 @@ section.dashboard-elements {
     }
 
     .input-group-addon {
+      padding: 2px 10px;
       border-radius:0;
       background-color:@white;
       cursor:pointer;
@@ -1095,9 +1104,9 @@ section.dashboard-elements {
 
   .date-field-title,
   .extra-label-context {
-    color:@black;
-    font-size:20px;
-    margin-bottom:20px;
+    color:@gray;
+    font-size:14px;
+    margin-bottom:8px;
   }
 
   h3.section-title {
@@ -1472,6 +1481,7 @@ section.dashboard-elements {
 .options-wrapper {
   width:100%;
   .clearfix();
+  padding-left: 20px;
 
   .multiple-container {
     width:50%;
@@ -1527,7 +1537,7 @@ section.dashboard-elements {
   .checkbox {
     position:absolute;
     right:0;
-    top:10px;
+    top:0px;
 
     input[type="checkbox"] {
       cursor:pointer;
@@ -1689,7 +1699,7 @@ section.dashboard-elements {
     border-radius:0;
     background-color:transparent;
     border-color:#ddd;
-    height:60px;
+    height:40px;
 
     &:focus {
       outline:none !important;
@@ -1773,7 +1783,7 @@ section.dashboard-elements {
   &.sticky {
     position:fixed;
     top:0px;
-    padding-top:20px;  
+    padding-top:20px;
   }
 }
 
