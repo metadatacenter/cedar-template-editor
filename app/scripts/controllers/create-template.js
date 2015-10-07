@@ -53,16 +53,14 @@ angularApp.controller('CreateTemplateController', function($rootScope, $scope, $
           "oneOf": [
             {
               "type": "string",
-              "format": "uri",
-              "enum": []
+              "format": "uri"
             },
             {
               "type": "array",
               "minItems": 1,
               "items": {
                 "type": "string",
-                "format": "uri",
-                "enum": []
+                "format": "uri"
               },
               "uniqueItems": true
             }
