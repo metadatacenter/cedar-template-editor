@@ -137,8 +137,13 @@ angularApp.controller('CreateElementController', function ($rootScope, $scope, $
       $scope.element.properties["@context"].properties[underscoreTitle].enum =
         new Array($rootScope.schemasBase + underscoreTitle);
       $scope.element.properties["@context"].required.push(underscoreTitle);
+
+      // Evaluate cardinality
+      $rootScope.cardinalizeField(field);
+
       // Adding field to the element.properties object
       $scope.element.properties[underscoreTitle] = field;
+
       // Lastly, remove this field from the $scope.staging object
       delete $scope.staging[field['@id']];
     }

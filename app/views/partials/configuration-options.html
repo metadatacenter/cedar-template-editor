@@ -3,12 +3,16 @@
 		<i class="cedar-svg-controll-term collapsed" data-toggle="collapse" data-target="#control-options-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}"></i>
 	</div>
 	<div class="checkbox checkbox-inline">
-    <input type="checkbox" id="required-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}" ng-model="field.properties.info.required_value">
+    <input type="checkbox" id="required-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}" ng-model="field.properties.info.required_value" />
     <label for="required-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}">Required</label>
   </div><!-- /.checkbox-inline -->
   <div class="checkbox checkbox-inline">
-    <input type="checkbox" id="advanced-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}" value="option1" data-toggle="collapse" data-target="#advanced-options-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}">
+    <input type="checkbox" id="advanced-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}" data-toggle="collapse" data-target="#advanced-options-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}" />
     <label for="advanced-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}">Advanced</label>
+  </div><!-- /.checkbox-inline -->
+  <div class="checkbox checkbox-inline">
+    <input type="checkbox" id="advanced-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}"  ng-model="$parent.element.properties.info.is_cardinal_field" />
+    <label for="cardinality-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}">Cardinality</label>
   </div><!-- /.checkbox-inline -->
   <div class="save-options">
   	<div class="add" ng-click="add()">
@@ -21,6 +25,39 @@
   		<i class="fa fa-times"></i>
   	</div>
   </div><!-- /.save-options -->
+ <div class="clearfix"></div>
+
+  <!-- Cardinaltiy Options -->
+  <div id="cardinality-options" class="cardinality-options" ng-show="$parent.element.properties.info.is_cardinal_field">
+      <div class="form-group validation-pattern pull-left min-items-option">
+          <label>Min:</label>
+          <select class="" data-max-options="1" ng-model="$parent.field.minItems">
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+              <option value="6">6</option>
+              <option value="7">7</option>
+              <option value="8">8</option>
+          </select>
+      </div><!-- /.form-group -->
+
+      <div class="form-group validation-pattern pull-left max-items-option">
+          <label>Max:</label>
+          <select class="" ng-model="$parent.field.maxItems">
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+              <option value="6">6</option>
+              <option value="7">7</option>
+              <option value="8">8</option>
+              <option value="N">N</option>
+          </select>
+      </div><!-- /.form-group -->
+  </div><!-- /.cardinality-options -->
 </div><!-- /.toggle-options -->
 <div id="advanced-options-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}"class="advanced-options collapse">
  	<div class="form-group validation-pattern floating-label-wrapper">

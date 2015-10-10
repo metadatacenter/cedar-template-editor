@@ -32,7 +32,11 @@ angularApp.directive('fieldDirective', function($http, $compile, $document) {
 
     // Retrive appropriate field template file
     $scope.getTemplateUrl = function() {
-      return './views/directive-templates/field-' + $scope.directory + '/' + $scope.field.properties.info.input_type + '.html';
+      var input_type = 'element';
+      if ($scope.field.properties.info.input_type) {
+        input_type = $scope.field.properties.info.input_type;
+      }
+      return './views/directive-templates/field-' + $scope.directory + '/' + input_type + '.html';
     }
   }
 

@@ -1,3 +1,5 @@
+/*jslint node: true */
+/*global angular */
 'use strict';
 
 angular.module('cedarFilters', [])

@@ -1,3 +1,5 @@
+/*jslint node: true */
+/*global angular */
 angularApp.run(['$rootScope', function($rootScope) {
 
   // Define global pageTitle variable for use
@@ -31,15 +33,15 @@ angularApp.run(['$rootScope', function($rootScope) {
   // Transform string to Pascal case
   $rootScope.toCamelCase = function(string) {
     return string.replace(/(?:^\w|[A-Z]|\b\w)/g, function(letter, index) {
-      return index == 0 ? letter.toLowerCase() : letter.toUpperCase();
+      return index === 0 ? letter.toLowerCase() : letter.toUpperCase();
     }).replace(/\s+/g, '');
-  }
+  };
 
   // Capitalize first letter
   $rootScope.capitalizeFirst = function(string) {
     string = string.toLowerCase();
     return string.substring(0,1).toUpperCase() + string.substring(1);
-  }
+  };
 
   // Returning true if the object key value in the properties object is of json-ld type '@' or if it corresponds to any of the reserved fields
   $rootScope.ignoreKey = function(key) {
@@ -133,7 +135,7 @@ angularApp.run(['$rootScope', function($rootScope) {
       context[key] = value.enum[0];
     });
    return context;
-  }
+  };
 
   // Function that generates the @type for an instance, based on the schema @type definition
   $rootScope.generateInstanceType = function(schemaType) {
@@ -141,7 +143,7 @@ angularApp.run(['$rootScope', function($rootScope) {
     if (angular.isUndefined(schemaType.oneOf[0].enum))
       return null;
     else {
-      if (schemaType.oneOf[0].enum.length == 0)
+      if (schemaType.oneOf[0].enum.length === 0)
         return null;
       // If only one type has been defined, a string is returned
       else if (schemaType.oneOf[0].enum.length == 1)
@@ -150,5 +152,44 @@ angularApp.run(['$rootScope', function($rootScope) {
       else
         return schemaType.oneOf[0].enum;
     }
-  }
+  };
+
+  $rootScope.cardinalizeField = function(field) {
+    if (field.maxItems || field.minItems) {
+      if (field.maxItems > 1 || field.minItems > 1) {
+        field.items = {
+          'type': field.type,
+          '@id': field['@id'],
+          '$schema': field.schema,
+          'title': field.properties.info.title,
+          'description': field.properties.description,
+          'properties': field.properties,
+          'required': field.required,
+          'additionalProperties': field.additionalProperties
+        };
+        field.type = 'array';
+
+        delete field.$schema;
+        delete field['@id'];
+        /**
+         * TODO: we should remove this per the example JSON,
+         * but the properties.info is depended on by other pieces of the app
+         * ex. template lookup.
+         */
+        // delete field.properties;
+        delete field.title;
+        delete field.description;
+        delete field.required;
+        delete field.additionalProperties;
+
+        return true;
+      }
+    }
+    return false;
+  };
+
+  $rootScope.console = function(txt, label) {
+    console.log(label + ' ' + JSON.stringify(txt,null,2));
+  };
+
 }]);

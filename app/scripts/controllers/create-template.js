@@ -122,6 +122,11 @@ angularApp.controller('CreateTemplateController', function($rootScope, $scope, $
 
   };
 
+  $scope.addElementToStaging = function(element) {
+    $scope.staging = {};
+    $scope.staging[element['@id']] = element;
+  };
+
   // Function to add additional options for radio, checkbox, and list fieldTypes
   $scope.addOption = function(field) {
     //console.log(field.properties.value);
@@ -145,8 +150,13 @@ angularApp.controller('CreateTemplateController', function($rootScope, $scope, $
       $scope.form.properties["@context"].properties[underscoreTitle].enum =
         new Array($rootScope.schemasBase + underscoreTitle);
       $scope.form.properties["@context"].required.push(underscoreTitle);
+
+      // Evaluate cardinality
+      $rootScope.cardinalizeField(field);
+
       // Adding field to the element.properties object
       $scope.form.properties[underscoreTitle] = field;
+
       // Lastly, remove this field from the $scope.staging object
       delete $scope.staging[field['@id']];
     }
