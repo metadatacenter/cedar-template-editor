@@ -93,8 +93,9 @@ angularApp.controller('CreateElementController', function ($rootScope, $scope, $
 
   // Add new field into $scope.staging object
   $scope.addFieldToStaging = function(fieldType) {
-
     var field = $rootScope.generateField(fieldType);
+    field.minItems = 1;
+    field.maxItems = 1;
 
     // If fieldtype can have multiple options, additional parameters on field object are necessary
     var optionInputs = ["radio", "checkbox", "list"];
@@ -111,7 +112,6 @@ angularApp.controller('CreateElementController', function ($rootScope, $scope, $
     $scope.staging = {};
     // put field into fields staging object
     $scope.staging[field['@id']] = field;
-
   };
 
   // Function to add additional options for radio, checkbox, and list fieldTypes
@@ -156,7 +156,7 @@ angularApp.controller('CreateElementController', function ($rootScope, $scope, $
 
     // Field title is already required, if it's empty create error message
     if (!field.info.title.length) {
-      unmetConditions.push('"Enter Field Title" input cannot be left empty.'); 
+      unmetConditions.push('"Enter Field Title" input cannot be left empty.');
     }
 
     // If field is within multiple choice field types
@@ -309,5 +309,5 @@ angularApp.controller('CreateElementController', function ($rootScope, $scope, $
       }
     }
   });
-  
+
 });

@@ -1,13 +1,16 @@
-<div ng-class="{'required': field.properties.info.required_value}">
-	<p class="extra-label-context">{{field.properties.info.title}}</p>
-	<div class="form-group radio-item" ng-repeat="(index, value) in field.properties.info.options">
-		<div class="radio radio-primary">
-	    <input 	type="radio" 
-	    				id="radio{{index}}" 
-	    				name="radio-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}"
-	    				ng-model="model.value"
-	    				value="{{field.properties.info.options[index]['text']}}">
-	    <label for="radio{{index}}">{{field.properties.info.options[index]['text']}}</label>
-	  </div><!-- /.radio -->
-	</div><!-- /.form-group -->
+<div class="fields fields-radio">
+	<div class="field-radio" ng-class="{'required': field.properties.info.required_value}" ng-repeat="value_element in model">
+		<p class="extra-label-context">{{field.properties.info.title}}</p>
+		<div class="form-group radio-item" ng-repeat="(index, value) in field.properties.info.options">
+			<div class="radio radio-primary">
+		    <input 	type="radio"
+		    				id="radio{{index}}"
+		    				name="radio-{{$parent.$index}}-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}"
+		    				ng-model="value_element.value"
+		    				value="{{field.properties.info.options[index]['text']}}">
+		    <label for="radio{{index}}">{{field.properties.info.options[index]['text']}}</label>
+		  </div><!-- /.radio -->
+		</div><!-- /.form-group -->
+		<div class="more-input-wrapper" ng-include="'views/partials/more-input-buttons.html'" ng-show="field.maxItems && (field.maxItems == 'N' || field.maxItems > 1)"></div>
+	</div>
 </div>

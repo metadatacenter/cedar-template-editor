@@ -11,12 +11,14 @@ angularApp.directive('selectPicker', function ($timeout) {
         $scope.model = $scope.$parent.model;
       }
 
-      var default_array = [];
+      var default_array;
       if ($scope.model != undefined) {
         // If returning to an already populated select list field, load selections
         default_array = $scope.model.value;
 
       } else if ($scope.field && $scope.field.properties.info.default_option) {
+        default_array = [];
+
         // If default select options have been set for an empty field
         var default_options = $scope.field.properties.info.default_option;
 
@@ -36,8 +38,11 @@ angularApp.directive('selectPicker', function ($timeout) {
           iconBase: 'fa',
           tickIcon: 'fa-check',
         });
-        // If defaults were loaded during field item configuration, manually load defaults into the selectpicker
-        $element.selectpicker('val', default_array);
+
+        if (default_array) {
+          // If defaults were loaded during field item configuration, manually load defaults into the selectpicker
+          $element.selectpicker('val', default_array);
+        }
       }, 25);
       $element.on('change', function() {
         // Runtime document output is 3 $scope levels above this directive at this point, passing the $model up to be

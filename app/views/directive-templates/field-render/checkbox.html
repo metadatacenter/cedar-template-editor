@@ -1,13 +1,16 @@
-<div ng-class="{'required': field.properties.info.required_value}">
-	<p class="extra-label-context">{{field.properties.info.title}}</p>
-	<div class="form-group checkbox-item" ng-repeat="(index, value) in field.properties.info.options">
+<div class="fields fields-checkbox">
+	<div class="field-checkbox" ng-class="{'required': field.properties.info.required_value}" ng-repeat="value_element in model">
+		<p class="extra-label-context">{{field.properties.info.title}}</p>
+		<div class="form-group checkbox-item" ng-repeat="(index, value) in field.properties.info.options">
 
-	  <div class="checkbox checkbox-primary">
-	    <input 	type="checkbox" 
-	    				id="checkbox{{index}}" 
-	    				ng-model="model.value[value.text]"
-	    				ng-checked="model.value[value.text]">
-	    <label for="checkbox{{index}}">{{field.properties.info.options[index]['text']}}</label>
-	  </div><!-- ./checkbox -->
-	</div><!-- /.form-group -->
+		  <div class="checkbox checkbox-primary">
+		    <input 	type="checkbox"
+		    				id="checkbox-{{$parent.$index}}-{{index}}"
+		    				ng-model="value_element.value[value.text]"
+		    				ng-checked="value_element.value[value.text]">
+		    <label for="checkbox-{{$parent.$index}}-{{index}}">{{field.properties.info.options[index]['text']}}</label>
+		  </div><!-- ./checkbox -->
+		</div><!-- /.form-group -->
+		<div class="more-input-wrapper" ng-include="'views/partials/more-input-buttons.html'" ng-show="field.maxItems && (field.maxItems == 'N' || field.maxItems > 1)"></div>
+	</div>
 </div>

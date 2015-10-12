@@ -1,18 +1,21 @@
-<div class="form-group floating-label-wrapper">
-  <input 	type="text" 
-  				class="form-control" 
-  				ng-class="{'required': field.properties.info.required_value}"
-  				id="telephone1" 
-  				placeholder="{{field.properties.info.title}}"
-  				aria-label="{{field.properties.info.description}}"
-  				ng-model="model.value"
-  				validate-on="blur"
-  				ng-pattern= "/(\W|^)[(]{0,1}\d{3}[)]{0,1}[\s-]{0,1}\d{3}[\s-]{0,1}\d{4}(\W|$)/"
-  				with-floating-label>
-  <span class="warning-text">{{field.properties.info.warning_text}}</span>
-  <div class="input-indicator-icons">
-    <i class="cedar-svg-help-circle" data-container="body" data-toggle="popover" data-placement="left" data-content="{{field.properties.info.description}}"></i>
-    <i class="cedar-svg-check-circle"></i>
-    <i class="cedar-svg-warning"></i>
-  </div><!-- /.input-indicator-icons -->
-</div><!-- /.form-group -->
+<div class="fields fields-phone-number">
+  <div class="form-group floating-label-wrapper" ng-repeat="value_element in model">
+    <input 	type="text"
+    				class="form-control"
+    				ng-class="{'required': field.properties.info.required_value}"
+    				id="telephone1"
+    				placeholder="{{field.properties.info.title}}"
+    				aria-label="{{field.properties.info.description}}"
+    				ng-model="value_element.value"
+    				validate-on="blur"
+    				ng-pattern= "/(\W|^)[(]{0,1}\d{3}[)]{0,1}[\s-]{0,1}\d{3}[\s-]{0,1}\d{4}(\W|$)/"
+    				with-floating-label>
+    <span class="warning-text">{{field.properties.info.warning_text}}</span>
+    <div class="input-indicator-icons">
+      <i class="cedar-svg-help-circle" data-container="body" data-toggle="popover" data-placement="left" data-content="{{field.properties.info.description}}"></i>
+      <i class="cedar-svg-check-circle"></i>
+      <i class="cedar-svg-warning"></i>
+    </div><!-- /.input-indicator-icons -->
+    <div class="more-input-wrapper" ng-include="'views/partials/more-input-buttons.html'" ng-show="field.maxItems && (field.maxItems == 'N' || field.maxItems > 1)"></div>
+  </div><!-- /.form-group -->
+</div>

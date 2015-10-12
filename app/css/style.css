@@ -10845,3 +10845,91 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
 .cardinality-options .min-items-option {
   margin-right: 10px;
 }
+#cardinality-options .bootstrap-select {
+  width: 80px;
+}
+.more-input-wrapper {
+  position: absolute;
+  left: 100%;
+  top: 0;
+  width: 110px;
+}
+.more-input-wrapper .add,
+.more-input-wrapper .remove {
+  height: 40px;
+  width: 40px;
+  margin: 0 0 0 10px;
+  border-radius: 50%;
+  display: inline-block;
+  vertical-align: middle;
+  -webkit-transition: all 0.3s ease 0.1s;
+          transition: all 0.3s ease 0.1s;
+  cursor: pointer;
+}
+.more-input-wrapper .add i,
+.more-input-wrapper .remove i {
+  color: #FFF;
+  font-size: 18px;
+}
+.more-input-wrapper .add {
+  background-color: #393;
+}
+.more-input-wrapper .add i {
+  margin: 12px 0 0 12px;
+}
+.more-input-wrapper .remove {
+  background-color: #333333;
+}
+.more-input-wrapper .remove i {
+  -webkit-transform: translate(13px, 11px);
+      -ms-transform: translate(13px, 11px);
+          transform: translate(13px, 11px);
+}
+.fields .form-group {
+  margin-right: 100px;
+}
+.fields-checkbox .field-checkbox,
+.fields-radio .field-radio,
+.fields-date .field-date,
+.fields-list .field-list {
+  position: relative;
+  margin-right: 100px;
+}
+.element-toggles {
+  text-align: center;
+}
+.element-toggles .element-toggle {
+  display: inline-block;
+  padding: 0 20px;
+  border-bottom: 5px solid #DDD;
+  border-color: #DDD;
+  cursor: pointer;
+  -webkit-transition: all 0.3s ease 0.1s;
+          transition: all 0.3s ease 0.1s;
+}
+.element-toggles .element-toggle.active {
+  border-color: #393;
+}
+.element-toggles .element-toggle span {
+  text-transform: uppercase;
+}
+.element-toggles .add-element {
+  display: inline-block;
+}
+.element-toggles .add-element .add {
+  height: 40px;
+  width: 40px;
+  margin: 0 0 0 10px;
+  border-radius: 50%;
+  display: inline-block;
+  vertical-align: middle;
+  -webkit-transition: all 0.3s ease 0.1s;
+          transition: all 0.3s ease 0.1s;
+  cursor: pointer;
+  background-color: #393;
+}
+.element-toggles .add-element .add i {
+  color: #FFF;
+  font-size: 18px;
+  margin: 12px 0 0 0;
+}

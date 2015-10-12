@@ -59,20 +59,36 @@ angularApp.directive('formDirective', function ($rootScope, $document, $timeout)
               parentObject[name] = {};
               // Push 'order' array through into parse object
               parentObject[name]['order'] = value.order;
+              parentObject[name].minItems = value.minItems;
+              parentObject[name].maxItems = value.maxItems;
+
+              var min = value.minItems || 1;
+
               // Handle position and nesting within $scope.model if it does not exist
               if (parentModel[name] == undefined) {
-                parentModel[name] = {};
+                parentModel[name] = [];
+                for (var i = 0; i < min; i++) {
+                  parentModel[name].push({});
+                }
               }
               // Place top level element into $scope.formFieldsOrder
               $scope.pushIntoOrder(name, parentKey);
-              // Indication of nested element or nested fields reached, recursively call function
-              $scope.parseForm(value.properties, parentObject[name], parentModel[name], name);
+
+              for (var i = 0; i < min; i++) {
+                // Indication of nested element or nested fields reached, recursively call function
+                $scope.parseForm(value.properties, parentObject[name], parentModel[name][i], name);
+              }
             } else {
+              var min = value.minItems || 1;
+
               // Field level reached, assign to $scope.formFields object
               parentObject[name] = value;
               // Assign empty field instance model to $scope.model only if it does not exist
               if (parentModel[name] == undefined) {
-                parentModel[name] = {};
+                parentModel[name] = [];
+                for (var i = 0; i < min; i++) {
+                  parentModel[name].push({});
+                }
               }
               // Place field into $scope.formFieldsOrder
               $scope.pushIntoOrder(name, parentKey);
@@ -80,8 +96,12 @@ angularApp.directive('formDirective', function ($rootScope, $document, $timeout)
               // Add @type information to instance at the field level
               if (!angular.isUndefined(value.properties['@type'])) {
                 var type = $rootScope.generateInstanceType(value.properties['@type']);
-                if (type != null)
-                  parentModel[name]['@type'] = type;
+                if (type != null) {
+                  for (var i = 0; i < min; i++) {
+                    parentModel[name][i]["@type"] = type;
+                  }
+                  // parentModel[name]['@type'] = type;
+                }
               }
             }
           }

@@ -104,6 +104,8 @@ angularApp.controller('CreateTemplateController', function($rootScope, $scope, $
   $scope.addFieldToStaging = function(fieldType) {
 
     var field = $rootScope.generateField(fieldType);
+    field.minItems = 1;
+    field.maxItems = 1;
 
     // If fieldtype can have multiple options, additional parameters on field object are necessary
     var optionInputs = ["radio", "checkbox", "list"];
@@ -125,6 +127,8 @@ angularApp.controller('CreateTemplateController', function($rootScope, $scope, $
   $scope.addElementToStaging = function(element) {
     $scope.staging = {};
     $scope.staging[element['@id']] = element;
+    element.minItems = 1;
+    element.maxItems = 1;
   };
 
   // Function to add additional options for radio, checkbox, and list fieldTypes
@@ -226,7 +230,7 @@ angularApp.controller('CreateTemplateController', function($rootScope, $scope, $
         delete $scope.form.properties[key];
       }
     });
-    // Broadcast the reset event which will trigger the emptying of formFields formFieldsOrder 
+    // Broadcast the reset event which will trigger the emptying of formFields formFieldsOrder
     $scope.$broadcast('resetForm');
   };
 

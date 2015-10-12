@@ -9,11 +9,27 @@
 	</div>
 </script>
 
-<div class="element-header">
-  <p class="element-name-label"><i class="cedar-svg-element"></i>{{key | keyToTitle}}</p>
-  <div ng-if="preview" class="preview-edit-options" ng-include="'views/partials/preview-edit-options.html'"></div>
-</div>
+<div class="element-toggles list">
+  <div class="element-toggle" ng-class="{active: selectedTab == $index}" ng-repeat="m in model" ng-click="selectTab($index)">
+    <span>{{key | keyToTitle}}</span>
+  </div>
+  <div class="add-element" ng-click="addElement()">
+    <div class="add" ng-show="model.length < element.maxItems">
+	    <i class="fa fa-plus"></i>
+	  </div>
+  </div>
+  <div class="clearfix"></div>
+</div> <!-- /.date-type-toggle -->
 
-<div ng-repeat="key in element['order']">
-	<span ng-if="element[key]" ng-init="field = element[key]; model = model[key]" ng-include="'nestedElement'"></span>
+<div class="elements">
+	<div class="element" ng-repeat="m in model" ng-class="['element-{{$index}}']" ng-show="selectedTab == $index">
+		<div class="element-header">
+		  <p class="element-name-label"><i class="cedar-svg-element"></i>{{key | keyToTitle}}</p>
+		  <div ng-if="preview" class="preview-edit-options" ng-include="'views/partials/preview-edit-options.html'"></div>
+		</div>
+
+		<div ng-repeat="key in element['order']">
+			<span ng-if="element[key]" ng-init="field = element[key]; model = m[key]" ng-include="'nestedElement'"></span>
+		</div>
+	</div>
 </div>

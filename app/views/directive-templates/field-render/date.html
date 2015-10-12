@@ -1,45 +1,50 @@
-<!-- {{field}} -->
-<p class="date-field-title">{{field.properties.info.title}}</p>
-<div class="form-group date-group floating-label-wrapper" ng-if="field.properties.info.date_type == 'single-date'">
-  <!--<span class="date-label">Select a date</span>-->
-  <div class='input-group' date-time-picker>
-    <input  type="text" 
-            class="form-control" 
-            ng-class="{'required': field.properties.info.required_value}"
-            placeholder="MM / DD / YYYY" 
-            aria-label="Select a date" 
-            ng-model="model.value"
-            with-floating-label/>
-    <span class="input-group-addon">
-        <i class="fa fa-calendar fa-2x"></i>
-    </span>
-  </div>
-</div><!-- /.form-group -->
+<div class="fields fields-date">
+  <div class="field field-date" ng-repeat="value_element in model">
+    <!-- {{field}} -->
+    <p class="date-field-title">{{field.properties.info.title}}</p>
+    <div class="form-group date-group floating-label-wrapper" ng-if="field.properties.info.date_type == 'single-date'">
+      <!--<span class="date-label">Select a date</span>-->
+      <div class='input-group' date-time-picker>
+        <input  type="text"
+                class="form-control"
+                ng-class="{'required': field.properties.info.required_value}"
+                placeholder="MM / DD / YYYY"
+                aria-label="Select a date"
+                ng-model="value_element.value"
+                with-floating-label/>
+        <span class="input-group-addon">
+            <i class="fa fa-calendar fa-2x"></i>
+        </span>
+      </div>
+    </div><!-- /.form-group -->
 
-<div class="form-group date-group range floating-label-wrapper" ng-if="field.properties.info.date_type == 'date-range'">
-  <span class="date-label">Select a date range</span>
-  <div class='input-group' date-time-picker>
-    <input  type="text" 
-            class="form-control" 
-            ng-class="{'required': field.properties.info.required_value}"
-            placeholder="MM / DD / YYYY" 
-            aria-label="Select a start date" 
-            ng-model="model.value.start"
-            with-floating-label/>
-    <span class="input-group-addon">
-        <i class="fa fa-calendar fa-2x"></i>
-    </span>
+    <div class="form-group date-group range floating-label-wrapper" ng-if="field.properties.info.date_type == 'date-range'">
+      <span class="date-label">Select a date range</span>
+      <div class='input-group' date-time-picker>
+        <input  type="text"
+                class="form-control"
+                ng-class="{'required': field.properties.info.required_value}"
+                placeholder="MM / DD / YYYY"
+                aria-label="Select a start date"
+                ng-model="value_element.value.start"
+                with-floating-label/>
+        <span class="input-group-addon">
+            <i class="fa fa-calendar fa-2x"></i>
+        </span>
+      </div>
+      <div class='input-group' date-time-picker>
+        <input  type="text"
+                class="form-control"
+                ng-class="{'required': field.properties.info.required_value}"
+                placeholder="MM / DD / YYYY"
+                aria-label="Select a end date"
+                ng-model="value_element.value.end"
+                with-floating-label/>
+        <span class="input-group-addon">
+            <i class="fa fa-calendar fa-2x"></i>
+        </span>
+      </div>
+    </div><!-- /.form-group -->
+    <div class="more-input-wrapper" ng-include="'views/partials/more-input-buttons.html'" ng-show="field.maxItems && (field.maxItems == 'N' || field.maxItems > 1)"></div>
   </div>
-  <div class='input-group' date-time-picker>
-    <input  type="text" 
-            class="form-control" 
-            ng-class="{'required': field.properties.info.required_value}"
-            placeholder="MM / DD / YYYY" 
-            aria-label="Select a end date" 
-            ng-model="model.value.end"
-            with-floating-label/>
-    <span class="input-group-addon">
-        <i class="fa fa-calendar fa-2x"></i>
-    </span>
-  </div>
-</div><!-- /.form-group -->
+</div>
