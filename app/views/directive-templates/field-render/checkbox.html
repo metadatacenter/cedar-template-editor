@@ -5,10 +5,10 @@
 
 		  <div class="checkbox checkbox-primary">
 		    <input 	type="checkbox"
-		    				id="checkbox-{{$parent.$index}}-{{index}}"
+		    				id="checkbox-{{uuid}}-{{$parent.$index}}-{{index}}"
 		    				ng-model="value_element.value[value.text]"
 		    				ng-checked="value_element.value[value.text]">
-		    <label for="checkbox-{{$parent.$index}}-{{index}}">{{field.properties.info.options[index]['text']}}</label>
+		    <label for="checkbox-{{uuid}}-{{$parent.$index}}-{{index}}">{{field.properties.info.options[index]['text']}}</label>
 		  </div><!-- ./checkbox -->
 		</div><!-- /.form-group -->
 		<div class="more-input-wrapper" ng-include="'views/partials/more-input-buttons.html'" ng-show="field.maxItems && (field.maxItems == 'N' || field.maxItems > 1)"></div>

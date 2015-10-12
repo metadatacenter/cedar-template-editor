@@ -19,7 +19,7 @@ angularApp.run(['$rootScope', function($rootScope) {
 
   // Simple function to check if an object is empty
   $rootScope.isEmpty = function(obj) {
-    return Object.keys(obj).length;
+    return Object.keys(obj).length == 0;
   };
 
   // Tranform string to become object key

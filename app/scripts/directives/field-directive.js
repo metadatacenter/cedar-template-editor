@@ -1,6 +1,6 @@
 'use strict';
 
-angularApp.directive('fieldDirective', function($http, $compile, $document) {
+angularApp.directive('fieldDirective', function($rootScope, $http, $compile, $document) {
 
   var linker = function($scope, $element, attrs) {
 
@@ -24,9 +24,17 @@ angularApp.directive('fieldDirective', function($http, $compile, $document) {
                   hasValue = hasValue || !!ve;
                 });
 
-                allRequiredFieldsAreFilledIn = hasValue;
-              } else if (angular.isObject(valueElement.value) && $scope.isEmpty(valueElement.value)) {
-                allRequiredFieldsAreFilledIn = false;
+                if (!hasValue) {
+                  allRequiredFieldsAreFilledIn = false;
+                }
+              } else if (angular.isObject(valueElement.value)) {
+                if ($rootScope.isEmpty(valueElement.value)) {
+                  allRequiredFieldsAreFilledIn = false;
+                } else if ($scope.field.properties.info.date_type == "date-range") {
+                  if (!valueElement.value.start || !valueElement.value.end) {
+                    allRequiredFieldsAreFilledIn = false;
+                  }
+                }
               }
             });
           }
@@ -36,14 +44,14 @@ angularApp.directive('fieldDirective', function($http, $compile, $document) {
 
         if (!allRequiredFieldsAreFilledIn) {
           // add this field instance the the emptyRequiredField array
-          $scope.$emit('emptyRequiredField', ['add', $scope.field.properties.info.title]);
+          $scope.$emit('emptyRequiredField', ['add', $scope.field.properties.info.title, $scope.uuid]);
         }
       }
 
       // If field is required and is not empty, check to see if it needs to be removed from empty fields array
       if ($scope.field.properties.info.required_value && allRequiredFieldsAreFilledIn) {
         //remove from emptyRequiredField array
-        $scope.$emit('emptyRequiredField', ['remove', $scope.field.properties.info.title]);
+        $scope.$emit('emptyRequiredField', ['remove', $scope.field.properties.info.title, $scope.uuid]);
       }
     });
 
@@ -66,7 +74,7 @@ angularApp.directive('fieldDirective', function($http, $compile, $document) {
             }
           } else {
             for (var i = 0; i < min; i++) {
-              $scope.model[i]['value'] = "";
+              $scope.model[i]['value'] = {};
             }
           }
         } else {
@@ -82,6 +90,8 @@ angularApp.directive('fieldDirective', function($http, $compile, $document) {
         }
       }
     }
+
+    $scope.uuid = $rootScope.generateGUID();
 
     // Retrive appropriate field template file
     $scope.getTemplateUrl = function() {

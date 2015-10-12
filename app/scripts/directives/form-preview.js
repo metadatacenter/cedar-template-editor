@@ -6,6 +6,7 @@ angularApp.directive('formPreview', function ($rootScope, $document, $timeout) {
 
       // $scope.formFields object to loop through to call field-directive
       $scope.formFields = {};
+      $scope.model = $scope.model || {};
       // $scope.formFieldsOrder array to loop over for proper ordering of items/elements
       if ($scope.form.order && $scope.form.order.length) {
         // If form already has order array, set iterator to existing array (loading pre-existing element)
@@ -34,6 +35,8 @@ angularApp.directive('formPreview', function ($rootScope, $document, $timeout) {
         delete $scope.form.properties['@context'].properties[key];
         $scope.form.properties["@context"].required.splice($scope.form.properties["@context"].required.indexOf(key), 1);
 
+        delete $scope.model[key];
+
         // Remove selected field from $scope.formFields
         delete $scope.formFields[key];
 
@@ -55,7 +58,7 @@ angularApp.directive('formPreview', function ($rootScope, $document, $timeout) {
         }
       };
 
-      $scope.parseForm = function(iterator, parentObject, parentKey) {
+      $scope.parseForm = function(iterator, parentObject, parentModel, parentKey) {
         angular.forEach(iterator, function(value, name) {
           if (!$rootScope.ignoreKey(name)) {
             if (value.hasOwnProperty('order')) {
@@ -64,12 +67,39 @@ angularApp.directive('formPreview', function ($rootScope, $document, $timeout) {
               parentObject[name] = {};
               // Push 'order' array through into parse object
               parentObject[name]['order'] = value.order;
+              parentObject[name].minItems = value.minItems;
+              parentObject[name].maxItems = value.maxItems;
+
+              var min = value.minItems || 1;
+
+              // Handle position and nesting within $scope.model if it does not exist
+              if (parentModel[name] == undefined) {
+                parentModel[name] = [];
+                for (var i = 0; i < min; i++) {
+                  parentModel[name].push({});
+                }
+              }
+
               $scope.pushIntoOrder(name, parentKey);
-              // Indication of nested element or nested fields reached, recursively call function
-              $scope.parseForm(value.properties, parentObject[name], name);
+
+              for (var i = 0; i < min; i++) {
+                // Indication of nested element or nested fields reached, recursively call function
+                $scope.parseForm(value.properties, parentObject[name], parentModel[name][i], name);
+              }
             } else {
-              // Field level reached, assign to $scope.formFields object 
+              var min = value.minItems || 1;
+
+              // Field level reached, assign to $scope.formFields object
               parentObject[name] = value;
+
+              // Assign empty field instance model to $scope.model only if it does not exist
+              if (parentModel[name] == undefined) {
+                parentModel[name] = [];
+                for (var i = 0; i < min; i++) {
+                  parentModel[name].push({});
+                }
+              }
+
               $scope.pushIntoOrder(name, parentKey);
             }
           }
@@ -109,7 +139,7 @@ angularApp.directive('formPreview', function ($rootScope, $document, $timeout) {
       // Using Angular's $watch function to call $scope.parseForm on form.properties initial population and on update
       $scope.$watch('form.properties', function () {
         $scope.addPopover();
-        $scope.parseForm($scope.form.properties, $scope.formFields);
+        $scope.parseForm($scope.form.properties, $scope.formFields, $scope.model);
       }, true);
     },
     templateUrl: './views/directive-templates/form-preview.html',

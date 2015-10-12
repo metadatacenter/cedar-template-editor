@@ -21,7 +21,7 @@ angularApp.directive('elementDirective', function () {
           var seed = angular.copy(scope.model[0]);
           angular.forEach(seed, function(model, key) {
             for (var i = 0; i < model.length; i++) {
-              if (typeof(model[i] == "string")) {
+              if (typeof(model[i]["value"] == "string")) {
                 model[i]["value"] = "";
               } else {
                 model[i]["value"] = {};
