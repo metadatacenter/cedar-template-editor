@@ -40,6 +40,14 @@ angularApp.directive('formDirective', function ($rootScope, $document, $timeout)
       };
 
       $scope.parseForm = function(iterator, parentObject, parentModel, parentKey) {
+        var ctx;
+        angular.forEach(iterator, function(value, name) {
+          // Add @context information to instance
+          if (name == '@context') {
+            ctx = $rootScope.generateInstanceContext(value);
+          }
+        });
+
         angular.forEach(iterator, function(value, name) {
           // Add @context information to instance
           if (name == '@context') {
@@ -88,7 +96,12 @@ angularApp.directive('formDirective', function ($rootScope, $document, $timeout)
               if (parentModel[name] == undefined) {
                 parentModel[name] = [];
                 for (var i = 0; i < min; i++) {
-                  parentModel[name].push({});
+                  var obj = {};
+                  if (ctx && ctx.value) {
+                    obj["@context"] = {value: ctx.value};
+                  }
+
+                  parentModel[name].push(obj);
                 }
               }
 
@@ -98,11 +111,8 @@ angularApp.directive('formDirective', function ($rootScope, $document, $timeout)
               // Add @type information to instance at the field level
               if (!angular.isUndefined(value.properties['@type'])) {
                 var type = $rootScope.generateInstanceType(value.properties['@type']);
-                if (type != null) {
-                  for (var i = 0; i < min; i++) {
-                    parentModel[name][i]["@type"] = type;
-                  }
-                  // parentModel[name]['@type'] = type;
+                for (var i = 0; i < min; i++) {
+                  parentModel[name][i]["@type"] = type || "";
                 }
               }
             }

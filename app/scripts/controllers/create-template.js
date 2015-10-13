@@ -145,6 +145,7 @@ angularApp.controller('CreateTemplateController', function($rootScope, $scope, $
   $scope.addFieldToForm = function(field) {
     // Setting return value from $scope.checkFieldConditions to array which will display error messages if any
     $scope.stagingErrorMessages = $scope.checkFieldConditions(field.properties);
+    $scope.stagingErrorMessages = jQuery.merge($scope.stagingErrorMessages, $rootScope.checkFieldCardinalityOptions(field));
 
     if ($scope.stagingErrorMessages.length == 0) {
       // Converting title for irregular character handling

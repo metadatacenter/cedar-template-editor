@@ -19,7 +19,7 @@ angularApp.run(['$rootScope', function($rootScope) {
 
   // Simple function to check if an object is empty
   $rootScope.isEmpty = function(obj) {
-    return Object.keys(obj).length == 0;
+    return Object.keys(obj).length === 0;
   };
 
   // Tranform string to become object key
@@ -152,6 +152,18 @@ angularApp.run(['$rootScope', function($rootScope) {
       else
         return schemaType.oneOf[0].enum;
     }
+  };
+
+  $rootScope.checkFieldCardinalityOptions = function(field) {
+    var unmetConditions = [];
+
+    if (field.minItems && field.maxItems &&
+        field.maxItems != "N" &&
+        parseInt(field.minItems) > parseInt(field.maxItems)) {
+      unmetConditions.push('Min cannot be greater than Max.');
+    }
+
+    return unmetConditions;
   };
 
   $rootScope.cardinalizeField = function(field) {

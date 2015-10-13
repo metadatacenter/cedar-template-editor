@@ -17,12 +17,14 @@ angularApp.directive('elementDirective', function () {
         scope.selectedTab = index;
       }
       scope.addElement = function() {
-        if (scope.model.length < scope.element.maxItems) {
+        if (scope.element.maxItems == "N" || scope.model.length < scope.element.maxItems) {
           var seed = angular.copy(scope.model[0]);
           angular.forEach(seed, function(model, key) {
             for (var i = 0; i < model.length; i++) {
               if (typeof(model[i]["value"] == "string")) {
                 model[i]["value"] = "";
+              } else if (angular.isArray(model[i]["value"])) {
+                model[i]["value"] = [];
               } else {
                 model[i]["value"] = {};
               }

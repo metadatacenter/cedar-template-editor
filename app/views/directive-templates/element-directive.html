@@ -4,7 +4,9 @@
 
 		<p class="element-name-label"><i class="cedar-svg-element"></i>{{key | keyToTitle}}</p>
 		<div ng-repeat="key in field['order']">
-			<span ng-if="field[key]" ng-init="field = field[key]; model = model[key]" ng-include="'nestedElement'"></span>
+      <div class="element" ng-repeat="m1 in model">
+			 <span ng-if="field[key]" ng-init="field = field[key]; model = m1[key]" ng-include="'nestedElement'"></span>
+      </div>
 		</div>
 	</div>
 </script>
@@ -14,7 +16,7 @@
     <span>{{key | keyToTitle}}</span>
   </div>
   <div class="add-element" ng-click="addElement()">
-    <div class="add" ng-show="model.length < element.maxItems">
+    <div class="add" ng-show="element.maxItems == 'N' || model.length < element.maxItems">
 	    <i class="fa fa-plus"></i>
 	  </div>
   </div>

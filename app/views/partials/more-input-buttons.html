@@ -1,5 +1,5 @@
 <div class="more-input-buttons">
-  <div class="add" ng-click="addMoreInput()" ng-show="$parent.model.length < $parent.field.maxItems">
+  <div class="add" ng-click="addMoreInput()" ng-show="$parent.field.maxItems == 'N' || $parent.model.length < $parent.field.maxItems">
     <i class="fa fa-plus"></i>
   </div>
 

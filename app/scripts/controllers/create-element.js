@@ -128,6 +128,7 @@ angularApp.controller('CreateElementController', function ($rootScope, $scope, $
   $scope.addFieldToElement = function(field) {
     // Setting return value from $scope.checkFieldConditions to array which will display error messages if any
     $scope.stagingErrorMessages = $scope.checkFieldConditions(field.properties);
+    $scope.stagingErrorMessages = jQuery.merge($scope.stagingErrorMessages, $rootScope.checkFieldCardinalityOptions(field));    
 
     if ($scope.stagingErrorMessages.length == 0) {
       // Converting title for irregular character handling
@@ -145,7 +146,7 @@ angularApp.controller('CreateElementController', function ($rootScope, $scope, $
       $scope.element.properties[underscoreTitle] = field;
 
       // Lastly, remove this field from the $scope.staging object
-      delete $scope.staging[field['@id']];
+      $scope.staging = {};
     }
   };
 
@@ -201,6 +202,13 @@ angularApp.controller('CreateElementController', function ($rootScope, $scope, $
     // Add existing element to the $scope.element.properties object
     $scope.element.properties[titleKey] = element;
     //});
+  };
+
+  $scope.addElementToStaging = function(element) {
+    $scope.staging = {};
+    $scope.staging[element['@id']] = element;
+    element.minItems = 1;
+    element.maxItems = 1;
   };
 
   // Delete field from $scope.staging object

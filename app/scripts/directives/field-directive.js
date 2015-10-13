@@ -64,7 +64,6 @@ angularApp.directive('fieldDirective', function($rootScope, $http, $compile, $do
     // If a default value is set from the field item configuration, set $scope.model to its value
     if ($scope.directory == 'render') {
       if ($scope.model) {
-        // $scope.model['value'] = [];
         var min = $scope.field.minItems || 1;
 
         if (['checkbox'].indexOf(field.input_type) != -1) {
@@ -78,12 +77,13 @@ angularApp.directive('fieldDirective', function($rootScope, $http, $compile, $do
             }
           }
         } else {
-          if (field.default_option) {
-            for (var i = 0; i < min; i++) {
-              $scope.model[i]['value'] = field.default_option;
-            }
-          } else {
-            for (var i = 0; i < min; i++) {
+          for (var i = 0; i < min; i++) {
+            if (['checkbox'].indexOf(field.input_type) >= 0 ||
+                ['date'].indexOf(field.input_type) >= 0 && field.date_type == "date-range") {
+              $scope.model[i]['value'] = {};
+            } else if (['list'].indexOf(field.input_type) >= 0) {
+              $scope.model[i]['value'] = [];
+            } else {
               $scope.model[i]['value'] = "";
             }
           }
@@ -105,17 +105,17 @@ angularApp.directive('fieldDirective', function($rootScope, $http, $compile, $do
     $scope.addMoreInput = function() {
       if ($scope.field.maxItems == "N" || $scope.model.length < $scope.field.maxItems) {
         var seed = angular.copy($scope.model[0]);
-        if (['checkbox'].indexOf(field.input_type) != -1) {
-          if (field.default_option) {
-            seed["value"] = field.default_option;
-          } else {
-            seed["value"] = {};
-          }
+
+        if (field.default_option) {
+          seed["value"] = field.default_option;
         } else {
-          if (field.default_option) {
-            seed["value"] = field.default_option;
+          if (['checkbox'].indexOf(field.input_type) >= 0 ||
+              ['date'].indexOf(field.input_type) >= 0 && field.date_type == "date-range") {
+            seed['value'] = {};
+          } else if (['list'].indexOf(field.input_type) >= 0) {
+            seed['value'] = [];
           } else {
-            seed["value"] = "";
+            seed['value'] = "";
           }
         }
 
