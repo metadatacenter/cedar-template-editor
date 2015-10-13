@@ -63,18 +63,12 @@ angularApp.directive('fieldDirective', function($rootScope, $http, $compile, $do
 
     // If a default value is set from the field item configuration, set $scope.model to its value
     if ($scope.directory == 'render') {
-      if ($scope.model) {
+      if ($scope.model && $scope.model.length == 0) {
         var min = $scope.field.minItems || 1;
 
-        if (['checkbox'].indexOf(field.input_type) != -1) {
-          if (field.default_option) {
-            for (var i = 0; i < min; i++) {
-              $scope.model[i]["value"] = field.default_option;
-            }
-          } else {
-            for (var i = 0; i < min; i++) {
-              $scope.model[i]['value'] = {};
-            }
+        if (field.default_option) {
+          for (var i = 0; i < min; i++) {
+            $scope.model[i]["value"] = field.default_option;
           }
         } else {
           for (var i = 0; i < min; i++) {

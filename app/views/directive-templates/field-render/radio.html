@@ -7,7 +7,7 @@
 		    				id="radio-{{uuid}}-{{$parent.$index}}-{{index}}"
 		    				name="radio-{{uuid}}-{{$parent.$index}}-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}"
 		    				ng-model="value_element.value"
-		    				value="{{field.properties.info.options[index]['text']}}">
+		    				ng-value="field.properties.info.options[index]['text']">
 		    <label for="radio-{{uuid}}-{{$parent.$index}}-{{index}}">{{field.properties.info.options[index]['text']}}</label>
 		  </div><!-- /.radio -->
 		</div><!-- /.form-group -->
