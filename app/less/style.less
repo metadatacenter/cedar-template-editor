@@ -1813,25 +1813,24 @@ section.dashboard-elements {
     vertical-align: middle;
     transition: all 0.3s ease 0.1s;
     cursor: pointer;
+    border: none;
 
     i {
       color: #FFF;
       font-size: 18px;
+      line-height: 40px;
     }
   }
 
   .add {
     background-color: #393;
-    i {
-      margin: 12px 0 0 12px;
+    &:disabled {
+      opacity: 0.5;
     }
   }
 
   .remove {
     background-color: #333333;
-    i {
-      transform: translate(13px, 11px);
-    }
   }
 }
 
@@ -1851,6 +1850,7 @@ section.dashboard-elements {
 
 .element-toggles {
   text-align: center;
+  margin: 10px 0;
   .element-toggle {
     display: inline-block;
     padding: 0 20px;
@@ -1879,13 +1879,40 @@ section.dashboard-elements {
       display: inline-block;
       vertical-align: middle;
       transition: all 0.3s ease 0.1s;
-      cursor: pointer;
       background-color: #393;
+      border: none;
 
       i {
         color: #FFF;
         font-size: 18px;
-        margin: 12px 0 0 0;
+        line-height: 40px;
+      }
+
+      &:disabled {
+        opacity: 0.5;
+      }
+    }
+  }
+}
+
+#form-item-config-section {
+  .adding-element {
+    .preview-edit-options {
+      display: none;
+    }
+
+    .definition-inputs, .type-label, .toggle-json, .showed-json {
+      display: none;
+    }
+
+    .configuration-options {
+      .checkbox-required, .checkbox-advanced, .toggle-controlled-term {
+        display: none;
+      }
+
+      .checkbox-cardinality {
+        margin-left: 0;
+        margin-top: 10px;
       }
     }
   }

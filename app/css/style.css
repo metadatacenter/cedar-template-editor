@@ -10865,25 +10865,22 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   -webkit-transition: all 0.3s ease 0.1s;
           transition: all 0.3s ease 0.1s;
   cursor: pointer;
+  border: none;
 }
 .more-input-wrapper .add i,
 .more-input-wrapper .remove i {
   color: #FFF;
   font-size: 18px;
+  line-height: 40px;
 }
 .more-input-wrapper .add {
   background-color: #393;
 }
-.more-input-wrapper .add i {
-  margin: 12px 0 0 12px;
+.more-input-wrapper .add:disabled {
+  opacity: 0.5;
 }
 .more-input-wrapper .remove {
   background-color: #333333;
-}
-.more-input-wrapper .remove i {
-  -webkit-transform: translate(13px, 11px);
-      -ms-transform: translate(13px, 11px);
-          transform: translate(13px, 11px);
 }
 .fields .form-group {
   margin-right: 100px;
@@ -10897,6 +10894,7 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
 }
 .element-toggles {
   text-align: center;
+  margin: 10px 0;
 }
 .element-toggles .element-toggle {
   display: inline-block;
@@ -10925,11 +10923,32 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   vertical-align: middle;
   -webkit-transition: all 0.3s ease 0.1s;
           transition: all 0.3s ease 0.1s;
-  cursor: pointer;
   background-color: #393;
+  border: none;
 }
 .element-toggles .add-element .add i {
   color: #FFF;
   font-size: 18px;
-  margin: 12px 0 0 0;
+  line-height: 40px;
+}
+.element-toggles .add-element .add:disabled {
+  opacity: 0.5;
+}
+#form-item-config-section .adding-element .preview-edit-options {
+  display: none;
+}
+#form-item-config-section .adding-element .definition-inputs,
+#form-item-config-section .adding-element .type-label,
+#form-item-config-section .adding-element .toggle-json,
+#form-item-config-section .adding-element .showed-json {
+  display: none;
+}
+#form-item-config-section .adding-element .configuration-options .checkbox-required,
+#form-item-config-section .adding-element .configuration-options .checkbox-advanced,
+#form-item-config-section .adding-element .configuration-options .toggle-controlled-term {
+  display: none;
+}
+#form-item-config-section .adding-element .configuration-options .checkbox-cardinality {
+  margin-left: 0;
+  margin-top: 10px;
 }

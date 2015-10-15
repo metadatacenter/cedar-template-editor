@@ -1,6 +1,6 @@
 'use strict';
 
-angularApp.controller('CreateTemplateController', function($rootScope, $scope, $q, $routeParams, FormService) {
+angularApp.controller('CreateTemplateController', function($rootScope, $scope, $q, $routeParams, $timeout, FormService) {
 
   // Set Page Title variable when this controller is active
   $rootScope.pageTitle = 'Template Creator';
@@ -129,6 +129,14 @@ angularApp.controller('CreateTemplateController', function($rootScope, $scope, $
     $scope.staging[element['@id']] = element;
     element.minItems = 1;
     element.maxItems = 1;
+
+    $scope.previewForm = {};
+    $timeout(function() {
+      var underscoreTitle = $rootScope.underscoreText(element.properties.info.title);
+
+      $scope.previewForm.properties = {};
+      $scope.previewForm.properties[underscoreTitle] = element;
+    });
   };
 
   // Function to add additional options for radio, checkbox, and list fieldTypes

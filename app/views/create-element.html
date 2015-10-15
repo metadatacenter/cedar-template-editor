@@ -81,7 +81,11 @@
             <p ng-repeat="message in stagingErrorMessages"><i class="fa fa-exclamation-triangle"></i>{{message}}</p>
           </div>
           <form name="{{form.properties.info.title}}" id="{{form.guid}}">
-            <div ng-repeat="field in staging" class="animate-fade">
+            <div ng-repeat="field in staging" class="animate-fade" ng-class="{'adding-element': !field.properties.info.input_type}">
+              <div ng-if="!field.properties.info.input_type">
+                <form-preview form="previewForm">
+                </form-preview>
+              </div>
               <field-directive field="field" directory="create" delete="deleteField(field)" add="addFieldToElement(field)" option="addOption(field)">
               </field-directive>
             </div>

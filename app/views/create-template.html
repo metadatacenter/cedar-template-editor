@@ -79,7 +79,11 @@
 
         <div id="form-item-config-section">
           <form name="{{form.properties.info.title}}" id="{{form.guid}}">
-            <div ng-repeat="field in staging | orderObjectBy: 'properties.info.created_at'" class="animate-fade">
+            <div ng-repeat="field in staging | orderObjectBy: 'properties.info.created_at'" class="animate-fade" ng-class="{'adding-element': !field.properties.info.input_type}">
+              <div ng-if="!field.properties.info.input_type">
+                <form-preview form="previewForm">
+                </form-preview>
+              </div>
               <field-directive field="field" directory="create" delete="deleteField(field, staging)" add="addFieldToForm(field)" option="addOption(field)">
               </field-directive>
             </div>
@@ -104,7 +108,7 @@
             <button type="button" class="btn btn-save" ng-click="saveTemplate()">Save Template</button>
           </div>
         </div> <!-- /.template-actions -->
-        
+
       </div> <!-- /.right-body -->
     </div> <!-- /.row -->
   </div> <!-- /.container -->

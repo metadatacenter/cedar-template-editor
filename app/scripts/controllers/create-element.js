@@ -1,6 +1,6 @@
 'use strict';
 
-angularApp.controller('CreateElementController', function ($rootScope, $scope, $routeParams, FormService) {
+angularApp.controller('CreateElementController', function ($rootScope, $scope, $routeParams, $timeout, FormService) {
 
   // Set page title variable when this controller is active
   $rootScope.pageTitle = 'Element Creator';
@@ -128,7 +128,7 @@ angularApp.controller('CreateElementController', function ($rootScope, $scope, $
   $scope.addFieldToElement = function(field) {
     // Setting return value from $scope.checkFieldConditions to array which will display error messages if any
     $scope.stagingErrorMessages = $scope.checkFieldConditions(field.properties);
-    $scope.stagingErrorMessages = jQuery.merge($scope.stagingErrorMessages, $rootScope.checkFieldCardinalityOptions(field));    
+    $scope.stagingErrorMessages = jQuery.merge($scope.stagingErrorMessages, $rootScope.checkFieldCardinalityOptions(field));
 
     if ($scope.stagingErrorMessages.length == 0) {
       // Converting title for irregular character handling
@@ -209,6 +209,14 @@ angularApp.controller('CreateElementController', function ($rootScope, $scope, $
     $scope.staging[element['@id']] = element;
     element.minItems = 1;
     element.maxItems = 1;
+
+    $scope.previewForm = {};
+    $timeout(function() {
+      var underscoreTitle = $rootScope.underscoreText(element.properties.info.title);
+
+      $scope.previewForm.properties = {};
+      $scope.previewForm.properties[underscoreTitle] = element;
+    });
   };
 
   // Delete field from $scope.staging object

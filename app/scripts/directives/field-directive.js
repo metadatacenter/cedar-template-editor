@@ -131,6 +131,7 @@ angularApp.directive('fieldDirective', function($rootScope, $http, $compile, $do
       directory: '@',
       field: '=',
       model: '=',
+      preview: "=",
       delete: '&',
       add: '&',
       option: '&'

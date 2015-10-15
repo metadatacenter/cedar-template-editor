@@ -1,9 +1,9 @@
 <div class="more-input-buttons">
-  <div class="add" ng-click="addMoreInput()" ng-show="$parent.field.maxItems == 'N' || $parent.model.length < $parent.field.maxItems">
+  <button type="button" class="add" ng-disabled="$parent.preview" ng-click="addMoreInput()" ng-show="$parent.field.maxItems == 'N' || $parent.model.length < $parent.field.maxItems">
     <i class="fa fa-plus"></i>
-  </div>
+  </button>
 
-  <div class="remove" ng-click="removeInput($parent.$index)" ng-show="$parent.model.length > $parent.field.minItems">
+  <button type="button" class="remove" ng-click="removeInput($parent.$index)" ng-show="$parent.model.length > $parent.field.minItems">
     <i class="fa fa-times"></i>
-  </div>
+  </button>
 </div>
