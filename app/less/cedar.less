@@ -1,0 +1,32 @@
+@header-bg-color:#056046;
+
+#navbarMini {
+  display: none;
+  border: 0px solid red;
+}
+
+.navbarMiniGeneric {
+  display: block;
+  position: fixed;
+  width: 100%;
+}
+
+.navbarMiniShow {
+  .navbarMiniGeneric;
+  top: 0px;
+}
+
+.navbarMiniHide {
+  .navbarMiniGeneric;
+  top: -80px;
+}
+
+// Fixed navbar
+.navbar-header-mini {
+  height: 80px;
+  overflow: hidden;
+  position: fixed;
+  top: 0;
+  z-index: 999;
+  background-color:@header-bg-color;
+}

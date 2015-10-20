@@ -31,7 +31,7 @@ gulp.task('lint', function() {
 
 // Compile LESS files
 gulp.task('less', function() {
-	return gulp.src('app/less/style.less')
+	return gulp.src(['app/less/style.less', 'app/less/cedar.less'])
 		.pipe(plumber({
 			errorHandler: onError
 		}))
