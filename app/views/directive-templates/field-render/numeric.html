@@ -1,5 +1,5 @@
 <div class="fields fields-numeric">
-  <div class="form-group floating-label-wrapper" ng-repeat="value_element in model">
+  <div ng-if="$root.isArray(model)" class="form-group floating-label-wrapper" ng-repeat="value_element in model">
     <input 	type="number"
     				class="form-control"
     				ng-class="{'required': field.properties.info.required_value}"
@@ -18,6 +18,27 @@
       <i class="cedar-svg-check-circle"></i>
       <i class="cedar-svg-warning"></i>
     </div><!-- /.input-indicator-icons -->
-    <div class="more-input-wrapper" ng-include="'views/partials/more-input-buttons.html'" ng-show="field.maxItems && (field.maxItems == 'N' || field.maxItems > 1)"></div>
+    <div class="more-input-wrapper" ng-include="'views/partials/more-input-buttons.html'" ng-show="!field.maxItems || field.maxItems > 1"></div>
+  </div><!-- /.form-group -->
+
+  <div ng-if="!$root.isArray(model)" class="form-group floating-label-wrapper">
+    <input  type="number"
+            class="form-control"
+            ng-class="{'required': field.properties.info.required_value}"
+            id="numeric1"
+            placeholder="{{field.properties.info.title}}"
+            aria-label="{{field.properties.info.description}}"
+            ng-model="model.value"
+            ng-minlength="{{field.properties.info.min_length}}"
+            ng-maxlength="{{field.properties.info.max_length}}"
+            validate-on="blur"
+            ng-pattern= "/^\d+$/"
+            with-floating-label>
+    <span class="warning-text">{{field.properties.info.warning_text}}</span>
+    <div class="input-indicator-icons">
+      <i class="cedar-svg-help-circle" data-container="body" data-toggle="popover" data-placement="left" data-content="{{field.properties.info.description}}"></i>
+      <i class="cedar-svg-check-circle"></i>
+      <i class="cedar-svg-warning"></i>
+    </div><!-- /.input-indicator-icons -->
   </div><!-- /.form-group -->
 </div>

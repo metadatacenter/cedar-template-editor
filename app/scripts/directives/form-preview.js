@@ -74,29 +74,45 @@ angularApp.directive('formPreview', function ($rootScope, $document, $timeout) {
 
               // Handle position and nesting within $scope.model if it does not exist
               if (parentModel[name] == undefined) {
-                parentModel[name] = [];
-                for (var i = 0; i < min; i++) {
-                  parentModel[name].push({});
+                if ($rootScope.isCardinalElement(value)) {
+                  parentModel[name] = {};
+                } else {
+                  parentModel[name] = [];
+                  for (var i = 0; i < min; i++) {
+                    parentModel[name].push({});
+                  }
                 }
               }
 
               $scope.pushIntoOrder(name, parentKey);
 
-              for (var i = 0; i < min; i++) {
-                // Indication of nested element or nested fields reached, recursively call function
-                $scope.parseForm(value.properties, parentObject[name], parentModel[name][i], name);
+              if (angular.isArray(parentModel[name])) {
+                for (var i = 0; i < min; i++) {
+                  // Indication of nested element or nested fields reached, recursively call function
+                  $scope.parseForm($rootScope.getFieldProperties(value), parentObject[name], parentModel[name][i], name);
+                }
+              } else {
+                $scope.parseForm($rootScope.getFieldProperties(value), parentObject[name], parentModel[name], name);
               }
             } else {
               var min = value.minItems || 1;
 
               // Field level reached, assign to $scope.formFields object
+              if (value.type == 'array' && value.items && value.items.properties) {
+                // copy over the properties from the items object
+                value.properties = value.items.properties;
+              }
               parentObject[name] = value;
 
               // Assign empty field instance model to $scope.model only if it does not exist
               if (parentModel[name] == undefined) {
-                parentModel[name] = [];
-                for (var i = 0; i < min; i++) {
-                  parentModel[name].push({});
+                if (!$rootScope.isCardinalElement(value)) {
+                  parentModel[name] = {};
+                } else {
+                  parentModel[name] = [];
+                  for (var i = 0; i < min; i++) {
+                    parentModel[name].push({});
+                  }
                 }
               }
 
@@ -125,7 +141,9 @@ angularApp.directive('formPreview', function ($rootScope, $document, $timeout) {
         // loop through $scope.formFieldsOrder and build pages array
         angular.forEach($scope.formFieldsOrder, function(field, index) {
           // If item added is of type Page Break, jump into next page array for storage of following fields
-          if ($scope.form.properties[field].properties.info && $scope.form.properties[field].properties.info.input_type == 'page-break') {
+          if ($scope.form.properties[field].properties &&
+              $scope.form.properties[field].properties.info &&
+              $scope.form.properties[field].properties.info.input_type == 'page-break') {
             dimension ++;
           }
           // Push field key into page array
@@ -139,7 +157,7 @@ angularApp.directive('formPreview', function ($rootScope, $document, $timeout) {
       // Using Angular's $watch function to call $scope.parseForm on form.properties initial population and on update
       $scope.$watch('form.properties', function () {
         $scope.addPopover();
-        $scope.parseForm($scope.form.properties, $scope.formFields, $scope.model);
+        $scope.parseForm(angular.copy($scope.form.properties), $scope.formFields, $scope.model);
       }, true);
     },
     templateUrl: './views/directive-templates/form-preview.html',

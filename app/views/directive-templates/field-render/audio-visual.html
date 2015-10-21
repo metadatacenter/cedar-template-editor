@@ -1,5 +1,5 @@
 <div class="fields audio-visual-fields">
-  <div class="form-group floating-label-wrapper" ng-repeat="value_element in model">
+  <div ng-if="$root.isArray(model)" class="form-group floating-label-wrapper" ng-repeat="value_element in model">
     <input  type="text"
             class="form-control"
             ng-class="{'required': field.properties.info.required_value}"
@@ -17,6 +17,26 @@
       <span class="or">or</span>
       <span class="file-input btn btn-primary btn-file">Upload File<input type="file" multiple></span>
     </div>
-    <div class="more-input-wrapper" ng-include="'views/partials/more-input-buttons.html'" ng-show="field.maxItems && (field.maxItems == 'N' || field.maxItems > 1)"></div>
+    <div class="more-input-wrapper" ng-include="'views/partials/more-input-buttons.html'" ng-show="!field.maxItems || field.maxItems > 1"></div>
+  </div><!-- /.form-group -->
+
+  <div ng-if="!$root.isArray(model)" class="form-group floating-label-wrapper">
+    <input  type="text"
+            class="form-control"
+            ng-class="{'required': field.properties.info.required_value}"
+            id="audiovisual"
+            placeholder="{{field.properties.info.title}}"
+            aria-label="{{field.properties.info.description}}"
+            ng-model="model.value"
+            with-floating-label>
+    <div class="input-indicator-icons">
+      <i class="cedar-svg-help-circle" data-container="body" data-toggle="popover" data-placement="left" data-content="{{field.properties.info.description}}"></i>
+      <i class="cedar-svg-check-circle"></i>
+      <i class="cedar-svg-warning"></i>
+    </div><!-- /.input-indicator-icons -->
+    <div class="additional-options">
+      <span class="or">or</span>
+      <span class="file-input btn btn-primary btn-file">Upload File<input type="file" multiple></span>
+    </div>
   </div><!-- /.form-group -->
 </div>

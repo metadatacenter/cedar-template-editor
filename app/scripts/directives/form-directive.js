@@ -72,36 +72,53 @@ angularApp.directive('formDirective', function ($rootScope, $document, $timeout)
 
               var min = value.minItems || 1;
 
-              // Handle position and nesting within $scope.model if it does not exist
+                // Handle position and nesting within $scope.model if it does not exist
               if (parentModel[name] == undefined) {
-                parentModel[name] = [];
-                for (var i = 0; i < min; i++) {
-                  parentModel[name].push({});
+                if (!$rootScope.isCardinalElement(value)) {
+                  parentModel[name] = {};
+                } else {
+                  parentModel[name] = [];
+                  for (var i = 0; i < min; i++) {
+                    parentModel[name].push({});
+                  }
                 }
               }
               // Place top level element into $scope.formFieldsOrder
               $scope.pushIntoOrder(name, parentKey);
 
-              for (var i = 0; i < min; i++) {
-                // Indication of nested element or nested fields reached, recursively call function
-                $scope.parseForm(value.properties, parentObject[name], parentModel[name][i], name);
+              if (angular.isArray(parentModel[name])) {
+                for (var i = 0; i < min; i++) {
+                  // Indication of nested element or nested fields reached, recursively call function
+                  $scope.parseForm($rootScope.getFieldProperties(value), parentObject[name], parentModel[name][i], name);
+                }
+              } else {
+                $scope.parseForm($rootScope.getFieldProperties(value), parentObject[name], parentModel[name], name);
               }
             } else {
               var min = value.minItems || 1;
+
+              if (value.type == 'array' && value.items && value.items.properties) {
+                // copy over the properties from the items object
+                value.properties = value.items.properties;
+              }
 
               // Field level reached, assign to $scope.formFields object
               parentObject[name] = value;
 
               // Assign empty field instance model to $scope.model only if it does not exist
               if (parentModel[name] == undefined) {
-                parentModel[name] = [];
-                for (var i = 0; i < min; i++) {
-                  var obj = {};
-                  if (ctx && ctx.value) {
-                    obj["@context"] = {value: ctx.value};
-                  }
+                if (!$rootScope.isCardinalElement(value)) {
+                  parentModel[name] = {};
+                } else {
+                  parentModel[name] = [];
+                  for (var i = 0; i < min; i++) {
+                    var obj = {};
+                    // if (ctx && ctx.value) {
+                    //   obj["@context"] = {value: ctx.value};
+                    // }
 
-                  parentModel[name].push(obj);
+                    parentModel[name].push(obj);
+                  }
                 }
               }
 
@@ -111,8 +128,15 @@ angularApp.directive('formDirective', function ($rootScope, $document, $timeout)
               // Add @type information to instance at the field level
               if (!angular.isUndefined(value.properties['@type'])) {
                 var type = $rootScope.generateInstanceType(value.properties['@type']);
-                for (var i = 0; i < min; i++) {
-                  parentModel[name][i]["@type"] = type || "";
+
+                if (type) {
+                  if (angular.isArray(parentModel[name])) {
+                    for (var i = 0; i < min; i++) {
+                      parentModel[name][i]["@type"] = type || "";
+                    }
+                  } else {
+                    parentModel[name]["@type"] = type || "";
+                  }
                 }
               }
             }

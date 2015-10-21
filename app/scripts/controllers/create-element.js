@@ -276,6 +276,10 @@ angularApp.controller('CreateElementController', function ($rootScope, $scope, $
       // Console.log full working form example on save, just to show demonstration of something happening
       console.log('saving element...');
       console.log($scope.element);
+
+      // If maxItems is N, then remove maxItems
+      $rootScope.removeUnnecessaryMaxItems($scope.element.properties);
+
       // Save element
       // Check if the element is already stored into the DB
       if ($routeParams.id == undefined) {

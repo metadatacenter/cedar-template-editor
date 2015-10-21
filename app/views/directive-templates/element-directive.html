@@ -6,26 +6,48 @@
 </script>
 
 <div class="element-toggles list">
-  <div class="element-toggle" ng-class="{active: selectedTab == $index}" ng-repeat="m in model" ng-click="selectTab($index)">
+  <div ng-if="!$root.isArray(model)" class="element-toggle active">
     <span>{{key | keyToTitle}}</span>
   </div>
-  <div class="add-element" ng-click="addElement()">
-    <button type="button" class="add" ng-show="element.maxItems == 'N' || model.length < element.maxItems" ng-disabled="preview">
+  <div ng-if="$root.isArray(model)" class="element-toggle" ng-class="{active: selectedTab == $index}" ng-repeat="m in model" ng-click="selectTab($index)">
+    <span>{{key | keyToTitle}}</span>
+  </div>
+  <div class="add-element">
+    <button type="button" ng-click="addElement()" class="add" ng-show="element.minItems && (!element.maxItems || !$root.isArray(model) && element.maxItems > 1 || $root.isArray(model) && model.length < element.maxItems)" ng-disabled="preview">
       <i class="fa fa-plus"></i>
+      <div class="cardinality-info-container">
+        <div class="cardinality-info">
+          <div class="cardinality-info-text">Min Entries: {{element.minItems}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Max Entries: {{element.maxItems || "Unlimited"}}</div>
+        </div>
+      </div>
     </button>
   </div>
   <div class="clearfix"></div>
 </div> <!-- /.date-type-toggle -->
 
 <div class="elements">
-	<div class="element" ng-repeat="m in model" ng-class="['element-{{$index}}']" ng-show="selectedTab == $index">
+	<div ng-if="$root.isArray(model)" class="element" ng-repeat="m in model" ng-class="['element-{{$index}}']" ng-show="selectedTab == $index">
 		<div class="element-header">
-		  <!--p class="element-name-label"><i class="cedar-svg-element"></i>{{key | keyToTitle}}</p-->
+		    <p class="element-name-label"><i class="cedar-svg-element"></i>{{key | keyToTitle}}</p>
 		  <div ng-if="preview && !nestedElement" class="preview-edit-options" ng-include="'views/partials/preview-edit-options.html'"></div>
 		</div>
+    <div class="remove-element pull-right">
+      <a class="" ng-show="model.length > element.minItems" ng-click="removeElement($index)">Remove</a>
+    </div>
 
 		<div ng-repeat="key in element['order']">
 			<span ng-if="element[key]" ng-init="key = key; field = element[key]; model = m[key]; preview = preview; nestedElement = true;" ng-include="'nestedElement'"></span>
 		</div>
 	</div>
+
+  <div ng-if="!$root.isArray(model)" class="element only-element">
+    <div class="element-header">
+      <p class="element-name-label"><i class="cedar-svg-element"></i>{{key | keyToTitle}}</p>
+      <div ng-if="preview && !nestedElement" class="preview-edit-options" ng-include="'views/partials/preview-edit-options.html'"></div>
+    </div>
+
+    <div ng-repeat="key in element['order']">
+      <span ng-if="element[key]" ng-init="key = key; field = element[key]; model = model[key]; preview = preview; nestedElement = true;" ng-include="'nestedElement'"></span>
+    </div>
+  </div>
 </div>

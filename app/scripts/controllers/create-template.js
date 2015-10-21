@@ -125,17 +125,18 @@ angularApp.controller('CreateTemplateController', function($rootScope, $scope, $
   };
 
   $scope.addElementToStaging = function(element) {
+    var clonedElement = angular.copy(element);
     $scope.staging = {};
-    $scope.staging[element['@id']] = element;
-    element.minItems = 1;
-    element.maxItems = 1;
+    $scope.staging[element['@id']] = clonedElement;
+    clonedElement.minItems = 1;
+    clonedElement.maxItems = 1;
 
     $scope.previewForm = {};
     $timeout(function() {
-      var underscoreTitle = $rootScope.underscoreText(element.properties.info.title);
+      var underscoreTitle = $rootScope.underscoreText(clonedElement.properties.info.title);
 
       $scope.previewForm.properties = {};
-      $scope.previewForm.properties[underscoreTitle] = element;
+      $scope.previewForm.properties[underscoreTitle] = clonedElement;
     });
   };
 
@@ -164,6 +165,8 @@ angularApp.controller('CreateTemplateController', function($rootScope, $scope, $
         new Array($rootScope.schemasBase + underscoreTitle);
       $scope.form.properties["@context"].required.push(underscoreTitle);
 
+      var fieldId = field["@id"];
+
       // Evaluate cardinality
       $rootScope.cardinalizeField(field);
 
@@ -171,7 +174,7 @@ angularApp.controller('CreateTemplateController', function($rootScope, $scope, $
       $scope.form.properties[underscoreTitle] = field;
 
       // Lastly, remove this field from the $scope.staging object
-      delete $scope.staging[field['@id']];
+      delete $scope.staging[fieldId];
     }
   };
 
@@ -264,6 +267,12 @@ angularApp.controller('CreateTemplateController', function($rootScope, $scope, $
     }
     // If there are no Template level error messages
     if ($scope.templateErrorMessages.length == 0) {
+      // Delete this preview form, so that it does not listen/emit some related events.
+      delete $scope.previewForm;
+
+      // If maxItems is N, then remove maxItems
+      $rootScope.removeUnnecessaryMaxItems($scope.form.properties);
+
       // Broadcast the initialize Page Array event which will trigger the creation of the $scope.form 'pages' array
       $scope.$broadcast('initPageArray');
       // Save template

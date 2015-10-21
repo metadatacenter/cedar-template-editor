@@ -1825,7 +1825,8 @@ section.dashboard-elements {
   .add {
     background-color: #393;
     &:disabled {
-      opacity: 0.5;
+      // opacity: 0.5;
+      background-color: #94C795;
     }
   }
 
@@ -1853,10 +1854,9 @@ section.dashboard-elements {
   margin: 10px 0;
   .element-toggle {
     display: inline-block;
-    padding: 0 20px;
+    padding: 20px 20px 0;
     border-bottom: 5px solid #DDD;
     border-color: #DDD;
-    cursor: pointer;
     transition: all 0.3s ease 0.1s;
 
     &.active {
@@ -1865,6 +1865,11 @@ section.dashboard-elements {
 
     span {
       text-transform: uppercase;
+      cursor: pointer;
+    }
+
+    &.active span {
+      cursor: default;
     }
   }
 
@@ -1889,7 +1894,8 @@ section.dashboard-elements {
       }
 
       &:disabled {
-        opacity: 0.5;
+        // opacity: 0.5;
+        background-color: #94C795;
       }
     }
   }
@@ -1916,4 +1922,62 @@ section.dashboard-elements {
       }
     }
   }
+}
+
+.add {
+  .cardinality-info-container {
+    display: none;
+    position: relative;
+
+    .cardinality-info {
+      position: absolute;
+      width: 350px;
+      text-align: left;
+      top: -90px;
+      left: -5px;
+      .cardinality-info-text {
+        padding: 10px 15px;
+        border: 1px solid #B4C1C8;
+        display: inline-block;
+        background-color: #FFFFFF;
+        color: #359D34;
+        font-weight: bold;
+        border-radius: 3px;
+        &:after, &:before {
+          top: 40px;
+          left: 10px;
+          border: solid transparent;
+          content: " ";
+          height: 0;
+          width: 0;
+          position: absolute;
+          pointer-events: none;
+        }
+
+        &:after {
+          border-color: transparent;
+          border-top-color: #FFFFFF;
+          border-width: 10px;
+        }
+        &:before {
+          top: 41px;
+          left: 9px;
+          border-color: transparent;
+          border-top-color: #B4C1C8;
+          border-width: 11px;
+        }
+      }
+    }
+  }
+
+  &:hover {
+    .cardinality-info-container {
+      display: block;
+    }
+  }
+}
+
+.remove-element {
+  margin-top: -45px;
+  position: relative;
 }

@@ -34,12 +34,52 @@ angularApp.directive('fieldDirective', function($rootScope, $http, $compile, $do
                   if (!valueElement.value.start || !valueElement.value.end) {
                     allRequiredFieldsAreFilledIn = false;
                   }
+                } else {
+                  // Require at least one checkbox is checked.
+                  var hasValue = false;
+                  angular.forEach(valueElement.value, function(value, key) {
+                    hasValue = hasValue || value;
+                  });
+
+                  if (!hasValue) {
+                    allRequiredFieldsAreFilledIn = false;
+                  }
                 }
               }
             });
           }
         } else {
-          allRequiredFieldsAreFilledIn = false;
+          // allRequiredFieldsAreFilledIn = false;
+          if (!$scope.model || !$scope.model.value) {
+            allRequiredFieldsAreFilledIn = false;
+          } else if (angular.isArray($scope.model.value)) {
+            var hasValue = false;
+            angular.forEach($scope.model.value, function(ve) {
+              hasValue = hasValue || !!ve;
+            });
+
+            if (!hasValue) {
+              allRequiredFieldsAreFilledIn = false;
+            }
+          } else if (angular.isObject($scope.model.value)) {
+            if ($rootScope.isEmpty($scope.model.value)) {
+              allRequiredFieldsAreFilledIn = false;
+            } else if ($scope.field.properties.info.date_type == "date-range") {
+              if (!$scope.model.value.start || !$scope.model.value.end) {
+                allRequiredFieldsAreFilledIn = false;
+              }
+            } else {
+              // Require at least one checkbox is checked.
+              var hasValue = false;
+              angular.forEach($scope.model.value, function(value, key) {
+                hasValue = hasValue || value;
+              });
+
+              if (!hasValue) {
+                allRequiredFieldsAreFilledIn = false;
+              }
+            }
+          }
         }
 
         if (!allRequiredFieldsAreFilledIn) {
@@ -63,22 +103,58 @@ angularApp.directive('fieldDirective', function($rootScope, $http, $compile, $do
 
     // If a default value is set from the field item configuration, set $scope.model to its value
     if ($scope.directory == 'render') {
-      if ($scope.model && $scope.model.length == 0) {
-        var min = $scope.field.minItems || 1;
+      if ($scope.model) {
+        if ($rootScope.isArray($scope.model)) {
+          if ($scope.model.length == 0) {
+            var min = $scope.field.minItems || 1;
 
-        if (field.default_option) {
-          for (var i = 0; i < min; i++) {
-            $scope.model[i]["value"] = field.default_option;
+            if (field.default_option) {
+              for (var i = 0; i < min; i++) {
+                $scope.model[i]["value"] = angular.copy(field.default_option);
+              }
+            } else {
+              for (var i = 0; i < min; i++) {
+                if (['checkbox'].indexOf(field.input_type) >= 0 ||
+                    ['date'].indexOf(field.input_type) >= 0 && field.date_type == "date-range") {
+                  $scope.model[i]['value'] = {};
+                } else if (['list'].indexOf(field.input_type) >= 0) {
+                  $scope.model[i]['value'] = [];
+                } else {
+                  $scope.model[i]['value'] = "";
+                }
+              }
+            }
+          } else {
+            angular.forEach($scope.model, function(m, i) {
+              if (!("value" in m)) {
+                if (field.default_option) {
+                  $scope.model[i]["value"] = angular.copy(field.default_option);
+                } else {
+                  if (['checkbox'].indexOf(field.input_type) >= 0 ||
+                      ['date'].indexOf(field.input_type) >= 0 && field.date_type == "date-range") {
+                    $scope.model[i]['value'] = {};
+                  } else if (['list'].indexOf(field.input_type) >= 0) {
+                    $scope.model[i]['value'] = [];
+                  } else {
+                    $scope.model[i]['value'] = "";
+                  }
+                }
+              }
+            });
           }
         } else {
-          for (var i = 0; i < min; i++) {
-            if (['checkbox'].indexOf(field.input_type) >= 0 ||
-                ['date'].indexOf(field.input_type) >= 0 && field.date_type == "date-range") {
-              $scope.model[i]['value'] = {};
-            } else if (['list'].indexOf(field.input_type) >= 0) {
-              $scope.model[i]['value'] = [];
+          if (!("value" in $scope.model)) {
+            if (field.default_option) {
+              $scope.model["value"] = angular.copy(field.default_option);
             } else {
-              $scope.model[i]['value'] = "";
+              if (['checkbox'].indexOf(field.input_type) >= 0 ||
+                  ['date'].indexOf(field.input_type) >= 0 && field.date_type == "date-range") {
+                $scope.model['value'] = {};
+              } else if (['list'].indexOf(field.input_type) >= 0) {
+                $scope.model['value'] = [];
+              } else {
+                $scope.model['value'] = "";
+              }
             }
           }
         }
@@ -97,11 +173,11 @@ angularApp.directive('fieldDirective', function($rootScope, $http, $compile, $do
     }
 
     $scope.addMoreInput = function() {
-      if ($scope.field.maxItems == "N" || $scope.model.length < $scope.field.maxItems) {
+      if ($scope.field.minItems && (!$scope.field.maxItems || $scope.model.length < $scope.field.maxItems)) {
         var seed = angular.copy($scope.model[0]);
 
         if (field.default_option) {
-          seed["value"] = field.default_option;
+          seed["value"] = angular.copy(field.default_option);
         } else {
           if (['checkbox'].indexOf(field.input_type) >= 0 ||
               ['date'].indexOf(field.input_type) >= 0 && field.date_type == "date-range") {

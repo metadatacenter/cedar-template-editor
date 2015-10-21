@@ -10877,7 +10877,7 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   background-color: #393;
 }
 .more-input-wrapper .add:disabled {
-  opacity: 0.5;
+  background-color: #94C795;
 }
 .more-input-wrapper .remove {
   background-color: #333333;
@@ -10898,10 +10898,9 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
 }
 .element-toggles .element-toggle {
   display: inline-block;
-  padding: 0 20px;
+  padding: 20px 20px 0;
   border-bottom: 5px solid #DDD;
   border-color: #DDD;
-  cursor: pointer;
   -webkit-transition: all 0.3s ease 0.1s;
           transition: all 0.3s ease 0.1s;
 }
@@ -10910,6 +10909,10 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
 }
 .element-toggles .element-toggle span {
   text-transform: uppercase;
+  cursor: pointer;
+}
+.element-toggles .element-toggle.active span {
+  cursor: default;
 }
 .element-toggles .add-element {
   display: inline-block;
@@ -10932,7 +10935,7 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   line-height: 40px;
 }
 .element-toggles .add-element .add:disabled {
-  opacity: 0.5;
+  background-color: #94C795;
 }
 #form-item-config-section .adding-element .preview-edit-options {
   display: none;
@@ -10951,4 +10954,54 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
 #form-item-config-section .adding-element .configuration-options .checkbox-cardinality {
   margin-left: 0;
   margin-top: 10px;
+}
+.add .cardinality-info-container {
+  display: none;
+  position: relative;
+}
+.add .cardinality-info-container .cardinality-info {
+  position: absolute;
+  width: 350px;
+  text-align: left;
+  top: -90px;
+  left: -5px;
+}
+.add .cardinality-info-container .cardinality-info .cardinality-info-text {
+  padding: 10px 15px;
+  border: 1px solid #B4C1C8;
+  display: inline-block;
+  background-color: #FFFFFF;
+  color: #359D34;
+  font-weight: bold;
+  border-radius: 3px;
+}
+.add .cardinality-info-container .cardinality-info .cardinality-info-text:after,
+.add .cardinality-info-container .cardinality-info .cardinality-info-text:before {
+  top: 40px;
+  left: 10px;
+  border: solid transparent;
+  content: " ";
+  height: 0;
+  width: 0;
+  position: absolute;
+  pointer-events: none;
+}
+.add .cardinality-info-container .cardinality-info .cardinality-info-text:after {
+  border-color: transparent;
+  border-top-color: #FFFFFF;
+  border-width: 10px;
+}
+.add .cardinality-info-container .cardinality-info .cardinality-info-text:before {
+  top: 41px;
+  left: 9px;
+  border-color: transparent;
+  border-top-color: #B4C1C8;
+  border-width: 11px;
+}
+.add:hover .cardinality-info-container {
+  display: block;
+}
+.remove-element {
+  margin-top: -45px;
+  position: relative;
 }

@@ -31,7 +31,7 @@
   <div id="cardinality-options" class="cardinality-options" ng-show="$parent.element.properties.info.is_cardinal_field">
       <div class="form-group validation-pattern pull-left min-items-option">
           <label>Min:</label>
-          <select class="" data-max-options="1" ng-model="$parent.field.minItems" title="" select-picker>
+          <select class="" ng-model="$parent.field.minItems" title="" ng-options="v.value as v.label for v in $root.minCardinalities" select-picker>
               <option value="1">1</option>
               <option value="2">2</option>
               <option value="3">3</option>
@@ -45,7 +45,7 @@
 
       <div class="form-group validation-pattern pull-left max-items-option">
           <label>Max:</label>
-          <select class="" ng-model="$parent.field.maxItems" title="" select-picker>
+          <select class="" ng-model="$parent.field.maxItems" title="" ng-options="v.value as v.label for v in $root.maxCardinalities" select-picker>
               <option value="1">1</option>
               <option value="2">2</option>
               <option value="3">3</option>
@@ -54,7 +54,7 @@
               <option value="6">6</option>
               <option value="7">7</option>
               <option value="8">8</option>
-              <option value="N">N</option>
+              <option value="0">N</option>
           </select>
       </div><!-- /.form-group -->
   </div><!-- /.cardinality-options -->

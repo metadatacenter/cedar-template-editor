@@ -15,6 +15,8 @@ angularApp.run(['$rootScope', function($rootScope) {
 
   $rootScope.defaultPropertiesBase = $rootScope.schemasBase;
 
+  $rootScope.isArray = angular.isArray;
+
   // Global utility functions
 
   // Simple function to check if an object is empty
@@ -79,7 +81,7 @@ angularApp.run(['$rootScope', function($rootScope) {
       valueType = "number";
     }
     else if (fieldType == "checkbox") {
-      valueType = "boolean";
+      valueType = "object";
     }
     else if (fieldType == "list") {
       valueType = "array";
@@ -158,7 +160,6 @@ angularApp.run(['$rootScope', function($rootScope) {
     var unmetConditions = [];
 
     if (field.minItems && field.maxItems &&
-        field.maxItems != "N" &&
         parseInt(field.minItems) > parseInt(field.maxItems)) {
       unmetConditions.push('Min cannot be greater than Max.');
     }
@@ -166,42 +167,86 @@ angularApp.run(['$rootScope', function($rootScope) {
     return unmetConditions;
   };
 
+  $rootScope.getFieldProperties = function(field) {
+    if (field.type == 'array' && field.items && field.items.properties) {
+      return field.items.properties;
+    } else {
+      return field.properties;
+    }
+  };
+
   $rootScope.cardinalizeField = function(field) {
-    if (field.maxItems || field.minItems) {
-      if (field.maxItems > 1 || field.minItems > 1) {
-        field.items = {
-          'type': field.type,
-          '@id': field['@id'],
-          '$schema': field.schema,
-          'title': field.properties.info.title,
-          'description': field.properties.description,
-          'properties': field.properties,
-          'required': field.required,
-          'additionalProperties': field.additionalProperties
-        };
-        field.type = 'array';
+    if (field.minItems == 1 && field.maxItems == 1 || !field.minItems && !field.maxItems) {
+      return false;
+    }
+    if (!field.maxItems ||                  // special 'N' case
+        (field.maxItems && field.maxItems > 1) || // has maxItems of more than 1
+        (field.minItems && field.minItems > 1)) { // has minItems of more than 1
+      field.items = {
+        'type': field.type,
+        '@id': field['@id'],
+        '$schema': field.schema,
+        'title': field.properties.info.title,
+        'description': field.properties.description,
+        'properties': field.properties,
+        'required': field.required,
+        'additionalProperties': field.additionalProperties
+      };
+      field.type = 'array';
 
-        delete field.$schema;
-        delete field['@id'];
-        /**
-         * TODO: we should remove this per the example JSON,
-         * but the properties.info is depended on by other pieces of the app
-         * ex. template lookup.
-         */
-        // delete field.properties;
-        delete field.title;
-        delete field.description;
-        delete field.required;
-        delete field.additionalProperties;
+      delete field.$schema;
+      delete field['@id'];
+      delete field.properties;
+      delete field.title;
+      delete field.description;
+      delete field.required;
+      delete field.additionalProperties;
 
-        return true;
-      }
+      return true;
     }
     return false;
+  };
+
+  $rootScope.isCardinalElement = function(element) {
+    return element.minItems && element.maxItems != 1;
+  };
+
+  // If Max Items is N, its value will be 0, then need to remove it from schema
+  // if Min and Max are both 1, remove them
+  $rootScope.removeUnnecessaryMaxItems = function(properties) {
+    angular.forEach(properties, function(value, key) {
+      if (!$rootScope.ignoreKey(key)) {
+        if (!value.maxItems) {
+          delete value.maxItems;
+        }
+        if (value.minItems &&
+            value.minItems == 1 &&
+            value.maxItems &&
+            value.maxItems == 1) {
+          delete value.minItems;
+          delete value.maxItems;
+        }
+      }
+    });
   };
 
   $rootScope.console = function(txt, label) {
     console.log(label + ' ' + JSON.stringify(txt,null,2));
   };
 
+  var generateCardinalities = function(max) {
+    var results = [];
+    for (var i = 1; i <= max; i++) {
+      results.push({value: i, label: i});
+    }
+
+    return results;
+  };
+
+  var minCardinalities = generateCardinalities(8);
+  var maxCardinalities = generateCardinalities(8);
+  maxCardinalities.push({value: 0, label: "N"});
+
+  $rootScope.minCardinalities = minCardinalities;
+  $rootScope.maxCardinalities = maxCardinalities;
 }]);

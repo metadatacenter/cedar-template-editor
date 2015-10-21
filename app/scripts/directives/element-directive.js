@@ -1,6 +1,6 @@
 'use strict';
 
-angularApp.directive('elementDirective', function () {
+angularApp.directive('elementDirective', function ($rootScope) {
   return {
     templateUrl: './views/directive-templates/element-directive.html',
     restrict: 'EA',
@@ -19,16 +19,91 @@ angularApp.directive('elementDirective', function () {
             model.splice(settings[key].minItems, model.length);
           }
 
-          if (angular.isArray(model)) {
-            for (var i = 0; i < model.length; i++) {
-              if (typeof(model[i]["value"]) == "string") {
-                model[i]["value"] = "";
-              } else if (angular.isArray(model[i]["value"])) {
-                model[i]["value"] = [];
-              } else if (angular.isObject(model[i]["value"])) {
-                model[i]["value"] = {};
-              } else if (model[i]["value"] === undefined) {
-                resetElement(model[i], settings[key]);
+          if (!$rootScope.ignoreKey(key)) {
+            if (key == "value") {
+              if (angular.isArray(model)) {
+                if (settings.properties.info.input_type == "list") {
+                  if (settings.properties.info.default_option) {
+                    el[key] = angular.copy(settings.properties.info.default_option);
+                  } else {
+                    model.splice(0, model.length);
+                  }
+                } else {
+                  for (var i = 0; i < model.length; i++) {
+                    if (settings.properties.info.default_option) {
+                      model[i]["value"] = angular.copy(settings.properties.info.default_option);
+                    } else {
+                      if (typeof(model[i]["value"]) == "string") {
+                        model[i]["value"] = "";
+                      } else if (angular.isArray(model[i]["value"])) {
+                        model[i]["value"] = [];
+                      } else if (angular.isObject(model[i]["value"])) {
+                        model[i]["value"] = {};
+                      }
+                    }
+                  }
+                }
+              } else {
+                if (settings.properties.info.default_option) {
+                  el[key] = angular.copy(settings.properties.info.default_option);
+                } else {
+                  if (typeof(model) == "string") {
+                    el[key] = "";
+                  } else if (angular.isArray(model)) {
+                    el[key] = [];
+                  } else if (angular.isObject(model)) {
+                    el[key] = {};
+                  }
+                }
+              }
+            } else {
+              if (settings[key]) {
+                resetElement(model, settings[key]);
+              } else {
+                // This case el is an array
+                angular.forEach(model, function(v, k) {
+                  if (k == "value") {
+                    if (angular.isArray(v)) {
+                      if (settings.properties.info.input_type == "list") {
+                        if (settings.properties.info.default_option) {
+                          model[k] = angular.copy(settings.properties.info.default_option);
+                        } else {
+                          v.splice(0, v.length);
+                        }
+                      } else {
+                        for (var i = 0; i < v.length; i++) {
+                          if (settings.properties.info.default_option) {
+                            v[i]["value"] = angular.copy(settings.properties.info.default_option);
+                          } else {
+                            if (typeof(v[i]["value"]) == "string") {
+                              v[i]["value"] = "";
+                            } else if (angular.isArray(v[i]["value"])) {
+                              v[i]["value"] = [];
+                            } else if (angular.isObject(v[i]["value"])) {
+                              v[i]["value"] = {};
+                            }
+                          }
+                        }
+                      }
+                    } else {
+                      if (settings.properties.info.default_option) {
+                        model[k] = angular.copy(settings.properties.info.default_option);
+                      } else {
+                        if (typeof(v) == "string") {
+                          model[k] = "";
+                        } else if (angular.isArray(v)) {
+                          model[k] = [];
+                        } else if (angular.isObject(v)) {
+                          model[k] = {};
+                        }
+                      }
+                    }
+                  } else {
+                    if (settings[k]) {
+                      resetElement(v, settings[k]);
+                    }
+                  }
+                });
               }
             }
           }
@@ -41,7 +116,7 @@ angularApp.directive('elementDirective', function () {
       }
       scope.addElement = function() {
         if (!scope.preview) {
-          if (scope.element.maxItems == "N" || scope.model.length < scope.element.maxItems) {
+          if (scope.element.minItems && (!scope.element.maxItems || scope.model.length < scope.element.maxItems)) {
             var seed = angular.copy(scope.model[0]);
 
             resetElement(seed, scope.element);
@@ -53,6 +128,10 @@ angularApp.directive('elementDirective', function () {
       scope.removeElement = function(index) {
         if (scope.model.length > scope.element.minItems) {
           scope.model.splice(index, 1);
+
+          if (scope.selectedTab == index) {
+            scope.selectedTab = 0;
+          }
         }
       }
     }

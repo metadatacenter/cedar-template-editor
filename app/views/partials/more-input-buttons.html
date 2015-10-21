@@ -1,9 +1,14 @@
 <div class="more-input-buttons">
-  <button type="button" class="add" ng-disabled="$parent.preview" ng-click="addMoreInput()" ng-show="$parent.field.maxItems == 'N' || $parent.model.length < $parent.field.maxItems">
+  <button type="button" class="add" ng-disabled="$parent.preview" ng-click="addMoreInput()" ng-show="$parent.field.minItems && (!$parent.field.maxItems || $parent.model.length < $parent.field.maxItems)">
     <i class="fa fa-plus"></i>
+    <div class="cardinality-info-container">
+      <div class="cardinality-info">
+        <div class="cardinality-info-text">Min Entries: {{$parent.field.minItems}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Max Entries: {{$parent.field.maxItems || "Unlimited"}}</div>
+      </div>
+    </div>
   </button>
 
-  <button type="button" class="remove" ng-click="removeInput($parent.$index)" ng-show="$parent.model.length > $parent.field.minItems">
+  <button type="button" class="remove" ng-click="removeInput($parent.$index)" ng-show="$parent.field.minItems && ($parent.field.maxItems || $parent.model.length > $parent.field.minItems) && $parent.$index >= $parent.field.minItems">
     <i class="fa fa-times"></i>
   </button>
 </div>
