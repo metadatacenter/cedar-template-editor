@@ -1,6 +1,6 @@
 'use strict';
 
-angularApp.controller('CreateElementController', function ($rootScope, $scope, $routeParams, FormService, HeaderService) {
+angularApp.controller('CreateElementController', ["$rootScope", "$scope", "$routeParams", "FormService", "HeaderService", "HEADER_MINI", function ($rootScope, $scope, $routeParams, FormService, HeaderService, HEADER_MINI) {
 
   // Set page title variable when this controller is active
   $rootScope.pageTitle = 'Element Creator';
@@ -12,6 +12,8 @@ angularApp.controller('CreateElementController', function ($rootScope, $scope, $
   $scope.volatile = {};
   // Setting form preview setting to false by default
   $scope.formPreview = false;
+  // Set scrolling limit for mini header
+  $rootScope.headerMiniLimit = HEADER_MINI.SCROLL_LIMIT.ELEMENT;
 
   // Using form service to load list of existing elements to embed into new element
   FormService.elementList().then(function(response) {
@@ -307,4 +309,4 @@ angularApp.controller('CreateElementController', function ($rootScope, $scope, $
     }
   });
   
-});
+}]);

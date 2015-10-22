@@ -1,6 +1,6 @@
 'use strict';
 
-angularApp.controller('CreateTemplateController', function($rootScope, $scope, $q, $routeParams, FormService, HeaderService) {
+angularApp.controller('CreateTemplateController', ["$rootScope", "$scope", "$q", "$routeParams", "FormService", "HeaderService", "HEADER_MINI", function($rootScope, $scope, $q, $routeParams, FormService, HeaderService, HEADER_MINI) {
 
   // Set Page Title variable when this controller is active
   $rootScope.pageTitle = 'Template Creator';
@@ -10,6 +10,8 @@ angularApp.controller('CreateTemplateController', function($rootScope, $scope, $
   //$scope.favorite = false;
   // Setting form preview setting to false by default
   $scope.formPreview = false;
+  // Set scrolling limit for mini header
+  $rootScope.headerMiniLimit = HEADER_MINI.SCROLL_LIMIT.TEMPLATE;
 
   // Using form service to load list of existing elements to embed into new form
   FormService.elementList().then(function(response) {
@@ -293,4 +295,4 @@ angularApp.controller('CreateTemplateController', function($rootScope, $scope, $
     }
   });
 
-});
+}]);
