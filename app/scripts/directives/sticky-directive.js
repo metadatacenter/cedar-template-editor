@@ -17,13 +17,6 @@ angularApp.directive('stickyDirective', function ($window, $document, $rootScope
 						element.removeClass('sticky');
 					}
 
-					if ($window.pageYOffset > 140) {
-						angular.element("#navbarMini").show().removeClass('navbarMiniHide').addClass('navbarMiniShow');
-					} else {
-						angular.element("#navbarMini").hide().removeClass('navbarMiniShow').addClass('navbarMiniHide');
-					}
-
-
 				});
     	}
 

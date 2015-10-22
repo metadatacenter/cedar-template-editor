@@ -26,4 +26,11 @@
   top: 0;
   z-index: 999;
   background-color: #056046;
+  padding-left: 0px;
+  padding-right: 0px;
+}
+.navbarMiniInfoTitle {
+  position: absolute;
+  left: 270px;
+  padding-top: 27px;
 }

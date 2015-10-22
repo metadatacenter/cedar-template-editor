@@ -1,6 +1,6 @@
 'use strict';
 
-angularApp.controller('CreateElementController', function ($rootScope, $scope, $routeParams, FormService) {
+angularApp.controller('CreateElementController', function ($rootScope, $scope, $routeParams, FormService, HeaderService) {
 
   // Set page title variable when this controller is active
   $rootScope.pageTitle = 'Element Creator';
@@ -25,6 +25,7 @@ angularApp.controller('CreateElementController', function ($rootScope, $scope, $
       $scope.element = response;
       // Set form preview to true so the preview is viewable onload
       $scope.formPreview = true;
+      HeaderService.dataContainer.currentObjectScope = $scope.element;
     });
   } else {
     // If we're not loading an existing element then let's create a new empty $scope.element property
@@ -71,6 +72,7 @@ angularApp.controller('CreateElementController', function ($rootScope, $scope, $
       },
       "additionalProperties": false
     };
+    HeaderService.dataContainer.currentObjectScope = $scope.element;
   }
 
   // Return true if element.properties object only contains default values

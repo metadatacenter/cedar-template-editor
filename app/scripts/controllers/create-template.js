@@ -1,6 +1,6 @@
 'use strict';
 
-angularApp.controller('CreateTemplateController', function($rootScope, $scope, $q, $routeParams, FormService) {
+angularApp.controller('CreateTemplateController', function($rootScope, $scope, $q, $routeParams, FormService, HeaderService) {
 
   // Set Page Title variable when this controller is active
   $rootScope.pageTitle = 'Template Creator';
@@ -23,6 +23,7 @@ angularApp.controller('CreateTemplateController', function($rootScope, $scope, $
       $scope.form = response;
       // Set form preview to true so the preview is viewable onload
       $scope.formPreview = true;
+      HeaderService.dataContainer.currentObjectScope = $scope.form;
     });
   } else {
     // If we're not loading an existing form then let's create a new empty $scope.form property
@@ -66,7 +67,7 @@ angularApp.controller('CreateTemplateController', function($rootScope, $scope, $
             }
           ]
         },
-        "template_id" : {
+        "template_id": {
           "type": "string",
           "format": "uri"
         },
@@ -80,6 +81,7 @@ angularApp.controller('CreateTemplateController', function($rootScope, $scope, $
       ],
       "additionalProperties": false
     };
+    HeaderService.dataContainer.currentObjectScope = $scope.form;
   }
 
   // Return true if form.properties object only contains default values
