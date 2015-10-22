@@ -3,7 +3,7 @@
   <div ng-repeat="item in page" class="animate-fade">
     <span ng-if="formFields[item]">
       <span ng-if="formFields[item].properties.info.input_type">
-        <field-directive field="formFields[item]" model="model[item]" directory="render"></field-directive>
+        <field-directive field="formFields[item]" model="model[item]" directory="render" preview="false"></field-directive>
       </span>
       <div class="element-group full" ng-if="!formFields[item].properties.info.input_type">
         <element-directive element="formFields[item]" key="item" preview="false" model="model[item]"></element-directive>

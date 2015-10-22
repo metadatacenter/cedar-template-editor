@@ -1,3 +1,5 @@
+/*jslint node: true */
+/*global angular */
 angularApp.run(['$rootScope', function($rootScope) {
 
   // Define global pageTitle variable for use
@@ -13,11 +15,13 @@ angularApp.run(['$rootScope', function($rootScope) {
 
   $rootScope.defaultPropertiesBase = $rootScope.schemasBase;
 
+  $rootScope.isArray = angular.isArray;
+
   // Global utility functions
 
   // Simple function to check if an object is empty
   $rootScope.isEmpty = function(obj) {
-    return Object.keys(obj).length;
+    return Object.keys(obj).length === 0;
   };
 
   // Tranform string to become object key
@@ -31,15 +35,15 @@ angularApp.run(['$rootScope', function($rootScope) {
   // Transform string to Pascal case
   $rootScope.toCamelCase = function(string) {
     return string.replace(/(?:^\w|[A-Z]|\b\w)/g, function(letter, index) {
-      return index == 0 ? letter.toLowerCase() : letter.toUpperCase();
+      return index === 0 ? letter.toLowerCase() : letter.toUpperCase();
     }).replace(/\s+/g, '');
-  }
+  };
 
   // Capitalize first letter
   $rootScope.capitalizeFirst = function(string) {
     string = string.toLowerCase();
     return string.substring(0,1).toUpperCase() + string.substring(1);
-  }
+  };
 
   // Returning true if the object key value in the properties object is of json-ld type '@' or if it corresponds to any of the reserved fields
   $rootScope.ignoreKey = function(key) {
@@ -77,7 +81,7 @@ angularApp.run(['$rootScope', function($rootScope) {
       valueType = "number";
     }
     else if (fieldType == "checkbox") {
-      valueType = "boolean";
+      valueType = "object";
     }
     else if (fieldType == "list") {
       valueType = "array";
@@ -133,7 +137,7 @@ angularApp.run(['$rootScope', function($rootScope) {
       context[key] = value.enum[0];
     });
    return context;
-  }
+  };
 
   // Function that generates the @type for an instance, based on the schema @type definition
   $rootScope.generateInstanceType = function(schemaType) {
@@ -141,7 +145,7 @@ angularApp.run(['$rootScope', function($rootScope) {
     if (angular.isUndefined(schemaType.oneOf[0].enum))
       return null;
     else {
-      if (schemaType.oneOf[0].enum.length == 0)
+      if (schemaType.oneOf[0].enum.length === 0)
         return null;
       // If only one type has been defined, a string is returned
       else if (schemaType.oneOf[0].enum.length == 1)
@@ -150,5 +154,99 @@ angularApp.run(['$rootScope', function($rootScope) {
       else
         return schemaType.oneOf[0].enum;
     }
-  }
+  };
+
+  $rootScope.checkFieldCardinalityOptions = function(field) {
+    var unmetConditions = [];
+
+    if (field.minItems && field.maxItems &&
+        parseInt(field.minItems) > parseInt(field.maxItems)) {
+      unmetConditions.push('Min cannot be greater than Max.');
+    }
+
+    return unmetConditions;
+  };
+
+  $rootScope.getFieldProperties = function(field) {
+    if (field.type == 'array' && field.items && field.items.properties) {
+      return field.items.properties;
+    } else {
+      return field.properties;
+    }
+  };
+
+  $rootScope.cardinalizeField = function(field) {
+    if (field.minItems == 1 && field.maxItems == 1 || !field.minItems && !field.maxItems) {
+      return false;
+    }
+    if (!field.maxItems ||                  // special 'N' case
+        (field.maxItems && field.maxItems > 1) || // has maxItems of more than 1
+        (field.minItems && field.minItems > 1)) { // has minItems of more than 1
+      field.items = {
+        'type': field.type,
+        '@id': field['@id'],
+        '$schema': field.schema,
+        'title': field.properties.info.title,
+        'description': field.properties.description,
+        'properties': field.properties,
+        'required': field.required,
+        'additionalProperties': field.additionalProperties
+      };
+      field.type = 'array';
+
+      delete field.$schema;
+      delete field['@id'];
+      delete field.properties;
+      delete field.title;
+      delete field.description;
+      delete field.required;
+      delete field.additionalProperties;
+
+      return true;
+    }
+    return false;
+  };
+
+  $rootScope.isCardinalElement = function(element) {
+    return element.minItems && element.maxItems != 1;
+  };
+
+  // If Max Items is N, its value will be 0, then need to remove it from schema
+  // if Min and Max are both 1, remove them
+  $rootScope.removeUnnecessaryMaxItems = function(properties) {
+    angular.forEach(properties, function(value, key) {
+      if (!$rootScope.ignoreKey(key)) {
+        if (!value.maxItems) {
+          delete value.maxItems;
+        }
+        if (value.minItems &&
+            value.minItems == 1 &&
+            value.maxItems &&
+            value.maxItems == 1) {
+          delete value.minItems;
+          delete value.maxItems;
+        }
+      }
+    });
+  };
+
+  $rootScope.console = function(txt, label) {
+    console.log(label + ' ' + JSON.stringify(txt,null,2));
+  };
+
+  var generateCardinalities = function(max) {
+    var results = [];
+    for (var i = 1; i <= max; i++) {
+      results.push({value: i, label: i});
+    }
+
+    return results;
+  };
+
+  var minCardinalities = generateCardinalities(8);
+  var maxCardinalities = generateCardinalities(8);
+  maxCardinalities.push({value: 0, label: "N"});
+
+  $rootScope.minCardinalities = minCardinalities;
+  $rootScope.maxCardinalities = maxCardinalities;
 }]);

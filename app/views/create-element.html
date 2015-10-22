@@ -60,8 +60,7 @@
               Add an Element <i class="fa fa-angle-down fa-2x"></i>
             </button>
             <ul class="dropdown-menu element-menu" role="menu">
-              <!--<li ng-repeat="element in elementList" class="item"><a ng-click="addExistingElement(element.guid)"><i class="cedar-svg-element"></i>{{element.title}}</a></li>-->
-              <li ng-repeat="element in elementList" class="item"><a ng-click="addExistingElement(element)"><i class="cedar-svg-element"></i>{{element.properties.info.title}}</a></li>
+              <li ng-repeat="element in elementList" class="item"><a ng-click="addElementToStaging(element)"><i class="cedar-svg-element"></i>{{element.properties.info.title}}</a></li>
             </ul>
           </div>
         </div> <!-- /.sticky-list -->
@@ -82,7 +81,11 @@
             <p ng-repeat="message in stagingErrorMessages"><i class="fa fa-exclamation-triangle"></i>{{message}}</p>
           </div>
           <form name="{{form.properties.info.title}}" id="{{form.guid}}">
-            <div ng-repeat="field in staging" class="animate-fade">
+            <div ng-repeat="field in staging" class="animate-fade" ng-class="{'adding-element': !field.properties.info.input_type}">
+              <div ng-if="!field.properties.info.input_type">
+                <form-preview form="previewForm">
+                </form-preview>
+              </div>
               <field-directive field="field" directory="create" delete="deleteField(field)" add="addFieldToElement(field)" option="addOption(field)">
               </field-directive>
             </div>

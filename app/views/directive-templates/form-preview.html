@@ -1,24 +1,24 @@
-<form name="{{form.properties.info.title}}" id="{{form['@id']}}">
+<form class="form-preview" name="{{form.properties.info.title}}" id="{{form['@id']}}">
   <!--Loop through "formFieldsOrder" in form and call either field or element directive with property -->
   <div ng-repeat="field in formFieldsOrder" class="animate-fade">
     <span ng-if="formFields[field]">
       <span ng-if="formFields[field].properties.info.input_type">
-        <field-directive field="formFields[field]" model="formFields[field].properties.info.model" directory="preview" delete="removeField(field)"></field-directive>
+        <field-directive field="formFields[field]" model="model[field]" directory="preview" preview="true" delete="removeField(field)"></field-directive>
       </span>
       <div class="element-group" ng-if="!formFields[field].properties.info.input_type">
-        <element-directive element="formFields[field]" key="field" delete="removeField(field)" preview="true"></element-directive>
+        <element-directive element="formFields[field]" model="model[field]" key="field" delete="removeField(field)" preview="true"></element-directive>
       </div>
     </span>
   </div>
 </form>
 
-<div class="text-right" style="padding-top:20px; padding-bottom:20px;">
+<div class="text-right toggle-json" style="padding-top:20px; padding-bottom:20px;">
   <!--<a ng-show="!showRender" ng-click="showRender = true">Show JSON</a>-->
   <!--<a ng-show="showRender" ng-click="showRender = false">Hide JSON</a>-->
   <a ng-click="showRender = !showRender">Show JSON</a>
 
 </div>
-<div ng-show="showRender">
+<div class="showed-json" ng-show="showRender">
   <pre>{{ form | json }}</pre>
 </div>
 

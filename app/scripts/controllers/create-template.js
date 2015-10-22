@@ -1,6 +1,6 @@
 'use strict';
 
-angularApp.controller('CreateTemplateController', function($rootScope, $scope, $q, $routeParams, FormService) {
+angularApp.controller('CreateTemplateController', function($rootScope, $scope, $q, $routeParams, $timeout, FormService) {
 
   // Set Page Title variable when this controller is active
   $rootScope.pageTitle = 'Template Creator';
@@ -104,6 +104,8 @@ angularApp.controller('CreateTemplateController', function($rootScope, $scope, $
   $scope.addFieldToStaging = function(fieldType) {
 
     var field = $rootScope.generateField(fieldType);
+    field.minItems = 1;
+    field.maxItems = 1;
 
     // If fieldtype can have multiple options, additional parameters on field object are necessary
     var optionInputs = ["radio", "checkbox", "list"];
@@ -122,6 +124,22 @@ angularApp.controller('CreateTemplateController', function($rootScope, $scope, $
 
   };
 
+  $scope.addElementToStaging = function(element) {
+    var clonedElement = angular.copy(element);
+    $scope.staging = {};
+    $scope.staging[element['@id']] = clonedElement;
+    clonedElement.minItems = 1;
+    clonedElement.maxItems = 1;
+
+    $scope.previewForm = {};
+    $timeout(function() {
+      var underscoreTitle = $rootScope.underscoreText(clonedElement.properties.info.title);
+
+      $scope.previewForm.properties = {};
+      $scope.previewForm.properties[underscoreTitle] = clonedElement;
+    });
+  };
+
   // Function to add additional options for radio, checkbox, and list fieldTypes
   $scope.addOption = function(field) {
     //console.log(field.properties.value);
@@ -136,6 +154,7 @@ angularApp.controller('CreateTemplateController', function($rootScope, $scope, $
   $scope.addFieldToForm = function(field) {
     // Setting return value from $scope.checkFieldConditions to array which will display error messages if any
     $scope.stagingErrorMessages = $scope.checkFieldConditions(field.properties);
+    $scope.stagingErrorMessages = jQuery.merge($scope.stagingErrorMessages, $rootScope.checkFieldCardinalityOptions(field));
 
     if ($scope.stagingErrorMessages.length == 0) {
       // Converting title for irregular character handling
@@ -145,10 +164,17 @@ angularApp.controller('CreateTemplateController', function($rootScope, $scope, $
       $scope.form.properties["@context"].properties[underscoreTitle].enum =
         new Array($rootScope.schemasBase + underscoreTitle);
       $scope.form.properties["@context"].required.push(underscoreTitle);
+
+      var fieldId = field["@id"];
+
+      // Evaluate cardinality
+      $rootScope.cardinalizeField(field);
+
       // Adding field to the element.properties object
       $scope.form.properties[underscoreTitle] = field;
+
       // Lastly, remove this field from the $scope.staging object
-      delete $scope.staging[field['@id']];
+      delete $scope.staging[fieldId];
     }
   };
 
@@ -216,7 +242,7 @@ angularApp.controller('CreateTemplateController', function($rootScope, $scope, $
         delete $scope.form.properties[key];
       }
     });
-    // Broadcast the reset event which will trigger the emptying of formFields formFieldsOrder 
+    // Broadcast the reset event which will trigger the emptying of formFields formFieldsOrder
     $scope.$broadcast('resetForm');
   };
 
@@ -241,6 +267,12 @@ angularApp.controller('CreateTemplateController', function($rootScope, $scope, $
     }
     // If there are no Template level error messages
     if ($scope.templateErrorMessages.length == 0) {
+      // Delete this preview form, so that it does not listen/emit some related events.
+      delete $scope.previewForm;
+
+      // If maxItems is N, then remove maxItems
+      $rootScope.removeUnnecessaryMaxItems($scope.form.properties);
+
       // Broadcast the initialize Page Array event which will trigger the creation of the $scope.form 'pages' array
       $scope.$broadcast('initPageArray');
       // Save template

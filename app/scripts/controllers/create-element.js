@@ -1,6 +1,6 @@
 'use strict';
 
-angularApp.controller('CreateElementController', function ($rootScope, $scope, $routeParams, FormService) {
+angularApp.controller('CreateElementController', function ($rootScope, $scope, $routeParams, $timeout, FormService) {
 
   // Set page title variable when this controller is active
   $rootScope.pageTitle = 'Element Creator';
@@ -93,8 +93,9 @@ angularApp.controller('CreateElementController', function ($rootScope, $scope, $
 
   // Add new field into $scope.staging object
   $scope.addFieldToStaging = function(fieldType) {
-
     var field = $rootScope.generateField(fieldType);
+    field.minItems = 1;
+    field.maxItems = 1;
 
     // If fieldtype can have multiple options, additional parameters on field object are necessary
     var optionInputs = ["radio", "checkbox", "list"];
@@ -111,7 +112,6 @@ angularApp.controller('CreateElementController', function ($rootScope, $scope, $
     $scope.staging = {};
     // put field into fields staging object
     $scope.staging[field['@id']] = field;
-
   };
 
   // Function to add additional options for radio, checkbox, and list fieldTypes
@@ -128,6 +128,7 @@ angularApp.controller('CreateElementController', function ($rootScope, $scope, $
   $scope.addFieldToElement = function(field) {
     // Setting return value from $scope.checkFieldConditions to array which will display error messages if any
     $scope.stagingErrorMessages = $scope.checkFieldConditions(field.properties);
+    $scope.stagingErrorMessages = jQuery.merge($scope.stagingErrorMessages, $rootScope.checkFieldCardinalityOptions(field));
 
     if ($scope.stagingErrorMessages.length == 0) {
       // Converting title for irregular character handling
@@ -137,10 +138,15 @@ angularApp.controller('CreateElementController', function ($rootScope, $scope, $
       $scope.element.properties["@context"].properties[underscoreTitle].enum =
         new Array($rootScope.schemasBase + underscoreTitle);
       $scope.element.properties["@context"].required.push(underscoreTitle);
+
+      // Evaluate cardinality
+      $rootScope.cardinalizeField(field);
+
       // Adding field to the element.properties object
       $scope.element.properties[underscoreTitle] = field;
+
       // Lastly, remove this field from the $scope.staging object
-      delete $scope.staging[field['@id']];
+      $scope.staging = {};
     }
   };
 
@@ -151,7 +157,7 @@ angularApp.controller('CreateElementController', function ($rootScope, $scope, $
 
     // Field title is already required, if it's empty create error message
     if (!field.info.title.length) {
-      unmetConditions.push('"Enter Field Title" input cannot be left empty.'); 
+      unmetConditions.push('"Enter Field Title" input cannot be left empty.');
     }
 
     // If field is within multiple choice field types
@@ -196,6 +202,21 @@ angularApp.controller('CreateElementController', function ($rootScope, $scope, $
     // Add existing element to the $scope.element.properties object
     $scope.element.properties[titleKey] = element;
     //});
+  };
+
+  $scope.addElementToStaging = function(element) {
+    $scope.staging = {};
+    $scope.staging[element['@id']] = element;
+    element.minItems = 1;
+    element.maxItems = 1;
+
+    $scope.previewForm = {};
+    $timeout(function() {
+      var underscoreTitle = $rootScope.underscoreText(element.properties.info.title);
+
+      $scope.previewForm.properties = {};
+      $scope.previewForm.properties[underscoreTitle] = element;
+    });
   };
 
   // Delete field from $scope.staging object
@@ -255,6 +276,10 @@ angularApp.controller('CreateElementController', function ($rootScope, $scope, $
       // Console.log full working form example on save, just to show demonstration of something happening
       console.log('saving element...');
       console.log($scope.element);
+
+      // If maxItems is N, then remove maxItems
+      $rootScope.removeUnnecessaryMaxItems($scope.element.properties);
+
       // Save element
       // Check if the element is already stored into the DB
       if ($routeParams.id == undefined) {
@@ -304,5 +329,5 @@ angularApp.controller('CreateElementController', function ($rootScope, $scope, $
       }
     }
   });
-  
+
 });

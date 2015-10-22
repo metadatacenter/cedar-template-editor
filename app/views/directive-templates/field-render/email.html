@@ -1,18 +1,40 @@
-<div class="form-group floating-label-wrapper">
-  <input 	type="email" 
-  				class="form-control" 
-  				ng-class="{'required': field.properties.info.required_value}"
-  				id="emailfield1" 
-  				placeholder="{{field.properties.info.title}}"
-  				aria-label="{{field.properties.info.description}}"
-  				ng-model="model.value"
-  				validate-on="blur"
-  				ng-pattern= "/^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/"
-  				with-floating-label>
-  <span class="warning-text">{{field.properties.info.warning_text}}</span>
-  <div class="input-indicator-icons">
-    <i class="cedar-svg-help-circle" data-container="body" data-toggle="popover" data-placement="left" data-content="{{field.properties.info.description}}"></i>
-    <i class="cedar-svg-check-circle"></i>
-    <i class="cedar-svg-warning"></i>
-  </div><!-- /.input-indicator-icons -->
-</div><!-- /.form-group -->
+<div class="fields fields-email">
+  <div ng-if="$root.isArray(model)" class="form-group floating-label-wrapper" ng-repeat="value_element in model">
+    <input 	type="email"
+    				class="form-control"
+    				ng-class="{'required': field.properties.info.required_value}"
+    				id="emailfield1"
+    				placeholder="{{field.properties.info.title}}"
+    				aria-label="{{field.properties.info.description}}"
+    				ng-model="value_element.value"
+    				validate-on="blur"
+    				ng-pattern= "/^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/"
+    				with-floating-label>
+    <span class="warning-text">{{field.properties.info.warning_text}}</span>
+    <div class="input-indicator-icons">
+      <i class="cedar-svg-help-circle" data-container="body" data-toggle="popover" data-placement="left" data-content="{{field.properties.info.description}}"></i>
+      <i class="cedar-svg-check-circle"></i>
+      <i class="cedar-svg-warning"></i>
+    </div><!-- /.input-indicator-icons -->
+    <div class="more-input-wrapper" ng-include="'views/partials/more-input-buttons.html'" ng-show="!field.maxItems || field.maxItems > 1"></div>
+  </div><!-- /.form-group -->
+
+  <div ng-if="!$root.isArray(model)" class="form-group floating-label-wrapper">
+    <input  type="email"
+            class="form-control"
+            ng-class="{'required': field.properties.info.required_value}"
+            id="emailfield1"
+            placeholder="{{field.properties.info.title}}"
+            aria-label="{{field.properties.info.description}}"
+            ng-model="model.value"
+            validate-on="blur"
+            ng-pattern= "/^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/"
+            with-floating-label>
+    <span class="warning-text">{{field.properties.info.warning_text}}</span>
+    <div class="input-indicator-icons">
+      <i class="cedar-svg-help-circle" data-container="body" data-toggle="popover" data-placement="left" data-content="{{field.properties.info.description}}"></i>
+      <i class="cedar-svg-check-circle"></i>
+      <i class="cedar-svg-warning"></i>
+    </div><!-- /.input-indicator-icons -->
+  </div><!-- /.form-group -->
+</div>

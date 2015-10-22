@@ -31,7 +31,7 @@
         <div class="sidebar-inner" sticky-directive>
           <p class="add-item">Add Element</p>
           <ul class="element-menu" role="menu">
-            <li ng-repeat="element in elementList" class="item"><a ng-click="addExistingElement(element)"><i class="cedar-svg-element"></i>{{element.properties.info.title}}</a></li>
+            <li ng-repeat="element in elementList" class="item"><a ng-click="addElementToStaging(element)"><i class="cedar-svg-element"></i>{{element.properties.info.title}}</a></li>
           </ul>
 
           <div class="more-items" dropdown>
@@ -79,7 +79,11 @@
 
         <div id="form-item-config-section">
           <form name="{{form.properties.info.title}}" id="{{form.guid}}">
-            <div ng-repeat="field in staging | orderObjectBy: 'properties.info.created_at'" class="animate-fade">
+            <div ng-repeat="field in staging | orderObjectBy: 'properties.info.created_at'" class="animate-fade" ng-class="{'adding-element': !field.properties.info.input_type}">
+              <div ng-if="field && !field.properties.info.input_type && previewForm">
+                <form-preview form="previewForm">
+                </form-preview>
+              </div>
               <field-directive field="field" directory="create" delete="deleteField(field, staging)" add="addFieldToForm(field)" option="addOption(field)">
               </field-directive>
             </div>
@@ -104,7 +108,7 @@
             <button type="button" class="btn btn-save" ng-click="saveTemplate()">Save Template</button>
           </div>
         </div> <!-- /.template-actions -->
-        
+
       </div> <!-- /.right-body -->
     </div> <!-- /.row -->
   </div> <!-- /.container -->

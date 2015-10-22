@@ -27,6 +27,11 @@
     "gulp-rename": "^1.2.2",
     "gulp-uglify": "^1.2.0",
     "gulp-util": "^3.0.4",
-    "jshint-stylish": "^1.0.1"
+    "jasmine-core": "^2.3.4",
+    "jshint-stylish": "^1.0.1",
+    "karma": "^0.13.11",
+    "karma-chrome-launcher": "^0.2.1",
+    "karma-jasmine": "^0.2.2",
+    "karma-notify-send-reporter": "0.0.3"
   }
 }

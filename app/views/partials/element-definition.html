@@ -1,0 +1,18 @@
+<div class="form-group floating-label-wrapper">
+  <input 	type="text" 
+  				class="form-control" 
+  				id="placeholder-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}"
+  				placeholder="Enter Element Title" 
+  				aria-label="Enter Element Title" 
+  				ng-model="field.title"
+  				with-floating-label />
+</div><!-- /.form-group -->
+<div class="form-group floating-label-wrapper">
+  <input 	type="text" 
+  				class="form-control" 
+  				id="help-text-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}"
+  				placeholder="Enter Element Description (Help Text)" 
+  				aria-label="Enter Element Description (Help Text)" 
+  				ng-model="field.description"
+  				with-floating-label />
+</div><!-- /.form-group -->

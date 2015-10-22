@@ -659,7 +659,7 @@ section.dashboard-elements {
     }
 
     @media(min-width:@screen-md-min) {
-      padding:18px 12px 18px 25px; 
+      padding:18px 12px 18px 25px;
       font-size:16px;
     }
 
@@ -751,7 +751,7 @@ section.dashboard-elements {
       margin-left:10px;
       margin-right:10px;
       margin-bottom:30px;
-      float:left; 
+      float:left;
       width: calc(~"50% - 20px");
       border:1px solid #ddd;
       text-align:center;
@@ -900,7 +900,7 @@ section.dashboard-elements {
         top:12px;
       }
 
-      &:focus ~ .floating-label, 
+      &:focus ~ .floating-label,
       &:not(.empty) ~ .floating-label,
       &.ng-invalid ~ .floating-label {
         top:4px;
@@ -932,8 +932,8 @@ section.dashboard-elements {
       height:auto;
     }
 
-    input[type=number]::-webkit-inner-spin-button, 
-    input[type=number]::-webkit-outer-spin-button { 
+    input[type=number]::-webkit-inner-spin-button,
+    input[type=number]::-webkit-outer-spin-button {
       -webkit-appearance: none;
       margin: 0px;
     }
@@ -1160,7 +1160,7 @@ section.dashboard-elements {
     &.date {
       width:240px;
     }
-    
+
     &.list {
       width:300px;
     }
@@ -1192,7 +1192,7 @@ section.dashboard-elements {
   p {
     margin-bottom:5px;
   }
-  
+
   i {
     padding-right:10px;
   }
@@ -1372,7 +1372,7 @@ section.dashboard-elements {
           &:not(.collapsed) {
             color:@brand-primary;
           }
-          
+
           &:before {
             font-size:30px;
           }
@@ -1497,7 +1497,7 @@ section.dashboard-elements {
       .form-group {
         transform:translate(0, -15px);
       }
-    } 
+    }
 
     .add-another {
       text-transform:uppercase;
@@ -1514,7 +1514,7 @@ section.dashboard-elements {
         color:@brand-primary-hover;
 
         i {
-         color:@brand-primary-hover; 
+         color:@brand-primary-hover;
         }
       }
     }
@@ -1787,5 +1787,197 @@ section.dashboard-elements {
   }
 }
 
+.cardinality-options select {
+  padding: 5px;
+}
+.cardinality-options .min-items-option {
+  margin-right: 10px;
+}
 
+#cardinality-options .bootstrap-select {
+  width: 80px;
+}
 
+.more-input-wrapper {
+  position: absolute;
+  left: 100%;
+  top: 0;
+  width: 110px;
+
+  .add, .remove {
+    height: 40px;
+    width: 40px;
+    margin: 0 0 0 10px;
+    border-radius: 50%;
+    display: inline-block;
+    vertical-align: middle;
+    transition: all 0.3s ease 0.1s;
+    cursor: pointer;
+    border: none;
+
+    i {
+      color: #FFF;
+      font-size: 18px;
+      line-height: 40px;
+    }
+  }
+
+  .add {
+    background-color: #393;
+    &:disabled {
+      // opacity: 0.5;
+      background-color: #94C795;
+    }
+  }
+
+  .remove {
+    background-color: #333333;
+  }
+}
+
+.fields {
+  .form-group {
+    margin-right: 100px;
+  }
+}
+
+.fields-checkbox .field-checkbox,
+.fields-radio .field-radio,
+.fields-date .field-date,
+.fields-list .field-list {
+  position: relative;
+  margin-right: 100px;
+}
+
+.element-toggles {
+  text-align: center;
+  margin: 10px 0;
+  .element-toggle {
+    display: inline-block;
+    padding: 20px 20px 0;
+    border-bottom: 5px solid #DDD;
+    border-color: #DDD;
+    transition: all 0.3s ease 0.1s;
+
+    &.active {
+      border-color: #393;
+    }
+
+    span {
+      text-transform: uppercase;
+      cursor: pointer;
+    }
+
+    &.active span {
+      cursor: default;
+    }
+  }
+
+  .add-element {
+    display: inline-block;
+
+    .add {
+      height: 40px;
+      width: 40px;
+      margin: 0 0 0 10px;
+      border-radius: 50%;
+      display: inline-block;
+      vertical-align: middle;
+      transition: all 0.3s ease 0.1s;
+      background-color: #393;
+      border: none;
+
+      i {
+        color: #FFF;
+        font-size: 18px;
+        line-height: 40px;
+      }
+
+      &:disabled {
+        // opacity: 0.5;
+        background-color: #94C795;
+      }
+    }
+  }
+}
+
+#form-item-config-section {
+  .adding-element {
+    .preview-edit-options {
+      display: none;
+    }
+
+    .definition-inputs, .type-label, .toggle-json, .showed-json {
+      display: none;
+    }
+
+    .configuration-options {
+      .checkbox-required, .checkbox-advanced, .toggle-controlled-term {
+        display: none;
+      }
+
+      .checkbox-cardinality {
+        margin-left: 0;
+        margin-top: 10px;
+      }
+    }
+  }
+}
+
+.add {
+  .cardinality-info-container {
+    display: none;
+    position: relative;
+
+    .cardinality-info {
+      position: absolute;
+      width: 350px;
+      text-align: left;
+      top: -90px;
+      left: -5px;
+      .cardinality-info-text {
+        padding: 10px 15px;
+        border: 1px solid #B4C1C8;
+        display: inline-block;
+        background-color: #FFFFFF;
+        color: #359D34;
+        font-weight: bold;
+        border-radius: 3px;
+        &:after, &:before {
+          top: 40px;
+          left: 10px;
+          border: solid transparent;
+          content: " ";
+          height: 0;
+          width: 0;
+          position: absolute;
+          pointer-events: none;
+        }
+
+        &:after {
+          border-color: transparent;
+          border-top-color: #FFFFFF;
+          border-width: 10px;
+        }
+        &:before {
+          top: 41px;
+          left: 9px;
+          border-color: transparent;
+          border-top-color: #B4C1C8;
+          border-width: 11px;
+        }
+      }
+    }
+  }
+
+  &:hover {
+    .cardinality-info-container {
+      display: block;
+    }
+  }
+}
+
+.remove-element {
+  margin-top: -45px;
+  position: relative;
+}
