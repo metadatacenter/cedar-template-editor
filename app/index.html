@@ -31,14 +31,14 @@
           <span class="icon-bar"></span>
         </button>
         <p id="page-title" ng-bind="pageTitle"></p>
-        <a class="navbar-brand" href="/">Cedar</a>
+        <a class="navbar-brand" ng-href="#/">Cedar</a>
       </div>
       <div id="navbar" class="navbar-collapse collapse">
         <ul class="nav pull-right">
-          <li ng-class="{active: ($location.path() == '/') }"><a href="/">Dashboard</a></li>
-          <li ng-class="{active: ($location.path() == '/elements/create') }"><a href="elements/create">Element Creator</a></li>
-          <li ng-class="{active: ($location.path() == '/templates/create') }"><a href="templates/create">Template Creator</a></li>
-          <li ng-class="{active: ($location.path() == '/instances/create') }"><a href="instances/create">Runtime</a></li>
+          <li ng-class="{active: ($location.path() == '/') }"><a href="#/">Dashboard</a></li>
+          <li ng-class="{active: ($location.path() == '/elements/create') }"><a href="#/elements/create">Element Creator</a></li>
+          <li ng-class="{active: ($location.path() == '/templates/create') }"><a href="#/templates/create">Template Creator</a></li>
+          <li ng-class="{active: ($location.path() == '/instances/create') }"><a href="#/instances/create">Runtime</a></li>
         </ul>
       </div><!--/.navbar-collapse -->
     </div>
@@ -82,5 +82,6 @@
   <script src="scripts/directives/angular-validator.js"></script>
   <script src="scripts/directives/sticky-directive.js"></script>
   <!-- endbuild -->
+
   </body>
 </html>

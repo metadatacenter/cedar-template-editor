@@ -59,18 +59,30 @@ gulp.task('less', function() {
 // });
 
 gulp.task('server', function() {
-  connect.server({
-    root: 'app',
-    port: 4200,
-    livereload: true,
-    middleware: function(connect, opt) {
-    	//console.log(opt);
-    	opt.route = '/proxy';
-      var proxy = new Proxy(opt);
-      return [proxy, historyApiFallback];
-    }
-  });
+	connect.server({
+		root: 'app',
+		port: 4200,
+		livereload: true,
+		//middleware: function(connect, opt) {
+		//	console.log(opt);
+		//	opt.route = '/proxy';
+		//	var proxy = new Proxy(opt);
+		//	return [proxy, historyApiFallback({
+		//		// See: https://github.com/bripkens/connect-history-api-fallback
+		//		verbose: true,
+		//		rewrites: [
+		//			{
+		//				from: /^.*\/elements\/edit\/.*$/,
+		//				to: function(context) {
+		//					return '/';
+		//				}
+		//			}
+		//		]
+		//	})];
+		//}
+	})
 });
+
 
 gulp.task('html', function () {
   return gulp.src('/app/views/*.html')

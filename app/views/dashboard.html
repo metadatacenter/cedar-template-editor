@@ -3,11 +3,11 @@
 		<section id="metadata-templates" class="dashboard-elements">
 			<div class="col-sm-3">
 				<h2 class="section-title">Metadata Templates</h2>
-				<a href="templates/create" class="btn btn-create-new">Create New <i class="cedar-svg-plus"></i></a>
+				<a href="#/templates/create" class="btn btn-create-new">Create New <i class="cedar-svg-plus"></i></a>
 			</div>
 			<div class="col-sm-9">
 				<div class="dash-header">
-					<a class="see-all" href="/templates/list">See All</a>
+					<a class="see-all" href="#/templates/list">See All</a>
 				</div>
 				<div class="margin-reset-row">
 					<div class="template-item" ng-repeat="template in templateDefaults" resize-height>
@@ -19,7 +19,7 @@
 						<div class="back-panel">
 							<p class="description">{{template.properties.info.description}}</p>
 							<div class="edit-options">
-								<a ng-href="templates/edit/{{template['@id']}}">
+								<a ng-href="#/templates/edit/{{template['@id']}}">
 									<span class="edit">
 										<i class="cedar-svg-pencil"></i>
 									</span>
@@ -38,11 +38,11 @@
 		<section id="template-elements" class="dashboard-elements">
 			<div class="col-sm-3">
 				<h2 class="section-title">Template Elements</h2>
-				<a href="elements/create" class="btn btn-create-new">Create New <i class="cedar-svg-plus"></i></a>
+				<a href="#/elements/create" class="btn btn-create-new">Create New <i class="cedar-svg-plus"></i></a>
 			</div>
 			<div class="col-sm-9">
 				<div class="dash-header">
-					<a class="see-all" href="/elements/list">See All</a>
+					<a class="see-all" href="#/elements/list">See All</a>
 				</div>
 				<div class="margin-reset-row">
 					<div class="template-item" ng-repeat="element in elementDefaults"resize-height>
@@ -54,7 +54,7 @@
 						<div class="back-panel">
 							<p class="description">{{element.properties.info.description}}</p>
 							<div class="edit-options">
-								<a ng-href="elements/edit/{{element['@id']}}">
+								<a ng-href="#/elements/edit/{{element['@id']}}">
 									<span class="edit">
 										<i class="cedar-svg-pencil"></i>
 									</span>
@@ -75,11 +75,11 @@
 			<div class="col-sm-3">
 				<h2 class="section-title">POPULATED TEMPLATES</h2>
 				<!-- <p class="instructions">Choose a template to fill out.</p> -->
-				<a href="instances/create" class="btn btn-create-new">Fill Out Template</a>
+				<a href="#/instances/create" class="btn btn-create-new">Fill Out Template</a>
 			</div>
 			<div class="col-sm-9">
 				<div class="dash-header">
-					<a class="see-all" href="/submissions/list">See All</a>
+					<a class="see-all" href="#/submissions/list">See All</a>
 				</div>
 				<div class="margin-reset-row">
 					<div class="template-item" ng-repeat="submission in submissionDefaults" resize-height>
@@ -91,7 +91,7 @@
 						<div class="back-panel">
 							<p class="description">{{submission['@id']}}</p>
 							<div class="edit-options">
-								<a ng-href="instances/edit/{{submission['@id']}}">
+								<a ng-href="#/instances/edit/{{submission['@id']}}">
 									<span class="edit">
 										<i class="cedar-svg-pencil"></i>
 									</span>

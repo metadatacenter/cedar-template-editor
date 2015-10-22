@@ -17,7 +17,7 @@
           <p class="add-item">Templates</p>
           <ul class="element-menu" role="menu">
             <!--<li ng-repeat="form in formList" class="item"><a ng-class="{active: $location.path() == '/templates/runtime/{{form.guid}}'}" ng-href="/templates/runtime/{{form.guid}}"><i class="cedar-svg-metadata"></i>{{form.title}}</a></li>-->
-            <li ng-repeat="form in formList" class="item"><a ng-class="{active: $location.path() == '/instances/create/' + form['@id']}" ng-href="/instances/create/{{form['@id']}}"><i class="cedar-svg-metadata"></i>{{form.properties.info.title}}</a></li>
+            <li ng-repeat="form in formList" class="item"><a ng-class="{active: $location.path() == '/instances/create/' + form['@id']}" ng-href="#/instances/create/{{form['@id']}}"><i class="cedar-svg-metadata"></i>{{form.properties.info.title}}</a></li>
           </ul>
 
           <div class="more-items hidden-xs">
