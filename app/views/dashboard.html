@@ -88,12 +88,13 @@
 					<div class="template-item" ng-repeat="submission in submissionDefaults" resize-height>
 						<a ng-href="#/instances/edit/{{submission['@id']}}">
 							<i class="cedar-svg cedar-svg-submission"></i>
-							<p class="name">{{submission.properties.info.title}}</p>
+							<p class="name">{{submission.info.template_title}}</p>
 							<div class="state-indication">
 								<i class="cedar-svg-progress"></i>
 							</div>
 							<div class="back-panel">
-								<p class="description">{{submission['@id']}}</p>
+								<!--<p class="description">{{submission['@id']}}</p>-->
+								<p class="description">{{submission.info.template_description}}<br />{{'(' + (submission.info.creation_date | date:'short') + ')'}}</p>
 								<div class="edit-options">
 									<a ng-href="#/instances/edit/{{submission['@id']}}">
 										<span class="edit">

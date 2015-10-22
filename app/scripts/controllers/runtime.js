@@ -101,6 +101,11 @@ angularApp.controller('RuntimeController', function ($rootScope, $scope, FormSer
 			// '@id' and 'template_id' haven't been populated yet, create now
 			$scope.instance['@id'] = $rootScope.idBasePath + $rootScope.generateGUID();
 			$scope.instance['template_id'] = $routeParams.template_id;
+			// Create info field that will store information used by the UI
+			$scope.instance.info = {};
+			$scope.instance.info['template_title'] = $scope.form.properties.info.title + ' instance';
+			$scope.instance.info['template_description'] = $scope.form.properties.info.description;
+			$scope.instance.info['creation_date'] = new Date();
 			// Make create instance call
 			FormService.savePopulatedTemplate($scope.instance).then(function(response) {
 				$scope.runtimeSuccessMessages.push('The populated template has been saved.');
