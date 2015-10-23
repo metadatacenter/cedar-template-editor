@@ -1,9 +1,19 @@
 'use strict';
 
 angularApp.constant('HEADER_MINI', {
-  "SCROLL_LIMIT": {
-    "ELEMENT": 180,
-    "TEMPLATE": 140,
-    "RUNTIME": 140
+  "DASHBOARD": {
+    "enabled": false
+  },
+  "ELEMENT": {
+    "enabled": true,
+    "scrollLimit": 180
+  },
+  "TEMPLATE": {
+    "enabled": true,
+    "scrollLimit": 140
+  },
+  "RUNTIME": {
+    "enabled": true,
+    "scrollLimit": 140
   }
 });

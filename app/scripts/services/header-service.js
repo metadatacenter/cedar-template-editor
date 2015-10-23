@@ -1,20 +1,31 @@
 'use strict';
 
-angularApp.service('HeaderService', function HeaderService() {
+var HeaderService = function (HEADER_MINI) {
   return {
     serviceId: "HeaderService",
 
     miniHeaderEnabled: false,
+    miniHeaderScrollLimit: NaN,
+
     dataContainer: {
       currentObjectScope: null
     },
 
-    setEnabled: function(b) {
-      this.miniHeaderEnabled = b;
+    configure: function(pageId) {
+      this.miniHeaderEnabled = HEADER_MINI[pageId].enabled;
+      this.miniHeaderScrollLimit = HEADER_MINI[pageId].scrollLimit;
+      console.log(this);
     },
 
     isEnabled: function() {
       return this.miniHeaderEnabled;
+    },
+
+    showMini: function(pageYOffset) {
+      return this.isEnabled() && pageYOffset > this.miniHeaderScrollLimit;
     }
   };
-});
+};
+
+HeaderService.$inject = ["HEADER_MINI"];
+angularApp.service('HeaderService', HeaderService);

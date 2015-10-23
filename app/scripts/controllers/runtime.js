@@ -11,9 +11,8 @@ var RuntimeController = function($rootScope, $scope, FormService, $routeParams, 
   FormService.formList().then(function(response) {
     $scope.formList = response;
   });
-	// Set scrolling limit for mini header
-	$rootScope.headerMiniLimit = HEADER_MINI.SCROLL_LIMIT.RUNTIME;
-	HeaderService.setEnabled(true);
+	// Configure mini header
+	HeaderService.configure("RUNTIME");
 
 
 	// Create empty form object

@@ -9,8 +9,8 @@ var DashboardController = function ($rootScope, $scope, FormService, HeaderServi
   $scope.elementDefaults = [];
   $scope.templateDefaults = [];
   $scope.submissionDefaults = [];
-
-  HeaderService.setEnabled(false);
+  // Configure mini header
+  HeaderService.configure("DASHBOARD");
 
   // Define function to make async request to location of json objects and assign proper
   // scope array with returned list of data

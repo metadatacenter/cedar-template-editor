@@ -11,9 +11,8 @@ var CreateElementController = function($rootScope, $scope, $routeParams, $timeou
   $scope.volatile = {};
   // Setting form preview setting to false by default
   $scope.formPreview = false;
-  // Set scrolling limit for mini header
-  $rootScope.headerMiniLimit = HEADER_MINI.SCROLL_LIMIT.ELEMENT;
-  HeaderService.setEnabled(true);
+  // Configure mini header
+  HeaderService.configure("ELEMENT");
 
   // Using form service to load list of existing elements to embed into new element
   FormService.elementList().then(function(response) {

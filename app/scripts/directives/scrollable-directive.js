@@ -6,7 +6,8 @@ var scrollableDirective = function ($window, $document, $rootScope, $timeout, He
         scope: {},
         link: function (scope, element, attrs) {
             angular.element($window).bind('scroll', function () {
-                if ($window.pageYOffset > $rootScope.headerMiniLimit && HeaderService.isEnabled()) {
+                console.log("do scrollt");
+                if (HeaderService.showMini($window.pageYOffset)) {
                     angular.element("#navbarMini").show().removeClass('navbarMiniHide').addClass('navbarMiniShow');
                 } else {
                     angular.element("#navbarMini").hide().removeClass('navbarMiniShow').addClass('navbarMiniHide');

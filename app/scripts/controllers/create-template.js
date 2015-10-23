@@ -9,9 +9,8 @@ var CreateTemplateController = function($rootScope, $scope, $q, $routeParams, $t
   //$scope.favorite = false;
   // Setting form preview setting to false by default
   $scope.formPreview = false;
-  // Set scrolling limit for mini header
-  $rootScope.headerMiniLimit = HEADER_MINI.SCROLL_LIMIT.TEMPLATE;
-  HeaderService.setEnabled(true);
+  // Configure mini header
+  HeaderService.configure("TEMPLATE");
 
   // Using form service to load list of existing elements to embed into new form
   FormService.elementList().then(function(response) {
