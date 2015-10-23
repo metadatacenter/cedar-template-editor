@@ -14,16 +14,20 @@ var HeaderService = function (HEADER_MINI) {
     configure: function(pageId) {
       this.miniHeaderEnabled = HEADER_MINI[pageId].enabled;
       this.miniHeaderScrollLimit = HEADER_MINI[pageId].scrollLimit;
-      console.log(this);
     },
 
     isEnabled: function() {
       return this.miniHeaderEnabled;
     },
 
+    getScrollLimit: function() {
+      return this.miniHeaderScrollLimit;
+    },
+
     showMini: function(pageYOffset) {
-      return this.isEnabled() && pageYOffset > this.miniHeaderScrollLimit;
+      return this.isEnabled() && pageYOffset > this.getScrollLimit();
     }
+
   };
 };
 
