@@ -1,7 +1,6 @@
 'use strict';
 
-angularApp.controller('CreateElementController', ["$rootScope", "$scope", "$routeParams", "FormService", "HeaderService", "HEADER_MINI", function ($rootScope, $scope, $routeParams, FormService, HeaderService, HEADER_MINI) {
-
+var CreateElementController = function($rootScope, $scope, $routeParams, $timeout, FormService, HeaderService, HEADER_MINI) {
   // Set page title variable when this controller is active
   $rootScope.pageTitle = 'Element Creator';
   // Create staging area to create/edit fields before they get added to the element
@@ -14,6 +13,7 @@ angularApp.controller('CreateElementController', ["$rootScope", "$scope", "$rout
   $scope.formPreview = false;
   // Set scrolling limit for mini header
   $rootScope.headerMiniLimit = HEADER_MINI.SCROLL_LIMIT.ELEMENT;
+  HeaderService.setEnabled(true);
 
   // Using form service to load list of existing elements to embed into new element
   FormService.elementList().then(function(response) {
@@ -97,8 +97,9 @@ angularApp.controller('CreateElementController', ["$rootScope", "$scope", "$rout
 
   // Add new field into $scope.staging object
   $scope.addFieldToStaging = function(fieldType) {
-
     var field = $rootScope.generateField(fieldType);
+    field.minItems = 1;
+    field.maxItems = 1;
 
     // If fieldtype can have multiple options, additional parameters on field object are necessary
     var optionInputs = ["radio", "checkbox", "list"];
@@ -115,7 +116,6 @@ angularApp.controller('CreateElementController', ["$rootScope", "$scope", "$rout
     $scope.staging = {};
     // put field into fields staging object
     $scope.staging[field['@id']] = field;
-
   };
 
   // Function to add additional options for radio, checkbox, and list fieldTypes
@@ -132,6 +132,7 @@ angularApp.controller('CreateElementController', ["$rootScope", "$scope", "$rout
   $scope.addFieldToElement = function(field) {
     // Setting return value from $scope.checkFieldConditions to array which will display error messages if any
     $scope.stagingErrorMessages = $scope.checkFieldConditions(field.properties);
+    $scope.stagingErrorMessages = jQuery.merge($scope.stagingErrorMessages, $rootScope.checkFieldCardinalityOptions(field));
 
     if ($scope.stagingErrorMessages.length == 0) {
       // Converting title for irregular character handling
@@ -141,10 +142,15 @@ angularApp.controller('CreateElementController', ["$rootScope", "$scope", "$rout
       $scope.element.properties["@context"].properties[underscoreTitle].enum =
         new Array($rootScope.schemasBase + underscoreTitle);
       $scope.element.properties["@context"].required.push(underscoreTitle);
+
+      // Evaluate cardinality
+      $rootScope.cardinalizeField(field);
+
       // Adding field to the element.properties object
       $scope.element.properties[underscoreTitle] = field;
+
       // Lastly, remove this field from the $scope.staging object
-      delete $scope.staging[field['@id']];
+      $scope.staging = {};
     }
   };
 
@@ -155,7 +161,7 @@ angularApp.controller('CreateElementController', ["$rootScope", "$scope", "$rout
 
     // Field title is already required, if it's empty create error message
     if (!field.info.title.length) {
-      unmetConditions.push('"Enter Field Title" input cannot be left empty.'); 
+      unmetConditions.push('"Enter Field Title" input cannot be left empty.');
     }
 
     // If field is within multiple choice field types
@@ -200,6 +206,21 @@ angularApp.controller('CreateElementController', ["$rootScope", "$scope", "$rout
     // Add existing element to the $scope.element.properties object
     $scope.element.properties[titleKey] = element;
     //});
+  };
+
+  $scope.addElementToStaging = function(element) {
+    $scope.staging = {};
+    $scope.staging[element['@id']] = element;
+    element.minItems = 1;
+    element.maxItems = 1;
+
+    $scope.previewForm = {};
+    $timeout(function() {
+      var underscoreTitle = $rootScope.underscoreText(element.properties.info.title);
+
+      $scope.previewForm.properties = {};
+      $scope.previewForm.properties[underscoreTitle] = element;
+    });
   };
 
   // Delete field from $scope.staging object
@@ -259,6 +280,10 @@ angularApp.controller('CreateElementController', ["$rootScope", "$scope", "$rout
       // Console.log full working form example on save, just to show demonstration of something happening
       console.log('saving element...');
       console.log($scope.element);
+
+      // If maxItems is N, then remove maxItems
+      $rootScope.removeUnnecessaryMaxItems($scope.element.properties);
+
       // Save element
       // Check if the element is already stored into the DB
       if ($routeParams.id == undefined) {
@@ -308,5 +333,8 @@ angularApp.controller('CreateElementController', ["$rootScope", "$scope", "$rout
       }
     }
   });
-  
-}]);
+
+};
+
+CreateElementController.$inject = ["$rootScope", "$scope", "$routeParams", "$timeout", "FormService", "HeaderService", "HEADER_MINI"];
+angularApp.controller('CreateElementController', CreateElementController);

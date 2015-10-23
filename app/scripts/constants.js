@@ -3,6 +3,7 @@
 angularApp.constant('HEADER_MINI', {
   "SCROLL_LIMIT": {
     "ELEMENT": 180,
-    "TEMPLATE": 140
+    "TEMPLATE": 140,
+    "RUNTIME": 140
   }
 });

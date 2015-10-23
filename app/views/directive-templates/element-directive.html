@@ -1,19 +1,53 @@
 <script type="text/ng-template" id="nestedElement">
-	<field-directive ng-if="field.properties.info.input_type" field="field" model="model" directory="render"></field-directive>
+	<field-directive ng-if="field.properties.info.input_type" field="field" model="model" directory="render" preview="preview"></field-directive>
 	<div ng-if="!field.properties.info.input_type" class="nested-element">
-
-		<p class="element-name-label"><i class="cedar-svg-element"></i>{{key | keyToTitle}}</p>
-		<div ng-repeat="key in field['order']">
-			<span ng-if="field[key]" ng-init="field = field[key]; model = model[key]" ng-include="'nestedElement'"></span>
-		</div>
+	  <element-directive key="key" model="model" element="field" preview="preview" nested-element="nestedElement"></element-directive>
 	</div>
 </script>
 
-<div class="element-header">
-  <p class="element-name-label"><i class="cedar-svg-element"></i>{{key | keyToTitle}}</p>
-  <div ng-if="preview" class="preview-edit-options" ng-include="'views/partials/preview-edit-options.html'"></div>
-</div>
+<div class="element-toggles list">
+  <div ng-if="!$root.isArray(model)" class="element-toggle active">
+    <span>{{key | keyToTitle}}</span>
+  </div>
+  <div ng-if="$root.isArray(model)" class="element-toggle" ng-class="{active: selectedTab == $index}" ng-repeat="m in model" ng-click="selectTab($index)">
+    <span>{{key | keyToTitle}}</span>
+  </div>
+  <div class="add-element">
+    <button type="button" ng-click="addElement()" class="add" ng-show="element.minItems && (!element.maxItems || !$root.isArray(model) && element.maxItems > 1 || $root.isArray(model) && model.length < element.maxItems)" ng-disabled="preview">
+      <i class="fa fa-plus"></i>
+      <div class="cardinality-info-container">
+        <div class="cardinality-info">
+          <div class="cardinality-info-text">Min Entries: {{element.minItems}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Max Entries: {{element.maxItems || "Unlimited"}}</div>
+        </div>
+      </div>
+    </button>
+  </div>
+  <div class="clearfix"></div>
+</div> <!-- /.date-type-toggle -->
 
-<div ng-repeat="key in element['order']">
-	<span ng-if="element[key]" ng-init="field = element[key]; model = model[key]" ng-include="'nestedElement'"></span>
+<div class="elements">
+	<div ng-if="$root.isArray(model)" class="element" ng-repeat="m in model" ng-class="['element-{{$index}}']" ng-show="selectedTab == $index">
+		<div class="element-header">
+		    <p class="element-name-label"><i class="cedar-svg-element"></i>{{key | keyToTitle}}</p>
+		  <div ng-if="preview && !nestedElement" class="preview-edit-options" ng-include="'views/partials/preview-edit-options.html'"></div>
+		</div>
+    <div class="remove-element pull-right">
+      <a class="" ng-show="model.length > element.minItems" ng-click="removeElement($index)">Remove</a>
+    </div>
+
+		<div ng-repeat="key in element['order']">
+			<span ng-if="element[key]" ng-init="key = key; field = element[key]; model = m[key]; preview = preview; nestedElement = true;" ng-include="'nestedElement'"></span>
+		</div>
+	</div>
+
+  <div ng-if="!$root.isArray(model)" class="element only-element">
+    <div class="element-header">
+      <p class="element-name-label"><i class="cedar-svg-element"></i>{{key | keyToTitle}}</p>
+      <div ng-if="preview && !nestedElement" class="preview-edit-options" ng-include="'views/partials/preview-edit-options.html'"></div>
+    </div>
+
+    <div ng-repeat="key in element['order']">
+      <span ng-if="element[key]" ng-init="key = key; field = element[key]; model = model[key]; preview = preview; nestedElement = true;" ng-include="'nestedElement'"></span>
+    </div>
+  </div>
 </div>

@@ -40,6 +40,14 @@ angularApp.directive('formDirective', function ($rootScope, $document, $timeout)
       };
 
       $scope.parseForm = function(iterator, parentObject, parentModel, parentKey) {
+        var ctx;
+        angular.forEach(iterator, function(value, name) {
+          // Add @context information to instance
+          if (name == '@context') {
+            ctx = $rootScope.generateInstanceContext(value);
+          }
+        });
+
         angular.forEach(iterator, function(value, name) {
           // Add @context information to instance
           if (name == '@context') {
@@ -59,29 +67,77 @@ angularApp.directive('formDirective', function ($rootScope, $document, $timeout)
               parentObject[name] = {};
               // Push 'order' array through into parse object
               parentObject[name]['order'] = value.order;
-              // Handle position and nesting within $scope.model if it does not exist
+              parentObject[name].minItems = value.minItems;
+              parentObject[name].maxItems = value.maxItems;
+
+              var min = value.minItems || 1;
+
+                // Handle position and nesting within $scope.model if it does not exist
               if (parentModel[name] == undefined) {
-                parentModel[name] = {};
+                if (!$rootScope.isCardinalElement(value)) {
+                  parentModel[name] = {};
+                } else {
+                  parentModel[name] = [];
+                  for (var i = 0; i < min; i++) {
+                    parentModel[name].push({});
+                  }
+                }
               }
               // Place top level element into $scope.formFieldsOrder
               $scope.pushIntoOrder(name, parentKey);
-              // Indication of nested element or nested fields reached, recursively call function
-              $scope.parseForm(value.properties, parentObject[name], parentModel[name], name);
+
+              if (angular.isArray(parentModel[name])) {
+                for (var i = 0; i < min; i++) {
+                  // Indication of nested element or nested fields reached, recursively call function
+                  $scope.parseForm($rootScope.getFieldProperties(value), parentObject[name], parentModel[name][i], name);
+                }
+              } else {
+                $scope.parseForm($rootScope.getFieldProperties(value), parentObject[name], parentModel[name], name);
+              }
             } else {
+              var min = value.minItems || 1;
+
+              if (value.type == 'array' && value.items && value.items.properties) {
+                // copy over the properties from the items object
+                value.properties = value.items.properties;
+              }
+
               // Field level reached, assign to $scope.formFields object
               parentObject[name] = value;
+
               // Assign empty field instance model to $scope.model only if it does not exist
               if (parentModel[name] == undefined) {
-                parentModel[name] = {};
+                if (!$rootScope.isCardinalElement(value)) {
+                  parentModel[name] = {};
+                } else {
+                  parentModel[name] = [];
+                  for (var i = 0; i < min; i++) {
+                    var obj = {};
+                    // if (ctx && ctx.value) {
+                    //   obj["@context"] = {value: ctx.value};
+                    // }
+
+                    parentModel[name].push(obj);
+                  }
+                }
               }
+
               // Place field into $scope.formFieldsOrder
               $scope.pushIntoOrder(name, parentKey);
 
               // Add @type information to instance at the field level
               if (!angular.isUndefined(value.properties['@type'])) {
                 var type = $rootScope.generateInstanceType(value.properties['@type']);
-                if (type != null)
-                  parentModel[name]['@type'] = type;
+
+                if (type) {
+                  if (angular.isArray(parentModel[name])) {
+                    for (var i = 0; i < min; i++) {
+                      parentModel[name][i]["@type"] = type || "";
+                    }
+                  } else {
+                    parentModel[name]["@type"] = type || "";
+                  }
+                }
               }
             }
           }
@@ -90,7 +146,14 @@ angularApp.directive('formDirective', function ($rootScope, $document, $timeout)
 
       // Angular's $watch function to call $scope.parseForm on form.properties initial population and on update
       $scope.$watch('form.properties', function () {
-        $scope.parseForm($scope.form.properties, $scope.formFields, $scope.model);
+        var model;
+        if ($rootScope.isEmpty($scope.model)) {
+          model = $scope.model;
+        } else {
+          model = {};
+        }
+
+        $scope.parseForm($scope.form.properties, $scope.formFields, model);
       }, true);
 
       // Angular $watch function to run the Bootstrap Popover initialization on new form elements when they load

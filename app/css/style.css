@@ -10839,3 +10839,169 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   top: 0px;
   padding-top: 20px;
 }
+.cardinality-options select {
+  padding: 5px;
+}
+.cardinality-options .min-items-option {
+  margin-right: 10px;
+}
+#cardinality-options .bootstrap-select {
+  width: 80px;
+}
+.more-input-wrapper {
+  position: absolute;
+  left: 100%;
+  top: 0;
+  width: 110px;
+}
+.more-input-wrapper .add,
+.more-input-wrapper .remove {
+  height: 40px;
+  width: 40px;
+  margin: 0 0 0 10px;
+  border-radius: 50%;
+  display: inline-block;
+  vertical-align: middle;
+  -webkit-transition: all 0.3s ease 0.1s;
+          transition: all 0.3s ease 0.1s;
+  cursor: pointer;
+  border: none;
+}
+.more-input-wrapper .add i,
+.more-input-wrapper .remove i {
+  color: #FFF;
+  font-size: 18px;
+  line-height: 40px;
+}
+.more-input-wrapper .add {
+  background-color: #393;
+}
+.more-input-wrapper .add:disabled {
+  background-color: #94C795;
+}
+.more-input-wrapper .remove {
+  background-color: #333333;
+}
+.fields .form-group {
+  margin-right: 100px;
+}
+.fields-checkbox .field-checkbox,
+.fields-radio .field-radio,
+.fields-date .field-date,
+.fields-list .field-list {
+  position: relative;
+  margin-right: 100px;
+}
+.element-toggles {
+  text-align: center;
+  margin: 10px 0;
+}
+.element-toggles .element-toggle {
+  display: inline-block;
+  padding: 20px 20px 0;
+  border-bottom: 5px solid #DDD;
+  border-color: #DDD;
+  -webkit-transition: all 0.3s ease 0.1s;
+          transition: all 0.3s ease 0.1s;
+}
+.element-toggles .element-toggle.active {
+  border-color: #393;
+}
+.element-toggles .element-toggle span {
+  text-transform: uppercase;
+  cursor: pointer;
+}
+.element-toggles .element-toggle.active span {
+  cursor: default;
+}
+.element-toggles .add-element {
+  display: inline-block;
+}
+.element-toggles .add-element .add {
+  height: 40px;
+  width: 40px;
+  margin: 0 0 0 10px;
+  border-radius: 50%;
+  display: inline-block;
+  vertical-align: middle;
+  -webkit-transition: all 0.3s ease 0.1s;
+          transition: all 0.3s ease 0.1s;
+  background-color: #393;
+  border: none;
+}
+.element-toggles .add-element .add i {
+  color: #FFF;
+  font-size: 18px;
+  line-height: 40px;
+}
+.element-toggles .add-element .add:disabled {
+  background-color: #94C795;
+}
+#form-item-config-section .adding-element .preview-edit-options {
+  display: none;
+}
+#form-item-config-section .adding-element .definition-inputs,
+#form-item-config-section .adding-element .type-label,
+#form-item-config-section .adding-element .toggle-json,
+#form-item-config-section .adding-element .showed-json {
+  display: none;
+}
+#form-item-config-section .adding-element .configuration-options .checkbox-required,
+#form-item-config-section .adding-element .configuration-options .checkbox-advanced,
+#form-item-config-section .adding-element .configuration-options .toggle-controlled-term {
+  display: none;
+}
+#form-item-config-section .adding-element .configuration-options .checkbox-cardinality {
+  margin-left: 0;
+  margin-top: 10px;
+}
+.add .cardinality-info-container {
+  display: none;
+  position: relative;
+}
+.add .cardinality-info-container .cardinality-info {
+  position: absolute;
+  width: 350px;
+  text-align: left;
+  top: -90px;
+  left: -5px;
+}
+.add .cardinality-info-container .cardinality-info .cardinality-info-text {
+  padding: 10px 15px;
+  border: 1px solid #B4C1C8;
+  display: inline-block;
+  background-color: #FFFFFF;
+  color: #359D34;
+  font-weight: bold;
+  border-radius: 3px;
+}
+.add .cardinality-info-container .cardinality-info .cardinality-info-text:after,
+.add .cardinality-info-container .cardinality-info .cardinality-info-text:before {
+  top: 40px;
+  left: 10px;
+  border: solid transparent;
+  content: " ";
+  height: 0;
+  width: 0;
+  position: absolute;
+  pointer-events: none;
+}
+.add .cardinality-info-container .cardinality-info .cardinality-info-text:after {
+  border-color: transparent;
+  border-top-color: #FFFFFF;
+  border-width: 10px;
+}
+.add .cardinality-info-container .cardinality-info .cardinality-info-text:before {
+  top: 41px;
+  left: 9px;
+  border-color: transparent;
+  border-top-color: #B4C1C8;
+  border-width: 11px;
+}
+.add:hover .cardinality-info-container {
+  display: block;
+}
+.remove-element {
+  margin-top: -45px;
+  position: relative;
+}

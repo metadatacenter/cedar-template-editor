@@ -1,7 +1,6 @@
 'use strict';
 
-angularApp.controller('RuntimeController', function ($rootScope, $scope, FormService, $routeParams, $location) {
-
+var RuntimeController = function($rootScope, $scope, FormService, $routeParams, $location, HeaderService, HEADER_MINI) {
 	// set Page Title variable when this controller is active
 	$rootScope.pageTitle = 'Runtime Template';
 
@@ -12,6 +11,10 @@ angularApp.controller('RuntimeController', function ($rootScope, $scope, FormSer
   FormService.formList().then(function(response) {
     $scope.formList = response;
   });
+	// Set scrolling limit for mini header
+	$rootScope.headerMiniLimit = HEADER_MINI.SCROLL_LIMIT.RUNTIME;
+	HeaderService.setEnabled(true);
+
 
 	// Create empty form object
 	// Create empty currentPage array
@@ -34,6 +37,7 @@ angularApp.controller('RuntimeController', function ($rootScope, $scope, FormSer
 			$scope.form = form;
 			// $scope.initializePagination kicks off paging with form.pages array
 			$scope.initializePagination(form.pages);
+			HeaderService.dataContainer.currentObjectScope = $scope.form;
 		});
 	};
 
@@ -97,10 +101,15 @@ angularApp.controller('RuntimeController', function ($rootScope, $scope, FormSer
 		// Broadcast submitForm event to form-directive.js which will assign the form $scope.model to $scope.instance of this controller
 		$scope.$broadcast('submitForm');
 		// Create instance if there are no required field errors
-		if (!$scope.emptyRequiredFields.length && $scope.instance['@id'] == undefined) {
+		if ($rootScope.isEmpty($scope.emptyRequiredFields) && $scope.instance['@id'] == undefined) {
 			// '@id' and 'template_id' haven't been populated yet, create now
 			$scope.instance['@id'] = $rootScope.idBasePath + $rootScope.generateGUID();
 			$scope.instance['template_id'] = $routeParams.template_id;
+			// Create info field that will store information used by the UI
+			$scope.instance.info = {};
+			$scope.instance.info['template_title'] = $scope.form.properties.info.title + ' instance';
+			$scope.instance.info['template_description'] = $scope.form.properties.info.description;
+			$scope.instance.info['creation_date'] = new Date();
 			// Make create instance call
 			FormService.savePopulatedTemplate($scope.instance).then(function(response) {
 				$scope.runtimeSuccessMessages.push('The populated template has been saved.');
@@ -110,7 +119,7 @@ angularApp.controller('RuntimeController', function ($rootScope, $scope, FormSer
 			});
 		}
 		// Update instance
-		else if (!$scope.emptyRequiredFields.length) {
+		else if ($rootScope.isEmpty($scope.emptyRequiredFields)) {
 			FormService.updatePopulatedTemplate($scope.instance['@id'], $scope.instance).then(function(response) {
 				$scope.runtimeSuccessMessages.push('The populated template has been updated.');
 			}).catch(function(err) {
@@ -121,17 +130,17 @@ angularApp.controller('RuntimeController', function ($rootScope, $scope, FormSer
 	}
 
 	// Initialize array for required fields left empty that fail required empty check
-	$scope.emptyRequiredFields = [];
+	$scope.emptyRequiredFields = {};
 	// Event listener waiting for emptyRequiredField $emit from field-directive.js
 	$scope.$on('emptyRequiredField', function (event, args) {
-		if (args[0] == 'add' && $scope.emptyRequiredFields.indexOf(args[1]) == -1) {
-			$scope.emptyRequiredFields.push(args[1]);
+		if (args[0] == 'add') {
+			$scope.emptyRequiredFields[args[2]] = args[1];
 		}
 		if (args[0] == 'remove') {
-			var index = $scope.emptyRequiredFields.indexOf(args[1]);
-			if (index != -1) {
-				$scope.emptyRequiredFields.splice(index,1);
-			}
+			delete $scope.emptyRequiredFields[args[2]];
 		}
 	});
-});
+};
+
+RuntimeController.$inject = ["$rootScope", "$scope", "FormService", "$routeParams", "$location", "HeaderService", "HEADER_MINI"];
+angularApp.controller('RuntimeController', RuntimeController);

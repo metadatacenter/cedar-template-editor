@@ -1,6 +1,6 @@
 'use strict';
 
-angularApp.controller('DashboardController', function ($rootScope, $scope, FormService) {
+var DashboardController = function ($rootScope, $scope, FormService, HeaderService) {
 
   // set Page Title variable when this controller is active
   $rootScope.pageTitle = 'Dashboard';
@@ -9,6 +9,8 @@ angularApp.controller('DashboardController', function ($rootScope, $scope, FormS
   $scope.elementDefaults = [];
   $scope.templateDefaults = [];
   $scope.submissionDefaults = [];
+
+  HeaderService.setEnabled(false);
 
   // Define function to make async request to location of json objects and assign proper
   // scope array with returned list of data
@@ -63,4 +65,7 @@ angularApp.controller('DashboardController', function ($rootScope, $scope, FormS
       console.log(err);
     });
   }
-});
+};
+
+DashboardController.$inject = ["$rootScope", "$scope", "FormService", "HeaderService"];
+angularApp.controller('DashboardController', DashboardController);

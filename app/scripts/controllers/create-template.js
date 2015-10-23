@@ -1,7 +1,6 @@
 'use strict';
 
-angularApp.controller('CreateTemplateController', ["$rootScope", "$scope", "$q", "$routeParams", "FormService", "HeaderService", "HEADER_MINI", function($rootScope, $scope, $q, $routeParams, FormService, HeaderService, HEADER_MINI) {
-
+var CreateTemplateController = function($rootScope, $scope, $q, $routeParams, $timeout, FormService, HeaderService, HEADER_MINI) {
   // Set Page Title variable when this controller is active
   $rootScope.pageTitle = 'Template Creator';
   // Create staging area to create/edit fields before they get added to $scope.form.properties
@@ -12,6 +11,7 @@ angularApp.controller('CreateTemplateController', ["$rootScope", "$scope", "$q",
   $scope.formPreview = false;
   // Set scrolling limit for mini header
   $rootScope.headerMiniLimit = HEADER_MINI.SCROLL_LIMIT.TEMPLATE;
+  HeaderService.setEnabled(true);
 
   // Using form service to load list of existing elements to embed into new form
   FormService.elementList().then(function(response) {
@@ -69,7 +69,7 @@ angularApp.controller('CreateTemplateController', ["$rootScope", "$scope", "$q",
             }
           ]
         },
-        "template_id": {
+        "template_id" : {
           "type": "string",
           "format": "uri"
         },
@@ -108,6 +108,8 @@ angularApp.controller('CreateTemplateController', ["$rootScope", "$scope", "$q",
   $scope.addFieldToStaging = function(fieldType) {
 
     var field = $rootScope.generateField(fieldType);
+    field.minItems = 1;
+    field.maxItems = 1;
 
     // If fieldtype can have multiple options, additional parameters on field object are necessary
     var optionInputs = ["radio", "checkbox", "list"];
@@ -126,6 +128,22 @@ angularApp.controller('CreateTemplateController', ["$rootScope", "$scope", "$q",
 
   };
 
+  $scope.addElementToStaging = function(element) {
+    var clonedElement = angular.copy(element);
+    $scope.staging = {};
+    $scope.staging[element['@id']] = clonedElement;
+    clonedElement.minItems = 1;
+    clonedElement.maxItems = 1;
+
+    $scope.previewForm = {};
+    $timeout(function() {
+      var underscoreTitle = $rootScope.underscoreText(clonedElement.properties.info.title);
+
+      $scope.previewForm.properties = {};
+      $scope.previewForm.properties[underscoreTitle] = clonedElement;
+    });
+  };
+
   // Function to add additional options for radio, checkbox, and list fieldTypes
   $scope.addOption = function(field) {
     //console.log(field.properties.value);
@@ -140,6 +158,7 @@ angularApp.controller('CreateTemplateController', ["$rootScope", "$scope", "$q",
   $scope.addFieldToForm = function(field) {
     // Setting return value from $scope.checkFieldConditions to array which will display error messages if any
     $scope.stagingErrorMessages = $scope.checkFieldConditions(field.properties);
+    $scope.stagingErrorMessages = jQuery.merge($scope.stagingErrorMessages, $rootScope.checkFieldCardinalityOptions(field));
 
     if ($scope.stagingErrorMessages.length == 0) {
       // Converting title for irregular character handling
@@ -149,10 +168,17 @@ angularApp.controller('CreateTemplateController', ["$rootScope", "$scope", "$q",
       $scope.form.properties["@context"].properties[underscoreTitle].enum =
         new Array($rootScope.schemasBase + underscoreTitle);
       $scope.form.properties["@context"].required.push(underscoreTitle);
+
+      var fieldId = field["@id"];
+
+      // Evaluate cardinality
+      $rootScope.cardinalizeField(field);
+
       // Adding field to the element.properties object
       $scope.form.properties[underscoreTitle] = field;
+
       // Lastly, remove this field from the $scope.staging object
-      delete $scope.staging[field['@id']];
+      delete $scope.staging[fieldId];
     }
   };
 
@@ -220,7 +246,7 @@ angularApp.controller('CreateTemplateController', ["$rootScope", "$scope", "$q",
         delete $scope.form.properties[key];
       }
     });
-    // Broadcast the reset event which will trigger the emptying of formFields formFieldsOrder 
+    // Broadcast the reset event which will trigger the emptying of formFields formFieldsOrder
     $scope.$broadcast('resetForm');
   };
 
@@ -245,6 +271,12 @@ angularApp.controller('CreateTemplateController', ["$rootScope", "$scope", "$q",
     }
     // If there are no Template level error messages
     if ($scope.templateErrorMessages.length == 0) {
+      // Delete this preview form, so that it does not listen/emit some related events.
+      delete $scope.previewForm;
+
+      // If maxItems is N, then remove maxItems
+      $rootScope.removeUnnecessaryMaxItems($scope.form.properties);
+
       // Broadcast the initialize Page Array event which will trigger the creation of the $scope.form 'pages' array
       $scope.$broadcast('initPageArray');
       // Save template
@@ -280,7 +312,7 @@ angularApp.controller('CreateTemplateController', ["$rootScope", "$scope", "$q",
   });
 
   // This function watches for changes in the properties.info.title field and autogenerates the schema title and description fields
-  $scope.$watch('form.properties.info.title', function(v){
+  $scope.$watch('form.properties.info.title', function(v) {
     if (!angular.isUndefined($scope.form)) {
       var title = $scope.form.properties.info.title;
       if (title.length > 0) {
@@ -295,4 +327,7 @@ angularApp.controller('CreateTemplateController', ["$rootScope", "$scope", "$q",
     }
   });
 
-}]);
+};
+
+CreateTemplateController.$inject = ["$rootScope", "$scope", "$q", "$routeParams", "$timeout", "FormService", "HeaderService", "HEADER_MINI"];
+angularApp.controller('CreateTemplateController', CreateTemplateController);

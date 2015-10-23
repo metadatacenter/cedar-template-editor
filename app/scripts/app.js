@@ -1,3 +1,5 @@
+/*jslint node: true */
+/*global angular */
 'use strict';
 
 var angularApp = angular.module('angularJsCedarApplication', ['ui.bootstrap', 'ngRoute', 'ngAnimate', 'cedarFilters']);
@@ -59,6 +61,6 @@ angularApp.config(function ($routeProvider, $locationProvider) {
         });
 
     // use the HTML5 History API
-    $locationProvider.html5Mode(true);
+    //$locationProvider.html5Mode(true);
 
 });

@@ -25,48 +25,54 @@
   <nav class="navbar" role="navigation">
     <div class="container" ng-controller="HeaderCtrl">
       <div class="navbar-header">
-      <button type="button" cedar-navbar class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <p id="page-title" ng-bind="pageTitle"></p>
-      <a class="navbar-brand" href="/">Cedar</a>
+        <button type="button" cedar-navbar class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <p id="page-title" ng-bind="pageTitle"></p>
+        <a class="navbar-brand" href="#/">Cedar</a>
+      </div>
+      <div id="navbar" class="navbar-collapse collapse">
+        <ul class="nav pull-right">
+          <li ng-class="{active: ($location.path() == '/') }"><a href="/">Dashboard</a></li>
+          <li ng-class="{active: ($location.path() == '/elements/create') }"><a href="#/elements/create">Element Creator</a></li>
+          <li ng-class="{active: ($location.path() == '/templates/create') }"><a href="#/templates/create">Template Creator</a></li>
+          <li ng-class="{active: ($location.path() == '/instances/create') }"><a href="#/instances/create">Runtime</a></li>
+        </ul>
+      </div><!--/.navbar-collapse -->
     </div>
-    <div id="navbar" class="navbar-collapse collapse">
-      <ul class="nav pull-right">
-        <li ng-class="{active: ($location.path() == '/') }"><a href="/">Dashboard</a></li>
-        <li ng-class="{active: ($location.path() == '/elements/create') }"><a href="elements/create">Element Creator</a></li>
-        <li ng-class="{active: ($location.path() == '/templates/create') }"><a href="templates/create">Template Creator</a></li>
-        <li ng-class="{active: ($location.path() == '/instances/create') }"><a href="instances/create">Runtime</a></li>
-      </ul>
-    </div><!--/.navbar-collapse -->
-  </div>
-</nav>
+  </nav>
 
-<nav class="navbar" id="navbarMini">
-  <div class="container" ng-controller="HeaderCtrlMini">
-    <div class="navbar-header navbar-header-mini container">
-      <button type="button" cedar-navbar class="navbar-toggle collapsed" data-toggle="collapse"
-              data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <p id="page-title" ng-bind="pageTitle"></p>
-      <a class="navbar-brand" href="/">Cedar</a>
-      <div class="navbarMiniInfoTitle">
-        <p id="page-title-mini">{{dataContainer.currentObjectScope.properties.info.title}}</p>
+  <nav class="navbar" id="navbarMini">
+    <div class="container" ng-controller="HeaderCtrlMini">
+      <div class="navbar-header navbar-header-mini container">
+        <button type="button" cedar-navbar class="navbar-toggle collapsed" data-toggle="collapse"
+                data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <p id="page-title" ng-bind="pageTitle"></p>
+        <a class="navbar-brand" href="#/">Cedar</a>
+        <div class="navbarMiniInfoTitle">
+          <p id="page-title-mini">{{dataContainer.currentObjectScope.properties.info.title}}</p>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav pull-right">
+            <li ng-class="{active: ($location.path() == '/') }"><a href="#/">Dashboard</a></li>
+            <li ng-class="{active: ($location.path() == '/elements/create') }"><a href="#/elements/create">Element Creator</a></li>
+            <li ng-class="{active: ($location.path() == '/templates/create') }"><a href="#/templates/create">Template Creator</a></li>
+            <li ng-class="{active: ($location.path() == '/instances/create') }"><a href="#/instances/create">Runtime</a></li>
+          </ul>
+        </div><!--/.navbar-collapse -->
       </div>
     </div>
-  </div>
-</nav>
+  </nav>
 
-
-
-    <div id="angular-views-entry" ng-view=""></div>
+  <div id="angular-views-entry" ng-view=""></div>
   
   <!-- build:js scripts/modules.js -->
   <script src="bower_components/jquery/jquery.js"></script>
