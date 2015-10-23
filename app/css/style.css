@@ -9271,10 +9271,17 @@ i {
 }
 .navbar #navbar {
   position: absolute;
-  right: 0;
+  right: 15px;
   z-index: 2;
   background-color: #ffffff;
   margin-top: 18px;
+}
+.navbar #navbarmini {
+  position: absolute;
+  right: 15px;
+  z-index: 10000;
+  background-color: #ffffff;
+  margin-top: 65px;
 }
 .template-header {
   width: 100%;

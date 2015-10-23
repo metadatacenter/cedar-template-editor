@@ -22,7 +22,6 @@
 }
 .navbar-header-mini {
   height: 80px;
-  overflow: hidden;
   position: fixed;
   top: 0;
   background-color: #056046;
