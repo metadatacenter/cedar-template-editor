@@ -40,13 +40,14 @@ module.exports = function(config) {
       'app/scripts/directives/form-preview.js',
       'app/scripts/directives/element-directive.js',
       'app/scripts/directives/field-directive.js',
-      'app/scripts/directives/cedar-close-navbar.js',
+      'app/scripts/directives/cedar-navbar.js',
       'app/scripts/directives/with-floating-label.js',
       'app/scripts/directives/resize-height.js',
       'app/scripts/directives/date-time-picker.js',
       'app/scripts/directives/select-picker.js',
       'app/scripts/directives/angular-validator.js',
       'app/scripts/directives/sticky-directive.js',
+      'app/scripts/directives/cedar-scrollable.js',
       'tests/**/*.js'
     ],
 

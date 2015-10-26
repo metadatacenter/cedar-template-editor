@@ -1,7 +1,6 @@
 'use strict';
 
-angularApp.controller('CreateTemplateController', function($rootScope, $scope, $q, $routeParams, $timeout, FormService) {
-
+var CreateTemplateController = function($rootScope, $scope, $q, $routeParams, $timeout, FormService, HeaderService, HEADER_MINI) {
   // Set Page Title variable when this controller is active
   $rootScope.pageTitle = 'Template Creator';
   // Create staging area to create/edit fields before they get added to $scope.form.properties
@@ -10,6 +9,8 @@ angularApp.controller('CreateTemplateController', function($rootScope, $scope, $
   //$scope.favorite = false;
   // Setting form preview setting to false by default
   $scope.formPreview = false;
+  // Configure mini header
+  HeaderService.configure("TEMPLATE");
 
   // Using form service to load list of existing elements to embed into new form
   FormService.elementList().then(function(response) {
@@ -23,6 +24,7 @@ angularApp.controller('CreateTemplateController', function($rootScope, $scope, $
       $scope.form = response;
       // Set form preview to true so the preview is viewable onload
       $scope.formPreview = true;
+      HeaderService.dataContainer.currentObjectScope = $scope.form;
     });
   } else {
     // If we're not loading an existing form then let's create a new empty $scope.form property
@@ -80,6 +82,7 @@ angularApp.controller('CreateTemplateController', function($rootScope, $scope, $
       ],
       "additionalProperties": false
     };
+    HeaderService.dataContainer.currentObjectScope = $scope.form;
   }
 
   // Return true if form.properties object only contains default values
@@ -308,7 +311,7 @@ angularApp.controller('CreateTemplateController', function($rootScope, $scope, $
   });
 
   // This function watches for changes in the properties.info.title field and autogenerates the schema title and description fields
-  $scope.$watch('form.properties.info.title', function(v){
+  $scope.$watch('form.properties.info.title', function(v) {
     if (!angular.isUndefined($scope.form)) {
       var title = $scope.form.properties.info.title;
       if (title.length > 0) {
@@ -323,4 +326,7 @@ angularApp.controller('CreateTemplateController', function($rootScope, $scope, $
     }
   });
 
-});
+};
+
+CreateTemplateController.$inject = ["$rootScope", "$scope", "$q", "$routeParams", "$timeout", "FormService", "HeaderService", "HEADER_MINI"];
+angularApp.controller('CreateTemplateController', CreateTemplateController);

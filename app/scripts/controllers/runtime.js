@@ -1,7 +1,6 @@
 'use strict';
 
-angularApp.controller('RuntimeController', function ($rootScope, $scope, FormService, $routeParams, $location) {
-
+var RuntimeController = function($rootScope, $scope, FormService, $routeParams, $location, HeaderService, HEADER_MINI) {
 	// set Page Title variable when this controller is active
 	$rootScope.pageTitle = 'Runtime Template';
 
@@ -12,6 +11,9 @@ angularApp.controller('RuntimeController', function ($rootScope, $scope, FormSer
   FormService.formList().then(function(response) {
     $scope.formList = response;
   });
+	// Configure mini header
+	HeaderService.configure("RUNTIME");
+
 
 	// Create empty form object
 	// Create empty currentPage array
@@ -34,6 +36,7 @@ angularApp.controller('RuntimeController', function ($rootScope, $scope, FormSer
 			$scope.form = form;
 			// $scope.initializePagination kicks off paging with form.pages array
 			$scope.initializePagination(form.pages);
+			HeaderService.dataContainer.currentObjectScope = $scope.form;
 		});
 	};
 
@@ -136,4 +139,7 @@ angularApp.controller('RuntimeController', function ($rootScope, $scope, FormSer
 			delete $scope.emptyRequiredFields[args[2]];
 		}
 	});
-});
+};
+
+RuntimeController.$inject = ["$rootScope", "$scope", "FormService", "$routeParams", "$location", "HeaderService", "HEADER_MINI"];
+angularApp.controller('RuntimeController', RuntimeController);

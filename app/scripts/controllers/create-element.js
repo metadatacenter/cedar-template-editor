@@ -1,7 +1,6 @@
 'use strict';
 
-angularApp.controller('CreateElementController', function ($rootScope, $scope, $routeParams, $timeout, FormService) {
-
+var CreateElementController = function($rootScope, $scope, $routeParams, $timeout, FormService, HeaderService, HEADER_MINI) {
   // Set page title variable when this controller is active
   $rootScope.pageTitle = 'Element Creator';
   // Create staging area to create/edit fields before they get added to the element
@@ -12,6 +11,8 @@ angularApp.controller('CreateElementController', function ($rootScope, $scope, $
   $scope.volatile = {};
   // Setting form preview setting to false by default
   $scope.formPreview = false;
+  // Configure mini header
+  HeaderService.configure("ELEMENT");
 
   // Using form service to load list of existing elements to embed into new element
   FormService.elementList().then(function(response) {
@@ -25,6 +26,7 @@ angularApp.controller('CreateElementController', function ($rootScope, $scope, $
       $scope.element = response;
       // Set form preview to true so the preview is viewable onload
       $scope.formPreview = true;
+      HeaderService.dataContainer.currentObjectScope = $scope.element;
     });
   } else {
     // If we're not loading an existing element then let's create a new empty $scope.element property
@@ -71,6 +73,7 @@ angularApp.controller('CreateElementController', function ($rootScope, $scope, $
       },
       "additionalProperties": false
     };
+    HeaderService.dataContainer.currentObjectScope = $scope.element;
   }
 
   // Return true if element.properties object only contains default values
@@ -330,4 +333,7 @@ angularApp.controller('CreateElementController', function ($rootScope, $scope, $
     }
   });
 
-});
+};
+
+CreateElementController.$inject = ["$rootScope", "$scope", "$routeParams", "$timeout", "FormService", "HeaderService", "HEADER_MINI"];
+angularApp.controller('CreateElementController', CreateElementController);

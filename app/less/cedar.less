@@ -1,0 +1,40 @@
+@header-bg-color:#056046;
+
+#navbarMini {
+  display: none;
+  border: 0px solid red;
+  z-index: 9999;
+}
+
+.navbarMiniGeneric {
+  display: block;
+  position: fixed;
+  width: 100%;
+}
+
+.navbarMiniShow {
+  .navbarMiniGeneric;
+  top: 0px;
+}
+
+.navbarMiniHide {
+  .navbarMiniGeneric;
+  top: -80px;
+}
+
+// Fixed mini navbar
+.navbar-header-mini {
+  height: 80px;
+  position: fixed;
+  top: 0;
+  background-color:@header-bg-color;
+  padding-left:0px;
+  padding-right:0px;
+}
+
+// Page title inside the mini navbar
+.navbarMiniInfoTitle {
+  position:absolute;
+  left:270px;
+  padding-top:27px;
+}
