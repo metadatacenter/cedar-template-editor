@@ -1,6 +1,7 @@
 'use strict';
 
 angularApp.constant('HEADER_MINI', {
+  "stickyThreshold": 0,
   "DASHBOARD": {
     "enabled": false
   },

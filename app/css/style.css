@@ -10844,7 +10844,7 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
 .sidebar-inner.sticky {
   position: fixed;
   top: 0px;
-  padding-top: 90px;
+  padding-top: 100px;
 }
 .cardinality-options select {
   padding: 5px;

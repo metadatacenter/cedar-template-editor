@@ -1,6 +1,6 @@
 'use strict';
 
-var stickyDirective = function ($window, $document, $rootScope, $timeout, HeaderService) {
+var stickyDirective = function ($window, $document, $rootScope, $timeout, HeaderService, HEADER_MINI) {
     return {
         restrict: 'A',
         scope: {},
@@ -10,7 +10,7 @@ var stickyDirective = function ($window, $document, $rootScope, $timeout, Header
                 var initialOffset = element.offset().top;
                 angular.element($window).bind('scroll', function () {
 
-                    if ($window.innerWidth >= 768 && ($window.pageYOffset > HeaderService.getScrollLimit())) {
+                    if ($window.innerWidth >= 768 && ($window.pageYOffset > HeaderService.getScrollLimit() + HEADER_MINI.stickyThreshold )) {
                         element.addClass('sticky');
                         element.width(element.parent().width());
                     } else {
@@ -35,5 +35,5 @@ var stickyDirective = function ($window, $document, $rootScope, $timeout, Header
     };
 };
 
-stickyDirective.$inject = ["$window", "$document", "$rootScope", "$timeout", "HeaderService"];
+stickyDirective.$inject = ["$window", "$document", "$rootScope", "$timeout", "HeaderService", "HEADER_MINI"];
 angularApp.directive('stickyDirective', stickyDirective);
