@@ -135,18 +135,18 @@ var CreateElementController = function($rootScope, $scope, $routeParams, $timeou
 
     if ($scope.stagingErrorMessages.length == 0) {
       // Converting title for irregular character handling
-      var underscoreTitle = $rootScope.underscoreText(field.properties.info.title);
+      var fieldName = $rootScope.getFieldName(field.properties.info.title);
       // Adding corresponding property type to @context
-      $scope.element.properties["@context"].properties[underscoreTitle] = {};
-      $scope.element.properties["@context"].properties[underscoreTitle].enum =
-        new Array($rootScope.schemasBase + underscoreTitle);
-      $scope.element.properties["@context"].required.push(underscoreTitle);
+      $scope.element.properties["@context"].properties[fieldName] = {};
+      $scope.element.properties["@context"].properties[fieldName].enum =
+        new Array($rootScope.schemasBase + fieldName);
+      $scope.element.properties["@context"].required.push(fieldName);
 
       // Evaluate cardinality
       $rootScope.cardinalizeField(field);
 
       // Adding field to the element.properties object
-      $scope.element.properties[underscoreTitle] = field;
+      $scope.element.properties[fieldName] = field;
 
       // Lastly, remove this field from the $scope.staging object
       $scope.staging = {};
@@ -195,15 +195,15 @@ var CreateElementController = function($rootScope, $scope, $routeParams, $timeou
     //FormService.element(element).then(function(response) {
 
     // Add existing element to the $scope.element.properties object with it's title converted to an object key
-    var titleKey = $rootScope.underscoreText(element.properties.info.title);
+    var fieldName = $rootScope.getFieldName(element.properties.info.title);
     // Adding corresponding property type to @context
-    $scope.element.properties["@context"].properties[titleKey] = {};
-    $scope.element.properties["@context"].properties[titleKey].enum =
-      new Array($rootScope.schemasBase + titleKey);
-    $scope.element.properties["@context"].required.push(titleKey);
+    $scope.element.properties["@context"].properties[fieldName] = {};
+    $scope.element.properties["@context"].properties[fieldName].enum =
+      new Array($rootScope.schemasBase + fieldName);
+    $scope.element.properties["@context"].required.push(fieldName);
 
     // Add existing element to the $scope.element.properties object
-    $scope.element.properties[titleKey] = element;
+    $scope.element.properties[fieldName] = element;
     //});
   };
 
@@ -215,10 +215,10 @@ var CreateElementController = function($rootScope, $scope, $routeParams, $timeou
 
     $scope.previewForm = {};
     $timeout(function() {
-      var underscoreTitle = $rootScope.underscoreText(element.properties.info.title);
+      var fieldName = $rootScope.getFieldName(element.properties.info.title);
 
       $scope.previewForm.properties = {};
-      $scope.previewForm.properties[underscoreTitle] = element;
+      $scope.previewForm.properties[fieldName] = element;
     });
   };
 

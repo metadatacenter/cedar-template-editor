@@ -136,10 +136,10 @@ var CreateTemplateController = function($rootScope, $scope, $q, $routeParams, $t
 
     $scope.previewForm = {};
     $timeout(function() {
-      var underscoreTitle = $rootScope.underscoreText(clonedElement.properties.info.title);
+      var fieldName = $rootScope.getFieldName(clonedElement.properties.info.title);
 
       $scope.previewForm.properties = {};
-      $scope.previewForm.properties[underscoreTitle] = clonedElement;
+      $scope.previewForm.properties[fieldName] = clonedElement;
     });
   };
 
@@ -161,12 +161,12 @@ var CreateTemplateController = function($rootScope, $scope, $q, $routeParams, $t
 
     if ($scope.stagingErrorMessages.length == 0) {
       // Converting title for irregular character handling
-      var underscoreTitle = $rootScope.underscoreText(field.properties.info.title);
+      var fieldName = $rootScope.getFieldName(field.properties.info.title);
       // Adding corresponding property type to @context
-      $scope.form.properties["@context"].properties[underscoreTitle] = {};
-      $scope.form.properties["@context"].properties[underscoreTitle].enum =
-        new Array($rootScope.schemasBase + underscoreTitle);
-      $scope.form.properties["@context"].required.push(underscoreTitle);
+      $scope.form.properties["@context"].properties[fieldName] = {};
+      $scope.form.properties["@context"].properties[fieldName].enum =
+        new Array($rootScope.schemasBase + fieldName);
+      $scope.form.properties["@context"].required.push(fieldName);
 
       var fieldId = field["@id"];
 
@@ -174,7 +174,7 @@ var CreateTemplateController = function($rootScope, $scope, $q, $routeParams, $t
       $rootScope.cardinalizeField(field);
 
       // Adding field to the element.properties object
-      $scope.form.properties[underscoreTitle] = field;
+      $scope.form.properties[fieldName] = field;
 
       // Lastly, remove this field from the $scope.staging object
       delete $scope.staging[fieldId];
@@ -212,10 +212,10 @@ var CreateTemplateController = function($rootScope, $scope, $q, $routeParams, $t
     // Fetch existing element json data
     //FormService.element(element).then(function(response) {
     // Convert response.data.title string to an acceptable object key string
-    var titleKey = $rootScope.underscoreText(element.properties.info.title);
+    //var titleKey = $rootScope.getFieldName(element.properties.info.title);
 
     // Add existing element to the $scope.element.properties object with it's title converted to an object key
-    var titleKey = $rootScope.underscoreText(element.properties.info.title);
+    var titleKey = $rootScope.getFieldName(element.properties.info.title);
     // Adding corresponding property type to @context
     $scope.form.properties["@context"].properties[titleKey] = {};
     $scope.form.properties["@context"].properties[titleKey].enum =

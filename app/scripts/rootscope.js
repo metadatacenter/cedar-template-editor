@@ -24,20 +24,19 @@ angularApp.run(['$rootScope', function($rootScope) {
     return Object.keys(obj).length === 0;
   };
 
-  // Tranform string to become object key
-  $rootScope.underscoreText = function(string) {
-    return string
-      .replace(/'|"|(|)/g, '')
-      .replace(/ +/g, "_")
-      .toLowerCase();
-  };
-
-  // Transform string to Pascal case
-  $rootScope.toCamelCase = function(string) {
+  // Transform string to obtain JSON field name
+  $rootScope.getFieldName = function(string) {
+    // Using Camel case format
     return string.replace(/(?:^\w|[A-Z]|\b\w)/g, function(letter, index) {
       return index === 0 ? letter.toLowerCase() : letter.toUpperCase();
     }).replace(/\s+/g, '');
-  };
+
+    //// Using underscore format
+    //return string
+    //  .replace(/'|"|(|)/g, '')
+    //  .replace(/ +/g, "_")
+    //  .toLowerCase();
+  }
 
   // Capitalize first letter
   $rootScope.capitalizeFirst = function(string) {
