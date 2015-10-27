@@ -33,3 +33,20 @@
   left: 270px;
   padding-top: 27px;
 }
+.more-input-wrapper .spreadsheet {
+  height: 40px;
+  width: 40px;
+  margin: 0 0 0 10px;
+  border-radius: 50%;
+  display: inline-block;
+  vertical-align: middle;
+  -webkit-transition: all 0.3s ease 0.1s;
+          transition: all 0.3s ease 0.1s;
+  cursor: pointer;
+  border: none;
+  background-color: #393;
+}
+.more-input-wrapper .spreadsheet i {
+  color: #FFF;
+  line-height: 40px;
+}

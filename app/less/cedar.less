@@ -1,4 +1,4 @@
-@header-bg-color:#056046;
+@header-bg-color: #056046;
 
 #navbarMini {
   display: none;
@@ -27,14 +27,35 @@
   height: 80px;
   position: fixed;
   top: 0;
-  background-color:@header-bg-color;
-  padding-left:0px;
-  padding-right:0px;
+  background-color: @header-bg-color;
+  padding-left: 0px;
+  padding-right: 0px;
 }
 
 // Page title inside the mini navbar
 .navbarMiniInfoTitle {
-  position:absolute;
-  left:270px;
-  padding-top:27px;
+  position: absolute;
+  left: 270px;
+  padding-top: 27px;
+}
+
+.more-input-wrapper {
+
+  .spreadsheet {
+    height: 40px;
+    width: 40px;
+    margin: 0 0 0 10px;
+    border-radius: 50%;
+    display: inline-block;
+    vertical-align: middle;
+    transition: all 0.3s ease 0.1s;
+    cursor: pointer;
+    border: none;
+    background-color: #393;
+
+    i {
+      color: #FFF;
+      line-height: 40px;
+    }
+  }
 }

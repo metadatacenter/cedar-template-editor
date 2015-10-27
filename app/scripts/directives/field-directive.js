@@ -1,7 +1,6 @@
 'use strict';
 
-angularApp.directive('fieldDirective', function($rootScope, $http, $compile, $document) {
-
+var fieldDirective = function($rootScope, $http, $compile, $document, SpreadsheetService) {
   var linker = function($scope, $element, attrs) {
 
     // When form submit event is fired, check field for simple validation
@@ -198,6 +197,11 @@ angularApp.directive('fieldDirective', function($rootScope, $http, $compile, $do
         $scope.model.splice(index, 1);
       }
     }
+
+    $scope.switchToSpreadsheet = function () {
+      SpreadsheetService.switchToSpreadsheetField($scope, $element);
+    }
+
   }
 
   return {
@@ -215,4 +219,7 @@ angularApp.directive('fieldDirective', function($rootScope, $http, $compile, $do
     replace: true,
     link: linker
   };
-});
+};
+
+fieldDirective.$inject = ["$rootScope", "$http", "$compile", "$document", "SpreadsheetService"];
+angularApp.directive('fieldDirective', fieldDirective);
