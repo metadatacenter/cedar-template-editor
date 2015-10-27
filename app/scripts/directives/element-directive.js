@@ -20,7 +20,9 @@ angularApp.directive('elementDirective', function ($rootScope) {
           }
 
           if (!$rootScope.ignoreKey(key)) {
-            if (key == "value") {
+            // We have to check if model is empty to avoid problems when defining fields whose name is "value" because
+            // the "value" keyword is also used to specify the value for a field at runtime.
+            if ((key == "value") && (model == "")) {
               if (angular.isArray(model)) {
                 if (settings.properties.info.input_type == "list") {
                   if (settings.properties.info.default_option) {
