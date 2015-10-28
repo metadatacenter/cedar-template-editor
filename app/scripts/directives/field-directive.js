@@ -4,6 +4,17 @@ angularApp.directive('fieldDirective', function($rootScope, $http, $compile, $do
 
   var linker = function($scope, $element, attrs) {
 
+    $scope.setValueType = function() {
+      var typeEnum = $scope.field.properties['@type'].oneOf[0].enum;
+      if (angular.isDefined(typeEnum) && angular.isArray(typeEnum)) {
+        if (typeEnum.length == 1) {
+          $scope.model['@type'] = $scope.field.properties['@type'].oneOf[0].enum[0];
+        } else {
+          $scope.model['@type'] = $scope.field.properties['@type'].oneOf[0].enum;
+        }
+      }
+    }
+
     // When form submit event is fired, check field for simple validation
     $scope.$on('submitForm', function (event) {
       // If field is required and is empty, emit failed emptyRequiredField event
@@ -140,6 +151,7 @@ angularApp.directive('fieldDirective', function($rootScope, $http, $compile, $do
                   }
                 }
               }
+              $scope.setValueType();
             });
           }
         } else {
@@ -158,11 +170,12 @@ angularApp.directive('fieldDirective', function($rootScope, $http, $compile, $do
             }
           }
         }
+        $scope.setValueType();
       }
     }
 
     $scope.uuid = $rootScope.generateGUID();
-
+    
     // Retrive appropriate field template file
     $scope.getTemplateUrl = function() {
       var input_type = 'element';
@@ -211,6 +224,18 @@ angularApp.directive('fieldDirective', function($rootScope, $http, $compile, $do
       delete: '&',
       add: '&',
       option: '&'
+    },
+    controller: function($scope) {
+
+      var addPopover = function($scope) {
+        //Initializing Bootstrap Popover fn for each item loaded
+        setTimeout(function() {
+          angular.element('#field-value-tooltip').popover();
+        }, 1000);
+      };
+
+      addPopover($scope);
+
     },
     replace: true,
     link: linker

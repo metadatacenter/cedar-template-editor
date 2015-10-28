@@ -100,7 +100,7 @@ angularApp.directive('elementDirective', function ($rootScope) {
                         }
                       }
                     }
-                  } else {
+                  } else if (k !== '@type') {
                     if (settings[k]) {
                       resetElement(v, settings[k]);
                     }
