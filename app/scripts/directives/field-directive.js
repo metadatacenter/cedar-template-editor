@@ -205,7 +205,7 @@ var fieldDirective = function($rootScope, $http, $compile, $document, Spreadshee
   }
 
   return {
-    template : '<div ng-include="getTemplateUrl()"></div>',
+    templateUrl: './views/directive-templates/field-directive.html',
     restrict: 'EA',
     scope: {
       directory: '@',

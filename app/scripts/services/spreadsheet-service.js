@@ -96,7 +96,7 @@ var SpreadsheetService = function () {
 
       for (var i in columnHeaderOrder) {
         var desc = {};
-        desc.type = 'textfield';
+        desc.type = 'text';
         desc.cedarType = null;
         var name = columnHeaderOrder[i];
         var field = null;
@@ -197,12 +197,7 @@ var SpreadsheetService = function () {
       console.log("Switch to spreadsheet on FIELD");
       console.log($scope);
       console.log($element);
-      var context = {
-        mode: "field",
-        isField: function () {
-          return this.mode == 'field';
-        }
-      };
+      var context = new SpreadsheetContext("field", $element);
       this.switchToSpreadsheet(context, $scope, $element);
     },
 
@@ -210,16 +205,28 @@ var SpreadsheetService = function () {
       console.log("Switch to spreadsheet on ELEMENT");
       console.log($scope);
       console.log($element);
-      var context = {
-        mode: "element",
-        isField: function () {
-          return this.mode == 'field';
-        }
-      };
+      var context = new SpreadsheetContext("element", $element);
       this.switchToSpreadsheet(context, $scope, $element);
     },
 
-    switchToSpreadsheet: function (context, $scope, $element) {
+    applyVisibility: function($scope) {
+      var context = $scope.spreadsheetContext;
+      var ov = context.isOriginalContentVisible();
+      jQuery(context.getOriginalContentContainer()).toggle(ov);
+      jQuery(context.getSpreadsheetContainer()).toggle(!ov);
+    },
+
+    switchToSpreadsheet: function (ctx, $scope, $element) {
+      var context = ctx;
+      if ($scope.hasOwnProperty('spreadsheetContext')) {
+        context = $scope.spreadsheetContext;
+        context.switchVisibility();
+        this.applyVisibility($scope);
+        return;
+      } else {
+        $scope.spreadsheetContext = context;
+      }
+
       var owner = this;
       var scopeElement = (context.isField() ? $scope.field : $scope.element);
       console.log("scopeElement:");
@@ -230,9 +237,6 @@ var SpreadsheetService = function () {
 
       // handsOnTable config object
       var hotConfig = {};
-
-      // DOM element that contains the part to be replaced with HOT
-      var container = angular.element('#spreadsheetViewContainer', $element)[0];
 
       // column names
       var columnHeaderOrder = this.getColumnHeaderOrder(context, scopeElement);
@@ -267,6 +271,10 @@ var SpreadsheetService = function () {
 
       console.log(hotConfig);
 
+      // DOM element that contains the part to be replaced with HOT
+      var container = angular.element('.spreadsheetViewContainer', context.getPlaceholderContext())[0];
+      context.setSpreadsheetContainer(container);
+
       // launch hot
       var hot = new Handsontable(container, hotConfig);
       console.log("S4");
@@ -282,6 +290,11 @@ var SpreadsheetService = function () {
         console.log("After change");
         owner.updateDataModel($scope, $element);
       });
+
+      context.setOriginalContentContainer(angular.element('.cedarRealContent', context.getPlaceholderContext())[0]);
+
+      context.switchVisibility();
+      this.applyVisibility($scope);
 
     }
   };

@@ -8,10 +8,6 @@
     </div>
   </button>
 
-  <button type="button" class="spreadsheet" ng-click="switchToSpreadsheet()" ng-show="$index == 0">
-    <i class="cedar-svg-spreadsheet"></i>
-  </button>
-
   <button type="button" class="remove" ng-click="removeInput($parent.$index)" ng-show="$parent.field.minItems && ($parent.field.maxItems || $parent.model.length > $parent.field.minItems) && $parent.$index >= $parent.field.minItems">
     <i class="fa fa-times"></i>
   </button>

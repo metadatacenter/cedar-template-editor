@@ -1,3 +1,8 @@
+<a ng-click="switchToSpreadsheet()" >
+    <i class="cedar-svg-spreadsheet"></i>
+</a>
+<div class="spreadsheetViewContainer"></div>
+<div class="cedarRealContent">
 <script type="text/ng-template" id="nestedElement">
 	<field-directive ng-if="field.properties.info.input_type" field="field" model="model" directory="render" preview="preview"></field-directive>
 	<div ng-if="!field.properties.info.input_type" class="nested-element">
@@ -22,9 +27,6 @@
       </div>
     </button>
   </div>
-  <a ng-click="switchToSpreadsheet()" >
-    <i class="cedar-svg-spreadsheet"></i>
-  </a>
   <div class="clearfix"></div>
 </div> <!-- /.date-type-toggle -->
 
@@ -53,4 +55,5 @@
       <span ng-if="element[key]" ng-init="key = key; field = element[key]; model = model[key]; preview = preview; nestedElement = true;" ng-include="'nestedElement'"></span>
     </div>
   </div>
+</div>
 </div>
