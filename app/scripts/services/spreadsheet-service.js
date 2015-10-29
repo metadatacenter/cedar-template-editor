@@ -107,35 +107,42 @@ var SpreadsheetService = function () {
           field = scopeElement[name];
         }
 
-        var info = field.properties.info;
-        var inputType = info.input_type;
+        if (field.hasOwnProperty("properties")) {
 
-        if (inputType == 'date') {
-          // http://docs.handsontable.com/0.19.0/demo-date.html
-          desc.type = 'date';
-          desc.dateFormat = 'MM/DD/YYYY HH:mm';
-          desc.correctFormat = true;
-        } else if (inputType == 'email') {
-          // http://docs.handsontable.com/0.19.0/demo-data-validation.html
-          desc.allowInvalid = true;
-          desc.validator = this.validators.email;
-        } else if (inputType == 'numeric') {
-          // http://docs.handsontable.com/0.19.0/demo-numeric.html
-          // http://numeraljs.com/
-          desc.type = 'numeric';
-        } else if (inputType == 'list') {
-          var st = info.selection_type;
-          if (st == 'single') {
-            desc.type = 'dropdown';
-            var listOptions = this.extractOptionsForList(info.options);
-            desc.source = listOptions;
+          var info = field.properties.info;
+          var inputType = info.input_type;
+
+          if (inputType == 'date') {
+            // http://docs.handsontable.com/0.19.0/demo-date.html
+            desc.type = 'date';
+            desc.dateFormat = 'MM/DD/YYYY HH:mm';
+            desc.correctFormat = true;
+          } else if (inputType == 'email') {
+            // http://docs.handsontable.com/0.19.0/demo-data-validation.html
+            desc.allowInvalid = true;
+            desc.validator = this.validators.email;
+          } else if (inputType == 'numeric') {
+            // http://docs.handsontable.com/0.19.0/demo-numeric.html
+            // http://numeraljs.com/
+            desc.type = 'numeric';
+          } else if (inputType == 'list') {
+            var st = info.selection_type;
+            if (st == 'single') {
+              desc.type = 'dropdown';
+              var listOptions = this.extractOptionsForList(info.options);
+              desc.source = listOptions;
+            }
+          } else if (inputType == 'checkbox') {
+            desc.renderer = this.customRenderer.checkboxes;
+            desc.editor = 'checkboxes';//MultiCheckboxEditor;
+            var checkboxOptions = this.extractOptionsForCheckboxes(info.options);
+            desc.source = checkboxOptions;
+            desc.cedarType = 'checkboxes';
           }
-        } else if (inputType == 'checkbox') {
-          desc.renderer = this.customRenderer.checkboxes;
-          desc.editor = 'checkboxes';//MultiCheckboxEditor;
-          var checkboxOptions = this.extractOptionsForCheckboxes(info.options);
-          desc.source = checkboxOptions;
-          desc.cedarType = 'checkboxes';
+        } else {
+          desc.cedarType = 'deepObject';
+          desc.cedarLabel = "Object: " + name;
+          desc.readOnly = true;
         }
 
         colDescriptors.push(desc);
@@ -150,6 +157,8 @@ var SpreadsheetService = function () {
         rowData.push(cellDataObject.value[0]);
       } else if (cedarType == 'checkboxes') {
         rowData.push(JSON.stringify(cellDataObject.value));
+      } else if (cedarType == 'deepObject') {
+        rowData.push(columnDescriptor.cedarLabel);
       } else {
         rowData.push(cellDataObject.value);
       }
@@ -209,11 +218,15 @@ var SpreadsheetService = function () {
       this.switchToSpreadsheet(context, $scope, $element);
     },
 
-    applyVisibility: function($scope) {
+    applyVisibility: function ($scope) {
       var context = $scope.spreadsheetContext;
       var ov = context.isOriginalContentVisible();
-      jQuery(context.getOriginalContentContainer()).toggle(ov);
-      jQuery(context.getSpreadsheetContainer()).toggle(!ov);
+      jQuery(context.getOriginalContentContainer()).toggleClass("visible", ov);
+      jQuery(context.getOriginalContentContainer()).toggleClass("hidden", !ov);
+      jQuery(context.getSpreadsheetContainer()).toggleClass("visible", !ov);
+      var elementDirective = jQuery(context.getSpreadsheetContainer()).parent().parent();
+      jQuery(".spreadsheetSwitch.element.spreadsheet", elementDirective).toggleClass("visible", !ov);
+
     },
 
     switchToSpreadsheet: function (ctx, $scope, $element) {
@@ -221,8 +234,14 @@ var SpreadsheetService = function () {
       if ($scope.hasOwnProperty('spreadsheetContext')) {
         context = $scope.spreadsheetContext;
         context.switchVisibility();
-        this.applyVisibility($scope);
-        return;
+        if (context.isOriginalContentVisible()) {
+          context.getTable().destroy();
+          jQuery(context.getSpreadsheetContainer()).html("");
+          this.applyVisibility($scope);
+          return;
+        } else {
+          context.switchVisibility();
+        }
       } else {
         $scope.spreadsheetContext = context;
       }
@@ -258,26 +277,23 @@ var SpreadsheetService = function () {
 
 
       // static config
-      hotConfig.height = 200;
+      //hotConfig.height = 200;
       hotConfig.rowHeaders = true;
       hotConfig.stretchH = 'all';
       hotConfig.trimWhitespace = false;
 
-      console.log("S1");
-      //Handsontable.editors.registerEditor('checkboxes', MultiCheckboxEditor);
-      console.log("S2");
-      //Handsontable.renderers.registerRenderer('checkboxes', this.customRenderer.checkboxes);
-      console.log("S3");
-
-      console.log(hotConfig);
+      //console.log(hotConfig);
 
       // DOM element that contains the part to be replaced with HOT
       var container = angular.element('.spreadsheetViewContainer', context.getPlaceholderContext())[0];
       context.setSpreadsheetContainer(container);
 
+      context.setOriginalContentContainer(angular.element('.cedarRealContent', context.getPlaceholderContext())[0]);
+      context.switchVisibility();
+      this.applyVisibility($scope);
+
       // launch hot
       var hot = new Handsontable(container, hotConfig);
-      console.log("S4");
 
       // push data to scope
       $scope.spreadsheetDataScope = {
@@ -291,10 +307,8 @@ var SpreadsheetService = function () {
         owner.updateDataModel($scope, $element);
       });
 
-      context.setOriginalContentContainer(angular.element('.cedarRealContent', context.getPlaceholderContext())[0]);
+      context.setTable(hot);
 
-      context.switchVisibility();
-      this.applyVisibility($scope);
 
     }
   };

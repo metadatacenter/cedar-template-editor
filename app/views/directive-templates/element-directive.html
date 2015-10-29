@@ -1,8 +1,17 @@
-<a ng-click="switchToSpreadsheet()" >
-    <i class="cedar-svg-spreadsheet"></i>
-</a>
-<div class="spreadsheetViewContainer"></div>
-<div class="cedarRealContent">
+<div ng-show="$root.isArray(model)" class="spreadsheetSwitch element spreadsheet">
+    <p class="element-name-label">
+        <i class="cedar-svg-element"></i>
+        {{key | keyToTitle}}
+        &nbsp;
+        <a ng-click="switchToSpreadsheet()">
+            <i class="cedar-svg-spreadsheet"></i>
+        </a>
+    </p>
+</div>
+<div ng-show="$root.isArray(model)">
+    <div class="spreadsheetViewContainer visible"></div>
+</div>
+<div class="cedarRealContent visible">
 <script type="text/ng-template" id="nestedElement">
 	<field-directive ng-if="field.properties.info.input_type" field="field" model="model" directory="render" preview="preview"></field-directive>
 	<div ng-if="!field.properties.info.input_type" class="nested-element">
@@ -27,6 +36,11 @@
       </div>
     </button>
   </div>
+  <span ng-show="$root.isArray(model)" class="spreadsheetSwitch element original">
+    <a ng-click="switchToSpreadsheet()">
+        <i class="cedar-svg-spreadsheet"></i>
+    </a>
+  </span>
   <div class="clearfix"></div>
 </div> <!-- /.date-type-toggle -->
 

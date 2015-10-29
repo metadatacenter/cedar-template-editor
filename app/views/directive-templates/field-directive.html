@@ -1,8 +1,14 @@
 <div>
-    <a ng-click="switchToSpreadsheet()">
-        <i class="cedar-svg-spreadsheet"></i>
-    </a>
-    <div class="spreadsheetViewContainer"></div>
+    <div ng-show="$root.isArray(model)" class="spreadsheetSwitch field">
+        <p class="element-name-label">
+            <i class="cedar-svg-list"></i>
+            {{field.properties.info.title}}
+            <a ng-click="switchToSpreadsheet()">
+                <i class="cedar-svg-spreadsheet"></i>
+            </a>
+        </p>
+        <div class="spreadsheetViewContainer"></div>
+    </div>
 
     <div class="cedarRealContent">
         <div ng-include="getTemplateUrl()"></div>

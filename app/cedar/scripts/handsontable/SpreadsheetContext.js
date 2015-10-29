@@ -4,6 +4,7 @@ var SpreadsheetContext = function (mode, element) {
   this.originalContentVisible = true;
   this.spreadsheetContainer = null;
   this.originalContentContainer = null;
+  this.table = null;
 }
 
 SpreadsheetContext.prototype.isField = function () {
@@ -36,4 +37,12 @@ SpreadsheetContext.prototype.isOriginalContentVisible = function () {
 
 SpreadsheetContext.prototype.switchVisibility = function () {
   return this.originalContentVisible = !this.originalContentVisible;
+}
+
+SpreadsheetContext.prototype.setTable = function (hot) {
+  this.table = hot;
+}
+
+SpreadsheetContext.prototype.getTable = function () {
+  return this.table;
 }
