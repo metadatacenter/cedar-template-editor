@@ -77,7 +77,7 @@
         console.log(value);
         for(var i in this.cellProperties.source) {
             var n = this.cellProperties.source[i];
-            angular.element('#' + this.key2IdMap[n]).prop('checked', valueObject.hasOwnProperty(n));
+            angular.element('#' + this.key2IdMap[n]).prop('checked', valueObject.hasOwnProperty(n) && valueObject[n]);
         }
     };
 

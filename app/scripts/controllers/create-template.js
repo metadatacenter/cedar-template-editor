@@ -10,7 +10,7 @@ var CreateTemplateController = function($rootScope, $scope, $q, $routeParams, $t
   // Setting form preview setting to false by default
   $scope.formPreview = false;
   // Configure mini header
-  HeaderService.configure("TEMPLATE");
+  HeaderService.configure("TEMPLATE", "creator");
 
   // Using form service to load list of existing elements to embed into new form
   FormService.elementList().then(function(response) {

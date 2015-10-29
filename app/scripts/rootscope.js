@@ -17,6 +17,8 @@ angularApp.run(['$rootScope', function($rootScope) {
 
   $rootScope.isArray = angular.isArray;
 
+  $rootScope.applicationMode = 'default';
+
   // Global utility functions
 
   // Simple function to check if an object is empty

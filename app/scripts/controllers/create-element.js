@@ -12,7 +12,7 @@ var CreateElementController = function($rootScope, $scope, $routeParams, $timeou
   // Setting form preview setting to false by default
   $scope.formPreview = false;
   // Configure mini header
-  HeaderService.configure("ELEMENT");
+  HeaderService.configure("ELEMENT", "creator");
 
   // Using form service to load list of existing elements to embed into new element
   FormService.elementList().then(function(response) {

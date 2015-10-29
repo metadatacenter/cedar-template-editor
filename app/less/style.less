@@ -1,33 +1,7 @@
-// Import Bootstrap LESS library
-@import '../bower_components/bootstrap-less/less/bootstrap.less';
-
-// Import FontAwesome LESS library
-@import '../bower_components/fontawesome/less/font-awesome.less';
-
-// Import local LESS files
-@import 'fonts.less';
-
-// Import Bootstrap Checkbox Awesomeness
-@import 'awesome-bootstrap-checkbox.less';
-
-// Import Bootstrap Datepicker Styles
-@import '../bower_components/eonasdan-bootstrap-datetimepicker/src/less/_bootstrap-datetimepicker.less';
-
-// Import Bootstrap Select Styles
-@import '../bower_components/bootstrap-select/less/bootstrap-select.less';
-
 // Overriding Bootstrap library variables
 @grid-float-breakpoint:999999px;
 
 // Definine local variables
-@header-text-color:#fff;
-@header-bg-color:#056046;
-@brand-primary:#339933;
-@brand-primary-hover:#338833;
-@white:#fff;
-@black:#000;
-@gray:#999;
-@gray2:#f4f4f7;
 @container-cedar-medium:952px;
 
 // Definine local mixins
@@ -62,7 +36,7 @@
 */
 
 body {
-  background: #f9f9fb;
+  background: @background-color;
   font-family: 'aktiv-grotesk-std', 'Helvetica Neue', Helvetica, Arial, sans-serif;
   color: #333;
 }

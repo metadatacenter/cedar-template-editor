@@ -13,8 +13,10 @@ var SpreadsheetService = function () {
         var s = "";
         var sep = "";
         for (var name in objValue) {
-          s += sep + name;
-          sep = ", ";
+          if (objValue[name]) {
+            s += sep + name;
+            sep = ", ";
+          }
         }
         var escaped = Handsontable.helper.stringify(s);
         td.innerHTML = escaped;
