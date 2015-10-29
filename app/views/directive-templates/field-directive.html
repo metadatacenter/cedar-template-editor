@@ -1,9 +1,9 @@
 <div>
-    <div ng-show="$root.isArray(model)" class="spreadsheetSwitch field">
+    <div ng-show="$root.isArray(model) && $root.applicationMode == 'runtime'" class="spreadsheetSwitch field">
         <p class="element-name-label">
             <i class="cedar-svg-list"></i>
             {{field.properties.info.title}}
-            <a ng-click="switchToSpreadsheet()">
+            <a ng-click="switchToSpreadsheet()" class="spreadsheetSwitchLink">
                 <i class="cedar-svg-spreadsheet"></i>
             </a>
         </p>

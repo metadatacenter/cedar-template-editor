@@ -3,7 +3,7 @@
         <i class="cedar-svg-element"></i>
         {{key | keyToTitle}}
         &nbsp;
-        <a ng-click="switchToSpreadsheet()">
+        <a ng-click="switchToSpreadsheet()" class="spreadsheetSwitchLink">
             <i class="cedar-svg-spreadsheet"></i>
         </a>
     </p>
@@ -20,6 +20,8 @@
 </script>
 
 <div class="element-toggles list">
+  <a ng-click="switchExpandedState()" class="visibilitySwitch"><i class="cedar-svg-collapse"></i></a>
+  <a ng-click="switchExpandedState()" class="visibilitySwitch" style="display:none;"><i class="cedar-svg-expand"></i></a>
   <div ng-if="!$root.isArray(model)" class="element-toggle active">
     <span>{{key | keyToTitle}}</span>
   </div>
@@ -36,8 +38,8 @@
       </div>
     </button>
   </div>
-  <span ng-show="$root.isArray(model)" class="spreadsheetSwitch element original">
-    <a ng-click="switchToSpreadsheet()">
+  <span ng-show="$root.isArray(model) && $root.applicationMode == 'runtime'" class="spreadsheetSwitch element original">
+    <a ng-click="switchToSpreadsheet()" class="spreadsheetSwitchLink">
         <i class="cedar-svg-spreadsheet"></i>
     </a>
   </span>

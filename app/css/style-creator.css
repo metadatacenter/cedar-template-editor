@@ -9193,6 +9193,12 @@ button.close {
 .cedar-svg-spreadsheet:before {
   content: "z";
 }
+.cedar-svg-expand:before {
+  content: "A";
+}
+.cedar-svg-collapse:before {
+  content: "B";
+}
 #navbarMini {
   display: none;
   border: 0px solid red;
@@ -9244,6 +9250,9 @@ button.close {
 .more-input-wrapper .spreadsheet i {
   color: #FFF;
   line-height: 40px;
+}
+.spreadsheetSwitchLink {
+  margin-left: 10px;
 }
 .spreadsheetSwitch.field {
   margin-bottom: 0px;

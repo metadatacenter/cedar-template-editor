@@ -138,6 +138,12 @@ var elementDirective = function($rootScope, SpreadsheetService) {
       scope.switchToSpreadsheet = function () {
         SpreadsheetService.switchToSpreadsheetElement(scope, element);
       }
+
+      scope.switchExpandedState = function () {
+        var originalContent = angular.element('.elements', element);
+        originalContent.toggle();
+        angular.element(".visibilitySwitch").toggle();
+      }
     }
   };
 };

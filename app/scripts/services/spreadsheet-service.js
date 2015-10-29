@@ -205,17 +205,17 @@ var SpreadsheetService = function () {
     },
 
     switchToSpreadsheetField: function ($scope, $element) {
-      console.log("Switch to spreadsheet on FIELD");
-      console.log($scope);
-      console.log($element);
+      //console.log("Switch to spreadsheet on FIELD");
+      //console.log($scope);
+      //console.log($element);
       var context = new SpreadsheetContext("field", $element);
       this.switchToSpreadsheet(context, $scope, $element);
     },
 
     switchToSpreadsheetElement: function ($scope, $element) {
-      console.log("Switch to spreadsheet on ELEMENT");
-      console.log($scope);
-      console.log($element);
+      //console.log("Switch to spreadsheet on ELEMENT");
+      //console.log($scope);
+      //console.log($element);
       var context = new SpreadsheetContext("element", $element);
       this.switchToSpreadsheet(context, $scope, $element);
     },
