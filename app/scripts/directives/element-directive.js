@@ -142,7 +142,7 @@ var elementDirective = function($rootScope, SpreadsheetService) {
       scope.switchExpandedState = function () {
         var originalContent = angular.element('.elements', element);
         originalContent.toggle();
-        angular.element(".visibilitySwitch").toggle();
+        angular.element(".visibilitySwitch", element).toggle();
       }
     }
   };

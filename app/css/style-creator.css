@@ -11032,7 +11032,7 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
           transition: all 0.3s ease 0.1s;
 }
 .element-toggles .element-toggle.active {
-  border-color: #393;
+  border-color: #5795ba;
 }
 .element-toggles .element-toggle span {
   text-transform: uppercase;
@@ -11053,7 +11053,7 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   vertical-align: middle;
   -webkit-transition: all 0.3s ease 0.1s;
           transition: all 0.3s ease 0.1s;
-  background-color: #393;
+  background-color: #5795ba;
   border: none;
 }
 .element-toggles .add-element .add i {
@@ -11062,7 +11062,7 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   line-height: 40px;
 }
 .element-toggles .add-element .add:disabled {
-  background-color: #94C795;
+  background-color: rgba(87, 149, 186, 0.35);
 }
 #form-item-config-section .adding-element .preview-edit-options {
   display: none;
