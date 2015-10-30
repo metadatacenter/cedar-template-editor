@@ -32,7 +32,7 @@ gulp.task('lint', function() {
 
 // Compile LESS files
 gulp.task('less', function() {
-  return gulp.src(['app/less/style.less', 'app/less/cedar.less'])
+  return gulp.src(['app/less/style-default.less', 'app/less/style-creator.less', 'app/less/style-runtime.less'])
     .pipe(plumber({
       errorHandler: onError
     }))

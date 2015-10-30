@@ -12,7 +12,7 @@ var RuntimeController = function($rootScope, $scope, FormService, $routeParams, 
     $scope.formList = response;
   });
 	// Configure mini header
-	HeaderService.configure("RUNTIME");
+	HeaderService.configure("RUNTIME", "runtime");
 
 
 	// Create empty form object

@@ -1,6 +1,6 @@
 'use strict';
 
-var HeaderService = function (HEADER_MINI) {
+var HeaderService = function ($rootScope, HEADER_MINI) {
   return {
     serviceId: "HeaderService",
 
@@ -11,9 +11,10 @@ var HeaderService = function (HEADER_MINI) {
       currentObjectScope: null
     },
 
-    configure: function(pageId) {
+    configure: function(pageId, applicationMode) {
       this.miniHeaderEnabled = HEADER_MINI[pageId].enabled;
       this.miniHeaderScrollLimit = HEADER_MINI[pageId].scrollLimit;
+      $rootScope.applicationMode = applicationMode;
     },
 
     isEnabled: function() {
@@ -31,5 +32,5 @@ var HeaderService = function (HEADER_MINI) {
   };
 };
 
-HeaderService.$inject = ["HEADER_MINI"];
+HeaderService.$inject = ["$rootScope", "HEADER_MINI"];
 angularApp.service('HeaderService', HeaderService);

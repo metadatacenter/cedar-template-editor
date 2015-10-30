@@ -1,3 +1,17 @@
+<div ng-show="$root.isArray(model)" class="spreadsheetSwitch element spreadsheet">
+    <p class="element-name-label">
+        <i class="cedar-svg-element"></i>
+        {{key | keyToTitle}}
+        &nbsp;
+        <a ng-click="switchToSpreadsheet()" class="spreadsheetSwitchLink">
+            <i class="cedar-svg-spreadsheet"></i>
+        </a>
+    </p>
+</div>
+<div ng-show="$root.isArray(model)">
+    <div class="spreadsheetViewContainer visible"></div>
+</div>
+<div class="cedarRealContent visible">
 <script type="text/ng-template" id="nestedElement">
 	<field-directive ng-if="field.properties.info.input_type" field="field" model="model" directory="render" preview="preview"></field-directive>
 	<div ng-if="!field.properties.info.input_type" class="nested-element">
@@ -6,6 +20,8 @@
 </script>
 
 <div class="element-toggles list">
+  <a ng-click="switchExpandedState()" class="visibilitySwitch"><i class="cedar-svg-collapse"></i></a>
+  <a ng-click="switchExpandedState()" class="visibilitySwitch" style="display:none;"><i class="cedar-svg-expand"></i></a>
   <div ng-if="!$root.isArray(model)" class="element-toggle active">
     <span>{{key | keyToTitle}}</span>
   </div>
@@ -22,6 +38,11 @@
       </div>
     </button>
   </div>
+  <span ng-show="$root.isArray(model) && $root.applicationMode == 'runtime'" class="spreadsheetSwitch element original">
+    <a ng-click="switchToSpreadsheet()" class="spreadsheetSwitchLink">
+        <i class="cedar-svg-spreadsheet"></i>
+    </a>
+  </span>
   <div class="clearfix"></div>
 </div> <!-- /.date-type-toggle -->
 
@@ -50,4 +71,5 @@
       <span ng-if="element[key]" ng-init="key = key; field = element[key]; model = model[key]; preview = preview; nestedElement = true;" ng-include="'nestedElement'"></span>
     </div>
   </div>
+</div>
 </div>
