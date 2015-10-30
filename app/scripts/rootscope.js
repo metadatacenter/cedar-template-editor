@@ -38,7 +38,7 @@ angularApp.run(['$rootScope', function($rootScope) {
     //  .replace(/'|"|(|)/g, '')
     //  .replace(/ +/g, "_")
     //  .toLowerCase();
-  }
+  };
 
   // Capitalize first letter
   $rootScope.capitalizeFirst = function(string) {
