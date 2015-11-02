@@ -15,10 +15,10 @@
 <div class="text-right toggle-json" style="padding-top:20px; padding-bottom:20px;">
   <!--<a ng-show="!showRender" ng-click="showRender = true">Show JSON</a>-->
   <!--<a ng-show="showRender" ng-click="showRender = false">Hide JSON</a>-->
-  <a ng-click="showRender = !showRender">Show JSON</a>
+  <a id="show-json-link" ng-click="showRender = !showRender">Show JSON</a>
 
 </div>
 <div class="showed-json" ng-show="showRender">
-  <pre>{{ form | json }}</pre>
+  <pre id="form-json-preview">{{ form | json }}</pre>
 </div>
 

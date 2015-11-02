@@ -59,7 +59,7 @@
       </div><!-- /.form-group -->
   </div><!-- /.cardinality-options -->
 </div><!-- /.toggle-options -->
-<div id="advanced-options-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}"class="advanced-options collapse">
+<div id="advanced-options-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}" class="advanced-options collapse">
  	<div class="form-group validation-pattern floating-label-wrapper">
 	  <input type="text" class="form-control" placeholder="Expression" aria-label="Advanced - Enter Expression" ng-model="field.properties.info.advanced.expression"  with-floating-label>
 	</div><!-- /.form-group -->
@@ -77,22 +77,294 @@
 	  <input type="text" class="form-control" placeholder="Enter Error Message" aria-label="Advanced - Enter Error Message" ng-model="field.properties.info.advanced.error_message"  with-floating-label>
 	</div><!-- /.form-group -->
 </div><!-- /.advanced-options -->
+
 <div id="control-options-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}" class="controlled-term-options collapse" ng-controller="TermsController" ng-model="enumTemp">
+ 	<div class="form-group floating-label-wrapper class-container">
+ 		<span ng-if="controlTerm.addedFieldItems.length == 0 && controlTerm.addedValueItems.length == 0">{{controlTerm.emptyMessage}}</span>
+    <div class="added-field-classes">
+      <div class="one-class-list" ng-if="controlTerm.addedFieldItems.length == 1">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Class</th>
+              <th>Ontology</th>
+              <th>&nbsp;</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="item in controlTerm.addedFieldItems">
+              <td class="pref-label">{{item.prefLabel}}</td>
+              <td class="ontology-name">
+                {{item.ontologyDescription}}
+              </td>
+              <td>
+                <!--
+                <div class="item item-edit" ng-click="controlTerm.editFieldAddedItem(item)">
+                  <i class="fa fa-pencil"></i>
+                </div>
+                -->
+                <div class="item item-delete" ng-click="controlTerm.deleteFieldAddedItem(item)">
+                  <i class="fa fa-close"></i>
+                </div>
+                </li>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="more-items many-classes-list" ng-if="controlTerm.addedFieldItems.length > 1">
+        <button type="button" class="btn btn-more-items dropdown-toggle btn-block" data-toggle="dropdown" aria-expanded="false">
+          <span class="pull-left">Added Field Class</span> <i class="fa fa-angle-down fa-2x pull-right"></i>
+          <span class="clearfix"></span>
+        </button>
+        <div class="dropdown-menu element-menu" role="menu">
+          <table class="table classes-table">
+            <thead>
+              <tr>
+                <th>Class</th>
+                <th>Ontology</th>
+                <th>&nbsp;</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="item in controlTerm.addedFieldItems">
+                <td class="pref-label">{{item.prefLabel}}</td>
+                <td class="ontology-name">
+                  {{item.ontologyDescription}}
+                </td>
+                <td>
+                  <!--
+                  <div class="item item-edit" ng-click="controlTerm.editFieldAddedItem(item)">
+                    <i class="fa fa-pencil"></i>
+                  </div>
+                  -->
+                  <div class="item item-delete" ng-click="controlTerm.deleteFieldAddedItem(item)">
+                    <i class="fa fa-close"></i>
+                  </div>
+                  </li>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+ 	</div>
+ 	<div class="form-group floating-label-wrapper" ng-if="controlTerm.filterSelection == ''">
+ 		<div class="btn-two-toggle {{controlTerm.filterSelection}}">
+	 		<button type="button" class="btn btn-field" ng-click="controlTerm.selectFieldFilter()">Add Field</button>
+	 		<button type="button" class="btn btn-values" ng-click="controlTerm.selectValueFilter()">Add Values</button>
+	 		<i id="field-value-tooltip" class="cedar-svg-help-circle" data-container="body" data-toggle="popover" data-placement="right" data-content="Field selects classes to represent 'study type' itself. Values selects classes for the possible runtime values." data-original-title="" title=""></i>
+	 	</div>
+ 	</div>
+ 	<div class="form-group floating-label-wrapper field-value-filter {{controlTerm.filterSelection}}" ng-if="controlTerm.filterSelection != ''">
+		<div class="heading-label">
+			<hr /><span class="section-break" ng-if="controlTerm.filterSelection == 'field'">fields</span><span class="section-break" ng-if="controlTerm.filterSelection != 'field'">{{controlTerm.filterSelection}}</span><hr />
+		</div>
+	</div>
+ 	<div class="form-group floating-label-wrapper field-filter clearfix" ng-if="controlTerm.filterSelection == 'field'">
+
+
+ 		<!-- Field Search/Browse Input -->
+
+ 		<div class="form-group floating-label-wrapper btn-start-over-group clearfix" ng-if="controlTerm.fieldActionSelection">
+	 		<!--button type="button" class="btn btn-back" ng-show="controlTerm.fieldTreeVisibility" ng-click="controlTerm.hideFieldTree()">Back</button-->
+	 		<button type="button" class="btn btn-start-over" ng-click="controlTerm.startOver()">Start Over</button>
+ 		</div>
+
+ 		<div class="form-group form-group-actions clearfix" ng-class="{'is-searching': controlTerm.fieldActionSelection == 'search', 'is-browsing': controlTerm.fieldActionSelection == 'browse'}">
+      <div class="field-search">
+        <div class="input-group field-search-input-group">
+          <!--div class="pull-left selected-field-class" ng-show="controlTerm.fieldTreeVisibility" ng-click="controlTerm.hideFieldTree()"><a type="button"><img src="../img/eye.png" /></a></div-->
+  	  		<input id="field-search-input" type="text" class="form-control field-search-form-control" placeholder="Search" aria-label="Field Search" ng-model="controlTerm.fieldSearchTerms" ng-keyup="$event.keyCode == 13 && controlTerm.fieldSearch()"  with-floating-label />
+           <span class="input-group-addon" ng-click="controlTerm.fieldSearch()">
+             <img src="../img/search-icon.png" />
+           </span>
+        </div>
+      </div>
+      <div class="field-browse">
+        <div class="more-items" ng-class="{open: controlTerm.fieldActionSelection == 'browse'}">
+          <button type="button" class="btn btn-field-browse btn-block" data-toggle="dropdown" aria-expanded="false" ng-click="controlTerm.fieldBrowse($event)">
+            <span class="pull-left">Browse ontology</span> <i class="fa fa-angle-down fa-2x pull-right"></i>
+            <span class="clearfix"></span>
+          </button>
+        </div>
+      </div>
+ 		</div>
+
+
+ 		<!-- Field Search Results and Ontology Tree -->
+
+ 		<div class="form-group floating-label-wrapper clear search-results-section" ng-if="controlTerm.searchResults.length > 0">
+      <div class="search-results-headers" ng-hide="controlTerm.fieldTreeVisibility">
+        <table class="table table-condensed results-headers-table search-results-headers-table" ng-if="controlTerm.fieldActionSelection == 'search'">
+          <thead>
+            <tr>
+              <th>Class</th>
+              <th>Ontology</th>
+            </tr>
+          </thead>
+        </table>
+
+        <table class="table table-condensed results-headers-table browse-results-headers-table" ng-if="controlTerm.fieldActionSelection == 'browse'">
+          <thead>
+            <tr>
+              <th>Ontology</th>
+              <th>Categories</th>
+              <th>No Classes</th>
+            </tr>
+          </thead>
+        </table>
+      </div>
+ 			<div class="search-results" ng-hide="controlTerm.fieldTreeVisibility">
+ 				<div class="preloader" ng-show="controlTerm.searchPreloader"></div>
+ 				<div class="no-search-results" ng-show="controlTerm.searchNoResults">No results.</div>
+        <div class="table-responsive results-table-container">
+          <table class="table results-table search-results-table" ng-if="controlTerm.fieldActionSelection == 'search'">
+            <tbody>
+              <tr ng-repeat="result in controlTerm.searchResults" ng-click="controlTerm.selectFieldClass(result.collection)">
+                <td>{{result.class}}</td>
+                <td>{{result.ontology}}</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <table class="table results-table browse-results-table" ng-if="controlTerm.fieldActionSelection == 'browse'">
+            <tbody>
+              <tr ng-repeat="result in controlTerm.searchResults" ng-click="controlTerm.selectFieldOntology(result)">
+                <td>{{result.name}}</td>
+                <td>{{result.categoriesNames}}</td>
+                <td>{{result.metrics.classes}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+ 			</div>
+
+ 			<div class="field-tree clear" ng-show="controlTerm.fieldTreeVisibility">
+ 				<div class="preloader" ng-show="controlTerm.searchPreloader"></div>
+				<div class="ontology-tree pull-left" ng-if="controlTerm.currentOntology !=''">
+					<h4><a ng-click="controlTerm.hideFieldTree()"><img src="../img/left-arrow.png" /></a>&nbsp;&nbsp;&nbsp;&nbsp;Ontology Tree</h4>
+					<div class="tree tree-view-ul tree-view list-unstyled class-tree-container">
+						<class-tree tree="controlTerm.currentOntology.tree" control-term="controlTerm"></class-tree>
+					</div>
+				</div><!-- /.ontology-tree -->
+
+				<div class="field-details-view pull-right" ng-if="controlTerm.currentOntology !=''">
+					<ul class="nav nav-tabs" role="tablist">
+						<li role="presentation" class="detail-view-tab active"><a href="#class-details" aria-controls="class-details" role="tab" data-toggle="tab">Class Details</a></li>
+						<li role="presentation" class="detail-view-tab"><a href="#ontology-details" aria-controls="ontology-details" role="tab" data-toggle="tab">Ontology Details</a></li>
+					</ul>
+					<div class="tab-content">
+						<div id="class-details" class="tab-pane active" role="tabpanel">
+              <div class="no-selected-class text-center" ng-hide="controlTerm.classDetails">No class is selected</div>
+							<div class="table-responsive">
+								<table class="table">
+									<tbody ng-show="controlTerm.classDetails">
+						        <tr>
+						          <th>Perf. Name</th>
+						          <th>{{controlTerm.classDetails.prefLabel}}</th>
+						        </tr>
+						        <tr>
+						          <td>ID</td>
+						          <td>{{controlTerm.classDetails['@id']}}</td>
+						        </tr>
+						        <tr>
+						          <td>Definition</td>
+						          <td>{{controlTerm.classDetails.definition[0]}}</td>
+						        </tr>
+						      </tbody>
+								</table>
+							</div><!-- /.table-responsive -->
+						</div><!-- /.class-details -->
+		 				<div id="ontology-details" class="tab-pane" role="tabpanel">
+							<div class="table-responsive">
+								<table class="table">
+									<tbody>
+							      <tr>
+							        <th>Name</th>
+							        <th>{{controlTerm.currentOntology.details.ontology.name}}</th>
+							      </tr>
+							      <tr>
+							        <td>Acronym</td>
+							        <td>{{controlTerm.currentOntology.details.ontology.acronym}}</td>
+							      </tr>
+							      <tr>
+							        <td>@id</td>
+							        <td><a ng-href="{{controlTerm.currentOntology.details.ontology['@id']}}" target="_blank">{{controlTerm.currentOntology.details.ontology['@id']}}</a></td>
+							      </tr>
+							      <tr>
+							        <td>Description</td>
+							        <td>{{controlTerm.currentOntology.details.description | htmlToPlaintext}}</td>
+							      </tr>
+							      <tr>
+							        <td># of Classes</td>
+							        <td>{{controlTerm.currentOntology.size.classes | returnNullIfEmpty}}</td>
+							      </tr>
+							    </tbody>
+								</table>
+							</div><!-- /.table-responsive -->
+		 				</div>
+		 			</div>
+          <div class="clearfix"></div>
+	 			</div>
+        <div class="clearfix"></div>
+
+        <div class="class-actions">
+          <button class="btn btn-add-term" ng-if="controlTerm.selectedClass1.prefLabel && controlTerm.classDetails" ng-click="controlTerm.addClass(controlTerm.selectedClass1)">Add {{controlTerm.selectedClass1.prefLabel}}</button>
+  				<div class="or-divider" ng-if="controlTerm.selectedClass1.prefLabel && controlTerm.selectedClass2.prefLabel && controlTerm.classDetails"></div>
+  				<button class="btn btn-add-term add-btn-margin" ng-if="controlTerm.selectedClass2.prefLabel && controlTerm.classDetails" ng-click="controlTerm.addClass(controlTerm.selectedClass2)">Add {{controlTerm.selectedClass2.prefLabel}}</button>
+        </div>
+ 			</div>
+	  </div>
+  </div>
+ 	<div class="value-filter" ng-if="controlTerm.filterSelection == 'values'">
+ 		<div class="form-group floating-label-wrapper">
+			<div class="checkbox checkbox-primary">
+				<input type="checkbox" id="checkbox-bioportal-ontologies"
+					ng-model="controlTerm.bioportalOntoligiesFilter"
+					[name="bioportalOntoligiesFilter"]
+				    [ng-true-value="true"]
+				    [ng-false-value="false"]
+				    [ng-change="bioportalOntoligiesFilter"]>
+				<label for="checkbox-bioportal-ontologies">BioPortal Ontologies</label>
+			</div>
+			<div class="checkbox checkbox-primary">
+				<input type="checkbox" id="checkbox-bioportal-value-sets"
+					ng-model="controlTerm.bioportalValueSetsFilter"
+					[name="bioportalValueSetsFilter"]
+					[ng-true-value="true"]
+				    [ng-false-value="false"]
+				    [ng-change="bioportalValueSetsFilter"]>
+				<label for="checkbox-bioportal-value-sets">BioPortal Value Sets</label>
+			</div>
+		</div>
+ 		<div class="form-group floating-label-wrapper btn-start-over-group">
+	 		<button type="button" class="btn btn-start-over" ng-click="controlTerm.startOver()">Start Over</button>
+ 		</div>
+ 		<div class="form-group floating-label-wrapper">
+	  		<input type="text" class="form-control" placeholder="Search" aria-label="Values Search" ng-model="controlTerm.valueSearchTerms"  with-floating-label>
+	  	</div>
+  	</div>
+
+
  	<!--<div class="form-group floating-label-wrapper">-->
 	  <!--<input type="text" class="form-control" placeholder="Value Source" aria-label="Control Term Value Source" ng-model="field.properties.info.control_term.value_source"  with-floating-label>-->
 	<!--</div>&lt;!&ndash; /.form-group &ndash;&gt;-->
 
-	<div class="form-group floating-label-wrapper">
+	<!-- <div class="form-group floating-label-wrapper"> -->
 		<!-- Here ng-model and ng-change are used in combination to bind 2 different models to the Controlled Term ID input field (source: http://stackoverflow.com/questions/13890331/how-to-bind-2-models-to-one-input-field-in-angular) -->
-	  <input type="url" class="form-control" placeholder="Controlled Term ID 1" aria-label="Control Term ID 1" ng-model="enumTemp[0]" ng-change="updateEnum(field.properties)" with-floating-label>
-	</div><!-- /.form-group -->
-	<div class="form-group floating-label-wrapper">
-		<input type="url" class="form-control" placeholder="Controlled Term ID 2" aria-label="Control Term ID 2" ng-model="enumTemp[1]"
-					 ng-change="updateEnum(field.properties)" ng-disabled="!enumTemp[0].length" with-floating-label>
-	</div><!-- /.form-group -->
-	<div class="form-group floating-label-wrapper">
-		<input type="url" class="form-control" placeholder="Controlled Term ID 3" aria-label="Control Term ID 3" ng-model="enumTemp[2]"
-				 ng-change="updateEnum(field.properties)" ng-disabled="!enumTemp[1].length" with-floating-label>
-	</div><!-- /.form-group -->
+	  <!-- <input type="url" class="form-control" placeholder="Controlled Term ID 1" aria-label="Control Term ID 1" ng-model="enumTemp[0]" ng-change="updateEnum(field.properties)" with-floating-label> -->
+	<!-- </div> --><!-- /.form-group -->
+
+	<!-- <div class="form-group floating-label-wrapper"> -->
+		<!-- <input type="url" class="form-control" placeholder="Controlled Term ID 2" aria-label="Control Term ID 2" ng-model="enumTemp[1]"
+					 ng-change="updateEnum(field.properties)" ng-disabled="!enumTemp[0].length" with-floating-label> -->
+	<!-- </div> --><!-- /.form-group -->
+	<!-- <div class="form-group floating-label-wrapper"> -->
+		<!-- <input type="url" class="form-control" placeholder="Controlled Term ID 3" aria-label="Control Term ID 3" ng-model="enumTemp[2]"
+				 ng-change="updateEnum(field.properties)" ng-disabled="!enumTemp[1].length" with-floating-label> -->
+	<!-- </div> --><!-- /.form-group -->
 
 </div><!-- /.controlled-term-options -->

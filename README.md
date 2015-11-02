@@ -36,6 +36,8 @@ To run individual tasks, use `$ gulp <task> <othertask>`
 
 ## Running the tests
 
+### Unit Tests
+
 Tests are written in Jasmine and run with the karma test runner.
 
 To run the tests once:
@@ -45,3 +47,18 @@ To run the tests once:
 To have karma watch for changes:
 
     $ karma start
+
+### End-to-end (e2e) Tests
+
+e2e tests use Protractor.  To run them, first install selenium:
+
+    $ npm install
+    $ ./node_modules/selenium-standalone/bin/selenium-standalone install
+
+Then you can run the e2e tests from gulp:
+
+    $ gulp e2e
+
+This will start the selenium server, run the tests, then stop the selenium server.
+
+TODO: protractor.config.js currently is referencing specific install locations for linux.  Needs to be updated to support multiple developer environments / installs.
