@@ -11001,10 +11001,10 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   line-height: 40px;
 }
 .more-input-wrapper .add {
-  background-color: #393;
+  background-color: #339933;
 }
 .more-input-wrapper .add:disabled {
-  background-color: #94C795;
+  background-color: #94c795;
 }
 .more-input-wrapper .remove {
   background-color: #333333;
@@ -11098,7 +11098,7 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   border: 1px solid #B4C1C8;
   display: inline-block;
   background-color: #FFFFFF;
-  color: #359D34;
+  color: #339933;
   font-weight: bold;
   border-radius: 3px;
 }
