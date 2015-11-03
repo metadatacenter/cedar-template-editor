@@ -18,7 +18,7 @@ var angularRun = function($rootScope) {
   $rootScope.isArray = angular.isArray;
 
   $rootScope.applicationMode = 'default';
-  $rootScope.applicationRole = 'instanciator';
+  $rootScope.applicationRole = 'instantiator';
   $rootScope.pageId = null;
 
   // Global utility functions

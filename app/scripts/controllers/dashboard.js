@@ -32,8 +32,8 @@ var DashboardController = function ($rootScope, $scope, $routeParams, FormServic
     if ($routeParams.role == 'as-creator') {
       currentRole = 'creator';
       currentApplicationMode ='creator';
-    } else if ($routeParams.role == 'as-instanciator') {
-      currentRole = 'instanciator';
+    } else if ($routeParams.role == 'as-instantiator') {
+      currentRole = 'instantiator';
       currentApplicationMode = 'runtime';
     }
   }

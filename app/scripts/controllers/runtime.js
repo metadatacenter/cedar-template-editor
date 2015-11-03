@@ -13,7 +13,7 @@ var RuntimeController = function($rootScope, $scope, FormService, $routeParams, 
   });
 	// Configure mini header
 	HeaderService.configure("RUNTIME", "runtime");
-  $rootScope.applicationRole = 'instanciator';
+  $rootScope.applicationRole = 'instantiator';
 
 
 	// Create empty form object

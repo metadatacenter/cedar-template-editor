@@ -50,7 +50,8 @@ var cedarBox = function ($document, $window, $location, $sce, UrlService) {
       allowRemove: '@',
       allowEdit: '@',
       iconClass: '@',
-      href: '@'
+      href: '@',
+      cssClass: '@'
     },
     link: link
   };
