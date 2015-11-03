@@ -17,7 +17,7 @@ var cedarBox = function ($document, $window, $location, $sce, UrlService) {
           scope.$parent.removePopulatedTemplate(scope.objectId);
         }
       }
-      $event.stopImmediatePropagation();
+      //$event.stopImmediatePropagation();
     }
 
     scope.editObject = function ($event) {
@@ -31,8 +31,7 @@ var cedarBox = function ($document, $window, $location, $sce, UrlService) {
         //console.log("It is link:", scope.href);
         $location.path(scope.href);
       }
-
-      $event.stopImmediatePropagation();
+      //$event.stopImmediatePropagation();
     }
 
     scope.getDescription = function() {
