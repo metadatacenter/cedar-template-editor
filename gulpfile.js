@@ -14,6 +14,7 @@ var gulp               = require('gulp'),
     ngAnnotate         = require('gulp-ng-annotate'),
     historyApiFallback = require('connect-history-api-fallback'),
     Server             = require('karma').Server,
+    protractor         = require('gulp-protractor').protractor,
     Proxy              = require('gulp-connect-proxy');
 
 // Creating error handling exception using gulp-util
@@ -126,3 +127,10 @@ gulp.task('test', function (done) {
   }, done).start();
 });
 
+gulp.task('e2e', function() {
+  return gulp.src(['./tests/e2e/**/*.js'])
+    .pipe(protractor({
+      configFile: "protractor.config.js"
+    }))
+    .on('error', function(e) { throw e });
+});

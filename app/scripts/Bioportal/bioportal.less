@@ -1,0 +1,28 @@
+// Import autocomplete directive CSS
+@import '../scripts/Bioportal/vendor/angucomplete-alt.css';
+
+.tree-view li {
+	background-image:url('../scripts/Bioportal/assets/button-leaf.gif');
+	background-repeat:no-repeat;
+	padding-left:20px;
+	position:relative;
+
+	&:after {
+		content: '';
+		display:block;
+		background-image:url('../scripts/Bioportal/assets/leaf-filler.gif');
+    position: absolute;
+    left: 0px;
+    bottom: 0;
+    height: 100%;
+    width: 30px;
+	}
+
+	&.hasChildren {
+		background-image:url('../scripts/Bioportal/assets/button-expand.gif');
+	}
+
+	&.expanded {
+		background-image:url('../scripts/Bioportal/assets/button-collapse.gif');
+	}
+}

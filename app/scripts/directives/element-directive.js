@@ -98,7 +98,7 @@ var elementDirective = function($rootScope, SpreadsheetService) {
                         }
                       }
                     }
-                  } else {
+                  } else if (k !== '@type') {
                     if (settings[k]) {
                       resetElement(v, settings[k]);
                     }
