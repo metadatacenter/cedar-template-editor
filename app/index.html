@@ -12,6 +12,12 @@
       <base href="/">
       <link href="favicon.ico" rel="icon" type="image/x-icon" />
 
+      <style>
+          html, body {
+              display: none;
+          }
+      </style>
+
       <link rel="stylesheet" ng-href="css/style-{{applicationMode}}.css">
       <link rel="stylesheet" href="bower_components/handsontable/dist/handsontable.full.css">
 
@@ -32,14 +38,16 @@
           <span class="icon-bar"></span>
         </button>
         <p id="page-title" ng-bind="pageTitle"></p>
-        <a class="navbar-brand" href="#/">Cedar</a>
+        <a class="navbar-brand" href="#/dashboard">Cedar</a>
       </div>
       <div id="navbar" class="navbar-collapse collapse">
         <ul class="nav pull-right">
-          <li ng-class="{active: ($location.path() == '/') }"><a href="#/">Dashboard</a></li>
-          <li ng-class="{active: ($location.path() == '/elements/create') }"><a href="#/elements/create">Element Creator</a></li>
-          <li ng-class="{active: ($location.path() == '/templates/create') }"><a href="#/templates/create">Template Creator</a></li>
-          <li ng-class="{active: ($location.path() == '/instances/create') }"><a href="#/instances/create">Runtime</a></li>
+            <li                                                   ng-class="{active: ($root.pageId == 'DASHBOARD') }"><a href="#/dashboard">Dashboard</a></li>
+            <li ng-show="$root.applicationRole == 'creator'"      ng-class="{active: ($root.pageId == 'ELEMENT') }"><a href="#/elements/create">Element Creator</a></li>
+            <li ng-show="$root.applicationRole == 'creator'"      ng-class="{active: ($root.pageId == 'TEMPLATE') }"><a href="#/templates/create">Template Creator</a></li>
+            <li ng-show="$root.applicationRole == 'instantiator'" ng-class="{active: ($root.pageId == 'RUNTIME') }"><a href="#/instances/create">Runtime</a></li>
+            <li                                                   ng-class="{active: ($root.pageId == 'ROLESELECTOR') }"><a href="#/">Role selector</a></li>
+        </ul>
         </ul>
       </div><!--/.navbar-collapse -->
     </div>
@@ -56,16 +64,17 @@
           <span class="icon-bar"></span>
         </button>
         <p id="page-title" ng-bind="pageTitle"></p>
-        <a class="navbar-brand" href="#/">Cedar</a>
+        <a class="navbar-brand" href="#/dashboard">Cedar</a>
         <div class="navbarMiniInfoTitle">
           <p id="page-title-mini">{{dataContainer.currentObjectScope.properties.info.title}}</p>
         </div>
         <div id="navbarmini" class="navbar-collapse collapse">
           <ul class="nav pull-right">
-            <li ng-class="{active: ($location.path() == '/') }"><a href="#/">Dashboard</a></li>
-            <li ng-class="{active: ($location.path() == '/elements/create') }"><a href="#/elements/create">Element Creator</a></li>
-            <li ng-class="{active: ($location.path() == '/templates/create') }"><a href="#/templates/create">Template Creator</a></li>
-            <li ng-class="{active: ($location.path() == '/instances/create') }"><a href="#/instances/create">Runtime</a></li>
+            <li                                                   ng-class="{active: ($root.pageId == 'DASHBOARD') }"><a href="#/dashboard">Dashboard</a></li>
+            <li ng-show="$root.applicationRole == 'creator'"      ng-class="{active: ($root.pageId == 'ELEMENT') }"><a href="#/elements/create">Element Creator</a></li>
+            <li ng-show="$root.applicationRole == 'creator'"      ng-class="{active: ($root.pageId == 'TEMPLATE') }"><a href="#/templates/create">Template Creator</a></li>
+            <li ng-show="$root.applicationRole == 'instantiator'" ng-class="{active: ($root.pageId == 'RUNTIME') }"><a href="#/instances/create">Runtime</a></li>
+            <li                                                   ng-class="{active: ($root.pageId == 'ROLESELECTOR') }"><a href="#/">Role selector</a></li>
           </ul>
         </div><!--/.navbar-collapse -->
       </div>
@@ -95,6 +104,7 @@
   <script src="scripts/rootscope.js"></script>
   <script src="scripts/filters.js"></script>
   <script src="scripts/constants.js"></script>
+  <script src="scripts/controllers/role-selector.js"></script>
   <script src="scripts/controllers/dashboard.js"></script>
   <script src="scripts/controllers/dashboard-list.js"></script>
   <script src="scripts/controllers/create-element.js"></script>
@@ -106,6 +116,7 @@
   <script src="scripts/services/form-service.js"></script>
   <script src="scripts/services/header-service.js"></script>
   <script src="scripts/services/spreadsheet-service.js"></script>
+  <script src="scripts/services/url-service.js"></script>
   <script src="scripts/directives/form-directive.js"></script>
   <script src="scripts/directives/form-preview.js"></script>
   <script src="scripts/directives/element-directive.js"></script>
@@ -118,6 +129,7 @@
   <script src="scripts/directives/angular-validator.js"></script>
   <script src="scripts/directives/sticky-directive.js"></script>
   <script src="scripts/directives/cedar-scrollable.js"></script>
+  <script src="scripts/directives/cedar-box.js"></script>
   <!-- endbuild -->
 
   <script src="cedar/scripts/handsontable/MultiCheckboxEditor.js"></script>

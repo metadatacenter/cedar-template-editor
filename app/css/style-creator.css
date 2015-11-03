@@ -9199,6 +9199,12 @@ button.close {
 .cedar-svg-collapse:before {
   content: "B";
 }
+.cedar-svg-edit:before {
+  content: "D";
+}
+.cedar-svg-puzzle:before {
+  content: "C";
+}
 #navbarMini {
   display: none;
   border: 0px solid red;
@@ -9285,6 +9291,27 @@ div.htCedarCheckboxes {
 div.htCedarCheckboxContainer {
   border: 1px solid #888888;
   background-color: #fafafa;
+}
+.nav li.active {
+  font-weight: bold;
+}
+html,
+body {
+  display: block;
+}
+.roleSelectorCreator.cedar-svg,
+.roleSelectorCreator.name {
+  color: #5795ba !important;
+}
+.roleSelectorCreator.back-panel {
+  background-color: #5795ba !important;
+}
+.roleSelectorInstantiator.cedar-svg,
+.roleSelectorInstantiator.name {
+  color: #71a69c !important;
+}
+.roleSelectorInstantiator.back-panel {
+  background-color: #71a69c !important;
 }
 .activ-grotesk-regular {
   font-family: 'aktiv-grotesk-std';

@@ -1,6 +1,6 @@
 /*jslint node: true */
 /*global angular */
-angularApp.run(['$rootScope', function($rootScope) {
+var angularRun = function($rootScope) {
 
   // Define global pageTitle variable for use
   //$rootScope.pageTitle;
@@ -18,6 +18,8 @@ angularApp.run(['$rootScope', function($rootScope) {
   $rootScope.isArray = angular.isArray;
 
   $rootScope.applicationMode = 'default';
+  $rootScope.applicationRole = 'instantiator';
+  $rootScope.pageId = null;
 
   // Global utility functions
 
@@ -250,4 +252,7 @@ angularApp.run(['$rootScope', function($rootScope) {
 
   $rootScope.minCardinalities = minCardinalities;
   $rootScope.maxCardinalities = maxCardinalities;
-}]);
+};
+
+angularRun.$inject = ['$rootScope'];
+angularApp.run(angularRun);

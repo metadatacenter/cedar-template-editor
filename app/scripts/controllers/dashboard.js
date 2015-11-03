@@ -1,6 +1,6 @@
 'use strict';
 
-var DashboardController = function ($rootScope, $scope, FormService, HeaderService) {
+var DashboardController = function ($rootScope, $scope, $routeParams, FormService, HeaderService) {
 
   // set Page Title variable when this controller is active
   $rootScope.pageTitle = 'Dashboard';
@@ -9,8 +9,6 @@ var DashboardController = function ($rootScope, $scope, FormService, HeaderServi
   $scope.elementDefaults = [];
   $scope.templateDefaults = [];
   $scope.submissionDefaults = [];
-  // Configure mini header
-  HeaderService.configure("DASHBOARD", "default");
 
   // Define function to make async request to location of json objects and assign proper
   // scope array with returned list of data
@@ -27,6 +25,25 @@ var DashboardController = function ($rootScope, $scope, FormService, HeaderServi
   // Call getDefaults with parameters
   $scope.getDefaults('formList', 'templateDefaults');
   $scope.getDefaults('elementList', 'elementDefaults');
+
+  var currentRole = $rootScope.applicationRole;
+  var currentApplicationMode = $rootScope.applicationMode;
+  if ($routeParams.role) {
+    if ($routeParams.role == 'as-creator') {
+      currentRole = 'creator';
+      currentApplicationMode ='creator';
+    } else if ($routeParams.role == 'as-instantiator') {
+      currentRole = 'instantiator';
+      currentApplicationMode = 'runtime';
+    }
+  }
+
+  // Configure mini header
+  HeaderService.configure("DASHBOARD", currentApplicationMode);
+  $rootScope.applicationRole = currentRole;
+
+  //console.log("Using mode:" + currentApplicationMode);
+  //console.log("Using role:" + currentRole);
 
   // Submissions have a bit different requirements so they get their own function
   $scope.getSubmissions = function() {
@@ -67,5 +84,5 @@ var DashboardController = function ($rootScope, $scope, FormService, HeaderServi
   }
 };
 
-DashboardController.$inject = ["$rootScope", "$scope", "FormService", "HeaderService"];
+DashboardController.$inject = ["$rootScope", "$scope", "$routeParams", "FormService", "HeaderService"];
 angularApp.controller('DashboardController', DashboardController);

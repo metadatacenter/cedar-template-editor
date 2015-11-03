@@ -13,6 +13,7 @@ var CreateElementController = function($rootScope, $scope, $routeParams, $timeou
   $scope.formPreview = false;
   // Configure mini header
   HeaderService.configure("ELEMENT", "creator");
+  $rootScope.applicationRole = 'creator';
 
   // Using form service to load list of existing elements to embed into new element
   FormService.elementList().then(function(response) {
