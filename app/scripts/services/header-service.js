@@ -15,6 +15,7 @@ var HeaderService = function ($rootScope, HEADER_MINI) {
       this.miniHeaderEnabled = HEADER_MINI[pageId].enabled;
       this.miniHeaderScrollLimit = HEADER_MINI[pageId].scrollLimit;
       $rootScope.applicationMode = applicationMode;
+      $rootScope.pageId = pageId;
     },
 
     isEnabled: function() {

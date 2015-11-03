@@ -1,6 +1,6 @@
 <div class="container">
 	<div class="row">
-		<section id="metadata-templates" class="dashboard-elements">
+		<section id="metadata-templates" class="dashboard-elements" ng-show="$root.applicationRole == 'creator'">
 			<div class="col-sm-3">
 				<h2 class="section-title">Metadata Templates</h2>
 				<a href="#/templates/create" class="btn btn-create-new">Create New <i class="cedar-svg-plus"></i></a>
@@ -10,34 +10,20 @@
 					<a class="see-all" href="#/templates/list">See All</a>
 				</div>
 				<div class="margin-reset-row">
-					<div class="template-item" ng-repeat="template in templateDefaults" resize-height>
-						<a ng-href="#/templates/edit/{{template['@id']}}">
-							<i class="cedar-svg cedar-svg-metadata"></i>
-							<p class="name">{{template.properties.info.title}}</p>
-							<div class="state-indication" ng-if="template.favorite">
-								<i class="cedar-svg-flag"></i>
-							</div>
-							<div class="back-panel">
-								<p class="description">{{template.properties.info.description}}</p>
-								<div class="edit-options">
-									<a ng-href="#/templates/edit/{{template['@id']}}">
-										<span class="edit">
-											<i class="cedar-svg-pencil"></i>
-										</span>
-									</a>
-									<a ng-click="removeTemplate(template['@id'])">
-										<span class="remove">
-											<i class="cedar-svg-remove"></i>
-										</span>
-									</a>
-								</div>
-							</div><!-- ./back-panel -->
-						</a>
+					<div class="template-item" ng-repeat="template in templateDefaults" resize-height style="height:213px">
+                        <cedar-box
+                                type="template"
+                                description="{{template.properties.info.description}}"
+                                title="{{template.properties.info.title}}"
+                                object-id="{{template['@id']}}"
+                                allow-remove="true"
+                                >
+                        </cedar-box>
 					</div> <!-- /.template-item -->
 				</div> <!-- /.margin-reset-row -->
 			</div> <!-- /.col-sm-9 -->
 		</section>
-		<section id="template-elements" class="dashboard-elements">
+		<section id="template-elements" class="dashboard-elements" ng-show="$root.applicationRole == 'creator'">
 			<div class="col-sm-3">
 				<h2 class="section-title">Template Elements</h2>
 				<a href="#/elements/create" class="btn btn-create-new">Create New <i class="cedar-svg-plus"></i></a>
@@ -47,34 +33,20 @@
 					<a class="see-all" href="#/elements/list">See All</a>
 				</div>
 				<div class="margin-reset-row">
-					<div class="template-item" ng-repeat="element in elementDefaults"resize-height>
-						<a ng-href="#/elements/edit/{{element['@id']}}">
-							<i class="cedar-svg cedar-svg-element"></i>
-							<p class="name">{{element.properties.info.title}}</p>
-							<div class="state-indication" ng-if="element.favorite">
-								<i class="cedar-svg-flag"></i>
-							</div>
-							<div class="back-panel">
-								<p class="description">{{element.properties.info.description}}</p>
-								<div class="edit-options">
-									<a ng-href="#/elements/edit/{{element['@id']}}">
-										<span class="edit">
-											<i class="cedar-svg-pencil"></i>
-										</span>
-									</a>
-									<a ng-click="removeElement(element['@id'])">
-										<span class="remove">
-											<i class="cedar-svg-remove"></i>
-										</span>
-									</a>
-								</div>
-							</div><!-- ./back-panel -->
-						</a>
+					<div class="template-item" ng-repeat="element in elementDefaults"resize-height style="height:213px">
+                        <cedar-box
+                                type="element"
+                                description="{{element.properties.info.description}}"
+                                title="{{element.properties.info.title}}"
+                                object-id="{{element['@id']}}"
+                                allow-remove="true"
+                                >
+                        </cedar-box>
 					</div> <!-- /.template-item -->
 				</div> <!-- /.margin-reset-row -->
 			</div> <!-- /.col-sm-9 -->
 		</section>
-		<section id="data-submission" class="dashboard-elements">
+		<section id="data-submission" class="dashboard-elements" ng-show="$root.applicationRole == 'instanciator'">
 			<div class="col-sm-3">
 				<h2 class="section-title">POPULATED TEMPLATES</h2>
 				<!-- <p class="instructions">Choose a template to fill out.</p> -->
@@ -85,30 +57,15 @@
 					<a class="see-all" href="#/submissions/list">See All</a>
 				</div>
 				<div class="margin-reset-row">
-					<div class="template-item" ng-repeat="submission in submissionDefaults" resize-height>
-						<a ng-href="#/instances/edit/{{submission['@id']}}">
-							<i class="cedar-svg cedar-svg-submission"></i>
-							<p class="name">{{submission.info.template_title}}</p>
-							<div class="state-indication">
-								<i class="cedar-svg-progress"></i>
-							</div>
-							<div class="back-panel">
-								<!--<p class="description">{{submission['@id']}}</p>-->
-								<p class="description">{{submission.info.template_description}}<br />{{'(' + (submission.info.creation_date | date:'short') + ')'}}</p>
-								<div class="edit-options">
-									<a ng-href="#/instances/edit/{{submission['@id']}}">
-										<span class="edit">
-											<i class="cedar-svg-pencil"></i>
-										</span>
-									</a>
-									<a ng-click="removePopulatedTemplate(submission['@id'])">
-										<span class="remove">
-											<i class="cedar-svg-remove"></i>
-										</span>
-									</a>
-								</div>
-							</div><!-- ./back-panel -->
-						</a>
+					<div class="template-item" ng-repeat="submission in submissionDefaults" resize-height style="height:213px">
+                        <cedar-box
+                                type="instance"
+                                description="{{submission.info.template_description}}&lt;br/&gt;{{'(' + (submission.info.creation_date | date:'short') + ')'}}"
+                                title="{{submission.info.template_title}}"
+                                object-id="{{submission['@id']}}"
+                                allow-remove="true"
+                                >
+                        </cedar-box>
 					</div> <!-- /.template-item -->
 				</div> <!-- /.margin-reset-row -->
 			</div> <!-- /.col-sm-9 -->

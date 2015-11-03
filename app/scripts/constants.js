@@ -1,5 +1,8 @@
 angularApp.constant('HEADER_MINI', {
   "stickyThreshold": 0,
+  "ROLESELECTOR": {
+    "enabled": false
+  },
   "DASHBOARD": {
     "enabled": false
   },

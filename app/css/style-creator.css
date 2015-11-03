@@ -9199,6 +9199,12 @@ button.close {
 .cedar-svg-collapse:before {
   content: "B";
 }
+.cedar-svg-edit:before {
+  content: "C";
+}
+.cedar-svg-puzzle:before {
+  content: "D";
+}
 #navbarMini {
   display: none;
   border: 0px solid red;
@@ -9285,6 +9291,13 @@ div.htCedarCheckboxes {
 div.htCedarCheckboxContainer {
   border: 1px solid #888888;
   background-color: #fafafa;
+}
+.nav li.active {
+  font-weight: bold;
+}
+html,
+body {
+  display: block;
 }
 .activ-grotesk-regular {
   font-family: 'aktiv-grotesk-std';
