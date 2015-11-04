@@ -29,7 +29,7 @@ angularApp.directive('selectPicker', function ($timeout) {
           }
         }
         $scope.model = $scope.model || {};
-        $scope.model['value'] = default_array;
+        $scope.model['_value'] = default_array;
       }
 
       $timeout(function() {

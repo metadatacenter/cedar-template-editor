@@ -20,7 +20,7 @@ angularApp.directive('elementDirective', function ($rootScope) {
           }
 
           if (!$rootScope.ignoreKey(key)) {
-            if (key == "value") {
+            if (key == "_value") {
               if (angular.isArray(model)) {
                 if (settings.properties.info.input_type == "list") {
                   if (settings.properties.info.default_option) {
@@ -31,14 +31,14 @@ angularApp.directive('elementDirective', function ($rootScope) {
                 } else {
                   for (var i = 0; i < model.length; i++) {
                     if (settings.properties.info.default_option) {
-                      model[i]["value"] = angular.copy(settings.properties.info.default_option);
+                      model[i]["_value"] = angular.copy(settings.properties.info.default_option);
                     } else {
-                      if (typeof(model[i]["value"]) == "string") {
-                        model[i]["value"] = "";
-                      } else if (angular.isArray(model[i]["value"])) {
-                        model[i]["value"] = [];
-                      } else if (angular.isObject(model[i]["value"])) {
-                        model[i]["value"] = {};
+                      if (typeof(model[i]["_value"]) == "string") {
+                        model[i]["_value"] = "";
+                      } else if (angular.isArray(model[i]["_value"])) {
+                        model[i]["_value"] = [];
+                      } else if (angular.isObject(model[i]["_value"])) {
+                        model[i]["_value"] = {};
                       }
                     }
                   }
@@ -62,7 +62,7 @@ angularApp.directive('elementDirective', function ($rootScope) {
               } else {
                 // This case el is an array
                 angular.forEach(model, function(v, k) {
-                  if (k == "value") {
+                  if (k == "_value") {
                     if (angular.isArray(v)) {
                       if (settings.properties.info.input_type == "list") {
                         if (settings.properties.info.default_option) {
@@ -73,14 +73,14 @@ angularApp.directive('elementDirective', function ($rootScope) {
                       } else {
                         for (var i = 0; i < v.length; i++) {
                           if (settings.properties.info.default_option) {
-                            v[i]["value"] = angular.copy(settings.properties.info.default_option);
+                            v[i]["_value"] = angular.copy(settings.properties.info.default_option);
                           } else {
-                            if (typeof(v[i]["value"]) == "string") {
-                              v[i]["value"] = "";
-                            } else if (angular.isArray(v[i]["value"])) {
-                              v[i]["value"] = [];
-                            } else if (angular.isObject(v[i]["value"])) {
-                              v[i]["value"] = {};
+                            if (typeof(v[i]["_value"]) == "string") {
+                              v[i]["_value"] = "";
+                            } else if (angular.isArray(v[i]["_value"])) {
+                              v[i]["_value"] = [];
+                            } else if (angular.isObject(v[i]["_value"])) {
+                              v[i]["_value"] = {};
                             }
                           }
                         }

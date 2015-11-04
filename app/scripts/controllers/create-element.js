@@ -42,11 +42,11 @@ var CreateElementController = function($rootScope, $scope, $routeParams, $timeou
       "properties": {
         "@context": {
           "properties": {
-            "value": {
+            "_value": {
               "enum": ["https://schema.org/value"]
             },
           },
-          "required": ["value"],
+          "required": ["_value"],
           "additionalProperties": false
         },
         "@type": {

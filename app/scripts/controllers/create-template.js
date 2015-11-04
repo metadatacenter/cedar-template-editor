@@ -40,11 +40,11 @@ var CreateTemplateController = function($rootScope, $scope, $q, $routeParams, $t
       "properties": {
         "@context": {
           "properties": {
-            "value": {
+            "_value": {
               "enum": ["https://schema.org/value"]
             },
           },
-          "required": ["value"],
+          "required": ["_value"],
           "additionalProperties": false
         },
         "@id": {

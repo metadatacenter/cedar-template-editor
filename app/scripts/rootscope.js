@@ -117,12 +117,12 @@ angularApp.run(['$rootScope', function($rootScope) {
           "required_value": false,
           "created_at": Date.now()
         },
-        "value": {
+        "_value": {
           "type": valueType,
         }
       },
       "required": [
-        "value"
+        "_value"
       ],
       "additionalProperties": false
     };
