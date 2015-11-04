@@ -9266,12 +9266,6 @@ button.close {
 .spreadsheetSwitch.element {
   margin-bottom: -15px;
 }
-.spreadsheetSwitch.element.spreadsheet {
-  display: none;
-}
-.spreadsheetSwitch.element.spreadsheet.visible {
-  display: block;
-}
 .spreadsheetViewContainer {
   display: none;
 }
@@ -9279,12 +9273,13 @@ button.close {
   display: block;
   margin-bottom: 20px;
 }
-.cedarRealContent.hidden {
-  display: none;
+/*.cedarRealContent.hidden {
+  display:none;
 }
+
 .cedarRealContent.visible {
-  display: block;
-}
+  display:block;
+}*/
 div.htCedarCheckboxes {
   border: 0px solid red;
 }
@@ -9312,6 +9307,17 @@ body {
 }
 .roleSelectorInstantiator.back-panel {
   background-color: #71a69c !important;
+}
+.visibilitySwitch {
+  position: relative;
+  left: -27px;
+  background-color: #f4f4f7;
+  border: 1px solid #ddd;
+}
+.visibilitySwitch i {
+  position: relative;
+  color: #999999;
+  top: -2px;
 }
 .activ-grotesk-regular {
   font-family: 'aktiv-grotesk-std';
@@ -9641,7 +9647,7 @@ i {
 .template-body .right-body .element-group {
   width: 100%;
   border: 1px solid #ddd;
-  padding: 14px 14px 12px 16px;
+  padding: 0px 14px 12px 16px;
   margin-bottom: 16px;
   background-color: #f4f4f7;
 }
@@ -9661,7 +9667,7 @@ i {
   margin-bottom: 0;
 }
 .template-body .right-body .element-group .element-name-label {
-  margin-bottom: 25px;
+  margin-bottom: 10px;
   text-align: left;
   display: inline-block;
 }
@@ -9671,7 +9677,7 @@ i {
 }
 .template-body .right-body .element-group .nested-element {
   border: 1px solid #ddd;
-  padding: 0px 14px 0px 14px;
+  padding: 0px 16px 0px 16px;
   margin-bottom: 16px;
 }
 @media (min-width: 768px) {
@@ -11379,7 +11385,7 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
 }
 .element-toggles {
   text-align: center;
-  margin: 10px 0;
+  margin: 0 0 10px 0;
 }
 .element-toggles .element-toggle {
   display: inline-block;

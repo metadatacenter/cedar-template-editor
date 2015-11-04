@@ -136,13 +136,15 @@ var elementDirective = function($rootScope, SpreadsheetService) {
       }
 
       scope.switchToSpreadsheet = function () {
+        console.log("TOGGLE");
+        console.log(scope.model.parent);
         SpreadsheetService.switchToSpreadsheetElement(scope, element);
       }
 
       scope.switchExpandedState = function () {
-        var originalContent = angular.element('.elements', element);
-        originalContent.toggle();
+        angular.element('.elementTotalContent', element).toggle();
         angular.element(".visibilitySwitch", element).toggle();
+        angular.element(".spreadsheetSwitchLink", element).toggle();
       }
     }
   };
