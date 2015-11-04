@@ -2,14 +2,22 @@
 /*global angular */
 'use strict';
 
-var angularApp = angular.module('angularJsCedarApplication', ['ui.bootstrap', 'ngRoute', 'ngAnimate', 'cedarFilters']);
+var angularApp = angular.module('angularJsCedarApplication', ['ui.bootstrap', 'ngRoute', 'ngAnimate', 'cedarFilters', 'bioPortal']);
 
 angularApp.config(function ($routeProvider, $locationProvider) {
 
     $routeProvider
         .when('/', {
-            templateUrl: 'views/dashboard.html',
-            controller: 'DashboardController'
+            templateUrl: 'views/role-selector.html',
+            controller: 'RoleSelectorController'
+        })
+        .when('/dashboard', {
+          templateUrl: 'views/dashboard.html',
+          controller: 'DashboardController'
+        })
+        .when('/dashboard/:role*', {
+          templateUrl: 'views/dashboard.html',
+          controller: 'DashboardController'
         })
         .when('/:type/list', {
             templateUrl: 'views/dashboard-list.html',

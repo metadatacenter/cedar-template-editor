@@ -1,6 +1,6 @@
 /*jslint node: true */
 /*global angular */
-angularApp.run(['$rootScope', function($rootScope) {
+var angularRun = function($rootScope) {
 
   // Define global pageTitle variable for use
   //$rootScope.pageTitle;
@@ -16,6 +16,10 @@ angularApp.run(['$rootScope', function($rootScope) {
   $rootScope.defaultPropertiesBase = $rootScope.schemasBase;
 
   $rootScope.isArray = angular.isArray;
+
+  $rootScope.applicationMode = 'default';
+  $rootScope.applicationRole = 'instantiator';
+  $rootScope.pageId = null;
 
   // Global utility functions
 
@@ -36,7 +40,7 @@ angularApp.run(['$rootScope', function($rootScope) {
     //  .replace(/'|"|(|)/g, '')
     //  .replace(/ +/g, "_")
     //  .toLowerCase();
-  }
+  };
 
   // Capitalize first letter
   $rootScope.capitalizeFirst = function(string) {
@@ -248,4 +252,7 @@ angularApp.run(['$rootScope', function($rootScope) {
 
   $rootScope.minCardinalities = minCardinalities;
   $rootScope.maxCardinalities = maxCardinalities;
-}]);
+};
+
+angularRun.$inject = ['$rootScope'];
+angularApp.run(angularRun);

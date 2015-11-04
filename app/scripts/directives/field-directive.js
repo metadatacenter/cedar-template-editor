@@ -1,8 +1,18 @@
 'use strict';
 
-angularApp.directive('fieldDirective', function($rootScope, $http, $compile, $document) {
-
+var fieldDirective = function($rootScope, $http, $compile, $document, SpreadsheetService) {
   var linker = function($scope, $element, attrs) {
+
+    $scope.setValueType = function() {
+      var typeEnum = $scope.field.properties['@type'].oneOf[0].enum;
+      if (angular.isDefined(typeEnum) && angular.isArray(typeEnum)) {
+        if (typeEnum.length == 1) {
+          $scope.model['@type'] = $scope.field.properties['@type'].oneOf[0].enum[0];
+        } else {
+          $scope.model['@type'] = $scope.field.properties['@type'].oneOf[0].enum;
+        }
+      }
+    }
 
     // When form submit event is fired, check field for simple validation
     $scope.$on('submitForm', function (event) {
@@ -140,6 +150,7 @@ angularApp.directive('fieldDirective', function($rootScope, $http, $compile, $do
                   }
                 }
               }
+              $scope.setValueType();
             });
           }
         } else {
@@ -158,11 +169,12 @@ angularApp.directive('fieldDirective', function($rootScope, $http, $compile, $do
             }
           }
         }
+        $scope.setValueType();
       }
     }
 
     $scope.uuid = $rootScope.generateGUID();
-
+    
     // Retrive appropriate field template file
     $scope.getTemplateUrl = function() {
       var input_type = 'element';
@@ -198,10 +210,15 @@ angularApp.directive('fieldDirective', function($rootScope, $http, $compile, $do
         $scope.model.splice(index, 1);
       }
     }
+
+    $scope.switchToSpreadsheet = function () {
+      SpreadsheetService.switchToSpreadsheetField($scope, $element);
+    }
+
   }
 
   return {
-    template : '<div ng-include="getTemplateUrl()"></div>',
+    templateUrl: './views/directive-templates/field-directive.html',
     restrict: 'EA',
     scope: {
       directory: '@',
@@ -212,7 +229,24 @@ angularApp.directive('fieldDirective', function($rootScope, $http, $compile, $do
       add: '&',
       option: '&'
     },
+    controller: function($scope) {
+
+      var addPopover = function($scope) {
+        //Initializing Bootstrap Popover fn for each item loaded
+        setTimeout(function() {
+          angular.element('#field-value-tooltip').popover();
+        }, 1000);
+      };
+
+      addPopover($scope);
+
+    },
     replace: true,
     link: linker
   };
-});
+
+};
+
+fieldDirective.$inject = ["$rootScope", "$http", "$compile", "$document", "SpreadsheetService"];
+angularApp.directive('fieldDirective', fieldDirective);
+

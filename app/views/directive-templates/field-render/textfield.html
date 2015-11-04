@@ -1,13 +1,13 @@
 <div class="fields text-fields">
   <div ng-if="$root.isArray(model)" class="form-group floating-label-wrapper" ng-repeat="value_element in model">
-    <input 	type="text"
-    				class="form-control"
-    				ng-class="{'required': field.properties.info.required_value}"
-    				id="textfield1"
-    				placeholder="{{field.properties.info.title}}"
-    				aria-label="{{field.properties.info.description}}"
-    				ng-model="value_element._value"
-    				with-floating-label>
+    <input type="text"
+    	   class="form-control"
+    	   ng-class="{'required': field.properties.info.required_value}"
+    	   id="textfield1"
+    	   placeholder="{{field.properties.info.title}}"
+    	   aria-label="{{field.properties.info.description}}"
+    	   ng-model="value_element._value"
+    	   with-floating-label />
     <div class="input-indicator-icons">
       <i class="cedar-svg-help-circle" data-container="body" data-toggle="popover" data-placement="left" data-content="{{field.properties.info.description}}"></i>
       <i class="cedar-svg-check-circle"></i>
@@ -15,16 +15,16 @@
     </div><!-- /.input-indicator-icons -->
     <div class="more-input-wrapper" ng-include="'views/partials/more-input-buttons.html'" ng-show="!field.maxItems || field.maxItems > 1"></div>
   </div><!-- /.form-group -->
-
+  
   <div ng-if="!$root.isArray(model)" class="form-group floating-label-wrapper">
-    <input  type="text"
-            class="form-control"
-            ng-class="{'required': field.properties.info.required_value}"
-            id="textfield1"
-            placeholder="{{field.properties.info.title}}"
-            aria-label="{{field.properties.info.description}}"
-            ng-model="model._value"
-            with-floating-label>
+    <input type="text"
+           class="form-control"
+           ng-class="{'required': field.properties.info.required_value}"
+           id="textfield1"
+           placeholder="{{field.properties.info.title}}"
+           aria-label="{{field.properties.info.description}}"
+           ng-model="model._value"
+           with-floating-label />
     <div class="input-indicator-icons">
       <i class="cedar-svg-help-circle" data-container="body" data-toggle="popover" data-placement="left" data-content="{{field.properties.info.description}}"></i>
       <i class="cedar-svg-check-circle"></i>

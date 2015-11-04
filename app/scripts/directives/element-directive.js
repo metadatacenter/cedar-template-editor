@@ -1,6 +1,6 @@
 'use strict';
 
-angularApp.directive('elementDirective', function ($rootScope) {
+var elementDirective = function($rootScope, SpreadsheetService) {
   return {
     templateUrl: './views/directive-templates/element-directive.html',
     restrict: 'EA',
@@ -12,7 +12,7 @@ angularApp.directive('elementDirective', function ($rootScope) {
       model: '=',
       nestedElement: "="
     },
-    link: function(scope) {
+    link: function(scope, element, attrs) {
       var resetElement = function(el, settings) {
         angular.forEach(el, function(model, key) {
           if (settings[key] && settings[key].minItems && angular.isArray(model)) {
@@ -98,7 +98,7 @@ angularApp.directive('elementDirective', function ($rootScope) {
                         }
                       }
                     }
-                  } else {
+                  } else if (k !== '@type') {
                     if (settings[k]) {
                       resetElement(v, settings[k]);
                     }
@@ -134,6 +134,19 @@ angularApp.directive('elementDirective', function ($rootScope) {
           }
         }
       }
+
+      scope.switchToSpreadsheet = function () {
+        SpreadsheetService.switchToSpreadsheetElement(scope, element);
+      }
+
+      scope.switchExpandedState = function () {
+        var originalContent = angular.element('.elements', element);
+        originalContent.toggle();
+        angular.element(".visibilitySwitch", element).toggle();
+      }
     }
   };
-});
+};
+
+elementDirective.$inject = ["$rootScope", "SpreadsheetService"];
+angularApp.directive('elementDirective', elementDirective);
