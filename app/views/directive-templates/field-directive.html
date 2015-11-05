@@ -7,10 +7,13 @@
                 <i class="cedar-svg-spreadsheet"></i>
             </a>
         </p>
-        <div class="spreadsheetViewContainer"></div>
     </div>
 
-    <div class="cedarRealContent">
-        <div ng-include="getTemplateUrl()"></div>
+    <div class="elementTotalContent visible">
+
+        <div ng-show="$root.isArray(model)">
+            <div class="spreadsheetViewContainer"></div>
+        </div>
+        <div class="originalContent" ng-include="getTemplateUrl()"></div>
     </div>
 </div>

@@ -1,6 +1,6 @@
 'use strict';
 
-var SpreadsheetService = function () {
+var SpreadsheetService = function ($filter) {
   return {
 
     validators: {
@@ -20,6 +20,13 @@ var SpreadsheetService = function () {
         }
         var escaped = Handsontable.helper.stringify(s);
         td.innerHTML = escaped;
+        return td;
+      },
+      deepObject: function (instance, td, row, col, prop, value, cellProperties) {
+        var s = value + '<i class="cedar-svg-element"></i>';
+        var escaped = Handsontable.helper.stringify(s);
+        td.innerHTML = escaped;
+        td.className = 'htDimmed';
         return td;
       }
     },
@@ -93,7 +100,7 @@ var SpreadsheetService = function () {
       return list;
     },
 
-    getColumnDescriptors: function (context, scopeElement, columnHeaderOrder) {
+    getColumnDescriptors: function (context, scopeElement, columnHeaderOrder, originalScope) {
       var colDescriptors = [];
 
       for (var i in columnHeaderOrder) {
@@ -143,8 +150,9 @@ var SpreadsheetService = function () {
           }
         } else {
           desc.cedarType = 'deepObject';
-          desc.cedarLabel = "Object: " + name;
+          desc.cedarLabel = $filter('keyToTitle')(name);
           desc.readOnly = true;
+          desc.renderer = this.customRenderer.deepObject;
         }
 
         colDescriptors.push(desc);
@@ -226,8 +234,8 @@ var SpreadsheetService = function () {
       jQuery(context.getOriginalContentContainer()).toggleClass("visible", ov);
       jQuery(context.getOriginalContentContainer()).toggleClass("hidden", !ov);
       jQuery(context.getSpreadsheetContainer()).toggleClass("visible", !ov);
-      var elementDirective = jQuery(context.getSpreadsheetContainer()).parent().parent();
-      jQuery(".spreadsheetSwitch.element.spreadsheet", elementDirective).toggleClass("visible", !ov);
+      //var elementDirective = jQuery(context.getSpreadsheetContainer()).parent().parent();
+      //jQuery(".spreadsheetSwitch.element.spreadsheet", elementDirective).toggleClass("visible", !ov);
 
     },
 
@@ -261,10 +269,9 @@ var SpreadsheetService = function () {
 
       // column names
       var columnHeaderOrder = this.getColumnHeaderOrder(context, scopeElement);
-      hotConfig.colHeaders = columnHeaderOrder;
 
       // column descriptors (type, constraint, ...)
-      var columnDescriptors = this.getColumnDescriptors(context, scopeElement, columnHeaderOrder);
+      var columnDescriptors = this.getColumnDescriptors(context, scopeElement, columnHeaderOrder, $scope);
       hotConfig.columns = columnDescriptors;
 
       // min and max rows
@@ -284,13 +291,19 @@ var SpreadsheetService = function () {
       hotConfig.stretchH = 'all';
       hotConfig.trimWhitespace = false;
 
+      var colHeaders = [];
+      for(var i in columnHeaderOrder){
+        colHeaders.push($filter('keyToTitle')(columnHeaderOrder[i]));
+      }
+      hotConfig.colHeaders = colHeaders;
+
       //console.log(hotConfig);
 
       // DOM element that contains the part to be replaced with HOT
       var container = angular.element('.spreadsheetViewContainer', context.getPlaceholderContext())[0];
       context.setSpreadsheetContainer(container);
 
-      context.setOriginalContentContainer(angular.element('.cedarRealContent', context.getPlaceholderContext())[0]);
+      context.setOriginalContentContainer(angular.element('.originalContent', context.getPlaceholderContext())[0]);
       context.switchVisibility();
       this.applyVisibility($scope);
 
@@ -316,5 +329,5 @@ var SpreadsheetService = function () {
   };
 };
 
-SpreadsheetService.$inject = [];
+SpreadsheetService.$inject = ['$filter'];
 angularApp.service('SpreadsheetService', SpreadsheetService);

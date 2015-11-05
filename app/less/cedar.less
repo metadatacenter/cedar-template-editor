@@ -77,14 +77,6 @@
   margin-bottom: -15px;
 }
 
-.spreadsheetSwitch.element.spreadsheet {
-  display:none;
-}
-
-.spreadsheetSwitch.element.spreadsheet.visible {
-  display:block;
-}
-
 .spreadsheetViewContainer {
   display:none;
 }
@@ -94,13 +86,13 @@
   margin-bottom:20px;
 }
 
-.cedarRealContent.hidden {
+/*.cedarRealContent.hidden {
   display:none;
 }
 
 .cedarRealContent.visible {
   display:block;
-}
+}*/
 
 div.htCedarCheckboxes {
   border: 0px solid red;
@@ -136,5 +128,17 @@ html, body {
 
   &.back-panel {
     background-color:#71a69c !important;
+  }
+}
+
+.visibilitySwitch {
+  position:relative;;
+  left:-27px;
+  background-color:@gray2;
+  border:1px solid #ddd;
+  i {
+    position:relative;;
+    color:@gray;
+    top:-2px;
   }
 }
