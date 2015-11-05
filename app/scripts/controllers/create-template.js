@@ -2,7 +2,7 @@
 
 var CreateTemplateController = function($rootScope, $scope, $q, $routeParams, $timeout, FormService, HeaderService, HEADER_MINI) {
   // Set Page Title variable when this controller is active
-  $rootScope.pageTitle = 'Template Creator';
+  $rootScope.pageTitle = 'Template Designer';
   // Create staging area to create/edit fields before they get added to $scope.form.properties
   $scope.staging = {};
   // Setting default false flag for $scope.favorite

@@ -2,7 +2,7 @@
 
 var CreateElementController = function($rootScope, $scope, $routeParams, $timeout, FormService, HeaderService, HEADER_MINI) {
   // Set page title variable when this controller is active
-  $rootScope.pageTitle = 'Element Creator';
+  $rootScope.pageTitle = 'Element Designer';
   // Create staging area to create/edit fields before they get added to the element
   $scope.staging = {};
   // Setting default false flag for $scope.favorite

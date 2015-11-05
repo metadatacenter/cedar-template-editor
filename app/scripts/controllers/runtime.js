@@ -2,7 +2,7 @@
 
 var RuntimeController = function($rootScope, $scope, FormService, $routeParams, $location, HeaderService, HEADER_MINI) {
 	// set Page Title variable when this controller is active
-	$rootScope.pageTitle = 'Runtime Template';
+	$rootScope.pageTitle = 'Metadata Editor';
 
 	// Giving $scope access to window.location for checking active state
 	$scope.$location = $location;
