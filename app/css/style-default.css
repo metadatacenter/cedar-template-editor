@@ -9270,7 +9270,7 @@ button.close {
   display: none;
   overflow: auto;
   width: 650px;
-  height: 100px;
+  height: 130px;
 }
 .spreadsheetViewContainer.visible {
   display: block;
@@ -9604,8 +9604,8 @@ i {
 }
 .template-body .right-body .preview-edit-options .remove,
 .template-body .right-body .preview-edit-options .edit {
-  height: 40px;
-  width: 40px;
+  height: 25px;
+  width: 25px;
   border-radius: 50%;
   display: inline-block;
   vertical-align: middle;
@@ -9618,7 +9618,8 @@ i {
 .template-body .right-body .preview-edit-options .remove i,
 .template-body .right-body .preview-edit-options .edit i {
   color: #ffffff;
-  font-size: 18px;
+  font-size: 14px;
+  line-height: 25px;
 }
 .template-body .right-body .preview-edit-options .edit {
   display: none;
@@ -9639,9 +9640,9 @@ i {
   background-color: #000000;
 }
 .template-body .right-body .preview-edit-options .remove i {
-  -webkit-transform: translate(13px, 11px);
-      -ms-transform: translate(13px, 11px);
-          transform: translate(13px, 11px);
+  -webkit-transform: translate(7px, 0px);
+      -ms-transform: translate(7px, 0px);
+          transform: translate(7px, 0px);
 }
 .template-body .right-body .element-group {
   width: 100%;
@@ -10636,8 +10637,8 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
 .input-type-container .configuration-options .toggle-options .save-options .add,
 .input-type-container .configuration-options .toggle-options .save-options .remove,
 .input-type-container .configuration-options .toggle-options .save-options .edit {
-  height: 40px;
-  width: 40px;
+  height: 25px;
+  width: 25px;
   border-radius: 50%;
   display: inline-block;
   vertical-align: middle;
@@ -10650,7 +10651,7 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
 .input-type-container .configuration-options .toggle-options .save-options .remove i,
 .input-type-container .configuration-options .toggle-options .save-options .edit i {
   color: #ffffff;
-  font-size: 18px;
+  font-size: 14px;
 }
 .input-type-container .configuration-options .toggle-options .save-options .add {
   background-color: #339933;
@@ -11346,8 +11347,8 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
 }
 .more-input-wrapper .add,
 .more-input-wrapper .remove {
-  height: 40px;
-  width: 40px;
+  height: 25px;
+  width: 25px;
   margin: 0 0 0 10px;
   border-radius: 50%;
   display: inline-block;
@@ -11360,8 +11361,8 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
 .more-input-wrapper .add i,
 .more-input-wrapper .remove i {
   color: #FFF;
-  font-size: 18px;
-  line-height: 40px;
+  font-size: 14px;
+  line-height: 25px;
 }
 .more-input-wrapper .add {
   background-color: #339933;
@@ -11408,8 +11409,8 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   display: inline-block;
 }
 .element-toggles .add-element .add {
-  height: 40px;
-  width: 40px;
+  height: 25px;
+  width: 25px;
   margin: 0 0 0 10px;
   border-radius: 50%;
   display: inline-block;
@@ -11421,8 +11422,8 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
 }
 .element-toggles .add-element .add i {
   color: #FFF;
-  font-size: 18px;
-  line-height: 40px;
+  font-size: 14px;
+  line-height: 25px;
 }
 .element-toggles .add-element .add:disabled {
   background-color: #94c795;
