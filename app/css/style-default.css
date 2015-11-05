@@ -9405,11 +9405,11 @@ i {
   background-color: #ffffff;
 }
 .navbar .navbar-brand {
-  background-image: url(../img/cedar-logo.png);
+  background-image: url(../img/cedar-logo-main.png);
   background-repeat: no-repeat;
-  width: 116px;
-  height: 30px;
-  margin-top: 25px;
+  width: 194px;
+  height: 80px;
+  margin-top: 0px;
   margin-left: 10px;
   font: 0/0 a;
   color: transparent;
