@@ -60,7 +60,7 @@
               Add an Element <i class="fa fa-angle-down fa-2x"></i>
             </button>
             <ul class="dropdown-menu element-menu" role="menu">
-              <li ng-repeat="element in elementList" class="item"><a ng-click="addElementToStaging(element)"><i class="cedar-svg-element"></i>{{element.properties.info.title}}</a></li>
+              <li ng-repeat="element in elementList | orderBy:'title'" class="item"><a ng-click="addElementToStaging(element)"><i class="cedar-svg-element"></i>{{element.properties.info.title}}</a></li>
             </ul>
           </div>
         </div> <!-- /.sticky-list -->
