@@ -237,6 +237,14 @@ var angularRun = function($rootScope) {
     console.log(label + ' ' + JSON.stringify(txt,null,2));
   };
 
+  $rootScope.isRuntime = function() {
+    return $rootScope.pageId == 'RUNTIME';
+  }
+
+  $rootScope.elementIsMultiInstance = function(element) {
+    return element.hasOwnProperty('minItems') && element.minItems != null;
+  }
+
   var generateCardinalities = function(max) {
     var results = [];
     for (var i = 1; i <= max; i++) {

@@ -9268,18 +9268,14 @@ button.close {
 }
 .spreadsheetViewContainer {
   display: none;
+  overflow: auto;
+  width: 650px;
+  height: 100px;
 }
 .spreadsheetViewContainer.visible {
   display: block;
   margin-bottom: 20px;
 }
-/*.cedarRealContent.hidden {
-  display:none;
-}
-
-.cedarRealContent.visible {
-  display:block;
-}*/
 div.htCedarCheckboxes {
   border: 0px solid red;
 }
@@ -9318,6 +9314,9 @@ body {
   position: relative;
   color: #999999;
   top: -2px;
+}
+.multiple-instance-cardinality {
+  color: #339933;
 }
 .activ-grotesk-regular {
   font-family: 'aktiv-grotesk-std';
