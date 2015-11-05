@@ -1515,25 +1515,6 @@ section.dashboard-elements {
         clear:both;
       }
 
-      .field-search {
-        display: block;
-        float:left;
-        width:49%;
-      }
-
-      .field-browse {
-        display: block;
-        float:right;
-        width:49%;
-        overflow: hidden;
-
-        a {
-          color: #000;
-          text-align: left;
-          background: #FFF;
-        }
-      }
-
       .form-group-actions {
         .form-control {
           // padding: 6px 12px;
@@ -1541,32 +1522,32 @@ section.dashboard-elements {
         }
       }
 
-      .is-searching {
-        .field-search {
-          width: 100%;
-          transition: width 1s ease-in-out;
-        }
+      // .is-searching {
+      //   .field-search {
+      //     width: 100%;
+      //     transition: width 1s ease-in-out;
+      //   }
 
-        .field-browse {
-          display: none;
-        }
-      }
+      //   .field-browse {
+      //     display: none;
+      //   }
+      // }
 
-      .is-browsing {
-        .field-search {
-          display: none;
-        }
+      // .is-browsing {
+      //   .field-search {
+      //     display: none;
+      //   }
 
-        .field-browse {
-          width: 100%;
-          transition: width 1s ease-in-out;
-        }
-      }
+      //   .field-browse {
+      //     width: 100%;
+      //     transition: width 1s ease-in-out;
+      //   }
+      // }
 
       .search-results-section {
         .search-results {
           min-height: 58px;
-          max-height: 176px;
+          max-height: 203px;
           overflow-y: auto;
           .no-search-results {
             padding:20px 0 19px 3.06%;
@@ -1582,8 +1563,7 @@ section.dashboard-elements {
         .results-table, .results-headers-table {
           width:100%;
           td, th {
-            padding-left: 0;
-            padding-right: 0;
+            padding: 10px 0;
 
             &:first-child {
               width: 250px;
@@ -1607,6 +1587,18 @@ section.dashboard-elements {
           td, th {
             &:nth-child(2) {
               width: 300px;
+            }
+          }
+        }
+
+        .values-browse-results-headers-table, .values-browse-results-table {
+          td, th {
+            &:nth-child(2) {
+              width: 80px;
+            }
+
+            &:nth-child(3) {
+              width: 220px;
             }
           }
         }
@@ -2505,7 +2497,6 @@ section.dashboard-elements {
     .tab-content {
       table {
         th {
-          width: 50%;
           padding: 15px 8px;
           color: @brand-primary;
           font-weight: bold;
@@ -2562,10 +2553,17 @@ section.dashboard-elements {
     display: inline-block;
     width: 20px;
     height: 20px;
-    line-height: 20px;
     border: 1px solid @gray;
     border-radius: 50%;
     text-align: center;
+    cursor: pointer;
+    i:before {
+      height: 20px;
+      display: inline-block;
+      line-height: 20px;
+      position: relative;
+      top: -1px;
+    }
   }
 
   table {
@@ -2590,19 +2588,119 @@ section.dashboard-elements {
   transform: rotate(180deg);
 }
 
-.btn-field-browse {
+.btn-field-browse, .btn-values-browse {
   background: #FFF;
   line-height: 2em;
   color: @gray;
 }
 
-.field-search-input-group {
-  .field-search-form-control {
+.field-search-input-group, .values-search-input-group, .field-browse, .values-browse {
+  .form-control {
     border: none;
   }
 
   .input-group-addon {
     background: #FFF;
     border: none;
+    cursor: pointer;
   }
+}
+
+
+.is-searching {
+  .field-search {
+    width: 100%;
+    transition: width 1s ease-in-out;
+  }
+
+  .field-browse {
+    display: none;
+  }
+
+  .values-search {
+    width: 100%;
+    transition: width 1s ease-in-out;
+  }
+
+  .values-browse {
+    display: none;
+  }
+}
+
+.field-search {
+  display: block;
+  float:left;
+  width:49%;
+}
+
+.values-search {
+  display: block;
+  float:left;
+  width:49%;
+}
+
+.field-browse {
+  display: block;
+  float:right;
+  width:49%;
+  overflow: hidden;
+
+  a {
+    color: #000;
+    text-align: left;
+    background: #FFF;
+  }
+}
+
+.values-browse {
+  display: block;
+  float:right;
+  width:49%;
+  overflow: hidden;
+
+  a {
+    color: #000;
+    text-align: left;
+    background: #FFF;
+  }
+}
+
+.is-browsing {
+  .field-search {
+    display: none;
+  }
+
+  .field-browse {
+    width: 100%;
+    transition: width 1s ease-in-out;
+  }
+
+  .values-search {
+    display: none;
+  }
+
+  .values-browse {
+    width: 100%;
+    transition: width 1s ease-in-out;
+  }
+}
+
+.inline-block {
+  display: inline-block;
+}
+
+.checkbox-bioportal-value-sets {
+  margin-left: 20px;
+}
+
+.values-browse-results-headers-table {
+
+}
+
+.values-browse-results-table {
+
+}
+
+.clickable {
+    cursor: pointer;
 }

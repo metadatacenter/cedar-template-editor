@@ -15,16 +15,45 @@ bioPortalModule
   }
 })
 // This 'classTree' directive will call the 'childTree' directive for every child in the collection returned from the BioPortalService
-.directive('classTree', function () {
+.directive('classTree', function ($timeout) {
   return {
     restrict: 'E',
     scope: {
-    	tree: '=',
-    	controlTerm: '=',
-      level: "="
+      tree: '=',
+      controlTerm: '=',
+      level: "=",
+      selectedNode: "="
     },
     templateUrl: "./scripts/Bioportal/views/directives/class-tree.html",
-    replace: true
+    replace: true,
+    link: function(scope, element, attrs) {
+      $timeout(function() {
+
+        if (scope.selectedNode) {
+          var id = scope.selectedNode["@id"];
+          var node = angular.element("[at_id='" + id + "']");
+
+          if (node.length > 0) {
+            var $container = element.parent();
+            var containerHeight = $container.height();
+            var containerWidth = $container.width();
+            var containerOffset = $container.offset();
+            var selectedNodeOffset = node.offset();
+
+            var topScrollAmount = selectedNodeOffset.top - containerOffset.top - containerHeight/2;
+            var leftScrollAmount = selectedNodeOffset.left - containerOffset.left - containerWidth/2;
+
+            if (topScrollAmount > 0) {
+              $container.scrollTop(topScrollAmount);
+            }
+
+            if (leftScrollAmount > 0) {
+              $container.scrollLeft(leftScrollAmount);
+            }
+          }
+        }
+      });
+    }
   };
 })
 // This directive will recursively call the parent 'classTree' directive for every child in the collection returned from the BioPortalService
@@ -34,45 +63,52 @@ bioPortalModule
     restrict: 'E',
     replace: true,
     scope: {
-    	subtree: '=',
-    	term: '=',
+      subtree: '=',
+      term: '=',
       level: "="
     },
     templateUrl: "./scripts/Bioportal/views/directives/child-tree.html",
     link: function(scope, element, attrs) {
+      // Recycle function to add nest children under parent element
+      function nestChildren(children) {
+    	element.addClass('expanded');
 
-    	//console.log('scope.term: '+scope.term);
+		var children = '<class-tree tree="' + children + '" control-term="term" level="' + (scope.level + 1) + '"></class-tree>';
+		$compile(children)(scope, function(cloned, scope){
+		  element.append(cloned);
+		});
 
-    	// Recycle function to add nest children under parent element
-    	function nestChildren(children) {
+      }
+      
+      if (scope.subtree) {
+        var acronym = scope.subtree.links.ontology.slice(39);
+        if (scope.subtree["@type"].indexOf("Ontology") >= 0) {
+          scope.subtree.resultType = "Ontology";
+        } else if (acronym != 'NLMVS') {
+          scope.subtree.resultType = 'Ontology Class';
+        } else {
+          scope.subtree.resultType = "Value Set";
+        }
+      }
 
-    		element.addClass('expanded');
+      // Default Class nested tree expansion from BioPortalService.getClassTree() call
+  	  if (scope.subtree && scope.subtree.children && scope.subtree.children.length) {
+		nestChildren('subtree.children');
+  	  }
 
-			var children = '<class-tree tree="' + children + '" control-term="term" level="' + (scope.level + 1) + '"></class-tree>';
-			$compile(children)(scope, function(cloned, scope){
-			  element.append(cloned);
-			});
-
-    	}
-
-    	// Default Class nested tree expansion from BioPortalService.getClassTree() call
-  		if (scope.subtree && scope.subtree.children && scope.subtree.children.length) {
-			nestChildren('subtree.children');
-  		}
-
-  		// Manual drilling down into Class children upon user interaction via BioPortalService.getClassChildren() call
-  		element.find('a').on('click', function(event) {
-  			if (scope.subtree.hasChildren !== false && !scope.children) {
-  				BioPortalService.getClassChildren(scope.subtree.links.ontology.slice(39), scope.subtree['@id']).then(function(response) {
+  	  // Manual drilling down into Class children upon user interaction via BioPortalService.getClassChildren() call
+  	  element.find('a').on('click', function(event) {
+  		if (scope.subtree.hasChildren !== false && !scope.children) {
+  		  BioPortalService.getClassChildren(scope.subtree.links.ontology.slice(39), scope.subtree['@id']).then(function(response) {
             if (!response || response.length == 0) {
               scope.subtree.hasChildren = false;
             }
-
-  					scope.children = response;
-  					nestChildren('children');
-  				});
-  			}
-  		});
+            
+  			scope.children = response;
+  			nestChildren('children');
+  		  });
+  		}
+  	  });
     }
   };
 });

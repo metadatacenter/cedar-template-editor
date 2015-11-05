@@ -252,6 +252,14 @@ var angularRun = function($rootScope) {
 
   $rootScope.minCardinalities = minCardinalities;
   $rootScope.maxCardinalities = maxCardinalities;
+
+  $rootScope.isKeyVisible = function(keyCode) {
+    if (keyCode > 45 && keyCode < 112 && [91, 92, 93].indexOf(keyCode) == -1 || keyCode >= 186 && keyCode <= 222 || [8, 32, 173].indexOf(keyCode) >= 0) {
+      return true;
+    } else {
+      return false;
+    }
+  };
 };
 
 angularRun.$inject = ['$rootScope'];

@@ -15,7 +15,10 @@ var gulp               = require('gulp'),
     historyApiFallback = require('connect-history-api-fallback'),
     Server             = require('karma').Server,
     protractor         = require('gulp-protractor').protractor,
-    Proxy              = require('gulp-connect-proxy');
+    Proxy              = require('gulp-connect-proxy',
+    request            = require('sync-request'),
+    fs                 = require('fs')
+);
 
 // Creating error handling exception using gulp-util
 var onError = function (err) {  
@@ -85,6 +88,95 @@ gulp.task('server', function() {
 	})
 });
 
+gulp.task('cache-ontologies', function() {
+  var apiKey = 'apikey token=3bdf57dc-4d53-4ca1-b6c1-a1f1fe651ea9';
+  var options = {
+    headers: {
+      'Authorization': apiKey
+    }
+  }
+  var ontologies = [];
+
+  var response = request('GET', 'http://data.bioontology.org/ontologies', options);
+  if (response.statusCode == 200) {
+    ontologies = JSON.parse(response.getBody());
+    for (var i = 0; i < ontologies.length; i++) {
+      var ontology = ontologies[i];
+        
+      // load ontology categories
+      var url = 'http://data.bioontology.org/ontologies/' + ontology.acronym + '/categories';
+      var response = request('GET', url, options);
+      if (response.statusCode == 200) {
+        console.log('Retrieved category information for ' + ontology.acronym);
+        var ontologyCategories = JSON.parse(response.getBody());
+        ontology.categories = ontologyCategories;
+
+        // aggregrate ontology category names
+        var ontologyCategoryNames = [];
+        for (var j = 0; j < ontologyCategories.length; j++) {
+          ontologyCategoryNames.push(ontologyCategories[j].name);
+        }
+        ontology.categoriesNames = ontologyCategoryNames.join(', '); // TODO: rename variable?
+      } else {
+        console.log('Error requesting ontology categoies for ' + ontology.acronym + '-- ' + url);
+      }
+
+      // load ontology metrics
+      var url = 'http://data.bioontology.org/ontologies/' + ontology.acronym + '/metrics';
+      var response = request('GET', url, options);
+      if (response.statusCode == 200) {
+        console.log('Retrieved metric information for ' + ontology.acronym);
+        var ontologyMetrics = JSON.parse(response.getBody());
+        ontology.metrics = ontologyMetrics;
+      } else {
+        console.log('Error requesting ontology metrics for ' + ontology.acronym + ' -- ' + url + '; response.statusCode: ' + response.statusCode);
+      }
+      
+    }
+  } else {
+    console.log('Error requesting ontology catalog');
+  }
+
+  // write to cache file
+  fs.writeFileSync('app/cache/ontologies.json', JSON.stringify(ontologies));
+
+});
+
+gulp.task('cache-value-sets', function() {
+  var apiKey = 'apikey token=3bdf57dc-4d53-4ca1-b6c1-a1f1fe651ea9';
+  var options = {
+    headers: {
+      'Authorization': apiKey
+    }
+  }
+  var valueSets = [];
+
+  var uri = 'http://data.bioontology.org/ontologies/NLMVS/classes/roots';
+  var response = request('GET', 'http://data.bioontology.org/ontologies/NLMVS/classes/roots', options);
+  if (response.statusCode == 200) {
+    valueSets = JSON.parse(response.getBody());
+
+    // count children to determine size
+    for (var i = 0; i < valueSets.length; i++) {
+      var valueSetUri = valueSets[i].links.self + '?include=childrenCount';
+      var valueSetResponse = request('GET', valueSetUri, options);
+      if (valueSetResponse.statusCode == 200) {
+        console.log('Retrieved value set at: ' + valueSetUri);
+        var valueSet = JSON.parse(valueSetResponse.getBody());
+        valueSets[i].numChildren = valueSet.childrenCount;
+      } else {
+        console.log('Error requesting ontology metrics for ' + ontology.acronym + ' -- ' + url + '; response.statusCode: ' + response.statusCode);
+      }
+    }
+  } else {
+    console.log('Error requesting value set catalog');
+    return;
+  }
+
+  // write to cache file
+  fs.writeFileSync('app/cache/value-sets.json', JSON.stringify(valueSets));
+
+});
 
 gulp.task('html', function () {
   return gulp.src('/app/views/*.html')

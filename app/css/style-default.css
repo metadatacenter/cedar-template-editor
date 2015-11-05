@@ -10776,41 +10776,9 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
 .input-type-container .configuration-options .controlled-term-options .clear {
   clear: both;
 }
-.input-type-container .configuration-options .controlled-term-options .field-search {
-  display: block;
-  float: left;
-  width: 49%;
-}
-.input-type-container .configuration-options .controlled-term-options .field-browse {
-  display: block;
-  float: right;
-  width: 49%;
-  overflow: hidden;
-}
-.input-type-container .configuration-options .controlled-term-options .field-browse a {
-  color: #000;
-  text-align: left;
-  background: #FFF;
-}
-.input-type-container .configuration-options .controlled-term-options .is-searching .field-search {
-  width: 100%;
-  -webkit-transition: width 1s ease-in-out;
-          transition: width 1s ease-in-out;
-}
-.input-type-container .configuration-options .controlled-term-options .is-searching .field-browse {
-  display: none;
-}
-.input-type-container .configuration-options .controlled-term-options .is-browsing .field-search {
-  display: none;
-}
-.input-type-container .configuration-options .controlled-term-options .is-browsing .field-browse {
-  width: 100%;
-  -webkit-transition: width 1s ease-in-out;
-          transition: width 1s ease-in-out;
-}
 .input-type-container .configuration-options .controlled-term-options .search-results-section .search-results {
   min-height: 58px;
-  max-height: 176px;
+  max-height: 203px;
   overflow-y: auto;
 }
 .input-type-container .configuration-options .controlled-term-options .search-results-section .search-results .no-search-results {
@@ -10829,8 +10797,7 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
 .input-type-container .configuration-options .controlled-term-options .search-results-section .results-headers-table td,
 .input-type-container .configuration-options .controlled-term-options .search-results-section .results-table th,
 .input-type-container .configuration-options .controlled-term-options .search-results-section .results-headers-table th {
-  padding-left: 0;
-  padding-right: 0;
+  padding: 10px 0;
 }
 .input-type-container .configuration-options .controlled-term-options .search-results-section .results-table td:first-child,
 .input-type-container .configuration-options .controlled-term-options .search-results-section .results-headers-table td:first-child,
@@ -10852,6 +10819,18 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
 .input-type-container .configuration-options .controlled-term-options .search-results-section .browse-results-headers-table th:nth-child(2),
 .input-type-container .configuration-options .controlled-term-options .search-results-section .browse-results-table th:nth-child(2) {
   width: 300px;
+}
+.input-type-container .configuration-options .controlled-term-options .search-results-section .values-browse-results-headers-table td:nth-child(2),
+.input-type-container .configuration-options .controlled-term-options .search-results-section .values-browse-results-table td:nth-child(2),
+.input-type-container .configuration-options .controlled-term-options .search-results-section .values-browse-results-headers-table th:nth-child(2),
+.input-type-container .configuration-options .controlled-term-options .search-results-section .values-browse-results-table th:nth-child(2) {
+  width: 80px;
+}
+.input-type-container .configuration-options .controlled-term-options .search-results-section .values-browse-results-headers-table td:nth-child(3),
+.input-type-container .configuration-options .controlled-term-options .search-results-section .values-browse-results-table td:nth-child(3),
+.input-type-container .configuration-options .controlled-term-options .search-results-section .values-browse-results-headers-table th:nth-child(3),
+.input-type-container .configuration-options .controlled-term-options .search-results-section .values-browse-results-table th:nth-child(3) {
+  width: 220px;
 }
 .input-type-container .configuration-options .controlled-term-options .search-results-section .search-results-headers {
   background: #f9f9fb;
@@ -11619,7 +11598,6 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   color: #FFFFFF;
 }
 .field-tree .field-details-view .tab-content table th {
-  width: 50%;
   padding: 15px 8px;
   color: #339933;
   font-weight: bold;
@@ -11670,6 +11648,17 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   border: 1px solid #999999;
   border-radius: 50%;
   text-align: center;
+  cursor: pointer;
+}
+.one-class-list .item-edit i:before,
+.many-classes-list .item-edit i:before,
+.one-class-list .item-delete i:before,
+.many-classes-list .item-delete i:before {
+  height: 20px;
+  display: inline-block;
+  line-height: 20px;
+  position: relative;
+  top: -1px;
 }
 .one-class-list table,
 .many-classes-list table {
@@ -11692,15 +11681,96 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
       -ms-transform: rotate(180deg);
           transform: rotate(180deg);
 }
-.btn-field-browse {
+.btn-field-browse,
+.btn-values-browse {
   background: #FFF;
   line-height: 2em;
   color: #999999;
 }
-.field-search-input-group .field-search-form-control {
+.field-search-input-group .form-control,
+.values-search-input-group .form-control,
+.field-browse .form-control,
+.values-browse .form-control {
   border: none;
 }
-.field-search-input-group .input-group-addon {
+.field-search-input-group .input-group-addon,
+.values-search-input-group .input-group-addon,
+.field-browse .input-group-addon,
+.values-browse .input-group-addon {
   background: #FFF;
   border: none;
+  cursor: pointer;
+}
+.is-searching .field-search {
+  width: 100%;
+  -webkit-transition: width 1s ease-in-out;
+          transition: width 1s ease-in-out;
+}
+.is-searching .field-browse {
+  display: none;
+}
+.is-searching .values-search {
+  width: 100%;
+  -webkit-transition: width 1s ease-in-out;
+          transition: width 1s ease-in-out;
+}
+.is-searching .values-browse {
+  display: none;
+}
+.field-search {
+  display: block;
+  float: left;
+  width: 49%;
+}
+.values-search {
+  display: block;
+  float: left;
+  width: 49%;
+}
+.field-browse {
+  display: block;
+  float: right;
+  width: 49%;
+  overflow: hidden;
+}
+.field-browse a {
+  color: #000;
+  text-align: left;
+  background: #FFF;
+}
+.values-browse {
+  display: block;
+  float: right;
+  width: 49%;
+  overflow: hidden;
+}
+.values-browse a {
+  color: #000;
+  text-align: left;
+  background: #FFF;
+}
+.is-browsing .field-search {
+  display: none;
+}
+.is-browsing .field-browse {
+  width: 100%;
+  -webkit-transition: width 1s ease-in-out;
+          transition: width 1s ease-in-out;
+}
+.is-browsing .values-search {
+  display: none;
+}
+.is-browsing .values-browse {
+  width: 100%;
+  -webkit-transition: width 1s ease-in-out;
+          transition: width 1s ease-in-out;
+}
+.inline-block {
+  display: inline-block;
+}
+.checkbox-bioportal-value-sets {
+  margin-left: 20px;
+}
+.clickable {
+  cursor: pointer;
 }

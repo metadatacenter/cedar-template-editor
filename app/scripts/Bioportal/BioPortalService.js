@@ -106,6 +106,14 @@ bioPortalModule.service('BioPortalService', function BioPortalService($http, $q)
 		return err;
 	  });
 	},
+	getClassParents: function(acronym, classId) {
+	  //ontologies/{acronym}/classes/{id}/parents?include=hasChildren
+  	  return $http.get(base + 'ontologies/' + acronym + '/classes/' + encodeURIComponent(classId) + '/parents?include=hasChildren,prefLabel', http_default_config).then(function(response) {
+		return response.data;
+	  }).catch(function(err) {
+		return err;
+	  });
+	},
 	getClassValueSet: function(acronym, classId) {
 	  //ontologies/{acronym}/classes/{id}/children?pagesize={pagesize}
 	  return $http.get(base + 'ontologies/' + acronym + '/classes/' + encodeURIComponent(classId) + '/children?pagesize=100', http_default_config).then(function(response) {
@@ -122,11 +130,25 @@ bioPortalModule.service('BioPortalService', function BioPortalService($http, $q)
 		return err;
 	  });
 	},
-	searchValueSets: function(query) {
+	searchValueSetsAndValueSetClasses: function(query) {
 	  //search?q={query}&ontologies={acronym}&roots_only=true
 	  // &require_exact_match will only match the phrase, not any word within the phrase (more accurate)
 	  return $http.get(base + 'search?q=' + query.replace(/[\s]+/g, '+') + '&roots_only=true&require_exact_match=true', http_default_config).then(function(response) {
 		//console.log(response);
+		return response.data;
+	  }).catch(function(err) {
+		return err;
+	  });
+	},
+    searchOntologyClassesValueSetsAndValueSetClasses: function(query) {
+	  return $http.get(base + 'search?q=' + query.replace(/[\s]+/g, '+') + '&pagesize=100', http_default_config).then(function(response) {
+		return response.data;
+	  }).catch(function(err) {
+		return err;
+	  });
+    },
+	searchValueSetsAndValues: function(query) {
+	  return $http.get(base + 'search?q=' + query.replace(/[\s]+/g, '+') + '&ontologies=NLMVS', http_default_config).then(function(response) {
 		return response.data;
 	  }).catch(function(err) {
 		return err;

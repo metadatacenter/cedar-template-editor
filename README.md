@@ -34,6 +34,11 @@ Go to the project's root folder and execute `$ gulp`
 
 To run individual tasks, use `$ gulp <task> <othertask>`
 
+## Generating Ontology and Value Set caches
+
+    $ gulp cache-ontologies
+    $ gulp cache-value-sets
+
 ## Running the tests
 
 ### Unit Tests
