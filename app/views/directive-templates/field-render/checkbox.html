@@ -6,8 +6,8 @@
 		  <div class="checkbox checkbox-primary">
 		    <input 	type="checkbox"
 		    				id="checkbox-{{uuid}}-{{$parent.$index}}-{{index}}"
-		    				ng-model="value_element.value[value.text]"
-		    				ng-checked="value_element.value[value.text]">
+		    				ng-model="value_element._value[value.text]"
+		    				ng-checked="value_element._value[value.text]">
 		    <label for="checkbox-{{uuid}}-{{$parent.$index}}-{{index}}">{{field.properties.info.options[index]['text']}}</label>
 		  </div><!-- ./checkbox -->
 		</div><!-- /.form-group -->
@@ -21,8 +21,8 @@
 		  <div class="checkbox checkbox-primary">
 		    <input 	type="checkbox"
 		    				id="checkbox-{{uuid}}-{{$parent.$index}}-{{index}}"
-		    				ng-model="model.value[value.text]"
-		    				ng-checked="model.value[value.text]">
+		    				ng-model="model._value[value.text]"
+		    				ng-checked="model._value[value.text]">
 		    <label for="checkbox-{{uuid}}-{{$parent.$index}}-{{index}}">{{field.properties.info.options[index]['text']}}</label>
 		  </div><!-- ./checkbox -->
 		</div><!-- /.form-group -->

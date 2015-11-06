@@ -6,7 +6,7 @@
     				id="emailfield1"
     				placeholder="{{field.properties.info.title}}"
     				aria-label="{{field.properties.info.description}}"
-    				ng-model="value_element.value"
+    				ng-model="value_element._value"
     				validate-on="blur"
     				ng-pattern= "/^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/"
     				with-floating-label>
@@ -26,7 +26,7 @@
             id="emailfield1"
             placeholder="{{field.properties.info.title}}"
             aria-label="{{field.properties.info.description}}"
-            ng-model="model.value"
+            ng-model="model._value"
             validate-on="blur"
             ng-pattern= "/^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/"
             with-floating-label>

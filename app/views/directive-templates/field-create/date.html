@@ -14,6 +14,5 @@
     <input type="text" class="form-control" id="placeholder-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}" placeholder="Enter Field Title" aria-label="Enter Field Title" ng-model="field.properties.info.title"  with-floating-label>
   </div><!-- /.form-group -->
 
-  <div class="configuration-options" ng-include="'views/partials/configuration-options.html'">
-  </div><!-- /.configuration-options -->
+  <ng-include src="'views/partials/staging-area-footer.html'" />
 </div><!-- /.input-type-container -->

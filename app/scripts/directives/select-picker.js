@@ -14,7 +14,7 @@ angularApp.directive('selectPicker', function ($timeout) {
       var default_array;
       if ($scope.model != undefined) {
         // If returning to an already populated select list field, load selections
-        default_array = $scope.model.value;
+        default_array = $scope.model._value;
 
       } else if ($scope.field && $scope.field.properties.info.default_option) {
         default_array = [];
@@ -29,7 +29,7 @@ angularApp.directive('selectPicker', function ($timeout) {
           }
         }
         $scope.model = $scope.model || {};
-        $scope.model['value'] = default_array;
+        $scope.model['_value'] = default_array;
       }
 
       $timeout(function() {

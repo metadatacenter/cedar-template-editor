@@ -7,11 +7,11 @@
     	   id="textfield1"
     	   placeholder="{{field.properties.info.title}}"
     	   aria-label="{{field.properties.info.description}}"
-    	   ng-model="value_element.value"
-    	   with-floating-label="" />
+    	   ng-model="value_element._value"
+    	   with-floating-label />
     </div>
     <div ng-if="$root.hasValueConstraint(field.properties.info)" class="has-constraint">
-      <ui-select ng-model="value_element.value" theme="bootstrap" close-on-select="true">
+      <ui-select ng-model="value_element._value" theme="bootstrap" close-on-select="true">
         <ui-select-match placeholder="{{field.properties.info.title}}">{{$select.selected.label}}</ui-select-match>
         <ui-select-choices repeat="option in $root.predefinedConstraintValues(field['@id'], field.properties.info) | propsFilter: {label: $select.search}">
           <div ng-bind-html="option.label | highlight: $select.search"></div>
@@ -34,11 +34,11 @@
            id="textfield1"
            placeholder="{{field.properties.info.title}}"
            aria-label="{{field.properties.info.description}}"
-           ng-model="model.value"
-           with-floating-label="" />
+           ng-model="model._value"
+           with-floating-label />
     </div>
     <div ng-if="$root.hasValueConstraint(field.properties.info)" class="has-constraint">
-      <ui-select ng-model="model.value" theme="bootstrap" close-on-select="true">
+      <ui-select ng-model="model._value" theme="bootstrap" close-on-select="true">
         <ui-select-match placeholder="{{field.properties.info.title}}">{{$select.selected.label}}</ui-select-match>
         <ui-select-choices repeat="option in $root.predefinedConstraintValues(field['@id'], field.properties.info) | propsFilter: {label: $select.search}">
           <div ng-bind-html="option.label | highlight: $select.search"></div>

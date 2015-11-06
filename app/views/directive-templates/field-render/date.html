@@ -9,7 +9,7 @@
                 ng-class="{'required': field.properties.info.required_value}"
                 placeholder="{{field.properties.info.title}} ( MM / DD / YYYY )"
                 aria-label="Select a date"
-                ng-model="value_element.value"
+                ng-model="value_element._value"
                 with-floating-label/>
         <span class="input-group-addon">
             <i class="fa fa-calendar fa-2x"></i>
@@ -25,7 +25,7 @@
                 ng-class="{'required': field.properties.info.required_value}"
                 placeholder="MM / DD / YYYY"
                 aria-label="Select a start date"
-                ng-model="value_element.value.start"
+                ng-model="value_element._value.start"
                 with-floating-label/>
         <span class="input-group-addon">
             <i class="fa fa-calendar fa-2x"></i>
@@ -37,7 +37,7 @@
                 ng-class="{'required': field.properties.info.required_value}"
                 placeholder="MM / DD / YYYY"
                 aria-label="Select a end date"
-                ng-model="value_element.value.end"
+                ng-model="value_element._value.end"
                 with-floating-label/>
         <span class="input-group-addon">
             <i class="fa fa-calendar fa-2x"></i>
@@ -58,7 +58,7 @@
                 ng-class="{'required': field.properties.info.required_value}"
                 placeholder="MM / DD / YYYY"
                 aria-label="Select a date"
-                ng-model="model.value"
+                ng-model="model._value"
                 with-floating-label/>
         <span class="input-group-addon">
             <i class="fa fa-calendar fa-2x"></i>
@@ -74,7 +74,7 @@
                 ng-class="{'required': field.properties.info.required_value}"
                 placeholder="MM / DD / YYYY"
                 aria-label="Select a start date"
-                ng-model="model.value.start"
+                ng-model="model._value.start"
                 with-floating-label/>
         <span class="input-group-addon">
             <i class="fa fa-calendar fa-2x"></i>
@@ -86,7 +86,7 @@
                 ng-class="{'required': field.properties.info.required_value}"
                 placeholder="MM / DD / YYYY"
                 aria-label="Select a end date"
-                ng-model="model.value.end"
+                ng-model="model._value.end"
                 with-floating-label/>
         <span class="input-group-addon">
             <i class="fa fa-calendar fa-2x"></i>

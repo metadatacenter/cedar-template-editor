@@ -26,28 +26,28 @@ var fieldDirective = function($rootScope, $http, $compile, $document, Spreadshee
             allRequiredFieldsAreFilledIn = false;
           } else {
             angular.forEach($scope.model, function(valueElement) {
-              if (!valueElement || !valueElement.value) {
+              if (!valueElement || !valueElement._value) {
                 allRequiredFieldsAreFilledIn = false;
-              } else if (angular.isArray(valueElement.value)) {
+              } else if (angular.isArray(valueElement._value)) {
                 var hasValue = false;
-                angular.forEach(valueElement.value, function(ve) {
+                angular.forEach(valueElement._value, function(ve) {
                   hasValue = hasValue || !!ve;
                 });
 
                 if (!hasValue) {
                   allRequiredFieldsAreFilledIn = false;
                 }
-              } else if (angular.isObject(valueElement.value)) {
-                if ($rootScope.isEmpty(valueElement.value)) {
+              } else if (angular.isObject(valueElement._value)) {
+                if ($rootScope.isEmpty(valueElement._value)) {
                   allRequiredFieldsAreFilledIn = false;
                 } else if ($scope.field.properties.info.date_type == "date-range") {
-                  if (!valueElement.value.start || !valueElement.value.end) {
+                  if (!valueElement._value.start || !valueElement._value.end) {
                     allRequiredFieldsAreFilledIn = false;
                   }
                 } else {
                   // Require at least one checkbox is checked.
                   var hasValue = false;
-                  angular.forEach(valueElement.value, function(value, key) {
+                  angular.forEach(valueElement._value, function(value, key) {
                     hasValue = hasValue || value;
                   });
 
@@ -60,28 +60,28 @@ var fieldDirective = function($rootScope, $http, $compile, $document, Spreadshee
           }
         } else {
           // allRequiredFieldsAreFilledIn = false;
-          if (!$scope.model || !$scope.model.value) {
+          if (!$scope.model || !$scope.model._value) {
             allRequiredFieldsAreFilledIn = false;
-          } else if (angular.isArray($scope.model.value)) {
+          } else if (angular.isArray($scope.model._value)) {
             var hasValue = false;
-            angular.forEach($scope.model.value, function(ve) {
+            angular.forEach($scope.model._value, function(ve) {
               hasValue = hasValue || !!ve;
             });
 
             if (!hasValue) {
               allRequiredFieldsAreFilledIn = false;
             }
-          } else if (angular.isObject($scope.model.value)) {
-            if ($rootScope.isEmpty($scope.model.value)) {
+          } else if (angular.isObject($scope.model._value)) {
+            if ($rootScope.isEmpty($scope.model._value)) {
               allRequiredFieldsAreFilledIn = false;
             } else if ($scope.field.properties.info.date_type == "date-range") {
-              if (!$scope.model.value.start || !$scope.model.value.end) {
+              if (!$scope.model._value.start || !$scope.model._value.end) {
                 allRequiredFieldsAreFilledIn = false;
               }
             } else {
               // Require at least one checkbox is checked.
               var hasValue = false;
-              angular.forEach($scope.model.value, function(value, key) {
+              angular.forEach($scope.model._value, function(value, key) {
                 hasValue = hasValue || value;
               });
 
@@ -162,33 +162,33 @@ var fieldDirective = function($rootScope, $http, $compile, $document, Spreadshee
 
             if (field.default_option) {
               for (var i = 0; i < min; i++) {
-                $scope.model[i]["value"] = angular.copy(field.default_option);
+                $scope.model[i]["_value"] = angular.copy(field.default_option);
               }
             } else {
               for (var i = 0; i < min; i++) {
                 if (['checkbox'].indexOf(field.input_type) >= 0 ||
                     ['date'].indexOf(field.input_type) >= 0 && field.date_type == "date-range") {
-                  $scope.model[i]['value'] = {};
+                  $scope.model[i]['_value'] = {};
                 } else if (['list'].indexOf(field.input_type) >= 0) {
-                  $scope.model[i]['value'] = [];
+                  $scope.model[i]['_value'] = [];
                 } else {
-                  $scope.model[i]['value'] = "";
+                  $scope.model[i]['_value'] = "";
                 }
               }
             }
           } else {
             angular.forEach($scope.model, function(m, i) {
-              if (!("value" in m)) {
+              if (!("_value" in m)) {
                 if (field.default_option) {
-                  $scope.model[i]["value"] = angular.copy(field.default_option);
+                  $scope.model[i]["_value"] = angular.copy(field.default_option);
                 } else {
                   if (['checkbox'].indexOf(field.input_type) >= 0 ||
                       ['date'].indexOf(field.input_type) >= 0 && field.date_type == "date-range") {
-                    $scope.model[i]['value'] = {};
+                    $scope.model[i]['_value'] = {};
                   } else if (['list'].indexOf(field.input_type) >= 0) {
-                    $scope.model[i]['value'] = [];
+                    $scope.model[i]['_value'] = [];
                   } else {
-                    $scope.model[i]['value'] = "";
+                    $scope.model[i]['_value'] = "";
                   }
                 }
               }
@@ -196,17 +196,17 @@ var fieldDirective = function($rootScope, $http, $compile, $document, Spreadshee
             });
           }
         } else {
-          if (!("value" in $scope.model)) {
+          if (!("_value" in $scope.model)) {
             if (field.default_option) {
-              $scope.model["value"] = angular.copy(field.default_option);
+              $scope.model["_value"] = angular.copy(field.default_option);
             } else {
               if (['checkbox'].indexOf(field.input_type) >= 0 ||
                   ['date'].indexOf(field.input_type) >= 0 && field.date_type == "date-range") {
-                $scope.model['value'] = {};
+                $scope.model['_value'] = {};
               } else if (['list'].indexOf(field.input_type) >= 0) {
-                $scope.model['value'] = [];
+                $scope.model['_value'] = [];
               } else {
-                $scope.model['value'] = "";
+                $scope.model['_value'] = "";
               }
             }
           }
@@ -231,15 +231,15 @@ var fieldDirective = function($rootScope, $http, $compile, $document, Spreadshee
         var seed = angular.copy($scope.model[0]);
 
         if (field.default_option) {
-          seed["value"] = angular.copy(field.default_option);
+          seed["_value"] = angular.copy(field.default_option);
         } else {
           if (['checkbox'].indexOf(field.input_type) >= 0 ||
               ['date'].indexOf(field.input_type) >= 0 && field.date_type == "date-range") {
-            seed['value'] = {};
+            seed['_value'] = {};
           } else if (['list'].indexOf(field.input_type) >= 0) {
-            seed['value'] = [];
+            seed['_value'] = [];
           } else {
-            seed['value'] = "";
+            seed['_value'] = "";
           }
         }
 

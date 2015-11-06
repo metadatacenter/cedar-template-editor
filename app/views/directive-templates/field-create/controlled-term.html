@@ -8,7 +8,6 @@
 	</div><!-- /.form-group -->
 	<div class="form-group floating-label-wrapper">
 	  <input type="text" class="form-control" id="help-text-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}" placeholder="Controlled Term ID" aria-label="Controlled Term ID" ng-model="field.properties.info.controlled_term_id"  with-floating-label>
-	</div><!-- /.form-group --> 
-  <div class="configuration-options" ng-include="'views/partials/configuration-options.html'">
-  </div><!-- /.configuration-options -->
+	</div><!-- /.form-group -->
+	<div class="configuration-options" ng-include="'views/partials/staging-area-actions.html'"></div>
 </div><!-- /.input-type-container -->
