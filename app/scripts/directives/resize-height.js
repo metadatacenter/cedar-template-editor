@@ -8,10 +8,9 @@ var resizeHeight = function ($window, $timeout) {
 
     $scope.onResizeFunction = function () {
       var widthCalc = $element.width();
-      //console.log("width is:" + widthCalc);
       if (widthCalc == 0) {
         var w = angular.element($window);
-        $timeout(function(){ w.triggerHandler('resize') });
+        $timeout(function(){ w.triggerHandler('resize') }, 250);
       } else {
         $element.height(widthCalc);
       }
