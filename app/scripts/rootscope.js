@@ -242,7 +242,7 @@ var angularRun = function($rootScope) {
   };
 
   $rootScope.elementIsMultiInstance = function(element) {
-    return element.hasOwnProperty('minItems') && element.minItems != null;
+    return element.hasOwnProperty('minItems') && !angular.isUndefined(element.minItems);
   };
 
   var generateCardinalities = function(max) {
