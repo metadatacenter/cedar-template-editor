@@ -9318,6 +9318,15 @@ body {
 .multiple-instance-cardinality {
   color: #71a69c;
 }
+#form-item-config-section {
+  border-top: 3px dashed #71a69c;
+}
+#staging-area-actions {
+  border-top: 3px dashed #71a69c;
+}
+#previewEditOptionOfElement {
+  margin-top: 10px;
+}
 .activ-grotesk-regular {
   font-family: 'aktiv-grotesk-std';
   font-weight: 400;
