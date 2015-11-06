@@ -809,7 +809,8 @@ angularApp.controller('TermsController', function($rootScope, $scope, BioPortalS
     $scope.controlTerm.stageValueConstraintAction = "add_class";
   };
 
-  $scope.controlTerm.stageOntologyValueConstraint = function(selection) {
+
+  $scope.controlTerm.stageOntologyValueConstraint = function() {
     $scope.controlTerm.stagedOntologyValueConstraints.push({
       'name': $scope.controlTerm.currentOntology.details.ontology['name'],
       'uri': $scope.controlTerm.currentOntology.details.ontology['@id']
@@ -827,6 +828,7 @@ angularApp.controller('TermsController', function($rootScope, $scope, BioPortalS
   };
 
   $scope.controlTerm.stageOntologyClassChildrenValueConstraint = function(selection) {
+    $scope.controlTerm.stagedOntologyClassValueConstraints = [];
     var acronym = getOntologyAcronym(selection);
     BioPortalService.getClassChildren(acronym, selection['@id']).then(function(response) {
       angular.forEach(response, function(child) {
@@ -838,13 +840,23 @@ angularApp.controller('TermsController', function($rootScope, $scope, BioPortalS
   }
 
   $scope.controlTerm.stageOntologyClassSiblingsValueConstraint = function(selection) {
+    $scope.controlTerm.stagedOntologyClassValueConstraints = [];
     var acronym = getOntologyAcronym(selection);
     BioPortalService.getClassParents(acronym, selection['@id']).then(function(response) {
-      BioPortalService.getClassChildren(acronym, response[0]['@id']).then(function(childResponse) {
-        angular.forEach(childResponse, function(child) {
-          $scope.controlTerm.stageOntologyClassValueConstraint(child);
+      if (response && angular.isArray(response) && response.length > 0) {
+        BioPortalService.getClassChildren(acronym, response[0]['@id']).then(function(childResponse) {
+          angular.forEach(childResponse, function(child) {
+            $scope.controlTerm.stageOntologyClassValueConstraint(child);
+          });
         });
-      });
+      } else {
+        var acronym = $scope.controlTerm.currentOntology.details.ontology.acronym;
+        BioPortalService.getOntologyTreeRoot(acronym).then(function(childResponse) {
+          angular.forEach(childResponse, function(child) {
+            $scope.controlTerm.stageOntologyClassValueConstraint(child);
+          });
+        });
+      }
     });
 
     $scope.controlTerm.stageValueConstraintAction == "add_siblings";
@@ -872,7 +884,7 @@ angularApp.controller('TermsController', function($rootScope, $scope, BioPortalS
         }
       }
       if (!alreadyAdded) {
-        $scope.controlTerm.valueConstraint.ontologies.push(constraint);
+        $scope.controlTerm.valueConstraint.ontologies.push(angular.copy(constraint));
       }
     }
     $scope.controlTerm.stagedOntologyValueConstraints = [];
@@ -892,7 +904,7 @@ angularApp.controller('TermsController', function($rootScope, $scope, BioPortalS
         }
       }
       if (!alreadyAdded) {
-        $scope.controlTerm.valueConstraint.value_sets.push(constraint);
+        $scope.controlTerm.valueConstraint.value_sets.push(angular.copy(constraint));
       }
     }
     $scope.controlTerm.stagedValueSetValueConstraints = [];
@@ -918,7 +930,7 @@ angularApp.controller('TermsController', function($rootScope, $scope, BioPortalS
         if (constraint.label == '') {
           constraint.label = $scope.controlTerm.stagedOntologyClassValueConstraintData[i].label;
         }
-        $scope.controlTerm.valueConstraint.classes.push(constraint);
+        $scope.controlTerm.valueConstraint.classes.push(angular.copy(constraint));
       }
     }
     $scope.controlTerm.stagedOntologyClassValueConstraints = [];

@@ -316,8 +316,8 @@
 
         <div class="class-actions">
           <button class="btn btn-add-term" ng-if="controlTerm.selectedClass1.prefLabel && controlTerm.classDetails" ng-click="controlTerm.addClass(controlTerm.selectedClass1)" ng-disabled="controlTerm.isLoadingClassDetails">Add {{controlTerm.selectedClass1.prefLabel}}</button>
-  		  <div class="or-divider" ng-if="controlTerm.selectedClass1.prefLabel && controlTerm.selectedClass2.prefLabel && controlTerm.classDetails"></div>
-  		  <button class="btn btn-add-term add-btn-margin" ng-if="controlTerm.selectedClass2.prefLabel && controlTerm.classDetails" ng-click="controlTerm.addClass(controlTerm.selectedClass2)">Add {{controlTerm.selectedClass2.prefLabel}}</button>
+  		  <div class="or-divider" ng-if="controlTerm.selectedClass1.prefLabel && controlTerm.selectedClass2.prefLabel && controlTerm.selectedClass1['@id'] != controlTerm.selectedClass2['@id'] && controlTerm.classDetails"></div>
+  		  <button class="btn btn-add-term add-btn-margin" ng-if="controlTerm.selectedClass2.prefLabel && controlTerm.selectedClass2['@id'] != controlTerm.selectedClass1['@id'] && controlTerm.classDetails" ng-click="controlTerm.addClass(controlTerm.selectedClass2)">Add {{controlTerm.selectedClass2.prefLabel}}</button>
         </div>
  	  </div>
 	</div>
@@ -586,16 +586,16 @@
         <div class="class-actions">
           <div ng-if="controlTerm.selectedValueResult.resultType == 'Ontology Class' || controlTerm.selectedValueResult.resultType == 'Ontology'">
             <div class="element-toggles list table-style">
-              <div class="element-toggle table-cell-style" ng-class="{active: controlTerm.stageValueConstraintAction == 'add_class'}" ng-click="controlTerm.stageOntologyClassValueConstraint(controlTerm.selectedValueResult)">
+              <div class="element-toggle table-cell-style" ng-class="{active: controlTerm.stageValueConstraintAction == 'add_class'}" ng-click="controlTerm.stageOntologyClassValueConstraint(controlTerm.selectedValueResult)" ng-if="!$root.isOntology(controlTerm.selectedValueResult)">
                 <span>Add Class</span>
               </div>
-              <div class="element-toggle table-cell-style" ng-class="{active: controlTerm.stageValueConstraintAction == 'add_siblings'}" ng-click="controlTerm.stageOntologyClassSiblingsValueConstraint(controlTerm.selectedValueResult)">
+              <div class="element-toggle table-cell-style" ng-class="{active: controlTerm.stageValueConstraintAction == 'add_siblings'}" ng-click="controlTerm.stageOntologyClassSiblingsValueConstraint(controlTerm.selectedValueResult)" ng-if="!$root.isOntology(controlTerm.selectedValueResult)">
                 <span>Add Siblings</span>
               </div>
-              <div class="element-toggle table-cell-style" ng-class="{active: controlTerm.stageValueConstraintAction == 'add_children'}" ng-click="controlTerm.stageOntologyClassChildrenValueConstraint(controlTerm.selectedValueResult)">
+              <div class="element-toggle table-cell-style" ng-class="{active: controlTerm.stageValueConstraintAction == 'add_children'}" ng-click="controlTerm.stageOntologyClassChildrenValueConstraint(controlTerm.selectedValueResult)" ng-if="!$root.isOntology(controlTerm.selectedValueResult)">
                 <span>Add Children</span>
               </div>
-              <div class="element-toggle table-cell-style" ng-class="{active: controlTerm.stageValueConstraintAction == 'add_ontology'}" ng-click="controlTerm.stageOntologyValueConstraint(controlTerm.selectedValueResult)">
+              <div class="element-toggle table-cell-style" ng-class="{active: controlTerm.stageValueConstraintAction == 'add_ontology'}" ng-click="controlTerm.stageOntologyValueConstraint()" ng-if="controlTerm.currentOntology.details.ontology">
                 <span>Add Ontology</span>
               </div>
             </div>
@@ -605,7 +605,7 @@
               <div class="element-toggle table-cell-style" ng-class="{active: controlTerm.stageValueConstraintAction == 'add_class'}" ng-click="controlTerm.stageOntologyClassValueConstraint(controlTerm.selectedValueResult)">
                 <span>Add Class</span>
               </div>
-              <div class="element-toggle table-cell-style" ng-class="{active: controlTerm.stageValueConstraintAction == 'add_entire_value_set'}" ng-click="controlTerm.stageValueSetValueConstraint(controlTerm.selectedValueResult); controlTerm.addValueSetToValueConstraint()">
+              <div class="element-toggle table-cell-style" ng-class="{active: controlTerm.stageValueConstraintAction == 'add_entire_value_set'}" ng-click="controlTerm.stageValueSetValueConstraint(); controlTerm.addValueSetToValueConstraint()">
                 <span>Add Entire Value Set</span>
               </div>
             </div>

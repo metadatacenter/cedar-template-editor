@@ -2401,7 +2401,7 @@ section.dashboard-elements {
     }
   }
 
-  li:before {
+  li a:before {
     content:"";
     display:block;
     width:16px; /* same with indentation */
@@ -2421,33 +2421,33 @@ section.dashboard-elements {
   }
 
   .no-children {
-    &:before {
+    > a:before {
       background: url("../scripts/Bioportal/assets/upper_leaf.gif") no-repeat center top transparent;
     }
 
     &:last-child {
-      &:before {
+      > a:before {
         background: url("../scripts/Bioportal/assets/last_leaf.gif") no-repeat center top transparent;
       }
     }
   }
 
   .has-children {
-    &:before {
+    > a:before {
       background: url("../scripts/Bioportal/assets/upper_node_collapse.gif") no-repeat center top transparent;
     }
     &:last-child {
-      &:before {
+      > a:before {
         background: url("../scripts/Bioportal/assets/last_node_collapse.gif") no-repeat center top transparent;
       }
     }
 
     &.expanded {
-      &:before {
+      > a:before {
         background: url("../scripts/Bioportal/assets/upper_node_expand.gif") no-repeat center top transparent;
       }
       &:last-child {
-        &:before {
+        > a:before {
           background: url("../scripts/Bioportal/assets/last_node_expand.gif") no-repeat center center transparent;
         }
       }
@@ -2591,6 +2591,7 @@ section.dashboard-elements {
 
 .one-class-list {
   border: 1px solid #DDD;
+  margin-bottom: 20px;
 }
 
 .more-items.open .fa-angle-down {

@@ -11549,7 +11549,7 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
 .tree li.expanded:last-child {
   border-left: none;
 }
-.tree li:before {
+.tree li a:before {
   content: "";
   display: block;
   width: 16px;
@@ -11564,22 +11564,22 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   background: white;
   /* same with body background */
 }
-.tree .no-children:before {
+.tree .no-children > a:before {
   background: url("../scripts/Bioportal/assets/upper_leaf.gif") no-repeat center top transparent;
 }
-.tree .no-children:last-child:before {
+.tree .no-children:last-child > a:before {
   background: url("../scripts/Bioportal/assets/last_leaf.gif") no-repeat center top transparent;
 }
-.tree .has-children:before {
+.tree .has-children > a:before {
   background: url("../scripts/Bioportal/assets/upper_node_collapse.gif") no-repeat center top transparent;
 }
-.tree .has-children:last-child:before {
+.tree .has-children:last-child > a:before {
   background: url("../scripts/Bioportal/assets/last_node_collapse.gif") no-repeat center top transparent;
 }
-.tree .has-children.expanded:before {
+.tree .has-children.expanded > a:before {
   background: url("../scripts/Bioportal/assets/upper_node_expand.gif") no-repeat center top transparent;
 }
-.tree .has-children.expanded:last-child:before {
+.tree .has-children.expanded:last-child > a:before {
   background: url("../scripts/Bioportal/assets/last_node_expand.gif") no-repeat center center transparent;
 }
 .field-tree {
@@ -11699,6 +11699,7 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
 }
 .one-class-list {
   border: 1px solid #DDD;
+  margin-bottom: 20px;
 }
 .more-items.open .fa-angle-down {
   -webkit-transform: rotate(180deg);

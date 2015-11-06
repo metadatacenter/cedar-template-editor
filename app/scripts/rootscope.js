@@ -277,11 +277,11 @@ var angularRun = function($rootScope, BioPortalService) {
                     vcst.branches && vcst.branches.length > 0);
 
     return result;
-  }
+  };
 
   $rootScope.fieldAutocompleteCache = {};
   $rootScope.predefinedConstraintValues = function(id, info) {
-    if ($rootScope.fieldAutocompleteCache[id] != null) {
+    if ($rootScope.fieldAutocompleteCache[id]) {
       return $rootScope.fieldAutocompleteCache[id];
     }
     $rootScope.fieldAutocompleteCache[id] = [{label: 'Loading...'}];
@@ -294,18 +294,18 @@ var angularRun = function($rootScope, BioPortalService) {
       });
     }
 
-    for (var i = 0; i < vcst.value_sets.length; i++) {
-      BioPortalService.getClassChildren('NLMVS', vcst.value_sets[i]['uri']).then(function(childResponse) {
+    angular.forEach(vcst.value_sets, function(valueSet) {
+      BioPortalService.getClassChildren('NLMVS', valueSet.uri).then(function(childResponse) {
         for (var j = 0; j < childResponse.length; j++) {
           results.push(
             {
               '@id': childResponse[j]['@id'],
-              'label': childResponse[j]['prefLabel']
+              'label': childResponse[j].prefLabel
             }
           );
         }
       });
-    }
+    });
 
     if (vcst.ontologies.length > 0) {
       angular.forEach(vcst.ontologies, function(klass) {
@@ -321,7 +321,7 @@ var angularRun = function($rootScope, BioPortalService) {
 
     $rootScope.fieldAutocompleteCache[id] = results;
     return $rootScope.fieldAutocompleteCache[id];
-  }
+  };
 
   $rootScope.excludedValueConstraint = function(id, info) {
     if ($rootScope.excludedValues && $rootScope.excludedValues[id]) {
@@ -359,7 +359,7 @@ var angularRun = function($rootScope, BioPortalService) {
     $rootScope.excludedValues[id] = results;
 
     return results;
-  }
+  };
 
   $rootScope.isValueConformedToConstraint = function(value, id, info) {
     var predefinedValues = $rootScope.fieldAutocompleteCache[id];
@@ -378,7 +378,11 @@ var angularRun = function($rootScope, BioPortalService) {
     isValid = excludedValues.indexOf(value.uri) == -1;
 
     return isValid;
-  }
+  };
+
+  $rootScope.isOntology = function(obj) {
+    return obj["@type"] && obj["@type"].indexOf("Ontology") > 0;
+  };
 };
 
 angularRun.$inject = ['$rootScope', 'BioPortalService'];
