@@ -6,16 +6,5 @@
   <div class="form-group floating-label-wrapper">
     <input type="text" class="form-control" id="page-break-description-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}" placeholder="Page Description (Optional)" aria-label="Page Description (Optional)" ng-model="field.properties.info.description"  with-floating-label>
   </div><!-- /.form-group -->
-  <div class="configuration-options">
-  	<div class="toggle-options">
-		  <div class="save-options">
-		  	<div class="add" ng-click="add()">
-		  		<i class="fa fa-plus"></i>
-		  	</div>
-		  	<div class="remove" ng-click="delete()">
-		  		<i class="fa fa-times"></i>
-		  	</div>
-		  </div><!-- /.save-options -->
-		</div><!-- /.toggle-options -->
-	</div><!-- /.configuration-options -->
+	<div class="configuration-options" ng-include="'views/partials/staging-area-actions.html'"></div>
 </div><!-- /.input-type-container -->

@@ -14,17 +14,6 @@
     <input type="checkbox" id="advanced-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}"  ng-model="$parent.element.properties.info.is_cardinal_field" />
     <label for="cardinality-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}">Cardinality</label>
   </div><!-- /.checkbox-inline -->
-  <div class="save-options">
-  	<div class="add" ng-click="add()">
-  		<i class="fa fa-plus"></i>
-  	</div>
-  	<div class="edit">
-  		<i class="cedar-svg-pencil"></i>
-  	</div>
-  	<div class="remove" ng-click="delete()">
-  		<i class="fa fa-times"></i>
-  	</div>
-  </div><!-- /.save-options -->
  <div class="clearfix"></div>
 
   <!-- Cardinaltiy Options -->
