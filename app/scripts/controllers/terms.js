@@ -163,6 +163,8 @@ angularApp.controller('TermsController', function($rootScope, $scope, BioPortalS
     $scope.controlTerm.fieldTreeVisibility = false;
     $scope.controlTerm.searchPreloader = false;
     $scope.controlTerm.searchResults = [];
+    $scope.controlTerm.stageValueConstraintAction = null;
+
     //Init field/value tooltip
     setTimeout(function() {
       angular.element('#field-value-tooltip').popover();
@@ -278,6 +280,7 @@ angularApp.controller('TermsController', function($rootScope, $scope, BioPortalS
     var classesUrl = ontology.links.classes;
 
     $scope.controlTerm.fieldTreeVisibility = true;
+    $scope.controlTerm.searchPreloader = true;
     $q.all({
       details:    BioPortalService.getOntologyDetails(acronym),
       size:       BioPortalService.getOntologySize(acronym),
@@ -336,7 +339,7 @@ angularApp.controller('TermsController', function($rootScope, $scope, BioPortalS
 
   // Used in ontology tree directive
   $scope.controlTerm.getClassDetails = function(subtree) {
-    // $scope.controlTerm.selectedFieldClass = subtree;
+    $scope.controlTerm.selectedValueResult = subtree;
 
     // Get selected Class Details from the links.self endpoint provided
     $scope.controlTerm.selectedClass2 = subtree;
@@ -344,9 +347,6 @@ angularApp.controller('TermsController', function($rootScope, $scope, BioPortalS
       $scope.controlTerm.classDetails = response;
     });
 
-    if ($scope.controlTerm.filterSelection == "values") {
-      $scope.controlTerm.selectValueResult(subtree);
-    }
   };
 
   // FIELD: Hide ontology tree and details screen
@@ -428,12 +428,23 @@ angularApp.controller('TermsController', function($rootScope, $scope, BioPortalS
   }
 
   $scope.controlTerm.isOntologyNameMatched = function(ontology) {
+    var name;
+    if (!$scope.controlTerm.bioportalValueSetsFilter && ontology.resultType == 'Value Set') {
+      return false;
+    }
+    if (!$scope.controlTerm.bioportalOntologiesFilter && ontology.resultType == 'Ontology') {
+      return false;
+    }
     if (!$scope.controlTerm.isSearchingOntologies) {
       return ontology;
     }
 
     if ($scope.controlTerm.ontologySearchRegexp) {
-      return $scope.controlTerm.ontologySearchRegexp.test(ontology.name);
+      name = ontology.name;
+      if (ontology.resultType == 'Value Set') {
+        name = ontology.prefLabel;
+      }
+      return $scope.controlTerm.ontologySearchRegexp.test(name);
     } else {
       return ontology;
     }
@@ -500,6 +511,24 @@ angularApp.controller('TermsController', function($rootScope, $scope, BioPortalS
     for (var i = 0, len = $scope.controlTerm.valueConstraint.classes.length; i < len; i+= 1) {
       if ($scope.controlTerm.valueConstraint.classes[i] == ontologyClass) {
         $scope.controlTerm.valueConstraint.classes.splice(i,1);
+        break;
+      }
+    }
+  };
+
+  $scope.controlTerm.deleteFieldAddedValueSet = function(valueSet) {
+    for (var i = 0, len = $scope.controlTerm.valueConstraint.value_sets.length; i < len; i+= 1) {
+      if ($scope.controlTerm.valueConstraint.value_sets[i]['uri'] == valueSet['uri']) {
+        $scope.controlTerm.valueConstraint.value_sets.splice(i,1);
+        break;
+      }
+    }
+  };
+
+  $scope.controlTerm.deleteFieldAddedOntology = function(ontology) {
+    for (var i = 0, len = $scope.controlTerm.valueConstraint.ontologies.length; i < len; i+= 1) {
+      if ($scope.controlTerm.valueConstraint.ontologies[i]['uri'] == ontology['uri']) {
+        $scope.controlTerm.valueConstraint.ontologies.splice(i,1);
         break;
       }
     }
@@ -645,24 +674,53 @@ angularApp.controller('TermsController', function($rootScope, $scope, BioPortalS
    * should be working for ontology classes...
    */
   $scope.controlTerm.selectValueResult = function(result) {
+    var acronym;
+
     $scope.controlTerm.selectedValueResult = result;
     $scope.controlTerm.valuesTreeVisibility = true;
 
     if (result.resultType == 'Ontology' || result.resultType == 'Ontology Class') {
-      $scope.assignOntologyTree(result);
-    } else if (result.resultType == 'Value Set' || result.resultType == 'Value Set Class') {
-      $scope.assignClassDetails(result);
-      var acronym = getOntologyAcronym(result);
-      var classId = result["@id"];
-      if (result.resultType == 'Value Set Class') {
-        classId = result.resultParentId;
+      $scope.browsingSection = 'ontology';
+      if (result.resultType == 'Ontology') {
+        $scope.controlTerm.currentOntology = {
+          'details': { 'ontology': result }
+        };
+      } else {
+        $scope.controlTerm.currentOntology = {
+          'details': { 'ontology': $scope.getOntologyByAcronym(getOntologyAcronym(result)) }
+        };
       }
-      BioPortalService.getClassValueSet(acronym, classId).then(function(children) {
-        result.children = children;
+      loadOntologyRootClasses($scope.controlTerm.currentOntology.details.ontology);
+    } else if (result.resultType == 'Value Set' || result.resultType == 'Value Set Class') {
+      $scope.browsingSection = 'value_set';
+      $scope.controlTerm.searchPreloader = true;
+      $scope.assignClassDetails(result);
+      acronym = getOntologyAcronym(result);
+
+      if (result.resultType == 'Value Set') {
+        $scope.controlTerm.currentValueSet = result;
+      } else {
+        // get the parent
+        BioPortalService.getClassParents('NLMVS', result['@id']).then(function(response) {
+          $scope.controlTerm.currentValueSet = response[0];
+        });
+      }
+
+      $scope.currentValueSetId = result["@id"];
+      if (result.resultType == 'Value Set Class') {
+        $scope.currentValueSetId = result.resultParentId;
+      }
+      BioPortalService.getClassValueSet(acronym, $scope.currentValueSetId).then(function(valueSetClasses) {
+        $scope.controlTerm.valueSetClasses = valueSetClasses;
+        angular.forEach($scope.controlTerm.valueSetClasses, function(valueSetClass) {
+          valueSetClass.resultType = 'Value Set Class';
+        });
+        $scope.controlTerm.searchPreloader = false;
       });
     }
-    
-    $scope.assignClassDetails(result);
+
+    // TODO: is this needed?
+    // $scope.assignClassDetails(result);
   };
 
   $scope.controlTerm.valuesBrowse = function(event) {
@@ -708,7 +766,8 @@ angularApp.controller('TermsController', function($rootScope, $scope, BioPortalS
    * Lookup ontology tree and assign it as a property of the object.
    */
   $scope.assignOntologyTree = function(ontologyOrOntologyClass) {
-    if (!$scope.controlTerm.selectedValueResultOntologyTree) {
+    if (!$scope.controlTerm.selectedValueResult.ontologyTree) {
+      $scope.controlTerm.searchPreloader = true;
       if (ontologyOrOntologyClass["@type"].indexOf("Ontology") >= 0) {
         BioPortalService.getOntologyValueSets(ontologyOrOntologyClass.acronym).then(function(response) {
           if (response && angular.isArray(response)) {
@@ -717,21 +776,26 @@ angularApp.controller('TermsController', function($rootScope, $scope, BioPortalS
             angular.forEach(response, function(ontologyClass) {
               ontologyClass.resultType = 'Value Set';
             });
-            $scope.controlTerm.selectedValueResultOntologyTree = response;
+            $scope.controlTerm.selectedValueResult.ontologyTree = response;
           }
+          $scope.controlTerm.searchPreloader = false;
         });
       } else {
         var acronym = getOntologyAcronym(ontologyOrOntologyClass);
         BioPortalService.getClassTree(acronym, ontologyOrOntologyClass['@id']).then(function(response) {
           response.sort(sortOntologyTree);
-          $scope.controlTerm.selectedValueResultOntologyTree = response;
+          $scope.controlTerm.selectedValueResult.ontologyTree = response;
+          $scope.controlTerm.searchPreloader = false;
         });
       }
     }
   }
 
+  $scope.controlTerm.stagedOntologyValueConstraints = [];
   $scope.controlTerm.stagedOntologyClassValueConstraints = [];
   $scope.controlTerm.stagedOntologyClassValueConstraintData = [];
+  $scope.controlTerm.stagedValueSetValueConstraints = [];
+
   $scope.controlTerm.stageOntologyClassValueConstraint = function(selection) {
     $scope.controlTerm.stagedOntologyClassValueConstraints.push({
       'uri': selection['@id'],
@@ -741,6 +805,25 @@ angularApp.controller('TermsController', function($rootScope, $scope, BioPortalS
     $scope.controlTerm.stagedOntologyClassValueConstraintData.push({
       'label': selection.prefLabel
     });
+
+    $scope.controlTerm.stageValueConstraintAction = "add_class";
+  };
+
+  $scope.controlTerm.stageOntologyValueConstraint = function(selection) {
+    $scope.controlTerm.stagedOntologyValueConstraints.push({
+      'name': $scope.controlTerm.currentOntology.details.ontology['name'],
+      'uri': $scope.controlTerm.currentOntology.details.ontology['@id']
+    });
+
+    $scope.controlTerm.stageValueConstraintAction = "add_ontology";
+  };
+
+  $scope.controlTerm.stageValueSetValueConstraint = function(selection) {
+    $scope.controlTerm.stagedValueSetValueConstraints.push({
+      'uri': $scope.currentValueSetId
+    });
+
+    $scope.controlTerm.stageValueConstraintAction = "add_entire_value_set";
   };
 
   $scope.controlTerm.stageOntologyClassChildrenValueConstraint = function(selection) {
@@ -750,12 +833,72 @@ angularApp.controller('TermsController', function($rootScope, $scope, BioPortalS
         $scope.controlTerm.stageOntologyClassValueConstraint(child);
       });
     });
+
+    $scope.controlTerm.stageValueConstraintAction = "add_children";
   }
 
   $scope.controlTerm.stageOntologyClassSiblingsValueConstraint = function(selection) {
     var acronym = getOntologyAcronym(selection);
-    alert('TODO: lookup siblings and call stageOntologyClassValueConstraint on each');
-  }
+    BioPortalService.getClassParents(acronym, selection['@id']).then(function(response) {
+      BioPortalService.getClassChildren(acronym, response[0]['@id']).then(function(childResponse) {
+        angular.forEach(childResponse, function(child) {
+          $scope.controlTerm.stageOntologyClassValueConstraint(child);
+        });
+      });
+    });
+
+    $scope.controlTerm.stageValueConstraintAction == "add_siblings";
+  };
+
+  $scope.bioportalFilterResultLabel = function() {
+    if ($scope.controlTerm.bioportalValueSetsFilter && $scope.controlTerm.bioportalOntologiesFilter) {
+      return 'ontologies and value sets';
+    }
+    if ($scope.controlTerm.bioportalValueSetsFilter) {
+      return 'value sets';
+    }
+    return 'ontologies';
+  };
+
+  $scope.controlTerm.addOntologyToValueConstraint = function() {
+    var alreadyAdded, constraint, i, j;
+    for (i = 0; i < $scope.controlTerm.stagedOntologyValueConstraints.length; i++) {
+      constraint = $scope.controlTerm.stagedOntologyValueConstraints[i];
+      alreadyAdded = false;
+      for (j = 0; j < $scope.controlTerm.valueConstraint.ontologies.length; j++) {
+        if ($scope.controlTerm.valueConstraint.ontologies[j]['uri'] == constraint['uri']) {
+          alreadyAdded = true;
+          break;
+        }
+      }
+      if (!alreadyAdded) {
+        $scope.controlTerm.valueConstraint.ontologies.push(constraint);
+      }
+    }
+    $scope.controlTerm.stagedOntologyValueConstraints = [];
+
+    assignValueConstraintToField();
+  };
+
+  $scope.controlTerm.addValueSetToValueConstraint = function() {
+    var alreadyAdded, constraint, i, j;
+    for (i = 0; i < $scope.controlTerm.stagedValueSetValueConstraints.length; i++) {
+      constraint = $scope.controlTerm.stagedValueSetValueConstraints[i];
+      alreadyAdded = false;
+      for (j = 0; j < $scope.controlTerm.valueConstraint.value_sets.length; j++) {
+        if ($scope.controlTerm.valueConstraint.value_sets[j]['uri'] == constraint['uri']) {
+          alreadyAdded = true;
+          break;
+        }
+      }
+      if (!alreadyAdded) {
+        $scope.controlTerm.valueConstraint.value_sets.push(constraint);
+      }
+    }
+    $scope.controlTerm.stagedValueSetValueConstraints = [];
+
+    assignValueConstraintToField();
+  };
 
   /**
    * Add ontology class to value constraint to field values info definition.

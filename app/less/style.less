@@ -2595,7 +2595,7 @@ section.dashboard-elements {
   color: @gray;
 }
 
-.field-search-input-group, .values-search-input-group, .field-browse, .values-browse {
+.field-search-input-group, .values-search-input-group, .field-browse, .values-browse, .ontology-search-input-group {
   .form-control {
     border: none;
   }
@@ -2704,4 +2704,41 @@ section.dashboard-elements {
 
 .clickable {
     cursor: pointer;
+}
+
+.table-style {
+  display: table;
+  width: 100%;
+
+  .table-row-style {
+    display: table-row;
+  }
+
+  .table-cell-style {
+    display: table-cell;
+    vertical-align: middle;
+  }
+}
+
+.stage-value-constraint-actions {
+  .table-cell-style {
+    width: 50%;
+  }
+}
+
+.staged-items {
+  margin: 20px auto;
+}
+
+.ontology-class-children-table {
+  height: 304px;
+  background: @white;
+  overflow: auto;
+  margin-top: 19px;
+
+  tr:first-child {
+    td {
+      border-top: none;
+    }
+  }
 }

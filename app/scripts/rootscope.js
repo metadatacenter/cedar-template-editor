@@ -1,6 +1,6 @@
 /*jslint node: true */
 /*global angular */
-var angularRun = function($rootScope) {
+var angularRun = function($rootScope, BioPortalService) {
 
   // Define global pageTitle variable for use
   //$rootScope.pageTitle;
@@ -268,7 +268,118 @@ var angularRun = function($rootScope) {
       return false;
     }
   };
+
+  $rootScope.hasValueConstraint = function(info) {
+    var vcst = info && info.value_constraint;
+    var result = vcst && (vcst.ontologies && vcst.ontologies.length > 0 ||
+                    vcst.value_sets && vcst.value_sets.length > 0 ||
+                    vcst.classes && vcst.classes.length > 0 ||
+                    vcst.branches && vcst.branches.length > 0);
+
+    return result;
+  }
+
+  $rootScope.fieldAutocompleteCache = {};
+  $rootScope.predefinedConstraintValues = function(id, info) {
+    if ($rootScope.fieldAutocompleteCache[id] != null) {
+      return $rootScope.fieldAutocompleteCache[id];
+    }
+    $rootScope.fieldAutocompleteCache[id] = [{label: 'Loading...'}];
+    var results = [];
+    var vcst = info.value_constraint;
+
+    if (vcst.classes.length > 0) {
+      angular.forEach(vcst.classes, function(klass) {
+        results.push({uri: klass.uri, label: klass.label});
+      });
+    }
+
+    for (var i = 0; i < vcst.value_sets.length; i++) {
+      BioPortalService.getClassChildren('NLMVS', vcst.value_sets[i]['uri']).then(function(childResponse) {
+        for (var j = 0; j < childResponse.length; j++) {
+          results.push(
+            {
+              '@id': childResponse[j]['@id'],
+              'label': childResponse[j]['prefLabel']
+            }
+          );
+        }
+      });
+    }
+
+    if (vcst.ontologies.length > 0) {
+      angular.forEach(vcst.ontologies, function(klass) {
+        results.push({uri: klass.uri, label: klass.label});
+      });
+    }
+
+    if (vcst.branches.length > 0) {
+      angular.forEach(vcst.branches, function(klass) {
+        results.push({uri: klass.uri, label: klass.label});
+      });
+    }
+
+    $rootScope.fieldAutocompleteCache[id] = results;
+    return $rootScope.fieldAutocompleteCache[id];
+  }
+
+  $rootScope.excludedValueConstraint = function(id, info) {
+    if ($rootScope.excludedValues && $rootScope.excludedValues[id]) {
+      return $rootScope.excludedValues[id];
+    }
+
+    var results = [];
+    var vcst = info.value_constraint;
+
+    if (vcst.classes.length > 0) {
+      angular.forEach(vcst.classes, function(klass) {
+        jQuery.merge(results, klass.exclusions || []);
+      });
+    }
+
+    if (vcst.value_sets.length > 0) {
+      angular.forEach(vcst.value_sets, function(klass) {
+        jQuery.merge(results, klass.exclusions || []);
+      });
+    }
+
+    if (vcst.ontologies.length > 0) {
+      angular.forEach(vcst.ontologies, function(klass) {
+        jQuery.merge(results, klass.exclusions || []);
+      });
+    }
+
+    if (vcst.branches.length > 0) {
+      angular.forEach(vcst.branches, function(klass) {
+        jQuery.merge(results, klass.exclusions || []);
+      });
+    }
+
+    $rootScope.excludedValues = $rootScope.excludedValues || {};
+    $rootScope.excludedValues[id] = results;
+
+    return results;
+  }
+
+  $rootScope.isValueConformedToConstraint = function(value, id, info) {
+    var predefinedValues = $rootScope.fieldAutocompleteCache[id];
+    var excludedValues = $rootScope.excludedValueConstraint(id, info);
+    var isValid = false;
+    var jsonString = JSON.stringify(value);
+
+    angular.forEach(predefinedValues, function(val) {
+      if (!isValid) {
+        // IMPORTANT: this campare only valid if the 2 objects are simple
+        // and all properties are in the same order.
+        isValid = JSON.stringify(val) == jsonString;
+      }
+    });
+
+    isValid = excludedValues.indexOf(value.uri) == -1;
+
+    return isValid;
+  }
 };
 
-angularRun.$inject = ['$rootScope'];
+angularRun.$inject = ['$rootScope', 'BioPortalService'];
 angularApp.run(angularRun);

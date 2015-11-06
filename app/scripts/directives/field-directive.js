@@ -103,6 +103,48 @@ var fieldDirective = function($rootScope, $http, $compile, $document, Spreadshee
         //remove from emptyRequiredField array
         $scope.$emit('emptyRequiredField', ['remove', $scope.field.properties.info.title, $scope.uuid]);
       }
+
+      var allFieldsAreValid = true;
+      if ($rootScope.hasValueConstraint($scope.field.properties.info)) {
+
+        if (angular.isArray($scope.model)) {
+          angular.forEach($scope.model, function(valueElement) {
+            if (angular.isArray(valueElement.value)) {
+              angular.forEach(valueElement.value, function(ve) {
+                if (!$rootScope.isValueConformedToConstraint(ve, $scope.field["@id"], $scope.field.properties.info)) {
+                  allFieldsAreValid = false;
+                }
+              });
+            } else if (angular.isObject(valueElement.value)) {
+              if (!$rootScope.isValueConformedToConstraint(valueElement.value, $scope.field["@id"], $scope.field.properties.info)) {
+                allFieldsAreValid = false;
+              }
+            }
+          });
+        } else {
+          if (angular.isArray($scope.model.value)) {
+            angular.forEach($scope.model.value, function(ve) {
+              if (!$rootScope.isValueConformedToConstraint(ve, $scope.field["@id"], $scope.field.properties.info)) {
+                allFieldsAreValid = false;
+              }
+            });
+          } else if (angular.isObject($scope.model.value)) {
+            if (!$rootScope.isValueConformedToConstraint($scope.model.value, $scope.field["@id"], $scope.field.properties.info)) {
+              allFieldsAreValid = false;
+            }
+          }
+        }
+
+        if (!allFieldsAreValid) {
+          // add this field instance the the invalidFieldValues array
+          $scope.$emit('invalidFieldValues', ['add', $scope.field.properties.info.title, $scope.uuid]);
+        }
+      }
+
+      if (allFieldsAreValid) {
+        //remove from emptyRequiredField array
+        $scope.$emit('invalidFieldValues', ['remove', $scope.field.properties.info.title, $scope.uuid]);
+      }
     });
 
     var field = $scope.field.properties.info
@@ -174,7 +216,7 @@ var fieldDirective = function($rootScope, $http, $compile, $document, Spreadshee
     }
 
     $scope.uuid = $rootScope.generateGUID();
-    
+
     // Retrive appropriate field template file
     $scope.getTemplateUrl = function() {
       var input_type = 'element';
