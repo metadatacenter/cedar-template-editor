@@ -5,8 +5,10 @@
                 class="cedar-svg-expand"></i></a>
 
         <p class="element-name-label"><i class="cedar-svg-element"></i>{{key | keyToTitle}}</p>
+        <span class="multiple-instance-cardinality" ng-show="!$root.isRuntime() && $root.elementIsMultiInstance(element)">{{element.minItems}} .. {{element.maxItems || "Unlimited"}}
+        </span>
 
-        <div ng-if="preview && !nestedElement" class="preview-edit-options"
+        <div ng-if="preview && !nestedElement" class="preview-edit-options" id="previewEditOptionOfElement"
              ng-include="'views/partials/preview-edit-options.html'"></div>
         <span ng-show="$root.isArray(model) && $root.applicationMode == 'runtime'"
               class="spreadsheetSwitch element">
@@ -33,15 +35,14 @@
     </script>
 
     <div class="elements originalContent">
-
-        <div class="element-toggles list" ng-if="$root.isArray(model)">
+        <div class="element-toggles list" ng-if="$root.isRuntime() && $root.elementIsMultiInstance(element)">
             <div class="element-toggle" ng-class="{active: selectedTab == $index}" ng-repeat="m in model"
                  ng-click="selectTab($index)">
                 <span>{{$index + 1}}</span>
             </div>
             <div class="add-element">
                 <button type="button" ng-click="addElement()" class="add"
-                        ng-show="element.minItems && (!element.maxItems || !$root.isArray(model) && element.maxItems > 1 || $root.isArray(model) && model.length < element.maxItems)"
+                        ng-show="($root.isRuntime() && (element.minItems && (!element.maxItems || !$root.isArray(model) && element.maxItems > 1 || $root.isArray(model) && model.length < element.maxItems)))"
                         ng-disabled="preview">
                     <i class="fa fa-plus"></i>
 
