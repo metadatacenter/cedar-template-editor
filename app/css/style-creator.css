@@ -10660,9 +10660,9 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   background-color: #2f7dab;
 }
 .input-type-container .configuration-options .toggle-options .save-options .add i {
-  -webkit-transform: translate(13px, 12px);
-      -ms-transform: translate(13px, 12px);
-          transform: translate(13px, 12px);
+  -webkit-transform: translate(7px, 2px);
+      -ms-transform: translate(7px, 2px);
+          transform: translate(7px, 2px);
 }
 .input-type-container .configuration-options .toggle-options .save-options .edit {
   display: none;
@@ -10683,9 +10683,9 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   background-color: #000000;
 }
 .input-type-container .configuration-options .toggle-options .save-options .remove i {
-  -webkit-transform: translate(13px, 11px);
-      -ms-transform: translate(13px, 11px);
-          transform: translate(13px, 11px);
+  -webkit-transform: translate(7px, 1px);
+      -ms-transform: translate(7px, 1px);
+          transform: translate(7px, 1px);
 }
 .input-type-container .configuration-options .advanced-options {
   float: none;
