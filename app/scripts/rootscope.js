@@ -239,11 +239,11 @@ var angularRun = function($rootScope, BioPortalService) {
 
   $rootScope.isRuntime = function() {
     return $rootScope.pageId == 'RUNTIME';
-  }
+  };
 
   $rootScope.elementIsMultiInstance = function(element) {
-    return element.hasOwnProperty('minItems') && element.minItems != null;
-  }
+    return element.hasOwnProperty('minItems') && element.minItems !== null;
+  };
 
   var generateCardinalities = function(max) {
     var results = [];

@@ -9325,7 +9325,11 @@ body {
   border-top: 3px dashed #339933;
 }
 #previewEditOptionOfElement {
-  margin-top: 10px;
+  margin-top: 0px;
+}
+.more-input-buttons {
+  height: 40px;
+  padding-top: 7px;
 }
 .activ-grotesk-regular {
   font-family: 'aktiv-grotesk-std';
@@ -9609,7 +9613,8 @@ i {
 .template-body .right-body .preview-edit-options {
   display: inline-block;
   vertical-align: top;
-  margin-bottom: 40px;
+  margin-bottom: 0px;
+  padding-top: 7px;
 }
 .template-body .right-body .preview-edit-options .remove,
 .template-body .right-body .preview-edit-options .edit {
@@ -9627,7 +9632,7 @@ i {
 .template-body .right-body .preview-edit-options .remove i,
 .template-body .right-body .preview-edit-options .edit i {
   color: #ffffff;
-  font-size: 14px;
+  font-size: 16px;
   line-height: 25px;
 }
 .template-body .right-body .preview-edit-options .edit {
@@ -9649,9 +9654,9 @@ i {
   background-color: #000000;
 }
 .template-body .right-body .preview-edit-options .remove i {
-  -webkit-transform: translate(7px, 0px);
-      -ms-transform: translate(7px, 0px);
-          transform: translate(7px, 0px);
+  -webkit-transform: translate(6px, 0px);
+      -ms-transform: translate(6px, 0px);
+          transform: translate(6px, 0px);
 }
 .template-body .right-body .element-group {
   width: 100%;
@@ -10660,7 +10665,8 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
 .input-type-container .configuration-options .toggle-options .save-options .remove i,
 .input-type-container .configuration-options .toggle-options .save-options .edit i {
   color: #ffffff;
-  font-size: 14px;
+  font-size: 16px;
+  line-height: 25px;
 }
 .input-type-container .configuration-options .toggle-options .save-options .add {
   background-color: #339933;
@@ -10669,9 +10675,9 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   background-color: #338833;
 }
 .input-type-container .configuration-options .toggle-options .save-options .add i {
-  -webkit-transform: translate(7px, 2px);
-      -ms-transform: translate(7px, 2px);
-          transform: translate(7px, 2px);
+  -webkit-transform: translate(6px, 1px);
+      -ms-transform: translate(6px, 1px);
+          transform: translate(6px, 1px);
 }
 .input-type-container .configuration-options .toggle-options .save-options .edit {
   display: none;
@@ -10681,9 +10687,9 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   background-color: #999;
 }
 .input-type-container .configuration-options .toggle-options .save-options .edit i {
-  -webkit-transform: translate(10px, 9px);
-      -ms-transform: translate(10px, 9px);
-          transform: translate(10px, 9px);
+  -webkit-transform: translate(9px, 0px);
+      -ms-transform: translate(9px, 0px);
+          transform: translate(9px, 0px);
 }
 .input-type-container .configuration-options .toggle-options .save-options .remove {
   background-color: #333;
@@ -10692,9 +10698,9 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   background-color: #000000;
 }
 .input-type-container .configuration-options .toggle-options .save-options .remove i {
-  -webkit-transform: translate(7px, 1px);
-      -ms-transform: translate(7px, 1px);
-          transform: translate(7px, 1px);
+  -webkit-transform: translate(6px, 0px);
+      -ms-transform: translate(6px, 0px);
+          transform: translate(6px, 0px);
 }
 .input-type-container .configuration-options .advanced-options {
   float: none;
@@ -11349,7 +11355,7 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
 .more-input-wrapper .add i,
 .more-input-wrapper .remove i {
   color: #FFF;
-  font-size: 14px;
+  font-size: 16px;
   line-height: 25px;
 }
 .more-input-wrapper .add {
@@ -11358,8 +11364,18 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
 .more-input-wrapper .add:disabled {
   background-color: #94C795;
 }
+.more-input-wrapper .add i {
+  -webkit-transform: translate(0px, -1px);
+      -ms-transform: translate(0px, -1px);
+          transform: translate(0px, -1px);
+}
 .more-input-wrapper .remove {
   background-color: #333333;
+}
+.more-input-wrapper .remove i {
+  -webkit-transform: translate(0px, -2px);
+      -ms-transform: translate(0px, -2px);
+          transform: translate(0px, -2px);
 }
 .fields .form-group {
   margin-right: 100px;
