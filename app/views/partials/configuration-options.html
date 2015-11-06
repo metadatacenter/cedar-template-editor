@@ -80,7 +80,7 @@
 
 <div id="control-options-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}" class="controlled-term-options collapse" ng-controller="TermsController" ng-model="enumTemp">
  	<div class="form-group floating-label-wrapper class-container">
- 		<span ng-if="controlTerm.addedFieldItems.length == 0 && controlTerm.addedValueItems.length == 0">{{controlTerm.emptyMessage}}</span>
+ 		<!--<span ng-if="controlTerm.addedFieldItems.length == 0 && controlTerm.addedValueItems.length == 0">{{controlTerm.emptyMessage}}</span>-->
     <div class="added-field-classes">
       <div class="one-class-list" ng-if="controlTerm.addedFieldItems.length == 1">
         <table class="table">
@@ -153,14 +153,14 @@
  	</div>
  	<div class="form-group floating-label-wrapper" ng-if="controlTerm.filterSelection == ''">
  		<div class="btn-two-toggle {{controlTerm.filterSelection}}">
-	 		<button type="button" class="btn btn-field" ng-click="controlTerm.selectFieldFilter()">Add Field</button>
-	 		<button type="button" class="btn btn-values" ng-click="controlTerm.selectValueFilter()">Add Values</button>
-	 		<i id="field-value-tooltip" class="cedar-svg-help-circle" data-container="body" data-toggle="popover" data-placement="right" data-content="Field selects classes to represent 'study type' itself. Values selects classes for the possible runtime values." data-original-title="" title=""></i>
+	 		<button type="button" class="btn btn-field" ng-click="controlTerm.selectFieldFilter()">Field Types</button>
+	 		<button type="button" class="btn btn-values" ng-click="controlTerm.selectValueFilter()">Value Types</button>
+	 		<i id="field-value-tooltip" class="cedar-svg-help-circle" data-container="body" data-toggle="popover" data-placement="right" data-content="Select ontology classes from BioPortal to represent the field and/or the values accepted by the field." data-original-title="" title=""></i>
 	 	</div>
  	</div>
  	<div class="form-group floating-label-wrapper field-value-filter {{controlTerm.filterSelection}}" ng-if="controlTerm.filterSelection != ''">
 		<div class="heading-label">
-			<hr /><span class="section-break" ng-if="controlTerm.filterSelection == 'field'">fields</span><span class="section-break" ng-if="controlTerm.filterSelection != 'field'">{{controlTerm.filterSelection}}</span><hr />
+			<hr /><span class="section-break" ng-if="controlTerm.filterSelection == 'field'">select field types</span><span class="section-break" ng-if="controlTerm.filterSelection != 'field'">select value types</span><hr />
 		</div>
 	</div>
  	<div class="form-group floating-label-wrapper field-filter clearfix" ng-if="controlTerm.filterSelection == 'field'">
