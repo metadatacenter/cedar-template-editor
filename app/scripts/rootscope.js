@@ -121,12 +121,12 @@ var angularRun = function($rootScope) {
           "required_value": false,
           "created_at": Date.now()
         },
-        "value": {
+        "_value": {
           "type": valueType,
         }
       },
       "required": [
-        "value"
+        "_value"
       ],
       "additionalProperties": false
     };
@@ -190,7 +190,7 @@ var angularRun = function($rootScope) {
         '@id': field['@id'],
         '$schema': field.schema,
         'title': field.properties.info.title,
-        'description': field.properties.description,
+        'description': field.properties.info.description,
         'properties': field.properties,
         'required': field.required,
         'additionalProperties': field.additionalProperties
@@ -242,7 +242,7 @@ var angularRun = function($rootScope) {
   };
 
   $rootScope.elementIsMultiInstance = function(element) {
-    return element.hasOwnProperty('minItems') && element.minItems !== null;
+    return element.hasOwnProperty('minItems') && !angular.isUndefined(element.minItems);
   };
 
   var generateCardinalities = function(max) {

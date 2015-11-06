@@ -6,7 +6,7 @@
     				id="telephone1"
     				placeholder="{{field.properties.info.title}}"
     				aria-label="{{field.properties.info.description}}"
-    				ng-model="value_element.value"
+    				ng-model="value_element._value"
     				validate-on="blur"
     				ng-pattern= "/(\W|^)[(]{0,1}\d{3}[)]{0,1}[\s-]{0,1}\d{3}[\s-]{0,1}\d{4}(\W|$)/"
     				with-floating-label>
@@ -26,7 +26,7 @@
             id="telephone1"
             placeholder="{{field.properties.info.title}}"
             aria-label="{{field.properties.info.description}}"
-            ng-model="model.value"
+            ng-model="model._value"
             validate-on="blur"
             ng-pattern= "/(\W|^)[(]{0,1}\d{3}[)]{0,1}[\s-]{0,1}\d{3}[\s-]{0,1}\d{4}(\W|$)/"
             with-floating-label>
