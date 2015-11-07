@@ -341,7 +341,7 @@
             </td>
           </tr>
           <tr ng-repeat="valueSet in controlTerm.valueConstraint.value_sets">
-            <td class="pref-label">&nbsp;</td>
+            <td class="pref-label">{{valueSet.name}}</td>
             <td class="ontology-name">{{valueSet.uri}}</td>
             <td class="type">Value Set</td>
             <td>
@@ -356,6 +356,16 @@
             <td class="type">Ontology</td>
             <td>
               <div class="item item-delete" ng-click="controlTerm.deleteFieldAddedOntology(ontology)">
+                <i class="clickable fa fa-close"></i>
+              </div>
+            </td>
+          </tr>
+          <tr ng-repeat="branch in controlTerm.valueConstraint.branches">
+            <td class="pref-label">{{branch.name}}</td>
+            <td class="ontology-name">{{branch.uri}}</td>
+            <td class="type">Ontology Branch</td>
+            <td>
+              <div class="item item-delete" ng-click="controlTerm.deleteFieldAddedBranch(branch)">
                 <i class="clickable fa fa-close"></i>
               </div>
             </td>
@@ -581,7 +591,7 @@
               <div class="element-toggle table-cell-style" ng-class="{active: controlTerm.stageValueConstraintAction == 'add_siblings'}" ng-click="controlTerm.stageOntologyClassSiblingsValueConstraint(controlTerm.selectedValueResult)" ng-if="!$root.isOntology(controlTerm.selectedValueResult)">
                 <span>Add Siblings</span>
               </div>
-              <div class="element-toggle table-cell-style" ng-class="{active: controlTerm.stageValueConstraintAction == 'add_children'}" ng-click="controlTerm.stageOntologyClassChildrenValueConstraint(controlTerm.selectedValueResult)" ng-if="!$root.isOntology(controlTerm.selectedValueResult)">
+              <div class="element-toggle table-cell-style" ng-class="{active: controlTerm.stageValueConstraintAction == 'add_children'}" ng-click="controlTerm.stageBranchValueConstraint(controlTerm.selectedValueResult)" ng-if="!$root.isOntology(controlTerm.selectedValueResult)">
                 <span>Add Children</span>
               </div>
               <div class="element-toggle table-cell-style" ng-class="{active: controlTerm.stageValueConstraintAction == 'add_ontology'}" ng-click="controlTerm.stageOntologyValueConstraint()" ng-if="controlTerm.currentOntology.details.ontology">
@@ -594,11 +604,18 @@
               <div class="element-toggle table-cell-style" ng-class="{active: controlTerm.stageValueConstraintAction == 'add_class'}" ng-click="controlTerm.stageOntologyClassValueConstraint(controlTerm.selectedValueResult)">
                 <span>Add Class</span>
               </div>
-              <div class="element-toggle table-cell-style" ng-class="{active: controlTerm.stageValueConstraintAction == 'add_entire_value_set'}" ng-click="controlTerm.stageValueSetValueConstraint(); controlTerm.addValueSetToValueConstraint()">
-                <span>Add Entire Value Set</span>
+              <div class="element-toggle table-cell-style" ng-class="{active: controlTerm.stageValueConstraintAction == 'add_entire_value_set'}" ng-click="controlTerm.stageValueSetValueConstraint()">
+                <span>Add Value Set</span>
               </div>
             </div>
           </div>
+        </div>
+
+        <div class="staged-ontology-class-value-constraint" ng-if="controlTerm.stageValueConstraintAction == 'add_entire_value_set' && controlTerm.stagedValueSetValueConstraints.length > 0">
+            <div class="staged-item" ng-repeat="constraint in controlTerm.stagedValueSetValueConstraints">
+            <label>{{constraint.name}} : {{ constraint.uri }}</label>
+          </div>
+          <button class="btn" ng-click="controlTerm.addValueSetToValueConstraint()">Add</button>
         </div>
 
         <div class="staged-ontology-class-value-constraint" ng-if="controlTerm.stageValueConstraintAction == 'add_ontology' && controlTerm.stagedOntologyValueConstraints.length > 0">
@@ -606,6 +623,20 @@
             <label>{{constraint.name}} : {{ constraint.uri }}</label>
           </div>
           <button class="btn" ng-click="controlTerm.addOntologyToValueConstraint()">Add</button>
+        </div>
+
+        <div class="staged-ontology-class-value-constraint" ng-if="controlTerm.stageValueConstraintAction == 'add_children' && controlTerm.stagedBranchesValueConstraints.length > 0">
+          <div class="staged-items table-style">
+            <div class="staged-item table-row-style" ng-repeat="constraint in controlTerm.stagedBranchesValueConstraints">
+              <div class="table-cell-style">
+                {{constraint.name}}
+              </div>
+              <div class="table-cell-style">
+                <input placeholder="Maximum no. levels (default: 1)" type="textfield" class="form-control" ng-model="constraint.max_depth" />
+              </div>
+            </div>
+          </div>
+          <button class="btn" ng-click="controlTerm.addBranchToValueConstraint()">Add</button>
         </div>
 
         <div class="staged-ontology-class-value-constraint" ng-if="controlTerm.stageValueConstraintAction == 'add_class'">

@@ -534,6 +534,15 @@ angularApp.controller('TermsController', function($rootScope, $scope, BioPortalS
     }
   };
 
+  $scope.controlTerm.deleteFieldAddedBranch = function(branch) {
+    for (var i = 0, len = $scope.controlTerm.valueConstraint.branches.length; i < len; i+= 1) {
+      if ($scope.controlTerm.valueConstraint.branches[i]['uri'] == branch['uri']) {
+        $scope.controlTerm.valueConstraint.branches.splice(i,1);
+        break;
+      }
+    }
+  };
+
   ////////////////////////////////////////////////////////////////////////
   // VALUES: Set values as primary search/browse parameter
   ////////////////////////////////////////////////////////////////////////
@@ -795,6 +804,7 @@ angularApp.controller('TermsController', function($rootScope, $scope, BioPortalS
   $scope.controlTerm.stagedOntologyClassValueConstraints = [];
   $scope.controlTerm.stagedOntologyClassValueConstraintData = [];
   $scope.controlTerm.stagedValueSetValueConstraints = [];
+  $scope.controlTerm.stagedBranchesValueConstraints = [];
 
   $scope.controlTerm.stageOntologyClassValueConstraint = function(selection) {
     $scope.controlTerm.stagedOntologyClassValueConstraints.push({
@@ -812,6 +822,7 @@ angularApp.controller('TermsController', function($rootScope, $scope, BioPortalS
 
   $scope.controlTerm.stageOntologyValueConstraint = function() {
     $scope.controlTerm.stagedOntologyValueConstraints.push({
+      'acronym': $scope.controlTerm.currentOntology.details.ontology['acronym'],
       'name': $scope.controlTerm.currentOntology.details.ontology['name'],
       'uri': $scope.controlTerm.currentOntology.details.ontology['@id']
     });
@@ -821,21 +832,20 @@ angularApp.controller('TermsController', function($rootScope, $scope, BioPortalS
 
   $scope.controlTerm.stageValueSetValueConstraint = function(selection) {
     $scope.controlTerm.stagedValueSetValueConstraints.push({
-      'uri': $scope.currentValueSetId
+      'name': $scope.controlTerm.currentValueSet.prefLabel,
+      'uri': $scope.controlTerm.currentValueSet['@id']
     });
 
     $scope.controlTerm.stageValueConstraintAction = "add_entire_value_set";
   };
 
-  $scope.controlTerm.stageOntologyClassChildrenValueConstraint = function(selection) {
-    $scope.controlTerm.stagedOntologyClassValueConstraints = [];
-    var acronym = getOntologyAcronym(selection);
-    BioPortalService.getClassChildren(acronym, selection['@id']).then(function(response) {
-      angular.forEach(response, function(child) {
-        $scope.controlTerm.stageOntologyClassValueConstraint(child);
-      });
+  $scope.controlTerm.stageBranchValueConstraint = function(selection) {
+    $scope.controlTerm.stagedBranchesValueConstraints.push({
+      'acronym': $scope.controlTerm.currentOntology.details.ontology['acronym'],
+      'uri': selection['@id'],
+      'name': selection.prefLabel,
+      'max_depth': null
     });
-
     $scope.controlTerm.stageValueConstraintAction = "add_children";
   }
 
@@ -888,6 +898,32 @@ angularApp.controller('TermsController', function($rootScope, $scope, BioPortalS
       }
     }
     $scope.controlTerm.stagedOntologyValueConstraints = [];
+
+    assignValueConstraintToField();
+  };
+
+  $scope.controlTerm.addBranchToValueConstraint = function() {
+    var alreadyAdded, constraint, i, j;
+    for (i = 0; i < $scope.controlTerm.stagedBranchesValueConstraints.length; i++) {
+      constraint = $scope.controlTerm.stagedBranchesValueConstraints[i];
+      alreadyAdded = false;
+      for (j = 0; j < $scope.controlTerm.valueConstraint.branches.length; j++) {
+        if ($scope.controlTerm.valueConstraint.branches[j]['uri'] == constraint['uri']) {
+          alreadyAdded = true;
+          break;
+        }
+      }
+      if (!alreadyAdded) {
+        var newConstraint = angular.copy(constraint);
+        if (newConstraint.max_depth) {
+          newConstraint.max_depth = parseInt(newConstraint.max_depth);
+        } else {
+          newConstraint.max_depth = 1;
+        }
+        $scope.controlTerm.valueConstraint.branches.push(newConstraint);
+      }
+    }
+    $scope.controlTerm.stagedBranchesValueConstraints = [];
 
     assignValueConstraintToField();
   };
