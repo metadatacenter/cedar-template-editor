@@ -11,7 +11,7 @@
     <label for="advanced-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}">Advanced</label>
   </div><!-- /.checkbox-inline -->
   <div class="checkbox checkbox-inline checkbox-cardinality">
-    <input type="checkbox" id="advanced-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}"  ng-model="$parent.element.properties.info.is_cardinal_field" />
+    <input type="checkbox" id="cardinality-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}"  ng-model="$parent.element.properties.info.is_cardinal_field" />
     <label for="cardinality-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}">Cardinality</label>
   </div><!-- /.checkbox-inline -->
   <div class="clearfix"></div>

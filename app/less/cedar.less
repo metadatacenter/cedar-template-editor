@@ -56,10 +56,10 @@
     transition: all 0.3s ease 0.1s;
     cursor: pointer;
     border: none;
-    background-color: #393;
+    background-color: @brand-primary;
 
     i {
-      color: #FFF;
+      color: @white;
       line-height: 40px;
     }
   }
@@ -80,8 +80,8 @@
 .spreadsheetViewContainer {
   display: none;
   overflow: auto;
-  width:650px;
-  height:130px;
+  width: 650px;
+  height: 130px;
   &.visible {
     display: block;
     margin-bottom: 20px;
@@ -93,8 +93,8 @@ div.htCedarCheckboxes {
 }
 
 div.htCedarCheckboxContainer {
-  border: 1px solid #888888;
-  background-color: #fafafa;
+  border: 1px solid @gray;
+  background-color: @gray2;
 }
 
 .nav li.active {
@@ -129,7 +129,7 @@ html, body {
   position: relative;;
   left: -27px;
   background-color: @gray2;
-  border: 1px solid #ddd;
+  border: 1px solid @gray3;
   i {
     position: relative;;
     color: @gray;
@@ -142,18 +142,44 @@ html, body {
 }
 
 #form-item-config-section {
-  border-top:3px dashed @brand-primary;
-}
-
-#staging-area-actions {
-  border-top:3px dashed @brand-primary;
+  border: 1px solid @brand-primary;
+  padding: 10px 10px 0px 20px !important;
+  background-color: @brand-secondary
 }
 
 #previewEditOptionOfElement {
-  margin-top:0px;
+  margin-top: 0px;
 }
 
 .more-input-buttons {
   height: 40px;
-  padding-top:7px;
+  padding-top: 7px;
+}
+
+.input-type-container {
+  padding-top: 0px !important;
+}
+
+.form-group {
+  &.floating-label-wrapper {
+    &.field-value-filter {
+      &.field {
+        margin-bottom: 0px;
+      }
+      &.values {
+        margin-bottom: 0px;
+      }
+    }
+  }
+}
+
+#jsonTools {
+  height:0px;
+  position:fixed;
+  top:0px;
+  left:0px;
+  z-index: 10001;
+  a {
+    color: @white;
+  }
 }

@@ -9251,10 +9251,10 @@ button.close {
           transition: all 0.3s ease 0.1s;
   cursor: pointer;
   border: none;
-  background-color: #393;
+  background-color: #5795ba;
 }
 .more-input-wrapper .spreadsheet i {
-  color: #FFF;
+  color: #ffffff;
   line-height: 40px;
 }
 .spreadsheetSwitchLink {
@@ -9280,8 +9280,8 @@ div.htCedarCheckboxes {
   border: 0px solid red;
 }
 div.htCedarCheckboxContainer {
-  border: 1px solid #888888;
-  background-color: #fafafa;
+  border: 1px solid #999999;
+  background-color: #f4f4f7;
 }
 .nav li.active {
   font-weight: bold;
@@ -9308,7 +9308,7 @@ body {
   position: relative;
   left: -27px;
   background-color: #f4f4f7;
-  border: 1px solid #ddd;
+  border: 1px solid #dddddd;
 }
 .visibilitySwitch i {
   position: relative;
@@ -9319,10 +9319,9 @@ body {
   color: #5795ba;
 }
 #form-item-config-section {
-  border-top: 3px dashed #5795ba;
-}
-#staging-area-actions {
-  border-top: 3px dashed #5795ba;
+  border: 1px solid #5795ba;
+  padding: 10px 10px 0px 20px !important;
+  background-color: #eaf2f2;
 }
 #previewEditOptionOfElement {
   margin-top: 0px;
@@ -9330,6 +9329,25 @@ body {
 .more-input-buttons {
   height: 40px;
   padding-top: 7px;
+}
+.input-type-container {
+  padding-top: 0px !important;
+}
+.form-group.floating-label-wrapper.field-value-filter.field {
+  margin-bottom: 0px;
+}
+.form-group.floating-label-wrapper.field-value-filter.values {
+  margin-bottom: 0px;
+}
+#jsonTools {
+  height: 0px;
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  z-index: 10001;
+}
+#jsonTools a {
+  color: #ffffff;
 }
 .activ-grotesk-regular {
   font-family: 'aktiv-grotesk-std';
@@ -9566,7 +9584,7 @@ i {
 }
 .template-body .right-body #form-item-config-section .heading-label,
 .template-body .right-body #form-preview-section .heading-label {
-  padding-bottom: 30px;
+  padding-bottom: 0px;
 }
 .template-body .right-body #form-item-config-section .heading-label span.section-break,
 .template-body .right-body #form-preview-section .heading-label span.section-break {
@@ -10606,7 +10624,7 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   border-top: 1px dashed #ddd;
 }
 .input-type-container .configuration-options .toggle-options {
-  padding-bottom: 30px;
+  padding-bottom: 10px;
 }
 .input-type-container .configuration-options .toggle-options:before,
 .input-type-container .configuration-options .toggle-options:after {
@@ -11091,7 +11109,7 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
 */
 .element-actions {
   padding-top: 40px;
-  border-top: 1px solid #ddd;
+  border-top: 0px solid #ddd;
 }
 .element-actions .favorite {
   float: left;

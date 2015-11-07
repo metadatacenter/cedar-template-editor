@@ -43,6 +43,7 @@ module.exports = function(config) {
       'app/scripts/directives/cedar-navbar.js',
       'app/scripts/directives/with-floating-label.js',
       'app/scripts/directives/resize-height.js',
+      'app/scripts/directives/position-json-tools.js',
       'app/scripts/directives/date-time-picker.js',
       'app/scripts/directives/select-picker.js',
       'app/scripts/directives/angular-validator.js',

@@ -30,7 +30,7 @@
         <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
   <nav class="navbar" role="navigation">
-    <div class="container" ng-controller="HeaderCtrl">
+    <div class="container" id="headerCtrl" ng-controller="HeaderCtrl">
       <div class="navbar-header">
         <button type="button" cedar-navbar class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
           <span class="sr-only">Toggle navigation</span>
@@ -55,7 +55,7 @@
   </nav>
 
   <nav class="navbar" id="navbarMini">
-    <div class="container" ng-controller="HeaderCtrlMini">
+    <div class="container" id="headerCtrlMini" ng-controller="HeaderCtrlMini">
       <div class="navbar-header navbar-header-mini container">
         <button type="button" cedar-navbar class="navbar-toggle collapsed" data-toggle="collapse"
                 data-target="#navbarmini" aria-expanded="false" aria-controls="navbarmini">
@@ -81,6 +81,11 @@
       </div>
     </div>
   </nav>
+
+  <div id="jsonTools" position-json-tools>
+      <a ng-click="$root.showRender = !$root.showRender; $root.scrollToAnchor('templateJSON')" title="Show Template JSON" ng-show="$root.pageId == 'ELEMENT' || $root.pageId == 'TEMPLATE' || $root.pageId == 'RUNTIME'"><i class="cedar-svg-complete"  ng-show="$root.showRender"></i><i class="cedar-svg-progress" ng-show="!$root.showRender"></i></a><br/>
+      <a ng-click="$root.showOutput = !$root.showOutput; $root.scrollToAnchor('outputJSON')" title="Show Output JSON" ng-show="$root.pageId == 'RUNTIME'"><i class="cedar-svg-complete"  ng-show="$root.showOutput"></i><i class="cedar-svg-progress" ng-show="!$root.showOutput"></i></a>
+  </div>
 
   <div id="angular-views-entry" ng-view=""></div>
 
@@ -127,6 +132,7 @@
   <script src="scripts/directives/cedar-navbar.js"></script>
   <script src="scripts/directives/with-floating-label.js"></script>
   <script src="scripts/directives/resize-height.js"></script>
+  <script src="scripts/directives/position-json-tools.js"></script>
   <script src="scripts/directives/date-time-picker.js"></script>
   <script src="scripts/directives/select-picker.js"></script>
   <script src="scripts/directives/angular-validator.js"></script>
