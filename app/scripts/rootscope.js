@@ -1,6 +1,6 @@
 /*jslint node: true */
 /*global angular */
-var angularRun = function($rootScope) {
+var angularRun = function($rootScope, $location, $timeout, $anchorScroll) {
 
   // Define global pageTitle variable for use
   //$rootScope.pageTitle;
@@ -245,6 +245,18 @@ var angularRun = function($rootScope) {
     return element.hasOwnProperty('minItems') && !angular.isUndefined(element.minItems);
   };
 
+  $rootScope.scrollToAnchor = function(hash) {
+    //$location.hash(hash);
+    //console.log("scroll to hash:" + hash);
+    $timeout(function () {
+      var target = angular.element('#' + hash);
+      var y = target.offset().top;
+      console.log("scroll to y:" + y);
+      window.scrollTo(0, y-95);
+    }, 250);
+    //$anchorScroll();
+  }
+
   var generateCardinalities = function(max) {
     var results = [];
     for (var i = 1; i <= max; i++) {
@@ -262,5 +274,5 @@ var angularRun = function($rootScope) {
   $rootScope.maxCardinalities = maxCardinalities;
 };
 
-angularRun.$inject = ['$rootScope'];
+angularRun.$inject = ['$rootScope', '$location', '$timeout', '$anchorScroll'];
 angularApp.run(angularRun);
