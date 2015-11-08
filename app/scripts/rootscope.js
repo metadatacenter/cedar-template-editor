@@ -255,7 +255,7 @@ var angularRun = function($rootScope, BioPortalService, $location, $timeout, $an
       window.scrollTo(0, y-95);
     }, 250);
     //$anchorScroll();
-  }
+  };
 
   var generateCardinalities = function(max) {
     var results = [];
@@ -294,7 +294,7 @@ var angularRun = function($rootScope, BioPortalService, $location, $timeout, $an
   $rootScope.autocompleteResultsCache = {};
 
   $rootScope.sortAutocompleteResults = function(field_id) {
-    $rootScope.autocompleteResultsCache[field_id]['results'].sort(function(a, b) {
+    $rootScope.autocompleteResultsCache[field_id].results.sort(function(a, b) {
       var labelA = a.label.toLowerCase();
       var labelB = b.label.toLowerCase();
       if (labelA < labelB)
@@ -307,23 +307,24 @@ var angularRun = function($rootScope, BioPortalService, $location, $timeout, $an
 
   $rootScope.removeAutocompleteResultsForSource = function(field_id, source_uri) {
     // remove results for this source
-    for (var i = $rootScope.autocompleteResultsCache[field_id]['results'].length - 1; i >= 0; i--) {
-      if ($rootScope.autocompleteResultsCache[field_id]['results'][i]['sourceUri'] === source_uri) {
-        $rootScope.autocompleteResultsCache[field_id]['results'].splice(i, 1);
+    for (var i = $rootScope.autocompleteResultsCache[field_id].results.length - 1; i >= 0; i--) {
+      if ($rootScope.autocompleteResultsCache[field_id].results[i].sourceUri === source_uri) {
+        $rootScope.autocompleteResultsCache[field_id].results.splice(i, 1);
       }
     }
   };
 
   $rootScope.processAutocompleteClassResults = function(field_id, field_type, source_uri, response) {
+    var i, j, found;
     // we do a complicated method to find the changed results to reduce flicker :-/
-    for (var j = $rootScope.autocompleteResultsCache[field_id]['results'].length - 1; j >= 0; j--) {
-      if ($rootScope.autocompleteResultsCache[field_id]['results'][j]['sourceUri'] != source_uri) {
+    for (j = $rootScope.autocompleteResultsCache[field_id].results.length - 1; j >= 0; j--) {
+      if ($rootScope.autocompleteResultsCache[field_id].results[j].sourceUri != source_uri) {
         // we only care about the ones from this source
         continue;
       }
-      var found = false;
-      for (var i = 0; i < response.collection.length; i++) {
-        if (response.collection[i]['@id'] == $rootScope.autocompleteResultsCache[field_id]['results'][j]['@id']) {
+      found = false;
+      for (i = 0; i < response.collection.length; i++) {
+        if (response.collection[i]['@id'] == $rootScope.autocompleteResultsCache[field_id].results[j]['@id']) {
           // this option still in the result set -- mark it
           response.collection[i].found = true;
           found = true;
@@ -331,12 +332,12 @@ var angularRun = function($rootScope, BioPortalService, $location, $timeout, $an
       }
       if (!found) {
         // need to remove this option
-        $rootScope.autocompleteResultsCache[field_id]['results'].splice(j, 1);
+        $rootScope.autocompleteResultsCache[field_id].results.splice(j, 1);
       }
     }
-    for (var i = 0; i < response.collection.length; i++) {
+    for (i = 0; i < response.collection.length; i++) {
       if (!response.collection[i].found) {
-        $rootScope.autocompleteResultsCache[field_id]['results'].push(
+        $rootScope.autocompleteResultsCache[field_id].results.push(
           {
             '@id': response.collection[i]['@id'],
             'label': response.collection[i].prefLabel,
@@ -350,7 +351,7 @@ var angularRun = function($rootScope, BioPortalService, $location, $timeout, $an
   };
 
   $rootScope.updateFieldAutocomplete = function(field, term) {
-    if (term == '') {
+    if (term === '') {
       term = '*';
     }
     var results = [];
@@ -364,10 +365,10 @@ var angularRun = function($rootScope, BioPortalService, $location, $timeout, $an
       };
     }
 
-    if (!$rootScope.autocompleteResultsCache[field_id]['loadedClasses']) {
+    if (!$rootScope.autocompleteResultsCache[field_id].loadedClasses) {
       if (vcst.classes.length > 0) {
         angular.forEach(vcst.classes, function(klass) {
-          $rootScope.autocompleteResultsCache[field_id]['results'].push(
+          $rootScope.autocompleteResultsCache[field_id].results.push(
             {
               '@id': klass.uri,
               'label': klass.label,
@@ -377,7 +378,7 @@ var angularRun = function($rootScope, BioPortalService, $location, $timeout, $an
           );
         });
       }
-      $rootScope.autocompleteResultsCache[field_id]['loadedClasses'] = true;
+      $rootScope.autocompleteResultsCache[field_id].loadedClasses = true;
     }
 
     if (vcst.value_sets.length > 0) {
@@ -456,7 +457,7 @@ var angularRun = function($rootScope, BioPortalService, $location, $timeout, $an
   };
 
   $rootScope.isValueConformedToConstraint = function(value, id, info) {
-    var predefinedValues = $rootScope.autocompleteResultsCache[id]['results'];
+    var predefinedValues = $rootScope.autocompleteResultsCache[id].results;
     var excludedValues = $rootScope.excludedValueConstraint(id, info);
     var isValid = false;
     var jsonString = JSON.stringify(value);

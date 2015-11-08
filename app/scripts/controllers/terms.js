@@ -3,8 +3,6 @@
 // Controller for the functionality of adding controlled terms to fields and elements
 angularApp.controller('TermsController', function($rootScope, $scope, BioPortalService, $q, $timeout, $http) {
 
-  $scope.enumTemp = [];
-
   /**
    * Cache entire list of ontologies on the client so we don't have to make
    * additional API calls for ontological information in things like search
@@ -54,24 +52,6 @@ angularApp.controller('TermsController', function($rootScope, $scope, BioPortalS
     };
   }
 
-  $scope.updateEnum = function(properties) {
-    // Remove invalid values from the array
-    for (var i = 0; i < $scope.enumTemp.length; i++) {
-      if ($scope.enumTemp[i] == "" || $scope.enumTemp[i] == null) {
-        // Remove value
-        $scope.enumTemp.splice(i, 1);
-      }
-    }
-    if ($scope.enumTemp.length > 0) {
-      properties['@type'].oneOf[0].enum = $scope.enumTemp;
-      properties['@type'].oneOf[1].items.enum = $scope.enumTemp;
-    }
-    else {
-      delete properties['@type'].oneOf[0].enum
-      delete properties['@type'].oneOf[1].items.enum
-    }
-  }
-
   ///////////////////////////////////////////////////////////////
   // Control Term: Add a Class or Value Set
   ///////////////////////////////////////////////////////////////
@@ -84,7 +64,7 @@ angularApp.controller('TermsController', function($rootScope, $scope, BioPortalS
   //General
   $scope.controlTerm = {};
   $scope.controlTerm.emptyMessage = "You have not added any field or value classes";
-  $scope.controlTerm.filterSelection = "";
+  $scope.controlTerm.filterSelection = $scope.options && $scope.options.filterSelection || "";
   $scope.controlTerm.searchTimeout;
   $scope.controlTerm.currentOntology = "";
   $scope.controlTerm.classDetails = "";
@@ -139,7 +119,7 @@ angularApp.controller('TermsController', function($rootScope, $scope, BioPortalS
   $scope.controlTerm.startOver = function() {
     console.log('startOver');
     //Clear field/value filter
-    $scope.controlTerm.filterSelection = "";
+    $scope.controlTerm.filterSelection = $scope.options && $scope.options.filterSelection || "";
     $scope.controlTerm.fieldActionSelection = null;
     $scope.controlTerm.selectedFieldClass = null;
     //Reset bioportal filters
@@ -202,9 +182,9 @@ angularApp.controller('TermsController', function($rootScope, $scope, BioPortalS
       $scope.controlTerm.searchPreloader = true;
     }
 
-    $scope.controlTerm.searchTimeout = setTimeout(function() {
+    // $scope.controlTerm.searchTimeout = setTimeout(function() {
 
-      $scope.controlTerm.fieldSearchTerms = angular.element('#field-search-input').val();
+      // $scope.controlTerm.fieldSearchTerms = angular.element('#field-search-input').val();
       console.log('fieldSearch:'+$scope.controlTerm.fieldSearchTerms);
 
       BioPortalService.searchClass($scope.controlTerm.fieldSearchTerms).then(function(response) {
@@ -228,7 +208,7 @@ angularApp.controller('TermsController', function($rootScope, $scope, BioPortalS
         }
         $scope.controlTerm.searchResults = tArry;
       });
-    });
+    // });
   };
 
   // FIELD: Show ontology tree and details screen
@@ -471,7 +451,8 @@ angularApp.controller('TermsController', function($rootScope, $scope, BioPortalS
         prefLabel: selection.prefLabel,
         ontologyDescription: $scope.controlTerm.currentOntology.details.ontology.name+" ("+$scope.controlTerm.currentOntology.details.ontology.acronym+")",
         ontology: $scope.controlTerm.currentOntology,
-        class: selection
+        class: selection,
+        "@id": selection["@id"]
       });
 
       /**
@@ -479,13 +460,21 @@ angularApp.controller('TermsController', function($rootScope, $scope, BioPortalS
        *
        * TODO: review data transfer mechanism?
        */
-      var fieldType = $scope.$parent.$parent.$parent.field.properties['@type'].oneOf[0].enum;
-      if (angular.isArray(fieldType)) {
-        $scope.$parent.$parent.$parent.field.properties['@type'].oneOf[0].enum.push(selection['@id']);
-        $scope.$parent.$parent.$parent.field.properties['@type'].oneOf[1].items.enum.push(selection['@id']);
+      // var fieldType = $scope.$parent.$parent.$parent.field.properties['@type'].oneOf[0].enum;
+      // if (angular.isArray(fieldType)) {
+      //   $scope.$parent.$parent.$parent.field.properties['@type'].oneOf[0].enum.push(selection['@id']);
+      //   $scope.$parent.$parent.$parent.field.properties['@type'].oneOf[1].items.enum.push(selection['@id']);
+      // } else {
+      //   $scope.$parent.$parent.$parent.field.properties['@type'].oneOf[0].enum = [selection['@id']];
+      //   $scope.$parent.$parent.$parent.field.properties['@type'].oneOf[1].items.enum = [selection['@id']];
+      // }
+
+      if (angular.isArray($scope.field)) {
+        $scope.field.properties['@type'].oneOf[0].enum.push(selection['@id']);
+        $scope.field.properties['@type'].oneOf[1].items.enum.push(selection['@id']);
       } else {
-        $scope.$parent.$parent.$parent.field.properties['@type'].oneOf[0].enum = [selection['@id']];
-        $scope.$parent.$parent.$parent.field.properties['@type'].oneOf[1].items.enum = [selection['@id']];
+        $scope.field.properties['@type'].oneOf[0].enum = [selection['@id']];
+        $scope.field.properties['@type'].oneOf[1].items.enum = [selection['@id']];
       }
 
       $scope.controlTerm.startOver();
@@ -501,6 +490,19 @@ angularApp.controller('TermsController', function($rootScope, $scope, BioPortalS
   $scope.controlTerm.deleteFieldAddedItem = function(itemData) {
     for (var i = 0, len = $scope.controlTerm.addedFieldItems.length; i < len; i+= 1) {
       if ($scope.controlTerm.addedFieldItems[i] == itemData) {
+        var itemDataId = itemData["@id"];
+        var idx = $scope.field.properties["@type"].oneOf[0].enum.indexOf(itemDataId);
+
+        if (idx >= 0) {
+          $scope.field.properties["@type"].oneOf[0].enum.splice(idx, 1);
+        }
+
+        idx = $scope.field.properties['@type'].oneOf[1].items.enum.indexOf(itemDataId);
+
+        if (idx >= 0) {
+          $scope.field.properties['@type'].oneOf[1].items.enum.splice(idx, 1);
+        }
+
         $scope.controlTerm.addedFieldItems.splice(i,1);
         break;
       }
@@ -582,7 +584,7 @@ angularApp.controller('TermsController', function($rootScope, $scope, BioPortalS
     } else {
       $scope.controlTerm.searchPreloader = true;
     }
-    $scope.controlTerm.searchTimeout = setTimeout(function() {
+    // $scope.controlTerm.searchTimeout = setTimeout(function() {
       $scope.controlTerm.valuesSearchTerms = angular.element('#values-search-input').val();
       console.log('valuesSearch:' + $scope.controlTerm.valuesSearchTerms);
 
@@ -672,7 +674,7 @@ angularApp.controller('TermsController', function($rootScope, $scope, BioPortalS
         }
       }
 
-    });
+    // });
   };
 
   /**
@@ -806,12 +808,23 @@ angularApp.controller('TermsController', function($rootScope, $scope, BioPortalS
   $scope.controlTerm.stagedValueSetValueConstraints = [];
   $scope.controlTerm.stagedBranchesValueConstraints = [];
 
-  $scope.controlTerm.stageOntologyClassValueConstraint = function(selection) {
-    $scope.controlTerm.stagedOntologyClassValueConstraints.push({
+  $scope.controlTerm.stageOntologyClassValueConstraint = function(selection, type) {
+    if (type === undefined) {
+      type = 'Ontology Class';
+    }
+    var klass = {
       'uri': selection['@id'],
+      'prefLabel': selection.prefLabel,
+      'type': type,
       'label': '',
       'default': false
-    });
+    };
+    if (type == 'Ontology Class') {
+      klass['source'] = $scope.controlTerm.currentOntology.details.ontology.name + ' (' + $scope.controlTerm.currentOntology.details.ontology.acronym + ')';
+    } else {
+      klass['source'] = $scope.controlTerm.currentValueSet.prefLabel;
+    }
+    $scope.controlTerm.stagedOntologyClassValueConstraints.push(klass);
     $scope.controlTerm.stagedOntologyClassValueConstraintData.push({
       'label': selection.prefLabel
     });
@@ -822,8 +835,9 @@ angularApp.controller('TermsController', function($rootScope, $scope, BioPortalS
 
   $scope.controlTerm.stageOntologyValueConstraint = function() {
     $scope.controlTerm.stagedOntologyValueConstraints.push({
-      'acronym': $scope.controlTerm.currentOntology.details.ontology['acronym'],
-      'name': $scope.controlTerm.currentOntology.details.ontology['name'],
+      'numChildren': $scope.controlTerm.currentOntology.size.classes,
+      'acronym': $scope.controlTerm.currentOntology.details.ontology.acronym,
+      'name': $scope.controlTerm.currentOntology.details.ontology.name,
       'uri': $scope.controlTerm.currentOntology.details.ontology['@id']
     });
 
@@ -832,6 +846,7 @@ angularApp.controller('TermsController', function($rootScope, $scope, BioPortalS
 
   $scope.controlTerm.stageValueSetValueConstraint = function(selection) {
     $scope.controlTerm.stagedValueSetValueConstraints.push({
+      'numChildren': $scope.controlTerm.currentValueSet.numChildren,
       'name': $scope.controlTerm.currentValueSet.prefLabel,
       'uri': $scope.controlTerm.currentValueSet['@id']
     });
@@ -841,6 +856,7 @@ angularApp.controller('TermsController', function($rootScope, $scope, BioPortalS
 
   $scope.controlTerm.stageBranchValueConstraint = function(selection) {
     $scope.controlTerm.stagedBranchesValueConstraints.push({
+      'source': $scope.controlTerm.currentOntology.details.ontology.name + ' (' + $scope.controlTerm.currentOntology.details.ontology.acronym + ')',
       'acronym': $scope.controlTerm.currentOntology.details.ontology['acronym'],
       'uri': selection['@id'],
       'name': selection.prefLabel,
@@ -975,8 +991,14 @@ angularApp.controller('TermsController', function($rootScope, $scope, BioPortalS
   };
 
   var assignValueConstraintToField = function() {
-    var fieldPropertiesInfo = $scope.$parent.$parent.$parent.field.properties.info;
+    var fieldPropertiesInfo = $scope.field.properties.info;
     fieldPropertiesInfo.value_constraint = $scope.controlTerm.valueConstraint;
+    delete $scope.controlTerm.stageValueConstraintAction;
+    $scope.controlTerm.stagedOntologyValueConstraints = [];
+    $scope.controlTerm.stagedOntologyClassValueConstraints = [];
+    $scope.controlTerm.stagedOntologyClassValueConstraintData = [];
+    $scope.controlTerm.stagedValueSetValueConstraints = [];
+    $scope.controlTerm.stagedBranchesValueConstraints = [];
   }
 
   $scope.controlTerm.hideValuesTree = function() {

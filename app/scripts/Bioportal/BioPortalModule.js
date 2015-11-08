@@ -20,7 +20,7 @@ bioPortalModule
     restrict: 'E',
     scope: {
       tree: '=',
-      controlTerm: '=',
+      term: '=',
       level: "=",
       selectedNode: "="
     },
@@ -73,13 +73,13 @@ bioPortalModule
       function nestChildren(children) {
     	element.addClass('expanded');
 
-		var children = '<class-tree tree="' + children + '" control-term="term" level="' + (scope.level + 1) + '"></class-tree>';
+		var children = '<class-tree tree="' + children + '" term="term" level="' + (scope.level + 1) + '"></class-tree>';
 		$compile(children)(scope, function(cloned, scope){
 		  element.append(cloned);
 		});
 
       }
-      
+
       if (scope.subtree) {
         var acronym = scope.subtree.links.ontology.slice(39);
         if (scope.subtree["@type"].indexOf("Ontology") >= 0) {
@@ -103,7 +103,7 @@ bioPortalModule
             if (!response || response.length == 0) {
               scope.subtree.hasChildren = false;
             }
-            
+
   			scope.children = response;
   			nestChildren('children');
   		  });
