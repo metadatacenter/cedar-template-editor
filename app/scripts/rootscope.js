@@ -1,6 +1,6 @@
 /*jslint node: true */
 /*global angular */
-var angularRun = function($rootScope, $location, $timeout, $anchorScroll) {
+var angularRun = function($rootScope, BioPortalService, $location, $timeout, $anchorScroll) {
 
   // Define global pageTitle variable for use
   //$rootScope.pageTitle;
@@ -255,7 +255,7 @@ var angularRun = function($rootScope, $location, $timeout, $anchorScroll) {
       window.scrollTo(0, y-95);
     }, 250);
     //$anchorScroll();
-  }
+  };
 
   var generateCardinalities = function(max) {
     var results = [];
@@ -272,7 +272,213 @@ var angularRun = function($rootScope, $location, $timeout, $anchorScroll) {
 
   $rootScope.minCardinalities = minCardinalities;
   $rootScope.maxCardinalities = maxCardinalities;
+
+  $rootScope.isKeyVisible = function(keyCode) {
+    if (keyCode > 45 && keyCode < 112 && [91, 92, 93].indexOf(keyCode) == -1 || keyCode >= 186 && keyCode <= 222 || [8, 32, 173].indexOf(keyCode) >= 0) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
+  $rootScope.hasValueConstraint = function(info) {
+    var vcst = info && info.value_constraint;
+    var result = vcst && (vcst.ontologies && vcst.ontologies.length > 0 ||
+                    vcst.value_sets && vcst.value_sets.length > 0 ||
+                    vcst.classes && vcst.classes.length > 0 ||
+                    vcst.branches && vcst.branches.length > 0);
+
+    return result;
+  };
+
+  $rootScope.autocompleteResultsCache = {};
+
+  $rootScope.sortAutocompleteResults = function(field_id) {
+    $rootScope.autocompleteResultsCache[field_id].results.sort(function(a, b) {
+      var labelA = a.label.toLowerCase();
+      var labelB = b.label.toLowerCase();
+      if (labelA < labelB)
+        return -1;
+      if (labelA > labelB)
+        return 1;
+      return 0;
+    });
+  };
+
+  $rootScope.removeAutocompleteResultsForSource = function(field_id, source_uri) {
+    // remove results for this source
+    for (var i = $rootScope.autocompleteResultsCache[field_id].results.length - 1; i >= 0; i--) {
+      if ($rootScope.autocompleteResultsCache[field_id].results[i].sourceUri === source_uri) {
+        $rootScope.autocompleteResultsCache[field_id].results.splice(i, 1);
+      }
+    }
+  };
+
+  $rootScope.processAutocompleteClassResults = function(field_id, field_type, source_uri, response) {
+    var i, j, found;
+    // we do a complicated method to find the changed results to reduce flicker :-/
+    for (j = $rootScope.autocompleteResultsCache[field_id].results.length - 1; j >= 0; j--) {
+      if ($rootScope.autocompleteResultsCache[field_id].results[j].sourceUri != source_uri) {
+        // we only care about the ones from this source
+        continue;
+      }
+      found = false;
+      for (i = 0; i < response.collection.length; i++) {
+        if (response.collection[i]['@id'] == $rootScope.autocompleteResultsCache[field_id].results[j]['@id']) {
+          // this option still in the result set -- mark it
+          response.collection[i].found = true;
+          found = true;
+        }
+      }
+      if (!found) {
+        // need to remove this option
+        $rootScope.autocompleteResultsCache[field_id].results.splice(j, 1);
+      }
+    }
+    for (i = 0; i < response.collection.length; i++) {
+      if (!response.collection[i].found) {
+        $rootScope.autocompleteResultsCache[field_id].results.push(
+          {
+            '@id': response.collection[i]['@id'],
+            'label': response.collection[i].prefLabel,
+            'type': field_type,
+            'sourceUri': source_uri
+          }
+        );
+      }
+    }
+    $rootScope.sortAutocompleteResults(field_id);
+  };
+
+  $rootScope.updateFieldAutocomplete = function(field, term) {
+    if (term === '') {
+      term = '*';
+    }
+    var results = [];
+    var vcst = field.properties.info.value_constraint;
+    var field_id = field['@id'];
+
+    if (angular.isUndefined($rootScope.autocompleteResultsCache[field_id])) {
+      $rootScope.autocompleteResultsCache[field_id] = {
+        'loadedClasses': false,
+        'results': []
+      };
+    }
+
+    if (!$rootScope.autocompleteResultsCache[field_id].loadedClasses) {
+      if (vcst.classes.length > 0) {
+        angular.forEach(vcst.classes, function(klass) {
+          $rootScope.autocompleteResultsCache[field_id].results.push(
+            {
+              '@id': klass.uri,
+              'label': klass.label,
+              'type': 'Ontology Class',
+              'sourceUri': 'template'
+            }
+          );
+        });
+      }
+      $rootScope.autocompleteResultsCache[field_id].loadedClasses = true;
+    }
+
+    if (vcst.value_sets.length > 0) {
+      angular.forEach(vcst.value_sets, function(valueSet) {
+        if (term == '*') {
+          $rootScope.removeAutocompleteResultsForSource(field_id, valueSet.uri);
+        } else {
+          BioPortalService.autocompleteValueSetClasses(term, valueSet.uri).then(function(childResponse) {
+            $rootScope.processAutocompleteClassResults(field_id, 'Value Set Class', valueSet.uri, childResponse);
+          });
+        }
+      });
+    }
+
+    if (vcst.ontologies.length > 0) {
+      angular.forEach(vcst.ontologies, function(ontology) {
+        if (term == '*') {
+          $rootScope.removeAutocompleteResultsForSource(field_id, ontology.uri);
+        } else {
+          BioPortalService.autocompleteOntology(term, ontology.acronym).then(function(childResponse) {
+            $rootScope.processAutocompleteClassResults(field_id, 'Ontology Class', ontology.uri, childResponse);
+          });
+        }
+      });
+    }
+
+    if (vcst.branches.length > 0) {
+      angular.forEach(vcst.branches, function(branch) {
+        if (term == '*') {
+          $rootScope.removeAutocompleteResultsForSource(field_id, branch.uri);
+        } else {
+          BioPortalService.autocompleteOntologySubtree(term, branch.acronym, branch.uri, branch.max_depth).then(function(childResponse) {
+            $rootScope.processAutocompleteClassResults(field_id, 'Ontology Class', branch.uri, childResponse);
+          });
+        }
+      });
+    }
+  };
+
+  $rootScope.excludedValueConstraint = function(id, info) {
+    if ($rootScope.excludedValues && $rootScope.excludedValues[id]) {
+      return $rootScope.excludedValues[id];
+    }
+
+    var results = [];
+    var vcst = info.value_constraint;
+
+    if (vcst.classes.length > 0) {
+      angular.forEach(vcst.classes, function(klass) {
+        jQuery.merge(results, klass.exclusions || []);
+      });
+    }
+
+    if (vcst.value_sets.length > 0) {
+      angular.forEach(vcst.value_sets, function(klass) {
+        jQuery.merge(results, klass.exclusions || []);
+      });
+    }
+
+    if (vcst.ontologies.length > 0) {
+      angular.forEach(vcst.ontologies, function(klass) {
+        jQuery.merge(results, klass.exclusions || []);
+      });
+    }
+
+    if (vcst.branches.length > 0) {
+      angular.forEach(vcst.branches, function(klass) {
+        jQuery.merge(results, klass.exclusions || []);
+      });
+    }
+
+    $rootScope.excludedValues = $rootScope.excludedValues || {};
+    $rootScope.excludedValues[id] = results;
+
+    return results;
+  };
+
+  $rootScope.isValueConformedToConstraint = function(value, id, info) {
+    var predefinedValues = $rootScope.autocompleteResultsCache[id].results;
+    var excludedValues = $rootScope.excludedValueConstraint(id, info);
+    var isValid = false;
+    var jsonString = JSON.stringify(value);
+
+    angular.forEach(predefinedValues, function(val) {
+      if (!isValid) {
+        // IMPORTANT: this compare only valid if the 2 objects are simple
+        // and all properties are in the same order.
+        isValid = JSON.stringify(val) == jsonString;
+      }
+    });
+
+    isValid = excludedValues.indexOf(value.uri) == -1;
+
+    return isValid;
+  };
+
+  $rootScope.isOntology = function(obj) {
+    return obj["@type"] && obj["@type"].indexOf("Ontology") > 0;
+  };
 };
 
-angularRun.$inject = ['$rootScope', '$location', '$timeout', '$anchorScroll'];
+angularRun.$inject = ['$rootScope', 'BioPortalService', '$location', '$timeout', '$anchorScroll'];
 angularApp.run(angularRun);

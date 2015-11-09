@@ -9,24 +9,18 @@
           </div>
         </div>
       </div> <!-- /.left-sidebar -->
-      <div class="right-body col-sm-9">
+      <div class="right-body col-sm-8">
         <div id="element-description-container">
           <div class="form-group floating-label-wrapper">
             <input type="text" class="form-control" id="element-description" placeholder="Element Description" aria-label="Element Description" ng-model="element.properties.info.description" with-floating-label>
           </div>
         </div>
       </div> <!-- /.right-body -->
-    </div> <!-- /.row -->
-    <div class="row">
-      <div class="left-sidebar col-sm-3"></div> <!-- /.left-sidebar -->
-      <div class="right-body col-sm-9">
+      <div class="right-body col-sm-1">
         <div id="element-controlled-term-container">
-          <i class="cedar-svg-controll-term"></i>
-          <div class="form-group floating-label-wrapper element-controlled-term" ng-controller="TermsController" ng-model="enumTemp">
-            <!-- Here ng-model and ng-change are used in combination to bind 2 different models to the Controlled Term ID input field (source: http://stackoverflow.com/questions/13890331/how-to-bind-2-models-to-one-input-field-in-angular) -->
-            <input type="url" class="form-control" id="textfield1" placeholder="Controlled Term (Optional)" aria-label="Control Term Default Value" ng-model="enumTemp[0]"
-                   ng-change="updateEnum(element.properties)" with-floating-label>
-          </div><!-- /.form-group -->
+          <div class="toggle-controlled-term">
+            <i class="cedar-svg-controll-term collapsed" data-toggle="collapse" data-target="#element_control_term"></i>
+          </div>
         </div> <!-- /#element-controlled-term-container -->
       </div> <!-- /.right-body -->
     </div> <!-- /.row -->
@@ -39,7 +33,7 @@
       <div class="left-sidebar col-sm-3">
         <div class="sidebar-inner" sticky-directive>
           <p class="add-item">Add Item</p>
-          <ul class="element-menu" role="menu">
+          <ul class="element-menu fields-list" role="menu">
             <li class="item"><a ng-click="addFieldToStaging('textfield')"><i class="cedar-svg-text"></i>Text</a></li>
             <li class="item"><a ng-click="addFieldToStaging('textarea')"><i class="cedar-svg-paragraph"></i>Paragraph</a></li>
             <li class="item"><a ng-click="addFieldToStaging('radio')"><i class="cedar-svg-multiple-choice"></i>Multiple Choice</a></li>
@@ -59,7 +53,7 @@
             <button type="button" class="btn btn-more-items dropdown-toggle" data-toggle="dropdown" data-target=".element-menu" aria-expanded="false" dropdown-toggle>
               Add an Element <i class="fa fa-angle-down fa-2x"></i>
             </button>
-            <ul class="dropdown-menu element-menu" role="menu">
+            <ul class="dropdown-menu element-menu elements-list" role="menu">
               <li ng-repeat="element in elementList | orderBy:'title'" class="item"><a ng-click="addElementToStaging(element)"><i class="cedar-svg-element"></i>{{element.properties.info.title}}</a></li>
             </ul>
           </div>
@@ -67,6 +61,9 @@
       </div> <!-- /.left-sidebar -->
 
       <div class="right-body col-sm-9">
+        <div id="element_control_term" class="controlled-term-options collapse">
+          <div control-term field="element" options="{filterSelection: 'field'}"></div>
+        </div>
         <div id="form-preview-section">
           <div class="form-preview collapse in">
             <div class="empty-text" ng-show="isPropertiesEmpty()">

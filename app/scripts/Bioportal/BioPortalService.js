@@ -19,6 +19,27 @@ bioPortalModule.service('BioPortalService', function BioPortalService($http, $q)
 
   return {
 
+    autocompleteOntology: function(query, acronym) {
+      return $http.get(base + 'search?q=' + query.replace(/[\s]+/g, '+') + '&ontologies=' + acronym + '&suggest=true&display_context=false&display_links=false&pagesize=20', http_default_config).then(function(response) {
+        return response.data;
+      }).catch(function(err) {
+        return err;
+      });
+    },
+    autocompleteOntologySubtree: function(query, acronym, subtree_root_id, max_depth) {
+      return $http.get(base + 'search?q=' + query.replace(/[\s]+/g, '+') + '&ontology=' + acronym + '&suggest=true&display_context=false&display_links=false&subtree_root_id=' + encodeURIComponent(subtree_root_id) + '&max_depth=' + max_depth + '&pagesize=20', http_default_config).then(function(response) {
+        return response.data;
+      }).catch(function(err) {
+        return err;
+      });
+    },
+    autocompleteValueSetClasses: function(query, uri) {
+      return $http.get(base + 'search?q=' + query.replace(/[\s]+/g, '+') + '&ontology=NLMVS&suggest=true&display_context=false&display_links=false&subtree_root_id=' + encodeURIComponent(uri) + '&pagesize=20', http_default_config).then(function(response) {
+        return response.data;
+      }).catch(function(err) {
+        return err;
+      });
+    },
 	getAllOntologies: function() {
 	  return $http.get(base + 'ontologies/', http_default_config).then(function(response) {
 		return response;
@@ -106,6 +127,14 @@ bioPortalModule.service('BioPortalService', function BioPortalService($http, $q)
 		return err;
 	  });
 	},
+	getClassParents: function(acronym, classId) {
+	  //ontologies/{acronym}/classes/{id}/parents?include=hasChildren
+  	  return $http.get(base + 'ontologies/' + acronym + '/classes/' + encodeURIComponent(classId) + '/parents?include=hasChildren,prefLabel', http_default_config).then(function(response) {
+		return response.data;
+	  }).catch(function(err) {
+		return err;
+	  });
+	},
 	getClassValueSet: function(acronym, classId) {
 	  //ontologies/{acronym}/classes/{id}/children?pagesize={pagesize}
 	  return $http.get(base + 'ontologies/' + acronym + '/classes/' + encodeURIComponent(classId) + '/children?pagesize=100', http_default_config).then(function(response) {
@@ -122,11 +151,25 @@ bioPortalModule.service('BioPortalService', function BioPortalService($http, $q)
 		return err;
 	  });
 	},
-	searchValueSets: function(query) {
+	searchValueSetsAndValueSetClasses: function(query) {
 	  //search?q={query}&ontologies={acronym}&roots_only=true
 	  // &require_exact_match will only match the phrase, not any word within the phrase (more accurate)
 	  return $http.get(base + 'search?q=' + query.replace(/[\s]+/g, '+') + '&roots_only=true&require_exact_match=true', http_default_config).then(function(response) {
 		//console.log(response);
+		return response.data;
+	  }).catch(function(err) {
+		return err;
+	  });
+	},
+    searchOntologyClassesValueSetsAndValueSetClasses: function(query) {
+	  return $http.get(base + 'search?q=' + query.replace(/[\s]+/g, '+') + '&pagesize=100', http_default_config).then(function(response) {
+		return response.data;
+	  }).catch(function(err) {
+		return err;
+	  });
+    },
+	searchValueSetsAndValues: function(query) {
+	  return $http.get(base + 'search?q=' + query.replace(/[\s]+/g, '+') + '&ontologies=NLMVS', http_default_config).then(function(response) {
 		return response.data;
 	  }).catch(function(err) {
 		return err;

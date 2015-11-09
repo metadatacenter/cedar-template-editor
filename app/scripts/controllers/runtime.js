@@ -101,7 +101,7 @@ var RuntimeController = function($rootScope, $scope, FormService, $routeParams, 
 		// Broadcast submitForm event to form-directive.js which will assign the form $scope.model to $scope.instance of this controller
 		$scope.$broadcast('submitForm');
 		// Create instance if there are no required field errors
-		if ($rootScope.isEmpty($scope.emptyRequiredFields) && $scope.instance['@id'] == undefined) {
+		if ($rootScope.isEmpty($scope.emptyRequiredFields) && $rootScope.isEmpty($scope.invalidFieldValues) && $scope.instance['@id'] == undefined) {
 			// '@id' and 'template_id' haven't been populated yet, create now
 			$scope.instance['@id'] = $rootScope.idBasePath + $rootScope.generateGUID();
 			$scope.instance['template_id'] = $routeParams.template_id;
@@ -119,7 +119,7 @@ var RuntimeController = function($rootScope, $scope, FormService, $routeParams, 
 			});
 		}
 		// Update instance
-		else if ($rootScope.isEmpty($scope.emptyRequiredFields)) {
+		else if ($rootScope.isEmpty($scope.emptyRequiredFields) && $rootScope.isEmpty($scope.invalidFieldValues)) {
 			FormService.updatePopulatedTemplate($scope.instance['@id'], $scope.instance).then(function(response) {
 				$scope.runtimeSuccessMessages.push('The populated template has been updated.');
 			}).catch(function(err) {
@@ -138,6 +138,18 @@ var RuntimeController = function($rootScope, $scope, FormService, $routeParams, 
 		}
 		if (args[0] == 'remove') {
 			delete $scope.emptyRequiredFields[args[2]];
+		}
+	});
+
+	// Initialize array for fields that are not conform to value_constraint
+	$scope.invalidFieldValues = {};
+	// Event listener waiting for emptyRequiredField $emit from field-directive.js
+	$scope.$on('invalidFieldValues', function (event, args) {
+		if (args[0] == 'add') {
+			$scope.invalidFieldValues[args[2]] = args[1];
+		}
+		if (args[0] == 'remove') {
+			delete $scope.invalidFieldValues[args[2]];
 		}
 	});
 };

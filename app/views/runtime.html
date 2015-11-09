@@ -58,6 +58,12 @@
               <li ng-repeat="field in emptyRequiredFields">{{field}}</li>
             </ul>
           </div>
+          <div ng-if="!isEmpty(invalidFieldValues)" class="alert alert-danger" role="alert">
+            <p><i class="fa fa-exclamation-triangle"></i>Values of the following fields are invalid:</p>
+            <ul>
+              <li ng-repeat="field in invalidFieldValues">{{field}}</li>
+            </ul>
+          </div>
           <div ng-if="runtimeErrorMessages.length" class="alert alert-danger" role="alert">
             <p ng-repeat="message in runtimeErrorMessages"><i class="fa fa-exclamation-triangle"></i>{{message}}</p>
           </div>

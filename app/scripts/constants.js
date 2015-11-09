@@ -1,3 +1,8 @@
+/*jslint node: true */
+'use strict';
+
+/*global angularApp */
+
 angularApp.constant('HEADER_MINI', {
   "stickyThreshold": 0,
   "ROLESELECTOR": {

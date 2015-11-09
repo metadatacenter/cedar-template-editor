@@ -2,7 +2,7 @@
 /*global angular */
 'use strict';
 
-var angularApp = angular.module('angularJsCedarApplication', ['ui.bootstrap', 'ngRoute', 'ngAnimate', 'cedarFilters', 'bioPortal']);
+var angularApp = angular.module('angularJsCedarApplication', ['ui.bootstrap', 'ngRoute', 'ngAnimate', "ngSanitize", 'cedarFilters', 'bioPortal', "ui.select"]);
 
 angularApp.config(function ($routeProvider, $locationProvider) {
 
