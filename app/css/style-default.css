@@ -9349,6 +9349,56 @@ body {
 #jsonTools a {
   color: #ffffff;
 }
+.cedarSWAL .sa-confirm-button-container button.confirm {
+  background-color: #339933;
+}
+.cedarSWAL .sweet-alert .sa-icon.sa-warning .sa-body {
+  background-color: red;
+}
+@-webkit-keyframes pulseWarning {
+  0% {
+    border-color: #339933;
+  }
+  100% {
+    border-color: #eaf2f2;
+  }
+}
+@keyframes pulseWarning {
+  0% {
+    border-color: #339933;
+  }
+  100% {
+    border-color: #eaf2f2;
+  }
+}
+.pulseWarning {
+  -webkit-animation: pulseWarning 1.75s infinite alternate;
+  animation: pulseWarning 1.75s infinite alternate;
+}
+@-webkit-keyframes pulseWarningIns {
+  0% {
+    border-color: #339933;
+  }
+  100% {
+    border-color: #eaf2f2;
+  }
+}
+@keyframes pulseWarningIns {
+  0% {
+    border-color: #339933;
+  }
+  100% {
+    border-color: #eaf2f2;
+  }
+}
+.pulseWarningIns {
+  -webkit-animation: pulseWarningIns 1.75s infinite alternate;
+  animation: pulseWarningIns 1.75s infinite alternate;
+}
+.sweet-alert .sa-icon.sa-warning .sa-body,
+.sweet-alert .sa-icon.sa-warning .sa-dot {
+  background-color: #339933;
+}
 .activ-grotesk-regular {
   font-family: 'aktiv-grotesk-std';
   font-weight: 400;
