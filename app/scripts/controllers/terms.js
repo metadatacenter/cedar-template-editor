@@ -114,13 +114,13 @@ angularApp.controller('TermsController', function($rootScope, $scope, BioPortalS
           $scope.field.properties['@type']['oneOf'][0]['enum']) {
         for (i = 0; i < $scope.field.properties['@type']['oneOf'][0]['enum'].length; i++) {
           classId = $scope.field.properties['@type']['oneOf'][0]['enum'][i];
-          BioPortalService.searchClass(encodeURIComponent(classId)).then(function(response) {
-            if (response && response.collection && response.collection.length > 0) {
+          BioPortalService.getClassDetails(classId).then(function(response) {
+            if (response) {
               // get ontology details
-              acronym = getOntologyAcronym(response.collection[0]);
+              acronym = getOntologyAcronym(response);
               BioPortalService.getOntologyDetails(acronym).then(function(ontologyResponse) {
                 $scope.controlTerm.addedFieldItems.push({
-                  prefLabel: response.collection[0].prefLabel,
+                  prefLabel: response.prefLabel,
                   ontologyDescription: ontologyResponse.ontology.name + ' (' + acronym + ')',
                   '@id': classId
                 });
@@ -495,11 +495,11 @@ angularApp.controller('TermsController', function($rootScope, $scope, BioPortalS
        * Add ontology type to JSON.
        */
       if (angular.isArray($scope.field.properties['@type'].oneOf[0].enum)) {
-        $scope.field.properties['@type'].oneOf[0].enum.push(selection['@id']);
-        $scope.field.properties['@type'].oneOf[1].items.enum.push(selection['@id']);
+        $scope.field.properties['@type'].oneOf[0].enum.push(selection.links.self);
+        $scope.field.properties['@type'].oneOf[1].items.enum.push(selection.links.self);
       } else {
-        $scope.field.properties['@type'].oneOf[0].enum = [selection['@id']];
-        $scope.field.properties['@type'].oneOf[1].items.enum = [selection['@id']];
+        $scope.field.properties['@type'].oneOf[0].enum = [selection.links.self];
+        $scope.field.properties['@type'].oneOf[1].items.enum = [selection.links.self];
       }
 
       $scope.controlTerm.startOver();
