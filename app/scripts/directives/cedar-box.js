@@ -1,22 +1,32 @@
 'use strict';
 
-var cedarBox = function ($document, $window, $location, $sce, UrlService) {
+var cedarBox = function ($document, $window, $location, $sce, UrlService, LS) {
 
   function link(scope, element, attrs) {
     scope.removeObject = function ($event) {
-      if (scope.type == 'template') {
-        if ($window.confirm("Are you sure you want to remove the selected template?")) {
-          scope.$parent.removeTemplate(scope.objectId);
-        }
-      } else if (scope.type == 'element') {
-        if ($window.confirm("Are you sure you want to remove the selected element?")) {
-          scope.$parent.removeElement(scope.objectId);
-        }
-      } else if (scope.type == 'instance') {
-        if ($window.confirm("Are you sure you want to remove the populated template?")) {
-          scope.$parent.removePopulatedTemplate(scope.objectId);
-        }
-      }
+
+      swal({
+          title: "Are you sure?",
+          text: LS.dashboard.delete.confirm[scope.type],
+          type: "warning",
+          showCancelButton: true,
+          confirmButtonText: "Yes, delete it!",
+          closeOnConfirm: true,
+          customClass: 'cedarSWAL',
+          confirmButtonColor: null
+        },
+        function (isConfirm) {
+          if (isConfirm) {
+            if (scope.type == 'template') {
+              scope.$parent.removeTemplate(scope.objectId);
+            } else if (scope.type == 'element') {
+              scope.$parent.removeElement(scope.objectId);
+            } else if (scope.type == 'instance') {
+              scope.$parent.removePopulatedTemplate(scope.objectId);
+            }
+          }
+        });
+
       $event.stopImmediatePropagation();
       angular.element($document).trigger('click');
     }
@@ -36,7 +46,7 @@ var cedarBox = function ($document, $window, $location, $sce, UrlService) {
       angular.element($document).trigger('click');
     }
 
-    scope.getDescription = function() {
+    scope.getDescription = function () {
       return $sce.trustAsHtml(scope.description);
     }
   }
@@ -60,5 +70,5 @@ var cedarBox = function ($document, $window, $location, $sce, UrlService) {
 
 };
 
-cedarBox.$inject = ['$document', '$window', '$location', '$sce', 'UrlService'];
+cedarBox.$inject = ['$document', '$window', '$location', '$sce', 'UrlService', 'LS'];
 angularApp.directive('cedarBox', cedarBox);
