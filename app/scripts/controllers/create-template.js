@@ -1,6 +1,6 @@
 'use strict';
 
-var CreateTemplateController = function($rootScope, $scope, $q, $routeParams, $timeout, FormService, HeaderService, HEADER_MINI) {
+var CreateTemplateController = function($rootScope, $scope, $q, $routeParams, $timeout, FormService, HeaderService, HEADER_MINI, LS) {
   // Set Page Title variable when this controller is active
   $rootScope.pageTitle = 'Template Designer';
   // Create staging area to create/edit fields before they get added to $scope.form.properties
@@ -240,6 +240,26 @@ var CreateTemplateController = function($rootScope, $scope, $q, $routeParams, $t
 
   // Reverts to empty form and removes all previously added fields/elements
   $scope.reset = function() {
+    swal({
+        title: "Are you sure?",
+        text: LS.templateEditor.clear.confirm,
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Yes, clear it!",
+        closeOnConfirm: true,
+        customClass: 'cedarSWAL',
+        confirmButtonColor: null
+      },
+      function (isConfirm) {
+        if (isConfirm) {
+          $timeout(function () {
+            $scope.doReset();
+          });
+        }
+      });
+  };
+
+  $scope.doReset = function() {
     // Loop through $scope.form.properties object and delete each field leaving default json-ld syntax in place
     angular.forEach($scope.form.properties, function(value, key) {
       if (!$rootScope.ignoreKey(key)) {
@@ -329,5 +349,5 @@ var CreateTemplateController = function($rootScope, $scope, $q, $routeParams, $t
 
 };
 
-CreateTemplateController.$inject = ["$rootScope", "$scope", "$q", "$routeParams", "$timeout", "FormService", "HeaderService", "HEADER_MINI"];
+CreateTemplateController.$inject = ["$rootScope", "$scope", "$q", "$routeParams", "$timeout", "FormService", "HeaderService", "HEADER_MINI", "LS"];
 angularApp.controller('CreateTemplateController', CreateTemplateController);

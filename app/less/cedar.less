@@ -174,12 +174,78 @@ html, body {
 }
 
 #jsonTools {
-  height:0px;
-  position:fixed;
-  top:0px;
-  left:0px;
+  height: 0px;
+  position: fixed;
+  top: 0px;
+  left: 0px;
   z-index: 10001;
   a {
     color: @white;
+  }
+}
+
+.cedarSWAL {
+  .sa-confirm-button-container {
+    button.confirm {
+      background-color: @brand-primary;
+    }
+  }
+
+  .sweet-alert .sa-icon.sa-warning .sa-body {
+    background-color: red;
+  }
+}
+
+@-webkit-keyframes pulseWarning {
+  0% {
+    border-color: @brand-primary;
+  }
+  100% {
+    border-color: @brand-secondary;
+  }
+}
+
+@keyframes pulseWarning {
+  0% {
+    border-color: @brand-primary;
+  }
+  100% {
+    border-color: @brand-secondary;
+  }
+}
+
+.pulseWarning {
+  -webkit-animation: pulseWarning 1.75s infinite alternate;
+  animation: pulseWarning 1.75s infinite alternate;
+}
+
+@-webkit-keyframes pulseWarningIns {
+  0% {
+    border-color: @brand-primary;
+  }
+  100% {
+    border-color: @brand-secondary;
+  }
+}
+
+@keyframes pulseWarningIns {
+  0% {
+    border-color: @brand-primary;
+  }
+  100% {
+    border-color: @brand-secondary;
+  }
+}
+
+.pulseWarningIns {
+  -webkit-animation: pulseWarningIns 1.75s infinite alternate;
+  animation: pulseWarningIns 1.75s infinite alternate;
+}
+
+.sweet-alert {
+  .sa-icon.sa-warning {
+    .sa-body, .sa-dot {
+      background-color: @brand-primary;
+    }
   }
 }

@@ -1,72 +1,67 @@
 <div class="container">
-	<div class="row">
-		<section id="dashboard-list" class="dashboard-elements">
-			<div class="col-sm-3">
-				<h2 class="section-title" ng-bind="sectionTitle"></h2>
-				<a ng-href="#{{createLink}}" class="btn btn-create-new">Create New <i class="cedar-svg-plus"></i></a>
-			</div>
-			<div class="col-sm-9">
-				<div class="dash-header">
-					<div class="input-group">
-			      <input type="text" class="form-control" placeholder="Search" aria-label="Search" ng-model="searchText">
+    <div class="row">
+        <section id="dashboard-list" class="dashboard-elements">
+            <div class="col-sm-3">
+                <h2 class="section-title" ng-bind="sectionTitle"></h2>
+                <a ng-href="#{{createLink}}" class="btn btn-create-new">Create New <i class="cedar-svg-plus"></i></a>
+            </div>
+            <div class="col-sm-9">
+                <div class="dash-header">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search" aria-label="Search"
+                               ng-model="searchText">
 			      <span class="input-group-btn">
 			        <button class="btn btn-default" type="button"><i class="fa fa-search"></i></button>
 			      </span>
-			    </div>
-			    <a class="back" href="#/dashboard"><i class="fa fa-arrow-left"></i> Back</a>
-				</div>
-				<div class="margin-reset-row">
-					<div class="template-item" ng-repeat="item in itemList | filter:{title:searchText}" resize-height>
-						<a ng-href="#/{{itemType}}/edit/{{item['@id']}}">
-							<i class="cedar-svg cedar-svg-metadata"></i>
-							<p class="name">{{item.properties.info.title}}</p>
-							<div class="state-indication" ng-if="item.favorite">
-								<i class="cedar-svg-flag"></i>
-							</div>
-							<div class="back-panel">
-								<p class="description">{{item.properties.info.description}}</p>
-								<div class="edit-options">
-									<a ng-href="#/{{itemType}}/edit/{{item['@id']}}">
-										<span class="edit">
-											<i class="cedar-svg-pencil"></i>
-										</span>
-									</a>
-									<a ng-click="remove(item['@id'])">
-										<span class="remove">
-											<i class="cedar-svg-remove"></i>
-										</span>
-									</a>
-								</div>
-							</div><!-- ./back-panel -->
-						</a>
-					</div> <!-- /.template-item elements/templates -->
-					<div class="template-item" ng-repeat="item in submissions | filter:{title:searchText}" resize-height>
-						<a ng-href="#/instances/edit/{{item['@id']}}">
-							<i class="cedar-svg cedar-svg-metadata"></i>
-							<p class="name">{{item.info.template_title}}</p>
-							<div class="state-indication" ng-if="item.properties.info.favorite">
-								<i class="cedar-svg-progress"></i>
-							</div>
-							<div class="back-panel">
-								<!--<p class="description">{{item['@id']}}</p>-->
-								<p class="description">{{item.info.template_description}}<br />{{'(' + (item.info.creation_date | date:'short') + ')'}}</p>
-								<div class="edit-options">
-									<a ng-href="#/instances/edit/{{item['@id']}}">
-										<span class="edit">
-											<i class="cedar-svg-pencil"></i>
-										</span>
-									</a>
-									<a ng-click="remove(item['@id'])">
-										<span class="remove">
-											<i class="cedar-svg-remove"></i>
-										</span>
-									</a>
-								</div>
-							</div><!-- ./back-panel -->
-						</a>
-					</div> <!-- /.template-item elements/templates -->
-				</div> <!-- /.margin-reset-row -->
-			</div> <!-- /.col-sm-9 -->
-		</section>
-	</div> <!-- /.row -->
+                    </div>
+                    <a class="back" href="#/dashboard"><i class="fa fa-arrow-left"></i> Back</a>
+                </div>
+                <div class="margin-reset-row">
+
+                    <section ng-show="itemType == 'elements'">
+                        <div class="template-item" ng-repeat="item in itemList | filter:{title:searchText}"
+                             resize-height>
+                            <cedar-box
+                                    type="element"
+                                    description="{{item.properties.info.description}}"
+                                    title="{{item.properties.info.title}}"
+                                    object-id="{{item['@id']}}"
+                                    allow-remove="true"
+                            >
+                            </cedar-box>
+                        </div>
+                    </section>
+
+                    <section ng-show="itemType == 'templates'">
+                        <div class="template-item" ng-repeat="item in itemList | filter:{title:searchText}"
+                             resize-height>
+                            <cedar-box
+                                    type="template"
+                                    description="{{item.properties.info.description}}"
+                                    title="{{item.properties.info.title}}"
+                                    object-id="{{item['@id']}}"
+                                    allow-remove="true"
+                            >
+                            </cedar-box>
+                        </div>
+                    </section>
+
+                    <section ng-show="itemType == 'submissions'">
+                        <div class="template-item" ng-repeat="item in submissions | filter:{info:{template_title:searchText}}"
+                             resize-height>
+                            <cedar-box
+                                    type="instance"
+                                    description="{{item.info.template_description}}&lt;br/&gt;{{'(' + (item.info.creation_date | date:'short') + ')'}}"
+                                    title="{{item.info.template_title}}"
+                                    object-id="{{item['@id']}}"
+                                    allow-remove="true"
+                            >
+                            </cedar-box>
+                        </div>
+                    </section>
+
+                </div> <!-- /.margin-reset-row -->
+            </div> <!-- /.col-sm-9 -->
+        </section>
+    </div> <!-- /.row -->
 </div> <!-- /.container -->
