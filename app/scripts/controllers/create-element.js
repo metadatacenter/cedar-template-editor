@@ -1,6 +1,6 @@
 'use strict';
 
-var CreateElementController = function($rootScope, $scope, $routeParams, $timeout, FormService, HeaderService, HEADER_MINI) {
+var CreateElementController = function ($rootScope, $scope, $routeParams, $timeout, FormService, HeaderService, HEADER_MINI, LS) {
   // Set page title variable when this controller is active
   $rootScope.pageTitle = 'Element Designer';
   // Create staging area to create/edit fields before they get added to the element
@@ -16,14 +16,14 @@ var CreateElementController = function($rootScope, $scope, $routeParams, $timeou
   $rootScope.applicationRole = 'creator';
 
   // Using form service to load list of existing elements to embed into new element
-  FormService.elementList().then(function(response) {
+  FormService.elementList().then(function (response) {
     $scope.elementList = response;
   });
 
   // Load existing element if $routeParams.id parameter is supplied
   if ($routeParams.id) {
     // Fetch existing element and assign to $scope.element property
-    FormService.element($routeParams.id).then(function(response) {
+    FormService.element($routeParams.id).then(function (response) {
       $scope.element = response;
       // Set form preview to true so the preview is viewable onload
       $scope.formPreview = true;
@@ -83,7 +83,7 @@ var CreateElementController = function($rootScope, $scope, $routeParams, $timeou
   //    return Object.keys($scope.element.properties).length > 1 ? false : true;
   //  }
   //};
-  $scope.isPropertiesEmpty = function() {
+  $scope.isPropertiesEmpty = function () {
     if (!angular.isUndefined($scope.element)) {
       var keys = Object.keys($scope.element.properties);
       for (var i = 0; i < keys.length; i++) {
@@ -96,7 +96,7 @@ var CreateElementController = function($rootScope, $scope, $routeParams, $timeou
   };
 
   // Add new field into $scope.staging object
-  $scope.addFieldToStaging = function(fieldType) {
+  $scope.addFieldToStaging = function (fieldType) {
     var field = $rootScope.generateField(fieldType);
     field.minItems = 1;
     field.maxItems = 1;
@@ -119,7 +119,7 @@ var CreateElementController = function($rootScope, $scope, $routeParams, $timeou
   };
 
   // Function to add additional options for radio, checkbox, and list fieldTypes
-  $scope.addOption = function(field) {
+  $scope.addOption = function (field) {
     //console.log(field.properties.value);
     var emptyOption = {
       "text": ""
@@ -129,7 +129,7 @@ var CreateElementController = function($rootScope, $scope, $routeParams, $timeou
   };
 
   // Add newly configured field to the element object
-  $scope.addFieldToElement = function(field) {
+  $scope.addFieldToElement = function (field) {
     // Setting return value from $scope.checkFieldConditions to array which will display error messages if any
     $scope.stagingErrorMessages = $scope.checkFieldConditions(field.properties);
     $scope.stagingErrorMessages = jQuery.merge($scope.stagingErrorMessages, $rootScope.checkFieldCardinalityOptions(field));
@@ -154,10 +154,10 @@ var CreateElementController = function($rootScope, $scope, $routeParams, $timeou
     }
   };
 
-  $scope.checkFieldConditions = function(field) {
+  $scope.checkFieldConditions = function (field) {
     // Empty array to push 'error messages' into
     var unmetConditions = [],
-        extraConditionInputs = ['checkbox', 'radio', 'list'];
+      extraConditionInputs = ['checkbox', 'radio', 'list'];
 
     // Field title is already required, if it's empty create error message
     if (!field.info.title.length) {
@@ -165,9 +165,9 @@ var CreateElementController = function($rootScope, $scope, $routeParams, $timeou
     }
 
     // If field is within multiple choice field types
-    if (extraConditionInputs.indexOf(field.info.input_type) !== -1 ) {
+    if (extraConditionInputs.indexOf(field.info.input_type) !== -1) {
       var optionMessage = '"Enter Option" input cannot be left empty.';
-      angular.forEach(field.info.options, function(value, index) {
+      angular.forEach(field.info.options, function (value, index) {
         // If any 'option' title text is left empty, create error message
         if (!value.text.length && unmetConditions.indexOf(optionMessage) == -1) {
           unmetConditions.push(optionMessage);
@@ -191,7 +191,7 @@ var CreateElementController = function($rootScope, $scope, $routeParams, $timeou
   //    $scope.element.properties[titleKey] = response.data;
   //  });
   //};
-  $scope.addExistingElement = function(element) {
+  $scope.addExistingElement = function (element) {
     // Fetch existing element json data
     //FormService.element(element).then(function(response) {
 
@@ -208,14 +208,14 @@ var CreateElementController = function($rootScope, $scope, $routeParams, $timeou
     //});
   };
 
-  $scope.addElementToStaging = function(element) {
+  $scope.addElementToStaging = function (element) {
     $scope.staging = {};
     $scope.staging[element['@id']] = element;
     element.minItems = 1;
     element.maxItems = 1;
 
     $scope.previewForm = {};
-    $timeout(function() {
+    $timeout(function () {
       var fieldName = $rootScope.getFieldName(element.properties.info.title);
 
       $scope.previewForm.properties = {};
@@ -224,7 +224,7 @@ var CreateElementController = function($rootScope, $scope, $routeParams, $timeou
   };
 
   // Delete field from $scope.staging object
-  $scope.deleteField = function(field) {
+  $scope.deleteField = function (field) {
     // Remove field instance from $scope.staging
     delete $scope.staging[field['@id']];
     // Empty the Error Messages array if present
@@ -234,7 +234,7 @@ var CreateElementController = function($rootScope, $scope, $routeParams, $timeou
   };
 
   // Helper function for converting $scope.volatile values to json-ld '@' keys
-  $scope.convertVolatile = function() {
+  $scope.convertVolatile = function () {
     for (var key in $scope.volatile) {
       if ($scope.volatile.hasOwnProperty(key)) {
         $scope.element['@' + key] = $scope.volatile[key];
@@ -243,16 +243,36 @@ var CreateElementController = function($rootScope, $scope, $routeParams, $timeou
   };
 
   // Reverts to empty form and removes all previously added fields/elements
-  $scope.reset = function() {
+  $scope.reset = function () {
+    swal({
+        title: "Are you sure?",
+        text: LS.elementEditor.clear.confirm,
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Yes, clear it!",
+        closeOnConfirm: true,
+        customClass: 'cedarSWAL',
+        confirmButtonColor: null
+      },
+      function (isConfirm) {
+        if (isConfirm) {
+          $timeout(function () {
+            $scope.doReset();
+          });
+        }
+      });
+  };
+
+  $scope.doReset = function () {
     // Loop through $scope.element.properties object and delete each field leaving default json-ld syntax in place
-    angular.forEach($scope.element.properties, function(value, key) {
+    angular.forEach($scope.element.properties, function (value, key) {
       if (!$rootScope.ignoreKey(key)) {
         delete $scope.element.properties[key];
       }
     });
     // Broadcast the reset event which will trigger the emptying of formFields formFieldsOrder
     $scope.$broadcast('resetForm');
-  };
+  }
 
   // Setting $scope variable to toggle for whether this template is a favorite
   //$scope.toggleFavorite = function() {
@@ -261,7 +281,7 @@ var CreateElementController = function($rootScope, $scope, $routeParams, $timeou
   //};
 
   // Stores the element into the database
-  $scope.saveElement = function() {
+  $scope.saveElement = function () {
     // First check to make sure Element Name, Element Description are not blank
     $scope.elementErrorMessages = [];
     $scope.elementSuccessMessages = [];
@@ -287,14 +307,14 @@ var CreateElementController = function($rootScope, $scope, $routeParams, $timeou
       // Save element
       // Check if the element is already stored into the DB
       if ($routeParams.id == undefined) {
-        FormService.saveElement($scope.element).then(function(response) {
+        FormService.saveElement($scope.element).then(function (response) {
           console.log(response);
           $scope.elementSuccessMessages.push('The element \"' + response.data.properties.info.title + '\" has been created.');
           // Reload element list
-          FormService.elementList().then(function(response) {
+          FormService.elementList().then(function (response) {
             $scope.elementList = response;
           });
-        }).catch(function(err) {
+        }).catch(function (err) {
           $scope.elementErrorMessages.push("Problem creating the element.");
           console.log(err);
         });
@@ -303,9 +323,9 @@ var CreateElementController = function($rootScope, $scope, $routeParams, $timeou
       else {
         var id = $scope.element['@id'];
         delete $scope.element['@id'];
-        FormService.updateElement(id, $scope.element).then(function(response) {
+        FormService.updateElement(id, $scope.element).then(function (response) {
           $scope.elementSuccessMessages.push('The element \"' + response.data.title + '\" has been updated.');
-        }).catch(function(err) {
+        }).catch(function (err) {
           $scope.elementErrorMessages.push("Problem updating the element.");
           console.log(err);
         });
@@ -314,12 +334,12 @@ var CreateElementController = function($rootScope, $scope, $routeParams, $timeou
   }
 
   // Build $scope.element.order array
-  $scope.$on('finishOrderArray', function(event, orderArray) {
+  $scope.$on('finishOrderArray', function (event, orderArray) {
     $scope.element.order = orderArray;
   });
 
   // This function watches for changes in the properties.info.title field and autogenerates the schema title and description fields
-  $scope.$watch('element.properties.info.title', function(v){
+  $scope.$watch('element.properties.info.title', function (v) {
     if (!angular.isUndefined($scope.element)) {
       var title = $scope.element.properties.info.title;
       if (title.length > 0) {
@@ -336,5 +356,5 @@ var CreateElementController = function($rootScope, $scope, $routeParams, $timeou
 
 };
 
-CreateElementController.$inject = ["$rootScope", "$scope", "$routeParams", "$timeout", "FormService", "HeaderService", "HEADER_MINI"];
+CreateElementController.$inject = ["$rootScope", "$scope", "$routeParams", "$timeout", "FormService", "HeaderService", "HEADER_MINI", "LS"];
 angularApp.controller('CreateElementController', CreateElementController);

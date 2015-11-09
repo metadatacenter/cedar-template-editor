@@ -5,7 +5,6 @@ var cedarBox = function ($document, $window, $location, $sce, UrlService, LS) {
   function link(scope, element, attrs) {
     scope.removeObject = function ($event) {
 
-
       swal({
           title: "Are you sure?",
           text: LS.dashboard.delete.confirm[scope.type],

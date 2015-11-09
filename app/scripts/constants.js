@@ -34,5 +34,15 @@ angularApp.constant('LS', {
         "instance": "Are you sure you want to remove the selected populated template?"
       }
     }
+  },
+  "elementEditor" : {
+    "clear" : {
+      "confirm" : "Are you sure you want to clear the element? All included elements and fields will be deleted!"
+    }
+  },
+  "templateEditor" : {
+    "clear" : {
+      "confirm" : "Are you sure you want to clear the template? All included elements and fields will be deleted!"
+    }
   }
 });
