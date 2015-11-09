@@ -44,8 +44,8 @@
           </div>
 
           <div class="more-items" dropdown>
-            <p class="add-item">Add Item</p>
-            <button type="button" class="btn btn-more-items dropdown-toggle" data-toggle="dropdown" data-target=".element-menu" aria-expanded="false" dropdown-toggle>All Items <i class="fa fa-angle-down fa-2x"></i>
+            <p class="add-item">Add Field</p>
+            <button type="button" class="btn btn-more-items dropdown-toggle" data-toggle="dropdown" data-target=".element-menu" aria-expanded="false" dropdown-toggle>All Fields <i class="fa fa-angle-down fa-2x"></i>
             </button>
             <ul class="dropdown-menu element-menu" role="menu">
               <li class="item"><a ng-click="addFieldToStaging('textfield')"><i class="cedar-svg-text"></i>Text</a></li>
@@ -100,9 +100,9 @@
           <div ng-if="templateSuccessMessages.length" class="alert alert-success" role="alert">
             <p ng-repeat="message in templateSuccessMessages"><i class="fa fa-check"></i>{{message}}</p>
           </div>
-          <div class="favorite {{favorite}}" ng-click="toggleFavorite()">
-            <i class="cedar-svg-flag"></i><span>Favorite</span>
-          </div>
+          <!--<div class="favorite {{favorite}}" ng-click="toggleFavorite()">-->
+            <!--<i class="cedar-svg-flag"></i><span>Favorite</span>-->
+          <!--</div>-->
           <div class="clear-save">
             <button type="button" class="btn btn-clear" ng-click="reset()">Clear</button>
             <button type="button" class="btn btn-save" ng-click="saveTemplate()">Save Template</button>
