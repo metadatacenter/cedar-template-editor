@@ -1,3 +1,9 @@
+/*
+================================================
+=== CEDAR Customization
+================================================
+*/
+
 .transition (@transition) {
   -webkit-transition: @transition;
   -moz-transition: @transition;
@@ -132,7 +138,7 @@ html, body {
   border: 1px solid @gray3;
   i {
     position: relative;;
-    color: @gray;
+    color: @brand-primary;
     top: -2px;
   }
 }
@@ -154,10 +160,6 @@ html, body {
 .more-input-buttons {
   height: 40px;
   padding-top: 7px;
-}
-
-.input-type-container {
-  padding-top: 0px !important;
 }
 
 .form-group {
@@ -249,3 +251,21 @@ html, body {
     }
   }
 }
+
+.field-instance {
+  padding-left:14px;
+  padding-right:14px;
+  &.multiple-instance-field {
+    border: 1px solid @brand-primary-disabled;
+    padding-top:12px;
+    padding-bottom:12px;
+    margin-bottom: 16px;
+    background-color: @gray2;
+  }
+}
+
+/*
+================================================
+=== CEDAR Customization END
+================================================
+*/

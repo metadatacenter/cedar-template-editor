@@ -27,8 +27,10 @@
         </div>
 
         <script type="text/ng-template" id="nestedElement">
-            <field-directive ng-if="field.properties.info.input_type" field="field" model="model" directory="render"
-                             preview="preview"></field-directive>
+            <div ng-if="field.properties.info.input_type" ng-class="{'field-instance':true, 'multiple-instance-field':$root.isArray(model)}">
+                <field-directive field="field" model="model" directory="render"
+                                 preview="preview"></field-directive>
+            </div>
             <div ng-if="!field.properties.info.input_type && model !== undefined" class="nested-element">
                 <element-directive key="key" model="model" element="field" preview="preview"
                                    nested-element="nestedElement"></element-directive>

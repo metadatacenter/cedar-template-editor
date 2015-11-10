@@ -78,7 +78,8 @@ i {
 
   #page-title {
     float:right;
-    padding-top:27px;
+    font-size: 20px;
+    padding-top:22px;
     padding-right:20px;
   }
 
@@ -119,7 +120,7 @@ i {
     right:15px;
     z-index:2;
     background-color:@white;
-    margin-top:18px;
+    margin-top:-27px;
   }
 
   #navbarmini {
@@ -127,7 +128,7 @@ i {
     right:15px;
     z-index:10000;
     background-color:@white;
-    margin-top:65px;
+    margin-top:53px;
   }
 }
 
@@ -336,7 +337,7 @@ i {
     .element-group {
       width:100%;
       //border-bottom:2px dashed #ddd;
-      border:1px solid #ddd;
+      border:1px solid @gray3;
       padding:0px 14px 12px 16px;
       margin-bottom:16px;
       background-color:@gray2;
@@ -365,7 +366,7 @@ i {
         display:inline-block;
 
         i {
-          color:@brand-primary;
+          color:@gray;
           padding-right:10px;
         }
       }
@@ -402,7 +403,7 @@ i {
 }
 
 .form-control.empty ~ .floating-label  {
-  opacity: 1;
+  opacity: 0.6;
 }
 
 .form-control:focus ~ .floating-label,
@@ -1291,7 +1292,7 @@ section.dashboard-elements {
 */
 .input-type-container {
   clear:both;
-  padding-top:15px;
+  padding-top:0px;
 
   p.type-label {
     width:100%;

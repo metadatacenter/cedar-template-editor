@@ -2,9 +2,9 @@
   <!--Loop through top level "page" parameter in form element and call element-directive or field-directive with contents -->
   <div ng-repeat="item in page" class="animate-fade">
     <span ng-if="formFields[item]">
-      <span ng-if="formFields[item].properties.info.input_type">
+      <div ng-if="formFields[item].properties.info.input_type" ng-class="{'field-instance':true, 'multiple-instance-field':$root.isArray(model[item])}">
         <field-directive field="formFields[item]" model="model[item]" directory="render" preview="false"></field-directive>
-      </span>
+      </div>
       <div class="element-group full" ng-if="!formFields[item].properties.info.input_type">
         <element-directive element="formFields[item]" key="item" preview="false" model="model[item]"></element-directive>
       </div>

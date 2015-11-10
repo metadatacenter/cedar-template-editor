@@ -6,10 +6,10 @@
     <input type="checkbox" id="required-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}" ng-model="field.properties.info.required_value" />
     <label for="required-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}">Required</label>
   </div><!-- /.checkbox-inline -->
-  <div class="checkbox checkbox-inline checkbox-advanced">
-    <input type="checkbox" id="advanced-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}" data-toggle="collapse" data-target="#advanced-options-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}" />
-    <label for="advanced-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}">Advanced</label>
-  </div><!-- /.checkbox-inline -->
+  <!--<div class="checkbox checkbox-inline checkbox-advanced">-->
+    <!--<input type="checkbox" id="advanced-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}" data-toggle="collapse" data-target="#advanced-options-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}" />-->
+    <!--<label for="advanced-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}">Advanced</label>-->
+  <!--</div>&lt;!&ndash; /.checkbox-inline &ndash;&gt;-->
   <div class="checkbox checkbox-inline checkbox-cardinality">
     <input type="checkbox" id="cardinality-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}"  ng-model="$parent.element.properties.info.is_cardinal_field" />
     <label for="cardinality-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}">Cardinality</label>
