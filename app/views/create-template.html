@@ -77,7 +77,7 @@
           </div><!-- /.form-preview -->
         </div> <!-- /#form-preview-section -->
 
-        <div id="form-item-config-section">
+        <div id="form-item-config-section" class="animate-fade" ng-show="$root.stagingVisible">
           <form name="{{form.properties.info.title}}" id="{{form.guid}}">
             <div ng-repeat="field in staging | orderObjectBy: 'properties.info.created_at'" class="animate-fade" ng-class="{'adding-element': !field.properties.info.input_type}">
               <div ng-if="field && !field.properties.info.input_type && previewForm">

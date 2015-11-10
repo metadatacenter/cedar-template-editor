@@ -1,6 +1,6 @@
 'use strict';
 
-var CreateElementController = function ($rootScope, $scope, $routeParams, $timeout, FormService, HeaderService, HEADER_MINI, LS) {
+var CreateElementController = function ($rootScope, $scope, $routeParams, $timeout, FormService, HeaderService, StagingService, CONST, HEADER_MINI, LS) {
   // Set page title variable when this controller is active
   $rootScope.pageTitle = 'Element Designer';
   // Create staging area to create/edit fields before they get added to the element
@@ -12,7 +12,9 @@ var CreateElementController = function ($rootScope, $scope, $routeParams, $timeo
   // Setting form preview setting to false by default
   $scope.formPreview = false;
   // Configure mini header
-  HeaderService.configure("ELEMENT", "creator");
+  var pageId = CONST.pageId.ELEMENT;
+  HeaderService.configure(pageId, "creator");
+  StagingService.configure(pageId);
   $rootScope.applicationRole = 'creator';
 
   // Using form service to load list of existing elements to embed into new element
@@ -97,6 +99,7 @@ var CreateElementController = function ($rootScope, $scope, $routeParams, $timeo
 
   // Add new field into $scope.staging object
   $scope.addFieldToStaging = function (fieldType) {
+    StagingService.addField();
     var field = $rootScope.generateField(fieldType);
     field.minItems = 1;
     field.maxItems = 1;
@@ -151,6 +154,7 @@ var CreateElementController = function ($rootScope, $scope, $routeParams, $timeo
 
       // Lastly, remove this field from the $scope.staging object
       $scope.staging = {};
+      StagingService.moveIntoPlace();
     }
   };
 
@@ -209,6 +213,7 @@ var CreateElementController = function ($rootScope, $scope, $routeParams, $timeo
   };
 
   $scope.addElementToStaging = function (element) {
+    StagingService.addElement();
     $scope.staging = {};
     $scope.staging[element['@id']] = element;
     element.minItems = 1;
@@ -231,6 +236,7 @@ var CreateElementController = function ($rootScope, $scope, $routeParams, $timeo
     if ($scope.stagingErrorMessages) {
       $scope.stagingErrorMessages = [];
     }
+    StagingService.removeObject();
   };
 
   // Helper function for converting $scope.volatile values to json-ld '@' keys
@@ -356,5 +362,5 @@ var CreateElementController = function ($rootScope, $scope, $routeParams, $timeo
 
 };
 
-CreateElementController.$inject = ["$rootScope", "$scope", "$routeParams", "$timeout", "FormService", "HeaderService", "HEADER_MINI", "LS"];
+CreateElementController.$inject = ["$rootScope", "$scope", "$routeParams", "$timeout", "FormService", "HeaderService", "StagingService", "CONST", "HEADER_MINI", "LS"];
 angularApp.controller('CreateElementController', CreateElementController);

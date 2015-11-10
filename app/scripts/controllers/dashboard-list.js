@@ -1,12 +1,17 @@
 'use strict';
 
-angularApp.controller('DashboardListController', function ($rootScope, $scope, FormService, $routeParams) {
+var DashboardListController = function ($rootScope, $scope, $routeParams, FormService, HeaderService, CONST) {
 
   $scope.itemList = [];
   // Setting type via $routeParams ('elements', or 'templates')
   $scope.itemType = $routeParams.type;
   // Submissions have slightly different use cases then elements, or templates, need a different $scope
   $scope.submissions = [];
+
+  // Configure mini header
+  var pageId = CONST.pageId.DASHBOARDLIST;
+  var currentApplicationMode = $rootScope.applicationMode;
+  HeaderService.configure(pageId, currentApplicationMode);
 
 	// Load all items depending on $routeParams.type parameter supplied
   $scope.listElements = function() {
@@ -85,4 +90,8 @@ angularApp.controller('DashboardListController', function ($rootScope, $scope, F
         break;
     }
   }
-});
+};
+
+
+DashboardListController.$inject = ["$rootScope", "$scope", "$routeParams", "FormService", "HeaderService", "CONST"];
+angularApp.controller('DashboardListController', DashboardListController);

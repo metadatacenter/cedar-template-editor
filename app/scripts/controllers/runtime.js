@@ -1,6 +1,6 @@
 'use strict';
 
-var RuntimeController = function($rootScope, $scope, FormService, $routeParams, $location, HeaderService, HEADER_MINI) {
+var RuntimeController = function($rootScope, $scope, FormService, $routeParams, $location, HeaderService, CONST, HEADER_MINI) {
 	// set Page Title variable when this controller is active
 	$rootScope.pageTitle = 'Metadata Editor';
 
@@ -12,7 +12,8 @@ var RuntimeController = function($rootScope, $scope, FormService, $routeParams, 
     $scope.formList = response;
   });
 	// Configure mini header
-	HeaderService.configure("RUNTIME", "runtime");
+  var pageId = CONST.pageId.RUNTIME;
+	HeaderService.configure(pageId, "runtime");
   $rootScope.applicationRole = 'instantiator';
 
 
@@ -154,5 +155,5 @@ var RuntimeController = function($rootScope, $scope, FormService, $routeParams, 
 	});
 };
 
-RuntimeController.$inject = ["$rootScope", "$scope", "FormService", "$routeParams", "$location", "HeaderService", "HEADER_MINI"];
+RuntimeController.$inject = ["$rootScope", "$scope", "FormService", "$routeParams", "$location", "HeaderService", "CONST", "HEADER_MINI"];
 angularApp.controller('RuntimeController', RuntimeController);

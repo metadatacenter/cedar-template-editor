@@ -2,6 +2,8 @@
 
 var UrlService = function () {
   return {
+    serviceId: "UrlService",
+
     getTemplateEdit: function (id) {
       return "/templates/edit/" + id;
     },

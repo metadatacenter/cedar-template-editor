@@ -73,7 +73,7 @@
           </div><!-- /.form-preview -->
         </div> <!-- /#form-preview-section -->
 
-        <div id="form-item-config-section">
+        <div id="form-item-config-section" class="animate-fade" ng-show="$root.stagingVisible">
           <div ng-if="stagingErrorMessages.length" class="alert alert-danger" role="alert">
             <p ng-repeat="message in stagingErrorMessages"><i class="fa fa-exclamation-triangle"></i>{{message}}</p>
           </div>

@@ -1,6 +1,6 @@
 'use strict';
 
-var CreateTemplateController = function($rootScope, $scope, $q, $routeParams, $timeout, FormService, HeaderService, HEADER_MINI, LS) {
+var CreateTemplateController = function($rootScope, $scope, $q, $routeParams, $timeout, FormService, HeaderService, StagingService, CONST, HEADER_MINI, LS) {
   // Set Page Title variable when this controller is active
   $rootScope.pageTitle = 'Template Designer';
   // Create staging area to create/edit fields before they get added to $scope.form.properties
@@ -10,7 +10,9 @@ var CreateTemplateController = function($rootScope, $scope, $q, $routeParams, $t
   // Setting form preview setting to false by default
   $scope.formPreview = false;
   // Configure mini header
-  HeaderService.configure("TEMPLATE", "creator");
+  var pageId = CONST.pageId.TEMPLATE;
+  HeaderService.configure(pageId, "creator");
+  StagingService.configure(pageId);
   $rootScope.applicationRole = 'creator';
 
   // Using form service to load list of existing elements to embed into new form
@@ -106,7 +108,7 @@ var CreateTemplateController = function($rootScope, $scope, $q, $routeParams, $t
 
   // Add new field into $scope.staging object
   $scope.addFieldToStaging = function(fieldType) {
-
+    StagingService.addField();
     var field = $rootScope.generateField(fieldType);
     field.minItems = 1;
     field.maxItems = 1;
@@ -129,6 +131,7 @@ var CreateTemplateController = function($rootScope, $scope, $q, $routeParams, $t
   };
 
   $scope.addElementToStaging = function(element) {
+    StagingService.addElement();
     var clonedElement = angular.copy(element);
     $scope.staging = {};
     $scope.staging[element['@id']] = clonedElement;
@@ -179,6 +182,7 @@ var CreateTemplateController = function($rootScope, $scope, $q, $routeParams, $t
 
       // Lastly, remove this field from the $scope.staging object
       delete $scope.staging[fieldId];
+      StagingService.moveIntoPlace();
     }
   };
 
@@ -236,6 +240,7 @@ var CreateTemplateController = function($rootScope, $scope, $q, $routeParams, $t
     if ($scope.stagingErrorMessages) {
       $scope.stagingErrorMessages = [];
     }
+    StagingService.removeObject();
   };
 
   // Reverts to empty form and removes all previously added fields/elements
@@ -349,5 +354,5 @@ var CreateTemplateController = function($rootScope, $scope, $q, $routeParams, $t
 
 };
 
-CreateTemplateController.$inject = ["$rootScope", "$scope", "$q", "$routeParams", "$timeout", "FormService", "HeaderService", "HEADER_MINI", "LS"];
+CreateTemplateController.$inject = ["$rootScope", "$scope", "$q", "$routeParams", "$timeout", "FormService", "HeaderService", "StagingService", "CONST", "HEADER_MINI", "LS"];
 angularApp.controller('CreateTemplateController', CreateTemplateController);

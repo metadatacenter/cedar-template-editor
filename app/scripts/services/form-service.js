@@ -10,6 +10,7 @@ angularApp.service('FormService', function FormService($http) {
   var apiService = 'http://'+hostname+':9000';
 
   return {
+    serviceId: "FormService",
     // ELEMENTS OPERATIONS
     element: function(id) {
       //return $http.get('/static-data/elements/'+id+'.json').then(function(response) {

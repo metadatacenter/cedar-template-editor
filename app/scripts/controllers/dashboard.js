@@ -1,6 +1,6 @@
 'use strict';
 
-var DashboardController = function ($rootScope, $scope, $routeParams, FormService, HeaderService) {
+var DashboardController = function ($rootScope, $scope, $routeParams, FormService, HeaderService, CONST) {
 
   // set Page Title variable when this controller is active
   $rootScope.pageTitle = 'Dashboard';
@@ -39,7 +39,8 @@ var DashboardController = function ($rootScope, $scope, $routeParams, FormServic
   }
 
   // Configure mini header
-  HeaderService.configure("DASHBOARD", currentApplicationMode);
+  var pageId = CONST.pageId.DASHBOARD;
+  HeaderService.configure(pageId, currentApplicationMode);
   $rootScope.applicationRole = currentRole;
 
   //console.log("Using mode:" + currentApplicationMode);
@@ -84,5 +85,5 @@ var DashboardController = function ($rootScope, $scope, $routeParams, FormServic
   }
 };
 
-DashboardController.$inject = ["$rootScope", "$scope", "$routeParams", "FormService", "HeaderService"];
+DashboardController.$inject = ["$rootScope", "$scope", "$routeParams", "FormService", "HeaderService", "CONST"];
 angularApp.controller('DashboardController', DashboardController);
