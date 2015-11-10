@@ -24,6 +24,11 @@
         </div> <!-- /#element-controlled-term-container -->
       </div> <!-- /.right-body -->
     </div> <!-- /.row -->
+    <div class="row">
+      <div id="element_control_term" class="controlled-term-options collapse">
+        <div control-term field="element" options="{filterSection: 'field'}"></div>
+      </div>
+    </div>
   </div> <!-- /.container -->
 </div> <!-- /.template-header -->
 
@@ -61,9 +66,6 @@
       </div> <!-- /.left-sidebar -->
 
       <div class="right-body col-sm-9">
-        <div id="element_control_term" class="controlled-term-options collapse">
-          <div control-term field="element" options="{filterSelection: 'field'}"></div>
-        </div>
         <div id="form-preview-section">
           <div class="form-preview collapse in">
             <div class="empty-text" ng-show="isPropertiesEmpty()">

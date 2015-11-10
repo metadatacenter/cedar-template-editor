@@ -478,6 +478,13 @@ var angularRun = function($rootScope, BioPortalService, $location, $timeout, $an
   $rootScope.isOntology = function(obj) {
     return obj["@type"] && obj["@type"].indexOf("Ontology") > 0;
   };
+
+  $rootScope.lengthOfValueConstraint = function(valueConstraint) {
+    return (valueConstraint.classes || []).length +
+           (valueConstraint.value_sets || []).length +
+           (valueConstraint.ontologies || []).length +
+           (valueConstraint.branches || []).length;
+  };
 };
 
 angularRun.$inject = ['$rootScope', 'BioPortalService', '$location', '$timeout', '$anchorScroll'];
