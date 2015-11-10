@@ -259,6 +259,7 @@ var CreateTemplateController = function($rootScope, $scope, $q, $routeParams, $t
         if (isConfirm) {
           $timeout(function () {
             $scope.doReset();
+            StagingService.resetPage();
           });
         }
       });
@@ -281,8 +282,30 @@ var CreateTemplateController = function($rootScope, $scope, $q, $routeParams, $t
   //  $scope.form.favorite = $scope.favorite;
   //};
 
+  $scope.saveTemplate = function () {
+    if (!StagingService.isEmpty()) {
+      swal({
+          title: "Are you sure?",
+          text: LS.templateEditor.save.nonEmptyStagingConfirm,
+          type: "warning",
+          showCancelButton: true,
+          confirmButtonText: "Yes, save it!",
+          closeOnConfirm: true,
+          customClass: 'cedarSWAL',
+          confirmButtonColor: null
+        },
+        function (isConfirm) {
+          if (isConfirm) {
+            $scope.doSaveTemplate();
+          }
+        });
+    } else {
+      $scope.doSaveTemplate();
+    }
+  }
+
   // Stores the template into the database
-  $scope.saveTemplate = function() {
+  $scope.doSaveTemplate = function() {
     // First check to make sure Template Name, Template Description are not blank
     $scope.templateErrorMessages = [];
     $scope.templateSuccessMessages = [];

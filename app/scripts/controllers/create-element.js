@@ -264,6 +264,7 @@ var CreateElementController = function ($rootScope, $scope, $routeParams, $timeo
         if (isConfirm) {
           $timeout(function () {
             $scope.doReset();
+            StagingService.resetPage();
           });
         }
       });
@@ -286,8 +287,30 @@ var CreateElementController = function ($rootScope, $scope, $routeParams, $timeo
   //  $scope.element.favorite = $scope.favorite;
   //};
 
-  // Stores the element into the database
   $scope.saveElement = function () {
+    if (!StagingService.isEmpty()) {
+      swal({
+          title: "Are you sure?",
+          text: LS.elementEditor.save.nonEmptyStagingConfirm,
+          type: "warning",
+          showCancelButton: true,
+          confirmButtonText: "Yes, save it!",
+          closeOnConfirm: true,
+          customClass: 'cedarSWAL',
+          confirmButtonColor: null
+        },
+        function (isConfirm) {
+          if (isConfirm) {
+            $scope.doSaveElement();
+          }
+        });
+    } else {
+      $scope.doSaveElement();
+    }
+  }
+
+  // Stores the element into the database
+  $scope.doSaveElement = function () {
     // First check to make sure Element Name, Element Description are not blank
     $scope.elementErrorMessages = [];
     $scope.elementSuccessMessages = [];

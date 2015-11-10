@@ -33,6 +33,15 @@ var StagingService = function ($rootScope, CONST) {
       this.updateStatus();
     },
 
+    resetPage: function() {
+      this.stagingObjectType = CONST.stagingObject.NONE;
+      this.updateStatus();
+    },
+
+    isEmpty: function() {
+      return this.stagingObjectType == CONST.stagingObject.NONE;
+    },
+
     updateStatus: function() {
       $rootScope.stagingVisible = (this.stagingObjectType != CONST.stagingObject.NONE);
       //console.log("We are on page: " + this.pageId + ", object in staging:" + this.stagingObjectType);
