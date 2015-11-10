@@ -74,7 +74,7 @@
       <div class="heading-label">
         <fieldset class="section-break">
           <legend>
-            <span ng-if="controlTerm.filterSelection == 'field'">select field types</span>
+            <span ng-if="controlTerm.filterSelection == 'field'">select types</span>
             <span ng-if="controlTerm.filterSelection != 'field'">select value types</span>
           </legend>
         </fieldset>
@@ -143,7 +143,7 @@
             <tbody>
               <tr ng-repeat="result in controlTerm.searchResults" ng-click="controlTerm.selectFieldClass(result.collection)">
                 <td>{{result.class}}</td>
-                <td>{{result.ontology}}</td>
+                <td>{{getOntologySummary(result.ontology)}}</td>
               </tr>
             </tbody>
           </table>
@@ -163,7 +163,7 @@
       <div class="field-tree clear" ng-show="controlTerm.fieldTreeVisibility">
         <div class="field-tree-header table-style">
           <div class="ontology-tree-header table-cell-style" ng-if="controlTerm.currentOntology != ''">
-            <h4><a class="pull-left" ng-click="controlTerm.hideFieldTree()"><img src="../img/left-arrow.png" /></a>&nbsp;&nbsp;&nbsp;&nbsp;{{controlTerm.currentOntology.details.ontology.name}} Ontology Tree</h4>
+            <h4><a class="pull-left" ng-click="controlTerm.hideFieldTree()"><img src="../img/left-arrow.png" /></a>&nbsp;&nbsp;&nbsp;&nbsp;{{controlTerm.currentOntology.details.ontology.name}}</h4>
           </div><!-- /.ontology-tree -->
 
           <div class="field-details-view table-cell-style" ng-if="controlTerm.currentOntology !=''">
@@ -278,7 +278,7 @@
               </td>
             </tr>
             <tr ng-repeat="valueSet in controlTerm.valueConstraint.value_sets">
-              <td class="values">{{valueSet.numChildren}} classes</td>
+              <td class="values">{{valueSet.numChildren}} values</td>
               <td class="type">Value Set</td>
               <td class="source">{{valueSet.name}}</td>
               <td class="pref-label">N/A</td>
@@ -422,7 +422,7 @@
       <div class="field-tree clear" ng-show="controlTerm.selectedValueResult">
         <div class="field-tree-header table-style">
           <div class="ontology-tree-header table-cell-style" ng-if="controlTerm.selectedValueResult.resultType == 'Ontology' || controlTerm.selectedValueResult.resultType == 'Ontology Class'">
-            <h4><a class="pull-left" ng-click="controlTerm.hideValuesTree()"><img src="../img/left-arrow.png" /></a>&nbsp;&nbsp;&nbsp;&nbsp;{{controlTerm.currentOntology.details.ontology.name}} Ontology Tree</h4>
+            <h4><a class="pull-left" ng-click="controlTerm.hideValuesTree()"><img src="../img/left-arrow.png" /></a>&nbsp;&nbsp;&nbsp;&nbsp;{{controlTerm.currentOntology.details.ontology.name}}</h4>
           </div>
 
           <div class="ontology-class-children table-cell-style" ng-show="browsingSection == 'value_set'">
@@ -575,13 +575,15 @@
             </thead>
             <tbody>
               <tr ng-repeat="valueSet in controlTerm.stagedValueSetValueConstraints">
-                <td class="ontology-name">{{valueSet.numChildren}} classes</td>
+                <td class="ontology-name">{{valueSet.numChildren}} values</td>
                 <td class="type">Value Set</td>
                 <td class="pref-label">{{valueSet.name}}</td>
               </tr>
             </tbody>
           </table>
-          <button class="btn" ng-click="controlTerm.addValueSetToValueConstraint()">Add</button>
+          <div class="text-center">
+            <button class="btn" ng-click="controlTerm.addValueSetToValueConstraint()">Add</button>
+          </div>
         </div>
 
         <div class="staged-ontology-class-value-constraint" ng-if="controlTerm.stageValueConstraintAction == 'add_ontology' && controlTerm.stagedOntologyValueConstraints.length > 0">
@@ -601,7 +603,9 @@
               </tr>
             </tbody>
           </table>
-          <button class="btn" ng-click="controlTerm.addOntologyToValueConstraint()">Add</button>
+          <div class="text-center">
+            <button class="btn" ng-click="controlTerm.addOntologyToValueConstraint()">Add</button>
+          </div>
         </div>
 
         <div class="floating-label-wrapper staged-ontology-class-value-constraint" ng-if="controlTerm.stageValueConstraintAction == 'add_children' && controlTerm.stagedBranchesValueConstraints.length > 0">
@@ -615,10 +619,12 @@
               </div>
             </div>
           </div>
-          <button class="btn" ng-click="controlTerm.addBranchToValueConstraint()">Add</button>
+          <div class="text-center">
+            <button class="btn" ng-click="controlTerm.addBranchToValueConstraint()">Add</button>
+          </div>
         </div>
 
-        <div class="staged-ontology-class-value-constraint" ng-if="controlTerm.stageValueConstraintAction == 'add_class'">
+        <div class="staged-ontology-class-value-constraint" ng-if="controlTerm.stageValueConstraintAction == 'add_class' || controlTerm.stageValueConstraintAction == 'add_siblings'">
           <div class="staged-items table-style">
             <div class="staged-item table-row-style" ng-repeat="(key, constraint) in controlTerm.stagedOntologyClassValueConstraints">
               <div class="table-cell-style">
@@ -629,7 +635,9 @@
               </div>
             </div>
           </div>
-          <button class="btn" ng-click="controlTerm.addOntologyClassToValueConstraint()">Add <span ng-if="controlTerm.stagedOntologyClassValueConstraints.length == 1">Class</span><span ng-if="controlTerm.stagedOntologyClassValueConstraints.length > 1">Collection</span></button>
+          <div class="text-center">
+            <button class="btn" ng-click="controlTerm.addOntologyClassToValueConstraint()">Add <span ng-if="controlTerm.stagedOntologyClassValueConstraints.length == 1">Class</span><span ng-if="controlTerm.stagedOntologyClassValueConstraints.length > 1">Collection</span></button>
+          </div>
         </div>
       </div>
     </div>

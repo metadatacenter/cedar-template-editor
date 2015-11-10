@@ -257,6 +257,49 @@ var fieldDirective = function($rootScope, $http, $compile, $document, Spreadshee
       SpreadsheetService.switchToSpreadsheetField($scope, $element);
     }
 
+    if ($scope.directory == "render" &&
+        $scope.field.properties.info.input_type == "textfield" &&
+        $rootScope.hasValueConstraint($scope.field.properties.info)) {
+      if ($rootScope.isArray($scope.model)) {
+        $scope.modelValue = [];
+        angular.forEach($scope.model, function(m, i) {
+          // TODO: Push valid value if m is present.
+          if (m._value) {
+            $scope.modelValue.push({_value: {"@id": m._value, label: m._value_label}});
+          } else {
+            $scope.modelValue.push({});
+          }
+        });
+      } else {
+        if ($scope.model._value) {
+          $scope.modelValue = {_value: {"@id": $scope.model._value, label: $scope.model._value_label}};
+        } else {
+          $scope.modelValue = {};
+        }
+      }
+
+      $scope.$watch("modelValue", function(newValue, oldValue) {
+        if ($rootScope.isArray($scope.model)) {
+          angular.forEach($scope.modelValue, function(m, i) {
+            if (m && m._value && m._value["@id"]) {
+              $scope.model[i]._value = m._value["id"];
+              $scope.model[i]._value_label = m._value.label;
+            } else {
+              delete $scope.model[i]._value;
+              delete $scope.model[i]._value_label;
+            }
+          });
+        } else {
+          if (newValue && newValue._value && newValue._value["@id"]) {
+            $scope.model._value = newValue._value["@id"];
+            $scope.model._value_label = newValue._value.label;
+          } else if (oldValue) {
+            delete $scope.model._value;
+            delete $scope.model._value_label;
+          }
+        }
+      }, true);
+    }
   }
 
   return {
