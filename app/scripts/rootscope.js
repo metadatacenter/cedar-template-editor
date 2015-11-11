@@ -347,7 +347,19 @@ var angularRun = function($rootScope, BioPortalService, $location, $timeout, $an
         );
       }
     }
-    $rootScope.sortAutocompleteResults(field_id);
+    if ($rootScope.autocompleteResultsCache[field_id].results.length === 0) {
+      $rootScope.autocompleteResultsCache[field_id].results.push({
+        'label': 'No Results...'
+      });
+    } else {
+      for (i = 0; i < $rootScope.autocompleteResultsCache[field_id].results.length; i++) {
+        if ($rootScope.autocompleteResultsCache[field_id].results[i].label == 'No Results...') {
+          $rootScope.autocompleteResultsCache[field_id].results.splice(i, 1);
+          break;
+        }
+      }
+      $rootScope.sortAutocompleteResults(field_id);
+    }
   };
 
   $rootScope.updateFieldAutocomplete = function(field, term) {

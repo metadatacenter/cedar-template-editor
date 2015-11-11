@@ -11728,7 +11728,7 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   position: absolute;
 }
 .controlled-terms-modal .modal-dialog {
-  width: 740px;
+  width: 1020px;
 }
 .controlled-terms-modal .modal-content {
   background: #eaf2f2;
@@ -11736,9 +11736,14 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
 }
 .controlled-terms-modal .modal-header {
   border-bottom: none;
+  padding: 30px 20px;
+}
+.controlled-terms-modal .modal-header .close {
+  font-size: 3.5em;
+  margin-top: -20px;
 }
 .controlled-terms-modal .modal-body {
-  padding: 20px;
+  padding: 40px 170px 100px;
 }
 body.modal-open {
   overflow: auto;
@@ -11746,6 +11751,7 @@ body.modal-open {
 body.modal-open .controlled-terms-modal {
   overflow: visible;
   height: auto;
+  margin: 0 0 0 -280px;
 }
 .control-term-field-preview-form .elementTotalContent .preview-edit-options {
   display: none;

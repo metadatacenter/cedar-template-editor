@@ -2846,7 +2846,7 @@ section.dashboard-elements {
 .controlled-terms-modal {
   position: absolute;
   .modal-dialog {
-    width: 740px;
+    width: 1020px;
   }
 
   .modal-content {
@@ -2856,10 +2856,15 @@ section.dashboard-elements {
 
   .modal-header {
     border-bottom: none;
+    padding: 30px 20px;
+    .close {
+      font-size: 3.5em;
+      margin-top: -20px;
+    }
   }
 
   .modal-body {
-    padding: 20px;
+    padding: 40px 170px 100px;
   }
 }
 
@@ -2868,6 +2873,7 @@ body.modal-open {
   .controlled-terms-modal {
     overflow: visible;
     height: auto;
+    margin: 0 0 0 -280px;
   }
 }
 
