@@ -27,14 +27,28 @@ bioPortalModule.service('BioPortalService', function BioPortalService($http, $q)
       });
     },
     autocompleteOntologySubtree: function(query, acronym, subtree_root_id, max_depth) {
-      return $http.get(base + 'search?q=' + query.replace(/[\s]+/g, '+') + '&ontology=' + acronym + '&suggest=true&display_context=false&display_links=false&subtree_root_id=' + encodeURIComponent(subtree_root_id) + '&max_depth=' + max_depth + '&pagesize=20', http_default_config).then(function(response) {
+      var searchUrl = base;
+      if (query == '*') {
+        // use descendants
+        searchUrl += 'ontologies/' + acronym + '/classes/' + encodeURIComponent(subtree_root_id) + '/descendants?display_context=false&display_links=false';
+      } else {
+        searchUrl += 'search?q=' + query.replace(/[\s]+/g, '+') + '&ontology=' + acronym + '&suggest=true&display_context=false&display_links=false&subtree_root_id=' + encodeURIComponent(subtree_root_id) + '&max_depth=' + max_depth + '&pagesize=20';
+      }
+      return $http.get(searchUrl, http_default_config).then(function(response) {
         return response.data;
       }).catch(function(err) {
         return err;
       });
     },
     autocompleteValueSetClasses: function(query, uri) {
-      return $http.get(base + 'search?q=' + query.replace(/[\s]+/g, '+') + '&ontology=NLMVS&suggest=true&display_context=false&display_links=false&subtree_root_id=' + encodeURIComponent(uri) + '&pagesize=20', http_default_config).then(function(response) {
+      var searchUrl = base;
+      if (query == '*') {
+        // use descendants
+        searchUrl += 'ontologies/NLMVS/classes/' + encodeURIComponent(uri) + '/descendants?display_context=false&display_links=false';
+      } else {
+        searchUrl += 'search?q=' + query.replace(/[\s]+/g, '+') + '&ontology=NLMVS&suggest=true&display_context=false&display_links=false&subtree_root_id=' + encodeURIComponent(uri) + '&pagesize=20'
+      }
+      return $http.get(searchUrl, http_default_config).then(function(response) {
         return response.data;
       }).catch(function(err) {
         return err;
