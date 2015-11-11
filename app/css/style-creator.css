@@ -11969,7 +11969,7 @@ body.modal-open .controlled-terms-modal {
 .spreadsheetViewContainer {
   display: none;
   overflow: auto;
-  width: 650px;
+  width: 590px;
   height: 130px;
 }
 .spreadsheetViewContainer.visible {

@@ -1,6 +1,6 @@
 'use strict';
 
-var CreateTemplateController = function($rootScope, $scope, $q, $routeParams, $timeout, FormService, HeaderService, StagingService, CONST, HEADER_MINI, LS) {
+var CreateTemplateController = function($rootScope, $scope, $q, $routeParams, $timeout, $location, FormService, HeaderService, UrlService, StagingService, CONST, HEADER_MINI, LS) {
   // Set Page Title variable when this controller is active
   $rootScope.pageTitle = 'Template Designer';
   // Create staging area to create/edit fields before they get added to $scope.form.properties
@@ -259,6 +259,7 @@ var CreateTemplateController = function($rootScope, $scope, $q, $routeParams, $t
         if (isConfirm) {
           $timeout(function () {
             $scope.doReset();
+            StagingService.resetPage();
           });
         }
       });
@@ -281,8 +282,30 @@ var CreateTemplateController = function($rootScope, $scope, $q, $routeParams, $t
   //  $scope.form.favorite = $scope.favorite;
   //};
 
+  $scope.saveTemplate = function () {
+    if (!StagingService.isEmpty()) {
+      swal({
+          title: "Are you sure?",
+          text: LS.templateEditor.save.nonEmptyStagingConfirm,
+          type: "warning",
+          showCancelButton: true,
+          confirmButtonText: "Yes, save it!",
+          closeOnConfirm: true,
+          customClass: 'cedarSWAL',
+          confirmButtonColor: null
+        },
+        function (isConfirm) {
+          if (isConfirm) {
+            $scope.doSaveTemplate();
+          }
+        });
+    } else {
+      $scope.doSaveTemplate();
+    }
+  }
+
   // Stores the template into the database
-  $scope.saveTemplate = function() {
+  $scope.doSaveTemplate = function() {
     // First check to make sure Template Name, Template Description are not blank
     $scope.templateErrorMessages = [];
     $scope.templateSuccessMessages = [];
@@ -308,6 +331,10 @@ var CreateTemplateController = function($rootScope, $scope, $q, $routeParams, $t
       if ($routeParams.id == undefined) {
         FormService.saveTemplate($scope.form).then(function(response) {
           $scope.templateSuccessMessages.push('The template \"' + response.data.properties.info.title + '\" has been created.');
+          var newId = response.data['@id'];
+          $timeout(function () {
+            $location.path(UrlService.getTemplateEdit(newId));
+          }, 500);
         }).catch(function(err) {
           $scope.templateErrorMessages.push('Problem creating the template.');
           console.log(err);
@@ -354,5 +381,5 @@ var CreateTemplateController = function($rootScope, $scope, $q, $routeParams, $t
 
 };
 
-CreateTemplateController.$inject = ["$rootScope", "$scope", "$q", "$routeParams", "$timeout", "FormService", "HeaderService", "StagingService", "CONST", "HEADER_MINI", "LS"];
+CreateTemplateController.$inject = ["$rootScope", "$scope", "$q", "$routeParams", "$timeout", "$location", "FormService", "HeaderService", "UrlService", "StagingService", "CONST", "HEADER_MINI", "LS"];
 angularApp.controller('CreateTemplateController', CreateTemplateController);

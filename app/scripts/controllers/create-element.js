@@ -1,6 +1,6 @@
 'use strict';
 
-var CreateElementController = function ($rootScope, $scope, $routeParams, $timeout, FormService, HeaderService, StagingService, CONST, HEADER_MINI, LS) {
+var CreateElementController = function ($rootScope, $scope, $routeParams, $timeout, $location, FormService, HeaderService, UrlService, StagingService, CONST, HEADER_MINI, LS) {
   // Set page title variable when this controller is active
   $rootScope.pageTitle = 'Element Designer';
   // Create staging area to create/edit fields before they get added to the element
@@ -264,6 +264,7 @@ var CreateElementController = function ($rootScope, $scope, $routeParams, $timeo
         if (isConfirm) {
           $timeout(function () {
             $scope.doReset();
+            StagingService.resetPage();
           });
         }
       });
@@ -286,8 +287,30 @@ var CreateElementController = function ($rootScope, $scope, $routeParams, $timeo
   //  $scope.element.favorite = $scope.favorite;
   //};
 
-  // Stores the element into the database
   $scope.saveElement = function () {
+    if (!StagingService.isEmpty()) {
+      swal({
+          title: "Are you sure?",
+          text: LS.elementEditor.save.nonEmptyStagingConfirm,
+          type: "warning",
+          showCancelButton: true,
+          confirmButtonText: "Yes, save it!",
+          closeOnConfirm: true,
+          customClass: 'cedarSWAL',
+          confirmButtonColor: null
+        },
+        function (isConfirm) {
+          if (isConfirm) {
+            $scope.doSaveElement();
+          }
+        });
+    } else {
+      $scope.doSaveElement();
+    }
+  }
+
+  // Stores the element into the database
+  $scope.doSaveElement = function () {
     // First check to make sure Element Name, Element Description are not blank
     $scope.elementErrorMessages = [];
     $scope.elementSuccessMessages = [];
@@ -320,6 +343,12 @@ var CreateElementController = function ($rootScope, $scope, $routeParams, $timeo
           FormService.elementList().then(function (response) {
             $scope.elementList = response;
           });
+          var newId = response.data['@id'];
+          //console.log("Reload element for id: " + newId);
+          //console.log("URL:" + UrlService.getElementEdit(newId));
+          $timeout(function () {
+            $location.path(UrlService.getElementEdit(newId));
+          }, 500);
         }).catch(function (err) {
           $scope.elementErrorMessages.push("Problem creating the element.");
           console.log(err);
@@ -362,5 +391,5 @@ var CreateElementController = function ($rootScope, $scope, $routeParams, $timeo
 
 };
 
-CreateElementController.$inject = ["$rootScope", "$scope", "$routeParams", "$timeout", "FormService", "HeaderService", "StagingService", "CONST", "HEADER_MINI", "LS"];
+CreateElementController.$inject = ["$rootScope", "$scope", "$routeParams", "$timeout", "$location", "FormService", "HeaderService", "UrlService", "StagingService", "CONST", "HEADER_MINI", "LS"];
 angularApp.controller('CreateElementController', CreateElementController);
