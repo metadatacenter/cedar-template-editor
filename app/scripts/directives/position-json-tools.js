@@ -21,10 +21,10 @@ var positionJsonTools = function ($window, $timeout) {
           w.triggerHandler('resize')
         }, 250);
       } else {
-        var css = 'position:fixed;top:10px;left:' + (x + 40) + 'px;';
+        //var css = 'position:fixed;top:10px;left:' + (x + 40) + 'px;';
         //console.log("set css to:" + css);
         var t = angular.element('#jsonTools');
-        t.css('position', 'fixed').css('top', '5px').css('left', (x + 40) + 'px');
+        t.css('position', 'fixed').css('top', '5px').css('left', (x + 40) + 'px').css('display', 'block');
       }
     };
 

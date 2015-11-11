@@ -136,8 +136,8 @@ var elementDirective = function($rootScope, SpreadsheetService) {
       }
 
       scope.switchToSpreadsheet = function () {
-        console.log("TOGGLE");
-        console.log(scope.model.parent);
+        //console.log("TOGGLE");
+        //console.log(scope.model.parent);
         SpreadsheetService.switchToSpreadsheetElement(scope, element);
       }
 

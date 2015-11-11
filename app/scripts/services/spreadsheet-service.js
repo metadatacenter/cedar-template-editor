@@ -24,7 +24,7 @@ var SpreadsheetService = function ($filter) {
         return td;
       },
       deepObject: function (instance, td, row, col, prop, value, cellProperties) {
-        var s = value + '<i class="cedar-svg-element"></i>';
+        var s = value + '<i class="cedar-svg-element inSpreadsheetCell"></i>';
         var escaped = Handsontable.helper.stringify(s);
         td.innerHTML = escaped;
         td.className = 'htDimmed';
@@ -259,10 +259,10 @@ var SpreadsheetService = function ($filter) {
 
       var owner = this;
       var scopeElement = (context.isField() ? $scope.field : $scope.element);
-      console.log("scopeElement:");
-      console.log(scopeElement);
+      //console.log("scopeElement:");
+      //console.log(scopeElement);
 
-      console.log(context);
+      //console.log(context);
 
 
       // handsOnTable config object
@@ -291,6 +291,7 @@ var SpreadsheetService = function ($filter) {
       hotConfig.rowHeaders = true;
       hotConfig.stretchH = 'all';
       hotConfig.trimWhitespace = false;
+      hotConfig.manualRowResize = true;
 
       var colHeaders = [];
       for(var i in columnHeaderOrder){
@@ -300,13 +301,24 @@ var SpreadsheetService = function ($filter) {
 
       //console.log(hotConfig);
 
+      // DOM detector element
+      var detectorElement = angular.element('.spreadsheetViewDetector', context.getPlaceholderContext());
       // DOM element that contains the part to be replaced with HOT
       var container = angular.element('.spreadsheetViewContainer', context.getPlaceholderContext())[0];
       context.setSpreadsheetContainer(container);
 
+      // Compute size based on available width and number of rows
+      var spreadsheetRowCount = tableData.length;
+      var spreadsheetContainerHeight = 30 + spreadsheetRowCount * 30 + 20;
+      var spreadsheetContainerWidth = detectorElement.width() - 5;
+      console.log("HEIGHT:" + spreadsheetContainerHeight);
+
+      angular.element(container).css("height", spreadsheetContainerHeight + "px");
+      angular.element(container).css("width", spreadsheetContainerWidth + "px");
       context.setOriginalContentContainer(angular.element('.originalContent', context.getPlaceholderContext())[0]);
       context.switchVisibility();
       this.applyVisibility($scope);
+
 
       // launch hot
       var hot = new Handsontable(container, hotConfig);

@@ -13,11 +13,11 @@
   <p ng-if="form.requiredFields" class="required-text">Required</p>
 </form>
 
-<div ng-show="$root.showRender" id="templateJSON">
+<div ng-show="$root.showRender" id="templateJSON" ng-cloak>
   <h5>Template JSON</h5>
   <pre>{{ form | json }}</pre>
 </div>
-<div ng-show="$root.showOutput" id="outputJSON">
+<div ng-show="$root.showOutput" id="outputJSON" ng-cloak>
   <h5>Output JSON</h5>
   <pre>{{ model | json }}</pre>
 </div>

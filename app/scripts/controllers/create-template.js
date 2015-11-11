@@ -11,7 +11,8 @@ var CreateTemplateController = function($rootScope, $scope, $q, $routeParams, $t
   $scope.formPreview = false;
   // Configure mini header
   var pageId = CONST.pageId.TEMPLATE;
-  HeaderService.configure(pageId, "creator");
+  var applicationMode = CONST.applicationMode.CREATOR;
+  HeaderService.configure(pageId, applicationMode);
   StagingService.configure(pageId);
   $rootScope.applicationRole = 'creator';
 

@@ -11930,12 +11930,13 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
 .spreadsheetViewContainer {
   display: none;
   overflow: auto;
-  width: 590px;
-  height: 130px;
 }
 .spreadsheetViewContainer.visible {
   display: block;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
+}
+.spreadsheetViewDetector {
+  height: 1px;
 }
 div.htCedarCheckboxes {
   border: 0px solid red;
@@ -12083,6 +12084,15 @@ body {
 .animate-fade.ng-hide-add.ng-hide-add-active,
 .animate-fade.ng-hide-remove {
   opacity: 0;
+}
+.cedar-svg-element.inSpreadsheetCell::before {
+  font-size: 18px;
+  vertical-align: 15%;
+}
+.handsontable td,
+.handsontable th {
+  height: 28px;
+  line-height: 25px;
 }
 /*
 ================================================

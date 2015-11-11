@@ -86,12 +86,20 @@
 .spreadsheetViewContainer {
   display: none;
   overflow: auto;
-  width: 590px;
-  height: 130px;
+  //width: 590px;
+  //height: 130px;
+  //border:1px solid red;
+  //background-color: #0b97c4;
   &.visible {
     display: block;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
   }
+}
+
+.spreadsheetViewDetector {
+  //display: none;
+  //border:1px solid green;
+  height: 1px;
 }
 
 div.htCedarCheckboxes {
@@ -253,12 +261,12 @@ html, body {
 }
 
 .field-instance {
-  padding-left:14px;
-  padding-right:14px;
+  padding-left: 14px;
+  padding-right: 14px;
   &.multiple-instance-field {
     border: 1px solid @brand-primary-disabled;
-    padding-top:12px;
-    padding-bottom:12px;
+    padding-top: 12px;
+    padding-bottom: 12px;
     margin-bottom: 16px;
     background-color: @gray2;
   }
@@ -267,21 +275,34 @@ html, body {
 /* The base CSS styles for the animation property */
 .animate-fade.ng-hide-add,
 .animate-fade.ng-hide-remove {
-  transition:0.5s linear all;
+  transition: 0.5s linear all;
 }
 
 /* The starting CSS styles for the enter animation */
 .animate-fade.ng-hide-add,
 .animate-fade.ng-hide-remove.ng-hide-remove-active {
-  opacity:1;
+  opacity: 1;
 }
 
 /* The finishing CSS styles for the enter animation */
 .animate-fade.ng-hide-add.ng-hide-add-active,
 .animate-fade.ng-hide-remove {
-  opacity:0;
+  opacity: 0;
 }
 
+.cedar-svg-element {
+  &.inSpreadsheetCell::before {
+    font-size: 18px;
+    vertical-align: 15%;
+  }
+}
+
+.handsontable {
+  td, th {
+    height: 28px;
+    line-height: 25px;
+  }
+}
 
 /*
 ================================================

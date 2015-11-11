@@ -13,7 +13,8 @@ var CreateElementController = function ($rootScope, $scope, $routeParams, $timeo
   $scope.formPreview = false;
   // Configure mini header
   var pageId = CONST.pageId.ELEMENT;
-  HeaderService.configure(pageId, "creator");
+  var applicationMode = CONST.applicationMode.CREATOR;
+  HeaderService.configure(pageId, applicationMode);
   StagingService.configure(pageId);
   $rootScope.applicationRole = 'creator';
 
