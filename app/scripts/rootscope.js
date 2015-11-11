@@ -385,11 +385,10 @@ var angularRun = function($rootScope, BioPortalService, $location, $timeout, $an
       angular.forEach(vcst.value_sets, function(valueSet) {
         if (term == '*') {
           $rootScope.removeAutocompleteResultsForSource(field_id, valueSet.uri);
-        } else {
-          BioPortalService.autocompleteValueSetClasses(term, valueSet.uri).then(function(childResponse) {
-            $rootScope.processAutocompleteClassResults(field_id, 'Value Set Class', valueSet.uri, childResponse);
-          });
         }
+        BioPortalService.autocompleteValueSetClasses(term, valueSet.uri).then(function(childResponse) {
+          $rootScope.processAutocompleteClassResults(field_id, 'Value Set Class', valueSet.uri, childResponse);
+        });
       });
     }
 
@@ -397,11 +396,10 @@ var angularRun = function($rootScope, BioPortalService, $location, $timeout, $an
       angular.forEach(vcst.ontologies, function(ontology) {
         if (term == '*') {
           $rootScope.removeAutocompleteResultsForSource(field_id, ontology.uri);
-        } else {
-          BioPortalService.autocompleteOntology(term, ontology.acronym).then(function(childResponse) {
-            $rootScope.processAutocompleteClassResults(field_id, 'Ontology Class', ontology.uri, childResponse);
-          });
         }
+        BioPortalService.autocompleteOntology(term, ontology.acronym).then(function(childResponse) {
+          $rootScope.processAutocompleteClassResults(field_id, 'Ontology Class', ontology.uri, childResponse);
+        });
       });
     }
 
@@ -409,11 +407,10 @@ var angularRun = function($rootScope, BioPortalService, $location, $timeout, $an
       angular.forEach(vcst.branches, function(branch) {
         if (term == '*') {
           $rootScope.removeAutocompleteResultsForSource(field_id, branch.uri);
-        } else {
-          BioPortalService.autocompleteOntologySubtree(term, branch.acronym, branch.uri, branch.max_depth).then(function(childResponse) {
-            $rootScope.processAutocompleteClassResults(field_id, 'Ontology Class', branch.uri, childResponse);
-          });
         }
+        BioPortalService.autocompleteOntologySubtree(term, branch.acronym, branch.uri, branch.max_depth).then(function(childResponse) {
+          $rootScope.processAutocompleteClassResults(field_id, 'Ontology Class', branch.uri, childResponse);
+        });
       });
     }
   };
