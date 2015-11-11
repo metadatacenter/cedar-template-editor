@@ -4,7 +4,8 @@ var RoleSelectorController = function ($rootScope, $scope, FormService, HeaderSe
 
   $rootScope.pageTitle = 'Role Selector';
   var pageId = CONST.pageId.ROLESELECTOR;
-  HeaderService.configure(pageId, "default");
+  var applicationMode = CONST.applicationMode.DEFAULT;
+  HeaderService.configure(pageId, applicationMode);
 };
 
 RoleSelectorController.$inject = ["$rootScope", "$scope", "FormService", "HeaderService", "CONST"];

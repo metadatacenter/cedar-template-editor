@@ -1,6 +1,6 @@
 'use strict';
 
-var DashboardController = function ($rootScope, $scope, $routeParams, FormService, HeaderService, CONST) {
+var DashboardController = function ($rootScope, $scope, $routeParams, $location, FormService, HeaderService, UrlService, CONST) {
 
   // set Page Title variable when this controller is active
   $rootScope.pageTitle = 'Dashboard';
@@ -12,13 +12,13 @@ var DashboardController = function ($rootScope, $scope, $routeParams, FormServic
 
   // Define function to make async request to location of json objects and assign proper
   // scope array with returned list of data
-  $scope.getDefaults = function(type, scopeArray) {
-    FormService[type]().then(function(response) {
+  $scope.getDefaults = function (type, scopeArray) {
+    FormService[type]().then(function (response) {
       // Sort by the 'favorites' boolean parameter
       var sortFavorites = $rootScope.sortBoolean(response, 'favorite');
       // Slicing the top 3 out into new array and returning to the template
-      $scope[scopeArray] = sortFavorites.slice(0,3);
-    }).catch(function(err) {
+      $scope[scopeArray] = sortFavorites.slice(0, 3);
+    }).catch(function (err) {
       console.log(err);
     });
   };
@@ -31,11 +31,16 @@ var DashboardController = function ($rootScope, $scope, $routeParams, FormServic
   if ($routeParams.role) {
     if ($routeParams.role == 'as-creator') {
       currentRole = 'creator';
-      currentApplicationMode ='creator';
+      currentApplicationMode = CONST.applicationMode.CREATOR;
     } else if ($routeParams.role == 'as-instantiator') {
       currentRole = 'instantiator';
-      currentApplicationMode = 'runtime';
+      currentApplicationMode = CONST.applicationMode.RUNTIME;
     }
+  }
+  if (currentApplicationMode == CONST.applicationMode.DEFAULT) {
+
+    $location.path(UrlService.getRoleSelector());
+    return;
   }
 
   // Configure mini header
@@ -47,43 +52,43 @@ var DashboardController = function ($rootScope, $scope, $routeParams, FormServic
   //console.log("Using role:" + currentRole);
 
   // Submissions have a bit different requirements so they get their own function
-  $scope.getSubmissions = function() {
-    FormService.populatedTemplatesList().then(function(response) {
+  $scope.getSubmissions = function () {
+    FormService.populatedTemplatesList().then(function (response) {
       $scope.submissionDefaults = response;
-    }).catch(function(err) {
+    }).catch(function (err) {
       console.log(err);
     });
   };
   $scope.getSubmissions();
 
   // Remove template
-  $scope.removeTemplate = function(id) {
-    FormService.removeTemplate(id).then(function(response) {
+  $scope.removeTemplate = function (id) {
+    FormService.removeTemplate(id).then(function (response) {
       // Reload templates
       $scope.getDefaults('formList', 'templateDefaults');
-    }).catch(function(err) {
+    }).catch(function (err) {
       console.log(err);
     });
   }
   // Remove element
-  $scope.removeElement = function(id) {
-    FormService.removeElement(id).then(function(response) {
+  $scope.removeElement = function (id) {
+    FormService.removeElement(id).then(function (response) {
       // Reload elements
       $scope.getDefaults('elementList', 'elementDefaults');
-    }).catch(function(err) {
+    }).catch(function (err) {
       console.log(err);
     });
   }
   // Remove populated template
-  $scope.removePopulatedTemplate = function(id) {
-    FormService.removePopulatedTemplate(id).then(function(response) {
+  $scope.removePopulatedTemplate = function (id) {
+    FormService.removePopulatedTemplate(id).then(function (response) {
       // Reload populated templates
       $scope.getSubmissions();
-    }).catch(function(err) {
+    }).catch(function (err) {
       console.log(err);
     });
   }
 };
 
-DashboardController.$inject = ["$rootScope", "$scope", "$routeParams", "FormService", "HeaderService", "CONST"];
+DashboardController.$inject = ["$rootScope", "$scope", "$routeParams", "$location", "FormService", "HeaderService", "UrlService", "CONST"];
 angularApp.controller('DashboardController', DashboardController);

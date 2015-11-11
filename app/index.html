@@ -83,7 +83,7 @@
     </div>
   </nav>
 
-  <div id="jsonTools" position-json-tools>
+  <div id="jsonTools" position-json-tools style="display: none;">
       <a ng-click="$root.showRender = !$root.showRender; $root.scrollToAnchor('templateJSON')" title="Show Template JSON" ng-show="$root.pageId == 'ELEMENT' || $root.pageId == 'TEMPLATE' || $root.pageId == 'RUNTIME'"><i class="cedar-svg-complete"  ng-show="$root.showRender"></i><i class="cedar-svg-progress" ng-show="!$root.showRender"></i></a><br/>
       <a ng-click="$root.showOutput = !$root.showOutput; $root.scrollToAnchor('outputJSON')" title="Show Output JSON" ng-show="$root.pageId == 'RUNTIME'"><i class="cedar-svg-complete"  ng-show="$root.showOutput"></i><i class="cedar-svg-progress" ng-show="!$root.showOutput"></i></a>
   </div>

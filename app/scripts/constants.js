@@ -69,5 +69,10 @@ angularApp.constant('CONST', {
     "NONE": null,
     "ELEMENT": "ELEMENT",
     "FIELD": "FIELD"
+  },
+  "applicationMode": {
+    "DEFAULT": "default",
+    "CREATOR": "creator",
+    "RUNTIME": "runtime"
   }
 });

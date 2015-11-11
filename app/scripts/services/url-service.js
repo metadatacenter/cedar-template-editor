@@ -4,6 +4,9 @@ var UrlService = function () {
   return {
     serviceId: "UrlService",
 
+    getRoleSelector: function () {
+      return "/role-selector/";
+    },
     getTemplateEdit: function (id) {
       return "/templates/edit/" + id;
     },

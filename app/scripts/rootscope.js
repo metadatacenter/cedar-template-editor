@@ -1,6 +1,6 @@
 /*jslint node: true */
 /*global angular */
-var angularRun = function($rootScope, BioPortalService, $location, $timeout, $anchorScroll) {
+var angularRun = function($rootScope, BioPortalService, $location, $timeout, $anchorScroll, CONST) {
 
   // Define global pageTitle variable for use
   //$rootScope.pageTitle;
@@ -17,7 +17,7 @@ var angularRun = function($rootScope, BioPortalService, $location, $timeout, $an
 
   $rootScope.isArray = angular.isArray;
 
-  $rootScope.applicationMode = 'default';
+  $rootScope.applicationMode = CONST.applicationMode.DEFAULT;
   $rootScope.applicationRole = 'instantiator';
   $rootScope.pageId = null;
 
@@ -484,5 +484,5 @@ var angularRun = function($rootScope, BioPortalService, $location, $timeout, $an
   };
 };
 
-angularRun.$inject = ['$rootScope', 'BioPortalService', '$location', '$timeout', '$anchorScroll'];
+angularRun.$inject = ['$rootScope', 'BioPortalService', '$location', '$timeout', '$anchorScroll', 'CONST'];
 angularApp.run(angularRun);

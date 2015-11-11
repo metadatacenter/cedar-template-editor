@@ -13,7 +13,8 @@ var RuntimeController = function($rootScope, $scope, FormService, $routeParams, 
   });
 	// Configure mini header
   var pageId = CONST.pageId.RUNTIME;
-	HeaderService.configure(pageId, "runtime");
+  var applicationMode = CONST.applicationMode.RUNTIME;
+	HeaderService.configure(pageId, applicationMode);
   $rootScope.applicationRole = 'instantiator';
 
 
