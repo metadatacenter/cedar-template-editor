@@ -9395,7 +9395,7 @@ i {
   vertical-align: middle;
 }
 .template-body .right-body .element-group .element-header {
-  margin-right: -65px;
+  margin-left: -14px;
   min-width: 100%;
   position: relative;
 }
@@ -9410,7 +9410,6 @@ i {
   display: inline-block;
 }
 .template-body .right-body .element-group .element-name-label i {
-  color: #999999;
   padding-right: 10px;
 }
 .template-body .right-body .element-group .nested-element {
@@ -11968,7 +11967,7 @@ body {
 }
 .visibilitySwitch {
   position: relative;
-  left: -27px;
+  left: -13px;
   background-color: #f4f4f7;
   border: 1px solid #dddddd;
 }
