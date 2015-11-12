@@ -8,10 +8,11 @@
     	   placeholder="{{field.properties.info.title}}"
     	   aria-label="{{field.properties.info.description}}"
     	   ng-model="value_element._value"
+         ng-disabled="ngDisabled"
     	   with-floating-label />
     </div>
     <div ng-if="$root.hasValueConstraint(field.properties.info)" class="has-constraint autocomplete-label-wrapper" ng-class="{'has-selected': modelValue[index]._value.label}">
-      <ui-select ng-model="modelValue[index]" theme="bootstrap" close-on-select="true">
+      <ui-select ng-model="modelValue[index]" theme="bootstrap" close-on-select="true" ng-disabled="ngDisabled">
         <ui-select-match placeholder="">{{$select.selected.label}}</ui-select-match>
         <ui-select-choices ui-disable-choice="option.label == 'No Results...'" refresh="$root.updateFieldAutocomplete(field, $select.search)" refresh-delay="200" repeat="option in $root.autocompleteResultsCache[field['@id']]['results'] | propsFilter: {label: $select.search}">
           <div ng-bind-html="option.label | highlight: $select.search"></div>
@@ -36,10 +37,11 @@
            placeholder="{{field.properties.info.title}}"
            aria-label="{{field.properties.info.description}}"
            ng-model="model._value"
+           ng-disabled="ngDisabled"
            with-floating-label />
     </div>
     <div ng-if="$root.hasValueConstraint(field.properties.info)" class="has-constraint autocomplete-label-wrapper" ng-class="{'has-selected': modelValue._value.label}">
-      <ui-select ng-model="modelValue._value" theme="bootstrap" close-on-select="true">
+      <ui-select ng-model="modelValue._value" theme="bootstrap" close-on-select="true" ng-disabled="ngDisabled">
         <ui-select-match placeholder="">{{$select.selected.label}}</ui-select-match>
         <ui-select-choices ui-disable-choice="option.label == 'No Results...'" refresh="$root.updateFieldAutocomplete(field, $select.search)" refresh-delay="200" repeat="option in $root.autocompleteResultsCache[field['@id']]['results'] | propsFilter: {label: $select.search}">
           <div ng-bind-html="option.label | highlight: $select.search"></div>

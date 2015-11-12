@@ -1,6 +1,6 @@
 <div class="toggle-options">
   <div class="toggle-controlled-term">
-    <i class="cedar-svg-controll-term collapsed" data-toggle="collapse" data-target="#control-options-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}"></i>
+    <i class="cedar-svg-controll-term collapsed" data-toggle="modal" data-target="#control-options-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}"></i>
   </div>
   <div class="checkbox checkbox-inline checkbox-required">
     <input type="checkbox" id="required-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}" ng-model="field.properties.info.required_value" />
@@ -67,6 +67,16 @@
   </div><!-- /.form-group -->
 </div><!-- /.advanced-options -->
 
-<div id="control-options-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}" class="controlled-term-options collapse">
-  <div control-term field="$parent.$parent.$parent.field"></div>
+
+<div class="modal fade controlled-terms-modal" id="control-options-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      </div>
+      <div class="modal-body">
+        <div control-term field="$parent.$parent.$parent.field"></div>
+      </div>
+    </div>
+  </div>
 </div>

@@ -74,7 +74,7 @@ angularApp.controller('TermsController', function($rootScope, $scope, $element, 
   //General
   $scope.controlTerm = {};
   $scope.controlTerm.emptyMessage = "You have not added any field or value classes";
-  $scope.controlTerm.filterSelection = "";
+  $scope.controlTerm.filterSelection = $scope.options && $scope.options.filterSelection || "";
   $scope.controlTerm.searchTimeout;
   $scope.controlTerm.currentOntology = "";
   $scope.controlTerm.classDetails = "";
@@ -152,10 +152,10 @@ angularApp.controller('TermsController', function($rootScope, $scope, $element, 
   };
 
   //Start Over: reset to the beginning where you select field or value filter
-  $scope.controlTerm.startOver = function(options) {
+  $scope.controlTerm.startOver = function() {
     console.log('startOver');
     //Clear field/value filter
-    $scope.controlTerm.filterSelection = "";
+    $scope.controlTerm.filterSelection = $scope.options && $scope.options.filterSelection || "";
     $scope.controlTerm.fieldActionSelection = null;
     $scope.controlTerm.selectedFieldClass = null;
     //Reset bioportal filters
@@ -181,10 +181,6 @@ angularApp.controller('TermsController', function($rootScope, $scope, $element, 
     $scope.controlTerm.searchResults = [];
     $scope.controlTerm.stageValueConstraintAction = null;
 
-    if (!options || !options.closedModal) {
-      $element.find(".controlled-terms-modal").modal("hide");
-    }
-
     //Init field/value tooltip
     setTimeout(function() {
       angular.element('#field-value-tooltip').popover();
@@ -202,9 +198,6 @@ angularApp.controller('TermsController', function($rootScope, $scope, $element, 
     console.log('selectFieldFilter');
     angular.element('#field-value-tooltip').popover('hide');
     $scope.controlTerm.filterSelection = "field";
-
-    jQuery(window).scrollTop(0);
-    $element.find(".controlled-terms-modal").modal("show");
   };
 
 
@@ -591,9 +584,6 @@ angularApp.controller('TermsController', function($rootScope, $scope, $element, 
     console.log('selectValueFilter');
     angular.element('#field-value-tooltip').popover('hide');
     $scope.controlTerm.filterSelection = "values";
-
-    jQuery(window).scrollTop(0);
-    $element.find(".controlled-terms-modal").modal("show");
   };
 
   $scope.controlTerm.editValueAddedItem = function(itemData) {
@@ -1089,12 +1079,18 @@ angularApp.controller('TermsController', function($rootScope, $scope, $element, 
     }
   }
 
-  $element.find(".controlled-terms-modal").modal({show: false, backdrop: "static"});
-  $element.find(".controlled-terms-modal").on("hide.bs.modal", function() {
+  $element.parents(".controlled-terms-modal").modal({show: false, backdrop: "static"});
+  $element.parents(".controlled-terms-modal").on("hide.bs.modal", function() {
     $timeout(function() {
       $scope.$apply(function() {
-        $scope.controlTerm.startOver({closedModal: true});
+        $scope.controlTerm.startOver();
       });
+    });
+  });
+
+  $element.parents(".controlled-terms-modal").on("show.bs.modal", function() {
+    $timeout(function() {
+      jQuery(window).scrollTop(0);
     });
   });
 })

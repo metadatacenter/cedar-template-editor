@@ -19,14 +19,23 @@
       <div class="right-body col-sm-1">
         <div id="element-controlled-term-container">
           <div class="toggle-controlled-term">
-            <i class="cedar-svg-controll-term collapsed" data-toggle="collapse" data-target="#element_control_term"></i>
+            <i class="cedar-svg-controll-term collapsed" data-toggle="modal" data-target="#element_control_term"></i>
           </div>
         </div> <!-- /#element-controlled-term-container -->
       </div> <!-- /.right-body -->
     </div> <!-- /.row -->
     <div class="row">
-      <div id="element_control_term" class="controlled-term-options collapse">
-        <div control-term field="element" options="{filterSection: 'field'}"></div>
+      <div class="modal fade controlled-terms-modal" id="element_control_term">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+              <div control-term field="element" options="{filterSelection: 'field'}"></div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div> <!-- /.container -->

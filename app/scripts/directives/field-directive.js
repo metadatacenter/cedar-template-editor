@@ -312,7 +312,8 @@ var fieldDirective = function($rootScope, $http, $compile, $document, Spreadshee
       preview: "=",
       delete: '&',
       add: '&',
-      option: '&'
+      option: '&',
+      ngDisabled: "="
     },
     controller: function($scope) {
 

@@ -11764,11 +11764,11 @@ body.modal-open .controlled-terms-modal {
   height: 43px;
   padding-bottom: 3px;
 }
-.template-header .no-items-added {
-  color: #ffffff;
-}
 .template-header .controlled-term-options .form-control {
   background: #ffffff;
+}
+body .template-header .controlled-terms-modal {
+  margin-left: 0;
 }
 @font-face {
   font-family: "project-cedar";
