@@ -402,7 +402,7 @@ var angularRun = function($rootScope, BioPortalService, $location, $timeout, $an
         }
       });
       if (term !== '*') {
-        if ($rootScope.autocompleteResultsCache[field_id].results.length == 0) {
+        if ($rootScope.autocompleteResultsCache[field_id].results.length === 0) {
           $rootScope.autocompleteResultsCache[field_id].results.push({
             'label': 'No Results...',
             'sourceUri': 'template'
