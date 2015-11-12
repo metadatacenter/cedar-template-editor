@@ -12,7 +12,7 @@
 				<div class="margin-reset-row">
 					<div class="template-item" ng-repeat="template in templateDefaults" resize-height style="height:213px">
                         <cedar-box
-                                type="template"
+                                type="{{CONST.boxType.TEMPLATE}}"
                                 description="{{template.properties.info.description}}"
                                 title="{{template.properties.info.title}}"
                                 object-id="{{template['@id']}}"
@@ -35,7 +35,7 @@
 				<div class="margin-reset-row">
 					<div class="template-item" ng-repeat="element in elementDefaults"resize-height style="height:213px">
                         <cedar-box
-                                type="element"
+                                type="{{CONST.boxType.ELEMENT}}"
                                 description="{{element.properties.info.description}}"
                                 title="{{element.properties.info.title}}"
                                 object-id="{{element['@id']}}"
@@ -59,7 +59,7 @@
 				<div class="margin-reset-row">
 					<div class="template-item" ng-repeat="submission in submissionDefaults" resize-height style="height:213px">
                         <cedar-box
-                                type="instance"
+                                type="{{CONST.boxType.INSTANCE}}"
                                 description="{{submission.info.template_description}}&lt;br/&gt;{{'(' + (submission.info.creation_date | date:'short') + ')'}}"
                                 title="{{submission.info.template_title}}"
                                 object-id="{{submission['@id']}}"

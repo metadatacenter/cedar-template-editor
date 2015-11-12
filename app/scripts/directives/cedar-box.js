@@ -1,10 +1,9 @@
 'use strict';
 
-var cedarBox = function ($document, $window, $location, $sce, UrlService, LS) {
+var cedarBox = function ($document, $window, $location, $sce, UrlService, LS, CONST) {
 
   function link(scope, element, attrs) {
     scope.removeObject = function ($event) {
-
       swal({
           title: "Are you sure?",
           text: LS.dashboard.delete.confirm[scope.type],
@@ -17,12 +16,16 @@ var cedarBox = function ($document, $window, $location, $sce, UrlService, LS) {
         },
         function (isConfirm) {
           if (isConfirm) {
-            if (scope.type == 'template') {
-              scope.$parent.removeTemplate(scope.objectId);
-            } else if (scope.type == 'element') {
-              scope.$parent.removeElement(scope.objectId);
-            } else if (scope.type == 'instance') {
-              scope.$parent.removePopulatedTemplate(scope.objectId);
+            switch (scope.type) {
+              case CONST.boxType.TEMPLATE:
+                scope.$parent.removeTemplate(scope.objectId);
+                break;
+              case CONST.boxType.ELEMENT:
+                scope.$parent.removeElement(scope.objectId);
+                break;
+              case CONST.boxType.INSTANCE:
+                scope.$parent.removeInstance(scope.objectId);
+                break;
             }
           }
         });
@@ -32,15 +35,19 @@ var cedarBox = function ($document, $window, $location, $sce, UrlService, LS) {
     }
 
     scope.editObject = function ($event) {
-      if (scope.type == 'template') {
-        $location.path(UrlService.getTemplateEdit(scope.objectId));
-      } else if (scope.type == 'element') {
-        $location.path(UrlService.getElementEdit(scope.objectId));
-      } else if (scope.type == 'instance') {
-        $location.path(UrlService.getInstanceEdit(scope.objectId));
-      } else if (scope.type == 'link') {
-        //console.log("It is link:", scope.href);
-        $location.path(scope.href);
+      switch (scope.type) {
+        case CONST.boxType.TEMPLATE:
+          $location.path(UrlService.getTemplateEdit(scope.objectId));
+          break;
+        case CONST.boxType.ELEMENT:
+          $location.path(UrlService.getElementEdit(scope.objectId));
+          break;
+        case CONST.boxType.INSTANCE:
+          $location.path(UrlService.getInstanceEdit(scope.objectId));
+          break;
+        case CONST.boxType.LINK:
+          $location.path(scope.href);
+          break;
       }
       $event.stopImmediatePropagation();
       angular.element($document).trigger('click');
@@ -70,5 +77,5 @@ var cedarBox = function ($document, $window, $location, $sce, UrlService, LS) {
 
 };
 
-cedarBox.$inject = ['$document', '$window', '$location', '$sce', 'UrlService', 'LS'];
+cedarBox.$inject = ['$document', '$window', '$location', '$sce', 'UrlService', 'LS', 'CONST'];
 angularApp.directive('cedarBox', cedarBox);

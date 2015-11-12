@@ -74,5 +74,11 @@ angularApp.constant('CONST', {
     "DEFAULT": "default",
     "CREATOR": "creator",
     "RUNTIME": "runtime"
+  },
+  "boxType": {
+    "TEMPLATE": "template",
+    "ELEMENT": "element",
+    "INSTANCE": "instance",
+    "LINK": "link"
   }
 });

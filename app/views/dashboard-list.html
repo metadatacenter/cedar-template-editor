@@ -22,7 +22,7 @@
                         <div class="template-item" ng-repeat="item in itemList | filter:{title:searchText}"
                              resize-height>
                             <cedar-box
-                                    type="element"
+                                    type="{{CONST.boxType.ELEMENT}}"
                                     description="{{item.properties.info.description}}"
                                     title="{{item.properties.info.title}}"
                                     object-id="{{item['@id']}}"
@@ -36,7 +36,7 @@
                         <div class="template-item" ng-repeat="item in itemList | filter:{title:searchText}"
                              resize-height>
                             <cedar-box
-                                    type="template"
+                                    type="{{CONST.boxType.TEMPLATE}}"
                                     description="{{item.properties.info.description}}"
                                     title="{{item.properties.info.title}}"
                                     object-id="{{item['@id']}}"
@@ -50,7 +50,7 @@
                         <div class="template-item" ng-repeat="item in submissions | filter:{info:{template_title:searchText}}"
                              resize-height>
                             <cedar-box
-                                    type="instance"
+                                    type="{{CONST.boxType.INSTANCE}}"
                                     description="{{item.info.template_description}}&lt;br/&gt;{{'(' + (item.info.creation_date | date:'short') + ')'}}"
                                     title="{{item.info.template_title}}"
                                     object-id="{{item['@id']}}"
