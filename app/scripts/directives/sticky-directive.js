@@ -9,7 +9,7 @@ var stickyDirective = function ($window, $document, $rootScope, $timeout, Header
             function makeSticky() {
                 var initialOffset = element.offset().top;
                 angular.element($window).bind('scroll', function () {
-
+//return;
                     if ($window.innerWidth >= 768 && ($window.pageYOffset > HeaderService.getScrollLimit() + HEADER_MINI.stickyThreshold )) {
                         element.addClass('sticky');
                         element.width(element.parent().width());

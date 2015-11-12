@@ -12138,6 +12138,14 @@ body {
   height: 28px;
   line-height: 25px;
 }
+#stickyFix {
+  border: 0px solid red;
+  width: 10px;
+  height: 650px;
+  position: absolute;
+  left: 0;
+  top: 0;
+}
 /*
 ================================================
 === CEDAR Customization END
