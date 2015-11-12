@@ -347,7 +347,19 @@ var angularRun = function($rootScope, BioPortalService, $location, $timeout, $an
         );
       }
     }
-    $rootScope.sortAutocompleteResults(field_id);
+    if ($rootScope.autocompleteResultsCache[field_id].results.length === 0) {
+      $rootScope.autocompleteResultsCache[field_id].results.push({
+        'label': 'No Results...'
+      });
+    } else {
+      for (i = 0; i < $rootScope.autocompleteResultsCache[field_id].results.length; i++) {
+        if ($rootScope.autocompleteResultsCache[field_id].results[i].label == 'No Results...') {
+          $rootScope.autocompleteResultsCache[field_id].results.splice(i, 1);
+          break;
+        }
+      }
+      $rootScope.sortAutocompleteResults(field_id);
+    }
   };
 
   $rootScope.updateFieldAutocomplete = function(field, term) {
@@ -360,14 +372,14 @@ var angularRun = function($rootScope, BioPortalService, $location, $timeout, $an
 
     if (angular.isUndefined($rootScope.autocompleteResultsCache[field_id])) {
       $rootScope.autocompleteResultsCache[field_id] = {
-        'loadedClasses': false,
         'results': []
       };
     }
 
-    if (!$rootScope.autocompleteResultsCache[field_id].loadedClasses) {
-      if (vcst.classes.length > 0) {
-        angular.forEach(vcst.classes, function(klass) {
+    if (vcst.classes.length > 0) {
+      $rootScope.removeAutocompleteResultsForSource(field_id, 'template');
+      angular.forEach(vcst.classes, function(klass) {
+        if (term == '*') {
           $rootScope.autocompleteResultsCache[field_id].results.push(
             {
               '@id': klass.uri,
@@ -376,9 +388,27 @@ var angularRun = function($rootScope, BioPortalService, $location, $timeout, $an
               'sourceUri': 'template'
             }
           );
-        });
+        } else {
+          if (klass && klass.label && klass.label.toLowerCase().indexOf(term.toLowerCase()) !== -1) {
+            $rootScope.autocompleteResultsCache[field_id].results.push(
+              {
+                '@id': klass.uri,
+                'label': klass.label,
+                'type': 'Ontology Class',
+                'sourceUri': 'template'
+              }
+            );
+          }
+        }
+      });
+      if (term !== '*') {
+        if ($rootScope.autocompleteResultsCache[field_id].results.length === 0) {
+          $rootScope.autocompleteResultsCache[field_id].results.push({
+            'label': 'No Results...',
+            'sourceUri': 'template'
+          });
+        }
       }
-      $rootScope.autocompleteResultsCache[field_id].loadedClasses = true;
     }
 
     if (vcst.value_sets.length > 0) {
@@ -474,6 +504,13 @@ var angularRun = function($rootScope, BioPortalService, $location, $timeout, $an
 
   $rootScope.isOntology = function(obj) {
     return obj["@type"] && obj["@type"].indexOf("Ontology") > 0;
+  };
+
+  $rootScope.lengthOfValueConstraint = function(valueConstraint) {
+    return (valueConstraint.classes || []).length +
+           (valueConstraint.value_sets || []).length +
+           (valueConstraint.ontologies || []).length +
+           (valueConstraint.branches || []).length;
   };
 };
 

@@ -1,84 +1,228 @@
-<div class="controlled-terms">
+<div class="controlled-terms controlled-term-options">
+  <div class="control-term-field-preview-form" ng-if="field.properties.info.input_type">
+    <field-directive field="field" directory="preview" preview="false" ng-disabled="true">
+    </field-directive>
+  </div>
+
   <div class="class-container">
-    <div class="added-field-classes">
-      <div class="class-list-container" ng-if="controlTerm.addedFieldItems.length >= 1">
-        <div class="class-list-header">
-          <table class="table table-striped">
-            <thead>
-              <tr>
-                <th>Class</th>
-                <th>Ontology</th>
-                <th>&nbsp;</th>
-              </tr>
-            </thead>
-          </table>
+    <div ng-show="controlTerm.addedFieldItems.length > 0 || $root.lengthOfValueConstraint(controlTerm.valueConstraint) > 0">
+      <div class="added-field-classes">
+        <div class="class-list-container" ng-if="controlTerm.addedFieldItems.length >= 1">
+          <div class="class-list-header">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>Class</th>
+                  <th>Ontology</th>
+                  <th>&nbsp;</th>
+                </tr>
+              </thead>
+            </table>
+          </div>
+          <div class="class-list-table">
+            <table class="table table-striped">
+              <tbody>
+                <tr ng-repeat="item in controlTerm.addedFieldItems">
+                  <td class="pref-label">{{item.prefLabel}}</td>
+                  <td class="ontology-name">
+                    {{item.ontologyDescription}}
+                  </td>
+                  <td>
+                    <div class="item item-delete" ng-click="controlTerm.deleteFieldAddedItem(item)">
+                      <i class="fa fa-close"></i>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
-        <div class="class-list-table">
-          <table class="table table-striped">
-            <tbody>
-              <tr ng-repeat="item in controlTerm.addedFieldItems">
-                <td class="pref-label">{{item.prefLabel}}</td>
-                <td class="ontology-name">
-                  {{item.ontologyDescription}}
-                </td>
-                <td>
-                  <div class="item item-delete" ng-click="controlTerm.deleteFieldAddedItem(item)">
-                    <i class="fa fa-close"></i>
-                  </div>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+
+        <div class="more-items many-classes-list" ng-if="false && controlTerm.addedFieldItems.length > 1">
+          <button type="button" class="btn btn-more-items dropdown-toggle btn-block" data-toggle="dropdown" aria-expanded="false">
+            <span class="pull-left">Added Field Class</span> <i class="fa fa-angle-down fa-2x pull-right"></i>
+            <span class="clearfix"></span>
+          </button>
+          <div class="dropdown-menu element-menu" role="menu">
+            <table class="table table-striped classes-table">
+              <thead>
+                <tr>
+                  <th>Class</th>
+                  <th>Ontology</th>
+                  <th>&nbsp;</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr ng-repeat="item in controlTerm.addedFieldItems">
+                  <td class="pref-label">{{item.prefLabel}}</td>
+                  <td class="ontology-name">
+                    {{item.ontologyDescription}}
+                  </td>
+                  <td>
+                    <div class="item item-delete" ng-click="controlTerm.deleteFieldAddedItem(item)">
+                      <i class="fa fa-close"></i>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
+      <div class="added-value-constraints">
+        <div class="added-value-constraint-container" ng-if="$root.lengthOfValueConstraint(controlTerm.valueConstraint) >= 1">
+          <div class="added-value-constraints-header">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Values</th>
+                  <th>Type</th>
+                  <th>Source</th>
+                  <th>UI label</th>
+                  <th>&nbsp;</th>
+                </tr>
+              </thead>
+            </table>
+          </div>
+          <div class="value-contraint-table">
+            <table class="table table-striped">
+              <tbody>
+                <tr ng-repeat="class in controlTerm.valueConstraint.classes">
+                  <td class="values">{{class.prefLabel}}</td>
+                  <td class="type">{{class.type}}</td>
+                  <td class="ontology-name">{{class.source}}</td>
+                  <td class="pref-label">{{class.label}}</td>
+                  <td>
+                    <div class="item item-delete" ng-click="controlTerm.deleteFieldAddedClass(class)">
+                      <i class="clickable fa fa-close"></i>
+                    </div>
+                  </td>
+                </tr>
+                <tr ng-repeat="valueSet in controlTerm.valueConstraint.value_sets">
+                  <td class="values">{{valueSet.numChildren}} values</td>
+                  <td class="type">Value Set</td>
+                  <td class="source">{{valueSet.name}}</td>
+                  <td class="pref-label">N/A</td>
+                  <td>
+                    <div class="item item-delete" ng-click="controlTerm.deleteFieldAddedValueSet(valueSet)">
+                      <i class="clickable fa fa-close"></i>
+                    </div>
+                  </td>
+                </tr>
+                <tr ng-repeat="ontology in controlTerm.valueConstraint.ontologies">
+                  <td class="values">{{ontology.numChildren}} classes</td>
+                  <td class="type">Ontology</td>
+                  <td class="source">{{ontology.name}} ({{ontology.acronym}})</td>
+                  <td class="pref-label">N/A</td>
+                  <td>
+                    <div class="item item-delete" ng-click="controlTerm.deleteFieldAddedOntology(ontology)">
+                      <i class="clickable fa fa-close"></i>
+                    </div>
+                  </td>
+                </tr>
+                <tr ng-repeat="branch in controlTerm.valueConstraint.branches">
+                  <td class="values">{{branch.name}}</td>
+                  <td class="type">Ontology branch</td>
+                  <td class="source">{{branch.source}}</td>
+                  <td class="pref-label">N/A</td>
+                  <td>
+                    <div class="item item-delete" ng-click="controlTerm.deleteFieldAddedBranch(branch)">
+                      <i class="clickable fa fa-close"></i>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
 
-      <div class="more-items many-classes-list" ng-if="false && controlTerm.addedFieldItems.length > 1">
-        <button type="button" class="btn btn-more-items dropdown-toggle btn-block" data-toggle="dropdown" aria-expanded="false">
-          <span class="pull-left">Added Field Class</span> <i class="fa fa-angle-down fa-2x pull-right"></i>
-          <span class="clearfix"></span>
-        </button>
-        <div class="dropdown-menu element-menu" role="menu">
-          <table class="table table-striped classes-table">
-            <thead>
-              <tr>
-                <th>Class</th>
-                <th>Ontology</th>
-                <th>&nbsp;</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr ng-repeat="item in controlTerm.addedFieldItems">
-                <td class="pref-label">{{item.prefLabel}}</td>
-                <td class="ontology-name">
-                  {{item.ontologyDescription}}
-                </td>
-                <td>
-                  <div class="item item-delete" ng-click="controlTerm.deleteFieldAddedItem(item)">
-                    <i class="fa fa-close"></i>
-                  </div>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+        <div class="more-items many-classes-list" ng-if="false && $root.lengthOfValueConstraint(controlTerm.valueConstraint) > 1">
+          <button type="button" class="btn btn-more-items dropdown-toggle btn-block" data-toggle="dropdown" aria-expanded="false">
+            <span class="pull-left">Added Value Constraint</span> <i class="fa fa-angle-down fa-2x pull-right"></i>
+            <span class="clearfix"></span>
+          </button>
+          <div class="dropdown-menu element-menu" role="menu">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>Values</th>
+                  <th>Type</th>
+                  <th>Source</th>
+                  <th>UI label</th>
+                  <th>&nbsp;</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr ng-repeat="class in controlTerm.valueConstraint.classes">
+                  <td class="values">{{class.prefLabel}}</td>
+                  <td class="type">{{class.type}}</td>
+                  <td class="ontology-name">{{class.source}}</td>
+                  <td class="pref-label">{{class.label}}</td>
+                  <td>
+                    <div class="item item-delete" ng-click="controlTerm.deleteFieldAddedClass(class)">
+                      <i class="clickable fa fa-close"></i>
+                    </div>
+                  </td>
+                </tr>
+                <tr ng-repeat="valueSet in controlTerm.valueConstraint.value_sets">
+                  <td class="values">{{valueSet.numChildren}} values</td>
+                  <td class="type">Value Set</td>
+                  <td class="source">{{valueSet.name}}</td>
+                  <td class="pref-label">N/A</td>
+                  <td>
+                    <div class="item item-delete" ng-click="controlTerm.deleteFieldAddedValueSet(valueSet)">
+                      <i class="clickable fa fa-close"></i>
+                    </div>
+                  </td>
+                </tr>
+                <tr ng-repeat="ontology in controlTerm.valueConstraint.ontologies">
+                  <td class="values">{{ontology.numChildren}} classes</td>
+                  <td class="type">Ontology</td>
+                  <td class="source">{{ontology.name}} ({{ontology.acronym}})</td>
+                  <td class="pref-label">N/A</td>
+                  <td>
+                    <div class="item item-delete" ng-click="controlTerm.deleteFieldAddedOntology(ontology)">
+                      <i class="clickable fa fa-close"></i>
+                    </div>
+                  </td>
+                </tr>
+                <tr ng-repeat="branch in controlTerm.valueConstraint.branches">
+                  <td class="values">{{branch.name}}</td>
+                  <td class="type">Ontology branch</td>
+                  <td class="source">{{branch.source}}</td>
+                  <td class="pref-label">N/A</td>
+                  <td>
+                    <div class="item item-delete" ng-click="controlTerm.deleteFieldAddedBranch(branch)">
+                      <i class="clickable fa fa-close"></i>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>
+    <div ng-hide="controlTerm.addedFieldItems.length > 0 || $root.lengthOfValueConstraint(controlTerm.valueConstraint) > 0">
+      <div class="text-center form-group no-items-added">You have not added any fields<span ng-if="options.filterSelection != 'field'"> or value</span> classes</div>
+    </div>
+
     <div class="form-group floating-label-wrapper" ng-if="!controlTerm.filterSelection">
-      <div class="btn-two-toggle {{controlTerm.filterSelection}}">
-        <button type="button" class="btn btn-field" ng-click="controlTerm.selectFieldFilter()">Field Types</button>
-        <button type="button" class="btn btn-values" ng-click="controlTerm.selectValueFilter()">Value Types</button>
+      <div class="btn-two-toggle {{controlTerm.filterSelection}} text-center">
+        <button type="button" class="btn btn-field" ng-click="controlTerm.selectFieldFilter($event)" ng-if="!options.filterSection || options.filterSection == 'field'">Field Types</button>
+        <button type="button" class="btn btn-values" ng-click="controlTerm.selectValueFilter($event)" ng-if="!options.filterSection || options.filterSection == 'values'">Value Types</button>
         <i id="field-value-tooltip" class="cedar-svg-help-circle" data-container="body" data-toggle="popover" data-placement="right" data-content="Select ontology classes from BioPortal to represent the field and/or the values accepted by the field." data-original-title="" title=""></i>
       </div>
     </div>
-    <div ng-if="controlTerm.filterSelection">
-      <div class="heading-label">
-        <fieldset class="section-break">
-          <legend>
-            <span ng-if="controlTerm.filterSelection == 'field'">select types</span>
-            <span ng-if="controlTerm.filterSelection != 'field'">select value types</span>
-          </legend>
-        </fieldset>
-      </div>
+  </div>
+  <div ng-if="controlTerm.filterSelection">
+    <div class="heading-label">
+      <fieldset class="section-break">
+        <legend>
+          <span ng-if="controlTerm.filterSelection == 'field'">select types</span>
+          <span ng-if="controlTerm.filterSelection != 'field'">select value types</span>
+        </legend>
+      </fieldset>
     </div>
   </div>
   <div class="form-group floating-label-wrapper field-filter clearfix" ng-if="controlTerm.filterSelection == 'field'">
@@ -248,72 +392,6 @@
   </div>
 
   <div class="value-filter" ng-if="controlTerm.filterSelection == 'values'">
-
-    <div class="added-value-constraint-container" ng-if="!controlTerm.valueConstraint.isEmpty()">
-      <div class="added-value-constraints-header">
-        <table class="table">
-          <thead>
-            <tr>
-              <th>Values</th>
-              <th>Type</th>
-              <th>Source</th>
-              <th>UI label</th>
-              <th>&nbsp;</th>
-            </tr>
-          </thead>
-        </table>
-      </div>
-      <div class="value-contraint-table">
-        <table class="table table-striped">
-          <tbody>
-            <tr ng-repeat="class in controlTerm.valueConstraint.classes">
-              <td class="values">{{class.prefLabel}}</td>
-              <td class="type">{{class.type}}</td>
-              <td class="ontology-name">{{class.source}}</td>
-              <td class="pref-label">{{class.label}}</td>
-              <td>
-                <div class="item item-delete" ng-click="controlTerm.deleteFieldAddedClass(class)">
-                  <i class="clickable fa fa-close"></i>
-                </div>
-              </td>
-            </tr>
-            <tr ng-repeat="valueSet in controlTerm.valueConstraint.value_sets">
-              <td class="values">{{valueSet.numChildren}} values</td>
-              <td class="type">Value Set</td>
-              <td class="source">{{valueSet.name}}</td>
-              <td class="pref-label">N/A</td>
-              <td>
-                <div class="item item-delete" ng-click="controlTerm.deleteFieldAddedValueSet(valueSet)">
-                  <i class="clickable fa fa-close"></i>
-                </div>
-              </td>
-            </tr>
-            <tr ng-repeat="ontology in controlTerm.valueConstraint.ontologies">
-              <td class="values">{{ontology.numChildren}} classes</td>
-              <td class="type">Ontology</td>
-              <td class="source">{{ontology.name}} ({{ontology.acronym}})</td>
-              <td class="pref-label">N/A</td>
-              <td>
-                <div class="item item-delete" ng-click="controlTerm.deleteFieldAddedOntology(ontology)">
-                  <i class="clickable fa fa-close"></i>
-                </div>
-              </td>
-            </tr>
-            <tr ng-repeat="branch in controlTerm.valueConstraint.branches">
-              <td class="values">{{branch.name}}</td>
-              <td class="type">Ontology branch</td>
-              <td class="source">{{branch.source}}</td>
-              <td class="pref-label">N/A</td>
-              <td>
-                <div class="item item-delete" ng-click="controlTerm.deleteFieldAddedBranch(branch)">
-                  <i class="clickable fa fa-close"></i>
-                </div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
 
     <div class="text-center">
       <div class="checkbox checkbox-primary inline-block checkbox-bioportal-ontologies">
@@ -643,4 +721,4 @@
     </div>
 
   </div>
-</div><!-- /.controlled-term-options -->
+</div>

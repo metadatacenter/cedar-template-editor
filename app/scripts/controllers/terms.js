@@ -1,7 +1,7 @@
 'use strict';
 
 // Controller for the functionality of adding controlled terms to fields and elements
-angularApp.controller('TermsController', function($rootScope, $scope, BioPortalService, $q, $timeout, $http) {
+angularApp.controller('TermsController', function($rootScope, $scope, $element, BioPortalService, $q, $timeout, $http) {
 
   /**
    * Cache entire list of ontologies on the client so we don't have to make
@@ -194,7 +194,7 @@ angularApp.controller('TermsController', function($rootScope, $scope, BioPortalS
   }
 
   // FIELD: Set field as primary search/browse parameter
-  $scope.controlTerm.selectFieldFilter = function() {
+  $scope.controlTerm.selectFieldFilter = function(event) {
     console.log('selectFieldFilter');
     angular.element('#field-value-tooltip').popover('hide');
     $scope.controlTerm.filterSelection = "field";
@@ -962,6 +962,7 @@ angularApp.controller('TermsController', function($rootScope, $scope, BioPortalS
     $scope.controlTerm.stagedOntologyValueConstraints = [];
 
     assignValueConstraintToField();
+    $scope.controlTerm.startOver();
   };
 
   $scope.controlTerm.addBranchToValueConstraint = function() {
@@ -988,6 +989,7 @@ angularApp.controller('TermsController', function($rootScope, $scope, BioPortalS
     $scope.controlTerm.stagedBranchesValueConstraints = [];
 
     assignValueConstraintToField();
+    $scope.controlTerm.startOver();
   };
 
   $scope.controlTerm.addValueSetToValueConstraint = function() {
@@ -1008,6 +1010,7 @@ angularApp.controller('TermsController', function($rootScope, $scope, BioPortalS
     $scope.controlTerm.stagedValueSetValueConstraints = [];
 
     assignValueConstraintToField();
+    $scope.controlTerm.startOver();
   };
 
   /**
@@ -1034,6 +1037,8 @@ angularApp.controller('TermsController', function($rootScope, $scope, BioPortalS
     $scope.controlTerm.stagedOntologyClassValueConstraints = [];
     $scope.controlTerm.stagedOntologyClassValueConstraintData = [];
     assignValueConstraintToField();
+
+    $scope.controlTerm.startOver();
   };
 
   var assignValueConstraintToField = function() {
@@ -1074,6 +1079,20 @@ angularApp.controller('TermsController', function($rootScope, $scope, BioPortalS
     }
   }
 
+  $element.parents(".controlled-terms-modal").modal({show: false, backdrop: "static"});
+  $element.parents(".controlled-terms-modal").on("hide.bs.modal", function() {
+    $timeout(function() {
+      $scope.$apply(function() {
+        $scope.controlTerm.startOver();
+      });
+    });
+  });
+
+  $element.parents(".controlled-terms-modal").on("show.bs.modal", function() {
+    $timeout(function() {
+      jQuery(window).scrollTop(0);
+    });
+  });
 })
 .directive('addedFieldItem', function () {
   return {

@@ -2052,15 +2052,8 @@ section.dashboard-elements {
 */
 
 .preloader {
-  background-image:url(../img/preloader-gear.gif);
-  background-position: center center;
-  background-size: 100% auto;
-  background-repeat: no-repeat;
-  width:32px;
-  height:32px;
   display: block;
-  margin:11px 0 0;
-  position: relative;
+  margin:10px 0 0;
 
   &:after {
     content: "Searching...";
@@ -2068,9 +2061,6 @@ section.dashboard-elements {
     width:auto;
     height:32px;
     line-height: 32px;
-    position: absolute;
-    top:0;
-    left:42px;
     color: #333;
     color:@brand-primary;
   }
@@ -2517,7 +2507,7 @@ section.dashboard-elements {
   cursor: pointer;
 }
 
-.added-field-classes {
+.added-field-classes, .added-value-constraints {
   background: #FFF;
   .many-classes-list {
     position: relative;
@@ -2774,6 +2764,7 @@ section.dashboard-elements {
 .added-value-constraint-container {
   border: 1px solid #DDD;
   background: #FFF;
+  margin-bottom: 10px;
 }
 
 .added-value-constraints-header, .value-contraint-table {
@@ -2816,6 +2807,9 @@ section.dashboard-elements {
 .value-contraint-table {
   max-height: 285px;
   overflow: auto;
+  table {
+    margin-bottom: 0;
+  }
 }
 
 .field-tree-header {
@@ -2847,4 +2841,94 @@ section.dashboard-elements {
   top: 5px;
   left: 5px;
   font-size: 11px;
+}
+
+.controlled-terms-modal {
+  position: absolute;
+  .modal-dialog {
+    width: 1020px;
+  }
+
+  .modal-content {
+    background: #eaf2f2;
+    border: 1px solid #5795ba;
+  }
+
+  .modal-header {
+    border-bottom: none;
+    padding: 30px 20px;
+    .close {
+      font-size: 3.5em;
+      margin-top: -20px;
+    }
+  }
+
+  .modal-body {
+    padding: 40px 170px 100px;
+  }
+}
+
+body.modal-open {
+  overflow: auto;
+  .controlled-terms-modal {
+    overflow: visible;
+    height: auto;
+    margin: 0 0 0 -280px;
+  }
+}
+
+.control-term-field-preview-form {
+  .elementTotalContent {
+    .preview-edit-options {
+      display: none;
+    }
+
+    .form-group {
+      margin-right: 0;
+    }
+  }
+}
+
+.template-body form .form-group .field-search-form-control,
+.template-body form .form-group .values-search-input-group {
+  height: 43px;
+  padding-bottom: 3px;
+}
+
+.template-header {
+  .controlled-term-options {
+    .form-control {
+      background: @white;
+    }
+  }
+}
+
+body .template-header .controlled-terms-modal {
+  margin-left: 0;
+}
+
+.template-body form .autocomplete-label-wrapper.has-constraint .ui-select-container ~ .input-indicator-icons .cedar-svg-help-circle {
+  display:block;
+  margin-top: -7px;
+}
+.template-body form .has-selected.has-constraint .ui-select-container ~ .input-indicator-icons .cedar-svg-help-circle {
+  display:none;
+  margin-top: -7px;
+}
+
+.template-body form .autocomplete-label-wrapper.has-constraint .ui-select-container ~ .input-indicator-icons .cedar-svg-check-circle {
+  display:none;
+  margin-top: -7px;
+}
+.template-body form .has-selected.has-constraint .ui-select-container ~ .input-indicator-icons .cedar-svg-check-circle {
+  display:block;
+  margin-top: -7px;
+}
+
+.autocomplete-label-wrapper .ui-select-bootstrap .ui-select-toggle > .caret {
+  display: none;
+}
+
+.controlled-terms-modal p.type-label {
+  display: none;
 }

@@ -55,6 +55,9 @@ angular.module('cedarFilters', [])
   }).filter('propsFilter', function() {
     // This filter is copied from demo of angular-ui-select
     return function(items, props) {
+      if (items && items.length == 1 && items[0].label == 'No Results...')
+        return items;
+
       var out = [];
       if (angular.isArray(items)) {
         var keys = Object.keys(props);
