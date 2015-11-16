@@ -1,0 +1,57 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "@id": null,
+  "title": "",
+  "description": "",
+  "pages": [],
+  "type": "object",
+  "properties": {
+    "@context": {
+      "properties": {
+        "_value": {
+          "enum": [
+            "https://schema.org/value"
+          ]
+        }
+      },
+      "required": [
+        "_value"
+      ],
+      "additionalProperties": false
+    },
+    "@id": {
+      "type": "string",
+      "format": "uri"
+    },
+    "@type": {
+      "oneOf": [
+        {
+          "type": "string",
+          "format": "uri"
+        },
+        {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "format": "uri"
+          },
+          "uniqueItems": true
+        }
+      ]
+    },
+    "template_id": {
+      "type": "string",
+      "format": "uri"
+    },
+    "info": {
+      "title": "",
+      "description": ""
+    }
+  },
+  "required": [
+    "@id",
+    "template_id"
+  ],
+  "additionalProperties": false
+}

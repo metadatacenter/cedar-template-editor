@@ -1,7 +1,6 @@
 /*jslint node: true */
-'use strict';
-
 /*global angularApp */
+'use strict';
 
 angularApp.constant('HEADER_MINI', {
   "stickyThreshold": 0,

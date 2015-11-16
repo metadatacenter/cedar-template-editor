@@ -1,0 +1,38 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "@id": null,
+  "type": "object",
+  "properties": {
+    "@type": {
+      "oneOf": [
+        {
+          "type": "string",
+          "format": "uri"
+        },
+        {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "format": "uri"
+          },
+          "uniqueItems": true
+        }
+      ]
+    },
+    "info": {
+      "title": "",
+      "description": "",
+      "input_type": null,
+      "required_value": false,
+      "created_at": null
+    },
+    "_value": {
+      "type": null
+    }
+  },
+  "required": [
+    "_value"
+  ],
+  "additionalProperties": false
+}

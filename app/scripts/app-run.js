@@ -1,6 +1,10 @@
 /*jslint node: true */
+/*global angularApp */
 /*global angular */
-var angularRun = function($rootScope, BioPortalService, $location, $timeout, $anchorScroll, CONST) {
+/*global jQuery */
+'use strict';
+
+var angularRun = function($rootScope, BioPortalService, $location, $timeout, $window, CONST) {
 
   // Define global pageTitle variable for use
   //$rootScope.pageTitle;
@@ -251,9 +255,8 @@ var angularRun = function($rootScope, BioPortalService, $location, $timeout, $an
     $timeout(function () {
       var target = angular.element('#' + hash);
       var y = target.offset().top;
-      window.scrollTo(0, y-95);
+      $window.scrollTo(0, y-95);
     }, 250);
-    //$anchorScroll();
   };
 
   var generateCardinalities = function(max) {
@@ -513,5 +516,5 @@ var angularRun = function($rootScope, BioPortalService, $location, $timeout, $an
   };
 };
 
-angularRun.$inject = ['$rootScope', 'BioPortalService', '$location', '$timeout', '$anchorScroll', 'CONST'];
+angularRun.$inject = ['$rootScope', 'BioPortalService', '$location', '$timeout', '$window', 'CONST'];
 angularApp.run(angularRun);
