@@ -4,7 +4,7 @@
 /*global jQuery */
 'use strict';
 
-var angularRun = function($rootScope, BioPortalService, $location, $timeout, $window, CONST) {
+var angularRun = function($rootScope, BioPortalService, $location, $timeout, $window, DataTemplateService, CONST) {
 
   // Define global pageTitle variable for use
   //$rootScope.pageTitle;
@@ -93,47 +93,10 @@ var angularRun = function($rootScope, BioPortalService, $location, $timeout, $wi
     else if (fieldType == "list") {
       valueType = "array";
     }
-    var field = {
-      "$schema": "http://json-schema.org/draft-04/schema#",
-      "@id": $rootScope.idBasePath + $rootScope.generateGUID(),
-      "type": "object",
-      "properties": {
-        "@type": {
-          "oneOf": [
-            {
-              "type": "string",
-              "format": "uri"//,
-              //"enum": []
-            },
-            {
-              "type": "array",
-              "minItems": 1,
-              "items": {
-                "type": "string",
-                "format": "uri"//,
-                //"enum": []
-              },
-              "uniqueItems": true
-            }
-          ]
-        },
-        "info": {
-          "title": "",
-          //"id": $rootScope.generateGUID(),
-          "description": "",
-          "input_type": fieldType,
-          "required_value": false,
-          "created_at": Date.now()
-        },
-        "_value": {
-          "type": valueType,
-        }
-      },
-      "required": [
-        "_value"
-      ],
-      "additionalProperties": false
-    };
+    var field = DataTemplateService.getField($rootScope.idBasePath + $rootScope.generateGUID());
+    field.properties.info.input_type = fieldType;
+    field.properties.info.created_at = Date.now();
+    field.properties._value.type = valueType;
     return field;
   };
 
@@ -514,7 +477,9 @@ var angularRun = function($rootScope, BioPortalService, $location, $timeout, $wi
            (valueConstraint.ontologies || []).length +
            (valueConstraint.branches || []).length;
   };
+
+  DataTemplateService.init();
 };
 
-angularRun.$inject = ['$rootScope', 'BioPortalService', '$location', '$timeout', '$window', 'CONST'];
+angularRun.$inject = ['$rootScope', 'BioPortalService', '$location', '$timeout', '$window', 'DataTemplateService', 'CONST'];
 angularApp.run(angularRun);

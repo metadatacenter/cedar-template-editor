@@ -1,6 +1,6 @@
 'use strict';
 
-var CreateTemplateController = function($rootScope, $scope, $q, $routeParams, $timeout, $location, FormService, HeaderService, UrlService, StagingService, CONST, HEADER_MINI, LS) {
+var CreateTemplateController = function($rootScope, $scope, $q, $routeParams, $timeout, $location, FormService, HeaderService, UrlService, StagingService, DataTemplateService, CONST, HEADER_MINI, LS) {
   // Set Page Title variable when this controller is active
   $rootScope.pageTitle = 'Template Designer';
   // Create staging area to create/edit fields before they get added to $scope.form.properties
@@ -32,60 +32,7 @@ var CreateTemplateController = function($rootScope, $scope, $q, $routeParams, $t
     });
   } else {
     // If we're not loading an existing form then let's create a new empty $scope.form property
-    $scope.form = {
-      "$schema": "http://json-schema.org/draft-04/schema#",
-      "@id": $rootScope.idBasePath + $rootScope.generateGUID(),
-      "title": "",
-      "description": "",
-      //"favorite": $scope.favorite,
-      //"guid": $rootScope.generateGUID(),
-      "pages": [],
-      "type": "object",
-      "properties": {
-        "@context": {
-          "properties": {
-            "_value": {
-              "enum": ["https://schema.org/value"]
-            },
-          },
-          "required": ["_value"],
-          "additionalProperties": false
-        },
-        "@id": {
-          "type": "string",
-          "format": "uri"
-        },
-        "@type": {
-          "oneOf": [
-            {
-              "type": "string",
-              "format": "uri"
-            },
-            {
-              "type": "array",
-              "minItems": 1,
-              "items": {
-                "type": "string",
-                "format": "uri"
-              },
-              "uniqueItems": true
-            }
-          ]
-        },
-        "template_id" : {
-          "type": "string",
-          "format": "uri"
-        },
-        "info": {
-          "title": "",
-          "description": "",
-        },
-      },
-      "required": [
-        "@id", "template_id"
-      ],
-      "additionalProperties": false
-    };
+    $scope.form = DataTemplateService.getTemplate($rootScope.idBasePath + $rootScope.generateGUID());
     HeaderService.dataContainer.currentObjectScope = $scope.form;
   }
 
@@ -382,5 +329,5 @@ var CreateTemplateController = function($rootScope, $scope, $q, $routeParams, $t
 
 };
 
-CreateTemplateController.$inject = ["$rootScope", "$scope", "$q", "$routeParams", "$timeout", "$location", "FormService", "HeaderService", "UrlService", "StagingService", "CONST", "HEADER_MINI", "LS"];
+CreateTemplateController.$inject = ["$rootScope", "$scope", "$q", "$routeParams", "$timeout", "$location", "FormService", "HeaderService", "UrlService", "StagingService", "DataTemplateService", "CONST", "HEADER_MINI", "LS"];
 angularApp.controller('CreateTemplateController', CreateTemplateController);

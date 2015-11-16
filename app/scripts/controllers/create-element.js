@@ -1,6 +1,6 @@
 'use strict';
 
-var CreateElementController = function ($rootScope, $scope, $routeParams, $timeout, $location, FormService, HeaderService, UrlService, StagingService, CONST, HEADER_MINI, LS) {
+var CreateElementController = function ($rootScope, $scope, $routeParams, $timeout, $location, FormService, HeaderService, UrlService, StagingService, DataTemplateService, CONST, HEADER_MINI, LS) {
   // Set page title variable when this controller is active
   $rootScope.pageTitle = 'Element Designer';
   // Create staging area to create/edit fields before they get added to the element
@@ -34,49 +34,7 @@ var CreateElementController = function ($rootScope, $scope, $routeParams, $timeo
     });
   } else {
     // If we're not loading an existing element then let's create a new empty $scope.element property
-    $scope.element = {
-      "$schema": "http://json-schema.org/draft-04/schema#",
-      "@id": $rootScope.idBasePath + $rootScope.generateGUID(),
-      //"@type": "",
-      "title": "",
-      "description": "",
-      //"favorite": $scope.favorite,
-      "order": [],
-      "type": "object",
-      "properties": {
-        "@context": {
-          "properties": {
-            "_value": {
-              "enum": ["https://schema.org/value"]
-            },
-          },
-          "required": ["_value"],
-          "additionalProperties": false
-        },
-        "@type": {
-          "oneOf": [
-            {
-              "type": "string",
-              "format": "uri"
-            },
-            {
-              "type": "array",
-              "minItems": 1,
-              "items": {
-                "type": "string",
-                "format": "uri"
-              },
-              "uniqueItems": true
-            }
-          ]
-        },
-        "info": {
-          "title": "",
-          "description": "",
-        },
-      },
-      "additionalProperties": false
-    };
+    $scope.element = DataTemplateService.getElement($rootScope.idBasePath + $rootScope.generateGUID());
     HeaderService.dataContainer.currentObjectScope = $scope.element;
   }
 
@@ -392,5 +350,5 @@ var CreateElementController = function ($rootScope, $scope, $routeParams, $timeo
 
 };
 
-CreateElementController.$inject = ["$rootScope", "$scope", "$routeParams", "$timeout", "$location", "FormService", "HeaderService", "UrlService", "StagingService", "CONST", "HEADER_MINI", "LS"];
+CreateElementController.$inject = ["$rootScope", "$scope", "$routeParams", "$timeout", "$location", "FormService", "HeaderService", "UrlService", "StagingService", "DataTemplateService", "CONST", "HEADER_MINI", "LS"];
 angularApp.controller('CreateElementController', CreateElementController);
