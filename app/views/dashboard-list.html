@@ -18,9 +18,9 @@
                 </div>
                 <div class="margin-reset-row">
 
-                    <section ng-show="itemType == 'elements'">
+                    <section ng-if="itemType == 'elements'">
                         <div class="template-item" ng-repeat="item in itemList | filter:{title:searchText}"
-                             resize-height>
+                             cedar-resize-square="true">
                             <cedar-box
                                     type="{{CONST.boxType.ELEMENT}}"
                                     description="{{item.properties.info.description}}"
@@ -32,9 +32,9 @@
                         </div>
                     </section>
 
-                    <section ng-show="itemType == 'templates'">
+                    <section ng-if="itemType == 'templates'">
                         <div class="template-item" ng-repeat="item in itemList | filter:{title:searchText}"
-                             resize-height>
+                             cedar-resize-square="true">
                             <cedar-box
                                     type="{{CONST.boxType.TEMPLATE}}"
                                     description="{{item.properties.info.description}}"
@@ -46,9 +46,9 @@
                         </div>
                     </section>
 
-                    <section ng-show="itemType == 'submissions'">
+                    <section ng-if="itemType == 'submissions'">
                         <div class="template-item" ng-repeat="item in submissions | filter:{info:{template_title:searchText}}"
-                             resize-height>
+                             cedar-resize-square="true">
                             <cedar-box
                                     type="{{CONST.boxType.INSTANCE}}"
                                     description="{{item.info.template_description}}&lt;br/&gt;{{'(' + (item.info.creation_date | date:'short') + ')'}}"
