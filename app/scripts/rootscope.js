@@ -251,7 +251,6 @@ var angularRun = function($rootScope, BioPortalService, $location, $timeout, $an
     $timeout(function () {
       var target = angular.element('#' + hash);
       var y = target.offset().top;
-      console.log("scroll to y:" + y);
       window.scrollTo(0, y-95);
     }, 250);
     //$anchorScroll();

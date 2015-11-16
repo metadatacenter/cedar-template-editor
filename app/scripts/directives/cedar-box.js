@@ -1,15 +1,16 @@
 'use strict';
 
-var cedarBox = function ($document, $window, $location, $sce, UrlService, LS, CONST) {
+var cedarBox = function ($document, $location, $sce, UrlService, LS, CONST) {
 
   function link(scope, element, attrs) {
+
     scope.removeObject = function ($event) {
       swal({
-          title: "Are you sure?",
+          title: LS.c.areYouSure,
           text: LS.dashboard.delete.confirm[scope.type],
           type: "warning",
           showCancelButton: true,
-          confirmButtonText: "Yes, delete it!",
+          confirmButtonText: LS.c.yesDeleteIt,
           closeOnConfirm: true,
           customClass: 'cedarSWAL',
           confirmButtonColor: null
@@ -31,7 +32,7 @@ var cedarBox = function ($document, $window, $location, $sce, UrlService, LS, CO
         });
 
       $event.stopImmediatePropagation();
-      angular.element($document).trigger('click');
+      $document.trigger('click');
     }
 
     scope.editObject = function ($event) {
@@ -50,7 +51,7 @@ var cedarBox = function ($document, $window, $location, $sce, UrlService, LS, CO
           break;
       }
       $event.stopImmediatePropagation();
-      angular.element($document).trigger('click');
+      $document.trigger('click');
     }
 
     scope.getDescription = function () {
@@ -77,5 +78,5 @@ var cedarBox = function ($document, $window, $location, $sce, UrlService, LS, CO
 
 };
 
-cedarBox.$inject = ['$document', '$window', '$location', '$sce', 'UrlService', 'LS', 'CONST'];
+cedarBox.$inject = ['$document', '$location', '$sce', 'UrlService', 'LS', 'CONST'];
 angularApp.directive('cedarBox', cedarBox);

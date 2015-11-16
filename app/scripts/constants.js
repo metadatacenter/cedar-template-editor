@@ -53,6 +53,10 @@ angularApp.constant('LS', {
     "save": {
       "nonEmptyStagingConfirm": "The staging area is not empty. If you save the template now, you will loose the content of the staging area! Are you sure you want to save the template this way?"
     }
+  },
+  "c": {
+    "areYouSure": "Are you sure?",
+    "yesDeleteIt": "Yes, delete it!"
   }
 });
 

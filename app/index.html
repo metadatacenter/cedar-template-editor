@@ -33,7 +33,7 @@
     } catch (e) {
     }</script>
 </head>
-<body cedar-scrollable ng-cloak>
+<body cedar-switch-navbar="true" ng-cloak>
 <!--[if lt IE 8]>
 <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to
     improve your experience.</p>
@@ -41,7 +41,7 @@
 <nav class="navbar" role="navigation">
     <div class="container" id="headerCtrl" ng-controller="HeaderCtrl">
         <div class="navbar-header">
-            <button type="button" cedar-navbar class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false"
+            <button type="button" cedar-close-navbar="true" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false"
                     aria-controls="navbar">
                 <span class="sr-only">Toggle navigation</span>
                 <span class="icon-bar"></span>
@@ -70,7 +70,7 @@
 <nav class="navbar" id="navbarMini">
     <div class="container" id="headerCtrlMini" ng-controller="HeaderCtrlMini">
         <div class="navbar-header navbar-header-mini container">
-            <button type="button" cedar-navbar class="navbar-toggle collapsed" data-toggle="collapse"
+            <button type="button" cedar-close-navbar="true" class="navbar-toggle collapsed" data-toggle="collapse"
                     data-target="#navbarmini" aria-expanded="false" aria-controls="navbarmini">
                 <span class="sr-only">Toggle navigation</span>
                 <span class="icon-bar"></span>
@@ -99,7 +99,7 @@
     </div>
 </nav>
 
-<div id="jsonTools" position-json-tools style="display: none;">
+<div id="jsonTools" cedar-position-json-tools="true" style="display: none;">
     <a ng-click="$root.showRender = !$root.showRender; $root.scrollToAnchor('templateJSON')" title="Show Template JSON"
        ng-show="$root.pageId == 'ELEMENT' || $root.pageId == 'TEMPLATE' || $root.pageId == 'RUNTIME'"><i class="cedar-svg-complete"
                                                                                                          ng-show="$root.showRender"></i><i
@@ -154,15 +154,15 @@
 <script src="scripts/directives/element-directive.js"></script>
 <script src="scripts/directives/field-directive.js"></script>
 <script src="scripts/directives/cedar-box.js"></script>
-<script src="scripts/directives/cedar-navbar.js"></script>
+<script src="scripts/directives/cedar-close-navbar.js"></script>
 <script src="scripts/directives/cedar-resize-square.js"></script>
-<script src="scripts/directives/cedar-scrollable.js"></script>
+<script src="scripts/directives/cedar-switch-navbar.js"></script>
 <script src="scripts/directives/with-floating-label.js"></script>
-<script src="scripts/directives/position-json-tools.js"></script>
+<script src="scripts/directives/cedar-position-json-tools.js"></script>
 <script src="scripts/directives/date-time-picker.js"></script>
 <script src="scripts/directives/select-picker.js"></script>
 <script src="scripts/directives/angular-validator.js"></script>
-<script src="scripts/directives/sticky-directive.js"></script>
+<script src="scripts/directives/cedar-sticky-left-menu.js"></script>
 <script src="scripts/directives/control-term.js"></script>
 <!-- endbuild -->
 
