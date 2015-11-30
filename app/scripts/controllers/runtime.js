@@ -143,7 +143,7 @@ var RuntimeController = function($rootScope, $scope, FormService, $routeParams, 
 		}
 	});
 
-	// Initialize array for fields that are not conform to value_constraint
+	// Initialize array for fields that are not conform to valueConstraints
 	$scope.invalidFieldValues = {};
 	// Event listener waiting for emptyRequiredField $emit from field-directive.js
 	$scope.$on('invalidFieldValues', function (event, args) {

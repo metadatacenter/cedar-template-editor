@@ -247,7 +247,7 @@ var angularRun = function($rootScope, BioPortalService, $location, $timeout, $wi
   };
 
   $rootScope.hasValueConstraint = function(_ui) {
-    var vcst = _ui && _ui.value_constraint;
+    var vcst = _ui && _ui.valueConstraints;
     var result = vcst && (vcst.ontologies && vcst.ontologies.length > 0 ||
                     vcst.value_sets && vcst.value_sets.length > 0 ||
                     vcst.classes && vcst.classes.length > 0 ||
@@ -332,7 +332,7 @@ var angularRun = function($rootScope, BioPortalService, $location, $timeout, $wi
       term = '*';
     }
     var results = [];
-    var vcst = field.properties._ui.value_constraint;
+    var vcst = field.properties._ui.valueConstraints;
     var field_id = field['@id'];
 
     if (angular.isUndefined($rootScope.autocompleteResultsCache[field_id])) {
@@ -416,7 +416,7 @@ var angularRun = function($rootScope, BioPortalService, $location, $timeout, $wi
     }
 
     var results = [];
-    var vcst = _ui.value_constraint;
+    var vcst = _ui.valueConstraints;
 
     if (vcst.classes.length > 0) {
       angular.forEach(vcst.classes, function(klass) {
