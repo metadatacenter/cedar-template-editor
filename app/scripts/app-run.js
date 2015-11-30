@@ -403,7 +403,7 @@ var angularRun = function($rootScope, BioPortalService, $location, $timeout, $wi
         if (term == '*') {
           $rootScope.removeAutocompleteResultsForSource(field_id, branch.uri);
         }
-        BioPortalService.autocompleteOntologySubtree(term, branch.acronym, branch.uri, branch.max_depth).then(function(childResponse) {
+        BioPortalService.autocompleteOntologySubtree(term, branch.acronym, branch.uri, branch.maxDepth).then(function(childResponse) {
           $rootScope.processAutocompleteClassResults(field_id, 'Ontology Class', branch.uri, childResponse);
         });
       });

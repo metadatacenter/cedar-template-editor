@@ -904,7 +904,7 @@ angularApp.controller('TermsController', function($rootScope, $scope, $element, 
         'acronym': $scope.controlTerm.currentOntology.details.ontology['acronym'],
         'uri': selection['@id'],
         'name': selection.prefLabel,
-        'max_depth': null
+        'maxDepth': null
       });
     }
 
@@ -978,10 +978,10 @@ angularApp.controller('TermsController', function($rootScope, $scope, $element, 
       }
       if (!alreadyAdded) {
         var newConstraint = angular.copy(constraint);
-        if (newConstraint.max_depth) {
-          newConstraint.max_depth = parseInt(newConstraint.max_depth);
+        if (newConstraint.maxDepth) {
+          newConstraint.maxDepth = parseInt(newConstraint.maxDepth);
         } else {
-          newConstraint.max_depth = 1;
+          newConstraint.maxDepth = 1;
         }
         $scope.controlTerm.valueConstraint.branches.push(newConstraint);
       }
