@@ -1,30 +1,28 @@
 <div class="fields fields-checkbox">
-	<div ng-if="$root.isArray(model)" class="field-checkbox" ng-class="{'required': field.properties.info.required_value}" ng-repeat="value_element in model">
-		<p class="extra-label-context">{{field.properties.info.title}}</p>
-		<div class="form-group checkbox-item" ng-repeat="(index, value) in field.properties.info.options">
-
-		  <div class="checkbox checkbox-primary">
-		    <input 	type="checkbox"
-		    				id="checkbox-{{uuid}}-{{$parent.$index}}-{{index}}"
-		    				ng-model="value_element._value[value.text]"
-		    				ng-checked="value_element._value[value.text]">
-		    <label for="checkbox-{{uuid}}-{{$parent.$index}}-{{index}}">{{field.properties.info.options[index]['text']}}</label>
-		  </div><!-- ./checkbox -->
-		</div><!-- /.form-group -->
-		<div class="more-input-wrapper" ng-include="'views/partials/more-input-buttons.html'" ng-show="!field.maxItems || field.maxItems > 1"></div>
-	</div>
-
-	<div ng-if="!$root.isArray(model)" class="field-checkbox" ng-class="{'required': field.properties.info.required_value}">
-		<p class="extra-label-context">{{field.properties.info.title}}</p>
-		<div class="form-group checkbox-item" ng-repeat="(index, value) in field.properties.info.options">
-
-		  <div class="checkbox checkbox-primary">
-		    <input 	type="checkbox"
-		    				id="checkbox-{{uuid}}-{{$parent.$index}}-{{index}}"
-		    				ng-model="model._value[value.text]"
-		    				ng-checked="model._value[value.text]">
-		    <label for="checkbox-{{uuid}}-{{$parent.$index}}-{{index}}">{{field.properties.info.options[index]['text']}}</label>
-		  </div><!-- ./checkbox -->
-		</div><!-- /.form-group -->
-	</div>
+  <div ng-if="$root.isArray(model)" class="field-checkbox" ng-class="{'required': field.properties.info.required_value}" ng-repeat="value_element in model">
+	<p class="extra-label-context">{{field.properties.info.title}}</p>
+	<div class="form-group checkbox-item" ng-repeat="(index, value) in field.properties.info.options">
+	  <div class="checkbox checkbox-primary">
+		<input type="checkbox"
+		       id="checkbox-{{uuid}}-{{$parent.$index}}-{{index}}"
+		       ng-model="value_element._value[value.text]"
+		       ng-checked="value_element._value[value.text]" />
+		<label for="checkbox-{{uuid}}-{{$parent.$index}}-{{index}}">{{field.properties.info.options[index]['text']}}</label>
+	  </div><!-- ./checkbox -->
+	</div><!-- /.form-group -->
+	<div class="more-input-wrapper" ng-include="'views/partials/more-input-buttons.html'" ng-show="!field.maxItems || field.maxItems > 1"></div>
+  </div>
+  
+  <div ng-if="!$root.isArray(model)" class="field-checkbox" ng-class="{'required': field.properties.info.required_value}">
+	<p class="extra-label-context">{{field.properties.info.title}}</p>
+	<div class="form-group checkbox-item" ng-repeat="(index, value) in field.properties.info.options">
+      <div class="checkbox checkbox-primary">
+		<input type="checkbox"
+		       id="checkbox-{{uuid}}-{{$parent.$index}}-{{index}}"
+		       ng-model="model._value[value.text]"
+		       ng-checked="model._value[value.text]" />
+		<label for="checkbox-{{uuid}}-{{$parent.$index}}-{{index}}">{{field.properties.info.options[index]['text']}}</label>
+	  </div><!-- ./checkbox -->
+	</div><!-- /.form-group -->
+  </div>
 </div>

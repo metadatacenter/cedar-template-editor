@@ -727,12 +727,13 @@ angularApp.controller('TermsController', function($rootScope, $scope, $element, 
         $scope.controlTerm.currentOntology = {
           'details': { 'ontology': result }
         };
+        loadOntologyRootClasses($scope.controlTerm.currentOntology.details.ontology);
       } else {
         $scope.controlTerm.currentOntology = {
           'details': { 'ontology': $scope.getOntologyByAcronym(getOntologyAcronym(result)) }
         };
+        loadTreeOfClass(result);
       }
-      loadOntologyRootClasses($scope.controlTerm.currentOntology.details.ontology);
     } else if (result.resultType == 'Value Set' || result.resultType == 'Value Set Class') {
       $scope.browsingSection = 'value_set';
       $scope.controlTerm.searchPreloader = true;
@@ -784,6 +785,9 @@ angularApp.controller('TermsController', function($rootScope, $scope, $element, 
       ontology.resultType = ontology.resultType || "Ontology";
       browseResults.push(ontology);
     });
+
+    // Sort by title
+    browseResults.sort(sortBrowseResults);
 
     $scope.controlTerm.searchResults = browseResults;
   }
@@ -1078,6 +1082,39 @@ angularApp.controller('TermsController', function($rootScope, $scope, $element, 
       return 1;
     }
   }
+
+  /**
+   * Browse results sort.
+   */
+  function sortBrowseResults(a, b) {
+    var aName = getValuesBrowseDisplayLabel(a);
+    var bName = getValuesBrowseDisplayLabel(b);
+    if (aName < bName) {
+      return -1;
+    } else if (aName == bName) {
+      return 0;
+    } else {
+      return 1;
+    }
+  }
+
+  /**
+   * Helper function to get display label of values browse result.
+   */
+  function getValuesBrowseDisplayLabel(result) {
+    if (result.resultType == 'Ontology') {
+      return result.name;
+    } else if (result.resultType == 'Value Set') {
+      return result.prefLabel;
+    }
+  }
+
+  // Reset element's ontology
+  $scope.$watch("field.properties['@type'].oneOf[0].enum", function(newVal, oldVal) {
+    if (oldVal && oldVal.length > 0 && (!newVal || newVal.length == 0)) {
+      $scope.controlTerm.addedFieldItems = [];
+    }
+  }, true);
 
   $element.parents(".controlled-terms-modal").modal({show: false, backdrop: "static"});
   $element.parents(".controlled-terms-modal").on("hide.bs.modal", function() {
