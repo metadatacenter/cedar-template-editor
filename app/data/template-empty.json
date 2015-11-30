@@ -44,7 +44,7 @@
       "type": "string",
       "format": "uri"
     },
-    "info": {
+    "_ui": {
       "title": "",
       "description": ""
     }

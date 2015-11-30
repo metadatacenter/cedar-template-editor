@@ -17,7 +17,7 @@ var fieldDirective = function($rootScope, $http, $compile, $document, Spreadshee
     // When form submit event is fired, check field for simple validation
     $scope.$on('submitForm', function (event) {
       // If field is required and is empty, emit failed emptyRequiredField event
-      if ($scope.field.properties.info.required_value) {
+      if ($scope.field.properties._ui.required_value) {
         var allRequiredFieldsAreFilledIn = true;
         var min = $scope.field.minItems || 1;
 
@@ -40,7 +40,7 @@ var fieldDirective = function($rootScope, $http, $compile, $document, Spreadshee
               } else if (angular.isObject(valueElement._value)) {
                 if ($rootScope.isEmpty(valueElement._value)) {
                   allRequiredFieldsAreFilledIn = false;
-                } else if ($scope.field.properties.info.date_type == "date-range") {
+                } else if ($scope.field.properties._ui.date_type == "date-range") {
                   if (!valueElement._value.start || !valueElement._value.end) {
                     allRequiredFieldsAreFilledIn = false;
                   }
@@ -74,7 +74,7 @@ var fieldDirective = function($rootScope, $http, $compile, $document, Spreadshee
           } else if (angular.isObject($scope.model._value)) {
             if ($rootScope.isEmpty($scope.model._value)) {
               allRequiredFieldsAreFilledIn = false;
-            } else if ($scope.field.properties.info.date_type == "date-range") {
+            } else if ($scope.field.properties._ui.date_type == "date-range") {
               if (!$scope.model._value.start || !$scope.model._value.end) {
                 allRequiredFieldsAreFilledIn = false;
               }
@@ -94,29 +94,29 @@ var fieldDirective = function($rootScope, $http, $compile, $document, Spreadshee
 
         if (!allRequiredFieldsAreFilledIn) {
           // add this field instance the the emptyRequiredField array
-          $scope.$emit('emptyRequiredField', ['add', $scope.field.properties.info.title, $scope.uuid]);
+          $scope.$emit('emptyRequiredField', ['add', $scope.field.properties._ui.title, $scope.uuid]);
         }
       }
 
       // If field is required and is not empty, check to see if it needs to be removed from empty fields array
-      if ($scope.field.properties.info.required_value && allRequiredFieldsAreFilledIn) {
+      if ($scope.field.properties._ui.required_value && allRequiredFieldsAreFilledIn) {
         //remove from emptyRequiredField array
-        $scope.$emit('emptyRequiredField', ['remove', $scope.field.properties.info.title, $scope.uuid]);
+        $scope.$emit('emptyRequiredField', ['remove', $scope.field.properties._ui.title, $scope.uuid]);
       }
 
       var allFieldsAreValid = true;
-      if ($rootScope.hasValueConstraint($scope.field.properties.info)) {
+      if ($rootScope.hasValueConstraint($scope.field.properties._ui)) {
 
         if (angular.isArray($scope.model)) {
           angular.forEach($scope.model, function(valueElement) {
             if (angular.isArray(valueElement.value)) {
               angular.forEach(valueElement.value, function(ve) {
-                if (!$rootScope.isValueConformedToConstraint(ve, $scope.field["@id"], $scope.field.properties.info)) {
+                if (!$rootScope.isValueConformedToConstraint(ve, $scope.field["@id"], $scope.field.properties._ui)) {
                   allFieldsAreValid = false;
                 }
               });
             } else if (angular.isObject(valueElement.value)) {
-              if (!$rootScope.isValueConformedToConstraint(valueElement.value, $scope.field["@id"], $scope.field.properties.info)) {
+              if (!$rootScope.isValueConformedToConstraint(valueElement.value, $scope.field["@id"], $scope.field.properties._ui)) {
                 allFieldsAreValid = false;
               }
             }
@@ -124,12 +124,12 @@ var fieldDirective = function($rootScope, $http, $compile, $document, Spreadshee
         } else {
           if (angular.isArray($scope.model.value)) {
             angular.forEach($scope.model.value, function(ve) {
-              if (!$rootScope.isValueConformedToConstraint(ve, $scope.field["@id"], $scope.field.properties.info)) {
+              if (!$rootScope.isValueConformedToConstraint(ve, $scope.field["@id"], $scope.field.properties._ui)) {
                 allFieldsAreValid = false;
               }
             });
           } else if (angular.isObject($scope.model.value)) {
-            if (!$rootScope.isValueConformedToConstraint($scope.model.value, $scope.field["@id"], $scope.field.properties.info)) {
+            if (!$rootScope.isValueConformedToConstraint($scope.model.value, $scope.field["@id"], $scope.field.properties._ui)) {
               allFieldsAreValid = false;
             }
           }
@@ -137,17 +137,17 @@ var fieldDirective = function($rootScope, $http, $compile, $document, Spreadshee
 
         if (!allFieldsAreValid) {
           // add this field instance the the invalidFieldValues array
-          $scope.$emit('invalidFieldValues', ['add', $scope.field.properties.info.title, $scope.uuid]);
+          $scope.$emit('invalidFieldValues', ['add', $scope.field.properties._ui.title, $scope.uuid]);
         }
       }
 
       if (allFieldsAreValid) {
         //remove from emptyRequiredField array
-        $scope.$emit('invalidFieldValues', ['remove', $scope.field.properties.info.title, $scope.uuid]);
+        $scope.$emit('invalidFieldValues', ['remove', $scope.field.properties._ui.title, $scope.uuid]);
       }
     });
 
-    var field = $scope.field.properties.info
+    var field = $scope.field.properties._ui
     // Checking each field to see if required, will trigger flag for use to see there is required fields
     if (field.required) {
       $scope.$emit('formHasRequiredFields');
@@ -220,8 +220,8 @@ var fieldDirective = function($rootScope, $http, $compile, $document, Spreadshee
     // Retrive appropriate field template file
     $scope.getTemplateUrl = function() {
       var input_type = 'element';
-      if ($scope.field.properties.info.input_type) {
-        input_type = $scope.field.properties.info.input_type;
+      if ($scope.field.properties._ui.input_type) {
+        input_type = $scope.field.properties._ui.input_type;
       }
       return './views/directive-templates/field-' + $scope.directory + '/' + input_type + '.html';
     }
@@ -258,8 +258,8 @@ var fieldDirective = function($rootScope, $http, $compile, $document, Spreadshee
     }
 
     if ($scope.directory == "render" &&
-        $scope.field.properties.info.input_type == "textfield" &&
-        $rootScope.hasValueConstraint($scope.field.properties.info)) {
+        $scope.field.properties._ui.input_type == "textfield" &&
+        $rootScope.hasValueConstraint($scope.field.properties._ui)) {
       if ($rootScope.isArray($scope.model)) {
         $scope.modelValue = [];
         angular.forEach($scope.model, function(m, i) {

@@ -67,7 +67,7 @@ var CreateElementController = function ($rootScope, $scope, $routeParams, $timeo
     var optionInputs = ["radio", "checkbox", "list"];
 
     if (optionInputs.indexOf(fieldType) > -1) {
-      field.properties.info.options = [
+      field.properties._ui.options = [
         {
           "text": ""
         }
@@ -87,7 +87,7 @@ var CreateElementController = function ($rootScope, $scope, $routeParams, $timeo
       "text": ""
     };
 
-    field.properties.info.options.push(emptyOption);
+    field.properties._ui.options.push(emptyOption);
   };
 
   // Add newly configured field to the element object
@@ -98,7 +98,7 @@ var CreateElementController = function ($rootScope, $scope, $routeParams, $timeo
 
     if ($scope.stagingErrorMessages.length == 0) {
       // Converting title for irregular character handling
-      var fieldName = $rootScope.getFieldName(field.properties.info.title);
+      var fieldName = $rootScope.getFieldName(field.properties._ui.title);
       // Adding corresponding property type to @context
       $scope.element.properties["@context"].properties[fieldName] = {};
       $scope.element.properties["@context"].properties[fieldName].enum =
@@ -123,14 +123,14 @@ var CreateElementController = function ($rootScope, $scope, $routeParams, $timeo
       extraConditionInputs = ['checkbox', 'radio', 'list'];
 
     // Field title is already required, if it's empty create error message
-    if (!field.info.title.length) {
+    if (!field._ui.title.length) {
       unmetConditions.push('"Enter Field Title" input cannot be left empty.');
     }
 
     // If field is within multiple choice field types
-    if (extraConditionInputs.indexOf(field.info.input_type) !== -1) {
+    if (extraConditionInputs.indexOf(field._ui.input_type) !== -1) {
       var optionMessage = '"Enter Option" input cannot be left empty.';
-      angular.forEach(field.info.options, function (value, index) {
+      angular.forEach(field._ui.options, function (value, index) {
         // If any 'option' title text is left empty, create error message
         if (!value.text.length && unmetConditions.indexOf(optionMessage) == -1) {
           unmetConditions.push(optionMessage);
@@ -138,7 +138,7 @@ var CreateElementController = function ($rootScope, $scope, $routeParams, $timeo
       });
     }
     // If field type is 'radio' or 'pick from a list' there must be more than one option created
-    if ((field.info.input_type == 'radio' || field.info.input_type == 'list') && field.info.options && (field.info.options.length <= 1)) {
+    if ((field._ui.input_type == 'radio' || field._ui.input_type == 'list') && field._ui.options && (field._ui.options.length <= 1)) {
       unmetConditions.push('Multiple Choice fields must have at least two possible options');
     }
     // Return array of error messages
@@ -159,7 +159,7 @@ var CreateElementController = function ($rootScope, $scope, $routeParams, $timeo
     //FormService.element(element).then(function(response) {
 
     // Add existing element to the $scope.element.properties object with it's title converted to an object key
-    var fieldName = $rootScope.getFieldName(element.properties.info.title);
+    var fieldName = $rootScope.getFieldName(element.properties._ui.title);
     // Adding corresponding property type to @context
     $scope.element.properties["@context"].properties[fieldName] = {};
     $scope.element.properties["@context"].properties[fieldName].enum =
@@ -180,7 +180,7 @@ var CreateElementController = function ($rootScope, $scope, $routeParams, $timeo
 
     $scope.previewForm = {};
     $timeout(function () {
-      var fieldName = $rootScope.getFieldName(element.properties.info.title);
+      var fieldName = $rootScope.getFieldName(element.properties._ui.title);
 
       $scope.previewForm.properties = {};
       $scope.previewForm.properties[fieldName] = element;
@@ -274,11 +274,11 @@ var CreateElementController = function ($rootScope, $scope, $routeParams, $timeo
     $scope.elementErrorMessages = [];
     $scope.elementSuccessMessages = [];
     // If Element Name is blank, produce error message
-    if (!$scope.element.properties.info.title.length) {
+    if (!$scope.element.properties._ui.title.length) {
       $scope.elementErrorMessages.push('Element Name input cannot be left empty.');
     }
     // If Element Description is blank, produce error message
-    if (!$scope.element.properties.info.description.length) {
+    if (!$scope.element.properties._ui.description.length) {
       $scope.elementErrorMessages.push('Element Description input cannot be left empty.');
     }
     // If there are no Element level error messages
@@ -297,7 +297,7 @@ var CreateElementController = function ($rootScope, $scope, $routeParams, $timeo
       if ($routeParams.id == undefined) {
         FormService.saveElement($scope.element).then(function (response) {
           console.log(response);
-          $scope.elementSuccessMessages.push('The element \"' + response.data.properties.info.title + '\" has been created.');
+          $scope.elementSuccessMessages.push('The element \"' + response.data.properties._ui.title + '\" has been created.');
           // Reload element list
           FormService.elementList().then(function (response) {
             $scope.elementList = response;
@@ -332,10 +332,10 @@ var CreateElementController = function ($rootScope, $scope, $routeParams, $timeo
     $scope.element.order = orderArray;
   });
 
-  // This function watches for changes in the properties.info.title field and autogenerates the schema title and description fields
-  $scope.$watch('element.properties.info.title', function (v) {
+  // This function watches for changes in the properties._ui.title field and autogenerates the schema title and description fields
+  $scope.$watch('element.properties._ui.title', function (v) {
     if (!angular.isUndefined($scope.element)) {
-      var title = $scope.element.properties.info.title;
+      var title = $scope.element.properties._ui.title;
       if (title.length > 0) {
         $scope.element.title = $rootScope.capitalizeFirst(title) + ' element schema';
         $scope.element.description = $rootScope.capitalizeFirst(title) + ' element schema autogenerated by the CEDAR Template Editor';

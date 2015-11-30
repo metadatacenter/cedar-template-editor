@@ -1014,7 +1014,7 @@ angularApp.controller('TermsController', function($rootScope, $scope, $element, 
   };
 
   /**
-   * Add ontology class to value constraint to field values info definition.
+   * Add ontology class to value constraint to field values _ui definition.
    */
   $scope.controlTerm.addOntologyClassToValueConstraint = function() {
     var alreadyAdded, constraint, i, j;
@@ -1042,7 +1042,7 @@ angularApp.controller('TermsController', function($rootScope, $scope, $element, 
   };
 
   var assignValueConstraintToField = function() {
-    var fieldPropertiesInfo = $scope.field.properties.info;
+    var fieldPropertiesInfo = $scope.field.properties._ui;
     fieldPropertiesInfo.value_constraint = $scope.controlTerm.valueConstraint;
     delete $scope.controlTerm.stageValueConstraintAction;
     $scope.controlTerm.stagedOntologyValueConstraints = [];

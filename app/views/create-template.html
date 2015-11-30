@@ -6,7 +6,7 @@
           <i class="cedar-svg-metadata"></i>
           <form>
             <div class="form-group floating-label-wrapper">
-              <input type="text" class="form-control" id="template-name" placeholder="Template Name" aria-label="Template Name" ng-model="form.properties.info.title"  with-floating-label>
+              <input type="text" class="form-control" id="template-name" placeholder="Template Name" aria-label="Template Name" ng-model="form.properties._ui.title"  with-floating-label>
             </div>
           </form>
         </div>
@@ -15,7 +15,7 @@
         <div id="element-description-container">
           <form>
             <div class="form-group floating-label-wrapper">
-              <input type="text" class="form-control" id="template-description" placeholder="Template Description" aria-label="Template Description" ng-model="form.properties.info.description"  with-floating-label>
+              <input type="text" class="form-control" id="template-description" placeholder="Template Description" aria-label="Template Description" ng-model="form.properties._ui.description"  with-floating-label>
             </div>
           </form>
         </div>
@@ -32,14 +32,14 @@
         <div class="sidebar-inner" cedar-sticky-left-menu="true">
           <p class="add-item">Add Element</p>
           <ul class="element-menu" role="menu">
-            <li ng-repeat="element in elementList | orderBy:'title'" class="item"><a ng-click="addElementToStaging(element)"><i class="cedar-svg-element"></i>{{element.properties.info.title}}</a></li>
+            <li ng-repeat="element in elementList | orderBy:'title'" class="item"><a ng-click="addElementToStaging(element)"><i class="cedar-svg-element"></i>{{element.properties._ui.title}}</a></li>
           </ul>
 
           <!--<div class="more-items" dropdown>-->
             <!--<button type="button" class="btn btn-more-items dropdown-toggle" data-toggle="dropdown" data-target=".item-menu" aria-expanded="false" dropdown-toggle>More Elements <i class="fa fa-angle-down fa-2x"></i>-->
             <!--</button>-->
             <!--<ul class="dropdown-menu item-menu" role="menu">-->
-              <!--<li class="item" ng-repeat="e in elements track by $index" ng-if="$index > 4"><a ng-click="addExistingElement(e)"><i class="cedar-svg-element"></i>{{e.properties.info.title}}</a></li>-->
+              <!--<li class="item" ng-repeat="e in elements track by $index" ng-if="$index > 4"><a ng-click="addExistingElement(e)"><i class="cedar-svg-element"></i>{{e.properties._ui.title}}</a></li>-->
               <!--&lt;!&ndash;<li class="item"><a class="disabled" ng-click=""><i class="cedar-svg-element"></i>Element Name</a></li>&ndash;&gt;-->
             <!--</ul>-->
           <!--</div>-->
@@ -79,9 +79,9 @@
         </div> <!-- /#form-preview-section -->
 
         <div id="form-item-config-section" class="animate-fade" ng-show="$root.stagingVisible">
-          <form name="{{form.properties.info.title}}" id="{{form.guid}}">
-            <div ng-repeat="field in staging | orderObjectBy: 'properties.info.created_at'" class="animate-fade" ng-class="{'adding-element': !field.properties.info.input_type}">
-              <div ng-if="field && !field.properties.info.input_type && previewForm">
+          <form name="{{form.properties._ui.title}}" id="{{form.guid}}">
+            <div ng-repeat="field in staging | orderObjectBy: 'properties._ui.created_at'" class="animate-fade" ng-class="{'adding-element': !field.properties._ui.input_type}">
+              <div ng-if="field && !field.properties._ui.input_type && previewForm">
                 <form-preview form="previewForm">
                 </form-preview>
               </div>

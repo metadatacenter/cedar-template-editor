@@ -55,7 +55,7 @@ var angularRun = function($rootScope, BioPortalService, $location, $timeout, $wi
   // Returning true if the object key value in the properties object is of json-ld type '@' or if it corresponds to any of the reserved fields
   $rootScope.ignoreKey = function(key) {
     //var pattern = /^@/i,
-    var pattern = /(^@)|(^info$)|(^template_id$)/i,
+    var pattern = /(^@)|(^_ui$)|(^template_id$)/i,
       result = pattern.test(key);
 
     return result;
@@ -94,8 +94,8 @@ var angularRun = function($rootScope, BioPortalService, $location, $timeout, $wi
       valueType = "array";
     }
     var field = DataTemplateService.getField($rootScope.idBasePath + $rootScope.generateGUID());
-    field.properties.info.input_type = fieldType;
-    field.properties.info.created_at = Date.now();
+    field.properties._ui.input_type = fieldType;
+    field.properties._ui.created_at = Date.now();
     field.properties._value.type = valueType;
     return field;
   };
@@ -156,8 +156,8 @@ var angularRun = function($rootScope, BioPortalService, $location, $timeout, $wi
         'type': field.type,
         '@id': field['@id'],
         '$schema': field.schema,
-        'title': field.properties.info.title,
-        'description': field.properties.info.description,
+        'title': field.properties._ui.title,
+        'description': field.properties._ui.description,
         'properties': field.properties,
         'required': field.required,
         'additionalProperties': field.additionalProperties
@@ -246,8 +246,8 @@ var angularRun = function($rootScope, BioPortalService, $location, $timeout, $wi
     }
   };
 
-  $rootScope.hasValueConstraint = function(info) {
-    var vcst = info && info.value_constraint;
+  $rootScope.hasValueConstraint = function(_ui) {
+    var vcst = _ui && _ui.value_constraint;
     var result = vcst && (vcst.ontologies && vcst.ontologies.length > 0 ||
                     vcst.value_sets && vcst.value_sets.length > 0 ||
                     vcst.classes && vcst.classes.length > 0 ||
@@ -332,7 +332,7 @@ var angularRun = function($rootScope, BioPortalService, $location, $timeout, $wi
       term = '*';
     }
     var results = [];
-    var vcst = field.properties.info.value_constraint;
+    var vcst = field.properties._ui.value_constraint;
     var field_id = field['@id'];
 
     if (angular.isUndefined($rootScope.autocompleteResultsCache[field_id])) {
@@ -410,13 +410,13 @@ var angularRun = function($rootScope, BioPortalService, $location, $timeout, $wi
     }
   };
 
-  $rootScope.excludedValueConstraint = function(id, info) {
+  $rootScope.excludedValueConstraint = function(id, _ui) {
     if ($rootScope.excludedValues && $rootScope.excludedValues[id]) {
       return $rootScope.excludedValues[id];
     }
 
     var results = [];
-    var vcst = info.value_constraint;
+    var vcst = _ui.value_constraint;
 
     if (vcst.classes.length > 0) {
       angular.forEach(vcst.classes, function(klass) {
@@ -448,9 +448,9 @@ var angularRun = function($rootScope, BioPortalService, $location, $timeout, $wi
     return results;
   };
 
-  $rootScope.isValueConformedToConstraint = function(value, id, info) {
+  $rootScope.isValueConformedToConstraint = function(value, id, _ui) {
     var predefinedValues = $rootScope.autocompleteResultsCache[id].results;
-    var excludedValues = $rootScope.excludedValueConstraint(id, info);
+    var excludedValues = $rootScope.excludedValueConstraint(id, _ui);
     var isValid = false;
     var jsonString = JSON.stringify(value);
 

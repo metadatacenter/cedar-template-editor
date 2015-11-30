@@ -1,11 +1,11 @@
-<form class="form-preview" name="{{form.properties.info.title}}" id="{{form['@id']}}">
+<form class="form-preview" name="{{form.properties._ui.title}}" id="{{form['@id']}}">
   <!--Loop through "formFieldsOrder" in form and call either field or element directive with property -->
   <div ng-repeat="field in formFieldsOrder" class="animate-fade">
     <span ng-if="formFields[field]">
-      <div ng-if="formFields[field].properties.info.input_type" ng-class="{'field-instance':true, 'multiple-instance-field':$root.isArray(model[item])}">
+      <div ng-if="formFields[field].properties._ui.input_type" ng-class="{'field-instance':true, 'multiple-instance-field':$root.isArray(model[item])}">
         <field-directive field="formFields[field]" model="model[field]" directory="preview" preview="true" delete="removeField(field)"></field-directive>
       </div>
-      <div class="element-group" ng-if="!formFields[field].properties.info.input_type">
+      <div class="element-group" ng-if="!formFields[field].properties._ui.input_type">
         <element-directive element="formFields[field]" model="model[field]" key="field" delete="removeField(field)" preview="true"></element-directive>
       </div>
     </span>

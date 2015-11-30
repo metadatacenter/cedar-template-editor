@@ -65,7 +65,7 @@ var CreateTemplateController = function($rootScope, $scope, $q, $routeParams, $t
     var optionInputs = ["radio", "checkbox", "list"];
 
     if (optionInputs.indexOf(fieldType) > -1) {
-      field.properties.info.options = [
+      field.properties._ui.options = [
         {
           "text": ""
         }
@@ -88,7 +88,7 @@ var CreateTemplateController = function($rootScope, $scope, $q, $routeParams, $t
 
     $scope.previewForm = {};
     $timeout(function() {
-      var fieldName = $rootScope.getFieldName(clonedElement.properties.info.title);
+      var fieldName = $rootScope.getFieldName(clonedElement.properties._ui.title);
 
       $scope.previewForm.properties = {};
       $scope.previewForm.properties[fieldName] = clonedElement;
@@ -102,7 +102,7 @@ var CreateTemplateController = function($rootScope, $scope, $q, $routeParams, $t
       "text": ""
     };
 
-    field.properties.info.options.push(emptyOption);
+    field.properties._ui.options.push(emptyOption);
   };
 
   // Add newly configured field to the the $scope.form.properties object
@@ -113,7 +113,7 @@ var CreateTemplateController = function($rootScope, $scope, $q, $routeParams, $t
 
     if ($scope.stagingErrorMessages.length == 0) {
       // Converting title for irregular character handling
-      var fieldName = $rootScope.getFieldName(field.properties.info.title);
+      var fieldName = $rootScope.getFieldName(field.properties._ui.title);
       // Adding corresponding property type to @context
       $scope.form.properties["@context"].properties[fieldName] = {};
       $scope.form.properties["@context"].properties[fieldName].enum =
@@ -140,11 +140,11 @@ var CreateTemplateController = function($rootScope, $scope, $q, $routeParams, $t
       extraConditionInputs = ['checkbox', 'radio', 'list'];
 
     // Field title is already required, if it's empty create error message
-    if (!field.info.title.length) {
+    if (!field._ui.title.length) {
       unmetConditions.push('"Enter Field Title" input cannot be left empty.');
     }
     // If field is within multiple choice field types
-    if (extraConditionInputs.indexOf(field.info.input_type) !== -1) {
+    if (extraConditionInputs.indexOf(field._ui.input_type) !== -1) {
       var optionMessage = '"Enter Option" input cannot be left empty.';
       angular.forEach(field.options, function(value, index) {
         // If any 'option' title text is left empty, create error message
@@ -154,7 +154,7 @@ var CreateTemplateController = function($rootScope, $scope, $q, $routeParams, $t
       });
     }
     // If field type is 'radio' or 'pick from a list' there must be more than one option created
-    if ((field.info.input_type == 'radio' || field.info.input_type == 'list') && field.options && (field.options.length <= 1)) {
+    if ((field._ui.input_type == 'radio' || field._ui.input_type == 'list') && field.options && (field.options.length <= 1)) {
       unmetConditions.push('Multiple Choice fields must have at least two possible options');
     }
     // Return array of error messages
@@ -165,10 +165,10 @@ var CreateTemplateController = function($rootScope, $scope, $q, $routeParams, $t
     // Fetch existing element json data
     //FormService.element(element).then(function(response) {
     // Convert response.data.title string to an acceptable object key string
-    //var titleKey = $rootScope.getFieldName(element.properties.info.title);
+    //var titleKey = $rootScope.getFieldName(element.properties._ui.title);
 
     // Add existing element to the $scope.element.properties object with it's title converted to an object key
-    var titleKey = $rootScope.getFieldName(element.properties.info.title);
+    var titleKey = $rootScope.getFieldName(element.properties._ui.title);
     // Adding corresponding property type to @context
     $scope.form.properties["@context"].properties[titleKey] = {};
     $scope.form.properties["@context"].properties[titleKey].enum =
@@ -258,11 +258,11 @@ var CreateTemplateController = function($rootScope, $scope, $q, $routeParams, $t
     $scope.templateErrorMessages = [];
     $scope.templateSuccessMessages = [];
     // If Template Name is blank, produce error message
-    if (!$scope.form.properties.info.title.length) {
+    if (!$scope.form.properties._ui.title.length) {
       $scope.templateErrorMessages.push('Template Name input cannot be left empty.');
     }
     // If Template Description is blank, produce error message
-    if (!$scope.form.properties.info.description.length) {
+    if (!$scope.form.properties._ui.description.length) {
       $scope.templateErrorMessages.push('Template Description input cannot be left empty.');
     }
     // If there are no Template level error messages
@@ -278,7 +278,7 @@ var CreateTemplateController = function($rootScope, $scope, $q, $routeParams, $t
       // Save template
       if ($routeParams.id == undefined) {
         FormService.saveTemplate($scope.form).then(function(response) {
-          $scope.templateSuccessMessages.push('The template \"' + response.data.properties.info.title + '\" has been created.');
+          $scope.templateSuccessMessages.push('The template \"' + response.data.properties._ui.title + '\" has been created.');
           var newId = response.data['@id'];
           $timeout(function () {
             $location.path(UrlService.getTemplateEdit(newId));
@@ -293,7 +293,7 @@ var CreateTemplateController = function($rootScope, $scope, $q, $routeParams, $t
         var id = $scope.form['@id'];
         delete $scope.form['@id'];
         FormService.updateTemplate(id, $scope.form).then(function(response) {
-          $scope.templateSuccessMessages.push('The template \"' + response.data.properties.info.title + '\" has been updated.');
+          $scope.templateSuccessMessages.push('The template \"' + response.data.properties._ui.title + '\" has been updated.');
         }).catch(function(err) {
           $scope.templateErrorMessages.push('Problem updating the template.');
           console.log(err);
@@ -311,13 +311,13 @@ var CreateTemplateController = function($rootScope, $scope, $q, $routeParams, $t
     // Database service save() call could go here
   });
 
-  // This function watches for changes in the properties.info.title field and autogenerates the schema title and description fields
-  $scope.$watch('form.properties.info.title', function(v) {
+  // This function watches for changes in the properties._ui.title field and autogenerates the schema title and description fields
+  $scope.$watch('form.properties._ui.title', function(v) {
     if (!angular.isUndefined($scope.form)) {
-      var title = $scope.form.properties.info.title;
+      var title = $scope.form.properties._ui.title;
       if (title.length > 0) {
-        $scope.form.title = $rootScope.capitalizeFirst($scope.form.properties.info.title) + ' template schema';
-        $scope.form.description = $rootScope.capitalizeFirst($scope.form.properties.info.title) + ' template schema autogenerated by the CEDAR Template Editor';
+        $scope.form.title = $rootScope.capitalizeFirst($scope.form.properties._ui.title) + ' template schema';
+        $scope.form.description = $rootScope.capitalizeFirst($scope.form.properties._ui.title) + ' template schema autogenerated by the CEDAR Template Editor';
       }
       else {
         $scope.form.title = "";

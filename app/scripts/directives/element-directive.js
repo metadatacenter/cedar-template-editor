@@ -22,16 +22,16 @@ var elementDirective = function($rootScope, SpreadsheetService) {
           if (!$rootScope.ignoreKey(key)) {
             if (key == "_value") {
               if (angular.isArray(model)) {
-                if (settings.properties.info.input_type == "list") {
-                  if (settings.properties.info.default_option) {
-                    el[key] = angular.copy(settings.properties.info.default_option);
+                if (settings.properties._ui.input_type == "list") {
+                  if (settings.properties._ui.default_option) {
+                    el[key] = angular.copy(settings.properties._ui.default_option);
                   } else {
                     model.splice(0, model.length);
                   }
                 } else {
                   for (var i = 0; i < model.length; i++) {
-                    if (settings.properties.info.default_option) {
-                      model[i]["_value"] = angular.copy(settings.properties.info.default_option);
+                    if (settings.properties._ui.default_option) {
+                      model[i]["_value"] = angular.copy(settings.properties._ui.default_option);
                     } else {
                       if (typeof(model[i]["_value"]) == "string") {
                         model[i]["_value"] = "";
@@ -44,8 +44,8 @@ var elementDirective = function($rootScope, SpreadsheetService) {
                   }
                 }
               } else {
-                if (settings.properties.info.default_option) {
-                  el[key] = angular.copy(settings.properties.info.default_option);
+                if (settings.properties._ui.default_option) {
+                  el[key] = angular.copy(settings.properties._ui.default_option);
                 } else {
                   if (typeof(model) == "string") {
                     el[key] = "";
@@ -64,16 +64,16 @@ var elementDirective = function($rootScope, SpreadsheetService) {
                 angular.forEach(model, function(v, k) {
                   if (k == "_value") {
                     if (angular.isArray(v)) {
-                      if (settings.properties.info.input_type == "list") {
-                        if (settings.properties.info.default_option) {
-                          model[k] = angular.copy(settings.properties.info.default_option);
+                      if (settings.properties._ui.input_type == "list") {
+                        if (settings.properties._ui.default_option) {
+                          model[k] = angular.copy(settings.properties._ui.default_option);
                         } else {
                           v.splice(0, v.length);
                         }
                       } else {
                         for (var i = 0; i < v.length; i++) {
-                          if (settings.properties.info.default_option) {
-                            v[i]["_value"] = angular.copy(settings.properties.info.default_option);
+                          if (settings.properties._ui.default_option) {
+                            v[i]["_value"] = angular.copy(settings.properties._ui.default_option);
                           } else {
                             if (typeof(v[i]["_value"]) == "string") {
                               v[i]["_value"] = "";
@@ -86,8 +86,8 @@ var elementDirective = function($rootScope, SpreadsheetService) {
                         }
                       }
                     } else {
-                      if (settings.properties.info.default_option) {
-                        model[k] = angular.copy(settings.properties.info.default_option);
+                      if (settings.properties._ui.default_option) {
+                        model[k] = angular.copy(settings.properties._ui.default_option);
                       } else {
                         if (typeof(v) == "string") {
                           model[k] = "";

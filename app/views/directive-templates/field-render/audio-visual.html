@@ -2,14 +2,14 @@
   <div ng-if="$root.isArray(model)" class="form-group floating-label-wrapper" ng-repeat="value_element in model">
     <input  type="text"
             class="form-control"
-            ng-class="{'required': field.properties.info.required_value}"
+            ng-class="{'required': field.properties._ui.required_value}"
             id="audiovisual"
-            placeholder="{{field.properties.info.title}}"
-            aria-label="{{field.properties.info.description}}"
+            placeholder="{{field.properties._ui.title}}"
+            aria-label="{{field.properties._ui.description}}"
             ng-model="value_element._value"
             with-floating-label>
     <div class="input-indicator-icons">
-      <i class="cedar-svg-help-circle" data-container="body" data-toggle="popover" data-placement="left" data-content="{{field.properties.info.description}}"></i>
+      <i class="cedar-svg-help-circle" data-container="body" data-toggle="popover" data-placement="left" data-content="{{field.properties._ui.description}}"></i>
       <i class="cedar-svg-check-circle"></i>
       <i class="cedar-svg-warning"></i>
     </div><!-- /.input-indicator-icons -->
@@ -23,14 +23,14 @@
   <div ng-if="!$root.isArray(model)" class="form-group floating-label-wrapper">
     <input  type="text"
             class="form-control"
-            ng-class="{'required': field.properties.info.required_value}"
+            ng-class="{'required': field.properties._ui.required_value}"
             id="audiovisual"
-            placeholder="{{field.properties.info.title}}"
-            aria-label="{{field.properties.info.description}}"
+            placeholder="{{field.properties._ui.title}}"
+            aria-label="{{field.properties._ui.description}}"
             ng-model="model._value"
             with-floating-label>
     <div class="input-indicator-icons">
-      <i class="cedar-svg-help-circle" data-container="body" data-toggle="popover" data-placement="left" data-content="{{field.properties.info.description}}"></i>
+      <i class="cedar-svg-help-circle" data-container="body" data-toggle="popover" data-placement="left" data-content="{{field.properties._ui.description}}"></i>
       <i class="cedar-svg-check-circle"></i>
       <i class="cedar-svg-warning"></i>
     </div><!-- /.input-indicator-icons -->
