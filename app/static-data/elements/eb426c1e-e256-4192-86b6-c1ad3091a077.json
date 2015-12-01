@@ -24,7 +24,7 @@
           "id": "5a9c02c5-51c0-46ca-bea2-be274eca7b08",
           "title": "Street",
           "description": "enter your street name",
-          "input_type": "textfield",
+          "inputType": "textfield",
           "required": false,
           "created_at": 1434671275070
         }
@@ -48,7 +48,7 @@
           "id": "ac511c62-96ef-41dd-bed3-704e6280682a",
           "title": "City",
           "description": "Please enter your city name",
-          "input_type": "textfield",
+          "inputType": "textfield",
           "required": false,
           "created_at": 1434671285225
         }

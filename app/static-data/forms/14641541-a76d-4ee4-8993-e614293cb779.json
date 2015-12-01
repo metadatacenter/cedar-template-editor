@@ -39,7 +39,7 @@
           "id": "881565de-6a1d-4472-b477-1afda929913f",
           "title": "Simple Textfield #1",
           "description": "This is my simple textfield",
-          "input_type": "textfield",
+          "inputType": "textfield",
           "required": true,
           "created_at": 1433523975365
         }
@@ -63,7 +63,7 @@
           "id": "fe49b9c8-76a6-4b72-8188-987145983943",
           "title": "Simple Paragraph Field",
           "description": "This is my simple paragraph field",
-          "input_type": "textarea",
+          "inputType": "textarea",
           "required": true,
           "created_at": 1433523992574
         }
@@ -87,7 +87,7 @@
           "id": "a5c319ff-9e85-4eef-82aa-0aa485e0cc97",
           "title": "Simple Radio Button Field",
           "description": "",
-          "input_type": "radio",
+          "inputType": "radio",
           "required": true,
           "created_at": 1433524005025,
           "options": [
@@ -126,7 +126,7 @@
           "id": "b7bc8c85-db4e-45f2-bbf4-af51f529a6ac",
           "title": "Simple Checkbox Field #1",
           "description": "",
-          "input_type": "checkbox",
+          "inputType": "checkbox",
           "required": true,
           "created_at": 1433524035954,
           "options": [
@@ -168,7 +168,7 @@
           "id": "3f729bae-ae21-404a-8cb9-0df1bfb4c2a3",
           "title": "Simple Date Input Field #1",
           "description": "",
-          "input_type": "date",
+          "inputType": "date",
           "required": true,
           "created_at": 1433524064381,
           "date_type": "single-date"
@@ -193,7 +193,7 @@
           "id": "a346adfd-d355-4af7-b302-0f9a3c6871df",
           "title": "Simple Date Field #2",
           "description": "",
-          "input_type": "date",
+          "inputType": "date",
           "required": true,
           "created_at": 1433524082467,
           "date_type": "date-range"
@@ -218,7 +218,7 @@
           "id": "01b8bd47-f5d3-489d-a03a-5b10467e4855",
           "title": "Simple Email address Field #1",
           "description": "This is the help text for simple email address field #1",
-          "input_type": "email",
+          "inputType": "email",
           "required": true,
           "created_at": 1433524095784
         }
@@ -242,7 +242,7 @@
           "id": "59c7d3c4-d4a8-4602-8bae-5b9a57166855",
           "title": "Simple Pick from a List field",
           "description": "",
-          "input_type": "list",
+          "inputType": "list",
           "required": true,
           "created_at": 1433524154974,
           "selection_type": "single",
@@ -287,7 +287,7 @@
           "id": "78bf17ba-4f0f-4dbb-8625-f61baaab5b47",
           "title": "Audio Visual Field Sample",
           "description": "Help text for the audio/visual field sample",
-          "input_type": "audio-visual",
+          "inputType": "audio-visual",
           "required": true,
           "created_at": 1433524190870
         }
@@ -311,7 +311,7 @@
           "id": "ab3b962f-9c77-4716-b310-959246462a15",
           "title": "Simple Numeric Field Type",
           "description": "Helptext for simple numeric field type",
-          "input_type": "numeric",
+          "inputType": "numeric",
           "required": true,
           "created_at": 1433524212215
         }
@@ -335,7 +335,7 @@
           "id": "2e0e2a99-37ac-433e-82b6-b602f2bca832",
           "title": "Sample Phone Number Field",
           "description": "Please only use numbers and do not use any special characters or hyphens",
-          "input_type": "phone-number",
+          "inputType": "phone-number",
           "required": true,
           "created_at": 1433524229507
         }
@@ -359,7 +359,7 @@
           "id": "53b0ade2-f239-4cf2-bd7e-9241f2934bab",
           "title": "Sample Section Break Field type",
           "description": "This is the helper description for the section break field type",
-          "input_type": "section-break",
+          "inputType": "section-break",
           "required": true,
           "created_at": 1433524257819
         }

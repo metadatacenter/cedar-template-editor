@@ -120,7 +120,7 @@ var SpreadsheetService = function ($filter) {
         if (field.hasOwnProperty("properties")) {
 
           var _ui = field.properties._ui;
-          var inputType = _ui.input_type;
+          var inputType = _ui.inputType;
 
           if (inputType == 'date') {
             // http://docs.handsontable.com/0.19.0/demo-date.html

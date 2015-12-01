@@ -24,7 +24,7 @@
           "id": "4973ae2b-d782-4e03-a8d2-2d749217c86d",
           "title": "First Name",
           "description": "enter your first name",
-          "input_type": "textfield",
+          "inputType": "textfield",
           "required": false,
           "created_at": 1434671113752
         }
@@ -48,7 +48,7 @@
           "id": "f379bd53-7c21-4709-90c6-c90006ab52b6",
           "title": "Last Name",
           "description": "Enter your last name",
-          "input_type": "textfield",
+          "inputType": "textfield",
           "required": false,
           "created_at": 1434671124438
         }

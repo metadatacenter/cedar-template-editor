@@ -50,7 +50,7 @@
                   "id": "4973ae2b-d782-4e03-a8d2-2d749217c86d",
                   "title": "First Name",
                   "description": "enter your first name",
-                  "input_type": "textfield",
+                  "inputType": "textfield",
                   "required": false,
                   "created_at": 1434671113752
                 }
@@ -74,7 +74,7 @@
                   "id": "f379bd53-7c21-4709-90c6-c90006ab52b6",
                   "title": "Last Name",
                   "description": "Enter your last name",
-                  "input_type": "textfield",
+                  "inputType": "textfield",
                   "required": false,
                   "created_at": 1434671124438
                 }
@@ -117,7 +117,7 @@
                   "id": "5a9c02c5-51c0-46ca-bea2-be274eca7b08",
                   "title": "Street",
                   "description": "enter your street name",
-                  "input_type": "textfield",
+                  "inputType": "textfield",
                   "required": false,
                   "created_at": 1434671275070
                 }
@@ -141,7 +141,7 @@
                   "id": "ac511c62-96ef-41dd-bed3-704e6280682a",
                   "title": "City",
                   "description": "Please enter your city name",
-                  "input_type": "textfield",
+                  "inputType": "textfield",
                   "required": false,
                   "created_at": 1434671285225
                 }

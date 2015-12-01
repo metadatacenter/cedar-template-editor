@@ -144,7 +144,7 @@ var CreateTemplateController = function($rootScope, $scope, $q, $routeParams, $t
       unmetConditions.push('"Enter Field Title" input cannot be left empty.');
     }
     // If field is within multiple choice field types
-    if (extraConditionInputs.indexOf(field._ui.input_type) !== -1) {
+    if (extraConditionInputs.indexOf(field._ui.inputType) !== -1) {
       var optionMessage = '"Enter Option" input cannot be left empty.';
       angular.forEach(field.options, function(value, index) {
         // If any 'option' title text is left empty, create error message
@@ -154,7 +154,7 @@ var CreateTemplateController = function($rootScope, $scope, $q, $routeParams, $t
       });
     }
     // If field type is 'radio' or 'pick from a list' there must be more than one option created
-    if ((field._ui.input_type == 'radio' || field._ui.input_type == 'list') && field.options && (field.options.length <= 1)) {
+    if ((field._ui.inputType == 'radio' || field._ui.inputType == 'list') && field.options && (field.options.length <= 1)) {
       unmetConditions.push('Multiple Choice fields must have at least two possible options');
     }
     // Return array of error messages

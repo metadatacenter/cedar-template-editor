@@ -24,7 +24,7 @@
           "id": "14cccf8e-4a1b-4b61-bf4d-26ac4720146d",
           "title": "Are you 18 years or older?",
           "description": "",
-          "input_type": "checkbox",
+          "inputType": "checkbox",
           "required": false,
           "created_at": 1434581647731,
           "options": [
@@ -56,7 +56,7 @@
           "id": "05df4a88-b290-4d42-ba0c-71a86840fcdf",
           "title": "Please select your date of birth",
           "description": "",
-          "input_type": "date",
+          "inputType": "date",
           "required": true,
           "created_at": 1434581734129,
           "date_type": "single-date"

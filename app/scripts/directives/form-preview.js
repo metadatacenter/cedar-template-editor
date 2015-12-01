@@ -143,7 +143,7 @@ angularApp.directive('formPreview', function ($rootScope, $document, $timeout) {
           // If item added is of type Page Break, jump into next page array for storage of following fields
           if ($scope.form.properties[field].properties &&
               $scope.form.properties[field].properties._ui &&
-              $scope.form.properties[field].properties._ui.input_type == 'page-break') {
+              $scope.form.properties[field].properties._ui.inputType == 'page-break') {
             dimension ++;
           }
           // Push field key into page array

@@ -166,10 +166,10 @@ var fieldDirective = function($rootScope, $http, $compile, $document, Spreadshee
               }
             } else {
               for (var i = 0; i < min; i++) {
-                if (['checkbox'].indexOf(field.input_type) >= 0 ||
-                    ['date'].indexOf(field.input_type) >= 0 && field.date_type == "date-range") {
+                if (['checkbox'].indexOf(field.inputType) >= 0 ||
+                    ['date'].indexOf(field.inputType) >= 0 && field.date_type == "date-range") {
                   $scope.model[i]['_value'] = {};
-                } else if (['list'].indexOf(field.input_type) >= 0) {
+                } else if (['list'].indexOf(field.inputType) >= 0) {
                   $scope.model[i]['_value'] = [];
                 } else {
                   $scope.model[i]['_value'] = "";
@@ -182,10 +182,10 @@ var fieldDirective = function($rootScope, $http, $compile, $document, Spreadshee
                 if (field.default_option) {
                   $scope.model[i]["_value"] = angular.copy(field.default_option);
                 } else {
-                  if (['checkbox'].indexOf(field.input_type) >= 0 ||
-                      ['date'].indexOf(field.input_type) >= 0 && field.date_type == "date-range") {
+                  if (['checkbox'].indexOf(field.inputType) >= 0 ||
+                      ['date'].indexOf(field.inputType) >= 0 && field.date_type == "date-range") {
                     $scope.model[i]['_value'] = {};
-                  } else if (['list'].indexOf(field.input_type) >= 0) {
+                  } else if (['list'].indexOf(field.inputType) >= 0) {
                     $scope.model[i]['_value'] = [];
                   } else {
                     $scope.model[i]['_value'] = "";
@@ -200,10 +200,10 @@ var fieldDirective = function($rootScope, $http, $compile, $document, Spreadshee
             if (field.default_option) {
               $scope.model["_value"] = angular.copy(field.default_option);
             } else {
-              if (['checkbox'].indexOf(field.input_type) >= 0 ||
-                  ['date'].indexOf(field.input_type) >= 0 && field.date_type == "date-range") {
+              if (['checkbox'].indexOf(field.inputType) >= 0 ||
+                  ['date'].indexOf(field.inputType) >= 0 && field.date_type == "date-range") {
                 $scope.model['_value'] = {};
-              } else if (['list'].indexOf(field.input_type) >= 0) {
+              } else if (['list'].indexOf(field.inputType) >= 0) {
                 $scope.model['_value'] = [];
               } else {
                 $scope.model['_value'] = "";
@@ -219,11 +219,11 @@ var fieldDirective = function($rootScope, $http, $compile, $document, Spreadshee
 
     // Retrive appropriate field template file
     $scope.getTemplateUrl = function() {
-      var input_type = 'element';
-      if ($scope.field.properties._ui.input_type) {
-        input_type = $scope.field.properties._ui.input_type;
+      var inputType = 'element';
+      if ($scope.field.properties._ui.inputType) {
+        inputType = $scope.field.properties._ui.inputType;
       }
-      return './views/directive-templates/field-' + $scope.directory + '/' + input_type + '.html';
+      return './views/directive-templates/field-' + $scope.directory + '/' + inputType + '.html';
     }
 
     $scope.addMoreInput = function() {
@@ -233,10 +233,10 @@ var fieldDirective = function($rootScope, $http, $compile, $document, Spreadshee
         if (field.default_option) {
           seed["_value"] = angular.copy(field.default_option);
         } else {
-          if (['checkbox'].indexOf(field.input_type) >= 0 ||
-              ['date'].indexOf(field.input_type) >= 0 && field.date_type == "date-range") {
+          if (['checkbox'].indexOf(field.inputType) >= 0 ||
+              ['date'].indexOf(field.inputType) >= 0 && field.date_type == "date-range") {
             seed['_value'] = {};
-          } else if (['list'].indexOf(field.input_type) >= 0) {
+          } else if (['list'].indexOf(field.inputType) >= 0) {
             seed['_value'] = [];
           } else {
             seed['_value'] = "";
@@ -258,7 +258,7 @@ var fieldDirective = function($rootScope, $http, $compile, $document, Spreadshee
     }
 
     if ($scope.directory == "render" &&
-        $scope.field.properties._ui.input_type == "textfield" &&
+        $scope.field.properties._ui.inputType == "textfield" &&
         $rootScope.hasValueConstraint($scope.field.properties._ui)) {
       if ($rootScope.isArray($scope.model)) {
         $scope.modelValue = [];

@@ -23,7 +23,7 @@
           "id": "8bc8da84-64c8-496c-8ef6-b97de498fd59",
           "title": "First Name",
           "description": "Please enter your first name",
-          "input_type": "textfield",
+          "inputType": "textfield",
           "required": true,
           "created_at": 1432678567369
         }
@@ -47,7 +47,7 @@
           "id": "b0d45a1e-0370-4ac1-8338-77d9359e6c05",
           "title": "Last Name",
           "description": "Please enter your last name",
-          "input_type": "textfield",
+          "inputType": "textfield",
           "required": true,
           "created_at": 1432678602995
         }
@@ -71,7 +71,7 @@
           "id": "df98b119-c3b6-4d20-8e1d-be5fc4baa3fc",
           "title": "Email Address",
           "description": "Please provide a valid email address",
-          "input_type": "email",
+          "inputType": "email",
           "required": false,
           "created_at": 1432678623726
         }
@@ -95,7 +95,7 @@
           "id": "b44dbd62-85e3-4877-b564-03191008ca7f",
           "title": "Phone Number",
           "description": "Please provide a phone number you can be reached at. Include area code.",
-          "input_type": "phone-number",
+          "inputType": "phone-number",
           "required": true,
           "created_at": 1432678646399
         }
@@ -119,7 +119,7 @@
           "id": "3537908a-d498-4f74-813d-844ae3b92cee",
           "title": "Background Information (Optional)",
           "description": "If you would like, please tell us a little about yourself",
-          "input_type": "textarea",
+          "inputType": "textarea",
           "required": false,
           "created_at": 1432678682106
         }

@@ -98,7 +98,7 @@
                               "id": "8fbcde4b-c8ae-4edb-b5db-717bee0491ec",
                               "title": "E1a",
                               "description": "",
-                              "input_type": "textfield",
+                              "inputType": "textfield",
                               "required": false,
                               "created_at": {
                                 "$numberLong": "1434992673155"
@@ -124,7 +124,7 @@
                               "id": "73f78745-ab65-4b60-91b3-b524f4ace220",
                               "title": "E1b",
                               "description": "",
-                              "input_type": "textfield",
+                              "inputType": "textfield",
                               "required": false,
                               "created_at": {
                                 "$numberLong": "1434992680658"
@@ -172,7 +172,7 @@
                               "id": "571bade0-dc76-4075-b707-721bd35327e9",
                               "title": "E2a",
                               "description": "",
-                              "input_type": "textfield",
+                              "inputType": "textfield",
                               "required": false,
                               "created_at": {
                                 "$numberLong": "1434992696015"
@@ -198,7 +198,7 @@
                               "id": "4685cce4-4811-426b-8f4a-4b503a8a54d1",
                               "title": "E2b",
                               "description": "",
-                              "input_type": "textfield",
+                              "inputType": "textfield",
                               "required": false,
                               "created_at": {
                                 "$numberLong": "1434992702079"
@@ -224,7 +224,7 @@
                               "id": "7e778ad1-35e6-4d32-81af-8b36e7b4e12a",
                               "title": "E2List",
                               "description": "",
-                              "input_type": "list",
+                              "inputType": "list",
                               "required": false,
                               "selection_type": "single",
                               "created_at": {
@@ -273,7 +273,7 @@
                       "id": "72f52fbb-96f2-4da0-940c-f7ba892f933d",
                       "title": "E4 Checkbox",
                       "description": "",
-                      "input_type": "checkbox",
+                      "inputType": "checkbox",
                       "required": false,
                       "created_at": {
                         "$numberLong": "1434992778423"

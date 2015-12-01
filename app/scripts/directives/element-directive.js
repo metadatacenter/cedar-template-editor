@@ -22,7 +22,7 @@ var elementDirective = function($rootScope, SpreadsheetService) {
           if (!$rootScope.ignoreKey(key)) {
             if (key == "_value") {
               if (angular.isArray(model)) {
-                if (settings.properties._ui.input_type == "list") {
+                if (settings.properties._ui.inputType == "list") {
                   if (settings.properties._ui.default_option) {
                     el[key] = angular.copy(settings.properties._ui.default_option);
                   } else {
@@ -64,7 +64,7 @@ var elementDirective = function($rootScope, SpreadsheetService) {
                 angular.forEach(model, function(v, k) {
                   if (k == "_value") {
                     if (angular.isArray(v)) {
-                      if (settings.properties._ui.input_type == "list") {
+                      if (settings.properties._ui.inputType == "list") {
                         if (settings.properties._ui.default_option) {
                           model[k] = angular.copy(settings.properties._ui.default_option);
                         } else {

@@ -23,7 +23,7 @@
           "id": "e146e007-6698-407a-9e53-bc4c7860f374",
           "title": "Full Name",
           "description": "Whole name, including first name, middle name, and last name",
-          "input_type": "textfield",
+          "inputType": "textfield",
           "required": false,
           "created_at": 1432678567334
         }
@@ -47,7 +47,7 @@
           "id": "dbfa4aa1-8759-41f0-9829-a6c4c2cbd7c5",
           "title": "Institution",
           "description": "An established society, corporation, foundation or other organization founded and united for a specific purpose",
-          "input_type": "textfield",
+          "inputType": "textfield",
           "required": false,
           "created_at": 1432678567100
         }

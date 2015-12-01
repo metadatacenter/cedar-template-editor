@@ -90,8 +90,8 @@
             <p ng-repeat="message in stagingErrorMessages"><i class="fa fa-exclamation-triangle"></i>{{message}}</p>
           </div>
           <form name="{{form.properties._ui.title}}" id="{{form.guid}}">
-            <div ng-repeat="field in staging" class="animate-fade" ng-class="{'adding-element': !field.properties._ui.input_type}">
-              <div ng-if="!field.properties._ui.input_type">
+            <div ng-repeat="field in staging" class="animate-fade" ng-class="{'adding-element': !field.properties._ui.inputType}">
+              <div ng-if="!field.properties._ui.inputType">
                 <form-preview form="previewForm">
                 </form-preview>
               </div>

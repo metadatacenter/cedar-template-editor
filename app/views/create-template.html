@@ -80,8 +80,8 @@
 
         <div id="form-item-config-section" class="animate-fade" ng-show="$root.stagingVisible">
           <form name="{{form.properties._ui.title}}" id="{{form.guid}}">
-            <div ng-repeat="field in staging | orderObjectBy: 'properties._ui.created_at'" class="animate-fade" ng-class="{'adding-element': !field.properties._ui.input_type}">
-              <div ng-if="field && !field.properties._ui.input_type && previewForm">
+            <div ng-repeat="field in staging | orderObjectBy: 'properties._ui.created_at'" class="animate-fade" ng-class="{'adding-element': !field.properties._ui.inputType}">
+              <div ng-if="field && !field.properties._ui.inputType && previewForm">
                 <form-preview form="previewForm">
                 </form-preview>
               </div>

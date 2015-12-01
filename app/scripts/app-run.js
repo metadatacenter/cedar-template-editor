@@ -94,7 +94,7 @@ var angularRun = function($rootScope, BioPortalService, $location, $timeout, $wi
       valueType = "array";
     }
     var field = DataTemplateService.getField($rootScope.idBasePath + $rootScope.generateGUID());
-    field.properties._ui.input_type = fieldType;
+    field.properties._ui.inputType = fieldType;
     field.properties._ui.created_at = Date.now();
     field.properties._value.type = valueType;
     return field;
