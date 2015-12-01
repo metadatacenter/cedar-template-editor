@@ -249,7 +249,7 @@ var angularRun = function($rootScope, BioPortalService, $location, $timeout, $wi
   $rootScope.hasValueConstraint = function(_ui) {
     var vcst = _ui && _ui.valueConstraints;
     var result = vcst && (vcst.ontologies && vcst.ontologies.length > 0 ||
-                    vcst.value_sets && vcst.value_sets.length > 0 ||
+                    vcst.valueSets && vcst.valueSets.length > 0 ||
                     vcst.classes && vcst.classes.length > 0 ||
                     vcst.branches && vcst.branches.length > 0);
 
@@ -376,8 +376,8 @@ var angularRun = function($rootScope, BioPortalService, $location, $timeout, $wi
       }
     }
 
-    if (vcst.value_sets.length > 0) {
-      angular.forEach(vcst.value_sets, function(valueSet) {
+    if (vcst.valueSets.length > 0) {
+      angular.forEach(vcst.valueSets, function(valueSet) {
         if (term == '*') {
           $rootScope.removeAutocompleteResultsForSource(field_id, valueSet.uri);
         }
@@ -424,8 +424,8 @@ var angularRun = function($rootScope, BioPortalService, $location, $timeout, $wi
       });
     }
 
-    if (vcst.value_sets.length > 0) {
-      angular.forEach(vcst.value_sets, function(klass) {
+    if (vcst.valueSets.length > 0) {
+      angular.forEach(vcst.valueSets, function(klass) {
         jQuery.merge(results, klass.exclusions || []);
       });
     }
@@ -473,7 +473,7 @@ var angularRun = function($rootScope, BioPortalService, $location, $timeout, $wi
 
   $rootScope.lengthOfValueConstraint = function(valueConstraint) {
     return (valueConstraint.classes || []).length +
-           (valueConstraint.value_sets || []).length +
+           (valueConstraint.valueSets || []).length +
            (valueConstraint.ontologies || []).length +
            (valueConstraint.branches || []).length;
   };
