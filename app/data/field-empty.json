@@ -24,7 +24,7 @@
       "title": "",
       "description": "",
       "input_type": null,
-      "required_value": false,
+      "requiredValue": false,
       "created_at": null
     },
     "_value": {

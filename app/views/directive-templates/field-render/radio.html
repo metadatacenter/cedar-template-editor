@@ -1,5 +1,5 @@
 <div class="fields fields-radio">
-	<div ng-if="$root.isArray(model)" class="field-radio" ng-class="{'required': field.properties._ui.required_value}" ng-repeat="value_element in model">
+	<div ng-if="$root.isArray(model)" class="field-radio" ng-class="{'required': field.properties._ui.requiredValue}" ng-repeat="value_element in model">
 		<p class="extra-label-context">{{field.properties._ui.title}}</p>
 		<div class="form-group radio-item" ng-repeat="(index, value) in field.properties._ui.options">
 			<div class="radio radio-primary">

@@ -1,9 +1,9 @@
 <div class="fields fields-list">
-	<div ng-if="$root.isArray(model)" class="field-list" ng-class="{'required': field.properties._ui.required_value}" ng-repeat="value_element in model">
+	<div ng-if="$root.isArray(model)" class="field-list" ng-class="{'required': field.properties._ui.requiredValue}" ng-repeat="value_element in model">
 		<p class="extra-label-context">{{field.properties._ui.title}}</p>
 		<div 	ng-if="field.properties._ui.selection_type == 'single'"
 					class="form-group validation-pattern"
-					ng-class="{'required': field.properties._ui.required_value}">
+					ng-class="{'required': field.properties._ui.requiredValue}">
 			<select	class="form-control"
 							multiple
 							data-max-options="1"
@@ -18,7 +18,7 @@
 
 		<div 	ng-if="field.properties._ui.selection_type == 'multiple'"
 					class="form-group validation-pattern"
-					ng-class="{'required': field.properties._ui.required_value}">
+					ng-class="{'required': field.properties._ui.requiredValue}">
 			<select	class="form-control"
 							multiple
 							field="field"
@@ -32,11 +32,11 @@
 		<div class="more-input-wrapper" ng-include="'views/partials/more-input-buttons.html'" ng-show="!field.maxItems || field.maxItems > 1"></div>
 	</div>
 
-	<div ng-if="!$root.isArray(model)" class="field-list" ng-class="{'required': field.properties._ui.required_value}">
+	<div ng-if="!$root.isArray(model)" class="field-list" ng-class="{'required': field.properties._ui.requiredValue}">
 		<p class="extra-label-context">{{field.properties._ui.title}}</p>
 		<div 	ng-if="field.properties._ui.selection_type == 'single'"
 					class="form-group validation-pattern"
-					ng-class="{'required': field.properties._ui.required_value}">
+					ng-class="{'required': field.properties._ui.requiredValue}">
 			<select	class="form-control"
 							multiple
 							data-max-options="1"
@@ -51,7 +51,7 @@
 
 		<div 	ng-if="field.properties._ui.selection_type == 'multiple'"
 					class="form-group validation-pattern"
-					ng-class="{'required': field.properties._ui.required_value}">
+					ng-class="{'required': field.properties._ui.requiredValue}">
 			<select	class="form-control"
 							multiple
 							field="field"

@@ -2,7 +2,7 @@
   <div ng-if="$root.isArray(model)" class="form-group floating-label-wrapper" ng-repeat="value_element in model">
     <input 	type="number"
     				class="form-control"
-    				ng-class="{'required': field.properties._ui.required_value}"
+    				ng-class="{'required': field.properties._ui.requiredValue}"
     				id="numeric1"
     				placeholder="{{field.properties._ui.title}}"
     				aria-label="{{field.properties._ui.description}}"
@@ -24,7 +24,7 @@
   <div ng-if="!$root.isArray(model)" class="form-group floating-label-wrapper">
     <input  type="number"
             class="form-control"
-            ng-class="{'required': field.properties._ui.required_value}"
+            ng-class="{'required': field.properties._ui.requiredValue}"
             id="numeric1"
             placeholder="{{field.properties._ui.title}}"
             aria-label="{{field.properties._ui.description}}"
