@@ -26,7 +26,7 @@
           "description": "",
           "inputType": "checkbox",
           "required": false,
-          "created_at": 1434581647731,
+          "createdAt": 1434581647731,
           "options": [
             {
               "text": "Yes"
@@ -58,7 +58,7 @@
           "description": "",
           "inputType": "date",
           "required": true,
-          "created_at": 1434581734129,
+          "createdAt": 1434581734129,
           "date_type": "single-date"
         }
       },

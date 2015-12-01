@@ -54,7 +54,7 @@
           "description": "This is my simple textfield",
           "inputType": "textfield",
           "required": false,
-          "created_at": 1433523975365,
+          "createdAt": 1433523975365,
           "model": {
             "value": "This is a title field"
           }
@@ -81,7 +81,7 @@
           "description": "This is my simple paragraph field",
           "inputType": "textarea",
           "required": false,
-          "created_at": 1433523992574,
+          "createdAt": 1433523992574,
           "model": {
             "value": "This is a paragraph field"
           }
@@ -108,7 +108,7 @@
           "description": "",
           "inputType": "radio",
           "required": false,
-          "created_at": 1433524005025,
+          "createdAt": 1433524005025,
           "options": [
             {
               "text": "Option #1"
@@ -150,7 +150,7 @@
           "description": "",
           "inputType": "checkbox",
           "required": false,
-          "created_at": 1433524035954,
+          "createdAt": 1433524035954,
           "options": [
             {
               "text": "Checkbox 1"
@@ -198,7 +198,7 @@
           "description": "",
           "inputType": "date",
           "required": false,
-          "created_at": 1433524064381,
+          "createdAt": 1433524064381,
           "date_type": "single-date",
           "model": {
             "value": "06/24/2015 9:22 AM"
@@ -226,7 +226,7 @@
           "description": "",
           "inputType": "date",
           "required": false,
-          "created_at": 1433524082467,
+          "createdAt": 1433524082467,
           "date_type": "date-range",
           "model": {
             "value": {
@@ -257,7 +257,7 @@
           "description": "This is the help text for simple email address field #1",
           "inputType": "email",
           "required": false,
-          "created_at": 1433524095784,
+          "createdAt": 1433524095784,
           "model": {
             "value": "john@google.com"
           }
@@ -284,7 +284,7 @@
           "description": "",
           "inputType": "list",
           "required": false,
-          "created_at": 1433524154974,
+          "createdAt": 1433524154974,
           "selection_type": "single",
           "options": [
             {
@@ -329,7 +329,7 @@
           "description": "Help text for the audio/visual field sample",
           "inputType": "audio-visual",
           "required": false,
-          "created_at": 1433524190870
+          "createdAt": 1433524190870
         }
       },
       "required": [
@@ -353,7 +353,7 @@
           "description": "Helptext for simple numeric field type",
           "inputType": "numeric",
           "required": false,
-          "created_at": 1433524212215
+          "createdAt": 1433524212215
         }
       },
       "required": [
@@ -377,7 +377,7 @@
           "description": "Please only use numbers and do not use any special characters or hyphens",
           "inputType": "phone-number",
           "required": false,
-          "created_at": 1433524229507
+          "createdAt": 1433524229507
         }
       },
       "required": [
@@ -401,7 +401,7 @@
           "description": "This is the helper description for the section break field type",
           "inputType": "section-break",
           "required": false,
-          "created_at": 1433524257819
+          "createdAt": 1433524257819
         }
       },
       "required": [

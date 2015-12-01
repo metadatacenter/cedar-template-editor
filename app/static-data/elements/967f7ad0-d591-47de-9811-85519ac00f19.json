@@ -52,7 +52,7 @@
                   "description": "enter your first name",
                   "inputType": "textfield",
                   "required": false,
-                  "created_at": 1434671113752
+                  "createdAt": 1434671113752
                 }
               },
               "required": [
@@ -76,7 +76,7 @@
                   "description": "Enter your last name",
                   "inputType": "textfield",
                   "required": false,
-                  "created_at": 1434671124438
+                  "createdAt": 1434671124438
                 }
               },
               "required": [
@@ -119,7 +119,7 @@
                   "description": "enter your street name",
                   "inputType": "textfield",
                   "required": false,
-                  "created_at": 1434671275070
+                  "createdAt": 1434671275070
                 }
               },
               "required": [
@@ -143,7 +143,7 @@
                   "description": "Please enter your city name",
                   "inputType": "textfield",
                   "required": false,
-                  "created_at": 1434671285225
+                  "createdAt": 1434671285225
                 }
               },
               "required": [

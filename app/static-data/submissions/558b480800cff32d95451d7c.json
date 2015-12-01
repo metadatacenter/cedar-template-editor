@@ -51,7 +51,7 @@
           "description": "",
           "inputType": "textfield",
           "required": false,
-          "created_at": {
+          "createdAt": {
             "$numberLong": "1435190973550"
           },
           "model": {
@@ -80,7 +80,7 @@
           "description": "",
           "inputType": "textarea",
           "required": false,
-          "created_at": {
+          "createdAt": {
             "$numberLong": "1435191012317"
           },
           "model": {
@@ -109,7 +109,7 @@
           "description": "",
           "inputType": "radio",
           "required": false,
-          "created_at": {
+          "createdAt": {
             "$numberLong": "1435191020912"
           },
           "options": [
@@ -146,7 +146,7 @@
           "description": "",
           "inputType": "checkbox",
           "required": false,
-          "created_at": {
+          "createdAt": {
             "$numberLong": "1435191097075"
           },
           "options": [
@@ -190,7 +190,7 @@
           "description": "",
           "inputType": "date",
           "required": false,
-          "created_at": {
+          "createdAt": {
             "$numberLong": "1435191148836"
           },
           "date_type": "single-date",
@@ -220,7 +220,7 @@
           "description": "",
           "inputType": "email",
           "required": false,
-          "created_at": {
+          "createdAt": {
             "$numberLong": "1435191157870"
           },
           "model": {
@@ -249,7 +249,7 @@
           "description": "",
           "inputType": "radio",
           "required": false,
-          "created_at": {
+          "createdAt": {
             "$numberLong": "1435191172360"
           },
           "options": [
@@ -289,7 +289,7 @@
           "description": "",
           "inputType": "numeric",
           "required": false,
-          "created_at": {
+          "createdAt": {
             "$numberLong": "1435191277074"
           },
           "model": {
@@ -318,7 +318,7 @@
           "description": "",
           "inputType": "phone-number",
           "required": false,
-          "created_at": {
+          "createdAt": {
             "$numberLong": "1435191286581"
           },
           "model": {
@@ -347,7 +347,7 @@
           "description": "",
           "inputType": "list",
           "required": false,
-          "created_at": 1435248405726,
+          "createdAt": 1435248405726,
           "options": [
             {
               "text": "Monday"

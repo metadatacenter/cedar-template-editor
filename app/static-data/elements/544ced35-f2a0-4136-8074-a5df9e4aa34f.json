@@ -100,7 +100,7 @@
                               "description": "",
                               "inputType": "textfield",
                               "required": false,
-                              "created_at": {
+                              "createdAt": {
                                 "$numberLong": "1434992673155"
                               }
                             }
@@ -126,7 +126,7 @@
                               "description": "",
                               "inputType": "textfield",
                               "required": false,
-                              "created_at": {
+                              "createdAt": {
                                 "$numberLong": "1434992680658"
                               }
                             }
@@ -174,7 +174,7 @@
                               "description": "",
                               "inputType": "textfield",
                               "required": false,
-                              "created_at": {
+                              "createdAt": {
                                 "$numberLong": "1434992696015"
                               }
                             }
@@ -200,7 +200,7 @@
                               "description": "",
                               "inputType": "textfield",
                               "required": false,
-                              "created_at": {
+                              "createdAt": {
                                 "$numberLong": "1434992702079"
                               }
                             }
@@ -227,7 +227,7 @@
                               "inputType": "list",
                               "required": false,
                               "selection_type": "single",
-                              "created_at": {
+                              "createdAt": {
                                 "$numberLong": "1434992710888"
                               },
                               "options": [
@@ -275,7 +275,7 @@
                       "description": "",
                       "inputType": "checkbox",
                       "required": false,
-                      "created_at": {
+                      "createdAt": {
                         "$numberLong": "1434992778423"
                       },
                       "options": [

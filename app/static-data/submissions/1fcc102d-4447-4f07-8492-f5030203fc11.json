@@ -84,7 +84,7 @@
                       "description": "enter your first name",
                       "inputType": "textfield",
                       "required": false,
-                      "created_at": 1434671113752,
+                      "createdAt": 1434671113752,
                       "model": {
                         "value": "Dexter"
                       }
@@ -111,7 +111,7 @@
                       "description": "Enter your last name",
                       "inputType": "textfield",
                       "required": false,
-                      "created_at": 1434671124438,
+                      "createdAt": 1434671124438,
                       "model": {
                         "value": "Cope"
                       }
@@ -157,7 +157,7 @@
                       "description": "enter your street name",
                       "inputType": "textfield",
                       "required": false,
-                      "created_at": 1434671275070,
+                      "createdAt": 1434671275070,
                       "model": {
                         "value": "3137 Oakland Road"
                       }
@@ -184,7 +184,7 @@
                       "description": "Please enter your city name",
                       "inputType": "textfield",
                       "required": false,
-                      "created_at": 1434671285225,
+                      "createdAt": 1434671285225,
                       "model": {
                         "value": "Bethlehem"
                       }
@@ -241,7 +241,7 @@
               "description": "Whole name, including first name, middle name, and last name",
               "inputType": "textfield",
               "required": false,
-              "created_at": 1432678567334
+              "createdAt": 1432678567334
             }
           },
           "required": [
@@ -265,7 +265,7 @@
               "description": "An established society, corporation, foundation or other organization founded and united for a specific purpose",
               "inputType": "textfield",
               "required": false,
-              "created_at": 1432678567100
+              "createdAt": 1432678567100
             }
           },
           "required": [

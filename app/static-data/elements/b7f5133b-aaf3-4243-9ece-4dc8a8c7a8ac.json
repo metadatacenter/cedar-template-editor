@@ -26,7 +26,7 @@
           "description": "Enter your first name",
           "inputType": "textfield",
           "required": false,
-          "created_at": 1434581473679
+          "createdAt": 1434581473679
         }
       },
       "required": [
@@ -50,7 +50,7 @@
           "description": "Enter your last name",
           "inputType": "textfield",
           "required": false,
-          "created_at": 1434581482240
+          "createdAt": 1434581482240
         }
       },
       "required": [
@@ -74,7 +74,7 @@
           "description": "",
           "inputType": "radio",
           "required": false,
-          "created_at": 1434581509363,
+          "createdAt": 1434581509363,
           "options": [
             {
               "text": "Male"

@@ -38,7 +38,7 @@
               "description": "Whole name, including first name, middle name, and last name",
               "inputType": "textfield",
               "required": false,
-              "created_at": 1432678567334
+              "createdAt": 1432678567334
             }
           },
           "required": [
@@ -62,7 +62,7 @@
               "description": "An established society, corporation, foundation or other organization founded and united for a specific purpose",
               "inputType": "textfield",
               "required": false,
-              "created_at": 1432678567100
+              "createdAt": 1432678567100
             }
           },
           "required": [
@@ -104,7 +104,7 @@
               "description": "Please enter your first name",
               "inputType": "textfield",
               "required": true,
-              "created_at": 1432678567369
+              "createdAt": 1432678567369
             }
           },
           "required": [
@@ -128,7 +128,7 @@
               "description": "Please enter your last name",
               "inputType": "textfield",
               "required": true,
-              "created_at": 1432678602995
+              "createdAt": 1432678602995
             }
           },
           "required": [
@@ -152,7 +152,7 @@
               "description": "Please provide a valid email address",
               "inputType": "email",
               "required": false,
-              "created_at": 1432678623726
+              "createdAt": 1432678623726
             }
           },
           "required": [
@@ -176,7 +176,7 @@
               "description": "Please provide a phone number you can be reached at. Include area code.",
               "inputType": "phone-number",
               "required": true,
-              "created_at": 1432678646399
+              "createdAt": 1432678646399
             }
           },
           "required": [
@@ -200,7 +200,7 @@
               "description": "If you would like, please tell us a little about yourself",
               "inputType": "textarea",
               "required": false,
-              "created_at": 1432678682106
+              "createdAt": 1432678682106
             }
           },
           "required": [
@@ -230,7 +230,7 @@
           "description": "This is a simple text field",
           "inputType": "textfield",
           "required": true,
-          "created_at": 1433350124237,
+          "createdAt": 1433350124237,
           "advanced": {
             "expression": "Name",
             "condition": [
