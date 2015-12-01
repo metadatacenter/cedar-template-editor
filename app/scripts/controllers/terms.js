@@ -138,7 +138,7 @@ angularApp.controller('TermsController', function($rootScope, $scope, $element, 
     'value_sets': [],
     'classes': [],
     'branches': [],
-    'multiple_choice': false
+    'multipleChoice': false
   };
 
   $scope.controlTerm.valueConstraint.isEmpty = function() {
