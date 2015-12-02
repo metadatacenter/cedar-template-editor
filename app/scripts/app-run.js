@@ -55,7 +55,7 @@ var angularRun = function($rootScope, BioPortalService, $location, $timeout, $wi
   // Returning true if the object key value in the properties object is of json-ld type '@' or if it corresponds to any of the reserved fields
   $rootScope.ignoreKey = function(key) {
     //var pattern = /^@/i,
-    var pattern = /(^@)|(^_ui$)|(^template_id$)/i,
+    var pattern = /(^@)|(^_ui$)|(^templateId$)/i,
       result = pattern.test(key);
 
     return result;

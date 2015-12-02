@@ -395,7 +395,7 @@
   ],
   "additionalProperties": false,
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "template_id": {
+  "templateId": {
     "$oid": "558b480800cff32d95451d7c"
   },
   "submission_id": "558b480800cff32d95451d7c"

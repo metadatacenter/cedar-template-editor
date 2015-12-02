@@ -40,7 +40,7 @@
         }
       ]
     },
-    "template_id": {
+    "templateId": {
       "type": "string",
       "format": "uri"
     },
@@ -51,7 +51,7 @@
   },
   "required": [
     "@id",
-    "template_id"
+    "templateId"
   ],
   "additionalProperties": false
 }
