@@ -331,7 +331,7 @@ var angularRun = function($rootScope, BioPortalService, $location, $timeout, $wi
       term = '*';
     }
     var results = [];
-    var vcst = field.properties.valueConstraints;
+    var vcst = field.properties._valueConstraints;
     var field_id = field['@id'];
 
     if (angular.isUndefined($rootScope.autocompleteResultsCache[field_id])) {

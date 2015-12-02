@@ -105,18 +105,18 @@ var fieldDirective = function($rootScope, $http, $compile, $document, Spreadshee
       }
 
       var allFieldsAreValid = true;
-      if ($rootScope.hasValueConstraint($scope.field.properties.valueConstraints)) {
+      if ($rootScope.hasValueConstraint($scope.field.properties._valueConstraints)) {
 
         if (angular.isArray($scope.model)) {
           angular.forEach($scope.model, function(valueElement) {
             if (angular.isArray(valueElement.value)) {
               angular.forEach(valueElement.value, function(ve) {
-                if (!$rootScope.isValueConformedToConstraint(ve, $scope.field["@id"], $scope.field.properties.valueConstraints)) {
+                if (!$rootScope.isValueConformedToConstraint(ve, $scope.field["@id"], $scope.field.properties._valueConstraints)) {
                   allFieldsAreValid = false;
                 }
               });
             } else if (angular.isObject(valueElement.value)) {
-              if (!$rootScope.isValueConformedToConstraint(valueElement.value, $scope.field["@id"], $scope.field.properties.valueConstraints)) {
+              if (!$rootScope.isValueConformedToConstraint(valueElement.value, $scope.field["@id"], $scope.field.properties._valueConstraints)) {
                 allFieldsAreValid = false;
               }
             }
@@ -124,12 +124,12 @@ var fieldDirective = function($rootScope, $http, $compile, $document, Spreadshee
         } else {
           if (angular.isArray($scope.model.value)) {
             angular.forEach($scope.model.value, function(ve) {
-              if (!$rootScope.isValueConformedToConstraint(ve, $scope.field["@id"], $scope.field.properties.valueConstraints)) {
+              if (!$rootScope.isValueConformedToConstraint(ve, $scope.field["@id"], $scope.field.properties._valueConstraints)) {
                 allFieldsAreValid = false;
               }
             });
           } else if (angular.isObject($scope.model.value)) {
-            if (!$rootScope.isValueConformedToConstraint($scope.model.value, $scope.field["@id"], $scope.field.properties.valueConstraints)) {
+            if (!$rootScope.isValueConformedToConstraint($scope.model.value, $scope.field["@id"], $scope.field.properties._valueConstraints)) {
               allFieldsAreValid = false;
             }
           }
@@ -259,7 +259,7 @@ var fieldDirective = function($rootScope, $http, $compile, $document, Spreadshee
 
     if ($scope.directory == "render" &&
         $scope.field.properties._ui.inputType == "textfield" &&
-        $rootScope.hasValueConstraint($scope.field.properties.valueConstraints)) {
+        $rootScope.hasValueConstraint($scope.field.properties._valueConstraints)) {
       if ($rootScope.isArray($scope.model)) {
         $scope.modelValue = [];
         angular.forEach($scope.model, function(m, i) {
