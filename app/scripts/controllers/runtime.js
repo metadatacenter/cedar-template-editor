@@ -111,7 +111,7 @@ var RuntimeController = function($rootScope, $scope, FormService, $routeParams, 
 			$scope.instance._ui = {};
 			$scope.instance._ui['templateTitle'] = $scope.form.properties._ui.title + ' instance';
 			$scope.instance._ui['templateDescription'] = $scope.form.properties._ui.description;
-			$scope.instance._ui['creation_date'] = new Date();
+			$scope.instance._ui['creationDate'] = new Date();
 			// Make create instance call
 			FormService.savePopulatedTemplate($scope.instance).then(function(response) {
 				$scope.runtimeSuccessMessages.push('The populated template has been saved.');

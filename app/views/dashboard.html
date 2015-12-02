@@ -60,7 +60,7 @@
 					<div class="template-item" ng-repeat="submission in submissionDefaults" cedar-resize-square="true" style="height:213px">
                         <cedar-box
                                 type="{{CONST.boxType.INSTANCE}}"
-                                description="{{submission._ui.templateDescription}}&lt;br/&gt;{{'(' + (submission._ui.creation_date | date:'short') + ')'}}"
+                                description="{{submission._ui.templateDescription}}&lt;br/&gt;{{'(' + (submission._ui.creationDate | date:'short') + ')'}}"
                                 title="{{submission._ui.templateTitle}}"
                                 object-id="{{submission['@id']}}"
                                 allow-remove="true"
