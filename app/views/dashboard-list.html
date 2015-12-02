@@ -47,12 +47,12 @@
                     </section>
 
                     <section ng-if="itemType == 'submissions'">
-                        <div class="template-item" ng-repeat="item in submissions | filter:{_ui:{template_title:searchText}}"
+                        <div class="template-item" ng-repeat="item in submissions | filter:{_ui:{templateTitle:searchText}}"
                              cedar-resize-square="true">
                             <cedar-box
                                     type="{{CONST.boxType.INSTANCE}}"
                                     description="{{item._ui.template_description}}&lt;br/&gt;{{'(' + (item._ui.creation_date | date:'short') + ')'}}"
-                                    title="{{item._ui.template_title}}"
+                                    title="{{item._ui.templateTitle}}"
                                     object-id="{{item['@id']}}"
                                     allow-remove="true"
                             >

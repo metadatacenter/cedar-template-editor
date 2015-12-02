@@ -109,7 +109,7 @@ var RuntimeController = function($rootScope, $scope, FormService, $routeParams, 
 			$scope.instance['templateId'] = $routeParams.templateId;
 			// Create _ui field that will store information used by the UI
 			$scope.instance._ui = {};
-			$scope.instance._ui['template_title'] = $scope.form.properties._ui.title + ' instance';
+			$scope.instance._ui['templateTitle'] = $scope.form.properties._ui.title + ' instance';
 			$scope.instance._ui['template_description'] = $scope.form.properties._ui.description;
 			$scope.instance._ui['creation_date'] = new Date();
 			// Make create instance call
