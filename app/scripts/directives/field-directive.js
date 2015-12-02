@@ -265,14 +265,14 @@ var fieldDirective = function($rootScope, $http, $compile, $document, Spreadshee
         angular.forEach($scope.model, function(m, i) {
           // TODO: Push valid value if m is present.
           if (m._value) {
-            $scope.modelValue.push({_value: {"@id": m._value, label: m._value_label}});
+            $scope.modelValue.push({_value: {"@id": m._value, label: m._valueLabel}});
           } else {
             $scope.modelValue.push({});
           }
         });
       } else {
         if ($scope.model._value) {
-          $scope.modelValue = {_value: {"@id": $scope.model._value, label: $scope.model._value_label}};
+          $scope.modelValue = {_value: {"@id": $scope.model._value, label: $scope.model._valueLabel}};
         } else {
           $scope.modelValue = {};
         }
@@ -283,19 +283,19 @@ var fieldDirective = function($rootScope, $http, $compile, $document, Spreadshee
           angular.forEach($scope.modelValue, function(m, i) {
             if (m && m._value && m._value["@id"]) {
               $scope.model[i]._value = m._value["id"];
-              $scope.model[i]._value_label = m._value.label;
+              $scope.model[i]._valueLabel = m._value.label;
             } else {
               delete $scope.model[i]._value;
-              delete $scope.model[i]._value_label;
+              delete $scope.model[i]._valueLabel;
             }
           });
         } else {
           if (newValue && newValue._value && newValue._value["@id"]) {
             $scope.model._value = newValue._value["@id"];
-            $scope.model._value_label = newValue._value.label;
+            $scope.model._valueLabel = newValue._value.label;
           } else if (oldValue) {
             delete $scope.model._value;
-            delete $scope.model._value_label;
+            delete $scope.model._valueLabel;
           }
         }
       }, true);
