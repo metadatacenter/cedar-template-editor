@@ -35,6 +35,7 @@ var CreateElementController = function ($rootScope, $scope, $routeParams, $timeo
   } else {
     // If we're not loading an existing element then let's create a new empty $scope.element property
     $scope.element = DataTemplateService.getElement($rootScope.idBasePath + $rootScope.generateGUID());
+    $scope.resetElement = angular.copy($scope.element);
     HeaderService.dataContainer.currentObjectScope = $scope.element;
   }
 
@@ -230,12 +231,7 @@ var CreateElementController = function ($rootScope, $scope, $routeParams, $timeo
   };
 
   $scope.doReset = function () {
-    // Loop through $scope.element.properties object and delete each field leaving default json-ld syntax in place
-    angular.forEach($scope.element.properties, function (value, key) {
-      if (!$rootScope.ignoreKey(key)) {
-        delete $scope.element.properties[key];
-      }
-    });
+    $scope.element = angular.copy($scope.resetElement);
     // Broadcast the reset event which will trigger the emptying of formFields formFieldsOrder
     $scope.$broadcast('resetForm');
   }
@@ -347,7 +343,6 @@ var CreateElementController = function ($rootScope, $scope, $routeParams, $timeo
       }
     }
   });
-
 };
 
 CreateElementController.$inject = ["$rootScope", "$scope", "$routeParams", "$timeout", "$location", "FormService", "HeaderService", "UrlService", "StagingService", "DataTemplateService", "CONST", "HEADER_MINI", "LS"];

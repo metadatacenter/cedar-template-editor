@@ -1,13 +1,14 @@
 <div class="fields fields-textarea">
   <div ng-if="$root.isArray(model)" class="form-group floating-label-wrapper" ng-repeat="value_element in model">
+	<p class="extra-label-context" ng-if="ngDisabled && field.properties.info.title">{{field.properties.info.title}}</p>
     <textarea rows="5"
-    					id="comment"
-    					class="form-control"
-    					ng-class="{'required': field.properties.info.required_value}"
-    					placeholder="{{field.properties.info.title}}"
-    					aria-label="{{field.properties.info.description}}"
-    					ng-model="value_element._value"
-    					with-floating-label></textarea>
+    		  id="comment"
+    		  class="form-control"
+    		  ng-class="{'required': field.properties.info.required_value}"
+    		  placeholder="{{field.properties.info.title}}"
+    		  aria-label="{{field.properties.info.description}}"
+    		  ng-model="value_element._value"
+    		  with-floating-label=""></textarea>
     <div class="input-indicator-icons">
       <i class="cedar-svg-help-circle" data-container="body" data-toggle="popover" data-placement="left" data-content="{{field.properties.info.description}}"></i>
       <i class="cedar-svg-check-circle"></i>
@@ -17,6 +18,7 @@
   </div><!-- /.form-group -->
 
   <div ng-if="!$root.isArray(model)" class="form-group floating-label-wrapper">
+	<p class="extra-label-context" ng-if="ngDisabled && field.properties.info.title">{{field.properties.info.title}}</p>
     <textarea rows="5"
               id="comment"
               class="form-control"
@@ -24,7 +26,7 @@
               placeholder="{{field.properties.info.title}}"
               aria-label="{{field.properties.info.description}}"
               ng-model="model._value"
-              with-floating-label></textarea>
+              with-floating-label=""></textarea>
     <div class="input-indicator-icons">
       <i class="cedar-svg-help-circle" data-container="body" data-toggle="popover" data-placement="left" data-content="{{field.properties.info.description}}"></i>
       <i class="cedar-svg-check-circle"></i>
