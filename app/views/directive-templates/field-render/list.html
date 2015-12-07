@@ -10,6 +10,7 @@
 			  field="field"
 			  title="Please select one of the options..."
 			  ng-model="value_element._value"
+                          ng-disabled="ngDisabled || preview"
 			  defaults="field.properties.info.default_option"
 			  select-picker="">
 		<option ng-repeat="(index, value) in field.properties.info.options" value="{{field.properties.info.options[index]['text']}}">{{field.properties.info.options[index]['text']}}</option>
@@ -24,6 +25,7 @@
 			  field="field"
 			  title="Please select one or more options..."
 			  ng-model="value_element._value"
+                          ng-disabled="ngDisabled || preview"
 			  defaults="field.properties.info.default_option"
 			  select-picker="">
 		<option ng-repeat="(index, value) in field.properties.info.options" value="{{field.properties.info.options[index]['text']}}">{{field.properties.info.options[index]['text']}}</option>
@@ -43,6 +45,7 @@
 			  field="field"
 			  title="Please select one of the options..."
 			  ng-model="model._value"
+                          ng-disabled="ngDisabled || preview"
 			  defaults="field.properties.info.default_option"
 			  select-picker="">
 		<option ng-repeat="(index, value) in field.properties.info.options" value="{{field.properties.info.options[index]['text']}}">{{field.properties.info.options[index]['text']}}</option>
@@ -57,6 +60,7 @@
 			  field="field"
 			  title="Please select one or more options..."
 			  ng-model="model._value"
+                          ng-disabled="ngDisabled || preview"
 			  defaults="field.properties.info.default_option"
 			  select-picker="">
 		<option ng-repeat="(index, value) in field.properties.info.options" value="{{field.properties.info.options[index]['text']}}">{{field.properties.info.options[index]['text']}}</option>

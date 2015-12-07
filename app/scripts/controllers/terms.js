@@ -205,11 +205,20 @@ angularApp.controller('TermsController', function($rootScope, $scope, $element, 
   // FIELD: search results
   ////////////////////////////////////
 
+  $scope.controlTerm.startFieldSearch = function() {
+    $scope.controlTerm.fieldActionSelection = "search";
+  };
+
+  $scope.controlTerm.endFieldSearch = function() {
+    if (!$scope.controlTerm.fieldSearchTerms) {
+      $scope.controlTerm.fieldActionSelection = null;
+    }
+  };
+
   $scope.controlTerm.fieldSearch = function() {
 
     $scope.controlTerm.searchResults = [];
     $scope.controlTerm.searchNoResults = false;
-    $scope.controlTerm.fieldActionSelection = "search";
 
     if($scope.controlTerm.fieldSearchTerms == '') {
       $scope.controlTerm.searchPreloader = false;
@@ -1020,7 +1029,34 @@ angularApp.controller('TermsController', function($rootScope, $scope, $element, 
   /**
    * Add ontology class to value constraint to field values info definition.
    */
-  $scope.controlTerm.addOntologyClassToValueConstraint = function() {
+  $scope.controlTerm.addOntologyClassToValueConstraint = function(constraint) {
+    var i = $scope.controlTerm.stagedOntologyClassValueConstraints.indexOf(constraint);
+    var alreadyAdded = false;
+
+    for (var j = 0; j < $scope.controlTerm.valueConstraint.classes.length; j++) {
+      if ($scope.controlTerm.valueConstraint.classes[j]['uri'] == constraint['uri']) {
+        alreadyAdded = true;
+        break;
+      }
+    }
+    
+    if (!alreadyAdded) {
+      if (constraint.label == '') {
+        constraint.label = $scope.controlTerm.stagedOntologyClassValueConstraintData[i].label;
+      }
+      $scope.controlTerm.valueConstraint.classes.push(angular.copy(constraint));
+    }
+
+    $scope.controlTerm.stagedOntologyClassValueConstraints = [];
+    $scope.controlTerm.stagedOntologyClassValueConstraintData = [];
+    assignValueConstraintToField();
+    $scope.controlTerm.startOver();
+  };
+
+  /**
+   * Add ontology class to value constraint to field values info definition.
+   */
+  $scope.controlTerm.addOntologyClassesToValueConstraint = function() {
     var alreadyAdded, constraint, i, j;
     for (i = 0; i < $scope.controlTerm.stagedOntologyClassValueConstraints.length; i++) {
       constraint = $scope.controlTerm.stagedOntologyClassValueConstraints[i];
@@ -1129,6 +1165,16 @@ angularApp.controller('TermsController', function($rootScope, $scope, $element, 
     $timeout(function() {
       jQuery(window).scrollTop(0);
     });
+  });
+
+  $element.parents(".controlled-terms-modal").on("shown.bs.modal", function() {
+    var windowHeight = jQuery(window).height();
+    var modalHeight = $element.parents(".controlled-terms-modal .modal-content").outerHeight();
+    var topPosition = (windowHeight - modalHeight)/2;
+    if (topPosition < 0) {
+      topPosition = 0;
+    }
+    $element.parents(".controlled-terms-modal").css("top", topPosition);
   });
 })
 .directive('addedFieldItem', function () {

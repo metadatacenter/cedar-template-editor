@@ -9,7 +9,7 @@
     	     placeholder="{{field.properties.info.title}}"
     	     aria-label="{{field.properties.info.description}}"
     	     ng-model="value_element._value"
-             ng-disabled="ngDisabled"
+             ng-disabled="ngDisabled || preview"
     	     with-floating-label="" />
       <div class="input-indicator-icons">
         <i class="cedar-svg-help-circle" data-container="body" data-toggle="popover" data-placement="left" data-content="{{field.properties.info.description}}"></i>
@@ -18,7 +18,7 @@
       </div><!-- /.input-indicator-icons -->
     </div>
     <div ng-if="$root.hasValueConstraint(field.properties.info)" class="has-constraint autocomplete-label-wrapper" ng-class="{'has-selected': modelValue[index]._value.label}">
-      <ui-select ng-model="modelValue[index]" theme="bootstrap" close-on-select="true" ng-disabled="ngDisabled" aria-label="{{field.properties.info.description}}">
+      <ui-select ng-model="modelValue[index]" theme="bootstrap" close-on-select="true" ng-disabled="ngDisabled || preview" aria-label="{{field.properties.info.description}}">
         <ui-select-match placeholder="">{{$select.selected.label}}</ui-select-match>
         <ui-select-choices ui-disable-choice="option.label == 'No Results...'" refresh="$root.updateFieldAutocomplete(field, $select.search)" refresh-delay="200" repeat="option in $root.autocompleteResultsCache[field['@id']]['results'] | propsFilter: {label: $select.search}">
           <div ng-bind-html="option.label | highlight: $select.search"></div>
@@ -44,7 +44,7 @@
              placeholder="{{field.properties.info.title}}"
              aria-label="{{field.properties.info.description}}"
              ng-model="model._value"
-             ng-disabled="ngDisabled"
+             ng-disabled="ngDisabled || preview"
              with-floating-label="" />
       <div class="input-indicator-icons">
         <i class="cedar-svg-help-circle" data-container="body" data-toggle="popover" data-placement="left" data-content="{{field.properties.info.description}}"></i>
@@ -53,7 +53,7 @@
       </div><!-- /.input-indicator-icons -->
     </div>
     <div ng-if="$root.hasValueConstraint(field.properties.info)" class="has-constraint autocomplete-label-wrapper" ng-class="{'has-selected': modelValue._value.label}">
-      <ui-select ng-model="modelValue._value" theme="bootstrap" close-on-select="true" ng-disabled="ngDisabled" aria-label="{{field.properties.info.description}}">
+      <ui-select ng-model="modelValue._value" theme="bootstrap" close-on-select="true" ng-disabled="ngDisabled || preview" aria-label="{{field.properties.info.description}}">
         <ui-select-match placeholder="">{{$select.selected.label}}</ui-select-match>
         <ui-select-choices ui-disable-choice="option.label == 'No Results...'" refresh="$root.updateFieldAutocomplete(field, $select.search)" refresh-delay="200" repeat="option in $root.autocompleteResultsCache[field['@id']]['results'] | propsFilter: {label: $select.search}">
           <div ng-bind-html="option.label | highlight: $select.search"></div>

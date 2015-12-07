@@ -121,6 +121,7 @@ i {
     z-index:2;
     background-color:@white;
     margin-top:-27px;
+    padding: 0;
   }
 
   #navbarmini {
@@ -259,7 +260,7 @@ i {
       padding-bottom:40px;
 
       .form-preview {
-        padding-top:15px;
+        padding-top: 0;
 
         p.type-label {
           width: 100%;
@@ -776,15 +777,18 @@ section.dashboard-elements {
         height:100%;
         background-color:@brand-primary;
         position:relative;
+        display: table;
         z-index:1;
         opacity:0;
         .link-transition;
 
         p.description {
           color:@white;
-          padding:25px 15px;
+          padding: 25px 15px 60px;
           margin:0;
           font-size:11px;
+          display: table-cell;
+          vertical-align: middle;
 
           @media(min-width:@screen-xs-min) {
             font-size:12px;
@@ -798,6 +802,7 @@ section.dashboard-elements {
           position:absolute;
           bottom:15px;
           width:100%;
+          left: 0;
 
           span {
             height:30px;
@@ -1316,7 +1321,7 @@ section.dashboard-elements {
 
   .configuration-options {
     padding-top:20px;
-    border-top:1px dashed #ddd;
+    // border-top:1px dashed #ddd;
 
     .toggle-options {
       padding-bottom:10px;
@@ -1537,7 +1542,7 @@ section.dashboard-elements {
   .search-results-section {
     .search-results {
       min-height: 58px;
-      max-height: 185px;
+      max-height: 260px;
       overflow-y: auto;
       .no-search-results {
         padding:20px 0 19px 3.06%;
@@ -1547,13 +1552,12 @@ section.dashboard-elements {
 
     .results-table-container {
       background: @white;
-      padding: 0 20px;
     }
 
     .results-table, .results-headers-table {
       width:100%;
       td, th {
-        padding: 5px 0;
+        padding: 16px 20px;
 
         &:first-child {
           width: 250px;
@@ -1594,11 +1598,11 @@ section.dashboard-elements {
     }
 
     .search-results-headers {
-      background: #f9f9fb;
+      text-transform: uppercase;
     }
 
     .results-headers-table {
-      margin: 0 20px;
+      margin: 0;
       color: @brand-primary;
       th {
         border: none;
@@ -1612,19 +1616,22 @@ section.dashboard-elements {
       text-align: center;
     }
 
+    .action-cell {
+      width: 160px;
+    }
+
     .btn {
       text-transform:uppercase;
-      padding:12px 30px;
+      padding:4px 10px;
       border:none;
       .link-transition;
       color: @white;
       background: @brand-primary;
       font-size:18px;
       letter-spacing: 0.03em;
-      width: 290px;
+      width: 150px;
       overflow: hidden;
       text-overflow: ellipsis;
-      clear:both;
       text-align: center;
 
       &:focus {
@@ -2022,7 +2029,7 @@ section.dashboard-elements {
     padding:8px 20px;
 
     &:hover {
-      background-color:rgba(80,178,80,0.2);
+      background-color: @brand-primary;
     }
   }
 
@@ -2368,7 +2375,7 @@ section.dashboard-elements {
     }
 
     &.expanded {
-      border-left: 1px dotted;
+      // border-left: 1px dotted;
 
       &:last-child {
         border-left: none;
@@ -2397,33 +2404,33 @@ section.dashboard-elements {
 
   .no-children {
     > a:before {
-      background: url("../scripts/Bioportal/assets/upper_leaf.gif") no-repeat center top transparent;
+      // background: url("../scripts/Bioportal/assets/upper_leaf.gif") no-repeat center top transparent;
     }
 
     &:last-child {
       > a:before {
-        background: url("../scripts/Bioportal/assets/last_leaf.gif") no-repeat center top transparent;
+        // background: url("../scripts/Bioportal/assets/last_leaf.gif") no-repeat center top transparent;
       }
     }
   }
 
   .has-children {
     > a:before {
-      background: url("../scripts/Bioportal/assets/upper_node_collapse.gif") no-repeat center top transparent;
+      // background: url("../scripts/Bioportal/assets/upper_node_collapse.gif") no-repeat center top transparent;
     }
     &:last-child {
       > a:before {
-        background: url("../scripts/Bioportal/assets/last_node_collapse.gif") no-repeat center top transparent;
+        // background: url("../scripts/Bioportal/assets/last_node_collapse.gif") no-repeat center top transparent;
       }
     }
 
     &.expanded {
       > a:before {
-        background: url("../scripts/Bioportal/assets/upper_node_expand.gif") no-repeat center top transparent;
+        // background: url("../scripts/Bioportal/assets/upper_node_expand.gif") no-repeat center top transparent;
       }
       &:last-child {
         > a:before {
-          background: url("../scripts/Bioportal/assets/last_node_expand.gif") no-repeat center center transparent;
+          // background: url("../scripts/Bioportal/assets/last_node_expand.gif") no-repeat center center transparent;
         }
       }
     }
@@ -2454,6 +2461,7 @@ section.dashboard-elements {
       border:none;
       display: inline-block;
       width: 100%;
+      text-transform: uppercase;
 
       .detail-view-tab {
         width: 50%;
@@ -2461,9 +2469,10 @@ section.dashboard-elements {
           border-radius: 0;
           text-align: center;
           margin: 0;
-          background: @gray2;
+          background: @gray3;
           border: none;
           color: @black;
+          padding: 10px 15px;
         }
 
         &.active {
@@ -2483,6 +2492,10 @@ section.dashboard-elements {
           font-weight: bold;
           text-transform: uppercase;
           border: none;
+
+          &:first-child {
+            width: 100px;
+          }
         }
         tbody {
           border-bottom: 1px solid #DDD;
@@ -2757,7 +2770,7 @@ section.dashboard-elements {
   fieldset.section-break {
     border-top: 1px solid @brand-primary;
     legend {
-      margin: 0 0 5px 37%;
+      margin: 0 0 5px 30%;
       width: auto;
       padding: 0 10px;
       color: @brand-primary;
@@ -2821,8 +2834,8 @@ section.dashboard-elements {
     width: 42%;
     h4 {
       margin-right: 4%;
-      text-align: center;
       color: @brand-primary;
+      text-transform: uppercase;
     }
   }
 }
@@ -2851,11 +2864,21 @@ section.dashboard-elements {
   position: absolute;
   .modal-dialog {
     width: 1020px;
+    height: 100%;
+    padding: 0;
+    margin-top: 0px;
+    margin-bottom: 0px;
   }
 
   .modal-content {
+    height: 100%;
     background: #eaf2f2;
-    border: 1px solid #5795ba;
+    border-radius: 0;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    -o-box-shadow: none;
+    box-shadow: none;
+    border: 0;
   }
 
   .modal-header {
@@ -2868,7 +2891,9 @@ section.dashboard-elements {
   }
 
   .modal-body {
-    padding: 40px 170px 100px;
+    padding: 40px 100px 100px;
+    height: calc(~"100% - 60px");
+    overflow-y: auto;
   }
 }
 
@@ -2877,7 +2902,11 @@ body.modal-open {
   .controlled-terms-modal {
     overflow: visible;
     height: auto;
-    margin: 0 0 0 -280px;
+  }
+
+  .modal-backdrop {
+    background-color: transparent;
+    opacity: 1;
   }
 }
 
@@ -2947,4 +2976,177 @@ body .template-header .controlled-terms-modal {
 
 .template-body form .control-term-field-preview-form .autocomplete-label-wrapper [disabled] .ui-select-toggle {
   background: #EEE;
+}
+
+#form-item-config-section .radio label {
+  &:before {
+    top: -3px;
+  }
+
+  &:after {
+    top: -2px;
+  }
+}
+
+#form-item-config-section .checkbox label {
+  &:before {
+    top: -5px;
+  }
+
+  &:after {
+    top: -4px;
+  }
+}
+
+#form-item-config-section .checkbox-bioportal-ontologies label,
+#form-item-config-section .checkbox-bioportal-value-sets label,
+#form-item-config-section .checkbox-required label,
+#form-item-config-section .checkbox-cardinality label {
+  &:before {
+    top: -4px;
+    width: 22px;
+    height: 22px;
+  }
+
+  &:after {
+    top: -5px;
+    font-size: 15px;
+  }
+}
+
+.input-type-container .configuration-options {
+  padding: 20px 0 20px 5px;;
+  position: static;
+}
+
+.cardinality-options {
+  padding-left: 10px;
+  margin-top: 10px;
+}
+
+.input-type-container .configuration-options .toggle-options {
+  margin-right: 15px;
+}
+
+.input-type-container .configuration-actions .toggle-options {
+  margin-top: 5px;
+}
+
+.input-type-container .configuration-actions .toggle-options .save-options .remove {
+  margin-right: 0;
+}
+
+.add-another img {
+  background: @brand-primary;
+  color: @white;
+  border-radius: 50%;
+  border: 4px solid @brand-primary;
+  margin: 0 5px 0 0;
+  width: 19px;
+}
+
+.min-items-option, .max-items-option {
+  label {
+    float: left;
+    margin: 10px 10px 0 0;
+    font-weight: normal;
+  }
+
+  .bootstrap-select {
+    float: right;
+  }
+}
+
+.bootstrap-select .btn-select-picker {
+  background: @white;
+}
+
+.bootstrap-select .btn-select-picker.disabled {
+  background: @gray3;
+}
+
+.date-group .fa-calendar {
+  font-size: 1.5em;
+}
+
+.no-items-added {
+  padding: 15px;
+  margin: 0 0 15px;
+  border: 1px dashed @gray;
+}
+
+.template-body .right-body .controlled-terms .preview-group {
+  width: 100%;
+  padding-left: 0;
+}
+
+.btn-two-toggle .btn-field {
+  margin-left: 30px;
+}
+
+.template-body > .container,
+.template-header > .container {
+  position: static;
+}
+
+.template-body .right-body {
+  position: static;
+}
+
+.controlled-terms-modal .cedar-svg-controll-term {
+  height: 30px;
+  margin-right: 10px;
+  &:before {
+    font-size: 30px;
+  }
+}
+
+.controlled-terms-modal .heading-label fieldset.section-break legend {
+  border-bottom: none;
+}
+
+.controlled-terms-modal .heading-label fieldset.section-break {
+  margin: 15px 0;
+}
+
+.tree-view {
+  a {
+    text-transform: capitalize;
+    color: @gray;
+
+    &.selected {
+      color: @brand-primary;
+    }
+  }
+}
+
+.class-action {
+  padding-bottom: 10px;
+  border-bottom: 1px solid @brand-primary;
+
+  &:last-child {
+    margin-top: 10px;
+  }
+}
+
+.element .field-instance.multiple-instance-field {
+  border: none;
+}
+
+.create-template-body .right-body .preview-group {
+  width: calc(~"100% - 100px");
+}
+
+.nav > li > a {
+  padding: 10px 30px;
+}
+
+.add-class-container .table-row-style {
+  .table-cell-style {
+    padding-top: 10px;
+  }
+  
+  &:first-child .table-cell-style {
+    padding-top: 0;
+  }
 }

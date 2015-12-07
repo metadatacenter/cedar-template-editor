@@ -8,6 +8,7 @@
     		  placeholder="{{field.properties.info.title}}"
     		  aria-label="{{field.properties.info.description}}"
     		  ng-model="value_element._value"
+                  ng-disabled="ngDisabled || preview"
     		  with-floating-label=""></textarea>
     <div class="input-indicator-icons">
       <i class="cedar-svg-help-circle" data-container="body" data-toggle="popover" data-placement="left" data-content="{{field.properties.info.description}}"></i>
@@ -26,6 +27,7 @@
               placeholder="{{field.properties.info.title}}"
               aria-label="{{field.properties.info.description}}"
               ng-model="model._value"
+              ng-disabled="ngDisabled || preview"
               with-floating-label=""></textarea>
     <div class="input-indicator-icons">
       <i class="cedar-svg-help-circle" data-container="body" data-toggle="popover" data-placement="left" data-content="{{field.properties.info.description}}"></i>

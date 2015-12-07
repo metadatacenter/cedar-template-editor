@@ -11,6 +11,7 @@
                placeholder="{{field.properties.info.title}} ( MM / DD / YYYY )"
                aria-label="Select a date"
                ng-model="value_element._value"
+               ng-disabled="ngDisabled || preview"
                with-floating-label="" />
         <span class="input-group-addon">
           <i class="fa fa-calendar fa-2x"></i>
@@ -27,6 +28,7 @@
                placeholder="MM / DD / YYYY"
                aria-label="Select a start date"
                ng-model="value_element._value.start"
+               ng-disabled="ngDisabled || preview"
                with-floating-label="" />
         <span class="input-group-addon">
           <i class="fa fa-calendar fa-2x"></i>
@@ -39,6 +41,7 @@
                placeholder="MM / DD / YYYY"
                aria-label="Select a end date"
                ng-model="value_element._value.end"
+               ng-disabled="ngDisabled || preview"
                with-floating-label="" />
         <span class="input-group-addon">
           <i class="fa fa-calendar fa-2x"></i>
@@ -60,6 +63,7 @@
                placeholder="MM / DD / YYYY"
                aria-label="Select a date"
                ng-model="model._value"
+               ng-disabled="ngDisabled || preview"
                with-floating-label="" />
         <span class="input-group-addon">
           <i class="fa fa-calendar fa-2x"></i>
@@ -76,6 +80,7 @@
                placeholder="MM / DD / YYYY"
                aria-label="Select a start date"
                ng-model="model._value.start"
+               ng-disabled="ngDisabled || preview"
                with-floating-label="" />
         <span class="input-group-addon">
           <i class="fa fa-calendar fa-2x"></i>
@@ -88,6 +93,7 @@
                placeholder="MM / DD / YYYY"
                aria-label="Select a end date"
                ng-model="model._value.end"
+               ng-disabled="ngDisabled || preview"
                with-floating-label="" />
         <span class="input-group-addon">
           <i class="fa fa-calendar fa-2x"></i>

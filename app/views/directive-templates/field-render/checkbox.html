@@ -6,6 +6,7 @@
 		<input type="checkbox"
 		       id="checkbox-{{uuid}}-{{$parent.$index}}-{{index}}"
 		       ng-model="value_element._value[value.text]"
+                       ng-disabled="ngDisabled || preview"
 		       ng-checked="value_element._value[value.text]" />
 		<label for="checkbox-{{uuid}}-{{$parent.$index}}-{{index}}">{{field.properties.info.options[index]['text']}}</label>
 	  </div><!-- ./checkbox -->
@@ -20,6 +21,7 @@
 		<input type="checkbox"
 		       id="checkbox-{{uuid}}-{{$parent.$index}}-{{index}}"
 		       ng-model="model._value[value.text]"
+                       ng-disabled="ngDisabled || preview"
 		       ng-checked="model._value[value.text]" />
 		<label for="checkbox-{{uuid}}-{{$parent.$index}}-{{index}}">{{field.properties.info.options[index]['text']}}</label>
 	  </div><!-- ./checkbox -->
