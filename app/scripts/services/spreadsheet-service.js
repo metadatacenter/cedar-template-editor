@@ -77,7 +77,7 @@ var SpreadsheetService = function ($filter) {
       if (context.isField()) {
         headerOrder.push('value');
       } else {
-        var itemOrder = scopeElement.order;
+        var itemOrder = scopeElement._ui.order;
         for (var i in itemOrder) {
           headerOrder.push(itemOrder[i]);
         }

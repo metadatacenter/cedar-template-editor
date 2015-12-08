@@ -327,9 +327,9 @@ var CreateElementController = function ($rootScope, $scope, $routeParams, $timeo
     }
   }
 
-  // Build $scope.element.order array
+  // Build $scope.element._ui.order array
   $scope.$on('finishOrderArray', function (event, orderArray) {
-    $scope.element.order = orderArray;
+    $scope.element._ui.order = orderArray;
   });
 
   // This function watches for changes in the properties._ui.title field and autogenerates the schema title and description fields

@@ -8,9 +8,9 @@ angularApp.directive('formPreview', function ($rootScope, $document, $timeout) {
       $scope.formFields = {};
       $scope.model = $scope.model || {};
       // $scope.formFieldsOrder array to loop over for proper ordering of items/elements
-      if ($scope.form.order && $scope.form.order.length) {
+      if ($scope.form._ui && $scope.form._ui.order && $scope.form._ui.order.length) {
         // If form already has order array, set iterator to existing array (loading pre-existing element)
-        $scope.formFieldsOrder = $scope.form.order;
+        $scope.formFieldsOrder = $scope.form._ui.order;
       } else {
         // form has no order array, (ie. loading a new instance, with no existing fields)
         $scope.formFieldsOrder = [];
@@ -61,12 +61,12 @@ angularApp.directive('formPreview', function ($rootScope, $document, $timeout) {
       $scope.parseForm = function(iterator, parentObject, parentModel, parentKey) {
         angular.forEach(iterator, function(value, name) {
           if (!$rootScope.ignoreKey(name)) {
-            if (value.hasOwnProperty('order')) {
+            if (value._ui && value._ui.hasOwnProperty('order')) {
             //if (value.hasOwnProperty('guid')) {
               // Acknowledge position and nesting
               parentObject[name] = {};
               // Push 'order' array through into parse object
-              parentObject[name]['order'] = value.order;
+              parentObject[name]['_ui']['order'] = value._ui.order;
               parentObject[name].minItems = value.minItems;
               parentObject[name].maxItems = value.maxItems;
 

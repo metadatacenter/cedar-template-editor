@@ -3,7 +3,9 @@
   "@id": null,
   "title": "",
   "description": "",
-  "order": [],
+  "_ui": {
+    "order": []
+  },
   "type": "object",
   "properties": {
     "@context": {
