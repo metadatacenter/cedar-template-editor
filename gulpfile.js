@@ -63,6 +63,11 @@ gulp.task('less', function() {
 //    .pipe(gulp.dest('dist/js'));
 // });
 
+gulp.task('copy:resources', function() {
+  var glyphiconsGlob = 'app/bower_components/bootstrap/fonts/*.*';
+  return gulp.src(glyphiconsGlob).pipe(gulp.dest('app/fonts/'));
+});
+
 gulp.task('server', function() {
 	connect.server({
 		root: 'app',
@@ -208,7 +213,7 @@ gulp.task('watch', function() {
 });
 
 // Default task
-gulp.task('default', ['server', 'lint', 'less', 'watch']);
+gulp.task('default', ['server', 'lint', 'less', 'copy:resources', 'watch']);
 // Build task
 //gulp.task('build', ['minifyCSS', 'htmlreplace', 'angular']);
 

@@ -43,6 +43,9 @@ angularApp.directive('selectPicker', function ($timeout) {
           // If defaults were loaded during field item configuration, manually load defaults into the selectpicker
           $element.selectpicker('val', default_array);
         }
+
+        $('.caret').addClass('glyphicon').addClass('glyphicon-chevron-down');
+
       }, 25);
       $element.on('change', function() {
         // Runtime document output is 3 $scope levels above this directive at this point, passing the $model up to be

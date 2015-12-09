@@ -11018,7 +11018,6 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   background-color: rgba(80, 178, 80, 0.2);
 }
 .bootstrap-select .caret {
-  background-image: url(../img/primary-angle-down.png);
   background-repeat: no-repeat;
   width: 15px;
   height: 10px;
@@ -11028,6 +11027,7 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   -webkit-transform: rotate(0deg);
       -ms-transform: rotate(0deg);
           transform: rotate(0deg);
+  color: #5795ba;
 }
 .bootstrap-select.open .caret {
   -webkit-transform: rotate(180deg);
@@ -11036,6 +11036,9 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
 }
 .bootstrap-select .fa-check.check-mark {
   color: #5795ba;
+}
+.bootstrap-select.btn-group .dropdown-toggle .caret {
+  top: 42%;
 }
 /*
 ================================================
@@ -11791,6 +11794,15 @@ body .template-header .controlled-terms-modal {
 }
 .controlled-terms-modal p.type-label {
   display: none;
+}
+.template-body form .control-term-field-preview-form .input-indicator-icons {
+  top: 0;
+}
+.template-body form .control-term-field-preview-form .autocomplete-label-wrapper .input-indicator-icons {
+  top: -30px;
+}
+.template-body form .control-term-field-preview-form .autocomplete-label-wrapper [disabled] .ui-select-toggle {
+  background: #EEE;
 }
 @font-face {
   font-family: "project-cedar";

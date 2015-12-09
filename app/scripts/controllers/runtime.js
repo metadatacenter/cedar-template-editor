@@ -74,26 +74,26 @@ var RuntimeController = function($rootScope, $scope, FormService, $routeParams, 
 	// Inject pages array from FormService into $scope variable
 	// and render the first page of fields/elements by default
 	$scope.initializePagination = function(pages) {
-		$scope.pagesArray = pages;
-		$scope.currentPage = $scope.pagesArray[$scope.pageIndex];
+	  $scope.pagesArray = pages;
+	  $scope.currentPage = $scope.pagesArray[$scope.pageIndex];
 	};
 
 	// Load the previous page of the form
 	$scope.previousPage = function() {
-		$scope.pageIndex --;
-		$scope.currentPage = $scope.pagesArray[$scope.pageIndex];
+	  $scope.pageIndex --;
+	  $scope.currentPage = $scope.pagesArray[$scope.pageIndex];
 	};
 
 	// Load the next page of the form
 	$scope.nextPage = function() {
-		$scope.pageIndex ++;
-		$scope.currentPage = $scope.pagesArray[$scope.pageIndex];
+	  $scope.pageIndex ++;
+	  $scope.currentPage = $scope.pagesArray[$scope.pageIndex];
 	};
 
 	// Load an arbitrary page number attached to the index of it via runtime.html template
 	$scope.setCurrentPage = function(page) {
-		$scope.pageIndex = page;
-		$scope.currentPage = $scope.pagesArray[$scope.pageIndex];
+	  $scope.pageIndex = page;
+	  $scope.currentPage = $scope.pagesArray[$scope.pageIndex];
 	};
 
 	// Stores the data (populated template) into the database

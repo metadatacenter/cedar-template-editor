@@ -2027,13 +2027,13 @@ section.dashboard-elements {
   }
 
   .caret {
-    background-image:url(../img/primary-angle-down.png);
     background-repeat:no-repeat;
     width:15px;
     height:10px;
     border:none;
     transition: transform 0.3s 0s;
     transform:rotate(0deg);
+    color: @brand-primary
   }
 
   &.open .caret {
@@ -2043,6 +2043,10 @@ section.dashboard-elements {
   .fa-check.check-mark {
     color:@brand-primary;
   }
+}
+
+.bootstrap-select.btn-group .dropdown-toggle .caret {
+  top: 42%;
 }
 
 /*
@@ -2931,4 +2935,16 @@ body .template-header .controlled-terms-modal {
 
 .controlled-terms-modal p.type-label {
   display: none;
+}
+
+.template-body form .control-term-field-preview-form .input-indicator-icons {
+  top: 0;
+}
+
+.template-body form .control-term-field-preview-form .autocomplete-label-wrapper .input-indicator-icons {
+  top: -30px;
+}
+
+.template-body form .control-term-field-preview-form .autocomplete-label-wrapper [disabled] .ui-select-toggle {
+  background: #EEE;
 }

@@ -6,6 +6,11 @@
 
   <div class="class-container">
     <div ng-show="controlTerm.addedFieldItems.length > 0 || $root.lengthOfValueConstraint(controlTerm.valueConstraint) > 0">
+      <div ng-show="controlTerm.addedFieldItems.length > 0" class="heading-label">
+        <fieldset class="section-break">
+            <legend>field types</legend>
+        </fieldset>
+      </div>
       <div class="added-field-classes">
         <div class="class-list-container" ng-if="controlTerm.addedFieldItems.length >= 1">
           <div class="class-list-header">
@@ -68,6 +73,11 @@
             </table>
           </div>
         </div>
+      </div>
+      <div ng-show="$root.lengthOfValueConstraint(controlTerm.valueConstraint) > 0" class="heading-label">
+        <fieldset class="section-break">
+            <legend>value types</legend>
+        </fieldset>
       </div>
       <div class="added-value-constraints">
         <div class="added-value-constraint-container" ng-if="$root.lengthOfValueConstraint(controlTerm.valueConstraint) >= 1">
@@ -214,6 +224,9 @@
         <i id="field-value-tooltip" class="cedar-svg-help-circle" data-container="body" data-toggle="popover" data-placement="right" data-content="Select ontology classes from BioPortal to represent the field and/or the values accepted by the field." data-original-title="" title=""></i>
       </div>
     </div>
+  </div>
+  <div class="text-center" ng-if="!controlTerm.filterSelection">
+    <button type="button" class="btn btn-ok" data-dismiss="modal" ng-click="">OK</button>
   </div>
   <div ng-if="controlTerm.filterSelection">
     <div class="heading-label">

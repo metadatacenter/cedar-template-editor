@@ -1,13 +1,14 @@
 <div class="fields fields-textarea">
-  <div ng-if="$root.isArray(model)" class="form-group floating-label-wrapper" ng-repeat="value_element in model">
+  <div ng-if="$root.isArray(model)" class="form-group floating-label-wrapper" ng-repeat="valueElement in model">
+	<p class="extra-label-context" ng-if="ngDisabled && field.properties._ui.title">{{field.properties._ui.title}}</p>
     <textarea rows="5"
-    					id="comment"
-    					class="form-control"
-    					ng-class="{'required': field.properties._ui.requiredValue}"
-    					placeholder="{{field.properties._ui.title}}"
-    					aria-label="{{field.properties._ui.description}}"
-    					ng-model="value_element._value"
-    					with-floating-label></textarea>
+    		  id="comment"
+    		  class="form-control"
+    		  ng-class="{'required': field.properties._ui.requiredValue}"
+    		  placeholder="{{field.properties._ui.title}}"
+    		  aria-label="{{field.properties._ui.description}}"
+    		  ng-model="valueElement._value"
+    		  with-floating-label=""></textarea>
     <div class="input-indicator-icons">
       <i class="cedar-svg-help-circle" data-container="body" data-toggle="popover" data-placement="left" data-content="{{field.properties._ui.description}}"></i>
       <i class="cedar-svg-check-circle"></i>
@@ -17,6 +18,7 @@
   </div><!-- /.form-group -->
 
   <div ng-if="!$root.isArray(model)" class="form-group floating-label-wrapper">
+	<p class="extra-label-context" ng-if="ngDisabled && field.properties._ui.title">{{field.properties._ui.title}}</p>
     <textarea rows="5"
               id="comment"
               class="form-control"
@@ -24,7 +26,7 @@
               placeholder="{{field.properties._ui.title}}"
               aria-label="{{field.properties._ui.description}}"
               ng-model="model._value"
-              with-floating-label></textarea>
+              with-floating-label=""></textarea>
     <div class="input-indicator-icons">
       <i class="cedar-svg-help-circle" data-container="body" data-toggle="popover" data-placement="left" data-content="{{field.properties._ui.description}}"></i>
       <i class="cedar-svg-check-circle"></i>
