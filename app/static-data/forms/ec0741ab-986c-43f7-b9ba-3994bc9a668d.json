@@ -196,7 +196,7 @@
           "inputType": "date",
           "required": false,
           "createdAt": 1434409366813,
-          "date_type": "single-date"
+          "dateType": "single-date"
         }
       },
       "required": [

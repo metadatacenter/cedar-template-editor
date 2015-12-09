@@ -204,7 +204,7 @@
           "inputType": "date",
           "required": false,
           "createdAt": 1434409366813,
-          "date_type": "single-date",
+          "dateType": "single-date",
           "model": {
             "value": "06/02/2015 1:10 PM"
           }

@@ -40,7 +40,7 @@ var fieldDirective = function($rootScope, $http, $compile, $document, Spreadshee
               } else if (angular.isObject(valueElement._value)) {
                 if ($rootScope.isEmpty(valueElement._value)) {
                   allRequiredFieldsAreFilledIn = false;
-                } else if ($scope.field.properties._ui.date_type == "date-range") {
+                } else if ($scope.field.properties._ui.dateType == "date-range") {
                   if (!valueElement._value.start || !valueElement._value.end) {
                     allRequiredFieldsAreFilledIn = false;
                   }
@@ -74,7 +74,7 @@ var fieldDirective = function($rootScope, $http, $compile, $document, Spreadshee
           } else if (angular.isObject($scope.model._value)) {
             if ($rootScope.isEmpty($scope.model._value)) {
               allRequiredFieldsAreFilledIn = false;
-            } else if ($scope.field.properties._ui.date_type == "date-range") {
+            } else if ($scope.field.properties._ui.dateType == "date-range") {
               if (!$scope.model._value.start || !$scope.model._value.end) {
                 allRequiredFieldsAreFilledIn = false;
               }
@@ -167,7 +167,7 @@ var fieldDirective = function($rootScope, $http, $compile, $document, Spreadshee
             } else {
               for (var i = 0; i < min; i++) {
                 if (['checkbox'].indexOf(field.inputType) >= 0 ||
-                    ['date'].indexOf(field.inputType) >= 0 && field.date_type == "date-range") {
+                    ['date'].indexOf(field.inputType) >= 0 && field.dateType == "date-range") {
                   $scope.model[i]['_value'] = {};
                 } else if (['list'].indexOf(field.inputType) >= 0) {
                   $scope.model[i]['_value'] = [];
@@ -183,7 +183,7 @@ var fieldDirective = function($rootScope, $http, $compile, $document, Spreadshee
                   $scope.model[i]["_value"] = angular.copy(field.default_option);
                 } else {
                   if (['checkbox'].indexOf(field.inputType) >= 0 ||
-                      ['date'].indexOf(field.inputType) >= 0 && field.date_type == "date-range") {
+                      ['date'].indexOf(field.inputType) >= 0 && field.dateType == "date-range") {
                     $scope.model[i]['_value'] = {};
                   } else if (['list'].indexOf(field.inputType) >= 0) {
                     $scope.model[i]['_value'] = [];
@@ -201,7 +201,7 @@ var fieldDirective = function($rootScope, $http, $compile, $document, Spreadshee
               $scope.model["_value"] = angular.copy(field.default_option);
             } else {
               if (['checkbox'].indexOf(field.inputType) >= 0 ||
-                  ['date'].indexOf(field.inputType) >= 0 && field.date_type == "date-range") {
+                  ['date'].indexOf(field.inputType) >= 0 && field.dateType == "date-range") {
                 $scope.model['_value'] = {};
               } else if (['list'].indexOf(field.inputType) >= 0) {
                 $scope.model['_value'] = [];
@@ -234,7 +234,7 @@ var fieldDirective = function($rootScope, $http, $compile, $document, Spreadshee
           seed["_value"] = angular.copy(field.default_option);
         } else {
           if (['checkbox'].indexOf(field.inputType) >= 0 ||
-              ['date'].indexOf(field.inputType) >= 0 && field.date_type == "date-range") {
+              ['date'].indexOf(field.inputType) >= 0 && field.dateType == "date-range") {
             seed['_value'] = {};
           } else if (['list'].indexOf(field.inputType) >= 0) {
             seed['_value'] = [];

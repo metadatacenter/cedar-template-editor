@@ -193,7 +193,7 @@
           "createdAt": {
             "$numberLong": "1435191148836"
           },
-          "date_type": "single-date",
+          "dateType": "single-date",
           "model": {
             "value": "06/08/2015 5:15 PM"
           }

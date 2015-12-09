@@ -171,7 +171,7 @@
           "inputType": "date",
           "required": true,
           "createdAt": 1433524064381,
-          "date_type": "single-date"
+          "dateType": "single-date"
         }
       },
       "required": [
@@ -196,7 +196,7 @@
           "inputType": "date",
           "required": true,
           "createdAt": 1433524082467,
-          "date_type": "date-range"
+          "dateType": "date-range"
         }
       },
       "required": [
