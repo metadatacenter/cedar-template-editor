@@ -123,7 +123,7 @@
               "text": "Option #4"
             }
           ],
-          "default_option": "Option #3",
+          "defaultOption": "Option #3",
           "model": {
             "value": "Option #2"
           }
@@ -165,7 +165,7 @@
               "text": "Checkbox 4"
             }
           ],
-          "default_option": {
+          "defaultOption": {
             "Checkbox 3": true,
             "Checkbox 4": true
           },
@@ -303,7 +303,7 @@
               "text": "Option 5 of the pick from a list"
             }
           ],
-          "default_option": {
+          "defaultOption": {
             "Option 4": true
           }
         }

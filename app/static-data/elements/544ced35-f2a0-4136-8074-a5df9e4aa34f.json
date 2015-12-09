@@ -286,7 +286,7 @@
                           "text": "Bla2"
                         }
                       ],
-                      "default_option": {
+                      "defaultOption": {
                         "0": true
                       },
                       "model": {

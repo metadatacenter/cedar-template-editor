@@ -10,7 +10,7 @@
 			  field="field"
 			  title="Please select one of the options..."
 			  ng-model="valueElement._value"
-			  defaults="field.properties._ui.default_option"
+			  defaults="field.properties._ui.defaultOption"
 			  select-picker="">
 		<option ng-repeat="(index, value) in field.properties._ui.options" value="{{field.properties._ui.options[index]['text']}}">{{field.properties._ui.options[index]['text']}}</option>
 	  </select>
@@ -24,7 +24,7 @@
 			  field="field"
 			  title="Please select one or more options..."
 			  ng-model="valueElement._value"
-			  defaults="field.properties._ui.default_option"
+			  defaults="field.properties._ui.defaultOption"
 			  select-picker="">
 		<option ng-repeat="(index, value) in field.properties._ui.options" value="{{field.properties._ui.options[index]['text']}}">{{field.properties._ui.options[index]['text']}}</option>
 	  </select>
@@ -43,7 +43,7 @@
 			  field="field"
 			  title="Please select one of the options..."
 			  ng-model="model._value"
-			  defaults="field.properties._ui.default_option"
+			  defaults="field.properties._ui.defaultOption"
 			  select-picker="">
 		<option ng-repeat="(index, value) in field.properties._ui.options" value="{{field.properties._ui.options[index]['text']}}">{{field.properties._ui.options[index]['text']}}</option>
 	  </select>
@@ -57,7 +57,7 @@
 			  field="field"
 			  title="Please select one or more options..."
 			  ng-model="model._value"
-			  defaults="field.properties._ui.default_option"
+			  defaults="field.properties._ui.defaultOption"
 			  select-picker="">
 		<option ng-repeat="(index, value) in field.properties._ui.options" value="{{field.properties._ui.options[index]['text']}}">{{field.properties._ui.options[index]['text']}}</option>
 	  </select>

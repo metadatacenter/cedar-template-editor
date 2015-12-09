@@ -160,9 +160,9 @@ var fieldDirective = function($rootScope, $http, $compile, $document, Spreadshee
           if ($scope.model.length == 0) {
             var min = $scope.field.minItems || 1;
 
-            if (field.default_option) {
+            if (field.defaultOption) {
               for (var i = 0; i < min; i++) {
-                $scope.model[i]["_value"] = angular.copy(field.default_option);
+                $scope.model[i]["_value"] = angular.copy(field.defaultOption);
               }
             } else {
               for (var i = 0; i < min; i++) {
@@ -179,8 +179,8 @@ var fieldDirective = function($rootScope, $http, $compile, $document, Spreadshee
           } else {
             angular.forEach($scope.model, function(m, i) {
               if (!("_value" in m)) {
-                if (field.default_option) {
-                  $scope.model[i]["_value"] = angular.copy(field.default_option);
+                if (field.defaultOption) {
+                  $scope.model[i]["_value"] = angular.copy(field.defaultOption);
                 } else {
                   if (['checkbox'].indexOf(field.inputType) >= 0 ||
                       ['date'].indexOf(field.inputType) >= 0 && field.dateType == "date-range") {
@@ -197,8 +197,8 @@ var fieldDirective = function($rootScope, $http, $compile, $document, Spreadshee
           }
         } else {
           if (!("_value" in $scope.model)) {
-            if (field.default_option) {
-              $scope.model["_value"] = angular.copy(field.default_option);
+            if (field.defaultOption) {
+              $scope.model["_value"] = angular.copy(field.defaultOption);
             } else {
               if (['checkbox'].indexOf(field.inputType) >= 0 ||
                   ['date'].indexOf(field.inputType) >= 0 && field.dateType == "date-range") {
@@ -230,8 +230,8 @@ var fieldDirective = function($rootScope, $http, $compile, $document, Spreadshee
       if ($scope.field.minItems && (!$scope.field.maxItems || $scope.model.length < $scope.field.maxItems)) {
         var seed = angular.copy($scope.model[0]);
 
-        if (field.default_option) {
-          seed["_value"] = angular.copy(field.default_option);
+        if (field.defaultOption) {
+          seed["_value"] = angular.copy(field.defaultOption);
         } else {
           if (['checkbox'].indexOf(field.inputType) >= 0 ||
               ['date'].indexOf(field.inputType) >= 0 && field.dateType == "date-range") {
