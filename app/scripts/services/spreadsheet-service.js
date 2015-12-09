@@ -136,7 +136,7 @@ var SpreadsheetService = function ($filter) {
             // http://numeraljs.com/
             desc.type = 'numeric';
           } else if (inputType == 'list') {
-            var st = _ui.selection_type;
+            var st = _ui.selectionType;
             if (st == 'single') {
               desc.type = 'dropdown';
               var listOptions = this.extractOptionsForList(_ui.options);

@@ -226,7 +226,7 @@
                               "description": "",
                               "inputType": "list",
                               "required": false,
-                              "selection_type": "single",
+                              "selectionType": "single",
                               "createdAt": {
                                 "$numberLong": "1434992710888"
                               },

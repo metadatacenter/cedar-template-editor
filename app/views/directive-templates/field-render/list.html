@@ -1,7 +1,7 @@
 <div class="fields fields-list">
   <div ng-if="$root.isArray(model)" class="field-list" ng-class="{'required': field.properties._ui.requiredValue}" ng-repeat="valueElement in model">
 	<p class="extra-label-context">{{field.properties._ui.title}}</p>
-	<div ng-if="field.properties._ui.selection_type == 'single'"
+	<div ng-if="field.properties._ui.selectionType == 'single'"
 		 class="form-group validation-pattern"
 		 ng-class="{'required': field.properties._ui.requiredValue}">
 	  <select class="form-control"
@@ -16,7 +16,7 @@
 	  </select>
 	</div><!-- /.form-group -->
 
-	<div ng-if="field.properties._ui.selection_type == 'multiple'"
+	<div ng-if="field.properties._ui.selectionType == 'multiple'"
 		 class="form-group validation-pattern"
 		 ng-class="{'required': field.properties._ui.requiredValue}">
 	  <select class="form-control"
@@ -34,7 +34,7 @@
 
   <div ng-if="!$root.isArray(model)" class="field-list" ng-class="{'required': field.properties._ui.requiredValue}">
 	<p class="extra-label-context">{{field.properties._ui.title}}</p>
-	<div ng-if="field.properties._ui.selection_type == 'single'"
+	<div ng-if="field.properties._ui.selectionType == 'single'"
 		 class="form-group validation-pattern"
 		 ng-class="{'required': field.properties._ui.requiredValue}">
 	  <select class="form-control"
@@ -49,7 +49,7 @@
 	  </select>
 	</div><!-- /.form-group -->
 
-	<div ng-if="field.properties._ui.selection_type == 'multiple'"
+	<div ng-if="field.properties._ui.selectionType == 'multiple'"
 		 class="form-group validation-pattern"
 		 ng-class="{'required': field.properties._ui.requiredValue}">
 	  <select class="form-control"
