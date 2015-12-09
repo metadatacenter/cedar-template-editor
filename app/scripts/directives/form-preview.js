@@ -65,6 +65,7 @@ angularApp.directive('formPreview', function ($rootScope, $document, $timeout) {
             //if (value.hasOwnProperty('guid')) {
               // Acknowledge position and nesting
               parentObject[name] = {};
+              parentObject[name]['_ui'] = {}
               // Push 'order' array through into parse object
               parentObject[name]['_ui']['order'] = value._ui.order;
               parentObject[name].minItems = value.minItems;
