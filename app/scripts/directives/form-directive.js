@@ -161,7 +161,7 @@ angularApp.directive('formDirective', function ($rootScope, $document, $timeout)
         $scope.addPopover();
       });
 
-      // Watching for the 'submitForm' event to be $broadcast from parent 'RuntimeController'
+      // Watching for the 'submitForm' event to be $broadcast from parent 'CreateInstanceController'
       $scope.$on('submitForm', function(event) {
         // Make the model (populated template) available to the parent
         $scope.$parent.instance = $scope.model;

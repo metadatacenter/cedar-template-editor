@@ -1,6 +1,6 @@
 'use strict';
 
-var RuntimeController = function($rootScope, $scope, FormService, $routeParams, $location, HeaderService, CONST, HEADER_MINI) {
+var CreateInstanceController = function($rootScope, $scope, FormService, $routeParams, $location, HeaderService, CONST, HEADER_MINI) {
 	// set Page Title variable when this controller is active
 	$rootScope.pageTitle = 'Metadata Editor';
 
@@ -156,5 +156,5 @@ var RuntimeController = function($rootScope, $scope, FormService, $routeParams, 
 	});
 };
 
-RuntimeController.$inject = ["$rootScope", "$scope", "FormService", "$routeParams", "$location", "HeaderService", "CONST", "HEADER_MINI"];
-angularApp.controller('RuntimeController', RuntimeController);
+CreateInstanceController.$inject = ["$rootScope", "$scope", "FormService", "$routeParams", "$location", "HeaderService", "CONST", "HEADER_MINI"];
+angularApp.controller('CreateInstanceController', CreateInstanceController);

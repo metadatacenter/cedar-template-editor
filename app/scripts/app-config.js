@@ -37,16 +37,16 @@ var angularConfig = function ($routeProvider, $locationProvider) {
             controller: 'CreateTemplateController'
         })
         .when('/instances/create', {
-            templateUrl: 'views/runtime.html',
-            controller: 'RuntimeController'
+            templateUrl: 'views/create-instance.html',
+            controller: 'CreateInstanceController'
         })
         .when('/instances/create/:template_id*?', {
-            templateUrl: 'views/runtime.html',
-            controller: 'RuntimeController'
+            templateUrl: 'views/create-instance.html',
+            controller: 'CreateInstanceController'
         })
         .when('/instances/edit/:id*', {
-            templateUrl: 'views/runtime.html',
-            controller: 'RuntimeController'
+            templateUrl: 'views/create-instance.html',
+            controller: 'CreateInstanceController'
         })
         .otherwise({
             redirectTo: '/'
