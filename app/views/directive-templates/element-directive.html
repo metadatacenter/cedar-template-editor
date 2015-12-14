@@ -68,7 +68,7 @@
                     <a class="" ng-show="model.length > element.minItems" ng-click="removeElement($index)">Remove</a>
                 </div>
 
-                <div ng-repeat="key in element['ui']['order']">
+                <div ng-repeat="key in element['_ui']['order']">
                     <span ng-if="element[key]"
                           ng-init="key = key; field = element[key]; model = m[key]; preview = preview; nestedElement = true;"
                           ng-include="'nestedElement'"></span>
@@ -76,7 +76,7 @@
             </div>
 
             <div ng-if="!$root.isArray(model)" class="element only-element">
-                <div ng-repeat="key in element['ui']['order']">
+                <div ng-repeat="key in element['_ui']['order']">
                     <span ng-if="element[key]"
                           ng-init="key = key; field = element[key]; model = model[key]; preview = preview; nestedElement = true;"
                           ng-include="'nestedElement'"></span>
