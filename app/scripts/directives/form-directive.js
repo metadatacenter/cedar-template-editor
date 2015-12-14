@@ -65,6 +65,7 @@ angularApp.directive('formDirective', function ($rootScope, $document, $timeout)
             if (value._ui && value._ui.hasOwnProperty('order')) {
               // Handle position and nesting within $scope.formFields
               parentObject[name] = {};
+              parentObject[name]['_ui'] = {};
               // Push 'order' array through into parse object
               parentObject[name]['_ui']['order'] = value._ui.order;
               parentObject[name].minItems = value.minItems;
