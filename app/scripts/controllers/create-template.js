@@ -273,7 +273,7 @@ var CreateTemplateController = function($rootScope, $scope, $q, $routeParams, $t
       // If maxItems is N, then remove maxItems
       $rootScope.removeUnnecessaryMaxItems($scope.form.properties);
 
-      // Broadcast the initialize Page Array event which will trigger the creation of the $scope.form 'pages' array
+      // Broadcast the initialize Page Array event which will trigger the creation of the $scope.form._ui 'pages' array
       $scope.$broadcast('initPageArray');
       // Save template
       if ($routeParams.id == undefined) {
@@ -304,8 +304,8 @@ var CreateTemplateController = function($rootScope, $scope, $q, $routeParams, $t
 
   // Event listener for when the pages array is finished building
   $scope.$on('finishPageArray', function(event, orderArray) {
-    // Assigning array returned to $scope.form.pages property
-    $scope.form.pages = orderArray;
+    // Assigning array returned to $scope.form._ui.pages property
+    $scope.form._ui.pages = orderArray;
     // Console.log full working form example on save
     console.log($scope.form);
     // Database service save() call could go here

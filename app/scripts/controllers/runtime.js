@@ -37,8 +37,8 @@ var RuntimeController = function($rootScope, $scope, FormService, $routeParams, 
 		FormService.form($routeParams.templateId).then(function(form) {
 			// Assign returned form object from FormService to $scope.form
 			$scope.form = form;
-			// $scope.initializePagination kicks off paging with form.pages array
-			$scope.initializePagination(form.pages);
+			// $scope.initializePagination kicks off paging with form._ui.pages array
+			$scope.initializePagination(form._ui.pages);
 			HeaderService.dataContainer.currentObjectScope = $scope.form;
 		});
 	};
@@ -53,8 +53,8 @@ var RuntimeController = function($rootScope, $scope, FormService, $routeParams, 
 			FormService.form(response.templateId).then(function(form) {
 				// Assign returned form object from FormService to $scope.form
 				$scope.form = form;
-				// $scope.initializePagination kicks off paging with form.pages array
-				$scope.initializePagination(form.pages);
+				// $scope.initializePagination kicks off paging with form._ui.pages array
+				$scope.initializePagination(form._ui.pages);
 			});
 		}).catch(function(err) {
 			$scope.runtimeErrorMessages.push('Problem retrieving the populated template instance.');

@@ -40,11 +40,11 @@
           <form-directive form="form" page="page" model="instance" ng-show="pageIndex == $index"></form-directive>
         </div>
 
-        <div ng-if="form.pages.length > 1" class="pagination-container">
+        <div ng-if="form._ui.pages.length > 1" class="pagination-container">
           <ul class="pagination">
             <li ng-if="pageIndex > 0"><a ng-click="previousPage()"><span class="prev"><i class="fa fa-lg fa-angle-left"></i>Previous</span></a></li>
-            <li ng-repeat="(index, value) in form.pages" ng-class="{active: index == pageIndex}"><a ng-click="setCurrentPage(index)">{{index + 1}}</a></li>
-            <li ng-if="pageIndex < (form.pages.length - 1)"><a ng-click="nextPage()"><span class="next">Next<i class="fa fa-lg fa-angle-right"></i></span></a></li>
+            <li ng-repeat="(index, value) in form._ui.pages" ng-class="{active: index == pageIndex}"><a ng-click="setCurrentPage(index)">{{index + 1}}</a></li>
+            <li ng-if="pageIndex < (form._ui.pages.length - 1)"><a ng-click="nextPage()"><span class="next">Next<i class="fa fa-lg fa-angle-right"></i></span></a></li>
           </ul>
         </div><!-- /.pagination-container -->
 

@@ -3,7 +3,9 @@
   "@id": null,
   "title": "",
   "description": "",
-  "pages": [],
+  "_ui": {
+    "pages": []
+  },
   "type": "object",
   "properties": {
     "@context": {
