@@ -1,6 +1,6 @@
 'use strict';
 
-var CreateElementController = function ($rootScope, $scope, $routeParams, $timeout, $location, FormService, HeaderService, UrlService, StagingService, DataTemplateService, CONST, HEADER_MINI, LS) {
+var CreateElementController = function ($rootScope, $scope, $routeParams, $timeout, $location, FormService, HeaderService, UrlService, StagingService, DataTemplateService, FieldTypeService, CONST, HEADER_MINI, LS) {
   // Set page title variable when this controller is active
   $rootScope.pageTitle = 'Element Designer';
   // Create staging area to create/edit fields before they get added to the element
@@ -22,6 +22,8 @@ var CreateElementController = function ($rootScope, $scope, $routeParams, $timeo
   FormService.elementList().then(function (response) {
     $scope.elementList = response;
   });
+
+  $scope.fieldTypes = FieldTypeService.getFieldTypes();
 
   // Load existing element if $routeParams.id parameter is supplied
   if ($routeParams.id) {
@@ -350,5 +352,5 @@ var CreateElementController = function ($rootScope, $scope, $routeParams, $timeo
 
 };
 
-CreateElementController.$inject = ["$rootScope", "$scope", "$routeParams", "$timeout", "$location", "FormService", "HeaderService", "UrlService", "StagingService", "DataTemplateService", "CONST", "HEADER_MINI", "LS"];
+CreateElementController.$inject = ["$rootScope", "$scope", "$routeParams", "$timeout", "$location", "FormService", "HeaderService", "UrlService", "StagingService", "DataTemplateService", "FieldTypeService", "CONST", "HEADER_MINI", "LS"];
 angularApp.controller('CreateElementController', CreateElementController);

@@ -4,7 +4,7 @@
 /*global jQuery */
 'use strict';
 
-var angularRun = function($rootScope, BioPortalService, $location, $timeout, $window, DataTemplateService, CONST) {
+var angularRun = function($rootScope, BioPortalService, $location, $timeout, $window, DataTemplateService, FieldTypeService, CONST) {
 
   // Define global pageTitle variable for use
   //$rootScope.pageTitle;
@@ -479,7 +479,8 @@ var angularRun = function($rootScope, BioPortalService, $location, $timeout, $wi
   };
 
   DataTemplateService.init();
+  FieldTypeService.init();
 };
 
-angularRun.$inject = ['$rootScope', 'BioPortalService', '$location', '$timeout', '$window', 'DataTemplateService', 'CONST'];
+angularRun.$inject = ['$rootScope', 'BioPortalService', '$location', '$timeout', '$window', 'DataTemplateService', 'FieldTypeService', 'CONST'];
 angularApp.run(angularRun);

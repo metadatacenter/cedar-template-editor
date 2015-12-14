@@ -1,6 +1,6 @@
 'use strict';
 
-var CreateTemplateController = function($rootScope, $scope, $q, $routeParams, $timeout, $location, FormService, HeaderService, UrlService, StagingService, DataTemplateService, CONST, HEADER_MINI, LS) {
+var CreateTemplateController = function($rootScope, $scope, $q, $routeParams, $timeout, $location, FormService, HeaderService, UrlService, StagingService, DataTemplateService, FieldTypeService, CONST, HEADER_MINI, LS) {
   // Set Page Title variable when this controller is active
   $rootScope.pageTitle = 'Template Designer';
   // Create staging area to create/edit fields before they get added to $scope.form.properties
@@ -20,6 +20,8 @@ var CreateTemplateController = function($rootScope, $scope, $q, $routeParams, $t
   FormService.elementList().then(function(response) {
     $scope.elementList = response;
   });
+
+  $scope.fieldTypes = FieldTypeService.getFieldTypes();
 
   // Load existing form if $routeParams.id parameter is supplied
   if ($routeParams.id) {
@@ -329,5 +331,5 @@ var CreateTemplateController = function($rootScope, $scope, $q, $routeParams, $t
 
 };
 
-CreateTemplateController.$inject = ["$rootScope", "$scope", "$q", "$routeParams", "$timeout", "$location", "FormService", "HeaderService", "UrlService", "StagingService", "DataTemplateService", "CONST", "HEADER_MINI", "LS"];
+CreateTemplateController.$inject = ["$rootScope", "$scope", "$q", "$routeParams", "$timeout", "$location", "FormService", "HeaderService", "UrlService", "StagingService", "DataTemplateService", "FieldTypeService", "CONST", "HEADER_MINI", "LS"];
 angularApp.controller('CreateTemplateController', CreateTemplateController);
