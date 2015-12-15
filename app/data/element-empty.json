@@ -21,6 +21,10 @@
       ],
       "additionalProperties": false
     },
+    "@id": {
+      "format": "uri",
+      "type": "string"
+    },
     "@type": {
       "oneOf": [
         {
