@@ -82,9 +82,9 @@
                       "id": "4973ae2b-d782-4e03-a8d2-2d749217c86d",
                       "title": "First Name",
                       "description": "enter your first name",
-                      "input_type": "textfield",
+                      "inputType": "textfield",
                       "required": false,
-                      "created_at": 1434671113752,
+                      "createdAt": 1434671113752,
                       "model": {
                         "value": "Dexter"
                       }
@@ -109,9 +109,9 @@
                       "id": "f379bd53-7c21-4709-90c6-c90006ab52b6",
                       "title": "Last Name",
                       "description": "Enter your last name",
-                      "input_type": "textfield",
+                      "inputType": "textfield",
                       "required": false,
-                      "created_at": 1434671124438,
+                      "createdAt": 1434671124438,
                       "model": {
                         "value": "Cope"
                       }
@@ -155,9 +155,9 @@
                       "id": "5a9c02c5-51c0-46ca-bea2-be274eca7b08",
                       "title": "Street",
                       "description": "enter your street name",
-                      "input_type": "textfield",
+                      "inputType": "textfield",
                       "required": false,
-                      "created_at": 1434671275070,
+                      "createdAt": 1434671275070,
                       "model": {
                         "value": "3137 Oakland Road"
                       }
@@ -182,9 +182,9 @@
                       "id": "ac511c62-96ef-41dd-bed3-704e6280682a",
                       "title": "City",
                       "description": "Please enter your city name",
-                      "input_type": "textfield",
+                      "inputType": "textfield",
                       "required": false,
-                      "created_at": 1434671285225,
+                      "createdAt": 1434671285225,
                       "model": {
                         "value": "Bethlehem"
                       }
@@ -239,9 +239,9 @@
               "id": "e146e007-6698-407a-9e53-bc4c7860f374",
               "title": "Full Name",
               "description": "Whole name, including first name, middle name, and last name",
-              "input_type": "textfield",
+              "inputType": "textfield",
               "required": false,
-              "created_at": 1432678567334
+              "createdAt": 1432678567334
             }
           },
           "required": [
@@ -263,9 +263,9 @@
               "id": "dbfa4aa1-8759-41f0-9829-a6c4c2cbd7c5",
               "title": "Institution",
               "description": "An established society, corporation, foundation or other organization founded and united for a specific purpose",
-              "input_type": "textfield",
+              "inputType": "textfield",
               "required": false,
-              "created_at": 1432678567100
+              "createdAt": 1432678567100
             }
           },
           "required": [

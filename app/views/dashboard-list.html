@@ -23,8 +23,8 @@
                              cedar-resize-square="true">
                             <cedar-box
                                     type="{{CONST.boxType.ELEMENT}}"
-                                    description="{{item.properties.info.description}}"
-                                    title="{{item.properties.info.title}}"
+                                    description="{{item.properties._ui.description}}"
+                                    title="{{item.properties._ui.title}}"
                                     object-id="{{item['@id']}}"
                                     allow-remove="true"
                             >
@@ -37,8 +37,8 @@
                              cedar-resize-square="true">
                             <cedar-box
                                     type="{{CONST.boxType.TEMPLATE}}"
-                                    description="{{item.properties.info.description}}"
-                                    title="{{item.properties.info.title}}"
+                                    description="{{item.properties._ui.description}}"
+                                    title="{{item.properties._ui.title}}"
                                     object-id="{{item['@id']}}"
                                     allow-remove="true"
                             >
@@ -47,12 +47,12 @@
                     </section>
 
                     <section ng-if="itemType == 'submissions'">
-                        <div class="template-item" ng-repeat="item in submissions | filter:{info:{template_title:searchText}}"
+                        <div class="template-item" ng-repeat="item in submissions | filter:{_ui:{templateTitle:searchText}}"
                              cedar-resize-square="true">
                             <cedar-box
                                     type="{{CONST.boxType.INSTANCE}}"
-                                    description="{{item.info.template_description}}&lt;br/&gt;{{'(' + (item.info.creation_date | date:'short') + ')'}}"
-                                    title="{{item.info.template_title}}"
+                                    description="{{item._ui.templateDescription}}&lt;br/&gt;{{'(' + (item._ui.creationDate | date:'short') + ')'}}"
+                                    title="{{item._ui.templateTitle}}"
                                     object-id="{{item['@id']}}"
                                     allow-remove="true"
                             >

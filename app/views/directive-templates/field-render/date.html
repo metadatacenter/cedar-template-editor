@@ -1,16 +1,16 @@
 <div class="fields fields-date">
-  <div ng-if="$root.isArray(model)" class="field field-date" ng-repeat="value_element in model">
+  <div ng-if="$root.isArray(model)" class="field field-date" ng-repeat="valueElement in model">
     <!-- {{field}} -->
-    <p class="date-field-title">{{field.properties.info.title}}</p>
-    <div class="form-group date-group floating-label-wrapper" ng-if="field.properties.info.date_type == 'single-date'">
+    <p class="date-field-title">{{field.properties._ui.title}}</p>
+    <div class="form-group date-group floating-label-wrapper" ng-if="field.properties._ui.dateType == 'single-date'">
       <!--<span class="date-label">Select a date</span>-->
       <div class='input-group' date-time-picker>
         <input type="text"
                class="form-control"
-               ng-class="{'required': field.properties.info.required_value}"
-               placeholder="{{field.properties.info.title}} ( MM / DD / YYYY )"
+               ng-class="{'required': field.properties._valueConstraints.requiredValue}"
+               placeholder="{{field.properties._ui.title}} ( MM / DD / YYYY )"
                aria-label="Select a date"
-               ng-model="value_element._value"
+               ng-model="valueElement._value"
                with-floating-label="" />
         <span class="input-group-addon">
           <i class="fa fa-calendar fa-2x"></i>
@@ -18,15 +18,15 @@
       </div>
     </div><!-- /.form-group -->
 
-    <div class="form-group date-group range floating-label-wrapper" ng-if="field.properties.info.date_type == 'date-range'">
+    <div class="form-group date-group range floating-label-wrapper" ng-if="field.properties._ui.dateType == 'date-range'">
       <span class="date-label">Select a date range</span>
       <div class='input-group' date-time-picker>
         <input type="text"
                class="form-control"
-               ng-class="{'required': field.properties.info.required_value}"
+               ng-class="{'required': field.properties._valueConstraints.requiredValue}"
                placeholder="MM / DD / YYYY"
                aria-label="Select a start date"
-               ng-model="value_element._value.start"
+               ng-model="valueElement._value.start"
                with-floating-label="" />
         <span class="input-group-addon">
           <i class="fa fa-calendar fa-2x"></i>
@@ -35,10 +35,10 @@
       <div class='input-group' date-time-picker>
         <input type="text"
                class="form-control"
-               ng-class="{'required': field.properties.info.required_value}"
+               ng-class="{'required': field.properties._valueConstraints.requiredValue}"
                placeholder="MM / DD / YYYY"
                aria-label="Select a end date"
-               ng-model="value_element._value.end"
+               ng-model="valueElement._value.end"
                with-floating-label="" />
         <span class="input-group-addon">
           <i class="fa fa-calendar fa-2x"></i>
@@ -50,13 +50,13 @@
 
   <div ng-if="!$root.isArray(model)" class="field field-date">
     <!-- {{field}} -->
-    <p class="date-field-title">{{field.properties.info.title}}</p>
-    <div class="form-group date-group floating-label-wrapper" ng-if="field.properties.info.date_type == 'single-date'">
+    <p class="date-field-title">{{field.properties._ui.title}}</p>
+    <div class="form-group date-group floating-label-wrapper" ng-if="field.properties._ui.dateType == 'single-date'">
       <!--<span class="date-label">Select a date</span>-->
       <div class='input-group' date-time-picker>
         <input type="text"
                class="form-control"
-               ng-class="{'required': field.properties.info.required_value}"
+               ng-class="{'required': field.properties._valueConstraints.requiredValue}"
                placeholder="MM / DD / YYYY"
                aria-label="Select a date"
                ng-model="model._value"
@@ -67,12 +67,12 @@
       </div>
     </div><!-- /.form-group -->
 
-    <div class="form-group date-group range floating-label-wrapper" ng-if="field.properties.info.date_type == 'date-range'">
+    <div class="form-group date-group range floating-label-wrapper" ng-if="field.properties._ui.dateType == 'date-range'">
       <span class="date-label">Select a date range</span>
       <div class='input-group' date-time-picker="">
         <input type="text"
                class="form-control"
-               ng-class="{'required': field.properties.info.required_value}"
+               ng-class="{'required': field.properties._valueConstraints.requiredValue}"
                placeholder="MM / DD / YYYY"
                aria-label="Select a start date"
                ng-model="model._value.start"
@@ -84,7 +84,7 @@
       <div class='input-group' date-time-picker="">
         <input type="text"
                class="form-control"
-               ng-class="{'required': field.properties.info.required_value}"
+               ng-class="{'required': field.properties._valueConstraints.requiredValue}"
                placeholder="MM / DD / YYYY"
                aria-label="Select a end date"
                ng-model="model._value.end"

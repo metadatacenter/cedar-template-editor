@@ -40,7 +40,7 @@ var angularConfig = function ($routeProvider, $locationProvider) {
             templateUrl: 'views/runtime.html',
             controller: 'RuntimeController'
         })
-        .when('/instances/create/:template_id*?', {
+        .when('/instances/create/:templateId*?', {
             templateUrl: 'views/runtime.html',
             controller: 'RuntimeController'
         })

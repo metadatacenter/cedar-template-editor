@@ -77,7 +77,7 @@ var SpreadsheetService = function ($filter) {
       if (context.isField()) {
         headerOrder.push('value');
       } else {
-        var itemOrder = scopeElement.order;
+        var itemOrder = scopeElement._ui.order;
         for (var i in itemOrder) {
           headerOrder.push(itemOrder[i]);
         }
@@ -119,8 +119,8 @@ var SpreadsheetService = function ($filter) {
 
         if (field.hasOwnProperty("properties")) {
 
-          var info = field.properties.info;
-          var inputType = info.input_type;
+          var _ui = field.properties._ui;
+          var inputType = _ui.inputType;
 
           if (inputType == 'date') {
             // http://docs.handsontable.com/0.19.0/demo-date.html
@@ -136,16 +136,16 @@ var SpreadsheetService = function ($filter) {
             // http://numeraljs.com/
             desc.type = 'numeric';
           } else if (inputType == 'list') {
-            var st = info.selection_type;
+            var st = _ui.selectionType;
             if (st == 'single') {
               desc.type = 'dropdown';
-              var listOptions = this.extractOptionsForList(info.options);
+              var listOptions = this.extractOptionsForList(_ui.options);
               desc.source = listOptions;
             }
           } else if (inputType == 'checkbox') {
             desc.renderer = this.customRenderer.checkboxes;
             desc.editor = 'checkboxes';//MultiCheckboxEditor;
-            var checkboxOptions = this.extractOptionsForCheckboxes(info.options);
+            var checkboxOptions = this.extractOptionsForCheckboxes(_ui.options);
             desc.source = checkboxOptions;
             desc.cedarType = 'checkboxes';
           }

@@ -3,16 +3,16 @@
 
   <div class="form-group">
     <div class="form-group floating-label-wrapper">
-      <input type="text" class="form-control" id="placeholder-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}" placeholder="Enter Field Title" aria-label="Enter Field Title" ng-model="field.properties.info.title"  with-floating-label>
+      <input type="text" class="form-control" id="placeholder-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}" placeholder="Enter Field Title" aria-label="Enter Field Title" ng-model="field.properties._ui.title"  with-floating-label>
     </div><!-- /.form-group -->
     <div class="options-wrapper">
       <div class="multiple-container">
-        <span ng-repeat="(index, value) in field.properties.info.options">
+        <span ng-repeat="(index, value) in field.properties._ui.options">
           <div class="checkbox checkbox-primary">
-            <input type="checkbox" id="checkbox-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}-{{index}}" name="checkbox-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}" ng-model="field.properties.info.default_option[value.text]" value="{{field.properties.info.options[index]['text']}}">
+            <input type="checkbox" id="checkbox-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}-{{index}}" name="checkbox-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}" ng-model="field.properties._ui.defaultOption[value.text]" value="{{field.properties._ui.options[index]['text']}}">
             <label for="checkbox-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}-{{index}}">
               <div class="form-group floating-label-wrapper">
-                <input type="text" class="form-control" id="placeholder-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}" placeholder="Enter Option" aria-label="Enter Option" ng-model="field.properties.info.options[index]['text']"  with-floating-label>
+                <input type="text" class="form-control" id="placeholder-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}" placeholder="Enter Option" aria-label="Enter Option" ng-model="field.properties._ui.options[index]['text']"  with-floating-label>
               </div><!-- /.form-group -->
             </label> 
           </div><!-- /.checkbox -->

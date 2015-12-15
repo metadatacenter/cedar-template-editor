@@ -55,7 +55,7 @@ var angularRun = function($rootScope, BioPortalService, $location, $timeout, $wi
   // Returning true if the object key value in the properties object is of json-ld type '@' or if it corresponds to any of the reserved fields
   $rootScope.ignoreKey = function(key) {
     //var pattern = /^@/i,
-    var pattern = /(^@)|(^info$)|(^template_id$)/i,
+    var pattern = /(^@)|(^_ui$)|(^templateId$)/i,
       result = pattern.test(key);
 
     return result;
@@ -94,8 +94,8 @@ var angularRun = function($rootScope, BioPortalService, $location, $timeout, $wi
       valueType = "array";
     }
     var field = DataTemplateService.getField($rootScope.idBasePath + $rootScope.generateGUID());
-    field.properties.info.input_type = fieldType;
-    field.properties.info.created_at = Date.now();
+    field.properties._ui.inputType = fieldType;
+    field.properties._ui.createdAt = Date.now();
     field.properties._value.type = valueType;
     return field;
   };
@@ -156,8 +156,8 @@ var angularRun = function($rootScope, BioPortalService, $location, $timeout, $wi
         'type': field.type,
         '@id': field['@id'],
         '$schema': field.schema,
-        'title': field.properties.info.title,
-        'description': field.properties.info.description,
+        'title': field.properties._ui.title,
+        'description': field.properties._ui.description,
         'properties': field.properties,
         'required': field.required,
         'additionalProperties': field.additionalProperties
@@ -246,10 +246,9 @@ var angularRun = function($rootScope, BioPortalService, $location, $timeout, $wi
     }
   };
 
-  $rootScope.hasValueConstraint = function(info) {
-    var vcst = info && info.value_constraint;
+  $rootScope.hasValueConstraint = function(vcst) {
     var result = vcst && (vcst.ontologies && vcst.ontologies.length > 0 ||
-                    vcst.value_sets && vcst.value_sets.length > 0 ||
+                    vcst.valueSets && vcst.valueSets.length > 0 ||
                     vcst.classes && vcst.classes.length > 0 ||
                     vcst.branches && vcst.branches.length > 0);
 
@@ -332,7 +331,7 @@ var angularRun = function($rootScope, BioPortalService, $location, $timeout, $wi
       term = '*';
     }
     var results = [];
-    var vcst = field.properties.info.value_constraint;
+    var vcst = field.properties._valueConstraints;
     var field_id = field['@id'];
 
     if (angular.isUndefined($rootScope.autocompleteResultsCache[field_id])) {
@@ -376,8 +375,8 @@ var angularRun = function($rootScope, BioPortalService, $location, $timeout, $wi
       }
     }
 
-    if (vcst.value_sets.length > 0) {
-      angular.forEach(vcst.value_sets, function(valueSet) {
+    if (vcst.valueSets.length > 0) {
+      angular.forEach(vcst.valueSets, function(valueSet) {
         if (term == '*') {
           $rootScope.removeAutocompleteResultsForSource(field_id, valueSet.uri);
         }
@@ -403,20 +402,19 @@ var angularRun = function($rootScope, BioPortalService, $location, $timeout, $wi
         if (term == '*') {
           $rootScope.removeAutocompleteResultsForSource(field_id, branch.uri);
         }
-        BioPortalService.autocompleteOntologySubtree(term, branch.acronym, branch.uri, branch.max_depth).then(function(childResponse) {
+        BioPortalService.autocompleteOntologySubtree(term, branch.acronym, branch.uri, branch.maxDepth).then(function(childResponse) {
           $rootScope.processAutocompleteClassResults(field_id, 'Ontology Class', branch.uri, childResponse);
         });
       });
     }
   };
 
-  $rootScope.excludedValueConstraint = function(id, info) {
+  $rootScope.excludedValueConstraint = function(id, vcst) {
     if ($rootScope.excludedValues && $rootScope.excludedValues[id]) {
       return $rootScope.excludedValues[id];
     }
 
     var results = [];
-    var vcst = info.value_constraint;
 
     if (vcst.classes.length > 0) {
       angular.forEach(vcst.classes, function(klass) {
@@ -424,8 +422,8 @@ var angularRun = function($rootScope, BioPortalService, $location, $timeout, $wi
       });
     }
 
-    if (vcst.value_sets.length > 0) {
-      angular.forEach(vcst.value_sets, function(klass) {
+    if (vcst.valueSets.length > 0) {
+      angular.forEach(vcst.valueSets, function(klass) {
         jQuery.merge(results, klass.exclusions || []);
       });
     }
@@ -448,9 +446,9 @@ var angularRun = function($rootScope, BioPortalService, $location, $timeout, $wi
     return results;
   };
 
-  $rootScope.isValueConformedToConstraint = function(value, id, info) {
+  $rootScope.isValueConformedToConstraint = function(value, id, vcst) {
     var predefinedValues = $rootScope.autocompleteResultsCache[id].results;
-    var excludedValues = $rootScope.excludedValueConstraint(id, info);
+    var excludedValues = $rootScope.excludedValueConstraint(id, vcst);
     var isValid = false;
     var jsonString = JSON.stringify(value);
 
@@ -473,7 +471,7 @@ var angularRun = function($rootScope, BioPortalService, $location, $timeout, $wi
 
   $rootScope.lengthOfValueConstraint = function(valueConstraint) {
     return (valueConstraint.classes || []).length +
-           (valueConstraint.value_sets || []).length +
+           (valueConstraint.valueSets || []).length +
            (valueConstraint.ontologies || []).length +
            (valueConstraint.branches || []).length;
   };

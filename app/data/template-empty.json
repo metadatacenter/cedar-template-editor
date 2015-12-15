@@ -3,7 +3,9 @@
   "@id": null,
   "title": "",
   "description": "",
-  "pages": [],
+  "_ui": {
+    "pages": []
+  },
   "type": "object",
   "properties": {
     "@context": {
@@ -40,18 +42,18 @@
         }
       ]
     },
-    "template_id": {
+    "templateId": {
       "type": "string",
       "format": "uri"
     },
-    "info": {
+    "_ui": {
       "title": "",
       "description": ""
     }
   },
   "required": [
     "@id",
-    "template_id"
+    "templateId"
   ],
   "additionalProperties": false
 }

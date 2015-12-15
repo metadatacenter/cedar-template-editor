@@ -135,15 +135,15 @@ angularApp.controller('TermsController', function($rootScope, $scope, $element, 
   // Values constraint initial object
   $scope.controlTerm.valueConstraint = {
     'ontologies': [],
-    'value_sets': [],
+    'valueSets': [],
     'classes': [],
     'branches': [],
-    'multiple_choice': false
+    'multipleChoice': false
   };
 
   $scope.controlTerm.valueConstraint.isEmpty = function() {
     if ($scope.controlTerm.valueConstraint.ontologies.length > 0 ||
-        $scope.controlTerm.valueConstraint.value_sets.length > 0 ||
+        $scope.controlTerm.valueConstraint.valueSets.length > 0 ||
         $scope.controlTerm.valueConstraint.classes.length > 0 ||
         $scope.controlTerm.valueConstraint.branches.length > 0) {
       return false;
@@ -550,9 +550,9 @@ angularApp.controller('TermsController', function($rootScope, $scope, $element, 
   };
 
   $scope.controlTerm.deleteFieldAddedValueSet = function(valueSet) {
-    for (var i = 0, len = $scope.controlTerm.valueConstraint.value_sets.length; i < len; i+= 1) {
-      if ($scope.controlTerm.valueConstraint.value_sets[i]['uri'] == valueSet['uri']) {
-        $scope.controlTerm.valueConstraint.value_sets.splice(i,1);
+    for (var i = 0, len = $scope.controlTerm.valueConstraint.valueSets.length; i < len; i+= 1) {
+      if ($scope.controlTerm.valueConstraint.valueSets[i]['uri'] == valueSet['uri']) {
+        $scope.controlTerm.valueConstraint.valueSets.splice(i,1);
         break;
       }
     }
@@ -908,7 +908,7 @@ angularApp.controller('TermsController', function($rootScope, $scope, $element, 
         'acronym': $scope.controlTerm.currentOntology.details.ontology['acronym'],
         'uri': selection['@id'],
         'name': selection.prefLabel,
-        'max_depth': null
+        'maxDepth': null
       });
     }
 
@@ -982,10 +982,10 @@ angularApp.controller('TermsController', function($rootScope, $scope, $element, 
       }
       if (!alreadyAdded) {
         var newConstraint = angular.copy(constraint);
-        if (newConstraint.max_depth) {
-          newConstraint.max_depth = parseInt(newConstraint.max_depth);
+        if (newConstraint.maxDepth) {
+          newConstraint.maxDepth = parseInt(newConstraint.maxDepth);
         } else {
-          newConstraint.max_depth = 1;
+          newConstraint.maxDepth = 1;
         }
         $scope.controlTerm.valueConstraint.branches.push(newConstraint);
       }
@@ -1001,14 +1001,14 @@ angularApp.controller('TermsController', function($rootScope, $scope, $element, 
     for (i = 0; i < $scope.controlTerm.stagedValueSetValueConstraints.length; i++) {
       constraint = $scope.controlTerm.stagedValueSetValueConstraints[i];
       alreadyAdded = false;
-      for (j = 0; j < $scope.controlTerm.valueConstraint.value_sets.length; j++) {
-        if ($scope.controlTerm.valueConstraint.value_sets[j]['uri'] == constraint['uri']) {
+      for (j = 0; j < $scope.controlTerm.valueConstraint.valueSets.length; j++) {
+        if ($scope.controlTerm.valueConstraint.valueSets[j]['uri'] == constraint['uri']) {
           alreadyAdded = true;
           break;
         }
       }
       if (!alreadyAdded) {
-        $scope.controlTerm.valueConstraint.value_sets.push(angular.copy(constraint));
+        $scope.controlTerm.valueConstraint.valueSets.push(angular.copy(constraint));
       }
     }
     $scope.controlTerm.stagedValueSetValueConstraints = [];
@@ -1018,7 +1018,7 @@ angularApp.controller('TermsController', function($rootScope, $scope, $element, 
   };
 
   /**
-   * Add ontology class to value constraint to field values info definition.
+   * Add ontology class to value constraint to field values _ui definition.
    */
   $scope.controlTerm.addOntologyClassToValueConstraint = function() {
     var alreadyAdded, constraint, i, j;
@@ -1046,8 +1046,8 @@ angularApp.controller('TermsController', function($rootScope, $scope, $element, 
   };
 
   var assignValueConstraintToField = function() {
-    var fieldPropertiesInfo = $scope.field.properties.info;
-    fieldPropertiesInfo.value_constraint = $scope.controlTerm.valueConstraint;
+    $scope.field.properties._valueConstraints =
+      angular.extend($scope.controlTerm.valueConstraint, $scope.field.properties._valueConstraints)
     delete $scope.controlTerm.stageValueConstraintAction;
     $scope.controlTerm.stagedOntologyValueConstraints = [];
     $scope.controlTerm.stagedOntologyClassValueConstraints = [];

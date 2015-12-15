@@ -4,7 +4,7 @@
   				id="placeholder-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}"
   				placeholder="Enter Field Title"
   				aria-label="Enter Field Title"
-  				ng-model="field.properties.info.title"
+  				ng-model="field.properties._ui.title"
   				with-floating-label>
 </div><!-- /.form-group -->
 <div class="form-group floating-label-wrapper">
@@ -13,6 +13,6 @@
   				id="help-text-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}"
   				placeholder="Enter Field Description (Help Text)"
   				aria-label="Enter Field Description (Help Text)"
-  				ng-model="field.properties.info.description"
+  				ng-model="field.properties._ui.description"
   				with-floating-label>
 </div><!-- /.form-group -->

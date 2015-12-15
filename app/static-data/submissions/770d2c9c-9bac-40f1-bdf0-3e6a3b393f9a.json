@@ -66,9 +66,9 @@
               "id": "e146e007-6698-407a-9e53-bc4c7860f374",
               "title": "Full Name",
               "description": "Whole name, including first name, middle name, and last name",
-              "input_type": "textfield",
+              "inputType": "textfield",
               "required": false,
-              "created_at": 1432678567334,
+              "createdAt": 1432678567334,
               "model": {
                 "value": "John Wright"
               }
@@ -93,9 +93,9 @@
               "id": "dbfa4aa1-8759-41f0-9829-a6c4c2cbd7c5",
               "title": "Institution",
               "description": "An established society, corporation, foundation or other organization founded and united for a specific purpose",
-              "input_type": "textfield",
+              "inputType": "textfield",
               "required": false,
-              "created_at": 1432678567100
+              "createdAt": 1432678567100
             }
           },
           "required": [
@@ -123,9 +123,9 @@
           "id": "afb78170-1c4a-479f-a48a-1e829d318146",
           "title": "Principal Investigator Inspector",
           "description": "This is the inspector's name of the principal investigator",
-          "input_type": "textfield",
+          "inputType": "textfield",
           "required": false,
-          "created_at": 1434409307850,
+          "createdAt": 1434409307850,
           "model": {
             "value": "James Wright"
           }
@@ -150,9 +150,9 @@
           "id": "ca6494b9-0385-4abf-bd41-516a70bf8f6c",
           "title": "Second Page",
           "description": "Description for Page two of the form",
-          "input_type": "page-break",
+          "inputType": "page-break",
           "required": false,
-          "created_at": 1434409329479
+          "createdAt": 1434409329479
         }
       },
       "required": [
@@ -174,9 +174,9 @@
           "id": "a4d17714-f837-4ee4-9dcd-e6e917fa2ffb",
           "title": "Email field for page 2",
           "description": "description",
-          "input_type": "email",
+          "inputType": "email",
           "required": false,
-          "created_at": 1434409351151,
+          "createdAt": 1434409351151,
           "model": {
             "value": "johnwright@google.com"
           }
@@ -201,10 +201,10 @@
           "id": "6e0e772b-fa72-481f-b08d-d615d3e9e763",
           "title": "Date of Incident",
           "description": "",
-          "input_type": "date",
+          "inputType": "date",
           "required": false,
-          "created_at": 1434409366813,
-          "date_type": "single-date",
+          "createdAt": 1434409366813,
+          "dateType": "single-date",
           "model": {
             "value": "06/02/2015 1:10 PM"
           }
@@ -229,9 +229,9 @@
           "id": "526c93fa-749f-4cab-b203-87cbc737129d",
           "title": "Phone Number",
           "description": "asdsadfasdf",
-          "input_type": "phone-number",
+          "inputType": "phone-number",
           "required": false,
-          "created_at": 1434409379594,
+          "createdAt": 1434409379594,
           "model": {
             "value": 1234567891
           }
@@ -256,9 +256,9 @@
           "id": "76267dd0-9433-4309-ae69-c465c49c04db",
           "title": "Page Title for page 3",
           "description": "more page description text",
-          "input_type": "page-break",
+          "inputType": "page-break",
           "required": false,
-          "created_at": 1434409397730
+          "createdAt": 1434409397730
         }
       },
       "required": [
@@ -292,9 +292,9 @@
               "id": "8bc8da84-64c8-496c-8ef6-b97de498fd59",
               "title": "First Name",
               "description": "Please enter your first name",
-              "input_type": "textfield",
+              "inputType": "textfield",
               "required": true,
-              "created_at": 1432678567369
+              "createdAt": 1432678567369
             }
           },
           "required": [
@@ -316,9 +316,9 @@
               "id": "b0d45a1e-0370-4ac1-8338-77d9359e6c05",
               "title": "Last Name",
               "description": "Please enter your last name",
-              "input_type": "textfield",
+              "inputType": "textfield",
               "required": true,
-              "created_at": 1432678602995
+              "createdAt": 1432678602995
             }
           },
           "required": [
@@ -340,9 +340,9 @@
               "id": "df98b119-c3b6-4d20-8e1d-be5fc4baa3fc",
               "title": "Email Address",
               "description": "Please provide a valid email address",
-              "input_type": "email",
+              "inputType": "email",
               "required": false,
-              "created_at": 1432678623726
+              "createdAt": 1432678623726
             }
           },
           "required": [
@@ -364,9 +364,9 @@
               "id": "b44dbd62-85e3-4877-b564-03191008ca7f",
               "title": "Phone Number",
               "description": "Please provide a phone number you can be reached at. Include area code.",
-              "input_type": "phone-number",
+              "inputType": "phone-number",
               "required": true,
-              "created_at": 1432678646399
+              "createdAt": 1432678646399
             }
           },
           "required": [
@@ -388,9 +388,9 @@
               "id": "3537908a-d498-4f74-813d-844ae3b92cee",
               "title": "Background Information (Optional)",
               "description": "If you would like, please tell us a little about yourself",
-              "input_type": "textarea",
+              "inputType": "textarea",
               "required": false,
-              "created_at": 1432678682106
+              "createdAt": 1432678682106
             }
           },
           "required": [
@@ -418,9 +418,9 @@
           "id": "0875e6be-5aef-474e-b046-29882186bcbb",
           "title": "Section break page 3",
           "description": "stuff",
-          "input_type": "section-break",
+          "inputType": "section-break",
           "required": false,
-          "created_at": 1434409441504
+          "createdAt": 1434409441504
         }
       },
       "required": [
@@ -442,9 +442,9 @@
           "id": "a5bcebbd-6341-4993-88ab-3ad040ab7ae5",
           "title": "Video upload or YouTube embed field",
           "description": "Description for placeholder",
-          "input_type": "audio-visual",
+          "inputType": "audio-visual",
           "required": false,
-          "created_at": 1434409453736,
+          "createdAt": 1434409453736,
           "model": {
             "value": "https://www.youtube.com/watch?v=ROXqddQYBH4"
           }

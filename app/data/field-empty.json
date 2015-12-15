@@ -20,12 +20,14 @@
         }
       ]
     },
-    "info": {
+    "_ui": {
       "title": "",
       "description": "",
-      "input_type": null,
-      "required_value": false,
-      "created_at": null
+      "inputType": null,
+      "createdAt": null
+    },
+    "_valueConstraints": {
+      "requiredValue": false
     },
     "_value": {
       "type": null
