@@ -1046,7 +1046,8 @@ angularApp.controller('TermsController', function($rootScope, $scope, $element, 
   };
 
   var assignValueConstraintToField = function() {
-    $scope.field.properties._valueConstraints = $scope.controlTerm.valueConstraint;
+    $scope.field.properties._valueConstraints =
+      angular.extend($scope.controlTerm.valueConstraint, $scope.field.properties._valueConstraints)
     delete $scope.controlTerm.stageValueConstraintAction;
     $scope.controlTerm.stagedOntologyValueConstraints = [];
     $scope.controlTerm.stagedOntologyClassValueConstraints = [];

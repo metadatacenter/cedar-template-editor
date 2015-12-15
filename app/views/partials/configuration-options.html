@@ -3,7 +3,7 @@
     <i class="cedar-svg-controll-term collapsed" data-toggle="modal" data-target="#control-options-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}"></i>
   </div>
   <div class="checkbox checkbox-inline checkbox-required">
-    <input type="checkbox" id="required-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}" ng-model="field.properties._ui.requiredValue" />
+    <input type="checkbox" id="required-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}" ng-model="field.properties._valueConstraints.requiredValue" />
     <label for="required-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}">Required</label>
   </div><!-- /.checkbox-inline -->
   <!--<div class="checkbox checkbox-inline checkbox-advanced">-->

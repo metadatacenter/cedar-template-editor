@@ -24,8 +24,10 @@
       "title": "",
       "description": "",
       "inputType": null,
-      "requiredValue": false,
       "createdAt": null
+    },
+    "_valueConstraints": {
+      "requiredValue": false
     },
     "_value": {
       "type": null

@@ -3,7 +3,7 @@
 	<p class="extra-label-context" ng-if="ngDisabled && field.properties._ui.title">{{field.properties._ui.title}}</p>
     <input type="email"
     	   class="form-control"
-    	   ng-class="{'required': field.properties._ui.requiredValue}"
+    	   ng-class="{'required': field.properties._valueConstraints.requiredValue}"
     	   id="emailfield1"
     	   placeholder="{{field.properties._ui.title}}"
     	   aria-label="{{field.properties._ui.description}}"
@@ -24,7 +24,7 @@
 	<p class="extra-label-context" ng-if="ngDisabled && field.properties._ui.title">{{field.properties._ui.title}}</p>
     <input type="email"
            class="form-control"
-           ng-class="{'required': field.properties._ui.requiredValue}"
+           ng-class="{'required': field.properties._valueConstraints.requiredValue}"
            id="emailfield1"
            placeholder="{{field.properties._ui.title}}"
            aria-label="{{field.properties._ui.description}}"

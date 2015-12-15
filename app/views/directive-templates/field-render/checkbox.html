@@ -1,5 +1,5 @@
 <div class="fields fields-checkbox">
-  <div ng-if="$root.isArray(model)" class="field-checkbox" ng-class="{'required': field.properties._ui.requiredValue}" ng-repeat="valueElement in model">
+  <div ng-if="$root.isArray(model)" class="field-checkbox" ng-class="{'required': field.properties._valueConstraints.requiredValue}" ng-repeat="valueElement in model">
 	<p class="extra-label-context">{{field.properties._ui.title}}</p>
 	<div class="form-group checkbox-item" ng-repeat="(index, value) in field.properties._ui.options">
 	  <div class="checkbox checkbox-primary">
@@ -13,7 +13,7 @@
 	<div class="more-input-wrapper" ng-include="'views/partials/more-input-buttons.html'" ng-show="!field.maxItems || field.maxItems > 1"></div>
   </div>
   
-  <div ng-if="!$root.isArray(model)" class="field-checkbox" ng-class="{'required': field.properties._ui.requiredValue}">
+  <div ng-if="!$root.isArray(model)" class="field-checkbox" ng-class="{'required': field.properties._valueConstraints.requiredValue}">
 	<p class="extra-label-context">{{field.properties._ui.title}}</p>
 	<div class="form-group checkbox-item" ng-repeat="(index, value) in field.properties._ui.options">
       <div class="checkbox checkbox-primary">

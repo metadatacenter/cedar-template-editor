@@ -7,7 +7,7 @@
       <div class='input-group' date-time-picker>
         <input type="text"
                class="form-control"
-               ng-class="{'required': field.properties._ui.requiredValue}"
+               ng-class="{'required': field.properties._valueConstraints.requiredValue}"
                placeholder="{{field.properties._ui.title}} ( MM / DD / YYYY )"
                aria-label="Select a date"
                ng-model="valueElement._value"
@@ -23,7 +23,7 @@
       <div class='input-group' date-time-picker>
         <input type="text"
                class="form-control"
-               ng-class="{'required': field.properties._ui.requiredValue}"
+               ng-class="{'required': field.properties._valueConstraints.requiredValue}"
                placeholder="MM / DD / YYYY"
                aria-label="Select a start date"
                ng-model="valueElement._value.start"
@@ -35,7 +35,7 @@
       <div class='input-group' date-time-picker>
         <input type="text"
                class="form-control"
-               ng-class="{'required': field.properties._ui.requiredValue}"
+               ng-class="{'required': field.properties._valueConstraints.requiredValue}"
                placeholder="MM / DD / YYYY"
                aria-label="Select a end date"
                ng-model="valueElement._value.end"
@@ -56,7 +56,7 @@
       <div class='input-group' date-time-picker>
         <input type="text"
                class="form-control"
-               ng-class="{'required': field.properties._ui.requiredValue}"
+               ng-class="{'required': field.properties._valueConstraints.requiredValue}"
                placeholder="MM / DD / YYYY"
                aria-label="Select a date"
                ng-model="model._value"
@@ -72,7 +72,7 @@
       <div class='input-group' date-time-picker="">
         <input type="text"
                class="form-control"
-               ng-class="{'required': field.properties._ui.requiredValue}"
+               ng-class="{'required': field.properties._valueConstraints.requiredValue}"
                placeholder="MM / DD / YYYY"
                aria-label="Select a start date"
                ng-model="model._value.start"
@@ -84,7 +84,7 @@
       <div class='input-group' date-time-picker="">
         <input type="text"
                class="form-control"
-               ng-class="{'required': field.properties._ui.requiredValue}"
+               ng-class="{'required': field.properties._valueConstraints.requiredValue}"
                placeholder="MM / DD / YYYY"
                aria-label="Select a end date"
                ng-model="model._value.end"
