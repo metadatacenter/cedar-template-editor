@@ -292,7 +292,7 @@ var CreateTemplateController = function ($rootScope, $scope, $q, $routeParams, $
       // Update template
       else {
         var id = $scope.form['@id'];
-        delete $scope.form['@id'];
+        //--//delete $scope.form['@id'];
         TemplateService.updateTemplate(id, $scope.form).then(function (response) {
           $scope.templateSuccessMessages.push('The template \"' + response.data.properties.info.title + '\" has been updated.');
         }).catch(function (err) {

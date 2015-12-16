@@ -317,7 +317,7 @@ var CreateElementController = function ($rootScope, $scope, $routeParams, $timeo
       // Update element
       else {
         var id = $scope.element['@id'];
-        delete $scope.element['@id'];
+        //--//delete $scope.element['@id'];
         TemplateElementService.updateTemplateElement(id, $scope.element).then(function (response) {
           $scope.elementSuccessMessages.push('The element \"' + response.data.title + '\" has been updated.');
         }).catch(function (err) {
