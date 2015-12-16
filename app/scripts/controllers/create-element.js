@@ -35,7 +35,7 @@ var CreateElementController = function ($rootScope, $scope, $routeParams, $timeo
     });
   } else {
     // If we're not loading an existing element then let's create a new empty $scope.element property
-    $scope.element = DataTemplateService.getElement($rootScope.idBasePath + $rootScope.generateGUID());
+    $scope.element = DataTemplateService.getElement();
     HeaderService.dataContainer.currentObjectScope = $scope.element;
   }
 

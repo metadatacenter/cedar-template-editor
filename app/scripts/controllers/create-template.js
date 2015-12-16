@@ -33,7 +33,7 @@ var CreateTemplateController = function ($rootScope, $scope, $q, $routeParams, $
     });
   } else {
     // If we're not loading an existing form then let's create a new empty $scope.form property
-    $scope.form = DataTemplateService.getTemplate($rootScope.idBasePath + $rootScope.generateGUID());
+    $scope.form = DataTemplateService.getTemplate();
     HeaderService.dataContainer.currentObjectScope = $scope.form;
   }
 

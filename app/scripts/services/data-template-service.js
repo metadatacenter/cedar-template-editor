@@ -27,21 +27,18 @@ var DataTemplateService = function ($http) {
     });
   };
 
-  service.getField = function (id) {
+  service.getField = function () {
     var clonedField = angular.copy(dataTemplate.field);
-    clonedField['@id'] = id;
     return clonedField;
   };
 
-  service.getElement = function (id) {
+  service.getElement = function () {
     var clonedElement = angular.copy(dataTemplate.element);
-    clonedElement['@id'] = id;
     return clonedElement;
   };
 
-  service.getTemplate = function (id) {
+  service.getTemplate = function () {
     var clonedTemplate = angular.copy(dataTemplate.template);
-    clonedTemplate['@id'] = id;
     return clonedTemplate;
   };
 

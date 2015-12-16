@@ -25,24 +25,24 @@ var UrlService = function () {
     return "/instances/edit/" + id;
   };
 
-  service.getDefaultTemplatesSummary = function (count, page) {
-    return apiService + '/templates?summary=true' + '&count=' + count + '&page=' + page;
+  service.getDefaultTemplatesSummary = function (limit, offset) {
+    return apiService + '/templates?summary=true' + '&limit=' + limit + '&offset=' + offset;
   };
 
   service.getAllTemplatesSummary = function () {
     return apiService + '/templates?summary=true';
   };
 
-  service.getDefaultTemplateElementsSummary = function (count, page) {
-    return apiService + '/template_elements?summary=true' + '&count=' + count + '&page=' + page;
+  service.getDefaultTemplateElementsSummary = function (limit, offset) {
+    return apiService + '/template_elements?summary=true' + '&limit=' + limit + '&offset=' + offset;
   };
 
   service.getAllTemplateElementsSummary = function () {
     return apiService + '/template_elements?summary=true';
   };
 
-  service.getDefaultTemplateInstancesSummary = function (count, page) {
-    return apiService + '/template_instances?summary=true' + '&count=' + count + '&page=' + page;
+  service.getDefaultTemplateInstancesSummary = function (limit, offset) {
+    return apiService + '/template_instances?summary=true' + '&limit=' + limit + '&offset=' + offset;
   };
 
   service.getAllTemplateInstancesSummary = function () {
@@ -50,27 +50,27 @@ var UrlService = function () {
   };
 
   service.templates = function () {
-    return apiService + '/templates/';
+    return apiService + '/templates';
   };
 
   service.getTemplate = function (id) {
-    return this.templates() + encodeURIComponent(id);
+    return this.templates() + '/' + encodeURIComponent(id);
   };
 
   service.templateElements = function () {
-    return apiService + '/template_elements/';
+    return apiService + '/template_elements';
   };
 
   service.getTemplateElement = function (id) {
-    return this.templateElements() + encodeURIComponent(id);
+    return this.templateElements() + '/' + encodeURIComponent(id);
   };
 
   service.templateInstances = function () {
-    return apiService + '/template_instances/';
+    return apiService + '/template_instances';
   };
 
   service.getTemplateInstance = function (id) {
-    return this.templateInstances() + encodeURIComponent(id);
+    return this.templateInstances() + '/' + encodeURIComponent(id);
   };
 
   return service;

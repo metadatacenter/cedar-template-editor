@@ -8,7 +8,7 @@ var TemplateService = function ($http, UrlService) {
 
   service.getDefaultTemplatesSummary = function () {
     return $http.get(UrlService.getDefaultTemplatesSummary(3, 0)).then(function (response) {
-      return response.data.data;
+      return response.data;
     }).catch(function (err) {
       console.log(err);
     });
@@ -16,7 +16,7 @@ var TemplateService = function ($http, UrlService) {
 
   service.getAllTemplatesSummary = function() {
     return $http.get(UrlService.getAllTemplatesSummary()).then(function (response) {
-      return response.data.data;
+      return response.data;
     }).catch(function (err) {
       console.log(err);
     });
