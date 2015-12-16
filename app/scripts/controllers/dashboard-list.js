@@ -1,6 +1,6 @@
 'use strict';
 
-var DashboardListController = function ($rootScope, $scope, $routeParams, $location, FormService, HeaderService, UrlService, TemplateService, TemplateElementService, TemplateInstanceService, CONST) {
+var DashboardListController = function ($rootScope, $scope, $routeParams, $location, HeaderService, UrlService, TemplateService, TemplateElementService, TemplateInstanceService, CONST) {
 
   // Load all items depending on $routeParams.type parameter supplied
   $scope.listTemplateElements = function () {
@@ -106,5 +106,5 @@ var DashboardListController = function ($rootScope, $scope, $routeParams, $locat
 };
 
 
-DashboardListController.$inject = ["$rootScope", "$scope", "$routeParams", "$location", "FormService", "HeaderService", "UrlService", "TemplateService", "TemplateElementService", "TemplateInstanceService", "CONST"];
+DashboardListController.$inject = ["$rootScope", "$scope", "$routeParams", "$location", "HeaderService", "UrlService", "TemplateService", "TemplateElementService", "TemplateInstanceService", "CONST"];
 angularApp.controller('DashboardListController', DashboardListController);

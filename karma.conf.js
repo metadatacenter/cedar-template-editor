@@ -36,7 +36,6 @@ module.exports = function(config) {
       'app/scripts/controllers/create-instance.js',
       'app/scripts/controllers/header.js',
       'app/scripts/controllers/terms.js',
-      'app/scripts/services/form-service.js',
       'app/scripts/directives/form-directive.js',
       'app/scripts/directives/form-preview.js',
       'app/scripts/directives/element-directive.js',

@@ -1,6 +1,6 @@
 'use strict';
 
-var CreateTemplateController = function ($rootScope, $scope, $q, $routeParams, $timeout, $location, FormService, HeaderService, UrlService, StagingService, DataTemplateService, FieldTypeService, TemplateElementService, TemplateService, CONST, HEADER_MINI, LS) {
+var CreateTemplateController = function ($rootScope, $scope, $q, $routeParams, $timeout, $location, HeaderService, UrlService, StagingService, DataTemplateService, FieldTypeService, TemplateElementService, TemplateService, CONST, HEADER_MINI, LS) {
   // Set Page Title variable when this controller is active
   $rootScope.pageTitle = 'Template Designer';
   // Create staging area to create/edit fields before they get added to $scope.form.properties
@@ -278,7 +278,7 @@ var CreateTemplateController = function ($rootScope, $scope, $q, $routeParams, $
       $scope.$broadcast('initPageArray');
       // Save template
       if ($routeParams.id == undefined) {
-        FormService.saveTemplate($scope.form).then(function (response) {
+        TemplateService.saveTemplate($scope.form).then(function (response) {
           $scope.templateSuccessMessages.push('The template \"' + response.data.properties.info.title + '\" has been created.');
           var newId = response.data['@id'];
           $timeout(function () {
@@ -293,7 +293,7 @@ var CreateTemplateController = function ($rootScope, $scope, $q, $routeParams, $
       else {
         var id = $scope.form['@id'];
         delete $scope.form['@id'];
-        FormService.updateTemplate(id, $scope.form).then(function (response) {
+        TemplateService.updateTemplate(id, $scope.form).then(function (response) {
           $scope.templateSuccessMessages.push('The template \"' + response.data.properties.info.title + '\" has been updated.');
         }).catch(function (err) {
           $scope.templateErrorMessages.push('Problem updating the template.');
@@ -330,5 +330,5 @@ var CreateTemplateController = function ($rootScope, $scope, $q, $routeParams, $
 
 };
 
-CreateTemplateController.$inject = ["$rootScope", "$scope", "$q", "$routeParams", "$timeout", "$location", "FormService", "HeaderService", "UrlService", "StagingService", "DataTemplateService", "FieldTypeService", "TemplateElementService", "TemplateService", "CONST", "HEADER_MINI", "LS"];
+CreateTemplateController.$inject = ["$rootScope", "$scope", "$q", "$routeParams", "$timeout", "$location", "HeaderService", "UrlService", "StagingService", "DataTemplateService", "FieldTypeService", "TemplateElementService", "TemplateService", "CONST", "HEADER_MINI", "LS"];
 angularApp.controller('CreateTemplateController', CreateTemplateController);

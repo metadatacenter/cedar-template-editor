@@ -1,6 +1,6 @@
 'use strict';
 
-var DashboardController = function ($rootScope, $scope, $routeParams, $location, FormService, HeaderService, UrlService, TemplateService, TemplateElementService, TemplateInstanceService, CONST) {
+var DashboardController = function ($rootScope, $scope, $routeParams, $location, HeaderService, UrlService, TemplateService, TemplateElementService, TemplateInstanceService, CONST) {
 
   // Remove template
   $scope.removeTemplate = function (id) {
@@ -92,5 +92,5 @@ var DashboardController = function ($rootScope, $scope, $routeParams, $location,
 
 };
 
-DashboardController.$inject = ["$rootScope", "$scope", "$routeParams", "$location", "FormService", "HeaderService", "UrlService", "TemplateService", "TemplateElementService", "TemplateInstanceService", "CONST"];
+DashboardController.$inject = ["$rootScope", "$scope", "$routeParams", "$location", "HeaderService", "UrlService", "TemplateService", "TemplateElementService", "TemplateInstanceService", "CONST"];
 angularApp.controller('DashboardController', DashboardController);

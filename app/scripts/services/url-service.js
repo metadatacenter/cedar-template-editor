@@ -49,16 +49,28 @@ var UrlService = function () {
     return apiService + '/template_instances?summary=true';
   };
 
+  service.templates = function () {
+    return apiService + '/templates/';
+  };
+
   service.getTemplate = function (id) {
-    return apiService + '/templates/' + encodeURIComponent(id);
+    return this.templates() + encodeURIComponent(id);
+  };
+
+  service.templateElements = function () {
+    return apiService + '/template_elements/';
   };
 
   service.getTemplateElement = function (id) {
-    return apiService + '/template_elements/' + encodeURIComponent(id);
+    return this.templateElements() + encodeURIComponent(id);
+  };
+
+  service.templateInstances = function () {
+    return apiService + '/template_instances/';
   };
 
   service.getTemplateInstance = function (id) {
-    return apiService + '/template_instances/' + encodeURIComponent(id);
+    return this.templateInstances() + encodeURIComponent(id);
   };
 
   return service;

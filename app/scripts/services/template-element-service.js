@@ -34,6 +34,13 @@ var TemplateElementService = function ($http, UrlService) {
     return $http.delete(UrlService.getTemplateElement(id));
   };
 
+  service.saveTemplateElement = function (element) {
+    return $http.post(UrlService.templateElements(), angular.toJson(element));
+  };
+
+  service.updateTemplateElement = function (id, element) {
+    return $http.put(UrlService.getTemplateElement(id), angular.toJson(element));
+  };
 
   return service;
 

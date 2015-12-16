@@ -34,6 +34,14 @@ var TemplateInstanceService = function ($http, UrlService) {
     return $http.delete(UrlService.getTemplateInstance(id));
   };
 
+  service.saveTemplateInstance = function (instance) {
+    return $http.post(UrlService.templateInstances(), angular.toJson(instance));
+  };
+
+  service.updateTemplateInstance = function (id, instance) {
+    return $http.put(UrlService.getTemplateInstance(id), angular.toJson(instance));
+  };
+
   return service;
 
 };

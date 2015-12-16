@@ -1,6 +1,6 @@
 'use strict';
 
-var CreateInstanceController = function($rootScope, $scope, FormService, $routeParams, $location, HeaderService, TemplateService, TemplateInstanceService, CONST, HEADER_MINI) {
+var CreateInstanceController = function($rootScope, $scope, $routeParams, $location, HeaderService, TemplateService, TemplateInstanceService, CONST, HEADER_MINI) {
 	// set Page Title variable when this controller is active
 	$rootScope.pageTitle = 'Metadata Editor';
 
@@ -46,7 +46,7 @@ var CreateInstanceController = function($rootScope, $scope, FormService, $routeP
 	};
 
 	// Get/read submission with given submission_id from $routeParams
-	$scope.getSubmission = function() {
+	$scope.getInstance = function() {
 		TemplateInstanceService.getTemplateInstance($routeParams.id).then(function(response) {
 			// FormService.populatedTemplate returns an existing instance, assign it to our local $scope.instance
 			$scope.instance = response;
@@ -70,7 +70,7 @@ var CreateInstanceController = function($rootScope, $scope, FormService, $routeP
 	// Edit existing instance
 	if (!angular.isUndefined($routeParams.id)) {
 		// Loading empty form if given an ID in the $routeParams.id url path
-		$scope.getSubmission();
+		$scope.getInstance();
 	}
 
 	// Inject pages array from FormService into $scope variable
@@ -115,7 +115,7 @@ var CreateInstanceController = function($rootScope, $scope, FormService, $routeP
 			$scope.instance.info['template_description'] = $scope.template.properties.info.description;
 			$scope.instance.info['creation_date'] = new Date();
 			// Make create instance call
-			FormService.savePopulatedTemplate($scope.instance).then(function(response) {
+			TemplateInstanceService.saveTemplateInstance($scope.instance).then(function(response) {
 				$scope.runtimeSuccessMessages.push('The populated template has been saved.');
 			}).catch(function(err) {
 				$scope.runtimeErrorMessages.push('Problem saving the populated template.');
@@ -124,7 +124,7 @@ var CreateInstanceController = function($rootScope, $scope, FormService, $routeP
 		}
 		// Update instance
 		else if ($rootScope.isEmpty($scope.emptyRequiredFields) && $rootScope.isEmpty($scope.invalidFieldValues)) {
-			FormService.updatePopulatedTemplate($scope.instance['@id'], $scope.instance).then(function(response) {
+			TemplateInstanceService.updateTemplateInstance($scope.instance['@id'], $scope.instance).then(function(response) {
 				$scope.runtimeSuccessMessages.push('The populated template has been updated.');
 			}).catch(function(err) {
 				$scope.runtimeErrorMessages.push('Problem updating the populated template.');
@@ -158,5 +158,5 @@ var CreateInstanceController = function($rootScope, $scope, FormService, $routeP
 	});
 };
 
-CreateInstanceController.$inject = ["$rootScope", "$scope", "FormService", "$routeParams", "$location", "HeaderService", "TemplateService", "TemplateInstanceService", "CONST", "HEADER_MINI"];
+CreateInstanceController.$inject = ["$rootScope", "$scope", "$routeParams", "$location", "HeaderService", "TemplateService", "TemplateInstanceService", "CONST", "HEADER_MINI"];
 angularApp.controller('CreateInstanceController', CreateInstanceController);

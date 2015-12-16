@@ -1,6 +1,6 @@
 'use strict';
 
-var CreateElementController = function ($rootScope, $scope, $routeParams, $timeout, $location, FormService, HeaderService, UrlService, StagingService, DataTemplateService, FieldTypeService, TemplateElementService, CONST, HEADER_MINI, LS) {
+var CreateElementController = function ($rootScope, $scope, $routeParams, $timeout, $location, HeaderService, UrlService, StagingService, DataTemplateService, FieldTypeService, TemplateElementService, CONST, HEADER_MINI, LS) {
   // Set page title variable when this controller is active
   $rootScope.pageTitle = 'Element Designer';
   // Create staging area to create/edit fields before they get added to the element
@@ -296,7 +296,7 @@ var CreateElementController = function ($rootScope, $scope, $routeParams, $timeo
       // Save element
       // Check if the element is already stored into the DB
       if ($routeParams.id == undefined) {
-        FormService.saveElement($scope.element).then(function (response) {
+        TemplateElementService.saveTemplateElement($scope.element).then(function (response) {
           console.log(response);
           $scope.elementSuccessMessages.push('The element \"' + response.data.properties.info.title + '\" has been created.');
           // Reload element list
@@ -318,7 +318,7 @@ var CreateElementController = function ($rootScope, $scope, $routeParams, $timeo
       else {
         var id = $scope.element['@id'];
         delete $scope.element['@id'];
-        FormService.updateElement(id, $scope.element).then(function (response) {
+        TemplateElementService.updateTemplateElement(id, $scope.element).then(function (response) {
           $scope.elementSuccessMessages.push('The element \"' + response.data.title + '\" has been updated.');
         }).catch(function (err) {
           $scope.elementErrorMessages.push("Problem updating the element.");
@@ -351,5 +351,5 @@ var CreateElementController = function ($rootScope, $scope, $routeParams, $timeo
 
 };
 
-CreateElementController.$inject = ["$rootScope", "$scope", "$routeParams", "$timeout", "$location", "FormService", "HeaderService", "UrlService", "StagingService", "DataTemplateService", "FieldTypeService", "TemplateElementService", "CONST", "HEADER_MINI", "LS"];
+CreateElementController.$inject = ["$rootScope", "$scope", "$routeParams", "$timeout", "$location", "HeaderService", "UrlService", "StagingService", "DataTemplateService", "FieldTypeService", "TemplateElementService", "CONST", "HEADER_MINI", "LS"];
 angularApp.controller('CreateElementController', CreateElementController);
