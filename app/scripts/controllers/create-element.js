@@ -27,7 +27,7 @@ var CreateElementController = function ($rootScope, $scope, $routeParams, $timeo
   // Load existing element if $routeParams.id parameter is supplied
   if ($routeParams.id) {
     // Fetch existing element and assign to $scope.element property
-    FormService.element($routeParams.id).then(function (response) {
+    TemplateElementService.getTemplateElement($routeParams.id).then(function (response) {
       $scope.element = response;
       // Set form preview to true so the preview is viewable onload
       $scope.formPreview = true;

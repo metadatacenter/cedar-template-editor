@@ -22,6 +22,19 @@ var TemplateElementService = function ($http, UrlService) {
     });
   };
 
+  service.getTemplateElement = function (id) {
+    return $http.get(UrlService.getTemplateElement(id)).then(function (response) {
+      return response.data;
+    }).catch(function (err) {
+      console.log(err);
+    });
+  };
+
+  service.removeTemplateElement = function (id) {
+    return $http.delete(UrlService.getTemplateElement(id));
+  };
+
+
   return service;
 
 };

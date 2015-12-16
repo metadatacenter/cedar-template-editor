@@ -4,7 +4,7 @@ var DashboardController = function ($rootScope, $scope, $routeParams, $location,
 
   // Remove template
   $scope.removeTemplate = function (id) {
-    FormService.removeTemplate(id).then(function (response) {
+    TemplateService.removeTemplate(id).then(function (response) {
       // Reload templates
       $scope.loadDefaultTemplates();
     }).catch(function (err) {
@@ -14,7 +14,7 @@ var DashboardController = function ($rootScope, $scope, $routeParams, $location,
 
   // Remove element
   $scope.removeElement = function (id) {
-    FormService.removeElement(id).then(function (response) {
+    TemplateElementService.removeTemplateElement(id).then(function (response) {
       // Reload elements
       $scope.loadDefaultTemplateElements();
     }).catch(function (err) {
@@ -24,7 +24,7 @@ var DashboardController = function ($rootScope, $scope, $routeParams, $location,
 
   // Remove populated template
   $scope.removeInstance = function (id) {
-    FormService.removePopulatedTemplate(id).then(function (response) {
+    TemplateInstanceService.removeTemplateInstance(id).then(function (response) {
       // Reload instances
       $scope.loadDefaultTemplateInstances();
     }).catch(function (err) {

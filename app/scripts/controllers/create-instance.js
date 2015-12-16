@@ -1,6 +1,6 @@
 'use strict';
 
-var CreateInstanceController = function($rootScope, $scope, FormService, $routeParams, $location, HeaderService, TemplateService, CONST, HEADER_MINI) {
+var CreateInstanceController = function($rootScope, $scope, FormService, $routeParams, $location, HeaderService, TemplateService, TemplateInstanceService, CONST, HEADER_MINI) {
 	// set Page Title variable when this controller is active
 	$rootScope.pageTitle = 'Metadata Editor';
 
@@ -36,7 +36,7 @@ var CreateInstanceController = function($rootScope, $scope, FormService, $routeP
 
 	// Get/read form with given id from $routeParams
 	$scope.getForm = function() {
-		FormService.form($routeParams.template_id).then(function(template) {
+		TemplateService.getTemplate($routeParams.template_id).then(function(template) {
 			// Assign returned form object from FormService to $scope.form
 			$scope.template = template;
 			// $scope.initializePagination kicks off paging with form.pages array
@@ -47,12 +47,12 @@ var CreateInstanceController = function($rootScope, $scope, FormService, $routeP
 
 	// Get/read submission with given submission_id from $routeParams
 	$scope.getSubmission = function() {
-		FormService.populatedTemplate($routeParams.id).then(function(response) {
+		TemplateInstanceService.getTemplateInstance($routeParams.id).then(function(response) {
 			// FormService.populatedTemplate returns an existing instance, assign it to our local $scope.instance
 			$scope.instance = response;
 			//$scope.$broadcast('loadExistingModel', response);
 			// Get and load the template document this instance will populate from (will be blank form template)
-			FormService.form(response.template_id).then(function(template) {
+			TemplateService.getTemplate(response.template_id).then(function(template) {
 				// Assign returned form object from FormService to $scope.form
 				$scope.template = template;
 				// $scope.initializePagination kicks off paging with form.pages array
@@ -158,5 +158,5 @@ var CreateInstanceController = function($rootScope, $scope, FormService, $routeP
 	});
 };
 
-CreateInstanceController.$inject = ["$rootScope", "$scope", "FormService", "$routeParams", "$location", "HeaderService", "TemplateService", "CONST", "HEADER_MINI"];
+CreateInstanceController.$inject = ["$rootScope", "$scope", "FormService", "$routeParams", "$location", "HeaderService", "TemplateService", "TemplateInstanceService", "CONST", "HEADER_MINI"];
 angularApp.controller('CreateInstanceController', CreateInstanceController);

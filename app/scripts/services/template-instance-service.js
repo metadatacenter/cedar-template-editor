@@ -22,6 +22,18 @@ var TemplateInstanceService = function ($http, UrlService) {
     });
   };
 
+  service.getTemplateInstance = function (id) {
+    return $http.get(UrlService.getTemplateInstance(id)).then(function (response) {
+      return response.data;
+    }).catch(function (err) {
+      console.log(err);
+    });
+  };
+
+  service.removeTemplateInstance = function (id) {
+    return $http.delete(UrlService.getTemplateInstance(id));
+  };
+
   return service;
 
 };

@@ -49,6 +49,18 @@ var UrlService = function () {
     return apiService + '/template_instances?summary=true';
   };
 
+  service.getTemplate = function (id) {
+    return apiService + '/templates/' + encodeURIComponent(id);
+  };
+
+  service.getTemplateElement = function (id) {
+    return apiService + '/template_elements/' + encodeURIComponent(id);
+  };
+
+  service.getTemplateInstance = function (id) {
+    return apiService + '/template_instances/' + encodeURIComponent(id);
+  };
+
   return service;
 };
 
