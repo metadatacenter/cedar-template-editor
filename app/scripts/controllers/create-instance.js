@@ -1,16 +1,18 @@
 'use strict';
 
-var CreateInstanceController = function($rootScope, $scope, FormService, $routeParams, $location, HeaderService, CONST, HEADER_MINI) {
+var CreateInstanceController = function($rootScope, $scope, FormService, $routeParams, $location, HeaderService, TemplateService, CONST, HEADER_MINI) {
 	// set Page Title variable when this controller is active
 	$rootScope.pageTitle = 'Metadata Editor';
 
 	// Giving $scope access to window.location for checking active state
 	$scope.$location = $location;
 
-	// Using form service to load list of existing elements to embed into new element
-  FormService.formList().then(function(response) {
-    $scope.formList = response;
-  });
+
+	TemplateService.getAllTemplatesSummary().then(function (data) {
+		$scope.templateList = data;
+	});
+
+
 	// Configure mini header
   var pageId = CONST.pageId.RUNTIME;
   var applicationMode = CONST.applicationMode.RUNTIME;
@@ -23,7 +25,7 @@ var CreateInstanceController = function($rootScope, $scope, FormService, $routeP
 	// Default to page 1 on load (array index 0)
 	// Create empty pages Array
 	// Create empty instance object
-  $scope.form = {},
+  $scope.template = {},
   $scope.currentPage = [],
   $scope.pageIndex = 0,
   $scope.pagesArray = [],
@@ -34,12 +36,12 @@ var CreateInstanceController = function($rootScope, $scope, FormService, $routeP
 
 	// Get/read form with given id from $routeParams
 	$scope.getForm = function() {
-		FormService.form($routeParams.template_id).then(function(form) {
+		FormService.form($routeParams.template_id).then(function(template) {
 			// Assign returned form object from FormService to $scope.form
-			$scope.form = form;
+			$scope.template = template;
 			// $scope.initializePagination kicks off paging with form.pages array
-			$scope.initializePagination(form.pages);
-			HeaderService.dataContainer.currentObjectScope = $scope.form;
+			$scope.initializePagination(template.pages);
+			HeaderService.dataContainer.currentObjectScope = $scope.template;
 		});
 	};
 
@@ -50,11 +52,11 @@ var CreateInstanceController = function($rootScope, $scope, FormService, $routeP
 			$scope.instance = response;
 			//$scope.$broadcast('loadExistingModel', response);
 			// Get and load the template document this instance will populate from (will be blank form template)
-			FormService.form(response.template_id).then(function(form) {
+			FormService.form(response.template_id).then(function(template) {
 				// Assign returned form object from FormService to $scope.form
-				$scope.form = form;
+				$scope.template = template;
 				// $scope.initializePagination kicks off paging with form.pages array
-				$scope.initializePagination(form.pages);
+				$scope.initializePagination(template.pages);
 			});
 		}).catch(function(err) {
 			$scope.runtimeErrorMessages.push('Problem retrieving the populated template instance.');
@@ -109,8 +111,8 @@ var CreateInstanceController = function($rootScope, $scope, FormService, $routeP
 			$scope.instance['template_id'] = $routeParams.template_id;
 			// Create info field that will store information used by the UI
 			$scope.instance.info = {};
-			$scope.instance.info['template_title'] = $scope.form.properties.info.title + ' instance';
-			$scope.instance.info['template_description'] = $scope.form.properties.info.description;
+			$scope.instance.info['template_title'] = $scope.template.properties.info.title + ' instance';
+			$scope.instance.info['template_description'] = $scope.template.properties.info.description;
 			$scope.instance.info['creation_date'] = new Date();
 			// Make create instance call
 			FormService.savePopulatedTemplate($scope.instance).then(function(response) {
@@ -156,5 +158,5 @@ var CreateInstanceController = function($rootScope, $scope, FormService, $routeP
 	});
 };
 
-CreateInstanceController.$inject = ["$rootScope", "$scope", "FormService", "$routeParams", "$location", "HeaderService", "CONST", "HEADER_MINI"];
+CreateInstanceController.$inject = ["$rootScope", "$scope", "FormService", "$routeParams", "$location", "HeaderService", "TemplateService", "CONST", "HEADER_MINI"];
 angularApp.controller('CreateInstanceController', CreateInstanceController);

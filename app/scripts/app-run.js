@@ -72,15 +72,6 @@ var angularRun = function($rootScope, BioPortalService, $location, $timeout, $wi
     return guid;
   };
 
-  // Sorting function that moves boolean values with true to the front of the sort
-  $rootScope.sortBoolean = function(array, bool) {
-    return array.sort(function(a, b) {
-      var x = a[bool],
-        y = b[bool];
-      return ((x == y) ? -1 : ((x === true) ? -1 : 1));
-    });
-  };
-
   // Function that generates a basic field definition
   $rootScope.generateField = function(fieldType) {
     var valueType = "string";

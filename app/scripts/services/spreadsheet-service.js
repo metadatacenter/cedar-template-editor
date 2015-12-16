@@ -311,7 +311,7 @@ var SpreadsheetService = function ($filter) {
       var spreadsheetRowCount = tableData.length;
       var spreadsheetContainerHeight = 30 + spreadsheetRowCount * 30 + 20;
       var spreadsheetContainerWidth = detectorElement.width() - 5;
-      console.log("HEIGHT:" + spreadsheetContainerHeight);
+      //console.log("HEIGHT:" + spreadsheetContainerHeight);
 
       angular.element(container).css("height", spreadsheetContainerHeight + "px");
       angular.element(container).css("width", spreadsheetContainerWidth + "px");

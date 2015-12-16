@@ -1,6 +1,6 @@
 'use strict';
 
-var CreateTemplateController = function($rootScope, $scope, $q, $routeParams, $timeout, $location, FormService, HeaderService, UrlService, StagingService, DataTemplateService, FieldTypeService, CONST, HEADER_MINI, LS) {
+var CreateTemplateController = function ($rootScope, $scope, $q, $routeParams, $timeout, $location, FormService, HeaderService, UrlService, StagingService, DataTemplateService, FieldTypeService, TemplateElementService, CONST, HEADER_MINI, LS) {
   // Set Page Title variable when this controller is active
   $rootScope.pageTitle = 'Template Designer';
   // Create staging area to create/edit fields before they get added to $scope.form.properties
@@ -16,9 +16,8 @@ var CreateTemplateController = function($rootScope, $scope, $q, $routeParams, $t
   StagingService.configure(pageId);
   $rootScope.applicationRole = 'creator';
 
-  // Using form service to load list of existing elements to embed into new form
-  FormService.elementList().then(function(response) {
-    $scope.elementList = response;
+  TemplateElementService.getAllTemplateElementsSummary().then(function (data) {
+    $scope.elementList = data;
   });
 
   $scope.fieldTypes = FieldTypeService.getFieldTypes();
@@ -26,7 +25,7 @@ var CreateTemplateController = function($rootScope, $scope, $q, $routeParams, $t
   // Load existing form if $routeParams.id parameter is supplied
   if ($routeParams.id) {
     // Fetch existing form and assign to $scope.form property
-    FormService.form($routeParams.id).then(function(response) {
+    FormService.form($routeParams.id).then(function (response) {
       $scope.form = response;
       // Set form preview to true so the preview is viewable onload
       $scope.formPreview = true;
@@ -44,7 +43,7 @@ var CreateTemplateController = function($rootScope, $scope, $q, $routeParams, $t
   //    return Object.keys($scope.form.properties).length > 3 ? false : true;
   //  }
   //};
-  $scope.isPropertiesEmpty = function() {
+  $scope.isPropertiesEmpty = function () {
     if (!angular.isUndefined($scope.form)) {
       var keys = Object.keys($scope.form.properties);
       for (var i = 0; i < keys.length; i++) {
@@ -57,7 +56,7 @@ var CreateTemplateController = function($rootScope, $scope, $q, $routeParams, $t
   };
 
   // Add new field into $scope.staging object
-  $scope.addFieldToStaging = function(fieldType) {
+  $scope.addFieldToStaging = function (fieldType) {
     StagingService.addField();
     var field = $rootScope.generateField(fieldType);
     field.minItems = 1;
@@ -80,7 +79,7 @@ var CreateTemplateController = function($rootScope, $scope, $q, $routeParams, $t
 
   };
 
-  $scope.addElementToStaging = function(element) {
+  $scope.addElementToStaging = function (element) {
     StagingService.addElement();
     var clonedElement = angular.copy(element);
     $scope.staging = {};
@@ -89,7 +88,7 @@ var CreateTemplateController = function($rootScope, $scope, $q, $routeParams, $t
     clonedElement.maxItems = 1;
 
     $scope.previewForm = {};
-    $timeout(function() {
+    $timeout(function () {
       var fieldName = $rootScope.getFieldName(clonedElement.properties.info.title);
 
       $scope.previewForm.properties = {};
@@ -98,7 +97,7 @@ var CreateTemplateController = function($rootScope, $scope, $q, $routeParams, $t
   };
 
   // Function to add additional options for radio, checkbox, and list fieldTypes
-  $scope.addOption = function(field) {
+  $scope.addOption = function (field) {
     //console.log(field.properties.value);
     var emptyOption = {
       "text": ""
@@ -108,7 +107,7 @@ var CreateTemplateController = function($rootScope, $scope, $q, $routeParams, $t
   };
 
   // Add newly configured field to the the $scope.form.properties object
-  $scope.addFieldToForm = function(field) {
+  $scope.addFieldToForm = function (field) {
     // Setting return value from $scope.checkFieldConditions to array which will display error messages if any
     $scope.stagingErrorMessages = $scope.checkFieldConditions(field.properties);
     $scope.stagingErrorMessages = jQuery.merge($scope.stagingErrorMessages, $rootScope.checkFieldCardinalityOptions(field));
@@ -136,7 +135,7 @@ var CreateTemplateController = function($rootScope, $scope, $q, $routeParams, $t
     }
   };
 
-  $scope.checkFieldConditions = function(field) {
+  $scope.checkFieldConditions = function (field) {
     // Empty array to push 'error messages' into
     var unmetConditions = [],
       extraConditionInputs = ['checkbox', 'radio', 'list'];
@@ -148,7 +147,7 @@ var CreateTemplateController = function($rootScope, $scope, $q, $routeParams, $t
     // If field is within multiple choice field types
     if (extraConditionInputs.indexOf(field.info.input_type) !== -1) {
       var optionMessage = '"Enter Option" input cannot be left empty.';
-      angular.forEach(field.options, function(value, index) {
+      angular.forEach(field.options, function (value, index) {
         // If any 'option' title text is left empty, create error message
         if (!value.text.length && unmetConditions.indexOf(optionMessage) == -1) {
           unmetConditions.push(optionMessage);
@@ -163,7 +162,7 @@ var CreateTemplateController = function($rootScope, $scope, $q, $routeParams, $t
     return unmetConditions;
   };
 
-  $scope.addExistingElement = function(element) {
+  $scope.addExistingElement = function (element) {
     // Fetch existing element json data
     //FormService.element(element).then(function(response) {
     // Convert response.data.title string to an acceptable object key string
@@ -183,7 +182,7 @@ var CreateTemplateController = function($rootScope, $scope, $q, $routeParams, $t
   };
 
   // Delete field from $scope.staging object
-  $scope.deleteField = function(field) {
+  $scope.deleteField = function (field) {
     // Remove field instance from $scope.staging
     delete $scope.staging[field['@id']];
     // Empty the Error Messages array if present
@@ -194,7 +193,7 @@ var CreateTemplateController = function($rootScope, $scope, $q, $routeParams, $t
   };
 
   // Reverts to empty form and removes all previously added fields/elements
-  $scope.reset = function() {
+  $scope.reset = function () {
     swal({
         title: "Are you sure?",
         text: LS.templateEditor.clear.confirm,
@@ -215,9 +214,9 @@ var CreateTemplateController = function($rootScope, $scope, $q, $routeParams, $t
       });
   };
 
-  $scope.doReset = function() {
+  $scope.doReset = function () {
     // Loop through $scope.form.properties object and delete each field leaving default json-ld syntax in place
-    angular.forEach($scope.form.properties, function(value, key) {
+    angular.forEach($scope.form.properties, function (value, key) {
       if (!$rootScope.ignoreKey(key)) {
         delete $scope.form.properties[key];
       }
@@ -255,7 +254,7 @@ var CreateTemplateController = function($rootScope, $scope, $q, $routeParams, $t
   }
 
   // Stores the template into the database
-  $scope.doSaveTemplate = function() {
+  $scope.doSaveTemplate = function () {
     // First check to make sure Template Name, Template Description are not blank
     $scope.templateErrorMessages = [];
     $scope.templateSuccessMessages = [];
@@ -279,13 +278,13 @@ var CreateTemplateController = function($rootScope, $scope, $q, $routeParams, $t
       $scope.$broadcast('initPageArray');
       // Save template
       if ($routeParams.id == undefined) {
-        FormService.saveTemplate($scope.form).then(function(response) {
+        FormService.saveTemplate($scope.form).then(function (response) {
           $scope.templateSuccessMessages.push('The template \"' + response.data.properties.info.title + '\" has been created.');
           var newId = response.data['@id'];
           $timeout(function () {
             $location.path(UrlService.getTemplateEdit(newId));
           }, 500);
-        }).catch(function(err) {
+        }).catch(function (err) {
           $scope.templateErrorMessages.push('Problem creating the template.');
           console.log(err);
         });
@@ -294,9 +293,9 @@ var CreateTemplateController = function($rootScope, $scope, $q, $routeParams, $t
       else {
         var id = $scope.form['@id'];
         delete $scope.form['@id'];
-        FormService.updateTemplate(id, $scope.form).then(function(response) {
+        FormService.updateTemplate(id, $scope.form).then(function (response) {
           $scope.templateSuccessMessages.push('The template \"' + response.data.properties.info.title + '\" has been updated.');
-        }).catch(function(err) {
+        }).catch(function (err) {
           $scope.templateErrorMessages.push('Problem updating the template.');
           console.log(err);
         });
@@ -305,7 +304,7 @@ var CreateTemplateController = function($rootScope, $scope, $q, $routeParams, $t
   };
 
   // Event listener for when the pages array is finished building
-  $scope.$on('finishPageArray', function(event, orderArray) {
+  $scope.$on('finishPageArray', function (event, orderArray) {
     // Assigning array returned to $scope.form.pages property
     $scope.form.pages = orderArray;
     // Console.log full working form example on save
@@ -314,7 +313,7 @@ var CreateTemplateController = function($rootScope, $scope, $q, $routeParams, $t
   });
 
   // This function watches for changes in the properties.info.title field and autogenerates the schema title and description fields
-  $scope.$watch('form.properties.info.title', function(v) {
+  $scope.$watch('form.properties.info.title', function (v) {
     if (!angular.isUndefined($scope.form)) {
       var title = $scope.form.properties.info.title;
       if (title.length > 0) {
@@ -331,5 +330,5 @@ var CreateTemplateController = function($rootScope, $scope, $q, $routeParams, $t
 
 };
 
-CreateTemplateController.$inject = ["$rootScope", "$scope", "$q", "$routeParams", "$timeout", "$location", "FormService", "HeaderService", "UrlService", "StagingService", "DataTemplateService", "FieldTypeService", "CONST", "HEADER_MINI", "LS"];
+CreateTemplateController.$inject = ["$rootScope", "$scope", "$q", "$routeParams", "$timeout", "$location", "FormService", "HeaderService", "UrlService", "StagingService", "DataTemplateService", "FieldTypeService", "TemplateElementService", "CONST", "HEADER_MINI", "LS"];
 angularApp.controller('CreateTemplateController', CreateTemplateController);
