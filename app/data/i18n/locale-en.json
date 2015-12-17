@@ -38,5 +38,22 @@
         "NAME": "Page Break"
       }
     }
+  },
+  "SERVER": {
+    "ELEMENT": {
+      "save": {
+        "success": "The element '{{title}}' has been created."
+      }
+    },
+    "TEMPLATE": {
+      "save": {
+        "success": "The template '{{title}}' has been created."
+      }
+    },
+    "INSTANCE": {
+      "save": {
+        "success": "The template instance has been saved."
+      }
+    }
   }
 }

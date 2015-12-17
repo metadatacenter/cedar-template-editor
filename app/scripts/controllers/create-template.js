@@ -1,6 +1,6 @@
 'use strict';
 
-var CreateTemplateController = function ($rootScope, $scope, $q, $routeParams, $timeout, $location, HeaderService, UrlService, StagingService, DataTemplateService, FieldTypeService, TemplateElementService, TemplateService, CONST, HEADER_MINI, LS) {
+var CreateTemplateController = function ($rootScope, $scope, $q, $routeParams, $timeout, $location, HeaderService, UrlService, StagingService, DataTemplateService, FieldTypeService, TemplateElementService, TemplateService, UIMessageService, CONST, HEADER_MINI, LS) {
   // Set Page Title variable when this controller is active
   $rootScope.pageTitle = 'Template Designer';
   // Create staging area to create/edit fields before they get added to $scope.form.properties
@@ -279,11 +279,11 @@ var CreateTemplateController = function ($rootScope, $scope, $q, $routeParams, $
       // Save template
       if ($routeParams.id == undefined) {
         TemplateService.saveTemplate($scope.form).then(function (response) {
-          $scope.templateSuccessMessages.push('The template \"' + response.data.properties.info.title + '\" has been created.');
+          // confirm message
+          UIMessageService.flashSuccess('SERVER.TEMPLATE.save.success', {"title": response.data.properties.info.title}, 'Success');
+          // Reload page with template id
           var newId = response.data['@id'];
-          $timeout(function () {
-            $location.path(UrlService.getTemplateEdit(newId));
-          }, 500);
+          $location.path(UrlService.getTemplateEdit(newId));
         }).catch(function (err) {
           $scope.templateErrorMessages.push('Problem creating the template.');
           console.log(err);
@@ -330,5 +330,5 @@ var CreateTemplateController = function ($rootScope, $scope, $q, $routeParams, $
 
 };
 
-CreateTemplateController.$inject = ["$rootScope", "$scope", "$q", "$routeParams", "$timeout", "$location", "HeaderService", "UrlService", "StagingService", "DataTemplateService", "FieldTypeService", "TemplateElementService", "TemplateService", "CONST", "HEADER_MINI", "LS"];
+CreateTemplateController.$inject = ["$rootScope", "$scope", "$q", "$routeParams", "$timeout", "$location", "HeaderService", "UrlService", "StagingService", "DataTemplateService", "FieldTypeService", "TemplateElementService", "TemplateService", "UIMessageService", "CONST", "HEADER_MINI", "LS"];
 angularApp.controller('CreateTemplateController', CreateTemplateController);
