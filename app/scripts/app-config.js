@@ -71,8 +71,8 @@ var angularConfig = function ($routeProvider, $locationProvider, $translateProvi
     clickToClose: false,      // {bool} Whether clicking the toasty closes it
     position: 'bottom-right', // {string:bottom-right,bottom-left,top-right,top-left} The window position where the toast pops up
     timeout: 5000,            // {int} How long (in miliseconds) the toasty shows before it's removed. Set to false to disable.
-    sound: true,              // {bool} Whether to play a sound when a toast is added
-    html: false,              // {bool} Whether HTML is allowed in toasts
+    sound: false,              // {bool} Whether to play a sound when a toast is added
+    html: true,              // {bool} Whether HTML is allowed in toasts
     shake: false,             // {bool} Whether to shake the toasts
     theme: 'bootstrap'        // {string} What theme to use; default, material or bootstrap
   });
