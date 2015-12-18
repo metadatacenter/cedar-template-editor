@@ -8,19 +8,19 @@ var DataTemplateService = function ($http) {
   };
 
   service.init = function () {
-    $http.get('data/field-empty.json').then(function (response) {
+    $http.get('resources/field-empty.json').then(function (response) {
       dataTemplate.field = response.data;
     }).catch(function (err) {
       console.log(err);
     });
 
-    $http.get('data/element-empty.json').then(function (response) {
+    $http.get('resources/element-empty.json').then(function (response) {
       dataTemplate.element = response.data;
     }).catch(function (err) {
       console.log(err);
     });
 
-    $http.get('data/template-empty.json').then(function (response) {
+    $http.get('resources/template-empty.json').then(function (response) {
       dataTemplate.template = response.data;
     }).catch(function (err) {
       console.log(err);

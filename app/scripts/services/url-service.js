@@ -26,27 +26,27 @@ var UrlService = function () {
   };
 
   service.getDefaultTemplatesSummary = function (limit, offset) {
-    return apiService + '/templates?summary=true' + '&limit=' + limit + '&offset=' + offset;
+    return this.templates() + '?summary=true' + '&limit=' + limit + '&offset=' + offset;
   };
 
   service.getAllTemplatesSummary = function () {
-    return apiService + '/templates?summary=true';
+    return this.templates() + '?summary=true';
   };
 
   service.getDefaultTemplateElementsSummary = function (limit, offset) {
-    return apiService + '/template_elements?summary=true' + '&limit=' + limit + '&offset=' + offset;
+    return this.templateElements() + '?summary=true' + '&limit=' + limit + '&offset=' + offset;
   };
 
   service.getAllTemplateElementsSummary = function () {
-    return apiService + '/template_elements?summary=true';
+    return this.templateElements() + '?summary=true';
   };
 
   service.getDefaultTemplateInstancesSummary = function (limit, offset) {
-    return apiService + '/template_instances?summary=true' + '&limit=' + limit + '&offset=' + offset;
+    return this.templateInstances() + '?summary=true' + '&limit=' + limit + '&offset=' + offset;
   };
 
   service.getAllTemplateInstancesSummary = function () {
-    return apiService + '/template_instances?summary=true';
+    return this.templateInstances() + '?summary=true';
   };
 
   service.templates = function () {
@@ -58,7 +58,7 @@ var UrlService = function () {
   };
 
   service.templateElements = function () {
-    return apiService + '/template_elements';
+    return apiService + '/template-elements';
   };
 
   service.getTemplateElement = function (id) {
@@ -66,7 +66,7 @@ var UrlService = function () {
   };
 
   service.templateInstances = function () {
-    return apiService + '/template_instances';
+    return apiService + '/template-instances';
   };
 
   service.getTemplateInstance = function (id) {

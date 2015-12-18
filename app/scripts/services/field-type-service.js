@@ -8,7 +8,7 @@ var FieldTypeService = function ($http) {
   };
 
   service.init = function () {
-    $http.get('data/field-types.json').then(function (response) {
+    $http.get('config/field-types.json').then(function (response) {
       fieldTypes = response.data;
     }).catch(function (err) {
       console.log(err);

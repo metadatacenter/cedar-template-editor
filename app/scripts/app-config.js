@@ -59,7 +59,7 @@ var angularConfig = function ($routeProvider, $locationProvider, $translateProvi
 
   // configure translations
   $translateProvider.useStaticFilesLoader({
-    prefix: 'data/i18n/locale-',
+    prefix: 'resources/i18n/locale-',
     suffix: '.json'
   });
   $translateProvider.preferredLanguage('en');
