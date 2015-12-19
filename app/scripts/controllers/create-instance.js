@@ -107,7 +107,6 @@ var CreateInstanceController = function ($rootScope, $scope, $routeParams, $loca
     // Create instance if there are no required field errors
     if ($rootScope.isEmpty($scope.emptyRequiredFields) && $rootScope.isEmpty($scope.invalidFieldValues) && $scope.instance['@id'] == undefined) {
       // '@id' and 'template_id' haven't been populated yet, create now
-      $scope.instance['@id'] = $rootScope.idBasePath + $rootScope.generateGUID();
       $scope.instance['template_id'] = $routeParams.template_id;
       // Create info field that will store information used by the UI
       $scope.instance.info = {};
@@ -117,7 +116,7 @@ var CreateInstanceController = function ($rootScope, $scope, $routeParams, $loca
       // Make create instance call
       TemplateInstanceService.saveTemplateInstance($scope.instance).then(function (response) {
         // confirm message
-        UIMessageService.flashSuccess('SERVER.INSTANCE.save.success', null, 'Success');
+        UIMessageService.flashSuccess('SERVER.INSTANCE.create.success', null, 'GENERIC.Created');
         // Reload page with element id
         var newId = response.data['@id'];
         $location.path(UrlService.getInstanceEdit(newId));
@@ -129,7 +128,7 @@ var CreateInstanceController = function ($rootScope, $scope, $routeParams, $loca
     // Update instance
     else if ($rootScope.isEmpty($scope.emptyRequiredFields) && $rootScope.isEmpty($scope.invalidFieldValues)) {
       TemplateInstanceService.updateTemplateInstance($scope.instance['@id'], $scope.instance).then(function (response) {
-        $scope.runtimeSuccessMessages.push('The populated template has been updated.');
+        UIMessageService.flashSuccess('SERVER.INSTANCE.update.success', null, 'GENERIC.Updated');
       }).catch(function (err) {
         $scope.runtimeErrorMessages.push('Problem updating the populated template.');
         console.log(err);

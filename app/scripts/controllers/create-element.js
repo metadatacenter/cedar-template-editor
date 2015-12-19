@@ -298,7 +298,7 @@ var CreateElementController = function ($rootScope, $scope, $routeParams, $timeo
       if ($routeParams.id == undefined) {
         TemplateElementService.saveTemplateElement($scope.element).then(function (response) {
           // confirm message
-          UIMessageService.flashSuccess('SERVER.ELEMENT.save.success', {"title": response.data.properties.info.title}, 'Success');
+          UIMessageService.flashSuccess('SERVER.ELEMENT.create.success', {"title": response.data.properties.info.title}, 'GENERIC.Created');
           // Reload page with element id
           var newId = response.data['@id'];
           $location.path(UrlService.getElementEdit(newId));
@@ -312,7 +312,7 @@ var CreateElementController = function ($rootScope, $scope, $routeParams, $timeo
         var id = $scope.element['@id'];
         //--//delete $scope.element['@id'];
         TemplateElementService.updateTemplateElement(id, $scope.element).then(function (response) {
-          $scope.elementSuccessMessages.push('The element \"' + response.data.title + '\" has been updated.');
+          UIMessageService.flashSuccess('SERVER.ELEMENT.update.success', {"title": response.data.title}, 'GENERIC.Updated');
         }).catch(function (err) {
           $scope.elementErrorMessages.push("Problem updating the element.");
           console.log(err);

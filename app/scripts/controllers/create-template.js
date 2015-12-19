@@ -280,7 +280,7 @@ var CreateTemplateController = function ($rootScope, $scope, $q, $routeParams, $
       if ($routeParams.id == undefined) {
         TemplateService.saveTemplate($scope.form).then(function (response) {
           // confirm message
-          UIMessageService.flashSuccess('SERVER.TEMPLATE.save.success', {"title": response.data.properties.info.title}, 'Success');
+          UIMessageService.flashSuccess('SERVER.TEMPLATE.create.success', {"title": response.data.properties.info.title}, 'GENERIC.Created');
           // Reload page with template id
           var newId = response.data['@id'];
           $location.path(UrlService.getTemplateEdit(newId));
@@ -294,7 +294,7 @@ var CreateTemplateController = function ($rootScope, $scope, $q, $routeParams, $
         var id = $scope.form['@id'];
         //--//delete $scope.form['@id'];
         TemplateService.updateTemplate(id, $scope.form).then(function (response) {
-          $scope.templateSuccessMessages.push('The template \"' + response.data.properties.info.title + '\" has been updated.');
+          UIMessageService.flashSuccess('SERVER.TEMPLATE.update.success', {"title": response.data.properties.info.title}, 'GENERIC.Updated');
         }).catch(function (err) {
           $scope.templateErrorMessages.push('Problem updating the template.');
           console.log(err);

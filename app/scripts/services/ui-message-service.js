@@ -10,12 +10,10 @@ var UIMessageService = function (toasty, $translate) {
     this.flash('success', messageKey, messageParameters, title);
   };
 
-  service.flash = function (type, messageKey, messageParameters, title) {
-    $translate(messageKey, messageParameters).then(function (message) {
-      toasty[type]({
-        title: title,
-        msg: message
-      });
+  service.flash = function (type, messageKey, messageParameters, titleKey) {
+    toasty[type]({
+      title: $translate.instant(titleKey),
+      msg: $translate.instant(messageKey, messageParameters)
     });
   };
 

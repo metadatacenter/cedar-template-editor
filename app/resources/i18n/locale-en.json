@@ -39,19 +39,32 @@
       }
     }
   },
+  "GENERIC": {
+    "Created": "Created",
+    "Updated": "Saved"
+  },
   "SERVER": {
     "ELEMENT": {
-      "save": {
+      "create": {
         "success": "The element <b>{{title}}</b> has been created."
+      },
+      "update": {
+        "success": "The element <b>{{title}}</b> has been saved."
       }
     },
     "TEMPLATE": {
-      "save": {
+      "create": {
         "success": "The template <b>{{title}}</b> has been created."
+      },
+      "update": {
+        "success": "The template <b>{{title}}</b> has been saved."
       }
     },
     "INSTANCE": {
-      "save": {
+      "create": {
+        "success": "The template instance has been created."
+      },
+      "update": {
         "success": "The template instance has been saved."
       }
     }
