@@ -1,5 +1,5 @@
 <div class="controlled-terms controlled-term-options">
-  <div class="control-term-field-preview-form" ng-if="field.properties.info.input_type">
+  <div class="control-term-field-preview-form" ng-if="field.properties._ui.inputType">
     <field-directive field="field" directory="preview" preview="false" ng-disabled="true">
     </field-directive>
   </div>
@@ -108,7 +108,7 @@
                     </div>
                   </td>
                 </tr>
-                <tr ng-repeat="valueSet in controlTerm.valueConstraint.value_sets">
+                <tr ng-repeat="valueSet in controlTerm.valueConstraint.valueSets">
                   <td class="values">{{valueSet.numChildren}} values</td>
                   <td class="type">Value Set</td>
                   <td class="source">{{valueSet.name}}</td>
@@ -174,7 +174,7 @@
                     </div>
                   </td>
                 </tr>
-                <tr ng-repeat="valueSet in controlTerm.valueConstraint.value_sets">
+                <tr ng-repeat="valueSet in controlTerm.valueConstraint.valueSets">
                   <td class="values">{{valueSet.numChildren}} values</td>
                   <td class="type">Value Set</td>
                   <td class="source">{{valueSet.name}}</td>
@@ -715,7 +715,7 @@
                 {{constraint.name}}
               </div>
               <div class="table-cell-style floating-label-wrapper">
-                <input placeholder="Maximum no. levels (default: 1)" type="textfield" class="form-control" ng-model="constraint.max_depth" with-floating-label />
+                <input placeholder="Maximum no. levels (default: 1)" type="textfield" class="form-control" ng-model="constraint.maxDepth" with-floating-label />
               </div>
             </div>
           </div>

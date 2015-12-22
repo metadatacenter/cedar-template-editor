@@ -28,11 +28,11 @@
         </div>
 
         <script type="text/ng-template" id="nestedElement">
-            <div ng-if="field.properties.info.input_type" ng-class="{'field-instance':true, 'multiple-instance-field':$root.isArray(model)}">
+            <div ng-if="field.properties._ui.inputType" ng-class="{'field-instance':true, 'multiple-instance-field':$root.isArray(model)}">
                 <field-directive field="field" model="model" directory="render"
                                  preview="preview"></field-directive>
             </div>
-            <div ng-if="!field.properties.info.input_type && model !== undefined" class="nested-element">
+            <div ng-if="!field.properties._ui.inputType && model !== undefined" class="nested-element">
                 <element-directive key="key" model="model" element="field" preview="preview"
                                    nested-element="nestedElement"></element-directive>
             </div>
@@ -50,9 +50,9 @@
                             ng-disabled="preview">
                         <i class="fa fa-plus"></i>
 
-                        <div class="cardinality-info-container">
-                            <div class="cardinality-info">
-                                <div class="cardinality-info-text">Min Entries: {{element.minItems}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Max
+                        <div class="cardinality-_ui-container">
+                            <div class="cardinality-_ui">
+                                <div class="cardinality-_ui-text">Min Entries: {{element.minItems}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Max
                                     Entries: {{element.maxItems || "Unlimited"}}
                                 </div>
                             </div>
@@ -68,7 +68,7 @@
                     <a class="" ng-show="model.length > element.minItems" ng-click="removeElement($index)">Remove</a>
                 </div>
 
-                <div ng-repeat="key in element['order']">
+                <div ng-repeat="key in element['_ui']['order']">
                     <span ng-if="element[key]"
                           ng-init="key = key; field = element[key]; model = m[key]; preview = preview; nestedElement = true;"
                           ng-include="'nestedElement'"></span>
@@ -76,7 +76,7 @@
             </div>
 
             <div ng-if="!$root.isArray(model)" class="element only-element">
-                <div ng-repeat="key in element['order']">
+                <div ng-repeat="key in element['_ui']['order']">
                     <span ng-if="element[key]"
                           ng-init="key = key; field = element[key]; model = model[key]; preview = preview; nestedElement = true;"
                           ng-include="'nestedElement'"></span>

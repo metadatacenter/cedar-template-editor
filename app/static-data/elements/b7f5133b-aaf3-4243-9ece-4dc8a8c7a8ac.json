@@ -24,9 +24,9 @@
           "id": "53bf8fc3-ca33-4744-a174-1d11aa37bdd7",
           "title": "First Name",
           "description": "Enter your first name",
-          "input_type": "textfield",
+          "inputType": "textfield",
           "required": false,
-          "created_at": 1434581473679
+          "createdAt": 1434581473679
         }
       },
       "required": [
@@ -48,9 +48,9 @@
           "id": "72e0c98b-f3ad-4bd1-a932-6f98908340c0",
           "title": "Last Name",
           "description": "Enter your last name",
-          "input_type": "textfield",
+          "inputType": "textfield",
           "required": false,
-          "created_at": 1434581482240
+          "createdAt": 1434581482240
         }
       },
       "required": [
@@ -72,9 +72,9 @@
           "id": "a8295954-8a42-4812-adfb-87916fbe4c60",
           "title": "Gender",
           "description": "",
-          "input_type": "radio",
+          "inputType": "radio",
           "required": false,
-          "created_at": 1434581509363,
+          "createdAt": 1434581509363,
           "options": [
             {
               "text": "Male"

@@ -1,69 +1,69 @@
 <div class="fields fields-list">
-  <div ng-if="$root.isArray(model)" class="field-list" ng-class="{'required': field.properties.info.required_value}" ng-repeat="value_element in model">
-	<p class="extra-label-context">{{field.properties.info.title}}</p>
-	<div ng-if="field.properties.info.selection_type == 'single'"
+  <div ng-if="$root.isArray(model)" class="field-list" ng-class="{'required': field.properties._valueConstraints.requiredValue}" ng-repeat="valueElement in model">
+	<p class="extra-label-context">{{field.properties._ui.title}}</p>
+	<div ng-if="field.properties._ui.selectionType == 'single'"
 		 class="form-group validation-pattern"
-		 ng-class="{'required': field.properties.info.required_value}">
+		 ng-class="{'required': field.properties._valueConstraints.requiredValue}">
 	  <select class="form-control"
 			  multiple=""
 			  data-max-options="1"
 			  field="field"
 			  title="Please select one of the options..."
-			  ng-model="value_element._value"
-                          ng-disabled="ngDisabled || preview"
-			  defaults="field.properties.info.default_option"
+			  ng-model="valueElement._value"
+              ng-disabled="ngDisabled || preview"
+			  defaults="field.properties._ui.defaultOption"
 			  select-picker="">
-		<option ng-repeat="(index, value) in field.properties.info.options" value="{{field.properties.info.options[index]['text']}}">{{field.properties.info.options[index]['text']}}</option>
+		<option ng-repeat="(index, value) in field.properties._ui.options" value="{{field.properties._ui.options[index]['text']}}">{{field.properties._ui.options[index]['text']}}</option>
 	  </select>
 	</div><!-- /.form-group -->
 
-	<div ng-if="field.properties.info.selection_type == 'multiple'"
+	<div ng-if="field.properties._ui.selectionType == 'multiple'"
 		 class="form-group validation-pattern"
-		 ng-class="{'required': field.properties.info.required_value}">
+		 ng-class="{'required': field.properties._valueConstraints.requiredValue}">
 	  <select class="form-control"
 			  multiple=""
 			  field="field"
 			  title="Please select one or more options..."
-			  ng-model="value_element._value"
-                          ng-disabled="ngDisabled || preview"
-			  defaults="field.properties.info.default_option"
+			  ng-model="valueElement._value"
+              ng-disabled="ngDisabled || preview"
+			  defaults="field.properties._ui.defaultOption"
 			  select-picker="">
-		<option ng-repeat="(index, value) in field.properties.info.options" value="{{field.properties.info.options[index]['text']}}">{{field.properties.info.options[index]['text']}}</option>
+		<option ng-repeat="(index, value) in field.properties._ui.options" value="{{field.properties._ui.options[index]['text']}}">{{field.properties._ui.options[index]['text']}}</option>
 	  </select>
 	</div><!-- /.form-group -->
 	<div class="more-input-wrapper" ng-include="'views/partials/more-input-buttons.html'" ng-show="!field.maxItems || field.maxItems > 1"></div>
   </div>
 
-  <div ng-if="!$root.isArray(model)" class="field-list" ng-class="{'required': field.properties.info.required_value}">
-	<p class="extra-label-context">{{field.properties.info.title}}</p>
-	<div ng-if="field.properties.info.selection_type == 'single'"
+  <div ng-if="!$root.isArray(model)" class="field-list" ng-class="{'required': field.properties._valueConstraints.requiredValue}">
+	<p class="extra-label-context">{{field.properties._ui.title}}</p>
+	<div ng-if="field.properties._ui.selectionType == 'single'"
 		 class="form-group validation-pattern"
-		 ng-class="{'required': field.properties.info.required_value}">
+		 ng-class="{'required': field.properties._valueConstraints.requiredValue}">
 	  <select class="form-control"
 			  multiple=""
 			  data-max-options="1"
 			  field="field"
 			  title="Please select one of the options..."
 			  ng-model="model._value"
-                          ng-disabled="ngDisabled || preview"
-			  defaults="field.properties.info.default_option"
+              ng-disabled="ngDisabled || preview"
+			  defaults="field.properties._ui.defaultOption"
 			  select-picker="">
-		<option ng-repeat="(index, value) in field.properties.info.options" value="{{field.properties.info.options[index]['text']}}">{{field.properties.info.options[index]['text']}}</option>
+		<option ng-repeat="(index, value) in field.properties._ui.options" value="{{field.properties._ui.options[index]['text']}}">{{field.properties._ui.options[index]['text']}}</option>
 	  </select>
 	</div><!-- /.form-group -->
 
-	<div ng-if="field.properties.info.selection_type == 'multiple'"
+	<div ng-if="field.properties._ui.selectionType == 'multiple'"
 		 class="form-group validation-pattern"
-		 ng-class="{'required': field.properties.info.required_value}">
+		 ng-class="{'required': field.properties._valueConstraints.requiredValue}">
 	  <select class="form-control"
 			  multiple=""
 			  field="field"
 			  title="Please select one or more options..."
 			  ng-model="model._value"
-                          ng-disabled="ngDisabled || preview"
-			  defaults="field.properties.info.default_option"
+              ng-disabled="ngDisabled || preview"
+			  defaults="field.properties._ui.defaultOption"
 			  select-picker="">
-		<option ng-repeat="(index, value) in field.properties.info.options" value="{{field.properties.info.options[index]['text']}}">{{field.properties.info.options[index]['text']}}</option>
+		<option ng-repeat="(index, value) in field.properties._ui.options" value="{{field.properties._ui.options[index]['text']}}">{{field.properties._ui.options[index]['text']}}</option>
 	  </select>
 	</div><!-- /.form-group -->
   </div>

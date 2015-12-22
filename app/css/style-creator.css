@@ -11237,18 +11237,18 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   margin-left: 0;
   margin-top: 10px;
 }
-.add .cardinality-info-container {
+.add .cardinality-_ui-container {
   display: none;
   position: relative;
 }
-.add .cardinality-info-container .cardinality-info {
+.add .cardinality-_ui-container .cardinality-_ui {
   position: absolute;
   width: 350px;
   text-align: left;
   top: -90px;
   left: -5px;
 }
-.add .cardinality-info-container .cardinality-info .cardinality-info-text {
+.add .cardinality-_ui-container .cardinality-_ui .cardinality-_ui-text {
   padding: 10px 15px;
   border: 1px solid #B4C1C8;
   display: inline-block;
@@ -11257,8 +11257,8 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   font-weight: bold;
   border-radius: 3px;
 }
-.add .cardinality-info-container .cardinality-info .cardinality-info-text:after,
-.add .cardinality-info-container .cardinality-info .cardinality-info-text:before {
+.add .cardinality-_ui-container .cardinality-_ui .cardinality-_ui-text:after,
+.add .cardinality-_ui-container .cardinality-_ui .cardinality-_ui-text:before {
   top: 40px;
   left: 10px;
   border: solid transparent;
@@ -11268,19 +11268,19 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   position: absolute;
   pointer-events: none;
 }
-.add .cardinality-info-container .cardinality-info .cardinality-info-text:after {
+.add .cardinality-_ui-container .cardinality-_ui .cardinality-_ui-text:after {
   border-color: transparent;
   border-top-color: #FFFFFF;
   border-width: 10px;
 }
-.add .cardinality-info-container .cardinality-info .cardinality-info-text:before {
+.add .cardinality-_ui-container .cardinality-_ui .cardinality-_ui-text:before {
   top: 41px;
   left: 9px;
   border-color: transparent;
   border-top-color: #B4C1C8;
   border-width: 11px;
 }
-.add:hover .cardinality-info-container {
+.add:hover .cardinality-_ui-container {
   display: block;
 }
 .remove-element {

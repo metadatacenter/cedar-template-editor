@@ -16,14 +16,14 @@ angularApp.directive('selectPicker', function ($timeout) {
         // If returning to an already populated select list field, load selections
         default_array = $scope.model._value;
 
-      } else if ($scope.field && $scope.field.properties.info.default_option) {
+      } else if ($scope.field && $scope.field.properties._ui.defaultOption) {
         default_array = [];
 
         // If default select options have been set for an empty field
-        var default_options = $scope.field.properties.info.default_option;
+        var defaultOptions = $scope.field.properties._ui.defaultOption;
 
-        for (var property in default_options) {
-          if (default_options.hasOwnProperty(property)) {
+        for (var property in defaultOptions) {
+          if (defaultOptions.hasOwnProperty(property)) {
             // Push into array that is set via $element.selectpicker 'val' method
             default_array.push(property);
           }

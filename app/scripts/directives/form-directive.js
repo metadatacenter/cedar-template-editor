@@ -62,11 +62,12 @@ angularApp.directive('formDirective', function ($rootScope, $document, $timeout)
 
           if (!$rootScope.ignoreKey(name)) {
             // We can tell we've reached an element level by its 'order' property
-            if (value.hasOwnProperty('order')) {
+            if (value._ui && value._ui.hasOwnProperty('order')) {
               // Handle position and nesting within $scope.formFields
               parentObject[name] = {};
+              parentObject[name]['_ui'] = {};
               // Push 'order' array through into parse object
-              parentObject[name]['order'] = value.order;
+              parentObject[name]['_ui']['order'] = value._ui.order;
               parentObject[name].minItems = value.minItems;
               parentObject[name].maxItems = value.maxItems;
 

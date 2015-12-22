@@ -34,11 +34,11 @@ var RuntimeController = function($rootScope, $scope, FormService, $routeParams, 
 
 	// Get/read form with given id from $routeParams
 	$scope.getForm = function() {
-		FormService.form($routeParams.template_id).then(function(form) {
+		FormService.form($routeParams.templateId).then(function(form) {
 			// Assign returned form object from FormService to $scope.form
 			$scope.form = form;
-			// $scope.initializePagination kicks off paging with form.pages array
-			$scope.initializePagination(form.pages);
+			// $scope.initializePagination kicks off paging with form._ui.pages array
+			$scope.initializePagination(form._ui.pages);
 			HeaderService.dataContainer.currentObjectScope = $scope.form;
 		});
 	};
@@ -50,11 +50,11 @@ var RuntimeController = function($rootScope, $scope, FormService, $routeParams, 
 			$scope.instance = response;
 			//$scope.$broadcast('loadExistingModel', response);
 			// Get and load the template document this instance will populate from (will be blank form template)
-			FormService.form(response.template_id).then(function(form) {
+			FormService.form(response.templateId).then(function(form) {
 				// Assign returned form object from FormService to $scope.form
 				$scope.form = form;
-				// $scope.initializePagination kicks off paging with form.pages array
-				$scope.initializePagination(form.pages);
+				// $scope.initializePagination kicks off paging with form._ui.pages array
+				$scope.initializePagination(form._ui.pages);
 			});
 		}).catch(function(err) {
 			$scope.runtimeErrorMessages.push('Problem retrieving the populated template instance.');
@@ -62,7 +62,7 @@ var RuntimeController = function($rootScope, $scope, FormService, $routeParams, 
 	};
 
 	// Create new instance
-	if (!angular.isUndefined($routeParams.template_id)) {
+	if (!angular.isUndefined($routeParams.templateId)) {
 		$scope.getForm();
 	}
 	// Edit existing instance
@@ -104,14 +104,14 @@ var RuntimeController = function($rootScope, $scope, FormService, $routeParams, 
 		$scope.$broadcast('submitForm');
 		// Create instance if there are no required field errors
 		if ($rootScope.isEmpty($scope.emptyRequiredFields) && $rootScope.isEmpty($scope.invalidFieldValues) && $scope.instance['@id'] == undefined) {
-			// '@id' and 'template_id' haven't been populated yet, create now
+			// '@id' and 'templateId' haven't been populated yet, create now
 			$scope.instance['@id'] = $rootScope.idBasePath + $rootScope.generateGUID();
-			$scope.instance['template_id'] = $routeParams.template_id;
-			// Create info field that will store information used by the UI
-			$scope.instance.info = {};
-			$scope.instance.info['template_title'] = $scope.form.properties.info.title + ' instance';
-			$scope.instance.info['template_description'] = $scope.form.properties.info.description;
-			$scope.instance.info['creation_date'] = new Date();
+			$scope.instance['templateId'] = $routeParams.templateId;
+			// Create _ui field that will store information used by the UI
+			$scope.instance._ui = {};
+			$scope.instance._ui['templateTitle'] = $scope.form.properties._ui.title + ' instance';
+			$scope.instance._ui['templateDescription'] = $scope.form.properties._ui.description;
+			$scope.instance._ui['creationDate'] = new Date();
 			// Make create instance call
 			FormService.savePopulatedTemplate($scope.instance).then(function(response) {
 				$scope.runtimeSuccessMessages.push('The populated template has been saved.');
@@ -143,7 +143,7 @@ var RuntimeController = function($rootScope, $scope, FormService, $routeParams, 
 		}
 	});
 
-	// Initialize array for fields that are not conform to value_constraint
+	// Initialize array for fields that are not conform to valueConstraints
 	$scope.invalidFieldValues = {};
 	// Event listener waiting for emptyRequiredField $emit from field-directive.js
 	$scope.$on('invalidFieldValues', function (event, args) {

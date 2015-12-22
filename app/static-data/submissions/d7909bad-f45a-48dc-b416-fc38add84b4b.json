@@ -43,7 +43,7 @@
           "type": "string",
           "title": "Brief title",
           "description": "The title of the study",
-          "input_type": "textfield",
+          "inputType": "textfield",
           "model": {
             "value": "Example brief title"
           }
@@ -83,7 +83,7 @@
               "type": "string",
               "title": "Full name",
               "description": "Whole name, including first name, middle name, and last name",
-              "input_type": "textfield",
+              "inputType": "textfield",
               "model": {
                 "value": "John Doe"
               }
@@ -109,7 +109,7 @@
               "type": "string",
               "title": "Institution",
               "description": "An established society, corporation, foundation or other organization founded and united for a specific purpose",
-              "input_type": "textarea",
+              "inputType": "textarea",
               "model": {
                 "value": "Sample institution name"
               }

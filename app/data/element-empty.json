@@ -3,7 +3,9 @@
   "@id": null,
   "title": "",
   "description": "",
-  "order": [],
+  "_ui": {
+    "order": []
+  },
   "type": "object",
   "properties": {
     "@context": {
@@ -18,6 +20,10 @@
         "_value"
       ],
       "additionalProperties": false
+    },
+    "@id": {
+      "format": "uri",
+      "type": "string"
     },
     "@type": {
       "oneOf": [
@@ -36,7 +42,7 @@
         }
       ]
     },
-    "info": {
+    "_ui": {
       "title": "",
       "description": ""
     }
