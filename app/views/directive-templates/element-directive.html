@@ -1,15 +1,15 @@
-<div ng-if="model !== undefined">
+<div ng-if="model !== undefined" class="element-root">
     <div>
-        <div class="element-header">
+        <div class="element-header" ng-class="{'sortable-handler': !$root.isRuntime()}">
             <a ng-click="switchExpandedState()" class="visibilitySwitch"><i class="cedar-svg-collapse"></i></a>
             <a ng-click="switchExpandedState()" class="visibilitySwitch" style="display:none;"><i
                     class="cedar-svg-expand"></i></a>
 
-            <p class="element-name-label"><i class="cedar-svg-element"></i>{{key | keyToTitle}}</p>
+            <p class="element-name-label"><i class="cedar-svg-element"></i>{{$root.propertiesOf(element)._ui.title}}</p>
             <span class="multiple-instance-cardinality" ng-show="!$root.isRuntime() && $root.elementIsMultiInstance(element)">{{element.minItems}} .. {{element.maxItems || "Unlimited"}}
             </span>
 
-            <div ng-if="preview && !nestedElement" class="preview-edit-options" id="previewEditOptionOfElement"
+            <div ng-if="!$root.propertiesOf(element)._ui.is_root" class="preview-edit-options" id="previewEditOptionOfElement"
                  ng-include="'views/partials/preview-edit-options.html'"></div>
             <span ng-show="$root.isArray(model) && $root.applicationMode == 'runtime'"
                   class="spreadsheetSwitch element">
@@ -26,17 +26,6 @@
             <div class="spreadsheetViewDetector"></div>
             <div class="spreadsheetViewContainer"></div>
         </div>
-
-        <script type="text/ng-template" id="nestedElement">
-            <div ng-if="field.properties._ui.inputType" ng-class="{'field-instance':true, 'multiple-instance-field':$root.isArray(model)}">
-                <field-directive field="field" model="model" directory="render"
-                                 preview="preview"></field-directive>
-            </div>
-            <div ng-if="!field.properties._ui.inputType && model !== undefined" class="nested-element">
-                <element-directive key="key" model="model" element="field" preview="preview"
-                                   nested-element="nestedElement"></element-directive>
-            </div>
-        </script>
 
         <div class="elements originalContent">
             <div class="element-toggles list" ng-if="$root.isRuntime() && $root.elementIsMultiInstance(element)">
@@ -68,19 +57,50 @@
                     <a class="" ng-show="model.length > element.minItems" ng-click="removeElement($index)">Remove</a>
                 </div>
 
-                <div ng-repeat="key in element['_ui']['order']">
-                    <span ng-if="element[key]"
-                          ng-init="key = key; field = element[key]; model = m[key]; preview = preview; nestedElement = true;"
-                          ng-include="'nestedElement'"></span>
+                <div ui-sortable="$root.sortableOptions" ng-model="element._ui.order" class="sortable-container">
+                  <div ng-repeat="key in element['_ui']['order']">
+                    <div ng-if="$root.propertiesOf(element)[key]">
+                      <nested-element key="key" field="$root.propertiesOf(element)[key]" model="m[key]" remove-child="removeChild"></nested-element>
+                    </div>
+                  </div>
                 </div>
             </div>
 
-            <div ng-if="!$root.isArray(model)" class="element only-element">
+            <div ng-if="!$root.isArray(model)" class="element only-element" ui-sortable="$root.sortableOptions" ng-model="element._ui.order">
                 <div ng-repeat="key in element['_ui']['order']">
-                    <span ng-if="element[key]"
-                          ng-init="key = key; field = element[key]; model = model[key]; preview = preview; nestedElement = true;"
-                          ng-include="'nestedElement'"></span>
+                  <div ng-if="$root.propertiesOf(element)[key]">
+                    <nested-element key="key" field="$root.propertiesOf(element)[key]" model="model[key]" remove-child="removeChild"></nested-element>
+                  </div>
                 </div>
+            </div>
+
+            <div class="input-type-container" ng-if="!$root.isRuntime() && !$root.propertiesOf(element)._ui.is_root && $root.propertiesOf(element)._ui.state == 'creating'">
+              <div class="row">
+                <div class="configuration-options col-lg-9 pull-left">
+                    <div class="checkbox checkbox-inline checkbox-cardinality">
+                      <input type="checkbox" id="cardinality-{{element['@id'].substring(element['@id'].lastIndexOf('/')+1)}}" ng-model="$root.propertiesOf(element)._ui.is_cardinal_field" />
+                      <label for="cardinality-{{element['@id'].substring(element['@id'].lastIndexOf('/')+1)}}">Cardinality</label>
+                    </div><!-- /.checkbox-inline -->
+                    <div class="clearfix"></div>
+
+                    <!-- Cardinality Options -->
+                    <div id="cardinality-options" class="cardinality-options" ng-show="$root.propertiesOf(element)._ui.is_cardinal_field">
+                      <div class="form-group validation-pattern pull-left min-items-option">
+                        <label>Min:</label>
+                        <select class="" ng-model="element.minItems" ng-options="v.value as v.label for v in $root.minCardinalities" title="" select-picker="">
+                        </select>
+                      </div><!-- /.form-group -->
+
+                      <div class="form-group validation-pattern pull-left max-items-option">
+                        <label>Max:</label>
+                        <select class="" ng-model="element.maxItems" ng-options="v.value as v.label for v in $root.maxCardinalities" title="" select-picker="">
+                        </select>
+                      </div><!-- /.form-group -->
+                    </div><!-- /.cardinality-options -->
+                </div>
+                <div class="configuration-options col-lg-3 pull-right configuration-actions" ng-include="'views/partials/staging-area-actions.html'"></div>
+                <div class="clearfix"></div>
+              </div>
             </div>
         </div>
     </div>

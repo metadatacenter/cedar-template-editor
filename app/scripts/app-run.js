@@ -25,6 +25,10 @@ var angularRun = function($rootScope, BioPortalService, $location, $timeout, $wi
   $rootScope.applicationRole = 'instantiator';
   $rootScope.pageId = null;
 
+  $rootScope.sortableOptions = {
+    handle: ".sortable-handler"
+  };
+
   // Global utility functions
 
   // Simple function to check if an object is empty
@@ -177,6 +181,44 @@ var angularRun = function($rootScope, BioPortalService, $location, $timeout, $wi
     return false;
   };
 
+  $rootScope.propertiesOf = function(fieldOrElement) {
+    if (fieldOrElement) {
+      if (fieldOrElement.items) {
+        return fieldOrElement.items.properties;
+      } else {
+        return fieldOrElement.properties;
+      }
+    }
+  };
+
+  $rootScope.idOf = function(fieldOrElement) {
+    if (fieldOrElement) {
+      if (fieldOrElement.items) {
+        return fieldOrElement.items["@id"];
+      } else {
+        return fieldOrElement["@id"];
+      }
+    }
+  };
+
+  $rootScope.uncardinalizeField = function(field) {
+    if (field.maxItems != 1 || !field.items) {
+      return false;
+    }
+
+    field.type = 'object';
+
+    field.$schema = field.items.$schema;
+    field['@id'] = field.items["@id"];
+    field.properties = field.items.properties;
+    field.required = field.items.required;
+    field.additionalProperties = field.items.additionalProperties;
+
+    delete field.items;
+
+    return true;
+  };
+
   $rootScope.isCardinalElement = function(element) {
     return element.minItems && element.maxItems != 1;
   };
@@ -209,7 +251,26 @@ var angularRun = function($rootScope, BioPortalService, $location, $timeout, $wi
   };
 
   $rootScope.elementIsMultiInstance = function(element) {
-    return element.hasOwnProperty('minItems') && !angular.isUndefined(element.minItems);
+    return element.hasOwnProperty('minItems') && !angular.isUndefined(element.minItems) && (!element.hasOwnProperty('maxItems') || element.maxItems > 1);
+  };
+
+  $rootScope.isField = function(value) {
+    return value && value.properties && value.properties._ui && value.properties._ui.inputType;
+  };
+
+  $rootScope.isElement = function(value) {
+    return value && value._ui && !value.properties;
+  };
+
+  $rootScope.assignOrder = function(fieldOrElement, parentElement) {
+    var order = 1;
+    angular.forEach(parentElement, function(value, key) {
+      if ($rootScope.isElement(value) || $rootScope.isField(value)) {
+        order += 1;
+      }
+    });
+
+    fieldOrElement.properties._ui.order = order;
   };
 
   $rootScope.scrollToAnchor = function(hash) {

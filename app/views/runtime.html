@@ -36,17 +36,7 @@
         </div> <!-- /.sticky-list -->
       </div> <!-- /.left-sidebar -->
       <div class="right-body col-sm-9">
-        <div ng-repeat="page in pagesArray">
-          <form-directive form="form" page="page" model="instance" ng-show="pageIndex == $index"></form-directive>
-        </div>
-
-        <div ng-if="form._ui.pages.length > 1" class="pagination-container">
-          <ul class="pagination">
-            <li ng-if="pageIndex > 0"><a ng-click="previousPage()"><span class="prev"><i class="fa fa-lg fa-angle-left"></i>Previous</span></a></li>
-            <li ng-repeat="(index, value) in form._ui.pages" ng-class="{active: index == pageIndex}"><a ng-click="setCurrentPage(index)">{{index + 1}}</a></li>
-            <li ng-if="pageIndex < (form._ui.pages.length - 1)"><a ng-click="nextPage()"><span class="next">Next<i class="fa fa-lg fa-angle-right"></i></span></a></li>
-          </ul>
-        </div><!-- /.pagination-container -->
+        <form-directive form="form" model="instance" page-index="pageIndex" is-edit-data="isEditData"></form-directive>
 
         <div class="edit-actions" ng-hide="$root.isEmpty(form)">
           <div ng-if="failedValidation.length" class="alert alert-danger" role="alert">
@@ -81,4 +71,3 @@
     </div> <!-- /.row -->
   </div> <!-- /.container -->
 </div> <!-- /.template-body -->
-

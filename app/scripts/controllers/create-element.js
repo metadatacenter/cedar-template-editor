@@ -3,14 +3,13 @@
 var CreateElementController = function ($rootScope, $scope, $routeParams, $timeout, $location, FormService, HeaderService, UrlService, StagingService, DataTemplateService, CONST, HEADER_MINI, LS) {
   // Set page title variable when this controller is active
   $rootScope.pageTitle = 'Element Designer';
-  // Create staging area to create/edit fields before they get added to the element
-  $scope.staging = {};
   // Setting default false flag for $scope.favorite
   //$scope.favorite = false;
   // Empty $scope object used to store values that get converted to their json-ld counterparts on the $scope.element object
   $scope.volatile = {};
   // Setting form preview setting to false by default
-  $scope.formPreview = false;
+  $scope.form = {};
+
   // Configure mini header
   var pageId = CONST.pageId.ELEMENT;
   var applicationMode = CONST.applicationMode.CREATOR;
@@ -28,23 +27,34 @@ var CreateElementController = function ($rootScope, $scope, $routeParams, $timeo
     // Fetch existing element and assign to $scope.element property
     FormService.element($routeParams.id).then(function (response) {
       $scope.element = response;
-      // Set form preview to true so the preview is viewable onload
-      $scope.formPreview = true;
       HeaderService.dataContainer.currentObjectScope = $scope.element;
+
+      var key = $scope.element["@id"];
+      $scope.element.properties._ui.is_root = true;
+      $scope.form.properties = $scope.form.properties || {};
+      $scope.form.properties[key] = $scope.element;
+      $scope.form._ui = $scope.form._ui || {};
+      $scope.form._ui.order = $scope.form._ui.order || [];
+      $scope.form._ui.order.push(key);
+      $rootScope.jsonToSave = $scope.element;
     });
   } else {
     // If we're not loading an existing element then let's create a new empty $scope.element property
     $scope.element = DataTemplateService.getElement($rootScope.idBasePath + $rootScope.generateGUID());
     $scope.resetElement = angular.copy($scope.element);
     HeaderService.dataContainer.currentObjectScope = $scope.element;
+
+    var key = $scope.element["@id"]
+    $scope.element.properties._ui.is_root = true;
+    $scope.form.properties = $scope.form.properties || {};
+    $scope.form.properties[key] = $scope.element;
+    $scope.form._ui = $scope.form._ui || {};
+    $scope.form._ui.order = $scope.form._ui.order || [];
+    $scope.form._ui.order.push(key);
+    $rootScope.jsonToSave = $scope.element;
   }
 
   // Return true if element.properties object only contains default values
-  //$scope.isPropertiesEmpty = function() {
-  //  if ($scope.element) {
-  //    return Object.keys($scope.element.properties).length > 1 ? false : true;
-  //  }
-  //};
   $scope.isPropertiesEmpty = function () {
     if (!angular.isUndefined($scope.element)) {
       var keys = Object.keys($scope.element.properties);
@@ -57,16 +67,15 @@ var CreateElementController = function ($rootScope, $scope, $routeParams, $timeo
     }
   };
 
-  // Add new field into $scope.staging object
-  $scope.addFieldToStaging = function (fieldType) {
-    StagingService.addField();
+  // Add newly configured field to the element object
+  $scope.addFieldToElement = function (fieldType) {
+    // StagingService.addField();
     var field = $rootScope.generateField(fieldType);
     field.minItems = 1;
     field.maxItems = 1;
+    field.properties._ui.state = "creating";
 
-    // If fieldtype can have multiple options, additional parameters on field object are necessary
     var optionInputs = ["radio", "checkbox", "list"];
-
     if (optionInputs.indexOf(fieldType) > -1) {
       field.properties._ui.options = [
         {
@@ -75,128 +84,48 @@ var CreateElementController = function ($rootScope, $scope, $routeParams, $timeo
       ];
     }
 
-    // empty staging object (only one field should be configurable at a time)
-    $scope.staging = {};
-    // put field into fields staging object
-    $scope.staging[field['@id']] = field;
-  };
+    // Converting title for irregular character handling
+    var fieldName = $rootScope.generateGUID(); //field['@id'];
 
-  // Function to add additional options for radio, checkbox, and list fieldTypes
-  $scope.addOption = function (field) {
-    //console.log(field.properties.value);
-    var emptyOption = {
-      "text": ""
-    };
-
-    field.properties._ui.options.push(emptyOption);
-  };
-
-  // Add newly configured field to the element object
-  $scope.addFieldToElement = function (field) {
-    // Setting return value from $scope.checkFieldConditions to array which will display error messages if any
-    $scope.stagingErrorMessages = $scope.checkFieldConditions(field.properties);
-    $scope.stagingErrorMessages = jQuery.merge($scope.stagingErrorMessages, $rootScope.checkFieldCardinalityOptions(field));
-
-    if ($scope.stagingErrorMessages.length == 0) {
-      // Converting title for irregular character handling
-      var fieldName = $rootScope.getFieldName(field.properties._ui.title);
-      // Adding corresponding property type to @context
-      $scope.element.properties["@context"].properties[fieldName] = {};
-      $scope.element.properties["@context"].properties[fieldName].enum =
-        new Array($rootScope.schemasBase + fieldName);
-      $scope.element.properties["@context"].required.push(fieldName);
-
-      // Evaluate cardinality
-      $rootScope.cardinalizeField(field);
-
-      // Adding field to the element.properties object
-      $scope.element.properties[fieldName] = field;
-
-      // Lastly, remove this field from the $scope.staging object
-      $scope.staging = {};
-      StagingService.moveIntoPlace();
-    }
-  };
-
-  $scope.checkFieldConditions = function (field) {
-    // Empty array to push 'error messages' into
-    var unmetConditions = [],
-      extraConditionInputs = ['checkbox', 'radio', 'list'];
-
-    // Field title is already required, if it's empty create error message
-    if (!field._ui.title.length) {
-      unmetConditions.push('"Enter Field Title" input cannot be left empty.');
-    }
-
-    // If field is within multiple choice field types
-    if (extraConditionInputs.indexOf(field._ui.inputType) !== -1) {
-      var optionMessage = '"Enter Option" input cannot be left empty.';
-      angular.forEach(field._ui.options, function (value, index) {
-        // If any 'option' title text is left empty, create error message
-        if (!value.text.length && unmetConditions.indexOf(optionMessage) == -1) {
-          unmetConditions.push(optionMessage);
-        }
-      });
-    }
-    // If field type is 'radio' or 'pick from a list' there must be more than one option created
-    if ((field._ui.inputType == 'radio' || field._ui.inputType == 'list') && field._ui.options && (field._ui.options.length <= 1)) {
-      unmetConditions.push('Multiple Choice fields must have at least two possible options');
-    }
-    // Return array of error messages
-    return unmetConditions;
-  };
-
-  // Add existing element to the element object
-  //$scope.addExistingElement = function(element) {
-  //  // Fetch existing element json data
-  //  return $http.get('/static-data/elements/' + element + '.json').then(function(response) {
-  //    // Add existing element to the $scope.element.properties object with it's title converted to an object key
-  //    var titleKey = $rootScope.underscoreText(response.data.title);
-  //    $scope.element.properties[titleKey] = response.data;
-  //  });
-  //};
-  $scope.addExistingElement = function (element) {
-    // Fetch existing element json data
-    //FormService.element(element).then(function(response) {
-
-    // Add existing element to the $scope.element.properties object with it's title converted to an object key
-    var fieldName = $rootScope.getFieldName(element.properties._ui.title);
     // Adding corresponding property type to @context
     $scope.element.properties["@context"].properties[fieldName] = {};
     $scope.element.properties["@context"].properties[fieldName].enum =
       new Array($rootScope.schemasBase + fieldName);
     $scope.element.properties["@context"].required.push(fieldName);
 
-    // Add existing element to the $scope.element.properties object
-    $scope.element.properties[fieldName] = element;
-    //});
-  };
+    // Evaluate cardinality
+    $rootScope.cardinalizeField(field);
 
-  $scope.addElementToStaging = function (element) {
-    StagingService.addElement();
+    // Adding field to the element.properties object
+    $scope.element.properties[fieldName] = field;
+    $scope.element._ui.order.push(fieldName);
+
+    // Lastly, remove this field from the $scope.staging object
     $scope.staging = {};
-    $scope.staging[element['@id']] = element;
-    element.minItems = 1;
-    element.maxItems = 1;
-
-    $scope.previewForm = {};
-    $timeout(function () {
-      var fieldName = $rootScope.getFieldName(element.properties._ui.title);
-
-      $scope.previewForm.properties = {};
-      $scope.previewForm.properties[fieldName] = element;
-    });
+    // StagingService.moveIntoPlace();
   };
 
-  // Delete field from $scope.staging object
-  $scope.deleteField = function (field) {
-    // Remove field instance from $scope.staging
-    delete $scope.staging[field['@id']];
-    // Empty the Error Messages array if present
-    if ($scope.stagingErrorMessages) {
-      $scope.stagingErrorMessages = [];
-    }
-    StagingService.removeObject();
+  $scope.addElementToElement = function (element) {
+    // StagingService.addElement();
+    var el = angular.copy(element);
+    el.minItems = 1;
+    el.maxItems = 1;
+    $rootScope.propertiesOf(el)._ui.state = "creating";
+
+    // Converting title for irregular character handling
+    var elName = $rootScope.generateGUID(); //field['@id'];
+
+    $scope.element.properties["@context"].properties[elName] = {};
+    $scope.element.properties["@context"].properties[elName].enum = new Array($rootScope.schemasBase + elName);
+    $scope.element.properties["@context"].required.push(elName);
+
+    // Evaluate cardinality
+    $rootScope.cardinalizeField(el);
+
+    // Adding field to the element.properties object
+    $scope.element.properties[elName] = el;
+    $scope.element._ui.order.push(elName);
+    $scope.$broadcast("form:update");
   };
 
   // Helper function for converting $scope.volatile values to json-ld '@' keys
@@ -224,7 +153,7 @@ var CreateElementController = function ($rootScope, $scope, $routeParams, $timeo
         if (isConfirm) {
           $timeout(function () {
             $scope.doReset();
-            StagingService.resetPage();
+            // StagingService.resetPage();
           });
         }
       });
@@ -269,6 +198,8 @@ var CreateElementController = function ($rootScope, $scope, $routeParams, $timeo
     // First check to make sure Element Name, Element Description are not blank
     $scope.elementErrorMessages = [];
     $scope.elementSuccessMessages = [];
+    delete $scope.element.properties._ui.is_root;
+
     // If Element Name is blank, produce error message
     if (!$scope.element.properties._ui.title.length) {
       $scope.elementErrorMessages.push('Element Name input cannot be left empty.');
@@ -322,11 +253,6 @@ var CreateElementController = function ($rootScope, $scope, $routeParams, $timeo
       }
     }
   }
-
-  // Build $scope.element._ui.order array
-  $scope.$on('finishOrderArray', function (event, orderArray) {
-    $scope.element._ui.order = orderArray;
-  });
 
   // This function watches for changes in the properties._ui.title field and autogenerates the schema title and description fields
   $scope.$watch('element.properties._ui.title', function (v) {

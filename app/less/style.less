@@ -310,7 +310,7 @@ i {
       }
 
       .edit {
-        display:none;
+        // display:none;
         background-color:#ccc;
 
         &:hover {
@@ -3145,8 +3145,27 @@ body .template-header .controlled-terms-modal {
   .table-cell-style {
     padding-top: 10px;
   }
-  
+
   &:first-child .table-cell-style {
     padding-top: 0;
+  }
+}
+
+.sortable-handler {
+  cursor: move;
+}
+
+.template-body .right-body .preview-edit-options .element-preview-actions {
+  .edit {
+    background: @black;
+    i {
+      transform: unset;
+      &:before {
+        font-size: 16px;
+        color: @white;
+        line-height: 25px;
+        margin-left: 5px;
+      }
+    }
   }
 }

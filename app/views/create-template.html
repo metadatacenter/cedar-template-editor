@@ -32,7 +32,7 @@
         <div class="sidebar-inner" cedar-sticky-left-menu="true">
           <p class="add-item">Add Element</p>
           <ul class="element-menu" role="menu">
-            <li ng-repeat="element in elementList | orderBy:'title'" class="item"><a ng-click="addElementToStaging(element)"><i class="cedar-svg-element"></i>{{element.properties._ui.title}}</a></li>
+            <li ng-repeat="element in elementList | orderBy:'title'" class="item"><a ng-click="addElementToTemplate(element)"><i class="cedar-svg-element"></i>{{element.properties._ui.title}}</a></li>
           </ul>
 
           <!--<div class="more-items" dropdown>-->
@@ -49,19 +49,19 @@
             <button type="button" class="btn btn-more-items dropdown-toggle" data-toggle="dropdown" data-target=".element-menu" aria-expanded="false" dropdown-toggle>All Fields <i class="fa fa-angle-down fa-2x"></i>
             </button>
             <ul class="dropdown-menu element-menu" role="menu">
-              <li class="item"><a ng-click="addFieldToStaging('textfield')"><i class="cedar-svg-text"></i>Text</a></li>
-              <li class="item"><a ng-click="addFieldToStaging('textarea')"><i class="cedar-svg-paragraph"></i>Paragraph</a></li>
-              <li class="item"><a ng-click="addFieldToStaging('radio')"><i class="cedar-svg-multiple-choice"></i>Multiple Choice</a></li>
-              <li class="item"><a ng-click="addFieldToStaging('checkbox')"><i class="cedar-svg-checkbox"></i>Checkbox</a></li>
-              <li class="item"><a ng-click="addFieldToStaging('date')"><i class="cedar-svg-calendar"></i>Date</a></li>
-              <li class="item"><a ng-click="addFieldToStaging('email')"><i class="cedar-svg-at"></i>Email</a></li>
-              <li class="item"><a ng-click="addFieldToStaging('list')"><i class="cedar-svg-list"></i>Pick from a list</a></li>
-              <!-- <li class="item"><a ng-click="addFieldToStaging('controlled-term')"><i class="cedar-svg-controll-term"></i>Controlled Term</a></li> -->
-              <li class="item"><a ng-click="addFieldToStaging('audio-visual')"><i class="cedar-svg-audio-visual"></i>Audio Visual</a></li>
-              <li class="item"><a ng-click="addFieldToStaging('numeric')"><i class="cedar-svg-numeric"></i>Numeric</a></li>
-              <li class="item"><a ng-click="addFieldToStaging('phone-number')"><i class="cedar-svg-phone"></i>Phone</a></li>
-              <li class="item"><a ng-click="addFieldToStaging('section-break')"><i class="cedar-svg-section-break"></i>Section Break</a></li>
-              <li class="item"><a ng-click="addFieldToStaging('page-break')"><i class="cedar-svg-page-break"></i>Page Break</a></li>
+              <li class="item"><a ng-click="addFieldToTemplate('textfield')"><i class="cedar-svg-text"></i>Text</a></li>
+              <li class="item"><a ng-click="addFieldToTemplate('textarea')"><i class="cedar-svg-paragraph"></i>Paragraph</a></li>
+              <li class="item"><a ng-click="addFieldToTemplate('radio')"><i class="cedar-svg-multiple-choice"></i>Multiple Choice</a></li>
+              <li class="item"><a ng-click="addFieldToTemplate('checkbox')"><i class="cedar-svg-checkbox"></i>Checkbox</a></li>
+              <li class="item"><a ng-click="addFieldToTemplate('date')"><i class="cedar-svg-calendar"></i>Date</a></li>
+              <li class="item"><a ng-click="addFieldToTemplate('email')"><i class="cedar-svg-at"></i>Email</a></li>
+              <li class="item"><a ng-click="addFieldToTemplate('list')"><i class="cedar-svg-list"></i>Pick from a list</a></li>
+              <!-- <li class="item"><a ng-click="addFieldToTemplate('controlled-term')"><i class="cedar-svg-controll-term"></i>Controlled Term</a></li> -->
+              <li class="item"><a ng-click="addFieldToTemplate('audio-visual')"><i class="cedar-svg-audio-visual"></i>Audio Visual</a></li>
+              <li class="item"><a ng-click="addFieldToTemplate('numeric')"><i class="cedar-svg-numeric"></i>Numeric</a></li>
+              <li class="item"><a ng-click="addFieldToTemplate('phone-number')"><i class="cedar-svg-phone"></i>Phone</a></li>
+              <li class="item"><a ng-click="addFieldToTemplate('section-break')"><i class="cedar-svg-section-break"></i>Section Break</a></li>
+              <li class="item"><a ng-click="addFieldToTemplate('page-break')"><i class="cedar-svg-page-break"></i>Page Break</a></li>
               <!-- <li class="item"><a class="disabled" ng-click=""><i class="cedar-svg-location"></i>Location</a></li> -->
             </ul>
           </div>
@@ -74,22 +74,9 @@
             <div class="empty-text" ng-show="isPropertiesEmpty()">
               <p>Add an existing element or create a new item.</p>
             </div>
-            <form-preview form="form" ng-if="form"></form-preview>
+            <form-directive form="form" page="page" model="instance" page-index="0" ng-if="!isPropertiesEmpty()"></form-directive>
           </div><!-- /.form-preview -->
         </div> <!-- /#form-preview-section -->
-
-        <div id="form-item-config-section" class="animate-fade" ng-show="$root.stagingVisible">
-          <form name="{{form.properties._ui.title}}" id="{{form.guid}}">
-            <div ng-repeat="field in staging | orderObjectBy: 'properties._ui.createdAt'" class="animate-fade" ng-class="{'adding-element': !field.properties._ui.inputType}">
-              <div ng-if="field && !field.properties._ui.inputType && previewForm">
-                <form-preview form="previewForm">
-                </form-preview>
-              </div>
-              <field-directive field="field" directory="create" delete="deleteField(field, staging)" add="addFieldToForm(field)" option="addOption(field)">
-              </field-directive>
-            </div>
-          </form>
-        </div> <!-- /#form-item-config-section -->
 
         <div class="template-actions">
           <div ng-if="stagingErrorMessages.length" class="alert alert-danger" role="alert">

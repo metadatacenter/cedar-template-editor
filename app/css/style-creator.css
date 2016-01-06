@@ -9361,7 +9361,6 @@ i {
   line-height: 25px;
 }
 .template-body .right-body .preview-edit-options .edit {
-  display: none;
   background-color: #ccc;
 }
 .template-body .right-body .preview-edit-options .edit:hover {
@@ -11937,6 +11936,23 @@ body .template-header .controlled-terms-modal {
 }
 .add-class-container .table-row-style:first-child .table-cell-style {
   padding-top: 0;
+}
+.sortable-handler {
+  cursor: move;
+}
+.template-body .right-body .preview-edit-options .element-preview-actions .edit {
+  background: #000000;
+}
+.template-body .right-body .preview-edit-options .element-preview-actions .edit i {
+  -webkit-transform: unset;
+      -ms-transform: unset;
+          transform: unset;
+}
+.template-body .right-body .preview-edit-options .element-preview-actions .edit i:before {
+  font-size: 16px;
+  color: #ffffff;
+  line-height: 25px;
+  margin-left: 5px;
 }
 @font-face {
   font-family: "project-cedar";

@@ -1,32 +1,34 @@
 <div class="fields fields-radio">
-	<div ng-if="$root.isArray(model)" class="field-radio" ng-class="{'required': field.properties._valueConstraints.requiredValue}" ng-repeat="valueElement in model">
-		<p class="extra-label-context">{{field.properties._ui.title}}</p>
-		<div class="form-group radio-item" ng-repeat="(index, value) in field.properties._ui.options">
+	<div ng-if="$root.isArray(model)" class="field-radio" ng-class="{'required': $root.propertiesOf(field)._valueConstraints.requiredValue}" ng-repeat="valueElement in model">
+		<p class="extra-label-context">{{$root.propertiesOf(field)._ui.title}}</p>
+		<div class="form-group radio-item" ng-repeat="(index, value) in $root.propertiesOf(field)._ui.options">
 			<div class="radio radio-primary">
 		    <input type="radio"
 		    	   id="radio-{{uuid}}-{{$parent.$index}}-{{index}}"
 		    	   name="radio-{{uuid}}-{{$parent.$index}}-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}"
 		    	   ng-model="valueElement._value"
-                   ng-disabled="ngDisabled || preview"
-		    	   ng-value="field.properties._ui.options[index]['text']" />
-		    <label for="radio-{{uuid}}-{{$parent.$index}}-{{index}}">{{field.properties._ui.options[index]['text']}}</label>
+                   ng-disabled="!$root.isRuntime() || preview"
+		    	   ng-value="$root.propertiesOf(field)._ui.options[index]['text']" />
+		    <label for="radio-{{uuid}}-{{$parent.$index}}-{{index}}">{{$root.propertiesOf(field)._ui.options[index]['text']}}</label>
 		  </div><!-- /.radio -->
 		</div><!-- /.form-group -->
 		<div class="more-input-wrapper" ng-include="'views/partials/more-input-buttons.html'" ng-show="!field.maxItems || field.maxItems > 1"></div>
 	</div>
 
 	<div ng-if="!$root.isArray(model)" class="field-radio">
-		<p class="extra-label-context">{{field.properties._ui.title}}</p>
-		<div class="form-group radio-item" ng-repeat="(index, value) in field.properties._ui.options">
+		<p class="extra-label-context">{{$root.propertiesOf(field)._ui.title}}</p>
+		<div class="form-group radio-item" ng-repeat="(index, value) in $root.propertiesOf(field)._ui.options">
 			<div class="radio radio-primary">
 		    <input type="radio"
 		    	   id="radio-{{uuid}}-{{$parent.$index}}-{{index}}"
 		    	   name="radio-{{uuid}}-{{$parent.$index}}-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}"
 		    	   ng-model="model._value"
-                   ng-disabled="ngDisabled || preview"
-		    	   ng-value="field.properties._ui.options[index]['text']" />
-		    <label for="radio-{{uuid}}-{{$parent.$index}}-{{index}}">{{field.properties._ui.options[index]['text']}}</label>
+                   ng-disabled="!$root.isRuntime() || preview"
+		    	   ng-value="$root.propertiesOf(field)._ui.options[index]['text']" />
+		    <label for="radio-{{uuid}}-{{$parent.$index}}-{{index}}">{{$root.propertiesOf(field)._ui.options[index]['text']}}</label>
 		  </div><!-- /.radio -->
 		</div><!-- /.form-group -->
 	</div>
+
+  <div class="preview-edit-options" ng-include="'views/partials/preview-edit-options.html'" ng-init="childType='field'" ng-if="!$root.isRunTime()"></div>
 </div>

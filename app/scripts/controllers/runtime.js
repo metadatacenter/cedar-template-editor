@@ -19,14 +19,8 @@ var RuntimeController = function($rootScope, $scope, FormService, $routeParams, 
 
 
 	// Create empty form object
-	// Create empty currentPage array
-	// Default to page 1 on load (array index 0)
-	// Create empty pages Array
 	// Create empty instance object
   $scope.form = {},
-  $scope.currentPage = [],
-  $scope.pageIndex = 0,
-  $scope.pagesArray = [],
   $scope.instance = {
   	//'@context': {},
   	//'@type': {}
@@ -37,8 +31,6 @@ var RuntimeController = function($rootScope, $scope, FormService, $routeParams, 
 		FormService.form($routeParams.templateId).then(function(form) {
 			// Assign returned form object from FormService to $scope.form
 			$scope.form = form;
-			// $scope.initializePagination kicks off paging with form._ui.pages array
-			$scope.initializePagination(form._ui.pages);
 			HeaderService.dataContainer.currentObjectScope = $scope.form;
 		});
 	};
@@ -48,13 +40,12 @@ var RuntimeController = function($rootScope, $scope, FormService, $routeParams, 
 		FormService.populatedTemplate($routeParams.id).then(function(response) {
 			// FormService.populatedTemplate returns an existing instance, assign it to our local $scope.instance
 			$scope.instance = response;
-			//$scope.$broadcast('loadExistingModel', response);
+      $scope.isEditData = true;
+
 			// Get and load the template document this instance will populate from (will be blank form template)
 			FormService.form(response.templateId).then(function(form) {
 				// Assign returned form object from FormService to $scope.form
 				$scope.form = form;
-				// $scope.initializePagination kicks off paging with form._ui.pages array
-				$scope.initializePagination(form._ui.pages);
 			});
 		}).catch(function(err) {
 			$scope.runtimeErrorMessages.push('Problem retrieving the populated template instance.');
@@ -70,31 +61,6 @@ var RuntimeController = function($rootScope, $scope, FormService, $routeParams, 
 		// Loading empty form if given an ID in the $routeParams.id url path
 		$scope.getSubmission();
 	}
-
-	// Inject pages array from FormService into $scope variable
-	// and render the first page of fields/elements by default
-	$scope.initializePagination = function(pages) {
-	  $scope.pagesArray = pages;
-	  $scope.currentPage = $scope.pagesArray[$scope.pageIndex];
-	};
-
-	// Load the previous page of the form
-	$scope.previousPage = function() {
-	  $scope.pageIndex --;
-	  $scope.currentPage = $scope.pagesArray[$scope.pageIndex];
-	};
-
-	// Load the next page of the form
-	$scope.nextPage = function() {
-	  $scope.pageIndex ++;
-	  $scope.currentPage = $scope.pagesArray[$scope.pageIndex];
-	};
-
-	// Load an arbitrary page number attached to the index of it via runtime.html template
-	$scope.setCurrentPage = function(page) {
-	  $scope.pageIndex = page;
-	  $scope.currentPage = $scope.pagesArray[$scope.pageIndex];
-	};
 
 	// Stores the data (populated template) into the database
 	$scope.savePopulatedTemplate = function() {
