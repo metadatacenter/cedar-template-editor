@@ -11,7 +11,6 @@ angularApp.directive('formDirective', function ($rootScope, $document, $timeout)
       model: '='
     },
     controller: function($scope) {
-      $scope.formFieldsOrder = [];
       $scope.model = $scope.model || {};
 
       // Initializaing checkSubmission as false
@@ -55,9 +54,8 @@ angularApp.directive('formDirective', function ($rootScope, $document, $timeout)
         if (selectedKey) {
           delete props[selectedKey];
 
-          // Don't reset formFieldsOrder in $watch form.properties, it causes performance and usage issue.
-          var idx = $scope.formFieldsOrder.indexOf(selectedKey);
-          $scope.formFieldsOrder.splice(idx, 1);
+          var idx = $scope.form._ui.order.indexOf(selectedKey);
+          $scope.form._ui.order.splice(idx, 1);
         }
       };
 

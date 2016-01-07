@@ -11941,7 +11941,7 @@ body .template-header .controlled-terms-modal {
   cursor: move;
 }
 .template-body .right-body .preview-edit-options .element-preview-actions .edit {
-  background: #000000;
+  background: #339933;
 }
 .template-body .right-body .preview-edit-options .element-preview-actions .edit i {
   -webkit-transform: unset;
@@ -11953,6 +11953,9 @@ body .template-header .controlled-terms-modal {
   color: #ffffff;
   line-height: 25px;
   margin-left: 5px;
+}
+.element-configuration-options {
+  margin-top: 5px;
 }
 @font-face {
   font-family: "project-cedar";

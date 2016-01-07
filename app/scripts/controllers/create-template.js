@@ -84,6 +84,16 @@ var CreateTemplateController = function($rootScope, $scope, $q, $routeParams, $t
 
     // Converting title for irregular character handling
     var elName = $rootScope.getFieldName(clonedElement.properties._ui.title);
+
+    if ($scope.form.properties["@context"].properties[elName]) {
+      var idx = 1;
+      while ($scope.form.properties["@context"].properties[elName + idx]) {
+        idx += 1;
+      }
+
+      elName = elName + idx;
+    }
+
     // Adding corresponding property type to @context
     $scope.form.properties["@context"].properties[elName] = {};
     $scope.form.properties["@context"].properties[elName].enum =
@@ -97,6 +107,7 @@ var CreateTemplateController = function($rootScope, $scope, $q, $routeParams, $t
     $scope.form.properties[elName] = clonedElement;
     $scope.form._ui.order = $scope.form._ui.order || [];
     $scope.form._ui.order.push(elName);
+    $rootScope.$broadcast("form:update");
   };
 
   // Function to add additional options for radio, checkbox, and list fieldTypes
@@ -137,6 +148,7 @@ var CreateTemplateController = function($rootScope, $scope, $q, $routeParams, $t
         delete $scope.form.properties[key];
       }
     });
+    $scope.form._ui.order = [];
     // Broadcast the reset event which will trigger the emptying of formFields formFieldsOrder
     $scope.$broadcast('resetForm');
   };

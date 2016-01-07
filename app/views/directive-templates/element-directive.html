@@ -76,7 +76,7 @@
 
             <div class="input-type-container" ng-if="!$root.isRuntime() && !$root.propertiesOf(element)._ui.is_root && $root.propertiesOf(element)._ui.state == 'creating'">
               <div class="row">
-                <div class="configuration-options col-lg-9 pull-left">
+                <div class="configuration-options element-configuration-options col-lg-9 pull-left">
                     <div class="checkbox checkbox-inline checkbox-cardinality">
                       <input type="checkbox" id="cardinality-{{element['@id'].substring(element['@id'].lastIndexOf('/')+1)}}" ng-model="$root.propertiesOf(element)._ui.is_cardinal_field" />
                       <label for="cardinality-{{element['@id'].substring(element['@id'].lastIndexOf('/')+1)}}">Cardinality</label>
