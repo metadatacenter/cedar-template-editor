@@ -2,8 +2,9 @@
 
 var UrlService = function () {
 
-  var hostname = window.location.hostname;
-  var apiService = 'http://' + hostname + ':9000';
+  //var hostname = window.location.hostname;
+  //var apiService = 'http://' + hostname + ':9000';
+  var apiService = 'http://data.metadatacenter.orgx';
 
   var service = {
     serviceId: "UrlService"
