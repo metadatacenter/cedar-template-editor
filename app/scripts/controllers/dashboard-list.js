@@ -1,17 +1,16 @@
 'use strict';
 
-var DashboardListController = function ($rootScope, $scope, $routeParams, $location, FormService, HeaderService, UrlService, CONST) {
+var DashboardListController = function ($rootScope, $scope, $routeParams, $location, HeaderService, UrlService, TemplateService, TemplateElementService, TemplateInstanceService, CONST) {
 
   // Load all items depending on $routeParams.type parameter supplied
-  $scope.listElements = function () {
+  $scope.listTemplateElements = function () {
     // set Page Title variable when this is active
     $rootScope.pageTitle = 'Elements Listing';
     $scope.sectionTitle = 'Template Elements';
     $scope.createLink = '/elements/create';
-    // Retrieve list of elements using FormService
-    FormService.elementList().then(function (response) {
-      // Sort by the 'favorites' boolean parameter
-      $scope.itemList = $rootScope.sortBoolean(response, 'favorite');
+
+    TemplateElementService.getAllTemplateElementsSummary().then(function (data) {
+      $scope.allTemplateElements = data;
     });
   };
 
@@ -20,28 +19,26 @@ var DashboardListController = function ($rootScope, $scope, $routeParams, $locat
     $rootScope.pageTitle = 'Templates Listing';
     $scope.sectionTitle = 'Metadata Templates';
     $scope.createLink = '/templates/create';
-    // Retrieve list of form templates using FormService
-    FormService.formList().then(function (response) {
-      // Sort by the 'favorites' boolean parameter
-      $scope.itemList = $rootScope.sortBoolean(response, 'favorite');
+
+    TemplateService.getAllTemplatesSummary().then(function (data) {
+      $scope.allTemplates = data;
     });
   };
 
-  $scope.listSubmissions = function () {
+  $scope.listTemplateInstances = function () {
     // set Page Title variable when this is active
     $rootScope.pageTitle = 'Populated Templates';
     $scope.sectionTitle = 'Populated Templates';
     $scope.createLink = '/instances/create';
-    // Retrieve list of form submissions using FormService
-    FormService.populatedTemplatesList().then(function (response) {
-      // Return list of submissions from FormService
-      $scope.submissions = response;
+
+    TemplateInstanceService.getAllTemplateInstancesSummary().then(function (data) {
+      $scope.allTemplateInstances = data;
     });
   };
 
   // Remove template
   $scope.removeTemplate = function (id) {
-    FormService.removeTemplate(id).then(function (response) {
+    TemplateService.removeTemplate(id).then(function (response) {
       // Reload templates
       $scope.listTemplates();
     }).catch(function (err) {
@@ -51,9 +48,9 @@ var DashboardListController = function ($rootScope, $scope, $routeParams, $locat
 
   // Remove element
   $scope.removeElement = function (id) {
-    FormService.removeElement(id).then(function (response) {
+    TemplateElementService.removeTemplateElement(id).then(function (response) {
       // Reload elements
-      $scope.listElements();
+      $scope.listTemplateElements();
     }).catch(function (err) {
       console.log(err);
     });
@@ -61,9 +58,9 @@ var DashboardListController = function ($rootScope, $scope, $routeParams, $locat
 
   // Remove populated template
   $scope.removeInstance = function (id) {
-    FormService.removePopulatedTemplate(id).then(function (response) {
-      // Reload populated templates
-      $scope.listSubmissions();
+    TemplateInstanceService.removeTemplateInstance(id).then(function (response) {
+      // Reload template instances
+      $scope.listTemplateInstances();
     }).catch(function (err) {
       console.log(err);
     });
@@ -71,11 +68,12 @@ var DashboardListController = function ($rootScope, $scope, $routeParams, $locat
 
   // ************************************************************************************
 
-  $scope.itemList = [];
-  // Setting type via $routeParams ('elements', or 'templates')
+  $scope.allTemplates = [];
+  $scope.allTemplateElements = [];
+  $scope.allTemplateInstances = [];
+
+  // Setting type via $routeParams ('elements', or 'templates', or 'instances')
   $scope.itemType = $routeParams.type;
-  // Submissions have slightly different use cases then elements, or templates, need a different $scope
-  $scope.submissions = [];
 
   // Inject constants
   $scope.CONST = CONST;
@@ -83,27 +81,30 @@ var DashboardListController = function ($rootScope, $scope, $routeParams, $locat
   // Configure mini header
   var pageId = CONST.pageId.DASHBOARDLIST;
   var currentApplicationMode = $rootScope.applicationMode;
+
+  switch ($scope.itemType) {
+    case 'elements':
+      currentApplicationMode == CONST.applicationMode.CREATOR;
+      $scope.listTemplateElements();
+      break;
+    case 'templates':
+      currentApplicationMode == CONST.applicationMode.CREATOR;
+      $scope.listTemplates();
+      break;
+    case 'instances':
+      currentApplicationMode == CONST.applicationMode.RUNTIME;
+      $scope.listTemplateInstances();
+      break;
+  }
+
   if (currentApplicationMode == CONST.applicationMode.DEFAULT) {
     $location.path(UrlService.getRoleSelector());
     return;
   }
   HeaderService.configure(pageId, currentApplicationMode);
 
-
-  switch ($scope.itemType) {
-    case 'elements':
-      $scope.listElements();
-      break;
-    case 'templates':
-      $scope.listTemplates();
-      break;
-    case 'submissions':
-      $scope.listSubmissions();
-      break;
-  }
-
 };
 
 
-DashboardListController.$inject = ["$rootScope", "$scope", "$routeParams", "$location", "FormService", "HeaderService", "UrlService", "CONST"];
+DashboardListController.$inject = ["$rootScope", "$scope", "$routeParams", "$location", "HeaderService", "UrlService", "TemplateService", "TemplateElementService", "TemplateInstanceService", "CONST"];
 angularApp.controller('DashboardListController', DashboardListController);

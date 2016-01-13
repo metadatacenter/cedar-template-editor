@@ -1,0 +1,72 @@
+{
+  "FIELDS": {
+    "FIELD_TYPE": {
+      "textfield": {
+        "NAME": "Text"
+      },
+      "textarea": {
+        "NAME": "Paragraph"
+      },
+      "radio": {
+        "NAME": "Multiple Choice"
+      },
+      "checkbox": {
+        "NAME": "Checkbox"
+      },
+      "date": {
+        "NAME": "Date"
+      },
+      "email": {
+        "NAME": "Email"
+      },
+      "list": {
+        "NAME": "Pick from a list"
+      },
+      "audio-visual": {
+        "NAME": "Audio Visual"
+      },
+      "numeric": {
+        "NAME": "Numeric"
+      },
+      "phone-number": {
+        "NAME": "Phone"
+      },
+      "section-break": {
+        "NAME": "Section Break"
+      },
+      "page-break": {
+        "NAME": "Page Break"
+      }
+    }
+  },
+  "GENERIC": {
+    "Created": "Created",
+    "Updated": "Saved"
+  },
+  "SERVER": {
+    "ELEMENT": {
+      "create": {
+        "success": "The element <b>{{title}}</b> has been created."
+      },
+      "update": {
+        "success": "The element <b>{{title}}</b> has been saved."
+      }
+    },
+    "TEMPLATE": {
+      "create": {
+        "success": "The template <b>{{title}}</b> has been created."
+      },
+      "update": {
+        "success": "The template <b>{{title}}</b> has been saved."
+      }
+    },
+    "INSTANCE": {
+      "create": {
+        "success": "The template instance has been created."
+      },
+      "update": {
+        "success": "The template instance has been saved."
+      }
+    }
+  }
+}

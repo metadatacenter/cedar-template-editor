@@ -49,20 +49,9 @@
             <button type="button" class="btn btn-more-items dropdown-toggle" data-toggle="dropdown" data-target=".element-menu" aria-expanded="false" dropdown-toggle>All Fields <i class="fa fa-angle-down fa-2x"></i>
             </button>
             <ul class="dropdown-menu element-menu" role="menu">
-              <li class="item"><a ng-click="addFieldToStaging('textfield')"><i class="cedar-svg-text"></i>Text</a></li>
-              <li class="item"><a ng-click="addFieldToStaging('textarea')"><i class="cedar-svg-paragraph"></i>Paragraph</a></li>
-              <li class="item"><a ng-click="addFieldToStaging('radio')"><i class="cedar-svg-multiple-choice"></i>Multiple Choice</a></li>
-              <li class="item"><a ng-click="addFieldToStaging('checkbox')"><i class="cedar-svg-checkbox"></i>Checkbox</a></li>
-              <li class="item"><a ng-click="addFieldToStaging('date')"><i class="cedar-svg-calendar"></i>Date</a></li>
-              <li class="item"><a ng-click="addFieldToStaging('email')"><i class="cedar-svg-at"></i>Email</a></li>
-              <li class="item"><a ng-click="addFieldToStaging('list')"><i class="cedar-svg-list"></i>Pick from a list</a></li>
-              <!-- <li class="item"><a ng-click="addFieldToStaging('controlled-term')"><i class="cedar-svg-controll-term"></i>Controlled Term</a></li> -->
-              <li class="item"><a ng-click="addFieldToStaging('audio-visual')"><i class="cedar-svg-audio-visual"></i>Audio Visual</a></li>
-              <li class="item"><a ng-click="addFieldToStaging('numeric')"><i class="cedar-svg-numeric"></i>Numeric</a></li>
-              <li class="item"><a ng-click="addFieldToStaging('phone-number')"><i class="cedar-svg-phone"></i>Phone</a></li>
-              <li class="item"><a ng-click="addFieldToStaging('section-break')"><i class="cedar-svg-section-break"></i>Section Break</a></li>
-              <li class="item"><a ng-click="addFieldToStaging('page-break')"><i class="cedar-svg-page-break"></i>Page Break</a></li>
-              <!-- <li class="item"><a class="disabled" ng-click=""><i class="cedar-svg-location"></i>Location</a></li> -->
+              <li class="item" ng-repeat="fieldType in fieldTypes">
+                <a ng-click="addFieldToStaging(fieldType.cedarType)"><i class="{{fieldType.iconClass}}"></i><span translate>{{"FIELDS.FIELD_TYPE." + fieldType.cedarType + ".NAME"}}</span></a>
+              </li>
             </ul>
           </div>
         </div> <!-- /.sticky-list -->

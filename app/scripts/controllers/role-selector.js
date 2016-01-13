@@ -1,6 +1,6 @@
 'use strict';
 
-var RoleSelectorController = function ($rootScope, $scope, FormService, HeaderService, CONST) {
+var RoleSelectorController = function ($rootScope, $scope, HeaderService, CONST) {
 
   $rootScope.pageTitle = 'Role Selector';
 
@@ -12,5 +12,5 @@ var RoleSelectorController = function ($rootScope, $scope, FormService, HeaderSe
   HeaderService.configure(pageId, applicationMode);
 };
 
-RoleSelectorController.$inject = ["$rootScope", "$scope", "FormService", "HeaderService", "CONST"];
+RoleSelectorController.$inject = ["$rootScope", "$scope", "HeaderService", "CONST"];
 angularApp.controller('RoleSelectorController', RoleSelectorController);

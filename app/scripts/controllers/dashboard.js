@@ -1,58 +1,54 @@
 'use strict';
 
-var DashboardController = function ($rootScope, $scope, $routeParams, $location, FormService, HeaderService, UrlService, CONST) {
-
-  // Define function to make async request to location of json objects and assign proper
-  // scope array with returned list of data
-  $scope.getDefaults = function (type, scopeArray) {
-    FormService[type]().then(function (response) {
-      // Sort by the 'favorites' boolean parameter
-      var sortFavorites = $rootScope.sortBoolean(response, 'favorite');
-      // Slicing the top 3 out into new array and returning to the template
-      $scope[scopeArray] = sortFavorites.slice(0, 3);
-    }).catch(function (err) {
-      console.log(err);
-    });
-  };
-
-  // Submissions have a bit different requirements so they get their own function
-  $scope.getSubmissions = function () {
-    FormService.populatedTemplatesList().then(function (response) {
-      $scope.submissionDefaults = response;
-    }).catch(function (err) {
-      console.log(err);
-    });
-  };
+var DashboardController = function ($rootScope, $scope, $routeParams, $location, HeaderService, UrlService, TemplateService, TemplateElementService, TemplateInstanceService, CONST) {
 
   // Remove template
   $scope.removeTemplate = function (id) {
-    FormService.removeTemplate(id).then(function (response) {
+    TemplateService.removeTemplate(id).then(function (response) {
       // Reload templates
-      $scope.getDefaults('formList', 'templateDefaults');
+      $scope.loadDefaultTemplates();
     }).catch(function (err) {
       console.log(err);
     });
-  }
+  };
 
   // Remove element
   $scope.removeElement = function (id) {
-    FormService.removeElement(id).then(function (response) {
+    TemplateElementService.removeTemplateElement(id).then(function (response) {
       // Reload elements
-      $scope.getDefaults('elementList', 'elementDefaults');
+      $scope.loadDefaultTemplateElements();
     }).catch(function (err) {
       console.log(err);
     });
-  }
+  };
 
   // Remove populated template
   $scope.removeInstance = function (id) {
-    FormService.removePopulatedTemplate(id).then(function (response) {
-      // Reload populated templates
-      $scope.getSubmissions();
+    TemplateInstanceService.removeTemplateInstance(id).then(function (response) {
+      // Reload instances
+      $scope.loadDefaultTemplateInstances();
     }).catch(function (err) {
       console.log(err);
     });
-  }
+  };
+
+  $scope.loadDefaultTemplateElements = function () {
+    TemplateElementService.getDefaultTemplateElementsSummary().then(function (data) {
+      $scope.defaultElements = data;
+    });
+  };
+
+  $scope.loadDefaultTemplates = function () {
+    TemplateService.getDefaultTemplatesSummary().then(function (data) {
+      $scope.defaultTemplates = data;
+    });
+  };
+
+  $scope.loadDefaultTemplateInstances = function () {
+    TemplateInstanceService.getDefaultTemplateInstancesSummary().then(function (data) {
+      $scope.defaultInstances = data;
+    });
+  };
 
   // ************************************************************************************
 
@@ -60,9 +56,9 @@ var DashboardController = function ($rootScope, $scope, $routeParams, $location,
   $rootScope.pageTitle = 'Dashboard';
 
   // Create $scope arrays to load defaults elements/templates into
-  $scope.elementDefaults = [];
-  $scope.templateDefaults = [];
-  $scope.submissionDefaults = [];
+  $scope.defaultElements = [];
+  $scope.defaultTemplates = [];
+  $scope.defaultInstances = [];
 
   // Inject constants
   $scope.CONST = CONST;
@@ -88,12 +84,13 @@ var DashboardController = function ($rootScope, $scope, $routeParams, $location,
   HeaderService.configure(pageId, currentApplicationMode);
   $rootScope.applicationRole = currentRole;
 
-  // Call getDefaults with parameters
-  $scope.getDefaults('formList', 'templateDefaults');
-  $scope.getDefaults('elementList', 'elementDefaults');
-  $scope.getSubmissions();
+
+  // get default listings
+  $scope.loadDefaultTemplateElements();
+  $scope.loadDefaultTemplates();
+  $scope.loadDefaultTemplateInstances();
 
 };
 
-DashboardController.$inject = ["$rootScope", "$scope", "$routeParams", "$location", "FormService", "HeaderService", "UrlService", "CONST"];
+DashboardController.$inject = ["$rootScope", "$scope", "$routeParams", "$location", "HeaderService", "UrlService", "TemplateService", "TemplateElementService", "TemplateInstanceService", "CONST"];
 angularApp.controller('DashboardController', DashboardController);

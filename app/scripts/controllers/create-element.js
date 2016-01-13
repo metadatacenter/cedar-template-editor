@@ -1,6 +1,6 @@
 'use strict';
 
-var CreateElementController = function ($rootScope, $scope, $routeParams, $timeout, $location, FormService, HeaderService, UrlService, StagingService, DataTemplateService, CONST, HEADER_MINI, LS) {
+var CreateElementController = function ($rootScope, $scope, $routeParams, $timeout, $location, HeaderService, UrlService, StagingService, DataTemplateService, FieldTypeService, TemplateElementService, UIMessageService, CONST, HEADER_MINI, LS) {
   // Set page title variable when this controller is active
   $rootScope.pageTitle = 'Element Designer';
   // Create staging area to create/edit fields before they get added to the element
@@ -18,15 +18,16 @@ var CreateElementController = function ($rootScope, $scope, $routeParams, $timeo
   StagingService.configure(pageId);
   $rootScope.applicationRole = 'creator';
 
-  // Using form service to load list of existing elements to embed into new element
-  FormService.elementList().then(function (response) {
-    $scope.elementList = response;
+  TemplateElementService.getAllTemplateElementsSummary().then(function (data) {
+    $scope.elementList = data;
   });
+
+  $scope.fieldTypes = FieldTypeService.getFieldTypes();
 
   // Load existing element if $routeParams.id parameter is supplied
   if ($routeParams.id) {
     // Fetch existing element and assign to $scope.element property
-    FormService.element($routeParams.id).then(function (response) {
+    TemplateElementService.getTemplateElement($routeParams.id).then(function (response) {
       $scope.element = response;
       // Set form preview to true so the preview is viewable onload
       $scope.formPreview = true;
@@ -34,8 +35,7 @@ var CreateElementController = function ($rootScope, $scope, $routeParams, $timeo
     });
   } else {
     // If we're not loading an existing element then let's create a new empty $scope.element property
-    $scope.element = DataTemplateService.getElement($rootScope.idBasePath + $rootScope.generateGUID());
-    $scope.resetElement = angular.copy($scope.element);
+    $scope.element = DataTemplateService.getElement();
     HeaderService.dataContainer.currentObjectScope = $scope.element;
   }
 
@@ -291,19 +291,12 @@ var CreateElementController = function ($rootScope, $scope, $routeParams, $timeo
       // Save element
       // Check if the element is already stored into the DB
       if ($routeParams.id == undefined) {
-        FormService.saveElement($scope.element).then(function (response) {
-          console.log(response);
-          $scope.elementSuccessMessages.push('The element \"' + response.data.properties._ui.title + '\" has been created.');
-          // Reload element list
-          FormService.elementList().then(function (response) {
-            $scope.elementList = response;
-          });
+        TemplateElementService.saveTemplateElement($scope.element).then(function (response) {
+          // confirm message
+          UIMessageService.flashSuccess('SERVER.ELEMENT.create.success', {"title": response.data.properties.info.title}, 'GENERIC.Created');
+          // Reload page with element id
           var newId = response.data['@id'];
-          //console.log("Reload element for id: " + newId);
-          //console.log("URL:" + UrlService.getElementEdit(newId));
-          $timeout(function () {
-            $location.path(UrlService.getElementEdit(newId));
-          }, 500);
+          $location.path(UrlService.getElementEdit(newId));
         }).catch(function (err) {
           $scope.elementErrorMessages.push("Problem creating the element.");
           console.log(err);
@@ -312,9 +305,9 @@ var CreateElementController = function ($rootScope, $scope, $routeParams, $timeo
       // Update element
       else {
         var id = $scope.element['@id'];
-        delete $scope.element['@id'];
-        FormService.updateElement(id, $scope.element).then(function (response) {
-          $scope.elementSuccessMessages.push('The element \"' + response.data.title + '\" has been updated.');
+        //--//delete $scope.element['@id'];
+        TemplateElementService.updateTemplateElement(id, $scope.element).then(function (response) {
+          UIMessageService.flashSuccess('SERVER.ELEMENT.update.success', {"title": response.data.title}, 'GENERIC.Updated');
         }).catch(function (err) {
           $scope.elementErrorMessages.push("Problem updating the element.");
           console.log(err);
@@ -345,5 +338,5 @@ var CreateElementController = function ($rootScope, $scope, $routeParams, $timeo
   });
 };
 
-CreateElementController.$inject = ["$rootScope", "$scope", "$routeParams", "$timeout", "$location", "FormService", "HeaderService", "UrlService", "StagingService", "DataTemplateService", "CONST", "HEADER_MINI", "LS"];
+CreateElementController.$inject = ["$rootScope", "$scope", "$routeParams", "$timeout", "$location", "HeaderService", "UrlService", "StagingService", "DataTemplateService", "FieldTypeService", "TemplateElementService", "UIMessageService", "CONST", "HEADER_MINI", "LS"];
 angularApp.controller('CreateElementController', CreateElementController);

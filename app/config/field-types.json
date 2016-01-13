@@ -1,0 +1,62 @@
+[
+  {
+    "cedarType": "textfield",
+    "iconClass": "cedar-svg-text",
+    "allowedInElement": true
+  },
+  {
+    "cedarType": "textarea",
+    "iconClass": "cedar-svg-paragraph",
+    "allowedInElement": true
+  },
+  {
+    "cedarType": "radio",
+    "iconClass": "cedar-svg-multiple-choice",
+    "allowedInElement": true
+  },
+  {
+    "cedarType": "checkbox",
+    "iconClass": "cedar-svg-checkbox",
+    "allowedInElement": true
+  },
+  {
+    "cedarType": "date",
+    "iconClass": "cedar-svg-calendar",
+    "allowedInElement": true
+  },
+  {
+    "cedarType": "email",
+    "iconClass": "cedar-svg-at",
+    "allowedInElement": true
+  },
+  {
+    "cedarType": "list",
+    "iconClass": "cedar-svg-list",
+    "allowedInElement": true
+  },
+  {
+    "cedarType": "audio-visual",
+    "iconClass": "cedar-svg-audio-visual",
+    "allowedInElement": true
+  },
+  {
+    "cedarType": "numeric",
+    "iconClass": "cedar-svg-numeric",
+    "allowedInElement": true
+  },
+  {
+    "cedarType": "phone-number",
+    "iconClass": "cedar-svg-phone",
+    "allowedInElement": true
+  },
+  {
+    "cedarType": "section-break",
+    "iconClass": "cedar-svg-section-break",
+    "allowedInElement": true
+  },
+  {
+    "cedarType": "page-break",
+    "iconClass": "cedar-svg-page-break",
+    "allowedInElement": false
+  }
+]

@@ -4,7 +4,7 @@
 /*global jQuery */
 'use strict';
 
-var angularRun = function($rootScope, BioPortalService, $location, $timeout, $window, DataTemplateService, CONST) {
+var angularRun = function($rootScope, BioPortalService, $location, $timeout, $window, DataTemplateService, FieldTypeService, CONST) {
 
   // Define global pageTitle variable for use
   //$rootScope.pageTitle;
@@ -70,15 +70,6 @@ var angularRun = function($rootScope, BioPortalService, $location, $timeout, $wi
       return (c == 'x' ? r : (r & 0x3 | 0x8)).toString(16);
     });
     return guid;
-  };
-
-  // Sorting function that moves boolean values with true to the front of the sort
-  $rootScope.sortBoolean = function(array, bool) {
-    return array.sort(function(a, b) {
-      var x = a[bool],
-        y = b[bool];
-      return ((x == y) ? -1 : ((x === true) ? -1 : 1));
-    });
   };
 
   // Function that generates a basic field definition
@@ -477,7 +468,8 @@ var angularRun = function($rootScope, BioPortalService, $location, $timeout, $wi
   };
 
   DataTemplateService.init();
+  FieldTypeService.init();
 };
 
-angularRun.$inject = ['$rootScope', 'BioPortalService', '$location', '$timeout', '$window', 'DataTemplateService', 'CONST'];
+angularRun.$inject = ['$rootScope', 'BioPortalService', '$location', '$timeout', '$window', 'DataTemplateService', 'FieldTypeService', 'CONST'];
 angularApp.run(angularRun);

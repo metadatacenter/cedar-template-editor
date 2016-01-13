@@ -10,7 +10,7 @@
 					<a class="see-all" href="#/templates/list">See All</a>
 				</div>
 				<div class="margin-reset-row">
-					<div class="template-item" ng-repeat="template in templateDefaults" cedar-resize-square="true" style="height:213px">
+					<div class="template-item" ng-repeat="template in defaultTemplates" cedar-resize-square="true" style="height:213px">
                         <cedar-box
                                 type="{{CONST.boxType.TEMPLATE}}"
                                 description="{{template.properties._ui.description}}"
@@ -33,7 +33,7 @@
 					<a class="see-all" href="#/elements/list">See All</a>
 				</div>
 				<div class="margin-reset-row">
-					<div class="template-item" ng-repeat="element in elementDefaults" cedar-resize-square="true" style="height:213px">
+					<div class="template-item" ng-repeat="element in defaultElements" cedar-resize-square="true" style="height:213px">
                         <cedar-box
                                 type="{{CONST.boxType.ELEMENT}}"
                                 description="{{element.properties._ui.description}}"
@@ -48,21 +48,21 @@
 		</section>
 		<section id="data-submission" class="dashboard-elements" ng-if="$root.applicationRole == 'instantiator'">
 			<div class="col-sm-3">
-				<h2 class="section-title">POPULATED TEMPLATES</h2>
+				<h2 class="section-title">Template Instances</h2>
 				<!-- <p class="instructions">Choose a template to fill out.</p> -->
 				<a href="#/instances/create" class="btn btn-create-new">Fill Out Template</a>
 			</div>
 			<div class="col-sm-9">
 				<div class="dash-header">
-					<a class="see-all" href="#/submissions/list">See All</a>
+					<a class="see-all" href="#/instances/list">See All</a>
 				</div>
 				<div class="margin-reset-row">
-					<div class="template-item" ng-repeat="submission in submissionDefaults" cedar-resize-square="true" style="height:213px">
+					<div class="template-item" ng-repeat="instance in defaultInstances" cedar-resize-square="true" style="height:213px">
                         <cedar-box
                                 type="{{CONST.boxType.INSTANCE}}"
-                                description="{{submission._ui.templateDescription}}&lt;br/&gt;{{'(' + (submission._ui.creationDate | date:'short') + ')'}}"
-                                title="{{submission._ui.templateTitle}}"
-                                object-id="{{submission['@id']}}"
+                                description="{{instance._ui.template_description}}&lt;br/&gt;{{'(' + (instance._ui.creation_date | date:'short') + ')'}}"
+                                title="{{instance._ui.templateTitle}}"
+                                object-id="{{instance['@id']}}"
                                 allow-remove="true"
                                 >
                         </cedar-box>
