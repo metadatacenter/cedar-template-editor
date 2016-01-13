@@ -46,7 +46,7 @@
                     </section>
 
                     <section ng-if="itemType == 'instances'">
-                        <div class="template-item" ng-repeat="instance in allTemplateInstances | filter:{info:{template_title:searchText}}"
+                        <div class="template-item" ng-repeat="instance in allTemplateInstances | filter:{_ui:{template_title:searchText}}"
                              cedar-resize-square="true">
                             <cedar-box
                                     type="{{CONST.boxType.INSTANCE}}"

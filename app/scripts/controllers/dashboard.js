@@ -86,9 +86,12 @@ var DashboardController = function ($rootScope, $scope, $routeParams, $location,
 
 
   // get default listings
-  $scope.loadDefaultTemplateElements();
-  $scope.loadDefaultTemplates();
-  $scope.loadDefaultTemplateInstances();
+  if (currentApplicationMode == CONST.applicationMode.CREATOR) {
+    $scope.loadDefaultTemplateElements();
+    $scope.loadDefaultTemplates();
+  }  else if (currentApplicationMode == CONST.applicationMode.RUNTIME) {
+    $scope.loadDefaultTemplateInstances();
+  }
 
 };
 
