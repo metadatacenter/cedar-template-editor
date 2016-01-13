@@ -282,8 +282,8 @@ var CreateElementController = function ($rootScope, $scope, $routeParams, $timeo
       // Build element 'order' array via $broadcast call
       $scope.$broadcast('initOrderArray');
       // Console.log full working form example on save, just to show demonstration of something happening
-      console.log('saving element...');
-      console.log($scope.element);
+      //console.log('saving element...');
+      //console.log($scope.element);
 
       // If maxItems is N, then remove maxItems
       $rootScope.removeUnnecessaryMaxItems($scope.element.properties);
@@ -293,7 +293,7 @@ var CreateElementController = function ($rootScope, $scope, $routeParams, $timeo
       if ($routeParams.id == undefined) {
         TemplateElementService.saveTemplateElement($scope.element).then(function (response) {
           // confirm message
-          UIMessageService.flashSuccess('SERVER.ELEMENT.create.success', {"title": response.data.properties.info.title}, 'GENERIC.Created');
+          UIMessageService.flashSuccess('SERVER.ELEMENT.create.success', {"title": response.data.properties._ui.title}, 'GENERIC.Created');
           // Reload page with element id
           var newId = response.data['@id'];
           $location.path(UrlService.getElementEdit(newId));

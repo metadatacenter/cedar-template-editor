@@ -40,7 +40,7 @@ var CreateInstanceController = function ($rootScope, $scope, $routeParams, $loca
       // Assign returned form object from FormService to $scope.form
       $scope.template = template;
       // $scope.initializePagination kicks off paging with form.pages array
-      $scope.initializePagination(template.pages);
+      $scope.initializePagination(template._ui.pages);
       HeaderService.dataContainer.currentObjectScope = $scope.template;
     });
   };
@@ -56,7 +56,7 @@ var CreateInstanceController = function ($rootScope, $scope, $routeParams, $loca
         // Assign returned form object from FormService to $scope.form
         $scope.template = template;
         // $scope.initializePagination kicks off paging with form.pages array
-        $scope.initializePagination(template.pages);
+        $scope.initializePagination(template._ui.pages);
       });
     }).catch(function (err) {
       $scope.runtimeErrorMessages.push('Problem retrieving the populated template instance.');
@@ -109,10 +109,10 @@ var CreateInstanceController = function ($rootScope, $scope, $routeParams, $loca
       // '@id' and 'template_id' haven't been populated yet, create now
       $scope.instance['template_id'] = $routeParams.template_id;
       // Create info field that will store information used by the UI
-      $scope.instance.info = {};
-      $scope.instance.info['template_title'] = $scope.template.properties.info.title + ' instance';
-      $scope.instance.info['template_description'] = $scope.template.properties.info.description;
-      $scope.instance.info['creation_date'] = new Date();
+      $scope.instance._ui = {};
+      $scope.instance._ui['template_title'] = $scope.template.properties._ui.title + ' instance';
+      $scope.instance._ui['template_description'] = $scope.template.properties._ui.description;
+      $scope.instance._ui['creation_date'] = new Date();
       // Make create instance call
       TemplateInstanceService.saveTemplateInstance($scope.instance).then(function (response) {
         // confirm message
