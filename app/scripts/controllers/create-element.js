@@ -172,20 +172,9 @@ var CreateElementController = function ($rootScope, $scope, $routeParams, $timeo
     //});
   };
 
-  $scope.addElementToStaging = function (element) {
+  $scope.addElementToStaging = function (elementId) {
     StagingService.addElement();
-    $scope.staging = {};
-    $scope.staging[element['@id']] = element;
-    element.minItems = 1;
-    element.maxItems = 1;
-
-    $scope.previewForm = {};
-    $timeout(function () {
-      var fieldName = $rootScope.getFieldName(element.properties._ui.title);
-
-      $scope.previewForm.properties = {};
-      $scope.previewForm.properties[fieldName] = element;
-    });
+    StagingService.addElementWithId($scope, elementId);
   };
 
   // Delete field from $scope.staging object

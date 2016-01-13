@@ -79,21 +79,9 @@ var CreateTemplateController = function ($rootScope, $scope, $q, $routeParams, $
 
   };
 
-  $scope.addElementToStaging = function (element) {
+  $scope.addElementToStaging = function (elementId) {
     StagingService.addElement();
-    var clonedElement = angular.copy(element);
-    $scope.staging = {};
-    $scope.staging[element['@id']] = clonedElement;
-    clonedElement.minItems = 1;
-    clonedElement.maxItems = 1;
-
-    $scope.previewForm = {};
-    $timeout(function () {
-      var fieldName = $rootScope.getFieldName(clonedElement.properties._ui.title);
-
-      $scope.previewForm.properties = {};
-      $scope.previewForm.properties[fieldName] = clonedElement;
-    });
+    StagingService.addElementWithId($scope, elementId);
   };
 
   // Function to add additional options for radio, checkbox, and list fieldTypes
