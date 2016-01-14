@@ -1,6 +1,6 @@
 'use strict';
 
-var CreateTemplateController = function ($rootScope, $scope, $q, $routeParams, $timeout, $location, HeaderService, UrlService, StagingService, DataTemplateService, FieldTypeService, TemplateElementService, TemplateService, UIMessageService, CONST, HEADER_MINI, LS) {
+var CreateTemplateController = function ($rootScope, $scope, $q, $routeParams, $timeout, $location, $translate, HeaderService, UrlService, StagingService, DataTemplateService, FieldTypeService, TemplateElementService, TemplateService, UIMessageService, CONST) {
   // Set Page Title variable when this controller is active
   $rootScope.pageTitle = 'Template Designer';
   // Create staging area to create/edit fields before they get added to $scope.form.properties
@@ -182,24 +182,17 @@ var CreateTemplateController = function ($rootScope, $scope, $q, $routeParams, $
 
   // Reverts to empty form and removes all previously added fields/elements
   $scope.reset = function () {
-    swal({
-        title: "Are you sure?",
-        text: LS.templateEditor.clear.confirm,
-        type: "warning",
-        showCancelButton: true,
-        confirmButtonText: "Yes, clear it!",
-        closeOnConfirm: true,
-        customClass: 'cedarSWAL',
-        confirmButtonColor: null
+    UIMessageService.confirmedExecution(
+      function () {
+        $timeout(function () {
+          $scope.doReset();
+          StagingService.resetPage();
+        });
       },
-      function (isConfirm) {
-        if (isConfirm) {
-          $timeout(function () {
-            $scope.doReset();
-            StagingService.resetPage();
-          });
-        }
-      });
+      'GENERIC.AreYouSure',
+      'TEMPLATEEDITOR.clear.confirm',
+      'GENERIC.YesClearIt'
+    );
   };
 
   $scope.doReset = function () {
@@ -220,25 +213,15 @@ var CreateTemplateController = function ($rootScope, $scope, $q, $routeParams, $
   //};
 
   $scope.saveTemplate = function () {
-    if (!StagingService.isEmpty()) {
-      swal({
-          title: "Are you sure?",
-          text: LS.templateEditor.save.nonEmptyStagingConfirm,
-          type: "warning",
-          showCancelButton: true,
-          confirmButtonText: "Yes, save it!",
-          closeOnConfirm: true,
-          customClass: 'cedarSWAL',
-          confirmButtonColor: null
-        },
-        function (isConfirm) {
-          if (isConfirm) {
-            $scope.doSaveTemplate();
-          }
-        });
-    } else {
-      $scope.doSaveTemplate();
-    }
+    UIMessageService.conditionalOrConfirmedExecution(
+      StagingService.isEmpty(),
+      function () {
+        $scope.doSaveTemplate();
+      },
+      'GENERIC.AreYouSure',
+      'TEMPLATEEDITOR.save.nonEmptyStagingConfirm',
+      'GENERIC.YesSaveIt'
+    );
   }
 
   // Stores the template into the database
@@ -296,7 +279,7 @@ var CreateTemplateController = function ($rootScope, $scope, $q, $routeParams, $
     // Assigning array returned to $scope.form._ui.pages property
     $scope.form._ui.pages = orderArray;
     // Console.log full working form example on save
-    console.log($scope.form);
+    //console.log($scope.form);
     // Database service save() call could go here
   });
 
@@ -318,5 +301,5 @@ var CreateTemplateController = function ($rootScope, $scope, $q, $routeParams, $
 
 };
 
-CreateTemplateController.$inject = ["$rootScope", "$scope", "$q", "$routeParams", "$timeout", "$location", "HeaderService", "UrlService", "StagingService", "DataTemplateService", "FieldTypeService", "TemplateElementService", "TemplateService", "UIMessageService", "CONST", "HEADER_MINI", "LS"];
+CreateTemplateController.$inject = ["$rootScope", "$scope", "$q", "$routeParams", "$timeout", "$location", "$translate", "HeaderService", "UrlService", "StagingService", "DataTemplateService", "FieldTypeService", "TemplateElementService", "TemplateService", "UIMessageService", "CONST"];
 angularApp.controller('CreateTemplateController', CreateTemplateController);

@@ -17,6 +17,47 @@ var UIMessageService = function (toasty, $translate) {
     });
   };
 
+  service.conditionalOrConfirmedExecution = function (condition, callback, titleKey, textKey, confirmTextKey) {
+    if (condition) {
+      callback();
+    } else {
+      swal({
+          title: $translate.instant(titleKey),
+          text: $translate.instant(textKey),
+          type: "warning",
+          showCancelButton: true,
+          confirmButtonText: $translate.instant(confirmTextKey),
+          closeOnConfirm: true,
+          customClass: 'cedarSWAL',
+          confirmButtonColor: null
+        },
+        function (isConfirm) {
+          if (isConfirm) {
+            callback();
+          }
+        }
+      );
+    }
+  };
+
+  service.confirmedExecution = function (callback, titleKey, textKey, confirmTextKey) {
+    swal({
+        title: $translate.instant(titleKey),
+        text: $translate.instant(textKey),
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonText: $translate.instant(confirmTextKey),
+        closeOnConfirm: true,
+        customClass: 'cedarSWAL',
+        confirmButtonColor: null
+      },
+      function (isConfirm) {
+        if (isConfirm) {
+          callback();
+        }
+      });
+  };
+
   return service;
 };
 

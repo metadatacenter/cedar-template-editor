@@ -1,6 +1,6 @@
 'use strict';
 
-var CreateInstanceController = function ($rootScope, $scope, $routeParams, $location, HeaderService, UrlService, TemplateService, TemplateInstanceService, UIMessageService, CONST, HEADER_MINI) {
+var CreateInstanceController = function ($rootScope, $scope, $routeParams, $location, HeaderService, UrlService, TemplateService, TemplateInstanceService, UIMessageService, CONST) {
   // set Page Title variable when this controller is active
   $rootScope.pageTitle = 'Metadata Editor';
 
@@ -161,5 +161,5 @@ var CreateInstanceController = function ($rootScope, $scope, $routeParams, $loca
   });
 };
 
-CreateInstanceController.$inject = ["$rootScope", "$scope", "$routeParams", "$location", "HeaderService", "UrlService", "TemplateService", "TemplateInstanceService", "UIMessageService", "CONST", "HEADER_MINI"];
+CreateInstanceController.$inject = ["$rootScope", "$scope", "$routeParams", "$location", "HeaderService", "UrlService", "TemplateService", "TemplateInstanceService", "UIMessageService", "CONST"];
 angularApp.controller('CreateInstanceController', CreateInstanceController);

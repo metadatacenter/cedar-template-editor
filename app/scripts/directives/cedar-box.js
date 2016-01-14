@@ -1,16 +1,16 @@
 'use strict';
 
-var cedarBox = function ($document, $location, $sce, UrlService, LS, CONST) {
+var cedarBox = function ($document, $location, $sce, $translate, UrlService, CONST) {
 
   function link(scope, element, attrs) {
 
     scope.removeObject = function ($event) {
       swal({
-          title: LS.c.areYouSure,
-          text: LS.dashboard.delete.confirm[scope.type],
+          title: $translate.instant('GENERIC.AreYouSure'),
+          text: $translate.instant('DASHBOARD.delete.confirm.' + scope.type),
           type: "warning",
           showCancelButton: true,
-          confirmButtonText: LS.c.yesDeleteIt,
+          confirmButtonText: $translate.instant('GENERIC.YesDeleteIt'),
           closeOnConfirm: true,
           customClass: 'cedarSWAL',
           confirmButtonColor: null
@@ -78,5 +78,5 @@ var cedarBox = function ($document, $location, $sce, UrlService, LS, CONST) {
 
 };
 
-cedarBox.$inject = ['$document', '$location', '$sce', 'UrlService', 'LS', 'CONST'];
+cedarBox.$inject = ['$document', '$location', '$sce', '$translate', 'UrlService', 'CONST'];
 angularApp.directive('cedarBox', cedarBox);

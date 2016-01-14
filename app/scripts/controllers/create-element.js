@@ -1,6 +1,6 @@
 'use strict';
 
-var CreateElementController = function ($rootScope, $scope, $routeParams, $timeout, $location, HeaderService, UrlService, StagingService, DataTemplateService, FieldTypeService, TemplateElementService, UIMessageService, CONST, HEADER_MINI, LS) {
+var CreateElementController = function ($rootScope, $scope, $routeParams, $timeout, $location, $translate, HeaderService, UrlService, StagingService, DataTemplateService, FieldTypeService, TemplateElementService, UIMessageService, CONST) {
   // Set page title variable when this controller is active
   $rootScope.pageTitle = 'Element Designer';
   // Create staging area to create/edit fields before they get added to the element
@@ -199,24 +199,17 @@ var CreateElementController = function ($rootScope, $scope, $routeParams, $timeo
 
   // Reverts to empty form and removes all previously added fields/elements
   $scope.reset = function () {
-    swal({
-        title: "Are you sure?",
-        text: LS.elementEditor.clear.confirm,
-        type: "warning",
-        showCancelButton: true,
-        confirmButtonText: "Yes, clear it!",
-        closeOnConfirm: true,
-        customClass: 'cedarSWAL',
-        confirmButtonColor: null
+    UIMessageService.confirmedExecution(
+      function () {
+        $timeout(function () {
+          $scope.doReset();
+          StagingService.resetPage();
+        });
       },
-      function (isConfirm) {
-        if (isConfirm) {
-          $timeout(function () {
-            $scope.doReset();
-            StagingService.resetPage();
-          });
-        }
-      });
+      'GENERIC.AreYouSure',
+      'ELEMENTEDITOR.clear.confirm',
+      'GENERIC.YesClearIt'
+    );
   };
 
   $scope.doReset = function () {
@@ -232,25 +225,15 @@ var CreateElementController = function ($rootScope, $scope, $routeParams, $timeo
   //};
 
   $scope.saveElement = function () {
-    if (!StagingService.isEmpty()) {
-      swal({
-          title: "Are you sure?",
-          text: LS.elementEditor.save.nonEmptyStagingConfirm,
-          type: "warning",
-          showCancelButton: true,
-          confirmButtonText: "Yes, save it!",
-          closeOnConfirm: true,
-          customClass: 'cedarSWAL',
-          confirmButtonColor: null
-        },
-        function (isConfirm) {
-          if (isConfirm) {
-            $scope.doSaveElement();
-          }
-        });
-    } else {
-      $scope.doSaveElement();
-    }
+    UIMessageService.conditionalOrConfirmedExecution(
+      StagingService.isEmpty(),
+      function () {
+        $scope.doSaveElement();
+      },
+      'GENERIC.AreYouSure',
+      'ELEMENTEDITOR.save.nonEmptyStagingConfirm',
+      'GENERIC.YesSaveIt'
+    );
   }
 
   // Stores the element into the database
@@ -327,5 +310,5 @@ var CreateElementController = function ($rootScope, $scope, $routeParams, $timeo
   });
 };
 
-CreateElementController.$inject = ["$rootScope", "$scope", "$routeParams", "$timeout", "$location", "HeaderService", "UrlService", "StagingService", "DataTemplateService", "FieldTypeService", "TemplateElementService", "UIMessageService", "CONST", "HEADER_MINI", "LS"];
+CreateElementController.$inject = ["$rootScope", "$scope", "$routeParams", "$timeout", "$location", "$translate", "HeaderService", "UrlService", "StagingService", "DataTemplateService", "FieldTypeService", "TemplateElementService", "UIMessageService", "CONST"];
 angularApp.controller('CreateElementController', CreateElementController);

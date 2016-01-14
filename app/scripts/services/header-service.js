@@ -1,6 +1,8 @@
 'use strict';
 
-var HeaderService = function ($rootScope, HEADER_MINI) {
+var HeaderService = function ($rootScope, $http) {
+
+  var config = null;
 
   var service = {
     serviceId: "HeaderService",
@@ -12,9 +14,17 @@ var HeaderService = function ($rootScope, HEADER_MINI) {
     }
   };
 
+  service.init = function () {
+    $http.get('config/header-service.conf.json').then(function (response) {
+      config = response.data;
+    }).catch(function (err) {
+      console.log(err);
+    });
+  };
+
   service.configure = function (pageId, applicationMode) {
-    this.miniHeaderEnabled = HEADER_MINI[pageId].enabled;
-    this.miniHeaderScrollLimit = HEADER_MINI[pageId].scrollLimit;
+    this.miniHeaderEnabled = config[pageId].enabled;
+    this.miniHeaderScrollLimit = config[pageId].scrollLimit;
     $rootScope.applicationMode = applicationMode;
     $rootScope.pageId = pageId;
   };
@@ -27,6 +37,10 @@ var HeaderService = function ($rootScope, HEADER_MINI) {
     return this.miniHeaderScrollLimit;
   };
 
+  service.getStickyThreshold = function () {
+    return config.stickyThreshold;
+  };
+
   service.showMini = function (pageYOffset) {
     return this.isEnabled() && pageYOffset > this.getScrollLimit();
   };
@@ -34,5 +48,5 @@ var HeaderService = function ($rootScope, HEADER_MINI) {
   return service;
 };
 
-HeaderService.$inject = ["$rootScope", "HEADER_MINI"];
+HeaderService.$inject = ["$rootScope", "$http"];
 angularApp.service('HeaderService', HeaderService);

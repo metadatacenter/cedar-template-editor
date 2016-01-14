@@ -1,13 +1,19 @@
 'use strict';
 
-var UrlService = function () {
+var UrlService = function ($http) {
 
-  //var hostname = window.location.hostname;
-  //var apiService = 'http://' + hostname + ':9000';
-  var apiService = 'http://data.metadatacenter.orgx';
+  var apiService = null;
 
   var service = {
     serviceId: "UrlService"
+  };
+
+  service.init = function () {
+    $http.get('config/url-service.conf.json').then(function (response) {
+      apiService = response.data.cedarRestAPI;
+    }).catch(function (err) {
+      console.log(err);
+    });
   };
 
   service.getRoleSelector = function () {
@@ -77,5 +83,5 @@ var UrlService = function () {
   return service;
 };
 
-UrlService.$inject = [];
+UrlService.$inject = ['$http'];
 angularApp.service('UrlService', UrlService);
