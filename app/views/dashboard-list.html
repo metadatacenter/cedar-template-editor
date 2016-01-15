@@ -3,18 +3,18 @@
         <section id="dashboard-list" class="dashboard-elements">
             <div class="col-sm-3">
                 <h2 class="section-title" ng-bind="sectionTitle"></h2>
-                <a ng-href="#{{createLink}}" class="btn btn-create-new">Create New <i class="cedar-svg-plus"></i></a>
+                <a ng-href="#{{createLink}}" class="btn btn-create-new"><span translate>GENERIC.CreateNew</span> <i class="cedar-svg-plus"></i></a>
             </div>
             <div class="col-sm-9">
                 <div class="dash-header">
                     <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Search" aria-label="Search"
+                        <input type="text" class="form-control" placeholder="{{'GENERIC.Search' | translate}}" aria-label="{{'GENERIC.Search' | translate}}"
                                ng-model="searchText">
 			      <span class="input-group-btn">
 			        <button class="btn btn-default" type="button"><i class="fa fa-search"></i></button>
 			      </span>
                     </div>
-                    <a class="back" href="#/dashboard"><i class="fa fa-arrow-left"></i> Back</a>
+                    <a class="back" href="#/dashboard"><i class="fa fa-arrow-left"></i> <span translate>GENERIC.Back</span></a>
                 </div>
                 <div class="margin-reset-row">
                     <section ng-if="itemType == 'elements'">

@@ -4,7 +4,7 @@
   </div>
   <div class="checkbox checkbox-inline checkbox-required">
     <input type="checkbox" id="required-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}" ng-model="field.properties._valueConstraints.requiredValue" />
-    <label for="required-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}">Required</label>
+    <label for="required-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}" translate>GENERIC.Required</label>
   </div><!-- /.checkbox-inline -->
   <!--<div class="checkbox checkbox-inline checkbox-advanced">-->
     <!--<input type="checkbox" id="advanced-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}" data-toggle="collapse" data-target="#advanced-options-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}" />-->
@@ -12,14 +12,14 @@
   <!--</div>&lt;!&ndash; /.checkbox-inline &ndash;&gt;-->
   <div class="checkbox checkbox-inline checkbox-cardinality">
     <input type="checkbox" id="cardinality-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}"  ng-model="$parent.element.properties._ui.is_cardinal_field" />
-    <label for="cardinality-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}">Cardinality</label>
+    <label for="cardinality-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}" translate>GENERIC.Cardinality</label>
   </div><!-- /.checkbox-inline -->
   <div class="clearfix"></div>
 
   <!-- Cardinality Options -->
   <div id="cardinality-options" class="cardinality-options" ng-show="$parent.element.properties._ui.is_cardinal_field">
     <div class="form-group validation-pattern pull-left min-items-option">
-      <label>Min:</label>
+      <label translate>GENERIC.Min</label>
       <select class="" ng-model="$parent.field.minItems" title="" ng-options="v.value as v.label for v in $root.minCardinalities" select-picker="">
         <option value="1">1</option>
         <option value="2">2</option>
@@ -33,7 +33,7 @@
     </div><!-- /.form-group -->
 
     <div class="form-group validation-pattern pull-left max-items-option">
-      <label>Max:</label>
+      <label translate>GENERIC.Max</label>
       <select class="" ng-model="$parent.field.maxItems" title="" ng-options="v.value as v.label for v in $root.maxCardinalities" select-picker="">
         <option value="1">1</option>
         <option value="2">2</option>

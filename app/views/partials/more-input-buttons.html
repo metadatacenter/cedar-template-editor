@@ -3,7 +3,7 @@
     <i class="fa fa-plus"></i>
     <div class="cardinality-_ui-container">
       <div class="cardinality-_ui">
-        <div class="cardinality-_ui-text">Min Entries: {{$parent.field.minItems}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Max Entries: {{$parent.field.maxItems || "Unlimited"}}</div>
+        <div class="cardinality-_ui-text"><span translate="GENERIC.MultipleMinMaxMsg" translate-values="{min:$parent.field.minItems, max:($parent.field.maxItems || 'GENERIC.Unlimited' | translate)}"></span></div>
       </div>
     </div>
   </button>

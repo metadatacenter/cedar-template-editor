@@ -2,12 +2,12 @@
 	<div class="row">
 		<section id="metadata-templates" class="dashboard-elements" ng-if="$root.applicationRole == 'creator'">
 			<div class="col-sm-3">
-				<h2 class="section-title">Metadata Templates</h2>
-				<a href="#/templates/create" class="btn btn-create-new">Create New <i class="cedar-svg-plus"></i></a>
+				<h2 class="section-title" translate>PAGES.DASHBOARDLIST-TEMPLATE.sectionTitle</h2>
+				<a href="#/templates/create" class="btn btn-create-new"><span translate>GENERIC.CreateNew</span> <i class="cedar-svg-plus"></i></a>
 			</div>
 			<div class="col-sm-9">
 				<div class="dash-header">
-					<a class="see-all" href="#/templates/list">See All</a>
+					<a class="see-all" href="#/templates/list" translate>GENERIC.SeeAll</a>
 				</div>
 				<div class="margin-reset-row">
 					<div class="template-item" ng-repeat="template in defaultTemplates" cedar-resize-square="true" style="height:213px">
@@ -25,12 +25,12 @@
 		</section>
 		<section id="template-elements" class="dashboard-elements" ng-if="$root.applicationRole == 'creator'">
 			<div class="col-sm-3">
-				<h2 class="section-title">Template Elements</h2>
-				<a href="#/elements/create" class="btn btn-create-new">Create New <i class="cedar-svg-plus"></i></a>
+				<h2 class="section-title" translate>PAGES.DASHBOARDLIST-ELEMENT.sectionTitle</h2>
+				<a href="#/elements/create" class="btn btn-create-new"><span translate>GENERIC.CreateNew</span> <i class="cedar-svg-plus"></i></a>
 			</div>
 			<div class="col-sm-9">
 				<div class="dash-header">
-					<a class="see-all" href="#/elements/list">See All</a>
+					<a class="see-all" href="#/elements/list" translate>GENERIC.SeeAll</a>
 				</div>
 				<div class="margin-reset-row">
 					<div class="template-item" ng-repeat="element in defaultElements" cedar-resize-square="true" style="height:213px">
@@ -48,13 +48,13 @@
 		</section>
 		<section id="data-submission" class="dashboard-elements" ng-if="$root.applicationRole == 'instantiator'">
 			<div class="col-sm-3">
-				<h2 class="section-title">Template Instances</h2>
+				<h2 class="section-title" translate>PAGES.DASHBOARDLIST-INSTANCE.sectionTitle</h2>
 				<!-- <p class="instructions">Choose a template to fill out.</p> -->
-				<a href="#/instances/create" class="btn btn-create-new">Fill Out Template</a>
+				<a href="#/instances/create" class="btn btn-create-new"><span translate>GENERIC.FillOutTemplate</span></a>
 			</div>
 			<div class="col-sm-9">
 				<div class="dash-header">
-					<a class="see-all" href="#/instances/list">See All</a>
+					<a class="see-all" href="#/instances/list" translate>GENERIC.SeeAll</a>
 				</div>
 				<div class="margin-reset-row">
 					<div class="template-item" ng-repeat="instance in defaultInstances" cedar-resize-square="true" style="height:213px">

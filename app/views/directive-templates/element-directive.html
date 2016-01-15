@@ -52,8 +52,8 @@
 
                         <div class="cardinality-_ui-container">
                             <div class="cardinality-_ui">
-                                <div class="cardinality-_ui-text">Min Entries: {{element.minItems}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Max
-                                    Entries: {{element.maxItems || "Unlimited"}}
+                                <div class="cardinality-_ui-text">
+                                    <span translate="GENERIC.MultipleMinMaxMsg" translate-values="{min:element.minItems, max:(element.maxItems || 'GENERIC.Unlimited' | translate)}"></span>
                                 </div>
                             </div>
                         </div>
@@ -65,7 +65,7 @@
             <div ng-if="$root.isArray(model)" class="element" ng-repeat="m in model" ng-class="['element-{{$index}}']"
                  ng-show="selectedTab == $index">
                 <div class="remove-element pull-right">
-                    <a class="" ng-show="model.length > element.minItems" ng-click="removeElement($index)">Remove</a>
+                    <a class="" ng-show="model.length > element.minItems" ng-click="removeElement($index)" translate>GENERIC.Remove</a>
                 </div>
 
                 <div ng-repeat="key in element['_ui']['order']">
