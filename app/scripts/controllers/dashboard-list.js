@@ -1,12 +1,12 @@
 'use strict';
 
-var DashboardListController = function ($rootScope, $scope, $routeParams, $location, HeaderService, UrlService, TemplateService, TemplateElementService, TemplateInstanceService, CONST) {
+var DashboardListController = function ($rootScope, $scope, $routeParams, $location, $translate, HeaderService, UrlService, TemplateService, TemplateElementService, TemplateInstanceService, CONST) {
 
   // Load all items depending on $routeParams.type parameter supplied
   $scope.listTemplateElements = function () {
     // set Page Title variable when this is active
-    $rootScope.pageTitle = 'Elements Listing';
-    $scope.sectionTitle = 'Template Elements';
+    $rootScope.pageTitle = $translate.instant('PAGES.DASHBOARDLIST-ELEMENT.pageTitle');
+    $scope.sectionTitle = $translate.instant('PAGES.DASHBOARDLIST-ELEMENT.sectionTitle');
     $scope.createLink = '/elements/create';
 
     TemplateElementService.getAllTemplateElementsSummary().then(function (data) {
@@ -16,8 +16,8 @@ var DashboardListController = function ($rootScope, $scope, $routeParams, $locat
 
   $scope.listTemplates = function () {
     // set Page Title variable when this is active
-    $rootScope.pageTitle = 'Templates Listing';
-    $scope.sectionTitle = 'Metadata Templates';
+    $rootScope.pageTitle = $translate.instant('PAGES.DASHBOARDLIST-TEMPLATE.pageTitle');
+    $scope.sectionTitle = $translate.instant('PAGES.DASHBOARDLIST-TEMPLATE.sectionTitle');
     $scope.createLink = '/templates/create';
 
     TemplateService.getAllTemplatesSummary().then(function (data) {
@@ -27,8 +27,8 @@ var DashboardListController = function ($rootScope, $scope, $routeParams, $locat
 
   $scope.listTemplateInstances = function () {
     // set Page Title variable when this is active
-    $rootScope.pageTitle = 'Populated Templates';
-    $scope.sectionTitle = 'Populated Templates';
+    $rootScope.pageTitle = $translate.instant('PAGES.DASHBOARDLIST-INSTANCE.pageTitle');
+    $scope.sectionTitle = $translate.instant('PAGES.DASHBOARDLIST-INSTANCE.sectionTitle');
     $scope.createLink = '/instances/create';
 
     TemplateInstanceService.getAllTemplateInstancesSummary().then(function (data) {
@@ -106,5 +106,5 @@ var DashboardListController = function ($rootScope, $scope, $routeParams, $locat
 };
 
 
-DashboardListController.$inject = ["$rootScope", "$scope", "$routeParams", "$location", "HeaderService", "UrlService", "TemplateService", "TemplateElementService", "TemplateInstanceService", "CONST"];
+DashboardListController.$inject = ["$rootScope", "$scope", "$routeParams", "$location", "$translate", "HeaderService", "UrlService", "TemplateService", "TemplateElementService", "TemplateInstanceService", "CONST"];
 angularApp.controller('DashboardListController', DashboardListController);

@@ -4,7 +4,7 @@
 /*global jQuery */
 'use strict';
 
-var angularRun = function ($rootScope, BioPortalService, $location, $timeout, $window, DataTemplateService, FieldTypeService, UrlService, HeaderService, CONST) {
+var angularRun = function ($rootScope, BioPortalService, $location, $timeout, $window, $translate, DataTemplateService, FieldTypeService, UrlService, HeaderService, CONST) {
 
   // Define global pageTitle variable for use
   //$rootScope.pageTitle;
@@ -122,7 +122,7 @@ var angularRun = function ($rootScope, BioPortalService, $location, $timeout, $w
 
     if (field.minItems && field.maxItems &&
       parseInt(field.minItems) > parseInt(field.maxItems)) {
-      unmetConditions.push('Min cannot be greater than Max.');
+      unmetConditions.push($translate.instant('VALIDATION.minBiggerThanMax'));
     }
 
     return unmetConditions;
@@ -304,11 +304,11 @@ var angularRun = function ($rootScope, BioPortalService, $location, $timeout, $w
     }
     if ($rootScope.autocompleteResultsCache[field_id].results.length === 0) {
       $rootScope.autocompleteResultsCache[field_id].results.push({
-        'label': 'No Results...'
+        'label': $translate.instant('GENERIC.NoResults')
       });
     } else {
       for (i = 0; i < $rootScope.autocompleteResultsCache[field_id].results.length; i++) {
-        if ($rootScope.autocompleteResultsCache[field_id].results[i].label == 'No Results...') {
+        if ($rootScope.autocompleteResultsCache[field_id].results[i].label == $translate.instant('GENERIC.NoResults')) {
           $rootScope.autocompleteResultsCache[field_id].results.splice(i, 1);
           break;
         }
@@ -359,7 +359,7 @@ var angularRun = function ($rootScope, BioPortalService, $location, $timeout, $w
       if (term !== '*') {
         if ($rootScope.autocompleteResultsCache[field_id].results.length === 0) {
           $rootScope.autocompleteResultsCache[field_id].results.push({
-            'label': 'No Results...',
+            'label': $translate.instant('GENERIC.NoResults'),
             'sourceUri': 'template'
           });
         }
@@ -473,5 +473,5 @@ var angularRun = function ($rootScope, BioPortalService, $location, $timeout, $w
   HeaderService.init();
 };
 
-angularRun.$inject = ['$rootScope', 'BioPortalService', '$location', '$timeout', '$window', 'DataTemplateService', 'FieldTypeService', 'UrlService', 'HeaderService', 'CONST'];
+angularRun.$inject = ['$rootScope', 'BioPortalService', '$location', '$timeout', '$window', '$translate', 'DataTemplateService', 'FieldTypeService', 'UrlService', 'HeaderService', 'CONST'];
 angularApp.run(angularRun);
