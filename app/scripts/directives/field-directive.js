@@ -1,6 +1,7 @@
 'use strict';
 
-var fieldDirective = function($rootScope, $http, $compile, $document, SpreadsheetService) {
+var fieldDirective = function($rootScope, $http, $compile, $document, SpreadsheetService, DataManipulationService) {
+
   var linker = function($scope, $element, attrs) {
 
     $scope.setValueType = function() {
@@ -215,7 +216,7 @@ var fieldDirective = function($rootScope, $http, $compile, $document, Spreadshee
       }
     }
 
-    $scope.uuid = $rootScope.generateGUID();
+    $scope.uuid = DataManipulationService.generateGUID();
 
     // Retrive appropriate field template file
     $scope.getTemplateUrl = function() {
@@ -337,6 +338,6 @@ var fieldDirective = function($rootScope, $http, $compile, $document, Spreadshee
 
 };
 
-fieldDirective.$inject = ["$rootScope", "$http", "$compile", "$document", "SpreadsheetService"];
+fieldDirective.$inject = ["$rootScope", "$http", "$compile", "$document", "SpreadsheetService", "DataManipulationService"];
 angularApp.directive('fieldDirective', fieldDirective);
 

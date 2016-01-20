@@ -28,11 +28,11 @@
     <link rel="stylesheet" href="bower_components/angular-ui-select/dist/select.css">
     <link rel="stylesheet" href="bower_components/angular-toasty/dist/angular-toasty.min.css" />
 
-    <script src="//use.typekit.net/aph5zap.js"></script>
+    <!--<script src="//use.typekit.net/aph5zap.js"></script>
     <script>try {
         Typekit.load({async: false});
     } catch (e) {
-    }</script>
+    }</script>-->
 </head>
 <body cedar-switch-navbar="true" ng-cloak>
 <!--[if lt IE 8]>
@@ -139,8 +139,11 @@
 <script src="scripts/app-config.js"></script>
 <script src="scripts/app-run.js"></script>
 
-<script src="scripts/filters.js"></script>
 <script src="scripts/constants.js"></script>
+<script src="scripts/filters/key-to-title.js"></script>
+<script src="scripts/filters/order-object-by.js"></script>
+<script src="scripts/filters/props-filter.js"></script>
+<script src="scripts/filters/capitalize-first.js"></script>
 
 <script src="scripts/controllers/role-selector.js"></script>
 <script src="scripts/controllers/dashboard.js"></script>
@@ -162,6 +165,10 @@
 <script src="scripts/services/template-element-service.js"></script>
 <script src="scripts/services/template-instance-service.js"></script>
 <script src="scripts/services/ui-message-service.js"></script>
+<script src="scripts/services/data-manipulation-service.js"></script>
+<script src="scripts/services/data-util-service.js"></script>
+<script src="scripts/services/client-side-validation-service.js"></script>
+<script src="scripts/services/ui-util-service.js"></script>
 
 <script src="scripts/directives/form-directive.js"></script>
 <script src="scripts/directives/form-preview.js"></script>

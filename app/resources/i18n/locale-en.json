@@ -127,9 +127,9 @@
   },
   "VALIDATION": {
     "minBiggerThanMax": "Min cannot be greater than Max.",
-    "fieldTitleEmpty": "'Enter Field Title' input cannot be left empty.",
-    "optionEmpty": "'Enter Option' input cannot be left empty.",
-    "multipleChoiceToFew": "Multiple Choice fields must have at least two possible options",
+    "fieldTitleEmpty": "'Field Title' input cannot be left empty.",
+    "optionEmpty": "'Option' input cannot be left empty.",
+    "multipleChoiceTooFew": "Multiple Choice fields must have at least two possible options",
     "templateNameEmpty": "Template Name input cannot be left empty.",
     "templateDescriptionEmpty": "Template Description input cannot be left empty.",
     "elementNameEmpty": "Element Name input cannot be left empty.",

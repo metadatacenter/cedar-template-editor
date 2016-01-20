@@ -1,6 +1,9 @@
 'use strict';
 
-var CreateElementController = function ($rootScope, $scope, $routeParams, $timeout, $location, $translate, HeaderService, UrlService, StagingService, DataTemplateService, FieldTypeService, TemplateElementService, UIMessageService, CONST) {
+var CreateElementController = function ($rootScope, $scope, $routeParams, $timeout, $location, $translate,
+                                        $filter, HeaderService, UrlService, StagingService, DataTemplateService, FieldTypeService,
+                                        TemplateElementService, UIMessageService, DataManipulationService, ClientSideValidationService,
+                                        DataUtilService, CONST) {
   // Set page title variable when this controller is active
   $rootScope.pageTitle = 'Element Designer';
   // Create staging area to create/edit fields before they get added to the element
@@ -39,123 +42,23 @@ var CreateElementController = function ($rootScope, $scope, $routeParams, $timeo
     HeaderService.dataContainer.currentObjectScope = $scope.element;
   }
 
-  // Return true if element.properties object only contains default values
-  //$scope.isPropertiesEmpty = function() {
-  //  if ($scope.element) {
-  //    return Object.keys($scope.element.properties).length > 1 ? false : true;
-  //  }
-  //};
+  // *** proxied functions
   $scope.isPropertiesEmpty = function () {
-    if (!angular.isUndefined($scope.element)) {
-      var keys = Object.keys($scope.element.properties);
-      for (var i = 0; i < keys.length; i++) {
-        if ($rootScope.ignoreKey(keys[i]) == false) {
-          return false;
-        }
-      }
-      return true;
-    }
+    return DataUtilService.isPropertiesEmpty($scope.element);
   };
 
-  // Add new field into $scope.staging object
   $scope.addFieldToStaging = function (fieldType) {
-    StagingService.addField();
-    var field = $rootScope.generateField(fieldType);
-    field.minItems = 1;
-    field.maxItems = 1;
-
-    // If fieldtype can have multiple options, additional parameters on field object are necessary
-    var optionInputs = ["radio", "checkbox", "list"];
-
-    if (optionInputs.indexOf(fieldType) > -1) {
-      field.properties._ui.options = [
-        {
-          "text": ""
-        }
-      ];
-    }
-
-    // empty staging object (only one field should be configurable at a time)
-    $scope.staging = {};
-    // put field into fields staging object
-    $scope.staging[field['@id']] = field;
+    return StagingService.addFieldToStaging($scope, fieldType);
   };
 
-  // Function to add additional options for radio, checkbox, and list fieldTypes
-  $scope.addOption = function (field) {
-    //console.log(field.properties.value);
-    var emptyOption = {
-      "text": ""
-    };
-
-    field.properties._ui.options.push(emptyOption);
-  };
-
-  // Add newly configured field to the element object
   $scope.addFieldToElement = function (field) {
-    // Setting return value from $scope.checkFieldConditions to array which will display error messages if any
-    $scope.stagingErrorMessages = $scope.checkFieldConditions(field.properties);
-    $scope.stagingErrorMessages = jQuery.merge($scope.stagingErrorMessages, $rootScope.checkFieldCardinalityOptions(field));
-
-    if ($scope.stagingErrorMessages.length == 0) {
-      // Converting title for irregular character handling
-      var fieldName = $rootScope.getFieldName(field.properties._ui.title);
-      // Adding corresponding property type to @context
-      $scope.element.properties["@context"].properties[fieldName] = {};
-      $scope.element.properties["@context"].properties[fieldName].enum =
-        new Array($rootScope.schemasBase + fieldName);
-      $scope.element.properties["@context"].required.push(fieldName);
-
-      // Evaluate cardinality
-      $rootScope.cardinalizeField(field);
-
-      // Adding field to the element.properties object
-      $scope.element.properties[fieldName] = field;
-
-      // Lastly, remove this field from the $scope.staging object
-      $scope.staging = {};
-      StagingService.moveIntoPlace();
-    }
+    return StagingService.addFieldToScopeAndStaging($scope, $scope.element, field);
   };
 
-  $scope.checkFieldConditions = function (field) {
-    // Empty array to push 'error messages' into
-    var unmetConditions = [],
-      extraConditionInputs = ['checkbox', 'radio', 'list'];
+  // *** functions from data manipulation service
+  $scope.addOption = DataManipulationService.addOption;
 
-    // Field title is already required, if it's empty create error message
-    if (!field._ui.title.length) {
-      unmetConditions.push($translate.instant("VALIDATION.fieldTitleEmpty"));
-    }
-
-    // If field is within multiple choice field types
-    if (extraConditionInputs.indexOf(field._ui.inputType) !== -1) {
-      var optionMessage = $translate.instant("VALIDATION.optionEmpty");
-      angular.forEach(field._ui.options, function (value, index) {
-        // If any 'option' title text is left empty, create error message
-        if (!value.text.length && unmetConditions.indexOf(optionMessage) == -1) {
-          unmetConditions.push(optionMessage);
-        }
-      });
-    }
-    // If field type is 'radio' or 'pick from a list' there must be more than one option created
-    if ((field._ui.inputType == 'radio' || field._ui.inputType == 'list') && field._ui.options && (field._ui.options.length <= 1)) {
-      unmetConditions.push($translate.instant("VALIDATION.multipleChoiceToFew"));
-    }
-    // Return array of error messages
-    return unmetConditions;
-  };
-
-  // Add existing element to the element object
-  //$scope.addExistingElement = function(element) {
-  //  // Fetch existing element json data
-  //  return $http.get('/static-data/elements/' + element + '.json').then(function(response) {
-  //    // Add existing element to the $scope.element.properties object with it's title converted to an object key
-  //    var titleKey = $rootScope.underscoreText(response.data.title);
-  //    $scope.element.properties[titleKey] = response.data;
-  //  });
-  //};
-  $scope.addExistingElement = function (element) {
+  /*$scope.addExistingElement = function (element) {
     // Fetch existing element json data
     //FormService.element(element).then(function(response) {
 
@@ -170,7 +73,7 @@ var CreateElementController = function ($rootScope, $scope, $routeParams, $timeo
     // Add existing element to the $scope.element.properties object
     $scope.element.properties[fieldName] = element;
     //});
-  };
+  };*/
 
   $scope.addElementToStaging = function (elementId) {
     StagingService.addElement();
@@ -258,14 +161,15 @@ var CreateElementController = function ($rootScope, $scope, $routeParams, $timeo
       //console.log($scope.element);
 
       // If maxItems is N, then remove maxItems
-      $rootScope.removeUnnecessaryMaxItems($scope.element.properties);
+      DataManipulationService.removeUnnecessaryMaxItems($scope.element.properties);
 
       // Save element
       // Check if the element is already stored into the DB
       if ($routeParams.id == undefined) {
         TemplateElementService.saveTemplateElement($scope.element).then(function (response) {
           // confirm message
-          UIMessageService.flashSuccess('SERVER.ELEMENT.create.success', {"title": response.data.properties._ui.title}, 'GENERIC.Created');
+          UIMessageService.flashSuccess('SERVER.ELEMENT.create.success', {"title": response.data.properties._ui.title},
+            'GENERIC.Created');
           // Reload page with element id
           var newId = response.data['@id'];
           $location.path(UrlService.getElementEdit(newId));
@@ -279,7 +183,8 @@ var CreateElementController = function ($rootScope, $scope, $routeParams, $timeo
         var id = $scope.element['@id'];
         //--//delete $scope.element['@id'];
         TemplateElementService.updateTemplateElement(id, $scope.element).then(function (response) {
-          UIMessageService.flashSuccess('SERVER.ELEMENT.update.success', {"title": response.data.title}, 'GENERIC.Updated');
+          UIMessageService.flashSuccess('SERVER.ELEMENT.update.success', {"title": response.data.title},
+            'GENERIC.Updated');
         }).catch(function (err) {
           $scope.elementErrorMessages.push("Problem updating the element.");
           console.log(err);
@@ -298,7 +203,7 @@ var CreateElementController = function ($rootScope, $scope, $routeParams, $timeo
     if (!angular.isUndefined($scope.element)) {
       var title = $scope.element.properties._ui.title;
       if (title.length > 0) {
-        var capitalizedTitle = $rootScope.capitalizeFirst(title);
+        var capitalizedTitle = $filter('capitalizeFirst')(title);
         $scope.element.title = $translate.instant("GENERATEDVALUE.elementTitle", {title: capitalizedTitle});
         $scope.element.description = $translate.instant("GENERATEDVALUE.elementDescription", {title: capitalizedTitle});
       } else {
@@ -310,5 +215,8 @@ var CreateElementController = function ($rootScope, $scope, $routeParams, $timeo
   });
 };
 
-CreateElementController.$inject = ["$rootScope", "$scope", "$routeParams", "$timeout", "$location", "$translate", "HeaderService", "UrlService", "StagingService", "DataTemplateService", "FieldTypeService", "TemplateElementService", "UIMessageService", "CONST"];
+CreateElementController.$inject = ["$rootScope", "$scope", "$routeParams", "$timeout", "$location", "$translate",
+  "$filter", "HeaderService", "UrlService", "StagingService", "DataTemplateService", "FieldTypeService",
+  "TemplateElementService", "UIMessageService", "DataManipulationService", "ClientSideValidationService",
+  "DataUtilService", "CONST"];
 angularApp.controller('CreateElementController', CreateElementController);

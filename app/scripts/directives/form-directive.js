@@ -1,15 +1,15 @@
 'use strict';
 
-angularApp.directive('formDirective', function ($rootScope, $document, $timeout) {
+var formDirective = function ($rootScope, $document, $timeout, DataManipulationService, DataUtilService) {
   return {
     templateUrl: './views/directive-templates/form-render.html',
-    restrict: 'E',
-    scope: {
-      page:'=',
-      form:'=',
+    restrict   : 'E',
+    scope      : {
+      page : '=',
+      form : '=',
       model: '='
     },
-    controller: function($scope) {
+    controller : function ($scope) {
       // $scope.formFields object to loop through to call field-directive
       $scope.formFields = {};
       // $scope.formFieldsOrder array to loop over for proper ordering of items/elements
@@ -17,21 +17,21 @@ angularApp.directive('formDirective', function ($rootScope, $document, $timeout)
       // Initializaing checkSubmission as false
       $scope.checkSubmission = false;
 
-      $scope.addPopover = function() {
+      $scope.addPopover = function () {
         //Initializing Bootstrap Popover fn for each item loaded
-        $timeout(function() {
+        $timeout(function () {
           angular.element('[data-toggle="popover"]').popover();
         }, 1000);
       };
 
-      $document.on('click', function(e) {
+      $document.on('click', function (e) {
         // Check if Popovers exist and close on click anywhere but the popover toggle icon
-        if( angular.element(e.target).data('toggle') !== 'popover' && angular.element('.popover').length ) {
+        if (angular.element(e.target).data('toggle') !== 'popover' && angular.element('.popover').length) {
           angular.element('[data-toggle="popover"]').popover('hide');
         }
       });
 
-      $scope.pushIntoOrder = function(key, parentKey) {
+      $scope.pushIntoOrder = function (key, parentKey) {
         // If parent key does not exist
         // and key does not exist in the array
         if (!parentKey && $scope.formFieldsOrder.indexOf(key) == -1) {
@@ -39,28 +39,28 @@ angularApp.directive('formDirective', function ($rootScope, $document, $timeout)
         }
       };
 
-      $scope.parseForm = function(iterator, parentObject, parentModel, parentKey) {
+      $scope.parseForm = function (iterator, parentObject, parentModel, parentKey) {
         var ctx;
-        angular.forEach(iterator, function(value, name) {
+        angular.forEach(iterator, function (value, name) {
           // Add @context information to instance
           if (name == '@context') {
-            ctx = $rootScope.generateInstanceContext(value);
+            ctx = DataManipulationService.generateInstanceContext(value);
           }
         });
 
-        angular.forEach(iterator, function(value, name) {
+        angular.forEach(iterator, function (value, name) {
           // Add @context information to instance
           if (name == '@context') {
-            parentModel['@context'] = $rootScope.generateInstanceContext(value);
+            parentModel['@context'] = DataManipulationService.generateInstanceContext(value);
           }
           // Add @type information to instance
           else if (name == '@type') {
-            var type = $rootScope.generateInstanceType(value);
+            var type = DataManipulationService.generateInstanceType(value);
             if (type != null)
               parentModel['@type'] = type;
           }
 
-          if (!$rootScope.ignoreKey(name)) {
+          if (!DataUtilService.isSpecialKey(name)) {
             // We can tell we've reached an element level by its 'order' property
             if (value._ui && value._ui.hasOwnProperty('order')) {
               // Handle position and nesting within $scope.formFields
@@ -73,9 +73,9 @@ angularApp.directive('formDirective', function ($rootScope, $document, $timeout)
 
               var min = value.minItems || 1;
 
-                // Handle position and nesting within $scope.model if it does not exist
+              // Handle position and nesting within $scope.model if it does not exist
               if (parentModel[name] == undefined) {
-                if (!$rootScope.isCardinalElement(value)) {
+                if (!DataManipulationService.isCardinalElement(value)) {
                   parentModel[name] = {};
                 } else {
                   parentModel[name] = [];
@@ -90,10 +90,12 @@ angularApp.directive('formDirective', function ($rootScope, $document, $timeout)
               if (angular.isArray(parentModel[name])) {
                 for (var i = 0; i < min; i++) {
                   // Indication of nested element or nested fields reached, recursively call function
-                  $scope.parseForm($rootScope.getFieldProperties(value), parentObject[name], parentModel[name][i], name);
+                  $scope.parseForm(DataManipulationService.getFieldProperties(value), parentObject[name],
+                    parentModel[name][i], name);
                 }
               } else {
-                $scope.parseForm($rootScope.getFieldProperties(value), parentObject[name], parentModel[name], name);
+                $scope.parseForm(DataManipulationService.getFieldProperties(value), parentObject[name],
+                  parentModel[name], name);
               }
             } else {
               var min = value.minItems || 1;
@@ -108,7 +110,7 @@ angularApp.directive('formDirective', function ($rootScope, $document, $timeout)
 
               // Assign empty field instance model to $scope.model only if it does not exist
               if (parentModel[name] == undefined) {
-                if (!$rootScope.isCardinalElement(value)) {
+                if (!DataManipulationService.isCardinalElement(value)) {
                   parentModel[name] = {};
                 } else {
                   parentModel[name] = [];
@@ -128,7 +130,7 @@ angularApp.directive('formDirective', function ($rootScope, $document, $timeout)
 
               // Add @type information to instance at the field level
               if (!angular.isUndefined(value.properties['@type'])) {
-                var type = $rootScope.generateInstanceType(value.properties['@type']);
+                var type = DataManipulationService.generateInstanceType(value.properties['@type']);
 
                 if (type) {
                   if (angular.isArray(parentModel[name])) {
@@ -163,15 +165,18 @@ angularApp.directive('formDirective', function ($rootScope, $document, $timeout)
       });
 
       // Watching for the 'submitForm' event to be $broadcast from parent 'CreateInstanceController'
-      $scope.$on('submitForm', function(event) {
+      $scope.$on('submitForm', function (event) {
         // Make the model (populated template) available to the parent
         $scope.$parent.instance = $scope.model;
         $scope.checkSubmission = true;
       });
 
-      $scope.$on('formHasRequiredFields', function(event) {
+      $scope.$on('formHasRequiredFields', function (event) {
         $scope.form.requiredFields = true;
       });
     }
   };
-});
+};
+
+formDirective.$inject = ['$rootScope', '$document', '$timeout', 'DataManipulationService', 'DataUtilService'];
+angularApp.directive('formDirective', formDirective);

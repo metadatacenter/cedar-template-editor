@@ -27,8 +27,9 @@ var DataTemplateService = function ($http) {
     });
   };
 
-  service.getField = function () {
+  service.getField = function (tempId) {
     var clonedField = angular.copy(dataTemplate.field);
+    clonedField['@id'] = tempId;
     return clonedField;
   };
 

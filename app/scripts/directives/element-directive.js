@@ -1,6 +1,6 @@
 'use strict';
 
-var elementDirective = function($rootScope, SpreadsheetService) {
+var elementDirective = function($rootScope, SpreadsheetService, DataUtilService) {
   return {
     templateUrl: './views/directive-templates/element-directive.html',
     restrict: 'EA',
@@ -19,7 +19,7 @@ var elementDirective = function($rootScope, SpreadsheetService) {
             model.splice(settings[key].minItems, model.length);
           }
 
-          if (!$rootScope.ignoreKey(key)) {
+          if (!DataUtilService.isSpecialKey(key)) {
             if (key == "_value") {
               if (angular.isArray(model)) {
                 if (settings.properties._ui.inputType == "list") {
@@ -150,5 +150,5 @@ var elementDirective = function($rootScope, SpreadsheetService) {
   };
 };
 
-elementDirective.$inject = ["$rootScope", "SpreadsheetService"];
+elementDirective.$inject = ["$rootScope", "SpreadsheetService", "DataUtilService"];
 angularApp.directive('elementDirective', elementDirective);

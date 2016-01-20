@@ -1,8 +1,9 @@
 'use strict';
 
-angularApp.directive('formPreview', function ($rootScope, $document, $timeout) {
+var formPreview = function ($rootScope, $document, $timeout, DataManipulationService, DataUtilService) {
+
   return {
-    controller: function($scope){
+    controller : function ($scope) {
 
       // $scope.formFields object to loop through to call field-directive
       $scope.formFields = {};
@@ -16,21 +17,21 @@ angularApp.directive('formPreview', function ($rootScope, $document, $timeout) {
         $scope.formFieldsOrder = [];
       }
 
-      $scope.addPopover = function() {
+      $scope.addPopover = function () {
         //Initializing Bootstrap Popover fn for each item loaded
-        $timeout(function() {
+        $timeout(function () {
           angular.element('[data-toggle="popover"]').popover();
         }, 1000);
       };
 
-      $document.on('click', function(e) {
+      $document.on('click', function (e) {
         // Check if Popovers exist and close on click anywhere but the popover toggle icon
-        if( angular.element(e.target).data('toggle') !== 'popover' && angular.element('.popover').length ) {
+        if (angular.element(e.target).data('toggle') !== 'popover' && angular.element('.popover').length) {
           angular.element('[data-toggle="popover"]').popover('hide');
         }
       });
 
-      $scope.removeField = function(key) {
+      $scope.removeField = function (key) {
         // Remove selected field from @context
         delete $scope.form.properties['@context'].properties[key];
         $scope.form.properties["@context"].required.splice($scope.form.properties["@context"].required.indexOf(key), 1);
@@ -50,7 +51,7 @@ angularApp.directive('formPreview', function ($rootScope, $document, $timeout) {
         }
       };
 
-      $scope.pushIntoOrder = function(key, parentKey) {
+      $scope.pushIntoOrder = function (key, parentKey) {
         // If parent key does not exist
         // and key does not exist in the array
         if (!parentKey && $scope.formFieldsOrder.indexOf(key) == -1) {
@@ -58,11 +59,11 @@ angularApp.directive('formPreview', function ($rootScope, $document, $timeout) {
         }
       };
 
-      $scope.parseForm = function(iterator, parentObject, parentModel, parentKey) {
-        angular.forEach(iterator, function(value, name) {
-          if (!$rootScope.ignoreKey(name)) {
+      $scope.parseForm = function (iterator, parentObject, parentModel, parentKey) {
+        angular.forEach(iterator, function (value, name) {
+          if (!DataUtilService.isSpecialKey(name)) {
             if (value._ui && value._ui.hasOwnProperty('order')) {
-            //if (value.hasOwnProperty('guid')) {
+              //if (value.hasOwnProperty('guid')) {
               // Acknowledge position and nesting
               parentObject[name] = {};
               parentObject[name]['_ui'] = {}
@@ -75,7 +76,7 @@ angularApp.directive('formPreview', function ($rootScope, $document, $timeout) {
 
               // Handle position and nesting within $scope.model if it does not exist
               if (parentModel[name] == undefined) {
-                if ($rootScope.isCardinalElement(value)) {
+                if (DataManipulationService.isCardinalElement(value)) {
                   parentModel[name] = {};
                 } else {
                   parentModel[name] = [];
@@ -90,10 +91,12 @@ angularApp.directive('formPreview', function ($rootScope, $document, $timeout) {
               if (angular.isArray(parentModel[name])) {
                 for (var i = 0; i < min; i++) {
                   // Indication of nested element or nested fields reached, recursively call function
-                  $scope.parseForm($rootScope.getFieldProperties(value), parentObject[name], parentModel[name][i], name);
+                  $scope.parseForm(DataManipulationService.getFieldProperties(value), parentObject[name],
+                    parentModel[name][i], name);
                 }
               } else {
-                $scope.parseForm($rootScope.getFieldProperties(value), parentObject[name], parentModel[name], name);
+                $scope.parseForm(DataManipulationService.getFieldProperties(value), parentObject[name],
+                  parentModel[name], name);
               }
             } else {
               var min = value.minItems || 1;
@@ -107,7 +110,7 @@ angularApp.directive('formPreview', function ($rootScope, $document, $timeout) {
 
               // Assign empty field instance model to $scope.model only if it does not exist
               if (parentModel[name] == undefined) {
-                if (!$rootScope.isCardinalElement(value)) {
+                if (!DataManipulationService.isCardinalElement(value)) {
                   parentModel[name] = {};
                 } else {
                   parentModel[name] = [];
@@ -138,14 +141,14 @@ angularApp.directive('formPreview', function ($rootScope, $document, $timeout) {
       // Listening for event from parent $scope to reset the form
       $scope.$on('initPageArray', function (event) {
         var orderArray = [],
-            dimension = 0;
+            dimension  = 0;
         // loop through $scope.formFieldsOrder and build pages array
-        angular.forEach($scope.formFieldsOrder, function(field, index) {
+        angular.forEach($scope.formFieldsOrder, function (field, index) {
           // If item added is of type Page Break, jump into next page array for storage of following fields
           if ($scope.form.properties[field].properties &&
-              $scope.form.properties[field].properties._ui &&
-              $scope.form.properties[field].properties._ui.inputType == 'page-break') {
-            dimension ++;
+            $scope.form.properties[field].properties._ui &&
+            $scope.form.properties[field].properties._ui.inputType == 'page-break') {
+            dimension++;
           }
           // Push field key into page array
           orderArray[dimension] = orderArray[dimension] || [];
@@ -162,10 +165,13 @@ angularApp.directive('formPreview', function ($rootScope, $document, $timeout) {
       }, true);
     },
     templateUrl: './views/directive-templates/form-preview.html',
-    restrict: 'EA',
-    scope: {
-        form:'=',
-        delete: '&'
+    restrict   : 'EA',
+    scope      : {
+      form  : '=',
+      delete: '&'
     }
   };
-});
+};
+
+formPreview.$inject = ['$rootScope', '$document', '$timeout', 'DataManipulationService', 'DataUtilService'];
+angularApp.directive('formPreview', formPreview);
