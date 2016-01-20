@@ -1,6 +1,7 @@
 'use strict';
 
-var DashboardListController = function ($rootScope, $scope, $routeParams, $location, $translate, HeaderService, UrlService, TemplateService, TemplateElementService, TemplateInstanceService, CONST) {
+var DashboardListController = function ($rootScope, $scope, $routeParams, $location, $translate, HeaderService, UrlService,
+                                        TemplateService, TemplateElementService, TemplateInstanceService, UIMessageService, CONST) {
 
   // Load all items depending on $routeParams.type parameter supplied
   $scope.listTemplateElements = function () {
@@ -9,8 +10,10 @@ var DashboardListController = function ($rootScope, $scope, $routeParams, $locat
     $scope.sectionTitle = $translate.instant('PAGES.DASHBOARDLIST-ELEMENT.sectionTitle');
     $scope.createLink = '/elements/create';
 
-    TemplateElementService.getAllTemplateElementsSummary().then(function (data) {
-      $scope.allTemplateElements = data;
+    TemplateElementService.getAllTemplateElementsSummary().then(function (response) {
+      $scope.allTemplateElements = response.data;
+    }).catch(function (err) {
+      UIMessageService.showBackendError('SERVER.ELEMENTS.load.error', err);
     });
   };
 
@@ -20,8 +23,10 @@ var DashboardListController = function ($rootScope, $scope, $routeParams, $locat
     $scope.sectionTitle = $translate.instant('PAGES.DASHBOARDLIST-TEMPLATE.sectionTitle');
     $scope.createLink = '/templates/create';
 
-    TemplateService.getAllTemplatesSummary().then(function (data) {
-      $scope.allTemplates = data;
+    TemplateService.getAllTemplatesSummary().then(function (response) {
+      $scope.allTemplates = response.data;
+    }).catch(function (err) {
+      UIMessageService.showBackendError('SERVER.TEMPLATES.load.error', err);
     });
   };
 
@@ -31,38 +36,43 @@ var DashboardListController = function ($rootScope, $scope, $routeParams, $locat
     $scope.sectionTitle = $translate.instant('PAGES.DASHBOARDLIST-INSTANCE.sectionTitle');
     $scope.createLink = '/instances/create';
 
-    TemplateInstanceService.getAllTemplateInstancesSummary().then(function (data) {
-      $scope.allTemplateInstances = data;
+    TemplateInstanceService.getAllTemplateInstancesSummary().then(function (response) {
+      $scope.allTemplateInstances = response.data;
+    }).catch(function (err) {
+      UIMessageService.showBackendError('SERVER.INSTANCES.load.error', err);
     });
   };
 
   // Remove template
-  $scope.removeTemplate = function (id) {
-    TemplateService.removeTemplate(id).then(function (response) {
+  $scope.deleteTemplate = function (id) {
+    TemplateService.deleteTemplate(id).then(function (response) {
       // Reload templates
       $scope.listTemplates();
+      UIMessageService.flashSuccess('SERVER.TEMPLATE.delete.success', null, 'GENERIC.Deleted');
     }).catch(function (err) {
-      console.log(err);
+      UIMessageService.showBackendError('SERVER.TEMPLATE.delete.error', err);
     });
   }
 
   // Remove element
-  $scope.removeElement = function (id) {
-    TemplateElementService.removeTemplateElement(id).then(function (response) {
+  $scope.deleteElement = function (id) {
+    TemplateElementService.deleteTemplateElement(id).then(function (response) {
       // Reload elements
       $scope.listTemplateElements();
+      UIMessageService.flashSuccess('SERVER.ELEMENT.delete.success', null, 'GENERIC.Deleted');
     }).catch(function (err) {
-      console.log(err);
+      UIMessageService.showBackendError('SERVER.ELEMENT.delete.error', err);
     });
   }
 
   // Remove populated template
-  $scope.removeInstance = function (id) {
-    TemplateInstanceService.removeTemplateInstance(id).then(function (response) {
+  $scope.deleteInstance = function (id) {
+    TemplateInstanceService.deleteTemplateInstance(id).then(function (response) {
       // Reload template instances
       $scope.listTemplateInstances();
+      UIMessageService.flashSuccess('SERVER.INSTANCE.delete.success', null, 'GENERIC.Deleted');
     }).catch(function (err) {
-      console.log(err);
+      UIMessageService.showBackendError('SERVER.INSTANCE.delete.error', err);
     });
   }
 
@@ -106,5 +116,6 @@ var DashboardListController = function ($rootScope, $scope, $routeParams, $locat
 };
 
 
-DashboardListController.$inject = ["$rootScope", "$scope", "$routeParams", "$location", "$translate", "HeaderService", "UrlService", "TemplateService", "TemplateElementService", "TemplateInstanceService", "CONST"];
+DashboardListController.$inject = ["$rootScope", "$scope", "$routeParams", "$location", "$translate", "HeaderService", "UrlService",
+  "TemplateService", "TemplateElementService", "TemplateInstanceService", "UIMessageService", "CONST"];
 angularApp.controller('DashboardListController', DashboardListController);

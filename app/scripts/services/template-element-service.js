@@ -7,30 +7,18 @@ var TemplateElementService = function ($http, UrlService) {
   };
 
   service.getDefaultTemplateElementsSummary = function () {
-    return $http.get(UrlService.getDefaultTemplateElementsSummary(3, 0)).then(function (response) {
-      return response.data;
-    }).catch(function (err) {
-      console.log(err);
-    });
+    return $http.get(UrlService.getDefaultTemplateElementsSummary(3, 0));
   };
 
   service.getAllTemplateElementsSummary = function () {
-    return $http.get(UrlService.getAllTemplateElementsSummary()).then(function (response) {
-      return response.data;
-    }).catch(function (err) {
-      console.log(err);
-    });
+    return $http.get(UrlService.getAllTemplateElementsSummary());
   };
 
   service.getTemplateElement = function (id) {
-    return $http.get(UrlService.getTemplateElement(id)).then(function (response) {
-      return response.data;
-    }).catch(function (err) {
-      console.log(err);
-    });
+    return $http.get(UrlService.getTemplateElement(id));
   };
 
-  service.removeTemplateElement = function (id) {
+  service.deleteTemplateElement = function (id) {
     return $http.delete(UrlService.getTemplateElement(id));
   };
 

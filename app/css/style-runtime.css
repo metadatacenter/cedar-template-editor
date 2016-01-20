@@ -12185,6 +12185,14 @@ body {
 .ng-cloak {
   display: none;
 }
+div.errorTechnicalDetails {
+  width: 1000px;
+}
+div.errorTechnicalDetails textarea {
+  width: 900px;
+  height: 300px;
+  font-size: 12px;
+}
 /*
 ================================================
 === CEDAR Customization END

@@ -7,30 +7,18 @@ var TemplateInstanceService = function ($http, UrlService) {
   };
 
   service.getDefaultTemplateInstancesSummary = function () {
-    return $http.get(UrlService.getDefaultTemplateInstancesSummary(10, 0)).then(function (response) {
-      return response.data;
-    }).catch(function (err) {
-      console.log(err);
-    });
+    return $http.get(UrlService.getDefaultTemplateInstancesSummary(10, 0));
   };
 
   service.getAllTemplateInstancesSummary = function () {
-    return $http.get(UrlService.getAllTemplateInstancesSummary()).then(function (response) {
-      return response.data;
-    }).catch(function (err) {
-      console.log(err);
-    });
+    return $http.get(UrlService.getAllTemplateInstancesSummary());
   };
 
   service.getTemplateInstance = function (id) {
-    return $http.get(UrlService.getTemplateInstance(id)).then(function (response) {
-      return response.data;
-    }).catch(function (err) {
-      console.log(err);
-    });
+    return $http.get(UrlService.getTemplateInstance(id));
   };
 
-  service.removeTemplateInstance = function (id) {
+  service.deleteTemplateInstance = function (id) {
     return $http.delete(UrlService.getTemplateInstance(id));
   };
 

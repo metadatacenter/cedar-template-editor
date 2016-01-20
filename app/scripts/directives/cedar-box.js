@@ -19,13 +19,13 @@ var cedarBox = function ($document, $location, $sce, $translate, UrlService, CON
           if (isConfirm) {
             switch (scope.type) {
               case CONST.boxType.TEMPLATE:
-                scope.$parent.removeTemplate(scope.objectId);
+                scope.$parent.deleteTemplate(scope.objectId);
                 break;
               case CONST.boxType.ELEMENT:
-                scope.$parent.removeElement(scope.objectId);
+                scope.$parent.deleteElement(scope.objectId);
                 break;
               case CONST.boxType.INSTANCE:
-                scope.$parent.removeInstance(scope.objectId);
+                scope.$parent.deleteInstance(scope.objectId);
                 break;
             }
           }

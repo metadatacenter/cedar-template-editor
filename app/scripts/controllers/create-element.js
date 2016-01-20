@@ -21,8 +21,10 @@ var CreateElementController = function ($rootScope, $scope, $routeParams, $timeo
   StagingService.configure(pageId);
   $rootScope.applicationRole = 'creator';
 
-  TemplateElementService.getAllTemplateElementsSummary().then(function (data) {
-    $scope.elementList = data;
+  TemplateElementService.getAllTemplateElementsSummary().then(function (response) {
+    $scope.elementList = response.data;
+  }).catch(function (err) {
+    UIMessageService.showBackendError('SERVER.ELEMENTS.load.error', err);
   });
 
   $scope.fieldTypes = FieldTypeService.getFieldTypes();
@@ -31,10 +33,12 @@ var CreateElementController = function ($rootScope, $scope, $routeParams, $timeo
   if ($routeParams.id) {
     // Fetch existing element and assign to $scope.element property
     TemplateElementService.getTemplateElement($routeParams.id).then(function (response) {
-      $scope.element = response;
+      $scope.element = response.data;
       // Set form preview to true so the preview is viewable onload
       $scope.formPreview = true;
       HeaderService.dataContainer.currentObjectScope = $scope.element;
+    }).catch(function (err) {
+      UIMessageService.showBackendError('SERVER.ELEMENT.load.error', err);
     });
   } else {
     // If we're not loading an existing element then let's create a new empty $scope.element property
@@ -59,21 +63,21 @@ var CreateElementController = function ($rootScope, $scope, $routeParams, $timeo
   $scope.addOption = DataManipulationService.addOption;
 
   /*$scope.addExistingElement = function (element) {
-    // Fetch existing element json data
-    //FormService.element(element).then(function(response) {
+   // Fetch existing element json data
+   //FormService.element(element).then(function(response) {
 
-    // Add existing element to the $scope.element.properties object with it's title converted to an object key
-    var fieldName = $rootScope.getFieldName(element.properties._ui.title);
-    // Adding corresponding property type to @context
-    $scope.element.properties["@context"].properties[fieldName] = {};
-    $scope.element.properties["@context"].properties[fieldName].enum =
-      new Array($rootScope.schemasBase + fieldName);
-    $scope.element.properties["@context"].required.push(fieldName);
+   // Add existing element to the $scope.element.properties object with it's title converted to an object key
+   var fieldName = $rootScope.getFieldName(element.properties._ui.title);
+   // Adding corresponding property type to @context
+   $scope.element.properties["@context"].properties[fieldName] = {};
+   $scope.element.properties["@context"].properties[fieldName].enum =
+   new Array($rootScope.schemasBase + fieldName);
+   $scope.element.properties["@context"].required.push(fieldName);
 
-    // Add existing element to the $scope.element.properties object
-    $scope.element.properties[fieldName] = element;
-    //});
-  };*/
+   // Add existing element to the $scope.element.properties object
+   $scope.element.properties[fieldName] = element;
+   //});
+   };*/
 
   $scope.addElementToStaging = function (elementId) {
     StagingService.addElement();
@@ -174,8 +178,7 @@ var CreateElementController = function ($rootScope, $scope, $routeParams, $timeo
           var newId = response.data['@id'];
           $location.path(UrlService.getElementEdit(newId));
         }).catch(function (err) {
-          $scope.elementErrorMessages.push("Problem creating the element.");
-          console.log(err);
+          UIMessageService.showBackendError('SERVER.ELEMENT.create.error', err);
         });
       }
       // Update element
@@ -186,8 +189,7 @@ var CreateElementController = function ($rootScope, $scope, $routeParams, $timeo
           UIMessageService.flashSuccess('SERVER.ELEMENT.update.success', {"title": response.data.title},
             'GENERIC.Updated');
         }).catch(function (err) {
-          $scope.elementErrorMessages.push("Problem updating the element.");
-          console.log(err);
+          UIMessageService.showBackendError('SERVER.ELEMENT.update.error', err);
         });
       }
     }
@@ -209,7 +211,6 @@ var CreateElementController = function ($rootScope, $scope, $routeParams, $timeo
       } else {
         $scope.element.title = "";
         $scope.element.description = "";
-
       }
     }
   });

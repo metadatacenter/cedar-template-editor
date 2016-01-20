@@ -19,8 +19,10 @@ var CreateTemplateController = function ($rootScope, $scope, $q, $routeParams, $
   StagingService.configure(pageId);
   $rootScope.applicationRole = 'creator';
 
-  TemplateElementService.getAllTemplateElementsSummary().then(function (data) {
-    $scope.elementList = data;
+  TemplateElementService.getAllTemplateElementsSummary().then(function (response) {
+    $scope.elementList = response.data;
+  }).catch(function (err) {
+    UIMessageService.showBackendError('SERVER.ELEMENTS.load.error', err);
   });
 
   $scope.fieldTypes = FieldTypeService.getFieldTypes();
@@ -29,10 +31,12 @@ var CreateTemplateController = function ($rootScope, $scope, $q, $routeParams, $
   if ($routeParams.id) {
     // Fetch existing form and assign to $scope.form property
     TemplateService.getTemplate($routeParams.id).then(function (response) {
-      $scope.form = response;
+      $scope.form = response.data;
       // Set form preview to true so the preview is viewable onload
       $scope.formPreview = true;
       HeaderService.dataContainer.currentObjectScope = $scope.form;
+    }).catch(function (err) {
+      UIMessageService.showBackendError('SERVER.TEMPLATE.load.error', err);
     });
   } else {
     // If we're not loading an existing form then let's create a new empty $scope.form property
@@ -62,23 +66,23 @@ var CreateTemplateController = function ($rootScope, $scope, $q, $routeParams, $
   };
 
   /*$scope.addExistingElement = function (element) {
-    // Fetch existing element json data
-    //FormService.element(element).then(function(response) {
-    // Convert response.data.title string to an acceptable object key string
-    //var titleKey = $rootScope.getFieldName(element.properties._ui.title);
+   // Fetch existing element json data
+   //FormService.element(element).then(function(response) {
+   // Convert response.data.title string to an acceptable object key string
+   //var titleKey = $rootScope.getFieldName(element.properties._ui.title);
 
-    // Add existing element to the $scope.element.properties object with it's title converted to an object key
-    var titleKey = $rootScope.getFieldName(element.properties._ui.title);
-    // Adding corresponding property type to @context
-    $scope.form.properties["@context"].properties[titleKey] = {};
-    $scope.form.properties["@context"].properties[titleKey].enum =
-      new Array($rootScope.schemasBase + titleKey);
-    $scope.form.properties["@context"].required.push(titleKey);
+   // Add existing element to the $scope.element.properties object with it's title converted to an object key
+   var titleKey = $rootScope.getFieldName(element.properties._ui.title);
+   // Adding corresponding property type to @context
+   $scope.form.properties["@context"].properties[titleKey] = {};
+   $scope.form.properties["@context"].properties[titleKey].enum =
+   new Array($rootScope.schemasBase + titleKey);
+   $scope.form.properties["@context"].required.push(titleKey);
 
-    // Embed existing element into $scope.form.properties object
-    $scope.form.properties[titleKey] = element;
-    //});
-  };*/
+   // Embed existing element into $scope.form.properties object
+   $scope.form.properties[titleKey] = element;
+   //});
+   };*/
 
   // Delete field from $scope.staging object
   $scope.deleteField = function (field) {
@@ -168,8 +172,7 @@ var CreateTemplateController = function ($rootScope, $scope, $q, $routeParams, $
           var newId = response.data['@id'];
           $location.path(UrlService.getTemplateEdit(newId));
         }).catch(function (err) {
-          $scope.templateErrorMessages.push('Problem creating the template.');
-          console.log(err);
+          UIMessageService.showBackendError('SERVER.TEMPLATE.create.error', err);
         });
       }
       // Update template
@@ -180,8 +183,7 @@ var CreateTemplateController = function ($rootScope, $scope, $q, $routeParams, $
           UIMessageService.flashSuccess('SERVER.TEMPLATE.update.success', {"title": response.data.properties._ui.title},
             'GENERIC.Updated');
         }).catch(function (err) {
-          $scope.templateErrorMessages.push('Problem updating the template.');
-          console.log(err);
+          UIMessageService.showBackendError('SERVER.TEMPLATE.update.error', err);
         });
       }
     }
@@ -208,7 +210,6 @@ var CreateTemplateController = function ($rootScope, $scope, $q, $routeParams, $
       else {
         $scope.form.title = "";
         $scope.form.description = "";
-
       }
     }
   });

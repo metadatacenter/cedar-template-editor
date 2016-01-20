@@ -1,6 +1,7 @@
 'use strict';
 
-var StagingService = function ($rootScope, TemplateElementService, DataManipulationService, ClientSideValidationService, $timeout, CONST) {
+var StagingService = function ($rootScope, TemplateElementService, DataManipulationService, ClientSideValidationService,
+                               UIMessageService, $timeout, CONST) {
 
   var service = {
     serviceId        : "StagingService",
@@ -52,7 +53,7 @@ var StagingService = function ($rootScope, TemplateElementService, DataManipulat
     $scope.previewForm = {};
 
     TemplateElementService.getTemplateElement(elementId).then(function (response) {
-      var newElement = response;
+      var newElement = response.data;
       newElement.minItems = 1;
       newElement.maxItems = 1;
       $scope.staging[newElement['@id']] = newElement;
@@ -61,6 +62,8 @@ var StagingService = function ($rootScope, TemplateElementService, DataManipulat
         $scope.previewForm.properties = {};
         $scope.previewForm.properties[fieldName] = newElement;
       });
+    }).catch(function (err) {
+      UIMessageService.showBackendError('SERVER.ELEMENT.load.error', err);
     });
   };
 
@@ -117,5 +120,6 @@ var StagingService = function ($rootScope, TemplateElementService, DataManipulat
   return service;
 };
 
-StagingService.$inject = ["$rootScope", "TemplateElementService", "DataManipulationService", "ClientSideValidationService", "$timeout", "CONST"];
+StagingService.$inject = ["$rootScope", "TemplateElementService", "DataManipulationService", "ClientSideValidationService",
+  "UIMessageService", "$timeout", "CONST"];
 angularApp.service('StagingService', StagingService);

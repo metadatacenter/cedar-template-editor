@@ -72,32 +72,85 @@
     "Required": "Required",
     "Cardinality": "Cardinality",
     "Min": "Min:",
-    "Max": "Max:"
+    "Max": "Max:",
+    "NotAvailable": "Not Available",
+    "Deleted": "Deleted"
   },
   "SERVER": {
     "ELEMENT": {
       "create": {
-        "success": "The element <b>{{title}}</b> has been created."
+        "success": "The element <b>{{title}}</b> has been created.",
+        "error": "There was an error while creating the element!<br /><br />VIEW TECHNICAL DETAILS!"
       },
       "update": {
-        "success": "The element <b>{{title}}</b> has been saved."
+        "success": "The element <b>{{title}}</b> has been saved.",
+        "error": "There was an error while saving the element!<br /><br />VIEW TECHNICAL DETAILS!"
+      },
+      "load": {
+        "error": "There was an error while loading the template element!<br /><br />VIEW TECHNICAL DETAILS!"
+      },
+      "delete": {
+        "success": "The template element has been deleted.",
+        "error": "There was an error while deleting the template element!<br /><br />VIEW TECHNICAL DETAILS!"
       }
     },
     "TEMPLATE": {
       "create": {
-        "success": "The template <b>{{title}}</b> has been created."
+        "success": "The template <b>{{title}}</b> has been created.",
+        "error": "There was an error while creating the template!<br /><br />VIEW TECHNICAL DETAILS!"
       },
       "update": {
-        "success": "The template <b>{{title}}</b> has been saved."
+        "success": "The template <b>{{title}}</b> has been saved.",
+        "error": "There was an error while saving the template!<br /><br />VIEW TECHNICAL DETAILS!"
+      },
+      "load": {
+        "error": "There was an error while loading the template!<br /><br />VIEW TECHNICAL DETAILS!"
+      },
+      "delete": {
+        "success": "The template has been deleted.",
+        "error": "There was an error while deleting the template!<br /><br />VIEW TECHNICAL DETAILS!"
       }
     },
     "INSTANCE": {
       "create": {
-        "success": "The template instance has been created."
+        "success": "The template instance has been created.",
+        "error": "There was an error while creating the template instance!<br /><br />VIEW TECHNICAL DETAILS!"
       },
       "update": {
-        "success": "The template instance has been saved."
+        "success": "The template instance has been saved.",
+        "error": "There was an error while saving the template instance!<br /><br />VIEW TECHNICAL DETAILS!"
+      },
+      "load": {
+        "error": "There was an error while loading the template instance!<br /><br />VIEW TECHNICAL DETAILS!"
+      },
+      "delete": {
+        "success": "The template instance has been deleted.",
+        "error": "There was an error while deleting the template instance!<br /><br />VIEW TECHNICAL DETAILS!"
       }
+    },
+    "ELEMENTS": {
+      "load": {
+        "error": "There was an error while loading the template elements!<br /><br />VIEW TECHNICAL DETAILS!"
+      }
+    },
+    "TEMPLATES": {
+      "load": {
+        "error": "There was an error while loading the templates!<br /><br />VIEW TECHNICAL DETAILS!"
+      }
+    },
+    "INSTANCES": {
+      "load": {
+        "error": "There was an error while loading the template instances!<br /><br />VIEW TECHNICAL DETAILS!"
+      }
+    },
+    "ERROR": {
+      "title": "Server Error",
+      "technicalDetailsTitle": "Technical details of error",
+      "technicalDetailsTemplate": "Status: {{statusCode}}, {{statusText}}<br/>URL: {{url}}<br/>Method: {{method}}<br/><br/>Message: {{message}}<br />Exception: {{string}}<br /><br />Stack trace:<br/>",
+      "NotFoundMessage": "Not Found.",
+      "NotFoundString": "The object with the requested id can not be found.",
+      "InaccessibleMessage": "Can not access endpoint.",
+      "InaccessibleMessageString": "The endpoint can not be accessed. There is a problem contacting the server."
     }
   },
   "DASHBOARD": {
