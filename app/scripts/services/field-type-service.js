@@ -1,6 +1,8 @@
 'use strict';
 
-var FieldTypeService = function ($http) {
+var FieldTypeService = function ($http, $document) {
+
+  var config = null;
   var fieldTypes = [];
 
   var service = {
@@ -8,12 +10,8 @@ var FieldTypeService = function ($http) {
   };
 
   service.init = function () {
-    $http.get('config/field-type-service.conf.json').then(function (response) {
-      fieldTypes = response.data;
-    }).catch(function (err) {
-      console.log(err);
-    });
-
+    config = $document[0].serviceConfigMap[this.serviceId].config;
+    fieldTypes = config;
   };
 
   service.getFieldTypes = function () {
@@ -24,5 +22,5 @@ var FieldTypeService = function ($http) {
 
 };
 
-FieldTypeService.$inject = ["$http"];
+FieldTypeService.$inject = ["$http", "$document"];
 angularApp.service('FieldTypeService', FieldTypeService);

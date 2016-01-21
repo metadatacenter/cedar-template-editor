@@ -1,6 +1,8 @@
 'use strict';
 
-var DataManipulationService = function ($rootScope, $http, DataTemplateService, DataUtilService) {
+var DataManipulationService = function ($rootScope, $http, $document, DataTemplateService, DataUtilService) {
+
+  var config = null;
 
   var schemaBase = null;
 
@@ -14,12 +16,9 @@ var DataManipulationService = function ($rootScope, $http, DataTemplateService, 
   };
 
   service.init = function () {
-    $http.get('config/data-manipulation-service.conf.json').then(function (response) {
-      schemaBase = response.data.schemaBase;
-      idBasePath = response.data.idBasePath;
-    }).catch(function (err) {
-      console.log(err);
-    });
+    config = $document[0].serviceConfigMap[this.serviceId].config;
+    schemaBase = config.schemaBase;
+    idBasePath = config.idBasePath;
   };
 
   // Function that generates a basic field definition
@@ -184,5 +183,5 @@ var DataManipulationService = function ($rootScope, $http, DataTemplateService, 
   return service;
 };
 
-DataManipulationService.$inject = ["$rootScope", "$http", "DataTemplateService", "DataUtilService"];
+DataManipulationService.$inject = ["$rootScope", "$http", "$document", "DataTemplateService", "DataUtilService"];
 angularApp.service('DataManipulationService', DataManipulationService);

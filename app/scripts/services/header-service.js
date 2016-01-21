@@ -1,6 +1,6 @@
 'use strict';
 
-var HeaderService = function ($rootScope, $http) {
+var HeaderService = function ($rootScope, $http, $document) {
 
   var config = null;
 
@@ -15,11 +15,7 @@ var HeaderService = function ($rootScope, $http) {
   };
 
   service.init = function () {
-    $http.get('config/header-service.conf.json').then(function (response) {
-      config = response.data;
-    }).catch(function (err) {
-      console.log(err);
-    });
+    config = $document[0].serviceConfigMap[this.serviceId].config;
   };
 
   service.configure = function (pageId, applicationMode) {
@@ -48,5 +44,5 @@ var HeaderService = function ($rootScope, $http) {
   return service;
 };
 
-HeaderService.$inject = ["$rootScope", "$http"];
+HeaderService.$inject = ["$rootScope", "$http", "$document"];
 angularApp.service('HeaderService', HeaderService);

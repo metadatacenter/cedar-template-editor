@@ -1,12 +1,12 @@
 <!doctype html>
 <!--[if lt IE 7]>
-<html ng-app="angularJsCedarApplication" class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
+<html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
 <!--[if IE 7]>
-<html ng-app="angularJsCedarApplication" class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
+<html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
 <!--[if IE 8]>
-<html ng-app="angularJsCedarApplication" class="no-js lt-ie9" lang=""> <![endif]-->
+<html class="no-js lt-ie9" lang=""> <![endif]-->
 <!--[if gt IE 8]><!-->
-<html ng-app="angularJsCedarApplication" class="no-js" lang=""> <!--<![endif]-->
+<html class="no-js" lang=""> <!--<![endif]-->
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
@@ -26,7 +26,7 @@
     <link rel="stylesheet" href="bower_components/handsontable/dist/handsontable.full.css">
     <link rel="stylesheet" ng-href="css/style-{{applicationMode}}.css">
     <link rel="stylesheet" href="bower_components/angular-ui-select/dist/select.css">
-    <link rel="stylesheet" href="bower_components/angular-toasty/dist/angular-toasty.min.css" />
+    <link rel="stylesheet" href="bower_components/angular-toasty/dist/angular-toasty.min.css"/>
 
     <!--<script src="//use.typekit.net/aph5zap.js"></script>
     <script>try {
@@ -36,13 +36,15 @@
 </head>
 <body cedar-switch-navbar="true" ng-cloak>
 <!--[if lt IE 8]>
-<p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to
+<p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade
+    your browser</a> to
     improve your experience.</p>
 <![endif]-->
 <nav class="navbar" role="navigation">
     <div class="container" id="headerCtrl" ng-controller="HeaderCtrl">
         <div class="navbar-header">
-            <button type="button" cedar-close-navbar="true" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false"
+            <button type="button" cedar-close-navbar="true" class="navbar-toggle collapsed" data-toggle="collapse"
+                    data-target="#navbar" aria-expanded="false"
                     aria-controls="navbar">
                 <span class="sr-only">Toggle navigation</span>
                 <span class="icon-bar"></span>
@@ -55,14 +57,16 @@
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav pull-right">
                 <li ng-class="{active: ($root.pageId == 'DASHBOARD') }"><a href="#/dashboard">Dashboard</a></li>
-                <li ng-show="$root.applicationRole == 'creator'" ng-class="{active: ($root.pageId == 'ELEMENT') }"><a href="#/elements/create">Element
+                <li ng-show="$root.applicationRole == 'creator'" ng-class="{active: ($root.pageId == 'ELEMENT') }"><a
+                        href="#/elements/create">Element
                     Designer</a></li>
-                <li ng-show="$root.applicationRole == 'creator'" ng-class="{active: ($root.pageId == 'TEMPLATE') }"><a href="#/templates/create">Template
+                <li ng-show="$root.applicationRole == 'creator'" ng-class="{active: ($root.pageId == 'TEMPLATE') }"><a
+                        href="#/templates/create">Template
                     Designer</a></li>
-                <li ng-show="$root.applicationRole == 'instantiator'" ng-class="{active: ($root.pageId == 'RUNTIME') }"><a href="#/instances/create">Metadata
-                    Editor</a></li>
+                <li ng-show="$root.applicationRole == 'instantiator'" ng-class="{active: ($root.pageId == 'RUNTIME') }">
+                    <a href="#/instances/create">Metadata
+                        Editor</a></li>
                 <li ng-class="{active: ($root.pageId == 'ROLESELECTOR') }"><a href="#/">Role Selector</a></li>
-            </ul>
             </ul>
         </div><!--/.navbar-collapse -->
     </div>
@@ -87,11 +91,14 @@
             <div id="navbarmini" class="navbar-collapse collapse">
                 <ul class="nav pull-right">
                     <li ng-class="{active: ($root.pageId == 'DASHBOARD') }"><a href="#/dashboard">Dashboard</a></li>
-                    <li ng-show="$root.applicationRole == 'creator'" ng-class="{active: ($root.pageId == 'ELEMENT') }"><a href="#/elements/create">Element
-                        Designer</a></li>
-                    <li ng-show="$root.applicationRole == 'creator'" ng-class="{active: ($root.pageId == 'TEMPLATE') }"><a href="#/templates/create">Template
-                        Designer</a></li>
-                    <li ng-show="$root.applicationRole == 'instantiator'" ng-class="{active: ($root.pageId == 'RUNTIME') }"><a
+                    <li ng-show="$root.applicationRole == 'creator'" ng-class="{active: ($root.pageId == 'ELEMENT') }">
+                        <a href="#/elements/create">Element
+                            Designer</a></li>
+                    <li ng-show="$root.applicationRole == 'creator'" ng-class="{active: ($root.pageId == 'TEMPLATE') }">
+                        <a href="#/templates/create">Template
+                            Designer</a></li>
+                    <li ng-show="$root.applicationRole == 'instantiator'"
+                        ng-class="{active: ($root.pageId == 'RUNTIME') }"><a
                             href="#/instances/create">Metadata Editor</a></li>
                     <li ng-class="{active: ($root.pageId == 'ROLESELECTOR') }"><a href="#/">Role Selector</a></li>
                 </ul>
@@ -102,13 +109,15 @@
 
 <div id="jsonTools" cedar-position-json-tools="true" style="display: none;">
     <a ng-click="$root.showRender = !$root.showRender; $root.scrollToAnchor('templateJSON')" title="Show Template JSON"
-       ng-if="$root.pageId == 'ELEMENT' || $root.pageId == 'TEMPLATE' || $root.pageId == 'RUNTIME'"><i class="cedar-svg-complete" ng-if="$root.showRender"></i><i
+       ng-if="$root.pageId == 'ELEMENT' || $root.pageId == 'TEMPLATE' || $root.pageId == 'RUNTIME'"><i
+            class="cedar-svg-complete" ng-if="$root.showRender"></i><i
             class="cedar-svg-progress" ng-if="!$root.showRender"></i></a><br/>
     <a ng-click="$root.showOutput = !$root.showOutput; $root.scrollToAnchor('outputJSON')" title="Show Output JSON"
-       ng-if="$root.pageId == 'RUNTIME'"><i class="cedar-svg-complete" ng-if="$root.showOutput"></i><i class="cedar-svg-progress" ng-if="!$root.showOutput"></i></a>
+       ng-if="$root.pageId == 'RUNTIME'"><i class="cedar-svg-complete" ng-if="$root.showOutput"></i><i
+            class="cedar-svg-progress" ng-if="!$root.showOutput"></i></a>
 </div>
 
-<div id="angular-views-entry" ng-view=""></div>
+<div id="angular-views-entry" ng-view="">Preloading CEDAR ...</div>
 
 <toasty></toasty>
 
@@ -194,6 +203,8 @@
 <script src="scripts/Bioportal/BioPortalModule.js"></script>
 <script src="scripts/Bioportal/BioPortalService.js"></script>
 <!-- end BioPortal -->
+
+<script src="scripts/cedar-bootstrap.js"></script>
 
 </body>
 </html>

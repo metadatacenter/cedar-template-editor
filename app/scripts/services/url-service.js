@@ -1,7 +1,8 @@
 'use strict';
 
-var UrlService = function ($http) {
+var UrlService = function ($http, $document) {
 
+  var config = null;
   var apiService = null;
 
   var service = {
@@ -9,11 +10,8 @@ var UrlService = function ($http) {
   };
 
   service.init = function () {
-    $http.get('config/url-service.conf.json').then(function (response) {
-      apiService = response.data.cedarRestAPI;
-    }).catch(function (err) {
-      console.log(err);
-    });
+    config = $document[0].serviceConfigMap[this.serviceId].config;
+    apiService = config.cedarRestAPI;
   };
 
   service.getRoleSelector = function () {
@@ -83,5 +81,5 @@ var UrlService = function ($http) {
   return service;
 };
 
-UrlService.$inject = ['$http'];
+UrlService.$inject = ['$http', '$document'];
 angularApp.service('UrlService', UrlService);
