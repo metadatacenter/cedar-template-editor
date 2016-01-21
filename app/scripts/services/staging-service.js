@@ -104,6 +104,7 @@ var StagingService = function ($rootScope, TemplateElementService, DataManipulat
       targetObject.properties["@context"].properties[fieldName] = DataManipulationService.generateFieldContextProperties(
         fieldName);
       targetObject.properties["@context"].required.push(fieldName);
+      targetObject.required.push(fieldName);
 
       // Evaluate cardinality
       DataManipulationService.cardinalizeField(field);

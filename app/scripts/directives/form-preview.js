@@ -35,6 +35,7 @@ var formPreview = function ($rootScope, $document, $timeout, DataManipulationSer
         // Remove selected field from @context
         delete $scope.form.properties['@context'].properties[key];
         $scope.form.properties["@context"].required.splice($scope.form.properties["@context"].required.indexOf(key), 1);
+        $scope.form.required.splice($scope.form.required.indexOf(key), 1);
 
         delete $scope.model[key];
 
