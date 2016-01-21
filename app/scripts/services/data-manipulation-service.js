@@ -77,7 +77,7 @@ var DataManipulationService = function ($rootScope, $http, DataTemplateService, 
       field.items = {
         'type'                : field.type,
         '@id'                 : field['@id'],
-        '$schema'             : field.schema,
+        '$schema'             : field.$schema,
         'title'               : field.properties._ui.title,
         'description'         : field.properties._ui.description,
         'properties'          : field.properties,

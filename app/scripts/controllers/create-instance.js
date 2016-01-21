@@ -56,7 +56,7 @@ var CreateInstanceController = function ($rootScope, $scope, $routeParams, $loca
       $scope.instance = instanceResponse.data;
       //$scope.$broadcast('loadExistingModel', response);
       // Get and load the template document this instance will populate from (will be blank form template)
-      TemplateService.getTemplate(instanceResponse.data.template_id).then(function (templateResponse) {
+      TemplateService.getTemplate(instanceResponse.data._templateId).then(function (templateResponse) {
         // Assign returned form object from FormService to $scope.form
         $scope.template = templateResponse.data;
         // $scope.initializePagination kicks off paging with form.pages array
@@ -114,12 +114,12 @@ var CreateInstanceController = function ($rootScope, $scope, $routeParams, $loca
     if ($rootScope.isEmpty($scope.emptyRequiredFields) && $rootScope.isEmpty(
         $scope.invalidFieldValues) && $scope.instance['@id'] == undefined) {
       // '@id' and 'template_id' haven't been populated yet, create now
-      $scope.instance['template_id'] = $routeParams.template_id;
+      $scope.instance['_templateId'] = $routeParams.template_id;
       // Create info field that will store information used by the UI
       $scope.instance._ui = {};
-      $scope.instance._ui['template_title'] = $scope.template.properties._ui.title + ' instance';
-      $scope.instance._ui['template_description'] = $scope.template.properties._ui.description;
-      $scope.instance._ui['creation_date'] = new Date();
+      $scope.instance._ui['templateTitle'] = $scope.template.properties._ui.title + ' instance';
+      $scope.instance._ui['templateDescription'] = $scope.template.properties._ui.description;
+      $scope.instance._ui['creationDate'] = new Date();
       // Make create instance call
       TemplateInstanceService.saveTemplateInstance($scope.instance).then(function (response) {
         // confirm message

@@ -47,5 +47,8 @@
       "description": ""
     }
   },
+  "required": [
+    "@id"
+  ],
   "additionalProperties": false
 }

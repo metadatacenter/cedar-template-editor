@@ -60,8 +60,8 @@
 					<div class="template-item" ng-repeat="instance in defaultInstances" cedar-resize-square="true" style="height:213px">
                         <cedar-box
                                 type="{{CONST.boxType.INSTANCE}}"
-                                description="{{instance._ui.template_description}}&lt;br/&gt;{{'(' + (instance._ui.creation_date | date:'short') + ')'}}"
-                                title="{{instance._ui.template_title}}"
+                                description="{{instance._ui.templateDescription}}&lt;br/&gt;{{'(' + (instance._ui.creationDate | date:'short') + ')'}}"
+                                title="{{instance._ui.templateTitle}}"
                                 object-id="{{instance['@id']}}"
                                 allow-remove="true"
                                 >
