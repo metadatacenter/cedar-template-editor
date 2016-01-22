@@ -1,6 +1,6 @@
 'use strict';
 
-var FieldTypeService = function ($http, $document) {
+var FieldTypeService = function () {
 
   var config = null;
   var fieldTypes = [];
@@ -10,7 +10,7 @@ var FieldTypeService = function ($http, $document) {
   };
 
   service.init = function () {
-    config = $document[0].serviceConfigMap[this.serviceId].config;
+    config = cedarBootstrap.getBaseConfig(this.serviceId);
     fieldTypes = config;
   };
 
@@ -22,5 +22,5 @@ var FieldTypeService = function ($http, $document) {
 
 };
 
-FieldTypeService.$inject = ["$http", "$document"];
+FieldTypeService.$inject = [];
 angularApp.service('FieldTypeService', FieldTypeService);

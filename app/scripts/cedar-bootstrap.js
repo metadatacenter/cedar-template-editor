@@ -1,65 +1,116 @@
-String.prototype.toDash = function () {
-  return this.replace(/([A-Z])/g, function ($1) {
-    return "-" + $1.toLowerCase();
-  });
-};
+function CedarBootstrap($http) {
 
-var initServices = [
-  'DataManipulationService',
-  'FieldTypeService',
-  'HeaderService',
-  'UrlService'
-];
-var configMap = {};
+  // Variable holding the loaded data
+  var configMap = {};
 
+  // Services that need a preload
+  var initServices = {
+    'DataManipulationService': true,
+    'FieldTypeService'       : true,
+    'DataTemplateService'    : [
+      'resources/element-empty.json',
+      'resources/field-empty.json',
+      'resources/template-empty.json'
+    ],
+    'HeaderService'          : true,
+    'UrlService'             : true
+  };
 
-function checkIfAllLoaded() {
-  for (var i in configMap) {
-    if (!configMap[i].finished) {
-      return;
+  // Function to convert camelCase to train-case
+  this.toDash = function (s) {
+    s = s.replace(/([A-Z])/g, function ($1) {
+      return '-' + $1.toLowerCase();
+    });
+    if (s.substring(0, 1) == '-') {
+      s = s.substring(1);
     }
-  }
+    return s;
+  };
 
-  // bootstrap real app
-  document.serviceConfigMap = configMap;
-  angular.bootstrap(document, ['angularJsCedarApplication']);
-}
+  // Callback function to check the loading status
+  this.checkIfAllLoadedAndLaunch = function () {
+    for (var sid in configMap) {
+      for (var filePath in configMap[sid]) {
+        if (!configMap[sid][filePath].finished) {
+          return;
+        }
+      }
+    }
 
-angular.element(document).ready(function () {
+    // bootstrap real app
+    angular.bootstrap(document, ['angularJsCedarApplication']);
+  };
 
-  // bootstrap dummy app
-  var element = angular.element('<div></div>');
-  angular.bootstrap(element);
-  var $injector = element.injector();
-  var $http = $injector.get('$http');
-
-  // create config descriptors
-  for (var i in initServices) {
-    var sid = initServices[i];
-    var configFile = 'config/' + sid.toDash().substring(1) + '.conf.json';
-    var config = {
+  this.getPreloadDescriptor = function (sid, configFile) {
+    return {
       "serviceId" : sid,
       "configFile": configFile,
       "finished"  : false,
       "config"    : null,
       "error"     : null
     };
-    configMap[sid] = config;
-  }
+  };
 
-  // load config files
-  for (var key in configMap) {
-    (function (serviceId) {
-      $http.get(configMap[serviceId].configFile).then(function (response) {
-        configMap[serviceId].finished = true;
-        configMap[serviceId].config = response.data;
-        checkIfAllLoaded(configMap);
-      }).catch(function (err) {
-        configMap[serviceId].finished = true;
-        configMap[serviceId].error = error;
-        checkIfAllLoaded(configMap);
-      });
-    })(key);
-  }
+  this.getBaseConfigPath = function (sid) {
+    return 'config/' + this.toDash(sid) + '.conf.json';
+  };
 
+  this.preloadFile = function (sid, filePath) {
+    var owner = this;
+    $http.get(filePath).then(function (response) {
+      configMap[sid][filePath].finished = true;
+      configMap[sid][filePath].config = response.data;
+      owner.checkIfAllLoadedAndLaunch();
+    }).catch(function (err) {
+      configMap[sid][filePath].finished = true;
+      configMap[sid][filePath].error = error;
+      owner.checkIfAllLoadedAndLaunch(configMap);
+    });
+  };
+
+  this.preload = function () {
+    // create config descriptors
+    for (var sid in initServices) {
+      configMap[sid] = {};
+      var files = initServices[sid];
+      if (files === true) {
+        var configFile = this.getBaseConfigPath(sid);
+        configMap[sid][configFile] = this.getPreloadDescriptor(sid, configFile);
+      } else if (Array.isArray(files)) {
+        for (var i in files) {
+          var fn = files[i];
+          configMap[sid][fn] = this.getPreloadDescriptor(sid, fn);
+        }
+      }
+    }
+
+    // load config files
+    for (var sid2 in configMap) {
+      for (var filePath in configMap[sid2]) {
+        this.preloadFile(sid2, filePath);
+      }
+    }
+  };
+
+  this.getBaseConfig = function (sid) {
+    var configFile = this.getBaseConfigPath(sid);
+    return configMap[sid][configFile].config;
+  };
+
+  this.getFileConfig = function (sid, configFile) {
+    return configMap[sid][configFile].config;
+  };
+
+}
+
+angular.element(document).ready(function (doc) {
+  // bootstrap dummy app
+  var element = angular.element('<div></div>');
+  angular.bootstrap(element);
+  var $injector = element.injector();
+  var $http = $injector.get('$http');
+
+  // preload files, bootstrap CEDAR
+  window.cedarBootstrap = new CedarBootstrap($http);
+  window.cedarBootstrap.preload();
 });

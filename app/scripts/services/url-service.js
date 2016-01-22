@@ -1,6 +1,6 @@
 'use strict';
 
-var UrlService = function ($http, $document) {
+var UrlService = function () {
 
   var config = null;
   var apiService = null;
@@ -10,7 +10,7 @@ var UrlService = function ($http, $document) {
   };
 
   service.init = function () {
-    config = $document[0].serviceConfigMap[this.serviceId].config;
+    config = cedarBootstrap.getBaseConfig(this.serviceId);
     apiService = config.cedarRestAPI;
   };
 
@@ -81,5 +81,5 @@ var UrlService = function ($http, $document) {
   return service;
 };
 
-UrlService.$inject = ['$http', '$document'];
+UrlService.$inject = [];
 angularApp.service('UrlService', UrlService);

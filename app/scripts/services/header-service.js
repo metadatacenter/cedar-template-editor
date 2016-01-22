@@ -1,21 +1,21 @@
 'use strict';
 
-var HeaderService = function ($rootScope, $http, $document) {
+var HeaderService = function ($rootScope) {
 
   var config = null;
 
   var service = {
     serviceId: "HeaderService",
 
-    miniHeaderEnabled: false,
+    miniHeaderEnabled    : false,
     miniHeaderScrollLimit: NaN,
-    dataContainer: {
+    dataContainer        : {
       currentObjectScope: null
     }
   };
 
   service.init = function () {
-    config = $document[0].serviceConfigMap[this.serviceId].config;
+    config = cedarBootstrap.getBaseConfig(this.serviceId);
   };
 
   service.configure = function (pageId, applicationMode) {
@@ -44,5 +44,5 @@ var HeaderService = function ($rootScope, $http, $document) {
   return service;
 };
 
-HeaderService.$inject = ["$rootScope", "$http", "$document"];
+HeaderService.$inject = ["$rootScope"];
 angularApp.service('HeaderService', HeaderService);

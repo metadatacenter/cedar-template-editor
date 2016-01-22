@@ -1,6 +1,6 @@
 'use strict';
 
-var DataTemplateService = function ($http) {
+var DataTemplateService = function () {
   var dataTemplate = {};
 
   var service = {
@@ -8,23 +8,9 @@ var DataTemplateService = function ($http) {
   };
 
   service.init = function () {
-    $http.get('resources/field-empty.json').then(function (response) {
-      dataTemplate.field = response.data;
-    }).catch(function (err) {
-      console.log(err);
-    });
-
-    $http.get('resources/element-empty.json').then(function (response) {
-      dataTemplate.element = response.data;
-    }).catch(function (err) {
-      console.log(err);
-    });
-
-    $http.get('resources/template-empty.json').then(function (response) {
-      dataTemplate.template = response.data;
-    }).catch(function (err) {
-      console.log(err);
-    });
+    dataTemplate.field = cedarBootstrap.getFileConfig(this.serviceId, 'resources/field-empty.json');
+    dataTemplate.element = cedarBootstrap.getFileConfig(this.serviceId, 'resources/element-empty.json');
+    dataTemplate.template = cedarBootstrap.getFileConfig(this.serviceId, 'resources/template-empty.json');
   };
 
   service.getField = function (tempId) {
@@ -47,5 +33,5 @@ var DataTemplateService = function ($http) {
 
 };
 
-DataTemplateService.$inject = ["$http"];
+DataTemplateService.$inject = [];
 angularApp.service('DataTemplateService', DataTemplateService);

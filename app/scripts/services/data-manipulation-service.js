@@ -1,6 +1,7 @@
 'use strict';
+/*global cedarBootstrap */
 
-var DataManipulationService = function ($rootScope, $http, $document, DataTemplateService, DataUtilService) {
+var DataManipulationService = function (DataTemplateService, DataUtilService) {
 
   var config = null;
 
@@ -8,7 +9,7 @@ var DataManipulationService = function ($rootScope, $http, $document, DataTempla
 
   // Base path to generate field ids
   // TODO: fields will be saved as objects on server, they will get their id there
-  // TOOD: need to assign a temporary id, which will be replaced on server side
+  // TODO: need to assign a temporary id, which will be replaced on server side
   var idBasePath = null;
 
   var service = {
@@ -16,7 +17,7 @@ var DataManipulationService = function ($rootScope, $http, $document, DataTempla
   };
 
   service.init = function () {
-    config = $document[0].serviceConfigMap[this.serviceId].config;
+    config = cedarBootstrap.getBaseConfig(this.serviceId);
     schemaBase = config.schemaBase;
     idBasePath = config.idBasePath;
   };
@@ -183,5 +184,5 @@ var DataManipulationService = function ($rootScope, $http, $document, DataTempla
   return service;
 };
 
-DataManipulationService.$inject = ["$rootScope", "$http", "$document", "DataTemplateService", "DataUtilService"];
+DataManipulationService.$inject = ["DataTemplateService", "DataUtilService"];
 angularApp.service('DataManipulationService', DataManipulationService);
