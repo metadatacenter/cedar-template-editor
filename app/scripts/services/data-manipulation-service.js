@@ -32,7 +32,7 @@ var DataManipulationService = function (DataTemplateService, DataUtilService) {
     } else if (fieldType == "list") {
       valueType = "array";
     }
-    var field = DataTemplateService.getField(idBasePath + this.generateGUID());
+    var field = DataTemplateService.getField(this.generateTempGUID());
     field.properties._ui.inputType = fieldType;
     field.properties._ui.createdAt = Date.now();
     field.properties._value.type = valueType;
@@ -146,6 +146,7 @@ var DataManipulationService = function (DataTemplateService, DataUtilService) {
     return results;
   };
 
+  // TODO: remove this if not needed
   // Generating a RFC4122 version 4 compliant GUID
   service.generateGUID = function () {
     var d = Date.now();
@@ -156,6 +157,10 @@ var DataManipulationService = function (DataTemplateService, DataUtilService) {
     });
     return guid;
   };
+
+  service.generateTempGUID = function() {
+    return "@tmp-" + Date.now() + "-" + (window.performance.now() | 0);
+  }
 
   service.elementIsMultiInstance = function (element) {
     return element.hasOwnProperty('minItems') && !angular.isUndefined(element.minItems);

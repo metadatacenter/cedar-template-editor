@@ -1,0 +1,21 @@
+{
+  "name": "perfnow-polyfill",
+  "main": "perfnow-polyfill.js",
+  "version": "1.0.0",
+  "authors": [
+    "Luke Hedger <luke.hedger@gmail.com>"
+  ],
+  "description": "performance.now() polyfill",
+  "keywords": [
+    "performance.now",
+    "high resolution timer"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}

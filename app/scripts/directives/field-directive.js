@@ -216,7 +216,7 @@ var fieldDirective = function($rootScope, $http, $compile, $document, Spreadshee
       }
     }
 
-    $scope.uuid = DataManipulationService.generateGUID();
+    $scope.uuid = DataManipulationService.generateTempGUID();
 
     // Retrive appropriate field template file
     $scope.getTemplateUrl = function() {
