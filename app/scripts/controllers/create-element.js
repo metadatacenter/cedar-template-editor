@@ -1,9 +1,9 @@
 'use strict';
 
-var CreateElementController = function ($rootScope, $scope, $routeParams, $timeout, $location, $translate,
-                                        $filter, HeaderService, UrlService, StagingService, DataTemplateService, FieldTypeService,
-                                        TemplateElementService, UIMessageService, DataManipulationService, ClientSideValidationService,
-                                        DataUtilService, CONST) {
+var CreateElementController = function ($rootScope, $scope, $routeParams, $timeout, $location, $translate, $filter,
+                                        HeaderService, UrlService, StagingService, DataTemplateService,
+                                        FieldTypeService, TemplateElementService, UIMessageService,
+                                        DataManipulationService, DataUtilService, CONST) {
   // Set page title variable when this controller is active
   $rootScope.pageTitle = 'Element Designer';
   // Create staging area to create/edit fields before they get added to the element
@@ -107,15 +107,15 @@ var CreateElementController = function ($rootScope, $scope, $routeParams, $timeo
   // Reverts to empty form and removes all previously added fields/elements
   $scope.reset = function () {
     UIMessageService.confirmedExecution(
-      function () {
-        $timeout(function () {
-          $scope.doReset();
-          StagingService.resetPage();
-        });
-      },
-      'GENERIC.AreYouSure',
-      'ELEMENTEDITOR.clear.confirm',
-      'GENERIC.YesClearIt'
+        function () {
+          $timeout(function () {
+            $scope.doReset();
+            StagingService.resetPage();
+          });
+        },
+        'GENERIC.AreYouSure',
+        'ELEMENTEDITOR.clear.confirm',
+        'GENERIC.YesClearIt'
     );
   };
 
@@ -133,13 +133,13 @@ var CreateElementController = function ($rootScope, $scope, $routeParams, $timeo
 
   $scope.saveElement = function () {
     UIMessageService.conditionalOrConfirmedExecution(
-      StagingService.isEmpty(),
-      function () {
-        $scope.doSaveElement();
-      },
-      'GENERIC.AreYouSure',
-      'ELEMENTEDITOR.save.nonEmptyStagingConfirm',
-      'GENERIC.YesSaveIt'
+        StagingService.isEmpty(),
+        function () {
+          $scope.doSaveElement();
+        },
+        'GENERIC.AreYouSure',
+        'ELEMENTEDITOR.save.nonEmptyStagingConfirm',
+        'GENERIC.YesSaveIt'
     );
   }
 
@@ -173,7 +173,7 @@ var CreateElementController = function ($rootScope, $scope, $routeParams, $timeo
         TemplateElementService.saveTemplateElement($scope.element).then(function (response) {
           // confirm message
           UIMessageService.flashSuccess('SERVER.ELEMENT.create.success', {"title": response.data.properties._ui.title},
-            'GENERIC.Created');
+              'GENERIC.Created');
           // Reload page with element id
           var newId = response.data['@id'];
           $location.path(UrlService.getElementEdit(newId));
@@ -186,8 +186,9 @@ var CreateElementController = function ($rootScope, $scope, $routeParams, $timeo
         var id = $scope.element['@id'];
         //--//delete $scope.element['@id'];
         TemplateElementService.updateTemplateElement(id, $scope.element).then(function (response) {
+          $scope.element = response.data;
           UIMessageService.flashSuccess('SERVER.ELEMENT.update.success', {"title": response.data.title},
-            'GENERIC.Updated');
+              'GENERIC.Updated');
         }).catch(function (err) {
           UIMessageService.showBackendError('SERVER.ELEMENT.update.error', err);
         });
@@ -218,6 +219,5 @@ var CreateElementController = function ($rootScope, $scope, $routeParams, $timeo
 
 CreateElementController.$inject = ["$rootScope", "$scope", "$routeParams", "$timeout", "$location", "$translate",
   "$filter", "HeaderService", "UrlService", "StagingService", "DataTemplateService", "FieldTypeService",
-  "TemplateElementService", "UIMessageService", "DataManipulationService", "ClientSideValidationService",
-  "DataUtilService", "CONST"];
+  "TemplateElementService", "UIMessageService", "DataManipulationService", "DataUtilService", "CONST"];
 angularApp.controller('CreateElementController', CreateElementController);

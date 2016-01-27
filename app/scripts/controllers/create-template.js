@@ -1,9 +1,9 @@
 'use strict';
 
-var CreateTemplateController = function ($rootScope, $scope, $q, $routeParams, $timeout, $location, $translate,
-                                         $filter, HeaderService, UrlService, StagingService, DataTemplateService, FieldTypeService,
-                                         TemplateElementService, TemplateService, UIMessageService, DataManipulationService, ClientSideValidationService,
-                                         DataUtilService, CONST) {
+var CreateTemplateController = function ($rootScope, $scope, $routeParams, $timeout, $location, $translate, $filter,
+                                         HeaderService, UrlService, StagingService, DataTemplateService,
+                                         FieldTypeService, TemplateElementService, TemplateService, UIMessageService,
+                                         DataManipulationService, DataUtilService, CONST) {
   // Set Page Title variable when this controller is active
   $rootScope.pageTitle = 'Template Designer';
   // Create staging area to create/edit fields before they get added to $scope.form.properties
@@ -98,15 +98,15 @@ var CreateTemplateController = function ($rootScope, $scope, $q, $routeParams, $
   // Reverts to empty form and removes all previously added fields/elements
   $scope.reset = function () {
     UIMessageService.confirmedExecution(
-      function () {
-        $timeout(function () {
-          $scope.doReset();
-          StagingService.resetPage();
-        });
-      },
-      'GENERIC.AreYouSure',
-      'TEMPLATEEDITOR.clear.confirm',
-      'GENERIC.YesClearIt'
+        function () {
+          $timeout(function () {
+            $scope.doReset();
+            StagingService.resetPage();
+          });
+        },
+        'GENERIC.AreYouSure',
+        'TEMPLATEEDITOR.clear.confirm',
+        'GENERIC.YesClearIt'
     );
   };
 
@@ -129,13 +129,13 @@ var CreateTemplateController = function ($rootScope, $scope, $q, $routeParams, $
 
   $scope.saveTemplate = function () {
     UIMessageService.conditionalOrConfirmedExecution(
-      StagingService.isEmpty(),
-      function () {
-        $scope.doSaveTemplate();
-      },
-      'GENERIC.AreYouSure',
-      'TEMPLATEEDITOR.save.nonEmptyStagingConfirm',
-      'GENERIC.YesSaveIt'
+        StagingService.isEmpty(),
+        function () {
+          $scope.doSaveTemplate();
+        },
+        'GENERIC.AreYouSure',
+        'TEMPLATEEDITOR.save.nonEmptyStagingConfirm',
+        'GENERIC.YesSaveIt'
     );
   }
 
@@ -167,7 +167,7 @@ var CreateTemplateController = function ($rootScope, $scope, $q, $routeParams, $
         TemplateService.saveTemplate($scope.form).then(function (response) {
           // confirm message
           UIMessageService.flashSuccess('SERVER.TEMPLATE.create.success', {"title": response.data._ui.title},
-            'GENERIC.Created');
+              'GENERIC.Created');
           // Reload page with template id
           var newId = response.data['@id'];
           $location.path(UrlService.getTemplateEdit(newId));
@@ -180,8 +180,9 @@ var CreateTemplateController = function ($rootScope, $scope, $q, $routeParams, $
         var id = $scope.form['@id'];
         //--//delete $scope.form['@id'];
         TemplateService.updateTemplate(id, $scope.form).then(function (response) {
+          $scope.form = response.data;
           UIMessageService.flashSuccess('SERVER.TEMPLATE.update.success', {"title": response.data.properties._ui.title},
-            'GENERIC.Updated');
+              'GENERIC.Updated');
         }).catch(function (err) {
           UIMessageService.showBackendError('SERVER.TEMPLATE.update.error', err);
         });
@@ -216,8 +217,8 @@ var CreateTemplateController = function ($rootScope, $scope, $q, $routeParams, $
 
 };
 
-CreateTemplateController.$inject = ["$rootScope", "$scope", "$q", "$routeParams", "$timeout", "$location", "$translate",
+CreateTemplateController.$inject = ["$rootScope", "$scope", "$routeParams", "$timeout", "$location", "$translate",
   "$filter", "HeaderService", "UrlService", "StagingService", "DataTemplateService", "FieldTypeService",
-  "TemplateElementService", "TemplateService", "UIMessageService", "DataManipulationService", "ClientSideValidationService",
-  "DataUtilService", "CONST"];
+  "TemplateElementService", "TemplateService", "UIMessageService", "DataManipulationService", "DataUtilService",
+  "CONST"];
 angularApp.controller('CreateTemplateController', CreateTemplateController);
