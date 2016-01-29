@@ -159,7 +159,7 @@ var DataManipulationService = function (DataTemplateService, DataUtilService) {
   };
 
   service.generateTempGUID = function() {
-    return "@tmp-" + Date.now() + "-" + (window.performance.now() | 0);
+    return "tmp-" + Date.now() + "-" + (window.performance.now() | 0);
   }
 
   service.elementIsMultiInstance = function (element) {
