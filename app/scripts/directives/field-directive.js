@@ -1,6 +1,6 @@
 'use strict';
 
-var fieldDirective = function($rootScope, $http, $compile, $document, SpreadsheetService) {
+var fieldDirective = function($rootScope, $http, $compile, $document, SpreadsheetService, DataManipulationService) {
   var linker = function($scope, $element, attrs) {
 
     var setDirectory = function() {
@@ -165,7 +165,7 @@ var fieldDirective = function($rootScope, $http, $compile, $document, Spreadshee
       $scope.$emit('formHasRequiredFields');
     }
 
-    $scope.uuid = $rootScope.generateGUID();
+    $scope.uuid = DataManipulationService.generateTempGUID();
 
     // Retrive appropriate field template file
     $scope.getTemplateUrl = function() {
@@ -174,7 +174,7 @@ var fieldDirective = function($rootScope, $http, $compile, $document, Spreadshee
         inputType = $rootScope.propertiesOf($scope.field)._ui.inputType;
       }
 
-      return './views/directive-templates/field-' + $scope.directory + '/' + inputType + '.html';
+      return 'views/directive-templates/field-' + $scope.directory + '/' + inputType + '.html';
     }
 
     $scope.addMoreInput = function() {
@@ -390,7 +390,7 @@ var fieldDirective = function($rootScope, $http, $compile, $document, Spreadshee
   }
 
   return {
-    templateUrl: './views/directive-templates/field-directive.html',
+    templateUrl: 'views/directive-templates/field-directive.html',
     restrict: 'EA',
     scope: {
       field: '=',
@@ -420,5 +420,5 @@ var fieldDirective = function($rootScope, $http, $compile, $document, Spreadshee
 
 };
 
-fieldDirective.$inject = ["$rootScope", "$http", "$compile", "$document", "SpreadsheetService"];
+fieldDirective.$inject = ["$rootScope", "$http", "$compile", "$document", "SpreadsheetService", "DataManipulationService"];
 angularApp.directive('fieldDirective', fieldDirective);

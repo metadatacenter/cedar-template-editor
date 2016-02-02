@@ -10612,7 +10612,9 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
 .controlled-term-options .search-results-section .results-headers-table td:first-child,
 .controlled-term-options .search-results-section .results-table th:first-child,
 .controlled-term-options .search-results-section .results-headers-table th:first-child {
-  width: 250px;
+  width: 350px;
+  word-break: normal;
+  word-wrap: break-word;
 }
 .controlled-term-options .search-results-section .results-table tr:first-child th,
 .controlled-term-options .search-results-section .results-headers-table tr:first-child th,
@@ -10633,13 +10635,15 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
 .controlled-term-options .search-results-section .values-browse-results-table td:nth-child(2),
 .controlled-term-options .search-results-section .values-browse-results-headers-table th:nth-child(2),
 .controlled-term-options .search-results-section .values-browse-results-table th:nth-child(2) {
-  width: 80px;
+  width: 105px;
 }
 .controlled-term-options .search-results-section .values-browse-results-headers-table td:nth-child(3),
 .controlled-term-options .search-results-section .values-browse-results-table td:nth-child(3),
 .controlled-term-options .search-results-section .values-browse-results-headers-table th:nth-child(3),
 .controlled-term-options .search-results-section .values-browse-results-table th:nth-child(3) {
-  width: 220px;
+  width: 230px;
+  word-break: normal;
+  word-wrap: break-word;
 }
 .controlled-term-options .search-results-section .search-results-headers {
   text-transform: uppercase;
@@ -10707,7 +10711,7 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   margin-top: 0px;
 }
 .controlled-term-options .ontology-tree .tree-view-ul {
-  height: 304px;
+  height: 295px;
   width: 100%;
   overflow: auto;
 }
@@ -11313,7 +11317,7 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
 }
 .tree li {
   margin: 0;
-  padding: 0 1.5em;
+  padding: 5px 1.5em;
   /* indentation + .5em */
   line-height: 22px;
   /* default list item's `line-height` */
@@ -11325,6 +11329,10 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   height: 22px;
   white-space: nowrap;
   font-weight: normal;
+}
+.tree li a:hover {
+  color: #338833;
+  text-decoration: none;
 }
 .tree li a.selected {
   font-weight: bold;
@@ -11347,12 +11355,17 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   background: white;
   /* same with body background */
 }
+.tree-view-ul > .tree > li {
+  padding-left: 0;
+}
 .field-tree {
   margin-top: 20px;
 }
 .field-tree .ontology-tree {
   margin: 0;
   width: 40%;
+  padding: 10px 10px 0;
+  background: #ffffff;
 }
 .field-tree .ontology-tree .class-tree-container {
   padding: 0 10px 5px 10px;
@@ -11385,6 +11398,7 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
 .field-tree .field-details-view .nav-tabs .detail-view-tab.active a {
   background: #339933;
   color: #FFFFFF;
+  font-weight: normal;
 }
 .field-tree .field-details-view .tab-content table th {
   padding: 15px 8px;
@@ -11413,10 +11427,29 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
 }
 .field-search span.input-group-addon {
   cursor: pointer;
+  border-radius: 0;
 }
 .added-field-classes,
 .added-value-constraints {
-  background: #FFF;
+  background: #eaf2f2;
+}
+.added-field-classes .class-list-container,
+.added-value-constraints .class-list-container,
+.added-field-classes .added-value-constraint-container,
+.added-value-constraints .added-value-constraint-container {
+  border-color: #eaf2f2;
+}
+.added-field-classes .class-list-container thead,
+.added-value-constraints .class-list-container thead,
+.added-field-classes .added-value-constraint-container thead,
+.added-value-constraints .added-value-constraint-container thead {
+  background: #eaf2f2;
+}
+.added-field-classes .class-list-container thead th,
+.added-value-constraints .class-list-container thead th,
+.added-field-classes .added-value-constraint-container thead th,
+.added-value-constraints .added-value-constraint-container thead th {
+  color: #339933;
 }
 .added-field-classes .many-classes-list,
 .added-value-constraints .many-classes-list {
@@ -11442,6 +11475,11 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
 .many-classes-list .class-list-table {
   max-height: 190px;
   overflow: auto;
+  background: #ffffff;
+}
+.class-list-container .class-list-table tr:first-child td,
+.many-classes-list .class-list-table tr:first-child td {
+  border-top: none;
 }
 .class-list-container table,
 .many-classes-list table {
@@ -11519,6 +11557,7 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
 .ontology-search-input-group .input-group-addon {
   background: #FFF;
   border: none;
+  border-radius: 0;
   cursor: pointer;
 }
 .is-searching .field-search {
@@ -11636,6 +11675,7 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   width: auto;
   padding: 0 10px;
   color: #339933;
+  text-transform: uppercase;
 }
 .added-value-constraint-container {
   border: 1px solid #DDD;
@@ -11679,7 +11719,7 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   border: none;
 }
 .added-value-constraints-header .table thead {
-  background: #EFEFEF;
+  background: #eaf2f2;
 }
 .value-contraint-table {
   max-height: 285px;
@@ -11687,6 +11727,9 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
 }
 .value-contraint-table table {
   margin-bottom: 0;
+}
+.value-contraint-table table tr:first-child td {
+  border-top: none;
 }
 .field-tree-header .ontology-tree-header,
 .field-tree-header .ontology-class-children {
@@ -11738,13 +11781,16 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   padding: 30px 20px;
 }
 .controlled-terms-modal .modal-header .close {
-  font-size: 3.5em;
   margin-top: -20px;
 }
 .controlled-terms-modal .modal-body {
-  padding: 40px 100px 100px;
+  padding: 0 100px 100px;
   height: calc(100% - 60px);
   overflow-y: auto;
+}
+.controlled-terms-modal .element-title {
+  margin-bottom: 20px;
+  font-size: 1.2em;
 }
 body.modal-open {
   overflow: auto;
@@ -11793,9 +11839,6 @@ body .template-header .controlled-terms-modal {
 .autocomplete-label-wrapper .ui-select-bootstrap .ui-select-toggle > .caret {
   display: none;
 }
-.controlled-terms-modal p.type-label {
-  display: none;
-}
 .template-body form .control-term-field-preview-form .input-indicator-icons {
   top: 0;
 }
@@ -11833,7 +11876,7 @@ body .template-header .controlled-terms-modal {
   font-size: 15px;
 }
 .input-type-container .configuration-options {
-  padding: 20px 0 20px 5px;
+  padding: 5px 0 20px 5px;
   position: static;
 }
 .cardinality-options {
@@ -11956,6 +11999,43 @@ body .template-header .controlled-terms-modal {
 }
 .element-configuration-options {
   margin-top: 5px;
+}
+.definition-inputs {
+  padding-bottom: 20px;
+  border-bottom: 1px dashed #dddddd;
+}
+.fields.preview .floating-label {
+  display: none;
+}
+.extra-label-context.required:after {
+  content: "*";
+  color: red;
+}
+.configuration-options .controlled-terms .no-items-added {
+  margin-bottom: 50px;
+}
+.btn-field-browse .text,
+.btn-values-browse .text {
+  color: #999999;
+  opacity: 0.6;
+}
+.value-filter .search-options {
+  margin-bottom: 25px;
+}
+.value-filter .search-options label {
+  font-size: 16px;
+}
+.field-root {
+  padding: 5px;
+  border: 1px solid #dddddd;
+  margin-bottom: 10px;
+}
+.field-root .sortable-handler {
+  background: url("/img/drag-me.png") no-repeat;
+  background-size: 20px auto;
+  text-indent: -1000px;
+  width: 20px;
+  height: 20px;
 }
 @font-face {
   font-family: "project-cedar";
@@ -12234,7 +12314,7 @@ body {
   position: fixed;
   top: 5px;
   left: 0px;
-  z-index: 10001;
+  z-index: 1001;
 }
 #jsonTools a {
   color: #ffffff;
@@ -12328,7 +12408,7 @@ body {
 #stickyFix {
   border: 0px solid red;
   width: 10px;
-  height: 650px;
+  height: 730px;
   position: absolute;
   left: 0;
   top: 0;
@@ -12337,6 +12417,14 @@ body {
 [ng-cloak],
 .ng-cloak {
   display: none;
+}
+div.errorTechnicalDetails {
+  width: 1000px;
+}
+div.errorTechnicalDetails textarea {
+  width: 900px;
+  height: 300px;
+  font-size: 12px;
 }
 /*
 ================================================

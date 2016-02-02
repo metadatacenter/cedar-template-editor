@@ -4,20 +4,9 @@
 /*global jQuery */
 'use strict';
 
-var angularRun = function($rootScope, BioPortalService, $location, $timeout, $window, DataTemplateService, CONST) {
-
-  // Define global pageTitle variable for use
-  //$rootScope.pageTitle;
-
-  // Templates, Template Elements and Instances base paths
-  $rootScope.idBasePath = "https://repo.metadatacenter.org/";
-
-  // Schemas (classes and properties) base path
-  // Classes use Pascal casing (e.g. StudyType)
-  // Properties use Camel casing (e.g. hasName)
-  $rootScope.schemasBase = "https://metadatacenter.org/schemas/";
-
-  $rootScope.defaultPropertiesBase = $rootScope.schemasBase;
+var angularRun = function ($rootScope, BioPortalService, $location, $timeout, $window, $translate,
+                           DataTemplateService, DataManipulationService, FieldTypeService, UrlService, HeaderService, UIUtilService,
+                           CONST) {
 
   $rootScope.isArray = angular.isArray;
 
@@ -33,7 +22,7 @@ var angularRun = function($rootScope, BioPortalService, $location, $timeout, $wi
 
   // Simple function to check if an object is empty
   $rootScope.isEmpty = function(obj) {
-    return Object.keys(obj).length === 0;
+    return !obj || Object.keys(obj).length === 0;
   };
 
   // Transform string to obtain JSON field name
@@ -141,14 +130,6 @@ var angularRun = function($rootScope, BioPortalService, $location, $timeout, $wi
     return unmetConditions;
   };
 
-  $rootScope.getFieldProperties = function(field) {
-    if (field.type == 'array' && field.items && field.items.properties) {
-      return field.items.properties;
-    } else {
-      return field.properties;
-    }
-  };
-
   $rootScope.cardinalizeField = function(field) {
     if (field.minItems == 1 && field.maxItems == 1 || !field.minItems && !field.maxItems) {
       return false;
@@ -182,13 +163,7 @@ var angularRun = function($rootScope, BioPortalService, $location, $timeout, $wi
   };
 
   $rootScope.propertiesOf = function(fieldOrElement) {
-    if (fieldOrElement) {
-      if (fieldOrElement.items) {
-        return fieldOrElement.items.properties;
-      } else {
-        return fieldOrElement.properties;
-      }
-    }
+    return DataManipulationService.getFieldProperties(fieldOrElement);
   };
 
   $rootScope.idOf = function(fieldOrElement) {
@@ -273,27 +248,10 @@ var angularRun = function($rootScope, BioPortalService, $location, $timeout, $wi
     fieldOrElement.properties._ui.order = order;
   };
 
-  $rootScope.scrollToAnchor = function(hash) {
-    //$location.hash(hash);
-    //console.log("scroll to hash:" + hash);
-    $timeout(function () {
-      var target = angular.element('#' + hash);
-      var y = target.offset().top;
-      $window.scrollTo(0, y-95);
-    }, 250);
-  };
+  $rootScope.scrollToAnchor = UIUtilService.scrollToAnchor;
 
-  var generateCardinalities = function(max) {
-    var results = [];
-    for (var i = 1; i <= max; i++) {
-      results.push({value: i, label: i});
-    }
-
-    return results;
-  };
-
-  var minCardinalities = generateCardinalities(8);
-  var maxCardinalities = generateCardinalities(8);
+  var minCardinalities = DataManipulationService.generateCardinalities(8);
+  var maxCardinalities = DataManipulationService.generateCardinalities(8);
   maxCardinalities.push({value: 0, label: "N"});
 
   $rootScope.minCardinalities = minCardinalities;
@@ -374,7 +332,7 @@ var angularRun = function($rootScope, BioPortalService, $location, $timeout, $wi
     }
     if ($rootScope.autocompleteResultsCache[field_id].results.length === 0) {
       $rootScope.autocompleteResultsCache[field_id].results.push({
-        'label': 'No Results...'
+        'label': $translate.instant('GENERIC.NoResults')
       });
     } else {
       for (i = 0; i < $rootScope.autocompleteResultsCache[field_id].results.length; i++) {
@@ -538,7 +496,13 @@ var angularRun = function($rootScope, BioPortalService, $location, $timeout, $wi
   };
 
   DataTemplateService.init();
+  FieldTypeService.init();
+  UrlService.init();
+  DataManipulationService.init();
+  HeaderService.init();
 };
 
-angularRun.$inject = ['$rootScope', 'BioPortalService', '$location', '$timeout', '$window', 'DataTemplateService', 'CONST'];
+angularRun.$inject = ['$rootScope', 'BioPortalService', '$location', '$timeout', '$window', '$translate',
+  'DataTemplateService', 'DataManipulationService', 'FieldTypeService', 'UrlService', 'HeaderService', 'UIUtilService',
+  'CONST'];
 angularApp.run(angularRun);

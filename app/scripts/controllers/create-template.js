@@ -1,6 +1,9 @@
 'use strict';
 
-var CreateTemplateController = function($rootScope, $scope, $q, $routeParams, $timeout, $location, FormService, HeaderService, UrlService, StagingService, DataTemplateService, CONST, HEADER_MINI, LS) {
+var CreateTemplateController = function ($rootScope, $scope, $routeParams, $timeout, $location, $translate, $filter,
+                                         HeaderService, UrlService, StagingService, DataTemplateService,
+                                         FieldTypeService, TemplateElementService, TemplateService, UIMessageService,
+                                         DataManipulationService, DataUtilService, CONST) {
   // Set Page Title variable when this controller is active
   $rootScope.pageTitle = 'Template Designer';
 
@@ -11,102 +14,40 @@ var CreateTemplateController = function($rootScope, $scope, $q, $routeParams, $t
   StagingService.configure(pageId);
   $rootScope.applicationRole = 'creator';
 
-  // Using form service to load list of existing elements to embed into new form
-  FormService.elementList().then(function(response) {
-    $scope.elementList = response;
+  TemplateElementService.getAllTemplateElementsSummary().then(function (response) {
+    $scope.elementList = response.data;
+  }).catch(function (err) {
+    UIMessageService.showBackendError('SERVER.ELEMENTS.load.error', err);
   });
+
+  $scope.fieldTypes = FieldTypeService.getFieldTypes();
 
   // Load existing form if $routeParams.id parameter is supplied
   if ($routeParams.id) {
     // Fetch existing form and assign to $scope.form property
-    FormService.form($routeParams.id).then(function(response) {
-      $scope.form = response;
+    TemplateService.getTemplate($routeParams.id).then(function(response) {
+      $scope.form = response.data;
       HeaderService.dataContainer.currentObjectScope = $scope.form;
+    }).catch(function (err) {
+      UIMessageService.showBackendError('SERVER.TEMPLATE.load.error', err);
     });
   } else {
     // If we're not loading an existing form then let's create a new empty $scope.form property
-    $scope.form = DataTemplateService.getTemplate($rootScope.idBasePath + $rootScope.generateGUID());
+    $scope.form = DataTemplateService.getTemplate();
     HeaderService.dataContainer.currentObjectScope = $scope.form;
   }
 
   $scope.isPropertiesEmpty = function() {
-    if (!angular.isUndefined($scope.form)) {
-      var keys = Object.keys($scope.form.properties);
-      for (var i = 0; i < keys.length; i++) {
-        if ($rootScope.ignoreKey(keys[i]) == false) {
-          return false;
-        }
-      }
-      return true;
-    }
+    return DataUtilService.isPropertiesEmpty($scope.form);
   };
 
   // Add newly configured field to the element object
   $scope.addFieldToTemplate = function (fieldType) {
-    // StagingService.addField();
-    var field = $rootScope.generateField(fieldType);
-    field.minItems = 1;
-    field.maxItems = 1;
-    field.properties._ui.state = "creating";
-
-    var optionInputs = ["radio", "checkbox", "list"];
-    if (optionInputs.indexOf(fieldType) > -1) {
-      field.properties._ui.options = [
-        {
-          "text": ""
-        }
-      ];
-    }
-
-    // Converting title for irregular character handling
-    var fieldName = $rootScope.generateGUID(); //field['@id'];
-
-    // Adding corresponding property type to @context
-    $scope.form.properties["@context"].properties[fieldName] = {};
-    $scope.form.properties["@context"].properties[fieldName].enum =
-      new Array($rootScope.schemasBase + fieldName);
-    $scope.form.properties["@context"].required.push(fieldName);
-
-    // Evaluate cardinality
-    $rootScope.cardinalizeField(field);
-
-    // Adding field to the element.properties object
-    $scope.form.properties[fieldName] = field;
-    $scope.form._ui.order = $scope.form._ui.order || [];
-    $scope.form._ui.order.push(fieldName);
+    StagingService.addFieldToForm($scope.form, fieldType)
   };
 
   $scope.addElementToTemplate = function(element) {
-    var clonedElement = angular.copy(element);
-    clonedElement.minItems = 1;
-    clonedElement.maxItems = 1;
-    $rootScope.propertiesOf(clonedElement)._ui.state = "creating";
-
-    // Converting title for irregular character handling
-    var elName = $rootScope.getFieldName(clonedElement.properties._ui.title);
-
-    if ($scope.form.properties["@context"].properties[elName]) {
-      var idx = 1;
-      while ($scope.form.properties["@context"].properties[elName + idx]) {
-        idx += 1;
-      }
-
-      elName = elName + idx;
-    }
-
-    // Adding corresponding property type to @context
-    $scope.form.properties["@context"].properties[elName] = {};
-    $scope.form.properties["@context"].properties[elName].enum =
-      new Array($rootScope.schemasBase + elName);
-    $scope.form.properties["@context"].required.push(elName);
-
-    // Evaluate cardinality
-    $rootScope.cardinalizeField(clonedElement);
-
-    // Adding field to the element.properties object
-    $scope.form.properties[elName] = clonedElement;
-    $scope.form._ui.order = $scope.form._ui.order || [];
-    $scope.form._ui.order.push(elName);
+    StagingService.addElementToForm($scope.form, element["@id"])
     $rootScope.$broadcast("form:update");
   };
 
@@ -120,31 +61,24 @@ var CreateTemplateController = function($rootScope, $scope, $q, $routeParams, $t
   };
 
   // Reverts to empty form and removes all previously added fields/elements
-  $scope.reset = function() {
-    swal({
-        title: "Are you sure?",
-        text: LS.templateEditor.clear.confirm,
-        type: "warning",
-        showCancelButton: true,
-        confirmButtonText: "Yes, clear it!",
-        closeOnConfirm: true,
-        customClass: 'cedarSWAL',
-        confirmButtonColor: null
-      },
-      function (isConfirm) {
-        if (isConfirm) {
+  $scope.reset = function () {
+    UIMessageService.confirmedExecution(
+        function () {
           $timeout(function () {
             $scope.doReset();
             StagingService.resetPage();
           });
-        }
-      });
+        },
+        'GENERIC.AreYouSure',
+        'TEMPLATEEDITOR.clear.confirm',
+        'GENERIC.YesClearIt'
+    );
   };
 
-  $scope.doReset = function() {
+  $scope.doReset = function () {
     // Loop through $scope.form.properties object and delete each field leaving default json-ld syntax in place
-    angular.forEach($scope.form.properties, function(value, key) {
-      if (!$rootScope.ignoreKey(key)) {
+    angular.forEach($scope.form.properties, function (value, key) {
+      if (!DataUtilService.isSpecialKey(key)) {
         delete $scope.form.properties[key];
       }
     });
@@ -154,79 +88,71 @@ var CreateTemplateController = function($rootScope, $scope, $q, $routeParams, $t
   };
 
   $scope.saveTemplate = function () {
-    if (!StagingService.isEmpty()) {
-      swal({
-          title: "Are you sure?",
-          text: LS.templateEditor.save.nonEmptyStagingConfirm,
-          type: "warning",
-          showCancelButton: true,
-          confirmButtonText: "Yes, save it!",
-          closeOnConfirm: true,
-          customClass: 'cedarSWAL',
-          confirmButtonColor: null
+    UIMessageService.conditionalOrConfirmedExecution(
+        StagingService.isEmpty(),
+        function () {
+          $scope.doSaveTemplate();
         },
-        function (isConfirm) {
-          if (isConfirm) {
-            $scope.doSaveTemplate();
-          }
-        });
-    } else {
-      $scope.doSaveTemplate();
-    }
+        'GENERIC.AreYouSure',
+        'TEMPLATEEDITOR.save.nonEmptyStagingConfirm',
+        'GENERIC.YesSaveIt'
+    );
   }
 
   // Stores the template into the database
-  $scope.doSaveTemplate = function() {
+  $scope.doSaveTemplate = function () {
     // First check to make sure Template Name, Template Description are not blank
     $scope.templateErrorMessages = [];
     $scope.templateSuccessMessages = [];
     // If Template Name is blank, produce error message
     if (!$scope.form.properties._ui.title.length) {
-      $scope.templateErrorMessages.push('Template Name input cannot be left empty.');
+      $scope.templateErrorMessages.push($translate.instant("VALIDATION.templateNameEmpty"));
     }
     // If Template Description is blank, produce error message
     if (!$scope.form.properties._ui.description.length) {
-      $scope.templateErrorMessages.push('Template Description input cannot be left empty.');
+      $scope.templateErrorMessages.push($translate.instant("VALIDATION.templateDescriptionEmpty"));
     }
     // If there are no Template level error messages
     if ($scope.templateErrorMessages.length == 0) {
       // If maxItems is N, then remove maxItems
-      $rootScope.removeUnnecessaryMaxItems($scope.form.properties);
+      DataManipulationService.removeUnnecessaryMaxItems($scope.form.properties);
 
       // Save template
       if ($routeParams.id == undefined) {
-        FormService.saveTemplate($scope.form).then(function(response) {
-          $scope.templateSuccessMessages.push('The template \"' + response.data.properties._ui.title + '\" has been created.');
+        TemplateService.saveTemplate($scope.form).then(function (response) {
+          // confirm message
+          UIMessageService.flashSuccess('SERVER.TEMPLATE.create.success', {"title": response.data._ui.title},
+              'GENERIC.Created');
+          // Reload page with template id
           var newId = response.data['@id'];
-          $timeout(function () {
-            $location.path(UrlService.getTemplateEdit(newId));
-          }, 500);
-        }).catch(function(err) {
-          $scope.templateErrorMessages.push('Problem creating the template.');
-          console.log(err);
+          $location.path(UrlService.getTemplateEdit(newId));
+        }).catch(function (err) {
+          UIMessageService.showBackendError('SERVER.TEMPLATE.create.error', err);
         });
       }
       // Update template
       else {
         var id = $scope.form['@id'];
-        delete $scope.form['@id'];
-        FormService.updateTemplate(id, $scope.form).then(function(response) {
-          $scope.templateSuccessMessages.push('The template \"' + response.data.properties._ui.title + '\" has been updated.');
-        }).catch(function(err) {
-          $scope.templateErrorMessages.push('Problem updating the template.');
-          console.log(err);
+        //--//delete $scope.form['@id'];
+        TemplateService.updateTemplate(id, $scope.form).then(function (response) {
+          $scope.form = response.data;
+          UIMessageService.flashSuccess('SERVER.TEMPLATE.update.success', {"title": response.data.properties._ui.title},
+              'GENERIC.Updated');
+        }).catch(function (err) {
+          UIMessageService.showBackendError('SERVER.TEMPLATE.update.error', err);
         });
       }
     }
   };
 
   // This function watches for changes in the properties._ui.title field and autogenerates the schema title and description fields
-  $scope.$watch('form.properties._ui.title', function(v) {
+  $scope.$watch('form.properties._ui.title', function (v) {
     if (!angular.isUndefined($scope.form)) {
       var title = $scope.form.properties._ui.title;
       if (title.length > 0) {
-        $scope.form.title = $rootScope.capitalizeFirst($scope.form.properties._ui.title) + ' template schema';
-        $scope.form.description = $rootScope.capitalizeFirst($scope.form.properties._ui.title) + ' template schema autogenerated by the CEDAR Template Editor';
+        var capitalizedTitle = $filter('capitalizeFirst')(title);
+        $scope.form.title = $translate.instant("GENERATEDVALUE.templateTitle", {title: capitalizedTitle});
+        $scope.form.description = $translate.instant("GENERATEDVALUE.templateDescription", {title: capitalizedTitle});
       }
       else {
         $scope.form.title = "";
@@ -236,5 +162,8 @@ var CreateTemplateController = function($rootScope, $scope, $q, $routeParams, $t
   });
 };
 
-CreateTemplateController.$inject = ["$rootScope", "$scope", "$q", "$routeParams", "$timeout", "$location", "FormService", "HeaderService", "UrlService", "StagingService", "DataTemplateService", "CONST", "HEADER_MINI", "LS"];
+CreateTemplateController.$inject = ["$rootScope", "$scope", "$routeParams", "$timeout", "$location", "$translate",
+  "$filter", "HeaderService", "UrlService", "StagingService", "DataTemplateService", "FieldTypeService",
+  "TemplateElementService", "TemplateService", "UIMessageService", "DataManipulationService", "DataUtilService",
+  "CONST"];
 angularApp.controller('CreateTemplateController', CreateTemplateController);

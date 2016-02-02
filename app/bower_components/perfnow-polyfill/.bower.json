@@ -1,0 +1,31 @@
+{
+  "name": "perfnow-polyfill",
+  "main": "perfnow-polyfill.js",
+  "authors": [
+    "Luke Hedger <luke.hedger@gmail.com>"
+  ],
+  "description": "performance.now() polyfill",
+  "keywords": [
+    "performance.now",
+    "high resolution timer"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "homepage": "https://github.com/lukehedger/perfnow-polyfill",
+  "_release": "de47c8de74",
+  "_resolution": {
+    "type": "branch",
+    "branch": "master",
+    "commit": "de47c8de7462a578bd3e7f84a441e2b510c919f9"
+  },
+  "_source": "git://github.com/lukehedger/perfnow-polyfill.git",
+  "_target": "*",
+  "_originalSource": "perfnow-polyfill",
+  "_direct": true
+}

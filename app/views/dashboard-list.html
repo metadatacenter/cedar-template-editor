@@ -3,29 +3,28 @@
         <section id="dashboard-list" class="dashboard-elements">
             <div class="col-sm-3">
                 <h2 class="section-title" ng-bind="sectionTitle"></h2>
-                <a ng-href="#{{createLink}}" class="btn btn-create-new">Create New <i class="cedar-svg-plus"></i></a>
+                <a ng-href="#{{createLink}}" class="btn btn-create-new"><span translate>GENERIC.CreateNew</span> <i class="cedar-svg-plus"></i></a>
             </div>
             <div class="col-sm-9">
                 <div class="dash-header">
                     <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Search" aria-label="Search"
+                        <input type="text" class="form-control" placeholder="{{'GENERIC.Search' | translate}}" aria-label="{{'GENERIC.Search' | translate}}"
                                ng-model="searchText">
 			      <span class="input-group-btn">
 			        <button class="btn btn-default" type="button"><i class="fa fa-search"></i></button>
 			      </span>
                     </div>
-                    <a class="back" href="#/dashboard"><i class="fa fa-arrow-left"></i> Back</a>
+                    <a class="back" href="#/dashboard"><i class="fa fa-arrow-left"></i> <span translate>GENERIC.Back</span></a>
                 </div>
                 <div class="margin-reset-row">
-
                     <section ng-if="itemType == 'elements'">
-                        <div class="template-item" ng-repeat="item in itemList | filter:{title:searchText}"
+                        <div class="template-item" ng-repeat="element in allTemplateElements | filter:{title:searchText}"
                              cedar-resize-square="true">
                             <cedar-box
                                     type="{{CONST.boxType.ELEMENT}}"
-                                    description="{{item.properties._ui.description}}"
-                                    title="{{item.properties._ui.title}}"
-                                    object-id="{{item['@id']}}"
+                                    description="{{element.properties._ui.description}}"
+                                    title="{{element.properties._ui.title}}"
+                                    object-id="{{element['@id']}}"
                                     allow-remove="true"
                             >
                             </cedar-box>
@@ -33,27 +32,27 @@
                     </section>
 
                     <section ng-if="itemType == 'templates'">
-                        <div class="template-item" ng-repeat="item in itemList | filter:{title:searchText}"
+                        <div class="template-item" ng-repeat="template in allTemplates | filter:{title:searchText}"
                              cedar-resize-square="true">
                             <cedar-box
                                     type="{{CONST.boxType.TEMPLATE}}"
-                                    description="{{item.properties._ui.description}}"
-                                    title="{{item.properties._ui.title}}"
-                                    object-id="{{item['@id']}}"
+                                    description="{{template.properties._ui.description}}"
+                                    title="{{template.properties._ui.title}}"
+                                    object-id="{{template['@id']}}"
                                     allow-remove="true"
                             >
                             </cedar-box>
                         </div>
                     </section>
 
-                    <section ng-if="itemType == 'submissions'">
-                        <div class="template-item" ng-repeat="item in submissions | filter:{_ui:{templateTitle:searchText}}"
+                    <section ng-if="itemType == 'instances'">
+                        <div class="template-item" ng-repeat="instance in allTemplateInstances | filter:{_ui:{templateTitle:searchText}}"
                              cedar-resize-square="true">
                             <cedar-box
                                     type="{{CONST.boxType.INSTANCE}}"
-                                    description="{{item._ui.templateDescription}}&lt;br/&gt;{{'(' + (item._ui.creationDate | date:'short') + ')'}}"
-                                    title="{{item._ui.templateTitle}}"
-                                    object-id="{{item['@id']}}"
+                                    description="{{instance._ui.templateDescription}}&lt;br/&gt;{{'(' + (instance._ui.creationDate | date:'short') + ')'}}"
+                                    title="{{instance._ui.templateTitle}}"
+                                    object-id="{{instance['@id']}}"
                                     allow-remove="true"
                             >
                             </cedar-box>

@@ -1,5 +1,5 @@
 <div class="field-root">
-  <div ng-class="{'sortable-handler': !$root.isRuntime() && !preview}">Drag me to sort</div>
+  <div class="sortable-handler" ng-if="!preview && !$root.isRuntime()">Drag me to sort</div>
   <div ng-show="$root.isArray(model) && $root.applicationMode == 'runtime'" class="spreadsheetSwitch field">
     <p class="element-name-label">
       <i class="cedar-svg-list"></i>

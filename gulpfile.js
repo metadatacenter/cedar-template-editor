@@ -188,6 +188,13 @@ gulp.task('html', function () {
     .pipe(connect.reload());
 });
 
+gulp.task("cacheTemplates", function() {
+  var templateCache = require('gulp-angular-templatecache');
+  return gulp.src('app/views/**/*.html')
+    .pipe(templateCache("cached_templates.js", {root: "views", module: "cachedTemplates", standalone: true}))
+    .pipe(gulp.dest('app/scripts'));
+});
+
 // gulp.task('compress', function() {
 //   return gulp.src('scripts/*.js')
 //    .pipe(uglify())
@@ -213,7 +220,7 @@ gulp.task('watch', function() {
 });
 
 // Default task
-gulp.task('default', ['server', 'lint', 'less', 'copy:resources', 'watch']);
+gulp.task('default', ['server', 'lint', 'less', 'copy:resources', 'watch', "cacheTemplates"]);
 // Build task
 //gulp.task('build', ['minifyCSS', 'htmlreplace', 'angular']);
 

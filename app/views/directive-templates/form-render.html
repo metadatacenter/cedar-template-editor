@@ -30,9 +30,9 @@
 
 <div ng-if="form._ui.pages.length > 1 && $root.isRuntime()" class="pagination-container">
   <ul class="pagination">
-    <li ng-if="pageIndex > 0"><a ng-click="previousPage()"><span class="prev"><i class="fa fa-lg fa-angle-left"></i>Previous</span></a></li>
+    <li ng-if="pageIndex > 0"><a ng-click="previousPage()"><span class="prev"><i class="fa fa-lg fa-angle-left"></i><span translate>GENERIC.Previous</span></span></a></li>
     <li ng-repeat="(index, value) in form._ui.pages" ng-class="{active: index == pageIndex}"><a ng-click="setCurrentPage(index)">{{index + 1}}</a></li>
-    <li ng-if="pageIndex < (form._ui.pages.length - 1)"><a ng-click="nextPage()"><span class="next">Next<i class="fa fa-lg fa-angle-right"></i></span></a></li>
+    <li ng-if="pageIndex < (form._ui.pages.length - 1)"><a ng-click="nextPage()"><span class="next"><span translate>GENERIC.Next</span><i class="fa fa-lg fa-angle-right"></i></span></a></li>
   </ul>
 </div><!-- /.pagination-container -->
 

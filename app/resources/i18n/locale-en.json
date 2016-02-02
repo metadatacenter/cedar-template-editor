@@ -1,0 +1,220 @@
+{
+  "FIELDS": {
+    "FIELD_TYPE": {
+      "textfield": {
+        "NAME": "Text"
+      },
+      "textarea": {
+        "NAME": "Paragraph"
+      },
+      "radio": {
+        "NAME": "Multiple Choice"
+      },
+      "checkbox": {
+        "NAME": "Checkbox"
+      },
+      "date": {
+        "NAME": "Date"
+      },
+      "email": {
+        "NAME": "Email"
+      },
+      "list": {
+        "NAME": "Pick from a list"
+      },
+      "audio-visual": {
+        "NAME": "Audio Visual"
+      },
+      "numeric": {
+        "NAME": "Numeric"
+      },
+      "phone-number": {
+        "NAME": "Phone"
+      },
+      "section-break": {
+        "NAME": "Section Break"
+      },
+      "page-break": {
+        "NAME": "Page Break"
+      }
+    }
+  },
+  "GENERIC": {
+    "Created": "Created",
+    "Updated": "Saved",
+    "AreYouSure": "Are you sure?",
+    "YesDeleteIt": "Yes, delete it!",
+    "YesSaveIt": "Yes, save it!",
+    "YesClearIt": "Yes, clear it!",
+    "NoResults": "No Results...",
+    "Back": "Back",
+    "CreateNew": "Create New",
+    "Search": "Search",
+    "SeeAll": "See All",
+    "FillOutTemplate": "Fill Out Template",
+    "AddElement": "Add Element",
+    "AddField": "Add Field",
+    "Clear": "Clear",
+    "SaveTemplate": "Save Template",
+    "FillOutATemplate": "Fill Out a Template",
+    "Templates": "Templates",
+    "MoreTemplates": "More Templates",
+    "Save": "Save",
+    "Next": "Next",
+    "Previous": "Previous",
+    "ElementName": "Element Name",
+    "ElementDescription": "Element Description",
+    "SaveElement": "Save Element",
+    "AddAnElement": "Add an Element",
+    "MultipleMinMaxMsg": "Min Entries: {{min}}, Max Entries: {{max}}",
+    "Remove": "Remove",
+    "Unlimited": "Unlimited",
+    "Required": "Required",
+    "Cardinality": "Cardinality",
+    "Min": "Min:",
+    "Max": "Max:",
+    "NotAvailable": "Not Available",
+    "Deleted": "Deleted"
+  },
+  "SERVER": {
+    "ELEMENT": {
+      "create": {
+        "success": "The element <b>{{title}}</b> has been created.",
+        "error": "There was an error while creating the element!<br /><br />VIEW TECHNICAL DETAILS!"
+      },
+      "update": {
+        "success": "The element <b>{{title}}</b> has been saved.",
+        "error": "There was an error while saving the element!<br /><br />VIEW TECHNICAL DETAILS!"
+      },
+      "load": {
+        "error": "There was an error while loading the template element!<br /><br />VIEW TECHNICAL DETAILS!"
+      },
+      "delete": {
+        "success": "The template element has been deleted.",
+        "error": "There was an error while deleting the template element!<br /><br />VIEW TECHNICAL DETAILS!"
+      }
+    },
+    "TEMPLATE": {
+      "create": {
+        "success": "The template <b>{{title}}</b> has been created.",
+        "error": "There was an error while creating the template!<br /><br />VIEW TECHNICAL DETAILS!"
+      },
+      "update": {
+        "success": "The template <b>{{title}}</b> has been saved.",
+        "error": "There was an error while saving the template!<br /><br />VIEW TECHNICAL DETAILS!"
+      },
+      "load": {
+        "error": "There was an error while loading the template!<br /><br />VIEW TECHNICAL DETAILS!"
+      },
+      "delete": {
+        "success": "The template has been deleted.",
+        "error": "There was an error while deleting the template!<br /><br />VIEW TECHNICAL DETAILS!"
+      }
+    },
+    "INSTANCE": {
+      "create": {
+        "success": "The template instance has been created.",
+        "error": "There was an error while creating the template instance!<br /><br />VIEW TECHNICAL DETAILS!"
+      },
+      "update": {
+        "success": "The template instance has been saved.",
+        "error": "There was an error while saving the template instance!<br /><br />VIEW TECHNICAL DETAILS!"
+      },
+      "load": {
+        "error": "There was an error while loading the template instance!<br /><br />VIEW TECHNICAL DETAILS!"
+      },
+      "delete": {
+        "success": "The template instance has been deleted.",
+        "error": "There was an error while deleting the template instance!<br /><br />VIEW TECHNICAL DETAILS!"
+      }
+    },
+    "ELEMENTS": {
+      "load": {
+        "error": "There was an error while loading the template elements!<br /><br />VIEW TECHNICAL DETAILS!"
+      }
+    },
+    "TEMPLATES": {
+      "load": {
+        "error": "There was an error while loading the templates!<br /><br />VIEW TECHNICAL DETAILS!"
+      }
+    },
+    "INSTANCES": {
+      "load": {
+        "error": "There was an error while loading the template instances!<br /><br />VIEW TECHNICAL DETAILS!"
+      }
+    },
+    "ERROR": {
+      "title": "Server Error",
+      "technicalDetailsTitle": "Technical details of error",
+      "technicalDetailsTemplate": "Status: {{statusCode}}, {{statusText}}<br/>URL: {{url}}<br/>Method: {{method}}<br/><br/>Message: {{message}}<br />Exception: {{string}}<br /><br />Stack trace:<br/>",
+      "NotFoundMessage": "Not Found.",
+      "NotFoundString": "The object with the requested id can not be found.",
+      "InaccessibleMessage": "Can not access endpoint.",
+      "InaccessibleMessageString": "The endpoint can not be accessed. There is a problem contacting the server."
+    }
+  },
+  "DASHBOARD": {
+    "delete": {
+      "confirm": {
+        "template": "Are you sure you want to remove the selected template?",
+        "element": "Are you sure you want to remove the selected element?",
+        "instance": "Are you sure you want to remove the selected populated template?"
+      }
+    }
+  },
+  "ELEMENTEDITOR": {
+    "clear": {
+      "confirm": "Are you sure you want to clear the element? All included elements and fields will be deleted!"
+    },
+    "save": {
+      "nonEmptyStagingConfirm": "The staging area is not empty. If you save the element now, you will loose the content of the staging area! Are you sure you want to save the element this way?"
+    }
+  },
+  "TEMPLATEEDITOR": {
+    "clear": {
+      "confirm": "Are you sure you want to clear the template? All included elements and fields will be deleted!"
+    },
+    "save": {
+      "nonEmptyStagingConfirm": "The staging area is not empty. If you save the template now, you will loose the content of the staging area! Are you sure you want to save the template this way?"
+    }
+  },
+  "VALIDATION": {
+    "minBiggerThanMax": "Min cannot be greater than Max.",
+    "fieldTitleEmpty": "'Field Title' input cannot be left empty.",
+    "optionEmpty": "'Option' input cannot be left empty.",
+    "multipleChoiceTooFew": "Multiple Choice fields must have at least two possible options",
+    "templateNameEmpty": "Template Name input cannot be left empty.",
+    "templateDescriptionEmpty": "Template Description input cannot be left empty.",
+    "elementNameEmpty": "Element Name input cannot be left empty.",
+    "elementDescriptionEmpty": "Element Description input cannot be left empty.",
+    "groupHeader": {
+      "requiredFields": "The following fields are required:",
+      "invalidFields": "Values of the following fields are invalid:"
+    }
+  },
+  "PAGES": {
+    "DASHBOARDLIST-ELEMENT": {
+      "pageTitle": "Elements Listing",
+      "sectionTitle": "Template Elements"
+    },
+    "DASHBOARDLIST-TEMPLATE": {
+      "pageTitle": "Templates Listing",
+      "sectionTitle": "Metadata Templates"
+    },
+    "DASHBOARDLIST-INSTANCE": {
+      "pageTitle": "Populated Templates",
+      "sectionTitle": "Populated Templates"
+    }
+  },
+  "GENERATEDVALUE": {
+    "templateTitle": "{{title}} template schema",
+    "templateDescription": "{{title}} template schema autogenerated by the CEDAR Template Editor",
+    "elementTitle": "{{title}} element schema",
+    "elementDescription": "{{title}} element schema autogenerated by the CEDAR Template Editor"
+  },
+  "CREATOR": {
+    "addElementToStagingMsg": "Add an existing element or create a new item.",
+    "enterFieldTitle": "Enter Field Title",
+    "enterFieldDescription": "Enter Field Description (Help Text)"
+  }
+}

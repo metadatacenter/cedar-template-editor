@@ -1,8 +1,8 @@
 'use strict';
 
-angularApp.directive('formDirective', function ($rootScope, $document, $timeout) {
+var formDirective = function ($rootScope, $document, $timeout, DataManipulationService, DataUtilService) {
   return {
-    templateUrl: './views/directive-templates/form-render.html',
+    templateUrl: 'views/directive-templates/form-render.html',
     restrict: 'E',
     scope: {
       pageIndex:'=',
@@ -22,9 +22,21 @@ angularApp.directive('formDirective', function ($rootScope, $document, $timeout)
       $scope.pagesArray = [];
 
       var paginate = function() {
-        if ($scope.form && $scope.form._ui && $scope.form._ui.order) {
+        if ($scope.form) {
           var orderArray = [];
           var dimension = 0;
+
+          $scope.form._ui = $scope.form._ui || {};
+          $scope.form._ui.order = $scope.form._ui.order || [];
+
+          // This code is to allow render preview template (Before inline_edit). We can remove this later
+          if (!$scope.form._ui.order.length) {
+            angular.forEach($scope.form.properties, function(value, key) {
+              if (value.properties || value.items && value.items.properties) {
+                $scope.form._ui.order.push(key);
+              }
+            });
+          }
 
           angular.forEach($scope.form._ui.order, function(field, index) {
             // If item added is of type Page Break, jump into next page array for storage of following fields
@@ -114,29 +126,29 @@ angularApp.directive('formDirective', function ($rootScope, $document, $timeout)
         angular.forEach(iterator, function(value, name) {
           // Add @context information to instance
           if (name == '@context') {
-            ctx = $rootScope.generateInstanceContext(value);
+            ctx = DataManipulationService.generateInstanceContext(value);
           }
         });
 
         angular.forEach(iterator, function(value, name) {
           // Add @context information to instance
           if (name == '@context') {
-            parentModel['@context'] = $rootScope.generateInstanceContext(value);
+            parentModel['@context'] = DataManipulationService.generateInstanceContext(value);
           }
           // Add @type information to instance
           else if (name == '@type') {
-            var type = $rootScope.generateInstanceType(value);
+            var type = DataManipulationService.generateInstanceType(value);
             if (type != null)
               parentModel['@type'] = type;
           }
 
-          if (!$rootScope.ignoreKey(name)) {
+          if (!DataUtilService.isSpecialKey(name)) {
             // We can tell we've reached an element level by its 'order' property
             if (value._ui && value._ui.order) {
               var min = value.minItems || 1;
 
               // Handle position and nesting within $scope.model if it does not exist
-              if (!$rootScope.isCardinalElement(value)) {
+              if (!DataManipulationService.isCardinalElement(value)) {
                 parentModel[name] = {};
               } else {
                 parentModel[name] = [];
@@ -148,17 +160,17 @@ angularApp.directive('formDirective', function ($rootScope, $document, $timeout)
               if (angular.isArray(parentModel[name])) {
                 for (var i = 0; i < min; i++) {
                   // Indication of nested element or nested fields reached, recursively call function
-                  $scope.parseForm($rootScope.getFieldProperties(value), parentModel[name][i], name);
+                  $scope.parseForm($rootScope.propertiesOf(value), parentModel[name][i], name);
                 }
               } else {
-                $scope.parseForm($rootScope.getFieldProperties(value), parentModel[name], name);
+                $scope.parseForm($rootScope.propertiesOf(value), parentModel[name], name);
               }
             } else {
               var min = value.minItems || 1;
 
               // Assign empty field instance model to $scope.model only if it does not exist
               if (parentModel[name] == undefined) {
-                if (!$rootScope.isCardinalElement(value)) {
+                if (!DataManipulationService.isCardinalElement(value)) {
                   parentModel[name] = {};
                 } else {
                   parentModel[name] = [];
@@ -172,8 +184,8 @@ angularApp.directive('formDirective', function ($rootScope, $document, $timeout)
               var p = $rootScope.propertiesOf(value);
 
               // Add @type information to instance at the field level
-              if (!angular.isUndefined(p['@type'])) {
-                var type = $rootScope.generateInstanceType(p['@type']);
+              if (p && !angular.isUndefined(p['@type'])) {
+                var type = DataManipulationService.generateInstanceType(p['@type']);
 
                 if (type) {
                   if (angular.isArray(parentModel[name])) {
@@ -216,4 +228,7 @@ angularApp.directive('formDirective', function ($rootScope, $document, $timeout)
       });
     }
   };
-});
+};
+
+formDirective.$inject = ['$rootScope', '$document', '$timeout', 'DataManipulationService', 'DataUtilService'];
+angularApp.directive('formDirective', formDirective);

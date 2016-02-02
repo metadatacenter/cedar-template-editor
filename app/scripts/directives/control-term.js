@@ -7,7 +7,7 @@ angularApp.directive('controlTerm', function ($timeout) {
       field: '=',
       options: "="
     },
-    templateUrl: "./views/directive-templates/control-term.html",
+    templateUrl: "views/directive-templates/control-term.html",
     controller: "TermsController"
   };
 });

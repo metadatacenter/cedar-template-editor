@@ -1,6 +1,6 @@
 'use strict';
 
-var cedarStickyLeftMenu = function ($window, $document, $rootScope, $timeout, HeaderService, HEADER_MINI) {
+var cedarStickyLeftMenu = function ($window, $document, $rootScope, $timeout, HeaderService) {
 
   function link(scope, element, attrs) {
 
@@ -9,7 +9,7 @@ var cedarStickyLeftMenu = function ($window, $document, $rootScope, $timeout, He
     var initialOffset = element.offset().top;
 
     var windowScroll = function () {
-      if ($window.innerWidth >= 768 && ($window.pageYOffset > HeaderService.getScrollLimit() + HEADER_MINI.stickyThreshold )) {
+      if ($window.innerWidth >= 768 && ($window.pageYOffset > HeaderService.getScrollLimit() + HeaderService.getStickyThreshold() )) {
         element.addClass('sticky');
         element.width(element.parent().width());
       } else {
@@ -50,5 +50,5 @@ var cedarStickyLeftMenu = function ($window, $document, $rootScope, $timeout, He
   };
 };
 
-cedarStickyLeftMenu.$inject = ["$window", "$document", "$rootScope", "$timeout", "HeaderService", "HEADER_MINI"];
+cedarStickyLeftMenu.$inject = ["$window", "$document", "$rootScope", "$timeout", "HeaderService"];
 angularApp.directive('cedarStickyLeftMenu', cedarStickyLeftMenu);

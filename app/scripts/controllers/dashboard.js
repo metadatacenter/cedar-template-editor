@@ -1,58 +1,64 @@
 'use strict';
 
-var DashboardController = function ($rootScope, $scope, $routeParams, $location, FormService, HeaderService, UrlService, CONST) {
-
-  // Define function to make async request to location of json objects and assign proper
-  // scope array with returned list of data
-  $scope.getDefaults = function (type, scopeArray) {
-    FormService[type]().then(function (response) {
-      // Sort by the 'favorites' boolean parameter
-      var sortFavorites = $rootScope.sortBoolean(response, 'favorite');
-      // Slicing the top 3 out into new array and returning to the template
-      $scope[scopeArray] = sortFavorites.slice(0, 3);
-    }).catch(function (err) {
-      console.log(err);
-    });
-  };
-
-  // Submissions have a bit different requirements so they get their own function
-  $scope.getSubmissions = function () {
-    FormService.populatedTemplatesList().then(function (response) {
-      $scope.submissionDefaults = response;
-    }).catch(function (err) {
-      console.log(err);
-    });
-  };
+var DashboardController = function ($rootScope, $scope, $routeParams, $location, HeaderService, UrlService,
+                                    TemplateService, TemplateElementService, TemplateInstanceService, UIMessageService, CONST) {
 
   // Remove template
-  $scope.removeTemplate = function (id) {
-    FormService.removeTemplate(id).then(function (response) {
+  $scope.deleteTemplate = function (id) {
+    TemplateService.deleteTemplate(id).then(function (response) {
       // Reload templates
-      $scope.getDefaults('formList', 'templateDefaults');
+      $scope.loadDefaultTemplates();
+      UIMessageService.flashSuccess('SERVER.TEMPLATE.delete.success', null, 'GENERIC.Deleted');
     }).catch(function (err) {
-      console.log(err);
+      UIMessageService.showBackendError('SERVER.TEMPLATE.delete.error', err);
     });
-  }
+  };
 
   // Remove element
-  $scope.removeElement = function (id) {
-    FormService.removeElement(id).then(function (response) {
+  $scope.deleteElement = function (id) {
+    TemplateElementService.deleteTemplateElement(id).then(function (response) {
       // Reload elements
-      $scope.getDefaults('elementList', 'elementDefaults');
+      $scope.loadDefaultTemplateElements();
+      UIMessageService.flashSuccess('SERVER.ELEMENT.delete.success', null, 'GENERIC.Deleted');
     }).catch(function (err) {
-      console.log(err);
+      UIMessageService.showBackendError('SERVER.ELEMENT.delete.error', err);
     });
-  }
+  };
 
   // Remove populated template
-  $scope.removeInstance = function (id) {
-    FormService.removePopulatedTemplate(id).then(function (response) {
-      // Reload populated templates
-      $scope.getSubmissions();
+  $scope.deleteInstance = function (id) {
+    TemplateInstanceService.deleteTemplateInstance(id).then(function (response) {
+      // Reload instances
+      $scope.loadDefaultTemplateInstances();
+      UIMessageService.flashSuccess('SERVER.INSTANCE.delete.success', null, 'GENERIC.Deleted');
     }).catch(function (err) {
-      console.log(err);
+      UIMessageService.showBackendError('SERVER.INSTANCE.delete.error', err);
     });
-  }
+  };
+
+  $scope.loadDefaultTemplateElements = function () {
+    TemplateElementService.getDefaultTemplateElementsSummary().then(function (response) {
+      $scope.defaultElements = response.data;
+    }).catch(function (err) {
+      UIMessageService.showBackendError('SERVER.ELEMENTS.load.error', err);
+    });
+  };
+
+  $scope.loadDefaultTemplates = function () {
+    TemplateService.getDefaultTemplatesSummary().then(function (response) {
+      $scope.defaultTemplates = response.data;
+    }).catch(function (err) {
+      UIMessageService.showBackendError('SERVER.TEMPLATES.load.error', err);
+    });
+  };
+
+  $scope.loadDefaultTemplateInstances = function () {
+    TemplateInstanceService.getDefaultTemplateInstancesSummary().then(function (response) {
+      $scope.defaultInstances = response.data;
+    }).catch(function (err) {
+      UIMessageService.showBackendError('SERVER.INSTANCES.load.error', err);
+    });
+  };
 
   // ************************************************************************************
 
@@ -60,9 +66,9 @@ var DashboardController = function ($rootScope, $scope, $routeParams, $location,
   $rootScope.pageTitle = 'Dashboard';
 
   // Create $scope arrays to load defaults elements/templates into
-  $scope.elementDefaults = [];
-  $scope.templateDefaults = [];
-  $scope.submissionDefaults = [];
+  $scope.defaultElements = [];
+  $scope.defaultTemplates = [];
+  $scope.defaultInstances = [];
 
   // Inject constants
   $scope.CONST = CONST;
@@ -88,12 +94,17 @@ var DashboardController = function ($rootScope, $scope, $routeParams, $location,
   HeaderService.configure(pageId, currentApplicationMode);
   $rootScope.applicationRole = currentRole;
 
-  // Call getDefaults with parameters
-  $scope.getDefaults('formList', 'templateDefaults');
-  $scope.getDefaults('elementList', 'elementDefaults');
-  $scope.getSubmissions();
+
+  // get default listings
+  if (currentApplicationMode == CONST.applicationMode.CREATOR) {
+    $scope.loadDefaultTemplateElements();
+    $scope.loadDefaultTemplates();
+  } else if (currentApplicationMode == CONST.applicationMode.RUNTIME) {
+    $scope.loadDefaultTemplateInstances();
+  }
 
 };
 
-DashboardController.$inject = ["$rootScope", "$scope", "$routeParams", "$location", "FormService", "HeaderService", "UrlService", "CONST"];
+DashboardController.$inject = ["$rootScope", "$scope", "$routeParams", "$location", "HeaderService", "UrlService",
+  "TemplateService", "TemplateElementService", "TemplateInstanceService", "UIMessageService", "CONST"];
 angularApp.controller('DashboardController', DashboardController);

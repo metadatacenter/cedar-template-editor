@@ -1,5 +1,11 @@
 <div class="controlled-terms controlled-term-options">
+  <div ng-if="!$root.propertiesOf(field)._ui.inputType" class="element-title">
+    {{$root.propertiesOf(field)._ui.title}}
+  </div>
   <div class="control-term-field-preview-form" ng-if="$root.propertiesOf(field)._ui.inputType">
+    <div class="item-name">
+      <div name-of-field field="field"></div>
+    </div>
     <field-directive field="field" preview="true">
     </field-directive>
   </div>
@@ -25,7 +31,7 @@
             </table>
           </div>
           <div class="class-list-table">
-            <table class="table table-striped">
+            <table class="table table-hover">
               <tbody>
                 <tr ng-repeat="item in controlTerm.addedFieldItems">
                   <td class="pref-label">{{item.prefLabel}}</td>
@@ -95,7 +101,7 @@
             </table>
           </div>
           <div class="value-contraint-table">
-            <table class="table table-striped">
+            <table class="table table-hover">
               <tbody>
                 <tr ng-repeat="class in controlTerm.valueConstraint.classes">
                   <td class="values">{{class.prefLabel}}</td>
@@ -256,7 +262,7 @@
       <div class="field-browse">
         <div class="more-items" ng-if="!controlTerm.fieldActionSelection">
           <button type="button" class="btn btn-field-browse btn-block" data-toggle="dropdown" aria-expanded="false" ng-click="controlTerm.fieldBrowse($event)">
-            <span class="pull-left">Browse ontologies</span> <i class="fa fa-angle-down fa-2x pull-right"></i>
+            <span class="pull-left text">Browse ontologies</span> <i class="fa fa-angle-down fa-2x pull-right"></i>
             <span class="clearfix"></span>
           </button>
         </div>
@@ -296,7 +302,7 @@
       <div class="search-results" ng-hide="controlTerm.fieldTreeVisibility">
         <div class="no-search-results" ng-show="controlTerm.searchNoResults">No results.</div>
         <div class="table-responsive results-table-container">
-          <table class="table table-striped results-table search-results-table" ng-if="controlTerm.fieldActionSelection == 'search'">
+          <table class="table table-hover results-table search-results-table" ng-if="controlTerm.fieldActionSelection == 'search'">
             <tbody>
               <tr ng-repeat="result in controlTerm.searchResults" ng-click="controlTerm.selectFieldClass(result.collection)">
                 <td>{{result.class}}</td>
@@ -305,7 +311,7 @@
             </tbody>
           </table>
 
-          <table class="table table-striped results-table browse-results-table" ng-if="controlTerm.fieldActionSelection == 'browse'">
+          <table class="table table-hover results-table browse-results-table" ng-if="controlTerm.fieldActionSelection == 'browse'">
             <tbody>
               <tr ng-repeat="result in controlTerm.searchResults" ng-click="controlTerm.selectFieldOntology(result)" ng-show="controlTerm.isOntologyNameMatched(result)">
                 <td>{{result.name}}</td>
@@ -415,7 +421,7 @@
 
   <div class="value-filter" ng-if="controlTerm.filterSelection == 'values'">
 
-    <div class="text-center">
+    <div class="text-center search-options">
       <div class="checkbox inline-block checkbox-bioportal-ontologies">
         <input type="checkbox" id="checkbox-bioportal-ontologies"
         ng-model="controlTerm.bioportalOntologiesFilter"
@@ -451,7 +457,7 @@
       <div class="values-browse">
         <div class="more-items" ng-if="!controlTerm.valuesActionSelection">
           <button type="button" class="btn btn-values-browse btn-block" data-toggle="dropdown" aria-expanded="false" ng-click="controlTerm.valuesBrowse($event)">
-            <span class="pull-left">Browse {{bioportalFilterResultLabel()}}</span> <i class="fa fa-angle-down fa-2x pull-right"></i>
+            <span class="pull-left text">Browse {{bioportalFilterResultLabel()}}</span> <i class="fa fa-angle-down fa-2x pull-right"></i>
             <span class="clearfix"></span>
           </button>
         </div>
@@ -493,7 +499,7 @@
       <div class="search-results" ng-hide="controlTerm.valuesTreeVisibility">
         <div class="no-search-results" ng-show="controlTerm.searchNoResults">No results.</div>
         <div class="table-responsive results-table-container">
-          <table class="table table-striped results-table search-results-table" ng-if="controlTerm.valuesActionSelection == 'search'">
+          <table class="table table-hover results-table search-results-table" ng-if="controlTerm.valuesActionSelection == 'search'">
             <tbody>
               <tr ng-repeat="result in controlTerm.searchResults" ng-click="controlTerm.selectValueResult(result)">
                 <td>{{result.prefLabel}}</td>
@@ -503,7 +509,7 @@
             </tbody>
           </table>
 
-          <table class="table table-striped results-table browse-results-table values-browse-results-table" ng-if="controlTerm.valuesActionSelection == 'browse'">
+          <table class="table table-hover results-table browse-results-table values-browse-results-table" ng-if="controlTerm.valuesActionSelection == 'browse'">
             <tbody>
               <tr ng-repeat="result in controlTerm.searchResults" ng-click="controlTerm.selectValueResult(result)" ng-show="controlTerm.isOntologyNameMatched(result)">
                 <td ng-if="result.resultType == 'Ontology'">{{result.name}}</td>
@@ -546,7 +552,7 @@
 
           <div class="ontology-class-children pull-left" ng-show="browsingSection == 'value_set'">
             <div class="table-responsive ontology-class-children-table">
-              <table class="table table-striped" style="width: 275px; max-height: 203px; overflow-y: auto">
+              <table class="table table-hover" style="width: 275px; max-height: 203px; overflow-y: auto">
                 <tbody>
                   <tr ng-repeat="valueSetClass in controlTerm.valueSetClasses">
                     <td class="ontology-name">

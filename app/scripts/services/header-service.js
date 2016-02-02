@@ -1,20 +1,26 @@
 'use strict';
 
-var HeaderService = function ($rootScope, HEADER_MINI) {
+var HeaderService = function ($rootScope) {
+
+  var config = null;
 
   var service = {
     serviceId: "HeaderService",
 
-    miniHeaderEnabled: false,
+    miniHeaderEnabled    : false,
     miniHeaderScrollLimit: NaN,
-    dataContainer: {
+    dataContainer        : {
       currentObjectScope: null
     }
   };
 
+  service.init = function () {
+    config = cedarBootstrap.getBaseConfig(this.serviceId);
+  };
+
   service.configure = function (pageId, applicationMode) {
-    this.miniHeaderEnabled = HEADER_MINI[pageId].enabled;
-    this.miniHeaderScrollLimit = HEADER_MINI[pageId].scrollLimit;
+    this.miniHeaderEnabled = config[pageId].enabled;
+    this.miniHeaderScrollLimit = config[pageId].scrollLimit;
     $rootScope.applicationMode = applicationMode;
     $rootScope.pageId = pageId;
   };
@@ -27,6 +33,10 @@ var HeaderService = function ($rootScope, HEADER_MINI) {
     return this.miniHeaderScrollLimit;
   };
 
+  service.getStickyThreshold = function () {
+    return config.stickyThreshold;
+  };
+
   service.showMini = function (pageYOffset) {
     return this.isEnabled() && pageYOffset > this.getScrollLimit();
   };
@@ -34,5 +44,5 @@ var HeaderService = function ($rootScope, HEADER_MINI) {
   return service;
 };
 
-HeaderService.$inject = ["$rootScope", "HEADER_MINI"];
+HeaderService.$inject = ["$rootScope"];
 angularApp.service('HeaderService', HeaderService);
