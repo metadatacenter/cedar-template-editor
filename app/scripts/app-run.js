@@ -225,10 +225,6 @@ var angularRun = function ($rootScope, BioPortalService, $location, $timeout, $w
     return $rootScope.pageId == 'RUNTIME';
   };
 
-  $rootScope.elementIsMultiInstance = function(element) {
-    return element.hasOwnProperty('minItems') && !angular.isUndefined(element.minItems) && (!element.hasOwnProperty('maxItems') || element.maxItems > 1);
-  };
-
   $rootScope.isField = function(value) {
     return value && value.properties && value.properties._ui && value.properties._ui.inputType;
   };
@@ -249,6 +245,8 @@ var angularRun = function ($rootScope, BioPortalService, $location, $timeout, $w
   };
 
   $rootScope.scrollToAnchor = UIUtilService.scrollToAnchor;
+  $rootScope.elementIsMultiInstance = DataManipulationService.elementIsMultiInstance;
+
 
   var minCardinalities = DataManipulationService.generateCardinalities(8);
   var maxCardinalities = DataManipulationService.generateCardinalities(8);
@@ -257,27 +255,31 @@ var angularRun = function ($rootScope, BioPortalService, $location, $timeout, $w
   $rootScope.minCardinalities = minCardinalities;
   $rootScope.maxCardinalities = maxCardinalities;
 
-  $rootScope.isKeyVisible = function(keyCode) {
-    if (keyCode > 45 && keyCode < 112 && [91, 92, 93].indexOf(keyCode) == -1 || keyCode >= 186 && keyCode <= 222 || [8, 32, 173].indexOf(keyCode) >= 0) {
+  // BioPortal term selection integration code.
+  // TODO: separate the calls, create a service for these
+
+  $rootScope.isKeyVisible = function (keyCode) {
+    if (keyCode > 45 && keyCode < 112 && [91, 92, 93].indexOf(
+        keyCode) == -1 || keyCode >= 186 && keyCode <= 222 || [8, 32, 173].indexOf(keyCode) >= 0) {
       return true;
     } else {
       return false;
     }
   };
 
-  $rootScope.hasValueConstraint = function(vcst) {
+  $rootScope.hasValueConstraint = function (vcst) {
     var result = vcst && (vcst.ontologies && vcst.ontologies.length > 0 ||
-                    vcst.valueSets && vcst.valueSets.length > 0 ||
-                    vcst.classes && vcst.classes.length > 0 ||
-                    vcst.branches && vcst.branches.length > 0);
+      vcst.valueSets && vcst.valueSets.length > 0 ||
+      vcst.classes && vcst.classes.length > 0 ||
+      vcst.branches && vcst.branches.length > 0);
 
     return result;
   };
 
   $rootScope.autocompleteResultsCache = {};
 
-  $rootScope.sortAutocompleteResults = function(field_id) {
-    $rootScope.autocompleteResultsCache[field_id].results.sort(function(a, b) {
+  $rootScope.sortAutocompleteResults = function (field_id) {
+    $rootScope.autocompleteResultsCache[field_id].results.sort(function (a, b) {
       var labelA = a.label.toLowerCase();
       var labelB = b.label.toLowerCase();
       if (labelA < labelB)
@@ -288,7 +290,7 @@ var angularRun = function ($rootScope, BioPortalService, $location, $timeout, $w
     });
   };
 
-  $rootScope.removeAutocompleteResultsForSource = function(field_id, source_uri) {
+  $rootScope.removeAutocompleteResultsForSource = function (field_id, source_uri) {
     // remove results for this source
     for (var i = $rootScope.autocompleteResultsCache[field_id].results.length - 1; i >= 0; i--) {
       if ($rootScope.autocompleteResultsCache[field_id].results[i].sourceUri === source_uri) {
@@ -297,7 +299,7 @@ var angularRun = function ($rootScope, BioPortalService, $location, $timeout, $w
     }
   };
 
-  $rootScope.processAutocompleteClassResults = function(field_id, field_type, source_uri, response) {
+  $rootScope.processAutocompleteClassResults = function (field_id, field_type, source_uri, response) {
     var i, j, found;
     // we do a complicated method to find the changed results to reduce flicker :-/
     for (j = $rootScope.autocompleteResultsCache[field_id].results.length - 1; j >= 0; j--) {
@@ -322,9 +324,9 @@ var angularRun = function ($rootScope, BioPortalService, $location, $timeout, $w
       if (!response.collection[i].found) {
         $rootScope.autocompleteResultsCache[field_id].results.push(
           {
-            '@id': response.collection[i]['@id'],
-            'label': response.collection[i].prefLabel,
-            'type': field_type,
+            '@id'      : response.collection[i]['@id'],
+            'label'    : response.collection[i].prefLabel,
+            'type'     : field_type,
             'sourceUri': source_uri
           }
         );
@@ -336,7 +338,7 @@ var angularRun = function ($rootScope, BioPortalService, $location, $timeout, $w
       });
     } else {
       for (i = 0; i < $rootScope.autocompleteResultsCache[field_id].results.length; i++) {
-        if ($rootScope.autocompleteResultsCache[field_id].results[i].label == 'No Results...') {
+        if ($rootScope.autocompleteResultsCache[field_id].results[i].label == $translate.instant('GENERIC.NoResults')) {
           $rootScope.autocompleteResultsCache[field_id].results.splice(i, 1);
           break;
         }
@@ -345,7 +347,7 @@ var angularRun = function ($rootScope, BioPortalService, $location, $timeout, $w
     }
   };
 
-  $rootScope.updateFieldAutocomplete = function(field, term) {
+  $rootScope.updateFieldAutocomplete = function (field, term) {
     if (term === '') {
       term = '*';
     }
@@ -361,13 +363,13 @@ var angularRun = function ($rootScope, BioPortalService, $location, $timeout, $w
 
     if (vcst.classes.length > 0) {
       $rootScope.removeAutocompleteResultsForSource(field_id, 'template');
-      angular.forEach(vcst.classes, function(klass) {
+      angular.forEach(vcst.classes, function (klass) {
         if (term == '*') {
           $rootScope.autocompleteResultsCache[field_id].results.push(
             {
-              '@id': klass.uri,
-              'label': klass.label,
-              'type': 'Ontology Class',
+              '@id'      : klass.uri,
+              'label'    : klass.label,
+              'type'     : 'Ontology Class',
               'sourceUri': 'template'
             }
           );
@@ -375,9 +377,9 @@ var angularRun = function ($rootScope, BioPortalService, $location, $timeout, $w
           if (klass && klass.label && klass.label.toLowerCase().indexOf(term.toLowerCase()) !== -1) {
             $rootScope.autocompleteResultsCache[field_id].results.push(
               {
-                '@id': klass.uri,
-                'label': klass.label,
-                'type': 'Ontology Class',
+                '@id'      : klass.uri,
+                'label'    : klass.label,
+                'type'     : 'Ontology Class',
                 'sourceUri': 'template'
               }
             );
@@ -387,7 +389,7 @@ var angularRun = function ($rootScope, BioPortalService, $location, $timeout, $w
       if (term !== '*') {
         if ($rootScope.autocompleteResultsCache[field_id].results.length === 0) {
           $rootScope.autocompleteResultsCache[field_id].results.push({
-            'label': 'No Results...',
+            'label'    : $translate.instant('GENERIC.NoResults'),
             'sourceUri': 'template'
           });
         }
@@ -395,40 +397,41 @@ var angularRun = function ($rootScope, BioPortalService, $location, $timeout, $w
     }
 
     if (vcst.valueSets.length > 0) {
-      angular.forEach(vcst.valueSets, function(valueSet) {
+      angular.forEach(vcst.valueSets, function (valueSet) {
         if (term == '*') {
           $rootScope.removeAutocompleteResultsForSource(field_id, valueSet.uri);
         }
-        BioPortalService.autocompleteValueSetClasses(term, valueSet.uri).then(function(childResponse) {
+        BioPortalService.autocompleteValueSetClasses(term, valueSet.uri).then(function (childResponse) {
           $rootScope.processAutocompleteClassResults(field_id, 'Value Set Class', valueSet.uri, childResponse);
         });
       });
     }
 
     if (vcst.ontologies.length > 0) {
-      angular.forEach(vcst.ontologies, function(ontology) {
+      angular.forEach(vcst.ontologies, function (ontology) {
         if (term == '*') {
           $rootScope.removeAutocompleteResultsForSource(field_id, ontology.uri);
         }
-        BioPortalService.autocompleteOntology(term, ontology.acronym).then(function(childResponse) {
+        BioPortalService.autocompleteOntology(term, ontology.acronym).then(function (childResponse) {
           $rootScope.processAutocompleteClassResults(field_id, 'Ontology Class', ontology.uri, childResponse);
         });
       });
     }
 
     if (vcst.branches.length > 0) {
-      angular.forEach(vcst.branches, function(branch) {
+      angular.forEach(vcst.branches, function (branch) {
         if (term == '*') {
           $rootScope.removeAutocompleteResultsForSource(field_id, branch.uri);
         }
-        BioPortalService.autocompleteOntologySubtree(term, branch.acronym, branch.uri, branch.maxDepth).then(function(childResponse) {
-          $rootScope.processAutocompleteClassResults(field_id, 'Ontology Class', branch.uri, childResponse);
-        });
+        BioPortalService.autocompleteOntologySubtree(term, branch.acronym, branch.uri, branch.maxDepth).then(
+          function (childResponse) {
+            $rootScope.processAutocompleteClassResults(field_id, 'Ontology Class', branch.uri, childResponse);
+          });
       });
     }
   };
 
-  $rootScope.excludedValueConstraint = function(id, vcst) {
+  $rootScope.excludedValueConstraint = function (id, vcst) {
     if ($rootScope.excludedValues && $rootScope.excludedValues[id]) {
       return $rootScope.excludedValues[id];
     }
@@ -436,25 +439,25 @@ var angularRun = function ($rootScope, BioPortalService, $location, $timeout, $w
     var results = [];
 
     if (vcst.classes.length > 0) {
-      angular.forEach(vcst.classes, function(klass) {
+      angular.forEach(vcst.classes, function (klass) {
         jQuery.merge(results, klass.exclusions || []);
       });
     }
 
     if (vcst.valueSets.length > 0) {
-      angular.forEach(vcst.valueSets, function(klass) {
+      angular.forEach(vcst.valueSets, function (klass) {
         jQuery.merge(results, klass.exclusions || []);
       });
     }
 
     if (vcst.ontologies.length > 0) {
-      angular.forEach(vcst.ontologies, function(klass) {
+      angular.forEach(vcst.ontologies, function (klass) {
         jQuery.merge(results, klass.exclusions || []);
       });
     }
 
     if (vcst.branches.length > 0) {
-      angular.forEach(vcst.branches, function(klass) {
+      angular.forEach(vcst.branches, function (klass) {
         jQuery.merge(results, klass.exclusions || []);
       });
     }
@@ -465,13 +468,13 @@ var angularRun = function ($rootScope, BioPortalService, $location, $timeout, $w
     return results;
   };
 
-  $rootScope.isValueConformedToConstraint = function(value, id, vcst) {
+  $rootScope.isValueConformedToConstraint = function (value, id, vcst) {
     var predefinedValues = $rootScope.autocompleteResultsCache[id].results;
     var excludedValues = $rootScope.excludedValueConstraint(id, vcst);
     var isValid = false;
     var jsonString = JSON.stringify(value);
 
-    angular.forEach(predefinedValues, function(val) {
+    angular.forEach(predefinedValues, function (val) {
       if (!isValid) {
         // IMPORTANT: this compare only valid if the 2 objects are simple
         // and all properties are in the same order.
@@ -484,15 +487,15 @@ var angularRun = function ($rootScope, BioPortalService, $location, $timeout, $w
     return isValid;
   };
 
-  $rootScope.isOntology = function(obj) {
+  $rootScope.isOntology = function (obj) {
     return obj["@type"] && obj["@type"].indexOf("Ontology") > 0;
   };
 
-  $rootScope.lengthOfValueConstraint = function(valueConstraint) {
+  $rootScope.lengthOfValueConstraint = function (valueConstraint) {
     return (valueConstraint.classes || []).length +
-           (valueConstraint.valueSets || []).length +
-           (valueConstraint.ontologies || []).length +
-           (valueConstraint.branches || []).length;
+      (valueConstraint.valueSets || []).length +
+      (valueConstraint.ontologies || []).length +
+      (valueConstraint.branches || []).length;
   };
 
   DataTemplateService.init();

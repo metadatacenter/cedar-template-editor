@@ -33,6 +33,8 @@ var CreateElementController = function ($rootScope, $scope, $routeParams, $timeo
     // Fetch existing element and assign to $scope.element property
     TemplateElementService.getTemplateElement($routeParams.id).then(function (response) {
       $scope.element = response.data;
+      // Set form preview to true so the preview is viewable onload
+      $scope.formPreview = true;
       HeaderService.dataContainer.currentObjectScope = $scope.element;
 
       var key = $scope.element["@id"];
@@ -67,9 +69,38 @@ var CreateElementController = function ($rootScope, $scope, $routeParams, $timeo
     return DataUtilService.isPropertiesEmpty($scope.element);
   };
 
-  // Add newly configured field to the element object
-  $scope.addFieldToElement = function (fieldType) {
-    StagingService.addFieldToElement($scope.element, fieldType);
+  $scope.addFieldToStaging = function (fieldType) {
+    return StagingService.addFieldToStaging($scope, fieldType);
+  };
+
+  $scope.addFieldToElement = function (field) {
+    StagingService.addFieldToElement($scope.element, fieldType); // from sam
+    // return StagingService.addFieldToScopeAndStaging($scope, $scope.element, field); // from cedar
+  };
+
+  // *** functions from data manipulation service
+  $scope.addOption = DataManipulationService.addOption;
+
+  /*$scope.addExistingElement = function (element) {
+   // Fetch existing element json data
+   //FormService.element(element).then(function(response) {
+
+   // Add existing element to the $scope.element.properties object with it's title converted to an object key
+   var fieldName = $rootScope.getFieldName(element.properties._ui.title);
+   // Adding corresponding property type to @context
+   $scope.element.properties["@context"].properties[fieldName] = {};
+   $scope.element.properties["@context"].properties[fieldName].enum =
+   new Array($rootScope.schemasBase + fieldName);
+   $scope.element.properties["@context"].required.push(fieldName);
+
+   // Add existing element to the $scope.element.properties object
+   $scope.element.properties[fieldName] = element;
+   //});
+   };*/
+
+  $scope.addElementToStaging = function (elementId) {
+    StagingService.addElement();
+    StagingService.addElementWithId($scope, elementId);
   };
 
   $scope.addElementToElement = function (element) {

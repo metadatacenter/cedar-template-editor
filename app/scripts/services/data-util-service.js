@@ -31,3 +31,4 @@ var DataUtilService = function ($rootScope) {
 
 DataUtilService.$inject = ["$rootScope"];
 angularApp.service('DataUtilService', DataUtilService);
+

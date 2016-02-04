@@ -250,3 +250,4 @@ var StagingService = function ($rootScope, TemplateElementService, DataManipulat
 StagingService.$inject = ["$rootScope", "TemplateElementService", "DataManipulationService", "ClientSideValidationService",
   "UIMessageService", "$timeout", "CONST"];
 angularApp.service('StagingService', StagingService);
+

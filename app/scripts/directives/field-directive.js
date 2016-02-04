@@ -165,6 +165,69 @@ var fieldDirective = function($rootScope, $http, $compile, $document, Spreadshee
       $scope.$emit('formHasRequiredFields');
     }
 
+    // added by cedar
+    // If a default value is set from the field item configuration, set $scope.model to its value
+    if ($scope.directory == 'render') {
+      if ($scope.model) {
+        if ($rootScope.isArray($scope.model)) {
+          if ($scope.model.length == 0) {
+            var min = $scope.field.minItems || 1;
+
+            if (field.defaultOption) {
+              for (var i = 0; i < min; i++) {
+                $scope.model[i]["_value"] = angular.copy(field.defaultOption);
+              }
+            } else {
+              for (var i = 0; i < min; i++) {
+                if (['checkbox'].indexOf(field.inputType) >= 0 ||
+                    ['date'].indexOf(field.inputType) >= 0 && field.dateType == "date-range") {
+                  $scope.model[i]['_value'] = {};
+                } else if (['list'].indexOf(field.inputType) >= 0) {
+                  $scope.model[i]['_value'] = [];
+                } else {
+                  $scope.model[i]['_value'] = "";
+                }
+              }
+            }
+          } else {
+            angular.forEach($scope.model, function(m, i) {
+              if (!("_value" in m)) {
+                if (field.defaultOption) {
+                  $scope.model[i]["_value"] = angular.copy(field.defaultOption);
+                } else {
+                  if (['checkbox'].indexOf(field.inputType) >= 0 ||
+                      ['date'].indexOf(field.inputType) >= 0 && field.dateType == "date-range") {
+                    $scope.model[i]['_value'] = {};
+                  } else if (['list'].indexOf(field.inputType) >= 0) {
+                    $scope.model[i]['_value'] = [];
+                  } else {
+                    $scope.model[i]['_value'] = "";
+                  }
+                }
+              }
+              $scope.setValueType();
+            });
+          }
+        } else {
+          if (!("_value" in $scope.model)) {
+            if (field.defaultOption) {
+              $scope.model["_value"] = angular.copy(field.defaultOption);
+            } else {
+              if (['checkbox'].indexOf(field.inputType) >= 0 ||
+                  ['date'].indexOf(field.inputType) >= 0 && field.dateType == "date-range") {
+                $scope.model['_value'] = {};
+              } else if (['list'].indexOf(field.inputType) >= 0) {
+                $scope.model['_value'] = [];
+              } else {
+                $scope.model['_value'] = "";
+              }
+            }
+          }
+        }
+        $scope.setValueType();
+      }
+    }
+
     $scope.uuid = DataManipulationService.generateTempGUID();
 
     // Retrive appropriate field template file

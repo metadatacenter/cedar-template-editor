@@ -80,3 +80,4 @@ var cedarBox = function ($document, $location, $sce, $translate, UrlService, CON
 
 cedarBox.$inject = ['$document', '$location', '$sce', '$translate', 'UrlService', 'CONST'];
 angularApp.directive('cedarBox', cedarBox);
+

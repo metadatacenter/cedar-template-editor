@@ -2,16 +2,20 @@
 
 var formDirective = function ($rootScope, $document, $timeout, DataManipulationService, DataUtilService) {
   return {
-    templateUrl: 'views/directive-templates/form-render.html',
-    restrict: 'E',
-    scope: {
-      pageIndex:'=',
-      form:'=',
-      isEditData: "=",
+    templateUrl: './views/directive-templates/form-render.html',
+    restrict   : 'E',
+    scope      : {
+      page : '=',
+      form : '=',
       model: '='
     },
-    controller: function($scope) {
+    controller : function ($scope) {
       $scope.model = $scope.model || {};
+
+      // $scope.formFields object to loop through to call field-directive
+      $scope.formFields = {};
+      // $scope.formFieldsOrder array to loop over for proper ordering of items/elements
+      $scope.formFieldsOrder = [];
 
       // Initializaing checkSubmission as false
       $scope.checkSubmission = false;
@@ -71,37 +75,37 @@ var formDirective = function ($rootScope, $document, $timeout, DataManipulationS
         }
       };
 
-      $scope.addPopover = function() {
+      $scope.addPopover = function () {
         //Initializing Bootstrap Popover fn for each item loaded
-        $timeout(function() {
+        $timeout(function () {
           angular.element('[data-toggle="popover"]').popover();
         }, 1000);
       };
 
-      $document.on('click', function(e) {
+      $document.on('click', function (e) {
         // Check if Popovers exist and close on click anywhere but the popover toggle icon
-        if( angular.element(e.target).data('toggle') !== 'popover' && angular.element('.popover').length ) {
+        if (angular.element(e.target).data('toggle') !== 'popover' && angular.element('.popover').length) {
           angular.element('[data-toggle="popover"]').popover('hide');
         }
       });
 
     	// Load the previous page of the form
-    	$scope.previousPage = function() {
-    	  $scope.pageIndex --;
-    	  $scope.currentPage = $scope.pagesArray[$scope.pageIndex];
-    	};
-
-    	// Load the next page of the form
-    	$scope.nextPage = function() {
-    	  $scope.pageIndex ++;
-    	  $scope.currentPage = $scope.pagesArray[$scope.pageIndex];
-    	};
-
-    	// Load an arbitrary page number attached to the index of it via runtime.html template
-    	$scope.setCurrentPage = function(page) {
-    	  $scope.pageIndex = page;
-    	  $scope.currentPage = $scope.pagesArray[$scope.pageIndex];
-    	};
+      $scope.previousPage = function() {
+    	$scope.pageIndex --;
+    	$scope.currentPage = $scope.pagesArray[$scope.pageIndex];
+      };
+      
+      // Load the next page of the form
+      $scope.nextPage = function() {
+    	$scope.pageIndex ++;
+    	$scope.currentPage = $scope.pagesArray[$scope.pageIndex];
+      };
+      
+      // Load an arbitrary page number attached to the index of it via runtime.html template
+      $scope.setCurrentPage = function(page) {
+    	$scope.pageIndex = page;
+    	$scope.currentPage = $scope.pagesArray[$scope.pageIndex];
+      };
 
       var startParseForm = function() {
         if ($scope.form) {
@@ -121,16 +125,24 @@ var formDirective = function ($rootScope, $document, $timeout, DataManipulationS
         }
       };
 
+      $scope.pushIntoOrder = function (key, parentKey) {
+        // If parent key does not exist
+        // and key does not exist in the array
+        if (!parentKey && $scope.formFieldsOrder.indexOf(key) == -1) {
+          $scope.formFieldsOrder.push(key);
+        }
+      };
+
       $scope.parseForm = function(iterator, parentModel, parentKey) {
         var ctx;
-        angular.forEach(iterator, function(value, name) {
+        angular.forEach(iterator, function (value, name) {
           // Add @context information to instance
           if (name == '@context') {
             ctx = DataManipulationService.generateInstanceContext(value);
           }
         });
 
-        angular.forEach(iterator, function(value, name) {
+        angular.forEach(iterator, function (value, name) {
           // Add @context information to instance
           if (name == '@context') {
             parentModel['@context'] = DataManipulationService.generateInstanceContext(value);
@@ -148,12 +160,14 @@ var formDirective = function ($rootScope, $document, $timeout, DataManipulationS
               var min = value.minItems || 1;
 
               // Handle position and nesting within $scope.model if it does not exist
-              if (!DataManipulationService.isCardinalElement(value)) {
-                parentModel[name] = {};
-              } else {
-                parentModel[name] = [];
-                for (var i = 0; i < min; i++) {
-                  parentModel[name].push({});
+              if (parentModel[name] == undefined) {
+                if (!DataManipulationService.isCardinalElement(value)) {
+                  parentModel[name] = {};
+                } else {
+                  parentModel[name] = [];
+                  for (var i = 0; i < min; i++) {
+                    parentModel[name].push({});
+                  }
                 }
               }
 
@@ -186,7 +200,6 @@ var formDirective = function ($rootScope, $document, $timeout, DataManipulationS
               // Add @type information to instance at the field level
               if (p && !angular.isUndefined(p['@type'])) {
                 var type = DataManipulationService.generateInstanceType(p['@type']);
-
                 if (type) {
                   if (angular.isArray(parentModel[name])) {
                     for (var i = 0; i < min; i++) {
@@ -216,14 +229,14 @@ var formDirective = function ($rootScope, $document, $timeout, DataManipulationS
         $scope.addPopover();
       });
 
-      // Watching for the 'submitForm' event to be $broadcast from parent 'RuntimeController'
-      $scope.$on('submitForm', function(event) {
+      // Watching for the 'submitForm' event to be $broadcast from parent 'CreateInstanceController'
+      $scope.$on('submitForm', function (event) {
         // Make the model (populated template) available to the parent
         $scope.$parent.instance = $scope.model;
         $scope.checkSubmission = true;
       });
 
-      $scope.$on('formHasRequiredFields', function(event) {
+      $scope.$on('formHasRequiredFields', function (event) {
         $scope.form.requiredFields = true;
       });
     }
