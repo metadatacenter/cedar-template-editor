@@ -109,7 +109,30 @@ var elementDirective = function($rootScope, SpreadsheetService, DataUtilService)
         });
       }
 
-      scope.model = scope.model || {};
+      var parseElement = function() {
+        if (!$rootScope.isRuntime() && scope.element) {
+          if (angular.isArray(scope.model)) {
+            angular.forEach(scope.model, function(m) {
+              $rootScope.findChildren($rootScope.propertiesOf(scope.element), m);
+            });
+          } else {
+            $rootScope.findChildren($rootScope.propertiesOf(scope.element), scope.model);
+          }
+        }
+      }
+
+      if (!$rootScope.isRuntime()) {
+        if (!scope.model) {
+          if (scope.element.items) {
+            scope.model = [];
+          } else {
+            scope.model = {};
+          }
+        }
+
+        parseElement();
+      }
+
       scope.state = scope.state || "creating";
       scope.selectedTab = scope.selectedTab || 0;
       scope.selectTab = function(index) {
@@ -184,13 +207,25 @@ var elementDirective = function($rootScope, SpreadsheetService, DataUtilService)
         }
 
         $rootScope.propertiesOf(scope.element)._ui.state = "completed";
-        scope.$emit("form:update");
+        parseElement();
       };
 
       // When user clicks edit, the element state will be switched to creating;
       scope.edit = function() {
         $rootScope.propertiesOf(scope.element)._ui.state = "creating";
       };
+
+      scope.$watchCollection("element.properties['@context'].properties", function() {
+        parseElement();
+      });
+
+      scope.$watchCollection("element.properties", function() {
+        parseElement();
+      });
+      
+      scope.$watchCollection("element.items.properties", function() {
+        parseElement();
+      });
     }
   };
 };

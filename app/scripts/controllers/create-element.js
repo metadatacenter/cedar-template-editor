@@ -33,8 +33,6 @@ var CreateElementController = function ($rootScope, $scope, $routeParams, $timeo
     // Fetch existing element and assign to $scope.element property
     TemplateElementService.getTemplateElement($routeParams.id).then(function (response) {
       $scope.element = response.data;
-      // Set form preview to true so the preview is viewable onload
-      $scope.formPreview = true;
       HeaderService.dataContainer.currentObjectScope = $scope.element;
 
       var key = $scope.element["@id"];
@@ -69,19 +67,9 @@ var CreateElementController = function ($rootScope, $scope, $routeParams, $timeo
     return DataUtilService.isPropertiesEmpty($scope.element);
   };
 
-  $scope.addFieldToStaging = function (fieldType) {
-    return StagingService.addFieldToStaging($scope, fieldType);
-  };
-
-  $scope.addFieldToElement = function (field) {
+  // Add newly configured field to the element object
+  $scope.addFieldToElement = function (fieldType) {
     StagingService.addFieldToElement($scope.element, fieldType);
-  };
-
-  // *** functions from data manipulation service
-  $scope.addOption = DataManipulationService.addOption;
-  $scope.addElementToStaging = function (elementId) {
-    StagingService.addElement();
-    StagingService.addElementWithId($scope, elementId);
   };
 
   $scope.addElementToElement = function (element) {

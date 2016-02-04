@@ -26,6 +26,45 @@ var fieldDirective = function($rootScope, $http, $compile, $document, Spreadshee
       }
     }
 
+    var parseField = function() {
+      if (!$rootScope.isRuntime() && $scope.field) {
+        // $scope.model = $scope.model || {};
+        // $rootScope.findChildren($rootScope.propertiesOf($scope.field), $scope.model);
+
+        var min = $scope.field.minItems || 1;
+
+        if (!$rootScope.isCardinalElement($scope.field)) {
+          $scope.model = {};
+        } else {
+          $scope.model = [];
+          for (var i = 0; i < min; i++) {
+            var obj = {};
+            $scope.model.push(obj);
+          }
+        }
+
+        var p = $rootScope.propertiesOf($scope.field);
+        if (!p) {
+          console.log("Line 48 ", $scope.field);
+        }
+
+        // Add @type information to instance at the field level
+        if (p && !angular.isUndefined(p['@type'])) {
+          var type = $rootScope.generateInstanceType(p['@type']);
+
+          if (type) {
+            if (angular.isArray($scope.model)) {
+              for (var i = 0; i < min; i++) {
+                $scope.model[i]["@type"] = type || "";
+              }
+            } else {
+              $scope.model["@type"] = type || "";
+            }
+          }
+        }
+      }
+    }
+
     // When form submit event is fired, check field for simple validation
     $scope.$on('submitForm', function (event) {
       // If field is required and is empty, emit failed emptyRequiredField event
@@ -165,8 +204,7 @@ var fieldDirective = function($rootScope, $http, $compile, $document, Spreadshee
       $scope.$emit('formHasRequiredFields');
     }
 
-    // added by cedar
-    // If a default value is set from the field item configuration, set $scope.model to its value
+    // Added by cedar
     if ($scope.directory == 'render') {
       if ($scope.model) {
         if ($rootScope.isArray($scope.model)) {
@@ -344,7 +382,7 @@ var fieldDirective = function($rootScope, $http, $compile, $document, Spreadshee
         }
 
         $rootScope.propertiesOf($scope.field)._ui.state = "completed";
-        $scope.$emit("form:update");
+        parseField();
       }
     };
 

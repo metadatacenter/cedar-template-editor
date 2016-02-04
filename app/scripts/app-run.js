@@ -21,14 +21,14 @@ var angularRun = function ($rootScope, BioPortalService, $location, $timeout, $w
   // Global utility functions
 
   // Simple function to check if an object is empty
-  $rootScope.isEmpty = function(obj) {
+  $rootScope.isEmpty = function (obj) {
     return !obj || Object.keys(obj).length === 0;
   };
 
   // Transform string to obtain JSON field name
-  $rootScope.getFieldName = function(string) {
+  $rootScope.getFieldName = function (string) {
     // Using Camel case format
-    return string.replace(/(?:^\w|[A-Z]|\b\w)/g, function(letter, index) {
+    return string.replace(/(?:^\w|[A-Z]|\b\w)/g, function (letter, index) {
       return index === 0 ? letter.toLowerCase() : letter.toUpperCase();
     }).replace(/\s+/g, '');
 
@@ -40,13 +40,13 @@ var angularRun = function ($rootScope, BioPortalService, $location, $timeout, $w
   };
 
   // Capitalize first letter
-  $rootScope.capitalizeFirst = function(string) {
+  $rootScope.capitalizeFirst = function (string) {
     string = string.toLowerCase();
     return string.substring(0,1).toUpperCase() + string.substring(1);
   };
 
   // Returning true if the object key value in the properties object is of json-ld type '@' or if it corresponds to any of the reserved fields
-  $rootScope.ignoreKey = function(key) {
+  $rootScope.ignoreKey = function (key) {
     //var pattern = /^@/i,
     var pattern = /(^@)|(^_ui$)|(^templateId$)/i,
       result = pattern.test(key);
@@ -55,9 +55,9 @@ var angularRun = function ($rootScope, BioPortalService, $location, $timeout, $w
   };
 
   // Generating a RFC4122 version 4 compliant GUID
-  $rootScope.generateGUID = function() {
+  $rootScope.generateGUID = function () {
     var d = Date.now();
-    var guid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+    var guid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
       var r = (d + Math.random() * 16) % 16 | 0;
       d = Math.floor(d / 16);
       return (c == 'x' ? r : (r & 0x3 | 0x8)).toString(16);
@@ -66,8 +66,8 @@ var angularRun = function ($rootScope, BioPortalService, $location, $timeout, $w
   };
 
   // Sorting function that moves boolean values with true to the front of the sort
-  $rootScope.sortBoolean = function(array, bool) {
-    return array.sort(function(a, b) {
+  $rootScope.sortBoolean = function (array, bool) {
+    return array.sort(function (a, b) {
       var x = a[bool],
         y = b[bool];
       return ((x == y) ? -1 : ((x === true) ? -1 : 1));
@@ -75,7 +75,7 @@ var angularRun = function ($rootScope, BioPortalService, $location, $timeout, $w
   };
 
   // Function that generates a basic field definition
-  $rootScope.generateField = function(fieldType) {
+  $rootScope.generateField = function (fieldType) {
     var valueType = "string";
     if (fieldType == "numeric") {
       valueType = "number";
@@ -94,16 +94,16 @@ var angularRun = function ($rootScope, BioPortalService, $location, $timeout, $w
   };
 
   // Function that generates the @context for an instance, based on the schema @context definition
-  $rootScope.generateInstanceContext = function(schemaContext) {
+  $rootScope.generateInstanceContext = function (schemaContext) {
     var context = {};
-    angular.forEach(schemaContext.properties, function(value, key) {
+    angular.forEach(schemaContext.properties, function (value, key) {
       context[key] = value.enum[0];
     });
    return context;
   };
 
   // Function that generates the @type for an instance, based on the schema @type definition
-  $rootScope.generateInstanceType = function(schemaType) {
+  $rootScope.generateInstanceType = function (schemaType) {
     // If there is no type defined at the schema level
     if (angular.isUndefined(schemaType.oneOf[0].enum))
       return null;
@@ -119,7 +119,7 @@ var angularRun = function ($rootScope, BioPortalService, $location, $timeout, $w
     }
   };
 
-  $rootScope.checkFieldCardinalityOptions = function(field) {
+  $rootScope.checkFieldCardinalityOptions = function (field) {
     var unmetConditions = [];
 
     if (field.minItems && field.maxItems &&
@@ -130,7 +130,7 @@ var angularRun = function ($rootScope, BioPortalService, $location, $timeout, $w
     return unmetConditions;
   };
 
-  $rootScope.cardinalizeField = function(field) {
+  $rootScope.cardinalizeField = function (field) {
     if (field.minItems == 1 && field.maxItems == 1 || !field.minItems && !field.maxItems) {
       return false;
     }
@@ -162,11 +162,11 @@ var angularRun = function ($rootScope, BioPortalService, $location, $timeout, $w
     return false;
   };
 
-  $rootScope.propertiesOf = function(fieldOrElement) {
+  $rootScope.propertiesOf = function (fieldOrElement) {
     return DataManipulationService.getFieldProperties(fieldOrElement);
   };
 
-  $rootScope.idOf = function(fieldOrElement) {
+  $rootScope.idOf = function (fieldOrElement) {
     if (fieldOrElement) {
       if (fieldOrElement.items) {
         return fieldOrElement.items["@id"];
@@ -176,7 +176,7 @@ var angularRun = function ($rootScope, BioPortalService, $location, $timeout, $w
     }
   };
 
-  $rootScope.uncardinalizeField = function(field) {
+  $rootScope.uncardinalizeField = function (field) {
     if (field.maxItems != 1 || !field.items) {
       return false;
     }
@@ -194,14 +194,14 @@ var angularRun = function ($rootScope, BioPortalService, $location, $timeout, $w
     return true;
   };
 
-  $rootScope.isCardinalElement = function(element) {
+  $rootScope.isCardinalElement = function (element) {
     return element.minItems && element.maxItems != 1;
   };
 
   // If Max Items is N, its value will be 0, then need to remove it from schema
   // if Min and Max are both 1, remove them
-  $rootScope.removeUnnecessaryMaxItems = function(properties) {
-    angular.forEach(properties, function(value, key) {
+  $rootScope.removeUnnecessaryMaxItems = function (properties) {
+    angular.forEach(properties, function (value, key) {
       if (!$rootScope.ignoreKey(key)) {
         if (!value.maxItems) {
           delete value.maxItems;
@@ -217,25 +217,99 @@ var angularRun = function ($rootScope, BioPortalService, $location, $timeout, $w
     });
   };
 
-  $rootScope.console = function(txt, label) {
+  $rootScope.console = function (txt, label) {
     console.log(label + ' ' + JSON.stringify(txt,null,2));
   };
 
-  $rootScope.isRuntime = function() {
+  $rootScope.isRuntime = function () {
     return $rootScope.pageId == 'RUNTIME';
   };
 
-  $rootScope.isField = function(value) {
+  $rootScope.elementIsMultiInstance = DataManipulationService.elementIsMultiInstance;
+
+  $rootScope.isField = function (value) {
     return value && value.properties && value.properties._ui && value.properties._ui.inputType;
   };
 
-  $rootScope.isElement = function(value) {
+  $rootScope.isElement = function (value) {
     return value && value._ui && !value.properties;
   };
 
-  $rootScope.assignOrder = function(fieldOrElement, parentElement) {
+  $rootScope.findChildren = function (iterator, parentModel, parentKey, level) {
+    var ctx, min, type, i;
+    angular.forEach(iterator, function (value, name) {
+      // Add @context information to instance
+      if (name == '@context') {
+        ctx = $rootScope.generateInstanceContext(value);
+      }
+    });
+
+    angular.forEach(iterator, function (value, name) {
+      // Add @context information to instance
+      if (name == '@context') {
+        parentModel['@context'] = $rootScope.generateInstanceContext(value);
+      }
+      // Add @type information to instance
+      else if (name == '@type') {
+        type = $rootScope.generateInstanceType(value);
+        if (type) {
+          parentModel['@type'] = type;
+        }
+      }
+
+      if (!$rootScope.ignoreKey(name)) {
+        // We can tell we've reached an element level by its 'order' property
+        if (value._ui && value._ui.order) {
+          min = value.minItems || 1;
+
+          if ($rootScope.isCardinalElement(value)) {
+            parentModel[name] = [];
+            for (i = 0; i < min; i++) {
+              parentModel[name].push({});
+            }
+          } else {
+            parentModel[name] = {};
+          }
+        } else {
+          min = value.minItems || 1;
+
+          // Assign empty field instance model to $scope.model only if it does not exist
+          if (!parentModel[name]) {
+            if (!$rootScope.isCardinalElement(value)) {
+              parentModel[name] = {};
+            } else {
+              parentModel[name] = [];
+              for (i = 0; i < min; i++) {
+                var obj = {};
+                parentModel[name].push(obj);
+              }
+            }
+          }
+
+          var p = $rootScope.propertiesOf(value);
+
+          // Add @type information to instance at the field level
+          if (p && !angular.isUndefined(p['@type'])) {
+            type = $rootScope.generateInstanceType(p['@type']);
+
+            if (type) {
+              if (angular.isArray(parentModel[name])) {
+                for (i = 0; i < min; i++) {
+                  parentModel[name][i]["@type"] = type || "";
+                }
+              } else {
+                parentModel[name]["@type"] = type || "";
+              }
+            }
+          }
+        }
+      }
+    });
+  };
+
+  $rootScope.assignOrder = function (fieldOrElement, parentElement) {
     var order = 1;
-    angular.forEach(parentElement, function(value, key) {
+    angular.forEach(parentElement, function (value, key) {
       if ($rootScope.isElement(value) || $rootScope.isField(value)) {
         order += 1;
       }
@@ -245,8 +319,6 @@ var angularRun = function ($rootScope, BioPortalService, $location, $timeout, $w
   };
 
   $rootScope.scrollToAnchor = UIUtilService.scrollToAnchor;
-  $rootScope.elementIsMultiInstance = DataManipulationService.elementIsMultiInstance;
-
 
   var minCardinalities = DataManipulationService.generateCardinalities(8);
   var maxCardinalities = DataManipulationService.generateCardinalities(8);
@@ -257,10 +329,10 @@ var angularRun = function ($rootScope, BioPortalService, $location, $timeout, $w
 
   // BioPortal term selection integration code.
   // TODO: separate the calls, create a service for these
-
   $rootScope.isKeyVisible = function (keyCode) {
-    if (keyCode > 45 && keyCode < 112 && [91, 92, 93].indexOf(
-        keyCode) == -1 || keyCode >= 186 && keyCode <= 222 || [8, 32, 173].indexOf(keyCode) >= 0) {
+    if (keyCode > 45 && keyCode < 112 && [91, 92, 93].indexOf(keyCode) == -1 ||
+        keyCode >= 186 && keyCode <= 222 ||
+        [8, 32, 173].indexOf(keyCode) >= 0) {
       return true;
     } else {
       return false;
@@ -324,9 +396,9 @@ var angularRun = function ($rootScope, BioPortalService, $location, $timeout, $w
       if (!response.collection[i].found) {
         $rootScope.autocompleteResultsCache[field_id].results.push(
           {
-            '@id'      : response.collection[i]['@id'],
-            'label'    : response.collection[i].prefLabel,
-            'type'     : field_type,
+            '@id':       response.collection[i]['@id'],
+            'label':     response.collection[i].prefLabel,
+            'type':      field_type,
             'sourceUri': source_uri
           }
         );
@@ -367,9 +439,9 @@ var angularRun = function ($rootScope, BioPortalService, $location, $timeout, $w
         if (term == '*') {
           $rootScope.autocompleteResultsCache[field_id].results.push(
             {
-              '@id'      : klass.uri,
-              'label'    : klass.label,
-              'type'     : 'Ontology Class',
+              '@id':       klass.uri,
+              'label':     klass.label,
+              'type':      'Ontology Class',
               'sourceUri': 'template'
             }
           );
@@ -377,9 +449,9 @@ var angularRun = function ($rootScope, BioPortalService, $location, $timeout, $w
           if (klass && klass.label && klass.label.toLowerCase().indexOf(term.toLowerCase()) !== -1) {
             $rootScope.autocompleteResultsCache[field_id].results.push(
               {
-                '@id'      : klass.uri,
-                'label'    : klass.label,
-                'type'     : 'Ontology Class',
+                '@id':       klass.uri,
+                'label':     klass.label,
+                'type':      'Ontology Class',
                 'sourceUri': 'template'
               }
             );
@@ -389,7 +461,7 @@ var angularRun = function ($rootScope, BioPortalService, $location, $timeout, $w
       if (term !== '*') {
         if ($rootScope.autocompleteResultsCache[field_id].results.length === 0) {
           $rootScope.autocompleteResultsCache[field_id].results.push({
-            'label'    : $translate.instant('GENERIC.NoResults'),
+            'label':     $translate.instant('GENERIC.NoResults'),
             'sourceUri': 'template'
           });
         }
@@ -401,8 +473,8 @@ var angularRun = function ($rootScope, BioPortalService, $location, $timeout, $w
         if (term == '*') {
           $rootScope.removeAutocompleteResultsForSource(field_id, valueSet.uri);
         }
-        BioPortalService.autocompleteValueSetClasses(term, valueSet.uri).then(function (childResponse) {
-          $rootScope.processAutocompleteClassResults(field_id, 'Value Set Class', valueSet.uri, childResponse);
+        BioPortalService.autocompleteValueSetClasses (term, valueSet.uri).then(function (childResponse) {
+          $rootScope.processAutocompleteClassResults (field_id, 'Value Set Class', valueSet.uri, childResponse);
         });
       });
     }
@@ -412,8 +484,8 @@ var angularRun = function ($rootScope, BioPortalService, $location, $timeout, $w
         if (term == '*') {
           $rootScope.removeAutocompleteResultsForSource(field_id, ontology.uri);
         }
-        BioPortalService.autocompleteOntology(term, ontology.acronym).then(function (childResponse) {
-          $rootScope.processAutocompleteClassResults(field_id, 'Ontology Class', ontology.uri, childResponse);
+        BioPortalService.autocompleteOntology (term, ontology.acronym).then(function (childResponse) {
+          $rootScope.processAutocompleteClassResults (field_id, 'Ontology Class', ontology.uri, childResponse);
         });
       });
     }
@@ -423,10 +495,11 @@ var angularRun = function ($rootScope, BioPortalService, $location, $timeout, $w
         if (term == '*') {
           $rootScope.removeAutocompleteResultsForSource(field_id, branch.uri);
         }
-        BioPortalService.autocompleteOntologySubtree(term, branch.acronym, branch.uri, branch.maxDepth).then(
+        BioPortalService.autocompleteOntologySubtree (term, branch.acronym, branch.uri, branch.maxDepth).then(
           function (childResponse) {
             $rootScope.processAutocompleteClassResults(field_id, 'Ontology Class', branch.uri, childResponse);
-          });
+          }
+        );
       });
     }
   };
@@ -493,9 +566,9 @@ var angularRun = function ($rootScope, BioPortalService, $location, $timeout, $w
 
   $rootScope.lengthOfValueConstraint = function (valueConstraint) {
     return (valueConstraint.classes || []).length +
-      (valueConstraint.valueSets || []).length +
-      (valueConstraint.ontologies || []).length +
-      (valueConstraint.branches || []).length;
+       (valueConstraint.valueSets || []).length +
+       (valueConstraint.ontologies || []).length +
+       (valueConstraint.branches || []).length;
   };
 
   DataTemplateService.init();

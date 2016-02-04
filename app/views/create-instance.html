@@ -37,7 +37,7 @@
       <div class="right-body col-sm-9">
         <form-directive form="form" model="instance" page-index="pageIndex" is-edit-data="isEditData"></form-directive>
 
-        <div class="edit-actions" ng-hide="$root.isEmpty(template)">
+        <div class="edit-actions" ng-hide="$root.isEmpty(form)">
           <div ng-if="failedValidation.length" class="alert alert-danger" role="alert">
             <p translate>VALIDATION.groupHeader.requiredFields</p>
             <ul>

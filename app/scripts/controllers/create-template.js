@@ -25,10 +25,8 @@ var CreateTemplateController = function ($rootScope, $scope, $routeParams, $time
   // Load existing form if $routeParams.id parameter is supplied
   if ($routeParams.id) {
     // Fetch existing form and assign to $scope.form property
-    TemplateService.getTemplate($routeParams.id).then(function (response) {
+    TemplateService.getTemplate($routeParams.id).then(function(response) {
       $scope.form = response.data;
-      // Set form preview to true so the preview is viewable onload
-      $scope.formPreview = true;
       HeaderService.dataContainer.currentObjectScope = $scope.form;
     }).catch(function (err) {
       UIMessageService.showBackendError('SERVER.TEMPLATE.load.error', err);
@@ -39,7 +37,6 @@ var CreateTemplateController = function ($rootScope, $scope, $routeParams, $time
     HeaderService.dataContainer.currentObjectScope = $scope.form;
   }
 
-  // *** proxied functions
   $scope.isPropertiesEmpty = function () {
     return DataUtilService.isPropertiesEmpty($scope.form);
   };
@@ -54,51 +51,8 @@ var CreateTemplateController = function ($rootScope, $scope, $routeParams, $time
     $rootScope.$broadcast("form:update");
   };
 
-  $scope.addFieldToStaging = function (fieldType) {
-    return StagingService.addFieldToStaging($scope, fieldType);
-  };
-
-  $scope.addFieldToForm = function (field) {
-    return StagingService.addFieldToScopeAndStaging($scope, $scope.form, field);
-  };
-
-  // *** functions from data manipulation service
+  // Function to add additional options for radio, checkbox, and list fieldTypes
   $scope.addOption = DataManipulationService.addOption;
-
-  $scope.addElementToStaging = function (elementId) {
-    StagingService.addElement();
-    StagingService.addElementWithId($scope, elementId);
-  };
-
-  /*$scope.addExistingElement = function (element) {
-   // Fetch existing element json data
-   //FormService.element(element).then(function(response) {
-   // Convert response.data.title string to an acceptable object key string
-   //var titleKey = $rootScope.getFieldName(element.properties._ui.title);
-
-   // Add existing element to the $scope.element.properties object with it's title converted to an object key
-   var titleKey = $rootScope.getFieldName(element.properties._ui.title);
-   // Adding corresponding property type to @context
-   $scope.form.properties["@context"].properties[titleKey] = {};
-   $scope.form.properties["@context"].properties[titleKey].enum =
-   new Array($rootScope.schemasBase + titleKey);
-   $scope.form.properties["@context"].required.push(titleKey);
-
-   // Embed existing element into $scope.form.properties object
-   $scope.form.properties[titleKey] = element;
-   //});
-   };*/
-
-  // Delete field from $scope.staging object
-  $scope.deleteField = function (field) {
-    // Remove field instance from $scope.staging
-    delete $scope.staging[field['@id']];
-    // Empty the Error Messages array if present
-    if ($scope.stagingErrorMessages) {
-      $scope.stagingErrorMessages = [];
-    }
-    StagingService.removeObject();
-  };
 
   // Reverts to empty form and removes all previously added fields/elements
   $scope.reset = function () {
@@ -184,15 +138,6 @@ var CreateTemplateController = function ($rootScope, $scope, $routeParams, $time
       }
     }
   };
-
-  // Event listener for when the pages array is finished building
-  $scope.$on('finishPageArray', function (event, orderArray) {
-    // Assigning array returned to $scope.form._ui.pages property
-    $scope.form._ui.pages = orderArray;
-    // Console.log full working form example on save
-    //console.log($scope.form);
-    // Database service save() call could go here
-  });
 
   // This function watches for changes in the properties._ui.title field and autogenerates the schema title and description fields
   $scope.$watch('form.properties._ui.title', function (v) {
