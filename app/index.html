@@ -67,6 +67,8 @@
                     <a href="#/instances/create">Metadata
                         Editor</a></li>
                 <li ng-class="{active: ($root.pageId == 'ROLESELECTOR') }"><a href="#/">Role Selector</a></li>
+                <li><a href="#/profile">Profile</a></li>
+                <li><a href="#/logout">Logout</a></li>
             </ul>
         </div><!--/.navbar-collapse -->
     </div>
@@ -101,6 +103,8 @@
                         ng-class="{active: ($root.pageId == 'RUNTIME') }"><a
                             href="#/instances/create">Metadata Editor</a></li>
                     <li ng-class="{active: ($root.pageId == 'ROLESELECTOR') }"><a href="#/">Role Selector</a></li>
+                    <li><a href="#/profile">Profile</a></li>
+                    <li><a href="#/logout">Logout</a></li>
                 </ul>
             </div><!--/.navbar-collapse -->
         </div>
@@ -164,6 +168,7 @@
 <script src="scripts/controllers/header.js"></script>
 <script src="scripts/controllers/header-mini.js"></script>
 <script src="scripts/controllers/terms.js"></script>
+<script src="scripts/controllers/logout.js"></script>
 
 <script src="scripts/services/header-service.js"></script>
 <script src="scripts/services/spreadsheet-service.js"></script>
@@ -205,7 +210,11 @@
 <script src="scripts/Bioportal/BioPortalService.js"></script>
 <!-- end BioPortal -->
 
+<script src="scripts/keycloak/keycloak.js"></script>
+
+<script src="scripts/keycloak-bootstrap.js"></script>
 <script src="scripts/cedar-bootstrap.js"></script>
+<script src="scripts/app-entry-point.js"></script>
 
 </body>
 </html>

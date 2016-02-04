@@ -9,3 +9,5 @@ npm-debug.log
 .idea/
 
 .DS_Store
+
+keycloak.json
