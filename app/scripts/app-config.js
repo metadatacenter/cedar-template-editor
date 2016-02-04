@@ -80,4 +80,3 @@ var angularConfig = function ($routeProvider, $locationProvider, $translateProvi
 
 angularConfig.$inject = ['$routeProvider', '$locationProvider', '$translateProvider', 'toastyConfigProvider'];
 angularApp.config(angularConfig);
-

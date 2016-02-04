@@ -186,7 +186,6 @@ var CreateTemplateController = function ($rootScope, $scope, $routeParams, $time
   };
 
   // Event listener for when the pages array is finished building
-  // deleted by sam?
   $scope.$on('finishPageArray', function (event, orderArray) {
     // Assigning array returned to $scope.form._ui.pages property
     $scope.form._ui.pages = orderArray;

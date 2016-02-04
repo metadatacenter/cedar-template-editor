@@ -74,30 +74,11 @@ var CreateElementController = function ($rootScope, $scope, $routeParams, $timeo
   };
 
   $scope.addFieldToElement = function (field) {
-    StagingService.addFieldToElement($scope.element, fieldType); // from sam
-    // return StagingService.addFieldToScopeAndStaging($scope, $scope.element, field); // from cedar
+    StagingService.addFieldToElement($scope.element, fieldType);
   };
 
   // *** functions from data manipulation service
   $scope.addOption = DataManipulationService.addOption;
-
-  /*$scope.addExistingElement = function (element) {
-   // Fetch existing element json data
-   //FormService.element(element).then(function(response) {
-
-   // Add existing element to the $scope.element.properties object with it's title converted to an object key
-   var fieldName = $rootScope.getFieldName(element.properties._ui.title);
-   // Adding corresponding property type to @context
-   $scope.element.properties["@context"].properties[fieldName] = {};
-   $scope.element.properties["@context"].properties[fieldName].enum =
-   new Array($rootScope.schemasBase + fieldName);
-   $scope.element.properties["@context"].required.push(fieldName);
-
-   // Add existing element to the $scope.element.properties object
-   $scope.element.properties[fieldName] = element;
-   //});
-   };*/
-
   $scope.addElementToStaging = function (elementId) {
     StagingService.addElement();
     StagingService.addElementWithId($scope, elementId);

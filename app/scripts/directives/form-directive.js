@@ -89,7 +89,7 @@ var formDirective = function ($rootScope, $document, $timeout, DataManipulationS
         }
       });
 
-    	// Load the previous page of the form
+      // Load the previous page of the form
       $scope.previousPage = function() {
     	$scope.pageIndex --;
     	$scope.currentPage = $scope.pagesArray[$scope.pageIndex];
