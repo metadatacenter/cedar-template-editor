@@ -44,9 +44,6 @@ var fieldDirective = function($rootScope, $http, $compile, $document, Spreadshee
         }
 
         var p = $rootScope.propertiesOf($scope.field);
-        if (!p) {
-          console.log("Line 48 ", $scope.field);
-        }
 
         // Add @type information to instance at the field level
         if (p && !angular.isUndefined(p['@type'])) {
@@ -195,6 +192,14 @@ var fieldDirective = function($rootScope, $http, $compile, $document, Spreadshee
       if (allFieldsAreValid) {
         //remove from emptyRequiredField array
         $scope.$emit('invalidFieldValues', ['remove', $rootScope.propertiesOf($scope.field)._ui.title, $scope.uuid]);
+      }
+    });
+
+    $scope.$on("saveForm", function() {
+      if ($rootScope.propertiesOf($scope.field)._ui.state == "creating") {
+        $scope.$emit("invalidFieldState", ["add", $rootScope.propertiesOf($scope.field)._ui.title, $scope.field["@id"]]);
+      } else {
+        $scope.$emit("invalidFieldState", ["remove", $rootScope.propertiesOf($scope.field)._ui.title, $scope.field["@id"]]);
       }
     });
 

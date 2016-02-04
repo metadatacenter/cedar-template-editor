@@ -75,6 +75,20 @@
           </div><!-- /.form-preview -->
         </div> <!-- /#form-preview-section -->
 
+        <div ng-if="!isEmpty(invalidFieldStates)" class="alert alert-danger" role="alert">
+          <p><i class="fa fa-exclamation-triangle"></i><span translate>VALIDATION.groupHeader.invalidFieldState</span></p>
+          <ul>
+            <li ng-repeat="field in invalidFieldStates">{{field || "Untitle"}}</li>
+          </ul>
+        </div>
+
+        <div ng-if="!isEmpty(invalidElementStates)" class="alert alert-danger" role="alert">
+          <p><i class="fa fa-exclamation-triangle"></i><span translate>VALIDATION.groupHeader.invalidElementState</span></p>
+          <ul>
+            <li ng-repeat="element in invalidElementStates">{{element || "Untitle"}}</li>
+          </ul>
+        </div>
+
         <div class="element-actions">
           <div ng-if="elementErrorMessages.length" class="alert alert-danger" role="alert">
             <p ng-repeat="message in elementErrorMessages"><i class="fa fa-exclamation-triangle"></i>{{message}}</p>

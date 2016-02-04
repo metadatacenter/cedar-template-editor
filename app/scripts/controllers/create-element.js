@@ -73,7 +73,7 @@ var CreateElementController = function ($rootScope, $scope, $routeParams, $timeo
   };
 
   $scope.addElementToElement = function (element) {
-    StagingService.addElementToElement();
+    StagingService.addElementToElement($scope.element, element["@id"]);
     $scope.$broadcast("form:update");
   };
 
@@ -99,15 +99,18 @@ var CreateElementController = function ($rootScope, $scope, $routeParams, $timeo
   }
 
   $scope.saveElement = function () {
-    UIMessageService.conditionalOrConfirmedExecution(
-        StagingService.isEmpty(),
-        function () {
-          $scope.doSaveElement();
-        },
-        'GENERIC.AreYouSure',
-        'ELEMENTEDITOR.save.nonEmptyStagingConfirm',
-        'GENERIC.YesSaveIt'
-    );
+    $scope.$broadcast('saveForm');
+    if ($rootScope.isEmpty($scope.invalidFieldStates) && $rootScope.isEmpty($scope.invalidElementStates)) {
+      UIMessageService.conditionalOrConfirmedExecution(
+          StagingService.isEmpty(),
+          function () {
+            $scope.doSaveElement();
+          },
+          'GENERIC.AreYouSure',
+          'ELEMENTEDITOR.save.nonEmptyStagingConfirm',
+          'GENERIC.YesSaveIt'
+      );
+    }
   }
 
   // Stores the element into the database
@@ -164,6 +167,27 @@ var CreateElementController = function ($rootScope, $scope, $routeParams, $timeo
       }
     }
   }
+
+  $scope.invalidFieldStates = {};
+  $scope.invalidElementStates = {};
+  $scope.$on('invalidFieldState', function (event, args) {
+    if (args[2] != $scope.element["@id"]) {
+  		if (args[0] == 'add') {
+  			$scope.invalidFieldStates[args[2]] = args[1];
+  		}
+  		if (args[0] == 'remove') {
+  			delete $scope.invalidFieldStates[args[2]];
+  		}
+    }
+	});
+  $scope.$on('invalidElementState', function (event, args) {
+		if (args[0] == 'add') {
+			$scope.invalidElementStates[args[2]] = args[1];
+		}
+		if (args[0] == 'remove') {
+			delete $scope.invalidElementStates[args[2]];
+		}
+	});
 
   // This function watches for changes in the properties._ui.title field and autogenerates the schema title and description fields
   $scope.$watch('element.properties._ui.title', function (v) {

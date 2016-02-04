@@ -1,6 +1,6 @@
 'use strict';
 
-var elementDirective = function($rootScope, SpreadsheetService, DataUtilService) {
+var elementDirective = function($rootScope, SpreadsheetService, DataUtilService, DataManipulationService) {
   return {
     templateUrl: 'views/directive-templates/element-directive.html',
     restrict: 'EA',
@@ -215,6 +215,15 @@ var elementDirective = function($rootScope, SpreadsheetService, DataUtilService)
         $rootScope.propertiesOf(scope.element)._ui.state = "creating";
       };
 
+      scope.uuid = DataManipulationService.generateTempGUID();
+      scope.$on('saveForm', function (event) {
+        if ($rootScope.propertiesOf(scope.element)._ui.state == "creating") {
+          scope.$emit("invalidElementState", ["add", $rootScope.propertiesOf(scope.element)._ui.title, scope.element["@id"]]);
+        } else {
+          scope.$emit("invalidElementState", ["remove", $rootScope.propertiesOf(scope.element)._ui.title, scope.element["@id"]]);
+        }
+      });
+
       scope.$watchCollection("element.properties['@context'].properties", function() {
         parseElement();
       });
@@ -222,7 +231,7 @@ var elementDirective = function($rootScope, SpreadsheetService, DataUtilService)
       scope.$watchCollection("element.properties", function() {
         parseElement();
       });
-      
+
       scope.$watchCollection("element.items.properties", function() {
         parseElement();
       });
@@ -230,5 +239,5 @@ var elementDirective = function($rootScope, SpreadsheetService, DataUtilService)
   };
 };
 
-elementDirective.$inject = ["$rootScope", "SpreadsheetService", "DataUtilService"];
+elementDirective.$inject = ["$rootScope", "SpreadsheetService", "DataUtilService", "DataManipulationService"];
 angularApp.directive('elementDirective', elementDirective);
