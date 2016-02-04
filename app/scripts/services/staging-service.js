@@ -90,6 +90,132 @@ var StagingService = function ($rootScope, TemplateElementService, DataManipulat
     $scope.staging[field['@id']] = field;
   };
 
+  service.addFieldToForm = function(form, fieldType) {
+    var field = DataManipulationService.generateField(fieldType);
+    field.minItems = 1;
+    field.maxItems = 1;
+    field.properties._ui.state = "creating";
+
+    var optionInputs = ["radio", "checkbox", "list"];
+    if (optionInputs.indexOf(fieldType) > -1) {
+      field.properties._ui.options = [
+        {
+          "text": ""
+        }
+      ];
+    }
+
+    // Converting title for irregular character handling
+    var fieldName = $rootScope.generateGUID(); //field['@id'];
+
+    // Adding corresponding property type to @context
+    form.properties["@context"].properties[fieldName] = {};
+    form.properties["@context"].properties[fieldName].enum =
+      new Array(DataManipulationService.schemaBase + fieldName);
+    form.properties["@context"].required.push(fieldName);
+
+    // Evaluate cardinality
+    DataManipulationService.cardinalizeField(field);
+
+    // Adding field to the element.properties object
+    form.properties[fieldName] = field;
+    form._ui.order = form._ui.order || [];
+    form._ui.order.push(fieldName);
+  }
+
+  service.addElementToForm = function(form, elementId) {
+    TemplateElementService.getTemplateElement(elementId).then(function (response) {
+      var clonedElement = response.data;
+      clonedElement.minItems = 1;
+      clonedElement.maxItems = 1;
+      DataManipulationService.getFieldProperties(clonedElement)._ui.state = "creating";
+
+      // Converting title for irregular character handling
+      var elName = DataManipulationService.getFieldName(DataManipulationService.getFieldProperties(clonedElement)._ui.title);
+
+      if (form.properties["@context"].properties[elName]) {
+        var idx = 1;
+        while (form.properties["@context"].properties[elName + idx]) {
+          idx += 1;
+        }
+
+        elName = elName + idx;
+      }
+
+      // Adding corresponding property type to @context
+      form.properties["@context"].properties[elName] = {};
+      form.properties["@context"].properties[elName].enum =
+        new Array(DataManipulationService.schemaBase + elName);
+      form.properties["@context"].required.push(elName);
+
+      // Evaluate cardinality
+      DataManipulationService.cardinalizeField(clonedElement);
+
+      // Adding field to the element.properties object
+      form.properties[elName] = clonedElement;
+      form._ui.order = form._ui.order || [];
+      form._ui.order.push(elName);
+    }).catch(function (err) {
+      UIMessageService.showBackendError('SERVER.ELEMENT.load.error', err);
+    });
+  }
+
+  service.addFieldToElement = function(element, fieldType) {
+    var field = DataManipulationService.generateField(fieldType);
+    field.minItems = 1;
+    field.maxItems = 1;
+    field.properties._ui.state = "creating";
+
+    var optionInputs = ["radio", "checkbox", "list"];
+    if (optionInputs.indexOf(fieldType) > -1) {
+      field.properties._ui.options = [
+        {
+          "text": ""
+        }
+      ];
+    }
+
+    // Converting title for irregular character handling
+    var fieldName = DataManipulationService.generateGUID(); //field['@id'];
+
+    // Adding corresponding property type to @context
+    element.properties["@context"].properties[fieldName] = {};
+    element.properties["@context"].properties[fieldName].enum =
+      new Array(DataManipulationService.schemaBase + fieldName);
+    element.properties["@context"].required.push(fieldName);
+
+    // Evaluate cardinality
+    DataManipulationService.cardinalizeField(field);
+
+    // Adding field to the element.properties object
+    element.properties[fieldName] = field;
+    element._ui.order.push(fieldName);
+  }
+
+  service.addElementToElement = function(element, elementId) {
+    TemplateElementService.getTemplateElement(elementId).then(function (response) {
+      var el = response.data;
+      el.minItems = 1;
+      el.maxItems = 1;
+      DataManipulationService.getFieldProperties(el)._ui.state = "creating";
+
+      var elName = DataManipulationService.generateGUID(); //field['@id'];
+
+      element.properties["@context"].properties[elName] = {};
+      element.properties["@context"].properties[elName].enum = new Array(DataManipulationService.schemaBase + elName);
+      element.properties["@context"].required.push(elName);
+
+      // Evaluate cardinality
+      DataManipulationService.cardinalizeField(el);
+
+      // Adding field to the element.properties object
+      element.properties[elName] = el;
+      element._ui.order.push(elName);
+    }).catch(function (err) {
+      UIMessageService.showBackendError('SERVER.ELEMENT.load.error', err);
+    });
+  }
+
   // Add newly configured field to the the $scope.form or $scope.element
   service.addFieldToScopeAndStaging = function ($scope, targetObject, field) {
     // Setting return value from $scope.checkFieldConditions to array which will display error messages if any

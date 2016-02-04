@@ -2,17 +2,16 @@
 
 var elementDirective = function($rootScope, SpreadsheetService, DataUtilService) {
   return {
-    templateUrl: './views/directive-templates/element-directive.html',
+    templateUrl: 'views/directive-templates/element-directive.html',
     restrict: 'EA',
     scope: {
       key:'=',
       element:'=',
       delete: '&',
-      preview: '=',
-      model: '=',
-      nestedElement: "="
+      model: '='
     },
     link: function(scope, element, attrs) {
+      scope.elementId = $rootScope.idOf(scope.element) || $rootScope.generateGUID();
       var resetElement = function(el, settings) {
         angular.forEach(el, function(model, key) {
           if (settings[key] && settings[key].minItems && angular.isArray(model)) {
@@ -22,16 +21,16 @@ var elementDirective = function($rootScope, SpreadsheetService, DataUtilService)
           if (!DataUtilService.isSpecialKey(key)) {
             if (key == "_value") {
               if (angular.isArray(model)) {
-                if (settings.properties._ui.inputType == "list") {
-                  if (settings.properties._ui.defaultOption) {
-                    el[key] = angular.copy(settings.properties._ui.defaultOption);
+                if ($rootScope.propertiesOf(settings)._ui.inputType == "list") {
+                  if ($rootScope.propertiesOf(settings)._ui.defaultOption) {
+                    el[key] = angular.copy($rootScope.propertiesOf(settings)._ui.defaultOption);
                   } else {
                     model.splice(0, model.length);
                   }
                 } else {
                   for (var i = 0; i < model.length; i++) {
-                    if (settings.properties._ui.defaultOption) {
-                      model[i]["_value"] = angular.copy(settings.properties._ui.defaultOption);
+                    if ($rootScope.propertiesOf(settings)._ui.defaultOption) {
+                      model[i]["_value"] = angular.copy($rootScope.propertiesOf(settings)._ui.defaultOption);
                     } else {
                       if (typeof(model[i]["_value"]) == "string") {
                         model[i]["_value"] = "";
@@ -44,8 +43,8 @@ var elementDirective = function($rootScope, SpreadsheetService, DataUtilService)
                   }
                 }
               } else {
-                if (settings.properties._ui.defaultOption) {
-                  el[key] = angular.copy(settings.properties._ui.defaultOption);
+                if ($rootScope.propertiesOf(settings)._ui.defaultOption) {
+                  el[key] = angular.copy($rootScope.propertiesOf(settings)._ui.defaultOption);
                 } else {
                   if (typeof(model) == "string") {
                     el[key] = "";
@@ -64,16 +63,16 @@ var elementDirective = function($rootScope, SpreadsheetService, DataUtilService)
                 angular.forEach(model, function(v, k) {
                   if (k == "_value") {
                     if (angular.isArray(v)) {
-                      if (settings.properties._ui.inputType == "list") {
-                        if (settings.properties._ui.defaultOption) {
-                          model[k] = angular.copy(settings.properties._ui.defaultOption);
+                      if ($rootScope.propertiesOf(settings)._ui.inputType == "list") {
+                        if ($rootScope.propertiesOf(settings)._ui.defaultOption) {
+                          model[k] = angular.copy($rootScope.propertiesOf(settings)._ui.defaultOption);
                         } else {
                           v.splice(0, v.length);
                         }
                       } else {
                         for (var i = 0; i < v.length; i++) {
-                          if (settings.properties._ui.defaultOption) {
-                            v[i]["_value"] = angular.copy(settings.properties._ui.defaultOption);
+                          if ($rootScope.propertiesOf(settings)._ui.defaultOption) {
+                            v[i]["_value"] = angular.copy($rootScope.propertiesOf(settings)._ui.defaultOption);
                           } else {
                             if (typeof(v[i]["_value"]) == "string") {
                               v[i]["_value"] = "";
@@ -86,8 +85,8 @@ var elementDirective = function($rootScope, SpreadsheetService, DataUtilService)
                         }
                       }
                     } else {
-                      if (settings.properties._ui.defaultOption) {
-                        model[k] = angular.copy(settings.properties._ui.defaultOption);
+                      if ($rootScope.propertiesOf(settings)._ui.defaultOption) {
+                        model[k] = angular.copy($rootScope.propertiesOf(settings)._ui.defaultOption);
                       } else {
                         if (typeof(v) == "string") {
                           model[k] = "";
@@ -110,12 +109,37 @@ var elementDirective = function($rootScope, SpreadsheetService, DataUtilService)
         });
       }
 
+      var parseElement = function() {
+        if (!$rootScope.isRuntime() && scope.element) {
+          if (angular.isArray(scope.model)) {
+            angular.forEach(scope.model, function(m) {
+              $rootScope.findChildren($rootScope.propertiesOf(scope.element), m);
+            });
+          } else {
+            $rootScope.findChildren($rootScope.propertiesOf(scope.element), scope.model);
+          }
+        }
+      }
+
+      if (!$rootScope.isRuntime()) {
+        if (!scope.model) {
+          if (scope.element.items) {
+            scope.model = [];
+          } else {
+            scope.model = {};
+          }
+        }
+
+        parseElement();
+      }
+
+      scope.state = scope.state || "creating";
       scope.selectedTab = scope.selectedTab || 0;
       scope.selectTab = function(index) {
         scope.selectedTab = index;
       }
       scope.addElement = function() {
-        if (!scope.preview) {
+        if ($rootScope.isRuntime()) {
           if (scope.element.minItems && (!scope.element.maxItems || scope.model.length < scope.element.maxItems)) {
             var seed = angular.copy(scope.model[0]);
 
@@ -142,10 +166,66 @@ var elementDirective = function($rootScope, SpreadsheetService, DataUtilService)
       }
 
       scope.switchExpandedState = function () {
-        angular.element('.elementTotalContent', element).toggle();
-        angular.element(".visibilitySwitch", element).toggle();
-        angular.element(".spreadsheetSwitchLink", element).toggle();
+        element.find('.elementTotalContent').first().toggle();
+        element.find(".visibilitySwitch").toggle();
+        element.find(".spreadsheetSwitchLink").toggle();
       }
+
+      scope.removeChild = function(fieldOrElement) {
+        var selectedKey;
+        var props = $rootScope.propertiesOf(scope.element);
+        angular.forEach(props, function(value, key) {
+          if (value["@id"] == fieldOrElement["@id"]) {
+            selectedKey = key;
+          }
+        });
+
+        if (selectedKey) {
+          delete props[selectedKey];
+
+          var idx = scope.element._ui.order.indexOf(selectedKey);
+          scope.element._ui.order.splice(idx, 1);
+        }
+      };
+
+      // When user clicks Save button, we will switch element from creating state to completed state
+      scope.add = function() {
+        var p = $rootScope.propertiesOf(scope.element);
+        if (!p._ui.is_cardinal_field) {
+          scope.element.minItems = 1;
+          scope.element.maxItems = 1;
+        }
+
+        if (scope.element.maxItems == 1) {
+          if (scope.element.items) {
+            $rootScope.uncardinalizeField(scope.element);
+          }
+        } else {
+          if (!scope.element.items) {
+            $rootScope.cardinalizeField(scope.element);
+          }
+        }
+
+        $rootScope.propertiesOf(scope.element)._ui.state = "completed";
+        parseElement();
+      };
+
+      // When user clicks edit, the element state will be switched to creating;
+      scope.edit = function() {
+        $rootScope.propertiesOf(scope.element)._ui.state = "creating";
+      };
+
+      scope.$watchCollection("element.properties['@context'].properties", function() {
+        parseElement();
+      });
+
+      scope.$watchCollection("element.properties", function() {
+        parseElement();
+      });
+      
+      scope.$watchCollection("element.items.properties", function() {
+        parseElement();
+      });
     }
   };
 };

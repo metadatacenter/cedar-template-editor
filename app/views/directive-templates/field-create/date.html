@@ -1,17 +1,17 @@
 <div id="date-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}" class="input-type-container">
   <p class="type-label"><i class="cedar-svg-calendar"></i>Date</p>
-  
-  <div class="type-toggle date" ng-init="field.properties._ui.dateType = 'single-date'">
-    <div class="single-date d-option" ng-click="field.properties._ui.dateType = 'single-date'" ng-class="{active: field.properties._ui.dateType == 'single-date'}">
+
+  <div class="type-toggle date" ng-init="$root.propertiesOf(field)._ui.dateType = 'single-date'">
+    <div class="single-date d-option" ng-click="$root.propertiesOf(field)._ui.dateType = 'single-date'" ng-class="{active: $root.propertiesOf(field)._ui.dateType == 'single-date'}">
       <span>Date</span>
     </div>
-    <div class="date-range d-option" ng-click="field.properties._ui.dateType = 'date-range'" ng-class="{active: field.properties._ui.dateType == 'date-range'}">
+    <div class="date-range d-option" ng-click="$root.propertiesOf(field)._ui.dateType = 'date-range'" ng-class="{active: $root.propertiesOf(field)._ui.dateType == 'date-range'}">
       <span>Date Range</span>
     </div>
   </div> <!-- /.date-type-toggle -->
 
   <div class="form-group floating-label-wrapper">
-    <input type="text" class="form-control" id="placeholder-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}" placeholder="Enter Field Title" aria-label="Enter Field Title" ng-model="field.properties._ui.title"  with-floating-label>
+    <input type="text" class="form-control" id="placeholder-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}" placeholder="Field Title" aria-label="Field Title" ng-model="$root.propertiesOf(field)._ui.title"  with-floating-label>
   </div><!-- /.form-group -->
 
   <ng-include src="'views/partials/staging-area-footer.html'" />

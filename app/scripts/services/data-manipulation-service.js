@@ -123,10 +123,12 @@ var DataManipulationService = function (DataTemplateService, DataUtilService) {
   };
 
   service.getFieldProperties = function (field) {
-    if (field.type == 'array' && field.items && field.items.properties) {
-      return field.items.properties;
-    } else {
-      return field.properties;
+    if (field) {
+      if (field.type == 'array' && field.items && field.items.properties) {
+        return field.items.properties;
+      } else {
+        return field.properties;
+      }
     }
   };
 

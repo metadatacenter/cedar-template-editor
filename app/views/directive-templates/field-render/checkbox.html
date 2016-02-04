@@ -1,28 +1,32 @@
 <div class="fields fields-checkbox">
-  <div ng-if="$root.isArray(model)" class="field-checkbox" ng-class="{'required': field.properties._valueConstraints.requiredValue}" ng-repeat="valueElement in model">
-	<p class="extra-label-context">{{field.properties._ui.title}}</p>
-	<div class="form-group checkbox-item" ng-repeat="(index, value) in field.properties._ui.options">
+  <div ng-if="$root.isArray(model)" class="field-checkbox" ng-class="{'required': $root.propertiesOf(field)._valueConstraints.requiredValue}" ng-repeat="valueElement in model">
+	<p class="extra-label-context">{{$root.propertiesOf(field)._ui.title}}</p>
+	<div class="form-group checkbox-item" ng-repeat="(index, value) in $root.propertiesOf(field)._ui.options">
 	  <div class="checkbox checkbox-primary">
 		<input type="checkbox"
 		       id="checkbox-{{uuid}}-{{$parent.$index}}-{{index}}"
 		       ng-model="valueElement._value[value.text]"
+                       ng-disabled="!$root.isRuntime() || preview"
 		       ng-checked="valueElement._value[value.text]" />
-		<label for="checkbox-{{uuid}}-{{$parent.$index}}-{{index}}">{{field.properties._ui.options[index]['text']}}</label>
+		<label for="checkbox-{{uuid}}-{{$parent.$index}}-{{index}}">{{$root.propertiesOf(field)._ui.options[index]['text']}}</label>
 	  </div><!-- ./checkbox -->
 	</div><!-- /.form-group -->
 	<div class="more-input-wrapper" ng-include="'views/partials/more-input-buttons.html'" ng-show="!field.maxItems || field.maxItems > 1"></div>
   </div>
-  
-  <div ng-if="!$root.isArray(model)" class="field-checkbox" ng-class="{'required': field.properties._valueConstraints.requiredValue}">
-	<p class="extra-label-context">{{field.properties._ui.title}}</p>
-	<div class="form-group checkbox-item" ng-repeat="(index, value) in field.properties._ui.options">
+
+  <div ng-if="!$root.isArray(model)" class="field-checkbox" ng-class="{'required': $root.propertiesOf(field)._valueConstraints.requiredValue}">
+	<p class="extra-label-context">{{$root.propertiesOf(field)._ui.title}}</p>
+	<div class="form-group checkbox-item" ng-repeat="(index, value) in $root.propertiesOf(field)._ui.options">
       <div class="checkbox checkbox-primary">
 		<input type="checkbox"
 		       id="checkbox-{{uuid}}-{{$parent.$index}}-{{index}}"
 		       ng-model="model._value[value.text]"
+                       ng-disabled="!$root.isRuntime() || preview"
 		       ng-checked="model._value[value.text]" />
-		<label for="checkbox-{{uuid}}-{{$parent.$index}}-{{index}}">{{field.properties._ui.options[index]['text']}}</label>
+		<label for="checkbox-{{uuid}}-{{$parent.$index}}-{{index}}">{{$root.propertiesOf(field)._ui.options[index]['text']}}</label>
 	  </div><!-- ./checkbox -->
 	</div><!-- /.form-group -->
   </div>
+
+  <div class="preview-edit-options" ng-include="'views/partials/preview-edit-options.html'" ng-init="childType='field'" ng-if="!$root.isRunTime()"></div>
 </div>

@@ -35,19 +35,9 @@
         </div> <!-- /.sticky-list -->
       </div> <!-- /.left-sidebar -->
       <div class="right-body col-sm-9">
-          <div ng-repeat="page in pagesArray">
-              <form-directive form="template" page="currentPage" model="instance" ng-show="pageIndex == $index"></form-directive>
-          </div>
+        <form-directive form="form" model="instance" page-index="pageIndex" is-edit-data="isEditData"></form-directive>
 
-        <div ng-if="template._ui.pages.length > 1" class="pagination-container">
-          <ul class="pagination">
-            <li ng-if="pageIndex > 0"><a ng-click="previousPage()"><span class="prev"><i class="fa fa-lg fa-angle-left"></i><span translate>GENERIC.Previous</span></span></a></li>
-            <li ng-repeat="(index, value) in template._ui.pages" ng-class="{active: index == pageIndex}"><a ng-click="setCurrentPage(index)">{{index + 1}}</a></li>
-            <li ng-if="pageIndex < (template._ui.pages.length - 1)"><a ng-click="nextPage()"><span class="next"><span translate>GENERIC.Next</span><i class="fa fa-lg fa-angle-right"></i></span></a></li>
-          </ul>
-        </div><!-- /.pagination-container -->
-
-        <div class="edit-actions" ng-hide="$root.isEmpty(template)">
+        <div class="edit-actions" ng-hide="$root.isEmpty(form)">
           <div ng-if="failedValidation.length" class="alert alert-danger" role="alert">
             <p translate>VALIDATION.groupHeader.requiredFields</p>
             <ul>
@@ -80,4 +70,3 @@
     </div> <!-- /.row -->
   </div> <!-- /.container -->
 </div> <!-- /.template-body -->
-

@@ -1,32 +1,34 @@
-<div class="fields text-fields">
+<div class="fields text-fields" ng-class="{preview: preview}">
   <div ng-if="$root.isArray(model)" class="form-group floating-label-wrapper" ng-repeat="(index, valueElement) in model">
-	<p class="extra-label-context" ng-if="ngDisabled">{{field.properties._ui.title}}&nbsp;</p>
-    <div ng-if="!$root.hasValueConstraint(field.properties._valueConstraints)" class="has-no-constraint">
+	  <div class="extra-label-context" ng-class="{'required': $root.propertiesOf(field)._valueConstraints.requiredValue}" ng-if="preview">
+      {{$root.propertiesOf(field)._ui.title}}&nbsp;
+    </div>
+    <div ng-if="!$root.hasValueConstraint($root.propertiesOf(field)._valueConstraints)" class="has-no-constraint">
       <input type="text"
     	     class="form-control"
-    	     ng-class="{'required': field.properties._valueConstraints.requiredValue}"
+    	     ng-class="{'required': $root.propertiesOf(field)._valueConstraints.requiredValue}"
     	     id="textfield1"
-    	     placeholder="{{field.properties._ui.title}}"
-    	     aria-label="{{field.properties._ui.description}}"
+    	     placeholder="{{$root.propertiesOf(field)._ui.title}}"
+    	     aria-label="{{$root.propertiesOf(field)._ui.description}}"
     	     ng-model="valueElement._value"
-             ng-disabled="ngDisabled"
+             ng-disabled="!$root.isRuntime() || preview"
     	     with-floating-label="" />
       <div class="input-indicator-icons">
-        <i class="cedar-svg-help-circle" data-container="body" data-toggle="popover" data-placement="left" data-content="{{field.properties._ui.description}}"></i>
+        <i class="cedar-svg-help-circle" data-container="body" data-toggle="popover" data-placement="left" data-content="{{$root.propertiesOf(field)._ui.description}}"></i>
         <i class="cedar-svg-check-circle"></i>
         <i class="cedar-svg-warning"></i>
       </div><!-- /.input-indicator-icons -->
     </div>
-    <div ng-if="$root.hasValueConstraint(field.properties._valueConstraints)" class="has-constraint autocomplete-label-wrapper" ng-class="{'has-selected': modelValue[index]._value.label}">
-      <ui-select ng-model="modelValue[index]" theme="bootstrap" close-on-select="true" ng-disabled="ngDisabled" aria-label="{{field.properties._ui.description}}">
+    <div ng-if="$root.hasValueConstraint($root.propertiesOf(field)._valueConstraints)" class="has-constraint autocomplete-label-wrapper" ng-class="{'has-selected': modelValue[index]._value.label}">
+      <ui-select ng-model="modelValue[index]" theme="bootstrap" close-on-select="true" ng-disabled="!$root.isRuntime() || preview" aria-label="{{$root.propertiesOf(field)._ui.description}}">
         <ui-select-match placeholder="">{{$select.selected.label}}</ui-select-match>
         <ui-select-choices ui-disable-choice="option.label == 'No Results...'" refresh="$root.updateFieldAutocomplete(field, $select.search)" refresh-delay="200" repeat="option in $root.autocompleteResultsCache[field['@id']]['results'] | propsFilter: {label: $select.search}">
           <div ng-bind-html="option.label | highlight: $select.search"></div>
         </ui-select-choices>
       </ui-select>
-      <div class="floating-label">{{field.properties._ui.title}}</div>
+      <div class="floating-label">{{$root.propertiesOf(field)._ui.title}}</div>
       <div class="input-indicator-icons">
-        <i class="cedar-svg-help-circle" data-container="body" data-toggle="popover" data-placement="left" data-content="{{field.properties._ui.description}}"></i>
+        <i class="cedar-svg-help-circle" data-container="body" data-toggle="popover" data-placement="left" data-content="{{$root.propertiesOf(field)._ui.description}}"></i>
         <i class="cedar-svg-check-circle"></i>
         <i class="cedar-svg-warning"></i>
       </div><!-- /.input-indicator-icons -->
@@ -35,36 +37,40 @@
   </div><!-- /.form-group -->
 
   <div ng-if="!$root.isArray(model)" class="form-group floating-label-wrapper">
-    <p class="extra-label-context" ng-if="ngDisabled">{{field.properties._ui.title}}&nbsp;</p>
-    <div ng-if="!$root.hasValueConstraint(field.properties._valueConstraints)" class="has-no-constraint">
+    <div class="extra-label-context" ng-class="{'required': $root.propertiesOf(field)._valueConstraints.requiredValue}" ng-if="preview">
+      {{$root.propertiesOf(field)._ui.title}}&nbsp;
+    </div>
+    <div ng-if="!$root.hasValueConstraint($root.propertiesOf(field)._valueConstraints)" class="has-no-constraint">
       <input type="text"
              class="form-control"
-             ng-class="{'required': field.properties._valueConstraints.requiredValue}"
+             ng-class="{'required': $root.propertiesOf(field)._valueConstraints.requiredValue}"
              id="textfield1"
-             placeholder="{{field.properties._ui.title}}"
-             aria-label="{{field.properties._ui.description}}"
+             placeholder="{{$root.propertiesOf(field)._ui.title}}"
+             aria-label="{{$root.propertiesOf(field)._ui.description}}"
              ng-model="model._value"
-             ng-disabled="ngDisabled"
+             ng-disabled="!$root.isRuntime() || preview"
              with-floating-label="" />
       <div class="input-indicator-icons">
-        <i class="cedar-svg-help-circle" data-container="body" data-toggle="popover" data-placement="left" data-content="{{field.properties._ui.description}}"></i>
+        <i class="cedar-svg-help-circle" data-container="body" data-toggle="popover" data-placement="left" data-content="{{$root.propertiesOf(field)._ui.description}}"></i>
         <i class="cedar-svg-check-circle"></i>
         <i class="cedar-svg-warning"></i>
       </div><!-- /.input-indicator-icons -->
     </div>
-    <div ng-if="$root.hasValueConstraint(field.properties._valueConstraints)" class="has-constraint autocomplete-label-wrapper" ng-class="{'has-selected': modelValue._value.label}">
-      <ui-select ng-model="modelValue._value" theme="bootstrap" close-on-select="true" ng-disabled="ngDisabled" aria-label="{{field.properties._ui.description}}">
+    <div ng-if="$root.hasValueConstraint($root.propertiesOf(field)._valueConstraints)" class="has-constraint autocomplete-label-wrapper" ng-class="{'has-selected': modelValue._value.label}">
+      <ui-select ng-model="modelValue._value" theme="bootstrap" close-on-select="true" ng-disabled="!$root.isRuntime() || preview" aria-label="{{$root.propertiesOf(field)._ui.description}}">
         <ui-select-match placeholder="">{{$select.selected.label}}</ui-select-match>
         <ui-select-choices ui-disable-choice="option.label == 'No Results...'" refresh="$root.updateFieldAutocomplete(field, $select.search)" refresh-delay="200" repeat="option in $root.autocompleteResultsCache[field['@id']]['results'] | propsFilter: {label: $select.search}">
           <div ng-bind-html="option.label | highlight: $select.search"></div>
         </ui-select-choices>
       </ui-select>
-      <div class="floating-label">{{field.properties._ui.title}}</div>
+      <div class="floating-label">{{$root.propertiesOf(field)._ui.title}}</div>
       <div class="input-indicator-icons">
-        <i class="cedar-svg-help-circle" data-container="body" data-toggle="popover" data-placement="left" data-content="{{field.properties._ui.description}}"></i>
+        <i class="cedar-svg-help-circle" data-container="body" data-toggle="popover" data-placement="left" data-content="{{$root.propertiesOf(field)._ui.description}}"></i>
         <i class="cedar-svg-check-circle"></i>
         <i class="cedar-svg-warning"></i>
       </div><!-- /.input-indicator-icons -->
     </div>
   </div><!-- /.form-group -->
+
+  <div class="preview-edit-options" ng-include="'views/partials/preview-edit-options.html'" ng-init="childType='field'" ng-if="!$root.isRunTime()"></div>
 </div>

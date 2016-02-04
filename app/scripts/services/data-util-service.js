@@ -10,7 +10,7 @@ var DataUtilService = function ($rootScope) {
 
   // Return true if testScope.properties object only contains default values
   service.isPropertiesEmpty = function (testScope) {
-    if (!angular.isUndefined(testScope)) {
+    if (!angular.isUndefined(testScope) && testScope.properties) {
       var keys = Object.keys(testScope.properties);
       for (var i = 0; i < keys.length; i++) {
         if (!this.isSpecialKey(keys[i])) {

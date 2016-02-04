@@ -1,6 +1,12 @@
 <div class="controlled-terms controlled-term-options">
-  <div class="control-term-field-preview-form" ng-if="field.properties._ui.inputType">
-    <field-directive field="field" directory="preview" preview="false" ng-disabled="true">
+  <div ng-if="!$root.propertiesOf(field)._ui.inputType" class="element-title">
+    {{$root.propertiesOf(field)._ui.title}}
+  </div>
+  <div class="control-term-field-preview-form" ng-if="$root.propertiesOf(field)._ui.inputType">
+    <div class="item-name">
+      <div name-of-field field="field"></div>
+    </div>
+    <field-directive field="field" preview="true">
     </field-directive>
   </div>
 
@@ -8,7 +14,7 @@
     <div ng-show="controlTerm.addedFieldItems.length > 0 || $root.lengthOfValueConstraint(controlTerm.valueConstraint) > 0">
       <div ng-show="controlTerm.addedFieldItems.length > 0" class="heading-label">
         <fieldset class="section-break">
-            <legend>field types</legend>
+            <legend style="margin: 0 0 5px 42%">field types</legend>
         </fieldset>
       </div>
       <div class="added-field-classes">
@@ -25,7 +31,7 @@
             </table>
           </div>
           <div class="class-list-table">
-            <table class="table table-striped">
+            <table class="table table-hover">
               <tbody>
                 <tr ng-repeat="item in controlTerm.addedFieldItems">
                   <td class="pref-label">{{item.prefLabel}}</td>
@@ -76,7 +82,7 @@
       </div>
       <div ng-show="$root.lengthOfValueConstraint(controlTerm.valueConstraint) > 0" class="heading-label">
         <fieldset class="section-break">
-            <legend>value types</legend>
+            <legend style="margin: 0 0 5px 42%">value types</legend>
         </fieldset>
       </div>
       <div class="added-value-constraints">
@@ -95,7 +101,7 @@
             </table>
           </div>
           <div class="value-contraint-table">
-            <table class="table table-striped">
+            <table class="table table-hover">
               <tbody>
                 <tr ng-repeat="class in controlTerm.valueConstraint.classes">
                   <td class="values">{{class.prefLabel}}</td>
@@ -214,13 +220,13 @@
       </div>
     </div>
     <div ng-hide="controlTerm.addedFieldItems.length > 0 || $root.lengthOfValueConstraint(controlTerm.valueConstraint) > 0">
-      <div class="text-center form-group no-items-added">You have not added any fields<span ng-if="options.filterSelection != 'field'"> or value</span> classes</div>
+      <div class="form-group no-items-added">You have not added any field<span ng-if="options.filterSelection != 'field'"> or value</span> classes</div>
     </div>
 
     <div class="form-group floating-label-wrapper" ng-if="!controlTerm.filterSelection">
       <div class="btn-two-toggle {{controlTerm.filterSelection}} text-center">
-        <button type="button" class="btn btn-field" ng-click="controlTerm.selectFieldFilter($event)" ng-if="!options.filterSection || options.filterSection == 'field'">Field Types</button>
-        <button type="button" class="btn btn-values" ng-click="controlTerm.selectValueFilter($event)" ng-if="!options.filterSection || options.filterSection == 'values'">Value Types</button>
+        <button type="button" class="btn btn-field" ng-click="controlTerm.selectFieldFilter($event)" ng-if="!options.filterSection || options.filterSection == 'field'">Field</button>
+        <button type="button" class="btn btn-values" ng-click="controlTerm.selectValueFilter($event)" ng-if="!options.filterSection || options.filterSection == 'values'">Values</button>
         <i id="field-value-tooltip" class="cedar-svg-help-circle" data-container="body" data-toggle="popover" data-placement="right" data-content="Select ontology classes from BioPortal to represent the field and/or the values accepted by the field." data-original-title="" title=""></i>
       </div>
     </div>
@@ -232,8 +238,8 @@
     <div class="heading-label">
       <fieldset class="section-break">
         <legend>
-          <span ng-if="controlTerm.filterSelection == 'field'">select types</span>
-          <span ng-if="controlTerm.filterSelection != 'field'">select value types</span>
+          <span ng-if="controlTerm.filterSelection == 'field'"><i class="cedar-svg-controll-term"></i>CONTROL TERM FIELDS</span>
+          <span ng-if="controlTerm.filterSelection != 'field'"><i class="cedar-svg-controll-term"></i>CONTROL TERM VALUES</span>
         </legend>
       </fieldset>
     </div>
@@ -247,7 +253,7 @@
     <div class="form-group form-group-actions clearfix" ng-class="{'is-searching': controlTerm.fieldActionSelection == 'search', 'is-browsing': controlTerm.fieldActionSelection == 'browse'}">
       <div class="field-search">
         <div class="input-group field-search-input-group">
-          <input id="field-search-input" type="text" class="form-control field-search-form-control" placeholder="Search" aria-label="Field Search" ng-model="controlTerm.fieldSearchTerms" ng-keyup="$event.keyCode == 13 && controlTerm.fieldSearch()" with-floating-label="" />
+          <input id="field-search-input" type="text" class="form-control field-search-form-control" placeholder="Search" aria-label="Field Search" ng-model="controlTerm.fieldSearchTerms" ng-focus="controlTerm.startFieldSearch()" ng-blur="controlTerm.endFieldSearch()" ng-keyup="$event.keyCode == 13 && controlTerm.fieldSearch()" with-floating-label="" />
           <span class="input-group-addon" ng-click="controlTerm.fieldSearch()">
             <img src="../img/search-icon.png" />
           </span>
@@ -256,7 +262,7 @@
       <div class="field-browse">
         <div class="more-items" ng-if="!controlTerm.fieldActionSelection">
           <button type="button" class="btn btn-field-browse btn-block" data-toggle="dropdown" aria-expanded="false" ng-click="controlTerm.fieldBrowse($event)">
-            <span class="pull-left">Browse ontologies</span> <i class="fa fa-angle-down fa-2x pull-right"></i>
+            <span class="pull-left text">Browse ontologies</span> <i class="fa fa-angle-down fa-2x pull-right"></i>
             <span class="clearfix"></span>
           </button>
         </div>
@@ -296,7 +302,7 @@
       <div class="search-results" ng-hide="controlTerm.fieldTreeVisibility">
         <div class="no-search-results" ng-show="controlTerm.searchNoResults">No results.</div>
         <div class="table-responsive results-table-container">
-          <table class="table table-striped results-table search-results-table" ng-if="controlTerm.fieldActionSelection == 'search'">
+          <table class="table table-hover results-table search-results-table" ng-if="controlTerm.fieldActionSelection == 'search'">
             <tbody>
               <tr ng-repeat="result in controlTerm.searchResults" ng-click="controlTerm.selectFieldClass(result.collection)">
                 <td>{{result.class}}</td>
@@ -305,7 +311,7 @@
             </tbody>
           </table>
 
-          <table class="table table-striped results-table browse-results-table" ng-if="controlTerm.fieldActionSelection == 'browse'">
+          <table class="table table-hover results-table browse-results-table" ng-if="controlTerm.fieldActionSelection == 'browse'">
             <tbody>
               <tr ng-repeat="result in controlTerm.searchResults" ng-click="controlTerm.selectFieldOntology(result)" ng-show="controlTerm.isOntologyNameMatched(result)">
                 <td>{{result.name}}</td>
@@ -396,9 +402,18 @@
         </div>
 
         <div class="class-actions">
-          <button class="btn btn-add-term" ng-if="controlTerm.selectedClass1.prefLabel && controlTerm.classDetails" ng-click="controlTerm.addClass(controlTerm.selectedClass1)" ng-disabled="controlTerm.isLoadingClassDetails">Add {{controlTerm.selectedClass1.prefLabel}}</button>
-          <div class="or-divider" ng-if="controlTerm.selectedClass1.prefLabel && controlTerm.selectedClass2.prefLabel && controlTerm.selectedClass1['@id'] != controlTerm.selectedClass2['@id'] && controlTerm.classDetails"></div>
-          <button class="btn btn-add-term add-btn-margin" ng-if="controlTerm.selectedClass2.prefLabel && controlTerm.selectedClass2['@id'] != controlTerm.selectedClass1['@id'] && controlTerm.classDetails" ng-click="controlTerm.addClass(controlTerm.selectedClass2)">Add {{controlTerm.selectedClass2.prefLabel}}</button>
+          <div class="class-action table-style" ng-if="controlTerm.selectedClass1.prefLabel && controlTerm.classDetails">
+            <span class="table-cell-style text-left">{{controlTerm.selectedClass1.prefLabel}}</span>
+            <span class="table-cell-style text-right">
+              <button class="btn btn-add-term" ng-click="controlTerm.addClass(controlTerm.selectedClass1)" ng-disabled="controlTerm.isLoadingClassDetails">Add</button>
+            </span>
+          </div>
+          <div class="class-action table-style" ng-if="controlTerm.selectedClass2.prefLabel && controlTerm.selectedClass2['@id'] != controlTerm.selectedClass1['@id'] && controlTerm.classDetails">
+            <span class="table-cell-style text-left">{{controlTerm.selectedClass2.prefLabel}}</span>
+            <span class="table-cell-style text-right">
+              <button class="btn btn-add-term add-btn-margin" ng-click="controlTerm.addClass(controlTerm.selectedClass2)">Add</button>
+            </span>
+           </div>
         </div>
       </div>
     </div>
@@ -406,8 +421,8 @@
 
   <div class="value-filter" ng-if="controlTerm.filterSelection == 'values'">
 
-    <div class="text-center">
-      <div class="checkbox checkbox-primary inline-block checkbox-bioportal-ontologies">
+    <div class="text-center search-options">
+      <div class="checkbox inline-block checkbox-bioportal-ontologies">
         <input type="checkbox" id="checkbox-bioportal-ontologies"
         ng-model="controlTerm.bioportalOntologiesFilter"
         name="bioportalOntologiesFilter"
@@ -416,7 +431,7 @@
         ng-change="bioportalOntologiesFilter" />
         <label for="checkbox-bioportal-ontologies">BioPortal Ontologies</label>
       </div>
-      <div class="checkbox checkbox-primary inline-block checkbox-bioportal-value-sets">
+      <div class="checkbox inline-block checkbox-bioportal-value-sets">
         <input type="checkbox" id="checkbox-bioportal-value-sets"
         ng-model="controlTerm.bioportalValueSetsFilter"
         name="bioportalValueSetsFilter"
@@ -433,7 +448,7 @@
     <div class="form-group form-group-actions clearfix" ng-class="{'is-searching': controlTerm.valuesActionSelection == 'search', 'is-browsing': controlTerm.valuesActionSelection == 'browse'}">
       <div class="values-search">
         <div class="input-group values-search-input-group">
-          <input id="values-search-input" type="text" class="form-control values-search-form-control" placeholder="Search for a class in BioPortal" aria-label="Values Search" ng-model="controlTerm.valuesSearchTerms" ng-keyup="$event.keyCode == 13 && controlTerm.valuesSearch()" with-floating-label="" />
+          <input id="values-search-input" type="text" class="form-control values-search-form-control" placeholder="Search for a class in BioPortal" aria-label="Values Search" ng-focus="controlTerm.valuesActionSelection = 'search'" ng-model="controlTerm.valuesSearchTerms" ng-keyup="$event.keyCode == 13 && controlTerm.valuesSearch()" with-floating-label="" />
           <span class="input-group-addon" ng-click="controlTerm.valuesSearch()">
             <img src="../img/search-icon.png" />
           </span>
@@ -442,7 +457,7 @@
       <div class="values-browse">
         <div class="more-items" ng-if="!controlTerm.valuesActionSelection">
           <button type="button" class="btn btn-values-browse btn-block" data-toggle="dropdown" aria-expanded="false" ng-click="controlTerm.valuesBrowse($event)">
-            <span class="pull-left">Browse {{bioportalFilterResultLabel()}}</span> <i class="fa fa-angle-down fa-2x pull-right"></i>
+            <span class="pull-left text">Browse {{bioportalFilterResultLabel()}}</span> <i class="fa fa-angle-down fa-2x pull-right"></i>
             <span class="clearfix"></span>
           </button>
         </div>
@@ -484,7 +499,7 @@
       <div class="search-results" ng-hide="controlTerm.valuesTreeVisibility">
         <div class="no-search-results" ng-show="controlTerm.searchNoResults">No results.</div>
         <div class="table-responsive results-table-container">
-          <table class="table table-striped results-table search-results-table" ng-if="controlTerm.valuesActionSelection == 'search'">
+          <table class="table table-hover results-table search-results-table" ng-if="controlTerm.valuesActionSelection == 'search'">
             <tbody>
               <tr ng-repeat="result in controlTerm.searchResults" ng-click="controlTerm.selectValueResult(result)">
                 <td>{{result.prefLabel}}</td>
@@ -494,7 +509,7 @@
             </tbody>
           </table>
 
-          <table class="table table-striped results-table browse-results-table values-browse-results-table" ng-if="controlTerm.valuesActionSelection == 'browse'">
+          <table class="table table-hover results-table browse-results-table values-browse-results-table" ng-if="controlTerm.valuesActionSelection == 'browse'">
             <tbody>
               <tr ng-repeat="result in controlTerm.searchResults" ng-click="controlTerm.selectValueResult(result)" ng-show="controlTerm.isOntologyNameMatched(result)">
                 <td ng-if="result.resultType == 'Ontology'">{{result.name}}</td>
@@ -537,7 +552,7 @@
 
           <div class="ontology-class-children pull-left" ng-show="browsingSection == 'value_set'">
             <div class="table-responsive ontology-class-children-table">
-              <table class="table table-striped" style="width: 275px; max-height: 203px; overflow-y: auto">
+              <table class="table table-hover" style="width: 275px; max-height: 203px; overflow-y: auto">
                 <tbody>
                   <tr ng-repeat="valueSetClass in controlTerm.valueSetClasses">
                     <td class="ontology-name">
@@ -630,26 +645,26 @@
           <div ng-if="controlTerm.selectedValueResult.resultType == 'Ontology Class' || controlTerm.selectedValueResult.resultType == 'Ontology'">
             <div class="element-toggles list table-style">
               <div class="element-toggle table-cell-style" ng-class="{active: controlTerm.stageValueConstraintAction == 'add_class'}" ng-click="controlTerm.stageOntologyClassValueConstraint(controlTerm.selectedValueResult)" ng-if="!$root.isOntology(controlTerm.selectedValueResult)">
-                <span>Add Class</span>
+                <span>Class</span>
               </div>
               <div class="element-toggle table-cell-style" ng-class="{active: controlTerm.stageValueConstraintAction == 'add_siblings'}" ng-click="controlTerm.stageOntologyClassSiblingsValueConstraint(controlTerm.selectedValueResult)" ng-if="!$root.isOntology(controlTerm.selectedValueResult)">
-                <span>Add Siblings</span>
+                <span>Siblings</span>
               </div>
               <div class="element-toggle table-cell-style" ng-class="{active: controlTerm.stageValueConstraintAction == 'add_children'}" ng-click="controlTerm.stageBranchValueConstraint(controlTerm.selectedValueResult)" ng-if="!$root.isOntology(controlTerm.selectedValueResult)">
-                <span>Add Children</span>
+                <span>Children</span>
               </div>
               <div class="element-toggle table-cell-style" ng-class="{active: controlTerm.stageValueConstraintAction == 'add_ontology'}" ng-click="controlTerm.stageOntologyValueConstraint()" ng-if="controlTerm.currentOntology.details.ontology">
-                <span>Add Ontology</span>
+                <span>Ontology</span>
               </div>
             </div>
           </div>
           <div ng-if="controlTerm.selectedValueResult.resultType == 'Value Set' || controlTerm.selectedValueResult.resultType == 'Value Set Class'">
             <div class="element-toggles list table-style stage-value-constraint-actions">
               <div ng-if="controlTerm.selectedValueResult['@id'] != controlTerm.currentValueSet['@id']" class="element-toggle table-cell-style" ng-class="{active: controlTerm.stageValueConstraintAction == 'add_class'}" ng-click="controlTerm.stageOntologyClassValueConstraint(controlTerm.selectedValueResult, 'Value Set Class')">
-                <span>Add Class</span>
+                <span>Class</span>
               </div>
               <div class="element-toggle table-cell-style" ng-class="{active: controlTerm.stageValueConstraintAction == 'add_entire_value_set'}" ng-click="controlTerm.stageValueSetValueConstraint()">
-                <span>Add Value Set</span>
+                <span>Value Set</span>
               </div>
             </div>
           </div>
@@ -715,7 +730,20 @@
           </div>
         </div>
 
-        <div class="staged-ontology-class-value-constraint" ng-if="controlTerm.stageValueConstraintAction == 'add_class' || controlTerm.stageValueConstraintAction == 'add_siblings'">
+        <div class="staged-ontology-class-value-constraint add-class-container" ng-if="controlTerm.stageValueConstraintAction == 'add_class'">
+          <div class="staged-items table-style">
+            <div class="staged-item table-row-style" ng-repeat="(key, constraint) in controlTerm.stagedOntologyClassValueConstraints">
+              <div class="table-cell-style">
+                <input type="textfield" class="form-control" ng-model="constraint.label" placeholder="{{controlTerm.stagedOntologyClassValueConstraintData[key].label}}" />
+              </div>
+              <div class="table-cell-style floating-label-wrapper text-right action-cell">
+                <button class="btn" ng-click="controlTerm.addOntologyClassToValueConstraint(constraint)">Add</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="staged-ontology-class-value-constraint" ng-if="controlTerm.stageValueConstraintAction == 'add_siblings'">
           <div class="staged-items table-style">
             <div class="staged-item table-row-style" ng-repeat="(key, constraint) in controlTerm.stagedOntologyClassValueConstraints">
               <div class="table-cell-style">
@@ -727,7 +755,7 @@
             </div>
           </div>
           <div class="text-center">
-            <button class="btn" ng-click="controlTerm.addOntologyClassToValueConstraint()">Add <span ng-if="controlTerm.stagedOntologyClassValueConstraints.length == 1">Class</span><span ng-if="controlTerm.stagedOntologyClassValueConstraints.length > 1">Collection</span></button>
+            <button class="btn" ng-click="controlTerm.addOntologyClassesToValueConstraint()">Add <span ng-if="controlTerm.stagedOntologyClassValueConstraints.length == 1">Class</span><span ng-if="controlTerm.stagedOntologyClassValueConstraints.length > 1">Collection</span></button>
           </div>
         </div>
       </div>

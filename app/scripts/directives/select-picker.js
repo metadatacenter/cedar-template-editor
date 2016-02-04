@@ -1,5 +1,5 @@
 // Enabling Bootstrap Datepickers for date inputs
-angularApp.directive('selectPicker', function ($timeout) {
+angularApp.directive('selectPicker', function ($rootScope, $timeout) {
   return {
     restrict: 'A',
     scope: {
@@ -12,15 +12,21 @@ angularApp.directive('selectPicker', function ($timeout) {
       }
 
       var default_array;
+      var properties;
+
+      if ($scope.field) {
+        properties = $rootScope.propertiesOf($scope.field);
+      }
+
       if ($scope.model != undefined) {
         // If returning to an already populated select list field, load selections
         default_array = $scope.model._value;
 
-      } else if ($scope.field && $scope.field.properties._ui.defaultOption) {
+      } else if ($scope.field && properties._ui.defaultOption) {
         default_array = [];
 
         // If default select options have been set for an empty field
-        var defaultOptions = $scope.field.properties._ui.defaultOption;
+        var defaultOptions = properties._ui.defaultOption;
 
         for (var property in defaultOptions) {
           if (defaultOptions.hasOwnProperty(property)) {

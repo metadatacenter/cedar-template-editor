@@ -1,5 +1,5 @@
 <div class="more-input-buttons">
-  <button type="button" class="add" ng-disabled="$parent.preview" ng-click="addMoreInput()" ng-show="$parent.field.minItems && (!$parent.field.maxItems || $parent.model.length < $parent.field.maxItems)">
+  <button type="button" class="add" ng-disabled="!$root.isRuntime()" ng-click="addMoreInput()" ng-show="$parent.field.minItems && (!$parent.field.maxItems || $parent.model.length < $parent.field.maxItems)">
     <i class="fa fa-plus"></i>
     <div class="cardinality-_ui-container">
       <div class="cardinality-_ui">
