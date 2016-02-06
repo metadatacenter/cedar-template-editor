@@ -71,7 +71,7 @@
             <div class="empty-text" ng-show="isPropertiesEmpty()">
               <p translate>CREATOR.addElementToStagingMsg</p>
             </div>
-            <form-directive form="form" page="page" model="instance" page-index="0" ng-if="!isPropertiesEmpty()"></form-directive>
+            <form-directive form="form" page="page" model="instance" page-index="0" ng-if="!isPropertiesEmpty()" hide-root-element="hideRootElement"></form-directive>
           </div><!-- /.form-preview -->
         </div> <!-- /#form-preview-section -->
 
@@ -100,7 +100,7 @@
             <!--<i class="cedar-svg-flag"></i><span>Favorite</span>-->
           <!--</div>-->
           <div class="clear-save">
-            <button type="button" class="btn btn-clear" ng-click="reset()" translate>GENERIC.Clear</button>
+            <button type="button" class="btn btn-clear" ng-click="reset()" ng-hide="isPropertiesEmpty()" translate>GENERIC.Clear</button>
             <button type="button" class="btn btn-save" ng-click="saveElement()" translate>GENERIC.SaveElement</button>
           </div>
         </div> <!-- /.template-actions -->

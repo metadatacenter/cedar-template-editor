@@ -8,7 +8,8 @@ var formDirective = function ($rootScope, $document, $timeout, DataManipulationS
       pageIndex:'=',
       form:'=',
       isEditData: "=",
-      model: '='
+      model: '=',
+      hideRootElement: "="
     },
     controller: function($scope) {
       $scope.model = $scope.model || {};
@@ -29,7 +30,7 @@ var formDirective = function ($rootScope, $document, $timeout, DataManipulationS
           $scope.form._ui = $scope.form._ui || {};
           $scope.form._ui.order = $scope.form._ui.order || [];
 
-          // This code is to allow render preview template (Before inline_edit). We can remove this later
+          // This code is to allow render previous templates (Before inline_edit). We can remove this later
           if (!$scope.form._ui.order.length) {
             angular.forEach($scope.form.properties, function(value, key) {
               if (value.properties || value.items && value.items.properties) {
@@ -77,7 +78,6 @@ var formDirective = function ($rootScope, $document, $timeout, DataManipulationS
         }
 
         var childId = $rootScope.idOf(child);
-        console.log("Line 80 ", childId);
         if (!childId || /^tmp\-/.test(childId)) {
           var p = $scope.form.properties;
           if (p[newKey] && p[newKey] == child) {

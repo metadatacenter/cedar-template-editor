@@ -400,7 +400,6 @@ var fieldDirective = function($rootScope, $http, $compile, $document, Spreadshee
 
         if ($scope.renameChildKey) {
           var key = DataManipulationService.getFieldName(p._ui.title);
-          console.log("Line 403 ", key);
           $scope.renameChildKey($scope.field, key);
         }
 

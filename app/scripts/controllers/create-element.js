@@ -27,6 +27,7 @@ var CreateElementController = function ($rootScope, $scope, $routeParams, $timeo
   });
 
   $scope.fieldTypes = FieldTypeService.getFieldTypes();
+  $scope.hideRootElement = true;
 
   // Load existing element if $routeParams.id parameter is supplied
   if ($routeParams.id) {
@@ -176,7 +177,7 @@ var CreateElementController = function ($rootScope, $scope, $routeParams, $timeo
         var id = $scope.element['@id'];
         //--//delete $scope.element['@id'];
         TemplateElementService.updateTemplateElement(id, $scope.element).then(function (response) {
-          $scope.element = response.data;
+          angular.extend($scope.element, response.data);
           UIMessageService.flashSuccess('SERVER.ELEMENT.update.success', {"title": response.data.title},
               'GENERIC.Updated');
         }).catch(function (err) {

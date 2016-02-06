@@ -21,7 +21,7 @@
           <field-directive field="form.properties[item]" model="model[item]" delete="removeChild(form.properties[item])" rename-child-key="renameChildKey"></field-directive>
         </div>
         <div class="element-group full" ng-if="form.properties[item] && !$root.propertiesOf(form.properties[item])._ui.inputType">
-          <element-directive element="form.properties[item]" key="item" model="model[item]" delete="removeChild(form.properties[item])" is-root-element="true"></element-directive>
+          <element-directive element="form.properties[item]" key="item" model="model[item]" delete="removeChild(form.properties[item])" is-root-element="hideRootElement"></element-directive>
         </div>
       </span>
     </div>
