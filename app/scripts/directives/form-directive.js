@@ -71,6 +71,49 @@ var formDirective = function ($rootScope, $document, $timeout, DataManipulationS
         }
       };
 
+      $scope.renameChildKey = function(child, newKey) {
+        if (!child) {
+          return;
+        }
+
+        var childId = $rootScope.idOf(child);
+        console.log("Line 80 ", childId);
+        if (!childId || /^tmp\-/.test(childId)) {
+          var p = $scope.form.properties;
+          if (p[newKey] && p[newKey] == child) {
+            return;
+          }
+
+          newKey = DataManipulationService.getAcceptableKey(p, newKey);
+          angular.forEach(p, function(value, key) {
+            if (!value) {
+              return;
+            }
+
+            var idOfValue = $rootScope.idOf(value);
+            if (idOfValue && idOfValue == childId) {
+              DataManipulationService.renameKeyOfObject(p, key, newKey);
+
+              if (p["@context"] && p["@context"].properties) {
+                DataManipulationService.renameKeyOfObject(p["@context"].properties, key, newKey);
+
+                if (p["@context"].properties[newKey] && p["@context"].properties[newKey].enum) {
+                  p["@context"].properties[newKey].enum[0] = DataManipulationService.getEnumOf(newKey);
+                }
+              }
+
+              if (p["@context"].required) {
+                var idx = p["@context"].required.indexOf(key);
+                p["@context"].required[idx] = newKey;
+              }
+
+              var idx = $scope.form._ui.order.indexOf(key);
+              $scope.form._ui.order[idx] = newKey;
+            }
+          });
+        }
+      }
+
       $scope.addPopover = function () {
         //Initializing Bootstrap Popover fn for each item loaded
         $timeout(function () {

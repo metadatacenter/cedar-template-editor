@@ -36,7 +36,8 @@ var CreateElementController = function ($rootScope, $scope, $routeParams, $timeo
       HeaderService.dataContainer.currentObjectScope = $scope.element;
 
       var key = $scope.element["@id"];
-      $scope.element.properties._ui.is_root = true;
+      // $scope.element.properties._ui.is_root = true;
+      $rootScope.keyOfRootElement = key;
       $scope.form.properties = $scope.form.properties || {};
       $scope.form.properties[key] = $scope.element;
       $scope.form._ui = $scope.form._ui || {};
@@ -51,14 +52,25 @@ var CreateElementController = function ($rootScope, $scope, $routeParams, $timeo
     $scope.element = DataTemplateService.getElement();
     HeaderService.dataContainer.currentObjectScope = $scope.element;
 
-    var key = $scope.element["@id"]
-    $scope.element.properties._ui.is_root = true;
+    var key = $scope.element["@id"] || DataManipulationService.generateGUID();
+    // $scope.element.properties._ui.is_root = true;
+    $rootScope.keyOfRootElement = key;
     $scope.form.properties = $scope.form.properties || {};
     $scope.form.properties[key] = $scope.element;
     $scope.form._ui = $scope.form._ui || {};
     $scope.form._ui.order = $scope.form._ui.order || [];
     $scope.form._ui.order.push(key);
     $rootScope.jsonToSave = $scope.element;
+  }
+
+  var populateCreatingFieldOrElement = function () {
+    $scope.invalidFieldStates = {};
+    $scope.invalidElementStates = {};
+    $scope.$broadcast('saveForm');
+  }
+
+  var hasCreatingFieldOrElement = function () {
+    return $rootScope.isEmpty($scope.invalidFieldStates) && $rootScope.isEmpty($scope.invalidElementStates);
   }
 
   // *** proxied functions
@@ -69,12 +81,18 @@ var CreateElementController = function ($rootScope, $scope, $routeParams, $timeo
 
   // Add newly configured field to the element object
   $scope.addFieldToElement = function (fieldType) {
-    StagingService.addFieldToElement($scope.element, fieldType);
+    populateCreatingFieldOrElement();
+    if (hasCreatingFieldOrElement()) {
+      StagingService.addFieldToElement($scope.element, fieldType);
+    }
   };
 
   $scope.addElementToElement = function (element) {
-    StagingService.addElementToElement($scope.element, element["@id"]);
-    $scope.$broadcast("form:update");
+    populateCreatingFieldOrElement();
+    if (hasCreatingFieldOrElement()) {
+      StagingService.addElementToElement($scope.element, element["@id"]);
+      $scope.$broadcast("form:update");
+    }
   };
 
   // Reverts to empty form and removes all previously added fields/elements
@@ -99,8 +117,8 @@ var CreateElementController = function ($rootScope, $scope, $routeParams, $timeo
   }
 
   $scope.saveElement = function () {
-    $scope.$broadcast('saveForm');
-    if ($rootScope.isEmpty($scope.invalidFieldStates) && $rootScope.isEmpty($scope.invalidElementStates)) {
+    populateCreatingFieldOrElement();
+    if (hasCreatingFieldOrElement()) {
       UIMessageService.conditionalOrConfirmedExecution(
           StagingService.isEmpty(),
           function () {
@@ -118,7 +136,7 @@ var CreateElementController = function ($rootScope, $scope, $routeParams, $timeo
     // First check to make sure Element Name, Element Description are not blank
     $scope.elementErrorMessages = [];
     $scope.elementSuccessMessages = [];
-    delete $scope.element.properties._ui.is_root;
+    // delete $scope.element.properties._ui.is_root;
 
     // If Element Name is blank, produce error message
     if (!$scope.element.properties._ui.title.length) {

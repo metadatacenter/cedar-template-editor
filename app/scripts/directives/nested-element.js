@@ -3,7 +3,7 @@
 var nestedElement = function($rootScope, $compile) {
   var linker = function(scope, element, attrs) {
     var nestElement = function() {
-      var template = '<div ng-if="$root.propertiesOf(field)._ui.inputType" ng-class="{&quot;field-instance&quot;:true, &quot;multiple-instance-field&quot;:$root.isArray(model)}"> <field-directive field="field" model="model" delete="removeChild(field)" preview="preview"></field-directive></div><div ng-if="!$root.propertiesOf(field)._ui.inputType && model !== undefined" class="nested-element"><element-directive key="key" model="model" element="field" preview="preview" delete="removeChild(field)"></element-directive></div>';
+      var template = '<div ng-if="$root.propertiesOf(field)._ui.inputType" ng-class="{&quot;field-instance&quot;:true, &quot;multiple-instance-field&quot;:$root.isArray(model)}"> <field-directive field="field" model="model" delete="removeChild(field)" preview="preview" rename-child-key="renameChildKey"></field-directive></div><div ng-if="!$root.propertiesOf(field)._ui.inputType && model !== undefined" class="nested-element"><element-directive key="key" model="model" element="field" preview="preview" delete="removeChild(field)"></element-directive></div>';
       $compile(template)(scope, function(cloned, scope){
   		  element.html(cloned);
   		});
@@ -34,7 +34,8 @@ var nestedElement = function($rootScope, $compile) {
       model: '=',
       preview: "=",
       removeChild: '=',
-      ngDisabled: "="
+      ngDisabled: "=",
+      renameChildKey: "="
     },
     replace: true,
     link: linker

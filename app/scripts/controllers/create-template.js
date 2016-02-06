@@ -37,6 +37,16 @@ var CreateTemplateController = function ($rootScope, $scope, $routeParams, $time
     HeaderService.dataContainer.currentObjectScope = $scope.form;
   }
 
+  var populateCreatingFieldOrElement = function () {
+    $scope.invalidFieldStates = {};
+    $scope.invalidElementStates = {};
+    $scope.$broadcast('saveForm');
+  }
+
+  var hasCreatingFieldOrElement = function () {
+    return $rootScope.isEmpty($scope.invalidFieldStates) && $rootScope.isEmpty($scope.invalidElementStates);
+  }
+
   $scope.isPropertiesEmpty = function () {
     return DataUtilService.isPropertiesEmpty($scope.form);
   };
@@ -82,8 +92,8 @@ var CreateTemplateController = function ($rootScope, $scope, $routeParams, $time
   };
 
   $scope.saveTemplate = function () {
-    $scope.$broadcast("saveForm");
-    if ($rootScope.isEmpty($scope.invalidFieldStates) && $rootScope.isEmpty($scope.invalidElementStates)) {
+    populateCreatingFieldOrElement();
+    if (hasCreatingFieldOrElement()) {
       UIMessageService.conditionalOrConfirmedExecution(
           StagingService.isEmpty(),
           function () {

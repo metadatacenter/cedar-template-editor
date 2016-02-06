@@ -21,7 +21,7 @@ var gulp               = require('gulp'),
 );
 
 // Creating error handling exception using gulp-util
-var onError = function (err) {  
+var onError = function (err) {
   gutil.beep();
   console.log(err);
 };
@@ -107,7 +107,7 @@ gulp.task('cache-ontologies', function() {
     ontologies = JSON.parse(response.getBody());
     for (var i = 0; i < ontologies.length; i++) {
       var ontology = ontologies[i];
-        
+
       // load ontology categories
       var url = 'http://data.bioontology.org/ontologies/' + ontology.acronym + '/categories';
       var response = request('GET', url, options);
@@ -136,7 +136,7 @@ gulp.task('cache-ontologies', function() {
       } else {
         console.log('Error requesting ontology metrics for ' + ontology.acronym + ' -- ' + url + '; response.statusCode: ' + response.statusCode);
       }
-      
+
     }
   } else {
     console.log('Error requesting ontology catalog');
@@ -188,13 +188,6 @@ gulp.task('html', function () {
     .pipe(connect.reload());
 });
 
-gulp.task("cacheTemplates", function() {
-  var templateCache = require('gulp-angular-templatecache');
-  return gulp.src('app/views/**/*.html')
-    .pipe(templateCache("cached_templates.js", {root: "views", module: "cachedTemplates", standalone: true}))
-    .pipe(gulp.dest('app/scripts'));
-});
-
 // gulp.task('compress', function() {
 //   return gulp.src('scripts/*.js')
 //    .pipe(uglify())
@@ -220,7 +213,7 @@ gulp.task('watch', function() {
 });
 
 // Default task
-gulp.task('default', ['server', 'lint', 'less', 'copy:resources', 'watch', "cacheTemplates"]);
+gulp.task('default', ['server', 'lint', 'less', 'copy:resources', 'watch']);
 // Build task
 //gulp.task('build', ['minifyCSS', 'htmlreplace', 'angular']);
 

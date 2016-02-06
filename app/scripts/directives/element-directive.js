@@ -8,7 +8,8 @@ var elementDirective = function($rootScope, SpreadsheetService, DataUtilService,
       key:'=',
       element:'=',
       delete: '&',
-      model: '='
+      model: '=',
+      isRootElement: "="
     },
     link: function(scope, element, attrs) {
       scope.elementId = $rootScope.idOf(scope.element) || $rootScope.generateGUID();
@@ -133,7 +134,15 @@ var elementDirective = function($rootScope, SpreadsheetService, DataUtilService,
         parseElement();
       }
 
-      scope.state = scope.state || "creating";
+      if (!scope.state) {
+        var p = $rootScope.propertiesOf(scope.element);
+        if (p && p._ui && p._ui.title) {
+          scope.state = "completed";
+        } else {
+          scope.state = "creating";
+        }
+      }
+
       scope.selectedTab = scope.selectedTab || 0;
       scope.selectTab = function(index) {
         scope.selectedTab = index;
@@ -185,6 +194,12 @@ var elementDirective = function($rootScope, SpreadsheetService, DataUtilService,
 
           var idx = scope.element._ui.order.indexOf(selectedKey);
           scope.element._ui.order.splice(idx, 1);
+
+          if ($rootScope.isElement(fieldOrElement)) {
+            scope.$emit("invalidElementState", ["remove", $rootScope.propertiesOf(fieldOrElement)._ui.title, fieldOrElement["@id"]]);
+          } else {
+            scope.$emit("invalidFieldState", ["remove", $rootScope.propertiesOf(fieldOrElement)._ui.title, fieldOrElement["@id"]]);
+          }
         }
       };
 
@@ -206,18 +221,64 @@ var elementDirective = function($rootScope, SpreadsheetService, DataUtilService,
           }
         }
 
-        $rootScope.propertiesOf(scope.element)._ui.state = "completed";
+        delete $rootScope.propertiesOf(scope.element)._tmp;
         parseElement();
       };
 
       // When user clicks edit, the element state will be switched to creating;
       scope.edit = function() {
-        $rootScope.propertiesOf(scope.element)._ui.state = "creating";
+        var p = $rootScope.propertiesOf(scope.element);
+        p._tmp = p._tmp || {};
+        p._tmp.state = "creating";
       };
+
+      scope.renameChildKey = function(child, newKey) {
+        if (!child) {
+          return;
+        }
+
+        var childId = $rootScope.idOf(child);
+
+        if (!childId || /^tmp\-/.test(childId)) {
+          var p = $rootScope.propertiesOf(scope.element);
+          if (p[newKey] && p[newKey] == child) {
+            return;
+          }
+
+          newKey = DataManipulationService.getAcceptableKey(p, newKey);
+          angular.forEach(p, function(value, key) {
+            if (!value) {
+              return;
+            }
+
+            var idOfValue = $rootScope.idOf(value);
+            if (idOfValue && idOfValue == childId) {
+              DataManipulationService.renameKeyOfObject(p, key, newKey);
+
+              if (p["@context"] && p["@context"].properties) {
+                DataManipulationService.renameKeyOfObject(p["@context"].properties, key, newKey);
+
+                if (p["@context"].properties[newKey] && p["@context"].properties[newKey].enum) {
+                  p["@context"].properties[newKey].enum[0] = DataManipulationService.getEnumOf(newKey);
+                }
+              }
+
+              if (p["@context"].required) {
+                var idx = p["@context"].required.indexOf(key);
+                p["@context"].required[idx] = newKey;
+              }
+
+              var idx = scope.element._ui.order.indexOf(key);
+              scope.element._ui.order[idx] = newKey;
+            }
+          });
+        }
+      }
 
       scope.uuid = DataManipulationService.generateTempGUID();
       scope.$on('saveForm', function (event) {
-        if ($rootScope.propertiesOf(scope.element)._ui.state == "creating") {
+        var p = $rootScope.propertiesOf(scope.element);
+        if (p._tmp && p._tmp.state == "creating") {
           scope.$emit("invalidElementState", ["add", $rootScope.propertiesOf(scope.element)._ui.title, scope.element["@id"]]);
         } else {
           scope.$emit("invalidElementState", ["remove", $rootScope.propertiesOf(scope.element)._ui.title, scope.element["@id"]]);

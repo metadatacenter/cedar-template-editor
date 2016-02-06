@@ -5,11 +5,13 @@
             <a ng-click="switchExpandedState()" class="visibilitySwitch" style="display:none;"><i
                     class="cedar-svg-expand"></i></a>
 
-            <p class="element-name-label"><i class="cedar-svg-element"></i>{{$root.propertiesOf(element)._ui.title}}</p>
+            <p class="element-name-label">
+              <span class="sortable-icon"></span><i class="cedar-svg-element"></i>{{$root.propertiesOf(element)._ui.title}}
+            </p>
             <span class="multiple-instance-cardinality" ng-show="!$root.isRuntime() && $root.elementIsMultiInstance(element)">{{element.minItems}} .. {{element.maxItems || "Unlimited"}}
             </span>
 
-            <div ng-if="!$root.propertiesOf(element)._ui.is_root" class="preview-edit-options" id="previewEditOptionOfElement"
+            <div ng-if="!isRootElement" class="preview-edit-options" id="previewEditOptionOfElement"
                  ng-include="'views/partials/preview-edit-options.html'"></div>
             <span ng-show="$root.isArray(model) && $root.applicationMode == 'runtime'"
                   class="spreadsheetSwitch element">
@@ -60,7 +62,7 @@
                 <div ui-sortable="$root.sortableOptions" ng-model="element._ui.order" class="sortable-container">
                   <div ng-repeat="key in element['_ui']['order']">
                     <div ng-if="$root.propertiesOf(element)[key]">
-                      <nested-element key="key" field="$root.propertiesOf(element)[key]" model="m[key]" remove-child="removeChild"></nested-element>
+                      <nested-element key="key" field="$root.propertiesOf(element)[key]" model="m[key]" remove-child="removeChild" rename-child-key="renameChildKey"></nested-element>
                     </div>
                   </div>
                 </div>
@@ -69,12 +71,12 @@
             <div ng-if="!$root.isArray(model)" class="element only-element" ui-sortable="$root.sortableOptions" ng-model="element._ui.order">
                 <div ng-repeat="key in element['_ui']['order']">
                   <div ng-if="$root.propertiesOf(element)[key]">
-                    <nested-element key="key" field="$root.propertiesOf(element)[key]" model="model[key]" remove-child="removeChild"></nested-element>
+                    <nested-element key="key" field="$root.propertiesOf(element)[key]" model="model[key]" remove-child="removeChild" rename-child-key="renameChildKey"></nested-element>
                   </div>
                 </div>
             </div>
 
-            <div class="input-type-container" ng-if="!$root.isRuntime() && !$root.propertiesOf(element)._ui.is_root && $root.propertiesOf(element)._ui.state == 'creating'">
+            <div class="input-type-container" ng-if="!$root.isRuntime() && !isRootElement && $root.propertiesOf(element)._tmp.state == 'creating'">
               <div class="row">
                 <div class="configuration-options element-configuration-options col-lg-9 pull-left">
                     <div class="checkbox checkbox-inline checkbox-cardinality">

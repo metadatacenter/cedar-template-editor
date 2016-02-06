@@ -94,7 +94,8 @@ var StagingService = function ($rootScope, TemplateElementService, DataManipulat
     var field = DataManipulationService.generateField(fieldType);
     field.minItems = 1;
     field.maxItems = 1;
-    field.properties._ui.state = "creating";
+    field.properties._tmp = field.properties._tmp || {};
+    field.properties._tmp.state = "creating";
 
     var optionInputs = ["radio", "checkbox", "list"];
     if (optionInputs.indexOf(fieldType) > -1) {
@@ -109,9 +110,7 @@ var StagingService = function ($rootScope, TemplateElementService, DataManipulat
     var fieldName = $rootScope.generateGUID(); //field['@id'];
 
     // Adding corresponding property type to @context
-    form.properties["@context"].properties[fieldName] = {};
-    form.properties["@context"].properties[fieldName].enum =
-      new Array(DataManipulationService.schemaBase + fieldName);
+    form.properties["@context"].properties[fieldName] = DataManipulationService.generateFieldContextProperties(fieldName);
     form.properties["@context"].required.push(fieldName);
 
     // Evaluate cardinality
@@ -128,24 +127,17 @@ var StagingService = function ($rootScope, TemplateElementService, DataManipulat
       var clonedElement = response.data;
       clonedElement.minItems = 1;
       clonedElement.maxItems = 1;
-      DataManipulationService.getFieldProperties(clonedElement)._ui.state = "creating";
+
+      var elProperties = DataManipulationService.getFieldProperties(clonedElement);
+      elProperties._tmp = elProperties._tmp || {};
+      elProperties._tmp.state = "creating";
 
       // Converting title for irregular character handling
       var elName = DataManipulationService.getFieldName(DataManipulationService.getFieldProperties(clonedElement)._ui.title);
-
-      if (form.properties["@context"].properties[elName]) {
-        var idx = 1;
-        while (form.properties["@context"].properties[elName + idx]) {
-          idx += 1;
-        }
-
-        elName = elName + idx;
-      }
+      elName = DataManipulationService.getAcceptableKey(form.properties, elName);
 
       // Adding corresponding property type to @context
-      form.properties["@context"].properties[elName] = {};
-      form.properties["@context"].properties[elName].enum =
-        new Array(DataManipulationService.schemaBase + elName);
+      form.properties["@context"].properties[elName] = DataManipulationService.generateFieldContextProperties(elName);
       form.properties["@context"].required.push(elName);
 
       // Evaluate cardinality
@@ -164,7 +156,8 @@ var StagingService = function ($rootScope, TemplateElementService, DataManipulat
     var field = DataManipulationService.generateField(fieldType);
     field.minItems = 1;
     field.maxItems = 1;
-    field.properties._ui.state = "creating";
+    field.properties._tmp = field.properties._tmp || {};
+    field.properties._tmp.state = "creating";
 
     var optionInputs = ["radio", "checkbox", "list"];
     if (optionInputs.indexOf(fieldType) > -1) {
@@ -179,9 +172,7 @@ var StagingService = function ($rootScope, TemplateElementService, DataManipulat
     var fieldName = DataManipulationService.generateGUID(); //field['@id'];
 
     // Adding corresponding property type to @context
-    element.properties["@context"].properties[fieldName] = {};
-    element.properties["@context"].properties[fieldName].enum =
-      new Array(DataManipulationService.schemaBase + fieldName);
+    element.properties["@context"].properties[fieldName] = DataManipulationService.generateFieldContextProperties(fieldName);
     element.properties["@context"].required.push(fieldName);
 
     // Evaluate cardinality
@@ -197,12 +188,15 @@ var StagingService = function ($rootScope, TemplateElementService, DataManipulat
       var el = response.data;
       el.minItems = 1;
       el.maxItems = 1;
-      DataManipulationService.getFieldProperties(el)._ui.state = "creating";
 
-      var elName = DataManipulationService.generateGUID(); //field['@id'];
+      var elProperties = DataManipulationService.getFieldProperties(el);
+      elProperties._tmp = elProperties._tmp || {};
+      elProperties._tmp.state = "creating";
 
-      element.properties["@context"].properties[elName] = {};
-      element.properties["@context"].properties[elName].enum = new Array(DataManipulationService.schemaBase + elName);
+      var elName = DataManipulationService.getFieldName(DataManipulationService.getFieldProperties(el)._ui.title);
+      elName = DataManipulationService.getAcceptableKey(element.properties, elName);
+
+      element.properties["@context"].properties[elName] = DataManipulationService.generateFieldContextProperties(elName);
       element.properties["@context"].required.push(elName);
 
       // Evaluate cardinality

@@ -3,10 +3,19 @@
 var fieldDirective = function($rootScope, $http, $compile, $document, SpreadsheetService, DataManipulationService) {
   var linker = function($scope, $element, attrs) {
 
-    var setDirectory = function() {
-      var state = $rootScope.propertiesOf($scope.field)._ui.state || "creating";
+    // if (!$rootScope.propertiesOf($scope.field)._tmp.state) {
+    //   if ($rootScope.propertiesOf($scope.field)._ui.title) {
+    //     $rootScope.propertiesOf($scope.field)._tmp.state = "completed";
+    //   } else {
+    //     $rootScope.propertiesOf($scope.field)._tmp.state = "creating";
+    //   }
+    // }
 
-      if ((state == "creating" || state == "editing") && !$scope.preview) {
+    var setDirectory = function() {
+      var p = $rootScope.propertiesOf($scope.field);
+      var state = p._tmp && p._tmp.state || "completed";
+
+      if ((state == "creating") && !$scope.preview) {
         $scope.directory = "create";
       } else {
         $scope.directory = "render";
@@ -196,7 +205,8 @@ var fieldDirective = function($rootScope, $http, $compile, $document, Spreadshee
     });
 
     $scope.$on("saveForm", function() {
-      if ($rootScope.propertiesOf($scope.field)._ui.state == "creating") {
+      var p = $rootScope.propertiesOf($scope.field);
+      if (p._tmp && p._tmp.state == "creating") {
         $scope.$emit("invalidFieldState", ["add", $rootScope.propertiesOf($scope.field)._ui.title, $scope.field["@id"]]);
       } else {
         $scope.$emit("invalidFieldState", ["remove", $rootScope.propertiesOf($scope.field)._ui.title, $scope.field["@id"]]);
@@ -386,7 +396,14 @@ var fieldDirective = function($rootScope, $http, $compile, $document, Spreadshee
           }
         }
 
-        $rootScope.propertiesOf($scope.field)._ui.state = "completed";
+        delete $rootScope.propertiesOf($scope.field)._tmp;
+
+        if ($scope.renameChildKey) {
+          var key = DataManipulationService.getFieldName(p._ui.title);
+          console.log("Line 403 ", key);
+          $scope.renameChildKey($scope.field, key);
+        }
+
         parseField();
       }
     };
@@ -401,10 +418,12 @@ var fieldDirective = function($rootScope, $http, $compile, $document, Spreadshee
     };
 
     $scope.edit = function() {
-      $rootScope.propertiesOf($scope.field)._ui.state = "creating";
+      var p = $rootScope.propertiesOf($scope.field);
+      p._tmp = p._tmp || {};
+      p._tmp.state = "creating";
     };
 
-    $scope.$watch("field", function() {
+    $scope.$watch("field", function(newField, oldField) {
       setDirectory();
     }, true);
 
@@ -501,6 +520,7 @@ var fieldDirective = function($rootScope, $http, $compile, $document, Spreadshee
     scope: {
       field: '=',
       model: '=',
+      renameChildKey: "=",
       preview: "=",
       delete: '&',
       ngDisabled: "="

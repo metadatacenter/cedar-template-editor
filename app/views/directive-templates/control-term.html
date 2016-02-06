@@ -4,10 +4,8 @@
   </div>
   <div class="control-term-field-preview-form" ng-if="$root.propertiesOf(field)._ui.inputType">
     <div class="item-name">
-      <div name-of-field field="field"></div>
+      <div class="ibl"><div name-of-field field="field"></div></div>&nbsp;&nbsp;<span class="field-title">{{$root.propertiesOf(field)._ui.title}}</span>
     </div>
-    <field-directive field="field" preview="true">
-    </field-directive>
   </div>
 
   <div class="class-container">
