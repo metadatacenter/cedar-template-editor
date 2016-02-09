@@ -136,7 +136,7 @@ angularApp.controller('TermsController', function($rootScope, $scope, $element, 
       properties = $rootScope.propertiesOf($scope.field);
     }
 
-    if (oldValue === undefined && newValue !== undefined) {
+    if (newValue !== undefined) {
       if (properties && properties['@type'] &&
           properties['@type']['oneOf'] && properties['@type']['oneOf'][0] &&
           properties['@type']['oneOf'][0]['enum']) {

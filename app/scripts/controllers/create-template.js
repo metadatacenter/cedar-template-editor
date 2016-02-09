@@ -43,7 +43,7 @@ var CreateTemplateController = function ($rootScope, $scope, $routeParams, $time
     $scope.$broadcast('saveForm');
   }
 
-  var hasCreatingFieldOrElement = function () {
+  var dontHaveCreatingFieldOrElement = function () {
     return $rootScope.isEmpty($scope.invalidFieldStates) && $rootScope.isEmpty($scope.invalidElementStates);
   }
 
@@ -53,12 +53,18 @@ var CreateTemplateController = function ($rootScope, $scope, $routeParams, $time
 
   // Add newly configured field to the element object
   $scope.addFieldToTemplate = function (fieldType) {
-    StagingService.addFieldToForm($scope.form, fieldType)
+    populateCreatingFieldOrElement();
+    if (dontHaveCreatingFieldOrElement()) {
+      StagingService.addFieldToForm($scope.form, fieldType)
+    }
   };
 
   $scope.addElementToTemplate = function(element) {
-    StagingService.addElementToForm($scope.form, element["@id"])
-    $rootScope.$broadcast("form:update");
+    populateCreatingFieldOrElement();
+    if (dontHaveCreatingFieldOrElement()) {
+      StagingService.addElementToForm($scope.form, element["@id"])
+      $rootScope.$broadcast("form:update");
+    }
   };
 
   // Function to add additional options for radio, checkbox, and list fieldTypes
@@ -93,7 +99,7 @@ var CreateTemplateController = function ($rootScope, $scope, $routeParams, $time
 
   $scope.saveTemplate = function () {
     populateCreatingFieldOrElement();
-    if (hasCreatingFieldOrElement()) {
+    if (dontHaveCreatingFieldOrElement()) {
       UIMessageService.conditionalOrConfirmedExecution(
           StagingService.isEmpty(),
           function () {

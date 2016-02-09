@@ -187,6 +187,8 @@
     "templateDescriptionEmpty": "Template Description input cannot be left empty.",
     "elementNameEmpty": "Element Name input cannot be left empty.",
     "elementDescriptionEmpty": "Element Description input cannot be left empty.",
+    "noNameField": "Untitled",
+    "noNameElement": "Untitled",
     "groupHeader": {
       "requiredFields": "The following fields are required:",
       "invalidFields": "Values of the following fields are invalid:",

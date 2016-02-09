@@ -232,7 +232,7 @@ var angularRun = function ($rootScope, BioPortalService, $location, $timeout, $w
   };
 
   $rootScope.isElement = function (value) {
-    return value && value._ui && !value.properties;
+    return value && value._ui;
   };
 
   $rootScope.findChildren = function (iterator, parentModel, parentKey, level) {
@@ -424,7 +424,8 @@ var angularRun = function ($rootScope, BioPortalService, $location, $timeout, $w
       term = '*';
     }
     var results = [];
-    var vcst = field.properties._valueConstraints;
+    var properties = $rootScope.propertiesOf(field);
+    var vcst = properties._valueConstraints;
     var field_id = field['@id'];
 
     if (angular.isUndefined($rootScope.autocompleteResultsCache[field_id])) {

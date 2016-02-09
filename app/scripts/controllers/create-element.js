@@ -70,7 +70,7 @@ var CreateElementController = function ($rootScope, $scope, $routeParams, $timeo
     $scope.$broadcast('saveForm');
   }
 
-  var hasCreatingFieldOrElement = function () {
+  var dontHaveCreatingFieldOrElement = function () {
     return $rootScope.isEmpty($scope.invalidFieldStates) && $rootScope.isEmpty($scope.invalidElementStates);
   }
 
@@ -83,14 +83,14 @@ var CreateElementController = function ($rootScope, $scope, $routeParams, $timeo
   // Add newly configured field to the element object
   $scope.addFieldToElement = function (fieldType) {
     populateCreatingFieldOrElement();
-    if (hasCreatingFieldOrElement()) {
+    if (dontHaveCreatingFieldOrElement()) {
       StagingService.addFieldToElement($scope.element, fieldType);
     }
   };
 
   $scope.addElementToElement = function (element) {
     populateCreatingFieldOrElement();
-    if (hasCreatingFieldOrElement()) {
+    if (dontHaveCreatingFieldOrElement()) {
       StagingService.addElementToElement($scope.element, element["@id"]);
       $scope.$broadcast("form:update");
     }
@@ -119,7 +119,7 @@ var CreateElementController = function ($rootScope, $scope, $routeParams, $timeo
 
   $scope.saveElement = function () {
     populateCreatingFieldOrElement();
-    if (hasCreatingFieldOrElement()) {
+    if (dontHaveCreatingFieldOrElement()) {
       UIMessageService.conditionalOrConfirmedExecution(
           StagingService.isEmpty(),
           function () {

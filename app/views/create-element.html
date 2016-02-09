@@ -78,14 +78,20 @@
         <div ng-if="!isEmpty(invalidFieldStates)" class="alert alert-danger" role="alert">
           <p><i class="fa fa-exclamation-triangle"></i><span translate>VALIDATION.groupHeader.invalidFieldState</span></p>
           <ul>
-            <li ng-repeat="field in invalidFieldStates">{{field || "Untitled"}}</li>
+            <li ng-repeat="field in invalidFieldStates">
+              <span ng-show="field">{{field}}</span>
+              <span ng-hide="field" translate>VALIDATION.noNameField</span>
+            </li>
           </ul>
         </div>
 
         <div ng-if="!isEmpty(invalidElementStates)" class="alert alert-danger" role="alert">
           <p><i class="fa fa-exclamation-triangle"></i><span translate>VALIDATION.groupHeader.invalidElementState</span></p>
           <ul>
-            <li ng-repeat="element in invalidElementStates">{{element || "Untitled"}}</li>
+            <li ng-repeat="element in invalidElementStates">
+              <span ng-show="element">{{element}}</span>
+              <span ng-hide="element" translate>VALIDATION.noNameElement</span>
+            </li>
           </ul>
         </div>
 

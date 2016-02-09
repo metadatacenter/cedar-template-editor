@@ -403,6 +403,7 @@ var fieldDirective = function($rootScope, $http, $compile, $document, Spreadshee
           $scope.renameChildKey($scope.field, key);
         }
 
+        $scope.$emit("invalidFieldState", ["remove", $rootScope.propertiesOf($scope.field)._ui.title, $scope.field["@id"]]);
         parseField();
       }
     };

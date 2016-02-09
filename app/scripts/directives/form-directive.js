@@ -69,6 +69,12 @@ var formDirective = function ($rootScope, $document, $timeout, DataManipulationS
 
           var idx = $scope.form._ui.order.indexOf(selectedKey);
           $scope.form._ui.order.splice(idx, 1);
+
+          if ($rootScope.isElement(fieldOrElement)) {
+            $scope.$emit("invalidElementState", ["remove", $rootScope.propertiesOf(fieldOrElement)._ui.title, fieldOrElement["@id"]]);
+          } else {
+            $scope.$emit("invalidFieldState", ["remove", $rootScope.propertiesOf(fieldOrElement)._ui.title, fieldOrElement["@id"]]);
+          }
         }
       };
 
