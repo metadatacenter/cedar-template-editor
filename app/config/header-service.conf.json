@@ -22,5 +22,8 @@
   "RUNTIME": {
     "enabled": true,
     "scrollLimit": 140
+  },
+  "PROFILE": {
+    "enabled": false
   }
 }

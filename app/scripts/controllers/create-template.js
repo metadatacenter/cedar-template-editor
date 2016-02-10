@@ -3,7 +3,7 @@
 var CreateTemplateController = function ($rootScope, $scope, $routeParams, $timeout, $location, $translate, $filter,
                                          HeaderService, UrlService, StagingService, DataTemplateService,
                                          FieldTypeService, TemplateElementService, TemplateService, UIMessageService,
-                                         DataManipulationService, DataUtilService, CONST) {
+                                         DataManipulationService, DataUtilService, AuthorizedBackendService, CONST) {
   // Set Page Title variable when this controller is active
   $rootScope.pageTitle = 'Template Designer';
   // Create staging area to create/edit fields before they get added to $scope.form.properties
@@ -19,25 +19,37 @@ var CreateTemplateController = function ($rootScope, $scope, $routeParams, $time
   StagingService.configure(pageId);
   $rootScope.applicationRole = 'creator';
 
-  TemplateElementService.getAllTemplateElementsSummary().then(function (response) {
-    $scope.elementList = response.data;
-  }).catch(function (err) {
-    UIMessageService.showBackendError('SERVER.ELEMENTS.load.error', err);
-  });
+  AuthorizedBackendService.doCall(
+      function () {
+        return TemplateElementService.getAllTemplateElementsSummary();
+      },
+      function (response) {
+        $scope.elementList = response.data;
+      },
+      function (err) {
+        UIMessageService.showBackendError('SERVER.ELEMENTS.load.error', err);
+      }
+  );
 
   $scope.fieldTypes = FieldTypeService.getFieldTypes();
 
   // Load existing form if $routeParams.id parameter is supplied
   if ($routeParams.id) {
     // Fetch existing form and assign to $scope.form property
-    TemplateService.getTemplate($routeParams.id).then(function (response) {
-      $scope.form = response.data;
-      // Set form preview to true so the preview is viewable onload
-      $scope.formPreview = true;
-      HeaderService.dataContainer.currentObjectScope = $scope.form;
-    }).catch(function (err) {
-      UIMessageService.showBackendError('SERVER.TEMPLATE.load.error', err);
-    });
+    AuthorizedBackendService.doCall(
+        function () {
+          return TemplateService.getTemplate($routeParams.id);
+        },
+        function (response) {
+          $scope.form = response.data;
+          // Set form preview to true so the preview is viewable onload
+          $scope.formPreview = true;
+          HeaderService.dataContainer.currentObjectScope = $scope.form;
+        },
+        function (err) {
+          UIMessageService.showBackendError('SERVER.TEMPLATE.load.error', err);
+        }
+    );
   } else {
     // If we're not loading an existing form then let's create a new empty $scope.form property
     $scope.form = DataTemplateService.getTemplate();
@@ -164,28 +176,40 @@ var CreateTemplateController = function ($rootScope, $scope, $routeParams, $time
       $scope.$broadcast('initPageArray');
       // Save template
       if ($routeParams.id == undefined) {
-        TemplateService.saveTemplate($scope.form).then(function (response) {
-          // confirm message
-          UIMessageService.flashSuccess('SERVER.TEMPLATE.create.success', {"title": response.data._ui.title},
-              'GENERIC.Created');
-          // Reload page with template id
-          var newId = response.data['@id'];
-          $location.path(UrlService.getTemplateEdit(newId));
-        }).catch(function (err) {
-          UIMessageService.showBackendError('SERVER.TEMPLATE.create.error', err);
-        });
+        AuthorizedBackendService.doCall(
+            function () {
+              return TemplateService.saveTemplate($scope.form);
+            },
+            function (response) {
+              // confirm message
+              UIMessageService.flashSuccess('SERVER.TEMPLATE.create.success', {"title": response.data._ui.title},
+                  'GENERIC.Created');
+              // Reload page with template id
+              var newId = response.data['@id'];
+              $location.path(UrlService.getTemplateEdit(newId));
+            },
+            function (err) {
+              UIMessageService.showBackendError('SERVER.TEMPLATE.create.error', err);
+            }
+        );
       }
       // Update template
       else {
         var id = $scope.form['@id'];
         //--//delete $scope.form['@id'];
-        TemplateService.updateTemplate(id, $scope.form).then(function (response) {
-          $scope.form = response.data;
-          UIMessageService.flashSuccess('SERVER.TEMPLATE.update.success', {"title": response.data.properties._ui.title},
-              'GENERIC.Updated');
-        }).catch(function (err) {
-          UIMessageService.showBackendError('SERVER.TEMPLATE.update.error', err);
-        });
+        AuthorizedBackendService.doCall(
+            function () {
+              return TemplateService.updateTemplate(id, $scope.form);
+            },
+            function (response) {
+              $scope.form = response.data;
+              UIMessageService.flashSuccess('SERVER.TEMPLATE.update.success',
+                  {"title": response.data.properties._ui.title}, 'GENERIC.Updated');
+            },
+            function (err) {
+              UIMessageService.showBackendError('SERVER.TEMPLATE.update.error', err);
+            }
+        );
       }
     }
   };
@@ -218,7 +242,7 @@ var CreateTemplateController = function ($rootScope, $scope, $routeParams, $time
 };
 
 CreateTemplateController.$inject = ["$rootScope", "$scope", "$routeParams", "$timeout", "$location", "$translate",
-  "$filter", "HeaderService", "UrlService", "StagingService", "DataTemplateService", "FieldTypeService",
-  "TemplateElementService", "TemplateService", "UIMessageService", "DataManipulationService", "DataUtilService",
-  "CONST"];
+                                    "$filter", "HeaderService", "UrlService", "StagingService", "DataTemplateService",
+                                    "FieldTypeService", "TemplateElementService", "TemplateService", "UIMessageService",
+                                    "DataManipulationService", "DataUtilService", "AuthorizedBackendService", "CONST"];
 angularApp.controller('CreateTemplateController', CreateTemplateController);

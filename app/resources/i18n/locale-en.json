@@ -74,7 +74,9 @@
     "Min": "Min:",
     "Max": "Max:",
     "NotAvailable": "Not Available",
-    "Deleted": "Deleted"
+    "Deleted": "Deleted",
+    "Warning": "Warning",
+    "Ok": "Ok"
   },
   "SERVER": {
     "ELEMENT": {
@@ -216,5 +218,11 @@
     "addElementToStagingMsg": "Add an existing element or create a new item.",
     "enterFieldTitle": "Enter Field Title",
     "enterFieldDescription": "Enter Field Description (Help Text)"
+  },
+  "AUTHORIZATION-ERROR": {
+    "suggestedAction": {
+      "requestRole": "In order to accomplish the requested operation, you need the following role: <b>{{missingRole}}</b>.",
+      "logout": "Your session has expired or it is invalid. You will be logged out from the tool."
+    }
   }
 }

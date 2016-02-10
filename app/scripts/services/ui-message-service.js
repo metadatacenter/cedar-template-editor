@@ -22,6 +22,27 @@ var UIMessageService = function (toasty, $translate) {
       callback();
     } else {
       swal({
+            title             : $translate.instant(titleKey),
+            text              : $translate.instant(textKey),
+            type              : "warning",
+            showCancelButton  : true,
+            confirmButtonText : $translate.instant(confirmTextKey),
+            closeOnConfirm    : true,
+            customClass       : 'cedarSWAL',
+            confirmButtonColor: null,
+            html              : true
+          },
+          function (isConfirm) {
+            if (isConfirm) {
+              callback();
+            }
+          }
+      );
+    }
+  };
+
+  service.confirmedExecution = function (callback, titleKey, textKey, confirmTextKey) {
+    swal({
           title             : $translate.instant(titleKey),
           text              : $translate.instant(textKey),
           type              : "warning",
@@ -29,33 +50,45 @@ var UIMessageService = function (toasty, $translate) {
           confirmButtonText : $translate.instant(confirmTextKey),
           closeOnConfirm    : true,
           customClass       : 'cedarSWAL',
-          confirmButtonColor: null
+          confirmButtonColor: null,
+          html              : true
         },
         function (isConfirm) {
           if (isConfirm) {
             callback();
           }
-        }
-      );
-    }
+        });
   };
 
-  service.confirmedExecution = function (callback, titleKey, textKey, confirmTextKey) {
+  service.acknowledgedExecution = function (callback, titleKey, textKey, confirmTextKey) {
     swal({
-        title             : $translate.instant(titleKey),
-        text              : $translate.instant(textKey),
-        type              : "warning",
-        showCancelButton  : true,
-        confirmButtonText : $translate.instant(confirmTextKey),
-        closeOnConfirm    : true,
-        customClass       : 'cedarSWAL',
-        confirmButtonColor: null
-      },
-      function (isConfirm) {
-        if (isConfirm) {
+          title             : $translate.instant(titleKey),
+          text              : $translate.instant(textKey),
+          type              : "warning",
+          showCancelButton  : false,
+          confirmButtonText : $translate.instant(confirmTextKey),
+          closeOnConfirm    : true,
+          customClass       : 'cedarSWAL',
+          confirmButtonColor: null,
+          html              : true
+        },
+        function () {
           callback();
-        }
-      });
+        });
+  };
+
+  service.showWarning = function (titleKey, textKey, confirmTextKey, textParameters) {
+    swal({
+      title             : $translate.instant(titleKey),
+      text              : $translate.instant(textKey, textParameters),
+      type              : "warning",
+      showCancelButton  : false,
+      confirmButtonText : $translate.instant(confirmTextKey),
+      closeOnConfirm    : true,
+      customClass       : 'cedarSWAL',
+      confirmButtonColor: null,
+      html              : true
+    });
   };
 
   service.showBackendError = function (messageKey, response) {

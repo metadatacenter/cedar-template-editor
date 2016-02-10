@@ -3,7 +3,7 @@
 var CreateElementController = function ($rootScope, $scope, $routeParams, $timeout, $location, $translate, $filter,
                                         HeaderService, UrlService, StagingService, DataTemplateService,
                                         FieldTypeService, TemplateElementService, UIMessageService,
-                                        DataManipulationService, DataUtilService, CONST) {
+                                        DataManipulationService, DataUtilService, AuthorizedBackendService, CONST) {
   // Set page title variable when this controller is active
   $rootScope.pageTitle = 'Element Designer';
   // Create staging area to create/edit fields before they get added to the element
@@ -21,25 +21,37 @@ var CreateElementController = function ($rootScope, $scope, $routeParams, $timeo
   StagingService.configure(pageId);
   $rootScope.applicationRole = 'creator';
 
-  TemplateElementService.getAllTemplateElementsSummary().then(function (response) {
-    $scope.elementList = response.data;
-  }).catch(function (err) {
-    UIMessageService.showBackendError('SERVER.ELEMENTS.load.error', err);
-  });
+  AuthorizedBackendService.doCall(
+      function () {
+        return TemplateElementService.getAllTemplateElementsSummary();
+      },
+      function (response) {
+        $scope.elementList = response.data;
+      },
+      function (err) {
+        UIMessageService.showBackendError('SERVER.ELEMENTS.load.error', err);
+      }
+  );
 
   $scope.fieldTypes = FieldTypeService.getFieldTypes();
 
   // Load existing element if $routeParams.id parameter is supplied
   if ($routeParams.id) {
     // Fetch existing element and assign to $scope.element property
-    TemplateElementService.getTemplateElement($routeParams.id).then(function (response) {
-      $scope.element = response.data;
-      // Set form preview to true so the preview is viewable onload
-      $scope.formPreview = true;
-      HeaderService.dataContainer.currentObjectScope = $scope.element;
-    }).catch(function (err) {
-      UIMessageService.showBackendError('SERVER.ELEMENT.load.error', err);
-    });
+    AuthorizedBackendService.doCall(
+        function () {
+          return TemplateElementService.getTemplateElement($routeParams.id);
+        },
+        function (response) {
+          $scope.element = response.data;
+          // Set form preview to true so the preview is viewable onload
+          $scope.formPreview = true;
+          HeaderService.dataContainer.currentObjectScope = $scope.element;
+        },
+        function (err) {
+          UIMessageService.showBackendError('SERVER.ELEMENT.load.error', err);
+        }
+    );
   } else {
     // If we're not loading an existing element then let's create a new empty $scope.element property
     $scope.element = DataTemplateService.getElement();
@@ -170,28 +182,41 @@ var CreateElementController = function ($rootScope, $scope, $routeParams, $timeo
       // Save element
       // Check if the element is already stored into the DB
       if ($routeParams.id == undefined) {
-        TemplateElementService.saveTemplateElement($scope.element).then(function (response) {
-          // confirm message
-          UIMessageService.flashSuccess('SERVER.ELEMENT.create.success', {"title": response.data.properties._ui.title},
-              'GENERIC.Created');
-          // Reload page with element id
-          var newId = response.data['@id'];
-          $location.path(UrlService.getElementEdit(newId));
-        }).catch(function (err) {
-          UIMessageService.showBackendError('SERVER.ELEMENT.create.error', err);
-        });
+        AuthorizedBackendService.doCall(
+            function () {
+              return TemplateElementService.saveTemplateElement($scope.element);
+            },
+            function (response) {
+              // confirm message
+              UIMessageService.flashSuccess('SERVER.ELEMENT.create.success',
+                  {"title": response.data.properties._ui.title},
+                  'GENERIC.Created');
+              // Reload page with element id
+              var newId = response.data['@id'];
+              $location.path(UrlService.getElementEdit(newId));
+            },
+            function (err) {
+              UIMessageService.showBackendError('SERVER.ELEMENT.create.error', err);
+            }
+        );
       }
       // Update element
       else {
         var id = $scope.element['@id'];
         //--//delete $scope.element['@id'];
-        TemplateElementService.updateTemplateElement(id, $scope.element).then(function (response) {
-          $scope.element = response.data;
-          UIMessageService.flashSuccess('SERVER.ELEMENT.update.success', {"title": response.data.title},
-              'GENERIC.Updated');
-        }).catch(function (err) {
-          UIMessageService.showBackendError('SERVER.ELEMENT.update.error', err);
-        });
+        AuthorizedBackendService.doCall(
+            function () {
+              return TemplateElementService.updateTemplateElement(id, $scope.element);
+            },
+            function (response) {
+              $scope.element = response.data;
+              UIMessageService.flashSuccess('SERVER.ELEMENT.update.success', {"title": response.data.title},
+                  'GENERIC.Updated');
+            },
+            function (err) {
+              UIMessageService.showBackendError('SERVER.ELEMENT.update.error', err);
+            }
+        );
       }
     }
   }
@@ -218,6 +243,7 @@ var CreateElementController = function ($rootScope, $scope, $routeParams, $timeo
 };
 
 CreateElementController.$inject = ["$rootScope", "$scope", "$routeParams", "$timeout", "$location", "$translate",
-  "$filter", "HeaderService", "UrlService", "StagingService", "DataTemplateService", "FieldTypeService",
-  "TemplateElementService", "UIMessageService", "DataManipulationService", "DataUtilService", "CONST"];
+                                   "$filter", "HeaderService", "UrlService", "StagingService", "DataTemplateService",
+                                   "FieldTypeService", "TemplateElementService", "UIMessageService",
+                                   "DataManipulationService", "DataUtilService", "AuthorizedBackendService", "CONST"];
 angularApp.controller('CreateElementController', CreateElementController);

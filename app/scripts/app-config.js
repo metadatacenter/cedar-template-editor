@@ -54,6 +54,10 @@ var angularConfig = function ($routeProvider, $locationProvider, $translateProvi
         templateUrl: 'views/logout.html',
         controller: 'LogoutController'
       })
+      .when('/profile', {
+        templateUrl: 'views/profile.html',
+        controller: 'ProfileController'
+      })
       .otherwise({
         redirectTo: '/'
       });

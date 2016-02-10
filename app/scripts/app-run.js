@@ -285,6 +285,16 @@ var angularRun = function ($rootScope, BioPortalService, $location, $timeout, $w
   UrlService.init();
   DataManipulationService.init();
   HeaderService.init();
+
+  var pt = $window.keycloakBootstrap.getParsedToken();
+  $rootScope.currentUser = {
+    "name": pt.name,
+    "id": pt.sub,
+    "email": pt.email,
+    "roles": pt.realm_access.roles
+  };
+  //console.log("angular currentUser");
+  //console.log($rootScope.currentUser);
 };
 
 angularRun.$inject = ['$rootScope', 'BioPortalService', '$location', '$timeout', '$window', '$translate',

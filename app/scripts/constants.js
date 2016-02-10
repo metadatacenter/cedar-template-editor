@@ -9,7 +9,8 @@ angularApp.constant('CONST', {
     "RUNTIME": "RUNTIME",
     "ROLESELECTOR": "ROLESELECTOR",
     "DASHBOARD": "DASHBOARD",
-    "DASHBOARDLIST": "DASHBOARDLIST"
+    "DASHBOARDLIST": "DASHBOARDLIST",
+    "PROFILE": "PROFILE"
   },
   "stagingObject": {
     "NONE": null,

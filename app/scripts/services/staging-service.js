@@ -52,19 +52,25 @@ var StagingService = function ($rootScope, TemplateElementService, DataManipulat
     $scope.staging = {};
     $scope.previewForm = {};
 
-    TemplateElementService.getTemplateElement(elementId).then(function (response) {
-      var newElement = response.data;
-      newElement.minItems = 1;
-      newElement.maxItems = 1;
-      $scope.staging[newElement['@id']] = newElement;
-      $timeout(function () {
-        var fieldName = DataManipulationService.getFieldName(newElement.properties._ui.title);
-        $scope.previewForm.properties = {};
-        $scope.previewForm.properties[fieldName] = newElement;
-      });
-    }).catch(function (err) {
-      UIMessageService.showBackendError('SERVER.ELEMENT.load.error', err);
-    });
+    AuthorizedBackendService.doCall(
+        function () {
+          return TemplateElementService.getTemplateElement(elementId);
+        },
+        function (response) {
+          var newElement = response.data;
+          newElement.minItems = 1;
+          newElement.maxItems = 1;
+          $scope.staging[newElement['@id']] = newElement;
+          $timeout(function () {
+            var fieldName = DataManipulationService.getFieldName(newElement.properties._ui.title);
+            $scope.previewForm.properties = {};
+            $scope.previewForm.properties[fieldName] = newElement;
+          });
+        },
+        function (err) {
+          UIMessageService.showBackendError('SERVER.ELEMENT.load.error', err);
+        }
+    );
   };
 
   // Add new field into $scope.staging object
@@ -95,14 +101,14 @@ var StagingService = function ($rootScope, TemplateElementService, DataManipulat
     // Setting return value from $scope.checkFieldConditions to array which will display error messages if any
     $scope.stagingErrorMessages = ClientSideValidationService.checkFieldConditions(field.properties);
     $scope.stagingErrorMessages = jQuery.merge($scope.stagingErrorMessages,
-      ClientSideValidationService.checkFieldCardinalityOptions(field));
+        ClientSideValidationService.checkFieldCardinalityOptions(field));
 
     if ($scope.stagingErrorMessages.length == 0) {
       // Converting title for irregular character handling
       var fieldName = DataManipulationService.getFieldName(field.properties._ui.title);
       // Adding corresponding property type to @context
       targetObject.properties["@context"].properties[fieldName] = DataManipulationService.generateFieldContextProperties(
-        fieldName);
+          fieldName);
       targetObject.properties["@context"].required.push(fieldName);
       targetObject.required.push(fieldName);
 
@@ -121,6 +127,7 @@ var StagingService = function ($rootScope, TemplateElementService, DataManipulat
   return service;
 };
 
-StagingService.$inject = ["$rootScope", "TemplateElementService", "DataManipulationService", "ClientSideValidationService",
-  "UIMessageService", "$timeout", "CONST"];
+StagingService.$inject = ["$rootScope", "TemplateElementService", "DataManipulationService",
+                          "ClientSideValidationService",
+                          "UIMessageService", "$timeout", "CONST"];
 angularApp.service('StagingService', StagingService);

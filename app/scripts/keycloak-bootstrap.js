@@ -10,21 +10,28 @@ function KeycloakBootstrap() {
     keycloak.logout(options);
   };
 
-  this.readUserDetails = function (successCallback) {
-    if (keycloak.refreshToken === null) {
-      // not logged in
-      console.log("not logged in");
-    } else {
-      $.ajax({
-        url: "http://template.metadatacenter.orgx/user-details",
-        headers: {
-          'Cedar-Refresh-Auth-Token': keycloak.refreshToken
-        }
-      }).done(function (data) {
-        // logged in, data available
-        successCallback(data);
-      });
-    }
+  this.getToken = function () {
+    return keycloak.token;
+  };
+
+  this.getRefreshToken = function () {
+    return keycloak.refreshToken;
+  };
+
+  this.getParsedToken = function () {
+    return keycloak.tokenParsed;
+  };
+
+  this.getTokenValiditySeconds = function() {
+    return Math.round(keycloak.tokenParsed.exp + keycloak.timeSkew - new Date().getTime() / 1000);
+  };
+
+  this.refreshToken = function (minValidity, successCallback, errorCallback) {
+    keycloak.updateToken(minValidity).success(function (refreshed) {
+      successCallback(refreshed);
+    }).error(function () {
+      errorCallback();
+    });
   };
 
   this.init = function (successCallback, failureCallback) {

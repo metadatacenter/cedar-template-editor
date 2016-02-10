@@ -1,0 +1,34 @@
+<div class="container">
+
+  <h4 translate="" class="section-title ng-scope">Id:</h4>
+
+  <div class="row">
+    {{$root.currentUser.id}}
+  </div>
+
+  <h4 translate="" class="section-title ng-scope">Email:</h4>
+
+  <div class="row">
+    {{$root.currentUser.email}}
+  </div>
+
+  <h4 translate="" class="section-title ng-scope">Name:</h4>
+
+  <div class="row">
+    {{$root.currentUser.name}}
+  </div>
+
+  <h4 translate="" class="section-title ng-scope">Roles:</h4>
+
+  <div class="row">
+    {{$root.currentUser.roles}}
+  </div>
+
+  <h4 translate="" class="section-title ng-scope">Token validity:</h4>
+
+  <div class="row">
+    {{getTokenValidity()}}
+  </div>
+
+  <!-- /.row -->
+</div> <!-- /.container -->
