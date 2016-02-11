@@ -42,7 +42,7 @@ var angularConfig = function ($routeProvider, $locationProvider, $translateProvi
       templateUrl: 'views/create-instance.html',
       controller: 'CreateInstanceController'
     })
-    .when('/instances/create/:template_id*?', {
+    .when('/instances/create/:templateId*?', {
       templateUrl: 'views/create-instance.html',
       controller: 'CreateInstanceController'
     })

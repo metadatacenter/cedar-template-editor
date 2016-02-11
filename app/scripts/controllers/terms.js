@@ -106,14 +106,42 @@ angularApp.controller('TermsController', function($rootScope, $scope, $element, 
   $scope.controlTerm.bioportalValueSetsFilter = true;
   $scope.controlTerm.addedValueItems = [];
 
+  // Values constraint initial object
+  $scope.controlTerm.valueConstraint = {
+    'ontologies': [],
+    'valueSets': [],
+    'classes': [],
+    'branches': [],
+    'multipleChoice': false
+  };
+
+  var setInitialFieldConstraints = function() {
+    if ($scope.field) {
+      var properties = $rootScope.propertiesOf($scope.field);
+
+      $scope.controlTerm.valueConstraint = angular.copy(properties._valueConstraints) || {};
+      $scope.controlTerm.valueConstraint.ontologies = $scope.controlTerm.valueConstraint.ontologies || [];
+      $scope.controlTerm.valueConstraint.valueSets = $scope.controlTerm.valueConstraint.valueSets || [];
+      $scope.controlTerm.valueConstraint.classes = $scope.controlTerm.valueConstraint.classes || [];
+      $scope.controlTerm.valueConstraint.branches = $scope.controlTerm.valueConstraint.branches || [];
+      $scope.controlTerm.valueConstraint.multipleChoice = $scope.controlTerm.valueConstraint.multipleChoice || [];
+    }
+  };
+
+  setInitialFieldConstraints();
+
   $scope.$watch("field", function(newValue, oldValue) {
-    var i, classId, acronym;
-    if (oldValue === undefined && newValue !== undefined) {
-      if ($scope.field && $scope.field.properties && $scope.field.properties['@type'] &&
-          $scope.field.properties['@type']['oneOf'] && $scope.field.properties['@type']['oneOf'][0] &&
-          $scope.field.properties['@type']['oneOf'][0]['enum']) {
-        for (i = 0; i < $scope.field.properties['@type']['oneOf'][0]['enum'].length; i++) {
-          classId = $scope.field.properties['@type']['oneOf'][0]['enum'][i];
+    var i, classId, acronym, properties;
+    if ($scope.field) {
+      properties = $rootScope.propertiesOf($scope.field);
+    }
+
+    if (newValue !== undefined) {
+      if (properties && properties['@type'] &&
+          properties['@type']['oneOf'] && properties['@type']['oneOf'][0] &&
+          properties['@type']['oneOf'][0]['enum']) {
+        for (i = 0; i < properties['@type']['oneOf'][0]['enum'].length; i++) {
+          classId = properties['@type']['oneOf'][0]['enum'][i];
           BioPortalService.getClassDetails(classId).then(function(response) {
             if (response) {
               // get ontology details
@@ -129,17 +157,10 @@ angularApp.controller('TermsController', function($rootScope, $scope, $element, 
           });
         }
       }
+
+      // setInitialFieldConstraints();
     }
   });
-
-  // Values constraint initial object
-  $scope.controlTerm.valueConstraint = {
-    'ontologies': [],
-    'valueSets': [],
-    'classes': [],
-    'branches': [],
-    'multipleChoice': false
-  };
 
   $scope.controlTerm.valueConstraint.isEmpty = function() {
     if ($scope.controlTerm.valueConstraint.ontologies.length > 0 ||
@@ -205,11 +226,20 @@ angularApp.controller('TermsController', function($rootScope, $scope, $element, 
   // FIELD: search results
   ////////////////////////////////////
 
+  $scope.controlTerm.startFieldSearch = function() {
+    $scope.controlTerm.fieldActionSelection = "search";
+  };
+
+  $scope.controlTerm.endFieldSearch = function() {
+    if (!$scope.controlTerm.fieldSearchTerms) {
+      $scope.controlTerm.fieldActionSelection = null;
+    }
+  };
+
   $scope.controlTerm.fieldSearch = function() {
 
     $scope.controlTerm.searchResults = [];
     $scope.controlTerm.searchNoResults = false;
-    $scope.controlTerm.fieldActionSelection = "search";
 
     if($scope.controlTerm.fieldSearchTerms == '') {
       $scope.controlTerm.searchPreloader = false;
@@ -494,12 +524,13 @@ angularApp.controller('TermsController', function($rootScope, $scope, $element, 
       /**
        * Add ontology type to JSON.
        */
-      if (angular.isArray($scope.field.properties['@type'].oneOf[0].enum)) {
-        $scope.field.properties['@type'].oneOf[0].enum.push(selection.links.self);
-        $scope.field.properties['@type'].oneOf[1].items.enum.push(selection.links.self);
+      var properties = $rootScope.propertiesOf($scope.field);
+      if (angular.isArray(properties['@type'].oneOf[0].enum)) {
+        properties['@type'].oneOf[0].enum.push(selection.links.self);
+        properties['@type'].oneOf[1].items.enum.push(selection.links.self);
       } else {
-        $scope.field.properties['@type'].oneOf[0].enum = [selection.links.self];
-        $scope.field.properties['@type'].oneOf[1].items.enum = [selection.links.self];
+        properties['@type'].oneOf[0].enum = [selection.links.self];
+        properties['@type'].oneOf[1].items.enum = [selection.links.self];
       }
 
       $scope.controlTerm.startOver();
@@ -513,24 +544,25 @@ angularApp.controller('TermsController', function($rootScope, $scope, $element, 
   };
 
   $scope.controlTerm.deleteFieldAddedItem = function(itemData) {
+    var properties = $rootScope.propertiesOf($scope.field);
     for (var i = 0, len = $scope.controlTerm.addedFieldItems.length; i < len; i+= 1) {
       if ($scope.controlTerm.addedFieldItems[i] == itemData) {
         var itemDataId = itemData["@id"];
-        var idx = $scope.field.properties["@type"].oneOf[0].enum.indexOf(itemDataId);
+        var idx = properties["@type"].oneOf[0].enum.indexOf(itemDataId);
 
         if (idx >= 0) {
-          $scope.field.properties["@type"].oneOf[0].enum.splice(idx, 1);
-          if ($scope.field.properties["@type"].oneOf[0].enum.length == 0) {
-            delete $scope.field.properties["@type"].oneOf[0].enum;
+          properties["@type"].oneOf[0].enum.splice(idx, 1);
+          if (properties["@type"].oneOf[0].enum.length == 0) {
+            delete properties["@type"].oneOf[0].enum;
           }
         }
 
-        idx = $scope.field.properties['@type'].oneOf[1].items.enum.indexOf(itemDataId);
+        idx = properties['@type'].oneOf[1].items.enum.indexOf(itemDataId);
 
         if (idx >= 0) {
-          $scope.field.properties['@type'].oneOf[1].items.enum.splice(idx, 1);
-          if ($scope.field.properties["@type"].oneOf[1].items.enum.length == 0) {
-            delete $scope.field.properties["@type"].oneOf[1].items.enum;
+          properties['@type'].oneOf[1].items.enum.splice(idx, 1);
+          if (properties["@type"].oneOf[1].items.enum.length == 0) {
+            delete properties["@type"].oneOf[1].items.enum;
           }
         }
 
@@ -1020,7 +1052,61 @@ angularApp.controller('TermsController', function($rootScope, $scope, $element, 
   /**
    * Add ontology class to value constraint to field values _ui definition.
    */
-  $scope.controlTerm.addOntologyClassToValueConstraint = function() {
+  $scope.controlTerm.addOntologyClassToValueConstraint = function(constraint) {
+    var i = $scope.controlTerm.stagedOntologyClassValueConstraints.indexOf(constraint);
+    var alreadyAdded = false;
+
+    for (var j = 0; j < $scope.controlTerm.valueConstraint.classes.length; j++) {
+      if ($scope.controlTerm.valueConstraint.classes[j]['uri'] == constraint['uri']) {
+        alreadyAdded = true;
+        break;
+      }
+    }
+
+    if (!alreadyAdded) {
+      if (constraint.label == '') {
+        constraint.label = $scope.controlTerm.stagedOntologyClassValueConstraintData[i].label;
+      }
+      $scope.controlTerm.valueConstraint.classes.push(angular.copy(constraint));
+    }
+
+    $scope.controlTerm.stagedOntologyClassValueConstraints = [];
+    $scope.controlTerm.stagedOntologyClassValueConstraintData = [];
+    assignValueConstraintToField();
+    $scope.controlTerm.startOver();
+  };
+
+  /**
+   * Add ontology class to value constraint to field values info definition.
+   */
+  $scope.controlTerm.addOntologyClassToValueConstraint = function(constraint) {
+    var i = $scope.controlTerm.stagedOntologyClassValueConstraints.indexOf(constraint);
+    var alreadyAdded = false;
+
+    for (var j = 0; j < $scope.controlTerm.valueConstraint.classes.length; j++) {
+      if ($scope.controlTerm.valueConstraint.classes[j]['uri'] == constraint['uri']) {
+        alreadyAdded = true;
+        break;
+      }
+    }
+
+    if (!alreadyAdded) {
+      if (constraint.label == '') {
+        constraint.label = $scope.controlTerm.stagedOntologyClassValueConstraintData[i].label;
+      }
+      $scope.controlTerm.valueConstraint.classes.push(angular.copy(constraint));
+    }
+
+    $scope.controlTerm.stagedOntologyClassValueConstraints = [];
+    $scope.controlTerm.stagedOntologyClassValueConstraintData = [];
+    assignValueConstraintToField();
+    $scope.controlTerm.startOver();
+  };
+
+  /**
+   * Add ontology class to value constraint to field values info definition.
+   */
+  $scope.controlTerm.addOntologyClassesToValueConstraint = function() {
     var alreadyAdded, constraint, i, j;
     for (i = 0; i < $scope.controlTerm.stagedOntologyClassValueConstraints.length; i++) {
       constraint = $scope.controlTerm.stagedOntologyClassValueConstraints[i];
@@ -1046,8 +1132,8 @@ angularApp.controller('TermsController', function($rootScope, $scope, $element, 
   };
 
   var assignValueConstraintToField = function() {
-    $scope.field.properties._valueConstraints =
-      angular.extend($scope.controlTerm.valueConstraint, $scope.field.properties._valueConstraints)
+    $rootScope.propertiesOf($scope.field)._valueConstraints =
+      angular.extend($scope.controlTerm.valueConstraint, $rootScope.propertiesOf($scope.field)._valueConstraints)
     delete $scope.controlTerm.stageValueConstraintAction;
     $scope.controlTerm.stagedOntologyValueConstraints = [];
     $scope.controlTerm.stagedOntologyClassValueConstraints = [];
@@ -1116,6 +1202,12 @@ angularApp.controller('TermsController', function($rootScope, $scope, $element, 
     }
   }, true);
 
+  $scope.$watch("field.items.properties['@type'].oneOf[0].enum", function(newVal, oldVal) {
+    if (oldVal && oldVal.length > 0 && (!newVal || newVal.length == 0)) {
+      $scope.controlTerm.addedFieldItems = [];
+    }
+  }, true);
+
   $element.parents(".controlled-terms-modal").modal({show: false, backdrop: "static"});
   $element.parents(".controlled-terms-modal").on("hide.bs.modal", function() {
     $timeout(function() {
@@ -1129,6 +1221,16 @@ angularApp.controller('TermsController', function($rootScope, $scope, $element, 
     $timeout(function() {
       jQuery(window).scrollTop(0);
     });
+  });
+
+  $element.parents(".controlled-terms-modal").on("shown.bs.modal", function() {
+    var windowHeight = jQuery(window).height();
+    var modalHeight = $element.parents(".controlled-terms-modal .modal-content").outerHeight();
+    var topPosition = (windowHeight - modalHeight)/2;
+    if (topPosition < 0) {
+      topPosition = 0;
+    }
+    $element.parents(".controlled-terms-modal").css("top", topPosition);
   });
 })
 .directive('addedFieldItem', function () {

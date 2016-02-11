@@ -6,12 +6,7 @@ var CreateTemplateController = function ($rootScope, $scope, $routeParams, $time
                                          DataManipulationService, DataUtilService, CONST) {
   // Set Page Title variable when this controller is active
   $rootScope.pageTitle = 'Template Designer';
-  // Create staging area to create/edit fields before they get added to $scope.form.properties
-  $scope.staging = {};
-  // Setting default false flag for $scope.favorite
-  //$scope.favorite = false;
-  // Setting form preview setting to false by default
-  $scope.formPreview = false;
+
   // Configure mini header
   var pageId = CONST.pageId.TEMPLATE;
   var applicationMode = CONST.applicationMode.CREATOR;
@@ -30,10 +25,8 @@ var CreateTemplateController = function ($rootScope, $scope, $routeParams, $time
   // Load existing form if $routeParams.id parameter is supplied
   if ($routeParams.id) {
     // Fetch existing form and assign to $scope.form property
-    TemplateService.getTemplate($routeParams.id).then(function (response) {
+    TemplateService.getTemplate($routeParams.id).then(function(response) {
       $scope.form = response.data;
-      // Set form preview to true so the preview is viewable onload
-      $scope.formPreview = true;
       HeaderService.dataContainer.currentObjectScope = $scope.form;
     }).catch(function (err) {
       UIMessageService.showBackendError('SERVER.TEMPLATE.load.error', err);
@@ -44,56 +37,38 @@ var CreateTemplateController = function ($rootScope, $scope, $routeParams, $time
     HeaderService.dataContainer.currentObjectScope = $scope.form;
   }
 
-  // *** proxied functions
+  var populateCreatingFieldOrElement = function () {
+    $scope.invalidFieldStates = {};
+    $scope.invalidElementStates = {};
+    $scope.$broadcast('saveForm');
+  }
+
+  var dontHaveCreatingFieldOrElement = function () {
+    return $rootScope.isEmpty($scope.invalidFieldStates) && $rootScope.isEmpty($scope.invalidElementStates);
+  }
+
   $scope.isPropertiesEmpty = function () {
     return DataUtilService.isPropertiesEmpty($scope.form);
   };
 
-  $scope.addFieldToStaging = function (fieldType) {
-    return StagingService.addFieldToStaging($scope, fieldType);
-  };
-
-  $scope.addFieldToForm = function (field) {
-    return StagingService.addFieldToScopeAndStaging($scope, $scope.form, field);
-  };
-
-  // *** functions from data manipulation service
-  $scope.addOption = DataManipulationService.addOption;
-
-  $scope.addElementToStaging = function (elementId) {
-    StagingService.addElement();
-    StagingService.addElementWithId($scope, elementId);
-  };
-
-  /*$scope.addExistingElement = function (element) {
-   // Fetch existing element json data
-   //FormService.element(element).then(function(response) {
-   // Convert response.data.title string to an acceptable object key string
-   //var titleKey = $rootScope.getFieldName(element.properties._ui.title);
-
-   // Add existing element to the $scope.element.properties object with it's title converted to an object key
-   var titleKey = $rootScope.getFieldName(element.properties._ui.title);
-   // Adding corresponding property type to @context
-   $scope.form.properties["@context"].properties[titleKey] = {};
-   $scope.form.properties["@context"].properties[titleKey].enum =
-   new Array($rootScope.schemasBase + titleKey);
-   $scope.form.properties["@context"].required.push(titleKey);
-
-   // Embed existing element into $scope.form.properties object
-   $scope.form.properties[titleKey] = element;
-   //});
-   };*/
-
-  // Delete field from $scope.staging object
-  $scope.deleteField = function (field) {
-    // Remove field instance from $scope.staging
-    delete $scope.staging[field['@id']];
-    // Empty the Error Messages array if present
-    if ($scope.stagingErrorMessages) {
-      $scope.stagingErrorMessages = [];
+  // Add newly configured field to the element object
+  $scope.addFieldToTemplate = function (fieldType) {
+    populateCreatingFieldOrElement();
+    if (dontHaveCreatingFieldOrElement()) {
+      StagingService.addFieldToForm($scope.form, fieldType)
     }
-    StagingService.removeObject();
   };
+
+  $scope.addElementToTemplate = function(element) {
+    populateCreatingFieldOrElement();
+    if (dontHaveCreatingFieldOrElement()) {
+      StagingService.addElementToForm($scope.form, element["@id"])
+      $rootScope.$broadcast("form:update");
+    }
+  };
+
+  // Function to add additional options for radio, checkbox, and list fieldTypes
+  $scope.addOption = DataManipulationService.addOption;
 
   // Reverts to empty form and removes all previously added fields/elements
   $scope.reset = function () {
@@ -117,26 +92,24 @@ var CreateTemplateController = function ($rootScope, $scope, $routeParams, $time
         delete $scope.form.properties[key];
       }
     });
+    $scope.form._ui.order = [];
     // Broadcast the reset event which will trigger the emptying of formFields formFieldsOrder
     $scope.$broadcast('resetForm');
   };
 
-  // Setting $scope variable to toggle for whether this template is a favorite
-  //$scope.toggleFavorite = function() {
-  //  $scope.favorite = $scope.favorite === true ? false : true;
-  //  $scope.form.favorite = $scope.favorite;
-  //};
-
   $scope.saveTemplate = function () {
-    UIMessageService.conditionalOrConfirmedExecution(
-        StagingService.isEmpty(),
-        function () {
-          $scope.doSaveTemplate();
-        },
-        'GENERIC.AreYouSure',
-        'TEMPLATEEDITOR.save.nonEmptyStagingConfirm',
-        'GENERIC.YesSaveIt'
-    );
+    populateCreatingFieldOrElement();
+    if (dontHaveCreatingFieldOrElement()) {
+      UIMessageService.conditionalOrConfirmedExecution(
+          StagingService.isEmpty(),
+          function () {
+            $scope.doSaveTemplate();
+          },
+          'GENERIC.AreYouSure',
+          'TEMPLATEEDITOR.save.nonEmptyStagingConfirm',
+          'GENERIC.YesSaveIt'
+      );
+    }
   }
 
   // Stores the template into the database
@@ -154,14 +127,9 @@ var CreateTemplateController = function ($rootScope, $scope, $routeParams, $time
     }
     // If there are no Template level error messages
     if ($scope.templateErrorMessages.length == 0) {
-      // Delete this preview form, so that it does not listen/emit some related events.
-      delete $scope.previewForm;
-
       // If maxItems is N, then remove maxItems
       DataManipulationService.removeUnnecessaryMaxItems($scope.form.properties);
 
-      // Broadcast the initialize Page Array event which will trigger the creation of the $scope.form._ui 'pages' array
-      $scope.$broadcast('initPageArray');
       // Save template
       if ($routeParams.id == undefined) {
         TemplateService.saveTemplate($scope.form).then(function (response) {
@@ -190,13 +158,23 @@ var CreateTemplateController = function ($rootScope, $scope, $routeParams, $time
     }
   };
 
-  // Event listener for when the pages array is finished building
-  $scope.$on('finishPageArray', function (event, orderArray) {
-    // Assigning array returned to $scope.form._ui.pages property
-    $scope.form._ui.pages = orderArray;
-    // Console.log full working form example on save
-    //console.log($scope.form);
-    // Database service save() call could go here
+  $scope.invalidFieldStates = {};
+  $scope.invalidElementStates = {};
+  $scope.$on('invalidFieldState', function (event, args) {
+    if (args[0] == 'add') {
+      $scope.invalidFieldStates[args[2]] = args[1];
+    }
+    if (args[0] == 'remove') {
+      delete $scope.invalidFieldStates[args[2]];
+    }
+  });
+  $scope.$on('invalidElementState', function (event, args) {
+    if (args[0] == 'add') {
+      $scope.invalidElementStates[args[2]] = args[1];
+    }
+    if (args[0] == 'remove') {
+      delete $scope.invalidElementStates[args[2]];
+    }
   });
 
   // This function watches for changes in the properties._ui.title field and autogenerates the schema title and description fields
@@ -214,7 +192,6 @@ var CreateTemplateController = function ($rootScope, $scope, $routeParams, $time
       }
     }
   });
-
 };
 
 CreateTemplateController.$inject = ["$rootScope", "$scope", "$routeParams", "$timeout", "$location", "$translate",

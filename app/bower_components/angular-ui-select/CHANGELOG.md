@@ -1,3 +1,41 @@
+<a name="0.14.2"></a>
+## [0.14.2](https://github.com/angular-ui/ui-select/compare/v0.14.1...v0.14.2) (2016-01-28)
+
+
+
+
+<a name="0.14.1"></a>
+## [0.14.1](https://github.com/angular-ui/ui-select/compare/v0.14.1...v0.14.1) (2016-01-27)
+
+
+
+
+<a name="0.14.0"></a>
+# [0.14.0](https://github.com/angular-ui/ui-select/compare/v0.13.3...v0.14.0) (2016-01-25)
+
+
+### Features
+
+* **ngAnimate:** add support for ngAnimate ([8da8a6d](https://github.com/angular-ui/ui-select/commit/8da8a6d))
+
+
+
+<a name="0.13.3"></a>
+## [0.13.3](https://github.com/angular-ui/ui-select/compare/v0.13.3...v0.13.2) (2016-01-25)
+
+### Added
+- Add support for commonjs and npm
+
+<a name="0.13.2"></a>
+## [0.13.2](https://github.com/angular-ui/ui-select/compare/v0.13.2...v0.13.2) (2016-01-25)
+
+
+### Bug Fixes
+
+* **CSP:** avoid inline execution of javascript in choices template. ([fb88ec8](https://github.com/angular-ui/ui-select/commit/fb88ec8))
+
+
+
 # Change Log
 All notable changes to this project will be documented in this file.
 

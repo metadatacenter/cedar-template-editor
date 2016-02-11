@@ -123,10 +123,12 @@ var DataManipulationService = function (DataTemplateService, DataUtilService) {
   };
 
   service.getFieldProperties = function (field) {
-    if (field.type == 'array' && field.items && field.items.properties) {
-      return field.items.properties;
-    } else {
-      return field.properties;
+    if (field) {
+      if (field.type == 'array' && field.items && field.items.properties) {
+        return field.items.properties;
+      } else {
+        return field.properties;
+      }
     }
   };
 
@@ -180,11 +182,55 @@ var DataManipulationService = function (DataTemplateService, DataUtilService) {
     //  .toLowerCase();
   };
 
+  service.getEnumOf = function (fieldName) {
+    return schemaBase + fieldName
+  }
+
   service.generateFieldContextProperties = function (fieldName) {
     var c = {};
-    c.enum = new Array(schemaBase + fieldName);
+    c.enum = new Array(service.getEnumOf(schemaBase + fieldName));
     return c;
   };
+
+  service.getAcceptableKey = function(obj, suggestedKey) {
+    if (!obj || typeof(obj) != "object") {
+      return;
+    }
+
+    var key = suggestedKey;
+    if (obj[key]) {
+      var idx = 1;
+      while (obj["" + key + idx]) {
+        idx += 1;
+      }
+
+      key = "" + key + idx;
+    }
+
+    return key;
+  }
+
+  service.addKeyToObject = function (obj, key, value) {
+    if (!obj || typeof(obj) != "object") {
+      return;
+    }
+
+    key = service.getAcceptableKey(obj, key);
+    obj[key] = value;
+    return obj;
+  }
+
+  service.renameKeyOfObject = function (obj, currentKey, newKey) {
+    if (!obj || !obj[currentKey]) {
+      return;
+    }
+
+    newKey = service.getAcceptableKey(obj, newKey);
+    Object.defineProperty(obj, newKey, Object.getOwnPropertyDescriptor(obj, currentKey));
+    delete obj[currentKey];
+
+    return obj;
+  }
 
   return service;
 };

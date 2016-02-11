@@ -1,3 +1,4 @@
-<p class="extra-label-context">{{field.properties._ui.title}}</p>
+<p class="extra-label-context">{{$root.propertiesOf(field)._ui.title}}</p>
 <div class="form-group validation-pattern">
 </div><!-- /.form-group -->
+<div class="preview-edit-options" ng-include="'views/partials/preview-edit-options.html'" ng-init="childType='field'" ng-init="notEditable=true" ng-if="!$root.isRunTime()"></div>

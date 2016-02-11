@@ -27,12 +27,6 @@
     <link rel="stylesheet" ng-href="css/style-{{applicationMode}}.css">
     <link rel="stylesheet" href="bower_components/angular-ui-select/dist/select.css">
     <link rel="stylesheet" href="bower_components/angular-toasty/dist/angular-toasty.min.css"/>
-
-    <!--<script src="//use.typekit.net/aph5zap.js"></script>
-    <script>try {
-        Typekit.load({async: false});
-    } catch (e) {
-    }</script>-->
 </head>
 <body cedar-switch-navbar="true" ng-cloak>
 <!--[if lt IE 8]>
@@ -123,6 +117,7 @@
 
 <!-- build:js scripts/modules.js -->
 <script src="bower_components/jquery/jquery.js"></script>
+<script src="bower_components/jquery-ui/jquery-ui.min.js"></script>
 <script src="bower_components/angular/angular.js"></script>
 <script src="bower_components/angular-route/angular-route.js"></script>
 <script src="bower_components/angular-animate/angular-animate.js"></script>
@@ -135,6 +130,7 @@
 <script src="bower_components/handsontable/dist/handsontable.full.js"></script>
 <script src="bower_components/ngHandsontable/dist/ngHandsontable.js"></script>
 <script src="bower_components/angular-ui-select/dist/select.js"></script>
+<script src="bower_components/angular-ui-sortable/sortable.min.js"></script>
 <script src="bower_components/sweetalert/dist/sweetalert.min.js"></script>
 <script src="bower_components/angular-translate/angular-translate.min.js"></script>
 <script src="bower_components/angular-translate-loader-static-files/angular-translate-loader-static-files.min.js"></script>
@@ -181,7 +177,6 @@
 <script src="scripts/services/ui-util-service.js"></script>
 
 <script src="scripts/directives/form-directive.js"></script>
-<script src="scripts/directives/form-preview.js"></script>
 <script src="scripts/directives/element-directive.js"></script>
 <script src="scripts/directives/field-directive.js"></script>
 <script src="scripts/directives/cedar-box.js"></script>
@@ -195,6 +190,8 @@
 <script src="scripts/directives/angular-validator.js"></script>
 <script src="scripts/directives/cedar-sticky-left-menu.js"></script>
 <script src="scripts/directives/control-term.js"></script>
+<script src="scripts/directives/nested-element.js"></script>
+<script src="scripts/directives/name-of-field.js"></script>
 <!-- endbuild -->
 
 <script src="cedar/scripts/handsontable/MultiCheckboxEditor.js"></script>

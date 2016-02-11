@@ -21,7 +21,7 @@ var gulp               = require('gulp'),
 );
 
 // Creating error handling exception using gulp-util
-var onError = function (err) {  
+var onError = function (err) {
   gutil.beep();
   console.log(err);
 };
@@ -107,7 +107,7 @@ gulp.task('cache-ontologies', function() {
     ontologies = JSON.parse(response.getBody());
     for (var i = 0; i < ontologies.length; i++) {
       var ontology = ontologies[i];
-        
+
       // load ontology categories
       var url = 'http://data.bioontology.org/ontologies/' + ontology.acronym + '/categories';
       var response = request('GET', url, options);
@@ -136,7 +136,7 @@ gulp.task('cache-ontologies', function() {
       } else {
         console.log('Error requesting ontology metrics for ' + ontology.acronym + ' -- ' + url + '; response.statusCode: ' + response.statusCode);
       }
-      
+
     }
   } else {
     console.log('Error requesting ontology catalog');

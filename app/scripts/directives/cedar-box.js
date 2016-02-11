@@ -61,7 +61,7 @@ var cedarBox = function ($document, $location, $sce, $translate, UrlService, CON
 
   return {
     restrict: 'E',
-    templateUrl: './views/directive-templates/cedar-box.html',
+    templateUrl: 'views/directive-templates/cedar-box.html',
     scope: {
       type: '@',
       description: '@',

@@ -3,7 +3,7 @@
     <i class="cedar-svg-controll-term collapsed" data-toggle="modal" data-target="#control-options-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}"></i>
   </div>
   <div class="checkbox checkbox-inline checkbox-required">
-    <input type="checkbox" id="required-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}" ng-model="field.properties._valueConstraints.requiredValue" />
+    <input type="checkbox" id="required-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}" ng-model="$root.propertiesOf(field)._valueConstraints.requiredValue" />
     <label for="required-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}" translate>GENERIC.Required</label>
   </div><!-- /.checkbox-inline -->
   <!--<div class="checkbox checkbox-inline checkbox-advanced">-->
@@ -11,59 +11,42 @@
     <!--<label for="advanced-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}">Advanced</label>-->
   <!--</div>&lt;!&ndash; /.checkbox-inline &ndash;&gt;-->
   <div class="checkbox checkbox-inline checkbox-cardinality">
-    <input type="checkbox" id="cardinality-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}"  ng-model="$parent.element.properties._ui.is_cardinal_field" />
+    <input type="checkbox" id="cardinality-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}"  ng-model="$root.propertiesOf($parent.field)._ui.is_cardinal_field" />
     <label for="cardinality-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}" translate>GENERIC.Cardinality</label>
   </div><!-- /.checkbox-inline -->
   <div class="clearfix"></div>
 
   <!-- Cardinality Options -->
-  <div id="cardinality-options" class="cardinality-options" ng-show="$parent.element.properties._ui.is_cardinal_field">
+  <div id="cardinality-options" class="cardinality-options" ng-show="$root.propertiesOf($parent.field)._ui.is_cardinal_field">
     <div class="form-group validation-pattern pull-left min-items-option">
       <label translate>GENERIC.Min</label>
       <select class="" ng-model="$parent.field.minItems" title="" ng-options="v.value as v.label for v in $root.minCardinalities" select-picker="">
-        <option value="1">1</option>
-        <option value="2">2</option>
-        <option value="3">3</option>
-        <option value="4">4</option>
-        <option value="5">5</option>
-        <option value="6">6</option>
-        <option value="7">7</option>
-        <option value="8">8</option>
       </select>
     </div><!-- /.form-group -->
 
     <div class="form-group validation-pattern pull-left max-items-option">
       <label translate>GENERIC.Max</label>
-      <select class="" ng-model="$parent.field.maxItems" title="" ng-options="v.value as v.label for v in $root.maxCardinalities" select-picker="">
-        <option value="1">1</option>
-        <option value="2">2</option>
-        <option value="3">3</option>
-        <option value="4">4</option>
-        <option value="5">5</option>
-        <option value="6">6</option>
-        <option value="7">7</option>
-        <option value="8">8</option>
-        <option value="0">N</option>
+      <select class="" ng-model="$parent.field.maxItems" ng-options="v.value as v.label for v in $root.maxCardinalities" title="" select-picker="">
       </select>
     </div><!-- /.form-group -->
   </div><!-- /.cardinality-options -->
 </div><!-- /.toggle-options -->
 <div id="advanced-options-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}" class="advanced-options collapse">
   <div class="form-group validation-pattern floating-label-wrapper">
-    <input type="text" class="form-control" placeholder="Expression" aria-label="Advanced - Enter Expression" ng-model="field.properties._ui.advanced.expression" with-floating-label="" />
+    <input type="text" class="form-control" placeholder="Expression" aria-label="Advanced - Enter Expression" ng-model="$root.propertiesOf(field)._ui.advanced.expression" with-floating-label="" />
   </div><!-- /.form-group -->
   <div class="form-group validation-pattern">
-    <select class="form-control" multiple="" data-max-options="1" title="Select validation" ng-model="field.properties._ui.advanced.condition" select-picker="">
+    <select class="form-control" multiple="" data-max-options="1" title="Select validation" ng-model="$root.propertiesOf(field)._ui.advanced.condition" select-picker="">
       <option value="matches">Matches</option>
       <option value="greater-than">Greater Than</option>
       <option value="less-than">Less Than</option>
     </select>
   </div><!-- /.form-group -->
   <div class="form-group validation-pattern floating-label-wrapper">
-    <input type="text" class="form-control" placeholder="Pattern" aria-label="Advanced - Enter Pattern" ng-model="field.properties._ui.advanced.pattern" with-floating-label="" />
+    <input type="text" class="form-control" placeholder="Pattern" aria-label="Advanced - Enter Pattern" ng-model="$root.propertiesOf(field)._ui.advanced.pattern" with-floating-label="" />
   </div><!-- /.form-group -->
   <div class="form-group floating-label-wrapper">
-    <input type="text" class="form-control" placeholder="Enter Error Message" aria-label="Advanced - Enter Error Message" ng-model="field.properties._ui.advanced.error_message" with-floating-label="" />
+    <input type="text" class="form-control" placeholder="Enter Error Message" aria-label="Advanced - Enter Error Message" ng-model="$root.propertiesOf(field)._ui.advanced.error_message" with-floating-label="" />
   </div><!-- /.form-group -->
 </div><!-- /.advanced-options -->
 
@@ -72,7 +55,7 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"><img src="/img/close_modal.png" width="22" /></span></button>
       </div>
       <div class="modal-body">
         <div control-term field="$parent.$parent.$parent.field"></div>
