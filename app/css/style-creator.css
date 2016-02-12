@@ -8327,7 +8327,7 @@ button.close {
   vertical-align: middle;
   position: relative;
   padding-left: 5px;
-  font-family: 'aktiv-grotesk-std';
+  font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
   font-weight: 400;
 }
 .checkbox label::before {
@@ -8409,7 +8409,7 @@ button.close {
   vertical-align: middle;
   position: relative;
   padding-left: 10px;
-  font-family: 'aktiv-grotesk-std';
+  font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
   font-weight: 400;
 }
 .radio label::before {
@@ -9077,19 +9077,19 @@ button.close {
   opacity: 0;
 }
 .activ-grotesk-regular {
-  font-family: 'aktiv-grotesk-std';
+  font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
   font-weight: 400;
 }
 .activ-grotesk-medium {
-  font-family: 'aktiv-grotesk-std';
+  font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
   font-weight: 500;
 }
 .activ-grotesk-bold {
-  font-family: 'aktiv-grotesk-std';
+  font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
   font-weight: 700;
 }
 .ff-tisa-web-pro {
-  font-family: 'ff-tisa-web-pro';
+  font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
   font-weight: 400;
 }
 .link-transition {
@@ -9319,7 +9319,7 @@ i {
 .template-body .right-body #form-preview-section .form-preview p.type-label {
   width: 100%;
   text-align: left;
-  font-family: 'aktiv-grotesk-std';
+  font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
   font-weight: 400;
   text-transform: uppercase;
   color: #000000;
@@ -9639,7 +9639,7 @@ section.dashboard-elements p.instructions {
   padding-top: 15px;
 }
 section.dashboard-elements .btn-create-new {
-  font-family: 'aktiv-grotesk-std';
+  font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
   font-weight: 500;
   width: 100%;
   color: #ffffff;
@@ -9743,7 +9743,7 @@ section.dashboard-elements .dash-header .back {
   -webkit-transform: translateY(8px);
       -ms-transform: translateY(8px);
           transform: translateY(8px);
-  font-family: 'aktiv-grotesk-std';
+  font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
   font-weight: 500;
   color: #5795ba;
   cursor: pointer;
@@ -10016,7 +10016,7 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
 }
 .template-body form .form-group .warning-text,
 #element_control_term .form-group .warning-text {
-  font-family: 'aktiv-grotesk-std';
+  font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
   font-weight: 400;
   font-style: italic;
   font-size: 13px;
@@ -10036,7 +10036,7 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
 }
 .template-body form .form-group .additional-options span.or,
 #element_control_term .form-group .additional-options span.or {
-  font-family: 'aktiv-grotesk-std';
+  font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
   font-weight: 700;
   color: #999;
   text-transform: uppercase;
@@ -10050,7 +10050,7 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   background-color: #5795ba;
   border-radius: 0;
   color: #ffffff;
-  font-family: 'aktiv-grotesk-std';
+  font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
   font-weight: 400;
   border: none;
   vertical-align: middle;
@@ -10094,7 +10094,7 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   padding-left: 5px;
   font-size: 12px;
   text-transform: uppercase;
-  font-family: 'aktiv-grotesk-std';
+  font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
   font-weight: 500;
   color: #999;
 }
@@ -10224,7 +10224,7 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
 .template-body form .type-toggle .d-option span,
 #element_control_term .type-toggle .d-option span {
   text-transform: uppercase;
-  font-family: 'aktiv-grotesk-std';
+  font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
   font-weight: 500;
   font-size: 12px;
   color: #666;
@@ -10275,7 +10275,7 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   background-color: #5795ba;
   color: #ffffff;
   text-transform: uppercase;
-  font-family: 'aktiv-grotesk-std';
+  font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
   font-weight: 400;
   font-size: 16px;
   -webkit-transition: all 0.3s 0.1s;
@@ -10296,7 +10296,7 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   color: #5795ba;
   background-color: transparent;
   font-size: 14px;
-  font-family: 'aktiv-grotesk-std';
+  font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
   font-weight: 500;
   padding: 18px 0;
 }
@@ -10309,7 +10309,7 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   color: #2f7dab;
 }
 .popover {
-  font-family: 'aktiv-grotesk-std';
+  font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
   font-weight: 400;
   font-size: 12px;
   border-color: #5795ba;
@@ -10334,11 +10334,11 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   background-color: transparent;
   border: none;
   color: #5795ba;
-  font-family: 'aktiv-grotesk-std';
+  font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
   font-weight: 700;
 }
 .pagination-container .pagination li a > .prev {
-  font-family: 'aktiv-grotesk-std';
+  font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
   font-weight: 700;
   font-weight: bold;
   color: #5795ba;
@@ -10351,7 +10351,7 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   font-weight: bold;
 }
 .pagination-container .pagination li a > .next {
-  font-family: 'aktiv-grotesk-std';
+  font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
   font-weight: 700;
   font-weight: bold;
   color: #5795ba;
@@ -10385,7 +10385,7 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
 .input-type-container p.type-label {
   width: 100%;
   text-align: right;
-  font-family: 'aktiv-grotesk-std';
+  font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
   font-weight: 400;
   text-transform: uppercase;
   color: #000000;
@@ -10545,7 +10545,7 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
 .controlled-term-options .btn-back {
   color: #5795ba;
   background-color: transparent;
-  font-family: 'aktiv-grotesk-std';
+  font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
   font-weight: 700;
   font-style: italic;
   font-size: 12px;
@@ -10925,7 +10925,7 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
 .element-actions .clear-save .btn.btn-clear {
   color: #5795ba;
   background-color: transparent;
-  font-family: 'aktiv-grotesk-std';
+  font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
   font-weight: 700;
 }
 .element-actions .clear-save .btn.btn-clear:hover,
@@ -10985,7 +10985,7 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
 .template-actions .clear-save .btn.btn-clear {
   color: #5795ba;
   background-color: transparent;
-  font-family: 'aktiv-grotesk-std';
+  font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
   font-weight: 700;
 }
 .template-actions .clear-save .btn.btn-clear:hover,
