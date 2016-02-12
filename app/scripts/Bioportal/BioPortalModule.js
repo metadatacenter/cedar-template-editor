@@ -98,7 +98,13 @@ bioPortalModule
 
   	  // Manual drilling down into Class children upon user interaction via BioPortalService.getClassChildren() call
   	  element.find('a').on('click', function(event) {
-  		if (scope.subtree.hasChildren !== false && !scope.children) {
+        if (element.hasClass('expanded')) {
+          var childTree = element.find('ul.tree').empty();
+          delete scope.children;
+          delete scope.subtree.hasChildren;
+          element.removeClass('expanded');
+        }
+  		else if (scope.subtree.hasChildren !== false && !scope.children) {
   		  BioPortalService.getClassChildren(scope.subtree.links.ontology.slice(39), scope.subtree['@id']).then(function(response) {
             if (!response || response.length == 0) {
               scope.subtree.hasChildren = false;
