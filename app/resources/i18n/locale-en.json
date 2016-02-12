@@ -108,6 +108,9 @@
       "load": {
         "error": "There was an error while loading the template!<br /><br />VIEW TECHNICAL DETAILS!"
       },
+      "load-for-instance": {
+        "error": "Although the the instance was loaded, there was an error while loading the corresponding template!<br /><br />VIEW TECHNICAL DETAILS!"
+      },
       "delete": {
         "success": "The template has been deleted.",
         "error": "There was an error while deleting the template!<br /><br />VIEW TECHNICAL DETAILS!"

@@ -20,9 +20,7 @@ var CreateTemplateController = function ($rootScope, $scope, $routeParams, $time
   $rootScope.applicationRole = 'creator';
 
   AuthorizedBackendService.doCall(
-      function () {
-        return TemplateElementService.getAllTemplateElementsSummary();
-      },
+      TemplateElementService.getAllTemplateElementsSummary(),
       function (response) {
         $scope.elementList = response.data;
       },
@@ -37,9 +35,7 @@ var CreateTemplateController = function ($rootScope, $scope, $routeParams, $time
   if ($routeParams.id) {
     // Fetch existing form and assign to $scope.form property
     AuthorizedBackendService.doCall(
-        function () {
-          return TemplateService.getTemplate($routeParams.id);
-        },
+        TemplateService.getTemplate($routeParams.id),
         function (response) {
           $scope.form = response.data;
           // Set form preview to true so the preview is viewable onload
@@ -177,9 +173,7 @@ var CreateTemplateController = function ($rootScope, $scope, $routeParams, $time
       // Save template
       if ($routeParams.id == undefined) {
         AuthorizedBackendService.doCall(
-            function () {
-              return TemplateService.saveTemplate($scope.form);
-            },
+            TemplateService.saveTemplate($scope.form),
             function (response) {
               // confirm message
               UIMessageService.flashSuccess('SERVER.TEMPLATE.create.success', {"title": response.data._ui.title},
@@ -198,9 +192,7 @@ var CreateTemplateController = function ($rootScope, $scope, $routeParams, $time
         var id = $scope.form['@id'];
         //--//delete $scope.form['@id'];
         AuthorizedBackendService.doCall(
-            function () {
-              return TemplateService.updateTemplate(id, $scope.form);
-            },
+            TemplateService.updateTemplate(id, $scope.form),
             function (response) {
               $scope.form = response.data;
               UIMessageService.flashSuccess('SERVER.TEMPLATE.update.success',

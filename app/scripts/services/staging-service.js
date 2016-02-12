@@ -53,9 +53,7 @@ var StagingService = function ($rootScope, TemplateElementService, DataManipulat
     $scope.previewForm = {};
 
     AuthorizedBackendService.doCall(
-        function () {
-          return TemplateElementService.getTemplateElement(elementId);
-        },
+        TemplateElementService.getTemplateElement(elementId),
         function (response) {
           var newElement = response.data;
           newElement.minItems = 1;

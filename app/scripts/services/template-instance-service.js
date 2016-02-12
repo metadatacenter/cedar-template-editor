@@ -1,38 +1,38 @@
 'use strict';
 
-var TemplateInstanceService = function ($http, UrlService, AuthorizedBackendService) {
+var TemplateInstanceService = function (HttpBuilderService, UrlService) {
 
   var service = {
     serviceId: "TemplateInstanceService"
   };
 
   service.getDefaultTemplateInstancesSummary = function () {
-    return $http.get(UrlService.getDefaultTemplateInstancesSummary(10, 0), AuthorizedBackendService.getConfig());
+    return HttpBuilderService.get(UrlService.getDefaultTemplateInstancesSummary(10, 0));
   };
 
   service.getAllTemplateInstancesSummary = function () {
-    return $http.get(UrlService.getAllTemplateInstancesSummary(), AuthorizedBackendService.getConfig());
+    return HttpBuilderService.get(UrlService.getAllTemplateInstancesSummary());
   };
 
   service.getTemplateInstance = function (id) {
-    return $http.get(UrlService.getTemplateInstance(id), AuthorizedBackendService.getConfig());
+    return HttpBuilderService.get(UrlService.getTemplateInstance(id));
   };
 
   service.deleteTemplateInstance = function (id) {
-    return $http.delete(UrlService.getTemplateInstance(id), AuthorizedBackendService.getConfig());
+    return HttpBuilderService.delete(UrlService.getTemplateInstance(id));
   };
 
   service.saveTemplateInstance = function (instance) {
-    return $http.post(UrlService.templateInstances(), angular.toJson(instance), AuthorizedBackendService.getConfig());
+    return HttpBuilderService.post(UrlService.templateInstances(), angular.toJson(instance));
   };
 
   service.updateTemplateInstance = function (id, instance) {
-    return $http.put(UrlService.getTemplateInstance(id), angular.toJson(instance), AuthorizedBackendService.getConfig());
+    return HttpBuilderService.put(UrlService.getTemplateInstance(id), angular.toJson(instance));
   };
 
   return service;
 
 };
 
-TemplateInstanceService.$inject = ["$http", "UrlService", "AuthorizedBackendService"];
+TemplateInstanceService.$inject = ["HttpBuilderService", "UrlService"];
 angularApp.service('TemplateInstanceService', TemplateInstanceService);

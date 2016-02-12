@@ -22,9 +22,7 @@ var CreateElementController = function ($rootScope, $scope, $routeParams, $timeo
   $rootScope.applicationRole = 'creator';
 
   AuthorizedBackendService.doCall(
-      function () {
-        return TemplateElementService.getAllTemplateElementsSummary();
-      },
+      TemplateElementService.getAllTemplateElementsSummary(),
       function (response) {
         $scope.elementList = response.data;
       },
@@ -39,9 +37,7 @@ var CreateElementController = function ($rootScope, $scope, $routeParams, $timeo
   if ($routeParams.id) {
     // Fetch existing element and assign to $scope.element property
     AuthorizedBackendService.doCall(
-        function () {
-          return TemplateElementService.getTemplateElement($routeParams.id);
-        },
+        TemplateElementService.getTemplateElement($routeParams.id),
         function (response) {
           $scope.element = response.data;
           // Set form preview to true so the preview is viewable onload
@@ -183,9 +179,7 @@ var CreateElementController = function ($rootScope, $scope, $routeParams, $timeo
       // Check if the element is already stored into the DB
       if ($routeParams.id == undefined) {
         AuthorizedBackendService.doCall(
-            function () {
-              return TemplateElementService.saveTemplateElement($scope.element);
-            },
+            TemplateElementService.saveTemplateElement($scope.element),
             function (response) {
               // confirm message
               UIMessageService.flashSuccess('SERVER.ELEMENT.create.success',
@@ -205,9 +199,7 @@ var CreateElementController = function ($rootScope, $scope, $routeParams, $timeo
         var id = $scope.element['@id'];
         //--//delete $scope.element['@id'];
         AuthorizedBackendService.doCall(
-            function () {
-              return TemplateElementService.updateTemplateElement(id, $scope.element);
-            },
+            TemplateElementService.updateTemplateElement(id, $scope.element),
             function (response) {
               $scope.element = response.data;
               UIMessageService.flashSuccess('SERVER.ELEMENT.update.success', {"title": response.data.title},

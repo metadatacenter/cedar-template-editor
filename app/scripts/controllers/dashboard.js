@@ -7,9 +7,7 @@ var DashboardController = function ($rootScope, $scope, $routeParams, $location,
   // Remove template
   $scope.deleteTemplate = function (id) {
     AuthorizedBackendService.doCall(
-        function () {
-          return TemplateService.deleteTemplate(id);
-        },
+        TemplateService.deleteTemplate(id),
         function (response) {
           // Reload templates
           $scope.loadDefaultTemplates();
@@ -24,9 +22,7 @@ var DashboardController = function ($rootScope, $scope, $routeParams, $location,
   // Remove element
   $scope.deleteElement = function (id) {
     AuthorizedBackendService.doCall(
-        function () {
-          return TemplateElementService.deleteTemplateElement(id);
-        },
+        TemplateElementService.deleteTemplateElement(id),
         function (response) {
           // Reload elements
           $scope.loadDefaultTemplateElements();
@@ -41,9 +37,7 @@ var DashboardController = function ($rootScope, $scope, $routeParams, $location,
   // Remove populated template
   $scope.deleteInstance = function (id) {
     AuthorizedBackendService.doCall(
-        function () {
-          return TemplateInstanceService.deleteTemplateInstance(id);
-        },
+        TemplateInstanceService.deleteTemplateInstance(id),
         function (response) {
           // Reload instances
           $scope.loadDefaultTemplateInstances();
@@ -57,9 +51,7 @@ var DashboardController = function ($rootScope, $scope, $routeParams, $location,
 
   $scope.loadDefaultTemplateElements = function () {
     AuthorizedBackendService.doCall(
-        function () {
-          return TemplateElementService.getDefaultTemplateElementsSummary();
-        },
+        TemplateElementService.getDefaultTemplateElementsSummary(),
         function (response) {
           $scope.defaultElements = response.data;
         },
@@ -71,9 +63,7 @@ var DashboardController = function ($rootScope, $scope, $routeParams, $location,
 
   $scope.loadDefaultTemplates = function () {
     AuthorizedBackendService.doCall(
-        function () {
-          return TemplateService.getDefaultTemplatesSummary();
-        },
+        TemplateService.getDefaultTemplatesSummary(),
         function (response) {
           $scope.defaultTemplates = response.data;
         },
@@ -85,9 +75,7 @@ var DashboardController = function ($rootScope, $scope, $routeParams, $location,
 
   $scope.loadDefaultTemplateInstances = function () {
     AuthorizedBackendService.doCall(
-        function () {
-          return TemplateInstanceService.getDefaultTemplateInstancesSummary();
-        },
+        TemplateInstanceService.getDefaultTemplateInstancesSummary(),
         function (response) {
           $scope.defaultInstances = response.data;
         },

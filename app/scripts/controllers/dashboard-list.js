@@ -12,9 +12,7 @@ var DashboardListController = function ($rootScope, $scope, $routeParams, $locat
     $scope.createLink = '/elements/create';
 
     AuthorizedBackendService.doCall(
-        function () {
-          return TemplateElementService.getAllTemplateElementsSummary();
-        },
+        TemplateElementService.getAllTemplateElementsSummary(),
         function (response) {
           $scope.allTemplateElements = response.data;
         },
@@ -31,9 +29,7 @@ var DashboardListController = function ($rootScope, $scope, $routeParams, $locat
     $scope.createLink = '/templates/create';
 
     AuthorizedBackendService.doCall(
-        function () {
-          return TemplateService.getAllTemplatesSummary();
-        },
+        TemplateService.getAllTemplatesSummary(),
         function (response) {
           $scope.allTemplates = response.data;
         },
@@ -50,9 +46,7 @@ var DashboardListController = function ($rootScope, $scope, $routeParams, $locat
     $scope.createLink = '/instances/create';
 
     AuthorizedBackendService.doCall(
-        function () {
-          return TemplateInstanceService.getAllTemplateInstancesSummary();
-        },
+        TemplateInstanceService.getAllTemplateInstancesSummary(),
         function (response) {
           $scope.allTemplateInstances = response.data;
         },
@@ -65,9 +59,7 @@ var DashboardListController = function ($rootScope, $scope, $routeParams, $locat
   // Remove template
   $scope.deleteTemplate = function (id) {
     AuthorizedBackendService.doCall(
-        function () {
-          return TemplateService.deleteTemplate(id);
-        },
+        TemplateService.deleteTemplate(id),
         function (response) {
           // Reload templates
           $scope.listTemplates();
@@ -82,9 +74,7 @@ var DashboardListController = function ($rootScope, $scope, $routeParams, $locat
   // Remove element
   $scope.deleteElement = function (id) {
     AuthorizedBackendService.doCall(
-        function () {
-          return TemplateElementService.deleteTemplateElement(id);
-        },
+        TemplateElementService.deleteTemplateElement(id),
         function (response) {
           // Reload elements
           $scope.listTemplateElements();
@@ -99,9 +89,7 @@ var DashboardListController = function ($rootScope, $scope, $routeParams, $locat
   // Remove populated template
   $scope.deleteInstance = function (id) {
     AuthorizedBackendService.doCall(
-        function () {
-          return TemplateInstanceService.deleteTemplateInstance(id);
-        },
+        TemplateInstanceService.deleteTemplateInstance(id),
         function (response) {
           // Reload template instances
           $scope.listTemplateInstances();

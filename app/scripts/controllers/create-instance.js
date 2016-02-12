@@ -10,9 +10,7 @@ var CreateInstanceController = function ($rootScope, $scope, $routeParams, $loca
   $scope.$location = $location;
 
   AuthorizedBackendService.doCall(
-      function () {
-        return TemplateService.getAllTemplatesSummary();
-      },
+      TemplateService.getAllTemplatesSummary(),
       function (response) {
         $scope.templateList = response.data;
       },
@@ -45,9 +43,7 @@ var CreateInstanceController = function ($rootScope, $scope, $routeParams, $loca
   // Get/read form with given id from $routeParams
   $scope.getForm = function () {
     AuthorizedBackendService.doCall(
-        function () {
-          return TemplateService.getTemplate($routeParams.template_id);
-        },
+        TemplateService.getTemplate($routeParams.template_id),
         function (response) {
           // Assign returned form object from FormService to $scope.form
           $scope.template = response.data;
@@ -63,24 +59,30 @@ var CreateInstanceController = function ($rootScope, $scope, $routeParams, $loca
 
   // Get/read submission with given submission_id from $routeParams
   $scope.getInstance = function () {
-    // TODO: clean this up, protect backend
-
-    TemplateInstanceService.getTemplateInstance($routeParams.id).then(function (instanceResponse) {
-      // FormService.populatedTemplate returns an existing instance, assign it to our local $scope.instance
-      $scope.instance = instanceResponse.data;
-      //$scope.$broadcast('loadExistingModel', response);
-      // Get and load the template document this instance will populate from (will be blank form template)
-      TemplateService.getTemplate(instanceResponse.data._templateId).then(function (templateResponse) {
-        // Assign returned form object from FormService to $scope.form
-        $scope.template = templateResponse.data;
-        // $scope.initializePagination kicks off paging with form.pages array
-        $scope.initializePagination(templateResponse.data._ui.pages);
-      }).catch(function (err) {
-        UIMessageService.showBackendError('SERVER.TEMPLATE.load.error', err);
-      });
-    }).catch(function (err) {
-      UIMessageService.showBackendError('SERVER.INSTANCE.load.error', err);
-    });
+    AuthorizedBackendService.doCall(
+        TemplateInstanceService.getTemplateInstance($routeParams.id),
+        function (instanceResponse) {
+          // FormService.populatedTemplate returns an existing instance, assign it to our local $scope.instance
+          $scope.instance = instanceResponse.data;
+          //$scope.$broadcast('loadExistingModel', response);
+          // Get and load the template document this instance will populate from (will be blank form template)
+          AuthorizedBackendService.doCall(
+              TemplateService.getTemplate(instanceResponse.data._templateId),
+              function (templateResponse) {
+                // Assign returned form object from FormService to $scope.form
+                $scope.template = templateResponse.data;
+                // $scope.initializePagination kicks off paging with form.pages array
+                $scope.initializePagination(templateResponse.data._ui.pages);
+              },
+              function (templateErr) {
+                UIMessageService.showBackendError('SERVER.TEMPLATE.load-for-instance.error', templateErr);
+              }
+          );
+        },
+        function (instanceErr) {
+          UIMessageService.showBackendError('SERVER.INSTANCE.load.error', instanceErr);
+        }
+    );
   };
 
   // Create new instance
@@ -136,9 +138,7 @@ var CreateInstanceController = function ($rootScope, $scope, $routeParams, $loca
       $scope.instance._ui['creationDate'] = new Date();
       // Make create instance call
       AuthorizedBackendService.doCall(
-          function () {
-            return TemplateInstanceService.saveTemplateInstance($scope.instance);
-          },
+          TemplateInstanceService.saveTemplateInstance($scope.instance),
           function (response) {
             // confirm message
             UIMessageService.flashSuccess('SERVER.INSTANCE.create.success', null, 'GENERIC.Created');
@@ -154,9 +154,7 @@ var CreateInstanceController = function ($rootScope, $scope, $routeParams, $loca
     // Update instance
     else if ($rootScope.isEmpty($scope.emptyRequiredFields) && $rootScope.isEmpty($scope.invalidFieldValues)) {
       AuthorizedBackendService.doCall(
-          function () {
-            return TemplateInstanceService.updateTemplateInstance($scope.instance['@id'], $scope.instance);
-          },
+          TemplateInstanceService.updateTemplateInstance($scope.instance['@id'], $scope.instance),
           function (response) {
             UIMessageService.flashSuccess('SERVER.INSTANCE.update.success', null, 'GENERIC.Updated');
           },

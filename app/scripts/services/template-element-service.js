@@ -1,38 +1,38 @@
 'use strict';
 
-var TemplateElementService = function ($http, UrlService, AuthorizedBackendService) {
+var TemplateElementService = function (HttpBuilderService, UrlService) {
 
   var service = {
     serviceId: "TemplateElementService"
   };
 
   service.getDefaultTemplateElementsSummary = function () {
-    return $http.get(UrlService.getDefaultTemplateElementsSummary(3, 0), AuthorizedBackendService.getConfig());
+    return HttpBuilderService.get(UrlService.getDefaultTemplateElementsSummary(3, 0));
   };
 
   service.getAllTemplateElementsSummary = function () {
-    return $http.get(UrlService.getAllTemplateElementsSummary(), AuthorizedBackendService.getConfig());
+    return HttpBuilderService.get(UrlService.getAllTemplateElementsSummary());
   };
 
   service.getTemplateElement = function (id) {
-    return $http.get(UrlService.getTemplateElement(id), AuthorizedBackendService.getConfig());
+    return HttpBuilderService.get(UrlService.getTemplateElement(id));
   };
 
   service.deleteTemplateElement = function (id) {
-    return $http.delete(UrlService.getTemplateElement(id), AuthorizedBackendService.getConfig());
+    return HttpBuilderService.delete(UrlService.getTemplateElement(id));
   };
 
   service.saveTemplateElement = function (element) {
-    return $http.post(UrlService.templateElements(), angular.toJson(element), AuthorizedBackendService.getConfig());
+    return HttpBuilderService.post(UrlService.templateElements(), angular.toJson(element));
   };
 
   service.updateTemplateElement = function (id, element) {
-    return $http.put(UrlService.getTemplateElement(id), angular.toJson(element), AuthorizedBackendService.getConfig());
+    return HttpBuilderService.put(UrlService.getTemplateElement(id), angular.toJson(element));
   };
 
   return service;
 
 };
 
-TemplateElementService.$inject = ["$http", "UrlService", "AuthorizedBackendService"];
+TemplateElementService.$inject = ["HttpBuilderService", "UrlService"];
 angularApp.service('TemplateElementService', TemplateElementService);

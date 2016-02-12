@@ -1,38 +1,38 @@
 'use strict';
 
-var TemplateService = function ($http, UrlService, AuthorizedBackendService) {
+var TemplateService = function (HttpBuilderService, UrlService) {
 
   var service = {
     serviceId: "TemplateService"
   };
 
   service.getDefaultTemplatesSummary = function () {
-    return $http.get(UrlService.getDefaultTemplatesSummary(3, 0), AuthorizedBackendService.getConfig());
+    return HttpBuilderService.get(UrlService.getDefaultTemplatesSummary(3, 0));
   };
 
   service.getAllTemplatesSummary = function () {
-    return $http.get(UrlService.getAllTemplatesSummary(), AuthorizedBackendService.getConfig());
+    return HttpBuilderService.get(UrlService.getAllTemplatesSummary());
   };
 
   service.getTemplate = function (id) {
-    return $http.get(UrlService.getTemplate(id), AuthorizedBackendService.getConfig());
+    return HttpBuilderService.get(UrlService.getTemplate(id));
   };
 
   service.deleteTemplate = function (id) {
-    return $http.delete(UrlService.getTemplate(id), AuthorizedBackendService.getConfig());
+    return HttpBuilderService.delete(UrlService.getTemplate(id));
   };
 
   service.saveTemplate = function (template) {
-    return $http.post(UrlService.templates(), angular.toJson(template), AuthorizedBackendService.getConfig());
+    return HttpBuilderService.post(UrlService.templates(), angular.toJson(template));
   };
 
   service.updateTemplate = function (id, template) {
-    return $http.put(UrlService.getTemplate(id), angular.toJson(template), AuthorizedBackendService.getConfig());
+    return HttpBuilderService.put(UrlService.getTemplate(id), angular.toJson(template));
   };
 
   return service;
 
 };
 
-TemplateService.$inject = ["$http", "UrlService", "AuthorizedBackendService"];
+TemplateService.$inject = ["HttpBuilderService", "UrlService"];
 angularApp.service('TemplateService', TemplateService);
