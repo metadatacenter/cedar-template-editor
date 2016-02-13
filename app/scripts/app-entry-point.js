@@ -10,36 +10,27 @@ function continueWithAngularApp() {
   window.cedarBootstrap.preload();
 }
 
-function successInitKeycloak(authenticated) {
-  console.log("Keycloak init success. Authenticated: " + authenticated);
+function successInitUserHandler(authenticated) {
+  console.log("User handler init success. Authenticated: " + authenticated);
   if (!authenticated) {
-    window.keycloakBootstrap.doLogin();
+    window.bootstrapUserHandler.doLogin();
   } else {
-    /*console.log("Parsed token");
-    console.log(window.keycloakBootstrap.getParsedToken());
-    console.log("Realm roles");
-    console.log(window.keycloakBootstrap.getParsedToken()['realm_access']['roles']);
-    console.log("Token validity");
-    console.log(window.keycloakBootstrap.getTokenValiditySeconds() + " seconds");
-    window.keycloakBootstrap.readUserDetails(successReadUserDetails);*/
-    //console.log(window.keycloakBootstrap.getParsedToken());
     continueWithAngularApp();
   }
 }
 
-function failInitKeycloak() {
+function failInitUserHandler() {
   alert("There was an error initializing the application!");
 }
 
-/*function successReadUserDetails(data) {
-  console.log("Logged in user data available");
-  console.log(data);
-  continueWithAngularApp();
-}*/
-
+// -------------------------- ENTRY POINT --------------------------------------
 angular.element(document).ready(function (doc) {
-  window.keycloakBootstrap = new KeycloakBootstrap();
-  window.keycloakBootstrap.init(successInitKeycloak, failInitKeycloak);
+  // use this for live servers
+  window.bootstrapUserHandler = new KeycloakUserHandler();
+  // use this for unauthorized access during development
+  //window.bootstrapUserHandler = new NoauthUserHandler();
+
+  window.bootstrapUserHandler.init(successInitUserHandler, failInitUserHandler);
 });
 
 

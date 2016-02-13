@@ -6,7 +6,7 @@
 
 var angularRun = function ($rootScope, BioPortalService, $location, $timeout, $window, $translate,
                            DataTemplateService, DataManipulationService, FieldTypeService, UrlService, HeaderService, UIUtilService,
-                           CONST) {
+                           UserService, CONST) {
 
   $rootScope.isArray = angular.isArray;
 
@@ -286,18 +286,18 @@ var angularRun = function ($rootScope, BioPortalService, $location, $timeout, $w
   DataManipulationService.init();
   HeaderService.init();
 
-  var pt = $window.keycloakBootstrap.getParsedToken();
+  UserService.injectUserHandler($window.bootstrapUserHandler);
+
+  var pt = UserService.getParsedToken();
   $rootScope.currentUser = {
     "name": pt.name,
     "id": pt.sub,
     "email": pt.email,
     "roles": pt.realm_access.roles
   };
-  //console.log("angular currentUser");
-  //console.log($rootScope.currentUser);
 };
 
 angularRun.$inject = ['$rootScope', 'BioPortalService', '$location', '$timeout', '$window', '$translate',
   'DataTemplateService', 'DataManipulationService', 'FieldTypeService', 'UrlService', 'HeaderService', 'UIUtilService',
-  'CONST'];
+  'UserService','CONST'];
 angularApp.run(angularRun);

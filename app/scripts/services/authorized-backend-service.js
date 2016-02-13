@@ -1,15 +1,16 @@
 'use strict';
 
-var AuthorizedBackendService = function ($http, $timeout, UIMessageService) {
+var AuthorizedBackendService = function ($http, $timeout, UIMessageService, UserService) {
 
   var service = {
     serviceId: "AuthorizedBackendService"
   };
 
   service.getConfig = function () {
+    var token = UserService.getToken();
     return {
       "headers": {
-        "Authorization": "bearer " + window.keycloakBootstrap.getToken(),
+        "Authorization": token == null? "" : "bearer " + token,
       }
     };
   };
@@ -23,7 +24,7 @@ var AuthorizedBackendService = function ($http, $timeout, UIMessageService) {
     UIMessageService.acknowledgedExecution(
         function () {
           $timeout(function () {
-            window.keycloakBootstrap.doLogout();
+            UserService.doLogout();
           });
         },
         'GENERIC.Warning',
@@ -52,7 +53,7 @@ var AuthorizedBackendService = function ($http, $timeout, UIMessageService) {
   };
 
   service.getTokenValidityMessage = function () {
-    return 'Token validity:' + window.keycloakBootstrap.getTokenValiditySeconds() + ' seconds';
+    return 'Token validity:' + UserService.getTokenValiditySeconds() + ' seconds';
   }
 
   service.doCall = function (httpConfigObject, thenFunction, catchFunction) {
@@ -75,11 +76,11 @@ var AuthorizedBackendService = function ($http, $timeout, UIMessageService) {
 
           if (suggestedAction == "refreshToken") {
             console.log("DO refresh token");
-            window.keycloakBootstrap.refreshToken(null,
+            UserService.refreshToken(null,
                 function (refreshed) {
                   if (refreshed) {
                     console.log("Token successfully refreshed");
-                    //console.log(window.keycloakBootstrap.getParsedToken());
+                    //console.log(UserService.getParsedToken());
                     console.log("Execute original call once again");
                     owner.getHttpPromise(httpConfigObject).then(function (response) {
                       thenFunction(response);
@@ -111,5 +112,5 @@ var AuthorizedBackendService = function ($http, $timeout, UIMessageService) {
 
 };
 
-AuthorizedBackendService.$inject = ["$http", "$timeout", "UIMessageService"];
+AuthorizedBackendService.$inject = ["$http", "$timeout", "UIMessageService", "UserService"];
 angularApp.service('AuthorizedBackendService', AuthorizedBackendService);

@@ -1,4 +1,4 @@
-function KeycloakBootstrap() {
+function KeycloakUserHandler() {
 
   var keycloak = Keycloak();
 

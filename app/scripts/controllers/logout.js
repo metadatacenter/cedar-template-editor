@@ -1,13 +1,16 @@
 'use strict';
 
-angularApp.controller('LogoutController', function () {
+var LogoutController = function (UserService) {
   var redirectUri = location.href;
   var hashPos = redirectUri.indexOf("#");
   if (hashPos >= 0) {
     redirectUri = redirectUri.substr(0, hashPos);
   }
-  console.log(redirectUri);
-  window.keycloakBootstrap.doLogout({
+  //console.log(redirectUri);
+  UserService.doLogout({
     "redirectUri": redirectUri
   });
-});
+};
+
+LogoutController.$inject = ["UserService"];
+angularApp.controller('LogoutController', LogoutController);

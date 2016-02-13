@@ -1,6 +1,6 @@
 'use strict';
 
-var ProfileController = function ($rootScope, $scope, $window, HeaderService, CONST) {
+var ProfileController = function ($rootScope, $scope, $window, HeaderService, UserService, CONST) {
 
   $rootScope.pageTitle = 'Profile';
 
@@ -11,10 +11,10 @@ var ProfileController = function ($rootScope, $scope, $window, HeaderService, CO
   var applicationMode = CONST.applicationMode.DEFAULT;
   HeaderService.configure(pageId, applicationMode);
 
-  $scope.getTokenValidity = function() {
-    return $window.keycloakBootstrap.getTokenValiditySeconds();
+  $scope.getTokenValidity = function () {
+    return UserService.getTokenValiditySeconds();
   }
 };
 
-ProfileController.$inject = ["$rootScope", "$scope", "$window", "HeaderService", "CONST"];
+ProfileController.$inject = ["$rootScope", "$scope", "$window", "HeaderService", "UserService", "CONST"];
 angularApp.controller('ProfileController', ProfileController);
