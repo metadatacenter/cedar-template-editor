@@ -71,13 +71,12 @@ bioPortalModule
     link: function(scope, element, attrs) {
       // Recycle function to add nest children under parent element
       function nestChildren(children) {
-    	element.addClass('expanded');
+    	  element.addClass('expanded loaded');
 
-		var children = '<class-tree tree="' + children + '" term="term" level="' + (scope.level + 1) + '"></class-tree>';
-		$compile(children)(scope, function(cloned, scope){
-		  element.append(cloned);
-		});
-
+    		var children = '<class-tree tree="' + children + '" term="term" level="' + (scope.level + 1) + '"></class-tree>';
+    		$compile(children)(scope, function(cloned, scope){
+    		  element.append(cloned);
+    		});
       }
 
       if (scope.subtree) {
@@ -98,22 +97,21 @@ bioPortalModule
 
   	  // Manual drilling down into Class children upon user interaction via BioPortalService.getClassChildren() call
   	  element.find('a').on('click', function(event) {
-        if (element.hasClass('expanded')) {
-          var childTree = element.find('ul.tree').empty();
-          delete scope.children;
-          delete scope.subtree.hasChildren;
-          element.removeClass('expanded');
-        }
-  		else if (scope.subtree.hasChildren !== false && !scope.children) {
-  		  BioPortalService.getClassChildren(scope.subtree.links.ontology.slice(39), scope.subtree['@id']).then(function(response) {
-            if (!response || response.length == 0) {
-              scope.subtree.hasChildren = false;
-            }
-
-  			scope.children = response;
-  			nestChildren('children');
-  		  });
-  		}
+        if (jQuery(this).parent().hasClass("expanded")) {
+          jQuery(this).parent().removeClass("expanded");
+        } else if (jQuery(this).parent().hasClass("loaded")){
+          jQuery(this).parent().addClass("expanded");
+        } else {
+          if (scope.subtree.hasChildren !== false && !scope.children) {
+      		BioPortalService.getClassChildren(scope.subtree.links.ontology.slice(39), scope.subtree['@id']).then(function(response) {
+              if (!response || response.length == 0) {
+                scope.subtree.hasChildren = false;
+              }
+        	  scope.children = response;
+        	  nestChildren('children');
+      		});
+          }
+    	}
   	  });
     }
   };
@@ -241,4 +239,3 @@ bioPortalModule.controller('BioPortalController', function($scope, BioPortalServ
 		}
 	}
 });
-

@@ -2365,8 +2365,10 @@ section.dashboard-elements {
 
   li {
     margin:0;
-    padding: 5px 1.5em; /* indentation + .5em */
+    padding: 5px 1em; /* indentation + .5em */
     line-height:22px; /* default list item's `line-height` */
+    height: 30px;
+    overflow: hidden;
     font-weight:bold;
     position:relative;
     a {
@@ -2387,6 +2389,8 @@ section.dashboard-elements {
 
     &.expanded {
       // border-left: 1px dotted;
+      height: auto;
+      overflow: visible;
 
       &:last-child {
         border-left: none;
@@ -2399,11 +2403,13 @@ section.dashboard-elements {
     display:block;
     width:16px; /* same with indentation */
     height:22px;
+    float: left;
     // border-top:1px solid;
     // margin-top:-1px; /* border top width */
-    position:absolute;
-    top: 2px; /* (line-height/2) */
-    left: -8px;
+    // position:absolute;
+    // top: 2px; /* (line-height/2) */
+    // left: -8px;
+
   }
 
   li:last-child:before {
@@ -2428,6 +2434,7 @@ section.dashboard-elements {
   .has-children {
     > a:before {
       // background: url("../scripts/Bioportal/assets/upper_node_collapse.gif") no-repeat center top transparent;
+      background: url("/img/collapsed_arrow.png") no-repeat center center transparent;
     }
     &:last-child {
       > a:before {
@@ -2438,6 +2445,7 @@ section.dashboard-elements {
     &.expanded {
       > a:before {
         // background: url("../scripts/Bioportal/assets/upper_node_expand.gif") no-repeat center top transparent;
+        background: url("/img/expanded_arrow.png") no-repeat center center transparent;
       }
       &:last-child {
         > a:before {

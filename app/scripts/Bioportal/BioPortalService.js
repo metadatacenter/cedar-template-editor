@@ -110,7 +110,7 @@ bioPortalModule.service('BioPortalService', function BioPortalService($http, $q)
 	  if (query.slice(0, 27) == 'http://data.bioontology.org') {
 		request = query;
 	  }
-      
+
       return $http.get(request, http_default_config).then(function(response) {
 		return response.data;
 	  }).catch(function(err) {
@@ -201,7 +201,7 @@ bioPortalModule.service('BioPortalService', function BioPortalService($http, $q)
 	getOntologyValueSets: function(acronym) {
 	  //ontologies/NLMVS/classes/roots
 	  // Get all value sets that belong to a specific Ontology
-	  return $http.get(base + 'ontologies/' + acronym + '/classes/roots', http_default_config).then(function(response) {
+	  return $http.get(base + 'ontologies/' + acronym + '/classes/roots?include=hasChildren,prefLabel,definition,properties', http_default_config).then(function(response) {
 		return response.data;
 	  }).catch(function(err) {
 		return err;
