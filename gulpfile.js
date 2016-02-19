@@ -69,28 +69,11 @@ gulp.task('copy:resources', function() {
 });
 
 gulp.task('server', function() {
-	connect.server({
-		root: 'app',
-		port: 4200,
-		livereload: true,
-		//middleware: function(connect, opt) {
-		//	console.log(opt);
-		//	opt.route = '/proxy';
-		//	var proxy = new Proxy(opt);
-		//	return [proxy, historyApiFallback({
-		//		// See: https://github.com/bripkens/connect-history-api-fallback
-		//		verbose: true,
-		//		rewrites: [
-		//			{
-		//				from: /^.*\/elements\/edit\/.*$/,
-		//				to: function(context) {
-		//					return '/';
-		//				}
-		//			}
-		//		]
-		//	})];
-		//}
-	})
+  connect.server({
+	root: 'app',
+	port: 4200,
+	livereload: true,
+  })
 });
 
 gulp.task('cache-ontologies', function() {
@@ -188,23 +171,6 @@ gulp.task('html', function () {
     .pipe(connect.reload());
 });
 
-// gulp.task('compress', function() {
-//   return gulp.src('scripts/*.js')
-//    .pipe(uglify())
-//    .pipe(gulp.dest('dist/js'));
-// });
-
-// gulp.task('htmlreplace', function() {
-//   gulp.src('index.html')
-//     .pipe(htmlreplace({
-//      'css': 'dist/css/styles.css',
-//      'js/plugins': 'dist/js/plugins.js',
-//      'js/modules': 'dist/js/modules.js'
-//      'js/angular': 'dist/js/angular-scripts.js'
-//     }))
-//     .pipe(gulp.dest('build/'));
-// });
-
 // Watch files for changes
 gulp.task('watch', function() {
   gulp.watch('app/scripts/*.js', ['lint']);
@@ -214,8 +180,6 @@ gulp.task('watch', function() {
 
 // Default task
 gulp.task('default', ['server', 'lint', 'less', 'copy:resources', 'watch']);
-// Build task
-//gulp.task('build', ['minifyCSS', 'htmlreplace', 'angular']);
 
 gulp.task('test', function (done) {
   new Server({
