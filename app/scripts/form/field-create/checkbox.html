@@ -1,0 +1,27 @@
+<div id="checkbox-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}" class="input-type-container">
+  <p class="type-label"><i class="cedar-svg-checkbox"></i>Checkbox</p>
+
+  <div class="form-group">
+    <div class="form-group floating-label-wrapper">
+      <input type="text" class="form-control" id="placeholder-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}" placeholder="Field Title" aria-label="Field Title" ng-model="$root.propertiesOf(field)._ui.title"  with-floating-label>
+    </div><!-- /.form-group -->
+    <div class="options-wrapper">
+      <div class="multiple-container">
+        <span ng-repeat="(index, value) in $root.propertiesOf(field)._ui.options">
+          <div class="checkbox checkbox-primary">
+            <input type="checkbox" id="checkbox-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}-{{index}}" name="checkbox-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}" ng-model="$root.propertiesOf(field)._ui.defaultOption[value.text]" value="{{$root.propertiesOf(field)._ui.options[index]['text']}}">
+            <label for="checkbox-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}-{{index}}">
+              <div class="form-group floating-label-wrapper">
+                <input type="text" class="form-control" id="placeholder-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}" placeholder="Option" aria-label="Option" ng-model="$root.propertiesOf(field)._ui.options[index]['text']"  with-floating-label>
+              </div><!-- /.form-group -->
+            </label>
+          </div><!-- /.checkbox -->
+        </span>
+        <p class="add-another" ng-click="option()"><img src="/img/plus.png" />Add Another</p>
+      </div><!-- /.multiple-container -->
+      <p class="instructions">Click choice to set as default</p>
+    </div><!-- /.options-wrapper -->
+  </div><!-- /.form-group -->
+
+  <ng-include src="'scripts/form/partials/staging-area-footer.partial.html'" />
+</div><!-- /.input-type-container -->
