@@ -1,4 +1,4 @@
-<form name="templateForm" id="{{form['@id']}}" class="runtime" ng-class="{'validate': checkSubmission}" novalidate angular-validator>
+<form name="templateForm" id="{{form['@id']}}" class="runtime" ng-class="{'validate': checkSubmission}" novalidate>
   <!--Loop through top level "page" parameter in form element and call element-directive or field-directive with contents -->
   <div class="page" ng-repeat="page in pagesArray" ng-if="$root.isRuntime()">
     <div ng-repeat="item in page" class="animate-fade" ng-show="pageIndex == $parent.$index">
