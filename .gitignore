@@ -9,3 +9,7 @@ npm-debug.log
 .idea/
 
 .DS_Store
+
+keycloak.json
+
+app/config/url-service.conf.json

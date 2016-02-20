@@ -2,9 +2,9 @@
 
 define([
   'angular'
-], function(angular) {
+], function (angular) {
   angular.module('cedar.templateEditor.service.UIMessageService', [])
-    .service('UIMessageService', UIMessageService);
+      .service('UIMessageService', UIMessageService);
 
   UIMessageService.$inject = ['toasty', '$translate'];
 
@@ -30,41 +30,73 @@ define([
         callback();
       } else {
         swal({
-          title             : $translate.instant(titleKey),
-          text              : $translate.instant(textKey),
-          type              : "warning",
-          showCancelButton  : true,
-          confirmButtonText : $translate.instant(confirmTextKey),
-          closeOnConfirm    : true,
-          customClass       : 'cedarSWAL',
-          confirmButtonColor: null
-        },
-             function (isConfirm) {
-               if (isConfirm) {
-                 callback();
-               }
-             }
-            );
+              title             : $translate.instant(titleKey),
+              text              : $translate.instant(textKey),
+              type              : "warning",
+              showCancelButton  : true,
+              confirmButtonText : $translate.instant(confirmTextKey),
+              closeOnConfirm    : true,
+              customClass       : 'cedarSWAL',
+              confirmButtonColor: null
+            },
+            function (isConfirm) {
+              if (isConfirm) {
+                callback();
+              }
+            }
+        );
       }
     };
 
     service.confirmedExecution = function (callback, titleKey, textKey, confirmTextKey) {
       swal({
+            title             : $translate.instant(titleKey),
+            text              : $translate.instant(textKey),
+            type              : "warning",
+            showCancelButton  : true,
+            confirmButtonText : $translate.instant(confirmTextKey),
+            closeOnConfirm    : true,
+            customClass       : 'cedarSWAL',
+            confirmButtonColor: null
+          },
+          function (isConfirm) {
+            if (isConfirm) {
+              callback();
+            }
+          });
+    };
+
+    service.acknowledgedExecution = function (callback, titleKey, textKey, confirmTextKey) {
+      swal({
+            title             : $translate.instant(titleKey),
+            text              : $translate.instant(textKey),
+            type              : "warning",
+            showCancelButton  : false,
+            confirmButtonText : $translate.instant(confirmTextKey),
+            closeOnConfirm    : true,
+            customClass       : 'cedarSWAL',
+            confirmButtonColor: null,
+            html              : true
+          },
+          function () {
+            callback();
+          });
+    };
+
+    service.showWarning = function (titleKey, textKey, confirmTextKey, textParameters) {
+      swal({
         title             : $translate.instant(titleKey),
-        text              : $translate.instant(textKey),
+        text              : $translate.instant(textKey, textParameters),
         type              : "warning",
-        showCancelButton  : true,
+        showCancelButton  : false,
         confirmButtonText : $translate.instant(confirmTextKey),
         closeOnConfirm    : true,
         customClass       : 'cedarSWAL',
-        confirmButtonColor: null
-      },
-           function (isConfirm) {
-             if (isConfirm) {
-               callback();
-             }
-           });
+        confirmButtonColor: null,
+        html              : true
+      });
     };
+
 
     service.showBackendError = function (messageKey, response) {
       var errorObject = response.data;

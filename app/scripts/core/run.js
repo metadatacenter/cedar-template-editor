@@ -4,17 +4,18 @@
 
 define([
   'angular'
-], function(angular) {
+], function (angular) {
   angular.module('cedar.templateEditor.core.run', [])
-    .run(cedarTemplateEditorCoreRun);
+      .run(cedarTemplateEditorCoreRun);
 
-  cedarTemplateEditorCoreRun.$inject = ['$rootScope', 'controlTermService', '$location', '$timeout', '$window', '$translate',
-                                        'DataTemplateService', 'DataManipulationService', 'FieldTypeService', 'UrlService',
-                                        'HeaderService', 'UIUtilService', 'CONST'];
+  cedarTemplateEditorCoreRun.$inject = ['$rootScope', 'controlTermService', '$location', '$timeout', '$window',
+                                        '$translate', 'DataTemplateService', 'DataManipulationService',
+                                        'FieldTypeService', 'UrlService', 'HeaderService', 'UIUtilService',
+                                        'UserService', 'CONST'];
 
   function cedarTemplateEditorCoreRun($rootScope, controlTermService, $location, $timeout, $window, $translate,
                                       DataTemplateService, DataManipulationService, FieldTypeService, UrlService,
-                                      HeaderService, UIUtilService, CONST) {
+                                      HeaderService, UIUtilService, UserService, CONST) {
 
 
     $rootScope.isArray = angular.isArray;
@@ -51,14 +52,14 @@ define([
     // Capitalize first letter
     $rootScope.capitalizeFirst = function (string) {
       string = string.toLowerCase();
-      return string.substring(0,1).toUpperCase() + string.substring(1);
+      return string.substring(0, 1).toUpperCase() + string.substring(1);
     };
 
     // Returning true if the object key value in the properties object is of json-ld type '@' or if it corresponds to any of the reserved fields
     $rootScope.ignoreKey = function (key) {
       //var pattern = /^@/i,
       var pattern = /(^@)|(^_ui$)|(^templateId$)/i,
-      result = pattern.test(key);
+          result = pattern.test(key);
 
       return result;
     };
@@ -78,7 +79,7 @@ define([
     $rootScope.sortBoolean = function (array, bool) {
       return array.sort(function (a, b) {
         var x = a[bool],
-        y = b[bool];
+            y = b[bool];
         return ((x == y) ? -1 : ((x === true) ? -1 : 1));
       });
     };
@@ -147,13 +148,13 @@ define([
           (field.maxItems && field.maxItems > 1) || // has maxItems of more than 1
           (field.minItems && field.minItems > 1)) { // has minItems of more than 1
         field.items = {
-          'type': field.type,
-          '@id': field['@id'],
-          '$schema': field.schema,
-          'title': field.properties._ui.title,
-          'description': field.properties._ui.description,
-          'properties': field.properties,
-          'required': field.required,
+          'type'                : field.type,
+          '@id'                 : field['@id'],
+          '$schema'             : field.schema,
+          'title'               : field.properties._ui.title,
+          'description'         : field.properties._ui.description,
+          'properties'          : field.properties,
+          'required'            : field.required,
           'additionalProperties': field.additionalProperties
         };
         field.type = 'array';
@@ -227,7 +228,7 @@ define([
     };
 
     $rootScope.console = function (txt, label) {
-      console.log(label + ' ' + JSON.stringify(txt,null,2));
+      console.log(label + ' ' + JSON.stringify(txt, null, 2));
     };
 
     $rootScope.isRuntime = function () {
@@ -350,9 +351,9 @@ define([
 
     $rootScope.hasValueConstraint = function (vcst) {
       var result = vcst && (vcst.ontologies && vcst.ontologies.length > 0 ||
-                            vcst.valueSets && vcst.valueSets.length > 0 ||
-                            vcst.classes && vcst.classes.length > 0 ||
-                            vcst.branches && vcst.branches.length > 0);
+          vcst.valueSets && vcst.valueSets.length > 0 ||
+          vcst.classes && vcst.classes.length > 0 ||
+          vcst.branches && vcst.branches.length > 0);
 
       return result;
     };
@@ -404,12 +405,12 @@ define([
       for (i = 0; i < response.collection.length; i++) {
         if (!response.collection[i].found) {
           $rootScope.autocompleteResultsCache[field_id].results.push(
-            {
-              '@id':       response.collection[i]['@id'],
-              'label':     response.collection[i].prefLabel,
-              'type':      field_type,
-              'sourceUri': source_uri
-            }
+              {
+                '@id'      : response.collection[i]['@id'],
+                'label'    : response.collection[i].prefLabel,
+                'type'     : field_type,
+                'sourceUri': source_uri
+              }
           );
         }
       }
@@ -448,22 +449,22 @@ define([
         angular.forEach(vcst.classes, function (klass) {
           if (term == '*') {
             $rootScope.autocompleteResultsCache[field_id].results.push(
-              {
-                '@id':       klass.uri,
-                'label':     klass.label,
-                'type':      'Ontology Class',
-                'sourceUri': 'template'
-              }
+                {
+                  '@id'      : klass.uri,
+                  'label'    : klass.label,
+                  'type'     : 'Ontology Class',
+                  'sourceUri': 'template'
+                }
             );
           } else {
             if (klass && klass.label && klass.label.toLowerCase().indexOf(term.toLowerCase()) !== -1) {
               $rootScope.autocompleteResultsCache[field_id].results.push(
-                {
-                  '@id':       klass.uri,
-                  'label':     klass.label,
-                  'type':      'Ontology Class',
-                  'sourceUri': 'template'
-                }
+                  {
+                    '@id'      : klass.uri,
+                    'label'    : klass.label,
+                    'type'     : 'Ontology Class',
+                    'sourceUri': 'template'
+                  }
               );
             }
           }
@@ -471,7 +472,7 @@ define([
         if (term !== '*') {
           if ($rootScope.autocompleteResultsCache[field_id].results.length === 0) {
             $rootScope.autocompleteResultsCache[field_id].results.push({
-              'label':     $translate.instant('GENERIC.NoResults'),
+              'label'    : $translate.instant('GENERIC.NoResults'),
               'sourceUri': 'template'
             });
           }
@@ -483,8 +484,8 @@ define([
           if (term == '*') {
             $rootScope.removeAutocompleteResultsForSource(field_id, valueSet.uri);
           }
-          controlTermService.autocompleteValueSetClasses (term, valueSet.uri).then(function (childResponse) {
-            $rootScope.processAutocompleteClassResults (field_id, 'Value Set Class', valueSet.uri, childResponse);
+          controlTermService.autocompleteValueSetClasses(term, valueSet.uri).then(function (childResponse) {
+            $rootScope.processAutocompleteClassResults(field_id, 'Value Set Class', valueSet.uri, childResponse);
           });
         });
       }
@@ -494,8 +495,8 @@ define([
           if (term == '*') {
             $rootScope.removeAutocompleteResultsForSource(field_id, ontology.uri);
           }
-          controlTermService.autocompleteOntology (term, ontology.acronym).then(function (childResponse) {
-            $rootScope.processAutocompleteClassResults (field_id, 'Ontology Class', ontology.uri, childResponse);
+          controlTermService.autocompleteOntology(term, ontology.acronym).then(function (childResponse) {
+            $rootScope.processAutocompleteClassResults(field_id, 'Ontology Class', ontology.uri, childResponse);
           });
         });
       }
@@ -505,10 +506,10 @@ define([
           if (term == '*') {
             $rootScope.removeAutocompleteResultsForSource(field_id, branch.uri);
           }
-          controlTermService.autocompleteOntologySubtree (term, branch.acronym, branch.uri, branch.maxDepth).then(
-            function (childResponse) {
-              $rootScope.processAutocompleteClassResults(field_id, 'Ontology Class', branch.uri, childResponse);
-            }
+          controlTermService.autocompleteOntologySubtree(term, branch.acronym, branch.uri, branch.maxDepth).then(
+              function (childResponse) {
+                $rootScope.processAutocompleteClassResults(field_id, 'Ontology Class', branch.uri, childResponse);
+              }
           );
         });
       }
@@ -576,9 +577,9 @@ define([
 
     $rootScope.lengthOfValueConstraint = function (valueConstraint) {
       return (valueConstraint.classes || []).length +
-        (valueConstraint.valueSets || []).length +
-        (valueConstraint.ontologies || []).length +
-        (valueConstraint.branches || []).length;
+          (valueConstraint.valueSets || []).length +
+          (valueConstraint.ontologies || []).length +
+          (valueConstraint.branches || []).length;
     };
 
     DataTemplateService.init();
@@ -586,6 +587,16 @@ define([
     UrlService.init();
     DataManipulationService.init();
     HeaderService.init();
+
+    UserService.injectUserHandler($window.bootstrapUserHandler);
+
+    var pt = UserService.getParsedToken();
+    $rootScope.currentUser = {
+      "name" : pt.name,
+      "id"   : pt.sub,
+      "email": pt.email,
+      "roles": pt.realm_access.roles
+    };
   };
 
 });

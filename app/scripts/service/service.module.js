@@ -14,6 +14,9 @@ define([
   'cedar/template-editor/service/url.service',
   'cedar/template-editor/service/ui-message.service',
   'cedar/template-editor/service/ui-util.service',
+  'cedar/template-editor/service/authorized-backend.service',
+  'cedar/template-editor/service/http-builder.service',
+  'cedar/template-editor/service/user.service',
 ], function(angular) {
   angular.module('cedar.templateEditor.service', [
     'cedar.templateEditor.service.clientSideValidationService',
@@ -27,6 +30,9 @@ define([
     'cedar.templateEditor.service.templateService',
     'cedar.templateEditor.service.urlService',
     'cedar.templateEditor.service.UIMessageService',
-    'cedar.templateEditor.service.UIUtilService'
+    'cedar.templateEditor.service.UIUtilService',
+    'cedar.templateEditor.service.authorizedBackendService',
+    'cedar.templateEditor.service.httpBuilderService',
+    'cedar.templateEditor.service.userService',
   ]);
 });

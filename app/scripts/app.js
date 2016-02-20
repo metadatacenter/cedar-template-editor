@@ -40,6 +40,7 @@ define([
   'cedar/template-editor/template/template.module',
   'cedar/template-editor/template-element/template-element.module',
   'cedar/template-editor/template-instance/template-instance.module',
+  'cedar/template-editor/profile/profile.module',
 ], function(angular) {
   return angular.module('cedar.templateEditor', [
     'ui.bootstrap',
@@ -58,5 +59,6 @@ define([
     'cedar.templateEditor.template',
     'cedar.templateEditor.templateElement',
     'cedar.templateEditor.templateInstance',
+    'cedar.templateEditor.profile',
   ]);
 });

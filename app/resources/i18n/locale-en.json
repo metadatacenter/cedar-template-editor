@@ -74,7 +74,9 @@
     "Min": "Min:",
     "Max": "Max:",
     "NotAvailable": "Not Available",
-    "Deleted": "Deleted"
+    "Deleted": "Deleted",
+    "Warning": "Warning",
+    "Ok": "Ok"
   },
   "SERVER": {
     "ELEMENT": {
@@ -105,6 +107,9 @@
       },
       "load": {
         "error": "There was an error while loading the template!<br /><br />VIEW TECHNICAL DETAILS!"
+      },
+      "load-for-instance": {
+        "error": "Although the the instance was loaded, there was an error while loading the corresponding template!<br /><br />VIEW TECHNICAL DETAILS!"
       },
       "delete": {
         "success": "The template has been deleted.",
@@ -220,5 +225,11 @@
     "addElementToStagingMsg": "Add an existing element or create a new item.",
     "enterFieldTitle": "Enter Field Title",
     "enterFieldDescription": "Enter Field Description (Help Text)"
+  },
+  "AUTHORIZATION-ERROR": {
+    "suggestedAction": {
+      "requestRole": "In order to accomplish the requested operation, you need the following role: <b>{{missingRole}}</b>.",
+      "logout": "Your session has expired or it is invalid. You will be logged out from the tool."
+    }
   }
 }

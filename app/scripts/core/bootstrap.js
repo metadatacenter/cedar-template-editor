@@ -7,14 +7,14 @@ function CedarBootstrap($http) {
   // Services that need a preload
   var initServices = {
     'DataManipulationService': true,
-    'FieldTypeService'       : true,
-    'DataTemplateService'    : [
+    'FieldTypeService': true,
+    'DataTemplateService': [
       'resources/element-empty.json',
       'resources/field-empty.json',
       'resources/template-empty.json'
     ],
-    'HeaderService'          : true,
-    'UrlService'             : true
+    'HeaderService': true,
+    'UrlService': true
   };
 
   // Function to convert camelCase to train-case
@@ -44,11 +44,11 @@ function CedarBootstrap($http) {
 
   this.getPreloadDescriptor = function (sid, configFile) {
     return {
-      "serviceId" : sid,
+      "serviceId": sid,
       "configFile": configFile,
-      "finished"  : false,
-      "config"    : null,
-      "error"     : null
+      "finished": false,
+      "config": null,
+      "error": null
     };
   };
 
