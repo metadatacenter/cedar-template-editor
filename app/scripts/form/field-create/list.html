@@ -1,0 +1,36 @@
+<div id="list-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}" class="input-type-container pick-list">
+  <p class="type-label"><i class="cedar-svg-list"></i>Pick from a list</p>
+
+  <div class="type-toggle list" ng-init="$root.propertiesOf(field)._ui.selectionType = 'single'">
+    <div class="single-date d-option" ng-click="$root.propertiesOf(field)._ui.selectionType = 'single'" ng-class="{active: $root.propertiesOf(field)._ui.selectionType == 'single'}">
+      <span>Single Select</span>
+    </div>
+    <div class="date-range d-option" ng-click="$root.propertiesOf(field)._ui.selectionType = 'multiple'" ng-class="{active: $root.propertiesOf(field)._ui.selectionType == 'multiple'}">
+      <span>Multi-Select</span>
+    </div>
+  </div> <!-- /.date-type-toggle -->
+
+  <div class="form-group">
+    <div class="form-group floating-label-wrapper">
+      <input type="text" class="form-control" id="placeholder-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}" placeholder="Field Title" aria-label="Field Title" ng-model="$root.propertiesOf(field)._ui.title"  with-floating-label>
+    </div><!-- /.form-group -->
+    <div class="options-wrapper">
+      <div class="multiple-container">
+        <span ng-repeat="(index, value) in $root.propertiesOf(field)._ui.options">
+        	<div class="form-group floating-label-wrapper">
+            <input type="text" class="form-control" id="placeholder-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}" placeholder="Option" aria-label="Option" ng-model="$root.propertiesOf(field)._ui.options[index]['text']"  with-floating-label>
+
+            <div class="checkbox checkbox-primary checkbox-circle">
+	            <input type="checkbox" id="checkbox-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}-{{index}}" name="checkbox-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}" ng-model="$root.propertiesOf(field)._ui.defaultOption[value.text]">
+	            <label for="checkbox-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}-{{index}}"></label>
+	          </div><!-- /.checkbox -->
+          </div><!-- /.form-group -->
+        </span>
+        <p class="add-another" ng-click="option()"><img src="/img/plus.png" />Add Another</p>
+      </div><!-- /.multiple-container -->
+    </div><!-- /.options-wrapper -->
+  </div><!-- /.form-group -->
+
+
+  <ng-include src="'scripts/form/partials/staging-area-footer.partial.html'" />
+</div><!-- /.input-type-container -->

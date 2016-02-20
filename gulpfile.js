@@ -209,23 +209,6 @@ gulp.task('dev02-replace', function () {
       .pipe(gulp.dest('app/config/'));
 });
 
-// gulp.task('compress', function() {
-//   return gulp.src('scripts/*.js')
-//    .pipe(uglify())
-//    .pipe(gulp.dest('dist/js'));
-// });
-
-// gulp.task('htmlreplace', function() {
-//   gulp.src('index.html')
-//     .pipe(htmlreplace({
-//      'css': 'dist/css/styles.css',
-//      'js/plugins': 'dist/js/plugins.js',
-//      'js/modules': 'dist/js/modules.js'
-//      'js/angular': 'dist/js/angular-scripts.js'
-//     }))
-//     .pipe(gulp.dest('build/'));
-// });
-
 // Watch files for changes
 gulp.task('watch', function () {
   gulp.watch('app/scripts/*.js', ['lint']);
@@ -237,7 +220,6 @@ gulp.task('watch', function () {
 gulp.task('default', ['server', 'lint', 'less', 'copy:resources', 'dev-replace', 'watch']);
 // Build task
 //gulp.task('build', ['minifyCSS', 'htmlreplace', 'angular']);
-
 gulp.task('dev02', ['server-nolivereload', 'lint', 'less', 'copy:resources', 'dev02-replace']);
 
 gulp.task('test', function (done) {

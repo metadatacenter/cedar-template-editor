@@ -38,5 +38,8 @@
     "protractor": "^2.5.1",
     "selenium-standalone": "^4.7.1",
     "sync-request": "^2.1.0"
+  },
+  "dependencies": {
+    "gulp-replace": "^0.5.4"
   }
 }

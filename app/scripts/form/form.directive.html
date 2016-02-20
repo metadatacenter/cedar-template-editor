@@ -1,0 +1,46 @@
+<form name="templateForm" id="{{form['@id']}}" class="runtime" ng-class="{'validate': checkSubmission}" novalidate>
+  <!--Loop through top level "page" parameter in form element and call element-directive or field-directive with contents -->
+  <div class="page" ng-repeat="page in pagesArray" ng-if="$root.isRuntime()">
+    <div ng-repeat="item in page" class="animate-fade" ng-show="pageIndex == $parent.$index">
+      <span ng-if="form.properties[item]">
+        <div ng-if="$root.propertiesOf(form.properties[item])._ui.inputType" ng-class="{'field-instance':true, 'multiple-instance-field':$root.isArray(model[item])}">
+          <field-directive field="form.properties[item]" model="model[item]" delete="removeChild(form.properties[item])" rename-child-key="renameChildKey"></field-directive>
+        </div>
+        <div class="element-group full" ng-if="form.properties[item] && !$root.propertiesOf(form.properties[item])._ui.inputType">
+          <element-directive element="form.properties[item]" key="item" model="model[item]" delete="removeChild(form.properties[item])"></element-directive>
+        </div>
+      </span>
+    </div>
+  </div>
+  <p ng-if="form.requiredFields" class="required-text">Required</p>
+
+  <div class="page" ng-if="!$root.isRuntime()" ui-sortable="$root.sortableOptions" ng-model="form._ui.order">
+    <div ng-repeat="item in form._ui.order" class="animate-fade">
+      <span ng-if="form.properties[item]">
+        <div ng-if="$root.propertiesOf(form.properties[item])._ui.inputType" ng-class="{'field-instance':true, 'multiple-instance-field':$root.isArray(model[item])}">
+          <field-directive field="form.properties[item]" model="model[item]" delete="removeChild(form.properties[item])" rename-child-key="renameChildKey"></field-directive>
+        </div>
+        <div class="element-group full" ng-if="form.properties[item] && !$root.propertiesOf(form.properties[item])._ui.inputType">
+          <element-directive element="form.properties[item]" key="item" model="model[item]" delete="removeChild(form.properties[item])" is-root-element="hideRootElement"></element-directive>
+        </div>
+      </span>
+    </div>
+  </div>
+</form>
+
+<div ng-if="form._ui.pages.length > 1 && $root.isRuntime()" class="pagination-container">
+  <ul class="pagination">
+    <li ng-if="pageIndex > 0"><a ng-click="previousPage()"><span class="prev"><i class="fa fa-lg fa-angle-left"></i><span translate>GENERIC.Previous</span></span></a></li>
+    <li ng-repeat="(index, value) in form._ui.pages" ng-class="{active: index == pageIndex}"><a ng-click="setCurrentPage(index)">{{index + 1}}</a></li>
+    <li ng-if="pageIndex < (form._ui.pages.length - 1)"><a ng-click="nextPage()"><span class="next"><span translate>GENERIC.Next</span><i class="fa fa-lg fa-angle-right"></i></span></a></li>
+  </ul>
+</div><!-- /.pagination-container -->
+
+<div ng-show="$root.showRender" id="templateJSON">
+  <h5>Template JSON</h5>
+  <pre>{{ ($root.jsonToSave || form) | json }}</pre>
+</div>
+<div ng-show="$root.showOutput" id="outputJSON">
+  <h5>Output JSON</h5>
+  <pre>{{ model | json }}</pre>
+</div>

@@ -1,5 +1,5 @@
 describe('CreateElementController', function() {
-  beforeEach(module('angularJsCedarApplication'));
+  beforeEach(module('cedar.templateEditor'));
 
   var $controller;
   var $rootScope;

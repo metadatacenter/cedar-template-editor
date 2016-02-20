@@ -8,219 +8,123 @@
 <!--[if gt IE 8]><!-->
 <html class="no-js" lang=""> <!--<![endif]-->
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title ng-bind="'Project Cedar - ' + pageTitle">Project Cedar</title>
-    <meta name="description" content="">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <base href="/">
-    <link href="favicon.ico" rel="icon" type="image/x-icon"/>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title ng-bind="'Project Cedar - ' + pageTitle">Project Cedar</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <base href="/">
+  <link href="favicon.ico" rel="icon" type="image/x-icon"/>
 
-    <style>
-        html, body {
-            display: none;
-        }
-    </style>
+  <style>
+    html, body {
+      display: none;
+    }
+  </style>
 
-    <link rel="stylesheet" href="bower_components/sweetalert/dist/sweetalert.css">
-    <link rel="stylesheet" href="bower_components/handsontable/dist/handsontable.full.css">
-    <link rel="stylesheet" ng-href="css/style-{{applicationMode}}.css">
-    <link rel="stylesheet" href="bower_components/angular-ui-select/dist/select.css">
-    <link rel="stylesheet" href="bower_components/angular-toasty/dist/angular-toasty.min.css"/>
-
-    <!--<script src="//use.typekit.net/aph5zap.js"></script>
-    <script>try {
-        Typekit.load({async: false});
-    } catch (e) {
-    }</script>-->
+  <link rel="stylesheet" href="bower_components/sweetalert/dist/sweetalert.css">
+  <link rel="stylesheet" href="bower_components/handsontable/dist/handsontable.full.css">
+  <link rel="stylesheet" ng-href="css/style-{{applicationMode}}.css">
+  <link rel="stylesheet" href="bower_components/angular-ui-select/dist/select.css">
+  <link rel="stylesheet" href="bower_components/angular-toasty/dist/angular-toasty.min.css"/>
 </head>
 <body cedar-switch-navbar="true" ng-cloak>
 <!--[if lt IE 8]>
 <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade
-    your browser</a> to
-    improve your experience.</p>
+  your browser</a> to improve your experience.</p>
 <![endif]-->
 <nav class="navbar" role="navigation">
-    <div class="container" id="headerCtrl" ng-controller="HeaderCtrl">
-        <div class="navbar-header">
-            <button type="button" cedar-close-navbar="true" class="navbar-toggle collapsed" data-toggle="collapse"
-                    data-target="#navbar" aria-expanded="false"
-                    aria-controls="navbar">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <p id="page-title" ng-bind="pageTitle"></p>
-            <a class="navbar-brand" href="#/dashboard">Cedar</a>
-        </div>
-        <div id="navbar" class="navbar-collapse collapse">
-            <ul class="nav pull-right">
-                <li ng-class="{active: ($root.pageId == 'DASHBOARD') }"><a href="#/dashboard">Dashboard</a></li>
-                <li ng-show="$root.applicationRole == 'creator'" ng-class="{active: ($root.pageId == 'ELEMENT') }"><a
-                        href="#/elements/create">Element
-                    Designer</a></li>
-                <li ng-show="$root.applicationRole == 'creator'" ng-class="{active: ($root.pageId == 'TEMPLATE') }"><a
-                        href="#/templates/create">Template
-                    Designer</a></li>
-                <li ng-show="$root.applicationRole == 'instantiator'" ng-class="{active: ($root.pageId == 'RUNTIME') }">
-                    <a href="#/instances/create">Metadata
-                        Editor</a></li>
-                <li ng-class="{active: ($root.pageId == 'ROLESELECTOR') }"><a href="#/">Role Selector</a></li>
-                <li><a href="#/profile">Profile</a></li>
-                <li><a href="#/logout">Logout</a></li>
-            </ul>
-        </div><!--/.navbar-collapse -->
+  <div class="container" id="headerCtrl" ng-controller="HeaderCtrl">
+    <div class="navbar-header">
+      <button type="button" cedar-close-navbar="true" class="navbar-toggle collapsed" data-toggle="collapse"
+              data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <p id="page-title" ng-bind="pageTitle"></p>
+      <a class="navbar-brand" href="#/dashboard">Cedar</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav pull-right">
+        <li ng-class="{active: ($root.pageId == 'DASHBOARD') }"><a href="#/dashboard">Dashboard</a></li>
+        <li ng-show="$root.applicationRole == 'creator'" ng-class="{active: ($root.pageId == 'ELEMENT') }"><a
+            href="#/elements/create">Element Designer</a></li>
+        <li ng-show="$root.applicationRole == 'creator'" ng-class="{active: ($root.pageId == 'TEMPLATE') }"><a
+            href="#/templates/create">Template Designer</a></li>
+        <li ng-show="$root.applicationRole == 'instantiator'" ng-class="{active: ($root.pageId == 'RUNTIME') }"><a
+            href="#/instances/create">Metadata Editor</a></li>
+        <li ng-class="{active: ($root.pageId == 'ROLESELECTOR') }"><a href="#/">Role Selector</a></li>
+        <li><a href="#/profile">Profile</a></li>
+        <li><a href="#/logout">Logout</a></li>
+      </ul>
     </div>
 </nav>
 
 <nav class="navbar" id="navbarMini">
-    <div class="container" id="headerCtrlMini" ng-controller="HeaderCtrlMini">
-        <div class="navbar-header navbar-header-mini container">
-            <button type="button" cedar-close-navbar="true" class="navbar-toggle collapsed" data-toggle="collapse"
-                    data-target="#navbarmini" aria-expanded="false" aria-controls="navbarmini">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <p id="page-title" ng-bind="pageTitle"></p>
-            <a class="navbar-brand" href="#/dashboard">Cedar</a>
+  <div class="container" id="headerCtrlMini" ng-controller="HeaderCtrlMini">
+    <div class="navbar-header navbar-header-mini container">
+      <button type="button" cedar-close-navbar="true" class="navbar-toggle collapsed" data-toggle="collapse"
+              data-target="#navbarmini" aria-expanded="false" aria-controls="navbarmini">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <p id="page-title" ng-bind="pageTitle"></p>
+      <a class="navbar-brand" href="#/dashboard">Cedar</a>
 
-            <div class="navbarMiniInfoTitle">
-                <p id="page-title-mini">{{dataContainer.currentObjectScope.properties._ui.title}}</p>
-            </div>
-            <div id="navbarmini" class="navbar-collapse collapse">
-                <ul class="nav pull-right">
-                    <li ng-class="{active: ($root.pageId == 'DASHBOARD') }"><a href="#/dashboard">Dashboard</a></li>
-                    <li ng-show="$root.applicationRole == 'creator'" ng-class="{active: ($root.pageId == 'ELEMENT') }">
-                        <a href="#/elements/create">Element
-                            Designer</a></li>
-                    <li ng-show="$root.applicationRole == 'creator'" ng-class="{active: ($root.pageId == 'TEMPLATE') }">
-                        <a href="#/templates/create">Template
-                            Designer</a></li>
-                    <li ng-show="$root.applicationRole == 'instantiator'"
-                        ng-class="{active: ($root.pageId == 'RUNTIME') }"><a
-                            href="#/instances/create">Metadata Editor</a></li>
-                    <li ng-class="{active: ($root.pageId == 'ROLESELECTOR') }"><a href="#/">Role Selector</a></li>
-                    <li><a href="#/profile">Profile</a></li>
-                    <li><a href="#/logout">Logout</a></li>
-                </ul>
-            </div><!--/.navbar-collapse -->
-        </div>
+      <div class="navbarMiniInfoTitle">
+        <p id="page-title-mini">{{dataContainer.currentObjectScope.properties._ui.title}}</p>
+      </div>
+      <div id="navbarmini" class="navbar-collapse collapse">
+        <ul class="nav pull-right">
+          <li ng-class="{active: ($root.pageId == 'DASHBOARD') }"><a href="#/dashboard">Dashboard</a></li>
+          <li ng-show="$root.applicationRole == 'creator'" ng-class="{active: ($root.pageId == 'ELEMENT') }">
+            <a href="#/elements/create">Element
+              Designer</a></li>
+          <li ng-show="$root.applicationRole == 'creator'" ng-class="{active: ($root.pageId == 'TEMPLATE') }">
+            <a href="#/templates/create">Template
+              Designer</a></li>
+          <li ng-show="$root.applicationRole == 'instantiator'"
+              ng-class="{active: ($root.pageId == 'RUNTIME') }"><a
+              href="#/instances/create">Metadata Editor</a></li>
+          <li ng-class="{active: ($root.pageId == 'ROLESELECTOR') }"><a href="#/">Role Selector</a></li>
+          <li><a href="#/profile">Profile</a></li>
+          <li><a href="#/logout">Logout</a></li>
+        </ul>
+      </div>
+      <!--/.navbar-collapse -->
     </div>
+  </div>
+  </div>
 </nav>
 
 <div id="jsonTools" cedar-position-json-tools="true" style="display: none;">
-    <a ng-click="$root.showRender = !$root.showRender; $root.scrollToAnchor('templateJSON')" title="Show Template JSON"
-       ng-if="$root.pageId == 'ELEMENT' || $root.pageId == 'TEMPLATE' || $root.pageId == 'RUNTIME'"><i
-            class="cedar-svg-complete" ng-if="$root.showRender"></i><i
-            class="cedar-svg-progress" ng-if="!$root.showRender"></i></a><br/>
-    <a ng-click="$root.showOutput = !$root.showOutput; $root.scrollToAnchor('outputJSON')" title="Show Output JSON"
-       ng-if="$root.pageId == 'RUNTIME'"><i class="cedar-svg-complete" ng-if="$root.showOutput"></i><i
-            class="cedar-svg-progress" ng-if="!$root.showOutput"></i></a>
+  <a ng-click="$root.showRender = !$root.showRender; $root.scrollToAnchor('templateJSON')" title="Show Template JSON"
+     ng-if="$root.pageId == 'ELEMENT' || $root.pageId == 'TEMPLATE' || $root.pageId == 'RUNTIME'">
+    <i class="cedar-svg-complete" ng-if="$root.showRender"></i>
+    <i class="cedar-svg-progress" ng-if="!$root.showRender"></i>
+  </a>
+  <br/>
+  <a ng-click="$root.showOutput = !$root.showOutput; $root.scrollToAnchor('outputJSON')" title="Show Output JSON"
+     ng-if="$root.pageId == 'RUNTIME'">
+    <i class="cedar-svg-complete" ng-if="$root.showOutput"></i>
+    <i class="cedar-svg-progress" ng-if="!$root.showOutput"></i>
+  </a>
 </div>
 
 <div id="angular-views-entry" ng-view="">Preloading CEDAR ...</div>
 
 <toasty></toasty>
 
-<!-- build:js scripts/modules.js -->
-<script src="bower_components/jquery/jquery.js"></script>
-<script src="bower_components/angular/angular.js"></script>
-<script src="bower_components/angular-route/angular-route.js"></script>
-<script src="bower_components/angular-animate/angular-animate.js"></script>
-<script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
-<script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
-<script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
-<script src="bower_components/moment/min/moment.min.js"></script>
-<script src="bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
-<script src="bower_components/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
-<script src="bower_components/handsontable/dist/handsontable.full.js"></script>
-<script src="bower_components/ngHandsontable/dist/ngHandsontable.js"></script>
-<script src="bower_components/angular-ui-select/dist/select.js"></script>
-<script src="bower_components/sweetalert/dist/sweetalert.min.js"></script>
-<script src="bower_components/angular-translate/angular-translate.min.js"></script>
-<script src="bower_components/angular-translate-loader-static-files/angular-translate-loader-static-files.min.js"></script>
-<script src="bower_components/angular-toasty/dist/angular-toasty.min.js"></script>
-<script src="bower_components/perfnow-polyfill/perfnow-polyfill.js"></script>
-<!-- endbuild -->
-
-<script src="cedar/scripts/handsontable/SpreadsheetContext.js"></script>
-
-<!-- build:js({.tmp,app}) scripts/scripts.js -->
-<script src="scripts/app.js"></script>
-<script src="scripts/app-config.js"></script>
-<script src="scripts/app-run.js"></script>
-
-<script src="scripts/constants.js"></script>
-<script src="scripts/filters/key-to-title.js"></script>
-<script src="scripts/filters/order-object-by.js"></script>
-<script src="scripts/filters/props-filter.js"></script>
-<script src="scripts/filters/capitalize-first.js"></script>
-
-<script src="scripts/controllers/role-selector.js"></script>
-<script src="scripts/controllers/dashboard.js"></script>
-<script src="scripts/controllers/dashboard-list.js"></script>
-<script src="scripts/controllers/create-element.js"></script>
-<script src="scripts/controllers/create-template.js"></script>
-<script src="scripts/controllers/create-instance.js"></script>
-<script src="scripts/controllers/header.js"></script>
-<script src="scripts/controllers/header-mini.js"></script>
-<script src="scripts/controllers/terms.js"></script>
-<script src="scripts/controllers/logout.js"></script>
-<script src="scripts/controllers/profile.js"></script>
-
-<script src="scripts/services/header-service.js"></script>
-<script src="scripts/services/spreadsheet-service.js"></script>
-<script src="scripts/services/url-service.js"></script>
-<script src="scripts/services/staging-service.js"></script>
-<script src="scripts/services/data-template-service.js"></script>
-<script src="scripts/services/field-type-service.js"></script>
-<script src="scripts/services/template-service.js"></script>
-<script src="scripts/services/template-element-service.js"></script>
-<script src="scripts/services/template-instance-service.js"></script>
-<script src="scripts/services/ui-message-service.js"></script>
-<script src="scripts/services/data-manipulation-service.js"></script>
-<script src="scripts/services/data-util-service.js"></script>
-<script src="scripts/services/client-side-validation-service.js"></script>
-<script src="scripts/services/ui-util-service.js"></script>
-<script src="scripts/services/authorized-backend-service.js"></script>
-<script src="scripts/services/http-builder-service.js"></script>
-<script src="scripts/services/user-service.js"></script>
-
-<script src="scripts/directives/form-directive.js"></script>
-<script src="scripts/directives/form-preview.js"></script>
-<script src="scripts/directives/element-directive.js"></script>
-<script src="scripts/directives/field-directive.js"></script>
-<script src="scripts/directives/cedar-box.js"></script>
-<script src="scripts/directives/cedar-close-navbar.js"></script>
-<script src="scripts/directives/cedar-resize-square.js"></script>
-<script src="scripts/directives/cedar-switch-navbar.js"></script>
-<script src="scripts/directives/with-floating-label.js"></script>
-<script src="scripts/directives/cedar-position-json-tools.js"></script>
-<script src="scripts/directives/date-time-picker.js"></script>
-<script src="scripts/directives/select-picker.js"></script>
-<script src="scripts/directives/angular-validator.js"></script>
-<script src="scripts/directives/cedar-sticky-left-menu.js"></script>
-<script src="scripts/directives/control-term.js"></script>
-<!-- endbuild -->
-
-<script src="cedar/scripts/handsontable/MultiCheckboxEditor.js"></script>
-
-<!-- BioPortal Module -->
-<script src="scripts/Bioportal/vendor/angucomplete-alt.js"></script>
-<script src="scripts/Bioportal/BioPortalModule.js"></script>
-<script src="scripts/Bioportal/BioPortalService.js"></script>
-<!-- end BioPortal -->
-
 <script src="scripts/keycloak/keycloak.js"></script>
-
-<script src="scripts/cedar-bootstrap.js"></script>
-<script src="scripts/app-entry-point.js"></script>
 
 <script src="scripts/handlers/KeycloakUserHandler.js"></script>
 <script src="scripts/handlers/NoauthUserHandler.js"></script>
+
+<script data-main="require-config" src="bower_components/requirejs/require.js" type="text/javascript"></script>
 
 </body>
 </html>

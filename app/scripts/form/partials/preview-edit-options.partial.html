@@ -1,0 +1,8 @@
+<div ng-if="!$root.isRuntime()" class="element-preview-actions">
+  <div class="edit" ng-click="edit()" tooltip="Edit {{childType || 'element'}}" ng-if="!notEditable">
+    <i class="cedar-svg-pencil"></i>
+  </div>
+  <div class="remove" ng-click="delete()" tooltip="Delete {{childType || 'element'}}">
+  	<i class="fa fa-times"></i>
+  </div>
+</div>
