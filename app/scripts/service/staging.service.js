@@ -2,16 +2,17 @@
 
 define([
   'angular'
-], function(angular) {
+], function (angular) {
   // TODO: required by template module; more?
   angular.module('cedar.templateEditor.service.stagingService', [])
-    .service('StagingService', StagingService);
+      .service('StagingService', StagingService);
 
-  StagingService.$inject = ["$rootScope", "TemplateElementService", "DataManipulationService", "ClientSideValidationService",
-                            "UIMessageService", "$timeout", "CONST"];
+  StagingService.$inject = ["$rootScope", "TemplateElementService", "DataManipulationService",
+                            "ClientSideValidationService", "UIMessageService", "$timeout", "AuthorizedBackendService",
+                            "CONST"];
 
   function StagingService($rootScope, TemplateElementService, DataManipulationService, ClientSideValidationService,
-                          UIMessageService, $timeout, CONST) {
+                          UIMessageService, $timeout, AuthorizedBackendService, CONST) {
 
     var service = {
       serviceId        : "StagingService",
@@ -62,19 +63,23 @@ define([
       $scope.staging = {};
       $scope.previewForm = {};
 
-      TemplateElementService.getTemplateElement(elementId).then(function (response) {
-        var newElement = response.data;
-        newElement.minItems = 1;
-        newElement.maxItems = 1;
-        $scope.staging[newElement['@id']] = newElement;
-        $timeout(function () {
-          var fieldName = DataManipulationService.getFieldName(newElement.properties._ui.title);
-          $scope.previewForm.properties = {};
-          $scope.previewForm.properties[fieldName] = newElement;
-        });
-      }).catch(function (err) {
-        UIMessageService.showBackendError('SERVER.ELEMENT.load.error', err);
-      });
+      AuthorizedBackendService.doCall(
+          TemplateElementService.getTemplateElement(elementId),
+          function (response) {
+            var newElement = response.data;
+            newElement.minItems = 1;
+            newElement.maxItems = 1;
+            $scope.staging[newElement['@id']] = newElement;
+            $timeout(function () {
+              var fieldName = DataManipulationService.getFieldName(newElement.properties._ui.title);
+              $scope.previewForm.properties = {};
+              $scope.previewForm.properties[fieldName] = newElement;
+            });
+          },
+          function (err) {
+            UIMessageService.showBackendError('SERVER.ELEMENT.load.error', err);
+          }
+      );
     };
 
     // Add new field into $scope.staging object
@@ -100,7 +105,7 @@ define([
       $scope.staging[field['@id']] = field;
     };
 
-    service.addFieldToForm = function(form, fieldType) {
+    service.addFieldToForm = function (form, fieldType) {
       var field = DataManipulationService.generateField(fieldType);
       field.minItems = 1;
       field.maxItems = 1;
@@ -132,37 +137,41 @@ define([
       form._ui.order.push(fieldName);
     }
 
-    service.addElementToForm = function(form, elementId) {
-      TemplateElementService.getTemplateElement(elementId).then(function (response) {
-        var clonedElement = response.data;
-        clonedElement.minItems = 1;
-        clonedElement.maxItems = 1;
+    service.addElementToForm = function (form, elementId) {
+      AuthorizedBackendService.doCall(
+          TemplateElementService.getTemplateElement(elementId),
+          function (response) {
+            var clonedElement = response.data;
+            clonedElement.minItems = 1;
+            clonedElement.maxItems = 1;
 
-        var elProperties = DataManipulationService.getFieldProperties(clonedElement);
-        elProperties._tmp = elProperties._tmp || {};
-        elProperties._tmp.state = "creating";
+            var elProperties = DataManipulationService.getFieldProperties(clonedElement);
+            elProperties._tmp = elProperties._tmp || {};
+            elProperties._tmp.state = "creating";
 
-        // Converting title for irregular character handling
-        var elName = DataManipulationService.getFieldName(DataManipulationService.getFieldProperties(clonedElement)._ui.title);
-        elName = DataManipulationService.getAcceptableKey(form.properties, elName);
+            // Converting title for irregular character handling
+            var elName = DataManipulationService.getFieldName(DataManipulationService.getFieldProperties(clonedElement)._ui.title);
+            elName = DataManipulationService.getAcceptableKey(form.properties, elName);
 
-        // Adding corresponding property type to @context
-        form.properties["@context"].properties[elName] = DataManipulationService.generateFieldContextProperties(elName);
-        form.properties["@context"].required.push(elName);
+            // Adding corresponding property type to @context
+            form.properties["@context"].properties[elName] = DataManipulationService.generateFieldContextProperties(elName);
+            form.properties["@context"].required.push(elName);
 
-        // Evaluate cardinality
-        DataManipulationService.cardinalizeField(clonedElement);
+            // Evaluate cardinality
+            DataManipulationService.cardinalizeField(clonedElement);
 
-        // Adding field to the element.properties object
-        form.properties[elName] = clonedElement;
-        form._ui.order = form._ui.order || [];
-        form._ui.order.push(elName);
-      }).catch(function (err) {
-        UIMessageService.showBackendError('SERVER.ELEMENT.load.error', err);
-      });
+            // Adding field to the element.properties object
+            form.properties[elName] = clonedElement;
+            form._ui.order = form._ui.order || [];
+            form._ui.order.push(elName);
+          },
+          function (err) {
+            UIMessageService.showBackendError('SERVER.ELEMENT.load.error', err);
+          }
+      );
     }
 
-    service.addFieldToElement = function(element, fieldType) {
+    service.addFieldToElement = function (element, fieldType) {
       var field = DataManipulationService.generateField(fieldType);
       field.minItems = 1;
       field.maxItems = 1;
@@ -193,31 +202,35 @@ define([
       element._ui.order.push(fieldName);
     }
 
-    service.addElementToElement = function(element, elementId) {
-      TemplateElementService.getTemplateElement(elementId).then(function (response) {
-        var el = response.data;
-        el.minItems = 1;
-        el.maxItems = 1;
+    service.addElementToElement = function (element, elementId) {
+      AuthorizedBackendService.doCall(
+          TemplateElementService.getTemplateElement(elementId),
+          function (response) {
+            var el = response.data;
+            el.minItems = 1;
+            el.maxItems = 1;
 
-        var elProperties = DataManipulationService.getFieldProperties(el);
-        elProperties._tmp = elProperties._tmp || {};
-        elProperties._tmp.state = "creating";
+            var elProperties = DataManipulationService.getFieldProperties(el);
+            elProperties._tmp = elProperties._tmp || {};
+            elProperties._tmp.state = "creating";
 
-        var elName = DataManipulationService.getFieldName(DataManipulationService.getFieldProperties(el)._ui.title);
-        elName = DataManipulationService.getAcceptableKey(element.properties, elName);
+            var elName = DataManipulationService.getFieldName(DataManipulationService.getFieldProperties(el)._ui.title);
+            elName = DataManipulationService.getAcceptableKey(element.properties, elName);
 
-        element.properties["@context"].properties[elName] = DataManipulationService.generateFieldContextProperties(elName);
-        element.properties["@context"].required.push(elName);
+            element.properties["@context"].properties[elName] = DataManipulationService.generateFieldContextProperties(elName);
+            element.properties["@context"].required.push(elName);
 
-        // Evaluate cardinality
-        DataManipulationService.cardinalizeField(el);
+            // Evaluate cardinality
+            DataManipulationService.cardinalizeField(el);
 
-        // Adding field to the element.properties object
-        element.properties[elName] = el;
-        element._ui.order.push(elName);
-      }).catch(function (err) {
-        UIMessageService.showBackendError('SERVER.ELEMENT.load.error', err);
-      });
+            // Adding field to the element.properties object
+            element.properties[elName] = el;
+            element._ui.order.push(elName);
+          },
+          function (err) {
+            UIMessageService.showBackendError('SERVER.ELEMENT.load.error', err);
+          }
+      );
     }
 
     // Add newly configured field to the the $scope.form or $scope.element
@@ -225,14 +238,14 @@ define([
       // Setting return value from $scope.checkFieldConditions to array which will display error messages if any
       $scope.stagingErrorMessages = ClientSideValidationService.checkFieldConditions(field.properties);
       $scope.stagingErrorMessages = jQuery.merge($scope.stagingErrorMessages,
-                                                 ClientSideValidationService.checkFieldCardinalityOptions(field));
+          ClientSideValidationService.checkFieldCardinalityOptions(field));
 
       if ($scope.stagingErrorMessages.length == 0) {
         // Converting title for irregular character handling
         var fieldName = DataManipulationService.getFieldName(field.properties._ui.title);
         // Adding corresponding property type to @context
         targetObject.properties["@context"].properties[fieldName] = DataManipulationService.generateFieldContextProperties(
-          fieldName);
+            fieldName);
         targetObject.properties["@context"].required.push(fieldName);
         targetObject.required.push(fieldName);
 

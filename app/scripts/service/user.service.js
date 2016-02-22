@@ -6,14 +6,27 @@ define([
   angular.module('cedar.templateEditor.service.userService', [])
       .service('UserService', UserService);
 
-  UserService.$inject = [];
+  UserService.$inject = ['$rootScope'];
 
-  function UserService() {
+  function UserService($rootScope) {
 
+    var config = null;
     var userHandler = null;
 
     var service = {
       serviceId: "UserService"
+    };
+
+    service.init = function () {
+      config = cedarBootstrap.getBaseConfig(this.serviceId);
+
+      var pt = this.getParsedToken(config);
+      $rootScope.currentUser = {
+        "name" : pt.name,
+        "id"   : pt.sub,
+        "email": pt.email,
+        "roles": pt.realm_access.roles
+      };
     };
 
     service.injectUserHandler = function (userHandler) {

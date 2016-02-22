@@ -2,19 +2,20 @@
 
 define([
   'angular'
-], function(angular) {
+], function (angular) {
   angular.module('cedar.templateEditor.templateElement.createElementController', [])
-    .controller('CreateElementController', CreateElementController);
+      .controller('CreateElementController', CreateElementController);
 
   CreateElementController.$inject = ["$rootScope", "$scope", "$routeParams", "$timeout", "$location", "$translate",
-                                     "$filter", "HeaderService", "UrlService", "StagingService", "DataTemplateService", "FieldTypeService",
-                                     "TemplateElementService", "UIMessageService", "DataManipulationService", "DataUtilService", "CONST"];
+                                     "$filter", "HeaderService", "UrlService", "StagingService", "DataTemplateService",
+                                     "FieldTypeService", "TemplateElementService", "UIMessageService",
+                                     "DataManipulationService", "DataUtilService", "AuthorizedBackendService", "CONST"];
 
 
   function CreateElementController($rootScope, $scope, $routeParams, $timeout, $location, $translate, $filter,
-                                   HeaderService, UrlService, StagingService, DataTemplateService,
-                                   FieldTypeService, TemplateElementService, UIMessageService,
-                                   DataManipulationService, DataUtilService, CONST) {
+                                   HeaderService, UrlService, StagingService, DataTemplateService, FieldTypeService,
+                                   TemplateElementService, UIMessageService, DataManipulationService, DataUtilService,
+                                   AuthorizedBackendService, CONST) {
 
     // Set page title variable when this controller is active
     $rootScope.pageTitle = 'Element Designer';
@@ -32,11 +33,15 @@ define([
     StagingService.configure(pageId);
     $rootScope.applicationRole = 'creator';
 
-    TemplateElementService.getAllTemplateElementsSummary().then(function (response) {
-      $scope.elementList = response.data;
-    }).catch(function (err) {
-      UIMessageService.showBackendError('SERVER.ELEMENTS.load.error', err);
-    });
+    AuthorizedBackendService.doCall(
+        TemplateElementService.getAllTemplateElementsSummary(),
+        function (response) {
+          $scope.elementList = response.data;
+        },
+        function (err) {
+          UIMessageService.showBackendError('SERVER.ELEMENTS.load.error', err);
+        }
+    );
 
     $scope.fieldTypes = FieldTypeService.getFieldTypes();
     $scope.hideRootElement = true;
@@ -44,22 +49,26 @@ define([
     // Load existing element if $routeParams.id parameter is supplied
     if ($routeParams.id) {
       // Fetch existing element and assign to $scope.element property
-      TemplateElementService.getTemplateElement($routeParams.id).then(function (response) {
-        $scope.element = response.data;
-        HeaderService.dataContainer.currentObjectScope = $scope.element;
+      AuthorizedBackendService.doCall(
+          TemplateElementService.getTemplateElement($routeParams.id),
+          function (response) {
+            $scope.element = response.data;
+            HeaderService.dataContainer.currentObjectScope = $scope.element;
 
-        var key = $scope.element["@id"];
-        // $scope.element.properties._ui.is_root = true;
-        $rootScope.keyOfRootElement = key;
-        $scope.form.properties = $scope.form.properties || {};
-        $scope.form.properties[key] = $scope.element;
-        $scope.form._ui = $scope.form._ui || {};
-        $scope.form._ui.order = $scope.form._ui.order || [];
-        $scope.form._ui.order.push(key);
-        $rootScope.jsonToSave = $scope.element;
-      }).catch(function (err) {
-        UIMessageService.showBackendError('SERVER.ELEMENT.load.error', err);
-      });
+            var key = $scope.element["@id"];
+            // $scope.element.properties._ui.is_root = true;
+            $rootScope.keyOfRootElement = key;
+            $scope.form.properties = $scope.form.properties || {};
+            $scope.form.properties[key] = $scope.element;
+            $scope.form._ui = $scope.form._ui || {};
+            $scope.form._ui.order = $scope.form._ui.order || [];
+            $scope.form._ui.order.push(key);
+            $rootScope.jsonToSave = $scope.element;
+          },
+          function (err) {
+            UIMessageService.showBackendError('SERVER.ELEMENT.load.error', err);
+          }
+      );
     } else {
       // If we're not loading an existing element then let's create a new empty $scope.element property
       $scope.element = DataTemplateService.getElement();
@@ -111,15 +120,15 @@ define([
     // Reverts to empty form and removes all previously added fields/elements
     $scope.reset = function () {
       UIMessageService.confirmedExecution(
-        function () {
-          $timeout(function () {
-            $scope.doReset();
-            // StagingService.resetPage();
-          });
-        },
-        'GENERIC.AreYouSure',
-        'ELEMENTEDITOR.clear.confirm',
-        'GENERIC.YesClearIt'
+          function () {
+            $timeout(function () {
+              $scope.doReset();
+              // StagingService.resetPage();
+            });
+          },
+          'GENERIC.AreYouSure',
+          'ELEMENTEDITOR.clear.confirm',
+          'GENERIC.YesClearIt'
       );
     };
 
@@ -133,13 +142,13 @@ define([
       populateCreatingFieldOrElement();
       if (dontHaveCreatingFieldOrElement()) {
         UIMessageService.conditionalOrConfirmedExecution(
-          StagingService.isEmpty(),
-          function () {
-            $scope.doSaveElement();
-          },
-          'GENERIC.AreYouSure',
-          'ELEMENTEDITOR.save.nonEmptyStagingConfirm',
-          'GENERIC.YesSaveIt'
+            StagingService.isEmpty(),
+            function () {
+              $scope.doSaveElement();
+            },
+            'GENERIC.AreYouSure',
+            'ELEMENTEDITOR.save.nonEmptyStagingConfirm',
+            'GENERIC.YesSaveIt'
         );
       }
     }
@@ -173,28 +182,37 @@ define([
         // Save element
         // Check if the element is already stored into the DB
         if ($routeParams.id == undefined) {
-          TemplateElementService.saveTemplateElement($scope.element).then(function (response) {
-            // confirm message
-            UIMessageService.flashSuccess('SERVER.ELEMENT.create.success', {"title": response.data.properties._ui.title},
-                                          'GENERIC.Created');
-            // Reload page with element id
-            var newId = response.data['@id'];
-            $location.path(UrlService.getElementEdit(newId));
-          }).catch(function (err) {
-            UIMessageService.showBackendError('SERVER.ELEMENT.create.error', err);
-          });
+          AuthorizedBackendService.doCall(
+              TemplateElementService.saveTemplateElement($scope.element),
+              function (response) {
+                // confirm message
+                UIMessageService.flashSuccess('SERVER.ELEMENT.create.success',
+                    {"title": response.data.properties._ui.title},
+                    'GENERIC.Created');
+                // Reload page with element id
+                var newId = response.data['@id'];
+                $location.path(UrlService.getElementEdit(newId));
+              },
+              function (err) {
+                UIMessageService.showBackendError('SERVER.ELEMENT.create.error', err);
+              }
+          );
         }
         // Update element
         else {
           var id = $scope.element['@id'];
           //--//delete $scope.element['@id'];
-          TemplateElementService.updateTemplateElement(id, $scope.element).then(function (response) {
-            angular.extend($scope.element, response.data);
-            UIMessageService.flashSuccess('SERVER.ELEMENT.update.success', {"title": response.data.title},
-                                          'GENERIC.Updated');
-          }).catch(function (err) {
-            UIMessageService.showBackendError('SERVER.ELEMENT.update.error', err);
-          });
+          AuthorizedBackendService.doCall(
+              TemplateElementService.updateTemplateElement(id, $scope.element),
+              function (response) {
+                angular.extend($scope.element, response.data);
+                UIMessageService.flashSuccess('SERVER.ELEMENT.update.success', {"title": response.data.title},
+                    'GENERIC.Updated');
+              },
+              function (err) {
+                UIMessageService.showBackendError('SERVER.ELEMENT.update.error', err);
+              }
+          );
         }
       }
     }
@@ -203,22 +221,22 @@ define([
     $scope.invalidElementStates = {};
     $scope.$on('invalidFieldState', function (event, args) {
       if (args[2] != $scope.element["@id"]) {
-  		if (args[0] == 'add') {
-  		  $scope.invalidFieldStates[args[2]] = args[1];
-  		}
-  		if (args[0] == 'remove') {
-  		  delete $scope.invalidFieldStates[args[2]];
-  		}
+        if (args[0] == 'add') {
+          $scope.invalidFieldStates[args[2]] = args[1];
+        }
+        if (args[0] == 'remove') {
+          delete $scope.invalidFieldStates[args[2]];
+        }
       }
-	});
+    });
     $scope.$on('invalidElementState', function (event, args) {
-	  if (args[0] == 'add') {
-		$scope.invalidElementStates[args[2]] = args[1];
-	  }
-	  if (args[0] == 'remove') {
-		delete $scope.invalidElementStates[args[2]];
-	  }
-	});
+      if (args[0] == 'add') {
+        $scope.invalidElementStates[args[2]] = args[1];
+      }
+      if (args[0] == 'remove') {
+        delete $scope.invalidElementStates[args[2]];
+      }
+    });
 
     // This function watches for changes in the properties._ui.title field and autogenerates the schema title and description fields
     $scope.$watch('element.properties._ui.title', function (v) {
@@ -227,7 +245,8 @@ define([
         if (title.length > 0) {
           var capitalizedTitle = $filter('capitalizeFirst')(title);
           $scope.element.title = $translate.instant("GENERATEDVALUE.elementTitle", {title: capitalizedTitle});
-          $scope.element.description = $translate.instant("GENERATEDVALUE.elementDescription", {title: capitalizedTitle});
+          $scope.element.description = $translate.instant("GENERATEDVALUE.elementDescription",
+              {title: capitalizedTitle});
         } else {
           $scope.element.title = "";
           $scope.element.description = "";

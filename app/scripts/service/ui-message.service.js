@@ -3,7 +3,7 @@
 define([
   'angular'
 ], function (angular) {
-  angular.module('cedar.templateEditor.service.UIMessageService', [])
+  angular.module('cedar.templateEditor.service.uIMessageService', [])
       .service('UIMessageService', UIMessageService);
 
   UIMessageService.$inject = ['toasty', '$translate'];

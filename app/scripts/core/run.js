@@ -589,14 +589,7 @@ define([
     HeaderService.init();
 
     UserService.injectUserHandler($window.bootstrapUserHandler);
-
-    var pt = UserService.getParsedToken();
-    $rootScope.currentUser = {
-      "name" : pt.name,
-      "id"   : pt.sub,
-      "email": pt.email,
-      "roles": pt.realm_access.roles
-    };
+    UserService.init();
   };
 
 });
