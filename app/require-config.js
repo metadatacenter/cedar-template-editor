@@ -77,11 +77,11 @@ require([
         }
 
         // use this for live servers
-        //window.bootstrapUserHandler = new KeycloakUserHandler();
+        window.bootstrapUserHandler = new KeycloakUserHandler();
         // use this for unauthorized access during development
-        window.bootstrapUserHandler = new NoauthUserHandler();
+        //window.bootstrapUserHandler = new NoauthUserHandler();
 
-        window.bootstrapUserHandler.init(successInitUserHandler, failInitUserHandler);
+        window.bootstrapUserHandler.initUserHandler(successInitUserHandler, failInitUserHandler);
       });
     }
 );

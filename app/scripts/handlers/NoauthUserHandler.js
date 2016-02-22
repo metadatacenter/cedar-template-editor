@@ -16,8 +16,8 @@ function NoauthUserHandler() {
     return null;
   };
 
-  this.getParsedToken = function () {
-    return this.buildNoauthToken();
+  this.getParsedToken = function (config) {
+    return config.noauthToken;
   };
 
   this.getTokenValiditySeconds = function () {
@@ -28,23 +28,8 @@ function NoauthUserHandler() {
     console.log("NoauthUserHandler:refreshToken()");
   };
 
-  this.init = function (successCallback, failureCallback) {
+  this.initUserHandler = function (successCallback, failureCallback) {
     console.log("NoauthUserHandler:init()");
     successCallback(true);
   };
-
-  this.buildNoauthToken = function () {
-    return {
-      "name"        : "Unauthenticated User",
-      "sub"         : "111-2222-33333",
-      "email"       : "user@domain.edu",
-      "realm_access": {
-        "roles": [
-          "virtual role 1",
-          "virtual role 2",
-          "virtual role 3"
-        ]
-      }
-    };
-  }
 }

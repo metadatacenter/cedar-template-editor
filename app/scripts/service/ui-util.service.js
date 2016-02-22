@@ -3,7 +3,7 @@
 define([
   'angular'
 ], function(angular) {
-  angular.module('cedar.templateEditor.service.UIUtilService', [])
+  angular.module('cedar.templateEditor.service.uIUtilService', [])
     .service('UIUtilService', UIUtilService);
 
   UIUtilService.$inject = ["$window", "$timeout"];

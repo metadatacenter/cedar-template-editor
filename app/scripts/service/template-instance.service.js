@@ -2,40 +2,40 @@
 
 define([
   'angular'
-], function(angular) {
+], function (angular) {
   angular.module('cedar.templateEditor.service.templateInstanceService', [])
-    .service('TemplateInstanceService', TemplateInstanceService);
+      .service('TemplateInstanceService', TemplateInstanceService);
 
-  TemplateInstanceService.$inject = ['$http', 'UrlService'];
+  TemplateInstanceService.$inject = ['HttpBuilderService', 'UrlService'];
 
-  function TemplateInstanceService($http, UrlService) {
+  function TemplateInstanceService(HttpBuilderService, UrlService) {
 
     var service = {
       serviceId: "TemplateInstanceService"
     };
 
     service.getDefaultTemplateInstancesSummary = function () {
-      return $http.get(UrlService.getDefaultTemplateInstancesSummary(10, 0));
+      return HttpBuilderService.get(UrlService.getDefaultTemplateInstancesSummary(10, 0));
     };
 
     service.getAllTemplateInstancesSummary = function () {
-      return $http.get(UrlService.getAllTemplateInstancesSummary());
+      return HttpBuilderService.get(UrlService.getAllTemplateInstancesSummary());
     };
 
     service.getTemplateInstance = function (id) {
-      return $http.get(UrlService.getTemplateInstance(id));
+      return HttpBuilderService.get(UrlService.getTemplateInstance(id));
     };
 
     service.deleteTemplateInstance = function (id) {
-      return $http.delete(UrlService.getTemplateInstance(id));
+      return HttpBuilderService.delete(UrlService.getTemplateInstance(id));
     };
 
     service.saveTemplateInstance = function (instance) {
-      return $http.post(UrlService.templateInstances(), angular.toJson(instance));
+      return HttpBuilderService.post(UrlService.templateInstances(), angular.toJson(instance));
     };
 
     service.updateTemplateInstance = function (id, instance) {
-      return $http.put(UrlService.getTemplateInstance(id), angular.toJson(instance));
+      return HttpBuilderService.put(UrlService.getTemplateInstance(id), angular.toJson(instance));
     };
 
     return service;

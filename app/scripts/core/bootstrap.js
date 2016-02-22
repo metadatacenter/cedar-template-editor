@@ -14,7 +14,8 @@ function CedarBootstrap($http) {
       'resources/template-empty.json'
     ],
     'HeaderService': true,
-    'UrlService': true
+    'UrlService': true,
+    'UserService': true
   };
 
   // Function to convert camelCase to train-case
