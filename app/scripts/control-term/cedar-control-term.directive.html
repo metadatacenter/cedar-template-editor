@@ -4,7 +4,10 @@
   </div>
   <div class="control-term-field-preview-form" ng-if="$root.propertiesOf(field)._ui.inputType">
     <div class="item-name">
-      <div class="ibl"><div name-of-field field="field"></div></div>&nbsp;&nbsp;<span class="field-title">{{$root.propertiesOf(field)._ui.title}}</span>
+      <div class="ibl">
+        <cedar-name-of-field field="field"></cedar-name-of-field>
+      </div>
+      &nbsp;&nbsp;<span class="field-title">{{$root.propertiesOf(field)._ui.title}}</span>
     </div>
   </div>
 
@@ -247,174 +250,7 @@
     <div class="form-group floating-label-wrapper btn-start-over-group clearfix" ng-if="controlTerm.fieldActionSelection">
       <button type="button" class="btn btn-start-over" ng-click="controlTerm.startOver()">Start Over</button>
     </div>
-
-    <div class="form-group form-group-actions clearfix" ng-class="{'is-searching': controlTerm.fieldActionSelection == 'search', 'is-browsing': controlTerm.fieldActionSelection == 'browse'}">
-      <div class="field-search">
-        <div class="input-group field-search-input-group">
-          <input id="field-search-input" type="text" class="form-control field-search-form-control" placeholder="Search" aria-label="Field Search" ng-model="controlTerm.fieldSearchTerms" ng-focus="controlTerm.startFieldSearch()" ng-blur="controlTerm.endFieldSearch()" ng-keyup="$event.keyCode == 13 && controlTerm.fieldSearch()" with-floating-label="" />
-          <span class="input-group-addon" ng-click="controlTerm.fieldSearch()">
-            <img src="../img/search-icon.png" />
-          </span>
-        </div>
-      </div>
-      <div class="field-browse">
-        <div class="more-items" ng-if="!controlTerm.fieldActionSelection">
-          <button type="button" class="btn btn-field-browse btn-block" data-toggle="dropdown" aria-expanded="false" ng-click="controlTerm.fieldBrowse($event)">
-            <span class="pull-left text">Browse ontologies</span> <i class="fa fa-angle-down fa-2x pull-right"></i>
-            <span class="clearfix"></span>
-          </button>
-        </div>
-        <div class="input-group ontology-search-input-group" ng-if="controlTerm.fieldActionSelection == 'browse'">
-          <input id="ontologi_search_input" type="text" class="form-control ontology-search-form-control" placeholder="Search" aria-label="Browse" ng-model="controlTerm.ontologySearchTerms" ng-keyup="controlTerm.prepareForOntologySearch($event)" with-floating-label="" />
-          <span class="input-group-addon" ng-click="controlTerm.ontologySearch()">
-            <img src="../img/search-icon.png" />
-          </span>
-        </div>
-      </div>
-    </div>
-
-    <div class="preloader" ng-show="controlTerm.searchPreloader"></div>
-
-    <!-- Field Search Results and Ontology Tree -->
-    <div class="clear search-results-section" ng-if="controlTerm.searchResults.length > 0">
-      <div class="search-results-headers" ng-hide="controlTerm.fieldTreeVisibility">
-        <table class="table table-condensed results-headers-table search-results-headers-table" ng-if="controlTerm.fieldActionSelection == 'search'">
-          <thead>
-            <tr>
-              <th>Class</th>
-              <th>Ontology</th>
-            </tr>
-          </thead>
-        </table>
-
-        <table class="table table-condensed results-headers-table browse-results-headers-table" ng-if="controlTerm.fieldActionSelection == 'browse'">
-          <thead>
-            <tr>
-              <th>Ontology</th>
-              <th>Categories</th>
-              <th>No Classes</th>
-            </tr>
-          </thead>
-        </table>
-      </div>
-      <div class="search-results" ng-hide="controlTerm.fieldTreeVisibility">
-        <div class="no-search-results" ng-show="controlTerm.searchNoResults">No results.</div>
-        <div class="table-responsive results-table-container">
-          <table class="table table-hover results-table search-results-table" ng-if="controlTerm.fieldActionSelection == 'search'">
-            <tbody>
-              <tr ng-repeat="result in controlTerm.searchResults" ng-click="controlTerm.selectFieldClass(result.collection)">
-                <td>{{result.class}}</td>
-                <td>{{getOntologySummary(result.ontology)}}</td>
-              </tr>
-            </tbody>
-          </table>
-
-          <table class="table table-hover results-table browse-results-table" ng-if="controlTerm.fieldActionSelection == 'browse'">
-            <tbody>
-              <tr ng-repeat="result in controlTerm.searchResults" ng-click="controlTerm.selectFieldOntology(result)" ng-show="controlTerm.isOntologyNameMatched(result)">
-                <td>{{result.name}}</td>
-                <td>{{result.categoriesNames}}</td>
-                <td>{{result.metrics.classes}}</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-      <div class="field-tree clear" ng-show="controlTerm.fieldTreeVisibility">
-        <div class="field-tree-header table-style">
-          <div class="ontology-tree-header table-cell-style" ng-if="controlTerm.currentOntology != ''">
-            <h4><a class="pull-left" ng-click="controlTerm.hideFieldTree()"><img src="../img/left-arrow.png" /></a>&nbsp;&nbsp;&nbsp;&nbsp;{{controlTerm.currentOntology.details.ontology.name}}</h4>
-          </div><!-- /.ontology-tree -->
-
-          <div class="field-details-view table-cell-style" ng-if="controlTerm.currentOntology !=''">
-            <ul class="nav nav-tabs" role="tablist">
-              <li role="presentation" class="detail-view-tab active"><a href="#class-details" aria-controls="class-details" role="tab" data-toggle="tab">Class Details</a></li>
-              <li role="presentation" class="detail-view-tab"><a href="#ontology-details" aria-controls="ontology-details" role="tab" data-toggle="tab">Ontology Details</a></li>
-            </ul>
-          </div>
-          <div class="clearfix"></div>
-        </div>
-        <div class="field-tree-details">
-          <div class="ontology-tree pull-left" ng-if="controlTerm.currentOntology != ''">
-            <div class="tree tree-view-ul tree-view list-unstyled class-tree-container">
-            <class-tree tree="controlTerm.currentOntology.tree" term="controlTerm" selected-node="controlTerm.selectedClass1"></class-tree>
-            </div>
-          </div><!-- /.ontology-tree -->
-
-          <div class="field-details-view pull-right" ng-if="controlTerm.currentOntology !=''">
-            <div class="tab-content">
-              <div id="class-details" class="tab-pane active" role="tabpanel">
-                <div class="no-selected-class text-center" ng-hide="controlTerm.classDetails">No class is selected</div>
-                <div class="table-responsive">
-                  <table class="table table-striped">
-                    <tbody ng-show="controlTerm.classDetails">
-                      <tr>
-                        <th>Perf. Name</th>
-                        <th>{{controlTerm.classDetails.prefLabel}}</th>
-                      </tr>
-                      <tr>
-                        <td>ID</td>
-                        <td>{{controlTerm.classDetails['@id']}}</td>
-                      </tr>
-                      <tr>
-                        <td>Definition</td>
-                        <td>{{controlTerm.classDetails.definition[0]}}</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div><!-- /.table-responsive -->
-              </div><!-- /.class-details -->
-              <div id="ontology-details" class="tab-pane" role="tabpanel">
-                <div class="table-responsive">
-                  <table class="table table-striped">
-                    <tbody>
-                      <tr>
-                        <th>Name</th>
-                        <th>{{controlTerm.currentOntology.details.ontology.name}}</th>
-                      </tr>
-                      <tr>
-                        <td>Acronym</td>
-                        <td>{{controlTerm.currentOntology.details.ontology.acronym}}</td>
-                      </tr>
-                      <tr>
-                        <td>@id</td>
-                        <td><a ng-href="{{controlTerm.currentOntology.details.ontology['@id']}}" target="_blank">{{controlTerm.currentOntology.details.ontology['@id']}}</a></td>
-                      </tr>
-                      <tr>
-                        <td>Description</td>
-                        <td>{{controlTerm.currentOntology.details.description | htmlToPlainText}}</td>
-                      </tr>
-                      <tr>
-                        <td># of Classes</td>
-                        <td>{{controlTerm.currentOntology.size.classes | returnNullIfEmpty}}</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div><!-- /.table-responsive -->
-              </div>
-            </div>
-            <div class="clearfix"></div>
-          </div>
-          <div class="clearfix"></div>
-        </div>
-
-        <div class="class-actions">
-          <div class="class-action table-style" ng-if="controlTerm.selectedClass1.prefLabel && controlTerm.classDetails">
-            <span class="table-cell-style text-left">{{controlTerm.selectedClass1.prefLabel}}</span>
-            <span class="table-cell-style text-right">
-              <button class="btn btn-add-term" ng-click="controlTerm.addClass(controlTerm.selectedClass1)" ng-disabled="controlTerm.isLoadingClassDetails">Add</button>
-            </span>
-          </div>
-          <div class="class-action table-style" ng-if="controlTerm.selectedClass2.prefLabel && controlTerm.selectedClass2['@id'] != controlTerm.selectedClass1['@id'] && controlTerm.classDetails">
-            <span class="table-cell-style text-left">{{controlTerm.selectedClass2.prefLabel}}</span>
-            <span class="table-cell-style text-right">
-              <button class="btn btn-add-term add-btn-margin" ng-click="controlTerm.addClass(controlTerm.selectedClass2)">Add</button>
-            </span>
-           </div>
-        </div>
-      </div>
-    </div>
+    <cedar-control-term-ontology-picker control-term="controlTerm"></cedar-control-term-ontology-picker>
   </div>
 
   <div class="value-filter" ng-if="controlTerm.filterSelection == 'values'">
@@ -422,27 +258,27 @@
     <div class="text-center search-options">
       <div class="checkbox inline-block checkbox-bioportal-ontologies">
         <input type="checkbox" id="checkbox-bioportal-ontologies"
-        ng-model="controlTerm.bioportalOntologiesFilter"
-        name="bioportalOntologiesFilter"
-        ng-true-value="true"
-        ng-false-value="false"
-        ng-change="bioportalOntologiesFilter" />
+               ng-model="controlTerm.bioportalOntologiesFilter"
+               name="bioportalOntologiesFilter"
+               ng-true-value="true"
+               ng-false-value="false"
+               ng-change="bioportalOntologiesFilter" />
         <label for="checkbox-bioportal-ontologies">BioPortal Ontologies</label>
       </div>
       <div class="checkbox inline-block checkbox-bioportal-value-sets">
         <input type="checkbox" id="checkbox-bioportal-value-sets"
-        ng-model="controlTerm.bioportalValueSetsFilter"
-        name="bioportalValueSetsFilter"
-        ng-true-value="true"
-        ng-false-value="false"
-        ng-change="bioportalValueSetsFilter" />
+               ng-model="controlTerm.bioportalValueSetsFilter"
+               name="bioportalValueSetsFilter"
+               ng-true-value="true"
+               ng-false-value="false"
+               ng-change="bioportalValueSetsFilter" />
         <label for="checkbox-bioportal-value-sets">BioPortal Value Sets</label>
       </div>
     </div>
     <div class="btn-start-over-group" ng-if="controlTerm.valuesActionSelection">
       <button type="button" class="btn btn-start-over" ng-click="controlTerm.startOver()">Start Over</button>
     </div>
-
+    
     <div class="form-group form-group-actions clearfix" ng-class="{'is-searching': controlTerm.valuesActionSelection == 'search', 'is-browsing': controlTerm.valuesActionSelection == 'browse'}">
       <div class="values-search">
         <div class="input-group values-search-input-group">
@@ -544,7 +380,7 @@
         <div class="field-tree-details">
           <div class="ontology-tree pull-left" ng-if="controlTerm.selectedValueResult.resultType == 'Ontology' || controlTerm.selectedValueResult.resultType == 'Ontology Class'">
             <div class="tree tree-view-ul tree-view list-unstyled class-tree-container">
-              <class-tree tree="controlTerm.currentOntology.tree" term="controlTerm" selected-node="controlTerm.selectedValueResult"></class-tree>
+              <cedar-class-tree tree="controlTerm.currentOntology.tree" term="controlTerm" selected-node="controlTerm.selectedValueResult"></cedar-class-tree>
             </div>
           </div><!-- /.ontology-tree -->
 

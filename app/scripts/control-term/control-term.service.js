@@ -10,24 +10,42 @@ define([
 
   function controlTermService($http, $q) {
 
-    var service = {};
-    
+    var base = 'http://data.bioontology.org/';
     var http_default_config = {
       'headers': {
         'Authorization': 'apikey token=3bdf57dc-4d53-4ca1-b6c1-a1f1fe651ea9'
       }
-    }
+    };
+    var service = {
+      autocompleteOntology: autocompleteOntology,
+      autocompleteOntologySubtree: autocompleteOntologySubtree,
+      autocompleteValueSetClasses: autocompleteValueSetClasses,
+      getAllOntologies: getAllOntologies,
+      getClassChildren: getClassChildren,
+      getClassDetails: getClassDetails,
+      getClassParents: getClassParents,
+      getClassTree: getClassTree,
+      getClassValueSet: getClassValueSet,
+      getGenericEndpoint: getGenericEndpoint,
+      getOntologyCategories: getOntologyCategories,
+      getOntologyClasses: getOntologyClasses,
+      getOntologyDetails: getOntologyDetails,
+      getOntologySize: getOntologySize,
+      getOntologyTreeRoot: getOntologyTreeRoot,
+      getOntologyValueSets: getOntologyValueSets,
+      getValueSetDetails: getValueSetDetails,
+      searchClass: searchClass,
+      searchOntologyClassesValueSetsAndValueSetClasses: searchOntologyClassesValueSetsAndValueSetClasses,
+      searchValueSetsAndValues: searchValueSetsAndValues,
+      searchValueSetsAndValueSetClasses: searchValueSetsAndValueSetClasses
+    };
+    return service;
 
-    // Defining baseurl form requests
-    var base = 'http://data.bioontology.org/';
-
-    // TODO: respect existing query strings
-    function optimizeUri(uri) {
-      uri += '?display_context=false&display_links=false';
-      return uri;
-    }
-
-    service.autocompleteOntology = function(query, acronym) {
+    /**
+     * Service methods.
+     */
+    
+    function autocompleteOntology(query, acronym) {
       return $http.get(base + 'search?q=' + query.replace(/[\s]+/g, '+') + '&ontologies=' + acronym + '&suggest=true&display_context=false&display_links=false&pagesize=20', http_default_config).then(function(response) {
         return response.data;
       }).catch(function(err) {
@@ -35,8 +53,7 @@ define([
       });
     };
 
-
-    service.autocompleteOntologySubtree = function(query, acronym, subtree_root_id, max_depth) {
+    function autocompleteOntologySubtree(query, acronym, subtree_root_id, max_depth) {
       var searchUrl = base;
       if (query == '*') {
         // use descendants
@@ -51,7 +68,7 @@ define([
       });
     };
 
-    service.autocompleteValueSetClasses = function(query, uri) {
+    function autocompleteValueSetClasses(query, uri) {
       var searchUrl = base;
       if (query == '*') {
         // use descendants
@@ -66,7 +83,7 @@ define([
       });
     };
 
-	service.getAllOntologies = function() {
+	function getAllOntologies() {
 	  return $http.get(base + 'ontologies/', http_default_config).then(function(response) {
 		return response;
 	  }).catch(function(err) {
@@ -74,27 +91,62 @@ define([
 	  });
 	};
 
-	service.getOntologyDetails = function(acronym) {
-	  return $http.get(base + 'ontologies/' + acronym + '/latest_submission', http_default_config).then(function(response) {
+	function getClassChildren(acronym, classId) {
+	  //ontologies/{acronym}/classes/{id}/children?include=hasChildren
+  	  return $http.get(base + 'ontologies/' + acronym + '/classes/' + encodeURIComponent(classId) + '/children?include=hasChildren,prefLabel', http_default_config).then(function(response) {
+		return response.data.collection;
+	  }).catch(function(err) {
+		return err;
+	  });
+	};
+
+	function getClassDetails(endpoint) {
+	  // This function will return some more detailed information on a particular class
+   	  return $http.get(endpoint, http_default_config).then(function(response) {
 		return response.data;
 	  }).catch(function(err) {
 		return err;
 	  });
 	};
 
-	service.getOntologySize = function(acronym, optimize) {
-      var uri = base + 'ontologies/' + acronym + '/metrics';
-      if (optimize) {
-        uri = optimizeUri(uri);
-      }
-	  return $http.get(uri, http_default_config).then(function(response) {
+	function getClassParents(acronym, classId) {
+	  //ontologies/{acronym}/classes/{id}/parents?include=hasChildren
+  	  return $http.get(base + 'ontologies/' + acronym + '/classes/' + encodeURIComponent(classId) + '/parents?include=hasChildren,prefLabel', http_default_config).then(function(response) {
 		return response.data;
 	  }).catch(function(err) {
 		return err;
 	  });
 	};
 
-	service.getOntologyCategories = function(acronym, optimize) {
+    function getClassTree(acronym, classId ) {
+      //ontologies/{acronym}/classes/{id}/tree
+      return $http.get(base + 'ontologies/' + acronym + '/classes/' + encodeURIComponent(classId) + '/tree', http_default_config).then(function(response) {
+        return response.data;
+      }).catch(function(err) {
+        return err;
+      });
+    };
+
+	function getClassValueSet(acronym, classId) {
+	  //ontologies/{acronym}/classes/{id}/children?pagesize={pagesize}
+	  return $http.get(base + 'ontologies/' + acronym + '/classes/' + encodeURIComponent(classId) + '/children?pagesize=100', http_default_config).then(function(response) {
+		return response.data.collection;
+	  }).catch(function(err) {
+		return err;
+	  });
+	};
+
+	function getGenericEndpoint(endpoint) {
+	  // Some links within data returned from other requests have fully qualified endpoints so this is
+	  // simply a generic helper request function
+	  return $http.get(endpoint, http_default_config).then(function(response) {
+		return response.data;
+	  }).catch(function(err) {
+		return err;
+	  });
+	};
+
+	function getOntologyCategories(acronym, optimize) {
       var uri = base + 'ontologies/' + acronym + '/categories';
       if (optimize) {
         uri = optimizeUri(uri);
@@ -106,17 +158,69 @@ define([
 	  });
 	};
 
-	service.getGenericEndpoint = function(endpoint) {
-	  // Some links within data returned from other requests have fully qualified endpoints so this is
-	  // simply a generic helper request function
-	  return $http.get(endpoint, http_default_config).then(function(response) {
+	function getOntologyClasses(endpointOrAcronym) {
+	  var url = endpointOrAcronym;
+	  if (!/\/classes$/i.test(url)) {
+		url = base + "ontologies/" + url + "/classes";
+	  }
+      
+	  return $http.get(url, http_default_config).then(function(response) {
+		return response.data.collection;
+	  }).catch(function(err) {
+		return err;
+	  });
+	};
+    
+	function getOntologyDetails(acronym) {
+	  return $http.get(base + 'ontologies/' + acronym + '/latest_submission', http_default_config).then(function(response) {
 		return response.data;
 	  }).catch(function(err) {
 		return err;
 	  });
 	};
 
-	service.searchClass = function(query) {
+	function getOntologySize(acronym, optimize) {
+      var uri = base + 'ontologies/' + acronym + '/metrics';
+      if (optimize) {
+        uri = optimizeUri(uri);
+      }
+	  return $http.get(uri, http_default_config).then(function(response) {
+		return response.data;
+	  }).catch(function(err) {
+		return err;
+	  });
+	};
+
+	function getOntologyTreeRoot(acronym){
+	  //ontologies/{acronym}/classes/roots
+	  return $http.get(base + 'ontologies/' + acronym + '/classes/roots', http_default_config).then(function(response) {
+		return response.data;
+	  }).catch(function(err) {
+		return err;
+	  });
+	};
+
+	function getOntologyValueSets(acronym) {
+	  //ontologies/NLMVS/classes/roots
+	  // Get all value sets that belong to a specific Ontology
+	  return $http.get(base + 'ontologies/' + acronym + '/classes/roots?include=hasChildren,prefLabel,definition,properties', http_default_config).then(function(response) {
+		return response.data;
+	  }).catch(function(err) {
+		return err;
+	  });
+	};
+
+	function getValueSetDetails(acronym, classId) {
+	  //ontologies/{acronym}/classes/{id}?include=prefLabel,definition,properties
+	  var request = base + 'ontologies/' + acronym + '/classes/' + encodeURIComponent(classId) + '?include=prefLabel,definition,properties';
+	  return $http.get(request, http_default_config).then(function(response) {
+		return response.data;
+	  }).catch(function(err) {
+		return err;
+	  });
+	};
+
+	function searchClass(query) {
 	  // This searchClass() function will run for each additional page of data in the original request,
 	  // subsequent requests are made the the full qualified endpoint therefore the request will NOT need
 	  // to be sliced to properly format the request
@@ -135,61 +239,23 @@ define([
 	  });
 	};
 
-	service.getClassDetails = function(endpoint) {
-	  // This function will return some more detailed information on a particular class
-   	  return $http.get(endpoint, http_default_config).then(function(response) {
+    function searchOntologyClassesValueSetsAndValueSetClasses(query) {
+	  return $http.get(base + 'search?q=' + query.replace(/[\s]+/g, '+') + '&pagesize=100', http_default_config).then(function(response) {
+		return response.data;
+	  }).catch(function(err) {
+		return err;
+	  });
+    };
+
+	function searchValueSetsAndValues(query) {
+	  return $http.get(base + 'search?q=' + query.replace(/[\s]+/g, '+') + '&ontologies=NLMVS', http_default_config).then(function(response) {
 		return response.data;
 	  }).catch(function(err) {
 		return err;
 	  });
 	};
 
-	service.getClassTree = function(acronym, classId ) {
-	  //ontologies/{acronym}/classes/{id}/tree
-	  return $http.get(base + 'ontologies/' + acronym + '/classes/' + encodeURIComponent(classId) + '/tree', http_default_config).then(function(response) {
-		return response.data;
-	    }).catch(function(err) {
-		  return err;
-	    });
-	};
-
-	service.getClassChildren = function(acronym, classId) {
-	  //ontologies/{acronym}/classes/{id}/children?include=hasChildren
-  	  return $http.get(base + 'ontologies/' + acronym + '/classes/' + encodeURIComponent(classId) + '/children?include=hasChildren,prefLabel', http_default_config).then(function(response) {
-		return response.data.collection;
-	  }).catch(function(err) {
-		return err;
-	  });
-	};
-
-	service.getClassParents = function(acronym, classId) {
-	  //ontologies/{acronym}/classes/{id}/parents?include=hasChildren
-  	  return $http.get(base + 'ontologies/' + acronym + '/classes/' + encodeURIComponent(classId) + '/parents?include=hasChildren,prefLabel', http_default_config).then(function(response) {
-		return response.data;
-	  }).catch(function(err) {
-		return err;
-	  });
-	};
-
-	service.getClassValueSet = function(acronym, classId) {
-	    //ontologies/{acronym}/classes/{id}/children?pagesize={pagesize}
-	    return $http.get(base + 'ontologies/' + acronym + '/classes/' + encodeURIComponent(classId) + '/children?pagesize=100', http_default_config).then(function(response) {
-		  return response.data.collection;
-	    }).catch(function(err) {
-		  return err;
-	    });
-	};
-    
-	service.getOntologyTreeRoot = function(acronym){
-	  //ontologies/{acronym}/classes/roots
-	  return $http.get(base + 'ontologies/' + acronym + '/classes/roots', http_default_config).then(function(response) {
-		return response.data;
-	  }).catch(function(err) {
-		return err;
-	  });
-	};
-    
-	service.searchValueSetsAndValueSetClasses = function(query) {
+	function searchValueSetsAndValueSetClasses(query) {
 	  //search?q={query}&ontologies={acronym}&roots_only=true
 	  // &require_exact_match will only match the phrase, not any word within the phrase (more accurate)
 	  return $http.get(base + 'search?q=' + query.replace(/[\s]+/g, '+') + '&roots_only=true&require_exact_match=true', http_default_config).then(function(response) {
@@ -200,55 +266,15 @@ define([
 	  });
 	};
 
-    service.searchOntologyClassesValueSetsAndValueSetClasses = function(query) {
-	  return $http.get(base + 'search?q=' + query.replace(/[\s]+/g, '+') + '&pagesize=100', http_default_config).then(function(response) {
-		return response.data;
-	  }).catch(function(err) {
-		return err;
-	  });
-    };
+    /**
+     * Private methods.
+     */
 
-	service.searchValueSetsAndValues = function(query) {
-	  return $http.get(base + 'search?q=' + query.replace(/[\s]+/g, '+') + '&ontologies=NLMVS', http_default_config).then(function(response) {
-		return response.data;
-	  }).catch(function(err) {
-		return err;
-	  });
-	};
+    // TODO: respect existing query strings
+    function optimizeUri(uri) {
+      uri += '?display_context=false&display_links=false';
+      return uri;
+    }
 
-	service.getValueSetDetails = function(acronym, classId) {
-	  //ontologies/{acronym}/classes/{id}?include=prefLabel,definition,properties
-	  var request = base + 'ontologies/' + acronym + '/classes/' + encodeURIComponent(classId) + '?include=prefLabel,definition,properties';
-	  return $http.get(request, http_default_config).then(function(response) {
-		return response.data;
-	  }).catch(function(err) {
-		return err;
-	  });
-	};
-
-	service.getOntologyValueSets = function(acronym) {
-	  //ontologies/NLMVS/classes/roots
-	  // Get all value sets that belong to a specific Ontology
-	  return $http.get(base + 'ontologies/' + acronym + '/classes/roots?include=hasChildren,prefLabel,definition,properties', http_default_config).then(function(response) {
-		return response.data;
-	  }).catch(function(err) {
-		return err;
-	  });
-	};
-
-	service.getOntologyClasses = function(endpointOrAcronym) {
-	  var url = endpointOrAcronym;
-	  if (!/\/classes$/i.test(url)) {
-		url = base + "ontologies/" + url + "/classes";
-	  }
-      
-	  return $http.get(url, http_default_config).then(function(response) {
-		return response.data.collection;
-	  }).catch(function(err) {
-		return err;
-	  });
-	};
-
-    return service;
   }
 });
