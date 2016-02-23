@@ -199,13 +199,13 @@ gulp.task('html', function () {
 
 gulp.task('dev-replace', function () {
   gulp.src(['app/config/src/url-service.conf.json'])
-      .pipe(replace('templateServerUrl', 'http://template.metadatacenter.orgx'))
+      .pipe(replace('templateServerUrl', 'https://template.metadatacenter.orgx'))
       .pipe(gulp.dest('app/config/'));
 });
 
 gulp.task('dev02-replace', function () {
   gulp.src(['app/config/src/url-service.conf.json'])
-      .pipe(replace('templateServerUrl', 'http://template.metadatacenter.net'))
+      .pipe(replace('templateServerUrl', 'https://template.metadatacenter.net'))
       .pipe(gulp.dest('app/config/'));
 });
 
