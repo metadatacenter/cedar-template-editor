@@ -18,7 +18,8 @@ function KeycloakUserHandler() {
     return keycloak.refreshToken;
   };
 
-  this.getParsedToken = function () {
+  this.getParsedToken = function (config) {
+    // config is used for NoauthUserHandler only
     return keycloak.tokenParsed;
   };
 
@@ -34,7 +35,7 @@ function KeycloakUserHandler() {
     });
   };
 
-  this.init = function (successCallback, failureCallback) {
+  this.initUserHandler = function (successCallback, failureCallback) {
     keycloak.init().success(function (authenticated) {
       successCallback(authenticated);
     }).error(function () {

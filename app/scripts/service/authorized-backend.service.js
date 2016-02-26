@@ -18,7 +18,7 @@ define([
       var token = UserService.getToken();
       return {
         "headers": {
-          "Authorization": token == null ? "" : "bearer " + token,
+          "Authorization": token == null ? "" : "Bearer " + token,
         }
       };
     };
