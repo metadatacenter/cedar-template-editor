@@ -14,3 +14,4 @@ npm-debug.log
 keycloak.json
 
 app/config/url-service.conf.json
+app/config/user-service.conf.json
