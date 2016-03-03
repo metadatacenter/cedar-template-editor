@@ -1,5 +1,4 @@
 {
-  "userRestAPI": "userServerUrl",
   "noauthToken": {
     "name": "Unauthenticated User",
     "sub": "111-2222-33333",

@@ -65,15 +65,15 @@ define([
     }
 
     service.doCall = function (httpConfigObject, thenFunction, catchFunction) {
-      console.log("AuthorizedBackendService.doCall:" + httpConfigObject.url);
-      console.log(this.getTokenValidityMessage());
+      //console.log("AuthorizedBackendService.doCall:" + httpConfigObject.url);
+      //console.log(this.getTokenValidityMessage());
       var owner = this;
 
       owner.getHttpPromise(httpConfigObject).then(function (response) {
         thenFunction(response);
       }).catch(function (err) {
-        console.log("Original backend call failed:");
-        console.log(err);
+        //console.log("Original backend call failed:");
+        //console.log(err);
         if ("data" in err && err.data !== null) {
           if (err.data.errorSubType == "authException") {
             var handled = owner.handleAuthException(err);

@@ -200,8 +200,6 @@ gulp.task('html', function () {
 gulp.task('dev-replace', function () {
   gulp.src(['app/config/src/url-service.conf.json'])
       .pipe(replace('templateServerUrl', 'https://template.metadatacenter.orgx'))
-      .pipe(gulp.dest('app/config/'));
-  gulp.src(['app/config/src/user-service.conf.json'])
       .pipe(replace('userServerUrl', 'https://user.metadatacenter.orgx'))
       .pipe(gulp.dest('app/config/'));
 });
@@ -209,8 +207,6 @@ gulp.task('dev-replace', function () {
 gulp.task('dev02-replace', function () {
   gulp.src(['app/config/src/url-service.conf.json'])
       .pipe(replace('templateServerUrl', 'https://template.metadatacenter.net'))
-      .pipe(gulp.dest('app/config/'));
-  gulp.src(['app/config/src/user-service.conf.json'])
       .pipe(replace('userServerUrl', 'https://user.metadatacenter.net'))
       .pipe(gulp.dest('app/config/'));
 });
