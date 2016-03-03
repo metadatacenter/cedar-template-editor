@@ -7,6 +7,9 @@
       "textarea": {
         "NAME": "Paragraph"
       },
+      "richtext": {
+        "NAME": "Rich Text"
+      },
       "radio": {
         "NAME": "Multiple Choice"
       },

@@ -22,6 +22,8 @@ define([
   'lib/bootstrap/dist/js/bootstrap',
   'lib/bootstrap-select/dist/js/bootstrap-select.min',
   'lib/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min',
+  'lib/ng-ckeditor/ng-ckeditor',
+  'ckeditor',
   'lib/handsontable/dist/handsontable.full',
   'jquery',
   'lib/jquery-ui/jquery-ui',

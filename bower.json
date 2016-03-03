@@ -21,6 +21,10 @@
     "angular-translate": "~2.8.1",
     "angular-translate-loader-static-files": "~2.8.1",
     "angular-toasty": "~1.0.4",
-    "perfnow-polyfill": "*"
+    "perfnow-polyfill": "*",
+    "ng-ckeditor": "^0.2.1"
+  },
+  "resolutions": {
+    "angular": "~1.5.0"
   }
 }

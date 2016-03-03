@@ -10,6 +10,11 @@
     "allowedInElement": true
   },
   {
+    "cedarType": "richtext",
+    "iconClass": "cedar-svg-rich-text",
+    "allowedInElement": true
+  },
+  {
     "cedarType": "radio",
     "iconClass": "cedar-svg-multiple-choice",
     "allowedInElement": true

@@ -10,6 +10,8 @@ require.config({
 
     'app'                  : 'scripts/app',
     'cedar/template-editor': 'scripts',
+
+    'ckeditor' : 'bower_components/ng-ckeditor/libs/ckeditor/ckeditor'
   },
   shim    : {
     'angular'                                                                        : {
@@ -27,8 +29,16 @@ require.config({
     'lib/angular-toasty/dist/angular-toasty'                                         : ['angular'],
     'lib/angular-ui-select/dist/select'                                              : ['angular'],
     'lib/angular-ui-sortable/sortable'                                               : ['angular'],
-    'lib/ngHandsontable/dist/ngHandsontable'                                         : ['angular',
-                                                                                        'lib/handsontable/dist/handsontable.full'],
+
+    'lib/ng-ckeditor/ng-ckeditor'           :
+      ['angular', 'ckeditor']
+    ,
+    'ckeditor': {
+      'exports': 'CKEDITOR'
+    },
+
+    'lib/ngHandsontable/dist/ngHandsontable': ['angular',
+                                               'lib/handsontable/dist/handsontable.full'],
 
     'lib/handsontable/dist/handsontable.full'                                    : {'exports': 'Handsontable'},
     'lib/bootstrap/dist/js/bootstrap'                                            : ['jquery'],
