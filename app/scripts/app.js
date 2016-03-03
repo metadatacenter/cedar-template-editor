@@ -41,6 +41,11 @@ define([
   'cedar/template-editor/template-element/template-element.module',
   'cedar/template-editor/template-instance/template-instance.module',
   'cedar/template-editor/profile/profile.module',
+
+  // classic javascript code, KeyCloak related
+  'cedar/template-editor/keycloak/keycloak',
+  'cedar/template-editor/handlers/KeycloakUserHandler',
+  'cedar/template-editor/handlers/NoauthUserHandler'
 ], function(angular) {
   return angular.module('cedar.templateEditor', [
     'ui.bootstrap',

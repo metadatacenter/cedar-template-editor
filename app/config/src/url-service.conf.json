@@ -1,3 +1,4 @@
 {
-  "cedarRestAPI": "templateServerUrl"
+  "cedarRestAPI": "templateServerUrl",
+  "userRestAPI": "userServerUrl"
 }

@@ -11,11 +11,11 @@ define([
   cedarTemplateEditorCoreRun.$inject = ['$rootScope', 'controlTermService', '$location', '$timeout', '$window',
                                         '$translate', 'DataTemplateService', 'DataManipulationService',
                                         'FieldTypeService', 'UrlService', 'HeaderService', 'UIUtilService',
-                                        'UserService', 'CONST'];
+                                        'UserService', 'UserDataService', 'CONST'];
 
   function cedarTemplateEditorCoreRun($rootScope, controlTermService, $location, $timeout, $window, $translate,
                                       DataTemplateService, DataManipulationService, FieldTypeService, UrlService,
-                                      HeaderService, UIUtilService, UserService, CONST) {
+                                      HeaderService, UIUtilService, UserService, UserDataService, CONST) {
 
 
     $rootScope.isArray = angular.isArray;
@@ -589,7 +589,11 @@ define([
     HeaderService.init();
 
     UserService.injectUserHandler($window.bootstrapUserHandler);
-    UserService.init();
+    UserService.init(function () {
+      UserDataService.readUserDetails();
+    });
+
+
   };
 
 });

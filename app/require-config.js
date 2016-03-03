@@ -64,7 +64,7 @@ require([
         }
 
         function successInitUserHandler(authenticated) {
-          console.log("User handler init success. Authenticated: " + authenticated);
+          //console.log("User handler init success. Authenticated: " + authenticated);
           if (!authenticated) {
             window.bootstrapUserHandler.doLogin();
           } else {

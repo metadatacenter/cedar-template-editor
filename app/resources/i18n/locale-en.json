@@ -148,6 +148,11 @@
         "error": "There was an error while loading the template instances!<br /><br />VIEW TECHNICAL DETAILS!"
       }
     },
+    "USER": {
+      "read": {
+        "error": "There was an error reading the current user details!<br /><br />VIEW TECHNICAL DETAILS!"
+      }
+    },
     "ERROR": {
       "title": "Server Error",
       "technicalDetailsTitle": "Technical details of error",

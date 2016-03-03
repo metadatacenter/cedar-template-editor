@@ -3,23 +3,40 @@
   <h4 translate="" class="section-title ng-scope">Id:</h4>
 
   <div>
-    {{$root.currentUser.id}}
+    <ul>
+      <li>
+        {{$root.currentUser.id}}
+      </li>
+    </ul>
   </div>
-  <hr />
+  <hr/>
 
   <h4 translate="" class="section-title ng-scope">Email:</h4>
 
   <div>
-    {{$root.currentUser.email}}
+    <ul>
+      <li>{{$root.currentUser.email}}</li>
+    </ul>
   </div>
-  <hr />
+  <hr/>
 
   <h4 translate="" class="section-title ng-scope">Name:</h4>
 
   <div>
-    {{$root.currentUser.name}}
+    <ul>
+      <li>{{$root.currentUser.name}}</li>
+    </ul>
   </div>
-  <hr />
+  <hr/>
+
+  <h4 translate="" class="section-title ng-scope">API Keys:</h4>
+
+  <div>
+    <ul>
+      <li ng-repeat="apiKey in $root.currentUser.apiKeys">{{apiKey}}</li>
+    </ul>
+  </div>
+  <hr/>
 
   <h4 translate="" class="section-title ng-scope">Roles:</h4>
 
@@ -28,14 +45,18 @@
       <li ng-repeat="roleName in $root.currentUser.roles">{{roleName}}</li>
     </ul>
   </div>
-  <hr />
+  <hr/>
 
   <h4 translate="" class="section-title ng-scope">Token validity:</h4>
 
   <div>
-    {{getTokenValidity()}} seconds
+    <ul>
+      <li>
+        {{getTokenValidity()}} seconds
+      </li>
+    </ul>
   </div>
-  <hr />
+  <hr/>
 
   <!-- /.row -->
 </div> <!-- /.container -->

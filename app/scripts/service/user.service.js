@@ -17,7 +17,7 @@ define([
       serviceId: "UserService"
     };
 
-    service.init = function () {
+    service.init = function (callback) {
       config = cedarBootstrap.getBaseConfig(this.serviceId);
 
       var pt = this.getParsedToken(config);
@@ -27,6 +27,8 @@ define([
         "email": pt.email,
         "roles": pt.realm_access.roles
       };
+
+      callback();
     };
 
     service.injectUserHandler = function (userHandler) {
@@ -37,7 +39,7 @@ define([
           this[methodName] = userHandler[methodName];
         }
       }
-    }
+    };
 
     return service;
   };

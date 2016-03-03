@@ -12,6 +12,7 @@ define([
 
     var config = null;
     var apiService = null;
+    var userService = null;
 
     var service = {
       serviceId: "UrlService"
@@ -20,6 +21,7 @@ define([
     service.init = function () {
       config = cedarBootstrap.getBaseConfig(this.serviceId);
       apiService = config.cedarRestAPI;
+      userService = config.userRestAPI;
     };
 
     service.getRoleSelector = function () {
@@ -84,6 +86,14 @@ define([
 
     service.getTemplateInstance = function (id) {
       return this.templateInstances() + '/' + encodeURIComponent(id);
+    };
+
+    service.users = function () {
+      return userService + '/users';
+    };
+
+    service.getUser = function (id) {
+      return this.users() + '/' + encodeURIComponent(id);
     };
 
     return service;

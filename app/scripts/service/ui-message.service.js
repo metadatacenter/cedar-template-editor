@@ -121,9 +121,11 @@ define([
             string = $translate.instant('SERVER.ERROR.InaccessibleMessageString');
             stackTraceHtml = $translate.instant('GENERIC.NotAvailable');
           } else {
-            message = errorObject.message;
-            string = errorObject.string;
-            stackTraceHtml = "<textarea>" + errorObject.stackTrace.join('<br />') + "</textarea>";
+            if (errorObject !== null) {
+              message = errorObject.message;
+              string = errorObject.string;
+              stackTraceHtml = "<textarea>" + errorObject.stackTrace.join('<br />') + "</textarea>";
+            }
           }
 
           var content = $translate.instant('SERVER.ERROR.technicalDetailsTemplate', {
