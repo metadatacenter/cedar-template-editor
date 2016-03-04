@@ -23,10 +23,7 @@ define([
 
       var setDirectory = function() {
         var p = $rootScope.propertiesOf($scope.field);
-        console.info(p);
         var state = p._tmp && p._tmp.state || "completed";
-        console.info(state);
-        console.info(state);
 
         if ((state == "creating") && !$scope.preview) {
           $scope.directory = "create";
@@ -86,9 +83,6 @@ define([
 
       // When form submit event is fired, check field for simple validation
       $scope.$on('submitForm', function (event) {
-        console.log('submitForm');
-        console.log($scope.model);
-        console.log($scope.model._value);
 
         // If field is required and is empty, emit failed emptyRequiredField event
         if ($rootScope.propertiesOf($scope.field)._valueConstraints.requiredValue) {
@@ -222,9 +216,6 @@ define([
       });
 
       $scope.$on("saveForm", function() {
-        console.log('saveForm');
-        console.log($scope.field);
-        console.log($scope.field._value);
         var p = $rootScope.propertiesOf($scope.field);
         if (p._tmp && p._tmp.state == "creating") {
           $scope.$emit("invalidFieldState", ["add", $rootScope.propertiesOf($scope.field)._ui.title, $scope.field["@id"]]);
