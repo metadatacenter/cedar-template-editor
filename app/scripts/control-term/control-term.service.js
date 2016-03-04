@@ -10,10 +10,10 @@ define([
 
   function controlTermService($http, $q) {
 
-    var base = 'http://data.bioontology.org/';
+    var base = 'https://data.bioontology.org/';
     var http_default_config = {
       'headers': {
-        'Authorization': 'apikey token=3bdf57dc-4d53-4ca1-b6c1-a1f1fe651ea9'
+        'Authorization': 'apikey token=3adf57ac-2d73-4ca1-b6c1-a1f1fe651ea9'
       }
     };
     var service = {
