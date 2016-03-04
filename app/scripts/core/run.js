@@ -11,11 +11,11 @@ define([
   cedarTemplateEditorCoreRun.$inject = ['$rootScope', 'controlTermService', '$location', '$timeout', '$window',
                                         '$translate', 'DataTemplateService', 'DataManipulationService',
                                         'FieldTypeService', 'UrlService', 'HeaderService', 'UIUtilService',
-                                        'UserService', 'UserDataService', 'CONST'];
+                                        'UserService', 'UserDataService', 'RichTextConfigService','CONST'];
 
   function cedarTemplateEditorCoreRun($rootScope, controlTermService, $location, $timeout, $window, $translate,
                                       DataTemplateService, DataManipulationService, FieldTypeService, UrlService,
-                                      HeaderService, UIUtilService, UserService, UserDataService, CONST) {
+                                      HeaderService, UIUtilService, UserService, UserDataService, RichTextConfigService, CONST) {
 
 
     $rootScope.isArray = angular.isArray;
@@ -592,6 +592,8 @@ define([
     UserService.init(function () {
       UserDataService.readUserDetails();
     });
+
+    $rootScope.editorOptions =  RichTextConfigService.getConfig("default");
 
 
   };
