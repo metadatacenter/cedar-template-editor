@@ -8,12 +8,19 @@ define([
   angular.module('cedar.templateEditor.core.run', [])
       .run(cedarTemplateEditorCoreRun);
 
+  //cedarTemplateEditorCoreRun.$inject = ['$rootScope', 'controlTermService', '$location', '$timeout', '$window',
+  //                                      '$translate', 'DataTemplateService', 'DataManipulationService',
+  //                                      'FieldTypeService', 'UrlService', 'HeaderService', 'UIUtilService',
+  //                                      'UserService', 'UserDataService', 'CONST'];
   cedarTemplateEditorCoreRun.$inject = ['$rootScope', 'controlTermService', '$location', '$timeout', '$window',
                                         '$translate', 'DataTemplateService', 'DataManipulationService',
                                         'FieldTypeService', 'UrlService', 'HeaderService', 'UIUtilService',
                                         'UserService', 'UserDataService', 'RichTextConfigService','CONST'];
 
-  function cedarTemplateEditorCoreRun($rootScope, controlTermService, $location, $timeout, $window, $translate,
+  //function cedarTemplateEditorCoreRun($rootScope, controlTermService, $location, $timeout, $window, $translate,
+  //                                    DataTemplateService, DataManipulationService, FieldTypeService, UrlService,
+  //                                    HeaderService, UIUtilService, UserService, UserDataService,  CONST) {
+    function cedarTemplateEditorCoreRun($rootScope, controlTermService, $location, $timeout, $window, $translate,
                                       DataTemplateService, DataManipulationService, FieldTypeService, UrlService,
                                       HeaderService, UIUtilService, UserService, UserDataService, RichTextConfigService, CONST) {
 

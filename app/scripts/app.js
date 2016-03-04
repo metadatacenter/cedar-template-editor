@@ -58,6 +58,7 @@ define([
     'ui.sortable',
     'pascalprecht.translate',
     'angular-toasty',
+    'ngCkeditor',
 
     'cedar.templateEditor.core',
     'cedar.templateEditor.dashboard',
