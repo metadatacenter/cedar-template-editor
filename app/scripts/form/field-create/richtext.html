@@ -1,26 +1,16 @@
-<div id="richtext-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}" class="input-type-container rich-text">
+<div id="richtext-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}" class="input-type-container section-break">
   <p class="type-label"><i class="cedar-svg-rich-text"></i>Rich Text</p>
-
   <div class="form-group floating-label-wrapper">
-    <input type="text" class="form-control"
-        id="richtext-name-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}"
-        placeholder="Rich Text Name (Optional)" aria-label="Rich Text Name (Optional)"
-        ng-model="$root.propertiesOf(field)._ui.title" with-floating-label>
-  </div>
-  <!-- /.form-group -->
+    <input type="text" class="form-control" id="richtext-name-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}" placeholder="Rich Text Name (Optional)" aria-label="Rich Text Name (Optional)" ng-model="$root.propertiesOf(field)._ui.title"  with-floating-label>
+  </div><!-- /.form-group -->
   <div class="form-group floating-label-wrapper">
-    <!--<textarea rows="5"-->
-    <!--id="comment"-->
-    <!--class="form-control"-->
-    <!--ng-class="{'required': field.properties._valueConstraints.requiredValue}"-->
-    <!--placeholder="{{field.properties._ui.title}}"-->
-    <!--aria-label="{{field.properties._ui.description}}"-->
-    <!--ng-model="valueElement._value"-->
-    <!--ckeditor="editorOptions"></textarea>-->
+    <input type="text" class="form-control" id="section-break-description-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}" placeholder="Rich Text Description (Optional)" aria-label="Rich Text Description (Optional)" ng-model="$root.propertiesOf(field)._ui.description"  with-floating-label>
+  </div><!-- /.form-group -->
+  <div class="form-group floating-label-wrapper">
     <textarea ckeditor="editorOptions" rows="5" type="text" class="form-control"
         id="richtext-description-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}"
         placeholder="Rich Text Description (Optional)" aria-label="Rich Text Description (Optional)"
-        ng-model="valueElement._value">
+        ng-model="$root.propertiesOf(field)._content"></textarea>
   </div>
   <!-- /.form-group -->
   <div class="configuration-options" ng-include="'scripts/form/partials/staging-area-actions.partial.html'"></div>

@@ -1,49 +1,8 @@
-<div class="fields fields-textarea">
+<!--<h3 class="section-title">{{$root.propertiesOf(field)._ui.title}}</h3>-->
+<!--<p class="section-body">{{$root.propertiesOf(field)._ui.description}}</p>-->
 
-  <!-- Workaround for ngCkEditor not taking options into account -->
-  <div ng-hide="true">{{editorOptions = $root.editorOptions}}</div>
+<div  ng-bind-html="$root.getUnescapedContent(field)"></div>
 
-  <div ng-if="$root.isArray(model)" class="form-group floating-label-wrapper" ng-repeat="valueElement in model">
-    <p class="extra-label-context" ng-if="ngDisabled && field.properties._ui.title">{{field.properties._ui.title}}</p>
-    <textarea rows="5"
-        id="comment"
-        class="form-control"
-        ng-class="{'required': field.properties._valueConstraints.requiredValue}"
-        placeholder="{{field.properties._ui.title}}"
-        aria-label="{{field.properties._ui.description}}"
-        ng-model="valueElement._value"
-        ckeditor="editorOptions"></textarea>
 
-    <!--<div class="input-indicator-icons">-->
-    <!--<i class="cedar-svg-help-circle" data-container="body" data-toggle="popover" data-placement="left"-->
-    <!--data-content="{{field.properties._ui.description}}"></i>-->
-    <!--<i class="cedar-svg-check-circle"></i>-->
-    <!--<i class="cedar-svg-warning"></i>-->
-    <!--</div>-->
-    <!-- /.input-indicator-icons -->
-    <div class="more-input-wrapper" ng-include="'views/partials/more-input-buttons.html'"
-        ng-show="!field.maxItems || field.maxItems > 1"></div>
-  </div>
-  <!-- /.form-group -->
+<div class="preview-edit-options" ng-include="'scripts/form/partials/preview-edit-options.partial.html'" ng-edit="notEditable=true; childType='field'" ng-if="!$root.isRunTime()"></div>
 
-  <div ng-if="!$root.isArray(model)" class="form-group floating-label-wrapper">
-    <p class="extra-label-context" ng-if="ngDisabled && field.properties._ui.title">{{field.properties._ui.title}}</p>
-    <textarea rows="5"
-        id="comment"
-        class="form-control"
-        ng-class="{'required': field.properties._valueConstraints.requiredValue}"
-        placeholder="{{field.properties._ui.title}}"
-        aria-label="{{field.properties._ui.description}}"
-        ng-model="model._value"
-        ckeditor="editorOptions"></textarea>
-
-    <!--<div class="input-indicator-icons">-->
-    <!--<i class="cedar-svg-help-circle" data-container="body" data-toggle="popover" data-placement="left"-->
-    <!--data-content="{{field.properties._ui.description}}"></i>-->
-    <!--<i class="cedar-svg-check-circle"></i>-->
-    <!--<i class="cedar-svg-warning"></i>-->
-    <!--</div>-->
-    <!-- /.input-indicator-icons -->
-  </div>
-  <!-- /.form-group -->
-</div>

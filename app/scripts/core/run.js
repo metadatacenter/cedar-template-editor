@@ -12,17 +12,18 @@ define([
   //                                      '$translate', 'DataTemplateService', 'DataManipulationService',
   //                                      'FieldTypeService', 'UrlService', 'HeaderService', 'UIUtilService',
   //                                      'UserService', 'UserDataService', 'CONST'];
-  cedarTemplateEditorCoreRun.$inject = ['$rootScope', 'controlTermService', '$location', '$timeout', '$window',
+  cedarTemplateEditorCoreRun.$inject = ['$rootScope', 'controlTermService', '$location', '$timeout', '$window', '$sce',
                                         '$translate', 'DataTemplateService', 'DataManipulationService',
                                         'FieldTypeService', 'UrlService', 'HeaderService', 'UIUtilService',
-                                        'UserService', 'UserDataService', 'RichTextConfigService','CONST'];
+                                        'UserService', 'UserDataService', 'RichTextConfigService', 'CONST'];
 
-  //function cedarTemplateEditorCoreRun($rootScope, controlTermService, $location, $timeout, $window, $translate,
+  //function cedarTemplateEditorCoreRun($rootScope, controlTermService, $location, $timeout, $window,$sce, $translate,
   //                                    DataTemplateService, DataManipulationService, FieldTypeService, UrlService,
   //                                    HeaderService, UIUtilService, UserService, UserDataService,  CONST) {
-    function cedarTemplateEditorCoreRun($rootScope, controlTermService, $location, $timeout, $window, $translate,
+  function cedarTemplateEditorCoreRun($rootScope, controlTermService, $location, $timeout, $window, $sce, $translate,
                                       DataTemplateService, DataManipulationService, FieldTypeService, UrlService,
-                                      HeaderService, UIUtilService, UserService, UserDataService, RichTextConfigService, CONST) {
+                                      HeaderService, UIUtilService, UserService, UserDataService, RichTextConfigService,
+                                      CONST) {
 
 
     $rootScope.isArray = angular.isArray;
@@ -589,6 +590,10 @@ define([
           (valueConstraint.branches || []).length;
     };
 
+    $rootScope.getUnescapedContent = function (field) {
+      return $sce.trustAsHtml($rootScope.propertiesOf(field)._content);
+    };
+
     DataTemplateService.init();
     FieldTypeService.init();
     UrlService.init();
@@ -600,7 +605,7 @@ define([
       UserDataService.readUserDetails();
     });
 
-    $rootScope.editorOptions =  RichTextConfigService.getConfig("default");
+    $rootScope.editorOptions = RichTextConfigService.getConfig("default");
 
 
   };
