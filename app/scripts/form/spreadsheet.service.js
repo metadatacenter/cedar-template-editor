@@ -2,9 +2,9 @@
 
 define([
   'angular'
-], function(angular) {
+], function (angular) {
   angular.module('cedar.templateEditor.form.spreadsheetService', [])
-    .service('SpreadsheetService', SpreadsheetService);
+      .service('SpreadsheetService', SpreadsheetService);
 
   SpreadsheetService.$inject = ['$filter'];
 
@@ -122,50 +122,55 @@ define([
           if (context.isField()) {
             field = scopeElement;
           } else {
-            field = scopeElement[name];
+            field = scopeElement;
           }
 
-          if (field.hasOwnProperty("properties")) {
+          if (field.hasOwnProperty("items")) {
 
-            var _ui = field.properties._ui;
-            var inputType = _ui.inputType;
+            var items = field.items;
+            if (items != null && items.hasOwnProperty('properties')) {
 
-            if (inputType == 'date') {
-              // http://docs.handsontable.com/0.19.0/demo-date.html
-              desc.type = 'date';
-              desc.dateFormat = 'MM/DD/YYYY HH:mm';
-              desc.correctFormat = true;
-            } else if (inputType == 'email') {
-              // http://docs.handsontable.com/0.19.0/demo-data-validation.html
-              desc.allowInvalid = true;
-              desc.validator = this.validators.email;
-            } else if (inputType == 'numeric') {
-              // http://docs.handsontable.com/0.19.0/demo-numeric.html
-              // http://numeraljs.com/
-              desc.type = 'numeric';
-            } else if (inputType == 'list') {
-              var st = _ui.selectionType;
-              if (st == 'single') {
-                desc.type = 'dropdown';
-                var listOptions = this.extractOptionsForList(_ui.options);
-                desc.source = listOptions;
+              var _ui = field.items.properties._ui;
+              var inputType = _ui.inputType;
+
+              if (inputType == 'date') {
+                // http://docs.handsontable.com/0.19.0/demo-date.html
+                desc.type = 'date';
+                desc.dateFormat = 'MM/DD/YYYY HH:mm';
+                desc.correctFormat = true;
+              } else if (inputType == 'email') {
+                // http://docs.handsontable.com/0.19.0/demo-data-validation.html
+                desc.allowInvalid = true;
+                desc.validator = this.validators.email;
+              } else if (inputType == 'numeric') {
+                // http://docs.handsontable.com/0.19.0/demo-numeric.html
+                // http://numeraljs.com/
+                desc.type = 'numeric';
+              } else if (inputType == 'list') {
+                var st = _ui.selectionType;
+                if (st == 'single') {
+                  desc.type = 'dropdown';
+                  var listOptions = this.extractOptionsForList(_ui.options);
+                  desc.source = listOptions;
+                }
+              } else if (inputType == 'checkbox') {
+                desc.renderer = this.customRenderer.checkboxes;
+                desc.editor = 'checkboxes';//MultiCheckboxEditor;
+                var checkboxOptions = this.extractOptionsForCheckboxes(_ui.options);
+                desc.source = checkboxOptions;
+                desc.cedarType = 'checkboxes';
               }
-            } else if (inputType == 'checkbox') {
-              desc.renderer = this.customRenderer.checkboxes;
-              desc.editor = 'checkboxes';//MultiCheckboxEditor;
-              var checkboxOptions = this.extractOptionsForCheckboxes(_ui.options);
-              desc.source = checkboxOptions;
-              desc.cedarType = 'checkboxes';
+            } else {
+              desc.cedarType = 'deepObject';
+              desc.cedarLabel = $filter('keyToTitle')(name);
+              desc.readOnly = true;
+              desc.renderer = this.customRenderer.deepObject;
             }
-          } else {
-            desc.cedarType = 'deepObject';
-            desc.cedarLabel = $filter('keyToTitle')(name);
-            desc.readOnly = true;
-            desc.renderer = this.customRenderer.deepObject;
-          }
 
-          colDescriptors.push(desc);
+            colDescriptors.push(desc);
+          }
         }
+        console.log(colDescriptors);
         return colDescriptors;
       },
 
@@ -266,6 +271,7 @@ define([
         }
 
         var owner = this;
+        console.log($scope);
         var scopeElement = (context.isField() ? $scope.field : $scope.element);
         //console.log("scopeElement:");
         //console.log(scopeElement);
@@ -302,7 +308,7 @@ define([
         hotConfig.manualRowResize = true;
 
         var colHeaders = [];
-        for(var i in columnHeaderOrder){
+        for (var i in columnHeaderOrder) {
           colHeaders.push($filter('keyToTitle')(columnHeaderOrder[i]));
         }
         hotConfig.colHeaders = colHeaders;
@@ -333,8 +339,8 @@ define([
 
         // push data to scope
         $scope.spreadsheetDataScope = {
-          tableData: tableData,
-          tableDataSource: tableDataSource,
+          tableData        : tableData,
+          tableDataSource  : tableDataSource,
           columnDescriptors: columnDescriptors
         };
 
