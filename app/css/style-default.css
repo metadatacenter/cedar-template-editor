@@ -12119,9 +12119,6 @@ body .template-header .controlled-terms-modal {
 .cedar-svg-paragraph:before {
   content: "j";
 }
-.cedar-svg-rich-text:before {
-  content: "j";
-}
 .cedar-svg-phone:before {
   content: "k";
 }
@@ -12187,6 +12184,21 @@ body .template-header .controlled-terms-modal {
 }
 .cedar-svg-calendar:before {
   content: "F";
+}
+.cedar-svg-heart:before {
+  content: "G";
+}
+.cedar-svg-rich-text:before {
+  content: "H";
+}
+.cedar-svg-person:before {
+  content: "I";
+}
+.cedar-svg-youtube:before {
+  content: "J";
+}
+.cedar-svg-image:before {
+  content: "K";
 }
 /*
 ================================================
