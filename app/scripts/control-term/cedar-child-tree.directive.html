@@ -1,3 +1,3 @@
 <li ng-class="[subtree.hasChildren === false ? 'no-children' : 'has-children', 'level-' + level]" at_id="{{subtree['@id']}}">
-  <a ng-class="{selected:term.checkIfSelected(subtree)}" ng-click="term.getClassDetails(subtree)">{{subtree.prefLabel}}</a>
+  <a ng-class="{selected: isSelectedCallback(subtree)}" ng-click="getClassDetailsCallback(subtree)">{{subtree.prefLabel}}</a>
 </li>

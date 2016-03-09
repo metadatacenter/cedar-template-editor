@@ -4,276 +4,151 @@ define([
   'angular'
 ], function(angular) {
   angular.module('cedar.templateEditor.controlTerm.controlTermService', [])
-    .service('controlTermService', controlTermService);
+    .factory('controlTermService', controlTermService);
 
-  controlTermService.$inject = ['$http', '$q'];
+  controlTermService.$inject = ['$q', '$rootScope', 'controlTermDataService'];
 
-  function controlTermService($http, $q) {
+  function controlTermService($q, $rootScope, controlTermDataService) {
 
-    var base = 'https://data.bioontology.org/';
-    var http_default_config = {
-      'headers': {
-        'Authorization': 'apikey token=3adf57ac-2d73-4ca1-b6c1-a1f1fe651ea9'
-      }
-    };
     var service = {
-      autocompleteOntology: autocompleteOntology,
-      autocompleteOntologySubtree: autocompleteOntologySubtree,
-      autocompleteValueSetClasses: autocompleteValueSetClasses,
-      getAllOntologies: getAllOntologies,
-      getClassChildren: getClassChildren,
-      getClassDetails: getClassDetails,
-      getClassParents: getClassParents,
-      getClassTree: getClassTree,
-      getClassValueSet: getClassValueSet,
-      getGenericEndpoint: getGenericEndpoint,
-      getOntologyCategories: getOntologyCategories,
-      getOntologyClasses: getOntologyClasses,
-      getOntologyDetails: getOntologyDetails,
-      getOntologySize: getOntologySize,
-      getOntologyTreeRoot: getOntologyTreeRoot,
-      getOntologyValueSets: getOntologyValueSets,
-      getValueSetDetails: getValueSetDetails,
-      searchClass: searchClass,
-      searchOntologyClassesValueSetsAndValueSetClasses: searchOntologyClassesValueSetsAndValueSetClasses,
-      searchValueSetsAndValues: searchValueSetsAndValues,
-      searchValueSetsAndValueSetClasses: searchValueSetsAndValueSetClasses
+      getOntologyByAcronym: getOntologyByAcronym,
+      loadOntologyRootClasses: loadOntologyRootClasses,
+      loadTreeOfClass: loadTreeOfClass,
+      sortBrowseResults: sortBrowseResults,
+      sortOntologyTree: sortOntologyTree,
     };
+
     return service;
 
     /**
      * Service methods.
      */
-    
-    function autocompleteOntology(query, acronym) {
-      return $http.get(base + 'search?q=' + query.replace(/[\s]+/g, '+') + '&ontologies=' + acronym + '&suggest=true&display_context=false&display_links=false&pagesize=20', http_default_config).then(function(response) {
-        return response.data;
-      }).catch(function(err) {
-        return err;
-      });
-    };
-
-    function autocompleteOntologySubtree(query, acronym, subtree_root_id, max_depth) {
-      var searchUrl = base;
-      if (query == '*') {
-        // use descendants
-        searchUrl += 'ontologies/' + acronym + '/classes/' + encodeURIComponent(subtree_root_id) + '/descendants?display_context=false&display_links=false';
-      } else {
-        searchUrl += 'search?q=' + query.replace(/[\s]+/g, '+') + '&ontology=' + acronym + '&suggest=true&display_context=false&display_links=false&subtree_root_id=' + encodeURIComponent(subtree_root_id) + '&max_depth=' + max_depth + '&pagesize=20';
-      }
-      return $http.get(searchUrl, http_default_config).then(function(response) {
-        return response.data;
-      }).catch(function(err) {
-        return err;
-      });
-    };
-
-    function autocompleteValueSetClasses(query, uri) {
-      var searchUrl = base;
-      if (query == '*') {
-        // use descendants
-        searchUrl += 'ontologies/NLMVS/classes/' + encodeURIComponent(uri) + '/descendants?display_context=false&display_links=false';
-      } else {
-        searchUrl += 'search?q=' + query.replace(/[\s]+/g, '+') + '&ontology=NLMVS&suggest=true&display_context=false&display_links=false&subtree_root_id=' + encodeURIComponent(uri) + '&pagesize=20'
-      }
-      return $http.get(searchUrl, http_default_config).then(function(response) {
-        return response.data;
-      }).catch(function(err) {
-        return err;
-      });
-    };
-
-	function getAllOntologies() {
-	  return $http.get(base + 'ontologies/', http_default_config).then(function(response) {
-		return response;
-	  }).catch(function(err) {
-		return err;
-	  });
-	};
-
-	function getClassChildren(acronym, classId) {
-	  //ontologies/{acronym}/classes/{id}/children?include=hasChildren
-  	  return $http.get(base + 'ontologies/' + acronym + '/classes/' + encodeURIComponent(classId) + '/children?include=hasChildren,prefLabel', http_default_config).then(function(response) {
-		return response.data.collection;
-	  }).catch(function(err) {
-		return err;
-	  });
-	};
-
-	function getClassDetails(endpoint) {
-	  // This function will return some more detailed information on a particular class
-   	  return $http.get(endpoint, http_default_config).then(function(response) {
-		return response.data;
-	  }).catch(function(err) {
-		return err;
-	  });
-	};
-
-	function getClassParents(acronym, classId) {
-	  //ontologies/{acronym}/classes/{id}/parents?include=hasChildren
-  	  return $http.get(base + 'ontologies/' + acronym + '/classes/' + encodeURIComponent(classId) + '/parents?include=hasChildren,prefLabel', http_default_config).then(function(response) {
-		return response.data;
-	  }).catch(function(err) {
-		return err;
-	  });
-	};
-
-    function getClassTree(acronym, classId ) {
-      //ontologies/{acronym}/classes/{id}/tree
-      return $http.get(base + 'ontologies/' + acronym + '/classes/' + encodeURIComponent(classId) + '/tree', http_default_config).then(function(response) {
-        return response.data;
-      }).catch(function(err) {
-        return err;
-      });
-    };
-
-	function getClassValueSet(acronym, classId) {
-	  //ontologies/{acronym}/classes/{id}/children?pagesize={pagesize}
-	  return $http.get(base + 'ontologies/' + acronym + '/classes/' + encodeURIComponent(classId) + '/children?pagesize=100', http_default_config).then(function(response) {
-		return response.data.collection;
-	  }).catch(function(err) {
-		return err;
-	  });
-	};
-
-	function getGenericEndpoint(endpoint) {
-	  // Some links within data returned from other requests have fully qualified endpoints so this is
-	  // simply a generic helper request function
-	  return $http.get(endpoint, http_default_config).then(function(response) {
-		return response.data;
-	  }).catch(function(err) {
-		return err;
-	  });
-	};
-
-	function getOntologyCategories(acronym, optimize) {
-      var uri = base + 'ontologies/' + acronym + '/categories';
-      if (optimize) {
-        uri = optimizeUri(uri);
-      }
-	  return $http.get(uri, http_default_config).then(function(response) {
-		return response.data;
-	  }).catch(function(err) {
-		return err;
-	  });
-	};
-
-	function getOntologyClasses(endpointOrAcronym) {
-	  var url = endpointOrAcronym;
-	  if (!/\/classes$/i.test(url)) {
-		url = base + "ontologies/" + url + "/classes";
-	  }
-      
-	  return $http.get(url, http_default_config).then(function(response) {
-		return response.data.collection;
-	  }).catch(function(err) {
-		return err;
-	  });
-	};
-    
-	function getOntologyDetails(acronym) {
-	  return $http.get(base + 'ontologies/' + acronym + '/latest_submission', http_default_config).then(function(response) {
-		return response.data;
-	  }).catch(function(err) {
-		return err;
-	  });
-	};
-
-	function getOntologySize(acronym, optimize) {
-      var uri = base + 'ontologies/' + acronym + '/metrics';
-      if (optimize) {
-        uri = optimizeUri(uri);
-      }
-	  return $http.get(uri, http_default_config).then(function(response) {
-		return response.data;
-	  }).catch(function(err) {
-		return err;
-	  });
-	};
-
-	function getOntologyTreeRoot(acronym){
-	  //ontologies/{acronym}/classes/roots
-	  return $http.get(base + 'ontologies/' + acronym + '/classes/roots', http_default_config).then(function(response) {
-		return response.data;
-	  }).catch(function(err) {
-		return err;
-	  });
-	};
-
-	function getOntologyValueSets(acronym) {
-	  //ontologies/NLMVS/classes/roots
-	  // Get all value sets that belong to a specific Ontology
-	  return $http.get(base + 'ontologies/' + acronym + '/classes/roots?include=hasChildren,prefLabel,definition,properties', http_default_config).then(function(response) {
-		return response.data;
-	  }).catch(function(err) {
-		return err;
-	  });
-	};
-
-	function getValueSetDetails(acronym, classId) {
-	  //ontologies/{acronym}/classes/{id}?include=prefLabel,definition,properties
-	  var request = base + 'ontologies/' + acronym + '/classes/' + encodeURIComponent(classId) + '?include=prefLabel,definition,properties';
-	  return $http.get(request, http_default_config).then(function(response) {
-		return response.data;
-	  }).catch(function(err) {
-		return err;
-	  });
-	};
-
-	function searchClass(query) {
-	  // This searchClass() function will run for each additional page of data in the original request,
-	  // subsequent requests are made the the full qualified endpoint therefore the request will NOT need
-	  // to be sliced to properly format the request
-      
-	  //search?q={query}
-	  // &require_exact_match will only match the phrase, not any word within the phrase (more accurate)
-	  var request = base + 'search?q=' + query.replace(/[\s]+/g, '+') + '&require_exact_match=true';
-	  if (query.slice(0, 27) == 'http://data.bioontology.org') {
-		request = query;
-	  }
-
-      return $http.get(request, http_default_config).then(function(response) {
-		return response.data;
-	  }).catch(function(err) {
-		return err;
-	  });
-	};
-
-    function searchOntologyClassesValueSetsAndValueSetClasses(query) {
-	  return $http.get(base + 'search?q=' + query.replace(/[\s]+/g, '+') + '&pagesize=100', http_default_config).then(function(response) {
-		return response.data;
-	  }).catch(function(err) {
-		return err;
-	  });
-    };
-
-	function searchValueSetsAndValues(query) {
-	  return $http.get(base + 'search?q=' + query.replace(/[\s]+/g, '+') + '&ontologies=NLMVS', http_default_config).then(function(response) {
-		return response.data;
-	  }).catch(function(err) {
-		return err;
-	  });
-	};
-
-	function searchValueSetsAndValueSetClasses(query) {
-	  //search?q={query}&ontologies={acronym}&roots_only=true
-	  // &require_exact_match will only match the phrase, not any word within the phrase (more accurate)
-	  return $http.get(base + 'search?q=' + query.replace(/[\s]+/g, '+') + '&roots_only=true&require_exact_match=true', http_default_config).then(function(response) {
-		//console.log(response);
-		return response.data;
-	  }).catch(function(err) {
-		return err;
-	  });
-	};
 
     /**
-     * Private methods.
+     * Find ontology from cache by acronym.
+     */
+    function getOntologyByAcronym(acronym) {
+      // TODO: Refresh cache in case it is empty?
+      for (var i = 0; i < $rootScope.ontologies.length; i++) {
+        if (angular.uppercase($rootScope.ontologies[i].acronym) == angular.uppercase(acronym)) {
+          return $rootScope.ontologies[i];
+        }
+      };
+    }
+
+    /**
+     * Browse results sort.
+     */
+    function sortBrowseResults(a, b) {
+      var aName = getValuesBrowseDisplayLabel(a);
+      var bName = getValuesBrowseDisplayLabel(b);
+      if (aName < bName) {
+        return -1;
+      } else if (aName == bName) {
+        return 0;
+      } else {
+        return 1;
+      }
+    }
+
+    /**
+     * Ontology tree sort.
+     */
+    function sortOntologyTree(a, b) {
+      if (a.prefLabel < b.prefLabel) {
+        return -1;
+      } else if (a.prefLabel == b.prefLabel) {
+        return 0;
+      } else {
+        return 1;
+      }
+    }
+
+    /**
+     * Private functions.
      */
 
-    // TODO: respect existing query strings
-    function optimizeUri(uri) {
-      uri += '?display_context=false&display_links=false';
-      return uri;
+    /**
+     * Helper function to get display label of values browse result.
+     */
+    function getValuesBrowseDisplayLabel(result) {
+      if (result.resultType == 'Ontology') {
+        return result.name;
+      } else if (result.resultType == 'Value Set') {
+        return result.prefLabel;
+      }
+    }
+
+    function loadOntologyRootClasses(ontology, $scope) {
+      var acronym = ontology.acronym;
+      var classesUrl = ontology.links.classes;
+
+      $scope.fieldTreeVisibility = true;
+      $scope.searchPreloader = true;
+      $q.all({
+        details:    controlTermDataService.getOntologyDetails(acronym),
+        size:       controlTermDataService.getOntologySize(acronym),
+        tree:       controlTermDataService.getOntologyValueSets(acronym),
+      }).then(function(values) {
+        if($scope.fieldTreeVisibility == true) {
+          if (values.tree && angular.isArray(values.tree)) {
+            values.tree.sort(controlTermService.sortOntologyTree);
+
+            $scope.currentOntology = values;
+          } else {
+            // TODO: Handle error
+            if (values.tree.status == 404) {
+              alert("No submissions available");
+            } else {
+              alert(values.tree.statusText);
+            }
+          }
+        }
+        $scope.searchPreloader = false;
+      });
+    }
+
+    /**
+     * Show ontology tree and details screen.
+     */
+    function loadTreeOfClass(selection, $scope) {
+      $scope.fieldTreeVisibility = true;
+      $scope.searchPreloader = true;
+      var acronym = controlTermDataService.getOntologyAcronym(selection);
+
+      // Get selected class details from the links.self endpoint provided.
+      var selfUrl = selection.links.self;
+      if (!selfUrl) {
+        selfUrl = selection.links.ontology + "/classes/" + encodeURIComponent(selection["@id"]);
+      }
+
+      $scope.isLoadingClassDetails = true;
+      controlTermDataService.getClassDetails(selfUrl).then(function(response) {
+        $scope.classDetails = response;
+      });
+
+      $scope.selectedClass1 = selection;
+
+      $q.all({
+        details:    controlTermDataService.getOntologyDetails(acronym),
+        size:       controlTermDataService.getOntologySize(acronym),
+        tree:       controlTermDataService.getClassTree(acronym, selection['@id']),
+      }).then(function(values) {
+        if($scope.fieldTreeVisibility == true) {
+          $scope.currentOntology = values;
+          if ($scope.currentOntology.tree && angular.isArray($scope.currentOntology.tree)) {
+            angular.forEach($scope.currentOntology.tree, function(node) {
+              if (node["@type"].indexOf("Ontology") >= 0) {
+                node.resultType = "Ontology";
+              } else {
+                node.resultType = "Value Set";
+              }
+            })
+          }
+        }
+        $scope.searchPreloader = false;
+        $scope.isLoadingClassDetails = false;
+      });
     }
 
   }

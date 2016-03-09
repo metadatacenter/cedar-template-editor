@@ -1445,13 +1445,45 @@ section.dashboard-elements {
   }
 }
 
+.std-button {
+  text-transform:uppercase;
+  padding:12px 30px;
+  border:none;
+  .link-transition;
+  color:@white;
+  background-color:@brand-primary;
+  font-size:14px;
+  letter-spacing: 0.03em;
+
+  &:hover,
+  &:focus {
+    background-color:@brand-primary-hover;
+  }
+
+  &:focus {
+    outline:none;
+    box-shadow:none;
+  }
+}
+.std-button-active {
+  background-color:@brand-primary-hover;
+}
+
+// create value set
+.create-value-set-widget-actions {
+  padding-left: 230px;
+}
+
+.create-value-actions {
+  padding-bottom: 20px;
+}
 
 .controlled-term-options {
   float:none;
   width:100%;
   //clear:both;
 
-  .btn-two-toggle {
+  .btn-two-toggle, .btn-create-class, .btn-create-values {
 
     .btn {
       text-transform:uppercase;
@@ -1518,28 +1550,6 @@ section.dashboard-elements {
       // height: auto;
     }
   }
-
-  // .is-searching {
-  //   .field-search {
-  //     width: 100%;
-  //     transition: width 1s ease-in-out;
-  //   }
-
-  //   .field-browse {
-  //     display: none;
-  //   }
-  // }
-
-  // .is-browsing {
-  //   .field-search {
-  //     display: none;
-  //   }
-
-  //   .field-browse {
-  //     width: 100%;
-  //     transition: width 1s ease-in-out;
-  //   }
-  // }
 
   .search-results-section {
     .search-results {
@@ -1800,6 +1810,89 @@ section.dashboard-elements {
     }
   }
 
+}
+
+.center {
+  text-align: center;
+}
+
+div.dotted {
+  background-image: linear-gradient(to right, @brand-primary 10%, rgba(255, 255, 255, 0) 0%);
+  background-position: top;
+  background-size: 10px 2px;
+  background-repeat: repeat-x;
+}
+
+p.instructions {
+  text-align:center;
+  color: @gray;
+}
+
+.add-values-to-value-set {
+  padding-left: 20px;
+  margin-top: 20px;
+  margin-bottom: 10px;
+  background-color: @gray2;
+
+  p.add-values-header {
+    text-transform:uppercase;
+    text-align:center;
+    font-weight: bold;
+    color: @brand-primary;
+    padding-top: 10px;
+  }
+
+  .field-search {
+    width: 49%;
+  }
+
+  .field-browse {
+    width: 49%;
+  }
+}
+
+.add-ontology-class {
+  padding-left: 20px;
+
+  div.mapping-description {
+    padding-top: 20px;
+  }
+
+  div.mapping-tools {
+    padding-left: 165px;
+  }
+
+  div.map-existing-classes {
+    padding: 20px;
+    margin-bottom: 10px;
+    background-color: @gray2;
+
+    select.select-mapping-type {
+      width: 50%;
+      float: left;
+      padding-right: 20px;
+    }
+
+    button.btn-create-mapping {
+      float: right;
+    }
+
+  }
+
+  p.mapping-header, p.add-values-header {
+    text-transform:uppercase;
+    text-align:center;
+    font-weight: bold;
+    color: @brand-primary;
+  }
+
+  .field-search {
+    width: 49%;
+  }
+
+  .field-browse {
+    width: 49%;
+  }
 }
 
 .options-wrapper {
@@ -2667,6 +2760,25 @@ section.dashboard-elements {
   }
 }
 
+.is-creating-class, .is-creating-value-set {
+  .field-create-class {
+    width: 100%;
+    transition: width 1s ease-in-out;
+  }
+
+  .field-browse, .field-search {
+    display: none;
+  }
+
+  .values-create-class {
+    width: 100%;
+    transition: width 1s ease-in-out;
+  }
+
+  .values-browse, .values-search {
+    display: none;
+  }
+}
 
 .is-searching {
   .field-search {
@@ -2674,7 +2786,7 @@ section.dashboard-elements {
     transition: width 1s ease-in-out;
   }
 
-  .field-browse {
+  .field-browse, .field-create-class {
     display: none;
   }
 
@@ -2683,7 +2795,7 @@ section.dashboard-elements {
     transition: width 1s ease-in-out;
   }
 
-  .values-browse {
+  .values-browse, .values-create-class {
     display: none;
   }
 }
@@ -2691,19 +2803,20 @@ section.dashboard-elements {
 .field-search {
   display: block;
   float:left;
-  width:49%;
+  width:33%;
 }
 
 .values-search {
   display: block;
   float:left;
-  width:49%;
+  width:33%;
 }
 
 .field-browse {
   display: block;
-  float:right;
-  width:49%;
+  float:left;
+  padding-left: 20px;
+  width:33%;
   overflow: hidden;
 
   a {
@@ -2715,8 +2828,9 @@ section.dashboard-elements {
 
 .values-browse {
   display: block;
-  float:right;
-  width:49%;
+  float:left;
+  padding-left: 20px;
+  width:33%;
   overflow: hidden;
 
   a {
@@ -2726,8 +2840,16 @@ section.dashboard-elements {
   }
 }
 
+.field-create-class, .values-create-class {
+  display: block;
+  float: left;
+  padding-left: 20px;
+  width: 33%;
+  overflow: hidden;
+}
+
 .is-browsing {
-  .field-search {
+  .field-search, .field-create-class {
     display: none;
   }
 
@@ -2736,7 +2858,7 @@ section.dashboard-elements {
     transition: width 1s ease-in-out;
   }
 
-  .values-search {
+  .values-search, .values-create-class {
     display: none;
   }
 

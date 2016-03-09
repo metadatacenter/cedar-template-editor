@@ -6,6 +6,8 @@ function CedarBootstrap($http) {
 
   // Services that need a preload
   var initServices = {
+    'controlTermDataService': true,
+    'provisionalClassService': true,
     'DataManipulationService': true,
     'FieldTypeService': true,
     'DataTemplateService': [

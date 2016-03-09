@@ -8,23 +8,16 @@ define([
   angular.module('cedar.templateEditor.core.run', [])
       .run(cedarTemplateEditorCoreRun);
 
-  //cedarTemplateEditorCoreRun.$inject = ['$rootScope', 'controlTermService', '$location', '$timeout', '$window',
-  //                                      '$translate', 'DataTemplateService', 'DataManipulationService',
-  //                                      'FieldTypeService', 'UrlService', 'HeaderService', 'UIUtilService',
-  //                                      'UserService', 'UserDataService', 'CONST'];
   cedarTemplateEditorCoreRun.$inject = ['$rootScope', 'controlTermService', '$location', '$timeout', '$window', '$sce',
                                         '$translate', 'DataTemplateService', 'DataManipulationService',
                                         'FieldTypeService', 'UrlService', 'HeaderService', 'UIUtilService',
-                                        'UserService', 'UserDataService', 'RichTextConfigService', 'CONST'];
+                                        'UserService', 'UserDataService', 'RichTextConfigService', 'CONST',
+                                        'controlTermDataService', 'provisionalClassService'];
 
-  //function cedarTemplateEditorCoreRun($rootScope, controlTermService, $location, $timeout, $window,$sce, $translate,
-  //                                    DataTemplateService, DataManipulationService, FieldTypeService, UrlService,
-  //                                    HeaderService, UIUtilService, UserService, UserDataService,  CONST) {
   function cedarTemplateEditorCoreRun($rootScope, controlTermService, $location, $timeout, $window, $sce, $translate,
                                       DataTemplateService, DataManipulationService, FieldTypeService, UrlService,
                                       HeaderService, UIUtilService, UserService, UserDataService, RichTextConfigService,
-                                      CONST) {
-
+                                      CONST, controlTermDataService, provisionalClassService) {
 
     $rootScope.isArray = angular.isArray;
 
@@ -580,7 +573,7 @@ define([
     };
 
     $rootScope.isOntology = function (obj) {
-      return obj["@type"] && obj["@type"].indexOf("Ontology") > 0;
+      return obj && obj["@type"] && obj["@type"].indexOf("Ontology") > 0;
     };
 
     $rootScope.lengthOfValueConstraint = function (valueConstraint) {
@@ -594,6 +587,8 @@ define([
       return $sce.trustAsHtml($rootScope.propertiesOf(field)._content);
     };
 
+    provisionalClassService.init();
+    controlTermDataService.init();
     DataTemplateService.init();
     FieldTypeService.init();
     UrlService.init();
