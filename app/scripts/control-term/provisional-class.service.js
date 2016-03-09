@@ -16,6 +16,7 @@ define([
 
     var service = {
       getValueSet: getValueSet,
+      getValueSetValues: getValueSetValues,
       init: init,
       saveClass: saveClass,
       saveValue: saveValue,
@@ -45,6 +46,15 @@ define([
 
     function getValueSet(valueSetId) {
       var endpoint = base + '/bioportal/vs-collections/CEDARVS/value-sets/' + encodeURIComponent(valueSetId);
+      return $http.get(endpoint, http_default_config).then(function(response) {
+        return response.data;
+      }).catch(function(error) {
+        return error;
+      });
+    }
+
+    function getValueSetValues(valueSetId) {
+      var endpoint = base + '/bioportal/vs-collections/CEDARVS/value-sets/' + encodeURIComponent(valueSetId) + '/values';
       return $http.get(endpoint, http_default_config).then(function(response) {
         return response.data;
       }).catch(function(error) {

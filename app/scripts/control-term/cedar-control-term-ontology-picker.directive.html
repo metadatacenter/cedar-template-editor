@@ -5,7 +5,7 @@
 <div class="form-group form-group-actions clearfix" ng-class="{'is-searching': cctopdc.isSearching(), 'is-browsing': cctopdc.isBrowsing(), 'is-creating-class': cctopdc.isCreatingClass()}">
   <div class="field-search">
     <div class="input-group field-search-input-group">
-      <input id="field-search-input" type="text" class="form-control field-search-form-control" placeholder="Search" aria-label="Field Search" ng-model="cctopdc.fieldSearchTerms" ng-focus="cctopdc.startFieldSearch()" ng-blur="cctopdc.endFieldSearch()" ng-keyup="$event.keyCode == 13 && cctopdc.fieldSearch()" with-floating-label="" />
+      <input id="field-search-input" type="text" class="form-control field-search-form-control" placeholder="Search" aria-label="Field Search" ng-model="cctopdc.fieldSearchTerms" ng-focus="cctopdc.startFieldSearch()" ng-blur="cctopdc.endFieldSearch()" ng-keyup="$event.keyCode == 13 && cctopdc.fieldSearch($event)" with-floating-label="" />
       <span class="input-group-addon" ng-click="cctopdc.fieldSearch()">
         <img src="../img/search-icon.png" />
       </span>
@@ -40,7 +40,7 @@
 
   <ng-include src="'scripts/control-term/create-ontology-class.html'"></ng-include>
   <div class="clear btn-create-class">
-    <button class="btn" ng-click="pcc.saveAsFieldItem(pcc.provisionalClass)">Create Class</button>
+    <button type="button" class="btn" ng-click="pcc.saveAsFieldItem(pcc.provisionalClass)">Create Class</button>
   </div>
 
 </div>

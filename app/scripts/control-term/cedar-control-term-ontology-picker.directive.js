@@ -116,7 +116,11 @@ define([
         vm.searchResults = $rootScope.ontologies;
       }
 
-      function fieldSearch() {
+      function fieldSearch(event) {
+        if (event) {
+          event.preventDefault();
+        }
+
         vm.searchResults = [];
         vm.searchNoResults = false;
 
@@ -257,7 +261,7 @@ define([
        * Watch functions.
        */
 
-      $scope.$watch("vm.ontologySearchTerms", function() {
+      $scope.$watch(function(scope) { return vm.ontologySearchTerms; }, function() {
         if (vm.ontologySearchTerms) {
           vm.ontologySearchRegexp = new RegExp(vm.ontologySearchTerms, "i");
         } else {

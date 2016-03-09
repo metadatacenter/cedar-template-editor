@@ -30,7 +30,8 @@ define([
     vm.provisionalValueSetValues = [];
     vm.saveAsFieldItem = saveAsFieldItem;
     vm.saveAsOntologyClassValueConstraint = saveAsOntologyClassValueConstraint;
-    vm.saveAsValueSet = saveAsValueSet;
+    vm.saveAsValueSetConstraint = saveAsValueSetConstraint;
+    vm.startOverInner = startOverInner;
     vm.startOver = startOver;
 
     /**
@@ -95,18 +96,22 @@ define([
       });
     }
 
-    function saveAsValueSet(provisionalValueSet, provisionalValueSetValues) {
+    function saveAsValueSetConstraint(provisionalValueSet, provisionalValueSetValues) {
       provisionalClassService.saveValueSet(provisionalValueSet, provisionalValueSetValues).then(function(newValueSet) {
-        debugger;
         // hack to add prefLabel
         newValueSet.prefLabel = newValueSet.label;
         $scope.$emit(
-          'cedar.templateEditor.controlTerm.provisionalClassController.provisionalValueSetSavedAsValueSet', {
+          'cedar.templateEditor.controlTerm.provisionalClassController.provisionalValueSetSavedAsValueSetValueConstraint', {
             valueSet: newValueSet,
             ontology: vm.provisionalValueSetOntology
           }
         );
       });
+    }
+
+    function startOverInner() {
+      vm.pickedOntologyClass = null;
+      vm.provisionalClassMappingType = null;
     }
 
     function startOver() {

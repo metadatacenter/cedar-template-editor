@@ -10858,6 +10858,7 @@ p.instructions {
 }
 .add-values-to-value-set {
   padding-left: 20px;
+  padding-right: 20px;
   margin-top: 20px;
   margin-bottom: 10px;
   background-color: #f4f4f7;

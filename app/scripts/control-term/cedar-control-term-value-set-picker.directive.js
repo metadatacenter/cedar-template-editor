@@ -270,7 +270,11 @@ define([
         vm.valuesActionSelection = 'create';
       }
 
-      function valuesSearch() {
+      function valuesSearch(event) {
+        if (event) {
+          event.preventDefault();
+        }
+
         vm.searchResults = [];
         vm.searchNoResults = false;
         vm.valuesActionSelection = 'search';
@@ -372,7 +376,7 @@ define([
        * Watch functions.
        */
 
-      $scope.$watch("vm.ontologySearchTerms", function() {
+      $scope.$watch(function(scope) { return vm.ontologySearchTerms; }, function() {
         if (vm.ontologySearchTerms) {
           vm.ontologySearchRegexp = new RegExp(vm.ontologySearchTerms, "i");
         } else {

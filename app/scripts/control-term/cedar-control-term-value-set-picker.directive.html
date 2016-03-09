@@ -25,7 +25,7 @@
 <div class="form-group form-group-actions clearfix" ng-class="{ 'is-searching': cctvspdc.isSearching(), 'is-browsing': cctvspdc.isBrowsing(), 'is-creating-value-set': cctvspdc.isCreatingValueSet() }">
   <div class="values-search">
     <div class="input-group values-search-input-group">
-      <input id="values-search-input" type="text" class="form-control values-search-form-control" placeholder="Search for a class in BioPortal" aria-label="Values Search" ng-focus="cctvspdc.startValuesSearch()" ng-model="cctvspdc.valuesSearchTerms" ng-keyup="$event.keyCode == 13 && cctvspdc.valuesSearch()" with-floating-label="" />
+      <input id="values-search-input" type="text" class="form-control values-search-form-control" placeholder="Search for a class in BioPortal" aria-label="Values Search" ng-focus="cctvspdc.startValuesSearch()" ng-model="cctvspdc.valuesSearchTerms" ng-keyup="$event.keyCode == 13 && cctvspdc.valuesSearch($event)" with-floating-label="" />
       <span class="input-group-addon" ng-click="cctvspdc.valuesSearch()">
         <img src="../img/search-icon.png" />
       </span>
@@ -60,11 +60,11 @@
     <button type="button" class="std-button" ng-click="cctvspdc.valueCreateMode = 'class'" ng-class="{'std-button-active': cctvspdc.valueCreateMode == 'class'}">Create Class</button>
     <button type="button" class="std-button" ng-click="cctvspdc.valueCreateMode = 'valueset'" ng-class="{'std-button-active': cctvspdc.valueCreateMode == 'valueset'}">Create Value Set</button>
   </div>
-  <div class="form-group" ng-if="cctvspdc.valueCreateMode == 'class'">
+  <div class="form-group add-ontology-class" ng-if="cctvspdc.valueCreateMode == 'class'">
 
     <ng-include src="'scripts/control-term/create-ontology-class.html'"></ng-include>
     <div class="clear btn-create-class">
-      <button class="btn" ng-click="pcc.saveAsOntologyClassValueConstraint(pcc.provisionalClass)">Create Class</button>
+      <button type="button" class="btn" ng-click="pcc.saveAsOntologyClassValueConstraint(pcc.provisionalClass)">Create Class</button>
     </div>
 
   </div>
@@ -130,12 +130,12 @@
           ({{pcc.pickedCurrentOntology.details.ontology.acronym}})
         </div>
         <br />
-        <button class="std-button" ng-click="pcc.addValueToValueSet(pcc.pickedOntologyClass)">Add Value</button>
+        <button type="button" class="std-button" ng-click="pcc.addValueToValueSet(pcc.pickedOntologyClass)">Add Value</button>
       </div>
     </div>
 
     <div class="clear btn-create-class">
-      <button class="btn" ng-click="pcc.saveAsValueSet(pcc.provisionalClass, pcc.provisionalValueSetValues)">Create Value Set</button>
+      <button type="button" class="btn" ng-click="pcc.saveAsValueSetConstraint(pcc.provisionalClass, pcc.provisionalValueSetValues)">Create Value Set</button>
     </div>
 
   </div>
@@ -230,8 +230,8 @@
             <tbody>
               <tr ng-repeat="valueSetClass in cctvspdc.valueSetClasses">
                 <td class="ontology-name">
-                  <span ng-show="cctvspdc.selectedValueResult['@id'] == cctvspdc.valueSetClass['@id']">{{cctvspdc.valueSetClass.prefLabel}}</span>
-                  <a ng-hide="cctvspdc.selectedValueResult['@id'] == cctvspdc.valueSetClass['@id']" ng-click="cctvspdc.selectedValueResult = cctvspdc.valueSetClass">{{cctvspdc.valueSetClass.prefLabel}}</a>
+                  <span ng-show="cctvspdc.selectedValueResult['@id'] == valueSetClass['@id']">{{valueSetClass.prefLabel}}</span>
+                  <a ng-hide="cctvspdc.selectedValueResult['@id'] == valueSetClass['@id']" ng-click="cctvspdc.selectedValueResult = valueSetClass">{{valueSetClass.prefLabel}}</a>
                 </td>
               </tr>
             </tbody>

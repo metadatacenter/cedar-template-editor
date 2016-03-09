@@ -6,13 +6,22 @@ define([
   angular.module('cedar.templateEditor.controlTerm.controlTermDirectiveController', [])
     .controller('controlTermDirectiveController', controlTermDirectiveController);
 
-  controlTermDirectiveController.$inject = ['$element', '$http', '$q', '$rootScope', '$scope',
-                                            '$timeout', 'controlTermDataService', 'controlTermService'];
+  controlTermDirectiveController.$inject = [
+    '$element',
+    '$http',
+    '$q',
+    '$rootScope',
+    '$scope',
+    '$timeout',
+    'controlTermDataService',
+    'controlTermService',
+    'provisionalClassService'
+  ];
 
   /**
    * Controller for the functionality of adding controlled terms to fields and elements.
    */
-  function controlTermDirectiveController($element, $http, $q, $rootScope, $scope, $timeout, controlTermDataService, controlTermService) {
+  function controlTermDirectiveController($element, $http, $q, $rootScope, $scope, $timeout, controlTermDataService, controlTermService, provisionalClassService) {
     var vm = this;
 
     vm.addBranchToValueConstraint = addBranchToValueConstraint;
@@ -166,7 +175,6 @@ define([
      * Add ontology class to value constraint to field values _ui definition.
      */
     function addOntologyClassToValueConstraint(constraint) {
-      var i = vm.stagedOntologyClassValueConstraints.indexOf(constraint);
       var alreadyAdded = false;
 
       for (var j = 0; j < vm.valueConstraint.classes.length; j++) {
@@ -177,7 +185,8 @@ define([
       }
 
       if (!alreadyAdded) {
-        if (constraint.label == '') {
+        if (constraint.label == '' && !constraint.provisionalClass) {
+          var i = vm.stagedOntologyClassValueConstraints.indexOf(constraint);
           constraint.label = vm.stagedOntologyClassValueConstraintData[i].label;
         }
         vm.valueConstraint.classes.push(angular.copy(constraint));
@@ -357,7 +366,7 @@ define([
       vm.currentOntology = null;
       vm.selectedValueResult = null;
       vm.currentValueSet = null;
-      vm.stagedOntologyClassValueConstraints = null
+      vm.stagedOntologyClassValueConstraints = [];
       vm.stageValueConstraintAction = null;
 
       //Init field/value tooltip
@@ -507,24 +516,32 @@ define([
           'type': 'Ontology Class',
           'label': args.class.prefLabel,
           'default': false,
-          'source': args.ontology.details.ontology.name + ' (' + args.ontology.details.ontology.acronym + ')'
+          'source': args.ontology.details.ontology.name + ' (' + args.ontology.details.ontology.acronym + ')',
+          'provisionalClass': true,
         };
         addOntologyClassToValueConstraint(constraint);
       }
     );
 
     $scope.$on(
-      'cedar.templateEditor.controlTerm.provisionalClassController.provisionalValueSetSavedAsValueSet',
+      'cedar.templateEditor.controlTerm.provisionalClassController.provisionalValueSetSavedAsValueSetValueConstraint',
       function (event, args) {
-        // TODO: find numChildren from new API call or use old API to get details
-        var constraint = {
-          // 'numChildren': vm.currentValueSet.numChildren,
-          'name': args.valueSet.prefLabel,
-          'uri': args.valueSet['@id'],
-        };
-        debugger;
-        vm.valueConstraint.valueSets.push(constraint);
-        assignValueConstraintToField();
+        /**
+         * Get values for the current value set and compute an estimate by multiplying number
+         * of pages by values per page.
+         *
+         * TODO: request terminology API to supply this value more easily.
+         */
+        provisionalClassService.getValueSetValues(args.valueSet['@id']).then(function(valuesResponse) {
+          var numChildren = valuesResponse.pageCount * valuesResponse.pageSize;
+          var constraint = {
+            'numChildren': numChildren,
+            'name': args.valueSet.prefLabel,
+            'uri': args.valueSet['@id'],
+          };
+          vm.valueConstraint.valueSets.push(constraint);
+          assignValueConstraintToField();
+        });
       }
     );
 
@@ -611,6 +628,7 @@ define([
       vm.stagedOntologyClassValueConstraintData = [];
       vm.stagedValueSetValueConstraints = [];
       vm.stagedBranchesValueConstraints = [];
+      vm.startOver();
     }
 
     function setInitialFieldConstraints() {
