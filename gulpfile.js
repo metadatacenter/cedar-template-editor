@@ -108,7 +108,7 @@ gulp.task('cache-ontologies', function () {
     headers: {
       'Authorization': apiKey
     }
-  }
+  };
   var ontologies = [];
 
   var response = request('GET', 'http://data.bioontology.org/ontologies', options);
@@ -162,7 +162,7 @@ gulp.task('cache-value-sets', function () {
     headers: {
       'Authorization': apiKey
     }
-  }
+  };
   var valueSets = [];
 
   var uri = 'http://data.bioontology.org/ontologies/NLMVS/classes/roots';
@@ -204,11 +204,18 @@ gulp.task('dev-replace', function () {
       .pipe(gulp.dest('app/config/'));
 });
 
-gulp.task('dev02-replace', function () {
+gulp.task('dev01-replace', function () {
   gulp.src(['app/config/src/url-service.conf.json'])
-      .pipe(replace('templateServerUrl', 'https://template.metadatacenter.net'))
-      .pipe(replace('userServerUrl', 'https://user.metadatacenter.net'))
+      .pipe(replace('templateServerUrl', 'https://template.staging.metadatacenter.net'))
+      .pipe(replace('userServerUrl', 'https://user.staging.metadatacenter.net'))
       .pipe(gulp.dest('app/config/'));
+});
+
+gulp.task('dev02-replace', function () {
+    gulp.src(['app/config/src/url-service.conf.json'])
+        .pipe(replace('templateServerUrl', 'https://template.metadatacenter.net'))
+        .pipe(replace('userServerUrl', 'https://user.metadatacenter.net'))
+        .pipe(gulp.dest('app/config/'));
 });
 
 // Watch files for changes
@@ -222,6 +229,7 @@ gulp.task('watch', function () {
 gulp.task('default', ['server', 'lint', 'less', 'copy:resources', 'dev-replace', 'watch']);
 // Build task
 //gulp.task('build', ['minifyCSS', 'htmlreplace', 'angular']);
+gulp.task('dev01', ['server-nolivereload', 'lint', 'less', 'copy:resources', 'dev01-replace']);
 gulp.task('dev02', ['server-nolivereload', 'lint', 'less', 'copy:resources', 'dev02-replace']);
 
 gulp.task('test', function (done) {
