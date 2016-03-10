@@ -74,6 +74,7 @@ gulp.task('server', function () {
     root      : 'app',
     port      : 4200,
     livereload: true,
+    fallback: 'app/index.html'
     //middleware: function(connect, opt) {
     //	console.log(opt);
     //	opt.route = '/proxy';

@@ -1,7 +1,7 @@
 'use strict';
 
 var CreateElementPage = function () {
-  browser.get('http://localhost:4200/#/elements/create');
+  browser.get('http://localhost:4200/elements/create');
 };
 
 CreateElementPage.prototype = Object.create({}, {
