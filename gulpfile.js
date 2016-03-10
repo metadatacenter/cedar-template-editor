@@ -21,11 +21,21 @@ var gulp = require('gulp'),
         fs = require('fs')
     );
 
-// Creating error handling exception using gulp-util
+/**
+ * Create error handling exception using gulp-util.
+ */
 var onError = function (err) {
   gutil.beep();
   console.log(err);
 };
+
+/**
+ * Helper function to parse config files.
+ */
+function getConfig(configName) {
+  var filename = 'app/config/' + configName + '.conf.json';
+  return JSON.parse(fs.readFileSync(filename));
+}
 
 // Lint task
 gulp.task('lint', function () {
@@ -104,10 +114,11 @@ gulp.task('server-nolivereload', function () {
 });
 
 gulp.task('cache-ontologies', function () {
-  var apiKey = 'apikey token=3bdf57dc-4d53-4ca1-b6c1-a1f1fe651ea9';
+  var config = getConfig('control-term-data-service');
+  var apiKey = config.apiKey;
   var options = {
     headers: {
-      'Authorization': apiKey
+      'Authorization': 'apikey token=' + apiKey
     }
   };
   var ontologies = [];
@@ -158,10 +169,11 @@ gulp.task('cache-ontologies', function () {
 });
 
 gulp.task('cache-value-sets', function () {
-  var apiKey = 'apikey token=3bdf57dc-4d53-4ca1-b6c1-a1f1fe651ea9';
+  var config = getConfig('control-term-data-service');
+  var apiKey = config.apiKey;
   var options = {
     headers: {
-      'Authorization': apiKey
+      'Authorization': 'apikey token=' + apiKey
     }
   };
   var valueSets = [];
