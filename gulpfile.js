@@ -85,23 +85,6 @@ gulp.task('server', function () {
     port      : 4200,
     livereload: true,
     fallback: 'app/index.html'
-    //middleware: function(connect, opt) {
-    //	console.log(opt);
-    //	opt.route = '/proxy';
-    //	var proxy = new Proxy(opt);
-    //	return [proxy, historyApiFallback({
-    //		// See: https://github.com/bripkens/connect-history-api-fallback
-    //		verbose: true,
-    //		rewrites: [
-    //			{
-    //				from: /^.*\/elements\/edit\/.*$/,
-    //				to: function(context) {
-    //					return '/';
-    //				}
-    //			}
-    //		]
-    //	})];
-    //}
   })
 });
 
@@ -109,7 +92,8 @@ gulp.task('server-nolivereload', function () {
   connect.server({
     root      : 'app',
     port      : 4200,
-    livereload: false
+    livereload: false,
+    fallback: 'app/index.html'
   })
 });
 

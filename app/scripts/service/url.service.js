@@ -45,7 +45,7 @@ define([
     };
 
     service.getAllTemplatesSummary = function () {
-      return this.templates() + '?summary=true';
+      return this.getDefaultTemplatesSummary(300, 0);
     };
 
     service.getDefaultTemplateElementsSummary = function (limit, offset) {
@@ -53,7 +53,7 @@ define([
     };
 
     service.getAllTemplateElementsSummary = function () {
-      return this.templateElements() + '?summary=true';
+      return this.getDefaultTemplateElementsSummary(300, 0);
     };
 
     service.getDefaultTemplateInstancesSummary = function (limit, offset) {
@@ -61,7 +61,7 @@ define([
     };
 
     service.getAllTemplateInstancesSummary = function () {
-      return this.templateInstances() + '?summary=true';
+      return this.getDefaultTemplateInstancesSummary(300, 0);
     };
 
     service.templates = function () {
