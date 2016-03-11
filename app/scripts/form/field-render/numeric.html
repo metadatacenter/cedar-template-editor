@@ -24,7 +24,6 @@
   </div><!-- /.form-group -->
 
   <div ng-if="!$root.isArray(model)" class="form-group floating-label-wrapper">
-	<p class="extra-label-context" ng-if="!$root.isRuntime() && $root.propertiesOf(field)._ui.title">{{$root.propertiesOf(field)._ui.title}}</p>
     <input type="number"
            class="form-control"
            ng-class="{'required': $root.propertiesOf(field)._valueConstraints.requiredValue}"
@@ -37,7 +36,8 @@
            ng-maxlength="{{$root.propertiesOf(field)._ui.maxLength}}"
            validate-on="blur"
            ng-pattern= "/^\d+$/"
-           with-floating-label="" />
+           with-floating-label="">
+    </input>
     <span class="warning-text">{{$root.propertiesOf(field)._ui.warningText}}</span>
     <div class="input-indicator-icons">
       <i class="cedar-svg-help-circle" data-container="body" data-toggle="popover" data-placement="left" data-content="{{$root.propertiesOf(field)._ui.description}}"></i>

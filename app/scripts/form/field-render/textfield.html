@@ -37,9 +37,6 @@
   </div><!-- /.form-group -->
 
   <div ng-if="!$root.isArray(model)" class="form-group floating-label-wrapper">
-    <div class="extra-label-context" ng-class="{'required': $root.propertiesOf(field)._valueConstraints.requiredValue}" ng-if="preview">
-      {{$root.propertiesOf(field)._ui.title}}&nbsp;
-    </div>
     <div ng-if="!$root.hasValueConstraint($root.propertiesOf(field)._valueConstraints)" class="has-no-constraint">
       <input type="text"
              class="form-control"
@@ -49,7 +46,8 @@
              aria-label="{{$root.propertiesOf(field)._ui.description}}"
              ng-model="model._value"
              ng-disabled="!$root.isRuntime() || preview"
-             with-floating-label="" />
+             with-floating-label="">
+      </input>
       <div class="input-indicator-icons">
         <i class="cedar-svg-help-circle" data-container="body" data-toggle="popover" data-placement="left" data-content="{{$root.propertiesOf(field)._ui.description}}"></i>
         <i class="cedar-svg-check-circle"></i>

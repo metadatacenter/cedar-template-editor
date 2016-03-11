@@ -22,7 +22,6 @@
   </div><!-- /.form-group -->
 
   <div ng-if="!$root.isArray(model)" class="form-group floating-label-wrapper">
-	<p class="extra-label-context" ng-if="!$root.isRuntime() && $root.propertiesOf(field)._ui.title">{{$root.propertiesOf(field)._ui.title}}</p>
     <input type="text"
            class="form-control"
            ng-class="{'required': $root.propertiesOf(field)._valueConstraints.requiredValue}"
@@ -33,7 +32,8 @@
            ng-disabled="!$root.isRuntime() || preview"
            validate-on="blur"
            ng-pattern= "/(\W|^)[(]{0,1}\d{3}[)]{0,1}[\s-]{0,1}\d{3}[\s-]{0,1}\d{4}(\W|$)/"
-           with-floating-label="" />
+           with-floating-label="">
+    </input>
     <span class="warning-text">{{$root.propertiesOf(field)._ui.warningText}}</span>
     <div class="input-indicator-icons">
       <i class="cedar-svg-help-circle" data-container="body" data-toggle="popover" data-placement="left" data-content="{{$root.propertiesOf(field)._ui.description}}"></i>
