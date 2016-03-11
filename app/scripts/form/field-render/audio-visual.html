@@ -23,7 +23,6 @@
   </div><!-- /.form-group -->
 
   <div ng-if="!$root.isArray(model)" class="form-group floating-label-wrapper">
-	<p class="extra-label-context" ng-if="!$root.isRuntime() && $root.propertiesOf(field)._ui.title">{{$root.propertiesOf(field)._ui.title}}</p>
     <input type="text"
            class="form-control"
            ng-class="{'required': $root.propertiesOf(field)._valueConstraints.requiredValue}"
@@ -32,7 +31,8 @@
            aria-label="{{$root.propertiesOf(field)._ui.description}}"
            ng-model="model._value"
            ng-disabled="!$root.isRuntime() || preview"
-           with-floating-label="" />
+           with-floating-label="">
+    </input>
     <div class="input-indicator-icons">
       <i class="cedar-svg-help-circle" data-container="body" data-toggle="popover" data-placement="left" data-content="{{$root.propertiesOf(field)._ui.description}}"></i>
       <i class="cedar-svg-check-circle"></i>
