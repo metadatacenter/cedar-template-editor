@@ -1,0 +1,24 @@
+<div class="provisional-class-mappings" ng-if="pcc.provisionalClassMappings.length > 0">
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <td>Mapping Type</td>
+        <td>Target Class</td>
+        <td>Target Ontology</td>
+        <td></td>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="mapping in pcc.provisionalClassMappings">
+        <td>{{mapping.mappingType.label}}</td>
+        <td>{{mapping.targetClass.prefLabel}}</td>
+        <td>{{mapping.targetOntology.acronym}}</td>
+        <td>
+          <div class="item item-delete" ng-click="pcc.deleteProvisionalClassMapping($index)">
+            <i class="fa fa-close"></i>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

@@ -1,34 +1,54 @@
-<div class="form-group form-group-actions clearfix" ng-class="{'is-searching': controlTerm.fieldActionSelection == 'search', 'is-browsing': controlTerm.fieldActionSelection == 'browse'}">
+<div class="form-group floating-label-wrapper btn-start-over-group clearfix" ng-if="cctopdc.fieldActionSelection">
+  <button type="button" class="btn btn-start-over" ng-click="cctopdc.reset()">Start Over</button>
+</div>
+
+<div class="form-group form-group-actions clearfix" ng-class="{'is-searching': cctopdc.isSearching(), 'is-browsing': cctopdc.isBrowsing(), 'is-creating-class': cctopdc.isCreatingClass()}">
   <div class="field-search">
     <div class="input-group field-search-input-group">
-      <input id="field-search-input" type="text" class="form-control field-search-form-control" placeholder="Search" aria-label="Field Search" ng-model="controlTerm.fieldSearchTerms" ng-focus="controlTerm.startFieldSearch()" ng-blur="controlTerm.endFieldSearch()" ng-keyup="$event.keyCode == 13 && controlTerm.fieldSearch()" with-floating-label="" />
-      <span class="input-group-addon" ng-click="controlTerm.fieldSearch()">
+      <input id="field-search-input" type="text" class="form-control field-search-form-control" placeholder="Search" aria-label="Field Search" ng-model="cctopdc.fieldSearchTerms" ng-focus="cctopdc.startFieldSearch()" ng-blur="cctopdc.endFieldSearch()" ng-keyup="$event.keyCode == 13 && cctopdc.fieldSearch($event)" with-floating-label="" />
+      <span class="input-group-addon" ng-click="cctopdc.fieldSearch()">
         <img src="../img/search-icon.png" />
       </span>
     </div>
   </div>
   <div class="field-browse">
-    <div class="more-items" ng-if="!controlTerm.fieldActionSelection">
-      <button type="button" class="btn btn-field-browse btn-block" data-toggle="dropdown" aria-expanded="false" ng-click="controlTerm.fieldBrowse($event)">
+    <div class="more-items" ng-if="!cctopdc.fieldActionSelection">
+      <button type="button" class="btn btn-field-browse btn-block" data-toggle="dropdown" aria-expanded="false" ng-click="cctopdc.fieldBrowse($event)">
         <span class="pull-left text">Browse ontologies</span> <i class="fa fa-angle-down fa-2x pull-right"></i>
         <span class="clearfix"></span>
       </button>
     </div>
-    <div class="input-group ontology-search-input-group" ng-if="controlTerm.fieldActionSelection == 'browse'">
-      <input id="ontologi_search_input" type="text" class="form-control ontology-search-form-control" placeholder="Search" aria-label="Browse" ng-model="controlTerm.ontologySearchTerms" ng-keyup="controlTerm.prepareForOntologySearch($event)" with-floating-label="" />
-      <span class="input-group-addon" ng-click="controlTerm.ontologySearch()">
+    <div class="input-group ontology-search-input-group" ng-if="cctopdc.isBrowsing()">
+      <input id="ontologi_search_input" type="text" class="form-control ontology-search-form-control" placeholder="Search" aria-label="Browse" ng-model="cctopdc.ontologySearchTerms" ng-keyup="cctopdc.prepareForOntologySearch($event)" with-floating-label="" />
+
+      <span class="input-group-addon" ng-click="cctopdc.ontologySearch()">
         <img src="../img/search-icon.png" />
       </span>
     </div>
   </div>
+  <div ng-if="cctopdc.includeCreateClass" class="field-create-class">
+    <div class="input-group btn-create-class" style="width: 100%">
+      <button type="button" class="btn" style="width: 100%" ng-click="cctopdc.fieldCreateClass()">Create New Class</button>
+    </div>
+  </div>
 </div>
 
-<div class="preloader" ng-show="controlTerm.searchPreloader"></div>
+<div class="preloader" ng-show="cctopdc.searchPreloader"></div>
+
+<!-- Add Ontology Class / Value Sets -->
+<div class="clear form-group add-ontology-class" ng-controller="provisionalClassController as pcc" ng-if="cctopdc.includeCreateClass && cctopdc.fieldActionSelection == 'create'">
+
+  <ng-include src="'scripts/control-term/create-ontology-class.html'"></ng-include>
+  <div class="clear btn-create-class">
+    <button type="button" class="btn" ng-click="pcc.saveAsFieldItem(pcc.provisionalClass)">Create Class</button>
+  </div>
+
+</div>
 
 <!-- Field Search Results and Ontology Tree -->
-<div class="clear search-results-section" ng-if="controlTerm.searchResults.length > 0">
-  <div class="search-results-headers" ng-hide="controlTerm.fieldTreeVisibility">
-    <table class="table table-condensed results-headers-table search-results-headers-table" ng-if="controlTerm.fieldActionSelection == 'search'">
+<div class="clear search-results-section" ng-if="cctopdc.searchResults.length > 0">
+  <div class="search-results-headers" ng-hide="cctopdc.fieldTreeVisibility">
+    <table class="table table-condensed results-headers-table search-results-headers-table" ng-if="cctopdc.isSearching()">
       <thead>
         <tr>
           <th>Class</th>
@@ -37,7 +57,7 @@
       </thead>
     </table>
 
-    <table class="table table-condensed results-headers-table browse-results-headers-table" ng-if="controlTerm.fieldActionSelection == 'browse'">
+    <table class="table table-condensed results-headers-table browse-results-headers-table" ng-if="cctopdc.isBrowsing()">
       <thead>
         <tr>
           <th>Ontology</th>
@@ -47,21 +67,21 @@
       </thead>
     </table>
   </div>
-  <div class="search-results" ng-hide="controlTerm.fieldTreeVisibility">
-    <div class="no-search-results" ng-show="controlTerm.searchNoResults">No results.</div>
+  <div class="search-results" ng-hide="cctopdc.fieldTreeVisibility">
+    <div class="no-search-results" ng-show="cctopdc.searchNoResults">No results.</div>
     <div class="table-responsive results-table-container">
-      <table class="table table-hover results-table search-results-table" ng-if="controlTerm.fieldActionSelection == 'search'">
+      <table class="table table-hover results-table search-results-table" ng-if="cctopdc.isSearching()">
         <tbody>
-          <tr ng-repeat="result in controlTerm.searchResults" ng-click="controlTerm.selectFieldClass(result.collection)">
+          <tr ng-repeat="result in cctopdc.searchResults" ng-click="cctopdc.selectFieldClass(result.collection)">
             <td>{{result.class}}</td>
-            <td>{{getOntologySummary(result.ontology)}}</td>
+            <td>{{cctopdc.getOntologySummary(result.ontology)}}</td>
           </tr>
         </tbody>
       </table>
 
-      <table class="table table-hover results-table browse-results-table" ng-if="controlTerm.fieldActionSelection == 'browse'">
+      <table class="table table-hover results-table browse-results-table" ng-if="cctopdc.isBrowsing()">
         <tbody>
-          <tr ng-repeat="result in controlTerm.searchResults" ng-click="controlTerm.selectFieldOntology(result)" ng-show="controlTerm.isOntologyNameMatched(result)">
+          <tr ng-repeat="result in cctopdc.searchResults" ng-click="cctopdc.selectFieldOntology(result)" ng-show="cctopdc.isOntologyNameMatched(result)">
             <td>{{result.name}}</td>
             <td>{{result.categoriesNames}}</td>
             <td>{{result.metrics.classes}}</td>
@@ -71,45 +91,59 @@
     </div>
   </div>
 
-  <div class="field-tree clear" ng-show="controlTerm.fieldTreeVisibility">
+  <div class="field-tree clear" ng-show="cctopdc.fieldTreeVisibility">
     <div class="field-tree-header table-style">
-      <div class="ontology-tree-header table-cell-style" ng-if="controlTerm.currentOntology != ''">
-        <h4><a class="pull-left" ng-click="controlTerm.hideFieldTree()"><img src="../img/left-arrow.png" /></a>&nbsp;&nbsp;&nbsp;&nbsp;{{controlTerm.currentOntology.details.ontology.name}}</h4>
+      <div class="ontology-tree-header table-cell-style" ng-if="cctopdc.isCurrentOntology()">
+        <h4>
+          <a class="pull-left" ng-click="cctopdc.hideFieldTree()">
+            <img src="../img/left-arrow.png" />
+          </a>
+          &nbsp;&nbsp;&nbsp;&nbsp;{{cctopdc.currentOntology.details.ontology.name}}
+        </h4>
       </div><!-- /.ontology-tree -->
 
-      <div class="field-details-view table-cell-style" ng-if="controlTerm.currentOntology !=''">
+      <div class="field-details-view table-cell-style" ng-if="cctopdc.isCurrentOntology()">
         <ul class="nav nav-tabs" role="tablist">
-          <li role="presentation" class="detail-view-tab active"><a href="#class-details" aria-controls="class-details" role="tab" data-toggle="tab">Class Details</a></li>
-          <li role="presentation" class="detail-view-tab"><a href="#ontology-details" aria-controls="ontology-details" role="tab" data-toggle="tab">Ontology Details</a></li>
+          <li role="presentation" class="detail-view-tab active">
+            <a href="#class-details" aria-controls="class-details" role="tab" data-toggle="tab">Class Details</a>
+          </li>
+          <li role="presentation" class="detail-view-tab">
+            <a href="#ontology-details" aria-controls="ontology-details" role="tab" data-toggle="tab">Ontology Details</a>
+          </li>
         </ul>
       </div>
       <div class="clearfix"></div>
     </div>
     <div class="field-tree-details">
-      <div class="ontology-tree pull-left" ng-if="controlTerm.currentOntology != ''">
+      <div class="ontology-tree pull-left" ng-if="cctopdc.isCurrentOntology()">
         <div class="tree tree-view-ul tree-view list-unstyled class-tree-container">
-          <cedar-class-tree tree="controlTerm.currentOntology.tree" term="controlTerm" selected-node="controlTerm.selectedClass1"></cedar-class-tree>
+          <cedar-class-tree 
+              tree="cctopdc.currentOntology.tree"
+              selected-node="cctopdc.selectedClass1"
+              is-selected-callback="cctopdc.checkIfSelected"
+              get-class-details-callback="cctopdc.getClassDetails">
+          </cedar-class-tree>
         </div>
       </div><!-- /.ontology-tree -->
 
-      <div class="field-details-view pull-right" ng-if="controlTerm.currentOntology !=''">
+      <div class="field-details-view pull-right" ng-if="cctopdc.isCurrentOntology()">
         <div class="tab-content">
           <div id="class-details" class="tab-pane active" role="tabpanel">
-            <div class="no-selected-class text-center" ng-hide="controlTerm.classDetails">No class is selected</div>
+            <div class="no-selected-class text-center" ng-hide="cctopdc.classDetails">No class is selected</div>
             <div class="table-responsive">
               <table class="table table-striped">
-                <tbody ng-show="controlTerm.classDetails">
+                <tbody ng-show="cctopdc.classDetails">
                   <tr>
                     <th>Perf. Name</th>
-                    <th>{{controlTerm.classDetails.prefLabel}}</th>
+                    <th>{{cctopdc.classDetails.prefLabel}}</th>
                   </tr>
                   <tr>
                     <td>ID</td>
-                    <td>{{controlTerm.classDetails['@id']}}</td>
+                    <td>{{cctopdc.classDetails['@id']}}</td>
                   </tr>
                   <tr>
                     <td>Definition</td>
-                    <td>{{controlTerm.classDetails.definition[0]}}</td>
+                    <td>{{cctopdc.classDetails.definition[0]}}</td>
                   </tr>
                 </tbody>
               </table>
@@ -121,23 +155,25 @@
                 <tbody>
                   <tr>
                     <th>Name</th>
-                    <th>{{controlTerm.currentOntology.details.ontology.name}}</th>
+                    <th>{{cctopdc.currentOntology.details.ontology.name}}</th>
                   </tr>
                   <tr>
                     <td>Acronym</td>
-                    <td>{{controlTerm.currentOntology.details.ontology.acronym}}</td>
+                    <td>{{cctopdc.currentOntology.details.ontology.acronym}}</td>
                   </tr>
                   <tr>
                     <td>@id</td>
-                    <td><a ng-href="{{controlTerm.currentOntology.details.ontology['@id']}}" target="_blank">{{controlTerm.currentOntology.details.ontology['@id']}}</a></td>
+                    <td>
+                      <a ng-href="{{cctopdc.currentOntology.details.ontology['@id']}}" target="_blank">{{cctopdc.currentOntology.details.ontology['@id']}}</a>
+                    </td>
                   </tr>
                   <tr>
                     <td>Description</td>
-                    <td>{{controlTerm.currentOntology.details.description | htmlToPlainText}}</td>
+                    <td>{{cctopdc.currentOntology.details.description | htmlToPlainText}}</td>
                   </tr>
                   <tr>
                     <td># of Classes</td>
-                    <td>{{controlTerm.currentOntology.size.classes | returnNullIfEmpty}}</td>
+                    <td>{{cctopdc.currentOntology.size.classes | returnNullIfEmpty}}</td>
                   </tr>
                 </tbody>
               </table>
@@ -147,21 +183,6 @@
         <div class="clearfix"></div>
       </div>
       <div class="clearfix"></div>
-    </div>
-
-    <div class="class-actions">
-      <div class="class-action table-style" ng-if="controlTerm.selectedClass1.prefLabel && controlTerm.classDetails">
-        <span class="table-cell-style text-left">{{controlTerm.selectedClass1.prefLabel}}</span>
-        <span class="table-cell-style text-right">
-          <button class="btn btn-add-term" ng-click="controlTerm.addClass(controlTerm.selectedClass1)" ng-disabled="controlTerm.isLoadingClassDetails">Add</button>
-        </span>
-      </div>
-      <div class="class-action table-style" ng-if="controlTerm.selectedClass2.prefLabel && controlTerm.selectedClass2['@id'] != controlTerm.selectedClass1['@id'] && controlTerm.classDetails">
-        <span class="table-cell-style text-left">{{controlTerm.selectedClass2.prefLabel}}</span>
-        <span class="table-cell-style text-right">
-          <button class="btn btn-add-term add-btn-margin" ng-click="controlTerm.addClass(controlTerm.selectedClass2)">Add</button>
-        </span>
-      </div>
     </div>
   </div>
 </div>
