@@ -1,6 +1,7 @@
 <div class="fields text-fields" ng-class="{preview: preview}">
   <div ng-if="$root.isArray(model)" class="form-group floating-label-wrapper" ng-repeat="(index, valueElement) in model">
-	  <div class="extra-label-context" ng-class="{'required': $root.propertiesOf(field)._valueConstraints.requiredValue}" ng-if="preview">
+
+    <div class="extra-label-context" ng-class="{'required': $root.propertiesOf(field)._valueConstraints.requiredValue}" ng-if="preview">
       {{$root.propertiesOf(field)._ui.title}}&nbsp;
     </div>
     <div ng-if="!$root.hasValueConstraint($root.propertiesOf(field)._valueConstraints)" class="has-no-constraint">
@@ -36,6 +37,17 @@
     <div class="more-input-wrapper" ng-include="'scripts/form/partials/more-input-buttons.partial.html'" ng-show="!field.maxItems || field.maxItems > 1"></div>
   </div><!-- /.form-group -->
 
+  <!--<div ng-if="$root.isArray(model)" class="form-group floating-label-wrapper" >-->
+    <!--<div class="extra-label-context"  ng-show="!field.maxItems || field.maxItems > 1">-->
+      <!--<p class="extra-label-context"  ng-show="$parent.model.length == 0">{{$root.propertiesOf(field)._ui.title}}</p>-->
+    <!--</div>-->
+  <!--</div>-->
+
+
+  <div ng-if="$root.isArray(model)" class="form-group floating-label-wrapper" >
+    <div class="more-input-wrapper" ng-include="'scripts/form/partials/zero-input-buttons.partial.html'" ng-show="!field.maxItems || field.maxItems > 1"></div>
+  </div>
+
   <div ng-if="!$root.isArray(model)" class="form-group floating-label-wrapper">
     <div class="extra-label-context" ng-class="{'required': $root.propertiesOf(field)._valueConstraints.requiredValue}" ng-if="preview">
       {{$root.propertiesOf(field)._ui.title}}&nbsp;
@@ -56,6 +68,9 @@
         <i class="cedar-svg-warning"></i>
       </div><!-- /.input-indicator-icons -->
     </div>
+
+
+
     <div ng-if="$root.hasValueConstraint($root.propertiesOf(field)._valueConstraints)" class="has-constraint autocomplete-label-wrapper" ng-class="{'has-selected': modelValue._value.label}">
       <ui-select ng-model="modelValue._value" theme="bootstrap" close-on-select="true" ng-disabled="!$root.isRuntime() || preview" aria-label="{{$root.propertiesOf(field)._ui.description}}">
         <ui-select-match placeholder="">{{$select.selected.label}}</ui-select-match>
@@ -71,6 +86,8 @@
       </div><!-- /.input-indicator-icons -->
     </div>
   </div><!-- /.form-group -->
+
+
 
   <div class="preview-edit-options" ng-include="'scripts/form/partials/preview-edit-options.partial.html'" ng-init="childType='field'" ng-if="!$root.isRunTime()"></div>
 </div>

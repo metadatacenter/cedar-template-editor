@@ -50,7 +50,7 @@ define([
           // $scope.model = $scope.model || {};
           // $rootScope.findChildren($rootScope.propertiesOf($scope.field), $scope.model);
 
-          var min = $scope.field.minItems || 1;
+          var min = $scope.field.minItems || 0;
 
           if (!$rootScope.isCardinalElement($scope.field)) {
             $scope.model = {};
@@ -87,7 +87,7 @@ define([
         // If field is required and is empty, emit failed emptyRequiredField event
         if ($rootScope.propertiesOf($scope.field)._valueConstraints.requiredValue) {
           var allRequiredFieldsAreFilledIn = true;
-          var min = $scope.field.minItems || 1;
+          var min = $scope.field.minItems || 0;
 
           if (angular.isArray($scope.model)) {
             if ($scope.model.length < min) {
@@ -235,7 +235,7 @@ define([
         if ($scope.model) {
           if ($rootScope.isArray($scope.model)) {
             if ($scope.model.length == 0) {
-              var min = $scope.field.minItems || 1;
+              var min = $scope.field.minItems || 0;
 
               if (field.defaultOption) {
                 for (var i = 0; i < min; i++) {
@@ -305,8 +305,12 @@ define([
       }
 
       $scope.addMoreInput = function() {
-        if ($scope.field.minItems && (!$scope.field.maxItems || $scope.model.length < $scope.field.maxItems)) {
-          var seed = angular.copy($scope.model[0]);
+        console.debug('addMoreInput');
+        if ((!$scope.field.maxItems || $scope.model.length < $scope.field.maxItems)) {
+          var seed = {};
+          if ($scope.model.length > 0) {
+            seed = angular.copy($scope.model[0]);
+          }
 
           if (field.defaultOption) {
             seed["_value"] = angular.copy(field.defaultOption);
@@ -393,7 +397,7 @@ define([
         if ($scope.errorMessages.length == 0) {
 
           if (!p._ui.is_cardinal_field) {
-            $scope.field.minItems = 1;
+            $scope.field.minItems = 0;
             $scope.field.maxItems = 1;
           }
 
@@ -463,10 +467,12 @@ define([
 
         // If a default value is set from the field item configuration, set $scope.model to its value
         if ($scope.directory == 'render') {
+          console.debug('render');
+          console.debug($scope.model);
           if ($scope.model) {
             if ($rootScope.isArray($scope.model)) {
               if ($scope.model.length == 0) {
-                var min = $scope.field.minItems || 1;
+                var min = $scope.field.minItems || 0;
 
                 if (field.defaultOption) {
                   for (var i = 0; i < min; i++) {
@@ -486,6 +492,7 @@ define([
                 }
               } else {
                 angular.forEach($scope.model, function(m, i) {
+                  console.debug(m);
                   if (!("_value" in m)) {
                     if (field.defaultOption) {
                       $scope.model[i]["_value"] = angular.copy(field.defaultOption);
@@ -505,6 +512,7 @@ define([
               }
             } else {
               if (!("_value" in $scope.model)) {
+                console.debug("_value not in model")
                 if (field.defaultOption) {
                   $scope.model["_value"] = angular.copy(field.defaultOption);
                 } else {

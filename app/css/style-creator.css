@@ -9906,6 +9906,7 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
 .template-body form .form-group,
 #element_control_term .form-group {
   margin-bottom: 14px;
+  min-height: 1em;
 }
 .template-body form .form-group.radio-item,
 #element_control_term .form-group.radio-item,

@@ -14,6 +14,10 @@
 	<div class="more-input-wrapper" ng-include="'scripts/form/partials/more-input-buttons.partial.html'" ng-show="!field.maxItems || field.maxItems > 1"></div>
   </div>
 
+  <div ng-if="$root.isArray(model)" class="form-group floating-label-wrapper" >
+    <div class="more-input-wrapper" ng-include="'scripts/form/partials/zero-input-buttons.partial.html'" ng-show="!field.maxItems || field.maxItems > 1"></div>
+  </div>
+
   <div ng-if="!$root.isArray(model)" class="field-checkbox" ng-class="{'required': $root.propertiesOf(field)._valueConstraints.requiredValue}">
 	<p class="extra-label-context">{{$root.propertiesOf(field)._ui.title}}</p>
 	<div class="form-group checkbox-item" ng-repeat="(index, value) in $root.propertiesOf(field)._ui.options">

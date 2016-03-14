@@ -213,7 +213,8 @@ define([
     };
 
     $rootScope.isCardinalElement = function (element) {
-      return element.minItems && element.maxItems != 1;
+      //return element.minItems && element.maxItems != 1;
+      return !element.maxItems || element.minItems < element.maxItems;
     };
 
     // If Max Items is N, its value will be 0, then need to remove it from schema
@@ -338,8 +339,8 @@ define([
 
     $rootScope.scrollToAnchor = UIUtilService.scrollToAnchor;
 
-    var minCardinalities = DataManipulationService.generateCardinalities(8);
-    var maxCardinalities = DataManipulationService.generateCardinalities(8);
+    var minCardinalities = DataManipulationService.generateCardinalities(0,8);
+    var maxCardinalities = DataManipulationService.generateCardinalities(1,8);
     maxCardinalities.push({value: 0, label: "N"});
 
     $rootScope.minCardinalities = minCardinalities;

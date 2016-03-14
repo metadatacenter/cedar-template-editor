@@ -67,7 +67,7 @@ define([
           TemplateElementService.getTemplateElement(elementId),
           function (response) {
             var newElement = response.data;
-            newElement.minItems = 1;
+            newElement.minItems = 0;
             newElement.maxItems = 1;
             $scope.staging[newElement['@id']] = newElement;
             $timeout(function () {
@@ -84,9 +84,10 @@ define([
 
     // Add new field into $scope.staging object
     service.addFieldToStaging = function ($scope, fieldType) {
+      console.debug('addFieldToStaging' + fieldType);
       this.addField();
       var field = DataManipulationService.generateField(fieldType);
-      field.minItems = 1;
+      field.minItems = 0;
       field.maxItems = 1;
 
       // If fieldtype can have multiple options, additional parameters on field object are necessary
@@ -107,7 +108,7 @@ define([
 
     service.addFieldToForm = function (form, fieldType) {
       var field = DataManipulationService.generateField(fieldType);
-      field.minItems = 1;
+      field.minItems = 0;
       field.maxItems = 1;
       field.properties._tmp = field.properties._tmp || {};
       field.properties._tmp.state = "creating";
@@ -142,7 +143,7 @@ define([
           TemplateElementService.getTemplateElement(elementId),
           function (response) {
             var clonedElement = response.data;
-            clonedElement.minItems = 1;
+            clonedElement.minItems = 0;
             clonedElement.maxItems = 1;
 
             var elProperties = DataManipulationService.getFieldProperties(clonedElement);
@@ -173,7 +174,7 @@ define([
 
     service.addFieldToElement = function (element, fieldType) {
       var field = DataManipulationService.generateField(fieldType);
-      field.minItems = 1;
+      field.minItems = 0;
       field.maxItems = 1;
       field.properties._tmp = field.properties._tmp || {};
       field.properties._tmp.state = "creating";
@@ -207,7 +208,7 @@ define([
           TemplateElementService.getTemplateElement(elementId),
           function (response) {
             var el = response.data;
-            el.minItems = 1;
+            el.minItems = 0;
             el.maxItems = 1;
 
             var elProperties = DataManipulationService.getFieldProperties(el);

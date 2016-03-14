@@ -107,7 +107,8 @@ define([
     };
 
     service.isCardinalElement = function (element) {
-      return element.minItems && element.maxItems != 1;
+      //return element.minItems && element.maxItems != 1;
+      return element.maxItems != 1;
     };
 
     // If Max Items is N, its value will be 0, then need to remove it from schema
@@ -146,9 +147,9 @@ define([
       field.properties._ui.options.push(emptyOption);
     };
 
-    service.generateCardinalities = function (max) {
+    service.generateCardinalities = function (min,max) {
       var results = [];
-      for (var i = 1; i <= max; i++) {
+      for (var i = min; i <= max; i++) {
         results.push({value: i, label: i});
       }
 
