@@ -485,7 +485,7 @@ define([
           if (term == '*') {
             $rootScope.removeAutocompleteResultsForSource(field_id, valueSet.uri);
           }
-          controlTermService.autocompleteValueSetClasses(term, valueSet.uri).then(function (childResponse) {
+          controlTermDataService.autocompleteValueSetClasses(term, valueSet.uri).then(function (childResponse) {
             $rootScope.processAutocompleteClassResults(field_id, 'Value Set Class', valueSet.uri, childResponse);
           });
         });
@@ -496,7 +496,7 @@ define([
           if (term == '*') {
             $rootScope.removeAutocompleteResultsForSource(field_id, ontology.uri);
           }
-          controlTermService.autocompleteOntology(term, ontology.acronym).then(function (childResponse) {
+          controlTermDataService.autocompleteOntology(term, ontology.acronym).then(function (childResponse) {
             $rootScope.processAutocompleteClassResults(field_id, 'Ontology Class', ontology.uri, childResponse);
           });
         });
@@ -507,7 +507,7 @@ define([
           if (term == '*') {
             $rootScope.removeAutocompleteResultsForSource(field_id, branch.uri);
           }
-          controlTermService.autocompleteOntologySubtree(term, branch.acronym, branch.uri, branch.maxDepth).then(
+          controlTermDataService.autocompleteOntologySubtree(term, branch.acronym, branch.uri, branch.maxDepth).then(
               function (childResponse) {
                 $rootScope.processAutocompleteClassResults(field_id, 'Ontology Class', branch.uri, childResponse);
               }
