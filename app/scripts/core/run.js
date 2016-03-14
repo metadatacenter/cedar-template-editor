@@ -587,11 +587,11 @@ define([
       return $sce.trustAsHtml($rootScope.propertiesOf(field)._content);
     };
 
-    provisionalClassService.init();
-    controlTermDataService.init();
     DataTemplateService.init();
     FieldTypeService.init();
     UrlService.init();
+    provisionalClassService.init();
+    controlTermDataService.init();
     DataManipulationService.init();
     HeaderService.init();
 
