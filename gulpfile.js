@@ -101,7 +101,7 @@ gulp.task('server-nolivereload', function () {
 });
 
 gulp.task('cache-ontologies', ['set-environment-default'], function () {
-  var config = getConfig('control-term-data-service');
+  var config = getConfig();
   var apiKey = config.bioportalAPIKey;
   var options = {
     headers: {
@@ -156,7 +156,7 @@ gulp.task('cache-ontologies', ['set-environment-default'], function () {
 });
 
 gulp.task('cache-value-sets', ['set-environment-default'], function () {
-  var config = getConfig('control-term-data-service');
+  var config = getConfig();
   var apiKey = config.bioportalAPIKey;
   var options = {
     headers: {
@@ -208,7 +208,7 @@ gulp.task('replace-url', function () {
 
 // Task to replace bioportal api keys
 gulp.task('replace-apikey', function () {
-  var config = getConfig('control-term-data-service');
+  var config = getConfig();
   var apiKey = config.bioportalAPIKey;
   gulp.src(['app/config/src/control-term-data-service.conf.json'])
       .pipe(replace('bioportalAPIKey', apiKey))
