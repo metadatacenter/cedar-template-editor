@@ -18,7 +18,7 @@
     <label for="checkbox-bioportal-value-sets">BioPortal Value Sets</label>
   </div>
 </div>
-<div class="btn-start-over-group" ng-if="cctvspdc.valuesActionSelection">
+<div class="btn-start-over-group">
   <button type="button" class="btn btn-start-over" ng-click="cctvspdc.reset()">Start Over</button>
 </div>
 
@@ -64,7 +64,11 @@
 
     <ng-include src="'scripts/control-term/create-ontology-class.html'"></ng-include>
     <div class="clear btn-create-class">
-      <button type="button" class="btn" ng-click="pcc.saveAsOntologyClassValueConstraint(pcc.provisionalClass)">Create Class</button>
+      <button type="button"
+              class="btn"
+              ng-click="pcc.saveAsOntologyClassValueConstraint(pcc.provisionalClass)"
+              ng-disabled="!pcc.isValid()">Create Class
+      </button>
     </div>
 
   </div>
@@ -135,7 +139,11 @@
     </div>
 
     <div class="clear btn-create-class">
-      <button type="button" class="btn" ng-click="pcc.saveAsValueSetConstraint(pcc.provisionalClass, pcc.provisionalValueSetValues)">Create Value Set</button>
+      <button type="button"
+              class="btn"
+              ng-click="pcc.saveAsValueSetConstraint(pcc.provisionalClass, pcc.provisionalValueSetValues)"
+              ng-disabled="!pcc.isValid()">Create Value Set
+      </button>
     </div>
 
   </div>
@@ -213,7 +221,7 @@
       </div>
     </div>
     <div class="field-tree-details">
-      <div class="ontology-tree pull-left" ng-if="cctvspdc.selectedValueResult.resultType == 'Ontology' || cctvspdc.selectedValueResult.resultType == 'Ontology Class'">
+      <div class="ontology-tree pull-left" ng-if="cctvspdc.selectedValueResult && cctvspdc.currentOntology && cctvspdc.currentOntology.tree && (cctvspdc.selectedValueResult.resultType == 'Ontology' || cctvspdc.selectedValueResult.resultType == 'Ontology Class')">
         <div class="tree tree-view-ul tree-view list-unstyled class-tree-container">
           <cedar-class-tree
               get-class-details-callback="cctvspdc.getClassDetails"

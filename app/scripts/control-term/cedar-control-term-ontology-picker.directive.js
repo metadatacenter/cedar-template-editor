@@ -197,7 +197,7 @@ define([
       }
 
       function isCurrentOntology() {
-        return vm.currentOntology != '';
+        return vm.currentOntology && vm.currentOntology != '';
       }
 
       function isOntologyNameMatched(ontology) {
@@ -222,8 +222,8 @@ define([
         vm.fieldActionSelection = null;
         vm.fieldSearchTerms = '';
         vm.classDetails = null;
-        vm.selectedClass1 = { prefLabel: '' };
-        vm.selectedClass2 = { prefLabel: '' };
+        vm.selectedClass1 = null;
+        vm.selectedClass2 = null;
         vm.fieldTreeVisibility = false;
         vm.searchPreloader = false;
         vm.searchResults = [];

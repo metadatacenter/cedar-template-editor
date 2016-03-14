@@ -16,6 +16,7 @@ define([
     vm.deleteProvisionalClassMapping = deleteProvisionalClassMapping;
     vm.deleteProvisionalValueSetValue = deleteProvisionalValueSetValue;
     vm.isMappingExistingClasses = false;
+    vm.isValid = isValid;
     vm.provisionalClass = {};
     vm.provisionalClassOntology = { details: { ontology: { name: 'Cedar Provisional Classes', acronym: 'CEDARPC' } } };
     vm.provisionalClassMappings = [];
@@ -64,6 +65,10 @@ define([
 
     function deleteProvisionalClassMapping(index) {
       vm.provisionalClassMappings.splice(index, 1);
+    }
+
+    function isValid() {
+      return vm.provisionalClass.label && vm.provisionalClass.description;
     }
 
     function saveAsFieldItem(provisionalClass) {

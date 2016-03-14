@@ -15,6 +15,7 @@ define([
     var http_default_config = {};
 
     var service = {
+      getAllProvisionalClasses: getAllProvisionalClasses,
       getValueSet: getValueSet,
       getValueSetValues: getValueSetValues,
       init: init,
@@ -43,6 +44,15 @@ define([
     /**
      * Service methods.
      */
+
+    function getAllProvisionalClasses() {
+      var endpoint = base + '/bioportal/classes/provisional';
+      return $http.get(endpoint, http_default_config).then(function(response) {
+        return response.data;
+      }).catch(function(error) {
+        return error;
+      });
+    }
 
     function getValueSet(valueSetId) {
       var endpoint = base + '/bioportal/vs-collections/CEDARVS/value-sets/' + encodeURIComponent(valueSetId);
