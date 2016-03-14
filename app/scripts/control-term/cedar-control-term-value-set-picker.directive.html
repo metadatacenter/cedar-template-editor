@@ -221,7 +221,7 @@
       </div>
     </div>
     <div class="field-tree-details">
-      <div class="ontology-tree pull-left" ng-if="cctvspdc.selectedValueResult.resultType == 'Ontology' || cctvspdc.selectedValueResult.resultType == 'Ontology Class'">
+      <div class="ontology-tree pull-left" ng-if="cctvspdc.selectedValueResult && cctvspdc.currentOntology && cctvspdc.currentOntology.tree && (cctvspdc.selectedValueResult.resultType == 'Ontology' || cctvspdc.selectedValueResult.resultType == 'Ontology Class')">
         <div class="tree tree-view-ul tree-view list-unstyled class-tree-container">
           <cedar-class-tree
               get-class-details-callback="cctvspdc.getClassDetails"
