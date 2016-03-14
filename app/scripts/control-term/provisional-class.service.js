@@ -6,9 +6,9 @@ define([
   angular.module('cedar.templateEditor.controlTerm.provisionalClassService', [])
     .factory('provisionalClassService', provisionalClassService);
 
-  provisionalClassService.$inject = ['$http', '$q'];
+  provisionalClassService.$inject = ['$http', '$q', 'UrlService'];
 
-  function provisionalClassService($http, $q) {
+  function provisionalClassService($http, $q, UrlService) {
     var apiKey              = null;
     var base                = null;
     var config              = null;
@@ -32,7 +32,7 @@ define([
     function init() {
       config = cedarBootstrap.getBaseConfig(this.serviceId);
       apiKey = config.apiKey;
-      base = config.terminologyAPI;
+      base = UrlService.terminology();
       http_default_config = {
         'headers': {
           'Authorization': 'apikey=' + apiKey

@@ -29,11 +29,14 @@ var onError = function (err) {
   console.log(err);
 };
 
+// Environment name for config
+var environmentName = null;
+
 /**
- * Helper function to parse config files.
+ * Helper function to parse config file.
  */
-function getConfig(configName) {
-  var filename = 'app/config/' + configName + '.conf.json';
+function getConfig() {
+  var filename = '../cedar-conf/configuration-files/cedar-template-editor/gulp/' + environmentName + '.conf.json';
   return JSON.parse(fs.readFileSync(filename));
 }
 
@@ -84,7 +87,7 @@ gulp.task('server', function () {
     root      : 'app',
     port      : 4200,
     livereload: true,
-    fallback: 'app/index.html'
+    fallback  : 'app/index.html'
   })
 });
 
@@ -93,13 +96,13 @@ gulp.task('server-nolivereload', function () {
     root      : 'app',
     port      : 4200,
     livereload: false,
-    fallback: 'app/index.html'
+    fallback  : 'app/index.html'
   })
 });
 
 gulp.task('cache-ontologies', function () {
   var config = getConfig('control-term-data-service');
-  var apiKey = config.apiKey;
+  var apiKey = config.bioportalAPIKey;
   var options = {
     headers: {
       'Authorization': 'apikey token=' + apiKey
@@ -154,7 +157,7 @@ gulp.task('cache-ontologies', function () {
 
 gulp.task('cache-value-sets', function () {
   var config = getConfig('control-term-data-service');
-  var apiKey = config.apiKey;
+  var apiKey = config.bioportalAPIKey;
   var options = {
     headers: {
       'Authorization': 'apikey token=' + apiKey
@@ -194,25 +197,25 @@ gulp.task('html', function () {
       .pipe(connect.reload());
 });
 
-gulp.task('dev-replace', function () {
+// Task to replace service URLs
+gulp.task('replace-url', function () {
   gulp.src(['app/config/src/url-service.conf.json'])
-      .pipe(replace('templateServerUrl', 'https://template.metadatacenter.orgx'))
-      .pipe(replace('userServerUrl', 'https://user.metadatacenter.orgx'))
+      .pipe(replace('templateServerUrl', 'https://template.' + environmentName))
+      .pipe(replace('userServerUrl', 'https://user.' + environmentName))
+      .pipe(replace('terminologyServerUrl', 'https://terminology.' + environmentName))
       .pipe(gulp.dest('app/config/'));
 });
 
-gulp.task('dev01-replace', function () {
-  gulp.src(['app/config/src/url-service.conf.json'])
-      .pipe(replace('templateServerUrl', 'https://template.staging.metadatacenter.net'))
-      .pipe(replace('userServerUrl', 'https://user.staging.metadatacenter.net'))
+// Task to replace bioportal api keys
+gulp.task('replace-apikey', function () {
+  var config = getConfig('control-term-data-service');
+  var apiKey = config.bioportalAPIKey;
+  gulp.src(['app/config/src/control-term-data-service.conf.json'])
+      .pipe(replace('bioportalAPIKey', apiKey))
       .pipe(gulp.dest('app/config/'));
-});
-
-gulp.task('dev02-replace', function () {
-    gulp.src(['app/config/src/url-service.conf.json'])
-        .pipe(replace('templateServerUrl', 'https://template.metadatacenter.net'))
-        .pipe(replace('userServerUrl', 'https://user.metadatacenter.net'))
-        .pipe(gulp.dest('app/config/'));
+  gulp.src(['app/config/src/provisional-class-service.conf.json'])
+      .pipe(replace('bioportalAPIKey', apiKey))
+      .pipe(gulp.dest('app/config/'));
 });
 
 // Watch files for changes
@@ -222,13 +225,20 @@ gulp.task('watch', function () {
   gulp.watch('app/views/*.html', ['html']);
 });
 
-// Default task
-gulp.task('default', ['server', 'lint', 'less', 'copy:resources', 'dev-replace', 'watch']);
-// Build task
-//gulp.task('build', ['minifyCSS', 'htmlreplace', 'angular']);
-gulp.task('dev01', ['server-nolivereload', 'lint', 'less', 'copy:resources', 'dev01-replace']);
-gulp.task('dev02', ['server-nolivereload', 'lint', 'less', 'copy:resources', 'dev02-replace']);
+// Tasks to set global environment name
+gulp.task('set-environment-default', function () {
+  environmentName = 'metadatacenter.orgx';
+});
 
+gulp.task('set-environment-dev01', function () {
+  environmentName = 'staging.metadatacenter.net';
+});
+
+gulp.task('set-environment-dev02', function () {
+  environmentName = 'metadatacenter.net';
+});
+
+// Tasks for tests
 gulp.task('test', function (done) {
   new Server({
     configFile: __dirname + '/karma.conf.js',
@@ -245,3 +255,14 @@ gulp.task('e2e', function () {
         throw e
       });
 });
+
+
+// Entry points
+gulp.task('default',
+    ['set-environment-default', 'server', 'lint', 'less', 'copy:resources', 'replace-apikey', 'replace-url', 'watch']);
+gulp.task('dev01',
+    ['set-environment-dev01', 'server-nolivereload', 'lint', 'less', 'copy:resources', 'replace-apikey',
+     'replace-url']);
+gulp.task('dev02',
+    ['set-environment-dev02', 'server-nolivereload', 'lint', 'less', 'copy:resources', 'replace-apikey',
+     'replace-url']);

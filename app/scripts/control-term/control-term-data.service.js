@@ -6,9 +6,9 @@ define([
   angular.module('cedar.templateEditor.controlTerm.controlTermDataService', [])
     .service('controlTermDataService', controlTermDataService);
 
-  controlTermDataService.$inject = ['$http', '$q'];
+  controlTermDataService.$inject = ['$http', '$q', 'UrlService'];
 
-  function controlTermDataService($http, $q) {
+  function controlTermDataService($http, $q, UrlService) {
 
     var apiKey = null;
     var base = null;
@@ -50,7 +50,7 @@ define([
     function init() {
       config = cedarBootstrap.getBaseConfig(this.serviceId);
       apiKey = config.apiKey;
-      base = config.bioontologyAPI;
+      base = UrlService.bioontology();
       http_default_config = {
         'headers': {
           'Authorization': 'apikey token=' + apiKey
