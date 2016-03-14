@@ -100,7 +100,7 @@ gulp.task('server-nolivereload', function () {
   })
 });
 
-gulp.task('cache-ontologies', function () {
+gulp.task('cache-ontologies', ['set-environment-default'], function () {
   var config = getConfig('control-term-data-service');
   var apiKey = config.bioportalAPIKey;
   var options = {
@@ -155,7 +155,7 @@ gulp.task('cache-ontologies', function () {
 
 });
 
-gulp.task('cache-value-sets', function () {
+gulp.task('cache-value-sets', ['set-environment-default'], function () {
   var config = getConfig('control-term-data-service');
   var apiKey = config.bioportalAPIKey;
   var options = {
