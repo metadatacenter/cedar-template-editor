@@ -171,11 +171,10 @@ define([
         vm.searchPreloader = false;
         vm.searchResults = [];
 
-        if (typeof resetCallback === "function") {
+        if (typeof vm.resetCallback === "function") {
           vm.resetCallback();
         }
       };
-
 
       /**
        * This function should select a value search or browse value result and populate

@@ -1,4 +1,4 @@
-<div class="form-group floating-label-wrapper btn-start-over-group clearfix" ng-if="cctopdc.fieldActionSelection">
+<div class="form-group floating-label-wrapper btn-start-over-group clearfix">
   <button type="button" class="btn btn-start-over" ng-click="cctopdc.reset()">Start Over</button>
 </div>
 
@@ -40,7 +40,11 @@
 
   <ng-include src="'scripts/control-term/create-ontology-class.html'"></ng-include>
   <div class="clear btn-create-class">
-    <button type="button" class="btn" ng-click="pcc.saveAsFieldItem(pcc.provisionalClass)">Create Class</button>
+    <button type="button"
+            class="btn"
+            ng-click="pcc.saveAsFieldItem(pcc.provisionalClass)"
+            ng-disabled="!pcc.isValid()">Create Class
+    </button>
   </div>
 
 </div>
