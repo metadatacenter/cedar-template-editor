@@ -32,6 +32,12 @@ define([
         $scope.pageIndex = 0,
         $scope.pagesArray = [];
 
+
+        $scope.valueRecommendations = true;
+
+
+
+
         var paginate = function() {
           if ($scope.form) {
             var orderArray = [];

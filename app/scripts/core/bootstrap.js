@@ -17,7 +17,8 @@ function CedarBootstrap($http) {
     ],
     'HeaderService': true,
     'UrlService': true,
-    'UserService': true
+    'UserService': true,
+    //'ValueRecommenderService': true,
   };
 
   // Function to convert camelCase to train-case
