@@ -12,12 +12,12 @@ define([
                                         '$translate', 'DataTemplateService', 'DataManipulationService',
                                         'FieldTypeService', 'UrlService', 'HeaderService', 'UIUtilService',
                                         'UserService', 'UserDataService', 'RichTextConfigService', 'CONST',
-                                        'controlTermDataService', 'provisionalClassService'];
+                                        'controlTermDataService', 'provisionalClassService', 'Cedar'];
 
   function cedarTemplateEditorCoreRun($rootScope, controlTermService, $location, $timeout, $window, $sce, $translate,
                                       DataTemplateService, DataManipulationService, FieldTypeService, UrlService,
                                       HeaderService, UIUtilService, UserService, UserDataService, RichTextConfigService,
-                                      CONST, controlTermDataService, provisionalClassService) {
+                                      CONST, controlTermDataService, provisionalClassService, Cedar) {
 
     $rootScope.isArray = angular.isArray;
 
@@ -587,6 +587,8 @@ define([
       return $sce.trustAsHtml($rootScope.propertiesOf(field)._content);
     };
 
+    Cedar.init();
+    $rootScope.cedar = Cedar;
     DataTemplateService.init();
     FieldTypeService.init();
     UrlService.init();
