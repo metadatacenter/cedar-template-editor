@@ -149,7 +149,7 @@ define([
       // If there are no Template level error messages
       if ($scope.templateErrorMessages.length == 0) {
         // If maxItems is N, then remove maxItems
-        DataManipulationService.removeUnnecessaryMaxItems($scope.form.properties);
+        //DataManipulationService.removeUnnecessaryMaxItems($scope.form.properties);
 
         // Save template
         if ($routeParams.id == undefined) {

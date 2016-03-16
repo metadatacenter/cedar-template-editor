@@ -50,6 +50,7 @@ define([
           // $scope.model = $scope.model || {};
           // $rootScope.findChildren($rootScope.propertiesOf($scope.field), $scope.model);
 
+
           var min = $scope.field.minItems || 0;
 
           if (!$rootScope.isCardinalElement($scope.field)) {
@@ -330,7 +331,8 @@ define([
       }
 
       $scope.removeInput = function(index) {
-        if ($scope.model.length > $scope.field.minItems) {
+        var min = $scope.field.minItems || 0;
+        if ($scope.model.length > min) {
           $scope.model.splice(index, 1);
         }
       }
@@ -397,7 +399,7 @@ define([
         if ($scope.errorMessages.length == 0) {
 
           if (!p._ui.is_cardinal_field) {
-            $scope.field.minItems = 0;
+            $scope.field.minItems = 1;
             $scope.field.maxItems = 1;
           }
 

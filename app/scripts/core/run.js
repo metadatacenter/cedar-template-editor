@@ -94,6 +94,7 @@ define([
 
     // Function that generates a basic field definition
     $rootScope.generateField = function (fieldType) {
+      console.debug('generateField');
       var valueType = "string";
       if (fieldType == "numeric") {
         valueType = "number";
@@ -222,16 +223,16 @@ define([
     $rootScope.removeUnnecessaryMaxItems = function (properties) {
       angular.forEach(properties, function (value, key) {
         if (!$rootScope.ignoreKey(key)) {
-          if (!value.maxItems) {
-            delete value.maxItems;
-          }
-          if (value.minItems &&
-              value.minItems == 1 &&
-              value.maxItems &&
-              value.maxItems == 1) {
-            delete value.minItems;
-            delete value.maxItems;
-          }
+          //if (!value.maxItems) {
+          //  delete value.maxItems;
+          //}
+          //if (value.minItems &&
+          //    value.minItems == 1 &&
+          //    value.maxItems &&
+          //    value.maxItems == 1) {
+          //  delete value.minItems;
+          //  delete value.maxItems;
+          //}
         }
       });
     };
@@ -279,7 +280,7 @@ define([
         if (!$rootScope.ignoreKey(name)) {
           // We can tell we've reached an element level by its 'order' property
           if (value._ui && value._ui.order) {
-            min = value.minItems || 1;
+            min = value.minItems || 0;
 
             if ($rootScope.isCardinalElement(value)) {
               parentModel[name] = [];
@@ -290,7 +291,7 @@ define([
               parentModel[name] = {};
             }
           } else {
-            min = value.minItems || 1;
+            min = value.minItems || 0;
 
             // Assign empty field instance model to $scope.model only if it does not exist
             if (!parentModel[name]) {
