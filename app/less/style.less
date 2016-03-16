@@ -1458,15 +1458,13 @@ section.dashboard-elements {
   &:hover,
   &:focus {
     background-color:@brand-primary-hover;
+    color:@white;
   }
 
   &:focus {
     outline:none;
     box-shadow:none;
   }
-}
-.std-button-active {
-  background-color:@brand-primary-hover;
 }
 
 // create value set
@@ -1482,30 +1480,6 @@ section.dashboard-elements {
   float:none;
   width:100%;
   //clear:both;
-
-  .btn-two-toggle, .btn-create-class, .btn-create-values {
-
-    .btn {
-      text-transform:uppercase;
-      padding:12px 30px;
-      border:none;
-      .link-transition;
-      color:@white;
-      background-color:@brand-primary;
-      font-size:14px;
-      letter-spacing: 0.03em;
-
-      &:hover,
-      &:focus {
-        background-color:@brand-primary-hover;
-      }
-
-      &:focus {
-        outline:none;
-        box-shadow:none;
-      }
-    }
-  }
 
   #field-value-tooltip{
     color:#cacacb;
@@ -1817,10 +1791,16 @@ section.dashboard-elements {
 }
 
 div.dotted {
-  background-image: linear-gradient(to right, @brand-primary 10%, rgba(255, 255, 255, 0) 0%);
-  background-position: top;
-  background-size: 10px 2px;
-  background-repeat: repeat-x;
+  color: @brand-primary;
+  font-size: 45px;
+
+  .dashes {
+    position: relative;
+    top: 4px;
+    font-size: 70px;
+    padding-left: 18px;
+    padding-right: 18px;
+  }
 }
 
 p.instructions {
@@ -1861,6 +1841,12 @@ p.instructions {
 
   div.mapping-tools {
     padding-left: 165px;
+  }
+
+  div.create-class-select {
+    width: 220px;
+    float: left;
+    padding-right: 20px;
   }
 
   div.map-existing-classes {
