@@ -364,25 +364,6 @@ define([
         }
       }, true);
 
-      // Used to store the value recommendation results
-      $scope.$watch("modelValueRecommendation", function (newValue, oldValue) {
-        if ($rootScope.isArray($scope.model)) {
-          angular.forEach($scope.modelValueRecommendation, function (m, i) {
-            if (m && m._value & m._value.value) {
-              $scope.model[i]._value = m._value.value;
-            } else {
-              delete $scope.model[i]._value;
-            }
-          });
-        } else {
-          if (newValue && newValue._value && newValue._value.value) {
-            $scope.model._value = newValue._value.value;
-          } else if (oldValue) {
-            delete $scope.model._value;
-          }
-        }
-      }, true);
-
       $scope.checkFieldConditions = function (properties) {
         var unmetConditions = [],
             extraConditionInputs = ['checkbox', 'radio', 'list'];
@@ -489,29 +470,6 @@ define([
           }
         }
 
-        // Used for value recommendations
-        if ($scope.directory == "render" &&
-            $rootScope.propertiesOf($scope.field)._ui.inputType == "textfield" && !$rootScope.hasValueConstraint($rootScope.propertiesOf($scope.field)._valueConstraints) &&
-            $rootScope.isValueRecommendationEnabled) {
-          if ($rootScope.isArray($scope.model)) {
-            $scope.modelValueRecommendation = [];
-            angular.forEach($scope.model, function (m, i) {
-              // TODO: Push valid value if m is present.
-              if (m._value) {
-                $scope.modelValueRecommendation.push({_value: {"value": m._value}});
-              } else {
-                $scope.modelValueRecommendation.push({});
-              }
-            });
-          } else {
-            if ($scope.model && $scope.model._value) {
-              $scope.modelValueRecommendation = {_value: {"value": $scope.model._value}};
-            } else {
-              $scope.modelValueRecommendation = {};
-            }
-          }
-        }
-
         // If a default value is set from the field item configuration, set $scope.model to its value
         if ($scope.directory == 'render') {
           if ($scope.model) {
@@ -574,6 +532,75 @@ define([
           }
         }
       }, true);
+
+      /* Used by the Value Recommender */
+      // Load values when opening an instance
+      $scope.modelValueRecommendation = {'_value': {'value': $scope.model._value}}
+
+      $scope.updateModelWhenChangeSelection = function (modelvr) {
+        // This variable will be used at textfield.html
+        $scope.modelValueRecommendation = modelvr;
+        if ($rootScope.isArray($scope.model)) {
+          angular.forEach(modelvr, function (m, i) {
+            if (m && m._value & m._value.value) {
+              $scope.model[i]._value = m._value.value;
+            } else {
+              delete $scope.model[i]._value;
+            }
+          });
+        } else {
+          var newValue = modelvr._value.value;
+          $scope.model._value = newValue;
+        }
+      }
+
+      $scope.isFirstRefresh = true;
+
+      $scope.updateIsFirstRefresh = function() {
+        $scope.isFirstRefresh = false;
+      }
+
+      $scope.updateModelWhenRefresh = function (select) {
+
+
+        if (!$scope.isFirstRefresh) {
+          if ($rootScope.isArray($scope.model)) {
+            // TODO
+          } else {
+            $scope.model._value = select.search;
+            $scope.modelValueRecommendation._value.value = select.search;
+          }
+        }
+      }
+
+      $scope.clickedOn = function(select, modelvr) {
+        console.log('BEFORE-----------------');
+        console.log("$scope.model._value = " + $scope.model._value);
+        console.log("$scope.modelValueRecommendation._value.value = " + $scope.modelValueRecommendation._value.value);
+        console.log("$select.search: " + select.search);
+        console.log("$select.selected.value: " + select.selected.value);
+        // Clear search
+        //select.search = '';
+        //select.selected.value = '';
+        // Si habia un valor seleccionado y no era debido a una busqueda, lo elimino
+        //if (!select.search && select.selected.value) {
+        //  select.selected.value = '';
+        //}
+
+        if (select.selected.value) {
+          select.search = select.selected.value;
+        }
+
+        console.log('AFTER-----------------');
+        console.log("$scope.model._value = " + $scope.model._value);
+        console.log("$scope.modelValueRecommendation._value.value = " + $scope.modelValueRecommendation._value.value);
+        console.log("$select.search: " + select.search);
+        console.log("$select.selected.value: " + select.selected.value);
+
+        console.log();
+      }
+
+      /* End of Used by the Value Recommender */
     }
 
     return {

@@ -587,48 +587,6 @@ define([
       return $sce.trustAsHtml($rootScope.propertiesOf(field)._content);
     };
 
-    // Start - Value Recommender
-    $rootScope.updateValueRecommendationResults = function (modelvr, field, search) {
-      console.log(modelvr);
-
-      if (angular.isUndefined($rootScope.valueRecommendationResults)) {
-        $rootScope.valueRecommendationResults = [];
-      }
-      if (angular.isUndefined($rootScope.populatedFields)) {
-        $rootScope.populatedFields = [];
-      }
-
-      var fieldName = $rootScope.propertiesOf(field)._ui.title;
-
-      var recommendation = ValueRecommenderService.getRecommendation(fieldName);
-      var fieldId = field['@id'];
-
-
-      // Update populated fields
-      //if (!angular.isUndefined(modelvr._value) && !angular.isUndefined(modelvr._value.value)) {
-      //  var fieldValue = modelvr._value.value;
-      //  $rootScope.populatedFields[fieldId] = {
-      //    'name' : fieldName,
-      //    'value' : fieldValue
-      //  }
-      //  console.log('Populated fields');
-      //  console.log($rootScope.populatedFields);
-      //}
-
-      $rootScope.valueRecommendationResults[fieldId] = {
-        'fullResults'      : [],
-        'recommendedValues': []
-      };
-
-      $rootScope.valueRecommendationResults[fieldId].fullResults = recommendation.recommendedValues;
-      angular.forEach($rootScope.valueRecommendationResults[fieldId].fullResults, function (result) {
-        $rootScope.valueRecommendationResults[fieldId].recommendedValues.push(result.value);
-      });
-    }
-
-    $rootScope.isValueRecommendationEnabled = true;
-    // End - Value Recommender
-
     DataTemplateService.init();
     FieldTypeService.init();
     UrlService.init();
@@ -643,6 +601,8 @@ define([
     });
 
     ValueRecommenderService.init();
+    $rootScope.vrs = ValueRecommenderService;
+
 
     $rootScope.editorOptions = RichTextConfigService.getConfig("default");
 
