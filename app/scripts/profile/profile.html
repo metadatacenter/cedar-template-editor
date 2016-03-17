@@ -53,8 +53,16 @@
             <td>{{apiKey.key}}</td>
           </tr>
           <tr>
-            <td>Usage</td>
+            <td>Usage from REST client:</td>
             <td>Set the <b>Authorization</b> header in the REST calls to: <pre>apiKey {{apiKey.key}}</pre></td>
+          </tr>
+          <tr>
+            <td>Sample usage with CURL:</td>
+            <td><pre>curl -H "Content-Type: application/json" \<br/>-H "Authorization: apiKey {{apiKey.key}}" \<br/>-X GET https://template.metadatacenter.net/template-fields</pre></td>
+          </tr>
+          <tr>
+            <td>REST API Documentation:</td>
+            <td><a href="https://template.metadatacenter.net/">https://template.metadatacenter.net/</a></td>
           </tr>
         </table>
       </li>
