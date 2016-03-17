@@ -68,6 +68,10 @@ define([
       return this.getDefaultTemplateInstancesSummary(300, 0);
     };
 
+    service.base = function () {
+      return apiService;
+    };
+
     service.templates = function () {
       return apiService + '/templates';
     };
