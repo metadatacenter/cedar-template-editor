@@ -17,7 +17,7 @@
         <div class="sidebar-inner" cedar-sticky-left-menu="true">
           <p class="add-item" translate>GENERIC.Templates</p>
           <ul class="element-menu" role="menu">
-            <li ng-repeat="template in templateList" class="item"><a ng-class="{active: $location.path() == '/instances/create/' + template['@id']}" ng-href="#/instances/create/{{template['@id']}}"><i class="cedar-svg-metadata"></i>{{template.properties._ui.title}}</a></li>
+            <li ng-repeat="template in templateList" class="item"><a ng-class="{active: $location.path() == '/instances/create/' + template['@id']}" ng-href="/instances/create/{{template['@id']}}"><i class="cedar-svg-metadata"></i>{{template.properties._ui.title}}</a></li>
           </ul>
 
           <div class="more-items hidden-xs">

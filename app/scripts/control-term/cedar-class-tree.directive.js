@@ -10,18 +10,20 @@ define([
 
   /**
    * This 'cedarClassTree' directive will call the 'childTree' directive for 
-   * every child in the collection returned from the controlTermService.
+   * every child in the collection returned from the controlTermDataService.
    */
   function cedarClassTreeDirective($timeout) {
     var directive = {
       restrict: 'E',
       scope: {
+        getClassDetailsCallback: '=', // why won't this work with & ?
         tree: '=',
         term: '=',
-        level: "=",
-        selectedNode: "="
+        level: '=',
+        selectedNode: '=',
+        isSelectedCallback: '='  // why won't this work with & ?
       },
-      templateUrl: "scripts/control-term/cedar-class-tree.directive.html",
+      templateUrl: 'scripts/control-term/cedar-class-tree.directive.html',
       replace: true,
       link: linker
     };

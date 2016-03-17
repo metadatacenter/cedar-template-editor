@@ -11,7 +11,7 @@ require.config({
     'app'                  : 'scripts/app',
     'cedar/template-editor': 'scripts',
 
-    'ckeditor' : 'bower_components/ng-ckeditor/libs/ckeditor/ckeditor'
+    'ckeditor': 'bower_components/ng-ckeditor/libs/ckeditor/ckeditor'
   },
   shim    : {
     'angular'                                                                        : {
@@ -30,10 +30,9 @@ require.config({
     'lib/angular-ui-select/dist/select'                                              : ['angular'],
     'lib/angular-ui-sortable/sortable'                                               : ['angular'],
 
-    'lib/ng-ckeditor/ng-ckeditor'           :
-      ['angular', 'ckeditor']
+    'lib/ng-ckeditor/ng-ckeditor': ['angular', 'ckeditor']
     ,
-    'ckeditor': {
+    'ckeditor'                   : {
       'exports': 'CKEDITOR'
     },
 
@@ -54,23 +53,29 @@ require.config({
   ],
 });
 
+// do not load the full app here.
+// maybe we will be redirected to Keycloak for authentication
 require([
       'angular',
-      'app',
-    ], function (angular, app) {
+    ], function (angular) {
       var $html = angular.element(document.getElementsByTagName('html')[0]);
       angular.element().ready(function () {
 
         function continueWithAngularApp() {
-          // bootstrap dummy app
-          var element = angular.element('<div></div>');
-          angular.bootstrap(element);
-          var $injector = element.injector();
-          var $http = $injector.get('$http');
+          require([
+            'angular',
+            'app',
+          ], function (angular, app) {
+            // bootstrap dummy app
+            var element = angular.element('<div></div>');
+            angular.bootstrap(element);
+            var $injector = element.injector();
+            var $http = $injector.get('$http');
 
-          // preload files, bootstrap CEDAR
-          window.cedarBootstrap = new CedarBootstrap($http);
-          window.cedarBootstrap.preload();
+            // preload files, bootstrap CEDAR
+            window.cedarBootstrap = new CedarBootstrap($http);
+            window.cedarBootstrap.preload();
+          });
         }
 
         function successInitUserHandler(authenticated) {

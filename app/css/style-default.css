@@ -10515,11 +10515,41 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
 .input-type-container .configuration-options .form-group {
   margin-bottom: 15px;
 }
+.std-button {
+  text-transform: uppercase;
+  padding: 12px 30px;
+  border: none;
+  -webkit-transition: all 0.3s 0.1s;
+          transition: all 0.3s 0.1s;
+  color: #ffffff;
+  background-color: #339933;
+  font-size: 14px;
+  letter-spacing: 0.03em;
+}
+.std-button:hover,
+.std-button:focus {
+  background-color: #338833;
+}
+.std-button:focus {
+  outline: none;
+  box-shadow: none;
+}
+.std-button-active {
+  background-color: #338833;
+}
+.create-value-set-widget-actions {
+  padding-left: 230px;
+}
+.create-value-actions {
+  padding-bottom: 20px;
+}
 .controlled-term-options {
   float: none;
   width: 100%;
 }
-.controlled-term-options .btn-two-toggle .btn {
+.controlled-term-options .btn-two-toggle .btn,
+.controlled-term-options .btn-create-class .btn,
+.controlled-term-options .btn-create-values .btn {
   text-transform: uppercase;
   padding: 12px 30px;
   border: none;
@@ -10531,10 +10561,16 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   letter-spacing: 0.03em;
 }
 .controlled-term-options .btn-two-toggle .btn:hover,
-.controlled-term-options .btn-two-toggle .btn:focus {
+.controlled-term-options .btn-create-class .btn:hover,
+.controlled-term-options .btn-create-values .btn:hover,
+.controlled-term-options .btn-two-toggle .btn:focus,
+.controlled-term-options .btn-create-class .btn:focus,
+.controlled-term-options .btn-create-values .btn:focus {
   background-color: #338833;
 }
-.controlled-term-options .btn-two-toggle .btn:focus {
+.controlled-term-options .btn-two-toggle .btn:focus,
+.controlled-term-options .btn-create-class .btn:focus,
+.controlled-term-options .btn-create-values .btn:focus {
   outline: none;
   box-shadow: none;
 }
@@ -10806,6 +10842,75 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
 }
 .controlled-term-options .added-item-list li .item.item-delete:before {
   background: #000000;
+}
+.center {
+  text-align: center;
+}
+div.dotted {
+  background-image: -webkit-linear-gradient(left, #339933 10%, rgba(255, 255, 255, 0) 0%);
+  background-image: linear-gradient(to right, #339933 10%, rgba(255, 255, 255, 0) 0%);
+  background-position: top;
+  background-size: 10px 2px;
+  background-repeat: repeat-x;
+}
+p.instructions {
+  text-align: center;
+  color: #999999;
+}
+.add-values-to-value-set {
+  padding-left: 20px;
+  padding-right: 20px;
+  margin-top: 20px;
+  margin-bottom: 10px;
+  background-color: #f4f4f7;
+}
+.add-values-to-value-set p.add-values-header {
+  text-transform: uppercase;
+  text-align: center;
+  font-weight: bold;
+  color: #339933;
+  padding-top: 10px;
+}
+.add-values-to-value-set .field-search {
+  width: 49%;
+}
+.add-values-to-value-set .field-browse {
+  width: 49%;
+}
+.add-ontology-class {
+  padding-left: 20px;
+}
+.add-ontology-class div.mapping-description {
+  padding-top: 20px;
+}
+.add-ontology-class div.mapping-tools {
+  padding-left: 165px;
+}
+.add-ontology-class div.map-existing-classes {
+  padding: 20px;
+  margin-bottom: 10px;
+  background-color: #f4f4f7;
+}
+.add-ontology-class div.map-existing-classes select.select-mapping-type {
+  width: 50%;
+  float: left;
+  padding-right: 20px;
+}
+.add-ontology-class div.map-existing-classes button.btn-create-mapping {
+  float: right;
+}
+.add-ontology-class p.mapping-header,
+.add-ontology-class p.add-values-header {
+  text-transform: uppercase;
+  text-align: center;
+  font-weight: bold;
+  color: #339933;
+}
+.add-ontology-class .field-search {
+  width: 49%;
+}
+.add-ontology-class .field-browse {
+  width: 49%;
 }
 .options-wrapper {
   width: 100%;
@@ -11323,7 +11428,6 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   line-height: 22px;
   /* default list item's `line-height` */
   height: 30px;
-  overflow: hidden;
   font-weight: bold;
   position: relative;
 }
@@ -11570,12 +11674,37 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   border-radius: 0;
   cursor: pointer;
 }
+.is-creating-class .field-create-class,
+.is-creating-value-set .field-create-class {
+  width: 100%;
+  -webkit-transition: width 1s ease-in-out;
+          transition: width 1s ease-in-out;
+}
+.is-creating-class .field-browse,
+.is-creating-value-set .field-browse,
+.is-creating-class .field-search,
+.is-creating-value-set .field-search {
+  display: none;
+}
+.is-creating-class .values-create-class,
+.is-creating-value-set .values-create-class {
+  width: 100%;
+  -webkit-transition: width 1s ease-in-out;
+          transition: width 1s ease-in-out;
+}
+.is-creating-class .values-browse,
+.is-creating-value-set .values-browse,
+.is-creating-class .values-search,
+.is-creating-value-set .values-search {
+  display: none;
+}
 .is-searching .field-search {
   width: 100%;
   -webkit-transition: width 1s ease-in-out;
           transition: width 1s ease-in-out;
 }
-.is-searching .field-browse {
+.is-searching .field-browse,
+.is-searching .field-create-class {
   display: none;
 }
 .is-searching .values-search {
@@ -11583,23 +11712,25 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   -webkit-transition: width 1s ease-in-out;
           transition: width 1s ease-in-out;
 }
-.is-searching .values-browse {
+.is-searching .values-browse,
+.is-searching .values-create-class {
   display: none;
 }
 .field-search {
   display: block;
   float: left;
-  width: 49%;
+  width: 33%;
 }
 .values-search {
   display: block;
   float: left;
-  width: 49%;
+  width: 33%;
 }
 .field-browse {
   display: block;
-  float: right;
-  width: 49%;
+  float: left;
+  padding-left: 20px;
+  width: 33%;
   overflow: hidden;
 }
 .field-browse a {
@@ -11609,8 +11740,9 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
 }
 .values-browse {
   display: block;
-  float: right;
-  width: 49%;
+  float: left;
+  padding-left: 20px;
+  width: 33%;
   overflow: hidden;
 }
 .values-browse a {
@@ -11618,7 +11750,16 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   text-align: left;
   background: #FFF;
 }
-.is-browsing .field-search {
+.field-create-class,
+.values-create-class {
+  display: block;
+  float: left;
+  padding-left: 20px;
+  width: 33%;
+  overflow: hidden;
+}
+.is-browsing .field-search,
+.is-browsing .field-create-class {
   display: none;
 }
 .is-browsing .field-browse {
@@ -11626,7 +11767,8 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   -webkit-transition: width 1s ease-in-out;
           transition: width 1s ease-in-out;
 }
-.is-browsing .values-search {
+.is-browsing .values-search,
+.is-browsing .values-create-class {
   display: none;
 }
 .is-browsing .values-browse {
@@ -12050,6 +12192,19 @@ body .template-header .controlled-terms-modal {
 }
 .ibl {
   display: inline-block;
+}
+table.apiKey {
+  border-collapse: collapse;
+  border: 1px solid #eeeeee;
+}
+table.apiKey tr {
+  border-bottom: 1px solid #eeeeee;
+}
+table.apiKey td {
+  text-align: left;
+  vertical-align: top;
+  padding: 5px;
+  margin: 0px;
 }
 @font-face {
   font-family: "project-cedar";

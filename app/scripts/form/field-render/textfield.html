@@ -34,7 +34,7 @@
         <i class="cedar-svg-warning"></i>
       </div><!-- /.input-indicator-icons -->
     </div>
-    <div class="more-input-wrapper" ng-include="'scripts/form/partials/more-input-buttons.partial.html'" ng-show="!field.maxItems || field.maxItems > 1"></div>
+    <div class="more-input-wrapper" ng-include="'scripts/form/partials/more-input-buttons.partial.html'" ng-show="!field.maxItems || field.maxItems > 1 || (field.maxItems ==1 && field.minItems ==0)"></div>
   </div><!-- /.form-group -->
 
   <!--<div ng-if="$root.isArray(model)" class="form-group floating-label-wrapper" >-->
@@ -48,14 +48,44 @@
     <div class="more-input-wrapper" ng-include="'scripts/form/partials/zero-input-buttons.partial.html'" ng-show="$root.isRuntime() && (!field.maxItems || field.maxItems > 1 || (!field.minItems && field.maxItems ==1))"></div>
   </div>
 
-  <div ng-if="$root.isArray(model) && model.length == 0" class="form-group floating-label-wrapper" >
-    <div class="extra-label-content"  ng-show="!$root.isRuntime() && (!field.maxItems || field.maxItems > 1 || (!field.minItems && field.maxItems ==1))">{{$root.propertiesOf(field)._ui.title}}</div>
+  <div ng-if="$root.isArray(model) && model.length == 0 && !$root.isRuntime()" class="form-group floating-label-wrapper" >
+    <div class="extra-label-content"  ng-show="!$root.isRuntime() && (!field.maxItems || field.maxItems > 1 || (!field.minItems && field.maxItems ==1))" ng-if="preview">
+      {{$root.propertiesOf(field)._ui.title}} zzz
+    </div>
+
+    <div ng-if="!$root.hasValueConstraint($root.propertiesOf(field)._valueConstraints)" class="has-no-constraint">
+      <input type="text"
+          class="form-control"
+          ng-class="{'required': $root.propertiesOf(field)._valueConstraints.requiredValue}"
+          id="textfield1"
+          placeholder="{{$root.propertiesOf(field)._ui.title}}"
+          aria-label="{{$root.propertiesOf(field)._ui.description}}"
+          ng-model="valueElement._value"
+          ng-disabled="!$root.isRuntime() || preview"
+          with-floating-label="" />
+      <div class="input-indicator-icons">
+        <i class="cedar-svg-help-circle" data-container="body" data-toggle="popover" data-placement="left" data-content="{{$root.propertiesOf(field)._ui.description}}"></i>
+        <i class="cedar-svg-check-circle"></i>
+        <i class="cedar-svg-warning"></i>
+      </div><!-- /.input-indicator-icons -->
+    </div>
+    <div ng-if="$root.hasValueConstraint($root.propertiesOf(field)._valueConstraints)" class="has-constraint autocomplete-label-wrapper" ng-class="{'has-selected': modelValue._value.label}">
+      <ui-select ng-model="modelValue[index]" theme="bootstrap" close-on-select="true" ng-disabled="!$root.isRuntime() || preview" aria-label="{{$root.propertiesOf(field)._ui.description}}">
+        <ui-select-match placeholder="">{{$select.selected.label}}</ui-select-match>
+        <ui-select-choices ui-disable-choice="option.label == 'No Results...'" refresh="$root.updateFieldAutocomplete(field, $select.search)" refresh-delay="200" repeat="option in $root.autocompleteResultsCache[field['@id']]['results'] | propsFilter: {label: $select.search}">
+          <div ng-bind-html="option.label | highlight: $select.search"></div>
+        </ui-select-choices>
+      </ui-select>
+      <div class="floating-label">{{$root.propertiesOf(field)._ui.title}} title</div>
+      <div class="input-indicator-icons">
+        <i class="cedar-svg-help-circle" data-container="body" data-toggle="popover" data-placement="left" data-content="{{$root.propertiesOf(field)._ui.description}}"></i>
+        <i class="cedar-svg-check-circle"></i>
+        <i class="cedar-svg-warning"></i>
+      </div><!-- /.input-indicator-icons -->
+    </div>
   </div>
 
   <div ng-if="!$root.isArray(model)" class="form-group floating-label-wrapper">
-    <div class="extra-label-context" ng-class="{'required': $root.propertiesOf(field)._valueConstraints.requiredValue}" ng-if="preview">
-      {{$root.propertiesOf(field)._ui.title}}&nbsp;
-    </div>
     <div ng-if="!$root.hasValueConstraint($root.propertiesOf(field)._valueConstraints)" class="has-no-constraint">
       <input type="text"
              class="form-control"
@@ -65,7 +95,8 @@
              aria-label="{{$root.propertiesOf(field)._ui.description}}"
              ng-model="model._value"
              ng-disabled="!$root.isRuntime() || preview"
-             with-floating-label="" />
+             with-floating-label="">
+      </input>
       <div class="input-indicator-icons">
         <i class="cedar-svg-help-circle" data-container="body" data-toggle="popover" data-placement="left" data-content="{{$root.propertiesOf(field)._ui.description}}"></i>
         <i class="cedar-svg-check-circle"></i>
@@ -82,7 +113,7 @@
           <div ng-bind-html="option.label | highlight: $select.search"></div>
         </ui-select-choices>
       </ui-select>
-      <div class="floating-label">{{$root.propertiesOf(field)._ui.title}}</div>
+      <div class="floating-label">{{$root.propertiesOf(field)._ui.title}} xtitle</div>
       <div class="input-indicator-icons">
         <i class="cedar-svg-help-circle" data-container="body" data-toggle="popover" data-placement="left" data-content="{{$root.propertiesOf(field)._ui.description}}"></i>
         <i class="cedar-svg-check-circle"></i>

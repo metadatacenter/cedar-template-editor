@@ -3,11 +3,11 @@
 		<section id="metadata-templates" class="dashboard-elements" ng-if="$root.applicationRole == 'creator'">
 			<div class="col-sm-3">
 				<h2 class="section-title" translate>PAGES.DASHBOARDLIST-TEMPLATE.sectionTitle</h2>
-				<a href="#/templates/create" class="btn btn-create-new"><span translate>GENERIC.CreateNew</span> <i class="cedar-svg-plus"></i></a>
+				<a href="/templates/create" class="btn btn-create-new"><span translate>GENERIC.CreateNew</span> <i class="cedar-svg-plus"></i></a>
 			</div>
 			<div class="col-sm-9">
 				<div class="dash-header">
-					<a class="see-all" href="#/templates/list" translate>GENERIC.SeeAll</a>
+					<a class="see-all" href="/templates/list" translate>GENERIC.SeeAll</a>
 				</div>
 				<div class="margin-reset-row">
 					<div class="template-item" ng-repeat="template in defaultTemplates" cedar-resize-square="true" style="height:213px">
@@ -26,11 +26,11 @@
 		<section id="template-elements" class="dashboard-elements" ng-if="$root.applicationRole == 'creator'">
 			<div class="col-sm-3">
 				<h2 class="section-title" translate>PAGES.DASHBOARDLIST-ELEMENT.sectionTitle</h2>
-				<a href="#/elements/create" class="btn btn-create-new"><span translate>GENERIC.CreateNew</span> <i class="cedar-svg-plus"></i></a>
+				<a href="/elements/create" class="btn btn-create-new"><span translate>GENERIC.CreateNew</span> <i class="cedar-svg-plus"></i></a>
 			</div>
 			<div class="col-sm-9">
 				<div class="dash-header">
-					<a class="see-all" href="#/elements/list" translate>GENERIC.SeeAll</a>
+					<a class="see-all" href="/elements/list" translate>GENERIC.SeeAll</a>
 				</div>
 				<div class="margin-reset-row">
 					<div class="template-item" ng-repeat="element in defaultElements" cedar-resize-square="true" style="height:213px">
@@ -50,11 +50,11 @@
 			<div class="col-sm-3">
 				<h2 class="section-title" translate>PAGES.DASHBOARDLIST-INSTANCE.sectionTitle</h2>
 				<!-- <p class="instructions">Choose a template to fill out.</p> -->
-				<a href="#/instances/create" class="btn btn-create-new"><span translate>GENERIC.FillOutTemplate</span></a>
+				<a href="/instances/create" class="btn btn-create-new"><span translate>GENERIC.FillOutTemplate</span></a>
 			</div>
 			<div class="col-sm-9">
 				<div class="dash-header">
-					<a class="see-all" href="#/instances/list" translate>GENERIC.SeeAll</a>
+					<a class="see-all" href="/instances/list" translate>GENERIC.SeeAll</a>
 				</div>
 				<div class="margin-reset-row">
 					<div class="template-item" ng-repeat="instance in defaultInstances" cedar-resize-square="true" style="height:213px">

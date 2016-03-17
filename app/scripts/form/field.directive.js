@@ -403,7 +403,7 @@ define([
             $scope.field.maxItems = 1;
           }
 
-          if ($scope.field.maxItems == 1) {
+          if ($scope.field.maxItems == 1  && $scope.field.minItems == 1) {
             if ($scope.field.items) {
               $rootScope.uncardinalizeField($scope.field);
             }

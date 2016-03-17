@@ -8,23 +8,16 @@ define([
   angular.module('cedar.templateEditor.core.run', [])
       .run(cedarTemplateEditorCoreRun);
 
-  //cedarTemplateEditorCoreRun.$inject = ['$rootScope', 'controlTermService', '$location', '$timeout', '$window',
-  //                                      '$translate', 'DataTemplateService', 'DataManipulationService',
-  //                                      'FieldTypeService', 'UrlService', 'HeaderService', 'UIUtilService',
-  //                                      'UserService', 'UserDataService', 'CONST'];
   cedarTemplateEditorCoreRun.$inject = ['$rootScope', 'controlTermService', '$location', '$timeout', '$window', '$sce',
                                         '$translate', 'DataTemplateService', 'DataManipulationService',
                                         'FieldTypeService', 'UrlService', 'HeaderService', 'UIUtilService',
-                                        'UserService', 'UserDataService', 'RichTextConfigService', 'CONST'];
+                                        'UserService', 'UserDataService', 'RichTextConfigService', 'CONST',
+                                        'controlTermDataService', 'provisionalClassService', 'Cedar'];
 
-  //function cedarTemplateEditorCoreRun($rootScope, controlTermService, $location, $timeout, $window,$sce, $translate,
-  //                                    DataTemplateService, DataManipulationService, FieldTypeService, UrlService,
-  //                                    HeaderService, UIUtilService, UserService, UserDataService,  CONST) {
   function cedarTemplateEditorCoreRun($rootScope, controlTermService, $location, $timeout, $window, $sce, $translate,
                                       DataTemplateService, DataManipulationService, FieldTypeService, UrlService,
                                       HeaderService, UIUtilService, UserService, UserDataService, RichTextConfigService,
-                                      CONST) {
-
+                                      CONST, controlTermDataService, provisionalClassService, Cedar) {
 
     $rootScope.isArray = angular.isArray;
 
@@ -150,6 +143,7 @@ define([
     };
 
     $rootScope.cardinalizeField = function (field) {
+      console.debug('cardinalizeField');
       if (field.minItems == 1 && field.maxItems == 1 || !field.minItems && !field.maxItems) {
         return false;
       }
@@ -215,6 +209,7 @@ define([
 
     $rootScope.isCardinalElement = function (element) {
       //return element.minItems && element.maxItems != 1;
+      console.debug('isCardinalElement' + element.maxItems + ' '  + element.maxItems);
       return !element.maxItems || element.minItems < element.maxItems;
     };
 
@@ -494,7 +489,7 @@ define([
           if (term == '*') {
             $rootScope.removeAutocompleteResultsForSource(field_id, valueSet.uri);
           }
-          controlTermService.autocompleteValueSetClasses(term, valueSet.uri).then(function (childResponse) {
+          controlTermDataService.autocompleteValueSetClasses(term, valueSet.uri).then(function (childResponse) {
             $rootScope.processAutocompleteClassResults(field_id, 'Value Set Class', valueSet.uri, childResponse);
           });
         });
@@ -505,7 +500,7 @@ define([
           if (term == '*') {
             $rootScope.removeAutocompleteResultsForSource(field_id, ontology.uri);
           }
-          controlTermService.autocompleteOntology(term, ontology.acronym).then(function (childResponse) {
+          controlTermDataService.autocompleteOntology(term, ontology.acronym).then(function (childResponse) {
             $rootScope.processAutocompleteClassResults(field_id, 'Ontology Class', ontology.uri, childResponse);
           });
         });
@@ -516,7 +511,7 @@ define([
           if (term == '*') {
             $rootScope.removeAutocompleteResultsForSource(field_id, branch.uri);
           }
-          controlTermService.autocompleteOntologySubtree(term, branch.acronym, branch.uri, branch.maxDepth).then(
+          controlTermDataService.autocompleteOntologySubtree(term, branch.acronym, branch.uri, branch.maxDepth).then(
               function (childResponse) {
                 $rootScope.processAutocompleteClassResults(field_id, 'Ontology Class', branch.uri, childResponse);
               }
@@ -582,7 +577,7 @@ define([
     };
 
     $rootScope.isOntology = function (obj) {
-      return obj["@type"] && obj["@type"].indexOf("Ontology") > 0;
+      return obj && obj["@type"] && obj["@type"].indexOf("Ontology") > 0;
     };
 
     $rootScope.lengthOfValueConstraint = function (valueConstraint) {
@@ -596,9 +591,13 @@ define([
       return $sce.trustAsHtml($rootScope.propertiesOf(field)._content);
     };
 
+    Cedar.init();
+    $rootScope.cedar = Cedar;
     DataTemplateService.init();
     FieldTypeService.init();
     UrlService.init();
+    provisionalClassService.init();
+    controlTermDataService.init();
     DataManipulationService.init();
     HeaderService.init();
 

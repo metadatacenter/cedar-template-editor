@@ -15,7 +15,7 @@ define([
   angular.module('cedar.templateEditor.form', [
     'cedar.templateEditor.controlTerm',
     'cedar.templateEditor.form.addedFieldItemDirective',
-    'cedar.templateEditor.form.addedValueItemDirective',
+    //'cedar.templateEditor.form.addedValueItemDirective',
     'cedar.templateEditor.form.dateTimePickerDirective',
     'cedar.templateEditor.form.fieldDirective',
     'cedar.templateEditor.form.formDirective',

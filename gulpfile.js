@@ -21,11 +21,24 @@ var gulp = require('gulp'),
         fs = require('fs')
     );
 
-// Creating error handling exception using gulp-util
+/**
+ * Create error handling exception using gulp-util.
+ */
 var onError = function (err) {
   gutil.beep();
   console.log(err);
 };
+
+// Environment name for config
+var environmentName = null;
+
+/**
+ * Helper function to parse config file.
+ */
+function getConfig() {
+  var filename = '../cedar-conf/configuration-files/cedar-template-editor/gulp/' + environmentName + '.conf.json';
+  return JSON.parse(fs.readFileSync(filename));
+}
 
 // Lint task
 gulp.task('lint', function () {
@@ -74,23 +87,7 @@ gulp.task('server', function () {
     root      : 'app',
     port      : 4200,
     livereload: true,
-    //middleware: function(connect, opt) {
-    //	console.log(opt);
-    //	opt.route = '/proxy';
-    //	var proxy = new Proxy(opt);
-    //	return [proxy, historyApiFallback({
-    //		// See: https://github.com/bripkens/connect-history-api-fallback
-    //		verbose: true,
-    //		rewrites: [
-    //			{
-    //				from: /^.*\/elements\/edit\/.*$/,
-    //				to: function(context) {
-    //					return '/';
-    //				}
-    //			}
-    //		]
-    //	})];
-    //}
+    fallback  : 'app/index.html'
   })
 });
 
@@ -98,17 +95,19 @@ gulp.task('server-nolivereload', function () {
   connect.server({
     root      : 'app',
     port      : 4200,
-    livereload: false
+    livereload: false,
+    fallback  : 'app/index.html'
   })
 });
 
-gulp.task('cache-ontologies', function () {
-  var apiKey = 'apikey token=3bdf57dc-4d53-4ca1-b6c1-a1f1fe651ea9';
+gulp.task('cache-ontologies', ['set-environment-default'], function () {
+  var config = getConfig();
+  var apiKey = config.bioportalAPIKey;
   var options = {
     headers: {
-      'Authorization': apiKey
+      'Authorization': 'apikey token=' + apiKey
     }
-  }
+  };
   var ontologies = [];
 
   var response = request('GET', 'http://data.bioontology.org/ontologies', options);
@@ -156,13 +155,14 @@ gulp.task('cache-ontologies', function () {
 
 });
 
-gulp.task('cache-value-sets', function () {
-  var apiKey = 'apikey token=3bdf57dc-4d53-4ca1-b6c1-a1f1fe651ea9';
+gulp.task('cache-value-sets', ['set-environment-default'], function () {
+  var config = getConfig();
+  var apiKey = config.bioportalAPIKey;
   var options = {
     headers: {
-      'Authorization': apiKey
+      'Authorization': 'apikey token=' + apiKey
     }
-  }
+  };
   var valueSets = [];
 
   var uri = 'http://data.bioontology.org/ontologies/NLMVS/classes/roots';
@@ -197,17 +197,24 @@ gulp.task('html', function () {
       .pipe(connect.reload());
 });
 
-gulp.task('dev-replace', function () {
+// Task to replace service URLs
+gulp.task('replace-url', function () {
   gulp.src(['app/config/src/url-service.conf.json'])
-      .pipe(replace('templateServerUrl', 'https://template.metadatacenter.orgx'))
-      .pipe(replace('userServerUrl', 'https://user.metadatacenter.orgx'))
+      .pipe(replace('templateServerUrl', 'https://template.' + environmentName))
+      .pipe(replace('userServerUrl', 'https://user.' + environmentName))
+      .pipe(replace('terminologyServerUrl', 'https://terminology.' + environmentName))
       .pipe(gulp.dest('app/config/'));
 });
 
-gulp.task('dev02-replace', function () {
-  gulp.src(['app/config/src/url-service.conf.json'])
-      .pipe(replace('templateServerUrl', 'https://template.metadatacenter.net'))
-      .pipe(replace('userServerUrl', 'https://user.metadatacenter.net'))
+// Task to replace bioportal api keys
+gulp.task('replace-apikey', function () {
+  var config = getConfig();
+  var apiKey = config.bioportalAPIKey;
+  gulp.src(['app/config/src/control-term-data-service.conf.json'])
+      .pipe(replace('bioportalAPIKey', apiKey))
+      .pipe(gulp.dest('app/config/'));
+  gulp.src(['app/config/src/provisional-class-service.conf.json'])
+      .pipe(replace('bioportalAPIKey', apiKey))
       .pipe(gulp.dest('app/config/'));
 });
 
@@ -218,12 +225,20 @@ gulp.task('watch', function () {
   gulp.watch('app/views/*.html', ['html']);
 });
 
-// Default task
-gulp.task('default', ['server', 'lint', 'less', 'copy:resources', 'dev-replace', 'watch']);
-// Build task
-//gulp.task('build', ['minifyCSS', 'htmlreplace', 'angular']);
-gulp.task('dev02', ['server-nolivereload', 'lint', 'less', 'copy:resources', 'dev02-replace']);
+// Tasks to set global environment name
+gulp.task('set-environment-default', function () {
+  environmentName = 'metadatacenter.orgx';
+});
 
+gulp.task('set-environment-dev01', function () {
+  environmentName = 'staging.metadatacenter.net';
+});
+
+gulp.task('set-environment-dev02', function () {
+  environmentName = 'metadatacenter.net';
+});
+
+// Tasks for tests
 gulp.task('test', function (done) {
   new Server({
     configFile: __dirname + '/karma.conf.js',
@@ -240,3 +255,14 @@ gulp.task('e2e', function () {
         throw e
       });
 });
+
+
+// Entry points
+gulp.task('default',
+    ['set-environment-default', 'server', 'lint', 'less', 'copy:resources', 'replace-apikey', 'replace-url', 'watch']);
+gulp.task('dev01',
+    ['set-environment-dev01', 'server-nolivereload', 'lint', 'less', 'copy:resources', 'replace-apikey',
+     'replace-url']);
+gulp.task('dev02',
+    ['set-environment-dev02', 'server-nolivereload', 'lint', 'less', 'copy:resources', 'replace-apikey',
+     'replace-url']);

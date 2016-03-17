@@ -10,6 +10,8 @@
     </div>
   </button>
 
+
+
   <button type="button" ng-disabled="!$root.isRuntime()" class="remove" ng-click="removeInput($parent.$index)" ng-show="$parent.field.minItems && ($parent.field.maxItems || $parent.model.length > $parent.field.minItems) && $parent.$index >= $parent.field.minItems">
     <i class="fa fa-times"></i>
   </button>

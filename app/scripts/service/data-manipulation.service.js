@@ -75,11 +75,14 @@ define([
     };
 
     service.cardinalizeField = function (field) {
+      console.debug('service.cardinalizeField');
+      console.debug(field);
       if (field.minItems == 1 && field.maxItems == 1 || !field.minItems && !field.maxItems) {
         return false;
       }
       if (!field.maxItems ||                  // special 'N' case
           (field.maxItems && field.maxItems > 1) || // has maxItems of more than 1
+          (field.maxItems && field.maxItems == 1 && field.minItems == 0) || // has maxItems of more than 1 and min 0
           (field.minItems && field.minItems > 1)) { // has minItems of more than 1
         field.items = {
           'type'                : field.type,
@@ -107,8 +110,11 @@ define([
     };
 
     service.isCardinalElement = function (element) {
+      var result = (element.maxItems != 1 || (element.minItems == 0 && element.maxItems == 1));
+      console.debug("service.isCardinalElement" + result);
+      console.debug(element);
       //return element.minItems && element.maxItems != 1;
-      return element.maxItems != 1;
+      return result;
     };
 
     // If Max Items is N, its value will be 0, then need to remove it from schema
@@ -116,16 +122,16 @@ define([
     service.removeUnnecessaryMaxItems = function (properties) {
       angular.forEach(properties, function (value, key) {
         if (!DataUtilService.isSpecialKey(key)) {
-          if (!value.maxItems) {
-            delete value.maxItems;
-          }
-          if (value.minItems &&
-              value.minItems == 1 &&
-              value.maxItems &&
-              value.maxItems == 1) {
-            delete value.minItems;
-            delete value.maxItems;
-          }
+          //if (!value.maxItems) {
+          //  delete value.maxItems;
+          //}
+          //if (value.minItems &&
+          //    value.minItems == 1 &&
+          //    value.maxItems &&
+          //    value.maxItems == 1) {
+          //  delete value.minItems;
+          //  delete value.maxItems;
+          //}
         }
       });
     };
@@ -173,6 +179,7 @@ define([
     }
 
     service.elementIsMultiInstance = function (element) {
+      console.debug("service.elementIsMultiInstance" + (element.hasOwnProperty('minItems') && !angular.isUndefined(element.minItems)));
       return element.hasOwnProperty('minItems') && !angular.isUndefined(element.minItems);
     };
 

@@ -1,23 +1,28 @@
 'use strict';
 
 define([
-  'angular'
+  'angular',
+  'cedar/template-editor/control-term/control-term.directive.controller'
 ], function(angular) {
-  angular.module('cedar.templateEditor.controlTerm.cedarControlTermDirective', [])
-    .directive('cedarControlTerm', cedarControlTermDirective);
+  angular.module('cedar.templateEditor.controlTerm.cedarControlTermDirective', [
+    'cedar.templateEditor.controlTerm.controlTermDirectiveController',
+  ]).directive('cedarControlTerm', cedarControlTermDirective);
 
   cedarControlTermDirective.$inject = ['$timeout'];
   
   function cedarControlTermDirective($timeout) {
+
     var directive = {
-      restrict: 'A',
-      replace: true,
-      scope: {
+      bindToController: {
         field: '=',
         options: '='
       },
+      controller: 'controlTermDirectiveController',
+      controllerAs: 'ctdc',
+      restrict: 'A',
+      replace: true,
+      scope: {},
       templateUrl: 'scripts/control-term/cedar-control-term.directive.html',
-      controller: 'ControlTermController'
     };
 
     return directive;

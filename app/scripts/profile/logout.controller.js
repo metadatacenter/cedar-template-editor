@@ -10,7 +10,7 @@ define([
 
   function LogoutController(UserService) {
     var redirectUri = location.href;
-    var hashPos = redirectUri.indexOf("#");
+    var hashPos = redirectUri.indexOf("/logout");
     if (hashPos >= 0) {
       redirectUri = redirectUri.substr(0, hashPos);
     }

@@ -6,10 +6,11 @@ define([
   angular.module('cedar.templateEditor.service.userDataService', [])
       .service('UserDataService', UserDataService);
 
-  UserDataService.$inject = ['$rootScope', 'UrlService', 'HttpBuilderService', 'AuthorizedBackendService',
-                             'UIMessageService'];
+  UserDataService.$inject = ['UrlService', 'HttpBuilderService', 'AuthorizedBackendService',
+                             'UIMessageService', 'Cedar'];
 
-  function UserDataService($rootScope, UrlService, HttpBuilderService, AuthorizedBackendService, UIMessageService) {
+  function UserDataService(UrlService, HttpBuilderService, AuthorizedBackendService, UIMessageService,
+                           Cedar) {
 
     var config = null;
 
@@ -27,11 +28,11 @@ define([
 
     service.readUserDetails = function () {
       AuthorizedBackendService.doCall(
-          service.getUser($rootScope.currentUser.id),
+          service.getUser(Cedar.getUserId()),
           function (response) {
             //console.log("USER was read:");
             //console.log(response);
-            $rootScope.currentUser.apiKeys = response.data.apiKeys;
+            Cedar.setCedarProfile(response.data);
           },
           function (err) {
             if (err.status == 404) {
@@ -45,17 +46,15 @@ define([
 
     service.createDefaultUserProfile = function () {
       AuthorizedBackendService.doCall(
-          service.createUser($rootScope.currentUser.id),
+          service.createUser(Cedar.getUserId()),
           function (response) {
-            //console.log("USER was created:");
-            //console.log(response);
-            $rootScope.currentUser.apiKeys = response.data.apiKeys;
+            Cedar.setCedarProfile(response.data);
           },
           function (err) {
             UIMessageService.showBackendError('SERVER.USER.create.error', err);
           }
       );
-    }
+    };
 
     return service;
   };

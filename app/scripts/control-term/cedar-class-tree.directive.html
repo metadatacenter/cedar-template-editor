@@ -1,3 +1,3 @@
 <ul class="tree tree-view list-unstyled" ng-class="['level-' + (level || 1)]">
-  <cedar-child-tree ng-repeat="child in tree" subtree="child" term="term" level="level || 1"></cedar-child-tree>
+  <cedar-child-tree ng-repeat="child in tree" subtree="child" selected-class-details="selectedClassDetails" level="level || 1" get-class-details-callback="getClassDetailsCallback" is-selected-callback="isSelectedCallback"></cedar-child-tree>
 </ul>
