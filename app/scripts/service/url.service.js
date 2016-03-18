@@ -1,8 +1,9 @@
 'use strict';
 
 define([
-  'angular'
-], function (angular) {
+  'angular',
+  'json!config/url-service.conf.json'
+], function (angular, config) {
   angular.module('cedar.templateEditor.service.urlService', [])
       .service('UrlService', UrlService);
 
@@ -10,7 +11,6 @@ define([
 
   function UrlService() {
 
-    var config = null;
     var apiService = null;
     var userService = null;
     var terminologyService = null;
@@ -21,7 +21,6 @@ define([
     };
 
     service.init = function () {
-      config = cedarBootstrap.getBaseConfig(this.serviceId);
       apiService = config.cedarRestAPI;
       userService = config.userRestAPI;
       terminologyService = config.terminologyRestAPI;

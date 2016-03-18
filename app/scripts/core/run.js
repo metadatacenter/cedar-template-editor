@@ -6,7 +6,7 @@ define([
   'angular'
 ], function (angular) {
   angular.module('cedar.templateEditor.core.run', [])
-      .run(cedarTemplateEditorCoreRun);
+    .run(cedarTemplateEditorCoreRun);
 
   cedarTemplateEditorCoreRun.$inject = ['$rootScope', 'controlTermService', '$location', '$timeout', '$window', '$sce',
                                         '$translate', 'DataTemplateService', 'DataManipulationService',
@@ -597,7 +597,6 @@ define([
     provisionalClassService.init();
     controlTermDataService.init();
     DataManipulationService.init();
-    HeaderService.init();
     UISettingsService.init();
 
     UserService.injectUserHandler($window.bootstrapUserHandler);

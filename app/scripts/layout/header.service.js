@@ -1,8 +1,9 @@
 'use strict';
 
 define([
-  'angular'
-], function(angular) {
+  'angular',
+  'json!config/header-service.conf.json'
+], function(angular, config) {
   angular.module('cedar.templateEditor.layout.headerService', [])
     .service('HeaderService', HeaderService);
 
@@ -10,8 +11,6 @@ define([
 
   function HeaderService($rootScope) {
     
-    var config = null;
-
     var service = {
       serviceId: "HeaderService",
 
@@ -21,11 +20,7 @@ define([
         currentObjectScope: null
       }
     };
-    
-    service.init = function () {
-      config = cedarBootstrap.getBaseConfig(this.serviceId);
-    };
-    
+        
     service.configure = function (pageId, applicationMode) {
       this.miniHeaderEnabled = config[pageId].enabled;
       this.miniHeaderScrollLimit = config[pageId].scrollLimit;
