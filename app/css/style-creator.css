@@ -10534,6 +10534,9 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   outline: none;
   box-shadow: none;
 }
+.std-button-active {
+  background-color: #2f7dab;
+}
 .create-value-set-widget-actions {
   padding-left: 230px;
 }
