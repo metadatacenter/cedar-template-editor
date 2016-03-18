@@ -12172,6 +12172,19 @@ body .template-header .controlled-terms-modal {
 .ibl {
   display: inline-block;
 }
+table.apiKey {
+  border-collapse: collapse;
+  border: 1px solid #eeeeee;
+}
+table.apiKey tr {
+  border-bottom: 1px solid #eeeeee;
+}
+table.apiKey td {
+  text-align: left;
+  vertical-align: top;
+  padding: 5px;
+  margin: 0px;
+}
 @font-face {
   font-family: "project-cedar";
   src: url("../media/fonts/project-cedar.eot");

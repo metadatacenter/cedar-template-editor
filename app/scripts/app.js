@@ -45,9 +45,12 @@ define([
   'cedar/template-editor/profile/profile.module',
 
   // classic javascript code, KeyCloak related
-  'cedar/template-editor/keycloak/keycloak',
-  'cedar/template-editor/handlers/KeycloakUserHandler',
-  'cedar/template-editor/handlers/NoauthUserHandler'
+  //'cedar/template-editor/keycloak/keycloak',
+  //'cedar/template-editor/handlers/KeycloakUserHandler',
+  //'cedar/template-editor/handlers/NoauthUserHandler',
+
+  // classic javascript, app data
+  'cedar/template-editor/classic/app-data'
 ], function(angular) {
   return angular.module('cedar.templateEditor', [
     'ui.bootstrap',
@@ -67,6 +70,6 @@ define([
     'cedar.templateEditor.template',
     'cedar.templateEditor.templateElement',
     'cedar.templateEditor.templateInstance',
-    'cedar.templateEditor.profile',
+    'cedar.templateEditor.profile'
   ]);
 });
