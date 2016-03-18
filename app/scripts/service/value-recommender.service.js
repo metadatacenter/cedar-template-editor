@@ -4,12 +4,12 @@ define(['angular'], function (angular) {
   angular.module('cedar.templateEditor.service.valueRecommenderService', [])
       .service('ValueRecommenderService', ValueRecommenderService);
 
-  ValueRecommenderService.$inject = ['$rootScope', '$http', '$q', 'UrlService'];
+  ValueRecommenderService.$inject = ['$rootScope', '$http', 'DataManipulationService', '$translate', 'UrlService'];
 
-  function ValueRecommenderService($rootScope, $http, $q, UrlService) {
+  function ValueRecommenderService($rootScope, $http, DataManipulationService, $translate, UrlService) {
 
-    var base = 'https://valuerecommender.metadatacenter.orgx';
-    //var config = null;
+
+    var base;
     var http_default_config = {};
 
     var isValueRecommendationEnabled = true;
@@ -24,7 +24,7 @@ define(['angular'], function (angular) {
      * Initialize service.
      */
     service.init = function () {
-      //config = cedarBootstrap.getBaseConfig(this.serviceId);
+      base = UrlService.valueRecommender();
       http_default_config = {
           'headers': {
             'Content-Type': 'application/json'
@@ -36,6 +36,7 @@ define(['angular'], function (angular) {
       if (angular.isUndefined(populatedFields)) {
         populatedFields = [];
       }
+      return service;
     }
 
     /**
@@ -60,7 +61,7 @@ define(['angular'], function (angular) {
     service.updatePopulatedFields = function(field, value) {
       var fieldId = field['@id'];
       if (value) {
-        var fieldName = $rootScope.propertiesOf(field)._ui.title;
+        var fieldName = DataManipulationService.getFieldName($rootScope.propertiesOf(field)._ui.title);
         populatedFields[fieldId] = {
           "name" : fieldName + '._value',
           "value": value
@@ -88,49 +89,40 @@ define(['angular'], function (angular) {
     }
 
     service.updateValueRecommendationResults = function (field) {
+      console.log(field);
       var fieldId = field['@id'];
-      var fieldName = $rootScope.propertiesOf(field)._ui.title;
+      var fieldName = DataManipulationService.getFieldName($rootScope.propertiesOf(field)._ui.title);
       service.getRecommendation(fieldName + "._value", service.getRelevantPopulatedFields(fieldId)).then(function (recommendation) {
+        if (recommendation.recommendedValues.length == 0) {
+          recommendation.recommendedValues.push({'value' : $translate.instant('VALUERECOMMENDER.noResults'), 'score' : undefined})
+        }
         valueRecommendationResults[fieldId] = recommendation.recommendedValues;
       });
 
     }
 
-    /** Call to Value Recommender Service **/
+    // Invoke the Value Recommender service
     service.getRecommendation = function (targetFieldName, populatedFields) {
       var inputData = {};
-      var recommendation;
       if (populatedFields.length > 0) {
         inputData['populatedFields'] = populatedFields;
       }
       inputData['targetField'] = {'name' : targetFieldName};
-
+      console.log("Input Data: ");
+      console.log(inputData);
       return $http.post(base + '/recommend', inputData, http_default_config).then(function (response) {
         return response.data;
       }).catch(function (err) {
         return err;
       });
-
-      //console.log('Call to getRecommendation - Query: ' + fieldName);
-      //var example =
-      //{
-      //  "fieldName"        : "platform._value",
-      //  "recommendedValues": [
-      //    {
-      //      "value": targetFieldName + "1",
-      //      "score": 38
-      //    },
-      //    {
-      //      "value": targetFieldName + "2",
-      //      "score": 32
-      //    }, {
-      //      "value": targetFieldName + "3",
-      //      "score": 12
-      //    }
-      //  ]
-      //}
-      //return example;
     };
+
+    /**
+     * Messages
+     */
+    service.getNoResultsMsg = function() {
+      return $translate.instant('VALUERECOMMENDER.noResults');
+    }
 
     return service;
   }

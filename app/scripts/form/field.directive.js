@@ -533,9 +533,11 @@ define([
         }
       }, true);
 
-      /* Used by the Value Recommender */
+      /* Value Recommendation functionality */
       // Load values when opening an instance
-      $scope.modelValueRecommendation = {'_value': {'value': $scope.model._value}}
+      if ($scope.model) {
+        $scope.modelValueRecommendation = {'_value': {'value': $scope.model._value}}
+      }
 
       $scope.updateModelWhenChangeSelection = function (modelvr) {
         // This variable will be used at textfield.html
@@ -555,14 +557,11 @@ define([
       }
 
       $scope.isFirstRefresh = true;
-
-      $scope.updateIsFirstRefresh = function() {
-        $scope.isFirstRefresh = false;
+      $scope.setIsFirstRefresh = function(isFirstRefresh) {
+        $scope.isFirstRefresh = isFirstRefresh;
       }
 
       $scope.updateModelWhenRefresh = function (select) {
-
-
         if (!$scope.isFirstRefresh) {
           if ($rootScope.isArray($scope.model)) {
             // TODO
@@ -573,34 +572,14 @@ define([
         }
       }
 
-      $scope.clickedOn = function(select, modelvr) {
-        console.log('BEFORE-----------------');
-        console.log("$scope.model._value = " + $scope.model._value);
-        console.log("$scope.modelValueRecommendation._value.value = " + $scope.modelValueRecommendation._value.value);
-        console.log("$select.search: " + select.search);
-        console.log("$select.selected.value: " + select.selected.value);
-        // Clear search
-        //select.search = '';
-        //select.selected.value = '';
-        // Si habia un valor seleccionado y no era debido a una busqueda, lo elimino
-        //if (!select.search && select.selected.value) {
-        //  select.selected.value = '';
-        //}
-
+      // Updates the search using the selected value
+      $scope.updateSearch = function(select) {
         if (select.selected.value) {
           select.search = select.selected.value;
         }
-
-        console.log('AFTER-----------------');
-        console.log("$scope.model._value = " + $scope.model._value);
-        console.log("$scope.modelValueRecommendation._value.value = " + $scope.modelValueRecommendation._value.value);
-        console.log("$select.search: " + select.search);
-        console.log("$select.selected.value: " + select.selected.value);
-
-        console.log();
       }
+      /* end of Value Recommendation functionality */
 
-      /* End of Used by the Value Recommender */
     }
 
     return {

@@ -92,32 +92,27 @@
       <!-- /.input-indicator-icons -->
     </div>
 
-    <!-- value recommender -->
-    <!-- Note on ng-click: '!$root.isRuntime() || preview' ensures that ng-click is only enabled at runtime -->
+    <!-- Field with value recommendation functionality -->
     <div
         ng-if="!$root.hasValueConstraint($root.propertiesOf(field)._valueConstraints) && $root.vrs.getIsValueRecommendationEnabled()"
         class="has-constraint autocomplete-label-wrapper"
-        ng-class="{'has-selected': modelValueRecommendation._value.value}"
-        ng-focus="clickedOn($select, modelValueRecommendation)">
+        ng-class="{'has-selected': modelValueRecommendation._value.value}">
       <ui-select
-          reset-search-input="false"
           ng-model="modelValueRecommendation._value"
           ng-change="updateModelWhenChangeSelection(modelValueRecommendation); $root.vrs.updatePopulatedFields(field, modelValueRecommendation._value.value)"
           ng-disabled="!$root.isRuntime() || preview"
-          ng-click="!$root.isRuntime() || preview || $root.vrs.updateValueRecommendationResults(field); updateIsFirstRefresh()"
+          ng-click="!$root.isRuntime() || preview || $root.vrs.updateValueRecommendationResults(field); setIsFirstRefresh(false); updateSearch($select)"
           close-on-select="true"
+          reset-search-input="false"
           aria-label="{{$root.propertiesOf(field)._ui.description}}">
-        <ui-select-match
-            placeholder="">
-          {{$select.selected.value}}
-        </ui-select-match>
+        <ui-select-match placeholder="">{{$select.selected.value}}</ui-select-match>
         <ui-select-choices
-            ui-disable-choice="option.value == 'No Results...'"
+            ui-disable-choice="option.value == $root.vrs.getNoResultsMsg()"
             refresh="updateModelWhenRefresh($select); $root.vrs.updatePopulatedFields(field, $select.search)"
             refresh-delay="0"
             repeat="option in $root.vrs.getValueRecommendationResults(field['@id']) | propsFilter: {value: $select.search}">
           <div><span ng-bind-html="option.value | highlight: $select.search"></span>&nbsp;
-            <small>(score: <span ng-bind-html="option.score | highlight: $select.search"></span>)</small>
+            <small ng-if="option.score!=undefined">(hits: <span ng-bind-html="option.score | highlight: $select.search"></span>)</small>
           </div>
         </ui-select-choices>
       </ui-select>
@@ -130,7 +125,7 @@
       </div>
       <!-- /.input-indicator-icons -->
     </div>
-    <!-- end of value recommender -->
+    <!-- end of Field with value recommendation functionality -->
 
   </div>
   <!-- /.form-group -->

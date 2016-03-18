@@ -191,6 +191,9 @@
       "nonEmptyStagingConfirm": "The staging area is not empty. If you save the template now, you will loose the content of the staging area! Are you sure you want to save the template this way?"
     }
   },
+  "VALUERECOMMENDER": {
+    "noResults" : "No recommended values..."
+  },
   "VALIDATION": {
     "minBiggerThanMax": "Min cannot be greater than Max.",
     "fieldTitleEmpty": "'Field Title' input cannot be left empty.",
