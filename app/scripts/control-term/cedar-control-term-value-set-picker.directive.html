@@ -47,7 +47,7 @@
   </div>
   <div ng-if="cctvspdc.includeCreateClass" class="values-create-class">
     <div class="input-group btn-create-values" style="width: 100%">
-      <button type="button" class="btn" style="width: 100%" ng-click="cctvspdc.fieldCreateValueSet()">Create</button>
+      <button type="button" class="std-button btn" style="width: 100%" ng-click="cctvspdc.fieldCreateValueSet()">Create</button>
     </div>
   </div>
 </div>
@@ -57,15 +57,15 @@
 <!-- add ontology values sets -->
 <div class="create-value-set-widget" ng-controller="provisionalClassController as pcc" ng-if="cctvspdc.includeCreateClass && cctvspdc.valuesActionSelection == 'create'">
   <div class="form-group form-group-actions create-value-set-widget-actions" ng-init="cctvspdc.valueCreateMode = 'class'">
-    <button type="button" class="std-button" ng-click="cctvspdc.valueCreateMode = 'class'" ng-class="{'std-button-active': cctvspdc.valueCreateMode == 'class'}">Create Class</button>
-    <button type="button" class="std-button" ng-click="cctvspdc.valueCreateMode = 'valueset'" ng-class="{'std-button-active': cctvspdc.valueCreateMode == 'valueset'}">Create Value Set</button>
+    <button type="button" class="std-button" ng-click="cctvspdc.valueCreateMode = 'class'" ng-class="{'active': cctvspdc.valueCreateMode == 'class'}">Create Class</button>
+    <button type="button" class="std-button" ng-click="cctvspdc.valueCreateMode = 'valueset'" ng-class="{'active': cctvspdc.valueCreateMode == 'valueset'}">Create Value Set</button>
   </div>
   <div class="form-group add-ontology-class" ng-if="cctvspdc.valueCreateMode == 'class'">
 
     <ng-include src="'scripts/control-term/create-ontology-class.html'"></ng-include>
     <div class="clear btn-create-class">
       <button type="button"
-              class="btn"
+              class="std-button btn"
               ng-click="pcc.saveAsOntologyClassValueConstraint(pcc.provisionalClass)"
               ng-disabled="!pcc.isValid()">Create Class
       </button>
@@ -140,7 +140,7 @@
 
     <div class="clear btn-create-class">
       <button type="button"
-              class="btn"
+              class="std-button btn"
               ng-click="pcc.saveAsValueSetConstraint(pcc.provisionalClass, pcc.provisionalValueSetValues)"
               ng-disabled="!pcc.isValid()">Create Value Set
       </button>

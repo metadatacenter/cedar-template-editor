@@ -129,8 +129,8 @@
 
     <div class="form-group floating-label-wrapper" ng-if="!ctdc.filterSelection">
       <div class="btn-two-toggle {{ctdc.filterSelection}} text-center">
-        <button type="button" class="btn btn-field" ng-click="ctdc.selectFieldFilter($event)" ng-if="!ctdc.options.filterSection || ctdc.options.filterSection == 'field'">Field</button>
-        <button type="button" class="btn btn-values" ng-click="ctdc.selectValueFilter($event)" ng-if="!ctdc.options.filterSection || ctdc.options.filterSection == 'values'">Values</button>
+        <button type="button" class="std-button btn btn-field" ng-click="ctdc.selectFieldFilter($event)" ng-if="!ctdc.options.filterSection || ctdc.options.filterSection == 'field'">Field</button>
+        <button type="button" class="std-button btn btn-values" ng-click="ctdc.selectValueFilter($event)" ng-if="!ctdc.options.filterSection || ctdc.options.filterSection == 'values'">Values</button>
         <i id="field-value-tooltip" class="cedar-svg-help-circle" data-container="body" data-toggle="popover" data-placement="right" data-content="Select ontology classes from BioPortal to represent the field and/or the values accepted by the field." data-original-title="" title=""></i>
       </div>
     </div>

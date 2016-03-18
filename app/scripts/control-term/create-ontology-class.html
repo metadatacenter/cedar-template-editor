@@ -43,9 +43,9 @@
       <center>
         <table width="80%">
           <tr>
-            <td width="20%" class="center">{{pcc.provisionalClass.label}}</td>
-            <td><div class="dotted">&nbsp;</div></td>
-            <td width="20%" class="center">
+            <td width="20%" class="center" style="padding-top: 20px">{{pcc.provisionalClass.label || '(no label)'}}</td>
+            <td><div class="dotted"><span class="dashes">&ndash; &ndash; &ndash; &ndash; &ndash;</span><span class="arrow">&#10142;</span></div></td>
+            <td width="20%" class="center" style="padding-top: 20px">
               {{pcc.pickedOntologyClass.prefLabel}}<br /> ({{pcc.pickedCurrentOntology.details.ontology.acronym}})
             </td>
           </tr>
@@ -53,12 +53,15 @@
       </center>
     </div>
     <div class="mapping-tools inline-block btn-create-class">
-      <select ng-model="pcc.provisionalClassMappingType"
-              ng-options="option.label for option in pcc.provisionalClassMappingTypes"
-              class="form-control select-mapping-type">
-        <option value="">Select a mapping type...</option>
-      </select>
-      <button class="btn btn-create-mapping" ng-click="pcc.createProvisionalClassMapping(pcc.provisionalClassMappingType, pcc.pickedOntologyClass, pcc.pickedCurrentOntology)">Create Mapping</button>
+      <div class="create-class-select">
+        <select ng-model="pcc.provisionalClassMappingType"
+                ng-options="option.label for option in pcc.provisionalClassMappingTypes"
+                class="form-control select-mapping-type"
+                select-picker="">
+          <option value="">Select a mapping type...</option>
+        </select>
+      </div>
+      <button class="std-button btn btn-create-mapping" ng-click="pcc.createProvisionalClassMapping(pcc.provisionalClassMappingType, pcc.pickedOntologyClass, pcc.pickedCurrentOntology)">Create Mapping</button>
     </div>
   </div>
 
