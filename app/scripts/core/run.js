@@ -190,6 +190,7 @@ define([
     };
 
     $rootScope.uncardinalizeField = function (field) {
+      console.debug('uncardinalizeField');
       if (field.maxItems != 1 || !field.items) {
         return false;
       }
@@ -203,13 +204,15 @@ define([
       field.additionalProperties = field.items.additionalProperties;
 
       delete field.items;
+      delete field.maxItems;
+      delete field.minItems;
 
       return true;
     };
 
     $rootScope.isCardinalElement = function (element) {
       //return element.minItems && element.maxItems != 1;
-      console.debug('isCardinalElement' + element.maxItems + ' '  + element.maxItems);
+      console.debug('isCardinalElement' + (element.type =='array')  + (!element.maxItems || element.minItems < element.maxItems));
       return !element.maxItems || element.minItems < element.maxItems;
     };
 
@@ -218,6 +221,8 @@ define([
     $rootScope.removeUnnecessaryMaxItems = function (properties) {
       angular.forEach(properties, function (value, key) {
         if (!$rootScope.ignoreKey(key)) {
+          console.debug('removeUnnecessaryMaxItems' + value);
+
           //if (!value.maxItems) {
           //  delete value.maxItems;
           //}
