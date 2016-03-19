@@ -87,7 +87,6 @@ define([
 
     // Function that generates a basic field definition
     $rootScope.generateField = function (fieldType) {
-      console.debug('generateField');
       var valueType = "string";
       if (fieldType == "numeric") {
         valueType = "number";
@@ -143,36 +142,36 @@ define([
     };
 
     $rootScope.cardinalizeField = function (field) {
-      console.debug('cardinalizeField');
+
       if (field.minItems == 1 && field.maxItems == 1 || !field.minItems && !field.maxItems) {
         return false;
       }
-      if (!field.maxItems ||                  // special 'N' case
-          (field.maxItems && field.maxItems > 1) || // has maxItems of more than 1
-          (field.minItems && field.minItems > 1)) { // has minItems of more than 1
-        field.items = {
-          'type'                : field.type,
-          '@id'                 : field['@id'],
-          '$schema'             : field.schema,
-          'title'               : field.properties._ui.title,
-          'description'         : field.properties._ui.description,
-          'properties'          : field.properties,
-          'required'            : field.required,
-          'additionalProperties': field.additionalProperties
-        };
-        field.type = 'array';
+      //if (!field.maxItems ||                  // special 'N' case
+      //    (field.maxItems && field.maxItems > 1) || // has maxItems of more than 1
+      //    (field.minItems && field.minItems > 1)) { // has minItems of more than 1
+      field.items = {
+        'type'                : field.type,
+        '@id'                 : field['@id'],
+        '$schema'             : field.schema,
+        'title'               : field.properties._ui.title,
+        'description'         : field.properties._ui.description,
+        'properties'          : field.properties,
+        'required'            : field.required,
+        'additionalProperties': field.additionalProperties
+      };
+      field.type = 'array';
 
-        delete field.$schema;
-        delete field['@id'];
-        delete field.properties;
-        delete field.title;
-        delete field.description;
-        delete field.required;
-        delete field.additionalProperties;
+      delete field.$schema;
+      delete field['@id'];
+      delete field.properties;
+      delete field.title;
+      delete field.description;
+      delete field.required;
+      delete field.additionalProperties;
 
-        return true;
-      }
-      return false;
+      return true;
+      //}
+      //return false;
     };
 
     $rootScope.propertiesOf = function (fieldOrElement) {
@@ -190,7 +189,7 @@ define([
     };
 
     $rootScope.uncardinalizeField = function (field) {
-      console.debug('uncardinalizeField');
+
       if (field.maxItems != 1 || !field.items) {
         return false;
       }
@@ -212,7 +211,6 @@ define([
 
     $rootScope.isCardinalElement = function (element) {
       //return element.minItems && element.maxItems != 1;
-      console.debug('isCardinalElement' + (element.type =='array')  + (!element.maxItems || element.minItems < element.maxItems));
       return !element.maxItems || element.minItems < element.maxItems;
     };
 
@@ -221,7 +219,7 @@ define([
     $rootScope.removeUnnecessaryMaxItems = function (properties) {
       angular.forEach(properties, function (value, key) {
         if (!$rootScope.ignoreKey(key)) {
-          console.debug('removeUnnecessaryMaxItems' + value);
+
 
           //if (!value.maxItems) {
           //  delete value.maxItems;
@@ -280,6 +278,7 @@ define([
         if (!$rootScope.ignoreKey(name)) {
           // We can tell we've reached an element level by its 'order' property
           if (value._ui && value._ui.order) {
+
             min = value.minItems || 0;
 
             if ($rootScope.isCardinalElement(value)) {
@@ -340,8 +339,8 @@ define([
 
     $rootScope.scrollToAnchor = UIUtilService.scrollToAnchor;
 
-    var minCardinalities = DataManipulationService.generateCardinalities(0,8);
-    var maxCardinalities = DataManipulationService.generateCardinalities(1,8);
+    var minCardinalities = DataManipulationService.generateCardinalities(0, 8);
+    var maxCardinalities = DataManipulationService.generateCardinalities(1, 8);
     maxCardinalities.push({value: 0, label: "N"});
 
     $rootScope.minCardinalities = minCardinalities;

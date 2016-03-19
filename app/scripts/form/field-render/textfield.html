@@ -1,4 +1,6 @@
 <div class="fields text-fields" ng-class="{preview: preview}">
+
+  <!--for all elements in the model -->
   <div ng-if="$root.isArray(model)" class="form-group floating-label-wrapper" ng-repeat="(index, valueElement) in model">
 
     <div class="extra-label-context" ng-class="{'required': $root.propertiesOf(field)._valueConstraints.requiredValue}" ng-if="preview">
@@ -42,6 +44,7 @@
     <div class="more-input-wrapper" ng-include="'scripts/form/partials/zero-input-buttons.partial.html'" ng-show="$root.isRuntime() && field.type == 'array'"></div>
   </div>
 
+  <!-- zero cardinality case, we have an array but nothing there yet -->
   <div ng-if="$root.isArray(model) && model.length == 0 && !$root.isRuntime()" class="form-group floating-label-wrapper" >
     <div class="extra-label-content"  ng-show="!field.maxItems || field.maxItems > 1 || (!field.minItems && field.maxItems ==1)" ng-if="preview">
       {{$root.propertiesOf(field)._ui.title}}

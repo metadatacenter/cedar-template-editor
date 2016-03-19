@@ -2,9 +2,9 @@
 
 define([
   'angular'
-], function(angular) {
+], function (angular) {
   angular.module('cedar.templateEditor.templateElement.elementDirective', [])
-    .directive('elementDirective', elementDirective);
+      .directive('elementDirective', elementDirective);
 
   // TODO: refactor to cedarTemplateElementDirective <cedar-template-element>
 
@@ -13,19 +13,19 @@ define([
   function elementDirective($rootScope, SpreadsheetService, DataUtilService, DataManipulationService) {
     return {
       templateUrl: 'scripts/template-element/element.directive.html',
-      restrict: 'EA',
-      scope: {
-        key:'=',
-        element:'=',
-        delete: '&',
-        model: '=',
+      restrict   : 'EA',
+      scope      : {
+        key          : '=',
+        element      : '=',
+        delete       : '&',
+        model        : '=',
         isRootElement: "="
       },
-      link: function(scope, element, attrs) {
+      link       : function (scope, element, attrs) {
         scope.elementId = $rootScope.idOf(scope.element) || $rootScope.generateGUID();
-        var resetElement = function(el, settings) {
-          angular.forEach(el, function(model, key) {
-            if (settings[key] && settings[key].minItems && angular.isArray(model)) {
+        var resetElement = function (el, settings) {
+          angular.forEach(el, function (model, key) {
+            if (settings[key] && angular.isArray(model)) {
               model.splice(settings[key].minItems, model.length);
             }
 
@@ -71,7 +71,7 @@ define([
                   resetElement(model, settings[key]);
                 } else {
                   // This case el is an array
-                  angular.forEach(model, function(v, k) {
+                  angular.forEach(model, function (v, k) {
                     if (k == "_value") {
                       if (angular.isArray(v)) {
                         if ($rootScope.propertiesOf(settings)._ui.inputType == "list") {
@@ -120,10 +120,10 @@ define([
           });
         }
 
-        var parseElement = function() {
+        var parseElement = function () {
           if (!$rootScope.isRuntime() && scope.element) {
             if (angular.isArray(scope.model)) {
-              angular.forEach(scope.model, function(m) {
+              angular.forEach(scope.model, function (m) {
                 $rootScope.findChildren($rootScope.propertiesOf(scope.element), m);
               });
             } else {
@@ -154,21 +154,62 @@ define([
         }
 
         scope.selectedTab = scope.selectedTab || 0;
-        scope.selectTab = function(index) {
+        scope.selectTab = function (index) {
           scope.selectedTab = index;
         }
-        scope.addElement = function() {
-          if ($rootScope.isRuntime()) {
-            if (scope.element.minItems && (!scope.element.maxItems || scope.model.length < scope.element.maxItems)) {
-              var seed = angular.copy(scope.model[0]);
+        //scope.addElement = function () {
+        //  if ($rootScope.isRuntime()) {
+        //    if ((!scope.element.maxItems || scope.model.length < scope.element.maxItems)) {
+        //      var seed = {};
+        //
+        //
+        //      if (scope.model.length > 0) {
+        //        seed = angular.copy(scope.model[0]);
+        //
+        //      }
+        //      //var seed = angular.copy(scope.model[0]);
+        //
+        //      resetElement(seed, scope.element);
+        //      scope.model.push(seed);
+        //    }
+        //  }
+        //}
+        scope.addElement = function () {
 
-              resetElement(seed, scope.element);
-              scope.model.push(seed);
+          if ($rootScope.isRuntime()) {
+            if ((!scope.element.maxItems || scope.model.length < scope.element.maxItems)) {
+              var seed = {};
+
+              if (scope.model.length > 0) {
+                seed = angular.copy(scope.model[0]);
+                resetElement(seed, scope.element);
+                scope.model.push(seed);
+
+              } else {
+
+                scope.model.push(seed);
+
+                if (angular.isArray(scope.model)) {
+                  angular.forEach(scope.model, function (m) {
+                    $rootScope.findChildren($rootScope.propertiesOf(scope.element), m);
+                  });
+                } else {
+                  $rootScope.findChildren($rootScope.propertiesOf(scope.element), scope.model);
+                }
+
+                resetElement(seed, scope.element);
+
+              }
+
+              //resetElement(seed, scope.element);
+              //scope.model.push(seed);
+
             }
           }
         }
 
-        scope.removeElement = function(index) {
+        scope.removeElement = function (index) {
+
           if (scope.model.length > scope.element.minItems) {
             scope.model.splice(index, 1);
 
@@ -190,10 +231,10 @@ define([
           element.find(".spreadsheetSwitchLink").toggle();
         }
 
-        scope.removeChild = function(fieldOrElement) {
+        scope.removeChild = function (fieldOrElement) {
           var selectedKey;
           var props = $rootScope.propertiesOf(scope.element);
-          angular.forEach(props, function(value, key) {
+          angular.forEach(props, function (value, key) {
             if (value["@id"] == fieldOrElement["@id"]) {
               selectedKey = key;
             }
@@ -206,20 +247,30 @@ define([
             scope.element._ui.order.splice(idx, 1);
 
             if ($rootScope.isElement(fieldOrElement)) {
-              scope.$emit("invalidElementState", ["remove", $rootScope.propertiesOf(fieldOrElement)._ui.title, fieldOrElement["@id"]]);
+              scope.$emit("invalidElementState",
+                  ["remove", $rootScope.propertiesOf(fieldOrElement)._ui.title, fieldOrElement["@id"]]);
             } else {
-              scope.$emit("invalidFieldState", ["remove", $rootScope.propertiesOf(fieldOrElement)._ui.title, fieldOrElement["@id"]]);
+              scope.$emit("invalidFieldState",
+                  ["remove", $rootScope.propertiesOf(fieldOrElement)._ui.title, fieldOrElement["@id"]]);
             }
           }
         };
 
         // When user clicks Save button, we will switch element from creating state to completed state
-        scope.add = function() {
+        scope.add = function () {
           var p = $rootScope.propertiesOf(scope.element);
           if (!p._ui.is_cardinal_field) {
             scope.element.minItems = 1;
             scope.element.maxItems = 1;
           }
+
+          if (!scope.element.maxItems) {
+            scope.element.maxItems = 1;
+          }
+          if (typeof scope.element.minItems == 'undefined') {
+            scope.element.minItems = 1;
+          }
+
 
           if (scope.element.maxItems == 1) {
             if (scope.element.items) {
@@ -232,18 +283,19 @@ define([
           }
 
           delete $rootScope.propertiesOf(scope.element)._tmp;
-          scope.$emit("invalidElementState", ["remove", $rootScope.propertiesOf(scope.element)._ui.title, scope.element["@id"]]);
+          scope.$emit("invalidElementState",
+              ["remove", $rootScope.propertiesOf(scope.element)._ui.title, scope.element["@id"]]);
           parseElement();
         };
 
         // When user clicks edit, the element state will be switched to creating;
-        scope.edit = function() {
+        scope.edit = function () {
           var p = $rootScope.propertiesOf(scope.element);
           p._tmp = p._tmp || {};
           p._tmp.state = "creating";
         };
 
-        scope.renameChildKey = function(child, newKey) {
+        scope.renameChildKey = function (child, newKey) {
           if (!child) {
             return;
           }
@@ -257,7 +309,7 @@ define([
             }
 
             newKey = DataManipulationService.getAcceptableKey(p, newKey);
-            angular.forEach(p, function(value, key) {
+            angular.forEach(p, function (value, key) {
               if (!value) {
                 return;
               }
@@ -290,21 +342,23 @@ define([
         scope.$on('saveForm', function (event) {
           var p = $rootScope.propertiesOf(scope.element);
           if (p._tmp && p._tmp.state == "creating") {
-            scope.$emit("invalidElementState", ["add", $rootScope.propertiesOf(scope.element)._ui.title, scope.element["@id"]]);
+            scope.$emit("invalidElementState",
+                ["add", $rootScope.propertiesOf(scope.element)._ui.title, scope.element["@id"]]);
           } else {
-            scope.$emit("invalidElementState", ["remove", $rootScope.propertiesOf(scope.element)._ui.title, scope.element["@id"]]);
+            scope.$emit("invalidElementState",
+                ["remove", $rootScope.propertiesOf(scope.element)._ui.title, scope.element["@id"]]);
           }
         });
 
-        scope.$watchCollection("element.properties['@context'].properties", function() {
+        scope.$watchCollection("element.properties['@context'].properties", function () {
           parseElement();
         });
 
-        scope.$watchCollection("element.properties", function() {
+        scope.$watchCollection("element.properties", function () {
           parseElement();
         });
 
-        scope.$watchCollection("element.items.properties", function() {
+        scope.$watchCollection("element.items.properties", function () {
           parseElement();
         });
       }

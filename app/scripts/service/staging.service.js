@@ -107,9 +107,11 @@ define([
     };
 
     service.addFieldToForm = function (form, fieldType) {
+
       var field = DataManipulationService.generateField(fieldType);
-      field.minItems = 0;
-      field.maxItems = 1;
+      //field.minItems = 1;
+      //field.maxItems = 1;
+      console.debug('addFieldtoForm' + field.minItems + " " + field.maxItems);
       field.properties._tmp = field.properties._tmp || {};
       field.properties._tmp.state = "creating";
 
@@ -136,6 +138,8 @@ define([
       form.properties[fieldName] = field;
       form._ui.order = form._ui.order || [];
       form._ui.order.push(fieldName);
+
+      console.debug('addFieldtoForm' + field.minItems + ' ' + field.maxItems);
     }
 
     service.addElementToForm = function (form, elementId) {
@@ -174,7 +178,7 @@ define([
 
     service.addFieldToElement = function (element, fieldType) {
       var field = DataManipulationService.generateField(fieldType);
-      field.minItems = 0;
+      field.minItems = 1;
       field.maxItems = 1;
       field.properties._tmp = field.properties._tmp || {};
       field.properties._tmp.state = "creating";

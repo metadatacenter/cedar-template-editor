@@ -306,7 +306,7 @@ define([
       }
 
       $scope.addMoreInput = function() {
-        console.debug('addMoreInput');
+
         if ((!$scope.field.maxItems || $scope.model.length < $scope.field.maxItems)) {
           var seed = {};
           if ($scope.model.length > 0) {
@@ -392,6 +392,7 @@ define([
 
       // Switch from creating to completed.
       $scope.add = function() {
+
         var p = $rootScope.propertiesOf($scope.field);
         $scope.errorMessages = $scope.checkFieldConditions(p);
         $scope.errorMessages = jQuery.merge($scope.errorMessages, $rootScope.checkFieldCardinalityOptions($scope.field));
@@ -469,8 +470,7 @@ define([
 
         // If a default value is set from the field item configuration, set $scope.model to its value
         if ($scope.directory == 'render') {
-          console.debug('render');
-          console.debug($scope.model);
+
           if ($scope.model) {
             if ($rootScope.isArray($scope.model)) {
               if ($scope.model.length == 0) {
@@ -494,7 +494,7 @@ define([
                 }
               } else {
                 angular.forEach($scope.model, function(m, i) {
-                  console.debug(m);
+
                   if (!("_value" in m)) {
                     if (field.defaultOption) {
                       $scope.model[i]["_value"] = angular.copy(field.defaultOption);
@@ -514,7 +514,7 @@ define([
               }
             } else {
               if (!("_value" in $scope.model)) {
-                console.debug("_value not in model")
+
                 if (field.defaultOption) {
                   $scope.model["_value"] = angular.copy(field.defaultOption);
                 } else {
