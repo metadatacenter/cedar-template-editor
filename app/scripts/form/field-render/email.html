@@ -1,6 +1,6 @@
 <div class="fields fields-email">
   <div ng-if="$root.isArray(model)" class="form-group floating-label-wrapper" ng-repeat="valueElement in model">
-	<p class="extra-label-context" ng-if="!$root.isRuntime() && $root.propertiesOf(field)._ui.title">{{$root.propertiesOf(field)._ui.title}}</p>
+	<!--<p class="extra-label-context" ng-if="!$root.isRuntime() && $root.propertiesOf(field)._ui.title">{{$root.propertiesOf(field)._ui.title}}</p>-->
     <input type="email"
     	   class="form-control"
     	   ng-class="{'required': $root.propertiesOf(field)._valueConstraints.requiredValue}"
@@ -24,7 +24,7 @@
   <div ng-if="$root.isArray(model)" class="form-group floating-label-wrapper" >
     <div class="more-input-wrapper" ng-include="'scripts/form/partials/zero-input-buttons.partial.html'" ></div>
   </div>
-
+  
   <div ng-if="$root.isArray(model) && model.length == 0 && !$root.isRuntime()" class="form-group floating-label-wrapper">
     <input type="email"
         class="form-control"
