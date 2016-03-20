@@ -38,7 +38,6 @@
           <span>{{$index + 1}}</span>
         </div>
         <div class="add-element">
-          add-element {{selectedTab}} {{$index}}
           <button type="button" ng-click="addElement()" class="add"
               ng-show="($root.isRuntime() && ((!element.maxItems || !$root.isArray(model) && element.maxItems > 1 || $root.isArray(model) && model.length < element.maxItems)))"
               ng-disabled="preview">
@@ -92,7 +91,6 @@
           ng-model="element._ui.order">
         <div ng-repeat="key in element['_ui']['order']">
           <div ng-if="$root.propertiesOf(element)[key]">
-            nested element
             <nested-element key="key" field="$root.propertiesOf(element)[key]" model="model[key]"
                 remove-child="removeChild" rename-child-key="renameChildKey"></nested-element>
           </div>
@@ -103,7 +101,6 @@
       <div class="input-type-container"
           ng-if="!$root.isRuntime() && !isRootElement && $root.propertiesOf(element)._tmp.state == 'creating'">
         <div class="row">
-          creating row {{element.minItems}} {{element.maxItems}} {{$root.propertiesOf(element)._ui.is_cardinal_field}}
           <div class="configuration-options element-configuration-options col-lg-9 pull-left">
             <div class="checkbox checkbox-inline checkbox-cardinality">
               <input type="checkbox" id="cardinality-{{element['@id'].substring(element['@id'].lastIndexOf('/')+1)}}"

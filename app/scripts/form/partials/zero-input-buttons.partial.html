@@ -1,18 +1,22 @@
-<div class="more-input-buttons">
+<!-- show this during runtime and only when you have cardinality -->
+<div class="more-input-buttons" ng-show="$root.isRuntime() && $root.isArray(model)">
 
-
-    <button type="button" class="add" ng-disabled="!$root.isRuntime()" ng-click="addMoreInput()" ng-show="$parent.model.length == 0">
+  <!-- add button when you have no items in the model array and min cardinality is zero -->
+  <button type="button" class="add" ng-click="addMoreInput()" ng-disabled="!$root.isRuntime()" ng-show="$parent.model.length == 0">
     <i class="fa fa-plus"></i>
+
     <div class="cardinality-_ui-container">
       <div class="cardinality-_ui">
-        <div class="cardinality-_ui-text"><span translate="GENERIC.MultipleMinMaxMsg" translate-values="{min:($parent.field.minItems || 0), max:($parent.field.maxItems || 'GENERIC.Unlimited' | translate)}"></span></div>
+        <div class="cardinality-_ui-text"><span translate="GENERIC.MultipleMinMaxMsg"
+            translate-values="{min:($parent.field.minItems || 0), max:($parent.field.maxItems || 'GENERIC.Unlimited' | translate)}"></span>
+        </div>
       </div>
     </div>
   </button>
 
-
-
-  <button type="button" ng-disabled="!$root.isRuntime()" class="remove" ng-click="removeInput($parent.$index)" ng-show="$parent.field.minItems && ($parent.field.maxItems || $parent.model.length > $parent.field.minItems) && $parent.$index >= $parent.field.minItems">
+  <!-- remove button when the model has more than the min items -->
+  <button type="button"  class="remove" ng-click="removeInput($parent.$index)"
+      ng-show="$parent.field.minItems && ($parent.field.maxItems || $parent.model.length > $parent.field.minItems) && $parent.$index >= $parent.field.minItems">
     <i class="fa fa-times"></i>
   </button>
 </div>

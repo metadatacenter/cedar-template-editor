@@ -147,7 +147,7 @@ define([
           TemplateElementService.getTemplateElement(elementId),
           function (response) {
             var clonedElement = response.data;
-            clonedElement.minItems = 0;
+            clonedElement.minItems = 1;
             clonedElement.maxItems = 1;
 
             var elProperties = DataManipulationService.getFieldProperties(clonedElement);
