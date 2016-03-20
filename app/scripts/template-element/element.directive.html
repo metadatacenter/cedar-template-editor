@@ -33,13 +33,13 @@
 
     <div class="elements originalContent">
       <div class="element-toggles list" ng-if="$root.isRuntime() && $root.elementIsMultiInstance(element)">
-        <div class="element-toggle" ng-class="{active: selectedTab == $index}" ng-repeat="m in model"
+        <div class="element-toggle" ng-class="{active: selectedTab == $index}" ng-repeat="m in model" ng-if="$root.isArray(model) && model.length > 0"
             ng-click="selectTab($index)">
           <span>{{$index + 1}}</span>
         </div>
         <div class="add-element">
-          <button type="button" ng-click="addElement()" class="add"
-              ng-show="($root.isRuntime() && ((!element.maxItems || !$root.isArray(model) && element.maxItems > 1 || $root.isArray(model) && model.length < element.maxItems)))"
+          <button type="button" ng-click="addElement()" class="add zero"
+              ng-show="true"
               ng-disabled="preview">
             <i class="fa fa-plus"></i>
 

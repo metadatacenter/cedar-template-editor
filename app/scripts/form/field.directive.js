@@ -306,6 +306,7 @@ define([
       }
 
       $scope.addMoreInput = function() {
+        console.debug('addMoreItems' + $scope.model.length + " " + $scope.field.maxItems);
 
         if ((!$scope.field.maxItems || $scope.model.length < $scope.field.maxItems)) {
           var seed = {};

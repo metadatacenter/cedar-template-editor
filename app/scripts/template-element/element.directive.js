@@ -176,6 +176,10 @@ define([
         //}
         scope.addElement = function () {
 
+          console.debug('addElement' + angular.isArray(scope.model) + " " +scope.model.length + " " + scope.element.maxItems);
+
+          console.debug(scope.model);
+
           if ($rootScope.isRuntime()) {
             if ((!scope.element.maxItems || scope.model.length < scope.element.maxItems)) {
               var seed = {};
@@ -198,6 +202,7 @@ define([
                 }
 
                 resetElement(seed, scope.element);
+
 
               }
 
@@ -258,13 +263,15 @@ define([
 
         // When user clicks Save button, we will switch element from creating state to completed state
         scope.add = function () {
+
           var p = $rootScope.propertiesOf(scope.element);
+          console.debug("add element " + scope.element.minItems + " " + scope.element.maxItems + " " + p._ui.is_cardinal_field);
           if (!p._ui.is_cardinal_field) {
             scope.element.minItems = 1;
             scope.element.maxItems = 1;
           }
 
-          if (!scope.element.maxItems) {
+          if (typeof scope.element.maxItems == 'undefined') {
             scope.element.maxItems = 1;
           }
           if (typeof scope.element.minItems == 'undefined') {

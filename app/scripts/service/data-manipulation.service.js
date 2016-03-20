@@ -177,7 +177,7 @@ define([
 
     service.elementIsMultiInstance = function (element) {
       //return element.hasOwnProperty('minItems') && !angular.isUndefined(element.minItems);
-      return element.type == 'array';
+      return element.hasOwnProperty('maxItems') && !angular.isUndefined(element.maxItems) && element.maxItems != 1;
     };
 
     // Transform string to obtain JSON field name

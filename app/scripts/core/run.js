@@ -143,7 +143,7 @@ define([
 
     $rootScope.cardinalizeField = function (field) {
 
-      if (field.minItems == 1 && field.maxItems == 1 || !field.minItems && !field.maxItems) {
+      if ((field.minItems == 1 && field.maxItems == 1) || (typeof field.minItems == 'undefined' && typeof field.maxItems == 'undefined')) {
         return false;
       }
       //if (!field.maxItems ||                  // special 'N' case
