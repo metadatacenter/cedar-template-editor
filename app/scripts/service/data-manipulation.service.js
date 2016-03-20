@@ -129,6 +129,11 @@ define([
           //  delete value.minItems;
           //  delete value.maxItems;
           //}
+
+          if (value.minItems == 1 && value.maxItems == 1) {
+            delete value.minItems;
+            delete value.maxItems;
+          }
         }
       });
     };

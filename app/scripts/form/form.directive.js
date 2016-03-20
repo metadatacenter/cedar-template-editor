@@ -2,9 +2,9 @@
 
 define([
   'angular'
-], function (angular) {
+], function(angular) {
   angular.module('cedar.templateEditor.form.formDirective', [])
-      .directive('formDirective', formDirective);
+    .directive('formDirective', formDirective);
 
   // TODO: refactor to cedarFormDirective <cedar-form-directive>
 
@@ -13,15 +13,15 @@ define([
   function formDirective($rootScope, $document, $timeout, DataManipulationService, DataUtilService) {
     return {
       templateUrl: 'scripts/form/form.directive.html',
-      restrict   : 'E',
-      scope      : {
-        pageIndex      : '=',
-        form           : '=',
-        isEditData     : "=",
-        model          : '=',
+      restrict: 'E',
+      scope: {
+        pageIndex:'=',
+        form:'=',
+        isEditData: "=",
+        model: '=',
         hideRootElement: "="
       },
-      controller : function ($scope) {
+      controller: function($scope) {
         $scope.model = $scope.model || {};
 
         // Initializaing checkSubmission as false
@@ -29,10 +29,10 @@ define([
         $scope.pageIndex = $scope.pageIndex || 0;
 
         $scope.currentPage = [],
-            $scope.pageIndex = 0,
-            $scope.pagesArray = [];
+        $scope.pageIndex = 0,
+        $scope.pagesArray = [];
 
-        var paginate = function () {
+        var paginate = function() {
           if ($scope.form) {
             var orderArray = [];
             var dimension = 0;
@@ -42,19 +42,19 @@ define([
 
             // This code is to allow render previous templates (Before inline_edit). We can remove this later
             if (!$scope.form._ui.order.length) {
-              angular.forEach($scope.form.properties, function (value, key) {
+              angular.forEach($scope.form.properties, function(value, key) {
                 if (value.properties || value.items && value.items.properties) {
                   $scope.form._ui.order.push(key);
                 }
               });
             }
 
-            angular.forEach($scope.form._ui.order, function (field, index) {
+            angular.forEach($scope.form._ui.order, function(field, index) {
               // If item added is of type Page Break, jump into next page array for storage of following fields
               if ($scope.form.properties[field].properties &&
                   $scope.form.properties[field].properties._ui &&
                   $scope.form.properties[field].properties._ui.inputType == 'page-break') {
-                dimension++;
+                dimension ++;
               }
               // Push field key into page array
               orderArray[dimension] = orderArray[dimension] || [];
@@ -65,10 +65,10 @@ define([
           }
         }
 
-        $scope.removeChild = function (fieldOrElement) {
+        $scope.removeChild = function(fieldOrElement) {
           var selectedKey;
           var props = $scope.form.properties;
-          angular.forEach(props, function (value, key) {
+          angular.forEach(props, function(value, key) {
             if (value["@id"] == fieldOrElement["@id"]) {
               selectedKey = key;
             }
@@ -81,16 +81,14 @@ define([
             $scope.form._ui.order.splice(idx, 1);
 
             if ($rootScope.isElement(fieldOrElement)) {
-              $scope.$emit("invalidElementState",
-                  ["remove", $rootScope.propertiesOf(fieldOrElement)._ui.title, fieldOrElement["@id"]]);
+              $scope.$emit("invalidElementState", ["remove", $rootScope.propertiesOf(fieldOrElement)._ui.title, fieldOrElement["@id"]]);
             } else {
-              $scope.$emit("invalidFieldState",
-                  ["remove", $rootScope.propertiesOf(fieldOrElement)._ui.title, fieldOrElement["@id"]]);
+              $scope.$emit("invalidFieldState", ["remove", $rootScope.propertiesOf(fieldOrElement)._ui.title, fieldOrElement["@id"]]);
             }
           }
         };
 
-        $scope.renameChildKey = function (child, newKey) {
+        $scope.renameChildKey = function(child, newKey) {
           if (!child) {
             return;
           }
@@ -103,7 +101,7 @@ define([
             }
 
             newKey = DataManipulationService.getAcceptableKey(p, newKey);
-            angular.forEach(p, function (value, key) {
+            angular.forEach(p, function(value, key) {
               if (!value) {
                 return;
               }
@@ -146,25 +144,25 @@ define([
           }
         });
 
-        // Load the previous page of the form
-        $scope.previousPage = function () {
-          $scope.pageIndex--;
-          $scope.currentPage = $scope.pagesArray[$scope.pageIndex];
-        };
+    	// Load the previous page of the form
+    	$scope.previousPage = function() {
+    	  $scope.pageIndex --;
+    	  $scope.currentPage = $scope.pagesArray[$scope.pageIndex];
+    	};
 
-        // Load the next page of the form
-        $scope.nextPage = function () {
-          $scope.pageIndex++;
-          $scope.currentPage = $scope.pagesArray[$scope.pageIndex];
-        };
+    	// Load the next page of the form
+    	$scope.nextPage = function() {
+    	  $scope.pageIndex ++;
+    	  $scope.currentPage = $scope.pagesArray[$scope.pageIndex];
+    	};
 
-        // Load an arbitrary page number attached to the index of it via runtime.html template
-        $scope.setCurrentPage = function (page) {
-          $scope.pageIndex = page;
-          $scope.currentPage = $scope.pagesArray[$scope.pageIndex];
-        };
+    	// Load an arbitrary page number attached to the index of it via runtime.html template
+    	$scope.setCurrentPage = function(page) {
+    	  $scope.pageIndex = page;
+    	  $scope.currentPage = $scope.pagesArray[$scope.pageIndex];
+    	};
 
-        var startParseForm = function () {
+        var startParseForm = function() {
           if ($scope.form) {
             var model;
             if ($rootScope.isRuntime()) {
@@ -187,7 +185,7 @@ define([
           }
         };
 
-        $scope.parseForm = function (iterator, parentModel, parentKey) {
+        $scope.parseForm = function(iterator, parentModel, parentKey) {
           var ctx;
           angular.forEach(iterator, function (value, name) {
             // Add @context information to instance

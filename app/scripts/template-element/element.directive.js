@@ -176,7 +176,7 @@ define([
         //}
         scope.addElement = function () {
 
-          console.debug('addElement' + angular.isArray(scope.model) + " " +scope.model.length + " " + scope.element.maxItems);
+          console.debug('addElement' + angular.isArray(scope.model) + " " + scope.model.length + " " + scope.element.maxItems);
 
           console.debug(scope.model);
 
