@@ -185,29 +185,27 @@ define([
     };
 
     $rootScope.uncardinalizeField = function (field) {
+      if ((typeof field.minItems == 'undefined' && typeof field.maxItems == 'undefined') || (field.minItems == 1 && field.maxItems == 1)) {
 
-      if (field.maxItems != 1 || !field.items) {
-        return false;
-      }
+        field.type = 'object';
 
-      field.type = 'object';
+        field.$schema = field.items.$schema;
+        field['@id'] = field.items["@id"];
+        field.properties = field.items.properties;
+        field.required = field.items.required;
+        field.additionalProperties = field.items.additionalProperties;
 
-      field.$schema = field.items.$schema;
-      field['@id'] = field.items["@id"];
-      field.properties = field.items.properties;
-      field.required = field.items.required;
-      field.additionalProperties = field.items.additionalProperties;
+        delete field.items;
+        delete field.maxItems;
+        delete field.minItems;
 
-      delete field.items;
-      delete field.maxItems;
-      delete field.minItems;
-
-      return true;
+        return true;
+      } else return false;
     };
 
     $rootScope.isCardinalElement = function (element) {
       //return element.minItems && element.maxItems != 1;
-      return !element.maxItems || element.minItems < element.maxItems;
+      return (!(typeof element.minItems == 'undefined' && typeof element.maxItems == 'undefined') && !(element.minItems == 1 && element.maxItems == 1));
     };
 
     // If Max Items is N, its value will be 0, then need to remove it from schema
@@ -215,18 +213,10 @@ define([
     $rootScope.removeUnnecessaryMaxItems = function (properties) {
       angular.forEach(properties, function (value, key) {
         if (!$rootScope.ignoreKey(key)) {
-
-
-          //if (!value.maxItems) {
-          //  delete value.maxItems;
-          //}
-          //if (value.minItems &&
-          //    value.minItems == 1 &&
-          //    value.maxItems &&
-          //    value.maxItems == 1) {
-          //  delete value.minItems;
-          //  delete value.maxItems;
-          //}
+          if (field.minItems == 1 && field.maxItems == 1) {
+            delete value.minItems;
+            delete value.maxItems;
+          }
         }
       });
     };

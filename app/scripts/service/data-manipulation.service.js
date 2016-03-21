@@ -3,9 +3,9 @@
 
 define([
   'angular'
-], function (angular) {
+], function(angular) {
   angular.module('cedar.templateEditor.service.dataManipulationService', [])
-      .service('DataManipulationService', DataManipulationService);
+    .service('DataManipulationService', DataManipulationService);
 
   DataManipulationService.$inject = ['DataTemplateService', 'DataUtilService'];
 
@@ -75,14 +75,11 @@ define([
     };
 
     service.cardinalizeField = function (field) {
-
-      if (field.minItems == 1 && field.maxItems == 1 || !field.minItems && !field.maxItems) {
+      console.debug('service.cardinalizeField ' +field.minItems + ' ' + field.maxItems);
+      if ((field.minItems == 1 && field.maxItems == 1) || (typeof field.minItems == 'undefined'  && typeof field.maxItems == 'undefined')) {
+        console.debug('service.cardinalizeField false');
         return false;
       }
-      //if (!field.maxItems ||                  // special 'N' case
-      //    (field.maxItems && field.maxItems > 1) || // has maxItems of more than 1
-      //    (field.maxItems && field.maxItems == 1 && field.minItems == 0) || // has maxItems of more than 1 and min 0
-      //    (field.minItems && field.minItems > 1)) { // has minItems of more than 1
       field.items = {
         'type'                : field.type,
         '@id'                 : field['@id'],
@@ -95,18 +92,15 @@ define([
       };
       field.type = 'array';
 
-      delete field.$schema;
-      delete field['@id'];
-      delete field.properties;
-      delete field.title;
-      delete field.description;
-      delete field.required;
-      delete field.additionalProperties;
-
+        delete field.$schema;
+        delete field['@id'];
+        delete field.properties;
+        delete field.title;
+        delete field.description;
+        delete field.required;
+        delete field.additionalProperties;
 
       return true;
-      //}
-      //return false;
     };
 
     service.isCardinalElement = function (element) {
@@ -118,18 +112,6 @@ define([
     service.removeUnnecessaryMaxItems = function (properties) {
       angular.forEach(properties, function (value, key) {
         if (!DataUtilService.isSpecialKey(key)) {
-
-          //if (!value.maxItems) {
-          //  delete value.maxItems;
-          //}
-          //if (value.minItems &&
-          //    value.minItems == 1 &&
-          //    value.maxItems &&
-          //    value.maxItems == 1) {
-          //  delete value.minItems;
-          //  delete value.maxItems;
-          //}
-
           if (value.minItems == 1 && value.maxItems == 1) {
             delete value.minItems;
             delete value.maxItems;
@@ -176,7 +158,7 @@ define([
       return guid;
     };
 
-    service.generateTempGUID = function () {
+    service.generateTempGUID = function() {
       return "tmp-" + Date.now() + "-" + (window.performance.now() | 0);
     }
 
@@ -209,7 +191,7 @@ define([
       return c;
     };
 
-    service.getAcceptableKey = function (obj, suggestedKey) {
+    service.getAcceptableKey = function(obj, suggestedKey) {
       if (!obj || typeof(obj) != "object") {
         return;
       }
