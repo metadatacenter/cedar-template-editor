@@ -142,35 +142,32 @@ define([
     };
 
     $rootScope.cardinalizeField = function (field) {
-      if (field.minItems == 1 && field.maxItems == 1 || !field.minItems && !field.maxItems) {
+
+      if ((field.minItems == 1 && field.maxItems == 1) || (typeof field.minItems == 'undefined' && typeof field.maxItems == 'undefined')) {
         return false;
       }
-      if (!field.maxItems ||                  // special 'N' case
-          (field.maxItems && field.maxItems > 1) || // has maxItems of more than 1
-          (field.minItems && field.minItems > 1)) { // has minItems of more than 1
-        field.items = {
-          'type'                : field.type,
-          '@id'                 : field['@id'],
-          '$schema'             : field.schema,
-          'title'               : field.properties._ui.title,
-          'description'         : field.properties._ui.description,
-          'properties'          : field.properties,
-          'required'            : field.required,
-          'additionalProperties': field.additionalProperties
-        };
-        field.type = 'array';
 
-        delete field.$schema;
-        delete field['@id'];
-        delete field.properties;
-        delete field.title;
-        delete field.description;
-        delete field.required;
-        delete field.additionalProperties;
+      field.items = {
+        'type'                : field.type,
+        '@id'                 : field['@id'],
+        '$schema'             : field.schema,
+        'title'               : field.properties._ui.title,
+        'description'         : field.properties._ui.description,
+        'properties'          : field.properties,
+        'required'            : field.required,
+        'additionalProperties': field.additionalProperties
+      };
+      field.type = 'array';
 
-        return true;
-      }
-      return false;
+      delete field.$schema;
+      delete field['@id'];
+      delete field.properties;
+      delete field.title;
+      delete field.description;
+      delete field.required;
+      delete field.additionalProperties;
+
+      return true;
     };
 
     $rootScope.propertiesOf = function (fieldOrElement) {
@@ -188,25 +185,27 @@ define([
     };
 
     $rootScope.uncardinalizeField = function (field) {
-      if (field.maxItems != 1 || !field.items) {
-        return false;
-      }
+      if ((typeof field.minItems == 'undefined' && typeof field.maxItems == 'undefined') || (field.minItems == 1 && field.maxItems == 1)) {
 
-      field.type = 'object';
+        field.type = 'object';
 
-      field.$schema = field.items.$schema;
-      field['@id'] = field.items["@id"];
-      field.properties = field.items.properties;
-      field.required = field.items.required;
-      field.additionalProperties = field.items.additionalProperties;
+        field.$schema = field.items.$schema;
+        field['@id'] = field.items["@id"];
+        field.properties = field.items.properties;
+        field.required = field.items.required;
+        field.additionalProperties = field.items.additionalProperties;
 
-      delete field.items;
+        delete field.items;
+        delete field.maxItems;
+        delete field.minItems;
 
-      return true;
+        return true;
+      } else return false;
     };
 
     $rootScope.isCardinalElement = function (element) {
-      return element.minItems && element.maxItems != 1;
+      //return element.minItems && element.maxItems != 1;
+      return (!(typeof element.minItems == 'undefined' && typeof element.maxItems == 'undefined') && !(element.minItems == 1 && element.maxItems == 1));
     };
 
     // If Max Items is N, its value will be 0, then need to remove it from schema
@@ -214,13 +213,7 @@ define([
     $rootScope.removeUnnecessaryMaxItems = function (properties) {
       angular.forEach(properties, function (value, key) {
         if (!$rootScope.ignoreKey(key)) {
-          if (!value.maxItems) {
-            delete value.maxItems;
-          }
-          if (value.minItems &&
-              value.minItems == 1 &&
-              value.maxItems &&
-              value.maxItems == 1) {
+          if (field.minItems == 1 && field.maxItems == 1) {
             delete value.minItems;
             delete value.maxItems;
           }
@@ -271,7 +264,8 @@ define([
         if (!$rootScope.ignoreKey(name)) {
           // We can tell we've reached an element level by its 'order' property
           if (value._ui && value._ui.order) {
-            min = value.minItems || 1;
+
+            min = value.minItems || 0;
 
             if ($rootScope.isCardinalElement(value)) {
               parentModel[name] = [];
@@ -282,7 +276,7 @@ define([
               parentModel[name] = {};
             }
           } else {
-            min = value.minItems || 1;
+            min = value.minItems || 0;
 
             // Assign empty field instance model to $scope.model only if it does not exist
             if (!parentModel[name]) {
@@ -331,8 +325,8 @@ define([
 
     $rootScope.scrollToAnchor = UIUtilService.scrollToAnchor;
 
-    var minCardinalities = DataManipulationService.generateCardinalities(8);
-    var maxCardinalities = DataManipulationService.generateCardinalities(8);
+    var minCardinalities = DataManipulationService.generateCardinalities(0, 8);
+    var maxCardinalities = DataManipulationService.generateCardinalities(1, 8);
     maxCardinalities.push({value: 0, label: "N"});
 
     $rootScope.minCardinalities = minCardinalities;

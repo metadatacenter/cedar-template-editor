@@ -67,7 +67,7 @@ define([
           TemplateElementService.getTemplateElement(elementId),
           function (response) {
             var newElement = response.data;
-            newElement.minItems = 1;
+            newElement.minItems = 0;
             newElement.maxItems = 1;
             $scope.staging[newElement['@id']] = newElement;
             $timeout(function () {
@@ -84,9 +84,10 @@ define([
 
     // Add new field into $scope.staging object
     service.addFieldToStaging = function ($scope, fieldType) {
+      console.debug('addFieldToStaging' + fieldType);
       this.addField();
       var field = DataManipulationService.generateField(fieldType);
-      field.minItems = 1;
+      field.minItems = 0;
       field.maxItems = 1;
 
       // If fieldtype can have multiple options, additional parameters on field object are necessary
@@ -106,9 +107,11 @@ define([
     };
 
     service.addFieldToForm = function (form, fieldType) {
+
       var field = DataManipulationService.generateField(fieldType);
-      field.minItems = 1;
-      field.maxItems = 1;
+      //field.minItems = 1;
+      //field.maxItems = 1;
+      console.debug('addFieldtoForm' + field.minItems + " " + field.maxItems);
       field.properties._tmp = field.properties._tmp || {};
       field.properties._tmp.state = "creating";
 
@@ -135,6 +138,8 @@ define([
       form.properties[fieldName] = field;
       form._ui.order = form._ui.order || [];
       form._ui.order.push(fieldName);
+
+      console.debug('addFieldtoForm' + field.minItems + ' ' + field.maxItems);
     }
 
     service.addElementToForm = function (form, elementId) {
@@ -207,7 +212,7 @@ define([
           TemplateElementService.getTemplateElement(elementId),
           function (response) {
             var el = response.data;
-            el.minItems = 1;
+            el.minItems = 0;
             el.maxItems = 1;
 
             var elProperties = DataManipulationService.getFieldProperties(el);
