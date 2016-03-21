@@ -10529,6 +10529,7 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
 .std-button:hover,
 .std-button:focus {
   background-color: #2f7dab;
+  color: #ffffff;
 }
 .std-button:focus {
   outline: none;
@@ -10546,33 +10547,6 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
 .controlled-term-options {
   float: none;
   width: 100%;
-}
-.controlled-term-options .btn-two-toggle .btn,
-.controlled-term-options .btn-create-class .btn,
-.controlled-term-options .btn-create-values .btn {
-  text-transform: uppercase;
-  padding: 12px 30px;
-  border: none;
-  -webkit-transition: all 0.3s 0.1s;
-          transition: all 0.3s 0.1s;
-  color: #ffffff;
-  background-color: #5795ba;
-  font-size: 14px;
-  letter-spacing: 0.03em;
-}
-.controlled-term-options .btn-two-toggle .btn:hover,
-.controlled-term-options .btn-create-class .btn:hover,
-.controlled-term-options .btn-create-values .btn:hover,
-.controlled-term-options .btn-two-toggle .btn:focus,
-.controlled-term-options .btn-create-class .btn:focus,
-.controlled-term-options .btn-create-values .btn:focus {
-  background-color: #2f7dab;
-}
-.controlled-term-options .btn-two-toggle .btn:focus,
-.controlled-term-options .btn-create-class .btn:focus,
-.controlled-term-options .btn-create-values .btn:focus {
-  outline: none;
-  box-shadow: none;
 }
 .controlled-term-options #field-value-tooltip {
   color: #cacacb;
@@ -10847,11 +10821,15 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   text-align: center;
 }
 div.dotted {
-  background-image: -webkit-linear-gradient(left, #5795ba 10%, rgba(255, 255, 255, 0) 0%);
-  background-image: linear-gradient(to right, #5795ba 10%, rgba(255, 255, 255, 0) 0%);
-  background-position: top;
-  background-size: 10px 2px;
-  background-repeat: repeat-x;
+  color: #5795ba;
+  font-size: 45px;
+}
+div.dotted .dashes {
+  position: relative;
+  top: 4px;
+  font-size: 70px;
+  padding-left: 18px;
+  padding-right: 18px;
 }
 p.instructions {
   text-align: center;
@@ -10885,6 +10863,11 @@ p.instructions {
 }
 .add-ontology-class div.mapping-tools {
   padding-left: 165px;
+}
+.add-ontology-class div.create-class-select {
+  width: 220px;
+  float: left;
+  padding-right: 20px;
 }
 .add-ontology-class div.map-existing-classes {
   padding: 20px;

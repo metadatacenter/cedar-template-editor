@@ -28,7 +28,7 @@
   </div>
   <div ng-if="cctopdc.includeCreateClass" class="field-create-class">
     <div class="input-group btn-create-class" style="width: 100%">
-      <button type="button" class="btn" style="width: 100%" ng-click="cctopdc.fieldCreateClass()">Create New Class</button>
+      <button type="button" class="std-button btn" style="width: 100%" ng-click="cctopdc.fieldCreateClass()">Create New Class</button>
     </div>
   </div>
 </div>
@@ -41,7 +41,7 @@
   <ng-include src="'scripts/control-term/create-ontology-class.html'"></ng-include>
   <div class="clear btn-create-class">
     <button type="button"
-            class="btn"
+            class="std-button btn"
             ng-click="pcc.saveAsFieldItem(pcc.provisionalClass)"
             ng-disabled="!pcc.isValid()">Create Class
     </button>
