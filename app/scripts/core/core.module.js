@@ -2,7 +2,6 @@
 
 define([
   'angular',
-  'cedar/template-editor/core/bootstrap',
   'cedar/template-editor/core/config',
   'cedar/template-editor/core/constants',
   'cedar/template-editor/core/run',

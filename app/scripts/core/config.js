@@ -7,16 +7,19 @@ define([
   angular.module('cedar.templateEditor.core.config', [])
       .config(cedarTemplateEditorCoreConfig);
 
-  cedarTemplateEditorCoreConfig.$inject = ['$routeProvider', '$locationProvider', '$translateProvider',
-                                           'toastyConfigProvider'];
+  cedarTemplateEditorCoreConfig.$inject = [
+    '$routeProvider',
+    '$locationProvider',
+    '$translateProvider',
+    'toastyConfigProvider'
+  ];
 
   function cedarTemplateEditorCoreConfig($routeProvider, $locationProvider, $translateProvider, toastyConfigProvider) {
 
     // configure routes
-    $routeProvider
-        .otherwise({
-          redirectTo: '/'
-        });
+    $routeProvider.otherwise({
+      redirectTo: '/'
+    });
 
     // configure translations
     $translateProvider.useStaticFilesLoader({

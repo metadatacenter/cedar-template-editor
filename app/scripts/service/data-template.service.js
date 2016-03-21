@@ -1,8 +1,11 @@
 'use strict';
 
 define([
-  'angular'
-], function(angular) {
+  'angular',
+  'json!resources/field-empty.json',
+  'json!resources/element-empty.json',
+  'json!resources/template-empty.json'
+], function(angular, emptyField, emptyElement, emptyTemplate) {
   angular.module('cedar.templateEditor.service.dataTemplateService', [])
     .service('DataTemplateService', DataTemplateService);
 
@@ -16,9 +19,9 @@ define([
     };
 
     service.init = function () {
-      dataTemplate.field = cedarBootstrap.getFileConfig(this.serviceId, 'resources/field-empty.json');
-      dataTemplate.element = cedarBootstrap.getFileConfig(this.serviceId, 'resources/element-empty.json');
-      dataTemplate.template = cedarBootstrap.getFileConfig(this.serviceId, 'resources/template-empty.json');
+      dataTemplate.field = emptyField;
+      dataTemplate.element = emptyElement;
+      dataTemplate.template = emptyTemplate;
     };
 
     service.getField = function (tempId) {

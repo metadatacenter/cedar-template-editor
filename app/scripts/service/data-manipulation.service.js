@@ -1,9 +1,9 @@
 'use strict';
-/*global cedarBootstrap */
 
 define([
-  'angular'
-], function(angular) {
+  'angular',
+  'json!config/data-manipulation-service.conf.json'
+], function(angular, config) {
   angular.module('cedar.templateEditor.service.dataManipulationService', [])
     .service('DataManipulationService', DataManipulationService);
 
@@ -11,7 +11,6 @@ define([
 
   function DataManipulationService(DataTemplateService, DataUtilService) {
 
-    var config = null;
     var schemaBase = null;
 
     // Base path to generate field ids
@@ -24,7 +23,6 @@ define([
     };
 
     service.init = function () {
-      config = cedarBootstrap.getBaseConfig(this.serviceId);
       schemaBase = config.schemaBase;
       idBasePath = config.idBasePath;
     };
