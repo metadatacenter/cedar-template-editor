@@ -161,6 +161,10 @@ define([
         delete $scope.invalidFieldValues[args[2]];
       }
     });
+
+    // Initialize value recommender service
+    $rootScope.vrs.init($routeParams.templateId);
+
   };
 
 });

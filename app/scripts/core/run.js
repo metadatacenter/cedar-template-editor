@@ -13,13 +13,13 @@ define([
                                         'FieldTypeService', 'UrlService', 'HeaderService', 'UIUtilService',
                                         'UserService', 'UserDataService', 'RichTextConfigService', 'CONST',
                                         'controlTermDataService', 'provisionalClassService', 'Cedar',
-                                        'UISettingsService'];
+                                        'UISettingsService', 'ValueRecommenderService'];
 
   function cedarTemplateEditorCoreRun($rootScope, controlTermService, $location, $timeout, $window, $sce, $translate,
                                       DataTemplateService, DataManipulationService, FieldTypeService, UrlService,
                                       HeaderService, UIUtilService, UserService, UserDataService, RichTextConfigService,
                                       CONST, controlTermDataService, provisionalClassService, Cedar,
-                                      UISettingsService) {
+                                      UISettingsService, ValueRecommenderService) {
 
     $rootScope.isArray = angular.isArray;
 
@@ -597,6 +597,8 @@ define([
     UserService.init(function () {
       UserDataService.readUserDetails();
     });
+
+    $rootScope.vrs = ValueRecommenderService;
 
     $rootScope.editorOptions = RichTextConfigService.getConfig("default");
 

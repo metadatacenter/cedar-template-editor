@@ -79,7 +79,9 @@
     "NotAvailable": "Not Available",
     "Deleted": "Deleted",
     "Warning": "Warning",
-    "Ok": "Ok"
+    "Ok": "Ok",
+    "Info": "Info",
+    "GoodNews" : "Good News!"
   },
   "SERVER": {
     "ELEMENT": {
@@ -190,6 +192,11 @@
     "save": {
       "nonEmptyStagingConfirm": "The staging area is not empty. If you save the template now, you will loose the content of the staging area! Are you sure you want to save the template this way?"
     }
+  },
+  "VALUERECOMMENDER": {
+    "noResults" : "No recommended values...",
+    "enabled" : "Value Recommendation for this template has been enabled",
+    "errorCallingService" : "Error calling Value Recommender service"
   },
   "VALIDATION": {
     "minBiggerThanMax": "Min cannot be greater than Max.",
