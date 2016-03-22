@@ -79,7 +79,9 @@
     "NotAvailable": "Not Available",
     "Deleted": "Deleted",
     "Warning": "Warning",
-    "Ok": "Ok"
+    "Ok": "Ok",
+    "Info": "Info",
+    "GoodNews" : "Good News!"
   },
   "SERVER": {
     "ELEMENT": {
@@ -192,7 +194,9 @@
     }
   },
   "VALUERECOMMENDER": {
-    "noResults" : "No recommended values..."
+    "noResults" : "No recommended values...",
+    "enabled" : "Value Recommendation for this template has been enabled",
+    "errorCallingService" : "Error calling Value Recommender service"
   },
   "VALIDATION": {
     "minBiggerThanMax": "Min cannot be greater than Max.",

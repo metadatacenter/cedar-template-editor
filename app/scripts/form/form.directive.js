@@ -8,9 +8,9 @@ define([
 
   // TODO: refactor to cedarFormDirective <cedar-form-directive>
 
-  formDirective.$inject = ['$rootScope', '$document', '$timeout', 'DataManipulationService', 'DataUtilService'];
+  formDirective.$inject = ['$rootScope', '$document', '$timeout', 'DataManipulationService', 'DataUtilService', 'ValueRecommenderService'];
 
-  function formDirective($rootScope, $document, $timeout, DataManipulationService, DataUtilService) {
+  function formDirective($rootScope, $document, $timeout, DataManipulationService, DataUtilService, ValueRecommenderService) {
     return {
       templateUrl: 'scripts/form/form.directive.html',
       restrict: 'E',
@@ -24,18 +24,13 @@ define([
       controller: function($scope) {
         $scope.model = $scope.model || {};
 
-        // Initializaing checkSubmission as false
+        // Initializing checkSubmission as false
         $scope.checkSubmission = false;
         $scope.pageIndex = $scope.pageIndex || 0;
 
         $scope.currentPage = [],
         $scope.pageIndex = 0,
         $scope.pagesArray = [];
-
-
-        $scope.valueRecommendations = true;
-
-
 
 
         var paginate = function() {
@@ -296,6 +291,7 @@ define([
         $scope.$on('formHasRequiredFields', function (event) {
           $scope.form.requiredFields = true;
         });
+
       }
     };
   };

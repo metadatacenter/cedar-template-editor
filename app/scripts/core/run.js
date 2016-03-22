@@ -600,7 +600,7 @@ define([
       UserDataService.readUserDetails();
     });
 
-    $rootScope.vrs = ValueRecommenderService.init();
+    $rootScope.vrs = ValueRecommenderService;
 
     $rootScope.editorOptions = RichTextConfigService.getConfig("default");
 
