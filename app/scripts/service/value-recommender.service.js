@@ -8,7 +8,6 @@ define(['angular'], function (angular) {
 
   function ValueRecommenderService($rootScope, $http, DataManipulationService, $translate, UrlService, UIMessageService) {
 
-    var base;
     var http_default_config = {};
     var isValueRecommendationEnabled = false;
     var valueRecommendationResults;
@@ -22,18 +21,13 @@ define(['angular'], function (angular) {
      * Initialize service
      */
     service.init = function (templateId) {
-      base = UrlService.valueRecommender();
+      valueRecommendationResults = [];
+      populatedFields = [];
       http_default_config = {
         'headers': {
           'Content-Type': 'application/json'
         }
       };
-      if (angular.isUndefined(valueRecommendationResults)) {
-        valueRecommendationResults = [];
-      }
-      if (angular.isUndefined(populatedFields)) {
-        populatedFields = [];
-      }
       // Set isValueRecommendationEnabled using the templateId
       service.hasInstances(templateId).then(function(results) {
         isValueRecommendationEnabled = results;
@@ -108,7 +102,7 @@ define(['angular'], function (angular) {
     }
 
     service.hasInstances = function(templateId) {
-      return $http.get(base + '/has-instances?template_id=' + templateId, http_default_config).then(function (response) {
+      return $http.get(UrlService.hasInstances(templateId), http_default_config).then(function (response) {
         return response.data;
       }).catch(function (err) {
         UIMessageService.showBackendError($translate.instant('VALUERECOMMENDER.errorCallingService'), err);
@@ -122,7 +116,7 @@ define(['angular'], function (angular) {
         inputData['populatedFields'] = populatedFields;
       }
       inputData['targetField'] = {'name': targetFieldName};
-      return $http.post(base + '/recommend', inputData, http_default_config).then(function (response) {
+      return $http.post(UrlService.getValueRecommendation(), inputData, http_default_config).then(function (response) {
         return response.data;
       }).catch(function (err) {
         UIMessageService.showBackendError($translate.instant('VALUERECOMMENDER.errorCallingService'), err);
