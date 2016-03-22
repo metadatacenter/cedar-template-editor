@@ -113,6 +113,14 @@ define([
       return valueRecommenderService;
     };
 
+    service.getValueRecommendation = function() {
+      return valueRecommenderService + '/recommend';
+    }
+
+    service.hasInstances = function(templateId) {
+      return valueRecommenderService + '/has-instances?template_id=' + templateId;
+    }
+
     service.bioontology = function () {
       return bioontologyService;
     };
