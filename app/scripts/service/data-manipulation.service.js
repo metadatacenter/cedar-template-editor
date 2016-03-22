@@ -1,9 +1,9 @@
 'use strict';
-/*global cedarBootstrap */
 
 define([
-  'angular'
-], function(angular) {
+  'angular',
+  'json!config/data-manipulation-service.conf.json'
+], function(angular, config) {
   angular.module('cedar.templateEditor.service.dataManipulationService', [])
     .service('DataManipulationService', DataManipulationService);
 
@@ -11,7 +11,6 @@ define([
 
   function DataManipulationService(DataTemplateService, DataUtilService) {
 
-    var config = null;
     var schemaBase = null;
 
     // Base path to generate field ids
@@ -24,7 +23,6 @@ define([
     };
 
     service.init = function () {
-      config = cedarBootstrap.getBaseConfig(this.serviceId);
       schemaBase = config.schemaBase;
       idBasePath = config.idBasePath;
     };
@@ -75,23 +73,22 @@ define([
     };
 
     service.cardinalizeField = function (field) {
-      if (field.minItems == 1 && field.maxItems == 1 || !field.minItems && !field.maxItems) {
+      console.debug('service.cardinalizeField ' +field.minItems + ' ' + field.maxItems);
+      if ((field.minItems == 1 && field.maxItems == 1) || (typeof field.minItems == 'undefined'  && typeof field.maxItems == 'undefined')) {
+        console.debug('service.cardinalizeField false');
         return false;
       }
-      if (!field.maxItems ||                  // special 'N' case
-          (field.maxItems && field.maxItems > 1) || // has maxItems of more than 1
-          (field.minItems && field.minItems > 1)) { // has minItems of more than 1
-        field.items = {
-          'type'                : field.type,
-          '@id'                 : field['@id'],
-          '$schema'             : field.$schema,
-          'title'               : field.properties._ui.title,
-          'description'         : field.properties._ui.description,
-          'properties'          : field.properties,
-          'required'            : field.required,
-          'additionalProperties': field.additionalProperties
-        };
-        field.type = 'array';
+      field.items = {
+        'type'                : field.type,
+        '@id'                 : field['@id'],
+        '$schema'             : field.$schema,
+        'title'               : field.properties._ui.title,
+        'description'         : field.properties._ui.description,
+        'properties'          : field.properties,
+        'required'            : field.required,
+        'additionalProperties': field.additionalProperties
+      };
+      field.type = 'array';
 
         delete field.$schema;
         delete field['@id'];
@@ -101,13 +98,11 @@ define([
         delete field.required;
         delete field.additionalProperties;
 
-        return true;
-      }
-      return false;
+      return true;
     };
 
     service.isCardinalElement = function (element) {
-      return element.minItems && element.maxItems != 1;
+      return element.type == 'array';
     };
 
     // If Max Items is N, its value will be 0, then need to remove it from schema
@@ -115,13 +110,7 @@ define([
     service.removeUnnecessaryMaxItems = function (properties) {
       angular.forEach(properties, function (value, key) {
         if (!DataUtilService.isSpecialKey(key)) {
-          if (!value.maxItems) {
-            delete value.maxItems;
-          }
-          if (value.minItems &&
-              value.minItems == 1 &&
-              value.maxItems &&
-              value.maxItems == 1) {
+          if (value.minItems == 1 && value.maxItems == 1) {
             delete value.minItems;
             delete value.maxItems;
           }
@@ -146,9 +135,9 @@ define([
       field.properties._ui.options.push(emptyOption);
     };
 
-    service.generateCardinalities = function (max) {
+    service.generateCardinalities = function (min, max) {
       var results = [];
-      for (var i = 1; i <= max; i++) {
+      for (var i = min; i <= max; i++) {
         results.push({value: i, label: i});
       }
 
@@ -172,7 +161,8 @@ define([
     }
 
     service.elementIsMultiInstance = function (element) {
-      return element.hasOwnProperty('minItems') && !angular.isUndefined(element.minItems);
+      //return element.hasOwnProperty('minItems') && !angular.isUndefined(element.minItems);
+      return element.hasOwnProperty('maxItems') && !angular.isUndefined(element.maxItems) && element.maxItems != 1;
     };
 
     // Transform string to obtain JSON field name

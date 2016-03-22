@@ -159,11 +159,27 @@ define([
         }
         scope.addElement = function() {
           if ($rootScope.isRuntime()) {
-            if (scope.element.minItems && (!scope.element.maxItems || scope.model.length < scope.element.maxItems)) {
-              var seed = angular.copy(scope.model[0]);
+            if ((!scope.element.maxItems || scope.model.length < scope.element.maxItems)) {
+              var seed = {};
 
-              resetElement(seed, scope.element);
-              scope.model.push(seed);
+              if (scope.model.length > 0) {
+                seed = angular.copy(scope.model[0]);
+                resetElement(seed, scope.element);
+                scope.model.push(seed);
+              } else {
+                scope.model.push(seed);
+                if (angular.isArray(scope.model)) {
+                  angular.forEach(scope.model, function (m) {
+                    $rootScope.findChildren($rootScope.propertiesOf(scope.element), m);
+                  });
+                } else {
+                  $rootScope.findChildren($rootScope.propertiesOf(scope.element), scope.model);
+                }
+                resetElement(seed, scope.element);
+              }
+              //resetElement(seed, scope.element);
+              //scope.model.push(seed);
+
             }
           }
         }
@@ -220,6 +236,14 @@ define([
             scope.element.minItems = 1;
             scope.element.maxItems = 1;
           }
+
+          if (typeof scope.element.maxItems == 'undefined') {
+            scope.element.maxItems = 1;
+          }
+          if (typeof scope.element.minItems == 'undefined') {
+            scope.element.minItems = 1;
+          }
+
 
           if (scope.element.maxItems == 1) {
             if (scope.element.items) {

@@ -210,7 +210,7 @@ define([
             if (!DataUtilService.isSpecialKey(name)) {
               // We can tell we've reached an element level by its 'order' property
               if (value._ui && value._ui.order) {
-                var min = value.minItems || 1;
+                var min = value.minItems || 0;
 
                 // Handle position and nesting within $scope.model if it does not exist
                 if (!DataManipulationService.isCardinalElement(value)) {
@@ -231,7 +231,7 @@ define([
                   $scope.parseForm($rootScope.propertiesOf(value), parentModel[name], name);
                 }
               } else {
-                var min = value.minItems || 1;
+                var min = value.minItems || 0;
 
                 // Assign empty field instance model to $scope.model only if it does not exist
                 if (parentModel[name] == undefined) {

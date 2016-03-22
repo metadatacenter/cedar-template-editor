@@ -2,8 +2,9 @@
 
 
 define([
-  'angular'
-], function (angular) {
+  'angular',
+  'json!config/rich-text-config-service.conf.json'
+], function (angular, config) {
   angular.module('cedar.templateEditor.service.richTextConfigService', [])
       .service('RichTextConfigService', RichTextConfigService);
 
@@ -11,7 +12,6 @@ define([
 
   function RichTextConfigService($rootScope) {
 
-    var config = null;
     var richTextConfigs = [];
 
     var service = {
@@ -19,7 +19,6 @@ define([
     };
 
     service.init = function () {
-      config = cedarBootstrap.getBaseConfig(this.serviceId);
       richTextConfigs = config;
     };
 

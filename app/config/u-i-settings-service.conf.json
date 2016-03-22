@@ -1,0 +1,120 @@
+{
+  "settingsMenu": [
+    {
+      "type": "menuItem",
+      "labelKey": "menu.settings.settings",
+      "iconCssClass": "svg-icon-settings",
+      "path": "/settings"
+    },
+    {
+      "type": "menuItem",
+      "labelKey": "menu.settings.help-and-feedback",
+      "iconCssClass": "svg-icon-help",
+      "path": "/help"
+    },
+    {
+      "type": "menuSeparator",
+      "labelKey": "menu.settings.user"
+    },
+    {
+      "type": "menuItem",
+      "labelKey": "menu.settings.profile",
+      "iconCssClass": "svg-icon-profile",
+      "path": "/profile"
+    },
+    {
+      "type": "menuItem",
+      "labelKey": "menu.settings.signout",
+      "iconCssClass": "svg-icon-signout",
+      "path": "/logout"
+    }
+  ],
+  "listView": {
+    "headers": [
+      {
+        "labelKey": "view.list.name",
+        "dataPath": "_ui.title",
+        "displayType": "data",
+        "dataType": "string",
+        "canOrder": true,
+        "orderParamName": "name",
+        "linkAction": "resource"
+      },
+      {
+        "labelKey": "view.list.owner",
+        "dataPath": "prov.owner.name",
+        "displayType": "data",
+        "dataType": "string",
+        "canOrder": true,
+        "orderParamName": "owner",
+        "linkAction": "user"
+      },
+      {
+        "labelKey": "view.list.changed",
+        "dataPath": "prov.lastchanged",
+        "displayType": "data",
+        "dataType": "date",
+        "canOrder": true,
+        "orderParamName": "lastchanged",
+        "linkAction": null
+      },
+      {
+        "displayType": "icon",
+        "canOrder": false,
+        "iconCssClass": "icon-svg-info",
+        "linkAction": "info"
+      },
+      {
+        "displayType": "icon",
+        "canOrder": false,
+        "iconCssClass": "icon-svg-edit",
+        "linkAction": "resource"
+      }
+    ]
+  },
+  "populateAForm": {
+    "countOnDashboard": 4,
+    "pageSizeOnModal": 50,
+    "dataPaths": {
+      "id": "@id",
+      "title": "_ui.title",
+      "description": "_ui.description"
+    }
+  },
+  "resourceTypeFilters": [
+    {
+      "resourceType": "field",
+      "labelKey": "view.resourceTypeFilter.field"
+    },
+    {
+      "resourceType": "element",
+      "labelKey": "view.resourceTypeFilter.element"
+    },
+    {
+      "resourceType": "template",
+      "labelKey": "view.resourceTypeFilter.template"
+    },
+    {
+      "resourceType": "instance",
+      "labelKey": "view.resourceTypeFilter.instance"
+    }
+  ],
+  "orderDropdown": [
+    {
+      "labelKey": "view.orderDropdown.name",
+      "dataName": "name"
+    },
+    {
+      "labelKey": "view.orderDropdown.dateModified",
+      "dataName": "dateModified"
+    },
+    {
+      "labelKey": "view.orderDropdown.dateCreated",
+      "dataName": "dateCreated"
+    },
+    {
+      "labelKey": "view.orderDropdown.relevance",
+      "dataName": "relevance"
+    }
+  ]
+}

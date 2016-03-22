@@ -20,6 +20,8 @@ define([
   'cedar/template-editor/service/user-data.service',
   'cedar/template-editor/service/rich-text-config.service',
   'cedar/template-editor/service/value-recommender.service',
+  'cedar/template-editor/service/cedar',
+  'cedar/template-editor/service/ui-settings.service'
 ], function(angular) {
   angular.module('cedar.templateEditor.service', [
     'cedar.templateEditor.service.clientSideValidationService',
@@ -40,5 +42,7 @@ define([
     'cedar.templateEditor.service.userDataService',
     'cedar.templateEditor.service.richTextConfigService',
     'cedar.templateEditor.service.valueRecommenderService',
+    'cedar.templateEditor.service.cedar',
+    'cedar.templateEditor.service.uISettingsService'
   ]);
 });

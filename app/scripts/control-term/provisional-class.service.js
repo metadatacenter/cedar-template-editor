@@ -1,8 +1,9 @@
 'use strict';
 
 define([
-  'angular'
-], function(angular) {
+  'angular',
+  'json!config/provisional-class-service.conf.json'
+], function(angular, config) {
   angular.module('cedar.templateEditor.controlTerm.provisionalClassService', [])
     .factory('provisionalClassService', provisionalClassService);
 
@@ -11,7 +12,6 @@ define([
   function provisionalClassService($http, $q, UrlService) {
     var apiKey              = null;
     var base                = null;
-    var config              = null;
     var http_default_config = {};
 
     var service = {
@@ -31,7 +31,6 @@ define([
      * Initialize service.
      */
     function init() {
-      config = cedarBootstrap.getBaseConfig(this.serviceId);
       apiKey = config.apiKey;
       base = UrlService.terminology();
       http_default_config = {

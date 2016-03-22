@@ -5,7 +5,7 @@
   <div>
     <ul>
       <li>
-        {{$root.currentUser.id}}
+        {{$root.cedar.getUserId()}}
       </li>
     </ul>
   </div>
@@ -15,34 +15,75 @@
 
   <div>
     <ul>
-      <li>{{$root.currentUser.email}}</li>
+      <li>{{$root.cedar.getEmail()}}</li>
     </ul>
   </div>
   <hr/>
 
   <h4 translate="" class="section-title ng-scope">Name:</h4>
 
-  <div>
+  <div ng-if="$root.cedar.isCedarProfileAvailable()">
     <ul>
-      <li>{{$root.currentUser.name}}</li>
+      <li>{{$root.cedar.getScreenName()}}</li>
     </ul>
   </div>
   <hr/>
 
   <h4 translate="" class="section-title ng-scope">API Keys:</h4>
 
-  <div>
+  <div ng-if="$root.cedar.isCedarProfileAvailable()">
     <ul>
-      <li ng-repeat="apiKey in $root.currentUser.apiKeys">{{apiKey}}</li>
+      <li ng-repeat="apiKey in $root.cedar.getApiKeys()">
+        {{apiKey.serviceName}}
+        <table class="apiKey">
+          <tr>
+            <td>Service name:</td>
+            <td>{{apiKey.serviceName}}</td>
+          </tr>
+          <tr>
+            <td>Description:</td>
+            <td>{{apiKey.description}}</td>
+          </tr>
+          <tr>
+            <td>Enabled:</td>
+            <td>{{apiKey.enabled}}</td>
+          </tr>
+          <tr>
+            <td>Key:</td>
+            <td>{{apiKey.key}}</td>
+          </tr>
+          <tr>
+            <td>Usage from REST client:</td>
+            <td>Set the <b>Authorization</b> header in the REST calls to: <pre>apiKey {{apiKey.key}}</pre></td>
+          </tr>
+          <tr>
+            <td>Sample usage with CURL:</td>
+            <td><pre>curl -H "Content-Type: application/json" \<br/>-H "Authorization: apiKey {{apiKey.key}}" \<br/>-X GET {{urlService.base()}}/template-fields</pre></td>
+          </tr>
+          <!--<tr>
+            <td>REST API Documentation:</td>
+            <td><a href="{{urlService.base()}}">{{urlService.base()}}/</a></td>
+          </tr>-->
+        </table>
+      </li>
     </ul>
   </div>
   <hr/>
 
   <h4 translate="" class="section-title ng-scope">Roles:</h4>
 
-  <div>
+  <div ng-if="$root.cedar.isCedarProfileAvailable()">
     <ul>
-      <li ng-repeat="roleName in $root.currentUser.roles">{{roleName}}</li>
+      <li ng-repeat="roleName in $root.cedar.getRoles()">{{roleName}}</li>
+    </ul>
+  </div>
+  <hr/>
+
+  <h4 translate="" class="section-title ng-scope">Permissions:</h4>
+
+  <div ng-if="$root.cedar.isCedarProfileAvailable()">
+    <ul>
+      <li ng-repeat="permissionName in $root.cedar.getPermissions()">{{permissionName}}</li>
     </ul>
   </div>
   <hr/>
