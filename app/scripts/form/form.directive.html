@@ -1,5 +1,5 @@
 <form name="templateForm" id="{{form['@id']}}" class="runtime" ng-class="{'validate': checkSubmission}" novalidate>
-  <!--Loop through top level "page" parameter in form element and call element-directive or field-directive with contents -->
+  <!--Loop through top level "page" parameter in form element and call cedar-template-element or field-directive with contents -->
   <div class="page" ng-repeat="page in pagesArray" ng-if="$root.isRuntime()">
     <div ng-repeat="item in page" class="animate-fade" ng-show="pageIndex == $parent.$index">
       <span ng-if="form.properties[item]">
@@ -7,7 +7,11 @@
           <field-directive field="form.properties[item]" model="model[item]" delete="removeChild(form.properties[item])" rename-child-key="renameChildKey"></field-directive>
         </div>
         <div class="element-group full" ng-if="form.properties[item] && !$root.propertiesOf(form.properties[item])._ui.inputType">
-          <element-directive element="form.properties[item]" key="item" model="model[item]" delete="removeChild(form.properties[item])"></element-directive>
+          <cedar-template-element element="form.properties[item]"
+                                  key="item"
+                                  model="model[item]"
+                                  delete="removeChild(form.properties[item])">
+          </cedar-template-element>
         </div>
       </span>
     </div>
@@ -21,7 +25,12 @@
           <field-directive field="form.properties[item]" model="model[item]" delete="removeChild(form.properties[item])" rename-child-key="renameChildKey"></field-directive>
         </div>
         <div class="element-group full" ng-if="form.properties[item] && !$root.propertiesOf(form.properties[item])._ui.inputType">
-          <element-directive element="form.properties[item]" key="item" model="model[item]" delete="removeChild(form.properties[item])" is-root-element="hideRootElement"></element-directive>
+          <cedar-template-element element="form.properties[item]" 
+                         key="item"
+                         model="model[item]"
+                         delete="removeChild(form.properties[item])"
+                         is-root-element="hideRootElement">
+          </cedar-template-element>
         </div>
       </span>
     </div>
