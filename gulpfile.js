@@ -204,6 +204,7 @@ gulp.task('replace-url', function () {
       .pipe(replace('userServerUrl', 'https://user.' + environmentName))
       .pipe(replace('terminologyServerUrl', 'https://terminology.' + environmentName))
       .pipe(replace('resourceServerUrl', 'https://resource.' + environmentName))
+      .pipe(replace('valueRecommenderServerUrl', 'https://valuerecommender.' + environmentName))
       .pipe(gulp.dest('app/config/'));
 });
 

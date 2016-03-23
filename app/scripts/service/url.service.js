@@ -15,6 +15,7 @@ define([
     var userService = null;
     var terminologyService = null;
     var resourceService = null;
+    var valueRecommenderService = null;
     var bioontologyService = null;
 
     var service = {
@@ -26,6 +27,7 @@ define([
       userService = config.userRestAPI;
       terminologyService = config.terminologyRestAPI;
       resourceService = config.resourceRestAPI;
+      valueRecommenderService = config.valueRecommenderRestAPI;
       bioontologyService = config.bioontologyRestAPI;
     };
 
@@ -108,6 +110,18 @@ define([
     service.terminology = function () {
       return terminologyService;
     };
+
+    service.valueRecommender = function () {
+      return valueRecommenderService;
+    };
+
+    service.getValueRecommendation = function() {
+      return valueRecommenderService + '/recommend';
+    }
+
+    service.hasInstances = function(templateId) {
+      return valueRecommenderService + '/has-instances?template_id=' + templateId;
+    }
 
     service.bioontology = function () {
       return bioontologyService;
