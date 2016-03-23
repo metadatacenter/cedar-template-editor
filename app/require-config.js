@@ -7,6 +7,7 @@ require.config({
 
     'lib'       : 'bower_components',
     'lib/custom': 'cedar/scripts',
+    '3rdparty'  : 'third_party_components',
 
     'app'                  : 'scripts/app',
     'cedar/template-editor': 'scripts',
@@ -29,6 +30,11 @@ require.config({
     'lib/angular-toasty/dist/angular-toasty'                                         : ['angular'],
     'lib/angular-ui-select/dist/select'                                              : ['angular'],
     'lib/angular-ui-sortable/sortable'                                               : ['angular'],
+
+    '3rdparty/angular-fitvids/angular-fitvids': {
+      deps   : ['angular','jquery'],
+      exports: 'fitVids'
+    },
 
     'lib/ng-ckeditor/ng-ckeditor': ['angular', 'ckeditor']
     ,

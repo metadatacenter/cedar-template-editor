@@ -267,6 +267,15 @@ define([
           p._tmp.state = "creating";
         };
 
+        scope.getYouTubeEmbedFrame = function () {
+          // <iframe width="560" height="315" src="https://www.youtube.com/embed/qxH8npLQizo" frameborder="0" allowfullscreen></iframe>
+          var width = ($rootScope.propertiesOf(scope.element)._size && $rootScope.propertiesOf(scope.element)._size.width) || 560;
+          var height = ($rootScope.propertiesOf(scope.element)._size && $rootScope.propertiesOf(scope.element)._size.height) || 315;
+          var result = '<iframe width="' + width + '" height="' + height + '" src="https://www.youtube.com/embed/' + $rootScope.propertiesOf(scope.element)._content + '" frameborder="0" allowfullscreen></iframe>';
+          console.log(result);
+          return $sce.trustAsHtml(result);
+        };
+
         scope.renameChildKey = function(child, newKey) {
           if (!child) {
             return;
