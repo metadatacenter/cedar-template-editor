@@ -1,7 +1,7 @@
 'use strict';
 
 var CreateElementPage = require('../pages/create-element-page.js');
-var _ = require('../libs/lodash.min.js');
+var _ = require('../libs/lodash.min.js')
 
 describe('create-element', function() {
 
