@@ -203,6 +203,7 @@ gulp.task('replace-url', function () {
       .pipe(replace('templateServerUrl', 'https://template.' + environmentName))
       .pipe(replace('userServerUrl', 'https://user.' + environmentName))
       .pipe(replace('terminologyServerUrl', 'https://terminology.' + environmentName))
+      .pipe(replace('resourceServerUrl', 'https://resource.' + environmentName))
       .pipe(gulp.dest('app/config/'));
 });
 

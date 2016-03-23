@@ -2,5 +2,6 @@
   "cedarRestAPI": "templateServerUrl",
   "userRestAPI": "userServerUrl",
   "terminologyRestAPI": "terminologyServerUrl",
+  "resourceRestAPI": "resourceServerUrl",
   "bioontologyRestAPI": "https://data.bioontology.org/"
 }
