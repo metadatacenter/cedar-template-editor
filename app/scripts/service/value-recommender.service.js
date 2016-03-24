@@ -105,7 +105,8 @@ define(['angular'], function (angular) {
       return $http.get(UrlService.hasInstances(templateId), http_default_config).then(function (response) {
         return response.data;
       }).catch(function (err) {
-        UIMessageService.showBackendError($translate.instant('VALUERECOMMENDER.errorCallingService'), err);
+        //UIMessageService.showBackendError($translate.instant('VALUERECOMMENDER.errorCallingService'), err);
+        console.log($translate.instant('VALUERECOMMENDER.errorCallingService'));
       });
     }
 

@@ -14,6 +14,7 @@ define([
     var apiService = null;
     var userService = null;
     var terminologyService = null;
+    var resourceService = null;
     var valueRecommenderService = null;
     var bioontologyService = null;
 
@@ -25,6 +26,7 @@ define([
       apiService = config.cedarRestAPI;
       userService = config.userRestAPI;
       terminologyService = config.terminologyRestAPI;
+      resourceService = config.resourceRestAPI;
       valueRecommenderService = config.valueRecommenderRestAPI;
       bioontologyService = config.bioontologyRestAPI;
     };
@@ -123,6 +125,14 @@ define([
 
     service.bioontology = function () {
       return bioontologyService;
+    };
+
+    service.resourceBase = function() {
+      return resourceService;
+    };
+
+    service.folders = function() {
+      return resourceService + "/folders";
     };
 
     return service;

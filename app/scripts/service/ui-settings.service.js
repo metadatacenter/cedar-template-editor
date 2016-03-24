@@ -40,8 +40,8 @@ define([
       console.log(this.getPopulateAForm());
       console.log("Use UISettingsService.getResourceTypeFilters() to get the list of menu items:");
       console.log(this.getResourceTypeFilters());
-      console.log("Use UISettingsService.getOrderDropdown() to get the list of menu items:");
-      console.log(this.getOrderDropdown());
+      console.log("Use UISettingsService.getOrderOptions() to get the list of menu items:");
+      console.log(this.getOrderOptions());
     };
 
     service.getSettingsMenuItems = function () {
@@ -60,7 +60,7 @@ define([
       return resourceTypeFilters;
     };
 
-    service.getOrderDropdown = function () {
+    service.getOrderOptions = function () {
       return orderDropdown;
     };
 

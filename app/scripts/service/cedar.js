@@ -59,6 +59,10 @@ define([
       return getAppData().cedarUserProfile.permissions;
     };
 
+    service.getHome = function() {
+      return getAppData().homePath;
+    };
+
     return service;
   };
 });
