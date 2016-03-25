@@ -12,7 +12,7 @@ var createElementUrl = 'https://cedar.metadatacenter.orgx/elements/create';
 var CreateElementPage = function () {
   browser.get(createElementUrl);
   // wait until loaded - should use EC for this
-  browser.sleep(2000);
+  browser.sleep(5000);
 };
 
 CreateElementPage.prototype = Object.create({}, {
