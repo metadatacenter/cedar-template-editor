@@ -1,7 +1,18 @@
 'use strict';
 
+var createElementUrl = 'https://cedar.metadatacenter.orgx/elements/create';
+
+// var EC = protractor.ExpectedConditions;
+// var urlChanged = function() {
+//   return browser.getCurrentUrl().then(function(url) {
+//     return url == createElementUrl;
+//   });
+// };
+
 var CreateElementPage = function () {
-  browser.get('https://cedar.metadatacenter.orgx/elements/create');
+  browser.get(createElementUrl);
+  // wait until loaded - should use EC for this
+  browser.sleep(2000);
 };
 
 CreateElementPage.prototype = Object.create({}, {

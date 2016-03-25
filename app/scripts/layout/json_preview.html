@@ -1,6 +1,6 @@
 <div ng-show="$root.showRender" id="templateJSON">
   <h5>Template JSON</h5>
-  <pre>{{ ($root.jsonToSave || form) | json }}</pre>
+  <pre id='form-json-preview'>{{ ($root.jsonToSave || form) | json }}</pre>
 </div>
 <div ng-show="$root.showOutput" id="outputJSON">
   <h5>Output JSON</h5>
