@@ -583,15 +583,6 @@ define([
       return $sce.trustAsHtml($rootScope.propertiesOf(field)._content);
     };
 
-    $rootScope.getYouTubeEmbedFrame = function (field) {
-      // <iframe width="560" height="315" src="https://www.youtube.com/embed/qxH8npLQizo" frameborder="0" allowfullscreen></iframe>
-      var width = ($rootScope.propertiesOf(field)._size && $rootScope.propertiesOf(field)._size.width) || 560;
-      var height = ($rootScope.propertiesOf(field)._size && $rootScope.propertiesOf(field)._size.height) || 315;
-      var result = '<iframe width="' + width + '" height="' + height + '" src="https://www.youtube.com/embed/' + $rootScope.propertiesOf(field)._content + '" frameborder="0" allowfullscreen></iframe>';
-      console.log(result);
-      return $sce.trustAsHtml(result);
-    };
-
 
     Cedar.init();
     $rootScope.cedar = Cedar;

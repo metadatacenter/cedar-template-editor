@@ -2,16 +2,17 @@
 
 define([
   'angular'
-], function(angular) {
+], function (angular) {
   angular.module('cedar.templateEditor.form.fieldDirective', [])
-    .directive('fieldDirective', fieldDirective);
+      .directive('fieldDirective', fieldDirective);
 
   // TODO: refactor to cedarFieldDirective <cedar-field-directive>
 
-  fieldDirective.$inject = ["$rootScope", "$http", "$compile", "$document", "SpreadsheetService", "DataManipulationService"];
+  fieldDirective.$inject = ["$rootScope", "$sce", "$http", "$compile", "$document", "SpreadsheetService",
+                            "DataManipulationService"];
 
-  function fieldDirective($rootScope, $http, $compile, $document, SpreadsheetService, DataManipulationService) {
-    var linker = function($scope, $element, attrs) {
+  function fieldDirective($rootScope, $sce, $http, $compile, $document, SpreadsheetService, DataManipulationService) {
+    var linker = function ($scope, $element, attrs) {
 
       // if (!$rootScope.propertiesOf($scope.field)._tmp.state) {
       //   if ($rootScope.propertiesOf($scope.field)._ui.title) {
@@ -21,7 +22,7 @@ define([
       //   }
       // }
 
-      var setDirectory = function() {
+      var setDirectory = function () {
         var p = $rootScope.propertiesOf($scope.field);
         var state = p._tmp && p._tmp.state || "completed";
 
@@ -33,7 +34,7 @@ define([
       }
       setDirectory();
 
-      $scope.setValueType = function() {
+      $scope.setValueType = function () {
         var properties = $rootScope.propertiesOf($scope.field);
         var typeEnum = properties['@type'].oneOf[0].enum;
         if (angular.isDefined(typeEnum) && angular.isArray(typeEnum)) {
@@ -45,7 +46,7 @@ define([
         }
       }
 
-      var parseField = function() {
+      var parseField = function () {
         if (!$rootScope.isRuntime() && $scope.field) {
           // $scope.model = $scope.model || {};
           // $rootScope.findChildren($rootScope.propertiesOf($scope.field), $scope.model);
@@ -94,12 +95,12 @@ define([
             if ($scope.model.length < min) {
               allRequiredFieldsAreFilledIn = false;
             } else {
-              angular.forEach($scope.model, function(valueElement) {
+              angular.forEach($scope.model, function (valueElement) {
                 if (!valueElement || !valueElement._value) {
                   allRequiredFieldsAreFilledIn = false;
                 } else if (angular.isArray(valueElement._value)) {
                   var hasValue = false;
-                  angular.forEach(valueElement._value, function(ve) {
+                  angular.forEach(valueElement._value, function (ve) {
                     hasValue = hasValue || !!ve;
                   });
 
@@ -116,7 +117,7 @@ define([
                   } else {
                     // Require at least one checkbox is checked.
                     var hasValue = false;
-                    angular.forEach(valueElement._value, function(value, key) {
+                    angular.forEach(valueElement._value, function (value, key) {
                       hasValue = hasValue || value;
                     });
 
@@ -133,7 +134,7 @@ define([
               allRequiredFieldsAreFilledIn = false;
             } else if (angular.isArray($scope.model._value)) {
               var hasValue = false;
-              angular.forEach($scope.model._value, function(ve) {
+              angular.forEach($scope.model._value, function (ve) {
                 hasValue = hasValue || !!ve;
               });
 
@@ -150,7 +151,7 @@ define([
               } else {
                 // Require at least one checkbox is checked.
                 var hasValue = false;
-                angular.forEach($scope.model._value, function(value, key) {
+                angular.forEach($scope.model._value, function (value, key) {
                   hasValue = hasValue || value;
                 });
 
@@ -177,28 +178,32 @@ define([
         if ($rootScope.hasValueConstraint($rootScope.propertiesOf($scope.field)._valueConstraints)) {
 
           if (angular.isArray($scope.model)) {
-            angular.forEach($scope.model, function(valueElement) {
+            angular.forEach($scope.model, function (valueElement) {
               if (angular.isArray(valueElement._value)) {
-                angular.forEach(valueElement._value, function(ve) {
-                  if (!$rootScope.isValueConformedToConstraint(ve, $scope.field["@id"], $rootScope.propertiesOf($scope.field)._valueConstraints)) {
+                angular.forEach(valueElement._value, function (ve) {
+                  if (!$rootScope.isValueConformedToConstraint(ve, $scope.field["@id"],
+                          $rootScope.propertiesOf($scope.field)._valueConstraints)) {
                     allFieldsAreValid = false;
                   }
                 });
               } else if (angular.isObject(valueElement._value)) {
-                if (!$rootScope.isValueConformedToConstraint(valueElement._value, $scope.field["@id"], $rootScope.propertiesOf($scope.field)._valueConstraints)) {
+                if (!$rootScope.isValueConformedToConstraint(valueElement._value, $scope.field["@id"],
+                        $rootScope.propertiesOf($scope.field)._valueConstraints)) {
                   allFieldsAreValid = false;
                 }
               }
             });
           } else {
             if (angular.isArray($scope.model._value)) {
-              angular.forEach($scope.model._value, function(ve) {
-                if (!$rootScope.isValueConformedToConstraint(ve, $scope.field["@id"], $rootScope.propertiesOf($scope.field)._valueConstraints)) {
+              angular.forEach($scope.model._value, function (ve) {
+                if (!$rootScope.isValueConformedToConstraint(ve, $scope.field["@id"],
+                        $rootScope.propertiesOf($scope.field)._valueConstraints)) {
                   allFieldsAreValid = false;
                 }
               });
             } else if (angular.isObject($scope.model._value)) {
-              if (!$rootScope.isValueConformedToConstraint($scope.model._value, $scope.field["@id"], $rootScope.propertiesOf($scope.field)._valueConstraints)) {
+              if (!$rootScope.isValueConformedToConstraint($scope.model._value, $scope.field["@id"],
+                      $rootScope.propertiesOf($scope.field)._valueConstraints)) {
                 allFieldsAreValid = false;
               }
             }
@@ -216,12 +221,14 @@ define([
         }
       });
 
-      $scope.$on("saveForm", function() {
+      $scope.$on("saveForm", function () {
         var p = $rootScope.propertiesOf($scope.field);
         if (p._tmp && p._tmp.state == "creating") {
-          $scope.$emit("invalidFieldState", ["add", $rootScope.propertiesOf($scope.field)._ui.title, $scope.field["@id"]]);
+          $scope.$emit("invalidFieldState",
+              ["add", $rootScope.propertiesOf($scope.field)._ui.title, $scope.field["@id"]]);
         } else {
-          $scope.$emit("invalidFieldState", ["remove", $rootScope.propertiesOf($scope.field)._ui.title, $scope.field["@id"]]);
+          $scope.$emit("invalidFieldState",
+              ["remove", $rootScope.propertiesOf($scope.field)._ui.title, $scope.field["@id"]]);
         }
       });
 
@@ -255,7 +262,7 @@ define([
                 }
               }
             } else {
-              angular.forEach($scope.model, function(m, i) {
+              angular.forEach($scope.model, function (m, i) {
                 if (!("_value" in m)) {
                   if (field.defaultOption) {
                     $scope.model[i]["_value"] = angular.copy(field.defaultOption);
@@ -296,7 +303,7 @@ define([
       $scope.uuid = DataManipulationService.generateTempGUID();
 
       // Retrive appropriate field template file
-      $scope.getTemplateUrl = function() {
+      $scope.getTemplateUrl = function () {
         var inputType = 'element';
         if ($rootScope.propertiesOf($scope.field)._ui.inputType) {
           inputType = $rootScope.propertiesOf($scope.field)._ui.inputType;
@@ -305,7 +312,7 @@ define([
         return 'scripts/form/field-' + $scope.directory + '/' + inputType + '.html';
       }
 
-      $scope.addMoreInput = function() {
+      $scope.addMoreInput = function () {
         console.debug('addMoreItems' + $scope.model.length + " " + $scope.field.maxItems);
 
         if ((!$scope.field.maxItems || $scope.model.length < $scope.field.maxItems)) {
@@ -331,7 +338,7 @@ define([
         }
       }
 
-      $scope.removeInput = function(index) {
+      $scope.removeInput = function (index) {
         var min = $scope.field.minItems || 0;
         if ($scope.model.length > min) {
           $scope.model.splice(index, 1);
@@ -342,9 +349,9 @@ define([
         SpreadsheetService.switchToSpreadsheetField($scope, $element);
       }
 
-      $scope.$watch("modelValue", function(newValue, oldValue) {
+      $scope.$watch("modelValue", function (newValue, oldValue) {
         if ($rootScope.isArray($scope.model)) {
-          angular.forEach($scope.modelValue, function(m, i) {
+          angular.forEach($scope.modelValue, function (m, i) {
             if (m && m._value && m._value["@id"]) {
               $scope.model[i]._value = m._value["id"];
               $scope.model[i]._valueLabel = m._value.label;
@@ -366,7 +373,7 @@ define([
 
       $scope.checkFieldConditions = function (properties) {
         var unmetConditions = [],
-        extraConditionInputs = ['checkbox', 'radio', 'list'];
+            extraConditionInputs = ['checkbox', 'radio', 'list'];
 
         // Field title is already required, if it's empty create error message
         if (!properties._ui.title) {
@@ -392,11 +399,12 @@ define([
       };
 
       // Switch from creating to completed.
-      $scope.add = function() {
+      $scope.add = function () {
 
         var p = $rootScope.propertiesOf($scope.field);
         $scope.errorMessages = $scope.checkFieldConditions(p);
-        $scope.errorMessages = jQuery.merge($scope.errorMessages, $rootScope.checkFieldCardinalityOptions($scope.field));
+        $scope.errorMessages = jQuery.merge($scope.errorMessages,
+            $rootScope.checkFieldCardinalityOptions($scope.field));
 
         if ($scope.errorMessages.length == 0) {
 
@@ -405,7 +413,7 @@ define([
             $scope.field.maxItems = 1;
           }
 
-          if ($scope.field.maxItems == 1  && $scope.field.minItems == 1) {
+          if ($scope.field.maxItems == 1 && $scope.field.minItems == 1) {
             if ($scope.field.items) {
               $rootScope.uncardinalizeField($scope.field);
             }
@@ -422,7 +430,8 @@ define([
             $scope.renameChildKey($scope.field, key);
           }
 
-          $scope.$emit("invalidFieldState", ["remove", $rootScope.propertiesOf($scope.field)._ui.title, $scope.field["@id"]]);
+          $scope.$emit("invalidFieldState",
+              ["remove", $rootScope.propertiesOf($scope.field)._ui.title, $scope.field["@id"]]);
           parseField();
         }
       };
@@ -436,23 +445,46 @@ define([
         $rootScope.propertiesOf($scope.field)._ui.options.push(emptyOption);
       };
 
-      $scope.edit = function() {
+      $scope.edit = function () {
         var p = $rootScope.propertiesOf($scope.field);
         p._tmp = p._tmp || {};
         p._tmp.state = "creating";
       };
 
-      $scope.$watch("field", function(newField, oldField) {
+      /**
+       * Turn my field into a youtube iframe.
+       * @param field
+       * @returns {*}
+       */
+      $scope.getYouTubeEmbedFrame = function (field) {
+
+        var width = 560;
+        var height = 315;
+        var content = $rootScope.propertiesOf(field)._content.replace(/<(?:.|\n)*?>/gm, '');
+
+        if ($rootScope.propertiesOf(field)._size && $rootScope.propertiesOf(field)._size.width && Number.isInteger($rootScope.propertiesOf(field)._size.width)) {
+          width = $rootScope.propertiesOf(field)._size.width;
+        }
+        if ($rootScope.propertiesOf(field)._size && $rootScope.propertiesOf(field)._size.height && Number.isInteger($rootScope.propertiesOf(field)._size.height)) {
+          height = $rootScope.propertiesOf(field)._size.height;
+        }
+
+        // if I say trust as html, then better make sure it is safe first
+        return $sce.trustAsHtml('<iframe width="' + width + '" height="' + height + '" src="https://www.youtube.com/embed/' + content + '" frameborder="0" allowfullscreen></iframe>');
+
+      };
+
+      $scope.$watch("field", function (newField, oldField) {
         setDirectory();
       }, true);
 
-      $scope.$watch("model", function() {
+      $scope.$watch("model", function () {
         if ($scope.directory == "render" &&
             $rootScope.propertiesOf($scope.field)._ui.inputType == "textfield" &&
             $rootScope.hasValueConstraint($rootScope.propertiesOf($scope.field)._valueConstraints)) {
           if ($rootScope.isArray($scope.model)) {
             $scope.modelValue = [];
-            angular.forEach($scope.model, function(m, i) {
+            angular.forEach($scope.model, function (m, i) {
               // TODO: Push valid value if m is present.
               if (m._value) {
                 $scope.modelValue.push({_value: {"@id": m._value, label: m._valueLabel}});
@@ -494,7 +526,7 @@ define([
                   }
                 }
               } else {
-                angular.forEach($scope.model, function(m, i) {
+                angular.forEach($scope.model, function (m, i) {
 
                   if (!("_value" in m)) {
                     if (field.defaultOption) {
@@ -538,19 +570,19 @@ define([
 
     return {
       templateUrl: 'scripts/form/field.directive.html',
-      restrict: 'EA',
-      scope: {
-        field: '=',
-        model: '=',
+      restrict   : 'EA',
+      scope      : {
+        field         : '=',
+        model         : '=',
         renameChildKey: "=",
-        preview: "=",
-        delete: '&',
-        ngDisabled: "="
+        preview       : "=",
+        delete        : '&',
+        ngDisabled    : "="
       },
-      controller: function($scope, $element) {
-        var addPopover = function($scope) {
+      controller : function ($scope, $element) {
+        var addPopover = function ($scope) {
           //Initializing Bootstrap Popover fn for each item loaded
-          setTimeout(function() {
+          setTimeout(function () {
             if ($element.find('#field-value-tooltip').length > 0) {
               $element.find('#field-value-tooltip').popover();
             } else if ($element.find('[data-toggle="popover"]').length > 0) {
@@ -562,8 +594,8 @@ define([
         addPopover($scope);
 
       },
-      replace: true,
-      link: linker
+      replace    : true,
+      link       : linker
     };
 
   };
