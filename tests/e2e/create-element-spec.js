@@ -9,10 +9,10 @@ describe('create-element', function() {
 
   beforeEach(function() {
     page = new CreateElementPage();
+    page.get();
   });
 
   it('should start out with valid JSON Schema', function() {
-    var formJson;
     var validInitialSchema = {
       '$schema': 'http://json-schema.org/draft-04/schema#',
       '@type': 'https://schema.metadatacenter.org/core/TemplateElement',
@@ -41,14 +41,14 @@ describe('create-element', function() {
       additionalProperties: false
     };
 
-    page.getJsonPreviewText.then(function(value) {
-      formJson = JSON.parse(value);
+    page.getJsonPreviewText().then(function(value) {
+      var formJson = JSON.parse(value);
+
       // the @id field is a GUID which is always random
       // remove it before testing for equality
       delete formJson['@id'];
       expect(_.isEqual(formJson, validInitialSchema)).toBe(true);
     });
-
   });
 
   xit("Should allow to set cardinality for text field", function() {
