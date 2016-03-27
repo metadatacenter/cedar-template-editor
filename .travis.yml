@@ -6,4 +6,4 @@ before_script:
   - sh -e /etc/init.d/xvfb start
   - echo '{"apiKey":"test"}' > app/config/provisional-class-service.conf.json
   - echo '{"apiKey":"test"}' > app/config/control-term-data-service.conf.json
-  - echo '{"cedarRestAPI": "https://template.metadatacenter.orgx","userRestAPI": "https://user.metadatacenter.orgx","terminologyRestAPI": "https://terminology.metadatacenter.orgx","resourceRestAPI": "https://resource.metadatacenter.orgx","valueRecommenderRestAPI": "https://valuerecommender.metadatacenter.orgx","bioontologyRestAPI": "https://data.bioontology.org/"}' > app/config/url-service.conf.json
+  - echo '{"cedarRestAPI":"https://template.metadatacenter.orgx","userRestAPI":"https://user.metadatacenter.orgx","terminologyRestAPI":"https://terminology.metadatacenter.orgx","resourceRestAPI":"https://resource.metadatacenter.orgx","valueRecommenderRestAPI":"https://valuerecommender.metadatacenter.orgx","bioontologyRestAPI":"https://data.bioontology.org/"}' > app/config/url-service.conf.json
