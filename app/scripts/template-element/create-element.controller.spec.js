@@ -18,7 +18,7 @@ define(['app', 'angularMocks'], function(app) {
       it('sets the pageTitle to "Element Designer"', function() {
         var $scope = $rootScope.$new();
         var controller = $controller('CreateElementController', { $scope: $scope });
-        expect($scope.pageTitle).toEqual('Element Designer');
+        expect($scope.pageTitle).toEqual('Element Designerx');
       });
     });
   });
