@@ -2,7 +2,7 @@
 
 This is an AngularJS web application to create and fill in Metadata Templates. 
 
-## Status
+## Travis CI Status
 
 [![Build Status](https://travis-ci.org/metadatacenter/cedar-template-editor.svg?branch=feature/karma-protractor)](https://travis-ci.org/metadatacenter/cedar-template-editor)
 
