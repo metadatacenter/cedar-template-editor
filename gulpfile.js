@@ -267,6 +267,8 @@ var taskNameList = [];
 if (cedarProfile === 'development') {
   taskNameList.push('server-development');
   taskNameList.push('watch');
+} else if (cedarProfile === 'production') {
+  console.log("Editor is configuring URLs, and exiting. The frontend content will be served by nginx");
 } else {
   exitWithError("Invalid CEDAR_PROFILE value. Please set 'development' or 'production'");
 }
