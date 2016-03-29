@@ -6,7 +6,7 @@ define([
   'angular'
 ], function (angular) {
   angular.module('cedar.templateEditor.core.run', [])
-    .run(cedarTemplateEditorCoreRun);
+      .run(cedarTemplateEditorCoreRun);
 
   cedarTemplateEditorCoreRun.$inject = ['$rootScope', 'controlTermService', '$location', '$timeout', '$window', '$sce',
                                         '$translate', 'DataTemplateService', 'DataManipulationService',
@@ -145,7 +145,7 @@ define([
 
     $rootScope.cardinalizeField = function (field) {
 
-      if ((field.minItems == 1 && field.maxItems == 1) || (typeof field.minItems == 'undefined' && typeof field.maxItems == 'undefined')) {
+      if (typeof field.minItems == 'undefined') {
         return false;
       }
 
@@ -187,7 +187,7 @@ define([
     };
 
     $rootScope.uncardinalizeField = function (field) {
-      if ((typeof field.minItems == 'undefined' && typeof field.maxItems == 'undefined') || (field.minItems == 1 && field.maxItems == 1)) {
+      if (typeof field.minItems == 'undefined' || (field.minItems == 1 && field.maxItems == 1)) {
 
         field.type = 'object';
 
@@ -207,7 +207,7 @@ define([
 
     $rootScope.isCardinalElement = function (element) {
       //return element.minItems && element.maxItems != 1;
-      return (!(typeof element.minItems == 'undefined' && typeof element.maxItems == 'undefined') && !(element.minItems == 1 && element.maxItems == 1));
+      return typeof element.minItems != 'undefined';
     };
 
     // If Max Items is N, its value will be 0, then need to remove it from schema
@@ -215,10 +215,15 @@ define([
     $rootScope.removeUnnecessaryMaxItems = function (properties) {
       angular.forEach(properties, function (value, key) {
         if (!$rootScope.ignoreKey(key)) {
-          if (field.minItems == 1 && field.maxItems == 1) {
+
+          if ((value.minItems == 1 && value.maxItems == 1)) {
             delete value.minItems;
             delete value.maxItems;
           }
+          if (value.maxItems == 0) {
+            delete value.maxItems;
+          }
+
         }
       });
     };
@@ -263,11 +268,11 @@ define([
           }
         }
 
+        min = value.minItems || 0;
+
         if (!$rootScope.ignoreKey(name)) {
           // We can tell we've reached an element level by its 'order' property
           if (value._ui && value._ui.order) {
-
-            min = value.minItems || 0;
 
             if ($rootScope.isCardinalElement(value)) {
               parentModel[name] = [];
@@ -278,7 +283,6 @@ define([
               parentModel[name] = {};
             }
           } else {
-            min = value.minItems || 0;
 
             // Assign empty field instance model to $scope.model only if it does not exist
             if (!parentModel[name]) {
