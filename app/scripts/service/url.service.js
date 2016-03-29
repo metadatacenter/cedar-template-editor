@@ -115,28 +115,36 @@ define([
       return valueRecommenderService;
     };
 
-    service.getValueRecommendation = function() {
+    service.getValueRecommendation = function () {
       return valueRecommenderService + '/recommend';
-    }
+    };
 
-    service.hasInstances = function(templateId) {
+    service.hasInstances = function (templateId) {
       return valueRecommenderService + '/has-instances?template_id=' + templateId;
-    }
+    };
 
     service.bioontology = function () {
       return bioontologyService;
     };
 
-    service.resourceBase = function() {
+    service.resourceBase = function () {
       return resourceService;
     };
 
-    service.folders = function() {
+    service.folders = function () {
       return resourceService + "/folders";
     };
 
-    service.search = function() {
+    service.search = function () {
       return resourceService + "/search";
+    };
+
+    service.facets = function () {
+      return resourceService + "/facets";
+    };
+
+    service.resources = function () {
+      return resourceService + "/resources";
     };
 
     return service;
