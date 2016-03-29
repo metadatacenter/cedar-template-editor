@@ -15,6 +15,7 @@
   "license": "ISC",
   "devDependencies": {
     "bower": "^1.7.7",
+    "colors": "^1.1.2",
     "connect-history-api-fallback": "1.1.0",
     "gulp": "^3.9.1",
     "gulp-autoprefixer": "^2.1.0",

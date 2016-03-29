@@ -135,6 +135,10 @@ define([
       return resourceService + "/folders";
     };
 
+    service.search = function() {
+      return resourceService + "/search";
+    };
+
     return service;
   };
 
