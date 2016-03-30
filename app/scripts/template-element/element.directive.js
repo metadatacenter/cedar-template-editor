@@ -121,7 +121,6 @@ define([
         }
 
         var parseElement = function() {
-          console.debug('element.directive parseElement');
           if (!$rootScope.isRuntime() && scope.element) {
             if (angular.isArray(scope.model)) {
               angular.forEach(scope.model, function(m) {

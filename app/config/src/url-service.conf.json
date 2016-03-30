@@ -4,5 +4,6 @@
   "terminologyRestAPI": "terminologyServerUrl",
   "resourceRestAPI": "resourceServerUrl",
   "valueRecommenderRestAPI": "valueRecommenderServerUrl",
+  "schemaRestAPI": "schemaServerUrl",
   "bioontologyRestAPI": "https://data.bioontology.org/"
 }
