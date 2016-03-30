@@ -235,31 +235,31 @@ define([
       scope.add = function() {
         var p = $rootScope.propertiesOf(scope.element);
         if (!p._ui.is_cardinal_field) {
-          scope.element.minItems = 1;
-          scope.element.maxItems = 1;
+          delete scope.element.minItems;
+          delete scope.element.maxItems;
         }
 
-        if (typeof scope.element.maxItems == 'undefined') {
-          scope.element.maxItems = 1;
-        }
-        if (typeof scope.element.minItems == 'undefined') {
-          scope.element.minItems = 1;
-        }
+        // if you have min and max defined, make sure min <= max
+        var minMaxError = (scope.element.minItems && scope.element.maxItems) && (scope.element.minItems > scope.element.maxItems)
+        if (!minMaxError) {
 
-        if (scope.element.maxItems == 1) {
-          if (scope.element.items) {
-            $rootScope.uncardinalizeField(scope.element);
+          if (typeof scope.element.minItems == 'undefined') {
+            if (scope.element.items) {
+              $rootScope.uncardinalizeField(scope.element);
+            }
+          } else {
+            if (!scope.element.items) {
+              $rootScope.cardinalizeField(scope.element);
+            }
           }
+
+          delete $rootScope.propertiesOf(scope.element)._tmp;
+          scope.$emit("invalidElementState",
+              ["remove", $rootScope.propertiesOf(scope.element)._ui.title, scope.element["@id"]]);
+          parseElement();
         } else {
-          if (!scope.element.items) {
-            $rootScope.cardinalizeField(scope.element);
-          }
+          console.log("TODO handle displaying min > max error for elements");
         }
-
-        delete $rootScope.propertiesOf(scope.element)._tmp;
-        scope.$emit("invalidElementState",
-                    ["remove", $rootScope.propertiesOf(scope.element)._ui.title, scope.element["@id"]]);
-        parseElement();
       };
 
       // When user clicks edit, the element state will be switched to creating;
