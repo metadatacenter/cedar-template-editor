@@ -83,16 +83,6 @@ gulp.task('server-development', function () {
   });
 });
 
-gulp.task('server-production', function () {
-  connect.server({
-    root      : 'app',
-    port      : 4200,
-    livereload: false,
-    fallback  : 'app/index.html'
-  });
-});
-
-
 gulp.task('cache-ontologies', ['set-environment-default'], function () {
   var apiKey = cedarBioportalAPIKey;
   var options = {
@@ -278,7 +268,7 @@ if (cedarProfile === 'development') {
   taskNameList.push('server-development');
   taskNameList.push('watch');
 } else if (cedarProfile === 'production') {
-  taskNameList.push('server-production');
+  console.log("Editor is configuring URLs, and exiting. The frontend content will be served by nginx");
 } else {
   exitWithError("Invalid CEDAR_PROFILE value. Please set 'development' or 'production'");
 }
