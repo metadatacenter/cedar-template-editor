@@ -1,8 +1,9 @@
 'use strict';
 
 define([
-  'angular'
-], function (angular) {
+  'angular',
+  'json!config/url-service.conf.json'
+], function (angular, config) {
   angular.module('cedar.templateEditor.service.urlService', [])
       .service('UrlService', UrlService);
 
@@ -10,10 +11,11 @@ define([
 
   function UrlService() {
 
-    var config = null;
     var apiService = null;
     var userService = null;
     var terminologyService = null;
+    var resourceService = null;
+    var valueRecommenderService = null;
     var bioontologyService = null;
 
     var service = {
@@ -21,10 +23,11 @@ define([
     };
 
     service.init = function () {
-      config = cedarBootstrap.getBaseConfig(this.serviceId);
       apiService = config.cedarRestAPI;
       userService = config.userRestAPI;
       terminologyService = config.terminologyRestAPI;
+      resourceService = config.resourceRestAPI;
+      valueRecommenderService = config.valueRecommenderRestAPI;
       bioontologyService = config.bioontologyRestAPI;
     };
 
@@ -108,8 +111,40 @@ define([
       return terminologyService;
     };
 
+    service.valueRecommender = function () {
+      return valueRecommenderService;
+    };
+
+    service.getValueRecommendation = function () {
+      return valueRecommenderService + '/recommend';
+    };
+
+    service.hasInstances = function (templateId) {
+      return valueRecommenderService + '/has-instances?template_id=' + templateId;
+    };
+
     service.bioontology = function () {
       return bioontologyService;
+    };
+
+    service.resourceBase = function () {
+      return resourceService;
+    };
+
+    service.folders = function () {
+      return resourceService + "/folders";
+    };
+
+    service.search = function () {
+      return resourceService + "/search";
+    };
+
+    service.facets = function () {
+      return resourceService + "/facets";
+    };
+
+    service.resources = function () {
+      return resourceService + "/resources";
     };
 
     return service;

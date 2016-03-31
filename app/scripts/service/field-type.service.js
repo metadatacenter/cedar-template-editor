@@ -2,8 +2,9 @@
 
 
 define([
-  'angular'
-], function(angular) {
+  'angular',
+  'json!config/field-type-service.conf.json'
+], function(angular, config) {
   angular.module('cedar.templateEditor.service.fieldTypeService', [])
     .service('FieldTypeService', FieldTypeService);
 
@@ -11,7 +12,6 @@ define([
 
   function FieldTypeService() {
 
-    var config = null;
     var fieldTypes = [];
 
     var service = {
@@ -19,7 +19,6 @@ define([
     };
 
     service.init = function () {
-      config = cedarBootstrap.getBaseConfig(this.serviceId);
       fieldTypes = config;
     };
 

@@ -2,5 +2,7 @@
   "cedarRestAPI": "templateServerUrl",
   "userRestAPI": "userServerUrl",
   "terminologyRestAPI": "terminologyServerUrl",
+  "resourceRestAPI": "resourceServerUrl",
+  "valueRecommenderRestAPI": "valueRecommenderServerUrl",
   "bioontologyRestAPI": "https://data.bioontology.org/"
 }

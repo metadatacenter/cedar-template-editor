@@ -1,12 +1,13 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
   "@id": null,
+  "@type": "https://schema.metadatacenter.org/core/Template",
+  "type": "object",
   "title": "",
   "description": "",
   "_ui": {
     "pages": []
   },
-  "type": "object",
   "properties": {
     "@context": {
       "properties": {

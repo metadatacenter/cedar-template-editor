@@ -9,6 +9,10 @@ require.config({
     'lib/custom': 'cedar/scripts',
     '3rdparty'  : 'third_party_components',
 
+    // requirejs plugins
+    'text': 'bower_components/requirejs-plugins/lib/text',
+    'json': 'bower_components/requirejs-plugins/src/json',
+
     'app'                  : 'scripts/app',
     'cedar/template-editor': 'scripts',
 
@@ -62,47 +66,39 @@ require.config({
 // do not load the full app here.
 // maybe we will be redirected to Keycloak for authentication
 require([
-      'angular',
-    ], function (angular) {
-      var $html = angular.element(document.getElementsByTagName('html')[0]);
-      angular.element().ready(function () {
+  'angular',
+], function(angular) {
+  var $html = angular.element(document.getElementsByTagName('html')[0]);
+  angular.element().ready(function() {
 
-        function continueWithAngularApp() {
-          require([
-            'angular',
-            'app',
-          ], function (angular, app) {
-            // bootstrap dummy app
-            var element = angular.element('<div></div>');
-            angular.bootstrap(element);
-            var $injector = element.injector();
-            var $http = $injector.get('$http');
-
-            // preload files, bootstrap CEDAR
-            window.cedarBootstrap = new CedarBootstrap($http);
-            window.cedarBootstrap.preload();
-          });
-        }
-
-        function successInitUserHandler(authenticated) {
-          //console.log("User handler init success. Authenticated: " + authenticated);
-          if (!authenticated) {
-            window.bootstrapUserHandler.doLogin();
-          } else {
-            continueWithAngularApp();
-          }
-        }
-
-        function failInitUserHandler() {
-          alert("There was an error initializing the application!");
-        }
-
-        // use this for live servers
-        window.bootstrapUserHandler = new KeycloakUserHandler();
-        // use this for unauthorized access during development
-        //window.bootstrapUserHandler = new NoauthUserHandler();
-
-        window.bootstrapUserHandler.initUserHandler(successInitUserHandler, failInitUserHandler);
+    function continueWithAngularApp() {
+      require([
+        'angular',
+        'app',
+      ], function(angular, app) {
+        angular.bootstrap(document, ['cedar.templateEditor']);
       });
     }
-);
+
+    function successInitUserHandler(authenticated) {
+      //console.log("User handler init success. Authenticated: " + authenticated);
+      if (!authenticated) {
+        window.bootstrapUserHandler.doLogin();
+      } else {
+        continueWithAngularApp();
+      }
+    }
+
+    function failInitUserHandler() {
+      alert("There was an error initializing the application!");
+    }
+
+    // use this for live servers
+    window.bootstrapUserHandler = new KeycloakUserHandler();
+    // use this for unauthorized access during development
+    //window.bootstrapUserHandler = new NoauthUserHandler();
+
+    window.bootstrapUserHandler.initUserHandler(successInitUserHandler, failInitUserHandler);
+  });
+
+});

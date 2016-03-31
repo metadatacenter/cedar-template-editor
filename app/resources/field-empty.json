@@ -1,7 +1,12 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
   "@id": null,
+  "@type": "https://schema.metadatacenter.org/core/TemplateField",
   "type": "object",
+  "title": "",
+  "description": "",
+  "_ui": {
+  },
   "properties": {
     "@type": {
       "oneOf": [

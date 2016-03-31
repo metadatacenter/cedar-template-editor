@@ -1,16 +1,16 @@
 'use strict';
 
 define([
-  'angular'
-], function (angular) {
+  'angular',
+  'json!config/user-service.conf.json'
+], function (angular, config) {
   angular.module('cedar.templateEditor.service.userService', [])
-      .service('UserService', UserService);
+    .service('UserService', UserService);
 
   UserService.$inject = ['$rootScope', 'Cedar'];
 
   function UserService($rootScope, Cedar) {
 
-    var config = null;
     var userHandler = null;
 
     var service = {
@@ -18,8 +18,6 @@ define([
     };
 
     service.init = function (callback) {
-      config = cedarBootstrap.getBaseConfig(this.serviceId);
-
       var pt = this.getParsedToken(config);
       Cedar.setAuthProfile(pt);
 

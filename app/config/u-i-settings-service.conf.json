@@ -33,7 +33,7 @@
     "headers": [
       {
         "labelKey": "view.list.name",
-        "dataPath": "_ui.title",
+        "dataPath": "name",
         "displayType": "data",
         "dataType": "string",
         "canOrder": true,
@@ -42,7 +42,7 @@
       },
       {
         "labelKey": "view.list.owner",
-        "dataPath": "prov.owner.name",
+        "dataPath": "pav:createdBy.name",
         "displayType": "data",
         "dataType": "string",
         "canOrder": true,
@@ -51,7 +51,7 @@
       },
       {
         "labelKey": "view.list.changed",
-        "dataPath": "prov.lastchanged",
+        "dataPath": "pav:lastUpdatedOn",
         "displayType": "data",
         "dataType": "date",
         "canOrder": true,
@@ -59,12 +59,14 @@
         "linkAction": null
       },
       {
+        "labelKey": "view.list.info",
         "displayType": "icon",
         "canOrder": false,
         "iconCssClass": "icon-svg-info",
         "linkAction": "info"
       },
       {
+        "labelKey": "view.list.edit",
         "displayType": "icon",
         "canOrder": false,
         "iconCssClass": "icon-svg-edit",
@@ -76,9 +78,8 @@
     "countOnDashboard": 4,
     "pageSizeOnModal": 50,
     "dataPaths": {
-      "id": "@id",
-      "title": "_ui.title",
-      "description": "_ui.description"
+      "name": "name",
+      "description": "description"
     }
   },
   "resourceTypeFilters": [

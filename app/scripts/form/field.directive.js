@@ -8,10 +8,12 @@ define([
 
   // TODO: refactor to cedarFieldDirective <cedar-field-directive>
 
+
   fieldDirective.$inject = ["$rootScope", "$sce", "$http", "$compile", "$document", "SpreadsheetService",
                             "DataManipulationService"];
 
   function fieldDirective($rootScope, $sce, $http, $compile, $document, SpreadsheetService, DataManipulationService) {
+
     var linker = function ($scope, $element, attrs) {
 
       // if (!$rootScope.propertiesOf($scope.field)._tmp.state) {
@@ -312,8 +314,10 @@ define([
         return 'scripts/form/field-' + $scope.directory + '/' + inputType + '.html';
       }
 
-      $scope.addMoreInput = function () {
-        console.debug('addMoreItems' + $scope.model.length + " " + $scope.field.maxItems);
+
+
+      $scope.addMoreInput = function() {
+
 
         if ((!$scope.field.maxItems || $scope.model.length < $scope.field.maxItems)) {
           var seed = {};
@@ -399,7 +403,8 @@ define([
       };
 
       // Switch from creating to completed.
-      $scope.add = function () {
+
+      $scope.add = function() {
 
         var p = $rootScope.propertiesOf($scope.field);
         $scope.errorMessages = $scope.checkFieldConditions(p);
@@ -451,6 +456,7 @@ define([
         p._tmp.state = "creating";
       };
 
+
       /**
        * Turn my field into a youtube iframe.
        * @param field
@@ -473,6 +479,7 @@ define([
         return $sce.trustAsHtml('<iframe width="' + width + '" height="' + height + '" src="https://www.youtube.com/embed/' + content + '" frameborder="0" allowfullscreen></iframe>');
 
       };
+
 
       $scope.$watch("field", function (newField, oldField) {
         setDirectory();
@@ -526,7 +533,8 @@ define([
                   }
                 }
               } else {
-                angular.forEach($scope.model, function (m, i) {
+
+                angular.forEach($scope.model, function(m, i) {
 
                   if (!("_value" in m)) {
                     if (field.defaultOption) {
@@ -566,6 +574,54 @@ define([
           }
         }
       }, true);
+
+      /* Value Recommendation functionality */
+      // Load values when opening an instance
+      if ($scope.model) {
+        $scope.modelValueRecommendation = {'_value': {'value': $scope.model._value}}
+      }
+
+      $scope.updateModelWhenChangeSelection = function (modelvr) {
+        // This variable will be used at textfield.html
+        $scope.modelValueRecommendation = modelvr;
+        if ($rootScope.isArray($scope.model)) {
+          angular.forEach(modelvr, function (m, i) {
+            if (m && m._value & m._value.value) {
+              $scope.model[i]._value = m._value.value;
+            } else {
+              delete $scope.model[i]._value;
+            }
+          });
+        } else {
+          var newValue = modelvr._value.value;
+          $scope.model._value = newValue;
+        }
+      }
+
+      $scope.isFirstRefresh = true;
+      $scope.setIsFirstRefresh = function(isFirstRefresh) {
+        $scope.isFirstRefresh = isFirstRefresh;
+      }
+
+      $scope.updateModelWhenRefresh = function (select) {
+        if (!$scope.isFirstRefresh) {
+          if ($rootScope.isArray($scope.model)) {
+            // TODO
+          } else {
+            $scope.model._value = select.search;
+            $scope.modelValueRecommendation._value.value = select.search;
+          }
+        }
+      }
+
+      // Updates the search using the selected value
+      $scope.updateSearch = function(select) {
+        if (select.selected.value) {
+          select.search = select.selected.value;
+        }
+      }
+      /* end of Value Recommendation functionality */
+
     }
 
     return {

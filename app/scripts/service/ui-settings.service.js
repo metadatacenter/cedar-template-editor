@@ -2,8 +2,9 @@
 
 
 define([
-  'angular'
-], function (angular) {
+  'angular',
+  'json!config/u-i-settings-service.conf.json'
+], function (angular, config) {
   angular.module('cedar.templateEditor.service.uISettingsService', [])
       .service('UISettingsService', UISettingsService);
 
@@ -11,7 +12,6 @@ define([
 
   function UISettingsService() {
 
-    var config = null;
     var settingsMenu = null;
     var listView = null;
     var populateAForm = null;
@@ -23,7 +23,6 @@ define([
     };
 
     service.init = function () {
-      config = cedarBootstrap.getBaseConfig(this.serviceId);
       settingsMenu = config.settingsMenu;
       listView = config.listView;
       populateAForm = config.populateAForm;
@@ -41,8 +40,8 @@ define([
       console.log(this.getPopulateAForm());
       console.log("Use UISettingsService.getResourceTypeFilters() to get the list of menu items:");
       console.log(this.getResourceTypeFilters());
-      console.log("Use UISettingsService.getOrderDropdown() to get the list of menu items:");
-      console.log(this.getOrderDropdown());
+      console.log("Use UISettingsService.getOrderOptions() to get the list of menu items:");
+      console.log(this.getOrderOptions());
     };
 
     service.getSettingsMenuItems = function () {
@@ -61,7 +60,7 @@ define([
       return resourceTypeFilters;
     };
 
-    service.getOrderDropdown = function () {
+    service.getOrderOptions = function () {
       return orderDropdown;
     };
 
