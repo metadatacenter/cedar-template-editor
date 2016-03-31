@@ -16,6 +16,7 @@ define([
     var terminologyService = null;
     var resourceService = null;
     var valueRecommenderService = null;
+    var schemaService = null;
     var bioontologyService = null;
 
     var service = {
@@ -28,6 +29,7 @@ define([
       terminologyService = config.terminologyRestAPI;
       resourceService = config.resourceRestAPI;
       valueRecommenderService = config.valueRecommenderRestAPI;
+      schemaService = config.schemaRestAPI;
       bioontologyService = config.bioontologyRestAPI;
     };
 
@@ -76,7 +78,7 @@ define([
     };
 
     service.templates = function () {
-      return apiService + '/templates';
+      return this.base() + '/templates';
     };
 
     service.getTemplate = function (id) {
@@ -84,7 +86,7 @@ define([
     };
 
     service.templateElements = function () {
-      return apiService + '/template-elements';
+      return this.base() + '/template-elements';
     };
 
     service.getTemplateElement = function (id) {
@@ -92,7 +94,7 @@ define([
     };
 
     service.templateInstances = function () {
-      return apiService + '/template-instances';
+      return this.base() + '/template-instances';
     };
 
     service.getTemplateInstance = function (id) {
@@ -116,11 +118,11 @@ define([
     };
 
     service.getValueRecommendation = function () {
-      return valueRecommenderService + '/recommend';
+      return this.valueRecommender() + '/recommend';
     };
 
     service.hasInstances = function (templateId) {
-      return valueRecommenderService + '/has-instances?template_id=' + templateId;
+      return this.valueRecommender() + '/has-instances?template_id=' + templateId;
     };
 
     service.bioontology = function () {
@@ -132,19 +134,31 @@ define([
     };
 
     service.folders = function () {
-      return resourceService + "/folders";
+      return this.resourceBase() + "/folders";
     };
 
     service.search = function () {
-      return resourceService + "/search";
+      return this.resourceBase() + "/search";
     };
 
     service.facets = function () {
-      return resourceService + "/facets";
+      return this.resourceBase() + "/facets";
     };
 
     service.resources = function () {
-      return resourceService + "/resources";
+      return this.resourceBase() + "/resources";
+    };
+
+    service.schemaBase = function () {
+      return schemaService;
+    };
+
+    service.schemaProperties = function () {
+      return this.schemaBase() + "/properties";
+    };
+
+    service.schemaProperty = function (propertyName) {
+      return this.schemaProperties() + "/" + propertyName;
     };
 
     return service;

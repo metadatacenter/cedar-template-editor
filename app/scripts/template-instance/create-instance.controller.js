@@ -39,11 +39,11 @@ define([
 
     // Create empty form object
     // Create empty instance object
-    $scope.form = {},
-        $scope.instance = {
-          //'@context': {},
-          //'@type': {}
-        };
+    $scope.form = {};
+    $scope.instance = {
+      //'@context': {},
+      //'@type': {}
+    };
 
     // Get/read form with given id from $routeParams
     $scope.getForm = function () {
@@ -109,7 +109,6 @@ define([
         $scope.instance._ui = {};
         $scope.instance._ui['templateTitle'] = $scope.form.properties._ui.title + ' instance';
         $scope.instance._ui['templateDescription'] = $scope.form.properties._ui.description;
-        $scope.instance._ui['creationDate'] = new Date();
         // Make create instance call
         AuthorizedBackendService.doCall(
             TemplateInstanceService.saveTemplateInstance($scope.instance),

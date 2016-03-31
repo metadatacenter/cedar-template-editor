@@ -101,7 +101,6 @@ define([
       }
       var field = DataTemplateService.getField($rootScope.idBasePath + $rootScope.generateGUID());
       field.properties._ui.inputType = fieldType;
-      field.properties._ui.createdAt = Date.now();
       field.properties._value.type = valueType;
       return field;
     };
@@ -586,6 +585,7 @@ define([
     $rootScope.getUnescapedContent = function (field) {
       return $sce.trustAsHtml($rootScope.propertiesOf(field)._content);
     };
+
 
     Cedar.init();
     $rootScope.cedar = Cedar;

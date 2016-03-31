@@ -60,7 +60,7 @@ define([
     };
 
     service.getHome = function() {
-      return getAppData().homePath;
+      return getAppData().cedarUserProfile.homePath;
     };
 
     return service;

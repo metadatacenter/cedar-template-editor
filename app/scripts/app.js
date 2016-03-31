@@ -29,6 +29,7 @@ define([
   'lib/jquery-ui/jquery-ui',
   'lib/perfnow-polyfill/perfnow-polyfill',
   'lib/sweetalert/dist/sweetalert.min',
+  '3rdparty/angular-fitvids/angular-fitvids',
 
   // custom libraries
   'lib/custom/handsontable/SpreadsheetContext',
@@ -62,6 +63,7 @@ define([
     'pascalprecht.translate',
     'angular-toasty',
     'ngCkeditor',
+    'fitVids',
 
     'cedar.templateEditor.core',
     'cedar.templateEditor.dashboard',
