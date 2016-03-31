@@ -17,7 +17,7 @@ define([
     var service = {
       serviceId        : "StagingService",
       pageId           : null,
-      stagingObjectType: CONST.stagingObject.NONE,
+      stagingObjectType: CONST.stagingObject.NONE
     };
 
     service.configure = function (pageId) {

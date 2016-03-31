@@ -3,15 +3,13 @@
 define([
   'angular',
   'json!config/data-manipulation-service.conf.json'
-], function(angular, config) {
+], function (angular, config) {
   angular.module('cedar.templateEditor.service.dataManipulationService', [])
-    .service('DataManipulationService', DataManipulationService);
+      .service('DataManipulationService', DataManipulationService);
 
-  DataManipulationService.$inject = ['DataTemplateService', 'DataUtilService'];
+  DataManipulationService.$inject = ['DataTemplateService', 'DataUtilService', 'UrlService'];
 
-  function DataManipulationService(DataTemplateService, DataUtilService) {
-
-    var schemaBase = null;
+  function DataManipulationService(DataTemplateService, DataUtilService, UrlService) {
 
     // Base path to generate field ids
     // TODO: fields will be saved as objects on server, they will get their id there
@@ -23,7 +21,6 @@ define([
     };
 
     service.init = function () {
-      schemaBase = config.schemaBase;
       idBasePath = config.idBasePath;
     };
 
@@ -39,7 +36,6 @@ define([
       }
       var field = DataTemplateService.getField(this.generateTempGUID());
       field.properties._ui.inputType = fieldType;
-      field.properties._ui.createdAt = Date.now();
       field.properties._value.type = valueType;
       return field;
     };
@@ -88,13 +84,13 @@ define([
       };
       field.type = 'array';
 
-        delete field.$schema;
-        delete field['@id'];
-        delete field.properties;
-        delete field.title;
-        delete field.description;
-        delete field.required;
-        delete field.additionalProperties;
+      delete field.$schema;
+      delete field['@id'];
+      delete field.properties;
+      delete field.title;
+      delete field.description;
+      delete field.required;
+      delete field.additionalProperties;
 
       return true;
     };
@@ -157,9 +153,9 @@ define([
       return guid;
     };
 
-    service.generateTempGUID = function() {
+    service.generateTempGUID = function () {
       return "tmp-" + Date.now() + "-" + (window.performance.now() | 0);
-    }
+    };
 
     service.elementIsMultiInstance = function (element) {
       return element.hasOwnProperty('minItems') && !angular.isUndefined(element.minItems);
@@ -180,16 +176,16 @@ define([
     };
 
     service.getEnumOf = function (fieldName) {
-      return schemaBase + fieldName
-    }
+      return UrlService.schemaProperty(fieldName);
+    };
 
     service.generateFieldContextProperties = function (fieldName) {
       var c = {};
-      c.enum = new Array(service.getEnumOf(schemaBase + fieldName));
+      c.enum = new Array(service.getEnumOf(fieldName));
       return c;
     };
 
-    service.getAcceptableKey = function(obj, suggestedKey) {
+    service.getAcceptableKey = function (obj, suggestedKey) {
       if (!obj || typeof(obj) != "object") {
         return;
       }
@@ -205,7 +201,7 @@ define([
       }
 
       return key;
-    }
+    };
 
     service.addKeyToObject = function (obj, key, value) {
       if (!obj || typeof(obj) != "object") {
@@ -215,7 +211,7 @@ define([
       key = service.getAcceptableKey(obj, key);
       obj[key] = value;
       return obj;
-    }
+    };
 
     service.renameKeyOfObject = function (obj, currentKey, newKey) {
       if (!obj || !obj[currentKey]) {
@@ -227,7 +223,7 @@ define([
       delete obj[currentKey];
 
       return obj;
-    }
+    };
 
     return service;
   };
