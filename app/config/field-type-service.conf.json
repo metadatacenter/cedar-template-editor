@@ -35,11 +35,6 @@
     "allowedInElement": true
   },
   {
-    "cedarType": "audio-visual",
-    "iconClass": "cedar-svg-audio-visual",
-    "allowedInElement": true
-  },
-  {
     "cedarType": "numeric",
     "iconClass": "cedar-svg-numeric",
     "allowedInElement": true
