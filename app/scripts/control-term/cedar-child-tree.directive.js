@@ -6,9 +6,9 @@ define([
   angular.module('cedar.templateEditor.controlTerm.cedarChildTreeDirective', [])
     .directive('cedarChildTree', cedarChildTreeDirective);
 
-  cedarChildTreeDirective.$inject = ['controlTermDataService', '$compile'];
+  cedarChildTreeDirective.$inject = ['controlTermService', 'controlTermDataService', '$compile'];
 
-  function cedarChildTreeDirective(controlTermDataService, $compile) {
+  function cedarChildTreeDirective(controlTermService, controlTermDataService, $compile) {
 
     var directive = {
       restrict: 'E',
@@ -25,7 +25,7 @@ define([
 
     return directive;
 
-    cedarChildTreeController.$inject = ['$rootScope', '$scope', 'controlTermDataService', 'controlTermService'];
+    cedarChildTreeController.$inject = ['$rootScope', '$scope', 'controlTermDataService'];
     
     function linker(scope, element, attrs) {
 
@@ -40,14 +40,17 @@ define([
       }
       
       if (scope.subtree) {
-        var acronym = scope.subtree.links.ontology.slice(39);
-        if (scope.subtree["@type"].indexOf("Ontology") >= 0) {
-          scope.subtree.resultType = "Ontology";
-        } else if (acronym != 'NLMVS') {
-          scope.subtree.resultType = 'Ontology Class';
-        } else {
-          scope.subtree.resultType = "Value Set";
-        }
+        //console.log("SUBTREE");
+        //console.log(scope.subtree);
+        //var acronym = scope.subtree.ontology.substr(scope.subtree.ontology.lastIndexOf('/') + 1);
+        //scope.subtree.type = scope.subtree.type;
+        //if (scope.subtree["@type"].indexOf("Ontology") >= 0) {
+        //  scope.subtree.resultType = "Ontology";
+        //} else if (acronym != 'NLMVS' && acronym != 'CEDARVS') {
+        //  scope.subtree.resultType = 'Ontology Class';
+        //} else {
+        //  scope.subtree.resultType = "Value Set";
+        //}
       }
 
       // Default Class nested tree expansion from controlTermDataService.getClassTree() call
@@ -63,7 +66,10 @@ define([
           jQuery(this).parent().addClass("expanded");
         } else {
           if (scope.subtree.hasChildren !== false && !scope.children) {
-            controlTermDataService.getClassChildren(scope.subtree.links.ontology.slice(39), scope.subtree['@id']).then(function(response) {
+            var acronym = controlTermService.getAcronym(scope.subtree);
+            var classId = scope.subtree['@id'];
+            controlTermDataService.getClassChildren(acronym, classId).then(function(response) {
+              //console.log("Call to getClassChildren");
               if (!response || response.length == 0) {
                 scope.subtree.hasChildren = false;
               }

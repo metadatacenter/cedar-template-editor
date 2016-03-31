@@ -102,9 +102,10 @@ define([
        */
       function getClassDetails(subtree) {
         vm.selectedValueResult = subtree;
-
+        var acronym = controlTermService.getAcronym(subtree);
+        var classId = subtree['@id'];
         // Get selected class details from the links.self endpoint provided.
-        controlTermDataService.getClassDetails(subtree.links.self).then(function(response) {
+        controlTermDataService.getClassDetails(acronym, classId).then(function(response) {
           vm.classDetails = response;
         });
       }
@@ -124,10 +125,10 @@ define([
 
       function isOntologyNameMatched(ontology) {
         var name;
-        if (!vm.bioportalValueSetsFilter && ontology.resultType == 'Value Set') {
+        if (!vm.bioportalValueSetsFilter && ontology.type == 'ValueSet') {
           return false;
         }
-        if (!vm.bioportalOntologiesFilter && ontology.resultType == 'Ontology') {
+        if (!vm.bioportalOntologiesFilter && ontology.type == 'Ontology') {
           return false;
         }
         if (!vm.isSearchingOntologies) {
@@ -136,7 +137,7 @@ define([
 
         if (vm.ontologySearchRegexp) {
           name = ontology.name;
-          if (ontology.resultType == 'Value Set') {
+          if (ontology.type == 'ValueSet') {
             name = ontology.prefLabel;
           }
           return vm.ontologySearchRegexp.test(name);
@@ -189,26 +190,26 @@ define([
         vm.selectedValueResult = result;
         vm.valuesTreeVisibility = true;
 
-        if (result.resultType == 'Ontology' || result.resultType == 'Ontology Class') {
+        if (result.type == 'Ontology' || result.type == 'OntologyClass') {
           vm.browsingSection = 'ontology';
-          if (result.resultType == 'Ontology') {
+          if (result.type == 'Ontology') {
             vm.currentOntology = {
               'details': { 'ontology': result }
             };
             controlTermService.loadOntologyRootClasses(vm.currentOntology.details.ontology, vm);
           } else {
             vm.currentOntology = {
-              'details': { 'ontology': controlTermService.getOntologyByAcronym(controlTermDataService.getOntologyAcronym(result)) }
+              'details': { 'ontology': controlTermDataService.getOntologyById(controlTermDataService.getAcronym(result)) }
             };
             controlTermService.loadTreeOfClass(result, vm);
           }
-        } else if (result.resultType == 'Value Set' || result.resultType == 'Value Set Class') {
+        } else if (result.type == 'ValueSet' || result.type == 'Value') {
           vm.browsingSection = 'value_set';
           vm.searchPreloader = true;
-          assignClassDetails(result);
-          acronym = controlTermDataService.getOntologyAcronym(result);
+          assignValueSetDetails(result);
+          acronym = controlTermDataService.getAcronym(result);
 
-          if (result.resultType == 'Value Set') {
+          if (result.type == 'ValueSet') {
             vm.currentValueSet = result;
           } else {
             // get the parent
@@ -218,13 +219,13 @@ define([
           }
 
           vm.currentValueSetId = result["@id"];
-          if (result.resultType == 'Value Set Class') {
+          if (result.type == 'Value') {
             vm.currentValueSetId = result.resultParentId;
           }
           controlTermDataService.getClassValueSet(acronym, vm.currentValueSetId).then(function(valueSetClasses) {
             vm.valueSetClasses = valueSetClasses;
             angular.forEach(vm.valueSetClasses, function(valueSetClass) {
-              valueSetClass.resultType = 'Value Set Class';
+              valueSetClass.type = 'Value';
             });
             vm.searchPreloader = false;
           });
@@ -247,22 +248,54 @@ define([
 
         vm.valuesActionSelection = "browse";
         var browseResults = [];
-        angular.forEach($rootScope.valueSets, function(valueSet) {
-          valueSet.resultType = valueSet.resultType || 'Value Set';
-          // TODO: all the sources are obviously the same Ontology due to data organization;
-          //   confirm with client where Source field should come from for value sets
-          var valueSetOntology = controlTermService.getOntologyByAcronym(controlTermDataService.getOntologyAcronym(valueSet));
-          valueSet.resultSource = valueSetOntology.name;
-          browseResults.push(valueSet);
-        });
-        angular.forEach($rootScope.ontologies, function(ontology) {
-          ontology.resultType = ontology.resultType || "Ontology";
-          browseResults.push(ontology);
+        //angular.forEach($rootScope.valueSets, function(valueSet) {
+        //  valueSet.resultType = valueSet.resultType || 'Value Set';
+        //  // TODO: all the sources are obviously the same Ontology due to data organization;
+        //  //   confirm with client where Source field should come from for value sets
+        //  var valueSetOntology = controlTermService.getOntologyByAcronym(controlTermDataService.getOntologyAcronym(valueSet));
+        //  valueSet.resultSource = valueSetOntology.name;
+        //  browseResults.push(valueSet);
+        //});
+        //angular.forEach($rootScope.ontologies, function(ontology) {
+        //  ontology.resultType = ontology.resultType || "Ontology";
+        //  browseResults.push(ontology);
+        //});
+        //
+        //// Sort by title
+        //browseResults.sort(controlTermService.sortBrowseResults);
+        //vm.searchResults = browseResults;
+
+        /*** My code ***/
+
+        $q.all({
+          ontologies: controlTermDataService.getAllOntologies(),
+          valueSets : controlTermDataService.getAllValueSets()
+        }).then(function(result) {
+          angular.forEach(result.valueSets, function(valueSet) {
+            //valueSet.resultType = valueSet.resultType || 'ValueSet';
+            // TODO: all the sources are obviously the same Ontology due to data organization;
+            //   confirm with client where Source field should come from for value sets
+            //var valueSetOntology = controlTermService.getOntologyByAcronym(controlTermDataService.getOntologyAcronym(valueSet));
+            //valueSet.resultSource = valueSetOntology.name;
+            browseResults.push(valueSet);
+          });
+          angular.forEach(result.ontologies, function(ont) {
+            //ontology.resultType = ontology.resultType || "Ontology";
+            //ont.resultType = ont.type;
+            browseResults.push(ont);
+          });
+
+          // Sort by title
+          browseResults.sort(controlTermService.sortBrowseResults);
+          vm.searchResults = browseResults;
         });
 
-        // Sort by title
-        browseResults.sort(controlTermService.sortBrowseResults);
-        vm.searchResults = browseResults;
+
+
+
+
+        /*** End of My code ***/
+
       }
 
       function valuesCreateClass() {
@@ -296,12 +329,12 @@ define([
               var searchResults = [];
               for (var i = 0; i < maxLen; i++) {
                 var result = response.collection[i];
-                var acronym = controlTermDataService.getOntologyAcronym(result);
+                var acronym = controlTermDataService.getAcronym(result);
                 if (acronym != 'NLMVS') {
-                  result.resultType = 'Ontology Class';
+                  result.type = 'OntologyClass';
                   result.resultSource = acronym;
                 } else {
-                  result.resultType = 'Value Set'; // default to value set
+                  result.type = 'ValueSet'; // default to value set
                   result.resultSource = response.collection[i].prefLabel;
                   loadParentAndDetermineValueSetForValuesSearchResult(result);
                 }
@@ -328,9 +361,9 @@ define([
                 var searchResults = [];
                 for(var i = 0; i < maxLen; i++) {
                   var result = response.collection[i];
-                  result.resultType = 'Ontology Class';
+                  result.type = 'OntologyClass';
                   var acronym = result.links.ontology.slice(39);
-                  var ontology = controlTermService.getOntologyByAcronym(acronym);
+                  var ontology = controlTermDataService.getOntologyById(acronym);
                   if (ontology) {
                     result.resultSource = ontology.name;
                   }
@@ -357,7 +390,7 @@ define([
                 var searchResults = [];
                 for (var i = 0; i < maxLen; i++) {
                   var result = response.collection[i];
-                  result.resultType = 'Value Set'; // default to value set
+                  result.type = 'ValueSet'; // default to value set
                   result.resultSource = response.collection[i].prefLabel;
                   loadParentAndDetermineValueSetForValuesSearchResult(result);
                   searchResults.push(result);
@@ -392,15 +425,29 @@ define([
        */
       function assignClassDetails(ontologyClass) {
         if (!ontologyClass.classDetails) {
-          var selfUrl = ontologyClass.links.self;
-          if (!selfUrl) {
-            selfUrl = ontologyClass.links.ontology + "/classes/" + encodeURIComponent(ontologyClass["@id"]);
-          }
-
-          controlTermDataService.getClassDetails(selfUrl).then(function(response) {
+          //var selfUrl = controlTermService.getSelfUrl(ontologyClass);
+          var acronym = controlTermDataService.getAcronym(ontologyClass);
+          var classId = ontologyClass['@id'];
+          console.log(">>>>>>>ONTOLOGY CLASS");
+          console.log(ontologyClass);
+          controlTermDataService.getClassById(acronym, classId).then(function(response) {
             vm.selectedValueResult.classDetails = response;
           });
         }
+      }
+
+      function assignValueSetDetails(valueSet) {
+        console.log(">>>>>>>VALUE SET");
+        console.log(valueSet);
+        //if (!ontologyClass.classDetails) {
+        var acronym = controlTermDataService.getAcronym(valueSet);
+        //var valueSetId = valueSet['@id'];
+          //var selfUrl = controlTermService.getSelfUrl(valueSet);
+          //controlTermDataService.getValueSetById(valueSet.id).then(function(response) {
+          //  vm.selectedValueResult.classDetails = response;
+          //});
+        vm.selectedValueResult.classDetails = controlTermDataService.getValueSetById(valueSet.id);
+        //}
       }
 
       function loadParentAndDetermineValueSetForValuesSearchResult (valueSet) {
@@ -408,7 +455,7 @@ define([
         controlTermDataService.getClassParents(acronym, valueSet['@id']).then(function(response) {
           if (!(status in response)) {
             if (angular.isArray(response) && response.length > 0) {
-              valueSet.resultType = 'Value Set Class';
+              valueSet.type = 'Value';
               // take the first result assuming there will be only one parent for value sets
               valueSet.resultSource = response[0].prefLabel;
               valueSet.resultParentId = response[0]['@id'];

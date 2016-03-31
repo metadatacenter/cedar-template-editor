@@ -51,7 +51,7 @@ define([
       vm.provisionalClassMappings.push({
         mappingType: mappingType,
         targetClass: targetClass,
-        targetOntology: targetOntology.details.ontology
+        targetOntology: targetOntology.info
       });
       // hack to reset inner picker
       $timeout(function() {
@@ -73,6 +73,7 @@ define([
 
     function saveAsFieldItem(provisionalClass) {
       provisionalClassService.saveClass(provisionalClass, vm.provisionalClassMappings).then(function(newClass) {
+        // TODO: fix the following call
         controlTermDataService.getClassDetails(newClass['@id']).then(function(details) {
           // hack to add prefLabel
           details.prefLabel = details.label;

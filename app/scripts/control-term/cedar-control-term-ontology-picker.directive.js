@@ -8,9 +8,9 @@ define([
     'cedar.templateEditor.controlTerm.provisionalClassController'
   ]).directive('cedarControlTermOntologyPicker', cedarControlTermOntologyPickerDirective);
 
-  cedarControlTermOntologyPickerDirective.$inject = [];
+  cedarControlTermOntologyPickerDirective.$inject = ['controlTermService'];
 
-  function cedarControlTermOntologyPickerDirective() {
+  function cedarControlTermOntologyPickerDirective(controlTermService) {
 
     var directive = {
       bindToController: {
@@ -111,9 +111,13 @@ define([
         if (event) {
           event.preventDefault();
         }
-
         vm.fieldActionSelection = 'browse';
-        vm.searchResults = $rootScope.ontologies;
+        //vm.searchResults = controlTermDataService.getAllOntologies();
+        //console.log("------");
+        //console.log(vm.searchResults);
+        controlTermDataService.getAllOntologies().then(function(response) {
+          vm.searchResults = response;
+        });
       }
 
       function fieldSearch(event) {
@@ -162,16 +166,26 @@ define([
        * and child tree directives.
        */
       function getClassDetails(subtree) {
+        var acronym = controlTermService.getAcronym(subtree);
+        var classId = subtree['@id'];
+
         // Get selected class details from the links.self endpoint provided.
         vm.selectedClass2 = subtree;
-        controlTermDataService.getClassDetails(subtree.links.self).then(function(response) {
+
+        //controlTermDataService.getClassDetails(subtree.links.self).then(function(response) {
+        //  vm.classDetails = response;
+        //});
+
+        controlTermDataService.getClassDetails(acronym, classId).then(function(response) {
           vm.classDetails = response;
+          console.log("CLASS DETAILS")
+          console.log(vm.classDetails)
         });
       }
 
       function getOntologySummary(ontologyUri) {
         var acronym = ontologyUri.slice(39);
-        var ontology = controlTermService.getOntologyByAcronym(acronym);
+        var ontology = controlTermDataService.getOntologyById(acronym);
         if (ontology) {
           return ontology.name + ' (' + acronym + ')';
         } else {

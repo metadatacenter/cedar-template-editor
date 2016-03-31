@@ -188,7 +188,7 @@
     </cedar-control-term-value-set-picker>
 
     <div class="class-actions">
-      <div ng-if="ctdc.selectedValueResult.resultType == 'Ontology Class' || ctdc.selectedValueResult.resultType == 'Ontology'">
+      <div ng-if="ctdc.selectedValueResult.type == 'OntologyClass' || ctdc.selectedValueResult.type == 'Ontology'">
         <div class="element-toggles list table-style">
           <div class="element-toggle table-cell-style" ng-class="{active: ctdc.stageValueConstraintAction == 'add_class'}" ng-click="ctdc.stageOntologyClassValueConstraint(ctdc.selectedValueResult)" ng-if="!$root.isOntology(ctdc.selectedValueResult)">
             <span>Class</span>
@@ -199,14 +199,14 @@
           <div class="element-toggle table-cell-style" ng-class="{active: ctdc.stageValueConstraintAction == 'add_children'}" ng-click="ctdc.stageBranchValueConstraint(ctdc.selectedValueResult)" ng-if="!$root.isOntology(ctdc.selectedValueResult)">
             <span>Children</span>
           </div>
-          <div class="element-toggle table-cell-style" ng-class="{active: ctdc.stageValueConstraintAction == 'add_ontology'}" ng-click="ctdc.stageOntologyValueConstraint()" ng-if="ctdc.currentOntology.details.ontology">
+          <div class="element-toggle table-cell-style" ng-class="{active: ctdc.stageValueConstraintAction == 'add_ontology'}" ng-click="ctdc.stageOntologyValueConstraint()" ng-if="ctdc.currentOntology.info">
             <span>Ontology</span>
           </div>
         </div>
       </div>
-      <div ng-if="ctdc.selectedValueResult.resultType == 'Value Set' || ctdc.selectedValueResult.resultType == 'Value Set Class'">
+      <div ng-if="ctdc.selectedValueResult.type == 'ValueSet' || ctdc.selectedValueResult.type == 'Value'">
         <div class="element-toggles list table-style stage-value-constraint-actions">
-          <div ng-if="ctdc.selectedValueResult['@id'] != ctdc.currentValueSet['@id']" class="element-toggle table-cell-style" ng-class="{active: ctdc.stageValueConstraintAction == 'add_class'}" ng-click="ctdc.stageOntologyClassValueConstraint(ctdc.selectedValueResult, 'Value Set Class')">
+          <div ng-if="ctdc.selectedValueResult['@id'] != ctdc.currentValueSet['@id']" class="element-toggle table-cell-style" ng-class="{active: ctdc.stageValueConstraintAction == 'add_class'}" ng-click="ctdc.stageOntologyClassValueConstraint(ctdc.selectedValueResult, 'Value')">
             <span>Class</span>
           </div>
           <div class="element-toggle table-cell-style" ng-class="{active: ctdc.stageValueConstraintAction == 'add_entire_value_set'}" ng-click="ctdc.stageValueSetValueConstraint()">

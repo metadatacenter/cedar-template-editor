@@ -39,8 +39,8 @@ define([
     vm.deleteFieldAddedOntology = deleteFieldAddedOntology;
     vm.deleteFieldAddedValueSet = deleteFieldAddedValueSet;
     vm.isLoadingClassDetails = false;
-    vm.loadAllOntologies = loadAllOntologies;
-    vm.loadAllValueSets = loadAllValueSets;
+    //vm.loadAllOntologies = loadAllOntologies;
+    //vm.loadAllValueSets = loadAllValueSets;
     vm.selectFieldFilter = selectFieldFilter;
     vm.selectValueFilter = selectValueFilter;
     vm.stagedBranchesValueConstraints = [];
@@ -67,8 +67,8 @@ define([
     vm.controlTerm = {};
     vm.filterSelection = vm.options && vm.options.filterSelection || "";
 
-    vm.loadAllOntologies();
-    vm.loadAllValueSets();
+    //vm.loadAllOntologies();
+    //vm.loadAllValueSets();
     setInitialFieldConstraints();
 
     $('body').on('click', '.detail-view-tab a', function (e) {
@@ -116,10 +116,12 @@ define([
         }
       }
 
+      console.log("ONTOLOGY:");
+      console.log(ontology);
       if(alreadyAdded == false) {
         vm.addedFieldItems.push({
           prefLabel: selection.prefLabel,
-          ontologyDescription: ontology.details.ontology.name+" ("+ontology.details.ontology.acronym+")",
+          ontologyDescription: ontology.info.name+" ("+ontology.info.id+")",
           ontology: ontology,
           class: selection,
           "@id": selection["@id"]
@@ -129,12 +131,13 @@ define([
          * Add ontology type to JSON.
          */
         var properties = $rootScope.propertiesOf(vm.field);
+        var selfUrl = controlTermService.getSelfUrl(selection);
         if (angular.isArray(properties['@type'].oneOf[0].enum)) {
-          properties['@type'].oneOf[0].enum.push(selection.links.self);
-          properties['@type'].oneOf[1].items.enum.push(selection.links.self);
+          properties['@type'].oneOf[0].enum.push(selfUrl);
+          properties['@type'].oneOf[1].items.enum.push(selfUrl);
         } else {
-          properties['@type'].oneOf[0].enum = [selection.links.self];
-          properties['@type'].oneOf[1].items.enum = [selection.links.self];
+          properties['@type'].oneOf[0].enum = [selfUrl];
+          properties['@type'].oneOf[1].items.enum = [selfUrl];
         }
 
         vm.startOver();
@@ -310,48 +313,48 @@ define([
      * additional API calls for ontological information in things like search
      * results.
      */
-    function loadAllOntologies() {
-      $rootScope.ontologies = $rootScope.ontologies || [];
-      if ($rootScope.ontologies.length == 0) {
-        $rootScope.ontologies = $http.get('/cache/ontologies.json').
-          success(function(response) {
-            $rootScope.ontologies = response;
-          }).
-          error(function(response) {
-            alert('There was an error loading the ontologies from cache.');
-          });
-      }
-    }
+    //function loadAllOntologies() {
+    //  $rootScope.ontologies = $rootScope.ontologies || [];
+    //  if ($rootScope.ontologies.length == 0) {
+    //    $rootScope.ontologies = $http.get('/cache/ontologies.json').
+    //      success(function(response) {
+    //        $rootScope.ontologies = response;
+    //      }).
+    //      error(function(response) {
+    //        alert('There was an error loading the ontologies from cache.');
+    //      });
+    //  }
+    //}
 
     /**
      * Cache entire list of value sets on the client for control
      * term browsing.
      */
-    function loadAllValueSets() {
-      $rootScope.valueSets = $rootScope.valueSets || [];
-      if ($rootScope.valueSets.length == 0) {
-        $rootScope.valueSets = $http.get('/cache/value-sets.json').
-          success(function(response) {
-            $rootScope.valueSets = response;
-          }).
-          error(function(response) {
-            alert('There was an error loading the value sets from cache.');
-          });
-      }
-    }
+    //function loadAllValueSets() {
+    //  $rootScope.valueSets = $rootScope.valueSets || [];
+    //  if ($rootScope.valueSets.length == 0) {
+    //    $rootScope.valueSets = $http.get('/cache/value-sets.json').
+    //      success(function(response) {
+    //        $rootScope.valueSets = response;
+    //      }).
+    //      error(function(response) {
+    //        alert('There was an error loading the value sets from cache.');
+    //      });
+    //  }
+    //}
 
     function stageOntologyValueConstraint() {
       var existed = false;
       angular.forEach(vm.stagedOntologyValueConstraints, function(ontologyValueConstraint) {
-        existed = existed || ontologyValueConstraint.uri == vm.currentOntology.details.ontology["@id"];
+        existed = existed || ontologyValueConstraint.uri == vm.currentOntology.info["@id"];
       });
 
       if (!existed) {
         vm.stagedOntologyValueConstraints.push({
           'numChildren': vm.currentOntology.size.classes,
-          'acronym': vm.currentOntology.details.ontology.acronym,
-          'name': vm.currentOntology.details.ontology.name,
-          'uri': vm.currentOntology.details.ontology['@id']
+          'acronym': vm.currentOntology.info.id,
+          'name': vm.currentOntology.info.name,
+          'uri': vm.currentOntology.info['@id']
         });
       }
 
@@ -421,8 +424,8 @@ define([
 
       if (!existed) {
         vm.stagedBranchesValueConstraints.push({
-          'source': vm.currentOntology.details.ontology.name + ' (' + vm.currentOntology.details.ontology.acronym + ')',
-          'acronym': vm.currentOntology.details.ontology['acronym'],
+          'source': vm.currentOntology.info.name + ' (' + vm.currentOntology.info.id + ')',
+          'acronym': vm.currentOntology.info.id,
           'uri': selection['@id'],
           'name': selection.prefLabel,
           'maxDepth': null
@@ -434,8 +437,8 @@ define([
 
     function stageOntologyClassSiblingsValueConstraint(selection) {
       vm.stagedOntologyClassValueConstraints = [];
-      controlTermDataService.getClassParents(controlTermDataService.getOntologyAcronym(selection), selection['@id']).then(function(response) {
-        var acronym = vm.currentOntology.details.ontology.acronym;
+      controlTermDataService.getClassParents(controlTermDataService.getAcronym(selection), selection['@id']).then(function(response) {
+        var acronym = vm.currentOntology.info.id;
         if (response && angular.isArray(response) && response.length > 0) {
           controlTermDataService.getClassChildren(acronym, response[0]['@id']).then(function(childResponse) {
             angular.forEach(childResponse, function(child) {
@@ -457,7 +460,7 @@ define([
 
     function stageOntologyClassValueConstraint(selection, type) {
       if (type === undefined) {
-        type = 'Ontology Class';
+        type = 'OntologyClass';
       }
       var klass = {
         'uri': selection['@id'],
@@ -466,8 +469,8 @@ define([
         'label': '',
         'default': false
       };
-      if (type == 'Ontology Class') {
-        klass['source'] = vm.currentOntology.details.ontology.name + ' (' + vm.currentOntology.details.ontology.acronym + ')';
+      if (type == 'OntologyClass') {
+        klass['source'] = vm.currentOntology.info.name + ' (' + vm.currentOntology.info.id + ')';
       } else {
         klass['source'] = vm.currentValueSet.prefLabel;
       }
@@ -516,10 +519,10 @@ define([
         var constraint = {
           'uri': args.class['@id'],
           'prefLabel': args.class.prefLabel,
-          'type': 'Ontology Class',
+          'type': 'OntologyClass',
           'label': args.class.prefLabel,
           'default': false,
-          'source': args.ontology.details.ontology.name + ' (' + args.ontology.details.ontology.acronym + ')',
+          'source': args.ontology.info.name + ' (' + args.ontology.info.id + ')',
           'provisionalClass': true,
         };
         addOntologyClassToValueConstraint(constraint);
@@ -563,7 +566,7 @@ define([
             controlTermDataService.getClassDetails(classId).then(function(response) {
               if (response) {
                 // get ontology details
-                acronym = getOntologyAcronym(response);
+                acronym = getAcronym(response);
                 controlTermDataService.getOntologyDetails(acronym).then(function(ontologyResponse) {
                   vm.addedFieldItems.push({
                     prefLabel: response.prefLabel,
