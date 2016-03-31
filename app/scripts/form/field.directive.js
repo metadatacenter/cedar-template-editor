@@ -316,7 +316,7 @@ define([
       $scope.addMoreInput = function() {
         console.debug('addMoreItems' + $scope.model.length + " " + $scope.field.maxItems);
 
-        if ((!$scope.field.maxItems || $scope.model.length < $scope.field.maxItems)) {
+        if ((typeof $scope.field.minItems != 'undefined' && (typeof $scope.field.maxItems == 'undefined' || $scope.model.length < $scope.field.maxItems))) {
           var seed = {};
           if ($scope.model.length > 0) {
             seed = angular.copy($scope.model[0]);
@@ -325,6 +325,7 @@ define([
           if (field.defaultOption) {
             seed["_value"] = angular.copy(field.defaultOption);
           } else {
+            console.log(field);
             if (['checkbox'].indexOf(field.inputType) >= 0 ||
                 ['date'].indexOf(field.inputType) >= 0 && field.dateType == "date-range") {
               seed['_value'] = {};
@@ -409,8 +410,8 @@ define([
         if ($scope.errorMessages.length == 0) {
 
           if (!p._ui.is_cardinal_field) {
-            $scope.field.minItems = 1;
-            $scope.field.maxItems = 1;
+            delete $scope.field.minItems;
+            delete $scope.field.maxItems;
           }
 
           if ($scope.field.maxItems == 1  && $scope.field.minItems == 1) {

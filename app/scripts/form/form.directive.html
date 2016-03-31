@@ -4,6 +4,7 @@
     <div ng-repeat="item in page" class="animate-fade" ng-show="pageIndex == $parent.$index">
       <span ng-if="form.properties[item]">
         <div ng-if="$root.propertiesOf(form.properties[item])._ui.inputType" ng-class="{'field-instance':true, 'multiple-instance-field':$root.isArray(model[item])}">
+
           <field-directive field="form.properties[item]" model="model[item]" delete="removeChild(form.properties[item])" rename-child-key="renameChildKey"></field-directive>
         </div>
         <div class="element-group full" ng-if="form.properties[item] && !$root.propertiesOf(form.properties[item])._ui.inputType">

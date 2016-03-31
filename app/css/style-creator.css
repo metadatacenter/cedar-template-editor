@@ -9336,7 +9336,6 @@ i {
   padding-left: 22px;
 }
 .template-body .right-body .preview-edit-options {
-  display: inline-block;
   vertical-align: top;
   margin-bottom: 0px;
   padding-top: 7px;
@@ -11256,6 +11255,58 @@ p.instructions {
       -ms-transform: translate(0px, -2px);
           transform: translate(0px, -2px);
 }
+.field-wrapper-checkbox,
+.field-wrapper-radio {
+  padding: 5px;
+  border: 1px solid #ddd;
+  background: white;
+  position: relative;
+  width: 100%;
+}
+.zero-input-wrapper {
+  position: absolute;
+  right: 0;
+  top: .5em;
+  width: 100px;
+}
+.zero-input-wrapper .add,
+.zero-input-wrapper .remove {
+  height: 25px;
+  width: 25px;
+  margin: 0 0 0 10px;
+  border-radius: 50%;
+  display: inline-block;
+  vertical-align: middle;
+  -webkit-transition: all 0.3s ease 0.1s;
+          transition: all 0.3s ease 0.1s;
+  cursor: pointer;
+  border: none;
+}
+.zero-input-wrapper .add i,
+.zero-input-wrapper .remove i {
+  color: #FFF;
+  font-size: 16px;
+  line-height: 25px;
+}
+.zero-input-wrapper .add {
+  background-color: #5795ba;
+}
+.zero-input-wrapper .add:disabled {
+  background-color: rgba(87, 149, 186, 0.35);
+}
+.zero-input-wrapper .add i {
+  -webkit-transform: translate(0px, -1px);
+      -ms-transform: translate(0px, -1px);
+          transform: translate(0px, -1px);
+}
+.zero-input-wrapper .remove {
+  background-color: #333333;
+}
+.zero-input-wrapper .remove i {
+  -webkit-transform: translate(0px, -2px);
+      -ms-transform: translate(0px, -2px);
+          transform: translate(0px, -2px);
+}
 .fields .form-group {
   margin-right: 100px;
 }
@@ -12542,9 +12593,6 @@ body {
 }
 .field-instance.multiple-instance-field {
   border: 1px solid rgba(87, 149, 186, 0.35);
-  padding-top: 12px;
-  padding-bottom: 12px;
-  margin-bottom: 16px;
   background-color: #f4f4f7;
 }
 /* The base CSS styles for the animation property */

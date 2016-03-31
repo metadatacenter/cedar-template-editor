@@ -287,7 +287,7 @@ i {
     }
 
     .preview-edit-options {
-      display: inline-block;
+      //display: inline-block;
       vertical-align: top;
       margin-bottom: 0px;
       padding-top: 7px;
@@ -2242,6 +2242,57 @@ p.instructions {
   left: 100%;
   top: 0;
   width: 110px;
+
+  .add, .remove {
+    height: 25px;
+    width: 25px;
+    margin: 0 0 0 10px;
+    border-radius: 50%;
+    display: inline-block;
+    vertical-align: middle;
+    transition: all 0.3s ease 0.1s;
+    cursor: pointer;
+    border: none;
+
+    i {
+      color: #FFF;
+      font-size: 16px;
+      line-height: 25px;
+    }
+  }
+
+  .add {
+    background-color: @brand-primary;
+    &:disabled {
+      // opacity: 0.5;
+      background-color: @brand-primary-disabled;
+    }
+    i {
+      transform: translate(0px, -1px);
+    }
+  }
+
+  .remove {
+    background-color: #333333;
+    i {
+      transform: translate(0px, -2px);
+    }
+  }
+}
+
+.field-wrapper-checkbox, .field-wrapper-radio {
+  padding: 5px;
+  border: 1px solid #ddd;
+  background: white;
+  position:relative;
+  width:100%;
+}
+
+.zero-input-wrapper {
+  position: absolute;
+  right: 0;
+  top: .5em;
+  width: 100px;
 
   .add, .remove {
     height: 25px;
