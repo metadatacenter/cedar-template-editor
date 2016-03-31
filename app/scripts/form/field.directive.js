@@ -314,7 +314,6 @@ define([
 
 
       $scope.addMoreInput = function() {
-        console.debug('addMoreItems' + $scope.model.length + " " + $scope.field.maxItems);
 
         if ((typeof $scope.field.minItems != 'undefined' && (typeof $scope.field.maxItems == 'undefined' || $scope.model.length < $scope.field.maxItems))) {
           var seed = {};
@@ -325,7 +324,6 @@ define([
           if (field.defaultOption) {
             seed["_value"] = angular.copy(field.defaultOption);
           } else {
-            console.log(field);
             if (['checkbox'].indexOf(field.inputType) >= 0 ||
                 ['date'].indexOf(field.inputType) >= 0 && field.dateType == "date-range") {
               seed['_value'] = {};
@@ -450,6 +448,12 @@ define([
         var p = $rootScope.propertiesOf($scope.field);
         p._tmp = p._tmp || {};
         p._tmp.state = "creating";
+      };
+
+      $scope.isEditState = function () {
+        var p = $rootScope.propertiesOf($scope.field);
+        p._tmp = p._tmp || {};
+        return (p._tmp.state == "creating");
       };
 
       $scope.$watch("field", function (newField, oldField) {

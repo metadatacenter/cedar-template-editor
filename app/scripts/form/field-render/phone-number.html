@@ -24,9 +24,9 @@
   <!-- /.form-group -->
 
 
-  <div ng-if="$root.isArray(model) && model.length == 0" class="form-group floating-label-wrapper">
+  <div ng-if="$root.isArray(model) && model.length == 0 && !$root.isRuntime()" class="form-group floating-label-wrapper">
 
-    <div ng-if="!$root.isRuntime()">
+    <div >
       <input type="text"
           class="form-control"
           ng-class="{'required': $root.propertiesOf(field)._valueConstraints.requiredValue}"

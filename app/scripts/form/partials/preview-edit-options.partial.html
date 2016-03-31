@@ -1,4 +1,5 @@
-<div ng-if="!$root.isRuntime()" class="element-preview-actions">
+<!-- edit or delete the field or element -->
+<div ng-if="!$root.isRuntime() && !isEditState()" class="element-preview-actions">
   <div class="edit" ng-click="edit()" title="Edit {{childType || 'element'}}" ng-if="!notEditable">
     <i class="cedar-svg-pencil"></i>
   </div>
