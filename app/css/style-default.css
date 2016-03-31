@@ -12593,6 +12593,9 @@ body {
 }
 .field-instance.multiple-instance-field {
   border: 1px solid #94C795;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  margin-bottom: 16px;
   background-color: #f4f4f7;
 }
 /* The base CSS styles for the animation property */
