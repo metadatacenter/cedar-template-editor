@@ -315,8 +315,7 @@ define([
       }
 
 
-
-      $scope.addMoreInput = function() {
+      $scope.addMoreInput = function () {
 
         if ((typeof $scope.field.minItems != 'undefined' && (typeof $scope.field.maxItems == 'undefined' || $scope.model.length < $scope.field.maxItems))) {
           var seed = {};
@@ -403,7 +402,7 @@ define([
 
       // Switch from creating to completed.
 
-      $scope.add = function() {
+      $scope.add = function () {
 
         var p = $rootScope.propertiesOf($scope.field);
         $scope.errorMessages = $scope.checkFieldConditions(p);
@@ -462,6 +461,28 @@ define([
         return (p._tmp.state == "creating");
       };
 
+      $scope.isEditState = function () {
+        var p = $rootScope.propertiesOf($scope.field);
+        p._tmp = p._tmp || {};
+        return (p._tmp.state == "creating");
+      };
+
+      // use fieldTypes to determine if the field should be displayed with the button to add controlled terms
+      $scope.hasControlledTerms = function () {
+
+        var fieldTypes = $rootScope.fieldTypes;
+        var inputType = 'element';
+        if ($rootScope.propertiesOf($scope.field)._ui.inputType) {
+          inputType = $rootScope.propertiesOf($scope.field)._ui.inputType;
+
+          for (var i = 0; i < fieldTypes.length; i++) {
+            if (fieldTypes[i].cedarType == inputType) {
+              return fieldTypes[i].hasControlledTerms;
+            }
+          }
+        }
+        return false;
+      }
 
 
       /**
@@ -486,7 +507,6 @@ define([
         return $sce.trustAsHtml('<iframe width="' + width + '" height="' + height + '" src="https://www.youtube.com/embed/' + content + '" frameborder="0" allowfullscreen></iframe>');
 
       };
-
 
 
       $scope.$watch("field", function (newField, oldField) {
@@ -542,7 +562,7 @@ define([
                 }
               } else {
 
-                angular.forEach($scope.model, function(m, i) {
+                angular.forEach($scope.model, function (m, i) {
 
                   if (!("_value" in m)) {
                     if (field.defaultOption) {
@@ -607,7 +627,7 @@ define([
       }
 
       $scope.isFirstRefresh = true;
-      $scope.setIsFirstRefresh = function(isFirstRefresh) {
+      $scope.setIsFirstRefresh = function (isFirstRefresh) {
         $scope.isFirstRefresh = isFirstRefresh;
       }
 
@@ -623,7 +643,7 @@ define([
       }
 
       // Updates the search using the selected value
-      $scope.updateSearch = function(select) {
+      $scope.updateSearch = function (select) {
         if (select.selected.value) {
           select.search = select.selected.value;
         }
