@@ -1,7 +1,7 @@
 <div class="fields fields-phone-number">
   <div ng-if="$root.isArray(model)" class="form-group floating-label-wrapper" ng-repeat="valueElement in model">
-    <p class="extra-label-context" ng-if="!$root.isRuntime() && $root.propertiesOf(field)._ui.title">
-      {{$root.propertiesOf(field)._ui.title}}</p>
+    <!--<p class="extra-label-context" ng-if="!$root.isRuntime() && $root.propertiesOf(field)._ui.title">-->
+      <!--{{$root.propertiesOf(field)._ui.title}}</p>-->
     <input type="text"
         class="form-control"
         ng-class="{'required': $root.propertiesOf(field)._valueConstraints.requiredValue}"

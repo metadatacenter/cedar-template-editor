@@ -50,11 +50,6 @@
     "allowedInElement": true
   },
   {
-    "cedarType": "page-break",
-    "iconClass": "cedar-svg-page-break",
-    "allowedInElement": false
-  },
-  {
     "cedarType": "richtext",
     "iconClass": "cedar-svg-rich-text",
     "allowedInElement": true
