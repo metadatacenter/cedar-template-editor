@@ -10,6 +10,7 @@ define([
   'cedar/template-editor/form/select-picker.directive',
   'cedar/template-editor/form/spreadsheet.service',
   'cedar/template-editor/form/with-floating-label.directive',
+  'cedar/template-editor/form/no-image.directive',
 ], function(angular) {
   angular.module('cedar.templateEditor.form', [
     'cedar.templateEditor.controlTerm',
@@ -20,5 +21,6 @@ define([
     'cedar.templateEditor.form.selectPickerDirective',
     'cedar.templateEditor.form.spreadsheetService',
     'cedar.templateEditor.form.withFloatingLabelDirective',
+    'cedar.templateEditor.form.noImageDirective',
   ]);
 });

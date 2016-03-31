@@ -586,6 +586,7 @@ define([
       return $sce.trustAsHtml($rootScope.propertiesOf(field)._content);
     };
 
+
     Cedar.init();
     $rootScope.cedar = Cedar;
     DataTemplateService.init();

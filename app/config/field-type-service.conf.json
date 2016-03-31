@@ -63,5 +63,15 @@
     "cedarType": "richtext",
     "iconClass": "cedar-svg-rich-text",
     "allowedInElement": true
+  },
+  {
+    "cedarType": "image",
+    "iconClass": "cedar-svg-image",
+    "allowedInElement": true
+  },
+  {
+    "cedarType": "youtube",
+    "iconClass": "cedar-svg-youtube",
+    "allowedInElement": true
   }
 ]

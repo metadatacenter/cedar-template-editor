@@ -1,0 +1,39 @@
+<div id="youtube-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}" class="input-type-container video">
+  <p class="type-label"><i class="cedar-svg-youtube"></i>&nbsp;YouTube Video</p>
+
+  <div class="form-group floating-label-wrapper">
+    <input type="text" class="form-control"
+        id="youtube-name-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}"
+        placeholder="Video Name (Optional)" aria-label="Video Name (Optional)"
+        ng-model="$root.propertiesOf(field)._ui.title" with-floating-label>
+  </div>
+  <!-- /.form-group -->
+  <div class="form-group floating-label-wrapper">
+    <input type="text" class="form-control"
+        id="youtube-description-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}"
+        placeholder="Video Description (Optional)" aria-label="Video Description (Optional)"
+        ng-model="$root.propertiesOf(field)._ui.description" with-floating-label>
+  </div>
+  <!-- /.form-group -->
+  <div class="form-group floating-label-wrapper">
+    <input type="text" class="form-control" id="youtube-src-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}"
+        placeholder="YouTube Video Identifier" aria-label="YouTube Video Identifier"
+        ng-model="$root.propertiesOf(field)._content" with-floating-label>
+  </div>
+  <!-- /.form-group -->
+  <div class="form-group floating-label-wrapper">
+    <input  type="number" class="form-control"
+        id="youtube-width-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}"
+        placeholder="Video Width (Optional)" aria-label="Video Width (Optional)"
+        ng-model="$root.propertiesOf(field)._size.width" with-floating-label>
+  </div>
+  <!-- /.form-group -->
+  <div class="form-group floating-label-wrapper">
+    <input type="number" class="form-control"
+        id="youtube-height-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}"
+        placeholder="Video Height (Optional)" aria-label="Video Height (Optional)"
+        ng-model="$root.propertiesOf(field)._size.height" with-floating-label>
+  </div>
+  <!-- /.form-group -->
+  <div class="configuration-options" ng-include="'scripts/form/partials/staging-area-actions.partial.html'"></div>
+</div><!-- /.input-type-container -->
