@@ -13,18 +13,19 @@ define([
 
     var apiKey = null;
     var base = null;
-    var baseTerminology = "https://terminology.metadatacenter.orgx/bioportal/";
+    var baseTerminology = null;
     var http_default_config = {};
 
     var ontologiesCache = {};
     var valueSetsCache = {};
 
     var service = {
-      autocompleteOntology                            : autocompleteOntology,
-      autocompleteOntologySubtree                     : autocompleteOntologySubtree,
+      //autocompleteOntology                            : autocompleteOntology,
+      //autocompleteOntologySubtree                     : autocompleteOntologySubtree,
       autocompleteValueSetClasses                     : autocompleteValueSetClasses,
       getAllOntologies                                : getAllOntologies,
       getOntologyById                                 : getOntologyById,
+      getOntologyByLdId                               : getOntologyByLdId,
       getAllValueSets                                 : getAllValueSets,
       getValueSetById                                 : getValueSetById,
       getRootClasses                                  : getRootClasses,
@@ -60,42 +61,87 @@ define([
     function init() {
       apiKey = config.apiKey;
       base = UrlService.bioontology();
+      baseTerminology = "https://terminology.metadatacenter.orgx/bioportal/";
       http_default_config = {
         'headers': {
           'Authorization': 'apikey token=' + apiKey
         }
       };
+      initOntologiesCache();
+      initValueSetsCache();
     }
+
+    /*** Init caches ***/
+
+    function initOntologiesCache() {
+      var url = baseTerminology + "ontologies"
+      $http.get(url, http_default_config).then(function (response) {
+        var ontologies = response.data;
+        angular.forEach(ontologies, function (value) {
+          ontologiesCache[value.id] = value;
+        });
+      }).catch(function (err) {
+        return err;
+      });
+    }
+
+    function initValueSetsCache() {
+      var url = baseTerminology + "value-sets"
+      return $http.get(url, http_default_config).then(function (response) {
+        var valueSets = response.data;
+        angular.forEach(valueSets, function (element) {
+          valueSetsCache[element.id] = element;
+        });
+      }).catch(function (err) {
+        return err;
+      });
+    }
+
+    function getAllOntologies() {
+      var ontologies = [];
+      for (var key in ontologiesCache) {
+        ontologies.push(ontologiesCache[key]);
+      }
+      return ontologies;
+    };
+
+    function getAllValueSets() {
+      var valueSets = [];
+      for (var key in valueSetsCache) {
+        valueSets.push(valueSetsCache[key]);
+      }
+      return valueSets;
+    };
 
     /**
      * Service methods.
      */
 
-    function autocompleteOntology(query, acronym) {
-      return $http.get(base + 'search?q=' + query.replace(/[\s]+/g,
-              '+') + '&ontologies=' + acronym + '&suggest=true&display_context=false&display_links=false&pagesize=20',
-          http_default_config).then(function (response) {
-            return response.data;
-          }).catch(function (err) {
-            return err;
-          });
-    };
+    //function autocompleteOntology(query, acronym) {
+    //  return $http.get(base + 'search?q=' + query.replace(/[\s]+/g,
+    //          '+') + '&ontologies=' + acronym + '&suggest=true&display_context=false&display_links=false&pagesize=20',
+    //      http_default_config).then(function (response) {
+    //        return response.data;
+    //      }).catch(function (err) {
+    //        return err;
+    //      });
+    //};
 
-    function autocompleteOntologySubtree(query, acronym, subtree_root_id, max_depth) {
-      var searchUrl = base;
-      if (query == '*') {
-        // use descendants
-        searchUrl += 'ontologies/' + acronym + '/classes/' + encodeURIComponent(subtree_root_id) + '/descendants?display_context=false&display_links=false';
-      } else {
-        searchUrl += 'search?q=' + query.replace(/[\s]+/g,
-                '+') + '&ontology=' + acronym + '&suggest=true&display_context=false&display_links=false&subtree_root_id=' + encodeURIComponent(subtree_root_id) + '&max_depth=' + max_depth + '&pagesize=20';
-      }
-      return $http.get(searchUrl, http_default_config).then(function (response) {
-        return response.data;
-      }).catch(function (err) {
-        return err;
-      });
-    };
+    //function autocompleteOntologySubtree(query, acronym, subtree_root_id, max_depth) {
+    //  var searchUrl = base;
+    //  if (query == '*') {
+    //    // use descendants
+    //    searchUrl += 'ontologies/' + acronym + '/classes/' + encodeURIComponent(subtree_root_id) + '/descendants?display_context=false&display_links=false';
+    //  } else {
+    //    searchUrl += 'search?q=' + query.replace(/[\s]+/g,
+    //            '+') + '&ontology=' + acronym + '&suggest=true&display_context=false&display_links=false&subtree_root_id=' + encodeURIComponent(subtree_root_id) + '&max_depth=' + max_depth + '&pagesize=20';
+    //  }
+    //  return $http.get(searchUrl, http_default_config).then(function (response) {
+    //    return response.data;
+    //  }).catch(function (err) {
+    //    return err;
+    //  });
+    //};
 
     function autocompleteValueSetClasses(query, uri) {
       var searchUrl = base;
@@ -116,38 +162,13 @@ define([
 
     /***** Calls to Terminology Service ******/
 
-    function getAllOntologies() {
-      if ($.isEmptyObject(ontologiesCache)) {
-        var url = baseTerminology + "ontologies";
-        return $http.get(url, http_default_config).then(function (response) {
-          var ontologies = response.data;
-          angular.forEach(ontologies, function (value) {
-            ontologiesCache[value.id] = value;
-          });
-          return ontologies;
-        }).catch(function (err) {
-          return err;
-        });
-      }
-      else {
-        var ontologies = [];
-        for (var key in ontologiesCache) {
-          ontologies.push(ontologiesCache[key]);
-        }
-        // Turns the result into a promise to be consistent with the 'if' path
-        return $q.when(ontologies);
-      }
-    };
-
     function getOntologyById(ontologyId) {
-      if ($.isEmptyObject(ontologiesCache)) {
-        return getAllOntologies().then(function() {
-          return ontologiesCache[ontologyId];
-        });
-      }
-      else {
-        return ontologiesCache[ontologyId];
-      }
+      return ontologiesCache[ontologyId];
+    }
+
+    function getOntologyByLdId(ontologyLdId) {
+      var ontologyId = ontologyLdId.substr(ontologyLdId.lastIndexOf('/') + 1);
+      return getOntologyById(ontologyId);
     }
 
     function getRootClasses(ontology) {
@@ -157,29 +178,6 @@ define([
       }).catch(function (err) {
         return err;
       });
-    };
-
-    function getAllValueSets() {
-      if ($.isEmptyObject(valueSetsCache)) {
-        var url = baseTerminology + "value-sets"
-        return $http.get(url, http_default_config).then(function (response) {
-          var valueSets = response.data;
-          angular.forEach(valueSets, function (element) {
-            valueSetsCache[element.id] = element;
-          });
-          return valueSets;
-        }).catch(function (err) {
-          return err;
-        });
-      }
-      else {
-        var valueSets = [];
-        for (var key in valueSetsCache) {
-          valueSets.push(valueSetsCache[key]);
-        }
-        // Turns the result into a promise to be consistent with the 'if' path
-        return $q.when(valueSets);
-      }
     };
 
     // TODO: the value set cache keys should contain the vsCollection too, because there may be duplicates

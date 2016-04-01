@@ -53,7 +53,7 @@ define([
       vm.fieldSearchTerms = '';
       vm.fieldTreeVisibility = false;
       vm.getClassDetails = getClassDetails;
-      vm.getOntologySummary = getOntologySummary;
+      //vm.getOntologySummary = getOntologySummary;
       vm.hideFieldTree = hideFieldTree;
       vm.isBrowsing = isBrowsing;
       vm.isCreatingClass = isCreatingClass;
@@ -115,16 +115,13 @@ define([
         //vm.searchResults = controlTermDataService.getAllOntologies();
         //console.log("------");
         //console.log(vm.searchResults);
-        controlTermDataService.getAllOntologies().then(function(response) {
-          vm.searchResults = response;
-        });
+        vm.searchResults = controlTermDataService.getAllOntologies();
       }
 
       function fieldSearch(event) {
         if (event) {
           event.preventDefault();
         }
-
         vm.searchResults = [];
         vm.searchNoResults = false;
 
@@ -135,21 +132,13 @@ define([
           vm.searchPreloader = true;
         }
 
-        var self = this;
-        controlTermDataService.searchClass(vm.fieldSearchTerms).then(function(response) {
-          var maxLen = response.collection.length;
-          if (maxLen > 20) {
-            maxLen = 20;
-          }
-
-          vm.searchPreloader = false;
-
-          if (maxLen > 0) {
+        controlTermDataService.searchClass(vm.fieldSearchTerms).then(function (response) {
+          if (response.collection.length > 0) {
             var tArry = [], i;
-            for( i = 0; i < maxLen; i += 1 ) {
+            for (i = 0; i < response.collection.length; i += 1) {
               tArry.push({
-                class: response.collection[i].prefLabel,
-                ontology: response.collection[i].links.ontology,
+                class     : response.collection[i].prefLabel,
+                ontology  : controlTermDataService.getOntologyByLdId(response.collection[i].links.ontology),
                 collection: response.collection[i]
               });
             }
@@ -158,6 +147,9 @@ define([
             vm.searchNoResults = true;
           }
           vm.searchResults = tArry;
+
+          // Hide 'Searching...' message
+          vm.searchPreloader = false;
         });
       }
 
@@ -184,15 +176,15 @@ define([
         });
       }
 
-      function getOntologySummary(ontologyUri) {
-        var acronym = ontologyUri.slice(39);
-        var ontology = controlTermDataService.getOntologyById(acronym);
-        if (ontology) {
-          return ontology.name + ' (' + acronym + ')';
-        } else {
-          return ontologyUri;
-        }
-      }
+      //function getOntologySummary(ontologyUri) {
+      //  var acronym = ontologyUri.slice(39);
+      //  var ontology = controlTermDataService.getOntologyById(acronym);
+      //  if (ontology) {
+      //    return ontology.name + ' (' + acronym + ')';
+      //  } else {
+      //    return ontologyUri;
+      //  }
+      //}
 
       /**
        * Hide ontology tree and details screen
