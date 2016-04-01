@@ -26,7 +26,7 @@ define([
     return directive;
 
     function linker(scope, element, attrs) {
-      scope.elementId = $rootScope.idOf(scope.element) || $rootScope.generateGUID();
+      scope.elementId = DataManipulationService.idOf(scope.element) || DataManipulationService.generateGUID();
 
       var resetElement = function(el, settings) {
         angular.forEach(el, function(model, key) {
@@ -245,11 +245,11 @@ define([
 
           if (typeof scope.element.minItems == 'undefined') {
             if (scope.element.items) {
-              $rootScope.uncardinalizeField(scope.element);
+              DataManipulationService.uncardinalizeField(scope.element);
             }
           } else {
             if (!scope.element.items) {
-              $rootScope.cardinalizeField(scope.element);
+              DataManipulationService.cardinalizeField(scope.element);
             }
           }
 
@@ -274,7 +274,7 @@ define([
           return;
         }
 
-        var childId = $rootScope.idOf(child);
+        var childId = DataManipulationService.idOf(child);
 
         if (!childId || /^tmp\-/.test(childId)) {
           var p = $rootScope.propertiesOf(scope.element);
@@ -288,7 +288,7 @@ define([
               return;
             }
 
-            var idOfValue = $rootScope.idOf(value);
+            var idOfValue = DataManipulationService.idOf(value);
             if (idOfValue && idOfValue == childId) {
               DataManipulationService.renameKeyOfObject(p, key, newKey);
 

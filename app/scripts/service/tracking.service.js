@@ -28,10 +28,11 @@ define([
     };
 
     service.eventTrack = function(eventName, eventParameters) {
-      console.log('isTracking eventTrack ' +  isTracking + ' ' + analyticsKey + " " + eventName);
-      console.log(eventParameters);
-      console.log($location.absUrl());
       $analytics.eventTrack(eventName, eventParameters);
+    };
+
+    service.pageTrack = function() {
+      $analytics.eventTrack("pageLoad", {'url': $location.absUrl()});
       $analytics.pageTrack($location.absUrl());
     };
 

@@ -64,6 +64,7 @@ define([
       $scope.$broadcast('saveForm');
 
       TrackingService.eventTrack('saveForm', {category: 'creating', label: 'saveForm'});
+      TrackingService.pageTrack();
 
     }
 
