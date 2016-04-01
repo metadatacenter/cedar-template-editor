@@ -8,6 +8,7 @@ define([
 
   // TODO: refactor to cedarFieldDirective <cedar-field-directive>
 
+
   fieldDirective.$inject = ["$rootScope", "$sce", "SpreadsheetService", "DataManipulationService", "FieldTypeService",
                             "ClientSideValidationService"];
 
@@ -634,9 +635,8 @@ define([
         }
       };
       /* end of Value Recommendation functionality */
-      //console.log("init fieldTypes");
-      //console.log(FieldTypeService.getFieldTypes());
     };
+
 
     return {
       templateUrl: 'scripts/form/field.directive.html',
