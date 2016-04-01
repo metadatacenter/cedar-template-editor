@@ -125,7 +125,7 @@ define([
       }
 
       // Converting title for irregular character handling
-      var fieldName = $rootScope.generateGUID(); //field['@id'];
+      var fieldName = DataManipulationService.generateGUID(); //field['@id'];
 
       // Adding corresponding property type to @context
       form.properties["@context"].properties[fieldName] = DataManipulationService.generateFieldContextProperties(fieldName);

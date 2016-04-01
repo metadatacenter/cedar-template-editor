@@ -26,7 +26,7 @@ define([
     return directive;
 
     function linker(scope, element, attrs) {
-      scope.elementId = $rootScope.idOf(scope.element) || $rootScope.generateGUID();
+      scope.elementId = $rootScope.idOf(scope.element) || DataManipulationService.generateGUID();
 
       var resetElement = function(el, settings) {
         angular.forEach(el, function(model, key) {
@@ -245,11 +245,11 @@ define([
 
           if (typeof scope.element.minItems == 'undefined') {
             if (scope.element.items) {
-              $rootScope.uncardinalizeField(scope.element);
+              DataManipulationService.uncardinalizeField(scope.element);
             }
           } else {
             if (!scope.element.items) {
-              $rootScope.cardinalizeField(scope.element);
+              DataManipulationService.cardinalizeField(scope.element);
             }
           }
 

@@ -95,6 +95,27 @@ define([
       return true;
     };
 
+    service.uncardinalizeField = function (field) {
+      if (typeof field.minItems == 'undefined' || (field.minItems == 1 && field.maxItems == 1)) {
+
+        field.type = 'object';
+
+        field.$schema = field.items.$schema;
+        field['@id'] = field.items["@id"];
+        field.properties = field.items.properties;
+        field.required = field.items.required;
+        field.additionalProperties = field.items.additionalProperties;
+
+        delete field.items;
+        delete field.maxItems;
+        delete field.minItems;
+
+        return true;
+      } else {
+        return false;
+      }
+    };
+
     service.isCardinalElement = function (element) {
       return element.type == 'array';
     };

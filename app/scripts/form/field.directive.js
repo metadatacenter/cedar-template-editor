@@ -8,12 +8,10 @@ define([
 
   // TODO: refactor to cedarFieldDirective <cedar-field-directive>
 
-
-  fieldDirective.$inject = ["$rootScope", "$sce", "$http", "$compile", "$document", "SpreadsheetService",
+  fieldDirective.$inject = ["$rootScope", "$http", "$compile", "$document", "SpreadsheetService",
                             "DataManipulationService"];
 
-  function fieldDirective($rootScope, $sce, $http, $compile, $document, SpreadsheetService, DataManipulationService) {
-
+  function fieldDirective($rootScope, $http, $compile, $document, SpreadsheetService, DataManipulationService) {
     var linker = function ($scope, $element, attrs) {
 
       // if (!$rootScope.propertiesOf($scope.field)._tmp.state) {
@@ -70,7 +68,7 @@ define([
 
           // Add @type information to instance at the field level
           if (p && !angular.isUndefined(p['@type'])) {
-            var type = $rootScope.generateInstanceType(p['@type']);
+            var type = DataManipulationService.generateInstanceType(p['@type']);
 
             if (type) {
               if (angular.isArray($scope.model)) {
@@ -315,10 +313,10 @@ define([
       }
 
 
-
       $scope.addMoreInput = function() {
+        console.debug('addMoreItems' + $scope.model.length + " " + $scope.field.maxItems);
 
-        if ((typeof $scope.field.minItems != 'undefined' && (typeof $scope.field.maxItems == 'undefined' || $scope.model.length < $scope.field.maxItems))) {
+        if ((!$scope.field.maxItems || $scope.model.length < $scope.field.maxItems)) {
           var seed = {};
           if ($scope.model.length > 0) {
             seed = angular.copy($scope.model[0]);
@@ -341,7 +339,7 @@ define([
         }
       }
 
-      $scope.removeInput = function (index) {
+      $scope.removeInput = function(index) {
         var min = $scope.field.minItems || 0;
         if ($scope.model.length > min) {
           $scope.model.splice(index, 1);
@@ -402,9 +400,7 @@ define([
       };
 
       // Switch from creating to completed.
-
       $scope.add = function() {
-
         var p = $rootScope.propertiesOf($scope.field);
         $scope.errorMessages = $scope.checkFieldConditions(p);
         $scope.errorMessages = jQuery.merge($scope.errorMessages,
@@ -413,17 +409,17 @@ define([
         if ($scope.errorMessages.length == 0) {
 
           if (!p._ui.is_cardinal_field) {
-            delete $scope.field.minItems;
-            delete $scope.field.maxItems;
+            $scope.field.minItems = 1;
+            $scope.field.maxItems = 1;
           }
 
-          if ($scope.field.maxItems == 1 && $scope.field.minItems == 1) {
+          if ($scope.field.maxItems == 1  && $scope.field.minItems == 1) {
             if ($scope.field.items) {
-              $rootScope.uncardinalizeField($scope.field);
+              DataManipulationService.uncardinalizeField($scope.field);
             }
           } else {
             if (!$scope.field.items) {
-              $rootScope.cardinalizeField($scope.field);
+              DataManipulationService.cardinalizeField($scope.field);
             }
           }
 
@@ -454,40 +450,6 @@ define([
         p._tmp = p._tmp || {};
         p._tmp.state = "creating";
       };
-
-
-      $scope.isEditState = function () {
-        var p = $rootScope.propertiesOf($scope.field);
-        p._tmp = p._tmp || {};
-        return (p._tmp.state == "creating");
-      };
-
-
-
-      /**
-       * Turn my field into a youtube iframe.
-       * @param field
-       * @returns {*}
-       */
-      $scope.getYouTubeEmbedFrame = function (field) {
-
-        var width = 560;
-        var height = 315;
-        var content = $rootScope.propertiesOf(field)._content.replace(/<(?:.|\n)*?>/gm, '');
-
-        if ($rootScope.propertiesOf(field)._size && $rootScope.propertiesOf(field)._size.width && Number.isInteger($rootScope.propertiesOf(field)._size.width)) {
-          width = $rootScope.propertiesOf(field)._size.width;
-        }
-        if ($rootScope.propertiesOf(field)._size && $rootScope.propertiesOf(field)._size.height && Number.isInteger($rootScope.propertiesOf(field)._size.height)) {
-          height = $rootScope.propertiesOf(field)._size.height;
-        }
-
-        // if I say trust as html, then better make sure it is safe first
-        return $sce.trustAsHtml('<iframe width="' + width + '" height="' + height + '" src="https://www.youtube.com/embed/' + content + '" frameborder="0" allowfullscreen></iframe>');
-
-      };
-
-
 
       $scope.$watch("field", function (newField, oldField) {
         setDirectory();
@@ -541,9 +503,7 @@ define([
                   }
                 }
               } else {
-
                 angular.forEach($scope.model, function(m, i) {
-
                   if (!("_value" in m)) {
                     if (field.defaultOption) {
                       $scope.model[i]["_value"] = angular.copy(field.defaultOption);

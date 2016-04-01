@@ -67,17 +67,6 @@ define([
       return result;
     };
 
-    // Generating a RFC4122 version 4 compliant GUID
-    $rootScope.generateGUID = function () {
-      var d = Date.now();
-      var guid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
-        var r = (d + Math.random() * 16) % 16 | 0;
-        d = Math.floor(d / 16);
-        return (c == 'x' ? r : (r & 0x3 | 0x8)).toString(16);
-      });
-      return guid;
-    };
-
     // Sorting function that moves boolean values with true to the front of the sort
     $rootScope.sortBoolean = function (array, bool) {
       return array.sort(function (a, b) {
@@ -85,50 +74,6 @@ define([
             y = b[bool];
         return ((x == y) ? -1 : ((x === true) ? -1 : 1));
       });
-    };
-
-    // Function that generates a basic field definition
-    $rootScope.generateField = function (fieldType) {
-      var valueType = "string";
-      if (fieldType == "numeric") {
-        valueType = "number";
-      }
-      else if (fieldType == "checkbox") {
-        valueType = "object";
-      }
-      else if (fieldType == "list") {
-        valueType = "array";
-      }
-      var field = DataTemplateService.getField($rootScope.idBasePath + $rootScope.generateGUID());
-      field.properties._ui.inputType = fieldType;
-      field.properties._value.type = valueType;
-      return field;
-    };
-
-    // Function that generates the @context for an instance, based on the schema @context definition
-    $rootScope.generateInstanceContext = function (schemaContext) {
-      var context = {};
-      angular.forEach(schemaContext.properties, function (value, key) {
-        context[key] = value.enum[0];
-      });
-      return context;
-    };
-
-    // Function that generates the @type for an instance, based on the schema @type definition
-    $rootScope.generateInstanceType = function (schemaType) {
-      // If there is no type defined at the schema level
-      if (angular.isUndefined(schemaType.oneOf[0].enum))
-        return null;
-      else {
-        if (schemaType.oneOf[0].enum.length === 0)
-          return null;
-        // If only one type has been defined, a string is returned
-        else if (schemaType.oneOf[0].enum.length == 1)
-          return schemaType.oneOf[0].enum[0];
-        // If more than one types have been defined for the template/element/field, an array is returned
-        else
-          return schemaType.oneOf[0].enum;
-      }
     };
 
     $rootScope.checkFieldCardinalityOptions = function (field) {
@@ -140,35 +85,6 @@ define([
       }
 
       return unmetConditions;
-    };
-
-    $rootScope.cardinalizeField = function (field) {
-
-      if (typeof field.minItems == 'undefined') {
-        return false;
-      }
-
-      field.items = {
-        'type'                : field.type,
-        '@id'                 : field['@id'],
-        '$schema'             : field.schema,
-        'title'               : field.properties._ui.title,
-        'description'         : field.properties._ui.description,
-        'properties'          : field.properties,
-        'required'            : field.required,
-        'additionalProperties': field.additionalProperties
-      };
-      field.type = 'array';
-
-      delete field.$schema;
-      delete field['@id'];
-      delete field.properties;
-      delete field.title;
-      delete field.description;
-      delete field.required;
-      delete field.additionalProperties;
-
-      return true;
     };
 
     $rootScope.propertiesOf = function (fieldOrElement) {
@@ -183,25 +99,6 @@ define([
           return fieldOrElement["@id"];
         }
       }
-    };
-
-    $rootScope.uncardinalizeField = function (field) {
-      if (typeof field.minItems == 'undefined' || (field.minItems == 1 && field.maxItems == 1)) {
-
-        field.type = 'object';
-
-        field.$schema = field.items.$schema;
-        field['@id'] = field.items["@id"];
-        field.properties = field.items.properties;
-        field.required = field.items.required;
-        field.additionalProperties = field.items.additionalProperties;
-
-        delete field.items;
-        delete field.maxItems;
-        delete field.minItems;
-
-        return true;
-      } else return false;
     };
 
     $rootScope.isCardinalElement = function (element) {
@@ -250,18 +147,18 @@ define([
       angular.forEach(iterator, function (value, name) {
         // Add @context information to instance
         if (name == '@context') {
-          ctx = $rootScope.generateInstanceContext(value);
+          ctx = DataManipulationService.generateInstanceContext(value);
         }
       });
 
       angular.forEach(iterator, function (value, name) {
         // Add @context information to instance
         if (name == '@context') {
-          parentModel['@context'] = $rootScope.generateInstanceContext(value);
+          parentModel['@context'] = DataManipulationService.generateInstanceContext(value);
         }
         // Add @type information to instance
         else if (name == '@type') {
-          type = $rootScope.generateInstanceType(value);
+          type = DataManipulationService.generateInstanceType(value);
           if (type) {
             parentModel['@type'] = type;
           }
@@ -300,7 +197,7 @@ define([
 
             // Add @type information to instance at the field level
             if (p && !angular.isUndefined(p['@type'])) {
-              type = $rootScope.generateInstanceType(p['@type']);
+              type = DataManipulationService.generateInstanceType(p['@type']);
 
               if (type) {
                 if (angular.isArray(parentModel[name])) {
