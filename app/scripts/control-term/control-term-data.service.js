@@ -34,10 +34,11 @@ define([
       getClassParents                                 : getClassParents,
       getClassTree                                    : getClassTree,
       getClassValueSet                                : getClassValueSet,
+      getValuesInValueSet                             : getValuesInValueSet,
       getGenericEndpoint                              : getGenericEndpoint,
       getAcronym                                      : getAcronym,
       getOntologyCategories                           : getOntologyCategories,
-      //getOntologyClasses                              : getOntologyClasses,
+      //getOntologyClasses                            : getOntologyClasses,
       getOntologyDetails                              : getOntologyDetails,
       getOntologySize                                 : getOntologySize,
       getOntologyTreeRoot                             : getOntologyTreeRoot,
@@ -181,6 +182,7 @@ define([
       }
     };
 
+    // TODO: the value set cache keys should contain the vsCollection too, because there may be duplicates
     function getValueSetById(valueSetId) {
       if ($.isEmptyObject(valueSetsCache)) {
         return getAllValueSets().then(function() {
@@ -216,7 +218,9 @@ define([
     //  });
     //}
 
+    // [Deprecated] Use getClassById instead
     function getClassDetails(acronym, classId) {
+      if (classId.sub)
       var url = base + 'ontologies/' + acronym + '/classes/' + encodeURIComponent(classId);
       return $http.get(url, http_default_config).then(function (response) {
         return response.data;
@@ -254,15 +258,25 @@ define([
           });
     };
 
+    // [Deprecated] - use getValuesInValueSet instead
     // Return the values in a value set
-    function getClassValueSet(acronym, classId) {
-      var url = base + 'ontologies/' + acronym + '/classes/' + encodeURIComponent(classId) + '/children?pagesize=100';
+    function getClassValueSet(acronym, valueSetId) {
+      var url = base + 'ontologies/' + acronym + '/classes/' + encodeURIComponent(valueSetId) + '/children?pagesize=100';
       return $http.get(url, http_default_config).then(function (response) {
         return response.data.collection;
       }).catch(function (err) {
         return err;
       });
     };
+
+    function getValuesInValueSet(vsCollection, vsId) {
+      var url = baseTerminology + 'vs-collections/' + vsCollection + '/value-sets/' + encodeURIComponent(vsId) + "/values";
+      return $http.get(url, http_default_config).then(function (response) {
+        return response.data.collection;
+      }).catch(function (err) {
+        return err;
+      });
+    }
 
     function getGenericEndpoint(endpoint) {
       // Some links within data returned from other requests have fully qualified endpoints so this is

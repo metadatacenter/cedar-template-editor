@@ -107,6 +107,8 @@ define([
         // Get selected class details from the links.self endpoint provided.
         controlTermDataService.getClassDetails(acronym, classId).then(function(response) {
           vm.classDetails = response;
+          console.log("CLASS DETAILS")
+          console.log(vm.classDetails)
         });
       }
 
@@ -222,7 +224,8 @@ define([
           if (result.type == 'Value') {
             vm.currentValueSetId = result.resultParentId;
           }
-          controlTermDataService.getClassValueSet(acronym, vm.currentValueSetId).then(function(valueSetClasses) {
+          //controlTermDataService.getClassValueSet(acronym, vm.currentValueSetId).then(function(valueSetClasses) {
+          controlTermDataService.getValuesInValueSet(acronym, vm.currentValueSetId).then(function(valueSetClasses) {
             vm.valueSetClasses = valueSetClasses;
             angular.forEach(vm.valueSetClasses, function(valueSetClass) {
               valueSetClass.type = 'Value';

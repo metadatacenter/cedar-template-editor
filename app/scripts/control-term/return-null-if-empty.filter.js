@@ -8,7 +8,7 @@ define([
 
   function returnNullIfEmptyFilter() {
     return function(text) {
-      return text == undefined ? 0 : text;
+      return text == (undefined || 0) ? "-" : text;
     }
   }
 

@@ -188,7 +188,7 @@
     </cedar-control-term-value-set-picker>
 
     <div class="class-actions">
-      <div ng-if="ctdc.selectedValueResult.type == 'OntologyClass' || ctdc.selectedValueResult.type == 'Ontology'">
+      <div ng-if="ctdc.selectedValueResult.type == 'OntologyClass' || ctdc.selectedValueResult['@type'] == 'http://www.w3.org/2002/07/owl#Class' || ctdc.selectedValueResult.type == 'Ontology'">
         <div class="element-toggles list table-style">
           <div class="element-toggle table-cell-style" ng-class="{active: ctdc.stageValueConstraintAction == 'add_class'}" ng-click="ctdc.stageOntologyClassValueConstraint(ctdc.selectedValueResult)" ng-if="!$root.isOntology(ctdc.selectedValueResult)">
             <span>Class</span>

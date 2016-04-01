@@ -68,7 +68,7 @@ define([
     }
 
     function isValid() {
-      return vm.provisionalClass.label && vm.provisionalClass.description;
+      return vm.provisionalClass.prefLabel && vm.provisionalClass.description;
     }
 
     function saveAsFieldItem(provisionalClass) {
@@ -89,16 +89,22 @@ define([
 
     function saveAsOntologyClassValueConstraint(provisionalClass) {
       provisionalClassService.saveClass(provisionalClass, vm.provisionalClassMappings).then(function(newClass) {
-        controlTermDataService.getClassDetails(newClass['@id']).then(function(details) {
-          // hack to add prefLabel
-          details.prefLabel = details.label;
-          $scope.$emit(
+        $scope.$emit(
             'cedar.templateEditor.controlTerm.provisionalClassController.provisionalClassSavedAsOntologyValueConstraint', {
-              class: details,
+              class: newClass,
               ontology: vm.provisionalClassOntology
             }
-          );
-        });
+        );
+        //controlTermDataService.getClassById(newClass['@id']).then(function(details) {
+        //  // hack to add prefLabel
+        //  details.prefLabel = details.label;
+        //  $scope.$emit(
+        //    'cedar.templateEditor.controlTerm.provisionalClassController.provisionalClassSavedAsOntologyValueConstraint', {
+        //      class: details,
+        //      ontology: vm.provisionalClassOntology
+        //    }
+        //  );
+        //});
       });
     }
 

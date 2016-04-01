@@ -3,7 +3,7 @@
 </p>
 <br />
 <div class="floating-label-wrapper">
-  <input type="text" class="form-control required" name="provisionalClassLabel" placeholder="Label" ng-model="pcc.provisionalClass.label" with-floating-label="" />
+  <input type="text" class="form-control required" name="provisionalClassLabel" placeholder="Label" ng-model="pcc.provisionalClass.prefLabel" with-floating-label="" />
 </div>
 <br />
 <div class="floating-label-wrapper">
@@ -43,7 +43,7 @@
       <center>
         <table width="80%">
           <tr>
-            <td width="20%" class="center" style="padding-top: 20px">{{pcc.provisionalClass.label || '(no label)'}}</td>
+            <td width="20%" class="center" style="padding-top: 20px">{{pcc.provisionalClass.prefLabel || '(no label)'}}</td>
             <td><div class="dotted"><span class="dashes">&ndash; &ndash; &ndash; &ndash; &ndash;</span><span class="arrow">&#10142;</span></div></td>
             <td width="20%" class="center" style="padding-top: 20px">
               {{pcc.pickedOntologyClass.prefLabel}}<br /> ({{pcc.pickedCurrentOntology.info.id}})

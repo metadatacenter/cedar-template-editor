@@ -74,7 +74,7 @@ define([
     function saveClass(newClass, mappings) {
       var endpoint = base + '/bioportal/ontologies/CEDARPC/classes';
       var payload = {
-        'label': newClass.label,
+        'prefLabel': newClass.prefLabel,
         'creator': 'http://data.bioontology.org/users/cedar-mjd',
         "definitions": [newClass.description],
         "synonyms": [],
@@ -116,7 +116,7 @@ define([
       var payload = {
         'creator': 'http://data.bioontology.org/users/cedar-mjd',
         'definitions': [newValueSet.description],
-        'label': newValueSet.label,
+        'prefLabel': newValueSet.prefLabel,
       };
       return $http.post(endpoint, payload, http_default_config).then(function(valueSetCreateResponse) {
         if (newValues && newValues.length > 0) {

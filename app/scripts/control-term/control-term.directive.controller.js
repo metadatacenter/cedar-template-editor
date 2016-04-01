@@ -351,7 +351,7 @@ define([
 
       if (!existed) {
         vm.stagedOntologyValueConstraints.push({
-          'numChildren': vm.currentOntology.size.classes,
+          'numChildren': vm.currentOntology.info.details.numberOfClasses,
           'acronym': vm.currentOntology.info.id,
           'name': vm.currentOntology.info.name,
           'uri': vm.currentOntology.info['@id']
@@ -484,7 +484,7 @@ define([
 
     function stageValueSetValueConstraint(selection) {
       vm.stagedValueSetValueConstraints.push({
-        'numChildren': vm.currentValueSet.numChildren,
+        //'numChildren': vm.currentValueSet.numChildren,
         'name': vm.currentValueSet.prefLabel,
         'uri': vm.currentValueSet['@id']
       });
@@ -522,7 +522,7 @@ define([
           'type': 'OntologyClass',
           'label': args.class.prefLabel,
           'default': false,
-          'source': args.ontology.info.name + ' (' + args.ontology.info.id + ')',
+          'source': args.ontology.details.ontology.name + ' (' + args.ontology.details.ontology.id + ')',
           'provisionalClass': true,
         };
         addOntologyClassToValueConstraint(constraint);

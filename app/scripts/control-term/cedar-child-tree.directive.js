@@ -69,7 +69,7 @@ define([
             var acronym = controlTermService.getAcronym(scope.subtree);
             var classId = scope.subtree['@id'];
             controlTermDataService.getClassChildren(acronym, classId).then(function(response) {
-              //console.log("Call to getClassChildren");
+              console.log("Call to getClassChildren");
               if (!response || response.length == 0) {
                 scope.subtree.hasChildren = false;
               }

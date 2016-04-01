@@ -176,7 +176,8 @@ define([
         //  vm.classDetails = response;
         //});
 
-        controlTermDataService.getClassDetails(acronym, classId).then(function(response) {
+        //controlTermDataService.getClassDetails(acronym, classId).then(function(response) {
+        controlTermDataService.getClassById(acronym, classId).then(function(response) {
           vm.classDetails = response;
           console.log("CLASS DETAILS")
           console.log(vm.classDetails)

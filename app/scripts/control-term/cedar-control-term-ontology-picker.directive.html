@@ -88,7 +88,7 @@
           <tr ng-repeat="result in cctopdc.searchResults" ng-click="cctopdc.selectFieldOntology(result)" ng-show="cctopdc.isOntologyNameMatched(result)">
             <td>{{result.name}}</td>
             <td>{{result.details.categories.join(", ") || "-" }}</td>
-            <td>{{result.details.numberOfClasses}}</td>
+            <td>{{result.details.numberOfClasses | returnNullIfEmpty}}</td>
           </tr>
         </tbody>
       </table>
@@ -148,7 +148,8 @@
                   <tr>
                     <td>Definition</td>
                     <td ng-if="cctopdc.classDetails.definition[0]">{{cctopdc.classDetails.definition[0]}}</td>
-                    <td ng-if="!cctopdc.classDetails.definition[0]">-</td>
+                    <td ng-if="cctopdc.classDetails.definitions[0]">{{cctopdc.classDetails.definitions[0]}}</td>
+                    <td ng-if="!cctopdc.classDetails.definition[0] && !cctopdc.classDetails.definitions[0]">-</td>
                   </tr>
                 </tbody>
               </table>
