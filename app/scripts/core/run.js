@@ -10,15 +10,15 @@ define([
 
   cedarTemplateEditorCoreRun.$inject = ['$rootScope', '$window', '$sce', '$translate', 'DataTemplateService',
                                         'DataManipulationService', 'FieldTypeService', 'UrlService', 'UIUtilService',
-                                        'UserService', 'UserDataService', 'RichTextConfigService', 'CONST',
-                                        'controlTermDataService', 'provisionalClassService', 'Cedar',
-                                        'UISettingsService', 'ValueRecommenderService', 'DataUtilService', 'TrackingService'];
+                                        'UserService', 'RichTextConfigService', 'CONST', 'controlTermDataService',
+                                        'provisionalClassService', 'Cedar', 'UISettingsService',
+                                        'ValueRecommenderService', 'DataUtilService', 'TrackingService'];
 
   function cedarTemplateEditorCoreRun($rootScope, $window, $sce, $translate, DataTemplateService,
-                                      DataManipulationService, FieldTypeService, UrlService, UIUtilService,
-                                      UserService, UserDataService, RichTextConfigService, CONST,
-                                      controlTermDataService, provisionalClassService, Cedar,
-                                      UISettingsService, ValueRecommenderService, DataUtilService, TrackingService) {
+                                      DataManipulationService, FieldTypeService, UrlService, UIUtilService, UserService,
+                                      RichTextConfigService, CONST, controlTermDataService, provisionalClassService,
+                                      Cedar, UISettingsService, ValueRecommenderService, DataUtilService,
+                                      TrackingService) {
 
     $rootScope.isArray = angular.isArray;
 
@@ -40,11 +40,11 @@ define([
     // Capitalize first letter
     /*
      egyedia - this seems to be unused
-    $rootScope.capitalizeFirst = function (string) {
-      string = string.toLowerCase();
-      return string.substring(0, 1).toUpperCase() + string.substring(1);
-    };
-    */
+     $rootScope.capitalizeFirst = function (string) {
+     string = string.toLowerCase();
+     return string.substring(0, 1).toUpperCase() + string.substring(1);
+     };
+     */
 
     // Sorting function that moves boolean values with true to the front of the sort
     /*
@@ -75,9 +75,9 @@ define([
     /*
      egyedia - this seems to be unused
      $rootScope.isField = function (value) {
-      return value && value.properties && value.properties._ui && value.properties._ui.inputType;
-    };
-    */
+     return value && value.properties && value.properties._ui && value.properties._ui.inputType;
+     };
+     */
 
     $rootScope.isElement = function (value) {
       return value && value._ui;
@@ -437,9 +437,25 @@ define([
       return $sce.trustAsHtml($rootScope.propertiesOf(field)._content);
     };
 
-
+    // Init Cedar "god object"
     Cedar.init();
+    // Make it available for everybody through rootScope
     $rootScope.cedar = Cedar;
+
+    // Inject user data:
+    // read from Keycloak
+    // read in Non-Angular way from user.... REST endpoint
+    UserService.injectUserHandler($window.bootstrapUserHandler);
+
+
+    //TODO MJD
+    // User data is available at this point:
+    console.log("Cedar service providing user data at this point:");
+    console.log(Cedar.getUserId());
+    console.log(Cedar.getScreenName());
+    console.log(Cedar.getHome());
+
+    // Init the services that have dependencies on configuration
     DataTemplateService.init();
     FieldTypeService.init();
     UrlService.init();
@@ -449,23 +465,9 @@ define([
     UISettingsService.init();
     TrackingService.init();
 
-    UserService.injectUserHandler($window.bootstrapUserHandler);
-    UserService.init(function () {
-      UserDataService.readUserDetails();
-    });
-
+    // Make objects available through rootScope
     $rootScope.vrs = ValueRecommenderService;
-
     $rootScope.editorOptions = RichTextConfigService.getConfig("default");
-
-    // google analytics tracking
-    ga('create', 'UA-73983324-1', 'auto');
-    $rootScope.$on('$stateChangeSuccess', function (event) {
-      $window.ga('send', 'pageview', $location.path());
-      console.log('ga pageview event '+ $location.path());
-    });
-
-
 
   };
 

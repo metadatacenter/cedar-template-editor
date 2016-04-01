@@ -38,7 +38,7 @@ require.config({
     'lib/angulartics-google-analytics/angulartics-google-analytics'                  : ['angular'],
 
     '3rdparty/angular-fitvids/angular-fitvids': {
-      deps   : ['angular','jquery'],
+      deps   : ['angular', 'jquery'],
       exports: 'fitVids'
     },
 
@@ -69,15 +69,16 @@ require.config({
 // maybe we will be redirected to Keycloak for authentication
 require([
   'angular',
-], function(angular) {
+], function (angular) {
   var $html = angular.element(document.getElementsByTagName('html')[0]);
-  angular.element().ready(function() {
+  angular.element().ready(function () {
 
     function continueWithAngularApp() {
+      console.log("continueWithAngularApp");
       require([
         'angular',
         'app',
-      ], function(angular, app) {
+      ], function (angular, app) {
         angular.bootstrap(document, ['cedar.templateEditor']);
       });
     }
@@ -87,7 +88,8 @@ require([
       if (!authenticated) {
         window.bootstrapUserHandler.doLogin();
       } else {
-        continueWithAngularApp();
+        var uph = new UserProfileHandler();
+        uph.proceed(window.bootstrapUserHandler, continueWithAngularApp);
       }
     }
 
