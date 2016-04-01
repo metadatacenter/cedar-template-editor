@@ -1,6 +1,6 @@
 <div class="toggle-options">
-  <div class="toggle-controlled-term">
-    <i class="cedar-svg-controll-term collapsed" data-toggle="modal" data-target="#control-options-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}"></i>
+  <div  class="toggle-controlled-term">
+    <i ng-if="hasControlledTerms()" class="cedar-svg-controll-term collapsed" data-toggle="modal" data-target="#control-options-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}"></i>
   </div>
   <div class="checkbox checkbox-inline checkbox-required">
     <input type="checkbox" id="required-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}" ng-model="$root.propertiesOf(field)._valueConstraints.requiredValue" />

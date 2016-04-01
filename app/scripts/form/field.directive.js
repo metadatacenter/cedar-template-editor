@@ -8,10 +8,11 @@ define([
 
   // TODO: refactor to cedarFieldDirective <cedar-field-directive>
 
-  fieldDirective.$inject = ["$rootScope", "$http", "$compile", "$document", "SpreadsheetService",
-                            "DataManipulationService"];
+  fieldDirective.$inject = ["$rootScope", "$sce", "$http", "$compile", "$document", "SpreadsheetService",
+                            "DataManipulationService", "FieldTypeService"];
 
-  function fieldDirective($rootScope, $http, $compile, $document, SpreadsheetService, DataManipulationService) {
+  function fieldDirective($rootScope, $sce, $http, $compile, $document, SpreadsheetService, DataManipulationService,
+                          FieldTypeService) {
     var linker = function ($scope, $element, attrs) {
 
       // if (!$rootScope.propertiesOf($scope.field)._tmp.state) {
@@ -310,12 +311,9 @@ define([
         }
 
         return 'scripts/form/field-' + $scope.directory + '/' + inputType + '.html';
-      }
+      };
 
-
-      $scope.addMoreInput = function() {
-        console.debug('addMoreItems' + $scope.model.length + " " + $scope.field.maxItems);
-
+      $scope.addMoreInput = function () {
         if ((!$scope.field.maxItems || $scope.model.length < $scope.field.maxItems)) {
           var seed = {};
           if ($scope.model.length > 0) {
@@ -337,18 +335,18 @@ define([
 
           $scope.model.push(seed);
         }
-      }
+      };
 
-      $scope.removeInput = function(index) {
+      $scope.removeInput = function (index) {
         var min = $scope.field.minItems || 0;
         if ($scope.model.length > min) {
           $scope.model.splice(index, 1);
         }
-      }
+      };
 
       $scope.switchToSpreadsheet = function () {
         SpreadsheetService.switchToSpreadsheetField($scope, $element);
-      }
+      };
 
       $scope.$watch("modelValue", function (newValue, oldValue) {
         if ($rootScope.isArray($scope.model)) {
@@ -400,7 +398,7 @@ define([
       };
 
       // Switch from creating to completed.
-      $scope.add = function() {
+      $scope.add = function () {
         var p = $rootScope.propertiesOf($scope.field);
         $scope.errorMessages = $scope.checkFieldConditions(p);
         $scope.errorMessages = jQuery.merge($scope.errorMessages,
@@ -413,7 +411,7 @@ define([
             $scope.field.maxItems = 1;
           }
 
-          if ($scope.field.maxItems == 1  && $scope.field.minItems == 1) {
+          if ($scope.field.maxItems == 1 && $scope.field.minItems == 1) {
             if ($scope.field.items) {
               DataManipulationService.uncardinalizeField($scope.field);
             }
@@ -449,6 +447,60 @@ define([
         var p = $rootScope.propertiesOf($scope.field);
         p._tmp = p._tmp || {};
         p._tmp.state = "creating";
+      };
+
+      $scope.isEditState = function () {
+        var p = $rootScope.propertiesOf($scope.field);
+        p._tmp = p._tmp || {};
+        return (p._tmp.state == "creating");
+      };
+
+      $scope.isEditState = function () {
+        var p = $rootScope.propertiesOf($scope.field);
+        p._tmp = p._tmp || {};
+        return (p._tmp.state == "creating");
+      };
+
+      /**
+       * Use the fieldType to determine if the field supports using controlled terms
+       * @returns {boolean} hasControlledTerms
+       */
+      $scope.hasControlledTerms = function () {
+
+        var fieldTypes = FieldTypeService.getFieldTypes();
+        var inputType = 'element';
+        if ($rootScope.propertiesOf($scope.field)._ui.inputType) {
+          inputType = $rootScope.propertiesOf($scope.field)._ui.inputType;
+          for (var i = 0; i < fieldTypes.length; i++) {
+            if (fieldTypes[i].cedarType === inputType) {
+              return fieldTypes[i].hasControlledTerms;
+            }
+          }
+        }
+        return false;
+      };
+
+      /**
+       * Turn my field into a youtube iframe.
+       * @param field
+       * @returns {string} html
+       */
+      $scope.getYouTubeEmbedFrame = function (field) {
+
+        var width = 560;
+        var height = 315;
+        var content = $rootScope.propertiesOf(field)._content.replace(/<(?:.|\n)*?>/gm, '');
+
+        if ($rootScope.propertiesOf(field)._size && $rootScope.propertiesOf(field)._size.width && Number.isInteger($rootScope.propertiesOf(field)._size.width)) {
+          width = $rootScope.propertiesOf(field)._size.width;
+        }
+        if ($rootScope.propertiesOf(field)._size && $rootScope.propertiesOf(field)._size.height && Number.isInteger($rootScope.propertiesOf(field)._size.height)) {
+          height = $rootScope.propertiesOf(field)._size.height;
+        }
+
+        // if I say trust as html, then better make sure it is safe first
+        return $sce.trustAsHtml('<iframe width="' + width + '" height="' + height + '" src="https://www.youtube.com/embed/' + content + '" frameborder="0" allowfullscreen></iframe>');
+
       };
 
       $scope.$watch("field", function (newField, oldField) {
@@ -503,7 +555,7 @@ define([
                   }
                 }
               } else {
-                angular.forEach($scope.model, function(m, i) {
+                angular.forEach($scope.model, function (m, i) {
                   if (!("_value" in m)) {
                     if (field.defaultOption) {
                       $scope.model[i]["_value"] = angular.copy(field.defaultOption);
@@ -564,12 +616,12 @@ define([
           var newValue = modelvr._value.value;
           $scope.model._value = newValue;
         }
-      }
+      };
 
       $scope.isFirstRefresh = true;
-      $scope.setIsFirstRefresh = function(isFirstRefresh) {
+      $scope.setIsFirstRefresh = function (isFirstRefresh) {
         $scope.isFirstRefresh = isFirstRefresh;
-      }
+      };
 
       $scope.updateModelWhenRefresh = function (select) {
         if (!$scope.isFirstRefresh) {
@@ -580,17 +632,18 @@ define([
             $scope.modelValueRecommendation._value.value = select.search;
           }
         }
-      }
+      };
 
       // Updates the search using the selected value
-      $scope.updateSearch = function(select) {
+      $scope.updateSearch = function (select) {
         if (select.selected.value) {
           select.search = select.selected.value;
         }
-      }
+      };
       /* end of Value Recommendation functionality */
-
-    }
+      //console.log("init fieldTypes");
+      //console.log(FieldTypeService.getFieldTypes());
+    };
 
     return {
       templateUrl: 'scripts/form/field.directive.html',
