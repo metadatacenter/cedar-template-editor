@@ -98,7 +98,7 @@ define([
             return;
           }
 
-          var childId = $rootScope.DataManipulationService(child);
+          var childId = DataManipulationService.idOf(child);
           if (!childId || /^tmp\-/.test(childId)) {
             var p = $scope.form.properties;
             if (p[newKey] && p[newKey] == child) {
