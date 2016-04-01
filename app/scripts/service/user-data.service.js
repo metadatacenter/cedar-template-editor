@@ -33,6 +33,8 @@ define([
             //console.log("USER was read:");
             //console.log(response);
             Cedar.setCedarProfile(response.data);
+            console.log("USER home available now:");
+            console.log(Cedar.getHome());
           },
           function (err) {
             if (err.status == 404) {
