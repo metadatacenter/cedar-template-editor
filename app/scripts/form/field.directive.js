@@ -318,8 +318,7 @@ define([
 
       $scope.addMoreInput = function() {
 
-
-        if ((!$scope.field.maxItems || $scope.model.length < $scope.field.maxItems)) {
+        if ((typeof $scope.field.minItems != 'undefined' && (typeof $scope.field.maxItems == 'undefined' || $scope.model.length < $scope.field.maxItems))) {
           var seed = {};
           if ($scope.model.length > 0) {
             seed = angular.copy($scope.model[0]);
@@ -414,8 +413,8 @@ define([
         if ($scope.errorMessages.length == 0) {
 
           if (!p._ui.is_cardinal_field) {
-            $scope.field.minItems = 1;
-            $scope.field.maxItems = 1;
+            delete $scope.field.minItems;
+            delete $scope.field.maxItems;
           }
 
           if ($scope.field.maxItems == 1 && $scope.field.minItems == 1) {
@@ -457,6 +456,14 @@ define([
       };
 
 
+      $scope.isEditState = function () {
+        var p = $rootScope.propertiesOf($scope.field);
+        p._tmp = p._tmp || {};
+        return (p._tmp.state == "creating");
+      };
+
+
+
       /**
        * Turn my field into a youtube iframe.
        * @param field
@@ -479,6 +486,7 @@ define([
         return $sce.trustAsHtml('<iframe width="' + width + '" height="' + height + '" src="https://www.youtube.com/embed/' + content + '" frameborder="0" allowfullscreen></iframe>');
 
       };
+
 
 
       $scope.$watch("field", function (newField, oldField) {

@@ -35,11 +35,6 @@
     "allowedInElement": true
   },
   {
-    "cedarType": "audio-visual",
-    "iconClass": "cedar-svg-audio-visual",
-    "allowedInElement": true
-  },
-  {
     "cedarType": "numeric",
     "iconClass": "cedar-svg-numeric",
     "allowedInElement": true
@@ -53,11 +48,6 @@
     "cedarType": "section-break",
     "iconClass": "cedar-svg-section-break",
     "allowedInElement": true
-  },
-  {
-    "cedarType": "page-break",
-    "iconClass": "cedar-svg-page-break",
-    "allowedInElement": false
   },
   {
     "cedarType": "richtext",
