@@ -10,9 +10,9 @@ define([
 
 
   fieldDirective.$inject = ["$rootScope", "$sce", "$http", "$compile", "$document", "SpreadsheetService",
-                            "DataManipulationService"];
+                            "DataManipulationService","FieldTypeService"];
 
-  function fieldDirective($rootScope, $sce, $http, $compile, $document, SpreadsheetService, DataManipulationService) {
+  function fieldDirective($rootScope, $sce, $http, $compile, $document, SpreadsheetService, DataManipulationService, FieldTypeService) {
 
     var linker = function ($scope, $element, attrs) {
 
@@ -315,8 +315,7 @@ define([
       }
 
 
-
-      $scope.addMoreInput = function() {
+      $scope.addMoreInput = function () {
 
         if ((typeof $scope.field.minItems != 'undefined' && (typeof $scope.field.maxItems == 'undefined' || $scope.model.length < $scope.field.maxItems))) {
           var seed = {};
@@ -403,7 +402,7 @@ define([
 
       // Switch from creating to completed.
 
-      $scope.add = function() {
+      $scope.add = function () {
 
         var p = $rootScope.propertiesOf($scope.field);
         $scope.errorMessages = $scope.checkFieldConditions(p);
@@ -462,12 +461,36 @@ define([
         return (p._tmp.state == "creating");
       };
 
+      $scope.isEditState = function () {
+        var p = $rootScope.propertiesOf($scope.field);
+        p._tmp = p._tmp || {};
+        return (p._tmp.state == "creating");
+      };
+
+      /**
+       * Use the fieldType to determine if the field supports using controlled terms
+       * @returns {boolean} hasControlledTerms
+       */
+      $scope.hasControlledTerms = function () {
+
+        var fieldTypes = FieldTypeService.getFieldTypes();
+        var inputType = 'element';
+        if ($rootScope.propertiesOf($scope.field)._ui.inputType) {
+          inputType = $rootScope.propertiesOf($scope.field)._ui.inputType;
+          for (var i = 0; i < fieldTypes.length; i++) {
+            if (fieldTypes[i].cedarType === inputType) {
+              return fieldTypes[i].hasControlledTerms;
+            }
+          }
+        }
+        return false;
+      }
 
 
       /**
        * Turn my field into a youtube iframe.
        * @param field
-       * @returns {*}
+       * @returns {string} html
        */
       $scope.getYouTubeEmbedFrame = function (field) {
 
@@ -486,7 +509,6 @@ define([
         return $sce.trustAsHtml('<iframe width="' + width + '" height="' + height + '" src="https://www.youtube.com/embed/' + content + '" frameborder="0" allowfullscreen></iframe>');
 
       };
-
 
 
       $scope.$watch("field", function (newField, oldField) {
@@ -542,7 +564,7 @@ define([
                 }
               } else {
 
-                angular.forEach($scope.model, function(m, i) {
+                angular.forEach($scope.model, function (m, i) {
 
                   if (!("_value" in m)) {
                     if (field.defaultOption) {
@@ -607,7 +629,7 @@ define([
       }
 
       $scope.isFirstRefresh = true;
-      $scope.setIsFirstRefresh = function(isFirstRefresh) {
+      $scope.setIsFirstRefresh = function (isFirstRefresh) {
         $scope.isFirstRefresh = isFirstRefresh;
       }
 
@@ -623,12 +645,17 @@ define([
       }
 
       // Updates the search using the selected value
-      $scope.updateSearch = function(select) {
+      $scope.updateSearch = function (select) {
         if (select.selected.value) {
           select.search = select.selected.value;
         }
       }
       /* end of Value Recommendation functionality */
+
+
+      console.log("init fieldTypes");
+      console.log(FieldTypeService.getFieldTypes());
+
 
     }
 
