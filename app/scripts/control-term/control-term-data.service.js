@@ -30,7 +30,7 @@ define([
       getValueSetById                                 : getValueSetById,
       getRootClasses                                  : getRootClasses,
       getClassChildren                                : getClassChildren,
-      getClassDetails                                 : getClassDetails,
+      //getClassDetails                                 : getClassDetails,
       getClassById                                    : getClassById,
       getClassParents                                 : getClassParents,
       getClassTree                                    : getClassTree,
@@ -199,16 +199,6 @@ define([
 
     /*****End of Calls to Terminology Service ******/
 
-    //function getClassChildren(acronym, classId) {
-    //  //ontologies/{acronym}/classes/{id}/children?include=hasChildren
-    //  return $http.get(base + 'ontologies/' + acronym + '/classes/' + encodeURIComponent(classId) + '/children?include=hasChildren,prefLabel',
-    //      http_default_config).then(function (response) {
-    //        return response.data.collection;
-    //      }).catch(function (err) {
-    //        return err;
-    //      });
-    //};
-
     function getClassChildren(acronym, classId) {
       //ontologies/{acronym}/classes/{id}/children?include=hasChildren
       return $http.get(baseTerminology + 'ontologies/' + acronym + '/classes/' + encodeURIComponent(classId) + "/children?page=1&pageSize=1000",
@@ -219,28 +209,16 @@ define([
           });
     };
 
-    /**
-     * This function will return some more detailed information on a particular class.
-     */
-    //function getClassDetails(endpoint) {
-    //   endpoint = fixEndpointScheme(endpoint);
-    //	  return $http.get(endpoint, http_default_config).then(function(response) {
-    //	return response.data;
-    //  }).catch(function(err) {
-    //	return err;
+    // [Deprecated] Use getClassById instead
+    //function getClassDetails(acronym, classId) {
+    //  if (classId.sub)
+    //  var url = base + 'ontologies/' + acronym + '/classes/' + encodeURIComponent(classId);
+    //  return $http.get(url, http_default_config).then(function (response) {
+    //    return response.data;
+    //  }).catch(function (err) {
+    //    return err;
     //  });
     //}
-
-    // [Deprecated] Use getClassById instead
-    function getClassDetails(acronym, classId) {
-      if (classId.sub)
-      var url = base + 'ontologies/' + acronym + '/classes/' + encodeURIComponent(classId);
-      return $http.get(url, http_default_config).then(function (response) {
-        return response.data;
-      }).catch(function (err) {
-        return err;
-      });
-    }
 
     function getClassById(acronym, classId) {
       var url = baseTerminology + 'ontologies/' + acronym + '/classes/' + encodeURIComponent(classId);

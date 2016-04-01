@@ -165,7 +165,7 @@ define([
 
       $scope.isLoadingClassDetails = true;
 
-      controlTermDataService.getClassDetails(acronym, selection["@id"]).then(function(response) {
+      controlTermDataService.getClassById(acronym, selection["@id"]).then(function(response) {
         $scope.classDetails = response;
       });
 

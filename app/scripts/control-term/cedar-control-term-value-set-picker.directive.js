@@ -105,7 +105,7 @@ define([
         var acronym = controlTermService.getAcronym(subtree);
         var classId = subtree['@id'];
         // Get selected class details from the links.self endpoint provided.
-        controlTermDataService.getClassDetails(acronym, classId).then(function(response) {
+        controlTermDataService.getClassById(acronym, classId).then(function(response) {
           vm.classDetails = response;
           console.log("CLASS DETAILS")
           console.log(vm.classDetails)

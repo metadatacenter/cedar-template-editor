@@ -74,7 +74,7 @@ define([
     function saveAsFieldItem(provisionalClass) {
       provisionalClassService.saveClass(provisionalClass, vm.provisionalClassMappings).then(function(newClass) {
         // TODO: fix the following call
-        controlTermDataService.getClassDetails(newClass['@id']).then(function(details) {
+        controlTermDataService.getClassById(newClass['@id']).then(function(details) {
           // hack to add prefLabel
           details.prefLabel = details.label;
           $scope.$emit(

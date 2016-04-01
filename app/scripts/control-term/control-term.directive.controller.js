@@ -563,7 +563,8 @@ define([
             properties['@type']['oneOf'][0]['enum']) {
           for (i = 0; i < properties['@type']['oneOf'][0]['enum'].length; i++) {
             classId = properties['@type']['oneOf'][0]['enum'][i];
-            controlTermDataService.getClassDetails(classId).then(function(response) {
+            // TODO: fix the following call
+            controlTermDataService.getClassById(classId).then(function(response) {
               if (response) {
                 // get ontology details
                 acronym = getAcronym(response);
