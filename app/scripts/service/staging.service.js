@@ -178,8 +178,8 @@ define([
 
     service.addFieldToElement = function (element, fieldType) {
       var field = DataManipulationService.generateField(fieldType);
-      field.minItems = 1;
-      field.maxItems = 1;
+      //field.minItems = 1;
+      //field.maxItems = 1;
       field.properties._tmp = field.properties._tmp || {};
       field.properties._tmp.state = "creating";
 
@@ -212,8 +212,8 @@ define([
           TemplateElementService.getTemplateElement(elementId),
           function (response) {
             var el = response.data;
-            el.minItems = 0;
-            el.maxItems = 1;
+            //el.minItems = 0;
+            //el.maxItems = 1;
 
             var elProperties = DataManipulationService.getFieldProperties(el);
             elProperties._tmp = elProperties._tmp || {};

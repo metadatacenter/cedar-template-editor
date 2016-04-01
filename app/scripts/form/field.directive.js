@@ -10,9 +10,9 @@ define([
 
 
   fieldDirective.$inject = ["$rootScope", "$sce", "$http", "$compile", "$document", "SpreadsheetService",
-                            "DataManipulationService"];
+                            "DataManipulationService","FieldTypeService"];
 
-  function fieldDirective($rootScope, $sce, $http, $compile, $document, SpreadsheetService, DataManipulationService) {
+  function fieldDirective($rootScope, $sce, $http, $compile, $document, SpreadsheetService, DataManipulationService, FieldTypeService) {
 
     var linker = function ($scope, $element, attrs) {
 
@@ -467,16 +467,18 @@ define([
         return (p._tmp.state == "creating");
       };
 
-      // use fieldTypes to determine if the field should be displayed with the button to add controlled terms
+      /**
+       * Use the fieldType to determine if the field supports using controlled terms
+       * @returns {boolean} hasControlledTerms
+       */
       $scope.hasControlledTerms = function () {
 
-        var fieldTypes = $rootScope.fieldTypes;
+        var fieldTypes = FieldTypeService.getFieldTypes();
         var inputType = 'element';
         if ($rootScope.propertiesOf($scope.field)._ui.inputType) {
           inputType = $rootScope.propertiesOf($scope.field)._ui.inputType;
-
           for (var i = 0; i < fieldTypes.length; i++) {
-            if (fieldTypes[i].cedarType == inputType) {
+            if (fieldTypes[i].cedarType === inputType) {
               return fieldTypes[i].hasControlledTerms;
             }
           }
@@ -488,7 +490,7 @@ define([
       /**
        * Turn my field into a youtube iframe.
        * @param field
-       * @returns {*}
+       * @returns {string} html
        */
       $scope.getYouTubeEmbedFrame = function (field) {
 
@@ -649,6 +651,11 @@ define([
         }
       }
       /* end of Value Recommendation functionality */
+
+
+      console.log("init fieldTypes");
+      console.log(FieldTypeService.getFieldTypes());
+
 
     }
 

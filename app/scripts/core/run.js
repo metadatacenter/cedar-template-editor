@@ -604,9 +604,7 @@ define([
 
     $rootScope.vrs = ValueRecommenderService;
 
-    // TODO probably there is a better place to put these
     $rootScope.editorOptions = RichTextConfigService.getConfig("default");
-    $rootScope.fieldTypes = FieldTypeService.getFieldTypes();
 
 
   };
