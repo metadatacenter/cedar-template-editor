@@ -13,13 +13,13 @@ define([
                                         'FieldTypeService', 'UrlService', 'HeaderService', 'UIUtilService',
                                         'UserService', 'UserDataService', 'RichTextConfigService', 'CONST',
                                         'controlTermDataService', 'provisionalClassService', 'Cedar',
-                                        'UISettingsService', 'ValueRecommenderService'];
+                                        'UISettingsService', 'ValueRecommenderService','TrackingService'];
 
   function cedarTemplateEditorCoreRun($rootScope, controlTermService, $location, $timeout, $window, $sce, $translate,
                                       DataTemplateService, DataManipulationService, FieldTypeService, UrlService,
                                       HeaderService, UIUtilService, UserService, UserDataService, RichTextConfigService,
                                       CONST, controlTermDataService, provisionalClassService, Cedar,
-                                      UISettingsService, ValueRecommenderService) {
+                                      UISettingsService, ValueRecommenderService, TrackingService) {
 
     $rootScope.isArray = angular.isArray;
 
@@ -596,6 +596,7 @@ define([
     controlTermDataService.init();
     DataManipulationService.init();
     UISettingsService.init();
+    TrackingService.init();
 
     UserService.injectUserHandler($window.bootstrapUserHandler);
     UserService.init(function () {
@@ -605,6 +606,14 @@ define([
     $rootScope.vrs = ValueRecommenderService;
 
     $rootScope.editorOptions = RichTextConfigService.getConfig("default");
+
+    // google analytics tracking
+    ga('create', 'UA-73983324-1', 'auto');
+    $rootScope.$on('$stateChangeSuccess', function (event) {
+      $window.ga('send', 'pageview', $location.path());
+      console.log('ga pageview event '+ $location.path());
+    });
+
 
 
   };

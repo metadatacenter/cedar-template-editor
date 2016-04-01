@@ -10,9 +10,10 @@ define([
 
 
   fieldDirective.$inject = ["$rootScope", "$sce", "$http", "$compile", "$document", "SpreadsheetService",
-                            "DataManipulationService","FieldTypeService"];
+                            "DataManipulationService", "FieldTypeService"];
 
-  function fieldDirective($rootScope, $sce, $http, $compile, $document, SpreadsheetService, DataManipulationService, FieldTypeService) {
+  function fieldDirective($rootScope, $sce, $http, $compile, $document, SpreadsheetService, DataManipulationService,
+                          FieldTypeService) {
 
     var linker = function ($scope, $element, attrs) {
 
@@ -651,10 +652,6 @@ define([
         }
       }
       /* end of Value Recommendation functionality */
-
-
-      console.log("init fieldTypes");
-      console.log(FieldTypeService.getFieldTypes());
 
 
     }

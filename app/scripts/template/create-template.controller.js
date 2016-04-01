@@ -7,15 +7,15 @@ define([
       .controller('CreateTemplateController', CreateTemplateController);
 
   CreateTemplateController.$inject = ["$rootScope", "$scope", "$routeParams", "$timeout", "$location", "$translate",
-                                      "$filter", "HeaderService", "UrlService", "StagingService", "DataTemplateService",
-                                      "FieldTypeService", "TemplateElementService", "TemplateService",
-                                      "UIMessageService", "DataManipulationService", "DataUtilService",
-                                      "AuthorizedBackendService", "CONST"];
+                                      "$filter", "TrackingService", "HeaderService", "UrlService", "StagingService",
+                                      "DataTemplateService", "FieldTypeService", "TemplateElementService",
+                                      "TemplateService", "UIMessageService", "DataManipulationService",
+                                      "DataUtilService", "AuthorizedBackendService", "CONST"];
 
   function CreateTemplateController($rootScope, $scope, $routeParams, $timeout, $location, $translate, $filter,
-                                    HeaderService, UrlService, StagingService, DataTemplateService, FieldTypeService,
-                                    TemplateElementService, TemplateService, UIMessageService, DataManipulationService,
-                                    DataUtilService, AuthorizedBackendService, CONST) {
+                                    TrackingService, HeaderService, UrlService, StagingService, DataTemplateService,
+                                    FieldTypeService, TemplateElementService, TemplateService, UIMessageService,
+                                    DataManipulationService, DataUtilService, AuthorizedBackendService, CONST) {
 
     // Set Page Title variable when this controller is active
     $rootScope.pageTitle = 'Template Designer';
@@ -62,6 +62,9 @@ define([
       $scope.invalidFieldStates = {};
       $scope.invalidElementStates = {};
       $scope.$broadcast('saveForm');
+
+      TrackingService.eventTrack('saveForm', {category: 'creating', label: 'saveForm'});
+
     }
 
     var dontHaveCreatingFieldOrElement = function () {

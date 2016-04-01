@@ -18,6 +18,7 @@ define([
   'lib/angular-translate-loader-static-files/angular-translate-loader-static-files',
   'lib/angular-toasty/dist/angular-toasty',
 
+
   // non-angular 3rd party libraries
   'lib/bootstrap/dist/js/bootstrap',
   'lib/bootstrap-select/dist/js/bootstrap-select.min',
@@ -30,6 +31,8 @@ define([
   'lib/perfnow-polyfill/perfnow-polyfill',
   'lib/sweetalert/dist/sweetalert.min',
   '3rdparty/angular-fitvids/angular-fitvids',
+  'lib/angulartics/dist/angulartics.min',
+  'lib/angulartics-google-analytics/dist/angulartics-google-analytics.min',
 
   // custom libraries
   'lib/custom/handsontable/SpreadsheetContext',
@@ -64,6 +67,8 @@ define([
     'angular-toasty',
     'ngCkeditor',
     'fitVids',
+    'angulartics',
+    'angulartics.google.analytics',
 
     'cedar.templateEditor.core',
     'cedar.templateEditor.dashboard',
