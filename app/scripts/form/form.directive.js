@@ -98,7 +98,7 @@ define([
             return;
           }
 
-          var childId = $rootScope.idOf(child);
+          var childId = $rootScope.DataManipulationService(child);
           if (!childId || /^tmp\-/.test(childId)) {
             var p = $scope.form.properties;
             if (p[newKey] && p[newKey] == child) {
@@ -111,7 +111,7 @@ define([
                 return;
               }
 
-              var idOfValue = $rootScope.idOf(value);
+              var idOfValue = DataManipulationService.idOf(value);
               if (idOfValue && idOfValue == childId) {
                 DataManipulationService.renameKeyOfObject(p, key, newKey);
 

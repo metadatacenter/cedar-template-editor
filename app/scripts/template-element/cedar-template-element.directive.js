@@ -26,7 +26,7 @@ define([
     return directive;
 
     function linker(scope, element, attrs) {
-      scope.elementId = $rootScope.idOf(scope.element) || DataManipulationService.generateGUID();
+      scope.elementId = DataManipulationService.idOf(scope.element) || DataManipulationService.generateGUID();
 
       var resetElement = function(el, settings) {
         angular.forEach(el, function(model, key) {
@@ -274,7 +274,7 @@ define([
           return;
         }
 
-        var childId = $rootScope.idOf(child);
+        var childId = DataManipulationService.idOf(child);
 
         if (!childId || /^tmp\-/.test(childId)) {
           var p = $rootScope.propertiesOf(scope.element);
@@ -288,7 +288,7 @@ define([
               return;
             }
 
-            var idOfValue = $rootScope.idOf(value);
+            var idOfValue = DataManipulationService.idOf(value);
             if (idOfValue && idOfValue == childId) {
               DataManipulationService.renameKeyOfObject(p, key, newKey);
 

@@ -118,6 +118,8 @@ define([
 
     service.isCardinalElement = function (element) {
       return element.type == 'array';
+      // Alternative implementation from $rootScope
+      //return typeof element.minItems != 'undefined';
     };
 
     // If Max Items is N, its value will be 0, then need to remove it from schema
@@ -244,6 +246,16 @@ define([
       delete obj[currentKey];
 
       return obj;
+    };
+
+    service.idOf = function (fieldOrElement) {
+      if (fieldOrElement) {
+        if (fieldOrElement.items) {
+          return fieldOrElement.items["@id"];
+        } else {
+          return fieldOrElement["@id"];
+        }
+      }
     };
 
     return service;

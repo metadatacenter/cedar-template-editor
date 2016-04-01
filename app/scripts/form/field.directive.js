@@ -8,20 +8,13 @@ define([
 
   // TODO: refactor to cedarFieldDirective <cedar-field-directive>
 
-  fieldDirective.$inject = ["$rootScope", "$sce", "$http", "$compile", "$document", "SpreadsheetService",
-                            "DataManipulationService", "FieldTypeService"];
+  fieldDirective.$inject = ["$rootScope", "$sce", "SpreadsheetService", "DataManipulationService", "FieldTypeService",
+                            "ClientSideValidationService"];
 
-  function fieldDirective($rootScope, $sce, $http, $compile, $document, SpreadsheetService, DataManipulationService,
-                          FieldTypeService) {
+  function fieldDirective($rootScope, $sce, SpreadsheetService, DataManipulationService, FieldTypeService,
+                          ClientSideValidationService) {
+
     var linker = function ($scope, $element, attrs) {
-
-      // if (!$rootScope.propertiesOf($scope.field)._tmp.state) {
-      //   if ($rootScope.propertiesOf($scope.field)._ui.title) {
-      //     $rootScope.propertiesOf($scope.field)._tmp.state = "completed";
-      //   } else {
-      //     $rootScope.propertiesOf($scope.field)._tmp.state = "creating";
-      //   }
-      // }
 
       var setDirectory = function () {
         var p = $rootScope.propertiesOf($scope.field);
@@ -55,7 +48,7 @@ define([
 
           var min = $scope.field.minItems || 0;
 
-          if (!$rootScope.isCardinalElement($scope.field)) {
+          if (!DataManipulationService.isCardinalElement($scope.field)) {
             $scope.model = {};
           } else {
             $scope.model = [];
@@ -402,7 +395,7 @@ define([
         var p = $rootScope.propertiesOf($scope.field);
         $scope.errorMessages = $scope.checkFieldConditions(p);
         $scope.errorMessages = jQuery.merge($scope.errorMessages,
-            $rootScope.checkFieldCardinalityOptions($scope.field));
+            ClientSideValidationService.checkFieldCardinalityOptions($scope.field));
 
         if ($scope.errorMessages.length == 0) {
 
