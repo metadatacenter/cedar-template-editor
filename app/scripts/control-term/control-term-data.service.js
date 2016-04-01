@@ -7,9 +7,9 @@ define([
   angular.module('cedar.templateEditor.controlTerm.controlTermDataService', [])
       .service('controlTermDataService', controlTermDataService);
 
-  controlTermDataService.$inject = ['$http', '$q', 'UrlService'];
+  controlTermDataService.$inject = ['$http', '$q', 'UrlService', 'UIMessageService'];
 
-  function controlTermDataService($http, $q, UrlService) {
+  function controlTermDataService($http, $q, UrlService, UIMessageService) {
 
     var apiKey = null;
     var base = null;
@@ -22,7 +22,7 @@ define([
     var service = {
       //autocompleteOntology                            : autocompleteOntology,
       //autocompleteOntologySubtree                     : autocompleteOntologySubtree,
-      autocompleteValueSetClasses                     : autocompleteValueSetClasses,
+      //autocompleteValueSetClasses                     : autocompleteValueSetClasses,
       getAllOntologies                                : getAllOntologies,
       getOntologyById                                 : getOntologyById,
       getOntologyByLdId                               : getOntologyByLdId,
@@ -71,28 +71,34 @@ define([
       initValueSetsCache();
     }
 
-    /*** Init caches ***/
+    /**
+     * Initialize caches
+     */
 
     function initOntologiesCache() {
-      var url = baseTerminology + "ontologies"
+      var url = baseTerminology + "ontologies";
+      // Get ontologies
       $http.get(url, http_default_config).then(function (response) {
         var ontologies = response.data;
         angular.forEach(ontologies, function (value) {
           ontologiesCache[value.id] = value;
         });
       }).catch(function (err) {
+        UIMessageService.showBackendError("Error retrieving ontologies from terminology service", err);
         return err;
       });
     }
 
     function initValueSetsCache() {
-      var url = baseTerminology + "value-sets"
+      var url = baseTerminology + "value-sets";
+      // Get value sets
       return $http.get(url, http_default_config).then(function (response) {
         var valueSets = response.data;
         angular.forEach(valueSets, function (element) {
           valueSetsCache[element.id] = element;
         });
       }).catch(function (err) {
+        UIMessageService.showBackendError("Error retrieving value sets from terminology service", err);
         return err;
       });
     }
@@ -143,22 +149,21 @@ define([
     //  });
     //};
 
-    function autocompleteValueSetClasses(query, uri) {
-      var searchUrl = base;
-      if (query == '*') {
-        // use descendants
-        searchUrl += 'ontologies/NLMVS/classes/' + encodeURIComponent(uri) + '/descendants?display_context=false&display_links=false';
-      } else {
-        searchUrl += 'search?q=' + query.replace(/[\s]+/g,
-                '+') + '&ontology=NLMVS&suggest=true&display_context=false&display_links=false&subtree_root_id=' + encodeURIComponent(uri) + '&pagesize=20'
-      }
-      return $http.get(searchUrl, http_default_config).then(function (response) {
-        return response.data;
-      }).catch(function (err) {
-        return err;
-      });
-    };
-
+    //function autocompleteValueSetClasses(query, uri) {
+    //  var searchUrl = base;
+    //  if (query == '*') {
+    //    // use descendants
+    //    searchUrl += 'ontologies/NLMVS/classes/' + encodeURIComponent(uri) + '/descendants?display_context=false&display_links=false';
+    //  } else {
+    //    searchUrl += 'search?q=' + query.replace(/[\s]+/g,
+    //            '+') + '&ontology=NLMVS&suggest=true&display_context=false&display_links=false&subtree_root_id=' + encodeURIComponent(uri) + '&pagesize=20'
+    //  }
+    //  return $http.get(searchUrl, http_default_config).then(function (response) {
+    //    return response.data;
+    //  }).catch(function (err) {
+    //    return err;
+    //  });
+    //};
 
     /***** Calls to Terminology Service ******/
 
@@ -194,9 +199,19 @@ define([
 
     /*****End of Calls to Terminology Service ******/
 
+    //function getClassChildren(acronym, classId) {
+    //  //ontologies/{acronym}/classes/{id}/children?include=hasChildren
+    //  return $http.get(base + 'ontologies/' + acronym + '/classes/' + encodeURIComponent(classId) + '/children?include=hasChildren,prefLabel',
+    //      http_default_config).then(function (response) {
+    //        return response.data.collection;
+    //      }).catch(function (err) {
+    //        return err;
+    //      });
+    //};
+
     function getClassChildren(acronym, classId) {
       //ontologies/{acronym}/classes/{id}/children?include=hasChildren
-      return $http.get(base + 'ontologies/' + acronym + '/classes/' + encodeURIComponent(classId) + '/children?include=hasChildren,prefLabel',
+      return $http.get(baseTerminology + 'ontologies/' + acronym + '/classes/' + encodeURIComponent(classId) + "/children?page=1&pageSize=1000",
           http_default_config).then(function (response) {
             return response.data.collection;
           }).catch(function (err) {
