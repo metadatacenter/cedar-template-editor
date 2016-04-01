@@ -75,6 +75,8 @@ define([
       field.items = {
         'type'                : field.type,
         '@id'                 : field['@id'],
+        '@type'               : field['@type'],
+        '@context'            : field['@context'],
         '$schema'             : field.$schema,
         'title'               : field.properties._ui.title,
         'description'         : field.properties._ui.description,
@@ -86,6 +88,8 @@ define([
 
       delete field.$schema;
       delete field['@id'];
+      delete field['@type'];
+      delete field['@context'];
       delete field.properties;
       delete field.title;
       delete field.description;
@@ -102,6 +106,8 @@ define([
 
         field.$schema = field.items.$schema;
         field['@id'] = field.items["@id"];
+        field['@type'] = field.items["@type"];
+        field['@context'] = field.items["@context"];
         field.properties = field.items.properties;
         field.required = field.items.required;
         field.additionalProperties = field.items.additionalProperties;
