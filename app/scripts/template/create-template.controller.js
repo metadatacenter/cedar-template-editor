@@ -80,15 +80,15 @@ define([
     $scope.addFieldToTemplate = function (fieldType) {
       populateCreatingFieldOrElement();
       if (dontHaveCreatingFieldOrElement()) {
-        StagingService.addFieldToForm($scope.form, fieldType)
+        StagingService.addFieldToForm($scope.form, fieldType);
       }
     };
 
     $scope.addElementToTemplate = function (element) {
       populateCreatingFieldOrElement();
       if (dontHaveCreatingFieldOrElement()) {
-        StagingService.addElementToForm($scope.form, element["@id"])
-        $rootScope.$broadcast("form:update");
+        StagingService.addElementToForm($scope.form, element["@id"]);
+        $rootScope.$broadcast("form:update", element);
       }
     };
 

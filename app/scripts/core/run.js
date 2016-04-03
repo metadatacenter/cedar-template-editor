@@ -12,7 +12,8 @@ define([
                                         'DataManipulationService', 'FieldTypeService', 'UrlService', 'UIUtilService',
                                         'UserService', 'UserDataService', 'RichTextConfigService', 'CONST',
                                         'controlTermDataService', 'provisionalClassService', 'Cedar',
-                                        'UISettingsService', 'ValueRecommenderService', 'DataUtilService', 'TrackingService'];
+                                        'UISettingsService', 'ValueRecommenderService', 'DataUtilService',
+                                        'TrackingService'];
 
   function cedarTemplateEditorCoreRun($rootScope, $window, $sce, $translate, DataTemplateService,
                                       DataManipulationService, FieldTypeService, UrlService, UIUtilService,
@@ -40,11 +41,11 @@ define([
     // Capitalize first letter
     /*
      egyedia - this seems to be unused
-    $rootScope.capitalizeFirst = function (string) {
-      string = string.toLowerCase();
-      return string.substring(0, 1).toUpperCase() + string.substring(1);
-    };
-    */
+     $rootScope.capitalizeFirst = function (string) {
+     string = string.toLowerCase();
+     return string.substring(0, 1).toUpperCase() + string.substring(1);
+     };
+     */
 
     // Sorting function that moves boolean values with true to the front of the sort
     /*
@@ -75,9 +76,9 @@ define([
     /*
      egyedia - this seems to be unused
      $rootScope.isField = function (value) {
-      return value && value.properties && value.properties._ui && value.properties._ui.inputType;
-    };
-    */
+     return value && value.properties && value.properties._ui && value.properties._ui.inputType;
+     };
+     */
 
     $rootScope.isElement = function (value) {
       return value && value._ui;
@@ -171,6 +172,9 @@ define([
      */
 
     $rootScope.scrollToAnchor = UIUtilService.scrollToAnchor;
+    $rootScope.scrollToFieldOrElement = UIUtilService.scrollToFieldOrElement;
+    $rootScope.getId = UIUtilService.getId;
+
 
     var minCardinalities = DataManipulationService.generateCardinalities(0, 8);
     var maxCardinalities = DataManipulationService.generateCardinalities(1, 8);
@@ -464,7 +468,6 @@ define([
       $window.ga('send', 'pageview', $location.path());
       console.log('ga pageview event '+ $location.path());
     });
-
 
 
   };

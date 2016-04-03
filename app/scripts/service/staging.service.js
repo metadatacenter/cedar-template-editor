@@ -7,11 +7,12 @@ define([
   angular.module('cedar.templateEditor.service.stagingService', [])
       .service('StagingService', StagingService);
 
-  StagingService.$inject = ["$rootScope", "TemplateElementService", "DataManipulationService",
+  StagingService.$inject = ["$rootScope", "$document", "TemplateElementService", "DataManipulationService",
                             "ClientSideValidationService", "UIMessageService", "$timeout", "AuthorizedBackendService",
                             "CONST"];
 
-  function StagingService($rootScope, TemplateElementService, DataManipulationService, ClientSideValidationService,
+  function StagingService($rootScope, $document, TemplateElementService, DataManipulationService,
+                          ClientSideValidationService,
                           UIMessageService, $timeout, AuthorizedBackendService, CONST) {
 
     var service = {
@@ -108,10 +109,9 @@ define([
 
     service.addFieldToForm = function (form, fieldType) {
 
+
       var field = DataManipulationService.generateField(fieldType);
-      //field.minItems = 1;
-      //field.maxItems = 1;
-      console.debug('addFieldtoForm' + field.minItems + " " + field.maxItems);
+
       field.properties._tmp = field.properties._tmp || {};
       field.properties._tmp.state = "creating";
 
@@ -139,8 +139,9 @@ define([
       form._ui.order = form._ui.order || [];
       form._ui.order.push(fieldName);
 
-      console.debug('addFieldtoForm' + field.minItems + ' ' + field.maxItems);
-    }
+      //scroll the new field into view
+      $rootScope.scrollToFieldOrElement(field);
+    };
 
     service.addElementToForm = function (form, elementId) {
       AuthorizedBackendService.doCall(
@@ -169,12 +170,15 @@ define([
             form.properties[elName] = clonedElement;
             form._ui.order = form._ui.order || [];
             form._ui.order.push(elName);
+
+            // scroll the new element into view
+            $rootScope.scrollToFieldOrElement(clonedElement);
           },
           function (err) {
             UIMessageService.showBackendError('SERVER.ELEMENT.load.error', err);
           }
       );
-    }
+    };
 
     service.addFieldToElement = function (element, fieldType) {
       var field = DataManipulationService.generateField(fieldType);
@@ -205,7 +209,7 @@ define([
       // Adding field to the element.properties object
       element.properties[fieldName] = field;
       element._ui.order.push(fieldName);
-    }
+    };
 
     service.addElementToElement = function (element, elementId) {
       AuthorizedBackendService.doCall(
