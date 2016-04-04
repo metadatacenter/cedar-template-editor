@@ -76,8 +76,8 @@
     <div class="table-responsive results-table-container">
       <table class="table table-hover results-table search-results-table" ng-if="cctopdc.isSearching()">
         <tbody>
-          <tr ng-repeat="result in cctopdc.searchResults" ng-click="cctopdc.selectFieldClass(result.collection)">
-            <td>{{result.class}}</td>
+          <tr ng-repeat="result in cctopdc.searchResults" ng-click="cctopdc.selectFieldClass(result.details)">
+            <td>{{result.prefLabel}}</td>
             <td>{{result.ontology.name}} ({{result.ontology.id}})</td>
           </tr>
         </tbody>

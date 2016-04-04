@@ -308,41 +308,6 @@ define([
       }
     };
 
-    /**
-     * Cache entire list of ontologies on the client so we don't have to make
-     * additional API calls for ontological information in things like search
-     * results.
-     */
-    //function loadAllOntologies() {
-    //  $rootScope.ontologies = $rootScope.ontologies || [];
-    //  if ($rootScope.ontologies.length == 0) {
-    //    $rootScope.ontologies = $http.get('/cache/ontologies.json').
-    //      success(function(response) {
-    //        $rootScope.ontologies = response;
-    //      }).
-    //      error(function(response) {
-    //        alert('There was an error loading the ontologies from cache.');
-    //      });
-    //  }
-    //}
-
-    /**
-     * Cache entire list of value sets on the client for control
-     * term browsing.
-     */
-    //function loadAllValueSets() {
-    //  $rootScope.valueSets = $rootScope.valueSets || [];
-    //  if ($rootScope.valueSets.length == 0) {
-    //    $rootScope.valueSets = $http.get('/cache/value-sets.json').
-    //      success(function(response) {
-    //        $rootScope.valueSets = response;
-    //      }).
-    //      error(function(response) {
-    //        alert('There was an error loading the value sets from cache.');
-    //      });
-    //  }
-    //}
-
     function stageOntologyValueConstraint() {
       var existed = false;
       angular.forEach(vm.stagedOntologyValueConstraints, function(ontologyValueConstraint) {
@@ -380,28 +345,6 @@ define([
         angular.element('#field-value-tooltip').popover();
       }, 500);
     };
-
-    var loadCategoriesForOntology = function(ontology) {
-      controlTermDataService.getOntologyCategories(ontology.acronym, true).then(function(response) {
-        if (!(status in response)) {
-          ontology.categories = response;
-          var names = [];
-          angular.forEach(response, function(c) {
-            names.push(c.name);
-          });
-
-          ontology.categoriesNames = names.join(", ");
-        }
-      });
-    }
-
-    var loadMetricsForOntology = function(ontology) {
-      controlTermDataService.getOntologySize(ontology.acronym, true).then(function(response) {
-        if (!(status in response)) {
-          ontology.metrics = response;
-        }
-      });
-    }
 
     /**
      * Set field as primary search/browse parameter.
@@ -447,7 +390,7 @@ define([
             vm.stageValueConstraintAction = "add_siblings";
           });
         } else {
-          controlTermDataService.getOntologyTreeRoot(acronym).then(function(childResponse) {
+          controlTermDataService.getRootClasses(acronym).then(function(childResponse) {
             angular.forEach(childResponse, function(child) {
               vm.stageOntologyClassValueConstraint(child);
             });

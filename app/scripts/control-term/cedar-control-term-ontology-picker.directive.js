@@ -132,14 +132,14 @@ define([
           vm.searchPreloader = true;
         }
 
-        controlTermDataService.searchClass(vm.fieldSearchTerms).then(function (response) {
+        controlTermDataService.searchClasses(vm.fieldSearchTerms).then(function (response) {
           if (response.collection.length > 0) {
             var tArry = [], i;
             for (i = 0; i < response.collection.length; i += 1) {
               tArry.push({
-                class     : response.collection[i].prefLabel,
-                ontology  : controlTermDataService.getOntologyByLdId(response.collection[i].links.ontology),
-                collection: response.collection[i]
+                prefLabel : response.collection[i].prefLabel,
+                details   : response.collection[i],
+                ontology  : controlTermDataService.getOntologyByLdId(response.collection[i].source)
               });
             }
             vm.searchResults = tArry;

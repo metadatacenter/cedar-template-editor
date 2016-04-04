@@ -157,7 +157,7 @@
         <tr>
           <th>Result</th>
           <th>Type</th>
-          <th>Source Name</th>
+          <th>Source</th>
         </tr>
       </thead>
     </table>
@@ -181,7 +181,7 @@
           <tr ng-repeat="result in cctvspdc.searchResults" ng-click="cctvspdc.selectValueResult(result)">
             <td>{{result.prefLabel}}</td>
             <td>{{result.type}}</td>
-            <td>{{result.resultSource}}</td>
+            <td>{{result.sourceName}}</td>
           </tr>
         </tbody>
       </table>
@@ -221,7 +221,9 @@
       </div>
     </div>
     <div class="field-tree-details">
-      <div class="ontology-tree pull-left" ng-if="cctvspdc.selectedValueResult && cctvspdc.currentOntology && cctvspdc.currentOntology.tree">
+      <!-- ontology-tree -->
+      <div class="ontology-tree pull-left" ng-if="cctvspdc.selectedValueResult && cctvspdc.currentOntology && cctvspdc.currentOntology.tree
+      && cctvspdc.browsingSection == 'ontology'">
         <div class="tree tree-view-ul tree-view list-unstyled class-tree-container">
           <cedar-class-tree
               get-class-details-callback="cctvspdc.getClassDetails"
@@ -230,8 +232,10 @@
               tree="cctvspdc.currentOntology.tree">
           </cedar-class-tree>
         </div>
-      </div><!-- /.ontology-tree -->
+      </div>
+      <!-- /.ontology-tree -->
 
+      <!-- value set values -->
       <div class="ontology-class-children pull-left" ng-show="cctvspdc.browsingSection == 'value_set'">
         <div class="table-responsive ontology-class-children-table">
           <table class="table table-hover" style="width: 275px; max-height: 203px; overflow-y: auto">
@@ -246,6 +250,7 @@
           </table>
         </div>
       </div>
+      <!-- /.value set values -->
 
       <div class="field-details-view pull-right" ng-if="cctvspdc.selectedValueResult">
         <div class="tab-content">
@@ -265,7 +270,8 @@
                   <tr>
                     <td>Definition</td>
                     <td ng-if="cctvspdc.classDetails.definition[0]">{{cctvspdc.classDetails.definition[0]}}</td>
-                    <td ng-if="!cctvspdc.classDetails.definition[0]">-</td>
+                    <td ng-if="cctvspdc.classDetails.definitions[0]">{{cctvspdc.classDetails.definitions[0]}}</td>
+                    <td ng-if="!cctvspdc.classDetails.definition[0] && !cctvspdc.classDetails.definitions[0]">-</td>
                   </tr>
                 </tbody>
               </table>
