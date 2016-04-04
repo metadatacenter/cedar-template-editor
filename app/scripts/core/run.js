@@ -113,12 +113,19 @@ define([
           if (value._ui && value._ui.order) {
 
             if (DataManipulationService.isCardinalElement(value)) {
-              parentModel[name] = [];
-              for (i = 0; i < min; i++) {
+              if (!parentModel[name] || angular.isObject(parentModel[name])) {
+                parentModel[name] = [];
+              }
+
+              for (i = 0; i < min - parentModel[name].length; i++) {
                 parentModel[name].push({});
               }
+
+              parentModel[name].splice(min, parentModel[name].length);
             } else {
-              parentModel[name] = {};
+              if (!parentModel[name] || angular.isArray(parentModel[name])) {
+                parentModel[name] = {};
+              }
             }
           } else {
 

@@ -69,7 +69,7 @@ define([
     };
 
     service.cardinalizeField = function (field) {
-      if (typeof field.minItems == 'undefined') {
+      if (typeof(field.minItems) == 'undefined' || field.maxItems == 1) {
         return false;
       }
       field.items = {
