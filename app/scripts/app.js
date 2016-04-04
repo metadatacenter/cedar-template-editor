@@ -49,11 +49,6 @@ define([
   'cedar/template-editor/template-instance/template-instance.module',
   'cedar/template-editor/profile/profile.module',
 
-  // classic javascript code, KeyCloak related
-  //'cedar/template-editor/keycloak/keycloak',
-  //'cedar/template-editor/handlers/KeycloakUserHandler',
-  //'cedar/template-editor/handlers/NoauthUserHandler',
-
   // classic javascript, app data
   'cedar/template-editor/classic/app-data'
 ], function(angular) {
