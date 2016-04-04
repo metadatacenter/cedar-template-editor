@@ -8,18 +8,17 @@ define([
   angular.module('cedar.templateEditor.core.run', [])
       .run(cedarTemplateEditorCoreRun);
 
-  cedarTemplateEditorCoreRun.$inject = ['$rootScope', 'controlTermService', '$location', '$timeout', '$window', '$sce',
-                                        '$translate', 'DataTemplateService', 'DataManipulationService',
-                                        'FieldTypeService', 'UrlService', 'HeaderService', 'UIUtilService',
-                                        'UserService', 'UserDataService', 'RichTextConfigService', 'CONST',
-                                        'controlTermDataService', 'provisionalClassService', 'Cedar',
-                                        'UISettingsService', 'ValueRecommenderService'];
+  cedarTemplateEditorCoreRun.$inject = ['$rootScope', '$window', '$sce', '$translate', 'DataTemplateService',
+                                        'DataManipulationService', 'FieldTypeService', 'UrlService', 'UIUtilService',
+                                        'UserService', 'RichTextConfigService', 'CONST', 'controlTermDataService',
+                                        'provisionalClassService', 'Cedar', 'UISettingsService',
+                                        'ValueRecommenderService', 'DataUtilService', 'TrackingService'];
 
-  function cedarTemplateEditorCoreRun($rootScope, controlTermService, $location, $timeout, $window, $sce, $translate,
-                                      DataTemplateService, DataManipulationService, FieldTypeService, UrlService,
-                                      HeaderService, UIUtilService, UserService, UserDataService, RichTextConfigService,
-                                      CONST, controlTermDataService, provisionalClassService, Cedar,
-                                      UISettingsService, ValueRecommenderService) {
+  function cedarTemplateEditorCoreRun($rootScope, $window, $sce, $translate, DataTemplateService,
+                                      DataManipulationService, FieldTypeService, UrlService, UIUtilService, UserService,
+                                      RichTextConfigService, CONST, controlTermDataService, provisionalClassService,
+                                      Cedar, UISettingsService, ValueRecommenderService, DataUtilService,
+                                      TrackingService) {
 
     $rootScope.isArray = angular.isArray;
 
@@ -38,193 +37,29 @@ define([
       return !obj || Object.keys(obj).length === 0;
     };
 
-    // Transform string to obtain JSON field name
-    $rootScope.getFieldName = function (string) {
-      // Using Camel case format
-      return string.replace(/(?:^\w|[A-Z]|\b\w)/g, function (letter, index) {
-        return index === 0 ? letter.toLowerCase() : letter.toUpperCase();
-      }).replace(/\s+/g, '');
-
-      //// Using underscore format
-      //return string
-      //  .replace(/'|"|(|)/g, '')
-      //  .replace(/ +/g, "_")
-      //  .toLowerCase();
-    };
-
     // Capitalize first letter
-    $rootScope.capitalizeFirst = function (string) {
-      string = string.toLowerCase();
-      return string.substring(0, 1).toUpperCase() + string.substring(1);
-    };
-
-    // Returning true if the object key value in the properties object is of json-ld type '@' or if it corresponds to any of the reserved fields
-    $rootScope.ignoreKey = function (key) {
-      //var pattern = /^@/i,
-      var pattern = /(^@)|(^_ui$)|(^templateId$)/i,
-          result = pattern.test(key);
-
-      return result;
-    };
-
-    // Generating a RFC4122 version 4 compliant GUID
-    $rootScope.generateGUID = function () {
-      var d = Date.now();
-      var guid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
-        var r = (d + Math.random() * 16) % 16 | 0;
-        d = Math.floor(d / 16);
-        return (c == 'x' ? r : (r & 0x3 | 0x8)).toString(16);
-      });
-      return guid;
-    };
+    /*
+     egyedia - this seems to be unused
+     $rootScope.capitalizeFirst = function (string) {
+     string = string.toLowerCase();
+     return string.substring(0, 1).toUpperCase() + string.substring(1);
+     };
+     */
 
     // Sorting function that moves boolean values with true to the front of the sort
-    $rootScope.sortBoolean = function (array, bool) {
-      return array.sort(function (a, b) {
-        var x = a[bool],
-            y = b[bool];
-        return ((x == y) ? -1 : ((x === true) ? -1 : 1));
-      });
-    };
-
-    // Function that generates a basic field definition
-    $rootScope.generateField = function (fieldType) {
-      var valueType = "string";
-      if (fieldType == "numeric") {
-        valueType = "number";
-      }
-      else if (fieldType == "checkbox") {
-        valueType = "object";
-      }
-      else if (fieldType == "list") {
-        valueType = "array";
-      }
-      var field = DataTemplateService.getField($rootScope.idBasePath + $rootScope.generateGUID());
-      field.properties._ui.inputType = fieldType;
-      field.properties._value.type = valueType;
-      return field;
-    };
-
-    // Function that generates the @context for an instance, based on the schema @context definition
-    $rootScope.generateInstanceContext = function (schemaContext) {
-      var context = {};
-      angular.forEach(schemaContext.properties, function (value, key) {
-        context[key] = value.enum[0];
-      });
-      return context;
-    };
-
-    // Function that generates the @type for an instance, based on the schema @type definition
-    $rootScope.generateInstanceType = function (schemaType) {
-      // If there is no type defined at the schema level
-      if (angular.isUndefined(schemaType.oneOf[0].enum))
-        return null;
-      else {
-        if (schemaType.oneOf[0].enum.length === 0)
-          return null;
-        // If only one type has been defined, a string is returned
-        else if (schemaType.oneOf[0].enum.length == 1)
-          return schemaType.oneOf[0].enum[0];
-        // If more than one types have been defined for the template/element/field, an array is returned
-        else
-          return schemaType.oneOf[0].enum;
-      }
-    };
-
-    $rootScope.checkFieldCardinalityOptions = function (field) {
-      var unmetConditions = [];
-
-      if (field.minItems && field.maxItems &&
-          parseInt(field.minItems) > parseInt(field.maxItems)) {
-        unmetConditions.push('Min cannot be greater than Max.');
-      }
-
-      return unmetConditions;
-    };
-
-    $rootScope.cardinalizeField = function (field) {
-
-      if (typeof field.minItems == 'undefined') {
-        return false;
-      }
-
-      field.items = {
-        'type'                : field.type,
-        '@id'                 : field['@id'],
-        '$schema'             : field.schema,
-        'title'               : field.properties._ui.title,
-        'description'         : field.properties._ui.description,
-        'properties'          : field.properties,
-        'required'            : field.required,
-        'additionalProperties': field.additionalProperties
-      };
-      field.type = 'array';
-
-      delete field.$schema;
-      delete field['@id'];
-      delete field.properties;
-      delete field.title;
-      delete field.description;
-      delete field.required;
-      delete field.additionalProperties;
-
-      return true;
-    };
+    /*
+     egyedia - this seems to be unused
+     $rootScope.sortBoolean = function (array, bool) {
+     return array.sort(function (a, b) {
+     var x = a[bool],
+     y = b[bool];
+     return ((x == y) ? -1 : ((x === true) ? -1 : 1));
+     });
+     };
+     */
 
     $rootScope.propertiesOf = function (fieldOrElement) {
       return DataManipulationService.getFieldProperties(fieldOrElement);
-    };
-
-    $rootScope.idOf = function (fieldOrElement) {
-      if (fieldOrElement) {
-        if (fieldOrElement.items) {
-          return fieldOrElement.items["@id"];
-        } else {
-          return fieldOrElement["@id"];
-        }
-      }
-    };
-
-    $rootScope.uncardinalizeField = function (field) {
-      if (typeof field.minItems == 'undefined' || (field.minItems == 1 && field.maxItems == 1)) {
-
-        field.type = 'object';
-
-        field.$schema = field.items.$schema;
-        field['@id'] = field.items["@id"];
-        field.properties = field.items.properties;
-        field.required = field.items.required;
-        field.additionalProperties = field.items.additionalProperties;
-
-        delete field.items;
-        delete field.maxItems;
-        delete field.minItems;
-
-        return true;
-      } else return false;
-    };
-
-    $rootScope.isCardinalElement = function (element) {
-      //return element.minItems && element.maxItems != 1;
-      return typeof element.minItems != 'undefined';
-    };
-
-    // If Max Items is N, its value will be 0, then need to remove it from schema
-    // if Min and Max are both 1, remove them
-    $rootScope.removeUnnecessaryMaxItems = function (properties) {
-      angular.forEach(properties, function (value, key) {
-        if (!$rootScope.ignoreKey(key)) {
-
-          if ((value.minItems == 1 && value.maxItems == 1)) {
-            delete value.minItems;
-            delete value.maxItems;
-          }
-          if (value.maxItems == 0) {
-            delete value.maxItems;
-          }
-
-        }
-      });
     };
 
     $rootScope.console = function (txt, label) {
@@ -237,31 +72,35 @@ define([
 
     $rootScope.elementIsMultiInstance = DataManipulationService.elementIsMultiInstance;
 
-    $rootScope.isField = function (value) {
-      return value && value.properties && value.properties._ui && value.properties._ui.inputType;
-    };
+    /*
+     egyedia - this seems to be unused
+     $rootScope.isField = function (value) {
+     return value && value.properties && value.properties._ui && value.properties._ui.inputType;
+     };
+     */
 
     $rootScope.isElement = function (value) {
       return value && value._ui;
     };
 
+    // Used in cedar-template-element.directive.js, form.directive
     $rootScope.findChildren = function (iterator, parentModel, parentKey, level) {
       var ctx, min, type, i;
       angular.forEach(iterator, function (value, name) {
         // Add @context information to instance
         if (name == '@context') {
-          ctx = $rootScope.generateInstanceContext(value);
+          ctx = DataManipulationService.generateInstanceContext(value);
         }
       });
 
       angular.forEach(iterator, function (value, name) {
         // Add @context information to instance
         if (name == '@context') {
-          parentModel['@context'] = $rootScope.generateInstanceContext(value);
+          parentModel['@context'] = DataManipulationService.generateInstanceContext(value);
         }
         // Add @type information to instance
         else if (name == '@type') {
-          type = $rootScope.generateInstanceType(value);
+          type = DataManipulationService.generateInstanceType(value);
           if (type) {
             parentModel['@type'] = type;
           }
@@ -269,11 +108,11 @@ define([
 
         min = value.minItems || 0;
 
-        if (!$rootScope.ignoreKey(name)) {
+        if (!DataUtilService.isSpecialKey(name)) {
           // We can tell we've reached an element level by its 'order' property
           if (value._ui && value._ui.order) {
 
-            if ($rootScope.isCardinalElement(value)) {
+            if (DataManipulationService.isCardinalElement(value)) {
               parentModel[name] = [];
               for (i = 0; i < min; i++) {
                 parentModel[name].push({});
@@ -285,7 +124,7 @@ define([
 
             // Assign empty field instance model to $scope.model only if it does not exist
             if (!parentModel[name]) {
-              if (!$rootScope.isCardinalElement(value)) {
+              if (!DataManipulationService.isCardinalElement(value)) {
                 parentModel[name] = {};
               } else {
                 parentModel[name] = [];
@@ -300,7 +139,7 @@ define([
 
             // Add @type information to instance at the field level
             if (p && !angular.isUndefined(p['@type'])) {
-              type = $rootScope.generateInstanceType(p['@type']);
+              type = DataManipulationService.generateInstanceType(p['@type']);
 
               if (type) {
                 if (angular.isArray(parentModel[name])) {
@@ -317,16 +156,19 @@ define([
       });
     };
 
-    $rootScope.assignOrder = function (fieldOrElement, parentElement) {
-      var order = 1;
-      angular.forEach(parentElement, function (value, key) {
-        if ($rootScope.isElement(value) || $rootScope.isField(value)) {
-          order += 1;
-        }
-      });
+    /*
+     egyedia - this seems to be unused
+     $rootScope.assignOrder = function (fieldOrElement, parentElement) {
+     var order = 1;
+     angular.forEach(parentElement, function (value, key) {
+     if ($rootScope.isElement(value) || $rootScope.isField(value)) {
+     order += 1;
+     }
+     });
 
-      fieldOrElement.properties._ui.order = order;
-    };
+     fieldOrElement.properties._ui.order = order;
+     };
+     */
 
     $rootScope.scrollToAnchor = UIUtilService.scrollToAnchor;
 
@@ -349,6 +191,7 @@ define([
       }
     };
 
+    // Used in field.directive.js and textfield.html
     $rootScope.hasValueConstraint = function (vcst) {
       var result = vcst && (vcst.ontologies && vcst.ontologies.length > 0 ||
           vcst.valueSets && vcst.valueSets.length > 0 ||
@@ -360,6 +203,7 @@ define([
 
     $rootScope.autocompleteResultsCache = {};
 
+    // Used here
     $rootScope.sortAutocompleteResults = function (field_id) {
       $rootScope.autocompleteResultsCache[field_id].results.sort(function (a, b) {
         var labelA = a.label.toLowerCase();
@@ -372,6 +216,7 @@ define([
       });
     };
 
+    // Used here
     $rootScope.removeAutocompleteResultsForSource = function (field_id, source_uri) {
       // remove results for this source
       for (var i = $rootScope.autocompleteResultsCache[field_id].results.length - 1; i >= 0; i--) {
@@ -381,6 +226,7 @@ define([
       }
     };
 
+    // Used here
     $rootScope.processAutocompleteClassResults = function (field_id, field_type, source_uri, response) {
       var i, j, found;
       // we do a complicated method to find the changed results to reduce flicker :-/
@@ -429,6 +275,7 @@ define([
       }
     };
 
+    // Used in textfield.html
     $rootScope.updateFieldAutocomplete = function (field, term) {
       if (term === '') {
         term = '*';
@@ -515,6 +362,7 @@ define([
       }
     };
 
+    // Used here by isValueConformedToConstraint
     $rootScope.excludedValueConstraint = function (id, vcst) {
       if ($rootScope.excludedValues && $rootScope.excludedValues[id]) {
         return $rootScope.excludedValues[id];
@@ -552,6 +400,7 @@ define([
       return results;
     };
 
+    // Used in field.directive
     $rootScope.isValueConformedToConstraint = function (value, id, vcst) {
       var predefinedValues = $rootScope.autocompleteResultsCache[id].results;
       var excludedValues = $rootScope.excludedValueConstraint(id, vcst);
@@ -575,6 +424,7 @@ define([
       return obj && obj["@type"] && obj["@type"].indexOf("Ontology") > 0;
     };
 
+    // Used in cedar-control-term.directive
     $rootScope.lengthOfValueConstraint = function (valueConstraint) {
       return (valueConstraint.classes || []).length +
           (valueConstraint.valueSets || []).length +
@@ -582,13 +432,30 @@ define([
           (valueConstraint.branches || []).length;
     };
 
+    // Used in richtext.html
     $rootScope.getUnescapedContent = function (field) {
       return $sce.trustAsHtml($rootScope.propertiesOf(field)._content);
     };
 
-
+    // Init Cedar "god object"
     Cedar.init();
+    // Make it available for everybody through rootScope
     $rootScope.cedar = Cedar;
+
+    // Inject user data:
+    // read from Keycloak
+    // read in Non-Angular way from user.... REST endpoint
+    UserService.injectUserHandler($window.bootstrapUserHandler);
+
+
+    //TODO MJD
+    // User data is available at this point:
+    console.log("Cedar service providing user data at this point:");
+    console.log(Cedar.getUserId());
+    console.log(Cedar.getScreenName());
+    console.log(Cedar.getHome());
+
+    // Init the services that have dependencies on configuration
     DataTemplateService.init();
     FieldTypeService.init();
     UrlService.init();
@@ -596,16 +463,11 @@ define([
     controlTermDataService.init();
     DataManipulationService.init();
     UISettingsService.init();
+    TrackingService.init();
 
-    UserService.injectUserHandler($window.bootstrapUserHandler);
-    UserService.init(function () {
-      UserDataService.readUserDetails();
-    });
-
+    // Make objects available through rootScope
     $rootScope.vrs = ValueRecommenderService;
-
     $rootScope.editorOptions = RichTextConfigService.getConfig("default");
-
 
   };
 
