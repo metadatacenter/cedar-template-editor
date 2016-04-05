@@ -14,6 +14,7 @@ define([
                                         'provisionalClassService', 'Cedar', 'UISettingsService',
                                         'ValueRecommenderService', 'DataUtilService', 'TrackingService'];
 
+
   function cedarTemplateEditorCoreRun($rootScope, $window, $sce, $translate, DataTemplateService,
                                       DataManipulationService, FieldTypeService, UrlService, UIUtilService, UserService,
                                       RichTextConfigService, CONST, controlTermDataService, provisionalClassService,
@@ -178,6 +179,10 @@ define([
      */
 
     $rootScope.scrollToAnchor = UIUtilService.scrollToAnchor;
+    $rootScope.scrollToDomId = UIUtilService.scrollToDomId;
+    $rootScope.getDomId = DataManipulationService.getDomId;
+
+
 
     var minCardinalities = DataManipulationService.generateCardinalities(0, 8);
     var maxCardinalities = DataManipulationService.generateCardinalities(1, 8);
@@ -475,6 +480,7 @@ define([
     // Make objects available through rootScope
     $rootScope.vrs = ValueRecommenderService;
     $rootScope.editorOptions = RichTextConfigService.getConfig("default");
+
 
   };
 

@@ -24,7 +24,8 @@
     "perfnow-polyfill": "*",
     "ng-ckeditor": "^0.2.1",
     "requirejs-plugins": "~1.0.3",
-    "angulartics-google-analytics": "^0.1.4"
+    "angulartics-google-analytics": "^0.1.4",
+    "angular-md5": "^0.1.10"
   },
   "resolutions": {
     "angular": "~1.5.0"

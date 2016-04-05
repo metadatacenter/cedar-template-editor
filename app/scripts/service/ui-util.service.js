@@ -2,9 +2,9 @@
 
 define([
   'angular'
-], function(angular) {
+], function (angular) {
   angular.module('cedar.templateEditor.service.uIUtilService', [])
-    .service('UIUtilService', UIUtilService);
+      .service('UIUtilService', UIUtilService);
 
   UIUtilService.$inject = ["$window", "$timeout"];
 
@@ -22,6 +22,24 @@ define([
       }, 250);
     };
 
+    /**
+     * Scroll to a dom id. Delay ensures that a new field or element has been created and drawn.
+     * @param id
+     */
+    service.scrollToDomId = function (id) {
+
+      $timeout(function () {
+
+            var target = angular.element('#' + id);
+            if (target) {
+              var y = target.offset().top;
+              $window.scrollTo(0, y - 95);
+            }
+          }, 250
+      );
+    };
+
+
     service.console = function (txt, label) {
       console.log(label + ' ' + JSON.stringify(txt, null, 2));
     };
@@ -29,4 +47,5 @@ define([
     return service;
   };
 
-});
+})
+;
