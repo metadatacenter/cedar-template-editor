@@ -6,9 +6,16 @@ define([
   angular.module('cedar.templateEditor.service.resourceService', [])
     .service('resourceService', resourceService);
 
-  resourceService.$inject = ['$http', '$timeout', 'Cedar', 'UrlService'];
+  resourceService.$inject = [
+    '$http',
+    '$timeout',
+    'AuthorizedBackendService',
+    'Cedar',
+    'HttpBuilderService',
+    'UrlService'
+  ];
 
-  function resourceService($http, $timeout, cedar, urlService) {
+  function resourceService($http, $timeout, authorizedBackendService, cedar, httpBuilderService, urlService) {
 
     var service = {
       getResources: getResources
@@ -16,8 +23,17 @@ define([
     return service;
 
     function getResources() {
-      debugger;
-      var url = urlService.folders() + '?path=' + cedar.getHome();
+      var homeDir = cedar.getHome();
+      var url = urlService.folders() + '?path=' + homeDir + '&resource_types=field,element,template,instance&limit=50&offset=0';
+      authorizedBackendService.doCall(
+        httpBuilderService.get(url),
+        function(response) {
+          debugger;
+        },
+        function(error) {
+          debugger;
+        }
+      );
     }
 
   }

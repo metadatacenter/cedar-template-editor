@@ -23,7 +23,6 @@ define([
   'cedar/template-editor/service/user.service',
   'cedar/template-editor/service/rich-text-config.service',
   'cedar/template-editor/service/value-recommender.service',
-  'cedar/template-editor/service/cedar',
   'cedar/template-editor/service/ui-settings.service',
   'cedar/template-editor/service/tracking.service'
 ], function(angular) {
@@ -49,7 +48,6 @@ define([
     'cedar.templateEditor.service.userService',
     'cedar.templateEditor.service.richTextConfigService',
     'cedar.templateEditor.service.valueRecommenderService',
-    'cedar.templateEditor.service.cedar',
     'cedar.templateEditor.service.uISettingsService',
     'cedar.templateEditor.service.trackingService'
   ]);
