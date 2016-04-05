@@ -33,7 +33,6 @@ define([
   '3rdparty/angular-fitvids/angular-fitvids',
   'lib/angulartics/dist/angulartics.min',
   'lib/angulartics-google-analytics/dist/angulartics-google-analytics.min',
-  'lib/angular-md5/angular-md5',
 
   // custom libraries
   'lib/custom/handsontable/SpreadsheetContext',
@@ -65,7 +64,6 @@ define([
     'fitVids',
     'angulartics',
     'angulartics.google.analytics',
-    'angular-md5',
 
     'cedar.templateEditor.core',
     'cedar.templateEditor.dashboard',
