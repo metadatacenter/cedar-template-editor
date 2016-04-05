@@ -5,7 +5,7 @@ define([
 ], function(angular) {
   angular.module('cedar.templateEditor.templateElement.cedarTemplateElementDirective', [])
     .directive('cedarTemplateElement', cedarTemplateElementDirective);
-  
+
   cedarTemplateElementDirective.$inject = ['$rootScope', 'DataManipulationService', 'DataUtilService', 'SpreadsheetService'];
 
   function cedarTemplateElementDirective($rootScope, DataManipulationService, DataUtilService, SpreadsheetService) {
@@ -336,7 +336,6 @@ define([
       scope.$watchCollection("element.items.properties", function() {
         parseElement();
       });
-
     }
 
   };
