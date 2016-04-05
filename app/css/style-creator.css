@@ -9102,7 +9102,7 @@ button.close {
 ================================================
 */
 body {
-  background: #f3f7f6;
+  background: #f8f8f8;
   font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
   color: #333;
   padding: 200px;
@@ -9124,16 +9124,6 @@ i {
 }
 .container {
   position: relative;
-}
-@media (min-width: 768px) {
-  .container {
-    width: 750px;
-  }
-}
-@media (min-width: 992px) {
-  .container {
-    width: 952px;
-  }
 }
 .navbar {
   color: #fff;
@@ -9249,6 +9239,9 @@ i {
   margin-top: 20px;
   margin-bottom: 5px;
 }
+.navbar .nav-search {
+  margin-top: 23px;
+}
 .controls-bar {
   padding: 25px 40px;
   background-color: #ffffff;
@@ -9275,6 +9268,24 @@ i {
 }
 .controls-bar .nav-pills {
   text-transform: uppercase;
+  border: 2px solid #5795ba;
+  color: #5795ba;
+  background: #ffffff;
+  padding: 4px 11px;
+  border-radius: 4px;
+}
+.controls-bar .nav-pills.active {
+  background: #5795ba;
+  color: #ffffff;
+}
+.controls-bar a.nav-pills:hover,
+.controls-bar a.nav-pills:focus {
+  text-decoration: none;
+}
+.controls-bar .list-inline .sort-text {
+  text-transform: uppercase;
+  margin: 5px;
+  color: #666666;
 }
 .template-header {
   width: 100%;
@@ -9818,7 +9829,8 @@ section.dashboard-elements .dash-header .input-group .input-group-btn .btn:focus
   color: #5795ba;
 }
 section.dashboard-elements .dash-header .see-all,
-section.dashboard-elements .dash-header .back {
+section.dashboard-elements .dash-header .back,
+section.dashboard-elements .dash-header .breadcrumbs {
   float: right;
   margin: 0;
   -webkit-transform: translateY(8px);
@@ -9833,12 +9845,14 @@ section.dashboard-elements .dash-header .back {
           transition: all 0.3s 0.1s;
 }
 section.dashboard-elements .dash-header .see-all:hover,
-section.dashboard-elements .dash-header .back:hover {
+section.dashboard-elements .dash-header .back:hover,
+section.dashboard-elements .dash-header .breadcrumbs:hover {
   color: #2f7dab;
   text-decoration: none;
 }
 section.dashboard-elements .dash-header .see-all i,
-section.dashboard-elements .dash-header .back i {
+section.dashboard-elements .dash-header .back i,
+section.dashboard-elements .dash-header .breadcrumbs i {
   color: rgba(51, 51, 51, 0.43);
 }
 section.dashboard-elements .margin-reset-row {
@@ -9875,7 +9889,7 @@ section.dashboard-elements .margin-reset-row .template-item {
 }
 @media (min-width: 992px) {
   section.dashboard-elements .margin-reset-row .template-item {
-    width: calc(33.33333333% - 20px);
+    width: calc(25% - 20px);
   }
 }
 section.dashboard-elements .margin-reset-row .template-item a {

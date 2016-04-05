@@ -37,7 +37,7 @@
             <div class="nav-container" id="headerCtrl" ng-controller="HeaderCtrl">
                 <Documdiv class="navbar-header">
                     <i class="fa fa-search navbar-toggle"></i>
-                    <div class="pull-right">
+                    <div class="pull-right col-sm-7 nav-search">
                         <form>
                             <div class="form-group floating-label-wrapper">
                                 <input type="search" class="form-control" id="search" placeholder="Search" aria-label="Search" ng-model="form.properties._ui.title"  with-floating-label>
@@ -80,7 +80,20 @@
                 </div>
                 <div class="pull-right list-inline">
                     <ul class="list-inline">
-                        <li><i class="fa fa-ellipsis-v inline graytext"></i></li>
+                        <li><a class="active nav-pills" href="#n">Forms</a></li>
+                        <li><a class="nav-pills" href="#n">Elements</a></li>
+                        <li><a class="nav-pills" href="#n">Fields</a></li>
+                        <li><a class="active nav-pills" href="#n">Responses</a></li>
+                        <li><span class="sort-text">Sort by:</span></li>
+                        <li class="btn-group">
+                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Most Recent <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li><a href="#">Folders</a></li>
+                                <li><a href="#">Another action</a></li>
+                            </ul>
+                        </li>
                         <li><i class="fa fa-th graytext"></i></li>
                         <li><i class="fa fa-list-ul graytext"></i></li>
                         <li class="inline divider-vertical graytext"></li>
