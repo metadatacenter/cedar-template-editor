@@ -1,9 +1,8 @@
 'use strict';
 
 define([
-  'angular',
-  'json!config/control-term-data-service.conf.json'
-], function (angular, config) {
+  'angular'
+], function (angular) {
   angular.module('cedar.templateEditor.controlTerm.controlTermDataService', [])
       .service('controlTermDataService', controlTermDataService);
 
@@ -11,7 +10,6 @@ define([
 
   function controlTermDataService($http, $q, UrlService, UIMessageService) {
 
-    var apiKey = null;
     var base = null;
     var http_default_config = {};
 
@@ -48,13 +46,8 @@ define([
      * Initialize service.
      */
     function init() {
-      apiKey = config.apiKey;
       base = UrlService.terminology() + "/bioportal";
-      http_default_config = {
-        'headers': {
-          'Authorization': 'apikey token=' + apiKey
-        }
-      };
+      http_default_config = {};
       initOntologiesCache();
       initValueSetsCache();
     }

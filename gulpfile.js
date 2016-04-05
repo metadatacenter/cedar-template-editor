@@ -100,16 +100,6 @@ gulp.task('replace-url', function () {
       .pipe(gulp.dest('app/config/'));
 });
 
-// Task to replace bioportal api keys
-gulp.task('replace-apikey', function () {
-  gulp.src(['app/config/src/control-term-data-service.conf.json'])
-      .pipe(replace('bioportalAPIKey', cedarBioportalAPIKey))
-      .pipe(gulp.dest('app/config/'));
-  gulp.src(['app/config/src/provisional-class-service.conf.json'])
-      .pipe(replace('bioportalAPIKey', cedarBioportalAPIKey))
-      .pipe(gulp.dest('app/config/'));
-});
-
 // Task to set up tracking
 gulp.task('replace-tracking', function () {
   gulp.src(['app/config/src/tracking-service.conf.json'])
@@ -167,7 +157,6 @@ function readAllEnvVarsOrFail() {
 var envConfig = {
   'CEDAR_PROFILE'          : null,
   'CEDAR_HOST'             : null,
-  'CEDAR_BIOPORTAL_API_KEY': null,
   'CEDAR_ANALYTICS_KEY'    : null
 };
 console.log();
@@ -177,7 +166,6 @@ console.log("- Starting CEDAR front end server...".green);
 readAllEnvVarsOrFail();
 var cedarProfile = envConfig['CEDAR_PROFILE'];
 var cedarHost = envConfig['CEDAR_HOST'];
-var cedarBioportalAPIKey = envConfig['CEDAR_BIOPORTAL_API_KEY'];
 var cedarAnalyticsKey = envConfig['CEDAR_ANALYTICS_KEY'];
 console.log("-------------------------------------------- ************* --------------------------------------------".red);
 console.log();
@@ -193,6 +181,6 @@ if (cedarProfile === 'development') {
   exitWithError("Invalid CEDAR_PROFILE value. Please set 'development' or 'production'");
 }
 
-taskNameList.push('lint', 'less', 'copy:resources', 'replace-apikey', 'replace-url', 'replace-tracking');
+taskNameList.push('lint', 'less', 'copy:resources', 'replace-url', 'replace-tracking');
 // Launch tasks
 gulp.task('default', taskNameList);
