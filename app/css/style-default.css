@@ -9336,7 +9336,6 @@ i {
   padding-left: 22px;
 }
 .template-body .right-body .preview-edit-options {
-  display: inline-block;
   vertical-align: top;
   margin-bottom: 0px;
   padding-top: 7px;
@@ -10169,7 +10168,7 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   font-size: 24px;
   color: #339933;
   border-top: 1px solid #ddd;
-  padding-top: 60px;
+  padding-top: 40px;
   margin-top: 0;
 }
 .template-body form h3.section-title.page-title,
@@ -11252,6 +11251,58 @@ p.instructions {
   background-color: #333333;
 }
 .more-input-wrapper .remove i {
+  -webkit-transform: translate(0px, -2px);
+      -ms-transform: translate(0px, -2px);
+          transform: translate(0px, -2px);
+}
+.field-wrapper-checkbox,
+.field-wrapper-radio {
+  padding: 5px;
+  border: 1px solid #ddd;
+  background: white;
+  position: relative;
+  width: 100%;
+}
+.zero-input-wrapper {
+  position: absolute;
+  right: 0;
+  top: .5em;
+  width: 100px;
+}
+.zero-input-wrapper .add,
+.zero-input-wrapper .remove {
+  height: 25px;
+  width: 25px;
+  margin: 0 0 0 10px;
+  border-radius: 50%;
+  display: inline-block;
+  vertical-align: middle;
+  -webkit-transition: all 0.3s ease 0.1s;
+          transition: all 0.3s ease 0.1s;
+  cursor: pointer;
+  border: none;
+}
+.zero-input-wrapper .add i,
+.zero-input-wrapper .remove i {
+  color: #FFF;
+  font-size: 16px;
+  line-height: 25px;
+}
+.zero-input-wrapper .add {
+  background-color: #339933;
+}
+.zero-input-wrapper .add:disabled {
+  background-color: #94C795;
+}
+.zero-input-wrapper .add i {
+  -webkit-transform: translate(0px, -1px);
+      -ms-transform: translate(0px, -1px);
+          transform: translate(0px, -1px);
+}
+.zero-input-wrapper .remove {
+  background-color: #333333;
+}
+.zero-input-wrapper .remove i {
   -webkit-transform: translate(0px, -2px);
       -ms-transform: translate(0px, -2px);
           transform: translate(0px, -2px);

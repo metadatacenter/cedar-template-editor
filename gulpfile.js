@@ -83,15 +83,6 @@ gulp.task('server-development', function () {
   });
 });
 
-gulp.task('server-production', function () {
-  connect.server({
-    root      : 'app',
-    port      : 4200,
-    livereload: false,
-    fallback  : 'app/index.html'
-  });
-});
-
 gulp.task('html', function () {
   return gulp.src('/app/views/*.html')
       .pipe(connect.reload());
@@ -105,6 +96,7 @@ gulp.task('replace-url', function () {
       .pipe(replace('terminologyServerUrl', 'https://terminology.' + cedarHost))
       .pipe(replace('resourceServerUrl', 'https://resource.' + cedarHost))
       .pipe(replace('valueRecommenderServerUrl', 'https://valuerecommender.' + cedarHost))
+      .pipe(replace('schemaServerUrl', 'https://schema.' + cedarHost))
       .pipe(gulp.dest('app/config/'));
 });
 
@@ -115,6 +107,13 @@ gulp.task('replace-apikey', function () {
       .pipe(gulp.dest('app/config/'));
   gulp.src(['app/config/src/provisional-class-service.conf.json'])
       .pipe(replace('bioportalAPIKey', cedarBioportalAPIKey))
+      .pipe(gulp.dest('app/config/'));
+});
+
+// Task to set up tracking
+gulp.task('replace-tracking', function () {
+  gulp.src(['app/config/src/tracking-service.conf.json'])
+      .pipe(replace('googleAnalyticsKey', cedarAnalyticsKey))
       .pipe(gulp.dest('app/config/'));
 });
 
@@ -168,7 +167,8 @@ function readAllEnvVarsOrFail() {
 var envConfig = {
   'CEDAR_PROFILE'          : null,
   'CEDAR_HOST'             : null,
-  'CEDAR_BIOPORTAL_API_KEY': null
+  'CEDAR_BIOPORTAL_API_KEY': null,
+  'CEDAR_ANALYTICS_KEY'    : null
 };
 console.log();
 console.log();
@@ -178,6 +178,7 @@ readAllEnvVarsOrFail();
 var cedarProfile = envConfig['CEDAR_PROFILE'];
 var cedarHost = envConfig['CEDAR_HOST'];
 var cedarBioportalAPIKey = envConfig['CEDAR_BIOPORTAL_API_KEY'];
+var cedarAnalyticsKey = envConfig['CEDAR_ANALYTICS_KEY'];
 console.log("-------------------------------------------- ************* --------------------------------------------".red);
 console.log();
 
@@ -187,11 +188,11 @@ if (cedarProfile === 'development') {
   taskNameList.push('server-development');
   taskNameList.push('watch');
 } else if (cedarProfile === 'production') {
-  taskNameList.push('server-production');
+  console.log("Editor is configuring URLs, and exiting. The frontend content will be served by nginx");
 } else {
   exitWithError("Invalid CEDAR_PROFILE value. Please set 'development' or 'production'");
 }
 
-taskNameList.push('lint', 'less', 'copy:resources', 'replace-apikey', 'replace-url');
+taskNameList.push('lint', 'less', 'copy:resources', 'replace-apikey', 'replace-url', 'replace-tracking');
 // Launch tasks
 gulp.task('default', taskNameList);

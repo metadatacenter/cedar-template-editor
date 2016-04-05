@@ -18,6 +18,7 @@ define([
   'lib/angular-translate-loader-static-files/angular-translate-loader-static-files',
   'lib/angular-toasty/dist/angular-toasty',
 
+
   // non-angular 3rd party libraries
   'lib/bootstrap/dist/js/bootstrap',
   'lib/bootstrap-select/dist/js/bootstrap-select.min',
@@ -29,6 +30,9 @@ define([
   'lib/jquery-ui/jquery-ui',
   'lib/perfnow-polyfill/perfnow-polyfill',
   'lib/sweetalert/dist/sweetalert.min',
+  '3rdparty/angular-fitvids/angular-fitvids',
+  'lib/angulartics/dist/angulartics.min',
+  'lib/angulartics-google-analytics/dist/angulartics-google-analytics.min',
 
   // custom libraries
   'lib/custom/handsontable/SpreadsheetContext',
@@ -44,11 +48,6 @@ define([
   'cedar/template-editor/template-instance/template-instance.module',
   'cedar/template-editor/profile/profile.module',
 
-  // classic javascript code, KeyCloak related
-  //'cedar/template-editor/keycloak/keycloak',
-  //'cedar/template-editor/handlers/KeycloakUserHandler',
-  //'cedar/template-editor/handlers/NoauthUserHandler',
-
   // classic javascript, app data
   'cedar/template-editor/classic/app-data'
 ], function(angular) {
@@ -62,6 +61,9 @@ define([
     'pascalprecht.translate',
     'angular-toasty',
     'ngCkeditor',
+    'fitVids',
+    'angulartics',
+    'angulartics.google.analytics',
 
     'cedar.templateEditor.core',
     'cedar.templateEditor.dashboard',

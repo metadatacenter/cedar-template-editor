@@ -30,18 +30,20 @@ define([
       orderDropdown = config.orderDropdown;
 
       //TODO MJD
-      console.log("MJD:")
-      console.log("UISettingsService initialized");
-      console.log("Use UISettingsService.getSettingsMenuItems() to get the list of menu items:");
-      console.log(this.getSettingsMenuItems());
-      console.log("Use UISettingsService.getListViewHeaders() to get the list of menu items:");
-      console.log(this.getListViewHeaders());
-      console.log("Use UISettingsService.getPopulateAForm() to get the list of menu items:");
-      console.log(this.getPopulateAForm());
-      console.log("Use UISettingsService.getResourceTypeFilters() to get the list of menu items:");
-      console.log(this.getResourceTypeFilters());
-      console.log("Use UISettingsService.getOrderOptions() to get the list of menu items:");
-      console.log(this.getOrderOptions());
+      /*
+       console.log("MJD:")
+       console.log("UISettingsService initialized");
+       console.log("Use UISettingsService.getSettingsMenuItems() to get the list of menu items:");
+       console.log(this.getSettingsMenuItems());
+       console.log("Use UISettingsService.getListViewHeaders() to get the list of menu items:");
+       console.log(this.getListViewHeaders());
+       console.log("Use UISettingsService.getPopulateAForm() to get the list of menu items:");
+       console.log(this.getPopulateAForm());
+       console.log("Use UISettingsService.getResourceTypeFilters() to get the list of menu items:");
+       console.log(this.getResourceTypeFilters());
+       console.log("Use UISettingsService.getOrderOptions() to get the list of menu items:");
+       console.log(this.getOrderOptions());
+       */
     };
 
     service.getSettingsMenuItems = function () {

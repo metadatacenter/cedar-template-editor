@@ -16,7 +16,7 @@ define([
     var terminologyService = null;
     var resourceService = null;
     var valueRecommenderService = null;
-    //var bioontologyService = null;
+    var schemaService = null;
 
     var service = {
       serviceId: "UrlService"
@@ -28,7 +28,7 @@ define([
       terminologyService = config.terminologyRestAPI;
       resourceService = config.resourceRestAPI;
       valueRecommenderService = config.valueRecommenderRestAPI;
-      //bioontologyService = config.bioontologyRestAPI;
+      schemaService = config.schemaRestAPI;
     };
 
     service.getRoleSelector = function () {
@@ -76,7 +76,7 @@ define([
     };
 
     service.templates = function () {
-      return apiService + '/templates';
+      return this.base() + '/templates';
     };
 
     service.getTemplate = function (id) {
@@ -84,7 +84,7 @@ define([
     };
 
     service.templateElements = function () {
-      return apiService + '/template-elements';
+      return this.base() + '/template-elements';
     };
 
     service.getTemplateElement = function (id) {
@@ -92,7 +92,7 @@ define([
     };
 
     service.templateInstances = function () {
-      return apiService + '/template-instances';
+      return this.base() + '/template-instances';
     };
 
     service.getTemplateInstance = function (id) {
@@ -115,28 +115,44 @@ define([
       return valueRecommenderService;
     };
 
-    service.getValueRecommendation = function() {
-      return valueRecommenderService + '/recommend';
-    }
+    service.getValueRecommendation = function () {
+      return this.valueRecommender() + '/recommend';
+    };
 
-    service.hasInstances = function(templateId) {
-      return valueRecommenderService + '/has-instances?template_id=' + templateId;
-    }
+    service.hasInstances = function (templateId) {
+      return this.valueRecommender() + '/has-instances?template_id=' + templateId;
+    };
 
-    //service.bioontology = function () {
-    //  return bioontologyService;
-    //};
-
-    service.resourceBase = function() {
+    service.resourceBase = function () {
       return resourceService;
     };
 
-    service.folders = function() {
-      return resourceService + "/folders";
+    service.folders = function () {
+      return this.resourceBase() + "/folders";
     };
 
-    service.search = function() {
-      return resourceService + "/search";
+    service.search = function () {
+      return this.resourceBase() + "/search";
+    };
+
+    service.facets = function () {
+      return this.resourceBase() + "/facets";
+    };
+
+    service.resources = function () {
+      return this.resourceBase() + "/resources";
+    };
+
+    service.schemaBase = function () {
+      return schemaService;
+    };
+
+    service.schemaProperties = function () {
+      return this.schemaBase() + "/properties";
+    };
+
+    service.schemaProperty = function (propertyName) {
+      return this.schemaProperties() + "/" + propertyName;
     };
 
     return service;

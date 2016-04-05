@@ -2,6 +2,11 @@
   "$schema": "http://json-schema.org/draft-04/schema#",
   "@id": null,
   "@type": "https://schema.metadatacenter.org/core/Template",
+  "@context": {
+    "pav": "http://purl.org/pav/",
+    "cedar": "https://schema.metadatacenter.org/core/",
+    "_value": "https://schema.org/value"
+  },
   "type": "object",
   "title": "",
   "description": "",

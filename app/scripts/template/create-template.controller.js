@@ -7,15 +7,15 @@ define([
       .controller('CreateTemplateController', CreateTemplateController);
 
   CreateTemplateController.$inject = ["$rootScope", "$scope", "$routeParams", "$timeout", "$location", "$translate",
-                                      "$filter", "HeaderService", "UrlService", "StagingService", "DataTemplateService",
-                                      "FieldTypeService", "TemplateElementService", "TemplateService",
-                                      "UIMessageService", "DataManipulationService", "DataUtilService",
-                                      "AuthorizedBackendService", "CONST"];
+                                      "$filter", "TrackingService", "HeaderService", "UrlService", "StagingService",
+                                      "DataTemplateService", "FieldTypeService", "TemplateElementService",
+                                      "TemplateService", "UIMessageService", "DataManipulationService",
+                                      "DataUtilService", "AuthorizedBackendService", "CONST"];
 
   function CreateTemplateController($rootScope, $scope, $routeParams, $timeout, $location, $translate, $filter,
-                                    HeaderService, UrlService, StagingService, DataTemplateService, FieldTypeService,
-                                    TemplateElementService, TemplateService, UIMessageService, DataManipulationService,
-                                    DataUtilService, AuthorizedBackendService, CONST) {
+                                    TrackingService, HeaderService, UrlService, StagingService, DataTemplateService,
+                                    FieldTypeService, TemplateElementService, TemplateService, UIMessageService,
+                                    DataManipulationService, DataUtilService, AuthorizedBackendService, CONST) {
 
     // Set Page Title variable when this controller is active
     $rootScope.pageTitle = 'Template Designer';
@@ -47,6 +47,10 @@ define([
           function (response) {
             $scope.form = response.data;
             HeaderService.dataContainer.currentObjectScope = $scope.form;
+
+            // stick a domId on fields and elements
+            DataManipulationService.createDomIds($scope.form);
+
           },
           function (err) {
             UIMessageService.showBackendError('SERVER.TEMPLATE.load.error', err);
@@ -62,6 +66,10 @@ define([
       $scope.invalidFieldStates = {};
       $scope.invalidElementStates = {};
       $scope.$broadcast('saveForm');
+
+      TrackingService.eventTrack('saveForm', {category: 'creating', label: 'saveForm'});
+      TrackingService.pageTrack();
+
     }
 
     var dontHaveCreatingFieldOrElement = function () {
@@ -74,17 +82,35 @@ define([
 
     // Add newly configured field to the element object
     $scope.addFieldToTemplate = function (fieldType) {
+
+      console.log('addFieldToTemplate ');
       populateCreatingFieldOrElement();
       if (dontHaveCreatingFieldOrElement()) {
-        StagingService.addFieldToForm($scope.form, fieldType)
+
+        var domId = DataManipulationService.createDomId();
+        StagingService.addFieldToForm($scope.form, fieldType, domId, function(el) {
+
+          // now we are sure that the element was successfully added
+          $rootScope.scrollToDomId(domId);
+
+        });
       }
     };
 
     $scope.addElementToTemplate = function (element) {
       populateCreatingFieldOrElement();
       if (dontHaveCreatingFieldOrElement()) {
-        StagingService.addElementToForm($scope.form, element["@id"])
-        $rootScope.$broadcast("form:update");
+
+        var domId = DataManipulationService.createDomId();
+        StagingService.addElementToForm($scope.form, element["@id"], domId, function(e) {
+
+          // now we are sure that the element was successfully added
+          $rootScope.scrollToDomId(domId);
+
+        });
+        $rootScope.$broadcast("form:update", element);
+
+
       }
     };
 

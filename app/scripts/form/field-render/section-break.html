@@ -1,4 +1,4 @@
 <h3 class="section-title">{{$root.propertiesOf(field)._ui.title}}</h3>
-<p class="section-body">{{$root.propertiesOf(field)._ui.description}}</p>
+<p ng-if="$root.propertiesOf(field)._ui.description.length > 0" class="section-body">{{$root.propertiesOf(field)._ui.description}}</p>
 
-<div class="preview-edit-options" ng-include="'scripts/form/partials/preview-edit-options.partial.html'" ng-edit="notEditable=true; childType='field'" ng-if="!$root.isRunTime()"></div>
+

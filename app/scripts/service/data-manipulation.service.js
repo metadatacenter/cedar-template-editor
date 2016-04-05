@@ -3,15 +3,13 @@
 define([
   'angular',
   'json!config/data-manipulation-service.conf.json'
-], function(angular, config) {
+], function (angular, config) {
   angular.module('cedar.templateEditor.service.dataManipulationService', [])
-    .service('DataManipulationService', DataManipulationService);
+      .service('DataManipulationService', DataManipulationService);
 
-  DataManipulationService.$inject = ['DataTemplateService', 'DataUtilService'];
+  DataManipulationService.$inject = ['DataTemplateService', 'DataUtilService', 'UrlService'];
 
-  function DataManipulationService(DataTemplateService, DataUtilService) {
-
-    var schemaBase = null;
+  function DataManipulationService(DataTemplateService, DataUtilService, UrlService) {
 
     // Base path to generate field ids
     // TODO: fields will be saved as objects on server, they will get their id there
@@ -23,7 +21,6 @@ define([
     };
 
     service.init = function () {
-      schemaBase = config.schemaBase;
       idBasePath = config.idBasePath;
     };
 
@@ -39,7 +36,6 @@ define([
       }
       var field = DataTemplateService.getField(this.generateTempGUID());
       field.properties._ui.inputType = fieldType;
-      field.properties._ui.createdAt = Date.now();
       field.properties._value.type = valueType;
       return field;
     };
@@ -73,12 +69,14 @@ define([
     };
 
     service.cardinalizeField = function (field) {
-      if (typeof field.minItems == 'undefined') {
+      if (typeof(field.minItems) == 'undefined' || field.maxItems == 1) {
         return false;
       }
       field.items = {
         'type'                : field.type,
         '@id'                 : field['@id'],
+        '@type'               : field['@type'],
+        '@context'            : field['@context'],
         '$schema'             : field.$schema,
         'title'               : field.properties._ui.title,
         'description'         : field.properties._ui.description,
@@ -88,19 +86,46 @@ define([
       };
       field.type = 'array';
 
-        delete field.$schema;
-        delete field['@id'];
-        delete field.properties;
-        delete field.title;
-        delete field.description;
-        delete field.required;
-        delete field.additionalProperties;
+      delete field.$schema;
+      delete field['@id'];
+      delete field['@type'];
+      delete field['@context'];
+      delete field.properties;
+      delete field.title;
+      delete field.description;
+      delete field.required;
+      delete field.additionalProperties;
 
       return true;
     };
 
+    service.uncardinalizeField = function (field) {
+      if (typeof field.minItems == 'undefined' || (field.minItems == 1 && field.maxItems == 1)) {
+
+        field.type = 'object';
+
+        field.$schema = field.items.$schema;
+        field['@id'] = field.items["@id"];
+        field['@type'] = field.items["@type"];
+        field['@context'] = field.items["@context"];
+        field.properties = field.items.properties;
+        field.required = field.items.required;
+        field.additionalProperties = field.items.additionalProperties;
+
+        delete field.items;
+        delete field.maxItems;
+        delete field.minItems;
+
+        return true;
+      } else {
+        return false;
+      }
+    };
+
     service.isCardinalElement = function (element) {
       return element.type == 'array';
+      // Alternative implementation from $rootScope
+      //return typeof element.minItems != 'undefined';
     };
 
     // If Max Items is N, its value will be 0, then need to remove it from schema
@@ -117,6 +142,13 @@ define([
           }
         }
       });
+    };
+
+    service.getDivId = function (node) {
+
+      var elProperties = service.getFieldProperties(node);
+      return elProperties._tmp.divId;
+
     };
 
     service.getFieldProperties = function (field) {
@@ -157,9 +189,9 @@ define([
       return guid;
     };
 
-    service.generateTempGUID = function() {
+    service.generateTempGUID = function () {
       return "tmp-" + Date.now() + "-" + (window.performance.now() | 0);
-    }
+    };
 
     service.elementIsMultiInstance = function (element) {
       return element.hasOwnProperty('minItems') && !angular.isUndefined(element.minItems);
@@ -180,16 +212,16 @@ define([
     };
 
     service.getEnumOf = function (fieldName) {
-      return schemaBase + fieldName
-    }
+      return UrlService.schemaProperty(fieldName);
+    };
 
     service.generateFieldContextProperties = function (fieldName) {
       var c = {};
-      c.enum = new Array(service.getEnumOf(schemaBase + fieldName));
+      c.enum = new Array(service.getEnumOf(fieldName));
       return c;
     };
 
-    service.getAcceptableKey = function(obj, suggestedKey) {
+    service.getAcceptableKey = function (obj, suggestedKey) {
       if (!obj || typeof(obj) != "object") {
         return;
       }
@@ -205,7 +237,7 @@ define([
       }
 
       return key;
-    }
+    };
 
     service.addKeyToObject = function (obj, key, value) {
       if (!obj || typeof(obj) != "object") {
@@ -215,7 +247,7 @@ define([
       key = service.getAcceptableKey(obj, key);
       obj[key] = value;
       return obj;
-    }
+    };
 
     service.renameKeyOfObject = function (obj, currentKey, newKey) {
       if (!obj || !obj[currentKey]) {
@@ -227,7 +259,75 @@ define([
       delete obj[currentKey];
 
       return obj;
-    }
+    };
+
+    service.idOf = function (fieldOrElement) {
+      if (fieldOrElement) {
+        if (fieldOrElement.items) {
+          return fieldOrElement.items["@id"];
+        } else {
+          return fieldOrElement["@id"];
+        }
+      }
+    };
+
+    /**
+     * create domIds for node and children
+     * @param node
+     */
+    service.createDomIds = function (node) {
+
+      service.addDomIdIfNotPresent(node, service.createDomId());
+
+      angular.forEach(node.properties, function (value, key) {
+        if (!DataUtilService.isSpecialKey(key)) {
+          service.createDomIds(value);
+        }
+      });
+    };
+
+    /**
+     * add a domId to the node if there is not one present
+     * @param node
+     */
+    service.addDomIdIfNotPresent = function(node, id) {
+
+      if (!node.hasOwnProperty("_tmp")) {
+        node._tmp = {};
+      }
+      if (!node._tmp.hasOwnProperty("domId")) {
+        node._tmp.domId = id;
+      }
+
+      return node._tmp.domId;
+
+    };
+
+    /**
+     * get the domId of the node if there is one present
+     * @param node
+     */
+    service.getDomId = function(node) {
+
+      var domId = null;
+
+      if (node.hasOwnProperty("_tmp")) {
+        domId = node._tmp.domId;
+      }
+
+      return domId;
+
+
+    };
+
+
+
+    /**
+     * make a unique string that we can use for dom ids
+     */
+    service.createDomId  =  function() {
+      return  'id' + Math.random().toString().replace(/\./g, '');
+    };
 
     return service;
   };

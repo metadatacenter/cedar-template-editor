@@ -5,23 +5,16 @@ define([
   'json!config/user-service.conf.json'
 ], function (angular, config) {
   angular.module('cedar.templateEditor.service.userService', [])
-    .service('UserService', UserService);
+      .service('UserService', UserService);
 
-  UserService.$inject = ['$rootScope', 'Cedar'];
+  UserService.$inject = ['Cedar'];
 
-  function UserService($rootScope, Cedar) {
+  function UserService(Cedar) {
 
     var userHandler = null;
 
     var service = {
       serviceId: "UserService"
-    };
-
-    service.init = function (callback) {
-      var pt = this.getParsedToken(config);
-      Cedar.setAuthProfile(pt);
-
-      callback();
     };
 
     service.injectUserHandler = function (userHandler) {
@@ -32,6 +25,8 @@ define([
           this[methodName] = userHandler[methodName];
         }
       }
+      Cedar.setAuthProfile(this.getParsedToken());
+      Cedar.setCedarProfile(userHandler.cedarUserProfile);
     };
 
     return service;

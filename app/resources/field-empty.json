@@ -2,6 +2,10 @@
   "$schema": "http://json-schema.org/draft-04/schema#",
   "@id": null,
   "@type": "https://schema.metadatacenter.org/core/TemplateField",
+  "@context": {
+    "pav": "http://purl.org/pav/",
+    "cedar": "https://schema.metadatacenter.org/core/"
+  },
   "type": "object",
   "title": "",
   "description": "",
@@ -28,8 +32,7 @@
     "_ui": {
       "title": "",
       "description": "",
-      "inputType": null,
-      "createdAt": null
+      "inputType": null
     },
     "_valueConstraints": {
       "requiredValue": false

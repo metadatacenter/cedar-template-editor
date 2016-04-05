@@ -2,6 +2,10 @@
   "$schema": "http://json-schema.org/draft-04/schema#",
   "@id": null,
   "@type": "https://schema.metadatacenter.org/core/TemplateElement",
+  "@context": {
+    "pav": "http://purl.org/pav/",
+    "cedar": "https://schema.metadatacenter.org/core/"
+  },
   "type": "object",
   "title": "",
   "description": "",
@@ -11,11 +15,6 @@
   "properties": {
     "@context": {
       "properties": {
-        "_value": {
-          "enum": [
-            "https://schema.org/value"
-          ]
-        }
       },
       "required": [
         "_value"
