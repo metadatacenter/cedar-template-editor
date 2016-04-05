@@ -5,7 +5,7 @@
 <div class="form-group form-group-actions clearfix" ng-class="{'is-searching': cctopdc.isSearching(), 'is-browsing': cctopdc.isBrowsing(), 'is-creating-class': cctopdc.isCreatingClass()}">
   <div class="field-search">
     <div class="input-group field-search-input-group">
-      <input id="field-search-input" type="text" class="form-control field-search-form-control" placeholder="Search" aria-label="Field Search" ng-model="cctopdc.fieldSearchTerms" ng-focus="cctopdc.startFieldSearch()" ng-blur="cctopdc.endFieldSearch()" ng-keyup="$event.keyCode == 13 && cctopdc.fieldSearch($event)" with-floating-label="" />
+      <input id="field-search-input" type="text" class="form-control field-search-form-control" placeholder="Search for a class in BioPortal" aria-label="Field Search" ng-model="cctopdc.fieldSearchTerms" ng-focus="cctopdc.startFieldSearch()" ng-blur="cctopdc.endFieldSearch()" ng-keyup="$event.keyCode == 13 && cctopdc.fieldSearch($event)" with-floating-label="" />
       <span class="input-group-addon" ng-click="cctopdc.fieldSearch()">
         <img src="../img/search-icon.png" />
       </span>
@@ -76,9 +76,9 @@
     <div class="table-responsive results-table-container">
       <table class="table table-hover results-table search-results-table" ng-if="cctopdc.isSearching()">
         <tbody>
-          <tr ng-repeat="result in cctopdc.searchResults" ng-click="cctopdc.selectFieldClass(result.collection)">
-            <td>{{result.class}}</td>
-            <td>{{cctopdc.getOntologySummary(result.ontology)}}</td>
+          <tr ng-repeat="result in cctopdc.searchResults" ng-click="cctopdc.selectFieldClass(result.details)">
+            <td>{{result.prefLabel}}</td>
+            <td>{{result.ontology.name}} ({{result.ontology.id}})</td>
           </tr>
         </tbody>
       </table>
@@ -87,8 +87,8 @@
         <tbody>
           <tr ng-repeat="result in cctopdc.searchResults" ng-click="cctopdc.selectFieldOntology(result)" ng-show="cctopdc.isOntologyNameMatched(result)">
             <td>{{result.name}}</td>
-            <td>{{result.categoriesNames}}</td>
-            <td>{{result.metrics.classes}}</td>
+            <td>{{result.details.categories.join(", ") || "-" }}</td>
+            <td>{{result.details.numberOfClasses | returnNullIfEmpty}}</td>
           </tr>
         </tbody>
       </table>
@@ -102,7 +102,7 @@
           <a class="pull-left" ng-click="cctopdc.hideFieldTree()">
             <img src="../img/left-arrow.png" />
           </a>
-          &nbsp;&nbsp;&nbsp;&nbsp;{{cctopdc.currentOntology.details.ontology.name}}
+          &nbsp;&nbsp;&nbsp;&nbsp;{{cctopdc.currentOntology.info.name}}
         </h4>
       </div><!-- /.ontology-tree -->
 
@@ -138,7 +138,7 @@
               <table class="table table-striped">
                 <tbody ng-show="cctopdc.classDetails">
                   <tr>
-                    <th>Perf. Name</th>
+                    <th>Name</th>
                     <th>{{cctopdc.classDetails.prefLabel}}</th>
                   </tr>
                   <tr>
@@ -147,7 +147,9 @@
                   </tr>
                   <tr>
                     <td>Definition</td>
-                    <td>{{cctopdc.classDetails.definition[0]}}</td>
+                    <td ng-if="cctopdc.classDetails.definition[0]">{{cctopdc.classDetails.definition[0]}}</td>
+                    <td ng-if="cctopdc.classDetails.definitions[0]">{{cctopdc.classDetails.definitions[0]}}</td>
+                    <td ng-if="!cctopdc.classDetails.definition[0] && !cctopdc.classDetails.definitions[0]">-</td>
                   </tr>
                 </tbody>
               </table>
@@ -159,25 +161,25 @@
                 <tbody>
                   <tr>
                     <th>Name</th>
-                    <th>{{cctopdc.currentOntology.details.ontology.name}}</th>
+                    <th>{{cctopdc.currentOntology.info.name}}</th>
                   </tr>
                   <tr>
                     <td>Acronym</td>
-                    <td>{{cctopdc.currentOntology.details.ontology.acronym}}</td>
+                    <td>{{cctopdc.currentOntology.info.id}}</td>
                   </tr>
                   <tr>
                     <td>@id</td>
                     <td>
-                      <a ng-href="{{cctopdc.currentOntology.details.ontology['@id']}}" target="_blank">{{cctopdc.currentOntology.details.ontology['@id']}}</a>
+                      <a ng-href="{{cctopdc.currentOntology.info['@id']}}" target="_blank">{{cctopdc.currentOntology.info['@id']}}</a>
                     </td>
                   </tr>
                   <tr>
                     <td>Description</td>
-                    <td>{{cctopdc.currentOntology.details.description | htmlToPlainText}}</td>
+                    <td>{{cctopdc.currentOntology.info.details.description | htmlToPlainText}}</td>
                   </tr>
                   <tr>
                     <td># of Classes</td>
-                    <td>{{cctopdc.currentOntology.size.classes | returnNullIfEmpty}}</td>
+                    <td>{{cctopdc.currentOntology.info.details.numberOfClasses | returnNullIfEmpty}}</td>
                   </tr>
                 </tbody>
               </table>
