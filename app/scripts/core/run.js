@@ -343,7 +343,7 @@ define([
           if (term == '*') {
             $rootScope.removeAutocompleteResultsForSource(field_id, valueSet.uri);
           }
-          controlTermDataService.autocompleteValueSetClasses(term, valueSet.uri).then(function (childResponse) {
+          controlTermDataService.autocompleteValueSetClasses(term, valueSet.vsCollection, valueSet.uri).then(function (childResponse) {
             $rootScope.processAutocompleteClassResults(field_id, 'Value Set Class', valueSet.uri, childResponse);
           });
         });

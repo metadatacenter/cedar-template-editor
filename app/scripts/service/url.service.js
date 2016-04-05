@@ -17,7 +17,6 @@ define([
     var resourceService = null;
     var valueRecommenderService = null;
     var schemaService = null;
-    var bioontologyService = null;
 
     var service = {
       serviceId: "UrlService"
@@ -30,7 +29,6 @@ define([
       resourceService = config.resourceRestAPI;
       valueRecommenderService = config.valueRecommenderRestAPI;
       schemaService = config.schemaRestAPI;
-      bioontologyService = config.bioontologyRestAPI;
     };
 
     service.getRoleSelector = function () {
@@ -123,10 +121,6 @@ define([
 
     service.hasInstances = function (templateId) {
       return this.valueRecommender() + '/has-instances?template_id=' + templateId;
-    };
-
-    service.bioontology = function () {
-      return bioontologyService;
     };
 
     service.resourceBase = function () {
