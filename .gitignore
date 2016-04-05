@@ -17,3 +17,4 @@ app/config/url-service.conf.json
 app/config/control-term-data-service.conf.json
 app/config/provisional-class-service.conf.json
 app/config/tracking-service.conf.json
+tests/env.js

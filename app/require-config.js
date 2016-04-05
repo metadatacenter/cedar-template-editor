@@ -36,6 +36,7 @@ require.config({
     'lib/angular-ui-sortable/sortable'                                               : ['angular'],
     'lib/angulartics/angulartics'                                                    : ['angular'],
     'lib/angulartics-google-analytics/angulartics-google-analytics'                  : ['angular'],
+    'lib/angular-md5/angular-md5'                                                    : ['angular'],
 
     '3rdparty/angular-fitvids/angular-fitvids': {
       deps   : ['angular', 'jquery'],

@@ -401,11 +401,11 @@ define([
         if ($scope.errorMessages.length == 0) {
 
           if (!p._ui.is_cardinal_field) {
-            $scope.field.minItems = 1;
-            $scope.field.maxItems = 1;
+            delete $scope.field.minItems;
+            delete $scope.field.maxItems;
           }
 
-          if ($scope.field.maxItems == 1 && $scope.field.minItems == 1) {
+          if (typeof $scope.field.maxItems == 'undefined' && typeof $scope.field.minItems == 'undefined') {
             if ($scope.field.items) {
               DataManipulationService.uncardinalizeField($scope.field);
             }

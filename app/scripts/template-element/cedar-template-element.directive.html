@@ -1,11 +1,11 @@
-<div ng-if="model !== undefined" class="element-root">
+<div ng-if="model !== undefined" class="element-root" id="{{$root.getDomId(element)}}">
   <div>
     <div class="element-header" ng-class="{'sortable-handler': !$root.isRuntime()}">
       <a ng-click="switchExpandedState()" class="visibilitySwitch"><i class="cedar-svg-collapse"></i></a>
       <a ng-click="switchExpandedState()" class="visibilitySwitch" style="display:none;"><i class="cedar-svg-expand"></i></a>
 
       <p class="element-name-label">
-        <span class="sortable-icon"></span><i class="cedar-svg-element"></i>{{$root.propertiesOf(element)._ui.title}}
+        <span  ng-class="{'sortable-icon': !$root.isRuntime()}" ></span><i class="cedar-svg-element"></i>{{$root.propertiesOf(element)._ui.title}}
       </p>
       <span class="multiple-instance-cardinality" ng-show="!$root.isRuntime() && $root.elementIsMultiInstance(element)">
         {{element.minItems}} .. {{element.maxItems || "Unlimited"}}
