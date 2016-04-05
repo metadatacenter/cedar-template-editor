@@ -7,9 +7,9 @@ define([
   angular.module('cedar.templateEditor.controlTerm.provisionalClassService', [])
     .factory('provisionalClassService', provisionalClassService);
 
-  provisionalClassService.$inject = ['$http', '$q', 'UrlService'];
+  provisionalClassService.$inject = ['$http', '$q', 'UrlService', 'controlTermDataService'];
 
-  function provisionalClassService($http, $q, UrlService) {
+  function provisionalClassService($http, $q, UrlService, controlTermDataService) {
     var apiKey              = null;
     var base                = null;
     var http_default_config = {};
@@ -102,7 +102,7 @@ define([
       var payload = {
         'creator': 'http://data.bioontology.org/users/cedar-mjd',
         'definitions': newValue.definition,
-        'label': newValue.prefLabel,
+        'prefLabel': newValue.prefLabel,
       };
       return $http.post(endpoint, payload, http_default_config).then(function(response) {
         return response.data;

@@ -180,7 +180,7 @@
         <tbody>
           <tr ng-repeat="result in cctvspdc.searchResults" ng-click="cctvspdc.selectValueResult(result)">
             <td>{{result.prefLabel}}</td>
-            <td>{{result.type}}</td>
+            <td>{{cctvspdc.toUiType(result.type)}}</td>
             <td>{{result.sourceName}}</td>
           </tr>
         </tbody>
@@ -191,11 +191,9 @@
           <tr ng-repeat="result in cctvspdc.searchResults" ng-click="cctvspdc.selectValueResult(result)" ng-show="cctvspdc.isOntologyNameMatched(result)">
             <td ng-if="result.type == 'Ontology'">{{result.name}}</td>
             <td ng-if="result.type == 'ValueSet'">{{result.prefLabel}}</td>
-            <td>{{result.type}}</td>
+            <td>{{cctvspdc.toUiType(result.type)}}</td>
             <td ng-if="result.type == 'Ontology'">{{result.details.categories.join(", ") || "-" }}</td>
             <td ng-if="result.type == 'ValueSet'">{{result.vsCollection.substr(result.vsCollection.lastIndexOf('/') + 1)}}</td>
-            <!--<td ng-if="result.resultType == 'Ontology'">{{result.metrics.classes}}</td>-->
-            <!--<td ng-if="result.resultType == 'Value Set'">{{result.numChildren}}</td>-->
           </tr>
         </tbody>
       </table>
@@ -310,14 +308,12 @@
                     <td>Description</td>
                     <td>
                       <span>{{cctvspdc.currentOntology.info.details.description | htmlToPlainText}}</span>
-                      <!--<span ng-show="cctvspdc.browsingSection == 'value_set'">{{cctvspdc.currentValueSet.resultSource}}</span>-->
                     </td>
                   </tr>
                   <tr ng-show="cctvspdc.browsingSection == 'ontology'">
                     <td># of Classes</td>
                     <td>
                       <span>{{cctvspdc.currentOntology.info.details.numberOfClasses | returnNullIfEmpty}}</span>
-                      <!--<span ng-show="cctvspdc.browsingSection == 'value_set'">{{cctvspdc.currentValueSet.numChildren | returnNullIfEmpty}}</span>-->
                     </td>
                   </tr>
                 </tbody>

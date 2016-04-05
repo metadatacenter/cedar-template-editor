@@ -104,9 +104,6 @@ define([
     }
 
     function loadOntologyRootClasses(ontology, $scope) {
-      //var classesUrl = ontology.links.classes;
-      console.log("ONTOLOGY");
-      console.log(ontology);
       $scope.fieldTreeVisibility = true;
       $scope.searchPreloader = true;
       $q.all({

@@ -112,9 +112,6 @@ define([
           event.preventDefault();
         }
         vm.fieldActionSelection = 'browse';
-        //vm.searchResults = controlTermDataService.getAllOntologies();
-        //console.log("------");
-        //console.log(vm.searchResults);
         vm.searchResults = controlTermDataService.getAllOntologies();
       }
 
@@ -164,27 +161,10 @@ define([
         // Get selected class details from the links.self endpoint provided.
         vm.selectedClass2 = subtree;
 
-        //controlTermDataService.getClassDetails(subtree.links.self).then(function(response) {
-        //  vm.classDetails = response;
-        //});
-
-        //controlTermDataService.getClassDetails(acronym, classId).then(function(response) {
         controlTermDataService.getClassById(acronym, classId).then(function(response) {
           vm.classDetails = response;
-          console.log("CLASS DETAILS")
-          console.log(vm.classDetails)
         });
       }
-
-      //function getOntologySummary(ontologyUri) {
-      //  var acronym = ontologyUri.slice(39);
-      //  var ontology = controlTermDataService.getOntologyById(acronym);
-      //  if (ontology) {
-      //    return ontology.name + ' (' + acronym + ')';
-      //  } else {
-      //    return ontologyUri;
-      //  }
-      //}
 
       /**
        * Hide ontology tree and details screen

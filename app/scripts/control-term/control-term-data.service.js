@@ -13,13 +13,13 @@ define([
 
     var apiKey = null;
     var base = null;
-    var baseTerminology = null;
     var http_default_config = {};
 
     var ontologiesCache = {};
     var valueSetsCache = {};
 
     var service = {
+      initValueSetsCache             : initValueSetsCache,
       getAllOntologies               : getAllOntologies,
       getOntologyById                : getOntologyById,
       getOntologyByLdId              : getOntologyByLdId,
@@ -36,6 +36,9 @@ define([
       searchClasses                  : searchClasses,
       searchClassesValueSetsAndValues: searchClassesValueSetsAndValues,
       searchValueSetsAndValues       : searchValueSetsAndValues,
+      autocompleteOntology           : autocompleteOntology,
+      autocompleteOntologySubtree    : autocompleteOntologySubtree,
+      autocompleteValueSetClasses    : autocompleteValueSetClasses,
       serviceId                      : 'controlTermDataService'
     };
 
@@ -46,8 +49,7 @@ define([
      */
     function init() {
       apiKey = config.apiKey;
-      base = UrlService.bioontology();
-      baseTerminology = "https://terminology.metadatacenter.orgx/bioportal/";
+      base = UrlService.terminology() + "/bioportal";
       http_default_config = {
         'headers': {
           'Authorization': 'apikey token=' + apiKey
@@ -62,12 +64,15 @@ define([
      */
 
     function initOntologiesCache() {
-      var url = baseTerminology + "ontologies";
+      var url = base + "/ontologies";
       // Get ontologies
       $http.get(url, http_default_config).then(function (response) {
         var ontologies = response.data;
         angular.forEach(ontologies, function (value) {
-          ontologiesCache[value.id] = value;
+          // Ignore empty ontologies (without submissions), except for CEDARPC
+          if ((value.details.numberOfClasses > 0) || (value.id == 'CEDARPC')) {
+            ontologiesCache[value.id] = value;
+          }
         });
       }).catch(function (err) {
         UIMessageService.showBackendError("Error retrieving ontologies from terminology service", err);
@@ -76,7 +81,7 @@ define([
     }
 
     function initValueSetsCache() {
-      var url = baseTerminology + "value-sets";
+      var url = base + "/value-sets";
       // Get value sets
       return $http.get(url, http_default_config).then(function (response) {
         var valueSets = response.data;
@@ -88,6 +93,10 @@ define([
         return err;
       });
     }
+
+    /**
+     * Service methods
+     */
 
     function getAllOntologies() {
       var ontologies = [];
@@ -105,10 +114,6 @@ define([
       return valueSets;
     };
 
-    /**
-     * Service methods.
-     */
-
     function getOntologyById(ontologyId) {
       return ontologiesCache[ontologyId];
     }
@@ -119,10 +124,12 @@ define([
     }
 
     function getRootClasses(ontology) {
-      var url = baseTerminology + "ontologies/" + ontology + "/classes/roots"
+      var url = base + "/ontologies/" + ontology + "/classes/roots"
       return $http.get(url, http_default_config).then(function (response) {
         return response.data;
       }).catch(function (err) {
+        UIMessageService.showBackendError("Error retrieving root classes from terminology server (ontology: " + ontology + ")",
+            err);
         return err;
       });
     };
@@ -140,46 +147,54 @@ define([
     }
 
     function getClassChildren(acronym, classId) {
-      return $http.get(baseTerminology + 'ontologies/' + acronym + '/classes/' + encodeURIComponent(classId) + "/children?page=1&pageSize=1000",
+      return $http.get(base + '/ontologies/' + acronym + '/classes/' + encodeURIComponent(classId) + "/children?page=1&pageSize=1000",
           http_default_config).then(function (response) {
             return response.data.collection;
           }).catch(function (err) {
+            UIMessageService.showBackendError("Error retrieving class children from terminology server (ontology: " + acronym + ")",
+                err);
             return err;
           });
     };
 
     function getClassById(acronym, classId) {
-      var url = baseTerminology + 'ontologies/' + acronym + '/classes/' + encodeURIComponent(classId);
+      var url = base + '/ontologies/' + acronym + '/classes/' + encodeURIComponent(classId);
       return $http.get(url, http_default_config).then(function (response) {
         return response.data;
       }).catch(function (err) {
+        UIMessageService.showBackendError("Error when calling terminology server", err);
         return err;
       });
     }
 
     function getClassParents(acronym, classId) {
-      return $http.get(baseTerminology + 'ontologies/' + acronym + '/classes/' + encodeURIComponent(classId) + '/parents?include=hasChildren,prefLabel',
+      return $http.get(base + '/ontologies/' + acronym + '/classes/' + encodeURIComponent(classId) + '/parents?include=hasChildren,prefLabel',
           http_default_config).then(function (response) {
             return response.data;
           }).catch(function (err) {
+            UIMessageService.showBackendError("Error retrieving class parents from terminology server (ontology: " + acronym + ")",
+                err);
             return err;
           });
     };
 
     function getClassTree(acronym, classId) {
-      return $http.get(baseTerminology + 'ontologies/' + acronym + '/classes/' + encodeURIComponent(classId) + '/tree',
+      return $http.get(base + '/ontologies/' + acronym + '/classes/' + encodeURIComponent(classId) + '/tree',
           http_default_config).then(function (response) {
             return response.data;
           }).catch(function (err) {
+            UIMessageService.showBackendError("Error retrieving class tree from terminology server (ontology: " + acronym + ")",
+                err);
             return err;
           });
     };
 
     function getValuesInValueSet(vsCollection, vsId) {
-      var url = baseTerminology + 'vs-collections/' + vsCollection + '/value-sets/' + encodeURIComponent(vsId) + "/values";
+      var url = base + '/vs-collections/' + vsCollection + '/value-sets/' + encodeURIComponent(vsId) + "/values";
       return $http.get(url, http_default_config).then(function (response) {
         return response.data.collection;
       }).catch(function (err) {
+        UIMessageService.showBackendError("Error retrieving values in value set from terminology server", err);
         return err;
       });
     }
@@ -197,31 +212,107 @@ define([
     }
 
     function searchClasses(query) {
-      var url = baseTerminology + "search?q=" + encodeURIComponent(query) + "&scope=classes" + "&page=1&page_size=100";
+      var url = base + "/search?q=" + encodeURIComponent(query) + "&scope=classes" + "&page=1&page_size=100";
       return $http.get(url, http_default_config).then(function (response) {
         return response.data;
       }).catch(function (err) {
+        UIMessageService.showBackendError("Error when calling terminology server to perform search", err);
         return err;
       });
     };
 
     function searchClassesValueSetsAndValues(query) {
-      var url = baseTerminology + "search?q=" + encodeURIComponent(query) + "&scope=all" + "&page=1&page_size=100";
+      var url = base + "/search?q=" + encodeURIComponent(query) + "&scope=all" + "&page=1&page_size=100";
       return $http.get(url, http_default_config).then(function (response) {
         return response.data;
       }).catch(function (err) {
+        UIMessageService.showBackendError("Error when calling terminology server to perform search", err);
         return err;
       });
     };
 
     function searchValueSetsAndValues(query) {
-      var url = baseTerminology + "search?q=" + encodeURIComponent(query) + "&scope=value_sets,values" + "&page=1&page_size=100";
+      var url = base + "/search?q=" + encodeURIComponent(query) + "&scope=value_sets,values" + "&page=1&page_size=100";
       return $http.get(url, http_default_config).then(function (response) {
         return response.data;
       }).catch(function (err) {
+        UIMessageService.showBackendError("Error when calling terminology server to perform search", err);
         return err;
       });
     };
+
+    function autocompleteOntology(query, acronym) {
+      var url = base + "/search?q=" + encodeURIComponent(query) + "&scope=classes" +
+          "&sources=" + acronym + "&suggest=true&page=1&page_size=50";
+      return $http.get(url, http_default_config).then(function (response) {
+        return response.data;
+      }).catch(function (err) {
+        UIMessageService.showBackendError("Error when calling terminology server to perform search", err);
+        return err;
+      });
+    };
+
+    function autocompleteOntologySubtree(query, acronym, subtree_root_id, max_depth) {
+      var searchUrl = "";
+      if (query == '*') {
+        // use descendants
+        searchUrl += base + '/ontologies/' + acronym + '/classes/' + encodeURIComponent(subtree_root_id) + '/descendants?&page=1&page_size=100';
+      } else {
+        searchUrl = base + '/search?q=' + encodeURIComponent(query) + '&scope=classes' + '&source=' + acronym +
+            '&subtree_root_id=' + encodeURIComponent(subtree_root_id) + '&max_depth=' + max_depth + "&suggest=true&page=1&page_size=100";
+      }
+      return $http.get(searchUrl, http_default_config).then(function (response) {
+        return response.data;
+      }).catch(function (err) {
+        UIMessageService.showBackendError("Error when calling terminology server to perform subtree search", err);
+        return err;
+      });
+    };
+
+    function autocompleteValueSetClasses(query, vsCollection, vsId) {
+      var acronym = vsCollection.substr(vsCollection.lastIndexOf('/') + 1);
+      // use descendants
+      return getValuesInValueSet(acronym, vsId).then(function (r) {
+        var response = {};
+        response["collection"] = r;
+        return response;
+      }).catch(function (err) {
+        UIMessageService.showBackendError("Error when calling terminology server to retrieve values in value set",
+            err);
+        return err;
+      });
+    };
+
+    // This is a more complex version of the previous function. It uses BioPortal subtree search for autocomplete. This is not needed for a small amount of values.
+    //function autocompleteValueSetClasses(query, vsCollection, vsId) {
+    //  var searchUrl = base;
+    //  var acronym = vsCollection.substr(vsCollection.lastIndexOf('/') + 1);
+    //  // If the VS belongs to CEDARVS we return all values because the search subtree used below does not work for provisional value sets
+    //  if ((query == '*') || (acronym == 'CEDARVS')) {
+    //    // use descendants
+    //    //searchUrl += 'ontologies/NLMVS/classes/' + encodeURIComponent(uri) + '/descendants?display_context=false&display_links=false';
+    //    return getValuesInValueSet(acronym, vsId).then(function (r) {
+    //      var response = {};
+    //      response["collection"] = r;
+    //      return response;
+    //    }).catch(function (err) {
+    //      UIMessageService.showBackendError("Error when calling terminology server to retrieve values in value set",
+    //          err);
+    //      return err;
+    //    });
+    //  } else {
+    //    //searchUrl += 'search?q=' + query.replace(/[\s]+/g,
+    //    //        '+') + '&ontology=NLMVS&suggest=true&display_context=false&display_links=false&subtree_root_id=' + encodeURIComponent(uri) + '&pagesize=20'
+    //    var searchUrl = base + 'search?q=' + encodeURIComponent(query) + '&scope=classes' + '&source=' + acronym +
+    //        '&subtree_root_id=' + encodeURIComponent(vsId) + "&suggest=true&page=1&page_size=100";
+    //    return $http.get(searchUrl, http_default_config).then(function (response) {
+    //      return response.data;
+    //    }).catch(function (err) {
+    //      UIMessageService.showBackendError("Error when calling BioPortal to perform search", err);
+    //      return err;
+    //    });
+    //  }
+    //};
 
   }
 });

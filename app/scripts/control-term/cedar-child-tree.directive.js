@@ -38,20 +38,6 @@ define([
           element.append(cloned);
         });
       }
-      
-      if (scope.subtree) {
-        //console.log("SUBTREE");
-        //console.log(scope.subtree);
-        //var acronym = scope.subtree.ontology.substr(scope.subtree.ontology.lastIndexOf('/') + 1);
-        //scope.subtree.type = scope.subtree.type;
-        //if (scope.subtree["@type"].indexOf("Ontology") >= 0) {
-        //  scope.subtree.resultType = "Ontology";
-        //} else if (acronym != 'NLMVS' && acronym != 'CEDARVS') {
-        //  scope.subtree.resultType = 'Ontology Class';
-        //} else {
-        //  scope.subtree.resultType = "Value Set";
-        //}
-      }
 
       // Default Class nested tree expansion from controlTermDataService.getClassTree() call
       if (scope.subtree && scope.subtree.children && scope.subtree.children.length) {
@@ -69,7 +55,6 @@ define([
             var acronym = controlTermService.getAcronym(scope.subtree);
             var classId = scope.subtree['@id'];
             controlTermDataService.getClassChildren(acronym, classId).then(function(response) {
-              console.log("Call to getClassChildren");
               if (!response || response.length == 0) {
                 scope.subtree.hasChildren = false;
               }

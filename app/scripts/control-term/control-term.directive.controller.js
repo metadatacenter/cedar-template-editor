@@ -67,8 +67,6 @@ define([
     vm.controlTerm = {};
     vm.filterSelection = vm.options && vm.options.filterSelection || "";
 
-    //vm.loadAllOntologies();
-    //vm.loadAllValueSets();
     setInitialFieldConstraints();
 
     $('body').on('click', '.detail-view-tab a', function (e) {
@@ -116,8 +114,6 @@ define([
         }
       }
 
-      console.log("ONTOLOGY:");
-      console.log(ontology);
       if(alreadyAdded == false) {
         vm.addedFieldItems.push({
           prefLabel: selection.prefLabel,
@@ -426,9 +422,16 @@ define([
     };
 
     function stageValueSetValueConstraint(selection) {
+      var vsCollection;
+      if (vm.currentValueSet.sourceName) {
+        vsCollection = vm.currentValueSet.sourceName;
+      }
+      else {
+        vsCollection = vm.currentValueSet.vsCollection;
+      }
       vm.stagedValueSetValueConstraints.push({
-        //'numChildren': vm.currentValueSet.numChildren,
         'name': vm.currentValueSet.prefLabel,
+        'vsCollection': vsCollection,
         'uri': vm.currentValueSet['@id']
       });
 
@@ -486,6 +489,7 @@ define([
           var constraint = {
             'numChildren': numChildren,
             'name': args.valueSet.prefLabel,
+            'vsCollection': args.valueSet.vsCollection,
             'uri': args.valueSet['@id'],
           };
           vm.valueConstraint.valueSets.push(constraint);

@@ -71,6 +71,7 @@ define([
       vm.valuesSearchTerms = '';
       vm.valueSetClasses = null;
       vm.valuesTreeVisibility = false;
+      vm.toUiType = toUiType;
 
       /**
        * Scope funcitons.
@@ -108,8 +109,6 @@ define([
         // Get selected class details from the links.self endpoint provided.
         controlTermDataService.getClassById(acronym, classId).then(function (response) {
           vm.classDetails = response;
-          console.log("CLASS DETAILS")
-          console.log(vm.classDetails)
         });
       }
 
@@ -183,9 +182,6 @@ define([
       /**
        * This function should select a value search or browse value result and populate
        * all the associated data necessary to display the class details and related info.
-       *
-       * TODO: at least that ^^ was the intent -- it's been misbehaving recently, but
-       * should be working for ontology classes...
        */
       function selectValueResult(result) {
         vm.selectedValueResult = result;
@@ -268,40 +264,15 @@ define([
 
         vm.valuesActionSelection = "browse";
         var browseResults = [];
-        //angular.forEach($rootScope.valueSets, function(valueSet) {
-        //  valueSet.resultType = valueSet.resultType || 'Value Set';
-        //  // TODO: all the sources are obviously the same Ontology due to data organization;
-        //  //   confirm with client where Source field should come from for value sets
-        //  var valueSetOntology = controlTermService.getOntologyByAcronym(controlTermDataService.getOntologyAcronym(valueSet));
-        //  valueSet.resultSource = valueSetOntology.name;
-        //  browseResults.push(valueSet);
-        //});
-        //angular.forEach($rootScope.ontologies, function(ontology) {
-        //  ontology.resultType = ontology.resultType || "Ontology";
-        //  browseResults.push(ontology);
-        //});
-        //
-        //// Sort by title
-        //browseResults.sort(controlTermService.sortBrowseResults);
-        //vm.searchResults = browseResults;
-
-        /*** My code ***/
 
         $q.all({
           ontologies: controlTermDataService.getAllOntologies(),
           valueSets : controlTermDataService.getAllValueSets()
         }).then(function (result) {
           angular.forEach(result.valueSets, function (valueSet) {
-            //valueSet.resultType = valueSet.resultType || 'ValueSet';
-            // TODO: all the sources are obviously the same Ontology due to data organization;
-            //   confirm with client where Source field should come from for value sets
-            //var valueSetOntology = controlTermService.getOntologyByAcronym(controlTermDataService.getOntologyAcronym(valueSet));
-            //valueSet.resultSource = valueSetOntology.name;
             browseResults.push(valueSet);
           });
           angular.forEach(result.ontologies, function (ont) {
-            //ontology.resultType = ontology.resultType || "Ontology";
-            //ont.resultType = ont.type;
             browseResults.push(ont);
           });
 
@@ -309,9 +280,6 @@ define([
           browseResults.sort(controlTermService.sortBrowseResults);
           vm.searchResults = browseResults;
         });
-
-
-        /*** End of My code ***/
 
       }
 
@@ -416,8 +384,6 @@ define([
           //var selfUrl = controlTermService.getSelfUrl(ontologyClass);
           var acronym = controlTermDataService.getAcronym(ontologyClass);
           var classId = ontologyClass['@id'];
-          console.log(">>>>>>>ONTOLOGY CLASS");
-          console.log(ontologyClass);
           controlTermDataService.getClassById(acronym, classId).then(function (response) {
             vm.selectedValueResult.classDetails = response;
           });
@@ -443,6 +409,20 @@ define([
         });
       };
 
+      function toUiType(type) {
+        if (type == 'OntologyClass') {
+          return 'Class';
+        }
+        if (type == 'ValueSet') {
+          return 'Value Set';
+        }
+        if (type == 'Value') {
+          return 'Value';
+        }
+        if (type == 'Ontology') {
+          return 'Ontology';
+        }
+      }
     }
   }
 });

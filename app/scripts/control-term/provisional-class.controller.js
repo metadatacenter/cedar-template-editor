@@ -95,21 +95,14 @@ define([
               ontology: vm.provisionalClassOntology
             }
         );
-        //controlTermDataService.getClassById(newClass['@id']).then(function(details) {
-        //  // hack to add prefLabel
-        //  details.prefLabel = details.label;
-        //  $scope.$emit(
-        //    'cedar.templateEditor.controlTerm.provisionalClassController.provisionalClassSavedAsOntologyValueConstraint', {
-        //      class: details,
-        //      ontology: vm.provisionalClassOntology
-        //    }
-        //  );
-        //});
       });
     }
 
     function saveAsValueSetConstraint(provisionalValueSet, provisionalValueSetValues) {
       provisionalClassService.saveValueSet(provisionalValueSet, provisionalValueSetValues).then(function(newValueSet) {
+        // Reload value sets cache
+        console.log("Reloading value sets cache");
+        controlTermDataService.initValueSetsCache();
         // hack to add prefLabel
         newValueSet.prefLabel = newValueSet.label;
         $scope.$emit(
