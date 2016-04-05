@@ -144,6 +144,13 @@ define([
       });
     };
 
+    service.getDivId = function (node) {
+
+      var elProperties = service.getFieldProperties(node);
+      return elProperties._tmp.divId;
+
+    };
+
     service.getFieldProperties = function (field) {
       if (field) {
         if (field.type == 'array' && field.items && field.items.properties) {
@@ -262,6 +269,64 @@ define([
           return fieldOrElement["@id"];
         }
       }
+    };
+
+    /**
+     * create domIds for node and children
+     * @param node
+     */
+    service.createDomIds = function (node) {
+
+      service.addDomIdIfNotPresent(node, service.createDomId());
+
+      angular.forEach(node.properties, function (value, key) {
+        if (!DataUtilService.isSpecialKey(key)) {
+          service.createDomIds(value);
+        }
+      });
+    };
+
+    /**
+     * add a domId to the node if there is not one present
+     * @param node
+     */
+    service.addDomIdIfNotPresent = function(node, id) {
+
+      if (!node.hasOwnProperty("_tmp")) {
+        node._tmp = {};
+      }
+      if (!node._tmp.hasOwnProperty("domId")) {
+        node._tmp.domId = id;
+      }
+
+      return node._tmp.domId;
+
+    };
+
+    /**
+     * get the domId of the node if there is one present
+     * @param node
+     */
+    service.getDomId = function(node) {
+
+      var domId = null;
+
+      if (node.hasOwnProperty("_tmp")) {
+        domId = node._tmp.domId;
+      }
+
+      return domId;
+
+
+    };
+
+
+
+    /**
+     * make a unique string that we can use for dom ids
+     */
+    service.createDomId  =  function() {
+      return  'id' + Math.random().toString().replace(/\./g, '');
     };
 
     return service;

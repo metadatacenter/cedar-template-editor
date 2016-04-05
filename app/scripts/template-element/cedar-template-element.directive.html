@@ -1,4 +1,4 @@
-<div ng-if="model !== undefined" class="element-root">
+<div ng-if="model !== undefined" class="element-root" id="{{$root.getDomId(element)}}">
   <div>
     <div class="element-header" ng-class="{'sortable-handler': !$root.isRuntime()}">
       <a ng-click="switchExpandedState()" class="visibilitySwitch"><i class="cedar-svg-collapse"></i></a>

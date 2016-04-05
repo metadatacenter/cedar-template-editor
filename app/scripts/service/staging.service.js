@@ -107,8 +107,7 @@ define([
       $scope.staging[field['@id']] = field;
     };
 
-    service.addFieldToForm = function (form, fieldType) {
-
+    service.addFieldToForm = function (form, fieldType, divId, callback) {
 
       var field = DataManipulationService.generateField(fieldType);
 
@@ -139,17 +138,19 @@ define([
       form._ui.order = form._ui.order || [];
       form._ui.order.push(fieldName);
 
-      //scroll the new field into view
-      $rootScope.scrollToFieldOrElement(field);
+      DataManipulationService.addDomIdIfNotPresent(field, divId);
+      callback(field);
+
+      return field;
     };
 
-    service.addElementToForm = function (form, elementId) {
+    service.addElementToForm = function (form, elementId, divId, callback) {
       AuthorizedBackendService.doCall(
           TemplateElementService.getTemplateElement(elementId),
           function (response) {
             var clonedElement = response.data;
-            clonedElement.minItems = 1;
-            clonedElement.maxItems = 1;
+            //clonedElement.minItems = 1;
+            //clonedElement.maxItems = 1;
 
             var elProperties = DataManipulationService.getFieldProperties(clonedElement);
             elProperties._tmp = elProperties._tmp || {};
@@ -171,8 +172,9 @@ define([
             form._ui.order = form._ui.order || [];
             form._ui.order.push(elName);
 
-            // scroll the new element into view
-            $rootScope.scrollToFieldOrElement(clonedElement);
+            DataManipulationService.addDomIdIfNotPresent(clonedElement, divId);
+            callback(clonedElement);
+
           },
           function (err) {
             UIMessageService.showBackendError('SERVER.ELEMENT.load.error', err);

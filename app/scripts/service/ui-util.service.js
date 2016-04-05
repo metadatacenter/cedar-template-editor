@@ -2,9 +2,9 @@
 
 define([
   'angular'
-], function(angular) {
+], function (angular) {
   angular.module('cedar.templateEditor.service.uIUtilService', [])
-    .service('UIUtilService', UIUtilService);
+      .service('UIUtilService', UIUtilService);
 
   UIUtilService.$inject = ["$window", "$timeout", 'md5'];
 
@@ -23,33 +23,22 @@ define([
     };
 
     /**
-     * scroll to a field or element
-     * @param fieldOrElement
+     * Scroll to a dom id. Delay ensures that a new field or element has been created and drawn.
+     * @param id
      */
-    service.scrollToFieldOrElement = function (fieldOrElement) {
+    service.scrollToDomId = function (id) {
+
       $timeout(function () {
-        var target = angular.element('#' + service.getId(fieldOrElement));
-        var y = target.offset().top;
-        $window.scrollTo(0, y - 95);
-      }, 250);
+
+            var target = angular.element('#' + id);
+            if (target) {
+              var y = target.offset().top;
+              $window.scrollTo(0, y - 95);
+            }
+          }, 250
+      );
     };
 
-    /**
-     * create a predictable id for the field or element
-     * @param fieldOrElement
-     * @returns {string} id of field or element
-     */
-    service.getId = function (fieldOrElement) {
-      var id = null;
-      if (fieldOrElement) {
-        if (fieldOrElement.items) {
-          id = fieldOrElement.items['@id'];
-        } else if (fieldOrElement['@id']) {
-          id = fieldOrElement['@id'];
-        }
-      }
-      return 'id' + md5.createHash(id);
-    };
 
     service.console = function (txt, label) {
       console.log(label + ' ' + JSON.stringify(txt, null, 2));
@@ -58,4 +47,5 @@ define([
     return service;
   };
 
-});
+})
+;

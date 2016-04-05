@@ -7,15 +7,14 @@
             ng-class="{'field-instance':true, 'multiple-instance-field':$root.isArray(model[item])}">
 
           <field-directive field="form.properties[item]" model="model[item]" delete="removeChild(form.properties[item])"
-              rename-child-key="renameChildKey" id="{{$root.getId(form.properties[item])}}"></field-directive>
+              rename-child-key="renameChildKey" ></field-directive>
         </div>
         <div class=" element-group full "
           ng-if="form.properties[item] && !$root.propertiesOf(form.properties[item])._ui.inputType">
           <cedar-template-element element="form.properties[item]"
               key="item"
               model="model[item]"
-              delete="removeChild(form.properties[item])"
-              id="{{$root.getId(form.properties[item])}}">
+              delete="removeChild(form.properties[item])">
           </cedar-template-element>
         </div>
       </span>
@@ -29,7 +28,7 @@
         <div ng-if="$root.propertiesOf(form.properties[item])._ui.inputType"
             ng-class="{'field-instance':true, 'multiple-instance-field':$root.isArray(model[item])}">
           <field-directive field="form.properties[item]" model="model[item]" delete="removeChild(form.properties[item])"
-              rename-child-key="renameChildKey" id="{{$root.getId(form.properties[item])}}"></field-directive>
+              rename-child-key="renameChildKey"></field-directive>
         </div>
         <div class="element-group full"
             ng-if="form.properties[item] && !$root.propertiesOf(form.properties[item])._ui.inputType">
@@ -37,8 +36,7 @@
               key="item"
               model="model[item]"
               delete="removeChild(form.properties[item])"
-              is-root-element="hideRootElement"
-              id="{{$root.getId(form.properties[item])}}">
+              is-root-element="hideRootElement">
           </cedar-template-element>
         </div>
       </span>

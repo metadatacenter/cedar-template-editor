@@ -172,8 +172,9 @@ define([
      */
 
     $rootScope.scrollToAnchor = UIUtilService.scrollToAnchor;
-    $rootScope.scrollToFieldOrElement = UIUtilService.scrollToFieldOrElement;
-    $rootScope.getId = UIUtilService.getId;
+    $rootScope.scrollToDomId = UIUtilService.scrollToDomId;
+    $rootScope.getDomId = DataManipulationService.getDomId;
+
 
 
     var minCardinalities = DataManipulationService.generateCardinalities(0, 8);

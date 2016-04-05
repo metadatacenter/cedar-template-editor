@@ -47,6 +47,10 @@ define([
           function (response) {
             $scope.form = response.data;
             HeaderService.dataContainer.currentObjectScope = $scope.form;
+
+            // stick a domId on fields and elements
+            DataManipulationService.createDomIds($scope.form);
+
           },
           function (err) {
             UIMessageService.showBackendError('SERVER.TEMPLATE.load.error', err);
@@ -78,17 +82,35 @@ define([
 
     // Add newly configured field to the element object
     $scope.addFieldToTemplate = function (fieldType) {
+
+      console.log('addFieldToTemplate ');
       populateCreatingFieldOrElement();
       if (dontHaveCreatingFieldOrElement()) {
-        StagingService.addFieldToForm($scope.form, fieldType);
+
+        var domId = DataManipulationService.createDomId();
+        StagingService.addFieldToForm($scope.form, fieldType, domId, function(el) {
+
+          // now we are sure that the element was successfully added
+          $rootScope.scrollToDomId(domId);
+
+        });
       }
     };
 
     $scope.addElementToTemplate = function (element) {
       populateCreatingFieldOrElement();
       if (dontHaveCreatingFieldOrElement()) {
-        StagingService.addElementToForm($scope.form, element["@id"]);
+
+        var domId = DataManipulationService.createDomId();
+        StagingService.addElementToForm($scope.form, element["@id"], domId, function(e) {
+
+          // now we are sure that the element was successfully added
+          $rootScope.scrollToDomId(domId);
+
+        });
         $rootScope.$broadcast("form:update", element);
+
+
       }
     };
 
