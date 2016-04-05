@@ -9105,6 +9105,7 @@ body {
   background: #f3f7f6;
   font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
   color: #333;
+  padding: 200px;
 }
 a {
   -webkit-transition: all 0.3s 0.1s;
@@ -9139,12 +9140,19 @@ i {
   background-color: #006b57;
   margin-bottom: 0;
   min-height: 80px;
+  border: none;
 }
 .navbar #page-title {
   float: right;
   font-size: 20px;
   padding-top: 22px;
   padding-right: 20px;
+}
+.navbar .nav-container {
+  padding: 10px 30px;
+}
+.navbar i.fa.fa-search {
+  font-size: 22px;
 }
 .navbar .navbar-toggle {
   border-radius: 0;
@@ -9194,6 +9202,79 @@ i {
   z-index: 10000;
   background-color: #ffffff;
   margin-top: 53px;
+}
+.navbar .form-control {
+  border: none;
+  background-color: transparent;
+  box-shadow: none;
+  border-bottom: 2px solid #71a69c;
+  border-radius: 0;
+  color: #ffffff;
+}
+.navbar .form-control:before {
+  font-family: "project-cedar" !important;
+  content: "n";
+  display: block;
+}
+.navbar .floating-label {
+  font-size: 16px;
+  top: 5px;
+  color: #ffffff;
+}
+.navbar #element-name-container .cedar-svg-element,
+.navbar #element-controlled-term-container .cedar-svg-element,
+.navbar #element-name-container .cedar-svg-metadata,
+.navbar #element-controlled-term-container .cedar-svg-metadata,
+.navbar #element-name-container .cedar-svg-controll-term,
+.navbar #element-controlled-term-container .cedar-svg-controll-term {
+  position: absolute;
+  color: #71a69c;
+}
+.navbar #element-name-container .form-control,
+.navbar #element-controlled-term-container .form-control {
+  padding-left: 30px;
+}
+.navbar #element-name-container .form-control ~ .floating-label,
+.navbar #element-controlled-term-container .form-control ~ .floating-label {
+  left: 30px;
+}
+.navbar #element-name-container .form-control:focus ~ .floating-label,
+.navbar #element-controlled-term-container .form-control:focus ~ .floating-label,
+.navbar #element-name-container .form-control:not(.empty) ~ .floating-label,
+.navbar #element-controlled-term-container .form-control:not(.empty) ~ .floating-label {
+  left: 0;
+}
+.navbar #element-name-container .element-controlled-term,
+.navbar #element-controlled-term-container .element-controlled-term {
+  margin-top: 20px;
+  margin-bottom: 5px;
+}
+.controls-bar {
+  padding: 25px 40px;
+  background-color: #ffffff;
+  color: #71a69c;
+  border-bottom: 5px solid #eaeaea;
+}
+.controls-bar i {
+  font-size: 20px;
+}
+.controls-bar ul {
+  margin-bottom: 0;
+}
+.controls-bar .filternav {
+  text-transform: uppercase;
+}
+.controls-bar .divider-vertical {
+  height: 30px;
+  margin: -8px 9px;
+  border-left: 1px solid #666666;
+  border-right: 1px solid #FFF;
+}
+.controls-bar .graytext {
+  color: #666666;
+}
+.controls-bar .nav-pills {
+  text-transform: uppercase;
 }
 .template-header {
   width: 100%;
