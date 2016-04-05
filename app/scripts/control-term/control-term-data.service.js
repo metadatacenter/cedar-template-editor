@@ -68,7 +68,7 @@ define([
           }
         });
       }).catch(function (err) {
-        UIMessageService.showBackendError("Error retrieving ontologies from terminology service", err);
+        UIMessageService.showBackendError("Error retrieving ontologies from BioPortal. Please try again later", err);
         return err;
       });
     }
@@ -82,7 +82,7 @@ define([
           valueSetsCache[element.id] = element;
         });
       }).catch(function (err) {
-        UIMessageService.showBackendError("Error retrieving value sets from terminology service", err);
+        UIMessageService.showBackendError("Error retrieving value sets from BioPortal. Please try again later", err);
         return err;
       });
     }
@@ -121,7 +121,7 @@ define([
       return $http.get(url, http_default_config).then(function (response) {
         return response.data;
       }).catch(function (err) {
-        UIMessageService.showBackendError("Error retrieving root classes from terminology server (ontology: " + ontology + ")",
+        UIMessageService.showBackendError("Error retrieving root classes from BioPortal (ontology: " + ontology + "). Please try again later",
             err);
         return err;
       });
@@ -144,7 +144,7 @@ define([
           http_default_config).then(function (response) {
             return response.data.collection;
           }).catch(function (err) {
-            UIMessageService.showBackendError("Error retrieving class children from terminology server (ontology: " + acronym + ")",
+            UIMessageService.showBackendError("Error retrieving class children from BioPortal (ontology: " + acronym + ")",
                 err);
             return err;
           });
@@ -155,7 +155,7 @@ define([
       return $http.get(url, http_default_config).then(function (response) {
         return response.data;
       }).catch(function (err) {
-        UIMessageService.showBackendError("Error when calling terminology server", err);
+        UIMessageService.showBackendError("Error when calling BioPortal to retrieve class. Please try again later", err);
         return err;
       });
     }
@@ -165,7 +165,7 @@ define([
           http_default_config).then(function (response) {
             return response.data;
           }).catch(function (err) {
-            UIMessageService.showBackendError("Error retrieving class parents from terminology server (ontology: " + acronym + ")",
+            UIMessageService.showBackendError("Error retrieving class parents from BioPortal (ontology: " + acronym + "). Please try again later",
                 err);
             return err;
           });
@@ -176,7 +176,7 @@ define([
           http_default_config).then(function (response) {
             return response.data;
           }).catch(function (err) {
-            UIMessageService.showBackendError("Error retrieving class tree from terminology server (ontology: " + acronym + ")",
+            UIMessageService.showBackendError("Error retrieving class tree from BioPortal (ontology: " + acronym + "). Please try again later",
                 err);
             return err;
           });
@@ -187,7 +187,7 @@ define([
       return $http.get(url, http_default_config).then(function (response) {
         return response.data.collection;
       }).catch(function (err) {
-        UIMessageService.showBackendError("Error retrieving values in value set from terminology server", err);
+        UIMessageService.showBackendError("Error retrieving values in value set from BioPortal. Please try again later", err);
         return err;
       });
     }
@@ -209,7 +209,7 @@ define([
       return $http.get(url, http_default_config).then(function (response) {
         return response.data;
       }).catch(function (err) {
-        UIMessageService.showBackendError("Error when calling terminology server to perform search", err);
+        UIMessageService.showBackendError("Error when calling BioPortal to perform search. Please try again later", err);
         return err;
       });
     };
@@ -219,7 +219,7 @@ define([
       return $http.get(url, http_default_config).then(function (response) {
         return response.data;
       }).catch(function (err) {
-        UIMessageService.showBackendError("Error when calling terminology server to perform search", err);
+        UIMessageService.showBackendError("Error when calling BioPortal to perform search. Please try again later", err);
         return err;
       });
     };
@@ -229,7 +229,7 @@ define([
       return $http.get(url, http_default_config).then(function (response) {
         return response.data;
       }).catch(function (err) {
-        UIMessageService.showBackendError("Error when calling terminology server to perform search", err);
+        UIMessageService.showBackendError("Error when calling BioPortal to perform search. Please try again later", err);
         return err;
       });
     };
@@ -240,7 +240,7 @@ define([
       return $http.get(url, http_default_config).then(function (response) {
         return response.data;
       }).catch(function (err) {
-        UIMessageService.showBackendError("Error when calling terminology server to perform search", err);
+        UIMessageService.showBackendError("Error when calling BioPortal to perform search. Please try again later", err);
         return err;
       });
     };
@@ -257,7 +257,7 @@ define([
       return $http.get(searchUrl, http_default_config).then(function (response) {
         return response.data;
       }).catch(function (err) {
-        UIMessageService.showBackendError("Error when calling terminology server to perform subtree search", err);
+        UIMessageService.showBackendError("Error when calling BioPortal to perform subtree search. Please try again later", err);
         return err;
       });
     };
@@ -270,7 +270,7 @@ define([
         response["collection"] = r;
         return response;
       }).catch(function (err) {
-        UIMessageService.showBackendError("Error when calling terminology server to retrieve values in value set",
+        UIMessageService.showBackendError("Error when calling BioPortal to retrieve values in value set. Please try again later",
             err);
         return err;
       });

@@ -230,13 +230,14 @@ define([
               });
               vm.searchPreloader = false;
             });
-          // Value
+            // Value
           } else {
             // Get the value set that contains the value
             controlTermDataService.getClassParents(acronym, result['@id']).then(function (response) {
               vm.currentValueSet = response[0];
               vm.currentValueSetId = vm.currentValueSet["@id"];
-              controlTermDataService.getValuesInValueSet(acronym, vm.currentValueSetId).then(function (valueSetClasses) {
+              controlTermDataService.getValuesInValueSet(acronym,
+                  vm.currentValueSetId).then(function (valueSetClasses) {
                 vm.valueSetClasses = valueSetClasses;
                 angular.forEach(vm.valueSetClasses, function (valueSetClass) {
                   valueSetClass.type = 'Value';
@@ -315,9 +316,15 @@ define([
                   var type = vm.tmpSearchResults[i].type;
                   var sourceId = vm.tmpSearchResults[i].source;
                   var sourceName;
+                  var ignoreResult = false;
                   if (type == 'OntologyClass') {
                     var ontology = controlTermDataService.getOntologyByLdId(sourceId);
-                    sourceName = ontology.name + ' (' + ontology.id + ')';
+                    if (ontology == undefined) {
+                      ignoreResult = true;
+                    }
+                    else {
+                      sourceName = ontology.name + ' (' + ontology.id + ')';
+                    }
                   }
                   else if (type == 'ValueSet') {
                     sourceName = controlTermService.getLastFragmentOfUri(sourceId);
@@ -325,13 +332,15 @@ define([
                   else if (type == 'Value') {
                     sourceName = controlTermService.getLastFragmentOfUri(sourceId);
                   }
-                  vm.searchResults.push({
-                    '@id'     : vm.tmpSearchResults[i]['@id'],
-                    prefLabel : vm.tmpSearchResults[i].prefLabel,
-                    type      : type,
-                    sourceName: sourceName,
-                    sourceId  : sourceId
-                  });
+                  if (!ignoreResult) {
+                    vm.searchResults.push({
+                      '@id'     : vm.tmpSearchResults[i]['@id'],
+                      prefLabel : vm.tmpSearchResults[i].prefLabel,
+                      type      : type,
+                      sourceName: sourceName,
+                      sourceId  : sourceId
+                    });
+                  }
                 }
               }
             });
