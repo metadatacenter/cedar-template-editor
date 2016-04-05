@@ -1,5 +1,5 @@
 <div class="fields fields-textarea">
-  <div ng-if="$root.isArray(model)" class="form-group floating-label-wrapper" ng-repeat="valueElement in model">
+  <div ng-if="$root.isArray(model)" class="form-group floating-label-wrapper has-feedback" ng-repeat="valueElement in model">
     <textarea rows="5"
         id="comment"
         class="form-control"
@@ -18,7 +18,7 @@
 
 
   <div ng-if="$root.isArray(model) && model.length == 0 && !$root.isRuntime()"
-      class="form-group floating-label-wrapper">
+      class="form-group floating-label-wrapper has-feedback">
 
     <textarea rows="5"
         id="comment"
@@ -36,7 +36,7 @@
   </div>
   <!-- /.form-group -->
 
-  <div ng-if="!$root.isArray(model)" class="form-group floating-label-wrapper">
+  <div ng-if="!$root.isArray(model)" class="form-group floating-label-wrapper has-feedback">
     <!--p class="extra-label-context" ng-if="!$root.isRuntime() && $root.propertiesOf(field)._ui.title">{{$root.propertiesOf(field)._ui.title}}</p-->
     <textarea rows="5"
         id="comment"
