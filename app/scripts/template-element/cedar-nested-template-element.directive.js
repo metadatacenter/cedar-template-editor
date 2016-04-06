@@ -30,10 +30,10 @@ define([
 
     function linker(scope, element, attrs) {
 
-      var nested;
+      //var nested;
 
       var nestElement = function () {
-        nested = setNested(scope.field);
+        setNested(scope.field);
         var template = '<div ng-if="$root.propertiesOf(field)._ui.inputType" ng-class="{&quot;field-instance&quot;:true, &quot;multiple-instance-field&quot;:$root.isArray(model)}"> <field-directive field="field" model="model" delete="removeChild(field)" preview="preview" rename-child-key="renameChildKey" ></field-directive></div><div ng-if="!$root.propertiesOf(field)._ui.inputType && model !== undefined" class="nested-element"><cedar-template-element key="key" model="model" element="field" preview="preview" delete="removeChild(field)" ></cedar-template-element></div>';
         $compile(template)(scope, function (cloned, scope) {
           element.html(cloned);
@@ -48,6 +48,12 @@ define([
           key = node["@id"];
         }
         return key;
+      };
+
+      var getNestedValue = function (node) {
+        var p = $rootScope.propertiesOf(node);
+        p._tmp = p._tmp || {};
+        return p._tmp.nested || false;
       };
 
       var setNestedValue = function (node, value) {
@@ -71,7 +77,7 @@ define([
       }
 
       scope.$watch("field", function() {
-        if (scope.field && !nested) {
+        if (scope.field && !getNestedValue(scope.field)) {
           nestElement();
         }
       });
