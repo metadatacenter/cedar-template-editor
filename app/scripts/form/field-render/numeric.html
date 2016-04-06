@@ -1,36 +1,35 @@
 <div class="fields fields-numeric">
   <div ng-if="$root.isArray(model)" class="form-group floating-label-wrapper" ng-repeat="valueElement in model">
-	<p class="extra-label-context" ng-if="!$root.isRuntime() && $root.propertiesOf(field)._ui.title">{{$root.propertiesOf(field)._ui.title}}</p>
+    <!--<p class="extra-label-context" ng-if="!$root.isRuntime() && $root.propertiesOf(field)._ui.title">-->
+      <!--{{$root.propertiesOf(field)._ui.title}}</p>-->
     <input type="number"
-    	   class="form-control"
-    	   ng-class="{'required': $root.propertiesOf(field)._valueConstraints.requiredValue}"
-    	   id="numeric1"
-    	   placeholder="{{$root.propertiesOf(field)._ui.title}}"
-    	   aria-label="{{$root.propertiesOf(field)._ui.description}}"
-    	   ng-model="valueElement._value"
-           ng-disabled="!$root.isRuntime() || preview"
-    	   ng-minlength="{{$root.propertiesOf(field)._ui.minLength}}"
-    	   ng-maxlength="{{$root.propertiesOf(field)._ui.maxLength}}"
-    	   validate-on="blur"
-    	   ng-pattern= "/^\d+$/"
-    	   with-floating-label="" />
+        class="form-control"
+        ng-class="{'required': $root.propertiesOf(field)._valueConstraints.requiredValue}"
+        id="numeric1"
+        placeholder="{{$root.propertiesOf(field)._ui.title}}"
+        aria-label="{{$root.propertiesOf(field)._ui.description}}"
+        ng-model="valueElement._value"
+        ng-disabled="!$root.isRuntime() || preview"
+        ng-minlength="{{$root.propertiesOf(field)._ui.minLength}}"
+        ng-maxlength="{{$root.propertiesOf(field)._ui.maxLength}}"
+        validate-on="blur"
+        ng-pattern="/^\d+$/"
+        with-floating-label=""/>
     <span class="warning-text">{{$root.propertiesOf(field)._ui.warningText}}</span>
-    <div class="input-indicator-icons">
-      <i class="cedar-svg-help-circle" data-container="body" data-toggle="popover" data-placement="left" data-content="{{$root.propertiesOf(field)._ui.description}}"></i>
-      <i class="cedar-svg-check-circle"></i>
-      <i class="cedar-svg-warning"></i>
-    </div><!-- /.input-indicator-icons -->
-    <div class="more-input-wrapper" ng-include="'scripts/form/partials/more-input-buttons.partial.html'" ng-show="!field.maxItems || field.maxItems > 1"></div>
-  </div><!-- /.form-group -->
+
+    <div class="input-indicator-icons ng-valid ng-scope"
+        ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
+    <div class="more-input-wrapper" ng-include="'scripts/form/partials/more-input-buttons.partial.html'"
+        ng-show="!field.maxItems || field.maxItems > 1"></div>
+  </div>
+  <!-- /.form-group -->
 
 
+  <div ng-if="$root.isArray(model) && model.length == 0 && !$root.isRuntime()"
+      class="form-group floating-label-wrapper">
 
-  <div ng-if="$root.isArray(model) && model.length == 0" class="form-group floating-label-wrapper" >
-    <div ng-if="$root.isArray(model)" class="form-group floating-label-wrapper" >
-      <div class="more-input-wrapper" ng-include="'scripts/form/partials/zero-input-buttons.partial.html'" ></div>
-    </div>
-    <div ng-if="!$root.isRuntime()">
-    <p class="extra-label-context" ng-if="preview && $root.propertiesOf(field)._ui.title">{{$root.propertiesOf(field)._ui.title}}</p>
+    <p class="extra-label-context" ng-if="preview && $root.propertiesOf(field)._ui.title">
+      {{$root.propertiesOf(field)._ui.title}}</p>
     <input type="number"
         class="form-control"
         ng-class="{'required': $root.propertiesOf(field)._valueConstraints.requiredValue}"
@@ -42,41 +41,37 @@
         ng-minlength="{{$root.propertiesOf(field)._ui.minLength}}"
         ng-maxlength="{{$root.propertiesOf(field)._ui.maxLength}}"
         validate-on="blur"
-        ng-pattern= "/^\d+$/"
+        ng-pattern="/^\d+$/"
         with-floating-label="">
     </input>
     <span class="warning-text">{{$root.propertiesOf(field)._ui.warningText}}</span>
-    <div class="input-indicator-icons">
-      <i class="cedar-svg-help-circle" data-container="body" data-toggle="popover" data-placement="left" data-content="{{$root.propertiesOf(field)._ui.description}}"></i>
-      <i class="cedar-svg-check-circle"></i>
-      <i class="cedar-svg-warning"></i>
-    </div><!-- /.input-indicator-icons -->
-    <div class="more-input-wrapper" ng-disabled="true" ng-include="'scripts/form/partials/more-input-buttons.partial.html'" ></div>
-    </div>
-   </div><!-- /.form-group -->
+
+    <div class="input-indicator-icons ng-valid ng-scope"
+        ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
+
+  </div>
+  <!-- /.form-group -->
 
   <div ng-if="!$root.isArray(model)" class="form-group floating-label-wrapper">
     <input type="number"
-           class="form-control"
-           ng-class="{'required': $root.propertiesOf(field)._valueConstraints.requiredValue}"
-           id="numeric1"
-           placeholder="{{$root.propertiesOf(field)._ui.title}}"
-           aria-label="{{$root.propertiesOf(field)._ui.description}}"
-           ng-model="model._value"
-           ng-disabled="!$root.isRuntime() || preview"
-           ng-minlength="{{$root.propertiesOf(field)._ui.minLength}}"
-           ng-maxlength="{{$root.propertiesOf(field)._ui.maxLength}}"
-           validate-on="blur"
-           ng-pattern= "/^\d+$/"
-           with-floating-label="">
+        class="form-control"
+        ng-class="{'required': $root.propertiesOf(field)._valueConstraints.requiredValue}"
+        id="numeric1"
+        placeholder="{{$root.propertiesOf(field)._ui.title}}"
+        aria-label="{{$root.propertiesOf(field)._ui.description}}"
+        ng-model="model._value"
+        ng-disabled="!$root.isRuntime() || preview"
+        ng-minlength="{{$root.propertiesOf(field)._ui.minLength}}"
+        ng-maxlength="{{$root.propertiesOf(field)._ui.maxLength}}"
+        validate-on="blur"
+        ng-pattern="/^\d+$/"
+        with-floating-label="">
     </input>
     <span class="warning-text">{{$root.propertiesOf(field)._ui.warningText}}</span>
-    <div class="input-indicator-icons">
-      <i class="cedar-svg-help-circle" data-container="body" data-toggle="popover" data-placement="left" data-content="{{$root.propertiesOf(field)._ui.description}}"></i>
-      <i class="cedar-svg-check-circle"></i>
-      <i class="cedar-svg-warning"></i>
-    </div><!-- /.input-indicator-icons -->
-  </div><!-- /.form-group -->
 
-  <div class="preview-edit-options" ng-include="'scripts/form/partials/preview-edit-options.partial.html'" ng-init="childType='field'" ng-if="!$root.isRunTime()"></div>
+    <div class="input-indicator-icons ng-valid ng-scope"
+        ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
+  </div>
+  <!-- /.form-group -->
+
 </div>

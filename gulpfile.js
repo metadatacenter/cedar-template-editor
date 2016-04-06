@@ -201,6 +201,13 @@ gulp.task('replace-apikey', function () {
             .pipe(gulp.dest('app/config/'));
 });
 
+// Task to set up tracking
+gulp.task('replace-tracking', function () {
+  gulp.src(['app/config/src/tracking-service.conf.json'])
+      .pipe(replace('googleAnalyticsKey', cedarAnalyticsKey))
+      .pipe(gulp.dest('app/config/'));
+});
+
 // Watch files for changes
 gulp.task('watch', function () {
     gulp.watch('app/scripts/*.js', ['lint']);
@@ -249,9 +256,10 @@ function readAllEnvVarsOrFail() {
 
 // Get environment variables
 var envConfig = {
-    'CEDAR_PROFILE': null,
-    'CEDAR_HOST': null,
-    'CEDAR_BIOPORTAL_API_KEY': null
+  'CEDAR_PROFILE'          : null,
+  'CEDAR_HOST'             : null,
+  'CEDAR_BIOPORTAL_API_KEY': null,
+  'CEDAR_ANALYTICS_KEY'    : null
 };
 console.log();
 console.log();
@@ -261,6 +269,7 @@ readAllEnvVarsOrFail();
 var cedarProfile = envConfig['CEDAR_PROFILE'];
 var cedarHost = envConfig['CEDAR_HOST'];
 var cedarBioportalAPIKey = envConfig['CEDAR_BIOPORTAL_API_KEY'];
+var cedarAnalyticsKey = envConfig['CEDAR_ANALYTICS_KEY'];
 console.log("-------------------------------------------- ************* --------------------------------------------".red);
 console.log();
 
@@ -275,6 +284,6 @@ if (cedarProfile === 'development') {
     exitWithError("Invalid CEDAR_PROFILE value. Please set 'development' or 'production'");
 }
 
-taskNameList.push('lint', 'less', 'copy:resources', 'replace-apikey', 'replace-url');
+taskNameList.push('lint', 'less', 'copy:resources', 'replace-apikey', 'replace-url', 'replace-tracking');
 // Launch tasks
 gulp.task('default', taskNameList);

@@ -75,6 +75,8 @@ define([
       field.items = {
         'type'                : field.type,
         '@id'                 : field['@id'],
+        '@type'               : field['@type'],
+        '@context'            : field['@context'],
         '$schema'             : field.$schema,
         'title'               : field.properties._ui.title,
         'description'         : field.properties._ui.description,
@@ -86,6 +88,8 @@ define([
 
       delete field.$schema;
       delete field['@id'];
+      delete field['@type'];
+      delete field['@context'];
       delete field.properties;
       delete field.title;
       delete field.description;
@@ -95,8 +99,33 @@ define([
       return true;
     };
 
+    service.uncardinalizeField = function (field) {
+      if (typeof field.minItems == 'undefined' || (field.minItems == 1 && field.maxItems == 1)) {
+
+        field.type = 'object';
+
+        field.$schema = field.items.$schema;
+        field['@id'] = field.items["@id"];
+        field['@type'] = field.items["@type"];
+        field['@context'] = field.items["@context"];
+        field.properties = field.items.properties;
+        field.required = field.items.required;
+        field.additionalProperties = field.items.additionalProperties;
+
+        delete field.items;
+        delete field.maxItems;
+        delete field.minItems;
+
+        return true;
+      } else {
+        return false;
+      }
+    };
+
     service.isCardinalElement = function (element) {
       return element.type == 'array';
+      // Alternative implementation from $rootScope
+      //return typeof element.minItems != 'undefined';
     };
 
     // If Max Items is N, its value will be 0, then need to remove it from schema
@@ -223,6 +252,16 @@ define([
       delete obj[currentKey];
 
       return obj;
+    };
+
+    service.idOf = function (fieldOrElement) {
+      if (fieldOrElement) {
+        if (fieldOrElement.items) {
+          return fieldOrElement.items["@id"];
+        } else {
+          return fieldOrElement["@id"];
+        }
+      }
     };
 
     return service;

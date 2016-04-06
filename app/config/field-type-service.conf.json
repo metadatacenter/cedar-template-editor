@@ -2,76 +2,79 @@
   {
     "cedarType": "textfield",
     "iconClass": "cedar-svg-text",
-    "allowedInElement": true
+    "allowedInElement": true,
+    "hasControlledTerms": true
   },
   {
     "cedarType": "textarea",
     "iconClass": "cedar-svg-paragraph",
-    "allowedInElement": true
+    "allowedInElement": true,
+    "hasControlledTerms": false
   },
   {
     "cedarType": "radio",
     "iconClass": "cedar-svg-multiple-choice",
-    "allowedInElement": true
+    "allowedInElement": true,
+    "hasControlledTerms": true
   },
   {
     "cedarType": "checkbox",
     "iconClass": "cedar-svg-checkbox",
-    "allowedInElement": true
+    "allowedInElement": true,
+    "hasControlledTerms": true
   },
   {
     "cedarType": "date",
     "iconClass": "cedar-svg-calendar",
-    "allowedInElement": true
+    "allowedInElement": true,
+    "hasControlledTerms": false
   },
   {
     "cedarType": "email",
     "iconClass": "cedar-svg-at",
-    "allowedInElement": true
+    "allowedInElement": true,
+    "hasControlledTerms": false
   },
   {
     "cedarType": "list",
     "iconClass": "cedar-svg-list",
-    "allowedInElement": true
-  },
-  {
-    "cedarType": "audio-visual",
-    "iconClass": "cedar-svg-audio-visual",
-    "allowedInElement": true
+    "allowedInElement": true,
+    "hasControlledTerms": true
   },
   {
     "cedarType": "numeric",
     "iconClass": "cedar-svg-numeric",
-    "allowedInElement": true
+    "allowedInElement": true,
+    "hasControlledTerms": false
   },
   {
     "cedarType": "phone-number",
     "iconClass": "cedar-svg-phone",
-    "allowedInElement": true
+    "allowedInElement": true,
+    "hasControlledTerms": false
   },
   {
     "cedarType": "section-break",
     "iconClass": "cedar-svg-section-break",
-    "allowedInElement": true
-  },
-  {
-    "cedarType": "page-break",
-    "iconClass": "cedar-svg-page-break",
-    "allowedInElement": false
+    "allowedInElement": true,
+    "hasControlledTerms": false
   },
   {
     "cedarType": "richtext",
     "iconClass": "cedar-svg-rich-text",
-    "allowedInElement": true
+    "allowedInElement": true,
+    "hasControlledTerms": false
   },
   {
     "cedarType": "image",
     "iconClass": "cedar-svg-image",
-    "allowedInElement": true
+    "allowedInElement": true,
+    "hasControlledTerms": false
   },
   {
     "cedarType": "youtube",
     "iconClass": "cedar-svg-youtube",
-    "allowedInElement": true
+    "allowedInElement": true,
+    "hasControlledTerms": false
   }
 ]

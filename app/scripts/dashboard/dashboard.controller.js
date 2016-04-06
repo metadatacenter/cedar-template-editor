@@ -6,13 +6,25 @@ define([
   angular.module('cedar.templateEditor.dashboard.dashboardController', [])
       .controller('DashboardController', DashboardController);
 
-  DashboardController.$inject = ['$rootScope', '$scope', '$routeParams', '$location', 'HeaderService', 'UrlService',
-                                 'TemplateService', 'TemplateElementService', 'TemplateInstanceService',
-                                 'UIMessageService', 'AuthorizedBackendService', 'CONST'];
+  DashboardController.$inject = [
+    '$location',
+    '$rootScope',
+    '$routeParams',
+    '$scope',
+    'AuthorizedBackendService',
+    'HeaderService',
+    'resourceService',
+    'TemplateElementService',
+    'TemplateService',
+    'TemplateInstanceService',
+    'UIMessageService',
+    'UrlService',
+    'CONST'
+  ];
 
-  function DashboardController($rootScope, $scope, $routeParams, $location, HeaderService, UrlService, TemplateService,
-                               TemplateElementService, TemplateInstanceService, UIMessageService,
-                               AuthorizedBackendService, CONST) {
+  function DashboardController($location, $rootScope, $routeParams, $scope, AuthorizedBackendService, HeaderService, resourceService, TemplateElementService, TemplateService, TemplateInstanceService, UIMessageService, UrlService, CONST) {
+
+    resourceService.getResources();
 
     // Remove template
     $scope.deleteTemplate = function (id) {
