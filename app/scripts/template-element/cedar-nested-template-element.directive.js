@@ -68,6 +68,8 @@ define([
         var parentKey = getKey(scope.$parent.element);
         var result = parentKey && key != rootKey && parentKey != rootKey;
 
+        //console.log('setNested ' + key + ' ' + rootKey + ' ' +  parentKey + ' ' +  result);
+
         setNestedValue(node, result);
         return result;
       };
