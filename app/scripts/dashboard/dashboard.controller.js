@@ -120,36 +120,6 @@ define([
     // Inject constants
     $scope.CONST = CONST;
 
-    var currentRole = $rootScope.applicationRole;
-    var currentApplicationMode = $rootScope.applicationMode;
-    if ($routeParams.role) {
-      if ($routeParams.role == 'as-creator') {
-        currentRole = 'creator';
-        currentApplicationMode = CONST.applicationMode.CREATOR;
-      } else if ($routeParams.role == 'as-instantiator') {
-        currentRole = 'instantiator';
-        currentApplicationMode = CONST.applicationMode.RUNTIME;
-      }
-    }
-    if (currentApplicationMode == CONST.applicationMode.DEFAULT) {
-      $location.path(UrlService.getRoleSelector());
-      return;
-    }
-
-    // Configure mini header
-    var pageId = CONST.pageId.DASHBOARD;
-    HeaderService.configure(pageId, currentApplicationMode);
-    $rootScope.applicationRole = currentRole;
-
-
-    // get default listings
-    if (currentApplicationMode == CONST.applicationMode.CREATOR) {
-      $scope.loadDefaultTemplateElements();
-      $scope.loadDefaultTemplates();
-    } else if (currentApplicationMode == CONST.applicationMode.RUNTIME) {
-      $scope.loadDefaultTemplateInstances();
-    }
-
   };
 
 });
