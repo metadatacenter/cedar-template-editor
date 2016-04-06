@@ -163,6 +163,18 @@ define([
         scope.selectedTab = index;
       }
 
+      scope.isEditState = function () {
+        var p = $rootScope.propertiesOf(scope.element);
+        p._tmp = p._tmp || {};
+        return (p._tmp.state == "creating");
+      };
+
+      scope.isNested = function () {
+        var p = $rootScope.propertiesOf(scope.element);
+        p._tmp = p._tmp || {};
+        return (p._tmp.nested || false);
+      };
+
       scope.addElement = function() {
         if ($rootScope.isRuntime()) {
           if ((!scope.element.maxItems || scope.model.length < scope.element.maxItems)) {
