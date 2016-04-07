@@ -9105,7 +9105,7 @@ body {
   background: #f9f9fb;
   font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
   color: #333;
-  padding-top: 200px;
+  padding-top: 189px;
 }
 a {
   -webkit-transition: all 0.3s 0.1s;
@@ -9286,6 +9286,42 @@ i {
   text-transform: uppercase;
   margin: 5px;
   color: #666666;
+}
+.form-populate {
+  color: #666666;
+  padding: 40px 0;
+  background-color: #eaeaea;
+}
+.form-populate h4 {
+  margin: 0;
+}
+.form-populate .pull-right {
+  text-transform: uppercase;
+}
+.form-populate .populate-form-boxes .form-box {
+  width: 220px;
+  height: 220px;
+  border: 1px solid #ebebeb;
+  box-shadow: 4px 4px #e0e0e0;
+  background: #ffffff;
+  margin: 10px auto;
+}
+.form-populate .populate-form-boxes .form-box .box-content {
+  color: #71a69c;
+  padding: 45px 55px;
+  font-size: 16px;
+  display: block;
+}
+.form-populate .populate-form-boxes .form-box .box-content i {
+  font-size: 36px;
+  margin-bottom: 25px;
+}
+.form-populate .populate-form-boxes .form-box .box-content p {
+  line-height: 1;
+}
+.form-populate .populate-form-boxes .form-box a.box-content:hover,
+.form-populate .populate-form-boxes .form-box a.box-content:hover {
+  text-decoration: none;
 }
 .template-header {
   width: 100%;

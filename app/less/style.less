@@ -41,7 +41,7 @@ body {
   background: @background-color;
   font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
   color: #333;
-  padding-top: 200px;
+  padding-top: 189px;
 }
 
 a {
@@ -230,6 +230,49 @@ i {
     text-transform: uppercase;
     margin: 5px;
     color: @graytxt;
+  }
+}
+
+.form-populate {
+  color: @graytxt;
+  padding: 40px 0;
+  background-color: @graybg;
+
+  h4 {
+    margin: 0;
+  }
+
+  .pull-right {
+    text-transform: uppercase;
+  }
+  .populate-form-boxes {
+
+    .form-box {
+      width: 220px;
+      height: 220px;
+      border: 1px solid #ebebeb;
+      box-shadow: 4px 4px #e0e0e0;
+      background: #ffffff;
+      margin: 10px auto;
+
+      .box-content {
+        color: @brand-primary;
+        padding: 45px 55px;
+        font-size: 16px;
+        display: block;
+
+        i {
+          font-size: 36px;
+          margin-bottom: 25px;
+        }
+        p {
+          line-height: 1;
+        }
+      }
+      a.box-content:hover, a.box-content:hover {
+        text-decoration: none;
+      }
+    }
   }
 }
 
