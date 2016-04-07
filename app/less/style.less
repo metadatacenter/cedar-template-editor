@@ -49,6 +49,9 @@ a {
   cursor: pointer;
 }
 
+a:hover, a:focus {
+  text-decoration: none;
+}
 i {
   .link-transition;
 }
@@ -270,9 +273,6 @@ i {
           line-height: 1;
         }
       }
-      a.box-content:hover, a.box-content:hover {
-        text-decoration: none;
-      }
     }
   }
   #fsModal {
@@ -347,6 +347,71 @@ i {
   }
 }
 /* End Form Populate Gray Modal Slide Up/Down Section */
+
+/* Begin All Items View */
+
+.all-items-view {
+  color: @graytxt;
+  padding: 40px 0;
+  position: relative;
+
+  .push-pull-box {
+    position: absolute;
+    background: @graybg;
+    color: @brand-primary;
+    padding: 5px 10px;
+    top: 0;
+    right: 4%;
+
+    .fa-caret-down {
+      display: none;
+    }
+    .fa-caret-up {
+      display: block;
+    }
+  }
+
+  .push-pull-box.collapsed {
+    .fa-caret-down {
+      display: block;
+    }
+    .fa-caret-up {
+      display: none;
+    }
+  }
+
+  .pull-right {
+    text-transform: uppercase;
+  }
+  .populate-form-boxes {
+
+    .form-box {
+      width: 220px;
+      height: 220px;
+      border: 1px solid #ebebeb;
+      box-shadow: 4px 4px #e0e0e0;
+      background: #ffffff;
+      margin: 10px auto 20px;
+
+      .box-content {
+        color: @brand-primary;
+        padding: 45px 55px;
+        font-size: 16px;
+        display: block;
+
+        i {
+          font-size: 36px;
+          margin-bottom: 25px;
+        }
+        p {
+          line-height: 1;
+        }
+      }
+    }
+  }
+}
+
+/* End All Items View */
 
 .template-header {
   width: 100%;

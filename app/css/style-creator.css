@@ -9112,6 +9112,10 @@ a {
           transition: all 0.3s 0.1s;
   cursor: pointer;
 }
+a:hover,
+a:focus {
+  text-decoration: none;
+}
 i {
   -webkit-transition: all 0.3s 0.1s;
           transition: all 0.3s 0.1s;
@@ -9320,10 +9324,6 @@ i {
 .form-populate .populate-form-boxes .form-box .box-content p {
   line-height: 1;
 }
-.form-populate .populate-form-boxes .form-box a.box-content:hover,
-.form-populate .populate-form-boxes .form-box a.box-content:hover {
-  text-decoration: none;
-}
 .form-populate #fsModal {
   background: #eaeaea;
 }
@@ -9387,6 +9387,57 @@ i {
   border: none;
 }
 /* End Form Populate Gray Modal Slide Up/Down Section */
+/* Begin All Items View */
+.all-items-view {
+  color: #666666;
+  padding: 40px 0;
+  position: relative;
+}
+.all-items-view .push-pull-box {
+  position: absolute;
+  background: #eaeaea;
+  color: #5795ba;
+  padding: 5px 10px;
+  top: 0;
+  right: 4%;
+}
+.all-items-view .push-pull-box .fa-caret-down {
+  display: none;
+}
+.all-items-view .push-pull-box .fa-caret-up {
+  display: block;
+}
+.all-items-view .push-pull-box.collapsed .fa-caret-down {
+  display: block;
+}
+.all-items-view .push-pull-box.collapsed .fa-caret-up {
+  display: none;
+}
+.all-items-view .pull-right {
+  text-transform: uppercase;
+}
+.all-items-view .populate-form-boxes .form-box {
+  width: 220px;
+  height: 220px;
+  border: 1px solid #ebebeb;
+  box-shadow: 4px 4px #e0e0e0;
+  background: #ffffff;
+  margin: 10px auto 20px;
+}
+.all-items-view .populate-form-boxes .form-box .box-content {
+  color: #5795ba;
+  padding: 45px 55px;
+  font-size: 16px;
+  display: block;
+}
+.all-items-view .populate-form-boxes .form-box .box-content i {
+  font-size: 36px;
+  margin-bottom: 25px;
+}
+.all-items-view .populate-form-boxes .form-box .box-content p {
+  line-height: 1;
+}
+/* End All Items View */
 .template-header {
   width: 100%;
   background-color: #2e5365;
