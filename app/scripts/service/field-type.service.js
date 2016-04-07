@@ -4,9 +4,9 @@
 define([
   'angular',
   'json!config/field-type-service.conf.json'
-], function(angular, config) {
+], function (angular, config) {
   angular.module('cedar.templateEditor.service.fieldTypeService', [])
-    .service('FieldTypeService', FieldTypeService);
+      .service('FieldTypeService', FieldTypeService);
 
   FieldTypeService.$inject = [];
 
@@ -24,6 +24,15 @@ define([
 
     service.getFieldTypes = function () {
       return fieldTypes;
+    };
+
+    service.isStaticField = function (fieldType) {
+      for (var ft in fieldTypes) {
+        if (fieldTypes[ft].cedarType == fieldType) {
+          return fieldTypes[ft].staticField;
+        }
+      }
+      return false;
     };
 
     return service;

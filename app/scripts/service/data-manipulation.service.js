@@ -7,9 +7,9 @@ define([
   angular.module('cedar.templateEditor.service.dataManipulationService', [])
       .service('DataManipulationService', DataManipulationService);
 
-  DataManipulationService.$inject = ['DataTemplateService', 'DataUtilService', 'UrlService'];
+  DataManipulationService.$inject = ['DataTemplateService', 'DataUtilService', 'UrlService', 'FieldTypeService'];
 
-  function DataManipulationService(DataTemplateService, DataUtilService, UrlService) {
+  function DataManipulationService(DataTemplateService, DataUtilService, UrlService, FieldTypeService) {
 
     // Base path to generate field ids
     // TODO: fields will be saved as objects on server, they will get their id there
@@ -34,9 +34,15 @@ define([
       } else if (fieldType == "list") {
         valueType = "array";
       }
-      var field = DataTemplateService.getField(this.generateTempGUID());
+      var field;
+      if (FieldTypeService.isStaticField(fieldType)) {
+        field = DataTemplateService.getStaticField(this.generateTempGUID());
+      } else {
+        field = DataTemplateService.getField(this.generateTempGUID());
+        field.properties._value.type = valueType;
+      }
       field.properties._ui.inputType = fieldType;
-      field.properties._value.type = valueType;
+      //field.properties._value.type = valueType;
       return field;
     };
 
@@ -290,7 +296,7 @@ define([
      * add a domId to the node if there is not one present
      * @param node
      */
-    service.addDomIdIfNotPresent = function(node, id) {
+    service.addDomIdIfNotPresent = function (node, id) {
 
       if (!node.hasOwnProperty("_tmp")) {
         node._tmp = {};
@@ -307,7 +313,7 @@ define([
      * get the domId of the node if there is one present
      * @param node
      */
-    service.getDomId = function(node) {
+    service.getDomId = function (node) {
 
       var domId = null;
 
@@ -321,12 +327,11 @@ define([
     };
 
 
-
     /**
      * make a unique string that we can use for dom ids
      */
-    service.createDomId  =  function() {
-      return  'id' + Math.random().toString().replace(/\./g, '');
+    service.createDomId = function () {
+      return 'id' + Math.random().toString().replace(/\./g, '');
     };
 
     return service;
