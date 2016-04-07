@@ -6,9 +6,9 @@ define([
   angular.module('cedar.templateEditor.controlTerm.controlTermDataService', [])
       .service('controlTermDataService', controlTermDataService);
 
-  controlTermDataService.$inject = ['$http', '$q', 'UrlService', 'UIMessageService'];
+  controlTermDataService.$inject = ['$http', '$q', 'UrlService', 'UIMessageService', '$translate'];
 
-  function controlTermDataService($http, $q, UrlService, UIMessageService) {
+  function controlTermDataService($http, $q, UrlService, UIMessageService, $translate) {
 
     var base = null;
     var http_default_config = {};
@@ -68,7 +68,12 @@ define([
           }
         });
       }).catch(function (err) {
-        UIMessageService.showBackendError("Error retrieving ontologies from BioPortal. Please try again later", err);
+        if (err.status == 502) {
+          UIMessageService.showBackendError($translate.instant("TERMINOLOGY.errorTerminology"), err);
+        }
+        else {
+          UIMessageService.showBackendError($translate.instant("TERMINOLOGY.errorBioPortal"), err);
+        }
         return err;
       });
     }
@@ -82,7 +87,12 @@ define([
           valueSetsCache[element.id] = element;
         });
       }).catch(function (err) {
-        UIMessageService.showBackendError("Error retrieving value sets from BioPortal. Please try again later", err);
+        if (err.status == 502) {
+          UIMessageService.showBackendError($translate.instant("TERMINOLOGY.errorTerminology"), err);
+        }
+        else {
+          UIMessageService.showBackendError($translate.instant("TERMINOLOGY.errorBioPortal"), err);
+        }
         return err;
       });
     }
@@ -121,8 +131,12 @@ define([
       return $http.get(url, http_default_config).then(function (response) {
         return response.data;
       }).catch(function (err) {
-        UIMessageService.showBackendError("Error retrieving root classes from BioPortal (ontology: " + ontology + "). Please try again later",
-            err);
+        if (err.status == 502) {
+          UIMessageService.showBackendError($translate.instant("TERMINOLOGY.errorTerminology"), err);
+        }
+        else {
+          UIMessageService.showBackendError($translate.instant("TERMINOLOGY.errorBioPortal"), err);
+        }
         return err;
       });
     };
@@ -144,8 +158,12 @@ define([
           http_default_config).then(function (response) {
             return response.data.collection;
           }).catch(function (err) {
-            UIMessageService.showBackendError("Error retrieving class children from BioPortal (ontology: " + acronym + ")",
-                err);
+            if (err.status == 502) {
+              UIMessageService.showBackendError($translate.instant("TERMINOLOGY.errorTerminology"), err);
+            }
+            else {
+              UIMessageService.showBackendError($translate.instant("TERMINOLOGY.errorBioPortal"), err);
+            }
             return err;
           });
     };
@@ -155,7 +173,12 @@ define([
       return $http.get(url, http_default_config).then(function (response) {
         return response.data;
       }).catch(function (err) {
-        UIMessageService.showBackendError("Error when calling BioPortal to retrieve class. Please try again later", err);
+        if (err.status == 502) {
+          UIMessageService.showBackendError($translate.instant("TERMINOLOGY.errorTerminology"), err);
+        }
+        else {
+          UIMessageService.showBackendError($translate.instant("TERMINOLOGY.errorBioPortal"), err);
+        }
         return err;
       });
     }
@@ -165,8 +188,12 @@ define([
           http_default_config).then(function (response) {
             return response.data;
           }).catch(function (err) {
-            UIMessageService.showBackendError("Error retrieving class parents from BioPortal (ontology: " + acronym + "). Please try again later",
-                err);
+            if (err.status == 502) {
+              UIMessageService.showBackendError($translate.instant("TERMINOLOGY.errorTerminology"), err);
+            }
+            else {
+              UIMessageService.showBackendError($translate.instant("TERMINOLOGY.errorBioPortal"), err);
+            }
             return err;
           });
     };
@@ -176,8 +203,12 @@ define([
           http_default_config).then(function (response) {
             return response.data;
           }).catch(function (err) {
-            UIMessageService.showBackendError("Error retrieving class tree from BioPortal (ontology: " + acronym + "). Please try again later",
-                err);
+            if (err.status == 502) {
+              UIMessageService.showBackendError($translate.instant("TERMINOLOGY.errorTerminology"), err);
+            }
+            else {
+              UIMessageService.showBackendError($translate.instant("TERMINOLOGY.errorBioPortal"), err);
+            }
             return err;
           });
     };
@@ -187,7 +218,12 @@ define([
       return $http.get(url, http_default_config).then(function (response) {
         return response.data.collection;
       }).catch(function (err) {
-        UIMessageService.showBackendError("Error retrieving values in value set from BioPortal. Please try again later", err);
+        if (err.status == 502) {
+          UIMessageService.showBackendError($translate.instant("TERMINOLOGY.errorTerminology"), err);
+        }
+        else {
+          UIMessageService.showBackendError($translate.instant("TERMINOLOGY.errorBioPortal"), err);
+        }
         return err;
       });
     }
@@ -209,7 +245,12 @@ define([
       return $http.get(url, http_default_config).then(function (response) {
         return response.data;
       }).catch(function (err) {
-        UIMessageService.showBackendError("Error when calling BioPortal to perform search. Please try again later", err);
+        if (err.status == 502) {
+          UIMessageService.showBackendError($translate.instant("TERMINOLOGY.errorTerminology"), err);
+        }
+        else {
+          UIMessageService.showBackendError($translate.instant("TERMINOLOGY.errorBioPortal"), err);
+        }
         return err;
       });
     };
@@ -219,7 +260,12 @@ define([
       return $http.get(url, http_default_config).then(function (response) {
         return response.data;
       }).catch(function (err) {
-        UIMessageService.showBackendError("Error when calling BioPortal to perform search. Please try again later", err);
+        if (err.status == 502) {
+          UIMessageService.showBackendError($translate.instant("TERMINOLOGY.errorTerminology"), err);
+        }
+        else {
+          UIMessageService.showBackendError($translate.instant("TERMINOLOGY.errorBioPortal"), err);
+        }
         return err;
       });
     };
@@ -229,7 +275,12 @@ define([
       return $http.get(url, http_default_config).then(function (response) {
         return response.data;
       }).catch(function (err) {
-        UIMessageService.showBackendError("Error when calling BioPortal to perform search. Please try again later", err);
+        if (err.status == 502) {
+          UIMessageService.showBackendError($translate.instant("TERMINOLOGY.errorTerminology"), err);
+        }
+        else {
+          UIMessageService.showBackendError($translate.instant("TERMINOLOGY.errorBioPortal"), err);
+        }
         return err;
       });
     };
@@ -240,7 +291,12 @@ define([
       return $http.get(url, http_default_config).then(function (response) {
         return response.data;
       }).catch(function (err) {
-        UIMessageService.showBackendError("Error when calling BioPortal to perform search. Please try again later", err);
+        if (err.status == 502) {
+          UIMessageService.showBackendError($translate.instant("TERMINOLOGY.errorTerminology"), err);
+        }
+        else {
+          UIMessageService.showBackendError($translate.instant("TERMINOLOGY.errorBioPortal"), err);
+        }
         return err;
       });
     };
@@ -257,7 +313,12 @@ define([
       return $http.get(searchUrl, http_default_config).then(function (response) {
         return response.data;
       }).catch(function (err) {
-        UIMessageService.showBackendError("Error when calling BioPortal to perform subtree search. Please try again later", err);
+        if (err.status == 502) {
+          UIMessageService.showBackendError($translate.instant("TERMINOLOGY.errorTerminology"), err);
+        }
+        else {
+          UIMessageService.showBackendError($translate.instant("TERMINOLOGY.errorBioPortal"), err);
+        }
         return err;
       });
     };
@@ -270,8 +331,12 @@ define([
         response["collection"] = r;
         return response;
       }).catch(function (err) {
-        UIMessageService.showBackendError("Error when calling BioPortal to retrieve values in value set. Please try again later",
-            err);
+        if (err.status == 502) {
+          UIMessageService.showBackendError($translate.instant("TERMINOLOGY.errorTerminology"), err);
+        }
+        else {
+          UIMessageService.showBackendError($translate.instant("TERMINOLOGY.errorBioPortal"), err);
+        }
         return err;
       });
     };
