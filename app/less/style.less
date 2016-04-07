@@ -407,6 +407,33 @@ i {
           line-height: 1;
         }
       }
+      .quick-details-box {
+        display: none;
+      }
+    }
+    .form-box:hover {
+      background: @brand-primary-hover;
+
+      .box-content {
+        display: none;
+      }
+      .quick-details-box {
+        padding: 20px;
+        color: @white;
+        display: block;
+        text-align: center;
+
+        .btn-circle {
+          border-radius: 50%;
+          width: 30px;
+        }
+        .btn-info.btn-circle {
+          box-shadow: none;
+          background: #ffffff;
+          color: @graytxt;
+          border: none;
+        }
+      }
     }
   }
 }
