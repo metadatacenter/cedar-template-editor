@@ -10,6 +10,8 @@
   "title": "",
   "description": "",
   "_ui": {
+    "title": "",
+    "description": "",
     "order": []
   },
   "properties": {
@@ -41,10 +43,6 @@
           "uniqueItems": true
         }
       ]
-    },
-    "_ui": {
-      "title": "",
-      "description": ""
     }
   },
   "required": [
