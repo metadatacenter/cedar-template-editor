@@ -47,7 +47,7 @@ Tests are written in Jasmine and run with the karma test runner.
 
 To run the tests once:
 
-    $ gulp unit
+    $ npm test
     
 To have karma watch for changes:
 
