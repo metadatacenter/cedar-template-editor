@@ -227,9 +227,9 @@ define([
         }
       });
 
-      var uiField = DataManipulationService.getFieldSchema($scope.field)._ui
+      var field = DataManipulationService.getFieldSchema($scope.field)._ui
       // Checking each field to see if required, will trigger flag for use to see there is required fields
-      if (uiField.required) {
+      if (field.required) {
         $scope.$emit('formHasRequiredFields');
       }
 
@@ -240,16 +240,16 @@ define([
             if ($scope.model.length == 0) {
               var min = $scope.field.minItems || 0;
 
-              if (uiField.defaultOption) {
+              if (field.defaultOption) {
                 for (var i = 0; i < min; i++) {
-                  $scope.model[i]["_value"] = angular.copy(uiField.defaultOption);
+                  $scope.model[i]["_value"] = angular.copy(field.defaultOption);
                 }
               } else {
                 for (var i = 0; i < min; i++) {
-                  if (['checkbox'].indexOf(uiField.inputType) >= 0 ||
-                      ['date'].indexOf(uiField.inputType) >= 0 && uiField.dateType == "date-range") {
+                  if (['checkbox'].indexOf(field.inputType) >= 0 ||
+                      ['date'].indexOf(field.inputType) >= 0 && field.dateType == "date-range") {
                     $scope.model[i]['_value'] = {};
-                  } else if (['list'].indexOf(uiField.inputType) >= 0) {
+                  } else if (['list'].indexOf(field.inputType) >= 0) {
                     $scope.model[i]['_value'] = [];
                   } else {
                     $scope.model[i]['_value'] = "";
@@ -259,13 +259,13 @@ define([
             } else {
               angular.forEach($scope.model, function (m, i) {
                 if (!("_value" in m)) {
-                  if (uiField.defaultOption) {
-                    $scope.model[i]["_value"] = angular.copy(uiField.defaultOption);
+                  if (field.defaultOption) {
+                    $scope.model[i]["_value"] = angular.copy(field.defaultOption);
                   } else {
-                    if (['checkbox'].indexOf(uiField.inputType) >= 0 ||
-                        ['date'].indexOf(uiField.inputType) >= 0 && uiField.dateType == "date-range") {
+                    if (['checkbox'].indexOf(field.inputType) >= 0 ||
+                        ['date'].indexOf(field.inputType) >= 0 && field.dateType == "date-range") {
                       $scope.model[i]['_value'] = {};
-                    } else if (['list'].indexOf(uiField.inputType) >= 0) {
+                    } else if (['list'].indexOf(field.inputType) >= 0) {
                       $scope.model[i]['_value'] = [];
                     } else {
                       $scope.model[i]['_value'] = "";
@@ -277,13 +277,13 @@ define([
             }
           } else {
             if (!("_value" in $scope.model)) {
-              if (uiField.defaultOption) {
-                $scope.model["_value"] = angular.copy(uiField.defaultOption);
+              if (field.defaultOption) {
+                $scope.model["_value"] = angular.copy(field.defaultOption);
               } else {
-                if (['checkbox'].indexOf(uiField.inputType) >= 0 ||
-                    ['date'].indexOf(uiField.inputType) >= 0 && uiField.dateType == "date-range") {
+                if (['checkbox'].indexOf(field.inputType) >= 0 ||
+                    ['date'].indexOf(field.inputType) >= 0 && field.dateType == "date-range") {
                   $scope.model['_value'] = {};
-                } else if (['list'].indexOf(uiField.inputType) >= 0) {
+                } else if (['list'].indexOf(field.inputType) >= 0) {
                   $scope.model['_value'] = [];
                 } else {
                   $scope.model['_value'] = "";
@@ -314,13 +314,13 @@ define([
             seed = angular.copy($scope.model[0]);
           }
 
-          if (uiField.defaultOption) {
-            seed["_value"] = angular.copy(uiField.defaultOption);
+          if (field.defaultOption) {
+            seed["_value"] = angular.copy(field.defaultOption);
           } else {
-            if (['checkbox'].indexOf(uiField.inputType) >= 0 ||
-                ['date'].indexOf(uiField.inputType) >= 0 && uiField.dateType == "date-range") {
+            if (['checkbox'].indexOf(field.inputType) >= 0 ||
+                ['date'].indexOf(field.inputType) >= 0 && field.dateType == "date-range") {
               seed['_value'] = {};
-            } else if (['list'].indexOf(uiField.inputType) >= 0) {
+            } else if (['list'].indexOf(field.inputType) >= 0) {
               seed['_value'] = [];
             } else {
               seed['_value'] = "";
@@ -365,6 +365,7 @@ define([
       }, true);
 
       $scope.checkFieldConditions = function (field) {
+        field = $rootScope.schemaOf(field);
         //var properties = field.properties;
         var unmetConditions = [],
             extraConditionInputs = ['checkbox', 'radio', 'list'];

@@ -85,7 +85,12 @@ define([
      */
 
     $rootScope.isElement = function (value) {
-      return value && value._ui;
+      if (value && value['@type'] && value['@type'] == "https://schema.metadatacenter.org/core/TemplateElement") {
+        return true;
+      }
+      else {
+        return false;
+      }
     };
 
     // Used in cedar-template-element.directive.js, form.directive

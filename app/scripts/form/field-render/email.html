@@ -1,18 +1,18 @@
 <div class="fields fields-email">
   <div ng-if="$root.isArray(model)" class="form-group floating-label-wrapper" ng-repeat="valueElement in model">
-	<!--<p class="extra-label-context" ng-if="!$root.isRuntime() && field._ui.title">{{field._ui.title}}</p>-->
+	<!--<p class="extra-label-context" ng-if="!$root.isRuntime() && $root.schemaOf(field)._ui.title">{{$root.schemaOf(field)._ui.title}}</p>-->
     <input type="email"
     	   class="form-control"
     	   ng-class="{'required': $root.propertiesOf(field)._valueConstraints.requiredValue}"
     	   id="emailfield1"
-    	   placeholder="{{field._ui.title}}"
-    	   aria-label="{{field._ui.description}}"
+    	   placeholder="{{$root.schemaOf(field)._ui.title}}"
+    	   aria-label="{{$root.schemaOf(field)._ui.description}}"
     	   ng-model="valueElement._value"
            ng-disabled="!$root.isRuntime() || preview"
     	   validate-on="blur"
     	   ng-pattern= "/^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/"
     	   with-floating-label="" />
-    <span class="warning-text">{{field._ui.warningText}}</span>
+    <span class="warning-text">{{$root.schemaOf(field)._ui.warningText}}</span>
     <div class="input-indicator-icons ng-valid ng-scope"
         ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
     <div class="more-input-wrapper" ng-include="'scripts/form/partials/more-input-buttons.partial.html'" ng-show="!field.maxItems || field.maxItems > 1 || (field.maxItems ==1 && field.minItems ==0)"></div>
@@ -25,14 +25,14 @@
         class="form-control"
         ng-class="{'required': $root.propertiesOf(field)._valueConstraints.requiredValue}"
         id="emailfield1"
-        placeholder="{{field._ui.title}}"
-        aria-label="{{field._ui.description}}"
+        placeholder="{{$root.schemaOf(field)._ui.title}}"
+        aria-label="{{$root.schemaOf(field)._ui.description}}"
         ng-disabled="true"
         validate-on="blur"
         ng-pattern= "/^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/"
         with-floating-label="">
     </input>
-    <span class="warning-text">{{field._ui.warningText}}</span>
+    <span class="warning-text">{{$root.schemaOf(field)._ui.warningText}}</span>
     <div class="input-indicator-icons ng-valid ng-scope"
         ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
 
@@ -43,15 +43,15 @@
            class="form-control"
            ng-class="{'required': $root.propertiesOf(field)._valueConstraints.requiredValue}"
            id="emailfield1"
-           placeholder="{{field._ui.title}}"
-           aria-label="{{field._ui.description}}"
+           placeholder="{{$root.schemaOf(field)._ui.title}}"
+           aria-label="{{$root.schemaOf(field)._ui.description}}"
            ng-model="model._value"
            ng-disabled="!$root.isRuntime() || preview"
            validate-on="blur"
            ng-pattern= "/^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/"
            with-floating-label="">
     </input>
-    <span class="warning-text">{{field._ui.warningText}}</span>
+    <span class="warning-text">{{$root.schemaOf(field)._ui.warningText}}</span>
     <div class="input-indicator-icons ng-valid ng-scope"
         ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
   </div><!-- /.form-group -->

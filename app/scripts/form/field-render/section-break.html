@@ -1,4 +1,4 @@
-<h3 class="section-title">{{field._ui.title}}</h3>
-<p ng-if="field._ui.description.length > 0" class="section-body">{{field._ui.description}}</p>
+<h3 class="section-title">{{$root.schemaOf(field)._ui.title}}</h3>
+<p ng-if="$root.schemaOf(field)._ui.description.length > 0" class="section-body">{{$root.schemaOf(field)._ui.description}}</p>
 
 
