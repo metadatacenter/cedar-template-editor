@@ -4,7 +4,7 @@
   "dependencies": {
     "angular": "~1.5.0",
     "angular-animate": "~1.5.0",
-    "angular-md5": "^0.1.10"
+    "angular-md5": "^0.1.10",
     "angular-mocks": "~1.5.0",
     "angular-resource": "~1.5.0",
     "angular-route": "~1.5.0",
