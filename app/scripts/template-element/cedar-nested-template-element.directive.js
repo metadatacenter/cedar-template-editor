@@ -33,12 +33,9 @@ define([
       //var nested;
 
       var nestElement = function () {
-        console.log('nestElement');
 
         setNested(scope.field);
-
-        var template = '<div>nested-template-element</div><div ng-if="$root.propertiesOf(field)._ui.inputType" > <field-directive field="field" model="model" delete="removeChild(field)" preview="false" rename-child-key="renameChildKey" ></field-directive></div><div ng-if="!$root.propertiesOf(field)._ui.inputType && model !== undefined" class="nested-element"><cedar-template-element key="key" model="model" element="field" preview="preview" delete="removeChild(field)" ></cedar-template-element></div>';
-        console.log(template);
+        var template = '<div ng-if="$root.propertiesOf(field)._ui.inputType" > <field-directive field="field" model="model" delete="removeChild(field)" preview="false" rename-child-key="renameChildKey" ></field-directive></div><div ng-if="!$root.propertiesOf(field)._ui.inputType " class="nested-element"><cedar-template-element key="key" model="model" element="field" preview="preview" delete="removeChild(field)" ></cedar-template-element></div>';
         $compile(template)(scope, function (cloned, scope) {
           element.html(cloned);
         });
