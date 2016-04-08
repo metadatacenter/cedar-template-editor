@@ -7,9 +7,9 @@ define([
   angular.module('cedar.templateEditor.service.dataManipulationService', [])
       .service('DataManipulationService', DataManipulationService);
 
-  DataManipulationService.$inject = ['DataTemplateService', 'DataUtilService', 'UrlService'];
+  DataManipulationService.$inject = ['DataTemplateService', 'DataUtilService', 'UrlService', 'FieldTypeService'];
 
-  function DataManipulationService(DataTemplateService, DataUtilService, UrlService) {
+  function DataManipulationService(DataTemplateService, DataUtilService, UrlService, FieldTypeService) {
 
     // Base path to generate field ids
     // TODO: fields will be saved as objects on server, they will get their id there
@@ -34,9 +34,16 @@ define([
       } else if (fieldType == "list") {
         valueType = "array";
       }
-      var field = DataTemplateService.getField(this.generateTempGUID());
+
+      var field;
+      if (FieldTypeService.isStaticField(fieldType)) {
+        field = DataTemplateService.getStaticField(this.generateTempGUID());
+      } else {
+        field = DataTemplateService.getField(this.generateTempGUID());
+        field.properties._value.type = valueType;
+      }
       field._ui.inputType = fieldType;
-      field.properties._value.type = valueType;
+      //field.properties._value.type = valueType;
       return field;
     };
 

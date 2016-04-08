@@ -83,7 +83,6 @@ define([
     // Add newly configured field to the element object
     $scope.addFieldToTemplate = function (fieldType) {
 
-      console.log('addFieldToTemplate ');
       populateCreatingFieldOrElement();
       if (dontHaveCreatingFieldOrElement()) {
 

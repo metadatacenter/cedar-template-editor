@@ -450,10 +450,10 @@ define([
         return (p._tmp.state == "creating");
       };
 
-      $scope.isEditState = function () {
+      $scope.isNested = function () {
         var p = $rootScope.propertiesOf($scope.field);
         p._tmp = p._tmp || {};
-        return (p._tmp.state == "creating");
+        return (p._tmp.nested || false);
       };
 
       /**
