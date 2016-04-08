@@ -12,27 +12,37 @@ define([
     'AuthorizedBackendService',
     'Cedar',
     'HttpBuilderService',
+    'UISettingsService',
     'UrlService'
   ];
 
-  function resourceService($http, $timeout, authorizedBackendService, cedar, httpBuilderService, urlService) {
+  function resourceService($http, $timeout, authorizedBackendService, cedar, httpBuilderService, uiSettingsService, urlService) {
 
     var service = {
       getResources: getResources
     };
     return service;
 
-    function getResources() {
+    function getResources(options = {}, successCallback, errorCallback) {
       var homeDir = cedar.getHome();
-      var url = urlService.folders() + '?path=' + homeDir + '&resource_types=field,element,template,instance&limit=50&offset=0';
+      var resourceTypes = options.resourceTypes || uiSettingsService.getResourceTypeFilters().map(function(obj) { return obj.resourceType });
+      var url = urlService.folders() + '?path=' + homeDir + '&resource_types=' + resourceTypes.join(',');
+      if (options.sort) {
+        url += '&sort=' + options.sort;
+      }
+      if (options.limit) {
+        url += '&limit=' + options.limit;
+      }
+      if (options.offset) {
+        url += '&offset=' + options.offset;
+      }
+
       authorizedBackendService.doCall(
         httpBuilderService.get(url),
         function(response) {
-          debugger;
+          successCallback(response.data);
         },
-        function(error) {
-          debugger;
-        }
+        errorCallback
       );
     }
 

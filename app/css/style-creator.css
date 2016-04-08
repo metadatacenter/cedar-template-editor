@@ -9437,6 +9437,31 @@ i {
 .all-items-view .populate-form-boxes .form-box .box-content p {
   line-height: 1;
 }
+.all-items-view .populate-form-boxes .form-box .quick-details-box {
+  display: none;
+}
+.all-items-view .populate-form-boxes .form-box:hover {
+  background: #2f7dab;
+}
+.all-items-view .populate-form-boxes .form-box:hover .box-content {
+  display: none;
+}
+.all-items-view .populate-form-boxes .form-box:hover .quick-details-box {
+  padding: 20px;
+  color: #ffffff;
+  display: block;
+  text-align: center;
+}
+.all-items-view .populate-form-boxes .form-box:hover .quick-details-box .btn-circle {
+  border-radius: 50%;
+  width: 30px;
+}
+.all-items-view .populate-form-boxes .form-box:hover .quick-details-box .btn-info.btn-circle {
+  box-shadow: none;
+  background: #ffffff;
+  color: #666666;
+  border: none;
+}
 /* End All Items View */
 .template-header {
   width: 100%;

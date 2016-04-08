@@ -10,6 +10,7 @@ define([
     $routeProvider
       .when('/', {
         controller: 'DashboardController',
+        controllerAs: 'dc',
         templateUrl: 'scripts/dashboard/dashboard.html',
       });
   }
