@@ -30,8 +30,6 @@ define([
 
     function linker(scope, element, attrs) {
 
-      //var nested;
-
       var nestElement = function () {
 
         setNested(scope.field);
@@ -70,8 +68,6 @@ define([
           var rootKey = $rootScope.keyOfRootElement;
           var parentKey = getKey(scope.$parent.element);
           result = parentKey && key != rootKey && parentKey != rootKey;
-          console.log('setNested ' + key + ' ' + rootKey + ' ' + parentKey + ' ' + result);
-          console.log(node);
           setNestedValue(node, result);
         }
         return result;
