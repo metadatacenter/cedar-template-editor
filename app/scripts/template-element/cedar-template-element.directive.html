@@ -1,4 +1,5 @@
 <div ng-if="model !== undefined" class="element-root" id="{{$root.getDomId(element)}}">
+  cedar template element
   <div>
     <div class="element-header" ng-class="{'sortable-handler': !$root.isRuntime()}">
       <a ng-click="switchExpandedState()" class="visibilitySwitch"><i class="cedar-svg-collapse"></i></a>
@@ -72,16 +73,22 @@
         </div>
       </div>
 
-      <!-- have an array with at least no elements -->
+      <!-- have an array with no elements -->
       <div ng-if="!$root.isRuntime() && $root.isArray(model) && model.length == 0" class="element"  ng-class="['element-0']">
+        zero cardinality case
         <div ui-sortable="$root.sortableOptions" ng-model="element._ui.order" class="sortable-container">
+          zero cardinality case {{element['_ui']['order']}}
           <div ng-repeat="key in element['_ui']['order']">
-            <div ng-if="$root.propertiesOf(element)[key]">
+
+            <div ng-if="true">
+              <div> zero case for nested template element={{key}} model={{m[key]}}</div>
               <cedar-nested-template-element key="key"
                   field="$root.propertiesOf(element)[key]"
                   model="m[key]"
+                  preview="preview",
                   remove-child="removeChild"
-                  rename-child-key="renameChildKey">
+                  rename-child-key="renameChildKey"
+                  >
               </cedar-nested-template-element>
             </div>
           </div>

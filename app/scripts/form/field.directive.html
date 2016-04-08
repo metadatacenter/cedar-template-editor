@@ -1,4 +1,6 @@
+
 <div class="field-root" id="{{$root.getDomId(field)}}">
+  field-root model={{model}}  isArray{{$root.isArray(model)}}
   <div class="sortable-handler" ng-if="!preview && !$root.isRuntime()"><span class="sortable-icon"></span></div>
 
   <!-- field title first -->
@@ -13,6 +15,7 @@
 
       <!-- show this add button only when you have minCardinality 0 and an empty list -->
     <span class="zero-input-wrapper" ng-show="$root.isRuntime() && $root.isArray(model) && model.length == 0">
+      zero cardinality case field directive
       <button type="button" class="add" ng-click="addMoreInput()">
         <i class="fa fa-plus"></i>
 

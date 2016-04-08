@@ -33,8 +33,12 @@ define([
       //var nested;
 
       var nestElement = function () {
+        console.log('nestElement');
+
         setNested(scope.field);
-        var template = '<div ng-if="$root.propertiesOf(field)._ui.inputType" ng-class="{&quot;field-instance&quot;:true, &quot;multiple-instance-field&quot;:$root.isArray(model)}"> <field-directive field="field" model="model" delete="removeChild(field)" preview="preview" rename-child-key="renameChildKey" ></field-directive></div><div ng-if="!$root.propertiesOf(field)._ui.inputType && model !== undefined" class="nested-element"><cedar-template-element key="key" model="model" element="field" preview="preview" delete="removeChild(field)" ></cedar-template-element></div>';
+
+        var template = '<div>nested-template-element</div><div ng-if="$root.propertiesOf(field)._ui.inputType" > <field-directive field="field" model="model" delete="removeChild(field)" preview="false" rename-child-key="renameChildKey" ></field-directive></div><div ng-if="!$root.propertiesOf(field)._ui.inputType && model !== undefined" class="nested-element"><cedar-template-element key="key" model="model" element="field" preview="preview" delete="removeChild(field)" ></cedar-template-element></div>';
+        console.log(template);
         $compile(template)(scope, function (cloned, scope) {
           element.html(cloned);
         });
@@ -63,14 +67,16 @@ define([
       };
 
       var setNested = function (node) {
-        var key = getKey(node);
-        var rootKey = $rootScope.keyOfRootElement;
-        var parentKey = getKey(scope.$parent.element);
-        var result = parentKey && key != rootKey && parentKey != rootKey;
-
-        //console.log('setNested ' + key + ' ' + rootKey + ' ' +  parentKey + ' ' +  result);
-
-        setNestedValue(node, result);
+        var result = false;
+        if (node) {
+          var key = getKey(node);
+          var rootKey = $rootScope.keyOfRootElement;
+          var parentKey = getKey(scope.$parent.element);
+          result = parentKey && key != rootKey && parentKey != rootKey;
+          console.log('setNested ' + key + ' ' + rootKey + ' ' + parentKey + ' ' + result);
+          console.log(node);
+          setNestedValue(node, result);
+        }
         return result;
       };
 
@@ -78,7 +84,7 @@ define([
         nestElement();
       }
 
-      scope.$watch("field", function() {
+      scope.$watch("field", function () {
         if (scope.field && !getNestedValue(scope.field)) {
           nestElement();
         }
