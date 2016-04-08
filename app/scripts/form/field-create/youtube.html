@@ -5,14 +5,14 @@
     <input type="text" class="form-control"
         id="youtube-name-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}"
         placeholder="Video Name (Optional)" aria-label="Video Name (Optional)"
-        ng-model="$root.propertiesOf(field)._ui.title" with-floating-label>
+        ng-model="field._ui.title" with-floating-label>
   </div>
   <!-- /.form-group -->
   <div class="form-group floating-label-wrapper">
     <input type="text" class="form-control"
         id="youtube-description-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}"
         placeholder="Video Description (Optional)" aria-label="Video Description (Optional)"
-        ng-model="$root.propertiesOf(field)._ui.description" with-floating-label>
+        ng-model="field._ui.description" with-floating-label>
   </div>
   <!-- /.form-group -->
   <div class="form-group floating-label-wrapper">

@@ -4,7 +4,7 @@
            id="placeholder-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}"
            placeholder="{{'CREATOR.enterFieldTitle' | translate}}"
            aria-label="{{'CREATOR.enterFieldTitle' | translate}}"
-           ng-model="$root.propertiesOf(field)._ui.title"
+           ng-model="field._ui.title"
            with-floating-label>
 </div><!-- /.form-group -->
 <div class="form-group floating-label-wrapper">
@@ -13,6 +13,6 @@
            id="help-text-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}"
            placeholder="{{'CREATOR.enterFieldDescription' | translate}}"
            aria-label="{{'CREATOR.enterFieldDescription' | translate}}"
-           ng-model="$root.propertiesOf(field)._ui.description"
+           ng-model="field._ui.description"
            with-floating-label>
 </div><!-- /.form-group -->

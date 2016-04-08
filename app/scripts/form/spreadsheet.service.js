@@ -130,7 +130,7 @@ define([
             var items = field.items;
             if (items != null && items.hasOwnProperty('properties')) {
 
-              var _ui = field.items.properties._ui;
+              var _ui = field.items._ui;
               var inputType = _ui.inputType;
 
               if (inputType == 'date') {

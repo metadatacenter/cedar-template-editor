@@ -105,7 +105,7 @@ define([
                 } else if (angular.isObject(valueElement._value)) {
                   if ($rootScope.isEmpty(valueElement._value)) {
                     allRequiredFieldsAreFilledIn = false;
-                  } else if ($rootScope.propertiesOf($scope.field)._ui.dateType == "date-range") {
+                  } else if (DataManipulationService.getFieldSchema($scope.field)._ui.dateType == "date-range") {
                     if (!valueElement._value.start || !valueElement._value.end) {
                       allRequiredFieldsAreFilledIn = false;
                     }
@@ -139,7 +139,7 @@ define([
             } else if (angular.isObject($scope.model._value)) {
               if ($rootScope.isEmpty($scope.model._value)) {
                 allRequiredFieldsAreFilledIn = false;
-              } else if ($rootScope.propertiesOf($scope.field)._ui.dateType == "date-range") {
+              } else if (DataManipulationService.getFieldSchema($scope.field)._ui.dateType == "date-range") {
                 if (!$scope.model._value.start || !$scope.model._value.end) {
                   allRequiredFieldsAreFilledIn = false;
                 }
@@ -159,14 +159,14 @@ define([
 
           if (!allRequiredFieldsAreFilledIn) {
             // add this field instance the the emptyRequiredField array
-            $scope.$emit('emptyRequiredField', ['add', $rootScope.propertiesOf($scope.field)._ui.title, $scope.uuid]);
+            $scope.$emit('emptyRequiredField', ['add', DataManipulationService.getFieldSchema($scope.field)._ui.title, $scope.uuid]);
           }
         }
 
         // If field is required and is not empty, check to see if it needs to be removed from empty fields array
         if ($rootScope.propertiesOf($scope.field)._valueConstraints.requiredValue && allRequiredFieldsAreFilledIn) {
           //remove from emptyRequiredField array
-          $scope.$emit('emptyRequiredField', ['remove', $rootScope.propertiesOf($scope.field)._ui.title, $scope.uuid]);
+          $scope.$emit('emptyRequiredField', ['remove', DataManipulationService.getFieldSchema($scope.field)._ui.title, $scope.uuid]);
         }
 
         var allFieldsAreValid = true;
@@ -206,13 +206,13 @@ define([
 
           if (!allFieldsAreValid) {
             // add this field instance the the invalidFieldValues array
-            $scope.$emit('invalidFieldValues', ['add', $rootScope.propertiesOf($scope.field)._ui.title, $scope.uuid]);
+            $scope.$emit('invalidFieldValues', ['add', DataManipulationService.getFieldSchema($scope.field)._ui.title, $scope.uuid]);
           }
         }
 
         if (allFieldsAreValid) {
           //remove from emptyRequiredField array
-          $scope.$emit('invalidFieldValues', ['remove', $rootScope.propertiesOf($scope.field)._ui.title, $scope.uuid]);
+          $scope.$emit('invalidFieldValues', ['remove', DataManipulationService.getFieldSchema($scope.field)._ui.title, $scope.uuid]);
         }
       });
 
@@ -220,16 +220,16 @@ define([
         var p = $rootScope.propertiesOf($scope.field);
         if (p._tmp && p._tmp.state == "creating") {
           $scope.$emit("invalidFieldState",
-              ["add", $rootScope.propertiesOf($scope.field)._ui.title, $scope.field["@id"]]);
+              ["add", DataManipulationService.getFieldSchema($scope.field)._ui.title, $scope.field["@id"]]);
         } else {
           $scope.$emit("invalidFieldState",
-              ["remove", $rootScope.propertiesOf($scope.field)._ui.title, $scope.field["@id"]]);
+              ["remove", DataManipulationService.getFieldSchema($scope.field)._ui.title, $scope.field["@id"]]);
         }
       });
 
-      var field = $rootScope.propertiesOf($scope.field)._ui
+      var uiField = DataManipulationService.getFieldSchema($scope.field)._ui
       // Checking each field to see if required, will trigger flag for use to see there is required fields
-      if (field.required) {
+      if (uiField.required) {
         $scope.$emit('formHasRequiredFields');
       }
 
@@ -240,16 +240,16 @@ define([
             if ($scope.model.length == 0) {
               var min = $scope.field.minItems || 0;
 
-              if (field.defaultOption) {
+              if (uiField.defaultOption) {
                 for (var i = 0; i < min; i++) {
-                  $scope.model[i]["_value"] = angular.copy(field.defaultOption);
+                  $scope.model[i]["_value"] = angular.copy(uiField.defaultOption);
                 }
               } else {
                 for (var i = 0; i < min; i++) {
-                  if (['checkbox'].indexOf(field.inputType) >= 0 ||
-                      ['date'].indexOf(field.inputType) >= 0 && field.dateType == "date-range") {
+                  if (['checkbox'].indexOf(uiField.inputType) >= 0 ||
+                      ['date'].indexOf(uiField.inputType) >= 0 && uiField.dateType == "date-range") {
                     $scope.model[i]['_value'] = {};
-                  } else if (['list'].indexOf(field.inputType) >= 0) {
+                  } else if (['list'].indexOf(uiField.inputType) >= 0) {
                     $scope.model[i]['_value'] = [];
                   } else {
                     $scope.model[i]['_value'] = "";
@@ -259,13 +259,13 @@ define([
             } else {
               angular.forEach($scope.model, function (m, i) {
                 if (!("_value" in m)) {
-                  if (field.defaultOption) {
-                    $scope.model[i]["_value"] = angular.copy(field.defaultOption);
+                  if (uiField.defaultOption) {
+                    $scope.model[i]["_value"] = angular.copy(uiField.defaultOption);
                   } else {
-                    if (['checkbox'].indexOf(field.inputType) >= 0 ||
-                        ['date'].indexOf(field.inputType) >= 0 && field.dateType == "date-range") {
+                    if (['checkbox'].indexOf(uiField.inputType) >= 0 ||
+                        ['date'].indexOf(uiField.inputType) >= 0 && uiField.dateType == "date-range") {
                       $scope.model[i]['_value'] = {};
-                    } else if (['list'].indexOf(field.inputType) >= 0) {
+                    } else if (['list'].indexOf(uiField.inputType) >= 0) {
                       $scope.model[i]['_value'] = [];
                     } else {
                       $scope.model[i]['_value'] = "";
@@ -277,13 +277,13 @@ define([
             }
           } else {
             if (!("_value" in $scope.model)) {
-              if (field.defaultOption) {
-                $scope.model["_value"] = angular.copy(field.defaultOption);
+              if (uiField.defaultOption) {
+                $scope.model["_value"] = angular.copy(uiField.defaultOption);
               } else {
-                if (['checkbox'].indexOf(field.inputType) >= 0 ||
-                    ['date'].indexOf(field.inputType) >= 0 && field.dateType == "date-range") {
+                if (['checkbox'].indexOf(uiField.inputType) >= 0 ||
+                    ['date'].indexOf(uiField.inputType) >= 0 && uiField.dateType == "date-range") {
                   $scope.model['_value'] = {};
-                } else if (['list'].indexOf(field.inputType) >= 0) {
+                } else if (['list'].indexOf(uiField.inputType) >= 0) {
                   $scope.model['_value'] = [];
                 } else {
                   $scope.model['_value'] = "";
@@ -297,11 +297,11 @@ define([
 
       $scope.uuid = DataManipulationService.generateTempGUID();
 
-      // Retrive appropriate field template file
+      // Retrieve appropriate field template file
       $scope.getTemplateUrl = function () {
         var inputType = 'element';
-        if ($rootScope.propertiesOf($scope.field)._ui.inputType) {
-          inputType = $rootScope.propertiesOf($scope.field)._ui.inputType;
+        if (DataManipulationService.getFieldSchema($scope.field)._ui.inputType) {
+          inputType = DataManipulationService.getFieldSchema($scope.field)._ui.inputType;
         }
 
         return 'scripts/form/field-' + $scope.directory + '/' + inputType + '.html';
@@ -314,13 +314,13 @@ define([
             seed = angular.copy($scope.model[0]);
           }
 
-          if (field.defaultOption) {
-            seed["_value"] = angular.copy(field.defaultOption);
+          if (uiField.defaultOption) {
+            seed["_value"] = angular.copy(uiField.defaultOption);
           } else {
-            if (['checkbox'].indexOf(field.inputType) >= 0 ||
-                ['date'].indexOf(field.inputType) >= 0 && field.dateType == "date-range") {
+            if (['checkbox'].indexOf(uiField.inputType) >= 0 ||
+                ['date'].indexOf(uiField.inputType) >= 0 && uiField.dateType == "date-range") {
               seed['_value'] = {};
-            } else if (['list'].indexOf(field.inputType) >= 0) {
+            } else if (['list'].indexOf(uiField.inputType) >= 0) {
               seed['_value'] = [];
             } else {
               seed['_value'] = "";
@@ -364,19 +364,20 @@ define([
         }
       }, true);
 
-      $scope.checkFieldConditions = function (properties) {
+      $scope.checkFieldConditions = function (field) {
+        //var properties = field.properties;
         var unmetConditions = [],
             extraConditionInputs = ['checkbox', 'radio', 'list'];
 
         // Field title is already required, if it's empty create error message
-        if (!properties._ui.title) {
+        if (!field._ui.title) {
           unmetConditions.push('"Enter Field Title" input cannot be left empty.');
         }
 
         // If field is within multiple choice field types
-        if (extraConditionInputs.indexOf(properties._ui.inputType) !== -1) {
+        if (extraConditionInputs.indexOf(field._ui.inputType) !== -1) {
           var optionMessage = '"Enter Option" input cannot be left empty.';
-          angular.forEach(properties._ui.options, function (value, index) {
+          angular.forEach(field._ui.options, function (value, index) {
             // If any 'option' title text is left empty, create error message
             if (!value.text.length && unmetConditions.indexOf(optionMessage) == -1) {
               unmetConditions.push(optionMessage);
@@ -384,7 +385,7 @@ define([
           });
         }
         // If field type is 'radio' or 'pick from a list' there must be more than one option created
-        if ((properties._ui.inputType == 'radio' || properties._ui.inputType == 'list') && properties._ui.options && (properties._ui.options.length <= 1)) {
+        if ((field._ui.inputType == 'radio' || field._ui.inputType == 'list') && field._ui.options && (field._ui.options.length <= 1)) {
           unmetConditions.push('Multiple Choice fields must have at least two possible options');
         }
         // Return array of error messages
@@ -393,14 +394,13 @@ define([
 
       // Switch from creating to completed.
       $scope.add = function () {
-        var p = $rootScope.propertiesOf($scope.field);
-        $scope.errorMessages = $scope.checkFieldConditions(p);
+        $scope.errorMessages = $scope.checkFieldConditions($scope.field);
         $scope.errorMessages = jQuery.merge($scope.errorMessages,
             ClientSideValidationService.checkFieldCardinalityOptions($scope.field));
 
         if ($scope.errorMessages.length == 0) {
 
-          if (!p._ui.is_cardinal_field) {
+          if (!DataManipulationService.getFieldSchema($scope.field)._ui.is_cardinal_field) {
             delete $scope.field.minItems;
             delete $scope.field.maxItems;
           }
@@ -418,12 +418,12 @@ define([
           delete $rootScope.propertiesOf($scope.field)._tmp;
 
           if ($scope.renameChildKey) {
-            var key = DataManipulationService.getFieldName(p._ui.title);
+            var key = DataManipulationService.getFieldName(DataManipulationService.getFieldSchema($scope.field)._ui.title);
             $scope.renameChildKey($scope.field, key);
           }
 
           $scope.$emit("invalidFieldState",
-              ["remove", $rootScope.propertiesOf($scope.field)._ui.title, $scope.field["@id"]]);
+              ["remove", DataManipulationService.getFieldSchema($scope.field)._ui.title, $scope.field["@id"]]);
           parseField();
         }
       };
@@ -434,7 +434,7 @@ define([
           "text": ""
         };
 
-        $rootScope.propertiesOf($scope.field)._ui.options.push(emptyOption);
+        DataManipulationService.getFieldSchema($scope.field)._ui.options.push(emptyOption);
       };
 
       $scope.edit = function () {
@@ -463,8 +463,8 @@ define([
 
         var fieldTypes = FieldTypeService.getFieldTypes();
         var inputType = 'element';
-        if ($rootScope.propertiesOf($scope.field)._ui.inputType) {
-          inputType = $rootScope.propertiesOf($scope.field)._ui.inputType;
+        if (DataManipulationService.getFieldSchema($scope.field)._ui.inputType) {
+          inputType = DataManipulationService.getFieldSchema($scope.field)._ui.inputType;
           for (var i = 0; i < fieldTypes.length; i++) {
             if (fieldTypes[i].cedarType === inputType) {
               return fieldTypes[i].hasControlledTerms;
@@ -503,7 +503,7 @@ define([
 
       $scope.$watch("model", function () {
         if ($scope.directory == "render" &&
-            $rootScope.propertiesOf($scope.field)._ui.inputType == "textfield" &&
+            DataManipulationService.getFieldSchema($scope.field)._ui.inputType == "textfield" &&
             $rootScope.hasValueConstraint($rootScope.propertiesOf($scope.field)._valueConstraints)) {
           if ($rootScope.isArray($scope.model)) {
             $scope.modelValue = [];

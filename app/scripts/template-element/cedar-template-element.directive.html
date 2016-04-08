@@ -5,7 +5,7 @@
       <a ng-click="switchExpandedState()" class="visibilitySwitch" style="display:none;"><i class="cedar-svg-expand"></i></a>
 
       <p class="element-name-label">
-        <span  ng-class="{'sortable-icon': !$root.isRuntime()}" ></span><i class="cedar-svg-element"></i>{{$root.propertiesOf(element)._ui.title}}
+        <span  ng-class="{'sortable-icon': !$root.isRuntime()}" ></span><i class="cedar-svg-element"></i>{{element._ui.title}}
       </p>
       <span class="multiple-instance-cardinality" ng-show="!$root.isRuntime() && $root.elementIsMultiInstance(element)">
         {{element.minItems}} .. {{element.maxItems || "Unlimited"}}
@@ -88,13 +88,13 @@
         <div class="row">
           <div class="configuration-options element-configuration-options col-lg-9 pull-left">
             <div class="checkbox checkbox-inline checkbox-cardinality">
-              <input type="checkbox" id="cardinality-{{element['@id'].substring(element['@id'].lastIndexOf('/')+1)}}" ng-model="$root.propertiesOf(element)._ui.is_cardinal_field" />
+              <input type="checkbox" id="cardinality-{{element['@id'].substring(element['@id'].lastIndexOf('/')+1)}}" ng-model="element._ui.is_cardinal_field" />
               <label for="cardinality-{{element['@id'].substring(element['@id'].lastIndexOf('/')+1)}}">Cardinality</label>
             </div><!-- /.checkbox-inline -->
             <div class="clearfix"></div>
 
             <!-- Cardinality Options -->
-            <div id="cardinality-options" class="cardinality-options" ng-show="$root.propertiesOf(element)._ui.is_cardinal_field">
+            <div id="cardinality-options" class="cardinality-options" ng-show="element._ui.is_cardinal_field">
               <div class="form-group validation-pattern pull-left min-items-option">
                 <label>Min:</label>
                 <select class=""

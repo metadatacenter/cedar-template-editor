@@ -6,17 +6,17 @@
       ng-class="{'required': $root.propertiesOf(field)._valueConstraints.requiredValue}"
       ng-repeat="valueElement in model">
     <div class="form-group field-wrapper-radio  ">
-      <p class="extra-label-context">{{$root.propertiesOf(field)._ui.title}}</p>
+      <p class="extra-label-context">{{field._ui.title}}</p>
 
-      <div class="form-group radio-item" ng-repeat="(index, value) in $root.propertiesOf(field)._ui.options">
+      <div class="form-group radio-item" ng-repeat="(index, value) in field._ui.options">
         <div class="radio radio-primary">
           <input type="radio"
               id="radio-{{uuid}}-{{$parent.$index}}-{{index}}"
               name="radio-{{uuid}}-{{$parent.$index}}-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}"
               ng-model="valueElement._value"
               ng-disabled="!$root.isRuntime() || preview"
-              ng-value="$root.propertiesOf(field)._ui.options[index]['text']"/>
-          <label for="radio-{{uuid}}-{{$parent.$index}}-{{index}}">{{$root.propertiesOf(field)._ui.options[index]['text']}}</label>
+              ng-value="field._ui.options[index]['text']"/>
+          <label for="radio-{{uuid}}-{{$parent.$index}}-{{index}}">{{field._ui.options[index]['text']}}</label>
         </div>
         <div class="input-indicator-icons ng-valid ng-scope"
             ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
@@ -31,17 +31,17 @@
   <!-- empty list -->
   <div ng-if="$root.isArray(model) && model.length == 0 && !$root.isRuntime()"  class="form-group  floating-label-wrapper ng-scope">
     <div class="form-group field-wrapper-radio  ">
-      <p class="extra-label-context">{{$root.propertiesOf(field)._ui.title}}</p>
+      <p class="extra-label-context">{{field._ui.title}}</p>
 
-      <div class="form-group radio-item" ng-repeat="(index, value) in $root.propertiesOf(field)._ui.options">
+      <div class="form-group radio-item" ng-repeat="(index, value) in field._ui.options">
         <div class="radio radio-primary">
           <input type="radio"
               id="radio-{{uuid}}-{{$parent.$index}}-{{index}}"
               name="radio-{{uuid}}-{{$parent.$index}}-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}"
               ng-model="model._value"
               ng-disabled="true"
-              ng-value="$root.propertiesOf(field)._ui.options[index]['text']"/>
-          <label for="radio-{{uuid}}-{{$parent.$index}}-{{index}}">{{$root.propertiesOf(field)._ui.options[index]['text']}}</label>
+              ng-value="field._ui.options[index]['text']"/>
+          <label for="radio-{{uuid}}-{{$parent.$index}}-{{index}}">{{field._ui.options[index]['text']}}</label>
         </div>
         <div class="input-indicator-icons ng-valid ng-scope"
             ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
@@ -52,18 +52,18 @@
   <!-- just one object -->
   <div ng-if="!$root.isArray(model)" class="form-group  floating-label-wrapper ng-scope">
     <div class="form-group field-wrapper-radio  ">
-      <p class="extra-label-context">{{$root.propertiesOf(field)._ui.title}}</p>
+      <p class="extra-label-context">{{field._ui.title}}</p>
 
-      <div class="form-group radio-item" ng-repeat="(index, value) in $root.propertiesOf(field)._ui.options">
+      <div class="form-group radio-item" ng-repeat="(index, value) in field._ui.options">
         <div class="radio radio-primary">
           <input type="radio"
               id="radio-{{uuid}}-{{$parent.$index}}-{{index}}"
               name="radio-{{uuid}}-{{$parent.$index}}-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}"
               ng-model="model._value"
               ng-disabled="!$root.isRuntime() || preview"
-              ng-value="$root.propertiesOf(field)._ui.options[index]['text']"/>
+              ng-value="field._ui.options[index]['text']"/>
           <label
-              for="radio-{{uuid}}-{{$parent.$index}}-{{index}}">{{$root.propertiesOf(field)._ui.options[index]['text']}}</label>
+              for="radio-{{uuid}}-{{$parent.$index}}-{{index}}">{{field._ui.options[index]['text']}}</label>
         </div>
         <div class="input-indicator-icons ng-valid ng-scope"
             ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>

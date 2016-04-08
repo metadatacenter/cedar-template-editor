@@ -30,7 +30,7 @@ define([
 
     function linker(scope, element, attrs) {
       var nestElement = function() {
-        var template = '<div ng-if="$root.propertiesOf(field)._ui.inputType" ng-class="{&quot;field-instance&quot;:true, &quot;multiple-instance-field&quot;:$root.isArray(model)}"> <field-directive field="field" model="model" delete="removeChild(field)" preview="preview" rename-child-key="renameChildKey"></field-directive></div><div ng-if="!$root.propertiesOf(field)._ui.inputType && model !== undefined" class="nested-element"><cedar-template-element key="key" model="model" element="field" preview="preview" delete="removeChild(field)"></cedar-template-element></div>';
+        var template = '<div ng-if="field._ui.inputType" ng-class="{&quot;field-instance&quot;:true, &quot;multiple-instance-field&quot;:$root.isArray(model)}"> <field-directive field="$root.schemaOf(field)" model="model" delete="removeChild(field)" preview="preview" rename-child-key="renameChildKey"></field-directive></div><div ng-if="!field._ui.inputType && model !== undefined" class="nested-element"><cedar-template-element key="key" model="model" element="field" preview="preview" delete="removeChild(field)"></cedar-template-element></div>';
         $compile(template)(scope, function(cloned, scope){
   		  element.html(cloned);
   		});

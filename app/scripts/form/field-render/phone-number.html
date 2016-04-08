@@ -1,19 +1,19 @@
 <div class="fields fields-phone-number">
   <div ng-if="$root.isArray(model)" class="form-group floating-label-wrapper" ng-repeat="valueElement in model">
-    <!--<p class="extra-label-context" ng-if="!$root.isRuntime() && $root.propertiesOf(field)._ui.title">-->
-      <!--{{$root.propertiesOf(field)._ui.title}}</p>-->
+    <!--<p class="extra-label-context" ng-if="!$root.isRuntime() && field._ui.title">-->
+      <!--{{field._ui.title}}</p>-->
     <input type="text"
         class="form-control"
         ng-class="{'required': $root.propertiesOf(field)._valueConstraints.requiredValue}"
         id="telephone1"
-        placeholder="{{$root.propertiesOf(field)._ui.title}}"
-        aria-label="{{$root.propertiesOf(field)._ui.description}}"
+        placeholder="{{field._ui.title}}"
+        aria-label="{{field._ui.description}}"
         ng-model="valueElement._value"
         ng-disabled="!$root.isRuntime() || preview"
         validate-on="blur"
         ng-pattern="/(\W|^)[(]{0,1}\d{3}[)]{0,1}[\s-]{0,1}\d{3}[\s-]{0,1}\d{4}(\W|$)/"
         with-floating-label=""/>
-    <span class="warning-text">{{$root.propertiesOf(field)._ui.warningText}}</span>
+    <span class="warning-text">{{field._ui.warningText}}</span>
 
     <div class="input-indicator-icons ng-valid ng-scope"
         ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
@@ -31,15 +31,15 @@
           class="form-control"
           ng-class="{'required': $root.propertiesOf(field)._valueConstraints.requiredValue}"
           id="telephone1"
-          placeholder="{{$root.propertiesOf(field)._ui.title}}"
-          aria-label="{{$root.propertiesOf(field)._ui.description}}"
+          placeholder="{{field._ui.title}}"
+          aria-label="{{field._ui.description}}"
           ng-model="model._value"
           ng-disabled="true"
           validate-on="blur"
           ng-pattern="/(\W|^)[(]{0,1}\d{3}[)]{0,1}[\s-]{0,1}\d{3}[\s-]{0,1}\d{4}(\W|$)/"
           with-floating-label="">
       </input>
-      <span class="warning-text">{{$root.propertiesOf(field)._ui.warningText}}</span>
+      <span class="warning-text">{{field._ui.warningText}}</span>
 
       <div class="input-indicator-icons ng-valid ng-scope"
           ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
@@ -53,15 +53,15 @@
         class="form-control"
         ng-class="{'required': $root.propertiesOf(field)._valueConstraints.requiredValue}"
         id="telephone1"
-        placeholder="{{$root.propertiesOf(field)._ui.title}}"
-        aria-label="{{$root.propertiesOf(field)._ui.description}}"
+        placeholder="{{field._ui.title}}"
+        aria-label="{{field._ui.description}}"
         ng-model="model._value"
         ng-disabled="!$root.isRuntime() || preview"
         validate-on="blur"
         ng-pattern="/(\W|^)[(]{0,1}\d{3}[)]{0,1}[\s-]{0,1}\d{3}[\s-]{0,1}\d{4}(\W|$)/"
         with-floating-label="">
     </input>
-    <span class="warning-text">{{$root.propertiesOf(field)._ui.warningText}}</span>
+    <span class="warning-text">{{field._ui.warningText}}</span>
 
     <div class="input-indicator-icons ng-valid ng-scope"
         ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>

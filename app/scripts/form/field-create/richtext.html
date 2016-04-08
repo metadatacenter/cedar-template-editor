@@ -1,10 +1,10 @@
 <div id="richtext-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}" class="input-type-container section-break">
   <p class="type-label"><i class="cedar-svg-rich-text"></i>Rich Text</p>
   <div class="form-group floating-label-wrapper">
-    <input type="text" class="form-control" id="richtext-name-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}" placeholder="Rich Text Name (Optional)" aria-label="Rich Text Name (Optional)" ng-model="$root.propertiesOf(field)._ui.title"  with-floating-label>
+    <input type="text" class="form-control" id="richtext-name-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}" placeholder="Rich Text Name (Optional)" aria-label="Rich Text Name (Optional)" ng-model="field._ui.title"  with-floating-label>
   </div><!-- /.form-group -->
   <div class="form-group floating-label-wrapper">
-    <input type="text" class="form-control" id="richtext-description-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}" placeholder="Rich Text Description (Optional)" aria-label="Rich Text Description (Optional)" ng-model="$root.propertiesOf(field)._ui.description"  with-floating-label>
+    <input type="text" class="form-control" id="richtext-description-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}" placeholder="Rich Text Description (Optional)" aria-label="Rich Text Description (Optional)" ng-model="field._ui.description"  with-floating-label>
   </div><!-- /.form-group -->
   <div class="form-group floating-label-wrapper">
     <textarea ckeditor="editorOptions" rows="5" type="text" class="form-control"

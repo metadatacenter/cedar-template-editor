@@ -37,16 +37,16 @@ define([
           if (!DataUtilService.isSpecialKey(key)) {
             if (key == "_value") {
               if (angular.isArray(model)) {
-                if ($rootScope.propertiesOf(settings)._ui.inputType == "list") {
-                  if ($rootScope.propertiesOf(settings)._ui.defaultOption) {
-                    el[key] = angular.copy($rootScope.propertiesOf(settings)._ui.defaultOption);
+                if (settings._ui.inputType == "list") {
+                  if (settings._ui.defaultOption) {
+                    el[key] = angular.copy(settings._ui.defaultOption);
                   } else {
                     model.splice(0, model.length);
                   }
                 } else {
                   for (var i = 0; i < model.length; i++) {
-                    if ($rootScope.propertiesOf(settings)._ui.defaultOption) {
-                      model[i]["_value"] = angular.copy($rootScope.propertiesOf(settings)._ui.defaultOption);
+                    if (settings._ui.defaultOption) {
+                      model[i]["_value"] = angular.copy(settings._ui.defaultOption);
                     } else {
                       if (typeof(model[i]["_value"]) == "string") {
                         model[i]["_value"] = "";
@@ -59,8 +59,8 @@ define([
                   }
                 }
               } else {
-                if ($rootScope.propertiesOf(settings)._ui.defaultOption) {
-                  el[key] = angular.copy($rootScope.propertiesOf(settings)._ui.defaultOption);
+                if (settings._ui.defaultOption) {
+                  el[key] = angular.copy(settings._ui.defaultOption);
                 } else {
                   if (typeof(model) == "string") {
                     el[key] = "";
@@ -79,16 +79,16 @@ define([
                 angular.forEach(model, function(v, k) {
                   if (k == "_value") {
                     if (angular.isArray(v)) {
-                      if ($rootScope.propertiesOf(settings)._ui.inputType == "list") {
-                        if ($rootScope.propertiesOf(settings)._ui.defaultOption) {
-                          model[k] = angular.copy($rootScope.propertiesOf(settings)._ui.defaultOption);
+                      if (settings._ui.inputType == "list") {
+                        if (settings._ui.defaultOption) {
+                          model[k] = angular.copy(settings._ui.defaultOption);
                         } else {
                           v.splice(0, v.length);
                         }
                       } else {
                         for (var i = 0; i < v.length; i++) {
-                          if ($rootScope.propertiesOf(settings)._ui.defaultOption) {
-                            v[i]["_value"] = angular.copy($rootScope.propertiesOf(settings)._ui.defaultOption);
+                          if (settings._ui.defaultOption) {
+                            v[i]["_value"] = angular.copy(settings._ui.defaultOption);
                           } else {
                             if (typeof(v[i]["_value"]) == "string") {
                               v[i]["_value"] = "";
@@ -101,8 +101,8 @@ define([
                         }
                       }
                     } else {
-                      if ($rootScope.propertiesOf(settings)._ui.defaultOption) {
-                        model[k] = angular.copy($rootScope.propertiesOf(settings)._ui.defaultOption);
+                      if (settings._ui.defaultOption) {
+                        model[k] = angular.copy(settings._ui.defaultOption);
                       } else {
                         if (typeof(v) == "string") {
                           model[k] = "";
@@ -150,8 +150,7 @@ define([
       }
 
       if (!scope.state) {
-        var p = $rootScope.propertiesOf(scope.element);
-        if (p && p._ui && p._ui.title) {
+        if (scope.element && scope.element._ui && scope.element._ui.title) {
           scope.state = "completed";
         } else {
           scope.state = "creating";
@@ -223,18 +222,17 @@ define([
 
           if ($rootScope.isElement(fieldOrElement)) {
             scope.$emit("invalidElementState",
-                        ["remove", $rootScope.propertiesOf(fieldOrElement)._ui.title, fieldOrElement["@id"]]);
+                        ["remove", fieldOrElement._ui.title, fieldOrElement["@id"]]);
           } else {
             scope.$emit("invalidFieldState",
-                        ["remove", $rootScope.propertiesOf(fieldOrElement)._ui.title, fieldOrElement["@id"]]);
+                        ["remove", fieldOrElement._ui.title, fieldOrElement["@id"]]);
           }
         }
       };
 
       // When user clicks Save button, we will switch element from creating state to completed state
       scope.add = function() {
-        var p = $rootScope.propertiesOf(scope.element);
-        if (!p._ui.is_cardinal_field) {
+        if (!scope.element._ui.is_cardinal_field) {
           delete scope.element.minItems;
           delete scope.element.maxItems;
         }
@@ -255,7 +253,7 @@ define([
 
           delete $rootScope.propertiesOf(scope.element)._tmp;
           scope.$emit("invalidElementState",
-              ["remove", $rootScope.propertiesOf(scope.element)._ui.title, scope.element["@id"]]);
+              ["remove", scope.element._ui.title, scope.element["@id"]]);
           parseElement();
         } else {
           console.log("TODO handle displaying min > max error for elements");
@@ -318,10 +316,10 @@ define([
         var p = $rootScope.propertiesOf(scope.element);
         if (p._tmp && p._tmp.state == "creating") {
           scope.$emit("invalidElementState",
-                      ["add", $rootScope.propertiesOf(scope.element)._ui.title, scope.element["@id"]]);
+                      ["add", scope.element._ui.title, scope.element["@id"]]);
         } else {
           scope.$emit("invalidElementState",
-                      ["remove", $rootScope.propertiesOf(scope.element)._ui.title, scope.element["@id"]]);
+                      ["remove", scope.element._ui.title, scope.element["@id"]]);
         }
       });
 

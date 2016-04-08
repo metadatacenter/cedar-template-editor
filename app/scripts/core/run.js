@@ -63,6 +63,10 @@ define([
       return DataManipulationService.getFieldProperties(fieldOrElement);
     };
 
+    $rootScope.schemaOf = function (fieldOrElement) {
+      return DataManipulationService.getFieldSchema(fieldOrElement);
+    };
+
     $rootScope.console = function (txt, label) {
       console.log(label + ' ' + JSON.stringify(txt, null, 2));
     };
@@ -76,7 +80,7 @@ define([
     /*
      egyedia - this seems to be unused
      $rootScope.isField = function (value) {
-     return value && value.properties && value.properties._ui && value.properties._ui.inputType;
+     return value && value.properties && value._ui && value._ui.inputType;
      };
      */
 
@@ -174,7 +178,7 @@ define([
      }
      });
 
-     fieldOrElement.properties._ui.order = order;
+     fieldOrElement._ui.order = order;
      };
      */
 

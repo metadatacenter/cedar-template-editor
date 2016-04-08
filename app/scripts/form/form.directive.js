@@ -55,8 +55,8 @@ define([
             angular.forEach($scope.form._ui.order, function (field, index) {
               // If item added is of type Page Break, jump into next page array for storage of following fields
               if ($scope.form.properties[field].properties &&
-                  $scope.form.properties[field].properties._ui &&
-                  $scope.form.properties[field].properties._ui.inputType == 'page-break') {
+                  $scope.form.properties[field]._ui &&
+                  $scope.form.properties[field]._ui.inputType == 'page-break') {
                 dimension++;
               }
               // Push field key into page array
@@ -85,10 +85,10 @@ define([
 
             if ($rootScope.isElement(fieldOrElement)) {
               $scope.$emit("invalidElementState",
-                  ["remove", $rootScope.propertiesOf(fieldOrElement)._ui.title, fieldOrElement["@id"]]);
+                  ["remove", fieldOrElement._ui.title, fieldOrElement["@id"]]);
             } else {
               $scope.$emit("invalidFieldState",
-                  ["remove", $rootScope.propertiesOf(fieldOrElement)._ui.title, fieldOrElement["@id"]]);
+                  ["remove", fieldOrElement._ui.title, fieldOrElement["@id"]]);
             }
           }
         };
