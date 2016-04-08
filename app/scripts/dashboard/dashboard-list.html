@@ -48,9 +48,10 @@
                     <section ng-if="itemType == 'instances'">
                         <div class="template-item" ng-repeat="instance in allTemplateInstances | filter:{_ui:{templateTitle:searchText}}"
                              cedar-resize-square="true">
+
                             <cedar-box
                                     type="{{CONST.boxType.INSTANCE}}"
-                                    description="{{instance._ui.templateDescription}}&lt;br/&gt;{{'(' + (instance._ui.creationDate | date:'short') + ')'}}"
+                                    description="{{instance._ui.templateDescription}}&lt;br/&gt;{{'(' + (instance['pav:createdOn'] | date:'short') + ')'}}"
                                     title="{{instance._ui.templateTitle}}"
                                     object-id="{{instance['@id']}}"
                                     allow-remove="true"
