@@ -39,6 +39,12 @@
       },
       "page-break": {
         "NAME": "Page Break"
+      },
+      "image": {
+        "NAME": "Image"
+      },
+      "youtube": {
+        "NAME": "YouTube"
       }
     }
   },
@@ -192,6 +198,10 @@
     "save": {
       "nonEmptyStagingConfirm": "The staging area is not empty. If you save the template now, you will loose the content of the staging area! Are you sure you want to save the template this way?"
     }
+  },
+  "TERMINOLOGY" : {
+    "errorBioPortal" : "Error connecting to BioPortal. Please try again later",
+    "errorTerminology" : "Error connecting to Terminology Server"
   },
   "VALUERECOMMENDER": {
     "noResults" : "No recommended values...",

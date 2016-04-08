@@ -68,9 +68,9 @@
       <div class="right-body col-sm-9">
         <div id="form-preview-section">
           <div class="form-preview collapse in">
-            <div class="empty-text" ng-show="isPropertiesEmpty()">
-              <p translate>CREATOR.addElementToStagingMsg</p>
-            </div>
+            <!--<div class="empty-text" ng-show="isPropertiesEmpty()">-->
+              <!--<p translate>CREATOR.addElementToStagingMsg</p>-->
+            <!--</div>-->
             <form-directive form="form" page="page" model="instance" page-index="0" ng-if="!isPropertiesEmpty()" hide-root-element="hideRootElement"></form-directive>
             <ng-include src="'scripts/layout/json_preview.html'"></ng-include>
           </div><!-- /.form-preview -->

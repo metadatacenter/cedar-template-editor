@@ -7,17 +7,18 @@ define([
   angular.module('cedar.templateEditor.service.stagingService', [])
       .service('StagingService', StagingService);
 
-  StagingService.$inject = ["$rootScope", "TemplateElementService", "DataManipulationService",
+  StagingService.$inject = ["$rootScope", "$document", "TemplateElementService", "DataManipulationService",
                             "ClientSideValidationService", "UIMessageService", "$timeout", "AuthorizedBackendService",
                             "CONST"];
 
-  function StagingService($rootScope, TemplateElementService, DataManipulationService, ClientSideValidationService,
+  function StagingService($rootScope, $document, TemplateElementService, DataManipulationService,
+                          ClientSideValidationService,
                           UIMessageService, $timeout, AuthorizedBackendService, CONST) {
 
     var service = {
       serviceId        : "StagingService",
       pageId           : null,
-      stagingObjectType: CONST.stagingObject.NONE,
+      stagingObjectType: CONST.stagingObject.NONE
     };
 
     service.configure = function (pageId) {
@@ -106,12 +107,10 @@ define([
       $scope.staging[field['@id']] = field;
     };
 
-    service.addFieldToForm = function (form, fieldType) {
+    service.addFieldToForm = function (form, fieldType, divId, callback) {
 
       var field = DataManipulationService.generateField(fieldType);
-      //field.minItems = 1;
-      //field.maxItems = 1;
-      console.debug('addFieldtoForm' + field.minItems + " " + field.maxItems);
+
       field.properties._tmp = field.properties._tmp || {};
       field.properties._tmp.state = "creating";
 
@@ -125,7 +124,7 @@ define([
       }
 
       // Converting title for irregular character handling
-      var fieldName = $rootScope.generateGUID(); //field['@id'];
+      var fieldName = DataManipulationService.generateGUID(); //field['@id'];
 
       // Adding corresponding property type to @context
       form.properties["@context"].properties[fieldName] = DataManipulationService.generateFieldContextProperties(fieldName);
@@ -139,16 +138,19 @@ define([
       form._ui.order = form._ui.order || [];
       form._ui.order.push(fieldName);
 
-      console.debug('addFieldtoForm' + field.minItems + ' ' + field.maxItems);
-    }
+      DataManipulationService.addDomIdIfNotPresent(field, divId);
+      callback(field);
 
-    service.addElementToForm = function (form, elementId) {
+      return field;
+    };
+
+    service.addElementToForm = function (form, elementId, divId, callback) {
       AuthorizedBackendService.doCall(
           TemplateElementService.getTemplateElement(elementId),
           function (response) {
             var clonedElement = response.data;
-            clonedElement.minItems = 1;
-            clonedElement.maxItems = 1;
+            //clonedElement.minItems = 1;
+            //clonedElement.maxItems = 1;
 
             var elProperties = DataManipulationService.getFieldProperties(clonedElement);
             elProperties._tmp = elProperties._tmp || {};
@@ -169,17 +171,21 @@ define([
             form.properties[elName] = clonedElement;
             form._ui.order = form._ui.order || [];
             form._ui.order.push(elName);
+
+            DataManipulationService.addDomIdIfNotPresent(clonedElement, divId);
+            callback(clonedElement);
+
           },
           function (err) {
             UIMessageService.showBackendError('SERVER.ELEMENT.load.error', err);
           }
       );
-    }
+    };
 
     service.addFieldToElement = function (element, fieldType) {
       var field = DataManipulationService.generateField(fieldType);
-      field.minItems = 1;
-      field.maxItems = 1;
+      //field.minItems = 1;
+      //field.maxItems = 1;
       field.properties._tmp = field.properties._tmp || {};
       field.properties._tmp.state = "creating";
 
@@ -205,15 +211,15 @@ define([
       // Adding field to the element.properties object
       element.properties[fieldName] = field;
       element._ui.order.push(fieldName);
-    }
+    };
 
     service.addElementToElement = function (element, elementId) {
       AuthorizedBackendService.doCall(
           TemplateElementService.getTemplateElement(elementId),
           function (response) {
             var el = response.data;
-            el.minItems = 0;
-            el.maxItems = 1;
+            //el.minItems = 0;
+            //el.maxItems = 1;
 
             var elProperties = DataManipulationService.getFieldProperties(el);
             elProperties._tmp = elProperties._tmp || {};

@@ -1,0 +1,8 @@
+<!-- let's put the video into a figure so we can use the figcaption for the title -->
+<figure>
+  <!-- fit-vids directive automatically resizes the video to full width -->
+  <div fit-vids ng-bind-html="getYouTubeEmbedFrame(field)"></div>
+  <figcaption><label>{{$root.propertiesOf(field)._ui.title}}</label></figcaption>
+</figure>
+
+

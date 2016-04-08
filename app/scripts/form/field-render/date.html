@@ -58,9 +58,7 @@
         ng-show="!field.maxItems || field.maxItems > 1"></div>
   </div>
 
-  <div ng-if="$root.isArray(model)" class="form-group floating-label-wrapper">
-    <div class="more-input-wrapper" ng-include="'scripts/form/partials/zero-input-buttons.partial.html'"></div>
-  </div>
+
 
   <div ng-if="$root.isArray(model) && model.length == 0 && !$root.isRuntime()" class="field field-date">
     <!-- {{field}} -->
@@ -82,7 +80,6 @@
           <i class="fa fa-calendar fa-2x"></i>
         </span>
       </div>
-      <div class="more-input-wrapper" ng-disabled="true" ng-include="'scripts/form/partials/more-input-buttons.partial.html'" ></div>
     </div>
 
     <div class="form-group date-group range floating-label-wrapper"
@@ -177,6 +174,5 @@
     <!-- /.form-group -->
   </div>
 
-  <div class="preview-edit-options" ng-include="'scripts/form/partials/preview-edit-options.partial.html'"
-      ng-init="childType='field'" ng-if="!$root.isRunTime()"></div>
+
 </div>

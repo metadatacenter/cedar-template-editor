@@ -2,9 +2,9 @@
 
 define([
   'angular'
-], function(angular) {
+], function (angular) {
   angular.module('cedar.templateEditor.controlTerm.cedarControlTermValueSetPickerDirective', [])
-    .directive('cedarControlTermValueSetPicker', cedarControlTermValueSetPickerDirective);
+      .directive('cedarControlTermValueSetPicker', cedarControlTermValueSetPickerDirective);
 
   cedarControlTermValueSetPickerDirective.$inject = [];
 
@@ -12,17 +12,17 @@ define([
 
     var directive = {
       bindToController: {
-        currentOntology: '=',
-        currentValueSet: '=',
-        includeCreateClass: '=',
-        resetCallback: '=?',
+        currentOntology    : '=',
+        currentValueSet    : '=',
+        includeCreateClass : '=',
+        resetCallback      : '=?',
         selectedValueResult: '=',
       },
-      controller: cedarControlTermValueSetPickerDirectiveController,
-      controllerAs: 'cctvspdc',
-      restrict: 'E',
-      scope: {},
-      templateUrl: 'scripts/control-term/cedar-control-term-value-set-picker.directive.html'
+      controller      : cedarControlTermValueSetPickerDirectiveController,
+      controllerAs    : 'cctvspdc',
+      restrict        : 'E',
+      scope           : {},
+      templateUrl     : 'scripts/control-term/cedar-control-term-value-set-picker.directive.html'
     };
 
     return directive;
@@ -35,7 +35,8 @@ define([
       'controlTermService'
     ];
 
-    function cedarControlTermValueSetPickerDirectiveController($q, $rootScope, $scope, controlTermDataService, controlTermService) {
+    function cedarControlTermValueSetPickerDirectiveController($q, $rootScope, $scope, controlTermDataService,
+                                                               controlTermService) {
       var vm = this;
 
       vm.bioportalOntologiesFilter = true;
@@ -70,6 +71,7 @@ define([
       vm.valuesSearchTerms = '';
       vm.valueSetClasses = null;
       vm.valuesTreeVisibility = false;
+      vm.toUiType = toUiType;
 
       /**
        * Scope funcitons.
@@ -102,9 +104,10 @@ define([
        */
       function getClassDetails(subtree) {
         vm.selectedValueResult = subtree;
-
+        var acronym = controlTermService.getAcronym(subtree);
+        var classId = subtree['@id'];
         // Get selected class details from the links.self endpoint provided.
-        controlTermDataService.getClassDetails(subtree.links.self).then(function(response) {
+        controlTermDataService.getClassById(acronym, classId).then(function (response) {
           vm.classDetails = response;
         });
       }
@@ -124,10 +127,10 @@ define([
 
       function isOntologyNameMatched(ontology) {
         var name;
-        if (!vm.bioportalValueSetsFilter && ontology.resultType == 'Value Set') {
+        if (!vm.bioportalValueSetsFilter && ontology.type == 'ValueSet') {
           return false;
         }
-        if (!vm.bioportalOntologiesFilter && ontology.resultType == 'Ontology') {
+        if (!vm.bioportalOntologiesFilter && ontology.type == 'Ontology') {
           return false;
         }
         if (!vm.isSearchingOntologies) {
@@ -136,7 +139,7 @@ define([
 
         if (vm.ontologySearchRegexp) {
           name = ontology.name;
-          if (ontology.resultType == 'Value Set') {
+          if (ontology.type == 'ValueSet') {
             name = ontology.prefLabel;
           }
           return vm.ontologySearchRegexp.test(name);
@@ -179,55 +182,70 @@ define([
       /**
        * This function should select a value search or browse value result and populate
        * all the associated data necessary to display the class details and related info.
-       *
-       * TODO: at least that ^^ was the intent -- it's been misbehaving recently, but
-       * should be working for ontology classes...
        */
       function selectValueResult(result) {
-        var acronym;
-
         vm.selectedValueResult = result;
         vm.valuesTreeVisibility = true;
-
-        if (result.resultType == 'Ontology' || result.resultType == 'Ontology Class') {
+        // Ontology
+        if (result.type == 'Ontology') {
           vm.browsingSection = 'ontology';
-          if (result.resultType == 'Ontology') {
+          var ontology = controlTermDataService.getOntologyById(controlTermService.getLastFragmentOfUri(result.id));
+          if (result.type == 'Ontology') {
             vm.currentOntology = {
-              'details': { 'ontology': result }
+              'details': {'ontology': result}
             };
             controlTermService.loadOntologyRootClasses(vm.currentOntology.details.ontology, vm);
-          } else {
-            vm.currentOntology = {
-              'details': { 'ontology': controlTermService.getOntologyByAcronym(controlTermDataService.getOntologyAcronym(result)) }
-            };
-            controlTermService.loadTreeOfClass(result, vm);
           }
-        } else if (result.resultType == 'Value Set' || result.resultType == 'Value Set Class') {
+        }
+        // Ontology Class
+        if (result.type == 'OntologyClass') {
+          vm.browsingSection = 'ontology';
+          var ontology = controlTermDataService.getOntologyById(controlTermService.getLastFragmentOfUri(result.sourceId));
+          vm.currentOntology = {
+            'details': {'ontology': ontology}
+          };
+          controlTermService.loadTreeOfClass(result, vm);
+        }
+        // Value Set or value
+        else if (result.type == 'ValueSet' || result.type == 'Value') {
+          var id;
+          if (result.sourceId) {
+            id = result.sourceId;
+          }
+          else {
+            id = result.vsCollection;
+          }
+          var acronym = controlTermService.getLastFragmentOfUri(id);
           vm.browsingSection = 'value_set';
           vm.searchPreloader = true;
-          assignClassDetails(result);
-          acronym = controlTermDataService.getOntologyAcronym(result);
-
-          if (result.resultType == 'Value Set') {
+          assignValueSetDetails(result);
+          // Value Set
+          if (result.type == 'ValueSet') {
             vm.currentValueSet = result;
+            vm.currentValueSetId = result['@id'];
+            controlTermDataService.getValuesInValueSet(acronym, vm.currentValueSetId).then(function (valueSetClasses) {
+              vm.valueSetClasses = valueSetClasses;
+              angular.forEach(vm.valueSetClasses, function (valueSetClass) {
+                valueSetClass.type = 'Value';
+              });
+              vm.searchPreloader = false;
+            });
+            // Value
           } else {
-            // get the parent
-            controlTermDataService.getClassParents('NLMVS', result['@id']).then(function(response) {
+            // Get the value set that contains the value
+            controlTermDataService.getClassParents(acronym, result['@id']).then(function (response) {
               vm.currentValueSet = response[0];
+              vm.currentValueSetId = vm.currentValueSet["@id"];
+              controlTermDataService.getValuesInValueSet(acronym,
+                  vm.currentValueSetId).then(function (valueSetClasses) {
+                vm.valueSetClasses = valueSetClasses;
+                angular.forEach(vm.valueSetClasses, function (valueSetClass) {
+                  valueSetClass.type = 'Value';
+                });
+                vm.searchPreloader = false;
+              });
             });
           }
-
-          vm.currentValueSetId = result["@id"];
-          if (result.resultType == 'Value Set Class') {
-            vm.currentValueSetId = result.resultParentId;
-          }
-          controlTermDataService.getClassValueSet(acronym, vm.currentValueSetId).then(function(valueSetClasses) {
-            vm.valueSetClasses = valueSetClasses;
-            angular.forEach(vm.valueSetClasses, function(valueSetClass) {
-              valueSetClass.resultType = 'Value Set Class';
-            });
-            vm.searchPreloader = false;
-          });
         }
 
       };
@@ -247,22 +265,23 @@ define([
 
         vm.valuesActionSelection = "browse";
         var browseResults = [];
-        angular.forEach($rootScope.valueSets, function(valueSet) {
-          valueSet.resultType = valueSet.resultType || 'Value Set';
-          // TODO: all the sources are obviously the same Ontology due to data organization;
-          //   confirm with client where Source field should come from for value sets
-          var valueSetOntology = controlTermService.getOntologyByAcronym(controlTermDataService.getOntologyAcronym(valueSet));
-          valueSet.resultSource = valueSetOntology.name;
-          browseResults.push(valueSet);
-        });
-        angular.forEach($rootScope.ontologies, function(ontology) {
-          ontology.resultType = ontology.resultType || "Ontology";
-          browseResults.push(ontology);
+
+        $q.all({
+          ontologies: controlTermDataService.getAllOntologies(),
+          valueSets : controlTermDataService.getAllValueSets()
+        }).then(function (result) {
+          angular.forEach(result.valueSets, function (valueSet) {
+            browseResults.push(valueSet);
+          });
+          angular.forEach(result.ontologies, function (ont) {
+            browseResults.push(ont);
+          });
+
+          // Sort by title
+          browseResults.sort(controlTermService.sortBrowseResults);
+          vm.searchResults = browseResults;
         });
 
-        // Sort by title
-        browseResults.sort(controlTermService.sortBrowseResults);
-        vm.searchResults = browseResults;
       }
 
       function valuesCreateClass() {
@@ -274,100 +293,77 @@ define([
           event.preventDefault();
         }
 
-        vm.searchResults = [];
         vm.searchNoResults = false;
         vm.valuesActionSelection = 'search';
 
-        if(vm.valuesSearchTerms == '') {
+        if (vm.valuesSearchTerms == '') {
           vm.searchPreloader = false;
           return;
         } else {
           vm.searchPreloader = true;
         }
 
-        // search all
-        if (vm.bioportalOntologiesFilter && vm.bioportalValueSetsFilter) {
-          controlTermDataService.searchOntologyClassesValueSetsAndValueSetClasses(vm.valuesSearchTerms).then(function(response) {
-            var maxLen = response.collection.length;
+        vm.searchResults = [];
+        vm.tmpSearchResults = [];
 
-            vm.searchPreloader = false;
-
-            if(maxLen > 0) {
-              var searchResults = [];
-              for (var i = 0; i < maxLen; i++) {
-                var result = response.collection[i];
-                var acronym = controlTermDataService.getOntologyAcronym(result);
-                if (acronym != 'NLMVS') {
-                  result.resultType = 'Ontology Class';
-                  result.resultSource = acronym;
-                } else {
-                  result.resultType = 'Value Set'; // default to value set
-                  result.resultSource = response.collection[i].prefLabel;
-                  loadParentAndDetermineValueSetForValuesSearchResult(result);
-                }
-                searchResults.push(result);
-              }
-              vm.searchResults = searchResults;
-            } else {
-              vm.searchNoResults = true;
-            }
-          });
-
-        } else {
-          // search ontologies
-          if (vm.bioportalOntologiesFilter) {
-            controlTermDataService.searchClass(vm.valuesSearchTerms).then(function(response) {
-              var maxLen = response.collection.length;
-              if (maxLen > 20) {
-                maxLen = 20;
-              }
-
+        bpSearch(vm.valuesSearchTerms, vm.bioportalOntologiesFilter,
+            vm.bioportalValueSetsFilter).then(function (response) {
               vm.searchPreloader = false;
+              vm.tmpSearchResults = response.collection;
 
-              if(maxLen > 0) {
-                var searchResults = [];
-                for(var i = 0; i < maxLen; i++) {
-                  var result = response.collection[i];
-                  result.resultType = 'Ontology Class';
-                  var acronym = result.links.ontology.slice(39);
-                  var ontology = controlTermService.getOntologyByAcronym(acronym);
-                  if (ontology) {
-                    result.resultSource = ontology.name;
+              if (vm.tmpSearchResults.length > 0) {
+                for (var i = 0; i < vm.tmpSearchResults.length; i++) {
+                  var type = vm.tmpSearchResults[i].type;
+                  var sourceId = vm.tmpSearchResults[i].source;
+                  var sourceName;
+                  var ignoreResult = false;
+                  if (type == 'OntologyClass') {
+                    var ontology = controlTermDataService.getOntologyByLdId(sourceId);
+                    if (ontology == undefined) {
+                      ignoreResult = true;
+                    }
+                    else {
+                      sourceName = ontology.name + ' (' + ontology.id + ')';
+                    }
                   }
-
-                  searchResults.push(result);
+                  else if (type == 'ValueSet') {
+                    sourceName = controlTermService.getLastFragmentOfUri(sourceId);
+                  }
+                  else if (type == 'Value') {
+                    sourceName = controlTermService.getLastFragmentOfUri(sourceId);
+                  }
+                  if (!ignoreResult) {
+                    vm.searchResults.push({
+                      '@id'     : vm.tmpSearchResults[i]['@id'],
+                      prefLabel : vm.tmpSearchResults[i].prefLabel,
+                      type      : type,
+                      sourceName: sourceName,
+                      sourceId  : sourceId
+                    });
+                  }
                 }
-                vm.searchResults = searchResults;
-              } else {
-                vm.searchNoResults = true;
               }
             });
-          }
-          // search value sets
-          else if (vm.bioportalValueSetsFilter) {
-            controlTermDataService.searchValueSetsAndValues(vm.valuesSearchTerms).then(function(response) {
-              var maxLen = response.collection.length;
-              if (maxLen > 20) {
-                maxLen = 20;
-              }
+      }
 
-              vm.searchPreloader = false;
-
-              if(maxLen > 0) {
-                var searchResults = [];
-                for (var i = 0; i < maxLen; i++) {
-                  var result = response.collection[i];
-                  result.resultType = 'Value Set'; // default to value set
-                  result.resultSource = response.collection[i].prefLabel;
-                  loadParentAndDetermineValueSetForValuesSearchResult(result);
-                  searchResults.push(result);
-                }
-                vm.searchResults = searchResults;
-              } else {
-                vm.searchNoResults = true;
-              }
-            });
-          }
+      function bpSearch(query, ontologiesFilter, valueSetsFilter) {
+        // Search All (Classes, Value Sets and Values)
+        if (ontologiesFilter && valueSetsFilter) {
+          return controlTermDataService.searchClassesValueSetsAndValues(query).then(function (response) {
+            return response;
+          });
+        }
+        // Search Classes
+        else if (ontologiesFilter) {
+          return controlTermDataService.searchClasses(query).then(function (response) {
+            return response;
+          });
+        }
+        // Search Value Sets and Values
+        else if (valueSetsFilter) {
+          return controlTermDataService.searchValueSetsAndValues(query).then(function (response) {
+            return response;
+          });
         }
       }
 
@@ -375,7 +371,9 @@ define([
        * Watch functions.
        */
 
-      $scope.$watch(function(scope) { return vm.ontologySearchTerms; }, function() {
+      $scope.$watch(function (scope) {
+        return vm.ontologySearchTerms;
+      }, function () {
         if (vm.ontologySearchTerms) {
           vm.ontologySearchRegexp = new RegExp(vm.ontologySearchTerms, "i");
         } else {
@@ -392,23 +390,26 @@ define([
        */
       function assignClassDetails(ontologyClass) {
         if (!ontologyClass.classDetails) {
-          var selfUrl = ontologyClass.links.self;
-          if (!selfUrl) {
-            selfUrl = ontologyClass.links.ontology + "/classes/" + encodeURIComponent(ontologyClass["@id"]);
-          }
-
-          controlTermDataService.getClassDetails(selfUrl).then(function(response) {
+          //var selfUrl = controlTermService.getSelfUrl(ontologyClass);
+          var acronym = controlTermDataService.getAcronym(ontologyClass);
+          var classId = ontologyClass['@id'];
+          controlTermDataService.getClassById(acronym, classId).then(function (response) {
             vm.selectedValueResult.classDetails = response;
           });
         }
       }
 
-      function loadParentAndDetermineValueSetForValuesSearchResult (valueSet) {
-        var acronym = valueSet.links.ontology.slice(39);
-        controlTermDataService.getClassParents(acronym, valueSet['@id']).then(function(response) {
+      function assignValueSetDetails(valueSet) {
+        //var acronym = controlTermService.getLastFragmentOfUri(valueSet.sourceId);
+        vm.selectedValueResult.classDetails = controlTermDataService.getValueSetByLdId(valueSet['@id']);
+      }
+
+      function loadParentAndDetermineValueSetForValuesSearchResult(valueSet) {
+        var acronym = valueSet.ontology.slice(39);
+        controlTermDataService.getClassParents(acronym, valueSet['@id']).then(function (response) {
           if (!(status in response)) {
             if (angular.isArray(response) && response.length > 0) {
-              valueSet.resultType = 'Value Set Class';
+              valueSet.type = 'Value';
               // take the first result assuming there will be only one parent for value sets
               valueSet.resultSource = response[0].prefLabel;
               valueSet.resultParentId = response[0]['@id'];
@@ -417,6 +418,20 @@ define([
         });
       };
 
+      function toUiType(type) {
+        if (type == 'OntologyClass') {
+          return 'Class';
+        }
+        if (type == 'ValueSet') {
+          return 'Value Set';
+        }
+        if (type == 'Value') {
+          return 'Value';
+        }
+        if (type == 'Ontology') {
+          return 'Ontology';
+        }
+      }
     }
   }
 });

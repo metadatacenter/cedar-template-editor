@@ -19,6 +19,7 @@ require.config({
 
     'lib'       : 'bower_components',
     'lib/custom': 'cedar/scripts',
+    '3rdparty'  : 'third_party_components',
 
     // requirejs plugins
     'text': 'bower_components/requirejs-plugins/lib/text',
@@ -49,6 +50,13 @@ require.config({
     'lib/angular-toasty/dist/angular-toasty'                                         : ['angular'],
     'lib/angular-ui-select/dist/select'                                              : ['angular'],
     'lib/angular-ui-sortable/sortable'                                               : ['angular'],
+    'lib/angulartics/angulartics'                                                    : ['angular'],
+    'lib/angulartics-google-analytics/angulartics-google-analytics'                  : ['angular'],
+
+    '3rdparty/angular-fitvids/angular-fitvids': {
+      deps   : ['angular', 'jquery'],
+      exports: 'fitVids'
+    },
 
     'lib/ng-ckeditor/ng-ckeditor': ['angular', 'ckeditor']
     ,
@@ -80,15 +88,16 @@ require.config({
 // maybe we will be redirected to Keycloak for authentication
 require([
   'angular',
-], function(angular) {
+], function (angular) {
   var $html = angular.element(document.getElementsByTagName('html')[0]);
-  angular.element().ready(function() {
+  angular.element().ready(function () {
 
     function continueWithAngularApp() {
+      console.log("continueWithAngularApp");
       require([
         'angular',
         'app',
-      ], function(angular, app) {
+      ], function (angular, app) {
         angular.bootstrap(document, ['cedar.templateEditor']);
       });
     }
@@ -98,7 +107,8 @@ require([
       if (!authenticated) {
         window.bootstrapUserHandler.doLogin();
       } else {
-        continueWithAngularApp();
+        var uph = new UserProfileHandler();
+        uph.proceed(window.bootstrapUserHandler, continueWithAngularApp);
       }
     }
 

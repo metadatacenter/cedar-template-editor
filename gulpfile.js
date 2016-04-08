@@ -83,106 +83,6 @@ gulp.task('server-development', function () {
   });
 });
 
-gulp.task('server-production', function () {
-  connect.server({
-    root      : 'app',
-    port      : 4200,
-    livereload: false,
-    fallback  : 'app/index.html'
-  });
-});
-
-
-gulp.task('cache-ontologies', ['set-environment-default'], function () {
-  var apiKey = cedarBioportalAPIKey;
-  var options = {
-    headers: {
-      'Authorization': 'apikey token=' + apiKey
-    }
-  };
-  var ontologies = [];
-
-  var response = request('GET', 'http://data.bioontology.org/ontologies', options);
-  if (response.statusCode == 200) {
-    ontologies = JSON.parse(response.getBody());
-    for (var i = 0; i < ontologies.length; i++) {
-      var ontology = ontologies[i];
-
-      // load ontology categories
-      var url = 'http://data.bioontology.org/ontologies/' + ontology.acronym + '/categories';
-      var response = request('GET', url, options);
-      if (response.statusCode == 200) {
-        console.log('Retrieved category information for ' + ontology.acronym);
-        var ontologyCategories = JSON.parse(response.getBody());
-        ontology.categories = ontologyCategories;
-
-        // aggregrate ontology category names
-        var ontologyCategoryNames = [];
-        for (var j = 0; j < ontologyCategories.length; j++) {
-          ontologyCategoryNames.push(ontologyCategories[j].name);
-        }
-        ontology.categoriesNames = ontologyCategoryNames.join(', '); // TODO: rename variable?
-      } else {
-        console.log('Error requesting ontology categoies for ' + ontology.acronym + '-- ' + url);
-      }
-
-      // load ontology metrics
-      var url = 'http://data.bioontology.org/ontologies/' + ontology.acronym + '/metrics';
-      var response = request('GET', url, options);
-      if (response.statusCode == 200) {
-        console.log('Retrieved metric information for ' + ontology.acronym);
-        var ontologyMetrics = JSON.parse(response.getBody());
-        ontology.metrics = ontologyMetrics;
-      } else {
-        console.log('Error requesting ontology metrics for ' + ontology.acronym + ' -- ' + url + '; response.statusCode: ' + response.statusCode);
-      }
-
-    }
-  } else {
-    console.log('Error requesting ontology catalog');
-  }
-
-  // write to cache file
-  fs.writeFileSync('app/cache/ontologies.json', JSON.stringify(ontologies));
-
-});
-
-gulp.task('cache-value-sets', ['set-environment-default'], function () {
-  var apiKey = cedarBioportalAPIKey;
-  var options = {
-    headers: {
-      'Authorization': 'apikey token=' + apiKey
-    }
-  };
-  var valueSets = [];
-
-  var uri = 'http://data.bioontology.org/ontologies/NLMVS/classes/roots';
-  var response = request('GET', 'http://data.bioontology.org/ontologies/NLMVS/classes/roots', options);
-  if (response.statusCode == 200) {
-    valueSets = JSON.parse(response.getBody());
-
-    // count children to determine size
-    for (var i = 0; i < valueSets.length; i++) {
-      var valueSetUri = valueSets[i].links.self + '?include=childrenCount';
-      var valueSetResponse = request('GET', valueSetUri, options);
-      if (valueSetResponse.statusCode == 200) {
-        console.log('Retrieved value set at: ' + valueSetUri);
-        var valueSet = JSON.parse(valueSetResponse.getBody());
-        valueSets[i].numChildren = valueSet.childrenCount;
-      } else {
-        console.log('Error requesting ontology metrics for ' + ontology.acronym + ' -- ' + url + '; response.statusCode: ' + response.statusCode);
-      }
-    }
-  } else {
-    console.log('Error requesting value set catalog');
-    return;
-  }
-
-  // write to cache file
-  fs.writeFileSync('app/cache/value-sets.json', JSON.stringify(valueSets));
-
-});
-
 gulp.task('html', function () {
   return gulp.src('/app/views/*.html')
       .pipe(connect.reload());
@@ -196,16 +96,14 @@ gulp.task('replace-url', function () {
       .pipe(replace('terminologyServerUrl', 'https://terminology.' + cedarHost))
       .pipe(replace('resourceServerUrl', 'https://resource.' + cedarHost))
       .pipe(replace('valueRecommenderServerUrl', 'https://valuerecommender.' + cedarHost))
+      .pipe(replace('schemaServerUrl', 'https://schema.' + cedarHost))
       .pipe(gulp.dest('app/config/'));
 });
 
-// Task to replace bioportal api keys
-gulp.task('replace-apikey', function () {
-  gulp.src(['app/config/src/control-term-data-service.conf.json'])
-      .pipe(replace('bioportalAPIKey', cedarBioportalAPIKey))
-      .pipe(gulp.dest('app/config/'));
-  gulp.src(['app/config/src/provisional-class-service.conf.json'])
-      .pipe(replace('bioportalAPIKey', cedarBioportalAPIKey))
+// Task to set up tracking
+gulp.task('replace-tracking', function () {
+  gulp.src(['app/config/src/tracking-service.conf.json'])
+      .pipe(replace('googleAnalyticsKey', cedarAnalyticsKey))
       .pipe(gulp.dest('app/config/'));
 });
 
@@ -259,7 +157,7 @@ function readAllEnvVarsOrFail() {
 var envConfig = {
   'CEDAR_PROFILE'          : null,
   'CEDAR_HOST'             : null,
-  'CEDAR_BIOPORTAL_API_KEY': null
+  'CEDAR_ANALYTICS_KEY'    : null
 };
 console.log();
 console.log();
@@ -268,7 +166,7 @@ console.log("- Starting CEDAR front end server...".green);
 readAllEnvVarsOrFail();
 var cedarProfile = envConfig['CEDAR_PROFILE'];
 var cedarHost = envConfig['CEDAR_HOST'];
-var cedarBioportalAPIKey = envConfig['CEDAR_BIOPORTAL_API_KEY'];
+var cedarAnalyticsKey = envConfig['CEDAR_ANALYTICS_KEY'];
 console.log("-------------------------------------------- ************* --------------------------------------------".red);
 console.log();
 
@@ -278,11 +176,11 @@ if (cedarProfile === 'development') {
   taskNameList.push('server-development');
   taskNameList.push('watch');
 } else if (cedarProfile === 'production') {
-  taskNameList.push('server-production');
+  console.log("Editor is configuring URLs, and exiting. The frontend content will be served by nginx");
 } else {
   exitWithError("Invalid CEDAR_PROFILE value. Please set 'development' or 'production'");
 }
 
-taskNameList.push('lint', 'less', 'copy:resources', 'replace-apikey', 'replace-url');
+taskNameList.push('lint', 'less', 'copy:resources', 'replace-url', 'replace-tracking');
 // Launch tasks
 gulp.task('default', taskNameList);

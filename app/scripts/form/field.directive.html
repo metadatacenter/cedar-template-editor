@@ -1,22 +1,52 @@
-<div class="field-root">
+<div class="field-root" id="{{$root.getDomId(field)}}">
   <div class="sortable-handler" ng-if="!preview && !$root.isRuntime()"><span class="sortable-icon"></span></div>
-  <div ng-show="$root.isArray(model) && $root.applicationMode == 'runtime'" class="spreadsheetSwitch field">
+
+  <!-- field title first -->
+  <div ng-show="$root.isArray(model) && $root.applicationMode == 'runtime'" class="spreadsheetSwitch field"
+      style="position:relative">
     <p class="element-name-label">
       <i class="cedar-svg-list"></i>
       {{$root.propertiesOf(field)._ui.title}}
       <a ng-click="switchToSpreadsheet()" class="spreadsheetSwitchLink">
         <i class="cedar-svg-spreadsheet"></i>
       </a>
+
+      <!-- show this add button only when you have minCardinality 0 and an empty list -->
+    <span class="zero-input-wrapper" ng-show="$root.isRuntime() && $root.isArray(model) && model.length == 0">
+      <button type="button" class="add" ng-click="addMoreInput()">
+        <i class="fa fa-plus"></i>
+
+        <div class="cardinality-_ui-container">
+          <div class="cardinality-_ui">
+            <div class="cardinality-_ui-text"><span translate="GENERIC.MultipleMinMaxMsg"
+                translate-values="{min:($parent.field.minItems || 0), max:($parent.field.maxItems || 'GENERIC.Unlimited' | translate)}"></span>
+            </div>
+          </div>
+        </div>
+      </button>
+    </span>
     </p>
   </div>
 
+  <!-- field content next -->
   <div class="elementTotalContent visible">
+
     <div ng-show="$root.isArray(model)">
       <div class="spreadsheetViewDetector"></div>
       <div class="spreadsheetViewContainer"></div>
     </div>
+
+    <!-- this is the line that pulls in the actual element -->
     <div class="originalContent" ng-include="getTemplateUrl()"></div>
+
+    <!-- add the edit and delete buttons at the bottom of the content -->
+    <div class="preview-edit-options" ng-if="!$root.isRuntime()"
+        ng-include="'scripts/form/partials/preview-edit-options.partial.html'"
+        ng-init="childType='field'"></div>
+
   </div>
+
+  <!-- error messages last -->
   <div class="errors" ng-if="errorMessages">
     <div class="alert alert-danger" ng-repeat="message in errorMessages">{{message}}</div>
   </div>

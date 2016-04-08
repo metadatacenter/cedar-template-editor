@@ -51,7 +51,7 @@ define([
       vm.provisionalClassMappings.push({
         mappingType: mappingType,
         targetClass: targetClass,
-        targetOntology: targetOntology.details.ontology
+        targetOntology: targetOntology.info
       });
       // hack to reset inner picker
       $timeout(function() {
@@ -68,12 +68,13 @@ define([
     }
 
     function isValid() {
-      return vm.provisionalClass.label && vm.provisionalClass.description;
+      return vm.provisionalClass.prefLabel && vm.provisionalClass.description;
     }
 
     function saveAsFieldItem(provisionalClass) {
       provisionalClassService.saveClass(provisionalClass, vm.provisionalClassMappings).then(function(newClass) {
-        controlTermDataService.getClassDetails(newClass['@id']).then(function(details) {
+        // TODO: fix the following call
+        controlTermDataService.getClassById(newClass['@id']).then(function(details) {
           // hack to add prefLabel
           details.prefLabel = details.label;
           $scope.$emit(
@@ -88,21 +89,20 @@ define([
 
     function saveAsOntologyClassValueConstraint(provisionalClass) {
       provisionalClassService.saveClass(provisionalClass, vm.provisionalClassMappings).then(function(newClass) {
-        controlTermDataService.getClassDetails(newClass['@id']).then(function(details) {
-          // hack to add prefLabel
-          details.prefLabel = details.label;
-          $scope.$emit(
+        $scope.$emit(
             'cedar.templateEditor.controlTerm.provisionalClassController.provisionalClassSavedAsOntologyValueConstraint', {
-              class: details,
+              class: newClass,
               ontology: vm.provisionalClassOntology
             }
-          );
-        });
+        );
       });
     }
 
     function saveAsValueSetConstraint(provisionalValueSet, provisionalValueSetValues) {
       provisionalClassService.saveValueSet(provisionalValueSet, provisionalValueSetValues).then(function(newValueSet) {
+        // Reload value sets cache
+        console.log("Reloading value sets cache");
+        controlTermDataService.initValueSetsCache();
         // hack to add prefLabel
         newValueSet.prefLabel = newValueSet.label;
         $scope.$emit(
