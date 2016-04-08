@@ -52,6 +52,7 @@
         <div class="clearfix"></div>
       </div> <!-- /.date-type-toggle -->
 
+      <!-- have an array with at least one element -->
       <div ng-if="$root.isArray(model) && selectedTab == $index" class="element" ng-repeat="m in model" ng-class="['element-{{$index}}']">
         <div class="remove-element pull-right">
           <a class="" ng-show="model.length > element.minItems" ng-click="removeElement($index)" translate>GENERIC.Remove</a>
@@ -60,17 +61,37 @@
         <div ui-sortable="$root.sortableOptions" ng-model="element._ui.order" class="sortable-container">
           <div ng-repeat="key in element['_ui']['order']">
             <div ng-if="$root.propertiesOf(element)[key]">
-              <cedar-nested-template-element key="key" 
-                                             field="$root.propertiesOf(element)[key]"
-                                             model="m[key]"
-                                             remove-child="removeChild"
-                                             rename-child-key="renameChildKey">
+              <cedar-nested-template-element key="key"
+                  field="$root.propertiesOf(element)[key]"
+                  model="m[key]"
+                  remove-child="removeChild"
+                  rename-child-key="renameChildKey">
               </cedar-nested-template-element>
             </div>
           </div>
         </div>
       </div>
 
+      <!-- have an array with no elements -->
+      <div ng-if="!$root.isRuntime() && $root.isArray(model) && model.length == 0" class="element"  ng-class="['element-0']">
+        <div ui-sortable="$root.sortableOptions" ng-model="element._ui.order" class="sortable-container">
+          <div ng-repeat="key in element['_ui']['order']">
+
+            <div ng-if="true">
+              <cedar-nested-template-element key="key"
+                  field="$root.propertiesOf(element)[key]"
+                  model="m[key]"
+                  preview="preview",
+                  remove-child="removeChild"
+                  rename-child-key="renameChildKey"
+                  >
+              </cedar-nested-template-element>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- not an array -->
       <div ng-if="!$root.isArray(model)" class="element only-element" ui-sortable="$root.sortableOptions" ng-model="element._ui.order">
         <div ng-repeat="key in element['_ui']['order']">
           <div ng-if="$root.propertiesOf(element)[key]">
