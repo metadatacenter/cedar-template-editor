@@ -82,7 +82,7 @@ define([
       $scope.$on('submitForm', function (event) {
 
         // If field is required and is empty, emit failed emptyRequiredField event
-        if ($rootScope.propertiesOf($scope.field)._valueConstraints.requiredValue) {
+        if ($rootScope.schemaOf($scope.field)._valueConstraints.requiredValue) {
           var allRequiredFieldsAreFilledIn = true;
           var min = $scope.field.minItems || 0;
 
@@ -164,26 +164,26 @@ define([
         }
 
         // If field is required and is not empty, check to see if it needs to be removed from empty fields array
-        if ($rootScope.propertiesOf($scope.field)._valueConstraints.requiredValue && allRequiredFieldsAreFilledIn) {
+        if ($rootScope.schemaOf($scope.field)._valueConstraints.requiredValue && allRequiredFieldsAreFilledIn) {
           //remove from emptyRequiredField array
           $scope.$emit('emptyRequiredField', ['remove', DataManipulationService.getFieldSchema($scope.field)._ui.title, $scope.uuid]);
         }
 
         var allFieldsAreValid = true;
-        if ($rootScope.hasValueConstraint($rootScope.propertiesOf($scope.field)._valueConstraints)) {
+        if ($rootScope.hasValueConstraint($rootScope.schemaOf($scope.field)._valueConstraints)) {
 
           if (angular.isArray($scope.model)) {
             angular.forEach($scope.model, function (valueElement) {
               if (angular.isArray(valueElement._value)) {
                 angular.forEach(valueElement._value, function (ve) {
                   if (!$rootScope.isValueConformedToConstraint(ve, $scope.field["@id"],
-                          $rootScope.propertiesOf($scope.field)._valueConstraints)) {
+                          $rootScope.schemaOf($scope.field)._valueConstraints)) {
                     allFieldsAreValid = false;
                   }
                 });
               } else if (angular.isObject(valueElement._value)) {
                 if (!$rootScope.isValueConformedToConstraint(valueElement._value, $scope.field["@id"],
-                        $rootScope.propertiesOf($scope.field)._valueConstraints)) {
+                        $rootScope.schemaOf($scope.field)._valueConstraints)) {
                   allFieldsAreValid = false;
                 }
               }
@@ -192,13 +192,13 @@ define([
             if (angular.isArray($scope.model._value)) {
               angular.forEach($scope.model._value, function (ve) {
                 if (!$rootScope.isValueConformedToConstraint(ve, $scope.field["@id"],
-                        $rootScope.propertiesOf($scope.field)._valueConstraints)) {
+                        $rootScope.schemaOf($scope.field)._valueConstraints)) {
                   allFieldsAreValid = false;
                 }
               });
             } else if (angular.isObject($scope.model._value)) {
               if (!$rootScope.isValueConformedToConstraint($scope.model._value, $scope.field["@id"],
-                      $rootScope.propertiesOf($scope.field)._valueConstraints)) {
+                      $rootScope.schemaOf($scope.field)._valueConstraints)) {
                 allFieldsAreValid = false;
               }
             }
@@ -505,7 +505,7 @@ define([
       $scope.$watch("model", function () {
         if ($scope.directory == "render" &&
             DataManipulationService.getFieldSchema($scope.field)._ui.inputType == "textfield" &&
-            $rootScope.hasValueConstraint($rootScope.propertiesOf($scope.field)._valueConstraints)) {
+            $rootScope.hasValueConstraint($rootScope.schemaOf($scope.field)._valueConstraints)) {
           if ($rootScope.isArray($scope.model)) {
             $scope.modelValue = [];
             angular.forEach($scope.model, function (m, i) {

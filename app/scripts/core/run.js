@@ -302,9 +302,8 @@ define([
         term = '*';
       }
       var results = [];
-      var properties = $rootScope.propertiesOf(field);
-      var vcst = properties._valueConstraints;
-      var field_id = field['@id'];
+      var vcst = $rootScope.schemaOf(field)._valueConstraints;
+      var field_id = $rootScope.schemaOf(field)['@id'];
 
       if (angular.isUndefined($rootScope.autocompleteResultsCache[field_id])) {
         $rootScope.autocompleteResultsCache[field_id] = {

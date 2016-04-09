@@ -4,7 +4,7 @@
       <!--{{$root.schemaOf(field)._ui.title}}</p>-->
     <input type="number"
         class="form-control"
-        ng-class="{'required': $root.propertiesOf(field)._valueConstraints.requiredValue}"
+        ng-class="{'required': $root.schemaOf(field)._valueConstraints.requiredValue}"
         id="numeric1"
         placeholder="{{$root.schemaOf(field)._ui.title}}"
         aria-label="{{$root.schemaOf(field)._ui.description}}"
@@ -32,7 +32,7 @@
       {{$root.schemaOf(field)._ui.title}}</p>
     <input type="number"
         class="form-control"
-        ng-class="{'required': $root.propertiesOf(field)._valueConstraints.requiredValue}"
+        ng-class="{'required': $root.schemaOf(field)._valueConstraints.requiredValue}"
         id="numeric1"
         placeholder="{{$root.schemaOf(field)._ui.title}}"
         aria-label="{{$root.schemaOf(field)._ui.description}}"
@@ -55,7 +55,7 @@
   <div ng-if="!$root.isArray(model)" class="form-group floating-label-wrapper">
     <input type="number"
         class="form-control"
-        ng-class="{'required': $root.propertiesOf(field)._valueConstraints.requiredValue}"
+        ng-class="{'required': $root.schemaOf(field)._valueConstraints.requiredValue}"
         id="numeric1"
         placeholder="{{$root.schemaOf(field)._ui.title}}"
         aria-label="{{$root.schemaOf(field)._ui.description}}"
