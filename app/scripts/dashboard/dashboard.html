@@ -14,39 +14,14 @@
     </div>
     <!-- template boxes (4 columns) -->
     <div class="row populate-form-boxes">
-      <div class="col-md-3 col-sm-6">
+      <div class="col-md-3 col-sm-6" ng-repeat="(key, form) in dc.forms" ng-show="key < 4">
         <div class="form-box">
           <a href="#n" class="box-content text-center">
             <i class="fa fa-file-text-o"></i>
-            <p>Form Name Goes Here</p>
+            <p>{{ form.name }}</p>
           </a>
         </div>
       </div>
-      <div class="col-md-3 col-sm-6">
-        <div class="form-box">
-          <a href="#n" class="box-content text-center">
-            <i class="fa fa-file-text-o"></i>
-            <p>Form Name Goes Here</p>
-          </a>
-        </div>
-      </div>
-      <div class="col-md-3 col-sm-6">
-        <div class="form-box">
-          <a href="#n" class="box-content text-center">
-            <i class="fa fa-file-text-o"></i>
-            <p>Form Name Goes Here</p>
-          </a>
-        </div>
-      </div>
-      <div class="col-md-3 col-sm-6">
-        <div class="form-box">
-          <a href="#n" class="box-content text-center">
-            <i class="fa fa-file-text-o"></i>
-            <p>Form Name Goes Here</p>
-          </a>
-        </div>
-      </div>
-      <!-- **NOTE, THEN DELETE ME** no need for a new row after 12 columns - feel free to loop the col-md-3 divs -->
     </div>
     <!-- template boxes (4 columns) -->
   </div>
@@ -77,135 +52,14 @@
         <div class="modal-body">
           <div class="container">
             <div class="row populate-form-boxes">
-              <div class="col-md-3 col-sm-6">
+              <div class="col-md-3 col-sm-6" ng-repeat="(key, form) in dc.forms">
                 <div class="form-box">
                   <a href="#n" class="box-content text-center">
                     <i class="fa fa-file-text-o"></i>
-                    <p>Form Name Goes Here</p>
+                    <p>{{ form.name }}</p>
                   </a>
                 </div>
               </div>
-              <div class="col-md-3 col-sm-6">
-                <div class="form-box">
-                  <a href="#n" class="box-content text-center">
-                    <i class="fa fa-file-text-o"></i>
-                    <p>Form Name Goes Here</p>
-                  </a>
-                </div>
-              </div>
-              <div class="col-md-3 col-sm-6">
-                <div class="form-box">
-                  <a href="#n" class="box-content text-center">
-                    <i class="fa fa-file-text-o"></i>
-                    <p>Form Name Goes Here</p>
-                  </a>
-                </div>
-              </div>
-              <div class="col-md-3 col-sm-6">
-                <div class="form-box">
-                  <a href="#n" class="box-content text-center">
-                    <i class="fa fa-file-text-o"></i>
-                    <p>Form Name Goes Here</p>
-                  </a>
-                </div>
-              </div>
-              <div class="col-md-3 col-sm-6">
-                <div class="form-box">
-                  <a href="#n" class="box-content text-center">
-                    <i class="fa fa-file-text-o"></i>
-                    <p>Form Name Goes Here</p>
-                  </a>
-                </div>
-              </div>
-              <div class="col-md-3 col-sm-6">
-                <div class="form-box">
-                  <a href="#n" class="box-content text-center">
-                    <i class="fa fa-file-text-o"></i>
-                    <p>Form Name Goes Here</p>
-                  </a>
-                </div>
-              </div>
-              <div class="col-md-3 col-sm-6">
-                <div class="form-box">
-                  <a href="#n" class="box-content text-center">
-                    <i class="fa fa-file-text-o"></i>
-                    <p>Form Name Goes Here</p>
-                  </a>
-                </div>
-              </div>
-              <div class="col-md-3 col-sm-6">
-                <div class="form-box">
-                  <a href="#n" class="box-content text-center">
-                    <i class="fa fa-file-text-o"></i>
-                    <p>Form Name Goes Here</p>
-                  </a>
-                </div>
-              </div>
-              <div class="col-md-3 col-sm-6">
-                <div class="form-box">
-                  <a href="#n" class="box-content text-center">
-                    <i class="fa fa-file-text-o"></i>
-                    <p>Form Name Goes Here</p>
-                  </a>
-                </div>
-              </div>
-              <div class="col-md-3 col-sm-6">
-                <div class="form-box">
-                  <a href="#n" class="box-content text-center">
-                    <i class="fa fa-file-text-o"></i>
-                    <p>Form Name Goes Here</p>
-                  </a>
-                </div>
-              </div>
-              <div class="col-md-3 col-sm-6">
-                <div class="form-box">
-                  <a href="#n" class="box-content text-center">
-                    <i class="fa fa-file-text-o"></i>
-                    <p>Form Name Goes Here</p>
-                  </a>
-                </div>
-              </div>
-              <div class="col-md-3 col-sm-6">
-                <div class="form-box">
-                  <a href="#n" class="box-content text-center">
-                    <i class="fa fa-file-text-o"></i>
-                    <p>Form Name Goes Here</p>
-                  </a>
-                </div>
-              </div>
-              <div class="col-md-3 col-sm-6">
-                <div class="form-box">
-                  <a href="#n" class="box-content text-center">
-                    <i class="fa fa-file-text-o"></i>
-                    <p>Form Name Goes Here</p>
-                  </a>
-                </div>
-              </div>
-              <div class="col-md-3 col-sm-6">
-                <div class="form-box">
-                  <a href="#n" class="box-content text-center">
-                    <i class="fa fa-file-text-o"></i>
-                    <p>Form Name Goes Here</p>
-                  </a>
-                </div>
-              </div>
-              <div class="col-md-3 col-sm-6">
-                <div class="form-box">
-                  <a href="#n" class="box-content text-center">
-                    <i class="fa fa-file-text-o"></i>
-                    <p>Form Name Goes Here</p>
-                  </a>
-                </div>
-              </div>
-              <div class="col-md-3 col-sm-6">
-                <div class="form-box">
-                  <a href="#n" class="box-content text-center">
-                    <i class="fa fa-file-text-o"></i>
-                    <p>Form Name Goes Here</p>
-                  </a>
-                </div>
-              </div>
-              <!-- **NOTE, THEN DELETE ME** no need for a new row after 12 columns - feel free to loop the col-md-3 divs -->
             </div>
           </div>
         </div>

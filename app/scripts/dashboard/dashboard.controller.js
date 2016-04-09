@@ -29,10 +29,10 @@ define([
     vm.getForms = getForms;
 
     function getForms() {
-      resourceService.getResources(
+      return resourceService.getResources(
         { resourceTypes: ['template'], sort: '-createdOn' },
         function(response) {
-          debugger;
+          vm.forms = response.resources;
         },
         function(error) { }
       );
