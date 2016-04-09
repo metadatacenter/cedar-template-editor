@@ -119,8 +119,8 @@ define([
         min = value.minItems || 0;
 
         if (!DataUtilService.isSpecialKey(name)) {
-          // We can tell we've reached an element level by its 'order' property
-          if (value._ui && value._ui.order) {
+          // We can tell we've reached an element level by its '@type' property
+          if ($rootScope.schemaOf(value)['@type'] == 'https://schema.metadatacenter.org/core/TemplateElement') {
 
             if (DataManipulationService.isCardinalElement(value)) {
               if (!parentModel[name] || angular.isObject(parentModel[name])) {

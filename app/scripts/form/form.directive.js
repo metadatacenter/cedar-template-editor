@@ -212,8 +212,8 @@ define([
             }
 
             if (!DataUtilService.isSpecialKey(name)) {
-              // We can tell we've reached an element level by its 'order' property
-              if (value._ui && value._ui.order) {
+              // We can tell we've reached an element level by its '@type' property
+              if ($rootScope.schemaOf(value)['@type'] == 'https://schema.metadatacenter.org/core/TemplateElement') {
                 var min = value.minItems || 0;
 
                 // Handle position and nesting within $scope.model if it does not exist

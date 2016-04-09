@@ -285,11 +285,7 @@ define([
 
     service.idOf = function (fieldOrElement) {
       if (fieldOrElement) {
-        if (fieldOrElement.items) {
-          return fieldOrElement.items["@id"];
-        } else {
-          return fieldOrElement["@id"];
-        }
+        return service.getFieldSchema(fieldOrElement)['@id'];
       }
     };
 
