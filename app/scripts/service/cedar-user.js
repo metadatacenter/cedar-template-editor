@@ -3,12 +3,12 @@
 define([
   'angular'
 ], function (angular) {
-  angular.module('cedar.templateEditor.service.cedar', [])
-      .service('Cedar', Cedar);
+  angular.module('cedar.templateEditor.service.cedarUser', [])
+      .service('CedarUser', CedarUser);
 
-  Cedar.$inject = ["$rootScope"];
+  CedarUser.$inject = ["$rootScope"];
 
-  function Cedar($rootScope) {
+  function CedarUser($rootScope) {
 
     var service = {};
 
@@ -61,6 +61,10 @@ define([
 
     service.getHome = function() {
       return getAppData().cedarUserProfile.homePath;
+    };
+
+    service.getPermissions = function() {
+      return getAppData().cedarUserProfile.permissions;
     };
 
     return service;
