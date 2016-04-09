@@ -27,6 +27,10 @@ define([
 
     vm.forms = getForms();
     vm.getForms = getForms;
+    vm.getWorkspace = getWorkspace;
+    vm.resources = getWorkspace();
+
+    $rootScope.pageTitle = 'Dashboard';    
 
     function getForms() {
       return resourceService.getResources(
@@ -38,7 +42,15 @@ define([
       );
     }
 
-    $rootScope.pageTitle = 'Dashboard';    
+    function getWorkspace() {
+      return resourceService.getResources(
+        { resourceTypes: ['element', 'field', 'instance', 'template'], sort: '-createdOn' },
+        function(response) {
+          vm.resources = response.resources;
+        },
+        function(error) { }
+      );
+    }
 
   };
 
