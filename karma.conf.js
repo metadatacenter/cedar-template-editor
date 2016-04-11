@@ -33,6 +33,7 @@ module.exports = function(config) {
       'scripts/keycloak/keycloak.js',
       'scripts/handlers/KeycloakUserHandler.js',
       'scripts/handlers/NoauthUserHandler.js',
+      'scripts/handlers/UserProfileHandler.js',
       'require-config.js',
     ],
 
