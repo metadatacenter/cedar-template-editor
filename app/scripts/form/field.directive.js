@@ -639,7 +639,76 @@ define([
       };
       /* end of Value Recommendation functionality */
 
-      //$scope.myvm;
+
+      /* start of controlled terms functionality */
+      function deleteFieldAddedBranch(branch) {
+        for (var i = 0, len = vm.valueConstraint.branches.length; i < len; i+= 1) {
+          if (vm.valueConstraint.branches[i]['uri'] == branch['uri']) {
+            vm.valueConstraint.branches.splice(i,1);
+            break;
+          }
+        }
+      };
+
+      function deleteFieldAddedClass(ontologyClass) {
+        for (var i = 0, len = vm.valueConstraint.classes.length; i < len; i+= 1) {
+          if (vm.valueConstraint.classes[i] == ontologyClass) {
+            vm.valueConstraint.classes.splice(i,1);
+            break;
+          }
+        }
+      };
+
+      function deleteFieldAddedItem(itemData) {
+        var properties = $rootScope.propertiesOf($scope.field);
+        for (var i = 0, len = vm.addedFieldItems.length; i < len; i+= 1) {
+          if (vm.addedFieldItems[i] == itemData) {
+            var itemDataId = itemData["@id"];
+            var idx = properties["@type"].oneOf[0].enum.indexOf(itemDataId);
+
+            if (idx >= 0) {
+              properties["@type"].oneOf[0].enum.splice(idx, 1);
+              if (properties["@type"].oneOf[0].enum.length == 0) {
+                delete properties["@type"].oneOf[0].enum;
+              }
+            }
+
+            idx = properties['@type'].oneOf[1].items.enum.indexOf(itemDataId);
+
+            if (idx >= 0) {
+              properties['@type'].oneOf[1].items.enum.splice(idx, 1);
+              if (properties["@type"].oneOf[1].items.enum.length == 0) {
+                delete properties["@type"].oneOf[1].items.enum;
+              }
+            }
+
+            vm.addedFieldItems.splice(i,1);
+            break;
+          }
+        }
+      };
+
+      function deleteFieldAddedOntology(ontology) {
+        var valueConstraint = $rootScope.propertiesOf($scope.field)._valueConstraints;
+        for (var i = 0, len = valueConstraint.ontologies.length; i < len; i+= 1) {
+          if (valueConstraints.ontologies[i]['uri'] == ontology['uri']) {
+            valueConstraints.ontologies.splice(i,1);
+            break;
+          }
+        }
+      };
+
+      function deleteFieldAddedValueSet(valueSet) {
+        var valueConstraint = $rootScope.propertiesOf($scope.field)._valueConstraints;
+        for (var i = 0, len = valueConstraint.valueSets.length; i < len; i+= 1) {
+          if (vm.valueConstraint.valueSets[i]['uri'] == valueSet['uri']) {
+            vm.valueConstraint.valueSets.splice(i,1);
+            break;
+          }
+        }
+      };
+      /* end of controlled terms functionality */
+
     };
 
 
