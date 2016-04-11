@@ -401,12 +401,15 @@ define([
         if ($scope.errorMessages.length == 0) {
 
           if (!p._ui.is_cardinal_field) {
+            console.log('delete minItems and maxItems');
             delete $scope.field.minItems;
             delete $scope.field.maxItems;
+            console.log($scope.field);
           }
 
-          if (typeof $scope.field.maxItems == 'undefined' && typeof $scope.field.minItems == 'undefined') {
+          if (typeof $scope.field.minItems == 'undefined') {
             if ($scope.field.items) {
+              console.log('uncardinalizeField');
               DataManipulationService.uncardinalizeField($scope.field);
             }
           } else {
@@ -635,6 +638,8 @@ define([
         }
       };
       /* end of Value Recommendation functionality */
+
+      //$scope.myvm;
     };
 
 

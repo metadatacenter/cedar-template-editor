@@ -36,7 +36,7 @@ define([
         selfUrl = resource.links.self;
       }
       else {
-        if (resource.type == 'Ontology') {
+        if (resource.type == 'ontology' ||  resource.type == 'Ontology') {
           var acronym = resource.ontology.substr(resource.ontology.lastIndexOf('/') + 1);
           selfUrl = "http://data.bioontology.org/ontologies/" + acronym + "/classes/" + encodeURIComponent(resource["@id"]);
         }

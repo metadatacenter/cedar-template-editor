@@ -574,6 +574,7 @@ define([
      */
 
     function assignValueConstraintToField() {
+      console.log('assignValueConstraintToField');
       $rootScope.propertiesOf(vm.field)._valueConstraints =
         angular.extend(vm.valueConstraint, $rootScope.propertiesOf(vm.field)._valueConstraints)
       delete vm.stageValueConstraintAction;

@@ -75,38 +75,40 @@ define([
     };
 
     service.cardinalizeField = function (field) {
-      if (typeof(field.minItems) == 'undefined' || field.maxItems == 1) {
+      if (typeof(field.minItems) != 'undefined' && !field.items) {
+
+        field.items = {
+          'type'                : field.type,
+          '@id'                 : field['@id'],
+          '@type'               : field['@type'],
+          '@context'            : field['@context'],
+          '$schema'             : field.$schema,
+          'title'               : field.properties._ui.title,
+          'description'         : field.properties._ui.description,
+          'properties'          : field.properties,
+          'required'            : field.required,
+          'additionalProperties': field.additionalProperties
+        };
+        field.type = 'array';
+
+        delete field.$schema;
+        delete field['@id'];
+        delete field['@type'];
+        delete field['@context'];
+        delete field.properties;
+        delete field.title;
+        delete field.description;
+        delete field.required;
+        delete field.additionalProperties;
+
+        return true;
+      } else {
         return false;
       }
-      field.items = {
-        'type'                : field.type,
-        '@id'                 : field['@id'],
-        '@type'               : field['@type'],
-        '@context'            : field['@context'],
-        '$schema'             : field.$schema,
-        'title'               : field.properties._ui.title,
-        'description'         : field.properties._ui.description,
-        'properties'          : field.properties,
-        'required'            : field.required,
-        'additionalProperties': field.additionalProperties
-      };
-      field.type = 'array';
-
-      delete field.$schema;
-      delete field['@id'];
-      delete field['@type'];
-      delete field['@context'];
-      delete field.properties;
-      delete field.title;
-      delete field.description;
-      delete field.required;
-      delete field.additionalProperties;
-
-      return true;
     };
 
     service.uncardinalizeField = function (field) {
-      if (typeof field.minItems == 'undefined' || (field.minItems == 1 && field.maxItems == 1)) {
+      if (typeof field.minItems == 'undefined' && field.items) {
 
         field.type = 'object';
 
@@ -120,7 +122,7 @@ define([
 
         delete field.items;
         delete field.maxItems;
-        delete field.minItems;
+        //delete field.minItems;
 
         return true;
       } else {
