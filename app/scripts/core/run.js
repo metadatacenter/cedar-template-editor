@@ -460,12 +460,13 @@ define([
     UserService.injectUserHandler($window.bootstrapUserHandler);
 
 
+    // the below console.log statements break the karma tests
     //TODO MJD
     // User data is available at this point:
-    console.log("Cedar service providing user data at this point:");
-    console.log(Cedar.getUserId());
-    console.log(Cedar.getScreenName());
-    console.log(Cedar.getHome());
+    // console.log("Cedar service providing user data at this point:");
+    // console.log(Cedar.getUserId());
+    // console.log(Cedar.getScreenName());
+    // console.log(Cedar.getHome());
 
     // Init the services that have dependencies on configuration
     DataTemplateService.init();

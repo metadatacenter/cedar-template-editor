@@ -25,7 +25,7 @@ define([
           this[methodName] = userHandler[methodName];
         }
       }
-      Cedar.setAuthProfile(this.getParsedToken());
+      Cedar.setAuthProfile(this.getParsedToken(config));
       Cedar.setCedarProfile(userHandler.cedarUserProfile);
     };
 
