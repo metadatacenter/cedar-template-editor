@@ -37,7 +37,13 @@ define([
       }
       else {
         if (resource.type == 'OntologyClass') {
-          var acronym = resource.source.substr(resource.source.lastIndexOf('/') + 1);
+          var acronym;
+          if (resource.source) {
+            acronym = resource.source.substr(resource.source.lastIndexOf('/') + 1);
+          }
+          else if (resource.ontology) {
+            acronym = resource.ontology.substr(resource.ontology.lastIndexOf('/') + 1);
+          }
           selfUrl = "http://data.bioontology.org/ontologies/" + acronym + "/classes/" + encodeURIComponent(resource["@id"]);
         }
         // Not used
