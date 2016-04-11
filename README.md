@@ -44,6 +44,8 @@ To run individual tasks, use `$ gulp <task> <othertask>`
 
 Tests are written in Jasmine and run with the karma test runner.
 
+To avoid Google Analytics errors while running karma tests the value of 'analyticsKey' in the tracking-service.conf.json file should be the string 'false'.
+
 To run the tests:
 
     $ npm test
