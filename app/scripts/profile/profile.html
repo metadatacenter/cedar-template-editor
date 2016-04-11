@@ -5,7 +5,7 @@
   <div>
     <ul>
       <li>
-        {{$root.cedar.getUserId()}}
+        {{$root.cedarUser.getUserId()}}
       </li>
     </ul>
   </div>
@@ -15,25 +15,25 @@
 
   <div>
     <ul>
-      <li>{{$root.cedar.getEmail()}}</li>
+      <li>{{$root.cedarUser.getEmail()}}</li>
     </ul>
   </div>
   <hr/>
 
   <h4 translate="" class="section-title ng-scope">Name:</h4>
 
-  <div ng-if="$root.cedar.isCedarProfileAvailable()">
+  <div ng-if="$root.cedarUser.isCedarProfileAvailable()">
     <ul>
-      <li>{{$root.cedar.getScreenName()}}</li>
+      <li>{{$root.cedarUser.getScreenName()}}</li>
     </ul>
   </div>
   <hr/>
 
   <h4 translate="" class="section-title ng-scope">API Keys:</h4>
 
-  <div ng-if="$root.cedar.isCedarProfileAvailable()">
+  <div ng-if="$root.cedarUser.isCedarProfileAvailable()">
     <ul>
-      <li ng-repeat="apiKey in $root.cedar.getApiKeys()">
+      <li ng-repeat="apiKey in $root.cedarUser.getApiKeys()">
         {{apiKey.serviceName}}
         <table class="apiKey">
           <tr>
@@ -72,18 +72,18 @@
 
   <h4 translate="" class="section-title ng-scope">Roles:</h4>
 
-  <div ng-if="$root.cedar.isCedarProfileAvailable()">
+  <div ng-if="$root.cedarUser.isCedarProfileAvailable()">
     <ul>
-      <li ng-repeat="roleName in $root.cedar.getRoles()">{{roleName}}</li>
+      <li ng-repeat="roleName in $root.cedarUser.getRoles()">{{roleName}}</li>
     </ul>
   </div>
   <hr/>
 
   <h4 translate="" class="section-title ng-scope">Permissions:</h4>
 
-  <div ng-if="$root.cedar.isCedarProfileAvailable()">
+  <div ng-if="$root.cedarUser.isCedarProfileAvailable()">
     <ul>
-      <li ng-repeat="permissionName in $root.cedar.getPermissions()">{{permissionName}}</li>
+      <li ng-repeat="permissionName in $root.cedarUser.getPermissions()">{{permissionName}}</li>
     </ul>
   </div>
   <hr/>
