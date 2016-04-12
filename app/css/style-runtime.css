@@ -9109,7 +9109,7 @@ body {
   background: #f9f9fb;
   font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
   color: #333;
-  padding-top: 189px;
+  padding-top: 100px;
 }
 a {
   -webkit-transition: all 0.3s 0.1s;
@@ -9258,6 +9258,7 @@ i {
   background-color: #ffffff;
   color: #71a69c;
   border-bottom: 5px solid #eaeaea;
+  top: 100px;
 }
 .controls-bar i {
   font-size: 20px;
@@ -9297,6 +9298,9 @@ i {
   text-transform: uppercase;
   margin: 5px;
   color: #666666;
+}
+.search-browse-spacer {
+  padding-top: 89px;
 }
 /* Begin Form Populate Gray Modal Slide Up/Down Section */
 .form-populate {
