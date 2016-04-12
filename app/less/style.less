@@ -36,7 +36,7 @@
 === MJD Custom Code
 ================================================
 */
-
+html,body { height:100%; }
 body {
   background: @background-color;
   font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
@@ -190,6 +190,9 @@ i {
   }
 }
 
+#angular-views-entry {
+  height: 100%;
+}
 .controls-bar {
   padding: 25px 40px;
   background-color: @white;
@@ -354,6 +357,8 @@ i {
   color: @graytxt;
   padding: 40px 0;
   position: relative;
+  //  overflow:hidden;
+  height: 100%;
 
   .push-pull-box {
     position: absolute;
@@ -435,6 +440,80 @@ i {
         }
       }
     }
+  }
+  /* Off Canvas */
+  .row-offcanvas {
+    -webkit-transition: all .25s ease-out;
+    -o-transition: all .25s ease-out;
+    transition: all .25s ease-out;
+    overflow: hidden;
+  }
+  .row-offcanvas-right {
+    right: 0;
+  }
+  .row-offcanvas-left {
+    left: 0;
+    overflow: scroll;
+
+    .filter-options {
+      ul.list-unstyled > li {
+        border-top: 1px solid @gray3;
+      }
+      ul > li {
+        list-style-type: none;
+        padding-top: 5px;
+      }
+      li > ul {
+        padding-left: 20px;
+
+        li i {
+          padding-right: 10px;
+          color: @brand-primary;
+        }
+        li a {
+          color: @graytxt
+        }
+      }
+      ul.list-unstyled > li:last-child {
+        border-bottom: 1px solid @gray3;
+      }
+      ul.list-unstyled > li > a {
+        display: block;
+        height: 55px;
+        padding: 20px;
+        text-transform: uppercase;
+        color: @graytxt;
+
+        i {
+          color: @brand-primary;
+        }
+      }
+      .reset-text {
+        text-transform: uppercase;
+        height: 55px;
+        padding: 20px;
+      }
+    }
+  }
+  .row-offcanvas-right .sidebar-offcanvas-right {
+    // right: -20%; /* 6 columns */
+  }
+  .row-offcanvas-left .sidebar-offcanvas-left {
+    left: -20%; /* 6 columns */
+  }
+  .row-offcanvas-right.active-right {
+    right: 20%; /* 6 columns */
+  }
+  .row-offcanvas-left.active-left {
+    left: 20%; /* 6 columns */
+  }
+  .sidebar-offcanvas-left, .sidebar-offcanvas-right {
+    position: absolute;
+    top: 0;
+    width: 20%; /* 6 columns */
+    padding: 0;
+    background: @graybg;
+    height: 100%;
   }
 }
 

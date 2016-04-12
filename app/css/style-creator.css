@@ -9101,6 +9101,10 @@ button.close {
 === MJD Custom Code
 ================================================
 */
+html,
+body {
+  height: 100%;
+}
 body {
   background: #f8f8f8;
   font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
@@ -9245,6 +9249,9 @@ i {
 }
 .navbar .nav-search {
   margin-top: 23px;
+}
+#angular-views-entry {
+  height: 100%;
 }
 .controls-bar {
   padding: 25px 40px;
@@ -9392,6 +9399,8 @@ i {
   color: #666666;
   padding: 40px 0;
   position: relative;
+  height: 100%;
+  /* Off Canvas */
 }
 .all-items-view .push-pull-box {
   position: absolute;
@@ -9461,6 +9470,75 @@ i {
   background: #ffffff;
   color: #666666;
   border: none;
+}
+.all-items-view .row-offcanvas {
+  -webkit-transition: all 0.25s ease-out;
+  transition: all 0.25s ease-out;
+  overflow: hidden;
+}
+.all-items-view .row-offcanvas-right {
+  right: 0;
+}
+.all-items-view .row-offcanvas-left {
+  left: 0;
+  overflow: scroll;
+}
+.all-items-view .row-offcanvas-left .filter-options ul.list-unstyled > li {
+  border-top: 1px solid #d2d2d2;
+}
+.all-items-view .row-offcanvas-left .filter-options ul > li {
+  list-style-type: none;
+  padding-top: 5px;
+}
+.all-items-view .row-offcanvas-left .filter-options li > ul {
+  padding-left: 20px;
+}
+.all-items-view .row-offcanvas-left .filter-options li > ul li i {
+  padding-right: 10px;
+  color: #5795ba;
+}
+.all-items-view .row-offcanvas-left .filter-options li > ul li a {
+  color: #666666;
+}
+.all-items-view .row-offcanvas-left .filter-options ul.list-unstyled > li:last-child {
+  border-bottom: 1px solid #d2d2d2;
+}
+.all-items-view .row-offcanvas-left .filter-options ul.list-unstyled > li > a {
+  display: block;
+  height: 55px;
+  padding: 20px;
+  text-transform: uppercase;
+  color: #666666;
+}
+.all-items-view .row-offcanvas-left .filter-options ul.list-unstyled > li > a i {
+  color: #5795ba;
+}
+.all-items-view .row-offcanvas-left .filter-options .reset-text {
+  text-transform: uppercase;
+  height: 55px;
+  padding: 20px;
+}
+.all-items-view .row-offcanvas-left .sidebar-offcanvas-left {
+  left: -20%;
+  /* 6 columns */
+}
+.all-items-view .row-offcanvas-right.active-right {
+  right: 20%;
+  /* 6 columns */
+}
+.all-items-view .row-offcanvas-left.active-left {
+  left: 20%;
+  /* 6 columns */
+}
+.all-items-view .sidebar-offcanvas-left,
+.all-items-view .sidebar-offcanvas-right {
+  position: absolute;
+  top: 0;
+  width: 20%;
+  /* 6 columns */
+  padding: 0;
+  background: #eaeaea;
+  height: 100%;
 }
 /* End All Items View */
 .template-header {
@@ -9651,7 +9729,7 @@ i {
 }
 .template-body .right-body .element-group {
   width: 100%;
-  border: 1px solid #dddddd;
+  border: 1px solid #d2d2d2;
   padding: 0px 14px 12px 16px;
   margin-bottom: 16px;
   background-color: #f4f4f7;
@@ -11815,7 +11893,7 @@ p.instructions {
   border-radius: 0;
   text-align: center;
   margin: 0;
-  background: #dddddd;
+  background: #d2d2d2;
   border: none;
   color: #000000;
   padding: 10px 15px;
@@ -12377,7 +12455,7 @@ body .template-header .controlled-terms-modal {
   background: #ffffff;
 }
 .bootstrap-select .btn-select-picker.disabled {
-  background: #dddddd;
+  background: #d2d2d2;
 }
 .date-group .fa-calendar {
   font-size: 1.5em;
@@ -12465,7 +12543,7 @@ body .template-header .controlled-terms-modal {
 }
 .definition-inputs {
   padding-bottom: 20px;
-  border-bottom: 1px dashed #dddddd;
+  border-bottom: 1px dashed #d2d2d2;
 }
 .fields.preview .floating-label {
   display: none;
@@ -12490,7 +12568,7 @@ body .template-header .controlled-terms-modal {
 }
 .field-root {
   padding: 5px;
-  border: 1px solid #dddddd;
+  border: 1px solid #d2d2d2;
   margin-bottom: 10px;
 }
 .sortable-icon {
@@ -12776,7 +12854,7 @@ body {
   position: relative;
   left: -13px;
   background-color: #f4f4f7;
-  border: 1px solid #dddddd;
+  border: 1px solid #d2d2d2;
 }
 .visibilitySwitch i {
   position: relative;
