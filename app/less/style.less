@@ -440,6 +440,51 @@ i {
         }
       }
     }
+    .list-view {
+      display: none;
+
+      thead th {
+        text-transform: uppercase;
+        padding: 10px 0 20px;
+
+        i {
+          color: @brand-primary;
+        }
+      }
+
+      tbody {
+        margin: 10px 0;
+      }
+
+      table tbody tr.box-row {
+        width: 100%;
+        border: 1px solid #ebebeb;
+        box-shadow: 4px 4px #e0e0e0;
+        background: #ffffff;
+        margin: 10px auto 20px;
+        font-size: 18px;
+
+        td {
+          padding: 20px;
+
+          i.large-icon {
+            font-size: 36px;
+            color: @brand-primary;
+          }
+        }
+
+        .btn-circle {
+          border-radius: 50%;
+          width: 30px;
+        }
+        .btn-info.btn-circle {
+          box-shadow: none;
+          background: @graytxt;
+          color: #fff;
+          border: none;
+        }
+      }
+    }
   }
   /* Off Canvas */
   .row-offcanvas {

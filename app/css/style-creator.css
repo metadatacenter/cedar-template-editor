@@ -9471,6 +9471,44 @@ i {
   color: #666666;
   border: none;
 }
+.all-items-view .populate-form-boxes .list-view {
+  display: none;
+}
+.all-items-view .populate-form-boxes .list-view thead th {
+  text-transform: uppercase;
+  padding: 10px 0 20px;
+}
+.all-items-view .populate-form-boxes .list-view thead th i {
+  color: #5795ba;
+}
+.all-items-view .populate-form-boxes .list-view tbody {
+  margin: 10px 0;
+}
+.all-items-view .populate-form-boxes .list-view table tbody tr.box-row {
+  width: 100%;
+  border: 1px solid #ebebeb;
+  box-shadow: 4px 4px #e0e0e0;
+  background: #ffffff;
+  margin: 10px auto 20px;
+  font-size: 18px;
+}
+.all-items-view .populate-form-boxes .list-view table tbody tr.box-row td {
+  padding: 20px;
+}
+.all-items-view .populate-form-boxes .list-view table tbody tr.box-row td i.large-icon {
+  font-size: 36px;
+  color: #5795ba;
+}
+.all-items-view .populate-form-boxes .list-view table tbody tr.box-row .btn-circle {
+  border-radius: 50%;
+  width: 30px;
+}
+.all-items-view .populate-form-boxes .list-view table tbody tr.box-row .btn-info.btn-circle {
+  box-shadow: none;
+  background: #666666;
+  color: #fff;
+  border: none;
+}
 .all-items-view .row-offcanvas {
   -webkit-transition: all 0.25s ease-out;
   transition: all 0.25s ease-out;
