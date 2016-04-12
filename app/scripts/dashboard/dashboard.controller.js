@@ -25,12 +25,27 @@ define([
   function DashboardController($location, $rootScope, $routeParams, $scope, AuthorizedBackendService, HeaderService, resourceService, TemplateElementService, TemplateService, TemplateInstanceService, UIMessageService, UrlService, CONST) {
     var vm = this;
 
-    vm.forms = getForms();
+    vm.forms = [];
     vm.getForms = getForms;
     vm.getWorkspace = getWorkspace;
-    vm.resources = getWorkspace();
+    vm.isResourceTypeActive = isResourceTypeActive;
+    vm.resources = [];
+    vm.resourceTypes = {
+      element: true,
+      field: true,
+      instance: true,
+      template: true
+    };
+    vm.toggleResourceType = toggleResourceType;
 
     $rootScope.pageTitle = 'Dashboard';    
+
+    getForms();
+    getWorkspace();
+
+    /**
+     * Scope functions.
+     */
 
     function getForms() {
       return resourceService.getResources(
@@ -43,13 +58,41 @@ define([
     }
 
     function getWorkspace() {
-      return resourceService.getResources(
-        { resourceTypes: ['element', 'field', 'instance', 'template'], sort: '-createdOn' },
-        function(response) {
-          vm.resources = response.resources;
-        },
-        function(error) { }
-      );
+      var resourceTypes = activeResourceTypes();
+      if (resourceTypes.length > 0) {
+        return resourceService.getResources(
+          { resourceTypes: resourceTypes, sort: '-createdOn' },
+          function(response) {
+            vm.resources = response.resources;
+          },
+          function(error) { }
+        );
+      } else {
+        vm.resources = [];
+      }
+    }
+
+    function isResourceTypeActive(type) {
+      return vm.resourceTypes[type];
+    }
+
+    function toggleResourceType(type) {
+      vm.resourceTypes[type] = !vm.resourceTypes[type];
+      getWorkspace();
+    }
+
+    /**
+     * Private functions.
+     */
+
+    function activeResourceTypes() {
+      var activeResourceTypes = [];
+      angular.forEach(Object.keys(vm.resourceTypes), function(value, key) {
+        if (vm.resourceTypes[value]) {
+          activeResourceTypes.push(value);
+        }
+      });
+      return activeResourceTypes;
     }
 
   };
