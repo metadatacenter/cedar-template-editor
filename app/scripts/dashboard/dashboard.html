@@ -1,7 +1,7 @@
 <div class="controls-bar clearfix row-fluid navbar-fixed-top">
   <div class="pull-left">
     <ul class="list-inline filternav">
-      <li><a href="#sidebar-left" data-toggle="offcanvas"><i class="fa fa-plus-circle"></i></a></li>
+      <li><a href="#sidebar-left" data-toggle="offcanvas" ng-click="dc.toggleFilters()"><i class="fa fa-plus-circle"></i></a></li>
       <li>Filters</li>
     </ul>
   </div>
@@ -117,7 +117,7 @@
   <!-- here are the right and left sides.  these are currently hidden -->
   <div class="row-offcanvas row-offcanvas-right row-offcanvas-left">
     <!-- START LEFT SIDE -->
-    <div class="sidebar-offcanvas-left" id="sidebar-left">
+    <div class="sidebar-offcanvas-left" id="sidebar-left" ng-show="dc.showFilters">
       <div class="filter-options">
         <div class="clearfix reset-text">
           <div class="pull-left">Filter By</div>
@@ -146,29 +146,29 @@
     </div>
     <!-- END LEFT SIDE -->
     <!-- RIGHT SIDE -->
-    <div class="sidebar-offcanvas-right" id="sidebar-right">
+    <div class="sidebar-offcanvas-right" id="sidebar-right" ng-show="dc.selectedResource">
       <div class="filter-options rightside">
         <div class="clearfix reset-text">
-          <div class="pull-right"><a href="#n"><i class="fa fa-times" aria-hidden="true"></i></a></div>
+          <div class="pull-right"><a ng-click="dc.selectedResource = null"><i class="fa fa-times" aria-hidden="true"></i></a></div>
         </div>
-        <h4>Name Goes Here</h4>
+        <h4>{{ dc.selectedResource.name }}</h4>
         <table class="table">
           <tbody>
             <tr>
               <td class="left"><strong>Type:</strong></td>
-              <td>Metadata</td>
+              <td>{{ dc.selectedResource.type }}</td>
             </tr>
             <tr>
               <td class="left"><strong>Location:</strong></td>
-              <td>My Folder</td>
+              <td>{{ dc.selectedResource.path }}</td>
             </tr>
             <tr>
               <td class="left"><strong>Owner:</strong></td>
-              <td>Name</td>
+              <td>{{ dc.selectedResource.createdBy.name }}</td>
             </tr>
             <tr>
               <td class="left"><strong>Modified:</strong></td>
-              <td>Date by Name</td>
+              <td>{{ dc.selectedResource.lastUpdatedOn }} by {{ dc.selectedResource.lastUpdatedBy.name }}</td>
             </tr>
             <tr>
               <td class="left"><strong>Opened:</strong></td>
@@ -176,12 +176,12 @@
             </tr>
             <tr>
               <td class="left"><strong>Created:</strong></td>
-              <td>Date by Name</td>
+              <td>{{ dc.selectedResource.createdOn }} by {{ dc.selectedResource.createdBy.name }}</td>
             </tr>
           </tbody>
         </table>
         <h4>Description</h4>
-        <p>Description text goes here.</p>
+        <p>{{ dc.selectedResource.description }}</p>
       </div>
     </div>
     <!-- END RIGHT SIDE -->
@@ -209,7 +209,7 @@
               <ul class="list-inline">
                 <li><button class="btn  btn-sm btn-info btn-circle"><i class="fa fa-times"></i></button></li>
                 <li><button class="btn  btn-sm btn-info btn-circle"><i class="fa fa-question"></i></button></li>
-                <li><button class="btn  btn-sm btn-info btn-circle"><i class="fa fa-info"></i></button></li>
+                <li><button class="btn  btn-sm btn-info btn-circle" ng-click="dc.selectResource(resource)"><i class="fa fa-info"></i></button></li>
                 <li><button class="btn  btn-sm btn-info btn-circle"><i class="fa fa-pencil"></i></button></li>
               </ul>
             </div>

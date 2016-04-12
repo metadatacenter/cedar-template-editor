@@ -36,6 +36,10 @@ define([
       instance: true,
       template: true
     };
+    vm.selectedResource = null;
+    vm.selectResource = selectResource;
+    vm.showFilters = false;
+    vm.toggleFilters = toggleFilters;
     vm.toggleResourceType = toggleResourceType;
 
     $rootScope.pageTitle = 'Dashboard';    
@@ -74,6 +78,14 @@ define([
 
     function isResourceTypeActive(type) {
       return vm.resourceTypes[type];
+    }
+
+    function selectResource(resource) {
+      vm.selectedResource = resource;
+    }
+
+    function toggleFilters() {
+      vm.showFilters = !vm.showFilters;
     }
 
     function toggleResourceType(type) {
