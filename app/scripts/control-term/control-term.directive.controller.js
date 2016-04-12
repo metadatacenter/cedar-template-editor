@@ -115,6 +115,11 @@ define([
       }
 
       if(alreadyAdded == false) {
+        if (!ontology.info) {
+          ontology.info = {};
+          ontology.info.name = ontology.details.ontology.name;
+          ontology.info.id = ontology.details.ontology.acronym;
+        }
         vm.addedFieldItems.push({
           prefLabel: selection.prefLabel,
           ontologyDescription: ontology.info.name+" ("+ontology.info.id+")",

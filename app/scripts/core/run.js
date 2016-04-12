@@ -11,14 +11,14 @@ define([
   cedarTemplateEditorCoreRun.$inject = ['$rootScope', '$window', '$sce', '$translate', 'DataTemplateService',
                                         'DataManipulationService', 'FieldTypeService', 'UrlService', 'UIUtilService',
                                         'UserService', 'RichTextConfigService', 'CONST', 'controlTermDataService',
-                                        'provisionalClassService', 'Cedar', 'UISettingsService',
+                                        'provisionalClassService', 'CedarUser', 'UISettingsService',
                                         'ValueRecommenderService', 'DataUtilService', 'TrackingService'];
 
 
   function cedarTemplateEditorCoreRun($rootScope, $window, $sce, $translate, DataTemplateService,
                                       DataManipulationService, FieldTypeService, UrlService, UIUtilService, UserService,
                                       RichTextConfigService, CONST, controlTermDataService, provisionalClassService,
-                                      Cedar, UISettingsService, ValueRecommenderService, DataUtilService,
+                                      CedarUser, UISettingsService, ValueRecommenderService, DataUtilService,
                                       TrackingService) {
 
     $rootScope.isArray = angular.isArray;
@@ -449,10 +449,9 @@ define([
       return $sce.trustAsHtml($rootScope.propertiesOf(field)._content);
     };
 
-    // Init Cedar "god object"
-    Cedar.init();
+    CedarUser.init();
     // Make it available for everybody through rootScope
-    $rootScope.cedar = Cedar;
+    $rootScope.cedarUser = CedarUser;
 
     // Inject user data:
     // read from Keycloak
@@ -467,6 +466,7 @@ define([
     // console.log(Cedar.getUserId());
     // console.log(Cedar.getScreenName());
     // console.log(Cedar.getHome());
+    // console.log(CedarUser.getPermissions());
 
     // Init the services that have dependencies on configuration
     DataTemplateService.init();

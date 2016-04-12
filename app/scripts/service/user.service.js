@@ -6,9 +6,9 @@ define([
   angular.module('cedar.templateEditor.service.userService', [])
       .service('UserService', UserService);
 
-  UserService.$inject = ['Cedar'];
+  UserService.$inject = ['CedarUser'];
 
-  function UserService(Cedar) {
+  function UserService(CedarUser) {
 
     var userHandler = null;
 
@@ -24,8 +24,8 @@ define([
           this[methodName] = userHandler[methodName];
         }
       }
-      Cedar.setAuthProfile(this.getParsedToken());
-      Cedar.setCedarProfile(userHandler.cedarUserProfile);
+      CedarUser.setAuthProfile(this.getParsedToken());
+      CedarUser.setCedarProfile(userHandler.cedarUserProfile);
     };
 
     return service;

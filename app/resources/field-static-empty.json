@@ -1,0 +1,46 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "@id": null,
+  "@type": "https://schema.metadatacenter.org/core/StaticTemplateField",
+  "@context": {
+    "pav": "http://purl.org/pav/",
+    "cedar": "https://schema.metadatacenter.org/core/"
+  },
+  "type": "object",
+  "title": "",
+  "description": "",
+  "_ui": {
+  },
+  "properties": {
+    "@type": {
+      "oneOf": [
+        {
+          "type": "string",
+          "format": "uri"
+        },
+        {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "format": "uri"
+          },
+          "uniqueItems": true
+        }
+      ]
+    },
+    "_ui": {
+      "title": "",
+      "description": "",
+      "inputType": null
+    },
+    "_valueConstraints": {
+      "requiredValue": false
+    },
+    "_content": null
+  },
+  "required": [
+    "_content"
+  ],
+  "additionalProperties": false
+}

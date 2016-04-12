@@ -133,11 +133,15 @@ define([
           if (response.collection.length > 0) {
             var tArry = [], i;
             for (i = 0; i < response.collection.length; i += 1) {
-              tArry.push({
-                prefLabel : response.collection[i].prefLabel,
-                details   : response.collection[i],
-                ontology  : controlTermDataService.getOntologyByLdId(response.collection[i].source)
-              });
+              var ontology = controlTermDataService.getOntologyByLdId(response.collection[i].source);
+              // Ignore results for which the ontology was not found in the cache
+              if (ontology) {
+                tArry.push({
+                  prefLabel : response.collection[i].prefLabel,
+                  details   : response.collection[i],
+                  ontology  : ontology
+                });
+              }
             }
             vm.searchResults = tArry;
           } else {

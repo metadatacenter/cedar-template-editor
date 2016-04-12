@@ -36,22 +36,26 @@ define([
         selfUrl = resource.links.self;
       }
       else {
-        if (resource.type == 'Ontology') {
-          var acronym = resource.ontology.substr(resource.ontology.lastIndexOf('/') + 1);
+        if (resource.type == 'OntologyClass') {
+          var acronym;
+          if (resource.source) {
+            acronym = resource.source.substr(resource.source.lastIndexOf('/') + 1);
+          }
+          else if (resource.ontology) {
+            acronym = resource.ontology.substr(resource.ontology.lastIndexOf('/') + 1);
+          }
           selfUrl = "http://data.bioontology.org/ontologies/" + acronym + "/classes/" + encodeURIComponent(resource["@id"]);
         }
-        else if (resource.type == 'ValueSet') {
-
-          if (resource.provisional) {
-            selfUrl = resource["@id"];
-          }
-          else {
-            var acronym = resource.vsCollection.substr(resource.vsCollection.lastIndexOf('/') + 1);
-            selfUrl = "http://data.bioontology.org/ontologies/" + acronym + "/classes/" + encodeURIComponent(resource["@id"]);
-          }
-        }
-
-
+        // Not used
+        //else if (resource.type == 'ValueSet' || resource.type == 'Value') {
+        //  if (resource.provisional) {
+        //    selfUrl = resource["@id"];
+        //  }
+        //  else {
+        //    var acronym = resource.vsCollection.substr(resource.vsCollection.lastIndexOf('/') + 1);
+        //    selfUrl = "http://data.bioontology.org/ontologies/" + acronym + "/classes/" + encodeURIComponent(resource["@id"]);
+        //  }
+        //}
       }
       return selfUrl;
     }
