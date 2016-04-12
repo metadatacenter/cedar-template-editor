@@ -6,9 +6,9 @@ define([
   angular.module('cedar.templateEditor.controlTerm.provisionalClassController', [])
     .controller('provisionalClassController', provisionalClassController);
 
-  provisionalClassController.$inject = ['$q', '$scope', '$timeout', 'provisionalClassService', 'controlTermDataService'];
+  provisionalClassController.$inject = ['$q', '$scope', '$timeout', 'provisionalClassService', 'controlTermDataService', 'controlTermService'];
 
-  function provisionalClassController($q, $scope, $timeout, provisionalClassService, controlTermDataService) {
+  function provisionalClassController($q, $scope, $timeout, provisionalClassService, controlTermDataService, controlTermService) {
     var vm = this;
 
     vm.addValueToValueSet = addValueToValueSet;
@@ -73,10 +73,8 @@ define([
 
     function saveAsFieldItem(provisionalClass) {
       provisionalClassService.saveClass(provisionalClass, vm.provisionalClassMappings).then(function(newClass) {
-        // TODO: fix the following call
-        controlTermDataService.getClassById(newClass['@id']).then(function(details) {
-          // hack to add prefLabel
-          details.prefLabel = details.label;
+        var acronym = controlTermService.getLastFragmentOfUri(newClass.ontology);
+        controlTermDataService.getClassById(acronym, newClass['@id']).then(function(details) {
           $scope.$emit(
             'cedar.templateEditor.controlTerm.provisionalClassController.provisionalClassSaved', {
               class: details,
