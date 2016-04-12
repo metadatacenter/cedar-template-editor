@@ -450,6 +450,22 @@ i {
   }
   .row-offcanvas-right {
     right: 0;
+    overflow: scroll;
+
+    .rightside {
+      padding: 20px;
+
+      .pull-right a {
+        color: @graytxt;
+      }
+
+      td {
+        border: none;
+      }
+      td.left {
+        text-align: right;
+      }
+    }
   }
   .row-offcanvas-left {
     left: 0;
@@ -496,7 +512,7 @@ i {
     }
   }
   .row-offcanvas-right .sidebar-offcanvas-right {
-    // right: -20%; /* 6 columns */
+    right: -20%; /* 6 columns */
   }
   .row-offcanvas-left .sidebar-offcanvas-left {
     left: -20%; /* 6 columns */

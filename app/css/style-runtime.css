@@ -9478,6 +9478,19 @@ i {
 }
 .all-items-view .row-offcanvas-right {
   right: 0;
+  overflow: scroll;
+}
+.all-items-view .row-offcanvas-right .rightside {
+  padding: 20px;
+}
+.all-items-view .row-offcanvas-right .rightside .pull-right a {
+  color: #666666;
+}
+.all-items-view .row-offcanvas-right .rightside td {
+  border: none;
+}
+.all-items-view .row-offcanvas-right .rightside td.left {
+  text-align: right;
 }
 .all-items-view .row-offcanvas-left {
   left: 0;
@@ -9517,6 +9530,10 @@ i {
   text-transform: uppercase;
   height: 55px;
   padding: 20px;
+}
+.all-items-view .row-offcanvas-right .sidebar-offcanvas-right {
+  right: -20%;
+  /* 6 columns */
 }
 .all-items-view .row-offcanvas-left .sidebar-offcanvas-left {
   left: -20%;
