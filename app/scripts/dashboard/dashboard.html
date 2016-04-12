@@ -197,25 +197,27 @@
       </div>
     </div>
     <div class="row populate-form-boxes">
-      <div class="col-md-3 col-sm-6" ng-repeat="(index, resource) in dc.resources">
-        <div class="form-box">
-          <div class="box-content text-center">
-            <i class="fa fa-file-text-o"></i>
-            <p>{{ resource.name}}</p>
-          </div>
-          <div class="quick-details-box">
-            <p>{{ resource.description}}</p>
-            <ul class="list-inline">
-              <li><button class="btn  btn-sm btn-info btn-circle"><i class="fa fa-times"></i></button></li>
-              <li><button class="btn  btn-sm btn-info btn-circle"><i class="fa fa-question"></i></button></li>
-              <li><button class="btn  btn-sm btn-info btn-circle"><i class="fa fa-info"></i></button></li>
-              <li><button class="btn  btn-sm btn-info btn-circle"><i class="fa fa-pencil"></i></button></li>
-            </ul>
+      <div class="grid-view" style="display: block">
+        <div class="col-md-3 col-sm-6" ng-repeat="(index, resource) in dc.resources">
+          <div class="form-box">
+            <div class="box-content text-center">
+              <i class="fa fa-file-text-o"></i>
+              <p>{{ resource.name}}</p>
+            </div>
+            <div class="quick-details-box">
+              <p>{{ resource.description}}</p>
+              <ul class="list-inline">
+                <li><button class="btn  btn-sm btn-info btn-circle"><i class="fa fa-times"></i></button></li>
+                <li><button class="btn  btn-sm btn-info btn-circle"><i class="fa fa-question"></i></button></li>
+                <li><button class="btn  btn-sm btn-info btn-circle"><i class="fa fa-info"></i></button></li>
+                <li><button class="btn  btn-sm btn-info btn-circle"><i class="fa fa-pencil"></i></button></li>
+              </ul>
+            </div>
           </div>
         </div>
       </div>
       <!-- this is the beginning of the list view -->
-      <div class="list-view">
+      <div class="list-view" style="display: none;">
         <div class="col-xs-12">
           <table class="table">
             <thead>

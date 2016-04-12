@@ -9475,9 +9475,6 @@ i {
   color: #666666;
   border: none;
 }
-.all-items-view .populate-form-boxes .list-view {
-  display: none;
-}
 .all-items-view .populate-form-boxes .list-view thead th {
   text-transform: uppercase;
   padding: 10px 0 20px;
@@ -9575,10 +9572,6 @@ i {
 }
 .all-items-view .row-offcanvas-right .sidebar-offcanvas-right {
   right: -20%;
-  /* 6 columns */
-}
-.all-items-view .row-offcanvas-left .sidebar-offcanvas-left {
-  left: -20%;
   /* 6 columns */
 }
 .all-items-view .row-offcanvas-right.active-right {
