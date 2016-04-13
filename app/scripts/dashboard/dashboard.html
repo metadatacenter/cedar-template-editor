@@ -21,8 +21,8 @@
           <li><a href="#">Another action</a></li>
         </ul>
       </li>
-      <li><a ng-click="dc.resourceView = 'grid'"><i class="fa fa-th graytext"></i></a></li>
-      <li><a ng-click="dc.resourceView = 'list'"><i class="fa fa-list-ul graytext"></i></a></li>
+      <li ng-show="dc.resourceView != 'grid'"><a ng-click="dc.resourceView = 'grid'"><i class="fa fa-th graytext"></i></a></li>
+      <li ng-show="dc.resourceView != 'list'"><a ng-click="dc.resourceView = 'list'"><i class="fa fa-list-ul graytext"></i></a></li>
       <li class="inline divider-vertical graytext"></li>
       <li><i class="fa fa-ellipsis-v inline graytext"></i>
         <ul>
