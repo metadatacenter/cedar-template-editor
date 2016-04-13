@@ -24,7 +24,14 @@
       <li><a ng-click="dc.resourceView = 'grid'"><i class="fa fa-th graytext"></i></a></li>
       <li><a ng-click="dc.resourceView = 'list'"><i class="fa fa-list-ul graytext"></i></a></li>
       <li class="inline divider-vertical graytext"></li>
-      <li><i class="fa fa-ellipsis-v inline graytext"></i></li>
+      <li><i class="fa fa-ellipsis-v inline graytext"></i>
+        <ul>
+          <li><a href="#n">Settings</a></li>
+          <li><a href="#n">Help & Feedback</a></li>
+          <li><a href="#n">Profile</a></li>
+          <li><a href="#n">Logout</a></li>
+        </ul>
+      </li>
     </ul>
   </div>
 </div>
@@ -49,7 +56,7 @@
         <div class="form-box">
           <a href="#n" class="box-content text-center">
             <i class="fa fa-file-text-o"></i>
-            <p>{{ form.name }}</p>
+            <p>{{ form.name}}</p>
           </a>
         </div>
       </div>
@@ -151,24 +158,24 @@
         <div class="clearfix reset-text">
           <div class="pull-right"><a ng-click="dc.selectedResource = null"><i class="fa fa-times" aria-hidden="true"></i></a></div>
         </div>
-        <h4>{{ dc.selectedResource.name }}</h4>
+        <h4>{{ dc.selectedResource.name}}</h4>
         <table class="table">
           <tbody>
             <tr>
               <td class="left"><strong>Type:</strong></td>
-              <td>{{ dc.selectedResource.type }}</td>
+              <td>{{ dc.selectedResource.type}}</td>
             </tr>
             <tr>
               <td class="left"><strong>Location:</strong></td>
-              <td>{{ dc.selectedResource.path }}</td>
+              <td>{{ dc.selectedResource.path}}</td>
             </tr>
             <tr>
               <td class="left"><strong>Owner:</strong></td>
-              <td>{{ dc.selectedResource.createdBy.name }}</td>
+              <td>{{ dc.selectedResource.createdBy.name}}</td>
             </tr>
             <tr>
               <td class="left"><strong>Modified:</strong></td>
-              <td>{{ dc.selectedResource.lastUpdatedOn }} by {{ dc.selectedResource.lastUpdatedBy.name }}</td>
+              <td>{{ dc.selectedResource.lastUpdatedOn}} by {{ dc.selectedResource.lastUpdatedBy.name}}</td>
             </tr>
             <tr>
               <td class="left"><strong>Opened:</strong></td>
@@ -176,12 +183,12 @@
             </tr>
             <tr>
               <td class="left"><strong>Created:</strong></td>
-              <td>{{ dc.selectedResource.createdOn }} by {{ dc.selectedResource.createdBy.name }}</td>
+              <td>{{ dc.selectedResource.createdOn}} by {{ dc.selectedResource.createdBy.name}}</td>
             </tr>
           </tbody>
         </table>
         <h4>Description</h4>
-        <p>{{ dc.selectedResource.description }}</p>
+        <p>{{ dc.selectedResource.description}}</p>
       </div>
     </div>
     <!-- END RIGHT SIDE -->
@@ -202,7 +209,7 @@
           <div class="form-box">
             <div class="box-content text-center">
               <i class="fa fa-file-text-o"></i>
-              <p>{{ resource.name }}</p>
+              <p>{{ resource.name}}</p>
             </div>
             <div class="quick-details-box">
               <p>{{ resource.description}}</p>
@@ -230,7 +237,7 @@
             <tbody>
               <tr class="box-row" ng-repeat="(index, resource) in dc.resources">
                 <td><i class="fa fa-folder-o large-icon" aria-hidden="true"></i></td>
-                <td><a ng-click="dc.selectResource(resource)">{{ resource.name }}</a></td>
+                <td><a ng-click="dc.selectResource(resource)">{{ resource.name}}</a></td>
                 <td>{{ resource.createdOn|date:'shortDate' }}</td>
                 <td>{{ resource.lastUpdatedOn|date:'shortDate' }}</td>
                 <td>
