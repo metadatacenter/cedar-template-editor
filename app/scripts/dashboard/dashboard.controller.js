@@ -58,7 +58,7 @@ define([
      * TODO: return link?
      */
     function editResource(resource) {
-      switch (resource.type) {
+      switch (resource.resourceType) {
         case CONST.resourceType.TEMPLATE:
           $location.path(UrlService.getTemplateEdit(resource.id));
           break;
