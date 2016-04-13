@@ -65,7 +65,9 @@ define([
 
     //General
     vm.controlTerm = {};
-    vm.filterSelection = vm.options && vm.options.filterSelection || "";
+    vm.filterSelection = vm.options && vm.options.filterSelection || ""
+    vm.modalId = vm.options && vm.options.modalId || "";
+
 
     setInitialFieldConstraints();
 
@@ -105,6 +107,10 @@ define([
       vm.startOver();
     };
 
+    function closeDialog() {
+
+    }
+
     function addClass(selection, ontology) {
       var alreadyAdded = false;
       for(var i = 0, len = vm.addedFieldItems.length; i < len; i+= 1) {
@@ -137,6 +143,16 @@ define([
         }
 
         vm.startOver();
+
+
+        console.log('close the modal');
+        $rootScope.$broadcast('field:controlledTermAdded');
+
+
+
+        //$element.parents("#" + vm.modalId).modal({show: false, backdrop: "static"});
+        $element.parents(".controlled-terms-modal-vm.filterSelector").hide();
+
       } else {
         alert(selection.prefLabel+' has already been added.');
       }
@@ -326,7 +342,9 @@ define([
      * Reset to the beginning where you select field or value filter.
      */
     function startOver() {
+      console.log('startOver');
       vm.filterSelection = vm.options && vm.options.filterSelection || "";
+      vm.modalId = vm.options && vm.options.modalId || "";
       vm.currentOntology = null;
       vm.selectedValueResult = null;
       vm.currentValueSet = null;
@@ -527,7 +545,6 @@ define([
           }
         }
 
-        // setInitialFieldConstraints();
       }
     });
 
@@ -574,7 +591,6 @@ define([
      */
 
     function assignValueConstraintToField() {
-      console.log('assignValueConstraintToField');
       $rootScope.propertiesOf(vm.field)._valueConstraints =
         angular.extend(vm.valueConstraint, $rootScope.propertiesOf(vm.field)._valueConstraints)
       delete vm.stageValueConstraintAction;

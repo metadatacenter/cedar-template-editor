@@ -10,12 +10,15 @@ define([
 
 
   fieldDirective.$inject = ["$rootScope", "$sce", "SpreadsheetService", "DataManipulationService", "FieldTypeService",
-                            "ClientSideValidationService"];
+                            "ClientSideValidationService", "controlTermDataService"];
 
   function fieldDirective($rootScope, $sce, SpreadsheetService, DataManipulationService, FieldTypeService,
-                          ClientSideValidationService) {
+                          ClientSideValidationService, controlTermDataService) {
 
     var linker = function ($scope, $element, attrs) {
+
+      $scope.controlledTermsValues = false;
+      $scope.controlledTermsField = false;
 
       var setDirectory = function () {
         var p = $rootScope.propertiesOf($scope.field);
@@ -641,73 +644,190 @@ define([
 
 
       /* start of controlled terms functionality */
-      function deleteFieldAddedBranch(branch) {
-        for (var i = 0, len = vm.valueConstraint.branches.length; i < len; i+= 1) {
-          if (vm.valueConstraint.branches[i]['uri'] == branch['uri']) {
-            vm.valueConstraint.branches.splice(i,1);
-            break;
-          }
-        }
-      };
 
-      function deleteFieldAddedClass(ontologyClass) {
-        for (var i = 0, len = vm.valueConstraint.classes.length; i < len; i+= 1) {
-          if (vm.valueConstraint.classes[i] == ontologyClass) {
-            vm.valueConstraint.classes.splice(i,1);
-            break;
-          }
-        }
-      };
-
-      function deleteFieldAddedItem(itemData) {
+      $scope.getAddedFieldItems = function () {
+        var result = [];
         var properties = $rootScope.propertiesOf($scope.field);
-        for (var i = 0, len = vm.addedFieldItems.length; i < len; i+= 1) {
-          if (vm.addedFieldItems[i] == itemData) {
-            var itemDataId = itemData["@id"];
-            var idx = properties["@type"].oneOf[0].enum.indexOf(itemDataId);
+        var fields = properties['@type'].oneOf[1].items['enum'];
+        return fields;
+      };
 
-            if (idx >= 0) {
-              properties["@type"].oneOf[0].enum.splice(idx, 1);
-              if (properties["@type"].oneOf[0].enum.length == 0) {
-                delete properties["@type"].oneOf[0].enum;
-              }
-            }
+      $scope.getClassName = function (itemData) {
+        console.log("getClassName " + itemData);
 
-            idx = properties['@type'].oneOf[1].items.enum.indexOf(itemDataId);
 
-            if (idx >= 0) {
-              properties['@type'].oneOf[1].items.enum.splice(idx, 1);
-              if (properties["@type"].oneOf[1].items.enum.length == 0) {
-                delete properties["@type"].oneOf[1].items.enum;
-              }
-            }
+        var acronym = $scope.getOntologyName(itemData);
+        var classId = $scope.getClassLabel(itemData);
+        console.log("getClassName acronym " + acronym);
+        console.log("getClassName classId " + classId);
 
-            vm.addedFieldItems.splice(i,1);
+        //// Get selected class details from the links.self endpoint provided.
+        //controlTermDataService.getClassById(acronym, classId).then(function (response) {
+        //  console.log('response');
+        //  console.log(response);
+        //});
+
+      }
+
+      $scope.getClassLabel = function (itemData) {
+        var re = new RegExp('\/classes\/(.+)');
+        var m;
+        var result;
+        if ((m = re.exec(itemData)) !== null) {
+          if (m.index === re.lastIndex) {
+            re.lastIndex++;
+          }
+          result = m[1];
+        }
+        return result;
+      };
+
+      $scope.getOntologyName = function (itemData) {
+        var re = new RegExp('\/ontologies\/(.+)\/classes\/');
+        var m;
+        var result;
+        if ((m = re.exec(itemData)) !== null) {
+          if (m.index === re.lastIndex) {
+            re.lastIndex++;
+          }
+          result = m[1];
+        }
+        return result;
+      };
+
+
+      /**
+       * delete both the oneOf copies of the class id for the question type
+       * @param itemDataId
+       */
+      $scope.deleteFieldAddedItem = function (itemDataId) {
+
+        var properties = $rootScope.propertiesOf($scope.field);
+        var idx = properties["@type"].oneOf[0].enum.indexOf(itemDataId);
+
+
+        if (idx >= 0) {
+          properties["@type"].oneOf[0].enum.splice(idx, 1);
+          if (properties["@type"].oneOf[0].enum.length == 0) {
+            delete properties["@type"].oneOf[0].enum;
+          }
+        }
+
+        idx = properties['@type'].oneOf[1].items.enum.indexOf(itemDataId);
+
+        if (idx >= 0) {
+          properties['@type'].oneOf[1].items.enum.splice(idx, 1);
+          if (properties["@type"].oneOf[1].items.enum.length == 0) {
+            delete properties["@type"].oneOf[1].items.enum;
+          }
+        }
+      };
+
+      /**
+       * delete the branch in valueConstraints
+       * @param branch
+       */
+      $scope.deleteFieldAddedBranch = function (branch) {
+        var valueConstraints = $rootScope.propertiesOf($scope.field)._valueConstraints;
+        for (var i = 0, len = valueConstraints.branches.length; i < len; i += 1) {
+          if (valueConstraints.branches[i]['uri'] == branch['uri']) {
+            valueConstraints.branches.splice(i, 1);
             break;
           }
         }
       };
 
+      /**
+       * delete the ontologyCLass in valueConstraints
+       * @param ontologyClass
+       */
+      $scope.deleteFieldAddedClass = function (ontologyClass) {
+        var valueConstraints = $rootScope.propertiesOf($scope.field)._valueConstraints;
+        for (var i = 0, len = valueConstraints.classes.length; i < len; i += 1) {
+          if (valueConstraints.classes[i] == ontologyClass) {
+            valueConstraints.classes.splice(i, 1);
+            break;
+          }
+        }
+      };
+
+
+      /**
+       * delete the ontology in valueConstraints
+       * @param ontology
+       */
       function deleteFieldAddedOntology(ontology) {
-        var valueConstraint = $rootScope.propertiesOf($scope.field)._valueConstraints;
-        for (var i = 0, len = valueConstraint.ontologies.length; i < len; i+= 1) {
+        var valueConstraints = $rootScope.propertiesOf($scope.field)._valueConstraints;
+        for (var i = 0, len = valueConstraints.ontologies.length; i < len; i += 1) {
           if (valueConstraints.ontologies[i]['uri'] == ontology['uri']) {
-            valueConstraints.ontologies.splice(i,1);
+            valueConstraints.ontologies.splice(i, 1);
             break;
           }
         }
       };
 
+      /**
+       * delete the valueSet in valueConstraints
+       * @param valueSet
+       */
       function deleteFieldAddedValueSet(valueSet) {
-        var valueConstraint = $rootScope.propertiesOf($scope.field)._valueConstraints;
-        for (var i = 0, len = valueConstraint.valueSets.length; i < len; i+= 1) {
-          if (vm.valueConstraint.valueSets[i]['uri'] == valueSet['uri']) {
-            vm.valueConstraint.valueSets.splice(i,1);
+        var valueConstraints = $rootScope.propertiesOf($scope.field)._valueConstraints;
+        for (var i = 0, len = valueConstraint.valueSets.length; i < len; i += 1) {
+          if (valueConstraints.valueSets[i]['uri'] == valueSet['uri']) {
+            valueConstraints.valueSets.splice(i, 1);
             break;
           }
         }
       };
+
+
       /* end of controlled terms functionality */
+
+      $scope.$on("field:controlledTermAdded", function () {
+
+
+        var id = "#" + $scope.fieldModalId();
+        console.log('field:controlledTermAdded close the modal ' + id);
+
+        var b = jQuery.attr(id);
+        console.log(b);
+
+        if (b) {
+          b.click();
+        }
+
+      });
+
+      $scope.toggleControlledTerm = function (item) {
+        if (item === 'values') {
+          $scope.controlledTermsValues = true;
+          $scope.controlledTermsField = false;
+        }
+        if (item === 'field') {
+          $scope.controlledTermsField = true;
+          $scope.controlledTermsValues = false;
+        }
+        if (item === 'cardinality') {
+          $scope.controlledTermsField = false;
+          $scope.controlledTermsValues = false;
+        }
+      }
+
+      $scope.getFieldOptions = function () {
+        return '{"filterSelection":"field","modalId":"' + $scope.fieldModalId() + '"}';
+      };
+
+      $scope.fieldModalId = function () {
+        return "control-options-" + $scope.field['@id'].substring($scope.field['@id'].lastIndexOf('/') + 1) + "-field";
+      };
+
+      $scope.getValueOptions = function () {
+        return '{"filterSelection":"values","modalId":"' + $scope.valueModalId() + '"}';
+      };
+
+      $scope.valueModalId = function () {
+        return "control-options-" + $scope.field['@id'].substring($scope.field['@id'].lastIndexOf('/') + 1) + "-values";
+      }
 
     };
 

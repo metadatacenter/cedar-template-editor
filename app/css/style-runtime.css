@@ -12200,6 +12200,11 @@ body .template-header .controlled-terms-modal {
 .configuration-options .controlled-terms .no-items-added {
   margin-bottom: 50px;
 }
+.configuration-options .toggle-controlled-term .controlled-term-label {
+  top: -0.3em;
+  position: relative;
+  font-weight: normal;
+}
 .btn-field-browse .text,
 .btn-values-browse .text {
   color: #999999;
