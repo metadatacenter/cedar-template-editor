@@ -9666,6 +9666,35 @@ i {
   background: #eaeaea;
   height: 100%;
 }
+.all-items-view .add-new {
+  position: fixed;
+  bottom: 50px;
+  right: 50px;
+}
+.all-items-view .add-new .btn-info {
+  border-radius: 50%;
+  width: 40px;
+  font-size: 18px;
+  margin: 5px 0;
+}
+.all-items-view .add-new .btn-info.btn-circle {
+  box-shadow: none;
+  background: #339933;
+  color: #ffffff;
+  border: none;
+}
+.all-items-view .add-new .btn-info.btn-circle-outline {
+  box-shadow: none;
+  background: #ffffff;
+  color: #339933;
+  border: 1px solid #339933;
+}
+.all-items-view .add-new .btn-info.btn-close {
+  box-shadow: none;
+  background: #666666;
+  color: #ffffff;
+  border: none;
+}
 /* End All Items View */
 .template-header {
   width: 100%;

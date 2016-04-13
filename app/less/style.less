@@ -652,6 +652,37 @@ i {
     background: @graybg;
     height: 100%;
   }
+
+  .add-new {
+    position: fixed;
+    bottom: 50px;
+    right: 50px;
+
+    .btn-info {
+      border-radius: 50%;
+      width: 40px;
+      font-size: 18px;
+      margin: 5px 0;
+    }
+    .btn-info.btn-circle {
+      box-shadow: none;
+      background: @brand-primary;
+      color: @white;
+      border: none;
+    }
+    .btn-info.btn-circle-outline {
+      box-shadow: none;
+      background: @white;
+      color: @brand-primary;
+      border: 1px solid @brand-primary;
+    }
+    .btn-info.btn-close {
+      box-shadow: none;
+      background: @graytxt;
+      color: @white;
+      border: none;
+    }
+  }
 }
 
 /* End All Items View */
