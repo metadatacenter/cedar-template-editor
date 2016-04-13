@@ -41,6 +41,7 @@ define([
     vm.selectedResource = null;
     vm.selectResource = selectResource;
     vm.showFilters = false;
+    vm.showFloatingMenu = false;
     vm.toggleFilters = toggleFilters;
     vm.toggleResourceType = toggleResourceType;
 
