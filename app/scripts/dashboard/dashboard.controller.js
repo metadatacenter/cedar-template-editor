@@ -53,6 +53,9 @@ define([
      * Scope functions.
      */
 
+    /**
+     * TODO: return link?
+     */
     function editResource(resource) {
       switch (resource.type) {
         case CONST.resourceType.TEMPLATE:
