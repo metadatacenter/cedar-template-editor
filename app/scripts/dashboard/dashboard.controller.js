@@ -36,6 +36,7 @@ define([
       instance: true,
       template: true
     };
+    vm.resourceView = 'grid';
     vm.selectedResource = null;
     vm.selectResource = selectResource;
     vm.showFilters = false;
