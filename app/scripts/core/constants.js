@@ -26,7 +26,7 @@ define([
         "CREATOR": "creator",
         "RUNTIME": "runtime"
       },
-      "boxType": {
+      "resourceType": {
         "TEMPLATE": "template",
         "ELEMENT": "element",
         "INSTANCE": "instance",

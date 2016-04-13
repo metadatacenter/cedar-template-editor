@@ -214,10 +214,10 @@
             <div class="quick-details-box">
               <p>{{ resource.description}}</p>
               <ul class="list-inline">
-                <li><button class="btn  btn-sm btn-info btn-circle"><i class="fa fa-times"></i></button></li>
-                <li><button class="btn  btn-sm btn-info btn-circle"><i class="fa fa-question"></i></button></li>
-                <li><button class="btn  btn-sm btn-info btn-circle" ng-click="dc.selectResource(resource)"><i class="fa fa-info"></i></button></li>
-                <li><button class="btn  btn-sm btn-info btn-circle"><i class="fa fa-pencil"></i></button></li>
+                <li><button class="btn btn-sm btn-info btn-circle"><i class="fa fa-times"></i></button></li>
+                <!--<li><button class="btn btn-sm btn-info btn-circle"><i class="fa fa-question"></i></button></li>-->
+                <li><button class="btn btn-sm btn-info btn-circle" ng-click="dc.selectResource(resource)"><i class="fa fa-info"></i></button></li>
+                <li><button class="btn btn-sm btn-info btn-circle" ng-click="dc.editResource(resource)"><i class="fa fa-pencil"></i></button></li>
               </ul>
             </div>
           </div>
@@ -243,7 +243,7 @@
                 <td>
                   <ul class="list-inline">
                     <li><button class="btn  btn-sm btn-info btn-circle" ng-click="dc.selectResource(resource)"><i class="fa fa-info"></i></button></li>
-                    <li><button class="btn  btn-sm btn-info btn-circle"><i class="fa fa-pencil"></i></button></li>
+                    <li><button class="btn  btn-sm btn-info btn-circle" ng-click="dc.editResource(resource)"><i class="fa fa-pencil"></i></button></li>
                   </ul>
                 </td>
               </tr>

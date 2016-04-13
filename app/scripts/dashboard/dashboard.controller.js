@@ -25,6 +25,7 @@ define([
   function DashboardController($location, $rootScope, $routeParams, $scope, AuthorizedBackendService, HeaderService, resourceService, TemplateElementService, TemplateService, TemplateInstanceService, UIMessageService, UrlService, CONST) {
     var vm = this;
 
+    vm.editResource = editResource;
     vm.forms = [];
     vm.getForms = getForms;
     vm.getWorkspace = getWorkspace;
@@ -51,6 +52,23 @@ define([
     /**
      * Scope functions.
      */
+
+    function editResource(resource) {
+      switch (resource.type) {
+        case CONST.resourceType.TEMPLATE:
+          $location.path(UrlService.getTemplateEdit(resource.id));
+          break;
+        case CONST.resourceType.ELEMENT:
+          $location.path(UrlService.getElementEdit(resource.id));
+          break;
+        case CONST.resourceType.INSTANCE:
+          $location.path(UrlService.getInstanceEdit(resource.id));
+          break;
+        case CONST.resourceType.LINK:
+          $location.path(scope.href);
+          break;
+      }
+    }
 
     function getForms() {
       return resourceService.getResources(
