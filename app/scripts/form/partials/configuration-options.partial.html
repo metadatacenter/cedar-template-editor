@@ -1,17 +1,17 @@
 <div class="toggle-options">
 
   <!-- field controlled terms -->
-  <div class="toggle-controlled-term"  ng-show="hasControlledTerms()">
+  <div class="toggle-controlled-term"  ng-show="hasControlledTerms()" ng-click="toggleControlledTerm('field')">
     <i class="cedar-svg-controll-term collapsed" id="field-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}"
-        ng-click="toggleControlledTerm('field')"></i>
+        ></i>
     <label class="controlled-term-label" for="field-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}"
         translate>Field Types</label>
   </div>
 
   <!-- value controlled terms -->
-  <div class="toggle-controlled-term" ng-show="hasControlledTerms()">
+  <div class="toggle-controlled-term" ng-show="hasControlledTerms()"  ng-click="toggleControlledTerm('values')">
     <i class="cedar-svg-controll-term collapsed" type="values" id="values-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}"
-        ng-click="toggleControlledTerm('values')"></i>
+       ></i>
     <label class="controlled-term-label" for="values-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}"
         translate>Values</label>
   </div>
@@ -53,32 +53,56 @@
 
 
   <!-- Field Types -->
-  <div id="field-type-options" class="cardinality-options"
-      ng-show="controlledTermsField">
+  <div id="field-type-options" class="cardinality-options" ng-show="controlledTermsField">
     <div class="form-group ">
       <div class="controlled-terms controlled-term-options">
         <div class="class-container">
 
           <!-- field type table -->
-          <div class="class-list-table">
-            <table class="table table-hover">
-              <tbody>
-              <tr ng-repeat="item in getAddedFieldItems()">
-                <td>{{getClassName(item)}}</td>
-                <td class="pref-label">{{getClassLabel(item)}}</td>
-                <td class="ontology-name">{{getOntologyName(item)}}</td>
-                <td>
-                  <div class="item item-delete" ng-click="deleteFieldAddedItem(item)">
-                    <i class="fa fa-close"></i>
-                  </div>
-                </td>
-              </tr>
-              </tbody>
-            </table>
+          <div ng-show="addedFields">
+
+            <div class="added-field-classes">
+              <div class="class-list-container" >
+                <div class="class-list-header">
+                  <table class="table table-striped">
+                    <thead>
+                    <tr>
+                      <th>Class</th>
+                      <th>Description</th>
+                      <th>Ontology</th>
+                      <th>&nbsp;</th>
+                    </tr>
+                    </thead>
+                  </table>
+                </div>
+                <div class="class-list-table">
+                  <table class="table table-hover">
+                    <tbody>
+                    <tr ng-repeat="key in addedFieldKeys">
+                      <td class="pref-label">
+                        {{getPrefLabel(key)}}
+                      </td>
+                      <td class="ontology-name">
+                        {{getClassDescription(key)}}
+                      </td>
+                      <td class="ontology-name">
+                        {{parseOntologyName(key)}}
+                      </td>
+                      <td>
+                        <div class="item item-delete" ng-click="deleteFieldAddedItem(key)">
+                          <i class="fa fa-close"></i>
+                        </div>
+                      </td>
+                    </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
           </div>
 
-          <button type="button" data-toggle="modal" data-target="{{'#' + fieldModalId()}}">Search</button>
-          <button type="button" >Create</button>
+          <button type="button" class="search-ontologies-button" data-toggle="modal" data-target="{{'#' + fieldModalId()}}">Search</button>
+          <button type="button" class="search-ontologies-button" >Create</button>
         </div>
         </div>
       </div>
@@ -86,14 +110,12 @@
   </div>
 
   <!-- Values -->
-  <div id="value-options" class="cardinality-options"
-      ng-show="controlledTermsValues">
+  <div id="value-options" class="cardinality-options"  ng-show="controlledTermsValues">
     <div class="form-group ">
       <div class="controlled-terms controlled-term-options">
 
-
         <div class="class-container">
-          <div>
+
             <!-- value table -->
             <div class="added-value-constraints">
               <div class="added-value-constraint-container"
@@ -164,9 +186,9 @@
               </div>
             </div>
 
-            <button type="button" data-toggle="modal" data-target="{{'#' + valueModalId()}}">Search</button>
-            <button type="button" >Create</button>
-          </div>
+            <button type="button" class="search-ontologies-button" data-toggle="modal" data-target="{{'#' + valueModalId()}}">Search</button>
+            <button type="button" class="search-ontologies-button">Create</button>
+
         </div>
       </div>
     </div>

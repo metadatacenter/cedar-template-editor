@@ -646,30 +646,77 @@ define([
       /* start of controlled terms functionality */
 
       $scope.getAddedFieldItems = function () {
-        var result = [];
         var properties = $rootScope.propertiesOf($scope.field);
         var fields = properties['@type'].oneOf[1].items['enum'];
         return fields;
       };
 
-      $scope.getClassName = function (itemData) {
-        console.log("getClassName " + itemData);
+
+      $scope.setAddedFieldMap = function () {
 
 
-        var acronym = $scope.getOntologyName(itemData);
-        var classId = $scope.getClassLabel(itemData);
-        console.log("getClassName acronym " + acronym);
-        console.log("getClassName classId " + classId);
+        $scope.addedFields = new Map();
+        $scope.addedFieldKeys = [];
 
-        //// Get selected class details from the links.self endpoint provided.
-        //controlTermDataService.getClassById(acronym, classId).then(function (response) {
-        //  console.log('response');
-        //  console.log(response);
-        //});
 
-      }
+        var items = $scope.getAddedFieldItems();
+        console.log('setAddedFieldMap' + items.length);
 
-      $scope.getClassLabel = function (itemData) {
+        var i;
+        for (i = 0; i < items.length; i++) {
+
+          console.log('i'); console.log(i);
+          console.log('items[i]'); console.log(items[i]);
+          if (!$scope.addedFields.has(items[i])) {
+
+            var item = items[i];
+            var ontologyName = $scope.parseOntologyName(item);
+            var className = $scope.parseClassLabel(item);
+
+            // Get selected class details from the links.self endpoint provided.
+            controlTermDataService.getClassById(ontologyName, className).then(function (response) {
+
+
+                  $scope.addedFields.set(item, response);
+                  $scope.addedFieldKeys.push(item);
+
+                  console.log('i'); console.log(i);
+                  console.log('item'); console.log(item);
+                  console.log('response'); console.log(response);
+                  console.log('addedFields'); console.log($scope.addedFields);
+                  console.log('addedFieldKeys');console.log($scope.addedFieldKeys);
+                });
+          }
+        }
+
+      };
+
+
+      $scope.getOntologyName = function (item) {
+        var result = "error";
+        if ($scope.addedFields && $scope.addedFields.has(item)) {
+          result = $scope.addedFields.get(item).ontology;
+        }
+        return result;
+      };
+
+      $scope.getPrefLabel = function (item) {
+        var result = "error";
+        if ($scope.addedFields && $scope.addedFields.has(item)) {
+          result = $scope.addedFields.get(item).prefLabel;
+        }
+        return result;
+      };
+
+      $scope.getClassDescription = function (item) {
+        var result = "error";
+        if ($scope.addedFields && $scope.addedFields.has(item)) {
+          result = $scope.addedFields.get(item).definitions[0];
+        }
+        return result;
+      };
+
+      $scope.parseClassLabel = function (itemData) {
         var re = new RegExp('\/classes\/(.+)');
         var m;
         var result;
@@ -682,7 +729,7 @@ define([
         return result;
       };
 
-      $scope.getOntologyName = function (itemData) {
+      $scope.parseOntologyName = function (itemData) {
         var re = new RegExp('\/ontologies\/(.+)\/classes\/');
         var m;
         var result;
@@ -700,10 +747,17 @@ define([
        * delete both the oneOf copies of the class id for the question type
        * @param itemDataId
        */
-      $scope.deleteFieldAddedItem = function (itemDataId) {
+      $scope.deleteFieldAddedItem = function (index) {
+
+        console.log('deleteFieldAddedItem');
+
+        var itemDataId = $scope.addedFields[index]['@id'];
+        console.log(itemDataId);
 
         var properties = $rootScope.propertiesOf($scope.field);
         var idx = properties["@type"].oneOf[0].enum.indexOf(itemDataId);
+
+        console.log(idx);
 
 
         if (idx >= 0) {
@@ -720,6 +774,11 @@ define([
           if (properties["@type"].oneOf[1].items.enum.length == 0) {
             delete properties["@type"].oneOf[1].items.enum;
           }
+        }
+
+        // rebuild the added fields map
+        if (idx >= 0) {
+          $scope.setAddedFieldMap();
         }
       };
 
@@ -786,15 +845,16 @@ define([
       $scope.$on("field:controlledTermAdded", function () {
 
 
+
         var id = "#" + $scope.fieldModalId();
         console.log('field:controlledTermAdded close the modal ' + id);
+        jQuery(id).modal('hide');
 
-        var b = jQuery.attr(id);
-        console.log(b);
 
-        if (b) {
-          b.click();
-        }
+        var id = "#" + $scope.valueModalId();
+        console.log('field:controlledTermAdded close the modal ' + id);
+        jQuery(id).modal('hide');
+
 
       });
 
@@ -804,6 +864,8 @@ define([
           $scope.controlledTermsField = false;
         }
         if (item === 'field') {
+          // make sure we build the added fields map
+          $scope.setAddedFieldMap();
           $scope.controlledTermsField = true;
           $scope.controlledTermsValues = false;
         }

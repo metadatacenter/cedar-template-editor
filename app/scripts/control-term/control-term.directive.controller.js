@@ -112,6 +112,7 @@ define([
     }
 
     function addClass(selection, ontology) {
+      console.log('addClass');
       var alreadyAdded = false;
       for(var i = 0, len = vm.addedFieldItems.length; i < len; i+= 1) {
         if(vm.addedFieldItems[i].prefLabel == selection.prefLabel) {
@@ -148,9 +149,7 @@ define([
         console.log('close the modal');
         $rootScope.$broadcast('field:controlledTermAdded');
 
-
-
-        //$element.parents("#" + vm.modalId).modal({show: false, backdrop: "static"});
+        $element.parents("#" + vm.modalId).modal({show: false, backdrop: "static"});
         $element.parents(".controlled-terms-modal-vm.filterSelector").hide();
 
       } else {
@@ -591,6 +590,7 @@ define([
      */
 
     function assignValueConstraintToField() {
+      console.log("assignValueConstraintToField");
       $rootScope.propertiesOf(vm.field)._valueConstraints =
         angular.extend(vm.valueConstraint, $rootScope.propertiesOf(vm.field)._valueConstraints)
       delete vm.stageValueConstraintAction;
@@ -600,6 +600,12 @@ define([
       vm.stagedValueSetValueConstraints = [];
       vm.stagedBranchesValueConstraints = [];
       vm.startOver();
+
+      // broadcast the action
+      $rootScope.$broadcast('field:controlledTermAdded');
+
+
+
     }
 
     function setInitialFieldConstraints() {
