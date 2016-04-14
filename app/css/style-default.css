@@ -12201,6 +12201,12 @@ body .template-header .controlled-terms-modal {
 .configuration-options .controlled-terms .no-items-added {
   margin-bottom: 50px;
 }
+.configuration-options .controlled-terms button.search-ontologies-button:focus {
+  outline: none;
+}
+.configuration-options .controlled-terms .clear-save {
+  float: right;
+}
 .configuration-options .toggle-controlled-term .controlled-term-label {
   top: -0.3em;
   position: relative;
@@ -12245,9 +12251,6 @@ table.apiKey td {
   vertical-align: top;
   padding: 5px;
   margin: 0px;
-}
-button.search-ontologies-button:focus {
-  outline: none;
 }
 @font-face {
   font-family: "project-cedar";

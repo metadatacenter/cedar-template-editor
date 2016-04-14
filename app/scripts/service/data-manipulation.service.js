@@ -461,7 +461,7 @@ define([
     service.deleteFieldAddedValueSet = function (valueSet, node) {
 
       var valueConstraints = service.getFieldProperties(node)._valueConstraints;
-      for (var i = 0, len = valueConstraint.valueSets.length; i < len; i += 1) {
+      for (var i = 0, len = valueConstraints.valueSets.length; i < len; i += 1) {
         if (valueConstraints.valueSets[i]['uri'] == valueSet['uri']) {
           valueConstraints.valueSets.splice(i, 1);
           break;

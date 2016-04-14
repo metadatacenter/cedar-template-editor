@@ -401,8 +401,7 @@ define([
 
         if ($scope.errorMessages.length == 0) {
 
-          console.log('minItems= ' + $scope.field.minItems);
-          console.log('maxItems= ' + $scope.field.maxItems);
+
           //if (!p._ui.is_cardinal_field) {
           //  delete $scope.field.minItems;
           //  delete $scope.field.maxItems;
@@ -674,6 +673,8 @@ define([
         }
       };
 
+
+
       /**
        * get the class details from the server.
        * @param item
@@ -685,7 +686,11 @@ define([
         controlTermDataService.getClassById(ontologyName, className).then(function (response) {
           $scope.addedFields.set(item, response);
         });
-      }
+      };
+
+      $scope.parseOntologyName = function(dataItemsId) {
+        return DataManipulationService.parseOntologyName(dataItemsId);
+      };
 
 
       /**
@@ -743,7 +748,7 @@ define([
        * @param branch
        */
       $scope.deleteFieldAddedBranch = function (branch) {
-        DataManipulationService.deleteFieldAddedOntology(branch, $scope.field);
+        DataManipulationService.deleteFieldAddedBranch(branch, $scope.field);
       };
 
       /**
@@ -772,10 +777,13 @@ define([
       };
 
 
-      /* end of controlled terms functionality */
+      $scope.getOntologyCode = function (ontology) {
+        var ontologyDetails =  controlTermDataService.getOntologyByLdId(ontology);
+      };
+
+
 
       $scope.$on("field:controlledTermAdded", function () {
-        console.log('field:controlledTermAdded start ');
 
         jQuery("#" + $scope.fieldModalId()).modal('hide');
         jQuery("#" + $scope.valueModalId()).modal('hide');
@@ -783,7 +791,6 @@ define([
         // make sure we build the added fields map in this case
         $scope.setAddedFieldMap();
 
-        console.log('field:controlledTermAdded end ');
 
       });
 
@@ -823,7 +830,9 @@ define([
           result = "control-options-" + $scope.field['@id'].substring($scope.field['@id'].lastIndexOf('/') + 1) + "-values";
         }
         return result;
-      }
+      };
+
+      /* end of controlled terms functionality */
 
     };
 

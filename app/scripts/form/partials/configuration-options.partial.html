@@ -70,27 +70,35 @@
             <div class="class-list-container">
               <div class="class-list-header">
                 <table class="table table-striped">
-                  <thead>
-                  <tr>
-                    <th>Class</th>
-                    <th>Description</th>
-                    <th>Ontology</th>
-                    <th>&nbsp;</th>
-                  </tr>
-                  </thead>
+                  <!--<thead>-->
+                  <!--<tr>-->
+                    <!--<th>Name</th>-->
+                    <!--<th>Description</th>-->
+                    <!--<th>Source</th>-->
+                    <!--<th>&nbsp;</th>-->
+                  <!--</tr>-->
+                  <!--</thead>-->
                 </table>
               </div>
               <div class="class-list-table">
                 <table class="table table-hover">
+                  <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Source</th>
+                    <th>&nbsp;</th>
+                  </tr>
+                  </thead>
                   <tbody>
                   <tr ng-repeat="key in addedFieldKeys">
-                    <td class="pref-label">
+                    <td >
                       {{getPrefLabel(key)}}
                     </td>
-                    <td class="ontology-name">
+                    <td >
                       {{getClassDescription(key)}}
                     </td>
-                    <td class="ontology-name">
+                    <td >
                       {{parseOntologyName(key)}}
                     </td>
                     <td>
@@ -106,10 +114,12 @@
           </div>
         </div>
 
-        <button type="button" class="search-ontologies-button" data-toggle="modal"
+        <div class="clear-save">
+        <button type="button" class="std-button btn search-ontologies-button" data-toggle="modal"
             data-target="{{'#' + fieldModalId()}}">Search
         </button>
-        <button type="button" class="search-ontologies-button">Create</button>
+        <!--<button type="button" class="std-button btn search-ontologies-button">Create</button>-->
+          </div>
       </div>
     </div>
   </div>
@@ -128,25 +138,37 @@
           <div class="added-value-constraint-container" >
             <div class="added-value-constraints-header">
               <table class="table">
-                <thead>
-                <tr>
-                  <th>Values</th>
-                  <th>Type</th>
-                  <th>Source</th>
-                  <th>UI label</th>
-                  <th>&nbsp;</th>
-                </tr>
-                </thead>
+                <!--<thead>-->
+                <!--<tr>-->
+                  <!--<th>Name</th>-->
+                  <!--<th>Description</th>-->
+                  <!--<th>Type</th>-->
+                  <!--<th>Source</th>-->
+                  <!--<th>Values</th>-->
+                  <!--<th>&nbsp;</th>-->
+                <!--</tr>-->
+                <!--</thead>-->
               </table>
             </div>
             <div class="value-contraint-table">
               <table class="table table-hover">
+                <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Description</th>
+                  <th>Type</th>
+                  <th>Source</th>
+                  <th>Values</th>
+                  <th>&nbsp;</th>
+                </tr>
+                </thead>
                 <tbody>
                 <tr ng-repeat="class in $root.propertiesOf(field)._valueConstraints.classes">
-                  <td class="values">{{class.prefLabel}}</td>
-                  <td class="type">{{class.type}}</td>
-                  <td class="ontology-name">{{class.ontology.substr(class.ontology.lastIndexOf('/') -1 )}}</td>
-                  <td class="pref-label">{{class.label}}</td>
+                  <td >{{class.prefLabel}}</td>
+                  <td ></td>
+                  <td >{{class.type}}</td>
+                  <td >{{class.ontology.substr(class.ontology.lastIndexOf('/') -1 )}}</td>
+                  <td>&nbsp;</td>
                   <td>
                     <div class="item item-delete" ng-click="deleteFieldAddedClass(class)">
                       <i class="clickable fa fa-close"></i>
@@ -154,10 +176,11 @@
                   </td>
                 </tr>
                 <tr ng-repeat="valueSet in $root.propertiesOf(field)._valueConstraints.valueSets">
-                  <td class="values">{{valueSet.numChildren}} values</td>
-                  <td class="type">Value Set</td>
-                  <td class="source">{{valueSet.name}}</td>
-                  <td class="pref-label">N/A</td>
+                  <td >{{valueSet.name}}</td>
+                  <td ></td>
+                  <td >Value Set</td>
+                  <td >{{valueSet.vsCollection}}</td>
+                  <td >{{valueSet.numChildren}}</td>
                   <td>
                     <div class="item item-delete" ng-click="deleteFieldAddedValueSet(valueSet)">
                       <i class="clickable fa fa-close"></i>
@@ -165,10 +188,11 @@
                   </td>
                 </tr>
                 <tr ng-repeat="ontology in $root.propertiesOf(field)._valueConstraints.ontologies">
-                  <td class="values">{{ontology.numChildren}} classes</td>
-                  <td class="type">Ontology</td>
-                  <td class="source">{{ontology.name}} ({{ontology.acronym}})</td>
-                  <td class="pref-label">N/A</td>
+                  <td >{{ontology.acronym}}</td>
+                  <td >{{ontology.name}}</td>
+                  <td >Ontology</td>
+                  <td ></td>
+                  <td >{{ontology.numChildren}}</td>
                   <td>
                     <div class="item item-delete" ng-click="deleteFieldAddedOntology(ontology)">
                       <i class="clickable fa fa-close"></i>
@@ -176,10 +200,11 @@
                   </td>
                 </tr>
                 <tr ng-repeat="branch in $root.propertiesOf(field)._valueConstraints.branches">
-                  <td class="values">{{branch.name}}</td>
-                  <td class="type">Ontology branch</td>
-                  <td class="source">{{branch.source}}</td>
-                  <td class="pref-label">N/A</td>
+                  <td >{{branch.name}}</td>
+                  <td ></td>
+                  <td >Ontology branch</td>
+                  <td >{{branch.acronym}}</td>
+                  <td ></td>
                   <td>
                     <div class="item item-delete" ng-click="deleteFieldAddedBranch(branch)">
                       <i class="clickable fa fa-close"></i>
@@ -192,10 +217,12 @@
           </div>
         </div>
 
-        <button type="button" class="search-ontologies-button" data-toggle="modal"
+       <div  class="clear-save">
+        <button type="button" class="std-button btn search-ontologies-button" data-toggle="modal"
             data-target="{{'#' + valueModalId()}}">Search
         </button>
-        <button type="button" class="search-ontologies-button">Create</button>
+        <!--<button type="button" class="std-button btn search-ontologies-button">Create</button>-->
+        </div>
 
       </div>
     </div>
