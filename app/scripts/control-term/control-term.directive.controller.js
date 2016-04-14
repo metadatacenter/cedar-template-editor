@@ -149,8 +149,8 @@ define([
         console.log('close the modal');
         $rootScope.$broadcast('field:controlledTermAdded');
 
-        $element.parents("#" + vm.modalId).modal({show: false, backdrop: "static"});
-        $element.parents(".controlled-terms-modal-vm.filterSelector").hide();
+        //$element.parents("#" + vm.modalId).modal({show: false, backdrop: "static"});
+        //$element.parents(".controlled-terms-modal-vm.filterSelector").hide();
 
       } else {
         alert(selection.prefLabel+' has already been added.');

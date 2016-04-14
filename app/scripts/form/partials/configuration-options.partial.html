@@ -1,7 +1,7 @@
 <div class="toggle-options">
 
   <!-- field controlled terms -->
-  <div class="toggle-controlled-term"  ng-show="hasControlledTerms()" ng-click="toggleControlledTerm('field')">
+  <div class="toggle-controlled-term"   ng-click="toggleControlledTerm('field')">
     <i class="cedar-svg-controll-term collapsed" id="field-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}"
         ></i>
     <label class="controlled-term-label" for="field-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}"
@@ -59,7 +59,7 @@
         <div class="class-container">
 
           <!-- field type table -->
-          <div ng-show="addedFields">
+          <div ng-show="true">
 
             <div class="added-field-classes">
               <div class="class-list-container" >
