@@ -10,12 +10,13 @@ define([
 
 
   fieldDirective.$inject = ["$rootScope", "$sce", "SpreadsheetService", "DataManipulationService", "FieldTypeService",
-                            "ClientSideValidationService"];
+                            "ClientSideValidationService", "controlTermDataService"];
 
   function fieldDirective($rootScope, $sce, SpreadsheetService, DataManipulationService, FieldTypeService,
-                          ClientSideValidationService) {
+                          ClientSideValidationService, controlTermDataService) {
 
     var linker = function ($scope, $element, attrs) {
+
 
       var setDirectory = function () {
         var p = $rootScope.propertiesOf($scope.field);
@@ -400,12 +401,14 @@ define([
 
         if ($scope.errorMessages.length == 0) {
 
-          if (!p._ui.is_cardinal_field) {
-            delete $scope.field.minItems;
-            delete $scope.field.maxItems;
-          }
 
-          if (typeof $scope.field.maxItems == 'undefined' && typeof $scope.field.minItems == 'undefined') {
+          //if (!p._ui.is_cardinal_field) {
+          //  delete $scope.field.minItems;
+          //  delete $scope.field.maxItems;
+          //}
+
+
+          if (typeof $scope.field.minItems == 'undefined') {
             if ($scope.field.items) {
               DataManipulationService.uncardinalizeField($scope.field);
             }
@@ -635,6 +638,202 @@ define([
         }
       };
       /* end of Value Recommendation functionality */
+
+
+      /* start of controlled terms functionality */
+      $scope.controlledTermsValues = false;
+      $scope.controlledTermsField = false;
+      $scope.addedFields = new Map();
+
+      /**
+       * build a map with the added field controlled term id as the key and the details for that class as the value
+       */
+      $scope.setAddedFieldMap = function () {
+
+        $scope.addedFieldKeys = DataManipulationService.getFieldControlledTerms($scope.field);
+        if ($scope.addedFieldKeys) {
+
+          var key;
+
+          // add missing items
+          for (var i = 0; i < $scope.addedFieldKeys.length; i++) {
+            key = $scope.addedFieldKeys[i];
+            if (!$scope.addedFields.has(key)) {
+              setResponse(key, DataManipulationService.parseOntologyName(key),
+                  DataManipulationService.parseClassLabel(key));
+            }
+          }
+
+          // remove extra items
+          for (key in $scope.addedFields.keys()) {
+            if (jQuery.inArray(key, $scope.addedFieldKeys) == -1) {
+              $scope.addedFields.delete(key);
+            }
+          }
+        }
+      };
+
+
+
+      /**
+       * get the class details from the server.
+       * @param item
+       * @param ontologyName
+       * @param className
+       */
+      var setResponse = function (item, ontologyName, className) {
+        // Get selected class details from the links.self endpoint provided.
+        controlTermDataService.getClassById(ontologyName, className).then(function (response) {
+          $scope.addedFields.set(item, response);
+        });
+      };
+
+      $scope.parseOntologyName = function(dataItemsId) {
+        return DataManipulationService.parseOntologyName(dataItemsId);
+      };
+
+
+      /**
+       * get the ontology name from the addedFields map
+       * @param item
+       * @returns {string}
+       */
+      $scope.getOntologyName = function (item) {
+        var result = "";
+        if ($scope.addedFields && $scope.addedFields.has(item)) {
+          result = $scope.addedFields.get(item).ontology;
+        }
+        return result;
+      };
+
+      /**
+       * get the class description from the addedFields map
+       * @param item
+       * @returns {string}
+       */
+      $scope.getPrefLabel = function (item) {
+        var result = "";
+        if ($scope.addedFields && $scope.addedFields.has(item)) {
+          result = $scope.addedFields.get(item).prefLabel;
+        }
+        return result;
+      };
+
+      /**
+       * get the class description from the the addedFields map
+       * @param item
+       * @returns {string}
+       */
+      $scope.getClassDescription = function (item) {
+        var result = "";
+        if ($scope.addedFields && $scope.addedFields.has(item)) {
+          if ($scope.addedFields.get(item).definitions && $scope.addedFields.get(item).definitions.length > 0) {
+            result = $scope.addedFields.get(item).definitions[0];
+          }
+        }
+        return result;
+      };
+
+      /**
+       * delete the field type class and rebuild the field map
+       * @param itemDataId
+       */
+      $scope.deleteFieldAddedItem = function (itemDataId) {
+        DataManipulationService.deleteFieldControlledTerm(itemDataId, $scope.field);
+        $scope.setAddedFieldMap();
+      };
+
+      /**
+       * delete the branch
+       * @param branch
+       */
+      $scope.deleteFieldAddedBranch = function (branch) {
+        DataManipulationService.deleteFieldAddedBranch(branch, $scope.field);
+      };
+
+      /**
+       * delete the ontologyCLass
+       * @param ontologyClass
+       */
+      $scope.deleteFieldAddedClass = function (ontologyClass) {
+        DataManipulationService.deleteFieldAddedClass(ontologyClass, $scope.field);
+      };
+
+
+      /**
+       * delete the ontology
+       * @param ontology
+       */
+      $scope.deleteFieldAddedOntology = function (ontology) {
+        DataManipulationService.deleteFieldAddedOntology(ontology, $scope.field);
+      };
+
+      /**
+       * delete the valueSet
+       * @param valueSet
+       */
+      $scope.deleteFieldAddedValueSet = function (valueSet) {
+        DataManipulationService.deleteFieldAddedValueSet(valueSet, $scope.field);
+      };
+
+
+      $scope.getOntologyCode = function (ontology) {
+        var ontologyDetails =  controlTermDataService.getOntologyByLdId(ontology);
+      };
+
+
+
+      $scope.$on("field:controlledTermAdded", function () {
+
+        jQuery("#" + $scope.fieldModalId()).modal('hide');
+        jQuery("#" + $scope.valueModalId()).modal('hide');
+
+        // make sure we build the added fields map in this case
+        $scope.setAddedFieldMap();
+
+
+      });
+
+      $scope.toggleControlledTerm = function (item) {
+        if (item === 'values') {
+          $scope.controlledTermsValues = true;
+          $scope.controlledTermsField = false;
+        }
+        if (item === 'field') {
+          $scope.setAddedFieldMap();
+          $scope.controlledTermsField = true;
+          $scope.controlledTermsValues = false;
+        }
+      }
+
+      $scope.getFieldOptions = function () {
+        return '{"filterSelection":"field","modalId":"' + $scope.fieldModalId() + '"}';
+      };
+
+      $scope.fieldModalId = function () {
+        var result = "";
+        var id = $scope.field['@id'];
+        if (id) {
+          result = "control-options-" + $scope.field['@id'].substring($scope.field['@id'].lastIndexOf('/') + 1) + "-field";
+        }
+        return result;
+      };
+
+      $scope.getValueOptions = function () {
+        return '{"filterSelection":"values","modalId":"' + $scope.valueModalId() + '"}';
+      };
+
+      $scope.valueModalId = function () {
+        var result = "";
+        var id = $scope.field['@id'];
+        if (id) {
+          result = "control-options-" + $scope.field['@id'].substring($scope.field['@id'].lastIndexOf('/') + 1) + "-values";
+        }
+        return result;
+      };
+
+      /* end of controlled terms functionality */
+
     };
 
 
@@ -670,4 +869,5 @@ define([
 
   };
 
-});
+})
+;

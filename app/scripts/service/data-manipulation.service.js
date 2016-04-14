@@ -75,38 +75,40 @@ define([
     };
 
     service.cardinalizeField = function (field) {
-      if (typeof(field.minItems) == 'undefined' || field.maxItems == 1) {
+      if (typeof(field.minItems) != 'undefined' && !field.items) {
+
+        field.items = {
+          'type'                : field.type,
+          '@id'                 : field['@id'],
+          '@type'               : field['@type'],
+          '@context'            : field['@context'],
+          '$schema'             : field.$schema,
+          'title'               : field.properties._ui.title,
+          'description'         : field.properties._ui.description,
+          'properties'          : field.properties,
+          'required'            : field.required,
+          'additionalProperties': field.additionalProperties
+        };
+        field.type = 'array';
+
+        delete field.$schema;
+        delete field['@id'];
+        delete field['@type'];
+        delete field['@context'];
+        delete field.properties;
+        delete field.title;
+        delete field.description;
+        delete field.required;
+        delete field.additionalProperties;
+
+        return true;
+      } else {
         return false;
       }
-      field.items = {
-        'type'                : field.type,
-        '@id'                 : field['@id'],
-        '@type'               : field['@type'],
-        '@context'            : field['@context'],
-        '$schema'             : field.$schema,
-        'title'               : field.properties._ui.title,
-        'description'         : field.properties._ui.description,
-        'properties'          : field.properties,
-        'required'            : field.required,
-        'additionalProperties': field.additionalProperties
-      };
-      field.type = 'array';
-
-      delete field.$schema;
-      delete field['@id'];
-      delete field['@type'];
-      delete field['@context'];
-      delete field.properties;
-      delete field.title;
-      delete field.description;
-      delete field.required;
-      delete field.additionalProperties;
-
-      return true;
     };
 
     service.uncardinalizeField = function (field) {
-      if (typeof field.minItems == 'undefined' || (field.minItems == 1 && field.maxItems == 1)) {
+      if (typeof field.minItems == 'undefined' && field.items) {
 
         field.type = 'object';
 
@@ -120,7 +122,7 @@ define([
 
         delete field.items;
         delete field.maxItems;
-        delete field.minItems;
+        //delete field.minItems;
 
         return true;
       } else {
@@ -322,8 +324,6 @@ define([
       }
 
       return domId;
-
-
     };
 
 
@@ -332,6 +332,141 @@ define([
      */
     service.createDomId = function () {
       return 'id' + Math.random().toString().replace(/\./g, '');
+    };
+
+
+    /**
+     * get the controlled terms list for field types
+     * @returns {Array}
+     */
+    service.getFieldControlledTerms = function (node) {
+
+      var properties = service.getFieldProperties(node);
+      return properties['@type'].oneOf[1].items['enum'];
+
+    };
+
+    /**
+     * parse the class from the selfUrl
+     * @param itemData
+     * @returns {*}
+     */
+    service.parseClassLabel = function (itemData) {
+      var re = new RegExp('\/classes\/(.+)');
+      var m;
+      var result;
+      if ((m = re.exec(itemData)) !== null) {
+        if (m.index === re.lastIndex) {
+          re.lastIndex++;
+        }
+        result = m[1];
+      }
+      return result;
+    };
+
+    /**
+     * parse the ontology code from the selfUrl
+     * @param itemData
+     * @returns {*}
+     */
+    service.parseOntologyName = function (itemData) {
+      var re = new RegExp('\/ontologies\/(.+)\/classes\/');
+      var m;
+      var result;
+      if ((m = re.exec(itemData)) !== null) {
+        if (m.index === re.lastIndex) {
+          re.lastIndex++;
+        }
+        result = m[1];
+      }
+      return result;
+    };
+
+    /**
+     * delete both the oneOf copies of the class id for the question type
+     * @param itemDataId
+     */
+    service.deleteFieldControlledTerm = function (itemDataId, node) {
+
+      var properties = service.getFieldProperties(node);
+      var idx = properties["@type"].oneOf[0].enum.indexOf(itemDataId);
+
+      if (idx >= 0) {
+        properties["@type"].oneOf[0].enum.splice(idx, 1);
+        if (properties["@type"].oneOf[0].enum.length == 0) {
+          delete properties["@type"].oneOf[0].enum;
+        }
+      }
+
+      idx = properties['@type'].oneOf[1].items.enum.indexOf(itemDataId);
+
+      if (idx >= 0) {
+        properties['@type'].oneOf[1].items.enum.splice(idx, 1);
+        if (properties["@type"].oneOf[1].items.enum.length == 0) {
+          delete properties["@type"].oneOf[1].items.enum;
+        }
+      }
+    };
+
+    /**
+     * delete the branch in valueConstraints
+     * @param branch
+     */
+    service.deleteFieldAddedBranch = function (branch, node) {
+
+      var valueConstraints = service.getFieldProperties(node)._valueConstraints;
+      for (var i = 0, len = valueConstraints.branches.length; i < len; i += 1) {
+        if (valueConstraints.branches[i]['uri'] == branch['uri']) {
+          valueConstraints.branches.splice(i, 1);
+          break;
+        }
+      }
+    };
+
+    /**
+     * delete the ontologyCLass in valueConstraints
+     * @param ontologyClass
+     */
+    service.deleteFieldAddedClass = function (ontologyClass, node) {
+
+      var valueConstraints = service.getFieldProperties(node)._valueConstraints;
+      for (var i = 0, len = valueConstraints.classes.length; i < len; i += 1) {
+        if (valueConstraints.classes[i] == ontologyClass) {
+          valueConstraints.classes.splice(i, 1);
+          break;
+        }
+      }
+    };
+
+
+    /**
+     * delete the ontology in valueConstraints
+     * @param ontology
+     */
+    service.deleteFieldAddedOntology = function (ontology, node) {
+
+      var valueConstraints = service.getFieldProperties(node)._valueConstraints;
+      for (var i = 0, len = valueConstraints.ontologies.length; i < len; i += 1) {
+        if (valueConstraints.ontologies[i]['uri'] == ontology['uri']) {
+          valueConstraints.ontologies.splice(i, 1);
+          break;
+        }
+      }
+    };
+
+    /**
+     * delete the valueSet in valueConstraints
+     * @param valueSet
+     */
+    service.deleteFieldAddedValueSet = function (valueSet, node) {
+
+      var valueConstraints = service.getFieldProperties(node)._valueConstraints;
+      for (var i = 0, len = valueConstraints.valueSets.length; i < len; i += 1) {
+        if (valueConstraints.valueSets[i]['uri'] == valueSet['uri']) {
+          valueConstraints.valueSets.splice(i, 1);
+          break;
+        }
+      }
     };
 
     return service;
