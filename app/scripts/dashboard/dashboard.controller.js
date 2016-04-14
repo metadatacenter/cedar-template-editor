@@ -117,6 +117,14 @@ define([
     }
 
     /**
+     * Watch functions.
+     */
+
+    $scope.$on('search', function(event, data) {
+      vm.resources = data.resources;
+    });
+
+    /**
      * Private functions.
      */
 
