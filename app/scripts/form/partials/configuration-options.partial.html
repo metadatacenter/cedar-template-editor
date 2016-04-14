@@ -17,12 +17,6 @@
         translate>Values</label>
   </div>
 
-  <!-- reequired -->
-  <div class="checkbox checkbox-inline checkbox-required">
-    <input type="checkbox" id="required-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}"
-        ng-model="$root.propertiesOf(field)._valueConstraints.requiredValue"/>
-    <label for="required-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}" translate>GENERIC.Required</label>
-  </div>
 
   <!-- cardinaltiy -->
   <div class="checkbox checkbox-inline checkbox-cardinality">
@@ -31,6 +25,14 @@
         ng-click="toggleControlledTerm('cardinality')"/>
     <label for="cardinality-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}"
         translate>GENERIC.Cardinality</label>
+  </div>
+
+
+  <!-- reequired -->
+  <div class="checkbox checkbox-inline checkbox-required">
+    <input type="checkbox" id="required-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}"
+        ng-model="$root.propertiesOf(field)._valueConstraints.requiredValue"/>
+    <label for="required-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}" translate>GENERIC.Required</label>
   </div>
 
   <!-- Cardinality Options -->
@@ -62,7 +64,7 @@
       <div class="class-container">
 
         <!-- field type table -->
-        <div ng-show="true">
+        <div>
 
           <div class="added-field-classes">
             <div class="class-list-container">
@@ -123,8 +125,7 @@
 
         <!-- value table -->
         <div class="added-value-constraints">
-          <div class="added-value-constraint-container"
-              ng-if="$root.lengthOfValueConstraint($root.propertiesOf(field)._valueConstraints) >= 1">
+          <div class="added-value-constraint-container" >
             <div class="added-value-constraints-header">
               <table class="table">
                 <thead>
