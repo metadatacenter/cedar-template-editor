@@ -406,6 +406,7 @@ define([
      * @param itemDataId
      */
     service.deleteFieldControlledTerm = function (itemDataId, node) {
+      console.log('deleteFieldControlledTerm ' + itemDataId);
 
       var properties = service.getFieldProperties(node);
       var idx = properties["@type"].oneOf[0].enum.indexOf(itemDataId);
@@ -414,6 +415,7 @@ define([
         properties["@type"].oneOf[0].enum.splice(idx, 1);
         if (properties["@type"].oneOf[0].enum.length == 0) {
           delete properties["@type"].oneOf[0].enum;
+          console.log('delete');
         }
       }
 
@@ -423,6 +425,7 @@ define([
         properties['@type'].oneOf[1].items.enum.splice(idx, 1);
         if (properties["@type"].oneOf[1].items.enum.length == 0) {
           delete properties["@type"].oneOf[1].items.enum;
+          console.log('delete');
         }
       }
     };

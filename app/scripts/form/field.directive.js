@@ -652,6 +652,7 @@ define([
       $scope.showControlledTermsValues = false;
       $scope.showControlledTermsField = false;
       $scope.addedFields = new Map();
+      $scope.addedFieldKeys = [];
 
 
       /**
@@ -659,26 +660,53 @@ define([
        */
       $scope.setAddedFieldMap = function () {
 
-        $scope.addedFieldKeys = DataManipulationService.getFieldControlledTerms($scope.field);
-        if ($scope.addedFieldKeys) {
 
-          var key;
+        var fields = DataManipulationService.getFieldControlledTerms($scope.field);
+        if (fields) {
 
-          // add missing items
-          for (var i = 0; i < $scope.addedFieldKeys.length; i++) {
-            key = $scope.addedFieldKeys[i];
-            if (!$scope.addedFields.has(key)) {
+
+          // create a new map to avoid any duplicates coming from the modal
+          var myMap = new Map();
+
+          // move the keys into the new map
+          for (var i = 0; i < fields.length; i++) {
+            var key = fields[i];
+            if (myMap.has(key)) {
+
+              // here is a duplicate, so delete it
+              DataManipulationService.deleteFieldControlledTerm(key, $scope.field);
+            } else {
+              myMap.set(key, "");
+            }
+          }
+
+          // copy over any responses from the old map
+          myMap.forEach(function(value, key) {
+
+            if ($scope.addedFields.has(key)) {
+              myMap.set(key, $scope.addedFields.get(key));
+            }
+          }, myMap);
+
+
+          // get any missing responses
+          myMap.forEach(function(value, key) {
+            if (myMap.get(key) == "") {
               setResponse(key, DataManipulationService.parseOntologyName(key),
                   DataManipulationService.parseClassLabel(key));
             }
-          }
+          }, myMap);
 
-          // remove extra items
-          for (key in $scope.addedFields.keys()) {
-            if (jQuery.inArray(key, $scope.addedFieldKeys) == -1) {
-              $scope.addedFields.delete(key);
-            }
-          }
+
+          // fill up the key array
+          $scope.addedFieldKeys = [];
+          myMap.forEach(function(value, key) {
+            $scope.addedFieldKeys.push(key);
+          }, myMap);
+
+          // hang on to the new map
+          $scope.addedFields = myMap;
+
         }
       };
 
@@ -690,9 +718,11 @@ define([
        * @param className
        */
       var setResponse = function (item, ontologyName, className) {
+        console.log('setResponse ');
         // Get selected class details from the links.self endpoint provided.
         controlTermDataService.getClassById(ontologyName, className).then(function (response) {
           $scope.addedFields.set(item, response);
+           console.log(response);
         });
       };
 
@@ -797,6 +827,8 @@ define([
         if ($scope.showControlledTermsValues || $scope.showControlledTermsField || item === 'none') {
           $rootScope.propertiesOf($scope.field)._ui.is_cardinal_field = false;
         }
+
+        $scope.setAddedFieldMap();
       };
 
       $scope.getModalId = function (isField) {
