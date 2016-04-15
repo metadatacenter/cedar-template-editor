@@ -202,7 +202,10 @@
     </div>
     <div class="row populate-form-boxes">
       <div class="grid-view" ng-show="dc.resourceView == 'grid'">
-        <div class="col-md-4 col-sm-6" ng-class="{ 'col-md-3': !dc.narrowContent(), 'col-md-4': dc.narrowContent(), selected: dc.isResourceSelected(resource) }" ng-repeat="(index, resource) in dc.resources">
+        <div class="col-md-4 col-sm-6"
+             ng-class="{ 'col-md-3': !dc.narrowContent(), 'col-md-4': dc.narrowContent(), selected: dc.isResourceSelected(resource) }"
+             ng-dblclick="dc.editResource(resource)"
+             ng-repeat="(index, resource) in dc.resources">
           <div class="form-box">
             <div class="box-content text-center">
               <i class="fa fa-file-text-o"></i>
@@ -232,7 +235,10 @@
             <th></th>
             </thead>
             <tbody>
-              <tr class="box-row" ng-class="{ selected: dc.isResourceSelected(resource) }" ng-repeat="(index, resource) in dc.resources">
+              <tr class="box-row"
+                  ng-class="{ selected: dc.isResourceSelected(resource) }"
+                  ng-dblclick="dc.editResource(resource)"
+                  ng-repeat="(index, resource) in dc.resources">
                 <td><i class="fa fa-folder-o large-icon" aria-hidden="true"></i></td>
                 <td><a ng-click="dc.selectResource(resource)">{{ resource.name}}</a></td>
                 <td>{{ resource.createdOn|date:'shortDate' }}</td>
