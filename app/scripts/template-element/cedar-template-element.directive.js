@@ -254,12 +254,10 @@ define([
 
 
         // remove any -1 values
-        if (scope.element.minItems < 0) {
+        if (typeof scope.element.minItems == 'undefined' || scope.element.minItems < 0) {
           delete scope.element.minItems;
           delete scope.element.maxItems;
-        }
-
-        if (scope.element.maxItems < 0) {
+        } else if (scope.element.maxItems < 0) {
           delete scope.element.maxItems;
         }
 

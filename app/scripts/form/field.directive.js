@@ -399,12 +399,10 @@ define([
       $scope.add = function () {
         var p = $rootScope.propertiesOf($scope.field);
 
-        if ($scope.field.minItems < 0) {
+        if (typeof $scope.field.minItems == 'undefined' || $scope.field.minItems < 0) {
           delete $scope.field.minItems;
           delete $scope.field.maxItems;
-        }
-
-        if ($scope.field.maxItems < 0) {
+        } else if ($scope.field.maxItems < 0) {
           delete $scope.field.maxItems;
         }
 
@@ -416,10 +414,7 @@ define([
         if ($scope.errorMessages.length == 0) {
 
 
-
-
-
-          if (typeof $scope.field.minItems == 'undefined' || $scope.field.minItems < 0) {
+          if (typeof $scope.field.minItems == 'undefined') {
             if ($scope.field.items) {
               DataManipulationService.uncardinalizeField($scope.field);
             }
@@ -796,8 +791,8 @@ define([
        */
       $scope.toggleControlledTerm = function (item) {
 
-        $scope.showControlledTermsValues = (item === 'values') ? !$scope.showControlledTermsValues : false ;
-        $scope.showControlledTermsField = (item === 'field') ? !$scope.showControlledTermsField : false ;
+        $scope.showControlledTermsValues = (item === 'values') ? !$scope.showControlledTermsValues : false;
+        $scope.showControlledTermsField = (item === 'field') ? !$scope.showControlledTermsField : false;
 
         if ($scope.showControlledTermsValues || $scope.showControlledTermsField || item === 'none') {
           $rootScope.propertiesOf($scope.field)._ui.is_cardinal_field = false;
