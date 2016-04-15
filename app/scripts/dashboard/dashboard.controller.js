@@ -108,8 +108,9 @@ define([
     }
 
     function getForms() {
-      return resourceService.getResources(
-        { resourceTypes: ['template'], sort: '-createdOn' },
+      return resourceService.searchResources(
+        null,
+        { resourceTypes: ['template'], sort: 'dateModified' },
         function(response) {
           vm.forms = response.resources;
         },

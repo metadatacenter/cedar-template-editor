@@ -186,7 +186,11 @@ define([
     function searchResources(searchTerm, options = {}, successCallback, errorCallback) {
       this.searchTerm = searchTerm;
       var resourceTypes = options.resourceTypes || uiSettingsService.getResourceTypeFilters().map(function(obj) { return obj.resourceType });
-      var url = urlService.search() + '?search_term=' + searchTerm + '&resource_types=' + resourceTypes.join(',');
+      var url = urlService.search() + '?';
+      if (searchTerm) {
+        url += 'search_term=' + searchTerm + '&';
+      }
+      url += 'resource_types=' + resourceTypes.join(',');
       if (options.sort) {
         url += '&sort=' + options.sort;
       }
