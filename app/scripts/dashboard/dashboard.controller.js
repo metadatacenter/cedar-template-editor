@@ -26,7 +26,9 @@ define([
     var vm = this;
 
     vm.editResource = editResource;
+    vm.facets = {};
     vm.forms = [];
+    vm.getFacets = getFacets;
     vm.getForms = getForms;
     vm.getWorkspace = getWorkspace;
     vm.isResourceTypeActive = isResourceTypeActive;
@@ -48,6 +50,7 @@ define([
 
     $rootScope.pageTitle = 'Dashboard';    
 
+    getFacets();
     getForms();
     getWorkspace();
 
@@ -73,6 +76,15 @@ define([
           $location.path(scope.href);
           break;
       }
+    }
+
+    function getFacets() {
+      resourceService.getFacets(
+        function(response) {
+          vm.facets = response.facets;
+        },
+        function(error) { }
+      );
     }
 
     function getForms() {

@@ -20,10 +20,125 @@ define([
 
     var searchTerm = null;
     var service = {
+      getFacets: getFacets,
       getResources: getResources,
       searchResources: searchResources
     };
     return service;
+
+    function getFacets(successCallback, errorCallback) {
+      var dummyData = {
+        facets: {
+          "author": {
+            "totalCount": 245,
+            "nodes": [
+              {
+                "label": "Author 1",
+                "key": "authorIdFromIndex1",
+                "numberOfMatches": 6,
+                "selected": true,
+                "hasChildren": false
+              },
+              {
+                "label": "Author 2",
+                "key": "authorIdFromIndex2",
+                "numberOfMatches": 7,
+                "selected": false,
+                "hasChildren": false
+              },
+              {
+                "label": "Author 3",
+                "key": "authorIdFromIndex3",
+                "numberOfMatches": 8,
+                "selected": false,
+                "hasChildren": false
+              }
+            ]
+          },
+          "status": {
+            "totalCount": 3,
+            "nodes": [
+              {
+                "label": "Draft",
+                "key": "draft",
+                "numberOfMatches": 20,
+                "selected": false,
+                "hasChildren": false
+              },
+              {
+                "label": "Complete",
+                "key": "complete",
+                "numberOfMatches": 255,
+                "selected": false,
+                "hasChildren": false
+              },
+              {
+                "label": "Reviewed",
+                "key": "reviewed",
+                "numberOfMatches": 10,
+                "selected": false,
+                "hasChildren": false
+              }
+            ]
+          },
+          "term": {
+            "totalCount": 8,
+            "nodes": [
+              {
+                "label": "CTO",
+                "key": "CTO",
+                "numberOfMatches": 3,
+                "selected": false,
+                "hasChildren": false
+              },
+              {
+                "label": "ICD",
+                "key": "ICD",
+                "numberOfMatches": 10,
+                "selected": false,
+                "hasChildren": false
+              },
+              {
+                "label": "SNOMED-CT",
+                "key": "SNOMED-CT",
+                "numberOfMatches": 6,
+                "selected": false,
+                "hasChildren": true,
+                "nodes" :[
+                  {
+                    "label": "Influenza",
+                    "key": "INF",
+                    "numberOfMatches": 6,
+                    "hasChildren": true,
+                    "nodes" :[
+                      {
+                        "label": "bronchitis",
+                        "key": "BRONCH",
+                        "numberOfMatches": 6,
+                        "selected": false,
+                        "hasChildren": false
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      }
+      var response = { data: dummyData };
+      successCallback(response.data);
+      return;
+
+      var url = UrlService.facets();
+      authorizedBackendService.doCall(
+        httpBuilderService.get(url),
+        function(response) {
+          successCallback(response.data);
+        },
+        errorCallback
+      );
+    }
 
     function getResources(options = {}, successCallback, errorCallback) {
       var homeDir = cedar.getHome();
