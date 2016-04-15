@@ -188,6 +188,7 @@ define([
     var maxCardinalities = DataManipulationService.generateCardinalities(1, 8);
     maxCardinalities.push({value: 0, label: "N"});
 
+
     $rootScope.minCardinalities = minCardinalities;
     $rootScope.maxCardinalities = maxCardinalities;
 

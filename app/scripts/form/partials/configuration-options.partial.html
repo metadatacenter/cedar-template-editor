@@ -181,7 +181,7 @@
                   <td >{{valueSet.name}}</td>
                   <td ></td>
                   <td >Value Set</td>
-                  <td >{{valueSet.vsCollection}}</td>
+                  <td >{{valueSet.vsCollection.substr(valueSet.vsCollection.lastIndexOf('/') + 1)}}</td>
                   <td >{{valueSet.numChildren}}</td>
                   <td>
                     <div class="item item-delete" ng-click="deleteFieldAddedValueSet(valueSet)">
