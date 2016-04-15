@@ -184,7 +184,7 @@ define([
         } else if (cedarType == 'deepObject') {
           rowData.push(columnDescriptor.cedarLabel);
         } else {
-          rowData.push(cellDataObject._value);
+          rowData.push(cellDataObject._valueLabel || cellDataObject._value);
         }
       },
 
