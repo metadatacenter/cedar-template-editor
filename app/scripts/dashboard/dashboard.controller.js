@@ -32,6 +32,7 @@ define([
     vm.getFacets = getFacets;
     vm.getForms = getForms;
     vm.getWorkspace = getWorkspace;
+    vm.isResourceSelected = isResourceSelected;
     vm.isResourceTypeActive = isResourceTypeActive;
     vm.narrowContent = narrowContent;
     vm.resources = [];
@@ -46,7 +47,9 @@ define([
     vm.selectResource = selectResource;
     vm.showFilters = false;
     vm.showFloatingMenu = false;
+    vm.showResourceInfo = false;
     vm.toggleFilters = toggleFilters;
+    vm.toggleResourceInfo = toggleResourceInfo;
     vm.toggleResourceType = toggleResourceType;
 
     $rootScope.pageTitle = 'Dashboard';    
@@ -117,16 +120,25 @@ define([
       return vm.resourceTypes[type];
     }
 
+    function isResourceSelected(resource) {
+      return angular.equals(vm.selectedResource, resource);
+    }
+
     function narrowContent() {
       return vm.showFilters || vm.selectedResource;
     }
 
     function selectResource(resource) {
       vm.selectedResource = resource;
+      vm.showResourceInfo = true;
     }
 
     function toggleFilters() {
       vm.showFilters = !vm.showFilters;
+    }
+
+    function toggleResourceInfo() {
+      vm.showResourceInfo = !vm.showResourceInfo;
     }
 
     function toggleResourceType(type) {
