@@ -178,6 +178,7 @@ define([
 
     service.generateCardinalities = function (min, max) {
       var results = [];
+      results.push({value: -1, label: ""});
       for (var i = min; i <= max; i++) {
         results.push({value: i, label: i});
       }

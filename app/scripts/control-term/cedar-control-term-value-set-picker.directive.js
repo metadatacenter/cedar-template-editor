@@ -179,6 +179,11 @@ define([
         }
       };
 
+      //TODO change to some other method of resetting state
+      $scope.$on("field:controlledTermAdded", function () {
+        reset();
+      });
+
       /**
        * This function should select a value search or browse value result and populate
        * all the associated data necessary to display the class details and related info.

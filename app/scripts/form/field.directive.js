@@ -398,6 +398,17 @@ define([
       // Switch from creating to completed.
       $scope.add = function () {
         var p = $rootScope.propertiesOf($scope.field);
+
+        if ($scope.field.minItems < 0) {
+          delete $scope.field.minItems;
+          delete $scope.field.maxItems;
+        }
+
+        if ($scope.field.maxItems < 0) {
+          delete $scope.field.maxItems;
+        }
+
+
         $scope.errorMessages = $scope.checkFieldConditions(p);
         $scope.errorMessages = jQuery.merge($scope.errorMessages,
             ClientSideValidationService.checkFieldCardinalityOptions($scope.field));
@@ -405,13 +416,10 @@ define([
         if ($scope.errorMessages.length == 0) {
 
 
-          //if (!p._ui.is_cardinal_field) {
-          //  delete $scope.field.minItems;
-          //  delete $scope.field.maxItems;
-          //}
 
 
-          if (typeof $scope.field.minItems == 'undefined') {
+
+          if (typeof $scope.field.minItems == 'undefined' || $scope.field.minItems < 0) {
             if ($scope.field.items) {
               DataManipulationService.uncardinalizeField($scope.field);
             }
@@ -787,14 +795,19 @@ define([
        * @param item
        */
       $scope.toggleControlledTerm = function (item) {
-        $scope.showControlledTermsValues = (item === 'values');
-        $scope.showControlledTermsField = (item === 'field');
-        $rootScope.propertiesOf($scope.field)._ui.is_cardinal_field = (item === 'cardinality');
+
+        $scope.showControlledTermsValues = (item === 'values') ? !$scope.showControlledTermsValues : false ;
+        $scope.showControlledTermsField = (item === 'field') ? !$scope.showControlledTermsField : false ;
+
+        if ($scope.showControlledTermsValues || $scope.showControlledTermsField || item === 'none') {
+          $rootScope.propertiesOf($scope.field)._ui.is_cardinal_field = false;
+        }
       };
 
       $scope.getModalId = function (isField) {
         var fieldOrValue = isField ? "field" : "values";
-        var id = $scope.field['@id'].substring($scope.field['@id'].lastIndexOf('/') + 1);
+        var fieldId = $scope.field['@id'] || $scope.field.items['@id'];
+        var id = fieldId.substring(fieldId.lastIndexOf('/') + 1);
         return "control-options-" + id + "-" + fieldOrValue;
       };
 

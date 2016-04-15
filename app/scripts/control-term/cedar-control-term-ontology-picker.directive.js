@@ -265,9 +265,6 @@ define([
         }
       });
 
-      $scope.$on("field:controlledTermAdded", function () {
-        console.log('field:controlledtermAdded');
-      });
 
     }
 

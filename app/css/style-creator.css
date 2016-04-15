@@ -12062,7 +12062,7 @@ body .template-header .controlled-terms-modal {
   font-size: 15px;
 }
 .input-type-container .configuration-options {
-  padding: 5px 0 20px 5px;
+  padding: 5px 0 0 5px;
   position: static;
 }
 .cardinality-options {
