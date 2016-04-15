@@ -67,7 +67,13 @@ i {
 .container {
   position: relative;
 }
+.smaller-width {
+  width: 770px;
 
+  @media (max-width: @screen-sm-max) {
+    width: 100%;
+  }
+}
 .navbar {
   color: @header-text-color;
   background-color: @header-bg-color;
@@ -633,7 +639,7 @@ i {
     }
   }
   .row-offcanvas-right .sidebar-offcanvas-right {
-    right: -20%; /* 6 columns */
+    right: 0%; /* 6 columns */
   }
   .row-offcanvas-left .sidebar-offcanvas-left {
     //left: -20%; /* 6 columns */
@@ -645,12 +651,13 @@ i {
     left: 20%; /* 6 columns */
   }
   .sidebar-offcanvas-left, .sidebar-offcanvas-right {
-    position: absolute;
-    top: 0;
+    position: fixed;
+    top: 189px;
     width: 20%; /* 6 columns */
     padding: 0;
     background: @graybg;
     height: 100%;
+    overflow: scroll;
   }
 
   .add-new {

@@ -9133,6 +9133,14 @@ i {
 .container {
   position: relative;
 }
+.smaller-width {
+  width: 770px;
+}
+@media (max-width: 991px) {
+  .smaller-width {
+    width: 100%;
+  }
+}
 .navbar {
   color: #fff;
   background-color: #006b57;
@@ -9645,7 +9653,7 @@ i {
   padding: 20px;
 }
 .all-items-view .row-offcanvas-right .sidebar-offcanvas-right {
-  right: -20%;
+  right: 0%;
   /* 6 columns */
 }
 .all-items-view .row-offcanvas-right.active-right {
@@ -9658,13 +9666,14 @@ i {
 }
 .all-items-view .sidebar-offcanvas-left,
 .all-items-view .sidebar-offcanvas-right {
-  position: absolute;
-  top: 0;
+  position: fixed;
+  top: 189px;
   width: 20%;
   /* 6 columns */
   padding: 0;
   background: #eaeaea;
   height: 100%;
+  overflow: scroll;
 }
 .all-items-view .add-new {
   position: fixed;
