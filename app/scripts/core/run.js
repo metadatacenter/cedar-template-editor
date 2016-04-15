@@ -219,12 +219,14 @@ define([
     // Used here
     $rootScope.sortAutocompleteResults = function (field_id) {
       $rootScope.autocompleteResultsCache[field_id].results.sort(function (a, b) {
-        var labelA = a.label.toLowerCase();
-        var labelB = b.label.toLowerCase();
-        if (labelA < labelB)
-          return -1;
-        if (labelA > labelB)
-          return 1;
+        if (a.label && b.label) {
+          var labelA = a.label.toLowerCase();
+          var labelB = b.label.toLowerCase();
+          if (labelA < labelB)
+            return -1;
+          if (labelA > labelB)
+            return 1;
+        }
         return 0;
       });
     };
