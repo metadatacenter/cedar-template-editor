@@ -30,6 +30,7 @@ define([
     vm.getForms = getForms;
     vm.getWorkspace = getWorkspace;
     vm.isResourceTypeActive = isResourceTypeActive;
+    vm.narrowContent = narrowContent;
     vm.resources = [];
     vm.resourceTypes = {
       element: true,
@@ -101,6 +102,10 @@ define([
 
     function isResourceTypeActive(type) {
       return vm.resourceTypes[type];
+    }
+
+    function narrowContent() {
+      return vm.showFilters || vm.selectedResource;
     }
 
     function selectResource(resource) {
