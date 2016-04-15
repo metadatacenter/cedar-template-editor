@@ -210,6 +210,11 @@ define([
             'details': {'ontology': ontology}
           };
           controlTermService.loadTreeOfClass(result, vm);
+
+          // Set the hasChildren property, which will be used to decide if the 'Children' tab will be shown
+          controlTermDataService.getClassById(ontology.id, result['@id']).then(function (cls) {
+            result.hasChildren = cls.hasChildren;
+          });
         }
         // Value Set or value
         else if (result.type == 'ValueSet' || result.type == 'Value') {
