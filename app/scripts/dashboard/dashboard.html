@@ -172,11 +172,11 @@
             </tr>
             <tr>
               <td class="left"><strong>Modified:</strong></td>
-              <td>{{ dc.selectedResource.lastUpdatedOn}} by {{ dc.selectedResource.lastUpdatedBy.name}}</td>
+              <td>{{ dc.selectedResource.lastUpdatedOn|date:'shortDate' }} by {{ dc.selectedResource.lastUpdatedBy.name}}</td>
             </tr>
             <tr>
               <td class="left"><strong>Created:</strong></td>
-              <td>{{ dc.selectedResource.createdOn}} by {{ dc.selectedResource.createdBy.name}}</td>
+              <td>{{ dc.selectedResource.createdOn|date:'shortDate' }} by {{ dc.selectedResource.createdBy.name}}</td>
             </tr>
           </tbody>
         </table>
