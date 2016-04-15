@@ -152,8 +152,7 @@ define([
 
         vm.startOver();
 
-
-
+        // TODO broadcast the action for now because parent scope is not working
         $rootScope.$broadcast('field:controlledTermAdded');
 
         //$element.parents("#" + vm.modalId).modal({show: false, backdrop: "static"});
@@ -608,10 +607,8 @@ define([
       vm.stagedBranchesValueConstraints = [];
       vm.startOver();
 
-      // broadcast the action
+      // TODO broadcast the action so dialog is closed and ontology picker is reset
       $rootScope.$broadcast('field:controlledTermAdded');
-
-
 
     }
 

@@ -224,6 +224,11 @@ define([
         }
       };
 
+      //TODO change to some other method of resetting state
+      $scope.$on("field:controlledTermAdded", function () {
+        reset();
+      });
+
       function selectFieldClass(selection) {
         controlTermService.loadTreeOfClass(selection, vm);
       }
