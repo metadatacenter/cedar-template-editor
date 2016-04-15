@@ -130,22 +130,19 @@
           <div class="pull-left">Filter By</div>
           <div class="pull-right"><a href="#n">Reset</a></div>
         </div>
+        <!-- nested facet template -->
+        <script type="text/ng-template" id="facet_renderer.html">
+          <a href="#"><i class="fa fa-caret-right" aria-hidden="true"></i>{{ node.label }} ({{ node.numberOfMatches }})</a>
+          <ul ui-tree-nodes="" ng-model="node.nodes">
+            <li ng-repeat="node in node.nodes" ui-tree-node="" ng-include="'facet_renderer.html'"></li>
+          </ul>
+        </script>
         <ul class="list-unstyled clearfix">
           <li><a href="#">Author<i class="fa fa-caret-down pull-right" aria-hidden="true"></i></a></li>
           <li><a href="#">Status<i class="fa fa-caret-down pull-right" aria-hidden="true"></i></a></li>
-          <li><a href="#">Term<i class="fa fa-caret-up pull-right" aria-hidden="true"></i></a>
-            <ul>
-              <li><a href="#n"><i class="fa fa-caret-right" aria-hidden="true"></i>Test</a></li>
-              <li>
-                <a href="#n"><i class="fa fa-caret-down pull-down" aria-hidden="true"></i>Concepts (14)</a>
-                <ul>
-                  <li><a href="#"><i class="fa fa-caret-down" aria-hidden="true"></i>SNOMED-CT (6)</a>
-                    <ul>
-                      <li><a href="#"><i class="fa fa-caret-right" aria-hidden="true"></i>mumblecore (100)</a></li>
-                    </ul>
-                  </li>
-                </ul>
-              </li>
+          <li ui-tree=""><a href="#">Term<i class="fa fa-caret-up pull-right" aria-hidden="true"></i></a>
+            <ul ui-tree-nodes="" ng-model="dc.facets.term.nodes">
+              <li ng-repeat="node in dc.facets.term.nodes" ui-tree-node="" ng-include="'facet_renderer.html'"></li>
             </ul>
           </li>
         </ul>

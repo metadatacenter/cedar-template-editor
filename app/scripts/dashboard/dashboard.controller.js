@@ -1,7 +1,8 @@
 'use strict';
 
 define([
-  'angular'
+  'angular',
+  'lib/angular-ui-tree/dist/angular-ui-tree'
 ], function (angular) {
   angular.module('cedar.templateEditor.dashboard.dashboardController', [])
       .controller('DashboardController', DashboardController);
