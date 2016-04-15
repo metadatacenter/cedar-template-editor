@@ -20,11 +20,32 @@ define([
 
     var searchTerm = null;
     var service = {
+      createFolder: createFolder,
       getFacets: getFacets,
       getResources: getResources,
       searchResources: searchResources
     };
     return service;
+
+    /**
+     * Service methods.
+     */
+
+    function createFolder(name, path, successCallback, errorCallback) {
+      var url = urlService.folders() + '?parent_path=' + path;
+      var payload = {
+        resourceType: 'folder',
+        name: name,
+        description: ''
+      };
+      authorizedBackendService.doCall(
+        httpBuilderService.post(url, payload),
+        function(response) {
+          successCallback(response.data);
+        },
+        errorCallback
+      );
+    }
 
     function getFacets(successCallback, errorCallback) {
       var dummyData = {
@@ -140,10 +161,9 @@ define([
       );
     }
 
-    function getResources(options = {}, successCallback, errorCallback) {
-      var homeDir = cedar.getHome();
+    function getResources(path, options = {}, successCallback, errorCallback) {
       var resourceTypes = options.resourceTypes || uiSettingsService.getResourceTypeFilters().map(function(obj) { return obj.resourceType });
-      var url = urlService.folders() + '?path=' + homeDir + '&resource_types=' + resourceTypes.join(',');
+      var url = urlService.folders() + '?path=' + path + '&resource_types=' + resourceTypes.join(',');
       if (options.sort) {
         url += '&sort=' + options.sort;
       }

@@ -257,7 +257,9 @@
   <div class="add-new">
     <ul class="list-unstyled">
       <li ng-show="dc.showFloatingMenu"><button class="btn btn-sm btn-info btn-circle-outline"><i class="fa fa-file-text-o"></i></button></li>
-      <li ng-show="dc.showFloatingMenu"><button class="btn btn-sm btn-info btn-circle"><i class="fa fa-folder-o"></i></button></li>
+      <li ng-show="dc.showFloatingMenu">
+        <button class="btn btn-sm btn-info btn-circle" ng-click="dc.createFolder()"><i class="fa fa-folder-o"></i></button>
+      </li>
       <li ng-hide="dc.showFloatingMenu">
         <button class="btn btn-sm btn-info btn-circle" ng-click="dc.showFloatingMenu = true"><i class="fa fa-plus"></i></button>
       </li>

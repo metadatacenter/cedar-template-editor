@@ -13,6 +13,7 @@ define([
     '$routeParams',
     '$scope',
     'AuthorizedBackendService',
+    'Cedar',
     'HeaderService',
     'resourceService',
     'TemplateElementService',
@@ -23,9 +24,11 @@ define([
     'CONST'
   ];
 
-  function DashboardController($location, $rootScope, $routeParams, $scope, AuthorizedBackendService, HeaderService, resourceService, TemplateElementService, TemplateService, TemplateInstanceService, UIMessageService, UrlService, CONST) {
+  function DashboardController($location, $rootScope, $routeParams, $scope, AuthorizedBackendService, cedar, HeaderService, resourceService, TemplateElementService, TemplateService, TemplateInstanceService, UIMessageService, UrlService, CONST) {
     var vm = this;
 
+    vm.createFolder = createFolder;
+    vm.currentWorkspacePath = cedar.getHome();
     vm.editResource = editResource;
     vm.facets = {};
     vm.forms = [];
@@ -61,6 +64,19 @@ define([
     /**
      * Scope functions.
      */
+
+    function createFolder() {
+      var name = prompt("Please enter a folder name");
+      var path = vm.currentWorkspacePath;
+      resourceService.createFolder(
+        name,
+        path,
+        function(response) {
+          debugger;
+        },
+        function(response) { }
+      );
+    }
 
     /**
      * TODO: return link?
@@ -102,9 +118,11 @@ define([
     }
 
     function getWorkspace() {
+      var path = vm.currentWorkspacePath;
       var resourceTypes = activeResourceTypes();
       if (resourceTypes.length > 0) {
         return resourceService.getResources(
+          path,
           { resourceTypes: resourceTypes, sort: '-createdOn' },
           function(response) {
             vm.resources = response.resources;
