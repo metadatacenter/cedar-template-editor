@@ -347,6 +347,24 @@ define([
     };
 
     /**
+     * parse the ontology code from the source
+     * @param itemData
+     * @returns {*}
+     */
+    service.parseOntologyCode = function (itemData) {
+      var re = new RegExp('\((.+)\)');
+      var m;
+      var result;
+      if ((m = re.exec(itemData)) !== null) {
+        if (m.index === re.lastIndex) {
+          re.lastIndex++;
+        }
+        result = m[1];
+      }
+      return result;
+    };
+
+    /**
      * parse the class from the selfUrl
      * @param itemData
      * @returns {*}
@@ -363,6 +381,8 @@ define([
       }
       return result;
     };
+
+
 
     /**
      * parse the ontology code from the selfUrl

@@ -58,7 +58,7 @@
 
 
 <!-- Field Types -->
-<div id="field-type-options" class="cardinality-options" ng-show="controlledTermsField">
+<div id="field-type-options" class="cardinality-options" ng-show="showControlledTermsField">
   <div class="form-group ">
     <div class="controlled-terms controlled-term-options">
       <div class="class-container">
@@ -116,7 +116,7 @@
 
         <div class="clear-save">
         <button type="button" class="std-button btn search-ontologies-button" data-toggle="modal"
-            data-target="{{'#' + fieldModalId()}}">Search
+            data-target="{{'#' + getModalId(true)}}">Search
         </button>
         <!--<button type="button" class="std-button btn search-ontologies-button">Create</button>-->
           </div>
@@ -127,7 +127,7 @@
 
 
 <!-- Values -->
-<div id="value-options" class="cardinality-options" ng-show="controlledTermsValues">
+<div id="value-options" class="cardinality-options" ng-show="showControlledTermsValues">
   <div class="form-group ">
     <div class="controlled-terms controlled-term-options">
 
@@ -166,8 +166,10 @@
                 <tr ng-repeat="class in $root.propertiesOf(field)._valueConstraints.classes">
                   <td >{{class.prefLabel}}</td>
                   <td ></td>
-                  <td >{{class.type}}</td>
-                  <td >{{class.ontology.substr(class.ontology.lastIndexOf('/') -1 )}}</td>
+                  <td >Class</td>
+                  <td >
+                    {{class.source.substr(0, class.source.lastIndexOf(')')).substr(class.source.lastIndexOf('(')+1)}}
+                  </td>
                   <td>&nbsp;</td>
                   <td>
                     <div class="item item-delete" ng-click="deleteFieldAddedClass(class)">
@@ -202,7 +204,7 @@
                 <tr ng-repeat="branch in $root.propertiesOf(field)._valueConstraints.branches">
                   <td >{{branch.name}}</td>
                   <td ></td>
-                  <td >Ontology branch</td>
+                  <td >Branch</td>
                   <td >{{branch.acronym}}</td>
                   <td ></td>
                   <td>
@@ -219,7 +221,7 @@
 
        <div  class="clear-save">
         <button type="button" class="std-button btn search-ontologies-button" data-toggle="modal"
-            data-target="{{'#' + valueModalId()}}">Search
+            data-target="{{'#' + getModalId(false)}}">Search
         </button>
         <!--<button type="button" class="std-button btn search-ontologies-button">Create</button>-->
         </div>
@@ -234,7 +236,7 @@
 </div><!-- /.toggle-options -->
 
 
-<div class="modal fade controlled-terms-modal" id="{{fieldModalId()}}">
+<div class="modal fade controlled-terms-modal" id="{{getModalId(true)}}">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -249,7 +251,7 @@
   </div>
 </div>
 
-<div class="modal fade controlled-terms-modal" id="{{valueModalId()}}">
+<div class="modal fade controlled-terms-modal" id="{{getModalId(false)}}">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
