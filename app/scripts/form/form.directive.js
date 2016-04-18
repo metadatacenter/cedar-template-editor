@@ -72,7 +72,7 @@ define([
           var selectedKey;
           var props = $scope.form.properties;
           angular.forEach(props, function (value, key) {
-            if (value["@id"] == fieldOrElement["@id"]) {
+            if ($rootScope.schemaOf(value)["@id"] == $rootScope.schemaOf(fieldOrElement)["@id"]) {
               selectedKey = key;
             }
           });
@@ -85,10 +85,10 @@ define([
 
             if ($rootScope.isElement(fieldOrElement)) {
               $scope.$emit("invalidElementState",
-                  ["remove", fieldOrElement._ui.title, fieldOrElement["@id"]]);
+                  ["remove", $rootScope.schemaOf(fieldOrElement)._ui.title, $rootScope.schemaOf(fieldOrElement)["@id"]]);
             } else {
               $scope.$emit("invalidFieldState",
-                  ["remove", fieldOrElement._ui.title, fieldOrElement["@id"]]);
+                  ["remove", $rootScope.schemaOf(fieldOrElement)._ui.title, $rootScope.schemaOf(fieldOrElement)["@id"]]);
             }
           }
         };
