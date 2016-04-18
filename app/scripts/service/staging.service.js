@@ -247,13 +247,13 @@ define([
     // Add newly configured field to the the $scope.form or $scope.element
     service.addFieldToScopeAndStaging = function ($scope, targetObject, field) {
       // Setting return value from $scope.checkFieldConditions to array which will display error messages if any
-      $scope.stagingErrorMessages = ClientSideValidationService.checkFieldConditions(field.properties);
+      $scope.stagingErrorMessages = ClientSideValidationService.checkFieldConditions(field);
       $scope.stagingErrorMessages = jQuery.merge($scope.stagingErrorMessages,
           ClientSideValidationService.checkFieldCardinalityOptions(field));
 
       if ($scope.stagingErrorMessages.length == 0) {
         // Converting title for irregular character handling
-        var fieldName = DataManipulationService.getFieldName(field._ui.title);
+        var fieldName = DataManipulationService.getFieldName($rootScope.schemaOf(field)._ui.title);
         // Adding corresponding property type to @context
         targetObject.properties["@context"].properties[fieldName] = DataManipulationService.generateFieldContextProperties(
             fieldName);

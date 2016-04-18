@@ -399,8 +399,6 @@ define([
       // Switch from creating to completed.
       $scope.add = function () {
 
-        var p = $rootScope.propertiesOf($scope.field);
-
         if (typeof $scope.field.minItems == 'undefined' || $scope.field.minItems < 0) {
           delete $scope.field.minItems;
           delete $scope.field.maxItems;
@@ -408,7 +406,7 @@ define([
           delete $scope.field.maxItems;
         }
 
-        $scope.errorMessages = $scope.checkFieldConditions(p);
+        $scope.errorMessages = $scope.checkFieldConditions($scope.field);
 
         $scope.errorMessages = jQuery.merge($scope.errorMessages,
             ClientSideValidationService.checkFieldCardinalityOptions($scope.field));
