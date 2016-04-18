@@ -473,6 +473,10 @@ i {
   }
   .populate-form-boxes {
 
+    .selected > .form-box {
+      border: 1px solid @brand-primary;
+    }
+
     .form-box {
       width: 220px;
       height: 220px;
@@ -483,13 +487,13 @@ i {
 
       .box-content {
         color: @brand-primary;
-        padding: 45px 55px;
+        padding: 25px 5px;
         font-size: 16px;
         display: block;
 
         i {
           font-size: 36px;
-          margin-bottom: 25px;
+          margin-bottom: 15px;
         }
         p {
           line-height: 1;
@@ -500,13 +504,10 @@ i {
       }
     }
     .form-box:hover {
-      background: @brand-primary-hover;
+      border: 1px solid @brand-primary;
 
-      .box-content {
-        display: none;
-      }
       .quick-details-box {
-        padding: 20px;
+        padding: 5px;
         color: @white;
         display: block;
         text-align: center;
@@ -517,11 +518,18 @@ i {
         }
         .btn-info.btn-circle {
           box-shadow: none;
-          background: #ffffff;
-          color: @graytxt;
+          background: @brand-primary;
+          color: @white;
           border: none;
         }
+        i {
+          font-size: 12px;
+          margin-bottom: 0;
+        }
       }
+    }
+    .form-box:active, .form-box:focus {
+      border: 1px solid @brand-primary;
     }
     .list-view {
 

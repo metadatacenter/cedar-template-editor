@@ -9511,6 +9511,9 @@ i {
 .all-items-view .breadcrumbs-sb {
   text-transform: uppercase;
 }
+.all-items-view .populate-form-boxes .selected > .form-box {
+  border: 1px solid #339933;
+}
 .all-items-view .populate-form-boxes .form-box {
   width: 220px;
   height: 220px;
@@ -9521,13 +9524,13 @@ i {
 }
 .all-items-view .populate-form-boxes .form-box .box-content {
   color: #339933;
-  padding: 45px 55px;
+  padding: 25px 5px;
   font-size: 16px;
   display: block;
 }
 .all-items-view .populate-form-boxes .form-box .box-content i {
   font-size: 36px;
-  margin-bottom: 25px;
+  margin-bottom: 15px;
 }
 .all-items-view .populate-form-boxes .form-box .box-content p {
   line-height: 1;
@@ -9536,13 +9539,10 @@ i {
   display: none;
 }
 .all-items-view .populate-form-boxes .form-box:hover {
-  background: #71a69c;
-}
-.all-items-view .populate-form-boxes .form-box:hover .box-content {
-  display: none;
+  border: 1px solid #339933;
 }
 .all-items-view .populate-form-boxes .form-box:hover .quick-details-box {
-  padding: 20px;
+  padding: 5px;
   color: #ffffff;
   display: block;
   text-align: center;
@@ -9553,9 +9553,17 @@ i {
 }
 .all-items-view .populate-form-boxes .form-box:hover .quick-details-box .btn-info.btn-circle {
   box-shadow: none;
-  background: #ffffff;
-  color: #666666;
+  background: #339933;
+  color: #ffffff;
   border: none;
+}
+.all-items-view .populate-form-boxes .form-box:hover .quick-details-box i {
+  font-size: 12px;
+  margin-bottom: 0;
+}
+.all-items-view .populate-form-boxes .form-box:active,
+.all-items-view .populate-form-boxes .form-box:focus {
+  border: 1px solid #339933;
 }
 .all-items-view .populate-form-boxes .list-view thead th {
   text-transform: uppercase;

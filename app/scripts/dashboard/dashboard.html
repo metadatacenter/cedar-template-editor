@@ -57,6 +57,7 @@
           <a href="#n" class="box-content text-center">
             <i class="fa fa-file-text-o"></i>
             <p>{{ form.name}}</p>
+            <p>{{ form.description}}</p>
           </a>
         </div>
       </div>
@@ -206,15 +207,15 @@
             <div class="box-content text-center">
               <i class="fa fa-file-text-o"></i>
               <p>{{ resource.name}}</p>
-            </div>
-            <div class="quick-details-box">
               <p>{{ resource.description}}</p>
-              <ul class="list-inline">
-                <li><button class="btn btn-sm btn-info btn-circle"><i class="fa fa-times"></i></button></li>
-                <!--<li><button class="btn btn-sm btn-info btn-circle"><i class="fa fa-question"></i></button></li>-->
-                <li><button class="btn btn-sm btn-info btn-circle" ng-click="dc.selectResource(resource)"><i class="fa fa-info"></i></button></li>
-                <li><button class="btn btn-sm btn-info btn-circle" ng-click="dc.editResource(resource)"><i class="fa fa-pencil"></i></button></li>
-              </ul>
+              <div class="quick-details-box">
+                <ul class="list-inline">
+                  <li><button class="btn btn-sm btn-info btn-circle"><i class="fa fa-times"></i></button></li>
+                  <!--<li><button class="btn btn-sm btn-info btn-circle"><i class="fa fa-question"></i></button></li>-->
+                  <li><button class="btn btn-sm btn-info btn-circle" ng-click="dc.selectResource(resource)"><i class="fa fa-info"></i></button></li>
+                  <li><button class="btn btn-sm btn-info btn-circle" ng-click="dc.editResource(resource)"><i class="fa fa-pencil"></i></button></li>
+                </ul>
+              </div>
             </div>
           </div>
         </div>
@@ -235,7 +236,7 @@
                   ng-class="{ selected: dc.isResourceSelected(resource) }"
                   ng-dblclick="dc.editResource(resource)"
                   ng-repeat="(index, resource) in dc.resources">
-                <td><i class="fa fa-folder-o large-icon" aria-hidden="true"></i></td>
+                <td><i class="fa fa-file-text-o large-icon" aria-hidden="true"></i></td>
                 <td><a ng-click="dc.selectResource(resource)">{{ resource.name}}</a></td>
                 <td>{{ resource.createdOn|date:'shortDate' }}</td>
                 <td>{{ resource.lastUpdatedOn|date:'shortDate' }}</td>
