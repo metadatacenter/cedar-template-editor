@@ -7,7 +7,6 @@ define([
   'cedar/template-editor/layout/header.controller',
   'cedar/template-editor/layout/header-mini.controller',
   'cedar/template-editor/layout/header.service',
-  'cedar/template-editor/layout/position-json-tools.directive',
   'cedar/template-editor/layout/switch-navbar.directive',
 ], function(angular) {
   angular.module('cedar.templateEditor.layout', [
@@ -16,7 +15,6 @@ define([
     'cedar.templateEditor.layout.headerController',
     'cedar.templateEditor.layout.headerMiniController',
     'cedar.templateEditor.layout.headerService',
-    'cedar.templateEditor.layout.positionJsonToolsDirective',
     'cedar.templateEditor.layout.switchNavbarDirective'
   ]);
 });
