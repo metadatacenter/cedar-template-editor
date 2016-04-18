@@ -597,7 +597,7 @@ define([
 
     function assignValueConstraintToField() {
       $rootScope.schemaOf(vm.field)._valueConstraints =
-        angular.extend(vm.valueConstraint, $rootScope.schemaOf(vm.field)._valueConstraints)
+        angular.extend($rootScope.schemaOf(vm.field)._valueConstraints, vm.valueConstraint)
 
       delete vm.stageValueConstraintAction;
       vm.stagedOntologyValueConstraints = [];
