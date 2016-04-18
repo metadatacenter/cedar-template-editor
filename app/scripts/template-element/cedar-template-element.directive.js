@@ -279,7 +279,7 @@ define([
 
         delete $rootScope.propertiesOf(scope.element)._tmp;
         scope.$emit("invalidElementState",
-            ["remove", $rootScope.propertiesOf(scope.element)._ui.title, scope.element["@id"]]);
+            ["remove", $rootScope.schemaOf(scope.element)._ui.title, scope.element["@id"]]);
         parseElement();
 
       };
