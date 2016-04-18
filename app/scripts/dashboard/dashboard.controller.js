@@ -144,7 +144,7 @@ define([
     }
 
     function narrowContent() {
-      return vm.showFilters || vm.selectedResource;
+      return vm.showFilters || vm.showResourceInfo;
     }
 
     function selectResource(resource) {
