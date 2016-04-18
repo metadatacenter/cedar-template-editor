@@ -826,7 +826,7 @@ define([
         $scope.showControlledTermsField = (item === 'field') ? !$scope.showControlledTermsField : false;
 
         if ($scope.showControlledTermsValues || $scope.showControlledTermsField || item === 'none') {
-          $rootScope.propertiesOf($scope.field)._ui.is_cardinal_field = false;
+          $rootScope.schemaOf($scope.field)._ui.is_cardinal_field = false;
         }
 
         $scope.setAddedFieldMap();
