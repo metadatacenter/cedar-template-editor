@@ -9274,23 +9274,23 @@ i {
 .controls-bar ul {
   margin-bottom: 0;
 }
-.controls-bar ul > li:hover > ul {
+.controls-bar ul > li:hover > ul.dropnav {
   visibility: visible;
   opacity: 1;
   padding: 20px;
 }
-.controls-bar ul > li > ul {
+.controls-bar ul > li > ul.dropnav {
   visibility: hidden;
   opacity: 0;
   position: absolute;
-  top: 70px;
+  top: 60px;
   right: 30px;
   border: 1px solid #d7d7d7;
   width: 200px;
   background-color: #ffffff;
 }
-.controls-bar ul > li > ul:before,
-.controls-bar ul > li > ul:after,
+.controls-bar ul > li > ul.dropnav:before,
+.controls-bar ul > li > ul.dropnav:after,
 .controls-bar ul > li > li:first-child:after {
   display: block;
   content: '';
@@ -9300,29 +9300,29 @@ i {
   right: 10px;
   border: 7px outset transparent;
 }
-.controls-bar ul > li > ul:before {
+.controls-bar ul > li > ul.dropnav:before {
   border-bottom: 7px solid #d7d7d7;
   top: -14px;
 }
-.controls-bar ul > li > ul > li:first-child:after {
+.controls-bar ul > li > ul.dropnav > li:first-child:after {
   border-bottom: 7px solid #fff;
   top: -13px;
 }
-.controls-bar ul > li > ul:after {
+.controls-bar ul > li > ul.dropnav:after {
   border-bottom: 7px solid #ffffff;
   top: -12px;
 }
-.controls-bar ul > li > ul > li {
+.controls-bar ul > li > ul.dropnav > li {
   padding: 5px 12px;
   font-size: 11px;
   list-style-type: none;
 }
-.controls-bar ul > li > ul > li.sep {
+.controls-bar ul > li > ul.dropnav > li.sep {
   border-top: 1px solid #d7d7d7;
   padding-top: 4px;
   margin-top: 4px;
 }
-.controls-bar ul > li > ul > li a {
+.controls-bar ul > li > ul.dropnav > li a {
   display: block;
   position: relative;
   margin: 0 -13px;
@@ -9332,7 +9332,7 @@ i {
   font-size: 14px;
   font-weight: 600;
 }
-.controls-bar ul > li > ul > li a i {
+.controls-bar ul > li > ul.dropnav > li a i {
   color: #339933;
   margin-right: 15px;
 }
@@ -9508,7 +9508,7 @@ i {
 .all-items-view .push-pull-box.collapsed .fa-caret-up {
   display: none;
 }
-.all-items-view .pull-right {
+.all-items-view .breadcrumbs-sb {
   text-transform: uppercase;
 }
 .all-items-view .populate-form-boxes .form-box {
@@ -9615,7 +9615,8 @@ i {
 }
 .all-items-view .row-offcanvas-left {
   left: 0;
-  overflow: scroll;
+  overflow: hidden;
+  overflow-y: scroll;
 }
 .all-items-view .row-offcanvas-left .filter-options ul.list-unstyled > li {
   border-top: 1px solid #d2d2d2;
@@ -9673,7 +9674,7 @@ i {
   padding: 0;
   background: #eaeaea;
   height: 100%;
-  overflow: scroll;
+  overflow: hidden;
 }
 .all-items-view .add-new {
   position: fixed;

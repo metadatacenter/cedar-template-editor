@@ -25,7 +25,7 @@
       <li ng-show="dc.resourceView != 'list'"><a ng-click="dc.resourceView = 'list'"><i class="fa fa-list-ul graytext"></i></a></li>
       <li class="inline divider-vertical graytext"></li>
       <li><i class="fa fa-ellipsis-v inline graytext"></i>
-        <ul>
+        <ul class="dropnav">
           <li><a href="#n">Settings</a></li>
           <li><a href="#n">Help & Feedback</a></li>
           <li><a href="#n">Profile</a></li>
@@ -134,7 +134,7 @@
         <script type="text/ng-template" id="facet_renderer.html">
           <a href="#"><i class="fa fa-caret-right" aria-hidden="true"></i>{{ node.label }} ({{ node.numberOfMatches }})</a>
           <ul ui-tree-nodes="" ng-model="node.nodes">
-            <li ng-repeat="node in node.nodes" ui-tree-node="" ng-include="'facet_renderer.html'"></li>
+          <li ng-repeat="node in node.nodes" ui-tree-node="" ng-include="'facet_renderer.html'"></li>
           </ul>
         </script>
         <ul class="list-unstyled clearfix">
@@ -191,7 +191,7 @@
   <div class="container" ng-class="{ 'smaller-width': dc.narrowContent() }">
     <div class="row">
       <div class="col-sm-12 clearfix">
-        <div class="pull-right">
+        <div class="breadcrumbs-sb">
           <p><a href="#n" class="breadcrumbs">Home</a> / My Workspace</p>
         </div>
       </div>

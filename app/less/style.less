@@ -212,22 +212,22 @@ i {
   ul {
     margin-bottom: 0;
   }
-  ul > li:hover > ul {
+  ul > li:hover > ul.dropnav {
     visibility: visible;
     opacity: 1;
     padding: 20px;
   }
-  ul > li > ul {
+  ul > li > ul.dropnav {
     visibility: hidden;
     opacity: 0;
     position: absolute;
-    top: 70px;
+    top: 60px;
     right: 30px;
     border: 1px solid #d7d7d7;
     width: 200px;
     background-color: @white;
   }
-  ul > li > ul:before, ul > li > ul:after, ul > li > li:first-child:after {
+  ul > li > ul.dropnav:before, ul > li > ul.dropnav:after, ul > li > li:first-child:after {
     display: block;
     content: '';
     width: 0;
@@ -236,29 +236,29 @@ i {
     right: 10px;
     border: 7px outset transparent;
   }
-  ul > li > ul:before {
+  ul > li > ul.dropnav:before {
     border-bottom: 7px solid #d7d7d7;
     top: -14px;
   }
-  ul > li > ul > li:first-child:after {
+  ul > li > ul.dropnav > li:first-child:after {
     border-bottom: 7px solid #fff;
     top: -13px;
   }
-  ul > li > ul:after {
+  ul > li > ul.dropnav:after {
     border-bottom: 7px solid @white;
     top: -12px;
   }
-  ul > li > ul > li {
+  ul > li > ul.dropnav > li {
     padding: 5px 12px;
     font-size: 11px;
     list-style-type: none;
   }
-  ul > li > ul > li.sep {
+  ul > li > ul.dropnav > li.sep {
     border-top: 1px solid #d7d7d7;
     padding-top: 4px;
     margin-top: 4px;
   }
-  ul > li > ul > li a {
+  ul > li > ul.dropnav > li a {
     display: block;
     position: relative;
     margin: 0 -13px;
@@ -468,7 +468,7 @@ i {
     }
   }
 
-  .pull-right {
+  .breadcrumbs-sb {
     text-transform: uppercase;
   }
   .populate-form-boxes {
@@ -596,7 +596,8 @@ i {
   }
   .row-offcanvas-left {
     left: 0;
-    overflow: scroll;
+    overflow: hidden;
+    overflow-y: scroll;
 
     .filter-options {
       ul.list-unstyled > li {
@@ -657,7 +658,7 @@ i {
     padding: 0;
     background: @graybg;
     height: 100%;
-    overflow: scroll;
+    overflow: hidden;
   }
 
   .add-new {
