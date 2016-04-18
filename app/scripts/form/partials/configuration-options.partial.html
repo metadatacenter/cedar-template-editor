@@ -1,64 +1,265 @@
 <div class="toggle-options">
-  <div  class="toggle-controlled-term">
-    <i ng-if="hasControlledTerms()" class="cedar-svg-controll-term collapsed" data-toggle="modal" data-target="#control-options-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}"></i>
+
+  <!-- field controlled terms -->
+  <div class="toggle-controlled-term" ng-click="toggleControlledTerm('field')">
+    <i class="cedar-svg-controll-term collapsed" id="field-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}"
+        ></i>
+    <label class="controlled-term-label" for="field-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}"
+        translate>Field Types</label>
   </div>
-  <div class="checkbox checkbox-inline checkbox-required">
-    <input type="checkbox" id="required-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}" ng-model="$root.schemaOf(field)._valueConstraints.requiredValue" />
-    <label for="required-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}" translate>GENERIC.Required</label>
-  </div><!-- /.checkbox-inline -->
-  <!--<div class="checkbox checkbox-inline checkbox-advanced">-->
-    <!--<input type="checkbox" id="advanced-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}" data-toggle="collapse" data-target="#advanced-options-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}" />-->
-    <!--<label for="advanced-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}">Advanced</label>-->
-  <!--</div>&lt;!&ndash; /.checkbox-inline &ndash;&gt;-->
+
+  <!-- value controlled terms -->
+  <div class="toggle-controlled-term" ng-show="hasControlledTerms()" ng-click="toggleControlledTerm('values')">
+    <i class="cedar-svg-controll-term collapsed" type="values"
+        id="values-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}"
+        ></i>
+    <label class="controlled-term-label" for="values-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}"
+        translate>Values</label>
+  </div>
+
+
+  <!-- cardinaltiy -->
   <div class="checkbox checkbox-inline checkbox-cardinality">
-    <input type="checkbox" id="cardinality-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}"  ng-model="$root.schemaOf($parent.field)._ui.is_cardinal_field" />
-    <label for="cardinality-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}" translate>GENERIC.Cardinality</label>
-  </div><!-- /.checkbox-inline -->
-  <div class="clearfix"></div>
+    <input type="checkbox" id="cardinality-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}"
+        ng-model="$root.propertiesOf($parent.field)._ui.is_cardinal_field"
+        ng-click="toggleControlledTerm('cardinality')"/>
+    <label for="cardinality-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}"
+        translate>GENERIC.Cardinality</label>
+  </div>
+
+
+  <!-- reequired -->
+  <div class="checkbox checkbox-inline checkbox-required">
+    <input type="checkbox" id="required-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}"
+        ng-model="$root.schemaOf(field)._valueConstraints.requiredValue"/>
+    <label for="required-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}" translate>GENERIC.Required</label>
+  </div>
 
   <!-- Cardinality Options -->
-  <div id="cardinality-options" class="cardinality-options" ng-show="$parent.$root.schemaOf(field)._ui.is_cardinal_field">
+  <div id="cardinality-options" class="cardinality-options"
+      ng-show="$root.schemaOf($parent.field)._ui.is_cardinal_field">
     <div class="form-group validation-pattern pull-left min-items-option">
       <label translate>GENERIC.Min</label>
-      <select class="" ng-model="$parent.field.minItems" title="" ng-options="v.value as v.label for v in $root.minCardinalities" select-picker="">
+      <select class="" ng-model="$parent.field.minItems" title=""
+          ng-options="v.value as v.label for v in $root.minCardinalities" select-picker="">
       </select>
-    </div><!-- /.form-group -->
+    </div>
+    <!-- /.form-group -->
 
     <div class="form-group validation-pattern pull-left max-items-option">
       <label translate>GENERIC.Max</label>
-      <select class="" ng-model="$parent.field.maxItems" ng-options="v.value as v.label for v in $root.maxCardinalities" title="" select-picker="">
+      <select class="" ng-model="$parent.field.maxItems" ng-options="v.value as v.label for v in $root.maxCardinalities"
+          title="" select-picker="">
       </select>
-    </div><!-- /.form-group -->
-  </div><!-- /.cardinality-options -->
+    </div>
+    <!-- /.form-group -->
+  </div>
+</div>
+
+
+<!-- Field Types -->
+<div id="field-type-options" class="cardinality-options" ng-show="showControlledTermsField">
+  <div class="form-group ">
+    <div class="controlled-terms controlled-term-options">
+      <div class="class-container">
+
+        <!-- field type table -->
+        <div>
+
+          <div class="added-field-classes">
+            <div class="class-list-container">
+              <div class="class-list-header">
+                <table class="table table-striped">
+                  <!--<thead>-->
+                  <!--<tr>-->
+                    <!--<th>Name</th>-->
+                    <!--<th>Description</th>-->
+                    <!--<th>Source</th>-->
+                    <!--<th>&nbsp;</th>-->
+                  <!--</tr>-->
+                  <!--</thead>-->
+                </table>
+              </div>
+              <div class="class-list-table">
+                <table class="table table-hover">
+                  <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Source</th>
+                    <th>&nbsp;</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr ng-repeat="key in addedFieldKeys">
+                    <td >
+                      {{getPrefLabel(key)}}
+                    </td>
+                    <td >
+                      {{getClassDescription(key)}}
+                    </td>
+                    <td >
+                      {{parseOntologyName(key)}}
+                    </td>
+                    <td>
+                      <div class="item item-delete" ng-click="deleteFieldAddedItem(key)">
+                        <i class="fa fa-close"></i>
+                      </div>
+                    </td>
+                  </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="clear-save">
+        <button type="button" class="std-button btn search-ontologies-button" data-toggle="modal"
+            data-target="{{'#' + getModalId(true)}}">Search
+        </button>
+        <!--<button type="button" class="std-button btn search-ontologies-button">Create</button>-->
+          </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Values -->
+<div id="value-options" class="cardinality-options" ng-show="showControlledTermsValues">
+  <div class="form-group ">
+    <div class="controlled-terms controlled-term-options">
+
+      <div class="class-container">
+
+        <!-- value table -->
+        <div class="added-value-constraints">
+          <div class="added-value-constraint-container" >
+            <div class="added-value-constraints-header">
+              <table class="table">
+                <!--<thead>-->
+                <!--<tr>-->
+                  <!--<th>Name</th>-->
+                  <!--<th>Description</th>-->
+                  <!--<th>Type</th>-->
+                  <!--<th>Source</th>-->
+                  <!--<th>Values</th>-->
+                  <!--<th>&nbsp;</th>-->
+                <!--</tr>-->
+                <!--</thead>-->
+              </table>
+            </div>
+            <div class="value-contraint-table">
+              <table class="table table-hover">
+                <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Description</th>
+                  <th>Type</th>
+                  <th>Source</th>
+                  <th>Values</th>
+                  <th>&nbsp;</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="class in $root.propertiesOf(field)._valueConstraints.classes">
+                  <td >{{class.prefLabel}}</td>
+                  <td ></td>
+                  <td >Class</td>
+                  <td >
+                    {{class.source.substr(0, class.source.lastIndexOf(')')).substr(class.source.lastIndexOf('(')+1)}}
+                  </td>
+                  <td>&nbsp;</td>
+                  <td>
+                    <div class="item item-delete" ng-click="deleteFieldAddedClass(class)">
+                      <i class="clickable fa fa-close"></i>
+                    </div>
+                  </td>
+                </tr>
+                <tr ng-repeat="valueSet in $root.propertiesOf(field)._valueConstraints.valueSets">
+                  <td >{{valueSet.name}}</td>
+                  <td ></td>
+                  <td >Value Set</td>
+                  <td >{{valueSet.vsCollection.substr(valueSet.vsCollection.lastIndexOf('/') + 1)}}</td>
+                  <td >{{valueSet.numChildren}}</td>
+                  <td>
+                    <div class="item item-delete" ng-click="deleteFieldAddedValueSet(valueSet)">
+                      <i class="clickable fa fa-close"></i>
+                    </div>
+                  </td>
+                </tr>
+                <tr ng-repeat="ontology in $root.propertiesOf(field)._valueConstraints.ontologies">
+                  <td >{{ontology.acronym}}</td>
+                  <td >{{ontology.name}}</td>
+                  <td >Ontology</td>
+                  <td ></td>
+                  <td >{{ontology.numChildren}}</td>
+                  <td>
+                    <div class="item item-delete" ng-click="deleteFieldAddedOntology(ontology)">
+                      <i class="clickable fa fa-close"></i>
+                    </div>
+                  </td>
+                </tr>
+                <tr ng-repeat="branch in $root.propertiesOf(field)._valueConstraints.branches">
+                  <td >{{branch.name}}</td>
+                  <td ></td>
+                  <td >Branch</td>
+                  <td >{{branch.acronym}}</td>
+                  <td ></td>
+                  <td>
+                    <div class="item item-delete" ng-click="deleteFieldAddedBranch(branch)">
+                      <i class="clickable fa fa-close"></i>
+                    </div>
+                  </td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+       <div  class="clear-save">
+        <button type="button" class="std-button btn search-ontologies-button" data-toggle="modal"
+            data-target="{{'#' + getModalId(false)}}">Search
+        </button>
+        <!--<button type="button" class="std-button btn search-ontologies-button">Create</button>-->
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <!-- /.form-group -->
+</div>
+
+
 </div><!-- /.toggle-options -->
-<div id="advanced-options-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}" class="advanced-options collapse">
-  <div class="form-group validation-pattern floating-label-wrapper">
-    <input type="text" class="form-control" placeholder="Expression" aria-label="Advanced - Enter Expression" ng-model="$root.schemaOf(field)._ui.advanced.expression" with-floating-label="" />
-  </div><!-- /.form-group -->
-  <div class="form-group validation-pattern">
-    <select class="form-control" multiple="" data-max-options="1" title="Select validation" ng-model="$root.schemaOf(field)._ui.advanced.condition" select-picker="">
-      <option value="matches">Matches</option>
-      <option value="greater-than">Greater Than</option>
-      <option value="less-than">Less Than</option>
-    </select>
-  </div><!-- /.form-group -->
-  <div class="form-group validation-pattern floating-label-wrapper">
-    <input type="text" class="form-control" placeholder="Pattern" aria-label="Advanced - Enter Pattern" ng-model="$root.schemaOf(field)._ui.advanced.pattern" with-floating-label="" />
-  </div><!-- /.form-group -->
-  <div class="form-group floating-label-wrapper">
-    <input type="text" class="form-control" placeholder="Enter Error Message" aria-label="Advanced - Enter Error Message" ng-model="$root.schemaOf(field)._ui.advanced.error_message" with-floating-label="" />
-  </div><!-- /.form-group -->
-</div><!-- /.advanced-options -->
 
-
-<div class="modal fade controlled-terms-modal" id="control-options-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}">
+<div class="modal fade controlled-terms-modal" id="{{getModalId(true)}}">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"><img src="/img/close_modal.png" width="22" /></span></button>
+        <button type="button" class="close controlled-terms-modal-field-close" data-dismiss="modal"
+            aria-label="Close"><span aria-hidden="true"><img
+            src="/img/close_modal.png" width="22"/></span></button>
       </div>
       <div class="modal-body">
-        <div cedar-control-term field="$parent.$parent.$parent.field"></div>
+        <div cedar-control-term field="field" options='{"filterSelection":"field"}'></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade controlled-terms-modal" id="{{getModalId(false)}}">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close controlled-terms-modal-value-close" data-dismiss="modal"
+            aria-label="Close"><span aria-hidden="true"><img
+            src="/img/close_modal.png" width="22"/></span></button>
+      </div>
+      <div class="modal-body">
+        <div cedar-control-term field="field" options='{"filterSelection":"values"}'></div>
       </div>
     </div>
   </div>

@@ -197,6 +197,7 @@ define([
     var maxCardinalities = DataManipulationService.generateCardinalities(1, 8);
     maxCardinalities.push({value: 0, label: "N"});
 
+
     $rootScope.minCardinalities = minCardinalities;
     $rootScope.maxCardinalities = maxCardinalities;
 
@@ -227,12 +228,14 @@ define([
     // Used here
     $rootScope.sortAutocompleteResults = function (field_id) {
       $rootScope.autocompleteResultsCache[field_id].results.sort(function (a, b) {
-        var labelA = a.label.toLowerCase();
-        var labelB = b.label.toLowerCase();
-        if (labelA < labelB)
-          return -1;
-        if (labelA > labelB)
-          return 1;
+        if (a.label && b.label) {
+          var labelA = a.label.toLowerCase();
+          var labelB = b.label.toLowerCase();
+          if (labelA < labelB)
+            return -1;
+          if (labelA > labelB)
+            return 1;
+        }
         return 0;
       });
     };

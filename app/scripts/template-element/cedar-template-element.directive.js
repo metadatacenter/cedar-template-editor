@@ -2,25 +2,26 @@
 
 define([
   'angular'
-], function(angular) {
+], function (angular) {
   angular.module('cedar.templateEditor.templateElement.cedarTemplateElementDirective', [])
-    .directive('cedarTemplateElement', cedarTemplateElementDirective);
+      .directive('cedarTemplateElement', cedarTemplateElementDirective);
 
-  cedarTemplateElementDirective.$inject = ['$rootScope', 'DataManipulationService', 'DataUtilService', 'SpreadsheetService'];
+  cedarTemplateElementDirective.$inject = ['$rootScope', 'DataManipulationService', 'DataUtilService',
+                                           'SpreadsheetService'];
 
   function cedarTemplateElementDirective($rootScope, DataManipulationService, DataUtilService, SpreadsheetService) {
 
     var directive = {
-      restrict: 'EA',
-      scope: {
-        key:'=',
-        element:'=',
-        delete: '&',
-        model: '=',
+      restrict   : 'EA',
+      scope      : {
+        key          : '=',
+        element      : '=',
+        delete       : '&',
+        model        : '=',
         isRootElement: "="
       },
       templateUrl: 'scripts/template-element/cedar-template-element.directive.html',
-      link: linker
+      link       : linker
     };
 
     return directive;
@@ -28,8 +29,8 @@ define([
     function linker(scope, element, attrs) {
       scope.elementId = DataManipulationService.idOf(scope.element) || DataManipulationService.generateGUID();
 
-      var resetElement = function(el, settings) {
-        angular.forEach(el, function(model, key) {
+      var resetElement = function (el, settings) {
+        angular.forEach(el, function (model, key) {
           if (settings[key] && settings[key].minItems && angular.isArray(model)) {
             model.splice(settings[key].minItems, model.length);
           }
@@ -76,7 +77,7 @@ define([
                 resetElement(model, settings[key]);
               } else {
                 // This case el is an array
-                angular.forEach(model, function(v, k) {
+                angular.forEach(model, function (v, k) {
                   if (k == "_value") {
                     if (angular.isArray(v)) {
                       if ($rootScope.schemaOf(settings)._ui.inputType == "list") {
@@ -125,10 +126,10 @@ define([
         });
       }
 
-      var parseElement = function() {
+      var parseElement = function () {
         if (!$rootScope.isRuntime() && scope.element) {
           if (angular.isArray(scope.model)) {
-            angular.forEach(scope.model, function(m) {
+            angular.forEach(scope.model, function (m) {
               $rootScope.findChildren($rootScope.propertiesOf(scope.element), m);
             });
           } else {
@@ -158,7 +159,7 @@ define([
       }
 
       scope.selectedTab = scope.selectedTab || 0;
-      scope.selectTab = function(index) {
+      scope.selectTab = function (index) {
         scope.selectedTab = index;
       }
 
@@ -174,7 +175,7 @@ define([
         return (p._tmp.nested || false);
       };
 
-      scope.addElement = function() {
+      scope.addElement = function () {
         if ($rootScope.isRuntime()) {
           if ((!scope.element.maxItems || scope.model.length < scope.element.maxItems)) {
             var seed = {};
@@ -197,7 +198,7 @@ define([
         }
       }
 
-      scope.removeElement = function(index) {
+      scope.removeElement = function (index) {
         if (scope.model.length > scope.element.minItems) {
           scope.model.splice(index, 1);
 
@@ -217,13 +218,13 @@ define([
         element.find(".spreadsheetSwitchLink").toggle();
       }
 
-
       scope.removeChild = function(fieldOrElement) {
         // fieldOrElement must contain the schema level
         fieldOrElement = $rootScope.schemaOf(fieldOrElement);
+
         var selectedKey;
         var props = $rootScope.propertiesOf(scope.element);
-        angular.forEach(props, function(value, key) {
+        angular.forEach(props, function (value, key) {
           if (value["@id"] == fieldOrElement["@id"]) {
             selectedKey = key;
           }
@@ -246,43 +247,51 @@ define([
       };
 
       // When user clicks Save button, we will switch element from creating state to completed state
-      scope.add = function() {
-        if (!$rootScope.schemaOf(scope.element)._ui.is_cardinal_field) {
+      scope.add = function () {
+        var p = $rootScope.propertiesOf(scope.element);
+        //if (!p._ui.is_cardinal_field) {
+        //  delete scope.element.minItems;
+        //  delete scope.element.maxItems;
+        //}
+
+        // remove any -1 values
+        if (typeof scope.element.minItems == 'undefined' || scope.element.minItems < 0) {
           delete scope.element.minItems;
+          delete scope.element.maxItems;
+        } else if (scope.element.maxItems < 0) {
           delete scope.element.maxItems;
         }
 
-        // if you have min and max defined, make sure min <= max
-        var minMaxError = (scope.element.minItems && scope.element.maxItems) && (scope.element.minItems > scope.element.maxItems)
-        if (!minMaxError) {
-
-          if (typeof scope.element.minItems == 'undefined') {
-            if (scope.element.items) {
-              DataManipulationService.uncardinalizeField(scope.element);
-            }
-          } else {
-            if (!scope.element.items) {
-              DataManipulationService.cardinalizeField(scope.element);
-            }
-          }
-
-          delete $rootScope.propertiesOf(scope.element)._tmp;
-          scope.$emit("invalidElementState",
-              ["remove", $rootScope.schemaOf(scope.element)._ui.title, scope.element["@id"]]);
-          parseElement();
-        } else {
-          console.log("TODO handle displaying min > max error for elements");
+        // adjust any max < min where max is not 0
+        if (typeof scope.element.minItems != 'undefined' && typeof scope.element.maxItems != 'undefined' && scope.element.maxItems != 0 && scope.element.maxItems < scope.element.minItems) {
+          scope.element.maxItems = 0;
         }
+
+        if (typeof scope.element.minItems == 'undefined') {
+          if (scope.element.items) {
+            DataManipulationService.uncardinalizeField(scope.element);
+          }
+        } else {
+          if (!scope.element.items) {
+            DataManipulationService.cardinalizeField(scope.element);
+          }
+        }
+
+        delete $rootScope.propertiesOf(scope.element)._tmp;
+        scope.$emit("invalidElementState",
+            ["remove", $rootScope.propertiesOf(scope.element)._ui.title, scope.element["@id"]]);
+        parseElement();
+
       };
 
       // When user clicks edit, the element state will be switched to creating;
-      scope.edit = function() {
+      scope.edit = function () {
         var p = $rootScope.propertiesOf(scope.element);
         p._tmp = p._tmp || {};
         p._tmp.state = "creating";
       };
 
-      scope.renameChildKey = function(child, newKey) {
+      scope.renameChildKey = function (child, newKey) {
         if (!child) {
           return;
         }
@@ -296,7 +305,7 @@ define([
           }
 
           newKey = DataManipulationService.getAcceptableKey(p, newKey);
-          angular.forEach(p, function(value, key) {
+          angular.forEach(p, function (value, key) {
             if (!value) {
               return;
             }
@@ -338,15 +347,15 @@ define([
         }
       });
 
-      scope.$watchCollection("element.properties['@context'].properties", function() {
+      scope.$watchCollection("element.properties['@context'].properties", function () {
         parseElement();
       });
 
-      scope.$watchCollection("element.properties", function() {
+      scope.$watchCollection("element.properties", function () {
         parseElement();
       });
 
-      scope.$watchCollection("element.items.properties", function() {
+      scope.$watchCollection("element.items.properties", function () {
         parseElement();
       });
     }
