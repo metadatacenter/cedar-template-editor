@@ -135,7 +135,7 @@
         <script type="text/ng-template" id="facet_renderer.html">
           <a href="#"><i class="fa fa-caret-right" aria-hidden="true"></i>{{ node.label }} ({{ node.numberOfMatches }})</a>
           <ul ui-tree-nodes="" ng-model="node.nodes">
-          <li ng-repeat="node in node.nodes" ui-tree-node="" ng-include="'facet_renderer.html'"></li>
+            <li ng-repeat="node in node.nodes" ui-tree-node="" ng-include="'facet_renderer.html'"></li>
           </ul>
         </script>
         <ul class="list-unstyled clearfix">
@@ -199,7 +199,7 @@
     </div>
     <div class="row populate-form-boxes">
       <div class="grid-view" ng-show="dc.resourceView == 'grid'">
-        <div class="col-md-4 col-sm-6"
+        <div class="col-sm-6"
              ng-class="{ 'col-md-3': !dc.narrowContent(), 'col-md-4': dc.narrowContent(), selected: dc.isResourceSelected(resource) }"
              ng-dblclick="dc.editResource(resource)"
              ng-repeat="(index, resource) in dc.resources">
