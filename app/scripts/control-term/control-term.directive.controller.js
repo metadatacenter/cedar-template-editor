@@ -113,22 +113,28 @@ define([
 
     function addClass(selection, ontology) {
 
-      var ontologyDetails =  controlTermDataService.getOntologyByLdId(selection.source);
-
+      // has this selection been added yet?
       var alreadyAdded = false;
       for(var i = 0, len = vm.addedFieldItems.length; i < len; i+= 1) {
-        if(vm.addedFieldItems[i].prefLabel == selection.prefLabel) {
+        if(vm.addedFieldItems[i]['@id'] == selection['@id']) {
           alreadyAdded = true;
           break;
         }
       }
 
       if(alreadyAdded == false) {
+
+        // do we have info about this ontology?
         if (!ontology.info) {
           ontology.info = {};
           ontology.info.name = ontology.details.ontology.name;
           ontology.info.id = ontology.details.ontology.acronym;
         }
+
+        // get details from the service
+        var ontologyDetails =  controlTermDataService.getOntologyByLdId(ontology.info.id);
+
+        // add this new selection
         vm.addedFieldItems.push({
           prefLabel: selection.prefLabel,
           ontologyDescription: ontology.info.name+" ("+ontology.info.id+")",
@@ -149,18 +155,15 @@ define([
           properties['@type'].oneOf[0].enum = [selfUrl];
           properties['@type'].oneOf[1].items.enum = [selfUrl];
         }
-
-        vm.startOver();
-
-        // TODO broadcast the action for now because parent scope is not working
-        $rootScope.$broadcast('field:controlledTermAdded');
-
-        //$element.parents("#" + vm.modalId).modal({show: false, backdrop: "static"});
-        //$element.parents(".controlled-terms-modal-vm.filterSelector").hide();
-
-      } else {
-        alert(selection.prefLabel+' has already been added.');
       }
+      vm.startOver();
+
+      //$element.parents("#" + vm.modalId).modal({show: false, backdrop: "static"});
+      //$element.parents(".controlled-terms-modal-vm.filterSelector").hide();
+
+      // TODO broadcast the action for now because parent scope is not working
+      $rootScope.$broadcast('field:controlledTermAdded');
+
     }
 
     /**
