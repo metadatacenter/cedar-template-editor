@@ -173,6 +173,19 @@ define([
       vm.resources = data.resources;
     });
 
+    $scope.$watch(
+      function(scope) {
+        return vm.showFilters || vm.showResourceInfo;
+      },
+      function(newVal, oldVal) {
+        if (newVal) {
+          angular.element('#favorites').collapse('hide');
+        } else {
+          angular.element('#favorites').collapse('show');
+        }
+      }
+    );
+
     /**
      * Private functions.
      */
