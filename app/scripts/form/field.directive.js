@@ -9,10 +9,10 @@ define([
   // TODO: refactor to cedarFieldDirective <cedar-field-directive>
 
 
-  fieldDirective.$inject = ["$rootScope", "$sce", "SpreadsheetService", "DataManipulationService", "FieldTypeService",
+  fieldDirective.$inject = ["$rootScope", "$sce", "$document", "SpreadsheetService", "DataManipulationService", "FieldTypeService",
                             "ClientSideValidationService", "controlTermDataService"];
 
-  function fieldDirective($rootScope, $sce, SpreadsheetService, DataManipulationService, FieldTypeService,
+  function fieldDirective($rootScope, $sce, $document, SpreadsheetService, DataManipulationService, FieldTypeService,
                           ClientSideValidationService, controlTermDataService) {
 
     var linker = function ($scope, $element, attrs) {
@@ -802,6 +802,10 @@ define([
         var ontologyDetails = controlTermDataService.getOntologyByLdId(ontology);
       };
 
+      // use the document height as the modal height
+      $scope.getModalHeight = function() {
+        return  "height: " + $document.height() + 'px';
+      };
 
       //TODO this event resets modal state and closes modal
       $scope.$on("field:controlledTermAdded", function () {

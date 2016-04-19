@@ -234,9 +234,9 @@
 
 </div><!-- /.toggle-options -->
 
-<div class="modal fade controlled-terms-modal" id="{{getModalId(true)}}">
+<div class="modal fade controlled-terms-modal" id="{{getModalId(true)}}" data-backdrop="static">
   <div class="modal-dialog">
-    <div class="modal-content">
+    <div class="modal-content" style="{{getModalHeight()}}">
       <div class="modal-header">
         <button type="button" class="close controlled-terms-modal-field-close" data-dismiss="modal"
             aria-label="Close"><span aria-hidden="true"><img
@@ -249,9 +249,9 @@
   </div>
 </div>
 
-<div class="modal fade controlled-terms-modal" id="{{getModalId(false)}}">
+<div class="modal fade controlled-terms-modal" id="{{getModalId(false)}}" data-backdrop="static" >
   <div class="modal-dialog">
-    <div class="modal-content">
+    <div class="modal-content" style="{{getModalHeight()}}">
       <div class="modal-header">
         <button type="button" class="close controlled-terms-modal-value-close" data-dismiss="modal"
             aria-label="Close"><span aria-hidden="true"><img
