@@ -9538,9 +9538,6 @@ i {
 .all-items-view .populate-form-boxes .form-box .quick-details-box {
   display: none;
 }
-.all-items-view .populate-form-boxes .form-box:hover {
-  border: 1px solid #71a69c;
-}
 .all-items-view .populate-form-boxes .form-box:hover .quick-details-box {
   padding: 5px;
   color: #ffffff;
@@ -9560,10 +9557,6 @@ i {
 .all-items-view .populate-form-boxes .form-box:hover .quick-details-box i {
   font-size: 12px;
   margin-bottom: 0;
-}
-.all-items-view .populate-form-boxes .form-box:active,
-.all-items-view .populate-form-boxes .form-box:focus {
-  border: 1px solid #71a69c;
 }
 .all-items-view .populate-form-boxes .list-view thead th {
   text-transform: uppercase;
