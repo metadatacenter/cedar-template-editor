@@ -10,6 +10,12 @@
   "title": "",
   "description": "",
   "_ui": {
+    "title": "",
+    "description": "",
+    "inputType": null
+  },
+  "_valueConstraints": {
+    "requiredValue": false
   },
   "properties": {
     "@type": {
@@ -28,14 +34,6 @@
           "uniqueItems": true
         }
       ]
-    },
-    "_ui": {
-      "title": "",
-      "description": "",
-      "inputType": null
-    },
-    "_valueConstraints": {
-      "requiredValue": false
     },
     "_value": {
       "type": null

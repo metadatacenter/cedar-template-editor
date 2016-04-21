@@ -1,16 +1,16 @@
 <div class="fields fields-date">
   <div ng-if="$root.isArray(model)" class="field field-date" ng-repeat="valueElement in model">
     <!-- {{field}} -->
-    <p class="date-field-title">{{$root.propertiesOf(field)._ui.title}}</p>
+    <p class="date-field-title">{{$root.schemaOf(field)._ui.title}}</p>
 
     <div class="form-group date-group floating-label-wrapper"
-        ng-if="$root.propertiesOf(field)._ui.dateType == 'single-date'">
+        ng-if="$root.schemaOf(field)._ui.dateType == 'single-date'">
       <!--<span class="date-label">Select a date</span>-->
       <div class='input-group' date-time-picker>
         <input type="text"
             class="form-control"
-            ng-class="{'required': $root.propertiesOf(field)._valueConstraints.requiredValue}"
-            placeholder="{{$root.propertiesOf(field)._ui.title}} ( MM / DD / YYYY )"
+            ng-class="{'required': $root.schemaOf(field)._valueConstraints.requiredValue}"
+            placeholder="{{$root.schemaOf(field)._ui.title}} ( MM / DD / YYYY )"
             aria-label="Select a date"
             ng-model="valueElement._value"
             ng-disabled="!$root.isRuntime() || preview"
@@ -23,13 +23,13 @@
     <!-- /.form-group -->
 
     <div class="form-group date-group range floating-label-wrapper"
-        ng-if="$root.propertiesOf(field)._ui.dateType == 'date-range'">
+        ng-if="$root.schemaOf(field)._ui.dateType == 'date-range'">
       <span class="date-label">Select a date range</span>
 
       <div class='input-group' date-time-picker>
         <input type="text"
             class="form-control"
-            ng-class="{'required': $root.propertiesOf(field)._valueConstraints.requiredValue}"
+            ng-class="{'required': $root.schemaOf(field)._valueConstraints.requiredValue}"
             placeholder="MM / DD / YYYY"
             aria-label="Select a start date"
             ng-model="valueElement._value.start"
@@ -42,7 +42,7 @@
       <div class='input-group' date-time-picker>
         <input type="text"
             class="form-control"
-            ng-class="{'required': $root.propertiesOf(field)._valueConstraints.requiredValue}"
+            ng-class="{'required': $root.schemaOf(field)._valueConstraints.requiredValue}"
             placeholder="MM / DD / YYYY"
             aria-label="Select a end date"
             ng-model="valueElement._value.end"
@@ -62,15 +62,15 @@
 
   <div ng-if="$root.isArray(model) && model.length == 0 && !$root.isRuntime()" class="field field-date">
     <!-- {{field}} -->
-    <p class="date-field-title">{{$root.propertiesOf(field)._ui.title}}</p>
+    <p class="date-field-title">{{$root.schemaOf(field)._ui.title}}</p>
 
     <div class="form-group date-group floating-label-wrapper"
-        ng-if="$root.propertiesOf(field)._ui.dateType == 'single-date'">
+        ng-if="$root.schemaOf(field)._ui.dateType == 'single-date'">
       <!--<span class="date-label">Select a date</span>-->
       <div class='input-group' date-time-picker>
         <input type="text"
             class="form-control"
-            ng-class="{'required': $root.propertiesOf(field)._valueConstraints.requiredValue}"
+            ng-class="{'required': $root.schemaOf(field)._valueConstraints.requiredValue}"
             placeholder="MM / DD / YYYY"
             aria-label="Select a date"
             ng-model="model._value"
@@ -83,13 +83,13 @@
     </div>
 
     <div class="form-group date-group range floating-label-wrapper"
-        ng-if="$root.propertiesOf(field)._ui.dateType == 'date-range'">
+        ng-if="$root.schemaOf(field)._ui.dateType == 'date-range'">
       <span class="date-label">Select a date range</span>
 
       <div class='input-group' date-time-picker="">
         <input type="text"
             class="form-control"
-            ng-class="{'required': $root.propertiesOf(field)._valueConstraints.requiredValue}"
+            ng-class="{'required': $root.schemaOf(field)._valueConstraints.requiredValue}"
             placeholder="MM / DD / YYYY"
             aria-label="Select a start date"
             ng-model="model._value.start"
@@ -102,7 +102,7 @@
       <div class='input-group' date-time-picker="">
         <input type="text"
             class="form-control"
-            ng-class="{'required': $root.propertiesOf(field)._valueConstraints.requiredValue}"
+            ng-class="{'required': $root.schemaOf(field)._valueConstraints.requiredValue}"
             placeholder="MM / DD / YYYY"
             aria-label="Select a end date"
             ng-model="model._value.end"
@@ -119,15 +119,15 @@
 
 
   <div ng-if="!$root.isArray(model)" class="field field-date">
-    <p class="date-field-title">{{$root.propertiesOf(field)._ui.title}}</p>
+    <p class="date-field-title">{{$root.schemaOf(field)._ui.title}}</p>
 
     <div class="form-group date-group floating-label-wrapper"
-        ng-if="$root.propertiesOf(field)._ui.dateType == 'single-date'">
+        ng-if="$root.schemaOf(field)._ui.dateType == 'single-date'">
       <!--<span class="date-label">Select a date</span>-->
       <div class='input-group' date-time-picker>
         <input type="text"
             class="form-control"
-            ng-class="{'required': $root.propertiesOf(field)._valueConstraints.requiredValue}"
+            ng-class="{'required': $root.schemaOf(field)._valueConstraints.requiredValue}"
             placeholder="MM / DD / YYYY"
             aria-label="Select a date"
             ng-model="model._value"
@@ -141,13 +141,13 @@
     <!-- /.form-group -->
 
     <div class="form-group date-group range floating-label-wrapper"
-        ng-if="$root.propertiesOf(field)._ui.dateType == 'date-range'">
+        ng-if="$root.schemaOf(field)._ui.dateType == 'date-range'">
       <span class="date-label">Select a date range</span>
 
       <div class='input-group' date-time-picker="">
         <input type="text"
             class="form-control"
-            ng-class="{'required': $root.propertiesOf(field)._valueConstraints.requiredValue}"
+            ng-class="{'required': $root.schemaOf(field)._valueConstraints.requiredValue}"
             placeholder="MM / DD / YYYY"
             aria-label="Select a start date"
             ng-model="model._value.start"
@@ -160,7 +160,7 @@
       <div class='input-group' date-time-picker="">
         <input type="text"
             class="form-control"
-            ng-class="{'required': $root.propertiesOf(field)._valueConstraints.requiredValue}"
+            ng-class="{'required': $root.schemaOf(field)._valueConstraints.requiredValue}"
             placeholder="MM / DD / YYYY"
             aria-label="Select a end date"
             ng-model="model._value.end"

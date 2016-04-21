@@ -1,5 +1,5 @@
-<div class="controlled-terms controlled-term-options" >
 
+<div class="controlled-terms controlled-term-options" >
 
   <div class="form-group floating-label-wrapper field-filter clearfix" ng-if="ctdc.filterSelection == 'field'">
 
@@ -23,7 +23,7 @@
       <div class="class-action table-style" ng-if="ctdc.selectedClass2.prefLabel && ctdc.selectedClass2['@id'] != ctdc.selectedClass1['@id'] && ctdc.classDetails">
         <span class="table-cell-style text-left">{{ctdc.selectedClass2.prefLabel}}</span>
         <span class="table-cell-style text-right">
-          <button class="btn btn-add-term add-btn-margin" ng-click="ctdc.addClass(ctdc.selectedClass2, ctdc.currentOntology; ctdc.startOver()">Add</button>
+          <button class="btn btn-add-term add-btn-margin" ng-click="ctdc.addClass(ctdc.selectedClass2, ctdc.currentOntology); ctdc.startOver()">Add</button>
         </span>
       </div>
     </div>

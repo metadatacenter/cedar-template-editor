@@ -1,18 +1,18 @@
 <div class="fields fields-checkbox">
   <div ng-if="$root.isArray(model) " class="form-group  floating-label-wrapper ng-scope"
-      ng-class="{'required': $root.propertiesOf(field)._valueConstraints.requiredValue}"
+      ng-class="{'required': $root.schemaOf(field)._valueConstraints.requiredValue}"
       ng-repeat="valueElement in model">
     <div class="form-group field-wrapper-checkbox  ">
-      <p class="extra-label-context">{{$root.propertiesOf(field)._ui.title}}</p>
+      <p class="extra-label-context">{{$root.schemaOf(field)._ui.title}}</p>
 
-      <div class=" checkbox-item" ng-repeat="(index, value) in $root.propertiesOf(field)._ui.options">
+      <div class=" checkbox-item" ng-repeat="(index, value) in $root.schemaOf(field)._ui.options">
         <div class="checkbox checkbox-primary">
           <input type="checkbox"
               id="checkbox-{{uuid}}-{{$parent.$index}}-{{index}}"
               ng-model="valueElement._value[value.text]"
               ng-disabled="!$root.isRuntime() || preview"
               ng-checked="valueElement._value[value.text]"/>
-          <label for="checkbox-{{uuid}}-{{$parent.$index}}-{{index}}">{{$root.propertiesOf(field)._ui.options[index]['text']}}</label>
+          <label for="checkbox-{{uuid}}-{{$parent.$index}}-{{index}}">{{$root.schemaOf(field)._ui.options[index]['text']}}</label>
 
         </div>
         <!-- ./checkbox -->
@@ -29,18 +29,18 @@
 
   <div ng-if="$root.isArray(model) && model.length == 0 && !$root.isRuntime()"
       class="form-group  floating-label-wrapper ng-scope"
-      ng-class="{'required': $root.propertiesOf(field)._valueConstraints.requiredValue}">
+      ng-class="{'required': $root.schemaOf(field)._valueConstraints.requiredValue}">
     <div class="form-group field-wrapper-checkbox  ">
-      <p class="extra-label-context">{{$root.propertiesOf(field)._ui.title}}</p>
+      <p class="extra-label-context">{{$root.schemaOf(field)._ui.title}}</p>
 
-      <div class="form-group checkbox-item" ng-repeat="(index, value) in $root.propertiesOf(field)._ui.options">
+      <div class="form-group checkbox-item" ng-repeat="(index, value) in $root.schemaOf(field)._ui.options">
         <div class="checkbox checkbox-primary">
           <input type="checkbox"
               id="checkbox-{{uuid}}-{{$parent.$index}}-{{index}}"
               ng-model="model._value[value.text]"
               ng-disabled="true"
               ng-checked="model._value[value.text]"/>
-          <label for="checkbox-{{uuid}}-{{$parent.$index}}-{{index}}">{{$root.propertiesOf(field)._ui.options[index]['text']}}</label>
+          <label for="checkbox-{{uuid}}-{{$parent.$index}}-{{index}}">{{$root.schemaOf(field)._ui.options[index]['text']}}</label>
         </div>
         <!-- ./checkbox -->
       </div>
@@ -53,19 +53,19 @@
   </div>
 
   <div ng-if="!$root.isArray(model)" class="form-group floating-label-wrapper ng-scope"
-      ng-class="{'required': $root.propertiesOf(field)._valueConstraints.requiredValue}">
+      ng-class="{'required': $root.schemaOf(field)._valueConstraints.requiredValue}">
     <div class="form-group field-wrapper-checkbox  ">
 
-      <p class="extra-label-context">{{$root.propertiesOf(field)._ui.title}}</p>
+      <p class="extra-label-context">{{$root.schemaOf(field)._ui.title}}</p>
 
-      <div class="checkbox-item" ng-repeat="(index, value) in $root.propertiesOf(field)._ui.options">
+      <div class="checkbox-item" ng-repeat="(index, value) in $root.schemaOf(field)._ui.options">
         <div class="checkbox checkbox-primary">
           <input type="checkbox"
               id="checkbox-{{uuid}}-{{$parent.$index}}-{{index}}"
               ng-model="model._value[value.text]"
               ng-disabled="!$root.isRuntime() || preview"
               ng-checked="model._value[value.text]"/>
-          <label for="checkbox-{{uuid}}-{{$parent.$index}}-{{index}}">{{$root.propertiesOf(field)._ui.options[index]['text']}}</label>
+          <label for="checkbox-{{uuid}}-{{$parent.$index}}-{{index}}">{{$root.schemaOf(field)._ui.options[index]['text']}}</label>
 
         </div>
         <!-- ./checkbox -->

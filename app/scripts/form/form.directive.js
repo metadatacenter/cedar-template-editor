@@ -55,8 +55,8 @@ define([
             angular.forEach($scope.form._ui.order, function (field, index) {
               // If item added is of type Page Break, jump into next page array for storage of following fields
               if ($scope.form.properties[field].properties &&
-                  $scope.form.properties[field].properties._ui &&
-                  $scope.form.properties[field].properties._ui.inputType == 'page-break') {
+                  $scope.form.properties[field]._ui &&
+                  $scope.form.properties[field]._ui.inputType == 'page-break') {
                 dimension++;
               }
               // Push field key into page array
@@ -72,7 +72,7 @@ define([
           var selectedKey;
           var props = $scope.form.properties;
           angular.forEach(props, function (value, key) {
-            if (value["@id"] == fieldOrElement["@id"]) {
+            if ($rootScope.schemaOf(value)["@id"] == $rootScope.schemaOf(fieldOrElement)["@id"]) {
               selectedKey = key;
             }
           });
@@ -85,10 +85,10 @@ define([
 
             if ($rootScope.isElement(fieldOrElement)) {
               $scope.$emit("invalidElementState",
-                  ["remove", $rootScope.propertiesOf(fieldOrElement)._ui.title, fieldOrElement["@id"]]);
+                  ["remove", $rootScope.schemaOf(fieldOrElement)._ui.title, $rootScope.schemaOf(fieldOrElement)["@id"]]);
             } else {
               $scope.$emit("invalidFieldState",
-                  ["remove", $rootScope.propertiesOf(fieldOrElement)._ui.title, fieldOrElement["@id"]]);
+                  ["remove", $rootScope.schemaOf(fieldOrElement)._ui.title, $rootScope.schemaOf(fieldOrElement)["@id"]]);
             }
           }
         };
@@ -212,8 +212,8 @@ define([
             }
 
             if (!DataUtilService.isSpecialKey(name)) {
-              // We can tell we've reached an element level by its 'order' property
-              if (value._ui && value._ui.order) {
+              // We can tell we've reached an element level by its '@type' property
+              if ($rootScope.schemaOf(value)['@type'] == 'https://schema.metadatacenter.org/core/TemplateElement') {
                 var min = value.minItems || 0;
 
                 // Handle position and nesting within $scope.model if it does not exist

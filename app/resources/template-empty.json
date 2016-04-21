@@ -11,6 +11,8 @@
   "title": "",
   "description": "",
   "_ui": {
+    "title": "",
+    "description": "",
     "pages": []
   },
   "properties": {
@@ -51,10 +53,6 @@
     "_templateId": {
       "type": "string",
       "format": "uri"
-    },
-    "_ui": {
-      "title": "",
-      "description": ""
     }
   },
   "required": [

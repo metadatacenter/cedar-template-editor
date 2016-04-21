@@ -72,7 +72,7 @@ define([
             newElement.maxItems = 1;
             $scope.staging[newElement['@id']] = newElement;
             $timeout(function () {
-              var fieldName = DataManipulationService.getFieldName(newElement.properties._ui.title);
+              var fieldName = DataManipulationService.getFieldName(newElement._ui.title);
               $scope.previewForm.properties = {};
               $scope.previewForm.properties[fieldName] = newElement;
             });
@@ -95,7 +95,7 @@ define([
       var optionInputs = ["radio", "checkbox", "list"];
 
       if (optionInputs.indexOf(fieldType) > -1) {
-        field.properties._ui.options = [
+        field._ui.options = [
           {
             "text": ""
           }
@@ -116,7 +116,7 @@ define([
 
       var optionInputs = ["radio", "checkbox", "list"];
       if (optionInputs.indexOf(fieldType) > -1) {
-        field.properties._ui.options = [
+        field._ui.options = [
           {
             "text": ""
           }
@@ -157,7 +157,7 @@ define([
             elProperties._tmp.state = "creating";
 
             // Converting title for irregular character handling
-            var elName = DataManipulationService.getFieldName(DataManipulationService.getFieldProperties(clonedElement)._ui.title);
+            var elName = DataManipulationService.getFieldName(clonedElement._ui.title);
             elName = DataManipulationService.getAcceptableKey(form.properties, elName);
 
             // Adding corresponding property type to @context
@@ -191,7 +191,7 @@ define([
 
       var optionInputs = ["radio", "checkbox", "list"];
       if (optionInputs.indexOf(fieldType) > -1) {
-        field.properties._ui.options = [
+        field._ui.options = [
           {
             "text": ""
           }
@@ -225,7 +225,7 @@ define([
             elProperties._tmp = elProperties._tmp || {};
             elProperties._tmp.state = "creating";
 
-            var elName = DataManipulationService.getFieldName(DataManipulationService.getFieldProperties(el)._ui.title);
+            var elName = DataManipulationService.getFieldName(el._ui.title);
             elName = DataManipulationService.getAcceptableKey(element.properties, elName);
 
             element.properties["@context"].properties[elName] = DataManipulationService.generateFieldContextProperties(elName);
@@ -247,13 +247,13 @@ define([
     // Add newly configured field to the the $scope.form or $scope.element
     service.addFieldToScopeAndStaging = function ($scope, targetObject, field) {
       // Setting return value from $scope.checkFieldConditions to array which will display error messages if any
-      $scope.stagingErrorMessages = ClientSideValidationService.checkFieldConditions(field.properties);
+      $scope.stagingErrorMessages = ClientSideValidationService.checkFieldConditions(field);
       $scope.stagingErrorMessages = jQuery.merge($scope.stagingErrorMessages,
           ClientSideValidationService.checkFieldCardinalityOptions(field));
 
       if ($scope.stagingErrorMessages.length == 0) {
         // Converting title for irregular character handling
-        var fieldName = DataManipulationService.getFieldName(field.properties._ui.title);
+        var fieldName = DataManipulationService.getFieldName($rootScope.schemaOf(field)._ui.title);
         // Adding corresponding property type to @context
         targetObject.properties["@context"].properties[fieldName] = DataManipulationService.generateFieldContextProperties(
             fieldName);

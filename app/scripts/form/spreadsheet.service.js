@@ -6,9 +6,9 @@ define([
   angular.module('cedar.templateEditor.form.spreadsheetService', [])
       .service('SpreadsheetService', SpreadsheetService);
 
-  SpreadsheetService.$inject = ['$filter'];
+  SpreadsheetService.$inject = ['$rootScope', '$filter'];
 
-  function SpreadsheetService($filter) {
+  function SpreadsheetService($rootScope, $filter) {
     return {
       serviceId: "SpreadsheetService",
 
@@ -85,7 +85,7 @@ define([
         if (context.isField()) {
           headerOrder.push('value');
         } else {
-          var itemOrder = scopeElement._ui.order;
+          var itemOrder = $rootScope.schemaOf(scopeElement)._ui.order;
           for (var i in itemOrder) {
             headerOrder.push(itemOrder[i]);
           }
@@ -130,7 +130,7 @@ define([
             var items = field.items;
             if (items != null && items.hasOwnProperty('properties')) {
 
-              var _ui = field.items.properties._ui;
+              var _ui = field.items._ui;
               var inputType = _ui.inputType;
 
               if (inputType == 'date') {

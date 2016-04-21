@@ -1,10 +1,10 @@
 <div id="image-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}" class="input-type-container">
   <p class="type-label"><i class="cedar-svg-image"></i>&nbsp;Image</p>
   <div class="form-group floating-label-wrapper">
-    <input type="text" class="form-control" id="image-name-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}" placeholder="Image Name (Optional)" aria-label="Image Name (Optional)" ng-model="$root.propertiesOf(field)._ui.title"  with-floating-label>
+    <input type="text" class="form-control" id="image-name-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}" placeholder="Image Name (Optional)" aria-label="Image Name (Optional)" ng-model="$root.schemaOf(field)._ui.title"  with-floating-label>
   </div><!-- /.form-group -->
   <div class="form-group floating-label-wrapper">
-    <input type="text" class="form-control" id="image-description-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}" placeholder="Image Description (Optional)" aria-label="Image Description (Optional)" ng-model="$root.propertiesOf(field)._ui.description"  with-floating-label>
+    <input type="text" class="form-control" id="image-description-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}" placeholder="Image Description (Optional)" aria-label="Image Description (Optional)" ng-model="$root.schemaOf(field)._ui.description"  with-floating-label>
   </div><!-- /.form-group -->
   <div class="form-group floating-label-wrapper">
     <input type="text" class="form-control" id="image-description-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}" placeholder="Image URL" aria-label="Image URL" ng-model="$root.propertiesOf(field)._content"  with-floating-label>

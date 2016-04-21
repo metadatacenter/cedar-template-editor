@@ -164,11 +164,11 @@ define([
       $scope.templateErrorMessages = [];
       $scope.templateSuccessMessages = [];
       // If Template Name is blank, produce error message
-      if (!$scope.form.properties._ui.title.length) {
+      if (!$scope.form._ui.title.length) {
         $scope.templateErrorMessages.push($translate.instant("VALIDATION.templateNameEmpty"));
       }
       // If Template Description is blank, produce error message
-      if (!$scope.form.properties._ui.description.length) {
+      if (!$scope.form._ui.description.length) {
         $scope.templateErrorMessages.push($translate.instant("VALIDATION.templateDescriptionEmpty"));
       }
       // If there are no Template level error messages
@@ -202,7 +202,7 @@ define([
               function (response) {
                 $scope.form = response.data;
                 UIMessageService.flashSuccess('SERVER.TEMPLATE.update.success',
-                    {"title": response.data.properties._ui.title}, 'GENERIC.Updated');
+                    {"title": response.data._ui.title}, 'GENERIC.Updated');
               },
               function (err) {
                 UIMessageService.showBackendError('SERVER.TEMPLATE.update.error', err);
@@ -231,10 +231,10 @@ define([
       }
     });
 
-    // This function watches for changes in the properties._ui.title field and autogenerates the schema title and description fields
-    $scope.$watch('form.properties._ui.title', function (v) {
+    // This function watches for changes in the _ui.title field and autogenerates the schema title and description fields
+    $scope.$watch('form._ui.title', function (v) {
       if (!angular.isUndefined($scope.form)) {
-        var title = $scope.form.properties._ui.title;
+        var title = $scope.form._ui.title;
         if (title.length > 0) {
           var capitalizedTitle = $filter('capitalizeFirst')(title);
           $scope.form.title = $translate.instant("GENERATEDVALUE.templateTitle", {title: capitalizedTitle});

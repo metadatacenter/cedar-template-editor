@@ -596,9 +596,9 @@ define([
      */
 
     function assignValueConstraintToField() {
+      $rootScope.schemaOf(vm.field)._valueConstraints =
+        angular.extend($rootScope.schemaOf(vm.field)._valueConstraints, vm.valueConstraint)
 
-      $rootScope.propertiesOf(vm.field)._valueConstraints =
-        angular.extend(vm.valueConstraint, $rootScope.propertiesOf(vm.field)._valueConstraints)
       delete vm.stageValueConstraintAction;
       vm.stagedOntologyValueConstraints = [];
       vm.stagedOntologyClassValueConstraints = [];
@@ -614,9 +614,7 @@ define([
 
     function setInitialFieldConstraints() {
       if (vm.field) {
-        var properties = $rootScope.propertiesOf(vm.field);
-
-        vm.valueConstraint = angular.copy(properties._valueConstraints) || {};
+        vm.valueConstraint = angular.copy($rootScope.schemaOf(vm.field)._valueConstraints) || {};
         vm.valueConstraint.ontologies = vm.valueConstraint.ontologies || [];
         vm.valueConstraint.valueSets = vm.valueConstraint.valueSets || [];
         vm.valueConstraint.classes = vm.valueConstraint.classes || [];

@@ -13,8 +13,8 @@
 					<div class="template-item" ng-repeat="template in defaultTemplates" cedar-resize-square="true" style="height:213px">
                         <cedar-box
                                 type="{{CONST.boxType.TEMPLATE}}"
-                                description="{{template.properties._ui.description}}"
-                                title="{{template.properties._ui.title}}"
+                                description="{{template._ui.description}}"
+                                title="{{template._ui.title}}"
                                 object-id="{{template['@id']}}"
                                 allow-remove="true"
                                 >
@@ -36,8 +36,8 @@
 					<div class="template-item" ng-repeat="element in defaultElements" cedar-resize-square="true" style="height:213px">
                         <cedar-box
                                 type="{{CONST.boxType.ELEMENT}}"
-                                description="{{element.properties._ui.description}}"
-                                title="{{element.properties._ui.title}}"
+                                description="{{element._ui.description}}"
+                                title="{{element._ui.title}}"
                                 object-id="{{element['@id']}}"
                                 allow-remove="true"
                                 >
@@ -60,7 +60,7 @@
 					<div class="template-item" ng-repeat="instance in defaultInstances" cedar-resize-square="true" style="height:213px">
                         <cedar-box
                                 type="{{CONST.boxType.INSTANCE}}"
-                                description="{{instance._ui.templateDescription}}&lt;br/&gt;{{'(' + (instance._ui.creationDate | date:'short') + ')'}}"
+                                description="{{instance._ui.templateDescription}}&lt;br/&gt;{{'(' + (instance['pav:createdOn'] | date:'short') + ')'}}"
                                 title="{{instance._ui.templateTitle}}"
                                 object-id="{{instance['@id']}}"
                                 allow-remove="true"
