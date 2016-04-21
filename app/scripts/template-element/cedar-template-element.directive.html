@@ -1,26 +1,57 @@
 <div ng-if="model !== undefined" class="element-root" id="{{$root.getDomId(element)}}">
-  <div>
-    <div class="element-header" ng-class="{'sortable-handler': !$root.isRuntime()}">
-      <a ng-click="switchExpandedState()" class="visibilitySwitch"><i class="cedar-svg-collapse"></i></a>
-      <a ng-click="switchExpandedState()" class="visibilitySwitch" style="display:none;"><i
-          class="cedar-svg-expand"></i></a>
 
-      <p class="element-name-label">
-        <span ng-class="{'sortable-icon': !$root.isRuntime()}"></span><i class="cedar-svg-element"></i>{{$root.schemaOf(element)._ui.title}}
-      </p>
-      <span class="multiple-instance-cardinality" ng-show="!$root.isRuntime() && $root.elementIsMultiInstance(element)">
-        {{element.minItems}} .. {{element.maxItems || "Unlimited"}}
-      </span>
 
-      <div ng-if="!isRootElement" class="preview-edit-options" id="previewEditOptionOfElement"
-          ng-include="'scripts/form/partials/preview-edit-options.partial.html'"></div>
-      <span ng-show="$root.isArray(model) && $root.applicationMode == 'runtime'" class="spreadsheetSwitch element">
-        <a ng-click="switchToSpreadsheet()" class="spreadsheetSwitchLink">
-          <i class="cedar-svg-spreadsheet"></i>
-        </a>
-      </span>
+  <div class="element-header input-type-container" ng-class="{'sortable-handler': !$root.isRuntime()}">
+
+    <div class="row" style="position:relative; margin-left:5px"
+        ng-if="!$root.isRuntime() && !isNested() && !isRootElement && !ngDisabled && !preview">
+
+      <div class="configuration-options col-lg-3 pull-left type-label"><p class="type-label">
+        <a ng-click="switchExpandedState()" class="visibilitySwitch"><i class="cedar-svg-collapse"></i></a>
+        <a ng-click="switchExpandedState()" class="visibilitySwitch" style="display:none;"><i
+            class="cedar-svg-expand"></i></a>
+        <i class="cedar-svg-element"></i>{{$root.schemaOf(element)._ui.title}}</p>
+      </div>
+
+      <div class="configuration-options col-lg-3 pull-right"
+          ng-if="$root.propertiesOf(element)._tmp.state == 'creating'">
+        <div class="toggle-options">
+          <div class="save-options">
+            <div class="add" ng-click="add()" ng-if="$root.propertiesOf(element)._tmp.state == 'creating'">
+              <i class="fa fa-plus"></i>
+            </div>
+            <div class="remove" ng-click="delete()">
+              <i class="fa fa-times"></i>
+            </div>
+          </div>
+          <!-- /.save-options -->
+          <div class="clearfix"></div>
+        </div>
+      </div>
+      <div class="preview-edit-options col-lg-3 pull-right" style="padding-top:10px"
+          ng-if="$root.propertiesOf(element)._tmp.state != 'creating'">
+        <div class="toggle-options">
+          <div class="save-options">
+            <div class="edit" ng-click="edit()" ng-if="$root.propertiesOf(element)._tmp.state != 'creating'">
+              <i class="fa fa-pencil" style="transform: translate(6px, 1px);"></i>
+            </div>
+            <div class="remove" ng-click="delete()">
+              <i class="fa fa-times"></i>
+            </div>
+          </div>
+          <!-- /.save-options -->
+          <div class="clearfix"></div>
+        </div>
+      </div>
+
+      <div class="configuration-options col-lg-1 centered " style="float: none;margin: 0 auto;">
+        <div class="sortable-handler " style="padding-top:5px" ng-if="!preview && !$root.isRuntime()"><span
+            class="sortable-icon"></span></div>
+      </div>
+
     </div>
   </div>
+
 
   <div class="elementTotalContent visible">
 
@@ -59,7 +90,7 @@
       <!-- have an array with at least one element -->
       <div ng-if="$root.isArray(model) && selectedTab == $index" class="element" ng-repeat="m in model"
           ng-class="['element-{{$index}}']">
-        <div class="remove-element pull-right">
+        <div class="remove-element pull-right" ng-if="$rootScope.isRuntime()">
           <a class="" ng-show="model.length > element.minItems" ng-click="removeElement($index)" translate>GENERIC.Remove</a>
         </div>
 
@@ -114,21 +145,13 @@
       </div>
 
       <div class="input-type-container"
-          ng-if="!$root.isRuntime() && !isRootElement && $root.propertiesOf(element)._tmp.state == 'creating'">
+          ng-if="!$root.isRuntime() && !isRootElement && !isNested() && $root.propertiesOf(element)._tmp.state == 'creating'">
         <div class="row">
           <div class="configuration-options element-configuration-options col-lg-9 pull-left">
-            <div class="checkbox checkbox-inline checkbox-cardinality">
-              <input type="checkbox" id="cardinality-{{element['@id'].substring(element['@id'].lastIndexOf('/')+1)}}"
-                  ng-model="$root.schemaOf(element)._ui.is_cardinal_field"/>
-              <label
-                  for="cardinality-{{element['@id'].substring(element['@id'].lastIndexOf('/')+1)}}">Cardinality</label>
-            </div>
-            <!-- /.checkbox-inline -->
-            <div class="clearfix"></div>
 
             <!-- Cardinality Options -->
-            <div id="cardinality-options" class="cardinality-options"
-                ng-show="$root.schemaOf(element)._ui.is_cardinal_field">
+            <div id="cardinality-options" class="cardinality-options" style="margin-left: 15px;"
+                ng-show="true">
               <div class="form-group validation-pattern pull-left min-items-option">
                 <label>Min:</label>
                 <select class=""
@@ -153,8 +176,7 @@
             </div>
             <!-- /.cardinality-options -->
           </div>
-          <div class="configuration-options col-lg-3 pull-right configuration-actions"
-              ng-include="'scripts/form/partials/staging-area-actions.partial.html'"></div>
+
           <div class="clearfix"></div>
         </div>
       </div>

@@ -1,7 +1,6 @@
 <div class="fields fields-numeric">
   <div ng-if="$root.isArray(model)" class="form-group floating-label-wrapper" ng-repeat="valueElement in model">
-    <!--<p class="extra-label-context" ng-if="!$root.isRuntime() && $root.schemaOf(field)._ui.title">-->
-      <!--{{$root.schemaOf(field)._ui.title}}</p>-->
+
     <input type="number"
         class="form-control"
         ng-class="{'required': $root.schemaOf(field)._valueConstraints.requiredValue}"
@@ -28,8 +27,7 @@
   <div ng-if="$root.isArray(model) && model.length == 0 && !$root.isRuntime()"
       class="form-group floating-label-wrapper">
 
-    <p class="extra-label-context" ng-if="preview && $root.schemaOf(field)._ui.title">
-      {{$root.schemaOf(field)._ui.title}}</p>
+
     <input type="number"
         class="form-control"
         ng-class="{'required': $root.schemaOf(field)._valueConstraints.requiredValue}"

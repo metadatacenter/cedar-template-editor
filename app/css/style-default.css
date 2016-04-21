@@ -12252,6 +12252,10 @@ table.apiKey td {
   padding: 5px;
   margin: 0px;
 }
+.detail-options {
+  padding-left: 10px;
+  margin-top: 10px;
+}
 @font-face {
   font-family: "project-cedar";
   src: url("../media/fonts/project-cedar.eot");

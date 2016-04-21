@@ -32,7 +32,7 @@
         <div class="sidebar-inner" cedar-sticky-left-menu="true">
           <p ng-if="elementList.length > 0" class="add-item" translate>GENERIC.AddElement</p>
           <ul ng-if="elementList.length > 0" class="element-menu" role="menu">
-            <li ng-repeat="element in elementList | orderBy:'title'" class="item"><a ng-click="addElementToTemplate(element)"><i class="cedar-svg-element"></i>{{element._ui.title}}</a></li>
+            <li ng-repeat="element in elementList | orderBy:'title'" class="item"><a ng-click="addElementToTemplate(element)"><i class="cedar-svg-element"></i>{{element._ui.title}} title</a></li>
           </ul>
 
           <!--<div class="more-items" dropdown>-->

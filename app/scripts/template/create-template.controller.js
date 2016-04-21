@@ -96,6 +96,11 @@ define([
       }
     };
 
+    $scope.getTitle = function(element) {
+      console.log('getTitle');
+      return $rootScope.schemaOf(element)._ui.title;
+    }
+
     $scope.addElementToTemplate = function (element) {
       populateCreatingFieldOrElement();
       if (dontHaveCreatingFieldOrElement()) {
@@ -165,12 +170,18 @@ define([
       $scope.templateSuccessMessages = [];
       // If Template Name is blank, produce error message
       if (!$scope.form._ui.title.length) {
-        $scope.templateErrorMessages.push($translate.instant("VALIDATION.templateNameEmpty"));
+        $scope.form._ui.title = "Untitled";
+        //$scope.templateErrorMessages.push($translate.instant("VALIDATION.templateNameEmpty"));
       }
       // If Template Description is blank, produce error message
       if (!$scope.form._ui.description.length) {
-        $scope.templateErrorMessages.push($translate.instant("VALIDATION.templateDescriptionEmpty"));
+        $scope.form._ui.description = "Untitled";
+        //$scope.templateErrorMessages.push($translate.instant("VALIDATION.templateDescriptionEmpty"));
       }
+
+      console.log($scope.templateErrorMessages);
+
+
       // If there are no Template level error messages
       if ($scope.templateErrorMessages.length == 0) {
         // If maxItems is N, then remove maxItems

@@ -9371,7 +9371,7 @@ i {
           transform: translate(10px, 9px);
 }
 .template-body .right-body .preview-edit-options .remove {
-  background-color: #333;
+  background-color: #999;
 }
 .template-body .right-body .preview-edit-options .remove:hover {
   background-color: #000000;
@@ -10186,7 +10186,6 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
 #element_control_term .type-toggle {
   text-align: center;
   margin: 0 auto;
-  margin-bottom: 40px;
 }
 .template-body form .type-toggle:before,
 #element_control_term .type-toggle:before,
@@ -10484,7 +10483,7 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
           transform: translate(9px, 0px);
 }
 .input-type-container .configuration-options .toggle-options .save-options .remove {
-  background-color: #333;
+  background-color: #999;
 }
 .input-type-container .configuration-options .toggle-options .save-options .remove:hover {
   background-color: #000000;
@@ -11323,7 +11322,7 @@ p.instructions {
 }
 .element-toggles .element-toggle {
   display: inline-block;
-  padding: 20px 20px 0;
+  padding: 10px 0 0;
   border-bottom: 5px solid #DDD;
   border-color: #DDD;
   -webkit-transition: all 0.3s ease 0.1s;
@@ -12062,13 +12061,10 @@ body .template-header .controlled-terms-modal {
   font-size: 15px;
 }
 .input-type-container .configuration-options {
-  padding: 5px 0 0 5px;
+  padding: 0;
   position: static;
 }
 .cardinality-options {
-  padding-left: 10px;
-  margin-top: 10px;
-  margin-right: 15px;
 }
 .input-type-container .configuration-options .toggle-options {
   margin-right: 15px;
@@ -12188,8 +12184,6 @@ body .template-header .controlled-terms-modal {
   margin-top: 5px;
 }
 .definition-inputs {
-  padding-bottom: 20px;
-  border-bottom: 1px dashed #dddddd;
 }
 .fields.preview .floating-label {
   display: none;
@@ -12606,7 +12600,7 @@ body {
 .field-instance.multiple-instance-field {
   border: 1px solid rgba(87, 149, 186, 0.35);
   padding-top: 12px;
-  padding-bottom: 12px;
+  padding-bottom: 5px;
   margin-bottom: 16px;
   background-color: #f4f4f7;
 }
@@ -12661,3 +12655,31 @@ div.errorTechnicalDetails textarea {
 === CEDAR Customization END
 ================================================
 */
+
+.detail-options {
+}
+
+.preview-container {
+  position:relative;
+}
+
+.preview-edit-options {
+  position:absolute;
+  top:0;
+  right:0;
+}
+
+
+.preview-edit-options .toggle-options .save-options {
+  float:right;
+  box-sizing:border-box;
+
+}
+
+.preview-edit-options .toggle-options .save-options .edit {
+  background-color: #5795ba;
+}
+
+
+
+

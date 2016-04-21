@@ -18,6 +18,13 @@ define([
     var linker = function ($scope, $element, attrs) {
 
 
+      // which details tab is open?
+      $scope.showControlledTermsValues = false;
+      $scope.showControlledTermsField = false;
+      $scope.showCardinality = false;
+      $scope.showRequired = false;
+
+
       var setDirectory = function () {
         var p = $rootScope.propertiesOf($scope.field);
         var state = p._tmp && p._tmp.state || "completed";
@@ -484,6 +491,14 @@ define([
         return false;
       };
 
+
+      $scope.hasDateRange = function () {
+        var inputType = $rootScope.schemaOf($scope.field)._ui.inputType;
+        return (inputType === "date");
+      };
+
+
+
       /**
        * Turn my field into a youtube iframe.
        * @param field
@@ -648,8 +663,7 @@ define([
 
 
       /* start of controlled terms functionality */
-      $scope.showControlledTermsValues = false;
-      $scope.showControlledTermsField = false;
+
       $scope.addedFields = new Map();
       $scope.addedFieldKeys = [];
 
@@ -818,6 +832,14 @@ define([
 
       });
 
+      $scope.isTabActive = function (item) {
+        return ($scope.showControlledTermsField && item == "field") ||
+            ($scope.showControlledTermsValues && item == "values") ||
+            ($scope.showCardinality && item == "cardinality") ||
+            ($scope.showRequired && item == "required");
+      };
+
+
       /**
        * only have one of these three divs open at a time
        * @param item
@@ -826,10 +848,9 @@ define([
 
         $scope.showControlledTermsValues = (item === 'values') ? !$scope.showControlledTermsValues : false;
         $scope.showControlledTermsField = (item === 'field') ? !$scope.showControlledTermsField : false;
-
-        if ($scope.showControlledTermsValues || $scope.showControlledTermsField || item === 'none') {
-          $rootScope.schemaOf($scope.field)._ui.is_cardinal_field = false;
-        }
+        $scope.showCardinality = (item === 'cardinality') ? !$scope.showCardinality : false;
+        $scope.showRequired = (item === 'required') ? !$scope.showRequired : false;
+        //$rootScope.schemaOf($scope.field)._ui.is_cardinal_field = $scope.showCardinality;
 
         $scope.setAddedFieldMap();
       };

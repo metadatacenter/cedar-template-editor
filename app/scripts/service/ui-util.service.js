@@ -17,8 +17,11 @@ define([
     service.scrollToAnchor = function (hash) {
       $timeout(function () {
         var target = angular.element('#' + hash);
-        var y = target.offset().top;
-        $window.scrollTo(0, y - 95);
+        if (target) {
+          var y = target.offset().top;
+          $window.scrollTo(0, y - 95);
+        }
+
       }, 250);
     };
 
