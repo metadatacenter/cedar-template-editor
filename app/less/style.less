@@ -292,6 +292,7 @@ i {
       margin-bottom: 0px;
       padding-top: 7px;
 
+
       .remove,
       .edit {
         height: 25px;
@@ -313,7 +314,7 @@ i {
 
       .edit {
         // display:none;
-        background-color: #ccc;
+        background-color: @brand-primary;
 
         &:hover {
           background-color: #999;
@@ -325,7 +326,7 @@ i {
       }
 
       .remove {
-        background-color: #333;
+        background-color: #999;
 
         &:hover {
           background-color: @black;
@@ -1422,6 +1423,8 @@ section.dashboard-elements {
         }
       }
     }
+
+
 
     .advanced-options {
       float: none;
@@ -3400,8 +3403,6 @@ body .template-header .controlled-terms-modal {
 }
 
 .definition-inputs {
-  padding-bottom: 20px;
-  border-bottom: 1px dashed @gray3;
 }
 
 .fields.preview .floating-label {

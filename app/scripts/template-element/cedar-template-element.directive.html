@@ -30,10 +30,11 @@
       </div>
       <div class="preview-edit-options col-lg-3 pull-right" style="padding-top:10px"
           ng-if="$root.propertiesOf(element)._tmp.state != 'creating'">
+        <div class="element-preview-actions">
         <div class="toggle-options">
-          <div class="save-options">
+          <div class="save-options pull-right">
             <div class="edit" ng-click="edit()" ng-if="$root.propertiesOf(element)._tmp.state != 'creating'">
-              <i class="fa fa-pencil" style="transform: translate(6px, 1px);"></i>
+              <i class="fa fa-pencil" ></i>
             </div>
             <div class="remove" ng-click="delete()">
               <i class="fa fa-times"></i>
@@ -41,6 +42,7 @@
           </div>
           <!-- /.save-options -->
           <div class="clearfix"></div>
+        </div>
         </div>
       </div>
 
