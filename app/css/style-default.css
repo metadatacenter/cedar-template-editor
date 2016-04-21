@@ -9360,7 +9360,7 @@ i {
   line-height: 25px;
 }
 .template-body .right-body .preview-edit-options .edit {
-  background-color: #ccc;
+  background-color: #339933;
 }
 .template-body .right-body .preview-edit-options .edit:hover {
   background-color: #999;
@@ -9371,7 +9371,7 @@ i {
           transform: translate(10px, 9px);
 }
 .template-body .right-body .preview-edit-options .remove {
-  background-color: #333;
+  background-color: #999;
 }
 .template-body .right-body .preview-edit-options .remove:hover {
   background-color: #000000;
@@ -12187,8 +12187,6 @@ body .template-header .controlled-terms-modal {
 .element-configuration-options {
   margin-top: 5px;
 }
-.definition-inputs {
-}
 .fields.preview .floating-label {
   display: none;
 }
@@ -12249,10 +12247,6 @@ table.apiKey td {
   vertical-align: top;
   padding: 5px;
   margin: 0px;
-}
-.detail-options {
-  padding-left: 10px;
-  margin-top: 10px;
 }
 @font-face {
   font-family: "project-cedar";
