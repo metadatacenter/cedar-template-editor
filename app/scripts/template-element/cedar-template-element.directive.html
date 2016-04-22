@@ -115,7 +115,7 @@
       <div ng-if="!$root.isRuntime() && $root.isArray(model) && model.length == 0" class="element"
           ng-class="['element-0']">
         <div ui-sortable="$root.sortableOptions" ng-model="element._ui.order" class="sortable-container">
-          <div ng-repeat="key in element['_ui']['order']">
+          <div ng-repeat="key in $root.schemaOf(element)['_ui']['order']">
 
             <div ng-if="true">
               <cedar-nested-template-element key="key"
