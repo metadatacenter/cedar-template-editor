@@ -14,21 +14,5 @@
   <div class="definition-inputs" ng-include="'scripts/form/partials/field-definition.partial.html'"></div>
   <!-- /.definition-inputs -->
 
-  <div class="form-group floating-label-wrapper">
-    <div class="options-wrapper">
-
-  <div class="type-toggle date" ng-init="$root.schemaOf(field)._ui.dateType = 'single-date'">
-    <div class="single-date d-option" ng-click="$root.schemaOf(field)._ui.dateType = 'single-date'"
-        ng-class="{active: $root.schemaOf(field)._ui.dateType == 'single-date'}">
-      <span>Date</span>
-    </div>
-    <div class="date-range d-option" ng-click="$root.schemaOf(field)._ui.dateType = 'date-range'"
-        ng-class="{active: $root.schemaOf(field)._ui.dateType == 'date-range'}">
-      <span>Date Range</span>
-    </div>
-  </div>
-  <!-- /.date-type-toggle -->
-
-
   <div class="configuration-options " ng-include="'scripts/form/partials/configuration-options.partial.html'"></div>
 </div><!-- /.input-type-container -->

@@ -23,13 +23,14 @@ define([
       $scope.showControlledTermsField = false;
       $scope.showCardinality = false;
       $scope.showRequired = false;
+      $scope.showRange = false;
 
 
       var setDirectory = function () {
         var p = $rootScope.propertiesOf($scope.field);
         var state = p._tmp && p._tmp.state || "completed";
 
-        if ((state == "creating") && !$scope.preview) {
+        if ((state == "creating") && !$scope.preview && !$rootScope.isRuntime()) {
           $scope.directory = "create";
         } else {
           $scope.directory = "render";
@@ -226,13 +227,22 @@ define([
 
       $scope.$on("saveForm", function () {
         var p = $rootScope.propertiesOf($scope.field);
-        if (p._tmp && p._tmp.state == "creating") {
-          $scope.$emit("invalidFieldState",
-              ["add", DataManipulationService.getFieldSchema($scope.field)._ui.title, $scope.field["@id"]]);
-        } else {
-          $scope.$emit("invalidFieldState",
-              ["remove", DataManipulationService.getFieldSchema($scope.field)._ui.title, $scope.field["@id"]]);
+
+        // default title and description
+        if (!$rootScope.schemaOf($scope.field)._ui.title) {
+          $rootScope.schemaOf($scope.field)._ui.title = 'Untitled';
         }
+        if (!$rootScope.schemaOf($scope.field)._ui.description) {
+          $rootScope.schemaOf($scope.field)._ui.description = 'Untitled';
+        }
+
+        //if (p._tmp && p._tmp.state == "creating") {
+        //  $scope.$emit("invalidFieldState",
+        //      ["add", DataManipulationService.getFieldSchema($scope.field)._ui.title, $scope.field["@id"]]);
+        //} else {
+        //  $scope.$emit("invalidFieldState",
+        //      ["remove", DataManipulationService.getFieldSchema($scope.field)._ui.title, $scope.field["@id"]]);
+        //}
       });
 
       var field = DataManipulationService.getFieldSchema($scope.field)._ui
@@ -312,6 +322,7 @@ define([
           inputType = DataManipulationService.getFieldSchema($scope.field)._ui.inputType;
         }
 
+        console.log('scripts/form/field-' + $scope.directory + '/' + inputType + '.html');
         return 'scripts/form/field-' + $scope.directory + '/' + inputType + '.html';
       };
 
@@ -836,8 +847,15 @@ define([
         return ($scope.showControlledTermsField && item == "field") ||
             ($scope.showControlledTermsValues && item == "values") ||
             ($scope.showCardinality && item == "cardinality") ||
+            ($scope.showRange && item == "range") ||
             ($scope.showRequired && item == "required");
       };
+
+      $scope.initDateSingle = function () {
+        if (!$rootScope.schemaOf($scope.field)._ui.dateType) {
+          $rootScope.schemaOf($scope.field)._ui.dateType = 'single-date';
+        }
+      }
 
 
       /**
@@ -850,6 +868,7 @@ define([
         $scope.showControlledTermsField = (item === 'field') ? !$scope.showControlledTermsField : false;
         $scope.showCardinality = (item === 'cardinality') ? !$scope.showCardinality : false;
         $scope.showRequired = (item === 'required') ? !$scope.showRequired : false;
+        $scope.showRange = (item === 'range') ? !$scope.showRange : false;
         //$rootScope.schemaOf($scope.field)._ui.is_cardinal_field = $scope.showCardinality;
 
         $scope.setAddedFieldMap();

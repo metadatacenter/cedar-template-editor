@@ -322,6 +322,17 @@ define([
 
     };
 
+
+    /**
+     * add a domId to the node if there is not one present
+     * @param node
+     */
+    service.defaultTitle = function (node) {
+
+      node._ui.title = "Untitled";
+
+    };
+
     /**
      * get the domId of the node if there is one present
      * @param node

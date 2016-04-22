@@ -10,7 +10,7 @@
           ng-click="toggleControlledTerm('values')">
         <span>Value</span>
       </div>
-      <div ng-if="hasDateRange()" class="element-toggle table-cell-style" ng-class="{active: isTabActive('values')}"
+      <div ng-if="hasDateRange()" class="element-toggle table-cell-style" ng-class="{active: isTabActive('range')}"
           ng-click="toggleControlledTerm('range')">
         <span>Range</span>
       </div>
@@ -25,15 +25,33 @@
     </div>
   </div>
 
+  <!-- date range -->
+  <div id="range" class="type-toggle date" ng-init="initDateSingle()" ng-show="isTabActive('range')">
+    <div class="single-date d-option" ng-click="$root.schemaOf(field)._ui.dateType = 'single-date'"
+        ng-class="{active: $root.schemaOf(field)._ui.dateType == 'single-date'}">
+      <span>Date</span>
+    </div>
+    <div class="date-range d-option" ng-click="$root.schemaOf(field)._ui.dateType = 'date-range'"
+        ng-class="{active: $root.schemaOf(field)._ui.dateType == 'date-range'}">
+      <span>Date Range</span>
+    </div>
+  </div>
+  <!-- /.date-type-toggle -->
 
 <!-- Required tab  -->
 <div id="required" class="cardinality-options" ng-show="isTabActive('required')">
-  <div class="checkbox checkbox-inline checkbox-required">
-    <input type="checkbox" id="required-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}"
-        ng-model="$root.schemaOf(field)._valueConstraints.requiredValue"/>
-    <label for="required-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}"
-        translate>GENERIC.Required</label>
+
+
+  <div class="type-toggle date"  >
+  <div class="single-date d-option" ng-click="$root.schemaOf(field)._valueConstraints.requiredValue = false"
+      ng-class="{active: !$root.schemaOf(field)._valueConstraints.requiredValue}">
+    <span>No</span>
   </div>
+  <div class="date-range d-option" ng-click="$root.schemaOf(field)._valueConstraints.requiredValue = true"
+      ng-class="{active: $root.schemaOf(field)._valueConstraints.requiredValue}">
+    <span>Yes</span>
+  </div>
+    </div>
 </div>
 
 <!-- Cardinality tab  -->

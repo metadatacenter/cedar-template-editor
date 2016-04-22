@@ -86,6 +86,7 @@ define([
       populateCreatingFieldOrElement();
       if (dontHaveCreatingFieldOrElement()) {
 
+
         var domId = DataManipulationService.createDomId();
         StagingService.addFieldToForm($scope.form, fieldType, domId, function(el) {
 
@@ -96,8 +97,16 @@ define([
       }
     };
 
+    $scope.initTitleAndDescription = function(element) {
+      if (!$rootScope.schemaOf(element)._ui.title) {
+        $rootScope.schemaOf(element)._ui.title = "Untitled";
+      }
+      if (!$rootScope.schemaOf(element)._ui.description) {
+        $rootScope.schemaOf(element)._ui.description = "Untitled";
+      }
+    }
+
     $scope.getTitle = function(element) {
-      console.log('getTitle');
       return $rootScope.schemaOf(element)._ui.title;
     }
 
@@ -170,13 +179,11 @@ define([
       $scope.templateSuccessMessages = [];
       // If Template Name is blank, produce error message
       if (!$scope.form._ui.title.length) {
-        $scope.form._ui.title = "Untitled";
-        //$scope.templateErrorMessages.push($translate.instant("VALIDATION.templateNameEmpty"));
+        $scope.templateErrorMessages.push($translate.instant("VALIDATION.templateNameEmpty"));
       }
       // If Template Description is blank, produce error message
       if (!$scope.form._ui.description.length) {
-        $scope.form._ui.description = "Untitled";
-        //$scope.templateErrorMessages.push($translate.instant("VALIDATION.templateDescriptionEmpty"));
+        $scope.templateErrorMessages.push($translate.instant("VALIDATION.templateDescriptionEmpty"));
       }
 
       console.log($scope.templateErrorMessages);
@@ -246,15 +253,20 @@ define([
     $scope.$watch('form._ui.title', function (v) {
       if (!angular.isUndefined($scope.form)) {
         var title = $scope.form._ui.title;
+
+        if (!title) {
+          title = "Untitled";
+        }
+
         if (title.length > 0) {
           var capitalizedTitle = $filter('capitalizeFirst')(title);
           $scope.form.title = $translate.instant("GENERATEDVALUE.templateTitle", {title: capitalizedTitle});
           $scope.form.description = $translate.instant("GENERATEDVALUE.templateDescription", {title: capitalizedTitle});
         }
-        else {
-          $scope.form.title = "";
-          $scope.form.description = "";
-        }
+
+        $scope.form._ui.title = title;
+        $scope.form._ui.description = title;
+
       }
     });
   };
