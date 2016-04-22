@@ -35,7 +35,7 @@
       <div class="floating-label">{{$root.schemaOf(field)._ui.title}}</div>
       <div class="input-indicator-icons" ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
     </div>
-    <div class="more-input-wrapper" ng-include="'scripts/form/partials/more-input-buttons.partial.html'"
+    <div ng-if="$root.isRuntime()" class="more-input-wrapper " ng-include="'scripts/form/partials/more-input-buttons.partial.html'"
         ng-show="!field.maxItems || field.maxItems > 1 || (field.maxItems ==1 && field.minItems ==0)"></div>
   </div>
   <!-- /.form-group -->
@@ -59,7 +59,7 @@
           ng-disabled="true"
           with-floating-label=""/>
 
-      <div class="floating-label">{{$root.schemaOf(field)._ui.title}} title</div>
+      <!--<div class="floating-label">{{$root.schemaOf(field)._ui.title}} title</div>-->
       <div class="input-indicator-icons" ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
     </div>
     <div ng-if="$root.hasValueConstraint($root.schemaOf(field)._valueConstraints)"
@@ -76,7 +76,7 @@
       <div class="floating-label">{{$root.schemaOf(field)._ui.title}} title</div>
       <div class="input-indicator-icons" ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
     </div>
-    <div class="more-input-wrapper" ng-include="'scripts/form/partials/more-input-buttons.partial.html'"
+    <div ng-if="$root.isRuntime()" class="more-input-wrapper" ng-include="'scripts/form/partials/more-input-buttons.partial.html'"
         ng-show="!field.maxItems || field.maxItems > 1 || (field.maxItems ==1 && field.minItems ==0)"></div>
   </div>
 
@@ -87,7 +87,7 @@
         ng-if="!$root.hasValueConstraint($root.schemaOf(field)._valueConstraints) && !$root.vrs.getIsValueRecommendationEnabled()"
         class="has-no-constraint">
       <input type="text"
-          class="form-control"
+          class="form-control xx"
           ng-class="{'required': $root.schemaOf(field)._valueConstraints.requiredValue}"
           id="textfield1"
           placeholder="{{$root.schemaOf(field)._ui.title}}"

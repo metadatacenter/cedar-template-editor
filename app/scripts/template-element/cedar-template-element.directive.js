@@ -172,7 +172,7 @@ define([
       scope.isNested = function () {
         var p = $rootScope.propertiesOf(scope.element);
         p._tmp = p._tmp || {};
-        return (p._tmp.nested || false);
+        return p._tmp.nested || false;
       };
 
       scope.addElement = function () {
@@ -245,6 +245,12 @@ define([
           }
         }
       };
+
+      scope.showCardinality = false;
+
+      scope.isCardinal = function() {
+        return DataManipulationService.isCardinalElement(scope.element);
+      }
 
       // When user clicks Save button, we will switch element from creating state to completed state
       scope.add = function () {

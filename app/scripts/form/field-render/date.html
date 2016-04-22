@@ -1,16 +1,14 @@
 <div class="fields fields-date">
   <div ng-if="$root.isArray(model)" class="field field-date" ng-repeat="valueElement in model">
-    <!-- {{field}} -->
-    <p class="date-field-title">{{$root.schemaOf(field)._ui.title}}</p>
 
     <div class="form-group date-group floating-label-wrapper"
         ng-if="$root.schemaOf(field)._ui.dateType == 'single-date'">
-      <!--<span class="date-label">Select a date</span>-->
+
       <div class='input-group' date-time-picker>
         <input type="text"
             class="form-control"
             ng-class="{'required': $root.schemaOf(field)._valueConstraints.requiredValue}"
-            placeholder="{{$root.schemaOf(field)._ui.title}} ( MM / DD / YYYY )"
+            placeholder="{{$root.schemaOf(field)._ui.title}}"
             aria-label="Select a date"
             ng-model="valueElement._value"
             ng-disabled="!$root.isRuntime() || preview"
@@ -24,13 +22,12 @@
 
     <div class="form-group date-group range floating-label-wrapper"
         ng-if="$root.schemaOf(field)._ui.dateType == 'date-range'">
-      <span class="date-label">Select a date range</span>
 
       <div class='input-group' date-time-picker>
         <input type="text"
             class="form-control"
             ng-class="{'required': $root.schemaOf(field)._valueConstraints.requiredValue}"
-            placeholder="MM / DD / YYYY"
+            placeholder="{{$root.schemaOf(field)._ui.title}} start"
             aria-label="Select a start date"
             ng-model="valueElement._value.start"
             ng-disabled="!$root.isRuntime() || preview"
@@ -43,8 +40,8 @@
         <input type="text"
             class="form-control"
             ng-class="{'required': $root.schemaOf(field)._valueConstraints.requiredValue}"
-            placeholder="MM / DD / YYYY"
-            aria-label="Select a end date"
+            placeholder="{{$root.schemaOf(field)._ui.title}} end"
+            aria-label="end date"
             ng-model="valueElement._value.end"
             ng-disabled="!$root.isRuntime() || preview"
             with-floating-label=""/>
@@ -54,24 +51,23 @@
       </div>
     </div>
     <!-- /.form-group -->
-    <div class="more-input-wrapper" ng-include="'scripts/form/partials/more-input-buttons.partial.html'"
-        ng-show="!field.maxItems || field.maxItems > 1"></div>
+    <!--<div class="more-input-wrapper" ng-include="'scripts/form/partials/more-input-buttons.partial.html'"-->
+        <!--ng-show="!field.maxItems || field.maxItems > 1"></div>-->
   </div>
 
 
 
   <div ng-if="$root.isArray(model) && model.length == 0 && !$root.isRuntime()" class="field field-date">
-    <!-- {{field}} -->
-    <p class="date-field-title">{{$root.schemaOf(field)._ui.title}}</p>
+
 
     <div class="form-group date-group floating-label-wrapper"
         ng-if="$root.schemaOf(field)._ui.dateType == 'single-date'">
-      <!--<span class="date-label">Select a date</span>-->
+
       <div class='input-group' date-time-picker>
         <input type="text"
             class="form-control"
             ng-class="{'required': $root.schemaOf(field)._valueConstraints.requiredValue}"
-            placeholder="MM / DD / YYYY"
+            placeholder="{{$root.schemaOf(field)._ui.title}}"
             aria-label="Select a date"
             ng-model="model._value"
             ng-disabled="true"
@@ -84,13 +80,13 @@
 
     <div class="form-group date-group range floating-label-wrapper"
         ng-if="$root.schemaOf(field)._ui.dateType == 'date-range'">
-      <span class="date-label">Select a date range</span>
+
 
       <div class='input-group' date-time-picker="">
         <input type="text"
             class="form-control"
             ng-class="{'required': $root.schemaOf(field)._valueConstraints.requiredValue}"
-            placeholder="MM / DD / YYYY"
+            placeholder="{{$root.schemaOf(field)._ui.title}} start"
             aria-label="Select a start date"
             ng-model="model._value.start"
             ng-disabled="true"
@@ -103,8 +99,8 @@
         <input type="text"
             class="form-control"
             ng-class="{'required': $root.schemaOf(field)._valueConstraints.requiredValue}"
-            placeholder="MM / DD / YYYY"
-            aria-label="Select a end date"
+            placeholder="{{$root.schemaOf(field)._ui.title}} end"
+            aria-label="end date"
             ng-model="model._value.end"
             ng-disabled="true"
             with-floating-label=""/>
@@ -119,16 +115,16 @@
 
 
   <div ng-if="!$root.isArray(model)" class="field field-date">
-    <p class="date-field-title">{{$root.schemaOf(field)._ui.title}}</p>
+
 
     <div class="form-group date-group floating-label-wrapper"
         ng-if="$root.schemaOf(field)._ui.dateType == 'single-date'">
-      <!--<span class="date-label">Select a date</span>-->
+
       <div class='input-group' date-time-picker>
         <input type="text"
             class="form-control"
             ng-class="{'required': $root.schemaOf(field)._valueConstraints.requiredValue}"
-            placeholder="MM / DD / YYYY"
+            placeholder="{{$root.schemaOf(field)._ui.title}}"
             aria-label="Select a date"
             ng-model="model._value"
             ng-disabled="!$root.isRuntime() || preview"
@@ -142,13 +138,13 @@
 
     <div class="form-group date-group range floating-label-wrapper"
         ng-if="$root.schemaOf(field)._ui.dateType == 'date-range'">
-      <span class="date-label">Select a date range</span>
+
 
       <div class='input-group' date-time-picker="">
         <input type="text"
             class="form-control"
             ng-class="{'required': $root.schemaOf(field)._valueConstraints.requiredValue}"
-            placeholder="MM / DD / YYYY"
+            placeholder="{{$root.schemaOf(field)._ui.title}} start"
             aria-label="Select a start date"
             ng-model="model._value.start"
             ng-disabled="!$root.isRuntime() || preview"
@@ -161,7 +157,7 @@
         <input type="text"
             class="form-control"
             ng-class="{'required': $root.schemaOf(field)._valueConstraints.requiredValue}"
-            placeholder="MM / DD / YYYY"
+            placeholder="{{$root.schemaOf(field)._ui.title}} end"
             aria-label="Select a end date"
             ng-model="model._value.end"
             ng-disabled="!$root.isRuntime() || preview"

@@ -139,6 +139,7 @@ define([
       form._ui.order.push(fieldName);
 
       DataManipulationService.addDomIdIfNotPresent(field, divId);
+      DataManipulationService.defaultTitle(field);
       callback(field);
 
       return field;

@@ -1,6 +1,6 @@
 <div class="fields fields-list">
   <div ng-if="$root.isArray(model)" class="field-list" ng-class="{'required': $root.schemaOf(field)._valueConstraints.requiredValue}" ng-repeat="valueElement in model">
-	<p class="extra-label-context">{{$root.schemaOf(field)._ui.title}}</p>
+
 	<div ng-if="$root.schemaOf(field)._ui.selectionType == 'single'"
 		 class="form-group validation-pattern"
 		 ng-class="{'required': $root.schemaOf(field)._valueConstraints.requiredValue}">
@@ -8,7 +8,7 @@
 			  multiple=""
 			  data-max-options="1"
 			  field="field"
-			  title="Please select one of the options..."
+			  title="{{$root.schemaOf(field)._ui.title}}"
 			  ng-model="valueElement._value"
               ng-disabled="!$root.isRuntime() || preview"
 			  defaults="$root.schemaOf(field)._ui.defaultOption"
@@ -23,7 +23,7 @@
 	  <select class="form-control"
 			  multiple=""
 			  field="field"
-			  title="Please select one or more options..."
+			  title="{{$root.schemaOf(field)._ui.title}}"
 			  ng-model="valueElement._value"
               ng-disabled="!$root.isRuntime() || preview"
 			  defaults="$root.schemaOf(field)._ui.defaultOption"
@@ -37,7 +37,7 @@
 
 
   <div ng-if="$root.isArray(model) && model.length == 0 && !$root.isRuntime()" class="field-list" ng-class="{'required': $root.schemaOf(field)._valueConstraints.requiredValue}">
-    <p class="extra-label-context">{{$root.schemaOf(field)._ui.title}}</p>
+
     <div ng-if="$root.schemaOf(field)._ui.selectionType == 'single'"
         class="form-group validation-pattern"
         ng-class="{'required': $root.schemaOf(field)._valueConstraints.requiredValue}">
@@ -45,7 +45,7 @@
           multiple=""
           data-max-options="1"
           field="field"
-          title="Please select one of the options..."
+          title="{{$root.schemaOf(field)._ui.title}}"
           ng-model="model._value"
           ng-disabled="true"
           defaults="$root.schemaOf(field)._ui.defaultOption"
@@ -60,7 +60,7 @@
       <select class="form-control"
           multiple=""
           field="field"
-          title="Please select one or more options..."
+          title="{{$root.schemaOf(field)._ui.title}}"
           ng-model="model._value"
           ng-disabled="true"
           defaults="$root.schemaOf(field)._ui.defaultOption"
@@ -71,7 +71,7 @@
   </div>
 
   <div ng-if="!$root.isArray(model)" class="field-list" ng-class="{'required': $root.schemaOf(field)._valueConstraints.requiredValue}">
-	<p class="extra-label-context">{{$root.schemaOf(field)._ui.title}}</p>
+
 	<div ng-if="$root.schemaOf(field)._ui.selectionType == 'single'"
 		 class="form-group validation-pattern"
 		 ng-class="{'required': $root.schemaOf(field)._valueConstraints.requiredValue}">
@@ -79,7 +79,7 @@
 			  multiple=""
 			  data-max-options="1"
 			  field="field"
-			  title="Please select one of the options..."
+			  title="{{$root.schemaOf(field)._ui.title}}"
 			  ng-model="model._value"
               ng-disabled="!$root.isRuntime() || preview"
 			  defaults="$root.schemaOf(field)._ui.defaultOption"
@@ -94,7 +94,7 @@
 	  <select class="form-control"
 			  multiple=""
 			  field="field"
-			  title="Please select one or more options..."
+			  title="{{$root.schemaOf(field)._ui.title}}"
 			  ng-model="model._value"
               ng-disabled="!$root.isRuntime() || preview"
 			  defaults="$root.schemaOf(field)._ui.defaultOption"

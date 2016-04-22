@@ -69,27 +69,28 @@ define([
         }
 
         $scope.removeChild = function (fieldOrElement) {
+          var id = $rootScope.schemaOf(fieldOrElement)["@id"];
+          var title = $rootScope.schemaOf(fieldOrElement)._ui.title;
           var selectedKey;
           var props = $scope.form.properties;
+
+          // find the field or element in the form's properties
           angular.forEach(props, function (value, key) {
-            if ($rootScope.schemaOf(value)["@id"] == $rootScope.schemaOf(fieldOrElement)["@id"]) {
+            if ($rootScope.schemaOf(value)["@id"] == id) {
               selectedKey = key;
             }
           });
 
+          // if it is there, delete it
           if (selectedKey) {
+
+            // delete it from the template's properties
             delete props[selectedKey];
 
+            // and the order array
             var idx = $scope.form._ui.order.indexOf(selectedKey);
             $scope.form._ui.order.splice(idx, 1);
-
-            if ($rootScope.isElement(fieldOrElement)) {
-              $scope.$emit("invalidElementState",
-                  ["remove", $rootScope.schemaOf(fieldOrElement)._ui.title, $rootScope.schemaOf(fieldOrElement)["@id"]]);
-            } else {
-              $scope.$emit("invalidFieldState",
-                  ["remove", $rootScope.schemaOf(fieldOrElement)._ui.title, $rootScope.schemaOf(fieldOrElement)["@id"]]);
-            }
+            $scope.$emit("invalidElementState", ["remove", title, id]);
           }
         };
 

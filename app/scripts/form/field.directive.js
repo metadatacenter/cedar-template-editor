@@ -9,20 +9,28 @@ define([
   // TODO: refactor to cedarFieldDirective <cedar-field-directive>
 
 
-  fieldDirective.$inject = ["$rootScope", "$sce", "SpreadsheetService", "DataManipulationService", "FieldTypeService",
+  fieldDirective.$inject = ["$rootScope", "$sce", "$document", "SpreadsheetService", "DataManipulationService", "FieldTypeService",
                             "ClientSideValidationService", "controlTermDataService"];
 
-  function fieldDirective($rootScope, $sce, SpreadsheetService, DataManipulationService, FieldTypeService,
+  function fieldDirective($rootScope, $sce, $document, SpreadsheetService, DataManipulationService, FieldTypeService,
                           ClientSideValidationService, controlTermDataService) {
 
     var linker = function ($scope, $element, attrs) {
+
+
+      // which details tab is open?
+      $scope.showControlledTermsValues = false;
+      $scope.showControlledTermsField = false;
+      $scope.showCardinality = false;
+      $scope.showRequired = false;
+      $scope.showRange = false;
 
 
       var setDirectory = function () {
         var p = $rootScope.propertiesOf($scope.field);
         var state = p._tmp && p._tmp.state || "completed";
 
-        if ((state == "creating") && !$scope.preview) {
+        if ((state == "creating") && !$scope.preview && !$rootScope.isRuntime()) {
           $scope.directory = "create";
         } else {
           $scope.directory = "render";
@@ -83,7 +91,7 @@ define([
       $scope.$on('submitForm', function (event) {
 
         // If field is required and is empty, emit failed emptyRequiredField event
-        if ($rootScope.schemaOf($scope.field)._valueConstraints.requiredValue) {
+        if ($rootScope.schemaOf($scope.field)._valueConstraints && $rootScope.schemaOf($scope.field)._valueConstraints.requiredValue) {
           var allRequiredFieldsAreFilledIn = true;
           var min = $scope.field.minItems || 0;
 
@@ -165,7 +173,7 @@ define([
         }
 
         // If field is required and is not empty, check to see if it needs to be removed from empty fields array
-        if ($rootScope.schemaOf($scope.field)._valueConstraints.requiredValue && allRequiredFieldsAreFilledIn) {
+        if ($rootScope.schemaOf($scope.field)._valueConstraints && $rootScope.schemaOf($scope.field)._valueConstraints.requiredValue  && allRequiredFieldsAreFilledIn) {
           //remove from emptyRequiredField array
           $scope.$emit('emptyRequiredField', ['remove', DataManipulationService.getFieldSchema($scope.field)._ui.title, $scope.uuid]);
         }
@@ -219,13 +227,22 @@ define([
 
       $scope.$on("saveForm", function () {
         var p = $rootScope.propertiesOf($scope.field);
-        if (p._tmp && p._tmp.state == "creating") {
-          $scope.$emit("invalidFieldState",
-              ["add", DataManipulationService.getFieldSchema($scope.field)._ui.title, $scope.field["@id"]]);
-        } else {
-          $scope.$emit("invalidFieldState",
-              ["remove", DataManipulationService.getFieldSchema($scope.field)._ui.title, $scope.field["@id"]]);
+
+        // default title and description
+        if (!$rootScope.schemaOf($scope.field)._ui.title) {
+          $rootScope.schemaOf($scope.field)._ui.title = 'Untitled';
         }
+        if (!$rootScope.schemaOf($scope.field)._ui.description) {
+          $rootScope.schemaOf($scope.field)._ui.description = 'Untitled';
+        }
+
+        //if (p._tmp && p._tmp.state == "creating") {
+        //  $scope.$emit("invalidFieldState",
+        //      ["add", DataManipulationService.getFieldSchema($scope.field)._ui.title, $scope.field["@id"]]);
+        //} else {
+        //  $scope.$emit("invalidFieldState",
+        //      ["remove", DataManipulationService.getFieldSchema($scope.field)._ui.title, $scope.field["@id"]]);
+        //}
       });
 
       var field = DataManipulationService.getFieldSchema($scope.field)._ui
@@ -304,7 +321,6 @@ define([
         if (DataManipulationService.getFieldSchema($scope.field)._ui.inputType) {
           inputType = DataManipulationService.getFieldSchema($scope.field)._ui.inputType;
         }
-
         return 'scripts/form/field-' + $scope.directory + '/' + inputType + '.html';
       };
 
@@ -484,6 +500,14 @@ define([
         return false;
       };
 
+
+      $scope.hasDateRange = function () {
+        var inputType = $rootScope.schemaOf($scope.field)._ui.inputType;
+        return (inputType === "date");
+      };
+
+
+
       /**
        * Turn my field into a youtube iframe.
        * @param field
@@ -648,8 +672,7 @@ define([
 
 
       /* start of controlled terms functionality */
-      $scope.showControlledTermsValues = false;
-      $scope.showControlledTermsField = false;
+
       $scope.addedFields = new Map();
       $scope.addedFieldKeys = [];
 
@@ -802,6 +825,10 @@ define([
         var ontologyDetails = controlTermDataService.getOntologyByLdId(ontology);
       };
 
+      // use the document height as the modal height
+      $scope.getModalHeight = function() {
+        return  "height: " + $document.height() + 'px';
+      };
 
       //TODO this event resets modal state and closes modal
       $scope.$on("field:controlledTermAdded", function () {
@@ -814,6 +841,21 @@ define([
 
       });
 
+      $scope.isTabActive = function (item) {
+        return ($scope.showControlledTermsField && item == "field") ||
+            ($scope.showControlledTermsValues && item == "values") ||
+            ($scope.showCardinality && item == "cardinality") ||
+            ($scope.showRange && item == "range") ||
+            ($scope.showRequired && item == "required");
+      };
+
+      $scope.initDateSingle = function () {
+        if (!$rootScope.schemaOf($scope.field)._ui.dateType) {
+          $rootScope.schemaOf($scope.field)._ui.dateType = 'single-date';
+        }
+      }
+
+
       /**
        * only have one of these three divs open at a time
        * @param item
@@ -822,10 +864,10 @@ define([
 
         $scope.showControlledTermsValues = (item === 'values') ? !$scope.showControlledTermsValues : false;
         $scope.showControlledTermsField = (item === 'field') ? !$scope.showControlledTermsField : false;
-
-        if ($scope.showControlledTermsValues || $scope.showControlledTermsField || item === 'none') {
-          $rootScope.schemaOf($scope.field)._ui.is_cardinal_field = false;
-        }
+        $scope.showCardinality = (item === 'cardinality') ? !$scope.showCardinality : false;
+        $scope.showRequired = (item === 'required') ? !$scope.showRequired : false;
+        $scope.showRange = (item === 'range') ? !$scope.showRange : false;
+        //$rootScope.schemaOf($scope.field)._ui.is_cardinal_field = $scope.showCardinality;
 
         $scope.setAddedFieldMap();
       };
@@ -838,6 +880,14 @@ define([
       };
 
       /* end of controlled terms functionality */
+
+      $scope.clearMinMax = function () {
+        console.log('clearMinMax');
+        console.log($scope.field);
+        delete $scope.field.minItems;
+        delete $scope.field.maxItems;
+      };
+
 
     };
 
