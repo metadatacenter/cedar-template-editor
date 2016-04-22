@@ -1,56 +1,74 @@
 <div ng-if="model !== undefined" class="element-root" id="{{$root.getDomId(element)}}">
 
+  <div>
+    <div class="element-header input-type-container" style="position:relative;"
+        ng-class="{'sortable-handler': !$root.isRuntime()}">
+      <div class="row">
 
-  <div class="element-header input-type-container" ng-class="{'sortable-handler': !$root.isRuntime()}">
+        <div class="col-lg-3 pull-left">
+          <a ng-click="switchExpandedState($root.getDomId(element))" class="visibilitySwitch"><i
+              class="cedar-svg-collapse"></i></a>
+          <a ng-click="switchExpandedState($root.getDomId(element))" class="visibilitySwitch" style="display:none;"><i
+              class="cedar-svg-expand"></i></a>
 
-    <div class="row" style="position:relative; margin-left:5px"
-        ng-if="!$root.isRuntime() && !isNested() && !isRootElement && !ngDisabled && !preview">
+          <p class="element-name-label ">
+            <i class="cedar-svg-element"></i>{{$root.schemaOf(element)._ui.title}}
+          </p>
 
-      <div class="configuration-options col-lg-3 pull-left type-label"><p class="type-label">
-        <a ng-click="switchExpandedState()" class="visibilitySwitch"><i class="cedar-svg-collapse"></i></a>
-        <a ng-click="switchExpandedState()" class="visibilitySwitch" style="display:none;"><i
-            class="cedar-svg-expand"></i></a>
-        <i class="cedar-svg-element"></i>{{$root.schemaOf(element)._ui.title}}</p>
-      </div>
+         <span ng-show="$root.isArray(model) && $root.applicationMode == 'runtime'" class="spreadsheetSwitch element">
+        <a ng-click="switchToSpreadsheet()" class="spreadsheetSwitchLink">
+          <i class="cedar-svg-spreadsheet"></i>
+        </a>
+      </span>
 
-      <div class="configuration-options col-lg-3 pull-right"
-          ng-if="$root.propertiesOf(element)._tmp.state == 'creating'">
-        <div class="toggle-options">
-          <div class="save-options">
-            <div class="add" ng-click="add()" ng-if="$root.propertiesOf(element)._tmp.state == 'creating'">
-              <i class="fa fa-plus"></i>
+        <span class="multiple-instance-cardinality"
+            ng-show="!$root.isRuntime() && $root.elementIsMultiInstance(element)">
+        {{element.minItems}} .. {{element.maxItems || "Unlimited"}}
+        </span>
+        </div>
+
+        <div class="configuration-options col-lg-3 pull-right" ng-if="!$root.isRuntime() && !isNested() &&
+          $root.propertiesOf(element)._tmp.state=='creating'">
+          <div class="toggle-options">
+            <div class="save-options">
+              <div class="add" ng-click="add()" ng-if="$root.propertiesOf(element)._tmp.state == 'creating'">
+                <i class="fa fa-plus"></i>
+              </div>
+              <div class="remove" ng-click="delete()">
+                <i class="fa fa-times"></i>
+              </div>
             </div>
-            <div class="remove" ng-click="delete()">
-              <i class="fa fa-times"></i>
+            <!-- /.save-options -->
+            <div class="clearfix"></div>
+          </div>
+        </div>
+
+        <div ng-if=" !$root.isRuntime()  && !isNested() && $root.propertiesOf(element)._tmp.state !='creating'"
+            class="preview-edit-options col-lg-3 pull-right" style="padding-top:10px">
+          <div class="element-preview-actions">
+            <div class="toggle-options">
+              <div class="save-options pull-right">
+                <div class="edit" ng-click="edit()" ng-if="$root.propertiesOf(element)._tmp.state != 'creating'">
+                  <i class="fa fa-pencil"></i>
+                </div>
+                <div class="remove" ng-click="delete()">
+                  <i class="fa fa-times"></i>
+                </div>
+              </div>
+              <!-- /.save-options -->
+              <div class="clearfix"></div>
             </div>
           </div>
-          <!-- /.save-options -->
-          <div class="clearfix"></div>
         </div>
-      </div>
-      <div class="preview-edit-options col-lg-3 pull-right" style="padding-top:10px"
-          ng-if="$root.propertiesOf(element)._tmp.state != 'creating'">
-        <div class="element-preview-actions">
-        <div class="toggle-options">
-          <div class="save-options pull-right">
-            <div class="edit" ng-click="edit()" ng-if="$root.propertiesOf(element)._tmp.state != 'creating'">
-              <i class="fa fa-pencil" ></i>
-            </div>
-            <div class="remove" ng-click="delete()">
-              <i class="fa fa-times"></i>
-            </div>
-          </div>
-          <!-- /.save-options -->
-          <div class="clearfix"></div>
-        </div>
-        </div>
-      </div>
 
-      <div class="configuration-options col-lg-1 centered " style="float: none;margin: 0 auto;">
-        <div class="sortable-handler " style="padding-top:5px" ng-if="!preview && !$root.isRuntime()"><span
-            class="sortable-icon"></span></div>
-      </div>
+        <div class="configuration-options col-lg-1 centered " style="float: none;margin: 0 auto;"
+            ng-if="!$root.isRuntime()">
+          <div class="sortable-handler " style="padding-top:5px"
+              ng-if="!preview && !$root.isRuntime() && $root.propertiesOf(element)._tmp.state != 'creating'"><span
+              class="sortable-icon"></span></div>
+        </div>
 
+      </div>
     </div>
   </div>
 
@@ -92,7 +110,7 @@
       <!-- have an array with at least one element -->
       <div ng-if="$root.isArray(model) && selectedTab == $index" class="element" ng-repeat="m in model"
           ng-class="['element-{{$index}}']">
-        <div class="remove-element pull-right" ng-if="$rootScope.isRuntime()">
+        <div class="remove-element pull-right">
           <a class="" ng-show="model.length > element.minItems" ng-click="removeElement($index)" translate>GENERIC.Remove</a>
         </div>
 
@@ -146,42 +164,45 @@
         </div>
       </div>
 
-      <div class="input-type-container"
-          ng-if="!$root.isRuntime() && !isRootElement && !isNested() && $root.propertiesOf(element)._tmp.state == 'creating'">
-        <div class="row">
-          <div class="configuration-options element-configuration-options col-lg-9 pull-left">
 
-            <!-- Cardinality Options -->
-            <div id="cardinality-options" class="cardinality-options" style="margin-left: 15px;"
-                ng-show="true">
-              <div class="form-group validation-pattern pull-left min-items-option">
-                <label>Min:</label>
-                <select class=""
-                    ng-model="element.minItems"
-                    ng-options="v.value as v.label for v in $root.minCardinalities"
-                    select-picker=""
-                    title="">
-                </select>
-              </div>
-              <!-- /.form-group -->
+    </div>
+  </div>
 
-              <div class="form-group validation-pattern pull-left max-items-option">
-                <label>Max:</label>
-                <select class=""
-                    ng-model="element.maxItems"
-                    ng-options="v.value as v.label for v in $root.maxCardinalities"
-                    select-picker=""
-                    title="">
-                </select>
-              </div>
-              <!-- /.form-group -->
-            </div>
-            <!-- /.cardinality-options -->
+
+  <div class="input-type-container"
+      ng-if="!$root.isRuntime() && !isRootElement && !isNested() && $root.propertiesOf(element)._tmp.state == 'creating'">
+    <div class="row">
+      <div class="configuration-options element-configuration-options col-lg-9 pull-left">
+
+        <!-- Cardinality Options -->
+        <div id="cardinality-options" class="cardinality-options" style="margin-left: 15px;"
+            ng-show="true">
+          <div class="form-group validation-pattern pull-left min-items-option">
+            <label>Min:</label>
+            <select class=""
+                ng-model="element.minItems"
+                ng-options="v.value as v.label for v in $root.minCardinalities"
+                select-picker=""
+                title="">
+            </select>
           </div>
+          <!-- /.form-group -->
 
-          <div class="clearfix"></div>
+          <div class="form-group validation-pattern pull-left max-items-option">
+            <label>Max:</label>
+            <select class=""
+                ng-model="element.maxItems"
+                ng-options="v.value as v.label for v in $root.maxCardinalities"
+                select-picker=""
+                title="">
+            </select>
+          </div>
+          <!-- /.form-group -->
         </div>
+        <!-- /.cardinality-options -->
       </div>
+
+      <div class="clearfix"></div>
     </div>
   </div>
 </div>

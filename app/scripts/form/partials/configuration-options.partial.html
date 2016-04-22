@@ -2,11 +2,13 @@
 <div class="">
   <div class="detail-options">
     <div class="element-toggles list table-style">
-      <div ng-if="hasControlledTerms()" class="element-toggle table-cell-style" ng-class="{active: isTabActive('field')}"
+      <div ng-if="hasControlledTerms()" class="element-toggle table-cell-style"
+          ng-class="{active: isTabActive('field')}"
           ng-click="toggleControlledTerm('field')">
         <span>Field</span>
       </div>
-      <div ng-if="hasControlledTerms()" class="element-toggle table-cell-style" ng-class="{active: isTabActive('values')}"
+      <div ng-if="hasControlledTerms()" class="element-toggle table-cell-style"
+          ng-class="{active: isTabActive('values')}"
           ng-click="toggleControlledTerm('values')">
         <span>Value</span>
       </div>
@@ -38,204 +40,207 @@
   </div>
   <!-- /.date-type-toggle -->
 
-<!-- Required tab  -->
-<div id="required" class="cardinality-options" ng-show="isTabActive('required')">
+  <!-- Required tab  -->
+  <div id="required" class="cardinality-options" ng-show="isTabActive('required')">
 
 
-  <div class="type-toggle date"  >
-  <div class="single-date d-option" ng-click="$root.schemaOf(field)._valueConstraints.requiredValue = false"
-      ng-class="{active: !$root.schemaOf(field)._valueConstraints.requiredValue}">
-    <span>No</span>
-  </div>
-  <div class="date-range d-option" ng-click="$root.schemaOf(field)._valueConstraints.requiredValue = true"
-      ng-class="{active: $root.schemaOf(field)._valueConstraints.requiredValue}">
-    <span>Yes</span>
-  </div>
-    </div>
-</div>
-
-<!-- Cardinality tab  -->
-<div id="cardinality-options" class="cardinality-options" ng-show="isTabActive('cardinality')">
-  <div class="form-group validation-pattern pull-left min-items-option">
-    <label translate>GENERIC.Min</label>
-    <select class="" ng-model="$parent.field.minItems" title=""
-        ng-options="v.value as v.label for v in $root.minCardinalities" select-picker="">
-    </select>
-  </div>
-  <div class="form-group validation-pattern pull-left max-items-option">
-    <label translate>GENERIC.Max</label>
-    <select class="" ng-model="$parent.field.maxItems" ng-options="v.value as v.label for v in $root.maxCardinalities"
-        title="" select-picker="">
-    </select>
-  </div>
-  <!-- /.form-group -->
-</div>
-
-<!-- Field tab -->
-<div id="field-type-options" class="cardinality-options" ng-show="isTabActive('field')">
-  <div class="form-group ">
-    <div class="controlled-terms controlled-term-options">
-      <div class="class-container">
-
-        <!-- field type table -->
-        <div class="added-field-classes">
-          <div class="class-list-container">
-            <!--<div class="class-list-header">-->
-            <!--<table class="table">-->
-            <!--<thead>-->
-            <!--<tr>-->
-            <!--<th width="15%">Name</th>-->
-            <!--<th width="55%">Description</th>-->
-            <!--<th width="15%">Source</th>-->
-            <!--<th width="15%">Action</th>-->
-            <!--</tr>-->
-            <!--</thead>-->
-            <!--</table>-->
-            <!--</div>-->
-            <div class="class-list-table">
-              <table class="table table-hover table-striped ">
-                <thead>
-                <tr>
-                  <th>Name</th>
-                  <th>Description</th>
-                  <th>Source</th>
-                  <th>&nbsp;</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr ng-repeat="key in addedFieldKeys">
-                  <td>
-                    {{getPrefLabel(key)}}
-                  </td>
-                  <td>
-                    {{getClassDescription(key)}}
-                  </td>
-                  <td>
-                    {{parseOntologyName(key)}}
-                  </td>
-                  <td>
-                    <div class="item item-delete" ng-click="deleteFieldAddedItem(key)">
-                      <i class="fa fa-close"></i>
-                    </div>
-                  </td>
-                </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
+    <div class="type-toggle date">
+      <div class="single-date d-option" ng-click="$root.schemaOf(field)._valueConstraints.requiredValue = false"
+          ng-class="{active: !$root.schemaOf(field)._valueConstraints.requiredValue}">
+        <span>No</span>
       </div>
-      <div class="clear-save">
-        <button type="button" class="std-button btn search-ontologies-button" data-toggle="modal"
-            data-target="{{'#' + getModalId(true)}}">Search
-        </button>
-        <!--<button type="button" class="std-button btn search-ontologies-button">Create</button>-->
+      <div class="date-range d-option" ng-click="$root.schemaOf(field)._valueConstraints.requiredValue = true"
+          ng-class="{active: $root.schemaOf(field)._valueConstraints.requiredValue}">
+        <span>Yes</span>
       </div>
     </div>
   </div>
-</div>
 
-<!-- Value tab -->
-<div id="value-options" class="cardinality-options" ng-show="isTabActive('values')">
-  <div class="form-group ">
-    <div class="controlled-terms controlled-term-options">
-      <div class="class-container">
-        <!-- value table -->
-        <div class="added-field-classes">
-          <div class="class-list-container">
-            <div class="added-value-constraints-header">
-              <table class="table table-striped">
-                <!--<thead>-->
-                <!--<tr>-->
-                <!--<th>Name</th>-->
-                <!--<th>Description</th>-->
-                <!--<th>Type</th>-->
-                <!--<th>Source</th>-->
-                <!--<th>Values</th>-->
-                <!--<th>&nbsp;</th>-->
-                <!--</tr>-->
-                <!--</thead>-->
-              </table>
-            </div>
-            <div class="class-list-table">
-              <table class="table table-hover">
-                <thead>
-                <tr>
-                  <th>Name</th>
-                  <th>Description</th>
-                  <th>Type</th>
-                  <th>Source</th>
-                  <th>Values</th>
-                  <th>&nbsp;</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr ng-repeat="class in $root.schemaOf(field)._valueConstraints.classes">
-                  <td>{{class.prefLabel}}</td>
-                  <td></td>
-                  <td>Class</td>
-                  <td>
-                    {{class.source.substr(0, class.source.lastIndexOf(')')).substr(class.source.lastIndexOf('(')+1)}}
-                  </td>
-                  <td>&nbsp;</td>
-                  <td>
-                    <div class="item item-delete" ng-click="deleteFieldAddedClass(class)">
-                      <i class="clickable fa fa-close"></i>
-                    </div>
-                  </td>
-                </tr>
-                <tr ng-repeat="valueSet in $root.schemaOf(field)._valueConstraints.valueSets">
-                  <td>{{valueSet.name}}</td>
-                  <td></td>
-                  <td>Value Set</td>
-                  <td>{{valueSet.vsCollection.substr(valueSet.vsCollection.lastIndexOf('/') + 1)}}</td>
-                  <td>{{valueSet.numChildren}}</td>
-                  <td>
-                    <div class="item item-delete" ng-click="deleteFieldAddedValueSet(valueSet)">
-                      <i class="clickable fa fa-close"></i>
-                    </div>
-                  </td>
-                </tr>
-                <tr ng-repeat="ontology in $root.schemaOf(field)._valueConstraints.ontologies">
-                  <td>{{ontology.acronym}}</td>
-                  <td>{{ontology.name}}</td>
-                  <td>Ontology</td>
-                  <td></td>
-                  <td>{{ontology.numChildren}}</td>
-                  <td>
-                    <div class="item item-delete" ng-click="deleteFieldAddedOntology(ontology)">
-                      <i class="clickable fa fa-close"></i>
-                    </div>
-                  </td>
-                </tr>
-                <tr ng-repeat="branch in $root.schemaOf(field)._valueConstraints.branches">
-                  <td>{{branch.name}}</td>
-                  <td></td>
-                  <td>Branch</td>
-                  <td>{{branch.acronym}}</td>
-                  <td></td>
-                  <td>
-                    <div class="item item-delete" ng-click="deleteFieldAddedBranch(branch)">
-                      <i class="clickable fa fa-close"></i>
-                    </div>
-                  </td>
-                </tr>
-                </tbody>
-              </table>
+  <!-- Cardinality tab  -->
+  <div id="cardinality-options" class="cardinality-options cardinality-selectors" ng-show="isTabActive('cardinality')">
+
+      <div class="form-group validation-pattern pull-left min-items-option">
+        <label translate>GENERIC.Min</label>
+        <select class="" ng-model="$parent.field.minItems" title=""
+            ng-options="v.value as v.label for v in $root.minCardinalities" select-picker="">
+        </select>
+      </div>
+      <div class="form-group validation-pattern pull-left max-items-option">
+        <label translate>GENERIC.Max</label>
+        <select class="" ng-model="$parent.field.maxItems"
+            ng-options="v.value as v.label for v in $root.maxCardinalities"
+            title="" select-picker="">
+        </select>
+      </div>
+
+    <!-- /.form-group -->
+  </div>
+
+  <!-- Field tab -->
+  <div id="field-type-options" class="cardinality-options" ng-show="isTabActive('field')">
+    <div class="form-group ">
+      <div class="controlled-terms controlled-term-options">
+        <div class="class-container">
+
+          <!-- field type table -->
+          <div class="added-field-classes">
+            <div class="class-list-container">
+              <!--<div class="class-list-header">-->
+              <!--<table class="table">-->
+              <!--<thead>-->
+              <!--<tr>-->
+              <!--<th width="15%">Name</th>-->
+              <!--<th width="55%">Description</th>-->
+              <!--<th width="15%">Source</th>-->
+              <!--<th width="15%">Action</th>-->
+              <!--</tr>-->
+              <!--</thead>-->
+              <!--</table>-->
+              <!--</div>-->
+              <div class="class-list-table">
+                <table class="table table-hover table-striped ">
+                  <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Source</th>
+                    <th>&nbsp;</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr ng-repeat="key in addedFieldKeys">
+                    <td>
+                      {{getPrefLabel(key)}}
+                    </td>
+                    <td>
+                      {{getClassDescription(key)}}
+                    </td>
+                    <td>
+                      {{parseOntologyName(key)}}
+                    </td>
+                    <td>
+                      <div class="item item-delete" ng-click="deleteFieldAddedItem(key)">
+                        <i class="fa fa-close"></i>
+                      </div>
+                    </td>
+                  </tr>
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
         </div>
         <div class="clear-save">
           <button type="button" class="std-button btn search-ontologies-button" data-toggle="modal"
-              data-target="{{'#' + getModalId(false)}}">Search
+              data-target="{{'#' + getModalId(true)}}">Search
           </button>
           <!--<button type="button" class="std-button btn search-ontologies-button">Create</button>-->
         </div>
-
       </div>
     </div>
   </div>
-</div>
+
+  <!-- Value tab -->
+  <div id="value-options" class="cardinality-options" ng-show="isTabActive('values')">
+    <div class="form-group ">
+      <div class="controlled-terms controlled-term-options">
+        <div class="class-container">
+          <!-- value table -->
+          <div class="added-field-classes">
+            <div class="class-list-container">
+              <div class="added-value-constraints-header">
+                <table class="table table-striped">
+                  <!--<thead>-->
+                  <!--<tr>-->
+                  <!--<th>Name</th>-->
+                  <!--<th>Description</th>-->
+                  <!--<th>Type</th>-->
+                  <!--<th>Source</th>-->
+                  <!--<th>Values</th>-->
+                  <!--<th>&nbsp;</th>-->
+                  <!--</tr>-->
+                  <!--</thead>-->
+                </table>
+              </div>
+              <div class="class-list-table">
+                <table class="table table-hover">
+                  <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Type</th>
+                    <th>Source</th>
+                    <th>Values</th>
+                    <th>&nbsp;</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr ng-repeat="class in $root.schemaOf(field)._valueConstraints.classes">
+                    <td>{{class.prefLabel}}</td>
+                    <td></td>
+                    <td>Class</td>
+                    <td>
+                      {{class.source.substr(0, class.source.lastIndexOf(')')).substr(class.source.lastIndexOf('(')+1)}}
+                    </td>
+                    <td>&nbsp;</td>
+                    <td>
+                      <div class="item item-delete" ng-click="deleteFieldAddedClass(class)">
+                        <i class="clickable fa fa-close"></i>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr ng-repeat="valueSet in $root.schemaOf(field)._valueConstraints.valueSets">
+                    <td>{{valueSet.name}}</td>
+                    <td></td>
+                    <td>Value Set</td>
+                    <td>{{valueSet.vsCollection.substr(valueSet.vsCollection.lastIndexOf('/') + 1)}}</td>
+                    <td>{{valueSet.numChildren}}</td>
+                    <td>
+                      <div class="item item-delete" ng-click="deleteFieldAddedValueSet(valueSet)">
+                        <i class="clickable fa fa-close"></i>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr ng-repeat="ontology in $root.schemaOf(field)._valueConstraints.ontologies">
+                    <td>{{ontology.acronym}}</td>
+                    <td>{{ontology.name}}</td>
+                    <td>Ontology</td>
+                    <td></td>
+                    <td>{{ontology.numChildren}}</td>
+                    <td>
+                      <div class="item item-delete" ng-click="deleteFieldAddedOntology(ontology)">
+                        <i class="clickable fa fa-close"></i>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr ng-repeat="branch in $root.schemaOf(field)._valueConstraints.branches">
+                    <td>{{branch.name}}</td>
+                    <td></td>
+                    <td>Branch</td>
+                    <td>{{branch.acronym}}</td>
+                    <td></td>
+                    <td>
+                      <div class="item item-delete" ng-click="deleteFieldAddedBranch(branch)">
+                        <i class="clickable fa fa-close"></i>
+                      </div>
+                    </td>
+                  </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <div class="clear-save">
+            <button type="button" class="std-button btn search-ontologies-button" data-toggle="modal"
+                data-target="{{'#' + getModalId(false)}}">Search
+            </button>
+            <!--<button type="button" class="std-button btn search-ontologies-button">Create</button>-->
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 
 <div class="clearfix"></div>

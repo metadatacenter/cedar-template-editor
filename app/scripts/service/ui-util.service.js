@@ -42,6 +42,24 @@ define([
       );
     };
 
+    /**
+     * toggle element's contents.
+     * @param id
+     */
+    service.toggleElement = function (id) {
+
+      $timeout(function () {
+
+            var target = angular.element('#' + id );
+            if (target) {
+              target.find('.elementTotalContent').first().toggle();
+              target.find(".visibilitySwitch").toggle();
+              target.find(".spreadsheetSwitchLink").toggle();
+            }
+          }, 350
+      );
+    };
+
 
     service.console = function (txt, label) {
       console.log(label + ' ' + JSON.stringify(txt, null, 2));
