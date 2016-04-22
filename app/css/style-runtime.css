@@ -12218,6 +12218,7 @@ body .template-header .controlled-terms-modal {
   padding: 5px;
   border: 1px solid #dddddd;
   margin-bottom: 10px;
+  margin-top: 5px;
 }
 .sortable-icon {
   background: url("/img/drag-me.png") no-repeat;

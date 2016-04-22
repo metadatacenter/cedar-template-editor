@@ -321,8 +321,6 @@ define([
         if (DataManipulationService.getFieldSchema($scope.field)._ui.inputType) {
           inputType = DataManipulationService.getFieldSchema($scope.field)._ui.inputType;
         }
-
-        console.log('scripts/form/field-' + $scope.directory + '/' + inputType + '.html');
         return 'scripts/form/field-' + $scope.directory + '/' + inputType + '.html';
       };
 
@@ -882,6 +880,14 @@ define([
       };
 
       /* end of controlled terms functionality */
+
+      $scope.clearMinMax = function () {
+        console.log('clearMinMax');
+        console.log($scope.field);
+        delete $scope.field.minItems;
+        delete $scope.field.maxItems;
+      };
+
 
     };
 

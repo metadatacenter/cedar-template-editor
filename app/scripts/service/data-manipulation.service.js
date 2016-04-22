@@ -190,12 +190,15 @@ define([
       field._ui.options.push(emptyOption);
     };
 
-    service.generateCardinalities = function (min, max) {
+    service.generateCardinalities = function (min, max,  addUnlimited) {
       var results = [];
-      results.push({value: -1, label: ""});
       for (var i = min; i <= max; i++) {
         results.push({value: i, label: i});
       }
+      if (addUnlimited) {
+        results.push({value: 0, label: "N"});
+      }
+      results.push({value: -1, label: ""});
 
       return results;
     };

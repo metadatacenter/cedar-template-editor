@@ -190,16 +190,8 @@ define([
     $rootScope.scrollToAnchor = UIUtilService.scrollToAnchor;
     $rootScope.scrollToDomId = UIUtilService.scrollToDomId;
     $rootScope.getDomId = DataManipulationService.getDomId;
-
-
-
-    var minCardinalities = DataManipulationService.generateCardinalities(0, 8);
-    var maxCardinalities = DataManipulationService.generateCardinalities(1, 8);
-    maxCardinalities.push({value: 0, label: "N"});
-
-
-    $rootScope.minCardinalities = minCardinalities;
-    $rootScope.maxCardinalities = maxCardinalities;
+    $rootScope.minCardinalities = DataManipulationService.generateCardinalities(0, 8, false);
+    $rootScope.maxCardinalities = DataManipulationService.generateCardinalities(1, 8, true);
 
     // BioPortal term selection integration code.
     // TODO: separate the calls, create a service for these
