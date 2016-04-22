@@ -26,7 +26,9 @@
         </span>
         </div>
 
-        <div class="configuration-options col-lg-3 pull-right" ng-if="!$root.isRuntime() &&
+
+
+        <div class="configuration-options col-lg-3 pull-right" ng-if="!$root.isRuntime() && !isNested() &&
           $root.propertiesOf(element)._tmp.state=='creating'">
           <div class="toggle-options">
             <div class="save-options">
@@ -43,7 +45,8 @@
         </div>
 
 
-        <div ng-if=" !$root.isRuntime() && $root.propertiesOf(element)._tmp.state !='creating'"
+
+        <div ng-if=" !$root.isRuntime()  && !isNested() && $root.propertiesOf(element)._tmp.state !='creating'"
             class="preview-edit-options col-lg-3 pull-right" style="padding-top:10px">
           <div class="element-preview-actions">
             <div class="toggle-options">
