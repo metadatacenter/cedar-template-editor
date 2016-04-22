@@ -189,6 +189,7 @@ define([
 
     $rootScope.scrollToAnchor = UIUtilService.scrollToAnchor;
     $rootScope.scrollToDomId = UIUtilService.scrollToDomId;
+    $rootScope.toggleElement = UIUtilService.toggleElement;
     $rootScope.getDomId = DataManipulationService.getDomId;
     $rootScope.minCardinalities = DataManipulationService.generateCardinalities(0, 8, false);
     $rootScope.maxCardinalities = DataManipulationService.generateCardinalities(1, 8, true);

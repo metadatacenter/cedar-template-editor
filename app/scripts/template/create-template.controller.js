@@ -117,13 +117,12 @@ define([
         var domId = DataManipulationService.createDomId();
         StagingService.addElementToForm($scope.form, element["@id"], domId, function(e) {
 
-          // now we are sure that the element was successfully added
+          // now we are sure that the element was successfully added, scroll to it and hide its nested contents
           $rootScope.scrollToDomId(domId);
+          $rootScope.toggleElement(domId);
 
         });
         $rootScope.$broadcast("form:update", element);
-
-
       }
     };
 

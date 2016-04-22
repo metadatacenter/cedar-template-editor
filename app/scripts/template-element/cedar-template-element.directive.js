@@ -212,10 +212,8 @@ define([
         SpreadsheetService.switchToSpreadsheetElement(scope, element);
       }
 
-      scope.switchExpandedState = function () {
-        element.find('.elementTotalContent').first().toggle();
-        element.find(".visibilitySwitch").toggle();
-        element.find(".spreadsheetSwitchLink").toggle();
+      scope.switchExpandedState = function (domId) {
+        $rootScope.toggleElement(domId);
       }
 
       scope.removeChild = function(fieldOrElement) {
