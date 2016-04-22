@@ -6,7 +6,8 @@
       <div class="row">
 
         <div class="col-lg-3 pull-left">
-          <a ng-click="switchExpandedState($root.getDomId(element))" class="visibilitySwitch"><i class="cedar-svg-collapse"></i></a>
+          <a ng-click="switchExpandedState($root.getDomId(element))" class="visibilitySwitch"><i
+              class="cedar-svg-collapse"></i></a>
           <a ng-click="switchExpandedState($root.getDomId(element))" class="visibilitySwitch" style="display:none;"><i
               class="cedar-svg-expand"></i></a>
 
@@ -26,8 +27,6 @@
         </span>
         </div>
 
-
-
         <div class="configuration-options col-lg-3 pull-right" ng-if="!$root.isRuntime() && !isNested() &&
           $root.propertiesOf(element)._tmp.state=='creating'">
           <div class="toggle-options">
@@ -43,8 +42,6 @@
             <div class="clearfix"></div>
           </div>
         </div>
-
-
 
         <div ng-if=" !$root.isRuntime()  && !isNested() && $root.propertiesOf(element)._tmp.state !='creating'"
             class="preview-edit-options col-lg-3 pull-right" style="padding-top:10px">
