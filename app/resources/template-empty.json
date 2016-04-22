@@ -22,6 +22,16 @@
           "enum": [
             "https://schema.org/value"
           ]
+        },
+        "pav": {
+          "enum": [
+            "http://purl.org/pav/"
+          ]
+        },
+        "cedar": {
+          "enum": [
+            "https://schema.metadatacenter.org/core/"
+          ]
         }
       },
       "required": [
@@ -53,11 +63,31 @@
     "_templateId": {
       "type": "string",
       "format": "uri"
+    },
+    "pav:createdOn": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "pav:createdBy": {
+      "type": "string",
+      "format": "uri"
+    },
+    "pav:lastUpdatedOn": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "cedar:lastUpdatedBy": {
+      "type": "string",
+      "format": "uri"
     }
   },
   "required": [
     "@id",
     "_templateId"
   ],
+  "pav:createdOn": null,
+  "pav:createdBy": null,
+  "pav:lastUpdatedOn": null,
+  "cedar:lastUpdatedBy": null,
   "additionalProperties": false
 }

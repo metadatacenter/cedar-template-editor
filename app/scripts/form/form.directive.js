@@ -90,9 +90,7 @@ define([
             // and the order array
             var idx = $scope.form._ui.order.indexOf(selectedKey);
             $scope.form._ui.order.splice(idx, 1);
-
             $scope.$emit("invalidElementState", ["remove", title, id]);
-
           }
         };
 

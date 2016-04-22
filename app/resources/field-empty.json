@@ -37,10 +37,30 @@
     },
     "_value": {
       "type": null
+    },
+    "pav:createdOn": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "pav:createdBy": {
+      "type": "string",
+      "format": "uri"
+    },
+    "pav:lastUpdatedOn": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "cedar:lastUpdatedBy": {
+      "type": "string",
+      "format": "uri"
     }
   },
   "required": [
     "_value"
   ],
+  "pav:createdOn": null,
+  "pav:createdBy": null,
+  "pav:lastUpdatedOn": null,
+  "cedar:lastUpdatedBy": null,
   "additionalProperties": false
 }
