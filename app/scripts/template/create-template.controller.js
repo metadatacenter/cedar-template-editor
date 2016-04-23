@@ -27,15 +27,13 @@ define([
     StagingService.configure(pageId);
     $rootScope.applicationRole = 'creator';
 
-    AuthorizedBackendService.doCall(
-        TemplateElementService.getAllTemplateElementsSummary(),
-        function (response) {
-          $scope.elementList = response.data;
-        },
-        function (err) {
-          UIMessageService.showBackendError('SERVER.ELEMENTS.load.error', err);
-        }
-    );
+    AuthorizedBackendService.doCall(TemplateElementService.getAllTemplateElementsSummary()).then(function(response) {
+      if (response.status == '200') {
+        $scope.elementList = response.data;
+      } else {
+        UIMessageService.showBackendError('SERVER.ELEMENTS.load.error', response);
+      }
+    });
 
     $scope.fieldTypes = FieldTypeService.getFieldTypes();
 

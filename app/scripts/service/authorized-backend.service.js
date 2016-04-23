@@ -69,8 +69,11 @@ define([
       //console.log(this.getTokenValidityMessage());
       var owner = this;
 
-      owner.getHttpPromise(httpConfigObject).then(function (response) {
-        thenFunction(response);
+      return owner.getHttpPromise(httpConfigObject).then(function (response) {
+        if (thenFunction) {
+          return thenFunction(response);
+        }
+        return response;
       }).catch(function (err) {
         //console.log("Original backend call failed:");
         //console.log(err);
@@ -91,11 +94,17 @@ define([
                       //console.log(UserService.getParsedToken());
                       console.log("Execute original call once again");
                       owner.getHttpPromise(httpConfigObject).then(function (response) {
-                        thenFunction(response);
+                        if (thenFunction) {
+                          return thenFunction(response);
+                        }
+                        return response;
                       }).catch(function (err) {
                         console.log("Second backend call failed:");
                         console.log(err);
-                        catchFunction(err);
+                        if (catchFunction) {
+                          return catchFunction(err);
+                        }
+                        return err;
                       });
                     } else {
                       console.log(this.getTokenValidityMessage());
@@ -112,7 +121,10 @@ define([
           }
         }
         // original catch function
-        catchFunction(err);
+        if (catchFunction) {
+          return catchFunction(err);
+        }
+        return err;
       });
     };
 
