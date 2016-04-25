@@ -229,7 +229,7 @@ define([
     }
 
     function getAcronym(result) {
-      var ontologyUri;
+      var ontologyUri = '';
       if (result.type == 'Ontology' || result.type == 'OntologyClass') {
         ontologyUri = result.ontology;
       }

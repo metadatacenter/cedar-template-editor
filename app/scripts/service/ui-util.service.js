@@ -17,8 +17,11 @@ define([
     service.scrollToAnchor = function (hash) {
       $timeout(function () {
         var target = angular.element('#' + hash);
-        var y = target.offset().top;
-        $window.scrollTo(0, y - 95);
+        if (target) {
+          var y = target.offset().top;
+          $window.scrollTo(0, y - 95);
+        }
+
       }, 250);
     };
 
@@ -36,6 +39,24 @@ define([
               $window.scrollTo(0, y - 95);
             }
           }, 250
+      );
+    };
+
+    /**
+     * toggle element's contents.
+     * @param id
+     */
+    service.toggleElement = function (id) {
+
+      $timeout(function () {
+
+            var target = angular.element('#' + id );
+            if (target) {
+              target.find('.elementTotalContent').first().toggle();
+              target.find(".visibilitySwitch").toggle();
+              target.find(".spreadsheetSwitchLink").toggle();
+            }
+          }, 350
       );
     };
 

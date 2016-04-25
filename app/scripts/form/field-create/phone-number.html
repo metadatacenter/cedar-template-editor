@@ -1,5 +1,17 @@
 <div id="phone-number-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}" class="input-type-container">
-	<p class="type-label"><i class="cedar-svg-phone"></i>Phone Number</p>
+
+  <div class="row" ng-if="!$root.isRuntime() && !ngDisabled && !preview">
+    <div class="configuration-options col-lg-3 pull-left type-label"><p class="type-label" style="padding-left:10px"><i class="cedar-svg-phone"></i>Phone Number</p></div>
+    <div class="configuration-options col-lg-3 pull-right configuration-actions" style="padding-top:0"
+        ng-include="'scripts/form/partials/staging-area-actions.partial.html'"></div>
+    <div class="configuration-options col-lg-1 centered " style="float: none;margin: 0 auto;">
+      <div class="sortable-handler " style="padding-top:5px" ng-if="!preview && !$root.isRuntime()"><span
+          class="sortable-icon"></span></div>
+    </div>
+  </div>
+
 	<div class="definition-inputs" ng-include="'scripts/form/partials/field-definition.partial.html'"></div><!-- /.definition-inputs -->
-	<ng-include src="'scripts/form/partials/staging-area-footer.partial.html'" />
+
+  <div class="configuration-options " ng-include="'scripts/form/partials/configuration-options.partial.html'"></div>
+
 </div><!-- /.input-type-container -->

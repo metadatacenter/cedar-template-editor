@@ -1,24 +1,77 @@
 <div ng-if="model !== undefined" class="element-root" id="{{$root.getDomId(element)}}">
+
   <div>
-    <div class="element-header" ng-class="{'sortable-handler': !$root.isRuntime()}">
-      <a ng-click="switchExpandedState()" class="visibilitySwitch"><i class="cedar-svg-collapse"></i></a>
-      <a ng-click="switchExpandedState()" class="visibilitySwitch" style="display:none;"><i class="cedar-svg-expand"></i></a>
+    <div class="element-header input-type-container" style="position:relative;"
+        ng-class="{'sortable-handler': !$root.isRuntime()}">
+      <div class="row">
 
-      <p class="element-name-label">
-        <span  ng-class="{'sortable-icon': !$root.isRuntime()}" ></span><i class="cedar-svg-element"></i>{{$root.propertiesOf(element)._ui.title}}
-      </p>
-      <span class="multiple-instance-cardinality" ng-show="!$root.isRuntime() && $root.elementIsMultiInstance(element)">
-        {{element.minItems}} .. {{element.maxItems || "Unlimited"}}
-      </span>
+        <div class="col-lg-3 pull-left">
+          <a ng-click="switchExpandedState($root.getDomId(element))" class="visibilitySwitch"><i
+              class="cedar-svg-collapse"></i></a>
+          <a ng-click="switchExpandedState($root.getDomId(element))" class="visibilitySwitch" style="display:none;"><i
+              class="cedar-svg-expand"></i></a>
 
-      <div ng-if="!isRootElement" class="preview-edit-options" id="previewEditOptionOfElement" ng-include="'scripts/form/partials/preview-edit-options.partial.html'"></div>
-      <span ng-show="$root.isArray(model) && $root.applicationMode == 'runtime'" class="spreadsheetSwitch element">
+          <p class="element-name-label ">
+            <i class="cedar-svg-element"></i>{{$root.schemaOf(element)._ui.title}}
+          </p>
+
+         <span ng-show="$root.isArray(model) && $root.applicationMode == 'runtime'" class="spreadsheetSwitch element">
         <a ng-click="switchToSpreadsheet()" class="spreadsheetSwitchLink">
           <i class="cedar-svg-spreadsheet"></i>
         </a>
       </span>
+
+        <span class="multiple-instance-cardinality"
+            ng-show="!$root.isRuntime() && $root.elementIsMultiInstance(element)">
+        {{element.minItems}} .. {{element.maxItems || "Unlimited"}}
+        </span>
+        </div>
+
+        <div class="configuration-options col-lg-3 pull-right" ng-if="!$root.isRuntime() && !isNested() &&
+          $root.propertiesOf(element)._tmp.state=='creating'">
+          <div class="toggle-options">
+            <div class="save-options">
+              <div class="add" ng-click="add()" ng-if="$root.propertiesOf(element)._tmp.state == 'creating'">
+                <i class="fa fa-plus"></i>
+              </div>
+              <div class="remove" ng-click="delete()">
+                <i class="fa fa-times"></i>
+              </div>
+            </div>
+            <!-- /.save-options -->
+            <div class="clearfix"></div>
+          </div>
+        </div>
+
+        <div ng-if=" !$root.isRuntime()  && !isNested() && $root.propertiesOf(element)._tmp.state !='creating'"
+            class="preview-edit-options col-lg-3 pull-right" style="padding-top:10px">
+          <div class="element-preview-actions">
+            <div class="toggle-options">
+              <div class="save-options pull-right">
+                <div class="edit" ng-click="edit()" ng-if="$root.propertiesOf(element)._tmp.state != 'creating'">
+                  <i class="fa fa-pencil"></i>
+                </div>
+                <div class="remove" ng-click="delete()">
+                  <i class="fa fa-times"></i>
+                </div>
+              </div>
+              <!-- /.save-options -->
+              <div class="clearfix"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="configuration-options col-lg-1 centered " style="float: none;margin: 0 auto;"
+            ng-if="!$root.isRuntime()">
+          <div class="sortable-handler " style="padding-top:5px"
+              ng-if="!preview && !$root.isRuntime() && $root.propertiesOf(element)._tmp.state != 'creating'"><span
+              class="sortable-icon"></span></div>
+        </div>
+
+      </div>
     </div>
   </div>
+
 
   <div class="elementTotalContent visible">
 
@@ -29,11 +82,11 @@
 
     <div class="elements originalContent">
       <div class="element-toggles list" ng-if="$root.isRuntime() && $root.elementIsMultiInstance(element)">
-        <div class="element-toggle" 
-             ng-class="{active: selectedTab == $index}"
-             ng-repeat="m in model"
-             ng-click="selectTab($index)"
-             ng-if="$root.isArray(model) && model.length > 0">
+        <div class="element-toggle"
+            ng-class="{active: selectedTab == $index}"
+            ng-repeat="m in model"
+            ng-click="selectTab($index)"
+            ng-if="$root.isArray(model) && model.length > 0">
           <span>{{$index + 1}}</span>
         </div>
         <div class="add-element">
@@ -43,83 +96,113 @@
             <div class="cardinality-_ui-container">
               <div class="cardinality-_ui">
                 <div class="cardinality-_ui-text">
-                  <span translate="GENERIC.MultipleMinMaxMsg" translate-values="{min:element.minItems, max:(element.maxItems || 'GENERIC.Unlimited' | translate)}"></span>
+                  <span translate="GENERIC.MultipleMinMaxMsg"
+                      translate-values="{min:element.minItems, max:(element.maxItems || 'GENERIC.Unlimited' | translate)}"></span>
                 </div>
               </div>
             </div>
           </button>
         </div>
         <div class="clearfix"></div>
-      </div> <!-- /.date-type-toggle -->
+      </div>
+      <!-- /.date-type-toggle -->
 
-      <div ng-if="$root.isArray(model) && selectedTab == $index" class="element" ng-repeat="m in model" ng-class="['element-{{$index}}']">
+      <!-- have an array with at least one element -->
+      <div ng-if="$root.isArray(model) && selectedTab == $index" class="element" ng-repeat="m in model"
+          ng-class="['element-{{$index}}']">
         <div class="remove-element pull-right">
           <a class="" ng-show="model.length > element.minItems" ng-click="removeElement($index)" translate>GENERIC.Remove</a>
         </div>
 
-        <div ui-sortable="$root.sortableOptions" ng-model="element._ui.order" class="sortable-container">
-          <div ng-repeat="key in element['_ui']['order']">
+        <div ui-sortable="$root.sortableOptions" ng-model="$root.schemaOf(element)._ui.order"
+            class="sortable-container">
+          <div ng-repeat="key in $root.schemaOf(element)['_ui']['order']">
             <div ng-if="$root.propertiesOf(element)[key]">
-              <cedar-nested-template-element key="key" 
-                                             field="$root.propertiesOf(element)[key]"
-                                             model="m[key]"
-                                             remove-child="removeChild"
-                                             rename-child-key="renameChildKey">
+              <cedar-nested-template-element key="key"
+                  field="$root.propertiesOf(element)[key]"
+                  model="m[key]"
+                  remove-child="removeChild"
+                  rename-child-key="renameChildKey">
               </cedar-nested-template-element>
             </div>
           </div>
         </div>
       </div>
 
-      <div ng-if="!$root.isArray(model)" class="element only-element" ui-sortable="$root.sortableOptions" ng-model="element._ui.order">
-        <div ng-repeat="key in element['_ui']['order']">
+      <!-- have an array with no elements -->
+      <div ng-if="!$root.isRuntime() && $root.isArray(model) && model.length == 0" class="element"
+          ng-class="['element-0']">
+        <div ui-sortable="$root.sortableOptions" ng-model="element._ui.order" class="sortable-container">
+          <div ng-repeat="key in $root.schemaOf(element)['_ui']['order']">
+
+            <div ng-if="true">
+              <cedar-nested-template-element key="key"
+                  field="$root.propertiesOf(element)[key]"
+                  model="m[key]"
+                  preview="preview" ,
+                  remove-child="removeChild"
+                  rename-child-key="renameChildKey"
+                  >
+              </cedar-nested-template-element>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- not an array -->
+      <div ng-if="!$root.isArray(model)" class="element only-element" ui-sortable="$root.sortableOptions"
+          ng-model="element._ui.order">
+        <div ng-repeat="key in $root.schemaOf(element)['_ui']['order']">
           <div ng-if="$root.propertiesOf(element)[key]">
             <cedar-nested-template-element key="key"
-                                           field="$root.propertiesOf(element)[key]"
-                                           model="model[key]"
-                                           remove-child="removeChild"
-                                           rename-child-key="renameChildKey">
+                field="$root.propertiesOf(element)[key]"
+                model="model[key]"
+                remove-child="removeChild"
+                rename-child-key="renameChildKey">
             </cedar-nested-template-element>
           </div>
         </div>
       </div>
 
-      <div class="input-type-container" ng-if="!$root.isRuntime() && !isRootElement && $root.propertiesOf(element)._tmp.state == 'creating'">
-        <div class="row">
-          <div class="configuration-options element-configuration-options col-lg-9 pull-left">
-            <div class="checkbox checkbox-inline checkbox-cardinality">
-              <input type="checkbox" id="cardinality-{{element['@id'].substring(element['@id'].lastIndexOf('/')+1)}}" ng-model="$root.propertiesOf(element)._ui.is_cardinal_field" />
-              <label for="cardinality-{{element['@id'].substring(element['@id'].lastIndexOf('/')+1)}}">Cardinality</label>
-            </div><!-- /.checkbox-inline -->
-            <div class="clearfix"></div>
 
-            <!-- Cardinality Options -->
-            <div id="cardinality-options" class="cardinality-options" ng-show="$root.propertiesOf(element)._ui.is_cardinal_field">
-              <div class="form-group validation-pattern pull-left min-items-option">
-                <label>Min:</label>
-                <select class=""
-                        ng-model="element.minItems"
-                        ng-options="v.value as v.label for v in $root.minCardinalities"
-                        select-picker=""
-                        title="">
-                </select>
-              </div><!-- /.form-group -->
+    </div>
+  </div>
 
-              <div class="form-group validation-pattern pull-left max-items-option">
-                <label>Max:</label>
-                <select class=""
-                        ng-model="element.maxItems"
-                        ng-options="v.value as v.label for v in $root.maxCardinalities"
-                        select-picker=""
-                        title="">
-                </select>
-              </div><!-- /.form-group -->
-            </div><!-- /.cardinality-options -->
+
+  <div class="input-type-container"
+      ng-if="!$root.isRuntime() && !isRootElement && !isNested() && $root.propertiesOf(element)._tmp.state == 'creating'">
+    <div class="row">
+      <div class="configuration-options element-configuration-options col-lg-9 pull-left">
+
+        <!-- Cardinality Options -->
+        <div id="cardinality-options" class="cardinality-options" style="margin-left: 15px;"
+            ng-show="true">
+          <div class="form-group validation-pattern pull-left min-items-option">
+            <label>Min:</label>
+            <select class=""
+                ng-model="element.minItems"
+                ng-options="v.value as v.label for v in $root.minCardinalities"
+                select-picker=""
+                title="">
+            </select>
           </div>
-          <div class="configuration-options col-lg-3 pull-right configuration-actions" ng-include="'scripts/form/partials/staging-area-actions.partial.html'"></div>
-          <div class="clearfix"></div>
+          <!-- /.form-group -->
+
+          <div class="form-group validation-pattern pull-left max-items-option">
+            <label>Max:</label>
+            <select class=""
+                ng-model="element.maxItems"
+                ng-options="v.value as v.label for v in $root.maxCardinalities"
+                select-picker=""
+                title="">
+            </select>
+          </div>
+          <!-- /.form-group -->
         </div>
+        <!-- /.cardinality-options -->
       </div>
+
+      <div class="clearfix"></div>
     </div>
   </div>
 </div>

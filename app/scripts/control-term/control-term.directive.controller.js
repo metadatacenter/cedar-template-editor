@@ -65,7 +65,9 @@ define([
 
     //General
     vm.controlTerm = {};
-    vm.filterSelection = vm.options && vm.options.filterSelection || "";
+    vm.filterSelection = vm.options && vm.options.filterSelection || ""
+    vm.modalId = vm.options && vm.options.modalId || "";
+
 
     setInitialFieldConstraints();
 
@@ -105,16 +107,34 @@ define([
       vm.startOver();
     };
 
+    function closeDialog() {
+
+    }
+
     function addClass(selection, ontology) {
+
+      // has this selection been added yet?
       var alreadyAdded = false;
       for(var i = 0, len = vm.addedFieldItems.length; i < len; i+= 1) {
-        if(vm.addedFieldItems[i].prefLabel == selection.prefLabel) {
+        if(vm.addedFieldItems[i]['@id'] == selection['@id']) {
           alreadyAdded = true;
           break;
         }
       }
 
       if(alreadyAdded == false) {
+
+        // do we have info about this ontology?
+        if (!ontology.info) {
+          ontology.info = {};
+          ontology.info.name = ontology.details.ontology.name;
+          ontology.info.id = ontology.details.ontology.acronym;
+        }
+
+        // get details from the service
+        var ontologyDetails =  controlTermDataService.getOntologyByLdId(ontology.info.id);
+
+        // add this new selection
         vm.addedFieldItems.push({
           prefLabel: selection.prefLabel,
           ontologyDescription: ontology.info.name+" ("+ontology.info.id+")",
@@ -135,11 +155,15 @@ define([
           properties['@type'].oneOf[0].enum = [selfUrl];
           properties['@type'].oneOf[1].items.enum = [selfUrl];
         }
-
-        vm.startOver();
-      } else {
-        alert(selection.prefLabel+' has already been added.');
       }
+      vm.startOver();
+
+      //$element.parents("#" + vm.modalId).modal({show: false, backdrop: "static"});
+      //$element.parents(".controlled-terms-modal-vm.filterSelector").hide();
+
+      // TODO broadcast the action for now because parent scope is not working
+      $rootScope.$broadcast('field:controlledTermAdded');
+
     }
 
     /**
@@ -326,7 +350,9 @@ define([
      * Reset to the beginning where you select field or value filter.
      */
     function startOver() {
+
       vm.filterSelection = vm.options && vm.options.filterSelection || "";
+      vm.modalId = vm.options && vm.options.modalId || "";
       vm.currentOntology = null;
       vm.selectedValueResult = null;
       vm.currentValueSet = null;
@@ -527,7 +553,6 @@ define([
           }
         }
 
-        // setInitialFieldConstraints();
       }
     });
 
@@ -574,8 +599,9 @@ define([
      */
 
     function assignValueConstraintToField() {
-      $rootScope.propertiesOf(vm.field)._valueConstraints =
-        angular.extend(vm.valueConstraint, $rootScope.propertiesOf(vm.field)._valueConstraints)
+      $rootScope.schemaOf(vm.field)._valueConstraints =
+        angular.extend($rootScope.schemaOf(vm.field)._valueConstraints, vm.valueConstraint)
+
       delete vm.stageValueConstraintAction;
       vm.stagedOntologyValueConstraints = [];
       vm.stagedOntologyClassValueConstraints = [];
@@ -583,13 +609,15 @@ define([
       vm.stagedValueSetValueConstraints = [];
       vm.stagedBranchesValueConstraints = [];
       vm.startOver();
+
+      // TODO broadcast the action so dialog is closed and ontology picker is reset
+      $rootScope.$broadcast('field:controlledTermAdded');
+
     }
 
     function setInitialFieldConstraints() {
       if (vm.field) {
-        var properties = $rootScope.propertiesOf(vm.field);
-
-        vm.valueConstraint = angular.copy(properties._valueConstraints) || {};
+        vm.valueConstraint = angular.copy($rootScope.schemaOf(vm.field)._valueConstraints) || {};
         vm.valueConstraint.ontologies = vm.valueConstraint.ontologies || [];
         vm.valueConstraint.valueSets = vm.valueConstraint.valueSets || [];
         vm.valueConstraint.classes = vm.valueConstraint.classes || [];

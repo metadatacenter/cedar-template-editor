@@ -9360,7 +9360,7 @@ i {
   line-height: 25px;
 }
 .template-body .right-body .preview-edit-options .edit {
-  background-color: #ccc;
+  background-color: #5795ba;
 }
 .template-body .right-body .preview-edit-options .edit:hover {
   background-color: #999;
@@ -9371,7 +9371,7 @@ i {
           transform: translate(10px, 9px);
 }
 .template-body .right-body .preview-edit-options .remove {
-  background-color: #333;
+  background-color: #999;
 }
 .template-body .right-body .preview-edit-options .remove:hover {
   background-color: #000000;
@@ -9384,7 +9384,7 @@ i {
 .template-body .right-body .element-group {
   width: 100%;
   border: 1px solid #dddddd;
-  padding: 0px 14px 12px 16px;
+  padding: 12px 14px 12px 16px;
   margin-bottom: 16px;
   background-color: #f4f4f7;
 }
@@ -10186,7 +10186,7 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
 #element_control_term .type-toggle {
   text-align: center;
   margin: 0 auto;
-  margin-bottom: 40px;
+  margin-bottom: 10px;
 }
 .template-body form .type-toggle:before,
 #element_control_term .type-toggle:before,
@@ -10484,7 +10484,7 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
           transform: translate(9px, 0px);
 }
 .input-type-container .configuration-options .toggle-options .save-options .remove {
-  background-color: #333;
+  background-color: #999;
 }
 .input-type-container .configuration-options .toggle-options .save-options .remove:hover {
   background-color: #000000;
@@ -11323,7 +11323,7 @@ p.instructions {
 }
 .element-toggles .element-toggle {
   display: inline-block;
-  padding: 20px 20px 0;
+  padding: 0 20px 0;
   border-bottom: 5px solid #DDD;
   border-color: #DDD;
   -webkit-transition: all 0.3s ease 0.1s;
@@ -12062,12 +12062,8 @@ body .template-header .controlled-terms-modal {
   font-size: 15px;
 }
 .input-type-container .configuration-options {
-  padding: 5px 0 20px 5px;
+  padding: 5px 0 0 5px;
   position: static;
-}
-.cardinality-options {
-  padding-left: 10px;
-  margin-top: 10px;
 }
 .input-type-container .configuration-options .toggle-options {
   margin-right: 15px;
@@ -12186,10 +12182,6 @@ body .template-header .controlled-terms-modal {
 .element-configuration-options {
   margin-top: 5px;
 }
-.definition-inputs {
-  padding-bottom: 20px;
-  border-bottom: 1px dashed #dddddd;
-}
 .fields.preview .floating-label {
   display: none;
 }
@@ -12199,6 +12191,17 @@ body .template-header .controlled-terms-modal {
 }
 .configuration-options .controlled-terms .no-items-added {
   margin-bottom: 50px;
+}
+.configuration-options .controlled-terms button.search-ontologies-button:focus {
+  outline: none;
+}
+.configuration-options .controlled-terms .clear-save {
+  float: right;
+}
+.configuration-options .toggle-controlled-term .controlled-term-label {
+  top: -0.3em;
+  position: relative;
+  font-weight: normal;
 }
 .btn-field-browse .text,
 .btn-values-browse .text {
@@ -12215,6 +12218,7 @@ body .template-header .controlled-terms-modal {
   padding: 5px;
   border: 1px solid #dddddd;
   margin-bottom: 10px;
+  margin-top: 5px;
 }
 .sortable-icon {
   background: url("/img/drag-me.png") no-repeat;

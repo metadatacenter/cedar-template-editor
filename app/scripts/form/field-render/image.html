@@ -1,7 +1,19 @@
+<div ng-if="!$root.isRuntime()" style="padding-top: 40px;">
+  <figure>
+  <img ng-src="{{$root.propertiesOf(field)._content}}" no-image alt="{{$root.schemaOf(field)._ui.title}}"
+      type="image/png" width="100%"/>
+  <figcaption><label>{{$root.schemaOf(field)._ui.title}}</label></figcaption>
+</figure>
+  </div>
 
-    <figure>
-      <img ng-src="{{$root.propertiesOf(field)._content}}" no-image  alt="{{$root.propertiesOf(field)._ui.title}}"  type="image/png"  width="100%"/>
-      <figcaption><label>{{$root.propertiesOf(field)._ui.title}}</label></figcaption>
-    </figure>
+<div ng-if="$root.isRuntime()">
+  <figure>
+    <img ng-src="{{$root.propertiesOf(field)._content}}" no-image alt="{{$root.schemaOf(field)._ui.title}}"
+        type="image/png" width="100%"/>
+    <figcaption><label>{{$root.schemaOf(field)._ui.title}}</label></figcaption>
+  </figure>
+</div>
+
+<div class="clearfix all"></div>
 
 

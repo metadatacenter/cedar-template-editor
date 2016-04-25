@@ -48,6 +48,12 @@ To run the tests:
 
     $ npm test
 
+    
+To have karma watch for changes:
+
+    $ karma start
+
+
 ### End-to-end (e2e) Tests
 
 e2e tests use Protractor.  To run them, first install selenium:

@@ -1,17 +1,17 @@
 <div class="fields audio-visual-fields">
   <div ng-if="$root.isArray(model)" class="form-group floating-label-wrapper" ng-repeat="valueElement in model">
-	<!--<p class="extra-label-context" ng-if="!$root.isRuntime() && $root.propertiesOf(field)._ui.title">{{$root.propertiesOf(field)._ui.title}}</p>-->
+	<!--<p class="extra-label-context" ng-if="!$root.isRuntime() && $root.schemaOf(field)._ui.title">{{$root.schemaOf(field)._ui.title}}</p>-->
     <input type="text"
            class="form-control"
-           ng-class="{'required': $root.propertiesOf(field)._valueConstraints.requiredValue}"
+           ng-class="{'required': $root.schemaOf(field)._valueConstraints.requiredValue}"
            id="audiovisual"
-           placeholder="{{$root.propertiesOf(field)._ui.title}}"
-           aria-label="{{$root.propertiesOf(field)._ui.description}}"
+           placeholder="{{$root.schemaOf(field)._ui.title}}"
+           aria-label="{{$root.schemaOf(field)._ui.description}}"
            ng-model="valueElement._value"
            ng-disabled="!$root.isRuntime() || preview"
            with-floating-label="" />
     <div class="input-indicator-icons">
-      <i class="cedar-svg-help-circle" data-container="body" data-toggle="popover" data-placement="left" data-content="{{$root.propertiesOf(field)._ui.description}}"></i>
+      <i class="cedar-svg-help-circle" data-container="body" data-toggle="popover" data-placement="left" data-content="{{$root.schemaOf(field)._ui.description}}"></i>
       <i class="cedar-svg-check-circle"></i>
       <i class="cedar-svg-warning"></i>
     </div><!-- /.input-indicator-icons -->
@@ -29,16 +29,16 @@
   <div ng-if="$root.isArray(model) && model.length == 0 && !$root.isRuntime()" class="form-group floating-label-wrapper">
     <input type="text"
         class="form-control"
-        ng-class="{'required': $root.propertiesOf(field)._valueConstraints.requiredValue}"
+        ng-class="{'required': $root.schemaOf(field)._valueConstraints.requiredValue}"
         id="audiovisual"
-        placeholder="{{$root.propertiesOf(field)._ui.title}}"
-        aria-label="{{$root.propertiesOf(field)._ui.description}}"
+        placeholder="{{$root.schemaOf(field)._ui.title}}"
+        aria-label="{{$root.schemaOf(field)._ui.description}}"
         ng-model="model._value"
         ng-disabled="true"
         with-floating-label="">
     </input>
     <div class="input-indicator-icons">
-      <i class="cedar-svg-help-circle" data-container="body" data-toggle="popover" data-placement="left" data-content="{{$root.propertiesOf(field)._ui.description}}"></i>
+      <i class="cedar-svg-help-circle" data-container="body" data-toggle="popover" data-placement="left" data-content="{{$root.schemaOf(field)._ui.description}}"></i>
       <i class="cedar-svg-check-circle"></i>
       <i class="cedar-svg-warning"></i>
     </div><!-- /.input-indicator-icons -->
@@ -52,16 +52,16 @@
   <div ng-if="!$root.isArray(model)" class="form-group floating-label-wrapper">
     <input type="text"
            class="form-control"
-           ng-class="{'required': $root.propertiesOf(field)._valueConstraints.requiredValue}"
+           ng-class="{'required': $root.schemaOf(field)._valueConstraints.requiredValue}"
            id="audiovisual"
-           placeholder="{{$root.propertiesOf(field)._ui.title}}"
-           aria-label="{{$root.propertiesOf(field)._ui.description}}"
+           placeholder="{{$root.schemaOf(field)._ui.title}}"
+           aria-label="{{$root.schemaOf(field)._ui.description}}"
            ng-model="model._value"
            ng-disabled="!$root.isRuntime() || preview"
            with-floating-label="">
     </input>
     <div class="input-indicator-icons">
-      <i class="cedar-svg-help-circle" data-container="body" data-toggle="popover" data-placement="left" data-content="{{$root.propertiesOf(field)._ui.description}}"></i>
+      <i class="cedar-svg-help-circle" data-container="body" data-toggle="popover" data-placement="left" data-content="{{$root.schemaOf(field)._ui.description}}"></i>
       <i class="cedar-svg-check-circle"></i>
       <i class="cedar-svg-warning"></i>
     </div><!-- /.input-indicator-icons -->
