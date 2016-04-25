@@ -62,7 +62,7 @@
         </div>
 
         <div class="configuration-options col-lg-1 centered " style="float: none;margin: 0 auto;"
-            ng-if="!$root.isRuntime()">
+            ng-if="!$root.isRuntime() && !isNested()">
           <div class="sortable-handler " style="padding-top:5px"
               ng-if="!preview && !$root.isRuntime() && $root.propertiesOf(element)._tmp.state != 'creating'"><span
               class="sortable-icon"></span></div>
