@@ -25,11 +25,15 @@ module.exports = function(config) {
       // custom libraries
       { pattern: 'cedar/scripts/**/*.js', included: false },
 
+      // third party libraries
+      { pattern: 'third_party_components/**/*.js', included: false },
+
       { pattern: 'scripts/**/*.js', included: false },
       { pattern: 'scripts/app.js', included: false },
       'scripts/keycloak/keycloak.js',
       'scripts/handlers/KeycloakUserHandler.js',
       'scripts/handlers/NoauthUserHandler.js',
+      'scripts/handlers/UserProfileHandler.js',
       'require-config.js',
     ],
 

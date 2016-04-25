@@ -50,8 +50,8 @@ require.config({
     'lib/angular-toasty/dist/angular-toasty'                                         : ['angular'],
     'lib/angular-ui-select/dist/select'                                              : ['angular'],
     'lib/angular-ui-sortable/sortable'                                               : ['angular'],
-    'lib/angulartics/angulartics'                                                    : ['angular'],
-    'lib/angulartics-google-analytics/angulartics-google-analytics'                  : ['angular'],
+    'lib/angulartics/dist/angulartics.min'                                           : ['angular'],
+    'lib/angulartics-google-analytics/dist/angulartics-google-analytics.min'         : ['angular'],
 
     '3rdparty/angular-fitvids/angular-fitvids': {
       deps   : ['angular', 'jquery'],

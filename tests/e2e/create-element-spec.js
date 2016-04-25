@@ -16,15 +16,17 @@ describe('create-element', function() {
     var validInitialSchema = {
       '$schema': 'http://json-schema.org/draft-04/schema#',
       '@type': 'https://schema.metadatacenter.org/core/TemplateElement',
+      '@context': {
+        pav: 'http://purl.org/pav/',
+        cedar: 'https://schema.metadatacenter.org/core/'
+      },
       type: 'object',
       title: '',
       description: '',
       _ui: { order: [] },
       properties: {
         '@context': {
-          properties: {
-            '_value': { 'enum': ['https://schema.org/value'] }
-          },
+          properties: {},
           required: [
             '_value'
           ],
