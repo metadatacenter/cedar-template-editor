@@ -13,11 +13,17 @@ function UserProfileHandler() {
 
   this.loadUrlServiceConf = function (userId, success) {
     var service = this;
-    jQuery.get('config/url-service.conf.json', function (urlConfigData) {
-      service.usersUrl = urlConfigData.userRestAPI + '/users';
+    if (window.__karma__) {
+      service.usersUrl = 'https://user.metadatacenter.orgx/users';
       service.userUrl = service.usersUrl + '/' + userId;
       success();
-    });
+    } else {
+      jQuery.get('config/url-service.conf.json', function (urlConfigData) {
+        service.usersUrl = urlConfigData.userRestAPI + '/users';
+        service.userUrl = service.usersUrl + '/' + userId;
+        success();
+      });
+    }
   };
 
   this.storeProfileAndCallback = function (userData) {

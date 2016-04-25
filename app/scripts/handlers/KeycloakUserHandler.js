@@ -18,8 +18,7 @@ function KeycloakUserHandler() {
     return keycloak.refreshToken;
   };
 
-  this.getParsedToken = function (config) {
-    // config is used for NoauthUserHandler only
+  this.getParsedToken = function () {
     return keycloak.tokenParsed;
   };
 
