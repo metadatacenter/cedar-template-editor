@@ -30,7 +30,8 @@ define([
         "TEMPLATE": "template",
         "ELEMENT": "element",
         "INSTANCE": "instance",
-        "LINK": "link"
+        "LINK": "link",
+        "FOLDER": "folder"
       }
     });
 });

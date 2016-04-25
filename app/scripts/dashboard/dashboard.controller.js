@@ -28,7 +28,8 @@ define([
     var vm = this;
 
     vm.createFolder = createFolder;
-    vm.currentWorkspacePath = cedar.getHome();
+    vm.currentWorkspacePath = '/Users'; // TODO: change to cedar.getHome();
+    vm.deleteResource = deleteResource;
     vm.editResource = editResource;
     vm.facets = {};
     vm.forms = [];
@@ -66,13 +67,15 @@ define([
      */
 
     function createFolder() {
-      var name = prompt("Please enter a folder name");
+      var name = prompt('Please enter a folder name');
+      var description = prompt('Please enter a folder description');
       var path = vm.currentWorkspacePath;
       resourceService.createFolder(
         name,
         path,
+        description,
         function(response) {
-          debugger;
+          getWorkspace();
         },
         function(response) { }
       );
@@ -94,6 +97,20 @@ define([
           break;
         case CONST.resourceType.LINK:
           $location.path(scope.href);
+          break;
+      }
+    }
+
+    function deleteResource(resource) {
+      switch (resource.resourceType) {
+        case CONST.resourceType.FOLDER:
+          resourceService.deleteFolder(
+            resource['@id'],
+            function(response) {
+              debugger;
+            },
+            function(error) { }
+          );
           break;
       }
     }
@@ -124,7 +141,7 @@ define([
       if (resourceTypes.length > 0) {
         return resourceService.getResources(
           path,
-          { resourceTypes: resourceTypes, sort: '-createdOn' },
+          { resourceTypes: resourceTypes, sort: '-createdOn', limit: 10, offset: 1 },
           function(response) {
             vm.resources = response.resources;
           },

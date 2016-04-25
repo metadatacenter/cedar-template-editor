@@ -21,6 +21,7 @@ define([
     var searchTerm = null;
     var service = {
       createFolder: createFolder,
+      deleteFolder: deleteFolder,
       getFacets: getFacets,
       getResources: getResources,
       searchResources: searchResources
@@ -31,16 +32,28 @@ define([
      * Service methods.
      */
 
-    function createFolder(name, path, successCallback, errorCallback) {
-      var url = urlService.folders() + '?parent_path=' + path;
+    function createFolder(name, path, description, successCallback, errorCallback) {
+      var url = urlService.folders();
       var payload = {
-        resourceType: 'folder',
+        path: path,
         name: name,
-        description: ''
+        description: description
       };
       authorizedBackendService.doCall(
         httpBuilderService.post(url, payload),
         function(response) {
+          successCallback(response.data);
+        },
+        errorCallback
+      );
+    }
+
+    function deleteFolder(folderId, successCallback, errorCallback) {
+      var url = urlService.folders() + '/' + folderId;
+      authorizedBackendService.doCall(
+        httpBuilderService.put(url),
+        function(response) {
+          debugger;
           successCallback(response.data);
         },
         errorCallback
@@ -163,7 +176,7 @@ define([
 
     function getResources(path, options = {}, successCallback, errorCallback) {
       var resourceTypes = options.resourceTypes || uiSettingsService.getResourceTypeFilters().map(function(obj) { return obj.resourceType });
-      var url = urlService.folders() + '?path=' + path + '&resource_types=' + resourceTypes.join(',');
+      var url = urlService.folders() + '/contents?path=' + path + '&resource_types=' + resourceTypes.join(',');
       if (options.sort) {
         url += '&sort=' + options.sort;
       }
