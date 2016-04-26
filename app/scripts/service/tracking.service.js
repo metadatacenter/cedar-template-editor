@@ -22,7 +22,7 @@ define([
     service.init = function () {
       analyticsKey = config.analyticsKey;
       isTracking = analyticsKey !== 'false';
-      if (isTracking) {
+      if (isTracking && typeof ga != 'undefined') {
         ga('create', analyticsKey, 'auto');
       }
     };

@@ -1,9 +1,8 @@
 'use strict';
 
 define([
-  'angular',
-  'json!config/user-service.conf.json'
-], function (angular, config) {
+  'angular'
+], function (angular) {
   angular.module('cedar.templateEditor.service.userService', [])
       .service('UserService', UserService);
 

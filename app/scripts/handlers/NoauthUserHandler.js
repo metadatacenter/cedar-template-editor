@@ -16,8 +16,19 @@ function NoauthUserHandler() {
     return null;
   };
 
-  this.getParsedToken = function (config) {
-    return config.noauthToken;
+  this.getParsedToken = function () {
+    return {
+      "name": "Unauthenticated User",
+      "sub": "111-2222-33333",
+      "email": "user@domain.edu",
+      "realm_access": {
+        "roles": [
+          "virtual role 1",
+          "virtual role 2",
+          "virtual role 3"
+        ]
+      }
+    }
   };
 
   this.getTokenValiditySeconds = function () {

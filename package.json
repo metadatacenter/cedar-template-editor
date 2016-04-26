@@ -4,7 +4,8 @@
   "description": "Form building application built with AngularJS",
   "main": "app/scripts/app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node_modules/karma/bin/karma start karma.conf.js --browsers Firefox --single-run",
+    "protractor": "node_modules/protractor/bin/protractor protractor.config.js"
   },
   "repository": {
     "type": "git",
@@ -13,6 +14,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "bower": "^1.7.7",
     "colors": "^1.1.2",
     "connect-history-api-fallback": "1.1.0",
     "gulp": "^3.9.1",
@@ -34,9 +36,12 @@
     "jshint-stylish": "^1.0.1",
     "karma": "^0.13.11",
     "karma-chrome-launcher": "^0.2.1",
+    "karma-firefox-launcher": "^0.1.7",
     "karma-jasmine": "^0.3.6",
-    "karma-notify-send-reporter": "0.0.3",
-    "protractor": "^2.5.1",
+    "karma-notify-send-reporter": "^0.0.3",
+    "karma-requirejs": "^0.2.5",
+    "protractor": "^3.2.1",
+    "requirejs": "^2.1.0",
     "selenium-standalone": "^4.7.1",
     "sync-request": "^2.1.0"
   },
