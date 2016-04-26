@@ -133,7 +133,7 @@
             ui-disable-choice="option.value == $root.vrs.getNoResultsMsg()"
             refresh="updateModelWhenRefresh($select); $root.vrs.updatePopulatedFields(field, $select.search)"
             refresh-delay="0"
-            repeat="option in $root.vrs.getValueRecommendationResults(field['@id']) | propsFilter: {value: $select.search}">
+            repeat="option in $root.vrs.getValueRecommendationResults(field['@id']) | propsFilter: {value: $select.search} | limitTo:50">
           <div><span ng-bind-html="option.value | highlight: $select.search"></span>&nbsp;
             <small ng-if="option.score!=undefined">(hits: <span
                 ng-bind-html="option.score | highlight: $select.search"></span>)
