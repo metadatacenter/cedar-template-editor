@@ -177,6 +177,9 @@ define([
         // If maxItems is N, then remove maxItems
         DataManipulationService.removeUnnecessaryMaxItems($scope.element.properties);
 
+        // create a copy of the element and strip out the _tmp fields before saving it
+       // var copiedElement = $scope.stripTmpFields();
+
         // Save element
         // Check if the element is already stored into the DB
         if ($routeParams.id == undefined) {
@@ -264,6 +267,16 @@ define([
         }
       }
     });
+
+    // create a copy of the form with the _tmp fields stripped out
+    $scope.stripTmpFields = function () {
+
+      var copiedForm = jQuery.extend(true, {}, $scope.form);
+      if (copiedForm) {
+        DataManipulationService.stripTmps(copiedForm);
+      }
+      return copiedForm;
+    };
   };
 
 });

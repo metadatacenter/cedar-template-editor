@@ -297,6 +297,37 @@ define([
     };
 
     /**
+     * strip tmps for node and children
+     * @param node
+     */
+    service.stripTmps = function (node) {
+      service.stripTmpIfPresent(node);
+
+      angular.forEach(node.properties, function (value, key) {
+        if (!DataUtilService.isSpecialKey(key)) {
+          service.stripTmps(value);
+        }
+      });
+    };
+
+    /**
+     * remove the _tmp field from the node and its properties
+     * @param node
+     */
+    service.stripTmpIfPresent = function (node) {
+
+      if (node.hasOwnProperty("_tmp")) {
+        delete node._tmp;
+      }
+
+      var p = $rootScope.propertiesOf(node);
+      if (p && p.hasOwnProperty("_tmp")) {
+        delete p._tmp;
+      }
+
+    };
+
+    /**
      * create domIds for node and children
      * @param node
      */
