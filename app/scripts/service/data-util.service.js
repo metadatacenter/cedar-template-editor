@@ -11,7 +11,7 @@ define([
 
   function DataUtilService($rootScope) {
 
-    var specialKeyPattern = /(^@)|(^_)/i;
+    var specialKeyPattern = /(^@)|(^_)|(^pav:)|(^cedar:)/i;
 
     var service = {
       serviceId: "DataUtilService"
