@@ -9,10 +9,10 @@ define([
   // TODO: refactor to cedarFieldDirective <cedar-field-directive>
 
 
-  fieldDirective.$inject = ["$rootScope", "$sce", "$document", "SpreadsheetService", "DataManipulationService", "FieldTypeService",
+  fieldDirective.$inject = ["$rootScope", "$sce", "$document", "$translate", "SpreadsheetService", "DataManipulationService", "FieldTypeService",
                             "ClientSideValidationService", "controlTermDataService"];
 
-  function fieldDirective($rootScope, $sce, $document, SpreadsheetService, DataManipulationService, FieldTypeService,
+  function fieldDirective($rootScope, $sce, $document, $translate, SpreadsheetService, DataManipulationService, FieldTypeService,
                           ClientSideValidationService, controlTermDataService) {
 
     var linker = function ($scope, $element, attrs) {
@@ -227,22 +227,23 @@ define([
 
       $scope.$on("saveForm", function () {
         var p = $rootScope.propertiesOf($scope.field);
+        var noName = $translate.instant("VALIDATION.noNameField");
 
         // default title and description
         if (!$rootScope.schemaOf($scope.field)._ui.title) {
-          $rootScope.schemaOf($scope.field)._ui.title = 'Untitled';
+          $rootScope.schemaOf($scope.field)._ui.title = noName;
         }
         if (!$rootScope.schemaOf($scope.field)._ui.description) {
-          $rootScope.schemaOf($scope.field)._ui.description = 'Untitled';
+          $rootScope.schemaOf($scope.field)._ui.description = noName;
         }
 
-        //if (p._tmp && p._tmp.state == "creating") {
-        //  $scope.$emit("invalidFieldState",
-        //      ["add", DataManipulationService.getFieldSchema($scope.field)._ui.title, $scope.field["@id"]]);
-        //} else {
-        //  $scope.$emit("invalidFieldState",
-        //      ["remove", DataManipulationService.getFieldSchema($scope.field)._ui.title, $scope.field["@id"]]);
-        //}
+        if (p._tmp && p._tmp.state == "creating") {
+          $scope.$emit("invalidFieldState",
+              ["add", DataManipulationService.getFieldSchema($scope.field)._ui.title, $scope.field["@id"]]);
+        } else {
+          $scope.$emit("invalidFieldState",
+              ["remove", DataManipulationService.getFieldSchema($scope.field)._ui.title, $scope.field["@id"]]);
+        }
       });
 
       var field = DataManipulationService.getFieldSchema($scope.field)._ui

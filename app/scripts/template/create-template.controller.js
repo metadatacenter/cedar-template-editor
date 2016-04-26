@@ -185,6 +185,9 @@ define([
             // If maxItems is N, then remove maxItems
             DataManipulationService.removeUnnecessaryMaxItems($scope.form.properties);
 
+            // create a copy of the form and strip out the _tmp fields before saving it
+            //var copiedForm = $scope.stripTmpFields();
+
             // Save template
             if ($routeParams.id == undefined) {
               AuthorizedBackendService.doCall(
@@ -256,7 +259,8 @@ define([
             if (title.length > 0) {
               var capitalizedTitle = $filter('capitalizeFirst')(title);
               $scope.form.title = $translate.instant("GENERATEDVALUE.templateTitle", {title: capitalizedTitle});
-              $scope.form.description = $translate.instant("GENERATEDVALUE.templateDescription", {title: capitalizedTitle});
+              $scope.form.description = $translate.instant("GENERATEDVALUE.templateDescription",
+                  {title: capitalizedTitle});
             } else {
               $scope.form._ui.title = "";
               $scope.form._ui.description = "";
@@ -276,6 +280,15 @@ define([
             }
           }
         });
+
+        // create a copy of the form with the _tmp fields stripped out
+        $scope.stripTmpFields = function () {
+          var copiedForm = jQuery.extend(true, {}, $scope.form);
+          if (copiedForm) {
+            DataManipulationService.stripTmps(copiedForm);
+          }
+          return copiedForm;
+        };
       }
 
     }
