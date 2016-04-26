@@ -1,11 +1,10 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
   "@id": null,
-  "@type": "https://schema.metadatacenter.org/core/Template",
+  "@type": "https://schema.metadatacenter.org/core/StaticTemplateField",
   "@context": {
     "pav": "http://purl.org/pav/",
-    "cedar": "https://schema.metadatacenter.org/core/",
-    "_value": "https://schema.org/value"
+    "cedar": "https://schema.metadatacenter.org/core/"
   },
   "type": "object",
   "title": "",
@@ -13,36 +12,9 @@
   "_ui": {
     "title": "",
     "description": "",
-    "pages": []
+    "inputType": null
   },
   "properties": {
-    "@context": {
-      "properties": {
-        "_value": {
-          "enum": [
-            "https://schema.org/value"
-          ]
-        },
-        "pav": {
-          "enum": [
-            "http://purl.org/pav/"
-          ]
-        },
-        "cedar": {
-          "enum": [
-            "https://schema.metadatacenter.org/core/"
-          ]
-        }
-      },
-      "required": [
-        "_value"
-      ],
-      "additionalProperties": false
-    },
-    "@id": {
-      "type": "string",
-      "format": "uri"
-    },
     "@type": {
       "oneOf": [
         {
@@ -60,10 +32,6 @@
         }
       ]
     },
-    "_templateId": {
-      "type": "string",
-      "format": "uri"
-    },
     "pav:createdOn": {
       "type": "string",
       "format": "date-time"
@@ -79,11 +47,11 @@
     "cedar:lastUpdatedBy": {
       "type": "string",
       "format": "uri"
-    }
+    },
+    "_content": null
   },
   "required": [
-    "@id",
-    "_templateId"
+    "_content"
   ],
   "pav:createdOn": null,
   "pav:createdBy": null,

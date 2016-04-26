@@ -10,13 +10,13 @@ define([
     '$http',
     '$timeout',
     'AuthorizedBackendService',
-    'Cedar',
+    'CedarUser',
     'HttpBuilderService',
     'UISettingsService',
     'UrlService'
   ];
 
-  function resourceService($http, $timeout, authorizedBackendService, cedar, httpBuilderService, uiSettingsService, urlService) {
+  function resourceService($http, $timeout, authorizedBackendService, cedarUser, httpBuilderService, uiSettingsService, urlService) {
 
     var searchTerm = null;
     var service = {

@@ -12,7 +12,7 @@
       <tr ng-repeat="mapping in pcc.provisionalClassMappings">
         <td>{{mapping.mappingType.label}}</td>
         <td>{{mapping.targetClass.prefLabel}}</td>
-        <td>{{mapping.targetOntology.acronym}}</td>
+        <td>{{mapping.targetOntology.id}}</td>
         <td>
           <div class="item item-delete" ng-click="pcc.deleteProvisionalClassMapping($index)">
             <i class="fa fa-close"></i>

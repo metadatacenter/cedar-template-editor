@@ -13,7 +13,7 @@ define([
     '$routeParams',
     '$scope',
     'AuthorizedBackendService',
-    'Cedar',
+    'CedarUser',
     'HeaderService',
     'resourceService',
     'TemplateElementService',
@@ -24,11 +24,11 @@ define([
     'CONST'
   ];
 
-  function DashboardController($location, $rootScope, $routeParams, $scope, AuthorizedBackendService, cedar, HeaderService, resourceService, TemplateElementService, TemplateService, TemplateInstanceService, UIMessageService, UrlService, CONST) {
+  function DashboardController($location, $rootScope, $routeParams, $scope, AuthorizedBackendService, cedarUser, HeaderService, resourceService, TemplateElementService, TemplateService, TemplateInstanceService, UIMessageService, UrlService, CONST) {
     var vm = this;
 
     vm.createFolder = createFolder;
-    vm.currentWorkspacePath = '/Users'; // TODO: change to cedar.getHome();
+    vm.currentWorkspacePath = '/Users'; // TODO: change to cedarUser.getHome();
     vm.deleteResource = deleteResource;
     vm.editResource = editResource;
     vm.facets = {};

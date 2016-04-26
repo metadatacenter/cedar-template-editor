@@ -27,21 +27,16 @@ define([
         }
 
         var default_array;
-        var properties;
-
-        if ($scope.field) {
-          properties = $rootScope.propertiesOf($scope.field);
-        }
 
         if ($scope.model != undefined) {
           // If returning to an already populated select list field, load selections
           default_array = $scope.model._value;
 
-        } else if ($scope.field && properties._ui.defaultOption) {
+        } else if ($scope.field && $scope.field._ui.defaultOption) {
           default_array = [];
 
           // If default select options have been set for an empty field
-          var defaultOptions = properties._ui.defaultOption;
+          var defaultOptions = $scope.field._ui.defaultOption;
 
           for (var property in defaultOptions) {
             if (defaultOptions.hasOwnProperty(property)) {

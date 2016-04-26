@@ -1,11 +1,20 @@
-<div id="richtext-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}" class="input-type-container section-break">
-  <p class="type-label"><i class="cedar-svg-rich-text"></i>Rich Text</p>
-  <div class="form-group floating-label-wrapper">
-    <input type="text" class="form-control" id="richtext-name-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}" placeholder="Rich Text Name (Optional)" aria-label="Rich Text Name (Optional)" ng-model="$root.propertiesOf(field)._ui.title"  with-floating-label>
-  </div><!-- /.form-group -->
-  <div class="form-group floating-label-wrapper">
-    <input type="text" class="form-control" id="richtext-description-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}" placeholder="Rich Text Description (Optional)" aria-label="Rich Text Description (Optional)" ng-model="$root.propertiesOf(field)._ui.description"  with-floating-label>
-  </div><!-- /.form-group -->
+<div id="richtext-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}"
+    class="input-type-container section-break">
+
+  <div class="row" ng-if="!$root.isRuntime() && !ngDisabled && !preview">
+    <div class="configuration-options col-lg-3 pull-left type-label"><p class="type-label" style="padding-left:10px"><i
+        class="cedar-svg-rich-text"></i>Rich Text</p></div>
+    <div class="configuration-options col-lg-3 pull-right configuration-actions" style="padding-top:0"
+        ng-include="'scripts/form/partials/staging-area-actions.partial.html'"></div>
+    <div class="configuration-options col-lg-1 centered " style="float: none;margin: 0 auto;">
+      <div class="sortable-handler " style="padding-top:5px" ng-if="!preview && !$root.isRuntime()"><span
+          class="sortable-icon"></span></div>
+    </div>
+  </div>
+
+  <div class="definition-inputs" ng-include="'scripts/form/partials/field-definition.partial.html'"></div>
+  <!-- /.definition-inputs -->
+
   <div class="form-group floating-label-wrapper">
     <textarea ckeditor="editorOptions" rows="5" type="text" class="form-control"
         id="richtext-description-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}"
@@ -13,5 +22,5 @@
         ng-model="$root.propertiesOf(field)._content"></textarea>
   </div>
   <!-- /.form-group -->
-  <div class="configuration-options" ng-include="'scripts/form/partials/staging-area-actions.partial.html'"></div>
+
 </div><!-- /.input-type-container -->

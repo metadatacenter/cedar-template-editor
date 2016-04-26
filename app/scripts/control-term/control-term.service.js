@@ -2,20 +2,22 @@
 
 define([
   'angular'
-], function(angular) {
+], function (angular) {
   angular.module('cedar.templateEditor.controlTerm.controlTermService', [])
-    .factory('controlTermService', controlTermService);
+      .factory('controlTermService', controlTermService);
 
   controlTermService.$inject = ['$q', '$rootScope', 'controlTermDataService'];
 
   function controlTermService($q, $rootScope, controlTermDataService) {
 
     var service = {
-      getOntologyByAcronym: getOntologyByAcronym,
+      getAcronym             : getAcronym,
+      getSelfUrl             : getSelfUrl,
       loadOntologyRootClasses: loadOntologyRootClasses,
-      loadTreeOfClass: loadTreeOfClass,
-      sortBrowseResults: sortBrowseResults,
-      sortOntologyTree: sortOntologyTree,
+      loadTreeOfClass        : loadTreeOfClass,
+      sortBrowseResults      : sortBrowseResults,
+      sortOntologyTree       : sortOntologyTree,
+      getLastFragmentOfUri   : getLastFragmentOfUri
     };
 
     return service;
@@ -24,16 +26,41 @@ define([
      * Service methods.
      */
 
-    /**
-     * Find ontology from cache by acronym.
-     */
-    function getOntologyByAcronym(acronym) {
-      // TODO: Refresh cache in case it is empty?
-      for (var i = 0; i < $rootScope.ontologies.length; i++) {
-        if (angular.uppercase($rootScope.ontologies[i].acronym) == angular.uppercase(acronym)) {
-          return $rootScope.ontologies[i];
+    function getAcronym(subtree) {
+      return subtree.ontology.substr(subtree.ontology.lastIndexOf('/') + 1);
+    }
+
+    function getSelfUrl(resource) {
+      var selfUrl;
+      if (resource.links) {
+        selfUrl = resource.links.self;
+      }
+      else {
+
+        if (resource.type == 'OntologyClass') {
+
+          var acronym;
+          if (resource.source) {
+            acronym = resource.source.substr(resource.source.lastIndexOf('/') + 1);
+          }
+          else if (resource.ontology) {
+            acronym = resource.ontology.substr(resource.ontology.lastIndexOf('/') + 1);
+          }
+
+          selfUrl = "http://data.bioontology.org/ontologies/" + acronym + "/classes/" + encodeURIComponent(resource["@id"]);
         }
-      };
+        // Not used
+        //else if (resource.type == 'ValueSet' || resource.type == 'Value') {
+        //  if (resource.provisional) {
+        //    selfUrl = resource["@id"];
+        //  }
+        //  else {
+        //    var acronym = resource.vsCollection.substr(resource.vsCollection.lastIndexOf('/') + 1);
+        //    selfUrl = "http://data.bioontology.org/ontologies/" + acronym + "/classes/" + encodeURIComponent(resource["@id"]);
+        //  }
+        //}
+      }
+      return selfUrl;
     }
 
     /**
@@ -64,6 +91,10 @@ define([
       }
     }
 
+    function getLastFragmentOfUri(uri) {
+      return uri.substr(uri.lastIndexOf('/') + 1);
+    }
+
     /**
      * Private functions.
      */
@@ -72,28 +103,23 @@ define([
      * Helper function to get display label of values browse result.
      */
     function getValuesBrowseDisplayLabel(result) {
-      if (result.resultType == 'Ontology') {
-        return result.name;
-      } else if (result.resultType == 'Value Set') {
-        return result.prefLabel;
+      if (result.type == 'Ontology') {
+        return result.name.trim();
+      } else if (result.type == 'ValueSet') {
+        return result.prefLabel.trim();
       }
     }
 
     function loadOntologyRootClasses(ontology, $scope) {
-      var acronym = ontology.acronym;
-      var classesUrl = ontology.links.classes;
-
       $scope.fieldTreeVisibility = true;
       $scope.searchPreloader = true;
       $q.all({
-        details:    controlTermDataService.getOntologyDetails(acronym),
-        size:       controlTermDataService.getOntologySize(acronym),
-        tree:       controlTermDataService.getOntologyValueSets(acronym),
-      }).then(function(values) {
-        if($scope.fieldTreeVisibility == true) {
+        info: ontology,
+        tree: controlTermDataService.getRootClasses(ontology.id)
+      }).then(function (values) {
+        if ($scope.fieldTreeVisibility == true) {
           if (values.tree && angular.isArray(values.tree)) {
             values.tree.sort(controlTermService.sortOntologyTree);
-
             $scope.currentOntology = values;
           } else {
             // TODO: Handle error
@@ -112,36 +138,36 @@ define([
      * Show ontology tree and details screen.
      */
     function loadTreeOfClass(selection, $scope) {
+      // TODO: try to remove this statement
+      if (selection.sourceId) {
+        var ontologyAcronym = getLastFragmentOfUri(selection.sourceId);
+      }
+      else {
+        var ontologyAcronym = getLastFragmentOfUri(selection.source);
+      }
       $scope.fieldTreeVisibility = true;
       $scope.searchPreloader = true;
-      var acronym = controlTermDataService.getOntologyAcronym(selection);
-
-      // Get selected class details from the links.self endpoint provided.
-      var selfUrl = selection.links.self;
-      if (!selfUrl) {
-        selfUrl = selection.links.ontology + "/classes/" + encodeURIComponent(selection["@id"]);
-      }
 
       $scope.isLoadingClassDetails = true;
-      controlTermDataService.getClassDetails(selfUrl).then(function(response) {
+
+      controlTermDataService.getClassById(ontologyAcronym, selection["@id"]).then(function (response) {
         $scope.classDetails = response;
       });
 
       $scope.selectedClass1 = selection;
 
       $q.all({
-        details:    controlTermDataService.getOntologyDetails(acronym),
-        size:       controlTermDataService.getOntologySize(acronym),
-        tree:       controlTermDataService.getClassTree(acronym, selection['@id']),
-      }).then(function(values) {
-        if($scope.fieldTreeVisibility == true) {
+        info: controlTermDataService.getOntologyById(ontologyAcronym),
+        tree: controlTermDataService.getClassTree(ontologyAcronym, selection['@id']),
+      }).then(function (values) {
+        if ($scope.fieldTreeVisibility == true) {
           $scope.currentOntology = values;
           if ($scope.currentOntology.tree && angular.isArray($scope.currentOntology.tree)) {
-            angular.forEach($scope.currentOntology.tree, function(node) {
+            angular.forEach($scope.currentOntology.tree, function (node) {
               if (node["@type"].indexOf("Ontology") >= 0) {
-                node.resultType = "Ontology";
+                node.type = "Ontology";
               } else {
-                node.resultType = "Value Set";
+                node.type = "ValueSet";
               }
             })
           }

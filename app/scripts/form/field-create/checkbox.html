@@ -1,29 +1,50 @@
 <div id="checkbox-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}" class="input-type-container">
-  <p class="type-label"><i class="cedar-svg-checkbox"></i>Checkbox</p>
 
-  <div class="form-group">
-    <div class="form-group floating-label-wrapper">
-      <!--<input type="text" class="form-control" id="placeholder-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}" placeholder="Field Title" aria-label="Field Title" ng-model="$root.propertiesOf(field)._ui.title"  with-floating-label>-->
-      <div class="definition-inputs" ng-include="'scripts/form/partials/field-definition.partial.html'"></div><!-- /.definition-inputs -->
+  <div class="row" ng-if="!$root.isRuntime() && !ngDisabled && !preview">
+    <div class="configuration-options col-lg-3 pull-left type-label"><p class="type-label" style="padding-left:10px"><i
+        class="cedar-svg-checkbox"></i>Checkbox</p></div>
+    <div class="configuration-options col-lg-3 pull-right configuration-actions" style="padding-top:0"
+        ng-include="'scripts/form/partials/staging-area-actions.partial.html'"></div>
+    <div class="configuration-options col-lg-1 centered " style="float: none;margin: 0 auto;">
+      <div class="sortable-handler " style="padding-top:5px" ng-if="!preview && !$root.isRuntime()"><span
+          class="sortable-icon"></span></div>
+    </div>
+  </div>
 
-    </div><!-- /.form-group -->
+  <div class="definition-inputs" ng-include="'scripts/form/partials/field-definition.partial.html'"></div>
+  <!-- /.definition-inputs -->
+
+
+  <div class="form-group floating-label-wrapper">
     <div class="options-wrapper">
       <div class="multiple-container">
-        <span ng-repeat="(index, value) in $root.propertiesOf(field)._ui.options">
+        <span ng-repeat="(index, value) in $root.schemaOf(field)._ui.options">
           <div class="checkbox checkbox-primary">
-            <input type="checkbox" id="checkbox-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}-{{index}}" name="checkbox-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}" ng-model="$root.propertiesOf(field)._ui.defaultOption[value.text]" value="{{$root.propertiesOf(field)._ui.options[index]['text']}}">
+            <input type="checkbox" id="checkbox-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}-{{index}}"
+                name="checkbox-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}"
+                ng-model="$root.schemaOf(field)._ui.defaultOption[value.text]"
+                value="{{$root.schemaOf(field)._ui.options[index]['text']}}">
             <label for="checkbox-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}-{{index}}">
               <div class="form-group floating-label-wrapper">
-                <input type="text" class="form-control" id="placeholder-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}" placeholder="Option" aria-label="Option" ng-model="$root.propertiesOf(field)._ui.options[index]['text']"  with-floating-label>
-              </div><!-- /.form-group -->
+                <input type="text" class="form-control"
+                    id="placeholder-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}" placeholder="Option"
+                    aria-label="Option" ng-model="$root.schemaOf(field)._ui.options[index]['text']" with-floating-label>
+              </div>
+              <!-- /.form-group -->
             </label>
           </div><!-- /.checkbox -->
         </span>
-        <p class="add-another" ng-click="option()"><img src="/img/plus.png" />Add Another</p>
-      </div><!-- /.multiple-container -->
-      <p class="instructions">Click choice to set as default</p>
-    </div><!-- /.options-wrapper -->
-  </div><!-- /.form-group -->
 
-  <ng-include src="'scripts/form/partials/staging-area-footer.partial.html'" />
+        <p class="add-another" ng-click="option()"><img src="/img/plus.png"/>Add Another</p>
+      </div>
+      <!-- /.multiple-container -->
+      <p class="instructions">Click choice to set as default</p>
+    </div>
+    <!-- /.options-wrapper -->
+  </div>
+  <!-- /.form-group -->
+
+
+  <!--<ng-include src="'scripts/form/partials/staging-area-footer.partial.html'" />-->
+  <div class="configuration-options " ng-include="'scripts/form/partials/configuration-options.partial.html'"></div>
 </div><!-- /.input-type-container -->

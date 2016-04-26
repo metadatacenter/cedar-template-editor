@@ -1,9 +1,24 @@
 <!-- edit or delete the field or element -->
-<div ng-if="!$root.isRuntime() && !isEditState()" class="element-preview-actions">
-  <div class="edit" ng-click="edit()" title="Edit {{childType || 'element'}}" ng-if="!notEditable">
-    <i class="cedar-svg-pencil"></i>
-  </div>
-  <div class="remove" ng-click="delete()" title="Delete {{childType || 'element'}}">
-  	<i class="fa fa-times"></i>
+<!--<div ng-if="!$root.isRuntime() && !isEditState() && !isNested()" class="configuration-options col-lg-3 pull-right configuration-actions save-options element-preview-actions">-->
+<!--<div class="edit" ng-click="edit()" title="Edit {{childType || 'element'}}" ng-if="!notEditable">-->
+<!--<i class="cedar-svg-pencil"></i>-->
+<!--</div>-->
+<!--<div class="remove" ng-click="delete()" title="Delete {{childType || 'element'}}">-->
+<!--<i class="fa fa-times"></i>-->
+<!--</div>-->
+<!--</div>-->
+
+<div ng-if="!$root.isRuntime() && !isEditState() && !isNested()" class="preview-container" >
+  <div class="row preview-edit-options pull-right">
+    <div class="toggle-options col-lg-12 pull-right">
+      <div class="save-options">
+        <div class="edit" ng-click="edit()" title="Edit {{childType || 'element'}}" ng-if="!notEditable">
+          <i class="fa fa-pencil" style="transform: translate(6px, 1px);"></i>
+        </div>
+        <div class="remove" style="margin-right: 0;" ng-click="delete()" title="Delete {{childType || 'element'}}">
+          <i class="fa fa-times"></i>
+        </div>
+      </div>
+    </div>
   </div>
 </div>

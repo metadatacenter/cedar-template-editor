@@ -1,0 +1,9 @@
+<div ng-show="$root.showRender" id="templateJSON">
+  <h5>Template JSON</h5>
+  <pre id='form-json-preview'>{{ ($root.jsonToSave || stripTmpFields()) | json }}</pre>
+</div>
+<div ng-show="$root.showOutput" id="outputJSON">
+  <h5>Output JSON</h5>
+  <pre>{{ model | json }}</pre>
+</div>
+

@@ -1,3 +1,15 @@
+if (window.__karma__) {
+  var allTestFiles = [];
+  var TEST_REGEXP = /spec\.js$/;
+
+  Object.keys(window.__karma__.files).forEach(function(file) {
+    if (TEST_REGEXP.test(file)) {
+      // Normalize paths to RequireJS module names.
+      allTestFiles.push(file);
+    }
+  });
+}
+
 require.config({
   paths   : {
     'angular'     : 'bower_components/angular/angular',
@@ -23,6 +35,10 @@ require.config({
       'deps'   : ['jquery'],
       'exports': 'angular'
     },
+	'angularMocks': {
+	  deps: ['angular'],
+	  'exports': 'angular.mock'
+	},
     'lib/angucomplete-alt/angulcomplete-alt'                                         : ['angular'],
     'lib/angular-animate/angular-animate'                                            : ['angular'],
     'lib/angular-bootstrap/ui-bootstrap'                                             : ['angular'],
@@ -34,8 +50,8 @@ require.config({
     'lib/angular-toasty/dist/angular-toasty'                                         : ['angular'],
     'lib/angular-ui-select/dist/select'                                              : ['angular'],
     'lib/angular-ui-sortable/sortable'                                               : ['angular'],
-    'lib/angulartics/angulartics'                                                    : ['angular'],
-    'lib/angulartics-google-analytics/angulartics-google-analytics'                  : ['angular'],
+    'lib/angulartics/dist/angulartics.min'                                           : ['angular'],
+    'lib/angulartics-google-analytics/dist/angulartics-google-analytics.min'         : ['angular'],
 
     '3rdparty/angular-fitvids/angular-fitvids': {
       deps   : ['angular', 'jquery'],
@@ -63,6 +79,9 @@ require.config({
     'jquery',
     'angular',
   ],
+  deps: window.__karma__ ? allTestFiles : [],
+  callback: window.__karma__ ? window.__karma__.start : null,
+  baseUrl: window.__karma__ ? '/base' : '',
 });
 
 // do not load the full app here.
@@ -97,11 +116,13 @@ require([
       alert("There was an error initializing the application!");
     }
 
-    // use this for live servers
-    window.bootstrapUserHandler = new KeycloakUserHandler();
-    // use this for unauthorized access during development
-    //window.bootstrapUserHandler = new NoauthUserHandler();
-
+    if (window.__karma__) {
+      // use this for unauthorized access during development
+      window.bootstrapUserHandler = new NoauthUserHandler();
+    } else {
+      // use this for live servers
+      window.bootstrapUserHandler = new KeycloakUserHandler();
+    }
     window.bootstrapUserHandler.initUserHandler(successInitUserHandler, failInitUserHandler);
   });
 

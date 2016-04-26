@@ -7,11 +7,12 @@ define([
   angular.module('cedar.templateEditor.service.stagingService', [])
       .service('StagingService', StagingService);
 
-  StagingService.$inject = ["$rootScope", "TemplateElementService", "DataManipulationService",
+  StagingService.$inject = ["$rootScope", "$document", "TemplateElementService", "DataManipulationService",
                             "ClientSideValidationService", "UIMessageService", "$timeout", "AuthorizedBackendService",
                             "CONST"];
 
-  function StagingService($rootScope, TemplateElementService, DataManipulationService, ClientSideValidationService,
+  function StagingService($rootScope, $document, TemplateElementService, DataManipulationService,
+                          ClientSideValidationService,
                           UIMessageService, $timeout, AuthorizedBackendService, CONST) {
 
     var service = {
@@ -71,7 +72,7 @@ define([
             newElement.maxItems = 1;
             $scope.staging[newElement['@id']] = newElement;
             $timeout(function () {
-              var fieldName = DataManipulationService.getFieldName(newElement.properties._ui.title);
+              var fieldName = DataManipulationService.getFieldName(newElement._ui.title);
               $scope.previewForm.properties = {};
               $scope.previewForm.properties[fieldName] = newElement;
             });
@@ -94,7 +95,7 @@ define([
       var optionInputs = ["radio", "checkbox", "list"];
 
       if (optionInputs.indexOf(fieldType) > -1) {
-        field.properties._ui.options = [
+        field._ui.options = [
           {
             "text": ""
           }
@@ -106,18 +107,16 @@ define([
       $scope.staging[field['@id']] = field;
     };
 
-    service.addFieldToForm = function (form, fieldType) {
+    service.addFieldToForm = function (form, fieldType, divId, callback) {
 
       var field = DataManipulationService.generateField(fieldType);
-      //field.minItems = 1;
-      //field.maxItems = 1;
-      console.debug('addFieldtoForm' + field.minItems + " " + field.maxItems);
+
       field.properties._tmp = field.properties._tmp || {};
       field.properties._tmp.state = "creating";
 
       var optionInputs = ["radio", "checkbox", "list"];
       if (optionInputs.indexOf(fieldType) > -1) {
-        field.properties._ui.options = [
+        field._ui.options = [
           {
             "text": ""
           }
@@ -139,23 +138,27 @@ define([
       form._ui.order = form._ui.order || [];
       form._ui.order.push(fieldName);
 
-      console.debug('addFieldtoForm' + field.minItems + ' ' + field.maxItems);
-    }
+      DataManipulationService.addDomIdIfNotPresent(field, divId);
+      DataManipulationService.defaultTitle(field);
+      callback(field);
 
-    service.addElementToForm = function (form, elementId) {
+      return field;
+    };
+
+    service.addElementToForm = function (form, elementId, divId, callback) {
       AuthorizedBackendService.doCall(
           TemplateElementService.getTemplateElement(elementId),
           function (response) {
             var clonedElement = response.data;
-            clonedElement.minItems = 1;
-            clonedElement.maxItems = 1;
+            //clonedElement.minItems = 1;
+            //clonedElement.maxItems = 1;
 
             var elProperties = DataManipulationService.getFieldProperties(clonedElement);
             elProperties._tmp = elProperties._tmp || {};
             elProperties._tmp.state = "creating";
 
             // Converting title for irregular character handling
-            var elName = DataManipulationService.getFieldName(DataManipulationService.getFieldProperties(clonedElement)._ui.title);
+            var elName = DataManipulationService.getFieldName(clonedElement._ui.title);
             elName = DataManipulationService.getAcceptableKey(form.properties, elName);
 
             // Adding corresponding property type to @context
@@ -169,12 +172,16 @@ define([
             form.properties[elName] = clonedElement;
             form._ui.order = form._ui.order || [];
             form._ui.order.push(elName);
+
+            DataManipulationService.addDomIdIfNotPresent(clonedElement, divId);
+            callback(clonedElement);
+
           },
           function (err) {
             UIMessageService.showBackendError('SERVER.ELEMENT.load.error', err);
           }
       );
-    }
+    };
 
     service.addFieldToElement = function (element, fieldType) {
       var field = DataManipulationService.generateField(fieldType);
@@ -185,7 +192,7 @@ define([
 
       var optionInputs = ["radio", "checkbox", "list"];
       if (optionInputs.indexOf(fieldType) > -1) {
-        field.properties._ui.options = [
+        field._ui.options = [
           {
             "text": ""
           }
@@ -205,7 +212,7 @@ define([
       // Adding field to the element.properties object
       element.properties[fieldName] = field;
       element._ui.order.push(fieldName);
-    }
+    };
 
     service.addElementToElement = function (element, elementId) {
       AuthorizedBackendService.doCall(
@@ -219,7 +226,7 @@ define([
             elProperties._tmp = elProperties._tmp || {};
             elProperties._tmp.state = "creating";
 
-            var elName = DataManipulationService.getFieldName(DataManipulationService.getFieldProperties(el)._ui.title);
+            var elName = DataManipulationService.getFieldName(el._ui.title);
             elName = DataManipulationService.getAcceptableKey(element.properties, elName);
 
             element.properties["@context"].properties[elName] = DataManipulationService.generateFieldContextProperties(elName);
@@ -241,13 +248,13 @@ define([
     // Add newly configured field to the the $scope.form or $scope.element
     service.addFieldToScopeAndStaging = function ($scope, targetObject, field) {
       // Setting return value from $scope.checkFieldConditions to array which will display error messages if any
-      $scope.stagingErrorMessages = ClientSideValidationService.checkFieldConditions(field.properties);
+      $scope.stagingErrorMessages = ClientSideValidationService.checkFieldConditions(field);
       $scope.stagingErrorMessages = jQuery.merge($scope.stagingErrorMessages,
           ClientSideValidationService.checkFieldCardinalityOptions(field));
 
       if ($scope.stagingErrorMessages.length == 0) {
         // Converting title for irregular character handling
-        var fieldName = DataManipulationService.getFieldName(field.properties._ui.title);
+        var fieldName = DataManipulationService.getFieldName($rootScope.schemaOf(field)._ui.title);
         // Adding corresponding property type to @context
         targetObject.properties["@context"].properties[fieldName] = DataManipulationService.generateFieldContextProperties(
             fieldName);

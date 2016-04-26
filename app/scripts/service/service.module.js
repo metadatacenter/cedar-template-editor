@@ -3,7 +3,6 @@
 define([
   'angular',
   'cedar/template-editor/service/authorized-backend.service',
-  'cedar/template-editor/service/cedar',
   'cedar/template-editor/service/client-side-validation.service',
   'cedar/template-editor/service/data-manipulation.service',
   'cedar/template-editor/service/data-template.service',
@@ -23,12 +22,12 @@ define([
   'cedar/template-editor/service/user.service',
   'cedar/template-editor/service/rich-text-config.service',
   'cedar/template-editor/service/value-recommender.service',
+  'cedar/template-editor/service/cedar-user',
   'cedar/template-editor/service/ui-settings.service',
   'cedar/template-editor/service/tracking.service'
 ], function(angular) {
   angular.module('cedar.templateEditor.service', [
     'cedar.templateEditor.service.authorizedBackendService',
-    'cedar.templateEditor.service.cedar',
     'cedar.templateEditor.service.clientSideValidationService',
     'cedar.templateEditor.service.dataManipulationService',
     'cedar.templateEditor.service.dataTemplateService',
@@ -48,6 +47,7 @@ define([
     'cedar.templateEditor.service.userService',
     'cedar.templateEditor.service.richTextConfigService',
     'cedar.templateEditor.service.valueRecommenderService',
+    'cedar.templateEditor.service.cedarUser',
     'cedar.templateEditor.service.uISettingsService',
     'cedar.templateEditor.service.trackingService'
   ]);

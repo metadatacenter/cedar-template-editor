@@ -79,7 +79,7 @@
     </p>
     <br />
     <div class="floating-label-wrapper">
-      <input type="text" class="form-control required" name="provisionalClassLabel" placeholder="Label" ng-model="pcc.provisionalClass.label" with-floating-label="" />
+      <input type="text" class="form-control required" name="provisionalClassLabel" placeholder="Label" ng-model="pcc.provisionalClass.prefLabel" with-floating-label="" />
     </div>
     <br />
     <div class="floating-label-wrapper">
@@ -131,7 +131,7 @@
       <div class="create-value-actions" ng-if="pcc.pickedOntologyClass">
         <div class="center">
           {{pcc.pickedOntologyClass.prefLabel}}<br />
-          ({{pcc.pickedCurrentOntology.details.ontology.acronym}})
+          ({{pcc.pickedCurrentOntology.info.id}})
         </div>
         <br />
         <button type="button" class="std-button" ng-click="pcc.addValueToValueSet(pcc.pickedOntologyClass)">Add Value</button>
@@ -157,7 +157,7 @@
         <tr>
           <th>Result</th>
           <th>Type</th>
-          <th>Source Name</th>
+          <th>Source</th>
         </tr>
       </thead>
     </table>
@@ -165,10 +165,10 @@
     <table class="table table-condensed results-headers-table browse-results-headers-table values-browse-results-headers-table" ng-if="cctvspdc.isBrowsing()">
       <thead>
         <tr>
-          <th>Source Name</th>
+          <th>Name</th>
           <th>Type</th>
           <th>Categories</th>
-          <th>Size</th>
+          <!--<th>Size</th>-->
         </tr>
       </thead>
     </table>
@@ -180,8 +180,8 @@
         <tbody>
           <tr ng-repeat="result in cctvspdc.searchResults" ng-click="cctvspdc.selectValueResult(result)">
             <td>{{result.prefLabel}}</td>
-            <td>{{result.resultType}}</td>
-            <td>{{result.resultSource}}</td>
+            <td>{{cctvspdc.toUiType(result.type)}}</td>
+            <td>{{result.sourceName}}</td>
           </tr>
         </tbody>
       </table>
@@ -189,13 +189,11 @@
       <table class="table table-hover results-table browse-results-table values-browse-results-table" ng-if="cctvspdc.isBrowsing()">
         <tbody>
           <tr ng-repeat="result in cctvspdc.searchResults" ng-click="cctvspdc.selectValueResult(result)" ng-show="cctvspdc.isOntologyNameMatched(result)">
-            <td ng-if="result.resultType == 'Ontology'">{{result.name}}</td>
-            <td ng-if="result.resultType == 'Value Set'">{{result.prefLabel}}</td>
-            <td>{{result.resultType}}</td>
-            <td ng-if="result.resultType == 'Ontology'">{{result.categoriesNames}}</td>
-            <td ng-if="result.resultType == 'Value Set'">{{result.resultSource}}</td>
-            <td ng-if="result.resultType == 'Ontology'">{{result.metrics.classes}}</td>
-            <td ng-if="result.resultType == 'Value Set'">{{result.numChildren}}</td>
+            <td ng-if="result.type == 'Ontology'">{{result.name}}</td>
+            <td ng-if="result.type == 'ValueSet'">{{result.prefLabel}}</td>
+            <td>{{cctvspdc.toUiType(result.type)}}</td>
+            <td ng-if="result.type == 'Ontology'">{{result.details.categories.join(", ") || "-" }}</td>
+            <td ng-if="result.type == 'ValueSet'">{{result.vsCollection.substr(result.vsCollection.lastIndexOf('/') + 1)}}</td>
           </tr>
         </tbody>
       </table>
@@ -204,12 +202,12 @@
 
   <div class="field-tree clear" ng-show="cctvspdc.selectedValueResult">
     <div class="field-tree-header table-style">
-      <div class="ontology-tree-header table-cell-style" ng-if="cctvspdc.selectedValueResult.resultType == 'Ontology' || cctvspdc.selectedValueResult.resultType == 'Ontology Class'">
-        <h4><a class="pull-left" ng-click="cctvspdc.hideValuesTree()"><img src="../img/left-arrow.png" /></a>&nbsp;&nbsp;&nbsp;&nbsp;{{cctvspdc.currentOntology.details.ontology.name}}</h4>
+      <div class="ontology-tree-header table-cell-style" ng-if="cctvspdc.selectedValueResult.type == 'Ontology' || cctvspdc.selectedValueResult.type == 'OntologyClass'">
+        <h4><a class="pull-left" ng-click="cctvspdc.hideValuesTree()"><img src="../img/left-arrow.png" /></a>&nbsp;&nbsp;&nbsp;&nbsp;{{cctvspdc.currentOntology.info.name}}</h4>
       </div>
 
       <div class="ontology-class-children table-cell-style" ng-show="cctvspdc.browsingSection == 'value_set'">
-        <h4><a class="pull-left" ng-click="cctvspdc.hideValuesTree()"><img src="../img/left-arrow.png" /></a>&nbsp;&nbsp;&nbsp;&nbsp;{{cctvspdc.currentValueSet.prefLabel}} Value Set</h4>
+        <h4><a class="pull-left" ng-click="cctvspdc.hideValuesTree()"><img src="../img/left-arrow.png" /></a>&nbsp;&nbsp;&nbsp;&nbsp;Value Set: {{cctvspdc.currentValueSet.prefLabel}}</h4>
       </div>
 
       <div class="field-details-view table-cell-style" ng-if="cctvspdc.selectedValueResult">
@@ -221,7 +219,9 @@
       </div>
     </div>
     <div class="field-tree-details">
-      <div class="ontology-tree pull-left" ng-if="cctvspdc.selectedValueResult && cctvspdc.currentOntology && cctvspdc.currentOntology.tree && (cctvspdc.selectedValueResult.resultType == 'Ontology' || cctvspdc.selectedValueResult.resultType == 'Ontology Class')">
+      <!-- ontology-tree -->
+      <div class="ontology-tree pull-left" ng-if="cctvspdc.selectedValueResult && cctvspdc.currentOntology && cctvspdc.currentOntology.tree
+      && cctvspdc.browsingSection == 'ontology'">
         <div class="tree tree-view-ul tree-view list-unstyled class-tree-container">
           <cedar-class-tree
               get-class-details-callback="cctvspdc.getClassDetails"
@@ -230,8 +230,10 @@
               tree="cctvspdc.currentOntology.tree">
           </cedar-class-tree>
         </div>
-      </div><!-- /.ontology-tree -->
+      </div>
+      <!-- /.ontology-tree -->
 
+      <!-- value set values -->
       <div class="ontology-class-children pull-left" ng-show="cctvspdc.browsingSection == 'value_set'">
         <div class="table-responsive ontology-class-children-table">
           <table class="table table-hover" style="width: 275px; max-height: 203px; overflow-y: auto">
@@ -246,6 +248,7 @@
           </table>
         </div>
       </div>
+      <!-- /.value set values -->
 
       <div class="field-details-view pull-right" ng-if="cctvspdc.selectedValueResult">
         <div class="tab-content">
@@ -255,7 +258,7 @@
               <table class="table table-striped">
                 <tbody ng-show="cctvspdc.selectedValueResult.prefLabel">
                   <tr>
-                    <th>Perf. Name</th>
+                    <th>Name</th>
                     <th>{{cctvspdc.selectedValueResult.prefLabel}}</th>
                   </tr>
                   <tr>
@@ -264,7 +267,9 @@
                   </tr>
                   <tr>
                     <td>Definition</td>
-                    <td>{{cctvspdc.selectedValueResult.definition[0]}}</td>
+                    <td ng-if="cctvspdc.classDetails.definition[0]">{{cctvspdc.classDetails.definition[0]}}</td>
+                    <td ng-if="cctvspdc.classDetails.definitions[0]">{{cctvspdc.classDetails.definitions[0]}}</td>
+                    <td ng-if="!cctvspdc.classDetails.definition[0] && !cctvspdc.classDetails.definitions[0]">-</td>
                   </tr>
                 </tbody>
               </table>
@@ -288,29 +293,27 @@
                   <tr>
                     <td>Acronym</td>
                     <td>
-                      <span ng-show="cctvspdc.browsingSection == 'ontology'">{{cctvspdc.currentOntology.details.ontology.acronym}}</span>
+                      <span ng-show="cctvspdc.browsingSection == 'ontology'">{{cctvspdc.currentOntology.info.id}}</span>
                       <span ng-show="cctvspdc.browsingSection == 'value_set'">NLMVS</span>
                     </td>
                   </tr>
                   <tr>
                     <td>@id</td>
                     <td>
-                      <span ng-show="cctvspdc.browsingSection == 'ontology'"><a ng-href="{{cctvspdc.currentOntology.details.ontology['@id']}}" target="_blank">{{cctvspdc.currentOntology.details.ontology['@id']}}</a></span>
+                      <span ng-show="cctvspdc.browsingSection == 'ontology'"><a ng-href="{{cctvspdc.currentOntology.info['@id']}}" target="_blank">{{cctvspdc.currentOntology.info['@id']}}</a></span>
                       <span ng-show="cctvspdc.browsingSection == 'value_set'"><a ng-href="{{cctvspdc.currentValueSet['@id']}}" target="_blank">{{cctvspdc.currentValueSet['@id']}}</a></span>
                     </td>
                   </tr>
-                  <tr>
+                  <tr ng-show="cctvspdc.browsingSection == 'ontology'">
                     <td>Description</td>
                     <td>
-                      <span ng-show="cctvspdc.browsingSection == 'ontology'">{{cctvspdc.currentOntology.details.ontology.description | htmlToPlainText}}</span>
-                      <span ng-show="cctvspdc.browsingSection == 'value_set'">{{cctvspdc.currentValueSet.resultSource}}</span>
+                      <span>{{cctvspdc.currentOntology.info.details.description | htmlToPlainText}}</span>
                     </td>
                   </tr>
-                  <tr>
+                  <tr ng-show="cctvspdc.browsingSection == 'ontology'">
                     <td># of Classes</td>
                     <td>
-                      <span ng-show="cctvspdc.browsingSection == 'ontology'">{{cctvspdc.currentOntology.size.classes | returnNullIfEmpty}}</span>
-                      <span ng-show="cctvspdc.browsingSection == 'value_set'">{{cctvspdc.currentValueSet.numChildren | returnNullIfEmpty}}</span>
+                      <span>{{cctvspdc.currentOntology.info.details.numberOfClasses | returnNullIfEmpty}}</span>
                     </td>
                   </tr>
                 </tbody>

@@ -56,7 +56,6 @@ define([
             HeaderService.dataContainer.currentObjectScope = $scope.element;
 
             var key = $scope.element["@id"];
-            // $scope.element.properties._ui.is_root = true;
             $rootScope.keyOfRootElement = key;
             $scope.form.properties = $scope.form.properties || {};
             $scope.form.properties[key] = $scope.element;
@@ -75,7 +74,6 @@ define([
       HeaderService.dataContainer.currentObjectScope = $scope.element;
 
       var key = $scope.element["@id"] || DataManipulationService.generateGUID();
-      // $scope.element.properties._ui.is_root = true;
       $rootScope.keyOfRootElement = key;
       $scope.form.properties = $scope.form.properties || {};
       $scope.form.properties[key] = $scope.element;
@@ -158,14 +156,14 @@ define([
       // First check to make sure Element Name, Element Description are not blank
       $scope.elementErrorMessages = [];
       $scope.elementSuccessMessages = [];
-      // delete $scope.element.properties._ui.is_root;
+      // delete $scope.element._ui.is_root;
 
       // If Element Name is blank, produce error message
-      if (!$scope.element.properties._ui.title.length) {
+      if (!$scope.element._ui.title.length) {
         $scope.elementErrorMessages.push($translate.instant("VALIDATION.elementNameEmpty"));
       }
       // If Element Description is blank, produce error message
-      if (!$scope.element.properties._ui.description.length) {
+      if (!$scope.element._ui.description.length) {
         $scope.elementErrorMessages.push($translate.instant("VALIDATION.elementDescriptionEmpty"));
       }
       // If there are no Element level error messages
@@ -179,6 +177,9 @@ define([
         // If maxItems is N, then remove maxItems
         DataManipulationService.removeUnnecessaryMaxItems($scope.element.properties);
 
+        // create a copy of the element and strip out the _tmp fields before saving it
+       // var copiedElement = $scope.stripTmpFields();
+
         // Save element
         // Check if the element is already stored into the DB
         if ($routeParams.id == undefined) {
@@ -187,7 +188,7 @@ define([
               function (response) {
                 // confirm message
                 UIMessageService.flashSuccess('SERVER.ELEMENT.create.success',
-                    {"title": response.data.properties._ui.title},
+                    {"title": response.data._ui.title},
                     'GENERIC.Created');
                 // Reload page with element id
                 var newId = response.data['@id'];
@@ -238,10 +239,10 @@ define([
       }
     });
 
-    // This function watches for changes in the properties._ui.title field and autogenerates the schema title and description fields
-    $scope.$watch('element.properties._ui.title', function (v) {
+    // This function watches for changes in the _ui.title field and autogenerates the schema title and description fields
+    $scope.$watch('element._ui.title', function (v) {
       if (!angular.isUndefined($scope.element)) {
-        var title = $scope.element.properties._ui.title;
+        var title = $scope.element._ui.title;
         if (title.length > 0) {
           var capitalizedTitle = $filter('capitalizeFirst')(title);
           $scope.element.title = $translate.instant("GENERATEDVALUE.elementTitle", {title: capitalizedTitle});
@@ -253,6 +254,29 @@ define([
         }
       }
     });
+
+    // This function watches for changes in the form and defaults the title and description fields
+    $scope.$watch('$scope.element', function (v) {
+      if ($scope.element && $rootScope.schemaOf($scope.element)) {
+        var noName = $translate.instant("VALIDATION.noNameField");
+        if (!$rootScope.schemaOf($scope.element)._ui.title) {
+          $rootScope.schemaOf($scope.element)._ui.title = noName;
+        }
+        if (!$rootScope.schemaOf($scope.element)._ui.description) {
+          $rootScope.schemaOf($scope.element)._ui.description = noName;
+        }
+      }
+    });
+
+    // create a copy of the form with the _tmp fields stripped out
+    $scope.stripTmpFields = function () {
+
+      var copiedForm = jQuery.extend(true, {}, $scope.form);
+      if (copiedForm) {
+        DataManipulationService.stripTmps(copiedForm);
+      }
+      return copiedForm;
+    };
   };
 
 });

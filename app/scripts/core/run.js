@@ -11,13 +11,14 @@ define([
   cedarTemplateEditorCoreRun.$inject = ['$rootScope', '$window', '$sce', '$translate', 'DataTemplateService',
                                         'DataManipulationService', 'FieldTypeService', 'UrlService', 'UIUtilService',
                                         'UserService', 'RichTextConfigService', 'CONST', 'controlTermDataService',
-                                        'provisionalClassService', 'Cedar', 'UISettingsService',
+                                        'provisionalClassService', 'CedarUser', 'UISettingsService',
                                         'ValueRecommenderService', 'DataUtilService', 'TrackingService'];
+
 
   function cedarTemplateEditorCoreRun($rootScope, $window, $sce, $translate, DataTemplateService,
                                       DataManipulationService, FieldTypeService, UrlService, UIUtilService, UserService,
                                       RichTextConfigService, CONST, controlTermDataService, provisionalClassService,
-                                      Cedar, UISettingsService, ValueRecommenderService, DataUtilService,
+                                      CedarUser, UISettingsService, ValueRecommenderService, DataUtilService,
                                       TrackingService) {
 
     $rootScope.isArray = angular.isArray;
@@ -62,6 +63,10 @@ define([
       return DataManipulationService.getFieldProperties(fieldOrElement);
     };
 
+    $rootScope.schemaOf = function (fieldOrElement) {
+      return DataManipulationService.getFieldSchema(fieldOrElement);
+    };
+
     $rootScope.console = function (txt, label) {
       console.log(label + ' ' + JSON.stringify(txt, null, 2));
     };
@@ -75,12 +80,17 @@ define([
     /*
      egyedia - this seems to be unused
      $rootScope.isField = function (value) {
-     return value && value.properties && value.properties._ui && value.properties._ui.inputType;
+     return value && value.properties && value._ui && value._ui.inputType;
      };
      */
 
     $rootScope.isElement = function (value) {
-      return value && value._ui;
+      if (value && value['@type'] && value['@type'] == "https://schema.metadatacenter.org/core/TemplateElement") {
+        return true;
+      }
+      else {
+        return false;
+      }
     };
 
     // Used in cedar-template-element.directive.js, form.directive
@@ -109,16 +119,23 @@ define([
         min = value.minItems || 0;
 
         if (!DataUtilService.isSpecialKey(name)) {
-          // We can tell we've reached an element level by its 'order' property
-          if (value._ui && value._ui.order) {
+          // We can tell we've reached an element level by its '@type' property
+          if ($rootScope.schemaOf(value)['@type'] == 'https://schema.metadatacenter.org/core/TemplateElement') {
 
             if (DataManipulationService.isCardinalElement(value)) {
-              parentModel[name] = [];
-              for (i = 0; i < min; i++) {
+              if (!parentModel[name] || angular.isObject(parentModel[name])) {
+                parentModel[name] = [];
+              }
+
+              for (i = 0; i < min - parentModel[name].length; i++) {
                 parentModel[name].push({});
               }
+
+              parentModel[name].splice(min, parentModel[name].length);
             } else {
-              parentModel[name] = {};
+              if (!parentModel[name] || angular.isArray(parentModel[name])) {
+                parentModel[name] = {};
+              }
             }
           } else {
 
@@ -166,18 +183,16 @@ define([
      }
      });
 
-     fieldOrElement.properties._ui.order = order;
+     fieldOrElement._ui.order = order;
      };
      */
 
     $rootScope.scrollToAnchor = UIUtilService.scrollToAnchor;
-
-    var minCardinalities = DataManipulationService.generateCardinalities(0, 8);
-    var maxCardinalities = DataManipulationService.generateCardinalities(1, 8);
-    maxCardinalities.push({value: 0, label: "N"});
-
-    $rootScope.minCardinalities = minCardinalities;
-    $rootScope.maxCardinalities = maxCardinalities;
+    $rootScope.scrollToDomId = UIUtilService.scrollToDomId;
+    $rootScope.toggleElement = UIUtilService.toggleElement;
+    $rootScope.getDomId = DataManipulationService.getDomId;
+    $rootScope.minCardinalities = DataManipulationService.generateCardinalities(0, 8, false);
+    $rootScope.maxCardinalities = DataManipulationService.generateCardinalities(1, 8, true);
 
     // BioPortal term selection integration code.
     // TODO: separate the calls, create a service for these
@@ -206,12 +221,14 @@ define([
     // Used here
     $rootScope.sortAutocompleteResults = function (field_id) {
       $rootScope.autocompleteResultsCache[field_id].results.sort(function (a, b) {
-        var labelA = a.label.toLowerCase();
-        var labelB = b.label.toLowerCase();
-        if (labelA < labelB)
-          return -1;
-        if (labelA > labelB)
-          return 1;
+        if (a.label && b.label) {
+          var labelA = a.label.toLowerCase();
+          var labelB = b.label.toLowerCase();
+          if (labelA < labelB)
+            return -1;
+          if (labelA > labelB)
+            return 1;
+        }
         return 0;
       });
     };
@@ -281,9 +298,8 @@ define([
         term = '*';
       }
       var results = [];
-      var properties = $rootScope.propertiesOf(field);
-      var vcst = properties._valueConstraints;
-      var field_id = field['@id'];
+      var vcst = $rootScope.schemaOf(field)._valueConstraints;
+      var field_id = $rootScope.schemaOf(field)['@id'];
 
       if (angular.isUndefined($rootScope.autocompleteResultsCache[field_id])) {
         $rootScope.autocompleteResultsCache[field_id] = {
@@ -331,7 +347,7 @@ define([
           if (term == '*') {
             $rootScope.removeAutocompleteResultsForSource(field_id, valueSet.uri);
           }
-          controlTermDataService.autocompleteValueSetClasses(term, valueSet.uri).then(function (childResponse) {
+          controlTermDataService.autocompleteValueSetClasses(term, valueSet.vsCollection, valueSet.uri).then(function (childResponse) {
             $rootScope.processAutocompleteClassResults(field_id, 'Value Set Class', valueSet.uri, childResponse);
           });
         });
@@ -437,10 +453,9 @@ define([
       return $sce.trustAsHtml($rootScope.propertiesOf(field)._content);
     };
 
-    // Init Cedar "god object"
-    Cedar.init();
+    CedarUser.init();
     // Make it available for everybody through rootScope
-    $rootScope.cedar = Cedar;
+    $rootScope.cedarUser = CedarUser;
 
     // Inject user data:
     // read from Keycloak
@@ -448,12 +463,14 @@ define([
     UserService.injectUserHandler($window.bootstrapUserHandler);
 
 
+    // the below console.log statements break the karma tests
     //TODO MJD
     // User data is available at this point:
-    console.log("Cedar service providing user data at this point:");
-    console.log(Cedar.getUserId());
-    console.log(Cedar.getScreenName());
-    console.log(Cedar.getHome());
+    // console.log("Cedar service providing user data at this point:");
+    // console.log(Cedar.getUserId());
+    // console.log(Cedar.getScreenName());
+    // console.log(Cedar.getHome());
+    // console.log(CedarUser.getPermissions());
 
     // Init the services that have dependencies on configuration
     DataTemplateService.init();
@@ -468,6 +485,7 @@ define([
     // Make objects available through rootScope
     $rootScope.vrs = ValueRecommenderService;
     $rootScope.editorOptions = RichTextConfigService.getConfig("default");
+
 
   };
 

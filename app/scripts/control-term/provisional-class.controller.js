@@ -6,9 +6,9 @@ define([
   angular.module('cedar.templateEditor.controlTerm.provisionalClassController', [])
     .controller('provisionalClassController', provisionalClassController);
 
-  provisionalClassController.$inject = ['$q', '$scope', '$timeout', 'provisionalClassService', 'controlTermDataService'];
+  provisionalClassController.$inject = ['$q', '$scope', '$timeout', 'provisionalClassService', 'controlTermDataService', 'controlTermService'];
 
-  function provisionalClassController($q, $scope, $timeout, provisionalClassService, controlTermDataService) {
+  function provisionalClassController($q, $scope, $timeout, provisionalClassService, controlTermDataService, controlTermService) {
     var vm = this;
 
     vm.addValueToValueSet = addValueToValueSet;
@@ -51,7 +51,7 @@ define([
       vm.provisionalClassMappings.push({
         mappingType: mappingType,
         targetClass: targetClass,
-        targetOntology: targetOntology.details.ontology
+        targetOntology: targetOntology.info
       });
       // hack to reset inner picker
       $timeout(function() {
@@ -68,14 +68,13 @@ define([
     }
 
     function isValid() {
-      return vm.provisionalClass.label && vm.provisionalClass.description;
+      return vm.provisionalClass.prefLabel && vm.provisionalClass.description;
     }
 
     function saveAsFieldItem(provisionalClass) {
       provisionalClassService.saveClass(provisionalClass, vm.provisionalClassMappings).then(function(newClass) {
-        controlTermDataService.getClassDetails(newClass['@id']).then(function(details) {
-          // hack to add prefLabel
-          details.prefLabel = details.label;
+        var acronym = controlTermService.getLastFragmentOfUri(newClass.ontology);
+        controlTermDataService.getClassById(acronym, newClass['@id']).then(function(details) {
           $scope.$emit(
             'cedar.templateEditor.controlTerm.provisionalClassController.provisionalClassSaved', {
               class: details,
@@ -88,21 +87,20 @@ define([
 
     function saveAsOntologyClassValueConstraint(provisionalClass) {
       provisionalClassService.saveClass(provisionalClass, vm.provisionalClassMappings).then(function(newClass) {
-        controlTermDataService.getClassDetails(newClass['@id']).then(function(details) {
-          // hack to add prefLabel
-          details.prefLabel = details.label;
-          $scope.$emit(
+        $scope.$emit(
             'cedar.templateEditor.controlTerm.provisionalClassController.provisionalClassSavedAsOntologyValueConstraint', {
-              class: details,
+              class: newClass,
               ontology: vm.provisionalClassOntology
             }
-          );
-        });
+        );
       });
     }
 
     function saveAsValueSetConstraint(provisionalValueSet, provisionalValueSetValues) {
       provisionalClassService.saveValueSet(provisionalValueSet, provisionalValueSetValues).then(function(newValueSet) {
+        // Reload value sets cache
+        console.log("Reloading value sets cache");
+        controlTermDataService.initValueSetsCache();
         // hack to add prefLabel
         newValueSet.prefLabel = newValueSet.label;
         $scope.$emit(

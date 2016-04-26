@@ -8,9 +8,9 @@ define([
     'cedar.templateEditor.controlTerm.provisionalClassController'
   ]).directive('cedarControlTermOntologyPicker', cedarControlTermOntologyPickerDirective);
 
-  cedarControlTermOntologyPickerDirective.$inject = [];
+  cedarControlTermOntologyPickerDirective.$inject = ['controlTermService'];
 
-  function cedarControlTermOntologyPickerDirective() {
+  function cedarControlTermOntologyPickerDirective(controlTermService) {
 
     var directive = {
       bindToController: {
@@ -53,7 +53,7 @@ define([
       vm.fieldSearchTerms = '';
       vm.fieldTreeVisibility = false;
       vm.getClassDetails = getClassDetails;
-      vm.getOntologySummary = getOntologySummary;
+      //vm.getOntologySummary = getOntologySummary;
       vm.hideFieldTree = hideFieldTree;
       vm.isBrowsing = isBrowsing;
       vm.isCreatingClass = isCreatingClass;
@@ -111,16 +111,14 @@ define([
         if (event) {
           event.preventDefault();
         }
-
         vm.fieldActionSelection = 'browse';
-        vm.searchResults = $rootScope.ontologies;
+        vm.searchResults = controlTermDataService.getAllOntologies();
       }
 
       function fieldSearch(event) {
         if (event) {
           event.preventDefault();
         }
-
         vm.searchResults = [];
         vm.searchNoResults = false;
 
@@ -131,29 +129,28 @@ define([
           vm.searchPreloader = true;
         }
 
-        var self = this;
-        controlTermDataService.searchClass(vm.fieldSearchTerms).then(function(response) {
-          var maxLen = response.collection.length;
-          if (maxLen > 20) {
-            maxLen = 20;
-          }
-
-          vm.searchPreloader = false;
-
-          if (maxLen > 0) {
+        controlTermDataService.searchClasses(vm.fieldSearchTerms).then(function (response) {
+          if (response.collection.length > 0) {
             var tArry = [], i;
-            for( i = 0; i < maxLen; i += 1 ) {
-              tArry.push({
-                class: response.collection[i].prefLabel,
-                ontology: response.collection[i].links.ontology,
-                collection: response.collection[i]
-              });
+            for (i = 0; i < response.collection.length; i += 1) {
+              var ontology = controlTermDataService.getOntologyByLdId(response.collection[i].source);
+              // Ignore results for which the ontology was not found in the cache
+              if (ontology) {
+                tArry.push({
+                  prefLabel : response.collection[i].prefLabel,
+                  details   : response.collection[i],
+                  ontology  : ontology
+                });
+              }
             }
             vm.searchResults = tArry;
           } else {
             vm.searchNoResults = true;
           }
           vm.searchResults = tArry;
+
+          // Hide 'Searching...' message
+          vm.searchPreloader = false;
         });
       }
 
@@ -162,21 +159,15 @@ define([
        * and child tree directives.
        */
       function getClassDetails(subtree) {
+        var acronym = controlTermService.getAcronym(subtree);
+        var classId = subtree['@id'];
+
         // Get selected class details from the links.self endpoint provided.
         vm.selectedClass2 = subtree;
-        controlTermDataService.getClassDetails(subtree.links.self).then(function(response) {
+
+        controlTermDataService.getClassById(acronym, classId).then(function(response) {
           vm.classDetails = response;
         });
-      }
-
-      function getOntologySummary(ontologyUri) {
-        var acronym = ontologyUri.slice(39);
-        var ontology = controlTermService.getOntologyByAcronym(acronym);
-        if (ontology) {
-          return ontology.name + ' (' + acronym + ')';
-        } else {
-          return ontologyUri;
-        }
       }
 
       /**
@@ -233,6 +224,11 @@ define([
         }
       };
 
+      //TODO change to some other method of resetting state
+      $scope.$on("field:controlledTermAdded", function () {
+        reset();
+      });
+
       function selectFieldClass(selection) {
         controlTermService.loadTreeOfClass(selection, vm);
       }
@@ -268,6 +264,7 @@ define([
           vm.ontologySearchRegexp = null;
         }
       });
+
 
     }
 
