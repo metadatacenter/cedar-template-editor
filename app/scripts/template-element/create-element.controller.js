@@ -251,6 +251,19 @@ define([
         }
       }
     });
+
+    // This function watches for changes in the form and defaults the title and description fields
+    $scope.$watch('$scope.element', function (v) {
+      if ($scope.element && $rootScope.schemaOf($scope.element)) {
+        var noName = $translate.instant("VALIDATION.noNameField");
+        if (!$rootScope.schemaOf($scope.element)._ui.title) {
+          $rootScope.schemaOf($scope.element)._ui.title = noName;
+        }
+        if (!$rootScope.schemaOf($scope.element)._ui.description) {
+          $rootScope.schemaOf($scope.element)._ui.description = noName;
+        }
+      }
+    });
   };
 
 });
