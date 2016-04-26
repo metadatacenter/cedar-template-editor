@@ -98,18 +98,9 @@ define([
           }
         };
 
-        $scope.initTitleAndDescription = function (element) {
-          if (!$rootScope.schemaOf(element)._ui.title) {
-            $rootScope.schemaOf(element)._ui.title = "Untitled";
-          }
-          if (!$rootScope.schemaOf(element)._ui.description) {
-            $rootScope.schemaOf(element)._ui.description = "Untitled";
-          }
-        }
-
         $scope.getTitle = function (element) {
           return $rootScope.schemaOf(element)._ui.title;
-        }
+        };
 
         $scope.addElementToTemplate = function (element) {
           populateCreatingFieldOrElement();
@@ -262,25 +253,30 @@ define([
         $scope.$watch('form._ui.title', function (v) {
           if (!angular.isUndefined($scope.form)) {
             var title = $scope.form._ui.title;
-
-            if (!title) {
-              title = "Untitled";
-            }
-
             if (title.length > 0) {
               var capitalizedTitle = $filter('capitalizeFirst')(title);
               $scope.form.title = $translate.instant("GENERATEDVALUE.templateTitle", {title: capitalizedTitle});
-              $scope.form.description = $translate.instant("GENERATEDVALUE.templateDescription",
-                  {title: capitalizedTitle});
+              $scope.form.description = $translate.instant("GENERATEDVALUE.templateDescription", {title: capitalizedTitle});
+            } else {
+              $scope.form._ui.title = "";
+              $scope.form._ui.description = "";
             }
-
-            $scope.form._ui.title = title;
-            $scope.form._ui.description = title;
-
           }
         });
-      };
+
+        // This function watches for changes in the form and defaults the title and description fields
+        $scope.$watch('form', function (v) {
+          if ($scope.form && $rootScope.schemaOf($scope.form)) {
+            var noName = $translate.instant("VALIDATION.noNameField");
+            if (!$rootScope.schemaOf($scope.form)._ui.title) {
+              $rootScope.schemaOf($scope.form)._ui.title = noName;
+            }
+            if (!$rootScope.schemaOf($scope.form)._ui.description) {
+              $rootScope.schemaOf($scope.form)._ui.description = noName;
+            }
+          }
+        });
+      }
 
     }
-)
-;
+);
