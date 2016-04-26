@@ -120,7 +120,7 @@ define([
     };
 
     service.hasInstances = function (templateId) {
-      return this.valueRecommender() + '/has-instances?template_id=' + templateId;
+      return this.valueRecommender() + '/has-instances?template_id=' + encodeURIComponent(templateId);
     };
 
     service.resourceBase = function () {
