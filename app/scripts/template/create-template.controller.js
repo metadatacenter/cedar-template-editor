@@ -177,9 +177,6 @@ define([
             $scope.templateErrorMessages.push($translate.instant("VALIDATION.templateDescriptionEmpty"));
           }
 
-          console.log($scope.templateErrorMessages);
-
-
           // If there are no Template level error messages
           if ($scope.templateErrorMessages.length == 0) {
             // If maxItems is N, then remove maxItems
