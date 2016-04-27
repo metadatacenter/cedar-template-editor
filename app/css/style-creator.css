@@ -9403,6 +9403,7 @@ i {
   box-shadow: 4px 4px #e0e0e0;
   background: #ffffff;
   margin: 10px auto 20px;
+  cursor: default;
 }
 .form-populate .populate-form-boxes .form-box .box-content {
   color: #5795ba;
@@ -9521,6 +9522,7 @@ i {
   box-shadow: 4px 4px #e0e0e0;
   background: #ffffff;
   margin: 10px auto 20px;
+  cursor: default;
 }
 .all-items-view .populate-form-boxes .form-box .box-content {
   color: #5795ba;
