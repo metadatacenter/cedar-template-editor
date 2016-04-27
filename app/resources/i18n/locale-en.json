@@ -87,7 +87,8 @@
     "Warning": "Warning",
     "Ok": "Ok",
     "Info": "Info",
-    "GoodNews": "Good News!"
+    "GoodNews": "Good News!",
+    "Cancel": "Cancel"
   },
   "SERVER": {
     "ELEMENT": {
