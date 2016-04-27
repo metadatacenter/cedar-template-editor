@@ -200,71 +200,22 @@ define([
       this.searchTerm = searchTerm;
       var resourceTypes = options.resourceTypes || uiSettingsService.getResourceTypeFilters().map(function(obj) { return obj.resourceType });
       var url = urlService.search() + '?';
-      if (searchTerm) {
-        url += 'search_term=' + searchTerm + '&';
-      }
-      url += 'resource_types=' + resourceTypes.join(',');
-      if (options.sort) {
-        url += '&sort=' + options.sort;
-      }
-      if (options.limit) {
-        url += '&limit=' + options.limit;
-      }
-      if (options.offset) {
-        url += '&offset=' + options.offset;
-      }
-      
-      // dummy data
-      var dummyData = {
-        "totalCount": 456,
-        "currentOffset": 0,
-        "paging": {
-          //same structure as in the case of folder view
-        },
-        "resources": [
-          {
-            "id":"0239092a-9ce7-45cf-8efc-ebfdd3e95ed4",
-            "type":null,
-            "resourceType":"field",
-            "path":"/Users/394c230b-ed59-4959-95b7-e7195fcb5aa6/Search 0",
-            "name":"Search 0",
-            "description":"Description Search 0",
-            "createdOn":"2016-04-14T22:07:04Z",
-            "lastUpdatedOn":"2016-04-14T22:07:04Z",
-            "createdBy": {
-              "id":"cb90e316-faed-4591-b9de-52ea3cd02915",
-              "name":"User Name 0"
-            },
-            "lastUpdatedBy": {
-              "id":"cb90e316-faed-4591-b9de-52ea3cd02915",
-              "name":"User Name 0"
-            }
-          },
-          {
-            "id":"0239092a-9ce7-45cf-8efc-ebfdd3e95ed4",
-            "type":null,
-            "resourceType":"field",
-            "path":"/Users/394c230b-ed59-4959-95b7-e7195fcb5aa6/Search 1",
-            "name":"Search 1",
-            "description":"Description Search 1",
-            "createdOn":"2016-04-14T22:07:04Z",
-            "lastUpdatedOn":"2016-04-14T22:07:04Z",
-            "createdBy": {
-              "id":"cb90e316-faed-4591-b9de-52ea3cd02915",
-              "name":"User Name 0"
-            },
-            "lastUpdatedBy": {
-              "id":"cb90e316-faed-4591-b9de-52ea3cd02915",
-              "name":"User Name 0"
-            }
-          }
-        ],
-        "facets": {
-          //same structure as in the case of facet call
-        }
-      };
-      successCallback(dummyData);
-      return;
+
+      // if (searchTerm) {
+      //   url += 'search_term=' + searchTerm + '&';
+      // }
+      // url += 'resource_types=' + resourceTypes.join(',');
+      // if (options.sort) {
+      //   url += '&sort=' + options.sort;
+      // }
+      // if (options.limit) {
+      //   url += '&limit=' + options.limit;
+      // }
+      // if (options.offset) {
+      //   url += '&offset=' + options.offset;
+      // }
+
+      url += 'q=dummy';
 
       authorizedBackendService.doCall(
         httpBuilderService.get(url),
