@@ -30,6 +30,7 @@ define([
     vm.createFolder = createFolder;
     vm.currentWorkspacePath = cedarUser.getHome();
     vm.currentPath = "";
+    vm.currentFolderId = ""; // TODO: this should go into AppData
     vm.deleteResource = deleteResource;
     vm.editResource = editResource;
     vm.facets = {};
@@ -168,9 +169,10 @@ define([
         return resourceService.getResources(
           { folderId: folderId, resourceTypes: resourceTypes, sort: '-createdOn', limit: 10, offset: 0 },
           function(response) {
-            vm.resources   = response.resources;
-            vm.pathInfo    = response.pathInfo;
-            vm.currentPath = vm.pathInfo.pop();
+            vm.currentFolderId = folderId;
+            vm.resources       = response.resources;
+            vm.pathInfo        = response.pathInfo;
+            vm.currentPath     = vm.pathInfo.pop();
           },
           function(error) {
             alert('there was an error fetching the folder contents');
@@ -188,9 +190,10 @@ define([
         return resourceService.getResources(
           { path: path, resourceTypes: resourceTypes, sort: '-createdOn', limit: 10, offset: 0 },
           function(response) {
-            vm.resources   = response.resources;
-            vm.pathInfo    = response.pathInfo;
-            vm.currentPath = vm.pathInfo.pop();
+            vm.resources       = response.resources;
+            vm.pathInfo        = response.pathInfo;
+            vm.currentPath     = vm.pathInfo.pop();
+            vm.currentFolderId = vm.currentPath['@id'];
           },
           function(error) {
             alert('there was an error fetching the folder contents');

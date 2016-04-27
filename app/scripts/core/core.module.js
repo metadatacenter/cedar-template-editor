@@ -10,6 +10,7 @@ define([
   'cedar/template-editor/core/key-to-title.filter',
   'cedar/template-editor/core/order-object-by.filter',
   'cedar/template-editor/core/props.filter',
+  'cedar/template-editor/core/encode-uri-component.filter',
 ], function(angular) {
   angular.module('cedar.templateEditor.core', [
     'cedar.templateEditor.core.config',
@@ -20,5 +21,6 @@ define([
     'cedar.templateEditor.core.keyToTitleFilter',
     'cedar.templateEditor.core.orderObjectByFilter',
     'cedar.templateEditor.core.propsFilter',
+    'cedar.templateEditor.core.encodeURIComponentFilter',
   ]);
 });
