@@ -165,7 +165,7 @@
             </tr>
             <tr>
               <td class="left"><strong>Location:</strong></td>
-              <td>{{ dc.selectedResource.path }}</td>
+              <td>TODO: What do use here?</td>
             </tr>
             <tr>
               <td class="left"><strong>Owner:</strong></td>
@@ -173,11 +173,11 @@
             </tr>
             <tr>
               <td class="left"><strong>Modified:</strong></td>
-              <td>{{ dc.selectedResource.lastUpdatedOnTS|date:'shortDate' }} by {{ dc.selectedResource.lastUpdatedByUserName }}</td>
+              <td>{{ dc.selectedResource.lastUpdatedOnTS * 1000 | date:'shortDate' }} by {{ dc.selectedResource.lastUpdatedByUserName }}</td>
             </tr>
             <tr>
               <td class="left"><strong>Created:</strong></td>
-              <td>{{ dc.selectedResource.createdOnTS|date:'shortDate' }} by {{ dc.selectedResource.createdByUserName }}</td>
+              <td>{{ dc.selectedResource.createdOnTS * 1000 | date:'shortDate' }} by {{ dc.selectedResource.createdByUserName }}</td>
             </tr>
           </tbody>
         </table>
