@@ -24,7 +24,7 @@ define([
     // Empty $scope object used to store values that get converted to their json-ld counterparts on the $scope.element object
     $scope.volatile = {};
     // Setting form preview setting to false by default
-    $scope.form = {};
+    //$scope.form = {};
 
     // Configure mini header
     var pageId = CONST.pageId.ELEMENT;
@@ -46,42 +46,46 @@ define([
     $scope.fieldTypes = FieldTypeService.getFieldTypes();
     $scope.hideRootElement = true;
 
-    // Load existing element if $routeParams.id parameter is supplied
-    if ($routeParams.id) {
-      // Fetch existing element and assign to $scope.element property
-      AuthorizedBackendService.doCall(
-          TemplateElementService.getTemplateElement($routeParams.id),
-          function (response) {
-            $scope.element = response.data;
-            HeaderService.dataContainer.currentObjectScope = $scope.element;
+    var getElement = function () {
+      $scope.form = {};
+      // Load existing element if $routeParams.id parameter is supplied
+      if ($routeParams.id) {
+        // Fetch existing element and assign to $scope.element property
+        AuthorizedBackendService.doCall(
+            TemplateElementService.getTemplateElement($routeParams.id),
+            function (response) {
+              $scope.element = response.data;
+              HeaderService.dataContainer.currentObjectScope = $scope.element;
 
-            var key = $scope.element["@id"];
-            $rootScope.keyOfRootElement = key;
-            $scope.form.properties = $scope.form.properties || {};
-            $scope.form.properties[key] = $scope.element;
-            $scope.form._ui = $scope.form._ui || {};
-            $scope.form._ui.order = $scope.form._ui.order || [];
-            $scope.form._ui.order.push(key);
-            $rootScope.jsonToSave = $scope.element;
-          },
-          function (err) {
-            UIMessageService.showBackendError('SERVER.ELEMENT.load.error', err);
-          }
-      );
-    } else {
-      // If we're not loading an existing element then let's create a new empty $scope.element property
-      $scope.element = DataTemplateService.getElement();
-      HeaderService.dataContainer.currentObjectScope = $scope.element;
+              var key = $scope.element["@id"];
+              $rootScope.keyOfRootElement = key;
+              $scope.form.properties = $scope.form.properties || {};
+              $scope.form.properties[key] = $scope.element;
+              $scope.form._ui = $scope.form._ui || {};
+              $scope.form._ui.order = $scope.form._ui.order || [];
+              $scope.form._ui.order.push(key);
+              $rootScope.jsonToSave = $scope.element;
+            },
+            function (err) {
+              UIMessageService.showBackendError('SERVER.ELEMENT.load.error', err);
+            }
+        );
+      } else {
+        // If we're not loading an existing element then let's create a new empty $scope.element property
+        $scope.element = DataTemplateService.getElement();
+        HeaderService.dataContainer.currentObjectScope = $scope.element;
 
-      var key = $scope.element["@id"] || DataManipulationService.generateGUID();
-      $rootScope.keyOfRootElement = key;
-      $scope.form.properties = $scope.form.properties || {};
-      $scope.form.properties[key] = $scope.element;
-      $scope.form._ui = $scope.form._ui || {};
-      $scope.form._ui.order = $scope.form._ui.order || [];
-      $scope.form._ui.order.push(key);
-      $rootScope.jsonToSave = $scope.element;
-    }
+        var key = $scope.element["@id"] || DataManipulationService.generateGUID();
+        $rootScope.keyOfRootElement = key;
+        $scope.form.properties = $scope.form.properties || {};
+        $scope.form.properties[key] = $scope.element;
+        $scope.form._ui = $scope.form._ui || {};
+        $scope.form._ui.order = $scope.form._ui.order || [];
+        $scope.form._ui.order.push(key);
+        $rootScope.jsonToSave = $scope.element;
+      }
+    };
+    getElement();
 
     var populateCreatingFieldOrElement = function () {
       $scope.invalidFieldStates = {};
@@ -134,7 +138,11 @@ define([
       $scope.element = angular.copy($scope.resetElement);
       // Broadcast the reset event which will trigger the emptying of formFields formFieldsOrder
       $scope.$broadcast('resetForm');
-    }
+    };
+
+    $scope.cancelElement = function () {
+      getElement();
+    };
 
     $scope.saveElement = function () {
       populateCreatingFieldOrElement();
@@ -149,7 +157,7 @@ define([
             'GENERIC.YesSaveIt'
         );
       }
-    }
+    };
 
     // Stores the element into the database
     $scope.doSaveElement = function () {
@@ -178,7 +186,7 @@ define([
         DataManipulationService.removeUnnecessaryMaxItems($scope.element.properties);
 
         // create a copy of the element and strip out the _tmp fields before saving it
-       // var copiedElement = $scope.stripTmpFields();
+        // var copiedElement = $scope.stripTmpFields();
 
         // Save element
         // Check if the element is already stored into the DB
@@ -277,6 +285,6 @@ define([
       }
       return copiedForm;
     };
-  };
+  }
 
 });

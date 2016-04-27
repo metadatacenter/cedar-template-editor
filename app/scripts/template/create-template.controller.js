@@ -39,29 +39,32 @@ define([
 
         $scope.fieldTypes = FieldTypeService.getFieldTypes();
 
-        // Load existing form if $routeParams.id parameter is supplied
-        if ($routeParams.id) {
-          // Fetch existing form and assign to $scope.form property
-          AuthorizedBackendService.doCall(
-              TemplateService.getTemplate($routeParams.id),
-              function (response) {
-                $scope.form = response.data;
-                HeaderService.dataContainer.currentObjectScope = $scope.form;
+        var getTemplate = function () {
+          // Load existing form if $routeParams.id parameter is supplied
+          if ($routeParams.id) {
+            // Fetch existing form and assign to $scope.form property
+            AuthorizedBackendService.doCall(
+                TemplateService.getTemplate($routeParams.id),
+                function (response) {
+                  $scope.form = response.data;
+                  HeaderService.dataContainer.currentObjectScope = $scope.form;
 
-                // stick a domId on fields and elements
-                DataManipulationService.createDomIds($scope.form);
-                closeAllElements();
+                  // stick a domId on fields and elements
+                  DataManipulationService.createDomIds($scope.form);
+                  closeAllElements();
 
-              },
-              function (err) {
-                UIMessageService.showBackendError('SERVER.TEMPLATE.load.error', err);
-              }
-          );
-        } else {
-          // If we're not loading an existing form then let's create a new empty $scope.form property
-          $scope.form = DataTemplateService.getTemplate();
-          HeaderService.dataContainer.currentObjectScope = $scope.form;
-        }
+                },
+                function (err) {
+                  UIMessageService.showBackendError('SERVER.TEMPLATE.load.error', err);
+                }
+            );
+          } else {
+            // If we're not loading an existing form then let's create a new empty $scope.form property
+            $scope.form = DataTemplateService.getTemplate();
+            HeaderService.dataContainer.currentObjectScope = $scope.form;
+          }
+        };
+        getTemplate();
 
         var populateCreatingFieldOrElement = function () {
           $scope.invalidFieldStates = {};
@@ -148,6 +151,10 @@ define([
           $scope.$broadcast('resetForm');
         };
 
+        $scope.cancelTemplate = function () {
+          getTemplate();
+        };
+
         $scope.saveTemplate = function () {
           populateCreatingFieldOrElement();
           if (dontHaveCreatingFieldOrElement()) {
@@ -161,7 +168,7 @@ define([
                 'GENERIC.YesSaveIt'
             );
           }
-        }
+        };
 
         // Stores the template into the database
         $scope.doSaveTemplate = function () {
