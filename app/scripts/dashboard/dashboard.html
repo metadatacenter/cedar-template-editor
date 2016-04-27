@@ -206,9 +206,8 @@
       <div class="grid-view" ng-show="dc.resourceView == 'grid'">
         <div class="col-sm-6"
              ng-class="{ 'col-md-3': !dc.narrowContent(), 'col-md-4': dc.narrowContent(), selected: dc.isResourceSelected(resource) }"
-             ng-dblclick="dc.editResource(resource)"
              ng-repeat="(index, resource) in dc.resources">
-          <div ng-dblclick="dc.goToResource(resource)" class="form-box">
+          <div ng-dblclick="dc.editResource(resource)" class="form-box">
             <div class="box-content text-center">
               <i class="fa" ng-class="dc.getResourceIconClass(resource)"></i>
               <p>{{ resource.name }}</p>

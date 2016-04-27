@@ -39,7 +39,6 @@ define([
     vm.getFolderContents = getFolderContents;
     vm.getFolderContentsById = getFolderContentsById;
     vm.getResourceIconClass = getResourceIconClass;
-    vm.goToResource = goToResource;
     vm.isResourceSelected = isResourceSelected;
     vm.isResourceTypeActive = isResourceTypeActive;
     vm.narrowContent = narrowContent;
@@ -93,32 +92,39 @@ define([
      */
     function editResource(resource) {
       switch (resource.resourceType) {
-        case CONST.resourceType.TEMPLATE:
-          $location.path(UrlService.getTemplateEdit(resource.id));
-          break;
-        case CONST.resourceType.ELEMENT:
-          $location.path(UrlService.getElementEdit(resource.id));
-          break;
-        case CONST.resourceType.INSTANCE:
-          $location.path(UrlService.getInstanceEdit(resource.id));
-          break;
-        case CONST.resourceType.LINK:
-          $location.path(scope.href);
-          break;
+      case CONST.resourceType.TEMPLATE:
+        $location.path(UrlService.getTemplateEdit(resource.id));
+        break;
+      case CONST.resourceType.ELEMENT:
+        $location.path(UrlService.getElementEdit(resource.id));
+        break;
+      case CONST.resourceType.INSTANCE:
+        $location.path(UrlService.getInstanceEdit(resource.id));
+        break;
+      case CONST.resourceType.LINK:
+        $location.path(scope.href);
+        break;
+      case CONST.resourceType.FOLDER:
+        // TODO: update url
+        getFolderContentsById(resource['@id']);
       }
     }
 
     function deleteResource(resource) {
       switch (resource.resourceType) {
-        case CONST.resourceType.FOLDER:
-          resourceService.deleteFolder(
-            resource['@id'],
-            function(response) {
-              debugger;
-            },
-            function(error) { }
-          );
-          break;
+      case CONST.resourceType.FOLDER:
+        resourceService.deleteFolder(
+          resource['@id'],
+          function(response) {
+            // remove resource from list
+            var index = vm.resources.indexOf(resource);
+            vm.resources.splice(index, 1);
+          },
+          function(error) {
+            alert('There was an error deleting the folder');
+          }
+        );
+        break;
       }
     }
 
@@ -200,15 +206,6 @@ define([
         return "fa-folder-o";
       } else {
         return "fa-file-text-o";
-      }
-    }
-
-    function goToResource(resource) {
-      resetSelected();
-      if (resource.resourceType == 'folder') {
-        getFolderContentsById(resource['@id']);
-      } else {
-        alert('TODO: navigate to resource detail page');
       }
     }
 

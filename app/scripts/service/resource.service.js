@@ -50,11 +50,10 @@ define([
     }
 
     function deleteFolder(folderId, successCallback, errorCallback) {
-      var url = urlService.folders() + '/' + folderId;
+      var url = urlService.folders() + '/' + encodeURIComponent(folderId);
       authorizedBackendService.doCall(
         httpBuilderService.delete(url),
         function(response) {
-          debugger;
           successCallback(response.data);
         },
         errorCallback
