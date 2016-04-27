@@ -45,7 +45,7 @@ gulp.task('less', function () {
             .pipe(plumber({
                 errorHandler: onError
             }))
-            .pipe(less())
+            .pipe(less().on('error', gutil.log))
             .pipe(autoprefixer({
                 browsers: ['> 1%', 'last 2 versions', 'Firefox ESR', 'Opera 12.1', 'IE 9'],
                 cascade: true
@@ -93,6 +93,7 @@ gulp.task('html', function () {
 gulp.task('replace-url', function () {
     gulp.src(['app/config/src/url-service.conf.json'])
             .pipe(replace('templateServerUrl', 'https://template.' + cedarHost))
+            .pipe(replace('resourceServerUrl', 'https://resource.' + cedarHost))
             .pipe(replace('userServerUrl', 'https://user.' + cedarHost))
             .pipe(replace('terminologyServerUrl', 'https://terminology.' + cedarHost))
             .pipe(replace('resourceServerUrl', 'https://resource.' + cedarHost))
