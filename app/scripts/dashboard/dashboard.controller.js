@@ -12,6 +12,7 @@ define([
     '$rootScope',
     '$routeParams',
     '$scope',
+    '$translate',
     'AuthorizedBackendService',
     'CedarUser',
     'HeaderService',
@@ -24,13 +25,13 @@ define([
     'CONST'
   ];
 
-  function DashboardController($location, $rootScope, $routeParams, $scope, AuthorizedBackendService, cedarUser, HeaderService, resourceService, TemplateElementService, TemplateService, TemplateInstanceService, UIMessageService, UrlService, CONST) {
+  function DashboardController($location, $rootScope, $routeParams, $scope, $translate, AuthorizedBackendService, cedarUser, HeaderService, resourceService, TemplateElementService, TemplateService, TemplateInstanceService, UIMessageService, UrlService, CONST) {
     var vm = this;
 
     vm.createFolder = createFolder;
     vm.currentWorkspacePath = cedarUser.getHome();
     vm.currentPath = "";
-    vm.currentFolderId = ""; // TODO: this should go into AppData
+    vm.currentFolderId = "";
     vm.deleteResource = deleteResource;
     vm.editResource = editResource;
     vm.facets = {};
@@ -40,6 +41,7 @@ define([
     vm.getFolderContents = getFolderContents;
     vm.getFolderContentsById = getFolderContentsById;
     vm.getResourceIconClass = getResourceIconClass;
+    vm.goToFolder = goToFolder;
     vm.isResourceSelected = isResourceSelected;
     vm.isResourceTypeActive = isResourceTypeActive;
     vm.narrowContent = narrowContent;
@@ -54,9 +56,11 @@ define([
     vm.resourceView = 'grid';
     vm.selectedResource = null;
     vm.selectResource = selectResource;
+    vm.setSortOption = setSortOption;
     vm.showFilters = false;
     vm.showFloatingMenu = false;
     vm.showResourceInfo = false;
+    vm.sortOptionLabel = $translate.instant('DASHBOARD.sort.name');
     vm.toggleFilters = toggleFilters;
     vm.toggleResourceInfo = toggleResourceInfo;
     vm.toggleResourceType = toggleResourceType;
@@ -65,7 +69,11 @@ define([
 
     getFacets();
     getForms();
-    getFolderContents(vm.currentWorkspacePath);
+    if ($routeParams.folderId) {
+      getFolderContentsById(decodeURIComponent($routeParams.folderId));
+    } else {
+      getFolderContents(cedarUser.getHome());
+    }
 
     /**
      * Scope functions.
@@ -106,8 +114,8 @@ define([
         $location.path(scope.href);
         break;
       case CONST.resourceType.FOLDER:
-        // TODO: update url
-        getFolderContentsById(resource['@id']);
+        goToFolder(resource['@id']);
+        break;
       }
     }
 
@@ -212,6 +220,10 @@ define([
       return "fa-file-text-o";
     }
 
+    function goToFolder(folderId) {
+      $location.path(UrlService.getFolderContents(folderId));
+    };
+
     function isResourceTypeActive(type) {
       return vm.resourceTypes[type];
     }
@@ -232,6 +244,10 @@ define([
       vm.selectedResource = resource;
       getFolderDetails(resource['@id']);
       vm.showResourceInfo = true;
+    }
+
+    function setSortOption(option) {
+      vm.sortOptionLabel = $translate.instant('DASHBOARD.sort.' + option);
     }
 
     function toggleFilters() {

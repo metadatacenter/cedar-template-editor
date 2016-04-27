@@ -1,5 +1,6 @@
 {
   "cedarRestAPI": "templateServerUrl",
+  "resourceRestAPI": "resourceServerUrl",
   "userRestAPI": "userServerUrl",
   "terminologyRestAPI": "terminologyServerUrl",
   "resourceRestAPI": "resourceServerUrl",

@@ -6,12 +6,12 @@ define([
   angular.module('cedar.templateEditor.service.templateService', [])
       .service('TemplateService', TemplateService);
 
-  TemplateService.$inject = ["HttpBuilderService", "UrlService"];
+  TemplateService.$inject = ['HttpBuilderService', 'UrlService', 'CedarUser'];
 
-  function TemplateService(HttpBuilderService, UrlService) {
+  function TemplateService(HttpBuilderService, UrlService, CedarUser) {
 
     var service = {
-      serviceId: "TemplateService"
+      serviceId: 'TemplateService'
     };
 
     service.getDefaultTemplatesSummary = function () {
@@ -31,7 +31,7 @@ define([
     };
 
     service.saveTemplate = function (template) {
-      return HttpBuilderService.post(UrlService.templates(), angular.toJson(template));
+      return HttpBuilderService.post(UrlService.postTemplate(CedarUser.getCurrentFolderId()), angular.toJson(template));
     };
 
     service.updateTemplate = function (id, template) {

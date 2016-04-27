@@ -12,6 +12,11 @@ define([
         controller: 'DashboardController',
         controllerAs: 'dc',
         templateUrl: 'scripts/dashboard/dashboard.html',
+      })
+      .when('/folder/:folderId*', {
+        controller: 'DashboardController',
+        controllerAs: 'dc',
+        templateUrl: 'scripts/dashboard/dashboard.html',
       });
   }
 

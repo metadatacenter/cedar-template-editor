@@ -48,7 +48,7 @@ define([
     };
 
     service.getDefaultTemplatesSummary = function (limit, offset) {
-      return this.templates() + '?summary=true' + '&limit=' + limit + '&offset=' + offset;
+      return this.templatesOld() + '?summary=true' + '&limit=' + limit + '&offset=' + offset;
     };
 
     service.getAllTemplatesSummary = function () {
@@ -56,7 +56,7 @@ define([
     };
 
     service.getDefaultTemplateElementsSummary = function (limit, offset) {
-      return this.templateElements() + '?summary=true' + '&limit=' + limit + '&offset=' + offset;
+      return this.templateElementsOld() + '?summary=true' + '&limit=' + limit + '&offset=' + offset;
     };
 
     service.getAllTemplateElementsSummary = function () {
@@ -64,7 +64,7 @@ define([
     };
 
     service.getDefaultTemplateInstancesSummary = function (limit, offset) {
-      return this.templateInstances() + '?summary=true' + '&limit=' + limit + '&offset=' + offset;
+      return this.templateInstancesOld() + '?summary=true' + '&limit=' + limit + '&offset=' + offset;
     };
 
     service.getAllTemplateInstancesSummary = function () {
@@ -72,6 +72,10 @@ define([
     };
 
     service.base = function () {
+      return resourceService;
+    };
+
+    service.oldBase = function () {
       return apiService;
     };
 
@@ -79,24 +83,48 @@ define([
       return this.base() + '/templates';
     };
 
+    service.templatesOld = function () {
+      return this.oldBase() + '/templates';
+    };
+
     service.getTemplate = function (id) {
       return this.templates() + '/' + encodeURIComponent(id);
+    };
+
+    service.postTemplate = function (folderId) {
+      return this.templates() + '?folderId=' + encodeURIComponent(folderId);
     };
 
     service.templateElements = function () {
       return this.base() + '/template-elements';
     };
 
+    service.templateElementsOld = function () {
+      return this.oldBase() + '/template-elements';
+    };
+
     service.getTemplateElement = function (id) {
       return this.templateElements() + '/' + encodeURIComponent(id);
+    };
+
+    service.postTemplateElement = function (folderId) {
+      return this.templateElements() + '?folderId=' + encodeURIComponent(folderId);
     };
 
     service.templateInstances = function () {
       return this.base() + '/template-instances';
     };
 
+    service.templateInstancesOld = function () {
+      return this.oldBase() + '/template-instances';
+    };
+
     service.getTemplateInstance = function (id) {
       return this.templateInstances() + '/' + encodeURIComponent(id);
+    };
+
+    service.postTemplateInstance = function (folderId) {
+      return this.templateInstances() + '?folderId=' + encodeURIComponent(folderId);
     };
 
     service.users = function () {
@@ -120,11 +148,15 @@ define([
     };
 
     service.hasInstances = function (templateId) {
-      return this.valueRecommender() + '/has-instances?template_id=' + encodeURIComponent(templateId);
+      return this.valueRecommender() + '/has-instances?template_id=' + templateId;
     };
 
     service.resourceBase = function () {
       return resourceService;
+    };
+
+    service.getFolderContents = function (folderId) {
+      return "/folder/" + encodeURIComponent(folderId);
     };
 
     service.folders = function () {

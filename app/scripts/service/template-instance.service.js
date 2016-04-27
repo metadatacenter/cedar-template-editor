@@ -6,9 +6,9 @@ define([
   angular.module('cedar.templateEditor.service.templateInstanceService', [])
       .service('TemplateInstanceService', TemplateInstanceService);
 
-  TemplateInstanceService.$inject = ['HttpBuilderService', 'UrlService'];
+  TemplateInstanceService.$inject = ['HttpBuilderService', 'UrlService', 'CedarUser'];
 
-  function TemplateInstanceService(HttpBuilderService, UrlService) {
+  function TemplateInstanceService(HttpBuilderService, UrlService, CedarUser) {
 
     var service = {
       serviceId: "TemplateInstanceService"
@@ -31,7 +31,7 @@ define([
     };
 
     service.saveTemplateInstance = function (instance) {
-      return HttpBuilderService.post(UrlService.templateInstances(), angular.toJson(instance));
+      return HttpBuilderService.post(UrlService.postTemplateInstance(CedarUser.getCurrentFolderId()), angular.toJson(instance));
     };
 
     service.updateTemplateInstance = function (id, instance) {

@@ -181,6 +181,11 @@
         "element": "Are you sure you want to remove the selected element?",
         "instance": "Are you sure you want to remove the selected populated template?"
       }
+    },
+    "sort": {
+      "name": "Name",
+      "created": "Recently Created",
+      "updated": "Recently Updated"
     }
   },
   "ELEMENTEDITOR": {
