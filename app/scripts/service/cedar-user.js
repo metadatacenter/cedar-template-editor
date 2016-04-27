@@ -67,6 +67,14 @@ define([
       return getAppData().cedarUserProfile.permissions;
     };
 
+    service.getCurrentFolderId = function() {
+      return getAppData().navigation.currentFolderId;
+    };
+
+    service.setCurrentFolderId = function(value) {
+      getAppData().navigation.currentFolderId = value;
+    }
+
     return service;
   };
 });

@@ -23,6 +23,7 @@ define([
       createFolder: createFolder,
       deleteFolder: deleteFolder,
       getFacets: getFacets,
+      getFolder: getFolder,
       getResources: getResources,
       searchResources: searchResources
     };
@@ -165,6 +166,19 @@ define([
       return;
 
       var url = UrlService.facets();
+      authorizedBackendService.doCall(
+        httpBuilderService.get(url),
+        function(response) {
+          successCallback(response.data);
+        },
+        errorCallback
+      );
+    }
+
+    function getFolder(folderId, options = {}, successCallback, errorCallback) {
+      var resourceTypes = options.resourceTypes || uiSettingsService.getResourceTypeFilters().map(function(obj) { return obj.resourceType });
+      var url = urlService.folders() + '/' + encodeURIComponent(folderId);
+
       authorizedBackendService.doCall(
         httpBuilderService.get(url),
         function(response) {

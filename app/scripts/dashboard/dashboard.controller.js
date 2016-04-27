@@ -28,17 +28,19 @@ define([
     var vm = this;
 
     vm.createFolder = createFolder;
-    vm.currentWorkspacePath = '/Users'; // TODO: change to cedarUser.getHome();
+    vm.currentWorkspacePath = cedarUser.getHome();
+    vm.currentPath = "";
     vm.deleteResource = deleteResource;
     vm.editResource = editResource;
     vm.facets = {};
     vm.forms = [];
     vm.getFacets = getFacets;
     vm.getForms = getForms;
-    vm.getWorkspace = getWorkspace;
+    vm.getFolderContents = getFolderContents;
     vm.isResourceSelected = isResourceSelected;
     vm.isResourceTypeActive = isResourceTypeActive;
     vm.narrowContent = narrowContent;
+    vm.pathInfo = [];
     vm.resources = [];
     vm.resourceTypes = {
       element: true,
@@ -60,7 +62,7 @@ define([
 
     getFacets();
     getForms();
-    getWorkspace();
+    getFolderContents(vm.currentWorkspacePath);
 
     /**
      * Scope functions.
@@ -75,9 +77,11 @@ define([
         path,
         description,
         function(response) {
-          getWorkspace();
+          getFolderContents(path);
         },
-        function(response) { }
+        function(response) {
+          alert('there was an error creating the folder!');
+        }
       );
     }
 
@@ -135,17 +139,33 @@ define([
       );
     }
 
-    function getWorkspace() {
-      var path = vm.currentWorkspacePath;
+    function getFolderDetails(folderId) {
+      return resourceService.getFolder(
+        folderId,
+        {},
+        function(response) {
+          vm.selectedResource = response;
+        },
+        function(error) {
+          alert('there was an error fetching the folder details');
+        }
+      );
+    };
+
+    function getFolderContents(path) {
       var resourceTypes = activeResourceTypes();
       if (resourceTypes.length > 0) {
         return resourceService.getResources(
           path,
-          { resourceTypes: resourceTypes, sort: '-createdOn', limit: 10, offset: 1 },
+          { resourceTypes: resourceTypes, sort: '-createdOn', limit: 10, offset: 0 },
           function(response) {
-            vm.resources = response.resources;
+            vm.resources   = response.resources;
+            vm.pathInfo    = response.pathInfo;
+            vm.currentPath = vm.pathInfo.pop();
           },
-          function(error) { }
+          function(error) {
+            alert('there was an error fetching the folder contents');
+          }
         );
       } else {
         vm.resources = [];
@@ -157,7 +177,11 @@ define([
     }
 
     function isResourceSelected(resource) {
-      return angular.equals(vm.selectedResource, resource);
+      if (resource == null || vm.selectedResource == null) {
+        return false;
+      } else {
+        return vm.selectedResource['@id'] == resource['@id'];
+      }
     }
 
     function narrowContent() {
@@ -166,6 +190,7 @@ define([
 
     function selectResource(resource) {
       vm.selectedResource = resource;
+      getFolderDetails(resource['@id']);
       vm.showResourceInfo = true;
     }
 
@@ -179,7 +204,8 @@ define([
 
     function toggleResourceType(type) {
       vm.resourceTypes[type] = !vm.resourceTypes[type];
-      getWorkspace();
+      // TODO: should be cedarUser.getCurrentFolderId()
+      getFolderContents(vm.currentWorkspacePath);
     }
 
     /**
@@ -214,6 +240,8 @@ define([
           activeResourceTypes.push(value);
         }
       });
+      // always want to show folders
+      activeResourceTypes.push('folder');
       return activeResourceTypes;
     }
 

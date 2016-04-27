@@ -161,7 +161,7 @@
           <tbody>
             <tr>
               <td class="left"><strong>Type:</strong></td>
-              <td>{{ dc.selectedResource.type }}</td>
+              <td>{{ dc.selectedResource.resourceType }}</td>
             </tr>
             <tr>
               <td class="left"><strong>Location:</strong></td>
@@ -169,15 +169,15 @@
             </tr>
             <tr>
               <td class="left"><strong>Owner:</strong></td>
-              <td>{{ dc.selectedResource.createdBy.name }}</td>
+              <td>{{ dc.selectedResource.createdByUserName }}</td>
             </tr>
             <tr>
               <td class="left"><strong>Modified:</strong></td>
-              <td>{{ dc.selectedResource.lastUpdatedOn|date:'shortDate' }} by {{ dc.selectedResource.lastUpdatedBy.name }}</td>
+              <td>{{ dc.selectedResource.lastUpdatedOnTS|date:'shortDate' }} by {{ dc.selectedResource.lastUpdatedByUserName }}</td>
             </tr>
             <tr>
               <td class="left"><strong>Created:</strong></td>
-              <td>{{ dc.selectedResource.createdOn|date:'shortDate' }} by {{ dc.selectedResource.createdBy.name }}</td>
+              <td>{{ dc.selectedResource.createdOnTS|date:'shortDate' }} by {{ dc.selectedResource.createdByUserName }}</td>
             </tr>
           </tbody>
         </table>
@@ -193,7 +193,12 @@
     <div class="row">
       <div class="col-sm-12 clearfix">
         <div class="breadcrumbs-sb">
-          <p><a href="#n" class="breadcrumbs">Home</a> / My Workspace</p>
+          <p>
+            <span ng-repeat="path in dc.pathInfo">
+              <a href="#n" class="breadcrumbs">{{path.name}}</a> /
+            </span>
+            {{dc.currentPath.name}}
+          </p>
         </div>
       </div>
     </div>
