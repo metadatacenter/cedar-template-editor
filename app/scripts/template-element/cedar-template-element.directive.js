@@ -175,6 +175,8 @@ define([
         return p._tmp.nested || false;
       };
 
+      // add a multiple cardinality element
+      scope.selectedTab = 0;
       scope.addElement = function () {
         if ($rootScope.isRuntime()) {
           if ((!scope.element.maxItems || scope.model.length < scope.element.maxItems)) {
@@ -194,29 +196,30 @@ define([
               }
               resetElement(seed, scope.element);
             }
+            scope.selectedTab = scope.model.length - 1;
           }
         }
-      }
+      };
 
+      // remove a multiple cardinality element
       scope.removeElement = function (index) {
         if (scope.model.length > scope.element.minItems) {
           scope.model.splice(index, 1);
-
-          if (scope.selectedTab == index) {
-            scope.selectedTab = 0;
+          if (index + 1 > scope.model.length) {
+            scope.selectedTab = scope.model.length - 1;
           }
         }
-      }
+      };
 
       scope.switchToSpreadsheet = function () {
         SpreadsheetService.switchToSpreadsheetElement(scope, element);
-      }
+      };
 
       scope.switchExpandedState = function (domId) {
         $rootScope.toggleElement(domId);
-      }
+      };
 
-      scope.removeChild = function(fieldOrElement) {
+      scope.removeChild = function (fieldOrElement) {
         // fieldOrElement must contain the schema level
         fieldOrElement = $rootScope.schemaOf(fieldOrElement);
 
@@ -236,19 +239,20 @@ define([
 
           if ($rootScope.isElement(fieldOrElement)) {
             scope.$emit("invalidElementState",
-                        ["remove", $rootScope.schemaOf(fieldOrElement)._ui.title, fieldOrElement["@id"]]);
+                ["remove", $rootScope.schemaOf(fieldOrElement)._ui.title, fieldOrElement["@id"]]);
           } else {
             scope.$emit("invalidFieldState",
-                        ["remove", $rootScope.schemaOf(fieldOrElement)._ui.title, fieldOrElement["@id"]]);
+                ["remove", $rootScope.schemaOf(fieldOrElement)._ui.title, fieldOrElement["@id"]]);
           }
         }
       };
 
+      // is the cardinality details tabl open?
       scope.showCardinality = false;
 
-      scope.isCardinal = function() {
+      scope.isCardinal = function () {
         return DataManipulationService.isCardinalElement(scope.element);
-      }
+      };
 
       // When user clicks Save button, we will switch element from creating state to completed state
       scope.add = function () {
@@ -344,10 +348,10 @@ define([
         var p = $rootScope.propertiesOf(scope.element);
         if (p._tmp && p._tmp.state == "creating") {
           scope.$emit("invalidElementState",
-                      ["add", $rootScope.schemaOf(scope.element)._ui.title, scope.element["@id"]]);
+              ["add", $rootScope.schemaOf(scope.element)._ui.title, scope.element["@id"]]);
         } else {
           scope.$emit("invalidElementState",
-                      ["remove", $rootScope.schemaOf(scope.element)._ui.title, scope.element["@id"]]);
+              ["remove", $rootScope.schemaOf(scope.element)._ui.title, scope.element["@id"]]);
         }
       });
 

@@ -75,6 +75,7 @@
           <div ng-if="runtimeSuccessMessages.length" class="alert alert-success" role="alert">
             <p ng-repeat="message in runtimeSuccessMessages"><i class="fa fa-check"></i>{{message}}</p>
           </div>
+          <button type="button" class="btn btn-clear" ng-click="cancelTemplate()"  translate>GENERIC.Cancel</button>
           <button type="button" class="btn btn-save" ng-click="savePopulatedTemplate()" translate>GENERIC.Save</button>
           <!--<button type="button" class="btn btn-clear disabled">Clear Form</button>-->
           <!--<button type="button" class="btn btn-submit disabled" ng-click="submitForm()">Submit</button>-->

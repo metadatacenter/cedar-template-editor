@@ -40,10 +40,7 @@ define([
     // Create empty form object
     // Create empty instance object
     $scope.form = {};
-    $scope.instance = {
-      //'@context': {},
-      //'@type': {}
-    };
+    $scope.instance = {};
 
     // Get/read form with given id from $routeParams
     $scope.getForm = function () {
@@ -94,7 +91,20 @@ define([
       $scope.getSubmission();
     }
 
-    // Stores the data (populated template) into the database
+    $scope.cancelTemplate = function () {
+      // Create new instance
+      if (!angular.isUndefined($routeParams.templateId)) {
+        $scope.getForm();
+        $scope.instance = {};
+      }
+      // Edit existing instance
+      if (!angular.isUndefined($routeParams.id)) {
+        // Loading empty form if given an ID in the $routeParams.id url path
+        $scope.getSubmission();
+      }
+    }
+
+    // Stores the data (populated template) into the databases
     $scope.savePopulatedTemplate = function () {
       $scope.runtimeErrorMessages = [];
       $scope.runtimeSuccessMessages = [];
