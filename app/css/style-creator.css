@@ -9895,13 +9895,8 @@ i {
 }
 .template-body .right-body .element-group {
   width: 100%;
-<<<<<<< HEAD
   border: 1px solid #d2d2d2;
-  padding: 0px 14px 12px 16px;
-=======
-  border: 1px solid #dddddd;
   padding: 12px 14px 12px 16px;
->>>>>>> develop
   margin-bottom: 16px;
   background-color: #f4f4f7;
 }
@@ -11957,8 +11952,8 @@ p.instructions {
   position: relative;
 }
 /*
-  Tree css is copied from http://www.bypeople.com/pure-css-tree-menu-framework-cssdeck/
-*/
+    Tree css is copied from http://www.bypeople.com/pure-css-tree-menu-framework-cssdeck/
+  */
 .tree {
   /* (indentation/2) */
 }
@@ -12708,13 +12703,6 @@ body .template-header .controlled-terms-modal {
 .element-configuration-options {
   margin-top: 5px;
 }
-<<<<<<< HEAD
-.definition-inputs {
-  padding-bottom: 20px;
-  border-bottom: 1px dashed #d2d2d2;
-}
-=======
->>>>>>> develop
 .fields.preview .floating-label {
   display: none;
 }
