@@ -260,7 +260,9 @@
   <!-- floating plus icon section -->
   <div class="add-new">
     <ul class="list-unstyled">
-      <li ng-show="dc.showFloatingMenu"><button class="btn btn-sm btn-info btn-circle-outline"><i class="fa fa-file-text-o"></i></button></li>
+      <li ng-show="dc.showFloatingMenu">
+        <a href="/elements/create"><button class="btn btn-sm btn-info btn-circle-outline"><i class="fa fa-file-text-o"></i></button></a>
+      </li>
       <li ng-show="dc.showFloatingMenu">
         <button class="btn btn-sm btn-info btn-circle" ng-click="dc.createFolder()"><i class="fa fa-folder-o"></i></button>
       </li>
