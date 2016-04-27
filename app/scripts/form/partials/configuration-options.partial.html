@@ -5,12 +5,12 @@
       <div ng-if="hasControlledTerms()" class="element-toggle table-cell-style"
           ng-class="{active: isTabActive('field')}"
           ng-click="toggleControlledTerm('field')">
-        <span>Field</span>
+        <span><i class="cedar-svg-controll-term collapsed" style="padding-bottom:10px"></i>Field</span>
       </div>
       <div ng-if="hasControlledTerms()" class="element-toggle table-cell-style"
           ng-class="{active: isTabActive('values')}"
           ng-click="toggleControlledTerm('values')">
-        <span>Value</span>
+        <span><i class="cedar-svg-controll-term collapsed" style="padding-bottom:10px"></i>Value</span>
       </div>
       <div ng-if="hasDateRange()" class="element-toggle table-cell-style" ng-class="{active: isTabActive('range')}"
           ng-click="toggleControlledTerm('range')">
@@ -42,8 +42,6 @@
 
   <!-- Required tab  -->
   <div id="required" class="cardinality-options" ng-show="isTabActive('required')">
-
-
     <div class="type-toggle date">
       <div class="single-date d-option" ng-click="$root.schemaOf(field)._valueConstraints.requiredValue = false"
           ng-class="{active: !$root.schemaOf(field)._valueConstraints.requiredValue}">
@@ -58,7 +56,6 @@
 
   <!-- Cardinality tab  -->
   <div id="cardinality-options" class="cardinality-options cardinality-selectors" ng-show="isTabActive('cardinality')">
-
       <div class="form-group validation-pattern pull-left min-items-option">
         <label translate>GENERIC.Min</label>
         <select class="" ng-model="$parent.field.minItems" title=""
@@ -72,7 +69,6 @@
             title="" select-picker="">
         </select>
       </div>
-
     <!-- /.form-group -->
   </div>
 

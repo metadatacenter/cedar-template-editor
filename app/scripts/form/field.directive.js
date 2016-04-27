@@ -9,22 +9,15 @@ define([
   // TODO: refactor to cedarFieldDirective <cedar-field-directive>
 
 
-  fieldDirective.$inject = ["$rootScope", "$sce", "$document", "$translate", "SpreadsheetService", "DataManipulationService", "FieldTypeService",
+  fieldDirective.$inject = ["$rootScope", "$sce", "$document", "$translate", "SpreadsheetService",
+                            "DataManipulationService", "FieldTypeService",
                             "ClientSideValidationService", "controlTermDataService"];
 
-  function fieldDirective($rootScope, $sce, $document, $translate, SpreadsheetService, DataManipulationService, FieldTypeService,
+  function fieldDirective($rootScope, $sce, $document, $translate, SpreadsheetService, DataManipulationService,
+                          FieldTypeService,
                           ClientSideValidationService, controlTermDataService) {
 
     var linker = function ($scope, $element, attrs) {
-
-
-      // which details tab is open?
-      $scope.showControlledTermsValues = false;
-      $scope.showControlledTermsField = false;
-      $scope.showCardinality = false;
-      $scope.showRequired = false;
-      $scope.showRange = false;
-
 
       var setDirectory = function () {
         var p = $rootScope.propertiesOf($scope.field);
@@ -35,7 +28,7 @@ define([
         } else {
           $scope.directory = "render";
         }
-      }
+      };
       setDirectory();
 
       $scope.setValueType = function () {
@@ -48,14 +41,12 @@ define([
             $scope.model['@type'] = properties['@type'].oneOf[0].enum;
           }
         }
-      }
+      };
 
       var parseField = function () {
         if (!$rootScope.isRuntime() && $scope.field) {
           // $scope.model = $scope.model || {};
           // $rootScope.findChildren($rootScope.propertiesOf($scope.field), $scope.model);
-
-
           var min = $scope.field.minItems || 0;
 
           if (!DataManipulationService.isCardinalElement($scope.field)) {
@@ -85,7 +76,7 @@ define([
             }
           }
         }
-      }
+      };
 
       // When form submit event is fired, check field for simple validation
       $scope.$on('submitForm', function (event) {
@@ -168,14 +159,16 @@ define([
 
           if (!allRequiredFieldsAreFilledIn) {
             // add this field instance the the emptyRequiredField array
-            $scope.$emit('emptyRequiredField', ['add', DataManipulationService.getFieldSchema($scope.field)._ui.title, $scope.uuid]);
+            $scope.$emit('emptyRequiredField',
+                ['add', DataManipulationService.getFieldSchema($scope.field)._ui.title, $scope.uuid]);
           }
         }
 
         // If field is required and is not empty, check to see if it needs to be removed from empty fields array
-        if ($rootScope.schemaOf($scope.field)._valueConstraints && $rootScope.schemaOf($scope.field)._valueConstraints.requiredValue  && allRequiredFieldsAreFilledIn) {
+        if ($rootScope.schemaOf($scope.field)._valueConstraints && $rootScope.schemaOf($scope.field)._valueConstraints.requiredValue && allRequiredFieldsAreFilledIn) {
           //remove from emptyRequiredField array
-          $scope.$emit('emptyRequiredField', ['remove', DataManipulationService.getFieldSchema($scope.field)._ui.title, $scope.uuid]);
+          $scope.$emit('emptyRequiredField',
+              ['remove', DataManipulationService.getFieldSchema($scope.field)._ui.title, $scope.uuid]);
         }
 
         var allFieldsAreValid = true;
@@ -215,13 +208,15 @@ define([
 
           if (!allFieldsAreValid) {
             // add this field instance the the invalidFieldValues array
-            $scope.$emit('invalidFieldValues', ['add', DataManipulationService.getFieldSchema($scope.field)._ui.title, $scope.uuid]);
+            $scope.$emit('invalidFieldValues',
+                ['add', DataManipulationService.getFieldSchema($scope.field)._ui.title, $scope.uuid]);
           }
         }
 
         if (allFieldsAreValid) {
           //remove from emptyRequiredField array
-          $scope.$emit('invalidFieldValues', ['remove', DataManipulationService.getFieldSchema($scope.field)._ui.title, $scope.uuid]);
+          $scope.$emit('invalidFieldValues',
+              ['remove', DataManipulationService.getFieldSchema($scope.field)._ui.title, $scope.uuid]);
         }
       });
 
@@ -508,7 +503,6 @@ define([
       };
 
 
-
       /**
        * Turn my field into a youtube iframe.
        * @param field
@@ -704,7 +698,7 @@ define([
           }
 
           // copy over any responses from the old map
-          myMap.forEach(function(value, key) {
+          myMap.forEach(function (value, key) {
 
             if ($scope.addedFields.has(key)) {
               myMap.set(key, $scope.addedFields.get(key));
@@ -713,7 +707,7 @@ define([
 
 
           // get any missing responses
-          myMap.forEach(function(value, key) {
+          myMap.forEach(function (value, key) {
             if (myMap.get(key) == "") {
               setResponse(key, DataManipulationService.parseOntologyName(key),
                   DataManipulationService.parseClassLabel(key));
@@ -723,7 +717,7 @@ define([
 
           // fill up the key array
           $scope.addedFieldKeys = [];
-          myMap.forEach(function(value, key) {
+          myMap.forEach(function (value, key) {
             $scope.addedFieldKeys.push(key);
           }, myMap);
 
@@ -745,7 +739,7 @@ define([
         // Get selected class details from the links.self endpoint provided.
         controlTermDataService.getClassById(ontologyName, className).then(function (response) {
           $scope.addedFields.set(item, response);
-           console.log(response);
+          console.log(response);
         });
       };
 
@@ -827,8 +821,8 @@ define([
       };
 
       // use the document height as the modal height
-      $scope.getModalHeight = function() {
-        return  "height: " + $document.height() + 'px';
+      $scope.getModalHeight = function () {
+        return "height: " + $document.height() + 'px';
       };
 
       //TODO this event resets modal state and closes modal
@@ -842,6 +836,12 @@ define([
 
       });
 
+      // which details tab is open?
+      $scope.showControlledTermsValues = false;
+      $scope.showControlledTermsField = false;
+      $scope.showCardinality = false;
+      $scope.showRequired = false;
+      $scope.showRange = false;
       $scope.isTabActive = function (item) {
         return ($scope.showControlledTermsField && item == "field") ||
             ($scope.showControlledTermsValues && item == "values") ||
@@ -854,7 +854,7 @@ define([
         if (!$rootScope.schemaOf($scope.field)._ui.dateType) {
           $rootScope.schemaOf($scope.field)._ui.dateType = 'single-date';
         }
-      }
+      };
 
 
       /**

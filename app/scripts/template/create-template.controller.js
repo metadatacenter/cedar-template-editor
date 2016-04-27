@@ -51,7 +51,7 @@ define([
 
                   // stick a domId on fields and elements
                   DataManipulationService.createDomIds($scope.form);
-                  closeAllElements();
+                  //closeAllElements();
 
                 },
                 function (err) {
@@ -114,12 +114,23 @@ define([
 
               // now we are sure that the element was successfully added, scroll to it and hide its nested contents
               $rootScope.scrollToDomId(domId);
-              $rootScope.toggleElement(domId);
+              //$rootScope.toggleElement(domId);
 
             });
             $rootScope.$broadcast("form:update", element);
           }
         };
+
+        // which details tab is open?
+        $scope.showCardinality = false;
+        $scope.isTabActive = function (item) {
+          return ($scope.showCardinality && item == "cardinality");
+        };
+        $scope.toggleTab = function (item) {
+          console.log('toggleTab ' + $scope.showCardinality);
+          $scope.showCardinality = !$scope.showCardinality;
+        };
+
 
         // Function to add additional options for radio, checkbox, and list fieldTypes
         $scope.addOption = DataManipulationService.addOption;
