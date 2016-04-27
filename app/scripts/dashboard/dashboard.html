@@ -194,8 +194,8 @@
       <div class="col-sm-12 clearfix">
         <div class="breadcrumbs-sb">
           <p>
-            <span ng-repeat="path in dc.pathInfo">
-              <a href="#n" class="breadcrumbs">{{path.name}}</a> /
+            <span ng-repeat="folder in dc.pathInfo">
+              <a ng-click="dc.getFolderContentsById(folder['@id'])" class="breadcrumbs">{{folder.name}}</a> /
             </span>
             {{dc.currentPath.name}}
           </p>
@@ -208,15 +208,14 @@
              ng-class="{ 'col-md-3': !dc.narrowContent(), 'col-md-4': dc.narrowContent(), selected: dc.isResourceSelected(resource) }"
              ng-dblclick="dc.editResource(resource)"
              ng-repeat="(index, resource) in dc.resources">
-          <div class="form-box">
+          <div ng-dblclick="dc.goToResource(resource)" class="form-box">
             <div class="box-content text-center">
-              <i class="fa fa-file-text-o"></i>
+              <i class="fa" ng-class="dc.getResourceIconClass(resource)"></i>
               <p>{{ resource.name }}</p>
               <p>{{ resource.description }}</p>
               <div class="quick-details-box">
                 <ul class="list-inline">
                   <li><button class="btn btn-sm btn-info btn-circle" ng-click="dc.deleteResource(resource)"><i class="fa fa-times"></i></button></li>
-                  <!--<li><button class="btn btn-sm btn-info btn-circle"><i class="fa fa-question"></i></button></li>-->
                   <li><button class="btn btn-sm btn-info btn-circle" ng-click="dc.selectResource(resource)"><i class="fa fa-info"></i></button></li>
                   <li><button class="btn btn-sm btn-info btn-circle" ng-click="dc.editResource(resource)"><i class="fa fa-pencil"></i></button></li>
                 </ul>

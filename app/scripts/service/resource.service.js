@@ -188,9 +188,16 @@ define([
       );
     }
 
-    function getResources(path, options = {}, successCallback, errorCallback) {
+    function getResources(options = {}, successCallback, errorCallback) {
       var resourceTypes = options.resourceTypes || uiSettingsService.getResourceTypeFilters().map(function(obj) { return obj.resourceType });
-      var url = urlService.folders() + '/contents?path=' + path + '&resource_types=' + resourceTypes.join(',');
+      var url = urlService.folders();
+      if (options.path) {
+        url += '/contents?path=' + options.path + '&';
+      }
+      if (options.folderId) {
+        url += '/' + encodeURIComponent(options.folderId) + '/contents?';
+      }
+      url += 'resource_types=' + resourceTypes.join(',');
       if (options.sort) {
         url += '&sort=' + options.sort;
       }

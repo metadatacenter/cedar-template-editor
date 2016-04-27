@@ -37,6 +37,9 @@ define([
     vm.getFacets = getFacets;
     vm.getForms = getForms;
     vm.getFolderContents = getFolderContents;
+    vm.getFolderContentsById = getFolderContentsById;
+    vm.getResourceIconClass = getResourceIconClass;
+    vm.goToResource = goToResource;
     vm.isResourceSelected = isResourceSelected;
     vm.isResourceTypeActive = isResourceTypeActive;
     vm.narrowContent = narrowContent;
@@ -152,12 +155,12 @@ define([
       );
     };
 
-    function getFolderContents(path) {
+    // TODO: merge this with getFolderContents below
+    function getFolderContentsById(folderId) {
       var resourceTypes = activeResourceTypes();
       if (resourceTypes.length > 0) {
         return resourceService.getResources(
-          path,
-          { resourceTypes: resourceTypes, sort: '-createdOn', limit: 10, offset: 0 },
+          { folderId: folderId, resourceTypes: resourceTypes, sort: '-createdOn', limit: 10, offset: 0 },
           function(response) {
             vm.resources   = response.resources;
             vm.pathInfo    = response.pathInfo;
@@ -169,6 +172,43 @@ define([
         );
       } else {
         vm.resources = [];
+      }
+    }
+
+    // TODO: merge this with getFolderContentsById above
+    function getFolderContents(path) {
+      var resourceTypes = activeResourceTypes();
+      if (resourceTypes.length > 0) {
+        return resourceService.getResources(
+          { path: path, resourceTypes: resourceTypes, sort: '-createdOn', limit: 10, offset: 0 },
+          function(response) {
+            vm.resources   = response.resources;
+            vm.pathInfo    = response.pathInfo;
+            vm.currentPath = vm.pathInfo.pop();
+          },
+          function(error) {
+            alert('there was an error fetching the folder contents');
+          }
+        );
+      } else {
+        vm.resources = [];
+      }
+    }
+
+    function getResourceIconClass(resource) {
+      if (resource.resourceType == 'folder') {
+        return "fa-folder-o";
+      } else {
+        return "fa-file-text-o";
+      }
+    }
+
+    function goToResource(resource) {
+      resetSelected();
+      if (resource.resourceType == 'folder') {
+        getFolderContentsById(resource['@id']);
+      } else {
+        alert('TODO: navigate to resource detail page');
       }
     }
 
@@ -244,6 +284,11 @@ define([
       activeResourceTypes.push('folder');
       return activeResourceTypes;
     }
+
+    function resetSelected() {
+      vm.selectedResource = null;
+      vm.showResourceInfo = false;
+    };
 
   };
 
