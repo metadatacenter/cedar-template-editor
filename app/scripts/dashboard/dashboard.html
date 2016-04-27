@@ -94,7 +94,7 @@
               <div class="col-md-3 col-sm-6" ng-repeat="(key, form) in dc.forms">
                 <div class="form-box">
                   <a href="#n" class="box-content text-center">
-                    <i class="fa fa-file-text-o"></i>
+                    <i ng-class="dc.getResourceIconClass(form)" class="fa"></i>
                     <p>{{ form.name }}</p>
                   </a>
                 </div>
@@ -239,7 +239,7 @@
                   ng-class="{ selected: dc.isResourceSelected(resource) }"
                   ng-dblclick="dc.editResource(resource)"
                   ng-repeat="(index, resource) in dc.resources">
-                <td><i class="fa fa-file-text-o large-icon" aria-hidden="true"></i></td>
+                <td><i ng-class="dc.getResourceIconClass(resource)" class="fa large-icon" aria-hidden="true"></i></td>
                 <td><a ng-click="dc.selectResource(resource)">{{ resource.name }}</a></td>
                 <td>{{ resource.createdOn|date:'shortDate' }}</td>
                 <td>{{ resource.lastUpdatedOn|date:'shortDate' }}</td>

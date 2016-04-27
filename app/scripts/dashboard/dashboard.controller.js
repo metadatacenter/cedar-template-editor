@@ -202,11 +202,11 @@ define([
     }
 
     function getResourceIconClass(resource) {
-      if (resource.resourceType == 'folder') {
+      switch (resource.resourceType) {
+      case CONST.resourceType.FOLDER:
         return "fa-folder-o";
-      } else {
-        return "fa-file-text-o";
       }
+      return "fa-file-text-o";
     }
 
     function isResourceTypeActive(type) {
