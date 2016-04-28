@@ -48,6 +48,7 @@
         </div>
         <div class="pull-right">
           <p><a href="#fsModal" data-toggle="modal">More <i class="fa fa-arrow-down"></i></a></p>
+          <p><a href="#editFolderModal" data-toggle="modal">More <i class="fa fa-arrow-down"></i></a></p>
         </div>
       </div>
     </div>
@@ -266,7 +267,7 @@
         <a ng-href="/elements/create?folderId={{dc.currentFolderId | encodeURIComponent}}"><button class="btn btn-sm btn-info btn-circle-outline"><i class="fa fa-file-text-o"></i></button></a>
       </li>
       <li ng-show="dc.showFloatingMenu">
-        <button class="btn btn-sm btn-info btn-circle" ng-click="dc.createFolder()"><i class="fa fa-folder-o"></i></button>
+        <button class="btn btn-sm btn-info btn-circle" ng-click="dc.showCreateFolder()"><i class="fa fa-folder-o"></i></button>
       </li>
       <li ng-hide="dc.showFloatingMenu">
         <button class="btn btn-sm btn-info btn-circle" ng-click="dc.showFloatingMenu = true"><i class="fa fa-plus"></i></button>
@@ -278,3 +279,69 @@
   </div>
   <!-- end floating plus section -->
 </section>
+
+<!-- add / edit folder modal -->
+<section>
+  <!-- modal -->
+  <div id="editFolderModal" class="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <!-- dialog -->
+    <div class="modal-dialog">
+      <!-- content -->
+      <div class="modal-content">
+        <!-- header -->
+        <div class="modal-header">
+          <div class="container">
+            <div class="row">
+              <div class="col-sm-12 clearfix">
+                <div class="pull-left">
+                  <h2>Create Folder</h2>
+                </div>
+                <div class="pull-right">
+                  <p><a href="#n" data-dismiss="modal">Less <i class="fa fa-arrow-up"></i></a></p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- header -->
+        <!-- body -->
+        <div class="modal-body">
+          <div class="container">
+            <div class="row">
+              <div class="col-sm-12 clearfix">
+                <div class="pull-left">
+                  <h4>Name:</h4>
+                  <p><input size="40" type="text" ng-model="dc.formFolderName" /></p>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-12 clearfix">
+                <div class="pull-left">
+                  <h4>Description:</h4>
+                  <p><textarea ng-model="dc.formFolderDescription" cols="40" rows="5"></textarea></p>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-12 clearfix">
+                <div class="pull-left">
+                  <button ng-click="dc.doCreateFolder()" type="button" class="btn btn-default">Create</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- body -->
+        <!-- footer -->
+        <div class="modal-footer"></div>
+        <!--<div class="modal-footer"></div>-->
+        <!-- footer -->
+      </div>
+      <!-- content -->
+    </div>
+    <!-- dialog -->
+  </div>
+  <!-- modal -->
+</section>
+<!-- end add / edit folder modal -->

@@ -28,14 +28,16 @@ define([
   function DashboardController($location, $rootScope, $routeParams, $scope, $translate, AuthorizedBackendService, cedarUser, HeaderService, resourceService, TemplateElementService, TemplateService, TemplateInstanceService, UIMessageService, UrlService, CONST) {
     var vm = this;
 
-    vm.createFolder = createFolder;
     vm.currentWorkspacePath = cedarUser.getHome();
     vm.currentPath = "";
     vm.currentFolderId = "";
     vm.deleteResource = deleteResource;
+    vm.doCreateFolder = doCreateFolder;
     vm.editResource = editResource;
     vm.facets = {};
     vm.forms = [];
+    vm.formFolderName,
+    vm.formFolderDescription,
     vm.getFacets = getFacets;
     vm.getForms = getForms;
     vm.getFolderContents = getFolderContents;
@@ -46,6 +48,7 @@ define([
     vm.isResourceTypeActive = isResourceTypeActive;
     vm.narrowContent = narrowContent;
     vm.pathInfo = [];
+    vm.params = $location.search();
     vm.resources = [];
     vm.resourceTypes = {
       element: true,
@@ -57,6 +60,7 @@ define([
     vm.selectedResource = null;
     vm.selectResource = selectResource;
     vm.setSortOption = setSortOption;
+    vm.showCreateFolder = showCreateFolder;
     vm.showFilters = false;
     vm.showFloatingMenu = false;
     vm.showResourceInfo = false;
@@ -67,30 +71,40 @@ define([
 
     $rootScope.pageTitle = 'Dashboard';    
 
-    getFacets();
-    getForms();
-    if ($routeParams.folderId) {
-      getFolderContentsById(decodeURIComponent($routeParams.folderId));
-    } else {
-      getFolderContents(cedarUser.getHome());
+    init();
+
+    function init() {
+      getFacets();
+      getForms();
+      if (vm.params.id) {
+        getFolderContentsById(decodeURIComponent(vm.params.id));
+      } else {
+        getFolderContents(cedarUser.getHome());
+      }
     }
 
     /**
      * Scope functions.
      */
 
-    function createFolder() {
-      var name = prompt('Please enter a folder name');
-      var description = prompt('Please enter a folder description');
+    function showCreateFolder() {
+      $('#editFolderModal').modal();
+    };
+
+    function doCreateFolder() {
       var path = vm.currentWorkspacePath;
       resourceService.createFolder(
-        name,
+        vm.formFolderName,
         path,
-        description,
+        vm.formFolderDescription,
         function(response) {
-          getFolderContents(path);
+          $('#editFolderModal').hide();
+          vm.formFolderName = null;
+          vm.formFolderDescription = null;
+          goToFolder(response['@id']);
         },
         function(response) {
+          $('#editFolderModal').hide();
           alert('there was an error creating the folder!');
         }
       );
@@ -222,7 +236,7 @@ define([
     }
 
     function goToFolder(folderId) {
-      $location.path(UrlService.getFolderContents(folderId));
+      $location.url(UrlService.getFolderContents(folderId));
     };
 
     function isResourceTypeActive(type) {
@@ -268,6 +282,11 @@ define([
     /**
      * Watch functions.
      */
+
+    $scope.$on('$routeUpdate', function(){
+      vm.params = $location.search();
+      init();
+    });
 
     $scope.$on('search', function(event, data) {
       vm.resources = data.resources;

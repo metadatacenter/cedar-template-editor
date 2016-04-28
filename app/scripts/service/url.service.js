@@ -156,7 +156,7 @@ define([
     };
 
     service.getFolderContents = function(id) {
-      return '/folder/' + encodeURIComponent(id);
+      return '/folder?id=' + encodeURIComponent(id);
     };
 
     service.getFolder = function (id) {
