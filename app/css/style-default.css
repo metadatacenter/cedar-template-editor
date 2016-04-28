@@ -9338,8 +9338,9 @@ i {
 .template-body .right-body .preview-edit-options {
   vertical-align: top;
   margin-bottom: 0px;
-  padding-top: 7px;
+  padding: 5px 15px;
 }
+.template-body .right-body .preview-edit-options .add,
 .template-body .right-body .preview-edit-options .remove,
 .template-body .right-body .preview-edit-options .edit {
   height: 25px;
@@ -9353,11 +9354,23 @@ i {
   cursor: pointer;
   text-align: left;
 }
+.template-body .right-body .preview-edit-options .add i,
 .template-body .right-body .preview-edit-options .remove i,
 .template-body .right-body .preview-edit-options .edit i {
   color: #ffffff;
   font-size: 16px;
   line-height: 25px;
+}
+.template-body .right-body .preview-edit-options .add {
+  background-color: #339933;
+}
+.template-body .right-body .preview-edit-options .add:hover {
+  background-color: #999;
+}
+.template-body .right-body .preview-edit-options .add i {
+  -webkit-transform: translate(6px, 0px);
+      -ms-transform: translate(6px, 0px);
+          transform: translate(6px, 0px);
 }
 .template-body .right-body .preview-edit-options .edit {
   background-color: #339933;
@@ -10467,16 +10480,15 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   background-color: #338833;
 }
 .input-type-container .configuration-options .toggle-options .save-options .add i {
-  -webkit-transform: translate(6px, 1px);
-      -ms-transform: translate(6px, 1px);
-          transform: translate(6px, 1px);
+  -webkit-transform: translate(6px, 0px);
+      -ms-transform: translate(6px, 0px);
+          transform: translate(6px, 0px);
 }
 .input-type-container .configuration-options .toggle-options .save-options .edit {
-  display: none;
-  background-color: #ccc;
+  background-color: #339933;
 }
 .input-type-container .configuration-options .toggle-options .save-options .edit:hover {
-  background-color: #999;
+  background-color: #338833;
 }
 .input-type-container .configuration-options .toggle-options .save-options .edit i {
   -webkit-transform: translate(9px, 0px);
@@ -12062,11 +12074,8 @@ body .template-header .controlled-terms-modal {
   font-size: 15px;
 }
 .input-type-container .configuration-options {
-  padding: 5px 0 0 5px;
+  padding: 0;
   position: static;
-}
-.input-type-container .configuration-actions .toggle-options {
-  margin-top: 5px;
 }
 .input-type-container .configuration-actions .toggle-options .save-options .remove {
   margin-right: 0;
@@ -12175,9 +12184,6 @@ body .template-header .controlled-terms-modal {
   color: #ffffff;
   line-height: 25px;
   margin-left: 5px;
-}
-.element-configuration-options {
-  margin-top: 5px;
 }
 .fields.preview .floating-label {
   display: none;
@@ -12509,6 +12515,7 @@ body {
 }
 .multiple-instance-cardinality {
   color: #339933;
+  padding-left: 5px;
 }
 #form-item-config-section {
   border: 1px solid #339933;

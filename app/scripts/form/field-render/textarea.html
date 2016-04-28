@@ -1,13 +1,8 @@
 <div class="fields fields-textarea">
 
-  <div class="row configuration-options" ng-if="!$root.isRuntime() && !isNested() && !ngDisabled && !preview">
-    <div class=" col-lg-9 pull-left type-label">
-      <div class="sortable-handler " ng-if="!preview && !$root.isRuntime()">
-        <p class="type-label"><span class="sortable-icon"></span><i class="cedar-svg-paragraph"></i>Paragraph</p>
-      </div>
-    </div>
-    <div class="col-lg-3 pull-right configuration-actions" style="padding-top:0" id="{{field.items._ui.title}}" ng-if="!$root.isRuntime()" ng-include="'scripts/form/partials/preview-edit-options.partial.html'"  ng-init="childType='field'" />
-  </div>
+  <!-- header row -->
+  <div ng-init="fieldTitle='Paragraph';fieldIconClass='cedar-svg-paragraph'"
+      ng-include="'scripts/form/partials/field-header.partial.html'"></div>
 
   <div ng-if="$root.isArray(model)" class="form-group floating-label-wrapper has-feedback"
       ng-repeat="valueElement in model">
@@ -22,8 +17,9 @@
         with-floating-label=""></textarea>
 
     <div class="input-indicator-icons" ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
-    <div ng-if="$root.isRuntime()" class="more-input-wrapper yy" ng-include="'scripts/form/partials/more-input-buttons.partial.html'"
-    ng-show="!field.maxItems || field.maxItems > 1"></div>
+    <div ng-if="$root.isRuntime()" class="more-input-wrapper yy"
+        ng-include="'scripts/form/partials/more-input-buttons.partial.html'"
+        ng-show="!field.maxItems || field.maxItems > 1"></div>
   </div>
   <!-- /.form-group -->
 
@@ -42,7 +38,7 @@
 
     <div class="input-indicator-icons" ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
     <div ng-if="$root.isRuntime()" class="more-input-wrapper" ng-disabled="true"
-    ng-include="'scripts/form/partials/more-input-buttons.partial.html'"></div>
+        ng-include="'scripts/form/partials/more-input-buttons.partial.html'"></div>
   </div>
   <!-- /.form-group -->
 

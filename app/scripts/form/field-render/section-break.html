@@ -1,13 +1,8 @@
 <div class="fields fields-section-break">
 
-  <div class="row configuration-options" ng-if="!$root.isRuntime() && !isNested() && !ngDisabled && !preview">
-    <div class=" col-lg-9 pull-left type-label">
-      <div class="sortable-handler " ng-if="!preview && !$root.isRuntime()">
-        <p class="type-label"><span class="sortable-icon"></span><i class="cedar-svg-section-break"></i>Section Break</p>
-      </div>
-    </div>
-    <div class="col-lg-3 pull-right configuration-actions" style="padding-top:0" id="{{field.items._ui.title}}" ng-if="!$root.isRuntime()" ng-include="'scripts/form/partials/preview-edit-options.partial.html'"  ng-init="childType='field'" />
-  </div>
+  <!-- header row -->
+  <div ng-init="fieldTitle='Section Break';fieldIconClass='cedar-svg-section-break'"
+      ng-include="'scripts/form/partials/field-header.partial.html'"></div>
 
   <h3 class="section-title">{{$root.schemaOf(field)._ui.title}}</h3>
 
