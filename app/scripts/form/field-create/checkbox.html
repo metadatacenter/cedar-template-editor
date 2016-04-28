@@ -1,19 +1,16 @@
 <div id="checkbox-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}" class="input-type-container">
 
-  <div class="row" ng-if="!$root.isRuntime() && !ngDisabled && !preview">
-    <div class="configuration-options col-lg-3 pull-left type-label"><p class="type-label" style="padding-left:10px"><i
-        class="cedar-svg-checkbox"></i>Checkbox</p></div>
-    <div class="configuration-options col-lg-3 pull-right configuration-actions" style="padding-top:0"
-        ng-include="'scripts/form/partials/staging-area-actions.partial.html'"></div>
-    <div class="configuration-options col-lg-1 centered " style="float: none;margin: 0 auto;">
-      <div class="sortable-handler " style="padding-top:5px" ng-if="!preview && !$root.isRuntime()"><span
-          class="sortable-icon"></span></div>
+  <div class="row configuration-options" ng-if="!$root.isRuntime() && !ngDisabled && !preview">
+    <div class=" col-lg-9 pull-left type-label">
+      <div class="sortable-handler " ng-if="!preview && !$root.isRuntime()">
+        <p class="type-label"><span class="sortable-icon"></span><i class="cedar-svg-checkbox"></i>Checkbox</p>
+      </div>
     </div>
+    <div class="col-lg-3 pull-right configuration-actions" style="padding-top:0" ng-include="'scripts/form/partials/staging-area-actions.partial.html'" />
   </div>
 
   <div class="definition-inputs" ng-include="'scripts/form/partials/field-definition.partial.html'"></div>
   <!-- /.definition-inputs -->
-
 
   <div class="form-group floating-label-wrapper">
     <div class="options-wrapper">

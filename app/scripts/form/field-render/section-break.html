@@ -1,4 +1,18 @@
-<h3 class="section-title">{{$root.schemaOf(field)._ui.title}}</h3>
-<p ng-if="$root.schemaOf(field)._ui.description.length > 0" class="section-body">{{$root.schemaOf(field)._ui.description}}</p>
+<div class="fields fields-section-break">
+
+  <div class="row configuration-options" ng-if="!$root.isRuntime() && !isNested() && !ngDisabled && !preview">
+    <div class=" col-lg-9 pull-left type-label">
+      <div class="sortable-handler " ng-if="!preview && !$root.isRuntime()">
+        <p class="type-label"><span class="sortable-icon"></span><i class="cedar-svg-section-break"></i>Section Break</p>
+      </div>
+    </div>
+    <div class="col-lg-3 pull-right configuration-actions" style="padding-top:0" id="{{field.items._ui.title}}" ng-if="!$root.isRuntime()" ng-include="'scripts/form/partials/preview-edit-options.partial.html'"  ng-init="childType='field'" />
+  </div>
+
+  <h3 class="section-title">{{$root.schemaOf(field)._ui.title}}</h3>
+
+  <p ng-if="$root.schemaOf(field)._ui.description.length > 0" class="section-body">
+    {{$root.schemaOf(field)._ui.description}}</p>
+</div>
 
 

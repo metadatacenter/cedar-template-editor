@@ -1,15 +1,19 @@
 <div ng-if="model !== undefined" class="element-root" id="{{$root.getDomId(element)}}">
 
   <div>
-    <div class="element-header input-type-container" style="position:relative;"
-        ng-class="{'sortable-handler': !$root.isRuntime()}">
+    <div class="element-header input-type-container" style="position:relative;"  ng-class="{'sortable-handler': !$root.isRuntime()}">
       <div class="row">
 
-        <div class="col-lg-3 pull-left">
+        <div class="col-lg-9 pull-left">
+
           <a ng-click="switchExpandedState($root.getDomId(element))" class="visibilitySwitch"><i
               class="cedar-svg-collapse"></i></a>
           <a ng-click="switchExpandedState($root.getDomId(element))" class="visibilitySwitch" style="display:none;"><i
               class="cedar-svg-expand"></i></a>
+
+          <div class="sortable-handler " style="padding-top:5px; display:inline-block"
+              ng-if="!isRootElement && !$root.isRuntime() && !preview "><span
+              class="sortable-icon"></span></div>
 
           <p class="element-name-label ">
             <i class="cedar-svg-element"></i>{{$root.schemaOf(element)._ui.title}}
@@ -62,12 +66,6 @@
           </div>
         </div>
 
-        <div class="configuration-options col-lg-1 centered " style="float: none;margin: 0 auto;"
-            ng-if="!isRootElement && !$root.isRuntime() && !isNested()">
-          <div class="sortable-handler " style="padding-top:5px"
-              ng-if="!preview && $root.propertiesOf(element)._tmp.state != 'creating'"><span
-              class="sortable-icon"></span></div>
-        </div>
 
       </div>
     </div>

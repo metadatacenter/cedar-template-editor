@@ -1,11 +1,24 @@
-<div <div ng-if="!$root.isRuntime()" style="padding-top: 40px;">
-  <div ng-bind-html="$root.getUnescapedContent(field)"></div>
-</div>
+<div class="fields fields-radio">
 
-<div <div ng-if="$root.isRuntime()" >
-  <div ng-bind-html="$root.getUnescapedContent(field)"></div>
-</div>
+  <div class="row configuration-options" ng-if="!$root.isRuntime() && !isNested() && !ngDisabled && !preview">
+    <div class=" col-lg-9 pull-left type-label">
+      <div class="sortable-handler " ng-if="!preview && !$root.isRuntime()">
+        <p class="type-label"><span class="sortable-icon"></span><i class="cedar-svg-rich-text"></i>Rich Text</p>
+      </div>
+    </div>
+    <div class="col-lg-3 pull-right configuration-actions" style="padding-top:0" id="{{field.items._ui.title}}" ng-if="!$root.isRuntime()" ng-include="'scripts/form/partials/preview-edit-options.partial.html'"  ng-init="childType='field'" />
+  </div>
 
-<div class="clearfix all"></div>
+  <div ng-if="!$root.isRuntime()" style="padding-top: 10px;">
+    <div ng-bind-html="$root.getUnescapedContent(field)"></div>
+  </div>
+
+
+  <div ng-if="$root.isRuntime()">
+    <div ng-bind-html="$root.getUnescapedContent(field)"></div>
+  </div>
+
+  <div class="clearfix all"></div>
+</div>
 
 
