@@ -9709,6 +9709,203 @@ i {
   border: none;
 }
 /* End All Items View */
+/* Begin Create-Edit Section */
+.create-edit {
+  color: #666666;
+  padding: 40px 0;
+  background-color: #eaeaea;
+}
+.create-edit h4 {
+  margin: 0;
+}
+.create-edit .pull-right {
+  text-transform: uppercase;
+}
+.create-edit #ceModal {
+  background: #eaeaea;
+  display: block;
+}
+.create-edit #ceModal .modal {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  overflow: hidden;
+}
+.create-edit #ceModal .modal-dialog {
+  position: fixed;
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+}
+.create-edit #ceModal .modal-content {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+  background: #eaeaea;
+}
+.create-edit #ceModal .modal-header {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  padding: 80px 0 20px;
+  background: #eaeaea;
+  border: 0;
+}
+.create-edit #ceModal .modal-title {
+  color: #666666;
+}
+.create-edit #ceModal .modal-title h4 {
+  margin: 0;
+}
+.create-edit #ceModal .modal-body {
+  position: absolute;
+  top: 110px;
+  bottom: 0;
+  width: 100%;
+  font-weight: 300;
+  overflow: auto;
+  background: #eaeaea;
+}
+.create-edit #ceModal .modal-body .container {
+  width: 900px;
+}
+.create-edit #ceModal .modal-footer {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 0;
+  padding: 0;
+  border: none;
+}
+.right-stick {
+  position: absolute;
+  right: -12%;
+  top: 0;
+}
+.right-stick .sidebar-inner {
+  padding: 35px 35px 15px 35px;
+  background: #ffffff;
+}
+.right-stick .sidebar-inner-next {
+  padding: 30px 35px 0px 45px;
+  background: #ffffff;
+  margin-top: 2px;
+}
+.right-stick .sidebar-inner-next:hover,
+.right-stick .sidebar-inner-next.active {
+  background: #339933;
+}
+.right-stick .sidebar-inner-next:hover .element-menu > li > a > i,
+.right-stick .sidebar-inner-next.active .element-menu > li > a > i {
+  color: #ffffff !important;
+}
+.right-stick .element-menu,
+.right-stick .item-menu {
+  margin: 0;
+  padding: 0;
+}
+.right-stick .element-menu > li,
+.right-stick .item-menu > li {
+  list-style: none;
+}
+.right-stick .element-menu > li a,
+.right-stick .item-menu > li a {
+  display: block;
+  padding-bottom: 30px;
+  text-transform: uppercase;
+  color: #000000;
+  text-decoration: none;
+}
+.right-stick .element-menu > li a i,
+.right-stick .item-menu > li a i {
+  color: #339933;
+  -webkit-transform: translate(0px, 0px);
+      -ms-transform: translate(0px, 0px);
+          transform: translate(0px, 0px);
+}
+.right-stick .element-menu > li a.disabled,
+.right-stick .item-menu > li a.disabled {
+  color: #ccc;
+  cursor: not-allowed;
+}
+.right-stick .element-menu > li a.disabled i,
+.right-stick .item-menu > li a.disabled i {
+  color: #ccc;
+}
+.right-stick .element-menu > li a.disabled:hover,
+.right-stick .item-menu > li a.disabled:hover {
+  background-color: transparent;
+}
+@media (min-width: 768px) {
+  .right-stick .element-menu > li:first-of-type a,
+  .right-stick .item-menu > li:first-of-type a {
+    border-top: none;
+  }
+}
+.right-stick .more-items {
+  margin-top: 30px;
+}
+.right-stick .more-items .btn-more-items {
+  border-radius: 0;
+  padding: 15px 15px 19px;
+  background-color: #fbfbfc;
+  width: 100%;
+  border: 1px solid #ddd;
+  text-align: left;
+  text-transform: uppercase;
+  position: relative;
+}
+@media (min-width: 768px) {
+  .right-stick .more-items .btn-more-items {
+    font-size: 13px;
+  }
+}
+@media (min-width: 992px) {
+  .right-stick .more-items .btn-more-items {
+    font-size: 14px;
+  }
+}
+.right-stick .more-items .btn-more-items .fa-angle-down {
+  position: absolute;
+  right: 15px;
+  top: 10px;
+  color: #339933;
+}
+.right-stick .more-items .btn-more-items:focus {
+  outline: none;
+  box-shadow: none;
+}
+.right-stick .more-items .dropdown-menu {
+  box-shadow: none;
+  width: 100%;
+  position: relative;
+  background-color: transparent;
+  margin-bottom: 30px;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+}
+.right-stick .more-items .dropdown-menu li:first-of-type a {
+  border-top: none;
+}
+.right-stick .more-items .dropdown-menu li a {
+  white-space: inherit;
+}
+.right-stick .more-items.open .fa-angle-down {
+  -webkit-transform: rotate(180deg);
+      -ms-transform: rotate(180deg);
+          transform: rotate(180deg);
+}
 .template-header {
   width: 100%;
   background-color: #056046;
@@ -11954,8 +12151,8 @@ p.instructions {
   position: relative;
 }
 /*
-    Tree css is copied from http://www.bypeople.com/pure-css-tree-menu-framework-cssdeck/
-  */
+  Tree css is copied from http://www.bypeople.com/pure-css-tree-menu-framework-cssdeck/
+*/
 .tree {
   /* (indentation/2) */
 }
