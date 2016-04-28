@@ -48,7 +48,6 @@
         </div>
         <div class="pull-right">
           <p><a href="#fsModal" data-toggle="modal">More <i class="fa fa-arrow-down"></i></a></p>
-          <p><a href="#editFolderModal" data-toggle="modal">More <i class="fa fa-arrow-down"></i></a></p>
         </div>
       </div>
     </div>
@@ -57,7 +56,7 @@
       <div class="col-md-3 col-sm-6" ng-repeat="(key, form) in dc.forms" ng-show="key < 4">
         <div class="form-box">
           <a href="#n" class="box-content text-center">
-            <i class="fa fa-file-text-o"></i>
+            <i ng-class="dc.getResourceIconClass(form)" class="fa"></i>
             <p>{{ form.name }}</p>
             <p>{{ form.description }}</p>
           </a>
@@ -264,10 +263,13 @@
   <div class="add-new">
     <ul class="list-unstyled">
       <li ng-show="dc.showFloatingMenu">
-        <a ng-href="/elements/create?folderId={{dc.currentFolderId | encodeURIComponent}}"><button class="btn btn-sm btn-info btn-circle-outline"><i class="fa fa-file-text-o"></i></button></a>
+        <a title="Add Element" ng-href="/elements/create?folderId={{dc.currentFolderId | encodeURIComponent}}"><button class="btn btn-sm btn-info btn-circle-outline"><i class="fa fa-file-text-o"></i></button></a>
       </li>
       <li ng-show="dc.showFloatingMenu">
-        <button class="btn btn-sm btn-info btn-circle" ng-click="dc.showCreateFolder()"><i class="fa fa-folder-o"></i></button>
+        <a title="Add Template" ng-href="/templates/create?folderId={{dc.currentFolderId | encodeURIComponent}}"><button class="btn btn-sm btn-info btn-circle-outline"><i class="fa fa-file-o"></i></button></a>
+      </li>
+      <li ng-show="dc.showFloatingMenu">
+        <button title="Add Folder" class="btn btn-sm btn-info btn-circle" ng-click="dc.showCreateFolder()"><i class="fa fa-folder-o"></i></button>
       </li>
       <li ng-hide="dc.showFloatingMenu">
         <button class="btn btn-sm btn-info btn-circle" ng-click="dc.showFloatingMenu = true"><i class="fa fa-plus"></i></button>

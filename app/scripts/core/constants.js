@@ -28,6 +28,7 @@ define([
       },
       "resourceType": {
         "TEMPLATE": "template",
+        "FIELD": "field",
         "ELEMENT": "element",
         "INSTANCE": "instance",
         "LINK": "link",

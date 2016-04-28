@@ -239,6 +239,12 @@ define([
       switch (resource.resourceType) {
       case CONST.resourceType.FOLDER:
         return "fa-folder-o";
+      case CONST.resourceType.TEMPLATE:
+        return "fa-file-o";
+      case CONST.resourceType.INSTANCE:
+        return "fa-clone";
+      case CONST.resourceType.FIELD:
+        return "fa-file-code-o";
       }
       return "fa-file-text-o";
     }
