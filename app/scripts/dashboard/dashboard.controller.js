@@ -47,6 +47,7 @@ define([
     vm.goToFolder = goToFolder;
     vm.isResourceSelected = isResourceSelected;
     vm.isResourceTypeActive = isResourceTypeActive;
+    vm.launchInstance = launchInstance;
     vm.narrowContent = narrowContent;
     vm.pathInfo = [];
     vm.params = $location.search();
@@ -116,6 +117,18 @@ define([
           alert('there was an error creating the folder!');
         }
       );
+    }
+
+    function launchInstance(resource) {
+      var params = $location.search();
+      var folderId;
+      if (params.id) {
+        folderId = params.id;
+      } else {
+        folderId = vm.currentFolderId
+      }
+      var url = UrlService.getInstanceCreate(resource['@id'], folderId);
+      $location.url(url);
     }
 
     /**

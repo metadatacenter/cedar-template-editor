@@ -43,6 +43,10 @@ define([
       return "/elements/edit/" + id;
     };
 
+    service.getInstanceCreate = function (id, folderId) {
+      return '/instances/create/' + id + '?folderId=' + encodeURIComponent(folderId);
+    };
+
     service.getInstanceEdit = function (id) {
       return "/instances/edit/" + id;
     };
