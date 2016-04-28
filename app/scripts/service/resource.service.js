@@ -13,17 +13,18 @@ define([
     'CedarUser',
     'HttpBuilderService',
     'UISettingsService',
-    'UrlService'
+    'UrlService',
+    'CONST'
   ];
 
-  function resourceService($http, $timeout, authorizedBackendService, cedarUser, httpBuilderService, uiSettingsService, urlService) {
+  function resourceService($http, $timeout, authorizedBackendService, cedarUser, httpBuilderService, uiSettingsService, urlService, CONST) {
 
     var searchTerm = null;
     var service = {
       createFolder: createFolder,
       deleteFolder: deleteFolder,
       getFacets: getFacets,
-      getFolder: getFolder,
+      getResource: getResource,
       getResources: getResources,
       searchResources: searchResources
     };
@@ -174,10 +175,23 @@ define([
       );
     }
 
-    function getFolder(folderId, options = {}, successCallback, errorCallback) {
-      var resourceTypes = options.resourceTypes || uiSettingsService.getResourceTypeFilters().map(function(obj) { return obj.resourceType });
-      var url = urlService.folders() + '/' + encodeURIComponent(folderId);
-
+    function getResource(resource, successCallback, errorCallback) {
+      var url;
+      var id = resource['@id'];
+      switch (resource.resourceType) {
+      case CONST.resourceType.FOLDER:
+        url = urlService.folders() + '/' + encodeURIComponent(id);
+        break;
+      case CONST.resourceType.ELEMENT:
+        url = urlService.getTemplateElement(id);
+        break;
+      case CONST.resourceType.TEMPLATE:
+        url = urlService.getTemplate(id);
+        break;
+      case CONST.resourceType.INSTANCE:
+        url = urlService.getTemplateInstance(id);
+        break;
+      }
       authorizedBackendService.doCall(
         httpBuilderService.get(url),
         function(response) {
@@ -185,7 +199,7 @@ define([
         },
         errorCallback
       );
-    }
+    };
 
     function getResources(options = {}, successCallback, errorCallback) {
       var resourceTypes = options.resourceTypes || uiSettingsService.getResourceTypeFilters().map(function(obj) { return obj.resourceType });

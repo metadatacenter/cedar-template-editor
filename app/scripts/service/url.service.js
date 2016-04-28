@@ -155,8 +155,12 @@ define([
       return resourceService;
     };
 
-    service.getFolderContents = function (folderId) {
-      return "/folder/" + encodeURIComponent(folderId);
+    service.getFolderContents = function(id) {
+      return '/folder/' + encodeURIComponent(id);
+    };
+
+    service.getFolder = function (id) {
+      return this.folders() + encodeURIComponent(id);
     };
 
     service.folders = function () {

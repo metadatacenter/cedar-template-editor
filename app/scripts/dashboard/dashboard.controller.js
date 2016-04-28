@@ -100,21 +100,22 @@ define([
      * TODO: return link?
      */
     function editResource(resource) {
+      var id = resource['@id'];
       switch (resource.resourceType) {
       case CONST.resourceType.TEMPLATE:
-        $location.path(UrlService.getTemplateEdit(resource.id));
+        $location.path(UrlService.getTemplateEdit(id));
         break;
       case CONST.resourceType.ELEMENT:
-        $location.path(UrlService.getElementEdit(resource.id));
+        $location.path(UrlService.getElementEdit(id));
         break;
       case CONST.resourceType.INSTANCE:
-        $location.path(UrlService.getInstanceEdit(resource.id));
+        $location.path(UrlService.getInstanceEdit(id));
         break;
       case CONST.resourceType.LINK:
         $location.path(scope.href);
         break;
       case CONST.resourceType.FOLDER:
-        goToFolder(resource['@id']);
+        goToFolder(id);
         break;
       }
     }
@@ -157,15 +158,15 @@ define([
       );
     }
 
-    function getFolderDetails(folderId) {
-      return resourceService.getFolder(
-        folderId,
-        {},
+    function getResourceDetails(resource) {
+      var id = resource['@id'];
+      resourceService.getResource(
+        resource,
         function(response) {
           vm.selectedResource = response;
         },
         function(error) {
-          alert('there was an error fetching the folder details');
+          alert('there was an error fetching the resource details');
         }
       );
     };
@@ -242,7 +243,7 @@ define([
 
     function selectResource(resource) {
       vm.selectedResource = resource;
-      getFolderDetails(resource['@id']);
+      getResourceDetails(resource);
       vm.showResourceInfo = true;
     }
 
