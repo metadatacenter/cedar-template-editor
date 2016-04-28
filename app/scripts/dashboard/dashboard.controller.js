@@ -28,6 +28,7 @@ define([
   function DashboardController($location, $rootScope, $routeParams, $scope, $translate, AuthorizedBackendService, cedarUser, HeaderService, resourceService, TemplateElementService, TemplateService, TemplateInstanceService, UIMessageService, UrlService, CONST) {
     var vm = this;
 
+    vm.breadcrumbName = breadcrumbName;
     vm.currentWorkspacePath = cedarUser.getHome();
     vm.currentPath = "";
     vm.currentFolderId = "";
@@ -86,6 +87,13 @@ define([
     /**
      * Scope functions.
      */
+
+    function breadcrumbName(folderName) {
+      if (folderName == '/') {
+        return 'All';
+      }
+      return folderName;
+    }
 
     function showCreateFolder() {
       $('#editFolderModal').modal();

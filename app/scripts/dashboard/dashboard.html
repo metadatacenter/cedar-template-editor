@@ -197,9 +197,9 @@
         <div class="breadcrumbs-sb">
           <p>
             <span ng-repeat="folder in dc.pathInfo">
-              <a ng-click="dc.goToFolder(folder['@id'])" class="breadcrumbs">{{folder.name}}</a> /
+              <a ng-click="dc.goToFolder(folder['@id'])" class="breadcrumbs">{{dc.breadcrumbName(folder.name)}}</a> /
             </span>
-            {{dc.currentPath.name}}
+            {{dc.breadcrumbName(dc.currentPath.name)}}
           </p>
         </div>
       </div>
