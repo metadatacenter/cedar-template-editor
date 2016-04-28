@@ -11431,8 +11431,8 @@ p.instructions {
   position: relative;
 }
 /*
-  Tree css is copied from http://www.bypeople.com/pure-css-tree-menu-framework-cssdeck/
-*/
+    Tree css is copied from http://www.bypeople.com/pure-css-tree-menu-framework-cssdeck/
+  */
 .tree {
   /* (indentation/2) */
 }
@@ -12065,9 +12065,6 @@ body .template-header .controlled-terms-modal {
   padding: 5px 0 0 5px;
   position: static;
 }
-.input-type-container .configuration-options .toggle-options {
-  margin-right: 15px;
-}
 .input-type-container .configuration-actions .toggle-options {
   margin-top: 5px;
 }
@@ -12226,7 +12223,7 @@ body .template-header .controlled-terms-modal {
   text-indent: -1000px;
   width: 0;
   height: 20px;
-  padding: 0 0 0 20px;
+  padding: 0 10px 0 20px;
 }
 .ibl {
   display: inline-block;
