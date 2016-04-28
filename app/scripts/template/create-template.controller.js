@@ -205,8 +205,10 @@ define([
 
             // Save template
             if ($routeParams.id == undefined) {
+              var queryParams = $location.search();
+              $scope.form['parentId'] = queryParams.folderId;
               AuthorizedBackendService.doCall(
-                  TemplateService.saveTemplate($scope.form),
+                  TemplateService.saveTemplate(queryParams.folderId, $scope.form),
                   function (response) {
                     // confirm message
                     UIMessageService.flashSuccess('SERVER.TEMPLATE.create.success', {"title": response.data._ui.title},

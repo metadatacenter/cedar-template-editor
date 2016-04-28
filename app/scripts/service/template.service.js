@@ -30,8 +30,8 @@ define([
       return HttpBuilderService.delete(UrlService.getTemplate(id));
     };
 
-    service.saveTemplate = function (template) {
-      return HttpBuilderService.post(UrlService.postTemplate(CedarUser.getCurrentFolderId()), angular.toJson(template));
+    service.saveTemplate = function (folderId, template) {
+      return HttpBuilderService.post(UrlService.postTemplate(folderId), angular.toJson(template));
     };
 
     service.updateTemplate = function (id, template) {
