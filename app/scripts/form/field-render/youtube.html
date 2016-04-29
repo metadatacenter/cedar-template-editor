@@ -1,21 +1,30 @@
-<div ng-if="!$root.isRuntime()" style="padding-top: 40px;">
-  <!-- let's put the video into a figure so we can use the figcaption for the title -->
-  <figure>
-    <!-- fit-vids directive automatically resizes the video to full width -->
-    <div fit-vids ng-bind-html="getYouTubeEmbedFrame(field)"></div>
-    <figcaption><label>{{$root.schemaOf(field)._ui.title}}</label></figcaption>
-  </figure>
+<div class="fields you-tube" ng-class="{preview: preview}">
+
+  <!-- header row -->
+  <div ng-init="fieldTitle='&nbsp;YouTube Video';fieldIconClass='cedar-svg-youtube'"
+      ng-include="'scripts/form/partials/field-header.partial.html'"></div>
+
+  <div ng-if="!$root.isRuntime()" style="padding-top: 10px;">
+    <!-- let's put the video into a figure so we can use the figcaption for the title -->
+    <figure>
+      <!-- fit-vids directive automatically resizes the video to full width -->
+      <div fit-vids ng-bind-html="getYouTubeEmbedFrame(field)"></div>
+      <figcaption><label>{{$root.schemaOf(field)._ui.title}}</label></figcaption>
+    </figure>
+  </div>
+
+
+  <div ng-if="$root.isRuntime()">
+    <!-- let's put the video into a figure so we can use the figcaption for the title -->
+    <figure>
+      <!-- fit-vids directive automatically resizes the video to full width -->
+      <div fit-vids ng-bind-html="getYouTubeEmbedFrame(field)"></div>
+      <figcaption><label>{{$root.schemaOf(field)._ui.title}}</label></figcaption>
+    </figure>
+  </div>
+
+  <div class="clearfix all"></div>
 </div>
 
 
-<div ng-if="$root.isRuntime()">
-  <!-- let's put the video into a figure so we can use the figcaption for the title -->
-  <figure>
-    <!-- fit-vids directive automatically resizes the video to full width -->
-    <div fit-vids ng-bind-html="getYouTubeEmbedFrame(field)"></div>
-    <figcaption><label>{{$root.schemaOf(field)._ui.title}}</label></figcaption>
-  </figure>
-</div>
-
-<div class="clearfix all"></div>
 

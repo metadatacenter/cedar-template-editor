@@ -1,4 +1,9 @@
 <div class="fields fields-checkbox">
+
+  <!-- header row -->
+  <div ng-init="fieldTitle='Checkbox';fieldIconClass='cedar-svg-checkbox'"
+      ng-include="'scripts/form/partials/field-header.partial.html'"></div>
+
   <div ng-if="$root.isArray(model) " class="form-group  floating-label-wrapper ng-scope"
       ng-class="{'required': $root.schemaOf(field)._valueConstraints.requiredValue}"
       ng-repeat="valueElement in model">

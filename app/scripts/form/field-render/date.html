@@ -1,4 +1,9 @@
 <div class="fields fields-date">
+
+  <!-- header row -->
+  <div ng-init="fieldTitle='Date';fieldIconClass='cedar-cedar-svg-calendar-checkbox'"
+      ng-include="'scripts/form/partials/field-header.partial.html'"></div>
+
   <div ng-if="$root.isArray(model)" class="field field-date" ng-repeat="valueElement in model">
 
     <div class="form-group date-group floating-label-wrapper"

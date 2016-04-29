@@ -1,4 +1,9 @@
 <div class="fields fields-numeric">
+
+  <!-- header row -->
+  <div ng-init="fieldTitle='Numeric';fieldIconClass='cedar-svg-numeric'"
+      ng-include="'scripts/form/partials/field-header.partial.html'"></div>
+
   <div ng-if="$root.isArray(model)" class="form-group floating-label-wrapper" ng-repeat="valueElement in model">
 
     <input type="number"
