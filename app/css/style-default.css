@@ -9906,6 +9906,58 @@ i {
       -ms-transform: rotate(180deg);
           transform: rotate(180deg);
 }
+.other-elements {
+  width: 465px;
+  background: #ffffff;
+  color: #666666;
+  position: absolute;
+  top: 0;
+  right: -1%;
+}
+.other-elements .pull-left,
+.other-elements .pull-right {
+  width: 45%;
+  text-transform: uppercase;
+}
+.other-elements .list-unstyled li {
+  margin-bottom: 15px;
+}
+.other-elements .list-unstyled li a {
+  color: #666666;
+  font-weight: 500;
+}
+.other-elements .list-unstyled li a i {
+  color: #339933;
+  padding-right: 10px;
+}
+.other-elements .top-half,
+.other-elements .bottom-half {
+  padding: 30px;
+  border-bottom: 1px solid #eaeaea;
+}
+.other-elements .search-part {
+  border: none;
+}
+.other-elements .search-part a {
+  display: block;
+  padding: 30px 35px;
+  color: #666666;
+  text-transform: uppercase;
+  font-weight: 500;
+  width: 100%;
+}
+.other-elements .search-part a i {
+  color: #339933;
+  padding-right: 10px;
+  text-align: right;
+}
+.other-elements .top-half:after,
+.other-elements .bottom-half:after,
+.other-elements .top-half:before,
+.other-elements .bottom-half:before {
+  clear: both;
+  content: '';
+}
 .template-header {
   width: 100%;
   background-color: #056046;
