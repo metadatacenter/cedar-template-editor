@@ -11986,6 +11986,9 @@ p.instructions {
   height: calc(100% - 60px);
   overflow-y: auto;
 }
+.controlled-terms-modal .modal-body .class-actions {
+  margin-top: 30px;
+}
 .controlled-terms-modal .element-title {
   margin-bottom: 20px;
   font-size: 1.2em;
