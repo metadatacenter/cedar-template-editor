@@ -70,6 +70,7 @@ define([
     vm.showFloatingMenu = false;
     vm.showResourceInfo = false;
     vm.sortOptionLabel = $translate.instant('DASHBOARD.sort.name');
+    vm.sortOptionField = 'name';
     vm.toggleFavorites = toggleFavorites;
     vm.toggleFilters = toggleFilters;
     vm.toggleResourceInfo = toggleResourceInfo;
@@ -138,9 +139,10 @@ define([
     }
 
     function doSearch(term) {
+      var resourceTypes = activeResourceTypes();
       resourceService.searchResources(
         term,
-        {},
+        { resourceTypes: resourceTypes, sort: '-' + vm.sortOptionField, limit: 10, offset: 0 },
         function(response) {
           vm.searchTerm = term;
           vm.isSearching = true;
@@ -242,7 +244,7 @@ define([
       var resourceTypes = activeResourceTypes();
       if (resourceTypes.length > 0) {
         return resourceService.getResources(
-          { folderId: folderId, resourceTypes: resourceTypes, sort: '-createdOn', limit: 10, offset: 0 },
+          { folderId: folderId, resourceTypes: resourceTypes, sort: '-' + vm.sortOptionField, limit: 10, offset: 0 },
           function(response) {
             vm.currentFolderId = folderId;
             vm.resources       = response.resources;
@@ -321,6 +323,8 @@ define([
 
     function setSortOption(option) {
       vm.sortOptionLabel = $translate.instant('DASHBOARD.sort.' + option);
+      vm.sortOptionField = option;
+      init();
     }
 
     function toggleFavorites() {

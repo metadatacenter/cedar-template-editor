@@ -185,8 +185,8 @@
     },
     "sort": {
       "name": "Name",
-      "created": "Recently Created",
-      "updated": "Recently Updated"
+      "createdOn": "Recently Created",
+      "lastUpdatedOn": "Recently Updated"
     }
   },
   "ELEMENTEDITOR": {
