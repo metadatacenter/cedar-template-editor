@@ -194,7 +194,10 @@
     <div class="row">
       <div class="col-sm-12 clearfix">
         <div class="breadcrumbs-sb">
-          <p>
+          <p ng-if="dc.isSearching">
+            <span>Search Results For: '{{dc.searchTerm}}'</span>
+          </p>
+          <p ng-if="!dc.isSearching">
             <span ng-repeat="folder in dc.pathInfo">
               <a ng-click="dc.goToFolder(folder['@id'])" class="breadcrumbs">{{dc.breadcrumbName(folder.name)}}</a> /
             </span>

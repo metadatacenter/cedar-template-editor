@@ -7,26 +7,20 @@ define([
     .controller('HeaderCtrl', HeaderController);
 
   HeaderController.$inject = [
-    '$rootScope',
-    'resourceService',
+    '$location',
+    'UrlService'
   ];
 
-  function HeaderController($rootScope, resourceService) {
+  function HeaderController($location, UrlService) {
     var vm = this;
 
     vm.search = search;
     vm.searchTerm = null;
 
     function search(searchTerm) {
-      resourceService.searchResources(
-        searchTerm,
-        {},
-        function(response) {
-          $rootScope.$broadcast('search', response);
-        },
-        function(error) { debugger; }
-      );
+      $location.url(UrlService.getSearchPath(searchTerm));
     }
+
   }
 
 });

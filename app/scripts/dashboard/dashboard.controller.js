@@ -34,6 +34,7 @@ define([
     vm.currentFolderId = "";
     vm.deleteResource = deleteResource;
     vm.doCreateFolder = doCreateFolder;
+    vm.doSearch = doSearch;
     vm.editResource = editResource;
     vm.facets = {};
     vm.forms = [];
@@ -47,6 +48,7 @@ define([
     vm.goToFolder = goToFolder;
     vm.isResourceSelected = isResourceSelected;
     vm.isResourceTypeActive = isResourceTypeActive;
+    vm.isSearching = false;
     vm.launchInstance = launchInstance;
     vm.narrowContent = narrowContent;
     vm.pathInfo = [];
@@ -80,9 +82,13 @@ define([
     function init() {
       getFacets();
       getForms();
-      if (vm.params.id) {
-        getFolderContentsById(decodeURIComponent(vm.params.id));
+      if (vm.params.folderId) {
+        vm.isSearching = false;
+        getFolderContentsById(decodeURIComponent(vm.params.folderId));
+      } else if (vm.params.search) {
+        doSearch(vm.params.search);
       } else {
+        vm.isSearching = false;
         getFolderContents(cedarUser.getHome());
       }
     }
@@ -121,11 +127,24 @@ define([
       );
     }
 
+    function doSearch(term) {
+      resourceService.searchResources(
+        term,
+        {},
+        function(response) {
+          vm.searchTerm = term;
+          vm.isSearching = true;
+          vm.resources = response.resources;
+        },
+        function(error) { debugger; }
+      );
+    }
+    
     function launchInstance(resource) {
       var params = $location.search();
       var folderId;
-      if (params.id) {
-        folderId = params.id;
+      if (params.folderId) {
+        folderId = params.folderId;
       } else {
         folderId = vm.currentFolderId
       }
@@ -327,6 +346,8 @@ define([
     });
 
     $scope.$on('search', function(event, data) {
+      vm.searchTerm = $('#search').val();
+      vm.isSearching = true;
       vm.resources = data.resources;
     });
 

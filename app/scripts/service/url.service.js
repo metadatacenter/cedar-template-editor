@@ -159,8 +159,12 @@ define([
       return resourceService;
     };
 
-    service.getFolderContents = function(id) {
-      return '/folder?id=' + encodeURIComponent(id);
+    service.getSearchPath = function (term) {
+      return '/dashboard?search=' + encodeURIComponent(term);
+    };
+
+    service.getFolderContents = function(folderId) {
+      return '/dashboard?folderId=' + encodeURIComponent(folderId);
     };
 
     service.getFolder = function (id) {

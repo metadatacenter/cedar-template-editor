@@ -13,7 +13,7 @@ define([
         controllerAs: 'dc',
         templateUrl: 'scripts/dashboard/dashboard.html',
       })
-      .when('/folder', {
+      .when('/dashboard', {
         controller: 'DashboardController',
         controllerAs: 'dc',
         templateUrl: 'scripts/dashboard/dashboard.html',
