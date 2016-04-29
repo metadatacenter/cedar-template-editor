@@ -234,9 +234,9 @@
           <table class="table">
             <thead>
             <th></th>
-            <th>Title <i class="fa fa-caret-down"></i></th>
-            <th>Owned By Me <i class="fa fa-caret-down"></i></th>
-            <th>Last Changed <i class="fa fa-caret-down"></i></th>
+            <th>Title</th>
+            <th>Created</th>
+            <th>Modified</th>
             <th></th>
             </thead>
             <tbody>
@@ -247,8 +247,8 @@
                   ng-repeat="(index, resource) in dc.resources">
                 <td><i ng-class="dc.getResourceIconClass(resource)" class="fa large-icon" aria-hidden="true"></i></td>
                 <td><a ng-click="dc.selectResource(resource)">{{ resource.name }}</a></td>
-                <td>{{ resource.createdOn|date:'shortDate' }}</td>
-                <td>{{ resource.lastUpdatedOn|date:'shortDate' }}</td>
+                <td>{{ resource.createdOnTS * 1000 | date:'shortDate' }}</td>
+                <td>{{ resource.lastUpdatedOnTS * 1000 | date:'shortDate' }}</td>
                 <td>
                   <ul class="list-inline">
                     <li><button class="btn  btn-sm btn-info btn-circle" ng-click="dc.selectResource(resource)"><i class="fa fa-info"></i></button></li>
