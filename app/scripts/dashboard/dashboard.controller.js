@@ -63,10 +63,12 @@ define([
     vm.selectResource = selectResource;
     vm.setSortOption = setSortOption;
     vm.showCreateFolder = showCreateFolder;
+    vm.showFavorites = true;
     vm.showFilters = false;
     vm.showFloatingMenu = false;
     vm.showResourceInfo = false;
     vm.sortOptionLabel = $translate.instant('DASHBOARD.sort.name');
+    vm.toggleFavorites = toggleFavorites;
     vm.toggleFilters = toggleFilters;
     vm.toggleResourceInfo = toggleResourceInfo;
     vm.toggleResourceType = toggleResourceType;
@@ -292,6 +294,15 @@ define([
       vm.sortOptionLabel = $translate.instant('DASHBOARD.sort.' + option);
     }
 
+    function toggleFavorites() {
+      vm.showFavorites = !vm.showFavorites;
+      if (vm.showFavorites) {
+        angular.element('#favorites').collapse('show');
+      } else {
+        angular.element('#favorites').collapse('hide');
+      }
+    }
+
     function toggleFilters() {
       vm.showFilters = !vm.showFilters;
     }
@@ -318,19 +329,6 @@ define([
     $scope.$on('search', function(event, data) {
       vm.resources = data.resources;
     });
-
-    $scope.$watch(
-      function(scope) {
-        return vm.showFilters || vm.showResourceInfo;
-      },
-      function(newVal, oldVal) {
-        if (newVal) {
-          angular.element('#favorites').collapse('hide');
-        } else {
-          angular.element('#favorites').collapse('show');
-        }
-      }
-    );
 
     /**
      * Private functions.
