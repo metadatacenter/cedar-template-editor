@@ -89,7 +89,16 @@ define([
         doSearch(vm.params.search);
       } else {
         vm.isSearching = false;
-        getFolderContents(cedarUser.getHome());
+        resourceService.getResources(
+          { path: cedarUser.getHome() },
+          function(response) {
+            var currentFolder = response.pathInfo[response.pathInfo.length - 1];
+            goToFolder(currentFolder['@id']);
+          },
+          function(error) {
+          }
+        );
+        // getFolderContents(cedarUser.getHome());
       }
     }
 
