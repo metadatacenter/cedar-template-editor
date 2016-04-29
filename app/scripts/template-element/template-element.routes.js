@@ -10,10 +10,12 @@ define([
     $routeProvider
       .when('/elements/create', {
         templateUrl: 'scripts/template-element/create-element.html',
+        // templateUrl: 'scripts/template-element/create-element-old.html',
         controller: 'CreateElementController'
       })
       .when('/elements/edit/:id*', {
         templateUrl: 'scripts/template-element/create-element.html',
+        // templateUrl: 'scripts/template-element/create-element-old.html',
         controller: 'CreateElementController'
       });
   }
