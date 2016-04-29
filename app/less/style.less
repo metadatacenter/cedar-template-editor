@@ -290,9 +290,9 @@ i {
       //display: inline-block;
       vertical-align: top;
       margin-bottom: 0px;
-      padding-top: 7px;
+      padding:5px 15px;
 
-
+      .add,
       .remove,
       .edit {
         height: 25px;
@@ -309,6 +309,19 @@ i {
           color: @white;
           font-size: 16px;
           line-height: 25px;
+        }
+      }
+
+      .add {
+        // display:none;
+        background-color: @brand-primary;
+
+        &:hover {
+          background-color: #999;
+        }
+
+        i {
+          transform: translate(6px, 0px);
         }
       }
 
@@ -1393,16 +1406,15 @@ section.dashboard-elements {
           }
 
           i {
-            transform: translate(6px, 1px);
+            transform: translate(6px, 0px);
           }
         }
 
         .edit {
-          display: none;
-          background-color: #ccc;
+          background-color: @brand-primary;
 
           &:hover {
-            background-color: #999;
+            background-color:  @brand-primary-hover;
           }
 
           i {
@@ -3118,6 +3130,9 @@ p.instructions {
       padding: 0 100px 100px;
       height: calc(~"100% - 60px");
       overflow-y: auto;
+      .class-actions {
+        margin-top: 30px;
+      }
     }
 
     .element-title {
@@ -3242,16 +3257,12 @@ p.instructions {
   }
 
   .input-type-container .configuration-options {
-    padding: 5px 0 0 5px;;
+    padding: 0;
     position: static;
   }
 
 
   .input-type-container .configuration-options .toggle-options {
-  }
-
-  .input-type-container .configuration-actions .toggle-options {
-    margin-top: 5px;
   }
 
   .input-type-container .configuration-actions .toggle-options .save-options .remove {
@@ -3393,7 +3404,6 @@ p.instructions {
   }
 
   .element-configuration-options {
-    margin-top: 5px;
   }
 
   .definition-inputs {

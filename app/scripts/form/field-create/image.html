@@ -1,13 +1,8 @@
 <div id="image-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}" class="input-type-container">
 
-  <div class="row configuration-options" ng-if="!$root.isRuntime() && !ngDisabled && !preview">
-    <div class=" col-lg-9 pull-left type-label">
-      <div class="sortable-handler " ng-if="!preview && !$root.isRuntime()">
-        <p class="type-label"><span class="sortable-icon"></span><i class="cedar-svg-image"></i>&nbsp;Image</p>
-      </div>
-    </div>
-    <div class="col-lg-3 pull-right configuration-actions" style="padding-top:0" ng-include="'scripts/form/partials/staging-area-actions.partial.html'" />
-  </div>
+  <!-- header row -->
+  <div ng-init="fieldTitle='&nbsp;Image';fieldIconClass='cedar-svg-image'"
+      ng-include="'scripts/form/partials/field-header.partial.html'"></div>
 
   <div class="definition-inputs" ng-include="'scripts/form/partials/field-definition.partial.html'"></div>
   <!-- /.definition-inputs -->

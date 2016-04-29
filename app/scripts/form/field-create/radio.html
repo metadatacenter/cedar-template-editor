@@ -1,18 +1,11 @@
 <div id="radio-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}" class="input-type-container">
 
-  <div class="row configuration-options" ng-if="!$root.isRuntime() && !ngDisabled && !preview">
-    <div class=" col-lg-9 pull-left type-label">
-      <div class="sortable-handler " ng-if="!preview && !$root.isRuntime()">
-        <p class="type-label"><span class="sortable-icon"></span><i class="cedar-svg-multiple-choice"></i>Multiple Choice</p></p>
-      </div>
-    </div>
-    <div class="col-lg-3 pull-right configuration-actions" style="padding-top:0"
-        ng-include="'scripts/form/partials/staging-area-actions.partial.html'"/>
-  </div>
+  <!-- header row -->
+  <div ng-init="fieldTitle='Multiple Choice';fieldIconClass='cedar-svg-multiple-choice'"
+      ng-include="'scripts/form/partials/field-header.partial.html'"></div>
 
   <div class="definition-inputs" ng-include="'scripts/form/partials/field-definition.partial.html'"></div>
   <!-- /.definition-inputs -->
-
 
   <div class="form-group floating-label-wrapper">
     <!--<input type="text" class="form-control" id="placeholder-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}" placeholder="Field Title" aria-label="Field Title" ng-model="$root.schemaOf(field)._ui.title"  with-floating-label>--

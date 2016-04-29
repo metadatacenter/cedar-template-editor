@@ -1,17 +1,11 @@
 <div id="list-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}" class="input-type-container pick-list">
 
-  <div class="row configuration-options" ng-if="!$root.isRuntime() && !ngDisabled && !preview">
-    <div class=" col-lg-9 pull-left type-label">
-      <div class="sortable-handler " ng-if="!preview && !$root.isRuntime()">
-        <p class="type-label"><span class="sortable-icon"></span><i class="cedar-svg-list"></i>Pick from a list</p></p>
-      </div>
-    </div>
-    <div class="col-lg-3 pull-right configuration-actions" style="padding-top:0" ng-include="'scripts/form/partials/staging-area-actions.partial.html'" />
-  </div>
+  <!-- header row -->
+  <div ng-init="fieldTitle='Pick from a list';fieldIconClass='cedar-svg-list'"
+      ng-include="'scripts/form/partials/field-header.partial.html'"></div>
 
   <div class="definition-inputs" ng-include="'scripts/form/partials/field-definition.partial.html'"></div>
   <!-- /.definition-inputs -->
-
 
   <div class="type-toggle list" ng-init="$root.schemaOf(field)._ui.selectionType = 'single'">
     <div class="single-date d-option" ng-click="$root.schemaOf(field)._ui.selectionType = 'single'"
@@ -55,7 +49,6 @@
     <!-- /.options-wrapper -->
   </div>
   <!-- /.form-group -->
-
 
   <div class="configuration-options " ng-include="'scripts/form/partials/configuration-options.partial.html'"></div>
 </div><!-- /.input-type-container -->
