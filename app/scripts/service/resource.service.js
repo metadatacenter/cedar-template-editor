@@ -235,21 +235,19 @@ define([
       var resourceTypes = options.resourceTypes || uiSettingsService.getResourceTypeFilters().map(function(obj) { return obj.resourceType });
       var url = urlService.search() + '?';
 
-      // if (searchTerm) {
-      //   url += 'search_term=' + searchTerm + '&';
-      // }
-      // url += 'resource_types=' + resourceTypes.join(',');
-      // if (options.sort) {
-      //   url += '&sort=' + options.sort;
-      // }
-      // if (options.limit) {
-      //   url += '&limit=' + options.limit;
-      // }
-      // if (options.offset) {
-      //   url += '&offset=' + options.offset;
-      // }
-
-      url += 'q=dummy';
+      if (searchTerm) {
+        url += 'q=' + searchTerm + '&';
+      }
+      url += 'resource_types=' + resourceTypes.join(',');
+      if (options.sort) {
+        url += '&sort=' + options.sort;
+      }
+      if (options.limit) {
+        url += '&limit=' + options.limit;
+      }
+      if (options.offset) {
+        url += '&offset=' + options.offset;
+      }
 
       authorizedBackendService.doCall(
         httpBuilderService.get(url),
