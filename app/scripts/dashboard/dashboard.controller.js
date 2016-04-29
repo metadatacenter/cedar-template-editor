@@ -80,13 +80,15 @@ define([
     init();
 
     function init() {
-      getFacets();
-      getForms();
-      if (vm.params.folderId) {
-        vm.isSearching = false;
-        getFolderContentsById(decodeURIComponent(vm.params.folderId));
-      } else if (vm.params.search) {
-        doSearch(vm.params.search);
+      if (vm.params.folderId || vm.params.search) {
+        getForms();
+        getFacets();
+        if (vm.params.folderId) {
+          vm.isSearching = false;
+          getFolderContentsById(decodeURIComponent(vm.params.folderId));
+        } else {
+          doSearch(vm.params.search);
+        }
       } else {
         vm.isSearching = false;
         resourceService.getResources(
@@ -98,7 +100,6 @@ define([
           function(error) {
           }
         );
-        // getFolderContents(cedarUser.getHome());
       }
     }
 
