@@ -288,7 +288,7 @@ define([
       case CONST.resourceType.TEMPLATE:
         return "fa-file-o";
       case CONST.resourceType.INSTANCE:
-        return "fa-clone";
+        return "fa-check-square-o";
       case CONST.resourceType.FIELD:
         return "fa-file-code-o";
       }
