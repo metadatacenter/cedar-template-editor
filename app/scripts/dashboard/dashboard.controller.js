@@ -322,11 +322,11 @@ define([
 
     function selectResource(resource) {
       vm.selectedResource = resource;
+      getResourceDetails(resource);
     }
 
     function showInfoPanel(resource) {
       selectResource(resource);
-      getResourceDetails(resource);
       vm.showResourceInfo = true;
     }
 
