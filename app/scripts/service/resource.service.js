@@ -27,7 +27,8 @@ define([
       getFacets: getFacets,
       getResourceDetail: getResourceDetail,
       getResources: getResources,
-      searchResources: searchResources
+      searchResources: searchResources,
+      updateFolder: updateFolder
     };
     return service;
 
@@ -283,6 +284,19 @@ define([
         },
         errorCallback
       );
+    }
+
+    function updateFolder(folder, successCallback, errorCallback) {
+      var url = urlService.getFolder(folder['@id']);
+
+      authorizedBackendService.doCall(
+        httpBuilderService.put(url, angular.toJson(folder)),
+        function(response) {
+          successCallback(response.data);
+        },
+        errorCallback
+      );
+
     }
 
   }

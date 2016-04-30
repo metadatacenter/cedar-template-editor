@@ -208,7 +208,7 @@
         <div class="col-sm-6"
              ng-class="{ 'col-md-3': !dc.narrowContent(), 'col-md-4': dc.narrowContent(), selected: dc.isResourceSelected(resource) }"
              ng-repeat="(index, resource) in dc.resources">
-          <div ng-click="dc.selectResource(resource)" ng-dblclick="dc.editResource(resource)" class="form-box">
+          <div ng-click="dc.selectResource(resource)" ng-dblclick="dc.goToResource(resource)" class="form-box">
             <div class="box-content text-center">
               <i class="fa" ng-class="dc.getResourceIconClass(resource)"></i>
               <p>{{ resource.name }}</p>
@@ -297,7 +297,7 @@
             <div class="row">
               <div class="col-sm-12 clearfix">
                 <div class="pull-left">
-                  <h2>Create Folder</h2>
+                  <h2><span ng-show="dc.formFolder">Edit</span><span ng-hide="dc.formFolder">Create</span> Folder</h2>
                 </div>
                 <div class="pull-right">
                   <p><a href="#n" data-dismiss="modal">Less <i class="fa fa-arrow-up"></i></a></p>
@@ -326,18 +326,25 @@
                 </div>
               </div>
             </div>
+          </div>
+        </div>
+        <!-- body -->
+        <!-- footer -->
+        <div class="modal-footer">
+          <div class="container">
             <div class="row">
               <div class="col-sm-12 clearfix">
                 <div class="pull-left">
-                  <button ng-click="dc.doCreateFolder()" type="button" class="btn btn-default">Create</button>
+                  <button ng-click="dc.doCreateEditFolder()" type="button" class="btn btn-default confirm">
+                    <span ng-show="dc.formFolder">Update</span>
+                    <span ng-hide="dc.formFolder">Create</span>
+                  </button>
+                  <a ng-click="dc.cancelCreateEditFolder()">Cancel</a>
                 </div>
               </div>
             </div>
           </div>
         </div>
-        <!-- body -->
-        <!-- footer -->
-        <div class="modal-footer"></div>
         <!--<div class="modal-footer"></div>-->
         <!-- footer -->
       </div>

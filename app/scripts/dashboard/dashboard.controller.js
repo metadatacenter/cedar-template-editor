@@ -29,15 +29,17 @@ define([
     var vm = this;
 
     vm.breadcrumbName = breadcrumbName;
+    vm.cancelCreateEditFolder = cancelCreateEditFolder;
     vm.currentWorkspacePath = cedarUser.getHome();
     vm.currentPath = "";
     vm.currentFolderId = "";
     vm.deleteResource = deleteResource;
-    vm.doCreateFolder = doCreateFolder;
+    vm.doCreateEditFolder = doCreateEditFolder;
     vm.doSearch = doSearch;
     vm.editResource = editResource;
     vm.facets = {};
     vm.forms = [];
+    vm.formFolder,
     vm.formFolderName,
     vm.formFolderDescription,
     vm.getFacets = getFacets;
@@ -45,6 +47,7 @@ define([
     vm.getFolderContents = getFolderContents;
     vm.getFolderContentsById = getFolderContentsById;
     vm.getResourceIconClass = getResourceIconClass;
+    vm.goToResource = goToResource;
     vm.goToFolder = goToFolder;
     vm.isResourceSelected = isResourceSelected;
     vm.isResourceTypeActive = isResourceTypeActive;
@@ -116,28 +119,53 @@ define([
       return folderName;
     }
 
+    function cancelCreateEditFolder() {
+      vm.formFolderName = 'Untitled';
+      vm.formFolderDescription = 'Untitled';
+      vm.formFolder = null;
+      $('#editFolderModal').modal('hide');
+    };
+
     function showCreateFolder() {
       vm.formFolderName = 'Untitled';
       vm.formFolderDescription = 'Untitled';
+      vm.formFolder = null;
       $('#editFolderModal').modal('show');
       $('#formFolderName').focus();
     };
 
-    function doCreateFolder() {
-      var path = vm.currentWorkspacePath;
-      resourceService.createFolder(
-        vm.params.folderId,
-        vm.formFolderName,
-        vm.formFolderDescription,
-        function(response) {
-          $('#editFolderModal').modal('hide');
-          init();
-        },
-        function(response) {
-          $('#editFolderModal').modal('hide');
-          UIMessageService.showBackendError('SERVER.FOLDER.create.error', error);
-        }
-      );
+    function doCreateEditFolder() {
+      $('#editFolderModal').modal('hide');
+      if (vm.formFolder) {
+        vm.formFolder.name = vm.formFolderName;
+        vm.formFolder.description = vm.formFolderDescription;
+        resourceService.updateFolder(
+          vm.formFolder,
+          function(response) {
+            init();
+            UIMessageService.flashSuccess('SERVER.FOLDER.update.success', {"title": vm.formFolderName},
+                                          'GENERIC.Updated');
+          },
+          function(response) {
+            UIMessageService.showBackendError('SERVER.FOLDER.update.error', error);
+          }
+        );
+        // edit
+      } else {
+        resourceService.createFolder(
+          vm.params.folderId,
+          vm.formFolderName,
+          vm.formFolderDescription,
+          function(response) {
+            init();
+            UIMessageService.flashSuccess('SERVER.FOLDER.create.success', {"title": vm.formFolderName},
+                                          'GENERIC.Created');
+          },
+          function(response) {
+            UIMessageService.showBackendError('SERVER.FOLDER.create.error', error);
+          }
+        );
+      }
     }
 
     function doSearch(term) {
@@ -166,9 +194,14 @@ define([
       $location.url(url);
     }
 
-    /**
-     * TODO: return link?
-     */
+    function goToResource(resource) {
+      if (resource.resourceType == 'folder') {
+        goToFolder(resource['@id']);
+      } else {
+        editResource(resource);
+      }
+    }
+
     function editResource(resource) {
       var id = resource['@id'];
       switch (resource.resourceType) {
@@ -185,9 +218,17 @@ define([
         $location.path(scope.href);
         break;
       case CONST.resourceType.FOLDER:
-        goToFolder(id);
+        showEditFolder(resource);
         break;
       }
+    }
+
+    function showEditFolder(resource) {
+      vm.formFolder = resource;
+      vm.formFolderName = resource.name;
+      vm.formFolderDescription = resource.description
+      $('#editFolderModal').modal('show');
+      $('#formFolderName').focus();
     }
 
     function deleteResource(resource) {
