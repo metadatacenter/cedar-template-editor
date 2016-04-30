@@ -46,6 +46,23 @@ define([
     $scope.fieldTypes = FieldTypeService.getFieldTypes();
     $scope.hideRootElement = true;
 
+    $scope.primaryFieldTypes = [];
+    $scope.secondaryFieldTypesEven = [];
+    $scope.secondaryFieldTypesOdd = [];
+    var even = true;
+    for (var i = 0; i < $scope.fieldTypes.length; i++) {
+      if ($scope.fieldTypes[i].primaryField) {
+        $scope.primaryFieldTypes.push($scope.fieldTypes[i]);
+      } else {
+        if (even) {
+          $scope.secondaryFieldTypesEven.push($scope.fieldTypes[i]);
+        } else {
+          $scope.secondaryFieldTypesOdd.push($scope.fieldTypes[i]);
+        }
+        even = !even;
+      }
+    }
+
     var getElement = function () {
       $scope.form = {};
       // Load existing element if $routeParams.id parameter is supplied
@@ -109,6 +126,7 @@ define([
       if (dontHaveCreatingFieldOrElement()) {
         StagingService.addFieldToElement($scope.element, fieldType);
       }
+      $scope.showMenuPopover = false;
     };
 
     $scope.addElementToElement = function (element) {

@@ -92,7 +92,7 @@
             <div class="right-stick">
               <div class="sidebar-inner" >
                 <ul class="element-menu fields-list">
-                  <li ng-repeat="fieldType in fieldTypes | filter: { primaryField: true }">
+                  <li ng-repeat="fieldType in primaryFieldTypes">
                     <a ng-click="addFieldToElement(fieldType.cedarType)"><i class="{{fieldType.iconClass}}"></i></a>
                   </li>
                 </ul>
@@ -109,20 +109,16 @@
               <div class="top-half clearfix">
                 <div class="pull-left">
                   <ul class="list-unstyled">
-                    <li><a><i class="cedar-svg-expand"></i> Expand</a></li>
-                    <li><a><i class="cedar-svg-puzzle"></i> Puzzle</a></li>
-                    <li><a><i class="cedar-svg-collapse"></i> Collapse</a></li>
-                    <li><a><i class="cedar-svg-spreadsheet"></i> Spreadsheet</a></li>
-                    <li><a><i class="cedar-svg-edit"></i> Edit</a></li>
+                    <li ng-repeat="fieldType in secondaryFieldTypesEven">
+                      <a ng-click="addFieldToElement(fieldType.cedarType)"><i class="{{fieldType.iconClass}}"></i> {{fieldType.label}}</a>
+                    </li>
                   </ul>
                 </div>
                 <div class="pull-right">
                   <ul class="list-unstyled">
-                    <li><a><i class="cedar-svg-multiple-choice"></i> Multiple Choice</a></li>
-                    <li><a><i class="cedar-svg-checkbox"></i> Check Box</a></li>
-                    <li><a><i class="cedar-svg-date"></i> Date</a></li>
-                    <li><a><i class="cedar-svg-phone"></i> Phone</a></li>
-                    <li><a><i class="cedar-svg-rich-text"></i> Rich Text</a></li>
+                    <li ng-repeat="fieldType in secondaryFieldTypesOdd">
+                      <a ng-click="addFieldToElement(fieldType.cedarType)"><i class="{{fieldType.iconClass}}"></i> {{fieldType.label}}</a>
+                    </li>
                   </ul>
                 </div>
               </div>
