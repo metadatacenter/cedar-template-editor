@@ -92,20 +92,8 @@
             <div class="right-stick">
               <div class="sidebar-inner" >
                 <ul class="element-menu fields-list">
-                  <li>
-                    <a ng-click="addFieldToElement('textfield')"><i class="cedar-svg-text"></i></a>
-                  </li>
-                  <li>
-                    <a ng-click="addFieldToElement('textarea')"><i class="cedar-svg-paragraph"></i></a>
-                  </li>
-                  <li>
-                    <a ng-click="addFieldToElement('numeric')"><i class="cedar-svg-numeric"></i></a>
-                  </li>
-                  <li>
-                    <a ng-click="addFieldToElement('email')"><i class="cedar-svg-at"></i></a>
-                  </li>
-                  <li>
-                    <a ng-click="addFieldToElement('list')"><i class="cedar-svg-list"></i></a>
+                  <li ng-repeat="fieldType in fieldTypes | filter: { primaryField: true }">
+                    <a ng-click="addFieldToElement(fieldType.cedarType)"><i class="{{fieldType.iconClass}}"></i></a>
                   </li>
                 </ul>
               </div>

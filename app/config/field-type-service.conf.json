@@ -3,6 +3,7 @@
     "cedarType": "textfield",
     "iconClass": "cedar-svg-text",
     "allowedInElement": true,
+    "primaryField": true,
     "hasControlledTerms": true,
     "staticField": false
   },
@@ -10,6 +11,7 @@
     "cedarType": "textarea",
     "iconClass": "cedar-svg-paragraph",
     "allowedInElement": true,
+    "primaryField": true,
     "hasControlledTerms": false,
     "staticField": false
   },
@@ -37,6 +39,7 @@
   {
     "cedarType": "email",
     "iconClass": "cedar-svg-at",
+    "primaryField": true,
     "allowedInElement": true,
     "hasControlledTerms": false,
     "staticField": false
@@ -45,6 +48,7 @@
     "cedarType": "list",
     "iconClass": "cedar-svg-list",
     "allowedInElement": true,
+    "primaryField": true,
     "hasControlledTerms": true,
     "staticField": false
   },
@@ -52,6 +56,7 @@
     "cedarType": "numeric",
     "iconClass": "cedar-svg-numeric",
     "allowedInElement": true,
+    "primaryField": true,
     "hasControlledTerms": false,
     "staticField": false
   },
