@@ -200,6 +200,8 @@ define([
               var index = vm.resources.indexOf(resource);
               vm.resources.splice(index, 1);
               resetSelected();
+              UIMessageService.flashSuccess('SERVER.'+resource.resourceType.toUpperCase()+'.delete.success', {"title": resource.resourceType},
+                                            'GENERIC.Deleted');
             },
             function(error) {
               UIMessageService.showBackendError('SERVER.'+resource.resourceType.toUpperCase()+'.delete.error', error);
