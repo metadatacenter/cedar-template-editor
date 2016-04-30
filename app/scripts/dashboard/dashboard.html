@@ -240,7 +240,7 @@
               <tr class="box-row"
                   ng-class="{ selected: dc.isResourceSelected(resource) }"
                   ng-click="dc.selectResource(resource)"
-                  ng-dblclick="dc.editResource(resource)"
+                  ng-dblclick="dc.goToResource(resource)"
                   ng-repeat="(index, resource) in dc.resources">
                 <td><i ng-class="dc.getResourceIconClass(resource)" class="fa large-icon" aria-hidden="true"></i></td>
                 <td><a ng-click="dc.selectResource(resource)">{{ resource.name }}</a></td>
@@ -248,8 +248,10 @@
                 <td>{{ resource.lastUpdatedOnTS | prettyDate }}</td>
                 <td>
                   <ul class="list-inline">
-                    <li><button class="btn  btn-sm btn-info btn-circle" ng-click="dc.selectResource(resource)"><i class="fa fa-info"></i></button></li>
-                    <li><button class="btn  btn-sm btn-info btn-circle" ng-click="dc.editResource(resource)"><i class="fa fa-pencil"></i></button></li>
+                    <li ng-if="resource.resourceType == 'template'"><button title="Run" class="btn btn-sm btn-info btn-circle" ng-click="dc.launchInstance(resource)"><i class="fa fa-check-square-o"></i></button></li>
+                    <li><button title="Info" class="btn btn-sm btn-info btn-circle" ng-click="dc.showInfoPanel(resource)"><i class="fa fa-info"></i></button></li>
+                    <li><button title="Edit" class="btn btn-sm btn-info btn-circle" ng-click="dc.editResource(resource)"><i class="fa fa-pencil"></i></button></li>
+                    <li><button title="Delete" class="btn btn-sm btn-info btn-circle" ng-click="dc.deleteResource(resource)"><i class="fa fa-times"></i></button></li>
                   </ul>
                 </td>
               </tr>
