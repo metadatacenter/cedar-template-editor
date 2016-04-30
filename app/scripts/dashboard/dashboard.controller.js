@@ -68,6 +68,7 @@ define([
     vm.showFavorites = true;
     vm.showFilters = false;
     vm.showFloatingMenu = false;
+    vm.showInfoPanel = showInfoPanel;
     vm.showResourceInfo = false;
     vm.sortOptionLabel = $translate.instant('DASHBOARD.sort.name');
     vm.sortOptionField = 'name';
@@ -321,6 +322,10 @@ define([
 
     function selectResource(resource) {
       vm.selectedResource = resource;
+    }
+
+    function showInfoPanel(resource) {
+      selectResource(resource);
       getResourceDetails(resource);
       vm.showResourceInfo = true;
     }
