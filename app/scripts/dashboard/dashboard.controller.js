@@ -199,6 +199,7 @@ define([
               // remove resource from list
               var index = vm.resources.indexOf(resource);
               vm.resources.splice(index, 1);
+              resetSelected();
             },
             function(error) {
               UIMessageService.showBackendError('SERVER.'+resource.resourceType.toUpperCase()+'.delete.error', error);
