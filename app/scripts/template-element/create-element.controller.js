@@ -119,6 +119,11 @@ define([
       }
     };
 
+    $scope.backToFolder = function() {
+      var params = $location.search();
+      $location.url(UrlService.getFolderContents(params.folderId));
+    };
+
     // Reverts to empty form and removes all previously added fields/elements
     $scope.reset = function () {
       UIMessageService.confirmedExecution(
