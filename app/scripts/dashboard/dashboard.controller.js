@@ -329,6 +329,8 @@ define([
     function showInfoPanel(resource) {
       selectResource(resource);
       vm.showResourceInfo = true;
+      vm.showFavorites = false;
+      updateFavorites();
     }
 
     function setSortOption(option) {
@@ -339,11 +341,7 @@ define([
 
     function toggleFavorites() {
       vm.showFavorites = !vm.showFavorites;
-      if (vm.showFavorites) {
-        angular.element('#favorites').collapse('show');
-      } else {
-        angular.element('#favorites').collapse('hide');
-      }
+      updateFavorites();
     }
 
     function toggleFilters() {
@@ -401,6 +399,14 @@ define([
         return 'name';
       } else {
         return '-' + vm.sortOptionField;
+      }
+    }
+
+    function updateFavorites() {
+      if (vm.showFavorites) {
+        angular.element('#favorites').collapse('show');
+      } else {
+        angular.element('#favorites').collapse('hide');
       }
     }
 
