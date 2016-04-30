@@ -127,6 +127,7 @@ define([
     };
 
     function showCreateFolder() {
+      vm.showFloatingMenu = false;
       vm.formFolderName = 'Untitled';
       vm.formFolderDescription = 'Untitled';
       vm.formFolder = null;
