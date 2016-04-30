@@ -9130,6 +9130,9 @@ i {
 .btn.diabled {
   cursor: not-allowed;
 }
+.no-wrap {
+  white-space: nowrap;
+}
 .container {
   position: relative;
 }

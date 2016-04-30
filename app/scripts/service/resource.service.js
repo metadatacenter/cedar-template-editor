@@ -24,7 +24,7 @@ define([
       createFolder: createFolder,
       deleteFolder: deleteFolder,
       getFacets: getFacets,
-      getResource: getResource,
+      getResourceDetail: getResourceDetail,
       getResources: getResources,
       searchResources: searchResources
     };
@@ -175,7 +175,7 @@ define([
       );
     }
 
-    function getResource(resource, successCallback, errorCallback) {
+    function getResourceDetail(resource, successCallback, errorCallback) {
       var url;
       var id = resource['@id'];
       switch (resource.resourceType) {
@@ -183,13 +183,13 @@ define([
         url = urlService.folders() + '/' + encodeURIComponent(id);
         break;
       case CONST.resourceType.ELEMENT:
-        url = urlService.getTemplateElement(id);
+        url = urlService.getTemplateElement(id) + '/details';
         break;
       case CONST.resourceType.TEMPLATE:
-        url = urlService.getTemplate(id);
+        url = urlService.getTemplate(id) + '/details';
         break;
       case CONST.resourceType.INSTANCE:
-        url = urlService.getTemplateInstance(id);
+        url = urlService.getTemplateInstance(id) + '/details';
         break;
       }
       authorizedBackendService.doCall(

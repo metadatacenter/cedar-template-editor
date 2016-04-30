@@ -229,7 +229,7 @@ define([
 
     function getResourceDetails(resource) {
       var id = resource['@id'];
-      resourceService.getResource(
+      resourceService.getResourceDetail(
         resource,
         function(response) {
           vm.selectedResource = response;

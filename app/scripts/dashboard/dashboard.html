@@ -171,11 +171,11 @@
             </tr>
             <tr>
               <td class="left"><strong>Modified:</strong></td>
-              <td>{{ dc.selectedResource.lastUpdatedOnTS | prettyDate }} by {{ dc.selectedResource.lastUpdatedByUserName }}</td>
+              <td>{{ dc.selectedResource.lastUpdatedOnTS | prettyDate }} by <span class="no-wrap">{{ dc.selectedResource.lastUpdatedByUserName }}</span></td>
             </tr>
             <tr>
               <td class="left"><strong>Created:</strong></td>
-              <td>{{ dc.selectedResource.createdOnTS | prettyDate }} by {{ dc.selectedResource.createdByUserName }}</td>
+              <td>{{ dc.selectedResource.createdOnTS | prettyDate }} by <span class="no-wrap">{{ dc.selectedResource.createdByUserName }}</span></td>
             </tr>
           </tbody>
         </table>
