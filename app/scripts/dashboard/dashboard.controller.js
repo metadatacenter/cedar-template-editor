@@ -219,7 +219,7 @@ define([
     function getForms() {
       return resourceService.searchResources(
         null,
-        { resourceTypes: ['template'], sort: 'dateModified' },
+        { resourceTypes: ['template'], sort: 'lastUpdatedOnTS', limit: 4, offset: 0 },
         function(response) {
           vm.forms = response.resources;
         },

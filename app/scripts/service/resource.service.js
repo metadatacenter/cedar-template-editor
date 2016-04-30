@@ -239,13 +239,13 @@ define([
         url += 'q=' + searchTerm + '&';
       }
       url += 'resource_types=' + resourceTypes.join(',');
-      if (options.sort) {
+      if ('sort' in options) {
         url += '&sort=' + options.sort;
       }
-      if (options.limit) {
+      if ('limit' in options) {
         url += '&limit=' + options.limit;
       }
-      if (options.offset) {
+      if ('offset' in options) {
         url += '&offset=' + options.offset;
       }
 
