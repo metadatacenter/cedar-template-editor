@@ -34,10 +34,10 @@ define([
      * Service methods.
      */
 
-    function createFolder(name, path, description, successCallback, errorCallback) {
+    function createFolder(parentFolderId, name, description, successCallback, errorCallback) {
       var url = urlService.folders();
       var payload = {
-        path: path,
+        folderId: parentFolderId,
         name: name,
         description: description
       };

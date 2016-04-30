@@ -9,7 +9,6 @@
     <ul class="list-inline">
       <li><a class="nav-pills" ng-class="{ active: dc.isResourceTypeActive('template') }" ng-click="dc.toggleResourceType('template')">Forms</a></li>
       <li><a class="nav-pills" ng-class="{ active: dc.isResourceTypeActive('element') }" ng-click="dc.toggleResourceType('element')">Elements</a></li>
-      <li><a class="nav-pills" ng-class="{ active: dc.isResourceTypeActive('field') }" ng-click="dc.toggleResourceType('field')">Fields</a></li>
       <li><a class="nav-pills" ng-class="{ active: dc.isResourceTypeActive('instance') }" ng-click="dc.toggleResourceType('instance')">Responses</a></li>
       <li><span class="sort-text">Sort by:</span></li>
       <li class="btn-group">
@@ -27,8 +26,6 @@
       <li class="inline divider-vertical graytext"></li>
       <li><i class="fa fa-ellipsis-v inline graytext"></i>
         <ul class="dropnav">
-          <li><a href="javascript:alert('TODO');">Settings</a></li>
-          <li><a href="javascript:alert('TODO');">Help & Feedback</a></li>
           <li><a href="/profile">Profile</a></li>
           <li><a href="/logout">Logout</a></li>
         </ul>
@@ -166,7 +163,7 @@
             </tr>
             <tr>
               <td class="left"><strong>Location:</strong></td>
-              <td>TODO: What do use here?</td>
+              <td></td>
             </tr>
             <tr>
               <td class="left"><strong>Owner:</strong></td>
@@ -174,11 +171,11 @@
             </tr>
             <tr>
               <td class="left"><strong>Modified:</strong></td>
-              <td>{{ dc.selectedResource.lastUpdatedOnTS * 1000 | date:'shortDate' }} by {{ dc.selectedResource.lastUpdatedByUserName }}</td>
+              <td>{{ dc.selectedResource.lastUpdatedOnTS | prettyDate }} by {{ dc.selectedResource.lastUpdatedByUserName }}</td>
             </tr>
             <tr>
               <td class="left"><strong>Created:</strong></td>
-              <td>{{ dc.selectedResource.createdOnTS * 1000 | date:'shortDate' }} by {{ dc.selectedResource.createdByUserName }}</td>
+              <td>{{ dc.selectedResource.createdOnTS | prettyDate }} by {{ dc.selectedResource.createdByUserName }}</td>
             </tr>
           </tbody>
         </table>
@@ -247,8 +244,8 @@
                   ng-repeat="(index, resource) in dc.resources">
                 <td><i ng-class="dc.getResourceIconClass(resource)" class="fa large-icon" aria-hidden="true"></i></td>
                 <td><a ng-click="dc.selectResource(resource)">{{ resource.name }}</a></td>
-                <td>{{ resource.createdOnTS * 1000 | date:'shortDate' }}</td>
-                <td>{{ resource.lastUpdatedOnTS * 1000 | date:'shortDate' }}</td>
+                <td>{{ resource.createdOnTS | prettyDate }}</td>
+                <td>{{ resource.lastUpdatedOnTS | prettyDate }}</td>
                 <td>
                   <ul class="list-inline">
                     <li><button class="btn  btn-sm btn-info btn-circle" ng-click="dc.selectResource(resource)"><i class="fa fa-info"></i></button></li>
@@ -317,7 +314,7 @@
               <div class="col-sm-12 clearfix">
                 <div class="pull-left">
                   <h4>Name:</h4>
-                  <p><input size="40" type="text" ng-model="dc.formFolderName" /></p>
+                  <p><input size="40" type="text" id="formFolderName" ng-model="dc.formFolderName" /></p>
                 </div>
               </div>
             </div>
@@ -325,7 +322,7 @@
               <div class="col-sm-12 clearfix">
                 <div class="pull-left">
                   <h4>Description:</h4>
-                  <p><textarea ng-model="dc.formFolderDescription" cols="40" rows="5"></textarea></p>
+                  <p><textarea ng-model="dc.formFolderDescription" id="formFolderDescription" cols="40" rows="5"></textarea></p>
                 </div>
               </div>
             </div>

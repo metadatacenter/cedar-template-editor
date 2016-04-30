@@ -9,6 +9,7 @@ define([
   'cedar/template-editor/core/capitalize-first.filter',
   'cedar/template-editor/core/key-to-title.filter',
   'cedar/template-editor/core/order-object-by.filter',
+  'cedar/template-editor/core/pretty-date.filter',
   'cedar/template-editor/core/props.filter',
   'cedar/template-editor/core/encode-uri-component.filter',
 ], function(angular) {
@@ -20,6 +21,7 @@ define([
     'cedar.templateEditor.core.capitalizeFirstFilter',
     'cedar.templateEditor.core.keyToTitleFilter',
     'cedar.templateEditor.core.orderObjectByFilter',
+    'cedar.templateEditor.core.prettyDateFilter',
     'cedar.templateEditor.core.propsFilter',
     'cedar.templateEditor.core.encodeURIComponentFilter',
   ]);

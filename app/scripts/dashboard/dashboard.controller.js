@@ -116,23 +116,24 @@ define([
     }
 
     function showCreateFolder() {
-      $('#editFolderModal').modal();
+      vm.formFolderName = null;
+      vm.formFolderDescription = null;
+      $('#editFolderModal').modal('show');
+      $('#formFolderName').focus();
     };
 
     function doCreateFolder() {
       var path = vm.currentWorkspacePath;
       resourceService.createFolder(
+        vm.params.folderId,
         vm.formFolderName,
-        path,
         vm.formFolderDescription,
         function(response) {
-          $('#editFolderModal').hide();
-          vm.formFolderName = null;
-          vm.formFolderDescription = null;
-          goToFolder(response['@id']);
+          $('#editFolderModal').modal('hide');
+          init();
         },
         function(response) {
-          $('#editFolderModal').hide();
+          $('#editFolderModal').modal('hide');
           alert('there was an error creating the folder!');
         }
       );
