@@ -51,7 +51,7 @@
     <!-- template boxes (4 columns) -->
     <div class="row populate-form-boxes">
       <div class="col-md-3 col-sm-6" ng-repeat="(key, form) in dc.forms" ng-show="key < 4">
-        <div class="form-box">
+        <div ng-click="dc.launchInstance(form)" class="form-box">
           <a href="#n" class="box-content text-center">
             <i ng-class="dc.getResourceIconClass(form)" class="fa"></i>
             <p>{{ form.name }}</p>
