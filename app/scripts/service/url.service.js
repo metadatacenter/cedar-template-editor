@@ -168,7 +168,7 @@ define([
     };
 
     service.getFolder = function (id) {
-      return this.folders() + encodeURIComponent(id);
+      return this.folders() + '/' + encodeURIComponent(id);
     };
 
     service.folders = function () {

@@ -23,6 +23,7 @@ define([
     var service = {
       createFolder: createFolder,
       deleteFolder: deleteFolder,
+      deleteResource: deleteResource,
       getFacets: getFacets,
       getResourceDetail: getResourceDetail,
       getResources: getResources,
@@ -43,6 +44,32 @@ define([
       };
       authorizedBackendService.doCall(
         httpBuilderService.post(url, payload),
+        function(response) {
+          successCallback(response.data);
+        },
+        errorCallback
+      );
+    }
+
+    function deleteResource(resource, successCallback, errorCallback) {
+      var url;
+      var id = resource['@id'];
+      switch (resource.resourceType) {
+      case CONST.resourceType.FOLDER:
+        url = urlService.getFolder(id);
+        break;
+      case CONST.resourceType.TEMPLATE:
+        url = urlService.getTemplate(id);
+        break;
+      case CONST.resourceType.ELEMENT:
+        url = urlService.getTemplateElement(id);
+        break;
+      case CONST.resourceType.INSTANCE:
+        url = urlService.getTemplateInstance(id);
+        break;
+      }
+      authorizedBackendService.doCall(
+        httpBuilderService.delete(url),
         function(response) {
           successCallback(response.data);
         },

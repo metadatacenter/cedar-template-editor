@@ -134,7 +134,7 @@ define([
         },
         function(response) {
           $('#editFolderModal').modal('hide');
-          alert('there was an error creating the folder!');
+          UIMessageService.showBackendError('SERVER.FOLDER.create.error', error);
         }
       );
     }
@@ -190,21 +190,24 @@ define([
     }
 
     function deleteResource(resource) {
-      switch (resource.resourceType) {
-      case CONST.resourceType.FOLDER:
-        resourceService.deleteFolder(
-          resource['@id'],
-          function(response) {
-            // remove resource from list
-            var index = vm.resources.indexOf(resource);
-            vm.resources.splice(index, 1);
-          },
-          function(error) {
-            alert('There was an error deleting the folder');
-          }
-        );
-        break;
-      }
+      UIMessageService.confirmedExecution(
+        function() {
+          resourceService.deleteResource(
+            resource,
+            function(response) {
+              // remove resource from list
+              var index = vm.resources.indexOf(resource);
+              vm.resources.splice(index, 1);
+            },
+            function(error) {
+              UIMessageService.showBackendError('SERVER.'+resource.resourceType.toUpperCase()+'.delete.error', error);
+            }
+          );
+        },
+        'GENERIC.AreYouSure',
+        'DASHBOARD.delete.confirm.' + resource.resourceType,
+        'GENERIC.YesDeleteIt'
+      );
     }
 
     function getFacets() {
@@ -235,7 +238,7 @@ define([
           vm.selectedResource = response;
         },
         function(error) {
-          alert('there was an error fetching the resource details');
+          UIMessageService.showBackendError('SERVER.'+resource.resourceType.toUpperCase()+'.load.error', error);
         }
       );
     };
@@ -253,7 +256,7 @@ define([
             vm.currentPath     = vm.pathInfo.pop();
           },
           function(error) {
-            alert('there was an error fetching the folder contents');
+            UIMessageService.showBackendError('SERVER.FOLDER.load.error', error);
           }
         );
       } else {
@@ -274,7 +277,7 @@ define([
             vm.currentFolderId = vm.currentPath['@id'];
           },
           function(error) {
-            alert('there was an error fetching the folder contents');
+            UIMessageService.showBackendError('SERVER.FOLDER.load.error', error);
           }
         );
       } else {

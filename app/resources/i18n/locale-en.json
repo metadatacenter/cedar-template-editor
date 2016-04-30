@@ -91,6 +91,23 @@
     "Cancel": "Cancel"
   },
   "SERVER": {
+    "FOLDER": {
+      "create": {
+        "success": "The folder <b>{{title}}</b> has been created.",
+        "error": "There was an error while creating the folder!<br /><br />VIEW TECHNICAL DETAILS!"
+      },
+      "update": {
+        "success": "The folder <b>{{title}}</b> has been saved.",
+        "error": "There was an error while saving the folder!<br /><br />VIEW TECHNICAL DETAILS!"
+      },
+      "load": {
+        "error": "There was an error while loading the folder!<br /><br />VIEW TECHNICAL DETAILS!"
+      },
+      "delete": {
+        "success": "The folder has been deleted.",
+        "error": "There was an error while deleting the folder!<br /><br />VIEW TECHNICAL DETAILS!"
+      }
+    },
     "ELEMENT": {
       "create": {
         "success": "The element <b>{{title}}</b> has been created.",
@@ -178,6 +195,7 @@
   "DASHBOARD": {
     "delete": {
       "confirm": {
+        "folder": "Are you sure you want to remove the selected folder?",
         "template": "Are you sure you want to remove the selected template?",
         "element": "Are you sure you want to remove the selected element?",
         "instance": "Are you sure you want to remove the selected populated template?"
