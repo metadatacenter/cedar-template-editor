@@ -91,7 +91,7 @@
                   </li>
                 </ul>
               </div>
-              <div class="sidebar-inner-next" >
+              <div ng-init="showMenuPopover = false" ng-click="showMenuPopover = !showMenuPopover" class="sidebar-inner-next" >
                 <ul class="element-menu fields-list">
                   <li>
                     <a><i class="fa fa-ellipsis-v" aria-hidden="true"></i></a>
@@ -99,7 +99,7 @@
                 </ul>
               </div>
             </div>
-            <div class="other-elements" style="display: block"> <!-- toggle this on and off -->
+            <div class="other-elements" ng-show="showMenuPopover" style="display: block"> <!-- toggle this on and off -->
               <div class="top-half clearfix">
                 <div class="pull-left">
                   <ul class="list-unstyled">
