@@ -109,41 +109,35 @@
               <div class="top-half clearfix">
                 <div class="pull-left">
                   <ul class="list-unstyled">
-                    <li ng-repeat="fieldType in secondaryFieldTypesEven">
+                    <li ng-repeat="fieldType in dynamicFieldTypesEven">
                       <a ng-click="addFieldToElement(fieldType.cedarType)"><i class="{{fieldType.iconClass}}"></i> {{fieldType.label}}</a>
                     </li>
                   </ul>
                 </div>
                 <div class="pull-right">
                   <ul class="list-unstyled">
-                    <li ng-repeat="fieldType in secondaryFieldTypesOdd">
+                    <li ng-repeat="fieldType in dynamicFieldTypesOdd">
                       <a ng-click="addFieldToElement(fieldType.cedarType)"><i class="{{fieldType.iconClass}}"></i> {{fieldType.label}}</a>
                     </li>
                   </ul>
                 </div>
               </div>
               <div class="bottom-half clearfix">
-                <!--
                 <div class="pull-left">
                   <ul class="list-unstyled">
-                    <li><a><i class="cedar-svg-calendar"></i> Calendar</a></li>
-                    <li><a><i class="cedar-svg-submission"></i> Submission</a></li>
-                    <li><a><i class="cedar-svg-metadata"></i> Metadata</a></li>
-                    <li><a><i class="cedar-svg-person"></i> Person</a></li>
-                    <li><a><i class="cedar-svg-location"></i> Location</a></li>
+                    <li ng-repeat="fieldType in staticFieldTypesEven">
+                      <a ng-click="addFieldToElement(fieldType.cedarType)"><i class="{{fieldType.iconClass}}"></i> {{fieldType.label}}</a>
+                    </li>
                   </ul>
                 </div>
                 <div class="pull-right">
                   <ul class="list-unstyled">
-                    <li><a><i class="cedar-svg-image"></i> Image</a></li>
-                    <li><a><i class="cedar-svg-youtube"></i> Youtube</a></li>
-                    <li><a><i class="cedar-svg-page-break"></i> Page Break</a></li>
-                    <li><a><i class="cedar-svg-section-break"></i> Section Break</a></li>
-                    <li><a><i class="cedar-svg-complete"></i> Food Truck</a></li>
+                    <li ng-repeat="fieldType in staticFieldTypesOdd">
+                      <a ng-click="addFieldToElement(fieldType.cedarType)"><i class="{{fieldType.iconClass}}"></i> {{fieldType.label}}</a>
+                    </li>
                   </ul>
                 </div>
               </div>
-              -->
               <div class="search-part clearfix">
                 <a href="#n"><i class="fa fa-search" aria-hidden="true"></i> Search
                   <span class="pull-right"><i class="fa fa-arrow-right pull-right" aria-hidden="true"></i></span>

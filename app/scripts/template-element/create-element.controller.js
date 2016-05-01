@@ -47,19 +47,31 @@ define([
     $scope.hideRootElement = true;
 
     $scope.primaryFieldTypes = [];
-    $scope.secondaryFieldTypesEven = [];
-    $scope.secondaryFieldTypesOdd = [];
-    var even = true;
+    $scope.dynamicFieldTypesEven = [];
+    $scope.dynamicFieldTypesOdd = [];
+    $scope.staticFieldTypesEven = [];
+    $scope.staticFieldTypesOdd = [];
+    var evenD = true;
+    var evenS = true;
     for (var i = 0; i < $scope.fieldTypes.length; i++) {
       if ($scope.fieldTypes[i].primaryField) {
         $scope.primaryFieldTypes.push($scope.fieldTypes[i]);
       } else {
-        if (even) {
-          $scope.secondaryFieldTypesEven.push($scope.fieldTypes[i]);
+        if ($scope.fieldTypes[i].staticField) {
+          if (evenS) {
+            $scope.staticFieldTypesEven.push($scope.fieldTypes[i]);
+          } else {
+            $scope.staticFieldTypesOdd.push($scope.fieldTypes[i]);
+          }
+          evenS = !evenS;
         } else {
-          $scope.secondaryFieldTypesOdd.push($scope.fieldTypes[i]);
+          if (evenD) {
+            $scope.dynamicFieldTypesEven.push($scope.fieldTypes[i]);
+          } else {
+            $scope.dynamicFieldTypesOdd.push($scope.fieldTypes[i]);
+          }
+          evenD = !evenD;
         }
-        even = !even;
       }
     }
 
