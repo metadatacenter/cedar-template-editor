@@ -137,6 +137,13 @@ define([
       }
     };
 
+    $scope.showSearchBrowsePicker = function() {
+      debugger;
+      $scope.usingSearchBrowsePicker = true;
+      $('#ceModal').modal('hide');
+      $('#sbdModal').modal('show');
+    };
+
     $scope.backToFolder = function() {
       var params = $location.search();
       $location.url(UrlService.getFolderContents(params.folderId));
