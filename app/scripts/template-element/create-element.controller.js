@@ -50,11 +50,25 @@ define([
     $scope.fieldTypes = FieldTypeService.getFieldTypes();
     $scope.hideRootElement = true;
 
+    $scope.addElementFromPicker = function() {
+      if ($scope.pickerResource) {
+        $scope.addElementToElement($scope.pickerResource);
+      }
+      $scope.hideSearchBrowsePicker();
+    };
+
+    $scope.pickElementFromPicker = function(resource) {
+      $scope.addElementToElement(resource);
+      $scope.hideSearchBrowsePicker();
+    };
+
     $scope.selectElementFromPicker = function(resource) {
-      debugger;
+      $scope.pickerResource = resource;
     };
 
     $scope.showSearchBrowsePicker = function() {
+      $scope.showMenuPopover = false;
+      $scope.pickerResource = null;
       $scope.showCreateEditForm = false;
       $('body').addClass('search-browse-modal');
     };

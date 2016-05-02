@@ -161,9 +161,9 @@
   <cedar-search-browse-picker
       select-resource-callback="selectElementFromPicker"
       pick-resource-callback="pickElementFromPicker"
-      mode="modal">
+      mode="'modal'">
   </cedar-search-browse-picker>
   <br />
-  <button type="button">Submit</button>
-  <button type="cancel">Cancel</button>
+  <button ng-click="addElementFromPicker()" type="button">Submit</button>
+  <button ng-click="hideSearchBrowsePicker()" type="cancel">Cancel</button>
 </section>

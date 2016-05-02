@@ -15,6 +15,7 @@ define([
     var directive = {
       bindToController: {
         selectResourceCallback: '=',
+        pickResourceCallback: '=',
         mode: '='
       },
       controller: cedarSearchBrowsePickerController,
@@ -108,11 +109,11 @@ define([
         if (vm.params.folderId || vm.params.search) {
           getForms();
           getFacets();
-          if (vm.params.folderId) {
+          if (vm.params.search) {
+            doSearch(vm.params.search);
+          } else {
             vm.isSearching = false;
             getFolderContentsById(decodeURIComponent(vm.params.folderId));
-          } else {
-            doSearch(vm.params.search);
           }
         } else {
           vm.isSearching = false;
@@ -225,12 +226,17 @@ define([
 
       function editResource(resource) {
         var id = resource['@id'];
+        if (typeof vm.pickResourceCallback === 'function') {
+          vm.pickResourceCallback(resource);
+        }
         switch (resource.resourceType) {
         case CONST.resourceType.TEMPLATE:
           $location.path(UrlService.getTemplateEdit(id));
           break;
         case CONST.resourceType.ELEMENT:
-          $location.path(UrlService.getElementEdit(id));
+          if (vm.onDashboard()) {
+            $location.path(UrlService.getElementEdit(id));
+          }
           break;
         case CONST.resourceType.INSTANCE:
           $location.path(UrlService.getInstanceEdit(id));
@@ -366,7 +372,12 @@ define([
       }
 
       function goToFolder(folderId) {
-        $location.url(UrlService.getFolderContents(folderId));
+        if (vm.onDashboard()) {
+          $location.url(UrlService.getFolderContents(folderId));
+        } else {
+          vm.params.folderId = folderId;
+          init();
+        }
       };
 
       function isResourceTypeActive(type) {
@@ -392,6 +403,9 @@ define([
       function selectResource(resource) {
         vm.selectedResource = resource;
         getResourceDetails(resource);
+        if (typeof vm.selectResourceCallback === 'function') {
+          vm.selectResourceCallback(resource);
+        }
       }
 
       function showInfoPanel(resource) {
@@ -435,10 +449,13 @@ define([
         init();
       });
 
-      $scope.$on('search', function(event, data) {
-        vm.searchTerm = $('#search').val();
-        vm.isSearching = true;
-        vm.resources = data.resources;
+      $scope.$on('search', function(event, searchTerm) {
+        if (onDashboard()) {
+          $location.url(UrlService.getSearchPath(searchTerm));
+        } else {
+          vm.params.search = searchTerm;
+          init();
+        }
       });
 
       /**
@@ -447,15 +464,18 @@ define([
 
       function activeResourceTypes() {
         var activeResourceTypes = [];
-        if (onDashboard()) {
-          angular.forEach(Object.keys(vm.resourceTypes), function(value, key) {
-            if (vm.resourceTypes[value]) {
+        angular.forEach(Object.keys(vm.resourceTypes), function(value, key) {
+          if (vm.resourceTypes[value]) {
+            if (!vm.onDashboard()) {
+              // just elements can be selected
+              if (value == 'element') {
+                activeResourceTypes.push(value);
+              }
+            } else {
               activeResourceTypes.push(value);
             }
-          });
-        } else {
-          activeResourceTypes.push('element');
-        }
+          }
+        });
         // always want to show folders
         activeResourceTypes.push('folder');
         return activeResourceTypes;

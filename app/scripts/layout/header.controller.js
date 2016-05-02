@@ -8,11 +8,10 @@ define([
 
   HeaderController.$inject = [
     '$rootScope',
-    '$location',
     'UrlService'
   ];
 
-  function HeaderController($rootScope, $location, UrlService) {
+  function HeaderController($rootScope, UrlService) {
     var vm = this;
 
     vm.search = search;
@@ -23,8 +22,8 @@ define([
       return $rootScope.showSearch;
     };
 
-    function search(searchTerm) {
-      $location.url(UrlService.getSearchPath(searchTerm));
+    function search() {
+      $rootScope.$broadcast('search', vm.searchTerm || '');
     }
 
   }
