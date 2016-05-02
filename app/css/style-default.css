@@ -9712,6 +9712,11 @@ i {
   border: none;
 }
 /* End All Items View */
+/* begin search browse modal */
+body.search-browse-modal a.navbar-brand {
+  display: none;
+}
+/* end search browse modal */
 /* Begin Create-Edit Section */
 .create-edit {
   color: #666666;
@@ -9725,12 +9730,12 @@ i {
   text-transform: uppercase;
 }
 .create-edit #ceModal,
-.create-edit #sbdModal {
+.create-edit #sbModal {
   background: #eaeaea;
   display: block;
 }
 .create-edit #ceModal .modal,
-.create-edit #sbdModal .modal {
+.create-edit #sbModal .modal {
   position: fixed;
   top: 0;
   right: 0;
@@ -9739,7 +9744,7 @@ i {
   overflow: hidden;
 }
 .create-edit #ceModal .modal-dialog,
-.create-edit #sbdModal .modal-dialog {
+.create-edit #sbModal .modal-dialog {
   position: fixed;
   margin: 0;
   width: 100%;
@@ -9747,7 +9752,7 @@ i {
   padding: 0;
 }
 .create-edit #ceModal .modal-content,
-.create-edit #sbdModal .modal-content {
+.create-edit #sbModal .modal-content {
   position: absolute;
   top: 0;
   right: 0;
@@ -9759,7 +9764,7 @@ i {
   background: #eaeaea;
 }
 .create-edit #ceModal .modal-header,
-.create-edit #sbdModal .modal-header {
+.create-edit #sbModal .modal-header {
   position: absolute;
   top: 0;
   right: 0;
@@ -9769,15 +9774,15 @@ i {
   border: 0;
 }
 .create-edit #ceModal .modal-title,
-.create-edit #sbdModal .modal-title {
+.create-edit #sbModal .modal-title {
   color: #666666;
 }
 .create-edit #ceModal .modal-title h4,
-.create-edit #sbdModal .modal-title h4 {
+.create-edit #sbModal .modal-title h4 {
   margin: 0;
 }
 .create-edit #ceModal .modal-body,
-.create-edit #sbdModal .modal-body {
+.create-edit #sbModal .modal-body {
   position: absolute;
   top: 110px;
   bottom: 0;
@@ -9787,11 +9792,11 @@ i {
   background: #eaeaea;
 }
 .create-edit #ceModal .modal-body .container,
-.create-edit #sbdModal .modal-body .container {
+.create-edit #sbModal .modal-body .container {
   width: 900px;
 }
 .create-edit #ceModal .modal-footer,
-.create-edit #sbdModal .modal-footer {
+.create-edit #sbModal .modal-footer {
   position: absolute;
   right: 0;
   bottom: 0;

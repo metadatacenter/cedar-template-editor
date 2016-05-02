@@ -52,6 +52,15 @@ define([
       debugger;
     };
 
+    $scope.showSearchBrowsePicker = function() {
+      $scope.showCreateEditForm = false;
+      $('body').addClass('search-browse-modal');
+    };
+    $scope.hideSearchBrowsePicker = function() {
+      $scope.showCreateEditForm = true;
+      $('body').removeClass('search-browse-modal');
+    };
+
     $scope.primaryFieldTypes = [];
     $scope.dynamicFieldTypesEven = [];
     $scope.dynamicFieldTypesOdd = [];
@@ -153,13 +162,6 @@ define([
         StagingService.addElementToElement($scope.element, element["@id"]);
         $scope.$broadcast("form:update");
       }
-    };
-
-    $scope.showSearchBrowsePicker = function() {
-      debugger;
-      $scope.usingSearchBrowsePicker = true;
-      $('#ceModal').modal('hide');
-      $('#sbdModal').modal('show');
     };
 
     $scope.backToFolder = function() {

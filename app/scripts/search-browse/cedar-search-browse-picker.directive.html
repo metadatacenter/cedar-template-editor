@@ -7,9 +7,9 @@
   </div>
   <div class="pull-right list-inline">
     <ul class="list-inline">
-      <li><a class="nav-pills" ng-class="{ active: dc.isResourceTypeActive('template') }" ng-click="dc.toggleResourceType('template')">Forms</a></li>
+      <li ng-if="dc.onDashboard()"><a class="nav-pills" ng-class="{ active: dc.isResourceTypeActive('template') }" ng-click="dc.toggleResourceType('template')">Forms</a></li>
       <li><a class="nav-pills" ng-class="{ active: dc.isResourceTypeActive('element') }" ng-click="dc.toggleResourceType('element')">Elements</a></li>
-      <li><a class="nav-pills" ng-class="{ active: dc.isResourceTypeActive('instance') }" ng-click="dc.toggleResourceType('instance')">Responses</a></li>
+      <li ng-if="dc.onDashboard()"><a class="nav-pills" ng-class="{ active: dc.isResourceTypeActive('instance') }" ng-click="dc.toggleResourceType('instance')">Responses</a></li>
       <li><span class="sort-text">Sort by:</span></li>
       <li class="btn-group">
         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -35,7 +35,7 @@
 </div>
 <div class="search-browse-spacer"></div>
 <!--gray populate a form modal slide up/down section -->
-<section class="form-populate collapse in" id="favorites">
+<section ng-if="dc.onDashboard()" class="form-populate collapse in" id="favorites">
   <!-- container -->
   <div class="container">
     <div class="row">
@@ -116,7 +116,7 @@
 
 <!--all items view -->
 <section class="all-items-view ">
-  <a class="push-pull-box" ng-click="dc.toggleFavorites()" href="javascript:" aria-expanded="false">
+  <a ng-if="dc.onDashboard()" class="push-pull-box" ng-click="dc.toggleFavorites()" href="javascript:" aria-expanded="false">
     <i class="fa fa-caret-down"></i>
     <i class="fa fa-caret-up"></i>
   </a>
@@ -263,7 +263,7 @@
     </div>
   </div>
   <!-- floating plus icon section -->
-  <div class="add-new">
+  <div class="add-new" ng-if="dc.onDashboard()">
     <ul class="list-unstyled">
       <li ng-show="dc.showFloatingMenu">
         <a title="Add Element" ng-href="/elements/create?folderId={{dc.currentFolderId | encodeURIComponent}}"><button class="btn btn-sm btn-info btn-circle-outline"><i class="fa fa-file-text-o"></i></button></a>

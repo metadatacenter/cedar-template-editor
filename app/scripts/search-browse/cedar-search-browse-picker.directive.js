@@ -14,7 +14,8 @@ define([
 
     var directive = {
       bindToController: {
-        selectResourceCallback: '='
+        selectResourceCallback: '=',
+        mode: '='
       },
       controller: cedarSearchBrowsePickerController,
       controllerAs: 'dc',
@@ -71,6 +72,7 @@ define([
       vm.isResourceTypeActive = isResourceTypeActive;
       vm.isSearching = false;
       vm.launchInstance = launchInstance;
+      vm.onDashboard = onDashboard;
       vm.narrowContent = narrowContent;
       vm.pathInfo = [];
       vm.params = $location.search();
@@ -379,6 +381,10 @@ define([
         }
       }
 
+      function onDashboard() {
+        return vm.mode == 'dashboard';
+      }
+
       function narrowContent() {
         return vm.showFilters || vm.showResourceInfo;
       }
@@ -441,11 +447,15 @@ define([
 
       function activeResourceTypes() {
         var activeResourceTypes = [];
-        angular.forEach(Object.keys(vm.resourceTypes), function(value, key) {
-          if (vm.resourceTypes[value]) {
-            activeResourceTypes.push(value);
-          }
-        });
+        if (onDashboard()) {
+          angular.forEach(Object.keys(vm.resourceTypes), function(value, key) {
+            if (vm.resourceTypes[value]) {
+              activeResourceTypes.push(value);
+            }
+          });
+        } else {
+          activeResourceTypes.push('element');
+        }
         // always want to show folders
         activeResourceTypes.push('folder');
         return activeResourceTypes;
