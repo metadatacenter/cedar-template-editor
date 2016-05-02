@@ -19,151 +19,154 @@
               <div class="col-sm-3">
                 <div id="element-name-container">
                   <div class="form-group floating-label-wrapper">
-                    <input type="text" class="form-control" id="element-name" placeholder="{{'GENERIC.ElementName' | translate}}" aria-label="{{'GENERIC.ElementName' | translate}}" ng-model="element._ui.title" with-floating-label />
-                    </div>
+                    <input type="text" class="form-control" id="element-name" placeholder="{{'GENERIC.ElementName'| translate}}" aria-label="{{'GENERIC.ElementName'| translate}}" ng-model="element._ui.title" with-floating-label />
                   </div>
-                </div>
-                <div class="col-sm-8">
-                  <div id="element-description-container">
-                    <div class="form-group floating-label-wrapper">
-                      <input type="text" class="form-control" id="element-description" placeholder="{{'GENERIC.ElementDescription' | translate}}" aria-label="{{'GENERIC.ElementDescription' | translate}}" ng-model="element._ui.description" with-floating-label />
-                      </div>
-                    </div>
-                  </div> <!-- /.right-body -->
                 </div>
               </div>
-            </div>
-          </div>
-        </div>
-        <!-- header -->
-        <!-- body -->
-        <div class="modal-body">
-          <div class="container">
-            <div class="row">
-              <div class="right-body col-sm-12">
-                <div id="form-preview-section">
-                  <div class="form-preview collapse in">
-                    <!--<div class="empty-text" ng-show="isPropertiesEmpty()">-->
-                    <!--<p translate>CREATOR.addElementToStagingMsg</p>-->
-                    <!--</div>-->
-                    <form-directive form="form" page="page" model="instance" page-index="0" ng-if="!isPropertiesEmpty()" hide-root-element="hideRootElement"></form-directive>
-                    <ng-include src="'scripts/layout/json_preview.html'"></ng-include>
-                  </div><!-- /.form-preview -->
-                </div> <!-- /#form-preview-section -->
-
-                <div ng-if="!isEmpty(invalidFieldStates)" class="alert alert-danger" role="alert">
-                  <p><i class="fa fa-exclamation-triangle"></i><span translate>VALIDATION.groupHeader.invalidFieldState</span></p>
-                  <ul>
-                    <li ng-repeat="field in invalidFieldStates">
-                      <span ng-show="field">{{field}}</span>
-                      <span ng-hide="field" translate>VALIDATION.noNameField</span>
-                    </li>
-                  </ul>
+              <div class="col-sm-8">
+                <div id="element-description-container">
+                  <div class="form-group floating-label-wrapper">
+                    <input type="text" class="form-control" id="element-description" placeholder="{{'GENERIC.ElementDescription'| translate}}" aria-label="{{'GENERIC.ElementDescription'| translate}}" ng-model="element._ui.description" with-floating-label />
+                  </div>
                 </div>
-
-                <div ng-if="!isEmpty(invalidElementStates)" class="alert alert-danger" role="alert">
-                  <p><i class="fa fa-exclamation-triangle"></i><span translate>VALIDATION.groupHeader.invalidElementState</span></p>
-                  <ul>
-                    <li ng-repeat="element in invalidElementStates">
-                      <span ng-show="element">{{element}}</span>
-                      <span ng-hide="element" translate>VALIDATION.noNameElement</span>
-                    </li>
-                  </ul>
-                </div>
-
-                <div class="element-actions">
-                  <div ng-if="elementErrorMessages.length" class="alert alert-danger" role="alert">
-                    <p ng-repeat="message in elementErrorMessages"><i class="fa fa-exclamation-triangle"></i>{{message}}</p>
-                  </div>
-                  <div ng-if="elementSuccessMessages.length" class="alert alert-success" role="alert">
-                    <p ng-repeat="message in elementSuccessMessages"><i class="fa fa-check"></i>{{message}}</p>
-                  </div>
-                  <!--<div class="favorite {{favorite}}" ng-click="toggleFavorite()">-->
-                  <!--<i class="cedar-svg-flag"></i><span>Favorite</span>-->
-                  <!--</div>-->
-                  <div class="clear-save">
-                    <button type="button" class="btn btn-clear" ng-click="reset()" ng-hide="isPropertiesEmpty()" translate>GENERIC.Clear</button>
-                    <button type="button" class="btn btn-clear" ng-click="cancelElement()"  translate>GENERIC.Cancel</button>
-                    <button type="button" class="btn btn-save" ng-click="saveElement()" translate>GENERIC.SaveElement</button>
-                  </div>
-                </div> <!-- /.template-actions -->
               </div> <!-- /.right-body -->
-            </div>
-            <div class="right-stick">
-              <div class="sidebar-inner" >
-                <ul class="element-menu fields-list">
-                  <li ng-repeat="fieldType in primaryFieldTypes">
-                    <a ng-click="addFieldToElement(fieldType.cedarType)"><i class="{{fieldType.iconClass}}"></i></a>
-                  </li>
-                </ul>
-              </div>
-              <div ng-init="showMenuPopover = false" ng-click="showMenuPopover = !showMenuPopover" class="sidebar-inner-next" >
-                <ul class="element-menu fields-list">
-                  <li>
-                    <a><i class="fa fa-ellipsis-v" aria-hidden="true"></i></a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div class="other-elements" ng-show="showMenuPopover" style="display: block"> <!-- toggle this on and off -->
-              <div class="top-half clearfix">
-                <div class="pull-left">
-                  <ul class="list-unstyled">
-                    <li ng-repeat="fieldType in dynamicFieldTypesEven">
-                      <a ng-click="addFieldToElement(fieldType.cedarType)"><i class="{{fieldType.iconClass}}"></i> {{fieldType.label}}</a>
-                    </li>
-                  </ul>
-                </div>
-                <div class="pull-right">
-                  <ul class="list-unstyled">
-                    <li ng-repeat="fieldType in dynamicFieldTypesOdd">
-                      <a ng-click="addFieldToElement(fieldType.cedarType)"><i class="{{fieldType.iconClass}}"></i> {{fieldType.label}}</a>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-              <div class="bottom-half clearfix">
-                <div class="pull-left">
-                  <ul class="list-unstyled">
-                    <li ng-repeat="fieldType in staticFieldTypesEven">
-                      <a ng-click="addFieldToElement(fieldType.cedarType)"><i class="{{fieldType.iconClass}}"></i> {{fieldType.label}}</a>
-                    </li>
-                  </ul>
-                </div>
-                <div class="pull-right">
-                  <ul class="list-unstyled">
-                    <li ng-repeat="fieldType in staticFieldTypesOdd">
-                      <a ng-click="addFieldToElement(fieldType.cedarType)"><i class="{{fieldType.iconClass}}"></i> {{fieldType.label}}</a>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-              <div class="search-part clearfix">
-                <a ng-click="showSearchBrowsePicker()" href="javascript:"><i class="fa fa-search" aria-hidden="true"></i> Search
-                  <span class="pull-right"><i class="fa fa-arrow-right pull-right" aria-hidden="true"></i></span>
-                </a>
-              </div>
             </div>
           </div>
         </div>
       </div>
-      <!-- body -->
-      <!-- footer -->
-      <div class="modal-footer"></div>
-      <!--<div class="modal-footer"></div>-->
-      <!-- footer -->
     </div>
-    <!-- content -->
+    <!-- header -->
+    <!-- body -->
+    <div class="modal-body">
+      <div class="container">
+        <div class="row">
+          <div class="right-body col-sm-12">
+            <div id="form-preview-section">
+              <div class="form-preview collapse in">
+                <!--<div class="empty-text" ng-show="isPropertiesEmpty()">-->
+                <!--<p translate>CREATOR.addElementToStagingMsg</p>-->
+                <!--</div>-->
+                <form-directive form="form" page="page" model="instance" page-index="0" ng-if="!isPropertiesEmpty()" hide-root-element="hideRootElement"></form-directive>
+                <ng-include src="'scripts/layout/json_preview.html'"></ng-include>
+              </div><!-- /.form-preview -->
+            </div> <!-- /#form-preview-section -->
+
+            <div ng-if="!isEmpty(invalidFieldStates)" class="alert alert-danger" role="alert">
+              <p><i class="fa fa-exclamation-triangle"></i><span translate>VALIDATION.groupHeader.invalidFieldState</span></p>
+              <ul>
+                <li ng-repeat="field in invalidFieldStates">
+                  <span ng-show="field">{{field}}</span>
+                  <span ng-hide="field" translate>VALIDATION.noNameField</span>
+                </li>
+              </ul>
+            </div>
+
+            <div ng-if="!isEmpty(invalidElementStates)" class="alert alert-danger" role="alert">
+              <p><i class="fa fa-exclamation-triangle"></i><span translate>VALIDATION.groupHeader.invalidElementState</span></p>
+              <ul>
+                <li ng-repeat="element in invalidElementStates">
+                  <span ng-show="element">{{element}}</span>
+                  <span ng-hide="element" translate>VALIDATION.noNameElement</span>
+                </li>
+              </ul>
+            </div>
+
+            <div class="element-actions">
+              <div ng-if="elementErrorMessages.length" class="alert alert-danger" role="alert">
+                <p ng-repeat="message in elementErrorMessages"><i class="fa fa-exclamation-triangle"></i>{{message}}</p>
+              </div>
+              <div ng-if="elementSuccessMessages.length" class="alert alert-success" role="alert">
+                <p ng-repeat="message in elementSuccessMessages"><i class="fa fa-check"></i>{{message}}</p>
+              </div>
+              <!--<div class="favorite {{favorite}}" ng-click="toggleFavorite()">-->
+              <!--<i class="cedar-svg-flag"></i><span>Favorite</span>-->
+              <!--</div>-->
+              <div class="clear-save">
+                <button type="button" class="btn btn-clear" ng-click="reset()" ng-hide="isPropertiesEmpty()" translate>GENERIC.Clear</button>
+                <button type="button" class="btn btn-clear" ng-click="cancelElement()"  translate>GENERIC.Cancel</button>
+                <button type="button" class="btn btn-save" ng-click="saveElement()" translate>GENERIC.SaveElement</button>
+              </div>
+            </div> <!-- /.template-actions -->
+          </div> <!-- /.right-body -->
+        </div>
+        <div class="right-stick">
+          <div class="sidebar-inner" >
+            <ul class="element-menu fields-list">
+              <li ng-repeat="fieldType in primaryFieldTypes">
+                <a ng-click="addFieldToElement(fieldType.cedarType)"><i class="{{fieldType.iconClass}}"></i></a>
+              </li>
+            </ul>
+          </div>
+          <div ng-init="showMenuPopover = false" ng-click="showMenuPopover = !showMenuPopover" class="sidebar-inner-next" >
+            <ul class="element-menu fields-list">
+              <li>
+                <a><i class="fa fa-ellipsis-v" aria-hidden="true"></i></a>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="other-elements" ng-show="showMenuPopover" style="display: block"> <!-- toggle this on and off -->
+          <div class="top-half clearfix">
+            <div class="pull-left">
+              <ul class="list-unstyled">
+                <li ng-repeat="fieldType in dynamicFieldTypesEven">
+                  <a ng-click="addFieldToElement(fieldType.cedarType)"><i class="{{fieldType.iconClass}}"></i> {{fieldType.label}}</a>
+                </li>
+              </ul>
+            </div>
+            <div class="pull-right">
+              <ul class="list-unstyled">
+                <li ng-repeat="fieldType in dynamicFieldTypesOdd">
+                  <a ng-click="addFieldToElement(fieldType.cedarType)"><i class="{{fieldType.iconClass}}"></i> {{fieldType.label}}</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="bottom-half clearfix">
+            <div class="pull-left">
+              <ul class="list-unstyled">
+                <li ng-repeat="fieldType in staticFieldTypesEven">
+                  <a ng-click="addFieldToElement(fieldType.cedarType)"><i class="{{fieldType.iconClass}}"></i> {{fieldType.label}}</a>
+                </li>
+              </ul>
+            </div>
+            <div class="pull-right">
+              <ul class="list-unstyled">
+                <li ng-repeat="fieldType in staticFieldTypesOdd">
+                  <a ng-click="addFieldToElement(fieldType.cedarType)"><i class="{{fieldType.iconClass}}"></i> {{fieldType.label}}</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="search-part clearfix">
+            <a ng-click="showSearchBrowsePicker()" href="javascript:"><i class="fa fa-search" aria-hidden="true"></i> Search
+              <span class="pull-right"><i class="fa fa-arrow-right pull-right" aria-hidden="true"></i></span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
-  <!-- modal -->
+  <!-- body -->
+  <!-- footer -->
+  <div class="modal-footer"></div>
+  <!--<div class="modal-footer"></div>-->
+  <!-- footer -->
+</div>
+<!-- content -->
+</div>
+<!-- modal -->
 </section>
 <section class="search-browse-modal" ng-hide="showCreateEditForm">
   <cedar-search-browse-picker
-      select-resource-callback="selectElementFromPicker"
-      pick-resource-callback="pickElementFromPicker"
-      mode="'modal'">
+    select-resource-callback="selectElementFromPicker"
+    pick-resource-callback="pickElementFromPicker"
+    mode="'modal'">
   </cedar-search-browse-picker>
-  <br />
-  <button ng-click="addElementFromPicker()" type="button">Submit</button>
-  <button ng-click="hideSearchBrowsePicker()" type="cancel">Cancel</button>
+  <div class="footer-buttons clearfix">
+    <div class="pull-right">
+      <button ng-click="addElementFromPicker()" type="button" class="subm">Submit</button>
+      <button ng-click="hideSearchBrowsePicker()" type="cancel" class="canc">Cancel</button>
+    </div>
+  </div>
 </section>

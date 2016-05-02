@@ -9144,6 +9144,39 @@ i {
     width: 100%;
   }
 }
+body.search-browse-modal {
+  padding: 120px 30px 30px;
+  background: #a3a3a3;
+}
+body.search-browse-modal .navbar {
+  margin: 30px 30px 0;
+}
+body.search-browse-modal .controls-bar {
+  top: 122px;
+  margin: 0 30px;
+}
+body.search-browse-modal .all-items-view {
+  background: #F9F9FB;
+  min-height: 350px;
+}
+body.search-browse-modal .footer-buttons {
+  background: #2e5365;
+  padding: 30px;
+}
+body.search-browse-modal .footer-buttons button {
+  padding: 20px 70px;
+  color: #ffffff;
+  text-transform: uppercase;
+  margin-left: 20px;
+}
+body.search-browse-modal .footer-buttons button.subm {
+  background: #5A96B8;
+  border: 2px solid #5A90B8;
+}
+body.search-browse-modal .footer-buttons button.canc {
+  background: #375E71;
+  border: 2px solid #D4D3D3;
+}
 .navbar {
   color: #fff;
   background-color: #056046;
@@ -12285,8 +12318,8 @@ p.instructions {
   position: relative;
 }
 /*
-    Tree css is copied from http://www.bypeople.com/pure-css-tree-menu-framework-cssdeck/
-  */
+  Tree css is copied from http://www.bypeople.com/pure-css-tree-menu-framework-cssdeck/
+*/
 .tree {
   /* (indentation/2) */
 }

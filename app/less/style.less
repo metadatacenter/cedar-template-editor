@@ -78,6 +78,42 @@ i {
     width: 100%;
   }
 }
+body.search-browse-modal {
+  padding: 120px 30px 30px;
+  background: #a3a3a3;
+
+  .navbar {
+    margin: 30px 30px 0;
+  }
+  .controls-bar {
+    top:122px;
+    margin: 0 30px;
+  }
+  .all-items-view {
+    background: #F9F9FB;
+    min-height: 350px;
+  }
+  .footer-buttons {
+    background: #2e5365;
+    padding: 30px;
+
+    button {
+      padding: 20px 70px;
+      color: @white;
+      text-transform: uppercase;
+      margin-left: 20px;
+
+      &.subm {
+        background: #5A96B8;
+        border: 2px solid #5A90B8;
+      }
+      &.canc {
+        background: #375E71;
+        border: 2px solid #D4D3D3;
+      }
+    }
+  }
+}
 .navbar {
   color: @header-text-color;
   background-color: @header-bg-color;
@@ -989,17 +1025,17 @@ body.search-browse-modal {
   position: absolute;
   top: 0;
   right: -1%;
-  
+
   .pull-left, .pull-right {
     width: 45%;
     text-transform: uppercase;
   }
-  
+
   .list-unstyled {
-    
+
     li {
       margin-bottom: 15px;
-      
+
       a {
         color: @graytxt;
         font-weight: 500;
@@ -1010,14 +1046,14 @@ body.search-browse-modal {
       }
     }
   }
-  
+
   .top-half, .bottom-half {
     padding: 30px;
     border-bottom: 1px solid @graybg;
   }
   .search-part {
     border: none;
-    
+
     a {
       display: block;
       padding: 30px 35px;
@@ -1025,7 +1061,7 @@ body.search-browse-modal {
       text-transform: uppercase;
       font-weight: 500;
       width: 100%;
-      
+
       i {
         color: @brand-primary;
         padding-right: 10px;
@@ -3154,1244 +3190,1244 @@ p.instructions {
   padding: 5px;
 }
 
-  .cardinality-options .min-items-option {
-    margin-right: 10px;
-  }
+.cardinality-options .min-items-option {
+  margin-right: 10px;
+}
 
-  #cardinality-options .bootstrap-select {
-    width: 80px;
-  }
+#cardinality-options .bootstrap-select {
+  width: 80px;
+}
 
-  .more-input-wrapper {
-    position: absolute;
-    left: 100%;
-    top: 0;
-    width: 110px;
+.more-input-wrapper {
+  position: absolute;
+  left: 100%;
+  top: 0;
+  width: 110px;
 
-    .add, .remove {
-      height: 25px;
-      width: 25px;
-      margin: 0 0 0 10px;
-      border-radius: 50%;
-      display: inline-block;
-      vertical-align: middle;
-      transition: all 0.3s ease 0.1s;
-      cursor: pointer;
-      border: none;
+  .add, .remove {
+    height: 25px;
+    width: 25px;
+    margin: 0 0 0 10px;
+    border-radius: 50%;
+    display: inline-block;
+    vertical-align: middle;
+    transition: all 0.3s ease 0.1s;
+    cursor: pointer;
+    border: none;
 
-      i {
-        color: #FFF;
-        font-size: 16px;
-        line-height: 25px;
-      }
-    }
-
-    .add {
-      background-color: @brand-primary;
-      &:disabled {
-        // opacity: 0.5;
-        background-color: @brand-primary-disabled;
-      }
-      i {
-        transform: translate(0px, -1px);
-      }
-    }
-
-    .remove {
-      background-color: #333333;
-      i {
-        transform: translate(0px, -2px);
-      }
-    }
-  }
-
-  .field-wrapper-checkbox, .field-wrapper-radio {
-    padding: 5px;
-    border: 1px solid #ddd;
-    background: white;
-    position:relative;
-    width:100%;
-  }
-
-  .zero-input-wrapper {
-    position: absolute;
-    right: 0;
-    top: .5em;
-    width: 100px;
-
-    .add, .remove {
-      height: 25px;
-      width: 25px;
-      margin: 0 0 0 10px;
-      border-radius: 50%;
-      display: inline-block;
-      vertical-align: middle;
-      transition: all 0.3s ease 0.1s;
-      cursor: pointer;
-      border: none;
-
-      i {
-        color: #FFF;
-        font-size: 16px;
-        line-height: 25px;
-      }
-    }
-
-    .add {
-      background-color: @brand-primary;
-      &:disabled {
-        // opacity: 0.5;
-        background-color: @brand-primary-disabled;
-      }
-      i {
-        transform: translate(0px, -1px);
-      }
-    }
-
-    .remove {
-      background-color: #333333;
-      i {
-        transform: translate(0px, -2px);
-      }
-    }
-  }
-
-  .fields {
-    .form-group {
-      margin-right: 100px;
-    }
-  }
-
-  .fields-checkbox .field-checkbox,
-  .fields-radio .field-radio,
-  .fields-date .field-date,
-  .fields-list .field-list {
-    position: relative;
-    margin-right: 100px;
-  }
-
-  .element-toggles {
-    text-align: center;
-    margin: 0 0 10px 0;
-    .element-toggle {
-      display: inline-block;
-      padding: 0 20px 0;
-      border-bottom: 5px solid #DDD;
-      border-color: #DDD;
-      transition: all 0.3s ease 0.1s;
-
-      &.active {
-        border-color: @brand-primary;
-      }
-
-      span {
-        text-transform: uppercase;
-        cursor: pointer;
-      }
-
-      &.active span {
-        cursor: default;
-      }
-    }
-
-    .add-element {
-      display: inline-block;
-
-      .add {
-        height: 25px;
-        width: 25px;
-        margin: 0 0 0 10px;
-        border-radius: 50%;
-        display: inline-block;
-        vertical-align: middle;
-        transition: all 0.3s ease 0.1s;
-        background-color: @brand-primary;
-        border: none;
-
-        i {
-          color: #FFF;
-          font-size: 14px;
-          line-height: 25px;
-        }
-
-        &:disabled {
-          // opacity: 0.5;
-          background-color: @brand-primary-disabled;
-        }
-      }
-    }
-  }
-
-  #form-item-config-section {
-    .adding-element {
-      .preview-edit-options {
-        display: none;
-      }
-
-      .definition-inputs, .type-label, .toggle-json, .showed-json {
-        display: none;
-      }
-
-      .configuration-options {
-        .checkbox-required, .checkbox-advanced, .toggle-controlled-term {
-          display: none;
-        }
-
-        .checkbox-cardinality {
-          margin-left: 0;
-          margin-top: 10px;
-        }
-      }
+    i {
+      color: #FFF;
+      font-size: 16px;
+      line-height: 25px;
     }
   }
 
   .add {
-    .cardinality-_ui-container {
-      display: none;
-      position: relative;
-
-      .cardinality-_ui {
-        position: absolute;
-        width: 350px;
-        text-align: left;
-        top: -90px;
-        left: -5px;
-        .cardinality-_ui-text {
-          padding: 10px 15px;
-          border: 1px solid #B4C1C8;
-          display: inline-block;
-          background-color: #FFFFFF;
-          color: @brand-primary;
-          font-weight: bold;
-          border-radius: 3px;
-          &:after, &:before {
-            top: 40px;
-            left: 10px;
-            border: solid transparent;
-            content: " ";
-            height: 0;
-            width: 0;
-            position: absolute;
-            pointer-events: none;
-          }
-
-          &:after {
-            border-color: transparent;
-            border-top-color: #FFFFFF;
-            border-width: 10px;
-          }
-          &:before {
-            top: 41px;
-            left: 9px;
-            border-color: transparent;
-            border-top-color: #B4C1C8;
-            border-width: 11px;
-          }
-        }
-      }
+    background-color: @brand-primary;
+    &:disabled {
+      // opacity: 0.5;
+      background-color: @brand-primary-disabled;
     }
-
-    &:hover {
-      .cardinality-_ui-container {
-        display: block;
-      }
-    }
-  }
-
-  .remove-element {
-    margin-top: -45px;
-    position: relative;
-  }
-
-  /*
-    Tree css is copied from http://www.bypeople.com/pure-css-tree-menu-framework-cssdeck/
-  */
-
-  .tree {
-    ul {
-      margin: 0 0 0 1em; /* indentation */
-      padding: 0;
-      list-style: none;
-      // color:#369;
-      position: relative;
-    }
-
-    ul {
-      margin-left: .5em
-    }
-    /* (indentation/2) */
-
-    ul:before {
-      content: "";
-      display: block;
-      width: 0;
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      left: 0;
-      // border-left: 1px dotted;
-    }
-
-    li {
-      margin: 0;
-      padding: 5px 1em; /* indentation + .5em */
-      line-height: 22px; /* default list item's `line-height` */
-      height: 30px;
-      font-weight: bold;
-      position: relative;
-      a {
-        display: block;
-        height: 22px;
-        white-space: nowrap;
-        font-weight: normal;
-
-        &:hover {
-          color: @brand-primary-hover;
-          text-decoration: none;
-        }
-
-        &.selected {
-          font-weight: bold;
-        }
-      }
-
-      &.expanded {
-        // border-left: 1px dotted;
-        height: auto;
-        overflow: visible;
-
-        &:last-child {
-          border-left: none;
-        }
-      }
-    }
-
-    li a:before {
-      content: "";
-      display: block;
-      width: 16px; /* same with indentation */
-      height: 22px;
-      float: left;
-      // border-top:1px solid;
-      // margin-top:-1px; /* border top width */
-      // position:absolute;
-      // top: 2px; /* (line-height/2) */
-      // left: -8px;
-
-    }
-
-    li:last-child:before {
-      background: white; /* same with body background */
-      // height:auto;
-      // top:1em;  (line-height/2)
-      // bottom:0;
-    }
-
-    .no-children {
-      > a:before {
-        // background: url("../scripts/Bioportal/assets/upper_leaf.gif") no-repeat center top transparent;
-      }
-
-      &:last-child {
-        > a:before {
-          // background: url("../scripts/Bioportal/assets/last_leaf.gif") no-repeat center top transparent;
-        }
-      }
-    }
-
-    .has-children {
-      > a:before {
-        // background: url("../scripts/Bioportal/assets/upper_node_collapse.gif") no-repeat center top transparent;
-        background: url("/img/collapsed_arrow.png") no-repeat center center transparent;
-      }
-      &:last-child {
-        > a:before {
-          // background: url("../scripts/Bioportal/assets/last_node_collapse.gif") no-repeat center top transparent;
-        }
-      }
-
-      &.expanded {
-        > a:before {
-          // background: url("../scripts/Bioportal/assets/upper_node_expand.gif") no-repeat center top transparent;
-          background: url("/img/expanded_arrow.png") no-repeat center center transparent;
-        }
-        &:last-child {
-          > a:before {
-            // background: url("../scripts/Bioportal/assets/last_node_expand.gif") no-repeat center center transparent;
-          }
-        }
-      }
-    }
-  }
-
-  .tree-view-ul > .tree > li {
-    padding-left: 0;
-  }
-
-  .field-tree {
-    margin-top: 20px;
-    .ontology-tree {
-      // border: 1px solid #DDD;
-      margin: 0;
-      width: 40%;
-      padding: 10px 10px 0;
-      background: @white;
-
-      .class-tree-container {
-        padding: 0 10px 5px 10px;
-        background: #FFF;
-      }
-    }
-
-    .ontology-class-children {
-      width: 40%;
-    }
-
-    .field-details-view {
-      width: 58%;
-
-      .nav-tabs {
-        border: none;
-        display: inline-block;
-        width: 100%;
-        text-transform: uppercase;
-
-        .detail-view-tab {
-          width: 50%;
-          a {
-            border-radius: 0;
-            text-align: center;
-            margin: 0;
-            background: @gray3;
-            border: none;
-            color: @black;
-            padding: 10px 15px;
-          }
-
-          &.active {
-            a {
-              background: @brand-primary;
-              color: #FFFFFF;
-              font-weight: normal;
-            }
-          }
-        }
-      }
-
-      .tab-content {
-        table {
-          th {
-            padding: 15px 8px;
-            color: @brand-primary;
-            font-weight: bold;
-            text-transform: uppercase;
-            border: none;
-
-            &:first-child {
-              width: 100px;
-            }
-          }
-          tbody {
-            border-bottom: 1px solid #DDD;
-          }
-
-          td {
-            border-bottom: none;
-          }
-        }
-      }
-    }
-  }
-
-  .selected-field-class {
-    margin-left: -28px;
-    border: 1px solid #DDD;
-    padding: 6px 5px;
-    background: #FFF;
-
-    img {
-      width: 15px;
-    }
-  }
-
-  .field-search span.input-group-addon {
-    cursor: pointer;
-    border-radius: 0;
-  }
-
-  .added-field-classes, .added-value-constraints {
-    background: @modal-bg-color;
-
-    .class-list-container, .added-value-constraint-container {
-      border-color: @modal-bg-color;
-
-      thead {
-        background: @modal-bg-color;
-        th {
-          color: @brand-primary;
-        }
-      }
-    }
-
-    .many-classes-list {
-      position: relative;
-      border: 1px solid #DDD;
-
-      .btn-more-items {
-        background: #FFF;
-        line-height: 2em;
-      }
-
-      .dropdown-menu {
-        width: 100%;
-        padding: 0;
-      }
-    }
-  }
-
-  .class-list-container, .many-classes-list {
-    margin-bottom: 10px;
-    border: 1px solid #DDD;
-    .class-list-table {
-      max-height: 190px;
-      overflow: auto;
-      background: @white;
-
-      tr:first-child td {
-        border-top: none;
-      }
-    }
-
-    table {
-      width: 100%;
-      margin-bottom: 0;
-
-      td:last-child {
-        text-align: right;
-      }
-
-      thead {
-        background: #EFEFEF;
-      }
-
-      th, td {
-        &:nth-child(1) {
-          width: 200px
-        }
-
-        &:nth-child(2) {
-          width: 400px;
-        }
-      }
-
-      > thead > tr > th {
-        border-bottom: none;
-      }
-    }
-  }
-
-  .item-edit, .item-delete {
-    display: inline-block;
-    width: 20px;
-    height: 20px;
-    border: 1px solid @gray;
-    border-radius: 50%;
-    text-align: center;
-    cursor: pointer;
-    i:before {
-      height: 20px;
-      display: inline-block;
-      line-height: 20px;
-      position: relative;
-      top: -1px;
-    }
-  }
-
-  .one-class-list {
-    border: 1px solid #DDD;
-    margin-bottom: 20px;
-  }
-
-  .more-items.open .fa-angle-down {
-    transform: rotate(180deg);
-  }
-
-  .btn-field-browse, .btn-values-browse {
-    background: #FFF;
-    line-height: 2em;
-    color: @gray;
-  }
-
-  .field-search-input-group, .values-search-input-group, .field-browse, .values-browse, .ontology-search-input-group {
-    .form-control {
-      border: none;
-    }
-
-    .input-group-addon {
-      background: #FFF;
-      border: none;
-      border-radius: 0;
-      cursor: pointer;
-    }
-  }
-
-  .is-creating-class, .is-creating-value-set {
-    .field-create-class {
-      width: 100%;
-      transition: width 1s ease-in-out;
-    }
-
-    .field-browse, .field-search {
-      display: none;
-    }
-
-    .values-create-class {
-      width: 100%;
-      transition: width 1s ease-in-out;
-    }
-
-    .values-browse, .values-search {
-      display: none;
-    }
-  }
-
-  .is-searching {
-    .field-search {
-      width: 100%;
-      transition: width 1s ease-in-out;
-    }
-
-    .field-browse, .field-create-class {
-      display: none;
-    }
-
-    .values-search {
-      width: 100%;
-      transition: width 1s ease-in-out;
-    }
-
-    .values-browse, .values-create-class {
-      display: none;
-    }
-  }
-
-  .field-search {
-    display: block;
-    float: left;
-    width: 33%;
-  }
-
-  .values-search {
-    display: block;
-    float: left;
-    width: 33%;
-  }
-
-  .field-browse {
-    display: block;
-    float: left;
-    padding-left: 20px;
-    width: 33%;
-    overflow: hidden;
-
-    a {
-      color: #000;
-      text-align: left;
-      background: #FFF;
-    }
-  }
-
-  .values-browse {
-    display: block;
-    float: left;
-    padding-left: 20px;
-    width: 33%;
-    overflow: hidden;
-
-    a {
-      color: #000;
-      text-align: left;
-      background: #FFF;
-    }
-  }
-
-  .field-create-class, .values-create-class {
-    display: block;
-    float: left;
-    padding-left: 20px;
-    width: 33%;
-    overflow: hidden;
-  }
-
-  .is-browsing {
-    .field-search, .field-create-class {
-      display: none;
-    }
-
-    .field-browse {
-      width: 100%;
-      transition: width 1s ease-in-out;
-    }
-
-    .values-search, .values-create-class {
-      display: none;
-    }
-
-    .values-browse {
-      width: 100%;
-      transition: width 1s ease-in-out;
-    }
-  }
-
-  .inline-block {
-    display: inline-block;
-  }
-
-  .checkbox-bioportal-value-sets {
-    margin-left: 20px;
-  }
-
-  .values-browse-results-headers-table {
-
-  }
-
-  .values-browse-results-table {
-
-  }
-
-  .clickable {
-    cursor: pointer;
-  }
-
-  .table-style {
-    display: table;
-    width: 100%;
-
-    .table-row-style {
-      display: table-row;
-    }
-
-    .table-cell-style {
-      display: table-cell;
-      vertical-align: middle;
-    }
-  }
-
-  .stage-value-constraint-actions {
-    .table-cell-style {
-      width: 50%;
-    }
-  }
-
-  .staged-items {
-    margin: 20px auto;
-  }
-
-  .ontology-class-children-table {
-    height: 304px;
-    background: @white;
-    overflow: auto;
-
-    tr:first-child {
-      td {
-        border-top: none;
-      }
-    }
-  }
-
-  #element-controlled-term-container {
-    height: 30px;
     i {
+      transform: translate(0px, -1px);
+    }
+  }
+
+  .remove {
+    background-color: #333333;
+    i {
+      transform: translate(0px, -2px);
+    }
+  }
+}
+
+.field-wrapper-checkbox, .field-wrapper-radio {
+  padding: 5px;
+  border: 1px solid #ddd;
+  background: white;
+  position:relative;
+  width:100%;
+}
+
+.zero-input-wrapper {
+  position: absolute;
+  right: 0;
+  top: .5em;
+  width: 100px;
+
+  .add, .remove {
+    height: 25px;
+    width: 25px;
+    margin: 0 0 0 10px;
+    border-radius: 50%;
+    display: inline-block;
+    vertical-align: middle;
+    transition: all 0.3s ease 0.1s;
+    cursor: pointer;
+    border: none;
+
+    i {
+      color: #FFF;
+      font-size: 16px;
+      line-height: 25px;
+    }
+  }
+
+  .add {
+    background-color: @brand-primary;
+    &:disabled {
+      // opacity: 0.5;
+      background-color: @brand-primary-disabled;
+    }
+    i {
+      transform: translate(0px, -1px);
+    }
+  }
+
+  .remove {
+    background-color: #333333;
+    i {
+      transform: translate(0px, -2px);
+    }
+  }
+}
+
+.fields {
+  .form-group {
+    margin-right: 100px;
+  }
+}
+
+.fields-checkbox .field-checkbox,
+.fields-radio .field-radio,
+.fields-date .field-date,
+.fields-list .field-list {
+  position: relative;
+  margin-right: 100px;
+}
+
+.element-toggles {
+  text-align: center;
+  margin: 0 0 10px 0;
+  .element-toggle {
+    display: inline-block;
+    padding: 0 20px 0;
+    border-bottom: 5px solid #DDD;
+    border-color: #DDD;
+    transition: all 0.3s ease 0.1s;
+
+    &.active {
+      border-color: @brand-primary;
+    }
+
+    span {
+      text-transform: uppercase;
       cursor: pointer;
     }
+
+    &.active span {
+      cursor: default;
+    }
   }
 
-  .heading-label {
-    padding-bottom: 0px;
+  .add-element {
+    display: inline-block;
 
-    fieldset.section-break {
-      border-top: 1px solid @brand-primary;
-      legend {
-        margin: 0 0 5px 30%;
-        width: auto;
-        padding: 0 10px;
-        color: @brand-primary;
-        text-transform: uppercase;
+    .add {
+      height: 25px;
+      width: 25px;
+      margin: 0 0 0 10px;
+      border-radius: 50%;
+      display: inline-block;
+      vertical-align: middle;
+      transition: all 0.3s ease 0.1s;
+      background-color: @brand-primary;
+      border: none;
+
+      i {
+        color: #FFF;
+        font-size: 14px;
+        line-height: 25px;
+      }
+
+      &:disabled {
+        // opacity: 0.5;
+        background-color: @brand-primary-disabled;
       }
     }
   }
+}
 
-  .added-value-constraint-container {
-    border: 1px solid #DDD;
-    background: #FFF;
-    margin-bottom: 10px;
-  }
-
-  .added-value-constraints-header, .value-contraint-table {
-    tr {
-      th, td {
-        vertical-align: middle;
-
-        &:nth-child(1) {
-          width: 150px;
-        }
-
-        &:nth-child(2) {
-          width: 150px;
-        }
-
-        &:nth-child(3) {
-          width: 200px;
-        }
-
-        &:nth-child(4) {
-          width: 100px;
-        }
-      }
-    }
-  }
-
-  .added-value-constraints-header {
-    .table {
-      margin-bottom: 0;
-      > thead > tr > th {
-        border: none;
-      }
-
-      thead {
-        background: @modal-bg-color;
-      }
-    }
-  }
-
-  .value-contraint-table {
-    max-height: 285px;
-    overflow: auto;
-    table {
-      margin-bottom: 0;
-      tr:first-child td {
-        border-top: none;
-      }
-    }
-  }
-
-  .field-tree-header {
-    .ontology-tree-header, .ontology-class-children {
-      width: 42%;
-      h4 {
-        margin-right: 4%;
-        color: @brand-primary;
-        text-transform: uppercase;
-      }
-    }
-  }
-
-  .autocomplete-label-wrapper {
-    position: relative;
-    .floating-label {
-      opacity: 1;
-    }
-  }
-
-  .ui-select-container ~ .floating-label {
-    top: 15px;
-    left: 10px;
-    font-size: 16px;
-  }
-
-  .ui-select-container.open ~ .floating-label,
-  .autocomplete-label-wrapper.has-selected .ui-select-container ~ .floating-label {
-    top: 5px;
-    left: 5px;
-    font-size: 11px;
-  }
-
-  .controlled-terms-modal {
-    position: absolute;
-    .modal-dialog {
-      width: 1020px;
-      height: 100%;
-      padding: 0;
-      margin-top: 0px;
-      margin-bottom: 0px;
+#form-item-config-section {
+  .adding-element {
+    .preview-edit-options {
+      display: none;
     }
 
-    .modal-content {
-      height: 100%;
-      background: @modal-bg-color;
-      border-radius: 0;
-      -webkit-box-shadow: none;
-      -moz-box-shadow: none;
-      -o-box-shadow: none;
-      box-shadow: none;
-      border: 0;
+    .definition-inputs, .type-label, .toggle-json, .showed-json {
+      display: none;
     }
 
-    .modal-header {
-      border-bottom: none;
-      padding: 30px 20px;
-      .close {
-        margin-top: -20px;
-      }
-    }
-
-    .modal-body {
-      padding: 0 100px 100px;
-      height: calc(~"100% - 60px");
-      overflow-y: auto;
-      .class-actions {
-        margin-top: 30px;
-      }
-    }
-
-    .element-title {
-      margin-bottom: 20px;
-      font-size: 1.2em;
-    }
-  }
-
-  body.modal-open {
-    overflow: auto;
-    .controlled-terms-modal {
-      overflow: visible;
-      height: auto;
-    }
-
-    .modal-backdrop {
-      background-color: transparent;
-      opacity: 1;
-    }
-  }
-
-  .control-term-field-preview-form {
-    .elementTotalContent {
-      .preview-edit-options {
+    .configuration-options {
+      .checkbox-required, .checkbox-advanced, .toggle-controlled-term {
         display: none;
       }
 
-      .form-group {
-        margin-right: 0;
+      .checkbox-cardinality {
+        margin-left: 0;
+        margin-top: 10px;
       }
     }
   }
+}
 
-  .template-body form .form-group .field-search-form-control,
-  .template-body form .form-group .values-search-input-group {
-    height: 43px;
-    padding-bottom: 3px;
-  }
-
-  .template-header {
-    .controlled-term-options {
-      .form-control {
-        background: @white;
-      }
-    }
-  }
-
-  body .template-header .controlled-terms-modal {
-    margin-left: 0;
-  }
-
-  .template-body form .autocomplete-label-wrapper.has-constraint .ui-select-container ~ .input-indicator-icons .cedar-svg-help-circle {
-    display: block;
-    margin-top: -7px;
-  }
-
-  .template-body form .has-selected.has-constraint .ui-select-container ~ .input-indicator-icons .cedar-svg-help-circle {
+.add {
+  .cardinality-_ui-container {
     display: none;
-    margin-top: -7px;
-  }
+    position: relative;
 
-  .template-body form .autocomplete-label-wrapper.has-constraint .ui-select-container ~ .input-indicator-icons .cedar-svg-check-circle {
-    display: none;
-    margin-top: -7px;
-  }
-
-  .template-body form .has-selected.has-constraint .ui-select-container ~ .input-indicator-icons .cedar-svg-check-circle {
-    display: block;
-    margin-top: -7px;
-  }
-
-  .autocomplete-label-wrapper .ui-select-bootstrap .ui-select-toggle > .caret {
-    display: none;
-  }
-
-  .template-body form .control-term-field-preview-form .input-indicator-icons {
-    top: 0;
-  }
-
-  .template-body form .control-term-field-preview-form .autocomplete-label-wrapper .input-indicator-icons {
-    top: -30px;
-  }
-
-  .template-body form .control-term-field-preview-form .autocomplete-label-wrapper [disabled] .ui-select-toggle {
-    background: #EEE;
-  }
-
-  #form-item-config-section .radio label {
-    &:before {
-      top: -3px;
-    }
-
-    &:after {
-      top: -2px;
-    }
-  }
-
-  #form-item-config-section .checkbox label {
-    &:before {
-      top: -5px;
-    }
-
-    &:after {
-      top: -4px;
-    }
-  }
-
-  #form-item-config-section .checkbox-bioportal-ontologies label,
-  #form-item-config-section .checkbox-bioportal-value-sets label,
-  #form-item-config-section .checkbox-required label,
-  #form-item-config-section .checkbox-cardinality label {
-    &:before {
-      top: -4px;
-      width: 22px;
-      height: 22px;
-    }
-
-    &:after {
-      top: -5px;
-      font-size: 15px;
-    }
-  }
-
-  .input-type-container .configuration-options {
-    padding: 0;
-    position: static;
-  }
-
-
-  .input-type-container .configuration-options .toggle-options {
-  }
-
-  .input-type-container .configuration-actions .toggle-options .save-options .remove {
-    margin-right: 0;
-  }
-
-  .add-another img {
-    background: @brand-primary;
-    color: @white;
-    border-radius: 50%;
-    border: 4px solid @brand-primary;
-    margin: 0 5px 0 0;
-    width: 19px;
-  }
-
-  .min-items-option, .max-items-option {
-    label {
-      float: left;
-      margin: 10px 10px 0 0;
-      font-weight: normal;
-    }
-
-    .bootstrap-select {
-      float: right;
-    }
-  }
-
-  .bootstrap-select .btn-select-picker {
-    background: @white;
-  }
-
-  .bootstrap-select .btn-select-picker.disabled {
-    background: @gray3;
-  }
-
-  .date-group .fa-calendar {
-    font-size: 1.5em;
-  }
-
-  .no-items-added {
-    padding: 15px;
-    margin: 0 0 15px;
-    border: 1px dashed @gray;
-  }
-
-  .template-body .right-body .controlled-terms .preview-group {
-    width: 100%;
-    padding-left: 0;
-  }
-
-  .btn-two-toggle .btn-field {
-    margin-left: 30px;
-  }
-
-  .template-body > .container,
-  .template-header > .container {
-    position: static;
-  }
-
-  .template-body .right-body {
-    position: static;
-  }
-
-  .controlled-terms-modal .cedar-svg-controll-term {
-    height: 30px;
-    margin-right: 10px;
-    &:before {
-      font-size: 30px;
-    }
-  }
-
-  .controlled-terms-modal .heading-label fieldset.section-break legend {
-    border-bottom: none;
-  }
-
-  .controlled-terms-modal .heading-label fieldset.section-break {
-    margin: 15px 0;
-  }
-
-  .tree-view {
-    a {
-      text-transform: capitalize;
-      color: @gray;
-
-      &.selected {
+    .cardinality-_ui {
+      position: absolute;
+      width: 350px;
+      text-align: left;
+      top: -90px;
+      left: -5px;
+      .cardinality-_ui-text {
+        padding: 10px 15px;
+        border: 1px solid #B4C1C8;
+        display: inline-block;
+        background-color: #FFFFFF;
         color: @brand-primary;
-      }
-    }
-  }
+        font-weight: bold;
+        border-radius: 3px;
+        &:after, &:before {
+          top: 40px;
+          left: 10px;
+          border: solid transparent;
+          content: " ";
+          height: 0;
+          width: 0;
+          position: absolute;
+          pointer-events: none;
+        }
 
-  .class-action {
-    padding-bottom: 10px;
-    border-bottom: 1px solid @brand-primary;
-
-    &:last-child {
-      margin-top: 10px;
-    }
-  }
-
-  .element .field-instance.multiple-instance-field {
-    border: none;
-  }
-
-  .create-template-body .right-body .preview-group {
-    width: calc(~"100% - 100px");
-  }
-
-  .nav > li > a {
-    padding: 10px 30px;
-  }
-
-  .add-class-container .table-row-style {
-    .table-cell-style {
-      padding-top: 10px;
-    }
-
-    &:first-child .table-cell-style {
-      padding-top: 0;
-    }
-  }
-
-  .sortable-handler {
-    cursor: move;
-  }
-
-  .template-body .right-body .preview-edit-options .element-preview-actions {
-    .edit {
-      background: @brand-primary;
-      i {
-        transform: unset;
+        &:after {
+          border-color: transparent;
+          border-top-color: #FFFFFF;
+          border-width: 10px;
+        }
         &:before {
-          font-size: 16px;
-          color: @white;
-          line-height: 25px;
-          margin-left: 5px;
+          top: 41px;
+          left: 9px;
+          border-color: transparent;
+          border-top-color: #B4C1C8;
+          border-width: 11px;
         }
       }
     }
   }
 
-  .element-configuration-options {
+  &:hover {
+    .cardinality-_ui-container {
+      display: block;
+    }
+  }
+}
+
+.remove-element {
+  margin-top: -45px;
+  position: relative;
+}
+
+/*
+  Tree css is copied from http://www.bypeople.com/pure-css-tree-menu-framework-cssdeck/
+*/
+
+.tree {
+  ul {
+    margin: 0 0 0 1em; /* indentation */
+    padding: 0;
+    list-style: none;
+    // color:#369;
+    position: relative;
   }
 
-  .definition-inputs {
+  ul {
+    margin-left: .5em
+  }
+  /* (indentation/2) */
+
+  ul:before {
+    content: "";
+    display: block;
+    width: 0;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    // border-left: 1px dotted;
   }
 
-  .fields.preview .floating-label {
+  li {
+    margin: 0;
+    padding: 5px 1em; /* indentation + .5em */
+    line-height: 22px; /* default list item's `line-height` */
+    height: 30px;
+    font-weight: bold;
+    position: relative;
+    a {
+      display: block;
+      height: 22px;
+      white-space: nowrap;
+      font-weight: normal;
+
+      &:hover {
+        color: @brand-primary-hover;
+        text-decoration: none;
+      }
+
+      &.selected {
+        font-weight: bold;
+      }
+    }
+
+    &.expanded {
+      // border-left: 1px dotted;
+      height: auto;
+      overflow: visible;
+
+      &:last-child {
+        border-left: none;
+      }
+    }
+  }
+
+  li a:before {
+    content: "";
+    display: block;
+    width: 16px; /* same with indentation */
+    height: 22px;
+    float: left;
+    // border-top:1px solid;
+    // margin-top:-1px; /* border top width */
+    // position:absolute;
+    // top: 2px; /* (line-height/2) */
+    // left: -8px;
+
+  }
+
+  li:last-child:before {
+    background: white; /* same with body background */
+    // height:auto;
+    // top:1em;  (line-height/2)
+    // bottom:0;
+  }
+
+  .no-children {
+    > a:before {
+      // background: url("../scripts/Bioportal/assets/upper_leaf.gif") no-repeat center top transparent;
+    }
+
+    &:last-child {
+      > a:before {
+        // background: url("../scripts/Bioportal/assets/last_leaf.gif") no-repeat center top transparent;
+      }
+    }
+  }
+
+  .has-children {
+    > a:before {
+      // background: url("../scripts/Bioportal/assets/upper_node_collapse.gif") no-repeat center top transparent;
+      background: url("/img/collapsed_arrow.png") no-repeat center center transparent;
+    }
+    &:last-child {
+      > a:before {
+        // background: url("../scripts/Bioportal/assets/last_node_collapse.gif") no-repeat center top transparent;
+      }
+    }
+
+    &.expanded {
+      > a:before {
+        // background: url("../scripts/Bioportal/assets/upper_node_expand.gif") no-repeat center top transparent;
+        background: url("/img/expanded_arrow.png") no-repeat center center transparent;
+      }
+      &:last-child {
+        > a:before {
+          // background: url("../scripts/Bioportal/assets/last_node_expand.gif") no-repeat center center transparent;
+        }
+      }
+    }
+  }
+}
+
+.tree-view-ul > .tree > li {
+  padding-left: 0;
+}
+
+.field-tree {
+  margin-top: 20px;
+  .ontology-tree {
+    // border: 1px solid #DDD;
+    margin: 0;
+    width: 40%;
+    padding: 10px 10px 0;
+    background: @white;
+
+    .class-tree-container {
+      padding: 0 10px 5px 10px;
+      background: #FFF;
+    }
+  }
+
+  .ontology-class-children {
+    width: 40%;
+  }
+
+  .field-details-view {
+    width: 58%;
+
+    .nav-tabs {
+      border: none;
+      display: inline-block;
+      width: 100%;
+      text-transform: uppercase;
+
+      .detail-view-tab {
+        width: 50%;
+        a {
+          border-radius: 0;
+          text-align: center;
+          margin: 0;
+          background: @gray3;
+          border: none;
+          color: @black;
+          padding: 10px 15px;
+        }
+
+        &.active {
+          a {
+            background: @brand-primary;
+            color: #FFFFFF;
+            font-weight: normal;
+          }
+        }
+      }
+    }
+
+    .tab-content {
+      table {
+        th {
+          padding: 15px 8px;
+          color: @brand-primary;
+          font-weight: bold;
+          text-transform: uppercase;
+          border: none;
+
+          &:first-child {
+            width: 100px;
+          }
+        }
+        tbody {
+          border-bottom: 1px solid #DDD;
+        }
+
+        td {
+          border-bottom: none;
+        }
+      }
+    }
+  }
+}
+
+.selected-field-class {
+  margin-left: -28px;
+  border: 1px solid #DDD;
+  padding: 6px 5px;
+  background: #FFF;
+
+  img {
+    width: 15px;
+  }
+}
+
+.field-search span.input-group-addon {
+  cursor: pointer;
+  border-radius: 0;
+}
+
+.added-field-classes, .added-value-constraints {
+  background: @modal-bg-color;
+
+  .class-list-container, .added-value-constraint-container {
+    border-color: @modal-bg-color;
+
+    thead {
+      background: @modal-bg-color;
+      th {
+        color: @brand-primary;
+      }
+    }
+  }
+
+  .many-classes-list {
+    position: relative;
+    border: 1px solid #DDD;
+
+    .btn-more-items {
+      background: #FFF;
+      line-height: 2em;
+    }
+
+    .dropdown-menu {
+      width: 100%;
+      padding: 0;
+    }
+  }
+}
+
+.class-list-container, .many-classes-list {
+  margin-bottom: 10px;
+  border: 1px solid #DDD;
+  .class-list-table {
+    max-height: 190px;
+    overflow: auto;
+    background: @white;
+
+    tr:first-child td {
+      border-top: none;
+    }
+  }
+
+  table {
+    width: 100%;
+    margin-bottom: 0;
+
+    td:last-child {
+      text-align: right;
+    }
+
+    thead {
+      background: #EFEFEF;
+    }
+
+    th, td {
+      &:nth-child(1) {
+        width: 200px
+      }
+
+      &:nth-child(2) {
+        width: 400px;
+      }
+    }
+
+    > thead > tr > th {
+      border-bottom: none;
+    }
+  }
+}
+
+.item-edit, .item-delete {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 1px solid @gray;
+  border-radius: 50%;
+  text-align: center;
+  cursor: pointer;
+  i:before {
+    height: 20px;
+    display: inline-block;
+    line-height: 20px;
+    position: relative;
+    top: -1px;
+  }
+}
+
+.one-class-list {
+  border: 1px solid #DDD;
+  margin-bottom: 20px;
+}
+
+.more-items.open .fa-angle-down {
+  transform: rotate(180deg);
+}
+
+.btn-field-browse, .btn-values-browse {
+  background: #FFF;
+  line-height: 2em;
+  color: @gray;
+}
+
+.field-search-input-group, .values-search-input-group, .field-browse, .values-browse, .ontology-search-input-group {
+  .form-control {
+    border: none;
+  }
+
+  .input-group-addon {
+    background: #FFF;
+    border: none;
+    border-radius: 0;
+    cursor: pointer;
+  }
+}
+
+.is-creating-class, .is-creating-value-set {
+  .field-create-class {
+    width: 100%;
+    transition: width 1s ease-in-out;
+  }
+
+  .field-browse, .field-search {
     display: none;
   }
 
-  .extra-label-context.required:after {
-    content: "*";
-    color: red;
+  .values-create-class {
+    width: 100%;
+    transition: width 1s ease-in-out;
   }
 
-  .configuration-options .controlled-terms .no-items-added {
-    margin-bottom: 50px;
+  .values-browse, .values-search {
+    display: none;
+  }
+}
+
+.is-searching {
+  .field-search {
+    width: 100%;
+    transition: width 1s ease-in-out;
   }
 
-  .configuration-options .controlled-terms button.search-ontologies-button:focus {
-    outline: none;
+  .field-browse, .field-create-class {
+    display: none;
   }
 
-  .configuration-options .controlled-terms .clear-save {
-    float: right;
+  .values-search {
+    width: 100%;
+    transition: width 1s ease-in-out;
   }
 
-  .configuration-options .toggle-controlled-term .controlled-term-label {
-    top:-.3em;
-    position:relative;
+  .values-browse, .values-create-class {
+    display: none;
+  }
+}
+
+.field-search {
+  display: block;
+  float: left;
+  width: 33%;
+}
+
+.values-search {
+  display: block;
+  float: left;
+  width: 33%;
+}
+
+.field-browse {
+  display: block;
+  float: left;
+  padding-left: 20px;
+  width: 33%;
+  overflow: hidden;
+
+  a {
+    color: #000;
+    text-align: left;
+    background: #FFF;
+  }
+}
+
+.values-browse {
+  display: block;
+  float: left;
+  padding-left: 20px;
+  width: 33%;
+  overflow: hidden;
+
+  a {
+    color: #000;
+    text-align: left;
+    background: #FFF;
+  }
+}
+
+.field-create-class, .values-create-class {
+  display: block;
+  float: left;
+  padding-left: 20px;
+  width: 33%;
+  overflow: hidden;
+}
+
+.is-browsing {
+  .field-search, .field-create-class {
+    display: none;
+  }
+
+  .field-browse {
+    width: 100%;
+    transition: width 1s ease-in-out;
+  }
+
+  .values-search, .values-create-class {
+    display: none;
+  }
+
+  .values-browse {
+    width: 100%;
+    transition: width 1s ease-in-out;
+  }
+}
+
+.inline-block {
+  display: inline-block;
+}
+
+.checkbox-bioportal-value-sets {
+  margin-left: 20px;
+}
+
+.values-browse-results-headers-table {
+
+}
+
+.values-browse-results-table {
+
+}
+
+.clickable {
+  cursor: pointer;
+}
+
+.table-style {
+  display: table;
+  width: 100%;
+
+  .table-row-style {
+    display: table-row;
+  }
+
+  .table-cell-style {
+    display: table-cell;
+    vertical-align: middle;
+  }
+}
+
+.stage-value-constraint-actions {
+  .table-cell-style {
+    width: 50%;
+  }
+}
+
+.staged-items {
+  margin: 20px auto;
+}
+
+.ontology-class-children-table {
+  height: 304px;
+  background: @white;
+  overflow: auto;
+
+  tr:first-child {
+    td {
+      border-top: none;
+    }
+  }
+}
+
+#element-controlled-term-container {
+  height: 30px;
+  i {
+    cursor: pointer;
+  }
+}
+
+.heading-label {
+  padding-bottom: 0px;
+
+  fieldset.section-break {
+    border-top: 1px solid @brand-primary;
+    legend {
+      margin: 0 0 5px 30%;
+      width: auto;
+      padding: 0 10px;
+      color: @brand-primary;
+      text-transform: uppercase;
+    }
+  }
+}
+
+.added-value-constraint-container {
+  border: 1px solid #DDD;
+  background: #FFF;
+  margin-bottom: 10px;
+}
+
+.added-value-constraints-header, .value-contraint-table {
+  tr {
+    th, td {
+      vertical-align: middle;
+
+      &:nth-child(1) {
+        width: 150px;
+      }
+
+      &:nth-child(2) {
+        width: 150px;
+      }
+
+      &:nth-child(3) {
+        width: 200px;
+      }
+
+      &:nth-child(4) {
+        width: 100px;
+      }
+    }
+  }
+}
+
+.added-value-constraints-header {
+  .table {
+    margin-bottom: 0;
+    > thead > tr > th {
+      border: none;
+    }
+
+    thead {
+      background: @modal-bg-color;
+    }
+  }
+}
+
+.value-contraint-table {
+  max-height: 285px;
+  overflow: auto;
+  table {
+    margin-bottom: 0;
+    tr:first-child td {
+      border-top: none;
+    }
+  }
+}
+
+.field-tree-header {
+  .ontology-tree-header, .ontology-class-children {
+    width: 42%;
+    h4 {
+      margin-right: 4%;
+      color: @brand-primary;
+      text-transform: uppercase;
+    }
+  }
+}
+
+.autocomplete-label-wrapper {
+  position: relative;
+  .floating-label {
+    opacity: 1;
+  }
+}
+
+.ui-select-container ~ .floating-label {
+  top: 15px;
+  left: 10px;
+  font-size: 16px;
+}
+
+.ui-select-container.open ~ .floating-label,
+.autocomplete-label-wrapper.has-selected .ui-select-container ~ .floating-label {
+  top: 5px;
+  left: 5px;
+  font-size: 11px;
+}
+
+.controlled-terms-modal {
+  position: absolute;
+  .modal-dialog {
+    width: 1020px;
+    height: 100%;
+    padding: 0;
+    margin-top: 0px;
+    margin-bottom: 0px;
+  }
+
+  .modal-content {
+    height: 100%;
+    background: @modal-bg-color;
+    border-radius: 0;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    -o-box-shadow: none;
+    box-shadow: none;
+    border: 0;
+  }
+
+  .modal-header {
+    border-bottom: none;
+    padding: 30px 20px;
+    .close {
+      margin-top: -20px;
+    }
+  }
+
+  .modal-body {
+    padding: 0 100px 100px;
+    height: calc(~"100% - 60px");
+    overflow-y: auto;
+    .class-actions {
+      margin-top: 30px;
+    }
+  }
+
+  .element-title {
+    margin-bottom: 20px;
+    font-size: 1.2em;
+  }
+}
+
+body.modal-open {
+  overflow: auto;
+  .controlled-terms-modal {
+    overflow: visible;
+    height: auto;
+  }
+
+  .modal-backdrop {
+    background-color: transparent;
+    opacity: 1;
+  }
+}
+
+.control-term-field-preview-form {
+  .elementTotalContent {
+    .preview-edit-options {
+      display: none;
+    }
+
+    .form-group {
+      margin-right: 0;
+    }
+  }
+}
+
+.template-body form .form-group .field-search-form-control,
+.template-body form .form-group .values-search-input-group {
+  height: 43px;
+  padding-bottom: 3px;
+}
+
+.template-header {
+  .controlled-term-options {
+    .form-control {
+      background: @white;
+    }
+  }
+}
+
+body .template-header .controlled-terms-modal {
+  margin-left: 0;
+}
+
+.template-body form .autocomplete-label-wrapper.has-constraint .ui-select-container ~ .input-indicator-icons .cedar-svg-help-circle {
+  display: block;
+  margin-top: -7px;
+}
+
+.template-body form .has-selected.has-constraint .ui-select-container ~ .input-indicator-icons .cedar-svg-help-circle {
+  display: none;
+  margin-top: -7px;
+}
+
+.template-body form .autocomplete-label-wrapper.has-constraint .ui-select-container ~ .input-indicator-icons .cedar-svg-check-circle {
+  display: none;
+  margin-top: -7px;
+}
+
+.template-body form .has-selected.has-constraint .ui-select-container ~ .input-indicator-icons .cedar-svg-check-circle {
+  display: block;
+  margin-top: -7px;
+}
+
+.autocomplete-label-wrapper .ui-select-bootstrap .ui-select-toggle > .caret {
+  display: none;
+}
+
+.template-body form .control-term-field-preview-form .input-indicator-icons {
+  top: 0;
+}
+
+.template-body form .control-term-field-preview-form .autocomplete-label-wrapper .input-indicator-icons {
+  top: -30px;
+}
+
+.template-body form .control-term-field-preview-form .autocomplete-label-wrapper [disabled] .ui-select-toggle {
+  background: #EEE;
+}
+
+#form-item-config-section .radio label {
+  &:before {
+    top: -3px;
+  }
+
+  &:after {
+    top: -2px;
+  }
+}
+
+#form-item-config-section .checkbox label {
+  &:before {
+    top: -5px;
+  }
+
+  &:after {
+    top: -4px;
+  }
+}
+
+#form-item-config-section .checkbox-bioportal-ontologies label,
+#form-item-config-section .checkbox-bioportal-value-sets label,
+#form-item-config-section .checkbox-required label,
+#form-item-config-section .checkbox-cardinality label {
+  &:before {
+    top: -4px;
+    width: 22px;
+    height: 22px;
+  }
+
+  &:after {
+    top: -5px;
+    font-size: 15px;
+  }
+}
+
+.input-type-container .configuration-options {
+  padding: 0;
+  position: static;
+}
+
+
+.input-type-container .configuration-options .toggle-options {
+}
+
+.input-type-container .configuration-actions .toggle-options .save-options .remove {
+  margin-right: 0;
+}
+
+.add-another img {
+  background: @brand-primary;
+  color: @white;
+  border-radius: 50%;
+  border: 4px solid @brand-primary;
+  margin: 0 5px 0 0;
+  width: 19px;
+}
+
+.min-items-option, .max-items-option {
+  label {
+    float: left;
+    margin: 10px 10px 0 0;
     font-weight: normal;
   }
 
-  .btn-field-browse, .btn-values-browse {
-    .text {
-      color: @gray;
-      opacity: 0.6;
+  .bootstrap-select {
+    float: right;
+  }
+}
+
+.bootstrap-select .btn-select-picker {
+  background: @white;
+}
+
+.bootstrap-select .btn-select-picker.disabled {
+  background: @gray3;
+}
+
+.date-group .fa-calendar {
+  font-size: 1.5em;
+}
+
+.no-items-added {
+  padding: 15px;
+  margin: 0 0 15px;
+  border: 1px dashed @gray;
+}
+
+.template-body .right-body .controlled-terms .preview-group {
+  width: 100%;
+  padding-left: 0;
+}
+
+.btn-two-toggle .btn-field {
+  margin-left: 30px;
+}
+
+.template-body > .container,
+.template-header > .container {
+  position: static;
+}
+
+.template-body .right-body {
+  position: static;
+}
+
+.controlled-terms-modal .cedar-svg-controll-term {
+  height: 30px;
+  margin-right: 10px;
+  &:before {
+    font-size: 30px;
+  }
+}
+
+.controlled-terms-modal .heading-label fieldset.section-break legend {
+  border-bottom: none;
+}
+
+.controlled-terms-modal .heading-label fieldset.section-break {
+  margin: 15px 0;
+}
+
+.tree-view {
+  a {
+    text-transform: capitalize;
+    color: @gray;
+
+    &.selected {
+      color: @brand-primary;
     }
   }
+}
 
-  .value-filter .search-options {
-    margin-bottom: 25px;
-    label {
-      font-size: 16px;
-    }
+.class-action {
+  padding-bottom: 10px;
+  border-bottom: 1px solid @brand-primary;
+
+  &:last-child {
+    margin-top: 10px;
+  }
+}
+
+.element .field-instance.multiple-instance-field {
+  border: none;
+}
+
+.create-template-body .right-body .preview-group {
+  width: calc(~"100% - 100px");
+}
+
+.nav > li > a {
+  padding: 10px 30px;
+}
+
+.add-class-container .table-row-style {
+  .table-cell-style {
+    padding-top: 10px;
   }
 
-  .field-root {
+  &:first-child .table-cell-style {
+    padding-top: 0;
+  }
+}
+
+.sortable-handler {
+  cursor: move;
+}
+
+.template-body .right-body .preview-edit-options .element-preview-actions {
+  .edit {
+    background: @brand-primary;
+    i {
+      transform: unset;
+      &:before {
+        font-size: 16px;
+        color: @white;
+        line-height: 25px;
+        margin-left: 5px;
+      }
+    }
+  }
+}
+
+.element-configuration-options {
+}
+
+.definition-inputs {
+}
+
+.fields.preview .floating-label {
+  display: none;
+}
+
+.extra-label-context.required:after {
+  content: "*";
+  color: red;
+}
+
+.configuration-options .controlled-terms .no-items-added {
+  margin-bottom: 50px;
+}
+
+.configuration-options .controlled-terms button.search-ontologies-button:focus {
+  outline: none;
+}
+
+.configuration-options .controlled-terms .clear-save {
+  float: right;
+}
+
+.configuration-options .toggle-controlled-term .controlled-term-label {
+  top:-.3em;
+  position:relative;
+  font-weight: normal;
+}
+
+.btn-field-browse, .btn-values-browse {
+  .text {
+    color: @gray;
+    opacity: 0.6;
+  }
+}
+
+.value-filter .search-options {
+  margin-bottom: 25px;
+  label {
+    font-size: 16px;
+  }
+}
+
+.field-root {
+  padding: 5px;
+  border: 1px solid @gray3;
+  margin-bottom: 10px;
+  margin-top:5px;
+}
+
+.sortable-icon {
+  background: url("/img/drag-me.png") no-repeat;
+  background-size: 18px auto;
+  text-indent: -1000px;
+  width: 0;
+  height: 20px;
+  padding: 0 10px 0 20px;
+}
+
+.ibl {
+  display: inline-block;
+}
+
+table.apiKey {
+  border-collapse: collapse;
+  border: 1px solid #eeeeee;
+  tr {
+    border-bottom: 1px solid #eeeeee;
+  }
+  td {
+    text-align: left;
+    vertical-align: top;
     padding: 5px;
-    border: 1px solid @gray3;
-    margin-bottom: 10px;
-    margin-top:5px;
+    margin: 0px;
   }
-
-  .sortable-icon {
-    background: url("/img/drag-me.png") no-repeat;
-    background-size: 18px auto;
-    text-indent: -1000px;
-    width: 0;
-    height: 20px;
-    padding: 0 10px 0 20px;
-  }
-
-  .ibl {
-    display: inline-block;
-  }
-
-  table.apiKey {
-    border-collapse: collapse;
-    border: 1px solid #eeeeee;
-    tr {
-      border-bottom: 1px solid #eeeeee;
-    }
-    td {
-      text-align: left;
-      vertical-align: top;
-      padding: 5px;
-      margin: 0px;
-    }
-  }
+}
 
 
 
