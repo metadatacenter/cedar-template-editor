@@ -17,7 +17,7 @@ define([
                                    TemplateElementService, UIMessageService, DataManipulationService, DataUtilService,
                                    AuthorizedBackendService, CONST) {
 
-    $rootScope.showSearch = true; // for search / browse picker
+    $rootScope.showSearch = false;
 
     // Set page title variable when this controller is active
     $rootScope.pageTitle = 'Element Designer';
