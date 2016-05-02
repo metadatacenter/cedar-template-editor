@@ -1,4 +1,4 @@
-<section class="create-edit">
+<section class="create-edit" ng-show="showCreateEditForm">
   <!-- modal -->
   <div id="ceModal" class="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false">
     <!-- dialog -->
@@ -139,7 +139,7 @@
                 </div>
               </div>
               <div class="search-part clearfix">
-                <a href="#n"><i class="fa fa-search" aria-hidden="true"></i> Search
+                <a ng-click="showCreateEditForm = false" href="javascript:"><i class="fa fa-search" aria-hidden="true"></i> Search
                   <span class="pull-right"><i class="fa fa-arrow-right pull-right" aria-hidden="true"></i></span>
                 </a>
               </div>
@@ -156,4 +156,11 @@
     <!-- content -->
   </div>
   <!-- modal -->
+</section>
+<section class="search-browse-modal" ng-hide="showCreateEditForm">
+  <!-- include search browse directive -->
+  <cedar-search-browse-picker
+    select-resource-callback="selectElementFromPicker"
+    mode="modal">
+  </cedar-search-browse-picker>
 </section>

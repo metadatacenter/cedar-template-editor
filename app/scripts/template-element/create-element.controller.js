@@ -26,6 +26,8 @@ define([
     // Setting form preview setting to false by default
     //$scope.form = {};
 
+    $scope.showCreateEditForm = true;
+
     // Configure mini header
     var pageId = CONST.pageId.ELEMENT;
     var applicationMode = CONST.applicationMode.CREATOR;
@@ -45,6 +47,10 @@ define([
 
     $scope.fieldTypes = FieldTypeService.getFieldTypes();
     $scope.hideRootElement = true;
+
+    $scope.selectElementFromPicker = function(resource) {
+      debugger;
+    };
 
     $scope.primaryFieldTypes = [];
     $scope.dynamicFieldTypesEven = [];
