@@ -2,20 +2,25 @@
   {
     "cedarType": "textfield",
     "iconClass": "cedar-svg-text",
+    "label": "Text",
     "allowedInElement": true,
+    "primaryField": true,
     "hasControlledTerms": true,
     "staticField": false
   },
   {
     "cedarType": "textarea",
     "iconClass": "cedar-svg-paragraph",
+    "label": "Paragraph",
     "allowedInElement": true,
+    "primaryField": true,
     "hasControlledTerms": false,
     "staticField": false
   },
   {
     "cedarType": "radio",
     "iconClass": "cedar-svg-multiple-choice",
+    "label": "Multiple Choice",
     "allowedInElement": true,
     "hasControlledTerms": true,
     "staticField": false
@@ -23,6 +28,7 @@
   {
     "cedarType": "checkbox",
     "iconClass": "cedar-svg-checkbox",
+    "label": "Checkbox",
     "allowedInElement": true,
     "hasControlledTerms": true,
     "staticField": false
@@ -30,6 +36,7 @@
   {
     "cedarType": "date",
     "iconClass": "cedar-svg-calendar",
+    "label": "Date",
     "allowedInElement": true,
     "hasControlledTerms": false,
     "staticField": false
@@ -37,6 +44,8 @@
   {
     "cedarType": "email",
     "iconClass": "cedar-svg-at",
+    "primaryField": true,
+    "label": "Email",
     "allowedInElement": true,
     "hasControlledTerms": false,
     "staticField": false
@@ -45,6 +54,8 @@
     "cedarType": "list",
     "iconClass": "cedar-svg-list",
     "allowedInElement": true,
+    "primaryField": true,
+    "label": "List",
     "hasControlledTerms": true,
     "staticField": false
   },
@@ -52,6 +63,8 @@
     "cedarType": "numeric",
     "iconClass": "cedar-svg-numeric",
     "allowedInElement": true,
+    "primaryField": true,
+    "Label": "Number",
     "hasControlledTerms": false,
     "staticField": false
   },
@@ -59,6 +72,7 @@
     "cedarType": "phone-number",
     "iconClass": "cedar-svg-phone",
     "allowedInElement": true,
+    "label": "Phone Number",
     "hasControlledTerms": false,
     "staticField": false
   },
@@ -66,6 +80,7 @@
     "cedarType": "section-break",
     "iconClass": "cedar-svg-section-break",
     "allowedInElement": true,
+    "label": "Section Break",
     "hasControlledTerms": false,
     "staticField": true
   },
@@ -73,6 +88,7 @@
     "cedarType": "richtext",
     "iconClass": "cedar-svg-rich-text",
     "allowedInElement": true,
+    "label": "Rich Text",
     "hasControlledTerms": false,
     "staticField": true
   },
@@ -80,6 +96,7 @@
     "cedarType": "image",
     "iconClass": "cedar-svg-image",
     "allowedInElement": true,
+    "label": "Image",
     "hasControlledTerms": false,
     "staticField": true
   },
@@ -87,6 +104,7 @@
     "cedarType": "youtube",
     "iconClass": "cedar-svg-youtube",
     "allowedInElement": true,
+    "label": "YouTube Video",
     "hasControlledTerms": false,
     "staticField": true
   }

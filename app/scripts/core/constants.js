@@ -26,11 +26,13 @@ define([
         "CREATOR": "creator",
         "RUNTIME": "runtime"
       },
-      "boxType": {
+      "resourceType": {
         "TEMPLATE": "template",
+        "FIELD": "field",
         "ELEMENT": "element",
         "INSTANCE": "instance",
-        "LINK": "link"
+        "LINK": "link",
+        "FOLDER": "folder"
       }
     });
 });

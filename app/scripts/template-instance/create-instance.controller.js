@@ -14,6 +14,8 @@ define([
                                     TemplateService, TemplateInstanceService, UIMessageService,
                                     AuthorizedBackendService, CONST) {
 
+    $rootScope.showSearch = false;
+
     // set Page Title variable when this controller is active
     $rootScope.pageTitle = 'Metadata Editor';
 
@@ -120,8 +122,10 @@ define([
         $scope.instance._ui['templateTitle'] = $scope.form._ui.title + ' instance';
         $scope.instance._ui['templateDescription'] = $scope.form._ui.description;
         // Make create instance call
+        var queryParams = $location.search();
+        $scope.instance['parentId'] = queryParams.folderId;
         AuthorizedBackendService.doCall(
-            TemplateInstanceService.saveTemplateInstance($scope.instance),
+            TemplateInstanceService.saveTemplateInstance(queryParams.folderId, $scope.instance),
             function (response) {
               UIMessageService.flashSuccess('SERVER.INSTANCE.create.success', null, 'GENERIC.Created');
               // Reload page with element id

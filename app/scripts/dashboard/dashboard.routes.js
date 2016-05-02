@@ -9,20 +9,15 @@ define([
   function dashboardRoutes($routeProvider) {
     $routeProvider
       .when('/', {
-        controller: 'RoleSelectorController',
-        templateUrl: 'scripts/dashboard/role-selector.html',
+        controller: 'DashboardController',
+        controllerAs: 'dc',
+        templateUrl: 'scripts/dashboard/dashboard.html',
       })
       .when('/dashboard', {
         controller: 'DashboardController',
+        controllerAs: 'dc',
         templateUrl: 'scripts/dashboard/dashboard.html',
-      })
-      .when('/dashboard/:role*', {
-        controller: 'DashboardController',
-        templateUrl: 'scripts/dashboard/dashboard.html',
-      })
-      .when('/:type/list', {
-        controller: 'DashboardListController',
-        templateUrl: 'scripts/dashboard/dashboard-list.html',
+        reloadOnSearch: false
       });
   }
 

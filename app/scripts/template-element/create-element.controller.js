@@ -4,7 +4,7 @@ define([
   'angular'
 ], function (angular) {
   angular.module('cedar.templateEditor.templateElement.createElementController', [])
-      .controller('CreateElementController', CreateElementController);
+    .controller('CreateElementController', CreateElementController);
 
   CreateElementController.$inject = ["$rootScope", "$scope", "$routeParams", "$timeout", "$location", "$translate",
                                      "$filter", "HeaderService", "UrlService", "StagingService", "DataTemplateService",
@@ -16,6 +16,8 @@ define([
                                    HeaderService, UrlService, StagingService, DataTemplateService, FieldTypeService,
                                    TemplateElementService, UIMessageService, DataManipulationService, DataUtilService,
                                    AuthorizedBackendService, CONST) {
+
+    $rootScope.showSearch = false;
 
     // Set page title variable when this controller is active
     $rootScope.pageTitle = 'Element Designer';
@@ -34,17 +36,46 @@ define([
     $rootScope.applicationRole = 'creator';
 
     AuthorizedBackendService.doCall(
-        TemplateElementService.getAllTemplateElementsSummary(),
-        function (response) {
-          $scope.elementList = response.data;
-        },
-        function (err) {
-          UIMessageService.showBackendError('SERVER.ELEMENTS.load.error', err);
-        }
+      TemplateElementService.getAllTemplateElementsSummary(),
+      function (response) {
+        $scope.elementList = response.data;
+      },
+      function (err) {
+        UIMessageService.showBackendError('SERVER.ELEMENTS.load.error', err);
+      }
     );
 
     $scope.fieldTypes = FieldTypeService.getFieldTypes();
     $scope.hideRootElement = true;
+
+    $scope.primaryFieldTypes = [];
+    $scope.dynamicFieldTypesEven = [];
+    $scope.dynamicFieldTypesOdd = [];
+    $scope.staticFieldTypesEven = [];
+    $scope.staticFieldTypesOdd = [];
+    var evenD = true;
+    var evenS = true;
+    for (var i = 0; i < $scope.fieldTypes.length; i++) {
+      if ($scope.fieldTypes[i].primaryField) {
+        $scope.primaryFieldTypes.push($scope.fieldTypes[i]);
+      } else {
+        if ($scope.fieldTypes[i].staticField) {
+          if (evenS) {
+            $scope.staticFieldTypesEven.push($scope.fieldTypes[i]);
+          } else {
+            $scope.staticFieldTypesOdd.push($scope.fieldTypes[i]);
+          }
+          evenS = !evenS;
+        } else {
+          if (evenD) {
+            $scope.dynamicFieldTypesEven.push($scope.fieldTypes[i]);
+          } else {
+            $scope.dynamicFieldTypesOdd.push($scope.fieldTypes[i]);
+          }
+          evenD = !evenD;
+        }
+      }
+    }
 
     var getElement = function () {
       $scope.form = {};
@@ -52,23 +83,23 @@ define([
       if ($routeParams.id) {
         // Fetch existing element and assign to $scope.element property
         AuthorizedBackendService.doCall(
-            TemplateElementService.getTemplateElement($routeParams.id),
-            function (response) {
-              $scope.element = response.data;
-              HeaderService.dataContainer.currentObjectScope = $scope.element;
+          TemplateElementService.getTemplateElement($routeParams.id),
+          function (response) {
+            $scope.element = response.data;
+            HeaderService.dataContainer.currentObjectScope = $scope.element;
 
-              var key = $scope.element["@id"];
-              $rootScope.keyOfRootElement = key;
-              $scope.form.properties = $scope.form.properties || {};
-              $scope.form.properties[key] = $scope.element;
-              $scope.form._ui = $scope.form._ui || {};
-              $scope.form._ui.order = $scope.form._ui.order || [];
-              $scope.form._ui.order.push(key);
-              $rootScope.jsonToSave = $scope.element;
-            },
-            function (err) {
-              UIMessageService.showBackendError('SERVER.ELEMENT.load.error', err);
-            }
+            var key = $scope.element["@id"];
+            $rootScope.keyOfRootElement = key;
+            $scope.form.properties = $scope.form.properties || {};
+            $scope.form.properties[key] = $scope.element;
+            $scope.form._ui = $scope.form._ui || {};
+            $scope.form._ui.order = $scope.form._ui.order || [];
+            $scope.form._ui.order.push(key);
+            $rootScope.jsonToSave = $scope.element;
+          },
+          function (err) {
+            UIMessageService.showBackendError('SERVER.ELEMENT.load.error', err);
+          }
         );
       } else {
         // If we're not loading an existing element then let's create a new empty $scope.element property
@@ -109,6 +140,7 @@ define([
       if (dontHaveCreatingFieldOrElement()) {
         StagingService.addFieldToElement($scope.element, fieldType);
       }
+      $scope.showMenuPopover = false;
     };
 
     $scope.addElementToElement = function (element) {
@@ -119,18 +151,23 @@ define([
       }
     };
 
+    $scope.backToFolder = function() {
+      var params = $location.search();
+      $location.url(UrlService.getFolderContents(params.folderId));
+    };
+
     // Reverts to empty form and removes all previously added fields/elements
     $scope.reset = function () {
       UIMessageService.confirmedExecution(
-          function () {
-            $timeout(function () {
-              $scope.doReset();
-              // StagingService.resetPage();
-            });
-          },
-          'GENERIC.AreYouSure',
-          'ELEMENTEDITOR.clear.confirm',
-          'GENERIC.YesClearIt'
+        function () {
+          $timeout(function () {
+            $scope.doReset();
+            // StagingService.resetPage();
+          });
+        },
+        'GENERIC.AreYouSure',
+        'ELEMENTEDITOR.clear.confirm',
+        'GENERIC.YesClearIt'
       );
     };
 
@@ -148,13 +185,13 @@ define([
       populateCreatingFieldOrElement();
       if (dontHaveCreatingFieldOrElement()) {
         UIMessageService.conditionalOrConfirmedExecution(
-            StagingService.isEmpty(),
-            function () {
-              $scope.doSaveElement();
-            },
-            'GENERIC.AreYouSure',
-            'ELEMENTEDITOR.save.nonEmptyStagingConfirm',
-            'GENERIC.YesSaveIt'
+          StagingService.isEmpty(),
+          function () {
+            $scope.doSaveElement();
+          },
+          'GENERIC.AreYouSure',
+          'ELEMENTEDITOR.save.nonEmptyStagingConfirm',
+          'GENERIC.YesSaveIt'
         );
       }
     };
@@ -191,20 +228,22 @@ define([
         // Save element
         // Check if the element is already stored into the DB
         if ($routeParams.id == undefined) {
+          var queryParams = $location.search();
+          $scope.element['parentId'] = queryParams.folderId;
           AuthorizedBackendService.doCall(
-              TemplateElementService.saveTemplateElement($scope.element),
-              function (response) {
-                // confirm message
-                UIMessageService.flashSuccess('SERVER.ELEMENT.create.success',
-                    {"title": response.data._ui.title},
-                    'GENERIC.Created');
-                // Reload page with element id
-                var newId = response.data['@id'];
-                $location.path(UrlService.getElementEdit(newId));
-              },
-              function (err) {
-                UIMessageService.showBackendError('SERVER.ELEMENT.create.error', err);
-              }
+            TemplateElementService.saveTemplateElement(queryParams.folderId, $scope.element),
+            function (response) {
+              // confirm message
+              UIMessageService.flashSuccess('SERVER.ELEMENT.create.success',
+                                            {"title": response.data._ui.title},
+                                            'GENERIC.Created');
+              // Reload page with element id
+              var newId = response.data['@id'];
+              $location.path(UrlService.getElementEdit(newId));
+            },
+            function (err) {
+              UIMessageService.showBackendError('SERVER.ELEMENT.create.error', err);
+            }
           );
         }
         // Update element
@@ -212,15 +251,15 @@ define([
           var id = $scope.element['@id'];
           //--//delete $scope.element['@id'];
           AuthorizedBackendService.doCall(
-              TemplateElementService.updateTemplateElement(id, $scope.element),
-              function (response) {
-                angular.extend($scope.element, response.data);
-                UIMessageService.flashSuccess('SERVER.ELEMENT.update.success', {"title": response.data.title},
-                    'GENERIC.Updated');
-              },
-              function (err) {
-                UIMessageService.showBackendError('SERVER.ELEMENT.update.error', err);
-              }
+            TemplateElementService.updateTemplateElement(id, $scope.element),
+            function (response) {
+              angular.extend($scope.element, response.data);
+              UIMessageService.flashSuccess('SERVER.ELEMENT.update.success', {"title": response.data.title},
+                                            'GENERIC.Updated');
+            },
+            function (err) {
+              UIMessageService.showBackendError('SERVER.ELEMENT.update.error', err);
+            }
           );
         }
       }
@@ -253,9 +292,14 @@ define([
         var title = $scope.element._ui.title;
         if (title.length > 0) {
           var capitalizedTitle = $filter('capitalizeFirst')(title);
-          $scope.element.title = $translate.instant("GENERATEDVALUE.elementTitle", {title: capitalizedTitle});
-          $scope.element.description = $translate.instant("GENERATEDVALUE.elementDescription",
-              {title: capitalizedTitle});
+          $scope.element.title = $translate.instant(
+            "GENERATEDVALUE.elementTitle",
+            {title: capitalizedTitle}
+          );
+          $scope.element.description = $translate.instant(
+            "GENERATEDVALUE.elementDescription",
+            {title: capitalizedTitle}
+          );
         } else {
           $scope.element.title = "";
           $scope.element.description = "";

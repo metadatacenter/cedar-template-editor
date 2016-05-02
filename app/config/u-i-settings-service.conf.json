@@ -98,6 +98,10 @@
     {
       "resourceType": "instance",
       "labelKey": "view.resourceTypeFilter.instance"
+    },
+    {
+      "resourceType": "folder",
+      "labelKey": "view.resourceTypeFilter.folder"
     }
   ],
   "orderDropdown": [
