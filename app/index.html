@@ -37,13 +37,15 @@
     <nav class="navbar navbar-fixed-top clearfix" role="navigation">
       <div class="nav-container" id="headerCtrl" ng-controller="HeaderCtrl as hc">
         <div class="navbar-header">
-          <a ng-click="hc.search(hc.searchTerm)"><i class="fa fa-search navbar-toggle"></i></a>
-          <div class="pull-right col-sm-7 nav-search">
-            <form>
-              <div class="form-group floating-label-wrapper">
-                <input ng-keyup="$event.keyCode == 13 && hc.search(hc.searchTerm)" type="search" class="form-control" id="search" placeholder="Search" aria-label="Search" ng-model="hc.searchTerm" with-floating-label />
-              </div>
-            </form>
+          <div ng-show="hc.showSearch()">
+            <a ng-click="hc.search(hc.searchTerm)"><i class="fa fa-search navbar-toggle"></i></a>
+            <div class="pull-right col-sm-7 nav-search">
+              <form>
+                <div class="form-group floating-label-wrapper">
+                  <input ng-keyup="$event.keyCode == 13 && hc.search(hc.searchTerm)" type="search" class="form-control" id="search" placeholder="Search" aria-label="Search" ng-model="hc.searchTerm" with-floating-label />
+                </div>
+              </form>
+            </div>
           </div>
           <a class="navbar-brand" href="/dashboard">Cedar</a>
         </div>
