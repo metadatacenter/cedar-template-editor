@@ -28,6 +28,8 @@ define([
   function DashboardController($location, $rootScope, $routeParams, $scope, $translate, AuthorizedBackendService, cedarUser, HeaderService, resourceService, TemplateElementService, TemplateService, TemplateInstanceService, UIMessageService, UrlService, CONST) {
     var vm = this;
 
+    $rootScope.showSearch = true;
+
     vm.breadcrumbName = breadcrumbName;
     vm.cancelCreateEditFolder = cancelCreateEditFolder;
     vm.currentWorkspacePath = cedarUser.getHome();

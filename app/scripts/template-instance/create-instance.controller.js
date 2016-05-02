@@ -14,6 +14,8 @@ define([
                                     TemplateService, TemplateInstanceService, UIMessageService,
                                     AuthorizedBackendService, CONST) {
 
+    $rootScope.showSearch = false;
+
     // set Page Title variable when this controller is active
     $rootScope.pageTitle = 'Metadata Editor';
 

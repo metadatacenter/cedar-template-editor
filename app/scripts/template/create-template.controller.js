@@ -17,6 +17,8 @@ define([
                                         FieldTypeService, TemplateElementService, TemplateService, UIMessageService,
                                         DataManipulationService, DataUtilService, AuthorizedBackendService, CONST) {
 
+        $rootScope.showSearch = false;
+
         // Set Page Title variable when this controller is active
         $rootScope.pageTitle = 'Template Designer';
 
