@@ -1,81 +1,65 @@
 <div ng-if="model !== undefined" class="element-root" id="{{$root.getDomId(element)}}">
 
-  <div>
-    <div class="element-header input-type-container" style="position:relative;"
-        ng-class="{'sortable-handler': !$root.isRuntime()}">
-      <div class="row">
+  <div class="element-header input-type-container" style="position:relative;margin-top:10px"
+      ng-class="{'sortable-handler': !$root.isRuntime()}">
+    <div class="row">
 
-        <div class="col-lg-3 pull-left">
-          <a ng-click="switchExpandedState($root.getDomId(element))" class="visibilitySwitch"><i
-              class="cedar-svg-collapse"></i></a>
-          <a ng-click="switchExpandedState($root.getDomId(element))" class="visibilitySwitch" style="display:none;"><i
-              class="cedar-svg-expand"></i></a>
+      <div class="col-lg-9 pull-left">
 
-          <p class="element-name-label ">
-            <i class="cedar-svg-element"></i>{{$root.schemaOf(element)._ui.title}}
-          </p>
+        <a ng-click="switchExpandedState($root.getDomId(element))" class="visibilitySwitch"><i
+            class="cedar-svg-collapse"></i></a>
+        <a ng-click="switchExpandedState($root.getDomId(element))" class="visibilitySwitch" style="display:none;"><i
+            class="cedar-svg-expand"></i></a>
+
+        <div class="sortable-handler " style="padding-top:5px; display:inline-block"
+            ng-if="!isRootElement && !$root.isRuntime() && !preview "><span
+            class="sortable-icon"></span></div>
+
+        <p class="element-name-label ">
+          <i class="cedar-svg-element"></i>{{$root.schemaOf(element)._ui.title}}
+        </p>
 
          <span ng-show="$root.isArray(model) && $root.applicationMode == 'runtime'" class="spreadsheetSwitch element">
-        <a ng-click="switchToSpreadsheet()" class="spreadsheetSwitchLink">
-          <i class="cedar-svg-spreadsheet"></i>
-        </a>
-      </span>
+           <a ng-click="switchToSpreadsheet()" class="spreadsheetSwitchLink">
+             <i class="cedar-svg-spreadsheet"></i>
+           </a>
+         </span>
 
-        <span class="multiple-instance-cardinality"
-            ng-show="!$root.isRuntime() && $root.elementIsMultiInstance(element)">
-        {{element.minItems}} .. {{element.maxItems || "Unlimited"}}
-        </span>
-        </div>
+          <span class="multiple-instance-cardinality"
+              ng-show="!$root.isRuntime() &&  !isNested() && $root.elementIsMultiInstance(element)">
+           {{element.minItems}} .. {{element.maxItems || "N"}}
+          </span>
+      </div>
 
-        <div class="configuration-options col-lg-3 pull-right" ng-if="!$root.isRuntime() && !isNested() &&
-          $root.propertiesOf(element)._tmp.state=='creating'">
-          <div class="toggle-options">
+      <div ng-if="!$root.isRuntime() &&  !isRootElement && !isNested()" class="preview-container">
+        <!--<div class="row preview-edit-options pull-right" style="margin-right:5px">-->
+        <div class="row preview-edit-options pull-right" >
+          <div class="toggle-options col-lg-12 pull-right">
             <div class="save-options">
-              <div class="add" ng-click="add()" ng-if="$root.propertiesOf(element)._tmp.state == 'creating'">
-                <i class="fa fa-plus"></i>
-              </div>
-              <div class="remove" ng-click="delete()">
-                <i class="fa fa-times"></i>
-              </div>
-            </div>
-            <!-- /.save-options -->
-            <div class="clearfix"></div>
-          </div>
-        </div>
-
-        <div
-            ng-if="!isRootElement &&  !$root.isRuntime()  && !isNested() && $root.propertiesOf(element)._tmp.state !='creating'"
-            class="preview-edit-options col-lg-3 pull-right" style="padding-top:10px">
-          <div class="element-preview-actions">
-            <div class="toggle-options">
-              <div class="save-options pull-right">
-                <div class="edit" ng-click="edit()" ng-if="$root.propertiesOf(element)._tmp.state != 'creating'">
-                  <i class="fa fa-pencil"></i>
+              <div class="save-options" ng-if="$root.propertiesOf(element)._tmp.state != 'creating'">
+                <div class="edit" ng-click="edit()" title="Edit element">
+                  <i class="fa fa-pencil" style="transform: translate(6px, 1px);"></i>
                 </div>
-                <div class="remove" ng-click="delete()">
+                <div class="remove" style="margin-right: 0;" ng-click="delete()" title="Delete element}}">
                   <i class="fa fa-times"></i>
                 </div>
               </div>
-              <!-- /.save-options -->
-              <div class="clearfix"></div>
+              <div class="save-options" ng-if="$root.propertiesOf(element)._tmp.state == 'creating'">
+                <div class="add" ng-click="add()" title="Add element">
+                  <i class="fa fa-plus"></i>
+                </div>
+                <div class="remove" style="margin-right: 0;" ng-click="delete()" title="Delete element}}">
+                  <i class="fa fa-times"></i>
+                </div>
+              </div>
             </div>
           </div>
         </div>
-
-        <div class="configuration-options col-lg-1 centered " style="float: none;margin: 0 auto;"
-            ng-if="!isRootElement && !$root.isRuntime() && !isNested()">
-          <div class="sortable-handler " style="padding-top:5px"
-              ng-if="!preview && $root.propertiesOf(element)._tmp.state != 'creating'"><span
-              class="sortable-icon"></span></div>
-        </div>
-
       </div>
     </div>
   </div>
 
-
-  <div class="elementTotalContent visible">
-
+  <div class="elementTotalContent visible" >
     <div ng-show="$root.isArray(model)">
       <div class="spreadsheetViewDetector"></div>
       <div class="spreadsheetViewContainer"></div>
@@ -164,10 +148,7 @@
           </div>
         </div>
       </div>
-
-
     </div>
-
 
     <div class=""
         ng-if="!$root.isRuntime() && !isRootElement && !isNested() && $root.propertiesOf(element)._tmp.state == 'creating'">
@@ -199,6 +180,6 @@
       </div>
       <div class="clearfix"></div>
     </div>
-
   </div>
+
 </div>

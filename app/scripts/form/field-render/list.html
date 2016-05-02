@@ -1,4 +1,9 @@
 <div class="fields fields-list">
+
+  <!-- header row -->
+  <div ng-init="fieldTitle='Pick from a list';fieldIconClass='cedar-svg-list'"
+      ng-include="'scripts/form/partials/field-header.partial.html'"></div>
+
   <div ng-if="$root.isArray(model)" class="field-list" ng-class="{'required': $root.schemaOf(field)._valueConstraints.requiredValue}" ng-repeat="valueElement in model">
 
 	<div ng-if="$root.schemaOf(field)._ui.selectionType == 'single'"
