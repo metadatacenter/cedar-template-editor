@@ -175,7 +175,7 @@ define([
       var resourceTypes = activeResourceTypes();
       resourceService.searchResources(
         term,
-        { resourceTypes: resourceTypes, sort: sortField(), limit: 10, offset: 0 },
+        { resourceTypes: resourceTypes, sort: sortField(), limit: 100, offset: 0 },
         function(response) {
           vm.searchTerm = term;
           vm.isSearching = true;
@@ -309,7 +309,7 @@ define([
       var resourceTypes = activeResourceTypes();
       if (resourceTypes.length > 0) {
         return resourceService.getResources(
-          { folderId: folderId, resourceTypes: resourceTypes, sort: sortField(), limit: 10, offset: 0 },
+          { folderId: folderId, resourceTypes: resourceTypes, sort: sortField(), limit: 100, offset: 0 },
           function(response) {
             vm.currentFolderId = folderId;
             vm.resources       = response.resources;
@@ -330,7 +330,7 @@ define([
       var resourceTypes = activeResourceTypes();
       if (resourceTypes.length > 0) {
         return resourceService.getResources(
-          { path: path, resourceTypes: resourceTypes, sort: sortField(), limit: 10, offset: 0 },
+          { path: path, resourceTypes: resourceTypes, sort: sortField(), limit: 100, offset: 0 },
           function(response) {
             vm.resources       = response.resources;
             vm.pathInfo        = response.pathInfo;
