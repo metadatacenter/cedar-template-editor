@@ -187,14 +187,27 @@ define([
     
     function launchInstance(resource) {
       var params = $location.search();
-      var folderId;
+      var folderId, url;
+
       if (params.folderId) {
         folderId = params.folderId;
+        url = UrlService.getInstanceCreate(resource['@id'], folderId);
+        $location.url(url);
       } else {
-        folderId = vm.currentFolderId
+        // in search - look up resource to find its parent
+        // place instance next to template
+        resourceService.getResourceDetail(
+          resource,
+          function(response) {
+            folderId = response.parentFolderId;
+            url = UrlService.getInstanceCreate(resource['@id'], folderId);
+            $location.url(url);
+          },
+          function(error) {
+            UIMessageService.showBackendError('SERVER.'+resource.resourceType.toUpperCase()+'.load.error', error);
+          }
+        );
       }
-      var url = UrlService.getInstanceCreate(resource['@id'], folderId);
-      $location.url(url);
     }
 
     function goToResource(resource) {

@@ -49,7 +49,7 @@
           </form>
         </div>
       </div>
-      <a class="navbar-brand" href="/dashboard">Cedar</a>
+      <a class="navbar-brand" ng-click="hc.goToDashboardOrBack()" href="javascript:">Cedar</a>
 
       <div id="jsonTools" cedar-position-json-tools="true" ng-if="!hc.showSearch()">
         <a id='show-json-link' ng-click="$root.showRender = !$root.showRender; $root.scrollToAnchor('templateJSON')"
