@@ -400,8 +400,7 @@ define([
 
     function toggleResourceType(type) {
       vm.resourceTypes[type] = !vm.resourceTypes[type];
-      // TODO: should be cedarUser.getCurrentFolderId()
-      getFolderContents(vm.currentWorkspacePath);
+      init();
     }
 
     /**
