@@ -192,7 +192,8 @@
       <div class="col-sm-12 clearfix">
         <div class="breadcrumbs-sb">
           <p ng-if="dc.isSearching">
-            <span>Search Results For: '{{dc.searchTerm}}'</span>
+            <span ng-if="dc.searchTerm==null">Search Results For: '{{dc.searchTerm}}'</span>
+            <span ng-if="dc.searchTerm!=null">Search Results (all resources):</span>
           </p>
           <p ng-if="!dc.isSearching">
             <span ng-repeat="folder in dc.pathInfo">
