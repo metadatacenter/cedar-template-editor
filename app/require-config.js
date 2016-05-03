@@ -93,7 +93,7 @@ require([
   angular.element().ready(function () {
 
     function continueWithAngularApp() {
-      console.log("continueWithAngularApp");
+      //console.log("continueWithAngularApp");
       require([
         'angular',
         'app',
