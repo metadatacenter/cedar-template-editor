@@ -9197,6 +9197,33 @@ i {
     margin-left: 0;
   }
 }
+.navbar .navbar-back {
+  height: 80px;
+  margin-top: 20px;
+  margin-left: 10px;
+}
+.navbar .navbar-back .back-arrow {
+  color: #ffffff;
+  font-size: 18px;
+  margin: 0 0 0 10px;
+  font-weight: 100;
+}
+@media (min-width: 768px) {
+  .navbar .navbar-back .back-arrow {
+    font-size: 22px;
+  }
+}
+.navbar .navbar-back .document-title {
+  color: #ffffff;
+  font-size: 22px;
+  margin: 0 0 0 10px;
+  font-weight: 200;
+}
+@media (min-width: 768px) {
+  .navbar .navbar-back {
+    margin-left: 0;
+  }
+}
 .navbar #navbar {
   position: absolute;
   right: 15px;

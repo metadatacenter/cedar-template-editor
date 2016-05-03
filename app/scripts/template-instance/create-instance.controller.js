@@ -52,6 +52,7 @@ define([
             // Assign returned form object from FormService to $scope.form
             $scope.form = response.data;
             HeaderService.dataContainer.currentObjectScope = $scope.form;
+            $rootScope.documentTitle = $scope.form._ui.title;
           },
           function (err) {
             UIMessageService.showBackendError('SERVER.TEMPLATE.load.error', err);
@@ -71,6 +72,7 @@ define([
                 function (templateResponse) {
                   // Assign returned form object from FormService to $scope.form
                   $scope.form = templateResponse.data;
+
                 },
                 function (templateErr) {
                   UIMessageService.showBackendError('SERVER.TEMPLATE.load-for-instance.error', templateErr);
@@ -165,21 +167,18 @@ define([
     // Initialize value recommender service
     $rootScope.vrs.init($routeParams.templateId);
 
-    // cancel the form and go back to search and browse
+    // cancel the form and go back to folder
     $scope.cancelTemplate = function () {
       var params = $location.search();
-      var path   = $location.path();
-      var url    = '/dashboard';
-      if (path != url) {
-        if (params.folderId) {
-          url += '?folderId=' + encodeURIComponent(params.folderId);
-        }
-        if (params.search) {
-          url += '?search=' + encodeURIComponent(params.search);
-        }
-      }
-      $location.url(url);
+      $location.url(UrlService.getFolderContents(params.folderId));
     };
+
+    // This function watches for changes in the _ui.title field and autogenerates the schema title and description fields
+    $scope.$watch('form._ui.title', function (v) {
+      if (!angular.isUndefined($scope.form)) {
+        $rootScope.documentTitle = $scope.form._ui.title;
+      }
+    });
 
   };
 

@@ -282,6 +282,7 @@ define([
               $scope.form._ui.title = "";
               $scope.form._ui.description = "";
             }
+            $rootScope.documentTitle = title;
           }
         });
 
@@ -307,20 +308,10 @@ define([
           return copiedForm;
         };
 
-        // cancel the form and go back to search and browse
+        // cancel the form and go back to the current folder
         $scope.cancelTemplate = function () {
           var params = $location.search();
-          var path   = $location.path();
-          var url    = '/dashboard';
-          if (path != url) {
-            if (params.folderId) {
-              url += '?folderId=' + encodeURIComponent(params.folderId);
-            }
-            if (params.search) {
-              url += '?search=' + encodeURIComponent(params.search);
-            }
-          }
-          $location.url(url);
+          $location.url(UrlService.getFolderContents(params.folderId));
         };
       }
 

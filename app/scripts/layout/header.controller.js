@@ -19,6 +19,8 @@ define([
     vm.search = search;
     vm.searchTerm = null;
     vm.showSearch = showSearch;
+    vm.isDashboard = isDashboard;
+    vm.getDocumentTitle = getDocumentTitle;
 
     function goToDashboardOrBack() {
       var params = $location.search();
@@ -37,6 +39,14 @@ define([
 
     function showSearch() {
       return $rootScope.showSearch;
+    };
+
+    function isDashboard() {
+      return ($location.path() === "/dashboard");
+    };
+
+    function getDocumentTitle() {
+      return $rootScope.documentTitle;
     };
 
     function search(searchTerm) {
