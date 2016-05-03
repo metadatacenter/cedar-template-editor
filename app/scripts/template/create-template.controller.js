@@ -54,6 +54,7 @@ define([
                   // stick a domId on fields and elements
                   DataManipulationService.createDomIds($scope.form);
                   //closeAllElements();
+                  $rootScope.keyOfRootElement = $scope.form["@id"];
 
                 },
                 function (err) {
@@ -64,6 +65,7 @@ define([
             // If we're not loading an existing form then let's create a new empty $scope.form property
             $scope.form = DataTemplateService.getTemplate();
             HeaderService.dataContainer.currentObjectScope = $scope.form;
+            $rootScope.keyOfRootElement = $scope.form["@id"];
           }
         };
         getTemplate();
