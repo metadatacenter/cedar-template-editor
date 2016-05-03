@@ -175,8 +175,8 @@ define([
                     "hasChildren": true,
                     "nodes" :[
                       {
-                        "label": "bronchitis",
-                        "key": "BRONCH",
+                        "label": "Influenza Type A",
+                        "key": "INFA",
                         "numberOfMatches": 6,
                         "selected": false,
                         "hasChildren": false
@@ -262,6 +262,10 @@ define([
       this.searchTerm = searchTerm;
       var resourceTypes = options.resourceTypes || uiSettingsService.getResourceTypeFilters().map(function(obj) { return obj.resourceType });
       var url = urlService.search() + '?';
+
+      if (searchTerm == 'null') {
+        searchTerm = '';
+      }
 
       if (searchTerm) {
         url += 'q=' + searchTerm + '&';
