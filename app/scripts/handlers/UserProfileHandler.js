@@ -58,7 +58,7 @@ function UserProfileHandler() {
           'method' : 'GET',
           'headers': service.getHeaders(),
           'success': function (userData) {
-            console.log("User was read from REST API");
+            //console.log("User was read from REST API");
             service.storeProfileAndCallback(userData);
           },
           'error'  : function (error) {

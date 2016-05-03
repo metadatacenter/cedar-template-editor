@@ -10,11 +10,11 @@
             ng-class="{'field-instance':true, 'multiple-instance-field':$root.isArray(model[item])}">
 
           <field-directive field="form.properties[item]" model="model[item]" delete="removeChild(form.properties[item])"
-              rename-child-key="renameChildKey" ></field-directive>
+              rename-child-key="renameChildKey"></field-directive>
         </div>
         <div class=" element-group full "
 
-          ng-if="form.properties[item]['@type']=='https://schema.metadatacenter.org/core/TemplateElement' || form.properties[item].items['@type']=='https://schema.metadatacenter.org/core/TemplateElement'">
+            ng-if="form.properties[item]['@type']=='https://schema.metadatacenter.org/core/TemplateElement' || form.properties[item].items['@type']=='https://schema.metadatacenter.org/core/TemplateElement'">
 
           <cedar-template-element element="form.properties[item]"
               key="item"
@@ -64,3 +64,7 @@
         class="fa fa-lg fa-angle-right"></i></span></a></li>
   </ul>
 </div><!-- /.pagination-container -->
+
+<div ng-if="$root.isRuntime()">
+  <ng-include src="'scripts/layout/json_preview.html'"></ng-include>
+</div>

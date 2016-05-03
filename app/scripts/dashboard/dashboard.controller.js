@@ -149,7 +149,7 @@ define([
             UIMessageService.flashSuccess('SERVER.FOLDER.update.success', {"title": vm.formFolderName},
                                           'GENERIC.Updated');
           },
-          function(response) {
+          function(error) {
             UIMessageService.showBackendError('SERVER.FOLDER.update.error', error);
           }
         );
@@ -164,7 +164,7 @@ define([
             UIMessageService.flashSuccess('SERVER.FOLDER.create.success', {"title": vm.formFolderName},
                                           'GENERIC.Created');
           },
-          function(response) {
+          function(error) {
             UIMessageService.showBackendError('SERVER.FOLDER.create.error', error);
           }
         );
