@@ -102,7 +102,9 @@ define([
         console.log("Reloading value sets cache");
         controlTermDataService.initValueSetsCache();
         // hack to add prefLabel
-        newValueSet.prefLabel = newValueSet.label;
+        if (newValueSet.label) {
+          newValueSet.prefLabel = newValueSet.label;
+        }
         $scope.$emit(
           'cedar.templateEditor.controlTerm.provisionalClassController.provisionalValueSetSavedAsValueSetValueConstraint', {
             valueSet: newValueSet,
