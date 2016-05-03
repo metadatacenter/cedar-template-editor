@@ -177,10 +177,6 @@ define([
       $scope.$broadcast('resetForm');
     };
 
-    $scope.cancelElement = function () {
-      getElement();
-    };
-
     $scope.saveElement = function () {
       populateCreatingFieldOrElement();
       if (dontHaveCreatingFieldOrElement()) {
@@ -328,6 +324,21 @@ define([
         DataManipulationService.stripTmps(copiedForm);
       }
       return copiedForm;
+    };
+
+    $scope.cancelElement = function () {
+      var params = $location.search();
+      var path   = $location.path();
+      var url    = '/dashboard';
+      if (path != url) {
+        if (params.folderId) {
+          url += '?folderId=' + encodeURIComponent(params.folderId);
+        }
+        if (params.search) {
+          url += '?search=' + encodeURIComponent(params.search);
+        }
+      }
+      $location.url(url);
     };
   }
 

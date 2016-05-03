@@ -166,10 +166,6 @@ define([
           $scope.$broadcast('resetForm');
         };
 
-        $scope.cancelTemplate = function () {
-          getTemplate();
-        };
-
         $scope.saveTemplate = function () {
           populateCreatingFieldOrElement();
           if (dontHaveCreatingFieldOrElement()) {
@@ -309,6 +305,22 @@ define([
             DataManipulationService.stripTmps(copiedForm);
           }
           return copiedForm;
+        };
+
+        // cancel the form and go back to search and browse
+        $scope.cancelTemplate = function () {
+          var params = $location.search();
+          var path   = $location.path();
+          var url    = '/dashboard';
+          if (path != url) {
+            if (params.folderId) {
+              url += '?folderId=' + encodeURIComponent(params.folderId);
+            }
+            if (params.search) {
+              url += '?search=' + encodeURIComponent(params.search);
+            }
+          }
+          $location.url(url);
         };
       }
 

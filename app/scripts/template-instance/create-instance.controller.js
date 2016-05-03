@@ -93,19 +93,6 @@ define([
       $scope.getSubmission();
     }
 
-    $scope.cancelTemplate = function () {
-      // Create new instance
-      if (!angular.isUndefined($routeParams.templateId)) {
-        $scope.getForm();
-        $scope.instance = {};
-      }
-      // Edit existing instance
-      if (!angular.isUndefined($routeParams.id)) {
-        // Loading empty form if given an ID in the $routeParams.id url path
-        $scope.getSubmission();
-      }
-    }
-
     // Stores the data (populated template) into the databases
     $scope.savePopulatedTemplate = function () {
       $scope.runtimeErrorMessages = [];
@@ -177,6 +164,22 @@ define([
 
     // Initialize value recommender service
     $rootScope.vrs.init($routeParams.templateId);
+
+    // cancel the form and go back to search and browse
+    $scope.cancelTemplate = function () {
+      var params = $location.search();
+      var path   = $location.path();
+      var url    = '/dashboard';
+      if (path != url) {
+        if (params.folderId) {
+          url += '?folderId=' + encodeURIComponent(params.folderId);
+        }
+        if (params.search) {
+          url += '?search=' + encodeURIComponent(params.search);
+        }
+      }
+      $location.url(url);
+    };
 
   };
 
