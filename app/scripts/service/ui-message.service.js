@@ -124,7 +124,9 @@ define([
             if (errorObject !== null) {
               message = errorObject.message;
               string = errorObject.string;
-              stackTraceHtml = "<textarea>" + errorObject.stackTrace.join('<br />') + "</textarea>";
+              if (errorObject.hasOwnProperty('stackTrace')) {
+                stackTraceHtml = "<textarea>" + errorObject.stackTrace.join('<br />') + "</textarea>";
+              }
             }
           }
 
