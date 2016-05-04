@@ -9199,7 +9199,7 @@ i {
 }
 .navbar .navbar-back {
   height: 80px;
-  margin-top: 20px;
+  margin-top: 0;
   margin-left: 10px;
 }
 .navbar .navbar-back .back-arrow {
@@ -9215,7 +9215,7 @@ i {
 }
 .navbar .navbar-back .document-title {
   color: #ffffff;
-  font-size: 22px;
+  font-size: 18px;
   margin: 0 0 0 10px;
   font-weight: 200;
 }
@@ -10124,7 +10124,7 @@ i {
   margin-bottom: 5px;
 }
 .template-body {
-  padding: 30px 0;
+  padding: 0 0 30px 0;
 }
 .template-body .right-body {
   padding-top: 30px;

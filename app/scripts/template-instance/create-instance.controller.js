@@ -6,11 +6,11 @@ define([
   angular.module('cedar.templateEditor.templateInstance.createInstanceController', [])
       .controller('CreateInstanceController', CreateInstanceController);
 
-  CreateInstanceController.$inject = ["$rootScope", "$scope", "$routeParams", "$location", "HeaderService",
+  CreateInstanceController.$inject = ["$window", "$document","$rootScope", "$scope", "$routeParams", "$location", "HeaderService",
                                       "UrlService", "TemplateService", "TemplateInstanceService", "UIMessageService",
                                       "AuthorizedBackendService", "CONST"];
 
-  function CreateInstanceController($rootScope, $scope, $routeParams, $location, HeaderService, UrlService,
+  function CreateInstanceController($window, $document, $rootScope, $scope, $routeParams, $location, HeaderService, UrlService,
                                     TemplateService, TemplateInstanceService, UIMessageService,
                                     AuthorizedBackendService, CONST) {
 
@@ -176,8 +176,29 @@ define([
     // This function watches for changes in the _ui.title field and autogenerates the schema title and description fields
     $scope.$watch('form._ui.title', function (v) {
       if (!angular.isUndefined($scope.form)) {
-        $rootScope.documentTitle = $scope.form._ui.title;
+        if ($scope.form._ui && $scope.form._ui.title) {
+          $rootScope.documentTitle = $scope.form._ui.title;
+        }
       }
+    });
+
+    jQuery($window).scroll(function(){
+      var id = '#' + $scope.form['@id'].substr($scope.form['@id'].lastIndexOf('/') + 1);
+      var formdiv = jQuery(id);
+      var left = jQuery(id).left + "px";
+      var top = $(this).scrollTop()+ 15;
+      console.log(formdiv);
+      console.log( left + ' ' + top);
+
+      jQuery('#toolbar').css({
+        'left': left
+        //Why this 15, because in the CSS, we have set left 15, so as we scroll, we would want this to remain at 15px left
+      });
+
+      jQuery('#toolbar').css({
+        'top': top
+        //Why this 15, because in the CSS, we have set left 15, so as we scroll, we would want this to remain at 15px left
+      });
     });
 
   };
