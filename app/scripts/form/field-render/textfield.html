@@ -141,7 +141,7 @@
             repeat="option in $root.vrs.getValueRecommendationResults(field['@id']) | propsFilter: {value: $select.search} | limitTo:50">
           <div><span ng-bind-html="option.value | highlight: $select.search"></span>&nbsp;
             <small ng-if="option.score!=undefined">(<span
-                ng-bind-html="option.score * 100 | highlight: $select.search * 100 | number : 1"></span>%)
+                ng-bind-html="option.score * 100 | highlight: $select.search * 100 | number : 0"></span>%)
             </small>
           </div>
         </ui-select-choices>
