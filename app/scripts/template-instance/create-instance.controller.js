@@ -184,19 +184,14 @@ define([
 
     jQuery($window).scroll(function(){
       var id = '#' + $scope.form['@id'].substr($scope.form['@id'].lastIndexOf('/') + 1);
-      var formdiv = jQuery(id);
-      var left = jQuery(id).left + "px";
-      var top = $(this).scrollTop()+ 15;
-      console.log(formdiv);
-      console.log( left + ' ' + top);
 
       jQuery('#toolbar').css({
-        'left': left
+        'left': jQuery(id).scrollLeft() - 15
         //Why this 15, because in the CSS, we have set left 15, so as we scroll, we would want this to remain at 15px left
       });
 
       jQuery('#toolbar').css({
-        'top': top
+        'top': $(this).scrollTop() + 15
         //Why this 15, because in the CSS, we have set left 15, so as we scroll, we would want this to remain at 15px left
       });
     });

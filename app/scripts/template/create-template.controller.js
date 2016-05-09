@@ -313,6 +313,13 @@ define([
           var params = $location.search();
           $location.url(UrlService.getFolderContents(params.folderId));
         };
+
+
+        $scope.elementSearch = function() {
+          console.log("elementSearch " + $scope.searchTerm );
+          jQuery("body").trigger("click");
+          jQuery("#basicModal").modal("show");
+        }
       }
 
     }

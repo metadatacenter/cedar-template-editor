@@ -275,6 +275,7 @@ define([
         // Angular's $watch function to call $scope.parseForm on form.properties initial population and on update
         $scope.$watch('form.properties', function () {
           startParseForm();
+          //positionToolbar();
         });
 
         $scope.$on("form:update", function () {
