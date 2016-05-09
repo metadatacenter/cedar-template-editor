@@ -10,22 +10,18 @@ define([
   DashboardController.$inject = [
     '$location',
     '$rootScope',
-    '$routeParams',
     '$scope',
     '$translate',
     'AuthorizedBackendService',
     'CedarUser',
-    'HeaderService',
     'resourceService',
-    'TemplateElementService',
-    'TemplateService',
-    'TemplateInstanceService',
     'UIMessageService',
     'UrlService',
     'CONST'
   ];
 
-  function DashboardController($location, $rootScope, $routeParams, $scope, $translate, AuthorizedBackendService, cedarUser, HeaderService, resourceService, TemplateElementService, TemplateService, TemplateInstanceService, UIMessageService, UrlService, CONST) {
+  function DashboardController($location, $rootScope, $scope, $translate, AuthorizedBackendService, cedarUser,
+                               resourceService, UIMessageService, UrlService, CONST) {
     var vm = this;
 
     $rootScope.showSearch = true;
@@ -42,9 +38,9 @@ define([
     vm.facets = {};
     vm.forms = [];
     vm.formFolder,
-    vm.formFolderName,
-    vm.formFolderDescription,
-    vm.getFacets = getFacets;
+        vm.formFolderName,
+        vm.formFolderDescription,
+        vm.getFacets = getFacets;
     vm.getForms = getForms;
     vm.getFolderContents = getFolderContents;
     vm.getFolderContentsById = getFolderContentsById;
@@ -60,8 +56,8 @@ define([
     vm.params = $location.search();
     vm.resources = [];
     vm.resourceTypes = {
-      element: true,
-      field: true,
+      element : true,
+      field   : true,
       instance: true,
       template: true
     };
@@ -82,7 +78,7 @@ define([
     vm.toggleResourceInfo = toggleResourceInfo;
     vm.toggleResourceType = toggleResourceType;
 
-    $rootScope.pageTitle = 'Dashboard';    
+    $rootScope.pageTitle = 'Dashboard';
 
     init();
 
@@ -99,13 +95,13 @@ define([
       } else {
         vm.isSearching = false;
         resourceService.getResources(
-          { path: cedarUser.getHome() },
-          function(response) {
-            var currentFolder = response.pathInfo[response.pathInfo.length - 1];
-            goToFolder(currentFolder['@id']);
-          },
-          function(error) {
-          }
+            {path: cedarUser.getHome()},
+            function (response) {
+              var currentFolder = response.pathInfo[response.pathInfo.length - 1];
+              goToFolder(currentFolder['@id']);
+            },
+            function (error) {
+            }
         );
       }
     }
@@ -143,30 +139,30 @@ define([
         vm.formFolder.name = vm.formFolderName;
         vm.formFolder.description = vm.formFolderDescription;
         resourceService.updateFolder(
-          vm.formFolder,
-          function(response) {
-            init();
-            UIMessageService.flashSuccess('SERVER.FOLDER.update.success', {"title": vm.formFolderName},
-                                          'GENERIC.Updated');
-          },
-          function(error) {
-            UIMessageService.showBackendError('SERVER.FOLDER.update.error', error);
-          }
+            vm.formFolder,
+            function (response) {
+              init();
+              UIMessageService.flashSuccess('SERVER.FOLDER.update.success', {"title": vm.formFolderName},
+                  'GENERIC.Updated');
+            },
+            function (error) {
+              UIMessageService.showBackendError('SERVER.FOLDER.update.error', error);
+            }
         );
         // edit
       } else {
         resourceService.createFolder(
-          vm.params.folderId,
-          vm.formFolderName,
-          vm.formFolderDescription,
-          function(response) {
-            init();
-            UIMessageService.flashSuccess('SERVER.FOLDER.create.success', {"title": vm.formFolderName},
-                                          'GENERIC.Created');
-          },
-          function(error) {
-            UIMessageService.showBackendError('SERVER.FOLDER.create.error', error);
-          }
+            vm.params.folderId,
+            vm.formFolderName,
+            vm.formFolderDescription,
+            function (response) {
+              init();
+              UIMessageService.flashSuccess('SERVER.FOLDER.create.success', {"title": vm.formFolderName},
+                  'GENERIC.Created');
+            },
+            function (error) {
+              UIMessageService.showBackendError('SERVER.FOLDER.create.error', error);
+            }
         );
       }
     }
@@ -174,17 +170,19 @@ define([
     function doSearch(term) {
       var resourceTypes = activeResourceTypes();
       resourceService.searchResources(
-        term,
-        { resourceTypes: resourceTypes, sort: sortField(), limit: 100, offset: 0 },
-        function(response) {
-          vm.searchTerm = term;
-          vm.isSearching = true;
-          vm.resources = response.resources;
-        },
-        function(error) { debugger; }
+          term,
+          {resourceTypes: resourceTypes, sort: sortField(), limit: 100, offset: 0},
+          function (response) {
+            vm.searchTerm = term;
+            vm.isSearching = true;
+            vm.resources = response.resources;
+          },
+          function (error) {
+            debugger;
+          }
       );
     }
-    
+
     function launchInstance(resource) {
       var params = $location.search();
       var folderId, url;
@@ -197,15 +195,15 @@ define([
         // in search - look up resource to find its parent
         // place instance next to template
         resourceService.getResourceDetail(
-          resource,
-          function(response) {
-            folderId = response.parentFolderId;
-            url = UrlService.getInstanceCreate(resource['@id'], folderId);
-            $location.url(url);
-          },
-          function(error) {
-            UIMessageService.showBackendError('SERVER.'+resource.resourceType.toUpperCase()+'.load.error', error);
-          }
+            resource,
+            function (response) {
+              folderId = response.parentFolderId;
+              url = UrlService.getInstanceCreate(resource['@id'], folderId);
+              $location.url(url);
+            },
+            function (error) {
+              UIMessageService.showBackendError('SERVER.' + resource.resourceType.toUpperCase() + '.load.error', error);
+            }
         );
       }
     }
@@ -221,21 +219,21 @@ define([
     function editResource(resource) {
       var id = resource['@id'];
       switch (resource.resourceType) {
-      case CONST.resourceType.TEMPLATE:
-        $location.path(UrlService.getTemplateEdit(id));
-        break;
-      case CONST.resourceType.ELEMENT:
-        $location.path(UrlService.getElementEdit(id));
-        break;
-      case CONST.resourceType.INSTANCE:
-        $location.path(UrlService.getInstanceEdit(id));
-        break;
-      case CONST.resourceType.LINK:
-        $location.path(scope.href);
-        break;
-      case CONST.resourceType.FOLDER:
-        showEditFolder(resource);
-        break;
+        case CONST.resourceType.TEMPLATE:
+          $location.path(UrlService.getTemplateEdit(id));
+          break;
+        case CONST.resourceType.ELEMENT:
+          $location.path(UrlService.getElementEdit(id));
+          break;
+        case CONST.resourceType.INSTANCE:
+          $location.path(UrlService.getInstanceEdit(id));
+          break;
+        case CONST.resourceType.LINK:
+          $location.path(scope.href);
+          break;
+        case CONST.resourceType.FOLDER:
+          showEditFolder(resource);
+          break;
       }
     }
 
@@ -249,58 +247,62 @@ define([
 
     function deleteResource(resource) {
       UIMessageService.confirmedExecution(
-        function() {
-          resourceService.deleteResource(
-            resource,
-            function(response) {
-              // remove resource from list
-              var index = vm.resources.indexOf(resource);
-              vm.resources.splice(index, 1);
-              resetSelected();
-              UIMessageService.flashSuccess('SERVER.'+resource.resourceType.toUpperCase()+'.delete.success', {"title": resource.resourceType},
-                                            'GENERIC.Deleted');
-            },
-            function(error) {
-              UIMessageService.showBackendError('SERVER.'+resource.resourceType.toUpperCase()+'.delete.error', error);
-            }
-          );
-        },
-        'GENERIC.AreYouSure',
-        'DASHBOARD.delete.confirm.' + resource.resourceType,
-        'GENERIC.YesDeleteIt'
+          function () {
+            resourceService.deleteResource(
+                resource,
+                function (response) {
+                  // remove resource from list
+                  var index = vm.resources.indexOf(resource);
+                  vm.resources.splice(index, 1);
+                  resetSelected();
+                  UIMessageService.flashSuccess('SERVER.' + resource.resourceType.toUpperCase() + '.delete.success',
+                      {"title": resource.resourceType},
+                      'GENERIC.Deleted');
+                },
+                function (error) {
+                  UIMessageService.showBackendError('SERVER.' + resource.resourceType.toUpperCase() + '.delete.error',
+                      error);
+                }
+            );
+          },
+          'GENERIC.AreYouSure',
+          'DASHBOARD.delete.confirm.' + resource.resourceType,
+          'GENERIC.YesDeleteIt'
       );
     }
 
     function getFacets() {
       resourceService.getFacets(
-        function(response) {
-          vm.facets = response.facets;
-        },
-        function(error) { }
+          function (response) {
+            vm.facets = response.facets;
+          },
+          function (error) {
+          }
       );
     }
 
     function getForms() {
       return resourceService.searchResources(
-        null,
-        { resourceTypes: ['template'], sort: '-lastUpdatedOnTS', limit: 4, offset: 0 },
-        function(response) {
-          vm.forms = response.resources;
-        },
-        function(error) { }
+          null,
+          {resourceTypes: ['template'], sort: '-lastUpdatedOnTS', limit: 4, offset: 0},
+          function (response) {
+            vm.forms = response.resources;
+          },
+          function (error) {
+          }
       );
     }
 
     function getResourceDetails(resource) {
       var id = resource['@id'];
       resourceService.getResourceDetail(
-        resource,
-        function(response) {
-          vm.selectedResource = response;
-        },
-        function(error) {
-          UIMessageService.showBackendError('SERVER.'+resource.resourceType.toUpperCase()+'.load.error', error);
-        }
+          resource,
+          function (response) {
+            vm.selectedResource = response;
+          },
+          function (error) {
+            UIMessageService.showBackendError('SERVER.' + resource.resourceType.toUpperCase() + '.load.error', error);
+          }
       );
     };
 
@@ -309,16 +311,16 @@ define([
       var resourceTypes = activeResourceTypes();
       if (resourceTypes.length > 0) {
         return resourceService.getResources(
-          { folderId: folderId, resourceTypes: resourceTypes, sort: sortField(), limit: 100, offset: 0 },
-          function(response) {
-            vm.currentFolderId = folderId;
-            vm.resources       = response.resources;
-            vm.pathInfo        = response.pathInfo;
-            vm.currentPath     = vm.pathInfo.pop();
-          },
-          function(error) {
-            UIMessageService.showBackendError('SERVER.FOLDER.load.error', error);
-          }
+            {folderId: folderId, resourceTypes: resourceTypes, sort: sortField(), limit: 100, offset: 0},
+            function (response) {
+              vm.currentFolderId = folderId;
+              vm.resources = response.resources;
+              vm.pathInfo = response.pathInfo;
+              vm.currentPath = vm.pathInfo.pop();
+            },
+            function (error) {
+              UIMessageService.showBackendError('SERVER.FOLDER.load.error', error);
+            }
         );
       } else {
         vm.resources = [];
@@ -330,16 +332,16 @@ define([
       var resourceTypes = activeResourceTypes();
       if (resourceTypes.length > 0) {
         return resourceService.getResources(
-          { path: path, resourceTypes: resourceTypes, sort: sortField(), limit: 100, offset: 0 },
-          function(response) {
-            vm.resources       = response.resources;
-            vm.pathInfo        = response.pathInfo;
-            vm.currentPath     = vm.pathInfo.pop();
-            vm.currentFolderId = vm.currentPath['@id'];
-          },
-          function(error) {
-            UIMessageService.showBackendError('SERVER.FOLDER.load.error', error);
-          }
+            {path: path, resourceTypes: resourceTypes, sort: sortField(), limit: 100, offset: 0},
+            function (response) {
+              vm.resources = response.resources;
+              vm.pathInfo = response.pathInfo;
+              vm.currentPath = vm.pathInfo.pop();
+              vm.currentFolderId = vm.currentPath['@id'];
+            },
+            function (error) {
+              UIMessageService.showBackendError('SERVER.FOLDER.load.error', error);
+            }
         );
       } else {
         vm.resources = [];
@@ -348,14 +350,14 @@ define([
 
     function getResourceIconClass(resource) {
       switch (resource.resourceType) {
-      case CONST.resourceType.FOLDER:
-        return "fa-folder-o";
-      case CONST.resourceType.TEMPLATE:
-        return "fa-file-o";
-      case CONST.resourceType.INSTANCE:
-        return "fa-check-square-o";
-      case CONST.resourceType.FIELD:
-        return "fa-file-code-o";
+        case CONST.resourceType.FOLDER:
+          return "fa-folder-o";
+        case CONST.resourceType.TEMPLATE:
+          return "fa-file-o";
+        case CONST.resourceType.INSTANCE:
+          return "fa-check-square-o";
+        case CONST.resourceType.FIELD:
+          return "fa-file-code-o";
       }
       return "fa-file-text-o";
     }
@@ -420,12 +422,13 @@ define([
      * Watch functions.
      */
 
-    $scope.$on('$routeUpdate', function(){
+    $scope.$on('$routeUpdate', function () {
       vm.params = $location.search();
       init();
     });
 
-    $scope.$on('search', function(event, data) {
+    $scope.$on('search', function (event, data) {
+      console.log("DashboardController on: search");
       vm.searchTerm = $('#search').val();
       vm.isSearching = true;
       vm.resources = data.resources;
@@ -437,7 +440,7 @@ define([
 
     function activeResourceTypes() {
       var activeResourceTypes = [];
-      angular.forEach(Object.keys(vm.resourceTypes), function(value, key) {
+      angular.forEach(Object.keys(vm.resourceTypes), function (value, key) {
         if (vm.resourceTypes[value]) {
           activeResourceTypes.push(value);
         }
