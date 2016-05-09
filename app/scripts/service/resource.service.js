@@ -229,7 +229,10 @@ define([
       );
     };
 
-    function getResources(options = {}, successCallback, errorCallback) {
+    function getResources(options, successCallback, errorCallback) {
+      if (options == null) {
+        options = {};
+      }
       var resourceTypes = options.resourceTypes || uiSettingsService.getResourceTypeFilters().map(function(obj) { return obj.resourceType });
       var url = urlService.folders();
       if (options.path) {
@@ -258,7 +261,10 @@ define([
       );
     }
 
-    function searchResources(searchTerm, options = {}, successCallback, errorCallback) {
+    function searchResources(searchTerm, options, successCallback, errorCallback) {
+      if (options == null) {
+        options = {};
+      }
       this.searchTerm = searchTerm;
       var resourceTypes = options.resourceTypes || uiSettingsService.getResourceTypeFilters().map(function(obj) { return obj.resourceType });
       var url = urlService.search() + '?';
