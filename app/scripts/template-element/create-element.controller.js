@@ -17,7 +17,7 @@ define([
                                    TemplateElementService, UIMessageService, DataManipulationService, DataUtilService,
                                    AuthorizedBackendService, CONST) {
 
-    $rootScope.showSearch = false;
+    $rootScope.showSearch = true;
 
     // Set page title variable when this controller is active
     $rootScope.pageTitle = 'Element Designer';
@@ -27,6 +27,8 @@ define([
     $scope.volatile = {};
     // Setting form preview setting to false by default
     //$scope.form = {};
+
+    $scope.showCreateEditForm = true;
 
     // Configure mini header
     var pageId = CONST.pageId.ELEMENT;
@@ -47,6 +49,33 @@ define([
 
     $scope.fieldTypes = FieldTypeService.getFieldTypes();
     $scope.hideRootElement = true;
+
+    $scope.addElementFromPicker = function() {
+      if ($scope.pickerResource) {
+        $scope.addElementToElement($scope.pickerResource);
+      }
+      $scope.hideSearchBrowsePicker();
+    };
+
+    $scope.pickElementFromPicker = function(resource) {
+      $scope.addElementToElement(resource);
+      $scope.hideSearchBrowsePicker();
+    };
+
+    $scope.selectElementFromPicker = function(resource) {
+      $scope.pickerResource = resource;
+    };
+
+    $scope.showSearchBrowsePicker = function() {
+      $scope.showMenuPopover = false;
+      $scope.pickerResource = null;
+      $scope.showCreateEditForm = false;
+      $('body').addClass('search-browse-modal');
+    };
+    $scope.hideSearchBrowsePicker = function() {
+      $scope.showCreateEditForm = true;
+      $('body').removeClass('search-browse-modal');
+    };
 
     $scope.primaryFieldTypes = [];
     $scope.dynamicFieldTypesEven = [];
