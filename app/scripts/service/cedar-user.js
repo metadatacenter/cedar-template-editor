@@ -31,7 +31,7 @@ define([
       getAppData().cedarUserProfile = profile;
     };
 
-    service.isCedarProfileAvailable = function() {
+    service.isCedarProfileAvailable = function () {
       return getAppData().cedarUserProfile != null;
     }
 
@@ -43,37 +43,41 @@ define([
       return getAppData().authUserProfile.email;
     };
 
-    service.getScreenName = function() {
+    service.getScreenName = function () {
       return getAppData().cedarUserProfile.screenName;
     };
 
-    service.getApiKeys = function() {
+    service.getApiKeys = function () {
       return getAppData().cedarUserProfile.apiKeys;
     };
 
-    service.getRoles = function() {
+    service.getRoles = function () {
       return getAppData().cedarUserProfile.roles;
     };
 
-    service.getPermissions = function() {
+    service.getPermissions = function () {
       return getAppData().cedarUserProfile.permissions;
     };
 
-    service.getHome = function() {
+    service.getHome = function () {
       return getAppData().cedarUserProfile.homePath;
     };
 
-    service.getPermissions = function() {
+    service.getPermissions = function () {
       return getAppData().cedarUserProfile.permissions;
     };
 
-    service.getCurrentFolderId = function() {
+    service.getCurrentFolderId = function () {
       return getAppData().navigation.currentFolderId;
     };
 
-    service.setCurrentFolderId = function(value) {
+    service.setCurrentFolderId = function (value) {
       getAppData().navigation.currentFolderId = value;
-    }
+    };
+
+    service.getUIPreferences = function () {
+      return getAppData().cedarUserProfile.uiPreferences;
+    };
 
     return service;
   };

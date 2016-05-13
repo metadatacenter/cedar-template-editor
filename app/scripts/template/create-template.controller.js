@@ -341,7 +341,7 @@ define([
         };
 
         $scope.hideSearchBrowsePicker = function() {
-          jQuery('#searchBrowseModal').modal('hide')
+          jQuery('#search-browse-modal').modal('hide')
         };
 
 

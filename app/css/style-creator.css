@@ -9558,7 +9558,7 @@ body.search-browse-modal .footer-buttons button.canc {
   color: #5795ba;
   padding: 5px 10px;
   top: 0;
-  right: 4%;
+  right: 0px;
 }
 .all-items-view .push-pull-box .fa-caret-down {
   display: none;
