@@ -116,9 +116,9 @@
 
 <!--all items view -->
 <section class="all-items-view ">
-  <a class="push-pull-box" ng-click="dc.toggleFavorites()" href="javascript:" aria-expanded="false">
-    <i class="fa fa-caret-down"></i>
+  <a class="push-pull-box" ng-click="dc.toggleFavorites()" ng-class="{'collapsed':!dc.showFavorites}" href="javascript:" aria-expanded="false">
     <i class="fa fa-caret-up"></i>
+    <i class="fa fa-caret-down"></i>
   </a>
   <!-- here are the right and left sides.  these are currently hidden -->
   <div class="row-offcanvas row-offcanvas-right row-offcanvas-left">

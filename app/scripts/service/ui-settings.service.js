@@ -8,9 +8,9 @@ define([
   angular.module('cedar.templateEditor.service.uISettingsService', [])
       .service('UISettingsService', UISettingsService);
 
-  UISettingsService.$inject = [];
+  UISettingsService.$inject = ['AuthorizedBackendService', 'UserService', 'UIMessageService'];
 
-  function UISettingsService() {
+  function UISettingsService(AuthorizedBackendService, UserService, UIMessageService) {
 
     var settingsMenu = null;
     var listView = null;
@@ -64,6 +64,19 @@ define([
 
     service.getOrderOptions = function () {
       return orderDropdown;
+    };
+
+    service.saveUIPreference = function (prefPath, prefValue) {
+      var putData = {};
+      putData['uiPreferences.' + prefPath] = prefValue;
+      AuthorizedBackendService.doCall(
+          UserService.updateOwnUser(putData),
+          function (response) {
+          },
+          function (err) {
+            UIMessageService.showBackendError('SERVER.UIPREFERENCES.update.error', err);
+          }
+      );
     };
 
     return service;

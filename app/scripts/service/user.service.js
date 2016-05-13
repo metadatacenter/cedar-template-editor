@@ -6,9 +6,9 @@ define([
   angular.module('cedar.templateEditor.service.userService', [])
       .service('UserService', UserService);
 
-  UserService.$inject = ['CedarUser'];
+  UserService.$inject = ['CedarUser', 'HttpBuilderService', 'UrlService'];
 
-  function UserService(CedarUser) {
+  function UserService(CedarUser, HttpBuilderService, UrlService) {
 
     var userHandler = null;
 
@@ -26,6 +26,10 @@ define([
       }
       CedarUser.setAuthProfile(this.getParsedToken());
       CedarUser.setCedarProfile(userHandler.cedarUserProfile);
+    };
+
+    service.updateOwnUser = function (instance) {
+      return HttpBuilderService.put(UrlService.getUser(CedarUser.getUserId()), angular.toJson(instance));
     };
 
     return service;

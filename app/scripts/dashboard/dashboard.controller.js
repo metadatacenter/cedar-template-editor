@@ -12,16 +12,17 @@ define([
     '$rootScope',
     '$scope',
     '$translate',
-    'AuthorizedBackendService',
     'CedarUser',
     'resourceService',
     'UIMessageService',
     'UrlService',
+    'UISettingsService',
+    '$timeout',
     'CONST'
   ];
 
-  function DashboardController($location, $rootScope, $scope, $translate, AuthorizedBackendService, cedarUser,
-                               resourceService, UIMessageService, UrlService, CONST) {
+  function DashboardController($location, $rootScope, $scope, $translate, cedarUser, resourceService, UIMessageService,
+                               UrlService, UISettingsService, $timeout, CONST) {
     var vm = this;
 
     $rootScope.showSearch = true;
@@ -37,10 +38,10 @@ define([
     vm.editResource = editResource;
     vm.facets = {};
     vm.forms = [];
-    vm.formFolder,
-        vm.formFolderName,
-        vm.formFolderDescription,
-        vm.getFacets = getFacets;
+    vm.formFolder = null;
+    vm.formFolderName = null;
+    vm.formFolderDescription = null;
+    vm.getFacets = getFacets;
     vm.getForms = getForms;
     vm.getFolderContents = getFolderContents;
     vm.getFolderContentsById = getFolderContentsById;
@@ -66,7 +67,7 @@ define([
     vm.selectResource = selectResource;
     vm.setSortOption = setSortOption;
     vm.showCreateFolder = showCreateFolder;
-    vm.showFavorites = true;
+    vm.showFavorites = cedarUser.getUIPreferences().populateATemplate.opened;
     vm.showFilters = false;
     vm.showFloatingMenu = false;
     vm.showInfoPanel = showInfoPanel;
@@ -83,15 +84,18 @@ define([
     init();
 
     function init() {
-      if (vm.params.folderId || vm.params.search) {
-        getForms();
+      if (vm.params.folderId) {
+        vm.isSearching = false;
         getFacets();
-        if (vm.params.search) {
-          doSearch(vm.params.search);
-        } else {
-          vm.isSearching = false;
-          getFolderContentsById(decodeURIComponent(vm.params.folderId));
+        getFolderContentsById(decodeURIComponent(vm.params.folderId));
+      } else if (vm.params.search) {
+        if (vm.showFavorites) {
+          vm.showFavorites = false;
+          updateFavorites();
         }
+        vm.isSearching = true;
+        getFacets();
+        doSearch(vm.params.search);
       } else {
         vm.isSearching = false;
         resourceService.getResources(
@@ -104,6 +108,10 @@ define([
             }
         );
       }
+      if (vm.showFavorites) {
+        getForms();
+      }
+      updateFavorites(false);
     }
 
     /**
@@ -463,11 +471,17 @@ define([
       }
     }
 
-    function updateFavorites() {
-      if (vm.showFavorites) {
-        angular.element('#favorites').collapse('show');
-      } else {
-        angular.element('#favorites').collapse('hide');
+    function updateFavorites(saveData) {
+      $timeout(function () {
+        if (vm.showFavorites) {
+          angular.element('#favorites').collapse('show');
+          getForms();
+        } else {
+          angular.element('#favorites').collapse('hide');
+        }
+      });
+      if (saveData == null || saveData) {
+        UISettingsService.saveUIPreference('populateATemplate.opened', vm.showFavorites);
       }
     }
 
