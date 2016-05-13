@@ -48,6 +48,9 @@ define([
   'cedar/template-editor/template-instance/template-instance.module',
   'cedar/template-editor/profile/profile.module',
 
+  // search browse
+  'cedar/template-editor/search-browse/search-browse.module',
+
   // classic javascript, app data
   'cedar/template-editor/classic/app-data'
 ], function(angular) {

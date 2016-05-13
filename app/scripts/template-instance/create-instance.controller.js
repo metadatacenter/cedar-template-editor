@@ -6,11 +6,11 @@ define([
   angular.module('cedar.templateEditor.templateInstance.createInstanceController', [])
       .controller('CreateInstanceController', CreateInstanceController);
 
-  CreateInstanceController.$inject = ["$rootScope", "$scope", "$routeParams", "$location", "HeaderService",
+  CreateInstanceController.$inject = ["$window", "$document","$rootScope", "$scope", "$routeParams", "$location", "HeaderService",
                                       "UrlService", "TemplateService", "TemplateInstanceService", "UIMessageService",
                                       "AuthorizedBackendService", "CONST"];
 
-  function CreateInstanceController($rootScope, $scope, $routeParams, $location, HeaderService, UrlService,
+  function CreateInstanceController($window, $document, $rootScope, $scope, $routeParams, $location, HeaderService, UrlService,
                                     TemplateService, TemplateInstanceService, UIMessageService,
                                     AuthorizedBackendService, CONST) {
 
@@ -52,6 +52,7 @@ define([
             // Assign returned form object from FormService to $scope.form
             $scope.form = response.data;
             HeaderService.dataContainer.currentObjectScope = $scope.form;
+            $rootScope.documentTitle = $scope.form._ui.title;
           },
           function (err) {
             UIMessageService.showBackendError('SERVER.TEMPLATE.load.error', err);
@@ -71,6 +72,7 @@ define([
                 function (templateResponse) {
                   // Assign returned form object from FormService to $scope.form
                   $scope.form = templateResponse.data;
+
                 },
                 function (templateErr) {
                   UIMessageService.showBackendError('SERVER.TEMPLATE.load-for-instance.error', templateErr);
@@ -91,19 +93,6 @@ define([
     if (!angular.isUndefined($routeParams.id)) {
       // Loading empty form if given an ID in the $routeParams.id url path
       $scope.getSubmission();
-    }
-
-    $scope.cancelTemplate = function () {
-      // Create new instance
-      if (!angular.isUndefined($routeParams.templateId)) {
-        $scope.getForm();
-        $scope.instance = {};
-      }
-      // Edit existing instance
-      if (!angular.isUndefined($routeParams.id)) {
-        // Loading empty form if given an ID in the $routeParams.id url path
-        $scope.getSubmission();
-      }
     }
 
     // Stores the data (populated template) into the databases
@@ -177,6 +166,35 @@ define([
 
     // Initialize value recommender service
     $rootScope.vrs.init($routeParams.templateId);
+
+    // cancel the form and go back to folder
+    $scope.cancelTemplate = function () {
+      var params = $location.search();
+      $location.url(UrlService.getFolderContents(params.folderId));
+    };
+
+    // This function watches for changes in the _ui.title field and autogenerates the schema title and description fields
+    $scope.$watch('form._ui.title', function (v) {
+      if (!angular.isUndefined($scope.form)) {
+        if ($scope.form._ui && $scope.form._ui.title) {
+          $rootScope.documentTitle = $scope.form._ui.title;
+        }
+      }
+    });
+
+    jQuery($window).scroll(function(){
+      var id = '#' + $scope.form['@id'].substr($scope.form['@id'].lastIndexOf('/') + 1);
+
+      jQuery('#toolbar').css({
+        'left': jQuery(id).scrollLeft() - 15
+        //Why this 15, because in the CSS, we have set left 15, so as we scroll, we would want this to remain at 15px left
+      });
+
+      jQuery('#toolbar').css({
+        'top': $(this).scrollTop() + 15
+        //Why this 15, because in the CSS, we have set left 15, so as we scroll, we would want this to remain at 15px left
+      });
+    });
 
   };
 

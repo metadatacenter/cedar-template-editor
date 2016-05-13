@@ -35,10 +35,15 @@
   your browser</a> to improve your experience.</p>
 <![endif]-->
 <nav class="navbar navbar-fixed-top clearfix" role="navigation">
-  <div class="nav-container" id="headerCtrl" ng-controller="HeaderCtrl as hc">
+  <div class="nav-container" id="headerCtrl" ng-controller="HeaderCtrl as hc" >
     <div class="navbar-header">
-      <div ng-show="hc.showSearch()">
+
+
+      <!-- if we are on the dashboard --->
+      <div ng-if="hc.isDashboard()">
+      <div >
         <a ng-click="hc.search(hc.searchTerm)"><i class="fa fa-search navbar-toggle"></i></a>
+
 
         <div class="pull-right col-sm-7 nav-search">
           <form>
@@ -50,12 +55,22 @@
         </div>
       </div>
       <a class="navbar-brand" ng-click="hc.goToDashboardOrBack()" href="javascript:">Cedar</a>
-
-      <div ng-if="!hc.showSearch()" class="pull-right" style="padding:20px">
-        <h4>{{$root.pageTitle}}</h4>
       </div>
 
+      <!-- otherwise on an edit page--->
+      <div ng-if="!hc.isDashboard()">
+        <div class="navbar-back">
+          <a ng-click="hc.goToDashboardOrBack()"><i class="back-arrow fa fa-arrow-left"></i></a> <span class="document-title">{{hc.getDocumentTitle()}}</span>
+        </div>
+      </div>
+
+
+      <!--<div ng-if="!hc.showSearch()" class="pull-right" style="padding:20px">-->
+        <!--<h4>{{$root.pageTitle}}</h4>-->
+      <!--</div>-->
+
       <div id="jsonTools" cedar-position-json-tools="true" ng-if="!hc.showSearch()">
+
         <a id='show-json-link' ng-click="$root.showRender = !$root.showRender; $root.scrollToAnchor('templateJSON')"
             title="Show Template JSON"
             ng-if="$root.pageId == 'ELEMENT' || $root.pageId == 'TEMPLATE' || $root.pageId == 'RUNTIME'">
