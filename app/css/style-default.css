@@ -13563,7 +13563,7 @@ div.errorTechnicalDetails textarea {
   font-size: 20px !important;
 }
 #toolbar {
-  border: 1px solid #ddd;
+  border: 1px solid #d2d2d2;
   width: 80px;
   margin-top: 40px;
 }
@@ -13573,9 +13573,46 @@ div.errorTechnicalDetails textarea {
 }
 #toolbar ul li {
   list-style: none;
-  margin: 0 auto;
+  margin: 10px auto;
   text-align: center;
-  padding: 5px;
+  padding: 10px;
+}
+#elementSearchForm .search-input {
+  position: relative;
+}
+#elementSearchForm .search-input:before {
+  font-size: 50px;
+  position: absolute;
+  background: url(../img/search-icon.png);
+  top: 0;
+  left: 10px;
+}
+#searchBrowseModal {
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+#searchBrowseModal .footer-buttons {
+  padding: 30px;
+}
+#searchBrowseModal .footer-buttons button {
+  padding: 20px 70px;
+  color: #ffffff;
+  text-transform: uppercase;
+  margin-left: 20px;
+}
+#searchBrowseModal .footer-buttons button.subm {
+  background: #5A96B8;
+  border: 2px solid #5A90B8;
+}
+#searchBrowseModal .footer-buttons button.canc {
+  color: #375E71;
+  background: transparent;
+  border: 0px solid #D4D3D3;
+}
+#searchBrowseModal .footer-buttons button.canc:focus {
+  outline: none;
+  box-shadow: none;
 }
 /*
 ================================================

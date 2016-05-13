@@ -34,8 +34,6 @@
 <div class="template-body create-template-body">
   <div class="container">
     <div class="row">
-
-
       <div class="right-body col-sm-9">
         <div id="form-preview-section">
           <div class="form-preview collapse in">
@@ -102,6 +100,7 @@
         <div id="stickyFix"></div>
         <div class="sidebar-inner" cedar-sticky-left-menu="true">
 
+          <!-- toolbar -->
           <div id="toolbar" style="position:relative">
             <ul>
 
@@ -109,6 +108,7 @@
                 <a ng-click="addFieldToTemplate(fieldType.cedarType)"><i class="{{fieldType.iconClass}}"></i></a>
               </li>
 
+              <!-- expanded toolbar dropdown -->
               <li>
                 <div dropdown auto-close="outsideClick">
                   <a class="" data-toggle="dropdown" data-target=".field-selector" aria-expanded="false"
@@ -142,52 +142,75 @@
                       </ul>
                     </div>
                     <div style="margin:10px;padding:10px">
-                      <form role="form" ng-submit="elementSearch();" ng-model="searchElementForm">
+                      <form role="form" ng-submit="elementSearch();" id="elementSearchForm" ng-model="searchElementForm">
                         <div class="form-group">
                           <div class="row">
-                            <input ng-model="searchTerm" class="form-control" id="inputdefault" type="text"
+
+                            <input ng-model="searchTerm" class="form-control search-input"  type="text"
                                 placeholder="Search">
-
+                             <!--<span class="pull-right"><i class="fa fa-search pull-right"-->
+                                 <!--aria-hidden="true"></i></span>-->
+                            <!--<a data-toggle="modal"-->
+                                <!--data-target="#searchBrowseModal" ng-click="showSearchBrowsePicker()"><i-->
+                                <!--class="fa fa-search" aria-hidden="true"></i> Search-->
+                              <!--<span class="pull-right"><i class="fa fa-arrow-right pull-right"-->
+                                  <!--aria-hidden="true"></i></span>-->
+                            <!--</a>-->
                           </div>
-
                         </div>
                       </form>
                     </div>
                   </div>
                 </div>
               </li>
-
             </ul>
           </div>
 
-          <div class="modal fade" id="basicModal" tabindex="-1" role="dialog" aria-labelledby="basicModal"
-              aria-hidden="true">
+          <!-- search browse modal for adding elements -->
+          <div class="modal fade controlled-terms-modal" tabindex="-1" id="searchBrowseModal" data-backdrop="static">
             <div class="modal-dialog">
               <div class="modal-content">
                 <div class="modal-header">
-                  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                  <h4 class="modal-title" id="myModalLabel">Basic Modal</h4>
+                  <button type="button" class="close controlled-terms-modal-field-close" data-dismiss="modal"
+                      aria-label="Close"><span aria-hidden="true"><img
+                      src="/img/close_modal.png" width="22"/></span></button>
+
+                  <div class="nav-container" id="headerCtrl" ng-controller="HeaderCtrl as hc">
+                    <div class="navbar-header">
+                      <div>
+                        <a ng-click="hc.search(hc.searchTerm)"><i class="fa fa-search navbar-toggle"></i></a>
+
+                        <div class="pull-right col-sm-7 nav-search">
+                          <form>
+                            <div class="form-group floating-label-wrapper">
+                              <input ng-keyup="$event.keyCode == 13 && hc.search(hc.searchTerm)" type="search"
+                                  class="form-control"
+                                  id="search" placeholder="Search" aria-label="Search" ng-model="hc.searchTerm"
+                                  with-floating-label/>
+                            </div>
+                          </form>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
                 <div class="modal-body">
-                  <h3>Modal Body</h3>
-                </div>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                  <button type="button" class="btn btn-primary">
-                    Save changes
-                  </button>
+                  <div class="search-browse-modal">
+                    <cedar-search-browse-picker
+                        select-resource-callback="selectElementFromPicker"
+                        pick-resource-callback="pickElementFromPicker"
+                        mode="'modal'">
+                    </cedar-search-browse-picker>
+                    <div class="footer-buttons clearfix">
+                      <div class="pull-right">
+                        <button ng-click="hideSearchBrowsePicker()" type="cancel" class="canc">Cancel</button>
+                        <button ng-click="addElementFromPicker()" type="button" class="subm">Submit</button>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-
-          <div class="more-items" dropdown>
-            <p ng-if="elementList.length > 0" class="add-item" translate>GENERIC.AddElement</p>
-            <ul ng-if="elementList.length > 0" class="element-menu" role="menu">
-              <li ng-repeat="element in elementList | orderBy:'title'" class="item"><a
-                  ng-click="addElementToTemplate(element)"><i class="cedar-svg-element"></i>{{getTitle(element)}}</a>
-              </li>
-            </ul>
           </div>
         </div>
         <!-- /.sticky-list -->
@@ -199,3 +222,4 @@
   </div>
   <!-- /.container -->
 </div> <!-- /.template-body -->
+

@@ -318,7 +318,61 @@ define([
         $scope.elementSearch = function() {
           console.log("elementSearch " + $scope.searchTerm );
           jQuery("body").trigger("click");
-          jQuery("#basicModal").modal("show");
+          jQuery("#searchBrowseModal").modal("show");
+        }
+
+        $scope.addElementFromPicker = function() {
+          if ($scope.pickerResource) {
+            $scope.addElementToTemplate($scope.pickerResource);
+          }
+          $scope.hideSearchBrowsePicker();
+        };
+
+        $scope.pickElementFromPicker = function(resource) {
+          $scope.addElementToTemplate(resource);
+          $scope.hideSearchBrowsePicker();
+        };
+
+        $scope.selectElementFromPicker = function(resource) {
+          $scope.pickerResource = resource;
+        };
+
+        $scope.showSearchBrowsePicker = function() {
+          $scope.pickerResource = null;
+        };
+
+        $scope.hideSearchBrowsePicker = function() {
+          jQuery('#searchBrowseModal').modal('hide')
+        };
+
+
+        $scope.primaryFieldTypes = [];
+        $scope.dynamicFieldTypesEven = [];
+        $scope.dynamicFieldTypesOdd = [];
+        $scope.staticFieldTypesEven = [];
+        $scope.staticFieldTypesOdd = [];
+        var evenD = true;
+        var evenS = true;
+        for (var i = 0; i < $scope.fieldTypes.length; i++) {
+          if ($scope.fieldTypes[i].primaryField) {
+            $scope.primaryFieldTypes.push($scope.fieldTypes[i]);
+          } else {
+            if ($scope.fieldTypes[i].staticField) {
+              if (evenS) {
+                $scope.staticFieldTypesEven.push($scope.fieldTypes[i]);
+              } else {
+                $scope.staticFieldTypesOdd.push($scope.fieldTypes[i]);
+              }
+              evenS = !evenS;
+            } else {
+              if (evenD) {
+                $scope.dynamicFieldTypesEven.push($scope.fieldTypes[i]);
+              } else {
+                $scope.dynamicFieldTypesOdd.push($scope.fieldTypes[i]);
+              }
+              evenD = !evenD;
+            }
+          }
         }
       }
 

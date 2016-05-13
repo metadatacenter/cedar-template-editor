@@ -41,7 +41,6 @@ define([
       return $rootScope.showSearch;
     };
 
-
     function isDashboard() {
       return ($location.path() === "/dashboard");
     };
@@ -52,10 +51,8 @@ define([
 
     function search(searchTerm) {
       $location.url(UrlService.getSearchPath(searchTerm));
-//=======
-//    function search() {
-//      $rootScope.$broadcast('search', vm.searchTerm || '');
-//>>>>>>> feature/good-search-browse-with-modal
+      //vm.searchTerm = searchTerm;
+      //$rootScope.$broadcast('search', vm.searchTerm || '');
     }
 
   }
