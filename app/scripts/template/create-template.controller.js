@@ -316,9 +316,8 @@ define([
 
 
         $scope.elementSearch = function() {
-          console.log("elementSearch " + $scope.searchTerm );
           jQuery("body").trigger("click");
-          jQuery("#searchBrowseModal").modal("show");
+          jQuery("#search-browse-modal").modal("show");
         }
 
         $scope.addElementFromPicker = function() {
