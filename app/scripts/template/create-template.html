@@ -101,65 +101,51 @@
         <div class="sidebar-inner" cedar-sticky-left-menu="true">
 
           <!-- toolbar -->
-          <div id="toolbar" >
+          <div id="toolbar">
             <ul>
-
               <li ng-repeat="fieldType in fieldTypes | limitTo : 4">
                 <a ng-click="addFieldToTemplate(fieldType.cedarType)"><i class="{{fieldType.iconClass}}"></i></a>
               </li>
-
-              <!-- expanded toolbar dropdown -->
               <li>
                 <div dropdown auto-close="outsideClick">
                   <a class="more" data-toggle="dropdown" data-target=".field-selector" aria-expanded="false"
                       dropdown-toggle uib-dropdown keyboard-nav dropdown-append-to-body><i
-
                       class="fa fa-ellipsis-h"></i></a>
 
-                  <div class="collapse dropdown-menu field-selector other-elements"
-                      role="menu">
+                  <div class="collapse dropdown-menu field-selector other-elements" role="menu">
                     <div class="row">
                       <ul class="col-xs-6 list-unstyled pull-left">
                         <li class="item"
                             ng-repeat="fieldType in fieldTypes"
-                            ng-if="$index > 4 && $index <= 8 ">
+                            ng-if="$index <= fieldTypes.length/2 ">
                           <a data-toggle="dropdown" data-target=".field-selector" dropdown-toggle
                               ng-click="addFieldToTemplate(fieldType.cedarType)"><i
-                              class="{{fieldType.iconClass}}"></i><span  translate>{{"FIELDS.FIELD_TYPE." + fieldType.cedarType + ".NAME"}}</span></a>
+                              class="{{fieldType.iconClass}}"></i><span translate>{{"FIELDS.FIELD_TYPE." + fieldType.cedarType + ".NAME"}}</span></a>
                         </li>
                       </ul>
-                      <ul class="col-xs-6 list-unstyled pull-right">
-                        <li  class="item"
+                      <ul class="row list-unstyled pull-right">
+                        <li class="item"
                             ng-repeat="fieldType in fieldTypes"
-                            ng-if="$index > 8">
+                            ng-if="$index > fieldTypes.length/2">
                           <a data-toggle="dropdown" data-target=".field-selector" dropdown-toggle
                               ng-click="addFieldToTemplate(fieldType.cedarType)"><i
                               class="{{fieldType.iconClass}}"></i><span
-                               translate>{{"FIELDS.FIELD_TYPE." + fieldType.cedarType + ".NAME"}}</span></a>
+                              translate>{{"FIELDS.FIELD_TYPE." + fieldType.cedarType + ".NAME"}}</span></a>
                         </li>
                       </ul>
                     </div>
-                    <div >
-                      <form role="form" ng-submit="elementSearch();" id="element-search-form"
-                          ng-model="searchElementForm">
-                        <div class="form-group">
-                          <div class="row input-group">
-
-                            <input ng-model="searchTerm" class="form-control search-input" type="text"
-                                placeholder="Search"  aria-describedby="search-icon" />
-                            <span class="input-group-addon" id="search-icon"><i class="fa fa-search"
-                            aria-hidden="true" ></i><span>
-                              </span>
-
-                          </div>
-                        </div>
-                      </form>
+                    <div>
+                      <ul class="row list-unstyled  search">
+                        <li class="item" style="width:auto; text-align:center">
+                          <a data-toggle="dropdown" data-target=".field-selector" dropdown-toggle
+                              ng-click="elementSearch();"><i
+                              class="fa fa-search "></i><span
+                              translate>MORE</span></a>
+                        </li>
                     </div>
                   </div>
                 </div>
               </li>
-
-
             </ul>
           </div>
 

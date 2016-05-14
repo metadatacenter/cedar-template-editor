@@ -361,6 +361,38 @@ define([
       var params = $location.search();
       $location.url(UrlService.getFolderContents(params.folderId));
     };
+
+    $scope.elementSearch = function() {
+      jQuery("body").trigger("click");
+      jQuery("#search-browse-modal").modal("show");
+    }
+
+    $scope.addElementFromPicker = function() {
+      if ($scope.pickerResource) {
+        $scope.addElementToElement($scope.pickerResource);
+      }
+      $scope.hideSearchBrowsePicker();
+    };
+
+    $scope.pickElementFromPicker = function(resource) {
+      $scope.addElementToElement(resource);
+      $scope.hideSearchBrowsePicker();
+    };
+
+    $scope.selectElementFromPicker = function(resource) {
+      $scope.pickerResource = resource;
+    };
+
+    $scope.showSearchBrowsePicker = function() {
+      $scope.pickerResource = null;
+    };
+
+    $scope.hideSearchBrowsePicker = function() {
+      jQuery('#search-browse-modal').modal('hide')
+    };
+
+
+
   }
 
 });

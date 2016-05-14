@@ -344,35 +344,6 @@ define([
           jQuery('#search-browse-modal').modal('hide')
         };
 
-
-        $scope.primaryFieldTypes = [];
-        $scope.dynamicFieldTypesEven = [];
-        $scope.dynamicFieldTypesOdd = [];
-        $scope.staticFieldTypesEven = [];
-        $scope.staticFieldTypesOdd = [];
-        var evenD = true;
-        var evenS = true;
-        for (var i = 0; i < $scope.fieldTypes.length; i++) {
-          if ($scope.fieldTypes[i].primaryField) {
-            $scope.primaryFieldTypes.push($scope.fieldTypes[i]);
-          } else {
-            if ($scope.fieldTypes[i].staticField) {
-              if (evenS) {
-                $scope.staticFieldTypesEven.push($scope.fieldTypes[i]);
-              } else {
-                $scope.staticFieldTypesOdd.push($scope.fieldTypes[i]);
-              }
-              evenS = !evenS;
-            } else {
-              if (evenD) {
-                $scope.dynamicFieldTypesEven.push($scope.fieldTypes[i]);
-              } else {
-                $scope.dynamicFieldTypesOdd.push($scope.fieldTypes[i]);
-              }
-              evenD = !evenD;
-            }
-          }
-        }
       }
 
     }

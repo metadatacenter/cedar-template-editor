@@ -1,26 +1,21 @@
-<!--<div class="template-header">-->
-  <!--<div class="container">-->
-    <!--<div class="row">-->
-      <!--&lt;!&ndash;<div class="left-sidebar col-sm-8 col-sm-offset-2">&ndash;&gt;-->
-        <!--&lt;!&ndash;<h2 ng-if="form._ui.title" class="runtime-template-name" ng-bind="form._ui.title"></h2>&ndash;&gt;-->
+<div class="template-header">
+  <div class="container">
+    <div class="row">
+      <div class="left-sidebar col-sm-8 col-sm-offset-2">
+        <h2 ng-if="form._ui.title" class="runtime-template-name" ng-bind="form._ui.title"></h2>
 
-        <!--&lt;!&ndash;<h2 ng-if="!form._ui.title" class="runtime-template-name" translate>GENERIC.FillOutATemplate</h2>&ndash;&gt;-->
-      <!--&lt;!&ndash;</div>&ndash;&gt;-->
-      <!--&lt;!&ndash; /.left-sidebar &ndash;&gt;-->
-    <!--</div>-->
-    <!--&lt;!&ndash; /.row &ndash;&gt;-->
-  <!--</div>-->
-  <!--&lt;!&ndash; /.container &ndash;&gt;-->
-<!--</div> &lt;!&ndash; /.template-header &ndash;&gt;-->
+        <h2 ng-if="!form._ui.title" class="runtime-template-name" translate>GENERIC.FillOutATemplate</h2>
+      </div>
+      <!--/.left-sidebar-->
+    </div>
+    <!-- /.row -->
+  </div>
+  <!-- /.container -->
+</div> <!-- /.template-header -->
 
 <div class="template-body">
-
-
   <div class="container">
-
     <div class="row">
-
-
       <div class="right-body col-sm-8 col-sm-offset-2">
 
         <!-- build the form -->
@@ -53,14 +48,12 @@
           <div ng-if="runtimeSuccessMessages.length" class="alert alert-success" role="alert">
             <p ng-repeat="message in runtimeSuccessMessages"><i class="fa fa-check"></i>{{message}}</p>
           </div>
-          <button type="button" class="btn btn-clear" ng-click="cancelTemplate()"  translate>GENERIC.Cancel</button>
+          <button type="button" class="btn btn-clear" ng-click="cancelTemplate()" translate>GENERIC.Cancel</button>
           <button type="button" class="btn btn-save" ng-click="savePopulatedTemplate()" translate>GENERIC.Save</button>
         </div>
         <!-- /.edit-actions -->
       </div>
       <!-- /.right-body -->
-
-
     </div>
     <!-- /.row -->
   </div>

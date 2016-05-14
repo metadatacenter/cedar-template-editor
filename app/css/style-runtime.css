@@ -13566,10 +13566,13 @@ div.errorTechnicalDetails textarea {
   position: relative;
   border: 1px solid #d2d2d2;
   width: 80px;
-  margin-top: 40px;
+  margin-top: 80px;
 }
 #toolbar .more {
   font-size: 20px;
+}
+#toolbar .search {
+  border-top: 1px solid #d2d2d2;
 }
 #toolbar .item {
   text-align: left;
@@ -13578,7 +13581,7 @@ div.errorTechnicalDetails textarea {
 }
 #toolbar ul {
   margin: 10px;
-  padding: 10px;
+  padding: 5px;
 }
 #toolbar ul li {
   list-style: none;
