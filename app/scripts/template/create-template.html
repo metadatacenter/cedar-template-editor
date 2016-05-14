@@ -1,7 +1,7 @@
 <div class="template-header" id="template-header">
   <div class="container">
     <div class="row">
-      <div class="left-sidebar col-sm-3">
+      <div class="left-sidebar col-sm-4 col-sm-offset-1">
         <div id="element-name-container">
           <i class="cedar-svg-metadata"></i>
 
@@ -14,7 +14,7 @@
         </div>
       </div>
       <!-- /.left-sidebar -->
-      <div class="right-body col-sm-9">
+      <div class="right-body col-sm-6">
         <div id="element-description-container">
           <form>
             <div class="form-group floating-label-wrapper">
@@ -34,7 +34,7 @@
 <div class="template-body create-template-body">
   <div class="container">
     <div class="row">
-      <div class="right-body col-sm-9">
+      <div class="right-body col-sm-10 col-sm-offset-1">
         <div id="form-preview-section">
           <div class="form-preview collapse in">
             <!--<div class="empty-text" ng-show="isPropertiesEmpty()">-->
@@ -96,7 +96,7 @@
       </div>
       <!-- /.right-body -->
 
-      <div class="left-sidebar col-sm-3 pull-right">
+      <div class="left-sidebar col-sm-1 pull-right">
         <div id="stickyFix"></div>
         <div class="sidebar-inner" cedar-sticky-left-menu="true">
 
@@ -150,7 +150,7 @@
           </div>
 
           <!-- search browse modal for adding elements -->
-          <div class="modal fade controlled-terms-modal" tabindex="-1" id="search-browse-modal" data-backdrop="static">
+          <div class="modal fade controlled-terms-modal" tabindex="-1" id="{{searchBrowseModalId}}" data-backdrop="static">
             <div class="modal-dialog">
               <div class="modal-content">
                 <div class="modal-header">
