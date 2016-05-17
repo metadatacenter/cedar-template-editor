@@ -9196,6 +9196,23 @@ body.search-browse-modal .footer-buttons button.canc {
 .navbar i.fa.fa-search {
   font-size: 22px;
 }
+.navbar .clear-search {
+  position: absolute;
+  top: -20px;
+  right: 30px;
+  margin: 20px;
+  font-size: 22px;
+}
+.navbar .search-input {
+  padding-right: 40px;
+}
+.navbar .do-search {
+  position: absolute;
+  top: -20px;
+  right: -20px;
+  margin: 20px;
+  font-size: 22px;
+}
 .navbar .navbar-toggle {
   border-radius: 0;
   border: none;
