@@ -889,6 +889,10 @@ define([
         delete $scope.field.maxItems;
       };
 
+      $scope.selectField = function () {
+        console.log('selectField');
+      };
+
 
     };
 

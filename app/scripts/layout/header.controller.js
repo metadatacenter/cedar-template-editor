@@ -50,9 +50,11 @@ define([
     };
 
     function search(searchTerm) {
-      $location.url(UrlService.getSearchPath(searchTerm));
-      //vm.searchTerm = searchTerm;
-      //$rootScope.$broadcast('search', vm.searchTerm || '');
+      if (isDashboard()) {
+        $location.url(UrlService.getSearchPath(searchTerm));
+      }
+      vm.searchTerm = searchTerm;
+      $rootScope.$broadcast('search', vm.searchTerm || '');
     }
 
   }

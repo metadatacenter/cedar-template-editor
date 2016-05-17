@@ -13658,6 +13658,21 @@ div.errorTechnicalDetails textarea {
   top: 0;
   left: 0;
 }
+#search-browse-modal .search-input {
+  padding-right: 60px;
+}
+#search-browse-modal .clear-search {
+  position: absolute;
+  top: 0;
+  right: 30px;
+  margin: 10px;
+}
+#search-browse-modal .do-search {
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 10px;
+}
 #search-browse-modal .footer-buttons {
   padding: 30px;
 }

@@ -317,32 +317,32 @@ define([
         };
 
 
-        $scope.elementSearch = function() {
+        $scope.elementSearch = function () {
           jQuery("body").trigger("click");
           jQuery("#" + $scope.searchBrowseModalId).modal("show");
-        }
+        };
 
-        $scope.addElementFromPicker = function() {
+        $scope.addElementFromPicker = function () {
           if ($scope.pickerResource) {
             $scope.addElementToTemplate($scope.pickerResource);
           }
           $scope.hideSearchBrowsePicker();
         };
 
-        $scope.pickElementFromPicker = function(resource) {
+        $scope.pickElementFromPicker = function (resource) {
           $scope.addElementToTemplate(resource);
           $scope.hideSearchBrowsePicker();
         };
 
-        $scope.selectElementFromPicker = function(resource) {
+        $scope.selectElementFromPicker = function (resource) {
           $scope.pickerResource = resource;
         };
 
-        $scope.showSearchBrowsePicker = function() {
+        $scope.showSearchBrowsePicker = function () {
           $scope.pickerResource = null;
         };
 
-        $scope.hideSearchBrowsePicker = function() {
+        $scope.hideSearchBrowsePicker = function () {
           jQuery("#" + $scope.searchBrowseModalId).modal('hide')
         };
 

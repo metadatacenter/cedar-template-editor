@@ -217,6 +217,7 @@ define([
       }
 
       function goToResource(resource) {
+        vm.params.search = null;
         if (resource.resourceType == 'folder') {
           goToFolder(resource['@id']);
         } else {
@@ -397,7 +398,7 @@ define([
       }
 
       function narrowContent() {
-        return vm.showFilters || vm.showResourceInfo;
+        return vm.showFilters || vm.showResourceInfo || !onDashboard();
       }
 
       function selectResource(resource) {

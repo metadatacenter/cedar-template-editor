@@ -1,0 +1,15 @@
+<div class="row configuration-options" ng-if="!$root.isRuntime() && !isNested() && !ngDisabled && !preview">
+
+  <div class=" col-lg-9 pull-left type-label">
+    <div class="sortable-handler ">
+      <p class="type-label"><span class="sortable-icon"></span><i class="{{fieldIconClass}}"></i>{{fieldTitle}}
+      <span class="multiple-instance-cardinality"
+          ng-show="$parent.field.hasOwnProperty('minItems')">
+           {{$parent.field.minItems}} .. {{$parent.field.maxItems || "N"}}
+       </span>
+      </p>
+    </div>
+  </div>
+  <div class="col-lg-3 pull-right configuration-actions"  ng-include="'scripts/form/field-inline/edit-options.partial.html'" ng-init="childType='field'"></div>
+
+</div>
