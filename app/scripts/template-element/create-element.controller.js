@@ -19,6 +19,8 @@ define([
 
     $rootScope.showSearch = true;
 
+    $rootScope.searchBrowseModalId = "search-browse-modal";
+
     // Set page title variable when this controller is active
     $rootScope.pageTitle = 'Element Designer';
     // Setting default false flag for $scope.favorite
@@ -70,41 +72,12 @@ define([
       $scope.showMenuPopover = false;
       $scope.pickerResource = null;
       $scope.showCreateEditForm = false;
-      $('body').addClass('search-browse-modal');
     };
     $scope.hideSearchBrowsePicker = function() {
       $scope.showCreateEditForm = true;
-      $('body').removeClass('search-browse-modal');
     };
 
-    $scope.primaryFieldTypes = [];
-    $scope.dynamicFieldTypesEven = [];
-    $scope.dynamicFieldTypesOdd = [];
-    $scope.staticFieldTypesEven = [];
-    $scope.staticFieldTypesOdd = [];
-    var evenD = true;
-    var evenS = true;
-    for (var i = 0; i < $scope.fieldTypes.length; i++) {
-      if ($scope.fieldTypes[i].primaryField) {
-        $scope.primaryFieldTypes.push($scope.fieldTypes[i]);
-      } else {
-        if ($scope.fieldTypes[i].staticField) {
-          if (evenS) {
-            $scope.staticFieldTypesEven.push($scope.fieldTypes[i]);
-          } else {
-            $scope.staticFieldTypesOdd.push($scope.fieldTypes[i]);
-          }
-          evenS = !evenS;
-        } else {
-          if (evenD) {
-            $scope.dynamicFieldTypesEven.push($scope.fieldTypes[i]);
-          } else {
-            $scope.dynamicFieldTypesOdd.push($scope.fieldTypes[i]);
-          }
-          evenD = !evenD;
-        }
-      }
-    }
+
 
     var getElement = function () {
       $scope.form = {};
@@ -364,7 +337,7 @@ define([
 
     $scope.elementSearch = function() {
       jQuery("body").trigger("click");
-      jQuery("#search-browse-modal").modal("show");
+      jQuery("#" + $scope.searchBrowseModalId).modal("show");
     }
 
     $scope.addElementFromPicker = function() {
@@ -388,7 +361,7 @@ define([
     };
 
     $scope.hideSearchBrowsePicker = function() {
-      jQuery('#search-browse-modal').modal('hide')
+      jQuery("#" + $scope.searchBrowseModalId).modal('hide')
     };
 
 

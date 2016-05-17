@@ -336,8 +336,8 @@ div.errorTechnicalDetails {
 #toolbar {
   position:relative;
   border: 1px solid #d2d2d2;
-  width: 80px;
-  margin-top: 80px;
+  width: 60px;
+  margin-top: 40px;
 
   .more {
     font-size: 20px;
@@ -356,18 +356,17 @@ div.errorTechnicalDetails {
 
     li {
       list-style: none;
-      margin: 10px auto;
+      margin: 5px auto;
       text-align: center;
-      padding: 10px;
+      padding: 5px;
     }
   }
   .other-elements {
     position: absolute;
-    width: 465px;
-    right: 90px;
+    right: 70px;
     border: 1px solid #fff;
     background: #fff;
-    top: 0;
+    top: -3px;
     left: auto;
     border-radius: 0;
     box-shadow: none;
@@ -384,7 +383,7 @@ div.errorTechnicalDetails {
     .list-unstyled {
 
       li {
-        margin-bottom: 15px;
+        margin-bottom: 10px;
         text-transform: uppercase;
 
         a {
@@ -442,6 +441,24 @@ div.errorTechnicalDetails {
   top:0;
   left:0;
 
+  .search-input {
+      padding-right:60px;
+  }
+
+  .clear-search {
+    position: absolute;
+    top: 0;
+    right: 30px;
+    margin:10px
+  }
+
+  .do-search {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin:10px
+  }
+
   .footer-buttons {
     padding: 30px;
 
@@ -470,6 +487,10 @@ div.errorTechnicalDetails {
   }
 }
 
+
+body.modal-open {
+  overflow: hidden;
+}
 
 
 /*

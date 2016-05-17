@@ -1,22 +1,7 @@
-<div class="template-header">
-  <div class="container">
-    <div class="row">
-      <div class="left-sidebar col-sm-8 col-sm-offset-2">
-        <h2 ng-if="form._ui.title" class="runtime-template-name" ng-bind="form._ui.title"></h2>
-
-        <h2 ng-if="!form._ui.title" class="runtime-template-name" translate>GENERIC.FillOutATemplate</h2>
-      </div>
-      <!--/.left-sidebar-->
-    </div>
-    <!-- /.row -->
-  </div>
-  <!-- /.container -->
-</div> <!-- /.template-header -->
-
 <div class="template-body">
   <div class="container">
     <div class="row">
-      <div class="right-body col-sm-8 col-sm-offset-2">
+      <div class="right-body col-sm-10 col-sm-offset-1">
 
         <!-- build the form -->
         <form-directive form="form" model="instance" page-index="pageIndex" is-edit-data="isEditData"></form-directive>

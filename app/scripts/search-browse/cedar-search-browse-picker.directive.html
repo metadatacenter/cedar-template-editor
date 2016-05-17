@@ -71,7 +71,7 @@
       <div class="modal-content">
         <!-- header -->
         <div class="modal-header">
-          <div class="container">
+          <div class="container" style="height:200px">
             <div class="row">
               <div class="col-sm-12 clearfix">
                 <div class="pull-left">
@@ -213,9 +213,9 @@
               <i class="fa" ng-class="dc.getResourceIconClass(resource)"></i>
               <p>{{ resource.name }}</p>
               <p>{{ resource.description }}</p>
-              <div class="quick-details-box">
+              <div class="quick-details-box" ng-show="dc.onDashboard()">
                 <ul class="list-inline">
-                  <li ng-if="resource.resourceType == 'template'"><button title="Run" class="btn btn-sm btn-info btn-circle" ng-click="dc.launchInstance(resource)"><i class="fa fa-check-square-o"></i></button></li>
+                  <li ng-if="resource.resourceType == 'template'"><button title="Populate" class="btn btn-sm btn-info btn-circle" ng-click="dc.launchInstance(resource)"><i class="fa fa-check-square-o"></i></button></li>
                   <li><button title="Info" class="btn btn-sm btn-info btn-circle" ng-click="dc.showInfoPanel(resource)"><i class="fa fa-info"></i></button></li>
                   <li><button title="Edit" class="btn btn-sm btn-info btn-circle" ng-click="dc.editResource(resource)"><i class="fa fa-pencil"></i></button></li>
                   <li><button title="Delete" class="btn btn-sm btn-info btn-circle" ng-click="dc.deleteResource(resource)"><i class="fa fa-times"></i></button></li>
@@ -234,7 +234,7 @@
             <th>Title</th>
             <th>Created</th>
             <th>Modified</th>
-            <th></th>
+            <th ng-show="dc.onDashboard()"></th>
             </thead>
             <tbody>
               <tr class="box-row"
@@ -246,8 +246,8 @@
                 <td><a ng-click="dc.selectResource(resource)">{{ resource.name }}</a></td>
                 <td>{{ resource.createdOnTS | prettyDate }}</td>
                 <td>{{ resource.lastUpdatedOnTS | prettyDate }}</td>
-                <td>
-                  <ul class="list-inline">
+                <td ng-show="dc.onDashboard()">
+                  <ul class="list-inline" >
                     <li ng-if="resource.resourceType == 'template'"><button title="Run" class="btn btn-sm btn-info btn-circle" ng-click="dc.launchInstance(resource)"><i class="fa fa-check-square-o"></i></button></li>
                     <li><button title="Info" class="btn btn-sm btn-info btn-circle" ng-click="dc.showInfoPanel(resource)"><i class="fa fa-info"></i></button></li>
                     <li><button title="Edit" class="btn btn-sm btn-info btn-circle" ng-click="dc.editResource(resource)"><i class="fa fa-pencil"></i></button></li>

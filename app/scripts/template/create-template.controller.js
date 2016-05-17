@@ -22,6 +22,8 @@ define([
         // Set Page Title variable when this controller is active
         $rootScope.pageTitle = 'Template Designer';
 
+        $rootScope.searchBrowseModalId = "search-browse-modal";
+
         // Configure mini header
         var pageId = CONST.pageId.TEMPLATE;
         var applicationMode = CONST.applicationMode.CREATOR;
@@ -315,33 +317,33 @@ define([
         };
 
 
-        $scope.elementSearch = function() {
+        $scope.elementSearch = function () {
           jQuery("body").trigger("click");
-          jQuery("#search-browse-modal").modal("show");
-        }
+          jQuery("#" + $scope.searchBrowseModalId).modal("show");
+        };
 
-        $scope.addElementFromPicker = function() {
+        $scope.addElementFromPicker = function () {
           if ($scope.pickerResource) {
             $scope.addElementToTemplate($scope.pickerResource);
           }
           $scope.hideSearchBrowsePicker();
         };
 
-        $scope.pickElementFromPicker = function(resource) {
+        $scope.pickElementFromPicker = function (resource) {
           $scope.addElementToTemplate(resource);
           $scope.hideSearchBrowsePicker();
         };
 
-        $scope.selectElementFromPicker = function(resource) {
+        $scope.selectElementFromPicker = function (resource) {
           $scope.pickerResource = resource;
         };
 
-        $scope.showSearchBrowsePicker = function() {
+        $scope.showSearchBrowsePicker = function () {
           $scope.pickerResource = null;
         };
 
-        $scope.hideSearchBrowsePicker = function() {
-          jQuery('#search-browse-modal').modal('hide')
+        $scope.hideSearchBrowsePicker = function () {
+          jQuery("#" + $scope.searchBrowseModalId).modal('hide')
         };
 
       }

@@ -13565,8 +13565,8 @@ div.errorTechnicalDetails textarea {
 #toolbar {
   position: relative;
   border: 1px solid #d2d2d2;
-  width: 80px;
-  margin-top: 80px;
+  width: 60px;
+  margin-top: 40px;
 }
 #toolbar .more {
   font-size: 20px;
@@ -13585,17 +13585,16 @@ div.errorTechnicalDetails textarea {
 }
 #toolbar ul li {
   list-style: none;
-  margin: 10px auto;
+  margin: 5px auto;
   text-align: center;
-  padding: 10px;
+  padding: 5px;
 }
 #toolbar .other-elements {
   position: absolute;
-  width: 465px;
-  right: 90px;
+  right: 70px;
   border: 1px solid #fff;
   background: #fff;
-  top: 0;
+  top: -3px;
   left: auto;
   border-radius: 0;
   box-shadow: none;
@@ -13609,7 +13608,7 @@ div.errorTechnicalDetails textarea {
   text-transform: uppercase;
 }
 #toolbar .other-elements .list-unstyled li {
-  margin-bottom: 15px;
+  margin-bottom: 10px;
   text-transform: uppercase;
 }
 #toolbar .other-elements .list-unstyled li a {
@@ -13659,6 +13658,21 @@ div.errorTechnicalDetails textarea {
   top: 0;
   left: 0;
 }
+#search-browse-modal .search-input {
+  padding-right: 60px;
+}
+#search-browse-modal .clear-search {
+  position: absolute;
+  top: 0;
+  right: 30px;
+  margin: 10px;
+}
+#search-browse-modal .do-search {
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 10px;
+}
 #search-browse-modal .footer-buttons {
   padding: 30px;
 }
@@ -13680,6 +13694,9 @@ div.errorTechnicalDetails textarea {
 #search-browse-modal .footer-buttons button.canc:focus {
   outline: none;
   box-shadow: none;
+}
+body.modal-open {
+  overflow: hidden;
 }
 /*
 ================================================
