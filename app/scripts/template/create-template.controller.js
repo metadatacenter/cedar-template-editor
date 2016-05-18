@@ -171,7 +171,6 @@ define([
         $scope.saveTemplate = function () {
           populateCreatingFieldOrElement();
           if (dontHaveCreatingFieldOrElement()) {
-            console.log('saveTemplate');
             UIMessageService.conditionalOrConfirmedExecution(
                 StagingService.isEmpty(),
                 function () {

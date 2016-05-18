@@ -31,6 +31,10 @@ define([
       };
       setDirectory();
 
+      $scope.console = function (value) {
+        console.log(value);
+      }
+
       $scope.setValueType = function () {
         var properties = $rootScope.propertiesOf($scope.field);
         var typeEnum = properties['@type'].oneOf[0].enum;
@@ -224,16 +228,10 @@ define([
       $scope.$on("saveForm", function () {
         var p = $rootScope.propertiesOf($scope.field);
 
-        // default title and description
-        if (!$rootScope.schemaOf($scope.field)._ui.title) {
-          $rootScope.schemaOf($scope.field)._ui.title = $translate.instant("VALIDATION.noNameField");
-        }
-        if (!$rootScope.schemaOf($scope.field)._ui.description) {
-          $rootScope.schemaOf($scope.field)._ui.description = $translate.instant("VALIDATION.noDescriptionField");
-        }
+
 
         if ($scope.isEditState() && !$scope.add()) {
-            $scope.$emit("invalidFieldState",
+          $scope.$emit("invalidFieldState",
               ["add", DataManipulationService.getFieldSchema($scope.field)._ui.title, $scope.field["@id"]]);
         } else {
           $scope.$emit("invalidFieldState",
@@ -306,6 +304,32 @@ define([
             }
           }
           $scope.setValueType();
+        }
+      }
+
+      $scope.setDefaults = function () {
+        // default title and description
+        if (!$rootScope.schemaOf($scope.field)._ui.title) {
+          $rootScope.schemaOf($scope.field)._ui.title = $translate.instant("VALIDATION.noNameField");
+        }
+        if (!$rootScope.schemaOf($scope.field)._ui.description) {
+          $rootScope.schemaOf($scope.field)._ui.description = $translate.instant("VALIDATION.noDescriptionField");
+        }
+
+        // if this is radio, then add at least two options and set default value
+        if ($rootScope.schemaOf($scope.field)._ui.inputType == "radio" || $rootScope.schemaOf($scope.field)._ui.inputType == "checkbox" || $rootScope.schemaOf($scope.field)._ui.inputType == "list") {
+
+          // make sure we have the minimum
+          while ($rootScope.schemaOf($scope.field)._ui.options.length < 2) {
+            $scope.option();
+          }
+
+          // and they all have text fields filled in
+          for (var i = 0; i < $rootScope.schemaOf($scope.field)._ui.options.length; i++) {
+            if ($rootScope.schemaOf($scope.field)._ui.options[i].text.length == 0) {
+              $rootScope.schemaOf($scope.field)._ui.options[i].text = $translate.instant("VALIDATION.noNameField");
+            }
+          }
         }
       }
 
@@ -408,9 +432,9 @@ define([
         return unmetConditions;
       };
 
-      // Switch from creating to completed.
-      $scope.add = function () {
+      $scope.checkMinMax = function() {
 
+        // delete min or max as necessary
         if (typeof $scope.field.minItems == 'undefined' || $scope.field.minItems < 0) {
           delete $scope.field.minItems;
           delete $scope.field.maxItems;
@@ -418,23 +442,36 @@ define([
           delete $scope.field.maxItems;
         }
 
-        $scope.errorMessages = $scope.checkFieldConditions($scope.field);
+        // delete any max if it is bigger than min
+        if ($scope.field.minItems && $scope.field.maxItems && $scope.field.minItems > $scope.field.maxItems) {
+          delete $scope.field.maxItems;
+        }
 
+        if (typeof $scope.field.minItems == 'undefined') {
+          if ($scope.field.items) {
+            DataManipulationService.uncardinalizeField($scope.field);
+          }
+        } else {
+          if (!$scope.field.items) {
+            DataManipulationService.cardinalizeField($scope.field);
+          }
+        }
+      };
+
+      // Switch from creating to completed.
+      $scope.add = function () {
+
+        $scope.checkMinMax();
+        $scope.setDefaults();
+
+        $scope.errorMessages = $scope.checkFieldConditions($scope.field);
         $scope.errorMessages = jQuery.merge($scope.errorMessages,
             ClientSideValidationService.checkFieldCardinalityOptions($scope.field));
 
-        if ($scope.errorMessages.length == 0) {
+        var result = $scope.errorMessages.length == 0;
 
-          if (typeof $scope.field.minItems == 'undefined') {
-            if ($scope.field.items) {
-              DataManipulationService.uncardinalizeField($scope.field);
-            }
-          } else {
-            if (!$scope.field.items) {
-              DataManipulationService.cardinalizeField($scope.field);
-            }
-          }
-
+        // don't continue with errors
+        if (result) {
           delete $rootScope.propertiesOf($scope.field)._tmp;
 
           if ($scope.renameChildKey) {
@@ -445,28 +482,32 @@ define([
           $scope.$emit("invalidFieldState",
               ["remove", DataManipulationService.getFieldSchema($scope.field)._ui.title, $scope.field["@id"]]);
           parseField();
-          return true;
+
         }
-        return false;
+        return result;
       };
 
       // Function to add additional options for radio, checkbox, and list fieldTypes
-      $scope.option = function () {
+      $scope.option = function (name) {
         var emptyOption = {
-          "text": ""
+          "text": name || ""
         };
 
         DataManipulationService.getFieldSchema($scope.field)._ui.options.push(emptyOption);
       };
 
-      $scope.edit = function () {
+      $scope.toggleEdit = function () {
         if (!$scope.isEditState()) {
-          var p = $rootScope.propertiesOf($scope.field);
-          p._tmp = p._tmp || {};
-          p._tmp.state = "creating";
-
-          $scope.toggleControlledTerm('none');
+          $scope.edit();
         }
+      };
+
+      $scope.edit = function () {
+        var p = $rootScope.propertiesOf($scope.field);
+        p._tmp = p._tmp || {};
+        p._tmp.state = "creating";
+
+        $scope.toggleControlledTerm('none');
       };
 
       $scope.isEditState = function () {
@@ -773,6 +814,11 @@ define([
         return result;
       };
 
+      $scope.showModal = function (id) {
+        console.log("showModal" + id);
+        jQuery("#" + id).modal('show');
+      };
+
       /**
        * get the class description from the the addedFields map
        * @param item
@@ -887,7 +933,6 @@ define([
       /* end of controlled terms functionality */
 
       $scope.clearMinMax = function () {
-        console.log('clearMinMax');
         console.log($scope.field);
         delete $scope.field.minItems;
         delete $scope.field.maxItems;

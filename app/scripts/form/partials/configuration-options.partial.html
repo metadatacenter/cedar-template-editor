@@ -4,24 +4,24 @@
     <div class="element-toggles list table-style">
       <div ng-if="hasControlledTerms()" class="element-toggle table-cell-style"
           ng-class="{active: isTabActive('field')}"
-          ng-click="toggleControlledTerm('field')">
+          ng-click="toggleControlledTerm('field'); console('field '); $event.stopPropagation();">
         <span><i class="cedar-svg-controll-term collapsed" style="padding-bottom:10px"></i>Field</span>
       </div>
       <div ng-if="hasControlledTerms()" class="element-toggle table-cell-style"
           ng-class="{active: isTabActive('values')}"
-          ng-click="toggleControlledTerm('values')">
+          ng-click="toggleControlledTerm('values'); console('value '); $event.stopPropagation();">
         <span><i class="cedar-svg-controll-term collapsed" style="padding-bottom:10px"></i>Value</span>
       </div>
       <div ng-if="hasDateRange()" class="element-toggle table-cell-style" ng-class="{active: isTabActive('range')}"
-          ng-click="toggleControlledTerm('range')">
+          ng-click="toggleControlledTerm('range'); console('date '); $event.stopPropagation();">
         <span>Range</span>
       </div>
       <div class="element-toggle table-cell-style" ng-class="{active: isTabActive('cardinality')}"
-          ng-click="toggleControlledTerm('cardinality')">
+          ng-click="toggleControlledTerm('cardinality'); console('cardinality '); $event.stopPropagation();">
         <span>Multiple</span>
       </div>
       <div class="element-toggle table-cell-style" ng-class="{active: isTabActive('required')}"
-          ng-click="toggleControlledTerm('required')">
+          ng-click="toggleControlledTerm('required'); console('required '); $event.stopPropagation();">
         <span>Required</span>
       </div>
     </div>
@@ -41,13 +41,13 @@
   <!-- /.date-type-toggle -->
 
   <!-- Required tab  -->
-  <div id="required" class="cardinality-options" ng-show="isTabActive('required')">
+  <div id="required" class="cardinality-options" ng-show="isTabActive('required')"  >
     <div class="type-toggle date">
-      <div class="single-date d-option" ng-click="$root.schemaOf(field)._valueConstraints.requiredValue = false"
+      <div class="single-date d-option" ng-click="$root.schemaOf(field)._valueConstraints.requiredValue = false; console('required false'); $event.stopPropagation();"
           ng-class="{active: !$root.schemaOf(field)._valueConstraints.requiredValue}">
         <span>No</span>
       </div>
-      <div class="date-range d-option" ng-click="$root.schemaOf(field)._valueConstraints.requiredValue = true"
+      <div class="date-range d-option" ng-click="$root.schemaOf(field)._valueConstraints.requiredValue = true; console('required true'); $event.stopPropagation();"
           ng-class="{active: $root.schemaOf(field)._valueConstraints.requiredValue}">
         <span>Yes</span>
       </div>
@@ -59,14 +59,14 @@
       <div class="form-group validation-pattern pull-left min-items-option">
         <label translate>GENERIC.Min</label>
         <select class="" ng-model="$parent.field.minItems" title=""
-            ng-options="v.value as v.label for v in $root.minCardinalities" select-picker="">
+            ng-options="v.value as v.label for v in $root.minCardinalities" select-picker="" ng-click="console('min '); $event.stopPropagation();">
         </select>
       </div>
       <div class="form-group validation-pattern pull-left max-items-option">
         <label translate>GENERIC.Max</label>
         <select class="" ng-model="$parent.field.maxItems"
             ng-options="v.value as v.label for v in $root.maxCardinalities"
-            title="" select-picker="">
+            title="" select-picker="" ng-click="console('max '); $event.stopPropagation();">
         </select>
       </div>
     <!-- /.form-group -->
@@ -115,7 +115,7 @@
                       {{parseOntologyName(key)}}
                     </td>
                     <td>
-                      <div class="item item-delete" ng-click="deleteFieldAddedItem(key)">
+                      <div class="item item-delete" ng-click="deleteFieldAddedItem(key); console('delete field'); $event.stopPropagation();">
                         <i class="fa fa-close"></i>
                       </div>
                     </td>
@@ -127,8 +127,7 @@
           </div>
         </div>
         <div class="clear-save">
-          <button type="button" class="std-button btn search-ontologies-button" data-toggle="modal"
-              data-target="{{'#' + getModalId(true)}}">Search
+          <button type="button" class="std-button btn search-ontologies-button" ng-click="showModal(getModalId(true)); console('search field'); $event.stopPropagation();">Search
           </button>
           <!--<button type="button" class="std-button btn search-ontologies-button">Create</button>-->
         </div>
@@ -180,7 +179,7 @@
                     </td>
                     <td>&nbsp;</td>
                     <td>
-                      <div class="item item-delete" ng-click="deleteFieldAddedClass(class)">
+                      <div class="item item-delete" ng-click="deleteFieldAddedClass(class); console('delete value'); $event.stopPropagation();">
                         <i class="clickable fa fa-close"></i>
                       </div>
                     </td>
@@ -192,7 +191,7 @@
                     <td>{{valueSet.vsCollection.substr(valueSet.vsCollection.lastIndexOf('/') + 1)}}</td>
                     <td>{{valueSet.numChildren}}</td>
                     <td>
-                      <div class="item item-delete" ng-click="deleteFieldAddedValueSet(valueSet)">
+                      <div class="item item-delete" ng-click="deleteFieldAddedValueSet(valueSet); console('delete'); $event.stopPropagation();">
                         <i class="clickable fa fa-close"></i>
                       </div>
                     </td>
@@ -204,7 +203,7 @@
                     <td></td>
                     <td>{{ontology.numChildren}}</td>
                     <td>
-                      <div class="item item-delete" ng-click="deleteFieldAddedOntology(ontology)">
+                      <div class="item item-delete" ng-click="deleteFieldAddedOntology(ontology);c onsole('delete'); $event.stopPropagation();">
                         <i class="clickable fa fa-close"></i>
                       </div>
                     </td>
@@ -216,7 +215,7 @@
                     <td>{{branch.acronym}}</td>
                     <td></td>
                     <td>
-                      <div class="item item-delete" ng-click="deleteFieldAddedBranch(branch)">
+                      <div class="item item-delete" ng-click="deleteFieldAddedBranch(branch); console('delete'); $event.stopPropagation();">
                         <i class="clickable fa fa-close"></i>
                       </div>
                     </td>
@@ -226,9 +225,8 @@
               </div>
             </div>
           </div>
-          <div class="clear-save">
-            <button type="button" class="std-button btn search-ontologies-button" data-toggle="modal"
-                data-target="{{'#' + getModalId(false)}}">Search
+          <div class="clear-save" >
+            <button type="button" class="std-button btn search-ontologies-button"   ng-click="showModal(getModalId(false)); console('search value'); $event.stopPropagation();">Search
             </button>
             <!--<button type="button" class="std-button btn search-ontologies-button">Create</button>-->
           </div>
