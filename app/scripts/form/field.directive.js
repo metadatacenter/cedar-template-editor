@@ -80,6 +80,7 @@ define([
 
       // When form submit event is fired, check field for simple validation
       $scope.$on('submitForm', function (event) {
+        console.log('submitForm');
 
         // If field is required and is empty, emit failed emptyRequiredField event
         if ($rootScope.schemaOf($scope.field)._valueConstraints && $rootScope.schemaOf($scope.field)._valueConstraints.requiredValue) {
@@ -222,18 +223,17 @@ define([
 
       $scope.$on("saveForm", function () {
         var p = $rootScope.propertiesOf($scope.field);
-        var noName = $translate.instant("VALIDATION.noNameField");
 
         // default title and description
         if (!$rootScope.schemaOf($scope.field)._ui.title) {
-          $rootScope.schemaOf($scope.field)._ui.title = noName;
+          $rootScope.schemaOf($scope.field)._ui.title = $translate.instant("VALIDATION.noNameField");
         }
         if (!$rootScope.schemaOf($scope.field)._ui.description) {
-          $rootScope.schemaOf($scope.field)._ui.description = noName;
+          $rootScope.schemaOf($scope.field)._ui.description = $translate.instant("VALIDATION.noDescriptionField");
         }
 
-        if (p._tmp && p._tmp.state == "creating") {
-          $scope.$emit("invalidFieldState",
+        if ($scope.isEditState() && !$scope.add()) {
+            $scope.$emit("invalidFieldState",
               ["add", DataManipulationService.getFieldSchema($scope.field)._ui.title, $scope.field["@id"]]);
         } else {
           $scope.$emit("invalidFieldState",
@@ -445,7 +445,9 @@ define([
           $scope.$emit("invalidFieldState",
               ["remove", DataManipulationService.getFieldSchema($scope.field)._ui.title, $scope.field["@id"]]);
           parseField();
+          return true;
         }
+        return false;
       };
 
       // Function to add additional options for radio, checkbox, and list fieldTypes
@@ -458,11 +460,13 @@ define([
       };
 
       $scope.edit = function () {
-        var p = $rootScope.propertiesOf($scope.field);
-        p._tmp = p._tmp || {};
-        p._tmp.state = "creating";
+        if (!$scope.isEditState()) {
+          var p = $rootScope.propertiesOf($scope.field);
+          p._tmp = p._tmp || {};
+          p._tmp.state = "creating";
 
-        $scope.toggleControlledTerm('none');
+          $scope.toggleControlledTerm('none');
+        }
       };
 
       $scope.isEditState = function () {
