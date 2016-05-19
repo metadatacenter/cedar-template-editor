@@ -164,15 +164,11 @@ define([
       }
 
       scope.isEditState = function () {
-        var p = $rootScope.propertiesOf(scope.element);
-        p._tmp = p._tmp || {};
-        return (p._tmp.state == "creating");
+        return (DataManipulationService.isEditState(scope.element));
       };
 
-      scope.isNested = function () {
-        var p = $rootScope.propertiesOf(scope.element);
-        p._tmp = p._tmp || {};
-        return p._tmp.nested || false;
+      $scope.isNested = function () {
+        return (DataManipulationService.isNested(scope.element));
       };
 
       // add a multiple cardinality element

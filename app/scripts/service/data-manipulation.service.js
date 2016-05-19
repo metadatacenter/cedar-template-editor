@@ -7,7 +7,8 @@ define([
   angular.module('cedar.templateEditor.service.dataManipulationService', [])
       .service('DataManipulationService', DataManipulationService);
 
-  DataManipulationService.$inject = ['DataTemplateService', 'DataUtilService', 'UrlService', 'FieldTypeService', '$rootScope'];
+  DataManipulationService.$inject = ['DataTemplateService', 'DataUtilService', 'UrlService', 'FieldTypeService',
+                                     '$rootScope'];
 
   function DataManipulationService(DataTemplateService, DataUtilService, UrlService, FieldTypeService, $rootScope) {
 
@@ -77,6 +78,20 @@ define([
         } else {
           return schemaType.oneOf[0].enum;
         }
+      }
+    };
+
+    // resolve min or max as necessary and cardinalize or uncardinalize field
+    service.setMinMax = function (field) {
+      if (!field.hasOwnProperty('minItems') || typeof field.minItems == 'undefined' || field.minItems < 0) {
+        delete field.minItems;
+        delete field.maxItems;
+      } else if (field.hasOwnProperty('maxItems') && field.maxItems < 0) {
+        delete field.maxItems;
+      }
+
+      if (!service.uncardinalizeField(field)) {
+        service.cardinalizeField(field);
       }
     };
 
@@ -191,6 +206,21 @@ define([
       }
     };
 
+    // is this a nested field?
+    service.isNested = function (field) {
+      var p = $rootScope.propertiesOf(field);
+      p._tmp = p._tmp || {};
+      return (p._tmp.nested || false);
+    };
+
+    // are we editing this field?
+    service.isEditState = function (field) {
+      var p = $rootScope.propertiesOf(field);
+      p._tmp = p._tmp || {};
+      return (p._tmp.state == "creating");
+    };
+
+    // add an option to this field
     service.addOption = function (field) {
       var emptyOption = {
         "text": ""
@@ -198,7 +228,7 @@ define([
       field._ui.options.push(emptyOption);
     };
 
-    service.generateCardinalities = function (min, max,  addUnlimited) {
+    service.generateCardinalities = function (min, max, addUnlimited) {
       var results = [];
       for (var i = min; i <= max; i++) {
         results.push({value: i, label: i});
@@ -445,7 +475,6 @@ define([
       }
       return result;
     };
-
 
 
     /**

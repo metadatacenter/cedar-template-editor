@@ -33,7 +33,7 @@
                 aria-label="Option" ng-model="$root.schemaOf(field)._ui.options[index]['text']" with-floating-label>
 
             <div class="checkbox checkbox-primary checkbox-circle">
-              <input type="checkbox" id="checkbox-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}-{{index}}"
+              <input ng-click="$event.stopPropagation();"  type="checkbox" id="checkbox-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}-{{index}}"
                   name="checkbox-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}"
                   ng-model="$root.schemaOf(field)._ui.defaultOption[value.text]">
               <label for="checkbox-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}-{{index}}"></label>
@@ -42,7 +42,7 @@
           </div><!-- /.form-group -->
         </span>
 
-        <p class="add-another" ng-click="option()"><img src="/img/plus.png"/>Add Another</p>
+        <p class="add-another" ng-click="addOption(); $event.stopPropagation();"><img src="/img/plus.png"/>Add Another</p>
       </div>
       <!-- /.multiple-container -->
     </div>
