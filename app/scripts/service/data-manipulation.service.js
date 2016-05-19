@@ -51,7 +51,12 @@ define([
     service.generateInstanceContext = function (schemaContext) {
       var context = {};
       angular.forEach(schemaContext.properties, function (value, key) {
-        context[key] = value.enum[0];
+        if (value.enum) {
+          context[key] = value.enum[0];
+        } else {
+          console.log('generateInstanceContext empty value');
+          console.log(value);
+        }
       });
       return context;
     };
