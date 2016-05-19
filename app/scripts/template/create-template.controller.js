@@ -291,12 +291,11 @@ define([
         // This function watches for changes in the form and defaults the title and description fields
         $scope.$watch('form', function (v) {
           if ($scope.form && $rootScope.schemaOf($scope.form)) {
-            var noName = $translate.instant("VALIDATION.noNameField");
             if (!$rootScope.schemaOf($scope.form)._ui.title) {
-              $rootScope.schemaOf($scope.form)._ui.title = noName;
+              $rootScope.schemaOf($scope.form)._ui.title = $translate.instant("VALIDATION.noNameField");
             }
             if (!$rootScope.schemaOf($scope.form)._ui.description) {
-              $rootScope.schemaOf($scope.form)._ui.description = noName;
+              $rootScope.schemaOf($scope.form)._ui.description = $translate.instant("VALIDATION.noDescriptionField");
             }
           }
         });

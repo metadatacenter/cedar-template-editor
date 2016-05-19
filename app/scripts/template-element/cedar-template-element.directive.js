@@ -345,8 +345,7 @@ define([
       scope.uuid = DataManipulationService.generateTempGUID();
 
       scope.$on('saveForm', function (event) {
-        var p = $rootScope.propertiesOf(scope.element);
-        if (p._tmp && p._tmp.state == "creating") {
+        if (scope.isEditState() && !scope.add()) {
           scope.$emit("invalidElementState",
               ["add", $rootScope.schemaOf(scope.element)._ui.title, scope.element["@id"]]);
         } else {

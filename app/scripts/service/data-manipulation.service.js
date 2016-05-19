@@ -51,7 +51,12 @@ define([
     service.generateInstanceContext = function (schemaContext) {
       var context = {};
       angular.forEach(schemaContext.properties, function (value, key) {
-        context[key] = value.enum[0];
+        if (value.enum) {
+          context[key] = value.enum[0];
+        } else {
+          console.log('generateInstanceContext empty value');
+          console.log(value);
+        }
       });
       return context;
     };
@@ -466,7 +471,7 @@ define([
      * @param itemDataId
      */
     service.deleteFieldControlledTerm = function (itemDataId, node) {
-      console.log('deleteFieldControlledTerm ' + itemDataId);
+
 
       var properties = service.getFieldProperties(node);
       var idx = properties["@type"].oneOf[0].enum.indexOf(itemDataId);
