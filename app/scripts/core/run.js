@@ -96,8 +96,11 @@ define([
     // Used in cedar-template-element.directive.js, form.directive
     $rootScope.findChildren = function (iterator, parentModel, parentKey, level) {
       var ctx, min, type, i;
+      console.log('findChildren'); console.log(iterator);
       angular.forEach(iterator, function (value, name) {
         // Add @context information to instance
+        console.log('name'); console.log(name);
+        console.log('value'); console.log(value);
         if (name == '@context') {
           ctx = DataManipulationService.generateInstanceContext(value);
         }

@@ -226,10 +226,7 @@ define([
       });
 
       $scope.$on("saveForm", function () {
-        var p = $rootScope.propertiesOf($scope.field);
-
-
-
+        //var p = $rootScope.propertiesOf($scope.field);
         if ($scope.isEditState() && !$scope.add()) {
           $scope.$emit("invalidFieldState",
               ["add", DataManipulationService.getFieldSchema($scope.field)._ui.title, $scope.field["@id"]]);
@@ -780,11 +777,10 @@ define([
        * @param className
        */
       var setResponse = function (item, ontologyName, className) {
-        console.log('setResponse ');
+
         // Get selected class details from the links.self endpoint provided.
         controlTermDataService.getClassById(ontologyName, className).then(function (response) {
           $scope.addedFields.set(item, response);
-          console.log(response);
         });
       };
 
@@ -815,7 +811,6 @@ define([
       };
 
       $scope.showModal = function (id) {
-        console.log("showModal" + id);
         jQuery("#" + id).modal('show');
       };
 
@@ -933,7 +928,6 @@ define([
       /* end of controlled terms functionality */
 
       $scope.clearMinMax = function () {
-        console.log($scope.field);
         delete $scope.field.minItems;
         delete $scope.field.maxItems;
       };
