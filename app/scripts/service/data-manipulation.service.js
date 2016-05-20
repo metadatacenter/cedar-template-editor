@@ -8,10 +8,10 @@ define([
       .service('DataManipulationService', DataManipulationService);
 
   DataManipulationService.$inject = ['DataTemplateService', 'DataUtilService', 'UrlService', 'FieldTypeService',
-                                     '$rootScope', "ClientSideValidationService"];
+                                     '$rootScope', "ClientSideValidationService", "$translate",];
 
   function DataManipulationService(DataTemplateService, DataUtilService, UrlService, FieldTypeService, $rootScope,
-                                   ClientSideValidationService) {
+                                   ClientSideValidationService, $translate) {
 
     // Base path to generate field ids
     // TODO: fields will be saved as objects on server, they will get their id there
@@ -224,7 +224,7 @@ define([
 
     // are we editing this field?
     service.setSelected = function (field) {
-      var p = $rootScope.propertiesOf(scope.element);
+      var p = $rootScope.propertiesOf(field);
       p._tmp = p._tmp || {};
       p._tmp.state = "creating";
     };
