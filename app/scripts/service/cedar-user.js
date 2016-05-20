@@ -59,8 +59,8 @@ define([
       return getAppData().cedarUserProfile.permissions;
     };
 
-    service.getHome = function () {
-      return getAppData().cedarUserProfile.homePath;
+    service.getHomeFolderId = function () {
+      return getAppData().cedarUserProfile.homeFolderId;
     };
 
     service.getPermissions = function () {
