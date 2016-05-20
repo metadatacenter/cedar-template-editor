@@ -11,13 +11,15 @@ define([
 
   fieldDirective.$inject = ["$rootScope", "$sce", "$document", "$translate", "SpreadsheetService",
                             "DataManipulationService", "FieldTypeService",
-                            "ClientSideValidationService", "controlTermDataService"];
+                            "ClientSideValidationService", "controlTermDataService",'DataUtilService'];
 
   function fieldDirective($rootScope, $sce, $document, $translate, SpreadsheetService, DataManipulationService,
                           FieldTypeService,
-                          ClientSideValidationService, controlTermDataService) {
+                          ClientSideValidationService, controlTermDataService,DataUtilService) {
 
     var linker = function ($scope, $element, attrs) {
+
+      var MIN_OPTIONS = 2;
 
       var setDirectory = function () {
         var p = $rootScope.propertiesOf($scope.field);
@@ -227,7 +229,7 @@ define([
 
       $scope.$on("saveForm", function () {
         //var p = $rootScope.propertiesOf($scope.field);
-        if ($scope.isEditState() && !$scope.add()) {
+        if ($scope.isEditState() && !$scope.add($scope.field)) {
           $scope.$emit("invalidFieldState",
               ["add", DataManipulationService.getFieldSchema($scope.field)._ui.title, $scope.field["@id"]]);
         } else {
@@ -304,39 +306,48 @@ define([
         }
       }
 
-      $scope.setDefaults = function () {
-        // default title and description
-        if (!$rootScope.schemaOf($scope.field)._ui.title) {
-          $rootScope.schemaOf($scope.field)._ui.title = $translate.instant("VALIDATION.noNameField");
-        }
-        if (!$rootScope.schemaOf($scope.field)._ui.description) {
-          $rootScope.schemaOf($scope.field)._ui.description = $translate.instant("VALIDATION.noDescriptionField");
+      $scope.setDefaults = function (field) {
+        var schema = $rootScope.schemaOf(field);
+
+        // default title
+        if (!schema._ui.title) {
+          schema._ui.title = $translate.instant("VALIDATION.noNameField");
         }
 
-        // if this is radio, then add at least two options and set default value
-        if ($rootScope.schemaOf($scope.field)._ui.inputType == "radio" || $rootScope.schemaOf($scope.field)._ui.inputType == "checkbox" || $rootScope.schemaOf($scope.field)._ui.inputType == "list") {
+        // default description
+        if (!schema._ui.description) {
+          schema._ui.description = $translate.instant("VALIDATION.noDescriptionField");
+        }
 
-          // make sure we have the minimum
-          while ($rootScope.schemaOf($scope.field)._ui.options.length < 2) {
-            $scope.option();
+        // if this is radio, checkbox or list,  add at least two options and set default values
+        if (schema._ui.inputType == "radio" || schema._ui.inputType == "checkbox" || schema._ui.inputType == "list") {
+
+          // make sure we have the minimum number of options
+          while (schema._ui.options.length < MIN_OPTIONS) {
+            var emptyOption = {
+              "text": name || ""
+            };
+            schema._ui.options.push(emptyOption);
           }
 
           // and they all have text fields filled in
-          for (var i = 0; i < $rootScope.schemaOf($scope.field)._ui.options.length; i++) {
-            if ($rootScope.schemaOf($scope.field)._ui.options[i].text.length == 0) {
-              $rootScope.schemaOf($scope.field)._ui.options[i].text = $translate.instant("VALIDATION.noNameField");
+          for (var i = 0; i < schema._ui.options.length; i++) {
+            if (schema._ui.options[i].text.length == 0) {
+              schema._ui.options[i].text = $translate.instant("VALIDATION.noNameField");
             }
           }
         }
-      }
+      };
 
       $scope.uuid = DataManipulationService.generateTempGUID();
 
       // Retrieve appropriate field template file
       $scope.getTemplateUrl = function () {
         var inputType = 'element';
-        if (DataManipulationService.getFieldSchema($scope.field)._ui.inputType) {
-          inputType = DataManipulationService.getFieldSchema($scope.field)._ui.inputType;
+        var schema = $rootScope.schemaOf($scope.field);
+
+        if (schema._ui.inputType) {
+          inputType = schema._ui.inputType;
         }
         return 'scripts/form/field-' + $scope.directory + '/' + inputType + '.html';
       };
@@ -400,13 +411,14 @@ define([
 
       }, true);
 
+      // look for errors
       $scope.checkFieldConditions = function (field) {
         field = $rootScope.schemaOf(field);
 
         var unmetConditions = [],
             extraConditionInputs = ['checkbox', 'radio', 'list'];
 
-        // Field title is already required, if it's empty create error message
+        // Field title is required, if it's empty create error message
         if (!field._ui.title) {
           unmetConditions.push('"Enter Field Title" input cannot be left empty.');
         }
@@ -429,94 +441,41 @@ define([
         return unmetConditions;
       };
 
-      $scope.checkMinMax = function() {
-
-        // delete min or max as necessary
-        if (typeof $scope.field.minItems == 'undefined' || $scope.field.minItems < 0) {
-          delete $scope.field.minItems;
-          delete $scope.field.maxItems;
-        } else if ($scope.field.maxItems < 0) {
-          delete $scope.field.maxItems;
-        }
-
-        // delete any max if it is bigger than min
-        if ($scope.field.minItems && $scope.field.maxItems && $scope.field.minItems > $scope.field.maxItems) {
-          delete $scope.field.maxItems;
-        }
-
-        if (typeof $scope.field.minItems == 'undefined') {
-          if ($scope.field.items) {
-            DataManipulationService.uncardinalizeField($scope.field);
-          }
-        } else {
-          if (!$scope.field.items) {
-            DataManipulationService.cardinalizeField($scope.field);
-          }
-        }
-      };
-
       // Switch from creating to completed.
-      $scope.add = function () {
+      $scope.add = function (field) {
+        return DataManipulationService.add(field, $scope.renameChildKey);
+      };
 
-        $scope.checkMinMax();
-        $scope.setDefaults();
+      $scope.$on('fieldAdded', function (event, args) {
+        var field = args[0];
+        var errors = args[1];
 
-        $scope.errorMessages = $scope.checkFieldConditions($scope.field);
-        $scope.errorMessages = jQuery.merge($scope.errorMessages,
-            ClientSideValidationService.checkFieldCardinalityOptions($scope.field));
-
-        var result = $scope.errorMessages.length == 0;
-
-        // don't continue with errors
-        if (result) {
-          delete $rootScope.propertiesOf($scope.field)._tmp;
-
-          if ($scope.renameChildKey) {
-            var key = DataManipulationService.getFieldName(DataManipulationService.getFieldSchema($scope.field)._ui.title);
-            $scope.renameChildKey($scope.field, key);
-          }
-
-          $scope.$emit("invalidFieldState",
-              ["remove", DataManipulationService.getFieldSchema($scope.field)._ui.title, $scope.field["@id"]]);
-          parseField();
-
+        if (field == $scope.field) {
+          $scope.errorMessages = errors;
+          if ($scope.errorMessages.length == 0) parseField();
         }
-        return result;
-      };
+      });
 
-      // Function to add additional options for radio, checkbox, and list fieldTypes
-      $scope.option = function (name) {
-        var emptyOption = {
-          "text": name || ""
-        };
-
-        DataManipulationService.getFieldSchema($scope.field)._ui.options.push(emptyOption);
-      };
-
+      // deselect any current selected items, then select this one
       $scope.toggleEdit = function () {
+        console.log('toggleEdit');
+        var result = true;
         if (!$scope.isEditState()) {
-          $scope.edit();
+          console.log($scope.$parent.form);
+          angular.forEach($scope.$parent.form.properties, function (value, key) {
+            if (!DataUtilService.isSpecialKey(key)) {
+              if (DataManipulationService.isEditState(value)) {
+                result = result && $scope.add(value);
+              }
+            }
+          });
+          if (result) $scope.edit();
         }
       };
 
       $scope.edit = function () {
-        var p = $rootScope.propertiesOf($scope.field);
-        p._tmp = p._tmp || {};
-        p._tmp.state = "creating";
-
+        DataManipulationService.setSelected($scope.field);
         $scope.toggleControlledTerm('none');
-      };
-
-      $scope.isEditState = function () {
-        var p = $rootScope.propertiesOf($scope.field);
-        p._tmp = p._tmp || {};
-        return (p._tmp.state == "creating");
-      };
-
-      $scope.isNested = function () {
-        var p = $rootScope.propertiesOf($scope.field);
-        p._tmp = p._tmp || {};
-        return (p._tmp.nested || false);
       };
 
       /**
@@ -594,6 +553,18 @@ define([
             }
           }
         }
+
+        $scope.isEditState = function () {
+          return (DataManipulationService.isEditState($scope.field));
+        };
+
+        $scope.isNested = function () {
+          return (DataManipulationService.isNested($scope.field));
+        };
+
+        $scope.addOption = function () {
+          return (DataManipulationService.addOption($scope.field));
+        };
 
         // If a default value is set from the field item configuration, set $scope.model to its value
         if ($scope.directory == 'render') {

@@ -7,14 +7,17 @@ define([
   angular.module('cedar.templateEditor.service.dataManipulationService', [])
       .service('DataManipulationService', DataManipulationService);
 
-  DataManipulationService.$inject = ['DataTemplateService', 'DataUtilService', 'UrlService', 'FieldTypeService', '$rootScope'];
+  DataManipulationService.$inject = ['DataTemplateService', 'DataUtilService', 'UrlService', 'FieldTypeService',
+                                     '$rootScope', "ClientSideValidationService", "$translate",];
 
-  function DataManipulationService(DataTemplateService, DataUtilService, UrlService, FieldTypeService, $rootScope) {
+  function DataManipulationService(DataTemplateService, DataUtilService, UrlService, FieldTypeService, $rootScope,
+                                   ClientSideValidationService, $translate) {
 
     // Base path to generate field ids
     // TODO: fields will be saved as objects on server, they will get their id there
     // TODO: need to assign a temporary id, which will be replaced on server side
     var idBasePath = null;
+
 
     var service = {
       serviceId: "DataManipulationService"
@@ -77,6 +80,20 @@ define([
         } else {
           return schemaType.oneOf[0].enum;
         }
+      }
+    };
+
+    // resolve min or max as necessary and cardinalize or uncardinalize field
+    service.setMinMax = function (field) {
+      if (!field.hasOwnProperty('minItems') || typeof field.minItems == 'undefined' || field.minItems < 0) {
+        delete field.minItems;
+        delete field.maxItems;
+      } else if (field.hasOwnProperty('maxItems') && field.maxItems < 0) {
+        delete field.maxItems;
+      }
+
+      if (!service.uncardinalizeField(field)) {
+        service.cardinalizeField(field);
       }
     };
 
@@ -191,6 +208,28 @@ define([
       }
     };
 
+    // is this a nested field?
+    service.isNested = function (field) {
+      var p = $rootScope.propertiesOf(field);
+      p._tmp = p._tmp || {};
+      return (p._tmp.nested || false);
+    };
+
+    // are we editing this field?
+    service.isEditState = function (field) {
+      var p = $rootScope.propertiesOf(field);
+      p._tmp = p._tmp || {};
+      return (p._tmp.state == "creating");
+    };
+
+    // are we editing this field?
+    service.setSelected = function (field) {
+      var p = $rootScope.propertiesOf(field);
+      p._tmp = p._tmp || {};
+      p._tmp.state = "creating";
+    };
+
+    // add an option to this field
     service.addOption = function (field) {
       var emptyOption = {
         "text": ""
@@ -198,7 +237,7 @@ define([
       field._ui.options.push(emptyOption);
     };
 
-    service.generateCardinalities = function (min, max,  addUnlimited) {
+    service.generateCardinalities = function (min, max, addUnlimited) {
       var results = [];
       for (var i = min; i <= max; i++) {
         results.push({value: i, label: i});
@@ -447,7 +486,6 @@ define([
     };
 
 
-
     /**
      * parse the ontology code from the selfUrl
      * @param itemData
@@ -553,6 +591,129 @@ define([
           valueConstraints.valueSets.splice(i, 1);
           break;
         }
+      }
+    };
+
+    // deselect any current selected items, then select this one
+    service.toggleEdit = function () {
+      console.log('toggleEdit ');
+      var result = true;
+      if (!service.isEditState()) {
+        console.log(scope.$parent.form);
+        angular.forEach(scope.$parent.form.properties, function (value, key) {
+          if (!DataUtilService.isSpecialKey(key)) {
+            if (DataManipulationService.isEditState(value)) {
+
+              result = result && scope.add(value);
+            }
+          }
+        });
+        if (result) $scope.edit();
+      }
+    };
+
+    // When user clicks Save button, we will switch field or element from creating state to completed state
+    service.add = function (field, renameChildKey) {
+
+      if (!field) {
+        return;
+      }
+
+      service.setMinMax(field);
+      service.setDefaults(field);
+
+      var errorMessages = jQuery.merge(service.checkFieldConditions(field),
+          ClientSideValidationService.checkFieldCardinalityOptions(field));
+
+      // don't continue with errors
+      if (errorMessages.length == 0) {
+        delete $rootScope.propertiesOf(field)._tmp;
+
+        if (renameChildKey) {
+          var key = service.getFieldName(service.getFieldSchema(field)._ui.title);
+          renameChildKey(field, key);
+        }
+
+        var event = service.isElement(field) ? "invalidElementState" : "invalidFieldState";
+        $rootScope.$emit(event,
+            ["remove", $rootScope.schemaOf(field)._ui.title, field["@id"]]);
+      }
+
+      $rootScope.$broadcast("fieldAdded", [field, errorMessages]);
+
+      return errorMessages.length == 0;
+    };
+
+    var MIN_OPTIONS = 2;
+    service.setDefaults = function (field) {
+      var schema = $rootScope.schemaOf(field);
+
+      // default title
+      if (!schema._ui.title) {
+        schema._ui.title = $translate.instant("VALIDATION.noNameField");
+      }
+
+      // default description
+      if (!schema._ui.description) {
+        schema._ui.description = $translate.instant("VALIDATION.noDescriptionField");
+      }
+
+      // if this is radio, checkbox or list,  add at least two options and set default values
+      if (schema._ui.inputType == "radio" || schema._ui.inputType == "checkbox" || schema._ui.inputType == "list") {
+
+        // make sure we have the minimum number of options
+        while (schema._ui.options.length < MIN_OPTIONS) {
+          var emptyOption = {
+            "text": name || ""
+          };
+          schema._ui.options.push(emptyOption);
+        }
+
+        // and they all have text fields filled in
+        for (var i = 0; i < schema._ui.options.length; i++) {
+          if (schema._ui.options[i].text.length == 0) {
+            schema._ui.options[i].text = $translate.instant("VALIDATION.noNameField");
+          }
+        }
+      }
+    };
+
+    // look for errors in field or element
+    service.checkFieldConditions = function (field) {
+      var schema = $rootScope.schemaOf(field);
+
+      var unmetConditions = [],
+          extraConditionInputs = ['checkbox', 'radio', 'list'];
+
+      // Field title is required, if it's empty create error message
+      if (!schema._ui.title) {
+        unmetConditions.push('"Enter Title" input cannot be left empty.');
+      }
+
+      // If field is within multiple choice field types
+      if (extraConditionInputs.indexOf(schema._ui.inputType) !== -1) {
+        var optionMessage = '"Enter Option" input cannot be left empty.';
+        angular.forEach(schema._ui.options, function (value, index) {
+          // If any 'option' title text is left empty, create error message
+          if (!value.text.length && unmetConditions.indexOf(optionMessage) == -1) {
+            unmetConditions.push(optionMessage);
+          }
+        });
+      }
+      // If field type is 'radio' or 'pick from a list' there must be more than one option created
+      if ((schema._ui.inputType == 'radio' || schema._ui.inputType == 'list') && schema._ui.options && (schema._ui.options.length <= 1)) {
+        unmetConditions.push('Multiple Choice fields must have at least two possible options');
+      }
+      // Return array of error messages
+      return unmetConditions;
+    };
+
+    service.isElement = function (value) {
+      if (value && value['@type'] && value['@type'] == "https://schema.metadatacenter.org/core/TemplateElement") {
+        return true;
+      }
+      else {
+        return false;
       }
     };
 

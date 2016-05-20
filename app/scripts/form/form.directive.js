@@ -191,6 +191,10 @@ define([
           }
         };
 
+        $scope.deselectAll = function() {
+          console.log("deselectAll");
+        }
+
         $scope.parseForm = function (iterator, parentModel, parentKey) {
           var ctx;
           angular.forEach(iterator, function (value, name) {

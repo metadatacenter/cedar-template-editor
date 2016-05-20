@@ -12,7 +12,7 @@
       <div class="multiple-container">
         <span ng-repeat="(index, value) in $root.schemaOf(field)._ui.options">
           <div class="checkbox checkbox-primary">
-            <input type="checkbox" id="checkbox-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}-{{index}}"
+            <input ng-click="$event.stopPropagation();" type="checkbox" id="checkbox-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}-{{index}}"
                 name="checkbox-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}"
                 ng-model="$root.schemaOf(field)._ui.defaultOption[value.text]"
                 value="{{$root.schemaOf(field)._ui.options[index]['text']}}">
@@ -27,7 +27,7 @@
           </div><!-- /.checkbox -->
         </span>
 
-        <p class="add-another" ng-click="option()"><img src="/img/plus.png"/>Add Another</p>
+        <p class="add-another" ng-click="addOption(); $event.stopPropagation();"><img src="/img/plus.png"/>Add Another</p>
       </div>
       <!-- /.multiple-container -->
       <p class="instructions">Click choice to set as default</p>
