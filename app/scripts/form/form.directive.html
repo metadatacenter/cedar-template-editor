@@ -9,7 +9,7 @@
 
             ng-class="{'field-instance':true, 'multiple-instance-field':$root.isArray(model[item])}">
 
-          <field-directive field="form.properties[item]" model="model[item]" delete="removeChild(form.properties[item]); console('removeChild'); $event.stopPropagation();"
+          <field-directive field="form.properties[item]" model="model[item]" delete="removeChild(form.properties[item]); $event.stopPropagation();"
               rename-child-key="renameChildKey"></field-directive>
         </div>
         <div class=" element-group full "
@@ -35,7 +35,7 @@
         form.properties[item].items['@type']=='https://schema.metadatacenter.org/core/TemplateField' || form.properties[item].items['@type']=='https://schema.metadatacenter.org/core/StaticTemplateField'"
 
             ng-class="{'field-instance':true, 'multiple-instance-field':$root.isArray(model[item])}">
-          <field-directive field="form.properties[item]" model="model[item]" delete="removeChild(form.properties[item]); console('removeChild'); $event.stopPropagation();"
+          <field-directive field="form.properties[item]" model="model[item]" delete="removeChild(form.properties[item]); $event.stopPropagation();"
               rename-child-key="renameChildKey"></field-directive>
         </div>
         <div class="element-group full"

@@ -50,7 +50,6 @@ define([
       };
 
       var parseField = function () {
-        console.log('parseField' ); console.log($scope.field);
         if (!$rootScope.isRuntime() && $scope.field) {
           // $scope.model = $scope.model || {};
           // $rootScope.findChildren($rootScope.propertiesOf($scope.field), $scope.model);
@@ -230,7 +229,7 @@ define([
 
       $scope.$on("saveForm", function () {
         //var p = $rootScope.propertiesOf($scope.field);
-        if ($scope.isEditState() && !$scope.add()) {
+        if ($scope.isEditState() && !$scope.add($scope.field)) {
           $scope.$emit("invalidFieldState",
               ["add", DataManipulationService.getFieldSchema($scope.field)._ui.title, $scope.field["@id"]]);
         } else {
@@ -444,49 +443,25 @@ define([
 
       // Switch from creating to completed.
       $scope.add = function (field) {
-
-        var result = false;
-
-        if (!field) {
-          console.log("Error: no field");
-        }
-
-        DataManipulationService.setMinMax(field);
-        $scope.setDefaults(field);
-
-        $scope.errorMessages = jQuery.merge($scope.checkFieldConditions(field),
-            ClientSideValidationService.checkFieldCardinalityOptions(field));
-
-        result = $scope.errorMessages.length == 0;
-
-        // don't continue with errors
-        if (result) {
-          delete $rootScope.propertiesOf(field)._tmp;
-
-          if ($scope.renameChildKey) {
-            var key = DataManipulationService.getFieldName(DataManipulationService.getFieldSchema(field)._ui.title);
-            $scope.renameChildKey(field, key);
-          }
-
-          $scope.$emit("invalidFieldState",
-              ["remove", DataManipulationService.getFieldSchema(field)._ui.title, field["@id"]]);
-
-          // TODO find another way to get to field's scope
-          $rootScope.$broadcast("fieldAdded",field);
-        }
-        return result;
+        return DataManipulationService.add(field, $scope.renameChildKey);
       };
 
-      $scope.$on('fieldAdded', function (event, field) {
+      $scope.$on('fieldAdded', function (event, args) {
+        var field = args[0];
+        var errors = args[1];
+
         if (field == $scope.field) {
-          parseField();
+          $scope.errorMessages = errors;
+          if ($scope.errorMessages.length == 0) parseField();
         }
       });
 
       // deselect any current selected items, then select this one
       $scope.toggleEdit = function () {
+        console.log('toggleEdit');
         var result = true;
         if (!$scope.isEditState()) {
+          console.log($scope.$parent.form);
           angular.forEach($scope.$parent.form.properties, function (value, key) {
             if (!DataUtilService.isSpecialKey(key)) {
               if (DataManipulationService.isEditState(value)) {
@@ -499,14 +474,9 @@ define([
       };
 
       $scope.edit = function () {
-        var p = $rootScope.propertiesOf($scope.field);
-        p._tmp = p._tmp || {};
-        p._tmp.state = "creating";
-
+        DataManipulationService.setSelected($scope.field);
         $scope.toggleControlledTerm('none');
       };
-
-
 
       /**
        * Use the fieldType to determine if the field supports using controlled terms

@@ -167,7 +167,7 @@ define([
         return (DataManipulationService.isEditState(scope.element));
       };
 
-      $scope.isNested = function () {
+      scope.isNested = function () {
         return (DataManipulationService.isNested(scope.element));
       };
 
@@ -215,6 +215,10 @@ define([
         $rootScope.toggleElement(domId);
       };
 
+      scope.toggleEdit = function () {
+        console.log('toggleEdit');
+      };
+
       scope.removeChild = function (fieldOrElement) {
         // fieldOrElement must contain the schema level
         fieldOrElement = $rootScope.schemaOf(fieldOrElement);
@@ -250,49 +254,36 @@ define([
         return DataManipulationService.isCardinalElement(scope.element);
       };
 
-      // When user clicks Save button, we will switch element from creating state to completed state
-      scope.add = function () {
-        var p = $rootScope.propertiesOf(scope.element);
-        //if (!p._ui.is_cardinal_field) {
-        //  delete scope.element.minItems;
-        //  delete scope.element.maxItems;
-        //}
+      // Switch from creating to completed.
+      scope.add = function (element) {
+        return DataManipulationService.add(element);
+      };
 
-        // remove any -1 values
-        if (typeof scope.element.minItems == 'undefined' || scope.element.minItems < 0) {
-          delete scope.element.minItems;
-          delete scope.element.maxItems;
-        } else if (scope.element.maxItems < 0) {
-          delete scope.element.maxItems;
+      scope.$on('fieldAdded', function (event, element, errorMessages) {
+        if (element == scope.element) {
+          scope.errorMessages = errorMessages;
+          if (errorMessages.length == 0) parseElement();
         }
+      });
 
-        // adjust any max < min where max is not 0
-        if (typeof scope.element.minItems != 'undefined' && typeof scope.element.maxItems != 'undefined' && scope.element.maxItems != 0 && scope.element.maxItems < scope.element.minItems) {
-          scope.element.maxItems = 0;
+      // deselect any current selected items, then select this one
+      scope.toggleEdit = function () {
+        var result = true;
+        if (!scope.isEditState()) {
+          angular.forEach(scope.$parent.form.properties, function (value, key) {
+            if (!DataUtilService.isSpecialKey(key)) {
+              if (DataManipulationService.isEditState(value)) {
+                result = result && scope.add(value);
+              }
+            }
+          });
+          if (result) scope.edit();
         }
-
-        if (typeof scope.element.minItems == 'undefined') {
-          if (scope.element.items) {
-            DataManipulationService.uncardinalizeField(scope.element);
-          }
-        } else {
-          if (!scope.element.items) {
-            DataManipulationService.cardinalizeField(scope.element);
-          }
-        }
-
-        delete $rootScope.propertiesOf(scope.element)._tmp;
-        scope.$emit("invalidElementState",
-            ["remove", $rootScope.schemaOf(scope.element)._ui.title, scope.element["@id"]]);
-        parseElement();
-
       };
 
       // When user clicks edit, the element state will be switched to creating;
       scope.edit = function () {
-        var p = $rootScope.propertiesOf(scope.element);
-        p._tmp = p._tmp || {};
-        p._tmp.state = "creating";
+        DataManipulationService.setSelected(scope.element);
       };
 
       scope.renameChildKey = function (child, newKey) {
@@ -341,7 +332,7 @@ define([
       scope.uuid = DataManipulationService.generateTempGUID();
 
       scope.$on('saveForm', function (event) {
-        if (scope.isEditState() && !scope.add()) {
+        if (scope.isEditState() && !scope.add(scope.element)) {
           scope.$emit("invalidElementState",
               ["add", $rootScope.schemaOf(scope.element)._ui.title, scope.element["@id"]]);
         } else {
