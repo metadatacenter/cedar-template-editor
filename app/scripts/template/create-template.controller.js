@@ -57,6 +57,7 @@ define([
                   DataManipulationService.createDomIds($scope.form);
                   //closeAllElements();
                   $rootScope.keyOfRootElement = $scope.form["@id"];
+                  $rootScope.rootElement = $scope.form;
 
                 },
                 function (err) {
@@ -68,6 +69,7 @@ define([
             $scope.form = DataTemplateService.getTemplate();
             HeaderService.dataContainer.currentObjectScope = $scope.form;
             $rootScope.keyOfRootElement = $scope.form["@id"];
+            $rootScope.rootElement = $scope.form;
           }
         };
         getTemplate();

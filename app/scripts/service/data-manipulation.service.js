@@ -227,6 +227,8 @@ define([
       var p = $rootScope.propertiesOf(field);
       p._tmp = p._tmp || {};
       p._tmp.state = "creating";
+
+      $rootScope.selectedFieldOrElement = field;
     };
 
     // add an option to this field
@@ -595,25 +597,21 @@ define([
     };
 
     // deselect any current selected items, then select this one
-    service.toggleEdit = function () {
-      console.log('toggleEdit ');
-      var result = true;
-      if (!service.isEditState()) {
-        console.log(scope.$parent.form);
-        angular.forEach(scope.$parent.form.properties, function (value, key) {
-          if (!DataUtilService.isSpecialKey(key)) {
-            if (DataManipulationService.isEditState(value)) {
+    service.canSelect = function (field) {
+      console.log('service.canSelect ');
 
-              result = result && scope.add(value);
-            }
-          }
-        });
-        if (result) $scope.edit();
+      var result = true;
+      if (!service.isEditState(field)) {
+        if ($rootScope.selectedFieldOrElement && service.isEditState($rootScope.selectedFieldOrElement)) {
+            result = service.canDeselect($rootScope.selectedFieldOrElement);
+        }
+        if (result) service.setSelected(field);
       }
+      return result;
     };
 
     // When user clicks Save button, we will switch field or element from creating state to completed state
-    service.add = function (field, renameChildKey) {
+    service.canDeselect = function (field, renameChildKey) {
 
       if (!field) {
         return;
@@ -639,7 +637,7 @@ define([
             ["remove", $rootScope.schemaOf(field)._ui.title, field["@id"]]);
       }
 
-      $rootScope.$broadcast("fieldAdded", [field, errorMessages]);
+      $rootScope.$broadcast("deselect", [field, errorMessages]);
 
       return errorMessages.length == 0;
     };

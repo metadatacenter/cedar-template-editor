@@ -1,4 +1,4 @@
-<div ng-if="model !== undefined" class="element-root" id="{{$root.getDomId(element)}}" ng-click="toggleEdit(); $event.preventDefault();">
+<div ng-if="model !== undefined" class="element-root" id="{{$root.getDomId(element)}}" ng-click="canSelect(!isRootElement && !$root.isRuntime()); $event.preventDefault();">
 
   <div class="element-header input-type-container" style="position:relative;margin-top:10px"
       ng-class="{'sortable-handler': !$root.isRuntime()}">
@@ -67,6 +67,7 @@
 
     <div class="elements originalContent">
       <div class="element-toggles list" ng-if="$root.isRuntime() && $root.elementIsMultiInstance(element)">
+        element-toggle
         <div class="element-toggle"
             ng-class="{active: selectedTab == $index}"
             ng-repeat="m in model"

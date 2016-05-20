@@ -92,6 +92,7 @@ define([
 
               var key = $scope.element["@id"];
               $rootScope.keyOfRootElement = key;
+              $rootScope.rootElement = $scope.form;
               $scope.form.properties = $scope.form.properties || {};
               $scope.form.properties[key] = $scope.element;
               $scope.form._ui = $scope.form._ui || {};
@@ -111,6 +112,7 @@ define([
 
         var key = $scope.element["@id"] || DataManipulationService.generateGUID();
         $rootScope.keyOfRootElement = key;
+        $rootScope.rootElement = $scope.form;
         $scope.form.properties = $scope.form.properties || {};
         $scope.form.properties[key] = $scope.element;
         $scope.form._ui = $scope.form._ui || {};
