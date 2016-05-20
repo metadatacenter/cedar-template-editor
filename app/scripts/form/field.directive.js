@@ -446,7 +446,7 @@ define([
         var result = select;
         if (select) {
           result = DataManipulationService.canSelect($scope.field);
-          $scope.toggleControlledTerm('none');
+          //$scope.toggleControlledTerm('none');
         }
         return result;
       };

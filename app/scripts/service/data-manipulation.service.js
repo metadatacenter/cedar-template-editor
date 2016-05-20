@@ -598,8 +598,6 @@ define([
 
     // deselect any current selected items, then select this one
     service.canSelect = function (field) {
-      console.log('service.canSelect ');
-
       var result = true;
       if (!service.isEditState(field)) {
         if ($rootScope.selectedFieldOrElement && service.isEditState($rootScope.selectedFieldOrElement)) {
