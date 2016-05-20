@@ -215,9 +215,6 @@ define([
         $rootScope.toggleElement(domId);
       };
 
-      scope.toggleEdit = function () {
-        console.log('toggleEdit');
-      };
 
       scope.removeChild = function (fieldOrElement) {
         // fieldOrElement must contain the schema level
@@ -247,44 +244,31 @@ define([
         }
       };
 
-      // is the cardinality details tabl open?
+      // is the cardinality details table open?
       scope.showCardinality = false;
 
       scope.isCardinal = function () {
         return DataManipulationService.isCardinalElement(scope.element);
       };
 
-      // Switch from creating to completed.
-      scope.add = function (element) {
-        return DataManipulationService.add(element);
+      // try to deselect this element
+      scope.canDeselect = function (element) {
+        return DataManipulationService.canDeselect(element);
       };
 
-      scope.$on('fieldAdded', function (event, element, errorMessages) {
+      // try to select this element
+      scope.canSelect = function (select) {
+        if (select)
+          DataManipulationService.canSelect(scope.element);
+      };
+
+      // when element is deseleted, look at errors and parse if none
+      scope.$on('deselect', function (event, element, errorMessages) {
         if (element == scope.element) {
           scope.errorMessages = errorMessages;
           if (errorMessages.length == 0) parseElement();
         }
       });
-
-      // deselect any current selected items, then select this one
-      scope.toggleEdit = function () {
-        var result = true;
-        if (!scope.isEditState()) {
-          angular.forEach(scope.$parent.form.properties, function (value, key) {
-            if (!DataUtilService.isSpecialKey(key)) {
-              if (DataManipulationService.isEditState(value)) {
-                result = result && scope.add(value);
-              }
-            }
-          });
-          if (result) scope.edit();
-        }
-      };
-
-      // When user clicks edit, the element state will be switched to creating;
-      scope.edit = function () {
-        DataManipulationService.setSelected(scope.element);
-      };
 
       scope.renameChildKey = function (child, newKey) {
         if (!child) {

@@ -110,9 +110,7 @@ define([
     service.addFieldToForm = function (form, fieldType, divId, callback) {
 
       var field = DataManipulationService.generateField(fieldType);
-
-      field.properties._tmp = field.properties._tmp || {};
-      field.properties._tmp.state = "creating";
+      DataManipulationService.setSelected(field);
 
       var optionInputs = ["radio", "checkbox", "list"];
       if (optionInputs.indexOf(fieldType) > -1) {
@@ -154,8 +152,9 @@ define([
             //clonedElement.maxItems = 1;
 
             var elProperties = DataManipulationService.getFieldProperties(clonedElement);
-            elProperties._tmp = elProperties._tmp || {};
-            elProperties._tmp.state = "creating";
+            DataManipulationService.setSelected(clonedElement);
+            //elProperties._tmp = elProperties._tmp || {};
+            //elProperties._tmp.state = "creating";
 
             // Converting title for irregular character handling
             var elName = DataManipulationService.getFieldName(clonedElement._ui.title);
@@ -185,10 +184,9 @@ define([
 
     service.addFieldToElement = function (element, fieldType) {
       var field = DataManipulationService.generateField(fieldType);
-      //field.minItems = 1;
-      //field.maxItems = 1;
-      field.properties._tmp = field.properties._tmp || {};
-      field.properties._tmp.state = "creating";
+      DataManipulationService.setSelected(field);
+      //field.properties._tmp = field.properties._tmp || {};
+      //field.properties._tmp.state = "creating";
 
       var optionInputs = ["radio", "checkbox", "list"];
       if (optionInputs.indexOf(fieldType) > -1) {
@@ -223,8 +221,9 @@ define([
             //el.maxItems = 1;
 
             var elProperties = DataManipulationService.getFieldProperties(el);
-            elProperties._tmp = elProperties._tmp || {};
-            elProperties._tmp.state = "creating";
+            DataManipulationService.setSelected(el);
+            //elProperties._tmp = elProperties._tmp || {};
+            //elProperties._tmp.state = "creating";
 
             var elName = DataManipulationService.getFieldName(el._ui.title);
             elName = DataManipulationService.getAcceptableKey(element.properties, elName);

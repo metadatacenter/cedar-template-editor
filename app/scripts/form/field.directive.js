@@ -229,7 +229,7 @@ define([
 
       $scope.$on("saveForm", function () {
         //var p = $rootScope.propertiesOf($scope.field);
-        if ($scope.isEditState() && !$scope.add($scope.field)) {
+        if ($scope.isEditState() && !$scope.canDeselect($scope.field)) {
           $scope.$emit("invalidFieldState",
               ["add", DataManipulationService.getFieldSchema($scope.field)._ui.title, $scope.field["@id"]]);
         } else {
@@ -441,12 +441,23 @@ define([
         return unmetConditions;
       };
 
-      // Switch from creating to completed.
-      $scope.add = function (field) {
-        return DataManipulationService.add(field, $scope.renameChildKey);
+      // try to select this field
+      $scope.canSelect = function (select) {
+        var result = select;
+        if (select) {
+          result = DataManipulationService.canSelect($scope.field);
+          $scope.toggleControlledTerm('none');
+        }
+        return result;
       };
 
-      $scope.$on('fieldAdded', function (event, args) {
+      // try to deselect this field
+      $scope.canDeselect = function (field) {
+        return DataManipulationService.canDeselect(field, $scope.renameChildKey);
+      };
+
+      // watch for this field's deselect
+      $scope.$on('deselect', function (event, args) {
         var field = args[0];
         var errors = args[1];
 
@@ -455,28 +466,6 @@ define([
           if ($scope.errorMessages.length == 0) parseField();
         }
       });
-
-      // deselect any current selected items, then select this one
-      $scope.toggleEdit = function () {
-        console.log('toggleEdit');
-        var result = true;
-        if (!$scope.isEditState()) {
-          console.log($scope.$parent.form);
-          angular.forEach($scope.$parent.form.properties, function (value, key) {
-            if (!DataUtilService.isSpecialKey(key)) {
-              if (DataManipulationService.isEditState(value)) {
-                result = result && $scope.add(value);
-              }
-            }
-          });
-          if (result) $scope.edit();
-        }
-      };
-
-      $scope.edit = function () {
-        DataManipulationService.setSelected($scope.field);
-        $scope.toggleControlledTerm('none');
-      };
 
       /**
        * Use the fieldType to determine if the field supports using controlled terms
