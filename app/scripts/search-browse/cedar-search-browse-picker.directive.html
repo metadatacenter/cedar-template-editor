@@ -116,7 +116,7 @@
 
 <!--all items view -->
 <section class="all-items-view ">
-  <a ng-if="dc.onDashboard()" class="push-pull-box" ng-click="dc.toggleFavorites()" href="javascript:" aria-expanded="false">
+  <a ng-if="dc.onDashboard()" class="push-pull-box" ng-click="dc.toggleFavorites()" href="javascript:" aria-expanded="false" ng-class="{'collapsed': !dc.showFavorites}">
     <i class="fa fa-caret-down"></i>
     <i class="fa fa-caret-up"></i>
   </a>
