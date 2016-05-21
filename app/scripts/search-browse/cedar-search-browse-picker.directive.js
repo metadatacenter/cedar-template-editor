@@ -508,6 +508,11 @@ define([
         }
       }
 
+      $scope.hideModal = function (id) {
+        console.log('hideModal' + id);
+        jQuery("#" + id).modal('hide');
+      };
+
     }
   };
 
