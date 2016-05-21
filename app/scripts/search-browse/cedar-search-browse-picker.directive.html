@@ -90,8 +90,8 @@
           <div class="container">
             <div class="row populate-form-boxes">
               <div class="col-md-3 col-sm-6" ng-repeat="(key, form) in dc.forms">
-                <div ng-click="dc.launchInstance(form);hideModal('fsModal');" class="form-box">
-                  <a href="#n"  class="box-content text-center">
+                <div ng-click="dc.launchInstance(form); hideModal('fsModal')" class="form-box">
+                  <a href="#n" class="box-content text-center">
                     <i ng-class="dc.getResourceIconClass(form)" class="fa"></i>
                     <p>{{ form.name }}</p>
                   </a>
@@ -116,7 +116,7 @@
 
 <!--all items view -->
 <section class="all-items-view ">
-  <a ng-if="dc.onDashboard()" class="push-pull-box" ng-click="dc.toggleFavorites()" href="javascript:" aria-expanded="false" ng-class="{'collapsed': !dc.showFavorites}">
+  <a ng-if="dc.onDashboard()" class="push-pull-box" ng-click="dc.toggleFavorites()" href="javascript:" aria-expanded="false">
     <i class="fa fa-caret-down"></i>
     <i class="fa fa-caret-up"></i>
   </a>

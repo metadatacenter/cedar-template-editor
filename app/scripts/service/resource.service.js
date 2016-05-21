@@ -241,7 +241,7 @@ define([
       if (options.folderId) {
         url += '/' + encodeURIComponent(options.folderId) + '/contents?';
       }
-      url += '&resource_types=' + resourceTypes.join(',');
+      url += 'resource_types=' + resourceTypes.join(',');
       if (options.sort) {
         url += '&sort=' + options.sort;
       }
@@ -276,7 +276,7 @@ define([
       if (searchTerm) {
         url += 'q=' + searchTerm + '&';
       }
-      url += '&resource_types=' + resourceTypes.join(',');
+      url += 'resource_types=' + resourceTypes.join(',');
       if ('sort' in options) {
         url += '&sort=' + options.sort;
       }
