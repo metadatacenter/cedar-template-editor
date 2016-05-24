@@ -9497,6 +9497,9 @@ body.search-browse-modal .footer-buttons button.canc {
 }
 .form-populate .populate-form-boxes .form-box .box-content p {
   line-height: 1;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 }
 .form-populate #fsModal {
   background: #eaeaea;
@@ -9616,6 +9619,9 @@ body.search-browse-modal .footer-buttons button.canc {
 }
 .all-items-view .populate-form-boxes .form-box .box-content p {
   line-height: 1;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 }
 .all-items-view .populate-form-boxes .form-box .quick-details-box {
   display: none;
