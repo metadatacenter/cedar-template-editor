@@ -14,27 +14,17 @@ define([
   function simpleDirective($parse,$timeout) {
     console.log('form/simpleDirective');
 
-    var alert = function (message) {
-      console.log(message);
-    };
-
-    var toggleDropDown = function(id) {
+    var selectAndToggleMenu = function(id) {
       var selectId = '#select' + id;
       var buttonId = '#button' + id;
 
-      console.log('click ' + '#select' + id );
-      jQuery(selectId).click();
-
-
       $timeout(function () {
-        console.log('toggleDropDown ' + buttonId );
+        jQuery(selectId).click();
         jQuery(buttonId).dropdown('toggle');
       });
 
       return false;
     };
-
-
 
     return {
       restrict: 'A',
@@ -46,22 +36,17 @@ define([
           return 'id' + id.substr(id.lastIndexOf('/') + 1);
         };
 
-        var fn = $parse(attr.simpleClick);
+        //var fn = $parse(attr.simpleClick);
         element.bind('contextmenu', function($event) {
           scope.$apply(function() {
             event.preventDefault();
             console.log('right click');
 
-            toggleDropDown(attr.dropdownid);
-            fn(scope, {$event:event});
+            selectAndToggleMenu(attr.dropdownid);
+            //fn(scope, {$event:event});
 
           });
         });
-
-        scope.alert = function (message) {
-          console.log('simple' +message);
-        };
-
 
       }
     };
