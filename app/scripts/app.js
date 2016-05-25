@@ -49,7 +49,7 @@ define([
   'cedar/template-editor/profile/profile.module',
 
   // search browse
-  'cedar/template-editor/search-browse/search-browse.module',
+  //'cedar/template-editor/search-browse/search-browse.module',
 
   // classic javascript, app data
   'cedar/template-editor/classic/app-data'

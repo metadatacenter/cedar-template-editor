@@ -1,15 +1,17 @@
-<div class="field-root" id="{{$root.getDomId(field)}}"  ng-click="canSelect(!$root.isRuntime()); $event.preventDefault();">
+<div simple class="field-root" id="{{$root.getDomId(field)}}"  ng-click="canSelect(!$root.isRuntime()); $event.preventDefault();">
+
+  rightClick
 
   <!-- add the edit and delete buttons at the top of the content -->
   <!--<div id="{{field.items._ui.title}}" ng-if="!$root.isRuntime()" ng-include="'scripts/form/partials/preview-edit-options.partial.html'"  ng-init="childType='field'">-->
   <!--</div>-->
 
   <!-- field title first -->
-  <div ng-show="$root.isArray(model) && $root.applicationMode == 'runtime'" class="spreadsheetSwitch field"
+  <div simple  ng-show="$root.isArray(model) && $root.applicationMode == 'runtime'" class="spreadsheetSwitch field"
       style="position:relative">
     <p class="element-name-label">
       <i class="cedar-svg-list"></i>
-      {{field.items._ui.title}}
+      {{field.items._ui.title}} {{alert('hello')}}
       <a ng-click="switchToSpreadsheet()" class="spreadsheetSwitchLink">
         <i class="cedar-svg-spreadsheet"></i>
       </a>
@@ -32,7 +34,8 @@
   </div>
 
   <!-- field content next -->
-  <div class="elementTotalContent visible">
+  <div  class="elementTotalContent visible">
+
 
     <div ng-show="$root.isArray(model)">
       <div class="spreadsheetViewDetector"></div>
@@ -44,7 +47,7 @@
 
 
   <!-- error messages last -->
-  <div class="errors" ng-if="errorMessages">
+  <div  class="errors" ng-if="errorMessages">
     <div class="alert alert-danger" ng-repeat="message in errorMessages">{{message}}</div>
   </div>
 </div>
