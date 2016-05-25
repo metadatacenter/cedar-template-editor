@@ -50,7 +50,7 @@ define([
 
       vm.breadcrumbName = breadcrumbName;
       vm.cancelCreateEditFolder = cancelCreateEditFolder;
-      vm.currentWorkspacePath = CedarUser.getHome();
+      //vm.currentWorkspacePath = CedarUser.getHome();
       vm.currentPath = "";
       vm.currentFolderId = "";
       vm.deleteResource = deleteResource;
@@ -118,7 +118,7 @@ define([
         } else {
           vm.isSearching = false;
           resourceService.getResources(
-            { path: CedarUser.getHome() },
+            { folderId: CedarUser.getHomeFolderId() },
             function(response) {
               var currentFolder = response.pathInfo[response.pathInfo.length - 1];
               goToFolder(currentFolder['@id']);
