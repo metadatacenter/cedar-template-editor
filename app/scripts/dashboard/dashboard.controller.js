@@ -193,6 +193,8 @@ define([
     }
 
     function launchInstance(resource) {
+      console.log('launchInstance');
+      console.log(resource);
       var params = $location.search();
       var folderId, url;
 
