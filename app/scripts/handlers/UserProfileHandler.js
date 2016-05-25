@@ -4,6 +4,7 @@ function UserProfileHandler() {
   this.callback = null;
   this.usersUrl = null;
   this.userUrl = null;
+  this.foldersUrl = null;
 
   this.getHeaders = function () {
     return {
@@ -21,13 +22,35 @@ function UserProfileHandler() {
       jQuery.get('config/url-service.conf.json', function (urlConfigData) {
         service.usersUrl = urlConfigData.userRestAPI + '/users';
         service.userUrl = service.usersUrl + '/' + userId;
+        service.foldersUrl = urlConfigData.resourceRestAPI + '/folders';
         success();
       });
     }
   };
 
-  this.storeProfileAndCallback = function (userData) {
+  this.userProfileLoaded = function (userData) {
     this.userHandler.cedarUserProfile = userData;
+
+    var service = this;
+    jQuery.ajax(
+        service.foldersUrl + "/" + encodeURIComponent(userData.homeFolderId),
+        {
+          'method' : 'GET',
+          'headers': service.getHeaders(),
+          'success': function (userData) {
+            console.log("Home folder was accessed");
+            service.homeFolderWasTouched();
+          },
+          'error'  : function (error) {
+            console.log("Home folder was not accessed:");
+            console.log(error);
+            service.homeFolderWasTouched();
+          }
+        }
+    );
+  }
+
+  this.homeFolderWasTouched = function () {
     this.callback();
   };
 
@@ -40,7 +63,7 @@ function UserProfileHandler() {
           'headers': service.getHeaders(),
           'success': function (userData) {
             console.log("User was created:");
-            service.storeProfileAndCallback(userData);
+            service.userProfileLoaded(userData);
           },
           'error'  : function (error) {
             console.log("User profile creation error:");
@@ -59,7 +82,7 @@ function UserProfileHandler() {
           'headers': service.getHeaders(),
           'success': function (userData) {
             //console.log("User was read from REST API");
-            service.storeProfileAndCallback(userData);
+            service.userProfileLoaded(userData);
           },
           'error'  : function (error) {
             if (error.status == 404) {

@@ -29,7 +29,7 @@ define([
 
     vm.breadcrumbName = breadcrumbName;
     vm.cancelCreateEditFolder = cancelCreateEditFolder;
-    vm.currentWorkspacePath = cedarUser.getHome();
+    //vm.currentWorkspacePath = cedarUser.getHome();
     vm.currentPath = "";
     vm.currentFolderId = "";
     vm.deleteResource = deleteResource;
@@ -81,6 +81,8 @@ define([
     vm.toggleResourceType = toggleResourceType;
 
     $rootScope.pageTitle = 'Dashboard';
+
+    return;
 
     init();
 
