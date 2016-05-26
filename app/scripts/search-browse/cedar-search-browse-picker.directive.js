@@ -184,7 +184,7 @@ define([
                                             'GENERIC.Created');
             },
             function(response) {
-              UIMessageService.showBackendError('SERVER.FOLDER.create.error', error);
+              UIMessageService.showBackendError('SERVER.FOLDER.create.error', response);
             }
           );
         }
