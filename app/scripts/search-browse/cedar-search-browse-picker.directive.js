@@ -30,22 +30,24 @@ define([
     cedarSearchBrowsePickerController.$inject = [
       '$location',
       '$rootScope',
+      '$timeout',
       '$scope',
       '$translate',
       'CedarUser',
       'resourceService',
       'UIMessageService',
+      'UISettingsService',
       'UrlService',
       'CONST'
     ];
 
-    function cedarSearchBrowsePickerController($location, $rootScope, $scope, $translate, CedarUser, resourceService,
-                                               UIMessageService, UrlService, CONST) {
+    function cedarSearchBrowsePickerController($location, $rootScope, $timeout, $scope, $translate, CedarUser,
+                                               resourceService, UIMessageService, UISettingsService, UrlService,
+                                               CONST) {
       var vm = this;
 
       vm.breadcrumbName = breadcrumbName;
       vm.cancelCreateEditFolder = cancelCreateEditFolder;
-      //vm.currentWorkspacePath = CedarUser.getHome();
       vm.currentPath = "";
       vm.currentFolderId = "";
       vm.deleteResource = deleteResource;
@@ -54,10 +56,10 @@ define([
       vm.editResource = editResource;
       vm.facets = {};
       vm.forms = [];
-      vm.formFolder,
-          vm.formFolderName,
-          vm.formFolderDescription,
-          vm.getFacets = getFacets;
+      vm.formFolder = null;
+      vm.formFolderName = null;
+      vm.formFolderDescription = null;
+      vm.getFacets = getFacets;
       vm.getForms = getForms;
       vm.getFolderContents = getFolderContents;
       vm.getFolderContentsById = getFolderContentsById;
@@ -84,7 +86,7 @@ define([
       vm.selectResource = selectResource;
       vm.setSortOption = setSortOption;
       vm.showCreateFolder = showCreateFolder;
-      vm.showFavorites = true;
+      vm.showFavorites = CedarUser.getUIPreferences().populateATemplate.opened;
       vm.showFilters = false;
       vm.showFloatingMenu = false;
       vm.showInfoPanel = showInfoPanel;
@@ -124,9 +126,27 @@ define([
         }
       }
 
-      /**
-       * Scope functions.
-       */
+      function init() {
+        vm.isSearching = false;
+        if (vm.params.folderId) {
+          getFacets();
+          getFolderContentsById(decodeURIComponent(vm.params.folderId));
+        } else if (vm.params.search) {
+          vm.isSearching = true;
+          if (vm.showFavorites) {
+            vm.showFavorites = false;
+            updateFavorites();
+          }
+          getFacets();
+          doSearch(vm.params.search);
+        } else {
+          goToFolder(CedarUser.getHomeFolderId());
+        }
+        if (vm.showFavorites) {
+          getForms();
+        }
+        updateFavorites(false);
+      }
 
       function breadcrumbName(folderName) {
         if (folderName == '/') {
@@ -164,7 +184,7 @@ define([
                     'GENERIC.Updated');
               },
               function (response) {
-                UIMessageService.showBackendError('SERVER.FOLDER.update.error', error);
+                UIMessageService.showBackendError('SERVER.FOLDER.update.error', response);
               }
           );
           // edit
@@ -189,14 +209,14 @@ define([
         var resourceTypes = activeResourceTypes();
         resourceService.searchResources(
             term,
-            {resourceTypes: resourceTypes, sort: sortField(), limit: 10, offset: 0},
+            {resourceTypes: resourceTypes, sort: sortField(), limit: 100, offset: 0},
             function (response) {
               vm.searchTerm = term;
               vm.isSearching = true;
               vm.resources = response.resources;
             },
             function (error) {
-              debugger;
+              UIMessageService.showBackendError('SERVER.SEARCH.error', error);
             }
         );
       }
@@ -403,7 +423,8 @@ define([
       }
 
       function selectResource(resource) {
-        vm.selectedResource = resource;
+        // commented this out because it causes flickering
+        //vm.selectedResource = resource;
         getResourceDetails(resource);
         if (typeof vm.selectResourceCallback === 'function') {
           vm.selectResourceCallback(resource);
@@ -438,8 +459,7 @@ define([
 
       function toggleResourceType(type) {
         vm.resourceTypes[type] = !vm.resourceTypes[type];
-        // TODO: should be cedarUser.getCurrentFolderId()
-        getFolderContents(vm.currentWorkspacePath);
+        init();
       }
 
       /**
@@ -491,7 +511,7 @@ define([
       function resetSelected() {
         vm.selectedResource = null;
         vm.showResourceInfo = false;
-      };
+      }
 
       function sortField() {
         if (vm.sortOptionField == 'name') {
@@ -501,11 +521,17 @@ define([
         }
       }
 
-      function updateFavorites() {
-        if (vm.showFavorites) {
-          angular.element('#favorites').collapse('show');
-        } else {
-          angular.element('#favorites').collapse('hide');
+      function updateFavorites(saveData) {
+        $timeout(function () {
+          if (vm.showFavorites) {
+            angular.element('#favorites').collapse('show');
+            getForms();
+          } else {
+            angular.element('#favorites').collapse('hide');
+          }
+        });
+        if (saveData == null || saveData) {
+          UISettingsService.saveUIPreference('populateATemplate.opened', vm.showFavorites);
         }
       }
 
