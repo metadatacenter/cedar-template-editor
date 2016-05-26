@@ -320,6 +320,7 @@ define([
               vm.forms = response.resources;
             },
             function (error) {
+              UIMessageService.showBackendError('SERVER.SEARCH.error', error);
             }
         );
       }
