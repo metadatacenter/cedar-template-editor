@@ -75,18 +75,11 @@ define([
       vm.pathInfo = [];
       vm.params = $location.search();
       vm.resources = [];
-      vm.resourceTypes = {
-        element : true,
-        field   : true,
-        instance: true,
-        template: true
-      };
       vm.resourceView = 'grid';
       vm.selectedResource = null;
       vm.selectResource = selectResource;
       vm.setSortOption = setSortOption;
       vm.showCreateFolder = showCreateFolder;
-      vm.showFavorites = CedarUser.getUIPreferences().populateATemplate.opened;
       vm.showFilters = false;
       vm.showFloatingMenu = false;
       vm.showInfoPanel = showInfoPanel;
@@ -100,30 +93,17 @@ define([
 
       $rootScope.pageTitle = 'Dashboard';
 
+      setUIPreferences();
       init();
 
-      function init() {
-        if (vm.params.folderId || vm.params.search) {
-          getForms();
-          getFacets();
-          if (vm.params.search) {
-            doSearch(vm.params.search);
-          } else {
-            vm.isSearching = false;
-            getFolderContentsById(decodeURIComponent(vm.params.folderId));
-          }
-        } else {
-          vm.isSearching = false;
-          resourceService.getResources(
-              {folderId: CedarUser.getHomeFolderId()},
-              function (response) {
-                var currentFolder = response.pathInfo[response.pathInfo.length - 1];
-                goToFolder(currentFolder['@id']);
-              },
-              function (error) {
-              }
-          );
-        }
+      function setUIPreferences() {
+        vm.showFavorites = CedarUser.getUIPreferences().populateATemplate.opened;
+        vm.resourceTypes = {
+          element : CedarUser.getUIPreferences().resourceTypeFilters.element,
+          field   : CedarUser.getUIPreferences().resourceTypeFilters.field,
+          instance: CedarUser.getUIPreferences().resourceTypeFilters.instance,
+          template: CedarUser.getUIPreferences().resourceTypeFilters.template
+        };
       }
 
       function init() {
@@ -460,6 +440,7 @@ define([
 
       function toggleResourceType(type) {
         vm.resourceTypes[type] = !vm.resourceTypes[type];
+        UISettingsService.saveUIPreference('resourceTypeFilters.' + type, vm.resourceTypes[type]);
         init();
       }
 
