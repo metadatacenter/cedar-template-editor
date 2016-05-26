@@ -12,14 +12,15 @@ define([
                                         'DataManipulationService', 'FieldTypeService', 'UrlService', 'UIUtilService',
                                         'UserService', 'RichTextConfigService', 'CONST', 'controlTermDataService',
                                         'provisionalClassService', 'CedarUser', 'UISettingsService',
-                                        'ValueRecommenderService', 'DataUtilService', 'TrackingService'];
+                                        'ValueRecommenderService', 'DataUtilService', 'TrackingService',
+                                        '$httpParamSerializer'];
 
 
   function cedarTemplateEditorCoreRun($rootScope, $window, $sce, $translate, DataTemplateService,
                                       DataManipulationService, FieldTypeService, UrlService, UIUtilService, UserService,
                                       RichTextConfigService, CONST, controlTermDataService, provisionalClassService,
                                       CedarUser, UISettingsService, ValueRecommenderService, DataUtilService,
-                                      TrackingService) {
+                                      TrackingService, $httpParamSerializer) {
 
     $rootScope.isArray = angular.isArray;
 
@@ -347,9 +348,10 @@ define([
           if (term == '*') {
             $rootScope.removeAutocompleteResultsForSource(field_id, valueSet.uri);
           }
-          controlTermDataService.autocompleteValueSetClasses(term, valueSet.vsCollection, valueSet.uri).then(function (childResponse) {
-            $rootScope.processAutocompleteClassResults(field_id, 'Value Set Class', valueSet.uri, childResponse);
-          });
+          controlTermDataService.autocompleteValueSetClasses(term, valueSet.vsCollection,
+              valueSet.uri).then(function (childResponse) {
+                $rootScope.processAutocompleteClassResults(field_id, 'Value Set Class', valueSet.uri, childResponse);
+              });
         });
       }
 
@@ -486,6 +488,15 @@ define([
     $rootScope.vrs = ValueRecommenderService;
     $rootScope.editorOptions = RichTextConfigService.getConfig("default");
 
+    $rootScope.util = {
+      buildUrl: function (url, params) {
+        var serializedParams = $httpParamSerializer(params);
+        if (serializedParams.length > 0) {
+          url += ((url.indexOf('?') === -1) ? '?' : '&') + serializedParams;
+        }
+        return url;
+      }
+    };
 
   };
 

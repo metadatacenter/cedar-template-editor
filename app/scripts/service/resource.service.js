@@ -4,31 +4,30 @@ define([
   'angular'
 ], function (angular) {
   angular.module('cedar.templateEditor.service.resourceService', [])
-    .service('resourceService', resourceService);
+      .service('resourceService', resourceService);
 
   resourceService.$inject = [
-    '$http',
-    '$timeout',
+    '$rootScope',
     'AuthorizedBackendService',
-    'CedarUser',
     'HttpBuilderService',
     'UISettingsService',
     'UrlService',
     'CONST'
   ];
 
-  function resourceService($http, $timeout, authorizedBackendService, cedarUser, httpBuilderService, uiSettingsService, urlService, CONST) {
+  function resourceService($rootScope, authorizedBackendService, httpBuilderService, uiSettingsService, urlService,
+                           CONST) {
 
     var searchTerm = null;
     var service = {
-      createFolder: createFolder,
-      deleteFolder: deleteFolder,
-      deleteResource: deleteResource,
-      getFacets: getFacets,
+      createFolder     : createFolder,
+      deleteFolder     : deleteFolder,
+      deleteResource   : deleteResource,
+      getFacets        : getFacets,
       getResourceDetail: getResourceDetail,
-      getResources: getResources,
-      searchResources: searchResources,
-      updateFolder: updateFolder
+      getResources     : getResources,
+      searchResources  : searchResources,
+      updateFolder     : updateFolder
     };
     return service;
 
@@ -39,16 +38,16 @@ define([
     function createFolder(parentFolderId, name, description, successCallback, errorCallback) {
       var url = urlService.folders();
       var payload = {
-        folderId: parentFolderId,
-        name: name,
+        folderId   : parentFolderId,
+        name       : name,
         description: description
       };
       authorizedBackendService.doCall(
-        httpBuilderService.post(url, payload),
-        function(response) {
-          successCallback(response.data);
-        },
-        errorCallback
+          httpBuilderService.post(url, payload),
+          function (response) {
+            successCallback(response.data);
+          },
+          errorCallback
       );
     }
 
@@ -56,36 +55,36 @@ define([
       var url;
       var id = resource['@id'];
       switch (resource.resourceType) {
-      case CONST.resourceType.FOLDER:
-        url = urlService.getFolder(id);
-        break;
-      case CONST.resourceType.TEMPLATE:
-        url = urlService.getTemplate(id);
-        break;
-      case CONST.resourceType.ELEMENT:
-        url = urlService.getTemplateElement(id);
-        break;
-      case CONST.resourceType.INSTANCE:
-        url = urlService.getTemplateInstance(id);
-        break;
+        case CONST.resourceType.FOLDER:
+          url = urlService.getFolder(id);
+          break;
+        case CONST.resourceType.TEMPLATE:
+          url = urlService.getTemplate(id);
+          break;
+        case CONST.resourceType.ELEMENT:
+          url = urlService.getTemplateElement(id);
+          break;
+        case CONST.resourceType.INSTANCE:
+          url = urlService.getTemplateInstance(id);
+          break;
       }
       authorizedBackendService.doCall(
-        httpBuilderService.delete(url),
-        function(response) {
-          successCallback(response.data);
-        },
-        errorCallback
+          httpBuilderService.delete(url),
+          function (response) {
+            successCallback(response.data);
+          },
+          errorCallback
       );
     }
 
     function deleteFolder(folderId, successCallback, errorCallback) {
       var url = urlService.folders() + '/' + encodeURIComponent(folderId);
       authorizedBackendService.doCall(
-        httpBuilderService.delete(url),
-        function(response) {
-          successCallback(response.data);
-        },
-        errorCallback
+          httpBuilderService.delete(url),
+          function (response) {
+            successCallback(response.data);
+          },
+          errorCallback
       );
     }
 
@@ -94,92 +93,92 @@ define([
         facets: {
           "author": {
             "totalCount": 245,
-            "nodes": [
+            "nodes"     : [
               {
-                "label": "Author 1",
-                "key": "authorIdFromIndex1",
+                "label"          : "Author 1",
+                "key"            : "authorIdFromIndex1",
                 "numberOfMatches": 6,
-                "selected": true,
-                "hasChildren": false
+                "selected"       : true,
+                "hasChildren"    : false
               },
               {
-                "label": "Author 2",
-                "key": "authorIdFromIndex2",
+                "label"          : "Author 2",
+                "key"            : "authorIdFromIndex2",
                 "numberOfMatches": 7,
-                "selected": false,
-                "hasChildren": false
+                "selected"       : false,
+                "hasChildren"    : false
               },
               {
-                "label": "Author 3",
-                "key": "authorIdFromIndex3",
+                "label"          : "Author 3",
+                "key"            : "authorIdFromIndex3",
                 "numberOfMatches": 8,
-                "selected": false,
-                "hasChildren": false
+                "selected"       : false,
+                "hasChildren"    : false
               }
             ]
           },
           "status": {
             "totalCount": 3,
-            "nodes": [
+            "nodes"     : [
               {
-                "label": "Draft",
-                "key": "draft",
+                "label"          : "Draft",
+                "key"            : "draft",
                 "numberOfMatches": 20,
-                "selected": false,
-                "hasChildren": false
+                "selected"       : false,
+                "hasChildren"    : false
               },
               {
-                "label": "Complete",
-                "key": "complete",
+                "label"          : "Complete",
+                "key"            : "complete",
                 "numberOfMatches": 255,
-                "selected": false,
-                "hasChildren": false
+                "selected"       : false,
+                "hasChildren"    : false
               },
               {
-                "label": "Reviewed",
-                "key": "reviewed",
+                "label"          : "Reviewed",
+                "key"            : "reviewed",
                 "numberOfMatches": 10,
-                "selected": false,
-                "hasChildren": false
+                "selected"       : false,
+                "hasChildren"    : false
               }
             ]
           },
-          "term": {
+          "term"  : {
             "totalCount": 8,
-            "nodes": [
+            "nodes"     : [
               {
-                "label": "CTO",
-                "key": "CTO",
+                "label"          : "CTO",
+                "key"            : "CTO",
                 "numberOfMatches": 3,
-                "selected": false,
-                "hasChildren": false
+                "selected"       : false,
+                "hasChildren"    : false
               },
               {
-                "label": "ICD",
-                "key": "ICD",
+                "label"          : "ICD",
+                "key"            : "ICD",
                 "numberOfMatches": 10,
-                "selected": false,
-                "hasChildren": false
+                "selected"       : false,
+                "hasChildren"    : false
               },
               {
-                "label": "SNOMED-CT",
-                "key": "SNOMED-CT",
+                "label"          : "SNOMED-CT",
+                "key"            : "SNOMED-CT",
                 "numberOfMatches": 6,
-                "selected": false,
-                "hasChildren": true,
-                "nodes" :[
+                "selected"       : false,
+                "hasChildren"    : true,
+                "nodes"          : [
                   {
-                    "label": "Influenza",
-                    "key": "INF",
+                    "label"          : "Influenza",
+                    "key"            : "INF",
                     "numberOfMatches": 6,
-                    "hasChildren": true,
-                    "nodes" :[
+                    "hasChildren"    : true,
+                    "nodes"          : [
                       {
-                        "label": "Influenza Type A",
-                        "key": "INFA",
+                        "label"          : "Influenza Type A",
+                        "key"            : "INFA",
                         "numberOfMatches": 6,
-                        "selected": false,
-                        "hasChildren": false
+                        "selected"       : false,
+                        "hasChildren"    : false
                       }
                     ]
                   }
@@ -189,17 +188,17 @@ define([
           }
         }
       }
-      var response = { data: dummyData };
+      var response = {data: dummyData};
       successCallback(response.data);
       return;
 
       var url = UrlService.facets();
       authorizedBackendService.doCall(
-        httpBuilderService.get(url),
-        function(response) {
-          successCallback(response.data);
-        },
-        errorCallback
+          httpBuilderService.get(url),
+          function (response) {
+            successCallback(response.data);
+          },
+          errorCallback
       );
     }
 
@@ -207,25 +206,25 @@ define([
       var url;
       var id = resource['@id'];
       switch (resource.resourceType) {
-      case CONST.resourceType.FOLDER:
-        url = urlService.folders() + '/' + encodeURIComponent(id);
-        break;
-      case CONST.resourceType.ELEMENT:
-        url = urlService.getTemplateElement(id) + '/details';
-        break;
-      case CONST.resourceType.TEMPLATE:
-        url = urlService.getTemplate(id) + '/details';
-        break;
-      case CONST.resourceType.INSTANCE:
-        url = urlService.getTemplateInstance(id) + '/details';
-        break;
+        case CONST.resourceType.FOLDER:
+          url = urlService.folders() + '/' + encodeURIComponent(id);
+          break;
+        case CONST.resourceType.ELEMENT:
+          url = urlService.getTemplateElement(id) + '/details';
+          break;
+        case CONST.resourceType.TEMPLATE:
+          url = urlService.getTemplate(id) + '/details';
+          break;
+        case CONST.resourceType.INSTANCE:
+          url = urlService.getTemplateInstance(id) + '/details';
+          break;
       }
       authorizedBackendService.doCall(
-        httpBuilderService.get(url),
-        function(response) {
-          successCallback(response.data);
-        },
-        errorCallback
+          httpBuilderService.get(url),
+          function (response) {
+            successCallback(response.data);
+          },
+          errorCallback
       );
     };
 
@@ -233,31 +232,27 @@ define([
       if (options == null) {
         options = {};
       }
-      var resourceTypes = options.resourceTypes || uiSettingsService.getResourceTypeFilters().map(function(obj) { return obj.resourceType });
-      var url = urlService.folders();
+
+      var params = {};
+      var baseUrl = urlService.folders();
       if (options.path) {
-        url += '/contents?path=' + options.path + '&';
+        baseUrl += '/contents';
+        params['path'] = options.path;
       }
       if (options.folderId) {
-        url += '/' + encodeURIComponent(options.folderId) + '/contents?';
-      }
-      url += 'resource_types=' + resourceTypes.join(',');
-      if (options.sort) {
-        url += '&sort=' + options.sort;
-      }
-      if (options.limit) {
-        url += '&limit=' + options.limit;
-      }
-      if (options.offset) {
-        url += '&offset=' + options.offset;
+        baseUrl += '/' + encodeURIComponent(options.folderId) + '/contents';
       }
 
+      addCommonParameters(params, options);
+
+      var url = $rootScope.util.buildUrl(baseUrl, params);
+
       authorizedBackendService.doCall(
-        httpBuilderService.get(url),
-        function(response) {
-          successCallback(response.data);
-        },
-        errorCallback
+          httpBuilderService.get(url),
+          function (response) {
+            successCallback(response.data);
+          },
+          errorCallback
       );
     }
 
@@ -266,45 +261,58 @@ define([
         options = {};
       }
       this.searchTerm = searchTerm;
-      var resourceTypes = options.resourceTypes || uiSettingsService.getResourceTypeFilters().map(function(obj) { return obj.resourceType });
-      var url = urlService.search() + '?';
+      var params = {};
+      var baseUrl = urlService.search();
 
       if (searchTerm == 'null') {
         searchTerm = '';
       }
 
       if (searchTerm) {
-        url += 'q=' + searchTerm + '&';
-      }
-      url += 'resource_types=' + resourceTypes.join(',');
-      if ('sort' in options) {
-        url += '&sort=' + options.sort;
-      }
-      if ('limit' in options) {
-        url += '&limit=' + options.limit;
-      }
-      if ('offset' in options) {
-        url += '&offset=' + options.offset;
+        params['q'] = searchTerm;
       }
 
+      addCommonParameters(params, options);
+
+      var url = $rootScope.util.buildUrl(baseUrl, params);
+
       authorizedBackendService.doCall(
-        httpBuilderService.get(url),
-        function(response) {
-          successCallback(response.data);
-        },
-        errorCallback
+          httpBuilderService.get(url),
+          function (response) {
+            successCallback(response.data);
+          },
+          errorCallback
       );
+    }
+
+    // private function
+    function addCommonParameters(params, options) {
+      var resourceTypes = options.resourceTypes || uiSettingsService.getResourceTypeFilters().map(function (obj) {
+            return obj.resourceType
+          });
+      params['resource_types'] = resourceTypes.join(',');
+      if (angular.isArray(options.sort)) {
+        params['sort'] = options.sort.join(',');
+      } else {
+        params['sort'] = options.sort;
+      }
+      if ('limit' in options) {
+        params['limit'] = options.limit;
+      }
+      if ('offset' in options) {
+        params['offset'] = options.offset;
+      }
     }
 
     function updateFolder(folder, successCallback, errorCallback) {
       var url = urlService.getFolder(folder['@id']);
 
       authorizedBackendService.doCall(
-        httpBuilderService.put(url, angular.toJson(folder)),
-        function(response) {
-          successCallback(response.data);
-        },
-        errorCallback
+          httpBuilderService.put(url, angular.toJson(folder)),
+          function (response) {
+            successCallback(response.data);
+          },
+          errorCallback
       );
 
     }
