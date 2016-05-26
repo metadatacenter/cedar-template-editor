@@ -98,7 +98,7 @@ define([
                         catchFunction(err);
                       });
                     } else {
-                      console.log(this.getTokenValidityMessage());
+                      console.log(owner.getTokenValidityMessage());
                     }
                   },
                   function () {
