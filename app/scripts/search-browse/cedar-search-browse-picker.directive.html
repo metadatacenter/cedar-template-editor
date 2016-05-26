@@ -208,7 +208,7 @@
         <div class="col-sm-6"
              ng-class="{ 'col-md-3': !dc.narrowContent(), 'col-md-4': dc.narrowContent(), selected: dc.isResourceSelected(resource) }"
              ng-repeat="(index, resource) in dc.resources">
-          <div simple dropdownId="{{getId(resource)}}"  id="{{'select'+getId(resource)}}" ng-click="dc.selectResource(resource)" ng-dblclick="dc.goToResource(resource)" class="form-box">
+          <div  rightclick   dropdownId="{{getId(resource)}}"  id="{{'select'+getId(resource)}}" ng-click="dc.selectResource(resource)" ng-dblclick="dc.goToResource(resource)" class="form-box">
             <div class="box-content text-center">
               <i class="fa" ng-class="dc.getResourceIconClass(resource)"></i>
               <p>{{ resource.name }}</p>

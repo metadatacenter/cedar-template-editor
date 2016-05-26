@@ -3,16 +3,15 @@
 define([
   'angular'
 ], function (angular) {
-  angular.module('cedar.templateEditor.form.simpleDirective', [])
-      .directive('simple', simpleDirective);
+  angular.module('cedar.templateEditor.form.rightClickDirective', [])
+      .directive('rightclick', rightClickDirective);
 
-  simpleDirective.$inject = ['$parse','$timeout'];
+  rightClickDirective.$inject = ['$parse','$timeout'];
 
   /**
    * Hides an image if the image src does not load.
    */
-  function simpleDirective($parse,$timeout) {
-    console.log('form/simpleDirective');
+  function rightClickDirective($parse,$timeout) {
 
     var selectAndToggleMenu = function(id) {
       var selectId = '#select' + id;
@@ -29,7 +28,6 @@ define([
     return {
       restrict: 'A',
       link    : function (scope, element, attr) {
-      console.log('link');
 
         scope.getId = function(resource) {
           var id = resource['@id'];
@@ -40,11 +38,8 @@ define([
         element.bind('contextmenu', function($event) {
           scope.$apply(function() {
             event.preventDefault();
-            console.log('right click');
-
             selectAndToggleMenu(attr.dropdownid);
             //fn(scope, {$event:event});
-
           });
         });
 
