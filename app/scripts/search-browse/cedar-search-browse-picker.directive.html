@@ -285,13 +285,18 @@
                       class="btn btn-sm btn-circle fa fa-ellipsis-v"></i>
                   </button>
                   <ul class="dropdown-menu" aria-labelledby="{{'button' + getId(resource, 'form')}}">
-                    <li ng-if="resource.resourceType == 'template'"><a href="#"
-                        ng-click="dc.launchInstance(resource)">Populate</a>
-                    </li>
-                    <li><a href="#" ng-click="dc.editResource(resource)">Edit</a></li>
                     <li><a href="#" ng-click="dc.showInfoPanel(resource)">Info</a></li>
+                    <li><a href="#" >Preview</a></li>
+                    <li ng-if="resource.resourceType == 'template'"><a href="#" ng-click="dc.launchInstance(resource)">Populate</a></li>
+                    <li><a href="#" ng-click="dc.editResource(resource)">Edit</a></li>
                     <li role="separator" class="divider"></li>
-                    <li><a href="#" ng-click="dc.deleteResource(resource)">Delete</a></li>
+                    <li><a href="#" >Share</a></li>
+                    <li><a href="#" >Move to...</a></li>
+                    <li><a href="#" >Rename</a></li>
+                    <li role="separator" class="divider"></li>
+                    <li><a href="#" >Make a copy</a></li>
+                    <li role="separator" class="divider"></li>
+                    <li><a href="#" ng-click="dc.deleteResource(resource)">Remove</a></li>
                   </ul>
                 </div>
               </td>
