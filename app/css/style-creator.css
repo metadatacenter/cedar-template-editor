@@ -9662,23 +9662,44 @@ body.search-browse-modal .footer-buttons button.canc {
   box-shadow: 4px 4px #e0e0e0;
   background: #ffffff;
   margin: 10px auto 20px;
-  font-size: 18px;
+  font-size: 16px;
+  color: #666666;
+  position: relative;
 }
 .all-items-view .populate-form-boxes .list-view table tbody tr.box-row td {
-  padding: 20px;
+  padding: 15px;
 }
 .all-items-view .populate-form-boxes .list-view table tbody tr.box-row td i.large-icon {
-  font-size: 36px;
   color: #5795ba;
 }
 .all-items-view .populate-form-boxes .list-view table tbody tr.box-row .btn-circle {
   border-radius: 50%;
+  background: #fff;
   width: 30px;
+  height: 30px;
 }
 .all-items-view .populate-form-boxes .list-view table tbody tr.box-row .btn-info.btn-circle {
   box-shadow: none;
-  background: #666666;
+  background: #5795ba;
   color: #fff;
+  border: none;
+}
+.all-items-view .populate-form-boxes .list-view table tbody tr.box-row.selected {
+  background: #5795ba;
+  color: #fff;
+}
+.all-items-view .populate-form-boxes .list-view table tbody tr.box-row.selected td i.large-icon {
+  color: #5795ba;
+}
+.all-items-view .populate-form-boxes .list-view table tbody tr.box-row.selected .btn-circle {
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+}
+.all-items-view .populate-form-boxes .list-view table tbody tr.box-row.selected .btn-info.btn-circle {
+  box-shadow: none;
+  background: #fff;
+  color: #5795ba;
   border: none;
 }
 .all-items-view .row-offcanvas {
