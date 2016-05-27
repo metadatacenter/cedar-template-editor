@@ -5,6 +5,7 @@ function UserProfileHandler() {
   this.usersUrl = null;
   this.userUrl = null;
   this.foldersUrl = null;
+  this.homeFolderId = null;
 
   this.getHeaders = function () {
     return {
@@ -30,27 +31,32 @@ function UserProfileHandler() {
 
   this.userProfileLoaded = function (userData) {
     this.userHandler.cedarUserProfile = userData;
+    this.homeFolderId = userData.homeFolderId;
 
-    var service = this;
-    jQuery.ajax(
-        service.foldersUrl + "/" + encodeURIComponent(userData.homeFolderId),
-        {
-          'method' : 'GET',
-          'headers': service.getHeaders(),
-          'success': function (userData) {
-            console.log("Home folder was accessed");
-            service.homeFolderWasTouched();
-          },
-          'error'  : function (error) {
-            console.log("Home folder was not accessed:");
-            console.log(error);
-            service.homeFolderWasTouched();
+    if (this.homeFolderId == null) {
+      var service = this;
+      // touch a folder, this should create the home folder
+      jQuery.ajax(
+          service.foldersUrl + "/" + encodeURIComponent("non-existing-folder-id"),
+          {
+            'method' : 'GET',
+            'headers': service.getHeaders(),
+            'success': function (userData) {
+              // do nothing, this folder should not be present
+            },
+            'error'  : function (error) {
+              // expected behaviour. Home folder was created in the background
+              service.loadUserProfile(false);
+            }
           }
-        }
-    );
-  }
+      );
+    } else {
+      this.userProfileLoadedDoCallback(userData);
+    }
+  };
 
-  this.homeFolderWasTouched = function () {
+  this.userProfileLoadedDoCallback = function (userData) {
+    this.userHandler.cedarUserProfile = userData;
     this.callback();
   };
 
@@ -73,7 +79,7 @@ function UserProfileHandler() {
     );
   };
 
-  this.loadUserProfile = function () {
+  this.loadUserProfile = function (createUserAndTouchHomeFolder) {
     var service = this;
     jQuery.ajax(
         service.userUrl,
@@ -81,13 +87,20 @@ function UserProfileHandler() {
           'method' : 'GET',
           'headers': service.getHeaders(),
           'success': function (userData) {
-            //console.log("User was read from REST API");
-            service.userProfileLoaded(userData);
+            if (createUserAndTouchHomeFolder) {
+              service.userProfileLoaded(userData);
+            } else {
+              service.userProfileLoadedDoCallback(userData);
+            }
           },
           'error'  : function (error) {
             if (error.status == 404) {
-              console.log("User was not found using the REST API. Create it!");
-              service.createUser();
+              if (createUserAndTouchHomeFolder) {
+                console.log("User was not found using the REST API. Create it!");
+                service.createUser();
+              } else {
+                service.userProfileLoadedDoCallback(userData);
+              }
             }
           }
         }
@@ -103,7 +116,7 @@ function UserProfileHandler() {
 
     var service = this;
     this.loadUrlServiceConf(userId, function () {
-      service.loadUserProfile();
+      service.loadUserProfile(true);
     });
   };
 }
