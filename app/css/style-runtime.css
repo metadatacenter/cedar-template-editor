@@ -9646,58 +9646,84 @@ body.search-browse-modal .footer-buttons button.canc {
   font-size: 12px;
   margin-bottom: 0;
 }
-.all-items-view .populate-form-boxes .list-view thead th {
+.all-items-view .populate-form-boxes .list-view .title {
   text-transform: uppercase;
   padding: 10px 0 20px;
 }
-.all-items-view .populate-form-boxes .list-view thead th i {
+.all-items-view .populate-form-boxes .list-view .title i {
   color: #71a69c;
 }
 .all-items-view .populate-form-boxes .list-view tbody {
   margin: 10px 0;
 }
-.all-items-view .populate-form-boxes .list-view table tbody tr.box-row {
+.all-items-view .populate-form-boxes .list-view .box-title {
   width: 100%;
-  border: 1px solid #ebebeb;
-  box-shadow: 4px 4px #e0e0e0;
-  background: #ffffff;
-  margin: 10px auto 20px;
   font-size: 16px;
   color: #666666;
-  position: relative;
 }
-.all-items-view .populate-form-boxes .list-view table tbody tr.box-row td {
-  padding: 15px;
+.all-items-view .populate-form-boxes .list-view .box-title .cell {
+  display: inline-block;
+  padding: 10px;
 }
-.all-items-view .populate-form-boxes .list-view table tbody tr.box-row td i.large-icon {
-  color: #71a69c;
+.all-items-view .populate-form-boxes .list-view .box-title .resource {
+  width: 45%;
 }
-.all-items-view .populate-form-boxes .list-view table tbody tr.box-row .btn-circle {
+.all-items-view .populate-form-boxes .list-view .box-title .type {
+  width: 10%;
+}
+.all-items-view .populate-form-boxes .list-view .box-title .date {
+  width: 20%;
+}
+.all-items-view .populate-form-boxes .list-view .box-row {
+  width: 100%;
+  border: 1px solid #ebebeb;
+  background: #ffffff;
+  font-size: 16px;
+  color: #666666;
+}
+.all-items-view .populate-form-boxes .list-view .box-row .cell {
+  display: inline-block;
+  padding: 10px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.all-items-view .populate-form-boxes .list-view .box-row .cell i.large-icon {
+  color: #fff;
+}
+.all-items-view .populate-form-boxes .list-view .box-row .resource {
+  width: 45%;
+}
+.all-items-view .populate-form-boxes .list-view .box-row .type {
+  width: 10%;
+}
+.all-items-view .populate-form-boxes .list-view .box-row .date {
+  width: 20%;
+  white-space: nowrap;
+}
+.all-items-view .populate-form-boxes .list-view .box-row .btn-circle {
   border-radius: 50%;
   background: #fff;
   width: 30px;
   height: 30px;
 }
-.all-items-view .populate-form-boxes .list-view table tbody tr.box-row .btn-info.btn-circle {
-  box-shadow: none;
+.all-items-view .populate-form-boxes .list-view .box-row .btn-info.btn-circle {
   background: #71a69c;
   color: #fff;
   border: none;
 }
-.all-items-view .populate-form-boxes .list-view table tbody tr.box-row.selected {
+.all-items-view .populate-form-boxes .list-view .box-row.selected {
   background: #71a69c;
   color: #fff;
 }
-.all-items-view .populate-form-boxes .list-view table tbody tr.box-row.selected td i.large-icon {
+.all-items-view .populate-form-boxes .list-view .box-row.selected .cell i.large-icon {
   color: #71a69c;
 }
-.all-items-view .populate-form-boxes .list-view table tbody tr.box-row.selected .btn-circle {
+.all-items-view .populate-form-boxes .list-view .box-row.selected .btn-circle {
   border-radius: 50%;
   width: 30px;
   height: 30px;
 }
-.all-items-view .populate-form-boxes .list-view table tbody tr.box-row.selected .btn-info.btn-circle {
-  box-shadow: none;
+.all-items-view .populate-form-boxes .list-view .box-row.selected .btn-info.btn-circle {
   background: #fff;
   color: #71a69c;
   border: none;

@@ -13,42 +13,44 @@ define([
    */
   function rightClickDirective($parse,$timeout,$document) {
 
-    var theThing;
-    var container;
 
+    var offsetX;
+    var offsetY;
+    var id;
+    var el;
+
+
+    // select the element and toggle the button trigger for the menu dropdown
     var selectAndToggleMenu = function(id) {
-      console.log('selectAndToggleMenu');
-      var selectId = '#select' + id;
-      var buttonId = '#button' + id;
 
       $timeout(function () {
-        jQuery(selectId).click();
-        jQuery(buttonId).dropdown('toggle');
+        el.click();
+        jQuery('#' + id + ' button').dropdown('toggle');
 
       });
 
       return false;
     };
 
-    var getPosition = function(el) {
+    var getPosition = function(element) {
       var xPos = 0;
       var yPos = 0;
 
-      while (el) {
-        if (el.tagName == "BODY") {
+      while (element) {
+        if (element.tagName == "BODY") {
           // deal with browser quirks with body/window/document and page scroll
-          var xScroll = el.scrollLeft || document.documentElement.scrollLeft;
-          var yScroll = el.scrollTop || document.documentElement.scrollTop;
+          var xScroll = element.scrollLeft || document.documentElement.scrollLeft;
+          var yScroll = element.scrollTop || document.documentElement.scrollTop;
 
-          xPos += (el.offsetLeft - xScroll + el.clientLeft);
-          yPos += (el.offsetTop - yScroll + el.clientTop);
+          xPos += (element.offsetLeft - xScroll + element.clientLeft);
+          yPos += (element.offsetTop - yScroll + element.clientTop);
         } else {
           // for all other non-BODY elements
-          xPos += (el.offsetLeft - el.scrollLeft + el.clientLeft);
-          yPos += (el.offsetTop - el.scrollTop + el.clientTop);
+          xPos += (element.offsetLeft - element.scrollLeft + element.clientLeft);
+          yPos += (element.offsetTop - element.scrollTop + element.clientTop);
         }
 
-        el = el.offsetParent;
+        element = element.offsetParent;
       }
       return {
         x: xPos,
@@ -56,49 +58,33 @@ define([
       };
     };
 
-    function getClickPosition(e, id) {
-
+    // calculate the absolute position of the context menu
+    function getClickPosition(e, id, dx, dy) {
       var parentPosition = getPosition(e.currentTarget);
-
-      var xPosition = e.clientX - parentPosition.x;
-      var yPosition = e.clientY - parentPosition.y;
-
-      console.log(theThing);
-      console.log('parent')
-      console.log(e.currentTarget);
-      console.log('parentPosition')
-      console.log(parentPosition);
-
-      console.log('clientX clientY')
-      console.log(e.clientX + ' ' + e.clientY);
-
-      console.log('xPosition yPosition')
-      console.log(xPosition + ' ' + yPosition);
-
-      jQuery( "#" + id ).css('left' , xPosition + "px");
-      jQuery( "#" + id ).css('top' , yPosition + "px");
-      jQuery( "#" + id ).css('position' , "absolute");
+      var xPosition = e.clientX - parentPosition.x + dx;
+      var yPosition = e.clientY - parentPosition.y + dy;
+      jQuery( "#" + id ).css('left' , xPosition + "px").css('top' , yPosition + "px").css('position' , "absolute");
     }
 
     return {
       restrict: 'A',
       link    : function (scope, element, attr) {
 
-        scope.getId = function(resource) {
+        scope.getId = function(resource, prefix) {
+
           var resourceId = resource['@id'];
-          var id =  'id' + resourceId.substr(resourceId.lastIndexOf('/') + 1);
-          return id;
+          return (prefix || "") + 'id' +  resourceId.substr(resourceId.lastIndexOf('/') + 1);
+
         };
 
         //var fn = $parse(attr.simpleClick);
         element.bind('contextmenu', function($event) {
 
-          var resourceId = attr.dropdownid;
-          var id =  resourceId.substr(resourceId.lastIndexOf('/') + 1);
-          theThing = jQuery( "#" + id );
-          container = jQuery( "#select" + id );
+          el = element;
+          id =  attr.dropdownid.substr(attr.dropdownid.lastIndexOf('/') + 1);
 
-          getClickPosition($event, id);
+
+          getClickPosition($event, id, parseInt(attr.offsetx), parseInt(attr.offsety));
 
           scope.$apply(function() {
             event.preventDefault();
