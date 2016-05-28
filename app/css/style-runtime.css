@@ -9623,6 +9623,12 @@ body.search-browse-modal .footer-buttons button.canc {
   overflow: hidden;
   white-space: nowrap;
 }
+.all-items-view .populate-form-boxes .form-box .box-content .disabled {
+  cursor: not-allowed;
+}
+.all-items-view .populate-form-boxes .form-box .box-content .disabled > a {
+  pointer-events: none;
+}
 .all-items-view .populate-form-boxes .form-box .quick-details-box {
   display: none;
 }
@@ -9689,6 +9695,12 @@ body.search-browse-modal .footer-buttons button.canc {
 }
 .all-items-view .populate-form-boxes .list-view .box-row .cell i.large-icon {
   color: #fff;
+}
+.all-items-view .populate-form-boxes .list-view .box-row .cell .disabled {
+  cursor: not-allowed;
+}
+.all-items-view .populate-form-boxes .list-view .box-row .cell .disabled > a {
+  pointer-events: none;
 }
 .all-items-view .populate-form-boxes .list-view .box-row .resource {
   width: 45%;

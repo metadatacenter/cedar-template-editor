@@ -63,30 +63,8 @@
             ng-click="dc.launchInstance(form)" class="form-box">
           <a href="#n" class="box-content text-center">
             <i ng-class="dc.getResourceIconClass(form)" class="fa"></i>
-
             <p>{{ form.name }}</p>
-
             <p>{{ form.description }}</p>
-
-            <div class="btn-group dropdown" id="{{getId(form, 'minipopulate')}}">
-              <button style="display:none" title="More"
-                  data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><i class="fa fa-ellipsis-v"></i>
-              </button>
-              <ul class="dropdown-menu" aria-labelledby="{{getId(form, 'grid')}}">
-                <li><a href="#" ng-click="dc.showInfoPanel(form)">Info</a></li>
-                <li><a href="#">Preview</a></li>
-                <li><a href="#" ng-click="dc.launchInstance(form)">Populate</a></li>
-                <li><a href="#" ng-click="dc.editResource(form)">Edit</a></li>
-                <li role="separator" class="divider"></li>
-                <li><a href="#">Share</a></li>
-                <li><a href="#">Move to...</a></li>
-                <li><a href="#">Rename</a></li>
-                <li role="separator" class="divider"></li>
-                <li><a href="#">Make a copy</a></li>
-                <li role="separator" class="divider"></li>
-                <li><a href="#" ng-click="dc.deleteResource(resource)">Remove</a></li>
-              </ul>
-            </div>
           </a>
         </div>
       </div>
@@ -126,29 +104,7 @@
                     <a href="#n" rightclick offsetX="30" offsetY="5" dropdownId="{{getId(form,'fullpopulate')}}"
                         class="box-content text-center">
                       <i ng-class="dc.getResourceIconClass(form)" class="fa"></i>
-
                       <p>{{ form.name }}</p>
-
-                      <div class="btn-group dropdown" id="{{getId(form, 'fullpopulate')}}">
-                        <button style="display:none" title="More" class="btn btn-default dropdown-toggle trigger"
-                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><i
-                            class="btn btn-sm btn-circle fa fa-ellipsis-v"></i>
-                        </button>
-                        <ul class="dropdown-menu" aria-labelledby="{{getId(form, 'fullpopulate')}}">
-                          <li><a href="#" ng-click="dc.showInfoPanel(form)">Info</a></li>
-                          <li><a href="#">Preview</a></li>
-                          <li><a href="#" ng-click="dc.launchInstance(form)">Populate</a></li>
-                          <li><a href="#" ng-click="dc.editResource(form)">Edit</a></li>
-                          <li role="separator" class="divider"></li>
-                          <li><a href="#">Share</a></li>
-                          <li><a href="#">Move to...</a></li>
-                          <li><a href="#">Rename</a></li>
-                          <li role="separator" class="divider"></li>
-                          <li><a href="#">Make a copy</a></li>
-                          <li role="separator" class="divider"></li>
-                          <li><a href="#" ng-click="dc.deleteResource(resource)">Remove</a></li>
-                        </ul>
-                      </div>
                     </a>
                   </div>
                 </div>
@@ -287,16 +243,16 @@
                 </button>
                 <ul class="dropdown-menu" aria-labelledby="{{getId(resource, 'populate')}}">
                   <li><a href="#" ng-click="dc.showInfoPanel(resource)">Info</a></li>
-                  <li><a href="#">Preview</a></li>
+                  <li class="disabled"><a href="#" >Preview</a></li>
                   <li ng-if="resource.resourceType == 'template'"><a href="#" ng-click="dc.launchInstance(resource)">Populate</a>
                   </li>
                   <li><a href="#" ng-click="dc.editResource(resource)">Edit</a></li>
                   <li role="separator" class="divider"></li>
-                  <li><a href="#">Share</a></li>
-                  <li><a href="#">Move to...</a></li>
-                  <li><a href="#">Rename</a></li>
+                  <li class="disabled" ><a href="#" >Share</a></li>
+                  <li class="disabled"><a href="#" >Move to...</a></li>
+                  <li class="disabled"><a href="#" >Rename</a></li>
                   <li role="separator" class="divider"></li>
-                  <li><a href="#">Make a copy</a></li>
+                  <li class="disabled"><a href="#" >Make a copy</a></li>
                   <li role="separator" class="divider"></li>
                   <li><a href="#" ng-click="dc.deleteResource(resource)">Remove</a></li>
                 </ul>
@@ -333,16 +289,16 @@
               </button>
               <ul class="dropdown-menu" aria-labelledby="{{getId(resource, 'list')}}">
                 <li><a href="#" ng-click="dc.showInfoPanel(resource)">Info</a></li>
-                <li><a href="#">Preview</a></li>
+                <li class="disabled"><a href="#" >Preview</a></li>
                 <li ng-if="resource.resourceType == 'template'"><a href="#" ng-click="dc.launchInstance(resource)">Populate</a>
                 </li>
                 <li><a href="#" ng-click="dc.editResource(resource)">Edit</a></li>
                 <li role="separator" class="divider"></li>
-                <li><a href="#">Share</a></li>
-                <li><a href="#">Move to...</a></li>
-                <li><a href="#">Rename</a></li>
+                <li class="disabled"><a href="#" >Share</a></li>
+                <li class="disabled"><a href="#" >Move to...</a></li>
+                <li class="disabled"><a href="#">Rename</a></li>
                 <li role="separator" class="divider"></li>
-                <li><a href="#">Make a copy</a></li>
+                <li class="disabled"><a href="#" >Make a copy</a></li>
                 <li role="separator" class="divider"></li>
                 <li><a href="#" ng-click="dc.deleteResource(resource)">Remove</a></li>
               </ul>
