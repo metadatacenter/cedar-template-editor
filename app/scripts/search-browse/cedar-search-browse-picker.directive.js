@@ -78,8 +78,8 @@ define([
       vm.resourceView = 'grid';
       vm.selectedResource = null;
       vm.selectResource = selectResource;
-      vm. hasSelection = hasSelection;
-      vm. getSelection = getSelection;
+      vm.hasSelection = hasSelection;
+      vm.getSelection = getSelection;
       vm.setSortOption = setSortOption;
       vm.sortName = sortName;
       vm.sortCreated = sortCreated;
@@ -444,8 +444,6 @@ define([
       }
 
       function selectResource(resource) {
-        // commented this out because it causes flickering
-        //vm.selectedResource = resource;
         getResourceDetails(resource);
         if (typeof vm.selectResourceCallback === 'function') {
           vm.selectResourceCallback(resource);
@@ -453,13 +451,23 @@ define([
       }
 
       function showInfoPanel(resource) {
-        if (resource) {
+        if (resource && !isResourceSelected(resource)) {
           selectResource(resource);
+        } else {
+
+          if (vm.currentFolderId) {
+            for (var r in vm.resources) {
+              if (r['@id'] == vm.currentFolderId) {
+                selectResource(r);
+              }
+            }
+          }
         }
+
         if (vm.selectedResource) {
-        vm.showResourceInfo = true;
-        vm.showFavorites = false;
-        updateFavorites();
+          vm.showResourceInfo = true;
+          vm.showFavorites = false;
+          updateFavorites();
         }
       }
 
@@ -555,7 +563,7 @@ define([
         }
       }
 
-      function sortName () {
+      function sortName() {
         return (vm.sortOptionField == 'name') ? "" : 'invisible';
       };
 
@@ -563,7 +571,7 @@ define([
         return (vm.sortOptionField == 'createdOnTS') ? "" : 'invisible';
       };
 
-      function sortUpdated  () {
+      function sortUpdated() {
         return (vm.sortOptionField == 'lastUpdatedOnTS') ? "" : 'invisible';
       };
 
@@ -576,7 +584,6 @@ define([
         vm.params = $location.search();
         init();
       });
-
 
 
       function updateFavorites(saveData) {

@@ -9347,6 +9347,7 @@ body.search-browse-modal .footer-buttons button.canc {
   color: #5795ba;
   border-bottom: 5px solid #eaeaea;
   top: 100px;
+  box-shadow: 0 4px 4px #ccc;
 }
 .controls-bar i {
   font-size: 20px;
@@ -9592,7 +9593,7 @@ body.search-browse-modal .footer-buttons button.canc {
 /* Begin All Items View */
 .all-items-view {
   color: #666666;
-  padding: 40px 0;
+  padding: 20px 0;
   position: relative;
   height: 100%;
   /* Off Canvas */
@@ -9841,7 +9842,7 @@ body.search-browse-modal .footer-buttons button.canc {
 .all-items-view .sidebar-offcanvas-left,
 .all-items-view .sidebar-offcanvas-right {
   position: fixed;
-  top: 189px;
+  top: 159px;
   width: 20%;
   /* 6 columns */
   padding: 0;
