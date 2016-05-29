@@ -78,7 +78,12 @@ define([
       vm.resourceView = 'grid';
       vm.selectedResource = null;
       vm.selectResource = selectResource;
+      vm. hasSelection = hasSelection;
+      vm. getSelection = getSelection;
       vm.setSortOption = setSortOption;
+      vm.sortName = sortName;
+      vm.sortCreated = sortCreated;
+      vm.sortUpdated = sortUpdated;
       vm.showCreateFolder = showCreateFolder;
       vm.showFilters = false;
       vm.showFloatingMenu = false;
@@ -285,6 +290,35 @@ define([
         );
       }
 
+      function deleteResource(resource) {
+        if (!resource && hasSelection()) {
+          resource = getSelection();
+        }
+        UIMessageService.confirmedExecution(
+            function () {
+              resourceService.deleteResource(
+                  resource,
+                  function (response) {
+                    // remove resource from list
+                    var index = vm.resources.indexOf(resource);
+                    vm.resources.splice(index, 1);
+                    resetSelected();
+                    UIMessageService.flashSuccess('SERVER.' + resource.resourceType.toUpperCase() + '.delete.success',
+                        {"title": resource.resourceType},
+                        'GENERIC.Deleted');
+                  },
+                  function (error) {
+                    UIMessageService.showBackendError('SERVER.' + resource.resourceType.toUpperCase() + '.delete.error',
+                        error);
+                  }
+              );
+            },
+            'GENERIC.AreYouSure',
+            'DASHBOARD.delete.confirm.' + resource.resourceType,
+            'GENERIC.YesDeleteIt'
+        );
+      }
+
       function getFacets() {
         resourceService.getFacets(
             function (response) {
@@ -309,6 +343,9 @@ define([
       }
 
       function getResourceDetails(resource) {
+        if (!resource && hasSelection()) {
+          resource = getSelection();
+        }
         var id = resource['@id'];
         resourceService.getResourceDetail(
             resource,
@@ -416,10 +453,14 @@ define([
       }
 
       function showInfoPanel(resource) {
-        selectResource(resource);
+        if (resource) {
+          selectResource(resource);
+        }
+        if (vm.selectedResource) {
         vm.showResourceInfo = true;
         vm.showFavorites = false;
         updateFavorites();
+        }
       }
 
       function setSortOption(option) {
@@ -498,6 +539,14 @@ define([
         vm.showResourceInfo = false;
       }
 
+      function getSelection() {
+        return vm.selectedResource;
+      }
+
+      function hasSelection() {
+        return vm.selectedResource != null;
+      }
+
       function sortField() {
         if (vm.sortOptionField == 'name') {
           return 'name';
@@ -505,6 +554,30 @@ define([
           return '-' + vm.sortOptionField;
         }
       }
+
+      function sortName () {
+        return (vm.sortOptionField == 'name') ? "" : 'invisible';
+      };
+
+      function sortCreated() {
+        return (vm.sortOptionField == 'createdOnTS') ? "" : 'invisible';
+      };
+
+      function sortUpdated  () {
+        return (vm.sortOptionField == 'lastUpdatedOnTS') ? "" : 'invisible';
+      };
+
+      $scope.$on('$routeUpdate', function () {
+        vm.params = $location.search();
+        init();
+      });
+
+      $scope.$on('$routeUpdate', function () {
+        vm.params = $location.search();
+        init();
+      });
+
+
 
       function updateFavorites(saveData) {
         $timeout(function () {

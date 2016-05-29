@@ -9342,17 +9342,43 @@ body.search-browse-modal .footer-buttons button.canc {
   height: 100%;
 }
 .controls-bar {
-  padding: 25px 40px;
-  background-color: #ffffff;
+  padding: 10px 40px;
+  background-color: #eaeaea;
   color: #339933;
   border-bottom: 5px solid #eaeaea;
   top: 100px;
 }
 .controls-bar i {
   font-size: 20px;
+  visibility: none;
+}
+.controls-bar i .invisible {
+  visibility: hidden;
 }
 .controls-bar ul {
   margin-bottom: 0;
+}
+.controls-bar ul li {
+  vertical-align: middle;
+  padding-left: 1px;
+  padding-right: 1px;
+}
+.controls-bar ul li button {
+  width: 35px;
+  height: 35px;
+  background: transparent;
+  border: 0px;
+}
+.controls-bar ul li button:hover {
+  background: #ffffff;
+  border: 1px solid #ccc;
+}
+.controls-bar ul li button:active {
+  background: #ffffff;
+  border: 1px solid #ccc;
+}
+.controls-bar ul li button:focus {
+  outline: 0;
 }
 .controls-bar ul > li:hover > ul.dropnav {
   visibility: visible;
@@ -9435,7 +9461,6 @@ body.search-browse-modal .footer-buttons button.canc {
   height: 30px;
   margin: -8px 9px;
   border-left: 1px solid #666666;
-  border-right: 1px solid #FFF;
 }
 .controls-bar .graytext {
   color: #666666;

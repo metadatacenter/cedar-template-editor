@@ -297,17 +297,41 @@ body.search-browse-modal {
 }
 
 .controls-bar {
-  padding: 25px 40px;
-  background-color: @white;
+  padding: 10px 40px;
+  background-color: @graybg;
   color: @brand-primary;
   border-bottom: 5px solid @graybg;
   top: 100px;
 
   i {
     font-size: 20px;
+    visibility:none;
+
+    .invisible {
+      visibility:hidden;
+    }
   }
   ul {
     margin-bottom: 0;
+    li {
+      vertical-align:middle;
+      padding-left:1px;
+      padding-right:1px;
+      button {
+        width:35px;height:35px;
+        background:transparent;
+        border:0px;
+      }
+      button:hover {
+        background:@white;
+        border:1px solid #ccc;
+      }
+      button:active {
+        background:@white;
+        border:1px solid #ccc;
+      }
+      button:focus {outline:0;}
+    }
   }
   ul > li:hover > ul.dropnav {
     visibility: visible;
@@ -390,7 +414,7 @@ body.search-browse-modal {
     height: 30px;
     margin: -8px 9px;
     border-left: 1px solid @graytxt;
-    border-right: 1px solid #FFF;
+    //border-right: 1px solid #FFF;
   }
   .graytext {
     color: @graytxt;

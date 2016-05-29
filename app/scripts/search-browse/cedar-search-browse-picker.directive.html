@@ -1,42 +1,110 @@
 <div class="controls-bar clearfix row-fluid navbar-fixed-top">
-  <div class="pull-left">
-    <ul class="list-inline filternav">
-      <li><a href="#" data-toggle="offcanvas" ng-click="dc.toggleFilters()"><i class="fa fa-plus-circle"></i></a></li>
-      <li>Filters</li>
-    </ul>
-  </div>
+  <!--<div class="pull-left">-->
+    <!--<ul class="list-inline filternav">-->
+      <!--<li><a href="#" data-toggle="offcanvas" ng-click="dc.toggleFilters()"><i class="fa fa-plus-circle"></i></a></li>-->
+      <!--<li>Filters</li>-->
+    <!--</ul>-->
+  <!--</div>-->
   <div class="pull-right list-inline">
     <ul class="list-inline">
+
+      <li ng-if="dc.onDashboard() && dc.hasSelection()"><button
+          type="button"
+          tooltip="preview selection"
+          tooltip-trigger
+          tooltip-animation="false"
+          tooltip-placement="top"
+          data-toggle="tooltip">
+        <i class="fa fa-eye graytext"></i></button></li>
+      <li ng-if="dc.onDashboard() && dc.hasSelection()"><button
+          type="button"
+          tooltip="delete selection"
+          tooltip-trigger
+          tooltip-animation="false"
+          tooltip-placement="top"
+          data-toggle="tooltip"
+          ng-click="dc.deleteResource()"><i class="fa fa-trash graytext"></i></button></li>
+      <li ng-if="dc.onDashboard() && dc.hasSelection()"><button
+          type="button"
+          tooltip="more options"
+          tooltip-trigger
+          tooltip-animation="false"
+          tooltip-placement="top"
+          data-toggle="tooltip"><i class="fa fa-ellipsis-v graytext"></i></button></li>
+
+      <li ng-if="dc.onDashboard() && dc.hasSelection()" class="inline divider-vertical graytext"></li>
+
       <li ng-if="dc.onDashboard()"><a class="nav-pills" ng-class="{ active: dc.isResourceTypeActive('template') }"
-          ng-click="dc.toggleResourceType('template')">Forms</a></li>
-      <li><a class="nav-pills" ng-class="{ active: dc.isResourceTypeActive('element') }"
-          ng-click="dc.toggleResourceType('element')">Elements</a></li>
-      <li ng-if="dc.onDashboard()"><a class="nav-pills" ng-class="{ active: dc.isResourceTypeActive('instance') }"
-          ng-click="dc.toggleResourceType('instance')">Instances</a></li>
-      <li><span class="sort-text">Sort by:</span></li>
-      <li class="btn-group">
-        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
-            aria-expanded="false">
-          {{dc.sortOptionLabel}} <span class="caret"></span>
-        </button>
-        <ul class="dropdown-menu">
-          <li><a ng-click="dc.setSortOption('name')"><span translate="DASHBOARD.sort.name"></span></a></li>
-          <li><a ng-click="dc.setSortOption('createdOnTS')"><span translate="DASHBOARD.sort.createdOnTS"></span></a>
-          </li>
-          <li><a ng-click="dc.setSortOption('lastUpdatedOnTS')"><span translate="DASHBOARD.sort.lastUpdatedOnTS"></span></a>
-          </li>
-        </ul>
+          ng-click="dc.toggleResourceType('template')">Template</a>
       </li>
-      <li ng-show="dc.resourceView != 'grid'"><a ng-click="dc.resourceView = 'grid'"><i
-          class="fa fa-th graytext"></i></a></li>
-      <li ng-show="dc.resourceView != 'list'"><a ng-click="dc.resourceView = 'list'"><i
-          class="fa fa-list-ul graytext"></i></a></li>
-      <li ng-if="dc.onDashboard()" class="inline divider-vertical graytext"></li>
-      <li ng-if="dc.onDashboard()"><i class="fa fa-ellipsis-v inline graytext"></i>
-        <ul class="dropnav">
-          <li><a href="/profile">Profile</a></li>
-          <li><a href="/logout">Logout</a></li>
-        </ul>
+      <li><a class="nav-pills" ng-class="{ active: dc.isResourceTypeActive('element') }"
+          ng-click="dc.toggleResourceType('element')">Element</a></li>
+      <li ng-if="dc.onDashboard()"><a class="nav-pills" ng-class="{ active: dc.isResourceTypeActive('instance') }"
+          ng-click="dc.toggleResourceType('instance')">Meta</a></li>
+
+
+      <li ng-if="dc.onDashboard()"><button
+          type="button"
+          tooltip="filter results"
+          tooltip-trigger
+          tooltip-animation="false"
+          tooltip-placement="top"
+          data-toggle="tooltip"
+          ng-click="dc.toggleFilters()"><i class="fa fa-filter graytext"></i></button></li>
+
+      <li ng-show="dc.resourceView != 'grid'" ><button
+          type="button"
+          tooltip="show as grid"
+          tooltip-trigger
+          tooltip-animation="false"
+          tooltip-placement="top"
+          data-toggle="tooltip"
+          ng-click="dc.resourceView = 'grid'"><i
+          class="fa fa-th inline graytext"></i></button></li>
+
+      <li ng-show="dc.resourceView != 'list'" ><button type="button"
+          tooltip="show as list"
+          tooltip-trigger
+          tooltip-animation="false"
+          tooltip-placement="top"
+          data-toggle="tooltip"
+          ng-click="dc.resourceView = 'list'"><i
+          class="fa fa-list-ul inline graytext"></i></button></li>
+
+      <li ng-if="dc.onDashboard()"><button type="button"
+        tooltip="show details"
+        tooltip-trigger
+        tooltip-animation="false"
+        tooltip-placement="top"
+        data-toggle="tooltip"
+        ng-click="dc.showInfoPanel()"><i class="fa fa-info graytext"></i></button></li>
+
+      <li ng-if="dc.onDashboard()">
+        <div class="btn-group dropdown">
+          <button  data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><i
+              class="fa fa-sort  inline graytext"></i></button>
+          <ul class="dropdown-menu dropdown-menu-right">
+            <li><a ng-click="dc.setSortOption('name')"><i class="fa fa-check" ng-class="dc.sortName()"></i><span
+                translate="DASHBOARD.sort.name"></span></a></li>
+            <li><a ng-click="dc.setSortOption('createdOnTS')"><i class="fa fa-check"
+                ng-class="dc.sortCreated()"></i><span translate="DASHBOARD.sort.createdOnTS"></span></a></li>
+            <li><a ng-click="dc.setSortOption('lastUpdatedOnTS')"><i class="fa fa-check"
+                ng-class="dc.sortUpdated()"></i><span
+                translate="DASHBOARD.sort.lastUpdatedOnTS"></span></a>
+            </li>
+          </ul>
+        </div>
+      </li>
+
+      <li ng-if="dc.onDashboard()">
+        <div class="btn-group dropdown">
+          <button data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><i
+              class="fa fa-user inline graytext"></i></button>
+          <ul class="dropdown-menu dropdown-menu-right">
+            <li><a href="/profile">Profile</a></li>
+            <li><a href="/logout">Logout</a></li>
+          </ul>
+        </div>
       </li>
     </ul>
   </div>
@@ -63,7 +131,9 @@
             ng-click="dc.launchInstance(form)" class="form-box">
           <a href="#n" class="box-content text-center">
             <i ng-class="dc.getResourceIconClass(form)" class="fa"></i>
+
             <p>{{ form.name }}</p>
+
             <p>{{ form.description }}</p>
           </a>
         </div>
@@ -104,6 +174,7 @@
                     <a href="#n" rightclick offsetX="30" offsetY="5" dropdownId="{{getId(form,'fullpopulate')}}"
                         class="box-content text-center">
                       <i ng-class="dc.getResourceIconClass(form)" class="fa"></i>
+
                       <p>{{ form.name }}</p>
                     </a>
                   </div>
@@ -243,16 +314,16 @@
                 </button>
                 <ul class="dropdown-menu" aria-labelledby="{{getId(resource, 'populate')}}">
                   <li><a href="#" ng-click="dc.showInfoPanel(resource)">Info</a></li>
-                  <li class="disabled"><a href="#" >Preview</a></li>
+                  <li class="disabled"><a href="#">Preview</a></li>
                   <li ng-if="resource.resourceType == 'template'"><a href="#" ng-click="dc.launchInstance(resource)">Populate</a>
                   </li>
                   <li><a href="#" ng-click="dc.editResource(resource)">Edit</a></li>
                   <li role="separator" class="divider"></li>
-                  <li class="disabled" ><a href="#" >Share</a></li>
-                  <li class="disabled"><a href="#" >Move to...</a></li>
-                  <li class="disabled"><a href="#" >Rename</a></li>
+                  <li class="disabled"><a href="#">Share</a></li>
+                  <li class="disabled"><a href="#">Move to...</a></li>
+                  <li class="disabled"><a href="#">Rename</a></li>
                   <li role="separator" class="divider"></li>
-                  <li class="disabled"><a href="#" >Make a copy</a></li>
+                  <li class="disabled"><a href="#">Make a copy</a></li>
                   <li role="separator" class="divider"></li>
                   <li><a href="#" ng-click="dc.deleteResource(resource)">Remove</a></li>
                 </ul>
@@ -263,24 +334,25 @@
       </div>
 
       <div class="list-view" ng-if="dc.resourceView == 'list'">
-        <div  class="box-title">
+        <div class="box-title">
           <div class="cell type"></div>
           <div class="cell resource">Title</div>
           <div class="cell date">Created</div>
           <div class="cell date">Modified</div>
         </div>
 
-        <div class="box-row" style="position:relative;width:100%" rightclick offsetx="0" offsety="0" dropdownId="{{getId(resource, 'list')}}"
+        <div class="box-row" style="position:relative;width:100%" rightclick offsetx="0" offsety="0"
+            dropdownId="{{getId(resource, 'list')}}"
             ng-class="{ selected: dc.isResourceSelected(resource) }"
             ng-click="dc.selectResource(resource)"
             ng-dblclick="dc.goToResource(resource)"
             ng-repeat="(index, resource) in dc.resources">
 
-          <div class="cell type" ><i ng-class="dc.getResourceIconClass(resource)"
+          <div class="cell type"><i ng-class="dc.getResourceIconClass(resource)"
               class="btn btn-sm btn-info btn-circle fa large-icon " aria-hidden="true"></i></div>
-          <div class="cell resource" >{{ resource.name }}</div>
-          <div class="cell date" >{{ resource.createdOnTS | prettyDate }}</div>
-          <div class="cell date" >{{ resource.lastUpdatedOnTS | prettyDate }}
+          <div class="cell resource">{{ resource.name }}</div>
+          <div class="cell date">{{ resource.createdOnTS | prettyDate }}</div>
+          <div class="cell date">{{ resource.lastUpdatedOnTS | prettyDate }}
 
             <div class="btn-group dropdown" id="{{getId(resource, 'list')}}">
               <button style="display:none" title="More" class="btn btn-default dropdown-toggle trigger"
@@ -289,16 +361,16 @@
               </button>
               <ul class="dropdown-menu" aria-labelledby="{{getId(resource, 'list')}}">
                 <li><a href="#" ng-click="dc.showInfoPanel(resource)">Info</a></li>
-                <li class="disabled"><a href="#" >Preview</a></li>
+                <li class="disabled"><a href="#">Preview</a></li>
                 <li ng-if="resource.resourceType == 'template'"><a href="#" ng-click="dc.launchInstance(resource)">Populate</a>
                 </li>
                 <li><a href="#" ng-click="dc.editResource(resource)">Edit</a></li>
                 <li role="separator" class="divider"></li>
-                <li class="disabled"><a href="#" >Share</a></li>
-                <li class="disabled"><a href="#" >Move to...</a></li>
+                <li class="disabled"><a href="#">Share</a></li>
+                <li class="disabled"><a href="#">Move to...</a></li>
                 <li class="disabled"><a href="#">Rename</a></li>
                 <li role="separator" class="divider"></li>
-                <li class="disabled"><a href="#" >Make a copy</a></li>
+                <li class="disabled"><a href="#">Make a copy</a></li>
                 <li role="separator" class="divider"></li>
                 <li><a href="#" ng-click="dc.deleteResource(resource)">Remove</a></li>
               </ul>
