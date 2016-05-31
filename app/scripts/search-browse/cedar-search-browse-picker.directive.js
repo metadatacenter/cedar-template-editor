@@ -75,7 +75,6 @@ define([
       vm.pathInfo = [];
       vm.params = $location.search();
       vm.resources = [];
-      vm.resourceView = 'grid';
       vm.selectedResource = null;
       vm.selectResource = selectResource;
       vm.setSortOption = setSortOption;
@@ -85,11 +84,11 @@ define([
       vm.showInfoPanel = showInfoPanel;
       vm.showResourceInfo = false;
       vm.sortOptionLabel = $translate.instant('DASHBOARD.sort.name');
-      vm.sortOptionField = 'name';
       vm.toggleFavorites = toggleFavorites;
       vm.toggleFilters = toggleFilters;
       vm.toggleResourceInfo = toggleResourceInfo;
       vm.toggleResourceType = toggleResourceType;
+      vm.setResourceViewMode = setResourceViewMode;
 
       $rootScope.pageTitle = 'Dashboard';
 
@@ -104,6 +103,9 @@ define([
           instance: CedarUser.getUIPreferences().resourceTypeFilters.instance,
           template: CedarUser.getUIPreferences().resourceTypeFilters.template
         };
+        var option = CedarUser.getUIPreferences().folderView.sortBy;
+        setSortOptionUI(option);
+        vm.resourceViewMode = CedarUser.getUIPreferences().folderView.viewMode;;
       }
 
       function init() {
@@ -323,7 +325,7 @@ define([
         var resourceTypes = activeResourceTypes();
         if (resourceTypes.length > 0) {
           return resourceService.getResources(
-              {folderId: folderId, resourceTypes: resourceTypes, sort: sortField(), limit: 10, offset: 0},
+              {folderId: folderId, resourceTypes: resourceTypes, sort: sortField(), limit: 100, offset: 0},
               function (response) {
                 vm.currentFolderId = folderId;
                 vm.resources = response.resources;
@@ -344,7 +346,7 @@ define([
         var resourceTypes = activeResourceTypes();
         if (resourceTypes.length > 0) {
           return resourceService.getResources(
-              {path: path, resourceTypes: resourceTypes, sort: sortField(), limit: 10, offset: 0},
+              {path: path, resourceTypes: resourceTypes, sort: sortField(), limit: 100, offset: 0},
               function (response) {
                 vm.resources = response.resources;
                 vm.pathInfo = response.pathInfo;
@@ -419,9 +421,14 @@ define([
         updateFavorites();
       }
 
-      function setSortOption(option) {
+      function setSortOptionUI(option) {
         vm.sortOptionLabel = $translate.instant('DASHBOARD.sort.' + option);
         vm.sortOptionField = option;
+      }
+
+      function setSortOption(option) {
+        setSortOptionUI(option);
+        UISettingsService.saveUIPreference('folderView.sortBy', vm.sortOptionField);
         init();
       }
 
@@ -515,6 +522,11 @@ define([
         if (saveData == null || saveData) {
           UISettingsService.saveUIPreference('populateATemplate.opened', vm.showFavorites);
         }
+      }
+
+      function setResourceViewMode(mode) {
+        vm.resourceViewMode = mode;
+        UISettingsService.saveUIPreference('folderView.viewMode', mode);
       }
 
     }
