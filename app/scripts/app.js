@@ -7,7 +7,6 @@ define([
   'angular',
   'lib/angucomplete-alt/angucomplete-alt',
   'lib/angular-animate/angular-animate',
-  'lib/angular-bootstrap/ui-bootstrap',
   'lib/angular-bootstrap/ui-bootstrap-tpls',
   'lib/ngHandsontable/dist/ngHandsontable',
   'lib/angular-route/angular-route',

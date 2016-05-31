@@ -79,7 +79,6 @@ define([
 
         //var fn = $parse(attr.simpleClick);
         element.bind('contextmenu', function($event) {
-
           el = element;
           id =  attr.dropdownid.substr(attr.dropdownid.lastIndexOf('/') + 1);
 
@@ -87,7 +86,7 @@ define([
           getClickPosition($event, id, parseInt(attr.offsetx), parseInt(attr.offsety));
 
           scope.$apply(function() {
-            event.preventDefault();
+            $event.preventDefault();
             selectAndToggleMenu(attr.dropdownid);
             //fn(scope, {$event:event});
           });
