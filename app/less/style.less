@@ -41,7 +41,7 @@ html, body {
 }
 
 body {
-  background: @background-color;
+  background: @gray2;
   font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
   color: #333;
   padding-top: 100px;
@@ -96,7 +96,6 @@ body.search-browse-modal {
     margin: 0 30px;
   }
   .all-items-view {
-    background: #F9F9FB;
     min-height: 350px;
   }
   .footer-buttons {
@@ -298,11 +297,14 @@ body.search-browse-modal {
 
 .controls-bar {
   padding: 10px 40px;
-  background-color: @graybg;
+  background: @gray2;
   color: @brand-primary;
-  border-bottom: 5px solid @graybg;
   top: 100px;
   box-shadow:0 4px 4px #ccc;
+
+  .open .dropdown-menu   {
+    border-radius:0px;
+  }
 
   i {
     font-size: 20px;
@@ -443,7 +445,7 @@ body.search-browse-modal {
 }
 
 .search-browse-spacer {
-  padding-top: 89px;
+  padding-top: 59px;
 }
 
 /* Begin Form Populate Gray Modal Slide Up/Down Section */
@@ -460,6 +462,7 @@ body.search-browse-modal {
     text-transform: uppercase;
   }
   .populate-form-boxes {
+
 
     .form-box {
       width: 220px;
@@ -602,34 +605,46 @@ body.search-browse-modal {
   }
   .populate-form-boxes {
 
+    margin:0 20px;
+
     .selected > .form-box {
-      border: 1px solid @brand-primary;
+      box-shadow:4px 4px 4px  #ccc;
     }
 
     .form-box {
       width: 220px;
-      height: 220px;
+      height: 110px;
       border: 1px solid #ebebeb;
-      box-shadow: 4px 4px #e0e0e0;
+      //box-shadow: 4px 4px #e0e0e0;
       background: #ffffff;
-      margin: 10px auto 20px;
+      margin: 10px auto;
       cursor: default;
+      overflow:hidden;
 
       .box-content {
         color: @brand-primary;
-        padding: 25px 5px;
-        font-size: 16px;
+        padding: 10px;
+        font-size: 14px;
         display: block;
+        text-align:left;
+
 
         i {
-          font-size: 36px;
-          margin-bottom: 15px;
+          font-size: 20px;
+          color:@brand-primary;
         }
-        p {
+        p.title {
           line-height: 1;
           text-overflow: ellipsis;
           overflow: hidden;
           white-space: nowrap;
+          color:@graytxt;
+        }
+        p.description {
+          height:60px;
+          line-height:15px;
+          overflow:hidden;
+          text-overflow: ellipsis;
         }
 
         .disabled{
@@ -687,12 +702,13 @@ body.search-browse-modal {
       .box-title {
 
         width: 100%;
-        font-size: 16px;
+        font-size: 14px;
         color:@graytxt;
 
         .cell {
           display:inline-block;
           padding:10px;
+          font-size: 14px;
         }
         .resource {
           width:45%;
@@ -710,7 +726,7 @@ body.search-browse-modal {
         width: 100%;
         border: 1px solid #ebebeb;
         background: #ffffff;
-        font-size: 16px;
+        font-size: 14px;
         color:@graytxt;
 
         .cell {
@@ -883,8 +899,10 @@ body.search-browse-modal {
 
   .add-new {
     position: fixed;
-    bottom: 50px;
-    right: 50px;
+    bottom: 15px;
+    right: 30px;
+
+    button:focus {outline:0;}
 
     .btn-info {
       border-radius: 50%;
@@ -4599,6 +4617,8 @@ table.apiKey {
     margin: 0px;
   }
 }
+
+
 
 
 

@@ -13,6 +13,8 @@ define([
   function FieldTypeService() {
 
     var fieldTypes = [];
+    var otherFieldTypes = [];
+    var primaryFieldTypeCount = 4;
 
     var service = {
       serviceId: "FieldTypeService"
@@ -20,10 +22,18 @@ define([
 
     service.init = function () {
       fieldTypes = config;
+      otherFieldTypes = fieldTypes.slice([4]);
+
+      console.log(fieldTypes)
+      console.log(otherFieldTypes);
     };
 
     service.getFieldTypes = function () {
       return fieldTypes;
+    };
+
+    service.getOtherFieldTypes = function () {
+      return otherFieldTypes;
     };
 
     service.isStaticField = function (fieldType) {

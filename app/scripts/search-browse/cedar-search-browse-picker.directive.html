@@ -2,14 +2,16 @@
   <div class="pull-left">
     <ul class="list-inline ">
 
-      <li ng-if="dc.onDashboard()"><button
-          type="button"
-          tooltip="filter results"
-          tooltip-trigger
-          tooltip-animation="false"
-          tooltip-placement="top"
-          data-toggle="tooltip"
-          ng-click="dc.toggleFilters()"><i class="fa fa-filter graytext"></i></button></li>
+      <li ng-if="dc.onDashboard()">
+        <button
+            type="button"
+            tooltip="filter results"
+            tooltip-trigger
+            tooltip-animation="false"
+            tooltip-placement="top"
+            data-toggle="tooltip"
+            ng-click="dc.toggleFilters()"><i class="fa fa-filter graytext"></i></button>
+      </li>
 
       <li ng-if="dc.onDashboard()"><a class="nav-pills" ng-class="{ active: dc.isResourceTypeActive('template') }"
           ng-click="dc.toggleResourceType('template')">Form</a>
@@ -24,64 +26,75 @@
   <div class="pull-right list-inline">
     <ul class="list-inline">
 
-      <li ng-if="dc.onDashboard() && dc.hasSelection()"><button
-          type="button"
-          tooltip="preview selection"
-          tooltip-trigger
-          tooltip-animation="false"
-          tooltip-placement="top"
-          data-toggle="tooltip">
-        <i class="fa fa-eye graytext"></i></button></li>
-      <li ng-if="dc.onDashboard() && dc.hasSelection()"><button
-          type="button"
-          tooltip="delete selection"
-          tooltip-trigger
-          tooltip-animation="false"
-          tooltip-placement="top"
-          data-toggle="tooltip"
-          ng-click="dc.deleteResource()"><i class="fa fa-trash graytext"></i></button></li>
-      <li ng-if="dc.onDashboard() && dc.hasSelection()"><button
-          type="button"
-          tooltip="more options"
-          tooltip-trigger
-          tooltip-animation="false"
-          tooltip-placement="top"
-          data-toggle="tooltip"><i class="fa fa-ellipsis-v graytext"></i></button></li>
+      <li ng-if="dc.onDashboard() && dc.hasSelection()">
+        <button
+            type="button"
+            tooltip="preview selection"
+            tooltip-trigger
+            tooltip-animation="false"
+            tooltip-placement="top"
+            data-toggle="tooltip">
+          <i class="fa fa-eye graytext"></i></button>
+      </li>
+      <li ng-if="dc.onDashboard() && dc.hasSelection()">
+        <button
+            type="button"
+            tooltip="delete selection"
+            tooltip-trigger
+            tooltip-animation="false"
+            tooltip-placement="top"
+            data-toggle="tooltip"
+            ng-click="dc.deleteResource()"><i class="fa fa-trash graytext"></i></button>
+      </li>
+      <li ng-if="dc.onDashboard() && dc.hasSelection()">
+        <button
+            type="button"
+            tooltip="more options"
+            tooltip-trigger
+            tooltip-animation="false"
+            tooltip-placement="top"
+            data-toggle="tooltip"><i class="fa fa-ellipsis-v graytext"></i></button>
+      </li>
 
       <li ng-if="dc.onDashboard() && dc.hasSelection()" class="inline divider-vertical graytext"></li>
 
 
+      <li ng-show="dc.resourceView != 'grid'">
+        <button
+            type="button"
+            tooltip="show as grid"
+            tooltip-trigger
+            tooltip-animation="false"
+            tooltip-placement="top"
+            data-toggle="tooltip"
+            ng-click="dc.resourceView = 'grid'"><i
+            class="fa fa-th inline graytext"></i></button>
+      </li>
 
-      <li ng-show="dc.resourceView != 'grid'" ><button
-          type="button"
-          tooltip="show as grid"
-          tooltip-trigger
-          tooltip-animation="false"
-          tooltip-placement="top"
-          data-toggle="tooltip"
-          ng-click="dc.resourceView = 'grid'"><i
-          class="fa fa-th inline graytext"></i></button></li>
+      <li ng-show="dc.resourceView != 'list'">
+        <button type="button"
+            tooltip="show as list"
+            tooltip-trigger
+            tooltip-animation="false"
+            tooltip-placement="top"
+            data-toggle="tooltip"
+            ng-click="dc.resourceView = 'list'"><i
+            class="fa fa-list-ul inline graytext"></i></button>
+      </li>
 
-      <li ng-show="dc.resourceView != 'list'" ><button type="button"
-          tooltip="show as list"
-          tooltip-trigger
-          tooltip-animation="false"
-          tooltip-placement="top"
-          data-toggle="tooltip"
-          ng-click="dc.resourceView = 'list'"><i
-          class="fa fa-list-ul inline graytext"></i></button></li>
-
-      <li ng-if="dc.onDashboard()"><button type="button"
-        tooltip="show details"
-        tooltip-trigger
-        tooltip-animation="false"
-        tooltip-placement="top"
-        data-toggle="tooltip"
-        ng-click="dc.showInfoPanel()"><i class="fa fa-info graytext"></i></button></li>
+      <li ng-if="dc.onDashboard()">
+        <button type="button"
+            tooltip="show details"
+            tooltip-trigger
+            tooltip-animation="false"
+            tooltip-placement="top"
+            data-toggle="tooltip"
+            ng-click="dc.showInfoPanel()"><i class="fa fa-info graytext"></i></button>
+      </li>
 
       <li ng-if="dc.onDashboard()">
         <div class="btn-group dropdown">
-          <button  data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><i
+          <button data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><i
               class="fa fa-sort  inline graytext"></i></button>
           <ul class="dropdown-menu dropdown-menu-right">
             <li><a ng-click="dc.setSortOption('name')"><i class="fa fa-check" ng-class="dc.sortName()"></i><span
@@ -112,88 +125,88 @@
 <div class="search-browse-spacer"></div>
 <!--gray populate a form modal slide up/down section -->
 <!--<section ng-if="dc.onDashboard()" class="form-populate collapse in" id="favorites">-->
-  <!--&lt;!&ndash; container &ndash;&gt;-->
-  <!--<div class="container">-->
-    <!--<div class="row">-->
-      <!--<div class="col-sm-12 clearfix">-->
-        <!--<div class="pull-left">-->
-          <!--<h4>Populate a form</h4>-->
-        <!--</div>-->
-        <!--<div class="pull-right">-->
-          <!--<p><a href="#fsModal" data-toggle="modal">More <i class="fa fa-arrow-down"></i></a></p>-->
-        <!--</div>-->
-      <!--</div>-->
-    <!--</div>-->
-    <!--&lt;!&ndash; template boxes (4 columns) &ndash;&gt;-->
-    <!--<div class="row populate-form-boxes">-->
-      <!--<div class="col-md-3 col-sm-6" ng-repeat="(key, form) in dc.forms" ng-show="key < 4">-->
-        <!--<div rightclick offsetX="30" offsetY="5" dropdownId="{{getId(form, 'minipopulate')}}"-->
-            <!--ng-click="dc.launchInstance(form)" class="form-box">-->
-          <!--<a href="#n" class="box-content text-center">-->
-            <!--<i ng-class="dc.getResourceIconClass(form)" class="fa"></i>-->
+<!--&lt;!&ndash; container &ndash;&gt;-->
+<!--<div class="container">-->
+<!--<div class="row">-->
+<!--<div class="col-sm-12 clearfix">-->
+<!--<div class="pull-left">-->
+<!--<h4>Populate a form</h4>-->
+<!--</div>-->
+<!--<div class="pull-right">-->
+<!--<p><a href="#fsModal" data-toggle="modal">More <i class="fa fa-arrow-down"></i></a></p>-->
+<!--</div>-->
+<!--</div>-->
+<!--</div>-->
+<!--&lt;!&ndash; template boxes (4 columns) &ndash;&gt;-->
+<!--<div class="row populate-form-boxes">-->
+<!--<div class="col-md-3 col-sm-6" ng-repeat="(key, form) in dc.forms" ng-show="key < 4">-->
+<!--<div rightclick offsetX="30" offsetY="5" dropdownId="{{getId(form, 'minipopulate')}}"-->
+<!--ng-click="dc.launchInstance(form)" class="form-box">-->
+<!--<a href="#n" class="box-content text-center">-->
+<!--<i ng-class="dc.getResourceIconClass(form)" class="fa"></i>-->
 
-            <!--<p>{{ form.name }}</p>-->
+<!--<p>{{ form.name }}</p>-->
 
-            <!--<p>{{ form.description }}</p>-->
-          <!--</a>-->
-        <!--</div>-->
-      <!--</div>-->
-    <!--</div>-->
-    <!--&lt;!&ndash; template boxes (4 columns) &ndash;&gt;-->
-  <!--</div>-->
-  <!--&lt;!&ndash; container &ndash;&gt;-->
-  <!--&lt;!&ndash; modal &ndash;&gt;-->
-  <!--<div id="fsModal" class="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">-->
-    <!--&lt;!&ndash; dialog &ndash;&gt;-->
-    <!--<div class="modal-dialog">-->
-      <!--&lt;!&ndash; content &ndash;&gt;-->
-      <!--<div class="modal-content">-->
-        <!--&lt;!&ndash; header &ndash;&gt;-->
-        <!--<div class="modal-header">-->
-          <!--<div class="container" style="height:200px">-->
-            <!--<div class="row">-->
-              <!--<div class="col-sm-12 clearfix">-->
-                <!--<div class="pull-left">-->
-                  <!--<h4>Populate a form</h4>-->
-                <!--</div>-->
-                <!--<div class="pull-right">-->
-                  <!--<p><a href="#n" data-dismiss="modal">Less <i class="fa fa-arrow-up"></i></a></p>-->
-                <!--</div>-->
-              <!--</div>-->
-            <!--</div>-->
-          <!--</div>-->
-        <!--</div>-->
-        <!--&lt;!&ndash; header &ndash;&gt;-->
-        <!--&lt;!&ndash; body &ndash;&gt;-->
-        <!--<div class="modal-body">-->
-          <!--<div class="container">-->
-            <!--<div class="row populate-form-boxes">-->
-              <!--<div class="col-md-3 col-sm-6" ng-repeat="(key, form) in dc.forms">-->
-                <!--<div ng-click="dc.selectResource(form)" ng-dblclick="dc.launchInstance(form)" class="form-box">-->
-                  <!--<div ng-click="dc.launchInstance(form); hideModal('fsModal')">-->
-                    <!--<a href="#n" rightclick offsetX="30" offsetY="5" dropdownId="{{getId(form,'fullpopulate')}}"-->
-                        <!--class="box-content text-center">-->
-                      <!--<i ng-class="dc.getResourceIconClass(form)" class="fa"></i>-->
+<!--<p>{{ form.description }}</p>-->
+<!--</a>-->
+<!--</div>-->
+<!--</div>-->
+<!--</div>-->
+<!--&lt;!&ndash; template boxes (4 columns) &ndash;&gt;-->
+<!--</div>-->
+<!--&lt;!&ndash; container &ndash;&gt;-->
+<!--&lt;!&ndash; modal &ndash;&gt;-->
+<!--<div id="fsModal" class="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">-->
+<!--&lt;!&ndash; dialog &ndash;&gt;-->
+<!--<div class="modal-dialog">-->
+<!--&lt;!&ndash; content &ndash;&gt;-->
+<!--<div class="modal-content">-->
+<!--&lt;!&ndash; header &ndash;&gt;-->
+<!--<div class="modal-header">-->
+<!--<div class="container" style="height:200px">-->
+<!--<div class="row">-->
+<!--<div class="col-sm-12 clearfix">-->
+<!--<div class="pull-left">-->
+<!--<h4>Populate a form</h4>-->
+<!--</div>-->
+<!--<div class="pull-right">-->
+<!--<p><a href="#n" data-dismiss="modal">Less <i class="fa fa-arrow-up"></i></a></p>-->
+<!--</div>-->
+<!--</div>-->
+<!--</div>-->
+<!--</div>-->
+<!--</div>-->
+<!--&lt;!&ndash; header &ndash;&gt;-->
+<!--&lt;!&ndash; body &ndash;&gt;-->
+<!--<div class="modal-body">-->
+<!--<div class="container">-->
+<!--<div class="row populate-form-boxes">-->
+<!--<div class="col-md-3 col-sm-6" ng-repeat="(key, form) in dc.forms">-->
+<!--<div ng-click="dc.selectResource(form)" ng-dblclick="dc.launchInstance(form)" class="form-box">-->
+<!--<div ng-click="dc.launchInstance(form); hideModal('fsModal')">-->
+<!--<a href="#n" rightclick offsetX="30" offsetY="5" dropdownId="{{getId(form,'fullpopulate')}}"-->
+<!--class="box-content text-center">-->
+<!--<i ng-class="dc.getResourceIconClass(form)" class="fa"></i>-->
 
-                      <!--<p>{{ form.name }}</p>-->
-                    <!--</a>-->
-                  <!--</div>-->
-                <!--</div>-->
-              <!--</div>-->
-            <!--</div>-->
-          <!--</div>-->
-        <!--</div>-->
-        <!--&lt;!&ndash; body &ndash;&gt;-->
-        <!--&lt;!&ndash; footer &ndash;&gt;-->
-        <!--<div class="modal-footer"></div>-->
-        <!--&lt;!&ndash;<div class="modal-footer"></div>&ndash;&gt;-->
-        <!--&lt;!&ndash; footer &ndash;&gt;-->
-      <!--</div>-->
-      <!--&lt;!&ndash; content &ndash;&gt;-->
-    <!--</div>-->
-    <!--&lt;!&ndash; dialog &ndash;&gt;-->
-  <!--</div>-->
-  <!--&lt;!&ndash; modal &ndash;&gt;-->
+<!--<p>{{ form.name }}</p>-->
+<!--</a>-->
+<!--</div>-->
+<!--</div>-->
+<!--</div>-->
+<!--</div>-->
+<!--</div>-->
+<!--</div>-->
+<!--&lt;!&ndash; body &ndash;&gt;-->
+<!--&lt;!&ndash; footer &ndash;&gt;-->
+<!--<div class="modal-footer"></div>-->
+<!--&lt;!&ndash;<div class="modal-footer"></div>&ndash;&gt;-->
+<!--&lt;!&ndash; footer &ndash;&gt;-->
+<!--</div>-->
+<!--&lt;!&ndash; content &ndash;&gt;-->
+<!--</div>-->
+<!--&lt;!&ndash; dialog &ndash;&gt;-->
+<!--</div>-->
+<!--&lt;!&ndash; modal &ndash;&gt;-->
 <!--</section>-->
 <!--gray populate a form modal slide up/down section -->
 
@@ -201,10 +214,10 @@
 <section class="all-items-view ">
 
   <!--<a ng-if="dc.onDashboard()" class="push-pull-box" ng-click="dc.toggleFavorites()" href="javascript:"-->
-      <!--aria-expanded="false" ng-class="{'collapsed': !dc.showFavorites}">-->
+  <!--aria-expanded="false" ng-class="{'collapsed': !dc.showFavorites}">-->
 
-    <!--<i class="fa fa-caret-down"></i>-->
-    <!--<i class="fa fa-caret-up"></i>-->
+  <!--<i class="fa fa-caret-down"></i>-->
+  <!--<i class="fa fa-caret-up"></i>-->
   <!--</a>-->
   <!-- here are the right and left sides.  these are currently hidden -->
   <div class="row-offcanvas row-offcanvas-right row-offcanvas-left">
@@ -302,11 +315,10 @@
           <div rightclick offsetX="30" offsetY="5" dropdownId="{{getId(resource, 'populate')}}"
               ng-click="dc.selectResource(resource)" ng-dblclick="dc.goToResource(resource)" class="form-box">
             <div class="box-content text-center">
-              <i class="fa" ng-class="dc.getResourceIconClass(resource)"></i>
 
-              <p>{{ resource.name }}</p>
 
-              <p>{{ resource.description }}</p>
+              <p class="title"><i style="font-size:20px; text-align:left" class="fa" ng-class="dc.getResourceIconClass(resource)"></i> {{ resource.name }}</p>
+              <p class="description">{{ resource.description }}</p>
 
               <div class="btn-group dropdown" id="{{getId(resource, 'populate')}}">
                 <button style="display:none" title="More"
@@ -383,31 +395,54 @@
 
     </div>
     <!-- floating plus icon section -->
-    <div class="add-new" ng-if="dc.onDashboard()">
+    <div class="add-new" ng-if="dc.onDashboard()" ng-mouseleave="dc.showFloatingMenu = false">
       <ul class="list-unstyled">
         <li ng-show="dc.showFloatingMenu">
           <a title="Add Element" ng-href="/elements/create?folderId={{dc.currentFolderId | encodeURIComponent}}">
-            <button class="btn btn-sm btn-info btn-circle-outline"><i class="fa fa-file-text-o"></i></button>
+            <button type="button"
+                tooltip="create new block"
+                tooltip-trigger
+                tooltip-animation="false"
+                tooltip-placement="left"
+                data-toggle="tooltip" class="btn btn-sm btn-info btn-circle"><i class="fa fa-file-text-o"></i></button>
           </a>
         </li>
-        <li ng-show="dc.showFloatingMenu">
-          <a title="Add Template" ng-href="/templates/create?folderId={{dc.currentFolderId | encodeURIComponent}}">
-            <button class="btn btn-sm btn-info btn-circle-outline"><i class="fa fa-file-o"></i></button>
-          </a>
-        </li>
-        <li ng-show="dc.showFloatingMenu">
-          <button title="Add Folder" class="btn btn-sm btn-info btn-circle" ng-click="dc.showCreateFolder()"><i
-              class="fa fa-folder-o"></i></button>
-        </li>
+
         <li ng-hide="dc.showFloatingMenu">
-          <button class="btn btn-sm btn-info btn-circle" ng-click="dc.showFloatingMenu = true"><i
+          <button type="button"
+              tooltip="create new form"
+              tooltip-trigger
+              tooltip-animation="false"
+              tooltip-placement="left"
+              data-toggle="tooltip" class="btn btn-sm btn-info btn-circle"
+              ng-mouseenter="dc.showFloatingMenu = true"><i
               class="fa fa-plus"></i>
           </button>
         </li>
+
         <li ng-show="dc.showFloatingMenu">
-          <button class="btn btn-sm btn-info btn-close" ng-click="dc.showFloatingMenu = false"><i
-              class="fa fa-times"></i>
-          </button>
+          <button type="button"
+              tooltip="create new folder"
+              tooltip-trigger
+              tooltip-animation="false"
+              tooltip-placement="left"
+              data-toggle="tooltip" title="create new folder" class="btn btn-sm btn-info btn-circle"
+              ng-click="dc.showCreateFolder()"><i
+              class="fa fa-folder-o"></i></button>
+        </li>
+
+        <li ng-show="dc.showFloatingMenu">
+          <a title="create new form" ng-href="/templates/create?folderId={{dc.currentFolderId | encodeURIComponent}}">
+            <button type="button"
+                tooltip="create new form"
+                tooltip-trigger
+                tooltip-animation="false"
+                tooltip-placement="left"
+                data-toggle="tooltip"
+                class="btn btn-sm btn-info btn-circle">
+              <i class="fa fa-plus"></i>
+            </button>
+          </a>
         </li>
       </ul>
     </div>

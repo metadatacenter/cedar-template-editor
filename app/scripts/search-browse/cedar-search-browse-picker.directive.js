@@ -453,22 +453,19 @@ define([
       function showInfoPanel(resource) {
         if (resource && !isResourceSelected(resource)) {
           selectResource(resource);
-        } else {
-
-          if (vm.currentFolderId) {
-            for (var r in vm.resources) {
-              if (r['@id'] == vm.currentFolderId) {
-                selectResource(r);
-              }
-            }
-          }
         }
 
-        if (vm.selectedResource) {
+        console.log(vm.formFolder);
+
+        if (!resource && vm.formFolder) {
+          selectResource(vm.formFolder);
+        }
+
+        //if (vm.selectedResource) {
           vm.showResourceInfo = true;
-          vm.showFavorites = false;
-          updateFavorites();
-        }
+          //vm.showFavorites = false;
+          //updateFavorites();
+        //}
       }
 
       function setSortOption(option) {

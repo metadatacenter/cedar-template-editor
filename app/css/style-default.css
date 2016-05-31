@@ -9106,7 +9106,7 @@ body {
   height: 100%;
 }
 body {
-  background: #f9f9fb;
+  background: #f4f4f7;
   font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
   color: #333;
   padding-top: 100px;
@@ -9156,7 +9156,6 @@ body.search-browse-modal .controls-bar {
   margin: 0 30px;
 }
 body.search-browse-modal .all-items-view {
-  background: #F9F9FB;
   min-height: 350px;
 }
 body.search-browse-modal .footer-buttons {
@@ -9343,11 +9342,13 @@ body.search-browse-modal .footer-buttons button.canc {
 }
 .controls-bar {
   padding: 10px 40px;
-  background-color: #eaeaea;
+  background: #f4f4f7;
   color: #339933;
-  border-bottom: 5px solid #eaeaea;
   top: 100px;
   box-shadow: 0 4px 4px #ccc;
+}
+.controls-bar .open .dropdown-menu {
+  border-radius: 0px;
 }
 .controls-bar i {
   font-size: 20px;
@@ -9488,7 +9489,7 @@ body.search-browse-modal .footer-buttons button.canc {
   color: #666666;
 }
 .search-browse-spacer {
-  padding-top: 89px;
+  padding-top: 59px;
 }
 /* Begin Form Populate Gray Modal Slide Up/Down Section */
 .form-populate {
@@ -9621,33 +9622,44 @@ body.search-browse-modal .footer-buttons button.canc {
 .all-items-view .breadcrumbs-sb {
   text-transform: uppercase;
 }
+.all-items-view .populate-form-boxes {
+  margin: 0 20px;
+}
 .all-items-view .populate-form-boxes .selected > .form-box {
-  border: 1px solid #339933;
+  box-shadow: 4px 4px 4px  #ccc;
 }
 .all-items-view .populate-form-boxes .form-box {
   width: 220px;
-  height: 220px;
+  height: 110px;
   border: 1px solid #ebebeb;
-  box-shadow: 4px 4px #e0e0e0;
   background: #ffffff;
-  margin: 10px auto 20px;
+  margin: 10px auto;
   cursor: default;
+  overflow: hidden;
 }
 .all-items-view .populate-form-boxes .form-box .box-content {
   color: #339933;
-  padding: 25px 5px;
-  font-size: 16px;
+  padding: 10px;
+  font-size: 14px;
   display: block;
+  text-align: left;
 }
 .all-items-view .populate-form-boxes .form-box .box-content i {
-  font-size: 36px;
-  margin-bottom: 15px;
+  font-size: 20px;
+  color: #339933;
 }
-.all-items-view .populate-form-boxes .form-box .box-content p {
+.all-items-view .populate-form-boxes .form-box .box-content p.title {
   line-height: 1;
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
+  color: #666666;
+}
+.all-items-view .populate-form-boxes .form-box .box-content p.description {
+  height: 60px;
+  line-height: 15px;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .all-items-view .populate-form-boxes .form-box .box-content .disabled {
   cursor: not-allowed;
@@ -9690,12 +9702,13 @@ body.search-browse-modal .footer-buttons button.canc {
 }
 .all-items-view .populate-form-boxes .list-view .box-title {
   width: 100%;
-  font-size: 16px;
+  font-size: 14px;
   color: #666666;
 }
 .all-items-view .populate-form-boxes .list-view .box-title .cell {
   display: inline-block;
   padding: 10px;
+  font-size: 14px;
 }
 .all-items-view .populate-form-boxes .list-view .box-title .resource {
   width: 45%;
@@ -9710,7 +9723,7 @@ body.search-browse-modal .footer-buttons button.canc {
   width: 100%;
   border: 1px solid #ebebeb;
   background: #ffffff;
-  font-size: 16px;
+  font-size: 14px;
   color: #666666;
 }
 .all-items-view .populate-form-boxes .list-view .box-row .cell {
@@ -9852,8 +9865,11 @@ body.search-browse-modal .footer-buttons button.canc {
 }
 .all-items-view .add-new {
   position: fixed;
-  bottom: 50px;
-  right: 50px;
+  bottom: 15px;
+  right: 30px;
+}
+.all-items-view .add-new button:focus {
+  outline: 0;
 }
 .all-items-view .add-new .btn-info {
   border-radius: 50%;
