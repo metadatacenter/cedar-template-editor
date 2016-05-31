@@ -75,7 +75,6 @@ define([
       vm.pathInfo = [];
       vm.params = $location.search();
       vm.resources = [];
-      vm.resourceView = 'grid';
       vm.selectedResource = null;
       vm.selectResource = selectResource;
       vm.setSortOption = setSortOption;
@@ -89,6 +88,7 @@ define([
       vm.toggleFilters = toggleFilters;
       vm.toggleResourceInfo = toggleResourceInfo;
       vm.toggleResourceType = toggleResourceType;
+      vm.setResourceViewMode = setResourceViewMode;
 
       $rootScope.pageTitle = 'Dashboard';
 
@@ -105,6 +105,7 @@ define([
         };
         var option = CedarUser.getUIPreferences().folderView.sortBy;
         setSortOptionUI(option);
+        vm.resourceViewMode = CedarUser.getUIPreferences().folderView.viewMode;;
       }
 
       function init() {
@@ -521,6 +522,11 @@ define([
         if (saveData == null || saveData) {
           UISettingsService.saveUIPreference('populateATemplate.opened', vm.showFavorites);
         }
+      }
+
+      function setResourceViewMode(mode) {
+        vm.resourceViewMode = mode;
+        UISettingsService.saveUIPreference('folderView.viewMode', mode);
       }
 
     }

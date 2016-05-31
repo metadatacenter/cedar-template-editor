@@ -21,8 +21,8 @@
           <li><a ng-click="dc.setSortOption('lastUpdatedOnTS')"><span translate="DASHBOARD.sort.lastUpdatedOnTS"></span></a></li>
         </ul>
       </li>
-      <li ng-show="dc.resourceView != 'grid'"><a ng-click="dc.resourceView = 'grid'"><i class="fa fa-th graytext"></i></a></li>
-      <li ng-show="dc.resourceView != 'list'"><a ng-click="dc.resourceView = 'list'"><i class="fa fa-list-ul graytext"></i></a></li>
+      <li ng-show="dc.resourceViewMode != 'grid'"><a ng-click="dc.setResourceViewMode('grid')"><i class="fa fa-th graytext"></i></a></li>
+      <li ng-show="dc.resourceViewMode != 'list'"><a ng-click="dc.setResourceViewMode('list')"><i class="fa fa-list-ul graytext"></i></a></li>
       <li ng-if="dc.onDashboard()" class="inline divider-vertical graytext"></li>
       <li ng-if="dc.onDashboard()"><i class="fa fa-ellipsis-v inline graytext"></i>
         <ul class="dropnav">
@@ -204,7 +204,7 @@
       </div>
     </div>
     <div class="row populate-form-boxes">
-      <div class="grid-view" ng-show="dc.resourceView == 'grid'">
+      <div class="grid-view" ng-show="dc.resourceViewMode == 'grid'">
         <div class="col-sm-6"
              ng-class="{ 'col-md-3': !dc.narrowContent(), 'col-md-4': dc.narrowContent(), selected: dc.isResourceSelected(resource) }"
              ng-repeat="(index, resource) in dc.resources">
@@ -226,7 +226,7 @@
         </div>
       </div>
       <!-- this is the beginning of the list view -->
-      <div class="list-view" ng-show="dc.resourceView == 'list'">
+      <div class="list-view" ng-show="dc.resourceViewMode == 'list'">
         <div class="col-xs-12">
           <table class="table">
             <thead>
