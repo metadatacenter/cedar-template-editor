@@ -9756,6 +9756,7 @@ body.search-browse-modal .footer-buttons button.canc {
   background: #fff;
   width: 30px;
   height: 30px;
+  padding-top: .5em;
 }
 .all-items-view .populate-form-boxes .list-view .box-row .btn-info.btn-circle {
   background: #71a69c;
