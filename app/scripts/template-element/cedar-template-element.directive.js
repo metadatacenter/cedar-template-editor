@@ -174,14 +174,20 @@ define([
       // add a multiple cardinality element
       scope.selectedTab = 0;
       scope.addElement = function () {
+        console.log('addElement');
         if ($rootScope.isRuntime()) {
           if ((!scope.element.maxItems || scope.model.length < scope.element.maxItems)) {
             var seed = {};
+            console.log(scope.model);
             if (scope.model.length > 0) {
               seed = angular.copy(scope.model[0]);
+              console.log(seed);
               resetElement(seed, scope.element);
+             console.log (angular.isArray(scope.model));
               scope.model.push(seed);
             } else {
+              console.log ('else ' +angular.isArray(scope.model));
+              console.log (scope.model);
               scope.model.push(seed);
               if (angular.isArray(scope.model)) {
                 angular.forEach(scope.model, function (m) {
