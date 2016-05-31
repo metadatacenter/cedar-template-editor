@@ -172,6 +172,10 @@ define([
       };
 
       // add a multiple cardinality element
+
+
+
+      // add a multiple cardinality element
       scope.selectedTab = 0;
       scope.addElement = function () {
         if ($rootScope.isRuntime()) {
@@ -315,8 +319,14 @@ define([
 
       scope.uuid = DataManipulationService.generateTempGUID();
 
+      // try to deselect this field
+      scope.canDeselect = function (field) {
+        return DataManipulationService.canDeselect(field, scope.renameChildKey);
+      };
+
       scope.$on('saveForm', function (event) {
-        if (scope.isEditState() && !scope.add(scope.element)) {
+      if (scope.isEditState() && !scope.canDeselect(scope.element)) {
+
           scope.$emit("invalidElementState",
               ["add", $rootScope.schemaOf(scope.element)._ui.title, scope.element["@id"]]);
         } else {
