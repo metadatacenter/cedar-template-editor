@@ -101,16 +101,6 @@
             <li><a href="/logout">Logout</a></li>
           </ul>
         </div>
-<!--=======-->
-      <!--<li ng-show="dc.resourceViewMode != 'grid'"><a ng-click="dc.setResourceViewMode('grid')"><i class="fa fa-th graytext"></i></a></li>-->
-      <!--<li ng-show="dc.resourceViewMode != 'list'"><a ng-click="dc.setResourceViewMode('list')"><i class="fa fa-list-ul graytext"></i></a></li>-->
-      <!--<li ng-if="dc.onDashboard()" class="inline divider-vertical graytext"></li>-->
-      <!--<li ng-if="dc.onDashboard()"><i class="fa fa-ellipsis-v inline graytext"></i>-->
-        <!--<ul class="dropnav">-->
-          <!--<li><a href="/profile">Profile</a></li>-->
-          <!--<li><a href="/logout">Logout</a></li>-->
-        <!--</ul>-->
-<!--&gt;>>>>>> develop-->
       </li>
     </ul>
   </div>
@@ -301,11 +291,9 @@
       </div>
     </div>
     <div class="row populate-form-boxes">
-<<<<<<< HEAD
-      <div class="grid-view" ng-if="dc.resourceView == 'grid'">
-=======
-      <div class="grid-view" ng-show="dc.resourceViewMode == 'grid'">
->>>>>>> develop
+
+      <div class="grid-view" ng-if="dc.resourceViewMode == 'grid'">
+
         <div class="col-sm-6"
             ng-class="{ 'col-md-3': !dc.narrowContent(), 'col-md-4': dc.narrowContent(), selected: dc.isResourceSelected(resource) }"
             ng-repeat="(index, resource) in dc.resources">
@@ -341,9 +329,9 @@
           </div>
         </div>
       </div>
-<<<<<<< HEAD
 
-      <div class="list-view" ng-if="dc.resourceView == 'list'">
+
+      <div class="list-view" ng-if="dc.resourceViewMode == 'list'">
         <div class="box-title">
           <div class="cell type"></div>
           <div class="cell resource">Title</div>
@@ -386,40 +374,6 @@
               </ul>
             </div>
           </div>
-=======
-      <!-- this is the beginning of the list view -->
-      <div class="list-view" ng-show="dc.resourceViewMode == 'list'">
-        <div class="col-xs-12">
-          <table class="table">
-            <thead>
-            <th></th>
-            <th>Title</th>
-            <th>Created</th>
-            <th>Modified</th>
-            <th ng-show="dc.onDashboard()"></th>
-            </thead>
-            <tbody>
-              <tr class="box-row"
-                  ng-class="{ selected: dc.isResourceSelected(resource) }"
-                  ng-click="dc.selectResource(resource)"
-                  ng-dblclick="dc.goToResource(resource)"
-                  ng-repeat="(index, resource) in dc.resources">
-                <td><i ng-class="dc.getResourceIconClass(resource)" class="fa large-icon" aria-hidden="true"></i></td>
-                <td><a ng-click="dc.selectResource(resource)">{{ resource.name }}</a></td>
-                <td>{{ resource.createdOnTS | prettyDate }}</td>
-                <td>{{ resource.lastUpdatedOnTS | prettyDate }}</td>
-                <td ng-show="dc.onDashboard()">
-                  <ul class="list-inline" >
-                    <li ng-if="resource.resourceType == 'template'"><button title="Run" class="btn btn-sm btn-info btn-circle" ng-click="dc.launchInstance(resource)"><i class="fa fa-check-square-o"></i></button></li>
-                    <li><button title="Info" class="btn btn-sm btn-info btn-circle" ng-click="dc.showInfoPanel(resource)"><i class="fa fa-info"></i></button></li>
-                    <li><button title="Edit" class="btn btn-sm btn-info btn-circle" ng-click="dc.editResource(resource)"><i class="fa fa-pencil"></i></button></li>
-                    <li><button title="Delete" class="btn btn-sm btn-info btn-circle" ng-click="dc.deleteResource(resource)"><i class="fa fa-times"></i></button></li>
-                  </ul>
-                </td>
-              </tr>
-            </tbody>
-          </table>
->>>>>>> develop
         </div>
       </div>
 
