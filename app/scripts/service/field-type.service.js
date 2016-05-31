@@ -22,7 +22,7 @@ define([
 
     service.init = function () {
       fieldTypes = config;
-      otherFieldTypes = fieldTypes.slice([4]);
+      otherFieldTypes = fieldTypes.slice(4);
 
       console.log(fieldTypes)
       console.log(otherFieldTypes);
