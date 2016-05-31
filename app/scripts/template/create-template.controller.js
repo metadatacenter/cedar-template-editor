@@ -41,7 +41,10 @@ define([
             }
         );
 
+        $scope.primaryFieldTypeCount = 4;
         $scope.fieldTypes = FieldTypeService.getFieldTypes();
+        $scope.otherFieldTypes = FieldTypeService.getOtherFieldTypes();
+
 
         var getTemplate = function () {
           // Load existing form if $routeParams.id parameter is supplied

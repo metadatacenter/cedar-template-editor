@@ -36,9 +36,12 @@
 === MJD Custom Code
 ================================================
 */
-html,body { height:100%; }
+html, body {
+  height: 100%;
+}
+
 body {
-  background: @background-color;
+  background: @gray2;
   font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
   color: #333;
   padding-top: 100px;
@@ -52,6 +55,7 @@ a {
 a:hover, a:focus {
   text-decoration: none;
 }
+
 i {
   .link-transition;
 }
@@ -71,6 +75,7 @@ i {
 .container {
   position: relative;
 }
+
 .smaller-width {
   width: 770px;
 
@@ -78,6 +83,7 @@ i {
     width: 100%;
   }
 }
+
 body.search-browse-modal {
   padding: 120px 30px 30px;
   background: #a3a3a3;
@@ -86,11 +92,10 @@ body.search-browse-modal {
     margin: 30px 30px 0;
   }
   .controls-bar {
-    top:122px;
+    top: 122px;
     margin: 0 30px;
   }
   .all-items-view {
-    background: #F9F9FB;
     min-height: 350px;
   }
   .footer-buttons {
@@ -114,6 +119,7 @@ body.search-browse-modal {
     }
   }
 }
+
 .navbar {
   color: @header-text-color;
   background-color: @header-bg-color;
@@ -138,7 +144,7 @@ body.search-browse-modal {
     position: absolute;
     top: -20px;
     right: 30px;
-    margin:20px;
+    margin: 20px;
     font-size: 22px;
   }
 
@@ -150,7 +156,7 @@ body.search-browse-modal {
     position: absolute;
     top: -20px;
     right: -20px;
-    margin:20px;
+    margin: 20px;
     font-size: 22px;
   }
 
@@ -163,7 +169,7 @@ body.search-browse-modal {
     transition: background-color 0.3s ease-in 0.1s;
 
     &:hover,
-      &:focus {
+    &:focus {
       background-color: @brand-primary;
     }
 
@@ -271,7 +277,7 @@ body.search-browse-modal {
     }
 
     .form-control:focus ~ .floating-label,
-      .form-control:not(.empty) ~ .floating-label {
+    .form-control:not(.empty) ~ .floating-label {
       left: 0;
     }
 
@@ -288,18 +294,47 @@ body.search-browse-modal {
 #angular-views-entry {
   height: 100%;
 }
+
 .controls-bar {
-  padding: 25px 40px;
-  background-color: @white;
+  padding: 10px 40px;
+  background: @gray2;
   color: @brand-primary;
-  border-bottom:5px solid @graybg;
   top: 100px;
+  box-shadow:0 4px 4px #ccc;
+
+  .open .dropdown-menu   {
+    border-radius:0px;
+  }
 
   i {
     font-size: 20px;
+    visibility:none;
+
+    .invisible {
+      visibility:hidden;
+    }
   }
   ul {
     margin-bottom: 0;
+    li {
+      vertical-align:middle;
+      padding-left:1px;
+      padding-right:1px;
+      button {
+        width:35px;height:35px;
+        background:transparent;
+        border:0px;
+      }
+      button:hover {
+        background:@white;
+        border:1px solid #ccc;
+      }
+      button:active {
+        background:@white;
+        border:1px solid #ccc;
+      }
+      button:focus {outline:0;}
+    }
   }
   ul > li:hover > ul.dropnav {
     visibility: visible;
@@ -382,7 +417,7 @@ body.search-browse-modal {
     height: 30px;
     margin: -8px 9px;
     border-left: 1px solid @graytxt;
-    border-right: 1px solid #FFF;
+    //border-right: 1px solid #FFF;
   }
   .graytext {
     color: @graytxt;
@@ -408,9 +443,11 @@ body.search-browse-modal {
     color: @graytxt;
   }
 }
+
 .search-browse-spacer {
-  padding-top: 89px;
+  padding-top: 59px;
 }
+
 /* Begin Form Populate Gray Modal Slide Up/Down Section */
 .form-populate {
   color: @graytxt;
@@ -425,6 +462,7 @@ body.search-browse-modal {
     text-transform: uppercase;
   }
   .populate-form-boxes {
+
 
     .form-box {
       width: 220px;
@@ -447,9 +485,9 @@ body.search-browse-modal {
         }
         p {
           line-height: 1;
-          text-overflow:ellipsis;
-          overflow:hidden;
-          white-space:nowrap;
+          text-overflow: ellipsis;
+          overflow: hidden;
+          white-space: nowrap;
         }
       }
     }
@@ -525,13 +563,14 @@ body.search-browse-modal {
     }
   }
 }
+
 /* End Form Populate Gray Modal Slide Up/Down Section */
 
 /* Begin All Items View */
 
 .all-items-view {
   color: @graytxt;
-  padding: 40px 0;
+  padding: 20px 0;
   position: relative;
   //  overflow:hidden;
   height: 100%;
@@ -566,34 +605,54 @@ body.search-browse-modal {
   }
   .populate-form-boxes {
 
+    margin:0 20px;
+
     .selected > .form-box {
-      border: 1px solid @brand-primary;
+      box-shadow:4px 4px 4px  #ccc;
     }
 
     .form-box {
       width: 220px;
-      height: 220px;
+      height: 110px;
       border: 1px solid #ebebeb;
-      box-shadow: 4px 4px #e0e0e0;
+      //box-shadow: 4px 4px #e0e0e0;
       background: #ffffff;
-      margin: 10px auto 20px;
+      margin: 10px auto;
       cursor: default;
+      overflow:hidden;
 
       .box-content {
         color: @brand-primary;
-        padding: 25px 5px;
-        font-size: 16px;
+        padding: 10px;
+        font-size: 14px;
         display: block;
+        text-align:left;
+
 
         i {
-          font-size: 36px;
-          margin-bottom: 15px;
+          font-size: 20px;
+          color:@brand-primary;
         }
-        p {
+        p.title {
           line-height: 1;
-          text-overflow:ellipsis;
+          text-overflow: ellipsis;
+          overflow: hidden;
+          white-space: nowrap;
+          color:@graytxt;
+        }
+        p.description {
+          height:60px;
+          line-height:15px;
           overflow:hidden;
-          white-space:nowrap;
+          text-overflow: ellipsis;
+        }
+
+        .disabled{
+          cursor: not-allowed;
+        }
+
+        .disabled > a{
+          pointer-events: none;
         }
       }
       .quick-details-box {
@@ -624,14 +683,16 @@ body.search-browse-modal {
         }
       }
     }
+
     .list-view {
 
-      thead th {
+      .title {
         text-transform: uppercase;
         padding: 10px 0 20px;
 
         i {
           color: @brand-primary;
+
         }
       }
 
@@ -639,19 +700,91 @@ body.search-browse-modal {
         margin: 10px 0;
       }
 
-      table tbody tr.box-row {
+      .box-title {
+
+        width: 100%;
+        font-size: 14px;
+        color:@graytxt;
+
+        .cell {
+          display:inline-block;
+          padding:10px;
+          font-size: 14px;
+        }
+        .resource {
+          width:45%;
+        }
+        .type {
+          width:10%;
+        }
+        .date {
+          width:20%;
+        }
+      }
+
+      .box-row {
+
         width: 100%;
         border: 1px solid #ebebeb;
-        box-shadow: 4px 4px #e0e0e0;
         background: #ffffff;
-        margin: 10px auto 20px;
-        font-size: 18px;
+        font-size: 14px;
+        color:@graytxt;
 
-        td {
-          padding: 20px;
+        .cell {
+          display:inline-block;
+          padding:10px;
+          overflow:hidden;
+          text-overflow:ellipsis;
 
           i.large-icon {
-            font-size: 36px;
+            color: #fff;
+          }
+
+          .disabled{
+            cursor: not-allowed;
+          }
+
+          .disabled > a{
+            pointer-events: none;
+          }
+
+
+
+        }
+
+
+        .resource {
+          width:45%;
+        }
+        .type {
+          width:10%;
+        }
+        .date {
+          width:20%;
+          white-space:nowrap;
+        }
+
+        .btn-circle {
+          border-radius: 50%;
+          background: #fff;
+          width: 30px;
+          height: 30px;
+          padding-top:.5em;
+        }
+        .btn-info.btn-circle {
+          background: @brand-primary;
+          color: #fff;
+          border: none;
+        }
+      }
+
+      .box-row.selected {
+        background: @brand-primary;
+        color: #fff;
+
+        .cell {
+
+          i.large-icon {
             color: @brand-primary;
           }
         }
@@ -659,16 +792,20 @@ body.search-browse-modal {
         .btn-circle {
           border-radius: 50%;
           width: 30px;
+          height: 30px;
         }
         .btn-info.btn-circle {
-          box-shadow: none;
-          background: @graytxt;
-          color: #fff;
+          background: #fff;
+          color: @brand-primary;
           border: none;
         }
+
+
       }
     }
+
   }
+
   /* Off Canvas */
   .row-offcanvas {
     -webkit-transition: all .25s ease-out;
@@ -754,7 +891,7 @@ body.search-browse-modal {
   }
   .sidebar-offcanvas-left, .sidebar-offcanvas-right {
     position: fixed;
-    top: 189px;
+    top: 159px;
     width: 20%; /* 6 columns */
     padding: 0;
     background: @graybg;
@@ -764,8 +901,10 @@ body.search-browse-modal {
 
   .add-new {
     position: fixed;
-    bottom: 50px;
-    right: 50px;
+    bottom: 15px;
+    right: 30px;
+
+    button:focus {outline:0;}
 
     .btn-info {
       border-radius: 50%;
@@ -802,6 +941,7 @@ body.search-browse-modal {
     display: none;
   }
 }
+
 /* end search browse modal */
 
 /* Begin Create-Edit Section */
@@ -894,9 +1034,8 @@ body.search-browse-modal {
   }
 }
 
-
 .right-stick {
-  position:absolute;
+  position: absolute;
   right: -12%;
   top: 0;
 
@@ -1016,6 +1155,7 @@ body.search-browse-modal {
 
   }
 }
+
 .other-elements {
   width: 465px;
   background: @white;
@@ -1210,7 +1350,7 @@ body.search-browse-modal {
     }
 
     .form-control:focus ~ .floating-label,
-      .form-control:not(.empty) ~ .floating-label {
+    .form-control:not(.empty) ~ .floating-label {
       left: 0;
     }
 
@@ -1285,7 +1425,7 @@ body.search-browse-modal {
       //display: inline-block;
       vertical-align: top;
       margin-bottom: 0px;
-      padding:5px 15px;
+      padding: 5px 15px;
 
       .add,
       .remove,
@@ -1480,7 +1620,7 @@ p.add-item {
         }
 
         &:hover,
-          &.active {
+        &.active {
           background-color: @brand-primary;
           color: @white;
 
@@ -1686,7 +1826,7 @@ section.dashboard-elements {
           }
 
           &:hover,
-            &:focus {
+          &:focus {
             border-left: none;
             outline: none;
             box-shadow: none;
@@ -1862,9 +2002,8 @@ section.dashboard-elements {
 .template-body form, #element_control_term {
 
   .form-group {
-    margin-bottom:14px;
-    min-height:1em;
-
+    margin-bottom: 14px;
+    min-height: 1em;
 
     &.radio-item,
     &.checkbox-item {
@@ -1891,8 +2030,8 @@ section.dashboard-elements {
       }
 
       &:focus ~ .floating-label,
-        &:not(.empty) ~ .floating-label,
-        &.ng-invalid ~ .floating-label {
+      &:not(.empty) ~ .floating-label,
+      &.ng-invalid ~ .floating-label {
         top: 4px;
         left: 8px;
         color: #bcbcc3;
@@ -2414,7 +2553,7 @@ section.dashboard-elements {
           background-color: @brand-primary;
 
           &:hover {
-            background-color:  @brand-primary-hover;
+            background-color: @brand-primary-hover;
           }
 
           i {
@@ -2435,8 +2574,6 @@ section.dashboard-elements {
         }
       }
     }
-
-
 
     .advanced-options {
       float: none;
@@ -2477,7 +2614,7 @@ section.dashboard-elements {
   letter-spacing: 0.03em;
 
   &:hover,
-    &:focus {
+  &:focus {
     background-color: @brand-primary-hover;
     color: @white;
   }
@@ -2523,7 +2660,7 @@ section.dashboard-elements {
     padding: 0;
 
     &:hover,
-      &:focus {
+    &:focus {
       color: @brand-primary-hover;
     }
   }
@@ -3026,7 +3163,7 @@ p.instructions {
         .activ-grotesk-bold;
 
         &:hover,
-          &:focus {
+        &:focus {
           color: @brand-primary-hover;
         }
       }
@@ -3037,7 +3174,7 @@ p.instructions {
         font-size: 16px;
 
         &:hover,
-          &:focus {
+        &:focus {
           background-color: @brand-primary-hover;
         }
       }
@@ -3097,7 +3234,7 @@ p.instructions {
         .activ-grotesk-bold;
 
         &:hover,
-          &:focus {
+        &:focus {
           color: @brand-primary-hover;
         }
       }
@@ -3108,7 +3245,7 @@ p.instructions {
         font-size: 16px;
 
         &:hover,
-          &:focus {
+        &:focus {
           background-color: @brand-primary-hover;
         }
       }
@@ -3300,8 +3437,8 @@ p.instructions {
   padding: 5px;
   border: 1px solid #ddd;
   background: white;
-  position:relative;
-  width:100%;
+  position: relative;
+  width: 100%;
 }
 
 .zero-input-wrapper {
@@ -4261,7 +4398,6 @@ body .template-header .controlled-terms-modal {
   position: static;
 }
 
-
 .input-type-container .configuration-options .toggle-options {
 }
 
@@ -4431,8 +4567,8 @@ body .template-header .controlled-terms-modal {
 }
 
 .configuration-options .toggle-controlled-term .controlled-term-label {
-  top:-.3em;
-  position:relative;
+  top: -.3em;
+  position: relative;
   font-weight: normal;
 }
 
@@ -4454,7 +4590,7 @@ body .template-header .controlled-terms-modal {
   padding: 5px;
   border: 1px solid @gray3;
   margin-bottom: 10px;
-  margin-top:5px;
+  margin-top: 5px;
 }
 
 .sortable-icon {
@@ -4483,6 +4619,8 @@ table.apiKey {
     margin: 0px;
   }
 }
+
+
 
 
 

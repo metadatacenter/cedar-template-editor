@@ -123,7 +123,7 @@
           <!-- toolbar -->
           <div id="toolbar">
             <ul>
-              <li ng-repeat="fieldType in fieldTypes | limitTo : 4">
+              <li ng-repeat="fieldType in fieldTypes | limitTo : primaryFieldTypeCount">
                 <a ng-click="addFieldToElement(fieldType.cedarType)"><i class="{{fieldType.iconClass}}"></i></a>
               </li>
               <li>
@@ -136,8 +136,8 @@
                     <div class="row">
                       <ul class="col-xs-6 list-unstyled pull-left">
                         <li class="item"
-                            ng-repeat="fieldType in fieldTypes"
-                            ng-if="$index <= fieldTypes.length/2 ">
+                            ng-repeat="fieldType in otherFieldTypes"
+                            ng-if="$index <= otherFieldTypes.length/2 ">
                           <a data-toggle="dropdown" data-target=".field-selector" dropdown-toggle
                               ng-click="addFieldToElement(fieldType.cedarType)"><i
                               class="{{fieldType.iconClass}}"></i><span translate>{{"FIELDS.FIELD_TYPE." + fieldType.cedarType + ".NAME"}}</span></a>
@@ -145,8 +145,8 @@
                       </ul>
                       <ul class="row list-unstyled pull-right">
                         <li class="item"
-                            ng-repeat="fieldType in fieldTypes"
-                            ng-if="$index > fieldTypes.length/2">
+                            ng-repeat="fieldType in otherFieldTypes"
+                            ng-if="$index > otherFieldTypes.length/2">
                           <a data-toggle="dropdown" data-target=".field-selector" dropdown-toggle
                               ng-click="addFieldToElement(fieldType.cedarType)"><i
                               class="{{fieldType.iconClass}}"></i><span

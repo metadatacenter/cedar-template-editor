@@ -11,6 +11,7 @@ define([
 
   function DashboardController() {
     var vm = this;
+
   };
 
 });

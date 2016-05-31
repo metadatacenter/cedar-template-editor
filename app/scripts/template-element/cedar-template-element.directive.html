@@ -76,7 +76,7 @@
           <span>{{$index + 1}}</span>
         </div>
         <div class="add-element">
-          <button type="button" ng-click="addElement()" class="add zero" ng-show="true" ng-disabled="preview">
+          <button type="button" ng-click="addElement(); $event.stopPropagation();" class="add zero" ng-show="true" ng-disabled="preview">
             <i class="fa fa-plus"></i>
 
             <div class="cardinality-_ui-container">

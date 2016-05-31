@@ -49,7 +49,9 @@ define([
         }
     );
 
+    $scope.primaryFieldTypeCount = 4;
     $scope.fieldTypes = FieldTypeService.getFieldTypes();
+    $scope.otherieldTypes = FieldTypeService.getOtherFieldTypes();
     $scope.hideRootElement = true;
 
     $scope.addElementFromPicker = function() {
