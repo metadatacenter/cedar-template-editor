@@ -2,9 +2,9 @@
 
 define([
   'angular'
-], function(angular) {
+], function (angular) {
   angular.module('cedar.templateEditor.layout.headerController', [])
-    .controller('HeaderCtrl', HeaderController);
+      .controller('HeaderCtrl', HeaderController);
 
   HeaderController.$inject = [
     '$rootScope',
@@ -17,15 +17,16 @@ define([
 
     vm.goToDashboardOrBack = goToDashboardOrBack;
     vm.search = search;
-    vm.searchTerm = null;
+    vm.searchTerm = $location.search().search;
     vm.showSearch = showSearch;
     vm.isDashboard = isDashboard;
     vm.getDocumentTitle = getDocumentTitle;
 
     function goToDashboardOrBack() {
+      vm.searchTerm = null;
       var params = $location.search();
-      var path   = $location.path();
-      var url    = '/dashboard';
+      var path = $location.path();
+      var url = '/dashboard';
       if (path != url) {
         if (params.folderId) {
           url += '?folderId=' + encodeURIComponent(params.folderId);
@@ -35,19 +36,19 @@ define([
         }
       }
       $location.url(url);
-    };
+    }
 
     function showSearch() {
       return $rootScope.showSearch;
-    };
+    }
 
     function isDashboard() {
       return ($location.path() === "/dashboard");
-    };
+    }
 
     function getDocumentTitle() {
       return $rootScope.documentTitle;
-    };
+    }
 
     function search(searchTerm) {
       if (isDashboard()) {
