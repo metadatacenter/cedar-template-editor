@@ -407,7 +407,7 @@ define([
           case CONST.resourceType.TEMPLATE:
             return "fa-file-o";
           case CONST.resourceType.INSTANCE:
-            return "fa-check-square-o";
+            return "fa-tags";
           case CONST.resourceType.FIELD:
             return "fa-file-code-o";
         }

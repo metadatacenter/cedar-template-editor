@@ -29,16 +29,6 @@
       <li ng-if="dc.onDashboard() && dc.hasSelection()">
         <button
             type="button"
-            tooltip="preview selection"
-            tooltip-trigger
-            tooltip-animation="false"
-            tooltip-placement="top"
-            data-toggle="tooltip">
-          <i class="fa fa-eye graytext"></i></button>
-      </li>
-      <li ng-if="dc.onDashboard() && dc.hasSelection()">
-        <button
-            type="button"
             tooltip="delete selection"
             tooltip-trigger
             tooltip-animation="false"
@@ -46,15 +36,7 @@
             data-toggle="tooltip"
             ng-click="dc.deleteResource()"><i class="fa fa-trash graytext"></i></button>
       </li>
-      <li ng-if="dc.onDashboard() && dc.hasSelection()">
-        <button
-            type="button"
-            tooltip="more options"
-            tooltip-trigger
-            tooltip-animation="false"
-            tooltip-placement="top"
-            data-toggle="tooltip"><i class="fa fa-ellipsis-v graytext"></i></button>
-      </li>
+
 
       <li ng-if="dc.onDashboard() && dc.hasSelection()" class="inline divider-vertical graytext"></li>
 
@@ -326,7 +308,7 @@
                 </button>
                 <ul class="dropdown-menu" aria-labelledby="{{getId(resource, 'populate')}}">
                   <li><a href="#" ng-click="dc.showInfoPanel(resource)">Info</a></li>
-                  <li class="disabled"><a href="#">Preview</a></li>
+                  <!--<li class="disabled"><a href="#">Preview</a></li>-->
                   <li ng-if="resource.resourceType == 'template'"><a href="#" ng-click="dc.launchInstance(resource)">Populate</a>
                   </li>
                   <li><a href="#" ng-click="dc.editResource(resource)">Edit</a></li>
@@ -337,7 +319,7 @@
                   <li role="separator" class="divider"></li>
                   <li class="disabled"><a href="#">Make a copy</a></li>
                   <li role="separator" class="divider"></li>
-                  <li><a href="#" ng-click="dc.deleteResource(resource)">Remove</a></li>
+                  <li><a href="#" ng-click="dc.deleteResource(resource)">Delete</a></li>
                 </ul>
               </div>
             </div>
@@ -373,7 +355,7 @@
               </button>
               <ul class="dropdown-menu" aria-labelledby="{{getId(resource, 'list')}}">
                 <li><a href="#" ng-click="dc.showInfoPanel(resource)">Info</a></li>
-                <li class="disabled"><a href="#">Preview</a></li>
+                <!--<li class="disabled"><a href="#">Preview</a></li>-->
                 <li ng-if="resource.resourceType == 'template'"><a href="#" ng-click="dc.launchInstance(resource)">Populate</a>
                 </li>
                 <li><a href="#" ng-click="dc.editResource(resource)">Edit</a></li>
@@ -384,7 +366,7 @@
                 <li role="separator" class="divider"></li>
                 <li class="disabled"><a href="#">Make a copy</a></li>
                 <li role="separator" class="divider"></li>
-                <li><a href="#" ng-click="dc.deleteResource(resource)">Remove</a></li>
+                <li><a href="#" ng-click="dc.deleteResource(resource)">Delete</a></li>
               </ul>
             </div>
           </div>
