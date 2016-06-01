@@ -9149,6 +9149,10 @@ i {
     width: 100%;
   }
 }
+button {
+  border: 0;
+  outline: none;
+}
 body.search-browse-modal {
   padding: 120px 30px 30px;
   background: #a3a3a3;

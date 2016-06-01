@@ -20,9 +20,18 @@
         </p>
 
          <span ng-show="$root.isArray(model) && $root.applicationMode == 'runtime'" class="spreadsheetSwitch element">
-           <a ng-click="switchToSpreadsheet()" class="spreadsheetSwitchLink">
-             <i class="cedar-svg-spreadsheet"></i>
-           </a>
+            <button type="button"
+                tooltip="show as spreadsheet"
+                tooltip-trigger
+                tooltip-animation="false"
+                tooltip-placement="top"
+                data-toggle="tooltip"
+                ng-click="switchToSpreadsheet()"
+                class="spreadsheetSwitchLink"
+                ng-show="true"
+                ng-disabled="preview" style="background:transparent;border:0;outline:none">
+              <i class="cedar-svg-spreadsheet"></i>
+            </button>
          </span>
 
           <span class="multiple-instance-cardinality"
@@ -76,17 +85,18 @@
           <span>{{$index + 1}}</span>
         </div>
         <div class="add-element">
-          <button type="button" ng-click="addElement(); $event.stopPropagation();" class="add zero" ng-show="true" ng-disabled="preview">
+          <button type="button"
+              tooltip="add a {{$root.schemaOf(element)._ui.title}}"
+              tooltip-trigger
+              tooltip-animation="false"
+              tooltip-placement="top"
+              data-toggle="tooltip"
+              ng-click="addElement(); $event.stopPropagation();"
+              class="add zero noOutline"
+              ng-show="true"
+              ng-disabled="preview"
+              style="outline:none">
             <i class="fa fa-plus"></i>
-
-            <div class="cardinality-_ui-container">
-              <div class="cardinality-_ui">
-                <div class="cardinality-_ui-text">
-                  <span translate="GENERIC.MultipleMinMaxMsg"
-                      translate-values="{min:element.minItems, max:(element.maxItems || 'GENERIC.Unlimited' | translate)}"></span>
-                </div>
-              </div>
-            </div>
           </button>
         </div>
         <div class="clearfix"></div>

@@ -37,6 +37,24 @@
             ng-click="dc.deleteResource()"><i class="fa fa-trash graytext"></i></button>
       </li>
 
+      <li ng-if="dc.onDashboard() && dc.hasSelection()">
+        <div class="btn-group dropdown">
+          <button data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><i
+              class="fa fa-ellipsis-v  inline graytext"></i></button>
+          <ul class="dropdown-menu dropdown-menu-right">
+            <li><a href="#" ng-click="dc.showInfoPanel()">Info</a></li>
+            <li ng-if="dc.isTemplate()"><a href="#" ng-click="dc.launchInstance()">Populate</a></li>
+            <li><a href="#" ng-click="dc.editResource()">Edit</a></li>
+            <li role="separator" class="divider"></li>
+            <li class="disabled"><a href="#">Share</a></li>
+            <li class="disabled"><a href="#">Move to...</a></li>
+            <li class="disabled"><a href="#">Rename</a></li>
+            <li role="separator" class="divider"></li>
+            <li class="disabled"><a href="#">Make a copy</a></li>
+          </ul>
+        </div>
+      </li>
+
 
 
       <li ng-if="dc.onDashboard() && dc.hasSelection()" class="inline divider-vertical graytext"></li>

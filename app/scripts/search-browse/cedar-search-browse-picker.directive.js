@@ -114,6 +114,7 @@ define([
       }
 
       function init() {
+
         vm.isSearching = false;
         if (vm.params.folderId) {
           getFacets();
@@ -133,6 +134,16 @@ define([
           getForms();
         }
         updateFavorites(false);
+      }
+
+      function initSearch() {
+         if (vm.params.search) {
+          vm.isSearching = true;
+          getFacets();
+          doSearch(vm.params.search);
+        } else {
+          goToFolder(CedarUser.getHomeFolderId());
+        }
       }
 
       function breadcrumbName(folderName) {
@@ -514,7 +525,7 @@ define([
           $location.url(UrlService.getSearchPath(searchTerm));
         } else {
           vm.params.search = searchTerm;
-          init();
+          initSearch();
         }
       });
 
