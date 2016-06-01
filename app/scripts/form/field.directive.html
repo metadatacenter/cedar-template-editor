@@ -10,22 +10,45 @@
     <p class="element-name-label">
       <i class="cedar-svg-list"></i>
       {{field.items._ui.title}}
-      <a ng-click="switchToSpreadsheet()" class="spreadsheetSwitchLink">
-        <i class="cedar-svg-spreadsheet"></i>
-      </a>
+
+
+      <!--<a ng-click="switchToSpreadsheet()" class="spreadsheetSwitchLink">-->
+        <!--<i class="cedar-svg-spreadsheet"></i>-->
+      <!--</a>-->
+
+       <span  class="spreadsheetSwitch ">
+            <button type="button"
+                tooltip="show as spreadsheet"
+                tooltip-trigger
+                tooltip-animation="false"
+                tooltip-placement="top"
+                data-toggle="tooltip"
+                ng-click="switchToSpreadsheet()"
+                class="spreadsheetSwitchLink"
+                ng-show="true"
+                ng-disabled="preview" style="background:transparent;border:0;outline:none">
+              <i class="cedar-svg-spreadsheet"></i>
+            </button>
+       </span>
 
       <!-- show this add button only when you have minCardinality 0 and an empty list -->
     <span class="zero-input-wrapper" ng-show="$root.isRuntime() && $root.isArray(model) && model.length == 0">
-      <button type="button" class="add" ng-click="addMoreInput()">
+      <button type="button"   class="add noOutline"
+                tooltip="add more {{field.items._ui.title}}"
+                tooltip-trigger
+                tooltip-animation="false"
+                tooltip-placement="top"
+                data-toggle="tooltip"
+          ng-click="addMoreInput()">
         <i class="fa fa-plus"></i>
 
-        <div class="cardinality-_ui-container">
-          <div class="cardinality-_ui">
-            <div class="cardinality-_ui-text"><span translate="GENERIC.MultipleMinMaxMsg"
-                translate-values="{min:($parent.field.minItems || 0), max:($parent.field.maxItems || 'GENERIC.Unlimited' | translate)}"></span>
-            </div>
-          </div>
-        </div>
+        <!--<div class="cardinality-_ui-container">-->
+          <!--<div class="cardinality-_ui">-->
+            <!--<div class="cardinality-_ui-text"><span translate="GENERIC.MultipleMinMaxMsg"-->
+                <!--translate-values="{min:($parent.field.minItems || 0), max:($parent.field.maxItems || 'GENERIC.Unlimited' | translate)}"></span>-->
+            <!--</div>-->
+          <!--</div>-->
+        <!--</div>-->
       </button>
     </span>
     </p>
