@@ -56,7 +56,6 @@
       </li>
 
 
-
       <li ng-if="dc.onDashboard() && dc.hasSelection()" class="inline divider-vertical graytext"></li>
 
 
@@ -255,16 +254,16 @@
           <div class="pull-right"><a ng-click="dc.toggleResourceInfo()"><i class="fa fa-times"
               aria-hidden="true"></i></a></div>
         </div>
-        <h4>{{ dc.selectedResource.name }}</h4>
+        <h4>{{ dc.selectedResource.name }}&nbsp;</h4>
         <table class="table">
           <tbody>
           <tr>
             <td class="left"><strong>Type:</strong></td>
-            <td>{{ dc.selectedResource.resourceType }}</td>
+            <td style="width:100%">{{ dc.selectedResource.nodeType }}</td>
           </tr>
           <tr>
             <td class="left"><strong>Location:</strong></td>
-            <td></td>
+            <td>{{ dc.selectedResource.path }}</td>
           </tr>
           <tr>
             <td class="left"><strong>Owner:</strong></td>
@@ -272,12 +271,18 @@
           </tr>
           <tr>
             <td class="left"><strong>Modified:</strong></td>
-            <td>{{ dc.selectedResource.lastUpdatedOnTS | prettyDate }} by <span class="no-wrap">{{ dc.selectedResource.lastUpdatedByUserName }}</span>
+            <td>
+              <span class="no-wrap">{{ dc.selectedResource.lastUpdatedOnTS | prettyDate }}</span>
+              by
+              <span class="no-wrap">{{ dc.selectedResource.lastUpdatedByUserName }}</span>
             </td>
           </tr>
           <tr>
             <td class="left"><strong>Created:</strong></td>
-            <td>{{ dc.selectedResource.createdOnTS | prettyDate }} by <span class="no-wrap">{{ dc.selectedResource.createdByUserName }}</span>
+            <td>
+              <span class="no-wrap">{{ dc.selectedResource.createdOnTS | prettyDate }}</span>
+              by
+              <span class="no-wrap">{{ dc.selectedResource.createdByUserName }}</span>
             </td>
           </tr>
           </tbody>
@@ -320,7 +325,9 @@
             <div class="box-content text-center">
 
 
-              <p class="title"><i style="font-size:20px; text-align:left" class="fa" ng-class="dc.getResourceIconClass(resource)"></i> {{ resource.name }}</p>
+              <p class="title"><i style="font-size:20px; text-align:left" class="fa"
+                  ng-class="dc.getResourceIconClass(resource)"></i> {{ resource.name }}</p>
+
               <p class="description">{{ resource.description }}</p>
 
               <div class="btn-group dropdown" id="{{getId(resource, 'populate')}}">
@@ -330,7 +337,7 @@
                 <ul class="dropdown-menu" aria-labelledby="{{getId(resource, 'populate')}}">
                   <li><a href="#" ng-click="dc.showInfoPanel(resource)">Info</a></li>
                   <!--<li class="disabled"><a href="#">Preview</a></li>-->
-                  <li ng-if="resource.resourceType == 'template'"><a href="#" ng-click="dc.launchInstance(resource)">Populate</a>
+                  <li ng-if="resource.nodeType == 'template'"><a href="#" ng-click="dc.launchInstance(resource)">Populate</a>
                   </li>
                   <li><a href="#" ng-click="dc.editResource(resource)">Edit</a></li>
                   <li role="separator" class="divider"></li>
@@ -378,7 +385,8 @@
               <ul class="dropdown-menu" aria-labelledby="{{getId(resource, 'list')}}">
                 <li><a href="#" ng-click="dc.showInfoPanel(resource)">Info</a></li>
                 <!--<li class="disabled"><a href="#">Preview</a></li>-->
-                <li ng-if="resource.resourceType == 'template'"><a href="#" ng-click="dc.launchInstance(resource)">Populate</a>
+                <li ng-if="resource.nodeType == 'template'"><a href="#"
+                    ng-click="dc.launchInstance(resource)">Populate</a>
                 </li>
                 <li><a href="#" ng-click="dc.editResource(resource)">Edit</a></li>
                 <li role="separator" class="divider"></li>

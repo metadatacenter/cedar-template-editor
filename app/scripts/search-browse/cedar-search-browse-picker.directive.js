@@ -236,7 +236,7 @@ define([
 
       function goToResource(resource) {
         vm.params.search = null;
-        if (resource.resourceType == 'folder') {
+        if (resource.nodeType == 'folder') {
           goToFolder(resource['@id']);
         } else {
           editResource(resource);
@@ -248,7 +248,7 @@ define([
         if (typeof vm.pickResourceCallback === 'function') {
           vm.pickResourceCallback(resource);
         }
-        switch (resource.resourceType) {
+        switch (resource.nodeType) {
           case CONST.resourceType.TEMPLATE:
             $location.path(UrlService.getTemplateEdit(id));
             break;
@@ -287,18 +287,18 @@ define([
                     var index = vm.resources.indexOf(resource);
                     vm.resources.splice(index, 1);
                     resetSelected();
-                    UIMessageService.flashSuccess('SERVER.' + resource.resourceType.toUpperCase() + '.delete.success',
-                        {"title": resource.resourceType},
+                    UIMessageService.flashSuccess('SERVER.' + resource.nodeType.toUpperCase() + '.delete.success',
+                        {"title": resource.nodeType},
                         'GENERIC.Deleted');
                   },
                   function (error) {
-                    UIMessageService.showBackendError('SERVER.' + resource.resourceType.toUpperCase() + '.delete.error',
+                    UIMessageService.showBackendError('SERVER.' + resource.nodeType.toUpperCase() + '.delete.error',
                         error);
                   }
               );
             },
             'GENERIC.AreYouSure',
-            'DASHBOARD.delete.confirm.' + resource.resourceType,
+            'DASHBOARD.delete.confirm.' + resource.nodeType,
             'GENERIC.YesDeleteIt'
         );
       }
@@ -316,18 +316,18 @@ define([
                     var index = vm.resources.indexOf(resource);
                     vm.resources.splice(index, 1);
                     resetSelected();
-                    UIMessageService.flashSuccess('SERVER.' + resource.resourceType.toUpperCase() + '.delete.success',
-                        {"title": resource.resourceType},
+                    UIMessageService.flashSuccess('SERVER.' + resource.nodeType.toUpperCase() + '.delete.success',
+                        {"title": resource.nodeType},
                         'GENERIC.Deleted');
                   },
                   function (error) {
-                    UIMessageService.showBackendError('SERVER.' + resource.resourceType.toUpperCase() + '.delete.error',
+                    UIMessageService.showBackendError('SERVER.' + resource.nodeType.toUpperCase() + '.delete.error',
                         error);
                   }
               );
             },
             'GENERIC.AreYouSure',
-            'DASHBOARD.delete.confirm.' + resource.resourceType,
+            'DASHBOARD.delete.confirm.' + resource.nodeType,
             'GENERIC.YesDeleteIt'
         );
       }
@@ -366,7 +366,7 @@ define([
               vm.selectedResource = response;
             },
             function (error) {
-              UIMessageService.showBackendError('SERVER.' + resource.resourceType.toUpperCase() + '.load.error', error);
+              UIMessageService.showBackendError('SERVER.' + resource.nodeType.toUpperCase() + '.load.error', error);
             }
         );
       };
@@ -414,7 +414,7 @@ define([
       }
 
       function getResourceIconClass(resource) {
-        switch (resource.resourceType) {
+        switch (resource.nodeType) {
           case CONST.resourceType.FOLDER:
             return "fa-folder-o";
           case CONST.resourceType.TEMPLATE:
