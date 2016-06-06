@@ -255,16 +255,16 @@
           <div class="pull-right"><a ng-click="dc.toggleResourceInfo()"><i class="fa fa-times"
               aria-hidden="true"></i></a></div>
         </div>
-        <h4>{{ dc.selectedResource.name }}</h4>
+        <h4>{{ dc.selectedResource.name }}&nbsp;</h4>
         <table class="table">
           <tbody>
           <tr>
             <td class="left"><strong>Type:</strong></td>
-            <td>{{ dc.selectedResource.resourceType }}</td>
+            <td style="width:100%">{{ dc.selectedResource.resourceType }}</td>
           </tr>
           <tr>
             <td class="left"><strong>Location:</strong></td>
-            <td></td>
+            <td>{{ dc.selectedResource.path }}</td>
           </tr>
           <tr>
             <td class="left"><strong>Owner:</strong></td>
