@@ -26,15 +26,17 @@ define([
       vm.searchTerm = null;
       var params = $location.search();
       var path = $location.path();
-      var url = '/dashboard';
-      if (path != url) {
+      var baseUrl = '/dashboard';
+      if (path != baseUrl) {
+        var queryParams = {};
         if (params.folderId) {
-          url += '?folderId=' + encodeURIComponent(params.folderId);
+          queryParams['folderId'] = params.folderId;
         }
         if (params.search) {
-          url += '?search=' + encodeURIComponent(params.search);
+          queryParams['search'] = params.search;
         }
       }
+      var url = $rootScope.util.buildUrl(baseUrl, queryParams);
       $location.url(url);
     }
 
