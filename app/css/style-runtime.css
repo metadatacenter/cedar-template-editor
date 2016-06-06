@@ -9513,6 +9513,11 @@ body.search-browse-modal .footer-buttons button.canc {
 .form-populate .pull-right {
   text-transform: uppercase;
 }
+.form-populate .populate-form-boxes .form-box-container {
+  position: relative;
+  display: inline-block;
+  margin: 0 5px;
+}
 .form-populate .populate-form-boxes .form-box {
   width: 220px;
   height: 220px;
@@ -9609,6 +9614,9 @@ body.search-browse-modal .footer-buttons button.canc {
   height: 100%;
   /* Off Canvas */
 }
+.all-items-view .center-panel {
+  padding-bottom: 100px;
+}
 .all-items-view .push-pull-box {
   position: absolute;
   background: #eaeaea;
@@ -9637,7 +9645,15 @@ body.search-browse-modal .footer-buttons button.canc {
   margin: 0 20px;
 }
 .all-items-view .populate-form-boxes .selected > .form-box {
-  box-shadow: 0 0 4px 2px  #ccc;
+  box-shadow: 0 0 4px 2px #ccc;
+}
+.all-items-view .populate-form-boxes .folder > .form-box {
+  height: 50px;
+}
+.all-items-view .populate-form-boxes .form-box-container {
+  position: relative;
+  display: inline-block;
+  margin: 0 5px;
 }
 .all-items-view .populate-form-boxes .form-box {
   width: 160px;

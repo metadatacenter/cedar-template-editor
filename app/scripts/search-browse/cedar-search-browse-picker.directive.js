@@ -85,11 +85,13 @@ define([
       vm.sortUpdated = sortUpdated;
       vm.showCreateFolder = showCreateFolder;
       vm.showFilters = true;
+      vm.filterShowing = filterShowing;
       vm.filterSections = {};
       vm.isFilterSection = isFilterSection;
       vm.getArrowIcon = getArrowIcon;
       vm.showFloatingMenu = false;
       vm.showInfoPanel = showInfoPanel;
+      vm.infoShowing = infoShowing;
       vm.showResourceInfo = false;
       vm.sortOptionLabel = $translate.instant('DASHBOARD.sort.name');
       vm.toggleFavorites = toggleFavorites;
@@ -461,8 +463,16 @@ define([
         return (hasSelection() && (vm.selectedResource.resourceType == CONST.resourceType.ELEMENT));
       }
 
-      function isFolder() {
-        return (hasSelection() && (vm.selectedResource.resourceType == CONST.resourceType.FOLDER));
+      function isFolder(resource) {
+        var result = false;
+        console.log('isFolder');
+        console.log(resource);
+        if (resource) {
+          result = (resource.resourceType == CONST.resourceType.FOLDER);
+        } else {
+          result = (hasSelection() && (vm.selectedResource.resourceType == CONST.resourceType.FOLDER))
+        }
+        return result;
       }
 
       function isMeta() {
@@ -493,6 +503,14 @@ define([
 
       function onDashboard() {
         return vm.mode == 'dashboard';
+      }
+
+      function filterShowing() {
+        return vm.showFilters && onDashboard();
+      }
+
+      function infoShowing() {
+        return vm.showResourceInfo && onDashboard();
       }
 
       function narrowContent() {

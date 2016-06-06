@@ -85,8 +85,8 @@ i {
 }
 
 button {
-  border:0;
-  outline:none;
+  border: 0;
+  outline: none;
 }
 
 body.search-browse-modal {
@@ -102,7 +102,7 @@ body.search-browse-modal {
   }
   .all-items-view {
     min-height: 350px;
-    margin:0 15px;
+    margin: 0 15px;
   }
   .footer-buttons {
     background: #2e5365;
@@ -299,7 +299,7 @@ body.search-browse-modal {
 
 #angular-views-entry {
   height: 100%;
-  margin-top:100px;
+  margin-top: 100px;
 }
 
 .controls-bar {
@@ -307,40 +307,43 @@ body.search-browse-modal {
   background: @gray2;
   color: @brand-primary;
   top: 100px;
-  box-shadow:0 4px 4px #ccc;
+  box-shadow: 0 4px 4px #ccc;
 
-  .open .dropdown-menu   {
-    border-radius:0px;
+  .open .dropdown-menu {
+    border-radius: 0px;
   }
 
   i {
     font-size: 20px;
-    visibility:none;
+    visibility: none;
 
     .invisible {
-      visibility:hidden;
+      visibility: hidden;
     }
   }
   ul {
     margin-bottom: 0;
     li {
-      vertical-align:middle;
-      padding-left:1px;
-      padding-right:1px;
+      vertical-align: middle;
+      padding-left: 1px;
+      padding-right: 1px;
       button {
-        width:35px;height:35px;
-        background:transparent;
-        border:0px;
+        width: 35px;
+        height: 35px;
+        background: transparent;
+        border: 0px;
       }
       button:hover {
-        background:@white;
-        border:1px solid #ccc;
+        background: @white;
+        border: 1px solid #ccc;
       }
       button:active {
-        background:@white;
-        border:1px solid #ccc;
+        background: @white;
+        border: 1px solid #ccc;
       }
-      button:focus {outline:0;}
+      button:focus {
+        outline: 0;
+      }
     }
   }
   ul > li:hover > ul.dropnav {
@@ -470,6 +473,11 @@ body.search-browse-modal {
   }
   .populate-form-boxes {
 
+    .form-box-container {
+      position: relative;
+      display: inline-block;
+      margin: 0 5px;
+    }
 
     .form-box {
       width: 220px;
@@ -498,6 +506,7 @@ body.search-browse-modal {
         }
       }
     }
+
   }
   #fsModal {
     background: @graybg;
@@ -581,6 +590,9 @@ body.search-browse-modal {
   position: relative;
   height: 100%;
 
+  .center-panel {
+    padding-bottom: 100px
+  }
 
   .push-pull-box {
     position: absolute;
@@ -613,11 +625,20 @@ body.search-browse-modal {
   }
   .populate-form-boxes {
 
-    margin:0 20px;
-
+    margin: 0 20px;
 
     .selected > .form-box {
-      box-shadow:0 0 4px 2px  #ccc;
+      box-shadow: 0 0 4px 2px #ccc;
+    }
+
+    .folder > .form-box {
+      height: 50px;
+    }
+
+    .form-box-container {
+      position: relative;
+      display: inline-block;
+      margin: 0 5px;
     }
 
     .form-box {
@@ -627,40 +648,39 @@ body.search-browse-modal {
       background: #ffffff;
       margin: 5px auto;
       cursor: default;
-      overflow:hidden;
+      overflow: hidden;
 
       .box-content {
         color: @brand-primary;
         padding: 5px;
         font-size: 14px;
         display: block;
-        text-align:left;
-
+        text-align: left;
 
         i {
           font-size: 20px;
-          color:@brand-primary;
+          color: @brand-primary;
         }
         span.title {
           line-height: 15px;
           text-overflow: ellipsis;
           overflow: hidden;
-          color:@graytxt;
+          color: @graytxt;
         }
         span.description {
-          height:60px;
-          line-height:15px;
-          overflow:hidden;
+          height: 60px;
+          line-height: 15px;
+          overflow: hidden;
           text-overflow: ellipsis;
-          color:#aaa;
+          color: #aaa;
           font-size: 12px;
         }
 
-        .disabled{
+        .disabled {
           cursor: not-allowed;
         }
 
-        .disabled > a{
+        .disabled > a {
           pointer-events: none;
         }
       }
@@ -713,21 +733,21 @@ body.search-browse-modal {
 
         width: 100%;
         font-size: 14px;
-        color:@graytxt;
+        color: @graytxt;
 
         .cell {
-          display:inline-block;
-          padding:10px;
+          display: inline-block;
+          padding: 10px;
           font-size: 14px;
         }
         .resource {
-          width:45%;
+          width: 45%;
         }
         .type {
-          width:10%;
+          width: 10%;
         }
         .date {
-          width:20%;
+          width: 20%;
         }
       }
 
@@ -737,40 +757,37 @@ body.search-browse-modal {
         border: 1px solid #ebebeb;
         background: #ffffff;
         font-size: 14px;
-        color:@graytxt;
+        color: @graytxt;
 
         .cell {
-          display:inline-block;
-          padding:10px;
-          overflow:hidden;
-          text-overflow:ellipsis;
+          display: inline-block;
+          padding: 10px;
+          overflow: hidden;
+          text-overflow: ellipsis;
 
           i.large-icon {
             color: #fff;
           }
 
-          .disabled{
+          .disabled {
             cursor: not-allowed;
           }
 
-          .disabled > a{
+          .disabled > a {
             pointer-events: none;
           }
 
-
-
         }
-
 
         .resource {
-          width:45%;
+          width: 45%;
         }
         .type {
-          width:10%;
+          width: 10%;
         }
         .date {
-          width:20%;
-          white-space:nowrap;
+          width: 20%;
+          white-space: nowrap;
         }
 
         .btn-circle {
@@ -778,7 +795,7 @@ body.search-browse-modal {
           background: #fff;
           width: 30px;
           height: 30px;
-          padding-top:.5em;
+          padding-top: .5em;
         }
         .btn-info.btn-circle {
           background: @brand-primary;
@@ -809,7 +826,6 @@ body.search-browse-modal {
           border: none;
         }
 
-
       }
     }
 
@@ -824,11 +840,10 @@ body.search-browse-modal {
   }
   .row-offcanvas-right {
     right: 0;
-    background:#fff;
-    border-left:1px solid #ebebeb;
+    background: #fff;
+    border-left: 1px solid #ebebeb;
     margin-bottom: -99999px;
     padding-bottom: 99999px;
-
 
     .rightside {
       padding: 20px 0;
@@ -847,17 +862,16 @@ body.search-browse-modal {
   }
   .row-offcanvas-left {
     left: 0;
-    height:100%;
+    height: 100%;
     margin-bottom: -99999px;
     padding-bottom: 99999px;
-
 
     .filter-options {
       padding: 20px 0;
 
       ul.list-unstyled > li {
         border-top: 1px solid @gray3;
-        margin-bottom:10px;
+        margin-bottom: 10px;
       }
       ul > li {
         list-style-type: none;
@@ -894,26 +908,25 @@ body.search-browse-modal {
       }
 
       button {
-        background:transparent;
-        border:0px solid #ccc;
+        background: transparent;
+        border: 0px solid #ccc;
       }
-
 
       .btn-circle {
         border-radius: 50%;
         background: @brand-primary-disabled;
-        border:@brand-primary-disabled;
-        color:#fff;
+        border: @brand-primary-disabled;
+        color: #fff;
         width: 30px;
         height: 30px;
-        padding-top:.5em;
+        padding-top: .5em;
 
       }
 
       .active {
-        background:@brand-primary;
-        border:@brand-primary;
-        color:#fff;
+        background: @brand-primary;
+        border: @brand-primary;
+        color: #fff;
       }
 
     }
@@ -945,7 +958,9 @@ body.search-browse-modal {
     bottom: 15px;
     right: 30px;
 
-    button:focus {outline:0;}
+    button:focus {
+      outline: 0;
+    }
 
     .btn-info {
       border-radius: 50%;
@@ -4632,7 +4647,7 @@ body .template-header .controlled-terms-modal {
   border: 1px solid @gray3;
   margin-bottom: 10px;
   margin-top: 5px;
-  background:#efefef;
+  background: #efefef;
 }
 
 .sortable-icon {
