@@ -124,9 +124,9 @@ define([
         };
         vm.filterSections = {
           type : true,
-          author: true,
-          status: true,
-          term: true
+          author: false,
+          status: false,
+          term: false
         };
         var option = CedarUser.getUIPreferences().folderView.sortBy;
         setSortOptionUI(option);
@@ -264,7 +264,7 @@ define([
         }
 
         vm.params.search = null;
-        if (r.resourceType == 'folder') {
+        if (r.nodeType == 'folder') {
           goToFolder(r['@id']);
         } else {
           editResource(r);
@@ -276,7 +276,7 @@ define([
         if (typeof vm.pickResourceCallback === 'function') {
           vm.pickResourceCallback(resource);
         }
-        switch (resource.resourceType) {
+        switch (resource.nodeType) {
           case CONST.resourceType.TEMPLATE:
             $location.path(UrlService.getTemplateEdit(id));
             break;
@@ -315,18 +315,18 @@ define([
                     var index = vm.resources.indexOf(resource);
                     vm.resources.splice(index, 1);
                     resetSelected();
-                    UIMessageService.flashSuccess('SERVER.' + resource.resourceType.toUpperCase() + '.delete.success',
-                        {"title": resource.resourceType},
+                    UIMessageService.flashSuccess('SERVER.' + resource.nodeType.toUpperCase() + '.delete.success',
+                        {"title": resource.nodeType},
                         'GENERIC.Deleted');
                   },
                   function (error) {
-                    UIMessageService.showBackendError('SERVER.' + resource.resourceType.toUpperCase() + '.delete.error',
+                    UIMessageService.showBackendError('SERVER.' + resource.nodeType.toUpperCase() + '.delete.error',
                         error);
                   }
               );
             },
             'GENERIC.AreYouSure',
-            'DASHBOARD.delete.confirm.' + resource.resourceType,
+            'DASHBOARD.delete.confirm.' + resource.nodeType,
             'GENERIC.YesDeleteIt'
         );
       }
@@ -344,18 +344,18 @@ define([
                     var index = vm.resources.indexOf(resource);
                     vm.resources.splice(index, 1);
                     resetSelected();
-                    UIMessageService.flashSuccess('SERVER.' + resource.resourceType.toUpperCase() + '.delete.success',
-                        {"title": resource.resourceType},
+                    UIMessageService.flashSuccess('SERVER.' + resource.nodeType.toUpperCase() + '.delete.success',
+                        {"title": resource.nodeType},
                         'GENERIC.Deleted');
                   },
                   function (error) {
-                    UIMessageService.showBackendError('SERVER.' + resource.resourceType.toUpperCase() + '.delete.error',
+                    UIMessageService.showBackendError('SERVER.' + resource.nodeType.toUpperCase() + '.delete.error',
                         error);
                   }
               );
             },
             'GENERIC.AreYouSure',
-            'DASHBOARD.delete.confirm.' + resource.resourceType,
+            'DASHBOARD.delete.confirm.' + resource.nodeType,
             'GENERIC.YesDeleteIt'
         );
       }
@@ -394,7 +394,7 @@ define([
               vm.selectedResource = response;
             },
             function (error) {
-              UIMessageService.showBackendError('SERVER.' + resource.resourceType.toUpperCase() + '.load.error', error);
+              UIMessageService.showBackendError('SERVER.' + resource.nodeType.toUpperCase() + '.load.error', error);
             }
         );
       };
@@ -442,7 +442,7 @@ define([
       }
 
       function getResourceIconClass(resource) {
-        switch (resource.resourceType) {
+        switch (resource.nodeType) {
           case CONST.resourceType.FOLDER:
             return "fa-folder-o";
           case CONST.resourceType.TEMPLATE:
@@ -456,11 +456,11 @@ define([
       }
 
       function isTemplate() {
-        return (hasSelection() && (vm.selectedResource.resourceType == CONST.resourceType.TEMPLATE));
+        return (hasSelection() && (vm.selectedResource.nodeType == CONST.resourceType.TEMPLATE));
       }
 
       function isElement() {
-        return (hasSelection() && (vm.selectedResource.resourceType == CONST.resourceType.ELEMENT));
+        return (hasSelection() && (vm.selectedResource.nodeType == CONST.resourceType.ELEMENT));
       }
 
       function isFolder(resource) {
@@ -468,15 +468,15 @@ define([
         console.log('isFolder');
         console.log(resource);
         if (resource) {
-          result = (resource.resourceType == CONST.resourceType.FOLDER);
+          result = (resource.nodeType == CONST.resourceType.FOLDER);
         } else {
-          result = (hasSelection() && (vm.selectedResource.resourceType == CONST.resourceType.FOLDER))
+          result = (hasSelection() && (vm.selectedResource.nodeType == CONST.resourceType.FOLDER))
         }
         return result;
       }
 
       function isMeta() {
-        return (hasSelection() && (vm.selectedResource.resourceType == CONST.resourceType.INSTANCE));
+        return (hasSelection() && (vm.selectedResource.nodeType == CONST.resourceType.INSTANCE));
       }
 
 
@@ -576,7 +576,7 @@ define([
             width = width - 2;
           }
           if (vm.showResourceInfo) {
-            width = width - 2;
+            width = width - 3;
           }
         }
         console.log('workspaceClass'  + 'col-sm-' + width);

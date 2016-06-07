@@ -54,7 +54,7 @@ define([
     function deleteResource(resource, successCallback, errorCallback) {
       var url;
       var id = resource['@id'];
-      switch (resource.resourceType) {
+      switch (resource.nodeType) {
         case CONST.resourceType.FOLDER:
           url = urlService.getFolder(id);
           break;
@@ -205,7 +205,7 @@ define([
     function getResourceDetail(resource, successCallback, errorCallback) {
       var url;
       var id = resource['@id'];
-      switch (resource.resourceType) {
+      switch (resource.nodeType) {
         case CONST.resourceType.FOLDER:
           url = urlService.folders() + '/' + encodeURIComponent(id);
           break;
