@@ -84,16 +84,30 @@ define([
       vm.sortCreated = sortCreated;
       vm.sortUpdated = sortUpdated;
       vm.showCreateFolder = showCreateFolder;
-      vm.showFilters = false;
+      vm.showFilters = true;
+      vm.filterShowing = filterShowing;
+      vm.filterSections = {};
+      vm.isFilterSection = isFilterSection;
+      vm.getArrowIcon = getArrowIcon;
       vm.showFloatingMenu = false;
       vm.showInfoPanel = showInfoPanel;
+      vm.infoShowing = infoShowing;
       vm.showResourceInfo = false;
       vm.sortOptionLabel = $translate.instant('DASHBOARD.sort.name');
       vm.toggleFavorites = toggleFavorites;
       vm.toggleFilters = toggleFilters;
+      vm.workspaceClass = workspaceClass;
+
+
+
       vm.toggleResourceInfo = toggleResourceInfo;
       vm.toggleResourceType = toggleResourceType;
       vm.setResourceViewMode = setResourceViewMode;
+      vm.isTemplate = isTemplate;
+      vm.isElement = isElement;
+      vm.isFolder = isFolder;
+      vm.isMeta = isMeta;
+
 
       $rootScope.pageTitle = 'Dashboard';
 
@@ -101,12 +115,18 @@ define([
       init();
 
       function setUIPreferences() {
-        vm.showFavorites = CedarUser.getUIPreferences().populateATemplate.opened;
+        //vm.showFavorites = CedarUser.getUIPreferences().populateATemplate.opened;
         vm.resourceTypes = {
           element : CedarUser.getUIPreferences().resourceTypeFilters.element,
           field   : CedarUser.getUIPreferences().resourceTypeFilters.field,
           instance: CedarUser.getUIPreferences().resourceTypeFilters.instance,
           template: CedarUser.getUIPreferences().resourceTypeFilters.template
+        };
+        vm.filterSections = {
+          type : true,
+          author: false,
+          status: false,
+          term: false
         };
         var option = CedarUser.getUIPreferences().folderView.sortBy;
         setSortOptionUI(option);
@@ -220,8 +240,11 @@ define([
       }
 
       function launchInstance(resource) {
-        console.log('launchInstance');
-        console.log(resource);
+        if (!resource) {
+          resource = getSelection();
+        }
+
+
 
         var params = $location.search();
         var folderId;
@@ -235,11 +258,16 @@ define([
       }
 
       function goToResource(resource) {
+        var r = resource;
+        if (!r && vm.selectedResource) {
+          r = vm.selectedResource;
+        }
+
         vm.params.search = null;
-        if (resource.nodeType == 'folder') {
-          goToFolder(resource['@id']);
+        if (r.nodeType == 'folder') {
+          goToFolder(r['@id']);
         } else {
-          editResource(resource);
+          editResource(r);
         }
       }
 
@@ -427,6 +455,31 @@ define([
         return "fa-file-text-o";
       }
 
+      function isTemplate() {
+        return (hasSelection() && (vm.selectedResource.nodeType == CONST.resourceType.TEMPLATE));
+      }
+
+      function isElement() {
+        return (hasSelection() && (vm.selectedResource.nodeType == CONST.resourceType.ELEMENT));
+      }
+
+      function isFolder(resource) {
+        var result = false;
+        console.log('isFolder');
+        console.log(resource);
+        if (resource) {
+          result = (resource.nodeType == CONST.resourceType.FOLDER);
+        } else {
+          result = (hasSelection() && (vm.selectedResource.nodeType == CONST.resourceType.FOLDER))
+        }
+        return result;
+      }
+
+      function isMeta() {
+        return (hasSelection() && (vm.selectedResource.nodeType == CONST.resourceType.INSTANCE));
+      }
+
+
       function goToFolder(folderId) {
         if (vm.onDashboard()) {
           $location.url(UrlService.getFolderContents(folderId));
@@ -450,6 +503,14 @@ define([
 
       function onDashboard() {
         return vm.mode == 'dashboard';
+      }
+
+      function filterShowing() {
+        return vm.showFilters && onDashboard();
+      }
+
+      function infoShowing() {
+        return vm.showResourceInfo && onDashboard();
       }
 
       function narrowContent() {
@@ -497,8 +558,50 @@ define([
         updateFavorites();
       }
 
-      function toggleFilters() {
-        vm.showFilters = !vm.showFilters;
+      // toggle the faceted filter panel and the various sections within it
+      function toggleFilters(section) {
+        if (!section) {
+          vm.showFilters = !vm.showFilters;
+        } else {
+          if (vm.filterSections.hasOwnProperty(section)) {
+            vm.filterSections[section] = !vm.filterSections[section];
+          }
+        }
+      }
+
+      function workspaceClass() {
+        var width = 12;
+        if (vm.onDashboard()) {
+          if (vm.showFilters) {
+            width = width - 2;
+          }
+          if (vm.showResourceInfo) {
+            width = width - 3;
+          }
+        }
+        console.log('workspaceClass'  + 'col-sm-' + width);
+        return 'col-sm-' + width;
+      }
+
+
+
+
+      function getArrowIcon(value) {
+        console.log('getArrowIcon' + value + (value ? 'fa-caret-left' : 'fa-caret-down'))
+        return value ? 'fa-caret-left' : 'fa-caret-down';
+      }
+
+      function isFilterSection(section) {
+        console.log('isFilterSection' + section);
+        var result = false;
+        if (!section) {
+          result = vm.showFilters;
+        } else {
+          if (vm.filterSections.hasOwnProperty(section)) {
+            result = vm.filterSections[section];
+          }
+        }
+        return result;
       }
 
       function toggleResourceInfo() {
