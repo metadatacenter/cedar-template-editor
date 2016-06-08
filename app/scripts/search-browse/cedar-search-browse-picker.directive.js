@@ -217,7 +217,16 @@ define([
                     'GENERIC.Created');
               },
               function (response) {
-                UIMessageService.showBackendError('SERVER.FOLDER.create.error', response);
+                if (response.status == 400) {
+                  UIMessageService.showWarning(
+                      'GENERIC.Warning',
+                      'SERVER.FOLDER.create.' + response.data.errorSubType,
+                      'GENERIC.Ok',
+                      response.data.errorParams
+                  );
+                } else {
+                  UIMessageService.showBackendError('SERVER.FOLDER.create.error', response);
+                }
               }
           );
         }
