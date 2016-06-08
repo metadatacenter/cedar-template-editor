@@ -103,7 +103,7 @@ define([
       toasty.error({
         title  : $translate.instant('SERVER.ERROR.title'),
         msg    : $translate.instant(messageKey),
-        timeout: false,
+        //timeout: false,
         onClick: function () {
           //console.log(response);
           var message, string, stackTraceHtml, statusCode, statusText, url, method;
