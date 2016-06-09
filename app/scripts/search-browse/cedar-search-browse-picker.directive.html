@@ -210,7 +210,7 @@
 
   <!-- container -->
   <div class="container-fluid">
-    <div class="row " >
+    <div class="row ">
 
       <!-- START LEFT SIDE -->
       <div class="row-offcanvas-left col-sm-2" id="sidebar-left" ng-if="dc.filterShowing() &&  dc.onDashboard()">
@@ -301,9 +301,9 @@
 
           <p ng-if="!dc.isSearching">
             <span ng-repeat="folder in dc.pathInfo">
-              <a ng-click="dc.goToFolder(folder['@id'])" class="breadcrumbs">{{dc.breadcrumbName(folder.name)}}</a> /
+              <a ng-click="dc.goToFolder(folder['@id'])" class="breadcrumbs">{{dc.breadcrumbName(folder.displayName)}}</a> /
             </span>
-            {{dc.breadcrumbName(dc.currentPath.name)}}
+            {{dc.breadcrumbName(dc.currentPath.displayName)}}
           </p>
         </div>
 
@@ -322,7 +322,7 @@
                 <div class="box-content text-center ">
                   <p><i style="font-size:20px; text-align:left" class="fa"
                       ng-class="dc.getResourceIconClass(resource)"></i>
-                    <span class="title">{{ resource.name }}</span>
+                    <span class="title">{{ resource.displayName }}</span>
                   </p>
 
                   <div class="btn-group dropdown" id="{{getId(resource, 'populate')}}">
@@ -367,7 +367,7 @@
                 <div class="box-content text-center">
                   <p><i style="font-size:20px; text-align:left" class="fa"
                       ng-class="dc.getResourceIconClass(resource)"></i>
-                    <span class="title">{{ resource.name }}</span>
+                    <span class="title">{{ resource.displayName }}</span>
                     <span class="description">{{ resource.description }}</span>
                   </p>
 
@@ -417,7 +417,7 @@
 
               <div class="cell type"><i ng-class="dc.getResourceIconClass(resource)"
                   class="btn btn-sm btn-info btn-circle fa large-icon " aria-hidden="true"></i></div>
-              <div class="cell resource">{{ resource.name }}</div>
+              <div class="cell resource">{{ resource.displayName }}</div>
               <div class="cell date">{{ resource.createdOnTS | prettyDate }}</div>
               <div class="cell date">{{ resource.lastUpdatedOnTS | prettyDate }}
 
@@ -456,7 +456,7 @@
 
               <div class="cell type"><i ng-class="dc.getResourceIconClass(resource)"
                   class="btn btn-sm btn-info btn-circle fa large-icon " aria-hidden="true"></i></div>
-              <div class="cell resource">{{ resource.name }}</div>
+              <div class="cell resource">{{ resource.displayName }}</div>
               <div class="cell date">{{ resource.createdOnTS | prettyDate }}</div>
               <div class="cell date">{{ resource.lastUpdatedOnTS | prettyDate }}
 
@@ -498,7 +498,7 @@
             <div class="pull-right"><a ng-click="dc.toggleResourceInfo()"><i class="fa fa-times"
                 aria-hidden="true"></i></a></div>
           </div>
-          <h4>{{ dc.selectedResource.name }}&nbsp;</h4>
+          <h4>{{ dc.selectedResource.displayName }}&nbsp;</h4>
           <table class="table">
             <tbody>
             <tr>
@@ -507,11 +507,11 @@
             </tr>
             <tr>
               <td class="left"><strong>Location:</strong></td>
-              <td>{{ dc.selectedResource.path }}</td>
+              <td>{{ dc.selectedResource.displayPath }}</td>
             </tr>
             <tr>
               <td class="left"><strong>Owner:</strong></td>
-              <td>{{ dc.selectedResource.createdByUserName }}</td>
+              <td>{{ dc.selectedResource.ownedByUserName }}</td>
             </tr>
             <tr>
               <td class="left"><strong>Modified:</strong></td>
@@ -527,6 +527,11 @@
                 <span class="no-wrap">{{ dc.selectedResource.createdOnTS | prettyDate }}</span>
                 by
                 <span class="no-wrap">{{ dc.selectedResource.createdByUserName }}</span>
+              </td>
+            </tr>
+            <tr>
+              <td class="left"><strong>Publicly writable:</strong></td>
+              <td>{{ dc.selectedResource.isPublicWritable }}</td>
               </td>
             </tr>
             </tbody>
