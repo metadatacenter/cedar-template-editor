@@ -108,7 +108,7 @@ define([
         $scope.instance['_templateId'] = $routeParams.templateId;
         // Create _ui field that will store information used by the UI
         $scope.instance._ui = {};
-        $scope.instance._ui['templateTitle'] = $scope.form._ui.title + ' instance';
+        $scope.instance._ui['templateTitle'] = $scope.form._ui.title + ' metadata';
         $scope.instance._ui['templateDescription'] = $scope.form._ui.description;
         // Make create instance call
         var queryParams = $location.search();

@@ -21,6 +21,10 @@ define([
     vm.showSearch = showSearch;
     vm.isDashboard = isDashboard;
     vm.getDocumentTitle = getDocumentTitle;
+    vm.isTemplate = isTemplate;
+    vm.isElement = isElement;
+    vm.isMetadata = isMetadata;
+
 
     function goToDashboardOrBack() {
       vm.searchTerm = null;
@@ -46,6 +50,19 @@ define([
 
     function isDashboard() {
       return ($location.path() === "/dashboard");
+    }
+
+    function isTemplate() {
+      console.log('isTemplate' + ($location.path() === "/templates"));
+      return ($location.path() === "/templates");
+    }
+
+    function isElement() {
+      return ($location.path() === "/elements");
+    }
+
+    function isMetadata() {
+      return ($location.path() === "/instances");
     }
 
     function getDocumentTitle() {

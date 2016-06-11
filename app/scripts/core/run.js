@@ -13,14 +13,14 @@ define([
                                         'UserService', 'RichTextConfigService', 'CONST', 'controlTermDataService',
                                         'provisionalClassService', 'CedarUser', 'UISettingsService',
                                         'ValueRecommenderService', 'DataUtilService', 'TrackingService',
-                                        '$httpParamSerializer'];
+                                        '$httpParamSerializer', '$location'];
 
 
   function cedarTemplateEditorCoreRun($rootScope, $window, $sce, $translate, DataTemplateService,
                                       DataManipulationService, FieldTypeService, UrlService, UIUtilService, UserService,
                                       RichTextConfigService, CONST, controlTermDataService, provisionalClassService,
                                       CedarUser, UISettingsService, ValueRecommenderService, DataUtilService,
-                                      TrackingService, $httpParamSerializer) {
+                                      TrackingService, $httpParamSerializer, $location) {
 
     $rootScope.isArray = angular.isArray;
 
@@ -497,6 +497,37 @@ define([
         return url;
       }
     };
+
+    $rootScope.$on('$locationChangeStart', function(event) {
+      $rootScope.setHeader();
+    });
+
+
+
+
+    $rootScope.setHeader = function () {
+      console.log('setHeader ' + $location.path());
+
+      var e = jQuery("#top-navigation");
+      e.removeClass('metadata').removeClass('template').removeClass('dashboard').removeClass('element');
+      jQuery("body").css('overflow:scroll');
+
+      if ($location.path().startsWith("/dashboard")) {
+        jQuery("body").css('overflow:hidden');
+        e.addClass('dashboard');
+      }
+       else if ($location.path().startsWith("/elements")) {
+        e.addClass('element');
+
+      } else if ($location.path().startsWith("/templates")) {
+        e.addClass('template');
+
+      }if ($location.path().startsWith("/instances")) {
+        e.addClass('metadata');
+      }
+    }
+
+
 
   };
 

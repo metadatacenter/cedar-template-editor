@@ -34,14 +34,14 @@
 <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade
   your browser</a> to improve your experience.</p>
 <![endif]-->
-<nav class="navbar navbar-fixed-top clearfix" role="navigation">
+<nav class="navbar navbar-fixed-top clearfix" id="top-navigation" role="navigation">
   <div class="nav-container" id="headerCtrl" ng-controller="HeaderCtrl as hc">
     <div class="navbar-header">
 
       <!-- if we are on the dashboard --->
       <div ng-if="hc.isDashboard()">
         <div>
-          <div class="pull-right col-sm-7 nav-search">
+          <div class=" nav-search" style="position:absolute;left:230px;width:700px;color:black; top: 18px;">
             <form>
               <div class="form-group floating-label-wrapper search-input">
                 <input autocomplete="off" ng-keyup="$event.keyCode == 13 && hc.search(hc.searchTerm)" type="search"
@@ -55,7 +55,7 @@
             </form>
           </div>
         </div>
-        <a class="navbar-brand" ng-click="hc.goToDashboardOrBack()" href="javascript:">Cedar</a>
+        <a class="navbar-brand pull-left" ng-click="hc.goToDashboardOrBack()" href="javascript:">Cedar</a>
       </div>
 
       <!-- otherwise on an edit page--->

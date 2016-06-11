@@ -201,6 +201,7 @@ define([
 
     // Stores the element into the database
     $scope.doSaveElement = function () {
+      console.log("doSaveElement")
       // First check to make sure Element Name, Element Description are not blank
       $scope.elementErrorMessages = [];
       $scope.elementSuccessMessages = [];
