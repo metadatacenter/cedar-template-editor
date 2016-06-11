@@ -98,10 +98,10 @@
 
       <div class="left-sidebar col-sm-1 pull-right">
         <div id="stickyFix"></div>
-        <div class="sidebar-inner" cedar-sticky-left-menu="true">
+        <div class="sidebar-inner" >
 
           <!-- toolbar -->
-          <div id="toolbar">
+          <div id="toolbar" >
             <ul>
               <li ng-repeat="fieldType in fieldTypes | limitTo : primaryFieldTypeCount">
                 <a ng-click="addFieldToTemplate(fieldType.cedarType)"><i class="{{fieldType.iconClass}}"></i></a>

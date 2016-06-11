@@ -21,6 +21,7 @@ define([
     vm.showSearch = showSearch;
     vm.isDashboard = isDashboard;
     vm.getDocumentTitle = getDocumentTitle;
+    vm.getPageTitle = getPageTitle;
     vm.isTemplate = isTemplate;
     vm.isElement = isElement;
     vm.isMetadata = isMetadata;
@@ -67,6 +68,10 @@ define([
 
     function getDocumentTitle() {
       return $rootScope.documentTitle;
+    }
+
+    function getPageTitle() {
+      return $rootScope.pageTitle;
     }
 
     function search(searchTerm) {

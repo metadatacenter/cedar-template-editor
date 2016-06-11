@@ -24,7 +24,8 @@
             <span ng-repeat="folder in dc.pathInfo">
               <a ng-click="dc.goToFolder(folder['@id'])" class="breadcrumbs">{{dc.breadcrumbName(folder.name)}}</a> /
             </span>
-        {{dc.breadcrumbName(dc.currentPath.name)}}
+        <a  class="breadcrumbs">{{dc.breadcrumbName(dc.currentPath.name)}}</a>
+
       </p>
     </div>
 
@@ -36,7 +37,7 @@
               tooltip="delete selection"
               tooltip-trigger
               tooltip-animation="false"
-              tooltip-placement="top"
+              tooltip-placement="bottom"
               data-toggle="tooltip"
               ng-click="dc.deleteResource()"><i class="fa fa-trash "></i></button>
         </li>
@@ -74,7 +75,7 @@
               tooltip-placement="bottom"
               data-toggle="tooltip"
               ng-click="dc.setResourceViewMode('grid')"><i
-              class="fa fa-th inline graytext"></i></button>
+              class="fa fa-th inline"></i></button>
         </li>
 
         <li ng-show="dc.resourceViewMode != 'list'">
@@ -249,7 +250,7 @@
         <div class="filter-options">
           <div class="clearfix reset-text">
             <div class="pull-left">Filter By</div>
-            <div class="pull-right"><a href="#n">Reset</a></div>
+            <div class="pull-right"><a href="#" ">Reset</a></div>
           </div>
           <div>
             <!-- nested facet template -->
@@ -388,11 +389,11 @@
 
                 <div class="box-content text-center " ng-class="dc.getResourceTypeClass(resource)">
 
-                  <p><i style="font-size:20px; text-align:left" class="fa"
+                  <div style="text-align:center;padding-top:20px"><i style="font-size:30px;" class="fa"
                       ng-class="dc.getResourceIconClass(resource)"></i>
-                    <span class="title">{{ resource.name }}</span>
-                    <span class="description">{{ resource.description }}</span>
-                  </p>
+
+                    </div>
+                  <div class="title" style="text-align:center;padding-top:20px; overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ resource.name }}</div>
 
                   <div class="btn-group dropdown" id="{{getId(resource, 'populate')}}">
                     <button style="display:none" title="More"

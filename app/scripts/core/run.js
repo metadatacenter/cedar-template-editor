@@ -506,7 +506,6 @@ define([
 
 
     $rootScope.setHeader = function () {
-      console.log('setHeader ' + $location.path());
 
       var e = jQuery("#top-navigation");
       e.removeClass('metadata').removeClass('template').removeClass('dashboard').removeClass('element');

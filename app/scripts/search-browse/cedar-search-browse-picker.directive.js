@@ -87,6 +87,7 @@ define([
           vm.showCreateFolder = showCreateFolder;
           vm.showFilters = true;
           vm.filterShowing = filterShowing;
+          vm.resetFilters = resetFilters;
           vm.filterSections = {};
           vm.isFilterSection = isFilterSection;
           vm.getArrowIcon = getArrowIcon;
@@ -114,7 +115,8 @@ define([
           vm.updateDescription = updateDescription;
 
 
-          $rootScope.pageTitle = 'Dashboard';
+          //$rootScope.pageTitle = 'Dashboard';
+          //$rootScope.pageId = 'DASHBOARD';
 
 
           setUIPreferences();
@@ -141,9 +143,6 @@ define([
           }
 
           function init() {
-
-            $rootScope.pageId = CONST.pageId.DASHBOARD;
-
             vm.isSearching = false;
             if (vm.params.folderId) {
               getFacets();
@@ -491,7 +490,6 @@ define([
 
               }
             }
-            console.log(result)
             return result;
           }
 
@@ -577,6 +575,15 @@ define([
 
           function filterShowing() {
             return vm.showFilters && onDashboard();
+          }
+
+          // TBD this blows up the current user, not sure why
+          function resetFilters() {
+            angular.forEach(Object.keys(vm.resourceTypes), function (value, key) {
+              vm.resourceTypes[key] = true;
+              UISettingsService.saveUIPreference('resourceTypeFilters.' + key, vm.resourceTypes[key]);
+            });
+            init();
           }
 
           function infoShowing() {
@@ -793,10 +800,7 @@ define([
             init();
           });
 
-          $scope.$on('$routeUpdate', function () {
-            vm.params = $location.search();
-            init();
-          });
+
 
 
           function updateFavorites(saveData) {

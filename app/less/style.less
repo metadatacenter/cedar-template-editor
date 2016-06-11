@@ -4,16 +4,18 @@
 // Definine local variables
 @container-cedar-medium: 952px;
 
-@modal-bg-color: #B2EBF2;
+@modal-bg-color: #eaf2f2;
+
+
 
 @header-element:#00796B;
 @button-element:#009688;
 @hover-element:#00796B;
 @accent-element:#009688;
 
-@header-template:#0097A7;
-@button-template:#0097A7;
-@hover-template:#00796B;
+@header-template:#2e5365;
+@button-template:#5795ba;
+@hover-template:#2f7dab;
 @accent-template:#00796B;
 
 @header-metadata:#009688;
@@ -32,7 +34,7 @@
 @accent-dashboard:#00796B;
 
 @header-navbar: #eaeaea;
-@header-bg-color:#0097A7;
+@header-bg-color:#2e5365;
 
 @primary:#00BCD4;
 @dark-primary:#0097A7;
@@ -89,7 +91,6 @@
 */
 html, body {
   height: 100%;
-  min-width:800px;
   overflow-x:hidden;
 }
 
@@ -246,7 +247,7 @@ body.search-browse-modal {
     width: 140px;
   background-size:140px;
     margin-top: 8px;
-    margin-left: 100px;
+    margin-left: 0;
     .text-hide();
 
     @media (min-width: @screen-sm-min) {
@@ -256,7 +257,7 @@ body.search-browse-modal {
 
   .navbar-back {
     height: 80px;
-    margin-top: 0;
+    margin-top: 10px;
     margin-left: 10px;
 
     .back-arrow {
@@ -270,8 +271,14 @@ body.search-browse-modal {
       }
     }
 
-    .document-title {
+    .page-title {
+      color: @white;
+      font-size: 18px;
+      margin: 0 0 0 10px;
+      font-weight: 200;
+    }
 
+    .document-title {
       color: @white;
       font-size: 18px;
       margin: 0 0 0 10px;
@@ -378,20 +385,31 @@ body.search-browse-modal {
 
 .controls-bar {
   padding: 10px 15px;
-  background: #f2f2f2;
-  color: @brand-primary;
+  background: @header-bg-color;
+  color: @white;
   top: 60px;
   height:55px;
   box-shadow: 0 4px 4px #ccc;
-  border-top:1px solid #ddd;
-  border-bottom:1px solid #ddd;
 
   .breadcrumbs-sb {
-    text-transform: uppercase;
+    //text-transform: uppercase;
     margin: 5px 15px;
-    font-size: 14px;
+    font-size: 16px;
     width: auto;
     display: inline-block;
+
+    a {
+      color: @white;
+      padding:0 4px;
+    }
+    a:hover {
+      color: #ccc;
+    }
+    a:active {
+      color: @white;
+    }
+    a:focus {
+    }
   }
 
   .open .dropdown-menu {
@@ -399,7 +417,7 @@ body.search-browse-modal {
   }
 
   i {
-    font-size: 20px;
+    font-size: 18px;
     visibility: none;
 
     .invisible {
@@ -412,23 +430,21 @@ body.search-browse-modal {
       vertical-align: middle;
       padding-left: 1px;
       padding-right: 1px;
+
       button {
-        width: 35px;
-        height: 35px;
+        width:26px;
+        height: 30px;
         background: transparent;
         border-top-width: 0;
         border-right-width: 0;
         border-left-width: 0;
         border-bottom-width: 0;
-        font-size: 20px;
+        font-size: 18px;
       }
       button:hover {
-        background: @white;
-        border: 1px solid #ccc;
+        color: #ccc;
       }
       button:active {
-        background: @white;
-        border: 1px solid #ccc;
       }
       button:focus {
         outline: 0;
@@ -515,7 +531,7 @@ body.search-browse-modal {
   .divider-vertical {
     height: 30px;
     margin: -8px 9px;
-    border-left: 1px solid @graytxt;
+    border-left: 1px solid @white;
     //border-right: 1px solid #FFF;
   }
   .graytext {
@@ -544,7 +560,7 @@ body.search-browse-modal {
 }
 
 .search-browse-spacer {
-  padding-top: 59px;
+  padding-top: 20px;
 }
 
 /* Begin Form Populate Gray Modal Slide Up/Down Section */
@@ -1100,7 +1116,6 @@ body.search-browse-modal {
     top: 0;
     left: 0;
     width: 200px;
-    border-right:1px solid #ddd;
     margin-bottom: -100%;
     padding-bottom: 100%;
 

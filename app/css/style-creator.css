@@ -9109,7 +9109,6 @@ button.close {
 html,
 body {
   height: 100%;
-  min-width: 800px;
   overflow-x: hidden;
 }
 body {
@@ -9189,7 +9188,7 @@ body.search-browse-modal .footer-buttons button.canc {
 }
 .navbar {
   color: #fff;
-  background-color: #0097A7;
+  background-color: #2e5365;
   margin-bottom: 0;
   min-height: 100px;
   border: none;
@@ -9230,7 +9229,7 @@ body.search-browse-modal .footer-buttons button.canc {
   border: none;
   margin-top: 21px;
   margin-right: 0;
-  background-color: #0097A7;
+  background-color: #2e5365;
   -webkit-transition: background-color 0.3s ease-in 0.1s;
           transition: background-color 0.3s ease-in 0.1s;
 }
@@ -9247,7 +9246,7 @@ body.search-browse-modal .footer-buttons button.canc {
   width: 140px;
   background-size: 140px;
   margin-top: 8px;
-  margin-left: 100px;
+  margin-left: 0;
   font: 0/0 a;
   color: transparent;
   text-shadow: none;
@@ -9261,7 +9260,7 @@ body.search-browse-modal .footer-buttons button.canc {
 }
 .navbar .navbar-back {
   height: 80px;
-  margin-top: 0;
+  margin-top: 10px;
   margin-left: 10px;
 }
 .navbar .navbar-back .back-arrow {
@@ -9274,6 +9273,12 @@ body.search-browse-modal .footer-buttons button.canc {
   .navbar .navbar-back .back-arrow {
     font-size: 22px;
   }
+}
+.navbar .navbar-back .page-title {
+  color: #ffffff;
+  font-size: 18px;
+  margin: 0 0 0 10px;
+  font-weight: 200;
 }
 .navbar .navbar-back .document-title {
   color: #ffffff;
@@ -9352,7 +9357,7 @@ body.search-browse-modal .footer-buttons button.canc {
   margin-top: 0px;
 }
 .navbar.template {
-  background-color: #0097A7;
+  background-color: #2e5365;
 }
 .navbar.element {
   background-color: #00796B;
@@ -9369,26 +9374,33 @@ body.search-browse-modal .footer-buttons button.canc {
 }
 .controls-bar {
   padding: 10px 15px;
-  background: #f2f2f2;
-  color: #5795ba;
+  background: #2e5365;
+  color: #ffffff;
   top: 60px;
   height: 55px;
   box-shadow: 0 4px 4px #ccc;
-  border-top: 1px solid #ddd;
-  border-bottom: 1px solid #ddd;
 }
 .controls-bar .breadcrumbs-sb {
-  text-transform: uppercase;
   margin: 5px 15px;
-  font-size: 14px;
+  font-size: 16px;
   width: auto;
   display: inline-block;
+}
+.controls-bar .breadcrumbs-sb a {
+  color: #ffffff;
+  padding: 0 4px;
+}
+.controls-bar .breadcrumbs-sb a:hover {
+  color: #ccc;
+}
+.controls-bar .breadcrumbs-sb a:active {
+  color: #ffffff;
 }
 .controls-bar .open .dropdown-menu {
   border-radius: 0px;
 }
 .controls-bar i {
-  font-size: 20px;
+  font-size: 18px;
   visibility: none;
 }
 .controls-bar i .invisible {
@@ -9403,22 +9415,17 @@ body.search-browse-modal .footer-buttons button.canc {
   padding-right: 1px;
 }
 .controls-bar ul li button {
-  width: 35px;
-  height: 35px;
+  width: 26px;
+  height: 30px;
   background: transparent;
   border-top-width: 0;
   border-right-width: 0;
   border-left-width: 0;
   border-bottom-width: 0;
-  font-size: 20px;
+  font-size: 18px;
 }
 .controls-bar ul li button:hover {
-  background: #ffffff;
-  border: 1px solid #ccc;
-}
-.controls-bar ul li button:active {
-  background: #ffffff;
-  border: 1px solid #ccc;
+  color: #ccc;
 }
 .controls-bar ul li button:focus {
   outline: 0;
@@ -9503,7 +9510,7 @@ body.search-browse-modal .footer-buttons button.canc {
 .controls-bar .divider-vertical {
   height: 30px;
   margin: -8px 9px;
-  border-left: 1px solid #666666;
+  border-left: 1px solid #ffffff;
 }
 .controls-bar .graytext {
   color: #666666;
@@ -9530,7 +9537,7 @@ body.search-browse-modal .footer-buttons button.canc {
   color: #666666;
 }
 .search-browse-spacer {
-  padding-top: 59px;
+  padding-top: 20px;
 }
 /* Begin Form Populate Gray Modal Slide Up/Down Section */
 .form-populate {
@@ -9709,7 +9716,7 @@ body.search-browse-modal .footer-buttons button.canc {
   color: #5795ba;
 }
 .all-items-view .populate-form-boxes .form-box .box-content.template i {
-  color: #0097A7;
+  color: #5795ba;
 }
 .all-items-view .populate-form-boxes .form-box .box-content.element i {
   color: #009688;
@@ -9759,7 +9766,7 @@ body.search-browse-modal .footer-buttons button.canc {
   border: none;
 }
 .all-items-view .populate-form-boxes .form-box:hover .quick-details-box .btn-info.btn-circle.template {
-  background: #0097A7;
+  background: #5795ba;
 }
 .all-items-view .populate-form-boxes .form-box:hover .quick-details-box .btn-info.btn-circle.element {
   background: #009688;
@@ -9848,7 +9855,7 @@ body.search-browse-modal .footer-buttons button.canc {
   border: none;
 }
 .all-items-view .populate-form-boxes .list-view .box-row .btn-info.btn-circle.template {
-  background: #0097A7;
+  background: #5795ba;
 }
 .all-items-view .populate-form-boxes .list-view .box-row .btn-info.btn-circle.element {
   background: #009688;
@@ -9876,7 +9883,7 @@ body.search-browse-modal .footer-buttons button.canc {
   border: none;
 }
 .all-items-view .populate-form-boxes .list-view .box-row.selected .btn-info.btn-circle.template {
-  color: #0097A7;
+  color: #5795ba;
 }
 .all-items-view .populate-form-boxes .list-view .box-row.selected .btn-info.btn-circle.element {
   color: #009688;
@@ -9971,7 +9978,6 @@ body.search-browse-modal .footer-buttons button.canc {
   top: 0;
   left: 0;
   width: 200px;
-  border-right: 1px solid #ddd;
   margin-bottom: -100%;
   padding-bottom: 100%;
 }
@@ -10028,7 +10034,7 @@ body.search-browse-modal .footer-buttons button.canc {
   opacity: 0.4;
 }
 .all-items-view .row-offcanvas-left .filter-options .btn-circle.template {
-  background: #0097A7;
+  background: #5795ba;
 }
 .all-items-view .row-offcanvas-left .filter-options .btn-circle.element {
   background: #009688;
@@ -10092,7 +10098,7 @@ body.search-browse-modal .footer-buttons button.canc {
   margin: 5px 0;
 }
 .all-items-view .add-new .btn-info.btn-circle.template {
-  background: #0097A7;
+  background: #5795ba;
 }
 .all-items-view .add-new .btn-info.btn-circle.element {
   background: #009688;
@@ -10434,7 +10440,7 @@ body.search-browse-modal a.navbar-brand {
 }
 .template-header {
   width: 100%;
-  background-color: #0097A7;
+  background-color: #2e5365;
   padding: 60px 0 20px 0;
   min-height: 130px;
 }
@@ -10516,7 +10522,7 @@ body.search-browse-modal a.navbar-brand {
   margin-bottom: 5px;
 }
 .template-header.template {
-  background-color: #0097A7;
+  background-color: #2e5365;
 }
 .template-header.element {
   background-color: #00796B;
@@ -11574,10 +11580,10 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   color: #2f7dab;
 }
 .edit-actions .btn.btn-save.template {
-  background-color: #0097A7;
+  background-color: #5795ba;
 }
 .edit-actions .btn.btn-save.template:hover {
-  color: #00796B;
+  color: #2f7dab;
 }
 .edit-actions .btn.btn-save.element {
   background-color: #009688;
@@ -12861,19 +12867,19 @@ p.instructions {
 }
 .added-field-classes,
 .added-value-constraints {
-  background: #B2EBF2;
+  background: #eaf2f2;
 }
 .added-field-classes .class-list-container,
 .added-value-constraints .class-list-container,
 .added-field-classes .added-value-constraint-container,
 .added-value-constraints .added-value-constraint-container {
-  border-color: #B2EBF2;
+  border-color: #eaf2f2;
 }
 .added-field-classes .class-list-container thead,
 .added-value-constraints .class-list-container thead,
 .added-field-classes .added-value-constraint-container thead,
 .added-value-constraints .added-value-constraint-container thead {
-  background: #B2EBF2;
+  background: #eaf2f2;
 }
 .added-field-classes .class-list-container thead th,
 .added-value-constraints .class-list-container thead th,
@@ -13187,7 +13193,7 @@ p.instructions {
   border: none;
 }
 .added-value-constraints-header .table thead {
-  background: #B2EBF2;
+  background: #eaf2f2;
 }
 .value-contraint-table {
   max-height: 285px;
@@ -13238,7 +13244,7 @@ p.instructions {
 }
 .controlled-terms-modal .modal-content {
   height: 100%;
-  background: #B2EBF2;
+  background: #eaf2f2;
   border-radius: 0;
   -o-box-shadow: none;
   box-shadow: none;
@@ -13702,7 +13708,7 @@ table.apiKey td {
   height: 80px;
   position: fixed;
   top: 0;
-  background-color: #0097A7;
+  background-color: #2e5365;
   padding-left: 0px;
   padding-right: 0px;
 }
@@ -13808,14 +13814,6 @@ body {
 }
 .form-group.floating-label-wrapper.field-value-filter.values {
   margin-bottom: 0px;
-}
-#jsonTools {
-  height: 0px;
-  width: 20px;
-  position: fixed;
-  top: 20px;
-  right: 10px;
-  z-index: 1001;
 }
 #jsonTools a {
   color: #ffffff;
