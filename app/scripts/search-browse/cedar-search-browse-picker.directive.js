@@ -70,6 +70,7 @@ define([
       vm.isResourceTypeActive = isResourceTypeActive;
       vm.isSearching = false;
       vm.launchInstance = launchInstance;
+      vm.copyToWorkspace = copyToWorkspace;
       vm.onDashboard = onDashboard;
       vm.narrowContent = narrowContent;
       vm.pathInfo = [];
@@ -99,7 +100,6 @@ define([
       vm.workspaceClass = workspaceClass;
 
 
-
       vm.toggleResourceInfo = toggleResourceInfo;
       vm.toggleResourceType = toggleResourceType;
       vm.setResourceViewMode = setResourceViewMode;
@@ -123,14 +123,14 @@ define([
           template: CedarUser.getUIPreferences().resourceTypeFilters.template
         };
         vm.filterSections = {
-          type : true,
+          type  : true,
           author: false,
           status: false,
-          term: false
+          term  : false
         };
         var option = CedarUser.getUIPreferences().folderView.sortBy;
         setSortOptionUI(option);
-        vm.resourceViewMode = CedarUser.getUIPreferences().folderView.viewMode;;
+        vm.resourceViewMode = CedarUser.getUIPreferences().folderView.viewMode;
       }
 
       function init() {
@@ -157,7 +157,7 @@ define([
       }
 
       function initSearch() {
-         if (vm.params.search) {
+        if (vm.params.search) {
           vm.isSearching = true;
           getFacets();
           doSearch(vm.params.search);
@@ -186,7 +186,11 @@ define([
         vm.formFolderDescription = 'Untitled';
         vm.formFolder = null;
         $('#editFolderModal').modal('show');
-        $('#formFolderName').focus();
+        $timeout(function () {
+          $('#formFolderName').focus();
+          var l = $('#formFolderName').val().length;
+          $('#formFolderName')[0].setSelectionRange(0, l);
+        });
       };
 
       function doCreateEditFolder() {
@@ -248,11 +252,26 @@ define([
         );
       }
 
+      function copyToWorkspace(resource) {
+        if (!resource) {
+          resource = getSelection();
+        }
+        resourceService.copyResourceToWorkspace(
+            resource,
+            function (response) {
+              UIMessageService.flashSuccess('SERVER.RESOURCE.copyToWorkspace.success', {"title": resource.name},
+                  'GENERIC.Copied');
+            },
+            function (response) {
+              UIMessageService.showBackendError('SERVER.RESOURCE.copyToWorkspace.error', response);
+            }
+        );
+      }
+
       function launchInstance(resource) {
         if (!resource) {
           resource = getSelection();
         }
-
 
 
         var params = $location.search();
@@ -311,7 +330,11 @@ define([
         vm.formFolderName = resource.name;
         vm.formFolderDescription = resource.description
         $('#editFolderModal').modal('show');
-        $('#formFolderName').focus();
+        $timeout(function () {
+          $('#formFolderName').focus();
+          var l = $('#formFolderName').val().length;
+          $('#formFolderName')[0].setSelectionRange(0, l);
+        });
       }
 
       function deleteResource(resource) {
@@ -474,8 +497,8 @@ define([
 
       function isFolder(resource) {
         var result = false;
-        console.log('isFolder');
-        console.log(resource);
+        //console.log('isFolder');
+        //console.log(resource);
         if (resource) {
           result = (resource.nodeType == CONST.resourceType.FOLDER);
         } else {
@@ -545,9 +568,9 @@ define([
         }
 
         //if (vm.selectedResource) {
-          vm.showResourceInfo = true;
-          //vm.showFavorites = false;
-          //updateFavorites();
+        vm.showResourceInfo = true;
+        //vm.showFavorites = false;
+        //updateFavorites();
         //}
       }
 
@@ -588,11 +611,9 @@ define([
             width = width - 3;
           }
         }
-        console.log('workspaceClass'  + 'col-sm-' + width);
+        console.log('workspaceClass' + 'col-sm-' + width);
         return 'col-sm-' + width;
       }
-
-
 
 
       function getArrowIcon(value) {
@@ -601,7 +622,7 @@ define([
       }
 
       function isFilterSection(section) {
-        console.log('isFilterSection' + section);
+        //console.log('isFilterSection' + section);
         var result = false;
         if (!section) {
           result = vm.showFilters;

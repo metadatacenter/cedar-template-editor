@@ -383,6 +383,7 @@
                       <li ng-if="dc.isFolder()"><a href="#" ng-click="dc.editResource(resource)">Edit</a></li>
                       <li><a href="#" ng-click="dc.showInfoPanel(resource)">Info</a></li>
                       <li role="separator" class="divider"></li>
+                      <li ><a href="#" ng-click="dc.copyToWorkspace(resource)">Copy to workspace</a></li>
                       <li class="disabled"><a href="#">Share</a></li>
                       <li class="disabled"><a href="#">Move to...</a></li>
                       <li class="disabled"><a href="#">Rename</a></li>
@@ -472,6 +473,7 @@
                     <li ng-if="dc.isFolder()"><a href="#" ng-click="dc.editResource(resource)">Edit</a></li>
                     <li><a href="#" ng-click="dc.showInfoPanel(resource)">Info</a></li>
                     <li role="separator" class="divider"></li>
+                    <li ><a href="#" ng-click="dc.copyToWorkspace(resource)">Copy to workspace</a></li>
                     <li class="disabled"><a href="#">Share</a></li>
                     <li class="disabled"><a href="#">Move to...</a></li>
                     <li class="disabled"><a href="#">Rename</a></li>
@@ -531,7 +533,7 @@
             </tr>
             <tr>
               <td class="left"><strong>Publicly writable:</strong></td>
-              <td>{{ dc.selectedResource.isPublicWritable }}</td>
+              <td>{{ dc.selectedResource.isPubliclyWritable }}</td>
               </td>
             </tr>
             </tbody>

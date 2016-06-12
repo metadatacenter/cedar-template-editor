@@ -12,22 +12,24 @@ define([
     'HttpBuilderService',
     'UISettingsService',
     'UrlService',
+    'CedarUser',
     'CONST'
   ];
 
   function resourceService($rootScope, authorizedBackendService, httpBuilderService, uiSettingsService, urlService,
-                           CONST) {
+                           CedarUser, CONST) {
 
     var searchTerm = null;
     var service = {
-      createFolder     : createFolder,
-      deleteFolder     : deleteFolder,
-      deleteResource   : deleteResource,
-      getFacets        : getFacets,
-      getResourceDetail: getResourceDetail,
-      getResources     : getResources,
-      searchResources  : searchResources,
-      updateFolder     : updateFolder
+      createFolder           : createFolder,
+      deleteFolder           : deleteFolder,
+      deleteResource         : deleteResource,
+      getFacets              : getFacets,
+      getResourceDetail      : getResourceDetail,
+      getResources           : getResources,
+      searchResources        : searchResources,
+      updateFolder           : updateFolder,
+      copyResourceToWorkspace: copyResourceToWorkspace
     };
     return service;
 
@@ -315,6 +317,21 @@ define([
           errorCallback
       );
 
+    }
+
+    function copyResourceToWorkspace(resource, successCallback, errorCallback) {
+      var postData = {};
+      postData['@id'] = resource['@id'];
+      postData['nodeType'] = resource['nodeType'];
+      postData['folderId'] = CedarUser.getHomeFolderId();
+      var url = urlService.copyResourceToFolder();
+      authorizedBackendService.doCall(
+          httpBuilderService.post(url, postData),
+          function (response) {
+            successCallback(response.data);
+          },
+          errorCallback
+      );
     }
 
   }

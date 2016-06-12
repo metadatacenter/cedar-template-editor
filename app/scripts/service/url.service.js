@@ -199,6 +199,10 @@ define([
       return this.schemaProperties() + "/" + propertyName;
     };
 
+    service.copyResourceToFolder = function () {
+      return this.resourceBase() + "/command/copy-resource-to-folder";
+    };
+
     return service;
   };
 

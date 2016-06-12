@@ -88,7 +88,8 @@
     "Ok": "Ok",
     "Info": "Info",
     "GoodNews": "Good News!",
-    "Cancel": "Cancel"
+    "Cancel": "Cancel",
+    "Copied": "Copied"
   },
   "SERVER": {
     "FOLDER": {
@@ -161,6 +162,12 @@
       "delete": {
         "success": "The template instance has been deleted.",
         "error": "There was an error while deleting the template instance!<br /><br />VIEW TECHNICAL DETAILS!"
+      }
+    },
+    "RESOURCE": {
+      "copyToWorkspace": {
+        "success": "The resource '{{title}}' was copied to your workspace!",
+        "error": "There was an error while copying the resource to your workspace!<br /><br />VIEW TECHNICAL DETAILS!"
       }
     },
     "ELEMENTS": {
