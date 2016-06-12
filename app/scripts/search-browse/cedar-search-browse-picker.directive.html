@@ -1,4 +1,4 @@
-<div ng-if="dc.onDashboard()" class="controls-bar clearfix row-fluid navbar-fixed-top " >
+<div  class="controls-bar clearfix row-fluid navbar-fixed-top " ng-class="{'as-modal': !dc.onDashboard()}" >
   <!--<div style="position:absolute;width:300px;">-->
     <!--<ul class="list-inline ">-->
       <!--<li ng-if="dc.onDashboard()">-->
@@ -14,7 +14,7 @@
     <!--</ul>-->
   <!--</div>-->
 
-  <div style="margin-left:200px;margin-right:15px;with:100%;min-width:600px;">
+
     <div class="breadcrumbs-sb ">
       <p ng-if="dc.isSearching">
         <span>Search Results For: '{{dc.searchTerm}}' </span>
@@ -66,7 +66,7 @@
 
         <li ng-if="dc.onDashboard() && dc.hasSelection()" class="inline divider-vertical "></li>
 
-        <li ng-show="dc.resourceViewMode != 'grid'">
+        <li ng-show="dc.onDashboard() && dc.resourceViewMode != 'grid'">
           <button
               type="button"
               tooltip="view as grid"
@@ -78,7 +78,7 @@
               class="fa fa-th inline"></i></button>
         </li>
 
-        <li ng-show="dc.resourceViewMode != 'list'">
+        <li ng-show="dc.onDashboard() && dc.resourceViewMode != 'list'">
           <button type="button"
               tooltip="view as list"
               tooltip-trigger
@@ -140,7 +140,7 @@
       </ul>
     </div>
   </div>
-  </div>
+
 
 
 <div class="search-browse-spacer"></div>
@@ -232,7 +232,7 @@
 <!--gray populate a form modal slide up/down section -->
 
 <!--all items view -->
-<section class="all-items-view ">
+<section class="all-items-view " ng-class="{'as-modal': !dc.onDashboard()}">
 
   <!--<a ng-if="dc.onDashboard()" class="push-pull-box" ng-click="dc.toggleFavorites()" href="javascript:"-->
   <!--aria-expanded="false" ng-class="{'collapsed': !dc.showFavorites}">-->
@@ -347,7 +347,7 @@
                     <span class="title">{{ resource.name }}</span>
                   </p>
 
-                  <div class="btn-group dropdown" id="{{getId(resource, 'populate')}}">
+                  <div ng-if="dc.onDashboard()" class="btn-group dropdown" id="{{getId(resource, 'populate')}}">
                     <button style="display:none" title="More"
                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><i
                         class="fa fa-ellipsis-v"></i>
@@ -395,7 +395,7 @@
                     </div>
                   <div class="title" style="text-align:center;padding-top:20px; overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ resource.name }}</div>
 
-                  <div class="btn-group dropdown" id="{{getId(resource, 'populate')}}">
+                  <div ng-if="dc.onDashboard()" class="btn-group dropdown" id="{{getId(resource, 'populate')}}">
                     <button style="display:none" title="More"
                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><i
                         class="fa fa-ellipsis-v"></i>
@@ -433,7 +433,7 @@
             </div>
 
             <!-- show the folders first -->
-            <div ng-if="dc.isFolder(resource)" class="box-row" style="position:relative;width:100%" rightclick
+            <div ng-if="dc.isFolder(resource) && dc.onDashboard()" class="box-row" style="position:relative;width:100%" rightclick
                 offsetx="0" offsety="0"
                 dropdownId="{{getId(resource, 'list')}}"
                 ng-class="{ selected: dc.isResourceSelected(resource) }"
@@ -489,7 +489,7 @@
               <div class="cell date">{{ resource.createdOnTS | prettyDate }}</div>
               <div class="cell date">{{ resource.lastUpdatedOnTS | prettyDate }}
 
-                <div class="btn-group dropdown" id="{{getId(resource, 'list')}}">
+                <div ng-if="dc.onDashboard()" class="btn-group dropdown" id="{{getId(resource, 'list')}}">
                   <button style="display:none" title="More" class="btn btn-default dropdown-toggle trigger"
                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><i
                       class="btn btn-sm btn-circle fa fa-ellipsis-v"></i>

@@ -789,6 +789,17 @@ define([
         return result;
       };
 
+      $scope.getClassId = function (item) {
+        var result = "";
+        if ($scope.addedFields && $scope.addedFields.has(item)) {
+          if ($scope.addedFields.get(item).definitions && $scope.addedFields.get(item).definitions.length > 0) {
+            result = $scope.addedFields.get(item).id;
+
+          }
+        }
+        return result;
+      };
+
 
       $scope.deleteFieldAddedItem = function (itemDataId) {
         DataManipulationService.deleteFieldControlledTerm(itemDataId, $scope.field);

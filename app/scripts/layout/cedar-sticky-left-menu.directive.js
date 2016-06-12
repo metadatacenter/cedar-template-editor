@@ -17,18 +17,15 @@ define([
       var initialOffset = element.offset().top;
 
       var windowScroll = function () {
-        console.log('windowScroll' + $window.innerWidth +" " + $window.pageYOffset + " " + HeaderService.getScrollLimit() + " " + HeaderService.getStickyThreshold());
         if ($window.innerWidth >= 768 && ($window.pageYOffset > HeaderService.getScrollLimit() + HeaderService.getStickyThreshold() )) {
           element.addClass('sticky');
           element.width(element.parent().width());
         } else {
           element.removeClass('sticky');
         }
-        element.addClass('sticky');
       }
 
       var onResizeFunction = function () {
-        console.log('resize');
         element.width(element.parent().width());
       }
 

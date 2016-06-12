@@ -509,10 +509,10 @@ define([
 
       var e = jQuery("#top-navigation");
       e.removeClass('metadata').removeClass('template').removeClass('dashboard').removeClass('element');
-      jQuery("body").css('overflow:scroll');
+      //jQuery("body").css('overflow:scroll');
 
       if ($location.path().startsWith("/dashboard")) {
-        jQuery("body").css('overflow:hidden');
+        //jQuery("body").css('overflow:hidden');
         e.addClass('dashboard');
       }
        else if ($location.path().startsWith("/elements")) {
