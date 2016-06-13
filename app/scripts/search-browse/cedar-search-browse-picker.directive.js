@@ -71,6 +71,7 @@ define([
           vm.isResourceTypeActive = isResourceTypeActive;
           vm.isSearching = false;
           vm.launchInstance = launchInstance;
+          vm.copyToWorkspace = copyToWorkspace;
           vm.onDashboard = onDashboard;
           vm.narrowContent = narrowContent;
           vm.pathInfo = [];
@@ -188,14 +189,18 @@ define([
             $('#editFolderModal').modal('hide');
           };
 
-          function showCreateFolder() {
-            vm.showFloatingMenu = false;
-            vm.formFolderName = 'Untitled';
-            vm.formFolderDescription = 'Untitled';
-            vm.formFolder = null;
-            $('#editFolderModal').modal('show');
-            $('#formFolderName').focus();
-          };
+      function showCreateFolder() {
+        vm.showFloatingMenu = false;
+        vm.formFolderName = 'Untitled';
+        vm.formFolderDescription = 'Untitled';
+        vm.formFolder = null;
+        $('#editFolderModal').modal('show');
+        $timeout(function () {
+          $('#formFolderName').focus();
+          var l = $('#formFolderName').val().length;
+          $('#formFolderName')[0].setSelectionRange(0, l);
+        });
+      };
 
           function doCreateEditFolder() {
             $('#editFolderModal').modal('hide');
@@ -256,10 +261,26 @@ define([
             );
           }
 
-          function launchInstance(resource) {
-            if (!resource) {
-              resource = getSelection();
+      function copyToWorkspace(resource) {
+        if (!resource) {
+          resource = getSelection();
+        }
+        resourceService.copyResourceToWorkspace(
+            resource,
+            function (response) {
+              UIMessageService.flashSuccess('SERVER.RESOURCE.copyToWorkspace.success', {"title": resource.name},
+                  'GENERIC.Copied');
+            },
+            function (response) {
+              UIMessageService.showBackendError('SERVER.RESOURCE.copyToWorkspace.error', response);
             }
+        );
+      }
+
+      function launchInstance(resource) {
+        if (!resource) {
+          resource = getSelection();
+        }
 
 
             var params = $location.search();
@@ -320,13 +341,17 @@ define([
             }
           }
 
-          function showEditFolder(resource) {
-            vm.formFolder = resource;
-            vm.formFolderName = resource.name;
-            vm.formFolderDescription = resource.description
-            $('#editFolderModal').modal('show');
-            $('#formFolderName').focus();
-          }
+      function showEditFolder(resource) {
+        vm.formFolder = resource;
+        vm.formFolderName = resource.name;
+        vm.formFolderDescription = resource.description
+        $('#editFolderModal').modal('show');
+        $timeout(function () {
+          $('#formFolderName').focus();
+          var l = $('#formFolderName').val().length;
+          $('#formFolderName')[0].setSelectionRange(0, l);
+        });
+      }
 
           function deleteResource(resource) {
             UIMessageService.confirmedExecution(
@@ -558,7 +583,7 @@ define([
           }
 
           function showOrHide(type) {
-            return isResourceTypeActive(type) ? 'hide': 'show';
+            return isResourceTypeActive(type) ? 'hide' : 'show';
           }
 
           function isResourceSelected(resource) {
@@ -799,8 +824,6 @@ define([
             vm.params = $location.search();
             init();
           });
-
-
 
 
           function updateFavorites(saveData) {

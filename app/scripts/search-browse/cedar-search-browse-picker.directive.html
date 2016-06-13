@@ -326,6 +326,7 @@
       <div class="center-panel" id="center-panel">
 
 
+
         <div class="row populate-form-boxes">
           <div class="grid-view" ng-if="dc.resourceViewMode == 'grid'">
 
@@ -343,7 +344,7 @@
                 <div class="box-content text-center folder">
                   <p><i style="font-size:20px; text-align:left" class="fa"
                       ng-class="dc.getResourceIconClass(resource)"></i>
-                    <span class="title">{{ resource.name }}</span>
+                    <span class="title">{{ resource.displayName }}</span>
                   </p>
 
                   <div ng-if="dc.onDashboard()" class="btn-group dropdown" id="{{getId(resource, 'populate')}}">
@@ -391,6 +392,7 @@
                   <div style="text-align:center;padding-top:20px"><i style="font-size:30px;" class="fa"
                       ng-class="dc.getResourceIconClass(resource)"></i>
 
+
                   </div>
                   <div class="title"
                       style="text-align:center;padding-top:20px; overflow:hidden;text-overflow:ellipsis;white-space:nowrap">
@@ -411,6 +413,7 @@
                           ng-click="dc.editResource(resource)">Edit</a></li>
                       <li><a href="#" ng-click="dc.showInfoPanel(resource)">Info</a></li>
                       <li role="separator" class="divider"></li>
+                      <li ><a href="#" ng-click="dc.copyToWorkspace(resource)">Copy to workspace</a></li>
                       <li class="disabled"><a href="#">Share</a></li>
                       <li class="disabled"><a href="#">Move to...</a></li>
                       <li class="disabled"><a href="#">Rename</a></li>
@@ -446,7 +449,7 @@
 
               <div class="cell type"><i ng-class="dc.getResourceIconClass(resource)"
                   class="btn btn-sm btn-info btn-circle fa large-icon " aria-hidden="true"></i></div>
-              <div class="cell resource">{{ resource.name }}</div>
+              <div class="cell resource">{{ resource.displayName }}</div>
               <div class="cell date">{{ resource.createdOnTS | prettyDate }}</div>
               <div class="cell date">{{ resource.lastUpdatedOnTS | prettyDate }}
 
@@ -488,7 +491,7 @@
               <div class="cell type" ng-class="dc.getResourceTypeClass(resource)"><i
                   ng-class="dc.getResourceIconClass(resource)"
                   class="btn btn-sm btn-info btn-circle fa large-icon " aria-hidden="true"></i></div>
-              <div class="cell resource">{{ resource.name }}</div>
+              <div class="cell resource">{{ resource.displayName }}</div>
               <div class="cell date">{{ resource.createdOnTS | prettyDate }}</div>
               <div class="cell date">{{ resource.lastUpdatedOnTS | prettyDate }}
 
@@ -506,6 +509,7 @@
                         ng-click="dc.editResource(resource)">Edit</a></li>
                     <li><a href="#" ng-click="dc.showInfoPanel(resource)">Info</a></li>
                     <li role="separator" class="divider"></li>
+                    <li ><a href="#" ng-click="dc.copyToWorkspace(resource)">Copy to workspace</a></li>
                     <li class="disabled"><a href="#">Share</a></li>
                     <li class="disabled"><a href="#">Move to...</a></li>
                     <li class="disabled"><a href="#">Rename</a></li>
@@ -541,14 +545,17 @@
                 src="/img/close_modal.png" width="22"/></span></button>
           </div>
 
+
           <table class="table"
               style="padding:0;margin:0;font-size:13px;border-top:1px solid #ddd;border-bottom:1px solid #ddd;">
+
             <tbody>
             <tr>
               <td class="left">Type</td>
               <td>{{ dc.selectedResource.nodeType }}</td>
             </tr>
             <tr>
+
               <td class="left">Location</td>
               <td>{{ dc.selectedResource.path }}</td>
             </tr>
@@ -570,6 +577,11 @@
                 <span class="no-wrap">{{ dc.selectedResource.createdOnTS | prettyDate }}</span>
                 by
                 <span class="no-wrap">{{ dc.selectedResource.createdByUserName }}</span>
+              </td>
+            </tr>
+            <tr>
+              <td class="left"><strong>Publicly writable:</strong></td>
+              <td>{{ dc.selectedResource.isPubliclyWritable }}</td>
               </td>
             </tr>
             </tbody>
