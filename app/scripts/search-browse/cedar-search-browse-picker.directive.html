@@ -22,9 +22,9 @@
 
     <p ng-if="!dc.isSearching">
             <span ng-repeat="folder in dc.pathInfo">
-              <a ng-click="dc.goToFolder(folder['@id'])" class="breadcrumbs">{{dc.breadcrumbName(folder.name)}}</a> /
+              <a ng-click="dc.goToFolder(folder['@id'])" class="breadcrumbs">{{dc.breadcrumbName(folder.displayName)}}</a> /
             </span>
-      <a class="breadcrumbs">{{dc.breadcrumbName(dc.currentPath.name)}}</a>
+      <a class="breadcrumbs">{{dc.breadcrumbName(dc.currentPath.displayName)}}</a>
 
     </p>
   </div>
@@ -396,7 +396,7 @@
                   </div>
                   <div class="title"
                       style="text-align:center;padding-top:20px; overflow:hidden;text-overflow:ellipsis;white-space:nowrap">
-                    {{ resource.name }}
+                    {{ resource.displayName }}
                   </div>
 
                   <div ng-if="dc.onDashboard()" class="btn-group dropdown" id="{{getId(resource, 'populate')}}">
@@ -536,7 +536,7 @@
           <div class="title" ng-class="dc.selectedResource.nodeType"><i style="font-size:20px; text-align:left"
               class="fa"
               ng-class="dc.getResourceIconClass(dc.selectedResource)"></i>
-            {{ dc.selectedResource.name }}
+            {{ dc.selectedResource.displayName }}
           </div>
 
           <div style="display:inline-block;" class="pull-right">
@@ -557,11 +557,11 @@
             <tr>
 
               <td class="left">Location</td>
-              <td>{{ dc.selectedResource.path }}</td>
+              <td>{{ dc.selectedResource.displayPath }}</td>
             </tr>
             <tr>
               <td class="left">Owner</td>
-              <td>{{ dc.selectedResource.createdByUserName }}</td>
+              <td>{{ dc.selectedResource.ownedByUserName }}</td>
             </tr>
             <tr>
               <td class="left">Modified</td>
