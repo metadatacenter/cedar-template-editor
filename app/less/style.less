@@ -6,6 +6,51 @@
 
 @modal-bg-color: #eaf2f2;
 
+// blue green combo
+// 557260	6A8B92	8A9875	34626B	EAEEEA	3291B1
+
+@header-element: #557260;
+@button-element: #71977F;
+@hover-element: #557260;
+@accent-element: #6A8B92;
+
+@header-template: #2e5365;
+//@button-template:#5795ba;
+@button-template: #5097A5;
+@hover-template: #2f7dab;
+@accent-template: #00796B;
+
+@header-metadata: #34626B;
+//@header-metadata:#557260;
+//@header-metadata:#9a9a75;
+@button-metadata: #6A8B92;
+@hover-metadata: #34626B;
+@accent-metadata: #3291B1;
+
+@header-folder: #005d67;
+@button-folder: #9E9E9E;
+@hover-folder: #616161;
+@accent-folder: #9E9E9E;
+
+@header-dashboard: #ffffff;
+@button-dashboard: #005d67;
+@hover-dashboard: #00796B;
+@accent-dashboard: #00796B;
+
+@header-navbar: #eaeaea;
+@header-bg-color: #2e5365;
+
+@primary-accent: #FF5722;
+@dark-accent: #E64A19;
+
+@primary-text: #212121;
+@secondary-text: #727272;
+
+@divider: #B6B6B6;
+
+@dark-gray: #616161;
+@med-gray: #9E9E9E;
+
 // Definine local mixins
 .activ-grotesk-regular {
   font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
@@ -41,7 +86,7 @@ html, body {
 }
 
 body {
-  background: @gray2;
+  background: #f0f0f0;
   font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
   color: #333;
 
@@ -89,48 +134,48 @@ button {
   outline: none;
 }
 
-body.search-browse-modal {
-  padding: 120px 30px 30px;
-  background: #a3a3a3;
-
-  .navbar {
-    margin: 30px 30px 0;
-  }
-  .controls-bar {
-    top: 122px;
-    margin: 0 30px;
-  }
-  .all-items-view {
-    min-height: 350px;
-    margin: 0 15px;
-  }
-  .footer-buttons {
-    background: #2e5365;
-    padding: 30px;
-
-    button {
-      padding: 20px 70px;
-      color: @white;
-      text-transform: uppercase;
-      margin-left: 20px;
-
-      &.subm {
-        background: #5A96B8;
-        border: 2px solid #5A90B8;
-      }
-      &.canc {
-        background: #375E71;
-        border: 2px solid #D4D3D3;
-      }
-    }
-  }
-}
+//body.search-browse-modal {
+//  padding: 120px 30px 30px;
+//  background: #a3a3a3;
+//
+//  .navbar {
+//    margin: 30px 30px 0;
+//  }
+//  .controls-bar {
+//    top: 122px;
+//    margin: 0 30px;
+//  }
+//  .all-items-view {
+//    min-height: 350px;
+//    margin: 0 15px;
+//  }
+//  .footer-buttons {
+//    background: #2e5365;
+//    padding: 30px;
+//
+//    button {
+//      padding: 20px 70px;
+//      color: @white;
+//      text-transform: uppercase;
+//      margin-left: 20px;
+//
+//      &.subm {
+//        background: #5A96B8;
+//        border: 2px solid #5A90B8;
+//      }
+//      &.canc {
+//        background: #375E71;
+//        border: 2px solid #D4D3D3;
+//      }
+//    }
+//  }
+//}
 
 .navbar {
   color: @header-text-color;
   background-color: @header-bg-color;
   margin-bottom: 0;
-  min-height: 80px;
+  min-height: 100px;
   border: none;
 
   #page-title {
@@ -140,7 +185,7 @@ body.search-browse-modal {
     padding-right: 20px;
   }
   .nav-container {
-    padding: 10px 30px;
+    padding: 5px 30px;
   }
   i.fa.fa-search {
     font-size: 22px;
@@ -149,13 +194,17 @@ body.search-browse-modal {
   .clear-search {
     position: absolute;
     top: -20px;
-    right: 30px;
+    right: 15px;
     margin: 20px;
     font-size: 22px;
+    color: #ccc;
   }
 
   .search-input {
-    padding-right: 40px;
+
+    color: black;
+    font-size: 16px;
+    margin-top: 12px;
   }
 
   .do-search {
@@ -185,13 +234,20 @@ body.search-browse-modal {
   }
 
   .navbar-brand {
-    background-image: url(../img/cedar-logo-main.png);
+    background-image: url(../img/cedar-logo-image.png);
     background-repeat: no-repeat;
-    width: 200px;
-    height: 80px;
-    margin-top: 0px;
-    margin-left: 10px;
+    width: 140px;
+    background-size: 140px;
+    margin-top: 8px;
+    margin-left: 0;
     .text-hide();
+
+    color: transparent;
+    text-shadow: none;
+    background-color: transparent;
+    border: 0;
+    position: absolute;
+    top: 0;
 
     @media (min-width: @screen-sm-min) {
       margin-left: 0;
@@ -200,7 +256,7 @@ body.search-browse-modal {
 
   .navbar-back {
     height: 80px;
-    margin-top: 0;
+    margin-top: 10px;
     margin-left: 10px;
 
     .back-arrow {
@@ -214,8 +270,14 @@ body.search-browse-modal {
       }
     }
 
-    .document-title {
+    .page-title {
+      color: @white;
+      font-size: 18px;
+      margin: 0 0 0 10px;
+      font-weight: 200;
+    }
 
+    .document-title {
       color: @white;
       font-size: 18px;
       margin: 0 0 0 10px;
@@ -247,9 +309,10 @@ body.search-browse-modal {
     border: none;
     background-color: transparent;
     box-shadow: none;
-    border-bottom: 2px solid @brand-primary;
+    border-bottom: 2px solid #ccc;
     border-radius: 0;
-    color: @white;
+    color: #000;
+    padding-left: 0;
 
     &:before {
       font-family: "project-cedar" !important;
@@ -261,7 +324,7 @@ body.search-browse-modal {
   .floating-label {
     font-size: 16px;
     top: 5px;
-    color: @white;
+    color: @graytxt;
   }
 
   #element-name-container,
@@ -291,10 +354,29 @@ body.search-browse-modal {
       margin-top: 20px;
       margin-bottom: 5px;
     }
+
   }
+
   .nav-search {
-    margin-top: 23px;
+    float: right;
+    width: 50%;
   }
+}
+
+.navbar.template {
+  background-color: @header-template;
+}
+
+.navbar.element {
+  background-color: @header-element;
+}
+
+.navbar.dashboard {
+  background-color: @header-dashboard;
+}
+
+.navbar.metadata {
+  background-color: @header-metadata;
 }
 
 #angular-views-entry {
@@ -303,18 +385,43 @@ body.search-browse-modal {
 }
 
 .controls-bar {
-  padding: 10px 40px;
-  background: @gray2;
-  color: @brand-primary;
-  top: 100px;
+  padding: 10px 15px;
+  background: @header-bg-color;
+  color: @white;
+  top: 60px;
+  height: 55px;
   box-shadow: 0 4px 4px #ccc;
+  width: 100%;
+
+  .breadcrumbs-sb {
+    //text-transform: uppercase;
+    margin: 5px 15px;
+    font-size: 16px;
+    width: auto;
+    display: inline-block;
+    margin-left: 200px;
+    margin-right: 15px;
+
+    a {
+      color: @white;
+      padding: 0 4px;
+    }
+    a:hover {
+      color: #ccc;
+    }
+    a:active {
+      color: @white;
+    }
+    a:focus {
+    }
+  }
 
   .open .dropdown-menu {
     border-radius: 0px;
   }
 
   i {
-    font-size: 20px;
+    font-size: 18px;
     visibility: none;
 
     .invisible {
@@ -327,19 +434,21 @@ body.search-browse-modal {
       vertical-align: middle;
       padding-left: 1px;
       padding-right: 1px;
+
       button {
-        width: 35px;
-        height: 35px;
+        width: 26px;
+        height: 30px;
         background: transparent;
-        border: 0px;
+        border-top-width: 0;
+        border-right-width: 0;
+        border-left-width: 0;
+        border-bottom-width: 0;
+        font-size: 18px;
       }
       button:hover {
-        background: @white;
-        border: 1px solid #ccc;
+        color: #ccc;
       }
       button:active {
-        background: @white;
-        border: 1px solid #ccc;
       }
       button:focus {
         outline: 0;
@@ -426,7 +535,7 @@ body.search-browse-modal {
   .divider-vertical {
     height: 30px;
     margin: -8px 9px;
-    border-left: 1px solid @graytxt;
+    border-left: 1px solid @white;
     //border-right: 1px solid #FFF;
   }
   .graytext {
@@ -454,8 +563,20 @@ body.search-browse-modal {
   }
 }
 
+.controls-bar.as-modal {
+  padding: 10px 15px;
+  background: @graytxt;
+  color: @white;
+  top: 100px;
+  height: 55px;
+  box-shadow: none;
+
+  .breadcrumbs-sb {
+  }
+}
+
 .search-browse-spacer {
-  padding-top: 59px;
+  padding-top: 20px;
 }
 
 /* Begin Form Populate Gray Modal Slide Up/Down Section */
@@ -476,7 +597,7 @@ body.search-browse-modal {
     .form-box-container {
       position: relative;
       display: inline-block;
-      margin: 0 5px;
+      margin: 5px;
     }
 
     .form-box {
@@ -591,7 +712,13 @@ body.search-browse-modal {
   height: 100%;
 
   .center-panel {
-    padding-bottom: 100px
+    position: absolute;
+    top: 0;
+    left: 200px;
+    right: 0;
+    padding-top: 30px;
+    height: 100%;
+
   }
 
   .push-pull-box {
@@ -619,10 +746,6 @@ body.search-browse-modal {
     }
   }
 
-  .breadcrumbs-sb {
-    text-transform: uppercase;
-    margin: 40px 30px 0 30px;
-  }
   .populate-form-boxes {
 
     margin: 0 20px;
@@ -638,7 +761,8 @@ body.search-browse-modal {
     .form-box-container {
       position: relative;
       display: inline-block;
-      margin: 0 5px;
+      margin: 5px;
+      padding: 5px;
     }
 
     .form-box {
@@ -661,6 +785,31 @@ body.search-browse-modal {
           font-size: 20px;
           color: @brand-primary;
         }
+
+        &.template {
+          i {
+            color: @button-template;
+          }
+        }
+
+        &.element {
+          i {
+            color: @button-element;
+          }
+        }
+
+        &.metadata, &.instance {
+          i {
+            color: @button-metadata;
+          }
+        }
+
+        &.folder {
+          i {
+            color: @button-folder;
+          }
+        }
+
         span.title {
           line-height: 15px;
           text-overflow: ellipsis;
@@ -701,10 +850,25 @@ body.search-browse-modal {
           width: 30px;
         }
         .btn-info.btn-circle {
-          box-shadow: none;
           background: @brand-primary;
-          color: @white;
+          color: #fff;
           border: none;
+
+          &.template {
+            background: @button-template;
+          }
+
+          &.element {
+            background: @button-element;
+          }
+
+          &.metadata, &.instance {
+            background: @button-metadata;
+          }
+
+          &.folder {
+            background: @button-folder;
+          }
         }
         i {
           font-size: 12px;
@@ -776,7 +940,6 @@ body.search-browse-modal {
           .disabled > a {
             pointer-events: none;
           }
-
         }
 
         .resource {
@@ -801,6 +964,22 @@ body.search-browse-modal {
           background: @brand-primary;
           color: #fff;
           border: none;
+
+          &.template {
+            background: @button-template;
+          }
+
+          &.element {
+            background: @button-element;
+          }
+
+          &.metadata, &.instance {
+            background: @button-metadata;
+          }
+
+          &.folder {
+            background: @button-folder;
+          }
         }
       }
 
@@ -812,6 +991,7 @@ body.search-browse-modal {
 
           i.large-icon {
             color: @brand-primary;
+
           }
         }
 
@@ -821,9 +1001,26 @@ body.search-browse-modal {
           height: 30px;
         }
         .btn-info.btn-circle {
-          background: #fff;
-          color: @brand-primary;
+          background: @white;
+
           border: none;
+
+          &.template {
+            color: @button-template;
+          }
+
+          &.element {
+            color: @button-element;
+          }
+
+          &.metadata, &.instance {
+            color: @button-metadata;
+          }
+
+          &.folder {
+            color: @button-folder;
+          }
+
         }
 
       }
@@ -839,32 +1036,101 @@ body.search-browse-modal {
     overflow: hidden;
   }
   .row-offcanvas-right {
+    position: absolute;
+    top: 0;
     right: 0;
-    background: #fff;
+    padding: 20px;
+    width: 400px;
+    height: 100%;
+    background: #fafafa;
     border-left: 1px solid #ebebeb;
-    margin-bottom: -99999px;
-    padding-bottom: 99999px;
+    margin-bottom: -100%;
+    padding-bottom: 100%;
 
-    .rightside {
+    .title {
+      display: inline-block;
+      width: 225px;
+      padding: 20px 0;
+      font-size: 22px;
+      opacity: .5;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .description {
+      border-bottom: 1px solid #ebebeb;
       padding: 20px 0;
 
-      .pull-right a {
-        color: @graytxt;
+      .title {
+        display: inline-block;
+        width: 200px;
+        font-size: 14px;
+        opacity: .9;
+        padding: 3px;
       }
 
-      td {
-        border: none;
+      .editing {
+
+        display: inline-block;
+        font-size: 14px;
+        width: 100%;
+        opacity: 1;
+
+        input {
+          width: 100%;
+        }
+
+        textarea {
+          outline: none;
+          resize: both;
+        }
       }
-      td.left {
-        text-align: right;
+
+      .edit {
+        display: inline-block;
+
+        button {
+
+          width: 35px;
+          height: 35px;
+          background: transparent;
+          border: 0px;
+          margin-top: -3px;
+
+        }
+
+        button:hover {
+          background: @white;
+          border: 1px solid #ccc;
+        }
+        button:active {
+          background: @white;
+          border: 1px solid #ccc;
+        }
+        button:focus {
+          outline: 0;
+        }
       }
     }
+
+    td {
+      border: none;
+      padding: 10px 15px 10px 0;
+    }
+    td.left {
+      text-align: left;
+    }
+
   }
+
   .row-offcanvas-left {
-    left: 0;
+    position: absolute;
     height: 100%;
-    margin-bottom: -99999px;
-    padding-bottom: 99999px;
+    top: 0;
+    left: 0;
+    width: 200px;
+    margin-bottom: -100%;
+    padding-bottom: 100%;
 
     .filter-options {
       padding: 20px 0;
@@ -920,29 +1186,48 @@ body.search-browse-modal {
         width: 30px;
         height: 30px;
         padding-top: .5em;
+        opacity: 0.4;
 
+        &.template {
+          background: @button-template;
+        }
+
+        &.element {
+          background: @button-element;
+        }
+
+        &.metadata, &.instance {
+          background: @button-metadata;
+        }
+
+        &.folder {
+          background: @button-folder;
+        }
       }
 
       .active {
-        background: @brand-primary;
-        border: @brand-primary;
-        color: #fff;
+        opacity: 1;
       }
 
     }
   }
+
   .row-offcanvas-right .sidebar-offcanvas-right {
     right: 0%; /* 6 columns */
   }
+
   .row-offcanvas-left .sidebar-offcanvas-left {
     //left: -20%; /* 6 columns */
   }
+
   .row-offcanvas-right.active-right {
     right: 20%; /* 6 columns */
   }
+
   .row-offcanvas-left.active-left {
     left: 20%; /* 6 columns */
   }
+
   .sidebar-offcanvas-left, .sidebar-offcanvas-right {
     position: fixed;
     top: 159px;
@@ -954,9 +1239,18 @@ body.search-browse-modal {
   }
 
   .add-new {
+
     position: fixed;
-    bottom: 15px;
+    bottom: 10px;
     right: 30px;
+
+    //transition: clip-path 2s ease-out;
+    //clip-path: inset(10px 20px 30px 40px);
+
+    &:hover {
+      //transition: clip-path 2s ease-in;
+      //clip-path: inset(0 0 0 0);
+    }
 
     button:focus {
       outline: 0;
@@ -965,14 +1259,35 @@ body.search-browse-modal {
     .btn-info {
       border-radius: 50%;
       width: 40px;
+      height: 40px;
       font-size: 18px;
       margin: 5px 0;
     }
+
     .btn-info.btn-circle {
-      box-shadow: none;
       background: @brand-primary;
       color: @white;
       border: none;
+
+      &.compose {
+        background: @primary-accent;
+      }
+
+      &.template {
+        background: @button-template;
+      }
+
+      &.element {
+        background: @button-element;
+      }
+
+      &.metadata, &.instance {
+        background: @button-metadata;
+      }
+
+      &.folder {
+        background: @button-folder;
+      }
     }
     .btn-info.btn-circle-outline {
       box-shadow: none;
@@ -986,6 +1301,17 @@ body.search-browse-modal {
       color: @white;
       border: none;
     }
+  }
+
+}
+
+.all-items-view.as-modal {
+  .center-panel {
+    position: relative;
+    margin: 0;
+    left: 0;
+    padding-top: 30px;
+    width: 100%;
   }
 }
 
@@ -1415,6 +1741,14 @@ body.search-browse-modal {
       margin-bottom: 5px;
     }
   }
+}
+
+.template-header.template {
+  background-color: @header-template;
+}
+
+.template-header.element {
+  background-color: @header-element;
 }
 
 .template-body {
@@ -2428,6 +2762,27 @@ section.dashboard-elements {
   }
 }
 
+.edit-actions {
+  .btn.btn-save.template {
+    background-color: @button-template;
+    &:hover {
+      background-color: @hover-template;
+    }
+  }
+  .btn.btn-save.element {
+    background-color: @button-element;
+    &:hover {
+      background-color: @hover-element;
+    }
+  }
+  .btn.btn-save.metadata {
+    background-color: @button-metadata;
+    &:hover {
+      background-color: @hover-metadata;
+    }
+  }
+}
+
 // Override Bootstrap popover styles
 .popover {
   .activ-grotesk-regular;
@@ -3226,12 +3581,12 @@ p.instructions {
 
       &.btn-save {
         color: @white;
-        background-color: @brand-primary;
+        background-color: @button-element;
         font-size: 16px;
 
         &:hover,
         &:focus {
-          background-color: @brand-primary-hover;
+          background-color: @hover-element;
         }
       }
     }

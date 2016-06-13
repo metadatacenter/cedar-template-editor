@@ -14,7 +14,8 @@ define([
         "ROLESELECTOR": "ROLESELECTOR",
         "DASHBOARD": "DASHBOARD",
         "DASHBOARDLIST": "DASHBOARDLIST",
-        "PROFILE": "PROFILE"
+        "PROFILE": "PROFILE",
+        "METADATA": "METADATA"
       },
       "stagingObject": {
         "NONE": null,
@@ -32,7 +33,8 @@ define([
         "ELEMENT": "element",
         "INSTANCE": "instance",
         "LINK": "link",
-        "FOLDER": "folder"
+        "FOLDER": "folder",
+        "METADATA": "metadata",
       }
     });
 });

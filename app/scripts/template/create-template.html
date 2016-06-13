@@ -1,4 +1,4 @@
-<div class="template-header" id="template-header">
+<div class="template-header template" id="template-header">
   <div class="container">
     <div class="row">
       <div class="left-sidebar col-sm-4 col-sm-offset-1">
@@ -31,7 +31,7 @@
   <!-- /.container -->
 </div> <!-- /.template-header -->
 
-<div class="template-body create-template-body">
+<div class="template-body create-template-body template">
   <div class="container">
     <div class="row">
       <div class="right-body col-sm-10 col-sm-offset-1">
@@ -84,11 +84,11 @@
           <!--<i class="cedar-svg-flag"></i><span>Favorite</span>-->
           <!--</div>-->
           <div class="clear-save">
-            <button type="button" class="btn btn-clear" ng-click="reset()" ng-hide="isPropertiesEmpty()" translate>
+            <button type="button" class="btn btn-clear template" ng-click="reset()" ng-hide="isPropertiesEmpty()" translate>
               GENERIC.Clear
             </button>
-            <button type="button" class="btn btn-clear" ng-click="cancelTemplate()" translate>GENERIC.Cancel</button>
-            <button type="button" class="btn btn-save" ng-click="saveTemplate()" translate>GENERIC.SaveTemplate</button>
+            <button type="button" class="btn btn-clear template" ng-click="cancelTemplate()" translate>GENERIC.Cancel</button>
+            <button type="button" class="btn btn-save template" ng-click="saveTemplate()" translate>GENERIC.SaveTemplate</button>
           </div>
         </div>
         <!-- /.template-actions -->
@@ -101,7 +101,7 @@
         <div class="sidebar-inner" cedar-sticky-left-menu="true">
 
           <!-- toolbar -->
-          <div id="toolbar">
+          <div id="toolbar" >
             <ul>
               <li ng-repeat="fieldType in fieldTypes | limitTo : primaryFieldTypeCount">
                 <a ng-click="addFieldToTemplate(fieldType.cedarType)"><i class="{{fieldType.iconClass}}"></i></a>
