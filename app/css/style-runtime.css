@@ -10068,6 +10068,7 @@ button {
 .all-items-view .add-new .btn-info {
   border-radius: 50%;
   width: 40px;
+  height: 40px;
   font-size: 18px;
   margin: 5px 0;
 }
@@ -10078,10 +10079,6 @@ button {
 }
 .all-items-view .add-new .btn-info.btn-circle.compose {
   background: #FF5722;
-  border-radius: 50%;
-  width: 40px;
-  font-size: 18px;
-  margin: 5px 0;
 }
 .all-items-view .add-new .btn-info.btn-circle.template {
   background: #5097A5;

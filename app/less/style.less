@@ -9,50 +9,47 @@
 // blue green combo
 // 557260	6A8B92	8A9875	34626B	EAEEEA	3291B1
 
-@header-element:#557260;
-@button-element:#71977F;
-@hover-element:#557260;
-@accent-element:#6A8B92;
+@header-element: #557260;
+@button-element: #71977F;
+@hover-element: #557260;
+@accent-element: #6A8B92;
 
-@header-template:#2e5365;
+@header-template: #2e5365;
 //@button-template:#5795ba;
-@button-template:#5097A5;
-@hover-template:#2f7dab;
-@accent-template:#00796B;
+@button-template: #5097A5;
+@hover-template: #2f7dab;
+@accent-template: #00796B;
 
 @header-metadata: #34626B;
 //@header-metadata:#557260;
 //@header-metadata:#9a9a75;
-@button-metadata:#6A8B92;
-@hover-metadata:#34626B;
-@accent-metadata:#3291B1;
+@button-metadata: #6A8B92;
+@hover-metadata: #34626B;
+@accent-metadata: #3291B1;
 
-@header-folder:#005d67;
-@button-folder:#9E9E9E;
-@hover-folder:#616161;
-@accent-folder:#9E9E9E;
+@header-folder: #005d67;
+@button-folder: #9E9E9E;
+@hover-folder: #616161;
+@accent-folder: #9E9E9E;
 
-@header-dashboard:#ffffff;
-@button-dashboard:#005d67;
-@hover-dashboard:#00796B;
-@accent-dashboard:#00796B;
+@header-dashboard: #ffffff;
+@button-dashboard: #005d67;
+@hover-dashboard: #00796B;
+@accent-dashboard: #00796B;
 
 @header-navbar: #eaeaea;
-@header-bg-color:#2e5365;
+@header-bg-color: #2e5365;
 
+@primary-accent: #FF5722;
+@dark-accent: #E64A19;
 
-@primary-accent:#FF5722;
-@dark-accent:#E64A19;
+@primary-text: #212121;
+@secondary-text: #727272;
 
-@primary-text:#212121;
-@secondary-text:#727272;
+@divider: #B6B6B6;
 
-@divider:#B6B6B6;
-
-@dark-gray:#616161;
-@med-gray:#9E9E9E;
-
-
+@dark-gray: #616161;
+@med-gray: #9E9E9E;
 
 // Definine local mixins
 .activ-grotesk-regular {
@@ -240,11 +237,10 @@ button {
     background-image: url(../img/cedar-logo-image.png);
     background-repeat: no-repeat;
     width: 140px;
-  background-size:140px;
+    background-size: 140px;
     margin-top: 8px;
     margin-left: 0;
     .text-hide();
-
 
     color: transparent;
     text-shadow: none;
@@ -316,7 +312,7 @@ button {
     border-bottom: 2px solid #ccc;
     border-radius: 0;
     color: #000;
-    padding-left:0;
+    padding-left: 0;
 
     &:before {
       font-family: "project-cedar" !important;
@@ -362,8 +358,8 @@ button {
   }
 
   .nav-search {
-    float:right;
-    width:50%;
+    float: right;
+    width: 50%;
   }
 }
 
@@ -388,16 +384,14 @@ button {
   margin-top: 100px;
 }
 
-
-
 .controls-bar {
   padding: 10px 15px;
   background: @header-bg-color;
   color: @white;
   top: 60px;
-  height:55px;
+  height: 55px;
   box-shadow: 0 4px 4px #ccc;
-  width:100%;
+  width: 100%;
 
   .breadcrumbs-sb {
     //text-transform: uppercase;
@@ -405,12 +399,12 @@ button {
     font-size: 16px;
     width: auto;
     display: inline-block;
-    margin-left:200px;
-    margin-right:15px;
+    margin-left: 200px;
+    margin-right: 15px;
 
     a {
       color: @white;
-      padding:0 4px;
+      padding: 0 4px;
     }
     a:hover {
       color: #ccc;
@@ -442,7 +436,7 @@ button {
       padding-right: 1px;
 
       button {
-        width:26px;
+        width: 26px;
         height: 30px;
         background: transparent;
         border-top-width: 0;
@@ -574,14 +568,12 @@ button {
   background: @graytxt;
   color: @white;
   top: 100px;
-  height:55px;
+  height: 55px;
   box-shadow: none;
 
   .breadcrumbs-sb {
   }
 }
-
-
 
 .search-browse-spacer {
   padding-top: 20px;
@@ -758,7 +750,6 @@ button {
 
     margin: 0 20px;
 
-
     .selected > .form-box {
       box-shadow: 0 0 4px 2px #ccc;
     }
@@ -771,7 +762,7 @@ button {
       position: relative;
       display: inline-block;
       margin: 5px;
-      padding:5px;
+      padding: 5px;
     }
 
     .form-box {
@@ -813,13 +804,11 @@ button {
           }
         }
 
-
         &.folder {
           i {
             color: @button-folder;
           }
         }
-
 
         span.title {
           line-height: 15px;
@@ -1058,7 +1047,6 @@ button {
     margin-bottom: -100%;
     padding-bottom: 100%;
 
-
     .title {
       display: inline-block;
       width: 225px;
@@ -1198,8 +1186,7 @@ button {
         width: 30px;
         height: 30px;
         padding-top: .5em;
-        opacity:0.4;
-
+        opacity: 0.4;
 
         &.template {
           background: @button-template;
@@ -1219,7 +1206,7 @@ button {
       }
 
       .active {
-        opacity:1;
+        opacity: 1;
       }
 
     }
@@ -1252,9 +1239,18 @@ button {
   }
 
   .add-new {
+
     position: fixed;
     bottom: 10px;
     right: 30px;
+
+    //transition: clip-path 2s ease-out;
+    //clip-path: inset(10px 20px 30px 40px);
+
+    &:hover {
+      //transition: clip-path 2s ease-in;
+      //clip-path: inset(0 0 0 0);
+    }
 
     button:focus {
       outline: 0;
@@ -1263,6 +1259,7 @@ button {
     .btn-info {
       border-radius: 50%;
       width: 40px;
+      height: 40px;
       font-size: 18px;
       margin: 5px 0;
     }
@@ -1274,10 +1271,6 @@ button {
 
       &.compose {
         background: @primary-accent;
-        border-radius: 50%;
-        width: 40px;
-        font-size: 18px;
-        margin: 5px 0;
       }
 
       &.template {
@@ -1288,7 +1281,7 @@ button {
         background: @button-element;
       }
 
-      &.metadata , &.instance{
+      &.metadata, &.instance {
         background: @button-metadata;
       }
 
@@ -1315,12 +1308,13 @@ button {
 .all-items-view.as-modal {
   .center-panel {
     position: relative;
-    margin:0;
-    left:0;
+    margin: 0;
+    left: 0;
     padding-top: 30px;
-    width:100%;
+    width: 100%;
   }
 }
+
 /* End All Items View */
 
 /* begin search browse modal */
@@ -1658,7 +1652,6 @@ body.search-browse-modal {
   }
 }
 
-
 .template-header {
   width: 100%;
   background-color: @header-bg-color;
@@ -1751,10 +1744,11 @@ body.search-browse-modal {
 }
 
 .template-header.template {
-  background-color:@header-template;
+  background-color: @header-template;
 }
+
 .template-header.element {
-  background-color:@header-element;
+  background-color: @header-element;
 }
 
 .template-body {
