@@ -2,10 +2,10 @@
 
 define([
   'angular'
-], function(angular) {
+], function (angular) {
   angular.module('cedar.templateEditor.form.selectPickerDirective', [])
-    .directive('selectPicker', selectPickerDirective);
- 
+      .directive('selectPicker', selectPickerDirective);
+
   // TODO: refactor to cedarSelectPicker <cedar-select-picker>
 
   selectPickerDirective.$inject = ['$rootScope', '$timeout'];
@@ -17,12 +17,12 @@ define([
 
     return {
       restrict: 'A',
-      scope: {
+      scope   : {
         field: '='
       },
-      link: function ($scope, $element, attrs) {
+      link    : function ($scope, $element, attrs) {
         // update local $scope.model to value of $parent.model if available
-        if ($scope.$parent.model != undefined ) {
+        if ($scope.$parent.model != undefined) {
           $scope.model = $scope.$parent.model;
         }
 
@@ -48,9 +48,9 @@ define([
           $scope.model['_value'] = default_array;
         }
 
-        $timeout(function() {
+        $timeout(function () {
           $element.selectpicker({
-            style: 'btn-select-picker',
+            style   : 'btn-select-picker',
             iconBase: 'fa',
             tickIcon: 'fa-check',
           });
@@ -63,7 +63,7 @@ define([
           $('.caret').addClass('glyphicon').addClass('glyphicon-chevron-down');
 
         }, 25);
-        $element.on('change', function() {
+        $element.on('change', function () {
           // Runtime document output is 3 $scope levels above this directive at this point, passing the $model up to be
           // assigned at the field-directive.js level
           $scope.model = $element.val();

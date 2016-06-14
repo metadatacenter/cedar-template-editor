@@ -8,11 +8,9 @@ define([
 
   // TODO: refactor to cedarFormDirective <cedar-form-directive>
 
-  formDirective.$inject = ['$rootScope', '$document', '$timeout', 'DataManipulationService', 'DataUtilService',
-                           'ValueRecommenderService'];
+  formDirective.$inject = ['$rootScope', '$document', '$timeout', 'DataManipulationService', 'DataUtilService'];
 
-  function formDirective($rootScope, $document, $timeout, DataManipulationService, DataUtilService,
-                         ValueRecommenderService) {
+  function formDirective($rootScope, $document, $timeout, DataManipulationService, DataUtilService) {
     return {
       templateUrl: 'scripts/form/form.directive.html',
       restrict   : 'E',
@@ -191,7 +189,7 @@ define([
           }
         };
 
-        $scope.deselectAll = function() {
+        $scope.deselectAll = function () {
           console.log("deselectAll");
         }
 

@@ -140,7 +140,6 @@ define([
             var option = CedarUser.getUIPreferences().folderView.sortBy;
             setSortOptionUI(option);
             vm.resourceViewMode = CedarUser.getUIPreferences().folderView.viewMode;
-            ;
           }
 
           function init() {
@@ -187,7 +186,7 @@ define([
             vm.formFolderDescription = 'Untitled';
             vm.formFolder = null;
             $('#editFolderModal').modal('hide');
-          };
+          }
 
           function showCreateFolder() {
             vm.showFloatingMenu = false;
@@ -196,11 +195,12 @@ define([
             vm.formFolder = null;
             $('#editFolderModal').modal('show');
             $timeout(function () {
-              $('#formFolderName').focus();
-              var l = $('#formFolderName').val().length;
-              $('#formFolderName')[0].setSelectionRange(0, l);
+              var jqFolderName = $('#formFolderName');
+              jqFolderName.focus();
+              var l = jqFolderName.val().length;
+              jqFolderName[0].setSelectionRange(0, l);
             });
-          };
+          }
 
           function doCreateEditFolder() {
             $('#editFolderModal').modal('hide');
@@ -344,12 +344,13 @@ define([
           function showEditFolder(resource) {
             vm.formFolder = resource;
             vm.formFolderName = resource.name;
-            vm.formFolderDescription = resource.description
+            vm.formFolderDescription = resource.description;
             $('#editFolderModal').modal('show');
             $timeout(function () {
-              $('#formFolderName').focus();
-              var l = $('#formFolderName').val().length;
-              $('#formFolderName')[0].setSelectionRange(0, l);
+              var jqFolderName = $('#formFolderName');
+              jqFolderName.focus();
+              var l = jqFolderName.val().length;
+              jqFolderName[0].setSelectionRange(0, l);
             });
           }
 
@@ -843,16 +844,15 @@ define([
           function setResourceViewMode(mode) {
             vm.resourceViewMode = mode;
             UISettingsService.saveUIPreference('folderView.viewMode', mode);
-          };
+          }
 
           // TBD save the updated description
           function updateDescription() {
             vm.editingDescription = false;
-          };
+          }
 
         }
-      };
+      }
 
     }
-)
-;
+);

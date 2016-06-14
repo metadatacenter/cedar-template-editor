@@ -10,12 +10,10 @@ define([
 
 
   fieldDirective.$inject = ["$rootScope", "$sce", "$document", "$translate", "SpreadsheetService",
-                            "DataManipulationService", "FieldTypeService",
-                            "ClientSideValidationService", "controlTermDataService",'DataUtilService'];
+                            "DataManipulationService", "FieldTypeService", "controlTermDataService"];
 
   function fieldDirective($rootScope, $sce, $document, $translate, SpreadsheetService, DataManipulationService,
-                          FieldTypeService,
-                          ClientSideValidationService, controlTermDataService,DataUtilService) {
+                          FieldTypeService, controlTermDataService) {
 
     var linker = function ($scope, $element, attrs) {
 
@@ -35,7 +33,7 @@ define([
 
       $scope.console = function (value) {
         console.log(value);
-      }
+      };
 
       $scope.setValueType = function () {
         var properties = $rootScope.propertiesOf($scope.field);
@@ -941,7 +939,6 @@ define([
       link       : linker
     };
 
-  };
+  }
 
-})
-;
+});
