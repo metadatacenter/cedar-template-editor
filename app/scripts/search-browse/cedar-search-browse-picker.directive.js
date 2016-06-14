@@ -268,6 +268,11 @@ define([
             resourceService.copyResourceToWorkspace(
                 resource,
                 function (response) {
+
+                  // refresh the current page just incase you copied to the current page
+                  vm.params = $location.search();
+                  init();
+
                   UIMessageService.flashSuccess('SERVER.RESOURCE.copyToWorkspace.success', {"title": resource.name},
                       'GENERIC.Copied');
                 },
