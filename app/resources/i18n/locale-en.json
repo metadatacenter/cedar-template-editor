@@ -140,7 +140,7 @@
         "error": "There was an error while loading the template!<br /><br />VIEW TECHNICAL DETAILS!"
       },
       "load-for-instance": {
-        "error": "Although the the instance was loaded, there was an error while loading the corresponding template!<br /><br />VIEW TECHNICAL DETAILS!"
+        "error": "Although the the metadata were loaded, there was an error while loading the corresponding template!<br /><br />VIEW TECHNICAL DETAILS!"
       },
       "delete": {
         "success": "The template has been deleted.",
@@ -149,19 +149,19 @@
     },
     "INSTANCE": {
       "create": {
-        "success": "The template instance has been created.",
-        "error": "There was an error while creating the template instance!<br /><br />VIEW TECHNICAL DETAILS!"
+        "success": "The metadata have been created.",
+        "error": "There was an error while creating the metadata!<br /><br />VIEW TECHNICAL DETAILS!"
       },
       "update": {
-        "success": "The template instance has been saved.",
-        "error": "There was an error while saving the template instance!<br /><br />VIEW TECHNICAL DETAILS!"
+        "success": "The metadata have been saved.",
+        "error": "There was an error while saving the metadata!<br /><br />VIEW TECHNICAL DETAILS!"
       },
       "load": {
-        "error": "There was an error while loading the template instance!<br /><br />VIEW TECHNICAL DETAILS!"
+        "error": "There was an error while loading the metadata!<br /><br />VIEW TECHNICAL DETAILS!"
       },
       "delete": {
-        "success": "The template instance has been deleted.",
-        "error": "There was an error while deleting the template instance!<br /><br />VIEW TECHNICAL DETAILS!"
+        "success": "The metadata have been deleted.",
+        "error": "There was an error while deleting the metadata!<br /><br />VIEW TECHNICAL DETAILS!"
       }
     },
     "RESOURCE": {
@@ -182,7 +182,7 @@
     },
     "INSTANCES": {
       "load": {
-        "error": "There was an error while loading the template instances!<br /><br />VIEW TECHNICAL DETAILS!"
+        "error": "There was an error while loading the metadata!<br /><br />VIEW TECHNICAL DETAILS!"
       }
     },
     "USER": {
@@ -209,7 +209,7 @@
         "folder": "Are you sure you want to remove the selected folder?",
         "template": "Are you sure you want to remove the selected template?",
         "element": "Are you sure you want to remove the selected element?",
-        "instance": "Are you sure you want to remove the selected populated template?"
+        "instance": "Are you sure you want to remove the selected metadata?"
       }
     },
     "sort": {
