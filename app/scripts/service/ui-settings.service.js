@@ -79,6 +79,21 @@ define([
       );
     };
 
+    service.saveUIPreferences = function (partialPutData) {
+      var putData = {};
+      for(var suffix in partialPutData) {
+        putData['uiPreferences.' + suffix] = partialPutData[suffix];
+      }
+      AuthorizedBackendService.doCall(
+          UserService.updateOwnUser(putData),
+          function (response) {
+          },
+          function (err) {
+            UIMessageService.showBackendError('SERVER.UIPREFERENCES.update.error', err);
+          }
+      );
+    };
+
     return service;
 
   };

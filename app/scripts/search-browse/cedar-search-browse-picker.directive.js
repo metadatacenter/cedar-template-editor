@@ -605,11 +605,14 @@ define([
 
           // TBD this blows up the current user, not sure why
           function resetFilters() {
-            //angular.forEach(Object.keys(vm.resourceTypes), function (value, key) {
-            //  vm.resourceTypes[key] = true;
-            //  UISettingsService.saveUIPreference('resourceTypeFilters.' + key, vm.resourceTypes[key]);
-            //});
-            //init();
+            var updates = {};
+            for (var nodeType in vm.resourceTypes) {
+              vm.resourceTypes[nodeType] = true;
+              var key = 'resourceTypeFilters.' + nodeType;
+              updates[key] = true;
+            }
+            UISettingsService.saveUIPreferences(updates);
+            init();
           }
 
           function infoShowing() {
