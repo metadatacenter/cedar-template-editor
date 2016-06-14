@@ -1,71 +1,74 @@
-<div  class="field-root" id="{{$root.getDomId(field)}}"  ng-click="canSelect(!$root.isRuntime()); $event.preventDefault();">
+<div class="field-root" id="{{$root.getDomId(field)}}"
+     ng-click="canSelect(!$root.isRuntime()); $event.preventDefault();">
 
-  <!-- add the edit and delete buttons at the top of the content -->
-  <!--<div id="{{field.items._ui.title}}" ng-if="!$root.isRuntime()" ng-include="'scripts/form/partials/preview-edit-options.partial.html'"  ng-init="childType='field'">-->
-  <!--</div>-->
+    <!-- add the edit and delete buttons at the top of the content -->
+    <!--<div id="{{field.items._ui.title}}" ng-if="!$root.isRuntime()" ng-include="'scripts/form/partials/preview-edit-options.partial.html'"  ng-init="childType='field'">-->
+    <!--</div>-->
 
-  <!-- field title first -->
-  <div  menuDropDownId=""  ng-show="$root.isArray(model) && $root.applicationMode == 'runtime'" class="spreadsheetSwitch field"
-      style="position:relative">
-    <p class="element-name-label">
-      <!--{{field.items._ui.inputType}}-->
-     <!--<i class="{{fieldIconClass}}"></i>-->
-      <!--<i class="cedar-svg-list"></i>-->
-      {{field.items._ui.title}}
+    <!-- field title first -->
+    <div menuDropDownId="" ng-show="$root.isArray(model) && $root.applicationMode == 'runtime'"
+         class="spreadsheetSwitch field"
+         style="position:relative">
+        <p class="element-name-label">
+            <!--{{field.items._ui.inputType}}-->
+            <!--<i class="{{fieldIconClass}}"></i>-->
+            <!--<i class="cedar-svg-list"></i>-->
+            {{field.items._ui.title}}
 
-       <span  class="spreadsheetSwitch ">
+       <span class="spreadsheetSwitch ">
             <button type="button"
-                tooltip="show as spreadsheet"
-                tooltip-trigger
-                tooltip-animation="false"
-                tooltip-placement="top"
-                data-toggle="tooltip"
-                ng-click="switchToSpreadsheet()"
-                class="spreadsheetSwitchLink"
-                ng-show="true"
-                ng-disabled="preview" style="background:transparent;border:0;outline:none">
-              <i class="cedar-svg-spreadsheet"></i>
+                    tooltip="show as spreadsheet"
+                    tooltip-trigger
+                    tooltip-animation="false"
+                    tooltip-placement="top"
+                    data-toggle="tooltip"
+                    ng-click="switchToSpreadsheet()"
+                    class="spreadsheetSwitchLink"
+                    ng-show="true"
+                    ng-disabled="preview" style="background:transparent;border:0;outline:none">
+                <i class="cedar-svg-spreadsheet"></i>
             </button>
        </span>
 
-      <!-- show this add button only when you have minCardinality 0 and an empty list -->
+            <!-- show this add button only when you have minCardinality 0 and an empty list -->
     <span class="zero-input-wrapper" ng-show="$root.isRuntime() && $root.isArray(model) && model.length == 0">
-      <button type="button"   class="add noOutline"
-                tooltip="add more {{field.items._ui.title}}"
-                tooltip-trigger
-                tooltip-animation="false"
-                tooltip-placement="top"
-                data-toggle="tooltip"
-          ng-click="addMoreInput()">
-        <i class="fa fa-plus"></i>
+      <button type="button" class="add noOutline"
+              tooltip="add more {{field.items._ui.title}}"
+              tooltip-trigger
+              tooltip-animation="false"
+              tooltip-placement="top"
+              data-toggle="tooltip"
+              ng-click="addMoreInput()">
+          <i class="fa fa-plus"></i>
 
-        <!--<div class="cardinality-_ui-container">-->
+          <!--<div class="cardinality-_ui-container">-->
           <!--<div class="cardinality-_ui">-->
-            <!--<div class="cardinality-_ui-text"><span translate="GENERIC.MultipleMinMaxMsg"-->
-                <!--translate-values="{min:($parent.field.minItems || 0), max:($parent.field.maxItems || 'GENERIC.Unlimited' | translate)}"></span>-->
-            <!--</div>-->
+          <!--<div class="cardinality-_ui-text"><span translate="GENERIC.MultipleMinMaxMsg"-->
+          <!--translate-values="{min:($parent.field.minItems || 0), max:($parent.field.maxItems || 'GENERIC.Unlimited' | translate)}"></span>-->
           <!--</div>-->
-        <!--</div>-->
+          <!--</div>-->
+          <!--</div>-->
       </button>
     </span>
-    </p>
-  </div>
-
-  <!-- field content next -->
-  <div  class="elementTotalContent visible">
-
-
-    <div ng-show="$root.isArray(model)">
-      <div class="spreadsheetViewDetector"></div>
-      <div class="spreadsheetViewContainer"></div>
+        </p>
     </div>
 
-    <!-- this is the line that pulls in the actual element -->
-    <div class="originalContent" ng-include="getTemplateUrl()"></div>
+    <!-- field content next -->
+    <div class="elementTotalContent visible">
 
 
-  <!-- error messages last -->
-  <div  class="errors" ng-if="errorMessages">
-    <div class="alert alert-danger" ng-repeat="message in errorMessages">{{message}}</div>
-  </div>
+        <div ng-show="$root.isArray(model)">
+            <div class="spreadsheetViewDetector"></div>
+            <div class="spreadsheetViewContainer"></div>
+        </div>
+
+        <!-- this is the line that pulls in the actual element -->
+        <div class="originalContent" ng-include="getTemplateUrl()"></div>
+
+
+        <!-- error messages last -->
+        <div class="errors" ng-if="errorMessages">
+            <div class="alert alert-danger" ng-repeat="message in errorMessages">{{message}}</div>
+        </div>
+    </div>
 </div>
