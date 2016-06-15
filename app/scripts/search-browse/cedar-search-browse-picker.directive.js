@@ -321,6 +321,9 @@ define([
           }
 
           function editResource(resource) {
+              console.log('editResource' );
+              console.log(resource);
+
             var id = resource['@id'];
             if (typeof vm.pickResourceCallback === 'function') {
               vm.pickResourceCallback(resource);

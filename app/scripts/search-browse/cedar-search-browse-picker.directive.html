@@ -49,9 +49,7 @@
 
             <li ng-if="dc.isFolder()"><a href="#" ng-click="dc.editResource()">Open</a></li>
             <li ng-if="dc.isTemplate()"><a href="#" ng-click="dc.launchInstance()">Populate</a></li>
-            <li ng-if="dc.isTemplate() || dc.isElement() || dc.isFolder() || dc.isMeta()"><a href="#"
-                ng-click="dc.editResource()">Edit</a></li>
-            <!--<li><a href="#" ng-click="dc.showInfoPanel()">Info</a></li>-->
+            <li ><a href="#" ng-click="dc.goToResource()">Edit</a></li>
             <li role="separator" class="divider"></li>
             <li class="disabled"><a href="#">Share</a></li>
             <li class="disabled"><a href="#">Move to...</a></li>
