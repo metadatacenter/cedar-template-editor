@@ -526,7 +526,7 @@
           <!-- here is the end of the list view- hidden initially -->
         </div>
 
-
+        term
       </div>
       <!-- end of center panel -->
 
@@ -541,8 +541,14 @@
           </div>
 
           <div style="display:inline-block;" class="pull-right">
-            <button ng-click="dc.toggleResourceInfo()" type="button" class="close"
-                aria-label="Close"><span aria-hidden="true"><img
+            <button
+                ng-click="dc.toggleResourceInfo()"
+                type="button"
+                class="close"
+                aria-label="Close"
+                tooltip="Close Info Panel"
+                tooltip-placement="left"
+                ><span aria-hidden="true"><img
                 src="/img/close_modal.png" width="22"/></span></button>
           </div>
 
@@ -581,6 +587,11 @@
               </td>
             </tr>
             <tr>
+              <td class="left"><strong>Publicly readable:</strong></td>
+              <td>{{ dc.selectedResource.isPubliclyReadable }}</td>
+              </td>
+            </tr>
+            <tr>
               <td class="left"><strong>Publicly writable:</strong></td>
               <td>{{ dc.selectedResource.isPubliclyWritable }}</td>
               </td>
@@ -592,10 +603,10 @@
           <div class="description">
             <div ng-if="dc.editingDescription" class="editing">
 
-              <form class="form-inline" ng-submit="dc.updateDescription()"
-                  ui-keypress="{'enter':'dc.updateDescription()'}">
+              <form class="form-inline" ng-submit="dc.updateDescription()">
                 <fieldset>
-                  <input id="edit-description" type="text" ng-model="dc.selectedResource.description">
+                  <input id="edit-description" type="text" ng-model="dc.selectedResource.description"
+                      ui-keypress="{'esc':'dc.cancelDescriptionEditing()'}">
                   <button type="submit" style=" display:none">Add</button>
                 </fieldset>
               </form>
@@ -610,9 +621,9 @@
                   tooltip="edit description"
                   tooltip-trigger
                   tooltip-animation="false"
-                  tooltip-placement="top"
+                  tooltip-placement="left"
                   data-toggle="tooltip"
-                  ng-click="dc.editingDescription = true"><i class="fa fa-pencil graytext"></i></button>
+                  ng-click="dc.startDescriptionEditing()"><i class="fa fa-pencil graytext"></i></button>
             </div>
           </div>
         </div>

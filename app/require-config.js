@@ -2,7 +2,7 @@ if (window.__karma__) {
   var allTestFiles = [];
   var TEST_REGEXP = /spec\.js$/;
 
-  Object.keys(window.__karma__.files).forEach(function(file) {
+  Object.keys(window.__karma__.files).forEach(function (file) {
     if (TEST_REGEXP.test(file)) {
       // Normalize paths to RequireJS module names.
       allTestFiles.push(file);
@@ -35,10 +35,10 @@ require.config({
       'deps'   : ['jquery'],
       'exports': 'angular'
     },
-	'angularMocks': {
-	  deps: ['angular'],
-	  'exports': 'angular.mock'
-	},
+    'angularMocks'                                                                   : {
+      deps     : ['angular'],
+      'exports': 'angular.mock'
+    },
     'lib/angucomplete-alt/angulcomplete-alt'                                         : ['angular'],
     'lib/angular-animate/angular-animate'                                            : ['angular'],
     'lib/angular-bootstrap/ui-bootstrap'                                             : ['angular'],
@@ -79,9 +79,9 @@ require.config({
     'jquery',
     'angular',
   ],
-  deps: window.__karma__ ? allTestFiles : [],
+  deps    : window.__karma__ ? allTestFiles : [],
   callback: window.__karma__ ? window.__karma__.start : null,
-  baseUrl: window.__karma__ ? '/base' : '',
+  baseUrl : window.__karma__ ? '/base' : '',
 });
 
 // do not load the full app here.

@@ -26,7 +26,8 @@
     "perfnow-polyfill": "*",
     "requirejs": "~2.1.0",
     "requirejs-plugins": "~1.0.3",
-    "sweetalert": "~1.1.3"
+    "sweetalert": "~1.1.3",
+    "angular-ui-keypress": "angular-ui-utils#bower-keypress"
   },
   "resolutions": {
     "angular": "~1.5.0"

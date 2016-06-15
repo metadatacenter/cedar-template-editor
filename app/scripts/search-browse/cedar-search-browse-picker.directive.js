@@ -71,7 +71,6 @@ define([
           vm.getResourceTypeClass = getResourceTypeClass;
           vm.goToResource = goToResource;
           vm.goToFolder = goToFolder;
-          vm.isResourceSelected = isResourceSelected;
           vm.isResourceTypeActive = isResourceTypeActive;
           vm.isSearching = false;
           vm.launchInstance = launchInstance;
@@ -83,7 +82,6 @@ define([
           vm.params = $location.search();
           vm.resources = [];
           vm.selectedResource = null;
-          vm.selectResource = selectResource;
           vm.hasSelection = hasSelection;
           vm.getSelection = getSelection;
           vm.setSortOption = setSortOption;
@@ -98,8 +96,6 @@ define([
           vm.isFilterSection = isFilterSection;
           vm.getArrowIcon = getArrowIcon;
           vm.showFloatingMenu = false;
-          vm.toggleInfoPanel = toggleInfoPanel;
-          vm.showInfoPanel = showInfoPanel;
           vm.infoShowing = infoShowing;
           vm.showOrHide = showOrHide;
           vm.sortOptionLabel = $translate.instant('DASHBOARD.sort.name');
@@ -120,9 +116,91 @@ define([
           vm.updateDescription = updateDescription;
 
 
-          //$rootScope.pageTitle = 'Dashboard';
-          //$rootScope.pageId = 'DASHBOARD';
+          vm.startDescriptionEditing = function () {
+            vm.editingDescription = true;
+            $timeout(function () {
+              var jqDescriptionField = $('#edit-description');
+              jqDescriptionField.focus();
+              var l = jqDescriptionField.val().length;
+              jqDescriptionField[0].setSelectionRange(0, l);
+            });
+          };
 
+          vm.cancelDescriptionEditing = function () {
+            vm.editingDescription = false;
+          };
+
+          vm.selectResource = function (resource) {
+            vm.cancelDescriptionEditing();
+            vm.getResourceDetails(resource);
+            if (typeof vm.selectResourceCallback === 'function') {
+              vm.selectResourceCallback(resource);
+            }
+          };
+
+          // show the info panel with this resource or find one
+          vm.showInfoPanel = function (resource) {
+            // if this one is defined, then use it
+            if (resource) {
+              if (!vm.isResourceSelected(resource)) {
+                vm.selectResource(resource);
+              }
+            } else {
+              if (vm.currentPath) {
+                vm.selectResource(vm.currentPath);
+              } else {
+                if (vm.formFolder) {
+                  vm.selectResource(vm.formFolder);
+                }
+              }
+            }
+
+            vm.setResourceInfoVisibility(true);
+            vm.resizeCenterPanel();
+          };
+
+          vm.isResourceSelected = function (resource) {
+            if (resource == null || vm.selectedResource == null) {
+              return false;
+            } else {
+              return vm.selectedResource['@id'] == resource['@id'];
+            }
+          };
+
+          // toggle the info panel with this resource or find one
+          vm.toggleInfoPanel = function (resource) {
+            if (!vm.showResourceInfo) {
+              vm.showInfoPanel(resource);
+            } else {
+              vm.setResourceInfoVisibility(false);
+              vm.resizeCenterPanel();
+            }
+          };
+
+          vm.resizeCenterPanel = function () {
+            var e = jQuery('#center-panel');
+            e.css("left", vm.showFilters ? "200px" : "0");
+            e.css("right", vm.showResourceInfo ? "400px" : "0");
+          };
+
+          vm.getResourceDetails = function (resource) {
+            if (!resource && vm.hasSelection()) {
+              resource = vm.getSelection();
+            }
+            var id = resource['@id'];
+            resourceService.getResourceDetail(
+                resource,
+                function (response) {
+                  vm.selectedResource = response;
+                },
+                function (error) {
+                  UIMessageService.showBackendError('SERVER.' + resource.nodeType.toUpperCase() + '.load.error', error);
+                }
+            );
+          };
+
+
+          //*********** ENTRY POINT
 
           setUIPreferences();
           init();
@@ -147,7 +225,7 @@ define([
             vm.resourceViewMode = uip.folderView.viewMode;
             if (uip.hasOwnProperty('infoPanel')) {
               vm.showResourceInfo = uip.infoPanel.opened;
-              resizeCenterPanel();
+              vm.resizeCenterPanel();
             } else {
               vm.showResourceInfo = false;
             }
@@ -332,8 +410,8 @@ define([
           }
 
           function editResource(resource) {
-              console.log('editResource' );
-              console.log(resource);
+            console.log('editResource');
+            console.log(resource);
 
             var id = resource['@id'];
             if (typeof vm.pickResourceCallback === 'function') {
@@ -450,22 +528,6 @@ define([
                 }
             );
           }
-
-          function getResourceDetails(resource) {
-            if (!resource && hasSelection()) {
-              resource = getSelection();
-            }
-            var id = resource['@id'];
-            resourceService.getResourceDetail(
-                resource,
-                function (response) {
-                  vm.selectedResource = response;
-                },
-                function (error) {
-                  UIMessageService.showBackendError('SERVER.' + resource.nodeType.toUpperCase() + '.load.error', error);
-                }
-            );
-          };
 
           // TODO: merge this with getFolderContents below
           function getFolderContentsById(folderId) {
@@ -606,14 +668,6 @@ define([
             return isResourceTypeActive(type) ? 'hide' : 'show';
           }
 
-          function isResourceSelected(resource) {
-            if (resource == null || vm.selectedResource == null) {
-              return false;
-            } else {
-              return vm.selectedResource['@id'] == resource['@id'];
-            }
-          }
-
           function onDashboard() {
             return vm.mode == 'dashboard';
           }
@@ -642,51 +696,10 @@ define([
             return vm.showFilters || vm.showResourceInfo || !onDashboard();
           }
 
-          function selectResource(resource) {
-            getResourceDetails(resource);
-            if (typeof vm.selectResourceCallback === 'function') {
-              vm.selectResourceCallback(resource);
-            }
-          }
-
-          // show the info panel with this resource or find one
-          function showInfoPanel(resource) {
-
-            // if this one is defined, then use it
-            if (resource) {
-              if (!isResourceSelected(resource)) {
-                selectResource(resource);
-              }
-            } else {
-              if (vm.currentPath) {
-                selectResource(vm.currentPath);
-              } else {
-                if (vm.formFolder) {
-                  selectResource(vm.formFolder);
-                }
-              }
-            }
-
-            vm.setResourceInfoVisibility(true);
-            resizeCenterPanel();
-          }
-
           function setResourceInfoVisibility(b) {
             vm.showResourceInfo = b;
             UISettingsService.saveUIPreference('infoPanel.opened', vm.showResourceInfo);
           }
-
-          // toggle the info panel with this resource or find one
-          function toggleInfoPanel(resource) {
-
-            if (!vm.showResourceInfo) {
-              showInfoPanel(resource);
-            } else {
-              vm.setResourceInfoVisibility(false);
-              resizeCenterPanel();
-            }
-          }
-
 
           function setSortOptionUI(option) {
             vm.sortOptionLabel = $translate.instant('DASHBOARD.sort.' + option);
@@ -713,7 +726,7 @@ define([
                 vm.filterSections[section] = !vm.filterSections[section];
               }
             }
-            resizeCenterPanel();
+            vm.resizeCenterPanel();
           }
 
           function workspaceClass() {
@@ -748,14 +761,7 @@ define([
 
           function toggleResourceInfo() {
             vm.setResourceInfoVisibility(!vm.showResourceInfo);
-            // resize center panel
-            resizeCenterPanel();
-          }
-
-          function resizeCenterPanel() {
-            var e = jQuery('#center-panel');
-            e.css("left", vm.showFilters ? "200px" : "0");
-            e.css("right", vm.showResourceInfo ? "400px" : "0");
+            vm.resizeCenterPanel();
           }
 
           function toggleResourceType(type) {
@@ -813,7 +819,7 @@ define([
           function resetSelected() {
             vm.selectedResource = null;
             vm.setResourceInfoVisibility(false);
-            resizeCenterPanel();
+            vm.resizeCenterPanel();
           }
 
           function getSelection() {

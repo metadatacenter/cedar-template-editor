@@ -13,6 +13,7 @@ define([
   'lib/angular-sanitize/angular-sanitize',
   'lib/angular-ui-select/dist/select',
   'lib/angular-ui-sortable/sortable',
+  'lib/angular-ui-keypress/keypress',
   'lib/angular-translate/angular-translate',
   'lib/angular-translate-loader-static-files/angular-translate-loader-static-files',
   'lib/angular-toasty/dist/angular-toasty',
@@ -55,6 +56,7 @@ define([
 ], function(angular) {
   return angular.module('cedar.templateEditor', [
     'ui.bootstrap',
+    'ui.keypress',
     'ngRoute',
     'ngAnimate',
     'ngSanitize',
