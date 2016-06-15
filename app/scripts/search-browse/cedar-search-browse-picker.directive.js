@@ -113,16 +113,38 @@ define([
           vm.isMeta = isMeta;
 
           vm.editingDescription = false;
-          vm.updateDescription = updateDescription;
-
 
           vm.startDescriptionEditing = function () {
-            vm.editingDescription = true;
+            var resource = vm.getSelection();
+            if (resource != null) {
+              if (resource.nodeType == 'folder') {
+                vm.showEditFolder(resource, true);
+              } else {
+                vm.editingDescription = true;
+                $timeout(function () {
+                  var jqDescriptionField = $('#edit-description');
+                  jqDescriptionField.focus();
+                  var l = jqDescriptionField.val().length;
+                  jqDescriptionField[0].setSelectionRange(0, l);
+                });
+              }
+            }
+          };
+
+          vm.showEditFolder = function (resource, selectDescription) {
+            vm.formFolder = resource;
+            vm.formFolderName = resource.name;
+            vm.formFolderDescription = resource.description;
+            $('#editFolderModal').modal('show');
             $timeout(function () {
-              var jqDescriptionField = $('#edit-description');
-              jqDescriptionField.focus();
-              var l = jqDescriptionField.val().length;
-              jqDescriptionField[0].setSelectionRange(0, l);
+              var selector = '#formFolderName';
+              if (selectDescription) {
+                selector = '#formFolderDescription';
+              }
+              var jqFolderProperty = $(selector);
+              jqFolderProperty.focus();
+              var l = jqFolderProperty.val().length;
+              jqFolderProperty[0].setSelectionRange(0, l);
             });
           };
 
@@ -199,6 +221,51 @@ define([
             );
           };
 
+          vm.updateDescription = function () {
+            vm.editingDescription = false;
+            var resource = vm.getSelection();
+            if (resource != null) {
+              var postData = {};
+              var id = resource['@id'];
+              var nodeType = resource.nodeType;
+              var description = resource.description;
+
+              if (nodeType == 'instance') {
+                AuthorizedBackendService.doCall(
+                    TemplateInstanceService.updateTemplateInstance(id, {'_ui.description': description}),
+                    function (response) {
+                      UIMessageService.flashSuccess('SERVER.INSTANCE.update.success', null, 'GENERIC.Updated');
+                    },
+                    function (err) {
+                      UIMessageService.showBackendError('SERVER.INSTANCE.update.error', err);
+                    }
+                );
+              } else if (nodeType == 'element') {
+                AuthorizedBackendService.doCall(
+                    TemplateElementService.updateTemplateElement(id, {'_ui.description': description}),
+                    function (response) {
+                      UIMessageService.flashSuccess('SERVER.ELEMENT.update.success', {"title": response.data._ui.title},
+                          'GENERIC.Updated');
+                    },
+                    function (err) {
+                      UIMessageService.showBackendError('SERVER.ELEMENT.update.error', err);
+                    }
+                );
+              } else if (nodeType == 'template') {
+                AuthorizedBackendService.doCall(
+                    TemplateService.updateTemplate(id, {'_ui.description': description}),
+                    function (response) {
+                      $scope.form = response.data;
+                      UIMessageService.flashSuccess('SERVER.TEMPLATE.update.success',
+                          {"title": response.data._ui.title}, 'GENERIC.Updated');
+                    },
+                    function (err) {
+                      UIMessageService.showBackendError('SERVER.TEMPLATE.update.error', err);
+                    }
+                );
+              }
+            }
+          };
 
           //*********** ENTRY POINT
 
@@ -410,8 +477,8 @@ define([
           }
 
           function editResource(resource) {
-            console.log('editResource');
-            console.log(resource);
+            //console.log('editResource');
+            //console.log(resource);
 
             var id = resource['@id'];
             if (typeof vm.pickResourceCallback === 'function') {
@@ -433,22 +500,9 @@ define([
                 $location.path(scope.href);
                 break;
               case CONST.resourceType.FOLDER:
-                showEditFolder(resource);
+                vm.showEditFolder(resource);
                 break;
             }
-          }
-
-          function showEditFolder(resource) {
-            vm.formFolder = resource;
-            vm.formFolderName = resource.name;
-            vm.formFolderDescription = resource.description;
-            $('#editFolderModal').modal('show');
-            $timeout(function () {
-              var jqFolderName = $('#formFolderName');
-              jqFolderName.focus();
-              var l = jqFolderName.val().length;
-              jqFolderName[0].setSelectionRange(0, l);
-            });
           }
 
           function deleteResource(resource) {
@@ -873,64 +927,6 @@ define([
           function setResourceViewMode(mode) {
             vm.resourceViewMode = mode;
             UISettingsService.saveUIPreference('folderView.viewMode', mode);
-          }
-
-          function updateDescription() {
-            vm.editingDescription = false;
-            var resource = getSelection();
-            if (resource != null) {
-              var postData = {};
-              var id = resource['@id'];
-              var nodeType = resource.nodeType;
-              var description = resource.description;
-
-              if (nodeType == 'instance') {
-                AuthorizedBackendService.doCall(
-                    TemplateInstanceService.updateTemplateInstance(id, {'_ui.description': description}),
-                    function (response) {
-                      UIMessageService.flashSuccess('SERVER.INSTANCE.update.success', null, 'GENERIC.Updated');
-                    },
-                    function (err) {
-                      UIMessageService.showBackendError('SERVER.INSTANCE.update.error', err);
-                    }
-                );
-              } else if (nodeType == 'element') {
-                AuthorizedBackendService.doCall(
-                    TemplateElementService.updateTemplateElement(id, {'_ui.description': description}),
-                    function (response) {
-                      UIMessageService.flashSuccess('SERVER.ELEMENT.update.success', {"title": response.data._ui.title},
-                          'GENERIC.Updated');
-                    },
-                    function (err) {
-                      UIMessageService.showBackendError('SERVER.ELEMENT.update.error', err);
-                    }
-                );
-              } else if (nodeType == 'template') {
-                AuthorizedBackendService.doCall(
-                    TemplateService.updateTemplate(id, {'_ui.description': description}),
-                    function (response) {
-                      $scope.form = response.data;
-                      UIMessageService.flashSuccess('SERVER.TEMPLATE.update.success',
-                          {"title": response.data._ui.title}, 'GENERIC.Updated');
-                    },
-                    function (err) {
-                      UIMessageService.showBackendError('SERVER.TEMPLATE.update.error', err);
-                    }
-                );
-              }
-
-              /*
-               resourceService.updateTitleOrDescription(
-               postData,
-               function (response) {
-               UIMessageService.flashSuccess('SERVER.RESOURCE.updateTitleOrDescription.success', null,
-               'GENERIC.Updated');
-               },
-               function (response) {
-               UIMessageService.showBackendError('SERVER.RESOURCE.updateTitleOrDescription.error', response);
-               }
-               );*/
-            }
           }
 
         }

@@ -21,16 +21,15 @@ define([
 
     var searchTerm = null;
     var service = {
-      createFolder            : createFolder,
-      deleteFolder            : deleteFolder,
-      deleteResource          : deleteResource,
-      getFacets               : getFacets,
-      getResourceDetail       : getResourceDetail,
-      getResources            : getResources,
-      searchResources         : searchResources,
-      updateFolder            : updateFolder,
-      copyResourceToWorkspace : copyResourceToWorkspace,
-      updateTitleOrDescription: updateTitleOrDescription
+      createFolder           : createFolder,
+      deleteFolder           : deleteFolder,
+      deleteResource         : deleteResource,
+      getFacets              : getFacets,
+      getResourceDetail      : getResourceDetail,
+      getResources           : getResources,
+      searchResources        : searchResources,
+      updateFolder           : updateFolder,
+      copyResourceToWorkspace: copyResourceToWorkspace
     };
     return service;
 
@@ -336,16 +335,6 @@ define([
       );
     }
 
-    function updateTitleOrDescription(postData, successCallback, errorCallback) {
-      var url = urlService.updateTitleOrDescription();
-      authorizedBackendService.doCall(
-          httpBuilderService.post(url, postData),
-          function (response) {
-            successCallback(response.data);
-          },
-          errorCallback
-      );
-    }
   }
 
 });
