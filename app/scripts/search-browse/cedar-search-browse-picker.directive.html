@@ -50,7 +50,7 @@
 
             <li ng-if="dc.isFolder()"><a href="#" ng-click="dc.editResource()">Open</a></li>
             <li ng-if="dc.isTemplate()"><a href="#" ng-click="dc.launchInstance()">Populate</a></li>
-            <li ><a href="#" ng-click="dc.goToResource()">Edit</a></li>
+            <li><a href="#" ng-click="dc.goToResource()">Edit</a></li>
             <li role="separator" class="divider"></li>
             <li class="disabled"><a href="#">Share</a></li>
             <li class="disabled"><a href="#">Move to...</a></li>
@@ -311,9 +311,11 @@
               </li>
               <li ui-tree=""><a href="#" ng-click="dc.toggleFilters('term')">Term<i class="fa pull-right"
                   ng-class="{ 'fa-caret-down': dc.isFilterSection('term'), 'fa-caret-left': !dc.isFilterSection('term') }"></i></a>
-                <ul ng-if="dc.isFilterSection('term')" ui-tree-nodes="" ng-model="dc.facets.term.nodes">
+
+                <div ng-if="dc.isFilterSection('term')">&nbsp;</div>
+                <!--<ul ng-if="dc.isFilterSection('term')" ui-tree-nodes="" ng-model="dc.facets.term.nodes">
                   <li ng-repeat="node in dc.facets.term.nodes" ui-tree-node="" ng-include="'facet_renderer.html'"></li>
-                </ul>
+                </ul>-->
               </li>
             </ul>
           </div>
