@@ -9676,6 +9676,11 @@ button {
 }
 .all-items-view .populate-form-boxes .selected > .form-box {
   box-shadow: 0 0 4px 2px #ccc;
+  border: 1px solid #339933;
+}
+.all-items-view .populate-form-boxes .selected .title {
+  background-color: #339933;
+  color: #ffffff;
 }
 .all-items-view .populate-form-boxes .folder > .form-box {
   height: 50px;
@@ -9697,7 +9702,7 @@ button {
 }
 .all-items-view .populate-form-boxes .form-box .box-content {
   color: #339933;
-  padding: 5px;
+  padding: 0px;
   font-size: 14px;
   display: block;
   text-align: left;
