@@ -307,7 +307,7 @@ define([
         // use descendants
         searchUrl += base + '/ontologies/' + acronym + '/classes/' + encodeURIComponent(subtree_root_id) + '/descendants?&page=1&page_size=100';
       } else {
-        searchUrl = base + '/search?q=' + encodeURIComponent(query) + '&scope=classes' + '&source=' + acronym +
+        searchUrl = base + '/search?q=' + encodeURIComponent(query) + '&scope=classes' + '&sources=' + acronym +
             '&subtree_root_id=' + encodeURIComponent(subtree_root_id) + '&max_depth=' + max_depth + "&suggest=true&page=1&page_size=100";
       }
       return $http.get(searchUrl, http_default_config).then(function (response) {
@@ -361,7 +361,7 @@ define([
     //  } else {
     //    //searchUrl += 'search?q=' + query.replace(/[\s]+/g,
     //    //        '+') + '&ontology=NLMVS&suggest=true&display_context=false&display_links=false&subtree_root_id=' + encodeURIComponent(uri) + '&pagesize=20'
-    //    var searchUrl = base + 'search?q=' + encodeURIComponent(query) + '&scope=classes' + '&source=' + acronym +
+    //    var searchUrl = base + 'search?q=' + encodeURIComponent(query) + '&scope=classes' + '&sources=' + acronym +
     //        '&subtree_root_id=' + encodeURIComponent(vsId) + "&suggest=true&page=1&page_size=100";
     //    return $http.get(searchUrl, http_default_config).then(function (response) {
     //      return response.data;
