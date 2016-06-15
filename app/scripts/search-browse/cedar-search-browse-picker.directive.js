@@ -279,6 +279,11 @@ define([
             resourceService.copyResourceToWorkspace(
                 resource,
                 function (response) {
+
+                  // TODO refresh the current page just in case you copied to the current page
+                  vm.params = $location.search();
+                  init();
+
                   UIMessageService.flashSuccess('SERVER.RESOURCE.copyToWorkspace.success', {"title": resource.name},
                       'GENERIC.Copied');
                 },
@@ -327,6 +332,9 @@ define([
           }
 
           function editResource(resource) {
+              console.log('editResource' );
+              console.log(resource);
+
             var id = resource['@id'];
             if (typeof vm.pickResourceCallback === 'function') {
               vm.pickResourceCallback(resource);
