@@ -67,6 +67,8 @@
       <!--<div class="floating-label">{{$root.schemaOf(field)._ui.title}} title</div>-->
       <div class="input-indicator-icons" ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
     </div>
+
+    <!-- Field whose values have been constrained using controlled terms -->
     <div ng-if="$root.hasValueConstraint($root.schemaOf(field)._valueConstraints)"
         class="has-constraint autocomplete-label-wrapper" ng-class="{'has-selected': modelValue._value.label}">
       <ui-select ng-model="modelValue._value" theme="bootstrap" close-on-select="true" ng-disabled="true"
@@ -104,6 +106,7 @@
       <div class="input-indicator-icons" ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
     </div>
 
+    <!-- Field whose values have been constrained using controlled terms -->
     <div ng-if="$root.hasValueConstraint($root.schemaOf(field)._valueConstraints)"
         class="has-constraint autocomplete-label-wrapper" ng-class="{'has-selected': modelValue._value.label}">
       <ui-select ng-model="modelValue._value" theme="bootstrap" close-on-select="true"
