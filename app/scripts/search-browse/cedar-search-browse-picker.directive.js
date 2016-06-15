@@ -269,7 +269,7 @@ define([
                 resource,
                 function (response) {
 
-                  // refresh the current page just incase you copied to the current page
+                  // TODO refresh the current page just in case you copied to the current page
                   vm.params = $location.search();
                   init();
 

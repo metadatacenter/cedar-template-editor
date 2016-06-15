@@ -48,8 +48,8 @@
           <ul class="dropdown-menu dropdown-menu-right">
 
             <li ng-if="dc.isFolder()"><a href="#" ng-click="dc.editResource()">Open</a></li>
-            <li ng-if="dc.isTemplate() || dc.isMeta()"><a href="#" ng-click="dc.launchInstance()">Populate</a></li>
-            <li ng-if="dc.isTemplate() || dc.isElement() || dc.isFolder()"><a href="#"
+            <li ng-if="dc.isTemplate()"><a href="#" ng-click="dc.launchInstance()">Populate</a></li>
+            <li ng-if="dc.isTemplate() || dc.isElement() || dc.isFolder() || dc.isMeta()"><a href="#"
                 ng-click="dc.editResource()">Edit</a></li>
             <!--<li><a href="#" ng-click="dc.showInfoPanel()">Info</a></li>-->
             <li role="separator" class="divider"></li>
@@ -409,7 +409,7 @@
                       <li ng-if="dc.isFolder()"><a href="#" ng-click="dc.editResource()">Open</a></li>
                       <li ng-if="dc.isTemplate() || dc.isMeta()"><a href="#" ng-click="dc.launchInstance(resource)">Populate</a>
                       </li>
-                      <li ng-if="dc.isTemplate() || dc.isElement() ||dc.isFolder()"><a href="#"
+                      <li ng-if="dc.isTemplate() || dc.isElement() ||dc.isFolder() || dc.isMeta()"><a href="#"
                           ng-click="dc.editResource(resource)">Edit</a></li>
                       <li><a href="#" ng-click="dc.showInfoPanel(resource)">Info</a></li>
                       <li role="separator" class="divider"></li>
@@ -462,6 +462,7 @@
 
                     <li ng-if="dc.isFolder()"><a href="#" ng-click="dc.editResource()">Open</a></li>
                     <li ng-if="dc.isTemplate() || dc.isMeta()"><a href="#" ng-click="dc.launchInstance(resource)">Populate</a>
+
                     </li>
                     <li ng-if="dc.isTemplate() || dc.isElement() || dc.isFolder()"><a href="#"
                         ng-click="dc.editResource(resource)">Edit</a></li>
@@ -505,7 +506,7 @@
                     <li ng-if="dc.isFolder()"><a href="#" ng-click="dc.editResource()">Open</a></li>
                     <li ng-if="dc.isTemplate() || dc.isMeta()"><a href="#" ng-click="dc.launchInstance(resource)">Populate</a>
                     </li>
-                    <li ng-if="dc.isTemplate() ||  dc.isElement() || dc.isFolder()"><a href="#"
+                    <li ng-if="dc.isTemplate() ||  dc.isElement() || dc.isFolder() || dc.isMeta()"><a href="#"
                         ng-click="dc.editResource(resource)">Edit</a></li>
                     <li><a href="#" ng-click="dc.showInfoPanel(resource)">Info</a></li>
                     <li role="separator" class="divider"></li>
@@ -552,7 +553,7 @@
             <tbody>
             <tr>
               <td class="left">Type</td>
-              <td>{{ dc.selectedResource.nodeType }}</td>
+              <td>{{ dc.getResourceTypeClass(dc.selectedResource)}}</td>
             </tr>
             <tr>
 
