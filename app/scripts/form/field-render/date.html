@@ -1,12 +1,12 @@
 <div class="fields fields-date">
 
   <!-- header row -->
-  <div ng-init="fieldTitle='Date';fieldIconClass='cedar-svg-calendar'"
+  <div ng-init="fieldTitle='Date';fieldIconClass='cedar-cedar-svg-calendar-checkbox'"
       ng-include="'scripts/form/partials/field-header.partial.html'"></div>
 
   <div ng-if="$root.isArray(model)" class="field field-date" ng-repeat="valueElement in model">
 
-    <div class="form-group date-group floating-label-wrapper"
+    <div class="form-group form-group-narrow date-group floating-label-wrapper"
         ng-if="$root.schemaOf(field)._ui.dateType == 'single-date'">
 
       <div class='input-group' date-time-picker>
@@ -23,9 +23,9 @@
         </span>
       </div>
     </div>
-    <!-- /.form-group -->
+    <!-- /.form-group form-group-narrow -->
 
-    <div class="form-group date-group range floating-label-wrapper"
+    <div class="form-group form-group-narrow date-group range floating-label-wrapper"
         ng-if="$root.schemaOf(field)._ui.dateType == 'date-range'">
 
       <div class='input-group' date-time-picker>
@@ -55,7 +55,7 @@
         </span>
       </div>
     </div>
-    <!-- /.form-group -->
+    <!-- /.form-group form-group-narrow -->
     <!--<div class="more-input-wrapper" ng-include="'scripts/form/partials/more-input-buttons.partial.html'"-->
         <!--ng-show="!field.maxItems || field.maxItems > 1"></div>-->
   </div>
@@ -65,7 +65,7 @@
   <div ng-if="$root.isArray(model) && model.length == 0 && !$root.isRuntime()" class="field field-date">
 
 
-    <div class="form-group date-group floating-label-wrapper"
+    <div class="form-group form-group-narrow date-group floating-label-wrapper"
         ng-if="$root.schemaOf(field)._ui.dateType == 'single-date'">
 
       <div class='input-group' date-time-picker>
@@ -83,7 +83,7 @@
       </div>
     </div>
 
-    <div class="form-group date-group range floating-label-wrapper"
+    <div class="form-group form-group-narrow date-group range floating-label-wrapper"
         ng-if="$root.schemaOf(field)._ui.dateType == 'date-range'">
 
 
@@ -114,15 +114,15 @@
         </span>
       </div>
     </div>
-    <!-- /.form-group -->
+    <!-- /.form-group form-group-narrow -->
   </div>
-  <!-- /.form-group -->
+  <!-- /.form-group form-group-narrow -->
 
 
   <div ng-if="!$root.isArray(model)" class="field field-date">
 
 
-    <div class="form-group date-group floating-label-wrapper"
+    <div class="form-group form-group-narrow date-group floating-label-wrapper"
         ng-if="$root.schemaOf(field)._ui.dateType == 'single-date'">
 
       <div class='input-group' date-time-picker>
@@ -139,9 +139,9 @@
         </span>
       </div>
     </div>
-    <!-- /.form-group -->
+    <!-- /.form-group form-group-narrow -->
 
-    <div class="form-group date-group range floating-label-wrapper"
+    <div class="form-group form-group-narrow date-group range floating-label-wrapper"
         ng-if="$root.schemaOf(field)._ui.dateType == 'date-range'">
 
 
@@ -172,7 +172,7 @@
         </span>
       </div>
     </div>
-    <!-- /.form-group -->
+    <!-- /.form-group form-group-narrow -->
   </div>
 
 

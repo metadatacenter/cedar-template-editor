@@ -12604,6 +12604,9 @@ p.instructions {
 .fields .form-group {
   margin-right: 100px;
 }
+.fields .form-group.form-group-narrow {
+  margin-right: 0px;
+}
 .fields-checkbox .field-checkbox,
 .fields-radio .field-radio,
 .fields-date .field-date,
