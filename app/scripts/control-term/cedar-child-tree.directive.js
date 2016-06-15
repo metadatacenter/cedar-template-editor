@@ -31,7 +31,9 @@ define([
 
       // Recycle function to add nest children under parent element
       function nestChildren(children) {
-        element.addClass('expanded loaded');
+        element.addClass('expanded');
+        element.addClass('loaded');
+
 
         var children = '<cedar-class-tree tree="' + children + '" term="term" level="' + (scope.level + 1) + '" is-selected-callback="isSelectedCallback" get-class-details-callback="getClassDetailsCallback"></cedar-class-tree>';
         $compile(children)(scope, function(cloned, scope){
@@ -46,10 +48,13 @@ define([
 
       // Manual drilling down into Class children upon user interaction via controlTermDataService.getClassChildren() call
       element.find('a').on('click', function(event) {
+
         if (jQuery(this).parent().hasClass("expanded")) {
           jQuery(this).parent().removeClass("expanded");
+          jQuery(this).parent().children('ul').hide();
         } else if (jQuery(this).parent().hasClass("loaded")){
           jQuery(this).parent().addClass("expanded");
+          jQuery(this).parent().children('ul').show();
         } else {
           if (scope.subtree.hasChildren !== false && !scope.children) {
             var acronym = controlTermService.getAcronym(scope.subtree);
