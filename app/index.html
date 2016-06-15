@@ -61,8 +61,8 @@
       <!-- otherwise on an edit page--->
       <div ng-if="!hc.isDashboard()">
         <div class="navbar-back col-sm-12" >
-          <a ng-click="hc.goToDashboardOrBack()"><i class="back-arrow fa fa-arrow-left"></i></a> <span
-            class="document-title">{{hc.getDocumentTitle()}}</span>
+          <div class="back-arrow-click" ng-click="hc.goToDashboardOrBack()"></div>
+          <i class="back-arrow fa fa-arrow-left"></i> <span class="document-title">{{hc.getDocumentTitle()}}</span>
           <div class="page-title pull-right" >{{hc.getPageTitle()}}
             <span id="jsonTools" cedar-position-json-tools="true">
 

@@ -9243,6 +9243,16 @@ button {
     font-size: 22px;
   }
 }
+.navbar .navbar-back .back-arrow-click {
+  position: absolute;
+  border: 0px solid red;
+  width: 46px;
+  height: 46px;
+  cursor: pointer;
+  z-index: 10;
+  top: -10px;
+  left: 10px;
+}
 .navbar .navbar-back .page-title {
   color: #ffffff;
   font-size: 18px;
