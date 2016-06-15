@@ -37,11 +37,33 @@ function UserProfileHandler() {
       var service = this;
       // touch a folder, this should create the home folder
       jQuery.ajax(
-          service.foldersUrl + "/" + encodeURIComponent("non-existing-folder-id"),
+          service.foldersUrl + "/contents?resource_types=folder&path=" + encodeURIComponent("/Users/" + userData.userId),
           {
             'method' : 'GET',
             'headers': service.getHeaders(),
-            'success': function (userData) {
+            'success': function (folderData) {
+              var userHome = folderData.pathInfo[folderData.pathInfo.length - 1];
+              console.log(userHome);
+              var putData = {
+                'homeFolderId': userHome['@id']
+              };
+              jQuery.ajax(
+                  service.userUrl,
+                  {
+                    'data'       : JSON.stringify(putData),
+                    'dataType'   : 'json',
+                    'method'     : 'PUT',
+                    'contentType': 'application/json; charset=utf-8',
+                    'headers'    : service.getHeaders(),
+                    'success'    : function (userData) {
+                      console.log("PUT success");
+                      console.log(userData);
+                    },
+                    'error'      : function (error) {
+                    }
+                  }
+              );
+
               // do nothing, this folder should not be present
             },
             'error'  : function (error) {

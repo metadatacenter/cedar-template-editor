@@ -29,7 +29,6 @@ define([
 
         cedarSearchBrowsePickerController.$inject = [
           '$location',
-          '$rootScope',
           '$timeout',
           '$scope',
           '$translate',
@@ -38,12 +37,17 @@ define([
           'UIMessageService',
           'UISettingsService',
           'UrlService',
+          'AuthorizedBackendService',
+          'TemplateInstanceService',
+          'TemplateElementService',
+          'TemplateService',
           'CONST'
         ];
 
-        function cedarSearchBrowsePickerController($location, $rootScope, $timeout, $scope, $translate, CedarUser,
-                                                   resourceService, UIMessageService, UISettingsService, UrlService,
-                                                   CONST) {
+        function cedarSearchBrowsePickerController($location, $timeout, $scope, $translate, CedarUser, resourceService,
+                                                   UIMessageService, UISettingsService, UrlService,
+                                                   AuthorizedBackendService, TemplateInstanceService,
+                                                   TemplateElementService, TemplateService, CONST) {
           var vm = this;
 
           vm.breadcrumbName = breadcrumbName;
@@ -72,6 +76,7 @@ define([
           vm.isSearching = false;
           vm.launchInstance = launchInstance;
           vm.copyToWorkspace = copyToWorkspace;
+          vm.setResourceInfoVisibility = setResourceInfoVisibility;
           vm.onDashboard = onDashboard;
           vm.narrowContent = narrowContent;
           vm.pathInfo = [];
@@ -97,7 +102,6 @@ define([
           vm.showInfoPanel = showInfoPanel;
           vm.infoShowing = infoShowing;
           vm.showOrHide = showOrHide;
-          vm.showResourceInfo = false;
           vm.sortOptionLabel = $translate.instant('DASHBOARD.sort.name');
           vm.toggleFavorites = toggleFavorites;
           vm.toggleFilters = toggleFilters;
@@ -124,12 +128,13 @@ define([
           init();
 
           function setUIPreferences() {
+            var uip = CedarUser.getUIPreferences();
             //vm.showFavorites = CedarUser.getUIPreferences().populateATemplate.opened;
             vm.resourceTypes = {
-              element : CedarUser.getUIPreferences().resourceTypeFilters.element,
-              field   : CedarUser.getUIPreferences().resourceTypeFilters.field,
-              instance: CedarUser.getUIPreferences().resourceTypeFilters.instance,
-              template: CedarUser.getUIPreferences().resourceTypeFilters.template
+              element : uip.resourceTypeFilters.element,
+              field   : uip.resourceTypeFilters.field,
+              instance: uip.resourceTypeFilters.instance,
+              template: uip.resourceTypeFilters.template
             };
             vm.filterSections = {
               type  : false,
@@ -139,7 +144,13 @@ define([
             };
             var option = CedarUser.getUIPreferences().folderView.sortBy;
             setSortOptionUI(option);
-            vm.resourceViewMode = CedarUser.getUIPreferences().folderView.viewMode;
+            vm.resourceViewMode = uip.folderView.viewMode;
+            if (uip.hasOwnProperty('infoPanel')) {
+              vm.showResourceInfo = uip.infoPanel.opened;
+              resizeCenterPanel();
+            } else {
+              vm.showResourceInfo = false;
+            }
           }
 
           function init() {
@@ -648,11 +659,14 @@ define([
               }
             }
 
-            vm.showResourceInfo = true;
+            vm.setResourceInfoVisibility(true);
             resizeCenterPanel();
-
           }
 
+          function setResourceInfoVisibility(b) {
+            vm.showResourceInfo = b;
+            UISettingsService.saveUIPreference('infoPanel.opened', vm.showResourceInfo);
+          }
 
           // toggle the info panel with this resource or find one
           function toggleInfoPanel(resource) {
@@ -660,7 +674,7 @@ define([
             if (!vm.showResourceInfo) {
               showInfoPanel(resource);
             } else {
-              vm.showResourceInfo = false;
+              vm.setResourceInfoVisibility(false);
               resizeCenterPanel();
             }
           }
@@ -725,11 +739,9 @@ define([
           }
 
           function toggleResourceInfo() {
-            vm.showResourceInfo = !vm.showResourceInfo;
-
+            vm.setResourceInfoVisibility(!vm.showResourceInfo);
             // resize center panel
             resizeCenterPanel();
-
           }
 
           function resizeCenterPanel() {
@@ -792,7 +804,7 @@ define([
 
           function resetSelected() {
             vm.selectedResource = null;
-            vm.showResourceInfo = false;
+            vm.setResourceInfoVisibility(false);
             resizeCenterPanel();
           }
 
@@ -849,9 +861,62 @@ define([
             UISettingsService.saveUIPreference('folderView.viewMode', mode);
           }
 
-          // TBD save the updated description
           function updateDescription() {
             vm.editingDescription = false;
+            var resource = getSelection();
+            if (resource != null) {
+              var postData = {};
+              var id = resource['@id'];
+              var nodeType = resource.nodeType;
+              var description = resource.description;
+
+              if (nodeType == 'instance') {
+                AuthorizedBackendService.doCall(
+                    TemplateInstanceService.updateTemplateInstance(id, {'_ui.description': description}),
+                    function (response) {
+                      UIMessageService.flashSuccess('SERVER.INSTANCE.update.success', null, 'GENERIC.Updated');
+                    },
+                    function (err) {
+                      UIMessageService.showBackendError('SERVER.INSTANCE.update.error', err);
+                    }
+                );
+              } else if (nodeType == 'element') {
+                AuthorizedBackendService.doCall(
+                    TemplateElementService.updateTemplateElement(id, {'_ui.description': description}),
+                    function (response) {
+                      UIMessageService.flashSuccess('SERVER.ELEMENT.update.success', {"title": response.data._ui.title},
+                          'GENERIC.Updated');
+                    },
+                    function (err) {
+                      UIMessageService.showBackendError('SERVER.ELEMENT.update.error', err);
+                    }
+                );
+              } else if (nodeType == 'template') {
+                AuthorizedBackendService.doCall(
+                    TemplateService.updateTemplate(id, {'_ui.description': description}),
+                    function (response) {
+                      $scope.form = response.data;
+                      UIMessageService.flashSuccess('SERVER.TEMPLATE.update.success',
+                          {"title": response.data._ui.title}, 'GENERIC.Updated');
+                    },
+                    function (err) {
+                      UIMessageService.showBackendError('SERVER.TEMPLATE.update.error', err);
+                    }
+                );
+              }
+
+              /*
+               resourceService.updateTitleOrDescription(
+               postData,
+               function (response) {
+               UIMessageService.flashSuccess('SERVER.RESOURCE.updateTitleOrDescription.success', null,
+               'GENERIC.Updated');
+               },
+               function (response) {
+               UIMessageService.showBackendError('SERVER.RESOURCE.updateTitleOrDescription.error', response);
+               }
+               );*/
+            }
           }
 
         }

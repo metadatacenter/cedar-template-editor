@@ -21,15 +21,16 @@ define([
 
     var searchTerm = null;
     var service = {
-      createFolder           : createFolder,
-      deleteFolder           : deleteFolder,
-      deleteResource         : deleteResource,
-      getFacets              : getFacets,
-      getResourceDetail      : getResourceDetail,
-      getResources           : getResources,
-      searchResources        : searchResources,
-      updateFolder           : updateFolder,
-      copyResourceToWorkspace: copyResourceToWorkspace
+      createFolder            : createFolder,
+      deleteFolder            : deleteFolder,
+      deleteResource          : deleteResource,
+      getFacets               : getFacets,
+      getResourceDetail       : getResourceDetail,
+      getResources            : getResources,
+      searchResources         : searchResources,
+      updateFolder            : updateFolder,
+      copyResourceToWorkspace : copyResourceToWorkspace,
+      updateTitleOrDescription: updateTitleOrDescription
     };
     return service;
 
@@ -324,6 +325,7 @@ define([
       postData['@id'] = resource['@id'];
       postData['nodeType'] = resource['nodeType'];
       postData['folderId'] = CedarUser.getHomeFolderId();
+      postData['titleTemplate'] = "Copy of {{title}}";
       var url = urlService.copyResourceToFolder();
       authorizedBackendService.doCall(
           httpBuilderService.post(url, postData),
@@ -334,6 +336,16 @@ define([
       );
     }
 
+    function updateTitleOrDescription(postData, successCallback, errorCallback) {
+      var url = urlService.updateTitleOrDescription();
+      authorizedBackendService.doCall(
+          httpBuilderService.post(url, postData),
+          function (response) {
+            successCallback(response.data);
+          },
+          errorCallback
+      );
+    }
   }
 
 });

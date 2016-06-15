@@ -22,7 +22,8 @@
 
     <p ng-if="!dc.isSearching">
             <span ng-repeat="folder in dc.pathInfo">
-              <a ng-click="dc.goToFolder(folder['@id'])" class="breadcrumbs">{{dc.breadcrumbName(folder.displayName)}}</a> /
+              <a ng-click="dc.goToFolder(folder['@id'])"
+                  class="breadcrumbs">{{dc.breadcrumbName(folder.displayName)}}</a> /
             </span>
       <a class="breadcrumbs">{{dc.breadcrumbName(dc.currentPath.displayName)}}</a>
 
@@ -249,7 +250,7 @@
         <div class="filter-options">
           <div class="clearfix reset-text">
             <div class="pull-left">Filter By</div>
-            <div class="pull-right"><a href="#"  ng-click="dc.resetFilters()">Reset</a></div>
+            <div class="pull-right"><a href="#" ng-click="dc.resetFilters()">Reset</a></div>
           </div>
           <div>
             <!-- nested facet template -->
@@ -324,7 +325,6 @@
 
       <!-- center panel -->
       <div class="center-panel" id="center-panel">
-
 
 
         <div class="row populate-form-boxes">
@@ -413,7 +413,7 @@
                           ng-click="dc.editResource(resource)">Edit</a></li>
                       <li><a href="#" ng-click="dc.showInfoPanel(resource)">Info</a></li>
                       <li role="separator" class="divider"></li>
-                      <li ><a href="#" ng-click="dc.copyToWorkspace(resource)">Copy to workspace</a></li>
+                      <li><a href="#" ng-click="dc.copyToWorkspace(resource)">Copy to workspace</a></li>
                       <li class="disabled"><a href="#">Share</a></li>
                       <li class="disabled"><a href="#">Move to...</a></li>
                       <li class="disabled"><a href="#">Rename</a></li>
@@ -509,7 +509,7 @@
                         ng-click="dc.editResource(resource)">Edit</a></li>
                     <li><a href="#" ng-click="dc.showInfoPanel(resource)">Info</a></li>
                     <li role="separator" class="divider"></li>
-                    <li ><a href="#" ng-click="dc.copyToWorkspace(resource)">Copy to workspace</a></li>
+                    <li><a href="#" ng-click="dc.copyToWorkspace(resource)">Copy to workspace</a></li>
                     <li class="disabled"><a href="#">Share</a></li>
                     <li class="disabled"><a href="#">Move to...</a></li>
                     <li class="disabled"><a href="#">Rename</a></li>
@@ -591,7 +591,8 @@
           <div class="description">
             <div ng-if="dc.editingDescription" class="editing">
 
-              <form class="form-inline" ng-submit="dc.updateDescription()" ui-keypress="{13:'dc.updateDescription()'}">
+              <form class="form-inline" ng-submit="dc.updateDescription()"
+                  ui-keypress="{'enter':'dc.updateDescription()'}">
                 <fieldset>
                   <input id="edit-description" type="text" ng-model="dc.selectedResource.description">
                   <button type="submit" style=" display:none">Add</button>

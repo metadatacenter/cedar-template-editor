@@ -163,7 +163,7 @@ define([
       return '/dashboard?search=' + encodeURIComponent(term);
     };
 
-    service.getFolderContents = function(folderId) {
+    service.getFolderContents = function (folderId) {
       return '/dashboard?folderId=' + encodeURIComponent(folderId);
     };
 
@@ -201,6 +201,10 @@ define([
 
     service.copyResourceToFolder = function () {
       return this.resourceBase() + "/command/copy-resource-to-folder";
+    };
+
+    service.updateTitleOrDescription = function () {
+      return this.resourceBase() + "/command/update-title-or-description";
     };
 
     return service;
