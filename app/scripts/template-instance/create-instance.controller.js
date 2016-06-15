@@ -14,45 +14,15 @@ define([
                                     TemplateService, TemplateInstanceService, UIMessageService,
                                     AuthorizedBackendService, CONST) {
 
-    $rootScope.showSearch = false;
-
-    // set Page Title variable when this controller is active
-    $rootScope.pageTitle = 'Metadata Editor';
-
-    // Giving $scope access to window.location for checking active state
-    $scope.$location = $location;
-
-    AuthorizedBackendService.doCall(
-        TemplateService.getAllTemplatesSummary(),
-        function (response) {
-          $scope.templateList = response.data;
-        },
-        function (err) {
-          UIMessageService.showBackendError('SERVER.TEMPLATES.load.error', err);
-        }
-    );
-
-    // Configure mini header
-    var pageId = CONST.pageId.RUNTIME;
-    var applicationMode = CONST.applicationMode.RUNTIME;
-    HeaderService.configure(pageId, applicationMode);
-    $rootScope.applicationRole = 'instantiator';
-
-
-    // Create empty form object
-    // Create empty instance object
-    $scope.form = {};
-    $scope.instance = {};
-
-    // Get/read form with given id from $routeParams
-    $scope.getForm = function () {
+    // Get/read template with given id from $routeParams
+    $scope.getTemplate = function () {
       AuthorizedBackendService.doCall(
           TemplateService.getTemplate($routeParams.templateId),
           function (response) {
             // Assign returned form object from FormService to $scope.form
             $scope.form = response.data;
             HeaderService.dataContainer.currentObjectScope = $scope.form;
-            //$rootScope.documentTitle = $scope.form._ui.title;
+            $rootScope.documentTitle = $scope.form._ui.title;
           },
           function (err) {
             UIMessageService.showBackendError('SERVER.TEMPLATE.load.error', err);
@@ -60,8 +30,9 @@ define([
       );
     };
 
-    // Get/read submission with given submission_id from $routeParams
-    $scope.getSubmission = function () {
+    // Get/read instance with given id from $routeParams
+    // Also read the template for it
+    $scope.getInstance = function () {
       AuthorizedBackendService.doCall(
           TemplateInstanceService.getTemplateInstance($routeParams.id),
           function (instanceResponse) {
@@ -73,7 +44,6 @@ define([
                 function (templateResponse) {
                   // Assign returned form object from FormService to $scope.form
                   $scope.form = templateResponse.data;
-
                 },
                 function (templateErr) {
                   UIMessageService.showBackendError('SERVER.TEMPLATE.load-for-instance.error', templateErr);
@@ -86,18 +56,8 @@ define([
       );
     };
 
-    // Create new instance
-    if (!angular.isUndefined($routeParams.templateId)) {
-      $scope.getForm();
-    }
-    // Edit existing instance
-    if (!angular.isUndefined($routeParams.id)) {
-      // Loading empty form if given an ID in the $routeParams.id url path
-      $scope.getSubmission();
-    }
-
-    // Stores the data (populated template) into the databases
-    $scope.savePopulatedTemplate = function () {
+    // Stores the data (instance) into the databases
+    $scope.saveInstance = function () {
       $scope.runtimeErrorMessages = [];
       $scope.runtimeSuccessMessages = [];
       // Broadcast submitForm event to form-directive.js which will assign the form $scope.model to $scope.instance of this controller
@@ -141,7 +101,50 @@ define([
             }
         );
       }
+    };
+
+    //*********** ENTRY POINT
+
+    $rootScope.showSearch = false;
+
+    // set Page Title variable when this controller is active
+    $rootScope.pageTitle = 'Metadata Editor';
+
+    // Giving $scope access to window.location for checking active state
+    $scope.$location = $location;
+
+    AuthorizedBackendService.doCall(
+        TemplateService.getAllTemplatesSummary(),
+        function (response) {
+          $scope.templateList = response.data;
+        },
+        function (err) {
+          UIMessageService.showBackendError('SERVER.TEMPLATES.load.error', err);
+        }
+    );
+
+    // Configure mini header
+    var pageId = CONST.pageId.RUNTIME;
+    var applicationMode = CONST.applicationMode.RUNTIME;
+    HeaderService.configure(pageId, applicationMode);
+    $rootScope.applicationRole = 'instantiator';
+
+    // Create empty form object
+    // Create empty instance object
+    $scope.form = {};
+    $scope.instance = {};
+
+    // Create new instance
+    if (!angular.isUndefined($routeParams.templateId)) {
+      $scope.getTemplate();
     }
+
+    // Edit existing instance
+    if (!angular.isUndefined($routeParams.id)) {
+      $scope.getInstance();
+    }
+
+
 
     // Initialize array for required fields left empty that fail required empty check
     $scope.emptyRequiredFields = {};
@@ -175,15 +178,6 @@ define([
       var params = $location.search();
       $location.url(UrlService.getFolderContents(params.folderId));
     };
-
-    // This function watches for changes in the _ui.title field and autogenerates the schema title and description fields
-    /*$scope.$watch('form._ui.title', function (v) {
-      if (!angular.isUndefined($scope.form)) {
-        if ($scope.form._ui && $scope.form._ui.title) {
-          $rootScope.documentTitle = $scope.form._ui.title;
-        }
-      }
-    });*/
 
   };
 
