@@ -6,11 +6,11 @@ define([
   angular.module('cedar.templateEditor.templateInstance.createInstanceController', [])
       .controller('CreateInstanceController', CreateInstanceController);
 
-  CreateInstanceController.$inject = ["$window", "$document","$rootScope", "$scope", "$routeParams", "$location", "HeaderService",
-                                      "UrlService", "TemplateService", "TemplateInstanceService", "UIMessageService",
-                                      "AuthorizedBackendService", "CONST"];
+  CreateInstanceController.$inject = ["$translate", "$rootScope", "$scope", "$routeParams", "$location",
+                                      "HeaderService", "UrlService", "TemplateService", "TemplateInstanceService",
+                                      "UIMessageService", "AuthorizedBackendService", "CONST"];
 
-  function CreateInstanceController($window, $document, $rootScope, $scope, $routeParams, $location, HeaderService, UrlService,
+  function CreateInstanceController($translate, $rootScope, $scope, $routeParams, $location, HeaderService, UrlService,
                                     TemplateService, TemplateInstanceService, UIMessageService,
                                     AuthorizedBackendService, CONST) {
 
@@ -52,7 +52,7 @@ define([
             // Assign returned form object from FormService to $scope.form
             $scope.form = response.data;
             HeaderService.dataContainer.currentObjectScope = $scope.form;
-            $rootScope.documentTitle = $scope.form._ui.title;
+            //$rootScope.documentTitle = $scope.form._ui.title;
           },
           function (err) {
             UIMessageService.showBackendError('SERVER.TEMPLATE.load.error', err);
@@ -67,6 +67,7 @@ define([
           function (instanceResponse) {
             $scope.instance = instanceResponse.data;
             $scope.isEditData = true;
+            $rootScope.documentTitle = $scope.instance._ui.title;
             AuthorizedBackendService.doCall(
                 TemplateService.getTemplate(instanceResponse.data._templateId),
                 function (templateResponse) {
@@ -108,8 +109,10 @@ define([
         $scope.instance['_templateId'] = $routeParams.templateId;
         // Create _ui field that will store information used by the UI
         $scope.instance._ui = {};
-        $scope.instance._ui['templateTitle'] = $scope.form._ui.title + ' metadata';
-        $scope.instance._ui['templateDescription'] = $scope.form._ui.description;
+        $scope.instance._ui['title'] = $translate.instant("GENERATEDVALUE.instanceTitle",
+            {title: $scope.form._ui.title});
+        $scope.instance._ui['description'] = $translate.instant("GENERATEDVALUE.instanceDescription",
+            {description: $scope.form._ui.description});
         // Make create instance call
         var queryParams = $location.search();
         $scope.instance['parentId'] = queryParams.folderId;
@@ -174,13 +177,13 @@ define([
     };
 
     // This function watches for changes in the _ui.title field and autogenerates the schema title and description fields
-    $scope.$watch('form._ui.title', function (v) {
+    /*$scope.$watch('form._ui.title', function (v) {
       if (!angular.isUndefined($scope.form)) {
         if ($scope.form._ui && $scope.form._ui.title) {
           $rootScope.documentTitle = $scope.form._ui.title;
         }
       }
-    });
+    });*/
 
   };
 
