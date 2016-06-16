@@ -84,7 +84,7 @@ define([
 
       // When form submit event is fired, check field for simple validation
       $scope.$on('submitForm', function (event) {
-        console.log('submitForm');
+        //console.log('submitForm');
 
         // If field is required and is empty, emit failed emptyRequiredField event
         if ($rootScope.schemaOf($scope.field)._valueConstraints && $rootScope.schemaOf($scope.field)._valueConstraints.requiredValue) {

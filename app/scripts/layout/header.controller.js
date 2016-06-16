@@ -13,21 +13,10 @@ define([
   ];
 
   function HeaderController($rootScope, $location, UrlService) {
+
     var vm = this;
 
-    vm.goToDashboardOrBack = goToDashboardOrBack;
-    vm.search = search;
-    vm.searchTerm = $location.search().search;
-    vm.showSearch = showSearch;
-    vm.isDashboard = isDashboard;
-    vm.getDocumentTitle = getDocumentTitle;
-    vm.getPageTitle = getPageTitle;
-    vm.isTemplate = isTemplate;
-    vm.isElement = isElement;
-    vm.isMetadata = isMetadata;
-
-
-    function goToDashboardOrBack() {
+    vm.goToDashboardOrBack = function () {
       vm.searchTerm = null;
       var params = $location.search();
       var path = $location.path();
@@ -43,44 +32,56 @@ define([
       }
       var url = $rootScope.util.buildUrl(baseUrl, queryParams);
       $location.url(url);
-    }
+    };
 
-    function showSearch() {
-      return $rootScope.showSearch;
-    }
-
-    function isDashboard() {
-      return ($location.path() === "/dashboard");
-    }
-
-    function isTemplate() {
-      console.log('isTemplate' + ($location.path() === "/templates"));
-      return ($location.path() === "/templates");
-    }
-
-    function isElement() {
-      return ($location.path() === "/elements");
-    }
-
-    function isMetadata() {
-      return ($location.path() === "/instances");
-    }
-
-    function getDocumentTitle() {
-      return $rootScope.documentTitle;
-    }
-
-    function getPageTitle() {
-      return $rootScope.pageTitle;
-    }
-
-    function search(searchTerm) {
-      if (isDashboard()) {
-        $location.url(UrlService.getSearchPath(searchTerm));
+    vm.search = function (searchTerm) {
+      if (vm.isDashboard()) {
+        var params = $location.search();
+        var baseUrl = '/dashboard';
+        var queryParams = {};
+        if (params.folderId) {
+          queryParams['folderId'] = params.folderId;
+        }
+        queryParams['search'] = searchTerm;
+        var url = $rootScope.util.buildUrl(baseUrl, queryParams);
+        $location.url(url);
       }
       vm.searchTerm = searchTerm;
       $rootScope.$broadcast('search', vm.searchTerm || '');
-    }
+    };
+
+    vm.showSearch = function () {
+      return $rootScope.showSearch;
+    };
+
+    vm.isDashboard = function () {
+      return ($location.path() === "/dashboard");
+    };
+
+    vm.getDocumentTitle = function () {
+      return $rootScope.documentTitle;
+    };
+
+    vm.getPageTitle = function () {
+      return $rootScope.pageTitle;
+    };
+
+    vm.isTemplate = function () {
+      //console.log('isTemplate' + ($location.path() === "/templates"));
+      return ($location.path() === "/templates");
+    };
+
+    vm.isElement = function () {
+      return ($location.path() === "/elements");
+    };
+
+    vm.isMetadata = function () {
+      return ($location.path() === "/instances");
+    };
+
+    //*********** ENTRY POINT
+
+    vm.searchTerm = $location.search().search;
 
   }
 

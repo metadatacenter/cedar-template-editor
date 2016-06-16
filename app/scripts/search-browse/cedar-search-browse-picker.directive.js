@@ -300,10 +300,7 @@ define([
 
           function init() {
             vm.isSearching = false;
-            if (vm.params.folderId) {
-              getFacets();
-              getFolderContentsById(decodeURIComponent(vm.params.folderId));
-            } else if (vm.params.search) {
+            if (vm.params.search) {
               vm.isSearching = true;
               if (vm.showFavorites) {
                 vm.showFavorites = false;
@@ -311,6 +308,9 @@ define([
               }
               getFacets();
               doSearch(vm.params.search);
+            } else if (vm.params.folderId) {
+              getFacets();
+              getFolderContentsById(decodeURIComponent(vm.params.folderId));
             } else {
               goToFolder(CedarUser.getHomeFolderId());
             }
@@ -835,7 +835,7 @@ define([
 
           $scope.$on('search', function (event, searchTerm) {
             if (onDashboard()) {
-              $location.url(UrlService.getSearchPath(searchTerm));
+              //$location.url(UrlService.getSearchPath(searchTerm));
             } else {
               vm.params.search = searchTerm;
               initSearch();
