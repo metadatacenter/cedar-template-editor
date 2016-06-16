@@ -761,13 +761,22 @@ button {
 
     margin: 0 20px;
 
+    .form-box {
+      box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.4);
+    }
     .selected > .form-box {
-      box-shadow: 0 0 4px 2px #ccc;
-      border:1px solid @brand-primary;
+      box-shadow: 0 0 6px 2px #dddddd;
+      //border:1px solid @brand-primary;
     }
 
     .selected .title {
-      background-color:@brand-primary;
+      background-color: @brand-primary;
+      color: @white;
+    }
+
+    .selected .form-box .box-content .folderIconContainer,
+    .selected .form-box .box-content .folderIconContainer i {
+      background-color: @brand-primary;
       color: @white;
     }
 
@@ -794,7 +803,7 @@ button {
       .box-content {
         color: @brand-primary;
         padding: 0px;
-        font-size: 14px;
+        font-size: 12px;
         display: block;
         text-align: left;
 
@@ -840,6 +849,23 @@ button {
           text-overflow: ellipsis;
           color: #aaa;
           font-size: 12px;
+        }
+
+        .folderIconContainer {
+          padding: 15px 0 0 15px;
+          width: 48px;
+          height: 48px;
+          background-color: #fafafa;
+        }
+
+        .folderTitle {
+          position: absolute;
+          width: 100px;
+          top: 27px;
+          left: 60px;
+          text-overflow: ellipsis;
+          overflow: hidden;
+          white-space: nowrap;
         }
 
         .disabled {

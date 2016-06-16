@@ -342,9 +342,10 @@
                   ng-dblclick="dc.goToResource(resource)"
                   class="form-box  ">
                 <div class="box-content text-center folder">
-                  <div style="padding:2px 0px 0px 10px"><i style="font-size:20px" class="fa"
-                      ng-class="dc.getResourceIconClass(resource)"></i></div>
-                  <div style="padding:2px 5px 2px 10px;" class="title">{{ resource.displayName }}</div>
+                  <div class="folderIconContainer">
+                    <i style="font-size:20px" class="fa" ng-class="dc.getResourceIconClass(resource)"></i>
+                  </div>
+                  <div class="folderTitle">{{ resource.displayName }}</div>
 
                   <div ng-if="dc.onDashboard()" class="btn-group dropdown" id="{{getId(resource, 'populate')}}">
                     <button style="display:none" title="More"
@@ -394,7 +395,7 @@
 
                   </div>
                   <div class="title"
-                      style="text-align:center;padding:10px;margin-top:20px; overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
+                      style="text-align:center;height:40px;padding:10px;margin-top:20px; overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
                     {{ resource.displayName }}
                   </div>
 

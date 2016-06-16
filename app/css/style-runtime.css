@@ -9674,11 +9674,18 @@ button {
 .all-items-view .populate-form-boxes {
   margin: 0 20px;
 }
+.all-items-view .populate-form-boxes .form-box {
+  box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.4);
+}
 .all-items-view .populate-form-boxes .selected > .form-box {
-  box-shadow: 0 0 4px 2px #ccc;
-  border: 1px solid #71a69c;
+  box-shadow: 0 0 6px 2px #dddddd;
 }
 .all-items-view .populate-form-boxes .selected .title {
+  background-color: #71a69c;
+  color: #ffffff;
+}
+.all-items-view .populate-form-boxes .selected .form-box .box-content .folderIconContainer,
+.all-items-view .populate-form-boxes .selected .form-box .box-content .folderIconContainer i {
   background-color: #71a69c;
   color: #ffffff;
 }
@@ -9703,7 +9710,7 @@ button {
 .all-items-view .populate-form-boxes .form-box .box-content {
   color: #71a69c;
   padding: 0px;
-  font-size: 14px;
+  font-size: 12px;
   display: block;
   text-align: left;
 }
@@ -9737,6 +9744,21 @@ button {
   text-overflow: ellipsis;
   color: #aaa;
   font-size: 12px;
+}
+.all-items-view .populate-form-boxes .form-box .box-content .folderIconContainer {
+  padding: 15px 0 0 15px;
+  width: 48px;
+  height: 48px;
+  background-color: #fafafa;
+}
+.all-items-view .populate-form-boxes .form-box .box-content .folderTitle {
+  position: absolute;
+  width: 100px;
+  top: 27px;
+  left: 60px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 }
 .all-items-view .populate-form-boxes .form-box .box-content .disabled {
   cursor: not-allowed;
