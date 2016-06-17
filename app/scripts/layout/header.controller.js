@@ -9,10 +9,11 @@ define([
   HeaderController.$inject = [
     '$rootScope',
     '$location',
+    '$window',
     'UrlService'
   ];
 
-  function HeaderController($rootScope, $location, UrlService) {
+  function HeaderController($rootScope, $location, $window, UrlService) {
 
     var vm = this;
 
@@ -32,6 +33,8 @@ define([
       }
       var url = $rootScope.util.buildUrl(baseUrl, queryParams);
       $location.url(url);
+      $window.scrollTo(0, 0);
+      
     };
 
     vm.search = function (searchTerm) {
