@@ -37,27 +37,6 @@ define([
       return !obj || Object.keys(obj).length === 0;
     };
 
-    // Capitalize first letter
-    /*
-     egyedia - this seems to be unused
-     $rootScope.capitalizeFirst = function (string) {
-     string = string.toLowerCase();
-     return string.substring(0, 1).toUpperCase() + string.substring(1);
-     };
-     */
-
-    // Sorting function that moves boolean values with true to the front of the sort
-    /*
-     egyedia - this seems to be unused
-     $rootScope.sortBoolean = function (array, bool) {
-     return array.sort(function (a, b) {
-     var x = a[bool],
-     y = b[bool];
-     return ((x == y) ? -1 : ((x === true) ? -1 : 1));
-     });
-     };
-     */
-
     $rootScope.propertiesOf = function (fieldOrElement) {
       return DataManipulationService.getFieldProperties(fieldOrElement);
     };
@@ -75,13 +54,6 @@ define([
     };
 
     $rootScope.elementIsMultiInstance = DataManipulationService.elementIsMultiInstance;
-
-    /*
-     egyedia - this seems to be unused
-     $rootScope.isField = function (value) {
-     return value && value.properties && value._ui && value._ui.inputType;
-     };
-     */
 
     $rootScope.isElement = function (value) {
       if (value && value['@type'] && value['@type'] == "https://schema.metadatacenter.org/core/TemplateElement") {
@@ -171,20 +143,6 @@ define([
         }
       });
     };
-
-    /*
-     egyedia - this seems to be unused
-     $rootScope.assignOrder = function (fieldOrElement, parentElement) {
-     var order = 1;
-     angular.forEach(parentElement, function (value, key) {
-     if ($rootScope.isElement(value) || $rootScope.isField(value)) {
-     order += 1;
-     }
-     });
-
-     fieldOrElement._ui.order = order;
-     };
-     */
 
     $rootScope.scrollToAnchor = UIUtilService.scrollToAnchor;
     $rootScope.scrollToDomId = UIUtilService.scrollToDomId;
@@ -464,7 +422,6 @@ define([
 
 
     // the below console.log statements break the karma tests
-    //TODO MJD
     // User data is available at this point:
     // console.log("Cedar service providing user data at this point:");
     // console.log(Cedar.getUserId());
@@ -496,12 +453,9 @@ define([
       }
     };
 
-    $rootScope.$on('$locationChangeStart', function(event) {
+    $rootScope.$on('$locationChangeStart', function (event) {
       $rootScope.setHeader();
     });
-
-
-
 
     $rootScope.setHeader = function () {
 
@@ -512,18 +466,16 @@ define([
       if ($location.path().startsWith("/dashboard")) {
         //jQuery("body").css('overflow:hidden');
         e.addClass('dashboard');
-      }
-       else if ($location.path().startsWith("/elements")) {
+      } else if ($location.path().startsWith("/elements")) {
         e.addClass('element');
 
       } else if ($location.path().startsWith("/templates")) {
         e.addClass('template');
 
-      }if ($location.path().startsWith("/instances")) {
+      } else if ($location.path().startsWith("/instances")) {
         e.addClass('metadata');
       }
     }
-
 
 
   };
