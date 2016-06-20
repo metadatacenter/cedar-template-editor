@@ -50,32 +50,6 @@ define([
     $scope.otherFieldTypes = FieldTypeService.getOtherFieldTypes();
     $scope.hideRootElement = true;
 
-    $scope.addElementFromPicker = function () {
-      if ($scope.pickerResource) {
-        $scope.addElementToElement($scope.pickerResource);
-      }
-      $scope.hideSearchBrowsePicker();
-    };
-
-    $scope.pickElementFromPicker = function (resource) {
-      $scope.addElementToElement(resource);
-      $scope.hideSearchBrowsePicker();
-    };
-
-    $scope.selectElementFromPicker = function (resource) {
-      $scope.pickerResource = resource;
-    };
-
-    $scope.showSearchBrowsePicker = function () {
-      $scope.showMenuPopover = false;
-      $scope.pickerResource = null;
-      $scope.showCreateEditForm = false;
-    };
-    $scope.hideSearchBrowsePicker = function () {
-      $scope.showCreateEditForm = true;
-    };
-
-
     var getElement = function () {
       $scope.form = {};
       // Load existing element if $routeParams.id parameter is supplied
