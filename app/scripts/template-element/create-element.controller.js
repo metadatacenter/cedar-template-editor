@@ -37,7 +37,6 @@ define([
     var applicationMode = CONST.applicationMode.CREATOR;
     HeaderService.configure(pageId, applicationMode);
     StagingService.configure(pageId);
-    $rootScope.applicationRole = 'creator';
 
     AuthorizedBackendService.doCall(
         TemplateElementService.getAllTemplateElementsSummary(),

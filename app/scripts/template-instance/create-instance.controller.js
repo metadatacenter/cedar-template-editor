@@ -127,7 +127,6 @@ define([
     var pageId = CONST.pageId.RUNTIME;
     var applicationMode = CONST.applicationMode.RUNTIME;
     HeaderService.configure(pageId, applicationMode);
-    $rootScope.applicationRole = 'instantiator';
 
     // Create empty form object
     // Create empty instance object
