@@ -10,7 +10,7 @@ define([
 
   cedarTemplateEditorCoreRun.$inject = ['$rootScope', '$window', '$sce', '$translate', 'DataTemplateService',
                                         'DataManipulationService', 'FieldTypeService', 'UrlService', 'UIUtilService',
-                                        'UserService', 'RichTextConfigService', 'CONST', 'controlTermDataService',
+                                        'UserService', 'RichTextConfigService', 'CONST', 'controlledTermDataService',
                                         'provisionalClassService', 'CedarUser', 'UISettingsService',
                                         'ValueRecommenderService', 'DataUtilService', 'TrackingService',
                                         '$httpParamSerializer', '$location'];
@@ -18,7 +18,7 @@ define([
 
   function cedarTemplateEditorCoreRun($rootScope, $window, $sce, $translate, DataTemplateService,
                                       DataManipulationService, FieldTypeService, UrlService, UIUtilService, UserService,
-                                      RichTextConfigService, CONST, controlTermDataService, provisionalClassService,
+                                      RichTextConfigService, CONST, controlledTermDataService, provisionalClassService,
                                       CedarUser, UISettingsService, ValueRecommenderService, DataUtilService,
                                       TrackingService, $httpParamSerializer, $location) {
 
@@ -304,7 +304,7 @@ define([
           if (term == '*') {
             $rootScope.removeAutocompleteResultsForSource(field_id, valueSet.uri);
           }
-          controlTermDataService.autocompleteValueSetClasses(term, valueSet.vsCollection,
+          controlledTermDataService.autocompleteValueSetClasses(term, valueSet.vsCollection,
               valueSet.uri).then(function (childResponse) {
                 $rootScope.processAutocompleteClassResults(field_id, 'Value Set Class', valueSet.uri, childResponse);
               });
@@ -316,7 +316,7 @@ define([
           if (term == '*') {
             $rootScope.removeAutocompleteResultsForSource(field_id, ontology.uri);
           }
-          controlTermDataService.autocompleteOntology(term, ontology.acronym).then(function (childResponse) {
+          controlledTermDataService.autocompleteOntology(term, ontology.acronym).then(function (childResponse) {
             $rootScope.processAutocompleteClassResults(field_id, 'Ontology Class', ontology.uri, childResponse);
           });
         });
@@ -327,7 +327,7 @@ define([
           if (term == '*') {
             $rootScope.removeAutocompleteResultsForSource(field_id, branch.uri);
           }
-          controlTermDataService.autocompleteOntologySubtree(term, branch.acronym, branch.uri, branch.maxDepth).then(
+          controlledTermDataService.autocompleteOntologySubtree(term, branch.acronym, branch.uri, branch.maxDepth).then(
               function (childResponse) {
                 $rootScope.processAutocompleteClassResults(field_id, 'Ontology Class', branch.uri, childResponse);
               }
@@ -398,7 +398,7 @@ define([
       return obj && obj["@type"] && obj["@type"].indexOf("Ontology") > 0;
     };
 
-    // Used in cedar-control-term.directive
+    // Used in cedar-controlled-term.directive
     $rootScope.lengthOfValueConstraint = function (valueConstraint) {
       return (valueConstraint.classes || []).length +
           (valueConstraint.valueSets || []).length +
@@ -434,7 +434,7 @@ define([
     FieldTypeService.init();
     UrlService.init();
     provisionalClassService.init();
-    controlTermDataService.init();
+    controlledTermDataService.init();
     DataManipulationService.init();
     UISettingsService.init();
     TrackingService.init();

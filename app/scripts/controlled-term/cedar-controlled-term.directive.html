@@ -3,7 +3,7 @@
 
   <div class="form-group floating-label-wrapper field-filter clearfix" ng-if="ctdc.filterSelection == 'field'">
 
-    <cedar-control-term-ontology-picker
+    <cedar-controlled-term-ontology-picker
         class-details="ctdc.classDetails"
         current-ontology="ctdc.currentOntology"
         include-create-class="true"
@@ -11,7 +11,7 @@
         reset-callback="ctdc.startOver"
         selected-class-1="ctdc.selectedClass1"
         selected-class-2="ctdc.selectedClass2">
-    </cedar-control-term-ontology-picker>
+    </cedar-controlled-term-ontology-picker>
 
     <div class="class-actions">
       <div class="class-action table-style" ng-if="ctdc.selectedClass1.prefLabel">
@@ -32,13 +32,13 @@
 
   <div class="value-filter" ng-if="ctdc.filterSelection == 'values'">
 
-    <cedar-control-term-value-set-picker
+    <cedar-controlled-term-value-set-picker
         current-ontology="ctdc.currentOntology"
         current-value-set="ctdc.currentValueSet"
         include-create-class="true"
         reset-callback="ctdc.startOver"
         selected-value-result="ctdc.selectedValueResult">
-    </cedar-control-term-value-set-picker>
+    </cedar-controlled-term-value-set-picker>
     <div class="class-actions">
       <div ng-if="ctdc.selectedValueResult.type == 'OntologyClass' || ctdc.selectedValueResult['@type'] == 'http://www.w3.org/2002/07/owl#Class' || ctdc.selectedValueResult.type == 'Ontology'">
         <div class="element-toggles list table-style" ng-init="ctdc.stageValueConstraintAction = 'add_class'">

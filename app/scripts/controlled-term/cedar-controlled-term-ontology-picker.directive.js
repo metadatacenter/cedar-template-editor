@@ -2,15 +2,15 @@
 
 define([
   'angular',
-  'cedar/template-editor/control-term/provisional-class.controller'
+  'cedar/template-editor/controlled-term/provisional-class.controller'
 ], function(angular) {
-  angular.module('cedar.templateEditor.controlTerm.cedarControlTermOntologyPickerDirective', [
-    'cedar.templateEditor.controlTerm.provisionalClassController'
-  ]).directive('cedarControlTermOntologyPicker', cedarControlTermOntologyPickerDirective);
+  angular.module('cedar.templateEditor.controlledTerm.cedarControlledTermOntologyPickerDirective', [
+    'cedar.templateEditor.controlledTerm.provisionalClassController'
+  ]).directive('cedarControlledTermOntologyPicker', cedarControlledTermOntologyPickerDirective);
 
-  cedarControlTermOntologyPickerDirective.$inject = ['controlTermService'];
+  cedarControlledTermOntologyPickerDirective.$inject = ['controlledTermService'];
 
-  function cedarControlTermOntologyPickerDirective(controlTermService) {
+  function cedarControlledTermOntologyPickerDirective(controlledTermService) {
 
     var directive = {
       bindToController: {
@@ -22,25 +22,25 @@ define([
         selectedClass1: '=',
         selectedClass2: '=',
       },
-      controller: cedarControlTermOntologyPickerController,
+      controller: cedarControlledTermOntologyPickerController,
       controllerAs: 'cctopdc',
       restrict: 'E',
       scope: {},
-      templateUrl: 'scripts/control-term/cedar-control-term-ontology-picker.directive.html'
+      templateUrl: 'scripts/controlled-term/cedar-controlled-term-ontology-picker.directive.html'
     };
 
     return directive;
 
-    cedarControlTermOntologyPickerDirectiveController.$inject = [
+    cedarControlledTermOntologyPickerDirectiveController.$inject = [
       '$q',
       '$rootScope',
       '$scope',
-      'controlTermDataService',
-      'controlTermService',
+      'controlledTermDataService',
+      'controlledTermService',
       'provisionalClassService'
     ];
 
-    function cedarControlTermOntologyPickerController($q, $rootScope, $scope, controlTermDataService, controlTermService, provisionalClassService) {
+    function cedarControlledTermOntologyPickerController($q, $rootScope, $scope, controlledTermDataService, controlledTermService, provisionalClassService) {
       var vm = this;
 
       vm.checkIfSelected = checkIfSelected;
@@ -112,7 +112,7 @@ define([
           event.preventDefault();
         }
         vm.fieldActionSelection = 'browse';
-        vm.searchResults = controlTermDataService.getAllOntologies();
+        vm.searchResults = controlledTermDataService.getAllOntologies();
       }
 
       function fieldSearch(event) {
@@ -129,11 +129,11 @@ define([
           vm.searchPreloader = true;
         }
 
-        controlTermDataService.searchClasses(vm.fieldSearchTerms).then(function (response) {
+        controlledTermDataService.searchClasses(vm.fieldSearchTerms).then(function (response) {
           if (response.collection.length > 0) {
             var tArry = [], i;
             for (i = 0; i < response.collection.length; i += 1) {
-              var ontology = controlTermDataService.getOntologyByLdId(response.collection[i].source);
+              var ontology = controlledTermDataService.getOntologyByLdId(response.collection[i].source);
               // Ignore results for which the ontology was not found in the cache
               if (ontology) {
                 tArry.push({
@@ -159,13 +159,13 @@ define([
        * and child tree directives.
        */
       function getClassDetails(subtree) {
-        var acronym = controlTermService.getAcronym(subtree);
+        var acronym = controlledTermService.getAcronym(subtree);
         var classId = subtree['@id'];
 
         // Get selected class details from the links.self endpoint provided.
         vm.selectedClass2 = subtree;
 
-        controlTermDataService.getClassById(acronym, classId).then(function(response) {
+        controlledTermDataService.getClassById(acronym, classId).then(function(response) {
           vm.classDetails = response;
         });
       }
@@ -230,11 +230,11 @@ define([
       });
 
       function selectFieldClass(selection) {
-        controlTermService.loadTreeOfClass(selection, vm);
+        controlledTermService.loadTreeOfClass(selection, vm);
       }
 
       function selectFieldOntology(selection) {
-        controlTermService.loadOntologyRootClasses(selection, vm);
+        controlledTermService.loadOntologyRootClasses(selection, vm);
       }
 
       function startFieldSearch() {
