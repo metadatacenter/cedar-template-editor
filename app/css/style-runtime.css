@@ -14018,6 +14018,9 @@ div.errorTechnicalDetails textarea {
   color: #71a69c;
   padding-right: 10px;
 }
+#toolbar .other-elements .list-unstyled .tooltip {
+  text-transform: none;
+}
 #toolbar .other-elements .top-half,
 #toolbar .other-elements .bottom-half {
   padding: 30px;

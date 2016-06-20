@@ -49,8 +49,7 @@ define([
         }
     );
 
-    $scope.primaryFieldTypeCount = 4;
-    $scope.fieldTypes = FieldTypeService.getFieldTypes();
+    $scope.primaryFieldTypes = FieldTypeService.getPrimaryFieldTypes();
     $scope.otherFieldTypes = FieldTypeService.getOtherFieldTypes();
     $scope.hideRootElement = true;
 
@@ -142,7 +141,7 @@ define([
     };
 
     // Add newly configured field to the element object
-    $scope.addFieldToElement = function (fieldType) {
+    $scope.addField = function (fieldType) {
       populateCreatingFieldOrElement();
       if (dontHaveCreatingFieldOrElement()) {
         StagingService.addFieldToElement($scope.element, fieldType);
