@@ -24,7 +24,6 @@ define([
 
     $rootScope.isArray = angular.isArray;
 
-    $rootScope.applicationMode = CONST.applicationMode.DEFAULT;
     $rootScope.pageId = null;
 
     $rootScope.sortableOptions = {

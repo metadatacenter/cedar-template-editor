@@ -24,10 +24,8 @@ define([
 
         $rootScope.searchBrowseModalId = "search-browse-modal";
 
-        // Configure mini header
         var pageId = CONST.pageId.TEMPLATE;
-        var applicationMode = CONST.applicationMode.CREATOR;
-        HeaderService.configure(pageId, applicationMode);
+        HeaderService.configure(pageId);
         StagingService.configure(pageId);
 
         AuthorizedBackendService.doCall(

@@ -32,10 +32,8 @@ define([
 
     $scope.showCreateEditForm = true;
 
-    // Configure mini header
     var pageId = CONST.pageId.ELEMENT;
-    var applicationMode = CONST.applicationMode.CREATOR;
-    HeaderService.configure(pageId, applicationMode);
+    HeaderService.configure(pageId);
     StagingService.configure(pageId);
 
     AuthorizedBackendService.doCall(
@@ -52,31 +50,30 @@ define([
     $scope.otherFieldTypes = FieldTypeService.getOtherFieldTypes();
     $scope.hideRootElement = true;
 
-    $scope.addElementFromPicker = function() {
+    $scope.addElementFromPicker = function () {
       if ($scope.pickerResource) {
         $scope.addElementToElement($scope.pickerResource);
       }
       $scope.hideSearchBrowsePicker();
     };
 
-    $scope.pickElementFromPicker = function(resource) {
+    $scope.pickElementFromPicker = function (resource) {
       $scope.addElementToElement(resource);
       $scope.hideSearchBrowsePicker();
     };
 
-    $scope.selectElementFromPicker = function(resource) {
+    $scope.selectElementFromPicker = function (resource) {
       $scope.pickerResource = resource;
     };
 
-    $scope.showSearchBrowsePicker = function() {
+    $scope.showSearchBrowsePicker = function () {
       $scope.showMenuPopover = false;
       $scope.pickerResource = null;
       $scope.showCreateEditForm = false;
     };
-    $scope.hideSearchBrowsePicker = function() {
+    $scope.hideSearchBrowsePicker = function () {
       $scope.showCreateEditForm = true;
     };
-
 
 
     var getElement = function () {
@@ -337,35 +334,34 @@ define([
       $location.url(UrlService.getFolderContents(params.folderId));
     };
 
-    $scope.elementSearch = function() {
+    $scope.elementSearch = function () {
       jQuery("body").trigger("click");
       jQuery("#" + $scope.searchBrowseModalId).modal("show");
     }
 
-    $scope.addElementFromPicker = function() {
+    $scope.addElementFromPicker = function () {
       if ($scope.pickerResource) {
         $scope.addElementToElement($scope.pickerResource);
       }
       $scope.hideSearchBrowsePicker();
     };
 
-    $scope.pickElementFromPicker = function(resource) {
+    $scope.pickElementFromPicker = function (resource) {
       $scope.addElementToElement(resource);
       $scope.hideSearchBrowsePicker();
     };
 
-    $scope.selectElementFromPicker = function(resource) {
+    $scope.selectElementFromPicker = function (resource) {
       $scope.pickerResource = resource;
     };
 
-    $scope.showSearchBrowsePicker = function() {
+    $scope.showSearchBrowsePicker = function () {
       $scope.pickerResource = null;
     };
 
-    $scope.hideSearchBrowsePicker = function() {
+    $scope.hideSearchBrowsePicker = function () {
       jQuery("#" + $scope.searchBrowseModalId).modal('hide')
     };
-
 
 
   }
