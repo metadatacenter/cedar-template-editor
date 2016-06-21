@@ -24,12 +24,9 @@ define([
 
         $rootScope.searchBrowseModalId = "search-browse-modal";
 
-        // Configure mini header
         var pageId = CONST.pageId.TEMPLATE;
-        var applicationMode = CONST.applicationMode.CREATOR;
-        HeaderService.configure(pageId, applicationMode);
+        HeaderService.configure(pageId);
         StagingService.configure(pageId);
-        $rootScope.applicationRole = 'creator';
 
         AuthorizedBackendService.doCall(
             TemplateElementService.getAllTemplateElementsSummary(),
@@ -41,8 +38,7 @@ define([
             }
         );
 
-        $scope.primaryFieldTypeCount = 4;
-        $scope.fieldTypes = FieldTypeService.getFieldTypes();
+        $scope.primaryFieldTypes = FieldTypeService.getPrimaryFieldTypes();
         $scope.otherFieldTypes = FieldTypeService.getOtherFieldTypes();
 
 
@@ -96,18 +92,13 @@ define([
         };
 
         // Add newly configured field to the element object
-        $scope.addFieldToTemplate = function (fieldType) {
-
+        $scope.addField = function (fieldType) {
           populateCreatingFieldOrElement();
           if (dontHaveCreatingFieldOrElement()) {
-
-
             var domId = DataManipulationService.createDomId();
             StagingService.addFieldToForm($scope.form, fieldType, domId, function (el) {
-
               // now we are sure that the element was successfully added
               $rootScope.scrollToDomId(domId);
-
             });
           }
         };

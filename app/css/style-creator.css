@@ -13311,10 +13311,10 @@ body.modal-open .modal-backdrop {
   background-color: transparent;
   opacity: 1;
 }
-.control-term-field-preview-form .elementTotalContent .preview-edit-options {
+.controlled-term-field-preview-form .elementTotalContent .preview-edit-options {
   display: none;
 }
-.control-term-field-preview-form .elementTotalContent .form-group {
+.controlled-term-field-preview-form .elementTotalContent .form-group {
   margin-right: 0;
 }
 .template-body form .form-group .field-search-form-control,
@@ -13347,13 +13347,13 @@ body .template-header .controlled-terms-modal {
 .autocomplete-label-wrapper .ui-select-bootstrap .ui-select-toggle > .caret {
   display: none;
 }
-.template-body form .control-term-field-preview-form .input-indicator-icons {
+.template-body form .controlled-term-field-preview-form .input-indicator-icons {
   top: 0;
 }
-.template-body form .control-term-field-preview-form .autocomplete-label-wrapper .input-indicator-icons {
+.template-body form .controlled-term-field-preview-form .autocomplete-label-wrapper .input-indicator-icons {
   top: -30px;
 }
-.template-body form .control-term-field-preview-form .autocomplete-label-wrapper [disabled] .ui-select-toggle {
+.template-body form .controlled-term-field-preview-form .autocomplete-label-wrapper [disabled] .ui-select-toggle {
   background: #EEE;
 }
 #form-item-config-section .radio label:before {
@@ -14017,6 +14017,9 @@ div.errorTechnicalDetails textarea {
 #toolbar .other-elements .list-unstyled li a i {
   color: #5795ba;
   padding-right: 10px;
+}
+#toolbar .other-elements .list-unstyled .tooltip {
+  text-transform: none;
 }
 #toolbar .other-elements .top-half,
 #toolbar .other-elements .bottom-half {

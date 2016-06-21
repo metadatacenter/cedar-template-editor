@@ -13,6 +13,7 @@ define([
   function FieldTypeService() {
 
     var fieldTypes = [];
+    var primaryFieldTypes = [];
     var otherFieldTypes = [];
     var primaryFieldTypeCount = 4;
 
@@ -22,11 +23,16 @@ define([
 
     service.init = function () {
       fieldTypes = config;
-      otherFieldTypes = fieldTypes.slice(4);
+      primaryFieldTypes = fieldTypes.slice(0, primaryFieldTypeCount);
+      otherFieldTypes = fieldTypes.slice(primaryFieldTypeCount);
     };
 
     service.getFieldTypes = function () {
       return fieldTypes;
+    };
+
+    service.getPrimaryFieldTypes = function () {
+      return primaryFieldTypes;
     };
 
     service.getOtherFieldTypes = function () {
