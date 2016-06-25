@@ -222,7 +222,7 @@
       <!-- ontology-tree -->
       <div class="ontology-tree pull-left" ng-if="cctvspdc.selectedValueResult && cctvspdc.currentOntology && cctvspdc.currentOntology.tree
       && cctvspdc.browsingSection == 'ontology'">
-        <div class="tree tree-view-ul tree-view list-unstyled class-tree-container">
+        <div class="tree tree-view-ul tree-view list-unstyled class-tree-container" ng-if="!cctvspdc.currentOntology.info.flat">
           <cedar-class-tree
               get-class-details-callback="cctvspdc.getClassDetails"
               is-selected-callback="cctvspdc.checkIfSelected"
@@ -230,6 +230,7 @@
               tree="cctvspdc.currentOntology.tree">
           </cedar-class-tree>
         </div>
+        <div class="tree tree-view-message" ng-if="cctvspdc.currentOntology.info.flat">Tree browsing not supported for this ontology</div>
       </div>
       <!-- /.ontology-tree -->
 
