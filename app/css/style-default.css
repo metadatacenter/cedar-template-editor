@@ -12033,6 +12033,10 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
 .controlled-term-options .tab-content .tab-pane {
   height: 100%;
 }
+.controlled-term-options .tab-content .table-responsive .no-selected-class,
+.controlled-term-options .tab-content .tab-pane .no-selected-class {
+  padding-top: 30px;
+}
 .controlled-term-options .ontology-tree > h4 {
   margin-top: 0px;
 }
@@ -12043,6 +12047,12 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
 }
 .controlled-term-options .ontology-tree .tree-view-ul .hasChildren .selected {
   font-weight: bold;
+}
+.controlled-term-options .ontology-tree .tree-view-message {
+  height: 295px;
+  width: 100%;
+  text-align: center;
+  padding-top: 20px;
 }
 .controlled-term-options .added-fields,
 .controlled-term-options .added-values {

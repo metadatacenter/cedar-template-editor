@@ -120,14 +120,15 @@
     </div>
     <div class="field-tree-details">
       <div class="ontology-tree pull-left" ng-if="cctopdc.isCurrentOntology()">
-        <div class="tree tree-view-ul tree-view list-unstyled class-tree-container">
-          <cedar-class-tree 
+        <div class="tree tree-view-ul tree-view list-unstyled class-tree-container" ng-if="!cctopdc.currentOntology.info.flat">
+          <cedar-class-tree
               tree="cctopdc.currentOntology.tree"
               selected-node="cctopdc.selectedClass1"
               is-selected-callback="cctopdc.checkIfSelected"
               get-class-details-callback="cctopdc.getClassDetails">
           </cedar-class-tree>
         </div>
+        <div class="tree tree-view-message" ng-if="cctopdc.currentOntology.info.flat">Tree browsing not supported for this ontology</div>
       </div><!-- /.ontology-tree -->
 
       <div class="field-details-view pull-right" ng-if="cctopdc.isCurrentOntology()">
