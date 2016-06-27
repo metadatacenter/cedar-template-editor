@@ -41,7 +41,7 @@
       <!-- if we are on the dashboard --->
       <div ng-if="hc.isDashboard()">
         <div>
-          <div class=" nav-search" >
+          <div class=" nav-search">
             <form>
               <div class="form-group floating-label-wrapper search-input">
                 <input autocomplete="off" ng-keyup="$event.keyCode == 13 && hc.search(hc.searchTerm)" type="search"
@@ -60,36 +60,43 @@
 
       <!-- otherwise on an edit page--->
       <div ng-if="!hc.isDashboard()">
-        <div class="navbar-back col-sm-12" >
+        <div class="navbar-back col-sm-12">
           <div class="back-arrow-click" ng-click="hc.goToDashboardOrBack()"></div>
           <i class="back-arrow fa fa-arrow-left"></i> <span class="document-title">{{hc.getDocumentTitle()}}</span>
-          <div class="page-title pull-right" >{{hc.getPageTitle()}}
+
+          <div class="page-title pull-right">{{hc.getPageTitle()}}
             <span id="jsonTools" cedar-position-json-tools="true">
 
-              <a id='show-json-link' ng-click="$root.showRender = !$root.showRender; $root.scrollToAnchor('templateJSON')"
-                  title="Show Template JSON">
-                <span ng-if="$root.showRender"><i class="cedar-svg-complete" ></i></span>
-                <span ng-if="!$root.showRender"><i class="cedar-svg-progress" ></i></span>
+              <a id='show-json-link'
+                  ng-click="$root.showModel = !$root.showModel; $root.scrollToAnchor('templateJSON')"
+                  tooltip='{{$root.isElementEditor()?"UTILS.JSON.showElementModel":"UTILS.JSON.showTemplateModel" | translate}}'
+                  tooltip-placement="left"
+                  >
+                <span ng-if="$root.showModel"><i class="cedar-svg-complete"></i></span>
+                <span ng-if="!$root.showModel"><i class="cedar-svg-progress"></i></span>
               </a>
 
-              <a ng-click="$root.showOutput = !$root.showOutput; $root.scrollToAnchor('outputJSON')" title="Show Output JSON"
-                  ng-if="$root.pageId == 'RUNTIME'">
-                <span ng-if="$root.showOutput"> <i class="cedar-svg-complete" ></i></span>
-                <span ng-if="!$root.showOutput"><i class="cedar-svg-progress" ></i></span>
+              <a
+                  ng-click="$root.showOutput = !$root.showOutput; $root.scrollToAnchor('outputJSON')"
+                  tooltip='{{"UTILS.JSON.showInstance" | translate}}'
+                  tooltip-placement="left"
+                  ng-if="$root.isRuntime()">
+                <span ng-if="$root.showOutput"><i class="cedar-svg-complete"></i></span>
+                <span ng-if="!$root.showOutput"><i class="cedar-svg-progress"></i></span>
               </a>
             </span>
 
           </div>
 
 
-          </div>
         </div>
       </div>
+    </div>
 
 
-      <!--<div ng-if="!hc.showSearch()" class="pull-right" style="padding:20px">-->
-      <!--<h4>{{$root.pageTitle}}</h4>-->
-      <!--</div>-->
+    <!--<div ng-if="!hc.showSearch()" class="pull-right" style="padding:20px">-->
+    <!--<h4>{{$root.pageTitle}}</h4>-->
+    <!--</div>-->
 
 
   </div>

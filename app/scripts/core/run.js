@@ -53,6 +53,14 @@ define([
       return $rootScope.pageId == 'RUNTIME';
     };
 
+    $rootScope.isElementEditor = function () {
+      return $rootScope.pageId == 'ELEMENT';
+    };
+
+    $rootScope.isTemplateEditor = function () {
+      return $rootScope.pageId == 'TEMPLATE';
+    };
+
     $rootScope.elementIsMultiInstance = DataManipulationService.elementIsMultiInstance;
 
     $rootScope.isElement = function (value) {

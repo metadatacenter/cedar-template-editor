@@ -17,40 +17,7 @@ define([
                                    TemplateElementService, UIMessageService, DataManipulationService, DataUtilService,
                                    AuthorizedBackendService, CONST) {
 
-    $rootScope.showSearch = true;
-
-    $rootScope.searchBrowseModalId = "search-browse-modal";
-
-    // Set page title variable when this controller is active
-    $rootScope.pageTitle = 'Element Designer';
-    // Setting default false flag for $scope.favorite
-    //$scope.favorite = false;
-    // Empty $scope object used to store values that get converted to their json-ld counterparts on the $scope.element object
-    $scope.volatile = {};
-    // Setting form preview setting to false by default
-    //$scope.form = {};
-
-    $scope.showCreateEditForm = true;
-
-    var pageId = CONST.pageId.ELEMENT;
-    HeaderService.configure(pageId);
-    StagingService.configure(pageId);
-
-    AuthorizedBackendService.doCall(
-        TemplateElementService.getAllTemplateElementsSummary(),
-        function (response) {
-          $scope.elementList = response.data;
-        },
-        function (err) {
-          UIMessageService.showBackendError('SERVER.ELEMENTS.load.error', err);
-        }
-    );
-
-    $scope.primaryFieldTypes = FieldTypeService.getPrimaryFieldTypes();
-    $scope.otherFieldTypes = FieldTypeService.getOtherFieldTypes();
-    $scope.hideRootElement = true;
-
-    var getElement = function () {
+    $scope.getElement = function () {
       $scope.form = {};
       // Load existing element if $routeParams.id parameter is supplied
       if ($routeParams.id) {
@@ -69,8 +36,8 @@ define([
               $scope.form._ui = $scope.form._ui || {};
               $scope.form._ui.order = $scope.form._ui.order || [];
               $scope.form._ui.order.push(key);
-              $rootScope.jsonToSave = $scope.element;
               $rootScope.documentTitle = $scope.form._ui.title;
+              StagingService.setModelObject($scope.element);
             },
             function (err) {
               UIMessageService.showBackendError('SERVER.ELEMENT.load.error', err);
@@ -89,18 +56,17 @@ define([
         $scope.form._ui = $scope.form._ui || {};
         $scope.form._ui.order = $scope.form._ui.order || [];
         $scope.form._ui.order.push(key);
-        $rootScope.jsonToSave = $scope.element;
+        StagingService.setModelObject($scope.element);
       }
     };
-    getElement();
 
-    var populateCreatingFieldOrElement = function () {
+    $scope.populateCreatingFieldOrElement = function () {
       $scope.invalidFieldStates = {};
       $scope.invalidElementStates = {};
       $scope.$broadcast('saveForm');
-    }
+    };
 
-    var dontHaveCreatingFieldOrElement = function () {
+    $scope.dontHaveCreatingFieldOrElement = function () {
       return $rootScope.isEmpty($scope.invalidFieldStates) && $rootScope.isEmpty($scope.invalidElementStates);
     }
 
@@ -112,16 +78,16 @@ define([
 
     // Add newly configured field to the element object
     $scope.addField = function (fieldType) {
-      populateCreatingFieldOrElement();
-      if (dontHaveCreatingFieldOrElement()) {
+      $scope.populateCreatingFieldOrElement();
+      if ($scope.dontHaveCreatingFieldOrElement()) {
         StagingService.addFieldToElement($scope.element, fieldType);
       }
       $scope.showMenuPopover = false;
     };
 
     $scope.addElementToElement = function (element) {
-      populateCreatingFieldOrElement();
-      if (dontHaveCreatingFieldOrElement()) {
+      $scope.populateCreatingFieldOrElement();
+      if ($scope.dontHaveCreatingFieldOrElement()) {
         StagingService.addElementToElement($scope.element, element["@id"]);
         $scope.$broadcast("form:update");
       }
@@ -154,8 +120,8 @@ define([
     };
 
     $scope.saveElement = function () {
-      populateCreatingFieldOrElement();
-      if (dontHaveCreatingFieldOrElement()) {
+      $scope.populateCreatingFieldOrElement();
+      if ($scope.dontHaveCreatingFieldOrElement()) {
         UIMessageService.conditionalOrConfirmedExecution(
             StagingService.isEmpty(),
             function () {
@@ -236,10 +202,54 @@ define([
           );
         }
       }
-    }
+    };
 
-    $scope.invalidFieldStates = {};
-    $scope.invalidElementStates = {};
+    // create a copy of the form with the _tmp fields stripped out
+    $scope.stripTmpFields = function () {
+      var copiedForm = jQuery.extend(true, {}, $scope.form);
+      if (copiedForm) {
+        DataManipulationService.stripTmps(copiedForm);
+      }
+      return copiedForm;
+    };
+
+    // cancel the form and go back to the current folder
+    $scope.cancelElement = function () {
+      var params = $location.search();
+      $location.url(UrlService.getFolderContents(params.folderId));
+    };
+
+    $scope.elementSearch = function () {
+      jQuery("body").trigger("click");
+      jQuery("#" + $scope.searchBrowseModalId).modal("show");
+    };
+
+    $scope.addElementFromPicker = function () {
+      if ($scope.pickerResource) {
+        $scope.addElementToElement($scope.pickerResource);
+      }
+      $scope.hideSearchBrowsePicker();
+    };
+
+    $scope.pickElementFromPicker = function (resource) {
+      $scope.addElementToElement(resource);
+      $scope.hideSearchBrowsePicker();
+    };
+
+    $scope.selectElementFromPicker = function (resource) {
+      $scope.pickerResource = resource;
+    };
+
+    $scope.showSearchBrowsePicker = function () {
+      $scope.pickerResource = null;
+    };
+
+    $scope.hideSearchBrowsePicker = function () {
+      jQuery("#" + $scope.searchBrowseModalId).modal('hide')
+    };
+
+    //*********** EVENT HANDLERS
+
     $scope.$on('invalidFieldState', function (event, args) {
       if (args[2] != $scope.element["@id"]) {
         if (args[0] == 'add') {
@@ -258,6 +268,8 @@ define([
         delete $scope.invalidElementStates[args[2]];
       }
     });
+
+    //*********** WATCHES
 
     // This function watches for changes in the _ui.title field and autogenerates the schema title and description fields
     $scope.$watch('element._ui.title', function (v) {
@@ -293,50 +305,34 @@ define([
       }
     });
 
-    // create a copy of the form with the _tmp fields stripped out
-    $scope.stripTmpFields = function () {
+    //*********** ENTRY POINT
 
-      var copiedForm = jQuery.extend(true, {}, $scope.form);
-      if (copiedForm) {
-        DataManipulationService.stripTmps(copiedForm);
-      }
-      return copiedForm;
-    };
+    $scope.invalidFieldStates = {};
+    $scope.invalidElementStates = {};
 
-    $scope.cancelElement = function () {
-      var params = $location.search();
-      $location.url(UrlService.getFolderContents(params.folderId));
-    };
+    $rootScope.showSearch = true;
 
-    $scope.elementSearch = function () {
-      jQuery("body").trigger("click");
-      jQuery("#" + $scope.searchBrowseModalId).modal("show");
-    }
+    $rootScope.pageTitle = 'Element Designer';
 
-    $scope.addElementFromPicker = function () {
-      if ($scope.pickerResource) {
-        $scope.addElementToElement($scope.pickerResource);
-      }
-      $scope.hideSearchBrowsePicker();
-    };
+    $rootScope.searchBrowseModalId = "search-browse-modal";
 
-    $scope.pickElementFromPicker = function (resource) {
-      $scope.addElementToElement(resource);
-      $scope.hideSearchBrowsePicker();
-    };
+    // Empty $scope object used to store values that get converted to their json-ld counterparts on the $scope.element object
+    $scope.volatile = {};
+    // Setting form preview setting to false by default
+    //$scope.form = {};
 
-    $scope.selectElementFromPicker = function (resource) {
-      $scope.pickerResource = resource;
-    };
+    $scope.showCreateEditForm = true;
 
-    $scope.showSearchBrowsePicker = function () {
-      $scope.pickerResource = null;
-    };
+    var pageId = CONST.pageId.ELEMENT;
+    HeaderService.configure(pageId);
+    StagingService.configure(pageId);
 
-    $scope.hideSearchBrowsePicker = function () {
-      jQuery("#" + $scope.searchBrowseModalId).modal('hide')
-    };
+    $scope.primaryFieldTypes = FieldTypeService.getPrimaryFieldTypes();
+    $scope.otherFieldTypes = FieldTypeService.getOtherFieldTypes();
 
+    $scope.hideRootElement = true;
+
+    $scope.getElement();
 
   }
 

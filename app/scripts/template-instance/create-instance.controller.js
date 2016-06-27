@@ -8,11 +8,11 @@ define([
 
   CreateInstanceController.$inject = ["$translate", "$rootScope", "$scope", "$routeParams", "$location",
                                       "HeaderService", "UrlService", "TemplateService", "TemplateInstanceService",
-                                      "UIMessageService", "AuthorizedBackendService", "CONST"];
+                                      "UIMessageService", "AuthorizedBackendService", "StagingService", "CONST"];
 
   function CreateInstanceController($translate, $rootScope, $scope, $routeParams, $location, HeaderService, UrlService,
                                     TemplateService, TemplateInstanceService, UIMessageService,
-                                    AuthorizedBackendService, CONST) {
+                                    AuthorizedBackendService, StagingService, CONST) {
 
     // Get/read template with given id from $routeParams
     $scope.getTemplate = function () {
@@ -23,6 +23,7 @@ define([
             $scope.form = response.data;
             HeaderService.dataContainer.currentObjectScope = $scope.form;
             $rootScope.documentTitle = $scope.form._ui.title;
+            StagingService.setModelObject($scope.form);
           },
           function (err) {
             UIMessageService.showBackendError('SERVER.TEMPLATE.load.error', err);
@@ -39,11 +40,13 @@ define([
             $scope.instance = instanceResponse.data;
             $scope.isEditData = true;
             $rootScope.documentTitle = $scope.instance._ui.title;
+            StagingService.setDataObject($scope.instance);
             AuthorizedBackendService.doCall(
                 TemplateService.getTemplate(instanceResponse.data._templateId),
                 function (templateResponse) {
                   // Assign returned form object from FormService to $scope.form
                   $scope.form = templateResponse.data;
+                  StagingService.setModelObject($scope.form);
                 },
                 function (templateErr) {
                   UIMessageService.showBackendError('SERVER.TEMPLATE.load-for-instance.error', templateErr);
@@ -103,25 +106,42 @@ define([
       }
     };
 
+    // cancel the form and go back to folder
+    $scope.cancelTemplate = function () {
+      var params = $location.search();
+      $location.url(UrlService.getFolderContents(params.folderId));
+    };
+
+    //*********** EVENT HANDLERS
+
+    // Event listener waiting for emptyRequiredField $emit from field-directive.js
+    $scope.$on('invalidFieldValues', function (event, args) {
+      if (args[0] == 'add') {
+        $scope.invalidFieldValues[args[2]] = args[1];
+      }
+      if (args[0] == 'remove') {
+        delete $scope.invalidFieldValues[args[2]];
+      }
+    });
+
+    // Event listener waiting for emptyRequiredField $emit from field-directive.js
+    $scope.$on('emptyRequiredField', function (event, args) {
+      if (args[0] == 'add') {
+        $scope.emptyRequiredFields[args[2]] = args[1];
+      }
+      if (args[0] == 'remove') {
+        delete $scope.emptyRequiredFields[args[2]];
+      }
+    });
+
     //*********** ENTRY POINT
 
     $rootScope.showSearch = false;
 
-    // set Page Title variable when this controller is active
     $rootScope.pageTitle = 'Metadata Editor';
 
     // Giving $scope access to window.location for checking active state
     $scope.$location = $location;
-
-    AuthorizedBackendService.doCall(
-        TemplateService.getAllTemplatesSummary(),
-        function (response) {
-          $scope.templateList = response.data;
-        },
-        function (err) {
-          UIMessageService.showBackendError('SERVER.TEMPLATES.load.error', err);
-        }
-    );
 
     var pageId = CONST.pageId.RUNTIME;
     HeaderService.configure(pageId);
@@ -130,6 +150,18 @@ define([
     // Create empty instance object
     $scope.form = {};
     $scope.instance = {};
+    StagingService.setModelObject($scope.form);
+    StagingService.setDataObject($scope.instance);
+
+    // Initialize array for required fields left empty that fail required empty check
+    $scope.emptyRequiredFields = {};
+
+    // Initialize array for fields that are not conform to valueConstraints
+    $scope.invalidFieldValues = {};
+
+    // Initialize value recommender service
+    $rootScope.vrs.init($routeParams.templateId);
+
 
     // Create new instance
     if (!angular.isUndefined($routeParams.templateId)) {
@@ -141,39 +173,6 @@ define([
       $scope.getInstance();
     }
 
-
-    // Initialize array for required fields left empty that fail required empty check
-    $scope.emptyRequiredFields = {};
-    // Event listener waiting for emptyRequiredField $emit from field-directive.js
-    $scope.$on('emptyRequiredField', function (event, args) {
-      if (args[0] == 'add') {
-        $scope.emptyRequiredFields[args[2]] = args[1];
-      }
-      if (args[0] == 'remove') {
-        delete $scope.emptyRequiredFields[args[2]];
-      }
-    });
-
-    // Initialize array for fields that are not conform to valueConstraints
-    $scope.invalidFieldValues = {};
-    // Event listener waiting for emptyRequiredField $emit from field-directive.js
-    $scope.$on('invalidFieldValues', function (event, args) {
-      if (args[0] == 'add') {
-        $scope.invalidFieldValues[args[2]] = args[1];
-      }
-      if (args[0] == 'remove') {
-        delete $scope.invalidFieldValues[args[2]];
-      }
-    });
-
-    // Initialize value recommender service
-    $rootScope.vrs.init($routeParams.templateId);
-
-    // cancel the form and go back to folder
-    $scope.cancelTemplate = function () {
-      var params = $location.search();
-      $location.url(UrlService.getFolderContents(params.folderId));
-    };
 
   };
 

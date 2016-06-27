@@ -301,5 +301,12 @@
     "TOOLBAR": {
       "searchForMore": "Search for More Elements"
     }
+  },
+  "UTILS": {
+    "JSON": {
+      "showElementModel": "Show/hide Element Model",
+      "showTemplateModel": "Show/hide Template Model",
+      "showInstance": "Show/hide Instance Data"
+    }
   }
 }
