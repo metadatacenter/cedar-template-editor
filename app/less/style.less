@@ -3455,12 +3455,12 @@ p.instructions {
   }
 
   .field-search {
-    width: 49%;
+    width: 100%;
   }
 
-  .field-browse {
-    width: 49%;
-  }
+  //.field-browse {
+  //  width: 49%;
+  //}
 }
 
 .add-ontology-class {
@@ -3505,12 +3505,12 @@ p.instructions {
   }
 
   .field-search {
-    width: 49%;
+    width: 100%;
   }
 
-  .field-browse {
-    width: 49%;
-  }
+  //.field-browse {
+  //  width: 49%;
+  //}
 }
 
 .options-wrapper {
@@ -4456,31 +4456,31 @@ p.instructions {
   }
 }
 
-.is-searching {
-  .field-search {
-    width: 100%;
-    transition: width 1s ease-in-out;
-  }
+//.is-searching {
+//  .field-search {
+//    width: 100%;
+//    transition: width 1s ease-in-out;
+//  }
+//
+//  .field-browse, .field-create-class {
+//    display: none;
+//  }
+//
+//  .values-search {
+//    width: 100%;
+//    transition: width 1s ease-in-out;
+//  }
+//
+//  .values-browse, .values-create-class {
+//    display: none;
+//  }
+//}
 
-  .field-browse, .field-create-class {
-    display: none;
-  }
-
-  .values-search {
-    width: 100%;
-    transition: width 1s ease-in-out;
-  }
-
-  .values-browse, .values-create-class {
-    display: none;
-  }
-}
-
-.field-search {
-  display: block;
-  float: left;
-  width: 33%;
-}
+//.field-search {
+//  display: block;
+//  float: left;
+//  width: 33%;
+//}
 
 .values-search {
   display: block;
@@ -4524,31 +4524,35 @@ p.instructions {
   overflow: hidden;
 }
 
-.is-browsing {
-  .field-search, .field-create-class {
-    display: none;
-  }
-
-  .field-browse {
-    width: 100%;
-    transition: width 1s ease-in-out;
-  }
-
-  .values-search, .values-create-class {
-    display: none;
-  }
-
-  .values-browse {
-    width: 100%;
-    transition: width 1s ease-in-out;
-  }
-}
+//.is-browsing {
+//  .field-search, .field-create-class {
+//    display: none;
+//  }
+//
+//  .field-browse {
+//    width: 100%;
+//    transition: width 1s ease-in-out;
+//  }
+//
+//  .values-search, .values-create-class {
+//    display: none;
+//  }
+//
+//  .values-browse {
+//    width: 100%;
+//    transition: width 1s ease-in-out;
+//  }
+//}
 
 .inline-block {
   display: inline-block;
 }
 
 .checkbox-bioportal-value-sets {
+  margin-left: 20px;
+}
+
+.radio-bioportal- {
   margin-left: 20px;
 }
 
@@ -5094,7 +5098,30 @@ table.apiKey {
   }
 }
 
+// Always show scroll bars
 
+::-webkit-scrollbar {
+  -webkit-appearance: none;
+}
+
+::-webkit-scrollbar:vertical {
+  width: 11px;
+}
+
+::-webkit-scrollbar:horizontal {
+  height: 11px;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 8px;
+  border: 2px solid white; /* should match background, can't be transparent */
+  background-color: rgba(0, 0, 0, .5);
+}
+
+::-webkit-scrollbar-track {
+  background-color: #fff;
+  border-radius: 0px;
+}
 
 
 

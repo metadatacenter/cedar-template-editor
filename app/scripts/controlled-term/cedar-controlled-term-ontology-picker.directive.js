@@ -3,7 +3,7 @@
 define([
   'angular',
   'cedar/template-editor/controlled-term/provisional-class.controller'
-], function(angular) {
+], function (angular) {
   angular.module('cedar.templateEditor.controlledTerm.cedarControlledTermOntologyPickerDirective', [
     'cedar.templateEditor.controlledTerm.provisionalClassController'
   ]).directive('cedarControlledTermOntologyPicker', cedarControlledTermOntologyPickerDirective);
@@ -14,19 +14,20 @@ define([
 
     var directive = {
       bindToController: {
-        classDetails: '=',
-        currentOntology: '=',
-        includeCreateClass: '=',
+        fieldName            : '=',
+        classDetails         : '=',
+        currentOntology      : '=',
+        includeCreateClass   : '=',
         isLoadingClassDetails: '=',
-        resetCallback: '=?',
-        selectedClass1: '=',
-        selectedClass2: '=',
+        resetCallback        : '=?',
+        selectedClass1       : '=',
+        selectedClass2       : '=',
       },
-      controller: cedarControlledTermOntologyPickerController,
-      controllerAs: 'cctopdc',
-      restrict: 'E',
-      scope: {},
-      templateUrl: 'scripts/controlled-term/cedar-controlled-term-ontology-picker.directive.html'
+      controller      : cedarControlledTermOntologyPickerController,
+      controllerAs    : 'cctopdc',
+      restrict        : 'E',
+      scope           : {},
+      templateUrl     : 'scripts/controlled-term/cedar-controlled-term-ontology-picker.directive.html'
     };
 
     return directive;
@@ -40,38 +41,122 @@ define([
       'provisionalClassService'
     ];
 
-    function cedarControlledTermOntologyPickerController($q, $rootScope, $scope, controlledTermDataService, controlledTermService, provisionalClassService) {
+    function cedarControlledTermOntologyPickerController($q, $rootScope, $scope, controlledTermDataService,
+                                                         controlledTermService) {
       var vm = this;
 
+      vm.changeSearchScope = changeSearchScope;
       vm.checkIfSelected = checkIfSelected;
       vm.classDetails = null;
-      vm.endFieldSearch = endFieldSearch;
-      vm.fieldActionSelection = null;
-      vm.fieldBrowse = fieldBrowse;
+      vm.currentAction = null;
+      vm.endSearch = endSearch;
+      vm.currentAction = null;
+      //vm.fieldBrowse = fieldBrowse;
       vm.fieldCreateClass = fieldCreateClass;
-      vm.fieldSearch = fieldSearch;
-      vm.fieldSearchTerms = '';
+      vm.searchQuery = '';
       vm.fieldTreeVisibility = false;
       vm.getClassDetails = getClassDetails;
-      //vm.getOntologySummary = getOntologySummary;
       vm.hideFieldTree = hideFieldTree;
-      vm.isBrowsing = isBrowsing;
       vm.isCreatingClass = isCreatingClass;
       vm.isCurrentOntology = isCurrentOntology;
       vm.isOntologyNameMatched = isOntologyNameMatched;
       vm.isSearching = isSearching;
-      vm.isSearchingOntologies = null;
+      vm.isSearchingOntologies = isSearchingOntologies;
+      vm.isSearchingClasses = isSearchingClasses;
       vm.ontologySearch = ontologySearch;
       vm.ontologySearchRegexp = null;
       vm.ontologySearchTerms = null;
       vm.prepareForOntologySearch = prepareForOntologySearch;
       vm.reset = reset;
-      vm.searchNoResults = false;
+      vm.search = search;
+      vm.searchClasses = searchClasses;
+      vm.searchOntologies = searchOntologies;
+      vm.searchScope = 'classes';
+      vm.searchClassesNoResults = false;
       vm.searchPreloader = false;
-      vm.searchResults = [];
+      vm.searchClassesResults = [];
+      vm.searchOntologiesResults = [];
       vm.selectFieldClass = selectFieldClass;
       vm.selectFieldOntology = selectFieldOntology;
-      vm.startFieldSearch = startFieldSearch;
+      vm.startSearch = startSearch;
+
+      /**
+       * Search
+       */
+
+      function search(event) {
+        if (event) {
+          event.preventDefault();
+        }
+        // Search for ontology classes
+        if (vm.searchScope == 'classes') {
+          searchClasses();
+        }
+        // Search for ontologies
+        else if (vm.searchScope == 'ontologies') {
+          searchOntologies();
+        }
+      }
+
+      function startSearch() {
+        vm.currentAction = 'search';
+      }
+
+      function endSearch() {
+        if (!vm.searchQuery) {
+          vm.currentAction = null;
+        }
+      }
+
+      function ontologySearch() {
+        vm.isSearchingOntologies = true;
+      }
+
+      /* Search for ontology classes */
+      function searchClasses() {
+        vm.searchClassesResults = [];
+        vm.searchClassesNoResults = false;
+
+        if (vm.searchQuery == '') {
+          vm.searchPreloader = false;
+          return;
+        } else {
+          vm.searchPreloader = true;
+        }
+
+        controlledTermDataService.searchClasses(vm.searchQuery).then(function (response) {
+          if (response.collection.length > 0) {
+            var tArry = [], i;
+            for (i = 0; i < response.collection.length; i += 1) {
+              var ontology = controlledTermDataService.getOntologyByLdId(response.collection[i].source);
+              // Ignore results for which the ontology was not found in the cache
+              if (ontology) {
+                tArry.push({
+                  prefLabel: response.collection[i].prefLabel,
+                  details  : response.collection[i],
+                  ontology : ontology
+                });
+              }
+            }
+            vm.searchClassesResults = tArry;
+          } else {
+            vm.searchClassesNoResults = true;
+          }
+          vm.searchClassesResults = tArry;
+
+          // Hide 'Searching...' message
+          vm.searchPreloader = false;
+        });
+      }
+
+      /* Search for ontologies */
+      function searchOntologies() {
+        //vm.searchOntologiesResults = controlledTermDataService.getAllOntologies();
+      }
+
+      function changeSearchScope() {
+        reset(vm.searchScope);
+      }
 
       /**
        * Used in ontology tree directive.
@@ -97,61 +182,8 @@ define([
         return spl == st;
       }
 
-      function endFieldSearch() {
-        if (!vm.fieldSearchTerms) {
-          vm.fieldActionSelection = null;
-        }
-      }
-
       function fieldCreateClass() {
-        vm.fieldActionSelection = 'create';
-      }
-
-      function fieldBrowse(event) {
-        if (event) {
-          event.preventDefault();
-        }
-        vm.fieldActionSelection = 'browse';
-        vm.searchResults = controlledTermDataService.getAllOntologies();
-      }
-
-      function fieldSearch(event) {
-        if (event) {
-          event.preventDefault();
-        }
-        vm.searchResults = [];
-        vm.searchNoResults = false;
-
-        if (vm.fieldSearchTerms == '') {
-          vm.searchPreloader = false;
-          return;
-        } else {
-          vm.searchPreloader = true;
-        }
-
-        controlledTermDataService.searchClasses(vm.fieldSearchTerms).then(function (response) {
-          if (response.collection.length > 0) {
-            var tArry = [], i;
-            for (i = 0; i < response.collection.length; i += 1) {
-              var ontology = controlledTermDataService.getOntologyByLdId(response.collection[i].source);
-              // Ignore results for which the ontology was not found in the cache
-              if (ontology) {
-                tArry.push({
-                  prefLabel : response.collection[i].prefLabel,
-                  details   : response.collection[i],
-                  ontology  : ontology
-                });
-              }
-            }
-            vm.searchResults = tArry;
-          } else {
-            vm.searchNoResults = true;
-          }
-          vm.searchResults = tArry;
-
-          // Hide 'Searching...' message
-          vm.searchPreloader = false;
-        });
+        vm.currentAction = 'create';
       }
 
       /**
@@ -165,7 +197,7 @@ define([
         // Get selected class details from the links.self endpoint provided.
         vm.selectedClass2 = subtree;
 
-        controlledTermDataService.getClassById(acronym, classId).then(function(response) {
+        controlledTermDataService.getClassById(acronym, classId).then(function (response) {
           vm.classDetails = response;
         });
       }
@@ -178,18 +210,6 @@ define([
         vm.currentOntology = '';
         vm.classDetails = '';
       };
-
-      function isBrowsing() {
-        return vm.fieldActionSelection == 'browse';
-      }
-
-      function isCreatingClass() {
-        return vm.fieldActionSelection == 'create';
-      }
-
-      function isCurrentOntology() {
-        return vm.currentOntology && vm.currentOntology != '';
-      }
 
       function isOntologyNameMatched(ontology) {
         var name;
@@ -206,18 +226,31 @@ define([
       }
 
       function isSearching() {
-        return vm.fieldActionSelection == 'search';
+        return vm.currentAction == 'search';
       }
 
-      function reset() {
-        vm.fieldActionSelection = null;
-        vm.fieldSearchTerms = '';
+      function reset(searchScope) {
+        if (searchScope == 'undefined') {
+          vm.searchScope = 'classes';
+        }
+        else {
+          vm.searchScope = searchScope;
+        }
+
+        vm.searchOntologiesResults = [];
+        vm.searchClassesResults = [];
+        if (searchScope == 'ontologies') {
+          vm.searchOntologiesResults = controlledTermDataService.getAllOntologies();
+          console.log('ontologies loaded');
+        }
+
+        vm.searchQuery = '';
+        vm.currentAction = null;
         vm.classDetails = null;
         vm.selectedClass1 = null;
         vm.selectedClass2 = null;
         vm.fieldTreeVisibility = false;
         vm.searchPreloader = false;
-        vm.searchResults = [];
 
         if (typeof vm.resetCallback === "function") {
           vm.resetCallback();
@@ -237,14 +270,6 @@ define([
         controlledTermService.loadOntologyRootClasses(selection, vm);
       }
 
-      function startFieldSearch() {
-        vm.fieldActionSelection = 'search';
-      }
-
-      function ontologySearch() {
-        vm.isSearchingOntologies = true;
-      }
-
       function prepareForOntologySearch(event) {
         if ($rootScope.isKeyVisible(event.keyCode)) {
           vm.isSearchingOntologies = false;
@@ -253,15 +278,36 @@ define([
         event.keyCode == 13 && vm.ontologySearch();
       }
 
+
+      /** Util methods **/
+
+      function isSearchingClasses() {
+        return vm.searchScope == 'classes';
+      }
+
+      function isSearchingOntologies() {
+        return vm.searchScope == 'ontologies'
+      }
+
+      function isCreatingClass() {
+        return vm.currentAction == 'create';
+      }
+
+      function isCurrentOntology() {
+        return vm.currentOntology && vm.currentOntology != '';
+      }
+
       /**
        * Watch functions.
        */
 
-      $scope.$watch(function(scope) { return vm.ontologySearchTerms; }, function() {
-        if (vm.ontologySearchTerms) {
-          vm.ontologySearchRegexp = new RegExp(vm.ontologySearchTerms, "i");
+      $scope.$watch(function (scope) {
+        return vm.searchQuery;
+      }, function () {
+        if (vm.searchQuery) {
+          vm.ontologySearchRegexp = new RegExp(vm.searchQuery, "i");
         } else {
-          vm.ontologySearchRegexp = null;
+          vm.searchQuery = null;
         }
       });
 
