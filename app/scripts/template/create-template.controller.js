@@ -25,6 +25,7 @@ define([
             TemplateService.getTemplate($routeParams.id),
             function (response) {
               $scope.form = response.data;
+              StagingService.setModelObject($scope.form);
               HeaderService.dataContainer.currentObjectScope = $scope.form;
 
               // stick a domId on fields and elements
@@ -32,7 +33,6 @@ define([
               //$scope.closeAllElements();
               $rootScope.keyOfRootElement = $scope.form["@id"];
               $rootScope.rootElement = $scope.form;
-              StagingService.setModelObject($scope.form);
             },
             function (err) {
               UIMessageService.showBackendError('SERVER.TEMPLATE.load.error', err);
@@ -41,10 +41,10 @@ define([
       } else {
         // If we're not loading an existing form then let's create a new empty $scope.form property
         $scope.form = DataTemplateService.getTemplate();
+        StagingService.setModelObject($scope.form);
         HeaderService.dataContainer.currentObjectScope = $scope.form;
         $rootScope.keyOfRootElement = $scope.form["@id"];
         $rootScope.rootElement = $scope.form;
-        StagingService.setModelObject($scope.form);
       }
     };
 
@@ -174,7 +174,6 @@ define([
         // Save template
         if ($routeParams.id == undefined) {
           var queryParams = $location.search();
-          $scope.form['parentId'] = queryParams.folderId;
           AuthorizedBackendService.doCall(
               TemplateService.saveTemplate(queryParams.folderId, $scope.form),
               function (response) {
@@ -198,6 +197,7 @@ define([
               TemplateService.updateTemplate(id, $scope.form),
               function (response) {
                 $scope.form = response.data;
+                StagingService.setModelObject($scope.form);
                 UIMessageService.flashSuccess('SERVER.TEMPLATE.update.success',
                     {"title": response.data._ui.title}, 'GENERIC.Updated');
               },

@@ -168,7 +168,6 @@ define([
         // Check if the element is already stored into the DB
         if ($routeParams.id == undefined) {
           var queryParams = $location.search();
-          $scope.element['parentId'] = queryParams.folderId;
           AuthorizedBackendService.doCall(
               TemplateElementService.saveTemplateElement(queryParams.folderId, $scope.element),
               function (response) {

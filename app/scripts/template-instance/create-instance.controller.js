@@ -78,7 +78,6 @@ define([
             {description: $scope.form._ui.description});
         // Make create instance call
         var queryParams = $location.search();
-        $scope.instance['parentId'] = queryParams.folderId;
         AuthorizedBackendService.doCall(
             TemplateInstanceService.saveTemplateInstance(queryParams.folderId, $scope.instance),
             function (response) {
