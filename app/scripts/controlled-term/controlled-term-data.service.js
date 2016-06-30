@@ -240,8 +240,8 @@ define([
       return acronym;
     }
 
-    function searchClasses(query) {
-      var url = base + "/search?q=" + encodeURIComponent(query) + "&scope=classes" + "&page=1&page_size=100";
+    function searchClasses(query, size) {
+      var url = base + "/search?q=" + encodeURIComponent(query) + "&scope=classes" + "&page=1&page_size=" + size;
       return $http.get(url, http_default_config).then(function (response) {
         return response.data;
       }).catch(function (err) {

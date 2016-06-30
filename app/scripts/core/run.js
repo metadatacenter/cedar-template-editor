@@ -398,7 +398,7 @@ define([
       return obj && obj["@type"] && obj["@type"].indexOf("Ontology") > 0;
     };
 
-    // Used in cedar-controlled-term.directive
+    // Used in controlled-term.directive
     $rootScope.lengthOfValueConstraint = function (valueConstraint) {
       return (valueConstraint.classes || []).length +
           (valueConstraint.valueSets || []).length +

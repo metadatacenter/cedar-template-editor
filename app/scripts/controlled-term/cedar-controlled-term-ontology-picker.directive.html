@@ -1,5 +1,5 @@
-<h2>Find ontology classes to annotate the '{{cctopdc.fieldName}}' field</h2>
-<p>This feature allows you to find classes from external ontologies stored in the BioPortal ontology repository to annotate your templates</p>
+<!--<h2>Find ontology classes to annotate the '{{cctopdc.fieldName}}' field</h2>-->
+<!--<p>This feature allows you to find classes from external ontologies stored in the BioPortal ontology repository to annotate your templates</p>-->
 <h4>Find an ontology class to annotate the '{{cctopdc.fieldName}}' field</h4>
 
 <div class="form-group floating-label-wrapper btn-start-over-group clearfix">
@@ -23,12 +23,11 @@
   <h3>{{cctopdc.searchScope}}</h3>
 </div>
 
-
 <div class="field-search">
 
   <div class="input-group field-search-input-group">
     <input id="field-search-input" type="text" class="form-control field-search-form-control"
-        placeholder="Search for a class/ontology in BioPortal" aria-label="Search field"
+        placeholder="{{cctopdc.searchPlaceholderMessage()}}" aria-label="Search field"
         ng-model="cctopdc.searchQuery" ng-focus="cctopdc.startSearch()" ng-blur="cctopdc.endSearch()"
         ng-keyup="$event.keyCode == 13 && cctopdc.search($event)" with-floating-label=""/>
       <span class="input-group-addon" ng-click="cctopdc.search()">

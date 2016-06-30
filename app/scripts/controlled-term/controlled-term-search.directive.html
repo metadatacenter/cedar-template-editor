@@ -1,0 +1,206 @@
+<!--<h2>Find ontology classes to annotate the '{{cctopdc.fieldName}}' field</h2>-->
+<!--<p>This feature allows you to find classes from external ontologies stored in the BioPortal ontology repository to annotate your templates</p>-->
+<h4 ng-show="tsc.isFieldTypesMode()">Find one or more terms in BioPortal to annotate the '{{tsc.fieldName}}' field</h4>
+<h4 ng-show="tsc.isFieldValuesMode()">Find terms in BioPortal to constrain the values of the '{{tsc.fieldName}}' field</h4>
+
+<!-- Start over -->
+<div class="form-group floating-label-wrapper btn-start-over-group clearfix">
+  <button type="button" class="btn btn-start-over" ng-click="tsc.reset()">Start Over</button>
+  <!-- Search Field -->
+  <div class="field-search">
+    <div class="input-group field-search-input-group">
+      <input id="field-search-input" type="text" class="form-control field-search-form-control"
+          placeholder="Search in BioPortal" aria-label="Search field"
+          ng-model="tsc.searchQuery" ng-focus="tsc.showEmptyQueryMsg = false"
+          ng-keyup="$event.keyCode == 13 && tsc.search($event)" with-floating-label="" />
+      <span class="input-group-addon" ng-click="tsc.search()">
+        <img src="../img/search-icon.png"/>
+      </span>
+    </div>
+  </div>
+  <!-- Advanced options -->
+  <!--<button type="button" class="btn btn-advanced" ng-click="cctopdc.reset()">Advanced</button>-->
+  <div class="text-center search-options">
+    <div class="radio inline-block radio-primary radio-controlled-terms-search">
+      <input id="search-scope-1" type="radio" ng-model="tsc.searchScope" value="classes"
+          ng-click="$event.stopPropagation()" ng-change="tsc.changeSearchScope()"/>
+      <label>Ontology Terms</label>
+    </div>
+    <div class="radio inline-block radio-primary radio-controlled-terms-search">
+      <input id="search-scope-2" type="radio" ng-model="tsc.searchScope" value="ontologies"
+          ng-click="$event.stopPropagation()" ng-change="tsc.changeSearchScope()"/>
+      <label>Ontologies</label>
+    </div>
+    <div class="radio inline-block radio-primary radio-controlled-terms-search"
+        ng-show="tsc.isFieldValuesMode()">
+      <input id="search-scope-3" type="radio" ng-model="tsc.searchScope" value="value-sets"
+          ng-click="$event.stopPropagation()" ng-change="tsc.changeSearchScope()"/>
+      <label>Value sets</label>
+    </div>
+  </div>
+</div>
+
+<div class="preloader" ng-if="tsc.showSearchPreloader"></div>
+<div class="searchMsg" ng-if="tsc.showEmptyQueryMsg">Please enter a search query</div>
+
+<div class="searchMsg" ng-if="tsc.searchFinished">
+  <div ng-if="tsc.resultsFound">{{tsc.searchClassesResults.length}} results</div>
+  <div ng-if="!tsc.resultsFound" >No results</div>
+</div>
+
+<!-- Search Results and Ontology Tree -->
+<div class="clear search-results-section">
+  <!-- Classes results -->
+  <div ng-if="tsc.isSearchingClasses() && tsc.resultsFound && !tsc.treeVisible">
+    <div class="search-results-headers">
+      <table class="table table-condensed results-headers-table search-results-headers-table">
+        <thead>
+        <tr>
+          <th>Term</th>
+          <th>Ontology</th>
+        </tr>
+        </thead>
+      </table>
+    </div>
+    <div class="search-results">
+      <div class="no-search-results" ng-show="!tsc.resultsFound">No results.</div>
+      <div class="table-responsive results-table-container">
+        <table class="table table-hover results-table search-results-table" ng-if="tsc.isSearchingClasses()">
+          <tbody>
+          <tr ng-repeat="result in tsc.searchClassesResults" ng-click="tsc.selectFieldClass(result.details)">
+            <td>{{result.prefLabel}}</td>
+            <td>{{result.ontology.name}} ({{result.ontology.id}})</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <!-- Ontologies results -->
+  <div ng-if="tsc.isSearchingOntologies() && !tsc.treeVisible">
+    <div class="search-results-headers">
+      <table class="table table-condensed results-headers-table browse-results-headers-table">
+        <thead>
+        <tr>
+          <th>Ontology</th>
+          <th>Categories</th>
+          <th>No Classes</th>
+        </tr>
+        </thead>
+      </table>
+    </div>
+    <div class="search-results">
+      <div class="table-responsive results-table-container">
+        <table class="table table-hover results-table browse-results-table">
+          <tbody>
+          <tr ng-repeat="result in tsc.searchOntologiesResults" ng-click="tsc.selectFieldOntology(result)" ng-show="tsc.isOntologyNameMatched(result)">
+            <td>{{result.name}}</td>
+            <td>{{result.details.categories.join(", ") || "-" }}</td>
+            <td>{{result.details.numberOfClasses | returnNullIfEmpty}}</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <!-- Ontology tree -->
+  <div class="field-tree clear" ng-show="tsc.treeVisible">
+    <div class="field-tree-header table-style">
+      <!-- Tree header -->
+      <div class="ontology-tree-header table-cell-style" ng-if="tsc.isCurrentOntology()">
+        <h4>
+          <a class="pull-left" ng-click="cctopdc.hideFieldTree()">
+            <img src="../img/left-arrow.png" />
+          </a>
+          &nbsp;&nbsp;&nbsp;&nbsp;{{cctopdc.currentOntology.info.name}}
+        </h4>
+      </div>
+      <!-- Term and ontology details header -->
+      <div class="field-details-view table-cell-style" ng-if="cctopdc.isCurrentOntology()">
+        <ul class="nav nav-tabs" role="tablist">
+          <li role="presentation" class="detail-view-tab active">
+            <a href="#class-details" aria-controls="class-details" role="tab" data-toggle="tab">Term Details</a>
+          </li>
+          <li role="presentation" class="detail-view-tab">
+            <a href="#ontology-details" aria-controls="ontology-details" role="tab" data-toggle="tab">Ontology Details</a>
+          </li>
+        </ul>
+      </div>
+      <div class="clearfix"></div>
+    </div>
+    <div class="field-tree-details">
+      <div class="ontology-tree pull-left" ng-if="cctopdc.isCurrentOntology()">
+        <div class="tree tree-view-ul tree-view list-unstyled class-tree-container" ng-if="!cctopdc.currentOntology.info.flat">
+          <cedar-class-tree
+              tree="cctopdc.currentOntology.tree"
+              selected-node="cctopdc.selectedClass1"
+              is-selected-callback="cctopdc.checkIfSelected"
+              get-class-details-callback="cctopdc.getClassDetails">
+          </cedar-class-tree>
+        </div>
+        <div class="tree tree-view-message" ng-if="cctopdc.currentOntology.info.flat">Tree browsing not supported for this ontology</div>
+      </div><!-- /.ontology-tree -->
+
+      <div class="field-details-view pull-right" ng-if="cctopdc.isCurrentOntology()">
+        <div class="tab-content">
+          <div id="class-details" class="tab-pane active" role="tabpanel">
+            <div class="no-selected-class text-center" ng-hide="cctopdc.classDetails">No class is selected</div>
+            <div class="table-responsive">
+              <table class="table table-striped">
+                <tbody ng-show="cctopdc.classDetails">
+                <tr>
+                  <th>Name</th>
+                  <th>{{cctopdc.classDetails.prefLabel}}</th>
+                </tr>
+                <tr>
+                  <td>ID</td>
+                  <td>{{cctopdc.classDetails['@id']}}</td>
+                </tr>
+                <tr>
+                  <td>Definition</td>
+                  <td ng-if="cctopdc.classDetails.definition[0]">{{cctopdc.classDetails.definition[0]}}</td>
+                  <td ng-if="cctopdc.classDetails.definitions[0]">{{cctopdc.classDetails.definitions[0]}}</td>
+                  <td ng-if="!cctopdc.classDetails.definition[0] && !cctopdc.classDetails.definitions[0]">-</td>
+                </tr>
+                </tbody>
+              </table>
+            </div><!-- /.table-responsive -->
+          </div><!-- /.class-details -->
+          <div id="ontology-details" class="tab-pane" role="tabpanel">
+            <div class="table-responsive">
+              <table class="table table-striped">
+                <tbody>
+                <tr>
+                  <th>Name</th>
+                  <th>{{cctopdc.currentOntology.info.name}}</th>
+                </tr>
+                <tr>
+                  <td>Acronym</td>
+                  <td>{{cctopdc.currentOntology.info.id}}</td>
+                </tr>
+                <tr>
+                  <td>@id</td>
+                  <td>
+                    <a ng-href="{{cctopdc.currentOntology.info['@id']}}" target="_blank">{{cctopdc.currentOntology.info['@id']}}</a>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Description</td>
+                  <td>{{cctopdc.currentOntology.info.details.description | htmlToPlainText}}</td>
+                </tr>
+                <tr>
+                  <td># of Classes</td>
+                  <td>{{cctopdc.currentOntology.info.details.numberOfClasses | returnNullIfEmpty}}</td>
+                </tr>
+                </tbody>
+              </table>
+            </div><!-- /.table-responsive -->
+          </div>
+        </div>
+        <div class="clearfix"></div>
+      </div>
+      <div class="clearfix"></div>
+    </div>
+  </div>
+
+</div>

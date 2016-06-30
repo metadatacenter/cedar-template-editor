@@ -73,6 +73,7 @@ define([
       vm.searchOntologies = searchOntologies;
       vm.searchScope = 'classes';
       vm.searchClassesNoResults = false;
+      vm.searchPlaceholderMessage = searchPlaceholderMessage;
       vm.searchPreloader = false;
       vm.searchClassesResults = [];
       vm.searchOntologiesResults = [];
@@ -158,6 +159,15 @@ define([
         reset(vm.searchScope);
       }
 
+      function searchPlaceholderMessage() {
+        if (vm.isSearchingClasses()) {
+          return ('Search for an ontology class in BioPortal');
+        }
+        else if (vm.isSearchingOntologies()) {
+          return ('Search for an ontology in BioPortal');
+        }
+      }
+
       /**
        * Used in ontology tree directive.
        *
@@ -241,7 +251,7 @@ define([
         vm.searchClassesResults = [];
         if (searchScope == 'ontologies') {
           vm.searchOntologiesResults = controlledTermDataService.getAllOntologies();
-          console.log('ontologies loaded');
+          vm.ontologySearchRegexp = null;
         }
 
         vm.searchQuery = '';

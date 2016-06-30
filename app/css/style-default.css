@@ -11868,6 +11868,7 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   cursor: pointer;
 }
 .controlled-term-options .btn-start-over,
+.controlled-term-options .btn-advanced,
 .controlled-term-options .btn-back {
   color: #339933;
   background-color: transparent;
@@ -11880,8 +11881,10 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   padding: 0;
 }
 .controlled-term-options .btn-start-over:hover,
+.controlled-term-options .btn-advanced:hover,
 .controlled-term-options .btn-back:hover,
 .controlled-term-options .btn-start-over:focus,
+.controlled-term-options .btn-advanced:focus,
 .controlled-term-options .btn-back:focus {
   color: #71a69c;
 }
@@ -13098,7 +13101,7 @@ p.instructions {
 .checkbox-bioportal-value-sets {
   margin-left: 20px;
 }
-.radio-bioportal- {
+.radio-controlled-terms-search {
   margin-left: 20px;
 }
 .clickable {
@@ -13255,7 +13258,7 @@ p.instructions {
   margin-top: -20px;
 }
 .controlled-terms-modal .modal-body {
-  padding: 0 100px 100px;
+  padding: 0 40px 40px;
   height: calc(100% - 60px);
   overflow-y: auto;
 }
@@ -13487,9 +13490,11 @@ body .template-header .controlled-terms-modal {
   color: #999999;
   opacity: 0.6;
 }
+.field-filter .search-options,
 .value-filter .search-options {
   margin-bottom: 25px;
 }
+.field-filter .search-options label,
 .value-filter .search-options label {
   font-size: 16px;
 }
