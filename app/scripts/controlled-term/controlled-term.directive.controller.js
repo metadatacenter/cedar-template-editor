@@ -358,8 +358,7 @@ define([
       vm.currentValueSet = null;
       vm.stagedOntologyClassValueConstraints = [];
       vm.stageValueConstraintAction = null;
-      vm.selectedClass1 = null;
-      vm.selectedClass2 = null;
+      vm.selectedClass = null;
       vm.classDetails = null;
 
       //Init field/value tooltip

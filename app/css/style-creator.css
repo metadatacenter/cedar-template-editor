@@ -11935,7 +11935,7 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
 .controlled-term-options .search-results-section .results-headers-table td,
 .controlled-term-options .search-results-section .results-table th,
 .controlled-term-options .search-results-section .results-headers-table th {
-  padding: 16px 20px;
+  padding: 10px 10px;
 }
 .controlled-term-options .search-results-section .results-table td:first-child,
 .controlled-term-options .search-results-section .results-headers-table td:first-child,
@@ -12768,9 +12768,10 @@ p.instructions {
   padding: 0;
   list-style: none;
   position: relative;
+  border-left: 1px dashed #333;
 }
 .tree ul {
-  margin-left: 0.5em;
+  margin-left: 1em;
 }
 .tree ul:before {
   content: "";
@@ -12783,17 +12784,18 @@ p.instructions {
 }
 .tree li {
   margin: 0;
-  padding: 5px 1em;
+  padding: 6px 0em;
   /* indentation + .5em */
-  line-height: 22px;
+  line-height: 14px;
   /* default list item's `line-height` */
-  height: 30px;
+  height: 22px;
   font-weight: bold;
   position: relative;
 }
 .tree li a {
+  color: #333;
   display: block;
-  height: 22px;
+  height: 14px;
   white-space: nowrap;
   font-weight: normal;
 }
@@ -12816,18 +12818,39 @@ p.instructions {
   display: block;
   width: 16px;
   /* same with indentation */
-  height: 22px;
+  height: 15px;
   float: left;
+  margin-left: -6px;
 }
 .tree li:last-child:before {
   background: white;
   /* same with body background */
 }
+.tree .no-children > a:before {
+  content: "--";
+  font-weight: 200;
+  display: inline-block;
+  padding-left: 6px;
+  vertical-align: middle;
+  margin-right: 2px;
+}
 .tree .has-children > a:before {
-  background: url("/img/collapsed_arrow.png") no-repeat center center transparent;
+  font-family: FontAwesome;
+  content: "\f196 ";
+  display: inline-block;
+  padding-right: 3px;
+  vertical-align: middle;
+  background: white;
+  margin-right: 2px;
 }
 .tree .has-children.expanded > a:before {
-  background: url("/img/expanded_arrow.png") no-repeat center center transparent;
+  font-family: FontAwesome;
+  content: "\f147";
+  display: inline-block;
+  padding-right: 3px;
+  vertical-align: middle;
+  background: white;
+  margin-right: 2px;
 }
 .tree-view-ul > .tree > li {
   padding-left: 0;
@@ -12838,11 +12861,11 @@ p.instructions {
 .field-tree .ontology-tree {
   margin: 0;
   width: 40%;
-  padding: 10px 10px 0;
+  padding: 4px 4px 0;
   background: #ffffff;
 }
 .field-tree .ontology-tree .class-tree-container {
-  padding: 0 10px 5px 10px;
+  padding: 0 5px 5px 5px;
   background: #FFF;
 }
 .field-tree .ontology-class-children {
@@ -12867,6 +12890,7 @@ p.instructions {
   background: #d2d2d2;
   border: none;
   color: #000000;
+  color: grey;
   padding: 10px 15px;
 }
 .field-tree .field-details-view .nav-tabs .detail-view-tab.active a {
@@ -12875,11 +12899,11 @@ p.instructions {
   font-weight: normal;
 }
 .field-tree .field-details-view .tab-content table th {
-  padding: 15px 8px;
+  padding: 8px 8px;
   color: #5795ba;
   font-weight: bold;
-  text-transform: uppercase;
-  border: none;
+  border-left: none;
+  border-right: none;
 }
 .field-tree .field-details-view .tab-content table th:first-child {
   width: 100px;
@@ -12889,6 +12913,7 @@ p.instructions {
 }
 .field-tree .field-details-view .tab-content table td {
   border-bottom: none;
+  padding: 8px 8px;
 }
 .selected-field-class {
   margin-left: -28px;
@@ -13246,8 +13271,7 @@ p.instructions {
   height: 100%;
   background: #eaf2f2;
   border-radius: 0;
-  -o-box-shadow: none;
-  box-shadow: none;
+  box-shadow: 6px 6px 13px -2px rgba(0, 0, 0, 0.75);
   border: 0;
 }
 .controlled-terms-modal .modal-header {
@@ -13277,8 +13301,7 @@ body.modal-open .controlled-terms-modal {
   height: auto;
 }
 body.modal-open .modal-backdrop {
-  background-color: transparent;
-  opacity: 1;
+  opacity: 0.5;
 }
 .controlled-term-field-preview-form .elementTotalContent .preview-edit-options {
   display: none;

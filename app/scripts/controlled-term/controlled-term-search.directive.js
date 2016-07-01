@@ -52,11 +52,14 @@ define([
 
       /* Function declarations */
       vm.changeSearchScope = changeSearchScope;
+      vm.checkIfSelected = checkIfSelected;
       vm.isEmptySearchQuery = isEmptySearchQuery;
       vm.isFieldTypesMode = isFieldTypesMode;
       vm.isFieldValuesMode = isFieldValuesMode;
       vm.isOntologyNameMatched = isOntologyNameMatched;
       vm.getDefaultSearchQuery = getDefaultSearchQuery;
+      vm.getClassDetails = getClassDetails;
+      vm.hideTree = hideTree;
       //vm.getSearchPlaceholderMessage = getSearchPlaceholderMessage;
       vm.isCurrentOntology = isCurrentOntology;
       vm.isSearchingClasses = isSearchingClasses;
@@ -259,6 +262,46 @@ define([
           return ontology;
         }
       }
+
+      /* Used in ontology tree directive. */
+      /* This function is passed as a callback down through class tree and child tree directives */
+      function checkIfSelected(subtree) {
+        if (!subtree) {
+          return false;
+        }
+
+        var spl = subtree["@id"];
+        var st;
+        if (vm.selectedClass && vm.selectedClass["@id"]) {
+          st = vm.selectedClass["@id"];
+        }
+        
+        return spl == st;
+      }
+
+      function fieldCreateClass() {
+        vm.currentAction = 'create';
+      }
+
+      /* This function is passed as a callback down through class tree and child tree directives */
+      function getClassDetails(subtree) {
+        var acronym = controlledTermService.getAcronym(subtree);
+        var classId = subtree['@id'];
+
+        // Get selected class details from the links.self endpoint provided.
+        vm.selectedClass = subtree;
+
+        controlledTermDataService.getClassById(acronym, classId).then(function (response) {
+          vm.classDetails = response;
+        });
+      }
+
+      /* Hide Ontology Tree and Details */
+      function hideTree() {
+        vm.treeVisible = false;
+        vm.currentOntology = '';
+        vm.classDetails = '';
+      };
 
       /**
        * Watch functions

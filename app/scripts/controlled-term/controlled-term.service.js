@@ -154,7 +154,7 @@ define([
         $scope.classDetails = response;
       });
 
-      $scope.selectedClass1 = selection;
+      $scope.selectedClass = selection;
 
       $q.all({
         info: controlledTermDataService.getOntologyById(ontologyAcronym),

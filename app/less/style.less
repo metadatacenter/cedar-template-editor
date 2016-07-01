@@ -3160,7 +3160,7 @@ section.dashboard-elements {
     .results-table, .results-headers-table {
       width: 100%;
       td, th {
-        padding: 16px 20px;
+        padding: 10px 10px;
 
         &:first-child {
           width: 350px;
@@ -4110,16 +4110,17 @@ p.instructions {
 */
 
 .tree {
+
   ul {
     margin: 0 0 0 1em; /* indentation */
     padding: 0;
     list-style: none;
-    // color:#369;
     position: relative;
+    border-left: 1px dashed #333;
   }
 
   ul {
-    margin-left: .5em
+    margin-left: 1em
   }
   /* (indentation/2) */
 
@@ -4136,14 +4137,15 @@ p.instructions {
 
   li {
     margin: 0;
-    padding: 5px 1em; /* indentation + .5em */
-    line-height: 22px; /* default list item's `line-height` */
-    height: 30px;
+    padding: 6px 0em; /* indentation + .5em */
+    line-height: 14px; /* default list item's `line-height` */
+    height: 22px;
     font-weight: bold;
     position: relative;
     a {
+      color: #333;
       display: block;
-      height: 22px;
+      height: 14px;
       white-space: nowrap;
       font-weight: normal;
 
@@ -4172,8 +4174,9 @@ p.instructions {
     content: "";
     display: block;
     width: 16px; /* same with indentation */
-    height: 22px;
+    height: 15px;
     float: left;
+    margin-left: -6px;
     // border-top:1px solid;
     // margin-top:-1px; /* border top width */
     // position:absolute;
@@ -4192,6 +4195,14 @@ p.instructions {
   .no-children {
     > a:before {
       // background: url("../scripts/Bioportal/assets/upper_leaf.gif") no-repeat center top transparent;
+      //font-family: FontAwesome;
+      content: "--";
+      font-weight: 200;
+      display: inline-block;
+      padding-left: 6px;
+      vertical-align: middle;
+      margin-right: 2px;
+      //background: white;
     }
 
     &:last-child {
@@ -4204,7 +4215,16 @@ p.instructions {
   .has-children {
     > a:before {
       // background: url("../scripts/Bioportal/assets/upper_node_collapse.gif") no-repeat center top transparent;
-      background: url("/img/collapsed_arrow.png") no-repeat center center transparent;
+      //content: '+';
+      font-family: FontAwesome;
+      content: "\f196 ";
+      display: inline-block;
+      padding-right: 3px;
+      vertical-align: middle;
+      background: white;
+      margin-right: 2px;
+      //background: url("/img/collapsed_arrow.png") no-repeat center center transparent;
+      //background: url("/img/collapsed_arrow.png") no-repeat center center transparent;
     }
     &:last-child {
       > a:before {
@@ -4215,7 +4235,14 @@ p.instructions {
     &.expanded {
       > a:before {
         // background: url("../scripts/Bioportal/assets/upper_node_expand.gif") no-repeat center top transparent;
-        background: url("/img/expanded_arrow.png") no-repeat center center transparent;
+        //background: url("/img/expanded_arrow.png") no-repeat center center transparent;
+        font-family: FontAwesome;
+        content: "\f147";
+        display: inline-block;
+        padding-right: 3px;
+        vertical-align: middle;
+        background: white;
+        margin-right: 2px;
       }
       &:last-child {
         > a:before {
@@ -4236,11 +4263,11 @@ p.instructions {
     // border: 1px solid #DDD;
     margin: 0;
     width: 40%;
-    padding: 10px 10px 0;
+    padding: 4px 4px 0;
     background: @white;
 
     .class-tree-container {
-      padding: 0 10px 5px 10px;
+      padding: 0 5px 5px 5px;
       background: #FFF;
     }
   }
@@ -4267,6 +4294,7 @@ p.instructions {
           background: @gray3;
           border: none;
           color: @black;
+          color: grey;
           padding: 10px 15px;
         }
 
@@ -4283,11 +4311,13 @@ p.instructions {
     .tab-content {
       table {
         th {
-          padding: 15px 8px;
+          padding: 8px 8px;
           color: @brand-primary;
           font-weight: bold;
-          text-transform: uppercase;
-          border: none;
+          border-left: none;
+          border-right: none;
+          //text-transform: uppercase;
+          //border: none;
 
           &:first-child {
             width: 100px;
@@ -4299,6 +4329,7 @@ p.instructions {
 
         td {
           border-bottom: none;
+          padding: 8px 8px;
         }
       }
     }
@@ -4726,10 +4757,9 @@ p.instructions {
     height: 100%;
     background: @modal-bg-color;
     border-radius: 0;
-    -webkit-box-shadow: none;
-    -moz-box-shadow: none;
-    -o-box-shadow: none;
-    box-shadow: none;
+    -webkit-box-shadow: 6px 6px 13px -2px rgba(0,0,0,0.75);
+    -moz-box-shadow: 6px 6px 13px -2px rgba(0,0,0,0.75);
+    box-shadow: 6px 6px 13px -2px rgba(0,0,0,0.75);
     border: 0;
   }
 
@@ -4764,8 +4794,8 @@ body.modal-open {
   }
 
   .modal-backdrop {
-    background-color: transparent;
-    opacity: 1;
+    //background-color: transparent;
+    opacity: 0.5;
   }
 }
 
