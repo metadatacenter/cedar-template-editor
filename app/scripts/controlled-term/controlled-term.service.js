@@ -138,6 +138,8 @@ define([
      * Show ontology tree and details screen.
      */
     function loadTreeOfClass(selection, $scope) {
+      $scope.selectedClass = null;
+      $scope.isLoadingClassDetails = true;
       // TODO: try to remove this statement
       if (selection.sourceId) {
         var ontologyAcronym = getLastFragmentOfUri(selection.sourceId);
@@ -147,8 +149,6 @@ define([
       }
       $scope.treeVisible = true;
       $scope.searchPreloader = true;
-
-      $scope.isLoadingClassDetails = true;
 
       controlledTermDataService.getClassById(ontologyAcronym, selection["@id"]).then(function (response) {
         $scope.classDetails = response;

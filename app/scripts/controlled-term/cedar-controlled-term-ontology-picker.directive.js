@@ -129,6 +129,7 @@ define([
           if (response.collection.length > 0) {
             var tArry = [], i;
             for (i = 0; i < response.collection.length; i += 1) {
+              console.log(response.collection[i]);
               var ontology = controlledTermDataService.getOntologyByLdId(response.collection[i].source);
               // Ignore results for which the ontology was not found in the cache
               if (ontology) {

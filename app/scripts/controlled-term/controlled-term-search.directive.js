@@ -11,13 +11,15 @@ define([
   function controlledTermSearchDirective() {
     var directive = {
       bindToController: {
-        fieldName : '=',
-        searchMode: '=',
-        //currentOntology    : '=',
+        fieldName    : '=',
+        searchMode   : '=',
+        selectedClass: '=',
+        currentOntology    : '=',
         //currentValueSet    : '=',
         //includeCreateClass : '=',
-        //resetCallback      : '=?',
+        resetCallback: '=?',
         //selectedValueResult: '=',
+        isLoadingClassDetails: '='
       },
       controller      : controlledTermSearchDirectiveController,
       controllerAs    : 'tsc',
@@ -36,7 +38,6 @@ define([
     ];
 
     function controlledTermSearchDirectiveController($q, $rootScope, $scope, controlledTermService, controlledTermDataService) {
-
       /* Variable declarations */
       var vm = this;
       vm.action = 'search';
@@ -46,6 +47,7 @@ define([
       vm.searchFinished = null;
       vm.searchOntologiesResults = [];
       vm.searchScope = 'classes'; // Default search scope
+      vm.selectedResultId = null;
       vm.showSearchPreloader = false;
       vm.showEmptyQueryMsg = false;
       vm.treeVisible = false;
@@ -68,7 +70,6 @@ define([
       vm.search = search;
       vm.selectFieldClass = selectFieldClass;
       vm.selectFieldOntology = selectFieldOntology;
-      //vm.searchQuery = vm.fieldName;
       vm.startSearch = startSearch;
       vm.endSearch = endSearch;
 
@@ -77,21 +78,11 @@ define([
        */
 
       function search(event) {
-        vm.searchFinished = false;
-        vm.resultsFound = null;
-        //if (event) {
-        //  event.preventDefault();
-        //}
+        reset(true, true);
         if (isEmptySearchQuery() == false) {
           vm.showEmptyQueryMsg = false;
           if (isSearchingClasses()) {
             searchClasses();
-          }
-          //else if (isSearchingOntologies()) {
-          //  searchOntologies();
-          //}
-          else if (isSearchingValueSets()) {
-            searchValueSets();
           }
         }
         else {
@@ -126,6 +117,7 @@ define([
               // Ignore results for which the ontology was not found in the cache
               if (ontology) {
                 tArry.push({
+                  resultId : i,
                   prefLabel: response.collection[i].prefLabel,
                   details  : response.collection[i],
                   ontology : ontology
@@ -159,7 +151,7 @@ define([
       }
 
       function changeSearchScope() {
-        reset(true);
+        reset(true, false);
         if (isSearchingOntologies()) {
           loadOntologies();
         }
@@ -168,21 +160,26 @@ define([
       /**
        * Reset
        */
-      function reset(keepSearchScope) {
+      function reset(keepSearchScope, keepSearchQuery) {
         if (!keepSearchScope) {
           vm.searchScope = 'classes'; // Default search scope
+        }
+        if (!keepSearchQuery) {
+          vm.searchQuery = '';
         }
         vm.action = 'search';
         vm.ontologySearchRegexp = null;
         vm.resultsFound = null;
         vm.searchClassesResults = [];
         vm.searchFinished = null;
-        //vm.searchOntologiesResults = [];
-        vm.searchQuery = '';
+        vm.selectedResultId = null;
         vm.showEmptyQueryMsg = false;
         vm.showSearchPreloader = false;
         vm.treeVisible = false;
-        vm.ontologySearchRegexp = null;
+
+        if (typeof vm.resetCallback === "function") {
+          vm.resetCallback();
+        }
       }
 
       /**
@@ -203,10 +200,6 @@ define([
 
       function isSearchingOntologies() {
         return vm.searchScope == 'ontologies' ? true : false;
-      }
-
-      function isSearchingValueSets() {
-        return vm.searchScope == 'value-sets' ? true : false;
       }
 
       function isEmptySearchQuery() {
@@ -238,7 +231,8 @@ define([
         }
       }
 
-      function selectFieldClass(selection) {
+      function selectFieldClass(selection, resultId) {
+        vm.selectedResultId = resultId;
         controlledTermService.loadTreeOfClass(selection, vm);
       }
 

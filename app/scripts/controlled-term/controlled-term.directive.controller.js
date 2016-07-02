@@ -350,7 +350,6 @@ define([
      * Reset to the beginning where you select field or value filter.
      */
     function startOver() {
-
       vm.filterSelection = vm.options && vm.options.filterSelection || "";
       vm.modalId = vm.options && vm.options.modalId || "";
       vm.currentOntology = null;

@@ -16,12 +16,12 @@ define([
     var directive = {
       restrict: 'E',
       scope: {
-        getClassDetailsCallback: '=', // why won't this work with & ?
         tree: '=',
         term: '=',
         level: '=',
         selectedNode: '=',
-        isSelectedCallback: '='  // why won't this work with & ?
+        isSelectedCallback: '=',  // why won't this work with & ?
+        getClassDetailsCallback: '=', // why won't this work with & ?
       },
       templateUrl: 'scripts/controlled-term/cedar-class-tree.directive.html',
       replace: true,
@@ -35,7 +35,6 @@ define([
         if (scope.selectedNode) {
           var id = scope.selectedNode["@id"];
           var node = angular.element("[at_id='" + id + "']");
-
           if (node.length > 0) {
             var $container = element.parent();
             var containerHeight = $container.height();

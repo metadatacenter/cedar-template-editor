@@ -6,40 +6,26 @@
     <controlled-term-search
         field-name="ctdc.field._ui.title"
         search-mode="ctdc.filterSelection"
+        reset-callback="ctdc.startOver"
+        current-ontology="ctdc.currentOntology"
+        selected-class="ctdc.selectedClass"
+        is-loading-class-details="ctdc.isLoadingClassDetails"
         >
         <!--class-details="ctdc.classDetails"-->
         <!--current-ontology="ctdc.currentOntology"-->
         <!--include-create-class="true"-->
         <!--is-loading-class-details="ctdc.isLoadingClassDetails"-->
-        <!--reset-callback="ctdc.startOver"-->
         <!--selected-class-1="ctdc.selectedClass"-->
         <!--selected-class-2="ctdc.selectedClass2"-->
     </controlled-term-search>
 
-    <!--<cedar-controlled-term-ontology-picker-->
-        <!--field-name="ctdc.field._ui.title"-->
-        <!--class-details="ctdc.classDetails"-->
-        <!--current-ontology="ctdc.currentOntology"-->
-        <!--include-create-class="true"-->
-        <!--is-loading-class-details="ctdc.isLoadingClassDetails"-->
-        <!--reset-callback="ctdc.startOver"-->
-        <!--selected-class-1="ctdc.selectedClass"-->
-        <!--selected-class-2="ctdc.selectedClass2">-->
-    <!--</cedar-controlled-term-ontology-picker>-->
-
-    <div class="class-actions">
+    <div class="class-actions" ng-show="!ctdc.isLoadingClassDetails">
       <div class="class-action table-style" ng-if="ctdc.selectedClass.prefLabel">
         <span class="table-cell-style text-left">{{ctdc.selectedClass.prefLabel}}</span>
         <span class="table-cell-style text-right">
-          <button class="btn btn-add-term" ng-click="ctdc.addClass(ctdc.selectedClass, ctdc.currentOntology); ctdc.startOver()" ng-disabled="ctdc.isLoadingClassDetails">Add</button>
+          <button type="button" class="btn btn-add-term" ng-click="ctdc.addClass(ctdc.selectedClass, ctdc.currentOntology); ctdc.startOver()">Add</button>
         </span>
       </div>
-      <!--<div class="class-action table-style" ng-if="ctdc.selectedClass2.prefLabel && ctdc.selectedClass2['@id'] != ctdc.selectedClass['@id'] && ctdc.classDetails">-->
-        <!--<span class="table-cell-style text-left">{{ctdc.selectedClass2.prefLabel}}</span>-->
-        <!--<span class="table-cell-style text-right">-->
-          <!--<button class="btn btn-add-term add-btn-margin" ng-click="ctdc.addClass(ctdc.selectedClass2, ctdc.currentOntology); ctdc.startOver()">Add</button>-->
-        <!--</span>-->
-      <!--</div>-->
     </div>
 
   </div>

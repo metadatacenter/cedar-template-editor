@@ -1,11 +1,11 @@
 <!--<h2>Find ontology classes to annotate the '{{tsc.fieldName}}' field</h2>-->
 <!--<p>This feature allows you to find classes from external ontologies stored in the BioPortal ontology repository to annotate your templates</p>-->
-<h4 ng-show="tsc.isFieldTypesMode()">Find one or more terms in BioPortal to annotate the '{{tsc.fieldName}}' field</h4>
+<h4 ng-show="tsc.isFieldTypesMode()">Find a term in BioPortal to annotate the '{{tsc.fieldName}}' field</h4>
 <h4 ng-show="tsc.isFieldValuesMode()">Find terms in BioPortal to constrain the values of the '{{tsc.fieldName}}' field</h4>
 
 <!-- Start over -->
 <div class="form-group floating-label-wrapper btn-start-over-group clearfix">
-  <button type="button" class="btn btn-start-over" ng-click="tsc.reset()">Start Over</button>
+  <button type="button" class="btn btn-start-over" ng-click="tsc.reset(false, false)">Start Over</button>
   <!-- Search Field -->
   <div class="field-search">
     <div class="input-group field-search-input-group">
@@ -60,6 +60,7 @@
         <thead>
         <tr>
           <th>Term</th>
+          <th>Short Id</th>
           <th>Ontology</th>
         </tr>
         </thead>
@@ -70,9 +71,11 @@
       <div class="table-responsive results-table-container">
         <table class="table table-hover results-table search-results-table" ng-if="tsc.isSearchingClasses()">
           <tbody>
-          <tr ng-repeat="result in tsc.searchClassesResults" ng-click="tsc.selectFieldClass(result.details)">
+          <tr ng-repeat="result in tsc.searchClassesResults" ng-click="tsc.selectFieldClass(result.details, result.resultId)"
+              ng-class="{'selected-row': result.resultId == tsc.selectedResultId}">
             <td>{{result.prefLabel}}</td>
-            <td>{{result.ontology.name}} ({{result.ontology.id}})</td>
+            <td>{{result.details.id.substr(result.details.id.lastIndexOf('/') + 1)}}</td>
+            <td tooltip="{{result.ontology.name}}" tooltip-append-to-body="true">{{result.ontology.id}}</td>
           </tr>
           </tbody>
         </table>
@@ -106,16 +109,18 @@
       </div>
     </div>
   </div>
+  <div ng-if="tsc.treeVisible && tsc.isLoadingClassDetails"><br />Loading details...</div>
   <!-- Ontology tree -->
-  <div class="field-tree clear" ng-show="tsc.treeVisible">
+  <div class="field-tree clear" ng-show="tsc.treeVisible && !tsc.isLoadingClassDetails">
     <div class="field-tree-header table-style">
       <!-- Tree header -->
       <div class="ontology-tree-header table-cell-style" ng-if="tsc.isCurrentOntology()">
         <h4>
-          <a class="pull-left" ng-click="tsc.hideTree()">
-            <img src="../img/left-arrow.png" />
-          </a>
-          &nbsp;&nbsp;&nbsp;&nbsp;{{tsc.currentOntology.info.id}} term tree
+          <!--<a class="pull-left" ng-click="tsc.hideTree()">-->
+            <!--<img src="../img/left-arrow.png" />-->
+          <!--</a>-->
+          <!--&nbsp;&nbsp;&nbsp;&nbsp;-->
+          {{tsc.currentOntology.info.id}} term tree
         </h4>
       </div>
       <!-- Term and ontology details header -->

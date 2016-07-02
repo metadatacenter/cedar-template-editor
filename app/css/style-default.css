@@ -11951,6 +11951,11 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
 .controlled-term-options .search-results-section .results-headers-table tr:first-child td {
   border-top: none;
 }
+.controlled-term-options .search-results-section .results-table .selected-row {
+  background: #5795ba;
+  color: #FFFFFF;
+  font-weight: normal;
+}
 .controlled-term-options .search-results-section .results-table tr {
   cursor: pointer;
 }
