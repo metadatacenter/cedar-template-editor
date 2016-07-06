@@ -111,13 +111,13 @@ define([
     }
 
     function loadOntologyRootClasses(ontology, $scope) {
-      $scope.treeVisible = true;
+      //$scope.treeVisible = true;
       $scope.searchPreloader = true;
       $q.all({
         info: ontology,
         tree: controlledTermDataService.getRootClasses(ontology.id)
       }).then(function (values) {
-        if ($scope.treeVisible == true) {
+        //if ($scope.treeVisible == true) {
           if (values.tree && angular.isArray(values.tree)) {
             values.tree.sort(controlledTermService.sortOntologyTree);
             $scope.currentOntology = values;
@@ -129,7 +129,7 @@ define([
               alert(values.tree.statusText);
             }
           }
-        }
+        //}
         $scope.searchPreloader = false;
       });
     }
@@ -147,7 +147,7 @@ define([
       else {
         var ontologyAcronym = getLastFragmentOfUri(selection.source);
       }
-      $scope.treeVisible = true;
+      //$scope.treeVisible = true;
       $scope.searchPreloader = true;
 
       controlledTermDataService.getClassById(ontologyAcronym, selection["@id"]).then(function (response) {
@@ -160,7 +160,7 @@ define([
         info: controlledTermDataService.getOntologyById(ontologyAcronym),
         tree: controlledTermDataService.getClassTree(ontologyAcronym, selection['@id']),
       }).then(function (values) {
-        if ($scope.treeVisible == true) {
+        //if ($scope.treeVisible == true) {
           $scope.currentOntology = values;
           if ($scope.currentOntology.tree && angular.isArray($scope.currentOntology.tree)) {
             angular.forEach($scope.currentOntology.tree, function (node) {
@@ -171,7 +171,7 @@ define([
               }
             })
           }
-        }
+        //}
         $scope.searchPreloader = false;
         $scope.isLoadingClassDetails = false;
       });

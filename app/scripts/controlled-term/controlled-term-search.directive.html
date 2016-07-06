@@ -1,11 +1,11 @@
 <!--<h2>Find ontology classes to annotate the '{{tsc.fieldName}}' field</h2>-->
 <!--<p>This feature allows you to find classes from external ontologies stored in the BioPortal ontology repository to annotate your templates</p>-->
-<h4 ng-show="tsc.isFieldTypesMode()">Find a term in BioPortal to annotate the '{{tsc.fieldName}}' field</h4>
-<h4 ng-show="tsc.isFieldValuesMode()">Find terms in BioPortal to constrain the values of the '{{tsc.fieldName}}' field</h4>
+<h4 ng-show="tsc.isFieldTypesMode()">Find a term in BioPortal to annotate the <span class="highlighted">'{{tsc.fieldName}}'</span> field</h4>
+<h4 ng-show="tsc.isFieldValuesMode()">Find terms in BioPortal to constrain the values of the <span class="highlighted">'{{tsc.fieldName}}'</span> field</h4>
 
 <!-- Start over -->
 <div class="form-group floating-label-wrapper btn-start-over-group clearfix">
-  <button type="button" class="btn btn-start-over" ng-click="tsc.reset(false, false)">Start Over</button>
+  <button type="button" class="btn btn-start-over" ng-click="tsc.reset(false, false)">Start Over <span class="fa fa-refresh primary-color"></span></button>
   <!-- Search Field -->
   <div class="field-search">
     <div class="input-group field-search-input-group">
@@ -31,12 +31,12 @@
           ng-click="$event.stopPropagation()" ng-change="tsc.changeSearchScope()"/>
       <label>Ontologies</label>
     </div>
-    <!--<div class="radio inline-block radio-primary radio-controlled-terms-search"-->
-        <!--ng-show="tsc.isFieldValuesMode()">-->
-      <!--<input id="search-scope-3" type="radio" ng-model="tsc.searchScope" value="value-sets"-->
-          <!--ng-click="$event.stopPropagation()" ng-change="tsc.changeSearchScope()"/>-->
-      <!--<label>Value sets</label>-->
-    <!--</div>-->
+    <div class="radio inline-block radio-primary radio-controlled-terms-search"
+        ng-show="tsc.isFieldValuesMode()">
+      <input id="search-scope-3" type="radio" ng-model="tsc.searchScope" value="value-sets"
+          ng-click="$event.stopPropagation()" ng-change="tsc.changeSearchScope()"/>
+      <label>Value sets</label>
+    </div>
   </div>
 </div>
 
@@ -48,7 +48,7 @@
     <div>{{tsc.searchClassesResults.length}} results</div>
     <div>Click on a term to see more details about it</div>
   </div>
-  <div ng-if="!tsc.resultsFound" >No results</div>
+  <div ng-if="!tsc.resultsFound">No results</div>
 </div>
 
 <!-- Search Results and Ontology Tree -->
@@ -59,9 +59,11 @@
       <table class="table table-condensed results-headers-table search-results-headers-table">
         <thead>
         <tr>
-          <th>Term</th>
-          <th>Short Id</th>
-          <th>Ontology</th>
+          <th width="16%">Term</th>
+          <th width="40%">Definition</th>
+          <th width="16%">Ontology</th>
+          <th width="16%">Id</th>
+          <th width="7%"></th>
         </tr>
         </thead>
       </table>
@@ -71,11 +73,15 @@
       <div class="table-responsive results-table-container">
         <table class="table table-hover results-table search-results-table" ng-if="tsc.isSearchingClasses()">
           <tbody>
-          <tr ng-repeat="result in tsc.searchClassesResults" ng-click="tsc.selectFieldClass(result.details, result.resultId)"
+          <tr ng-repeat="result in tsc.searchClassesResults" ng-click="tsc.selectFieldClass(result, result.resultId)"
               ng-class="{'selected-row': result.resultId == tsc.selectedResultId}">
-            <td>{{result.prefLabel}}</td>
-            <td>{{result.details.id.substr(result.details.id.lastIndexOf('/') + 1)}}</td>
-            <td tooltip="{{result.ontology.name}}" tooltip-append-to-body="true">{{result.ontology.id}}</td>
+            <td width="16%">{{result.prefLabel}}</td>
+            <td width="40%">(definition here)</td>
+            <td width="16%" tooltip="{{result.ontology.name}}" tooltip-append-to-body="true">{{result.ontology.id}}</td>
+            <td width="16%">{{tsc.getShortId(result.details.id)}}</td>
+            <td width="6%" tooltip="Show ontology tree and term details" tooltip-append-to-body="true">
+                <span ng-class="{'selected-row-details fa fa-search-plus': result.resultId == tsc.selectedResultId}" ng-click="tsc.changeTreeVisibility(); $event.stopPropagation()"></span>
+            </td>
           </tr>
           </tbody>
         </table>
@@ -197,7 +203,7 @@
                   <td>{{tsc.currentOntology.info.details.description | htmlToPlainText}}</td>
                 </tr>
                 <tr>
-                  <th>No. Classes</th>
+                  <th>No. Terms</th>
                   <td>{{tsc.currentOntology.info.details.numberOfClasses | returnNullIfEmpty}}</td>
                 </tr>
                 </tbody>

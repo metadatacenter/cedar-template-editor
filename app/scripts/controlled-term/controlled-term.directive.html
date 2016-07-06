@@ -19,12 +19,22 @@
         <!--selected-class-2="ctdc.selectedClass2"-->
     </controlled-term-search>
 
-    <div class="class-actions" ng-show="!ctdc.isLoadingClassDetails">
-      <div class="class-action table-style" ng-if="ctdc.selectedClass.prefLabel">
-        <span class="table-cell-style text-left">{{ctdc.selectedClass.prefLabel}}</span>
-        <span class="table-cell-style text-right">
-          <button type="button" class="btn btn-add-term" ng-click="ctdc.addClass(ctdc.selectedClass, ctdc.currentOntology); ctdc.startOver()">Add</button>
-        </span>
+    <div class="class-actions">
+      <div class="class-action" ng-if="ctdc.selectedClass.prefLabel">
+        <span>Click OK to select the term <span class="highlighted">'{{ctdc.selectedClass.prefLabel}}'</span> from {{ctdc.currentOntology.info.id}}</span>
+
+        <div>
+          <button type="button" class="std-button btn btn-add-term"
+              ng-click="ctdc.addClass(ctdc.selectedClass, ctdc.currentOntology); ctdc.startOver()">OK
+          </button>
+          <button type="button" class="std-button btn btn-add-term"
+              ng-click="ctdc.addClass(ctdc.selectedClass, ctdc.currentOntology); ctdc.startOver()" data-dismiss="modal">Cancel
+          </button>
+        </div>
+        <!--<span class="table-cell-style text-left">{{ctdc.selectedClass.prefLabel}}</span>-->
+        <!--<span class="table-cell-style text-right">-->
+        <!--<button type="button" class="btn btn-add-term" ng-click="ctdc.addClass(ctdc.selectedClass, ctdc.currentOntology); ctdc.startOver()">Add</button>-->
+        <!--</span>-->
       </div>
     </div>
 
@@ -36,7 +46,6 @@
         field-name="ctdc.field._ui.title"
         search-mode="ctdc.filterSelection">
     </controlled-term-search>
-
 
     <!--<cedar-controlled-term-value-set-picker-->
         <!--current-ontology="ctdc.currentOntology"-->

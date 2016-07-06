@@ -11918,7 +11918,7 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
 .controlled-term-options .search-results-section .search-results {
   min-height: 58px;
   max-height: 260px;
-  overflow-y: auto;
+  overflow-y: scroll;
 }
 .controlled-term-options .search-results-section .search-results .no-search-results {
   padding: 20px 0 19px 3.06%;
@@ -11929,6 +11929,7 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
 }
 .controlled-term-options .search-results-section .results-table,
 .controlled-term-options .search-results-section .results-headers-table {
+  table-layout: fixed;
   width: 100%;
 }
 .controlled-term-options .search-results-section .results-table td,
@@ -11941,7 +11942,6 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
 .controlled-term-options .search-results-section .results-headers-table td:first-child,
 .controlled-term-options .search-results-section .results-table th:first-child,
 .controlled-term-options .search-results-section .results-headers-table th:first-child {
-  width: 350px;
   word-break: normal;
   word-wrap: break-word;
 }
@@ -11955,6 +11955,13 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   background: #5795ba;
   color: #FFFFFF;
   font-weight: normal;
+}
+.controlled-term-options .search-results-section .results-table .selected-row .selected-row-details {
+  padding: 0px;
+  margin: 0px;
+  text-align: center;
+  font-size: 1.2em;
+  color: #FFF;
 }
 .controlled-term-options .search-results-section .results-table tr {
   cursor: pointer;
@@ -12049,7 +12056,8 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   margin-top: 0px;
 }
 .controlled-term-options .ontology-tree .tree-view-ul {
-  height: 295px;
+  font-size: 0.9em;
+  height: 300px;
   width: 100%;
   overflow: auto;
 }
@@ -12880,25 +12888,17 @@ p.instructions {
   width: 58%;
 }
 .field-tree .field-details-view .nav-tabs {
-  border: none;
-  display: inline-block;
-  width: 100%;
+  border-color: #71a69c;
   text-transform: uppercase;
 }
-.field-tree .field-details-view .nav-tabs .detail-view-tab {
-  width: 50%;
-}
 .field-tree .field-details-view .nav-tabs .detail-view-tab a {
-  border-radius: 0;
-  text-align: center;
-  margin: 0;
-  background: #d2d2d2;
   border: none;
-  color: #000000;
+  border-bottom: solid 1px #71a69c;
+  background: #d2d2d2;
   color: grey;
-  padding: 10px 15px;
 }
 .field-tree .field-details-view .nav-tabs .detail-view-tab.active a {
+  border-color: #71a69c;
   background: #71a69c;
   color: #FFFFFF;
   font-weight: normal;
@@ -12907,8 +12907,8 @@ p.instructions {
   padding: 8px 8px;
   color: #71a69c;
   font-weight: bold;
-  border-left: none;
-  border-right: none;
+  border: none;
+  border-bottom: 1px solid #DDD;
 }
 .field-tree .field-details-view .tab-content table th:first-child {
   width: 100px;
@@ -12917,7 +12917,8 @@ p.instructions {
   border-bottom: 1px solid #DDD;
 }
 .field-tree .field-details-view .tab-content table td {
-  border-bottom: none;
+  border: none;
+  border-bottom: 1px solid #DDD;
   padding: 8px 8px;
 }
 .selected-field-class {
@@ -13243,7 +13244,6 @@ p.instructions {
 .field-tree-header .ontology-class-children h4 {
   margin-right: 4%;
   color: #71a69c;
-  text-transform: uppercase;
 }
 .autocomplete-label-wrapper {
   position: relative;
@@ -13293,6 +13293,8 @@ p.instructions {
 }
 .controlled-terms-modal .modal-body .class-actions {
   margin-top: 30px;
+  font-size: 1.2em;
+  text-align: center;
 }
 .controlled-terms-modal .element-title {
   margin-bottom: 20px;
@@ -13455,10 +13457,13 @@ body .template-header .controlled-terms-modal {
 }
 .class-action {
   padding-bottom: 10px;
-  border-bottom: 1px solid #71a69c;
 }
 .class-action:last-child {
   margin-top: 10px;
+}
+.class-action .btn-add-term {
+  margin: 20px 10px;
+  width: 120px;
 }
 .element .field-instance.multiple-instance-field {
   border: none;
@@ -14117,6 +14122,13 @@ div.errorTechnicalDetails textarea {
 }
 body.modal-open {
   overflow: hidden;
+}
+.primary-color {
+  color: #71a69c;
+}
+.highlighted {
+  color: #71a69c;
+  font-weight: bold;
 }
 /*
 ================================================

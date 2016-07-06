@@ -54,7 +54,9 @@ define([
 
       /* Function declarations */
       vm.changeSearchScope = changeSearchScope;
+      vm.changeTreeVisibility = changeTreeVisibility;
       vm.checkIfSelected = checkIfSelected;
+      vm.getShortId = getShortId;
       vm.isEmptySearchQuery = isEmptySearchQuery;
       vm.isFieldTypesMode = isFieldTypesMode;
       vm.isFieldValuesMode = isFieldValuesMode;
@@ -70,6 +72,7 @@ define([
       vm.search = search;
       vm.selectFieldClass = selectFieldClass;
       vm.selectFieldOntology = selectFieldOntology;
+      vm.showTree = showTree;
       vm.startSearch = startSearch;
       vm.endSearch = endSearch;
 
@@ -232,8 +235,15 @@ define([
       }
 
       function selectFieldClass(selection, resultId) {
+        // Set the basic fields for the selected class and ontology in order to show the info of the selected class while the rest of details are being loaded
+        vm.treeVisible = false;
+        vm.selectedClass = {};
+        vm.currentOntology = {};
+        vm.currentOntology.info = {};
+        vm.selectedClass.prefLabel = selection.prefLabel;
+        vm.currentOntology.info.id = selection.ontology.id;
         vm.selectedResultId = resultId;
-        controlledTermService.loadTreeOfClass(selection, vm);
+        controlledTermService.loadTreeOfClass(selection.details, vm);
       }
 
       function selectFieldOntology(selection) {
@@ -271,6 +281,14 @@ define([
         }
         
         return spl == st;
+      }
+
+      function showTree() {
+        vm.treeVisible = true;
+      }
+
+      function changeTreeVisibility() {
+        vm.treeVisible = !vm.treeVisible;
       }
 
       function fieldCreateClass() {
@@ -320,6 +338,17 @@ define([
               vm.searchQuery = null;
             }
           });
+
+
+      /**
+       * Util functions
+       */
+
+      function getShortId(uri) {
+        var lastFragment = uri.substr(uri.lastIndexOf('/') + 1);
+        var shortId = lastFragment.substr(lastFragment.lastIndexOf('#') + 1);
+        return shortId;
+      }
     }
   }
 });

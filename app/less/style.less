@@ -3146,7 +3146,7 @@ section.dashboard-elements {
     .search-results {
       min-height: 58px;
       max-height: 260px;
-      overflow-y: auto;
+      overflow-y: scroll;
       .no-search-results {
         padding: 20px 0 19px 3.06%;
         width: 100%;
@@ -3158,12 +3158,13 @@ section.dashboard-elements {
     }
 
     .results-table, .results-headers-table {
+      table-layout: fixed;
       width: 100%;
       td, th {
         padding: 10px 10px;
 
         &:first-child {
-          width: 350px;
+          //width: 350px;
           word-break: normal;
           word-wrap: break-word;
         }
@@ -3182,10 +3183,20 @@ section.dashboard-elements {
         background: #5795ba;
         color: #FFFFFF;
         font-weight: normal;
+
+        .selected-row-details {
+          padding: 0px;
+          margin: 0px;
+          text-align: center;
+          font-size: 1.2em;
+          color: #FFF;
+        }
+
       }
 
       tr {
         cursor: pointer;
+
       }
     }
 
@@ -3297,7 +3308,8 @@ section.dashboard-elements {
     }
 
     .tree-view-ul {
-      height: 295px;
+      font-size: 0.9em;
+      height: 300px;
       width: 100%;
       overflow: auto;
 
@@ -4287,26 +4299,20 @@ p.instructions {
     width: 58%;
 
     .nav-tabs {
-      border: none;
-      display: inline-block;
-      width: 100%;
+      border-color: @brand-primary;
       text-transform: uppercase;
 
       .detail-view-tab {
-        width: 50%;
         a {
-          border-radius: 0;
-          text-align: center;
-          margin: 0;
-          background: @gray3;
           border: none;
-          color: @black;
+          border-bottom: solid 1px @brand-primary;
+          background: @gray3;
           color: grey;
-          padding: 10px 15px;
         }
 
         &.active {
           a {
+            border-color: @brand-primary;
             background: @brand-primary;
             color: #FFFFFF;
             font-weight: normal;
@@ -4321,8 +4327,10 @@ p.instructions {
           padding: 8px 8px;
           color: @brand-primary;
           font-weight: bold;
-          border-left: none;
-          border-right: none;
+          //border-left: none;
+          //border-right: none;
+          border: none;
+          border-bottom: 1px solid #DDD;
           //text-transform: uppercase;
           //border: none;
 
@@ -4335,7 +4343,8 @@ p.instructions {
         }
 
         td {
-          border-bottom: none;
+          border: none;
+          border-bottom: 1px solid #DDD;
           padding: 8px 8px;
         }
       }
@@ -4725,7 +4734,7 @@ p.instructions {
     h4 {
       margin-right: 4%;
       color: @brand-primary;
-      text-transform: uppercase;
+      //text-transform: uppercase;
     }
   }
 }
@@ -4784,6 +4793,8 @@ p.instructions {
     overflow-y: auto;
     .class-actions {
       margin-top: 30px;
+      font-size: 1.2em;
+      text-align: center;
     }
   }
 
@@ -5006,10 +5017,16 @@ body .template-header .controlled-terms-modal {
 
 .class-action {
   padding-bottom: 10px;
-  border-bottom: 1px solid @brand-primary;
+  //color: @brand-primary;
+  //border-bottom: 1px solid @brand-primary;
 
   &:last-child {
     margin-top: 10px;
+  }
+
+  .btn-add-term {
+    margin: 20px 10px;
+    width: 120px;
   }
 }
 
