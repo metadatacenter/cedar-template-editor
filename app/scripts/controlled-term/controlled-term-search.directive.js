@@ -47,7 +47,7 @@ define([
       vm.searchFinished = null;
       vm.searchOntologiesResults = [];
       vm.searchScope = 'classes'; // Default search scope
-      //vm.selectedResultId = null;
+      vm.selectedResultId = null;
       vm.showSearchPreloader = false;
       vm.showEmptyQueryMsg = false;
       vm.treeVisible = false;
@@ -175,7 +175,7 @@ define([
         vm.resultsFound = null;
         vm.searchClassesResults = [];
         vm.searchFinished = null;
-        //vm.selectedResultId = null;
+        vm.selectedResultId = null;
         vm.showEmptyQueryMsg = false;
         vm.showSearchPreloader = false;
         vm.treeVisible = false;
@@ -242,7 +242,7 @@ define([
         vm.currentOntology.info = {};
         vm.selectedClass.prefLabel = selection.prefLabel;
         vm.currentOntology.info.id = selection.ontology.id;
-        //vm.selectedResultId = resultId;
+        vm.selectedResultId = resultId;
         controlledTermService.loadTreeOfClass(selection.details, vm);
       }
 
