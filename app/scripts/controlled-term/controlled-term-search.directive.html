@@ -74,13 +74,18 @@
         <table class="table table-hover results-table search-results-table" ng-if="tsc.isSearchingClasses()">
           <tbody>
           <tr ng-repeat="result in tsc.searchClassesResults" ng-click="tsc.selectFieldClass(result, result.resultId)"
-              ng-class="{'selected-row': result.resultId == tsc.selectedResultId}">
+              ng-class="{'selected-row':  (result.details.id == tsc.selectedClass.id)}">
             <td width="16%">{{result.prefLabel}}</td>
             <td width="40%">(definition here)</td>
             <td width="16%" tooltip="{{result.ontology.name}}" tooltip-append-to-body="true">{{result.ontology.id}}</td>
             <td width="16%">{{tsc.getShortId(result.details.id)}}</td>
-            <td width="6%" tooltip="Show ontology tree and term details" tooltip-append-to-body="true">
-                <span ng-class="{'selected-row-details fa fa-search-plus': result.resultId == tsc.selectedResultId}" ng-click="tsc.changeTreeVisibility(); $event.stopPropagation()"></span>
+            <td width="6%">
+              <span tooltip="Show ontology tree and term details" tooltip-append-to-body="true"
+                  ng-class="{'selected-row-details fa fa-eye': (result.details.id == tsc.selectedClass.id) && !tsc.treeVisible}"
+                  ng-click="tsc.changeTreeVisibility(); $event.stopPropagation()"></span>
+              <span tooltip="Hide ontology tree and term details" tooltip-append-to-body="true"
+                  ng-class="{'selected-row-details fa fa-eye-slash': (result.details.id == tsc.selectedClass.id) && tsc.treeVisible}"
+                  ng-click="tsc.changeTreeVisibility(); $event.stopPropagation()"></span>
             </td>
           </tr>
           </tbody>
