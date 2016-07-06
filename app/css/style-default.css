@@ -11869,7 +11869,8 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
 }
 .controlled-term-options .btn-start-over,
 .controlled-term-options .btn-advanced,
-.controlled-term-options .btn-back {
+.controlled-term-options .btn-back,
+.controlled-term-options .btn-create-term {
   color: #339933;
   background-color: transparent;
   font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
@@ -11883,9 +11884,11 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
 .controlled-term-options .btn-start-over:hover,
 .controlled-term-options .btn-advanced:hover,
 .controlled-term-options .btn-back:hover,
+.controlled-term-options .btn-create-term:hover,
 .controlled-term-options .btn-start-over:focus,
 .controlled-term-options .btn-advanced:focus,
-.controlled-term-options .btn-back:focus {
+.controlled-term-options .btn-back:focus,
+.controlled-term-options .btn-create-term:focus {
   color: #71a69c;
 }
 .controlled-term-options .btn-start-over-group {
@@ -11911,6 +11914,13 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
 .controlled-term-options .btn-back {
   left: 0;
   position: absolute;
+}
+.controlled-term-options .btn-create-term {
+  font-size: 1em;
+  font-style: normal;
+  float: inherit;
+  padding: auto;
+  margin: auto;
 }
 .controlled-term-options .clear {
   clear: both;
@@ -11960,8 +11970,9 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   padding: 0px;
   margin: 0px;
   text-align: center;
-  font-size: 1.3em;
+  font-size: 0.9em;
   color: #FFF;
+  text-decoration: underline;
 }
 .controlled-term-options .search-results-section .results-table tr {
   cursor: pointer;

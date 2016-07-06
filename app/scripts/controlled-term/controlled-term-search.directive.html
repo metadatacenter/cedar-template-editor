@@ -1,6 +1,7 @@
 <!--<h2>Find ontology classes to annotate the '{{tsc.fieldName}}' field</h2>-->
 <!--<p>This feature allows you to find classes from external ontologies stored in the BioPortal ontology repository to annotate your templates</p>-->
-<h4 ng-show="tsc.isFieldTypesMode()">Find a term in BioPortal to annotate the <span class="highlighted">'{{tsc.fieldName}}'</span> field</h4>
+<h4 ng-show="tsc.isFieldTypesMode()">Find a term in BioPortal to annotate the <span class="highlighted">'{{tsc.fieldName}}'</span> field or <button type="button" class="btn btn-create-term">Create a New Term</button>
+</h4>
 <h4 ng-show="tsc.isFieldValuesMode()">Find terms in BioPortal to constrain the values of the <span class="highlighted">'{{tsc.fieldName}}'</span> field</h4>
 
 <!-- Start over -->
@@ -61,9 +62,9 @@
         <tr>
           <th width="16%">Term</th>
           <th width="40%">Definition</th>
-          <th width="16%">Ontology</th>
-          <th width="16%">Id</th>
-          <th width="7%"></th>
+          <th width="13%">Ontology</th>
+          <th width="13%">Id</th>
+          <th width="13%"></th>
         </tr>
         </thead>
       </table>
@@ -78,15 +79,19 @@
               ng-class="{'selected-row':  (result.resultId == tsc.selectedResultId) && (result.details.id == tsc.selectedClass.id)}">
             <td width="16%">{{result.prefLabel}}</td>
             <td width="40%">(definition here)</td>
-            <td width="16%" tooltip="{{result.ontology.name}}" tooltip-append-to-body="true">{{result.ontology.id}}</td>
-            <td width="16%">{{tsc.getShortId(result.details.id)}}</td>
-            <td width="6%">
-              <span tooltip="Show ontology tree and term details" tooltip-append-to-body="true"
-                  ng-class="{'selected-row-details fa fa-eye': (result.resultId == tsc.selectedResultId) && (result.details.id == tsc.selectedClass.id) && !tsc.treeVisible}"
-                  ng-click="tsc.changeTreeVisibility(); $event.stopPropagation()"></span>
-              <span tooltip="Hide ontology tree and term details" tooltip-append-to-body="true"
-                  ng-class="{'selected-row-details fa fa-eye-slash': (result.resultId == tsc.selectedResultId) && (result.details.id == tsc.selectedClass.id) && tsc.treeVisible}"
-                  ng-click="tsc.changeTreeVisibility(); $event.stopPropagation()"></span>
+            <td width="13%" tooltip="{{result.ontology.name}}" tooltip-append-to-body="true">{{result.ontology.id}}</td>
+            <td width="13%">{{tsc.getShortId(result.details.id)}}</td>
+            <td width="12%">
+              <span class="selected-row-details" ng-if="(result.resultId == tsc.selectedResultId) && (result.details.id == tsc.selectedClass.id) && !tsc.treeVisible" ng-click="tsc.changeTreeVisibility(); $event.stopPropagation()">Show Details</span>
+              <span class="selected-row-details" ng-if="(result.resultId == tsc.selectedResultId) && (result.details.id == tsc.selectedClass.id) && tsc.treeVisible" ng-click="tsc.changeTreeVisibility(); $event.stopPropagation()">Hide Details</span>
+
+
+              <!--<span tooltip="Show ontology tree and term details" tooltip-append-to-body="true"-->
+                  <!--ng-class="{'selected-row-details': (result.resultId == tsc.selectedResultId) && (result.details.id == tsc.selectedClass.id) && !tsc.treeVisible}"-->
+                  <!--ng-click="tsc.changeTreeVisibility(); $event.stopPropagation()">Show Details</span>-->
+              <!--<span tooltip="Hide ontology tree and term details" tooltip-append-to-body="true"-->
+                  <!--ng-class="{'selected-row-details': (result.resultId == tsc.selectedResultId) && (result.details.id == tsc.selectedClass.id) && tsc.treeVisible}"-->
+                  <!--ng-click="tsc.changeTreeVisibility(); $event.stopPropagation()">Hide Details</span>-->
             </td>
           </tr>
           </tbody>
@@ -100,9 +105,9 @@
       <table class="table table-condensed results-headers-table browse-results-headers-table">
         <thead>
         <tr>
-          <th>Ontology</th>
-          <th>Categories</th>
-          <th>No Classes</th>
+          <th width="45%">Ontology</th>
+          <th width="45%">Categories</th>
+          <th width="10%">No. Terms</th>
         </tr>
         </thead>
       </table>
@@ -111,10 +116,11 @@
       <div class="table-responsive results-table-container">
         <table class="table table-hover results-table browse-results-table">
           <tbody>
-          <tr ng-repeat="result in tsc.searchOntologiesResults" ng-click="tsc.selectFieldOntology(result)" ng-show="tsc.isOntologyNameMatched(result)">
-            <td>{{result.name}}</td>
-            <td>{{result.details.categories.join(", ") || "-" }}</td>
-            <td>{{result.details.numberOfClasses | returnNullIfEmpty}}</td>
+          <tr ng-repeat="result in tsc.searchOntologiesResults" ng-click="tsc.selectFieldOntology(result)" ng-show="tsc.isOntologyNameMatched(result)"
+              ng-class="{'selected-row':  (result.id == tsc.currentOntology.info.id)}">
+            <td width="45%">{{result.name}} ({{result.id}})</td>
+            <td width="45%">{{result.details.categories.join(", ") || "-" }}</td>
+            <td width="9%">{{result.details.numberOfClasses | number}}</td>
           </tr>
           </tbody>
         </table>
@@ -164,7 +170,7 @@
       <div class="field-details-view pull-right" ng-if="tsc.isCurrentOntology()">
         <div class="tab-content">
           <div id="class-details" class="tab-pane active" role="tabpanel">
-            <div class="no-selected-class text-center" ng-hide="tsc.classDetails">No class is selected</div>
+            <div class="no-selected-class text-center" ng-hide="tsc.classDetails">Click on any term in the ontology tree</div>
             <div class="table-responsive">
               <table class="table table-striped">
                 <tbody ng-show="tsc.classDetails">

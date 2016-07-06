@@ -247,6 +247,7 @@ define([
       }
 
       function selectFieldOntology(selection) {
+        vm.treeVisible = true;
         controlledTermService.loadOntologyRootClasses(selection, vm);
       }
 
@@ -260,7 +261,7 @@ define([
           return ontology;
         }
         if (vm.ontologySearchRegexp) {
-          name = ontology.name;
+          name = ontology.name + " " + ontology.id;
           return vm.ontologySearchRegexp.test(name);
         } else {
           return ontology;
@@ -333,7 +334,9 @@ define([
           },
           function () {
             if (vm.searchQuery) {
-              vm.ontologySearchRegexp = new RegExp(vm.searchQuery, "i");
+              // Remove illegal characters
+              var cleanSearchQuery = vm.searchQuery.replace(/[|&;$%@"<>()+,]/g, "");
+              vm.ontologySearchRegexp = new RegExp(cleanSearchQuery, "i");
             } else {
               vm.searchQuery = null;
             }
