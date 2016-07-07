@@ -11,8 +11,9 @@
       <input id="field-search-input" type="text" class="form-control field-search-form-control"
           placeholder="Search in BioPortal" aria-label="Search field"
           ng-model="tsc.searchQuery" ng-focus="tsc.showEmptyQueryMsg = false"
-          ng-keyup="$event.keyCode == 13 && tsc.search($event)" with-floating-label=""
+         with-floating-label=""
           ng-model-options="{debounce: 700}"
+          ng-submit="tsc.search($event)"
           ng-click="tsc.onTextClick($event)"/>
       <span class="input-group-addon" ng-click="tsc.search()">
         <img src="../img/search-icon.png"/>
@@ -55,7 +56,7 @@
 <!-- Search Results and Ontology Tree -->
 <div class="clear search-results-section">
   <!-- Classes results -->
-  <div ng-if="tsc.isSearchingClasses() && tsc.resultsFound">
+  <div ng-if="tsc.isSearchingClasses() && tsc.resultsFound && tsc.searchFinished">
     <div class="search-results-headers">
       <table class="table table-condensed results-headers-table search-results-headers-table">
         <thead>
