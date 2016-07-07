@@ -3135,9 +3135,8 @@ section.dashboard-elements {
   .btn-create-term {
     font-size: 1em;
     font-style: normal;
-    float: inherit;
-    padding: auto;
-    margin:auto;
+    font-weight: bold;
+    vertical-align: inherit;
   }
 
   .clear {
@@ -3193,13 +3192,18 @@ section.dashboard-elements {
         color: #FFFFFF;
         font-weight: normal;
 
-        .selected-row-details {
+        .show-details {
           padding: 0px;
           margin: 0px;
           text-align: center;
           font-size: 0.9em;
           color: #FFF;
-          text-decoration: underline;
+          vertical-align: baseline;
+          font-style: italic;
+
+          &:hover {
+            color: @brand-secondary;
+          }
         }
 
       }

@@ -11918,9 +11918,8 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
 .controlled-term-options .btn-create-term {
   font-size: 1em;
   font-style: normal;
-  float: inherit;
-  padding: auto;
-  margin: auto;
+  font-weight: bold;
+  vertical-align: inherit;
 }
 .controlled-term-options .clear {
   clear: both;
@@ -11966,13 +11965,17 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   color: #FFFFFF;
   font-weight: normal;
 }
-.controlled-term-options .search-results-section .results-table .selected-row .selected-row-details {
+.controlled-term-options .search-results-section .results-table .selected-row .show-details {
   padding: 0px;
   margin: 0px;
   text-align: center;
   font-size: 0.9em;
   color: #FFF;
-  text-decoration: underline;
+  vertical-align: baseline;
+  font-style: italic;
+}
+.controlled-term-options .search-results-section .results-table .selected-row .show-details:hover {
+  color: #eaf2f2;
 }
 .controlled-term-options .search-results-section .results-table tr {
   cursor: pointer;
@@ -14138,7 +14141,6 @@ body.modal-open {
   color: #5795ba;
 }
 .highlighted {
-  color: #5795ba;
   font-weight: bold;
 }
 /*

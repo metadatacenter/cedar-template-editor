@@ -68,6 +68,7 @@ define([
       vm.isCurrentOntology = isCurrentOntology;
       vm.isSearchingClasses = isSearchingClasses;
       vm.isSearchingOntologies = isSearchingOntologies;
+      vm.onTextClick = onTextClick;
       vm.reset = reset;
       vm.search = search;
       vm.selectFieldClass = selectFieldClass;
@@ -154,9 +155,13 @@ define([
       }
 
       function changeSearchScope() {
-        reset(true, false);
+        reset(true, true);
         if (isSearchingOntologies()) {
           loadOntologies();
+          searchRegexp(vm.searchQuery);
+        }
+        else if (isSearchingClasses()) {
+          search();
         }
       }
 
@@ -334,9 +339,12 @@ define([
           },
           function () {
             if (vm.searchQuery) {
-              // Remove illegal characters
-              var cleanSearchQuery = vm.searchQuery.replace(/[|&;$%@"<>()+,]/g, "");
-              vm.ontologySearchRegexp = new RegExp(cleanSearchQuery, "i");
+              if (isSearchingClasses()) {
+                search();
+              }
+              else if (isSearchingOntologies()) {
+                searchRegexp(vm.searchQuery);
+              }
             } else {
               vm.searchQuery = null;
             }
@@ -351,6 +359,16 @@ define([
         var lastFragment = uri.substr(uri.lastIndexOf('/') + 1);
         var shortId = lastFragment.substr(lastFragment.lastIndexOf('#') + 1);
         return shortId;
+      }
+
+      function searchRegexp(searchQuery) {
+        // Remove illegal characters
+        var cleanSearchQuery = searchQuery.replace(/[|&;$%@"<>()+,]/g, "");
+        vm.ontologySearchRegexp = new RegExp(cleanSearchQuery, "i");
+      }
+
+      function onTextClick(event) {
+        event.target.select();
       }
     }
   }
