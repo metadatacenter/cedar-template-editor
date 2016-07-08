@@ -3,7 +3,7 @@
 define([
   'angular',
 ], function(angular) {
-  angular.module('cedar.templateEditor.controlTerm.returnNullIfEmptyFilter', [])
+  angular.module('cedar.templateEditor.controlledTerm.returnNullIfEmptyFilter', [])
     .filter('returnNullIfEmpty', returnNullIfEmptyFilter);
 
   function returnNullIfEmptyFilter() {

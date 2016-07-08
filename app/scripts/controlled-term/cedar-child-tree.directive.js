@@ -3,12 +3,12 @@
 define([
   'angular'
 ], function(angular) {
-  angular.module('cedar.templateEditor.controlTerm.cedarChildTreeDirective', [])
+  angular.module('cedar.templateEditor.controlledTerm.cedarChildTreeDirective', [])
     .directive('cedarChildTree', cedarChildTreeDirective);
 
-  cedarChildTreeDirective.$inject = ['controlTermService', 'controlTermDataService', '$compile'];
+  cedarChildTreeDirective.$inject = ['controlledTermService', 'controlledTermDataService', '$compile'];
 
-  function cedarChildTreeDirective(controlTermService, controlTermDataService, $compile) {
+  function cedarChildTreeDirective(controlledTermService, controlledTermDataService, $compile) {
 
     var directive = {
       restrict: 'E',
@@ -19,13 +19,13 @@ define([
         subtree: '=',
         isSelectedCallback: '='  // why won't this work with & ?
       },
-      templateUrl: 'scripts/control-term/cedar-child-tree.directive.html',
+      templateUrl: 'scripts/controlled-term/cedar-child-tree.directive.html',
       link: linker
     };
 
     return directive;
 
-    cedarChildTreeController.$inject = ['$rootScope', '$scope', 'controlTermDataService'];
+    cedarChildTreeController.$inject = ['$rootScope', '$scope', 'controlledTermDataService'];
     
     function linker(scope, element, attrs) {
 
@@ -41,12 +41,12 @@ define([
         });
       }
 
-      // Default Class nested tree expansion from controlTermDataService.getClassTree() call
+      // Default Class nested tree expansion from controlledTermDataService.getClassTree() call
       if (scope.subtree && scope.subtree.children && scope.subtree.children.length) {
         nestChildren('subtree.children');
       }
 
-      // Manual drilling down into Class children upon user interaction via controlTermDataService.getClassChildren() call
+      // Manual drilling down into Class children upon user interaction via controlledTermDataService.getClassChildren() call
       element.find('a').on('click', function(event) {
 
         if (jQuery(this).parent().hasClass("expanded")) {
@@ -57,9 +57,9 @@ define([
           jQuery(this).parent().children('ul').show();
         } else {
           if (scope.subtree.hasChildren !== false && !scope.children) {
-            var acronym = controlTermService.getAcronym(scope.subtree);
+            var acronym = controlledTermService.getAcronym(scope.subtree);
             var classId = scope.subtree['@id'];
-            controlTermDataService.getClassChildren(acronym, classId).then(function(response) {
+            controlledTermDataService.getClassChildren(acronym, classId).then(function(response) {
               if (!response || response.length == 0) {
                 scope.subtree.hasChildren = false;
               }

@@ -3,12 +3,12 @@
 define([
   'angular'
 ], function (angular) {
-  angular.module('cedar.templateEditor.controlTerm.cedarControlTermValueSetPickerDirective', [])
-      .directive('cedarControlTermValueSetPicker', cedarControlTermValueSetPickerDirective);
+  angular.module('cedar.templateEditor.controlledTerm.cedarControlledTermValueSetPickerDirective', [])
+      .directive('cedarControlledTermValueSetPicker', cedarControlledTermValueSetPickerDirective);
 
-  cedarControlTermValueSetPickerDirective.$inject = [];
+  cedarControlledTermValueSetPickerDirective.$inject = [];
 
-  function cedarControlTermValueSetPickerDirective() {
+  function cedarControlledTermValueSetPickerDirective() {
 
     var directive = {
       bindToController: {
@@ -18,25 +18,25 @@ define([
         resetCallback      : '=?',
         selectedValueResult: '=',
       },
-      controller      : cedarControlTermValueSetPickerDirectiveController,
+      controller      : cedarControlledTermValueSetPickerDirectiveController,
       controllerAs    : 'cctvspdc',
       restrict        : 'E',
       scope           : {},
-      templateUrl     : 'scripts/control-term/cedar-control-term-value-set-picker.directive.html'
+      templateUrl     : 'scripts/controlled-term/cedar-controlled-term-value-set-picker.directive.html'
     };
 
     return directive;
 
-    cedarControlTermValueSetPickerDirectiveController.$inject = [
+    cedarControlledTermValueSetPickerDirectiveController.$inject = [
       '$q',
       '$rootScope',
       '$scope',
-      'controlTermDataService',
-      'controlTermService'
+      'controlledTermDataService',
+      'controlledTermService'
     ];
 
-    function cedarControlTermValueSetPickerDirectiveController($q, $rootScope, $scope, controlTermDataService,
-                                                               controlTermService) {
+    function cedarControlledTermValueSetPickerDirectiveController($q, $rootScope, $scope, controlledTermDataService,
+                                                               controlledTermService) {
       var vm = this;
 
       vm.bioportalOntologiesFilter = true;
@@ -104,10 +104,10 @@ define([
        */
       function getClassDetails(subtree) {
         vm.selectedValueResult = subtree;
-        var acronym = controlTermService.getAcronym(subtree);
+        var acronym = controlledTermService.getAcronym(subtree);
         var classId = subtree['@id'];
         // Get selected class details from the links.self endpoint provided.
-        controlTermDataService.getClassById(acronym, classId).then(function (response) {
+        controlledTermDataService.getClassById(acronym, classId).then(function (response) {
           vm.classDetails = response;
         });
       }
@@ -194,25 +194,25 @@ define([
         // Ontology
         if (result.type == 'Ontology') {
           vm.browsingSection = 'ontology';
-          var ontology = controlTermDataService.getOntologyById(controlTermService.getLastFragmentOfUri(result.id));
+          var ontology = controlledTermDataService.getOntologyById(controlledTermService.getLastFragmentOfUri(result.id));
           if (result.type == 'Ontology') {
             vm.currentOntology = {
               'details': {'ontology': result}
             };
-            controlTermService.loadOntologyRootClasses(vm.currentOntology.details.ontology, vm);
+            controlledTermService.loadOntologyRootClasses(vm.currentOntology.details.ontology, vm);
           }
         }
         // Ontology Class
         if (result.type == 'OntologyClass') {
           vm.browsingSection = 'ontology';
-          var ontology = controlTermDataService.getOntologyById(controlTermService.getLastFragmentOfUri(result.sourceId));
+          var ontology = controlledTermDataService.getOntologyById(controlledTermService.getLastFragmentOfUri(result.sourceId));
           vm.currentOntology = {
             'details': {'ontology': ontology}
           };
-          controlTermService.loadTreeOfClass(result, vm);
+          controlledTermService.loadTreeOfClass(result, vm);
 
           // Set the hasChildren property, which will be used to decide if the 'Children' tab will be shown
-          controlTermDataService.getClassById(ontology.id, result['@id']).then(function (cls) {
+          controlledTermDataService.getClassById(ontology.id, result['@id']).then(function (cls) {
             result.hasChildren = cls.hasChildren;
           });
         }
@@ -225,7 +225,7 @@ define([
           else {
             id = result.vsCollection;
           }
-          var acronym = controlTermService.getLastFragmentOfUri(id);
+          var acronym = controlledTermService.getLastFragmentOfUri(id);
           vm.browsingSection = 'value_set';
           vm.searchPreloader = true;
           assignValueSetDetails(result);
@@ -233,7 +233,7 @@ define([
           if (result.type == 'ValueSet') {
             vm.currentValueSet = result;
             vm.currentValueSetId = result['@id'];
-            controlTermDataService.getValuesInValueSet(acronym, vm.currentValueSetId).then(function (valueSetClasses) {
+            controlledTermDataService.getValuesInValueSet(acronym, vm.currentValueSetId).then(function (valueSetClasses) {
               vm.valueSetClasses = valueSetClasses;
               angular.forEach(vm.valueSetClasses, function (valueSetClass) {
                 valueSetClass.type = 'Value';
@@ -243,10 +243,10 @@ define([
             // Value
           } else {
             // Get the value set that contains the value
-            controlTermDataService.getClassParents(acronym, result['@id']).then(function (response) {
+            controlledTermDataService.getClassParents(acronym, result['@id']).then(function (response) {
               vm.currentValueSet = response[0];
               vm.currentValueSetId = vm.currentValueSet["@id"];
-              controlTermDataService.getValuesInValueSet(acronym,
+              controlledTermDataService.getValuesInValueSet(acronym,
                   vm.currentValueSetId).then(function (valueSetClasses) {
                 vm.valueSetClasses = valueSetClasses;
                 angular.forEach(vm.valueSetClasses, function (valueSetClass) {
@@ -277,8 +277,8 @@ define([
         var browseResults = [];
 
         $q.all({
-          ontologies: controlTermDataService.getAllOntologies(),
-          valueSets : controlTermDataService.getAllValueSets()
+          ontologies: controlledTermDataService.getAllOntologies(),
+          valueSets : controlledTermDataService.getAllValueSets()
         }).then(function (result) {
           angular.forEach(result.valueSets, function (valueSet) {
             browseResults.push(valueSet);
@@ -288,7 +288,7 @@ define([
           });
 
           // Sort by title
-          browseResults.sort(controlTermService.sortBrowseResults);
+          browseResults.sort(controlledTermService.sortBrowseResults);
           vm.searchResults = browseResults;
         });
 
@@ -328,7 +328,7 @@ define([
                   var sourceName;
                   var ignoreResult = false;
                   if (type == 'OntologyClass') {
-                    var ontology = controlTermDataService.getOntologyByLdId(sourceId);
+                    var ontology = controlledTermDataService.getOntologyByLdId(sourceId);
                     if (ontology == undefined) {
                       ignoreResult = true;
                     }
@@ -337,10 +337,10 @@ define([
                     }
                   }
                   else if (type == 'ValueSet') {
-                    sourceName = controlTermService.getLastFragmentOfUri(sourceId);
+                    sourceName = controlledTermService.getLastFragmentOfUri(sourceId);
                   }
                   else if (type == 'Value') {
-                    sourceName = controlTermService.getLastFragmentOfUri(sourceId);
+                    sourceName = controlledTermService.getLastFragmentOfUri(sourceId);
                   }
                   if (!ignoreResult) {
                     vm.searchResults.push({
@@ -359,19 +359,19 @@ define([
       function bpSearch(query, ontologiesFilter, valueSetsFilter) {
         // Search All (Classes, Value Sets and Values)
         if (ontologiesFilter && valueSetsFilter) {
-          return controlTermDataService.searchClassesValueSetsAndValues(query).then(function (response) {
+          return controlledTermDataService.searchClassesValueSetsAndValues(query).then(function (response) {
             return response;
           });
         }
         // Search Classes
         else if (ontologiesFilter) {
-          return controlTermDataService.searchClasses(query).then(function (response) {
+          return controlledTermDataService.searchClasses(query).then(function (response) {
             return response;
           });
         }
         // Search Value Sets and Values
         else if (valueSetsFilter) {
-          return controlTermDataService.searchValueSetsAndValues(query).then(function (response) {
+          return controlledTermDataService.searchValueSetsAndValues(query).then(function (response) {
             return response;
           });
         }
@@ -400,23 +400,23 @@ define([
        */
       function assignClassDetails(ontologyClass) {
         if (!ontologyClass.classDetails) {
-          //var selfUrl = controlTermService.getSelfUrl(ontologyClass);
-          var acronym = controlTermDataService.getAcronym(ontologyClass);
+          //var selfUrl = controlledTermService.getSelfUrl(ontologyClass);
+          var acronym = controlledTermDataService.getAcronym(ontologyClass);
           var classId = ontologyClass['@id'];
-          controlTermDataService.getClassById(acronym, classId).then(function (response) {
+          controlledTermDataService.getClassById(acronym, classId).then(function (response) {
             vm.selectedValueResult.classDetails = response;
           });
         }
       }
 
       function assignValueSetDetails(valueSet) {
-        //var acronym = controlTermService.getLastFragmentOfUri(valueSet.sourceId);
-        vm.selectedValueResult.classDetails = controlTermDataService.getValueSetByLdId(valueSet['@id']);
+        //var acronym = controlledTermService.getLastFragmentOfUri(valueSet.sourceId);
+        vm.selectedValueResult.classDetails = controlledTermDataService.getValueSetByLdId(valueSet['@id']);
       }
 
       function loadParentAndDetermineValueSetForValuesSearchResult(valueSet) {
         var acronym = valueSet.ontology.slice(39);
-        controlTermDataService.getClassParents(acronym, valueSet['@id']).then(function (response) {
+        controlledTermDataService.getClassParents(acronym, valueSet['@id']).then(function (response) {
           if (!(status in response)) {
             if (angular.isArray(response) && response.length > 0) {
               valueSet.type = 'Value';

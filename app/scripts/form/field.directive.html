@@ -6,7 +6,7 @@
   <!--</div>-->
 
   <!-- field title first -->
-  <div menuDropDownId="" ng-show="$root.isArray(model) && $root.applicationMode == 'runtime'"
+  <div menuDropDownId="" ng-show="$root.isArray(model) && $root.isRuntime()"
       class="spreadsheetSwitch field"
       style="position:relative">
     <p class="element-name-label">
@@ -53,7 +53,7 @@
     </p>
   </div>
 
-  <div menuDropDownId="" ng-show="!$root.isArray(model) && $root.applicationMode == 'runtime'"
+  <div menuDropDownId="" ng-show="!$root.isArray(model) && $root.isRuntime()"
       class="field"
       style="position:relative">
   </div>

@@ -10,7 +10,7 @@ define([
 
   cedarTemplateEditorCoreRun.$inject = ['$rootScope', '$window', '$sce', '$translate', 'DataTemplateService',
                                         'DataManipulationService', 'FieldTypeService', 'UrlService', 'UIUtilService',
-                                        'UserService', 'RichTextConfigService', 'CONST', 'controlTermDataService',
+                                        'UserService', 'RichTextConfigService', 'CONST', 'controlledTermDataService',
                                         'provisionalClassService', 'CedarUser', 'UISettingsService',
                                         'ValueRecommenderService', 'DataUtilService', 'TrackingService',
                                         '$httpParamSerializer', '$location'];
@@ -18,14 +18,12 @@ define([
 
   function cedarTemplateEditorCoreRun($rootScope, $window, $sce, $translate, DataTemplateService,
                                       DataManipulationService, FieldTypeService, UrlService, UIUtilService, UserService,
-                                      RichTextConfigService, CONST, controlTermDataService, provisionalClassService,
+                                      RichTextConfigService, CONST, controlledTermDataService, provisionalClassService,
                                       CedarUser, UISettingsService, ValueRecommenderService, DataUtilService,
                                       TrackingService, $httpParamSerializer, $location) {
 
     $rootScope.isArray = angular.isArray;
 
-    $rootScope.applicationMode = CONST.applicationMode.DEFAULT;
-    $rootScope.applicationRole = 'instantiator';
     $rootScope.pageId = null;
 
     $rootScope.sortableOptions = {
@@ -38,27 +36,6 @@ define([
     $rootScope.isEmpty = function (obj) {
       return !obj || Object.keys(obj).length === 0;
     };
-
-    // Capitalize first letter
-    /*
-     egyedia - this seems to be unused
-     $rootScope.capitalizeFirst = function (string) {
-     string = string.toLowerCase();
-     return string.substring(0, 1).toUpperCase() + string.substring(1);
-     };
-     */
-
-    // Sorting function that moves boolean values with true to the front of the sort
-    /*
-     egyedia - this seems to be unused
-     $rootScope.sortBoolean = function (array, bool) {
-     return array.sort(function (a, b) {
-     var x = a[bool],
-     y = b[bool];
-     return ((x == y) ? -1 : ((x === true) ? -1 : 1));
-     });
-     };
-     */
 
     $rootScope.propertiesOf = function (fieldOrElement) {
       return DataManipulationService.getFieldProperties(fieldOrElement);
@@ -76,14 +53,15 @@ define([
       return $rootScope.pageId == 'RUNTIME';
     };
 
-    $rootScope.elementIsMultiInstance = DataManipulationService.elementIsMultiInstance;
+    $rootScope.isElementEditor = function () {
+      return $rootScope.pageId == 'ELEMENT';
+    };
 
-    /*
-     egyedia - this seems to be unused
-     $rootScope.isField = function (value) {
-     return value && value.properties && value._ui && value._ui.inputType;
-     };
-     */
+    $rootScope.isTemplateEditor = function () {
+      return $rootScope.pageId == 'TEMPLATE';
+    };
+
+    $rootScope.elementIsMultiInstance = DataManipulationService.elementIsMultiInstance;
 
     $rootScope.isElement = function (value) {
       if (value && value['@type'] && value['@type'] == "https://schema.metadatacenter.org/core/TemplateElement") {
@@ -173,20 +151,6 @@ define([
         }
       });
     };
-
-    /*
-     egyedia - this seems to be unused
-     $rootScope.assignOrder = function (fieldOrElement, parentElement) {
-     var order = 1;
-     angular.forEach(parentElement, function (value, key) {
-     if ($rootScope.isElement(value) || $rootScope.isField(value)) {
-     order += 1;
-     }
-     });
-
-     fieldOrElement._ui.order = order;
-     };
-     */
 
     $rootScope.scrollToAnchor = UIUtilService.scrollToAnchor;
     $rootScope.scrollToDomId = UIUtilService.scrollToDomId;
@@ -348,7 +312,7 @@ define([
           if (term == '*') {
             $rootScope.removeAutocompleteResultsForSource(field_id, valueSet.uri);
           }
-          controlTermDataService.autocompleteValueSetClasses(term, valueSet.vsCollection,
+          controlledTermDataService.autocompleteValueSetClasses(term, valueSet.vsCollection,
               valueSet.uri).then(function (childResponse) {
                 $rootScope.processAutocompleteClassResults(field_id, 'Value Set Class', valueSet.uri, childResponse);
               });
@@ -360,7 +324,7 @@ define([
           if (term == '*') {
             $rootScope.removeAutocompleteResultsForSource(field_id, ontology.uri);
           }
-          controlTermDataService.autocompleteOntology(term, ontology.acronym).then(function (childResponse) {
+          controlledTermDataService.autocompleteOntology(term, ontology.acronym).then(function (childResponse) {
             $rootScope.processAutocompleteClassResults(field_id, 'Ontology Class', ontology.uri, childResponse);
           });
         });
@@ -371,7 +335,7 @@ define([
           if (term == '*') {
             $rootScope.removeAutocompleteResultsForSource(field_id, branch.uri);
           }
-          controlTermDataService.autocompleteOntologySubtree(term, branch.acronym, branch.uri, branch.maxDepth).then(
+          controlledTermDataService.autocompleteOntologySubtree(term, branch.acronym, branch.uri, branch.maxDepth).then(
               function (childResponse) {
                 $rootScope.processAutocompleteClassResults(field_id, 'Ontology Class', branch.uri, childResponse);
               }
@@ -442,7 +406,7 @@ define([
       return obj && obj["@type"] && obj["@type"].indexOf("Ontology") > 0;
     };
 
-    // Used in cedar-control-term.directive
+    // Used in cedar-controlled-term.directive
     $rootScope.lengthOfValueConstraint = function (valueConstraint) {
       return (valueConstraint.classes || []).length +
           (valueConstraint.valueSets || []).length +
@@ -466,7 +430,6 @@ define([
 
 
     // the below console.log statements break the karma tests
-    //TODO MJD
     // User data is available at this point:
     // console.log("Cedar service providing user data at this point:");
     // console.log(Cedar.getUserId());
@@ -479,7 +442,7 @@ define([
     FieldTypeService.init();
     UrlService.init();
     provisionalClassService.init();
-    controlTermDataService.init();
+    controlledTermDataService.init();
     DataManipulationService.init();
     UISettingsService.init();
     TrackingService.init();
@@ -498,12 +461,9 @@ define([
       }
     };
 
-    $rootScope.$on('$locationChangeStart', function(event) {
+    $rootScope.$on('$locationChangeStart', function (event) {
       $rootScope.setHeader();
     });
-
-
-
 
     $rootScope.setHeader = function () {
 
@@ -514,18 +474,16 @@ define([
       if ($location.path().startsWith("/dashboard")) {
         //jQuery("body").css('overflow:hidden');
         e.addClass('dashboard');
-      }
-       else if ($location.path().startsWith("/elements")) {
+      } else if ($location.path().startsWith("/elements")) {
         e.addClass('element');
 
       } else if ($location.path().startsWith("/templates")) {
         e.addClass('template');
 
-      }if ($location.path().startsWith("/instances")) {
+      } else if ($location.path().startsWith("/instances")) {
         e.addClass('metadata');
       }
     }
-
 
 
   };
