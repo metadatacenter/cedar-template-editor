@@ -32,6 +32,7 @@ define([
     vm.saveAsFieldItem = saveAsFieldItem;
     vm.saveAsOntologyClassValueConstraint = saveAsOntologyClassValueConstraint;
     vm.saveAsValueSetConstraint = saveAsValueSetConstraint;
+    vm.searchMode = null;
     vm.startOverInner = startOverInner;
     vm.startOver = startOver;
 

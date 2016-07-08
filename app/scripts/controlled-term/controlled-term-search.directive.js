@@ -12,7 +12,7 @@ define([
     var directive = {
       bindToController: {
         fieldName    : '=',
-        searchMode   : '=',
+        searchMode   : '=', // Search modes: field, values, mappings
         selectedClass: '=',
         currentOntology    : '=',
         //currentValueSet    : '=',
@@ -40,7 +40,7 @@ define([
     function controlledTermSearchDirectiveController($q, $rootScope, $scope, controlledTermService, controlledTermDataService) {
       /* Variable declarations */
       var vm = this;
-      vm.action = 'search';
+      vm.action = 'search'; // Possible actions: search, create
       vm.loadingOntologies = false;
       vm.ontologySearchRegexp = null;
       vm.resultsFound = null;
@@ -57,10 +57,13 @@ define([
       vm.changeTreeVisibility = changeTreeVisibility;
       vm.checkIfSelected = checkIfSelected;
       vm.getShortId = getShortId;
+      vm.isCreating = isCreating;
       vm.isEmptySearchQuery = isEmptySearchQuery;
       vm.isFieldTypesMode = isFieldTypesMode;
       vm.isFieldValuesMode = isFieldValuesMode;
+      vm.isMappingsMode = isMappingsMode;
       vm.isOntologyNameMatched = isOntologyNameMatched;
+      vm.isSearching = isSearching;
       vm.getDefaultSearchQuery = getDefaultSearchQuery;
       vm.getClassDetails = getClassDetails;
       vm.hideTree = hideTree;
@@ -75,6 +78,7 @@ define([
       vm.selectFieldOntology = selectFieldOntology;
       vm.showTree = showTree;
       vm.startSearch = startSearch;
+      vm.switchToCreate = switchToCreate;
       vm.endSearch = endSearch;
 
       /**
@@ -131,7 +135,6 @@ define([
             vm.searchClassesResults = tArry;
             vm.resultsFound = true;
           } else {
-            console.log("search results found false");
             vm.resultsFound = false;
           }
 
@@ -202,17 +205,30 @@ define([
         return vm.searchMode == 'values' ? true : false;
       }
 
+      function isMappingsMode() {
+        return vm.searchMode == 'mappings' ? true : false;
+      }
+
+      function isSearching() {
+        return (vm.action == 'search') ? true : false;
+      }
+
       function isSearchingClasses() {
-        return vm.searchScope == 'classes' ? true : false;
+        return (vm.action == 'search' && vm.searchScope == 'classes') ? true : false;
       }
 
       function isSearchingOntologies() {
-        return vm.searchScope == 'ontologies' ? true : false;
+        return (vm.action == 'search' && vm.searchScope == 'ontologies') ? true : false;
+      }
+
+      function isCreating() {
+        return (vm.action == 'create') ? true : false;
       }
 
       function isEmptySearchQuery() {
         return (vm.searchQuery == '' || vm.searchQuery == null) ? true : false;
       }
+
 
       //function getSearchPlaceholderMessage() {
       //  if (isSearchingTerms()) {
@@ -297,8 +313,8 @@ define([
         vm.treeVisible = !vm.treeVisible;
       }
 
-      function fieldCreateClass() {
-        vm.currentAction = 'create';
+      function switchToCreate() {
+        vm.action = 'create';
       }
 
       /* This function is passed as a callback down through class tree and child tree directives */
@@ -350,21 +366,26 @@ define([
             }
           });
 
-
       /**
        * Util functions
        */
 
-      function getShortId(uri) {
+      function getShortId(uri, maxLength) {
         var lastFragment = uri.substr(uri.lastIndexOf('/') + 1);
         var shortId = lastFragment.substr(lastFragment.lastIndexOf('#') + 1);
+        if (maxLength && shortId.length > maxLength) {
+          var start = shortId.length - maxLength;
+          shortId = '...' + shortId.substr(start, shortId.length-1);
+        }
         return shortId;
       }
 
       function searchRegexp(searchQuery) {
-        // Remove illegal characters
-        var cleanSearchQuery = searchQuery.replace(/[|&;$%@"<>()+,]/g, "");
-        vm.ontologySearchRegexp = new RegExp(cleanSearchQuery, "i");
+        if (searchQuery) {
+          // Remove illegal characters
+          searchQuery = searchQuery.replace(/[|&;$%@"<>()+,]/g, "");
+          vm.ontologySearchRegexp = new RegExp(searchQuery, "i");
+        }
       }
 
       function onTextClick(event) {

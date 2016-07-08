@@ -12187,8 +12187,7 @@ div.dotted .dashes {
   padding-right: 18px;
 }
 p.instructions {
-  text-align: center;
-  color: #999999;
+  text-align: left;
 }
 .add-values-to-value-set {
   padding-left: 20px;
@@ -12222,6 +12221,7 @@ p.instructions {
   padding-right: 20px;
 }
 .add-ontology-class div.map-existing-classes {
+  border: 1px solid #5795ba;
   padding: 20px;
   margin-bottom: 10px;
   background-color: #f4f4f7;

@@ -1,10 +1,13 @@
-<span ng-show="tsc.isFieldTypesMode()">Find a term in BioPortal to annotate the <span class="highlighted">'{{tsc.fieldName}}'</span> field or <button type="button" class="btn btn-create-term">Create a New Term</button>
+<span ng-show="tsc.isFieldTypesMode()">Find a term in BioPortal to annotate the <span class="highlighted">'{{tsc.fieldName}}'</span> field or <button type="button" class="btn btn-create-term" ng-click="tsc.switchToCreate()">Create a New Term</button>
 </span>
 <h4 ng-show="tsc.isFieldValuesMode()">Find terms in BioPortal to constrain the values of the <span class="highlighted">'{{tsc.fieldName}}'</span> field</h4>
 
 <!-- Start over -->
 <div class="form-group floating-label-wrapper btn-start-over-group clearfix">
-  <button type="button" class="btn btn-start-over" ng-click="tsc.reset(false, false)"><span class="fa fa-refresh primary-color"></span> Start Over</button>
+  <button type="button" class="btn btn-start-over" ng-click="tsc.reset(false, false)"><span class="fa fa-refresh primary-color"></span> Start Over
+  </button>
+</div>
+<div ng-if="tsc.isSearching()" class="form-group floating-label-wrapper clearfix">
   <!-- Search Field -->
   <div class="field-search">
     <div class="input-group field-search-input-group">
@@ -23,12 +26,14 @@
   <!-- Advanced options -->
   <!--<button type="button" class="btn btn-advanced" ng-click="tsc.reset()">Advanced</button>-->
   <div class="text-center search-options">
-    <div class="radio inline-block radio-primary radio-controlled-terms-search">
+    <div class="radio inline-block radio-primary radio-controlled-terms-search"
+        ng-show="!tsc.isMappingsMode()">
       <input id="search-scope-1" type="radio" ng-model="tsc.searchScope" value="classes"
           ng-click="$event.stopPropagation()" ng-change="tsc.changeSearchScope()"/>
       <label>Ontology Terms</label>
     </div>
-    <div class="radio inline-block radio-primary radio-controlled-terms-search">
+    <div class="radio inline-block radio-primary radio-controlled-terms-search"
+        ng-show="!tsc.isMappingsMode()">
       <input id="search-scope-2" type="radio" ng-model="tsc.searchScope" value="ontologies"
           ng-click="$event.stopPropagation()" ng-change="tsc.changeSearchScope()"/>
       <label>Ontologies</label>
@@ -40,18 +45,19 @@
       <label>Value sets</label>
     </div>
   </div>
-</div>
+  <!-- Search messages -->
+  <div class="preloader" ng-if="tsc.showSearchPreloader"></div>
+  <div class="searchMsg" ng-if="tsc.showEmptyQueryMsg">Please enter a search query</div>
 
-<div class="preloader" ng-if="tsc.showSearchPreloader"></div>
-<div class="searchMsg" ng-if="tsc.showEmptyQueryMsg">Please enter a search query</div>
-
-<div class="searchMsg" ng-if="tsc.searchFinished">
-  <div ng-if="tsc.resultsFound">
-    <div>{{tsc.searchClassesResults.length}} results</div>
-    <div>Click on a term to see more details about it</div>
+  <div class="searchMsg" ng-if="tsc.searchFinished">
+    <div ng-if="tsc.resultsFound && !tsc.isMappingsMode()">
+      <div>{{tsc.searchClassesResults.length}} results</div>
+      <div>Click on a term to see more details about it</div>
+    </div>
+    <div ng-if="!tsc.resultsFound">No results</div>
   </div>
-  <div ng-if="!tsc.resultsFound">No results</div>
 </div>
+
 
 <!-- Search Results and Ontology Tree -->
 <div class="clear search-results-section">
@@ -62,10 +68,10 @@
         <thead>
         <tr>
           <th width="16%">Term</th>
-          <th width="40%">Definition</th>
-          <th width="13%">Ontology</th>
-          <th width="13%">Id</th>
-          <th width="13%"></th>
+          <th width="36%">Definition</th>
+          <th width="15%">Ontology</th>
+          <th width="14%">Id</th>
+          <th width="14%"></th>
         </tr>
         </thead>
       </table>
@@ -79,10 +85,10 @@
           <tr ng-repeat="result in tsc.searchClassesResults" ng-click="tsc.selectFieldClass(result, result.resultId)"
               ng-class="{'selected-row':  (result.resultId == tsc.selectedResultId) && (result.details.id == tsc.selectedClass.id)}">
             <td width="16%">{{result.prefLabel}}</td>
-            <td width="40%">(definition here)</td>
-            <td width="13%" tooltip="{{result.ontology.name}}" tooltip-append-to-body="true">{{result.ontology.id}}</td>
-            <td width="13%">{{tsc.getShortId(result.details.id)}}</td>
-            <td width="12%">
+            <td width="36%">(definition here)</td>
+            <td width="15%" tooltip="{{result.ontology.name}}" tooltip-append-to-body="true">{{result.ontology.id}}</td>
+            <td width="14%" tooltip="{{tsc.getShortId(result.details.id, null)}}" tooltip-append-to-body="true">{{tsc.getShortId(result.details.id, 16)}}</td>
+            <td width="13%">
               <span class="fa fa-sitemap" ng-if="(result.resultId == tsc.selectedResultId) && (result.details.id == tsc.selectedClass.id)" ng-click="tsc.changeTreeVisibility(); $event.stopPropagation()"></span>
               <span class="show-details" ng-if="(result.resultId == tsc.selectedResultId) && (result.details.id == tsc.selectedClass.id) && !tsc.treeVisible" ng-click="tsc.changeTreeVisibility(); $event.stopPropagation()">Show Details</span>
               <span class="show-details" ng-if="(result.resultId == tsc.selectedResultId) && (result.details.id == tsc.selectedClass.id) && tsc.treeVisible" ng-click="tsc.changeTreeVisibility(); $event.stopPropagation()">Hide Details</span>
@@ -173,14 +179,15 @@
                   <td>{{tsc.classDetails.prefLabel}}</td>
                 </tr>
                 <tr>
-                  <th>ID</th>
+                  <th>Id</th>
                   <td>{{tsc.classDetails['@id']}}</td>
                 </tr>
                 <tr>
                   <th>Definition</th>
-                  <td ng-if="tsc.classDetails.definition[0]">{{tsc.classDetails.definition[0]}}</td>
+                  <!--<td ng-if="tsc.classDetails.definition[0]">{{tsc.classDetails.definition[0]}}</td>-->
                   <td ng-if="tsc.classDetails.definitions[0]">{{tsc.classDetails.definitions[0]}}</td>
-                  <td ng-if="!tsc.classDetails.definition[0] && !tsc.classDetails.definitions[0]">-</td>
+                  <!--<td ng-if="!tsc.classDetails.definition[0] && !tsc.classDetails.definitions[0]">-</td>-->
+                  <td ng-if="!tsc.classDetails.definitions[0]">-</td>
                 </tr>
                 </tbody>
               </table>
@@ -199,14 +206,14 @@
                   <td>{{tsc.currentOntology.info.id}}</td>
                 </tr>
                 <tr>
-                  <th>id</th>
+                  <th>Id</th>
                   <td>
                     <a ng-href="{{tsc.currentOntology.info['@id']}}" target="_blank">{{tsc.currentOntology.info['@id']}}</a>
                   </td>
                 </tr>
                 <tr>
                   <th>Description</th>
-                  <td>{{tsc.currentOntology.info.details.description | htmlToPlainText}}</td>
+                  <td>{{(tsc.currentOntology.info.details.description | htmlToPlainText) || '-'}}</td>
                 </tr>
                 <tr>
                   <th>No. Terms</th>
@@ -224,17 +231,16 @@
   </div>
 </div>
 
+<!-- Create term -->
+<div ng-if="tsc.isCreating()" class="clear form-group add-ontology-class" ng-controller="provisionalClassController as pcc">
 
-<!-- Add Ontology Class / Value Sets -->
-<!--<div class="clear form-group add-ontology-class" ng-controller="provisionalClassController as pcc">-->
+  <ng-include src="'scripts/controlled-term/create-ontology-class.html'"></ng-include>
+  <div class="clear btn-create-term">
+    <button type="button"
+        class="std-button btn"
+        ng-click="pcc.saveAsFieldItem(pcc.provisionalClass)"
+        ng-disabled="!pcc.isValid()">Create Term
+    </button>
+  </div>
 
-  <!--<ng-include src="'scripts/controlled-term/create-ontology-class.html'"></ng-include>-->
-  <!--<div class="clear btn-create-class">-->
-    <!--<button type="button"-->
-        <!--class="std-button btn"-->
-        <!--ng-click="pcc.saveAsFieldItem(pcc.provisionalClass)"-->
-        <!--ng-disabled="!pcc.isValid()">Create Class-->
-    <!--</button>-->
-  <!--</div>-->
-
-<!--</div>-->
+</div>
