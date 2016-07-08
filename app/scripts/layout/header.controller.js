@@ -34,7 +34,7 @@ define([
       var url = $rootScope.util.buildUrl(baseUrl, queryParams);
       $location.url(url);
       $window.scrollTo(0, 0);
-      
+
     };
 
     vm.search = function (searchTerm) {

@@ -800,7 +800,12 @@ define([
 
 
       $scope.deleteFieldAddedItem = function (itemDataId) {
-        DataManipulationService.deleteFieldControlledTerm(itemDataId, $scope.field);
+        console.log('deleteFieldAddedItem' + itemDataId);
+        if (itemDataId != null) {
+          console.log($scope.field);
+          DataManipulationService.deleteFieldControlledTerm(itemDataId, $scope.field);
+
+        }
 
         // adjust the map
         $scope.setAddedFieldMap();
