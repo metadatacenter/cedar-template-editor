@@ -66,6 +66,7 @@ define([
           if ((value.details.numberOfClasses > 0) || (value.id == 'CEDARPC')) {
             ontologiesCache[value.id] = value;
           }
+          value.fullName = value.name + ' (' + value.id + ')';
         });
       }).catch(function (err) {
         if (err.status == 502) {

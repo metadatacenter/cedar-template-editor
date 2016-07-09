@@ -3,7 +3,7 @@
 define([
   'angular'
 ], function (angular) {
-  angular.module('cedar.templateEditor.controlledTerm.controlledTermSearchDirective', [])
+  angular.module('cedar.templateEditor.controlledTerm.controlledTermSearchDirective', ['ngTagsInput'])
       .directive('controlledTermSearch', controlledTermSearchDirective);
 
   controlledTermSearchDirective.$inject = [];
@@ -47,13 +47,16 @@ define([
       vm.searchFinished = null;
       vm.searchOntologiesResults = [];
       vm.searchScope = 'classes'; // Default search scope
+      vm.searchOptionsVisible = false;
       vm.selectedResultId = null;
+      vm.selectedOntologies = null;
       vm.showSearchPreloader = false;
       vm.showEmptyQueryMsg = false;
       vm.treeVisible = false;
 
       /* Function declarations */
       vm.changeSearchScope = changeSearchScope;
+      vm.changeSearchOptionsVisibility = changeSearchOptionsVisibility;
       vm.changeTreeVisibility = changeTreeVisibility;
       vm.checkIfSelected = checkIfSelected;
       vm.getShortId = getShortId;
@@ -71,6 +74,7 @@ define([
       vm.isCurrentOntology = isCurrentOntology;
       vm.isSearchingClasses = isSearchingClasses;
       vm.isSearchingOntologies = isSearchingOntologies;
+      vm.loadOntologies = loadOntologies;
       vm.onTextClick = onTextClick;
       vm.reset = reset;
       vm.search = search;
@@ -249,15 +253,18 @@ define([
        * Ontology-related functions
        */
 
-      function loadOntologies() {
+      function loadOntologies(searchQuery) {
         if (vm.searchOntologiesResults.length == 0) {
           vm.searchOntologiesResults = controlledTermDataService.getAllOntologies();
         }
+        return vm.searchOntologiesResults.filter(function (ontology) {
+          return ontology.fullName.toLowerCase().indexOf(searchQuery.toLowerCase()) != -1;
+        });
       }
 
       function selectFieldClass(selection, resultId) {
         // Set the basic fields for the selected class and ontology in order to show the info of the selected class while the rest of details are being loaded
-        vm.treeVisible = false;
+        //vm.treeVisible = false;
         vm.selectedClass = {};
         vm.currentOntology = {};
         vm.currentOntology.info = {};
@@ -307,6 +314,10 @@ define([
 
       function showTree() {
         vm.treeVisible = true;
+      }
+
+      function changeSearchOptionsVisibility() {
+        vm.searchOptionsVisible = !vm.searchOptionsVisible;
       }
 
       function changeTreeVisibility() {

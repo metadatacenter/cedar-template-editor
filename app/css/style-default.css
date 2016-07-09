@@ -11892,6 +11892,8 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   color: #71a69c;
 }
 .controlled-term-options .btn-start-over-group {
+  width: 80%;
+  margin: auto;
   margin-bottom: 0;
   text-align: right;
 }
@@ -12203,8 +12205,37 @@ p.instructions {
   color: #339933;
   padding-top: 10px;
 }
-.add-values-to-value-set .field-search {
+.field-search {
+  border: 1px solid #ddd;
+  margin: auto;
+  width: 80%;
+}
+.field-search i.fa.fa-search,
+.field-search i.fa.fa-cog {
+  font-size: 22px;
+  color: #d2d2d2;
+}
+.field-search i.fa.fa-search:hover {
+  color: #339933;
+}
+.field-search i.fa.fa-cog.selected {
+  color: #339933;
+}
+.field-ontologies {
+  margin-top: 0.7em;
   width: 100%;
+}
+.advanced-search {
+  background-color: #f4f4f7;
+  margin: 10px auto;
+  padding: 20px;
+  width: 80%;
+}
+.advanced-search p.advanced-search-header {
+  text-transform: uppercase;
+  text-align: center;
+  font-weight: bold;
+  color: #339933;
 }
 .add-ontology-class {
   padding-left: 20px;
@@ -12221,7 +12252,7 @@ p.instructions {
   padding-right: 20px;
 }
 .add-ontology-class div.map-existing-classes {
-  border: 1px solid #339933;
+  border: 1px solid #eaf2f2;
   padding: 20px;
   margin-bottom: 10px;
   background-color: #f4f4f7;
@@ -12240,9 +12271,6 @@ p.instructions {
   text-align: center;
   font-weight: bold;
   color: #339933;
-}
-.add-ontology-class .field-search {
-  width: 100%;
 }
 .options-wrapper {
   width: 100%;
@@ -13085,8 +13113,8 @@ p.instructions {
   -webkit-transition: width 1s ease-in-out;
           transition: width 1s ease-in-out;
 }
-.is-creating-class .field-browse,
-.is-creating-value-set .field-browse,
+.is-creating-class .field-ontologies,
+.is-creating-value-set .field-ontologies,
 .is-creating-class .field-search,
 .is-creating-value-set .field-search {
   display: none;
@@ -13594,6 +13622,24 @@ table.apiKey td {
 ::-webkit-scrollbar-track {
   background-color: #fff;
   border-radius: 0px;
+}
+::-webkit-input-placeholder {
+  /* WebKit, Blink, Edge */
+  color: #bebebe;
+}
+:-moz-placeholder {
+  /* Mozilla Firefox 4 to 18 */
+  color: #bebebe;
+  opacity: 1;
+}
+::-moz-placeholder {
+  /* Mozilla Firefox 19+ */
+  color: #bebebe;
+  opacity: 1;
+}
+:-ms-input-placeholder {
+  /* Internet Explorer 10-11 */
+  color: #bebebe;
 }
 @font-face {
   font-family: "project-cedar";
@@ -14148,3 +14194,153 @@ body.modal-open {
 === CEDAR Customization END
 ================================================
 */
+/*
+ * ng-custom-.custom-tags-input customization
+ */
+.custom-tags-input {
+  display: block;
+}
+.custom-tags-input *,
+.custom-tags-input *:before,
+.custom-tags-input *:after {
+  box-sizing: border-box;
+}
+.custom-tags-input .host {
+  position: relative;
+  height: 100%;
+}
+.custom-tags-input .host:active {
+  outline: none;
+}
+.custom-tags-input .tags {
+  -moz-appearance: textfield;
+  -webkit-appearance: textfield;
+  padding: 1px;
+  overflow: hidden;
+  word-wrap: break-word;
+  cursor: text;
+  background-color: #fff;
+  border: none;
+  height: 100%;
+}
+.custom-tags-input .tags.focused {
+  outline: none;
+  box-shadow: 0 0 3px 1px rgba(5, 139, 242, 0.6);
+}
+.custom-tags-input .tags .tag-list {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+}
+.custom-tags-input .tags .tag-item {
+  color: #339933;
+  background: #eaf2f2;
+  margin: 6px 0px 6px 4px;
+  padding: 0 5px;
+  display: inline-block;
+  float: left;
+  font-size: 1em;
+  height: 30px;
+  line-height: 28px;
+  border: 1px solid #94C795;
+  border-radius: 3px;
+}
+.custom-tags-input .tags .tag-item.selected {
+  background: #339933;
+  color: #eaf2f2;
+}
+.custom-tags-input .tags .tag-item .remove-button {
+  margin: 0 0 0 5px;
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+  vertical-align: middle;
+  font: bold 1.1em Arial, sans-serif;
+  color: #585858;
+}
+.custom-tags-input .tags .tag-item .remove-button:active {
+  color: #fff;
+}
+.custom-tags-input .tags .input {
+  border: 0;
+  outline: none;
+  margin: 0px 2px 0px 2px;
+  padding: 0;
+  padding-left: 5px;
+  float: left;
+  height: 41px;
+  font-size: 1em;
+}
+.custom-tags-input .tags .input.invalid-tag {
+  color: #ff0000;
+}
+.custom-tags-input .tags .input::-ms-clear {
+  display: none;
+}
+.custom-tags-input.ng-invalid .tags {
+  box-shadow: 0 0 3px 1px rgba(255, 0, 0, 0.6);
+}
+.custom-tags-input[disabled] .host:focus {
+  outline: none;
+}
+.custom-tags-input[disabled] .tags {
+  background-color: #eee;
+  cursor: default;
+}
+.custom-tags-input[disabled] .tags .tag-item {
+  opacity: 0.65;
+  background: -webkit-linear-gradient(top, #f0f9ff 0%, rgba(203, 235, 255, 0.75) 47%, rgba(161, 219, 255, 0.62) 100%);
+  background: linear-gradient(to bottom, #f0f9ff 0%, rgba(203, 235, 255, 0.75) 47%, rgba(161, 219, 255, 0.62) 100%);
+}
+.custom-tags-input[disabled] .tags .tag-item .remove-button {
+  cursor: default;
+}
+.custom-tags-input[disabled] .tags .tag-item .remove-button:active {
+  color: #585858;
+}
+.custom-tags-input[disabled] .tags .input {
+  background-color: #eee;
+  cursor: default;
+}
+.custom-tags-input .autocomplete {
+  margin-top: 5px;
+  position: absolute;
+  padding: 5px 0;
+  z-index: 999;
+  width: 100%;
+  background-color: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+}
+.custom-tags-input .autocomplete .suggestion-list {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+  max-height: 280px;
+  overflow-y: auto;
+  position: relative;
+}
+.custom-tags-input .autocomplete .suggestion-item {
+  padding: 5px 10px;
+  cursor: pointer;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 1em;
+  color: #000;
+  background-color: #fff;
+}
+.custom-tags-input .autocomplete .suggestion-item.selected {
+  background-color: #eaf2f2;
+}
+.custom-tags-input .autocomplete .suggestion-item.selected em {
+  background-color: #eaf2f2;
+}
+.custom-tags-input .autocomplete .suggestion-item em {
+  font-size: 1em;
+  font-weight: bold;
+  font-style: normal;
+  color: #000;
+  background-color: #fff;
+}

@@ -3122,6 +3122,9 @@ section.dashboard-elements {
   }
 
   .btn-start-over-group {
+    width: 80%;
+    margin: auto;
+    //border: 1px solid red;
     margin-bottom: 0;
     .clearfix();
     text-align: right;
@@ -3487,14 +3490,47 @@ p.instructions {
     color: @brand-primary;
     padding-top: 10px;
   }
+}
 
-  .field-search {
-    width: 100%;
+.field-search {
+  border: 1px solid #ddd;
+  margin: auto;
+  width: 80%;
+
+  i.fa.fa-search, i.fa.fa-cog {
+    font-size: 22px;
+    color: @gray3;
   }
 
-  //.field-browse {
-  //  width: 49%;
-  //}
+  i.fa.fa-search {
+    &:hover {
+      color: @brand-primary;
+    }
+  }
+
+  i.fa.fa-cog.selected {
+    color: @brand-primary;
+  }
+}
+
+.field-ontologies {
+  margin-top: 0.7em;
+  width: 100%;
+}
+
+.advanced-search {
+  background-color: #f4f4f7;
+  margin: 10px auto;
+  padding: 20px;
+  //border: 1px solid red;
+  width: 80%;
+
+  p.advanced-search-header {
+    text-transform: uppercase;
+    text-align: center;
+    font-weight: bold;
+    color: @brand-primary;
+  }
 }
 
 .add-ontology-class {
@@ -3515,7 +3551,7 @@ p.instructions {
   }
 
   div.map-existing-classes {
-    border: 1px solid @brand-primary;
+    border: 1px solid @brand-secondary;
     padding: 20px;
     margin-bottom: 10px;
     background-color: @gray2;
@@ -3539,12 +3575,16 @@ p.instructions {
     color: @brand-primary;
   }
 
-  .field-search {
-    width: 100%;
-  }
 
-  //.field-browse {
-  //  width: 49%;
+
+  //.field-search {
+  //  float: left;
+  //  width: 60%;
+  //}
+  //
+  //.field-ontologies {
+  //  width: 30%;
+  //  float: right;
   //}
 }
 
@@ -4505,7 +4545,7 @@ p.instructions {
     transition: width 1s ease-in-out;
   }
 
-  .field-browse, .field-search {
+  .field-ontologies, .field-search {
     display: none;
   }
 
@@ -5191,4 +5231,21 @@ table.apiKey {
 ::-webkit-scrollbar-track {
   background-color: #fff;
   border-radius: 0px;
+}
+
+// Placeholder color
+
+::-webkit-input-placeholder { /* WebKit, Blink, Edge */
+  color: #bebebe;
+}
+:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+  color:    #bebebe;
+  opacity:  1;
+}
+::-moz-placeholder { /* Mozilla Firefox 19+ */
+  color:    #bebebe;
+  opacity:  1;
+}
+:-ms-input-placeholder { /* Internet Explorer 10-11 */
+  color:    #bebebe;
 }
