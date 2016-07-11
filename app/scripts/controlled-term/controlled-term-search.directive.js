@@ -49,7 +49,7 @@ define([
       vm.searchScope = 'classes'; // Default search scope
       vm.searchOptionsVisible = false;
       vm.selectedResultId = null;
-      vm.selectedOntologies = null;
+      vm.selectedOntologies = [];
       vm.showSearchPreloader = false;
       vm.showEmptyQueryMsg = false;
       vm.treeVisible = false;
@@ -90,7 +90,7 @@ define([
        */
 
       function search(event) {
-        reset(true, true);
+        reset(true, true, true);
         if (isEmptySearchQuery() == false) {
           vm.showEmptyQueryMsg = false;
           if (isSearchingClasses()) {
@@ -121,7 +121,16 @@ define([
         startSearch();
         vm.searchClassesResults = [];
         var maxResults = 500;
-        controlledTermDataService.searchClasses(vm.searchQuery, maxResults).then(function (response) {
+        var sources = "";
+        if ((vm.selectedOntologies && vm.selectedOntologies.length > 0))
+        {
+          var selectedOntologiesIds = [];
+          vm.selectedOntologies.forEach(function (ontology) {
+            selectedOntologiesIds.push(ontology.id);
+          });
+          sources = selectedOntologiesIds.join(",");
+        }
+        controlledTermDataService.searchClasses(vm.searchQuery, sources, maxResults).then(function (response) {
           if (response.collection.length > 0) {
             var tArry = [], i;
             for (i = 0; i < response.collection.length; i += 1) {
@@ -162,7 +171,7 @@ define([
       }
 
       function changeSearchScope() {
-        reset(true, true);
+        reset(true, true, true);
         if (isSearchingOntologies()) {
           loadOntologies();
           searchRegexp(vm.searchQuery);
@@ -175,12 +184,15 @@ define([
       /**
        * Reset
        */
-      function reset(keepSearchScope, keepSearchQuery) {
+      function reset(keepSearchScope, keepSearchQuery, keepSelectedOntologies) {
         if (!keepSearchScope) {
           vm.searchScope = 'classes'; // Default search scope
         }
         if (!keepSearchQuery) {
           vm.searchQuery = '';
+        }
+        if (!keepSelectedOntologies) {
+          vm.selectedOntologies = [];
         }
         vm.action = 'search';
         vm.ontologySearchRegexp = null;

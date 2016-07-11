@@ -241,8 +241,11 @@ define([
       return acronym;
     }
 
-    function searchClasses(query, size) {
+    function searchClasses(query, sources, size) {
       var url = base + "/search?q=" + encodeURIComponent(query) + "&scope=classes" + "&page=1&page_size=" + size;
+      if (sources) {
+        url = url + "&sources=" + sources;
+      }
       return $http.get(url, http_default_config).then(function (response) {
         return response.data;
       }).catch(function (err) {

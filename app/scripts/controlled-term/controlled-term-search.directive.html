@@ -11,7 +11,7 @@
     <!-- Start over -->
     <div class="btn-start-over-group clearfix">
       <!--<button type="button" class="btn btn-start-over" ng-click="tsc.reset(false, false)"><span class="fa fa-refresh primary-color"></span> Start Over</button>-->
-      <button type="button" class="btn btn-start-over" ng-click="tsc.reset(false, false)"><span class="primary-color"></span> Start Over</button></div>
+      <button type="button" class="btn btn-start-over" ng-click="tsc.reset(false, false, false)"><span class="primary-color"></span> Start Over</button></div>
     <!-- Search Field -->
     <div class="field-search">
       <div class="input-group field-search-input-group">
@@ -35,13 +35,15 @@
 
       <div class="field-ontologies">
         <tags-input class="custom-tags-input" ng-model="tsc.selectedOntologies" display-property="id"
-            placeholder="Add ontologies" replace-spaces-with-dashes="false">
+            placeholder="Add ontologies" replace-spaces-with-dashes="false"
+            on-tag-added="tsc.search()"
+            on-tag-removed="tsc.search()" >
           <auto-complete source="tsc.loadOntologies($query)"
               display-property="fullName"
               min-length="0"
               load-on-focus="true"
               load-on-empty="true"
-              max-results-to-show="5000"
+              max-results-to-show="2000"
               minLength="2"
           </auto-complete>
         </tags-input>
