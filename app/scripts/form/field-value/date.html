@@ -4,6 +4,7 @@
     <div class='input-group' date-time-picker>
         <input type="text"
                class="form-control"
+               id="single-date-{{uuid}}-{{pIndex}}"
                ng-class="{'required': $root.schemaOf(field)._valueConstraints.requiredValue}"
                placeholder="{{$root.schemaOf(field)._ui.title}}"
                aria-label="Select a date"
@@ -23,6 +24,7 @@
     <div class='input-group' date-time-picker>
         <input type="text"
                class="form-control"
+               id="start-date-{{uuid}}-{{pIndex}}"
                ng-class="{'required': $root.schemaOf(field)._valueConstraints.requiredValue}"
                placeholder="{{$root.schemaOf(field)._ui.title}} start"
                aria-label="Select a start date"
@@ -36,6 +38,7 @@
     <div class='input-group' date-time-picker>
         <input type="text"
                class="form-control"
+               id="end-date-{{uuid}}-{{pIndex}}"
                ng-class="{'required': $root.schemaOf(field)._valueConstraints.requiredValue}"
                placeholder="{{$root.schemaOf(field)._ui.title}} end"
                aria-label="end date"
