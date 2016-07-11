@@ -45,6 +45,16 @@ define([
       return DataManipulationService.getFieldSchema(fieldOrElement);
     };
 
+    $rootScope.arrayOf = function (objectOrArray) {
+      if (angular.isArray(objectOrArray)) {
+        return objectOrArray;
+      } else {
+        var arr = [];
+        arr.push(objectOrArray)
+        return arr;
+      }
+    };
+
     $rootScope.console = function (txt, label) {
       console.log(label + ' ' + JSON.stringify(txt, null, 2));
     };

@@ -7,7 +7,7 @@
           ng-show="$parent.field.hasOwnProperty('minItems')">
            {{$parent.field.minItems}} .. {{$parent.field.maxItems || "N"}}
        </span>
-        <span style="color:red;" ng-show="$root.schemaOf($parent.field)._valueConstraints.requiredValue">*</span>
+        <!--<span style="color:red;" ng-show="$root.schemaOf($parent.field)._valueConstraints.requiredValue">*</span>-->
       </p>
     </div>
   </div>

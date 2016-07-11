@@ -433,7 +433,7 @@ define([
         }
         // If field type is 'radio' or 'pick from a list' there must be more than one option created
         if ((field._ui.inputType == 'radio' || field._ui.inputType == 'list') && field._ui.options && (field._ui.options.length <= 1)) {
-          unmetConditions.push('Multiple Choice fields must have at least two possible options');
+          unmetConditions.push('Multiple choice fields must have at least two possible options');
         }
         // Return array of error messages
         return unmetConditions;
@@ -497,6 +497,7 @@ define([
        * @returns {string} html
        */
       $scope.getYouTubeEmbedFrame = function (field) {
+        console.log("getYouTubeEmbedFrame" + field);
 
         var width = 560;
         var height = 315;
@@ -908,6 +909,14 @@ define([
 
       $scope.selectField = function () {
         console.log('selectField');
+      };
+
+      $scope.refresh = function () {
+        setTimeout(function () {
+          console.log('refresh');
+          $scope.$apply();
+        }, 1000);
+
       };
 
 
