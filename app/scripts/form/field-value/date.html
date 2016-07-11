@@ -1,0 +1,49 @@
+<div class="form-group form-group-narrow date-group floating-label-wrapper"
+     ng-if="$root.schemaOf(field)._ui.dateType == 'single-date'">
+
+    <div class='input-group' date-time-picker>
+        <input type="text"
+               class="form-control"
+               ng-class="{'required': $root.schemaOf(field)._valueConstraints.requiredValue}"
+               placeholder="{{$root.schemaOf(field)._ui.title}}"
+               aria-label="Select a date"
+               ng-model="m._value"
+               ng-disabled="!$root.isRuntime() || preview"
+               with-floating-label=""/>
+        <span class="input-group-addon">
+          <i class="fa fa-calendar fa-2x"></i>
+        </span>
+    </div>
+</div>
+<!-- /.form-group form-group-narrow -->
+
+<div class="form-group form-group-narrow date-group range floating-label-wrapper"
+     ng-if="$root.schemaOf(field)._ui.dateType == 'date-range'">
+
+    <div class='input-group' date-time-picker>
+        <input type="text"
+               class="form-control"
+               ng-class="{'required': $root.schemaOf(field)._valueConstraints.requiredValue}"
+               placeholder="{{$root.schemaOf(field)._ui.title}} start"
+               aria-label="Select a start date"
+               ng-model="m._value.start"
+               ng-disabled="!$root.isRuntime() || preview"
+               with-floating-label=""/>
+        <span class="input-group-addon">
+          <i class="fa fa-calendar fa-2x"></i>
+        </span>
+    </div>
+    <div class='input-group' date-time-picker>
+        <input type="text"
+               class="form-control"
+               ng-class="{'required': $root.schemaOf(field)._valueConstraints.requiredValue}"
+               placeholder="{{$root.schemaOf(field)._ui.title}} end"
+               aria-label="end date"
+               ng-model="m._value.end"
+               ng-disabled="!$root.isRuntime() || preview"
+               with-floating-label=""/>
+        <span class="input-group-addon">
+          <i class="fa fa-calendar fa-2x"></i>
+        </span>
+    </div>
+</div>
