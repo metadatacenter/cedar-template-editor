@@ -26,4 +26,24 @@
 
         </div>
     </div>
+
+    <!-- zero cardinality  -->
+    <div ng-if="filteredModel.length==0 && !$root.isRuntime()"  class="form-group floating-label-wrapper ng-scope">
+        <div class="form-group field-wrapper-radio  ">
+            <div ng-include="'scripts/form/partials/field-title.html'"></div>
+
+            <div class="form-group radio-item" ng-repeat="(index, value) in $root.schemaOf(field)._ui.options">
+                <div class="radio radio-primary">
+                    <div ng-init="m=valueElement;pIndex=$parent.$index;cIndex=index"
+                         ng-include="'scripts/form/field-value/radio.html'"></div>
+                </div>
+            </div>
+
+            <!-- add/delete buttons -->
+            <div ng-if="$root.isArray(model)" class="more-input-wrapper"
+                 ng-include="'scripts/form/partials/more-input-buttons.partial.html'"
+                 ng-show="!field.maxItems || field.maxItems > 1 || (field.maxItems ==1 && field.minItems ==0)"></div>
+
+        </div>
+    </div>
 </div>
