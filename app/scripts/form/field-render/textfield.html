@@ -1,161 +1,85 @@
-<div class="fields text-fields" ng-class="{preview: preview}" >
+<div class="fields text-fields" ng-class="{preview: preview}">
 
-  <!-- header row -->
-  <div ng-init="fieldTitle='Text';fieldIconClass='cedar-svg-text'"
-      ng-include="'scripts/form/partials/field-header.partial.html'"></div>
+    <!-- header row -->
+    <div ng-init="fieldTitle='Text';fieldIconClass='cedar-svg-text'"
+         ng-include="'scripts/form/partials/field-header.partial.html'"></div>
 
-  <!--is this a list of text fields? -->
-  <div ng-if="$root.isArray(model)" class="form-group floating-label-wrapper has-feedback"
-      ng-repeat="(index, valueElement) in model">
-    <div class="extra-label-context" ng-class="{'required': $root.schemaOf(field)._valueConstraints.requiredValue}"
-        ng-if="preview">
-      {{$root.schemaOf(field)._ui.title}}&nbsp;
+    <!--list of items -->
+    <div class="form-group floating-label-wrapper has-feedback"
+         ng-repeat="(index, valueElement) in filteredModel= $root.arrayOf(model)">
+        <div class="extra-label-context" ng-class="{'required': $root.schemaOf(field)._valueConstraints.requiredValue}"
+             ng-if="preview">
+            {{$root.schemaOf(field)._ui.title}}&nbsp;
+        </div>
+        <div ng-if="!$root.hasValueConstraint($root.schemaOf(field)._valueConstraints)" class="has-no-constraint">
+
+
+            <div ng-init="m=valueElement;pIndex=$parent.$index;"
+                 ng-include="'scripts/form/field-value/textfield.html'"></div>
+
+            <!--<span class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"></span>-->
+            <!--<span id="placeholder-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}" class="sr-only">(success)</span>-->
+            <span class="input-indicator-icons form-control-feedback"
+                  ng-include="'scripts/form/partials/indicator-icons.partial.html'"></span>
+            <span class="floating-label">{{$root.schemaOf(field)._ui.title}}</span>
+        </div>
+        <div ng-if="$root.hasValueConstraint($root.schemaOf(field)._valueConstraints)"
+             class="has-constraint autocomplete-label-wrapper"
+             ng-class="{'has-selected': modelValue[index]._value.label}">
+            <ui-select ng-model="modelValue[index]" theme="bootstrap" close-on-select="true"
+                       ng-disabled="!$root.isRuntime() || preview"
+                       aria-label="{{$root.schemaOf(field)._ui.description}}">
+                <ui-select-match placeholder="">{{$select.selected.label}}</ui-select-match>
+                <ui-select-choices ui-disable-choice="option.label == 'No Results...'"
+                                   refresh="$root.updateFieldAutocomplete(field, $select.search)" refresh-delay="200"
+                                   repeat="option in $root.autocompleteResultsCache[field['@id']]['results'] | propsFilter: {label: $select.search}">
+                    <div ng-bind-html="option.label | highlight: $select.search"></div>
+                </ui-select-choices>
+            </ui-select>
+            <div class="floating-label">{{$root.schemaOf(field)._ui.title}}</div>
+            <div class="input-indicator-icons" ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
+        </div>
+        <div ng-if="$root.isRuntime()" class="more-input-wrapper "
+             ng-include="'scripts/form/partials/more-input-buttons.partial.html'"
+             ng-show="!field.maxItems || field.maxItems > 1 || (field.maxItems ==1 && field.minItems ==0)"></div>
     </div>
-    <div ng-if="!$root.hasValueConstraint($root.schemaOf(field)._valueConstraints)" class="has-no-constraint">
-      <input type="text"
-          class="form-control has-success has-feedback"
-          ng-class="{'required': $root.schemaOf(field)._valueConstraints.requiredValue}"
-          id="textfield1"
-          placeholder="{{$root.schemaOf(field)._ui.title}}"
-          aria-label="{{$root.schemaOf(field)._ui.description}}"
-          ng-model="valueElement._value"
-          ng-disabled="!$root.isRuntime() || preview"
-          with-floating-label=""/>
-      <!--<span class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"></span>-->
-      <!--<span id="placeholder-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}" class="sr-only">(success)</span>-->
-      <span class="input-indicator-icons form-control-feedback" ng-include="'scripts/form/partials/indicator-icons.partial.html'"></span>
-      <span class="floating-label">{{$root.schemaOf(field)._ui.title}}</span>
+    
+
+
+    <!-- zero cardinality case -->
+    <div ng-if="!$root.isRuntime() && filteredModel.length == 0"
+         class="form-group floating-label-wrapper has-feedback">
+
+        <div class="extra-label-content" ng-if="preview">
+            {{$root.schemaOf(field)._ui.title}}
+        </div>
+
+        <div ng-if="!$root.hasValueConstraint($root.schemaOf(field)._valueConstraints)" class="has-no-constraint">
+            <div ng-init="m=model;pIndex=$parent.$index;" ng-include="'scripts/form/field-value/textfield.html'"></div>
+
+            <!--<div class="floating-label">{{$root.schemaOf(field)._ui.title}} title</div>-->
+            <div class="input-indicator-icons" ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
+        </div>
+
+        <!-- Field whose values have been constrained using controlled terms -->
+        <div ng-if="$root.hasValueConstraint($root.schemaOf(field)._valueConstraints)"
+             class="has-constraint autocomplete-label-wrapper" ng-class="{'has-selected': modelValue._value.label}">
+            <ui-select ng-model="modelValue._value" theme="bootstrap" close-on-select="true" ng-disabled="true"
+                       aria-label="{{$root.schemaOf(field)._ui.description}}">
+                <ui-select-match placeholder="">{{$select.selected.label}}</ui-select-match>
+                <ui-select-choices ui-disable-choice="option.label == 'No Results...'"
+                                   refresh="$root.updateFieldAutocomplete(field, $select.search)" refresh-delay="200"
+                                   repeat="option in $root.autocompleteResultsCache[field['@id']]['results'] | propsFilter: {label: $select.search}">
+                    <div ng-bind-html="option.label | highlight: $select.search"></div>
+                </ui-select-choices>
+            </ui-select>
+            <div class="floating-label">{{$root.schemaOf(field)._ui.title}} title</div>
+            <div class="input-indicator-icons" ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
+        </div>
+        <div ng-if="$root.isRuntime()" class="more-input-wrapper"
+             ng-include="'scripts/form/partials/more-input-buttons.partial.html'"
+             ng-show="!field.maxItems || field.maxItems > 1 || (field.maxItems ==1 && field.minItems ==0)"></div>
     </div>
-    <div ng-if="$root.hasValueConstraint($root.schemaOf(field)._valueConstraints)"
-        class="has-constraint autocomplete-label-wrapper" ng-class="{'has-selected': modelValue[index]._value.label}">
-      <ui-select ng-model="modelValue[index]" theme="bootstrap" close-on-select="true"
-          ng-disabled="!$root.isRuntime() || preview" aria-label="{{$root.schemaOf(field)._ui.description}}">
-        <ui-select-match placeholder="">{{$select.selected.label}}</ui-select-match>
-        <ui-select-choices ui-disable-choice="option.label == 'No Results...'"
-            refresh="$root.updateFieldAutocomplete(field, $select.search)" refresh-delay="200"
-            repeat="option in $root.autocompleteResultsCache[field['@id']]['results'] | propsFilter: {label: $select.search}">
-          <div ng-bind-html="option.label | highlight: $select.search"></div>
-        </ui-select-choices>
-      </ui-select>
-      <div class="floating-label">{{$root.schemaOf(field)._ui.title}}</div>
-      <div class="input-indicator-icons" ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
-    </div>
-    <div ng-if="$root.isRuntime()" class="more-input-wrapper " ng-include="'scripts/form/partials/more-input-buttons.partial.html'"
-        ng-show="!field.maxItems || field.maxItems > 1 || (field.maxItems ==1 && field.minItems ==0)"></div>
-  </div>
-  <!-- /.form-group -->
-
-
-  <!-- got a list, but nothing there yet so show a disabled view of the field -->
-  <div ng-if="!$root.isRuntime() && $root.isArray(model) && model.length == 0"
-      class="form-group floating-label-wrapper has-feedback">
-
-    <div class="extra-label-content" ng-if="preview">
-      {{$root.schemaOf(field)._ui.title}}
-    </div>
-
-    <div ng-if="!$root.hasValueConstraint($root.schemaOf(field)._valueConstraints)" class="has-no-constraint">
-      <input type="text"
-          class="form-control"
-          ng-class="{'required': $root.schemaOf(field)._valueConstraints.requiredValue}"
-          id="textfield1"
-          placeholder="{{$root.schemaOf(field)._ui.title}}"
-          aria-label="{{$root.schemaOf(field)._ui.description}}"
-          ng-disabled="true"
-          with-floating-label=""/>
-
-      <!--<div class="floating-label">{{$root.schemaOf(field)._ui.title}} title</div>-->
-      <div class="input-indicator-icons" ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
-    </div>
-
-    <!-- Field whose values have been constrained using controlled terms -->
-    <div ng-if="$root.hasValueConstraint($root.schemaOf(field)._valueConstraints)"
-        class="has-constraint autocomplete-label-wrapper" ng-class="{'has-selected': modelValue._value.label}">
-      <ui-select ng-model="modelValue._value" theme="bootstrap" close-on-select="true" ng-disabled="true"
-          aria-label="{{$root.schemaOf(field)._ui.description}}">
-        <ui-select-match placeholder="">{{$select.selected.label}}</ui-select-match>
-        <ui-select-choices ui-disable-choice="option.label == 'No Results...'"
-            refresh="$root.updateFieldAutocomplete(field, $select.search)" refresh-delay="200"
-            repeat="option in $root.autocompleteResultsCache[field['@id']]['results'] | propsFilter: {label: $select.search}">
-          <div ng-bind-html="option.label | highlight: $select.search"></div>
-        </ui-select-choices>
-      </ui-select>
-      <div class="floating-label">{{$root.schemaOf(field)._ui.title}} title</div>
-      <div class="input-indicator-icons" ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
-    </div>
-    <div ng-if="$root.isRuntime()" class="more-input-wrapper" ng-include="'scripts/form/partials/more-input-buttons.partial.html'"
-        ng-show="!field.maxItems || field.maxItems > 1 || (field.maxItems ==1 && field.minItems ==0)"></div>
-  </div>
-
-
-  <!-- not a list, just show the object -->
-  <div ng-if="!$root.isArray(model)" class="form-group floating-label-wrapper has-feedback">
-    <div
-        ng-if="!$root.hasValueConstraint($root.schemaOf(field)._valueConstraints) && !$root.vrs.getIsValueRecommendationEnabled()"
-        class="has-no-constraint">
-      <input type="text"
-          class="form-control xx"
-          ng-class="{'required': $root.schemaOf(field)._valueConstraints.requiredValue}"
-          id="textfield1"
-          placeholder="{{$root.schemaOf(field)._ui.title}}"
-          aria-label="{{$root.schemaOf(field)._ui.description}}"
-          ng-model="model._value"
-          ng-disabled="!$root.isRuntime() || preview"
-          with-floating-label="">
-      </input>
-      <div class="input-indicator-icons" ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
-    </div>
-
-    <!-- Field whose values have been constrained using controlled terms -->
-    <div ng-if="$root.hasValueConstraint($root.schemaOf(field)._valueConstraints)"
-        class="has-constraint autocomplete-label-wrapper" ng-class="{'has-selected': modelValue._value.label}">
-      <ui-select ng-model="modelValue._value" theme="bootstrap" close-on-select="true"
-          ng-disabled="!$root.isRuntime() || preview"
-          aria-label="{{$root.schemaOf(field)._ui.description}}">
-        <ui-select-match placeholder="">{{$select.selected.label}}</ui-select-match>
-        <ui-select-choices ui-disable-choice="option.label == 'No Results...'"
-            refresh="$root.updateFieldAutocomplete(field, $select.search)" refresh-delay="200"
-            repeat="option in $root.autocompleteResultsCache[field['@id']]['results'] | propsFilter: {label: $select.search}">
-          <div ng-bind-html="option.label | highlight: $select.search"></div>
-        </ui-select-choices>
-      </ui-select>
-      <div class="floating-label">{{$root.schemaOf(field)._ui.title}}</div>
-      <div class="input-indicator-icons" ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
-    </div>
-
-    <!-- Field with value recommendation functionality -->
-    <div
-        ng-if="!$root.hasValueConstraint($root.schemaOf(field)._valueConstraints) && $root.vrs.getIsValueRecommendationEnabled()"
-        class="has-constraint autocomplete-label-wrapper"
-        ng-class="{'has-selected': modelValueRecommendation._value.value}">
-      <ui-select
-          ng-model="modelValueRecommendation._value"
-          ng-change="updateModelWhenChangeSelection(modelValueRecommendation); $root.vrs.updatePopulatedFields(field, modelValueRecommendation._value.value)"
-          ng-disabled="!$root.isRuntime() || preview"
-          ng-click="!$root.isRuntime() || preview || $root.vrs.updateValueRecommendationResults(field); setIsFirstRefresh(false); updateSearch($select)"
-          close-on-select="true"
-          reset-search-input="false"
-          aria-label="{{$root.schemaOf(field)._ui.description}}">
-        <ui-select-match placeholder="">{{$select.selected.value}}</ui-select-match>
-        <ui-select-choices
-            ui-disable-choice="option.value == $root.vrs.getNoResultsMsg()"
-            refresh="updateModelWhenRefresh($select); $root.vrs.updatePopulatedFields(field, $select.search)"
-            refresh-delay="200"
-            repeat="option in $root.vrs.getValueRecommendationResults(field['@id']) | propsFilter: {value: $select.search} | limitTo:50">
-          <div><span ng-bind-html="option.value | highlight: $select.search"></span>&nbsp;
-            <small ng-if="option.score!=undefined">(<span
-                ng-bind-html="option.score * 100 | highlight: $select.search * 100 | number : 0"></span>%)
-            </small>
-          </div>
-        </ui-select-choices>
-      </ui-select>
-      <div class="floating-label">{{$root.schemaOf(field)._ui.title}}</div>
-      <div class="input-indicator-icons" ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
-    </div>
-    <!-- end of Field with value recommendation functionality -->
-
-  </div>
-  <!-- /.form-group -->
 
 
 </div>
