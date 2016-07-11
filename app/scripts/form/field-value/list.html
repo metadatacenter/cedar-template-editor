@@ -1,0 +1,42 @@
+<!-- single select -->
+<div ng-if="$root.schemaOf(field)._ui.selectionType == 'single'"
+     class="form-group form-group-narrow validation-pattern"
+     ng-class="{'required': $root.schemaOf(field)._valueConstraints.requiredValue}">
+    <select class="form-control"
+            multiple=""
+            data-max-options="1"
+            ng-class="{'required': $root.schemaOf(field)._valueConstraints.requiredValue}"
+            field="field"
+            title="{{$root.schemaOf(field)._ui.title}}"
+            ng-model="m._value"
+            ng-disabled="!$root.isRuntime() || preview"
+            defaults="$root.schemaOf(field)._ui.defaultOption"
+            select-picker="">
+        <option value="">Please select</option>
+        <option ng-repeat="(index, value) in $root.schemaOf(field)._ui.options"
+                value="{{$root.schemaOf(field)._ui.options[index]['text']}}">
+            {{$root.schemaOf(field)._ui.options[index]['text']}}
+        </option>
+    </select>
+</div><!-- /.form-group form-group-narrow -->
+
+<!-- multiple select -->
+<div ng-if="$root.schemaOf(field)._ui.selectionType == 'multiple'"
+     class="form-group form-group-narrow validation-pattern"
+     ng-class="{'required': $root.schemaOf(field)._valueConstraints.requiredValue}">
+    <select class="form-control"
+            multiple="true"
+            field="field"
+            ng-class="{'required': $root.schemaOf(field)._valueConstraints.requiredValue}"
+            title="{{$root.schemaOf(field)._ui.title}}"
+            ng-model="m._value"
+            ng-disabled="!$root.isRuntime() || preview"
+            defaults="$root.schemaOf(field)._ui.defaultOption"
+            select-picker="">
+        <option value="">Please select </option>
+        <option ng-repeat="(index, value) in $root.schemaOf(field)._ui.options"
+                value="{{$root.schemaOf(field)._ui.options[index]['text']}}">
+            {{$root.schemaOf(field)._ui.options[index]['text']}}
+        </option>
+    </select>
+</div><!-- /.form-group form-group-narrow -->

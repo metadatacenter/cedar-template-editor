@@ -1,77 +1,33 @@
 <div class="fields fields-phone-number">
 
-  <!-- header row -->
-  <div ng-init="fieldTitle='Phone Number';fieldIconClass='cedar-svg-phone'"
-      ng-include="'scripts/form/partials/field-header.partial.html'"></div>
+    <!-- header row -->
+    <div ng-init="fieldTitle='Phone Number';fieldIconClass='cedar-svg-phone'"
+         ng-include="'scripts/form/partials/field-header.partial.html'"></div>
 
-  <div ng-if="$root.isArray(model)" class="form-group floating-label-wrapper" ng-repeat="valueElement in model">
-    <!--<p class="extra-label-context" ng-if="!$root.isRuntime() && $root.schemaOf(field)._ui.title">-->
-      <!--{{$root.schemaOf(field)._ui.title}}</p>-->
-    <input type="text"
-        class="form-control"
-        ng-class="{'required': $root.schemaOf(field)._valueConstraints.requiredValue}"
-        id="telephone1"
-        placeholder="{{$root.schemaOf(field)._ui.title}}"
-        aria-label="{{$root.schemaOf(field)._ui.description}}"
-        ng-model="valueElement._value"
-        ng-disabled="!$root.isRuntime() || preview"
-        validate-on="blur"
-        ng-pattern="/([0-9\s\-]{7,})(?:\s*(?:#|x\.?|ext\.?|extension)\s*(\d+))?$/"
-        with-floating-label=""/>
-    <span class="warning-text">{{$root.schemaOf(field)._ui.warningText}}</span>
+    <div class="form-group floating-label-wrapper" ng-repeat="valueElement in filteredModel = $root.arrayOf(model)">
 
-    <div class="input-indicator-icons ng-valid ng-scope"
-        ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
+        <div ng-init="m=valueElement;pIndex=$parent.$index;"
+             ng-include="'scripts/form/field-value/phone-number.html'"></div>
 
-    <div ng-if="$root.isRuntime()" class="more-input-wrapper" ng-include="'scripts/form/partials/more-input-buttons.partial.html'"
-        ng-show="!field.maxItems || field.maxItems > 1"></div>
-  </div>
-  <!-- /.form-group -->
+        <div class="input-indicator-icons ng-valid ng-scope"
+             ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
+
+        <div ng-if="$root.isArray(model)" class="more-input-wrapper"
+             ng-include="'scripts/form/partials/more-input-buttons.partial.html'"
+             ng-show="!field.maxItems || field.maxItems > 1"></div>
+    </div>
+
+    <div ng-if="filteredModel.length == 0 && !$root.isRuntime()" class="form-group floating-label-wrapper">
 
 
-  <div ng-if="$root.isArray(model) && model.length == 0 && !$root.isRuntime()" class="form-group floating-label-wrapper">
+        <div ng-init="m=model;pIndex=0" ng-include="'scripts/form/field-value/phone-number.html'"></div>
 
-    <div >
-      <input type="text"
-          class="form-control"
-          ng-class="{'required': $root.schemaOf(field)._valueConstraints.requiredValue}"
-          id="telephone1"
-          placeholder="{{$root.schemaOf(field)._ui.title}}"
-          aria-label="{{$root.schemaOf(field)._ui.description}}"
-          ng-model="model._value"
-          ng-disabled="true"
-          validate-on="blur"
-          ng-pattern="/([0-9\s\-]{7,})(?:\s*(?:#|x\.?|ext\.?|extension)\s*(\d+))?$/"
-          with-floating-label="">
-      </input>
-      <span class="warning-text">{{$root.schemaOf(field)._ui.warningText}}</span>
+        <div class="input-indicator-icons ng-valid ng-scope"
+             ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
 
-      <div class="input-indicator-icons ng-valid ng-scope"
-          ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
+        <div ng-if="$root.isArray(model)" class="more-input-wrapper"
+             ng-include="'scripts/form/partials/more-input-buttons.partial.html'"
+             ng-show="!field.maxItems || field.maxItems > 1"></div>
 
     </div>
-  </div>
-  <!-- /.form-group -->
-
-  <div ng-if="!$root.isArray(model)" class="form-group floating-label-wrapper">
-    <input type="text"
-        class="form-control"
-        ng-class="{'required': $root.schemaOf(field)._valueConstraints.requiredValue}"
-        id="telephone1"
-        placeholder="{{$root.schemaOf(field)._ui.title}}"
-        aria-label="{{$root.schemaOf(field)._ui.description}}"
-        ng-model="model._value"
-        ng-disabled="!$root.isRuntime() || preview"
-        validate-on="blur"
-        ng-pattern="/([0-9\s\-]{7,})(?:\s*(?:#|x\.?|ext\.?|extension)\s*(\d+))?$/"
-        with-floating-label="">
-    </input>
-    <span class="warning-text">{{$root.schemaOf(field)._ui.warningText}}</span>
-
-    <div class="input-indicator-icons ng-valid ng-scope"
-        ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
-
-  </div>
-  <!-- /.form-group -->
-
 </div>

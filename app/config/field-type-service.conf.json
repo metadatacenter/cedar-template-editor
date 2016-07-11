@@ -19,8 +19,8 @@
   },
   {
     "cedarType": "radio",
-    "iconClass": "cedar-svg-multiple-choice",
-    "label": "Multiple Choice",
+    "iconClass": "cedar-svg-radio",
+    "label": "Radio",
     "allowedInElement": true,
     "hasControlledTerms": true,
     "staticField": false

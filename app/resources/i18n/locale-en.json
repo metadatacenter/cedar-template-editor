@@ -11,7 +11,7 @@
         "NAME": "Rich Text"
       },
       "radio": {
-        "NAME": "Multiple Choice"
+        "NAME": "Radio"
       },
       "checkbox": {
         "NAME": "Checkbox"
