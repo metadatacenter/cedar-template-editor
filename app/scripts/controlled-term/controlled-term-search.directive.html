@@ -1,4 +1,7 @@
-<span ng-show="tsc.isSearching() && tsc.isFieldTypesMode()">Find a term in BioPortal to annotate the <span class="highlighted">'{{tsc.fieldName}}'</span> field or <button type="button" class="btn btn-create-term" ng-click="tsc.switchToCreate()">Create a New Term</button></span>
+<span ng-show="tsc.isSearching() && tsc.isFieldTypesMode()">Find a term in BioPortal to annotate the <span
+    class="highlighted">'{{tsc.fieldName}}'</span> field or <button type="button" class="btn btn-create-term"
+    ng-click="tsc.switchToCreate()">Create a New Term
+</button></span>
 
 
 <h4 ng-show="tsc.isFieldValuesMode()">Find terms in BioPortal to constrain the values of the <span class="highlighted">'{{tsc.fieldName}}'</span>
@@ -10,7 +13,10 @@
     <!-- Start over -->
     <div class="btn-start-over-group clearfix">
       <!--<button type="button" class="btn btn-start-over" ng-click="tsc.reset(false, false)"><span class="fa fa-refresh primary-color"></span> Start Over</button>-->
-      <button type="button" class="btn btn-start-over" ng-click="tsc.reset(false, false, false)"><span class="primary-color"></span> Start Over</button></div>
+      <button type="button" class="btn btn-start-over" ng-click="tsc.reset(false, false, false)"><span
+          class="primary-color"></span> Start Over
+      </button>
+    </div>
     <!-- Search Field -->
     <div class="field-search">
       <div class="input-group field-search-input-group">
@@ -30,8 +36,10 @@
     <!-- Search Options -->
     <div ng-show="tsc.searchOptionsVisible" class="advanced-search">
       <p class="advanced-search-header">Advanced Search Options</p>
+
       <div class="advanced-search-options">
         <b>I want to...</b>
+
         <div class="search-options">
           <div class="radio radio-primary radio-controlled-terms-search">
             <div class="radio-option">
@@ -41,7 +49,8 @@
             <div class="radio-option">
               <input id="search-scope-2" class="radio-option" type="radio" ng-model="tsc.searchScope" value="ontologies"
                   ng-click="$event.stopPropagation()" ng-change="tsc.changeSearchScope()"/>
-              <label>Search for an ontology in BioPortal (e.g. OBI) and then explore it to find a specific term</label></div>
+              <label>Search for an ontology in BioPortal (e.g. OBI) and then explore it to find a specific term</label>
+            </div>
             <div ng-if="tsc.isFieldValuesMode()" class="radio-option">
               <input id="search-scope-3" class="radio-option" type="radio" ng-model="tsc.searchScope" value="value-sets"
                   ng-click="$event.stopPropagation()" ng-change="tsc.changeSearchScope()"/>
@@ -51,6 +60,7 @@
         </div>
         <div ng-show="tsc.isSearchingClasses()">
           <b>Narrow your term search to specific ontologies</b>
+
           <div class="field-ontologies">
             <tags-input class="custom-tags-input" ng-model="tsc.selectedOntologies" display-property="id"
                 placeholder="Start typing to add ontologies" replace-spaces-with-dashes="false"
@@ -309,7 +319,9 @@
 </div>
 
 <!-- Create term -->
-<span ng-show="tsc.isCreating()">Please, provide the following information for the term you want to create or <button type="button" class="btn btn-create-term" ng-click="tsc.switchToSearch()">Go Back to Term Search</button></span>
+<span ng-show="tsc.isCreating()">Please, provide the following information for the term you want to create or <button
+    type="button" class="btn btn-create-term" ng-click="tsc.switchToSearch()">Go Back to Term Search
+</button></span>
 <div ng-if="tsc.isCreating()" class="clear form-group add-ontology-class"
     ng-controller="provisionalClassController as pcc">
 
@@ -320,6 +332,9 @@
         ng-click="pcc.saveAsFieldItem(pcc.provisionalClass)"
         ng-disabled="!pcc.isValid()">Create Term
     </button>
+    <!--<div class="input-indicator-icons">-->
+      <i class="cedar-svg-help-circle help-icon" tooltip="The term will be created in the CEDARPC (CEDAR Provisional Classes) BioPortal ontology and added to your template"></i>
+    <!--</div>-->
   </div>
 
 </div>
