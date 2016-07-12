@@ -39,10 +39,9 @@
             <div class="floating-label">{{$root.schemaOf(field)._ui.title}}</div>
             <div class="input-indicator-icons" ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
         </div>
-        <div ng-if="$root.isRuntime()" class="more-input-wrapper"
+        <div class="more-input-wrapper"
              ng-include="'scripts/form/partials/more-input-buttons.partial.html'"></div>
     </div>
-
 
 
     <!-- zero cardinality case -->
@@ -74,9 +73,7 @@
             <div class="input-indicator-icons" ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
         </div>
 
-        <div ng-if="$root.isRuntime()" class="more-input-wrapper"
-             ng-include="'scripts/form/partials/more-input-buttons.partial.html'"></div>
+        <div class="more-input-wrapper" ng-include="'scripts/form/partials/more-input-buttons.partial.html'"></div>
     </div>
-
 
 </div>
