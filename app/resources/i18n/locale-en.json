@@ -255,6 +255,7 @@
     "elementDescriptionEmpty": "Element Description input cannot be left empty.",
     "noNameField": "Untitled",
     "noNameElement": "Untitled",
+    "noHelpText": "",
     "noDescriptionField": "Description",
     "noDescriptionElement": "Description",
     "groupHeader": {
@@ -289,7 +290,7 @@
   "CREATOR": {
     "addElementToStagingMsg": "Add an existing element or create a new item.",
     "enterFieldTitle": "Enter Field Title",
-    "enterFieldDescription": "Enter Field Description (Help Text)"
+    "enterFieldDescription": "Enter Help Text"
   },
   "AUTHORIZATION-ERROR": {
     "suggestedAction": {

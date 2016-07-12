@@ -309,7 +309,7 @@ define([
           $rootScope.schemaOf($scope.form)._ui.title = $translate.instant("VALIDATION.noNameField");
         }
         if (!$rootScope.schemaOf($scope.form)._ui.description) {
-          $rootScope.schemaOf($scope.form)._ui.description = $translate.instant("VALIDATION.noDescriptionField");
+          $rootScope.schemaOf($scope.form)._ui.description = $translate.instant("VALIDATION.noHelpText");
         }
       }
     });

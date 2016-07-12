@@ -12543,11 +12543,19 @@ p.instructions {
   top: 0;
   width: 110px;
 }
+.more-input-wrapper.zero {
+  position: absolute;
+  right: 0;
+  top: .5em;
+  width: 100px;
+  left: auto;
+}
+.more-input-wrapper .help,
 .more-input-wrapper .add,
 .more-input-wrapper .remove {
   height: 25px;
   width: 25px;
-  margin: 0 0 0 10px;
+  margin: 0 0 0 6px;
   border-radius: 50%;
   display: inline-block;
   vertical-align: middle;
@@ -12556,11 +12564,20 @@ p.instructions {
   cursor: pointer;
   border: none;
 }
+.more-input-wrapper .help i,
 .more-input-wrapper .add i,
 .more-input-wrapper .remove i {
   color: #FFF;
   font-size: 16px;
   line-height: 25px;
+}
+.more-input-wrapper .help {
+  background-color: #aaa;
+}
+.more-input-wrapper .help i {
+  -webkit-transform: translate(0px, -1px);
+      -ms-transform: translate(0px, -1px);
+          transform: translate(0px, -1px);
 }
 .more-input-wrapper .add {
   background-color: #5795ba;
@@ -12588,50 +12605,6 @@ p.instructions {
   background: white;
   position: relative;
   width: 100%;
-}
-.zero-input-wrapper {
-  position: absolute;
-  right: 0;
-  top: .5em;
-  width: 100px;
-}
-.zero-input-wrapper .add,
-.zero-input-wrapper .remove {
-  height: 25px;
-  width: 25px;
-  margin: 0 0 0 10px;
-  border-radius: 50%;
-  display: inline-block;
-  vertical-align: middle;
-  -webkit-transition: all 0.3s ease 0.1s;
-          transition: all 0.3s ease 0.1s;
-  cursor: pointer;
-  border: none;
-}
-.zero-input-wrapper .add i,
-.zero-input-wrapper .remove i {
-  color: #FFF;
-  font-size: 16px;
-  line-height: 25px;
-}
-.zero-input-wrapper .add {
-  background-color: #5795ba;
-}
-.zero-input-wrapper .add:disabled {
-  background-color: rgba(87, 149, 186, 0.35);
-}
-.zero-input-wrapper .add i {
-  -webkit-transform: translate(0px, -1px);
-      -ms-transform: translate(0px, -1px);
-          transform: translate(0px, -1px);
-}
-.zero-input-wrapper .remove {
-  background-color: #333333;
-}
-.zero-input-wrapper .remove i {
-  -webkit-transform: translate(0px, -2px);
-      -ms-transform: translate(0px, -2px);
-          transform: translate(0px, -2px);
 }
 .fields .form-group {
   margin-right: 100px;
@@ -13543,6 +13516,16 @@ body .template-header .controlled-terms-modal {
   margin-bottom: 10px;
   margin-top: 5px;
   background: #efefef;
+}
+.field-root .field-title-definition {
+  background: transparent;
+  border: 0px;
+  border-bottom: 1px solid #ccc;
+}
+.field-root .field-description-definition {
+  background: transparent;
+  border: 0px;
+  border-bottom: 1px solid #ccc;
 }
 .sortable-icon {
   background: url("/img/drag-me.png") no-repeat;

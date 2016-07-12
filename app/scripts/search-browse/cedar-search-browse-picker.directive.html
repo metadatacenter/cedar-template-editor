@@ -658,6 +658,7 @@
           <li ng-show="dc.showFloatingMenu">
             <a ng-href="/templates/create?folderId={{dc.currentFolderId | encodeURIComponent}}">
               <button type="button"
+
                   tooltip="create template"
                   tooltip-trigger
                   tooltip-animation="false"
@@ -671,7 +672,8 @@
 
 
           <li ng-show="!dc.showFloatingMenu">
-            <button type="button"
+              <a ng-href="/templates/create?folderId={{dc.currentFolderId | encodeURIComponent}}">
+            <button type="button"  id="button-create-template"
                 tooltip="create template"
                 tooltip-trigger
                 tooltip-animation="false"
@@ -680,6 +682,7 @@
                 ng-mouseenter="dc.showFloatingMenu = true"><i
                 class="fa fa-plus template"></i>
             </button>
+                  </a>
           </li>
 
         </ul>

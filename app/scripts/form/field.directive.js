@@ -314,7 +314,7 @@ define([
 
         // default description
         if (!schema._ui.description) {
-          schema._ui.description = $translate.instant("VALIDATION.noDescriptionField");
+          schema._ui.description = $translate.instant("VALIDATION.noHelpText");
         }
 
         // if this is radio, checkbox or list,  add at least two options and set default values
@@ -862,12 +862,14 @@ define([
       $scope.showCardinality = false;
       $scope.showRequired = false;
       $scope.showRange = false;
+      $scope.showHelp = false;
       $scope.isTabActive = function (item) {
         return ($scope.showControlledTermsField && item == "field") ||
             ($scope.showControlledTermsValues && item == "values") ||
             ($scope.showCardinality && item == "cardinality") ||
             ($scope.showRange && item == "range") ||
-            ($scope.showRequired && item == "required");
+            ($scope.showRequired && item == "required") ||
+            ($scope.showHelp && item == "help");
       };
 
       $scope.initDateSingle = function () {
@@ -888,6 +890,7 @@ define([
         $scope.showCardinality = (item === 'cardinality') ? !$scope.showCardinality : false;
         $scope.showRequired = (item === 'required') ? !$scope.showRequired : false;
         $scope.showRange = (item === 'range') ? !$scope.showRange : false;
+        $scope.showHelp = (item === 'help') ? !$scope.showHelp : false;
         //$rootScope.schemaOf($scope.field)._ui.is_cardinal_field = $scope.showCardinality;
 
         $scope.setAddedFieldMap();
