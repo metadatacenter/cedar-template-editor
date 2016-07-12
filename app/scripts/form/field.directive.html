@@ -1,74 +1,76 @@
 <div class="field-root" id="{{$root.getDomId(field)}}"
-    ng-click="canSelect(!$root.isRuntime()); $event.preventDefault();">
+     ng-click="canSelect(!$root.isRuntime()); $event.preventDefault();">
 
 
-  <!-- field title first -->
-  <div menuDropDownId="" ng-show="$root.isArray(model) && $root.isRuntime()"
-      class="spreadsheetSwitch field"
-      style="position:relative">
-    <p class="element-name-label" >
+    <!-- field title first -->
+    <div menuDropDownId="" ng-show="$root.isArray(model) && $root.isRuntime()"
+         class="spreadsheetSwitch field"
+         style="position:relative">
+        <p class="element-name-label">
 
-      {{field.items._ui.title}}
+            {{field.items._ui.title}}
 
        <span class="spreadsheetSwitch ">
             <button type="button"
-                tooltip="show as spreadsheet"
-                tooltip-trigger
-                tooltip-animation="false"
-                tooltip-placement="top"
-                data-toggle="tooltip"
-                ng-click="switchToSpreadsheet()"
-                class="spreadsheetSwitchLink"
-                ng-show="true"
-                ng-disabled="preview" style="background:transparent;border:0;outline:none">
-              <i class="cedar-svg-spreadsheet"></i>
+                    tooltip="show as spreadsheet"
+                    tooltip-trigger
+                    tooltip-animation="false"
+                    tooltip-placement="top"
+                    data-toggle="tooltip"
+                    ng-click="switchToSpreadsheet()"
+                    class="spreadsheetSwitchLink"
+                    ng-show="true"
+                    ng-disabled="preview" style="background:transparent;border:0;outline:none">
+                <i class="cedar-svg-spreadsheet"></i>
             </button>
        </span>
 
-      <!-- show this add button only when you have minCardinality 0 and an empty list -->
-    <span class="zero-input-wrapper" ng-show="$root.isRuntime() && $root.isArray(model) && model.length == 0">
+            <!-- show this add button only when you have minCardinality 0 and an empty list -->
+    <span class="more-input-wrapper zero" ng-show="$root.isRuntime() && $root.isArray(model) && model.length == 0">
+
+         <button type="button" class="help"
+                 tooltip="{{$root.schemaOf(field)._ui.description}}"
+                 tooltip-trigger
+                 tooltip-animation="true"
+                 tooltip-placement="top"
+                 data-toggle="tooltip"
+                 style="border:0;outline:none">
+             <i class="fa fa-question"></i>
+         </button>
 
       <button type="button" class="add noOutline"
-          tooltip="add more {{field.items._ui.title}}"
-          tooltip-trigger
-          tooltip-animation="false"
-          tooltip-placement="top"
-          data-toggle="tooltip"
-          ng-click="addMoreInput()">
-        <i class="fa fa-plus"></i>
-
-        <!--<div class="cardinality-_ui-container">-->
-        <!--<div class="cardinality-_ui">-->
-        <!--<div class="cardinality-_ui-text"><span translate="GENERIC.MultipleMinMaxMsg"-->
-        <!--translate-values="{min:($parent.field.minItems || 0), max:($parent.field.maxItems || 'GENERIC.Unlimited' | translate)}"></span>-->
-        <!--</div>-->
-        <!--</div>-->
-        <!--</div>-->
+              tooltip="add"
+              tooltip-trigger
+              tooltip-animation="true"
+              tooltip-placement="top"
+              data-toggle="tooltip"
+              ng-click="addMoreInput()">
+          <i class="fa fa-plus"></i>
       </button>
     </span>
-    </p>
-  </div>
-
-  <div menuDropDownId="" ng-show="!$root.isArray(model) && $root.isRuntime()"
-      class="field"
-      style="position:relative">
-  </div>
-
-  <!-- field content next -->
-  <div class="elementTotalContent visible">
-
-    <div ng-show="$root.isArray(model)">
-      <div class="spreadsheetViewDetector"></div>
-      <div class="spreadsheetViewContainer"></div>
+        </p>
     </div>
 
-    <!-- this is the line that pulls in the actual element -->
-    <div class="originalContent" ng-include="getTemplateUrl()"></div>
-
-
-    <!-- error messages last -->
-    <div class="errors" ng-if="errorMessages">
-      <div class="alert alert-danger" ng-repeat="message in errorMessages">{{message}}</div>
+    <div menuDropDownId="" ng-show="!$root.isArray(model) && $root.isRuntime()"
+         class="field"
+         style="position:relative">
     </div>
-  </div>
+
+    <!-- field content next -->
+    <div class="elementTotalContent visible">
+
+        <div ng-show="$root.isArray(model)">
+            <div class="spreadsheetViewDetector"></div>
+            <div class="spreadsheetViewContainer"></div>
+        </div>
+
+        <!-- this is the line that pulls in the actual element -->
+        <div class="originalContent" ng-include="getTemplateUrl()"></div>
+
+
+        <!-- error messages last -->
+        <div class="errors" ng-if="errorMessages">
+            <div class="alert alert-danger" ng-repeat="message in errorMessages">{{message}}</div>
+        </div>
+    </div>
 </div>

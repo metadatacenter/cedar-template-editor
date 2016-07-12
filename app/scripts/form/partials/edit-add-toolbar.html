@@ -1,56 +1,61 @@
 <div id="toolbar">
-  <ul>
-    <li ng-repeat="fieldType in primaryFieldTypes">
-      <a ng-click="addField(fieldType.cedarType)"
-          tooltip='{{"FIELDS.FIELD_TYPE." + fieldType.cedarType + ".NAME" | translate}}'
-          tooltip-placement="left"
-          ><i class="{{fieldType.iconClass}}"></i></a>
-    </li>
-    <li>
-      <div dropdown auto-close="outsideClick">
-        <a class="more" data-toggle="dropdown" data-target=".field-selector" aria-expanded="false"
-            dropdown-toggle uib-dropdown keyboard-nav dropdown-append-to-body
-            tooltip='{{"GENERIC.More" | translate}}'
-            tooltip-placement="left"
-            ><i class="fa fa-ellipsis-h"></i></a>
+    <ul>
+        <li ng-repeat="fieldType in primaryFieldTypes">
+            <a ng-click="addField(fieldType.cedarType)"
+               id="button-add-field-{{fieldType.cedarType}}"
+               tooltip='{{"FIELDS.FIELD_TYPE." + fieldType.cedarType + ".NAME" | translate}}'
+               tooltip-placement="left">
+                <i class="{{fieldType.iconClass}}"></i>
+            </a>
+        </li>
+        <li>
+            <div dropdown auto-close="outsideClick">
+                <a id="button-add-more" class="more" data-toggle="dropdown" data-target=".field-selector" aria-expanded="false"
+                   dropdown-toggle uib-dropdown keyboard-nav dropdown-append-to-body
+                   tooltip='{{"GENERIC.More" | translate}}'
+                   tooltip-placement="left"
+                        ><i class="fa fa-ellipsis-h"></i></a>
 
-        <div class="collapse dropdown-menu field-selector other-elements" role="menu">
-          <div class="row">
-            <ul class="col-xs-6 list-unstyled pull-left">
-              <li class="item"
-                  ng-repeat="fieldType in otherFieldTypes"
-                  ng-if="$index <= otherFieldTypes.length/2 ">
-                <a data-toggle="dropdown" data-target=".field-selector" dropdown-toggle
-                    ng-click="addField(fieldType.cedarType)"
-                    tooltip='{{"FIELDS.FIELD_TYPE." + fieldType.cedarType + ".NAME" | translate}}'
-                    tooltip-placement="left"
-                    ><i class="{{fieldType.iconClass}}"></i><span translate>{{"FIELDS.FIELD_TYPE." + fieldType.cedarType + ".NAME"}}</span></a>
-              </li>
-            </ul>
-            <ul class="row list-unstyled pull-right">
-              <li class="item"
-                  ng-repeat="fieldType in otherFieldTypes"
-                  ng-if="$index > otherFieldTypes.length/2">
-                <a data-toggle="dropdown" data-target=".field-selector" dropdown-toggle
-                    ng-click="addField(fieldType.cedarType)"
-                    tooltip='{{"FIELDS.FIELD_TYPE." + fieldType.cedarType + ".NAME" | translate}}'
-                    tooltip-placement="left"
-                    ><i class="{{fieldType.iconClass}}"></i><span translate>{{"FIELDS.FIELD_TYPE." + fieldType.cedarType + ".NAME"}}</span></a>
-              </li>
-            </ul>
-          </div>
-          <div>
-            <ul class="row list-unstyled  search">
-              <li class="item" style="width:auto; text-align:center">
-                <a data-toggle="dropdown" data-target=".field-selector" dropdown-toggle
-                    ng-click="elementSearch();"
-                    tooltip='{{"EDITOR.TOOLBAR.searchForMore" | translate}}'
-                    tooltip-placement="left"
-                    ><i class="fa fa-search "></i><span translate>GENERIC.More</span></a>
-              </li>
-          </div>
-        </div>
-      </div>
-    </li>
-  </ul>
+                <div id="dialog-add-more" class="collapse dropdown-menu field-selector other-elements" role="menu">
+                    <div class="row">
+                        <ul class="col-xs-6 list-unstyled pull-left">
+                            <li class="item"
+
+                                ng-repeat="fieldType in otherFieldTypes"
+                                ng-if="$index <= otherFieldTypes.length/2 ">
+                                <a data-toggle="dropdown" data-target=".field-selector" dropdown-toggle
+                                   ng-click="addField(fieldType.cedarType)"
+                                   id="button-add-field-{{fieldType.cedarType}}"
+                                   tooltip='{{"FIELDS.FIELD_TYPE." + fieldType.cedarType + ".NAME" | translate}}'
+                                   tooltip-placement="left"
+                                        ><i class="{{fieldType.iconClass}}"></i><span translate>{{"FIELDS.FIELD_TYPE." + fieldType.cedarType + ".NAME"}}</span></a>
+                            </li>
+                        </ul>
+                        <ul class="row list-unstyled pull-right">
+                            <li class="item"
+                                ng-repeat="fieldType in otherFieldTypes"
+                                ng-if="$index > otherFieldTypes.length/2">
+                                <a data-toggle="dropdown" data-target=".field-selector" dropdown-toggle
+                                   ng-click="addField(fieldType.cedarType)"
+                                   id="button-add-field-{{fieldType.cedarType}}"
+                                   tooltip='{{"FIELDS.FIELD_TYPE." + fieldType.cedarType + ".NAME" | translate}}'
+                                   tooltip-placement="left"
+                                        ><i class="{{fieldType.iconClass}}"></i><span translate>{{"FIELDS.FIELD_TYPE." + fieldType.cedarType + ".NAME"}}</span></a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div>
+                        <ul class="row list-unstyled  search">
+                            <li class="item" style="width:auto; text-align:center">
+                                <a data-toggle="dropdown" data-target=".field-selector" dropdown-toggle
+                                   ng-click="elementSearch();"
+                                   tooltip='{{"EDITOR.TOOLBAR.searchForMore" | translate}}'
+                                   tooltip-placement="left"
+                                        ><i class="fa fa-search "></i><span translate>GENERIC.More</span></a>
+                            </li>
+                    </div>
+                </div>
+            </div>
+        </li>
+    </ul>
 </div>

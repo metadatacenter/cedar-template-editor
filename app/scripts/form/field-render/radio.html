@@ -22,7 +22,7 @@
             <!-- add/delete buttons -->
             <div ng-if="$root.isArray(model)" class="more-input-wrapper"
                  ng-include="'scripts/form/partials/more-input-buttons.partial.html'"
-                 ng-show="!field.maxItems || field.maxItems > 1 || (field.maxItems ==1 && field.minItems ==0)"></div>
+                 ></div>
 
         </div>
     </div>
@@ -41,8 +41,7 @@
 
             <!-- add/delete buttons -->
             <div ng-if="$root.isArray(model)" class="more-input-wrapper"
-                 ng-include="'scripts/form/partials/more-input-buttons.partial.html'"
-                 ng-show="!field.maxItems || field.maxItems > 1 || (field.maxItems ==1 && field.minItems ==0)"></div>
+                 ng-include="'scripts/form/partials/more-input-buttons.partial.html'"></div>
 
         </div>
     </div>

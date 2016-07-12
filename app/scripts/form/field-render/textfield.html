@@ -39,9 +39,8 @@
             <div class="floating-label">{{$root.schemaOf(field)._ui.title}}</div>
             <div class="input-indicator-icons" ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
         </div>
-        <div ng-if="$root.isRuntime()" class="more-input-wrapper "
-             ng-include="'scripts/form/partials/more-input-buttons.partial.html'"
-             ng-show="!field.maxItems || field.maxItems > 1 || (field.maxItems ==1 && field.minItems ==0)"></div>
+        <div ng-if="$root.isRuntime()" class="more-input-wrapper"
+             ng-include="'scripts/form/partials/more-input-buttons.partial.html'"></div>
     </div>
 
 
@@ -56,8 +55,6 @@
 
         <div ng-if="!$root.hasValueConstraint($root.schemaOf(field)._valueConstraints)" class="has-no-constraint">
             <div ng-init="m=model;pIndex=$parent.$index;" ng-include="'scripts/form/field-value/textfield.html'"></div>
-
-            <!--<div class="floating-label">{{$root.schemaOf(field)._ui.title}} title</div>-->
             <div class="input-indicator-icons" ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
         </div>
 
@@ -76,9 +73,9 @@
             <div class="floating-label">{{$root.schemaOf(field)._ui.title}} title</div>
             <div class="input-indicator-icons" ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
         </div>
+
         <div ng-if="$root.isRuntime()" class="more-input-wrapper"
-             ng-include="'scripts/form/partials/more-input-buttons.partial.html'"
-             ng-show="!field.maxItems || field.maxItems > 1 || (field.maxItems ==1 && field.minItems ==0)"></div>
+             ng-include="'scripts/form/partials/more-input-buttons.partial.html'"></div>
     </div>
 
 
