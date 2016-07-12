@@ -6,7 +6,8 @@
             tooltip-animation="true"
             tooltip-placement="top"
             data-toggle="tooltip"
-            style="border:0;outline:none">
+            style="border:0;outline:none"
+            ng-class="{'invisible' : $root.schemaOf(field)._ui.description.length == 0}"\>
         <i class="fa fa-question"></i>
     </button>
 
