@@ -1,7 +1,6 @@
-<span ng-show="tsc.isFieldTypesMode()">Find a term in BioPortal to annotate the <span class="highlighted">'{{tsc.fieldName}}'</span> field or <button
-    type="button" class="btn btn-create-term" ng-click="tsc.switchToCreate()">Create a New Term
-</button>
-</span>
+<span ng-show="tsc.isSearching() && tsc.isFieldTypesMode()">Find a term in BioPortal to annotate the <span class="highlighted">'{{tsc.fieldName}}'</span> field or <button type="button" class="btn btn-create-term" ng-click="tsc.switchToCreate()">Create a New Term</button></span>
+
+
 <h4 ng-show="tsc.isFieldValuesMode()">Find terms in BioPortal to constrain the values of the <span class="highlighted">'{{tsc.fieldName}}'</span>
   field</h4>
 
@@ -16,37 +15,59 @@
     <div class="field-search">
       <div class="input-group field-search-input-group">
         <input id="field-search-input" type="text" class="form-control field-search-form-control"
-            placeholder="Search for terms in BioPortal" aria-label="Search field"
+            placeholder="Search in BioPortal" aria-label="Search field"
             ng-model="tsc.searchQuery" ng-focus="tsc.showEmptyQueryMsg = false"
             with-floating-label=""
             ng-model-options="{debounce: 700}"
             ng-submit="tsc.search($event)"
             ng-click="tsc.onTextClick($event)"/>
-        <span class="input-group-addon" ng-click="tsc.search()"><i class="fa fa-search"></i></span>
         <span class="input-group-addon" ng-click="tsc.changeSearchOptionsVisibility()">
           <i ng-class="{'fa fa-cog': !tsc.searchOptionsVisible, 'fa fa-cog selected': tsc.searchOptionsVisible}"></i>
         </span>
+        <span class="input-group-addon" ng-click="tsc.search()"><i class="fa fa-search"></i></span>
       </div>
     </div>
-
+    <!-- Search Options -->
     <div ng-show="tsc.searchOptionsVisible" class="advanced-search">
-      <p class="advanced-search-header">Advanced Search</p>
-      <span>Narrow your search to specific ontologies:</span>
-
-      <div class="field-ontologies">
-        <tags-input class="custom-tags-input" ng-model="tsc.selectedOntologies" display-property="id"
-            placeholder="Add ontologies" replace-spaces-with-dashes="false"
-            on-tag-added="tsc.search()"
-            on-tag-removed="tsc.search()" >
-          <auto-complete source="tsc.loadOntologies($query)"
-              display-property="fullName"
-              min-length="0"
-              load-on-focus="true"
-              load-on-empty="true"
-              max-results-to-show="2000"
-              minLength="2"
-          </auto-complete>
-        </tags-input>
+      <p class="advanced-search-header">Advanced Search Options</p>
+      <div class="advanced-search-options">
+        <b>I want to...</b>
+        <div class="search-options">
+          <div class="radio radio-primary radio-controlled-terms-search">
+            <div class="radio-option">
+              <input id="search-scope-1" class="radio-option" type="radio" ng-model="tsc.searchScope" value="classes"
+                  ng-click="$event.stopPropagation()" ng-change="tsc.changeSearchScope()"/>
+              <label>Search for a term in BioPortal (e.g. 'microarray analysis') </label></div>
+            <div class="radio-option">
+              <input id="search-scope-2" class="radio-option" type="radio" ng-model="tsc.searchScope" value="ontologies"
+                  ng-click="$event.stopPropagation()" ng-change="tsc.changeSearchScope()"/>
+              <label>Search for an ontology in BioPortal (e.g. OBI) and then explore it to find a specific term</label></div>
+            <div ng-if="tsc.isFieldValuesMode()" class="radio-option">
+              <input id="search-scope-3" class="radio-option" type="radio" ng-model="tsc.searchScope" value="value-sets"
+                  ng-click="$event.stopPropagation()" ng-change="tsc.changeSearchScope()"/>
+              <label>Value sets</label>
+            </div>
+          </div>
+        </div>
+        <div ng-show="tsc.isSearchingClasses()">
+          <b>Narrow your term search to specific ontologies</b>
+          <div class="field-ontologies">
+            <tags-input class="custom-tags-input" ng-model="tsc.selectedOntologies" display-property="id"
+                placeholder="Start typing to add ontologies" replace-spaces-with-dashes="false"
+                add-from-autocomplete-only="true"
+                on-tag-added="tsc.search()"
+                on-tag-removed="tsc.search()">
+              <auto-complete source="tsc.loadOntologies($query)"
+                  display-property="fullName"
+                  min-length="0"
+                  load-on-focus="false"
+                  load-on-empty="false"
+                  max-results-to-show="2000"
+                  minLength="2"
+              </auto-complete>
+            </tags-input>
+          </div>
+        </div>
       </div>
     </div>
     <!--<div class="field-ontologies">-->
@@ -94,7 +115,6 @@
     <div ng-if="!tsc.resultsFound">No results</div>
   </div>
 </div>
-
 
 <!-- Search Results and Ontology Tree -->
 <div class="clear search-results-section">
@@ -289,6 +309,7 @@
 </div>
 
 <!-- Create term -->
+<span ng-show="tsc.isCreating()">Please, provide the following information for the term you want to create or <button type="button" class="btn btn-create-term" ng-click="tsc.switchToSearch()">Go Back to Term Search</button></span>
 <div ng-if="tsc.isCreating()" class="clear form-group add-ontology-class"
     ng-controller="provisionalClassController as pcc">
 

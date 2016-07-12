@@ -3514,30 +3514,84 @@ p.instructions {
 }
 
 .field-ontologies {
-  margin-top: 0.7em;
-  width: 100%;
+  border: 1px solid @gray3;
+  margin: 10px auto 10px 20px;
+  width: 90%;
 }
 
 .advanced-search {
   background-color: #f4f4f7;
   margin: 10px auto;
   padding: 20px;
-  //border: 1px solid red;
+  border: 1px solid @gray3;
   width: 80%;
 
   p.advanced-search-header {
-    text-transform: uppercase;
-    text-align: center;
+    //text-transform: uppercase;
+    text-align: left;
     font-weight: bold;
     color: @brand-primary;
+  }
+
+  .advanced-search-options {
+    margin-left: 20px;
   }
 }
 
 .add-ontology-class {
-  padding-left: 20px;
+  padding: 20px auto 40px 60px;
 
   div.mapping-description {
-    padding-top: 20px;
+    width: 100%;
+    margin: 30px auto;
+    text-align: center;
+    vertical-align: middle;
+
+    .mapping-subject, .mapping-object {
+      vertical-align: middle;
+      padding: auto;
+      margin: auto;
+      line-height: normal;
+      display: inline-block;
+      border: 2px solid @brand-primary;
+      width: 200px;
+      height: 50px;
+      -moz-border-radius: ~"100px / 25px";
+      -webkit-border-radius: ~"100px / 25px";
+      border-radius: ~"100px / 25px";
+      background-color: @brand-primary-disabled;
+
+      .mapping-label {
+        width: 200px;
+        height: 50px;
+        vertical-align: middle;
+        display: table-cell;
+      }
+
+    }
+
+    .mapping-predicate {
+      vertical-align: middle;
+      border: 1px solid @brand-primary;
+      width: 200px;
+      display: inline-block;
+    }
+
+    .mapping-predicate-arrow {
+      margin-left: -4px;
+      vertical-align: middle;
+      display: inline-block;
+      width: 0;
+      height: 0;
+      border: 6px solid transparent;
+      border-bottom: 6  px solid transparent;
+      border-left: 12px solid @brand-primary;
+    }
+
+    .mapping-object {
+      margin-left: -10px;
+    }
+
   }
 
   div.mapping-tools {
@@ -3551,7 +3605,7 @@ p.instructions {
   }
 
   div.map-existing-classes {
-    border: 1px solid @brand-secondary;
+    border: 1px solid @gray3;
     padding: 20px;
     margin-bottom: 10px;
     background-color: @gray2;
@@ -4361,6 +4415,8 @@ p.instructions {
         a {
           border: none;
           border-bottom: solid 1px @brand-primary;
+          border-radius: 0px;
+          margin-right: 6px;
           background: @gray3;
           color: grey;
         }
@@ -4419,6 +4475,8 @@ p.instructions {
 }
 
 .field-search span.input-group-addon {
+  padding-left: 6px;
+  padding-right: 6px;
   cursor: pointer;
   border-radius: 0;
 }
@@ -4657,6 +4715,10 @@ p.instructions {
 
 .radio-controlled-terms-search {
   margin-left: 20px;
+
+  .radio-option {
+    margin-bottom: 0.5em;
+  }
 }
 
 .values-browse-results-headers-table {
@@ -5167,9 +5229,10 @@ body .template-header .controlled-terms-modal {
 }
 
 .field-filter .search-options, .value-filter .search-options {
-  margin-bottom: 25px;
+  margin-bottom: 16px;
   label {
-    font-size: 16px;
+    //font-size: 16px;
+    font-size: 1em;
   }
 }
 

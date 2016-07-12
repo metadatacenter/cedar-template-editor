@@ -12222,26 +12222,72 @@ p.instructions {
   color: #5795ba;
 }
 .field-ontologies {
-  margin-top: 0.7em;
-  width: 100%;
+  border: 1px solid #d2d2d2;
+  margin: 10px auto 10px 20px;
+  width: 90%;
 }
 .advanced-search {
   background-color: #f4f4f7;
   margin: 10px auto;
   padding: 20px;
+  border: 1px solid #d2d2d2;
   width: 80%;
 }
 .advanced-search p.advanced-search-header {
-  text-transform: uppercase;
-  text-align: center;
+  text-align: left;
   font-weight: bold;
   color: #5795ba;
 }
+.advanced-search .advanced-search-options {
+  margin-left: 20px;
+}
 .add-ontology-class {
-  padding-left: 20px;
+  padding: 20px auto 40px 60px;
 }
 .add-ontology-class div.mapping-description {
-  padding-top: 20px;
+  width: 100%;
+  margin: 30px auto;
+  text-align: center;
+  vertical-align: middle;
+}
+.add-ontology-class div.mapping-description .mapping-subject,
+.add-ontology-class div.mapping-description .mapping-object {
+  vertical-align: middle;
+  padding: auto;
+  margin: auto;
+  line-height: normal;
+  display: inline-block;
+  border: 2px solid #5795ba;
+  width: 200px;
+  height: 50px;
+  border-radius: 100px / 25px;
+  background-color: rgba(87, 149, 186, 0.35);
+}
+.add-ontology-class div.mapping-description .mapping-subject .mapping-label,
+.add-ontology-class div.mapping-description .mapping-object .mapping-label {
+  width: 200px;
+  height: 50px;
+  vertical-align: middle;
+  display: table-cell;
+}
+.add-ontology-class div.mapping-description .mapping-predicate {
+  vertical-align: middle;
+  border: 1px solid #5795ba;
+  width: 200px;
+  display: inline-block;
+}
+.add-ontology-class div.mapping-description .mapping-predicate-arrow {
+  margin-left: -4px;
+  vertical-align: middle;
+  display: inline-block;
+  width: 0;
+  height: 0;
+  border: 6px solid transparent;
+  border-bottom: 6  px solid transparent;
+  border-left: 12px solid #5795ba;
+}
+.add-ontology-class div.mapping-description .mapping-object {
+  margin-left: -10px;
 }
 .add-ontology-class div.mapping-tools {
   padding-left: 165px;
@@ -12252,7 +12298,7 @@ p.instructions {
   padding-right: 20px;
 }
 .add-ontology-class div.map-existing-classes {
-  border: 1px solid #eaf2f2;
+  border: 1px solid #d2d2d2;
   padding: 20px;
   margin-bottom: 10px;
   background-color: #f4f4f7;
@@ -12936,6 +12982,8 @@ p.instructions {
 .field-tree .field-details-view .nav-tabs .detail-view-tab a {
   border: none;
   border-bottom: solid 1px #5795ba;
+  border-radius: 0px;
+  margin-right: 6px;
   background: #d2d2d2;
   color: grey;
 }
@@ -12973,6 +13021,8 @@ p.instructions {
   width: 15px;
 }
 .field-search span.input-group-addon {
+  padding-left: 6px;
+  padding-right: 6px;
   cursor: pointer;
   border-radius: 0;
 }
@@ -13176,6 +13226,9 @@ p.instructions {
 }
 .radio-controlled-terms-search {
   margin-left: 20px;
+}
+.radio-controlled-terms-search .radio-option {
+  margin-bottom: 0.5em;
 }
 .clickable {
   cursor: pointer;
@@ -13567,11 +13620,11 @@ body .template-header .controlled-terms-modal {
 }
 .field-filter .search-options,
 .value-filter .search-options {
-  margin-bottom: 25px;
+  margin-bottom: 16px;
 }
 .field-filter .search-options label,
 .value-filter .search-options label {
-  font-size: 16px;
+  font-size: 1em;
 }
 .field-root {
   padding: 5px;
@@ -14271,6 +14324,7 @@ body.modal-open {
   float: left;
   height: 41px;
   font-size: 1em;
+  width: 100%;
 }
 .custom-tags-input .tags .input.invalid-tag {
   color: #ff0000;

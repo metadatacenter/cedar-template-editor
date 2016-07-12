@@ -83,6 +83,7 @@ define([
       vm.showTree = showTree;
       vm.startSearch = startSearch;
       vm.switchToCreate = switchToCreate;
+      vm.switchToSearch = switchToSearch;
       vm.endSearch = endSearch;
 
       /**
@@ -269,9 +270,14 @@ define([
         if (vm.searchOntologiesResults.length == 0) {
           vm.searchOntologiesResults = controlledTermDataService.getAllOntologies();
         }
-        return vm.searchOntologiesResults.filter(function (ontology) {
-          return ontology.fullName.toLowerCase().indexOf(searchQuery.toLowerCase()) != -1;
-        });
+        if (searchQuery) {
+          return vm.searchOntologiesResults.filter(function (ontology) {
+            return ontology.fullName.toLowerCase().indexOf(searchQuery.toLowerCase()) != -1;
+          });
+        }
+        else {
+          return vm.searchOntologiesResults;
+        }
       }
 
       function selectFieldClass(selection, resultId) {
@@ -337,7 +343,13 @@ define([
       }
 
       function switchToCreate() {
+        reset(false, false, false);
         vm.action = 'create';
+      }
+
+      function switchToSearch() {
+        reset(false, false, false);
+        vm.action = 'search';
       }
 
       /* This function is passed as a callback down through class tree and child tree directives */
@@ -377,15 +389,13 @@ define([
             return vm.searchQuery;
           },
           function () {
-            if (vm.searchQuery) {
-              if (isSearchingClasses()) {
-                search();
+            if (isSearchingClasses()) {
+              if (vm.searchQuery) {
+                search()
               }
-              else if (isSearchingOntologies()) {
-                searchRegexp(vm.searchQuery);
-              }
-            } else {
-              vm.searchQuery = null;
+            }
+            else if (isSearchingOntologies()) {
+              searchRegexp(vm.searchQuery);
             }
           });
 
@@ -408,6 +418,9 @@ define([
           // Remove illegal characters
           searchQuery = searchQuery.replace(/[|&;$%@"<>()+,]/g, "");
           vm.ontologySearchRegexp = new RegExp(searchQuery, "i");
+        }
+        else {
+          vm.ontologySearchRegexp = null;
         }
       }
 

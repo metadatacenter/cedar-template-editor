@@ -1,6 +1,6 @@
-<p class="instructions">
-  Please, provide the following information for the term you want to create:
-</p>
+<!--<p class="instructions">-->
+  <!--Please, provide the following information for the term you want to create:-->
+<!--</p>-->
 <br />
 <div class="floating-label-wrapper">
   <input type="text" class="form-control required" name="provisionalClassLabel" placeholder="Label" ng-model="pcc.provisionalClass.prefLabel" with-floating-label="" />
@@ -58,25 +58,27 @@
   <div class="create-mapping-actions" ng-if="pcc.pickedOntologyClass">
     <div class="mapping-description">
       <!-- Visual representation of mapping -->
-      <!--<div>-->
-        <!--<div style="float:left; width: "-->
 
-      <!--</div>-->
+        <div class="mapping-subject">
+          <div class="mapping-label">{{pcc.provisionalClass.prefLabel || '(no label)'}}</div>
+        </div>
+        <div class="mapping-predicate"></div>
+        <div class="mapping-predicate-arrow"></div>
+        <div class="mapping-object">
+          <div class="mapping-label">{{pcc.pickedOntologyClass.prefLabel}} ({{pcc.pickedCurrentOntology.info.id}})</div>
+        </div>
 
-
-
-
-      <center>
-        <table width="80%">
-          <tr>
-            <td width="20%" class="center" style="padding-top: 20px">{{pcc.provisionalClass.prefLabel || '(no label)'}}</td>
-            <td><div class="dotted"><span class="dashes">&ndash; &ndash; &ndash; &ndash; &ndash;</span><span class="arrow">&#10142;</span></div></td>
-            <td width="20%" class="center" style="padding-top: 20px">
-              {{pcc.pickedOntologyClass.prefLabel}}<br /> ({{pcc.pickedCurrentOntology.info.id}})
-            </td>
-          </tr>
-        </table>
-      </center>
+      <!--<center>-->
+        <!--<table width="80%">-->
+          <!--<tr>-->
+            <!--<td width="20%" class="center" style="padding-top: 20px">{{pcc.provisionalClass.prefLabel || '(no label)'}}</td>-->
+            <!--<td><div class="dotted"><span class="dashes">&ndash; &ndash; &ndash; &ndash; &ndash;</span><span class="arrow">&#10142;</span></div></td>-->
+            <!--<td width="20%" class="center" style="padding-top: 20px">-->
+              <!--{{pcc.pickedOntologyClass.prefLabel}}<br /> ({{pcc.pickedCurrentOntology.info.id}})-->
+            <!--</td>-->
+          <!--</tr>-->
+        <!--</table>-->
+      <!--</center>-->
     </div>
     <div class="mapping-tools inline-block btn-create-class">
       <div class="create-class-select">
