@@ -50,6 +50,7 @@ define([
     vm.stagedValueSetValueConstraints = [];
     vm.stageBranchValueConstraint = stageBranchValueConstraint;
     vm.stageOntologyClassSiblingsValueConstraint = stageOntologyClassSiblingsValueConstraint;
+    vm.stageOntologyClass = stageOntologyClass;
     vm.stageOntologyClassValueConstraint = stageOntologyClassValueConstraint;
     vm.stageOntologyValueConstraint = stageOntologyValueConstraint;
     vm.stageValueConstraintAction = null;
@@ -400,19 +401,19 @@ define([
 
     function stageOntologyClassSiblingsValueConstraint(selection) {
       vm.stagedOntologyClassValueConstraints = [];
-      controlledTermDataService.getClassParents(controlledTermDataService.getAcronym(selection), selection['@id']).then(function(response) {
-        var acronym = vm.currentOntology.info.id;
+      var acronym = vm.currentOntology.info.id;
+      controlledTermDataService.getClassParents(acronym, selection['@id']).then(function(response) {
         if (response && angular.isArray(response) && response.length > 0) {
           controlledTermDataService.getClassChildren(acronym, response[0]['@id']).then(function(childResponse) {
             angular.forEach(childResponse, function(child) {
-              vm.stageOntologyClassValueConstraint(child);
+              vm.stageOntologyClass(child);
             });
             vm.stageValueConstraintAction = "add_siblings";
           });
         } else {
           controlledTermDataService.getRootClasses(acronym).then(function(childResponse) {
             angular.forEach(childResponse, function(child) {
-              vm.stageOntologyClassValueConstraint(child);
+              vm.stageOntologyClass(child);
             });
             vm.stageValueConstraintAction = "add_siblings";
           });
@@ -422,6 +423,12 @@ define([
     };
 
     function stageOntologyClassValueConstraint(selection, type) {
+      vm.stageValueConstraintAction = "add_class";
+      vm.stagedOntologyClassValueConstraints = [];
+      stageOntologyClass(selection, type);
+    };
+
+    function stageOntologyClass(selection, type) {
       if (type === undefined) {
         type = 'OntologyClass';
       }
@@ -433,16 +440,14 @@ define([
         'default': false
       };
       if (type == 'OntologyClass') {
-        klass['source'] = vm.currentOntology.info.name + ' (' + vm.currentOntology.info.id + ')';
+        klass['source'] = vm.currentOntology.info.id;
       } else {
         klass['source'] = vm.currentValueSet.prefLabel;
       }
       vm.stagedOntologyClassValueConstraints.push(klass);
-      vm.stagedOntologyClassValueConstraintData.push({
-        'label': selection.prefLabel
-      });
-
-      vm.stageValueConstraintAction = "add_class";
+      //vm.stagedOntologyClassValueConstraintData.push({
+      //  'label': selection.prefLabel
+      //});
     };
 
     function stageValueSetValueConstraint(selection) {

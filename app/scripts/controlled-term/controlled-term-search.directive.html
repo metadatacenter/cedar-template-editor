@@ -1,11 +1,14 @@
+<!-- Field types -->
 <span ng-show="tsc.isSearching() && tsc.isFieldTypesMode()">Find a term in BioPortal to annotate the <span
     class="highlighted">'{{tsc.fieldName}}'</span> field or <button type="button" class="btn btn-create-term"
     ng-click="tsc.switchToCreate()">Create a New Term
 </button></span>
 
-
-<h4 ng-show="tsc.isFieldValuesMode()">Find terms in BioPortal to constrain the values of the <span class="highlighted">'{{tsc.fieldName}}'</span>
-  field</h4>
+<!-- Field values -->
+<span ng-show="tsc.isSearching() && tsc.isFieldValuesMode()">Find terms in BioPortal to constrain the values of the <span
+    class="highlighted">'{{tsc.fieldName}}'</span> field or <button type="button" class="btn btn-create-term"
+    ng-click="tsc.switchToCreate()">Create New Terms
+</button></span>
 
 <div ng-if="tsc.isSearching()" class="form-group floating-label-wrapper clearfix">
 
@@ -49,12 +52,12 @@
             <div class="radio-option">
               <input id="search-scope-2" class="radio-option" type="radio" ng-model="tsc.searchScope" value="ontologies"
                   ng-click="$event.stopPropagation()" ng-change="tsc.changeSearchScope()"/>
-              <label>Search for an ontology in BioPortal (e.g. OBI) and then explore it to find a specific term</label>
+              <label>Search for an ontology in BioPortal (e.g. OBI) and then explore it to find specific terms</label>
             </div>
             <div ng-if="tsc.isFieldValuesMode()" class="radio-option">
               <input id="search-scope-3" class="radio-option" type="radio" ng-model="tsc.searchScope" value="value-sets"
                   ng-click="$event.stopPropagation()" ng-change="tsc.changeSearchScope()"/>
-              <label>Value sets</label>
+              <label>Search for a value set in BioPortal (e.g. 'Delivery Procedures') and then explore it to find specific values</label>
             </div>
           </div>
         </div>
@@ -63,15 +66,15 @@
 
           <div class="field-ontologies">
             <tags-input class="custom-tags-input" ng-model="tsc.selectedOntologies" display-property="id"
-                placeholder="Start typing to add ontologies" replace-spaces-with-dashes="false"
+                placeholder="Add ontologies" replace-spaces-with-dashes="false"
                 add-from-autocomplete-only="true"
                 on-tag-added="tsc.search()"
                 on-tag-removed="tsc.search()">
-              <auto-complete source="tsc.loadOntologies($query)"
+              <auto-complete source="tsc.searchOntologies($query)"
                   display-property="fullName"
                   min-length="0"
-                  load-on-focus="false"
-                  load-on-empty="false"
+                  load-on-focus="true"
+                  load-on-empty="true"
                   max-results-to-show="2000"
                   minLength="2"
               </auto-complete>
@@ -114,22 +117,35 @@
   <!--</div>-->
   <!--</div>-->
   <!-- Search messages -->
-  <div class="preloader" ng-if="tsc.showSearchPreloader"></div>
-  <div class="searchMsg" ng-if="tsc.showEmptyQueryMsg">Please enter a search query</div>
-
-  <div class="searchMsg" ng-if="tsc.searchFinished">
-    <div ng-if="tsc.resultsFound && !tsc.isMappingsMode()">
-      <div>{{tsc.searchClassesResults.length}} results</div>
-      <div>Click on a term to see more details about it</div>
-    </div>
-    <div ng-if="!tsc.resultsFound">No results</div>
+  <div ng-if="tsc.showSearchPreloader">
+    <div class="loader2"></div>
   </div>
+
+  <div class="search-messages" ng-if="tsc.isSearchingClasses()">
+    <span class="search-msg" ng-if="tsc.showEmptyQueryMsg">Please enter a search query</span>
+    <div ng-if="tsc.searchFinished">
+      <div ng-if="tsc.resultsFound && !tsc.isCreatingMappings">
+        <span class="search-msg">{{tsc.searchClassesResults.length}} results. </span>
+        <span class="search-msg">Click on a term below to select it</span>
+      </div>
+      <span class="search-msg" ng-if="!tsc.resultsFound">No results</span>
+    </div>
+  </div>
+  <div class="search-messages" ng-if="tsc.isSearchingOntologies()">
+      <div ng-if="tsc.ontologiesFound.length > 0 && !tsc.isCreatingMappings">
+        <span class="search-msg">{{tsc.ontologiesFound.length}} ontologies found. </span>
+        <span class="search-msg">Click on an ontology below to explore it</span>
+      </div>
+      <span class="search-msg" ng-if="tsc.ontologiesFound.length == 0">No results</span>
+  </div>
+
 </div>
 
 <!-- Search Results and Ontology Tree -->
 <div class="clear search-results-section">
   <!-- Classes results -->
-  <div ng-if="tsc.isSearchingClasses() && tsc.resultsFound && tsc.searchFinished">
+  <div ng-if="tsc.resultsFound && tsc.searchFinished">
+  <!--<div ng-if="tsc.isSearchingClasses() && tsc.resultsFound && tsc.searchFinished">-->
     <div class="search-results-headers">
       <table class="table table-condensed results-headers-table search-results-headers-table">
         <thead>
@@ -149,14 +165,12 @@
         <table class="table table-hover results-table search-results-table" ng-if="tsc.isSearchingClasses()">
           <tbody>
           <!-- Note that the comparison (result.resultId == tsc.selectedResultId) ensures that multiple classes with the same id are not highlighted at the same time and (result.details.id == tsc.selectedClass.id) deselects the row if the user clicks on another class in the ontology tree -->
-          <tr ng-repeat="result in tsc.searchClassesResults" ng-click="tsc.selectFieldClass(result, result.resultId)"
+          <tr ng-repeat="result in tsc.searchClassesResults" ng-click="tsc.selectClass(result, result.resultId)"
               ng-class="{'selected-row':  (result.resultId == tsc.selectedResultId) && (result.details.id == tsc.selectedClass.id)}">
             <td width="16%">{{result.prefLabel}}</td>
             <td width="36%">(definition here)</td>
             <td width="15%" tooltip="{{result.ontology.name}}" tooltip-append-to-body="true">{{result.ontology.id}}</td>
-            <td width="14%" tooltip="{{tsc.getShortId(result.details.id, null)}}" tooltip-append-to-body="true">
-              {{tsc.getShortId(result.details.id, 16)}}
-            </td>
+            <td width="14%" tooltip="{{tsc.getShortId(result.details.id, null)}}" tooltip-append-to-body="true">{{tsc.getShortId(result.details.id, 16)}}</td>
             <td width="13%">
               <span class="fa fa-sitemap"
                   ng-if="(result.resultId == tsc.selectedResultId) && (result.details.id == tsc.selectedClass.id)"
@@ -175,7 +189,7 @@
     </div>
   </div>
   <!-- Ontologies results -->
-  <div ng-if="tsc.isSearchingOntologies()">
+  <div ng-if="tsc.isSearchingOntologies() && tsc.ontologiesFound.length > 0 && tsc.searchFinished">
     <div class="search-results-headers">
       <table class="table table-condensed results-headers-table browse-results-headers-table">
         <thead>
@@ -191,8 +205,7 @@
       <div class="table-responsive results-table-container">
         <table class="table table-hover results-table browse-results-table">
           <tbody>
-          <tr ng-repeat="result in tsc.searchOntologiesResults" ng-click="tsc.selectFieldOntology(result)"
-              ng-show="tsc.isOntologyNameMatched(result)"
+          <tr ng-repeat="result in tsc.ontologiesFound" ng-click="tsc.selectOntology(result)"
               ng-class="{'selected-row':  (result.id == tsc.currentOntology.info.id)}">
             <td width="45%">{{result.name}} ({{result.id}})</td>
             <td width="45%">{{result.details.categories.join(", ") || "-" }}</td>
@@ -203,7 +216,10 @@
       </div>
     </div>
   </div>
-  <div ng-if="tsc.treeVisible && tsc.isLoadingClassDetails"><br/>Loading details...</div>
+
+  <div ng-if="tsc.treeVisible && tsc.isLoadingClassDetails">
+    <div class="loader2"></div>
+  </div>
   <!-- Ontology tree -->
   <div class="field-tree clear" ng-show="tsc.treeVisible && !tsc.isLoadingClassDetails">
     <div class="field-tree-header table-style">
@@ -333,7 +349,8 @@
         ng-disabled="!pcc.isValid()">Create Term
     </button>
     <!--<div class="input-indicator-icons">-->
-      <i class="cedar-svg-help-circle help-icon" tooltip="The term will be created in the CEDARPC (CEDAR Provisional Classes) BioPortal ontology and added to your template"></i>
+    <i class="cedar-svg-help-circle help-icon"
+        tooltip="The term will be created in the CEDARPC (CEDAR Provisional Classes) BioPortal ontology and added to your template"></i>
     <!--</div>-->
   </div>
 

@@ -21,7 +21,7 @@
       name="isMappingExistingClasses"
       id="is-mapping-existing-classes-checkbox"
       ng-model="pcc.isMappingExistingClasses"
-      ng-click="$event.stopPropagation(); pcc.searchMode='mappings'"
+      ng-click="$event.stopPropagation(); tsc.isCreatingMappings = true"
       ng-disabled="!pcc.isValid()"/>
   <label for="is-mapping-existing-classes-checkbox">Map to existing terms</label>
 </div>
@@ -32,7 +32,7 @@
 
   <ng-include src="'scripts/controlled-term/provisional-class-mappings.html'"></ng-include>
 
-  <p class="mappings-instructions">Use the options below to create mappings for the term <span class="highlighted">'{{pcc.provisionalClass.prefLabel}}'</span> to existing BioPortal terms</p>
+  <p class="mappings-instructions">Use the options below to add mappings from the term <span class="highlighted">'{{pcc.provisionalClass.prefLabel}}'</span> to existing BioPortal terms</p>
 
   <controlled-term-search
       search-mode="pcc.searchMode"

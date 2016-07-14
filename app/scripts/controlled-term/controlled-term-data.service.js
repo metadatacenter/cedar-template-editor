@@ -136,7 +136,7 @@ define([
           UIMessageService.showBackendError($translate.instant("TERMINOLOGY.errorTerminology"), err);
         }
         else {
-          //UIMessageService.showBackendError($translate.instant("TERMINOLOGY.errorBioPortal"), err);
+          UIMessageService.showBackendError($translate.instant("TERMINOLOGY.errorBioPortal"), err);
         }
         return err;
       });
@@ -163,7 +163,7 @@ define([
               UIMessageService.showBackendError($translate.instant("TERMINOLOGY.errorTerminology"), err);
             }
             else {
-              //UIMessageService.showBackendError($translate.instant("TERMINOLOGY.errorBioPortal"), err);
+              UIMessageService.showBackendError($translate.instant("TERMINOLOGY.errorBioPortal"), err);
             }
             return err;
           });
@@ -178,7 +178,7 @@ define([
           UIMessageService.showBackendError($translate.instant("TERMINOLOGY.errorTerminology"), err);
         }
         else {
-          //UIMessageService.showBackendError($translate.instant("TERMINOLOGY.errorBioPortal"), err);
+          UIMessageService.showBackendError($translate.instant("TERMINOLOGY.errorBioPortal"), err);
         }
         return err;
       });
@@ -193,7 +193,7 @@ define([
               UIMessageService.showBackendError($translate.instant("TERMINOLOGY.errorTerminology"), err);
             }
             else {
-              //UIMessageService.showBackendError($translate.instant("TERMINOLOGY.errorBioPortal"), err);
+              UIMessageService.showBackendError($translate.instant("TERMINOLOGY.errorBioPortal"), err);
             }
             return err;
           });
@@ -208,7 +208,7 @@ define([
               UIMessageService.showBackendError($translate.instant("TERMINOLOGY.errorTerminology"), err);
             }
             else {
-              //UIMessageService.showBackendError($translate.instant("TERMINOLOGY.errorBioPortal"), err);
+              UIMessageService.showBackendError($translate.instant("TERMINOLOGY.errorBioPortal"), err);
             }
             return err;
           });
@@ -223,7 +223,7 @@ define([
           UIMessageService.showBackendError($translate.instant("TERMINOLOGY.errorTerminology"), err);
         }
         else {
-          //UIMessageService.showBackendError($translate.instant("TERMINOLOGY.errorBioPortal"), err);
+          UIMessageService.showBackendError($translate.instant("TERMINOLOGY.errorBioPortal"), err);
         }
         return err;
       });
@@ -232,7 +232,12 @@ define([
     function getAcronym(result) {
       var ontologyUri = '';
       if (result.type == 'Ontology' || result.type == 'OntologyClass') {
-        ontologyUri = result.ontology;
+        if (result.ontology) {
+          ontologyUri = result.ontology;
+        }
+        else {
+          ontologyUri = result.source;
+        }
       }
       else if (result.type == 'ValueSet' || result.type == 'Value') {
         ontologyUri = result.vsCollection;
@@ -253,14 +258,17 @@ define([
           UIMessageService.showBackendError($translate.instant("TERMINOLOGY.errorTerminology"), err);
         }
         else {
-          //UIMessageService.showBackendError($translate.instant("TERMINOLOGY.errorBioPortal"), err);
+          UIMessageService.showBackendError($translate.instant("TERMINOLOGY.errorBioPortal"), err);
         }
         return err;
       });
     };
 
-    function searchClassesValueSetsAndValues(query) {
-      var url = base + "/search?q=" + encodeURIComponent(query) + "&scope=all" + "&page=1&page_size=100";
+    function searchClassesValueSetsAndValues(query, sources, size) {
+      var url = base + "/search?q=" + encodeURIComponent(query) + "&scope=all" + "&page=1&page_size=" + size;
+      if (sources) {
+        url = url + "&sources=" + sources;
+      }
       return $http.get(url, http_default_config).then(function (response) {
         return response.data;
       }).catch(function (err) {
@@ -268,14 +276,17 @@ define([
           UIMessageService.showBackendError($translate.instant("TERMINOLOGY.errorTerminology"), err);
         }
         else {
-          //UIMessageService.showBackendError($translate.instant("TERMINOLOGY.errorBioPortal"), err);
+          UIMessageService.showBackendError($translate.instant("TERMINOLOGY.errorBioPortal"), err);
         }
         return err;
       });
     };
 
-    function searchValueSetsAndValues(query) {
-      var url = base + "/search?q=" + encodeURIComponent(query) + "&scope=value_sets,values" + "&page=1&page_size=100";
+    function searchValueSetsAndValues(query, sources, size) {
+      var url = base + "/search?q=" + encodeURIComponent(query) + "&scope=value_sets,values" + "&page=1&page_size=" + size;
+      if (sources) {
+        url = url + "&sources=" + sources;
+      }
       return $http.get(url, http_default_config).then(function (response) {
         return response.data;
       }).catch(function (err) {
@@ -283,7 +294,7 @@ define([
           UIMessageService.showBackendError($translate.instant("TERMINOLOGY.errorTerminology"), err);
         }
         else {
-          //UIMessageService.showBackendError($translate.instant("TERMINOLOGY.errorBioPortal"), err);
+          UIMessageService.showBackendError($translate.instant("TERMINOLOGY.errorBioPortal"), err);
         }
         return err;
       });
@@ -299,7 +310,7 @@ define([
           UIMessageService.showBackendError($translate.instant("TERMINOLOGY.errorTerminology"), err);
         }
         else {
-          //UIMessageService.showBackendError($translate.instant("TERMINOLOGY.errorBioPortal"), err);
+          UIMessageService.showBackendError($translate.instant("TERMINOLOGY.errorBioPortal"), err);
         }
         return err;
       });
@@ -321,7 +332,7 @@ define([
           UIMessageService.showBackendError($translate.instant("TERMINOLOGY.errorTerminology"), err);
         }
         else {
-          //UIMessageService.showBackendError($translate.instant("TERMINOLOGY.errorBioPortal"), err);
+          UIMessageService.showBackendError($translate.instant("TERMINOLOGY.errorBioPortal"), err);
         }
         return err;
       });
@@ -339,7 +350,7 @@ define([
           UIMessageService.showBackendError($translate.instant("TERMINOLOGY.errorTerminology"), err);
         }
         else {
-          //UIMessageService.showBackendError($translate.instant("TERMINOLOGY.errorBioPortal"), err);
+          UIMessageService.showBackendError($translate.instant("TERMINOLOGY.errorBioPortal"), err);
         }
         return err;
       });

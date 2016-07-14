@@ -236,7 +236,7 @@
     }
   },
   "TERMINOLOGY": {
-    "errorBioPortal": "Error connecting to BioPortal. Please try again later",
+    "errorBioPortal": "Error establishing a connection to BioPortal. Please try again later",
     "errorTerminology": "Error connecting to Terminology Server"
   },
   "VALUERECOMMENDER": {
