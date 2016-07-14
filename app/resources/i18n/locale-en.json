@@ -290,7 +290,14 @@
   "CREATOR": {
     "addElementToStagingMsg": "Add an existing element or create a new item.",
     "enterFieldTitle": "Enter Field Title",
-    "enterFieldDescription": "Enter Help Text"
+    "enterFieldDescription": "Enter Help Text",
+    "enterEmail": "Enter an email address",
+    "enterDate": "Please select date",
+    "pleaseSelect": "Please select",
+    "enterPhoneNumber": "Enter phone number",
+    "enterNumber": "Enter number",
+    "enterParagraph": "Enter paragraph text",
+    "enterTextField": "Enter text field"
   },
   "AUTHORIZATION-ERROR": {
     "suggestedAction": {

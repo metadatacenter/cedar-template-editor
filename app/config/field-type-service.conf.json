@@ -64,7 +64,7 @@
     "iconClass": "cedar-svg-numeric",
     "allowedInElement": true,
     "primaryField": true,
-    "Label": "Number",
+    "label": "Number",
     "hasControlledTerms": false,
     "staticField": false
   },

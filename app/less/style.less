@@ -1800,8 +1800,14 @@ body.search-browse-modal {
   .right-body {
     padding-top: 30px;
 
+
     @media (min-width: @screen-sm-min) {
-      padding-top: 35px;
+      padding-top: 0px;
+
+    }
+
+    .page {
+      background:@white;
     }
 
     .btn-preview-form {
@@ -1830,7 +1836,10 @@ body.search-browse-modal {
       padding-bottom: 40px;
 
       .form-preview {
-        padding-top: 0;
+        padding-top: 35px;
+        background:#fff;
+        border:1px solid #ccc;
+
 
         p.type-label {
           width: 100%;
@@ -2437,6 +2446,7 @@ section.dashboard-elements {
   .form-group {
     margin-bottom: 14px;
     min-height: 1em;
+    margin-right:40px;
 
     &.radio-item,
     &.checkbox-item {
@@ -3863,7 +3873,7 @@ p.instructions {
   position: absolute;
   left: 100%;
   top: 0;
-  width: 110px;
+  width: 40px;
 
   &.zero {
     position: absolute;
@@ -3929,7 +3939,7 @@ p.instructions {
 
 .fields {
   .form-group {
-    margin-right: 100px;
+
 
     &.form-group-narrow {
       margin-right: 0px;
@@ -3942,7 +3952,7 @@ p.instructions {
 .fields-date .field-date,
 .fields-list .field-list {
   position: relative;
-  margin-right: 100px;
+
 }
 
 .element-toggles {
@@ -4969,6 +4979,10 @@ body .template-header .controlled-terms-modal {
 
 .sortable-handler {
   cursor: move;
+  .sortable {
+    width:20px;
+    margin:auto;
+  }
 }
 
 .template-body .right-body .preview-edit-options .element-preview-actions {
@@ -5034,12 +5048,17 @@ body .template-header .controlled-terms-modal {
 }
 
 .field-root {
-  padding: 5px;
-  border: 1px solid @gray3;
+  padding: 5px 30px;
   margin-bottom: 10px;
   margin-top: 5px;
-  background: #efefef;
 
+  &.selected {
+
+    border-top: 2px solid @gray3;
+    border-bottom: 2px solid @gray3;
+    border-left: 1px solid @gray3;
+    border-right: 1px solid @gray3;
+  }
 
   .field-title-definition {
     background:transparent;

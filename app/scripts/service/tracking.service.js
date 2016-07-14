@@ -31,6 +31,19 @@ define([
       $analytics.eventTrack(eventName, eventParameters);
     };
 
+    service.clickTrack = function(eventName, eventParameters) {
+      // goal should be to save
+      // 1. IP address
+      // 2. user agent
+      // 3. user name  or user id
+      // 4. the name which describes the action or purpose of the click "addTextField", "addParagraph",... also include stuff like basic navigation
+      // stuff, what is the user doing,  "saveTemplate",
+      // 5. the object clicked on, like the template id, or link name, the text that is clicked or the url
+      // 5. the url
+      // 6.
+      $analytics.eventTrack(eventName, eventParameters);
+    };
+
     service.pageTrack = function() {
       $analytics.eventTrack("pageLoad", {'url': $location.absUrl()});
       $analytics.pageTrack($location.absUrl());

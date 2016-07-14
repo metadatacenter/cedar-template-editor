@@ -19,6 +19,16 @@ define([
 
       var MIN_OPTIONS = 2;
 
+      $scope.fieldType;
+
+      $scope.$watch("fieldType", function () {
+
+        console.log('change field from ' + $rootScope.schemaOf($scope.field)._ui.inputType + ' to ' + $scope.fieldType);
+
+      }, true);
+
+
+
       var setDirectory = function () {
         var p = $rootScope.propertiesOf($scope.field);
         var state = p._tmp && p._tmp.state || "completed";
@@ -45,6 +55,10 @@ define([
             $scope.model['@type'] = properties['@type'].oneOf[0].enum;
           }
         }
+      };
+
+      $scope.getFieldTypes = function () {
+        return FieldTypeService.getFieldTypes();
       };
 
       var parseField = function () {
@@ -919,6 +933,11 @@ define([
           console.log('refresh');
           $scope.$apply();
         }, 1000);
+
+      };
+
+      $scope.card = function( m, n, addUnlimited)  {
+        return DataManipulationService.generateCardinalities(m, n, addUnlimited);
 
       };
 

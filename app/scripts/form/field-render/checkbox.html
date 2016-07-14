@@ -1,8 +1,6 @@
 <div class="fields fields-checkbox">
 
 
-    <div ng-init="fieldTitle='Checkbox';fieldIconClass='cedar-svg-checkbox'"
-         ng-include="'scripts/form/partials/field-header.partial.html'"></div>
 
     <!-- item list -->
     <div class="form-group  floating-label-wrapper ng-scope"
@@ -10,7 +8,7 @@
          ng-repeat="valueElement in filteredModel = $root.arrayOf(model)">
 
         <div class="form-group field-wrapper-checkbox  ">
-            <!--<div ng-include="'scripts/form/partials/field-title.html'"></div>-->
+
 
             <div class=" checkbox-item" ng-repeat="(index, value) in $root.schemaOf(field)._ui.options">
                 <div class="checkbox checkbox-primary">

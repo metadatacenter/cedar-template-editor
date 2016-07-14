@@ -1,16 +1,13 @@
 <div class="fields fields-radio">
 
-    <!-- header row -->
-    <div ng-init="fieldTitle='Radio';fieldIconClass='cedar-svg-radio'"
-         ng-include="'scripts/form/partials/field-header.partial.html'"></div>
+
 
     <!-- list of items -->
     <div class="form-group  floating-label-wrapper ng-scope"
-         ng-class="{'required': $root.schemaOf(field)._valueConstraints.requiredValue}"
          ng-repeat="valueElement in filteredModel = $root.arrayOf(model)">
 
         <div class="form-group field-wrapper-radio  ">
-            <div ng-include="'scripts/form/partials/field-title.html'"></div>
+
 
             <div class="form-group radio-item" ng-repeat="(index, value) in $root.schemaOf(field)._ui.options">
                 <div class="radio radio-primary">

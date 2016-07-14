@@ -1,76 +1,186 @@
 <div class="field-root" id="{{$root.getDomId(field)}}"
-     ng-click="canSelect(!$root.isRuntime()); $event.preventDefault();">
+     ng-click="canSelect(!$root.isRuntime()); $event.preventDefault();" ng-class="{'selected': isEditState(field)}">
 
 
-    <!-- field title first -->
-    <div menuDropDownId="" ng-show="$root.isArray(model) && $root.isRuntime()"
-         class="spreadsheetSwitch field"
-         style="position:relative">
-        <p class="element-name-label">
-
-            {{field.items._ui.title}}
-
-       <span class="spreadsheetSwitch ">
-            <button type="button"
-                    tooltip="show as spreadsheet"
-                    tooltip-trigger
-                    tooltip-animation="false"
-                    tooltip-placement="top"
-                    data-toggle="tooltip"
-                    ng-click="switchToSpreadsheet()"
-                    class="spreadsheetSwitchLink"
-                    ng-show="true"
-                    ng-disabled="preview" style="background:transparent;border:0;outline:none">
-                <i class="cedar-svg-spreadsheet"></i>
-            </button>
-       </span>
-
-            <!-- show this add button only when you have minCardinality 0 and an empty list -->
-    <span class="more-input-wrapper zero" ng-show="$root.isRuntime() && $root.isArray(model) && model.length == 0">
-
-         <button type="button" class="help"
-                 tooltip="{{$root.schemaOf(field)._ui.description}}"
-                 tooltip-trigger
-                 tooltip-animation="true"
-                 tooltip-placement="top"
-                 data-toggle="tooltip"
-                 style="border:0;outline:none">
-             <i class="fa fa-question"></i>
-         </button>
-
-      <button type="button" class="add noOutline"
-              tooltip="add"
-              tooltip-trigger
-              tooltip-animation="true"
-              tooltip-placement="top"
-              data-toggle="tooltip"
-              ng-click="addMoreInput()">
-          <i class="fa fa-plus"></i>
-      </button>
-    </span>
-        </p>
+    <div class="row">
+        <div class="sortable-handler" style="height:30px;" ng-class="{'invisible': $root.isRuntime()}"
+             ng-mousedown="canSelect(!$root.isRuntime()); $event.preventDefault();">
+            <div class="type-label sortable"><span class="sortable-icon"></span></div>
+        </div>
     </div>
 
-    <div menuDropDownId="" ng-show="!$root.isArray(model) && $root.isRuntime()"
-         class="field"
-         style="position:relative">
+    <div class="row">
+        <div class="col-sm-9">
+
+
+            <div class="form-group ">
+                <h4>
+
+                    <div ng-show="isEditState()">
+
+
+                        <input type="text"
+                               class="form-control field-title-definition"
+                               style="font-size:18px;"
+                               placeholder="{{'CREATOR.enterFieldTitle' | translate}}"
+                               aria-label="{{'CREATOR.enterFieldTitle' | translate}}"
+                               ng-model="$root.schemaOf(field)._ui.title">
+
+                        <div dropdown auto-close="outsideClick">
+                            <button type="button" class="" data-toggle="dropdown"
+                                    style="border:0;outline:none;position:absolute;right:50px;bottom:20px"
+                                    data-target="#dialog-field-controlled-term" aria-expanded="false" dropdown-toggle
+                                    uib-dropdown keyboard-nav dropdown-append-to-body>
+                                <i class="cedar-svg-controll-term collapsed"></i>
+                            </button>
+
+                            <div id="dialog-field-controlled-term" class="dropdown-menu dropdown-menu-right"
+                                 role="dialog">
+                                content
+                            </div>
+                        </div>
+
+
+                        <div dropdown auto-close="outsideClick">
+                            <button type="button" class="" data-toggle="dropdown" data-target=".field-selector"
+                                    aria-expanded="false" dropdown-toggle uib-dropdown keyboard-nav
+                                    dropdown-append-to-body
+                                    style="border:0;outline:none;position:absolute;right:20px;bottom:20px">
+                                <i class="fa fa-question"></i>
+                            </button>
+
+                            <div id="dialog-enter-help-text" class="dropdown-menu dropdown-menu-right"
+                                 style="margin:0;padding:0;resize: both;overflow: auto;" role="dialog">
+                                        <textarea style="width:100%;height:100%;border:0px solid #fff" rows="5"
+                                                  class="form-control"
+                                                  id="dialog-help-text"
+                                                  ng-model="$root.schemaOf(field)._ui.description"></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div ng-show="!isEditState()">
+                        {{$root.schemaOf(field)._ui.title}}
+                    <span ng-show="$root.isRuntime()" style="color:red"
+                          ng-class="{'invisible': !$root.schemaOf(field)._valueConstraints.requiredValue}">*</span>
+                    </div>
+
+
+                </h4>
+            </div>
+            <!-- /.form-group -->
+
+
+        </div>
+
+
+        <div class="col-sm-3">
+            <div ng-show="isEditState()" class="form-group validation-pattern pull-left min-items-option">
+                <select class="" ng-init="fieldType = $root.schemaOf(field)._ui.inputType" ng-model="fieldType"
+                        ng-options="v.cedarType as v.label for v in getFieldTypes()"
+                        select-picker="$event.stopPropagation();">
+                </select>
+            </div>
+            <div ng-show="$root.isRuntime()">
+
+                <button type="button" class="help"
+                        ng-class="{'invisible': $root.schemaOf(field)._ui.description.length == 0}"
+                        tooltip="{{$root.schemaOf(field)._ui.description}}"
+                        tooltip-trigger
+                        tooltip-animation="true"
+                        tooltip-placement="top"
+                        data-toggle="tooltip"
+                        style="border:0;outline:none">
+                    <i class="fa fa-question"></i>
+                </button>
+
+                <button type="button" class="add noOutline"
+                        tooltip="add"
+                        ng-show="$root.isArray(model)"
+                        tooltip-trigger
+                        tooltip-animation="true"
+                        tooltip-placement="top"
+                        data-toggle="tooltip"
+                        ng-click="addMoreInput()">
+                    <i class="fa fa-plus"></i>
+                </button>
+
+                <button type="button"
+
+                        tooltip="show as spreadsheet"
+                        tooltip-trigger
+                        tooltip-animation="false"
+                        tooltip-placement="top"
+                        data-toggle="tooltip"
+                        ng-click="switchToSpreadsheet()"
+                        class="spreadsheetSwitchLink"
+                        ng-show="$root.isArray(model)"
+                        ng-disabled="preview" style="background:transparent;border:0;outline:none">
+                    <i class="cedar-svg-spreadsheet"></i>
+                </button>
+            </div>
+        </div>
     </div>
 
-    <!-- field content next -->
-    <div class="elementTotalContent visible">
 
-        <div ng-show="$root.isArray(model)">
-            <div class="spreadsheetViewDetector"></div>
-            <div class="spreadsheetViewContainer"></div>
+    <div class="row">
+
+
+        <!-- field content next -->
+        <div class="elementTotalContent visible">
+
+            <div ng-show="$root.isArray(model)">
+                <div class="spreadsheetViewDetector"></div>
+                <div class="spreadsheetViewContainer"></div>
+            </div>
+
+            <!-- this is the line that pulls in the actual element -->
+            <div class="originalContent" ng-include="getTemplateUrl()"></div>
+
+
+            <!-- error messages last -->
+            <div class="errors" ng-if="errorMessages">
+                <div class="alert alert-danger" ng-repeat="message in errorMessages">{{message}}</div>
+            </div>
         </div>
 
-        <!-- this is the line that pulls in the actual element -->
-        <div class="originalContent" ng-include="getTemplateUrl()"></div>
+    </div>
+
+    <!-- toolbar -->
+    <div class="row" ng-show="isEditState()">
+
+        <div style="float:right" style="display: flex;flex-direction: row;justify-content: center;">
+
+            <label translate>GENERIC.Min</label>
+            <input type="number" ng-model="field.minItems" title="min" style="width:4em;margin-right:20px"
+                   placeholder="min"/>
 
 
-        <!-- error messages last -->
-        <div class="errors" ng-if="errorMessages">
-            <div class="alert alert-danger" ng-repeat="message in errorMessages">{{message}}</div>
+            <label translate>GENERIC.Max</label>
+            <input type="number" class="" ng-model="field.maxItems" style="width:4em;margin-right:20px"
+                   placeholder="max"
+                   title="max"/>
+
+            <input type="checkbox"
+                   id="checkbox-required-{{uuid}}"
+                   ng-click=" $event.stopPropagation();"
+                   ng-model="$root.schemaOf(field)._valueConstraints.requiredValue"/>
+            <label style="margin-right:10px" ng-click=" $event.stopPropagation();" for="checkbox-required-{{uuid}}">Required</label>
+
+
+            <div dropdown class="dropdown" auto-close="outsideClick" style="display:inline-block;margin-right:20px">
+                <button class="btn dropdown-toggle" type="button" data-toggle="dropdown"><i
+                        class="fa fa-ellipsis-v"></i></button>
+                <ul class="dropdown-menu">
+                    <li><a ng-click="duplicate();">Duplicate</a></li>
+                    <li role="separator" class="divider"></li>
+                    <li><a ng-click="delete(); ">Delete</a></li>
+                </ul>
+            </div>
+
         </div>
+
+
     </div>
 </div>

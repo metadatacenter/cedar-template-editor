@@ -1,11 +1,14 @@
 <div id="phone-number-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}" class="input-type-container">
 
-  <!-- header row -->
-  <div ng-init="fieldTitle='Phone Number';fieldIconClass='cedar-svg-phone'"
-      ng-include="'scripts/form/partials/field-header.partial.html'"></div>
+    <div class="form-group floating-label-wrapper">
+        <input type="text"
+               class="form-control field-title-definition"
+               placeholder="phone number text"
+               aria-label="phone number text"
+               with-floating-label
+               disabled="true">
+    </div><!-- /.form-group -->
 
-	<div class="definition-inputs" ng-include="'scripts/form/partials/field-definition.partial.html'"></div><!-- /.definition-inputs -->
+    <div class="configuration-options " ng-include="'scripts/form/partials/configuration-options.partial.html'"></div>
 
-  <div class="configuration-options " ng-include="'scripts/form/partials/configuration-options.partial.html'"></div>
-
-</div><!-- /.input-type-container -->
+</div>

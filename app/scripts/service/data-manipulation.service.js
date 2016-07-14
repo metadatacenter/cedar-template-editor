@@ -240,6 +240,7 @@ define([
         };
 
         service.generateCardinalities = function (min, max, addUnlimited) {
+            console.log("generateCardinalities");
             var results = [];
             for (var i = min; i <= max; i++) {
                 results.push({value: i, label: i});
@@ -656,7 +657,7 @@ define([
 
             // default description
             if (!schema._ui.description) {
-                schema._ui.description = $translate.instant("VALIDATION.noHelpText");
+                schema._ui.description = $translate.instant("VALIDATION.noDescriptionField");
             }
 
             // if this is radio, checkbox or list,  add at least two options and set default values
