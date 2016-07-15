@@ -815,7 +815,7 @@ define([
 
 
       $scope.deleteFieldAddedItem = function (itemDataId) {
-        console.log('deleteFieldAddedItem' + itemDataId);
+        console.log('deleteFieldAddedItem ' + itemDataId);
         if (itemDataId != null) {
           console.log($scope.field);
           DataManipulationService.deleteFieldControlledTerm(itemDataId, $scope.field);
@@ -939,6 +939,10 @@ define([
       $scope.card = function( m, n, addUnlimited)  {
         return DataManipulationService.generateCardinalities(m, n, addUnlimited);
 
+      };
+
+      $scope.duplicate = function () {
+        console.log('duplicate field or element' );
       };
 
 

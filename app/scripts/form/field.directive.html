@@ -2,6 +2,7 @@
      ng-click="canSelect(!$root.isRuntime()); $event.preventDefault();" ng-class="{'selected': isEditState(field)}">
 
 
+    <!-- sort hander -->
     <div class="row">
         <div class="sortable-handler" style="height:30px;" ng-class="{'invisible': $root.isRuntime()}"
              ng-mousedown="canSelect(!$root.isRuntime()); $event.preventDefault();">
@@ -9,6 +10,7 @@
         </div>
     </div>
 
+    <!-- field title -->
     <div class="row">
         <div class="col-sm-9">
 
@@ -26,52 +28,18 @@
                                aria-label="{{'CREATOR.enterFieldTitle' | translate}}"
                                ng-model="$root.schemaOf(field)._ui.title">
 
-                        <div dropdown auto-close="outsideClick">
-                            <button type="button" class="" data-toggle="dropdown"
-                                    style="border:0;outline:none;position:absolute;right:50px;bottom:20px"
-                                    data-target="#dialog-field-controlled-term" aria-expanded="false" dropdown-toggle
-                                    uib-dropdown keyboard-nav dropdown-append-to-body>
-                                <i class="cedar-svg-controll-term collapsed"></i>
-                            </button>
 
-                            <div id="dialog-field-controlled-term" class="dropdown-menu dropdown-menu-right"
-                                 role="dialog">
-                                content
-                            </div>
-                        </div>
-
-
-                        <div dropdown auto-close="outsideClick">
-                            <button type="button" class="" data-toggle="dropdown" data-target=".field-selector"
-                                    aria-expanded="false" dropdown-toggle uib-dropdown keyboard-nav
-                                    dropdown-append-to-body
-                                    style="border:0;outline:none;position:absolute;right:20px;bottom:20px">
-                                <i class="fa fa-question"></i>
-                            </button>
-
-                            <div id="dialog-enter-help-text" class="dropdown-menu dropdown-menu-right"
-                                 style="margin:0;padding:0;resize: both;overflow: auto;" role="dialog">
-                                        <textarea style="width:100%;height:100%;border:0px solid #fff" rows="5"
-                                                  class="form-control"
-                                                  id="dialog-help-text"
-                                                  ng-model="$root.schemaOf(field)._ui.description"></textarea>
-                            </div>
-                        </div>
                     </div>
-
 
                     <div ng-show="!isEditState()">
                         {{$root.schemaOf(field)._ui.title}}
                     <span ng-show="$root.isRuntime()" style="color:red"
                           ng-class="{'invisible': !$root.schemaOf(field)._valueConstraints.requiredValue}">*</span>
-                    </div>
 
+                    </div>
 
                 </h4>
             </div>
-            <!-- /.form-group -->
-
-
         </div>
 
 
@@ -124,10 +92,9 @@
     </div>
 
 
+    <!-- field content  -->
     <div class="row">
 
-
-        <!-- field content next -->
         <div class="elementTotalContent visible">
 
             <div ng-show="$root.isArray(model)">
@@ -147,40 +114,299 @@
 
     </div>
 
-    <!-- toolbar -->
-    <div class="row" ng-show="isEditState()">
+    <!-- field toolbar -->
+    <div class="row" ng-show="isEditState()"  style="border-top: 1px solid #ccc;
+    padding-top: 10px;
+    padding-bottom: 10px;">
 
         <div style="float:right" style="display: flex;flex-direction: row;justify-content: center;">
 
-            <label translate>GENERIC.Min</label>
-            <input type="number" ng-model="field.minItems" title="min" style="width:4em;margin-right:20px"
+            <label translate>GENERIC.Multiple</label>
+            <input tooltip="minimum required"
+                   tooltip-trigger
+                   tooltip-animation="true"
+                   tooltip-placement="top"
+                   data-toggle="tooltip" type="number" ng-model="field.minItems" title="min"
+                   style="width:4em;margin-right:5px"
                    placeholder="min"/>
 
-
-            <label translate>GENERIC.Max</label>
-            <input type="number" class="" ng-model="field.maxItems" style="width:4em;margin-right:20px"
+            <input tooltip="maximum allowed"
+                   tooltip-trigger
+                   tooltip-animation="true"
+                   tooltip-placement="top"
+                   data-toggle="tooltip" type="number" class="" ng-model="field.maxItems"
+                   style="width:4em;margin-right:20px"
                    placeholder="max"
                    title="max"/>
+
+            <div class="dropdown" style="font-size:20px;display:inline-block;margin-right:20px">
+                <a class="dropdown-toggle"
+                   type="button"
+                   data-toggle="dropdown"
+                   tooltip="characterize the field"
+                   tooltip-trigger
+                   tooltip-animation="true"
+                   tooltip-placement="top"
+                   data-toggle="tooltip"><i class="cedar-svg-controll-term collapsed"></i>
+                </a>
+
+                <div class="dropdown-menu">
+                    <div id="field-type-options" class="cardinality-options" >
+                        <div class="">
+                            <div class="controlled-terms controlled-term-options">
+                                <div class="class-container">
+
+                                    <!-- field type table -->
+                                    <div class="added-field-classes">
+                                        <div class="class-list-container">
+                                            <div class="class-list-table">
+                                                <table class="table table-hover table-striped " >
+                                                    <thead>
+                                                    <tr>
+                                                        <th>Name</th>
+                                                        <th>Identifier</th>
+                                                        <th>Source</th>
+                                                        <th></th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    <tr ng-repeat="key in addedFieldKeys">
+                                                        <td>
+                                                            {{getPrefLabel(key)}}
+                                                        </td>
+                                                        <td>
+                                                            {{getClassId(key)}}
+                                                        </td>
+                                                        <td>
+                                                            {{parseOntologyName(key)}}
+                                                        </td>
+                                                        <td>
+                                                            <div class="item item-delete" ng-click="deleteFieldAddedItem(key);  $event.stopPropagation();">
+                                                                <i class="fa fa-close"></i>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="clear-save" style="text-align:center">
+                                    <button type="button" class="std-button btn search-ontologies-button" ng-click="showModal(getModalId(true)); $event.stopPropagation();">Search
+                                    </button>
+                                    <!--<button type="button" class="std-button btn search-ontologies-button">Create</button>-->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+            </div>
+
+            <div class="dropdown" style="font-size:20px;display:inline-block;margin-right:20px">
+                <a class="dropdown-toggle"
+                   type="button"
+                   data-toggle="dropdown"
+                   tooltip="restrict the values"
+                   tooltip-trigger
+                   tooltip-animation="true"
+                   tooltip-placement="top"
+                   data-toggle="tooltip"><i class="cedar-svg-controll-term collapsed"></i>
+                </a>
+
+                <div class="dropdown-menu">
+                    <div id="value-options" class="cardinality-options" >
+                        <div class="">
+                            <div class="controlled-terms controlled-term-options">
+                                <div class="class-container">
+                                    <!-- value table -->
+                                    <div class="added-field-classes">
+                                        <div class="class-list-container">
+                                            <div class="class-list-table"  >
+                                                <table class="table table-hover" >
+                                                    <thead>
+                                                    <tr>
+                                                        <th>Name</th>
+                                                        <th>Type</th>
+                                                        <th>Source</th>
+                                                        <th>Values</th>
+                                                        <th>&nbsp;</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    <tr ng-repeat="class in $root.schemaOf(field)._valueConstraints.classes">
+                                                        <td>{{class.prefLabel}}</td>
+
+                                                        <td>Class</td>
+                                                        <td>
+                                                            {{class.source.substr(0, class.source.lastIndexOf(')')).substr(class.source.lastIndexOf('(')+1)}}
+                                                        </td>
+                                                        <td>&nbsp;</td>
+                                                        <td>
+                                                            <div class="item item-delete" ng-click="deleteFieldAddedClass(class); $event.stopPropagation();">
+                                                                <i class="clickable fa fa-close"></i>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr ng-repeat="valueSet in $root.schemaOf(field)._valueConstraints.valueSets">
+                                                        <td>{{valueSet.name}}</td>
+
+                                                        <td>Value Set</td>
+                                                        <td>{{valueSet.vsCollection.substr(valueSet.vsCollection.lastIndexOf('/') + 1)}}</td>
+                                                        <td>{{valueSet.numChildren}}</td>
+                                                        <td>
+                                                            <div class="item item-delete" ng-click="deleteFieldAddedValueSet(valueSet);  $event.stopPropagation();">
+                                                                <i class="clickable fa fa-close"></i>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr ng-repeat="ontology in $root.schemaOf(field)._valueConstraints.ontologies">
+                                                        <td>{{ontology.acronym}}</td>
+
+                                                        <td>Ontology</td>
+                                                        <td></td>
+                                                        <td>{{ontology.numChildren}}</td>
+                                                        <td>
+                                                            <div class="item item-delete" ng-click="deleteFieldAddedOntology(ontology); $event.stopPropagation();">
+                                                                <i class="clickable fa fa-close"></i>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr ng-repeat="branch in $root.schemaOf(field)._valueConstraints.branches">
+                                                        <td>{{branch.name}}</td>
+
+                                                        <td>Branch</td>
+                                                        <td>{{branch.acronym}}</td>
+                                                        <td></td>
+                                                        <td>
+                                                            <div class="item item-delete" ng-click="deleteFieldAddedBranch(branch); $event.stopPropagation();">
+                                                                <i class="clickable fa fa-close"></i>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="clear-save" style="text-align:center" >
+                                        <button type="button" class="std-button btn search-ontologies-button"   ng-click="showModal(getModalId(false)); $event.stopPropagation();">Search
+                                        </button>
+                                        <!--<button type="button" class="std-button btn search-ontologies-button">Create</button>-->
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+
+            <div class="dropdown" style="font-size:20px;display:inline-block;margin-right:20px">
+                <a class="dropdown-toggle"
+                   type="button"
+                   data-toggle="dropdown"
+                   tooltip="add help text"
+                   tooltip-trigger
+                   tooltip-animation="true"
+                   tooltip-placement="top"
+                   data-toggle="tooltip"
+                        ><i class="fa fa-question"></i>
+                </a>
+
+                <div class="dropdown-menu">
+                   <textarea style="width:100%;height:100%;border:0px solid #fff" rows="5"
+                             class="form-control"
+                             ng-model="$root.schemaOf(field)._ui.description"></textarea>
+                </div>
+            </div>
+
+
+            <a style="font-size:20px;display:inline-block;margin-right:20px"
+               ng-click=" duplicate();$event.stopPropagation();"
+               tooltip="duplicate field"
+               tooltip-trigger
+               tooltip-animation="true"
+               tooltip-placement="top"
+               data-toggle="tooltip"><i
+                    class="fa fa-files-o"></i></a>
+
 
             <input type="checkbox"
                    id="checkbox-required-{{uuid}}"
                    ng-click=" $event.stopPropagation();"
                    ng-model="$root.schemaOf(field)._valueConstraints.requiredValue"/>
-            <label style="margin-right:10px" ng-click=" $event.stopPropagation();" for="checkbox-required-{{uuid}}">Required</label>
+            <label style="margin-right:10px" ng-click=" $event.stopPropagation();" for="checkbox-required-{{uuid}}"
+                   tooltip="response required"
+                   tooltip-trigger
+                   tooltip-animation="true"
+                   tooltip-placement="top"
+                   data-toggle="tooltip">Required</label>
+
+            <div style="font-size:20px;display:inline-block;margin-right:20px"></div>
 
 
-            <div dropdown class="dropdown" auto-close="outsideClick" style="display:inline-block;margin-right:20px">
-                <button class="btn dropdown-toggle" type="button" data-toggle="dropdown"><i
-                        class="fa fa-ellipsis-v"></i></button>
-                <ul class="dropdown-menu">
-                    <li><a ng-click="duplicate();">Duplicate</a></li>
-                    <li role="separator" class="divider"></li>
-                    <li><a ng-click="delete(); ">Delete</a></li>
-                </ul>
-            </div>
+            <a style="font-size:20px;display:inline-block;margin-right:20px"
+               ng-click=" delete();$event.stopPropagation();"
+               tooltip="duplicate field"
+               tooltip-trigger
+               tooltip-animation="true"
+               tooltip-placement="top"
+               data-toggle="tooltip"><i
+                    class="fa fa-trash"></i></a>
 
+
+            <!--<div dropdown class="dropdown" auto-close="outsideClick" style="display:inline-block;margin-right:20px">-->
+                <!--<a style="font-size:20px" class="btn dropdown-toggle" data-toggle="dropdown"-->
+                   <!--tooltip="more options"-->
+                   <!--tooltip-trigger-->
+                   <!--tooltip-animation="true"-->
+                   <!--tooltip-placement="top"-->
+                   <!--data-toggle="tooltip"><i-->
+                        <!--class="fa fa-ellipsis-h"></i></a>-->
+                <!--<ul class="dropdown-menu">-->
+
+                    <!--<li role="separator" class="divider"></li>-->
+                    <!--<li><a ng-click="delete(); ">Delete</a></li>-->
+                <!--</ul>-->
+            <!--</div>-->
         </div>
-
-
     </div>
+
+
+
+<!-- field modal -->
+<div class="modal fade controlled-terms-modal" id="{{getModalId(true)}}" data-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content" style="overflow:auto">
+            <div class="modal-header">
+                <button type="button" class="close controlled-terms-modal-field-close" data-dismiss="modal"
+                        aria-label="Close"><span aria-hidden="true"><img
+                        src="/img/close_modal.png" width="22"/></span></button>
+            </div>
+            <div class="modal-body">
+                <div cedar-controlled-term field="field" options='{"filterSelection":"field"}'></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- value modal -->
+<div class="modal fade controlled-terms-modal" id="{{getModalId(false)}}" data-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content"  style="overflow:auto">
+            <div class="modal-header">
+                <button type="button" class="close controlled-terms-modal-value-close" data-dismiss="modal"
+                        aria-label="Close"><span aria-hidden="true"><img
+                        src="/img/close_modal.png" width="22"/></span></button>
+            </div>
+            <div class="modal-body">
+                <div cedar-controlled-term field="field" options='{"filterSelection":"values"}'></div>
+            </div>
+        </div>
+    </div>
+</div>
+
 </div>

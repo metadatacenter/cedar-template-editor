@@ -31,7 +31,7 @@ define([
       $analytics.eventTrack(eventName, eventParameters);
     };
 
-    service.clickTrack = function(eventName, eventParameters) {
+    service.clickTrack = function(eventCode) {
       // goal should be to save
       // 1. IP address
       // 2. user agent
@@ -41,12 +41,12 @@ define([
       // 5. the object clicked on, like the template id, or link name, the text that is clicked or the url
       // 5. the url
       // 6.
-      $analytics.eventTrack(eventName, eventParameters);
+      $analytics.eventTrack("mouseClick", {'eventCode':eventCode, 'url': $location.absUrl()});
     };
 
     service.pageTrack = function() {
       $analytics.eventTrack("pageLoad", {'url': $location.absUrl()});
-      $analytics.pageTrack($location.absUrl());
+      //$analytics.pageTrack($location.absUrl());
     };
 
     return service;
