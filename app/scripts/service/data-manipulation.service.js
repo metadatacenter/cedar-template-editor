@@ -29,6 +29,7 @@ define([
 
         // Function that generates a basic field definition
         service.generateField = function (fieldType) {
+            console.log('generateField' + fieldType);
             var valueType = "string";
             if (fieldType == "numeric") {
                 valueType = "number";

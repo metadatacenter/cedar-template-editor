@@ -12,14 +12,5 @@
     </div>
 
 
-    <!-- zero cardinality case -->
-    <div ng-if="filteredModel.length == 0 && !$root.isRuntime()" class="form-group floating-label-wrapper">
 
-        <div ng-init="m=model;pIndex=0" ng-include="'scripts/form/field-value/numeric.html'"></div>
-
-        <div class="more-input-wrapper"
-             ng-include="'scripts/form/partials/more-input-buttons.partial.html'"
-             ></div>
-
-    </div>
 </div>

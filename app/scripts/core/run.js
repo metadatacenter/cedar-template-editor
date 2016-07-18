@@ -47,8 +47,17 @@ define([
 
     $rootScope.arrayOf = function (objectOrArray) {
       if (angular.isArray(objectOrArray)) {
+
+        // if it is not runtime, then make sure we have at least one object in the array
+        if (!$rootScope.isRuntime()) {
+          if (objectOrArray.length == 0) {
+            var obj = {};
+            objectOrArray.push(obj);
+          }
+        }
         return objectOrArray;
       } else {
+        // make sure we put this object into an array
         var arr = [];
         arr.push(objectOrArray)
         return arr;

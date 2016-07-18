@@ -19,6 +19,9 @@
       "date": {
         "NAME": "Date"
       },
+      "date-range": {
+        "NAME": "Date Range"
+      },
       "email": {
         "NAME": "Email"
       },

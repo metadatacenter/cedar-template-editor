@@ -1,8 +1,5 @@
 <div class="fields fields-textarea">
 
-    <!--&lt;!&ndash; header row &ndash;&gt;-->
-    <!--<div ng-init="fieldTitle='Paragraph';fieldIconClass='cedar-svg-paragraph'"-->
-         <!--ng-include="'scripts/form/partials/field-header.partial.html'"></div>-->
 
 
     <!-- items -->
@@ -17,12 +14,6 @@
              ng-include="'scripts/form/partials/more-input-buttons.partial.html'"></div>
     </div>
 
-    <!-- zero cardinality  -->
-    <div ng-if="filteredModel.length==0 && !$root.isRuntime()" class="form-group floating-label-wrapper has-feedback">
-        <div ng-init="m=model;pIndex=0" ng-include="'scripts/form/field-value/textarea.html'"></div>
 
-        <div  class="more-input-wrapper"
-             ng-include="'scripts/form/partials/more-input-buttons.partial.html'"></div>
-    </div>
 
 </div>

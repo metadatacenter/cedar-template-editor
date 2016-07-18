@@ -1,11 +1,6 @@
 <div id="list-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}" class="input-type-container pick-list">
 
-  <!-- header row -->
-  <div ng-init="fieldTitle='Pick from a list';fieldIconClass='cedar-svg-list'"
-      ng-include="'scripts/form/partials/field-header.partial.html'"></div>
 
-  <div class="definition-inputs" ng-include="'scripts/form/partials/field-definition.partial.html'"></div>
-  <!-- /.definition-inputs -->
 
   <div class="type-toggle list" ng-init="$root.schemaOf(field)._ui.selectionType = 'single'">
     <div class="single-date d-option" ng-click="$root.schemaOf(field)._ui.selectionType = 'single'"

@@ -11,12 +11,6 @@
     </div>
 
 
-    <div ng-if="filteredModel.length == 0 && !$root.isRuntime()" class="field-list"
-         ng-class="{'required': $root.schemaOf(field)._valueConstraints.requiredValue}">
-        <div ng-init="m=model;pIndex=$parent.$index;" ng-include="'scripts/form/field-value/list.html'"></div>
 
-        <div class="more-input-wrapper"
-             ng-include="'scripts/form/partials/more-input-buttons.partial.html'"></div>
-    </div>
 
 </div>

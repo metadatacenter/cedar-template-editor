@@ -1,9 +1,12 @@
-<div class="form-group form-group-narrow date-group floating-label-wrapper"
-     ng-if="$root.schemaOf(field)._ui.dateType == 'single-date'">
 
-    <div class='input-group' date-time-picker>
-        <input type="text"
-               class="form-control"
+
+<div class="form-group form-group-narrow date-group floating-label-wrapper"
+     ng-show="!$root.schemaOf(field)._ui.hasOwnProperty('dateType')">
+
+    <div  class='input-group col-sm-6' date-time-picker>
+
+        <input  type="text"
+               class="form-control "
                id="single-date-{{uuid}}-{{pIndex}}"
                placeholder="{{'CREATOR.enterDate' | translate}}"
                aria-label="{{'CREATOR.enterDate' | translate}}"
@@ -14,13 +17,14 @@
           <i class="fa fa-calendar fa-2x"></i>
         </span>
     </div>
+
 </div>
-<!-- /.form-group form-group-narrow -->
 
 <div class="form-group form-group-narrow date-group range floating-label-wrapper"
-     ng-if="$root.schemaOf(field)._ui.dateType == 'date-range'">
+     ng-show="$root.schemaOf(field)._ui.dateType == 'date-range'">
 
-    <div class='input-group' date-time-picker>
+
+    <div class='input-group col-sm-6' date-time-picker>
         <input type="text"
                class="form-control"
                id="start-date-{{uuid}}-{{pIndex}}"
@@ -33,7 +37,8 @@
           <i class="fa fa-calendar fa-2x"></i>
         </span>
     </div>
-    <div class='input-group' date-time-picker>
+
+    <div class='input-group col-sm-6' date-time-picker>
         <input type="text"
                class="form-control"
                id="end-date-{{uuid}}-{{pIndex}}"
@@ -46,4 +51,5 @@
           <i class="fa fa-calendar fa-2x"></i>
         </span>
     </div>
+
 </div>
