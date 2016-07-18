@@ -2,8 +2,10 @@
 
   <div class="form-group floating-label-wrapper field-filter clearfix" ng-if="ctdc.filterSelection == 'field'">
 
+    <h3>Final title: {{$root.finalTitle}}</h3>
+
     <controlled-term-search
-        field-name="ctdc.field.finalTitle"
+        field-name="$root.finalTitle"
         search-mode="ctdc.filterSelection"
         reset-callback="ctdc.startOver"
         current-ontology="ctdc.currentOntology"
@@ -20,8 +22,9 @@
 
     <div class="class-actions">
       <div class="class-action" ng-if="ctdc.selectedClass.prefLabel">
-        <span>Click OK to select the term <span class="highlighted">'{{ctdc.selectedClass.prefLabel}}'</span> from {{ctdc.currentOntology.info.id}}</span>
-
+        <div class="action-msg">
+          <span>Click OK to select the term <span class="highlighted">'{{ctdc.selectedClass.prefLabel}}'</span> from {{ctdc.currentOntology.info.id}}</span>
+        </div>
         <div>
           <button type="button" class="std-button btn btn-add-term"
               ng-click="ctdc.addClass(ctdc.selectedClass, ctdc.currentOntology); ctdc.startOver()">OK
@@ -39,7 +42,7 @@
   <div class="value-filter" ng-if="ctdc.filterSelection == 'values'">
 
     <controlled-term-search
-        field-name="ctdc.field.finalTitle"
+        field-name="$root.finalTitle"
         search-mode="ctdc.filterSelection"
         reset-callback="ctdc.startOver"
         current-ontology="ctdc.currentOntology"
@@ -60,12 +63,14 @@
       <!--Selected: OntologyClass-->
       <div ng-if="ctdc.selectedClass.type == 'OntologyClass'"
           ng-init="ctdc.stageValueConstraintAction = 'add_class'; ctdc.stageOntologyClassValueConstraint(ctdc.selectedClass)">
-        <div class="element-toggles list table-style">
+        <!--<div class="element-toggles list table-style">-->
+          <div class="element-toggles">
           <!--Add Term-->
-          <div class="element-toggle table-cell-style"
+            <!--<div class="element-toggle table-cell-style"-->
+          <div class="element-toggle-add-values"
               ng-class="{active: ctdc.stageValueConstraintAction == 'add_class'}"
               ng-click="ctdc.stageOntologyClassValueConstraint(ctdc.selectedClass)">
-            <span>Add Term</span>
+            <span>Term</span>
           </div>
           <!--Add Siblings-->
           <!--<div class="element-toggle table-cell-style"-->
@@ -74,44 +79,72 @@
             <!--<span>Add Siblings</span>-->
           <!--</div>-->
           <!--Add Children-->
-          has children? {{ctdc.selectedClass}}
-          <div ng-show="ctdc.selectedClass.hasChildren" class="element-toggle table-cell-style"
+          <div ng-show="ctdc.selectedClass.hasChildren" class="element-toggle-add-values"
               ng-class="{active: ctdc.stageValueConstraintAction == 'add_children'}"
               ng-click="ctdc.stageBranchValueConstraint(ctdc.selectedClass)">
-            <span>Add Children</span>
+            <span>Branch</span>
           </div>
           <!--Add Ontology-->
-          <div class="element-toggle table-cell-style"
+          <div class="element-toggle-add-values"
               ng-class="{active: ctdc.stageValueConstraintAction == 'add_ontology'}"
               ng-click="ctdc.stageOntologyValueConstraint()" ng-if="ctdc.currentOntology.info">
-            <span>Add Ontology</span>
+            <span>Ontology</span>
           </div>
         </div>
       </div>
 
       <!--Selected: ValueSet or Value-->
-      <div ng-if="ctdc.selectedClass.type == 'ValueSet' || ctdc.selectedClass.type == 'Value'">
-        <div class="element-toggles list table-style stage-value-constraint-actions">
-          <div ng-if="ctdc.selectedClass['@id'] != ctdc.currentValueSet['@id']" class="element-toggle table-cell-style"
-              ng-class="{active: ctdc.stageValueConstraintAction == 'add_class'}"
-              ng-click="ctdc.stageOntologyClassValueConstraint(ctdc.selectedClass, 'Value')">
-            <span>Class</span>
-          </div>
-          <div class="element-toggle table-cell-style"
-              ng-class="{active: ctdc.stageValueConstraintAction == 'add_entire_value_set'}"
-              ng-click="ctdc.stageValueSetValueConstraint()">
-            <span>Value Set</span>
-          </div>
-        </div>
-      </div>
+      <!--<div ng-if="ctdc.selectedClass.type == 'ValueSet' || ctdc.selectedClass.type == 'Value'">-->
+        <!--<div class="element-toggles list table-style stage-value-constraint-actions">-->
+          <!--<div ng-if="ctdc.selectedClass['@id'] != ctdc.currentValueSet['@id']" class="element-toggle table-cell-style"-->
+              <!--ng-class="{active: ctdc.stageValueConstraintAction == 'add_class'}"-->
+              <!--ng-click="ctdc.stageOntologyClassValueConstraint(ctdc.selectedClass, 'Value')">-->
+            <!--<span>Class</span>-->
+          <!--</div>-->
+          <!--<div class="element-toggle table-cell-style"-->
+              <!--ng-class="{active: ctdc.stageValueConstraintAction == 'add_entire_value_set'}"-->
+              <!--ng-click="ctdc.stageValueSetValueConstraint()">-->
+            <!--<span>Value Set</span>-->
+          <!--</div>-->
+        <!--</div>-->
+      <!--</div>-->
     </div>
 
-
     <!-- Tabs content -->
-    <div class="tabs-content add-terms-content" ng-if="ctdc.stageValueConstraintAction">
+    <div class="tabs-content" ng-if="ctdc.stageValueConstraintAction">
+
+      <!--Add class (tab content)-->
+      <div ng-if="ctdc.stageValueConstraintAction == 'add_class'">
+        <table class="table table-values-info">
+          <tr>
+            <th width="30%">Term:</th>
+            <td width="70%">{{ctdc.stagedOntologyClassValueConstraints[0].prefLabel}} (from
+              {{ctdc.stagedOntologyClassValueConstraints[0].source}})
+            </td>
+          </tr>
+          <tr>
+            <th>UI Label:</th>
+            <td><input type="textfield" class="form-control" ng-model="ctdc.stagedOntologyClassValueConstraints[0].label"/></td>
+          </tr>
+        </table>
+      </div>
+
+      <!-- Add Ontology (tab content)-->
+      <div ng-if="ctdc.stageValueConstraintAction == 'add_ontology' && ctdc.stagedOntologyValueConstraints.length > 0">
+        <table class="table table-values-info">
+          <tr>
+            <th width="40%">Ontology:</th>
+            <td width="40%">{{ctdc.stagedOntologyValueConstraints[0].acronym}}</td>
+          </tr>
+          <tr>
+            <th>Number of terms:</th>
+            <td>{{ctdc.stagedOntologyValueConstraints[0].numChildren | number}}</td>
+          </tr>
+        </table>
+      </div>
+
       <!--Add Entire Value Set-->
-      <div class="staged-ontology-class-value-constraint"
-          ng-if="ctdc.stageValueConstraintAction == 'add_entire_value_set' && ctdc.stagedValueSetValueConstraints.length > 0">
+      <div ng-if="ctdc.stageValueConstraintAction == 'add_entire_value_set' && ctdc.stagedValueSetValueConstraints.length > 0">
         <table class="table">
           <thead>
           <tr>
@@ -133,83 +166,39 @@
         </div>
       </div>
 
-      <!-- Add Ontology (tab content)-->
-      <div class="staged-ontology-class-value-constraint"
-          ng-if="ctdc.stageValueConstraintAction == 'add_ontology' && ctdc.stagedOntologyValueConstraints.length > 0">
-        <table class="table">
-          <thead>
-          <tr>
-            <th>Values</th>
-            <th>Type</th>
-            <th>Source</th>
-          </tr>
-          </thead>
-          <tbody>
-          <tr ng-repeat="ontology in ctdc.stagedOntologyValueConstraints">
-            <td class="ontology-name">{{ontology.numChildren}} classes</td>
-            <td class="type">Ontology</td>
-            <td class="pref-label">{{ontology.name}} ({{ontology.acronym}})</td>
-          </tr>
-          </tbody>
-        </table>
-        <div class="text-center">
-          <button class="btn" ng-click="ctdc.addOntologyToValueConstraint()">Add</button>
-        </div>
-      </div>
-
       <!--Add Children (content)-->
-      <div class="floating-label-wrapper staged-ontology-class-value-constraint"
-          ng-if="ctdc.stageValueConstraintAction == 'add_children' && ctdc.stagedBranchesValueConstraints.length > 0">
-        <div class="staged-items table-style">
-          <div class="form-group staged-item table-row-style"
-              ng-repeat="constraint in ctdc.stagedBranchesValueConstraints">
-            <div class="table-cell-style">
-              {{constraint.name}}
-            </div>
-            <div class="table-cell-style floating-label-wrapper">
-              <input placeholder="Maximum no. levels (default: 1)" type="textfield" class="form-control"
-                  ng-model="constraint.maxDepth" with-floating-label/>
-            </div>
-          </div>
-        </div>
-        <div class="text-center">
-          <button class="btn" ng-click="ctdc.addBranchToValueConstraint()">Add</button>
-        </div>
-      </div>
-
-      <!--Add class (tab content)-->
-      <div class="staged-ontology-class-value-constraint add-class-container"
-          ng-if="ctdc.stageValueConstraintAction == 'add_class'">
-        <table class="table">
-          <thead>
+      <div ng-if="ctdc.stageValueConstraintAction == 'add_children' && ctdc.stagedBranchesValueConstraints.length > 0">
+        <table class="table table-values-info">
           <tr>
-            <th width="15%">Term</th>
-            <th width="15%">UI Label</th>
-            <th width="55%">URI</th>
-            <th width="15%">Ontology</th>
+            <th width="30%">Term:</th>
+            <td width="40%">{{ctdc.stagedBranchesValueConstraints[0].name}} (from
+              {{ctdc.stagedBranchesValueConstraints[0].acronym}})
+            </td>
           </tr>
-          </thead>
-          <tbody>
-          <tr ng-repeat="class in ctdc.stagedOntologyClassValueConstraints">
-            <td>{{class.prefLabel}}</td>
-            <td><input type="textfield" class="form-control" ng-model="class.label" placeholder="{{class.prefLabel}}"/></td>
-            <td>{{class.uri}}</td>
-            <td>{{class.source}}</td>
-          </tr>
-          </tbody>
+          <!--<tr>-->
+            <!--<th>No. hierarchy levels under the term:</th>-->
+            <!--<td>-->
+              <!--<select class="form-control" ng-model="ctdc.stagedBranchesValueConstraints[0].maxDepth"-->
+                  <!--ng-options="option.value as option.name for option in ctdc.depthOptions"/>-->
+              <!--</select>-->
+            <!--</td>-->
+          <!--</tr>-->
         </table>
 
         <!--<div class="staged-items table-style">-->
-          <!--<div class="staged-item table-row-style"-->
-              <!--ng-repeat="(key, constraint) in ctdc.stagedOntologyClassValueConstraints">-->
+          <!--<div class="form-group staged-item table-row-style"-->
+              <!--ng-repeat="constraint in ctdc.stagedBranchesValueConstraints">-->
             <!--<div class="table-cell-style">-->
-              <!--<input type="textfield" class="form-control" ng-model="constraint.label"-->
-                  <!--placeholder="{{ctdc.stagedOntologyClassValueConstraintData[key].label}}"/>-->
+              <!--{{constraint.name}}-->
             <!--</div>-->
-            <!--<div class="table-cell-style floating-label-wrapper text-right action-cell">-->
-              <!--<button class="btn" ng-click="ctdc.addOntologyClassToValueConstraint(constraint)">Add</button>-->
+            <!--<div class="table-cell-style floating-label-wrapper">-->
+              <!--<input placeholder="Maximum no. levels (default: 1)" type="textfield" class="form-control"-->
+                  <!--ng-model="constraint.maxDepth" with-floating-label/>-->
             <!--</div>-->
           <!--</div>-->
+        <!--</div>-->
+        <!--<div class="text-center">-->
+          <!--<button class="btn" ng-click="ctdc.addBranchToValueConstraint()">Add</button>-->
         <!--</div>-->
       </div>
 
@@ -245,17 +234,28 @@
       <!--</div>-->
     </div>
 
-
     <!--Class Actions-->
-    <div class="class-action" ng-if="ctdc.stagedOntologyClassValueConstraints.length > 0">
-      <span>Click OK to add the term(s) listed above</span>
-      <div>
-        <button type="button" class="std-button btn btn-add-term"
-            ng-click="ctdc.addOntologyClassToValueConstraint(ctdc.stagedOntologyClassValueConstraints[0])">OK
-        </button>
-        <button type="button" class="std-button btn btn-add-term" ng-click="" data-dismiss="modal">
-          Cancel
-        </button>
+    <div class="class-actions">
+      <div class="class-action" ng-if="ctdc.stagedOntologyClassValueConstraints.length > 0">
+        <div class="action-msg">
+          <span ng-if="ctdc.stageValueConstraintAction == 'add_class'">Click to add the selected term</span>
+          <span ng-if="ctdc.stageValueConstraintAction == 'add_ontology'">Click to add the selected ontology</span>
+          <span ng-if="ctdc.stageValueConstraintAction == 'add_children'">Click to add all descendants of the selected term</span>
+        </div>
+          <button type="button" class="std-button btn btn-add-term"
+              ng-click="ctdc.addValueConstraint(ctdc.stageValueConstraintAction)">Add</button>
+        <!--<div ng-if="ctdc.stageValueConstraintAction == 'add_class'">-->
+          <!--&lt;!&ndash;<span>Click OK to add the selected term</span><br/>&ndash;&gt;-->
+          <!--<button type="button" class="std-button btn btn-add-term"-->
+              <!--ng-click="ctdc.addOntologyClassToValueConstraint(ctdc.stagedOntologyClassValueConstraints[0])">Add-->
+          <!--</button>-->
+        <!--</div>-->
+        <!--<div ng-if="ctdc.stageValueConstraintAction == 'add_ontology'">-->
+          <!--&lt;!&ndash;<span>Click OK to add all the terms from the selected ontology</span><br/>&ndash;&gt;-->
+          <!--<button type="button" class="std-button btn btn-add-term"-->
+              <!--ng-click="ctdc.addOntologyToValueConstraint()">Add-->
+          <!--</button>-->
+        <!--</div>-->
       </div>
     </div>
 

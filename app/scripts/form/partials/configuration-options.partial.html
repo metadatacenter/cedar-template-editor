@@ -134,7 +134,7 @@
           <!-- The field.finalTitle variable is used to store the final title assigned to the field, which will be shown
           in the modal and used to perform a BioPortal initial search automatically -->
           <button type="button" class="std-button btn search-ontologies-button" ng-click="showModal(getModalId(true)); $event.stopPropagation();
-          field.finalTitle = $root.schemaOf(field)._ui.title">Search
+          $root.finalTitle = $root.schemaOf(field)._ui.title">Search
           </button>
           <!--<button type="button" class="std-button btn search-ontologies-button">Create</button>-->
         </div>
@@ -236,7 +236,7 @@
             <!-- The field.finalTitle variable is used to store the final title assigned to the field, which will be shown
           in the modal -->
             <button type="button" class="std-button btn search-ontologies-button" ng-click="showModal(getModalId(false)); $event.stopPropagation();
-                field.finalTitle = $root.schemaOf(field)._ui.title">Search
+                $root.finalTitle = $root.schemaOf(field)._ui.title">Search
             </button>
           </div>
         </div>

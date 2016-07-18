@@ -12867,11 +12867,14 @@ p.instructions {
   position: relative;
   margin-right: 100px;
 }
-.element-toggles {
+.element-toggles,
+.element-toggles-values {
   text-align: center;
   margin: 0 0 10px 0;
 }
-.element-toggles .element-toggle {
+.element-toggles .element-toggle,
+.element-toggles-values .element-toggle {
+  color: #999999;
   display: inline-block;
   padding: 0 20px 0;
   border-bottom: 5px solid #DDD;
@@ -12879,22 +12882,55 @@ p.instructions {
   -webkit-transition: all 0.3s ease 0.1s;
           transition: all 0.3s ease 0.1s;
 }
-.element-toggles .element-toggle.active {
+.element-toggles .element-toggle.active,
+.element-toggles-values .element-toggle.active {
   color: #5795ba;
   font-weight: bold;
   border-color: #5795ba;
 }
-.element-toggles .element-toggle span {
+.element-toggles .element-toggle span,
+.element-toggles-values .element-toggle span {
   text-transform: uppercase;
   cursor: pointer;
 }
-.element-toggles .element-toggle.active span {
+.element-toggles .element-toggle.active span,
+.element-toggles-values .element-toggle.active span {
   cursor: default;
 }
-.element-toggles .add-element {
+.element-toggles .element-toggle-add-values,
+.element-toggles-values .element-toggle-add-values {
+  color: #999999;
+  display: inline-block;
+  padding: 0 20px 0;
+  border-bottom: 5px solid #DDD;
+  border-color: #DDD;
+  -webkit-transition: all 0.3s ease 0.1s;
+          transition: all 0.3s ease 0.1s;
+  width: 150px;
+  padding: 6px;
+  margin: 0px;
+}
+.element-toggles .element-toggle-add-values.active,
+.element-toggles-values .element-toggle-add-values.active {
+  color: #5795ba;
+  font-weight: bold;
+  border-color: #5795ba;
+}
+.element-toggles .element-toggle-add-values span,
+.element-toggles-values .element-toggle-add-values span {
+  text-transform: uppercase;
+  cursor: pointer;
+}
+.element-toggles .element-toggle-add-values.active span,
+.element-toggles-values .element-toggle-add-values.active span {
+  cursor: default;
+}
+.element-toggles .add-element,
+.element-toggles-values .add-element {
   display: inline-block;
 }
-.element-toggles .add-element .add {
+.element-toggles .add-element .add,
+.element-toggles-values .add-element .add {
   height: 25px;
   width: 25px;
   margin: 0 0 0 10px;
@@ -12906,12 +12942,14 @@ p.instructions {
   background-color: #5795ba;
   border: none;
 }
-.element-toggles .add-element .add i {
+.element-toggles .add-element .add i,
+.element-toggles-values .add-element .add i {
   color: #FFF;
   font-size: 14px;
   line-height: 25px;
 }
-.element-toggles .add-element .add:disabled {
+.element-toggles .add-element .add:disabled,
+.element-toggles-values .add-element .add:disabled {
   background-color: rgba(87, 149, 186, 0.35);
 }
 #form-item-config-section .adding-element .preview-edit-options {
@@ -13618,13 +13656,15 @@ body .template-header .controlled-terms-modal {
   width: 19px;
 }
 .min-items-option label,
-.max-items-option label {
+.max-items-option label,
+.children-levels label {
   float: left;
   margin: 10px 10px 0 0;
   font-weight: normal;
 }
 .min-items-option .bootstrap-select,
-.max-items-option .bootstrap-select {
+.max-items-option .bootstrap-select,
+.children-levels .bootstrap-select {
   float: right;
 }
 .bootstrap-select .btn-select-picker {
@@ -13676,14 +13716,17 @@ body .template-header .controlled-terms-modal {
   color: #5795ba;
 }
 .class-action {
+  padding: 0px;
   padding-bottom: 10px;
+}
+.class-action .action-msg {
+  margin-bottom: 20px;
 }
 .class-action:last-child {
   margin-top: 10px;
 }
 .class-action .btn-add-term {
-  margin: 20px 10px;
-  width: 120px;
+  min-width: 120px;
 }
 .element .field-instance.multiple-instance-field {
   border: none;
@@ -13695,8 +13738,27 @@ body .template-header .controlled-terms-modal {
   padding: 10px 30px;
 }
 .tabs-content {
-  padding: 20px;
-  background: #f4f4f7;
+  padding: 20px 40px 0px 40px;
+  text-align: center;
+}
+.tabs-content .table-values-info {
+  table-layout: fixed;
+  width: 50%;
+  margin: auto;
+  display: inline;
+}
+.tabs-content .table-values-info th {
+  vertical-align: middle;
+  border: none;
+  text-align: right;
+}
+.tabs-content .table-values-info td {
+  vertical-align: middle;
+  border: none;
+  text-align: left;
+}
+.tabs-content .table-values-info select {
+  width: 60px;
 }
 .add-class-container .table-row-style .table-cell-style {
   padding-top: 10px;

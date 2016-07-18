@@ -4247,10 +4247,11 @@ p.instructions {
   margin-right: 100px;
 }
 
-.element-toggles {
+.element-toggles, .element-toggles-values {
   text-align: center;
   margin: 0 0 10px 0;
   .element-toggle {
+    color: @gray  ;
     display: inline-block;
     padding: 0 20px 0;
     border-bottom: 5px solid #DDD;
@@ -4271,6 +4272,13 @@ p.instructions {
     &.active span {
       cursor: default;
     }
+  }
+
+  .element-toggle-add-values {
+    .element-toggle;
+    width: 150px;
+    padding: 6px;
+    margin: 0px;
   }
 
   .add-element {
@@ -5206,7 +5214,7 @@ body .template-header .controlled-terms-modal {
   width: 19px;
 }
 
-.min-items-option, .max-items-option {
+.min-items-option, .max-items-option, .children-levels {
   label {
     float: left;
     margin: 10px 10px 0 0;
@@ -5282,17 +5290,22 @@ body .template-header .controlled-terms-modal {
 }
 
 .class-action {
+  padding: 0px;
   padding-bottom: 10px;
   //color: @brand-primary;
   //border-bottom: 1px solid @brand-primary;
+
+  .action-msg {
+    margin-bottom: 20px;
+  }
 
   &:last-child {
     margin-top: 10px;
   }
 
   .btn-add-term {
-    margin: 20px 10px;
-    width: 120px;
+    //margin: 20px 10px;
+    min-width: 120px;
   }
 }
 
@@ -5309,9 +5322,35 @@ body .template-header .controlled-terms-modal {
 }
 
 .tabs-content {
-  padding: 20px;
+  padding: 20px 40px 0px 40px;
+  text-align: center;
   //border: 1px solid @gray3;
-  background: @gray2;
+  //background: @gray2;
+
+  .table-values-info {
+    table-layout: fixed;
+    width: 50%;
+    margin: auto;
+    display: inline;
+
+    th {
+      vertical-align: middle;
+      border: none;
+      text-align: right;
+    }
+
+    td {
+      vertical-align: middle;
+      border: none;
+      text-align: left;
+    }
+
+    select {
+      width: 60px;
+    }
+  }
+
+
 }
 
 .add-class-container .table-row-style {

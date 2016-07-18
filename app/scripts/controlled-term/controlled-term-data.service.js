@@ -14,6 +14,7 @@ define([
     var http_default_config = {};
 
     var ontologiesCache = {};
+    var valueSetsCollectionsCache = {};
     var valueSetsCache = {};
 
     var service = {
@@ -21,11 +22,13 @@ define([
       getAllOntologies               : getAllOntologies,
       getOntologyById                : getOntologyById,
       getOntologyByLdId              : getOntologyByLdId,
+      getAllValueSetCollections      : getAllValueSetCollections,
       getAllValueSets                : getAllValueSets,
       getValueSetByLdId              : getValueSetByLdId,
       getRootClasses                 : getRootClasses,
       getClassChildren               : getClassChildren,
       getClassById                   : getClassById,
+      getClassDescendants            : getClassDescendants,
       getClassParents                : getClassParents,
       getClassTree                   : getClassTree,
       getValuesInValueSet            : getValuesInValueSet,
@@ -49,6 +52,7 @@ define([
       base = UrlService.terminology() + "/bioportal";
       http_default_config = {};
       initOntologiesCache();
+      initValueSetsCollectionsCache();
       initValueSetsCache();
     }
 
@@ -67,6 +71,25 @@ define([
             ontologiesCache[value.id] = value;
           }
           value.fullName = value.name + ' (' + value.id + ')';
+        });
+      }).catch(function (err) {
+        if (err.status == 502) {
+          UIMessageService.showBackendError($translate.instant("TERMINOLOGY.errorTerminology"), err);
+        }
+        else {
+          //UIMessageService.showBackendError($translate.instant("TERMINOLOGY.errorBioPortal"), err);
+        }
+        return err;
+      });
+    }
+
+    function initValueSetsCollectionsCache() {
+      var url = base + "/vs-collections";
+      // Get vs collections
+      $http.get(url, http_default_config).then(function (response) {
+        var vscs = response.data;
+        angular.forEach(vscs, function (vsc) {
+          vsc.fullName = vsc.name + ' (' + vsc.id + ')';
         });
       }).catch(function (err) {
         if (err.status == 502) {
@@ -103,19 +126,15 @@ define([
      */
 
     function getAllOntologies() {
-      var ontologies = [];
-      for (var key in ontologiesCache) {
-        ontologies.push(ontologiesCache[key]);
-      }
-      return ontologies;
+      return ontologiesCache;
+    };
+
+    function getAllValueSetCollections() {
+      return valueSetsCollectionsCache;
     };
 
     function getAllValueSets() {
-      var valueSets = [];
-      for (var key in valueSetsCache) {
-        valueSets.push(valueSetsCache[key]);
-      }
-      return valueSets;
+      return valueSetsCache;
     };
 
     function getOntologyById(ontologyId) {
@@ -156,6 +175,21 @@ define([
 
     function getClassChildren(acronym, classId) {
       return $http.get(base + '/ontologies/' + acronym + '/classes/' + encodeURIComponent(classId) + "/children?page=1&pageSize=1000",
+          http_default_config).then(function (response) {
+            return response.data.collection;
+          }).catch(function (err) {
+            if (err.status == 502) {
+              UIMessageService.showBackendError($translate.instant("TERMINOLOGY.errorTerminology"), err);
+            }
+            else {
+              UIMessageService.showBackendError($translate.instant("TERMINOLOGY.errorBioPortal"), err);
+            }
+            return err;
+          });
+    };
+
+    function getClassDescendants(acronym, classId) {
+      return $http.get(base + '/ontologies/' + acronym + '/classes/' + encodeURIComponent(classId) + "/descendants?page=1&pageSize=1000",
           http_default_config).then(function (response) {
             return response.data.collection;
           }).catch(function (err) {
@@ -319,11 +353,17 @@ define([
     function autocompleteOntologySubtree(query, acronym, subtree_root_id, max_depth) {
       var searchUrl = "";
       if (query == '*') {
-        // use descendants
-        searchUrl += base + '/ontologies/' + acronym + '/classes/' + encodeURIComponent(subtree_root_id) + '/descendants?&page=1&page_size=100';
+        //if (max_depth == 1) {
+        //  // direct children
+        //  searchUrl += base + '/ontologies/' + acronym + '/classes/' + encodeURIComponent(subtree_root_id) + '/children?&page=1&page_size=300';
+        //}
+        //else {
+          // use all descendants
+          searchUrl += base + '/ontologies/' + acronym + '/classes/' + encodeURIComponent(subtree_root_id) + '/descendants?&page=1&page_size=300';
+        //}
       } else {
-        searchUrl = base + '/search?q=' + encodeURIComponent(query) + '&scope=classes' + '&sources=' + acronym +
-            '&subtree_root_id=' + encodeURIComponent(subtree_root_id) + '&max_depth=' + max_depth + "&suggest=true&page=1&page_size=100";
+        searchUrl = base + '/search?q=' + encodeURIComponent(query) + '&scope=classes' + '&source=' + acronym +
+            '&subtree_root_id=' + encodeURIComponent(subtree_root_id) + '&max_depth=' + max_depth + "&suggest=true&page=1&page_size=300";
       }
       return $http.get(searchUrl, http_default_config).then(function (response) {
         return response.data;

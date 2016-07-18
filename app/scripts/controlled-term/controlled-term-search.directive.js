@@ -62,6 +62,7 @@ define([
       vm.changeTreeVisibility = changeTreeVisibility;
       vm.checkIfSelected = checkIfSelected;
       vm.getShortId = getShortId;
+      vm.getTypeForUi = getTypeForUi;
       vm.isCreating = isCreating;
       vm.isEmptySearchQuery = isEmptySearchQuery;
       vm.isFieldTypesMode = isFieldTypesMode;
@@ -310,10 +311,6 @@ define([
         //    vm.selectedClass.hasChildren = cls.hasChildren;
         //  });
         //}
-        console.log(selection);
-        console.log(vm.selectedClass);
-
-
       }
 
       function selectOntology(selection) {
@@ -456,6 +453,21 @@ define([
           shortId = '...' + shortId.substr(start, shortId.length-1);
         }
         return shortId;
+      }
+
+      function getTypeForUi(type) {
+        if (type == 'OntologyClass') {
+          return ('Class');
+        }
+        else if (type == 'Ontology') {
+          return ('Ontology');
+        }
+        else if (type == 'ValueSet') {
+          return ('Value Set');
+        }
+        else if (type == 'Value') {
+          return ('Value');
+        }
       }
 
       //function searchRegexp(searchQuery) {

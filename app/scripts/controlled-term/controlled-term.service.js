@@ -138,20 +138,22 @@ define([
      * Show ontology tree and details screen.
      */
     function loadTreeOfClass(selection, $scope) {
+      $scope.searchPreloader = true;
       $scope.selectedClass = null;
       $scope.isLoadingClassDetails = true;
-      // TODO: try to remove this statement
-      if (selection.sourceId) {
-        var ontologyAcronym = getLastFragmentOfUri(selection.sourceId);
-      }
-      else {
-        var ontologyAcronym = getLastFragmentOfUri(selection.source);
-      }
+      var ontologyAcronym = getLastFragmentOfUri(selection.source);
+      //// TODO: try to remove this statement
+      //if (selection.sourceId) {
+      //  var ontologyAcronym = getLastFragmentOfUri(selection.sourceId);
+      //}
+      //else {
+      //  var ontologyAcronym = getLastFragmentOfUri(selection.source);
+      //}
       //$scope.treeVisible = true;
-      $scope.searchPreloader = true;
 
       controlledTermDataService.getClassById(ontologyAcronym, selection["@id"]).then(function (response) {
         $scope.classDetails = response;
+        $scope.selectedClass.hasChildren = $scope.classDetails.hasChildren;
       });
 
       $scope.selectedClass = selection;
@@ -162,15 +164,15 @@ define([
       }).then(function (values) {
         //if ($scope.treeVisible == true) {
           $scope.currentOntology = values;
-          if ($scope.currentOntology.tree && angular.isArray($scope.currentOntology.tree)) {
-            angular.forEach($scope.currentOntology.tree, function (node) {
-              if (node["@type"].indexOf("Ontology") >= 0) {
-                node.type = "Ontology";
-              } else {
-                node.type = "ValueSet";
-              }
-            })
-          }
+          //if ($scope.currentOntology.tree && angular.isArray($scope.currentOntology.tree)) {
+          //  angular.forEach($scope.currentOntology.tree, function (node) {
+          //    if (node["@type"].indexOf("Ontology") >= 0) {
+          //      node.type = "Ontology";
+          //    } else {
+          //      node.type = "ValueSet";
+          //    }
+          //  })
+          //}
         //}
         $scope.searchPreloader = false;
         $scope.isLoadingClassDetails = false;
