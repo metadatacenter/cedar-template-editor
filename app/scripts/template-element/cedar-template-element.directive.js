@@ -263,11 +263,13 @@ define([
 
       // try to deselect this element
       scope.canDeselect = function (element) {
+        console.log('try to deselect this element ');
         return DataManipulationService.canDeselect(element);
       };
 
       // try to select this element
       scope.canSelect = function (select) {
+        console.log('try to select this element ' + select);
         if (select)
           DataManipulationService.canSelect(scope.element);
       };

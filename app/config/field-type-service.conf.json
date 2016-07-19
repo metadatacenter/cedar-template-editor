@@ -42,6 +42,14 @@
     "staticField": false
   },
   {
+    "cedarType": "date-range",
+    "iconClass": "cedar-svg-calendar",
+    "label": "Date Range",
+    "allowedInElement": true,
+    "hasControlledTerms": false,
+    "staticField": false
+  },
+  {
     "cedarType": "email",
     "iconClass": "cedar-svg-at",
     "primaryField": true,

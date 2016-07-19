@@ -294,7 +294,9 @@
   "CREATOR": {
     "addElementToStagingMsg": "Add an existing element or create a new item.",
     "enterFieldTitle": "Enter Field Title",
+    "enterElementTitle": "Enter Element Title",
     "enterFieldDescription": "Enter Help Text",
+    "enterElementDescription": "Enter Help Text",
     "enterEmail": "Enter an email address",
     "enterDate": "Please select date",
     "pleaseSelect": "Please select",

@@ -224,12 +224,12 @@ define([
         };
 
         // are we editing this field?
-        service.setSelected = function (field) {
-            var p = $rootScope.propertiesOf(field);
+        service.setSelected = function (fieldOrElement) {
+            var p = $rootScope.propertiesOf(fieldOrElement);
             p._tmp = p._tmp || {};
             p._tmp.state = "creating";
 
-            $rootScope.selectedFieldOrElement = field;
+            $rootScope.selectedFieldOrElement = fieldOrElement;
         };
 
         // add an option to this field
@@ -604,19 +604,29 @@ define([
         };
 
         // deselect any current selected items, then select this one
-        service.canSelect = function (field) {
+        service.canSelect = function (fieldOrElement) {
+
+            console.log('canSelect isElement ' + service.isElement(fieldOrElement) );
+            console.log(fieldOrElement );
+
             var result = true;
-            if (!service.isEditState(field)) {
+            if (!service.isEditState(fieldOrElement)) {
+                console.log('canSelect deselect this one first');
+                console.log($rootScope.selectedFieldOrElement  );
                 if ($rootScope.selectedFieldOrElement && service.isEditState($rootScope.selectedFieldOrElement)) {
                     result = service.canDeselect($rootScope.selectedFieldOrElement);
                 }
-                if (result) service.setSelected(field);
+                console.log('canSelect original? ' + result );
+                if (result) service.setSelected(fieldOrElement);
             }
+
+
             return result;
         };
 
         // When user clicks Save button, we will switch field or element from creating state to completed state
         service.canDeselect = function (field, renameChildKey) {
+            console.log('canDeselect isElement=' + service.isElement(field));
 
             if (!field) {
                 return;

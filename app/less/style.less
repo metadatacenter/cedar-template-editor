@@ -1931,10 +1931,11 @@ body.search-browse-modal {
     .element-group {
       width: 100%;
       //border-bottom:2px dashed #ddd;
-      border: 1px solid @gray3;
       padding: 12px 14px 12px 16px;
       margin-bottom: 16px;
-      background-color: @gray2;
+
+
+
 
       &:not(.full) {
         padding-right: 65px;
@@ -1952,6 +1953,28 @@ body.search-browse-modal {
           float: right;
           margin-top: -4px;
           margin-bottom: 0;
+        }
+      }
+
+      .element-root{
+
+        &.selected {
+          border: 1px solid @gray3;
+        }
+
+        .element-title-definition {
+          background:transparent;
+          border:0px;
+          border-bottom:1px solid #ccc;
+          width:100%;
+          margin-left:30px;
+          outline:none;
+        }
+
+        .element-description-definition {
+          background:transparent;
+          border:0px;
+          border-bottom:1px solid #ccc;
         }
       }
 

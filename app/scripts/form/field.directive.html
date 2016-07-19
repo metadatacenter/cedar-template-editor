@@ -1,11 +1,11 @@
 <div class="field-root" id="{{$root.getDomId(field)}}"
-     ng-click="canSelect(!$root.isRuntime()); $event.preventDefault();" ng-class="{'selected': isEditState(field)}">
+     ng-click="canSelect(!$root.isRuntime()); $event.preventDefault(); $event.stopPropagation()" ng-class="{'selected': isEditState(field)}">
 
 
     <!-- sort hander -->
     <div class="row">
         <div class="sortable-handler" style="height:30px;" ng-class="{'invisible': $root.isRuntime()}"
-             ng-mousedown="canSelect(!$root.isRuntime()); $event.preventDefault();">
+             ng-click="canSelect(!$root.isRuntime()); $event.preventDefault(); $event.stopPropagation()">
             <div class="type-label sortable"><span class="sortable-icon"></span></div>
         </div>
     </div>
@@ -345,16 +345,16 @@
                data-toggle="tooltip"><i
                     class="fa fa-files-o"></i></a>
 
-            <input ng-if="isDateField()" type="checkbox"
-                   id="date-range-{{uuid}}"
-                   ng-click="toggleDateType(); $event.stopPropagation();"/>
-            <label ng-if="isDateField()" style="margin-right:10px" ng-click=" $event.stopPropagation();"
-                   for="date-range-{{uuid}}"
-                   tooltip="single date or date range"
-                   tooltip-trigger
-                   tooltip-animation="true"
-                   tooltip-placement="top"
-                   data-toggle="tooltip">Date Range</label>
+            <!--<input ng-if="isDateField()" type="checkbox"-->
+                   <!--id="date-range-{{uuid}}"-->
+                   <!--ng-click="toggleDateType(); $event.stopPropagation();"/>-->
+            <!--<label ng-if="isDateField()" style="margin-right:10px" ng-click=" $event.stopPropagation();"-->
+                   <!--for="date-range-{{uuid}}"-->
+                   <!--tooltip="single date or date range"-->
+                   <!--tooltip-trigger-->
+                   <!--tooltip-animation="true"-->
+                   <!--tooltip-placement="top"-->
+                   <!--data-toggle="tooltip">Date Range</label>-->
 
             <input type="checkbox"
                    id="checkbox-required-{{uuid}}"

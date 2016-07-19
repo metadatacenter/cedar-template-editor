@@ -45,6 +45,7 @@ define([
       return DataManipulationService.getFieldSchema(fieldOrElement);
     };
 
+    // create an array from this object or array.  if !runtime then make sure we have at least one object in the array
     $rootScope.arrayOf = function (objectOrArray) {
       if (angular.isArray(objectOrArray)) {
 
