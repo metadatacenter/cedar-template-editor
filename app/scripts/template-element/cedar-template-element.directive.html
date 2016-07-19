@@ -1,12 +1,12 @@
 <div ng-if="model !== undefined" class="element-root" id="{{$root.getDomId(element)}}"
-     ng-click="canSelect(!isRootElement && !$root.isRuntime()); $event.preventDefault(); $event.stopPropagation()"
+     ng-click="canSelect(!isRootElement && !$root.isRuntime(), $event); $event.preventDefault(); "
      ng-class="{'selected': isEditState(element)}">
 
 
     <!-- sort hander -->
     <div class="row" ng-show="!isRootElement">
         <div class="sortable-handler" style="height:30px;" ng-class="{'invisible': $root.isRuntime() }"
-             ng-click="canSelect(!$root.isRuntime()); $event.preventDefault(); $event.stopPropagation()">
+             ng-mousedown="canSelect(!$root.isRuntime(), $event); $event.preventDefault(); ">
             <div class="type-label sortable"><span class="sortable-icon"></span></div>
         </div>
     </div>
@@ -20,6 +20,7 @@
                 <h4>
                         <div ng-show="isEditState()" >
                             <input type="text"
+                                   id="{{$root.getDomId(element)}}-title"
                                    class="element-title-definition"
                                    style="font-size:18px; "
                                    placeholder="{{'CREATOR.enterElementTitle' | translate}}"

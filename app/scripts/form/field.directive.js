@@ -10,10 +10,10 @@ define([
 
 
     fieldDirective.$inject = ["$rootScope", "$sce", "$document", "$translate", "SpreadsheetService",
-        "DataManipulationService", "FieldTypeService", "controlledTermDataService"];
+        "DataManipulationService", "FieldTypeService", "controlledTermDataService", "$timeout"];
 
     function fieldDirective($rootScope, $sce, $document, $translate, SpreadsheetService, DataManipulationService,
-                            FieldTypeService, controlledTermDataService) {
+                            FieldTypeService, controlledTermDataService, $timeout) {
 
         var linker = function ($scope, $element, attrs) {
 
@@ -455,11 +455,15 @@ define([
             };
 
             // try to select this field
-            $scope.canSelect = function (select) {
+            $scope.canSelect = function (select, event) {
                 var result = select;
                 if (select) {
-                    result = DataManipulationService.canSelect($scope.field);
+                    if (DataManipulationService.canSelect($scope.field)) {
+                        event.stopPropagation();
+
+                    }
                     //$scope.toggleControlledTerm('none');
+                    result = true;
                 }
                 return result;
             };
@@ -468,6 +472,23 @@ define([
             $scope.canDeselect = function (field) {
                 return DataManipulationService.canDeselect(field, $scope.renameChildKey);
             };
+
+            // watch for this field's select
+            $scope.$on('select', function (event, args) {
+                var field = args[0];
+                var errors = args[1];
+
+                if (field == $scope.field) {
+
+                    $timeout(function () {
+
+                        var title = angular.element('#' + $rootScope.getDomId($scope.field) + "-title");
+                        if (title) {
+                            title.select();
+                        }
+                    });
+                }
+            });
 
             // watch for this field's deselect
             $scope.$on('deselect', function (event, args) {

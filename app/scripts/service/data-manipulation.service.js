@@ -230,6 +230,7 @@ define([
             p._tmp.state = "creating";
 
             $rootScope.selectedFieldOrElement = fieldOrElement;
+            $rootScope.$broadcast("select", [fieldOrElement]);
         };
 
         // add an option to this field
@@ -606,20 +607,20 @@ define([
         // deselect any current selected items, then select this one
         service.canSelect = function (fieldOrElement) {
 
-            console.log('canSelect isElement ' + service.isElement(fieldOrElement) );
-            console.log(fieldOrElement );
 
-            var result = true;
+            var result = false;
+            var deselected = true;
             if (!service.isEditState(fieldOrElement)) {
-                console.log('canSelect deselect this one first');
-                console.log($rootScope.selectedFieldOrElement  );
-                if ($rootScope.selectedFieldOrElement && service.isEditState($rootScope.selectedFieldOrElement)) {
-                    result = service.canDeselect($rootScope.selectedFieldOrElement);
-                }
-                console.log('canSelect original? ' + result );
-                if (result) service.setSelected(fieldOrElement);
-            }
 
+                if ($rootScope.selectedFieldOrElement && service.isEditState($rootScope.selectedFieldOrElement)) {
+                    deselected = service.canDeselect($rootScope.selectedFieldOrElement);
+                }
+
+                if (deselected) service.setSelected(fieldOrElement);
+                result = true;
+
+
+            }
 
             return result;
         };

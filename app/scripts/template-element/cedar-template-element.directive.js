@@ -7,9 +7,9 @@ define([
       .directive('cedarTemplateElement', cedarTemplateElementDirective);
 
   cedarTemplateElementDirective.$inject = ['$rootScope', 'DataManipulationService', 'DataUtilService',
-                                           'SpreadsheetService'];
+                                           'SpreadsheetService', '$timeout'];
 
-  function cedarTemplateElementDirective($rootScope, DataManipulationService, DataUtilService, SpreadsheetService) {
+  function cedarTemplateElementDirective($rootScope, DataManipulationService, DataUtilService, SpreadsheetService, $timeout) {
 
     var directive = {
       restrict   : 'EA',
@@ -268,10 +268,18 @@ define([
       };
 
       // try to select this element
-      scope.canSelect = function (select) {
+      scope.canSelect = function (select, event) {
         console.log('try to select this element ' + select);
-        if (select)
-          DataManipulationService.canSelect(scope.element);
+        var result = select;
+        if (select) {
+          if (DataManipulationService.canSelect(scope.element)) {
+            console.log('stopPropagation');
+            event.stopPropagation();
+          }
+          //$scope.toggleControlledTerm('none');
+          result = true;
+        }
+        return result;
       };
 
       // when element is deseleted, look at errors and parse if none
@@ -281,6 +289,25 @@ define([
           if (errorMessages.length == 0) parseElement();
         }
       });
+
+      // watch for this elements's select
+      scope.$on('select', function (event, args) {
+        var element = args[0];
+        var errors = args[1];
+
+        if (element == scope.element) {
+
+          $timeout(function () {
+
+            var title = angular.element('#' + $rootScope.getDomId(scope.element) + "-title");
+            if (title) {
+              title.select();
+            }
+          });
+        }
+      });
+
+
 
       scope.renameChildKey = function (child, newKey) {
         if (!child) {

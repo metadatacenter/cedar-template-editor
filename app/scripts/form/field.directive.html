@@ -1,11 +1,11 @@
 <div class="field-root" id="{{$root.getDomId(field)}}"
-     ng-click="canSelect(!$root.isRuntime()); $event.preventDefault(); $event.stopPropagation()" ng-class="{'selected': isEditState(field)}">
+     ng-click="canSelect(!$root.isRuntime(), $event); $event.preventDefault();" ng-class="{'selected': isEditState(field)}">
 
 
     <!-- sort hander -->
     <div class="row">
         <div class="sortable-handler" style="height:30px;" ng-class="{'invisible': $root.isRuntime()}"
-             ng-click="canSelect(!$root.isRuntime()); $event.preventDefault(); $event.stopPropagation()">
+             ng-mousedown="canSelect(!$root.isRuntime(), $event); $event.preventDefault(); ">
             <div class="type-label sortable"><span class="sortable-icon"></span></div>
         </div>
     </div>
@@ -22,6 +22,7 @@
 
 
                         <input type="text"
+                               id="{{$root.getDomId(field)}}-title"
                                class="form-control field-title-definition"
                                style="font-size:18px;"
                                placeholder="{{'CREATOR.enterFieldTitle' | translate}}"
