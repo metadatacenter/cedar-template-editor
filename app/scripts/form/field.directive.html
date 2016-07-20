@@ -14,8 +14,7 @@
     <!-- second row field title and top toolbar -->
     <div class="row">
         <div class="col-sm-9">
-
-            <div ng-include src="'scripts/form/partials/field-title.partial.html'"></div>
+            <field-title-directive field-or-element="field"></field-title-directive>
         </div>
 
 
@@ -28,9 +27,8 @@
                         select-picker="$event.stopPropagation();">
                 </select>
             </div>
-            <!-- runtime toolbar -->
-            <div ng-include src="'scripts/form/partials/runtime-toolbar.partial.html'"></div>
-
+            <runtime-toolbar-directive field-or-element="field" add="addMoreInput();"
+                                       spreadsheet="switchToSpreadsheet();"></runtime-toolbar-directive>
         </div>
     </div>
 
@@ -55,15 +53,16 @@
     </div>
 
     <!-- finally edit toolbar -->
-    <div class="row" ng-show="isEditState()" style="border-top: 1px solid #ccc;
-    padding-top: 10px;
-    padding-bottom: 10px;">
-        <div ng-include src="'scripts/form/partials/edit-toolbar.partial.html'"></div>
+    <div class="row">
+        <div class="col-sm-12">
+            <edittime-toolbar-directive field-or-element="field" uuid="uuid" duplicate="duplicate();" is-edit="isEditState(field);"
+                                        delete="delete();"></edittime-toolbar-directive>
+        </div>
     </div>
 
 
     <!-- field modal -->
-    <div class="modal fade controlled-terms-modal" id="{{getModalId(true)}}" data-backdrop="static">
+    <div class="modal fade controlled-terms-modal" id="{{getFieldModalId()}}" data-backdrop="static">
         <div class="modal-dialog">
             <div class="modal-content" style="overflow:auto">
                 <div class="modal-header">
@@ -79,7 +78,7 @@
     </div>
 
     <!-- value modal -->
-    <div class="modal fade controlled-terms-modal" id="{{getModalId(false)}}" data-backdrop="static">
+    <div class="modal fade controlled-terms-modal" id="{{getValueModalId()}}" data-backdrop="static">
         <div class="modal-dialog">
             <div class="modal-content" style="overflow:auto">
                 <div class="modal-header">

@@ -222,6 +222,7 @@ define([
       };
 
       scope.switchExpandedState = function (domId) {
+        console.log('switchExpandedState');
         $rootScope.toggleElement(domId);
       };
 
@@ -229,12 +230,17 @@ define([
       scope.removeChild = function (fieldOrElement) {
         // fieldOrElement must contain the schema level
         fieldOrElement = $rootScope.schemaOf(fieldOrElement);
-
         var selectedKey;
         var props = $rootScope.propertiesOf(scope.element);
         angular.forEach(props, function (value, key) {
-          if (value["@id"] == fieldOrElement["@id"]) {
-            selectedKey = key;
+          if (DataManipulationService.isCardinalElement(value)) {
+            if (value.items["@id"] == fieldOrElement["@id"]) {
+              selectedKey = key;
+            }
+          } else {
+            if (value["@id"] == fieldOrElement["@id"]) {
+              selectedKey = key;
+            }
           }
         });
 
@@ -251,6 +257,9 @@ define([
             scope.$emit("invalidFieldState",
                 ["remove", $rootScope.schemaOf(fieldOrElement)._ui.title, fieldOrElement["@id"]]);
           }
+        } else {
+          console.log("Error: can't find field or element to delete");
+          console.log(fieldOrElement);
         }
       };
 
@@ -381,6 +390,10 @@ define([
       scope.$watchCollection("element.items.properties", function () {
         parseElement();
       });
+
+      scope.duplicate = function () {
+        console.log('duplicate element');
+      };
     }
 
   };

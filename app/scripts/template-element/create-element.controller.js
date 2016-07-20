@@ -28,6 +28,8 @@ define([
               $scope.element = response.data;
               HeaderService.dataContainer.currentObjectScope = $scope.element;
 
+
+
               var key = $scope.element["@id"];
               $rootScope.keyOfRootElement = key;
               $rootScope.rootElement = $scope.form;
@@ -38,6 +40,8 @@ define([
               $scope.form._ui.order.push(key);
               $rootScope.documentTitle = $scope.form._ui.title;
               StagingService.setModelObject($scope.element);
+
+              DataManipulationService.createDomIds($scope.form);
             },
             function (err) {
               UIMessageService.showBackendError('SERVER.ELEMENT.load.error', err);

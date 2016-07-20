@@ -828,9 +828,7 @@ define([
                 return result;
             };
 
-            $scope.showModal = function (id) {
-                jQuery("#" + id).modal('show');
-            };
+
 
             /**
              * get the class description from the the addedFields map
@@ -969,6 +967,18 @@ define([
                 return "control-options-" + id + "-" + fieldOrValue;
             };
 
+            $scope.getValueModalId = function () {
+                var fieldId = $scope.field['@id'] || $scope.field.items['@id'];
+                var id = fieldId.substring(fieldId.lastIndexOf('/') + 1);
+                return "control-options-" + id + "-" + "values";
+            };
+
+            $scope.getFieldModalId = function () {
+                var fieldId = $scope.field['@id'] || $scope.field.items['@id'];
+                var id = fieldId.substring(fieldId.lastIndexOf('/') + 1);
+                return "control-options-" + id + "-" +  "field";
+            };
+
             /* end of controlled terms functionality */
 
             $scope.clearMinMax = function () {
@@ -1009,6 +1019,14 @@ define([
                     });
                 });
 
+            };
+
+            $scope.duplicate = function () {
+                console.log('duplicate field');
+            };
+
+            $scope.switchExpandedState = function (domId) {
+                $rootScope.toggleElement(domId);
             };
 
 

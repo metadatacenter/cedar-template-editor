@@ -11,86 +11,16 @@
         </div>
     </div>
 
-    <!-- element title -->
+    <!-- element title and runtime toolbar -->
     <div class="row" ng-show="!isRootElement">
 
         <div class="col-sm-9">
-
-            <div class="form-group ">
-                <h4>
-                    <div ng-show="isEditState()">
-                        <input type="text"
-                               id="{{$root.getDomId(element)}}-edit-title"
-                               class="element-title-definition"
-                               style="font-size:18px; "
-                               placeholder="{{'CREATOR.enterElementTitle' | translate}}"
-                               aria-label="{{'CREATOR.enterElementTitle' | translate}}"
-                               ng-model="$root.schemaOf(element)._ui.title">
-
-
-                    </div>
-
-                    <div id="{{$root.getDomId(element)}}-title" ng-show="!isEditState()" style="margin-left:30px;">
-                        {{$root.schemaOf(element)._ui.title}}
-                    </div>
-                </h4>
-            </div>
-
-
-            <div style="position:absolute;left:15px;top:3px">
-                <a ng-click="switchExpandedState($root.getDomId(element))" class="visibilitySwitch"><i
-                        class="cedar-svg-collapse"></i></a>
-                <a ng-click="switchExpandedState($root.getDomId(element))" class="visibilitySwitch"
-                   style="display:none;"><i
-                        class="cedar-svg-expand"></i></a>
-            </div>
+            <field-title-directive field-or-element="element"></field-title-directive>
         </div>
 
-
-        <!-- runtime toolbar -->
         <div class="col-sm-3">
-            <div class="pull-right" ng-show="$root.isRuntime()">
-                <h4>
-                    <button type="button" class="help"
-                            ng-class="{'invisible': $root.schemaOf(element)._ui.description.length == 0}"
-                            tooltip="{{$root.schemaOf(element)._ui.description}}"
-                            tooltip-trigger
-                            tooltip-animation="true"
-                            tooltip-placement="top"
-                            data-toggle="tooltip"
-                            style="background:transparent;border:0;outline:none">
-                        <i class="fa fa-question"></i>
-                    </button>
-
-                    <button type="button" class="add noOutline"
-                            tooltip="add"
-                            ng-show="$root.isArray(model)"
-                            tooltip-trigger
-                            tooltip-animation="true"
-                            tooltip-placement="top"
-                            data-toggle="tooltip"
-                            ng-click="addMoreInput()"
-                            style="background:transparent;border:0;outline:none">
-                        <i class="fa fa-plus"></i>
-                    </button>
-
-
-                    <button ng-show="$root.isArray(model) && $root.isRuntime()" type="button"
-                            tooltip="show as spreadsheet"
-                            tooltip-trigger
-                            tooltip-animation="false"
-                            tooltip-placement="top"
-                            data-toggle="tooltip"
-                            ng-click="switchToSpreadsheet()"
-                            class="spreadsheetSwitchLink"
-                            ng-show="true"
-                            ng-disabled="preview"
-                            style="background:transparent;border:0;outline:none">
-                        <i class="cedar-svg-spreadsheet"></i>
-                    </button>
-                </h4>
-
-            </div>
+            <runtime-toolbar-directive field-or-element="element" ng-model="model" add="addMoreInput"
+                                       spreadsheet="switchToSpreadsheet();"></runtime-toolbar-directive>
         </div>
     </div>
 
@@ -193,79 +123,11 @@
     </div>
 
 
-    <!-- element toolbar -->
-    <div ng-show="isEditState() "
-         style="border-top:1px solid #ccc;padding:10px;height:50px;">
-
-        <div id="{{uuid}}-edit-toolbar" style="float:right"
-             style="display: flex;flex-direction: row;justify-content: center;">
-
-
-            <label translate>GENERIC.Multiple</label>
-            <input tooltip="minimum required"
-                   min="0"
-                   step="1"
-                   tooltip-trigger
-                   tooltip-animation="true"
-                   tooltip-placement="top"
-                   data-toggle="tooltip" type="number" ng-model="element.minItems" title="min"
-                   style="width:4em;margin-right:5px"
-                   placeholder="min"/>
-
-            <input tooltip="maximum allowed"
-                   min="1"
-                   step="1"
-                   tooltip-trigger
-                   tooltip-animation="true"
-                   tooltip-placement="top"
-                   data-toggle="tooltip" type="number" class="" ng-model="element.maxItems"
-                   style="width:4em;margin-right:20px"
-                   placeholder="max"
-                   title="max"/>
-
-
-            <div class="dropdown" style="font-size:20px;display:inline-block;margin-right:20px">
-                <a class="dropdown-toggle"
-                   type="button"
-                   data-toggle="dropdown"
-                   tooltip="add help text"
-                   tooltip-trigger
-                   tooltip-animation="true"
-                   tooltip-placement="top"
-                   data-toggle="tooltip"
-                        ><i class="fa fa-question"></i>
-                </a>
-
-                <div class="dropdown-menu">
-                   <textarea style="width:100%;height:100%;border:0px solid #fff" rows="5"
-                             class="form-control"
-                             ng-model="$root.schemaOf(element)._ui.description"></textarea>
-                </div>
-            </div>
-
-            <a style="font-size:20px;display:inline-block;margin-right:20px"
-               ng-click=" duplicate();$event.stopPropagation();"
-               tooltip="duplicate element"
-               tooltip-trigger
-               tooltip-animation="true"
-               tooltip-placement="top"
-               data-toggle="tooltip"><i
-                    class="fa fa-files-o"></i></a>
-
-
-            <div style="font-size:20px;display:inline-block;margin-right:20px"></div>
-
-
-            <a style="font-size:20px;display:inline-block;margin-right:20px"
-               ng-click=" delete();$event.stopPropagation();"
-               tooltip="delete element"
-               tooltip-trigger
-               tooltip-animation="true"
-               tooltip-placement="top"
-               data-toggle="tooltip"><i
-                    class="fa fa-trash"></i></a>
-
-
+    <!-- edittime toolbar -->
+    <div class="row">
+        <div class="col-sm-12">
+            <edittime-toolbar-directive field-or-element="element" uuid="uuid" duplicate="duplicate();" is-edit="isEditState(element);"
+                                        delete="delete();"></edittime-toolbar-directive>
         </div>
     </div>
 

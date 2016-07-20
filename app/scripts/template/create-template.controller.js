@@ -263,6 +263,13 @@ define([
       jQuery("#" + $scope.searchBrowseModalId).modal('hide')
     };
 
+    $scope.pushErrorMessage = function (msg) {
+      console.log('pushErrorMessage ' + msg);
+      $scope.templateErrorMessages.push($translate.instant(msg));
+    };
+
+
+
     //*********** EVENT HANDLERS
 
     $scope.$on('invalidFieldState', function (event, args) {
