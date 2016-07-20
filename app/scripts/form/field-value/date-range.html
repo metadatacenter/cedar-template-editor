@@ -5,28 +5,28 @@
 
     <div class='input-group col-sm-6' date-time-picker>
         <input type="text"
-               class="form-control"
-               id="start-date-{{uuid}}-{{pIndex}}"
+               class="form-control field-title-definition"
+               id="start-date-{{uuid}}-{{pIndex}}-{{cIndex}}"
                placeholder="{{'CREATOR.enterDate' | translate}}"
                aria-label="{{'CREATOR.enterDate' | translate}}"
                ng-model="m._value.start"
                ng-disabled="!$root.isRuntime() || preview"
                with-floating-label=""/>
-        <span class="input-group-addon">
+        <span class="input-group-addon field-title-definition">
           <i class="fa fa-calendar fa-2x"></i>
         </span>
     </div>
 
     <div class='input-group col-sm-6' date-time-picker>
         <input type="text"
-               class="form-control"
-               id="end-date-{{uuid}}-{{pIndex}}"
+               class="form-control field-title-definition"
+               id="end-date-{{uuid}}-{{pIndex}}-{{cIndex}}"
                placeholder="{{'CREATOR.enterDate' | translate}}"
                aria-label="{{'CREATOR.enterDate' | translate}}"
                ng-model="m._value.end"
                ng-disabled="!$root.isRuntime() || preview"
                with-floating-label=""/>
-        <span class="input-group-addon">
+        <span class="input-group-addon field-title-definition">
           <i class="fa fa-calendar fa-2x"></i>
         </span>
     </div>

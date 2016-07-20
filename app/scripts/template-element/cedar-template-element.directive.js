@@ -299,7 +299,7 @@ define([
 
           $timeout(function () {
 
-            var title = angular.element('#' + $rootScope.getDomId(scope.element) + "-title");
+            var title = angular.element('#' + $rootScope.getDomId(scope.element) + "-edit-title");
             if (title) {
               title.select();
             }

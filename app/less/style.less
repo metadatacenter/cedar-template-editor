@@ -98,8 +98,8 @@ a {
 }
 
 a:hover, a:focus {
-  text-decoration: none;
-}
+   text-decoration: none;
+ }
 
 i {
   .link-transition;
@@ -1958,8 +1958,11 @@ body.search-browse-modal {
 
       .element-root{
 
+        border-left: 1px solid @gray3;
+
         &.selected {
           border: 1px solid @gray3;
+          box-shadow: 4px 4px 4px #ccc;
         }
 
         .element-title-definition {
@@ -1990,8 +1993,8 @@ body.search-browse-modal {
       }
 
       .nested-element {
-        border: 1px solid #ddd;
-        padding: 0px 16px 0px 16px;
+
+        padding: 0px 0px 0px 16px;
         margin-bottom: 16px;
       }
     }
@@ -2013,7 +2016,7 @@ body.search-browse-modal {
   //font-size: 14px;
   position: absolute;
   pointer-events: none;
-  left: 12px;
+  left: 0px;
   top: 7px;
   transition: 0.2s ease all;
   opacity: 0;
@@ -5002,11 +5005,20 @@ body .template-header .controlled-terms-modal {
 
 .sortable-handler {
   cursor: move;
+
   .sortable {
-    width:20px;
-    margin:auto;
+    width: 20px;
+    margin: auto;
+    display:none;
+  }
+
+  &:hover {
+    .sortable {
+      display: block;
+    }
   }
 }
+
 
 .template-body .right-body .preview-edit-options .element-preview-actions {
   .edit {
@@ -5081,6 +5093,7 @@ body .template-header .controlled-terms-modal {
     border-bottom: 2px solid @gray3;
     border-left: 1px solid @gray3;
     border-right: 1px solid @gray3;
+    box-shadow: 4px 4px 4px #ccc;
   }
 
   .field-title-definition {

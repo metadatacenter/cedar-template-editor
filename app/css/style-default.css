@@ -10696,8 +10696,12 @@ body.search-browse-modal a.navbar-brand {
   margin-top: -4px;
   margin-bottom: 0;
 }
+.template-body .right-body .element-group .element-root {
+  border-left: 1px solid #d2d2d2;
+}
 .template-body .right-body .element-group .element-root.selected {
   border: 1px solid #d2d2d2;
+  box-shadow: 4px 4px 4px #ccc;
 }
 .template-body .right-body .element-group .element-root .element-title-definition {
   background: transparent;
@@ -10721,8 +10725,7 @@ body.search-browse-modal a.navbar-brand {
   padding-right: 10px;
 }
 .template-body .right-body .element-group .nested-element {
-  border: 1px solid #ddd;
-  padding: 0px 16px 0px 16px;
+  padding: 0px 0px 0px 16px;
   margin-bottom: 16px;
 }
 @media (min-width: 768px) {
@@ -10737,7 +10740,7 @@ body.search-browse-modal a.navbar-brand {
   color: #999999;
   position: absolute;
   pointer-events: none;
-  left: 12px;
+  left: 0px;
   top: 7px;
   -webkit-transition: 0.2s ease all;
           transition: 0.2s ease all;
@@ -13483,6 +13486,10 @@ body .template-header .controlled-terms-modal {
 .sortable-handler .sortable {
   width: 20px;
   margin: auto;
+  display: none;
+}
+.sortable-handler:hover .sortable {
+  display: block;
 }
 .template-body .right-body .preview-edit-options .element-preview-actions .edit {
   background: #339933;
@@ -13540,6 +13547,7 @@ body .template-header .controlled-terms-modal {
   border-bottom: 2px solid #d2d2d2;
   border-left: 1px solid #d2d2d2;
   border-right: 1px solid #d2d2d2;
+  box-shadow: 4px 4px 4px #ccc;
 }
 .field-root .field-title-definition {
   background: transparent;
@@ -13783,7 +13791,11 @@ table.apiKey td {
   line-height: 40px;
 }
 .spreadsheetSwitchLink {
-  margin-left: 10px;
+  background: transparent;
+  margin-top: 0;
+  padding-top: 0;
+  top: -4px;
+  position: relative;
 }
 .spreadsheetSwitch.field {
   margin-bottom: 0px;

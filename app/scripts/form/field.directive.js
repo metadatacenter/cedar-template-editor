@@ -482,7 +482,7 @@ define([
 
                     $timeout(function () {
 
-                        var title = angular.element('#' + $rootScope.getDomId($scope.field) + "-title");
+                        var title = angular.element('#' + $rootScope.getDomId($scope.field) + "-edit-title");
                         if (title) {
                             title.select();
                         }
@@ -993,9 +993,25 @@ define([
 
             };
 
-            $scope.duplicate = function () {
-                console.log('duplicate field or element');
+            $scope.card = function (m, n, addUnlimited) {
+                return DataManipulationService.generateCardinalities(m, n, addUnlimited);
+
             };
+
+            $scope.autoResizeTextArea = function (id) {
+
+                $timeout(function () {
+                    jQuery('#' + id).each(function () {
+                        this.setAttribute('style', 'height:' + (this.scrollHeight) + 'px;overflow-y:hidden;');
+                    }).on('input', function () {
+                        this.style.height = 'auto';
+                        this.style.height = (this.scrollHeight) + 'px';
+                    });
+                });
+
+            };
+
+
 
 
         };

@@ -4,7 +4,7 @@
 
     <div class="form-group floating-label-wrapper" ng-repeat="valueElement in filteredModel= $root.arrayOf(model)">
 
-        <div ng-init="m=valueElement;pIndex=$parent.$index;" ng-include="'scripts/form/field-value/numeric.html'"></div>
+        <div ng-init="m=valueElement;pIndex=$parent.$index;cIndex=$index" ng-include="'scripts/form/field-value/numeric.html'"></div>
 
         <div  class="more-input-wrapper"
              ng-include="'scripts/form/partials/more-input-buttons.partial.html'"

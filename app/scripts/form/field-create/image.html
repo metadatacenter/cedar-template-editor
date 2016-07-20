@@ -1,10 +1,6 @@
 <div id="image-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}" class="input-type-container">
 
 
-
-  <div class="definition-inputs" ng-include="'scripts/form/partials/field-definition.partial.html'"></div>
-  <!-- /.definition-inputs -->
-
   <div class="form-group floating-label-wrapper">
     <input type="text" class="form-control" id="image-description-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}" placeholder="Image URL" aria-label="Image URL" ng-model="$root.propertiesOf(field)._content"  with-floating-label>
   </div><!-- /.form-group -->
