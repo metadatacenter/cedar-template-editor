@@ -15,6 +15,7 @@ define([
       getSelfUrl             : getSelfUrl,
       loadOntologyRootClasses: loadOntologyRootClasses,
       loadTreeOfClass        : loadTreeOfClass,
+      loadTreeOfValue        : loadTreeOfValue,
       sortBrowseResults      : sortBrowseResults,
       sortOntologyTree       : sortOntologyTree,
       getLastFragmentOfUri   : getLastFragmentOfUri
@@ -142,42 +143,47 @@ define([
       $scope.selectedClass = null;
       $scope.isLoadingClassDetails = true;
       var ontologyAcronym = getLastFragmentOfUri(selection.source);
-      //// TODO: try to remove this statement
-      //if (selection.sourceId) {
-      //  var ontologyAcronym = getLastFragmentOfUri(selection.sourceId);
-      //}
-      //else {
-      //  var ontologyAcronym = getLastFragmentOfUri(selection.source);
-      //}
-      //$scope.treeVisible = true;
+      $scope.selectedClass = selection;
 
+      // Get class details
       controlledTermDataService.getClassById(ontologyAcronym, selection["@id"]).then(function (response) {
         $scope.classDetails = response;
         $scope.selectedClass.hasChildren = $scope.classDetails.hasChildren;
       });
 
-      $scope.selectedClass = selection;
-
       $q.all({
         info: controlledTermDataService.getOntologyById(ontologyAcronym),
         tree: controlledTermDataService.getClassTree(ontologyAcronym, selection['@id']),
       }).then(function (values) {
-        //if ($scope.treeVisible == true) {
-          $scope.currentOntology = values;
-          //if ($scope.currentOntology.tree && angular.isArray($scope.currentOntology.tree)) {
-          //  angular.forEach($scope.currentOntology.tree, function (node) {
-          //    if (node["@type"].indexOf("Ontology") >= 0) {
-          //      node.type = "Ontology";
-          //    } else {
-          //      node.type = "ValueSet";
-          //    }
-          //  })
-          //}
-        //}
+        $scope.currentOntology = values;
         $scope.searchPreloader = false;
         $scope.isLoadingClassDetails = false;
       });
     }
 
+    function loadTreeOfValue(selection, $scope) {
+      $scope.searchPreloader = true;
+      $scope.selectedClass = null;
+      $scope.isLoadingClassDetails = true;
+      var ontologyAcronym = getLastFragmentOfUri(selection.source);
+      $scope.selectedClass = selection;
+      // Get value details
+      controlledTermDataService.getValueById(ontologyAcronym, selection["@id"]).then(function (response) {
+        $scope.classDetails = response;
+        // Values do not have children
+        $scope.selectedClass.hasChildren = false;
+      });
+      $q.all({
+        info: controlledTermDataService.getVsCollectionById(ontologyAcronym),
+        vs  : controlledTermDataService.getValueTree(selection['@id'], ontologyAcronym),
+      }).then(function (values) {
+        values.tree = values.vs.children;
+        delete values.vs.children;
+        delete values.vs.hasChildren;
+        $scope.currentOntology = values;
+        $scope.searchPreloader = false;
+        $scope.isLoadingClassDetails = false;
+      });
+    }
   }
 });

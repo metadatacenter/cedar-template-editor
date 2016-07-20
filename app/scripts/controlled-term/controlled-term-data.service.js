@@ -22,9 +22,13 @@ define([
       getAllOntologies               : getAllOntologies,
       getOntologyById                : getOntologyById,
       getOntologyByLdId              : getOntologyByLdId,
+      getVsCollectionById            : getVsCollectionById,
+      getVsCollectionByLdId          : getVsCollectionByLdId,
       getAllValueSetCollections      : getAllValueSetCollections,
+      getAllValuesInValueSetByValue  : getAllValuesInValueSetByValue,
       getAllValueSets                : getAllValueSets,
       getValueSetByLdId              : getValueSetByLdId,
+      getValueTree                   : getValueTree,
       getRootClasses                 : getRootClasses,
       getClassChildren               : getClassChildren,
       getClassById                   : getClassById,
@@ -32,9 +36,11 @@ define([
       getClassParents                : getClassParents,
       getClassTree                   : getClassTree,
       getValuesInValueSet            : getValuesInValueSet,
+      getValueById                   : getValueById,
       getAcronym                     : getAcronym,
       init                           : init,
       searchClasses                  : searchClasses,
+      searchClassesAndValues         : searchClassesAndValues,
       searchClassesValueSetsAndValues: searchClassesValueSetsAndValues,
       searchValueSetsAndValues       : searchValueSetsAndValues,
       autocompleteOntology           : autocompleteOntology,
@@ -67,17 +73,17 @@ define([
         var ontologies = response.data;
         angular.forEach(ontologies, function (value) {
           // Ignore empty ontologies (without submissions), except for CEDARPC
-          if ((value.details.numberOfClasses > 0) || (value.id == 'CEDARPC')) {
+          if (((value.details.numberOfClasses > 0) || (value.id == 'CEDARPC')) && value.id != "NLMVS" && value.id != 'CEDARVS') {
+            value.fullName = value.name + ' (' + value.id + ')';
             ontologiesCache[value.id] = value;
           }
-          value.fullName = value.name + ' (' + value.id + ')';
         });
       }).catch(function (err) {
         if (err.status == 502) {
           UIMessageService.showBackendError($translate.instant("TERMINOLOGY.errorTerminology"), err);
         }
         else {
-          //UIMessageService.showBackendError($translate.instant("TERMINOLOGY.errorBioPortal"), err);
+          UIMessageService.showBackendError($translate.instant("TERMINOLOGY.errorBioPortal"), err);
         }
         return err;
       });
@@ -90,13 +96,14 @@ define([
         var vscs = response.data;
         angular.forEach(vscs, function (vsc) {
           vsc.fullName = vsc.name + ' (' + vsc.id + ')';
+          valueSetsCollectionsCache[vsc.id] = vsc;
         });
       }).catch(function (err) {
         if (err.status == 502) {
           UIMessageService.showBackendError($translate.instant("TERMINOLOGY.errorTerminology"), err);
         }
         else {
-          //UIMessageService.showBackendError($translate.instant("TERMINOLOGY.errorBioPortal"), err);
+          UIMessageService.showBackendError($translate.instant("TERMINOLOGY.errorBioPortal"), err);
         }
         return err;
       });
@@ -108,14 +115,14 @@ define([
       return $http.get(url, http_default_config).then(function (response) {
         var valueSets = response.data;
         angular.forEach(valueSets, function (element) {
-          valueSetsCache[element.id] = element;
+          valueSetsCache[element['@id']] = element;
         });
       }).catch(function (err) {
         if (err.status == 502) {
           UIMessageService.showBackendError($translate.instant("TERMINOLOGY.errorTerminology"), err);
         }
         else {
-          //UIMessageService.showBackendError($translate.instant("TERMINOLOGY.errorBioPortal"), err);
+          UIMessageService.showBackendError($translate.instant("TERMINOLOGY.errorBioPortal"), err);
         }
         return err;
       });
@@ -126,15 +133,27 @@ define([
      */
 
     function getAllOntologies() {
-      return ontologiesCache;
+      var ontologies = [];
+      for (var key in ontologiesCache) {
+        ontologies.push(ontologiesCache[key]);
+      }
+      return ontologies;
     };
 
     function getAllValueSetCollections() {
-      return valueSetsCollectionsCache;
+      var valueSetCollections = [];
+      for (var key in valueSetsCollectionsCache) {
+        valueSetCollections.push(valueSetsCollectionsCache[key]);
+      }
+      return valueSetCollections;
     };
 
     function getAllValueSets() {
-      return valueSetsCache;
+      var valueSets = [];
+      for (var key in valueSetsCache) {
+        valueSets.push(valueSetsCache[key]);
+      }
+      return valueSets;
     };
 
     function getOntologyById(ontologyId) {
@@ -144,6 +163,24 @@ define([
     function getOntologyByLdId(ontologyLdId) {
       var ontologyId = ontologyLdId.substr(ontologyLdId.lastIndexOf('/') + 1);
       return getOntologyById(ontologyId);
+    }
+
+    function getValueSetById(vsId) {
+      return valueSetsCache[vsId];
+    }
+
+    function getValueSetByLdId(vsLdId) {
+      var vsId = vsLdId.substr(vsLdId.lastIndexOf('/') + 1);
+      return getValueSetById(vsId);
+    }
+
+    function getVsCollectionById(vscId) {
+      return valueSetsCollectionsCache[vscId];
+    }
+
+    function getVsCollectionByLdId(vscLdId) {
+      var vscId = vscLdId.substr(vscLdId.lastIndexOf('/') + 1);
+      return getVsCollectionById(vscId);
     }
 
     function getRootClasses(ontology) {
@@ -161,17 +198,53 @@ define([
       });
     };
 
-    // TODO: the value set cache keys should contain the vsCollection too, because there may be duplicates
-    function getValueSetByLdId(valueSetLdId) {
-      if ($.isEmptyObject(valueSetsCache)) {
-        return getAllValueSets().then(function () {
-          return valueSetsCache[valueSetLdId];
-        });
-      }
-      else {
-        return valueSetsCache[valueSetLdId];
-      }
+
+
+    function getClassById(acronym, classId) {
+      var url = base + '/ontologies/' + acronym + '/classes/' + encodeURIComponent(classId);
+      return $http.get(url, http_default_config).then(function (response) {
+        return response.data;
+      }).catch(function (err) {
+        if (err.status == 502) {
+          UIMessageService.showBackendError($translate.instant("TERMINOLOGY.errorTerminology"), err);
+        }
+        else {
+          UIMessageService.showBackendError($translate.instant("TERMINOLOGY.errorBioPortal"), err);
+        }
+        return err;
+      });
     }
+
+
+    function getValueTree(valueId, vsCollection) {
+      return $http.get(base + '/vs-collections/' + vsCollection + '/values/' + encodeURIComponent(valueId) + "/tree",
+          http_default_config).then(function (response) {
+            return response.data;
+          }).catch(function (err) {
+            if (err.status == 502) {
+              UIMessageService.showBackendError($translate.instant("TERMINOLOGY.errorTerminology"), err);
+            }
+            else {
+              UIMessageService.showBackendError($translate.instant("TERMINOLOGY.errorBioPortal"), err);
+            }
+            return err;
+          });
+    };
+
+    function getAllValuesInValueSetByValue(valueId, vsCollection) {
+      return $http.get(base + '/vs-collections/' + vsCollection + '/values/' + encodeURIComponent(valueId) + "/all-values?page=1&pageSize=1000",
+          http_default_config).then(function (response) {
+            return response.data.collection;
+          }).catch(function (err) {
+            if (err.status == 502) {
+              UIMessageService.showBackendError($translate.instant("TERMINOLOGY.errorTerminology"), err);
+            }
+            else {
+              UIMessageService.showBackendError($translate.instant("TERMINOLOGY.errorBioPortal"), err);
+            }
+            return err;
+          });
+    };
 
     function getClassChildren(acronym, classId) {
       return $http.get(base + '/ontologies/' + acronym + '/classes/' + encodeURIComponent(classId) + "/children?page=1&pageSize=1000",
@@ -205,6 +278,21 @@ define([
 
     function getClassById(acronym, classId) {
       var url = base + '/ontologies/' + acronym + '/classes/' + encodeURIComponent(classId);
+      return $http.get(url, http_default_config).then(function (response) {
+        return response.data;
+      }).catch(function (err) {
+        if (err.status == 502) {
+          UIMessageService.showBackendError($translate.instant("TERMINOLOGY.errorTerminology"), err);
+        }
+        else {
+          UIMessageService.showBackendError($translate.instant("TERMINOLOGY.errorBioPortal"), err);
+        }
+        return err;
+      });
+    }
+
+    function getValueById(acronym, valueId) {
+      var url = base + '/vs-collections/' + acronym + '/values/' + encodeURIComponent(valueId);
       return $http.get(url, http_default_config).then(function (response) {
         return response.data;
       }).catch(function (err) {
@@ -297,6 +385,25 @@ define([
         return err;
       });
     };
+
+    function searchClassesAndValues(query, sources, size) {
+      var url = base + "/search?q=" + encodeURIComponent(query) + "&scope=classes,values" + "&page=1&page_size=" + size;
+      if (sources) {
+        url = url + "&sources=" + sources;
+      }
+      return $http.get(url, http_default_config).then(function (response) {
+        return response.data;
+      }).catch(function (err) {
+        if (err.status == 502) {
+          UIMessageService.showBackendError($translate.instant("TERMINOLOGY.errorTerminology"), err);
+        }
+        else {
+          UIMessageService.showBackendError($translate.instant("TERMINOLOGY.errorBioPortal"), err);
+        }
+        return err;
+      });
+    };
+
 
     function searchClassesValueSetsAndValues(query, sources, size) {
       var url = base + "/search?q=" + encodeURIComponent(query) + "&scope=all" + "&page=1&page_size=" + size;

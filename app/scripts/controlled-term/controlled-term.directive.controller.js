@@ -181,6 +181,9 @@ define([
       else if (action == 'add_ontology') {
         addOntologyToValueConstraint();
       }
+      else if (action == 'add_entire_value_set') {
+        addValueSetToValueConstraint();
+      }
     }
 
     /**
@@ -352,8 +355,6 @@ define([
         existed = existed || ontologyValueConstraint.uri == vm.currentOntology.info["@id"];
       });
 
-      console.log(vm.currentOntology);
-
       if (!existed) {
         vm.stagedOntologyValueConstraints.push({
           'numChildren': vm.currentOntology.info.details.numberOfClasses,
@@ -479,20 +480,13 @@ define([
       //});
     };
 
-    function stageValueSetValueConstraint(selection) {
-      var vsCollection;
-      if (vm.currentValueSet.sourceName) {
-        vsCollection = vm.currentValueSet.sourceName;
-      }
-      else {
-        vsCollection = vm.currentValueSet.vsCollection;
-      }
+    function stageValueSetValueConstraint() {
       vm.stagedValueSetValueConstraints.push({
-        'name': vm.currentValueSet.prefLabel,
-        'vsCollection': vsCollection,
-        'uri': vm.currentValueSet['@id']
+        'name': vm.currentOntology.vs.prefLabel,
+        'vsCollection': vm.currentOntology.info.id,
+        'uri': vm.currentOntology.vs['@id'],
+        'numTerms': vm.currentOntology.tree.length
       });
-
       vm.stageValueConstraintAction = "add_entire_value_set";
     };
 

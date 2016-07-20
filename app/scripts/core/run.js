@@ -301,6 +301,7 @@ define([
 
       if (vcst.valueSets.length > 0) {
         angular.forEach(vcst.valueSets, function (valueSet) {
+          console.log(valueSet);
           if (term == '*') {
             $rootScope.removeAutocompleteResultsForSource(field_id, valueSet.uri);
           }
