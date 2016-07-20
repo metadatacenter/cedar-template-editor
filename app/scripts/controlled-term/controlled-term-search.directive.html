@@ -92,7 +92,7 @@
     <span class="search-msg" ng-if="tsc.showEmptyQueryMsg">Please enter a search query</span>
     <div ng-if="tsc.searchFinished">
       <div ng-if="tsc.resultsFound && !tsc.isCreatingMappings">
-        <span class="search-msg">{{tsc.searchResults.length}} results. </span>
+        <span class="search-msg">{{tsc.searchResults.length}} results for the query '{{tsc.searchQuery}}'. </span>
         <span class="search-msg">Click on a term below to select it</span>
       </div>
       <span class="search-msg" ng-if="!tsc.resultsFound">No results</span>
@@ -100,7 +100,7 @@
   </div>
   <div class="search-messages" ng-if="tsc.isSearchingOntologies()">
       <div ng-if="tsc.ontologiesFound.length > 0 && !tsc.isCreatingMappings">
-        <span class="search-msg">{{tsc.ontologiesFound.length}} ontologies found. </span>
+        <span class="search-msg">{{tsc.ontologiesFound.length}} ontologies found for the query '{{tsc.searchQuery}}'. </span>
         <span class="search-msg">Click on an ontology below to explore it</span>
       </div>
       <span class="search-msg" ng-if="tsc.ontologiesFound.length == 0">No results</span>
