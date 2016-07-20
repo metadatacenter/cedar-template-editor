@@ -308,6 +308,8 @@ define([
       }
 
       function selectOntology(selection) {
+        vm.selectedClass = null;
+        vm.classDetails = null;
         vm.treeVisible = true;
         controlledTermService.loadOntologyRootClasses(selection, vm);
       }
