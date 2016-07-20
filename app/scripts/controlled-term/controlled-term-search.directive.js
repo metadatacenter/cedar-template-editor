@@ -44,6 +44,7 @@ define([
       vm.action = 'search'; // Possible actions: search, create
       vm.allOntologies = [];
       vm.isCreatingMappings = false;
+      vm.isLoadingOntologyDetails = false;
       vm.loadingOntologies = false;
       vm.ontologiesFound = [];
       vm.ontologySearchRegexp = null;
@@ -308,10 +309,13 @@ define([
       }
 
       function selectOntology(selection) {
+        vm.isLoadingOntologyDetails = true;
         vm.selectedClass = null;
         vm.classDetails = null;
         vm.treeVisible = true;
-        controlledTermService.loadOntologyRootClasses(selection, vm);
+        controlledTermService.loadOntologyRootClasses(selection, vm).then(function(response) {
+          vm.isLoadingOntologyDetails = false;
+        });
       }
 
       //*********

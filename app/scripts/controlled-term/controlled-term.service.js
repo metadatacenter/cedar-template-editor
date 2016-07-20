@@ -112,9 +112,8 @@ define([
     }
 
     function loadOntologyRootClasses(ontology, $scope) {
-      //$scope.treeVisible = true;
       $scope.searchPreloader = true;
-      $q.all({
+      return $q.all({
         info: ontology,
         tree: controlledTermDataService.getRootClasses(ontology.id)
       }).then(function (values) {
@@ -132,6 +131,7 @@ define([
           }
         //}
         $scope.searchPreloader = false;
+        return values;
       });
     }
 

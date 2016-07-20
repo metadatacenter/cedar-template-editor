@@ -42,7 +42,6 @@
 
       <div class="advanced-search-options">
         <b>I want to...</b>
-
         <div class="search-options">
           <div class="radio radio-primary radio-controlled-terms-search">
             <div class="radio-option">
@@ -52,12 +51,12 @@
             <div class="radio-option">
               <input id="search-scope-2" class="radio-option" type="radio" ng-model="tsc.searchScope" value="ontologies"
                   ng-click="$event.stopPropagation()" ng-change="tsc.changeSearchScope()"/>
-              <label>Search for an ontology in BioPortal (e.g. OBI) and then explore it to find specific terms</label>
+              <label>Search for an ontology in BioPortal (e.g. OBI) and explore it to find specific terms</label>
             </div>
             <div ng-if="tsc.isFieldValuesMode()" class="radio-option">
               <input id="search-scope-3" class="radio-option" type="radio" ng-model="tsc.searchScope" value="value-sets"
                   ng-click="$event.stopPropagation()" ng-change="tsc.changeSearchScope()"/>
-              <label>Search for a value set in BioPortal (e.g. 'Delivery Procedures') and then explore it to find specific values</label>
+              <label>Search for a value set in BioPortal (e.g. 'Delivery Procedures') and explore it to find specific terms</label>
             </div>
           </div>
         </div>
@@ -188,11 +187,11 @@
     </div>
   </div>
 
-  <div ng-if="tsc.treeVisible && tsc.isLoadingClassDetails">
+  <div ng-if="tsc.treeVisible && (tsc.isLoadingClassDetails || tsc.isLoadingOntologyDetails)">
     <div class="loader2"></div>
   </div>
 
-  <div class="field-tree clear" ng-show="tsc.treeVisible && !tsc.isLoadingClassDetails">
+  <div class="field-tree clear" ng-show="tsc.treeVisible && !tsc.isLoadingClassDetails && !tsc.isLoadingOntologyDetails">
     <div class="field-tree-header table-style">
       <!-- Ontology Tree header -->
       <div class="ontology-tree-header table-cell-style" ng-if="tsc.isCurrentOntology()">
