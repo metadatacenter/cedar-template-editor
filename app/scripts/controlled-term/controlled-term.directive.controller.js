@@ -460,25 +460,27 @@ define([
     };
 
     function stageOntologyClass(selection, type) {
-      if (type === undefined) {
-        type = 'OntologyClass';
+      if (selection) {
+        if (type === undefined) {
+          type = 'OntologyClass';
+        }
+        var klass = {
+          'uri'      : selection['@id'],
+          'prefLabel': selection.prefLabel,
+          'type'     : type,
+          'label'    : selection.prefLabel,
+          'default'  : false
+        };
+        if (type == 'OntologyClass') {
+          klass['source'] = vm.currentOntology.info.id;
+        } else {
+          klass['source'] = vm.currentValueSet.prefLabel;
+        }
+        vm.stagedOntologyClassValueConstraints.push(klass);
+        //vm.stagedOntologyClassValueConstraintData.push({
+        //  'label': selection.prefLabel
+        //});
       }
-      var klass = {
-        'uri': selection['@id'],
-        'prefLabel': selection.prefLabel,
-        'type': type,
-        'label': selection.prefLabel,
-        'default': false
-      };
-      if (type == 'OntologyClass') {
-        klass['source'] = vm.currentOntology.info.id;
-      } else {
-        klass['source'] = vm.currentValueSet.prefLabel;
-      }
-      vm.stagedOntologyClassValueConstraints.push(klass);
-      //vm.stagedOntologyClassValueConstraintData.push({
-      //  'label': selection.prefLabel
-      //});
     };
 
     function stageValueSetValueConstraint() {
@@ -640,7 +642,7 @@ define([
         },
         function (value) {
           if (vm.stageValueConstraintAction == 'add_ontology') {
-            if (value.info.details) {
+            if (value && value.info && value.info.details) {
               vm.stageOntologyValueConstraint();
             }
           }

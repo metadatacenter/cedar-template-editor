@@ -195,7 +195,7 @@
     <div class="field-tree-header table-style">
       <!-- Ontology Tree header -->
       <div class="ontology-tree-header table-cell-style" ng-if="tsc.isCurrentOntology()">
-        <h4 ng-if="tsc.selectedClass.type=='OntologyClass'">Ontology: {{tsc.currentOntology.info.id}}</h4>
+        <h4 ng-if="tsc.selectedClass.type=='OntologyClass' || !tsc.selectedClass">Ontology: {{tsc.currentOntology.info.id}}</h4>
         <h4 ng-if="tsc.selectedClass.type=='Value'">Value Set: {{tsc.currentOntology.vs.prefLabel}}</h4>
       </div>
       <!-- Term and Ontology/Value Set Details header -->
@@ -205,7 +205,7 @@
             <a href="#class-details" aria-controls="class-details" role="tab" data-toggle="tab">Term Details</a>
           </li>
           <li role="presentation" class="detail-view-tab">
-            <a ng-if="tsc.selectedClass.type=='OntologyClass'" href="#ontology-details" aria-controls="ontology-details" role="tab" data-toggle="tab">Ontology Details</a>
+            <a ng-if="tsc.selectedClass.type=='OntologyClass' || tsc.isCurrentOntology()" href="#ontology-details" aria-controls="ontology-details" role="tab" data-toggle="tab">Ontology Details</a>
             <a ng-if="tsc.selectedClass.type=='Value'" href="#ontology-details" aria-controls="ontology-details" role="tab" data-toggle="tab">Value Set Details</a>
           </li>
         </ul>
@@ -255,7 +255,7 @@
             </div>
           </div>
           <!--Ontology details-->
-          <div ng-if="tsc.selectedClass.type=='OntologyClass'" id="ontology-details" class="tab-pane" role="tabpanel">
+          <div ng-if="tsc.selectedClass.type=='OntologyClass' || tsc.isCurrentOntology()" id="ontology-details" class="tab-pane" role="tabpanel">
             <div class="table-responsive">
               <table class="table table-striped">
                 <tbody>

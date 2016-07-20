@@ -218,6 +218,7 @@ define([
         vm.showEmptyQueryMsg = false;
         vm.showSearchPreloader = false;
         vm.treeVisible = false;
+        vm.selectedClass = null;
 
         if (typeof vm.resetCallback === "function") {
           vm.resetCallback();
@@ -309,6 +310,7 @@ define([
       }
 
       function selectOntology(selection) {
+        vm.currentOntology = selection;
         vm.isLoadingOntologyDetails = true;
         vm.selectedClass = null;
         vm.classDetails = null;
@@ -431,10 +433,11 @@ define([
           function () {
             if (isSearchingClasses()) {
               if (vm.searchQuery) {
-                search()
+                search();
               }
             }
             else if (isSearchingOntologies()) {
+              reset(true, true, true);
               loadOntologies(vm.searchQuery);
               //searchRegexp(vm.searchQuery);
             }

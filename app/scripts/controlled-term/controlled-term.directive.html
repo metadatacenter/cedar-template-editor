@@ -48,7 +48,7 @@
     <div ng-if="!ctdc.treeVisible && ctdc.isLoadingClassDetails">
       <div class="loader2"></div>
     </div>
-    <div ng-if="!ctdc.isLoadingClassDetails">
+    <div ng-if="ctdc.selectedClass && !ctdc.isLoadingClassDetails && !ctdc.isLoadingOntologyDetails">
 
       <div class="class-actions"
           ng-if="ctdc.selectedClass.type == 'OntologyClass' || ctdc.selectedClass.type == 'Value'">
@@ -182,4 +182,6 @@
 
     </div>
   </div>
+  <div style="height: 400px"></div>
 </div>
+
