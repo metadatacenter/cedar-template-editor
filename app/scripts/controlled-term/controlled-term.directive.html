@@ -8,7 +8,9 @@
         reset-callback="ctdc.startOver"
         current-ontology="ctdc.currentOntology"
         selected-class="ctdc.selectedClass"
-        is-loading-class-details="ctdc.isLoadingClassDetails">
+        is-loading-class-details="ctdc.isLoadingClassDetails"
+        tree-visible="ctdc.treeVisible"
+        >
     </controlled-term-search>
 
     <div class="class-actions">
@@ -37,10 +39,13 @@
         reset-callback="ctdc.startOver"
         current-ontology="ctdc.currentOntology"
         selected-class="ctdc.selectedClass"
-        is-loading-class-details="ctdc.isLoadingClassDetails">
+        is-loading-class-details="ctdc.isLoadingClassDetails"
+        tree-visible="ctdc.treeVisible"
+        >
     </controlled-term-search>
 
-    <div ng-if="ctdc.isLoadingClassDetails">
+    <!--Show preloader only if the tree and class details preloader is not shown-->
+    <div ng-if="!ctdc.treeVisible && ctdc.isLoadingClassDetails">
       <div class="loader2"></div>
     </div>
     <div ng-if="!ctdc.isLoadingClassDetails">

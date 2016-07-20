@@ -19,7 +19,8 @@ define([
         //includeCreateClass : '=',
         resetCallback: '=?',
         //selectedValueResult: '=',
-        isLoadingClassDetails: '='
+        isLoadingClassDetails: '=',
+        treeVisible: '='
       },
       controller      : controlledTermSearchDirectiveController,
       controllerAs    : 'tsc',
@@ -54,7 +55,6 @@ define([
       vm.selectedOntologies = [];
       vm.showSearchPreloader = false;
       vm.showEmptyQueryMsg = false;
-      vm.treeVisible = false;
 
       /* Function declarations */
       vm.changeSearchScope = changeSearchScope;

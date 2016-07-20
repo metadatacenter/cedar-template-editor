@@ -58,6 +58,7 @@ define([
     vm.stageValueConstraintAction = null;
     vm.stageValueSetValueConstraint = stageValueSetValueConstraint;
     vm.startOver = startOver;
+    vm.treeVisible = false;
     vm.valueConstraint = {
       'ontologies': [],
       'valueSets': [],
