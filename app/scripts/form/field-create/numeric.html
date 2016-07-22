@@ -1,7 +1,7 @@
 <div id="numeric-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}" class="input-type-container">
 
   <!-- items -->
-  <div class="form-group floating-label-wrapper has-feedback" ng-repeat="valueElement in filteredModel = $root.arrayOf(model)">
+  <div class="form-group floating-label-wrapper has-feedback" ng-repeat="valueElement in filteredModel = $root.arrayOf(model)  | limitTo: 1">
     <div ng-init="m=valueElement;pIndex=$parent.$index;" ng-include="'scripts/form/field-value/numeric.html'"></div>
   </div>
 

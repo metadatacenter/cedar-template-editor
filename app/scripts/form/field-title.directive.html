@@ -1,12 +1,10 @@
 <div class="form-group " style="padding:0;font-size:20px;margin:0;">
 
-
-
     <div ng-show="$parent.isEditState()">
         <input type="text"
                id="{{$root.getDomId(fieldOrElement)}}-edit-title"
                class="form-control field-title-definition"
-               style="font-size:20px;"
+               style="padding-left: 0;font-size:20px;"
                placeholder="{{'CREATOR.enterFieldTitle' | translate}}"
                aria-label="{{'CREATOR.enterFieldTitle' | translate}}"
                ng-model="$root.schemaOf(fieldOrElement)._ui.title">

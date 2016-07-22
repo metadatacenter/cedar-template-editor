@@ -85,6 +85,22 @@
     "staticField": false
   },
   {
+    "cedarType": "regex",
+    "iconClass": "cedar-svg-text",
+    "allowedInElement": true,
+    "label": "Regex Text",
+    "hasControlledTerms": true,
+    "staticField": false
+  },
+  {
+    "cedarType": "url",
+    "iconClass": "cedar-svg-text",
+    "allowedInElement": true,
+    "label": "URL",
+    "hasControlledTerms": true,
+    "staticField": false
+  },
+  {
     "cedarType": "section-break",
     "iconClass": "cedar-svg-section-break",
     "allowedInElement": true,

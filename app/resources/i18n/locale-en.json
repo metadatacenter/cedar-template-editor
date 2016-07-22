@@ -48,6 +48,12 @@
       },
       "youtube": {
         "NAME": "YouTube"
+      },
+      "regex": {
+        "NAME": "Regex Text"
+      },
+      "url": {
+        "NAME": "URL"
       }
     }
   },
@@ -303,7 +309,9 @@
     "enterPhoneNumber": "Enter phone number",
     "enterNumber": "Enter number",
     "enterParagraph": "Enter paragraph text",
-    "enterTextField": "Enter text field"
+    "enterTextField": "Enter text field",
+    "enterURLField": "Enter URL field",
+    "enterRegexField": "Enter regex field"
   },
   "AUTHORIZATION-ERROR": {
     "suggestedAction": {

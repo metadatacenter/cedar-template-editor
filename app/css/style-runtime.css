@@ -10568,6 +10568,8 @@ body.search-browse-modal a.navbar-brand {
 }
 .template-body .right-body .page {
   background: #ffffff;
+  padding-bottom: 60px;
+  min-height: 200px;
 }
 .template-body .right-body .btn-preview-form {
   border-radius: 0;
@@ -10596,6 +10598,8 @@ body.search-browse-modal a.navbar-brand {
   padding-top: 35px;
   background: #fff;
   border: 1px solid #ccc;
+  padding-bottom: 60px;
+  min-height: 300px;
 }
 .template-body .right-body #form-item-config-section .form-preview p.type-label,
 .template-body .right-body #form-preview-section .form-preview p.type-label {
@@ -11233,7 +11237,7 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
 #element_control_term .form-group.radio-item,
 .template-body form .form-group.checkbox-item,
 #element_control_term .form-group.checkbox-item {
-  margin-bottom: 10px;
+  margin-bottom: 0px;
 }
 .template-body form .form-group .form-control,
 #element_control_term .form-group .form-control {
@@ -12245,7 +12249,7 @@ p.instructions {
 }
 .options-wrapper {
   width: 100%;
-  padding-left: 20px;
+  padding-left: 0px;
 }
 .options-wrapper:before,
 .options-wrapper:after {
@@ -12624,7 +12628,7 @@ p.instructions {
 .field-wrapper-checkbox,
 .field-wrapper-radio {
   padding: 5px;
-  border: 1px solid #ddd;
+  border: 0px solid #ddd;
   background: white;
   position: relative;
   width: 100%;
@@ -13538,9 +13542,9 @@ body .template-header .controlled-terms-modal {
   font-size: 16px;
 }
 .field-root {
-  padding: 5px 30px;
-  margin-bottom: 10px;
-  margin-top: 5px;
+  padding: 0px 30px;
+  margin-bottom: 0px;
+  margin-top: 0px;
 }
 .field-root.selected {
   border-top: 2px solid #d2d2d2;

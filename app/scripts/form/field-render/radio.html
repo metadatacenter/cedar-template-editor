@@ -10,7 +10,7 @@
 
 
             <div class="form-group radio-item" ng-repeat="(index, value) in $root.schemaOf(field)._ui.options">
-                <div class="radio radio-primary">
+                <div class="radio radio-primary" >
                     <div ng-init="m=valueElement;pIndex=$parent.$index;cIndex=$index"
                          ng-include="'scripts/form/field-value/radio.html'"></div>
                 </div>

@@ -236,13 +236,12 @@ define([
         // add an option to this field
         service.addOption = function (field) {
             var emptyOption = {
-                "text": ""
+                "text": $translate.instant("VALIDATION.noNameField")
             };
             field._ui.options.push(emptyOption);
         };
 
         service.generateCardinalities = function (min, max, addUnlimited) {
-            console.log("generateCardinalities");
             var results = [];
             for (var i = min; i <= max; i++) {
                 results.push({value: i, label: i});
@@ -404,6 +403,7 @@ define([
                 node._tmp.domId = id;
             }
 
+            console.log(node);
             return node._tmp.domId;
 
         };
