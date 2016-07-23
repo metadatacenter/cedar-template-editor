@@ -260,6 +260,7 @@
     "optionEmpty": "'Option' input cannot be left empty.",
     "multipleChoiceTooFew": "Multiple Choice fields must have at least two possible options",
     "templateNameEmpty": "Template Name input cannot be left empty.",
+    "invalidURLField": "Invalid URL.",
     "templateDescriptionEmpty": "Template Description input cannot be left empty.",
     "elementNameEmpty": "Element Name input cannot be left empty.",
     "elementDescriptionEmpty": "Element Description input cannot be left empty.",

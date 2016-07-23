@@ -29,7 +29,6 @@ define([
 
         // Function that generates a basic field definition
         service.generateField = function (fieldType) {
-            console.log('generateField' + fieldType);
             var valueType = "string";
             if (fieldType == "numeric") {
                 valueType = "number";
@@ -403,7 +402,6 @@ define([
                 node._tmp.domId = id;
             }
 
-            console.log(node);
             return node._tmp.domId;
 
         };
@@ -527,7 +525,6 @@ define([
                     properties["@type"].oneOf[0].enum.splice(idx, 1);
                     if (properties["@type"].oneOf[0].enum.length == 0) {
                         delete properties["@type"].oneOf[0].enum;
-                        console.log('delete');
                     }
                 }
 
@@ -537,7 +534,6 @@ define([
                     properties['@type'].oneOf[1].items.enum.splice(idx, 1);
                     if (properties["@type"].oneOf[1].items.enum.length == 0) {
                         delete properties["@type"].oneOf[1].items.enum;
-                        console.log('delete');
                     }
                 }
             }
@@ -627,7 +623,6 @@ define([
 
         // When user clicks Save button, we will switch field or element from creating state to completed state
         service.canDeselect = function (field, renameChildKey) {
-            console.log('canDeselect isElement=' + service.isElement(field));
 
             if (!field) {
                 return;

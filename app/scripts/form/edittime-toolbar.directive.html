@@ -60,6 +60,7 @@
                                                 </tr>
                                                 </thead>
                                                 <tbody>
+
                                                 <tr ng-repeat="key in addedFieldKeys">
                                                     <td>
                                                         {{getPrefLabel(key)}}
@@ -127,7 +128,7 @@
                                                 </tr>
                                                 </thead>
                                                 <tbody>
-                                                <tr ng-repeat="class in $root.schemaOf(field)._valueConstraints.classes">
+                                                <tr ng-repeat="class in $root.schemaOf(fieldOrElement)._valueConstraints.classes">
                                                     <td>{{class.prefLabel}}</td>
 
                                                     <td>Class</td>
@@ -143,7 +144,7 @@
                                                         </div>
                                                     </td>
                                                 </tr>
-                                                <tr ng-repeat="valueSet in $root.schemaOf(field)._valueConstraints.valueSets">
+                                                <tr ng-repeat="valueSet in $root.schemaOf(fieldOrElement)._valueConstraints.valueSets">
                                                     <td>{{valueSet.name}}</td>
 
                                                     <td>Value Set</td>
@@ -159,7 +160,7 @@
                                                         </div>
                                                     </td>
                                                 </tr>
-                                                <tr ng-repeat="ontology in $root.schemaOf(field)._valueConstraints.ontologies">
+                                                <tr ng-repeat="ontology in $root.schemaOf(fieldOrElement)._valueConstraints.ontologies">
                                                     <td>{{ontology.acronym}}</td>
 
                                                     <td>Ontology</td>
@@ -172,7 +173,7 @@
                                                         </div>
                                                     </td>
                                                 </tr>
-                                                <tr ng-repeat="branch in $root.schemaOf(field)._valueConstraints.branches">
+                                                <tr ng-repeat="branch in $root.schemaOf(fieldOrElement)._valueConstraints.branches">
                                                     <td>{{branch.name}}</td>
 
                                                     <td>Branch</td>
@@ -192,7 +193,7 @@
                                 </div>
                                 <div class="clear-save" style="text-align:center">
                                     <button type="button" class="std-button btn search-ontologies-button"
-                                            ng-click="showModal(getModalId(false)); $event.stopPropagation();">
+                                            ng-click="showModal(getValueModalId()); $event.stopPropagation();">
                                         Search
                                     </button>
                                     <!--<button type="button" class="std-button btn search-ontologies-button">Create</button>-->
@@ -266,36 +267,6 @@
 
     </div>
 
-    <!-- field modal -->
-    <div class="modal fade controlled-terms-modal" id="{{getFieldModalId()}}" data-backdrop="static">
-        <div class="modal-dialog">
-            <div class="modal-content" style="overflow:auto">
-                <div class="modal-header">
-                    <button type="button" class="close controlled-terms-modal-field-close" data-dismiss="modal"
-                            aria-label="Close"><span aria-hidden="true"><img
-                            src="/img/close_modal.png" width="22"/></span></button>
-                </div>
-                <div class="modal-body">
-                    <div cedar-controlled-term field="fieldOrElement" options='{"filterSelection":"field"}'></div>
-                </div>
-            </div>
-        </div>
-    </div>
 
-    <!-- value modal -->
-    <div class="modal fade controlled-terms-modal" id="{{getValueModalId()}}" data-backdrop="static">
-        <div class="modal-dialog">
-            <div class="modal-content" style="overflow:auto">
-                <div class="modal-header">
-                    <button type="button" class="close controlled-terms-modal-value-close" data-dismiss="modal"
-                            aria-label="Close"><span aria-hidden="true"><img
-                            src="/img/close_modal.png" width="22"/></span></button>
-                </div>
-                <div class="modal-body">
-                    <div cedar-controlled-term field="fieldOrElement" options='{"filterSelection":"values"}'></div>
-                </div>
-            </div>
-        </div>
-    </div>
 
 </div>

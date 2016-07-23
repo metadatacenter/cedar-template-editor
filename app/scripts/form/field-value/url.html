@@ -8,7 +8,7 @@
        validate-on="blur"
        ng-pattern= "/^[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?/"
        with-floating-label="" />
-<span class="warning-text">{{$root.schemaOf(field)._ui.warningText}}</span>
+<span class="warning-text">{{'VALIDATION.invalidURLField' | translate}}</span>
 
 <div class="input-indicator-icons ng-valid ng-scope"
      ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>

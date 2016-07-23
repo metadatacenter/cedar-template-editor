@@ -10,4 +10,11 @@
                placeholder="Enter Regex Pattern" aria-label="Enter Regex Pattern"
                ng-model="$root.schemaOf(field)._ui.pattern" with-floating-label>
     </div>
+
+    <div class="form-group floating-label-wrapper">
+        <input type="text" class="form-control field-title-definition"
+               id="regex-warning-{{uuid}}"
+               placeholder="Enter Regex Pattern" aria-label="Enter Regex Pattern"
+               ng-model="$root.schemaOf(field)._ui.warningText" with-floating-label>
+    </div>
 </div>
