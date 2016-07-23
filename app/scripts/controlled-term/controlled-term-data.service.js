@@ -29,6 +29,7 @@ define([
       getAllValueSets                : getAllValueSets,
       getValueSetByLdId              : getValueSetByLdId,
       getValueTree                   : getValueTree,
+      getValueSetTree                : getValueSetTree,
       getRootClasses                 : getRootClasses,
       getClassChildren               : getClassChildren,
       getClassById                   : getClassById,
@@ -43,6 +44,7 @@ define([
       searchClassesAndValues         : searchClassesAndValues,
       searchClassesValueSetsAndValues: searchClassesValueSetsAndValues,
       searchValueSetsAndValues       : searchValueSetsAndValues,
+      searchValueSets                : searchValueSets,
       autocompleteOntology           : autocompleteOntology,
       autocompleteOntologySubtree    : autocompleteOntologySubtree,
       autocompleteValueSetClasses    : autocompleteValueSetClasses,
@@ -198,8 +200,6 @@ define([
       });
     };
 
-
-
     function getClassById(acronym, classId) {
       var url = base + '/ontologies/' + acronym + '/classes/' + encodeURIComponent(classId);
       return $http.get(url, http_default_config).then(function (response) {
@@ -215,9 +215,23 @@ define([
       });
     }
 
+    function getValueTree(vsId, vsCollection) {
+      return $http.get(base + '/vs-collections/' + vsCollection + '/values/' + encodeURIComponent(vsId) + "/tree",
+          http_default_config).then(function (response) {
+            return response.data;
+          }).catch(function (err) {
+            if (err.status == 502) {
+              UIMessageService.showBackendError($translate.instant("TERMINOLOGY.errorTerminology"), err);
+            }
+            else {
+              UIMessageService.showBackendError($translate.instant("TERMINOLOGY.errorBioPortal"), err);
+            }
+            return err;
+          });
+    };
 
-    function getValueTree(valueId, vsCollection) {
-      return $http.get(base + '/vs-collections/' + vsCollection + '/values/' + encodeURIComponent(valueId) + "/tree",
+    function getValueSetTree(valueId, vsCollection) {
+      return $http.get(base + '/vs-collections/' + vsCollection + '/value-sets/' + encodeURIComponent(valueId) + "/tree",
           http_default_config).then(function (response) {
             return response.data;
           }).catch(function (err) {
@@ -425,6 +439,24 @@ define([
 
     function searchValueSetsAndValues(query, sources, size) {
       var url = base + "/search?q=" + encodeURIComponent(query) + "&scope=value_sets,values" + "&page=1&page_size=" + size;
+      if (sources) {
+        url = url + "&sources=" + sources;
+      }
+      return $http.get(url, http_default_config).then(function (response) {
+        return response.data;
+      }).catch(function (err) {
+        if (err.status == 502) {
+          UIMessageService.showBackendError($translate.instant("TERMINOLOGY.errorTerminology"), err);
+        }
+        else {
+          UIMessageService.showBackendError($translate.instant("TERMINOLOGY.errorBioPortal"), err);
+        }
+        return err;
+      });
+    };
+
+    function searchValueSets(query, sources, size) {
+      var url = base + "/search?q=" + encodeURIComponent(query) + "&scope=value_sets" + "&page=1&page_size=" + size;
       if (sources) {
         url = url + "&sources=" + sources;
       }

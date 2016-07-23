@@ -88,37 +88,41 @@
     <div class="loader2"></div>
   </div>
 
-  <div class="search-messages" ng-if="tsc.isSearchingClasses()">
+  <div class="search-messages" ng-if="tsc.isSearchingClasses() || tsc.isSearchingValueSets()">
     <span class="search-msg" ng-if="tsc.showEmptyQueryMsg">Please enter a search query</span>
     <div ng-if="tsc.searchFinished">
       <div ng-if="tsc.resultsFound && !tsc.isCreatingMappings">
-        <span class="search-msg">{{tsc.searchResults.length}} results for the query '{{tsc.searchQuery}}'. </span>
-        <span class="search-msg">Click on a term below to select it</span>
+        <span ng-if="tsc.searchQuery" class="search-msg">{{tsc.searchResults.length}} results for the query '{{tsc.searchQuery}}'. </span>
+        <span ng-if="!tsc.searchQuery" class="search-msg">{{tsc.searchResults.length}} results. </span>
+        <span class="search-msg" ng-if="tsc.isSearchingClasses()">Click on a term below to select it</span>
+        <span class="search-msg" ng-if="tsc.isSearchingValueSets()">Click on a value set below to select it</span>
       </div>
       <span class="search-msg" ng-if="!tsc.resultsFound">No results</span>
     </div>
   </div>
   <div class="search-messages" ng-if="tsc.isSearchingOntologies()">
       <div ng-if="tsc.ontologiesFound.length > 0 && !tsc.isCreatingMappings">
-        <span class="search-msg">{{tsc.ontologiesFound.length}} ontologies found for the query '{{tsc.searchQuery}}'. </span>
+        <span ng-if="tsc.searchQuery" class="search-msg">{{tsc.ontologiesFound.length}} ontologies found for the query '{{tsc.searchQuery}}'. </span>
+        <span ng-if="!tsc.searchQuery" class="search-msg">{{tsc.ontologiesFound.length}} ontologies. </span>
         <span class="search-msg">Click on an ontology below to explore it</span>
       </div>
       <span class="search-msg" ng-if="tsc.ontologiesFound.length == 0">No results</span>
   </div>
-
 </div>
 
 <!-- Search Results and Ontology Tree -->
 <div class="clear search-results-section">
 
-  <!-- Search results -->
-  <div ng-if="tsc.resultsFound && tsc.searchFinished && (tsc.isFieldTypesMode() || tsc.isFieldValuesMode())">
+  <!-- Terms and Value Sets results -->
+  <div ng-if="(tsc.isSearchingClasses() || tsc.isSearchingValueSets) && tsc.resultsFound && tsc.searchFinished">
     <div class="search-results-headers">
       <table class="table table-condensed results-headers-table search-results-headers-table">
         <thead>
         <tr>
-          <th width="15%">Term</th>
-          <th width="32%">Definition</th>
+          <th width="15%" ng-if="tsc.isSearchingClasses()">Term</th>
+          <th width="15%" ng-if="tsc.isSearchingValueSets()">Value Set</th>
+          <th width="32%" ng-if="tsc.isSearchingClasses()">Definition</th>
+          <th width="32%" ng-if="tsc.isSearchingValueSets()">Description</th>
           <th width="11%">Type</th>
           <th width="14%">Source</th>
           <th width="13%">Id</th>
@@ -130,7 +134,7 @@
     <div class="search-results">
       <div class="no-search-results" ng-show="!tsc.resultsFound">No results.</div>
       <div class="table-responsive results-table-container">
-        <table class="table table-hover results-table search-results-table" ng-if="tsc.isSearchingClasses()">
+        <table class="table table-hover results-table search-results-table" ng-if="tsc.isSearchingClasses() || tsc.isSearchingValueSets()">
           <tbody>
           <!-- Note that the comparison (result.resultId == tsc.selectedResultId) ensures that multiple classes with the same id are not highlighted at the same time and (result.details.id == tsc.selectedClass.id) deselects the row if the user clicks on another class in the ontology tree -->
           <tr ng-repeat="result in tsc.searchResults" ng-click="tsc.selectResult(result, result.resultId)"
@@ -196,7 +200,7 @@
       <!-- Ontology Tree header -->
       <div class="ontology-tree-header table-cell-style" ng-if="tsc.isCurrentOntology()">
         <h4 ng-if="tsc.selectedClass.type=='OntologyClass' || !tsc.selectedClass">Ontology: {{tsc.currentOntology.info.id}}</h4>
-        <h4 ng-if="tsc.selectedClass.type=='Value'">Value Set: {{tsc.currentOntology.vs.prefLabel}}</h4>
+        <h4 ng-if="tsc.selectedClass.type=='Value' || tsc.selectedClass.type=='ValueSet'">Value Set: {{tsc.currentOntology.vs.prefLabel}}</h4>
       </div>
       <!-- Term and Ontology/Value Set Details header -->
       <div class="field-details-view table-cell-style" ng-if="tsc.isCurrentOntology()">
@@ -205,8 +209,8 @@
             <a href="#class-details" aria-controls="class-details" role="tab" data-toggle="tab">Term Details</a>
           </li>
           <li role="presentation" class="detail-view-tab">
-            <a ng-if="tsc.selectedClass.type=='OntologyClass' || tsc.isCurrentOntology()" href="#ontology-details" aria-controls="ontology-details" role="tab" data-toggle="tab">Ontology Details</a>
-            <a ng-if="tsc.selectedClass.type=='Value'" href="#ontology-details" aria-controls="ontology-details" role="tab" data-toggle="tab">Value Set Details</a>
+            <a ng-if="tsc.selectedClass.type=='OntologyClass' || (!tsc.selectedClass.type && tsc.isCurrentOntology())" href="#ontology-details" aria-controls="ontology-details" role="tab" data-toggle="tab">Ontology Details</a>
+            <a ng-if="tsc.selectedClass.type=='Value' || tsc.selectedClass.type=='ValueSet'" href="#ontology-details" aria-controls="ontology-details" role="tab" data-toggle="tab">Value Set Details</a>
           </li>
         </ul>
       </div>
@@ -232,8 +236,7 @@
       <div class="field-details-view pull-right" ng-if="tsc.isCurrentOntology()">
         <div class="tab-content">
           <div id="class-details" class="tab-pane active" role="tabpanel">
-            <div class="no-selected-class text-center" ng-hide="tsc.classDetails">Click on any term in the ontology
-              tree
+            <div class="no-selected-class text-center" ng-hide="tsc.classDetails">Click on a term on the left to view details
             </div>
             <div class="table-responsive">
               <table class="table table-striped">
@@ -255,7 +258,7 @@
             </div>
           </div>
           <!--Ontology details-->
-          <div ng-if="tsc.selectedClass.type=='OntologyClass' || tsc.isCurrentOntology()" id="ontology-details" class="tab-pane" role="tabpanel">
+          <div ng-if="tsc.selectedClass.type=='OntologyClass' || (!tsc.selectedClass.type && tsc.isCurrentOntology())" id="ontology-details" class="tab-pane" role="tabpanel">
             <div class="table-responsive">
               <table class="table table-striped">
                 <tbody>
@@ -274,11 +277,11 @@
                         target="_blank">{{tsc.currentOntology.info['@id']}}</a>
                   </td>
                 </tr>
-                <tr>
+                <tr ng-if="tsc.currentOntology.info.details.description">
                   <th>Description</th>
                   <td>{{(tsc.currentOntology.info.details.description | htmlToPlainText) || '-'}}</td>
                 </tr>
-                <tr>
+                <tr ng-if="tsc.currentOntology.info.details.numberOfClasses">
                   <th>No. Terms</th>
                   <td>{{tsc.currentOntology.info.details.numberOfClasses | number}}</td>
                 </tr>
@@ -287,7 +290,7 @@
             </div>
           </div>
           <!--Value Set details-->
-          <div ng-if="tsc.selectedClass.type=='Value'" id="ontology-details" class="tab-pane" role="tabpanel">
+          <div ng-if="tsc.selectedClass.type=='Value' || tsc.selectedClass.type=='ValueSet'" id="ontology-details" class="tab-pane" role="tabpanel">
             <div class="table-responsive">
               <table class="table table-striped">
                 <tbody>

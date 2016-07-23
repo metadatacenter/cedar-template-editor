@@ -16,6 +16,7 @@ define([
       loadOntologyRootClasses: loadOntologyRootClasses,
       loadTreeOfClass        : loadTreeOfClass,
       loadTreeOfValue        : loadTreeOfValue,
+      loadTreeOfValueSet     : loadTreeOfValueSet,
       sortBrowseResults      : sortBrowseResults,
       sortOntologyTree       : sortOntologyTree,
       getLastFragmentOfUri   : getLastFragmentOfUri
@@ -181,6 +182,26 @@ define([
         delete values.vs.children;
         delete values.vs.hasChildren;
         $scope.currentOntology = values;
+        $scope.searchPreloader = false;
+        $scope.isLoadingClassDetails = false;
+      });
+    }
+
+    function loadTreeOfValueSet(selection, $scope) {
+      $scope.searchPreloader = true;
+      $scope.selectedClass = selection;
+      $scope.classDetails = null;
+      $scope.isLoadingClassDetails = true;
+      var ontologyAcronym = getLastFragmentOfUri(selection.source);
+      $q.all({
+        info: controlledTermDataService.getVsCollectionById(ontologyAcronym),
+        vs  : controlledTermDataService.getValueSetTree(selection['@id'], ontologyAcronym),
+      }).then(function (values) {
+        values.tree = values.vs.children;
+        delete values.vs.children;
+        delete values.vs.hasChildren;
+        $scope.currentOntology = values;
+        console.log(values);
         $scope.searchPreloader = false;
         $scope.isLoadingClassDetails = false;
       });

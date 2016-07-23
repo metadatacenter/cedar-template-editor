@@ -258,7 +258,6 @@ define([
         }
       }
       vm.stagedOntologyValueConstraints = [];
-
       assignValueConstraintToField();
       vm.startOver();
     }
@@ -378,6 +377,7 @@ define([
       vm.selectedValueResult = null;
       vm.currentValueSet = null;
       vm.stagedOntologyClassValueConstraints = [];
+      vm.stagedOntologyValueConstraints = [];
       vm.stageValueConstraintAction = null;
       vm.selectedClass = null;
       vm.classDetails = null;
@@ -628,11 +628,18 @@ define([
           return vm.selectedClass;
         },
         function (value) {
-          if (vm.stageValueConstraintAction == 'add_class') {
-            vm.stageOntologyClassValueConstraint(value);
+          if (!value) {
+            // 'add class' selected by default
+            vm.stageValueConstraintAction = 'add_class';
           }
-          else if (vm.stageValueConstraintAction == 'add_children') {
-            vm.stageBranchValueConstraint(value);
+          else {
+            if (value.type == "OntologyClass" || value.type == "Value") {
+              vm.stageValueConstraintAction = 'add_class';
+              vm.stageOntologyClassValueConstraint(value);
+            }
+            else if (value.type == "ValueSet") {
+              vm.stageValueConstraintAction = 'add_entire_value_set';
+            }
           }
         });
 
@@ -641,9 +648,18 @@ define([
           return vm.currentOntology;
         },
         function (value) {
-          if (vm.stageValueConstraintAction == 'add_ontology') {
+          if (!vm.selectedClass || vm.stageValueConstraintAction == 'add_ontology') {
             if (value && value.info && value.info.details) {
               vm.stageOntologyValueConstraint();
+            }
+            if (!vm.selectedClass) {
+              vm.stageValueConstraintAction = 'add_ontology'
+            }
+          }
+
+          if (vm.selectedClass && vm.stageValueConstraintAction == 'add_entire_value_set') {
+            if (vm.currentOntology.vs) {
+              vm.stageValueSetValueConstraint();
             }
           }
         });
