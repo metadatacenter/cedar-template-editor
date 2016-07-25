@@ -201,7 +201,6 @@ define([
         delete values.vs.children;
         delete values.vs.hasChildren;
         $scope.currentOntology = values;
-        console.log(values);
         $scope.searchPreloader = false;
         $scope.isLoadingClassDetails = false;
       });
