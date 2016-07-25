@@ -263,6 +263,13 @@ define([
       jQuery("#" + $scope.searchBrowseModalId).modal('hide')
     };
 
+    $scope.pushErrorMessage = function (msg) {
+      console.log('pushErrorMessage ' + msg);
+      $scope.templateErrorMessages.push($translate.instant(msg));
+    };
+
+
+
     //*********** EVENT HANDLERS
 
     $scope.$on('invalidFieldState', function (event, args) {
@@ -309,7 +316,7 @@ define([
           $rootScope.schemaOf($scope.form)._ui.title = $translate.instant("VALIDATION.noNameField");
         }
         if (!$rootScope.schemaOf($scope.form)._ui.description) {
-          $rootScope.schemaOf($scope.form)._ui.description = $translate.instant("VALIDATION.noHelpText");
+          $rootScope.schemaOf($scope.form)._ui.description = $translate.instant("VALIDATION.noDescriptionField");
         }
       }
     });

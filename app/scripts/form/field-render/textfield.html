@@ -1,8 +1,5 @@
 <div class="fields text-fields" ng-class="{preview: preview}">
 
-    <!-- header row -->
-    <div ng-init="fieldTitle='Text';fieldIconClass='cedar-svg-text'"
-         ng-include="'scripts/form/partials/field-header.partial.html'"></div>
 
     <!--list of items -->
     <div class="form-group floating-label-wrapper has-feedback"
@@ -14,7 +11,7 @@
         <div ng-if="!$root.hasValueConstraint($root.schemaOf(field)._valueConstraints)" class="has-no-constraint">
 
 
-            <div ng-init="m=valueElement;pIndex=$parent.$index;"
+            <div ng-init="m=valueElement;pIndex=$parent.$index;cIndex=$index"
                  ng-include="'scripts/form/field-value/textfield.html'"></div>
 
             <!--<span class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"></span>-->
@@ -44,36 +41,5 @@
     </div>
 
 
-    <!-- zero cardinality case -->
-    <div ng-if="!$root.isRuntime() && filteredModel.length == 0"
-         class="form-group floating-label-wrapper has-feedback">
-
-        <div class="extra-label-content" ng-if="preview">
-            {{$root.schemaOf(field)._ui.title}}
-        </div>
-
-        <div ng-if="!$root.hasValueConstraint($root.schemaOf(field)._valueConstraints)" class="has-no-constraint">
-            <div ng-init="m=model;pIndex=$parent.$index;" ng-include="'scripts/form/field-value/textfield.html'"></div>
-            <div class="input-indicator-icons" ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
-        </div>
-
-        <!-- Field whose values have been constrained using controlled terms -->
-        <div ng-if="$root.hasValueConstraint($root.schemaOf(field)._valueConstraints)"
-             class="has-constraint autocomplete-label-wrapper" ng-class="{'has-selected': modelValue._value.label}">
-            <ui-select ng-model="modelValue._value" theme="bootstrap" close-on-select="true" ng-disabled="true"
-                       aria-label="{{$root.schemaOf(field)._ui.description}}">
-                <ui-select-match placeholder="">{{$select.selected.label}}</ui-select-match>
-                <ui-select-choices ui-disable-choice="option.label == 'No Results...'"
-                                   refresh="$root.updateFieldAutocomplete(field, $select.search)" refresh-delay="200"
-                                   repeat="option in $root.autocompleteResultsCache[field['@id']]['results'] | propsFilter: {label: $select.search}">
-                    <div ng-bind-html="option.label | highlight: $select.search"></div>
-                </ui-select-choices>
-            </ui-select>
-            <div class="floating-label">{{$root.schemaOf(field)._ui.title}} title</div>
-            <div class="input-indicator-icons" ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
-        </div>
-
-        <div class="more-input-wrapper" ng-include="'scripts/form/partials/more-input-buttons.partial.html'"></div>
-    </div>
 
 </div>

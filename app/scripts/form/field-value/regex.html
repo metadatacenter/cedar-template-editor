@@ -1,0 +1,15 @@
+
+<input type="text"
+       class="form-control field-title-definition"
+       id="regex-{{uuid}}-{{pIndex}}-{{cIndex}}"
+       placeholder="{{'CREATOR.enterTextField' | translate}}"
+       aria-label="{{'CREATOR.enterTextField' | translate}}"
+       ng-model="m._value"
+       ng-disabled="!$root.isRuntime() || preview"
+       validate-on="blur"
+       ng-pattern= {{$root.schemaOf(field)._ui.pattern}}
+       with-floating-label="" />
+<span class="warning-text">{{$root.schemaOf(field)._ui.warningText}}</span>
+
+<div class="input-indicator-icons ng-valid ng-scope"
+     ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>

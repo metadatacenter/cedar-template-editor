@@ -1,0 +1,42 @@
+<div ng-show="$root.isRuntime()" class="pull-right" >
+    <h4>
+
+        <button type="button" class="help"
+                style="background:transparent;border:0;outline:none"
+                ng-class="{'invisible': $root.schemaOf(field)._ui.description.length == 0}"
+                tooltip="{{$root.schemaOf(field)._ui.description}}"
+                tooltip-trigger
+                tooltip-animation="true"
+                tooltip-placement="top"
+                data-toggle="tooltip"
+                >
+            <i class="fa fa-question"></i>
+        </button>
+
+        <button type="button" class="add noOutline"
+                style="background:transparent;border:0;outline:none"
+                tooltip="add"
+                ng-show="$root.isArray(model)"
+                tooltip-trigger
+                tooltip-animation="true"
+                tooltip-placement="top"
+                data-toggle="tooltip"
+                ng-click="addMoreInput()">
+            <i class="fa fa-plus"></i>
+        </button>
+
+        <button type="button"
+                tooltip="show as spreadsheet"
+                tooltip-trigger
+                tooltip-animation="false"
+                tooltip-placement="top"
+                data-toggle="tooltip"
+                ng-click="switchToSpreadsheet()"
+                class="spreadsheetSwitchLink"
+                ng-show="$root.isArray(model)"
+                ng-disabled="preview"
+                style="background:transparent;border:0;outline:none">
+            <i class="cedar-svg-spreadsheet"></i>
+        </button>
+    </h4>
+</div>
