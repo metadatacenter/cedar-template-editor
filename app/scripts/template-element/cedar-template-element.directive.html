@@ -1,5 +1,5 @@
 <div ng-if="model !== undefined" class="element-root" id="{{$root.getDomId(element)}}"
-     ng-click="canSelect(!isRootElement && !$root.isRuntime(), $event); $event.preventDefault(); "
+     ng-click="canSelect(!isRootElement && !$root.isRuntime() && !isNested(), $event); $event.preventDefault(); "
      ng-class="{'selected': isEditState(element)}">
 
 
