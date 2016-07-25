@@ -1,5 +1,6 @@
+
 <input type="checkbox"
-       ng-click="$event.stopPropagation();"
+       ng-click="console('clicked');$event.stopPropagation();"
        id="checkbox-{{uuid}}-{{pIndex}}-{{cIndex}}"
        ng-model="m._value[value.text]"
        ng-checked="m._value[value.text]"
