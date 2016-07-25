@@ -608,6 +608,20 @@ define([
                     return (DataManipulationService.addOption($scope.field));
                 };
 
+
+                $scope.refreshOption = function (index) {
+
+                    // make a deep copy
+                    var options =   JSON.parse(JSON.stringify($rootScope.schemaOf($scope.field)._ui.options));
+                    for (var i = index; i<options.length; i++) {
+                        // empty out the item and following items
+                        $rootScope.schemaOf($scope.field)._ui.options[i] = {};
+                    }
+                    $timeout(function () {
+                        $rootScope.schemaOf($scope.field)._ui.options = options;
+                    });
+                };
+
                 // looks funky, but this refreshes the items below the deleted item
                 // just deleting the item at index, makes the following items incorrect in the display
                 $scope.removeOption = function (index) {
