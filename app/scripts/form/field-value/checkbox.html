@@ -1,5 +1,5 @@
 <input type="checkbox"
-       ng-click="console('click'); $event.stopPropagation();"
+       ng-click="$event.stopPropagation();"
        id="checkbox-{{uuid}}-{{pIndex}}-{{cIndex}}"
        ng-model="m._value[value.text]"
        ng-checked="m._value[value.text]"
@@ -15,7 +15,8 @@
 
               <input  type="text" class="form-control" style="border:0px solid white;border-bottom:1px solid #ddd; width:100%"
                      id="placeholder-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}" placeholder="Option"
-                     aria-label="Option" ng-model="$root.schemaOf(field)._ui.options[cIndex]['text']" with-floating-label>
+                     aria-label="Option" ng-model="$root.schemaOf(field)._ui.options[cIndex]['text']" with-floating-label
+                      value="{{$root.schemaOf(field)._ui.options[index]['text']}}">
 
               <a  ng-click="removeOption(cIndex);"><i style="font-size:20px;position:absolute;right:0;top:10px" class="fa fa-times"></i></a>
               </div>
