@@ -1,9 +1,5 @@
-<!--<p class="instructions">-->
-<!--Please, provide the following information for the term you want to create:-->
-<!--</p>-->
-<br/>
 <div class="floating-label-wrapper">
-  <input type="text" class="form-control required" name="provisionalClassLabel" placeholder="Label"
+  <input type="text" class="form-control required" name="provisionalClassLabel" placeholder="Name"
       ng-model="pcc.provisionalClass.prefLabel" with-floating-label=""/>
 </div>
 <br/>
@@ -11,7 +7,7 @@
   <textarea class="form-control required"
       rows="5"
       name="provisionalClassDescription"
-      placeholder="Description"
+      placeholder="Definition"
       ng-model="pcc.provisionalClass.description"
       with-floating-label=""></textarea>
 </div>
@@ -40,6 +36,9 @@
       current-ontology="pcc.pickedCurrentOntology"
       selected-class="pcc.pickedOntologyClass"
       is-loading-class-details="pcc.isLoadingPickedOntologyClassDetails"
+      is-creating-mappings="true"
+      is-creating-vs="false"
+      tree-visible="false"
   <!--field-name="ctdc.field.finalTitle"-->
   <!--search-mode="ctdc.filterSelection"-->
   <!--reset-callback="ctdc.startOver"-->

@@ -20,6 +20,8 @@ define([
         resetCallback: '=?',
         //selectedValueResult: '=',
         isLoadingClassDetails: '=',
+        isCreatingMappings: '=',
+        isCreatingVs: '=',
         treeVisible: '='
       },
       controller      : controlledTermSearchDirectiveController,
@@ -43,7 +45,8 @@ define([
       var vm = this;
       vm.action = 'search'; // Possible actions: search, create
       vm.allOntologies = [];
-      vm.isCreatingMappings = false;
+      vm.isCreatingValue = true;
+      vm.isCreatingValueSet = false;
       vm.isLoadingOntologyDetails = false;
       vm.loadingOntologies = false;
       vm.ontologiesFound = [];
@@ -86,6 +89,8 @@ define([
       vm.startSearch = startSearch;
       vm.switchToCreate = switchToCreate;
       vm.switchToSearch = switchToSearch;
+      vm.switchToCreateValue = switchToCreateValue;
+      vm.switchToCreateValueSet = switchToCreateValueSet;
       vm.endSearch = endSearch;
 
       /**
@@ -410,6 +415,16 @@ define([
       function switchToSearch() {
         reset(false, false, false);
         vm.action = 'search';
+      }
+
+      function switchToCreateValue() {
+        vm.isCreatingValue = true;
+        vm.isCreatingValueSet = false;
+      }
+
+      function switchToCreateValueSet() {
+        vm.isCreatingValue = false;
+        vm.isCreatingValueSet = true;
       }
 
       /* This function is passed as a callback down through class tree and child tree directives */

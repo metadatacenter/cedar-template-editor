@@ -1,11 +1,11 @@
 <!-- Field types -->
-<span ng-show="tsc.isSearching() && tsc.isFieldTypesMode()">Find a term in BioPortal to annotate the <span
+<span ng-show="tsc.isSearching() && tsc.isFieldTypesMode() && !tsc.isCreatingMappings && !tsc.isCreatingVs">Find a term in BioPortal to annotate the <span
     class="highlighted">'{{tsc.fieldName}}'</span> field or <button type="button" class="btn btn-create-term"
     ng-click="tsc.switchToCreate()">Create a New Term
 </button></span>
 
 <!-- Field values -->
-<span ng-show="tsc.isSearching() && tsc.isFieldValuesMode()">Find terms in BioPortal to constrain the values of the <span
+<span ng-show="tsc.isSearching() && tsc.isFieldValuesMode() && !tsc.isCreatingMappings && !tsc.isCreatingVs">Find terms in BioPortal to constrain the values of the <span
     class="highlighted">'{{tsc.fieldName}}'</span> field or <button type="button" class="btn btn-create-term"
     ng-click="tsc.switchToCreate()">Create New Terms
 </button></span>
@@ -329,24 +329,75 @@
   </div>
 </div>
 
-<!-- Create term -->
-<span ng-show="tsc.isCreating()">Please, provide the following information for the term you want to create or <button
-    type="button" class="btn btn-create-term" ng-click="tsc.switchToSearch()">Go Back to Term Search
-</button></span>
-<div ng-if="tsc.isCreating()" class="clear form-group add-ontology-class"
-    ng-controller="provisionalClassController as pcc">
+<!-- Field types - Create term -->
+<div ng-if="tsc.isCreating() && tsc.isFieldTypesMode()" class="creation-container">
+<span>Please, provide the following information for the term you want to create or
+  <button type="button" class="btn btn-create-term" ng-click="tsc.switchToSearch()">Go Back to Term Search</button></span>
+  <div class="clear form-group add-ontology-class"
+      ng-controller="provisionalClassController as pcc">
+    <ng-include src="'scripts/controlled-term/create-ontology-class.html'"></ng-include>
+    <div class="clear btn-create-term">
+      <button type="button"
+          class="std-button btn"
+          ng-click="pcc.saveAsFieldItem(pcc.provisionalClass)"
+          ng-disabled="!pcc.isValid()">Create Term
+      </button>
+      <!--<div class="input-indicator-icons">-->
+      <i class="cedar-svg-help-circle help-icon"
+          tooltip="The term will be created in the CEDARPC (CEDAR Provisional Classes) BioPortal ontology and added to your template"></i>
+      <!--</div>-->
+    </div>
+  </div>
+</div>
 
-  <ng-include src="'scripts/controlled-term/create-ontology-class.html'"></ng-include>
-  <div class="clear btn-create-term">
-    <button type="button"
-        class="std-button btn"
-        ng-click="pcc.saveAsFieldItem(pcc.provisionalClass)"
-        ng-disabled="!pcc.isValid()">Create Term
-    </button>
-    <!--<div class="input-indicator-icons">-->
-    <i class="cedar-svg-help-circle help-icon"
-        tooltip="The term will be created in the CEDARPC (CEDAR Provisional Classes) BioPortal ontology and added to your template"></i>
-    <!--</div>-->
+<!-- Field values - Create Term or Value Set -->
+<div ng-if="tsc.isCreating() && tsc.isFieldValuesMode()" class="creation-container">
+  <span>Please, choose an option below or <button type="button" class="btn btn-create-term"
+      ng-click="tsc.switchToSearch()">Go Back to Term Search
+  </button></span>
+  <!--Tab Headers-->
+  <div class="element-toggles">
+    <!-- Create Term (Tab Header) -->
+    <div class="element-toggle-add-values" ng-class="{active: tsc.isCreatingValue}" ng-click="tsc.switchToCreateValue()">
+      <span>Create Term</span>
+    </div>
+    <!-- Create Term (Tab Header) -->
+    <div class="element-toggle-add-values" ng-class="{active: tsc.isCreatingValueSet}" ng-click="tsc.switchToCreateValueSet()">
+      <span>Create Value Set</span>
+    </div>
   </div>
 
+  <!-- Tabs content -->
+  <div>
+    <!-- Create Term (Tab Content) -->
+    <div ng-if="tsc.isCreatingValue" class="clear form-group add-ontology-class" ng-controller="provisionalClassController as pcc">
+      <ng-include src="'scripts/controlled-term/create-ontology-class.html'"></ng-include>
+      <div class="clear btn-create-term">
+        <button type="button"
+            class="std-button btn"
+            ng-click="pcc.saveAsFieldItem(pcc.provisionalClass)"
+            ng-disabled="!pcc.isValid()">Create Term
+        </button>
+        <!--<div class="input-indicator-icons">-->
+        <i class="cedar-svg-help-circle help-icon"
+            tooltip="The term will be created in the (CEDAR Provisional Classes) BioPortal ontology and added to your template"></i>
+        <!--</div>-->
+      </div>
+    </div>
+    <!-- Create Value Set (Tab Content) -->
+    <div ng-if="tsc.isCreatingValueSet" class="clear form-group add-ontology-class" ng-controller="provisionalClassController as pcc">
+      <ng-include src="'scripts/controlled-term/create-value-set.html'"></ng-include>
+      <div class="clear btn-create-term">
+        <button type="button"
+            class="std-button btn"
+            ng-click="pcc.saveAsValueSetConstraint(pcc.provisionalClass, pcc.provisionalValueSetValues)"
+            ng-disabled="!pcc.isValid() || pcc.provisionalValueSetValues.length == 0">Create Value Set
+        </button>
+        <i class="cedar-svg-help-circle help-icon"
+            tooltip="The value set will be created in the (CEDAR Value Sets) BioPortal ontology and added to your template"></i>
+      </div>
+    </div>
+  </div>
 </div>
+
+

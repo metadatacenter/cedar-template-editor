@@ -11865,6 +11865,10 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   display: none;
   cursor: pointer;
 }
+.creation-container {
+  width: 90%;
+  margin: auto;
+}
 .controlled-term-options {
   float: none;
   width: 100%;
@@ -12205,20 +12209,6 @@ div.dotted .dashes {
 p.instructions {
   text-align: left;
 }
-.add-values-to-value-set {
-  padding-left: 20px;
-  padding-right: 20px;
-  margin-top: 20px;
-  margin-bottom: 10px;
-  background-color: #f4f4f7;
-}
-.add-values-to-value-set p.add-values-header {
-  text-transform: uppercase;
-  text-align: center;
-  font-weight: bold;
-  color: #5795ba;
-  padding-top: 10px;
-}
 .field-search {
   border: 1px solid #ddd;
   margin: auto;
@@ -12351,34 +12341,69 @@ p.instructions {
   font-weight: bold;
   color: #5795ba;
 }
-.add-ontology-class .provisional-class-mappings {
+.add-ontology-class div.add-values-to-value-set {
+  border: 1px solid #d2d2d2;
+  padding: 20px;
+  margin-bottom: 10px;
+  background-color: #f4f4f7;
+}
+.add-ontology-class div.add-values-to-value-set .add-values-instructions {
+  margin-top: 30px;
+}
+.add-ontology-class div.add-values-to-value-set button.btn-add-values {
+  margin-top: 10px;
+}
+.add-ontology-class div.add-values-to-value-set .no-values-msg {
+  text-align: center;
+  font-style: italic;
+  color: #999999;
+}
+.add-ontology-class .provisional-class-mappings,
+.add-ontology-class .vs-values {
   text-align: center;
   margin: auto;
   width: 80%;
 }
-.add-ontology-class .provisional-class-mappings .no-mappings-msg {
+.add-ontology-class .provisional-class-mappings .no-mappings-msg,
+.add-ontology-class .vs-values .no-mappings-msg,
+.add-ontology-class .provisional-class-mappings .no-values-msg,
+.add-ontology-class .vs-values .no-values-msg {
   font-style: italic;
   color: #999999;
 }
-.add-ontology-class .provisional-class-mappings .mapping-delete {
+.add-ontology-class .provisional-class-mappings .mapping-delete,
+.add-ontology-class .vs-values .mapping-delete,
+.add-ontology-class .provisional-class-mappings .value-delete,
+.add-ontology-class .vs-values .value-delete {
   font-size: 1.4em;
   color: #999999;
   margin: 0px auto;
   padding: 0px;
 }
-.add-ontology-class .provisional-class-mappings .mapping-delete:hover {
+.add-ontology-class .provisional-class-mappings .mapping-delete:hover,
+.add-ontology-class .vs-values .mapping-delete:hover,
+.add-ontology-class .provisional-class-mappings .value-delete:hover,
+.add-ontology-class .vs-values .value-delete:hover {
   color: #5795ba;
 }
-.add-ontology-class .provisional-class-mappings table thead {
+.add-ontology-class .provisional-class-mappings table,
+.add-ontology-class .vs-values table {
+  text-align: left;
+}
+.add-ontology-class .provisional-class-mappings table thead,
+.add-ontology-class .vs-values table thead {
   font-weight: bold;
   background-color: #eaf2f2;
   color: #5795ba;
 }
-.add-ontology-class .provisional-class-mappings table tbody {
+.add-ontology-class .provisional-class-mappings table tbody,
+.add-ontology-class .vs-values table tbody {
   background-color: white;
 }
 .add-ontology-class .provisional-class-mappings table tbody tr,
-.add-ontology-class .provisional-class-mappings table tbody td {
+.add-ontology-class .vs-values table tbody tr,
+.add-ontology-class .provisional-class-mappings table tbody td,
+.add-ontology-class .vs-values table tbody td {
   vertical-align: middle;
 }
 .options-wrapper {

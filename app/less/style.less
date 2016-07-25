@@ -3099,6 +3099,11 @@ section.dashboard-elements {
   cursor: pointer;
 }
 
+.creation-container {
+  width: 90%;
+  margin: auto;
+}
+
 .controlled-term-options {
   float: none;
   width: 100%;
@@ -3493,21 +3498,21 @@ p.instructions {
   //color: @gray;
 }
 
-.add-values-to-value-set {
-  padding-left: 20px;
-  padding-right: 20px;
-  margin-top: 20px;
-  margin-bottom: 10px;
-  background-color: @gray2;
-
-  p.add-values-header {
-    text-transform: uppercase;
-    text-align: center;
-    font-weight: bold;
-    color: @brand-primary;
-    padding-top: 10px;
-  }
-}
+//.add-values-to-value-set {
+//  padding-left: 20px;
+//  padding-right: 20px;
+//  margin-top: 20px;
+//  margin-bottom: 10px;
+//  background-color: @gray2;
+//
+//  p.add-values-header {
+//    text-transform: uppercase;
+//    text-align: center;
+//    font-weight: bold;
+//    color: @brand-primary;
+//    padding-top: 10px;
+//  }
+//}
 
 .field-search {
   border: 1px solid #ddd;
@@ -3671,17 +3676,39 @@ p.instructions {
     color: @brand-primary;
   }
 
-  .provisional-class-mappings {
-    text-align: center;
-    margin: auto;
-    width: 80%;
+  div.add-values-to-value-set {
+    border: 1px solid @gray3;
+    padding: 20px;
+    margin-bottom: 10px;
+    background-color: @gray2;
 
-    .no-mappings-msg {
+    .add-values-instructions {
+      margin-top: 30px;
+    }
+
+    button.btn-add-values {
+      margin-top: 10px;
+    }
+
+    .no-values-msg {
+      text-align: center;
       font-style: italic;
       color: @gray;
     }
 
-    .mapping-delete {
+  }
+
+  .provisional-class-mappings, .vs-values {
+    text-align: center;
+    margin: auto;
+    width: 80%;
+
+    .no-mappings-msg, .no-values-msg {
+      font-style: italic;
+      color: @gray;
+    }
+
+    .mapping-delete, .value-delete {
       //height: 20px;
       font-size: 1.4em;
       color: @gray;
@@ -3694,6 +3721,7 @@ p.instructions {
     }
 
     table {
+      text-align: left;
       thead {
         font-weight: bold;
         background-color: @brand-secondary;
@@ -3710,16 +3738,6 @@ p.instructions {
       }
     }
   }
-
-  //.field-search {
-  //  float: left;
-  //  width: 60%;
-  //}
-  //
-  //.field-ontologies {
-  //  width: 30%;
-  //  float: right;
-  //}
 }
 
 .options-wrapper {

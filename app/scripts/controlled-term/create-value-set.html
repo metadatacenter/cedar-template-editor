@@ -1,0 +1,91 @@
+<br/>
+<p class="instructions">
+  Please, provide the following information for the value set you want to create
+</p>
+<br/>
+<div class="floating-label-wrapper">
+  <input type="text" class="form-control required" name="provisionalClassLabel" placeholder="Name"
+      ng-model="pcc.provisionalClass.prefLabel" with-floating-label=""/>
+</div>
+<br/>
+<div class="floating-label-wrapper">
+  <textarea class="form-control required"
+      rows="5"
+      name="provisionalClassDescription"
+      placeholder="Description"
+      ng-model="pcc.provisionalClass.description"
+      with-floating-label=""></textarea>
+</div>
+<br/>
+
+<div ng-show="pcc.isValid()" class="add-values-to-value-set">
+
+  <p class="add-values-header">Add terms to the value set</p>
+
+  <div class="vs-values" ng-if="pcc.provisionalValueSetValues.length == 0">
+    <span class="no-values-msg">You have not added any terms yet</span>
+  </div>
+
+  <div class="vs-values" ng-if="pcc.provisionalValueSetValues.length > 0">
+    <table class="table">
+      <thead>
+      <tr>
+        <td>Term</td>
+        <td>Id</td>
+        <td>Source</td>
+        <td></td>
+      </tr>
+      </thead>
+      <tbody>
+      <tr ng-repeat="value in pcc.provisionalValueSetValues">
+        <td>{{value.prefLabel}}</td>
+        <td>{{value.id}}</td>
+        <td>{{tsc.getShortId(value.source)}}</td>
+        <td>
+          <div class="value-delete">
+            <i class="fa fa-times-circle" tooltip="Delete term" ng-click="pcc.deleteProvisionalValueSetValue($index)"></i>
+          </div>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p class="add-values-instructions">Use the options below to add existing BioPortal terms to the value set <span
+      class="highlighted">'{{pcc.provisionalClass.prefLabel}}'</span></p>
+
+  <controlled-term-search
+      search-mode="tsc.searchMode"
+      reset-callback="pcc.startOverInner"
+      current-ontology="pcc.pickedCurrentOntology"
+      selected-class="pcc.pickedOntologyClass"
+      is-loading-class-details="pcc.isLoadingPickedOntologyClassDetails"
+      is-creating-mappings="false"
+      is-creating-vs="true"
+      tree-visible="false">
+  </controlled-term-search>
+
+  <!--<div class="create-mapping-actions" ng-if="pcc.pickedOntologyClass">-->
+  <!--</div>-->
+  <!--<p class="mapping-representation-header">Mapping Type</p>-->
+  <!-- Select mapping type -->
+  <!--<div class="create-class-select">-->
+  <!--<select ng-model="pcc.provisionalClassMappingType"-->
+  <!--ng-options="option.label for option in pcc.provisionalClassMappingTypes"-->
+  <!--class="form-control select-mapping-type"-->
+  <!--select-picker="">-->
+  <!--<option value="">Select a mapping type...</option>-->
+  <!--</select>-->
+  <!--</div>-->
+  <br />
+  <!-- Mapping types -->
+  <div class="mapping-tools inline-block btn-create-class">
+    <button class="std-button btn btn-create-mapping" ng-disabled="!pcc.pickedOntologyClass"
+        ng-click="pcc.addValueToValueSet(pcc.pickedOntologyClass)">
+      Add Term
+    </button>
+  </div>
+
+</div>
+
+
