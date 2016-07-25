@@ -51,16 +51,6 @@ define([
 
           selfUrl = "http://data.bioontology.org/ontologies/" + acronym + "/classes/" + encodeURIComponent(resource["@id"]);
         }
-        // Not used
-        //else if (resource.type == 'ValueSet' || resource.type == 'Value') {
-        //  if (resource.provisional) {
-        //    selfUrl = resource["@id"];
-        //  }
-        //  else {
-        //    var acronym = resource.vsCollection.substr(resource.vsCollection.lastIndexOf('/') + 1);
-        //    selfUrl = "http://data.bioontology.org/ontologies/" + acronym + "/classes/" + encodeURIComponent(resource["@id"]);
-        //  }
-        //}
       }
       return selfUrl;
     }

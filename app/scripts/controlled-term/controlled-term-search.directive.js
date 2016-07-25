@@ -16,10 +16,7 @@ define([
         searchMode   : '=', // Search modes: field, values
         selectedClass: '=',
         currentOntology    : '=',
-        //currentValueSet    : '=',
-        //includeCreateClass : '=',
         resetCallback: '=?',
-        //selectedValueResult: '=',
         isLoadingClassDetails: '=',
         isCreatingMappings: '=',
         isCreatingVs: '=',
@@ -307,8 +304,6 @@ define([
         return vm.ontologiesFound;
       }
 
-      //*********
-
       function selectResult(selection, resultId) {
 
         // Set the basic fields for the selected class and ontology in order to show the info of the selected class while the rest of details are being loaded
@@ -327,11 +322,6 @@ define([
         else if (selection.details.type == 'ValueSet') {
           controlledTermService.loadTreeOfValueSet(selection.details, vm);
         }
-        //if (vm.searchMode == 'values') {
-        //  controlledTermDataService.getClassById(vm.currentOntology.info.id, selection['@id']).then(function (cls) {
-        //    vm.selectedClass.hasChildren = cls.hasChildren;
-        //  });
-        //}
       }
 
       function selectOntology(selection) {
@@ -345,41 +335,9 @@ define([
         });
       }
 
-      //*********
-
-      //function selectFieldClass(selection, resultId) {
-      //  // Set the basic fields for the selected class and ontology in order to show the info of the selected class while the rest of details are being loaded
-      //  //vm.treeVisible = false;
-      //  vm.selectedClass = {};
-      //  vm.currentOntology = {};
-      //  vm.currentOntology.info = {};
-      //  vm.selectedClass.prefLabel = selection.prefLabel;
-      //  vm.currentOntology.info.id = selection.source.id;
-      //  vm.selectedResultId = resultId;
-      //  controlledTermService.loadTreeOfClass(selection.details, vm);
-      //}
-      //
-      //function selectFieldOntology(selection) {
-      //  vm.treeVisible = true;
-      //  controlledTermService.loadOntologyRootClasses(selection, vm);
-      //}
-
       function isCurrentOntology() {
         return vm.currentOntology && vm.currentOntology != '';
       }
-
-      //function isOntologyNameMatched(ontology) {
-      //  var name;
-      //  if (!vm.isSearchingOntologies) {
-      //    return ontology;
-      //  }
-      //  if (vm.ontologySearchRegexp) {
-      //    name = ontology.name + " " + ontology.id;
-      //    return vm.ontologySearchRegexp.test(name);
-      //  } else {
-      //    return ontology;
-      //  }
-      //}
 
       /* Used in ontology tree directive. */
       /* This function is passed as a callback down through class tree and child tree directives */
@@ -525,17 +483,6 @@ define([
           return ('Value');
         }
       }
-
-      //function searchRegexp(searchQuery) {
-      //  if (searchQuery) {
-      //    // Remove illegal characters
-      //    searchQuery = searchQuery.replace(/[|&;$%@"<>()+,]/g, "");
-      //    vm.ontologySearchRegexp = new RegExp(searchQuery, "i");
-      //  }
-      //  else {
-      //    vm.ontologySearchRegexp = null;
-      //  }
-      //}
 
       function onTextClick(event) {
         event.target.select();
