@@ -1,5 +1,5 @@
 <div class="field-root" id="{{$root.getDomId(field)}}"
-     ng-click="canSelect(!$root.isRuntime(), $event); $event.preventDefault();"
+     ng-click="canSelect(!$root.isRuntime() && !isNested(), $event); $event.preventDefault();"
      ng-class="{'selected': isEditState(field)}">
 
     <!-- first row sort hander -->
