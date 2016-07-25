@@ -35,6 +35,7 @@ define([
     vm.searchMode = null;
     vm.startOverInner = startOverInner;
     vm.startOver = startOver;
+    vm.showCreateVsLoader = false;
 
     /**
      * Scope functions.
@@ -98,6 +99,7 @@ define([
     }
 
     function saveAsValueSetConstraint(provisionalValueSet, provisionalValueSetValues) {
+      vm.showCreateVsLoader = true;
       provisionalClassService.saveValueSet(provisionalValueSet, provisionalValueSetValues).then(function(newValueSet) {
         // Reload value sets cache
         controlledTermDataService.initValueSetsCache();
@@ -111,6 +113,7 @@ define([
             ontology: vm.provisionalValueSetOntology
           }
         );
+        vm.showCreateVsLoader = false;
       });
     }
 

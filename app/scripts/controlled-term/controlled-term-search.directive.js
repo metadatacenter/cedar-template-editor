@@ -74,6 +74,7 @@ define([
       vm.isSearching = isSearching;
       vm.getDefaultSearchQuery = getDefaultSearchQuery;
       vm.getClassDetails = getClassDetails;
+      vm.getShortText = getShortText;
       vm.hideTree = hideTree;
       vm.isCurrentOntology = isCurrentOntology;
       vm.isSearchingClasses = isSearchingClasses;
@@ -438,6 +439,27 @@ define([
         controlledTermDataService.getClassById(acronym, classId).then(function (response) {
           vm.classDetails = response;
         });
+      }
+
+      function getShortText(text, maxLength, finalString, emptyString) {
+        if (text && text.length > 0) {
+          // Converts html to plain text if needed
+          var tag = document.createElement('div');
+          tag.innerHTML = text;
+          var plainText = tag.innerText;
+          if (plainText.length > maxLength) {
+            var trimmedText = plainText.substr(0, maxLength);
+            //re-trim if we are in the middle of a word
+            trimmedText = trimmedText.substr(0, Math.min(trimmedText.length, trimmedText.lastIndexOf(" ")));
+            return trimmedText + finalString;
+          }
+          else {
+            return plainText;
+          }
+        }
+        else {
+          return emptyString;
+        }
       }
 
       /* Hide Ontology Tree and Details */
