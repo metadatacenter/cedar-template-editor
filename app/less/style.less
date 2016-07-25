@@ -5341,7 +5341,7 @@ body .template-header .controlled-terms-modal {
 }
 
 .tabs-content {
-  padding: 20px 100px 0px 20px;
+  padding: 20px 20px 0px 20px;
   text-align: center;
   //border: 1px solid @gray3;
   //background: @gray2;
@@ -5353,16 +5353,35 @@ body .template-header .controlled-terms-modal {
     display: inline;
 
     th {
+      //border: 1px solid @gray3;
+      //border: none;
+      background: @white;
+      color: @brand-primary;
+      font-weight: bold;
       vertical-align: middle;
-      border: none;
       text-align: right;
+      padding: 12px;
     }
 
     td {
+      //border: 1px solid @gray3;
+      //border: none;
+      //background: @gray2;
+      background: @white;
+      //border: none;
       vertical-align: middle;
-      border: none;
       text-align: left;
+      padding: 12px;
     }
+
+    //tr:nth-child(even) {
+    //  background-color: red;
+    //}
+    //
+    //
+    //tr:nth-child(odd) {
+    //  background-color: white;
+    //}
 
     select {
       width: 60px;

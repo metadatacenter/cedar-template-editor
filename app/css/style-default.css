@@ -13764,7 +13764,7 @@ body .template-header .controlled-terms-modal {
   padding: 10px 30px;
 }
 .tabs-content {
-  padding: 20px 100px 0px 20px;
+  padding: 20px 20px 0px 20px;
   text-align: center;
 }
 .tabs-content .table-values-info {
@@ -13774,14 +13774,18 @@ body .template-header .controlled-terms-modal {
   display: inline;
 }
 .tabs-content .table-values-info th {
+  background: #ffffff;
+  color: #339933;
+  font-weight: bold;
   vertical-align: middle;
-  border: none;
   text-align: right;
+  padding: 12px;
 }
 .tabs-content .table-values-info td {
+  background: #ffffff;
   vertical-align: middle;
-  border: none;
   text-align: left;
+  padding: 12px;
 }
 .tabs-content .table-values-info select {
   width: 60px;

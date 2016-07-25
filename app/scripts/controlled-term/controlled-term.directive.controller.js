@@ -484,6 +484,7 @@ define([
     };
 
     function stageValueSetValueConstraint() {
+      vm.stagedValueSetValueConstraints = [];
       vm.stagedValueSetValueConstraints.push({
         'name': vm.currentOntology.vs.prefLabel,
         'vsCollection': vm.currentOntology.info.id,
