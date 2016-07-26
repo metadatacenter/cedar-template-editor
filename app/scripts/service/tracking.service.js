@@ -13,6 +13,7 @@ define([
 
     var analyticsKey = null;
     var isTracking = null;
+    var ip = "";  // TODO get this from a server call
 
 
     var service = {
@@ -27,7 +28,7 @@ define([
       }
     };
 
-    // goal should be to save
+    // goal should be to track the following:
     // 1. IP address
     // 2. user agent
     // 3. user name  or user id
@@ -39,11 +40,12 @@ define([
     service.eventTrack = function(eventName, eventParameters) {
       console.log('eventTrack');
       console.log(eventParameters);
-      eventParameters.url = $location.path();
-      eventParameters.ip = 'ip';
-      eventParameters.host = 'host';
-      $analytics.eventTrack(eventName, eventParameters);
+      eventParameters.url = $location.absUrl();
+      eventParameters.host = $location.host();
+      eventParameters.protocol = $location.protocol();
+      eventParameters.ip = ip;
 
+      $analytics.eventTrack(eventName, eventParameters);
     };
 
     service.clickTrack = function(action, objectId) {
