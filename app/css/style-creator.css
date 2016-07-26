@@ -12248,6 +12248,9 @@ p.instructions {
 .field-search i.fa.fa-cog.selected {
   color: #5795ba;
 }
+.field-search .floating-label {
+  left: 12px;
+}
 .field-ontologies {
   border: 1px solid #d2d2d2;
   margin: 10px auto 10px 20px;
