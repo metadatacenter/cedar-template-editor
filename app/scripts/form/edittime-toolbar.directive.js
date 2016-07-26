@@ -60,14 +60,12 @@ define([
                 $scope.getValueModalId = function () {
                     var fieldId = $scope.fieldOrElement['@id'] || $scope.fieldOrElement.items['@id'];
                     var id = fieldId.substring(fieldId.lastIndexOf('/') + 1);
-                  console.log("control-options-" + id + "-" + "values");
                     return "control-options-" + id + "-" + "values";
                 };
 
                 $scope.getFieldModalId = function () {
                     var fieldId = $scope.fieldOrElement['@id'] || $scope.fieldOrElement.items['@id'];
                     var id = fieldId.substring(fieldId.lastIndexOf('/') + 1);
-                  console.log("control-options-" + id + "-" +  "field");
                     return "control-options-" + id + "-" +  "field";
                 };
 

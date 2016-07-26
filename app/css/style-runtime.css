@@ -10739,7 +10739,7 @@ body.search-browse-modal a.navbar-brand {
   color: #999999;
   position: absolute;
   pointer-events: none;
-  left: 12px;
+  left: 0px;
   top: 7px;
   -webkit-transition: 0.2s ease all;
           transition: 0.2s ease all;
