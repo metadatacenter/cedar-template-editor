@@ -95,11 +95,11 @@
         <div ng-if="ctdc.stageValueConstraintAction == 'add_class'">
           <table class="table table-values-info">
             <tr>
-              <th>Id</th>
+              <th>Term Id</th>
               <td>{{ctdc.stagedOntologyClassValueConstraints[0].uri}}</td>
             </tr>
             <tr>
-              <th>Name</th>
+              <th>Term Name</th>
               <td>{{ctdc.stagedOntologyClassValueConstraints[0].prefLabel}}
               </td>
             </tr>
@@ -116,12 +116,12 @@
             ng-if="ctdc.stageValueConstraintAction == 'add_ontology' && ctdc.stagedOntologyValueConstraints.length > 0">
           <table class="table table-values-info">
             <tr>
-              <th>Id</th>
+              <th>Ontology Id</th>
               <td>{{ctdc.stagedOntologyValueConstraints[0].uri}}
               </td>
             </tr>
             <tr>
-              <th>Name</th>
+              <th>Ontology Name</th>
               <td>{{ctdc.stagedOntologyValueConstraints[0].name}}
                 ({{ctdc.stagedOntologyValueConstraints[0].acronym}})
               </td>
@@ -138,11 +138,11 @@
             ng-if="ctdc.stageValueConstraintAction == 'add_entire_value_set' && ctdc.stagedValueSetValueConstraints.length > 0">
           <table class="table table-values-info">
             <tr>
-              <th>Id</th>
+              <th>Value Set Id</th>
               <td>{{ctdc.stagedValueSetValueConstraints[0].uri}}</td>
             </tr>
             <tr>
-              <th>Name</th>
+              <th>Value Set Name</th>
               <td>{{ctdc.stagedValueSetValueConstraints[0].name}}</td>
             </tr>
             <tr>

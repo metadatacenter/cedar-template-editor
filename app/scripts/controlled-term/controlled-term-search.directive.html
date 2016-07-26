@@ -230,9 +230,9 @@
     </div>
     <div class="field-tree-details">
       <!-- Ontology Tree content -->
-      <div class="ontology-tree pull-left" ng-if="tsc.isCurrentOntology()">
-        <div class="tree tree-view-ul tree-view list-unstyled class-tree-container"
-            ng-if="!tsc.currentOntology.info.flat">
+      <!--Note: the ng-if below forces to render again the cedar-class-tree directive and to scroll to the right place-->
+      <div class="ontology-tree pull-left" ng-if="tsc.isCurrentOntology() && tsc.treeVisible && !tsc.isLoadingClassDetails">
+        <div class="tree tree-view-ul tree-view list-unstyled class-tree-container" ng-if="!tsc.currentOntology.info.flat">
           <cedar-class-tree
               tree="tsc.currentOntology.tree"
               selected-node="tsc.selectedClass"
