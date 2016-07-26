@@ -143,7 +143,7 @@ define([
       return field;
     };
 
-    service.addElementToForm = function (form, elementId, divId, callback) {
+    service.addElementToForm = function (form, elementId, domId, callback) {
       AuthorizedBackendService.doCall(
           TemplateElementService.getTemplateElement(elementId),
           function (response) {
@@ -172,7 +172,8 @@ define([
             form._ui.order = form._ui.order || [];
             form._ui.order.push(elName);
 
-            DataManipulationService.addDomIdIfNotPresent(clonedElement, divId);
+            DataManipulationService.addDomIdIfNotPresent(clonedElement, domId);
+            DataManipulationService.createDomIds(clonedElement);
             callback(clonedElement);
 
           },
@@ -182,7 +183,7 @@ define([
       );
     };
 
-    service.addFieldToElement = function (element, fieldType) {
+    service.addFieldToElement = function (element, fieldType, divId, callback) {
       var field = DataManipulationService.generateField(fieldType);
       DataManipulationService.setSelected(field);
       //field.properties._tmp = field.properties._tmp || {};
@@ -210,9 +211,15 @@ define([
       // Adding field to the element.properties object
       element.properties[fieldName] = field;
       element._ui.order.push(fieldName);
+
+      DataManipulationService.addDomIdIfNotPresent(field, divId);
+      DataManipulationService.defaultTitle(field);
+      callback(field);
+
+      return field;
     };
 
-    service.addElementToElement = function (element, elementId) {
+    service.addElementToElement = function (element, elementId, domId, callback) {
       AuthorizedBackendService.doCall(
           TemplateElementService.getTemplateElement(elementId),
           function (response) {
@@ -237,6 +244,10 @@ define([
             // Adding field to the element.properties object
             element.properties[elName] = el;
             element._ui.order.push(elName);
+
+            DataManipulationService.addDomIdIfNotPresent(el, domId);
+            DataManipulationService.createDomIds(el);
+            callback(el);
           },
           function (err) {
             UIMessageService.showBackendError('SERVER.ELEMENT.load.error', err);
@@ -270,6 +281,14 @@ define([
         $scope.staging = {};
         this.moveIntoPlace();
       }
+    };
+
+    service.setModelObject = function (modelObject) {
+      $rootScope.modelObject = modelObject;
+    };
+
+    service.setDataObject = function (dataObject) {
+      $rootScope.dataObject = dataObject;
     };
 
     return service;

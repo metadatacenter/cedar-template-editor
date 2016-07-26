@@ -1,0 +1,11 @@
+
+<textarea ng-init="autoResizeTextArea('textarea-' + uuid + '-' + pIndex + '-' + cIndex)" rows="1"
+          class="form-control field-title-definition"
+          id="textarea-{{uuid}}-{{pIndex}}-{{cIndex}}"
+          placeholder="{{'CREATOR.enterParagraph' | translate}}"
+          aria-label="{{'CREATOR.enterParagraph' | translate}}"
+          ng-model="m._value"
+          ng-disabled="!$root.isRuntime() || preview"
+          with-floating-label=""></textarea>
+
+<div class="input-indicator-icons" ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>

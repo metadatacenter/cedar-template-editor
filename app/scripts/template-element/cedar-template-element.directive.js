@@ -7,9 +7,9 @@ define([
       .directive('cedarTemplateElement', cedarTemplateElementDirective);
 
   cedarTemplateElementDirective.$inject = ['$rootScope', 'DataManipulationService', 'DataUtilService',
-                                           'SpreadsheetService'];
+                                           'SpreadsheetService', '$timeout'];
 
-  function cedarTemplateElementDirective($rootScope, DataManipulationService, DataUtilService, SpreadsheetService) {
+  function cedarTemplateElementDirective($rootScope, DataManipulationService, DataUtilService, SpreadsheetService, $timeout) {
 
     var directive = {
       restrict   : 'EA',
@@ -222,6 +222,7 @@ define([
       };
 
       scope.switchExpandedState = function (domId) {
+        console.log('switchExpandedState');
         $rootScope.toggleElement(domId);
       };
 
@@ -229,12 +230,17 @@ define([
       scope.removeChild = function (fieldOrElement) {
         // fieldOrElement must contain the schema level
         fieldOrElement = $rootScope.schemaOf(fieldOrElement);
-
         var selectedKey;
         var props = $rootScope.propertiesOf(scope.element);
         angular.forEach(props, function (value, key) {
-          if (value["@id"] == fieldOrElement["@id"]) {
-            selectedKey = key;
+          if (DataManipulationService.isCardinalElement(value)) {
+            if (value.items["@id"] == fieldOrElement["@id"]) {
+              selectedKey = key;
+            }
+          } else {
+            if (value["@id"] == fieldOrElement["@id"]) {
+              selectedKey = key;
+            }
           }
         });
 
@@ -251,6 +257,9 @@ define([
             scope.$emit("invalidFieldState",
                 ["remove", $rootScope.schemaOf(fieldOrElement)._ui.title, fieldOrElement["@id"]]);
           }
+        } else {
+          console.log("Error: can't find field or element to delete");
+          console.log(fieldOrElement);
         }
       };
 
@@ -263,13 +272,23 @@ define([
 
       // try to deselect this element
       scope.canDeselect = function (element) {
+        console.log('try to deselect this element ');
         return DataManipulationService.canDeselect(element);
       };
 
       // try to select this element
-      scope.canSelect = function (select) {
-        if (select)
-          DataManipulationService.canSelect(scope.element);
+      scope.canSelect = function (select, event) {
+        console.log('try to select this element ' + select);
+        var result = select;
+        if (select) {
+          if (DataManipulationService.canSelect(scope.element)) {
+            console.log('stopPropagation');
+            event.stopPropagation();
+          }
+          //$scope.toggleControlledTerm('none');
+          result = true;
+        }
+        return result;
       };
 
       // when element is deseleted, look at errors and parse if none
@@ -279,6 +298,25 @@ define([
           if (errorMessages.length == 0) parseElement();
         }
       });
+
+      // watch for this elements's select
+      scope.$on('select', function (event, args) {
+        var element = args[0];
+        var errors = args[1];
+
+        if (element == scope.element) {
+
+          $timeout(function () {
+
+            var title = angular.element('#' + $rootScope.getDomId(scope.element) + "-edit-title");
+            if (title) {
+              title.select();
+            }
+          });
+        }
+      });
+
+
 
       scope.renameChildKey = function (child, newKey) {
         if (!child) {
@@ -352,6 +390,10 @@ define([
       scope.$watchCollection("element.items.properties", function () {
         parseElement();
       });
+
+      scope.duplicate = function () {
+        console.log('duplicate element');
+      };
     }
 
   };

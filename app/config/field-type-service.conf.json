@@ -19,8 +19,8 @@
   },
   {
     "cedarType": "radio",
-    "iconClass": "cedar-svg-multiple-choice",
-    "label": "Multiple Choice",
+    "iconClass": "cedar-svg-radio",
+    "label": "Radio",
     "allowedInElement": true,
     "hasControlledTerms": true,
     "staticField": false
@@ -37,6 +37,14 @@
     "cedarType": "date",
     "iconClass": "cedar-svg-calendar",
     "label": "Date",
+    "allowedInElement": true,
+    "hasControlledTerms": false,
+    "staticField": false
+  },
+  {
+    "cedarType": "date-range",
+    "iconClass": "cedar-svg-calendar",
+    "label": "Date Range",
     "allowedInElement": true,
     "hasControlledTerms": false,
     "staticField": false
@@ -64,7 +72,7 @@
     "iconClass": "cedar-svg-numeric",
     "allowedInElement": true,
     "primaryField": true,
-    "Label": "Number",
+    "label": "Number",
     "hasControlledTerms": false,
     "staticField": false
   },
@@ -74,6 +82,22 @@
     "allowedInElement": true,
     "label": "Phone Number",
     "hasControlledTerms": false,
+    "staticField": false
+  },
+  {
+    "cedarType": "regex",
+    "iconClass": "cedar-svg-text",
+    "allowedInElement": true,
+    "label": "Regex Text",
+    "hasControlledTerms": true,
+    "staticField": false
+  },
+  {
+    "cedarType": "url",
+    "iconClass": "cedar-svg-text",
+    "allowedInElement": true,
+    "label": "URL",
+    "hasControlledTerms": true,
     "staticField": false
   },
   {

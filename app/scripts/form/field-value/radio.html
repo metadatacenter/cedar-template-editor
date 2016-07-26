@@ -1,0 +1,31 @@
+
+<input type="radio"  class="btn btn-primary"
+       id="radio-{{uuid}}-{{pIndex}}-{{cIndex}}"
+       name="radio-{{uuid}}-{{pIndex}}"
+       ng-model="m._value"
+       value="{{$root.schemaOf(field)._ui.options[cIndex]['text']}}"
+       ng-change="refreshOption(0);"/>
+
+<label style="width:100%" ng-click="$event.stopPropagation();" for="radio-{{uuid}}-{{pIndex}}-{{cIndex}}">
+
+       <div  class="form-group floating-label-wrapper" style="transform: translate(0, -15px);">
+              <div ng-if="!isEditState()" style="transform: translate(0, 15px);">
+                     {{$root.schemaOf(field)._ui.options[index]['text']}}
+              </div>
+              <div ng-if="isEditState()">
+
+                     <input  type="text" class="form-control" style="border:0px solid white;border-bottom:1px solid #ddd; width:100%"
+                             id="placeholder-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}" placeholder="Option"
+                             aria-label="Option" ng-model="$root.schemaOf(field)._ui.options[cIndex]['text']" with-floating-label
+                             value="{{$root.schemaOf(field)._ui.options[index]['text']}}">
+
+                     <a  ng-click="removeOption(cIndex);"><i style="font-size:20px;position:absolute;right:0;top:10px" class="fa fa-times"></i></a>
+              </div>
+
+
+       </div>
+</label>
+
+
+
+

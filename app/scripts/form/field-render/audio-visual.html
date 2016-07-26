@@ -1,74 +1,24 @@
 <div class="fields audio-visual-fields">
-  <div ng-if="$root.isArray(model)" class="form-group floating-label-wrapper" ng-repeat="valueElement in model">
-	<!--<p class="extra-label-context" ng-if="!$root.isRuntime() && $root.schemaOf(field)._ui.title">{{$root.schemaOf(field)._ui.title}}</p>-->
-    <input type="text"
-           class="form-control"
-           ng-class="{'required': $root.schemaOf(field)._valueConstraints.requiredValue}"
-           id="audiovisual"
-           placeholder="{{$root.schemaOf(field)._ui.title}}"
-           aria-label="{{$root.schemaOf(field)._ui.description}}"
-           ng-model="valueElement._value"
-           ng-disabled="!$root.isRuntime() || preview"
-           with-floating-label="" />
-    <div class="input-indicator-icons">
-      <i class="cedar-svg-help-circle" data-container="body" data-toggle="popover" data-placement="left" data-content="{{$root.schemaOf(field)._ui.description}}"></i>
-      <i class="cedar-svg-check-circle"></i>
-      <i class="cedar-svg-warning"></i>
-    </div><!-- /.input-indicator-icons -->
-    <div class="additional-options">
-      <span class="or">or</span>
-      <span class="file-input btn btn-primary btn-file">Upload File<input type="file" multiple></span>
-    </div>
-    <div class="more-input-wrapper" ng-include="'scripts/form/partials/more-input-buttons.partial.html'" ng-show="!field.maxItems || field.maxItems > 1"></div>
-  </div><!-- /.form-group -->
+    <div class="form-group floating-label-wrapper" ng-repeat="valueElement in model">
+        <!--<p class="extra-label-context" ng-if="!$root.isRuntime() && $root.schemaOf(field)._ui.title">{{$root.schemaOf(field)._ui.title}}</p>-->
 
-  <div ng-if="$root.isArray(model)" class="form-group floating-label-wrapper" >
-    <div class="more-input-wrapper" ng-include="'scripts/form/partials/zero-input-buttons.partial.html'" ></div>
-  </div>
+        <div ng-init="m=valueElement;pIndex=$parent.$index;"
+             ng-include="'scripts/form/field-value/audio-visual.html'"></div>
 
-  <div ng-if="$root.isArray(model) && model.length == 0 && !$root.isRuntime()" class="form-group floating-label-wrapper">
-    <input type="text"
-        class="form-control"
-        ng-class="{'required': $root.schemaOf(field)._valueConstraints.requiredValue}"
-        id="audiovisual"
-        placeholder="{{$root.schemaOf(field)._ui.title}}"
-        aria-label="{{$root.schemaOf(field)._ui.description}}"
-        ng-model="model._value"
-        ng-disabled="true"
-        with-floating-label="">
-    </input>
-    <div class="input-indicator-icons">
-      <i class="cedar-svg-help-circle" data-container="body" data-toggle="popover" data-placement="left" data-content="{{$root.schemaOf(field)._ui.description}}"></i>
-      <i class="cedar-svg-check-circle"></i>
-      <i class="cedar-svg-warning"></i>
-    </div><!-- /.input-indicator-icons -->
-    <div class="additional-options">
-      <span class="or">or</span>
-      <span class="file-input btn btn-primary btn-file">Upload File<input type="file" multiple></span>
+        <div  class="more-input-wrapper"
+             ng-include="'scripts/form/partials/more-input-buttons.partial.html'"
+             ></div>
     </div>
-    <div class="more-input-wrapper" ng-disabled="true" ng-include="'scripts/form/partials/more-input-buttons.partial.html'" ></div>
-  </div><!-- /.form-group -->
+    <!-- /.form-group -->
 
-  <div ng-if="!$root.isArray(model)" class="form-group floating-label-wrapper">
-    <input type="text"
-           class="form-control"
-           ng-class="{'required': $root.schemaOf(field)._valueConstraints.requiredValue}"
-           id="audiovisual"
-           placeholder="{{$root.schemaOf(field)._ui.title}}"
-           aria-label="{{$root.schemaOf(field)._ui.description}}"
-           ng-model="model._value"
-           ng-disabled="!$root.isRuntime() || preview"
-           with-floating-label="">
-    </input>
-    <div class="input-indicator-icons">
-      <i class="cedar-svg-help-circle" data-container="body" data-toggle="popover" data-placement="left" data-content="{{$root.schemaOf(field)._ui.description}}"></i>
-      <i class="cedar-svg-check-circle"></i>
-      <i class="cedar-svg-warning"></i>
-    </div><!-- /.input-indicator-icons -->
-    <div class="additional-options">
-      <span class="or">or</span>
-      <span class="file-input btn btn-primary btn-file">Upload File<input type="file" multiple></span>
+
+    <div ng-if="filteredModel.length == 0 && !$root.isRuntime()" class="form-group floating-label-wrapper">
+        <div ng-init="m=valueElement;pIndex=$parent.$index;"
+             ng-include="'scripts/form/field-value/audio-visual.html'"></div>
+        <div class="more-input-wrapper" ng-disabled="true"
+             ng-include="'scripts/form/partials/more-input-buttons.partial.html'"></div>
     </div>
-  </div><!-- /.form-group -->
+    <!-- /.form-group -->
+
 
 </div>

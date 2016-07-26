@@ -1,0 +1,18 @@
+<input type="text"
+       class="form-control"
+       id="audiovisual"
+       placeholder="{{$root.schemaOf(field)._ui.title}}"
+       aria-label="{{$root.schemaOf(field)._ui.description}}"
+       ng-model="m._value"
+       ng-disabled="!$root.isRuntime() || preview"
+       with-floating-label="" />
+<div class="input-indicator-icons">
+    <i class="cedar-svg-help-circle" data-container="body" data-toggle="popover" data-placement="left" data-content="{{$root.schemaOf(field)._ui.description}}"></i>
+    <i class="cedar-svg-check-circle"></i>
+    <i class="cedar-svg-warning"></i>
+</div><!-- /.input-indicator-icons -->
+
+<div class="additional-options">
+    <span class="or">or</span>
+    <span class="file-input btn btn-primary btn-file">Upload File<input type="file" multiple></span>
+</div>

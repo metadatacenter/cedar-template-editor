@@ -89,6 +89,9 @@ define([
             var idx = $scope.form._ui.order.indexOf(selectedKey);
             $scope.form._ui.order.splice(idx, 1);
             $scope.$emit("invalidElementState", ["remove", title, id]);
+          } else {
+            console.log("error: can't find field or element to delete with key ");
+            console.log(fieldOrElement);
           }
         };
 

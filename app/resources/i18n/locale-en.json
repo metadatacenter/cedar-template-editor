@@ -11,13 +11,16 @@
         "NAME": "Rich Text"
       },
       "radio": {
-        "NAME": "Multiple Choice"
+        "NAME": "Radio"
       },
       "checkbox": {
         "NAME": "Checkbox"
       },
       "date": {
         "NAME": "Date"
+      },
+      "date-range": {
+        "NAME": "Date Range"
       },
       "email": {
         "NAME": "Email"
@@ -45,6 +48,12 @@
       },
       "youtube": {
         "NAME": "YouTube"
+      },
+      "regex": {
+        "NAME": "Regex Text"
+      },
+      "url": {
+        "NAME": "URL"
       }
     }
   },
@@ -90,6 +99,7 @@
     "GoodNews": "Good News!",
     "Cancel": "Cancel",
     "Copied": "Copied",
+    "Multiple": "Multiple:",
     "More": "More"
   },
   "SERVER": {
@@ -250,11 +260,13 @@
     "optionEmpty": "'Option' input cannot be left empty.",
     "multipleChoiceTooFew": "Multiple Choice fields must have at least two possible options",
     "templateNameEmpty": "Template Name input cannot be left empty.",
+    "invalidURLField": "Invalid URL.",
     "templateDescriptionEmpty": "Template Description input cannot be left empty.",
     "elementNameEmpty": "Element Name input cannot be left empty.",
     "elementDescriptionEmpty": "Element Description input cannot be left empty.",
     "noNameField": "Untitled",
     "noNameElement": "Untitled",
+    "noHelpText": "",
     "noDescriptionField": "Description",
     "noDescriptionElement": "Description",
     "groupHeader": {
@@ -289,7 +301,18 @@
   "CREATOR": {
     "addElementToStagingMsg": "Add an existing element or create a new item.",
     "enterFieldTitle": "Enter Field Title",
-    "enterFieldDescription": "Enter Field Description (Help Text)"
+    "enterElementTitle": "Enter Element Title",
+    "enterFieldDescription": "Enter Help Text",
+    "enterElementDescription": "Enter Help Text",
+    "enterEmail": "Enter an email address",
+    "enterDate": "Please select date",
+    "pleaseSelect": "Please select",
+    "enterPhoneNumber": "Enter phone number",
+    "enterNumber": "Enter number",
+    "enterParagraph": "Enter paragraph text",
+    "enterTextField": "Enter text field",
+    "enterURLField": "Enter URL field",
+    "enterRegexField": "Enter regex field"
   },
   "AUTHORIZATION-ERROR": {
     "suggestedAction": {
@@ -300,6 +323,13 @@
   "EDITOR": {
     "TOOLBAR": {
       "searchForMore": "Search for More Elements"
+    }
+  },
+  "UTILS": {
+    "JSON": {
+      "showElementModel": "Show/hide Element Model",
+      "showTemplateModel": "Show/hide Template Model",
+      "showInstance": "Show/hide Instance Data"
     }
   }
 }

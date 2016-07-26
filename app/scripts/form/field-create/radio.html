@@ -1,44 +1,56 @@
-<div id="radio-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}" class="input-type-container">
+<!--<div id="radio-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}" class="input-type-container">-->
 
-  <!-- header row -->
-  <div ng-init="fieldTitle='Multiple Choice';fieldIconClass='cedar-svg-multiple-choice'"
-      ng-include="'scripts/form/partials/field-header.partial.html'"></div>
+  <!--<div class="form-group floating-label-wrapper">-->
 
-  <div class="definition-inputs" ng-include="'scripts/form/partials/field-definition.partial.html'"></div>
-  <!-- /.definition-inputs -->
+    <!--<div class="options-wrapper">-->
+      <!--<div class="multiple-container">-->
+        <!--<span ng-repeat="(index, value) in $root.schemaOf(field)._ui.options">-->
+          <!--<div class="radio radio-primary">-->
+            <!--<input ng-click="$event.stopPropagation();"  type="radio" id="radio{{index}}"-->
+                <!--name="radio-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}"-->
+                <!--ng-model="$root.schemaOf(field)._ui.defaultOption"-->
+                <!--value="{{$root.schemaOf(field)._ui.options[index]['text']}}">-->
+            <!--<label for="radio{{index}}">-->
+              <!--<div class="form-group floating-label-wrapper">-->
+                <!--<input type="text" class="form-control"-->
+                    <!--id="placeholder-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}" placeholder="Option"-->
+                    <!--aria-label="Option" ng-model="$root.schemaOf(field)._ui.options[index]['text']" with-floating-label>-->
+              <!--</div>-->
+              <!--&lt;!&ndash; /.form-group &ndash;&gt;-->
+            <!--</label>-->
+          <!--</div>&lt;!&ndash; /.radio &ndash;&gt;-->
+        <!--</span>-->
 
-  <div class="form-group floating-label-wrapper">
-    <!--<input type="text" class="form-control" id="placeholder-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}" placeholder="Field Title" aria-label="Field Title" ng-model="$root.schemaOf(field)._ui.title"  with-floating-label>--
+        <!--<p class="add-another" ng-click="addOption(); $event.stopPropagation();"><img src="/img/plus.png"/>Add Another</p>-->
+      <!--</div>-->
+      <!--&lt;!&ndash; /.multiple-container &ndash;&gt;-->
+      <!--<p class="instructions">Click choice to set as default</p>-->
+    <!--</div>-->
+    <!--&lt;!&ndash; /.options-wrapper &ndash;&gt;-->
 
-  </div><!-- /.form-group -->
-    <div class="options-wrapper">
-      <div class="multiple-container">
-        <span ng-repeat="(index, value) in $root.schemaOf(field)._ui.options">
-          <div class="radio radio-primary">
-            <input ng-click="$event.stopPropagation();"  type="radio" id="radio{{index}}"
-                name="radio-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}"
-                ng-model="$root.schemaOf(field)._ui.defaultOption"
-                value="{{$root.schemaOf(field)._ui.options[index]['text']}}">
-            <label for="radio{{index}}">
-              <div class="form-group floating-label-wrapper">
-                <input type="text" class="form-control"
-                    id="placeholder-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}" placeholder="Option"
-                    aria-label="Option" ng-model="$root.schemaOf(field)._ui.options[index]['text']" with-floating-label>
-              </div>
-              <!-- /.form-group -->
-            </label>
-          </div><!-- /.radio -->
-        </span>
 
-        <p class="add-another" ng-click="addOption(); $event.stopPropagation();"><img src="/img/plus.png"/>Add Another</p>
+  <!--</div>-->
+  <!--&lt;!&ndash; /.input-type-container &ndash;&gt;-->
+<!--</div>-->
+
+
+<div class="fields fields-radio">
+
+  <div class="form-group  floating-label-wrapper ng-scope"
+       ng-class="{'required': $root.schemaOf(field)._valueConstraints.requiredValue}"
+       ng-repeat="valueElement in filteredModel = $root.arrayOf(model) | limitTo: 1">
+
+    <div class="form-group field-wrapper-radio  ">
+
+      <div class=" radio-item" ng-repeat="(index, value) in $root.schemaOf(field)._ui.options ">
+        <div class="radio radio-primary">
+          <div ng-init="m=valueElement;pIndex=$parent.$index;cIndex=$index"
+               ng-include="'scripts/form/field-value/radio.html'"></div>
+        </div>
       </div>
-      <!-- /.multiple-container -->
-      <p class="instructions">Click choice to set as default</p>
+
+      <p class="add-another" ng-click="addOption(); $event.stopPropagation();"><img src="/img/plus.png"/>Add Another</p>
+
     </div>
-    <!-- /.options-wrapper -->
-
-
-    <div class="configuration-options " ng-include="'scripts/form/partials/configuration-options.partial.html'"></div>
   </div>
-  <!-- /.input-type-container -->
 </div>

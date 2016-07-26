@@ -298,17 +298,17 @@
                 </ul>
 
               </li>
-              <li><a href="#" ng-click="dc.toggleFilters('author')">Author<i class="fa pull-right"
+              <li class="invisible"><a href="#" ng-click="dc.toggleFilters('author')">Author<i class="fa pull-right"
                   ng-class="{ 'fa-caret-down': dc.isFilterSection('author'), 'fa-caret-left': !dc.isFilterSection('author') }"></i></a>
 
                 <div ng-if="dc.isFilterSection('author')">&nbsp;</div>
               </li>
-              <li><a href="#" ng-click="dc.toggleFilters('status')">Status<i class="fa pull-right"
+              <li class="invisible"><a href="#" ng-click="dc.toggleFilters('status')">Status<i class="fa pull-right"
                   ng-class="{ 'fa-caret-down': dc.isFilterSection('status'), 'fa-caret-left': !dc.isFilterSection('status') }"></i></a>
 
                 <div ng-if="dc.isFilterSection('status')">&nbsp;</div>
               </li>
-              <li ui-tree=""><a href="#" ng-click="dc.toggleFilters('term')">Term<i class="fa pull-right"
+              <li class="invisible" ui-tree=""><a href="#" ng-click="dc.toggleFilters('term')">Term<i class="fa pull-right "
                   ng-class="{ 'fa-caret-down': dc.isFilterSection('term'), 'fa-caret-left': !dc.isFilterSection('term') }"></i></a>
 
                 <div ng-if="dc.isFilterSection('term')">&nbsp;</div>
@@ -657,6 +657,7 @@
           <li ng-show="dc.showFloatingMenu">
             <a ng-href="/templates/create?folderId={{dc.currentFolderId | encodeURIComponent}}">
               <button type="button"
+
                   tooltip="create template"
                   tooltip-trigger
                   tooltip-animation="false"
@@ -670,7 +671,8 @@
 
 
           <li ng-show="!dc.showFloatingMenu">
-            <button type="button"
+              <a ng-href="/templates/create?folderId={{dc.currentFolderId | encodeURIComponent}}">
+            <button type="button"  id="button-create-template"
                 tooltip="create template"
                 tooltip-trigger
                 tooltip-animation="false"
@@ -679,6 +681,7 @@
                 ng-mouseenter="dc.showFloatingMenu = true"><i
                 class="fa fa-plus template"></i>
             </button>
+                  </a>
           </li>
 
         </ul>

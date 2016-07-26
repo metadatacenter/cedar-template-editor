@@ -1,58 +1,14 @@
 <div class="fields fields-textarea">
 
-  <!-- header row -->
-  <div ng-init="fieldTitle='Paragraph';fieldIconClass='cedar-svg-paragraph'"
-      ng-include="'scripts/form/partials/field-header.partial.html'"></div>
+    <div class="form-group floating-label-wrapper has-feedback"
+         ng-repeat="valueElement in filteredModel = $root.arrayOf(model)">
 
-  <div ng-if="$root.isArray(model)" class="form-group floating-label-wrapper has-feedback"
-      ng-repeat="valueElement in model">
-    <textarea rows="5"
-        id="comment"
-        class="form-control"
-        ng-class="{'required': $root.schemaOf(field)._valueConstraints.requiredValue}"
-        placeholder="{{$root.schemaOf(field)._ui.title}}"
-        aria-label="{{$root.schemaOf(field)._ui.description}}"
-        ng-model="valueElement._value"
-        ng-disabled="!$root.isRuntime() || preview"
-        with-floating-label=""></textarea>
-
-    <div class="input-indicator-icons" ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
-    <div ng-if="$root.isRuntime()" class="more-input-wrapper yy"
-        ng-include="'scripts/form/partials/more-input-buttons.partial.html'"
-        ng-show="!field.maxItems || field.maxItems > 1"></div>
-  </div>
-  <!-- /.form-group -->
+        <div ng-init="m=valueElement;pIndex=$parent.$index;cIndex=$index"
+             ng-include="'scripts/form/field-value/textarea.html'"></div>
 
 
-  <div ng-if="$root.isArray(model) && model.length == 0 && !$root.isRuntime()"
-      class="form-group floating-label-wrapper has-feedback">
+        <div  class="more-input-wrapper"
+             ng-include="'scripts/form/partials/more-input-buttons.partial.html'"></div>
+    </div>
 
-    <textarea rows="5"
-        id="comment"
-        class="form-control"
-        placeholder="{{$root.schemaOf(field)._ui.title}}"
-        aria-label="{{$root.schemaOf(field)._ui.description}}"
-        ng-model="model._value"
-        ng-disabled="true"
-        with-floating-label=""></textarea>
-
-    <div class="input-indicator-icons" ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
-    <div ng-if="$root.isRuntime()" class="more-input-wrapper" ng-disabled="true"
-        ng-include="'scripts/form/partials/more-input-buttons.partial.html'"></div>
-  </div>
-  <!-- /.form-group -->
-
-  <div ng-if="!$root.isArray(model)" class="form-group floating-label-wrapper has-feedback">
-    <textarea rows="5"
-        id="comment"
-        class="form-control"
-        placeholder="{{$root.schemaOf(field)._ui.title}}"
-        aria-label="{{$root.schemaOf(field)._ui.description}}"
-        ng-model="model._value"
-        ng-disabled="!$root.isRuntime() || preview"
-        with-floating-label=""></textarea>
-
-    <div class="input-indicator-icons" ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
-  </div>
-  <!-- /.form-group -->
 </div>

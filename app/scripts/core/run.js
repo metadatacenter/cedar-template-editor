@@ -45,12 +45,40 @@ define([
       return DataManipulationService.getFieldSchema(fieldOrElement);
     };
 
+    // create an array from this object or array.  if !runtime then make sure we have at least one object in the array
+    $rootScope.arrayOf = function (objectOrArray) {
+      if (angular.isArray(objectOrArray)) {
+
+        // if it is not runtime, then make sure we have at least one object in the array
+        if (!$rootScope.isRuntime()) {
+          if (objectOrArray.length == 0) {
+            var obj = {};
+            objectOrArray.push(obj);
+          }
+        }
+        return objectOrArray;
+      } else {
+        // make sure we put this object into an array
+        var arr = [];
+        arr.push(objectOrArray)
+        return arr;
+      }
+    };
+
     $rootScope.console = function (txt, label) {
       console.log(label + ' ' + JSON.stringify(txt, null, 2));
     };
 
     $rootScope.isRuntime = function () {
       return $rootScope.pageId == 'RUNTIME';
+    };
+
+    $rootScope.isElementEditor = function () {
+      return $rootScope.pageId == 'ELEMENT';
+    };
+
+    $rootScope.isTemplateEditor = function () {
+      return $rootScope.pageId == 'TEMPLATE';
     };
 
     $rootScope.elementIsMultiInstance = DataManipulationService.elementIsMultiInstance;

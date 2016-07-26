@@ -1,0 +1,16 @@
+<input type="number"
+       class="form-control field-title-definition"
+       id="numeric-{{uuid}}-{{pIndex}}-{{cIndex}}"
+       placeholder="{{'CREATOR.enterNumber' | translate}}"
+       aria-label="{{'CREATOR.enterNumber' | translate}}"
+       ng-model="m._value"
+       ng-disabled="!$root.isRuntime() || preview"
+       ng-minlength="{{$root.schemaOf(field)._ui.minLength}}"
+       ng-maxlength="{{$root.schemaOf(field)._ui.maxLength}}"
+       validate-on="blur"
+       ng-pattern="/^\d+$/"
+       with-floating-label=""/>
+<span class="warning-text">{{$root.schemaOf(field)._ui.warningText}}</span>
+
+<div class="input-indicator-icons ng-valid ng-scope"
+     ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
