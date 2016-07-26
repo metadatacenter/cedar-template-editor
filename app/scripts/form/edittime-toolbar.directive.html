@@ -7,6 +7,7 @@
 
         <label translate>GENERIC.Multiple</label>
         <input tooltip="minimum required"
+               ng-click="clickTrack('editMinItems')"
                min="0"
                step="1"
                id="{{uuid}}-edit-toolbar-min"
@@ -18,6 +19,7 @@
                placeholder="min"/>
 
         <input tooltip="maximum allowed"
+               ng-click="clickTrack('editMaxItems')"
                min="1"
                step="1"
                id="{{uuid}}-edit-toolbar-max"
@@ -31,6 +33,7 @@
 
         <div class="dropdown" style="font-size:20px;display:inline-block;margin-right:20px">
             <a class="dropdown-toggle"
+               ng-click="clickTrack('toggleFieldControlledTermsModal')"
                type="button"
                data-toggle="dropdown"
                tooltip="characterize the field"
@@ -73,7 +76,7 @@
                                                     </td>
                                                     <td>
                                                         <div class="item item-delete"
-                                                             ng-click="deleteFieldAddedItem(key);  $event.stopPropagation();">
+                                                             ng-click="deleteFieldAddedItem(key); clickTrack('deleteFieldControlledTerm'); $event.stopPropagation();">
                                                             <i class="fa fa-close"></i>
                                                         </div>
                                                     </td>
@@ -86,7 +89,7 @@
                             </div>
                             <div class="clear-save" style="text-align:center">
                                 <button type="button" class="std-button btn search-ontologies-button"
-                                        ng-click="showModal(getFieldModalId()); $event.stopPropagation();">Search
+                                        ng-click="showModal(getFieldModalId()); clickTrack('showFieldControlledTermModal');$event.stopPropagation();">Search
                                 </button>
                                 <!--<button type="button" class="std-button btn search-ontologies-button">Create</button>-->
                             </div>
@@ -139,7 +142,7 @@
                                                     <td>&nbsp;</td>
                                                     <td>
                                                         <div class="item item-delete"
-                                                             ng-click="deleteFieldAddedClass(class); $event.stopPropagation();">
+                                                             ng-click="deleteFieldAddedClass(class); clickTrack('deleteFieldAddedClass');$event.stopPropagation();">
                                                             <i class="clickable fa fa-close"></i>
                                                         </div>
                                                     </td>
@@ -155,7 +158,7 @@
                                                     <td>{{valueSet.numChildren}}</td>
                                                     <td>
                                                         <div class="item item-delete"
-                                                             ng-click="deleteFieldAddedValueSet(valueSet);  $event.stopPropagation();">
+                                                             ng-click="deleteFieldAddedValueSet(valueSet); clickTrack('deleteFieldAddedValueSet'); $event.stopPropagation();">
                                                             <i class="clickable fa fa-close"></i>
                                                         </div>
                                                     </td>
@@ -168,7 +171,7 @@
                                                     <td>{{ontology.numChildren}}</td>
                                                     <td>
                                                         <div class="item item-delete"
-                                                             ng-click="deleteFieldAddedOntology(ontology); $event.stopPropagation();">
+                                                             ng-click="deleteFieldAddedOntology(ontology); clickTrack('deleteFieldAddedOntology');$event.stopPropagation();">
                                                             <i class="clickable fa fa-close"></i>
                                                         </div>
                                                     </td>
@@ -181,7 +184,7 @@
                                                     <td></td>
                                                     <td>
                                                         <div class="item item-delete"
-                                                             ng-click="deleteFieldAddedBranch(branch); $event.stopPropagation();">
+                                                             ng-click="deleteFieldAddedBranch(branch); clickTrack('deleteFieldAddedBranch');$event.stopPropagation();">
                                                             <i class="clickable fa fa-close"></i>
                                                         </div>
                                                     </td>
@@ -193,7 +196,7 @@
                                 </div>
                                 <div class="clear-save" style="text-align:center">
                                     <button type="button" class="std-button btn search-ontologies-button"
-                                            ng-click="showModal(getValueModalId()); $event.stopPropagation();">
+                                            ng-click="showModal(getValueModalId()); clickTrack('searchFieldControlledTermsModal');$event.stopPropagation();">
                                         Search
                                     </button>
                                     <!--<button type="button" class="std-button btn search-ontologies-button">Create</button>-->
@@ -210,6 +213,7 @@
         <!-- edit help text -->
         <div class="dropdown" style="font-size:20px;display:inline-block;margin-right:20px">
             <a class="dropdown-toggle"
+               ng-click="clickTrack('editToolbarHelp');"
                id="{{uuid}}-edit-toolbar-help"
                type="button"
                data-toggle="dropdown"
@@ -222,7 +226,7 @@
             </a>
 
             <div class="dropdown-menu">
-                   <textarea style="width:100%;height:100%;border:0px solid #fff" rows="5"
+                   <textarea style="width:100%;height:100%;border:0px solid #fff" rows="5" ng-click="clickTrack('editHelpText');"
                              class="form-control"
                              ng-model="$root.schemaOf(fieldOrElement)._ui.description"></textarea>
             </div>
@@ -231,7 +235,7 @@
         <!-- duplicate field or element -->
         <a style="font-size:20px;display:inline-block;margin-right:20px"
            id="{{uuid}}-edit-toolbar-duplicate"
-           ng-click=" duplicate();$event.stopPropagation();"
+           ng-click=" duplicate();clickTrack('duplicateFieldOrElement');$event.stopPropagation();"
            tooltip="duplicate field"
            tooltip-trigger
            tooltip-animation="true"
@@ -242,9 +246,9 @@
         <!-- required -->
         <input type="checkbox"
                id="{{uuid}}-edit-toolbar-required"
-               ng-click=" $event.stopPropagation();"
+               ng-click="clickTrack('toggleRequired'); $event.stopPropagation();"
                ng-model="$root.schemaOf(fieldOrElement)._valueConstraints.requiredValue"/>
-        <label style="margin-right:10px" ng-click=" $event.stopPropagation();" for="{{uuid}}-edit-toolbar-required"
+        <label style="margin-right:10px" ng-click="clickTrack('toggleRequired'); $event.stopPropagation();" for="{{uuid}}-edit-toolbar-required"
                tooltip="response required"
                tooltip-trigger
                tooltip-animation="true"
@@ -257,7 +261,7 @@
         <!-- delete -->
         <a style="font-size:20px;display:inline-block;margin-right:20px"
            id="{{uuid}}-edit-toolbar-delete"
-           ng-click=" delete();$event.stopPropagation();"
+           ng-click="delete();clickTrack('deleteFieldOrElement');$event.stopPropagation();"
            tooltip="delete field"
            tooltip-trigger
            tooltip-animation="true"

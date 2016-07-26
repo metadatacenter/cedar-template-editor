@@ -10,10 +10,10 @@ define([
 
 
     fieldDirective.$inject = ["$rootScope", "$sce", "$document", "$translate", "SpreadsheetService",
-        "DataManipulationService", "FieldTypeService", "controlledTermDataService", "$timeout"];
+        "DataManipulationService", "FieldTypeService", "controlledTermDataService", "$timeout", "TrackingService"];
 
     function fieldDirective($rootScope, $sce, $document, $translate, SpreadsheetService, DataManipulationService,
-                            FieldTypeService, controlledTermDataService, $timeout) {
+                            FieldTypeService, controlledTermDataService, $timeout, TrackingService) {
 
         var linker = function ($scope, $element, attrs) {
 
@@ -1055,11 +1055,11 @@ define([
                 $rootScope.toggleElement(domId);
             };
 
-
-
-
+           $scope.clickTrack = function (action) {
+               console.log('clicktrack' + action);
+                TrackingService.clickTrack(action, $rootScope.schemaOf(field)['@id'] || "");
+            };
         };
-
 
         return {
             templateUrl: 'scripts/form/field.directive.html',

@@ -1,11 +1,11 @@
 <div class="field-root" id="{{$root.getDomId(field)}}"
-     ng-click="canSelect(!$root.isRuntime() && !isNested(), $event); $event.preventDefault();"
+     ng-click="canSelect(!$root.isRuntime() && !isNested(), $event); clickTrack('selectField'); $event.preventDefault(); "
      ng-class="{'selected': isEditState(field)}">
 
     <!-- first row sort hander -->
     <div class="row">
         <div class="sortable-handler" style="height:30px;" ng-class="{'invisible': $root.isRuntime()}"
-             ng-mousedown="canSelect(!$root.isRuntime(), $event); $event.preventDefault(); ">
+             ng-mousedown="canSelect(!$root.isRuntime(), $event); $event.preventDefault(); clickTrack('dragField');">
             <div class="type-label sortable"><span class="sortable-icon"></span></div>
         </div>
     </div>
@@ -23,7 +23,7 @@
             <div ng-show="isEditState()" class="form-group validation-pattern pull-left min-items-option">
                 <select class="" ng-init="fieldType = $root.schemaOf(field)._ui.inputType" ng-model="fieldType"
                         ng-options="v.cedarType as v.label for v in getFieldTypes()"
-                        select-picker="$event.stopPropagation();">
+                        select-picker="$event.stopPropagation();clickTrack('changeFieldType')">
                 </select>
             </div>
             <runtime-toolbar-directive field-or-element="field" add="addMoreInput();"
