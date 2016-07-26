@@ -506,32 +506,6 @@ define([
           }
 
           function deleteResource(resource) {
-            UIMessageService.confirmedExecution(
-                function () {
-                  resourceService.deleteResource(
-                      resource,
-                      function (response) {
-                        // remove resource from list
-                        var index = vm.resources.indexOf(resource);
-                        vm.resources.splice(index, 1);
-                        resetSelected();
-                        UIMessageService.flashSuccess('SERVER.' + resource.nodeType.toUpperCase() + '.delete.success',
-                            {"title": resource.nodeType},
-                            'GENERIC.Deleted');
-                      },
-                      function (error) {
-                        UIMessageService.showBackendError('SERVER.' + resource.nodeType.toUpperCase() + '.delete.error',
-                            error);
-                      }
-                  );
-                },
-                'GENERIC.AreYouSure',
-                'DASHBOARD.delete.confirm.' + resource.nodeType,
-                'GENERIC.YesDeleteIt'
-            );
-          }
-
-          function deleteResource(resource) {
             if (!resource && hasSelection()) {
               resource = getSelection();
             }

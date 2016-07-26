@@ -11881,6 +11881,16 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
 .create-value-actions {
   padding-bottom: 20px;
 }
+.help-icon {
+  color: rgba(51, 51, 51, 0.24);
+  margin-left: 10px;
+  display: none;
+  cursor: pointer;
+}
+.creation-container {
+  width: 90%;
+  margin: auto;
+}
 .controlled-term-options {
   float: none;
   width: 100%;
@@ -11890,7 +11900,9 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   cursor: pointer;
 }
 .controlled-term-options .btn-start-over,
-.controlled-term-options .btn-back {
+.controlled-term-options .btn-advanced,
+.controlled-term-options .btn-back,
+.controlled-term-options .btn-create-term {
   color: #71a69c;
   background-color: transparent;
   font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
@@ -11902,12 +11914,18 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   padding: 0;
 }
 .controlled-term-options .btn-start-over:hover,
+.controlled-term-options .btn-advanced:hover,
 .controlled-term-options .btn-back:hover,
+.controlled-term-options .btn-create-term:hover,
 .controlled-term-options .btn-start-over:focus,
-.controlled-term-options .btn-back:focus {
+.controlled-term-options .btn-advanced:focus,
+.controlled-term-options .btn-back:focus,
+.controlled-term-options .btn-create-term:focus {
   color: #3c8e80;
 }
 .controlled-term-options .btn-start-over-group {
+  width: 80%;
+  margin: auto;
   margin-bottom: 0;
   text-align: right;
 }
@@ -11931,13 +11949,28 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   left: 0;
   position: absolute;
 }
+.controlled-term-options .btn-create-term {
+  text-align: center;
+  margin: 20px auto;
+  font-size: 1em;
+  font-style: normal;
+  font-weight: bold;
+  vertical-align: inherit;
+}
 .controlled-term-options .clear {
   clear: both;
+}
+.controlled-term-options .search-messages {
+  text-align: center;
+  margin-top: 30px;
+}
+.controlled-term-options .search-messages .search-msg {
+  color: #71a69c;
 }
 .controlled-term-options .search-results-section .search-results {
   min-height: 58px;
   max-height: 260px;
-  overflow-y: auto;
+  overflow-y: scroll;
 }
 .controlled-term-options .search-results-section .search-results .no-search-results {
   padding: 20px 0 19px 3.06%;
@@ -11948,19 +11981,19 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
 }
 .controlled-term-options .search-results-section .results-table,
 .controlled-term-options .search-results-section .results-headers-table {
+  table-layout: fixed;
   width: 100%;
 }
 .controlled-term-options .search-results-section .results-table td,
 .controlled-term-options .search-results-section .results-headers-table td,
 .controlled-term-options .search-results-section .results-table th,
 .controlled-term-options .search-results-section .results-headers-table th {
-  padding: 16px 20px;
+  padding: 10px 10px;
 }
 .controlled-term-options .search-results-section .results-table td:first-child,
 .controlled-term-options .search-results-section .results-headers-table td:first-child,
 .controlled-term-options .search-results-section .results-table th:first-child,
 .controlled-term-options .search-results-section .results-headers-table th:first-child {
-  width: 350px;
   word-break: normal;
   word-wrap: break-word;
 }
@@ -11969,6 +12002,23 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
 .controlled-term-options .search-results-section .results-table tr:first-child td,
 .controlled-term-options .search-results-section .results-headers-table tr:first-child td {
   border-top: none;
+}
+.controlled-term-options .search-results-section .results-table .selected-row {
+  background: #5795ba;
+  color: #FFFFFF;
+  font-weight: normal;
+}
+.controlled-term-options .search-results-section .results-table .selected-row .show-details {
+  padding: 0px;
+  margin: 0px;
+  text-align: center;
+  font-size: 0.9em;
+  color: #FFF;
+  vertical-align: baseline;
+  font-style: italic;
+}
+.controlled-term-options .search-results-section .results-table .selected-row .show-details:hover {
+  color: #eaf2f2;
 }
 .controlled-term-options .search-results-section .results-table tr {
   cursor: pointer;
@@ -12063,7 +12113,8 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   margin-top: 0px;
 }
 .controlled-term-options .ontology-tree .tree-view-ul {
-  height: 295px;
+  font-size: 0.9em;
+  height: 300px;
   width: 100%;
   overflow: auto;
 }
@@ -12179,68 +12230,207 @@ div.dotted .dashes {
   padding-right: 18px;
 }
 p.instructions {
-  text-align: center;
-  color: #999999;
+  text-align: left;
 }
-.add-values-to-value-set {
-  padding-left: 20px;
-  padding-right: 20px;
-  margin-top: 20px;
-  margin-bottom: 10px;
+.field-search {
+  border: 1px solid #ddd;
+  margin: auto;
+  width: 80%;
+}
+.field-search i.fa.fa-search,
+.field-search i.fa.fa-cog {
+  font-size: 22px;
+  color: #d2d2d2;
+}
+.field-search i.fa.fa-search:hover {
+  color: #71a69c;
+}
+.field-search i.fa.fa-cog.selected {
+  color: #71a69c;
+}
+.field-search .floating-label {
+  left: 12px;
+}
+.field-ontologies {
+  border: 1px solid #d2d2d2;
+  margin: 10px auto 10px 20px;
+  width: 90%;
+}
+.advanced-search {
   background-color: #f4f4f7;
+  margin: 10px auto;
+  padding: 20px;
+  border: 1px solid #d2d2d2;
+  width: 80%;
 }
-.add-values-to-value-set p.add-values-header {
-  text-transform: uppercase;
-  text-align: center;
+.advanced-search p.advanced-search-header {
+  text-align: left;
   font-weight: bold;
   color: #71a69c;
-  padding-top: 10px;
 }
-.add-values-to-value-set .field-search {
-  width: 49%;
+.advanced-search .advanced-search-options {
+  margin-left: 20px;
 }
-.add-values-to-value-set .field-browse {
-  width: 49%;
+.create-mapping-actions {
+  margin: 30px auto;
 }
 .add-ontology-class {
-  padding-left: 20px;
+  padding: 20px auto 40px 60px;
 }
 .add-ontology-class div.mapping-description {
-  padding-top: 20px;
+  width: 100%;
+  margin: 20px auto;
+  text-align: center;
+  vertical-align: middle;
+}
+.add-ontology-class div.mapping-description .mapping-subject,
+.add-ontology-class div.mapping-description .mapping-object {
+  vertical-align: middle;
+  padding: auto;
+  margin: auto;
+  line-height: normal;
+  display: inline-block;
+  border: 2px solid #71a69c;
+  width: 200px;
+  height: 50px;
+  border-radius: 100px / 25px;
+  background-color: rgba(113, 166, 156, 0.6);
+}
+.add-ontology-class div.mapping-description .mapping-subject .mapping-label,
+.add-ontology-class div.mapping-description .mapping-object .mapping-label {
+  width: 200px;
+  height: 50px;
+  vertical-align: middle;
+  display: table-cell;
+}
+.add-ontology-class div.mapping-description .mapping-predicate {
+  margin-left: -6px;
+  vertical-align: middle;
+  border: 1px solid #71a69c;
+  width: 220px;
+  display: inline-block;
+}
+.add-ontology-class div.mapping-description .mapping-predicate .mapping-predicate-label {
+  position: absolute;
+  margin-left: 62px;
+  margin-top: -22px;
+}
+.add-ontology-class div.mapping-description .mapping-predicate-arrow {
+  margin-left: -10px;
+  vertical-align: middle;
+  display: inline-block;
+  width: 0;
+  height: 0;
+  border: 6px solid transparent;
+  border-bottom: 6px solid transparent;
+  border-left: 12px solid #71a69c;
+}
+.add-ontology-class div.mapping-description .mapping-object {
+  margin-left: -12px;
 }
 .add-ontology-class div.mapping-tools {
-  padding-left: 165px;
+  text-align: center;
+  width: 100%;
 }
 .add-ontology-class div.create-class-select {
-  width: 220px;
-  float: left;
-  padding-right: 20px;
+  width: 280px;
+  margin: auto;
 }
 .add-ontology-class div.map-existing-classes {
+  border: 1px solid #d2d2d2;
   padding: 20px;
   margin-bottom: 10px;
   background-color: #f4f4f7;
 }
+.add-ontology-class div.map-existing-classes .mappings-instructions {
+  margin-top: 30px;
+}
 .add-ontology-class div.map-existing-classes select.select-mapping-type {
   width: 50%;
-  float: left;
+  display: inline-block;
   padding-right: 20px;
 }
 .add-ontology-class div.map-existing-classes button.btn-create-mapping {
-  float: right;
+  margin-top: 10px;
 }
 .add-ontology-class p.mapping-header,
 .add-ontology-class p.add-values-header {
+  margin-top: 20px;
   text-transform: uppercase;
   text-align: center;
   font-weight: bold;
   color: #71a69c;
 }
-.add-ontology-class .field-search {
-  width: 49%;
+.add-ontology-class p.mapping-representation-header {
+  margin-top: 30px;
+  text-align: center;
+  font-weight: bold;
+  color: #71a69c;
 }
-.add-ontology-class .field-browse {
-  width: 49%;
+.add-ontology-class div.add-values-to-value-set {
+  border: 1px solid #d2d2d2;
+  padding: 20px;
+  margin-bottom: 10px;
+  background-color: #f4f4f7;
+}
+.add-ontology-class div.add-values-to-value-set .add-values-instructions {
+  margin-top: 30px;
+}
+.add-ontology-class div.add-values-to-value-set button.btn-add-values {
+  margin-top: 10px;
+}
+.add-ontology-class div.add-values-to-value-set .no-values-msg {
+  text-align: center;
+  font-style: italic;
+  color: #999999;
+}
+.add-ontology-class .provisional-class-mappings,
+.add-ontology-class .vs-values {
+  text-align: center;
+  margin: auto;
+  width: 80%;
+}
+.add-ontology-class .provisional-class-mappings .no-mappings-msg,
+.add-ontology-class .vs-values .no-mappings-msg,
+.add-ontology-class .provisional-class-mappings .no-values-msg,
+.add-ontology-class .vs-values .no-values-msg {
+  font-style: italic;
+  color: #999999;
+}
+.add-ontology-class .provisional-class-mappings .mapping-delete,
+.add-ontology-class .vs-values .mapping-delete,
+.add-ontology-class .provisional-class-mappings .value-delete,
+.add-ontology-class .vs-values .value-delete {
+  font-size: 1.4em;
+  color: #999999;
+  margin: 0px auto;
+  padding: 0px;
+}
+.add-ontology-class .provisional-class-mappings .mapping-delete:hover,
+.add-ontology-class .vs-values .mapping-delete:hover,
+.add-ontology-class .provisional-class-mappings .value-delete:hover,
+.add-ontology-class .vs-values .value-delete:hover {
+  color: #71a69c;
+}
+.add-ontology-class .provisional-class-mappings table,
+.add-ontology-class .vs-values table {
+  text-align: left;
+}
+.add-ontology-class .provisional-class-mappings table thead,
+.add-ontology-class .vs-values table thead {
+  font-weight: bold;
+  background-color: #eaf2f2;
+  color: #71a69c;
+}
+.add-ontology-class .provisional-class-mappings table tbody,
+.add-ontology-class .vs-values table tbody {
+  background-color: white;
+}
+.add-ontology-class .provisional-class-mappings table tbody tr,
+.add-ontology-class .vs-values table tbody tr,
+.add-ontology-class .provisional-class-mappings table tbody td,
+.add-ontology-class .vs-values table tbody td {
+  vertical-align: middle;
 }
 .options-wrapper {
   width: 100%;
@@ -12489,11 +12679,11 @@ p.instructions {
 === Preloader
 ================================================
 */
-.preloader {
+.loader1 {
   display: block;
   margin: 10px 0 0;
 }
-.preloader:after {
+.loader1:after {
   content: "Searching...";
   display: block;
   width: auto;
@@ -12501,6 +12691,66 @@ p.instructions {
   line-height: 32px;
   color: #333;
   color: #71a69c;
+}
+.loader2 {
+  font-size: 10px;
+  margin: 50px auto;
+  text-indent: -9999em;
+  width: 4em;
+  height: 4em;
+  border-radius: 50%;
+  background: #5594bc;
+  background: -webkit-linear-gradient(left, #71a69c 10%, #eaf2f2 42%);
+  background: linear-gradient(to right, #71a69c 10%, #eaf2f2 42%);
+  position: relative;
+  -webkit-animation: load3 1.4s infinite linear;
+  animation: load3 1.4s infinite linear;
+  -webkit-transform: translateZ(0);
+  -ms-transform: translateZ(0);
+  transform: translateZ(0);
+}
+.loader2:before {
+  width: 50%;
+  height: 50%;
+  background: #5594bc;
+  border-radius: 100% 0 0 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  content: '';
+}
+.loader2:after {
+  background: #eaf2f2;
+  width: 75%;
+  height: 75%;
+  border-radius: 50%;
+  content: '';
+  margin: auto;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+}
+@-webkit-keyframes load3 {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+@keyframes load3 {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
 }
 /*
 ================================================
@@ -12637,11 +12887,14 @@ p.instructions {
 .fields-list .field-list {
   position: relative;
 }
-.element-toggles {
+.element-toggles,
+.element-toggles-values {
   text-align: center;
   margin: 0 0 10px 0;
 }
-.element-toggles .element-toggle {
+.element-toggles .element-toggle,
+.element-toggles-values .element-toggle {
+  color: #999999;
   display: inline-block;
   padding: 0 20px 0;
   border-bottom: 5px solid #DDD;
@@ -12649,20 +12902,55 @@ p.instructions {
   -webkit-transition: all 0.3s ease 0.1s;
           transition: all 0.3s ease 0.1s;
 }
-.element-toggles .element-toggle.active {
+.element-toggles .element-toggle.active,
+.element-toggles-values .element-toggle.active {
+  color: #71a69c;
+  font-weight: bold;
   border-color: #71a69c;
 }
-.element-toggles .element-toggle span {
+.element-toggles .element-toggle span,
+.element-toggles-values .element-toggle span {
   text-transform: uppercase;
   cursor: pointer;
 }
-.element-toggles .element-toggle.active span {
+.element-toggles .element-toggle.active span,
+.element-toggles-values .element-toggle.active span {
   cursor: default;
 }
-.element-toggles .add-element {
+.element-toggles .element-toggle-add-values,
+.element-toggles-values .element-toggle-add-values {
+  color: #999999;
+  display: inline-block;
+  padding: 0 20px 0;
+  border-bottom: 5px solid #DDD;
+  border-color: #DDD;
+  -webkit-transition: all 0.3s ease 0.1s;
+          transition: all 0.3s ease 0.1s;
+  width: 150px;
+  padding: 6px;
+  margin: 0px;
+}
+.element-toggles .element-toggle-add-values.active,
+.element-toggles-values .element-toggle-add-values.active {
+  color: #71a69c;
+  font-weight: bold;
+  border-color: #71a69c;
+}
+.element-toggles .element-toggle-add-values span,
+.element-toggles-values .element-toggle-add-values span {
+  text-transform: uppercase;
+  cursor: pointer;
+}
+.element-toggles .element-toggle-add-values.active span,
+.element-toggles-values .element-toggle-add-values.active span {
+  cursor: default;
+}
+.element-toggles .add-element,
+.element-toggles-values .add-element {
   display: inline-block;
 }
-.element-toggles .add-element .add {
+.element-toggles .add-element .add,
+.element-toggles-values .add-element .add {
   height: 25px;
   width: 25px;
   margin: 0 0 0 10px;
@@ -12674,12 +12962,14 @@ p.instructions {
   background-color: #71a69c;
   border: none;
 }
-.element-toggles .add-element .add i {
+.element-toggles .add-element .add i,
+.element-toggles-values .add-element .add i {
   color: #FFF;
   font-size: 14px;
   line-height: 25px;
 }
-.element-toggles .add-element .add:disabled {
+.element-toggles .add-element .add:disabled,
+.element-toggles-values .add-element .add:disabled {
   background-color: rgba(113, 166, 156, 0.6);
 }
 #form-item-config-section .adding-element .preview-edit-options {
@@ -12762,9 +13052,10 @@ p.instructions {
   padding: 0;
   list-style: none;
   position: relative;
+  border-left: 1px dashed #333;
 }
 .tree ul {
-  margin-left: 0.5em;
+  margin-left: 1em;
 }
 .tree ul:before {
   content: "";
@@ -12777,17 +13068,18 @@ p.instructions {
 }
 .tree li {
   margin: 0;
-  padding: 5px 1em;
+  padding: 6px 0em;
   /* indentation + .5em */
-  line-height: 22px;
+  line-height: 14px;
   /* default list item's `line-height` */
-  height: 30px;
+  height: 22px;
   font-weight: bold;
   position: relative;
 }
 .tree li a {
+  color: #333;
   display: block;
-  height: 22px;
+  height: 14px;
   white-space: nowrap;
   font-weight: normal;
 }
@@ -12810,18 +13102,39 @@ p.instructions {
   display: block;
   width: 16px;
   /* same with indentation */
-  height: 22px;
+  height: 15px;
   float: left;
+  margin-left: -6px;
 }
 .tree li:last-child:before {
   background: white;
   /* same with body background */
 }
+.tree .no-children > a:before {
+  content: "--";
+  font-weight: 200;
+  display: inline-block;
+  padding-left: 6px;
+  vertical-align: middle;
+  margin-right: 2px;
+}
 .tree .has-children > a:before {
-  background: url("/img/collapsed_arrow.png") no-repeat center center transparent;
+  font-family: FontAwesome;
+  content: "\f196 ";
+  display: inline-block;
+  padding-right: 3px;
+  vertical-align: middle;
+  background: white;
+  margin-right: 2px;
 }
 .tree .has-children.expanded > a:before {
-  background: url("/img/expanded_arrow.png") no-repeat center center transparent;
+  font-family: FontAwesome;
+  content: "\f147";
+  display: inline-block;
+  padding-right: 3px;
+  vertical-align: middle;
+  background: white;
+  margin-right: 2px;
 }
 .tree-view-ul > .tree > li {
   padding-left: 0;
@@ -12832,11 +13145,11 @@ p.instructions {
 .field-tree .ontology-tree {
   margin: 0;
   width: 40%;
-  padding: 10px 10px 0;
+  padding: 4px 4px 0;
   background: #ffffff;
 }
 .field-tree .ontology-tree .class-tree-container {
-  padding: 0 10px 5px 10px;
+  padding: 0 5px 5px 5px;
   background: #FFF;
 }
 .field-tree .ontology-class-children {
@@ -12846,34 +13159,29 @@ p.instructions {
   width: 58%;
 }
 .field-tree .field-details-view .nav-tabs {
-  border: none;
-  display: inline-block;
-  width: 100%;
+  border-color: #71a69c;
   text-transform: uppercase;
 }
-.field-tree .field-details-view .nav-tabs .detail-view-tab {
-  width: 50%;
-}
 .field-tree .field-details-view .nav-tabs .detail-view-tab a {
-  border-radius: 0;
-  text-align: center;
-  margin: 0;
-  background: #d2d2d2;
   border: none;
-  color: #000000;
-  padding: 10px 15px;
+  border-bottom: solid 1px #71a69c;
+  border-radius: 0px;
+  margin-right: 6px;
+  background: #d2d2d2;
+  color: grey;
 }
 .field-tree .field-details-view .nav-tabs .detail-view-tab.active a {
+  border-color: #71a69c;
   background: #71a69c;
   color: #FFFFFF;
   font-weight: normal;
 }
 .field-tree .field-details-view .tab-content table th {
-  padding: 15px 8px;
+  padding: 8px 8px;
   color: #71a69c;
   font-weight: bold;
-  text-transform: uppercase;
   border: none;
+  border-bottom: 1px solid #DDD;
 }
 .field-tree .field-details-view .tab-content table th:first-child {
   width: 100px;
@@ -12882,7 +13190,9 @@ p.instructions {
   border-bottom: 1px solid #DDD;
 }
 .field-tree .field-details-view .tab-content table td {
-  border-bottom: none;
+  border: none;
+  border-bottom: 1px solid #DDD;
+  padding: 8px 8px;
 }
 .selected-field-class {
   margin-left: -28px;
@@ -12894,6 +13204,8 @@ p.instructions {
   width: 15px;
 }
 .field-search span.input-group-addon {
+  padding-left: 6px;
+  padding-right: 6px;
   cursor: pointer;
   border-radius: 0;
 }
@@ -13034,8 +13346,8 @@ p.instructions {
   -webkit-transition: width 1s ease-in-out;
           transition: width 1s ease-in-out;
 }
-.is-creating-class .field-browse,
-.is-creating-value-set .field-browse,
+.is-creating-class .field-ontologies,
+.is-creating-value-set .field-ontologies,
 .is-creating-class .field-search,
 .is-creating-value-set .field-search {
   display: none;
@@ -13051,29 +13363,6 @@ p.instructions {
 .is-creating-class .values-search,
 .is-creating-value-set .values-search {
   display: none;
-}
-.is-searching .field-search {
-  width: 100%;
-  -webkit-transition: width 1s ease-in-out;
-          transition: width 1s ease-in-out;
-}
-.is-searching .field-browse,
-.is-searching .field-create-class {
-  display: none;
-}
-.is-searching .values-search {
-  width: 100%;
-  -webkit-transition: width 1s ease-in-out;
-          transition: width 1s ease-in-out;
-}
-.is-searching .values-browse,
-.is-searching .values-create-class {
-  display: none;
-}
-.field-search {
-  display: block;
-  float: left;
-  width: 33%;
 }
 .values-search {
   display: block;
@@ -13112,29 +13401,17 @@ p.instructions {
   width: 33%;
   overflow: hidden;
 }
-.is-browsing .field-search,
-.is-browsing .field-create-class {
-  display: none;
-}
-.is-browsing .field-browse {
-  width: 100%;
-  -webkit-transition: width 1s ease-in-out;
-          transition: width 1s ease-in-out;
-}
-.is-browsing .values-search,
-.is-browsing .values-create-class {
-  display: none;
-}
-.is-browsing .values-browse {
-  width: 100%;
-  -webkit-transition: width 1s ease-in-out;
-          transition: width 1s ease-in-out;
-}
 .inline-block {
   display: inline-block;
 }
 .checkbox-bioportal-value-sets {
   margin-left: 20px;
+}
+.radio-controlled-terms-search {
+  margin-left: 20px;
+}
+.radio-controlled-terms-search .radio-option {
+  margin-bottom: 0.5em;
 }
 .clickable {
   cursor: pointer;
@@ -13245,7 +13522,6 @@ p.instructions {
 .field-tree-header .ontology-class-children h4 {
   margin-right: 4%;
   color: #71a69c;
-  text-transform: uppercase;
 }
 .autocomplete-label-wrapper {
   position: relative;
@@ -13278,8 +13554,7 @@ p.instructions {
   height: 100%;
   background: #eaf2f2;
   border-radius: 0;
-  -o-box-shadow: none;
-  box-shadow: none;
+  box-shadow: 6px 6px 13px -2px rgba(0, 0, 0, 0.75);
   border: 0;
 }
 .controlled-terms-modal .modal-header {
@@ -13290,12 +13565,14 @@ p.instructions {
   margin-top: -20px;
 }
 .controlled-terms-modal .modal-body {
-  padding: 0 100px 100px;
+  padding: 0 40px 40px;
   height: calc(100% - 60px);
   overflow-y: auto;
 }
 .controlled-terms-modal .modal-body .class-actions {
   margin-top: 30px;
+  font-size: 1em;
+  text-align: center;
 }
 .controlled-terms-modal .element-title {
   margin-bottom: 20px;
@@ -13309,8 +13586,7 @@ body.modal-open .controlled-terms-modal {
   height: auto;
 }
 body.modal-open .modal-backdrop {
-  background-color: transparent;
-  opacity: 1;
+  opacity: 0.5;
 }
 .controlled-term-field-preview-form .elementTotalContent .preview-edit-options {
   display: none;
@@ -13400,13 +13676,15 @@ body .template-header .controlled-terms-modal {
   width: 19px;
 }
 .min-items-option label,
-.max-items-option label {
+.max-items-option label,
+.children-levels label {
   float: left;
   margin: 10px 10px 0 0;
   font-weight: normal;
 }
 .min-items-option .bootstrap-select,
-.max-items-option .bootstrap-select {
+.max-items-option .bootstrap-select,
+.children-levels .bootstrap-select {
   float: right;
 }
 .bootstrap-select .btn-select-picker {
@@ -13458,11 +13736,17 @@ body .template-header .controlled-terms-modal {
   color: #71a69c;
 }
 .class-action {
+  padding: 0px;
   padding-bottom: 10px;
-  border-bottom: 1px solid #71a69c;
+}
+.class-action .action-msg {
+  margin-bottom: 20px;
 }
 .class-action:last-child {
   margin-top: 10px;
+}
+.class-action .btn-add-term {
+  min-width: 120px;
 }
 .element .field-instance.multiple-instance-field {
   border: none;
@@ -13472,6 +13756,33 @@ body .template-header .controlled-terms-modal {
 }
 .nav > li > a {
   padding: 10px 30px;
+}
+.tabs-content {
+  padding: 20px 20px 0px 20px;
+  text-align: center;
+}
+.tabs-content .table-values-info {
+  table-layout: fixed;
+  width: 50%;
+  margin: auto;
+  display: inline;
+}
+.tabs-content .table-values-info th {
+  background: #ffffff;
+  color: #71a69c;
+  font-weight: bold;
+  vertical-align: middle;
+  text-align: right;
+  padding: 12px;
+}
+.tabs-content .table-values-info td {
+  background: #ffffff;
+  vertical-align: middle;
+  text-align: left;
+  padding: 12px;
+}
+.tabs-content .table-values-info select {
+  width: 60px;
 }
 .add-class-container .table-row-style .table-cell-style {
   padding-top: 10px;
@@ -13530,11 +13841,13 @@ body .template-header .controlled-terms-modal {
   color: #999999;
   opacity: 0.6;
 }
+.field-filter .search-options,
 .value-filter .search-options {
-  margin-bottom: 25px;
+  margin-bottom: 16px;
 }
+.field-filter .search-options label,
 .value-filter .search-options label {
-  font-size: 16px;
+  font-size: 1em;
 }
 .field-root {
   padding: 0px 30px;
@@ -13581,6 +13894,43 @@ table.apiKey td {
   vertical-align: top;
   padding: 5px;
   margin: 0px;
+}
+::-webkit-scrollbar {
+  -webkit-appearance: none;
+}
+::-webkit-scrollbar:vertical {
+  width: 11px;
+}
+::-webkit-scrollbar:horizontal {
+  height: 11px;
+}
+::-webkit-scrollbar-thumb {
+  border-radius: 8px;
+  border: 2px solid white;
+  /* should match background, can't be transparent */
+  background-color: rgba(0, 0, 0, 0.5);
+}
+::-webkit-scrollbar-track {
+  background-color: #fff;
+  border-radius: 0px;
+}
+::-webkit-input-placeholder {
+  /* WebKit, Blink, Edge */
+  color: #bebebe;
+}
+:-moz-placeholder {
+  /* Mozilla Firefox 4 to 18 */
+  color: #bebebe;
+  opacity: 1;
+}
+::-moz-placeholder {
+  /* Mozilla Firefox 19+ */
+  color: #bebebe;
+  opacity: 1;
+}
+:-ms-input-placeholder {
+  /* Internet Explorer 10-11 */
+  color: #bebebe;
 }
 @font-face {
   font-family: "project-cedar";
@@ -14123,8 +14473,165 @@ div.errorTechnicalDetails textarea {
 body.modal-open {
   overflow: hidden;
 }
+.primary-color {
+  color: #71a69c;
+}
+.highlighted {
+  font-weight: bold;
+}
 /*
 ================================================
 === CEDAR Customization END
 ================================================
 */
+/*
+ * ng-custom-.custom-tags-input customization
+ */
+.custom-tags-input {
+  display: block;
+}
+.custom-tags-input *,
+.custom-tags-input *:before,
+.custom-tags-input *:after {
+  box-sizing: border-box;
+}
+.custom-tags-input .host {
+  position: relative;
+  height: 100%;
+}
+.custom-tags-input .host:active {
+  outline: none;
+}
+.custom-tags-input .tags {
+  -moz-appearance: textfield;
+  -webkit-appearance: textfield;
+  padding: 1px;
+  overflow: hidden;
+  word-wrap: break-word;
+  cursor: text;
+  background-color: #fff;
+  border: none;
+  height: 100%;
+}
+.custom-tags-input .tags.focused {
+  outline: none;
+  box-shadow: 0 0 3px 1px rgba(5, 139, 242, 0.6);
+}
+.custom-tags-input .tags .tag-list {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+}
+.custom-tags-input .tags .tag-item {
+  color: #71a69c;
+  background: #eaf2f2;
+  margin: 6px 0px 6px 4px;
+  padding: 0 5px;
+  display: inline-block;
+  float: left;
+  font-size: 1em;
+  height: 30px;
+  line-height: 28px;
+  border: 1px solid rgba(113, 166, 156, 0.6);
+  border-radius: 3px;
+}
+.custom-tags-input .tags .tag-item.selected {
+  background: #71a69c;
+  color: #eaf2f2;
+}
+.custom-tags-input .tags .tag-item .remove-button {
+  margin: 0 0 0 5px;
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+  vertical-align: middle;
+  font: bold 1.1em Arial, sans-serif;
+  color: #585858;
+}
+.custom-tags-input .tags .tag-item .remove-button:active {
+  color: #fff;
+}
+.custom-tags-input .tags .input {
+  border: 0;
+  outline: none;
+  margin: 0px 2px 0px 2px;
+  padding: 0;
+  padding-left: 5px;
+  float: left;
+  height: 41px;
+  font-size: 1em;
+  width: 100%;
+}
+.custom-tags-input .tags .input.invalid-tag {
+  color: #ff0000;
+}
+.custom-tags-input .tags .input::-ms-clear {
+  display: none;
+}
+.custom-tags-input.ng-invalid .tags {
+  box-shadow: 0 0 3px 1px rgba(255, 0, 0, 0.6);
+}
+.custom-tags-input[disabled] .host:focus {
+  outline: none;
+}
+.custom-tags-input[disabled] .tags {
+  background-color: #eee;
+  cursor: default;
+}
+.custom-tags-input[disabled] .tags .tag-item {
+  opacity: 0.65;
+  background: -webkit-linear-gradient(top, #f0f9ff 0%, rgba(203, 235, 255, 0.75) 47%, rgba(161, 219, 255, 0.62) 100%);
+  background: linear-gradient(to bottom, #f0f9ff 0%, rgba(203, 235, 255, 0.75) 47%, rgba(161, 219, 255, 0.62) 100%);
+}
+.custom-tags-input[disabled] .tags .tag-item .remove-button {
+  cursor: default;
+}
+.custom-tags-input[disabled] .tags .tag-item .remove-button:active {
+  color: #585858;
+}
+.custom-tags-input[disabled] .tags .input {
+  background-color: #eee;
+  cursor: default;
+}
+.custom-tags-input .autocomplete {
+  margin-top: 5px;
+  position: absolute;
+  padding: 5px 0;
+  z-index: 999;
+  width: 100%;
+  background-color: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+}
+.custom-tags-input .autocomplete .suggestion-list {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+  max-height: 280px;
+  overflow-y: auto;
+  position: relative;
+}
+.custom-tags-input .autocomplete .suggestion-item {
+  padding: 5px 10px;
+  cursor: pointer;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 1em;
+  color: #000;
+  background-color: #fff;
+}
+.custom-tags-input .autocomplete .suggestion-item.selected {
+  background-color: #eaf2f2;
+}
+.custom-tags-input .autocomplete .suggestion-item.selected em {
+  background-color: #eaf2f2;
+}
+.custom-tags-input .autocomplete .suggestion-item em {
+  font-size: 1em;
+  font-weight: bold;
+  font-style: normal;
+  color: #000;
+  background-color: #fff;
+}
