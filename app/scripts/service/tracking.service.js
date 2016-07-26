@@ -7,9 +7,9 @@ define([
   angular.module('cedar.templateEditor.service.trackingService', [])
       .service('TrackingService', TrackingService);
 
-  TrackingService.$inject = ["$analytics","$location"];
+  TrackingService.$inject = ["$analytics", "$location"];
 
-  function TrackingService($analytics,$location) {
+  function TrackingService($analytics, $location) {
 
     var analyticsKey = null;
     var isTracking = null;
@@ -37,7 +37,7 @@ define([
     // 5. the object clicked on, like the template id, or link name, the text that is clicked or the url
     // 5. the url
 
-    service.eventTrack = function(eventName, eventParameters) {
+    service.eventTrack = function (eventName, eventParameters) {
       console.log('eventTrack');
       console.log(eventParameters);
       eventParameters.url = $location.absUrl();
@@ -48,11 +48,11 @@ define([
       $analytics.eventTrack(eventName, eventParameters);
     };
 
-    service.clickTrack = function(action, objectId) {
-      service.eventTrack("mouseClick", {'action':action,  'objectId': objectId});
+    service.clickTrack = function (action, objectId) {
+      service.eventTrack("mouseClick", {'action': action, 'objectId': objectId});
     };
 
-    service.pageTrack = function() {
+    service.pageTrack = function () {
       service.eventTrack("pageLoad", {'url': $location.path()});
     };
 
