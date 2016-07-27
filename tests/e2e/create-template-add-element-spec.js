@@ -4,7 +4,7 @@ var CreateTemplatePage = require('../pages/create-template-page.js');
 var CreateElementPage = require('../pages/create-element-page.js');
 var _ = require('../libs/lodash.min.js')
 
-describe('create-template-add-element', function() {
+xdescribe('create-template-add-element', function() {
 
   var page, elementPage;
 
@@ -15,7 +15,7 @@ describe('create-template-add-element', function() {
     browser.driver.manage().window().maximize();
   });
 
-  it("Should allow to add element without cardinality", function() {
+  xit("Should allow to add element without cardinality", function() {
     var options = {};
     options.elementTitle = "Created at " + (new Date()).getTime();
     options.elementDescription = "Created by script";
@@ -49,7 +49,7 @@ describe('create-template-add-element', function() {
     });
   });
 
-  it("Should allow to add element with cardinality", function() {
+  xit("Should allow to add element with cardinality", function() {
     var options = {};
     options.elementTitle = "Created at " + (new Date()).getTime();
     options.elementDescription = "Created by script";
@@ -125,7 +125,7 @@ describe('create-template-add-element', function() {
     });
   });
 
-  it("Should not allow to create template with an editing element", function() {
+  xit("Should not allow to create template with an editing element", function() {
     var options = {};
     options.elementTitle = "Created at " + (new Date()).getTime();
     options.elementDescription = "Created by script";
@@ -212,7 +212,7 @@ describe('create-template-add-element', function() {
     });
   });
 
-  it("Should allow to re-arrange field in nested element", function() {
+  xit("Should allow to re-arrange field in nested element", function() {
     var elementTitle = "Created at " + (new Date()).getTime();
     var elementDescription = "Created by protractor";
 
@@ -363,7 +363,7 @@ describe('create-template-add-element', function() {
     });
   }, 60000);
 
-  it("Should allow to remove element without adding to the template", function() {
+  xit("Should allow to remove element without adding to the template", function() {
     var options = {};
     options.elementTitle = "Created at " + (new Date()).getTime();
     options.elementDescription = "Created by script";
@@ -394,7 +394,7 @@ describe('create-template-add-element', function() {
     });
   });
 
-  it("Should allow to remove element after added to the element", function() {
+  xit("Should allow to remove element after added to the element", function() {
     var options = {};
     options.elementTitle = "Created at " + (new Date()).getTime();
     options.elementDescription = "Created by script";
@@ -429,7 +429,7 @@ describe('create-template-add-element', function() {
     });
   });
 
-  it("Should not allow to add element while there is an editing field", function() {
+  xit("Should not allow to add element while there is an editing field", function() {
     var options = {};
     options.elementTitle = "Created at " + ("" + (new Date()).getTime()).substr(-8);
     options.elementDescription = "Created by script";
@@ -463,7 +463,7 @@ describe('create-template-add-element', function() {
     });
   });
 
-  it("Should not allow to add another element while there is an editing element", function() {
+  xit("Should not allow to add another element while there is an editing element", function() {
     var timestamp = ("" + (new Date()).getTime()).substr(-8);
     var element1Title = "Element " + timestamp + "_1";
     var element1Description = "Element 1 - Created by protractor";
@@ -500,7 +500,7 @@ describe('create-template-add-element', function() {
     });
   });
 
-  it("Should allow element to be collapsible", function() {
+  xit("Should allow element to be collapsible", function() {
     var options = {};
     options.elementTitle = "Created at " + ("" + (new Date()).getTime()).substr(-8);
     options.elementDescription = "Created by script";
@@ -595,7 +595,7 @@ describe('create-template-add-element', function() {
     });
   });
 
-  it("Should allow to clear adding element", function() {
+  xit("Should allow to clear adding element", function() {
     var options = {};
     options.elementTitle = "Created at " + (new Date()).getTime();
     options.elementDescription = "Created by script";
@@ -625,7 +625,7 @@ describe('create-template-add-element', function() {
     });
   });
 
-  it("Should allow to clear added element", function() {
+  xit("Should allow to clear added element", function() {
     var options = {};
     options.elementTitle = "Created at " + (new Date()).getTime();
     options.elementDescription = "Created by script";

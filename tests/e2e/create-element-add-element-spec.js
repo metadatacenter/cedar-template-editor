@@ -3,7 +3,7 @@
 var CreateElementPage = require('../pages/create-element-page.js');
 var _ = require('../libs/lodash.min.js')
 
-describe('create-element-add-element', function() {
+xdescribe('create-element-add-element', function() {
 
   var page;
 
@@ -13,7 +13,7 @@ describe('create-element-add-element', function() {
     browser.driver.manage().window().maximize();
   });
 
-  it("Should allow to add element without cardinality", function() {
+  xit("Should allow to add element without cardinality", function() {
     var elementTitle = "Created at " + (new Date()).getTime();
     var elementDescription = "Created by protractor";
     var options = {};
@@ -44,7 +44,7 @@ describe('create-element-add-element', function() {
     });
   });
 
-  it("Should allow to add element with cardinality", function() {
+  xit("Should allow to add element with cardinality", function() {
     var elementTitle = "Created at " + (new Date()).getTime();
     var elementDescription = "Created by protractor";
     var options = {};
@@ -117,7 +117,7 @@ describe('create-element-add-element', function() {
   });
 
   // FIXME: This does not display error message.
-  it("Should not allow to add element that min cardinality greater than max cardinality", function() {
+  xit("Should not allow to add element that min cardinality greater than max cardinality", function() {
     var elementTitle = "Created at " + (new Date()).getTime();
     var elementDescription = "Created by protractor";
     var options = {};
@@ -169,7 +169,7 @@ describe('create-element-add-element', function() {
     });
   });
 
-  it("Should not allow to create element with an editing element", function() {
+  xit("Should not allow to create element with an editing element", function() {
     var elementTitle = "Created at " + (new Date()).getTime();
     var elementDescription = "Created by protractor";
     var options = {};
@@ -249,7 +249,7 @@ describe('create-element-add-element', function() {
     });
   });
 
-  it("Should allow to re-arrange field in nested element", function() {
+  xit("Should allow to re-arrange field in nested element", function() {
     var elementTitle = "Created at " + (new Date()).getTime();
     var elementDescription = "Created by protractor";
 
@@ -387,7 +387,7 @@ describe('create-element-add-element', function() {
     });
   }, 60000);
 
-  it("Should allow to remove nested element without adding to the element", function() {
+  xit("Should allow to remove nested element without adding to the element", function() {
     var elementTitle = "Created at " + (new Date()).getTime();
     var elementDescription = "Created by protractor";
     var options = {};
@@ -415,7 +415,7 @@ describe('create-element-add-element', function() {
     });
   });
 
-  it("Should allow to remove nested element after added to the element", function() {
+  xit("Should allow to remove nested element after added to the element", function() {
     var elementTitle = "Created at " + (new Date()).getTime();
     var elementDescription = "Created by protractor";
     var options = {};
@@ -447,7 +447,7 @@ describe('create-element-add-element', function() {
     });
   });
 
-  it("Should not allow to add element while there is an editing field", function() {
+  xit("Should not allow to add element while there is an editing field", function() {
     var timestamp = ("" + (new Date()).getTime()).substr(-8);
     var elementTitle = "Created at " + timestamp;
     var elementDescription = "Created by protractor";
@@ -479,7 +479,7 @@ describe('create-element-add-element', function() {
     });
   });
 
-  it("Should not allow to add another element while there is an editing element", function() {
+  xit("Should not allow to add another element while there is an editing element", function() {
     var timestamp = ("" + (new Date()).getTime()).substr(-8);
     var element1Title = "Element " + timestamp + "_1";
     var element1Description = "Element 1 - Created by protractor";
@@ -521,7 +521,7 @@ describe('create-element-add-element', function() {
     });
   });
 
-  it("Should allow nested element to be collapsible", function() {
+  xit("Should allow nested element to be collapsible", function() {
     var timestamp = ("" + (new Date()).getTime()).substr(-8);
     var elementTitle = "Created at " + timestamp;
     var elementDescription = "Created by protractor";

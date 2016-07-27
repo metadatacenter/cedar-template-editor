@@ -4,7 +4,7 @@ var CreateTemplatePage = require('../pages/create-template-page.js');
 var CreateElementPage = require('../pages/create-element-page.js');
 var _ = require('../libs/lodash.min.js')
 
-describe('create-template-add-text-field', function() {
+xdescribe('create-template-add-text-field', function() {
 
   var page, elementPage;
 
@@ -16,7 +16,7 @@ describe('create-template-add-text-field', function() {
     browser.sleep(1000);
   });
 
-  it("Should allow to create template with 1 text field only", function() {
+  xit("Should allow to create template with 1 text field only", function() {
     var options = {};
     options.fieldTitle = "Simple text field";
 
@@ -33,7 +33,7 @@ describe('create-template-add-text-field', function() {
     });
   });
 
-  it("Should show errors if create template without title or description", function() {
+  xit("Should show errors if create template without title or description", function() {
     var options = {};
     options.fieldTitle = "Simple text field";
 
@@ -57,7 +57,7 @@ describe('create-template-add-text-field', function() {
     });
   });
 
-  it("Should show errors if save template without title or description", function() {
+  xit("Should show errors if save template without title or description", function() {
     var options = {};
     options.fieldTitle = "Simple text field";
 
@@ -87,7 +87,7 @@ describe('create-template-add-text-field', function() {
     });
   });
 
-  it("Should allow to create template with 1 element", function() {
+  xit("Should allow to create template with 1 element", function() {
     var options = {};
     options.elementTitle = "Element at " + ((new Date()).getTime());
     elementPage.createElement(options).then(function() {
@@ -203,7 +203,7 @@ describe('create-template-add-text-field', function() {
     });
   });
 
-  it("Should allow to clear adding field", function() {
+  xit("Should allow to clear adding field", function() {
     page.setTemplateTitle("Test element");
     page.setTemplateDescription("Just a simple text field");
 
@@ -227,7 +227,7 @@ describe('create-template-add-text-field', function() {
     });
   });
 
-  it("Should allow to mark field as required", function() {
+  xit("Should allow to mark field as required", function() {
     page.setTemplateTitle("Simple Text Field");
     page.setTemplateDescription("Text field that is required");
 
@@ -327,7 +327,7 @@ describe('create-template-add-text-field', function() {
     });
   });
 
-  it("Should not set minItems & maxItems if cardinality is 1 - 1", function() {
+  xit("Should not set minItems & maxItems if cardinality is 1 - 1", function() {
     page.setTemplateTitle("1 - 1 text field");
     page.setTemplateDescription("Text field was created via Selenium");
 
@@ -366,7 +366,7 @@ describe('create-template-add-text-field', function() {
     });
   });
 
-  it("Should allow to add more than 1 field", function() {
+  xit("Should allow to add more than 1 field", function() {
     page.addTextField().then(function() {
       page.addTextField().then(function() {
         browser.sleep(1000).then(function() {
@@ -425,7 +425,7 @@ describe('create-template-add-text-field', function() {
     });
   });
 
-  it("Should render added text field with additional things specific to 'edit' mode", function() {
+  xit("Should render added text field with additional things specific to 'edit' mode", function() {
     var fieldTitle = "Text 2";
     var minItems = 2;
     page.addTextField({minItems: minItems, maxItems: 3, fieldTitle: fieldTitle}).then(function() {
@@ -447,7 +447,7 @@ describe('create-template-add-text-field', function() {
     });
   });
 
-  it("Should allow to sort added fields", function() {
+  xit("Should allow to sort added fields", function() {
     page.addTextField({fieldTitle: "Text 1"}).then(function() {
       page.addTextField({fieldTitle: "Text 2"}).then(function() {
         page.scrollPageToTop().then(function() {
@@ -602,7 +602,7 @@ describe('create-template-add-text-field', function() {
     });
   });
 
-  it("Should allow to remove field without adding to template", function() {
+  xit("Should allow to remove field without adding to template", function() {
     page.addTextField({minItems: 1, maxItems: 2, dontSaveField: true}).then(function() {
       page.editingFieldRemoveButton().click().then(function() {
         browser.sleep(500).then(function() {
@@ -614,7 +614,7 @@ describe('create-template-add-text-field', function() {
     });
   });
 
-  it("Should allow to remove field after added to element", function() {
+  xit("Should allow to remove field after added to element", function() {
     page.addTextField({minItems: 1, maxItems: 2}).then(function() {
       browser.sleep(1000).then(function() {
         page.renderedFormAllRenderedFields().then(function(fields) {

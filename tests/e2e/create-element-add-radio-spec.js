@@ -3,7 +3,7 @@
 var CreateElementPage = require('../pages/create-element-page.js');
 var _ = require('../libs/lodash.min.js')
 
-describe('create-element-add-radio-button', function() {
+xdescribe('create-element-add-radio-button', function() {
 
   var page;
 
@@ -13,7 +13,7 @@ describe('create-element-add-radio-button', function() {
     browser.driver.manage().window().maximize();
   });
 
-  it("Should allow to add radio button without cardinality", function() {
+  xit("Should allow to add radio button without cardinality", function() {
     page.setElementTitle("Radio button element without cardinality");
     page.setElementDescription("Radio button without cardinality");
 
@@ -64,7 +64,7 @@ describe('create-element-add-radio-button', function() {
     });
   });
 
-  it("Should allow to mark field as required", function() {
+  xit("Should allow to mark field as required", function() {
     page.setElementTitle("Simple Radio Button");
     page.setElementDescription("Radio button that is required");
 
@@ -99,7 +99,7 @@ describe('create-element-add-radio-button', function() {
     });
   });
 
-  it("Should allow mark cardinality field as required", function() {
+  xit("Should allow mark cardinality field as required", function() {
     var options = {};
     options.inputType = "radio";
     options.fieldTitle = "Simple Radio Button";
@@ -139,7 +139,7 @@ describe('create-element-add-radio-button', function() {
     });
   });
 
-  it("Should allow to set cardinality for radio button", function() {
+  xit("Should allow to set cardinality for radio button", function() {
     page.setElementTitle("2 - 3 Radio button element");
     page.setElementDescription("Radio button with 2 - 3 cardinality");
 
@@ -259,7 +259,7 @@ describe('create-element-add-radio-button', function() {
     });
   });
 
-  it("Should not set minItems & maxItems if cardinality is 1 - 1", function() {
+  xit("Should not set minItems & maxItems if cardinality is 1 - 1", function() {
     page.setElementTitle("1 - 1 radio button");
     page.setElementDescription("Radio button was created via Selenium");
 
@@ -312,7 +312,7 @@ describe('create-element-add-radio-button', function() {
     });
   });
 
-  it("Should allow to add more than 1 field", function() {
+  xit("Should allow to add more than 1 field", function() {
     var options = {};
     options.inputType = "radio";
     options.options = [{value: "Option 1"}, {value: "Option 2"}, {value: "Option 3"}];
@@ -326,7 +326,7 @@ describe('create-element-add-radio-button', function() {
     });
   });
 
-  it("Should render added radio button like in run time 'mode' but is disabled", function() {
+  xit("Should render added radio button like in run time 'mode' but is disabled", function() {
     var options = {};
     options.inputType = "radio";
     options.fieldTitle = "Radio 1";
@@ -377,7 +377,7 @@ describe('create-element-add-radio-button', function() {
     });
   });
 
-  it("Should render added radio button with additional things specific to 'edit' mode", function() {
+  xit("Should render added radio button with additional things specific to 'edit' mode", function() {
     var options = {};
     options.inputType = "radio";
     options.fieldTitle = "Radio 1";
@@ -402,7 +402,7 @@ describe('create-element-add-radio-button', function() {
     });
   });
 
-  it("Should allow to sort added fields", function() {
+  xit("Should allow to sort added fields", function() {
     var options = {};
     options.inputType = "radio";
     options.fieldTitle = "Radio 1";
@@ -442,7 +442,7 @@ describe('create-element-add-radio-button', function() {
     });
   });
 
-  it("Should allow to edit added field", function() {
+  xit("Should allow to edit added field", function() {
     var options = {};
     options.minItems = 2;
     options.maxItems = 3;
@@ -579,7 +579,7 @@ describe('create-element-add-radio-button', function() {
     });
   });
 
-  it("Should allow to remove field without adding to element", function() {
+  xit("Should allow to remove field without adding to element", function() {
     var options = {};
     options.minItems = 2;
     options.maxItems = 3;
@@ -598,7 +598,7 @@ describe('create-element-add-radio-button', function() {
     });
   });
 
-  it("Should allow to remove field after added to element", function() {
+  xit("Should allow to remove field after added to element", function() {
     var options = {};
     options.minItems = 2;
     options.maxItems = 3;

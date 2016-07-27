@@ -3,7 +3,7 @@
 var CreateElementPage = require('../pages/create-element-page.js');
 var _ = require('../libs/lodash.min.js')
 
-describe('create-element-add-text-field', function() {
+xdescribe('create-element-add-text-field', function() {
 
   var page;
 
@@ -13,7 +13,7 @@ describe('create-element-add-text-field', function() {
     browser.driver.manage().window().maximize();
   });
 
-  it('should start out with valid JSON Schema', function() {
+  xit('should start out with valid JSON Schema', function() {
     var validInitialSchema = {
       '$schema': 'http://json-schema.org/draft-04/schema#',
       '@type': 'https://schema.metadatacenter.org/core/TemplateElement',
@@ -54,7 +54,7 @@ describe('create-element-add-text-field', function() {
     });
   });
 
-  it("Should show errors if create element without title or description", function() {
+  xit("Should show errors if create element without title or description", function() {
     var options = {};
     options.fieldTitle = "Simple text field";
 
@@ -78,7 +78,7 @@ describe('create-element-add-text-field', function() {
     });
   });
 
-  it("Should show errors if save element without title or description", function() {
+  xit("Should show errors if save element without title or description", function() {
     var options = {};
     options.fieldTitle = "Simple text field";
 
@@ -106,7 +106,7 @@ describe('create-element-add-text-field', function() {
     });
   });
 
-  it("Should show errors if create element without unsaved field", function() {
+  xit("Should show errors if create element without unsaved field", function() {
     var options = {};
     options.fieldTitle = "Simple text field";
     options.dontSaveField = true;
@@ -127,7 +127,7 @@ describe('create-element-add-text-field', function() {
     });
   });
 
-  it("Should show errors if save element with unsaved field", function() {
+  xit("Should show errors if save element with unsaved field", function() {
     var options = {};
     options.fieldTitle = "Simple text field";
 
@@ -159,7 +159,7 @@ describe('create-element-add-text-field', function() {
     });
   });
 
-  it("Should allow to add text field without cardinality", function() {
+  xit("Should allow to add text field without cardinality", function() {
     page.setElementTitle("Text field element without cardinality");
     page.setElementDescription("Text field without cardinality");
 
@@ -253,7 +253,7 @@ describe('create-element-add-text-field', function() {
     });
   });
 
-  it("Should allow to mark field as required", function() {
+  xit("Should allow to mark field as required", function() {
     page.setElementTitle("Simple Text Field");
     page.setElementDescription("Text field that is required");
 
@@ -284,7 +284,7 @@ describe('create-element-add-text-field', function() {
     });
   });
 
-  it("Should allow mark cardinality field as required", function() {
+  xit("Should allow mark cardinality field as required", function() {
     var options = {};
     options.fieldTitle = "Simple Text Field";
     options.minItems = 2;
@@ -321,7 +321,7 @@ describe('create-element-add-text-field', function() {
     });
   });
 
-  it("Should allow to set cardinality for text field", function() {
+  xit("Should allow to set cardinality for text field", function() {
     page.setElementTitle("2 - 3 Text field element");
     page.setElementDescription("Text field with 2 - 3 cardinality");
 
@@ -387,7 +387,7 @@ describe('create-element-add-text-field', function() {
     });
   });
 
-  it("Should not allow add field that min cardinality greater than max cardinality", function() {
+  xit("Should not allow add field that min cardinality greater than max cardinality", function() {
     page.setElementTitle("3 - 2 Text field element");
     page.setElementDescription("Text field with 3 - 2 cardinality");
 
@@ -472,7 +472,7 @@ describe('create-element-add-text-field', function() {
     });
   });
 
-  it("Should not set minItems & maxItems if cardinality is 1 - 1", function() {
+  xit("Should not set minItems & maxItems if cardinality is 1 - 1", function() {
     page.setElementTitle("1 - 1 text field");
     page.setElementDescription("Text field was created via Selenium");
 
@@ -509,7 +509,7 @@ describe('create-element-add-text-field', function() {
     });
   });
 
-  it("Should allow to add more than 1 field", function() {
+  xit("Should allow to add more than 1 field", function() {
     page.addTextField().then(function() {
       page.addTextField().then(function() {
         page.renderedFormAllRenderedFields().then(function(fields) {
@@ -519,7 +519,7 @@ describe('create-element-add-text-field', function() {
     });
   });
 
-  it("Should render added text field like in run time 'mode' but is disabled", function() {
+  xit("Should render added text field like in run time 'mode' but is disabled", function() {
     var fieldTitle = "Text 1";
     var minItems = 2;
     page.addTextField({minItems: minItems, maxItems: 3, fieldTitle: fieldTitle}).then(function() {
@@ -563,7 +563,7 @@ describe('create-element-add-text-field', function() {
     });
   });
 
-  it("Should render added text field with additional things specific to 'edit' mode", function() {
+  xit("Should render added text field with additional things specific to 'edit' mode", function() {
     var fieldTitle = "Text 2";
     var minItems = 2;
     page.addTextField({minItems: minItems, maxItems: 3, fieldTitle: fieldTitle}).then(function() {
@@ -583,7 +583,7 @@ describe('create-element-add-text-field', function() {
     });
   });
 
-  it("Should allow to sort added fields", function() {
+  xit("Should allow to sort added fields", function() {
     page.addTextField({fieldTitle: "Text 1"}).then(function() {
       page.addTextField({fieldTitle: "Text 2"}).then(function() {
         page.renderedFormAllRenderedFields().then(function(fields) {
@@ -615,7 +615,7 @@ describe('create-element-add-text-field', function() {
     });
   });
 
-  it("Should allow to edit added field", function() {
+  xit("Should allow to edit added field", function() {
     var options = {};
     options.minItems = 2;
     options.maxItems = 3;
@@ -728,7 +728,7 @@ describe('create-element-add-text-field', function() {
     });
   });
 
-  it("Should allow to remove field without adding to element", function() {
+  xit("Should allow to remove field without adding to element", function() {
     page.addTextField({minItems: 1, maxItems: 2, dontSaveField: true}).then(function() {
       page.editingFieldRemoveButton().click().then(function() {
         page.renderedFormAllRenderedFields().then(function(fields) {
@@ -738,7 +738,7 @@ describe('create-element-add-text-field', function() {
     });
   });
 
-  it("Should allow to remove field after added to element", function() {
+  xit("Should allow to remove field after added to element", function() {
     page.addTextField({minItems: 1, maxItems: 2}).then(function() {
       page.renderedFormAllRenderedFields().then(function(fields) {
         expect(fields.length).toBe(1);

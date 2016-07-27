@@ -3,7 +3,7 @@
 var CreateElementPage = require('../pages/create-element-page.js');
 var _ = require('../libs/lodash.min.js')
 
-describe('create-element-add-text-field', function() {
+xdescribe('create-element-add-text-field', function() {
 
   var page;
 
@@ -13,7 +13,7 @@ describe('create-element-add-text-field', function() {
     browser.driver.manage().window().maximize();
   });
 
-  it("Should allow to add paragraph field without cardinality", function() {
+  xit("Should allow to add paragraph field without cardinality", function() {
     page.setElementTitle("Text area element without cardinality");
     page.setElementDescription("Text area without cardinality");
 
@@ -45,7 +45,7 @@ describe('create-element-add-text-field', function() {
     });
   });
 
-  it("Should allow to mark field as required", function() {
+  xit("Should allow to mark field as required", function() {
     page.setElementTitle("Simple Text Area");
     page.setElementDescription("Text area that is required");
 
@@ -78,7 +78,7 @@ describe('create-element-add-text-field', function() {
     });
   });
 
-  it("Should allow mark cardinality field as required", function() {
+  xit("Should allow mark cardinality field as required", function() {
     var options = {};
     options.inputType = "paragraph";
     options.fieldTitle = "Simple Text Area";
@@ -118,7 +118,7 @@ describe('create-element-add-text-field', function() {
     });
   });
 
-  it("Should allow to set cardinality for text area", function() {
+  xit("Should allow to set cardinality for text area", function() {
     page.setElementTitle("2 - 3 Text area element");
     page.setElementDescription("Text area with 2 - 3 cardinality");
 
@@ -230,7 +230,7 @@ describe('create-element-add-text-field', function() {
     });
   });
 
-  it("Should not set minItems & maxItems if cardinality is 1 - 1", function() {
+  xit("Should not set minItems & maxItems if cardinality is 1 - 1", function() {
     page.setElementTitle("1 - 1 text area");
     page.setElementDescription("Text area was created via Selenium");
 
@@ -279,7 +279,7 @@ describe('create-element-add-text-field', function() {
     });
   });
 
-  it("Should allow to add more than 1 field", function() {
+  xit("Should allow to add more than 1 field", function() {
     var options = {};
     options.inputType = "paragraph";
 
@@ -292,7 +292,7 @@ describe('create-element-add-text-field', function() {
     });
   });
 
-  it("Should render added text area like in run time 'mode' but is disabled", function() {
+  xit("Should render added text area like in run time 'mode' but is disabled", function() {
     var fieldTitle = "Text 1";
     var minItems = 2;
     page.addField({inputType: "paragraph", minItems: minItems, maxItems: 3, fieldTitle: fieldTitle}).then(function() {
@@ -336,7 +336,7 @@ describe('create-element-add-text-field', function() {
     });
   });
 
-  it("Should render added text area with additional things specific to 'edit' mode", function() {
+  xit("Should render added text area with additional things specific to 'edit' mode", function() {
     var fieldTitle = "Text 2";
     var minItems = 2;
     page.addField({inputType: "paragraph", minItems: minItems, maxItems: 3, fieldTitle: fieldTitle}).then(function() {
@@ -356,7 +356,7 @@ describe('create-element-add-text-field', function() {
     });
   });
 
-  it("Should allow to sort added fields", function() {
+  xit("Should allow to sort added fields", function() {
     page.addField({inputType: "paragraph", fieldTitle: "Paragraph 1"}).then(function() {
       page.addField({inputType: "paragraph", fieldTitle: "Paragraph 2"}).then(function() {
         page.renderedFormAllRenderedFields().then(function(fields) {
@@ -388,7 +388,7 @@ describe('create-element-add-text-field', function() {
     });
   });
 
-  it("Should allow to edit added field", function() {
+  xit("Should allow to edit added field", function() {
     var options = {};
     options.minItems = 2;
     options.maxItems = 3;
@@ -502,7 +502,7 @@ describe('create-element-add-text-field', function() {
     });
   });
 
-  it("Should allow to remove field without adding to element", function() {
+  xit("Should allow to remove field without adding to element", function() {
     page.addTextField({minItems: 1, maxItems: 2, dontSaveField: true}).then(function() {
       page.editingFieldRemoveButton().click().then(function() {
         page.renderedFormAllRenderedFields().then(function(fields) {
@@ -512,7 +512,7 @@ describe('create-element-add-text-field', function() {
     });
   });
 
-  it("Should allow to remove field after added to element", function() {
+  xit("Should allow to remove field after added to element", function() {
     page.addField({inputType: "paragraph", minItems: 1, maxItems: 2}).then(function() {
       page.renderedFormAllRenderedFields().then(function(fields) {
         expect(fields.length).toBe(1);
