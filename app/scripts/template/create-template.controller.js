@@ -53,8 +53,7 @@ define([
       $scope.invalidElementStates = {};
       $scope.$broadcast('saveForm');
 
-      TrackingService.eventTrack('saveForm', {category: 'creating', label: 'saveForm'});
-      TrackingService.pageTrack();
+      TrackingService.eventTrack('createFieldOrElement', {action: 'creating', label: 'saveForm'});
 
     };
 

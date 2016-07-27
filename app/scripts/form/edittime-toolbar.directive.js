@@ -6,9 +6,9 @@ define([
     angular.module('cedar.templateEditor.form.edittimeToolbarDirective', [])
         .directive('edittimeToolbarDirective', edittimeToolbarDirective);
 
-    edittimeToolbarDirective.$inject = ["$rootScope","DataManipulationService","FieldTypeService","controlledTermDataService"];
+    edittimeToolbarDirective.$inject = ["$rootScope","DataManipulationService","FieldTypeService","controlledTermDataService","TrackingService"];
 
-    function edittimeToolbarDirective($rootScope, DataManipulationService,FieldTypeService,controlledTermDataService) {
+    function edittimeToolbarDirective($rootScope, DataManipulationService,FieldTypeService,controlledTermDataService, TrackingService) {
 
         var linker = function ($scope, $element, attrs) {
 
@@ -202,7 +202,6 @@ define([
 
 
                 $scope.deleteFieldAddedItem = function (itemDataId) {
-                    console.log('deleteFieldAddedItem ' + itemDataId);
                     if (itemDataId != null) {
                         console.log($scope.fieldOrElement);
                         DataManipulationService.deleteFieldControlledTerm(itemDataId, $scope.fieldOrElement);
@@ -258,6 +257,10 @@ define([
                     console.log($scope.addedFields);
 
                 });
+
+                $scope.clickTrack = function (action) {
+                    TrackingService.clickTrack(action);
+                };
 
 
             },
