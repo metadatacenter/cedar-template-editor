@@ -7,12 +7,13 @@ define([
   angular.module('cedar.templateEditor.service.trackingService', [])
       .service('TrackingService', TrackingService);
 
-  TrackingService.$inject = ["$analytics","$location"];
+  TrackingService.$inject = ["$analytics", "$location"];
 
-  function TrackingService($analytics,$location) {
+  function TrackingService($analytics, $location) {
 
     var analyticsKey = null;
     var isTracking = null;
+    var ip = "";  // TODO get this from a server call
 
 
     var service = {
@@ -27,26 +28,32 @@ define([
       }
     };
 
-    service.eventTrack = function(eventName, eventParameters) {
+    // goal should be to track the following:
+    // 1. IP address
+    // 2. user agent
+    // 3. user name  or user id
+    // 4. the name which describes the action or purpose of the click "addTextField", "addParagraph",... also include stuff like basic navigation
+    // stuff, what is the user doing,  "saveTemplate",
+    // 5. the object clicked on, like the template id, or link name, the text that is clicked or the url
+    // 5. the url
+
+    service.eventTrack = function (eventName, eventParameters) {
+      console.log('eventTrack');
+      console.log(eventParameters);
+      eventParameters.url = $location.absUrl();
+      eventParameters.host = $location.host();
+      eventParameters.protocol = $location.protocol();
+      eventParameters.ip = ip;
+
       $analytics.eventTrack(eventName, eventParameters);
     };
 
-    service.clickTrack = function(eventCode) {
-      // goal should be to save
-      // 1. IP address
-      // 2. user agent
-      // 3. user name  or user id
-      // 4. the name which describes the action or purpose of the click "addTextField", "addParagraph",... also include stuff like basic navigation
-      // stuff, what is the user doing,  "saveTemplate",
-      // 5. the object clicked on, like the template id, or link name, the text that is clicked or the url
-      // 5. the url
-      // 6.
-      $analytics.eventTrack("mouseClick", {'eventCode':eventCode, 'url': $location.absUrl()});
+    service.clickTrack = function (action, objectId) {
+      service.eventTrack("mouseClick", {'action': action, 'objectId': objectId});
     };
 
-    service.pageTrack = function() {
-      $analytics.eventTrack("pageLoad", {'url': $location.absUrl()});
-      //$analytics.pageTrack($location.absUrl());
+    service.pageTrack = function () {
+      service.eventTrack("pageLoad", {'url': $location.path()});
     };
 
     return service;
