@@ -3,25 +3,25 @@
 define([
   'angular'
 ], function(angular) {
-  angular.module('cedar.templateEditor.controlTerm.controlTermDirectiveController', [])
-    .controller('controlTermDirectiveController', controlTermDirectiveController);
+  angular.module('cedar.templateEditor.controlledTerm.controlledTermDirectiveController', [])
+    .controller('controlledTermDirectiveController', controlledTermDirectiveController);
 
-  controlTermDirectiveController.$inject = [
+  controlledTermDirectiveController.$inject = [
     '$element',
     '$http',
     '$q',
     '$rootScope',
     '$scope',
     '$timeout',
-    'controlTermDataService',
-    'controlTermService',
+    'controlledTermDataService',
+    'controlledTermService',
     'provisionalClassService'
   ];
 
   /**
    * Controller for the functionality of adding controlled terms to fields and elements.
    */
-  function controlTermDirectiveController($element, $http, $q, $rootScope, $scope, $timeout, controlTermDataService, controlTermService, provisionalClassService) {
+  function controlledTermDirectiveController($element, $http, $q, $rootScope, $scope, $timeout, controlledTermDataService, controlledTermService, provisionalClassService) {
     var vm = this;
 
     vm.addBranchToValueConstraint = addBranchToValueConstraint;
@@ -30,6 +30,7 @@ define([
     vm.addOntologyClassesToValueConstraint = addOntologyClassesToValueConstraint;
     vm.addOntologyClassToValueConstraint = addOntologyClassToValueConstraint;
     vm.addOntologyToValueConstraint = addOntologyToValueConstraint;
+    vm.addValueConstraint = addValueConstraint;
     vm.addValueSetToValueConstraint = addValueSetToValueConstraint;
     vm.currentOntology = null;
     vm.currentValueSet = null;
@@ -38,6 +39,7 @@ define([
     vm.deleteFieldAddedItem = deleteFieldAddedItem;
     vm.deleteFieldAddedOntology = deleteFieldAddedOntology;
     vm.deleteFieldAddedValueSet = deleteFieldAddedValueSet;
+    vm.depthOptions = null;
     vm.isLoadingClassDetails = false;
     //vm.loadAllOntologies = loadAllOntologies;
     //vm.loadAllValueSets = loadAllValueSets;
@@ -50,11 +52,13 @@ define([
     vm.stagedValueSetValueConstraints = [];
     vm.stageBranchValueConstraint = stageBranchValueConstraint;
     vm.stageOntologyClassSiblingsValueConstraint = stageOntologyClassSiblingsValueConstraint;
+    vm.stageOntologyClass = stageOntologyClass;
     vm.stageOntologyClassValueConstraint = stageOntologyClassValueConstraint;
     vm.stageOntologyValueConstraint = stageOntologyValueConstraint;
     vm.stageValueConstraintAction = null;
     vm.stageValueSetValueConstraint = stageValueSetValueConstraint;
     vm.startOver = startOver;
+    vm.treeVisible = false;
     vm.valueConstraint = {
       'ontologies': [],
       'valueSets': [],
@@ -64,10 +68,9 @@ define([
     };
 
     //General
-    vm.controlTerm = {};
+    vm.controlledTerm = {};
     vm.filterSelection = vm.options && vm.options.filterSelection || ""
     vm.modalId = vm.options && vm.options.modalId || "";
-
 
     setInitialFieldConstraints();
 
@@ -132,7 +135,7 @@ define([
         }
 
         // get details from the service
-        var ontologyDetails =  controlTermDataService.getOntologyByLdId(ontology.info.id);
+        var ontologyDetails =  controlledTermDataService.getOntologyByLdId(ontology.info.id);
 
         // add this new selection
         vm.addedFieldItems.push({
@@ -147,7 +150,7 @@ define([
          * Add ontology type to JSON.
          */
         var properties = $rootScope.propertiesOf(vm.field);
-        var selfUrl = controlTermService.getSelfUrl(selection);
+        var selfUrl = controlledTermService.getSelfUrl(selection);
         if (angular.isArray(properties['@type'].oneOf[0].enum)) {
           properties['@type'].oneOf[0].enum.push(selfUrl);
           properties['@type'].oneOf[1].items.enum.push(selfUrl);
@@ -164,6 +167,24 @@ define([
       // TODO broadcast the action for now because parent scope is not working
       $rootScope.$broadcast('field:controlledTermAdded');
 
+    }
+
+    /**
+     * Add value constraint depending on enabled action
+     */
+    function addValueConstraint(action) {
+      if (action == 'add_class') {
+        addOntologyClassToValueConstraint(vm.stagedOntologyClassValueConstraints[0]);
+      }
+      else if (action == 'add_children') {
+        addBranchToValueConstraint();
+      }
+      else if (action == 'add_ontology') {
+        addOntologyToValueConstraint();
+      }
+      else if (action == 'add_entire_value_set') {
+        addValueSetToValueConstraint();
+      }
     }
 
     /**
@@ -237,7 +258,6 @@ define([
         }
       }
       vm.stagedOntologyValueConstraints = [];
-
       assignValueConstraintToField();
       vm.startOver();
     }
@@ -329,6 +349,7 @@ define([
     };
 
     function stageOntologyValueConstraint() {
+      vm.stagedOntologyValueConstraints = [];
       var existed = false;
       angular.forEach(vm.stagedOntologyValueConstraints, function(ontologyValueConstraint) {
         existed = existed || ontologyValueConstraint.uri == vm.currentOntology.info["@id"];
@@ -350,16 +371,15 @@ define([
      * Reset to the beginning where you select field or value filter.
      */
     function startOver() {
-
       vm.filterSelection = vm.options && vm.options.filterSelection || "";
       vm.modalId = vm.options && vm.options.modalId || "";
       vm.currentOntology = null;
       vm.selectedValueResult = null;
       vm.currentValueSet = null;
       vm.stagedOntologyClassValueConstraints = [];
+      vm.stagedOntologyValueConstraints = [];
       vm.stageValueConstraintAction = null;
-      vm.selectedClass1 = null;
-      vm.selectedClass2 = null;
+      vm.selectedClass = null;
       vm.classDetails = null;
 
       //Init field/value tooltip
@@ -381,7 +401,18 @@ define([
       vm.filterSelection = "values";
     };
 
+    // Default values for depth options select field
+    vm.depthOptions = [
+      {value: '0', name: 'All'},
+      {value: '1', name: '1'},
+      {value: '2', name: '2'},
+      {value: '3', name: '3'},
+      {value: '4', name: '4'},
+      {value: '5', name: '5'}
+    ]
+
     function stageBranchValueConstraint(selection) {
+      vm.stagedBranchesValueConstraints = [];
       var existed = false;
       angular.forEach(vm.stagedBranchesValueConstraints, function(branchValueConstraint) {
         existed = existed || branchValueConstraint && branchValueConstraint.uri == selection["@id"];
@@ -393,28 +424,27 @@ define([
           'acronym': vm.currentOntology.info.id,
           'uri': selection['@id'],
           'name': selection.prefLabel,
-          'maxDepth': null
+          'maxDepth': vm.depthOptions[0].value
         });
       }
-
       vm.stageValueConstraintAction = "add_children";
     }
 
     function stageOntologyClassSiblingsValueConstraint(selection) {
       vm.stagedOntologyClassValueConstraints = [];
-      controlTermDataService.getClassParents(controlTermDataService.getAcronym(selection), selection['@id']).then(function(response) {
-        var acronym = vm.currentOntology.info.id;
+      var acronym = vm.currentOntology.info.id;
+      controlledTermDataService.getClassParents(acronym, selection['@id']).then(function(response) {
         if (response && angular.isArray(response) && response.length > 0) {
-          controlTermDataService.getClassChildren(acronym, response[0]['@id']).then(function(childResponse) {
+          controlledTermDataService.getClassChildren(acronym, response[0]['@id']).then(function(childResponse) {
             angular.forEach(childResponse, function(child) {
-              vm.stageOntologyClassValueConstraint(child);
+              vm.stageOntologyClass(child);
             });
             vm.stageValueConstraintAction = "add_siblings";
           });
         } else {
-          controlTermDataService.getRootClasses(acronym).then(function(childResponse) {
+          controlledTermDataService.getRootClasses(acronym).then(function(childResponse) {
             angular.forEach(childResponse, function(child) {
-              vm.stageOntologyClassValueConstraint(child);
+              vm.stageOntologyClass(child);
             });
             vm.stageValueConstraintAction = "add_siblings";
           });
@@ -424,51 +454,51 @@ define([
     };
 
     function stageOntologyClassValueConstraint(selection, type) {
-      if (type === undefined) {
-        type = 'OntologyClass';
-      }
-      var klass = {
-        'uri': selection['@id'],
-        'prefLabel': selection.prefLabel,
-        'type': type,
-        'label': '',
-        'default': false
-      };
-      if (type == 'OntologyClass') {
-        klass['source'] = vm.currentOntology.info.name + ' (' + vm.currentOntology.info.id + ')';
-      } else {
-        klass['source'] = vm.currentValueSet.prefLabel;
-      }
-      vm.stagedOntologyClassValueConstraints.push(klass);
-      vm.stagedOntologyClassValueConstraintData.push({
-        'label': selection.prefLabel
-      });
-
       vm.stageValueConstraintAction = "add_class";
+      vm.stagedOntologyClassValueConstraints = [];
+      stageOntologyClass(selection, type);
     };
 
-    function stageValueSetValueConstraint(selection) {
-      var vsCollection;
-      if (vm.currentValueSet.sourceName) {
-        vsCollection = vm.currentValueSet.sourceName;
+    function stageOntologyClass(selection, type) {
+      if (selection) {
+        if (type === undefined) {
+          type = 'OntologyClass';
+        }
+        var klass = {
+          'uri'      : selection['@id'],
+          'prefLabel': selection.prefLabel,
+          'type'     : type,
+          'label'    : selection.prefLabel,
+          'default'  : false
+        };
+        if (type == 'OntologyClass') {
+          klass['source'] = vm.currentOntology.info.id;
+        } else {
+          klass['source'] = vm.currentValueSet.prefLabel;
+        }
+        vm.stagedOntologyClassValueConstraints.push(klass);
+        //vm.stagedOntologyClassValueConstraintData.push({
+        //  'label': selection.prefLabel
+        //});
       }
-      else {
-        vsCollection = vm.currentValueSet.vsCollection;
-      }
-      vm.stagedValueSetValueConstraints.push({
-        'name': vm.currentValueSet.prefLabel,
-        'vsCollection': vsCollection,
-        'uri': vm.currentValueSet['@id']
-      });
+    };
 
+    function stageValueSetValueConstraint() {
+      vm.stagedValueSetValueConstraints = [];
+      vm.stagedValueSetValueConstraints.push({
+        'name': vm.currentOntology.vs.prefLabel,
+        'vsCollection': vm.currentOntology.info.id,
+        'uri': vm.currentOntology.vs['@id'],
+        'numTerms': vm.currentOntology.tree.length
+      });
       vm.stageValueConstraintAction = "add_entire_value_set";
     };
 
     vm.bioportalFilterResultLabel = function() {
-      if (vm.controlTerm.bioportalValueSetsFilter && vm.controlTerm.bioportalOntologiesFilter) {
+      if (vm.controlledTerm.bioportalValueSetsFilter && vm.controlledTerm.bioportalOntologiesFilter) {
         return 'ontologies and value sets';
       }
-      if (vm.controlTerm.bioportalValueSetsFilter) {
+      if (vm.controlledTerm.bioportalValueSetsFilter) {
         return 'value sets';
       }
       return 'ontologies';
@@ -479,14 +509,14 @@ define([
      */
 
     $scope.$on(
-      'cedar.templateEditor.controlTerm.provisionalClassController.provisionalClassSaved',
+      'cedar.templateEditor.controlledTerm.provisionalClassController.provisionalClassSaved',
       function(event, args) {
         addClass(args.class, args.ontology);
       }
     );
 
     $scope.$on(
-      'cedar.templateEditor.controlTerm.provisionalClassController.provisionalClassSavedAsOntologyValueConstraint',
+      'cedar.templateEditor.controlledTerm.provisionalClassController.provisionalClassSavedAsOntologyValueConstraint',
       function(event, args) {
         var constraint = {
           'uri': args.class['@id'],
@@ -502,7 +532,7 @@ define([
     );
 
     $scope.$on(
-      'cedar.templateEditor.controlTerm.provisionalClassController.provisionalValueSetSavedAsValueSetValueConstraint',
+      'cedar.templateEditor.controlledTerm.provisionalClassController.provisionalValueSetSavedAsValueSetValueConstraint',
       function (event, args) {
         /**
          * Get values for the current value set and compute an estimate by multiplying number
@@ -537,11 +567,11 @@ define([
           for (i = 0; i < properties['@type']['oneOf'][0]['enum'].length; i++) {
             classId = properties['@type']['oneOf'][0]['enum'][i];
             // TODO: fix the following call
-            controlTermDataService.getClassById(classId).then(function(response) {
+            controlledTermDataService.getClassById(classId).then(function(response) {
               if (response) {
                 // get ontology details
                 acronym = getAcronym(response);
-                controlTermDataService.getOntologyDetails(acronym).then(function(ontologyResponse) {
+                controlledTermDataService.getOntologyDetails(acronym).then(function(ontologyResponse) {
                   vm.addedFieldItems.push({
                     prefLabel: response.prefLabel,
                     ontologyDescription: ontologyResponse.ontology.name + ' (' + acronym + ')',
@@ -593,6 +623,47 @@ define([
       }
       $element.parents(".controlled-terms-modal").css("top", topPosition);
     });
+
+    // If the selected class changes, the constraints need to be updated
+    $scope.$watch(function () {
+          return vm.selectedClass;
+        },
+        function (value) {
+          if (!value) {
+            // 'add class' selected by default
+            vm.stageValueConstraintAction = 'add_class';
+          }
+          else {
+            if (value.type == "OntologyClass" || value.type == "Value") {
+              vm.stageValueConstraintAction = 'add_class';
+              vm.stageOntologyClassValueConstraint(value);
+            }
+            else if (value.type == "ValueSet") {
+              vm.stageValueConstraintAction = 'add_entire_value_set';
+            }
+          }
+        });
+
+    // If the selected ontology changes, the constraints need to be updated
+    $scope.$watch(function () {
+          return vm.currentOntology;
+        },
+        function (value) {
+          if (!vm.selectedClass || vm.stageValueConstraintAction == 'add_ontology') {
+            if (value && value.info && value.info.details) {
+              vm.stageOntologyValueConstraint();
+            }
+            if (!vm.selectedClass) {
+              vm.stageValueConstraintAction = 'add_ontology'
+            }
+          }
+
+          if (vm.selectedClass && vm.stageValueConstraintAction == 'add_entire_value_set') {
+            if (vm.currentOntology.vs) {
+              vm.stageValueSetValueConstraint();
+            }
+          }
+        });
 
     /**
      * Private functions.

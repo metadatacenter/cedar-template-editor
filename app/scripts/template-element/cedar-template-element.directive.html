@@ -19,7 +19,7 @@
           <i class="cedar-svg-element"></i>{{$root.schemaOf(element)._ui.title}}
         </p>
 
-         <span ng-show="$root.isArray(model) && $root.applicationMode == 'runtime'" class="spreadsheetSwitch element">
+         <span ng-show="$root.isArray(model) && $root.isRuntime()" class="spreadsheetSwitch element">
             <button type="button"
                 tooltip="show as spreadsheet"
                 tooltip-trigger

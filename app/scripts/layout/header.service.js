@@ -21,10 +21,9 @@ define([
       }
     };
         
-    service.configure = function (pageId, applicationMode) {
+    service.configure = function (pageId) {
       this.miniHeaderEnabled = config[pageId].enabled;
       this.miniHeaderScrollLimit = config[pageId].scrollLimit;
-      $rootScope.applicationMode = applicationMode;
       $rootScope.pageId = pageId;
     };
     

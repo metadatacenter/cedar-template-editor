@@ -10,7 +10,7 @@ define([
 
   cedarTemplateEditorCoreRun.$inject = ['$rootScope', '$window', '$sce', '$translate', 'DataTemplateService',
                                         'DataManipulationService', 'FieldTypeService', 'UrlService', 'UIUtilService',
-                                        'UserService', 'RichTextConfigService', 'CONST', 'controlTermDataService',
+                                        'UserService', 'RichTextConfigService', 'CONST', 'controlledTermDataService',
                                         'provisionalClassService', 'CedarUser', 'UISettingsService',
                                         'ValueRecommenderService', 'DataUtilService', 'TrackingService',
                                         '$httpParamSerializer', '$location'];
@@ -18,14 +18,12 @@ define([
 
   function cedarTemplateEditorCoreRun($rootScope, $window, $sce, $translate, DataTemplateService,
                                       DataManipulationService, FieldTypeService, UrlService, UIUtilService, UserService,
-                                      RichTextConfigService, CONST, controlTermDataService, provisionalClassService,
+                                      RichTextConfigService, CONST, controlledTermDataService, provisionalClassService,
                                       CedarUser, UISettingsService, ValueRecommenderService, DataUtilService,
                                       TrackingService, $httpParamSerializer, $location) {
 
     $rootScope.isArray = angular.isArray;
 
-    $rootScope.applicationMode = CONST.applicationMode.DEFAULT;
-    $rootScope.applicationRole = 'instantiator';
     $rootScope.pageId = null;
 
     $rootScope.sortableOptions = {
@@ -38,27 +36,6 @@ define([
     $rootScope.isEmpty = function (obj) {
       return !obj || Object.keys(obj).length === 0;
     };
-
-    // Capitalize first letter
-    /*
-     egyedia - this seems to be unused
-     $rootScope.capitalizeFirst = function (string) {
-     string = string.toLowerCase();
-     return string.substring(0, 1).toUpperCase() + string.substring(1);
-     };
-     */
-
-    // Sorting function that moves boolean values with true to the front of the sort
-    /*
-     egyedia - this seems to be unused
-     $rootScope.sortBoolean = function (array, bool) {
-     return array.sort(function (a, b) {
-     var x = a[bool],
-     y = b[bool];
-     return ((x == y) ? -1 : ((x === true) ? -1 : 1));
-     });
-     };
-     */
 
     $rootScope.propertiesOf = function (fieldOrElement) {
       return DataManipulationService.getFieldProperties(fieldOrElement);
@@ -77,13 +54,6 @@ define([
     };
 
     $rootScope.elementIsMultiInstance = DataManipulationService.elementIsMultiInstance;
-
-    /*
-     egyedia - this seems to be unused
-     $rootScope.isField = function (value) {
-     return value && value.properties && value._ui && value._ui.inputType;
-     };
-     */
 
     $rootScope.isElement = function (value) {
       if (value && value['@type'] && value['@type'] == "https://schema.metadatacenter.org/core/TemplateElement") {
@@ -173,20 +143,6 @@ define([
         }
       });
     };
-
-    /*
-     egyedia - this seems to be unused
-     $rootScope.assignOrder = function (fieldOrElement, parentElement) {
-     var order = 1;
-     angular.forEach(parentElement, function (value, key) {
-     if ($rootScope.isElement(value) || $rootScope.isField(value)) {
-     order += 1;
-     }
-     });
-
-     fieldOrElement._ui.order = order;
-     };
-     */
 
     $rootScope.scrollToAnchor = UIUtilService.scrollToAnchor;
     $rootScope.scrollToDomId = UIUtilService.scrollToDomId;
@@ -295,33 +251,25 @@ define([
 
     // Used in textfield.html
     $rootScope.updateFieldAutocomplete = function (field, term) {
-      if (term === '') {
-        term = '*';
-      }
-      var results = [];
-      var vcst = $rootScope.schemaOf(field)._valueConstraints;
-      var field_id = $rootScope.schemaOf(field)['@id'];
+      // Only populate the field at runtime
+      if ($rootScope.isRuntime()) {
+        if (term === '') {
+          term = '*';
+        }
+        var results = [];
+        var vcst = $rootScope.schemaOf(field)._valueConstraints;
+        var field_id = $rootScope.schemaOf(field)['@id'];
 
-      if (angular.isUndefined($rootScope.autocompleteResultsCache[field_id])) {
-        $rootScope.autocompleteResultsCache[field_id] = {
-          'results': []
-        };
-      }
+        if (angular.isUndefined($rootScope.autocompleteResultsCache[field_id])) {
+          $rootScope.autocompleteResultsCache[field_id] = {
+            'results': []
+          };
+        }
 
-      if (vcst.classes.length > 0) {
-        $rootScope.removeAutocompleteResultsForSource(field_id, 'template');
-        angular.forEach(vcst.classes, function (klass) {
-          if (term == '*') {
-            $rootScope.autocompleteResultsCache[field_id].results.push(
-                {
-                  '@id'      : klass.uri,
-                  'label'    : klass.label,
-                  'type'     : 'Ontology Class',
-                  'sourceUri': 'template'
-                }
-            );
-          } else {
-            if (klass && klass.label && klass.label.toLowerCase().indexOf(term.toLowerCase()) !== -1) {
+        if (vcst.classes.length > 0) {
+          $rootScope.removeAutocompleteResultsForSource(field_id, 'template');
+          angular.forEach(vcst.classes, function (klass) {
+            if (term == '*') {
               $rootScope.autocompleteResultsCache[field_id].results.push(
                   {
                     '@id'      : klass.uri,
@@ -330,53 +278,65 @@ define([
                     'sourceUri': 'template'
                   }
               );
+            } else {
+              if (klass && klass.label && klass.label.toLowerCase().indexOf(term.toLowerCase()) !== -1) {
+                $rootScope.autocompleteResultsCache[field_id].results.push(
+                    {
+                      '@id'      : klass.uri,
+                      'label'    : klass.label,
+                      'type'     : 'Ontology Class',
+                      'sourceUri': 'template'
+                    }
+                );
+              }
+            }
+          });
+          if (term !== '*') {
+            if ($rootScope.autocompleteResultsCache[field_id].results.length === 0) {
+              $rootScope.autocompleteResultsCache[field_id].results.push({
+                'label'    : $translate.instant('GENERIC.NoResults'),
+                'sourceUri': 'template'
+              });
             }
           }
-        });
-        if (term !== '*') {
-          if ($rootScope.autocompleteResultsCache[field_id].results.length === 0) {
-            $rootScope.autocompleteResultsCache[field_id].results.push({
-              'label'    : $translate.instant('GENERIC.NoResults'),
-              'sourceUri': 'template'
-            });
-          }
         }
-      }
 
-      if (vcst.valueSets.length > 0) {
-        angular.forEach(vcst.valueSets, function (valueSet) {
-          if (term == '*') {
-            $rootScope.removeAutocompleteResultsForSource(field_id, valueSet.uri);
-          }
-          controlTermDataService.autocompleteValueSetClasses(term, valueSet.vsCollection,
-              valueSet.uri).then(function (childResponse) {
-                $rootScope.processAutocompleteClassResults(field_id, 'Value Set Class', valueSet.uri, childResponse);
-              });
-        });
-      }
-
-      if (vcst.ontologies.length > 0) {
-        angular.forEach(vcst.ontologies, function (ontology) {
-          if (term == '*') {
-            $rootScope.removeAutocompleteResultsForSource(field_id, ontology.uri);
-          }
-          controlTermDataService.autocompleteOntology(term, ontology.acronym).then(function (childResponse) {
-            $rootScope.processAutocompleteClassResults(field_id, 'Ontology Class', ontology.uri, childResponse);
+        if (vcst.valueSets.length > 0) {
+          angular.forEach(vcst.valueSets, function (valueSet) {
+            if (term == '*') {
+              $rootScope.removeAutocompleteResultsForSource(field_id, valueSet.uri);
+            }
+            controlledTermDataService.autocompleteValueSetClasses(term, valueSet.vsCollection,
+                valueSet.uri).then(function (childResponse) {
+                  $rootScope.processAutocompleteClassResults(field_id, 'Value Set Class', valueSet.uri, childResponse);
+                });
           });
-        });
-      }
+        }
 
-      if (vcst.branches.length > 0) {
-        angular.forEach(vcst.branches, function (branch) {
-          if (term == '*') {
-            $rootScope.removeAutocompleteResultsForSource(field_id, branch.uri);
-          }
-          controlTermDataService.autocompleteOntologySubtree(term, branch.acronym, branch.uri, branch.maxDepth).then(
-              function (childResponse) {
-                $rootScope.processAutocompleteClassResults(field_id, 'Ontology Class', branch.uri, childResponse);
-              }
-          );
-        });
+        if (vcst.ontologies.length > 0) {
+          angular.forEach(vcst.ontologies, function (ontology) {
+            if (term == '*') {
+              $rootScope.removeAutocompleteResultsForSource(field_id, ontology.uri);
+            }
+            controlledTermDataService.autocompleteOntology(term, ontology.acronym).then(function (childResponse) {
+              $rootScope.processAutocompleteClassResults(field_id, 'Ontology Class', ontology.uri, childResponse);
+            });
+          });
+        }
+
+        if (vcst.branches.length > 0) {
+          angular.forEach(vcst.branches, function (branch) {
+            if (term == '*') {
+              $rootScope.removeAutocompleteResultsForSource(field_id, branch.uri);
+            }
+            controlledTermDataService.autocompleteOntologySubtree(term, branch.acronym, branch.uri,
+                branch.maxDepth).then(
+                function (childResponse) {
+                  $rootScope.processAutocompleteClassResults(field_id, 'Ontology Class', branch.uri, childResponse);
+                }
+            );
+          });
+        }
       }
     };
 
@@ -442,7 +402,7 @@ define([
       return obj && obj["@type"] && obj["@type"].indexOf("Ontology") > 0;
     };
 
-    // Used in cedar-control-term.directive
+    // Used in controlled-term.directive
     $rootScope.lengthOfValueConstraint = function (valueConstraint) {
       return (valueConstraint.classes || []).length +
           (valueConstraint.valueSets || []).length +
@@ -466,7 +426,6 @@ define([
 
 
     // the below console.log statements break the karma tests
-    //TODO MJD
     // User data is available at this point:
     // console.log("Cedar service providing user data at this point:");
     // console.log(Cedar.getUserId());
@@ -479,7 +438,7 @@ define([
     FieldTypeService.init();
     UrlService.init();
     provisionalClassService.init();
-    controlTermDataService.init();
+    controlledTermDataService.init();
     DataManipulationService.init();
     UISettingsService.init();
     TrackingService.init();
@@ -498,12 +457,9 @@ define([
       }
     };
 
-    $rootScope.$on('$locationChangeStart', function(event) {
+    $rootScope.$on('$locationChangeStart', function (event) {
       $rootScope.setHeader();
     });
-
-
-
 
     $rootScope.setHeader = function () {
 
@@ -514,18 +470,16 @@ define([
       if ($location.path().startsWith("/dashboard")) {
         //jQuery("body").css('overflow:hidden');
         e.addClass('dashboard');
-      }
-       else if ($location.path().startsWith("/elements")) {
+      } else if ($location.path().startsWith("/elements")) {
         e.addClass('element');
 
       } else if ($location.path().startsWith("/templates")) {
         e.addClass('template');
 
-      }if ($location.path().startsWith("/instances")) {
+      } else if ($location.path().startsWith("/instances")) {
         e.addClass('metadata');
       }
     }
-
 
 
   };

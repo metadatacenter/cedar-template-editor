@@ -123,11 +123,8 @@ define([
         }
     );
 
-    // Configure mini header
     var pageId = CONST.pageId.RUNTIME;
-    var applicationMode = CONST.applicationMode.RUNTIME;
-    HeaderService.configure(pageId, applicationMode);
-    $rootScope.applicationRole = 'instantiator';
+    HeaderService.configure(pageId);
 
     // Create empty form object
     // Create empty instance object
@@ -143,7 +140,6 @@ define([
     if (!angular.isUndefined($routeParams.id)) {
       $scope.getInstance();
     }
-
 
 
     // Initialize array for required fields left empty that fail required empty check

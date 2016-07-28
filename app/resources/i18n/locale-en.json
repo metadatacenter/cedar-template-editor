@@ -89,7 +89,8 @@
     "Info": "Info",
     "GoodNews": "Good News!",
     "Cancel": "Cancel",
-    "Copied": "Copied"
+    "Copied": "Copied",
+    "More": "More"
   },
   "SERVER": {
     "FOLDER": {
@@ -235,7 +236,7 @@
     }
   },
   "TERMINOLOGY": {
-    "errorBioPortal": "Error connecting to BioPortal. Please try again later",
+    "errorBioPortal": "Error establishing a connection to BioPortal. Please try again later",
     "errorTerminology": "Error connecting to Terminology Server"
   },
   "VALUERECOMMENDER": {
@@ -294,6 +295,11 @@
     "suggestedAction": {
       "requestRole": "In order to accomplish the requested operation, you need the following role: <b>{{missingRole}}</b>.",
       "logout": "Your session has expired or it is invalid. You will be logged out from the tool."
+    }
+  },
+  "EDITOR": {
+    "TOOLBAR": {
+      "searchForMore": "Search for More Elements"
     }
   }
 }

@@ -1,0 +1,29 @@
+<div class="provisional-class-mappings" ng-if="pcc.provisionalClassMappings.length == 0">
+  <span class="no-mappings-msg">You have not created any mappings yet</span>
+</div>
+<div class="provisional-class-mappings" ng-if="pcc.provisionalClassMappings.length > 0">
+  <table class="table">
+    <thead>
+    <tr>
+      <td>Source Term</td>
+      <td>Mapping Type</td>
+      <td>Target Term</td>
+      <td>Target Ontology</td>
+      <td></td>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="mapping in pcc.provisionalClassMappings">
+      <td>{{pcc.provisionalClass.prefLabel}}</td>
+      <td>{{mapping.mappingType.label}}</td>
+      <td>{{mapping.targetClass.prefLabel}}</td>
+      <td>{{mapping.targetOntology.id}}</td>
+      <td>
+        <div class="mapping-delete">
+          <i class="fa fa-times-circle" tooltip="Delete mapping" ng-click="pcc.deleteProvisionalClassMapping($index)"></i>
+        </div>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
