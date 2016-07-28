@@ -32,8 +32,9 @@ function UserProfileHandler() {
   this.userProfileLoaded = function (userData) {
     this.userHandler.cedarUserProfile = userData;
     this.homeFolderId = userData.homeFolderId;
-    var service = this;
+
     if (this.homeFolderId == null) {
+      var service = this;
       // touch a folder, this should create the home folder
       jQuery.ajax(
           service.foldersUrl + "/contents?resource_types=folder&path=" + encodeURIComponent("/Users/" + userData.userId),
@@ -57,7 +58,6 @@ function UserProfileHandler() {
                     'success'    : function (userData) {
                       console.log("PUT success");
                       console.log(userData);
-                      service.userProfileLoadedDoCallback(userData);
                     },
                     'error'      : function (error) {
                     }
@@ -73,7 +73,7 @@ function UserProfileHandler() {
           }
       );
     } else {
-      service.userProfileLoadedDoCallback(userData);
+      this.userProfileLoadedDoCallback(userData);
     }
   };
 
