@@ -3,7 +3,6 @@
   <h5 ng-if="$root.isTemplateEditor() || $root.isRuntime()">Template JSON</h5>
   <pre id='form-json-preview'>{{ $root.modelObject | json }}</pre>
 </div>
-
 <div ng-show="$root.showOutput && $root.isRuntime()" id="outputJSON">
   <h5>Instance JSON</h5>
   <pre>{{ $root.dataObject | json }}</pre>

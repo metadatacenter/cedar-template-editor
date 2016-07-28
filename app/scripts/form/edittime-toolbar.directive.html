@@ -1,271 +1,272 @@
-<div ng-show="isEdit()" style="border-top:1px solid #ccc;padding:10px;height:50px;">
+<div ng-show="isEdit()"
+     style="border-top:1px solid #ccc;padding:10px;height:50px;">
 
-  <div id="{{uuid}}-edit-toolbar" style="float:right"
-      style="display: flex;flex-direction: row;justify-content: center;">
+    <div id="{{uuid}}-edit-toolbar" style="float:right"
+         style="display: flex;flex-direction: row;justify-content: center;">
 
-    <label translate>GENERIC.Multiple</label>
-    <input tooltip="minimum required"
-        min="0"
-        step="1"
-        id="{{uuid}}-edit-toolbar-min"
-        tooltip-trigger
-        tooltip-animation="true"
-        tooltip-placement="top"
-        data-toggle="tooltip" type="number" ng-model="fieldOrElement.minItems" title="min"
-        style="width:4em;margin-right:5px"
-        placeholder="min"/>
 
-    <input tooltip="maximum allowed"
-        min="1"
-        step="1"
-        id="{{uuid}}-edit-toolbar-max"
-        tooltip-trigger
-        tooltip-animation="true"
-        tooltip-placement="top"
-        data-toggle="tooltip" type="number" class="" ng-model="fieldOrElement.maxItems"
-        style="width:4em;margin-right:20px"
-        placeholder="max"
-        title="max"/>
+        <label translate>GENERIC.Multiple</label>
+        <input tooltip="minimum required"
+               min="0"
+               step="1"
+               id="{{uuid}}-edit-toolbar-min"
+               tooltip-trigger
+               tooltip-animation="true"
+               tooltip-placement="top"
+               data-toggle="tooltip" type="number" ng-model="fieldOrElement.minItems" title="min"
+               style="width:4em;margin-right:5px"
+               placeholder="min"/>
 
-    <div class="dropdown" style="font-size:20px;display:inline-block;margin-right:20px">
-      <a class="dropdown-toggle"
-          type="button"
-          data-toggle="dropdown"
-          tooltip="characterize the field"
-          tooltip-trigger
-          tooltip-animation="true"
-          tooltip-placement="top"
-          data-toggle="tooltip"><i class="cedar-svg-controll-term collapsed"></i>
-      </a>
+        <input tooltip="maximum allowed"
+               min="1"
+               step="1"
+               id="{{uuid}}-edit-toolbar-max"
+               tooltip-trigger
+               tooltip-animation="true"
+               tooltip-placement="top"
+               data-toggle="tooltip" type="number" class="" ng-model="fieldOrElement.maxItems"
+               style="width:4em;margin-right:20px"
+               placeholder="max"
+               title="max"/>
 
-      <div class="dropdown-menu">
-        <div id="field-type-options" class="cardinality-options">
-          <div class="">
-            <div class="controlled-terms controlled-term-options">
-              <div class="class-container">
+        <div class="dropdown" style="font-size:20px;display:inline-block;margin-right:20px">
+            <a class="dropdown-toggle"
+               type="button"
+               data-toggle="dropdown"
+               tooltip="characterize the field"
+               tooltip-trigger
+               tooltip-animation="true"
+               tooltip-placement="top"
+               data-toggle="tooltip"><i class="cedar-svg-controll-term collapsed"></i>
+            </a>
 
-                <!-- field type table -->
-                <div class="added-field-classes">
-                  <div class="class-list-container">
-                    <div class="class-list-table">
-                      <table class="table table-hover table-striped ">
-                        <thead>
-                        <tr>
-                          <th>Name</th>
-                          <th>Identifier</th>
-                          <th>Source</th>
-                          <th></th>
-                        </tr>
-                        </thead>
-                        <tbody>
+            <div class="dropdown-menu">
+                <div id="field-type-options" class="cardinality-options">
+                    <div class="">
+                        <div class="controlled-terms controlled-term-options">
+                            <div class="class-container">
 
-                        <tr ng-repeat="key in addedFieldKeys">
-                          <td>
-                            {{getPrefLabel(key)}}
-                          </td>
-                          <td>
-                            {{getClassId(key)}}
-                          </td>
-                          <td>
-                            {{parseOntologyName(key)}}
-                          </td>
-                          <td>
-                            <div class="item item-delete"
-                                ng-click="deleteFieldAddedItem(key);  $event.stopPropagation();">
-                              <i class="fa fa-close"></i>
+                                <!-- field type table -->
+                                <div class="added-field-classes">
+                                    <div class="class-list-container">
+                                        <div class="class-list-table">
+                                            <table class="table table-hover table-striped ">
+                                                <thead>
+                                                <tr>
+                                                    <th>Name</th>
+                                                    <th>Identifier</th>
+                                                    <th>Source</th>
+                                                    <th></th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+
+                                                <tr ng-repeat="key in addedFieldKeys">
+                                                    <td>
+                                                        {{getPrefLabel(key)}}
+                                                    </td>
+                                                    <td>
+                                                        {{getClassId(key)}}
+                                                    </td>
+                                                    <td>
+                                                        {{parseOntologyName(key)}}
+                                                    </td>
+                                                    <td>
+                                                        <div class="item item-delete"
+                                                             ng-click="deleteFieldAddedItem(key);  $event.stopPropagation();">
+                                                            <i class="fa fa-close"></i>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                          </td>
-                        </tr>
-                        </tbody>
-                      </table>
+                            <div class="clear-save" style="text-align:center">
+                                <button type="button" class="std-button btn search-ontologies-button"
+                                        ng-click="showModal(getFieldModalId()); $event.stopPropagation();">Search
+                                </button>
+                                <!--<button type="button" class="std-button btn search-ontologies-button">Create</button>-->
+                            </div>
+                        </div>
                     </div>
-                  </div>
                 </div>
-              </div>
-              <div class="clear-save" style="text-align:center">
-                <!-- The field.finalTitle variable is used to store the final title assigned to the field, which will be shown
-               in the modal and used to perform a BioPortal initial search automatically -->
-                <button type="button" class="std-button btn search-ontologies-button"
-                    ng-click="showModal(getFieldModalId()); $event.stopPropagation(); $root.finalTitle = $root.schemaOf(fieldOrElement)._ui.title">
-                  Search
-                </button>
-              </div>
             </div>
-          </div>
         </div>
-      </div>
-    </div>
 
-    <div ng-if="hasControlledTerms()" class="dropdown"
-        style="font-size:20px;display:inline-block;margin-right:20px">
-      <a class="dropdown-toggle"
-          type="button"
-          data-toggle="dropdown"
-          tooltip="restrict the values"
-          tooltip-trigger
-          tooltip-animation="true"
-          tooltip-placement="top"
-          data-toggle="tooltip"><i class="cedar-svg-controll-term collapsed"></i>
-      </a>
+        <div ng-if="hasControlledTerms()" class="dropdown"
+             style="font-size:20px;display:inline-block;margin-right:20px">
+            <a class="dropdown-toggle"
+               type="button"
+               data-toggle="dropdown"
+               tooltip="restrict the values"
+               tooltip-trigger
+               tooltip-animation="true"
+               tooltip-placement="top"
+               data-toggle="tooltip"><i class="cedar-svg-controll-term collapsed"></i>
+            </a>
 
-      <div class="dropdown-menu">
-        <div id="value-options" class="cardinality-options">
-          <div class="">
-            <div class="controlled-terms controlled-term-options">
-              <div class="class-container">
-                <!-- value table -->
-                <div class="added-field-classes">
-                  <div class="class-list-container">
-                    <div class="class-list-table">
-                      <table class="table table-hover">
-                        <thead>
-                        <tr>
-                          <th>Name</th>
-                          <th>Type</th>
-                          <th>Source</th>
-                          <th>Values</th>
-                          <th>&nbsp;</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr ng-repeat="class in $root.schemaOf(fieldOrElement)._valueConstraints.classes">
-                          <td>{{class.prefLabel}}</td>
+            <div class="dropdown-menu">
+                <div id="value-options" class="cardinality-options">
+                    <div class="">
+                        <div class="controlled-terms controlled-term-options">
+                            <div class="class-container">
+                                <!-- value table -->
+                                <div class="added-field-classes">
+                                    <div class="class-list-container">
+                                        <div class="class-list-table">
+                                            <table class="table table-hover">
+                                                <thead>
+                                                <tr>
+                                                    <th>Name</th>
+                                                    <th>Type</th>
+                                                    <th>Source</th>
+                                                    <th>Values</th>
+                                                    <th>&nbsp;</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <tr ng-repeat="class in $root.schemaOf(fieldOrElement)._valueConstraints.classes">
+                                                    <td>{{class.prefLabel}}</td>
 
-                          <td>Class</td>
-                          <td>
-                            {{class.source.substr(0,
-                            class.source.lastIndexOf(')')).substr(class.source.lastIndexOf('(')+1)}}
-                          </td>
-                          <td>&nbsp;</td>
-                          <td>
-                            <div class="item item-delete"
-                                ng-click="deleteFieldAddedClass(class); $event.stopPropagation();">
-                              <i class="clickable fa fa-close"></i>
+                                                    <td>Class</td>
+                                                    <td>
+                                                        {{class.source.substr(0,
+                                                        class.source.lastIndexOf(')')).substr(class.source.lastIndexOf('(')+1)}}
+                                                    </td>
+                                                    <td>&nbsp;</td>
+                                                    <td>
+                                                        <div class="item item-delete"
+                                                             ng-click="deleteFieldAddedClass(class); $event.stopPropagation();">
+                                                            <i class="clickable fa fa-close"></i>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr ng-repeat="valueSet in $root.schemaOf(fieldOrElement)._valueConstraints.valueSets">
+                                                    <td>{{valueSet.name}}</td>
+
+                                                    <td>Value Set</td>
+                                                    <td>
+                                                        {{valueSet.vsCollection.substr(valueSet.vsCollection.lastIndexOf('/')
+                                                        + 1)}}
+                                                    </td>
+                                                    <td>{{valueSet.numChildren}}</td>
+                                                    <td>
+                                                        <div class="item item-delete"
+                                                             ng-click="deleteFieldAddedValueSet(valueSet);  $event.stopPropagation();">
+                                                            <i class="clickable fa fa-close"></i>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr ng-repeat="ontology in $root.schemaOf(fieldOrElement)._valueConstraints.ontologies">
+                                                    <td>{{ontology.acronym}}</td>
+
+                                                    <td>Ontology</td>
+                                                    <td></td>
+                                                    <td>{{ontology.numChildren}}</td>
+                                                    <td>
+                                                        <div class="item item-delete"
+                                                             ng-click="deleteFieldAddedOntology(ontology); $event.stopPropagation();">
+                                                            <i class="clickable fa fa-close"></i>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr ng-repeat="branch in $root.schemaOf(fieldOrElement)._valueConstraints.branches">
+                                                    <td>{{branch.name}}</td>
+
+                                                    <td>Branch</td>
+                                                    <td>{{branch.acronym}}</td>
+                                                    <td></td>
+                                                    <td>
+                                                        <div class="item item-delete"
+                                                             ng-click="deleteFieldAddedBranch(branch); $event.stopPropagation();">
+                                                            <i class="clickable fa fa-close"></i>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="clear-save" style="text-align:center">
+                                    <button type="button" class="std-button btn search-ontologies-button"
+                                            ng-click="showModal(getValueModalId()); $event.stopPropagation();">
+                                        Search
+                                    </button>
+                                    <!--<button type="button" class="std-button btn search-ontologies-button">Create</button>-->
+                                </div>
+
                             </div>
-                          </td>
-                        </tr>
-                        <tr ng-repeat="valueSet in $root.schemaOf(fieldOrElement)._valueConstraints.valueSets">
-                          <td>{{valueSet.name}}</td>
-
-                          <td>Value Set</td>
-                          <td>
-                            {{valueSet.vsCollection.substr(valueSet.vsCollection.lastIndexOf('/')
-                            + 1)}}
-                          </td>
-                          <td>{{valueSet.numChildren}}</td>
-                          <td>
-                            <div class="item item-delete"
-                                ng-click="deleteFieldAddedValueSet(valueSet);  $event.stopPropagation();">
-                              <i class="clickable fa fa-close"></i>
-                            </div>
-                          </td>
-                        </tr>
-                        <tr ng-repeat="ontology in $root.schemaOf(fieldOrElement)._valueConstraints.ontologies">
-                          <td>{{ontology.acronym}}</td>
-
-                          <td>Ontology</td>
-                          <td></td>
-                          <td>{{ontology.numChildren}}</td>
-                          <td>
-                            <div class="item item-delete"
-                                ng-click="deleteFieldAddedOntology(ontology); $event.stopPropagation();">
-                              <i class="clickable fa fa-close"></i>
-                            </div>
-                          </td>
-                        </tr>
-                        <tr ng-repeat="branch in $root.schemaOf(fieldOrElement)._valueConstraints.branches">
-                          <td>{{branch.name}}</td>
-
-                          <td>Branch</td>
-                          <td>{{branch.acronym}}</td>
-                          <td></td>
-                          <td>
-                            <div class="item item-delete"
-                                ng-click="deleteFieldAddedBranch(branch); $event.stopPropagation();">
-                              <i class="clickable fa fa-close"></i>
-                            </div>
-                          </td>
-                        </tr>
-                        </tbody>
-                      </table>
+                        </div>
                     </div>
-                  </div>
                 </div>
-                <div class="clear-save" style="text-align:center">
-                  <!-- The field.finalTitle variable is used to store the final title assigned to the field, which will be shown
-               in the modal -->
-                  <button type="button" class="std-button btn search-ontologies-button"
-                      ng-click="showModal(getValueModalId()); $event.stopPropagation(); $root.finalTitle = $root.schemaOf(fieldOrElement)._ui.title">
-                    Search
-                  </button>
-                </div>
-              </div>
             </div>
-          </div>
+
         </div>
-      </div>
 
-    </div>
+        <!-- edit help text -->
+        <div class="dropdown" style="font-size:20px;display:inline-block;margin-right:20px">
+            <a class="dropdown-toggle"
+               id="{{uuid}}-edit-toolbar-help"
+               type="button"
+               data-toggle="dropdown"
+               tooltip="add help text"
+               tooltip-trigger
+               tooltip-animation="true"
+               tooltip-placement="top"
+               data-toggle="tooltip"
+                    ><i class="fa fa-question"></i>
+            </a>
 
-    <!-- edit help text -->
-    <div class="dropdown" style="font-size:20px;display:inline-block;margin-right:20px">
-      <a class="dropdown-toggle"
-          id="{{uuid}}-edit-toolbar-help"
-          type="button"
-          data-toggle="dropdown"
-          tooltip="add help text"
-          tooltip-trigger
-          tooltip-animation="true"
-          tooltip-placement="top"
-          data-toggle="tooltip"
-          ><i class="fa fa-question"></i>
-      </a>
-
-      <div class="dropdown-menu">
+            <div class="dropdown-menu">
                    <textarea style="width:100%;height:100%;border:0px solid #fff" rows="5"
-                       class="form-control"
-                       ng-model="$root.schemaOf(fieldOrElement)._ui.description"></textarea>
-      </div>
+                             class="form-control"
+                             ng-model="$root.schemaOf(fieldOrElement)._ui.description"></textarea>
+            </div>
+        </div>
+
+        <!-- duplicate field or element -->
+        <a style="font-size:20px;display:inline-block;margin-right:20px"
+           id="{{uuid}}-edit-toolbar-duplicate"
+           ng-click=" duplicate();$event.stopPropagation();"
+           tooltip="duplicate field"
+           tooltip-trigger
+           tooltip-animation="true"
+           tooltip-placement="top"
+           data-toggle="tooltip"><i
+                class="fa fa-files-o"></i></a>
+
+        <!-- required -->
+        <input type="checkbox"
+               id="{{uuid}}-edit-toolbar-required"
+               ng-click=" $event.stopPropagation();"
+               ng-model="$root.schemaOf(fieldOrElement)._valueConstraints.requiredValue"/>
+        <label style="margin-right:10px" ng-click=" $event.stopPropagation();" for="{{uuid}}-edit-toolbar-required"
+               tooltip="response required"
+               tooltip-trigger
+               tooltip-animation="true"
+               tooltip-placement="top"
+               data-toggle="tooltip">Required</label>
+
+        <div style="font-size:20px;display:inline-block;margin-right:20px"></div>
+
+
+        <!-- delete -->
+        <a style="font-size:20px;display:inline-block;margin-right:20px"
+           id="{{uuid}}-edit-toolbar-delete"
+           ng-click=" delete();$event.stopPropagation();"
+           tooltip="delete field"
+           tooltip-trigger
+           tooltip-animation="true"
+           tooltip-placement="top"
+           data-toggle="tooltip"><i
+                class="fa fa-trash"></i></a>
+
     </div>
 
-    <!-- duplicate field or element -->
-    <a style="font-size:20px;display:inline-block;margin-right:20px"
-        id="{{uuid}}-edit-toolbar-duplicate"
-        ng-click=" duplicate();$event.stopPropagation();"
-        tooltip="duplicate field"
-        tooltip-trigger
-        tooltip-animation="true"
-        tooltip-placement="top"
-        data-toggle="tooltip"><i
-        class="fa fa-files-o"></i></a>
-
-    <!-- required -->
-    <input type="checkbox"
-        id="{{uuid}}-edit-toolbar-required"
-        ng-click=" $event.stopPropagation();"
-        ng-model="$root.schemaOf(fieldOrElement)._valueConstraints.requiredValue"/>
-    <label style="margin-right:10px" ng-click=" $event.stopPropagation();" for="{{uuid}}-edit-toolbar-required"
-        tooltip="response required"
-        tooltip-trigger
-        tooltip-animation="true"
-        tooltip-placement="top"
-        data-toggle="tooltip">Required</label>
-
-    <div style="font-size:20px;display:inline-block;margin-right:20px"></div>
-
-
-    <!-- delete -->
-    <a style="font-size:20px;display:inline-block;margin-right:20px"
-        id="{{uuid}}-edit-toolbar-delete"
-        ng-click=" delete();$event.stopPropagation();"
-        tooltip="delete field"
-        tooltip-trigger
-        tooltip-animation="true"
-        tooltip-placement="top"
-        data-toggle="tooltip"><i
-        class="fa fa-trash"></i></a>
-
-  </div>
 
 
 </div>

@@ -279,25 +279,33 @@ define([
 
     // Used in textfield.html
     $rootScope.updateFieldAutocomplete = function (field, term) {
-      // Only populate the field at runtime
-      if ($rootScope.isRuntime()) {
-        if (term === '') {
-          term = '*';
-        }
-        var results = [];
-        var vcst = $rootScope.schemaOf(field)._valueConstraints;
-        var field_id = $rootScope.schemaOf(field)['@id'];
+      if (term === '') {
+        term = '*';
+      }
+      var results = [];
+      var vcst = $rootScope.schemaOf(field)._valueConstraints;
+      var field_id = $rootScope.schemaOf(field)['@id'];
 
-        if (angular.isUndefined($rootScope.autocompleteResultsCache[field_id])) {
-          $rootScope.autocompleteResultsCache[field_id] = {
-            'results': []
-          };
-        }
+      if (angular.isUndefined($rootScope.autocompleteResultsCache[field_id])) {
+        $rootScope.autocompleteResultsCache[field_id] = {
+          'results': []
+        };
+      }
 
-        if (vcst.classes.length > 0) {
-          $rootScope.removeAutocompleteResultsForSource(field_id, 'template');
-          angular.forEach(vcst.classes, function (klass) {
-            if (term == '*') {
+      if (vcst.classes.length > 0) {
+        $rootScope.removeAutocompleteResultsForSource(field_id, 'template');
+        angular.forEach(vcst.classes, function (klass) {
+          if (term == '*') {
+            $rootScope.autocompleteResultsCache[field_id].results.push(
+                {
+                  '@id'      : klass.uri,
+                  'label'    : klass.label,
+                  'type'     : 'Ontology Class',
+                  'sourceUri': 'template'
+                }
+            );
+          } else {
+            if (klass && klass.label && klass.label.toLowerCase().indexOf(term.toLowerCase()) !== -1) {
               $rootScope.autocompleteResultsCache[field_id].results.push(
                   {
                     '@id'      : klass.uri,
@@ -306,65 +314,53 @@ define([
                     'sourceUri': 'template'
                   }
               );
-            } else {
-              if (klass && klass.label && klass.label.toLowerCase().indexOf(term.toLowerCase()) !== -1) {
-                $rootScope.autocompleteResultsCache[field_id].results.push(
-                    {
-                      '@id'      : klass.uri,
-                      'label'    : klass.label,
-                      'type'     : 'Ontology Class',
-                      'sourceUri': 'template'
-                    }
-                );
-              }
-            }
-          });
-          if (term !== '*') {
-            if ($rootScope.autocompleteResultsCache[field_id].results.length === 0) {
-              $rootScope.autocompleteResultsCache[field_id].results.push({
-                'label'    : $translate.instant('GENERIC.NoResults'),
-                'sourceUri': 'template'
-              });
             }
           }
-        }
-
-        if (vcst.valueSets.length > 0) {
-          angular.forEach(vcst.valueSets, function (valueSet) {
-            if (term == '*') {
-              $rootScope.removeAutocompleteResultsForSource(field_id, valueSet.uri);
-            }
-            controlledTermDataService.autocompleteValueSetClasses(term, valueSet.vsCollection,
-                valueSet.uri).then(function (childResponse) {
-                  $rootScope.processAutocompleteClassResults(field_id, 'Value Set Class', valueSet.uri, childResponse);
-                });
-          });
-        }
-
-        if (vcst.ontologies.length > 0) {
-          angular.forEach(vcst.ontologies, function (ontology) {
-            if (term == '*') {
-              $rootScope.removeAutocompleteResultsForSource(field_id, ontology.uri);
-            }
-            controlledTermDataService.autocompleteOntology(term, ontology.acronym).then(function (childResponse) {
-              $rootScope.processAutocompleteClassResults(field_id, 'Ontology Class', ontology.uri, childResponse);
+        });
+        if (term !== '*') {
+          if ($rootScope.autocompleteResultsCache[field_id].results.length === 0) {
+            $rootScope.autocompleteResultsCache[field_id].results.push({
+              'label'    : $translate.instant('GENERIC.NoResults'),
+              'sourceUri': 'template'
             });
-          });
+          }
         }
+      }
 
-        if (vcst.branches.length > 0) {
-          angular.forEach(vcst.branches, function (branch) {
-            if (term == '*') {
-              $rootScope.removeAutocompleteResultsForSource(field_id, branch.uri);
-            }
-            controlledTermDataService.autocompleteOntologySubtree(term, branch.acronym, branch.uri,
-                branch.maxDepth).then(
-                function (childResponse) {
-                  $rootScope.processAutocompleteClassResults(field_id, 'Ontology Class', branch.uri, childResponse);
-                }
-            );
+      if (vcst.valueSets.length > 0) {
+        angular.forEach(vcst.valueSets, function (valueSet) {
+          if (term == '*') {
+            $rootScope.removeAutocompleteResultsForSource(field_id, valueSet.uri);
+          }
+          controlledTermDataService.autocompleteValueSetClasses(term, valueSet.vsCollection,
+              valueSet.uri).then(function (childResponse) {
+                $rootScope.processAutocompleteClassResults(field_id, 'Value Set Class', valueSet.uri, childResponse);
+              });
+        });
+      }
+
+      if (vcst.ontologies.length > 0) {
+        angular.forEach(vcst.ontologies, function (ontology) {
+          if (term == '*') {
+            $rootScope.removeAutocompleteResultsForSource(field_id, ontology.uri);
+          }
+          controlledTermDataService.autocompleteOntology(term, ontology.acronym).then(function (childResponse) {
+            $rootScope.processAutocompleteClassResults(field_id, 'Ontology Class', ontology.uri, childResponse);
           });
-        }
+        });
+      }
+
+      if (vcst.branches.length > 0) {
+        angular.forEach(vcst.branches, function (branch) {
+          if (term == '*') {
+            $rootScope.removeAutocompleteResultsForSource(field_id, branch.uri);
+          }
+          controlledTermDataService.autocompleteOntologySubtree(term, branch.acronym, branch.uri, branch.maxDepth).then(
+              function (childResponse) {
+                $rootScope.processAutocompleteClassResults(field_id, 'Ontology Class', branch.uri, childResponse);
+              }
+          );
+        });
       }
     };
 
@@ -430,7 +426,7 @@ define([
       return obj && obj["@type"] && obj["@type"].indexOf("Ontology") > 0;
     };
 
-    // Used in controlled-term.directive
+    // Used in cedar-controlled-term.directive
     $rootScope.lengthOfValueConstraint = function (valueConstraint) {
       return (valueConstraint.classes || []).length +
           (valueConstraint.valueSets || []).length +

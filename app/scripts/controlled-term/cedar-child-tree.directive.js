@@ -34,6 +34,7 @@ define([
         element.addClass('expanded');
         element.addClass('loaded');
 
+
         var children = '<cedar-class-tree tree="' + children + '" term="term" level="' + (scope.level + 1) + '" is-selected-callback="isSelectedCallback" get-class-details-callback="getClassDetailsCallback"></cedar-class-tree>';
         $compile(children)(scope, function(cloned, scope){
           element.append(cloned);

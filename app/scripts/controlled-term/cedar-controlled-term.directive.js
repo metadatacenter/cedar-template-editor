@@ -4,13 +4,13 @@ define([
   'angular',
   'cedar/template-editor/controlled-term/controlled-term.directive.controller'
 ], function(angular) {
-  angular.module('cedar.templateEditor.controlledTerm.controlledTermDirective', [
+  angular.module('cedar.templateEditor.controlledTerm.cedarControlledTermDirective', [
     'cedar.templateEditor.controlledTerm.controlledTermDirectiveController',
-  ]).directive('controlledTerm', controlledTermDirective);
+  ]).directive('cedarControlledTerm', cedarControlledTermDirective);
 
-  controlledTermDirective.$inject = ['$timeout'];
+  cedarControlledTermDirective.$inject = ['$timeout'];
   
-  function controlledTermDirective($timeout) {
+  function cedarControlledTermDirective($timeout) {
 
     var directive = {
       bindToController: {
@@ -22,7 +22,7 @@ define([
       restrict: 'A',
       replace: true,
       scope: {},
-      templateUrl: 'scripts/controlled-term/controlled-term.directive.html',
+      templateUrl: 'scripts/controlled-term/cedar-controlled-term.directive.html',
     };
 
     return directive;

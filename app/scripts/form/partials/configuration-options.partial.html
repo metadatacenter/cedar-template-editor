@@ -149,10 +149,7 @@
           </div>
         </div>
         <div class="clear-save">
-          <!-- The field.finalTitle variable is used to store the final title assigned to the field, which will be shown
-          in the modal and used to perform a BioPortal initial search automatically -->
-          <button type="button" class="std-button btn search-ontologies-button" ng-click="showModal(getModalId(true)); $event.stopPropagation();
-          $root.finalTitle = $root.schemaOf(field)._ui.title">Search
+          <button type="button" class="std-button btn search-ontologies-button" ng-click="showModal(getModalId(true)); $event.stopPropagation();">Search
           </button>
           <!--<button type="button" class="std-button btn search-ontologies-button">Create</button>-->
         </div>
@@ -251,12 +248,11 @@
             </div>
           </div>
           <div class="clear-save" >
-            <!-- The field.finalTitle variable is used to store the final title assigned to the field, which will be shown
-          in the modal -->
-            <button type="button" class="std-button btn search-ontologies-button" ng-click="showModal(getModalId(false)); $event.stopPropagation();
-                $root.finalTitle = $root.schemaOf(field)._ui.title">Search
+            <button type="button" class="std-button btn search-ontologies-button"   ng-click="showModal(getModalId(false)); $event.stopPropagation();">Search
             </button>
+            <!--<button type="button" class="std-button btn search-ontologies-button">Create</button>-->
           </div>
+
         </div>
       </div>
     </div>
@@ -264,4 +260,36 @@
 </div>
 
 <div class="clearfix"></div>
+
+<!-- field modal -->
+<div class="modal fade controlled-terms-modal" id="{{getModalId(true)}}" data-backdrop="static">
+  <div class="modal-dialog">
+    <div class="modal-content" style="overflow:auto">
+      <div class="modal-header">
+        <button type="button" class="close controlled-terms-modal-field-close" data-dismiss="modal"
+            aria-label="Close"><span aria-hidden="true"><img
+            src="/img/close_modal.png" width="22"/></span></button>
+      </div>
+      <div class="modal-body">
+        <div cedar-controlled-term field="field" options='{"filterSelection":"field"}'></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- value modal -->
+<div class="modal fade controlled-terms-modal" id="{{getModalId(false)}}" data-backdrop="static">
+  <div class="modal-dialog">
+    <div class="modal-content"  style="overflow:auto">
+      <div class="modal-header">
+        <button type="button" class="close controlled-terms-modal-value-close" data-dismiss="modal"
+            aria-label="Close"><span aria-hidden="true"><img
+            src="/img/close_modal.png" width="22"/></span></button>
+      </div>
+      <div class="modal-body">
+        <div cedar-controlled-term field="field" options='{"filterSelection":"values"}'></div>
+      </div>
+    </div>
+  </div>
+</div>
 

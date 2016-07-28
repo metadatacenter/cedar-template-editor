@@ -32,10 +32,8 @@ define([
     vm.saveAsFieldItem = saveAsFieldItem;
     vm.saveAsOntologyClassValueConstraint = saveAsOntologyClassValueConstraint;
     vm.saveAsValueSetConstraint = saveAsValueSetConstraint;
-    vm.searchMode = null;
     vm.startOverInner = startOverInner;
     vm.startOver = startOver;
-    vm.showCreateVsLoader = false;
 
     /**
      * Scope functions.
@@ -99,9 +97,9 @@ define([
     }
 
     function saveAsValueSetConstraint(provisionalValueSet, provisionalValueSetValues) {
-      vm.showCreateVsLoader = true;
       provisionalClassService.saveValueSet(provisionalValueSet, provisionalValueSetValues).then(function(newValueSet) {
         // Reload value sets cache
+        console.log("Reloading value sets cache");
         controlledTermDataService.initValueSetsCache();
         // hack to add prefLabel
         if (newValueSet.label) {
@@ -113,7 +111,6 @@ define([
             ontology: vm.provisionalValueSetOntology
           }
         );
-        vm.showCreateVsLoader = false;
       });
     }
 

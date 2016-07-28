@@ -9,7 +9,6 @@ define([
   'lib/angular-animate/angular-animate',
   'lib/angular-bootstrap/ui-bootstrap-tpls',
   'lib/ngHandsontable/dist/ngHandsontable',
-  'lib/ng-tags-input/ng-tags-input',
   'lib/angular-route/angular-route',
   'lib/angular-sanitize/angular-sanitize',
   'lib/angular-ui-select/dist/select',
@@ -18,6 +17,7 @@ define([
   'lib/angular-translate/angular-translate',
   'lib/angular-translate-loader-static-files/angular-translate-loader-static-files',
   'lib/angular-toasty/dist/angular-toasty',
+
 
   // non-angular 3rd party libraries
   'lib/bootstrap/dist/js/bootstrap',
