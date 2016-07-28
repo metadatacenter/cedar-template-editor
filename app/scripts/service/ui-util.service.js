@@ -56,8 +56,6 @@ define([
               target.find('.elementTotalContent').first().toggle();
               target.find(".visibilitySwitch").toggle();
               target.find(".spreadsheetSwitchLink").toggle();
-            } else {
-              console.log('cant find target ' + id);
             }
           }, 350
       );

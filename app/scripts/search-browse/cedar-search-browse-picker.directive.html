@@ -299,17 +299,17 @@
                 </ul>
 
               </li>
-              <li class="invisible"><a href="#" ng-click="dc.toggleFilters('author')">Author<i class="fa pull-right"
+              <li><a href="#" ng-click="dc.toggleFilters('author')">Author<i class="fa pull-right"
                   ng-class="{ 'fa-caret-down': dc.isFilterSection('author'), 'fa-caret-left': !dc.isFilterSection('author') }"></i></a>
 
                 <div ng-if="dc.isFilterSection('author')">&nbsp;</div>
               </li>
-              <li class="invisible"><a href="#" ng-click="dc.toggleFilters('status')">Status<i class="fa pull-right"
+              <li><a href="#" ng-click="dc.toggleFilters('status')">Status<i class="fa pull-right"
                   ng-class="{ 'fa-caret-down': dc.isFilterSection('status'), 'fa-caret-left': !dc.isFilterSection('status') }"></i></a>
 
                 <div ng-if="dc.isFilterSection('status')">&nbsp;</div>
               </li>
-              <li class="invisible" ui-tree=""><a href="#" ng-click="dc.toggleFilters('term')">Term<i class="fa pull-right "
+              <li ui-tree=""><a href="#" ng-click="dc.toggleFilters('term')">Term<i class="fa pull-right"
                   ng-class="{ 'fa-caret-down': dc.isFilterSection('term'), 'fa-caret-left': !dc.isFilterSection('term') }"></i></a>
 
                 <div ng-if="dc.isFilterSection('term')">&nbsp;</div>

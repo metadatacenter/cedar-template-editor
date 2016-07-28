@@ -1,5 +1,28 @@
 <div class="more-input-buttons">
 
+    <button type="button" class="help" ng-show="$root.isRuntime()"
+            tooltip="{{$root.schemaOf(field)._ui.description}}"
+            tooltip-trigger
+            tooltip-animation="true"
+            tooltip-placement="top"
+            data-toggle="tooltip"
+            style="border:0;outline:none"
+            ng-class="{'invisible' : $root.schemaOf(field)._ui.description.length == 0}"\>
+        <i class="fa fa-question"></i>
+    </button>
+
+    <button type="button" class="add"
+            ng-show="$root.isRuntime() &&  $parent.field.hasOwnProperty('minItems') && (!$parent.field.hasOwnProperty('maxItems') || $parent.model.length < $parent.field.maxItems)"
+            tooltip="add"
+            tooltip-trigger
+            tooltip-animation="true"
+            tooltip-placement="top"
+            data-toggle="tooltip"
+            style="border:0;outline:none"
+            ng-click="addMoreInput()">
+        <i class="fa fa-plus"></i>
+    </button>
+
     <button type="button" class="remove"  ng-click="removeInput($parent.$index)"
             ng-show="$root.isRuntime() && $parent.field.hasOwnProperty('minItems') && ($parent.model.length > $parent.field.minItems)"
             tooltip="remove"

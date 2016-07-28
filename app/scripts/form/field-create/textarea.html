@@ -1,8 +1,8 @@
 <div id="paragraph-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}" class="input-type-container">
 
-  <div  class="form-group floating-label-wrapper has-feedback">
-    <div ng-init="m=model;pIndex=0" ng-include="'scripts/form/field-value/textarea.html'"></div>
-
-  </div>
+  <div ng-init="fieldTitle='Paragraph';fieldIconClass='cedar-svg-paragraph'"
+      ng-include="'scripts/form/partials/field-header.partial.html'"></div>
+  <div class="definition-inputs" ng-include="'scripts/form/partials/field-definition.partial.html'"></div>
+  <div class="configuration-options" ng-include="'scripts/form/partials/configuration-options.partial.html'"></div>
 
 </div>

@@ -28,8 +28,6 @@ define([
               $scope.element = response.data;
               HeaderService.dataContainer.currentObjectScope = $scope.element;
 
-
-
               var key = $scope.element["@id"];
               $rootScope.keyOfRootElement = key;
               $rootScope.rootElement = $scope.form;
@@ -40,9 +38,6 @@ define([
               $scope.form._ui.order.push(key);
               $rootScope.documentTitle = $scope.form._ui.title;
               StagingService.setModelObject($scope.element);
-
-              console.log('createElement controller');
-              DataManipulationService.createDomIds($scope.form);
             },
             function (err) {
               UIMessageService.showBackendError('SERVER.ELEMENT.load.error', err);
@@ -85,26 +80,15 @@ define([
     $scope.addField = function (fieldType) {
       $scope.populateCreatingFieldOrElement();
       if ($scope.dontHaveCreatingFieldOrElement()) {
-        var domId = DataManipulationService.createDomId();
-        StagingService.addFieldToElement($scope.element, fieldType, domId, function (el) {
-          // now we are sure that the element was successfully added
-          $rootScope.scrollToDomId(domId);
-        });
+        StagingService.addFieldToElement($scope.element, fieldType);
       }
       $scope.showMenuPopover = false;
     };
 
-
-
-
     $scope.addElementToElement = function (element) {
       $scope.populateCreatingFieldOrElement();
       if ($scope.dontHaveCreatingFieldOrElement()) {
-        var domId = DataManipulationService.createDomId();
-        StagingService.addElementToElement($scope.element, element["@id"], domId, function(el) {
-          // now we are sure that the element was successfully added
-          $rootScope.scrollToDomId(domId);
-        });
+        StagingService.addElementToElement($scope.element, element["@id"]);
         $scope.$broadcast("form:update");
       }
     };

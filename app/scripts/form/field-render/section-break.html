@@ -1,9 +1,13 @@
 <div class="fields fields-section-break">
 
+  <!-- header row -->
+  <div ng-init="fieldTitle='Section Break';fieldIconClass='cedar-svg-section-break'"
+      ng-include="'scripts/form/partials/field-header.partial.html'"></div>
 
   <h3 class="section-title">{{$root.schemaOf(field)._ui.title}}</h3>
 
-
+  <p ng-if="$root.schemaOf(field)._ui.description.length > 0" class="section-body">
+    {{$root.schemaOf(field)._ui.description}}</p>
 </div>
 
 

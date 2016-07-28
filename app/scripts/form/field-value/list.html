@@ -3,11 +3,11 @@
      class="form-group form-group-narrow validation-pattern"
      ng-class="{'required': $root.schemaOf(field)._valueConstraints.requiredValue}">
     <select class="form-control"
-
             multiple=""
             data-max-options="1"
+            ng-class="{'required': $root.schemaOf(field)._valueConstraints.requiredValue}"
             field="field"
-            title="{{'CREATOR.pleaseSelect' | translate}}"
+            title="{{$root.schemaOf(field)._ui.title}}"
             ng-model="m._value"
             ng-disabled="!$root.isRuntime() || preview"
             defaults="$root.schemaOf(field)._ui.defaultOption"
@@ -27,7 +27,8 @@
     <select class="form-control"
             multiple="true"
             field="field"
-            title="{{'CREATOR.pleaseSelect' | translate}}"
+            ng-class="{'required': $root.schemaOf(field)._valueConstraints.requiredValue}"
+            title="{{$root.schemaOf(field)._ui.title}}"
             ng-model="m._value"
             ng-disabled="!$root.isRuntime() || preview"
             defaults="$root.schemaOf(field)._ui.defaultOption"

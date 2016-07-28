@@ -223,19 +223,18 @@ define([
         };
 
         // are we editing this field?
-        service.setSelected = function (fieldOrElement) {
-            var p = $rootScope.propertiesOf(fieldOrElement);
+        service.setSelected = function (field) {
+            var p = $rootScope.propertiesOf(field);
             p._tmp = p._tmp || {};
             p._tmp.state = "creating";
 
-            $rootScope.selectedFieldOrElement = fieldOrElement;
-            $rootScope.$broadcast("select", [fieldOrElement]);
+            $rootScope.selectedFieldOrElement = field;
         };
 
         // add an option to this field
         service.addOption = function (field) {
             var emptyOption = {
-                "text": $translate.instant("VALIDATION.noNameField")
+                "text": ""
             };
             field._ui.options.push(emptyOption);
         };
@@ -525,6 +524,7 @@ define([
                     properties["@type"].oneOf[0].enum.splice(idx, 1);
                     if (properties["@type"].oneOf[0].enum.length == 0) {
                         delete properties["@type"].oneOf[0].enum;
+                        console.log('delete');
                     }
                 }
 
@@ -534,6 +534,7 @@ define([
                     properties['@type'].oneOf[1].items.enum.splice(idx, 1);
                     if (properties["@type"].oneOf[1].items.enum.length == 0) {
                         delete properties["@type"].oneOf[1].items.enum;
+                        console.log('delete');
                     }
                 }
             }
@@ -601,23 +602,14 @@ define([
         };
 
         // deselect any current selected items, then select this one
-        service.canSelect = function (fieldOrElement) {
-
-
-            var result = false;
-            var deselected = true;
-            if (!service.isEditState(fieldOrElement)) {
-
+        service.canSelect = function (field) {
+            var result = true;
+            if (!service.isEditState(field)) {
                 if ($rootScope.selectedFieldOrElement && service.isEditState($rootScope.selectedFieldOrElement)) {
-                    deselected = service.canDeselect($rootScope.selectedFieldOrElement);
+                    result = service.canDeselect($rootScope.selectedFieldOrElement);
                 }
-
-                if (deselected) service.setSelected(fieldOrElement);
-                result = true;
-
-
+                if (result) service.setSelected(field);
             }
-
             return result;
         };
 
@@ -664,7 +656,7 @@ define([
 
             // default description
             if (!schema._ui.description) {
-                schema._ui.description = $translate.instant("VALIDATION.noDescriptionField");
+                schema._ui.description = $translate.instant("VALIDATION.noHelpText");
             }
 
             // if this is radio, checkbox or list,  add at least two options and set default values

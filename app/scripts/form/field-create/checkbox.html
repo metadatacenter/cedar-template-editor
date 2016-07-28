@@ -1,22 +1,42 @@
+<div id="checkbox-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}" class="input-type-container">
 
-<div class="fields fields-checkbox">
+  <!-- header row -->
+  <div ng-init="fieldTitle='Checkbox';fieldIconClass='cedar-svg-checkbox'"
+      ng-include="'scripts/form/partials/field-header.partial.html'"></div>
 
-    <div class="form-group  floating-label-wrapper ng-scope"
-         ng-class="{'required': $root.schemaOf(field)._valueConstraints.requiredValue}"
-         ng-repeat="valueElement in filteredModel = $root.arrayOf(model) | limitTo: 1">
+  <div class="definition-inputs" ng-include="'scripts/form/partials/field-definition.partial.html'"></div>
+  <!-- /.definition-inputs -->
 
-        <div class="form-group field-wrapper-checkbox  ">
+  <div class="form-group floating-label-wrapper">
+    <div class="options-wrapper">
+      <div class="multiple-container">
+        <span ng-repeat="(index, value) in $root.schemaOf(field)._ui.options">
+          <div class="checkbox checkbox-primary">
+            <input ng-click="$event.stopPropagation();" type="checkbox" id="checkbox-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}-{{index}}"
+                name="checkbox-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}"
+                ng-model="$root.schemaOf(field)._ui.defaultOption[value.text]"
+                value="{{$root.schemaOf(field)._ui.options[index]['text']}}">
+            <label for="checkbox-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}-{{index}}">
+              <div class="form-group floating-label-wrapper">
+                <input type="text" class="form-control"
+                    id="placeholder-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}" placeholder="Option"
+                    aria-label="Option" ng-model="$root.schemaOf(field)._ui.options[index]['text']" with-floating-label>
+              </div>
+              <!-- /.form-group -->
+            </label>
+          </div><!-- /.checkbox -->
+        </span>
 
-            <div class=" checkbox-item" ng-repeat="(index, value) in $root.schemaOf(field)._ui.options ">
-                <div class="checkbox checkbox-primary">
-                    <div ng-init="m=valueElement;pIndex=$parent.$index;cIndex=$index"
-                         ng-include="'scripts/form/field-value/checkbox.html'"></div>
-                </div>
-            </div>
-
-            <p class="add-another" ng-click="addOption(); $event.stopPropagation();"><img src="/img/plus.png"/>Add Another</p>
-
-        </div>
+        <p class="add-another" ng-click="addOption(); $event.stopPropagation();"><img src="/img/plus.png"/>Add Another</p>
+      </div>
+      <!-- /.multiple-container -->
+      <p class="instructions">Click choice to set as default</p>
     </div>
-</div>
+    <!-- /.options-wrapper -->
+  </div>
+  <!-- /.form-group -->
 
+
+  <!--<ng-include src="'scripts/form/partials/staging-area-footer.partial.html'" />-->
+  <div class="configuration-options " ng-include="'scripts/form/partials/configuration-options.partial.html'"></div>
+</div><!-- /.input-type-container -->

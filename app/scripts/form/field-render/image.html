@@ -1,5 +1,9 @@
 <div class="fields fields-email">
 
+  <!-- header row -->
+  <div ng-init="fieldTitle='&nbsp;Image';fieldIconClass='cedar-svg-image'"
+      ng-include="'scripts/form/partials/field-header.partial.html'"></div>
+
   <div ng-if="!$root.isRuntime()" style="padding-top: 10px;">
     <figure>
       <img ng-src="{{$root.propertiesOf(field)._content}}" no-image alt="{{$root.schemaOf(field)._ui.title}}"

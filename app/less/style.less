@@ -98,8 +98,8 @@ a {
 }
 
 a:hover, a:focus {
-   text-decoration: none;
- }
+  text-decoration: none;
+}
 
 i {
   .link-transition;
@@ -1800,16 +1800,8 @@ body.search-browse-modal {
   .right-body {
     padding-top: 30px;
 
-
     @media (min-width: @screen-sm-min) {
-      padding-top: 0px;
-
-    }
-
-    .page {
-      background:@white;
-      padding-bottom:60px;
-      min-height:200px;
+      padding-top: 35px;
     }
 
     .btn-preview-form {
@@ -1838,12 +1830,7 @@ body.search-browse-modal {
       padding-bottom: 40px;
 
       .form-preview {
-        padding-top: 35px;
-        background:#fff;
-        border:1px solid #ccc;
-        padding-bottom: 60px;
-        min-height:300px;
-
+        padding-top: 0;
 
         p.type-label {
           width: 100%;
@@ -1935,11 +1922,10 @@ body.search-browse-modal {
     .element-group {
       width: 100%;
       //border-bottom:2px dashed #ddd;
+      border: 1px solid @gray3;
       padding: 12px 14px 12px 16px;
       margin-bottom: 16px;
-
-
-
+      background-color: @gray2;
 
       &:not(.full) {
         padding-right: 65px;
@@ -1960,31 +1946,6 @@ body.search-browse-modal {
         }
       }
 
-      .element-root{
-
-        border-left: 1px solid @gray3;
-
-        &.selected {
-          border: 1px solid @gray3;
-          box-shadow: 4px 4px 4px #ccc;
-        }
-
-        .element-title-definition {
-          background:transparent;
-          border:0px;
-          border-bottom:1px solid #ccc;
-          width:100%;
-          margin-left:30px;
-          outline:none;
-        }
-
-        .element-description-definition {
-          background:transparent;
-          border:0px;
-          border-bottom:1px solid #ccc;
-        }
-      }
-
       .element-name-label {
         margin-bottom: 10px;
         text-align: left;
@@ -1997,8 +1958,8 @@ body.search-browse-modal {
       }
 
       .nested-element {
-
-        padding: 0px 0px 0px 16px;
+        border: 1px solid #ddd;
+        padding: 0px 16px 0px 16px;
         margin-bottom: 16px;
       }
     }
@@ -2020,7 +1981,7 @@ body.search-browse-modal {
   //font-size: 14px;
   position: absolute;
   pointer-events: none;
-  left: 0px;
+  left: 12px;
   top: 7px;
   transition: 0.2s ease all;
   opacity: 0;
@@ -2476,11 +2437,10 @@ section.dashboard-elements {
   .form-group {
     margin-bottom: 14px;
     min-height: 1em;
-    margin-right:40px;
 
     &.radio-item,
     &.checkbox-item {
-      margin-bottom: 0px;
+      margin-bottom: 10px;
 
       .radio:nth-of-type(2) {
         //display:none;
@@ -3556,7 +3516,7 @@ p.instructions {
 .options-wrapper {
   width: 100%;
   .clearfix();
-  padding-left: 0px;
+  padding-left: 20px;
 
   .multiple-container {
     width: 50%;
@@ -3903,7 +3863,7 @@ p.instructions {
   position: absolute;
   left: 100%;
   top: 0;
-  width: 40px;
+  width: 110px;
 
   &.zero {
     position: absolute;
@@ -3959,7 +3919,7 @@ p.instructions {
 
 .field-wrapper-checkbox, .field-wrapper-radio {
   padding: 5px;
-  border: 0px solid #ddd;
+  border: 1px solid #ddd;
   background: white;
   position: relative;
   width: 100%;
@@ -3969,7 +3929,7 @@ p.instructions {
 
 .fields {
   .form-group {
-
+    margin-right: 100px;
 
     &.form-group-narrow {
       margin-right: 0px;
@@ -3982,7 +3942,7 @@ p.instructions {
 .fields-date .field-date,
 .fields-list .field-list {
   position: relative;
-
+  margin-right: 100px;
 }
 
 .element-toggles {
@@ -5009,20 +4969,7 @@ body .template-header .controlled-terms-modal {
 
 .sortable-handler {
   cursor: move;
-
-  .sortable {
-    width: 20px;
-    margin: auto;
-    display:none;
-  }
-
-  &:hover {
-    .sortable {
-      display: block;
-    }
-  }
 }
-
 
 .template-body .right-body .preview-edit-options .element-preview-actions {
   .edit {
@@ -5087,18 +5034,12 @@ body .template-header .controlled-terms-modal {
 }
 
 .field-root {
-  padding: 0px 30px;
-  margin-bottom: 0px;
-  margin-top: 0px;
+  padding: 5px;
+  border: 1px solid @gray3;
+  margin-bottom: 10px;
+  margin-top: 5px;
+  background: #efefef;
 
-  &.selected {
-
-    border-top: 2px solid @gray3;
-    border-bottom: 2px solid @gray3;
-    border-left: 1px solid @gray3;
-    border-right: 1px solid @gray3;
-    box-shadow: 4px 4px 4px #ccc;
-  }
 
   .field-title-definition {
     background:transparent;
