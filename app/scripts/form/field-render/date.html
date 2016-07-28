@@ -1,24 +1,179 @@
 <div class="fields fields-date">
 
-    <!-- header row -->
-    <div ng-init="fieldTitle='Date';fieldIconClass='cedar-svg-calendar'"
-         ng-include="'scripts/form/partials/field-header.partial.html'"></div>
+  <!-- header row -->
+  <div ng-init="fieldTitle='Date';fieldIconClass='cedar-svg-calendar'"
+      ng-include="'scripts/form/partials/field-header.partial.html'"></div>
 
-    <div class="field field-date" ng-repeat="valueElement in filteredModel = $root.arrayOf(model)">
+  <div ng-if="$root.isArray(model)" class="field field-date" ng-repeat="valueElement in model">
 
-        <div ng-init="m=valueElement;pIndex=$parent.$index;" ng-include="'scripts/form/field-value/date.html'"></div>
-        <div ng-if="$root.isArray(model)" class="more-input-wrapper"
-             ng-include="'scripts/form/partials/more-input-buttons.partial.html'"
-             ng-show="!field.maxItems || field.maxItems > 1"></div>
+    <div class="form-group form-group-narrow date-group floating-label-wrapper"
+        ng-if="$root.schemaOf(field)._ui.dateType == 'single-date'">
+
+      <div class='input-group' date-time-picker>
+        <input type="text"
+            class="form-control"
+            ng-class="{'required': $root.schemaOf(field)._valueConstraints.requiredValue}"
+            placeholder="{{$root.schemaOf(field)._ui.title}}"
+            aria-label="Select a date"
+            ng-model="valueElement._value"
+            ng-disabled="!$root.isRuntime() || preview"
+            with-floating-label=""/>
+        <span class="input-group-addon">
+          <i class="fa fa-calendar fa-2x"></i>
+        </span>
+      </div>
+    </div>
+    <!-- /.form-group form-group-narrow -->
+
+    <div class="form-group form-group-narrow date-group range floating-label-wrapper"
+        ng-if="$root.schemaOf(field)._ui.dateType == 'date-range'">
+
+      <div class='input-group' date-time-picker>
+        <input type="text"
+            class="form-control"
+            ng-class="{'required': $root.schemaOf(field)._valueConstraints.requiredValue}"
+            placeholder="{{$root.schemaOf(field)._ui.title}} start"
+            aria-label="Select a start date"
+            ng-model="valueElement._value.start"
+            ng-disabled="!$root.isRuntime() || preview"
+            with-floating-label=""/>
+        <span class="input-group-addon">
+          <i class="fa fa-calendar fa-2x"></i>
+        </span>
+      </div>
+      <div class='input-group' date-time-picker>
+        <input type="text"
+            class="form-control"
+            ng-class="{'required': $root.schemaOf(field)._valueConstraints.requiredValue}"
+            placeholder="{{$root.schemaOf(field)._ui.title}} end"
+            aria-label="end date"
+            ng-model="valueElement._value.end"
+            ng-disabled="!$root.isRuntime() || preview"
+            with-floating-label=""/>
+        <span class="input-group-addon">
+          <i class="fa fa-calendar fa-2x"></i>
+        </span>
+      </div>
+    </div>
+    <!-- /.form-group form-group-narrow -->
+    <!--<div class="more-input-wrapper" ng-include="'scripts/form/partials/more-input-buttons.partial.html'"-->
+        <!--ng-show="!field.maxItems || field.maxItems > 1"></div>-->
+  </div>
+
+
+
+  <div ng-if="$root.isArray(model) && model.length == 0 && !$root.isRuntime()" class="field field-date">
+
+
+    <div class="form-group form-group-narrow date-group floating-label-wrapper"
+        ng-if="$root.schemaOf(field)._ui.dateType == 'single-date'">
+
+      <div class='input-group' date-time-picker>
+        <input type="text"
+            class="form-control"
+            ng-class="{'required': $root.schemaOf(field)._valueConstraints.requiredValue}"
+            placeholder="{{$root.schemaOf(field)._ui.title}}"
+            aria-label="Select a date"
+            ng-model="model._value"
+            ng-disabled="true"
+            with-floating-label=""/>
+        <span class="input-group-addon">
+          <i class="fa fa-calendar fa-2x"></i>
+        </span>
+      </div>
     </div>
 
+    <div class="form-group form-group-narrow date-group range floating-label-wrapper"
+        ng-if="$root.schemaOf(field)._ui.dateType == 'date-range'">
 
-    <!-- zero cardinality case -->
-    <div ng-if="filteredModel.length==0 &&  !$root.isRuntime()" class="field field-date">
 
-        <div ng-init="m=valueElement;pIndex=$parent.$index;" ng-include="'scripts/form/field-value/date.html'"></div>
-        <div class="more-input-wrapper" ng-include="'scripts/form/partials/more-input-buttons.partial.html'"
-             ng-show="!field.maxItems || field.maxItems > 1"></div>
-
+      <div class='input-group' date-time-picker="">
+        <input type="text"
+            class="form-control"
+            ng-class="{'required': $root.schemaOf(field)._valueConstraints.requiredValue}"
+            placeholder="{{$root.schemaOf(field)._ui.title}} start"
+            aria-label="Select a start date"
+            ng-model="model._value.start"
+            ng-disabled="true"
+            with-floating-label=""/>
+        <span class="input-group-addon">
+          <i class="fa fa-calendar fa-2x"></i>
+        </span>
+      </div>
+      <div class='input-group' date-time-picker="">
+        <input type="text"
+            class="form-control"
+            ng-class="{'required': $root.schemaOf(field)._valueConstraints.requiredValue}"
+            placeholder="{{$root.schemaOf(field)._ui.title}} end"
+            aria-label="end date"
+            ng-model="model._value.end"
+            ng-disabled="true"
+            with-floating-label=""/>
+        <span class="input-group-addon">
+          <i class="fa fa-calendar fa-2x"></i>
+        </span>
+      </div>
     </div>
+    <!-- /.form-group form-group-narrow -->
+  </div>
+  <!-- /.form-group form-group-narrow -->
+
+
+  <div ng-if="!$root.isArray(model)" class="field field-date">
+
+
+    <div class="form-group form-group-narrow date-group floating-label-wrapper"
+        ng-if="$root.schemaOf(field)._ui.dateType == 'single-date'">
+
+      <div class='input-group' date-time-picker>
+        <input type="text"
+            class="form-control"
+            ng-class="{'required': $root.schemaOf(field)._valueConstraints.requiredValue}"
+            placeholder="{{$root.schemaOf(field)._ui.title}}"
+            aria-label="Select a date"
+            ng-model="model._value"
+            ng-disabled="!$root.isRuntime() || preview"
+            with-floating-label=""/>
+        <span class="input-group-addon">
+          <i class="fa fa-calendar fa-2x"></i>
+        </span>
+      </div>
+    </div>
+    <!-- /.form-group form-group-narrow -->
+
+    <div class="form-group form-group-narrow date-group range floating-label-wrapper"
+        ng-if="$root.schemaOf(field)._ui.dateType == 'date-range'">
+
+
+      <div class='input-group' date-time-picker="">
+        <input type="text"
+            class="form-control"
+            ng-class="{'required': $root.schemaOf(field)._valueConstraints.requiredValue}"
+            placeholder="{{$root.schemaOf(field)._ui.title}} start"
+            aria-label="Select a start date"
+            ng-model="model._value.start"
+            ng-disabled="!$root.isRuntime() || preview"
+            with-floating-label=""/>
+        <span class="input-group-addon">
+          <i class="fa fa-calendar fa-2x"></i>
+        </span>
+      </div>
+      <div class='input-group' date-time-picker="">
+        <input type="text"
+            class="form-control"
+            ng-class="{'required': $root.schemaOf(field)._valueConstraints.requiredValue}"
+            placeholder="{{$root.schemaOf(field)._ui.title}} end"
+            aria-label="Select a end date"
+            ng-model="model._value.end"
+            ng-disabled="!$root.isRuntime() || preview"
+            with-floating-label=""/>
+        <span class="input-group-addon">
+          <i class="fa fa-calendar fa-2x"></i>
+        </span>
+      </div>
+    </div>
+    <!-- /.form-group form-group-narrow -->
+  </div>
+
+
 </div>

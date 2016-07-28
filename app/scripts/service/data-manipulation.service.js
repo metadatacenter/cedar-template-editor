@@ -703,7 +703,7 @@ define([
             }
             // If field type is 'radio' or 'pick from a list' there must be more than one option created
             if ((schema._ui.inputType == 'radio' || schema._ui.inputType == 'list') && schema._ui.options && (schema._ui.options.length <= 1)) {
-                unmetConditions.push('Multiple choice fields must have at least two possible options');
+                unmetConditions.push('Multiple Choice fields must have at least two possible options');
             }
             // Return array of error messages
             return unmetConditions;

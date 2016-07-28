@@ -1,8 +1,0 @@
-<input type="checkbox"
-       ng-click="console('click'); $event.stopPropagation();"
-       id="checkbox-{{uuid}}-{{pIndex}}-{{cIndex}}"
-       ng-model="m._value[value.text]"
-       ng-disabled="!$root.isRuntime() || preview"
-       ng-checked="m._value[value.text]"
-       ng-change="console(m._value);"/>
-<label ng-click=" $event.stopPropagation();" for="checkbox-{{uuid}}-{{pIndex}}-{{cIndex}}">{{$root.schemaOf(field)._ui.options[index]['text']}}</label>
