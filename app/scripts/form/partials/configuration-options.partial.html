@@ -24,10 +24,6 @@
           ng-click="toggleControlledTerm('required');  $event.stopPropagation();">
         <span>Required</span>
       </div>
-      <div class="element-toggle table-cell-style" ng-class="{active: isTabActive('help')}"
-           ng-click="toggleControlledTerm('help');  $event.stopPropagation();">
-        <span>Help</span>
-      </div>
     </div>
   </div>
 
@@ -43,20 +39,6 @@
     </div>
   </div>
   <!-- /.date-type-toggle -->
-
-  <!-- help tab  -->
-  <div id="help" class="help-options" ng-show="isTabActive('help')"  >
-    <div class="form-group floating-label-wrapper">
-      <input type="text"
-             class="form-control field-description-definition"
-             id="help-text-{{$root.schemaOf(field)['@id'].substring($root.schemaOf(field)['@id'].lastIndexOf('/')+1)}}"
-             placeholder="{{'CREATOR.enterFieldDescription' | translate}}"
-             aria-label="{{'CREATOR.enterFieldDescription' | translate}}"
-             ng-model="$root.schemaOf(field)._ui.description"
-             with-floating-label>
-    </div><!-- /.form-group -->
-
-  </div>
 
   <!-- Required tab  -->
   <div id="required" class="cardinality-options" ng-show="isTabActive('required')"  >

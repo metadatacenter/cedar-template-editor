@@ -20,7 +20,7 @@
             </div>
 
             <!-- add/delete buttons -->
-            <div  class="more-input-wrapper" ng-disabled="true"
+            <div ng-if="$root.isArray(model)" class="more-input-wrapper" ng-disabled="true"
                  ng-include="'scripts/form/partials/more-input-buttons.partial.html'"></div>
         </div>
     </div>
@@ -38,7 +38,7 @@
             </div>
 
             <!-- add/delete buttons -->
-            <div  class="more-input-wrapper" ng-disabled="true"
+            <div ng-if="$root.isArray(model)" class="more-input-wrapper" ng-disabled="true"
                  ng-include="'scripts/form/partials/more-input-buttons.partial.html'"></div>
         </div>
     </div>

@@ -1,9 +1,9 @@
-<input  type="text"
-       class="form-control has-success has-feedback field-title-definition"
+<input type="text"
+       class="form-control has-success has-feedback"
        ng-class="{'required': $root.schemaOf(field)._valueConstraints.requiredValue}"
        id="textfield-{{uuid}}-{{pIndex}}"
        placeholder="{{$root.schemaOf(field)._ui.title}}"
        aria-label="{{$root.schemaOf(field)._ui.description}}"
        ng-model="m._value"
        ng-disabled="!$root.isRuntime() || preview"
-       with-floating-label/>
+       with-floating-label=""/>
