@@ -10,7 +10,7 @@ var CreateElementPage = function () {
     browser.get(url);
     // wait until loaded
     // TODO: should use EC for this
-    browser.sleep(1000);
+    browser.sleep(5000);
   }
 
   this.getJsonPreviewText = function() {

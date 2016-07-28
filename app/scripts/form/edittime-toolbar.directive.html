@@ -8,7 +8,6 @@
         min="0"
         step="1"
         id="{{uuid}}-edit-toolbar-min"
-        ng-click="clickTrack('editMinItems')"
         tooltip-trigger
         tooltip-animation="true"
         tooltip-placement="top"
@@ -19,7 +18,6 @@
     <input tooltip="maximum allowed"
         min="1"
         step="1"
-        ng-click="clickTrack('editMaxItems')"
         id="{{uuid}}-edit-toolbar-max"
         tooltip-trigger
         tooltip-animation="true"
@@ -61,7 +59,6 @@
                         </thead>
                         <tbody>
 
-
                         <tr ng-repeat="key in addedFieldKeys">
                           <td>
                             {{getPrefLabel(key)}}
@@ -74,9 +71,8 @@
                           </td>
                           <td>
                             <div class="item item-delete"
-                                ng-click="deleteFieldAddedItem(key); clickTrack('deleteFieldControlledTerm'); $event.stopPropagation();">
+                                ng-click="deleteFieldAddedItem(key);  $event.stopPropagation();">
                               <i class="fa fa-close"></i>
-
                             </div>
                           </td>
                         </tr>
@@ -90,7 +86,7 @@
                 <!-- The field.finalTitle variable is used to store the final title assigned to the field, which will be shown
                in the modal and used to perform a BioPortal initial search automatically -->
                 <button type="button" class="std-button btn search-ontologies-button"
-                    ng-click="showModal(getFieldModalId());clickTrack('showFieldControlledTermModal'); $event.stopPropagation(); $root.finalTitle = $root.schemaOf(fieldOrElement)._ui.title">
+                    ng-click="showModal(getFieldModalId()); $event.stopPropagation(); $root.finalTitle = $root.schemaOf(fieldOrElement)._ui.title">
                   Search
                 </button>
               </div>
@@ -103,7 +99,6 @@
     <div ng-if="hasControlledTerms()" class="dropdown"
         style="font-size:20px;display:inline-block;margin-right:20px">
       <a class="dropdown-toggle"
-          ng-click="clickTrack('showFieldControlledTermModal');"
           type="button"
           data-toggle="dropdown"
           tooltip="restrict the values"
@@ -144,7 +139,7 @@
                           <td>&nbsp;</td>
                           <td>
                             <div class="item item-delete"
-                                ng-click="deleteFieldAddedClass(class);clickTrack('deleteFieldAddedClass'); $event.stopPropagation();">
+                                ng-click="deleteFieldAddedClass(class); $event.stopPropagation();">
                               <i class="clickable fa fa-close"></i>
                             </div>
                           </td>
@@ -160,7 +155,7 @@
                           <td>{{valueSet.numChildren}}</td>
                           <td>
                             <div class="item item-delete"
-                                ng-click="deleteFieldAddedValueSet(valueSet); clickTrack('deleteFieldAddedValueSet'); $event.stopPropagation();">
+                                ng-click="deleteFieldAddedValueSet(valueSet);  $event.stopPropagation();">
                               <i class="clickable fa fa-close"></i>
                             </div>
                           </td>
@@ -180,7 +175,6 @@
                         </tr>
                         <tr ng-repeat="branch in $root.schemaOf(fieldOrElement)._valueConstraints.branches">
                           <td>{{branch.name}}</td>
-
 
                           <td>Branch</td>
                           <td>{{branch.acronym}}</td>
@@ -211,14 +205,12 @@
         </div>
       </div>
 
-
     </div>
 
     <!-- edit help text -->
     <div class="dropdown" style="font-size:20px;display:inline-block;margin-right:20px">
       <a class="dropdown-toggle"
           id="{{uuid}}-edit-toolbar-help"
-          ng-click="clickTrack('editToolbarHelp');"
           type="button"
           data-toggle="dropdown"
           tooltip="add help text"
@@ -239,7 +231,7 @@
     <!-- duplicate field or element -->
     <a style="font-size:20px;display:inline-block;margin-right:20px"
         id="{{uuid}}-edit-toolbar-duplicate"
-        ng-click=" duplicate();clickTrack('duplicateFieldOrElement');$event.stopPropagation();"
+        ng-click=" duplicate();$event.stopPropagation();"
         tooltip="duplicate field"
         tooltip-trigger
         tooltip-animation="true"
@@ -247,11 +239,10 @@
         data-toggle="tooltip"><i
         class="fa fa-files-o"></i></a>
 
-
     <!-- required -->
     <input type="checkbox"
         id="{{uuid}}-edit-toolbar-required"
-        ng-click=" clickTrack('setRequiredFieldOrElement');$event.stopPropagation();"
+        ng-click=" $event.stopPropagation();"
         ng-model="$root.schemaOf(fieldOrElement)._valueConstraints.requiredValue"/>
     <label style="margin-right:10px" ng-click=" $event.stopPropagation();" for="{{uuid}}-edit-toolbar-required"
         tooltip="response required"
@@ -266,7 +257,7 @@
     <!-- delete -->
     <a style="font-size:20px;display:inline-block;margin-right:20px"
         id="{{uuid}}-edit-toolbar-delete"
-        ng-click="delete();clickTrack('deleteFieldOrElement');$event.stopPropagation();"
+        ng-click=" delete();$event.stopPropagation();"
         tooltip="delete field"
         tooltip-trigger
         tooltip-animation="true"
@@ -274,6 +265,7 @@
         data-toggle="tooltip"><i
         class="fa fa-trash"></i></a>
 
-
   </div>
+
+
 </div>

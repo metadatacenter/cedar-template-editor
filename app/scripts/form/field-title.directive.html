@@ -2,7 +2,6 @@
 
     <div ng-show="$parent.isEditState()" ng-class="{'element-title':$root.isElement(fieldOrElement)}">
         <input type="text"
-               ng-click="clickTrack('editFieldTitle')"
                id="{{$root.getDomId(fieldOrElement)}}-edit-title"
                class="form-control field-title-definition"
                style="padding-left: 0;font-size:20px;"
@@ -19,9 +18,9 @@
     </div>
 
     <div ng-show="$root.isElement(fieldOrElement)">
-            <a ng-click="$parent.switchExpandedState($root.getDomId(fieldOrElement));clickTrack('switchToSpreadsheet')" class="visibilitySwitch"><i
+            <a ng-click="$parent.switchExpandedState($root.getDomId(fieldOrElement))" class="visibilitySwitch"><i
                     class="cedar-svg-collapse"></i></a>
-            <a ng-click="$parent.switchExpandedState($root.getDomId(fieldOrElement));clickTrack('switchToGrid')" class="visibilitySwitch"
+            <a ng-click="$parent.switchExpandedState($root.getDomId(fieldOrElement))" class="visibilitySwitch"
                style="display:none;"><i
                     class="cedar-svg-expand"></i></a>
     </div>
