@@ -3,7 +3,7 @@
 var CreateElementPage = require('../pages/create-element-page.js');
 var _ = require('../libs/lodash.min.js')
 
-xdescribe('create-element', function () {
+describe('create-element', function () {
 
   var page;
 
@@ -101,7 +101,7 @@ xdescribe('create-element', function () {
     });
   });
 
-  xit("Should allow to set cardinality for text field", function () {
+  it("Should allow to set cardinality for text field", function () {
     element(by.css("#element-name")).sendKeys("2 - 3 Text field element");
     element(by.css("#element-description")).sendKeys("Text field with 2 - 3 cardinality");
 
@@ -163,7 +163,7 @@ xdescribe('create-element', function () {
     });
   });
 
-  xit("Should not set maxItems if maxItems is N", function () {
+  it("Should not set maxItems if maxItems is N", function () {
     element(by.css("#element-name")).sendKeys("1 - N text field");
     element(by.css("#element-description")).sendKeys("Text field was created via Selenium");
 
@@ -202,7 +202,7 @@ xdescribe('create-element', function () {
     });
   });
 
-  xit("Should not set minItems & maxItems if cardinality is 1 - 1", function () {
+  it("Should not set minItems & maxItems if cardinality is 1 - 1", function () {
     element(by.css("#element-name")).sendKeys("1 - 1 text field");
     element(by.css("#element-description")).sendKeys("Text field was created via Selenium");
 

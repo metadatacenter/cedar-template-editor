@@ -20,7 +20,7 @@ var CreateMetadataPage = function () {
     var createRichTextButton = element(by.id('button-add-field-richtext'));
     var createImageButton = element(by.id('button-add-field-image'));
     var createVideoButton = element(by.id('button-add-field-youtube'));
-    var removeButton = element(by.css('.field-root .edittime-toolbar .delete'));
+    var removeButton = element(by.css('.configuration-actions .save-options .remove'));
 
     this.get = function() {
         browser.get(url);
