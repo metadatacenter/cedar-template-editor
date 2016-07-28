@@ -20,7 +20,8 @@ define([
         isLoadingClassDetails: '=',
         isCreatingMappings: '=',
         isCreatingVs: '=',
-        treeVisible: '='
+        treeVisible: '=',
+        modalId: '='
       },
       controller      : controlledTermSearchDirectiveController,
       controllerAs    : 'tsc',
@@ -92,12 +93,17 @@ define([
       vm.switchToCreateValueSet = switchToCreateValueSet;
       vm.endSearch = endSearch;
 
+      // Reset search options when closing the modal
+      jQuery("#" + vm.modalId).on('hidden.bs.modal', function () {
+        reset(false, false, false, false, false);
+      });
+
       /**
        * Search-related functions
        */
 
       function search(event) {
-        reset(true, true, true);
+        reset(true, true, true, true, true);
         if (isEmptySearchQuery() == false) {
           vm.showEmptyQueryMsg = false;
           var searchClasses = true;
@@ -200,7 +206,7 @@ define([
       }
 
       function changeSearchScope() {
-        reset(true, true, true);
+        reset(true, true, true, true, true);
         if (isSearchingOntologies()) {
           loadOntologies(vm.searchQuery);
           //searchRegexp(vm.searchQuery);
@@ -213,12 +219,22 @@ define([
       /**
        * Reset
        */
-      function reset(keepSearchScope, keepSearchQuery, keepSelectedOntologies) {
+      function reset(keepSearchScope, keepCreationMode, keepSearchQuery, keepOntologies, keepSelectedOntologies) {
         if (!keepSearchScope) {
           vm.searchScope = 'classes'; // Default search scope
+          vm.searchOptionsVisible = false;
+        }
+        if (!keepCreationMode) {
+          vm.isCreatingValue = true;
+          vm.isCreatingValueSet = false;
+          vm.isCreatingMappings = false;
         }
         if (!keepSearchQuery) {
           vm.searchQuery = '';
+        }
+        if (!keepOntologies) {
+          vm.allOntologies = [];
+          vm.ontologiesFound = [];
         }
         if (!keepSelectedOntologies) {
           vm.selectedOntologies = [];
@@ -233,6 +249,8 @@ define([
         vm.showSearchPreloader = false;
         vm.treeVisible = false;
         vm.selectedClass = null;
+        vm.isLoadingOntologyDetails = false;
+        vm.loadingOntologies = false;
 
         if (typeof vm.resetCallback === "function") {
           vm.resetCallback();
@@ -368,12 +386,12 @@ define([
       }
 
       function switchToCreate() {
-        reset(false, false, false);
+        reset(false, false, false, false, false);
         vm.action = 'create';
       }
 
       function switchToSearch() {
-        reset(false, false, false);
+        reset(false, false, false, false, false);
         vm.action = 'search';
       }
 
@@ -449,7 +467,7 @@ define([
               search();
             }
             else if (isSearchingOntologies()) {
-              reset(true, true, true);
+              reset(true, true, true, true, true);
               loadOntologies(vm.searchQuery);
               //searchRegexp(vm.searchQuery);
             }
