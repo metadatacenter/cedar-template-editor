@@ -10707,7 +10707,15 @@ body.search-browse-modal a.navbar-brand {
   border: 1px solid #d2d2d2;
   box-shadow: 4px 4px 4px #ccc;
 }
-.template-body .right-body .element-group .element-root .field-title-definition {
+.template-body .right-body .element-group .element-root .element-title-definition {
+  background: transparent;
+  border: 0px;
+  border-bottom: 1px solid #ccc;
+  width: 100%;
+  margin-left: 30px;
+  outline: none;
+}
+.template-body .right-body .element-group .element-root .element-description-definition {
   background: transparent;
   border: 0px;
   border-bottom: 1px solid #ccc;
@@ -10723,9 +10731,6 @@ body.search-browse-modal a.navbar-brand {
 .template-body .right-body .element-group .nested-element {
   padding: 0px 0px 0px 16px;
   margin-bottom: 16px;
-}
-.template-body .right-body .element-group .nested-element .element-title {
-  padding-left: 20px;
 }
 @media (min-width: 768px) {
   .left-sidebar {
