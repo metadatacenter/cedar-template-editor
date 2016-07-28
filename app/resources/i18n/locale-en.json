@@ -89,8 +89,7 @@
     "Info": "Info",
     "GoodNews": "Good News!",
     "Cancel": "Cancel",
-    "Copied": "Copied",
-    "More": "More"
+    "Copied": "Copied"
   },
   "SERVER": {
     "FOLDER": {
@@ -295,18 +294,6 @@
     "suggestedAction": {
       "requestRole": "In order to accomplish the requested operation, you need the following role: <b>{{missingRole}}</b>.",
       "logout": "Your session has expired or it is invalid. You will be logged out from the tool."
-    }
-  },
-  "EDITOR": {
-    "TOOLBAR": {
-      "searchForMore": "Search for More Elements"
-    }
-  },
-  "UTILS": {
-    "JSON": {
-      "showElementModel": "Show/hide Element Model",
-      "showTemplateModel": "Show/hide Template Model",
-      "showInstance": "Show/hide Instance Data"
     }
   }
 }

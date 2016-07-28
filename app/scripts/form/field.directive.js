@@ -10,10 +10,10 @@ define([
 
 
   fieldDirective.$inject = ["$rootScope", "$sce", "$document", "$translate", "SpreadsheetService",
-                            "DataManipulationService", "FieldTypeService", "controlledTermDataService"];
+                            "DataManipulationService", "FieldTypeService", "controlTermDataService"];
 
   function fieldDirective($rootScope, $sce, $document, $translate, SpreadsheetService, DataManipulationService,
-                          FieldTypeService, controlledTermDataService) {
+                          FieldTypeService, controlTermDataService) {
 
     var linker = function ($scope, $element, attrs) {
 
@@ -737,7 +737,7 @@ define([
       var setResponse = function (item, ontologyName, className) {
 
         // Get selected class details from the links.self endpoint provided.
-        controlledTermDataService.getClassById(ontologyName, className).then(function (response) {
+        controlTermDataService.getClassById(ontologyName, className).then(function (response) {
           $scope.addedFields.set(item, response);
         });
       };
@@ -836,7 +836,7 @@ define([
       };
 
       $scope.getOntologyCode = function (ontology) {
-        var ontologyDetails = controlledTermDataService.getOntologyByLdId(ontology);
+        var ontologyDetails = controlTermDataService.getOntologyByLdId(ontology);
       };
 
       // use the document height as the modal height

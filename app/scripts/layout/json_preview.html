@@ -1,10 +1,9 @@
-<div ng-show="$root.showModel" id="templateJSON">
-  <h5 ng-if="$root.isElementEditor()">Element JSON</h5>
-  <h5 ng-if="$root.isTemplateEditor() || $root.isRuntime()">Template JSON</h5>
-  <pre id='form-json-preview'>{{ $root.modelObject | json }}</pre>
+<div ng-show="$root.showRender" id="templateJSON" ng-if="($root.jsonToSave || stripTmpFields()) | json ">
+  <h5>Template JSON</h5>
+  <pre id='form-json-preview'>{{ ($root.jsonToSave || stripTmpFields()) | json }}</pre>
 </div>
-<div ng-show="$root.showOutput" id="outputJSON">
-  <h5>Instance JSON</h5>
-  <pre>{{ $root.dataObject | json }}</pre>
+<div ng-show="$root.showOutput" id="outputJSON" ng-if="model || json">
+  <h5>Output JSON</h5>
+  <pre>{{ model | json }}</pre>
 </div>
 

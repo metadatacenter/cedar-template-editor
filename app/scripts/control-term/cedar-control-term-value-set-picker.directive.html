@@ -62,7 +62,7 @@
   </div>
   <div class="form-group add-ontology-class" ng-if="cctvspdc.valueCreateMode == 'class'">
 
-    <ng-include src="'scripts/controlled-term/create-ontology-class.html'"></ng-include>
+    <ng-include src="'scripts/control-term/create-ontology-class.html'"></ng-include>
     <div class="clear btn-create-class">
       <button type="button"
               class="std-button btn"
@@ -118,7 +118,7 @@
         </table>
       </div>
 
-      <cedar-controlled-term-ontology-picker
+      <cedar-control-term-ontology-picker
         class-details="pcc.pickedOntologyClassDetails"
         current-ontology="pcc.pickedCurrentOntology"
         include-create-class="false"
@@ -126,7 +126,7 @@
         is-loading-class-details="pcc.isLoadingPickedOntologyClassDetails"
         selected-class-1="pcc.pickedOntologyClass"
         selected-class-2="pcc.pickedOntologyClass">
-      </cedar-controlled-term-ontology-picker>
+      </cedar-control-term-ontology-picker>
       <br />
       <div class="create-value-actions" ng-if="pcc.pickedOntologyClass">
         <div class="center">
@@ -222,7 +222,7 @@
       <!-- ontology-tree -->
       <div class="ontology-tree pull-left" ng-if="cctvspdc.selectedValueResult && cctvspdc.currentOntology && cctvspdc.currentOntology.tree
       && cctvspdc.browsingSection == 'ontology'">
-        <div class="tree tree-view-ul tree-view list-unstyled class-tree-container" ng-if="!cctvspdc.currentOntology.info.flat">
+        <div class="tree tree-view-ul tree-view list-unstyled class-tree-container">
           <cedar-class-tree
               get-class-details-callback="cctvspdc.getClassDetails"
               is-selected-callback="cctvspdc.checkIfSelected"
@@ -230,7 +230,6 @@
               tree="cctvspdc.currentOntology.tree">
           </cedar-class-tree>
         </div>
-        <div class="tree tree-view-message" ng-if="cctvspdc.currentOntology.info.flat">Tree browsing not supported for this ontology</div>
       </div>
       <!-- /.ontology-tree -->
 

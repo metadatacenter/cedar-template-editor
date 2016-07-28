@@ -3,12 +3,12 @@
 define([
   'angular'
 ], function (angular) {
-  angular.module('cedar.templateEditor.controlledTerm.provisionalClassService', [])
+  angular.module('cedar.templateEditor.controlTerm.provisionalClassService', [])
       .factory('provisionalClassService', provisionalClassService);
 
-  provisionalClassService.$inject = ['$http', '$q', 'UrlService', 'controlledTermDataService'];
+  provisionalClassService.$inject = ['$http', '$q', 'UrlService', 'controlTermDataService'];
 
-  function provisionalClassService($http, $q, UrlService, controlledTermDataService) {
+  function provisionalClassService($http, $q, UrlService, controlTermDataService) {
     var base = null;
     var http_default_config = {};
 

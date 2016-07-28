@@ -27,9 +27,9 @@ define([
         if (params.folderId) {
           queryParams['folderId'] = params.folderId;
         }
-        /*if (params.search) {
+        if (params.search) {
           queryParams['search'] = params.search;
-        }*/
+        }
       }
       var url = $rootScope.util.buildUrl(baseUrl, queryParams);
       $location.url(url);

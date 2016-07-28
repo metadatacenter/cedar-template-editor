@@ -84,15 +84,11 @@
           <!--<i class="cedar-svg-flag"></i><span>Favorite</span>-->
           <!--</div>-->
           <div class="clear-save">
-            <button type="button" class="btn btn-clear template" ng-click="reset()" ng-hide="isPropertiesEmpty()"
-                translate>
+            <button type="button" class="btn btn-clear template" ng-click="reset()" ng-hide="isPropertiesEmpty()" translate>
               GENERIC.Clear
             </button>
-            <button type="button" class="btn btn-clear template" ng-click="cancelTemplate()" translate>GENERIC.Cancel
-            </button>
-            <button type="button" class="btn btn-save template" ng-click="saveTemplate()" translate>
-              GENERIC.SaveTemplate
-            </button>
+            <button type="button" class="btn btn-clear template" ng-click="cancelTemplate()" translate>GENERIC.Cancel</button>
+            <button type="button" class="btn btn-save template" ng-click="saveTemplate()" translate>GENERIC.SaveTemplate</button>
           </div>
         </div>
         <!-- /.template-actions -->
@@ -105,7 +101,54 @@
         <div class="sidebar-inner" cedar-sticky-left-menu="true">
 
           <!-- toolbar -->
-          <ng-include src="'scripts/form/partials/edit-add-toolbar.html'"></ng-include>
+          <div id="toolbar" >
+            <ul>
+              <li ng-repeat="fieldType in fieldTypes | limitTo : primaryFieldTypeCount">
+                <a ng-click="addFieldToTemplate(fieldType.cedarType)"><i class="{{fieldType.iconClass}}"></i></a>
+              </li>
+              <li>
+                <div dropdown auto-close="outsideClick">
+                  <a class="more" data-toggle="dropdown" data-target=".field-selector" aria-expanded="false"
+                      dropdown-toggle uib-dropdown keyboard-nav dropdown-append-to-body><i
+                      class="fa fa-ellipsis-h"></i></a>
+
+                  <div class="collapse dropdown-menu field-selector other-elements" role="menu">
+                    <div class="row">
+                      <ul class="col-xs-6 list-unstyled pull-left">
+                        <li class="item"
+                            ng-repeat="fieldType in otherFieldTypes"
+                            ng-if="$index <= otherFieldTypes.length/2 ">
+                          <a data-toggle="dropdown" data-target=".field-selector" dropdown-toggle
+                              ng-click="addFieldToTemplate(fieldType.cedarType)"><i
+                              class="{{fieldType.iconClass}}"></i><span translate>{{"FIELDS.FIELD_TYPE." + fieldType.cedarType + ".NAME"}}</span></a>
+                        </li>
+                      </ul>
+                      <ul class="row list-unstyled pull-right">
+                        <li class="item"
+                            ng-repeat="fieldType in otherFieldTypes"
+                            ng-if="$index > otherFieldTypes.length/2">
+                          <a data-toggle="dropdown" data-target=".field-selector" dropdown-toggle
+                              ng-click="addFieldToTemplate(fieldType.cedarType)"><i
+                              class="{{fieldType.iconClass}}"></i><span
+                              translate>{{"FIELDS.FIELD_TYPE." + fieldType.cedarType + ".NAME"}}</span></a>
+                        </li>
+                      </ul>
+                    </div>
+                    <div>
+                      <ul class="row list-unstyled  search">
+                        <li class="item" style="width:auto; text-align:center">
+                          <a data-toggle="dropdown" data-target=".field-selector" dropdown-toggle
+                              ng-click="elementSearch();"><i
+                              class="fa fa-search "></i><span
+                              translate>MORE</span></a>
+                        </li>
+                    </div>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+
 
         </div>
         <!-- /.sticky-list -->
@@ -124,19 +167,18 @@
                 src="/img/close_modal.png" width="22"/></span></button>
 
             <div class="nav-container" id="headerCtrl" ng-controller="HeaderCtrl as hc">
-              <div class="navbar-header">
+              <div class="navbar-header"> 
                 <div>
 
                   <div class="center col-sm-8 col-sm-offset-2 nav-search">
-                    <form>
+                    <form >
                       <div class="form-group  floating-label-wrapper">
-                        <input autocomplete="off" ng-keyup="$event.keyCode == 13 && hc.search(hc.searchTerm)"
-                            type="search"
+                        <input autocomplete="off" ng-keyup="$event.keyCode == 13 && hc.search(hc.searchTerm)" type="search"
                             class="form-control search-input"
                             id="search" placeholder="Search" aria-label="Search" ng-model="hc.searchTerm"
                             with-floating-label/>
 
-                        <a class="clear do-search" ng-click="hc.search(hc.searchTerm)"><i class="fa fa-search"></i></a>
+                        <a class="clear do-search" ng-click="hc.search(hc.searchTerm)"><i class="fa fa-search" ></i></a>
                         <a class="clear clear-search" ng-show="hc.searchTerm" ng-click="hc.search('')">
                           <span class="fa fa-remove"></span></a>
                       </div>

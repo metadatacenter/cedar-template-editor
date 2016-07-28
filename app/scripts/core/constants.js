@@ -22,6 +22,11 @@ define([
         "ELEMENT": "ELEMENT",
         "FIELD": "FIELD"
       },
+      "applicationMode": {
+        "DEFAULT": "default",
+        "CREATOR": "creator",
+        "RUNTIME": "runtime"
+      },
       "resourceType": {
         "TEMPLATE": "template",
         "FIELD": "field",

@@ -2,7 +2,7 @@
 
 define([
   'angular',
-  'cedar/template-editor/controlled-term/controlled-term.module',
+  'cedar/template-editor/control-term/control-term.module',
   'cedar/template-editor/form/added-field-item.directive',
   'cedar/template-editor/form/date-time-picker.directive',
   'cedar/template-editor/form/field.directive',
@@ -14,7 +14,7 @@ define([
   'cedar/template-editor/form/right-click.directive',
 ], function(angular) {
   angular.module('cedar.templateEditor.form', [
-    'cedar.templateEditor.controlledTerm',
+    'cedar.templateEditor.controlTerm',
     'cedar.templateEditor.form.addedFieldItemDirective',
     'cedar.templateEditor.form.dateTimePickerDirective',
     'cedar.templateEditor.form.fieldDirective',

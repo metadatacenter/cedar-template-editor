@@ -3,7 +3,7 @@
 define([
   'angular',
 ], function(angular) {
-  angular.module('cedar.templateEditor.controlledTerm.htmlToPlainTextFilter', [])
+  angular.module('cedar.templateEditor.controlTerm.htmlToPlainTextFilter', [])
     .filter('htmlToPlainText', htmlToPlainTextFilter);
 
   function htmlToPlainTextFilter() {

@@ -272,14 +272,6 @@ define([
       }
     };
 
-    service.setModelObject = function (modelObject) {
-      $rootScope.modelObject = modelObject;
-    };
-
-    service.setDataObject = function (dataObject) {
-      $rootScope.dataObject = dataObject;
-    };
-
     return service;
   };
 

@@ -16,7 +16,8 @@ define([
     $scope.CONST = CONST;
 
     var pageId = CONST.pageId.PROFILE;
-    HeaderService.configure(pageId);
+    var applicationMode = CONST.applicationMode.DEFAULT;
+    HeaderService.configure(pageId, applicationMode);
 
     $scope.getTokenValidity = function () {
       return UserService.getTokenValiditySeconds();

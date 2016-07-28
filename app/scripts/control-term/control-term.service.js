@@ -3,12 +3,12 @@
 define([
   'angular'
 ], function (angular) {
-  angular.module('cedar.templateEditor.controlledTerm.controlledTermService', [])
-      .factory('controlledTermService', controlledTermService);
+  angular.module('cedar.templateEditor.controlTerm.controlTermService', [])
+      .factory('controlTermService', controlTermService);
 
-  controlledTermService.$inject = ['$q', '$rootScope', 'controlledTermDataService'];
+  controlTermService.$inject = ['$q', '$rootScope', 'controlTermDataService'];
 
-  function controlledTermService($q, $rootScope, controlledTermDataService) {
+  function controlTermService($q, $rootScope, controlTermDataService) {
 
     var service = {
       getAcronym             : getAcronym,
@@ -115,11 +115,11 @@ define([
       $scope.searchPreloader = true;
       $q.all({
         info: ontology,
-        tree: controlledTermDataService.getRootClasses(ontology.id)
+        tree: controlTermDataService.getRootClasses(ontology.id)
       }).then(function (values) {
         if ($scope.fieldTreeVisibility == true) {
           if (values.tree && angular.isArray(values.tree)) {
-            values.tree.sort(controlledTermService.sortOntologyTree);
+            values.tree.sort(controlTermService.sortOntologyTree);
             $scope.currentOntology = values;
           } else {
             // TODO: Handle error
@@ -150,15 +150,15 @@ define([
 
       $scope.isLoadingClassDetails = true;
 
-      controlledTermDataService.getClassById(ontologyAcronym, selection["@id"]).then(function (response) {
+      controlTermDataService.getClassById(ontologyAcronym, selection["@id"]).then(function (response) {
         $scope.classDetails = response;
       });
 
       $scope.selectedClass1 = selection;
 
       $q.all({
-        info: controlledTermDataService.getOntologyById(ontologyAcronym),
-        tree: controlledTermDataService.getClassTree(ontologyAcronym, selection['@id']),
+        info: controlTermDataService.getOntologyById(ontologyAcronym),
+        tree: controlTermDataService.getClassTree(ontologyAcronym, selection['@id']),
       }).then(function (values) {
         if ($scope.fieldTreeVisibility == true) {
           $scope.currentOntology = values;

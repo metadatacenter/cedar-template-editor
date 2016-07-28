@@ -3,25 +3,25 @@
 define([
   'angular'
 ], function(angular) {
-  angular.module('cedar.templateEditor.controlledTerm.controlledTermDirectiveController', [])
-    .controller('controlledTermDirectiveController', controlledTermDirectiveController);
+  angular.module('cedar.templateEditor.controlTerm.controlTermDirectiveController', [])
+    .controller('controlTermDirectiveController', controlTermDirectiveController);
 
-  controlledTermDirectiveController.$inject = [
+  controlTermDirectiveController.$inject = [
     '$element',
     '$http',
     '$q',
     '$rootScope',
     '$scope',
     '$timeout',
-    'controlledTermDataService',
-    'controlledTermService',
+    'controlTermDataService',
+    'controlTermService',
     'provisionalClassService'
   ];
 
   /**
    * Controller for the functionality of adding controlled terms to fields and elements.
    */
-  function controlledTermDirectiveController($element, $http, $q, $rootScope, $scope, $timeout, controlledTermDataService, controlledTermService, provisionalClassService) {
+  function controlTermDirectiveController($element, $http, $q, $rootScope, $scope, $timeout, controlTermDataService, controlTermService, provisionalClassService) {
     var vm = this;
 
     vm.addBranchToValueConstraint = addBranchToValueConstraint;
@@ -64,7 +64,7 @@ define([
     };
 
     //General
-    vm.controlledTerm = {};
+    vm.controlTerm = {};
     vm.filterSelection = vm.options && vm.options.filterSelection || ""
     vm.modalId = vm.options && vm.options.modalId || "";
 
@@ -132,7 +132,7 @@ define([
         }
 
         // get details from the service
-        var ontologyDetails =  controlledTermDataService.getOntologyByLdId(ontology.info.id);
+        var ontologyDetails =  controlTermDataService.getOntologyByLdId(ontology.info.id);
 
         // add this new selection
         vm.addedFieldItems.push({
@@ -147,7 +147,7 @@ define([
          * Add ontology type to JSON.
          */
         var properties = $rootScope.propertiesOf(vm.field);
-        var selfUrl = controlledTermService.getSelfUrl(selection);
+        var selfUrl = controlTermService.getSelfUrl(selection);
         if (angular.isArray(properties['@type'].oneOf[0].enum)) {
           properties['@type'].oneOf[0].enum.push(selfUrl);
           properties['@type'].oneOf[1].items.enum.push(selfUrl);
@@ -402,17 +402,17 @@ define([
 
     function stageOntologyClassSiblingsValueConstraint(selection) {
       vm.stagedOntologyClassValueConstraints = [];
-      controlledTermDataService.getClassParents(controlledTermDataService.getAcronym(selection), selection['@id']).then(function(response) {
+      controlTermDataService.getClassParents(controlTermDataService.getAcronym(selection), selection['@id']).then(function(response) {
         var acronym = vm.currentOntology.info.id;
         if (response && angular.isArray(response) && response.length > 0) {
-          controlledTermDataService.getClassChildren(acronym, response[0]['@id']).then(function(childResponse) {
+          controlTermDataService.getClassChildren(acronym, response[0]['@id']).then(function(childResponse) {
             angular.forEach(childResponse, function(child) {
               vm.stageOntologyClassValueConstraint(child);
             });
             vm.stageValueConstraintAction = "add_siblings";
           });
         } else {
-          controlledTermDataService.getRootClasses(acronym).then(function(childResponse) {
+          controlTermDataService.getRootClasses(acronym).then(function(childResponse) {
             angular.forEach(childResponse, function(child) {
               vm.stageOntologyClassValueConstraint(child);
             });
@@ -465,10 +465,10 @@ define([
     };
 
     vm.bioportalFilterResultLabel = function() {
-      if (vm.controlledTerm.bioportalValueSetsFilter && vm.controlledTerm.bioportalOntologiesFilter) {
+      if (vm.controlTerm.bioportalValueSetsFilter && vm.controlTerm.bioportalOntologiesFilter) {
         return 'ontologies and value sets';
       }
-      if (vm.controlledTerm.bioportalValueSetsFilter) {
+      if (vm.controlTerm.bioportalValueSetsFilter) {
         return 'value sets';
       }
       return 'ontologies';
@@ -479,14 +479,14 @@ define([
      */
 
     $scope.$on(
-      'cedar.templateEditor.controlledTerm.provisionalClassController.provisionalClassSaved',
+      'cedar.templateEditor.controlTerm.provisionalClassController.provisionalClassSaved',
       function(event, args) {
         addClass(args.class, args.ontology);
       }
     );
 
     $scope.$on(
-      'cedar.templateEditor.controlledTerm.provisionalClassController.provisionalClassSavedAsOntologyValueConstraint',
+      'cedar.templateEditor.controlTerm.provisionalClassController.provisionalClassSavedAsOntologyValueConstraint',
       function(event, args) {
         var constraint = {
           'uri': args.class['@id'],
@@ -502,7 +502,7 @@ define([
     );
 
     $scope.$on(
-      'cedar.templateEditor.controlledTerm.provisionalClassController.provisionalValueSetSavedAsValueSetValueConstraint',
+      'cedar.templateEditor.controlTerm.provisionalClassController.provisionalValueSetSavedAsValueSetValueConstraint',
       function (event, args) {
         /**
          * Get values for the current value set and compute an estimate by multiplying number
@@ -537,11 +537,11 @@ define([
           for (i = 0; i < properties['@type']['oneOf'][0]['enum'].length; i++) {
             classId = properties['@type']['oneOf'][0]['enum'][i];
             // TODO: fix the following call
-            controlledTermDataService.getClassById(classId).then(function(response) {
+            controlTermDataService.getClassById(classId).then(function(response) {
               if (response) {
                 // get ontology details
                 acronym = getAcronym(response);
-                controlledTermDataService.getOntologyDetails(acronym).then(function(ontologyResponse) {
+                controlTermDataService.getOntologyDetails(acronym).then(function(ontologyResponse) {
                   vm.addedFieldItems.push({
                     prefLabel: response.prefLabel,
                     ontologyDescription: ontologyResponse.ontology.name + ' (' + acronym + ')',

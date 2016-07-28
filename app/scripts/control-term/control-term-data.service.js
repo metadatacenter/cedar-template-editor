@@ -3,12 +3,12 @@
 define([
   'angular'
 ], function (angular) {
-  angular.module('cedar.templateEditor.controlledTerm.controlledTermDataService', [])
-      .service('controlledTermDataService', controlledTermDataService);
+  angular.module('cedar.templateEditor.controlTerm.controlTermDataService', [])
+      .service('controlTermDataService', controlTermDataService);
 
-  controlledTermDataService.$inject = ['$http', '$q', 'UrlService', 'UIMessageService', '$translate'];
+  controlTermDataService.$inject = ['$http', '$q', 'UrlService', 'UIMessageService', '$translate'];
 
-  function controlledTermDataService($http, $q, UrlService, UIMessageService, $translate) {
+  function controlTermDataService($http, $q, UrlService, UIMessageService, $translate) {
 
     var base = null;
     var http_default_config = {};
@@ -37,7 +37,7 @@ define([
       autocompleteOntology           : autocompleteOntology,
       autocompleteOntologySubtree    : autocompleteOntologySubtree,
       autocompleteValueSetClasses    : autocompleteValueSetClasses,
-      serviceId                      : 'controlledTermDataService'
+      serviceId                      : 'controlTermDataService'
     };
 
     return service;

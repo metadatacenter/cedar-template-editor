@@ -3,14 +3,14 @@
 define([
   'angular'
 ], function(angular) {
-  angular.module('cedar.templateEditor.controlledTerm.cedarClassTreeDirective', [])
+  angular.module('cedar.templateEditor.controlTerm.cedarClassTreeDirective', [])
     .directive('cedarClassTree', cedarClassTreeDirective);
 
   cedarClassTreeDirective.$inject = ['$timeout'];
 
   /**
    * This 'cedarClassTree' directive will call the 'childTree' directive for 
-   * every child in the collection returned from the controlledTermDataService.
+   * every child in the collection returned from the controlTermDataService.
    */
   function cedarClassTreeDirective($timeout) {
     var directive = {
@@ -23,7 +23,7 @@ define([
         selectedNode: '=',
         isSelectedCallback: '='  // why won't this work with & ?
       },
-      templateUrl: 'scripts/controlled-term/cedar-class-tree.directive.html',
+      templateUrl: 'scripts/control-term/cedar-class-tree.directive.html',
       replace: true,
       link: linker
     };

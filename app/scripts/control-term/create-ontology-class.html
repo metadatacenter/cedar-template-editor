@@ -26,9 +26,9 @@
   <p class="mapping-header">Mappings to existing classes</p>
   <p class="instructions">Use the options below to add mappings here</p>
 
-  <ng-include src="'scripts/controlled-term/provisional-class-mappings.html'"></ng-include>
+  <ng-include src="'scripts/control-term/provisional-class-mappings.html'"></ng-include>
 
-  <cedar-controlled-term-ontology-picker
+  <cedar-control-term-ontology-picker
       class-details="pcc.pickedOntologyClassDetails"
       current-ontology="pcc.pickedCurrentOntology"
       include-create-class="false"
@@ -36,7 +36,7 @@
       is-loading-class-details="pcc.isLoadingPickedOntologyClassDetails"
       selected-class-1="pcc.pickedOntologyClass"
       selected-class-2="pcc.pickedOntologyClass">
-  </cedar-controlled-term-ontology-picker>
+  </cedar-control-term-ontology-picker>
 
   <div class="create-mapping-actions" ng-if="pcc.pickedOntologyClass">
     <div class="mapping-description">
