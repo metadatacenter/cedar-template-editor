@@ -71,6 +71,7 @@ define([
     vm.controlledTerm = {};
     vm.filterSelection = vm.options && vm.options.filterSelection || ""
     vm.modalId = vm.options && vm.options.modalId || "";
+
     setInitialFieldConstraints();
 
     $('body').on('click', '.detail-view-tab a', function (e) {

@@ -20,8 +20,7 @@ define([
         isLoadingClassDetails: '=',
         isCreatingMappings: '=',
         isCreatingVs: '=',
-        treeVisible: '=',
-        modalId: '='
+        treeVisible: '='
       },
       controller      : controlledTermSearchDirectiveController,
       controllerAs    : 'tsc',
@@ -96,11 +95,6 @@ define([
       /**
        * Search-related functions
        */
-
-      // Reset search options when closing the modal
-      jQuery("#" + vm.modalId).on('hidden.bs.modal', function () {
-        reset(false, false, false);
-      });
 
       function search(event) {
         reset(true, true, true);
