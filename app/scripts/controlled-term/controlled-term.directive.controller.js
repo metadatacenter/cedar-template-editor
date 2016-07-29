@@ -524,7 +524,7 @@ define([
           'type': 'OntologyClass',
           'label': args.class.prefLabel,
           'default': false,
-          'source': args.ontology.details.ontology.name + ' (' + args.ontology.details.ontology.id + ')',
+          'source': args.ontology.details.ontology.acronym,
           'provisionalClass': true,
         };
         addOntologyClassToValueConstraint(constraint);
