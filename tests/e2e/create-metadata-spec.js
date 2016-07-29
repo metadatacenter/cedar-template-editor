@@ -18,6 +18,7 @@ describe('create-metadata', function () {
   var cssSectionBreak = ".field-root .elementTotalContent .cedar-svg-section-break";
   var cssImage= ".field-root .elementTotalContent .cedar-svg-image";
   var cssVideo = ".field-root .elementTotalContent .cedar-svg-youtube";
+  var cssAddMoreDialog = ".other-elements";
 
   beforeEach(function () {
     page = new CreateMetadataPage();
@@ -25,10 +26,6 @@ describe('create-metadata', function () {
     page.createTemplate();
   });
 
-  it("should open the dialog to create other field types", function () {
-    page.addMore();
-    expect(element(by.css(".other-elements")).isDisplayed()).toBe(true);
-  });
 
   it("should create a text field", function () {
     page.addTextField();
@@ -71,14 +68,15 @@ describe('create-metadata', function () {
     expect(element(by.css(cssCheckbox)).isPresent()).toBe(false);
   });
 
-
   it("should create a date", function () {
     page.addMore();
+    expect(element(by.css(cssAddMoreDialog)).isDisplayed()).toBe(true);
     page.addDateField();
     expect(element(by.css(cssDate)).isPresent()).toBe(true);
   });
   it("should create and delete a date", function () {
     page.addMore();
+    expect(element(by.css(cssAddMoreDialog)).isDisplayed()).toBe(true);
     page.addDateField();
     expect(element(by.css(cssDate)).isPresent()).toBe(true);
     page.removeField();
@@ -86,11 +84,13 @@ describe('create-metadata', function () {
   });
   it("should create an email", function () {
     page.addMore();
+    expect(element(by.css(cssAddMoreDialog)).isDisplayed()).toBe(true);
     page.addEmailField();
     expect(element(by.css(cssEmail)).isPresent()).toBe(true);
   });
   it("should create and delete an email", function () {
     page.addMore();
+    expect(element(by.css(cssAddMoreDialog)).isDisplayed()).toBe(true);
     page.addEmailField();
     expect(element(by.css(cssEmail)).isPresent()).toBe(true);
     page.removeField();
@@ -98,11 +98,13 @@ describe('create-metadata', function () {
   });
   it("should create a list", function () {
     page.addMore();
+    expect(element(by.css(cssAddMoreDialog)).isDisplayed()).toBe(true);
     page.addListField();
     expect(element(by.css(cssList)).isPresent()).toBe(true);;
   });
   it("should create and delete a list", function () {
     page.addMore();
+    expect(element(by.css(cssAddMoreDialog)).isDisplayed()).toBe(true);
     page.addListField();
     expect(element(by.css(cssList)).isPresent()).toBe(true);
     page.removeField();
@@ -111,11 +113,13 @@ describe('create-metadata', function () {
 
   it("should create a numeric", function () {
     page.addMore();
+    expect(element(by.css(cssAddMoreDialog)).isDisplayed()).toBe(true);
     page.addNumericField();
     expect(element(by.css(cssNumber)).isPresent()).toBe(true);
   });
   it("should create and delete a numeric", function () {
     page.addMore();
+    expect(element(by.css(cssAddMoreDialog)).isDisplayed()).toBe(true);
     page.addNumericField();
     expect(element(by.css(cssNumber)).isPresent()).toBe(true);
     page.removeField();
@@ -124,11 +128,13 @@ describe('create-metadata', function () {
 
   it("should create a phone number", function () {
     page.addMore();
+    expect(element(by.css(cssAddMoreDialog)).isDisplayed()).toBe(true);
     page.addPhoneNumberField();
     expect(element(by.css(cssPhoneNumber)).isPresent()).toBe(true);
   });
   it("should create and delete  a phone number", function () {
     page.addMore();
+    expect(element(by.css(cssAddMoreDialog)).isDisplayed()).toBe(true);
     page.addPhoneNumberField();
     expect(element(by.css(cssPhoneNumber)).isPresent()).toBe(true);
     page.removeField();
@@ -137,11 +143,13 @@ describe('create-metadata', function () {
 
   it("should create a section break", function () {
     page.addMore();
+    expect(element(by.css(cssAddMoreDialog)).isDisplayed()).toBe(true);
     page.addSectionBreakField();
     expect(element(by.css(cssSectionBreak)).isPresent()).toBe(true);
   });
   it("should create and delete a section break", function () {
     page.addMore();
+    expect(element(by.css(cssAddMoreDialog)).isDisplayed()).toBe(true);
     page.addSectionBreakField();
     expect(element(by.css(cssSectionBreak)).isPresent()).toBe(true);
     page.removeField();
@@ -150,11 +158,13 @@ describe('create-metadata', function () {
 
   it("should create a rich text field", function () {
     page.addMore();
+    expect(element(by.css(cssAddMoreDialog)).isDisplayed()).toBe(true);
     page.addRichTextField();
     expect(element(by.css(cssRichText)).isPresent()).toBe(true);
   });
   it("should create and delete a rich text field", function () {
     page.addMore();
+    expect(element(by.css(cssAddMoreDialog)).isDisplayed()).toBe(true);
     page.addRichTextField();
     expect(element(by.css(cssRichText)).isPresent()).toBe(true);
     page.removeField();
@@ -163,11 +173,13 @@ describe('create-metadata', function () {
 
   it("should create an image field", function () {
     page.addMore();
+    expect(element(by.css(cssAddMoreDialog)).isDisplayed()).toBe(true);
     page.addImageField();
     expect(element(by.css(cssImage)).isPresent()).toBe(true);
   });
   it("should create and delete an image field", function () {
     page.addMore();
+    expect(element(by.css(cssAddMoreDialog)).isDisplayed()).toBe(true);
     page.addImageField();
     expect(element(by.css(cssImage)).isPresent()).toBe(true);
     page.removeField();
@@ -176,11 +188,13 @@ describe('create-metadata', function () {
 
   it("should create a video field", function () {
     page.addMore();
+    expect(element(by.css(cssAddMoreDialog)).isDisplayed()).toBe(true);
     page.addVideoField();
     expect(element(by.css(cssVideo)).isPresent()).toBe(true);
   });
   it("should create and delete a video field", function () {
     page.addMore();
+    expect(element(by.css(cssAddMoreDialog)).isDisplayed()).toBe(true);
     page.addVideoField();
     expect(element(by.css(cssVideo)).isPresent()).toBe(true);
     page.removeField();
