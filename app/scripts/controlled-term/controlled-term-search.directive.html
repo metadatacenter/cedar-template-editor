@@ -94,7 +94,7 @@
     <span class="search-msg" ng-if="tsc.showEmptyQueryMsg">Please enter a search query</span>
 
     <div ng-if="tsc.searchFinished">
-      <div ng-if="tsc.resultsFound && !tsc.isCreatingMappings">
+      <div ng-if="tsc.resultsFound">
         <span ng-if="tsc.searchQuery" class="search-msg">{{tsc.searchResults.length}} results for the query '{{tsc.searchQuery}}'. </span>
         <span ng-if="!tsc.searchQuery" class="search-msg">{{tsc.searchResults.length}} results. </span>
         <span class="search-msg" ng-if="tsc.isSearchingClasses()">Click on a term below to select it</span>
