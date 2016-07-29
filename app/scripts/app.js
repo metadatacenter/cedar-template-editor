@@ -14,6 +14,7 @@ define([
   'lib/angular-sanitize/angular-sanitize',
   'lib/angular-ui-select/dist/select',
   'lib/angular-ui-sortable/sortable',
+  'lib/angular-ui-switch/angular-ui-switch.min',
   'lib/angular-ui-keypress/keypress',
   'lib/angular-translate/angular-translate',
   'lib/angular-translate-loader-static-files/angular-translate-loader-static-files',

@@ -5,7 +5,7 @@ define([
   'cedar/template-editor/controlled-term/provisional-class.controller'
 ], function (angular) {
   angular.module('cedar.templateEditor.controlledTerm.controlledTermSearchDirective',
-      ['ngTagsInput', 'cedar.templateEditor.controlledTerm.provisionalClassController'])
+      ['ngTagsInput', 'uiSwitch', 'cedar.templateEditor.controlledTerm.provisionalClassController'])
       .directive('controlledTermSearch', controlledTermSearchDirective);
 
   controlledTermSearchDirective.$inject = ["StringUtilsService"];

@@ -3569,6 +3569,51 @@ p.instructions {
 .add-ontology-class {
   padding: 20px auto 40px 60px;
 
+  .mappings-toggle {
+    margin: 20px auto;
+    text-align: center;
+
+    .mappings-label-enabled {
+      display: inline-block;
+      vertical-align: middle;
+    }
+
+    .mappings-label-disabled {
+      display: inline-block;
+      vertical-align: middle;
+      color: @gray3;
+    }
+
+    .mappings-switch {
+      padding-top: 6px;
+      display: inline-block;
+      vertical-align: middle;
+      margin-left: 6px;
+      .switch {
+        height: 20px;
+        width: 40px;
+        background-color: @white;
+        border-color: @white;
+
+        small {
+          background-color: @brand-primary;
+          border-color: @brand-primary;
+          height: 20px;
+          width: 20px;
+        }
+      }
+
+      .switch.checked {
+        background-color: @brand-primary;
+        border-color: @brand-primary;
+        small {
+          background-color: @white;
+          border-color: @white;
+        }
+      }
+    }
+  }
+
   div.mapping-description {
     width: 100%;
     margin: 20px auto;

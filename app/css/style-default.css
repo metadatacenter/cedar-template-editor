@@ -12252,6 +12252,45 @@ p.instructions {
 .add-ontology-class {
   padding: 20px auto 40px 60px;
 }
+.add-ontology-class .mappings-toggle {
+  margin: 20px auto;
+  text-align: center;
+}
+.add-ontology-class .mappings-toggle .mappings-label-enabled {
+  display: inline-block;
+  vertical-align: middle;
+}
+.add-ontology-class .mappings-toggle .mappings-label-disabled {
+  display: inline-block;
+  vertical-align: middle;
+  color: #d2d2d2;
+}
+.add-ontology-class .mappings-toggle .mappings-switch {
+  padding-top: 6px;
+  display: inline-block;
+  vertical-align: middle;
+  margin-left: 6px;
+}
+.add-ontology-class .mappings-toggle .mappings-switch .switch {
+  height: 20px;
+  width: 40px;
+  background-color: #ffffff;
+  border-color: #ffffff;
+}
+.add-ontology-class .mappings-toggle .mappings-switch .switch small {
+  background-color: #339933;
+  border-color: #339933;
+  height: 20px;
+  width: 20px;
+}
+.add-ontology-class .mappings-toggle .mappings-switch .switch.checked {
+  background-color: #339933;
+  border-color: #339933;
+}
+.add-ontology-class .mappings-toggle .mappings-switch .switch.checked small {
+  background-color: #ffffff;
+  border-color: #ffffff;
+}
 .add-ontology-class div.mapping-description {
   width: 100%;
   margin: 20px auto;

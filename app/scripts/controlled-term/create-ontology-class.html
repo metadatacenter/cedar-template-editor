@@ -11,15 +11,14 @@
       ng-model="pcc.provisionalClass.description"
       with-floating-label=""></textarea>
 </div>
-<br/>
-<div class="checkbox inline-block">
-  <input type="checkbox"
-      name="isMappingExistingClasses"
+
+<div class="mappings-toggle">
+  <div ng-class="{'mappings-label-enabled': pcc.isValid(), 'mappings-label-disabled': !pcc.isValid()}">Map to existing terms (optional)</div>
+  <div class="mappings-switch"> <switch name="isMappingExistingClasses"
       id="is-mapping-existing-classes-checkbox"
       ng-model="pcc.isMappingExistingClasses"
-      ng-click="$event.stopPropagation(); tsc.isCreatingMappings = true"
-      ng-disabled="!pcc.isValid()"/>
-  <label for="is-mapping-existing-classes-checkbox">Map to existing terms</label>
+      disabled="!pcc.isValid()">
+  </switch></div>
 </div>
 
 <div class="map-existing-classes" ng-if="pcc.isMappingExistingClasses">
