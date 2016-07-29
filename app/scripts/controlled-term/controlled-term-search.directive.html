@@ -1,14 +1,11 @@
 <!-- Field types -->
-<span ng-show="tsc.isSearching() && tsc.isFieldTypesMode() && !tsc.isCreatingMappings && !tsc.isCreatingVs">Find a term in BioPortal to annotate the <span
-    class="highlighted">'{{tsc.fieldName}}'</span> field or <button type="button" class="btn btn-create-term"
-    ng-click="tsc.switchToCreate()">Create a New Term
-</button></span>
+<span ng-show="tsc.isSearching() && tsc.isFieldTypesMode() && !tsc.isCreatingMappings && !tsc.isCreatingVs">Find a term in BioPortal or <button type="button" class="btn btn-create-term" ng-click="tsc.switchToCreate()">Create a New Term</button> to annotate the <span class="highlighted">'{{tsc.fieldName}}'</span> field
+</span>
 
 <!-- Field values -->
-<span ng-show="tsc.isSearching() && tsc.isFieldValuesMode() && !tsc.isCreatingMappings && !tsc.isCreatingVs">Find terms in BioPortal to constrain the values of the <span
-    class="highlighted">'{{tsc.fieldName}}'</span> field or <button type="button" class="btn btn-create-term"
-    ng-click="tsc.switchToCreate()">Create New Terms
-</button></span>
+<span ng-show="tsc.isSearching() && tsc.isFieldValuesMode() && !tsc.isCreatingMappings && !tsc.isCreatingVs">Find terms in BioPortal or <button type="button" class="btn btn-create-term"
+    ng-click="tsc.switchToCreate()">Create New Terms</button> to constrain the values of the <span
+    class="highlighted">'{{tsc.fieldName}}'</span> field</span>
 
 <div ng-if="tsc.isSearching()" class="form-group floating-label-wrapper clearfix">
 

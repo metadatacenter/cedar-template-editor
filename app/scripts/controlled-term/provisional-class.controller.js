@@ -25,6 +25,7 @@ define([
       { id: 'http://www.w3.org/2004/02/skos/core#exactMatch', label: 'exact match' },
       { id: 'http://www.w3.org/2004/02/skos/core#broadMatch', label: 'broad match' },
       { id: 'http://www.w3.org/2004/02/skos/core#narrowMatch', label: 'narrow match' },
+      { id: 'http://www.w3.org/2004/02/skos/core#relatedMatch', label: 'related match' },
       { id: 'http://www.w3.org/2000/01/rdf-schema#subclassOf', label: 'subclass of' }
     ];
     vm.provisionalValueSetOntology = { details: { ontology: { name: 'Cedar Provisional Value Sets', acronym: 'CEDARVS' } } };

@@ -139,35 +139,35 @@ define([
           }
           bioportalSearch(vm.searchQuery, sources, maxResults, searchClasses, searchValues,
               searchValueSets).then(function (response) {
-            if (response.collection && response.collection.length > 0) {
-              var tArry = [], i;
-              for (var i = 0; i < response.collection.length; i += 1) {
-                var source = null;
-                if (response.collection[i].type == "OntologyClass") {
-                  source = controlledTermDataService.getOntologyByLdId(response.collection[i].source);
+                if (response.collection && response.collection.length > 0) {
+                  var tArry = [], i;
+                  for (var i = 0; i < response.collection.length; i += 1) {
+                    var source = null;
+                    if (response.collection[i].type == "OntologyClass") {
+                      source = controlledTermDataService.getOntologyByLdId(response.collection[i].source);
+                    }
+                    else if (response.collection[i].type == "Value" || response.collection[i].type == "ValueSet") {
+                      source = controlledTermDataService.getVsCollectionByLdId(response.collection[i].source);
+                    }
+                    // Ignore results for which the ontology or value set collection was not found in the cache
+                    if (source) {
+                      tArry.push({
+                        resultId : i,
+                        prefLabel: response.collection[i].prefLabel,
+                        details  : response.collection[i],
+                        source   : source
+                      });
+                    }
+                  }
+                  vm.searchResults = tArry;
+                  vm.resultsFound = true;
+                } else {
+                  vm.resultsFound = false;
                 }
-                else if (response.collection[i].type == "Value" || response.collection[i].type == "ValueSet") {
-                  source = controlledTermDataService.getVsCollectionByLdId(response.collection[i].source);
-                }
-                // Ignore results for which the ontology or value set collection was not found in the cache
-                if (source) {
-                  tArry.push({
-                    resultId : i,
-                    prefLabel: response.collection[i].prefLabel,
-                    details  : response.collection[i],
-                    source   : source
-                  });
-                }
-              }
-              vm.searchResults = tArry;
-              vm.resultsFound = true;
-            } else {
-              vm.resultsFound = false;
-            }
-            // Hide 'Searching...' message
-            vm.showSearchPreloader = false;
-            endSearch();
-          });
+                // Hide 'Searching...' message
+                vm.showSearchPreloader = false;
+                endSearch();
+              });
         }
         else {
           vm.showEmptyQueryMsg = true;
@@ -230,7 +230,7 @@ define([
         if (!keepCreationMode) {
           vm.isCreatingValue = true;
           vm.isCreatingValueSet = false;
-          vm.isCreatingMappings = false;
+          // Note that we don't want to re-initialize vm.isCreatingMappings to false here because its value is passed to the directive
         }
         if (!keepSearchQuery) {
           vm.searchQuery = '';
