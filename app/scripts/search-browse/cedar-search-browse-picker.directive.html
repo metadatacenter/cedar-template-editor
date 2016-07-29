@@ -633,6 +633,7 @@
         <ul class="list-unstyled others">
           <li ng-show="dc.showFloatingMenu">
             <button type="button"
+                id="button-create-folder"
                 tooltip="create folder"
                 tooltip-trigger
                 tooltip-animation="false"
@@ -645,6 +646,7 @@
           <li ng-show="dc.showFloatingMenu">
             <a ng-href="/elements/create?folderId={{dc.currentFolderId | encodeURIComponent}}">
               <button type="button"
+                  id="button-create-element"
                   tooltip="create element"
                   tooltip-trigger
                   tooltip-animation="false"
@@ -657,6 +659,7 @@
           <li ng-show="dc.showFloatingMenu">
             <a ng-href="/templates/create?folderId={{dc.currentFolderId | encodeURIComponent}}">
               <button type="button"
+                  id="button-create-template"
                   tooltip="create template"
                   tooltip-trigger
                   tooltip-animation="false"
@@ -671,6 +674,7 @@
 
           <li ng-show="!dc.showFloatingMenu">
             <button type="button"
+                id="button-create"
                 tooltip="create template"
                 tooltip-trigger
                 tooltip-animation="false"
