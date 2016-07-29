@@ -357,7 +357,7 @@ define([
 
       if (!existed) {
         vm.stagedOntologyValueConstraints.push({
-          'numChildren': vm.currentOntology.info.details.numberOfClasses,
+          'numTerms': vm.currentOntology.info.details.numberOfClasses,
           'acronym': vm.currentOntology.info.id,
           'name': vm.currentOntology.info.name,
           'uri': vm.currentOntology.info['@id']

@@ -13265,6 +13265,7 @@ p.instructions {
 }
 .class-list-container .class-list-table tr:first-child td,
 .many-classes-list .class-list-table tr:first-child td {
+  vertical-align: middle;
   border-top: none;
 }
 .class-list-container table,
@@ -13285,12 +13286,6 @@ p.instructions {
 .class-list-container table td:nth-child(1),
 .many-classes-list table td:nth-child(1) {
   width: 200px;
-}
-.class-list-container table th:nth-child(2),
-.many-classes-list table th:nth-child(2),
-.class-list-container table td:nth-child(2),
-.many-classes-list table td:nth-child(2) {
-  width: 400px;
 }
 .class-list-container table > thead > tr > th,
 .many-classes-list table > thead > tr > th {
@@ -13313,6 +13308,16 @@ p.instructions {
   line-height: 20px;
   position: relative;
   top: -1px;
+}
+.class-delete {
+  text-align: left;
+  font-size: 1.4em;
+  color: #999999;
+  margin: 0px auto;
+  padding: 0px;
+}
+.class-delete:hover {
+  color: #71a69c;
 }
 .one-class-list {
   border: 1px solid #DDD;

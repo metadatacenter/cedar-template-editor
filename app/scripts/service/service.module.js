@@ -24,7 +24,9 @@ define([
   'cedar/template-editor/service/value-recommender.service',
   'cedar/template-editor/service/cedar-user',
   'cedar/template-editor/service/ui-settings.service',
-  'cedar/template-editor/service/tracking.service'
+  'cedar/template-editor/service/tracking.service',
+  'cedar/template-editor/service/string-utils.service'
+
 ], function(angular) {
   angular.module('cedar.templateEditor.service', [
     'cedar.templateEditor.service.authorizedBackendService',
@@ -49,6 +51,7 @@ define([
     'cedar.templateEditor.service.valueRecommenderService',
     'cedar.templateEditor.service.cedarUser',
     'cedar.templateEditor.service.uISettingsService',
-    'cedar.templateEditor.service.trackingService'
+    'cedar.templateEditor.service.trackingService',
+    'cedar.templateEditor.service.stringUtilsService'
   ]);
 });

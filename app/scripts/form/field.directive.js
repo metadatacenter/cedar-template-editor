@@ -10,10 +10,11 @@ define([
 
 
   fieldDirective.$inject = ["$rootScope", "$sce", "$document", "$translate", "SpreadsheetService",
-                            "DataManipulationService", "FieldTypeService", "controlledTermDataService"];
+                            "DataManipulationService", "FieldTypeService", "controlledTermDataService",
+                            "StringUtilsService"];
 
   function fieldDirective($rootScope, $sce, $document, $translate, SpreadsheetService, DataManipulationService,
-                          FieldTypeService, controlledTermDataService) {
+                          FieldTypeService, controlledTermDataService, StringUtilsService) {
 
     var linker = function ($scope, $element, attrs) {
 
@@ -679,8 +680,8 @@ define([
 
 
         var fields = DataManipulationService.getFieldControlledTerms($scope.field);
-        if (fields) {
 
+        if (fields) {
 
           // create a new map to avoid any duplicates coming from the modal
           var myMap = new Map();
@@ -724,6 +725,11 @@ define([
           // hang on to the new map
           $scope.addedFields = myMap;
 
+        }
+        else {
+          // If there are no controlled terms for the field type defined in the model, the map will be empty
+          $scope.addedFields = new Map();
+          $scope.addedFieldKeys = [];
         }
       };
 
@@ -790,9 +796,8 @@ define([
       $scope.getClassId = function (item) {
         var result = "";
         if ($scope.addedFields && $scope.addedFields.has(item)) {
-          if ($scope.addedFields.get(item).definitions && $scope.addedFields.get(item).definitions.length > 0) {
+          if ($scope.addedFields.get(item).id) {
             result = $scope.addedFields.get(item).id;
-
           }
         }
         return result;
@@ -801,7 +806,6 @@ define([
 
       $scope.deleteFieldAddedItem = function (itemDataId) {
         DataManipulationService.deleteFieldControlledTerm(itemDataId, $scope.field);
-
         // adjust the map
         $scope.setAddedFieldMap();
       };
@@ -904,6 +908,14 @@ define([
       $scope.selectField = function () {
         console.log('selectField');
       };
+
+      $scope.getShortText = function (text, maxLength, finalString, emptyString) {
+        return StringUtilsService.getShortText(text, maxLength, finalString, emptyString);
+      };
+
+      $scope.getShortId = function (uri, maxLength) {
+        return StringUtilsService.getShortId(uri, maxLength);
+      }
 
 
     };

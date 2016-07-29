@@ -4688,6 +4688,7 @@ p.instructions {
 }
 
 .class-list-container, .many-classes-list {
+
   margin-bottom: 10px;
   border: 1px solid #DDD;
   .class-list-table {
@@ -4696,11 +4697,13 @@ p.instructions {
     background: @white;
 
     tr:first-child td {
+      vertical-align: middle;
       border-top: none;
     }
   }
 
   table {
+
     width: 100%;
     margin-bottom: 0;
 
@@ -4713,13 +4716,14 @@ p.instructions {
     }
 
     th, td {
+
       &:nth-child(1) {
         width: 200px
       }
 
-      &:nth-child(2) {
-        width: 400px;
-      }
+      //&:nth-child(2) {
+      //  width: 300px;
+      //}
     }
 
     > thead > tr > th {
@@ -4742,6 +4746,18 @@ p.instructions {
     line-height: 20px;
     position: relative;
     top: -1px;
+  }
+}
+
+.class-delete {
+  text-align: left;
+  font-size: 1.4em;
+  color: @gray;
+  margin: 0px auto;
+  padding: 0px;
+
+  &:hover {
+    color: @brand-primary;
   }
 }
 

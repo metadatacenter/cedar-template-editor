@@ -4,24 +4,25 @@ define([
   'angular',
   'cedar/template-editor/controlled-term/provisional-class.controller'
 ], function (angular) {
-  angular.module('cedar.templateEditor.controlledTerm.controlledTermSearchDirective', ['ngTagsInput', 'cedar.templateEditor.controlledTerm.provisionalClassController'])
+  angular.module('cedar.templateEditor.controlledTerm.controlledTermSearchDirective',
+      ['ngTagsInput', 'cedar.templateEditor.controlledTerm.provisionalClassController'])
       .directive('controlledTermSearch', controlledTermSearchDirective);
 
-  controlledTermSearchDirective.$inject = [];
+  controlledTermSearchDirective.$inject = ["StringUtilsService"];
 
-  function controlledTermSearchDirective() {
+  function controlledTermSearchDirective(StringUtilsService) {
     var directive = {
       bindToController: {
-        fieldName    : '=',
-        searchMode   : '=', // Search modes: field, values
-        selectedClass: '=',
-        currentOntology    : '=',
-        resetCallback: '=?',
+        fieldName            : '=',
+        searchMode           : '=', // Search modes: field, values
+        selectedClass        : '=',
+        currentOntology      : '=',
+        resetCallback        : '=?',
         isLoadingClassDetails: '=',
-        isCreatingMappings: '=',
-        isCreatingVs: '=',
-        treeVisible: '=',
-        modalId: '='
+        isCreatingMappings   : '=',
+        isCreatingVs         : '=',
+        treeVisible          : '=',
+        modalId              : '='
       },
       controller      : controlledTermSearchDirectiveController,
       controllerAs    : 'tsc',
@@ -39,7 +40,8 @@ define([
       'controlledTermDataService'
     ];
 
-    function controlledTermSearchDirectiveController($q, $rootScope, $scope, controlledTermService, controlledTermDataService) {
+    function controlledTermSearchDirectiveController($q, $rootScope, $scope, controlledTermService,
+                                                     controlledTermDataService) {
       /* Variable declarations */
       var vm = this;
       vm.action = 'search'; // Possible actions: search, create
@@ -135,7 +137,8 @@ define([
             });
             sources = selectedOntologiesIds.join(",");
           }
-          bioportalSearch(vm.searchQuery, sources, maxResults, searchClasses, searchValues, searchValueSets).then(function (response) {
+          bioportalSearch(vm.searchQuery, sources, maxResults, searchClasses, searchValues,
+              searchValueSets).then(function (response) {
             if (response.collection && response.collection.length > 0) {
               var tArry = [], i;
               for (var i = 0; i < response.collection.length; i += 1) {
@@ -348,7 +351,7 @@ define([
         vm.selectedClass = null;
         vm.classDetails = null;
         vm.treeVisible = true;
-        controlledTermService.loadOntologyRootClasses(selection, vm).then(function(response) {
+        controlledTermService.loadOntologyRootClasses(selection, vm).then(function (response) {
           vm.isLoadingOntologyDetails = false;
         });
       }
@@ -369,7 +372,7 @@ define([
         if (vm.selectedClass && vm.selectedClass["@id"]) {
           st = vm.selectedClass["@id"];
         }
-        
+
         return spl == st;
       }
 
@@ -419,24 +422,7 @@ define([
       }
 
       function getShortText(text, maxLength, finalString, emptyString) {
-        if (text && text.length > 0) {
-          // Converts html to plain text if needed
-          var tag = document.createElement('div');
-          tag.innerHTML = text;
-          var plainText = tag.innerText;
-          if (plainText.length > maxLength) {
-            var trimmedText = plainText.substr(0, maxLength);
-            //re-trim if we are in the middle of a word
-            trimmedText = trimmedText.substr(0, Math.min(trimmedText.length, trimmedText.lastIndexOf(" ")));
-            return trimmedText + finalString;
-          }
-          else {
-            return plainText;
-          }
-        }
-        else {
-          return emptyString;
-        }
+        return StringUtilsService.getShortText(text, maxLength, finalString, emptyString);
       }
 
       /* Hide Ontology Tree and Details */
@@ -478,13 +464,7 @@ define([
        */
 
       function getShortId(uri, maxLength) {
-        var lastFragment = uri.substr(uri.lastIndexOf('/') + 1);
-        var shortId = lastFragment.substr(lastFragment.lastIndexOf('#') + 1);
-        if (maxLength && shortId.length > maxLength) {
-          var start = shortId.length - maxLength;
-          shortId = '...' + shortId.substr(start, shortId.length-1);
-        }
-        return shortId;
+        return StringUtilsService.getShortId(uri, maxLength);
       }
 
       function getTypeForUi(type) {
