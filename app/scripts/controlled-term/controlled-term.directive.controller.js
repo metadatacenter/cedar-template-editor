@@ -525,7 +525,7 @@ define([
           'label': args.class.prefLabel,
           'default': false,
           'source': args.ontology.details.ontology.acronym,
-          'provisionalClass': true,
+          //'provisionalClass': true,
         };
         addOntologyClassToValueConstraint(constraint);
       }
