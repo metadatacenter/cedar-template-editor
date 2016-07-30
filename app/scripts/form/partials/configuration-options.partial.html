@@ -2,25 +2,25 @@
 <div class="">
   <div class="detail-options">
     <div class="element-toggles list table-style">
-      <div ng-if="hasControlledTerms()" class="element-toggle table-cell-style"
+      <div ng-if="hasControlledTerms()" class="element-toggle table-cell-style field-controlled-terms-tab"
           ng-class="{active: isTabActive('field')}"
           ng-click="toggleControlledTerm('field');  $event.stopPropagation();">
         <span><i class="cedar-svg-controll-term collapsed" style="padding-bottom:10px"></i>Field</span>
       </div>
-      <div ng-if="hasControlledTerms()" class="element-toggle table-cell-style"
+      <div ng-if="hasControlledTerms()" class="element-toggle table-cell-style value-controlled-terms-tab"
           ng-class="{active: isTabActive('values')}"
           ng-click="toggleControlledTerm('values');  $event.stopPropagation();">
         <span><i class="cedar-svg-controll-term collapsed" style="padding-bottom:10px"></i>Value</span>
       </div>
-      <div ng-if="hasDateRange()" class="element-toggle table-cell-style" ng-class="{active: isTabActive('range')}"
+      <div ng-if="hasDateRange()" class="element-toggle table-cell-style date-range-tab" ng-class="{active: isTabActive('range')}"
           ng-click="toggleControlledTerm('range');  $event.stopPropagation();">
         <span>Range</span>
       </div>
-      <div class="element-toggle table-cell-style" ng-class="{active: isTabActive('cardinality')}"
+      <div class="element-toggle table-cell-style cardinality-tab" ng-class="{active: isTabActive('cardinality')}"
           ng-click="toggleControlledTerm('cardinality');  $event.stopPropagation();">
         <span>Multiple</span>
       </div>
-      <div class="element-toggle table-cell-style" ng-class="{active: isTabActive('required')}"
+      <div class="element-toggle table-cell-style required-tab" ng-class="{active: isTabActive('required')}"
           ng-click="toggleControlledTerm('required');  $event.stopPropagation();">
         <span>Required</span>
       </div>

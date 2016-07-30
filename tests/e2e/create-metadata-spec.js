@@ -4,6 +4,7 @@ var _ = require('../libs/lodash.min.js');
 
 
 describe('create-metadata', function () {
+  // var EC = protractor.ExpectedConditions;
   var page;
   var cssTextField = ".field-root .elementTotalContent .cedar-svg-text";
   var cssParagraph = '.field-root .elementTotalContent .cedar-svg-paragraph';
@@ -16,37 +17,83 @@ describe('create-metadata', function () {
   var cssNumber = ".field-root .elementTotalContent .cedar-svg-numeric";
   var cssPhoneNumber = ".field-root .elementTotalContent .cedar-svg-phone";
   var cssSectionBreak = ".field-root .elementTotalContent .cedar-svg-section-break";
-  var cssImage= ".field-root .elementTotalContent .cedar-svg-image";
+  var cssImage = ".field-root .elementTotalContent .cedar-svg-image";
   var cssVideo = ".field-root .elementTotalContent .cedar-svg-youtube";
   var cssAddMoreDialog = ".other-elements";
+  var cssFieldTitle = '.field-title-definition';
+  var cssFieldDescription = '.field-description-definition';
+  var cssFieldRoot = ".field-root";
+  var cssDetailOptions = ".detail-options";
 
   beforeEach(function () {
     page = new CreateMetadataPage();
     page.get();
     page.createTemplate();
+    browser.driver.manage().window().maximize();
   });
 
+  // github issue #401: create, edit, and delete fields, select and deselect
 
-  it("should create a text field", function () {
+  it("should create, edit, and delete a text field ", function () {
+
+    // add one text field
     page.addTextField();
-    expect(element(by.css(cssTextField)).isPresent()).toBe(true);
-  });
-  it("should create and remove a text field", function () {
-    page.addTextField();
-    expect(element(by.css(cssTextField)).isPresent()).toBe(true);
+    // is the text field there?
+    var field = element(by.css(cssTextField));
+    expect(field.isPresent()).toBe(true);
+    // does it have a title?
+    expect(element(by.css(cssFieldTitle)).isPresent()).toBe(true);
+    // does it have the help text field?
+    expect(element(by.css(cssFieldDescription)).isPresent()).toBe(true);
+    // is it in edit mode?
+    expect(element(by.css(cssDetailOptions)).isPresent()).toBe(true);
     page.removeField();
-    expect(element(by.css(cssParagraph)).isPresent()).toBe(false);
+    // is it removed?
+    expect(element(by.css(cssTextField)).isPresent()).toBe(false);
+
   });
+
+  it("should select and deselect the text field ", function () {
+
+    var firstField;
+    var lastField;
+
+    // add a text field
+    page.addTextField();
+    firstField = element(by.css(cssFieldRoot));
+    expect(firstField.isPresent()).toBe(true);
+
+    // sleep to let toolbar scroll into view
+    browser.sleep(2000);
+
+    // and another a text field
+    page.addTextField();
+    lastField = element.all(by.css(cssFieldRoot)).last();
+    expect(lastField.isPresent()).toBe(true);
+
+    // is the second field selected?
+    expect(firstField.element(by.css(cssDetailOptions)).isPresent()).toBe(false);
+    expect(lastField.element(by.css(cssDetailOptions)).isPresent()).toBe(true);
+
+    // does the first one select when i click on it?
+    browser.actions().mouseMove(firstField).perform();
+    firstField.click();
+    expect(firstField.element(by.css(cssDetailOptions)).isPresent()).toBe(true);
+    expect(lastField.element(by.css(cssDetailOptions)).isPresent()).toBe(false);
+  });
+
   it("should create a text area", function () {
     page.addTextArea();
     expect(element(by.css(cssParagraph)).isPresent()).toBe(true);
   });
+
   it("should create and remove a text area", function () {
     page.addTextArea();
     expect(element(by.css(cssParagraph)).isPresent()).toBe(true);
     page.removeField();
     expect(element(by.css(cssParagraph)).isPresent()).toBe(false);
   });
+
   it("should create a radio", function () {
     page.addRadio();
     expect(element(by.css(cssRadio)).isPresent()).toBe(true);
@@ -57,10 +104,12 @@ describe('create-metadata', function () {
     page.removeField();
     expect(element(by.css(cssRadio)).isPresent()).toBe(false);
   });
+
   it("should create  a checkbox", function () {
     page.addCheckbox();
     expect(element(by.css(cssCheckbox)).isPresent()).toBe(true);
   });
+
   it("should create and remove a checkbox", function () {
     page.addCheckbox();
     expect(element(by.css(cssCheckbox)).isPresent()).toBe(true);
@@ -100,7 +149,8 @@ describe('create-metadata', function () {
     page.addMore();
     expect(element(by.css(cssAddMoreDialog)).isDisplayed()).toBe(true);
     page.addListField();
-    expect(element(by.css(cssList)).isPresent()).toBe(true);;
+    expect(element(by.css(cssList)).isPresent()).toBe(true);
+    ;
   });
   it("should create and delete a list", function () {
     page.addMore();
@@ -200,6 +250,7 @@ describe('create-metadata', function () {
     page.removeField();
     expect(element(by.css(cssVideo)).isPresent()).toBe(false);
   });
+
 
   xit("Should not set maxItems if maxItems is N", function () {
     element(by.css("#element-name")).sendKeys("1 - N text field");
