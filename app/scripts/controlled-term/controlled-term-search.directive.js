@@ -205,7 +205,8 @@ define([
       };
 
       function getDefaultSearchQuery() {
-        return isFieldTypesMode() ? vm.fieldName : '';
+        //return isFieldTypesMode() ? vm.fieldName : '';
+        return vm.fieldName;
       }
 
       function changeSearchScope() {
