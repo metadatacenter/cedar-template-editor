@@ -1,9 +1,9 @@
 'use strict';
-var CreateMetadataPage = require('../pages/create-metadata-page.js');
+var TemplateCreatorPage = require('../pages/template-creator-page.js');
 var _ = require('../libs/lodash.min.js');
 
 
-describe('create-metadata', function () {
+describe('template-creator', function () {
   // var EC = protractor.ExpectedConditions;
   var page;
   var cssTextField = ".field-root .elementTotalContent .cedar-svg-text";
@@ -26,6 +26,9 @@ describe('create-metadata', function () {
   var cssFieldRoot = ".field-root";
   var cssDetailOptions = ".detail-options";
   var cssFieldContainer = ".field-root .elementTotalContent";
+  var modelFieldTitle = '$root.schemaOf(field)._ui.title';
+  var modelFieldDescription = '$root.schemaOf(field)._ui.description';
+
 
   var fieldTypes = [
     {
@@ -141,19 +144,19 @@ describe('create-metadata', function () {
 
 
   beforeEach(function () {
-    page = new CreateMetadataPage();
+    page = new TemplateCreatorPage();
     page.get();
     page.createTemplate();
     browser.driver.manage().window().maximize();
   });
 
-  // github issue #401: create, edit, and delete fields, select and deselect
 
   for (var i = 0; i < fieldTypes.length; i++) {
 
     (function (fieldType) {
-      it("should create, edit, and delete a " + fieldType.cedarType, function () {
 
+      // github issue #401 part 1 of 2: create, edit, and delete fields
+      it("should create, edit, and delete a " + fieldType.cedarType, function () {
 
         var cssField = cssFieldContainer + ' .' + fieldType.iconClass;
 
@@ -162,50 +165,53 @@ describe('create-metadata', function () {
         var field = element(by.css(cssField));
         expect(field.isPresent()).toBe(true);
         // does it have a title and in edit mode?
-        expect(element(by.model('$root.schemaOf(field)._ui.title')).isPresent()).toBe(true);
+        expect(element(by.model(modelFieldTitle)).isPresent()).toBe(true);
         // does it have the help text field in edit mode?
-        expect(element(by.model('$root.schemaOf(field)._ui.description')).isPresent()).toBe(true);
+        expect(element(by.model(modelFieldDescription)).isPresent()).toBe(true);
         page.removeField();
         // is it removed?
         expect(element(by.css(cssField)).isPresent()).toBe(false);
 
       });
+
+      // github issue #401 part 2 of 2:  select and deselect fields
+      it("should select and deselect a " + fieldType.cedarType, function () {
+
+        var firstField;
+        var lastField;
+
+        // add two fields
+        page.addField(fieldType.cedarType);
+        page.addField(fieldType.cedarType);
+
+        // do we have two fields?
+        var fields = element.all(by.css(cssFieldRoot));
+        expect(fields.count()).toBe(2);
+
+        firstField = fields.first();
+        lastField = fields.last();
+
+        // do we have two fields
+        expect(firstField.isPresent()).toBe(true);
+        expect(lastField.isPresent()).toBe(true);
+
+        // is the second field selected and not the first
+        expect(lastField.element(by.model(modelFieldTitle)).isPresent()).toBe(true);
+        expect(firstField.element(by.model(modelFieldTitle)).isPresent()).toBe(false);
+
+        // click on the first field
+        browser.actions().mouseMove(firstField).perform();
+        firstField.click();
+
+        // is the first selected and the second deselected
+        expect(firstField.element(by.model(modelFieldTitle)).isPresent()).toBe(true);
+        expect(lastField.element(by.model(modelFieldTitle)).isPresent()).toBe(false);
+      });
+
     })(fieldTypes[i]);
 
   }
 
-
-
-  //
-  //it("should select and deselect the text field ", function () {
-  //
-  //  var firstField;
-  //  var lastField;
-  //
-  //  // add a text field
-  //  page.addTextField();
-  //  firstField = element(by.css(cssFieldRoot));
-  //  expect(firstField.isPresent()).toBe(true);
-  //
-  //  // sleep to let toolbar scroll into view
-  //  browser.sleep(2000);
-  //
-  //  // and another a text field
-  //  page.addTextField();
-  //  lastField = element.all(by.css(cssFieldRoot)).last();
-  //  expect(lastField.isPresent()).toBe(true);
-  //
-  //  // is the second field selected?
-  //  expect(firstField.element(by.css(cssDetailOptions)).isPresent()).toBe(false);
-  //  expect(lastField.element(by.css(cssDetailOptions)).isPresent()).toBe(true);
-  //
-  //  // does the first one select when i click on it?
-  //  browser.actions().mouseMove(firstField).perform();
-  //  firstField.click();
-  //  expect(firstField.element(by.css(cssDetailOptions)).isPresent()).toBe(true);
-  //  expect(lastField.element(by.css(cssDetailOptions)).isPresent()).toBe(false);
-  //});
-  //
 
   //it("Should not set maxItems if maxItems is N", function () {
   //  element(by.css("#element-name")).sendKeys("1 - N text field");

@@ -134,6 +134,8 @@ var CreateMetadataPage = function () {
         this.addVideoField();
         break;
     }
+    // let the toolbar scroll back into the view
+    browser.sleep(2000);
   }
 };
 module.exports = CreateMetadataPage; 
