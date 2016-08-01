@@ -83,5 +83,57 @@ var CreateMetadataPage = function () {
   this.removeField = function () {
     removeButton.click();
   };
+  this.addField = function (cedarType) {
+    switch (cedarType) {
+      case "textfield":
+        this.addTextField();
+        break;
+      case "textarea":
+        this.addTextArea();
+        break;
+      case "radio":
+        this.addRadio();
+        break;
+      case "checkbox":
+        this.addCheckbox();
+        break;
+      case "date":
+        this.addMore();
+        this.addDateField();
+        break;
+      case "email":
+        this.addMore();
+        this.addEmailField();
+        break;
+      case "list":
+        this.addMore();
+        this.addListField();
+        break;
+      case "numeric":
+        this.addMore();
+        this.addNumericField();
+        break;
+      case "phone-number":
+        this.addMore();
+        this.addPhoneNumberField();
+        break;
+      case "section-break":
+        this.addMore();
+        this.addSectionBreakField();
+        break;
+      case "richtext":
+        this.addMore();
+        this.addRichTextField();
+        break;
+      case "image":
+        this.addMore();
+        this.addImageField();
+        break;
+      case "youtube":
+        this.addMore();
+        this.addVideoField();
+        break;
+    }
+  }
 };
 module.exports = CreateMetadataPage; 
