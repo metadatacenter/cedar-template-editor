@@ -128,7 +128,138 @@ describe('template-creator', function () {
     browser.driver.manage().window().maximize();
   });
 
-  // run all the tests on each field type
+  // github issue #397:  Verify that the header is present and displays back button, name, description, title, JSON preview
+  it("should show template editor header, title, description, and json preview", function () {
+
+    // should have a top navigation element
+    expect(page.topNavigation.isDisplayed()).toBe(true);
+    // should have a template editor top nav
+    expect(page.hasClass(page.topNavigation,page.template)).toBe(true);
+    // should have a back arrow in the header
+    expect(page.topNavBackArrow.isDisplayed()).toBe(true);
+    // should have a json preview in the header
+    expect(page.showJsonLink.isDisplayed()).toBe(true);
+
+
+    // should have an editable template title
+    expect(page.templateTitle.isDisplayed()).toBe(true);
+    browser.actions().doubleClick(page.templateTitle).perform();
+    page.templateTitle.sendKeys(page.testTemplateTitle);
+
+    // should have an editable description
+    expect(page.templateDescription.isDisplayed()).toBe(true);
+    browser.actions().doubleClick(page.templateDescription).perform();
+    page.templateDescription.sendKeys(page.testTemplateDescription);
+
+    // submit the form and check our edits
+    page.templateForm.submit();
+    page.templateTitle.getAttribute('value').then(function (value) {
+      expect(_.isEqual(value, page.testTemplateTitle)).toBe(true);
+    });
+    page.templateDescription.getAttribute('value').then(function (value) {
+      expect(_.isEqual(value, page.testTemplateDescription)).toBe(true);
+    });
+  });
+
+  // github issue #398 Part 1 of 3:  Verify that Clear button is present and active
+  // TODO this one fails because  _ui.order is in the currentJson but not in the cleanJson
+  xit("should have Clear button present and active", function () {
+
+    var cleanJson;
+    var dirtyJson;
+    var fieldType = fieldTypes[0];
+
+    // should have clear not displayed
+    expect(page.createClearTemplateButton.isDisplayed()).toBe(false);
+
+    // save a copy of the clean template
+    page.getJsonPreviewText().then(function (value) {
+      var cleanJson = JSON.parse(value);
+      page.clickJsonPreview();
+
+      // should have a clear button if the template is dirty
+      page.addField(fieldType.cedarType);
+      expect(page.createClearTemplateButton.isDisplayed()).toBe(true);
+
+      // save the dirty template
+      page.getJsonPreviewText().then(function (value) {
+        var dirtyJson = JSON.parse(value);
+        page.clickJsonPreview();
+        expect(_.isEqual(cleanJson, dirtyJson)).toBe(false);
+
+        // clicking the clear should bring up confirmation dialog which has a confirm and cancel button
+        page.clickClearTemplate();
+        expect(page.createConfirmationDialog.isDisplayed()).toBe(true);
+        expect(page.createConfirmationDialog.getAttribute(page.sweetAlertCancelAttribute)).toBe('true');
+        expect(page.createConfirmationDialog.getAttribute(page.sweetAlertConfirmAttribute)).toBe('true');
+
+        // expect confirm to clear the template,
+        page.clickSweetAlertConfirmButton();
+        page.getJsonPreviewText().then(function (value) {
+          var currentJson = JSON.parse(value);
+          page.clickJsonPreview();
+          expect(_.isEqual(currentJson, cleanJson)).toBe(true);
+        });
+      });
+    });
+  });
+
+  // github issue #398 Part 2 of 3:  Verify that Cancel button is present and active,
+  it("should have Cancel button present and active", function () {
+
+    var fieldType = fieldTypes[0];
+
+    // should have save and cancel displayed
+    expect(page.createCancelTemplateButton.isDisplayed()).toBe(true);
+
+    // make the template dirty
+    page.addField(fieldType.cedarType);
+
+    // clicking the cancel should cancel edits
+    page.clickCancelTemplate();
+
+    // should be back to dashboard
+    expect(page.hasClass(page.topNavigation, page.dashboard)).toBe(true);
+  });
+
+  // github issue #398 Part 3 of 3:  Verify that save button is present and active,
+  it("should have Save button present and active", function () {
+
+    var cleanJson;
+    var dirtyJson;
+    var fieldType = fieldTypes[0];
+
+    // should have save and cancel displayed
+    expect(page.createSaveTemplateButton.isDisplayed()).toBe(true);
+
+    // save the clean template
+    page.getJsonPreviewText().then(function (value) {
+      var cleanJson = JSON.parse(value);
+      page.clickJsonPreview();
+
+      // save a dirty template
+      page.addField(fieldType.cedarType);
+      page.getJsonPreviewText().then(function (value) {
+        var dirtyJson = JSON.parse(value);
+        page.clickJsonPreview();
+        expect(_.isEqual(cleanJson, dirtyJson)).toBe(false);
+
+        page.clickSaveTemplate();
+        expect(page.createToastyConfirmationPopup.isDisplayed()).toBe(true);
+        page.getToastyMessageText().then(function (value) {
+          expect(value.indexOf(page.hasBeenCreated) !== -1).toBe(true);
+        });
+      });
+    });
+  });
+
+  // github issue #399:  Verify that fields and elements can be reordered
+  xit("should reorder fields and elements in the template", function () {
+
+  });
+
+
+  // github issue #401
   for (var i = 0; i < fieldTypes.length; i++) {
 
     (function (fieldType) {
@@ -207,40 +338,6 @@ describe('template-creator', function () {
     expect(page.templateJSON.isDisplayed()).toBe(false);
 
   });
-
-  // github issue #397:  Verify that the header is present and displays back button, name, description, title, JSON preview
-  it("should show template editor header, title, description, and json preview", function () {
-
-    // should have a top navigation element
-    expect(page.topNavigation.isDisplayed()).toBe(true);
-    // should have a template editor top nav
-    expect(page.hasClass(page.topNavigation, 'template')).toBe(true);
-    // should have a back arrow in the header
-    expect(page.topNavBackArrow.isDisplayed()).toBe(true);
-    // should have a json preview in the header
-    expect(page.showJsonLink.isDisplayed()).toBe(true);
-
-
-    // should have an editable template title
-    expect(page.templateTitle.isDisplayed()).toBe(true);
-    browser.actions().doubleClick(page.templateTitle).perform();
-    page.templateTitle.sendKeys(page.testTemplateTitle);
-
-    // should have an editable description
-    expect(page.templateDescription.isDisplayed()).toBe(true);
-    browser.actions().doubleClick(page.templateDescription).perform();
-    page.templateDescription.sendKeys(page.testTemplateDescription);
-
-    // submit the form and check our edits
-    page.templateForm.submit();
-    page.templateTitle.getAttribute('value').then(function (value) {
-      expect(_.isEqual(value, page.testTemplateTitle)).toBe(true);
-    });
-    page.templateDescription.getAttribute('value').then(function (value) {
-      expect(_.isEqual(value,page.testTemplateDescription)).toBe(true);
-    });
-  });
-
 
 
   xit("Should not set maxItems if maxItems is N", function () {

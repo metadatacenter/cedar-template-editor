@@ -2,7 +2,7 @@
 var TemplateCreatorPage = function () {
   var url = 'https://cedar.metadatacenter.orgx/dashboard';
   this.showJsonLink = element(by.id('top-navigation')).element(by.css('.navbar-header')).element(by.id('show-json-link'));
-  var jsonPreview = element(by.id('form-json-preview'));
+  this.jsonPreview = element(by.id('form-json-preview'));
   var createButton = element(by.id('button-create'));
   var createTemplateButton = element(by.id('button-create-template'));
   var createTextFieldButton = element(by.id('button-add-field-textfield'));
@@ -21,6 +21,16 @@ var TemplateCreatorPage = function () {
   var createImageButton = element(by.id('button-add-field-image'));
   var createVideoButton = element(by.id('button-add-field-youtube'));
   var removeButton = element(by.css('.field-root  .remove'));
+  this.createToastyConfirmationPopup =  element(by.id('toasty')).element(by.css('.toast'));
+  this.toastyMessageText = element(by.id('toasty')).element(by.css('.toast')).element(by.css('.toast-msg'));
+  this.createSaveTemplateButton = element(by.id('button-save-template'));
+  this.createCancelTemplateButton = element(by.id('button-cancel-template'));
+  this.createClearTemplateButton = element(by.id('button-clear-template'));
+  this.createConfirmationDialog = element(by.css('.sweet-alert'));
+  this.sweetAlertCancelAttribute = 'data-has-cancel-button';
+  this.sweetAlertConfirmAttribute = 'data-has-confirm-button';
+  this.createSweetAlertCancelButton = element(by.css('.sweet-alert')).element(by.css('.sa-button-container')).element(by.css('.cancel'));
+  this.createSweetAlertConfirmButton = element(by.css('.sweet-alert')).element(by.css('.sa-button-container')).element(by.css('.confirm'));
   this.templateJSON = element(by.id('templateJSON'));
   this.topNavigation = element(by.id('top-navigation'));
   this.topNavBackArrow = element(by.id('top-navigation')).element(by.css('.navbar-header')).element(by.css('.back-arrow-click'));
@@ -33,6 +43,9 @@ var TemplateCreatorPage = function () {
   this.cssFieldContainer = ".field-root .elementTotalContent";
   this.modelFieldTitle = '$root.schemaOf(field)._ui.title';
   this.modelFieldDescription = '$root.schemaOf(field)._ui.description';
+  this.hasBeenCreated = 'has been created';
+  this.template = 'template';
+  this.dashboard = 'dashboard';
 
   this.emptyTemplateJson = {
     "$schema"             : "http://json-schema.org/draft-04/schema#",
@@ -141,7 +154,7 @@ var TemplateCreatorPage = function () {
   };
   this.getJsonPreviewText = function () {
     this.showJsonLink.click();
-    return jsonPreview.getText();
+    return this.jsonPreview.getText();
   };
   this.clickJsonPreview = function () {
     this.showJsonLink.click();
@@ -194,6 +207,26 @@ var TemplateCreatorPage = function () {
   };
   this.removeField = function () {
     removeButton.click();
+  };
+  this.clickSaveTemplate = function () {
+    this.createSaveTemplateButton.click();
+  };
+  this.clickCancelTemplate = function () {
+    this.createCancelTemplateButton.click();
+  };
+  this.clickClearTemplate = function () {
+    this.createClearTemplateButton.click();
+  };
+  this.clickSweetAlertCancelButton = function () {
+    this.createSweetAlertCancelButton.click();
+  };
+  this.clickSweetAlertConfirmButton = function () {
+    this.createSweetAlertConfirmButton.click();
+    // needs a sleep here
+    browser.sleep(1000);
+  };
+  this.getToastyMessageText = function () {
+    return this.toastyMessageText.getText();
   };
   this.hasClass = function (element, cls) {
     return element.getAttribute('class').then(function (classes) {
@@ -251,7 +284,7 @@ var TemplateCreatorPage = function () {
         this.addVideoField();
         break;
     }
-    // let the toolbar scroll back into the view
+    // needs a sleep to let the toolbar scroll back into the view
     browser.sleep(1000);
   }
 };
