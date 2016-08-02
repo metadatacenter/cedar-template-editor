@@ -40,6 +40,7 @@ var TemplateCreatorPage = function () {
   this.testTemplateTitle = 'test template title';
   this.testTemplateDescription = 'test template description';
   this.cssFieldRoot = ".field-root";
+  this.cssFieldSortableIcon = ".field-root .sortable-icon";
   this.cssFieldContainer = ".field-root .elementTotalContent";
   this.modelFieldTitle = '$root.schemaOf(field)._ui.title';
   this.modelFieldDescription = '$root.schemaOf(field)._ui.description';
@@ -219,10 +220,10 @@ var TemplateCreatorPage = function () {
   };
   this.clickSweetAlertCancelButton = function () {
     this.createSweetAlertCancelButton.click();
+    browser.sleep(1000);
   };
   this.clickSweetAlertConfirmButton = function () {
     this.createSweetAlertConfirmButton.click();
-    // needs a sleep here
     browser.sleep(1000);
   };
   this.getToastyMessageText = function () {

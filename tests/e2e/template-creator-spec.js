@@ -134,7 +134,7 @@ describe('template-creator', function () {
     // should have a top navigation element
     expect(page.topNavigation.isDisplayed()).toBe(true);
     // should have a template editor top nav
-    expect(page.hasClass(page.topNavigation,page.template)).toBe(true);
+    expect(page.hasClass(page.topNavigation, page.template)).toBe(true);
     // should have a back arrow in the header
     expect(page.topNavBackArrow.isDisplayed()).toBe(true);
     // should have a json preview in the header
@@ -161,9 +161,9 @@ describe('template-creator', function () {
     });
   });
 
-  // github issue #398 Part 1 of 3:  Verify that Clear button is present and active
-  // TODO this one fails because  _ui.order is in the currentJson but not in the cleanJson
-  xit("should have Clear button present and active", function () {
+  // github issue #398 Part 1 of 4:  Verify that Clear button is present and active, expect clear to clear the template
+  // TODO this fails because _ui.order and the created element id is still in properties and required
+  xit("should should restore the template when clear is clicked and confirmed", function () {
 
     var cleanJson;
     var dirtyJson;
@@ -204,7 +204,49 @@ describe('template-creator', function () {
     });
   });
 
-  // github issue #398 Part 2 of 3:  Verify that Cancel button is present and active,
+  // github issue #398 Part 2 of 4:  Verify that Clear button is present and active, expect cancelling the clear to not modify the template
+  it("should not change the template when clear clicked but then cancelled", function () {
+
+    var cleanJson;
+    var dirtyJson;
+    var fieldType = fieldTypes[0];
+
+    // should have clear not displayed
+    expect(page.createClearTemplateButton.isDisplayed()).toBe(false);
+
+    // save a copy of the clean template
+    page.getJsonPreviewText().then(function (value) {
+      var cleanJson = JSON.parse(value);
+      page.clickJsonPreview();
+
+      // should have a clear button if the template is dirty
+      page.addField(fieldType.cedarType);
+      expect(page.createClearTemplateButton.isDisplayed()).toBe(true);
+
+      // save the dirty template
+      page.getJsonPreviewText().then(function (value) {
+        var dirtyJson = JSON.parse(value);
+        page.clickJsonPreview();
+        expect(_.isEqual(cleanJson, dirtyJson)).toBe(false);
+
+        // clicking the clear should bring up confirmation dialog which has a confirm and cancel button
+        page.clickClearTemplate();
+        expect(page.createConfirmationDialog.isDisplayed()).toBe(true);
+        expect(page.createConfirmationDialog.getAttribute(page.sweetAlertCancelAttribute)).toBe('true');
+        expect(page.createConfirmationDialog.getAttribute(page.sweetAlertConfirmAttribute)).toBe('true');
+
+        // expect confirm to clear the template,
+        page.clickSweetAlertCancelButton();
+        page.getJsonPreviewText().then(function (value) {
+          var currentJson = JSON.parse(value);
+          page.clickJsonPreview();
+          expect(_.isEqual(currentJson, dirtyJson)).toBe(true);
+        });
+      });
+    });
+  });
+
+  // github issue #398 Part 3 of 4:  Verify that Cancel button is present and active,
   it("should have Cancel button present and active", function () {
 
     var fieldType = fieldTypes[0];
@@ -222,7 +264,7 @@ describe('template-creator', function () {
     expect(page.hasClass(page.topNavigation, page.dashboard)).toBe(true);
   });
 
-  // github issue #398 Part 3 of 3:  Verify that save button is present and active,
+  // github issue #398 Part 4 of 4:  Verify that save button is present and active,
   it("should have Save button present and active", function () {
 
     var cleanJson;
@@ -254,8 +296,50 @@ describe('template-creator', function () {
   });
 
   // github issue #399:  Verify that fields and elements can be reordered
-  xit("should reorder fields and elements in the template", function () {
+  it("should reorder fields and elements in the template", function () {
 
+    var fieldType = fieldTypes[0];
+
+    // add two fields
+    page.addField(fieldType.cedarType);
+    page.addField(fieldType.cedarType);
+
+    // should have two field roots
+    var fieldRoots = element.all(by.css(page.cssFieldRoot));
+    expect(fieldRoots.count()).toBe(2);
+
+    fieldRoots.first().getAttribute('id').then(function (attr) {
+      var firstId = attr;
+
+      fieldRoots.last().getAttribute('id').then(function (attr) {
+        var lastId = attr;
+
+        // get the fields by their sort handlers and drag last over first
+        var fields = element.all(by.css(page.cssFieldSortableIcon));
+        expect(fields.count()).toBe(2);
+
+        var firstField = fields.first();
+        var lastField = fields.last();
+        browser.actions().mouseDown(lastField).perform();
+        browser.actions().mouseMove(firstField, {x: 0, y: 0}).perform();
+        browser.actions().mouseUp().perform();
+
+        // now get the field roots again
+        fieldRoots = element.all(by.css(page.cssFieldRoot));
+        expect(fieldRoots.count()).toBe(2);
+
+        fieldRoots.first().getAttribute('id').then(function (attr) {
+          var newFirstId = attr;
+
+          fieldRoots.last().getAttribute('id').then(function (attr) {
+            var newLastId = attr;
+
+            expect(newFirstId === lastId).toBe(true);
+            expect(newLastId === firstId).toBe(true);
+          });
+        });
+      });
+    });
   });
 
 
