@@ -1,9 +1,9 @@
 'use strict';
-var TemplateCreatorPage = require('../pages/template-creator-page.js');
+var ElementCreatorPage = require('../pages/element-creator-page.js');
 var _ = require('../libs/lodash.min.js');
 
 
-describe('template-creator', function () {
+describe('element-creator', function () {
   var EC = browser.ExpectedConditions;
   var page;
   var fieldTypes = [
@@ -122,19 +122,19 @@ describe('template-creator', function () {
   // before each test, load a new page and create a template
   // maximize the window area for clicking
   beforeEach(function () {
-    page = new TemplateCreatorPage();
+    page = new ElementCreatorPage();
     page.get();
-    page.createTemplate();
+    page.createElement();
     browser.driver.manage().window().maximize();
   });
 
-  // github issue #397:  Verify that the header is present and displays back button, name, description, title, JSON preview
-  it("should show template editor header, title, description, and json preview", function () {
+  // github issue #403:  Verify that the header is present and displays back button, name, description, title, JSON preview
+  it("should show element editor header, title, description, and json preview", function () {
 
     // should have a top navigation element
     expect(page.topNavigation.isDisplayed()).toBe(true);
     // should have a template editor top nav
-    expect(page.hasClass(page.topNavigation, page.template)).toBe(true);
+    expect(page.hasClass(page.topNavigation, page.element)).toBe(true);
     // should have a back arrow in the header
     expect(page.topNavBackArrow.isDisplayed()).toBe(true);
     // should have a json preview in the header
@@ -142,26 +142,27 @@ describe('template-creator', function () {
 
 
     // should have an editable template title
-    expect(page.templateTitle.isDisplayed()).toBe(true);
-    browser.actions().doubleClick(page.templateTitle).perform();
-    page.templateTitle.sendKeys(page.testTemplateTitle);
+    expect(page.elementTitle.isDisplayed()).toBe(true);
+    browser.actions().doubleClick(page.elementTitle).perform();
+    page.elementTitle.sendKeys(page.testTitle);
 
     // should have an editable description
-    expect(page.templateDescription.isDisplayed()).toBe(true);
-    browser.actions().doubleClick(page.templateDescription).perform();
-    page.templateDescription.sendKeys(page.testTemplateDescription);
+    expect(page.elementDescription.isDisplayed()).toBe(true);
+    browser.actions().doubleClick(page.elementDescription).perform();
+    page.elementDescription.sendKeys(page.testDescription);
 
     // submit the form and check our edits
-    page.templateForm.submit();
-    page.templateTitle.getAttribute('value').then(function (value) {
-      expect(_.isEqual(value, page.testTemplateTitle)).toBe(true);
+    page.elementDescriptionForm.submit();
+    browser.sleep(3000);
+    page.elementTitle.getAttribute('value').then(function (value) {
+      expect(_.isEqual(value, page.testTitle)).toBe(true);
     });
-    page.templateDescription.getAttribute('value').then(function (value) {
-      expect(_.isEqual(value, page.testTemplateDescription)).toBe(true);
+    page.elementDescription.getAttribute('value').then(function (value) {
+      expect(_.isEqual(value, page.testDescription)).toBe(true);
     });
   });
 
-  // github issue #398 Part 1 of 4:  Verify that Clear button is present and active, expect clear to clear the template
+  // github issue #404 Part 1 of 4:  Verify that Clear button is present and active, expect clear to clear the template
   // TODO this fails because _ui.order and the created element id is still in properties and required
   xit("should should restore the template when clear is clicked and confirmed", function () {
 
@@ -170,7 +171,7 @@ describe('template-creator', function () {
     var fieldType = fieldTypes[0];
 
     // should have clear not displayed
-    expect(page.createClearTemplateButton.isDisplayed()).toBe(false);
+    expect(page.createClearElementButton.isDisplayed()).toBe(false);
 
     // save a copy of the clean template
     page.getJsonPreviewText().then(function (value) {
@@ -179,7 +180,7 @@ describe('template-creator', function () {
 
       // should have a clear button if the template is dirty
       page.addField(fieldType.cedarType);
-      expect(page.createClearTemplateButton.isDisplayed()).toBe(true);
+      expect(page.createClearElementButton.isDisplayed()).toBe(true);
 
       // save the dirty template
       page.getJsonPreviewText().then(function (value) {
@@ -188,7 +189,7 @@ describe('template-creator', function () {
         expect(_.isEqual(cleanJson, dirtyJson)).toBe(false);
 
         // clicking the clear should bring up confirmation dialog which has a confirm and cancel button
-        page.clickClearTemplate();
+        page.clickClearElement();
         expect(page.createConfirmationDialog.isDisplayed()).toBe(true);
         expect(page.createConfirmationDialog.getAttribute(page.sweetAlertCancelAttribute)).toBe('true');
         expect(page.createConfirmationDialog.getAttribute(page.sweetAlertConfirmAttribute)).toBe('true');
@@ -204,15 +205,15 @@ describe('template-creator', function () {
     });
   });
 
-  // github issue #398 Part 2 of 4:  Verify that Clear button is present and active, expect cancelling the clear to not modify the template
-  it("should not change the template when clear clicked but then cancelled", function () {
+  // github issue #404 Part 2 of 4:  Verify that Clear button is present and active, expect cancelling the clear to not modify the template
+  it("should not change the element when clear clicked but then cancelled", function () {
 
     var cleanJson;
     var dirtyJson;
     var fieldType = fieldTypes[0];
 
     // should have clear not displayed
-    expect(page.createClearTemplateButton.isDisplayed()).toBe(false);
+    expect(page.createClearElementButton.isDisplayed()).toBe(false);
 
     // save a copy of the clean template
     page.getJsonPreviewText().then(function (value) {
@@ -221,7 +222,7 @@ describe('template-creator', function () {
 
       // should have a clear button if the template is dirty
       page.addField(fieldType.cedarType);
-      expect(page.createClearTemplateButton.isDisplayed()).toBe(true);
+      expect(page.createClearElementButton.isDisplayed()).toBe(true);
 
       // save the dirty template
       page.getJsonPreviewText().then(function (value) {
@@ -230,7 +231,7 @@ describe('template-creator', function () {
         expect(_.isEqual(cleanJson, dirtyJson)).toBe(false);
 
         // clicking the clear should bring up confirmation dialog which has a confirm and cancel button
-        page.clickClearTemplate();
+        page.clickClearElement();
         expect(page.createConfirmationDialog.isDisplayed()).toBe(true);
         expect(page.createConfirmationDialog.getAttribute(page.sweetAlertCancelAttribute)).toBe('true');
         expect(page.createConfirmationDialog.getAttribute(page.sweetAlertConfirmAttribute)).toBe('true');
@@ -246,25 +247,25 @@ describe('template-creator', function () {
     });
   });
 
-  // github issue #398 Part 3 of 4:  Verify that Cancel button is present and active,
+  // github issue #404 Part 3 of 4:  Verify that Cancel button is present and active,
   it("should have Cancel button present and active", function () {
 
     var fieldType = fieldTypes[0];
 
     // should have save and cancel displayed
-    expect(page.createCancelTemplateButton.isDisplayed()).toBe(true);
+    expect(page.createCancelElementButton.isDisplayed()).toBe(true);
 
     // make the template dirty
     page.addField(fieldType.cedarType);
 
     // clicking the cancel should cancel edits
-    page.clickCancelTemplate();
+    page.clickCancelElement();
 
     // should be back to dashboard
     expect(page.hasClass(page.topNavigation, page.dashboard)).toBe(true);
   });
 
-  // github issue #398 Part 4 of 4:  Verify that save button is present and active,
+  // github issue #404 Part 4 of 4:  Verify that save button is present and active,
   it("should have Save button present and active", function () {
 
     var cleanJson;
@@ -272,7 +273,7 @@ describe('template-creator', function () {
     var fieldType = fieldTypes[0];
 
     // should have save and cancel displayed
-    expect(page.createSaveTemplateButton.isDisplayed()).toBe(true);
+    expect(page.createSaveElementButton.isDisplayed()).toBe(true);
 
     // save the clean template
     page.getJsonPreviewText().then(function (value) {
@@ -286,7 +287,7 @@ describe('template-creator', function () {
         page.clickJsonPreview();
         expect(_.isEqual(cleanJson, dirtyJson)).toBe(false);
 
-        page.clickSaveTemplate();
+        page.clickSaveElement();
         expect(page.createToastyConfirmationPopup.isDisplayed()).toBe(true);
         page.getToastyMessageText().then(function (value) {
           expect(value.indexOf(page.hasBeenCreated) !== -1).toBe(true);
@@ -295,8 +296,8 @@ describe('template-creator', function () {
     });
   });
 
-  // github issue #399:  Verify that fields and elements can be reordered
-  it("should reorder fields and elements in the template", function () {
+  // github issue #405:  Verify that fields and elements can be reordered
+  it("should reorder fields and elements in the element", function () {
 
     var fieldType = fieldTypes[0];
 
@@ -342,19 +343,12 @@ describe('template-creator', function () {
     });
   });
 
-
-  // github issue #400:
-  it("should add an element to a template", function () {
-
-  });
-
-
-  // github issue #401
-  for (var i = 0; i < fieldTypes.length; i++) {
+  // github issue #406
+  for (var i = 1; i < fieldTypes.length; i++) {
 
     (function (fieldType) {
 
-      // github issue #401 part 1 of 2: Verify that surround, field icon, and field name are present, Verify that the X icon is present on an field in the template and element editors and deletes the field
+      // github issue #406 part 1 of 2: Verify that surround, field icon, and field name are present, Verify that the X icon is present on an field in the template and element editors and deletes the field
       it("should create, edit, and delete a " + fieldType.cedarType, function () {
 
         // css path for this field type
@@ -381,7 +375,7 @@ describe('template-creator', function () {
       });
 
 
-      // github issue #401 part 2 of 2:  Verify that clicking on an field  puts it in edit mode, Verify that clicking outside a field  takes it out of edit mode
+      // github issue #406 part 2 of 2:  Verify that clicking on an field  puts it in edit mode, Verify that clicking outside a field  takes it out of edit mode
       it("should select and deselect a " + fieldType.cedarType, function () {
 
         var firstField;
@@ -419,14 +413,14 @@ describe('template-creator', function () {
 
   }
 
-  // github issue #402:  Verify that JSON preview button shows template JSON; verify that this JSON is same as underlying JSON, Verify that clicking in JSON preview button hides visible JSON preview area
-  it("clicking JSON preview button shows and hides template JSON", function () {
+  // github issue #407:  Verify that JSON preview button shows template JSON; verify that this JSON is same as underlying JSON, Verify that clicking in JSON preview button hides visible JSON preview area
+  it("clicking JSON preview button shows and hides element JSON", function () {
 
     expect(page.templateJSON.isDisplayed()).toBe(false);
 
     page.getJsonPreviewText().then(function (value) {
       var json = JSON.parse(value);
-      expect(_.isEqual(json, page.emptyTemplateJson)).toBe(true);
+      expect(_.isEqual(json, page.emptyElementJson)).toBe(true);
     });
 
     expect(page.templateJSON.isDisplayed()).toBe(true);
