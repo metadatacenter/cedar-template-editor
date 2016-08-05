@@ -1,6 +1,5 @@
 'use strict';
 
-require ('../pages/element-creator-page.js');
 require ('../pages/template-creator-page.js');
 
 var DashboardPage = function () {
@@ -45,7 +44,7 @@ var DashboardPage = function () {
   this.createElement = function () {
     browser.actions().mouseMove(createButton).perform();
     createElementButton.click();
-    return require('./element-creator-page.js');
+    return require('./template-creator-page.js');
   };
   this.clickSweetAlertCancelButton = function () {
     this.createSweetAlertCancelButton.click();

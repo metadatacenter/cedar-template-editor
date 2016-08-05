@@ -132,7 +132,7 @@ describe('template-creator', function () {
   });
 
   // github issue #397:  Verify that the header is present and displays back button, name, description, title, JSON preview
-  xit("should show template editor header, title, description, and json preview", function () {
+  it("should show template editor header, title, description, and json preview", function () {
 
     // should have a top navigation element
     expect(page.topNavigation.isDisplayed()).toBe(true);
@@ -208,7 +208,7 @@ describe('template-creator', function () {
   });
 
   // github issue #398 Part 2 of 4:  Verify that Clear button is present and active, expect cancelling the clear to not modify the template
-  xit("should not change the template when clear clicked but then cancelled", function () {
+  it("should not change the template when clear clicked but then cancelled", function () {
 
     var cleanJson;
     var dirtyJson;
@@ -250,7 +250,7 @@ describe('template-creator', function () {
   });
 
   // github issue #398 Part 3 of 4:  Verify that Cancel button is present and active,
-  xit("should have Cancel button present and active", function () {
+  it("should have Cancel button present and active", function () {
 
     var fieldType = fieldTypes[0];
 
@@ -268,7 +268,7 @@ describe('template-creator', function () {
   });
 
   // github issue #398 Part 4 of 4:  Verify that save button is present and active,
-  xit("should have Save button present and active", function () {
+  it("should have Save button present and active", function () {
 
     var cleanJson;
     var dirtyJson;
@@ -299,7 +299,7 @@ describe('template-creator', function () {
   });
 
   // github issue #399:  Verify that fields and elements can be reordered
-  xit("should reorder fields and elements in the template", function () {
+  it("should reorder fields and elements in the template", function () {
 
     var fieldType = fieldTypes[0];
 
@@ -347,36 +347,38 @@ describe('template-creator', function () {
 
 
   // github issue #400
-  xdescribe('should add an element to the template, ', function () {
+  describe('should add an element to the template, ', function () {
 
 
-    // github issue #400: part 1 of 2
-    xit("create sampleElement, ", function () {
+
+
+    // github issue #400: part 1 of 3
+    it("should create a sample element, ", function () {
 
       var dashboardPage = page.clickCancelTemplate();
       var elementPage = dashboardPage.createElement();
 
       // create an element and add a text field to it
       elementPage.addTextField();
-      elementPage.setElementTitle('sampleElement');
-      elementPage.setElementDescription('sampleElement description');
+      elementPage.setElementTitle(page.sampleElementTitle);
+      elementPage.setElementDescription(page.sampleElementDescription);
       elementPage.clickSaveElement();
 
     });
 
-    // github issue #400: part 2 of 2
-    it("add to template", function () {
+    // github issue #400: part 2 of 3
+    it("should add it to template", function () {
 
       page.addMore();
       page.addSearchElements();
 
       // search for the sampleElement
-      page.createSearchInput.sendKeys('sampleElement').sendKeys(protractor.Key.ENTER).then(function () {
+      page.createSearchInput.sendKeys(page.sampleElementTitle).sendKeys(protractor.Key.ENTER).then(function () {
 
-        browser.wait(EC.textToBePresentInElementValue($('#search'), 'sampleElement'), 5000);
+        browser.wait(EC.textToBePresentInElementValue($('#search'), page.sampleElementTitle), 10000);
 
         // click the search submit icon
-        element(by.id('search-browse-modal')).element(by.css('.do-search')).click().then(function () {
+        page.createSearchButton.click().then(function () {
 
           browser.wait(EC.visibilityOf(page.getFirstElement()), 10000);
 
@@ -396,9 +398,66 @@ describe('template-creator', function () {
               // the template should include the element name
               element.all(by.css('.element-name-label')).first().getText().then(function (text) {
 
-                // and the name should bbe sampleElement
-                expect(_.isEqual(text, 'sampleElement')).toBe(true);
+                // and the name should be sampleElement
+                expect(_.isEqual(text, page.sampleElementTitle)).toBe(true);
               });
+            });
+          });
+        });
+      });
+    });
+
+    // github issue #400: part 3 of 3
+    it("should delete the sample element, ", function () {
+
+      var dashboardPage = page.clickCancelTemplate();
+
+      var searchInput = element(by.id('search'));
+
+      searchInput.sendKeys(page.sampleElementTitle).sendKeys(protractor.Key.ENTER).then(function () {
+
+        browser.wait(EC.textToBePresentInElementValue($('#search'), page.sampleElementTitle), 10000);
+
+
+        // click the search submit icon
+        element(by.css('.do-search')).click().then(function () {
+
+          browser.wait(EC.visibilityOf(page.getFirstElement()), 10000);
+
+          // the search browse modal should show some results
+          expect(page.getFirstElement().isPresent()).toBe(true);
+
+          // get the first element in the list of search results
+          page.getFirstElement().click().then(function () {
+
+            var buttons = page.topNavButtons;
+            expect(buttons.count()).toBe(6);
+
+            var deleteButton = buttons.first();
+            browser.wait(EC.visibilityOf(deleteButton), 10000);
+            deleteButton.getAttribute('tooltip').then(function (value) {
+
+              // make sure it really is delete
+              expect(_.isEqual(value, page.deleteButtonTooltip)).toBe(true);
+              deleteButton.click();
+
+              // TODO not sure why i need this sleep here
+              browser.sleep(1000);
+
+              browser.wait(EC.visibilityOf(page.createConfirmationDialog), 10000);
+              expect(page.createConfirmationDialog.isDisplayed()).toBe(true);
+              expect(page.createConfirmationDialog.getAttribute(page.sweetAlertCancelAttribute)).toBe('true');
+              expect(page.createConfirmationDialog.getAttribute(page.sweetAlertConfirmAttribute)).toBe('true');
+
+              // click confirm to delete the element
+              page.clickSweetAlertConfirmButton();
+
+              browser.wait(EC.visibilityOf(page.createToastyConfirmationPopup), 10000);
+              expect(page.createToastyConfirmationPopup.isDisplayed()).toBe(true);
+              page.getToastyMessageText().then(function (value) {
+                expect(value.indexOf(page.deleteElementMessage) !== -1).toBe(true);
+              });
+
             });
           });
         });
@@ -408,82 +467,81 @@ describe('template-creator', function () {
 
 
   // github issue #401
-  for (var i = 10; i < 11; i++) {
+  for (var i =0; i < fieldTypes.length; i++) {
 
-      (function (fieldType) {
+    (function (fieldType) {
 
-        // github issue #401 part 1 of 2: Verify that surround, field icon, and field name are present, Verify that the X icon is present on an field in the template and element editors and deletes the field
-        xit("should create, edit, and delete a " + fieldType.cedarType, function () {
+      // github issue #401 part 1 of 2: Verify that surround, field icon, and field name are present, Verify that the X icon is present on an field in the template and element editors and deletes the field
+      it("should create, edit, and delete a " + fieldType.cedarType, function () {
 
-          // css path for this field type
-          var cssField = page.cssField(fieldType.iconClass);
+        // css path for this field type
+        var cssField = page.cssField(fieldType.iconClass);
 
-          page.addField(fieldType.cedarType);
-          // is the field there?
-          var field = element(by.css(cssField));
-          expect(field.isPresent()).toBe(true);
-          // does it have a title and in edit mode?
-          expect(element(by.model(page.modelFieldTitle)).isPresent()).toBe(true);
-          // does it have the help text field in edit mode?
-          expect(element(by.model(page.modelFieldDescription)).isPresent()).toBe(true);
+        page.addField(fieldType.cedarType);
+        // is the field there?
+        var field = element(by.css(cssField));
+        expect(field.isPresent()).toBe(true);
+        // does it have a title and in edit mode?
+        expect(element(by.model(page.modelFieldTitle)).isPresent()).toBe(true);
+        // does it have the help text field in edit mode?
+        expect(element(by.model(page.modelFieldDescription)).isPresent()).toBe(true);
 
-          // move the mouse away from the toolbar so the tooltip is hidden
-          // before trying to remove the field
-          // otherwise the textarea fails
-          browser.actions().mouseMove(field).perform();
-          browser.sleep(1000);
-          page.removeField();
-          // is it removed?
-          expect(element(by.css(cssField)).isPresent()).toBe(false);
+        // move the mouse away from the toolbar so the tooltip is hidden
+        // before trying to remove the field
+        // otherwise the textarea fails
+        browser.actions().mouseMove(field).perform();
+        browser.sleep(1000);
+        page.removeField();
+        // is it removed?
+        expect(element(by.css(cssField)).isPresent()).toBe(false);
 
-        });
+      });
 
 
-        // github issue #401 part 2 of 2:  Verify that clicking on an field  puts it in edit mode, Verify that clicking outside a field  takes it out of edit mode
-        it("should select and deselect a " + fieldType.cedarType, function () {
+      // github issue #401 part 2 of 2:  Verify that clicking on an field  puts it in edit mode, Verify that clicking outside a field  takes it out of edit mode
+      it("should select and deselect a " + fieldType.cedarType, function () {
 
-          var firstField;
-          var lastField;
+        var firstField;
+        var lastField;
 
-          // add two fields
-          browser.sleep(3000);
-          page.addField(fieldType.cedarType);
-          browser.sleep(3000);
-          page.addField(fieldType.cedarType);
-          browser.sleep(3000);
+        // add two fields
+        page.addField(fieldType.cedarType);
+        page.addField(fieldType.cedarType);
 
-          // do we have two fields
-          var fields = element.all(by.css(page.cssFieldRoot));
-          expect(fields.count()).toBe(2);
+        // do we have two fields
+        var fields = element.all(by.css(page.cssFieldRoot));
+        expect(fields.count()).toBe(2);
 
-          firstField = fields.first();
-          lastField = fields.last();
+        firstField = fields.first();
+        lastField = fields.last();
 
-          // do we have each field
-          expect(firstField.isPresent()).toBe(true);
-          expect(lastField.isPresent()).toBe(true);
+        // do we have each field
+        expect(firstField.isPresent()).toBe(true);
+        expect(lastField.isPresent()).toBe(true);
 
-          // is the second field selected and not the first
-          expect(lastField.element(by.model(page.modelFieldTitle)).isPresent()).toBe(true);
-          expect(firstField.element(by.model(page.modelFieldTitle)).isPresent()).toBe(false);
+        // is the second field selected and not the first
+        expect(lastField.element(by.model(page.modelFieldTitle)).isPresent()).toBe(true);
+        expect(firstField.element(by.model(page.modelFieldTitle)).isPresent()).toBe(false);
 
-          // click on the first field
-          browser.actions().mouseMove(firstField).perform();
-          browser.sleep(3000);
+        // scroll to top
+        browser.driver.executeScript('window.scrollTo(0,0);').then(function () {
 
+          // and select the first field
           firstField.click();
 
-          // is the first selected and the second deselected
+          // is the first selected and not the second
           expect(firstField.element(by.model(page.modelFieldTitle)).isPresent()).toBe(true);
           expect(lastField.element(by.model(page.modelFieldTitle)).isPresent()).toBe(false);
-        });
 
-      })(fieldTypes[i]);
+        });
+      });
+
+    })(fieldTypes[i]);
 
   }
 
 // github issue #402:  Verify that JSON preview button shows template JSON; verify that this JSON is same as underlying JSON, Verify that clicking in JSON preview button hides visible JSON preview area
-  xit("clicking JSON preview button shows and hides template JSON", function () {
+  it("clicking JSON preview button shows and hides template JSON", function () {
 
     expect(page.templateJSON.isDisplayed()).toBe(false);
 
@@ -499,6 +557,7 @@ describe('template-creator', function () {
   });
 
 
+  // TODO not working yet
   xit("Should not set maxItems if maxItems is N", function () {
     element(by.css("#element-name")).sendKeys("1 - N text field");
     element(by.css("#element-description")).sendKeys("Text field was created via Selenium");
@@ -534,6 +593,7 @@ describe('template-creator', function () {
     });
   });
 
+  // TODO not working yet
   xit("Should not set minItems & maxItems if cardinality is 1 - 1", function () {
     element(by.css("#element-name")).sendKeys("1 - 1 text field");
     element(by.css("#element-description")).sendKeys("Text field was created via Selenium");
