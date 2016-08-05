@@ -1,4 +1,7 @@
 'use strict';
+
+require ('../pages/dashboard-page.js');
+
 var ElementCreatorPage = function () {
   var url = 'https://cedar.metadatacenter.orgx/dashboard';
   this.showJsonLink = element(by.id('top-navigation')).element(by.css('.navbar-header')).element(by.id('show-json-link'));
@@ -21,11 +24,9 @@ var ElementCreatorPage = function () {
   var createImageButton = element(by.id('button-add-field-image'));
   var createVideoButton = element(by.id('button-add-field-youtube'));
   var removeButton = element(by.css('.field-root  .remove'));
+
   this.createToastyConfirmationPopup = element(by.id('toasty')).element(by.css('.toast'));
   this.toastyMessageText = element(by.id('toasty')).element(by.css('.toast')).element(by.css('.toast-msg'));
-  this.createSaveElementButton = element(by.id('button-save-element'));
-  this.createCancelElementButton = element(by.id('button-cancel-element'));
-  this.createClearElementButton = element(by.id('button-clear-element'));
   this.createConfirmationDialog = element(by.css('.sweet-alert'));
   this.sweetAlertCancelAttribute = 'data-has-cancel-button';
   this.sweetAlertConfirmAttribute = 'data-has-confirm-button';
@@ -34,10 +35,7 @@ var ElementCreatorPage = function () {
   this.templateJSON = element(by.id('templateJSON'));
   this.topNavigation = element(by.id('top-navigation'));
   this.topNavBackArrow = element(by.id('top-navigation')).element(by.css('.navbar-header')).element(by.css('.back-arrow-click'));
-  this.elementTitle = element(by.id('element-name-container')).element(by.model('element._ui.title'));
-  this.elementDescription = element(by.id('element-description-container')).element(by.model('element._ui.description'));
-  this.elementTitleForm = element(by.id('element-name-container')).element(by.tagName('form'));
-  this.elementDescriptionForm = element(by.id('element-description-container')).element(by.tagName('form'));
+
   this.testTitle = 'test title';
   this.testDescription = 'test description';
   this.cssFieldRoot = ".field-root";
@@ -50,6 +48,22 @@ var ElementCreatorPage = function () {
   this.dashboard = 'dashboard';
   this.element = 'element';
 
+  // template creator
+  this.templateTitle = element(by.id('template-header')).element(by.model('form._ui.title'));
+  this.templateDescription = element(by.id('template-header')).element(by.model('form._ui.description'));
+  this.templateForm = element(by.id('element-name-container')).element(by.tagName('form'));
+  this.createSaveTemplateButton = element(by.id('button-save-template'));
+  this.createCancelTemplateButton = element(by.id('button-cancel-template'));
+  this.createClearTemplateButton = element(by.id('button-clear-template'));
+
+  // element creator
+  this.elementTitle = element(by.id('element-name-container')).element(by.model('element._ui.title'));
+  this.elementDescription = element(by.id('element-description-container')).element(by.model('element._ui.description'));
+  this.elementTitleForm = element(by.id('element-name-container')).element(by.tagName('form'));
+  this.elementDescriptionForm = element(by.id('element-description-container')).element(by.tagName('form'));
+  this.createSaveElementButton = element(by.id('button-save-element'));
+  this.createCancelElementButton = element(by.id('button-cancel-element'));
+  this.createClearElementButton = element(by.id('button-clear-element'));
   this.emptyElementJson = {
     "$schema"             : "http://json-schema.org/draft-04/schema#",
     "@id"                 : null,
@@ -129,9 +143,9 @@ var ElementCreatorPage = function () {
 // TODO: should use EC for this 
     browser.sleep(1000);
   };
-  this.createElement = function () {
-    browser.actions().mouseMove(createButton).perform();
-    createElementButton.click();
+
+  this.test = function() {
+    console.log('element creator page test');
   };
   this.getJsonPreviewText = function () {
     this.showJsonLink.click();
@@ -158,7 +172,6 @@ var ElementCreatorPage = function () {
   this.addMore = function () {
     createMore.click();
   };
-
   this.addDateField = function () {
     createDateButton.click();
   };
@@ -189,15 +202,42 @@ var ElementCreatorPage = function () {
   this.removeField = function () {
     removeButton.click();
   };
+
+  // element creator
   this.clickSaveElement = function () {
     this.createSaveElementButton.click();
   };
   this.clickCancelElement = function () {
     this.createCancelElementButton.click();
+    return require('./dashboard-page.js');
   };
   this.clickClearElement = function () {
     this.createClearElementButton.click();
   };
+  this.createElement = function () {
+    browser.actions().mouseMove(createButton).perform();
+    createElementButton.click();
+  };
+  this.setElementTitle = function(text) {
+
+    // should have an editable element title
+    expect(this.elementTitle.isDisplayed()).toBe(true);
+    browser.actions().doubleClick(this.elementTitle).perform();
+    this.elementTitle.sendKeys(text);
+    this.elementTitleForm.submit();
+
+  };
+  this.setElementDescription = function(text) {
+
+    // should have an editable element title
+    expect(this.elementDescription.isDisplayed()).toBe(true);
+    browser.actions().doubleClick(this.elementDescription).perform();
+    this.elementDescription.sendKeys(text);
+    this.elementDescriptionForm.submit();
+
+  };
+
+
   this.clickSweetAlertCancelButton = function () {
     this.createSweetAlertCancelButton.click();
     browser.sleep(1000);
@@ -270,4 +310,4 @@ var ElementCreatorPage = function () {
     browser.sleep(1000);
   }
 };
-module.exports = ElementCreatorPage; 
+module.exports =  new ElementCreatorPage; 

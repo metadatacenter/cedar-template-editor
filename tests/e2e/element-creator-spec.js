@@ -122,14 +122,14 @@ describe('element-creator', function () {
   // before each test, load a new page and create a template
   // maximize the window area for clicking
   beforeEach(function () {
-    page = new ElementCreatorPage();
+    page = ElementCreatorPage;
     page.get();
     page.createElement();
     browser.driver.manage().window().maximize();
   });
 
   // github issue #403:  Verify that the header is present and displays back button, name, description, title, JSON preview
-  it("should show element editor header, title, description, and json preview", function () {
+  xit("should show element editor header, title, description, and json preview", function () {
 
     // should have a top navigation element
     expect(page.topNavigation.isDisplayed()).toBe(true);
@@ -206,7 +206,7 @@ describe('element-creator', function () {
   });
 
   // github issue #404 Part 2 of 4:  Verify that Clear button is present and active, expect cancelling the clear to not modify the template
-  it("should not change the element when clear clicked but then cancelled", function () {
+  xit("should not change the element when clear clicked but then cancelled", function () {
 
     var cleanJson;
     var dirtyJson;
@@ -248,7 +248,7 @@ describe('element-creator', function () {
   });
 
   // github issue #404 Part 3 of 4:  Verify that Cancel button is present and active,
-  it("should have Cancel button present and active", function () {
+  xit("should have Cancel button present and active", function () {
 
     var fieldType = fieldTypes[0];
 
@@ -266,7 +266,7 @@ describe('element-creator', function () {
   });
 
   // github issue #404 Part 4 of 4:  Verify that save button is present and active,
-  it("should have Save button present and active", function () {
+  xit("should have Save button present and active", function () {
 
     var cleanJson;
     var dirtyJson;
@@ -297,7 +297,7 @@ describe('element-creator', function () {
   });
 
   // github issue #405:  Verify that fields and elements can be reordered
-  it("should reorder fields and elements in the element", function () {
+  xit("should reorder fields and elements in the element", function () {
 
     var fieldType = fieldTypes[0];
 
@@ -349,7 +349,7 @@ describe('element-creator', function () {
     (function (fieldType) {
 
       // github issue #406 part 1 of 2: Verify that surround, field icon, and field name are present, Verify that the X icon is present on an field in the template and element editors and deletes the field
-      it("should create, edit, and delete a " + fieldType.cedarType, function () {
+      xit("should create, edit, and delete a " + fieldType.cedarType, function () {
 
         // css path for this field type
         var cssField = page.cssField(fieldType.iconClass);
@@ -376,7 +376,7 @@ describe('element-creator', function () {
 
 
       // github issue #406 part 2 of 2:  Verify that clicking on an field  puts it in edit mode, Verify that clicking outside a field  takes it out of edit mode
-      it("should select and deselect a " + fieldType.cedarType, function () {
+      xit("should select and deselect a " + fieldType.cedarType, function () {
 
         var firstField;
         var lastField;
@@ -414,7 +414,7 @@ describe('element-creator', function () {
   }
 
   // github issue #407:  Verify that JSON preview button shows template JSON; verify that this JSON is same as underlying JSON, Verify that clicking in JSON preview button hides visible JSON preview area
-  it("clicking JSON preview button shows and hides element JSON", function () {
+  xit("clicking JSON preview button shows and hides element JSON", function () {
 
     expect(page.templateJSON.isDisplayed()).toBe(false);
 
