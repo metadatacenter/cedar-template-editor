@@ -474,8 +474,14 @@ define([
     };
 
     function autocompleteOntology(query, acronym) {
-      var url = base + "/search?q=" + encodeURIComponent(query) + "&scope=classes" +
-          "&sources=" + acronym + "&suggest=true&page=1&page_size=50";
+      var url;
+      if (query == '*') {
+        url = base + "/ontologies/" + acronym + "/classes?page=1&page_size=500";
+      }
+      else {
+        var url = base + "/search?q=" + encodeURIComponent(query) + "&scope=classes" +
+            "&sources=" + acronym + "&suggest=true&page=1&page_size=500";
+      }
       return $http.get(url, http_default_config).then(function (response) {
         return response.data;
       }).catch(function (err) {
@@ -490,21 +496,14 @@ define([
     };
 
     function autocompleteOntologySubtree(query, acronym, subtree_root_id, max_depth) {
-      var searchUrl = "";
+      var url = "";
       if (query == '*') {
-        //if (max_depth == 1) {
-        //  // direct children
-        //  searchUrl += base + '/ontologies/' + acronym + '/classes/' + encodeURIComponent(subtree_root_id) + '/children?&page=1&page_size=300';
-        //}
-        //else {
-          // use all descendants
-          searchUrl += base + '/ontologies/' + acronym + '/classes/' + encodeURIComponent(subtree_root_id) + '/descendants?&page=1&page_size=300';
-        //}
+        url += base + '/ontologies/' + acronym + '/classes/' + encodeURIComponent(subtree_root_id) + '/descendants?page=1&page_size=500';
       } else {
-        searchUrl = base + '/search?q=' + encodeURIComponent(query) + '&scope=classes' + '&source=' + acronym +
-            '&subtree_root_id=' + encodeURIComponent(subtree_root_id) + '&max_depth=' + max_depth + "&suggest=true&page=1&page_size=300";
+        url = base + '/search?q=' + encodeURIComponent(query) + '&scope=classes' + '&source=' + acronym +
+            '&subtree_root_id=' + encodeURIComponent(subtree_root_id) + '&max_depth=' + max_depth + "&suggest=true&page=1&page_size=500";
       }
-      return $http.get(searchUrl, http_default_config).then(function (response) {
+      return $http.get(url, http_default_config).then(function (response) {
         return response.data;
       }).catch(function (err) {
         if (err.status == 502) {

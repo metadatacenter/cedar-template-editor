@@ -33,7 +33,7 @@
         <ui-select-match placeholder="">{{$select.selected.label}}</ui-select-match>
         <ui-select-choices ui-disable-choice="option.label == 'No Results...'"
             refresh="$root.updateFieldAutocomplete(field, $select.search)" refresh-delay="200"
-            repeat="option in $root.autocompleteResultsCache[field['@id']]['results'] | propsFilter: {label: $select.search}">
+            repeat="option in $root.autocompleteResultsCache[field['@id']]['results'] | propsFilter: {label: $select.search} | limitTo:500">
           <div ng-bind-html="option.label | highlight: $select.search"></div>
         </ui-select-choices>
       </ui-select>
@@ -76,7 +76,7 @@
         <ui-select-match placeholder="">{{$select.selected.label}}</ui-select-match>
         <ui-select-choices ui-disable-choice="option.label == 'No Results...'"
             refresh="$root.updateFieldAutocomplete(field, $select.search)" refresh-delay="200"
-            repeat="option in $root.autocompleteResultsCache[field['@id']]['results'] | propsFilter: {label: $select.search}">
+            repeat="option in $root.autocompleteResultsCache[field['@id']]['results'] | propsFilter: {label: $select.search} | limitTo:500">
           <div ng-bind-html="option.label | highlight: $select.search"></div>
         </ui-select-choices>
       </ui-select>
@@ -115,7 +115,7 @@
         <ui-select-match placeholder="">{{$select.selected.label}}</ui-select-match>
         <ui-select-choices ui-disable-choice="option.label == 'No Results...'"
             refresh="$root.updateFieldAutocomplete(field, $select.search)" refresh-delay="200"
-            repeat="option in $root.autocompleteResultsCache[field['@id']]['results'] | propsFilter: {label: $select.search}">
+            repeat="option in $root.autocompleteResultsCache[field['@id']]['results'] | propsFilter: {label: $select.search} | limitTo:500">
           <div ng-bind-html="option.label | highlight: $select.search"></div>
         </ui-select-choices>
       </ui-select>
