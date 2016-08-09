@@ -4,23 +4,26 @@
       <div class="left-sidebar col-sm-4 col-sm-offset-1">
         <div id="element-name-container">
           <i class="cedar-svg-element"></i>
-
-          <div class="form-group floating-label-wrapper">
-            <input type="text" class="form-control" id="element-name"
-                placeholder="{{'GENERIC.ElementName' | translate}}" aria-label="{{'GENERIC.ElementName' | translate}}"
-                ng-model="element._ui.title" with-floating-label>
-          </div>
+          <form>
+            <div class="form-group floating-label-wrapper">
+              <input type="text" class="form-control" id="element-name"
+                  placeholder="{{'GENERIC.ElementName' | translate}}" aria-label="{{'GENERIC.ElementName' | translate}}"
+                  ng-model="element._ui.title" with-floating-label>
+            </div>
+          </form>
         </div>
       </div>
       <!-- /.left-sidebar -->
       <div class="right-body col-sm-6">
         <div id="element-description-container">
+          <form>
           <div class="form-group floating-label-wrapper">
             <input type="text" class="form-control" id="element-description"
                 placeholder="{{'GENERIC.ElementDescription' | translate}}"
                 aria-label="{{'GENERIC.ElementDescription' | translate}}" ng-model="element._ui.description"
                 with-floating-label>
           </div>
+          </form>
         </div>
       </div>
       <!-- /.right-body -->
@@ -105,13 +108,13 @@
           <!--<i class="cedar-svg-flag"></i><span>Favorite</span>-->
           <!--</div>-->
           <div class="clear-save">
-            <button type="button" class="btn btn-clear element" ng-click="reset()" ng-hide="isPropertiesEmpty()"
+            <button type="button" id="button-clear-element" class="btn btn-clear element" ng-click="reset()" ng-hide="isPropertiesEmpty()"
                 translate>
               GENERIC.Clear
             </button>
-            <button type="button" class="btn btn-clear element" ng-click="cancelElement()" translate>GENERIC.Cancel
+            <button type="button" id="button-cancel-element" class="btn btn-clear element" ng-click="cancelElement()" translate>GENERIC.Cancel
             </button>
-            <button type="button" class="btn btn-save element" ng-click="saveElement()" translate>GENERIC.SaveElement
+            <button type="button"  id="button-save-element" class="btn btn-save element" ng-click="saveElement()" translate>GENERIC.SaveElement
             </button>
           </div>
         </div>

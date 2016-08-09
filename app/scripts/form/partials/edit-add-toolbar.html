@@ -2,13 +2,14 @@
   <ul>
     <li ng-repeat="fieldType in primaryFieldTypes">
       <a ng-click="addField(fieldType.cedarType)"
+          id='button-add-field-{{fieldType.cedarType}}'
           tooltip='{{"FIELDS.FIELD_TYPE." + fieldType.cedarType + ".NAME" | translate}}'
           tooltip-placement="left"
           ><i class="{{fieldType.iconClass}}"></i></a>
     </li>
     <li>
       <div dropdown auto-close="outsideClick">
-        <a class="more" data-toggle="dropdown" data-target=".field-selector" aria-expanded="false"
+        <a class="more" id='button-add-more' data-toggle="dropdown" data-target=".field-selector" aria-expanded="false"
             dropdown-toggle uib-dropdown keyboard-nav dropdown-append-to-body
             tooltip='{{"GENERIC.More" | translate}}'
             tooltip-placement="left"
@@ -21,6 +22,7 @@
                   ng-repeat="fieldType in otherFieldTypes"
                   ng-if="$index <= otherFieldTypes.length/2 ">
                 <a data-toggle="dropdown" data-target=".field-selector" dropdown-toggle
+                    id='button-add-field-{{fieldType.cedarType}}'
                     ng-click="addField(fieldType.cedarType)"
                     tooltip='{{"FIELDS.FIELD_TYPE." + fieldType.cedarType + ".NAME" | translate}}'
                     tooltip-placement="left"
@@ -32,6 +34,7 @@
                   ng-repeat="fieldType in otherFieldTypes"
                   ng-if="$index > otherFieldTypes.length/2">
                 <a data-toggle="dropdown" data-target=".field-selector" dropdown-toggle
+                    id='button-add-field-{{fieldType.cedarType}}'
                     ng-click="addField(fieldType.cedarType)"
                     tooltip='{{"FIELDS.FIELD_TYPE." + fieldType.cedarType + ".NAME" | translate}}'
                     tooltip-placement="left"
@@ -43,6 +46,7 @@
             <ul class="row list-unstyled  search">
               <li class="item" style="width:auto; text-align:center">
                 <a data-toggle="dropdown" data-target=".field-selector" dropdown-toggle
+                    id='button-search-element'
                     ng-click="elementSearch();"
                     tooltip='{{"EDITOR.TOOLBAR.searchForMore" | translate}}'
                     tooltip-placement="left"

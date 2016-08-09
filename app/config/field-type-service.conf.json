@@ -11,7 +11,7 @@
   {
     "cedarType": "textarea",
     "iconClass": "cedar-svg-paragraph",
-    "label": "Paragraph",
+    "label": "Text Area",
     "allowedInElement": true,
     "primaryField": true,
     "hasControlledTerms": false,
