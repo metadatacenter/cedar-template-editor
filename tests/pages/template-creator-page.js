@@ -1,6 +1,6 @@
 'use strict';
 
-require ('../pages/dashboard-page.js');
+require('../pages/dashboard-page.js');
 
 var TemplateCreatorPage = function () {
   var url = 'https://cedar.metadatacenter.orgx/dashboard';
@@ -19,9 +19,9 @@ var TemplateCreatorPage = function () {
   this.createSearchInput = element(by.id('search-browse-modal')).element(by.id('search'));
   this.createSearchButton = element(by.id('search-browse-modal')).element(by.css('.do-search'));
   var createElementButton = element(by.id('button-create-element'));
-  var createSearchForm =   element(by.css('.nav-search')).element(by.tagName('form'));
+  var createSearchForm = element(by.css('.nav-search')).element(by.tagName('form'));
   var searchBrowseModalDialog = element(by.id("search-browse-modal"));
-  var createSearchBreadcrumb =  element(by.css('.breadcrumbs-sb  span'));
+  var createSearchBreadcrumb = element(by.css('.breadcrumbs-sb  span'));
   var createSearchSubmitButton = element(by.css(".footer-buttons")).element(by.css('.subm'));
   var createSearchBreadcrumbText = element(by.id("search-browse-modal")).element(by.css('.controls-bar .as-modal')).element(by.css('.breadcrumbs-sb')).element(by.tagName('p')).element(by.tagName('span'));
 
@@ -34,9 +34,12 @@ var TemplateCreatorPage = function () {
   var createRichTextButton = element(by.id('button-add-field-richtext'));
   var createImageButton = element(by.id('button-add-field-image'));
   var createVideoButton = element(by.id('button-add-field-youtube'));
-  var removeButton = element(by.css('.field-root  .remove'));
+  var removeFieldButton = element(by.css('.field-root  .remove'));
+  var removeElementButton = element(by.css('.element-root  .remove'));
+  var visibilitySwitchButton = element(by.css('.element-root  .visibilitySwitch'));
 
-  this.createToastyConfirmationPopup =  element(by.id('toasty')).element(by.css('.toast'));
+
+  this.createToastyConfirmationPopup = element(by.id('toasty')).element(by.css('.toast'));
   this.toastyMessageText = element(by.id('toasty')).element(by.css('.toast')).element(by.css('.toast-msg'));
   this.createConfirmationDialog = element(by.css('.sweet-alert'));
   this.sweetAlertCancelAttribute = 'data-has-cancel-button';
@@ -51,10 +54,14 @@ var TemplateCreatorPage = function () {
 
   this.testTitle = 'test title';
   this.testDescription = 'test description';
-  this.sampleElementTitle = 'sampleElement';
-  this.sampleElementDescription = 'sampleElement description';
+  // make the element title short to avoid problems with sendKeys when searching
+  this.sampleElementTitle = 's';
+  this.sampleElementDescription = 's';
   this.cssFieldRoot = ".field-root";
+  this.cssItemRoot = ".item-root";
   this.cssFieldSortableIcon = ".field-root .sortable-icon";
+  this.cssItemSortableIcon = ".item-root .sortable-icon";
+  this.cssSortableIcon = ".sortable-icon";
   this.cssFieldContainer = ".field-root .elementTotalContent";
   this.modelFieldTitle = '$root.schemaOf(field)._ui.title';
   this.modelFieldDescription = '$root.schemaOf(field)._ui.description';
@@ -64,7 +71,9 @@ var TemplateCreatorPage = function () {
   this.template = 'template';
   this.dashboard = 'dashboard';
   this.element = 'element';
+  var cssNavDashboard = '.navbar.dashboard';
   this.cssElementNamelabel = '.element-name-label';
+  var cssDetailOptions = '.detail-options';
 
   // element creator
   this.elementTitle = element(by.id('element-name-container')).element(by.model('element._ui.title'));
@@ -74,6 +83,10 @@ var TemplateCreatorPage = function () {
   this.createSaveElementButton = element(by.id('button-save-element'));
   this.createCancelElementButton = element(by.id('button-cancel-element'));
   this.createClearElementButton = element(by.id('button-clear-element'));
+  this.cssElementRoot = ".element-root";
+  this.cssElementSortableIcon = ".element-root .sortable-icon";
+  var cssCollapseButton = '.visibilitySwitch:nth-child(0)';
+  var cssOpenButton = '.visibilitySwitch:nth-child(1)';
 
 
   // template creator
@@ -260,8 +273,14 @@ var TemplateCreatorPage = function () {
   };
 
 
-
-
+  // are we on the dashboard page?
+  this.isDashboard = function() {
+    return element(by.css(cssNavDashboard)).isDisplayed();
+  };
+  // template creator
+  this.clickBackArrow = function () {
+    this.topNavBackArrow.click();
+  };
   this.get = function () {
     browser.get(url);
 // wait until loaded 
@@ -280,25 +299,25 @@ var TemplateCreatorPage = function () {
 
 
   this.addSearchElements = function () {
-   createSearchElement.click();
+    createSearchElement.click();
   };
-  this.addSearch = function(keys) {
-    this.createSearchInput.sendKeys(keys).then(function() {
+  this.addSearch = function (keys) {
+    this.createSearchInput.sendKeys(keys).then(function () {
       this.createSearchButton.click();
     });
   };
-  this.addSearchButton = function(keys) {
-   this.createSearchButton.click();
+  this.addSearchButton = function (keys) {
+    this.createSearchButton.click();
   };
-  this.getSearchBreadcrumbText = function() {
+  this.getSearchBreadcrumbText = function () {
     return createSearchBreadcrumb.getText();
   };
-  this.getFirstElement = function() {
+  this.getFirstElement = function () {
     var firstElement = element.all(by.css('.form-box .element')).first();
     return firstElement;
 
   };
-  this.findSearchSubmit = function() {
+  this.findSearchSubmit = function () {
 
     var elm = element.all(by.css('.subm')).get(0);
     browser.executeScript("arguments[0].scrollIntoView();", elm.getWebElement());
@@ -343,7 +362,7 @@ var TemplateCreatorPage = function () {
     browser.actions().mouseMove(createButton).perform();
     createElementButton.click();
   };
-  this.setElementTitle = function(text) {
+  this.setElementTitle = function (text) {
 
     // should have an editable element title
     expect(this.elementTitle.isDisplayed()).toBe(true);
@@ -352,7 +371,7 @@ var TemplateCreatorPage = function () {
     this.elementTitleForm.submit();
 
   };
-  this.setElementDescription = function(text) {
+  this.setElementDescription = function (text) {
 
     // should have an editable element title
     expect(this.elementDescription.isDisplayed()).toBe(true);
@@ -428,10 +447,14 @@ var TemplateCreatorPage = function () {
   this.addVideoField = function () {
     createVideoButton.click();
   };
+  this.isSelected = function (item) {
+    return item.element(by.css(cssDetailOptions)).isPresent();
+  }
   this.removeField = function () {
-    removeButton.click();
+    removeFieldButton.click();
   };
   this.addField = function (cedarType) {
+    var deferred = protractor.promise.defer();
     switch (cedarType) {
       case "textfield":
         this.addTextField();
@@ -485,6 +508,147 @@ var TemplateCreatorPage = function () {
     // needs to sleep to let the toolbar scroll back into the view
     // also move the mouse off the toolbar button so the tooltip is hidden
     browser.sleep(1000);
-  }
+
+    deferred.fulfill(true);
+    return deferred.promise;
+
+  };
+
+  this.removeElement = function () {
+    removeElementButton.click();
+  };
+  this.collapseElement = function (item) {
+    var switches = item.all(By.css('.visibilitySwitch'));
+    expect(switches.count()).toBe(2);
+    switches.get(0).click();
+  };
+  this.openElement = function (item) {
+    var switches = item.all(By.css('.visibilitySwitch'));
+    expect(switches.count()).toBe(2);
+    switches.get(1).click();
+  };
+  this.addElement = function (title) {
+    var deferred = protractor.promise.defer();
+    var EC = protractor.ExpectedConditions;
+
+    // add an element
+    this.addMore();
+    this.addSearchElements();
+
+    // search for the sampleElement
+    this.createSearchInput.sendKeys(title).sendKeys(protractor.Key.ENTER).then(function () {
+
+      browser.wait(EC.textToBePresentInElementValue($('#search'), title), 10000);
+
+      // click the search submit icon
+      var searchButton = element(by.id('search-browse-modal')).element(by.css('.do-search'));
+      searchButton.click().then(function () {
+
+        var firstElement = element.all(by.css('.form-box .element')).first();
+        browser.wait(EC.visibilityOf(firstElement), 10000);
+
+        // the search browse modal should show some results
+        expect(firstElement.isPresent()).toBe(true);
+
+        // get the first element in the list of search results
+        firstElement.click().then(function () {
+
+          // select the first element in the list and click to submit the search browser modal
+          var searchSubmit = element.all(by.css('.subm')).get(0);
+          browser.executeScript("arguments[0].scrollIntoView();", searchSubmit.getWebElement());
+          browser.sleep(3000);
+
+          searchSubmit.click().then(function () {
+            deferred.fulfill(true);
+          });
+        });
+      });
+    });
+    return deferred.promise;
+  };
+
+
+  // delete the element in the workspace
+  this.deleteElement = function (title) {
+    var deferred = protractor.promise.defer();
+    var EC = protractor.ExpectedConditions;
+
+
+    var searchInput = element(by.id('search'));
+    searchInput.sendKeys(title).sendKeys(protractor.Key.ENTER).then(function () {
+
+      browser.wait(EC.textToBePresentInElementValue($('#search'), title), 10000);
+
+      // click the search submit icon
+      element(by.css('.do-search')).click().then(function () {
+
+        var firstElement = element.all(by.css('.form-box .element')).first();
+        browser.wait(EC.visibilityOf(firstElement), 10000);
+
+        // the search browse modal should show some results
+        expect(firstElement.isPresent()).toBe(true);
+
+        // get the first element in the list of search results
+        firstElement.click().then(function () {
+          browser.sleep(3000);
+
+          // top nav buttons
+          var deleteButton = element(by.id('delete-selection-button'));
+
+          browser.sleep(3000);
+
+          browser.wait(EC.visibilityOf(deleteButton), 10000);
+          expect(deleteButton.isPresent()).toBe(true);
+
+          console.log('got delete button');
+
+          deleteButton.getAttribute('tooltip').then(function (value) {
+
+            console.log('with tooltip' + value);
+
+            browser.sleep(3000);
+
+            // make sure it really is delete
+            expect(_.isEqual(value, 'delete selection')).toBe(true);
+            deleteButton.click();
+
+            // TODO not sure why i need this sleep here
+            browser.sleep(1000);
+
+            var sweetAlert = element(by.css('.sweet-alert'));
+            browser.wait(EC.visibilityOf(sweetAlert), 10000);
+            expect(sweetAlert.isDisplayed()).toBe(true);
+            expect(sweetAlert.getAttribute('data-has-cancel-button')).toBe('true');
+            expect(sweetAlert.getAttribute('data-has-confirm-button')).toBe('true');
+
+            browser.sleep(3000);
+
+            // click confirm to delete the element
+            sweetAlert.click();
+            browser.sleep(1000);
+
+            var toasty = element(by.id('toasty')).element(by.css('.toast'));
+            browser.wait(EC.visibilityOf(toasty), 10000);
+            expect(toasty.isDisplayed()).toBe(true);
+
+            browser.sleep(3000);
+
+            var message = toasty.element(by.css('.toast')).element(by.css('.toast-msg'));
+            message.getText().then(function (value) {
+
+              browser.sleep(3000);
+              expect(value.indexOf('The template element has been deleted.') !== -1).toBe(true);
+
+              deferred.fulfill(true);
+            });
+
+          });
+        });
+      });
+    });
+
+    return deferred.promise;
+  };
 };
-module.exports = new TemplateCreatorPage(); 
+
+  module.exports = new TemplateCreatorPage(); 
