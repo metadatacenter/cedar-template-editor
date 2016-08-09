@@ -273,6 +273,10 @@ var TemplateCreatorPage = function () {
   };
 
 
+  this.test = function() {
+    console.log('template creator  page test');
+  };
+
   // are we on the dashboard page?
   this.isDashboard = function() {
     return element(by.css(cssNavDashboard)).isDisplayed();
@@ -342,6 +346,29 @@ var TemplateCreatorPage = function () {
     browser.actions().mouseMove(createButton).perform();
     createTemplateButton.click();
   };
+
+  this.setTemplateTitle = function (text) {
+
+    // should have an editable element title
+    var title = element(by.id('template-name'));
+    expect(title.isDisplayed()).toBe(true);
+    browser.actions().doubleClick(title).perform();
+    browser.sleep(3000);
+    title.sendKeys(text);
+    browser.sleep(3000);
+    element(by.css('.template-header form')).submit();
+  };
+
+  this.setTemplateDescription = function (text) {
+    // should have an editable element title
+    expect(this.elementDescription.isDisplayed()).toBe(true);
+    browser.actions().doubleClick(this.elementDescription).perform();
+    this.elementDescription.sendKeys(text);
+    this.elementDescriptionForm.submit();
+
+  };
+
+
 
   // element creator
   this.clickSaveElement = function () {
