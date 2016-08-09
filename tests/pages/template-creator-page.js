@@ -516,16 +516,19 @@ var TemplateCreatorPage = function () {
 
   this.removeElement = function () {
     removeElementButton.click();
+    browser.sleep(1000);
   };
   this.collapseElement = function (item) {
     var switches = item.all(By.css('.visibilitySwitch'));
     expect(switches.count()).toBe(2);
     switches.get(0).click();
+    browser.sleep(1000);
   };
   this.openElement = function (item) {
     var switches = item.all(By.css('.visibilitySwitch'));
     expect(switches.count()).toBe(2);
     switches.get(1).click();
+    browser.sleep(1000);
   };
   this.addElement = function (title) {
     var deferred = protractor.promise.defer();
