@@ -1,6 +1,8 @@
 'use strict';
 var CreateTemplatePage = function () {
-  var url = 'https://cedar.metadatacenter.orgx/templates/create';
+  //var url = 'https://cedar.metadatacenter.orgx/templates/create';
+  var testConfig = require('../config/test-env.js');
+  var url = testConfig.baseUrl + '/create';
   this.get = function () {
     return browser.get(url);
   };

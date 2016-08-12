@@ -3,7 +3,9 @@
 require ('../pages/dashboard-page.js');
 
 var ProfilePage = function () {
-  var url = 'https://cedar.metadatacenter.orgx/dashboard';
+  //var url = 'https://cedar.metadatacenter.orgx/dashboard';
+  var testConfig = require('../config/test-env.js');
+  var url = testConfig.baseUrl + '/dashboard';
 
 
   this.get = function () {

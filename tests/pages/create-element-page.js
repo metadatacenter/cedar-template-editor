@@ -1,6 +1,8 @@
 'use strict';
 var CreateElementPage = function () {
-  var url = 'https://cedar.metadatacenter.orgx/elements/create';
+  //var url = 'https://cedar.metadatacenter.orgx/elements/create';
+  var testConfig = require('../config/test-env.js');
+  var url = testConfig.baseUrl + '/create';
   var showJsonLink = element(by.id('show-json-link'));
   var jsonPreview = element(by.id('form-json-preview'));
   this.get = function () {

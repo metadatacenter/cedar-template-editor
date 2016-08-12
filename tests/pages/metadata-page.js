@@ -3,7 +3,9 @@
 require ('../pages/workspace-page.js');
 
 var MetadataPage = function () {
-  var url = 'https://cedar.metadatacenter.orgx/dashboard';
+  //var url = 'https://cedar.metadatacenter.orgx/dashboard';
+  var testConfig = require('../config/test-env.js');
+  var url = testConfig.baseUrl + '/dashboard';
 
   this.topNavigation = element(by.id('top-navigation'));
   this.topNavBackArrow = element(by.id('top-navigation')).element(by.css('.navbar-header')).element(by.css('.back-arrow-click'));

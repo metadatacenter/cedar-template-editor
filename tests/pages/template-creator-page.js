@@ -3,7 +3,9 @@
 require('../pages/workspace-page.js');
 
 var TemplateCreatorPage = function () {
-  var url = 'https://cedar.metadatacenter.orgx/dashboard';
+  //var url = 'https://cedar.metadatacenter.orgx/dashboard';
+  var testConfig = require('../config/test-env.js');
+  var url = testConfig.baseUrl + '/dashboard';
   var showJsonLink = element(by.id('top-navigation')).element(by.css('.navbar-header')).element(by.id('show-json-link'));
   var jsonPreview = element(by.id('form-json-preview'));
   var createButton = element(by.id('button-create'));
