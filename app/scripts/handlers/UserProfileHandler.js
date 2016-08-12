@@ -16,7 +16,8 @@ function UserProfileHandler() {
   this.loadUrlServiceConf = function (userId, success) {
     var service = this;
     if (window.__karma__) {
-      service.usersUrl = 'https://user.metadatacenter.orgx/users';
+      //service.usersUrl = 'https://user.metadatacenter.orgx/users';
+      service.usersUrl = '/users';
       service.userUrl = service.usersUrl + '/' + userId;
       success();
     } else {

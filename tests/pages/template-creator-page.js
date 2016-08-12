@@ -690,9 +690,11 @@ var TemplateCreatorPage = function () {
           // select the first element in the list and click to submit the search browser modal
           var searchSubmit = element.all(by.css('.subm')).get(0);
           browser.executeScript("arguments[0].scrollIntoView();", searchSubmit.getWebElement());
-          browser.sleep(3000);
+          //browser.sleep(3000);
 
           searchSubmit.click().then(function () {
+            browser.wait(createToolbar.isDisplayed());
+            browser.sleep(1000);  // add time for animation
             deferred.fulfill(true);
           });
         });
