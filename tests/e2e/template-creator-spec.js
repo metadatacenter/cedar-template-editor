@@ -1,14 +1,16 @@
 'use strict';
 var TemplateCreatorPage = require('../pages/template-creator-page.js');
+var WorkspacePage = require('../pages/workspace-page.js');
 
 
 var _ = require('../libs/lodash.min.js');
 
 
-describe('template-creator', function () {
+xdescribe('template-creator', function () {
   var EC = protractor.ExpectedConditions;
   //var flow = browser.controlFlow();
   var page;
+  var workspacePage;
   var fieldTypes = [
     {
       "cedarType"         : "textfield",
@@ -126,8 +128,9 @@ describe('template-creator', function () {
   // maximize the window area for clicking
   beforeEach(function () {
     page = TemplateCreatorPage;
-    page.get();
-    page.createTemplate();
+    workspacePage = WorkspacePage;
+    workspacePage.get();
+    workspacePage.createTemplate();
     browser.driver.manage().window().maximize();
   });
 
@@ -135,32 +138,32 @@ describe('template-creator', function () {
   it("should show template editor header, title, description, and json preview", function () {
 
     // should have a top navigation element
-    expect(page.topNavigation.isDisplayed()).toBe(true);
+    expect(page.topNavigation().isDisplayed()).toBe(true);
     // should have a template editor top nav
-    expect(page.hasClass(page.topNavigation, page.template)).toBe(true);
+    expect(page.hasClass(page.topNavigation(), page.templateType())).toBe(true);
     // should have a back arrow in the header
-    expect(page.topNavBackArrow.isDisplayed()).toBe(true);
+    expect(page.topNavBackArrow().isDisplayed()).toBe(true);
     // should have a json preview in the header
-    expect(page.showJsonLink.isDisplayed()).toBe(true);
+    expect(page.showJsonLink().isDisplayed()).toBe(true);
 
 
     // should have an editable template title
-    expect(page.templateTitle.isDisplayed()).toBe(true);
-    browser.actions().doubleClick(page.templateTitle).perform();
-    page.templateTitle.sendKeys(page.testTitle);
+    expect(page.templateTitle().isDisplayed()).toBe(true);
+    browser.actions().doubleClick(page.templateTitle()).perform();
+    page.templateTitle().sendKeys(page.testTitle());
 
     // should have an editable description
-    expect(page.templateDescription.isDisplayed()).toBe(true);
-    browser.actions().doubleClick(page.templateDescription).perform();
-    page.templateDescription.sendKeys(page.testDescription);
+    expect(page.templateDescription().isDisplayed()).toBe(true);
+    browser.actions().doubleClick(page.templateDescription()).perform();
+    page.templateDescription().sendKeys(page.testDescription());
 
     // submit the form and check our edits
-    page.templateForm.submit();
-    page.templateTitle.getAttribute('value').then(function (value) {
-      expect(_.isEqual(value, page.testTitle)).toBe(true);
+    page.templateForm().submit();
+    page.templateTitle().getAttribute('value').then(function (value) {
+      expect(_.isEqual(value, page.testTitle())).toBe(true);
     });
-    page.templateDescription.getAttribute('value').then(function (value) {
-      expect(_.isEqual(value, page.testDescription)).toBe(true);
+    page.templateDescription().getAttribute('value').then(function (value) {
+      expect(_.isEqual(value, page.testDescription())).toBe(true);
     });
   });
 
@@ -168,7 +171,7 @@ describe('template-creator', function () {
   it("should go to dashboard when back arrow clicked", function () {
 
     // click the back arrow to return to workspace
-    page.topNavBackArrow.click();
+    page.topNavBackArrow().click();
 
     browser.wait(EC.visibilityOf($('.navbar-brand')), 10000);
     expect(page.isDashboard()).toBe(true);
@@ -183,7 +186,7 @@ describe('template-creator', function () {
     var fieldType = fieldTypes[0];
 
     // should have clear not displayed
-    expect(page.createClearTemplateButton.isDisplayed()).toBe(false);
+    expect(page.createClearTemplateButton().isDisplayed()).toBe(false);
 
     // save a copy of the clean template
     page.getJsonPreviewText().then(function (value) {
@@ -192,7 +195,7 @@ describe('template-creator', function () {
 
       // should have a clear button if the template is dirty
       page.addField(fieldType.cedarType);
-      expect(page.createClearTemplateButton.isDisplayed()).toBe(true);
+      expect(page.createClearTemplateButton().isDisplayed()).toBe(true);
 
       // save the dirty template
       page.getJsonPreviewText().then(function (value) {
@@ -227,7 +230,7 @@ describe('template-creator', function () {
     var fieldType = fieldTypes[0];
 
     // should have clear not displayed
-    expect(page.createClearTemplateButton.isDisplayed()).toBe(false);
+    expect(page.createClearTemplateButton().isDisplayed()).toBe(false);
 
     // save a copy of the clean template
     page.getJsonPreviewText().then(function (value) {
@@ -236,7 +239,7 @@ describe('template-creator', function () {
 
       // should have a clear button if the template is dirty
       page.addField(fieldType.cedarType);
-      expect(page.createClearTemplateButton.isDisplayed()).toBe(true);
+      expect(page.createClearTemplateButton().isDisplayed()).toBe(true);
 
       // save the dirty template
       page.getJsonPreviewText().then(function (value) {
@@ -264,19 +267,17 @@ describe('template-creator', function () {
   // github issue #398 Part 3 of 4:  Verify that Cancel button is present and active,
   it("should have Cancel button present and active", function () {
 
-    var fieldType = fieldTypes[0];
-
     // should have save and cancel displayed
-    expect(page.createCancelTemplateButton.isDisplayed()).toBe(true);
+    expect(page.createCancelTemplateButton().isDisplayed()).toBe(true);
 
     // make the template dirty
-    page.addField(fieldType.cedarType);
+    page.addField(fieldTypes[0].cedarType);
 
     // clicking the cancel should cancel edits
     page.clickCancelTemplate();
 
-    // should be back to dashboard
-    expect(page.hasClass(page.topNavigation, page.dashboard)).toBe(true);
+    // should be back to workspace
+    expect(page.isDashboard()).toBe(true);
   });
 
   // github issue #398 Part 4 of 4:  Verify that save button is present and active,
@@ -287,7 +288,7 @@ describe('template-creator', function () {
     var fieldType = fieldTypes[0];
 
     // should have save and cancel displayed
-    expect(page.createSaveTemplateButton.isDisplayed()).toBe(true);
+    expect(page.createSaveTemplateButton().isDisplayed()).toBe(true);
 
     // save the clean template
     page.getJsonPreviewText().then(function (value) {
@@ -357,20 +358,19 @@ describe('template-creator', function () {
     });
   });
 
-
   // github issue #400 add element to template
   describe('should add an element to the template, ', function () {
 
     // github issue #400
     it("should create a sample element in the workspace, ", function () {
 
-      var dashboardPage = page.clickCancelTemplate();
-      var elementPage = dashboardPage.createElement();
+      var workspacePage = page.clickCancelTemplate();
+      var elementPage = workspacePage.createElement();
 
       // create an element and add a text field to it
       elementPage.addTextField();
-      elementPage.setElementTitle(page.sampleElementTitle);
-      elementPage.setElementDescription(page.sampleElementDescription);
+      elementPage.setElementTitle(page.sampleElementTitle());
+      elementPage.setElementDescription(page.sampleElementDescription());
       elementPage.clickSaveElement();
 
     });
@@ -378,7 +378,7 @@ describe('template-creator', function () {
     // github issue #400
     it("should add and delete the sample element in a template", function () {
 
-      page.addElement(page.sampleElementTitle).then(function () {
+      page.addElement(page.sampleElementTitle()).then(function () {
 
         // wait till the template is visible again
         // this gives a warning if it finds more than one element in the form
@@ -388,7 +388,7 @@ describe('template-creator', function () {
         element.all(by.css('.element-root .element-name-label')).first().getText().then(function (text) {
 
           // and the name should be sampleElement
-          expect(_.isEqual(text, page.sampleElementTitle)).toBe(true);
+          expect(_.isEqual(text, page.sampleElementTitle())).toBe(true);
           browser.sleep(1000);
 
           // delete the element from the template
@@ -402,7 +402,7 @@ describe('template-creator', function () {
     // github issue #400
     it("should collapse and reopen the sample element", function () {
 
-      page.addElement(page.sampleElementTitle).then(function () {
+      page.addElement(page.sampleElementTitle()).then(function () {
 
         // wait till the template is visible again
         // this gives a warning if it finds more than one element in the form
@@ -412,7 +412,7 @@ describe('template-creator', function () {
         element.all(by.css('.element-root .element-name-label')).first().getText().then(function (text) {
 
           // and the name should be sampleElement
-          expect(_.isEqual(text, page.sampleElementTitle)).toBe(true);
+          expect(_.isEqual(text, page.sampleElementTitle())).toBe(true);
 
           // there should be two items, the element and the field it contains
           var itemRoots = element.all(by.css(page.cssItemRoot));
@@ -444,7 +444,7 @@ describe('template-creator', function () {
       page.addField(fieldType.cedarType).then(function () {
 
         // add the sample element
-        page.addElement(page.sampleElementTitle).then(function () {
+        page.addElement(page.sampleElementTitle()).then(function () {
 
           // wait till the template is visible again
           // this gives a warning if it finds more than one element in the form
@@ -454,7 +454,7 @@ describe('template-creator', function () {
           element.all(by.css('.element-root .element-name-label')).first().getText().then(function (text) {
 
             // and the name should be sampleElement
-            expect(_.isEqual(text, page.sampleElementTitle)).toBe(true);
+            expect(_.isEqual(text, page.sampleElementTitle())).toBe(true);
 
             // do we have three items, the element, its nested filed, and the field
             var items = element.all(by.css(page.cssItemRoot));
@@ -495,7 +495,7 @@ describe('template-creator', function () {
     xit("should check that multiple tab is functional when sample element is selected", function () {
 
       // add the sample element
-      page.addElement(page.sampleElementTitle).then(function () {
+      page.addElement(page.sampleElementTitle()).then(function () {
 
         // wait till the template is visible again
         // this gives a warning if it finds more than one element in the form
@@ -505,7 +505,7 @@ describe('template-creator', function () {
         element.all(by.css('.element-root .element-name-label')).first().getText().then(function (text) {
 
           // and the name should be sampleElement
-          expect(_.isEqual(text, page.sampleElementTitle)).toBe(true);
+          expect(_.isEqual(text, page.sampleElementTitle())).toBe(true);
 
           // do we have three items, the element, its nested filed, and the field
           var items = element.all(by.css(page.cssItemRoot));
@@ -541,7 +541,7 @@ describe('template-creator', function () {
       page.addField(fieldType.cedarType).then(function () {
 
         // add the sample element
-        page.addElement(page.sampleElementTitle).then(function () {
+        page.addElement(page.sampleElementTitle()).then(function () {
 
           // wait till the template is visible again
           // this gives a warning if it finds more than one element in the form
@@ -551,7 +551,7 @@ describe('template-creator', function () {
           element.all(by.css('.element-root .element-name-label')).first().getText().then(function (text) {
 
             // and the name should be sampleElement
-            expect(_.isEqual(text, page.sampleElementTitle)).toBe(true);
+            expect(_.isEqual(text, page.sampleElementTitle())).toBe(true);
 
 
             // find the roots of all fields and elements,
@@ -608,56 +608,9 @@ describe('template-creator', function () {
     // github issue #400
     it("should delete the sample element from the workspace, ", function () {
 
-      var dashboardPage = page.clickCancelTemplate();
+      page.clickCancelTemplate();
+      workspacePage.deleteElement(page.sampleElementTitle());
 
-      var searchInput = element(by.id('search'));
-
-      searchInput.sendKeys(page.sampleElementTitle).sendKeys(protractor.Key.ENTER).then(function () {
-
-        browser.wait(EC.textToBePresentInElementValue($('#search'), page.sampleElementTitle), 10000);
-
-
-        // click the search submit icon
-        element(by.css('.do-search')).click().then(function () {
-
-          browser.wait(EC.visibilityOf(page.getFirstElement()), 10000);
-
-          // the search browse modal should show some results
-          expect(page.getFirstElement().isPresent()).toBe(true);
-
-          // get the first element in the list of search results
-          page.getFirstElement().click().then(function () {
-
-            var buttons = page.topNavButtons;
-            expect(buttons.count()).toBe(6);
-
-            var deleteButton = buttons.first();
-            browser.wait(EC.visibilityOf(deleteButton), 10000);
-            deleteButton.getAttribute('tooltip').then(function (value) {
-
-              // make sure it really is delete
-              expect(_.isEqual(value, page.deleteButtonTooltip)).toBe(true);
-              deleteButton.click();
-              browser.sleep(1000);
-
-              browser.wait(EC.visibilityOf(page.createConfirmationDialog), 10000);
-              expect(page.createConfirmationDialog.isDisplayed()).toBe(true);
-              expect(page.createConfirmationDialog.getAttribute(page.sweetAlertCancelAttribute)).toBe('true');
-              expect(page.createConfirmationDialog.getAttribute(page.sweetAlertConfirmAttribute)).toBe('true');
-
-              // click confirm to delete the element
-              page.clickSweetAlertConfirmButton();
-
-              browser.wait(EC.visibilityOf(page.createToastyConfirmationPopup), 10000);
-              expect(page.createToastyConfirmationPopup.isDisplayed()).toBe(true);
-              page.getToastyMessageText().then(function (value) {
-                expect(value.indexOf(page.deleteElementMessage) !== -1).toBe(true);
-              });
-
-            });
-          });
-        });
-      });
     });
 
   });
@@ -743,16 +696,16 @@ describe('template-creator', function () {
 // github issue #402:  Verify that JSON preview button shows template JSON; verify that this JSON is same as underlying JSON, Verify that clicking in JSON preview button hides visible JSON preview area
   it("clicking JSON preview button shows and hides template JSON", function () {
 
-    expect(page.templateJSON.isDisplayed()).toBe(false);
+    expect(page.templateJSON().isDisplayed()).toBe(false);
 
     page.getJsonPreviewText().then(function (value) {
       var json = JSON.parse(value);
       expect(_.isEqual(json, page.emptyTemplateJson)).toBe(true);
     });
 
-    expect(page.templateJSON.isDisplayed()).toBe(true);
+    expect(page.templateJSON().isDisplayed()).toBe(true);
     page.clickJsonPreview();
-    expect(page.templateJSON.isDisplayed()).toBe(false);
+    expect(page.templateJSON().isDisplayed()).toBe(false);
 
   });
 

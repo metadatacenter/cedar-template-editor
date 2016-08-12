@@ -1,14 +1,13 @@
 'use strict';
-var DashboardPage = require('../pages/dashboard-page.js');
+var WorkspacePage = require('../pages/workspace-page.js');
 var MetadataPage = require('../pages/metadata-page.js');
 var TemplatePage = require('../pages/template-creator-page.js');
 var _ = require('../libs/lodash.min.js');
 
 
-describe('metadata-creator', function () {
-  var EC = protractor.ExpectedConditions;
+xdescribe('metadata-creator', function () {
   var metadataPage;
-  var dashboardPage;
+  var workspacePage;
   var templatePage;
 
 
@@ -16,15 +15,15 @@ describe('metadata-creator', function () {
   // maximize the window area for clicking
   beforeEach(function () {
     metadataPage = MetadataPage;
-    dashboardPage = DashboardPage;
+    workspacePage = WorkspacePage;
     templatePage = TemplatePage;
-    dashboardPage.get();
+    workspacePage.get();
     browser.driver.manage().window().maximize();
   });
 
   it("should create the sample template", function () {
-    dashboardPage.createTemplate();
-    templatePage.setTemplateTitle(dashboardPage.sampleTemplateTitle);
+    workspacePage.createTemplate();
+    templatePage.setTemplateTitle(workspacePage.sampleTemplateTitle());
     templatePage.addTextField();
     templatePage.clickSaveTemplate();
   });
@@ -32,7 +31,7 @@ describe('metadata-creator', function () {
 
   it("should show metadata editor header, title, description, and json preview", function () {
 
-    dashboardPage.openTemplate(dashboardPage.sampleTemplateTitle).then(function () {
+    workspacePage.openTemplate(workspacePage.sampleTemplateTitle()).then(function () {
 
       expect(metadataPage.isMetadata()).toBe(true);
 
@@ -45,7 +44,7 @@ describe('metadata-creator', function () {
 
       // and the right document
       metadataPage.documentTitle.getText().then(function (text) {
-        expect(dashboardPage.sampleTemplateTitle === text).toBe(true);
+        expect(workspacePage.sampleTemplateTitle() === text).toBe(true);
       });
 
       // and the right page title
@@ -63,7 +62,7 @@ describe('metadata-creator', function () {
 
   it("should have Cancel button present and active", function () {
 
-    dashboardPage.openTemplate(dashboardPage.sampleTemplateTitle).then(function () {
+    workspacePage.openTemplate(workspacePage.sampleTemplateTitle()).then(function () {
 
       expect(metadataPage.isMetadata()).toBe(true);
 
@@ -83,7 +82,7 @@ describe('metadata-creator', function () {
 
   it("should have save button present and active", function () {
 
-    dashboardPage.openTemplate(dashboardPage.sampleTemplateTitle).then(function () {
+    workspacePage.openTemplate(workspacePage.sampleTemplateTitle()).then(function () {
 
       expect(metadataPage.isMetadata()).toBe(true);
 
@@ -104,54 +103,8 @@ describe('metadata-creator', function () {
 
   it("should delete sample template from the workspace, ", function () {
 
-    var searchInput = element(by.id('search'));
+    workspacePage.deleteTemplate(workspacePage.sampleTemplateTitle());
 
-    searchInput.sendKeys(dashboardPage.sampleTemplateTitle).sendKeys(protractor.Key.ENTER).then(function () {
-
-      browser.wait(EC.textToBePresentInElementValue($('#search'), dashboardPage.sampleTemplateTitle), 10000);
-
-
-      // click the search submit icon
-      element(by.css('.do-search')).click().then(function () {
-
-        browser.wait(EC.visibilityOf(dashboardPage.getFirstElement()), 10000);
-
-        // the search browse modal should show some results
-        expect(dashboardPage.getFirstElement().isPresent()).toBe(true);
-
-        // get the first element in the list of search results
-        dashboardPage.getFirstElement().click().then(function () {
-
-          var buttons = dashboardPage.topNavButtons;
-          //expect(buttons.count()).toBe(6);
-
-          var deleteButton = buttons.first();
-          browser.wait(EC.visibilityOf(deleteButton), 10000);
-          deleteButton.getAttribute('tooltip').then(function (value) {
-
-            // make sure it really is delete
-            expect(_.isEqual(value, dashboardPage.deleteButtonTooltip)).toBe(true);
-            deleteButton.click();
-            browser.sleep(1000);
-
-            browser.wait(EC.visibilityOf(dashboardPage.createConfirmationDialog), 10000);
-            expect(dashboardPage.createConfirmationDialog.isDisplayed()).toBe(true);
-            expect(dashboardPage.createConfirmationDialog.getAttribute(dashboardPage.sweetAlertCancelAttribute)).toBe('true');
-            expect(dashboardPage.createConfirmationDialog.getAttribute(dashboardPage.sweetAlertConfirmAttribute)).toBe('true');
-
-            // click confirm to delete the element
-            dashboardPage.clickSweetAlertConfirmButton();
-
-            browser.wait(EC.visibilityOf(dashboardPage.createToastyConfirmationPopup), 10000);
-            expect(dashboardPage.createToastyConfirmationPopup.isDisplayed()).toBe(true);
-            dashboardPage.getToastyMessageText().then(function (value) {
-              expect(value.indexOf(dashboardPage.deleteTemplateMessage) !== -1).toBe(true);
-            });
-
-          });
-        });
-      });
-    });
   });
 
 });
