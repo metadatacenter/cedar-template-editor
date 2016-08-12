@@ -124,16 +124,6 @@ gulp.task('test', function (done) {
     }, done).start();
 });
 
-gulp.task('e2e', function () {
-    return gulp.src(['./tests/e2e/**/*.js'])
-            .pipe(protractor({
-                configFile: "protractor.config.js"
-            }))
-            .on('error', function (e) {
-                throw e
-            });
-});
-
 gulp.task('test-env', function () {
   gulp.src(['tests/config/src/test-env.js'])
       .pipe(replace('protractorBaseUrl', 'https://cedar.' + cedarHost))
@@ -144,6 +134,15 @@ gulp.task('test-env', function () {
       .pipe(gulp.dest('tests/config/'));
 });
 
+gulp.task('e2e',['test-env'], function () {
+    return gulp.src(['./tests/e2e/**/*.js'])
+            .pipe(protractor({
+                configFile: "protractor.config.js"
+            }))
+            .on('error', function (e) {
+                throw e
+            });
+});
 
 function exitWithError(msg) {
     onError(msg);
