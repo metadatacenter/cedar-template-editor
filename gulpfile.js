@@ -134,6 +134,17 @@ gulp.task('e2e', function () {
             });
 });
 
+gulp.task('test-env', function () {
+  gulp.src(['tests/config/src/test-env.js'])
+      .pipe(replace('protractorBaseUrl', 'https://cedar.' + cedarHost))
+      .pipe(replace('protractorTestUser', cedarTestUser))
+      .pipe(replace('protractorTestPassword', cedarTestPassword))
+      .pipe(replace('protractorSeleniumServerJar', cedarSeleniumServerJar))
+      .pipe(replace('protractorChromeDriver', cedarChromeDriver))
+      .pipe(gulp.dest('tests/config/'));
+});
+
+
 function exitWithError(msg) {
     onError(msg);
     console.log("Please see: https://github.com/metadatacenter/cedar-docs/wiki/Configure-environment-variables-on-OS-X".yellow);
@@ -159,7 +170,11 @@ function readAllEnvVarsOrFail() {
 var envConfig = {
   'CEDAR_PROFILE'          : null,
   'CEDAR_HOST'             : null,
-  'CEDAR_ANALYTICS_KEY'    : null
+  'CEDAR_ANALYTICS_KEY'    : null,
+  'CEDAR_TEST_USER'        : null,
+  'CEDAR_TEST_PASSWORD'    : null,
+  'CEDAR_SELENIUM_SERVER_JAR' : null,
+  'CEDAR_CHROME_DRIVER'    : null
 };
 console.log();
 console.log();
@@ -169,6 +184,10 @@ readAllEnvVarsOrFail();
 var cedarProfile = envConfig['CEDAR_PROFILE'];
 var cedarHost = envConfig['CEDAR_HOST'];
 var cedarAnalyticsKey = envConfig['CEDAR_ANALYTICS_KEY'];
+var cedarTestUser = envConfig['CEDAR_TEST_USER'];
+var cedarTestPassword = envConfig['CEDAR_TEST_PASSWORD'];
+var cedarSeleniumServerJar = envConfig['CEDAR_SELENIUM_SERVER_JAR'];
+var cedarChromeDriver = envConfig['CEDAR_CHROME_DRIVER'];
 console.log("-------------------------------------------- ************* --------------------------------------------".red);
 console.log();
 
@@ -183,6 +202,6 @@ if (cedarProfile === 'development') {
     exitWithError("Invalid CEDAR_PROFILE value. Please set 'development' or 'production'");
 }
 
-taskNameList.push('lint', 'less', 'copy:resources', 'replace-url', 'replace-tracking');
+taskNameList.push('lint', 'less', 'copy:resources', 'replace-url', 'replace-tracking', 'test-env');
 // Launch tasks
 gulp.task('default', taskNameList);

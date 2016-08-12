@@ -310,9 +310,9 @@ xdescribe('element-creator', function () {
 
   it("should delete untitled element the workspace, ", function () {
 
-    // element left over from prior tet
+    // element left over from prior test
     page.clickCancelElement();
-    workspacePage.deleteElement('Untitled');
+    workspacePage.deleteResource('Untitled', workspacePage.elementType());
 
   });
 
@@ -397,7 +397,7 @@ xdescribe('element-creator', function () {
           // and the name should be sampleElement
           expect(text === page.sampleElementTitle()).toBe(true);
 
-          // delete the element from the template
+          // remove the element from the template
           page.removeElement();
 
           expect(element(by.css('.element-root .element-name-label')).isPresent()).toBe(false);
@@ -564,7 +564,7 @@ xdescribe('element-creator', function () {
     it("should delete the sample element from the workspace, ", function () {
 
       page.clickCancelElement();
-      workspacePage.deleteElement(page.sampleElementTitle());
+      workspacePage.deleteResource(page.sampleElementTitle(), workspacePage.elementType());
 
     });
 

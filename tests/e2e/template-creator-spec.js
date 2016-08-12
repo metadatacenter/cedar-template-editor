@@ -205,9 +205,9 @@ xdescribe('template-creator', function () {
 
         // clicking the clear should bring up confirmation dialog which has a confirm and cancel button
         page.clickClearTemplate();
-        expect(page.createConfirmationDialog.isDisplayed()).toBe(true);
-        expect(page.createConfirmationDialog.getAttribute(page.sweetAlertCancelAttribute)).toBe('true');
-        expect(page.createConfirmationDialog.getAttribute(page.sweetAlertConfirmAttribute)).toBe('true');
+        expect(page.createConfirmationDialog().isDisplayed()).toBe(true);
+        expect(page.createConfirmationDialog().getAttribute(page.sweetAlertCancelAttribute())).toBe('true');
+        expect(page.createConfirmationDialog().getAttribute(page.sweetAlertConfirmAttribute())).toBe('true');
 
         // expect confirm to clear the template,
         page.clickSweetAlertConfirmButton();
@@ -249,9 +249,9 @@ xdescribe('template-creator', function () {
 
         // clicking the clear should bring up confirmation dialog which has a confirm and cancel button
         page.clickClearTemplate();
-        expect(page.createConfirmationDialog.isDisplayed()).toBe(true);
-        expect(page.createConfirmationDialog.getAttribute(page.sweetAlertCancelAttribute)).toBe('true');
-        expect(page.createConfirmationDialog.getAttribute(page.sweetAlertConfirmAttribute)).toBe('true');
+        expect(page.createConfirmationDialog().isDisplayed()).toBe(true);
+        expect(page.createConfirmationDialog().getAttribute(page.sweetAlertCancelAttribute())).toBe('true');
+        expect(page.createConfirmationDialog().getAttribute(page.sweetAlertConfirmAttribute())).toBe('true');
 
         // expect confirm to clear the template,
         page.clickSweetAlertCancelButton();
@@ -303,7 +303,7 @@ xdescribe('template-creator', function () {
         expect(_.isEqual(cleanJson, dirtyJson)).toBe(false);
 
         page.clickSaveTemplate();
-        expect(page.createToastyConfirmationPopup.isDisplayed()).toBe(true);
+        expect(page.createToastyConfirmationPopup().isDisplayed()).toBe(true);
         page.getToastyMessageText().then(function (value) {
           expect(value.indexOf(page.hasBeenCreated) !== -1).toBe(true);
         });
@@ -391,9 +391,9 @@ xdescribe('template-creator', function () {
           expect(_.isEqual(text, page.sampleElementTitle())).toBe(true);
           browser.sleep(1000);
 
-          // delete the element from the template
+          // remove the element from the template
           page.removeElement();
-          expect(element(by.css(page.cssElementRoot)).isPresent()).toBe(false);
+          expect(element(by.css(page.cssElementRoot())).isPresent()).toBe(false);
 
         });
       });
@@ -609,7 +609,7 @@ xdescribe('template-creator', function () {
     it("should delete the sample element from the workspace, ", function () {
 
       page.clickCancelTemplate();
-      workspacePage.deleteElement(page.sampleElementTitle());
+      workspacePage.deleteResource(page.sampleElementTitle(), workspacePage.elementType());
 
     });
 

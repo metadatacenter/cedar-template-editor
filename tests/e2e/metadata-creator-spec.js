@@ -103,7 +103,7 @@ xdescribe('metadata-creator', function () {
 
   it("should delete sample template from the workspace, ", function () {
 
-    workspacePage.deleteTemplate(workspacePage.sampleTemplateTitle());
+    workspacePage.deleteResource(workspacePage.sampleTemplateTitle(), workspacePage.templateType());
 
   });
 

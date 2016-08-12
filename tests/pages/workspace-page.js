@@ -2,6 +2,7 @@
 
 require('../pages/template-creator-page.js');
 
+
 var WorkspacePage = function () {
   var url = 'https://cedar.metadatacenter.orgx/dashboard';
 
@@ -65,9 +66,11 @@ var WorkspacePage = function () {
   // toasty messages
   var createToastyConfirmationPopup = element(by.id('toasty')).element(by.css('.toast'));
   var createToastyMessageText = element(by.id('toasty')).element(by.css('.toast')).element(by.css('.toast-msg'));
+
   var toastyFolderMessage = "The folder ";
   var toastyTemplateMessage = "The template ";
-  var toastyElementMessage = "The template ";
+  var toastyElementMessage = "The element ";
+  var toastyMessage = "The ";
   var toastyMessageCreated = " has been created.";
   var toastyMessageDeleted = " has been deleted.";
 
@@ -95,7 +98,8 @@ var WorkspacePage = function () {
     browser.sleep(1000);
   };
   this.test = function () {
-    console.log('workspace page test');
+    console.log('workspace page test ' );
+
   };
   this.isDashboard = function () {
     return createPageName.isDisplayed();
@@ -156,8 +160,8 @@ var WorkspacePage = function () {
     createNewFolderButton.click();
     browser.wait(createFolderModal.isPresent());
   };
-  this.createTestFolderName = function () {
-    return testFolderName;
+  this.createRandomFolderName = function () {
+    return testFolderName + Math.random();
   };
   this.sampleTemplateTitle = function () {
     return sampleTemplateTitle;
@@ -191,6 +195,7 @@ var WorkspacePage = function () {
   // create a new folder with name
   this.createFolder = function (name) {
     var deferred = protractor.promise.defer();
+    var EC = protractor.ExpectedConditions;
 
     this.createFolderModal();
 
@@ -199,123 +204,19 @@ var WorkspacePage = function () {
     createFolderSubmitButton.click();
 
     browser.wait(createToastyConfirmationPopup.isPresent());
-
     createToastyMessageText.getText().then(function (value) {
       var result = value.indexOf(toastyFolderMessage + name + toastyMessageCreated) !== -1;
+      browser.wait(EC.not(EC.presenceOf(createToastyConfirmationPopup)));
       deferred.fulfill(result);
     });
 
     return deferred.promise;
   };
 
-  // delete a folder by name
-  this.deleteFolder = function (name) {
+  // delete a resource by name
+  this.deleteResource = function (name, type) {
     var deferred = protractor.promise.defer();
-
-    // search for the folder
-    createSearchNavInput.sendKeys(name).sendKeys(protractor.Key.ENTER);
-
-    // wait for search results to show in the breadcrumb
-    browser.wait(createBreadcrumbSearch.isDisplayed());
-
-    // select the first result
-    expect(createFirstFolder.isDisplayed()).toBe(true);
-    createFirstFolder.click();
-
-    browser.wait(createTrashButton.isDisplayed());
-    createTrashButton.getAttribute('tooltip').then(function (value) {
-      expect(value === trashTooltip).toBe(true);
-    });
-    createTrashButton.click();
-
-    browser.wait(createConfirmationDialog.isDisplayed());
-    browser.sleep(1000);  // give it some time for animation
-    expect(createConfirmationDialog.getAttribute(sweetAlertCancelAttribute)).toBe('true');
-    expect(createConfirmationDialog.getAttribute(sweetAlertConfirmAttribute)).toBe('true');
-    createSweetAlertConfirmButton.click();
-
-    browser.wait(createToastyConfirmationPopup.isDisplayed());
-    createToastyMessageText.getText().then(function (value) {
-      var result = value.indexOf(toastyFolderMessage + name + toastyMessageCreated) !== -1;
-      deferred.fulfill(result);
-    });
-
-    return deferred.promise;
-  };
-
-  // delete a folder by name
-  this.deleteTemplate = function (name) {
-    var deferred = protractor.promise.defer();
-
-    // search for the folder
-    createSearchNavInput.sendKeys(name).sendKeys(protractor.Key.ENTER);
-
-    // wait for search results to show in the breadcrumb
-    browser.wait(createBreadcrumbSearch.isDisplayed());
-
-    // select the first result
-    expect(createFirstTemplate.isDisplayed()).toBe(true);
-    createFirstTemplate.click();
-
-    browser.wait(createTrashButton.isDisplayed());
-    createTrashButton.getAttribute('tooltip').then(function (value) {
-      expect(value === trashTooltip).toBe(true);
-    });
-    createTrashButton.click();
-
-    browser.wait(createConfirmationDialog.isDisplayed());
-    browser.sleep(1000);  // give it some time for animation
-    expect(createConfirmationDialog.getAttribute(sweetAlertCancelAttribute)).toBe('true');
-    expect(createConfirmationDialog.getAttribute(sweetAlertConfirmAttribute)).toBe('true');
-    createSweetAlertConfirmButton.click();
-
-    browser.wait(createToastyConfirmationPopup.isDisplayed());
-    createToastyMessageText.getText().then(function (value) {
-      var result = value.indexOf(toastyTemplateMessage + name + toastyMessageDeleted) !== -1;
-      deferred.fulfill(result);
-    });
-
-    return deferred.promise;
-  };
-
-  // delete a element by name
-  this.deleteElement= function (name) {
-    var deferred = protractor.promise.defer();
-
-    // search for the folder
-    createSearchNavInput.sendKeys(name).sendKeys(protractor.Key.ENTER);
-
-    // wait for search results to show in the breadcrumb
-    browser.wait(createBreadcrumbSearch.isDisplayed());
-
-    // select the first result
-    expect(createFirstElement.isDisplayed()).toBe(true);
-    createFirstElement.click();
-
-    browser.wait(createTrashButton.isDisplayed());
-    createTrashButton.getAttribute('tooltip').then(function (value) {
-      expect(value === trashTooltip).toBe(true);
-    });
-    createTrashButton.click();
-
-    browser.wait(createConfirmationDialog.isDisplayed());
-    browser.sleep(1000);  // give it some time for animation
-    expect(createConfirmationDialog.getAttribute(sweetAlertCancelAttribute)).toBe('true');
-    expect(createConfirmationDialog.getAttribute(sweetAlertConfirmAttribute)).toBe('true');
-    createSweetAlertConfirmButton.click();
-
-    browser.wait(createToastyConfirmationPopup.isDisplayed());
-    createToastyMessageText.getText().then(function (value) {
-      var result = value.indexOf(toastyElementMessage + name + toastyMessageDeleted) !== -1;
-      deferred.fulfill(result);
-    });
-
-    return deferred.promise;
-  };
-
-  // delete a element by name
-  this.deleteResource= function (name, type) {
-    var deferred = protractor.promise.defer();
+    var EC = protractor.ExpectedConditions;
 
     // search for the name
     createSearchNavInput.sendKeys(name).sendKeys(protractor.Key.ENTER);
@@ -324,14 +225,11 @@ var WorkspacePage = function () {
     browser.wait(createBreadcrumbSearch.isDisplayed());
 
     // select the first result
-    var createFirst = element.all(by.css( '.center-panel .grid-view .form-box .' + type)).first();
+    var createFirst = element.all(by.css(createFirstCss + type)).first();
     expect(createFirst.isDisplayed()).toBe(true);
     createFirst.click();
 
     browser.wait(createTrashButton.isDisplayed());
-    createTrashButton.getAttribute('tooltip').then(function (value) {
-      expect(value === trashTooltip).toBe(true);
-    });
     createTrashButton.click();
 
     browser.wait(createConfirmationDialog.isDisplayed());
@@ -342,12 +240,121 @@ var WorkspacePage = function () {
 
     browser.wait(createToastyConfirmationPopup.isDisplayed());
     createToastyMessageText.getText().then(function (value) {
-      var result = value.indexOf(toastyElementMessage + name + toastyMessageDeleted) !== -1;
+      var result = value.indexOf(toastyMessage + name + toastyMessageDeleted) !== -1;
+      browser.wait(EC.not(EC.presenceOf(createToastyConfirmationPopup)));
       deferred.fulfill(result);
     });
 
     return deferred.promise;
   };
+
+
+  //// delete a folder by name
+  //this.deleteFolder = function (name) {
+  //  var deferred = protractor.promise.defer();
+  //  var EC = protractor.ExpectedConditions;
+  //
+  //  // search for the folder
+  //  createSearchNavInput.sendKeys(name).sendKeys(protractor.Key.ENTER);
+  //
+  //  // wait for search results to show in the breadcrumb
+  //  browser.wait(createBreadcrumbSearch.isDisplayed());
+  //
+  //  // select the first result
+  //  expect(createFirstFolder.isDisplayed()).toBe(true);
+  //  createFirstFolder.click();
+  //
+  //  browser.wait(createTrashButton.isDisplayed());
+  //  createTrashButton.click();
+  //
+  //  browser.wait(createConfirmationDialog.isDisplayed());
+  //  browser.sleep(1000);  // give it some time for animation
+  //  expect(createConfirmationDialog.getAttribute(sweetAlertCancelAttribute)).toBe('true');
+  //  expect(createConfirmationDialog.getAttribute(sweetAlertConfirmAttribute)).toBe('true');
+  //  createSweetAlertConfirmButton.click();
+  //
+  //  browser.wait(createToastyConfirmationPopup.isDisplayed());
+  //  createToastyMessageText.getText().then(function (value) {
+  //    var result = value.indexOf(toastyFolderMessage + name + toastyMessageCreated) !== -1;
+  //    browser.wait(EC.not(EC.presenceOf(createToastyConfirmationPopup)));
+  //    deferred.fulfill(result);
+  //  });
+  //
+  //  return deferred.promise;
+  //};
+  //
+  //// delete a folder by name
+  //this.deleteTemplate = function (name) {
+  //  var deferred = protractor.promise.defer();
+  //  var EC = protractor.ExpectedConditions;
+  //
+  //  // search for the folder
+  //  createSearchNavInput.sendKeys(name).sendKeys(protractor.Key.ENTER);
+  //
+  //  // wait for search results to show in the breadcrumb
+  //  browser.wait(createBreadcrumbSearch.isDisplayed());
+  //
+  //  // select the first result
+  //  expect(createFirstTemplate.isDisplayed()).toBe(true);
+  //  createFirstTemplate.click();
+  //
+  //  browser.wait(createTrashButton.isDisplayed());
+  //  createTrashButton.getAttribute('tooltip').then(function (value) {
+  //    expect(value === trashTooltip).toBe(true);
+  //  });
+  //  createTrashButton.click();
+  //
+  //  browser.wait(createConfirmationDialog.isDisplayed());
+  //  browser.sleep(1000);  // give it some time for animation
+  //  expect(createConfirmationDialog.getAttribute(sweetAlertCancelAttribute)).toBe('true');
+  //  expect(createConfirmationDialog.getAttribute(sweetAlertConfirmAttribute)).toBe('true');
+  //  createSweetAlertConfirmButton.click();
+  //
+  //  browser.wait(createToastyConfirmationPopup.isDisplayed());
+  //  createToastyMessageText.getText().then(function (value) {
+  //    var result = value.indexOf(toastyTemplateMessage + name + toastyMessageDeleted) !== -1;
+  //    browser.wait(EC.not(EC.presenceOf(createToastyConfirmationPopup)));
+  //    deferred.fulfill(result);
+  //  });
+  //
+  //  return deferred.promise;
+  //};
+  //
+  //// delete a element by name
+  //this.deleteElement= function (name) {
+  //  var deferred = protractor.promise.defer();
+  //
+  //  // search for the folder
+  //  createSearchNavInput.sendKeys(name).sendKeys(protractor.Key.ENTER);
+  //
+  //  // wait for search results to show in the breadcrumb
+  //  browser.wait(createBreadcrumbSearch.isDisplayed());
+  //
+  //  // select the first result
+  //  expect(createFirstElement.isDisplayed()).toBe(true);
+  //  createFirstElement.click();
+  //
+  //  browser.wait(createTrashButton.isDisplayed());
+  //  createTrashButton.getAttribute('tooltip').then(function (value) {
+  //    expect(value === trashTooltip).toBe(true);
+  //  });
+  //  createTrashButton.click();
+  //
+  //  browser.wait(createConfirmationDialog.isDisplayed());
+  //  browser.sleep(1000);  // give it some time for animation
+  //  expect(createConfirmationDialog.getAttribute(sweetAlertCancelAttribute)).toBe('true');
+  //  expect(createConfirmationDialog.getAttribute(sweetAlertConfirmAttribute)).toBe('true');
+  //  createSweetAlertConfirmButton.click();
+  //
+  //  browser.wait(createToastyConfirmationPopup.isDisplayed());
+  //  createToastyMessageText.getText().then(function (value) {
+  //    var result = value.indexOf(toastyElementMessage + name + toastyMessageDeleted) !== -1;
+  //    deferred.fulfill(result);
+  //  });
+  //
+  //  return deferred.promise;
+  //};
+  //
 
   // open the template by title
   this.openTemplate = function (name) {

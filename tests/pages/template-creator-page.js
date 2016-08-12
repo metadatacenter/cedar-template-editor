@@ -279,8 +279,8 @@ var TemplateCreatorPage = function () {
   this.clickBackArrow = function () {
     topNavBackArrow.click();
   };
-  this.toolbar = function () {
-    return toolbar;
+  this.createToolbar = function () {
+    return createToolbar;
   };
   this.get = function () {
     browser.get(url);

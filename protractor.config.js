@@ -1,4 +1,5 @@
-var testConfig = require('./tests/env.js');
+//var testConfig = require('./tests/env.js');
+var testConfig = require('./tests/config/test-env.js');
 
 exports.config = {
   // seleniumAddress: 'http://localhost:4444/wd/hub',

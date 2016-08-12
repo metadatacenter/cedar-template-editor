@@ -4,7 +4,6 @@ var _ = require('../libs/lodash.min.js');
 
 
 describe('workspace', function () {
-  var EC = protractor.ExpectedConditions;
   var page;
 
 
@@ -16,14 +15,9 @@ describe('workspace', function () {
     browser.driver.manage().window().maximize();
   });
 
-  it("should have logo, search nav, breadcrumbs, toolbar and create new buttons", function () {
-    page.test();
-  });
-
 
   // github issue #375
   it("should have logo, search nav, breadcrumbs, toolbar and create new buttons", function () {
-
 
     // should be on the dashboard page
     expect(page.isDashboard()).toBe(true);
@@ -47,12 +41,13 @@ describe('workspace', function () {
 
   // github issue #376: functioning trash button
   it("should have trash button", function () {
+    var name = page.createRandomFolderName();
 
     // trash should not be visible
     expect(page.createTrashButton().isPresent()).toBe(false);
 
     //create a folder, select it, and expect the trash to be visible
-    page.createFolder(page.createTestFolderName()+ 'trash').then(function () {
+    page.createFolder(name).then(function () {
 
       // until something is selected
       page.createFirstFolder().click();
@@ -60,32 +55,27 @@ describe('workspace', function () {
       // now it should be displayed
       browser.wait(page.createTrashButton().isDisplayed());
 
-
-      page.deleteFolder(page.createTestFolderName()+ 'trash');
+      page.deleteResource(name, page.folderType());
     });
   });
 
   // github issue #377: functioning more options dropdown
   it("should have functioning more options dropdown", function () {
+    var name = page.createRandomFolderName();
 
     // more button should not be visible
     expect(page.createMoreOptionsButton().isPresent()).toBe(false);
 
-    //browser.sleep(3000);
-
     //create a folder, select it, and expect the trash to be visible
-    page.createFolder(page.createTestFolderName() + 'more').then(function () {
-
-      //browser.sleep(3000);
+    page.createFolder(name).then(function () {
 
       // until something is selected
       page.createFirstFolder().click();
-      //browser.sleep(3000);
 
       // now it should be displayed
       browser.wait(page.createMoreOptionsButton().isDisplayed());
 
-      page.deleteFolder(page.createTestFolderName()+ 'more');
+      page.deleteResource(name, page.folderType());
     });
   });
 
