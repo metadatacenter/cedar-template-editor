@@ -16,7 +16,7 @@
 
   <div class="breadcrumbs-sb ">
     <p ng-if="dc.isSearching">
-      <span>Search Results For: '{{dc.searchTerm}}' </span>
+      <span class="search-result">Search Results For: '{{dc.searchTerm}}' </span>
     </p>
 
     <p ng-if="!dc.isSearching">
@@ -29,9 +29,9 @@
     </p>
   </div>
 
-  <div style="float:right" class=" list-inline">
+  <div style="float:right" class=" list-inline" id="workspace-toolbar">
     <ul class="list-inline pull-right">
-      <li ng-if="dc.onDashboard() && dc.hasSelection()">
+      <li ng-if="dc.onDashboard() && dc.hasSelection()" id="delete-tool">
         <button
             type="button"
             tooltip="delete selection"
@@ -41,15 +41,15 @@
             data-toggle="tooltip"
             ng-click="dc.deleteResource()"><i class="fa fa-trash "></i></button>
       </li>
-      <li ng-if="dc.onDashboard() && dc.hasSelection()">
+      <li ng-if="dc.onDashboard() && dc.hasSelection()" id="more-options-tool">
         <div class="btn-group dropdown">
-          <button data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><i
+          <button  data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><i
               class="fa fa-ellipsis-v  inline "></i></button>
           <ul class="dropdown-menu dropdown-menu-right">
 
-            <li ng-if="dc.isFolder()"><a href="#" ng-click="dc.editResource()">Open</a></li>
+            <li ng-if="dc.isFolder()"><a href="#" ng-click="dc.goToResource()">Open</a></li>
             <li ng-if="dc.isTemplate()"><a href="#" ng-click="dc.launchInstance()">Populate</a></li>
-            <li><a href="#" ng-click="dc.goToResource()">Edit</a></li>
+            <li><a href="#" ng-click="dc.editResource()">Edit</a></li>
             <li role="separator" class="divider"></li>
             <li class="disabled"><a href="#">Share</a></li>
             <li class="disabled"><a href="#">Move to...</a></li>
@@ -62,9 +62,9 @@
         </div>
       </li>
 
-      <li ng-if="dc.onDashboard() && dc.hasSelection()" class="inline divider-vertical "></li>
+      <li ng-if="dc.onDashboard() && dc.hasSelection()" class="inline divider-vertical " ></li>
 
-      <li ng-show="dc.onDashboard() && dc.resourceViewMode != 'grid'">
+      <li ng-show="dc.onDashboard() && dc.resourceViewMode != 'grid'"  id="grid-view-tool">
         <button
             type="button"
             tooltip="view as grid"
@@ -76,7 +76,7 @@
             class="fa fa-th inline"></i></button>
       </li>
 
-      <li ng-show="dc.onDashboard() && dc.resourceViewMode != 'list'">
+      <li ng-show="dc.onDashboard() && dc.resourceViewMode != 'list'" id="list-view-tool">
         <button type="button"
             tooltip="view as list"
             tooltip-trigger
@@ -88,7 +88,7 @@
       </li>
 
 
-      <li ng-show="!dc.infoShowing()" ng-if="dc.onDashboard()">
+      <li ng-show="!dc.infoShowing()" ng-if="dc.onDashboard()" id="details-view-tool">
         <button type="button"
             tooltip="view details"
             tooltip-trigger
@@ -98,7 +98,7 @@
             ng-click="dc.toggleInfoPanel()"><i class="fa fa-info "></i></button>
       </li>
 
-      <li ng-show="dc.infoShowing()" ng-if="dc.onDashboard()">
+      <li ng-show="dc.infoShowing()" ng-if="dc.onDashboard()" id="details-hide-tool">
         <button type="button"
             tooltip="hide details"
             tooltip-trigger
@@ -108,7 +108,7 @@
             ng-click="dc.toggleInfoPanel()"><i class="fa fa-info "></i></button>
       </li>
 
-      <li ng-if="dc.onDashboard()">
+      <li ng-if="dc.onDashboard()" id="workspace-sort-tool">
         <div class="btn-group dropdown">
           <button data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><i
               class="fa fa-sort  inline "></i></button>
@@ -125,13 +125,13 @@
         </div>
       </li>
 
-      <li ng-if="dc.onDashboard()">
+      <li ng-if="dc.onDashboard()" id="user-tool">
         <div class="btn-group dropdown">
           <button data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><i
               class="fa fa-user inline "></i></button>
           <ul class="dropdown-menu dropdown-menu-right">
-            <li><a href="/profile">Profile</a></li>
-            <li><a href="/logout">Logout</a></li>
+            <li id="user-profile-tool"><a href="/profile">Profile</a></li>
+            <li id="user-logout-tool"><a href="/logout">Logout</a></li>
           </ul>
         </div>
       </li>

@@ -90,7 +90,7 @@ var DashboardPage = function () {
     return require('./template-creator-page.js');
   };
 
-
+  // confirmation alerts
   this.clickSweetAlertCancelButton = function () {
     this.createSweetAlertCancelButton.click();
     browser.sleep(1000);
@@ -99,9 +99,13 @@ var DashboardPage = function () {
     this.createSweetAlertConfirmButton.click();
     browser.sleep(1000);
   };
+
+  // toasty popups
   this.getToastyMessageText = function () {
     return this.toastyMessageText.getText();
   };
+
+  // does this element contain this class
   this.hasClass = function (element, cls) {
     return element.getAttribute('class').then(function (classes) {
       return classes.split(' ').indexOf(cls) !== -1;

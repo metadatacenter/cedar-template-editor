@@ -1,11 +1,11 @@
 'use strict';
 
-require('../pages/dashboard-page.js');
+require('../pages/workspace-page.js');
 
 var TemplateCreatorPage = function () {
   var url = 'https://cedar.metadatacenter.orgx/dashboard';
-  this.showJsonLink = element(by.id('top-navigation')).element(by.css('.navbar-header')).element(by.id('show-json-link'));
-  this.jsonPreview = element(by.id('form-json-preview'));
+  var showJsonLink = element(by.id('top-navigation')).element(by.css('.navbar-header')).element(by.id('show-json-link'));
+  var jsonPreview = element(by.id('form-json-preview'));
   var createButton = element(by.id('button-create'));
   var createTemplateButton = element(by.id('button-create-template'));
   var createTextFieldButton = element(by.id('button-add-field-textfield'));
@@ -16,8 +16,8 @@ var TemplateCreatorPage = function () {
 
 
   var createSearchElement = element(by.id('button-search-element'));
-  this.createSearchInput = element(by.id('search-browse-modal')).element(by.id('search'));
-  this.createSearchButton = element(by.id('search-browse-modal')).element(by.css('.do-search'));
+  var createSearchInput = element(by.id('search-browse-modal')).element(by.id('search'));
+  var createSearchButton = element(by.id('search-browse-modal')).element(by.css('.do-search'));
   var createElementButton = element(by.id('button-create-element'));
   var createSearchForm = element(by.css('.nav-search')).element(by.tagName('form'));
   var searchBrowseModalDialog = element(by.id("search-browse-modal"));
@@ -36,27 +36,28 @@ var TemplateCreatorPage = function () {
   var createVideoButton = element(by.id('button-add-field-youtube'));
   var removeFieldButton = element(by.css('.field-root  .remove'));
   var removeElementButton = element(by.css('.element-root  .remove'));
-  var visibilitySwitchButton = element(by.css('.element-root  .visibilitySwitch'));
+  var createToolbar = element(by.id('toolbar'));
 
 
-  this.createToastyConfirmationPopup = element(by.id('toasty')).element(by.css('.toast'));
-  this.toastyMessageText = element(by.id('toasty')).element(by.css('.toast')).element(by.css('.toast-msg'));
-  this.createConfirmationDialog = element(by.css('.sweet-alert'));
-  this.sweetAlertCancelAttribute = 'data-has-cancel-button';
-  this.sweetAlertConfirmAttribute = 'data-has-confirm-button';
-  this.createSweetAlertCancelButton = element(by.css('.sweet-alert')).element(by.css('.sa-button-container')).element(by.css('.cancel'));
-  this.createSweetAlertConfirmButton = element(by.css('.sweet-alert')).element(by.css('.sa-button-container')).element(by.css('.confirm'));
-  this.templateJSON = element(by.id('templateJSON'));
-  this.topNavigation = element(by.id('top-navigation'));
-  this.topNavBackArrow = element(by.id('top-navigation')).element(by.css('.navbar-header')).element(by.css('.back-arrow-click'));
-  this.topNavButtons = element.all(by.css('.controls-bar .list-inline li button'));
+  var createToastyConfirmationPopup = element(by.id('toasty')).element(by.css('.toast'));
+  var toastyMessageText = element(by.id('toasty')).element(by.css('.toast')).element(by.css('.toast-msg'));
+  var createConfirmationDialog = element(by.css('.sweet-alert'));
+  var sweetAlertCancelAttribute = 'data-has-cancel-button';
+  var sweetAlertConfirmAttribute = 'data-has-confirm-button';
+  var createSweetAlertCancelButton = element(by.css('.sweet-alert')).element(by.css('.sa-button-container')).element(by.css('.cancel'));
+  var createSweetAlertConfirmButton = element(by.css('.sweet-alert')).element(by.css('.sa-button-container')).element(by.css('.confirm'));
+  var templateJSON = element(by.id('templateJSON'));
+  var topNavigation = element(by.id('top-navigation'));
+  var topNavBackArrow = element(by.id('top-navigation')).element(by.css('.navbar-header')).element(by.css('.back-arrow-click'));
+  var topNavButtons = element.all(by.css('.controls-bar .list-inline li button'));
 
 
-  this.testTitle = 'test title';
-  this.testDescription = 'test description';
+
+  var testTitle = 'test title';
+  var testDescription = 'test description';
   // make the element title short to avoid problems with sendKeys when searching
-  this.sampleElementTitle = 's';
-  this.sampleElementDescription = 's';
+  var sampleElementTitle = 's';
+  var sampleElementDescription = 's';
   this.cssFieldRoot = ".field-root";
   this.cssItemRoot = ".item-root";
   this.cssFieldSortableIcon = ".field-root .sortable-icon";
@@ -68,35 +69,21 @@ var TemplateCreatorPage = function () {
   this.hasBeenCreated = 'has been created';
   this.deleteButtonTooltip = 'delete selection';
   this.deleteElementMessage = 'The template element has been deleted.';
-  this.template = 'template';
-  this.dashboard = 'dashboard';
-  this.element = 'element';
+  var templateType = 'template';
+  var elementType = 'element';
+  var folderType = 'folder';
+  var dashboardType = 'dashboard';
   var cssNavDashboard = '.navbar.dashboard';
-  this.cssElementNamelabel = '.element-name-label';
   var cssDetailOptions = '.detail-options';
 
-  // element creator
-  this.elementTitle = element(by.id('element-name-container')).element(by.model('element._ui.title'));
-  this.elementDescription = element(by.id('element-description-container')).element(by.model('element._ui.description'));
-  this.elementTitleForm = element(by.id('element-name-container')).element(by.tagName('form'));
-  this.elementDescriptionForm = element(by.id('element-description-container')).element(by.tagName('form'));
-  this.createSaveElementButton = element(by.id('button-save-element'));
-  this.createCancelElementButton = element(by.id('button-cancel-element'));
-  this.createClearElementButton = element(by.id('button-clear-element'));
-  this.cssElementRoot = ".element-root";
-  this.cssElementSortableIcon = ".element-root .sortable-icon";
-  var cssCollapseButton = '.visibilitySwitch:nth-child(0)';
-  var cssOpenButton = '.visibilitySwitch:nth-child(1)';
-
-
   // template creator
-  this.templateTitle = element(by.id('template-header')).element(by.model('form._ui.title'));
-  this.templateDescription = element(by.id('template-header')).element(by.model('form._ui.description'));
-  this.templateForm = element(by.id('element-name-container')).element(by.tagName('form'));
+  var templateTitle = element(by.id('template-header')).element(by.model('form._ui.title'));
+  var templateDescription = element(by.id('template-header')).element(by.model('form._ui.description'));
+  var templateForm = element(by.id('element-name-container')).element(by.tagName('form'));
 
-  this.createSaveTemplateButton = element(by.id('button-save-template'));
-  this.createCancelTemplateButton = element(by.id('button-cancel-template'));
-  this.createClearTemplateButton = element(by.id('button-clear-template'));
+  var createSaveTemplateButton = element(by.id('button-save-template'));
+  var createCancelTemplateButton = element(by.id('button-cancel-template'));
+  var createClearTemplateButton = element(by.id('button-clear-template'));
   this.emptyTemplateJson = {
     "$schema"             : "http://json-schema.org/draft-04/schema#",
     "@id"                 : null,
@@ -193,13 +180,16 @@ var TemplateCreatorPage = function () {
 
 
   // element creator
-  this.elementTitle = element(by.id('element-name-container')).element(by.model('element._ui.title'));
-  this.elementDescription = element(by.id('element-description-container')).element(by.model('element._ui.description'));
-  this.elementTitleForm = element(by.id('element-name-container')).element(by.tagName('form'));
-  this.elementDescriptionForm = element(by.id('element-description-container')).element(by.tagName('form'));
-  this.createSaveElementButton = element(by.id('button-save-element'));
-  this.createCancelElementButton = element(by.id('button-cancel-element'));
-  this.createClearElementButton = element(by.id('button-clear-element'));
+  var elementTitle = element(by.id('element-name-container')).element(by.model('element._ui.title'));
+  var elementDescription = element(by.id('element-description-container')).element(by.model('element._ui.description'));
+  var elementTitleForm = element(by.id('element-name-container')).element(by.tagName('form'));
+  var elementDescriptionForm = element(by.id('element-description-container')).element(by.tagName('form'));
+  var createSaveElementButton = element(by.id('button-save-element'));
+  var createCancelElementButton = element(by.id('button-cancel-element'));
+  var createClearElementButton = element(by.id('button-clear-element'));
+  var cssElementRoot = ".element-root";
+  var cssCollapseButton = '.visibilitySwitch:nth-child(0)';
+  var cssOpenButton = '.visibilitySwitch:nth-child(1)';
   this.emptyElementJson = {
     "$schema"             : "http://json-schema.org/draft-04/schema#",
     "@id"                 : null,
@@ -273,17 +263,24 @@ var TemplateCreatorPage = function () {
   };
 
 
-  this.test = function() {
+  this.test = function () {
     console.log('template creator  page test');
   };
 
   // are we on the dashboard page?
-  this.isDashboard = function() {
+  this.isDashboard = function () {
     return element(by.css(cssNavDashboard)).isDisplayed();
   };
   // template creator
+
+  this.templateJSON = function () {
+    return templateJSON;
+  };
   this.clickBackArrow = function () {
-    this.topNavBackArrow.click();
+    topNavBackArrow.click();
+  };
+  this.createToolbar = function () {
+    return createToolbar;
   };
   this.get = function () {
     browser.get(url);
@@ -292,26 +289,90 @@ var TemplateCreatorPage = function () {
     browser.sleep(1000);
   };
 
+  this.topNavigation = function () {
+    return topNavigation;
+  };
+  this.topNavBackArrow = function () {
+    return topNavBackArrow;
+  };
+  this.templateTitle = function () {
+    return templateTitle;
+  };
+  this.templateDescription = function () {
+    return templateDescription;
+  };
+  this.templateForm = function () {
+    return templateForm;
+  };
+  this.testTitle = function () {
+    return testTitle;
+  };
+  this.testDescription = function () {
+    return testDescription;
+  };
+  this.sampleElementTitle = function () {
+    return sampleElementTitle;
+  };
+  this.sampleElementDescription = function () {
+    return sampleElementDescription;
+  };
+  this.templateType = function () {
+    return templateType;
+  };
+  this.elementType = function () {
+    return elementType;
+  };
+  this.folderType = function () {
+    return folderType;
+  };
+  this.dashboardType = function () {
+    return dashboardType;
+  };
+
   // json preview
+  this.showJsonLink = function () {
+    return showJsonLink;
+  };
+  this.jsonPreview = function () {
+    return jsonPreview;
+  };
   this.getJsonPreviewText = function () {
-    this.showJsonLink.click();
-    return this.jsonPreview.getText();
+    showJsonLink.click();
+    return jsonPreview.getText();
   };
   this.clickJsonPreview = function () {
-    this.showJsonLink.click();
+    showJsonLink.click();
   };
+
+  // toasty
+  this.createToastyConfirmationPopup = function () {
+    return createToastyConfirmationPopup;
+  };
+
+  // sweet
+  this.createConfirmationDialog = function () {
+    return createConfirmationDialog;
+  };
+
+  this.sweetAlertCancelAttribute = function () {
+    return sweetAlertCancelAttribute;
+  };
+  this.sweetAlertConfirmAttribute = function () {
+    return sweetAlertConfirmAttribute;
+  };
+
 
 
   this.addSearchElements = function () {
     createSearchElement.click();
   };
   this.addSearch = function (keys) {
-    this.createSearchInput.sendKeys(keys).then(function () {
-      this.createSearchButton.click();
+    createSearchInput.sendKeys(keys).then(function () {
+      createSearchButton.click();
     });
   };
   this.addSearchButton = function (keys) {
-    this.createSearchButton.click();
+    createSearchButton.click();
   };
   this.getSearchBreadcrumbText = function () {
     return createSearchBreadcrumb.getText();
@@ -332,15 +393,24 @@ var TemplateCreatorPage = function () {
 
 
   // template creator
+  this.createSaveTemplateButton = function () {
+    return createSaveTemplateButton;
+  };
+  this.createClearTemplateButton = function () {
+    return createClearTemplateButton.getText();
+  };
+  this.createCancelTemplateButton = function () {
+    return createCancelTemplateButton;
+  };
   this.clickSaveTemplate = function () {
-    this.createSaveTemplateButton.click();
+    createSaveTemplateButton.click();
   };
   this.clickCancelTemplate = function () {
-    this.createCancelTemplateButton.click();
-    return require('./dashboard-page.js');
+    createCancelTemplateButton.click();
+    return require('./workspace-page.js');
   };
   this.clickClearTemplate = function () {
-    this.createClearTemplateButton.click();
+    createClearTemplateButton.click();
   };
   this.createTemplate = function () {
     browser.actions().mouseMove(createButton).perform();
@@ -360,26 +430,55 @@ var TemplateCreatorPage = function () {
   };
 
   this.setTemplateDescription = function (text) {
+
     // should have an editable element title
-    expect(this.elementDescription.isDisplayed()).toBe(true);
-    browser.actions().doubleClick(this.elementDescription).perform();
-    this.elementDescription.sendKeys(text);
-    this.elementDescriptionForm.submit();
-
+    expect(elementDescription.isDisplayed()).toBe(true);
+    browser.actions().doubleClick(elementDescription).perform();
+    elementDescription.sendKeys(text);
+    elementDescriptionForm.submit();
   };
-
 
 
   // element creator
+  this.elementTitle = function () {
+    return elementTitle;
+  };
+  this.elementDescription = function () {
+    return elementDescription;
+  };
+  this.elementTitleForm = function () {
+    return elementTitleForm;
+  };
+  this.elementDescriptionForm = function () {
+    return elementDescriptionForm;
+  };
+  this.createSaveElementButton = function () {
+    return createSaveElementButton;
+  };
+  this.createCancelElementButton = function () {
+    return createCancelElementButton;
+  };
+  this.createClearElementButton = function () {
+    return createClearElementButton;
+  };
+  this.cssOpenButton = function () {
+    return cssOpenButton;
+  };
+  this.cssCollapseButton = function () {
+    return cssCollapseButton;
+  };
+  this.cssElementRoot = function () {
+    return cssElementRoot;
+  };
   this.clickSaveElement = function () {
-    this.createSaveElementButton.click();
+    createSaveElementButton.click();
   };
   this.clickCancelElement = function () {
-    this.createCancelElementButton.click();
-    return require('./dashboard-page.js');
+    createCancelElementButton.click();
+    return require('./workspace-page.js');
   };
   this.clickClearElement = function () {
-    this.createClearElementButton.click();
+    createClearElementButton.click();
   };
   this.createElement = function () {
     browser.actions().mouseMove(createButton).perform();
@@ -392,33 +491,35 @@ var TemplateCreatorPage = function () {
   this.setElementTitle = function (text) {
 
     // should have an editable element title
-    expect(this.elementTitle.isDisplayed()).toBe(true);
-    browser.actions().doubleClick(this.elementTitle).perform();
-    this.elementTitle.sendKeys(text);
-    this.elementTitleForm.submit();
+    expect(elementTitle.isDisplayed()).toBe(true);
+    browser.actions().doubleClick(elementTitle).perform();
+    elementTitle.sendKeys(text);
+    elementTitleForm.submit();
 
   };
   this.setElementDescription = function (text) {
 
     // should have an editable element title
-    expect(this.elementDescription.isDisplayed()).toBe(true);
-    browser.actions().doubleClick(this.elementDescription).perform();
-    this.elementDescription.sendKeys(text);
-    this.elementDescriptionForm.submit();
+    expect(elementDescription.isDisplayed()).toBe(true);
+    browser.actions().doubleClick(elementDescription).perform();
+    elementDescription.sendKeys(text);
+    elementDescriptionForm.submit();
 
   };
 
   // sweet alerts
   this.clickSweetAlertCancelButton = function () {
-    this.createSweetAlertCancelButton.click();
+    createSweetAlertCancelButton.click();
     browser.sleep(1000);
   };
   this.clickSweetAlertConfirmButton = function () {
-    this.createSweetAlertConfirmButton.click();
+    createSweetAlertConfirmButton.click();
     browser.sleep(1000);
   };
+
+  // toasty
   this.getToastyMessageText = function () {
-    return this.toastyMessageText.getText();
+    return toastyMessageText.getText();
   };
 
   // utilities
@@ -534,7 +635,8 @@ var TemplateCreatorPage = function () {
     }
     // needs to sleep to let the toolbar scroll back into the view
     // also move the mouse off the toolbar button so the tooltip is hidden
-    browser.sleep(1000);
+    browser.wait(createToolbar.isDisplayed());
+    browser.sleep(1000);  // add time for animation
 
     deferred.fulfill(true);
     return deferred.promise;
@@ -566,7 +668,7 @@ var TemplateCreatorPage = function () {
     this.addSearchElements();
 
     // search for the sampleElement
-    this.createSearchInput.sendKeys(title).sendKeys(protractor.Key.ENTER).then(function () {
+    createSearchInput.sendKeys(title).sendKeys(protractor.Key.ENTER).then(function () {
 
       browser.wait(EC.textToBePresentInElementValue($('#search'), title), 10000);
 
@@ -597,88 +699,6 @@ var TemplateCreatorPage = function () {
     return deferred.promise;
   };
 
-
-  // delete the element in the workspace
-  this.deleteElement = function (title) {
-    var deferred = protractor.promise.defer();
-    var EC = protractor.ExpectedConditions;
-
-
-    var searchInput = element(by.id('search'));
-    searchInput.sendKeys(title).sendKeys(protractor.Key.ENTER).then(function () {
-
-      browser.wait(EC.textToBePresentInElementValue($('#search'), title), 10000);
-
-      // click the search submit icon
-      element(by.css('.do-search')).click().then(function () {
-
-        var firstElement = element.all(by.css('.form-box .element')).first();
-        browser.wait(EC.visibilityOf(firstElement), 10000);
-
-        // the search browse modal should show some results
-        expect(firstElement.isPresent()).toBe(true);
-
-        // get the first element in the list of search results
-        firstElement.click().then(function () {
-          browser.sleep(3000);
-
-          // top nav buttons
-          var deleteButton = element(by.id('delete-selection-button'));
-
-          browser.sleep(3000);
-
-          browser.wait(EC.visibilityOf(deleteButton), 10000);
-          expect(deleteButton.isPresent()).toBe(true);
-
-          console.log('got delete button');
-
-          deleteButton.getAttribute('tooltip').then(function (value) {
-
-            console.log('with tooltip' + value);
-
-            browser.sleep(3000);
-
-            // make sure it really is delete
-            expect(_.isEqual(value, 'delete selection')).toBe(true);
-            deleteButton.click();
-
-            // TODO not sure why i need this sleep here
-            browser.sleep(1000);
-
-            var sweetAlert = element(by.css('.sweet-alert'));
-            browser.wait(EC.visibilityOf(sweetAlert), 10000);
-            expect(sweetAlert.isDisplayed()).toBe(true);
-            expect(sweetAlert.getAttribute('data-has-cancel-button')).toBe('true');
-            expect(sweetAlert.getAttribute('data-has-confirm-button')).toBe('true');
-
-            browser.sleep(3000);
-
-            // click confirm to delete the element
-            sweetAlert.click();
-            browser.sleep(1000);
-
-            var toasty = element(by.id('toasty')).element(by.css('.toast'));
-            browser.wait(EC.visibilityOf(toasty), 10000);
-            expect(toasty.isDisplayed()).toBe(true);
-
-            browser.sleep(3000);
-
-            var message = toasty.element(by.css('.toast')).element(by.css('.toast-msg'));
-            message.getText().then(function (value) {
-
-              browser.sleep(3000);
-              expect(value.indexOf('The template element has been deleted.') !== -1).toBe(true);
-
-              deferred.fulfill(true);
-            });
-
-          });
-        });
-      });
-    });
-
-    return deferred.promise;
-  };
 };
 
-  module.exports = new TemplateCreatorPage(); 
+module.exports = new TemplateCreatorPage(); 

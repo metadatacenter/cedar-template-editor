@@ -1,11 +1,13 @@
 'use strict';
 var TemplateCreatorPage = require('../pages/template-creator-page.js');
+var WorkspacePage = require('../pages/workspace-page.js');
 var _ = require('../libs/lodash.min.js');
 
 
-describe('element-creator', function () {
+xdescribe('element-creator', function () {
   var EC = protractor.ExpectedConditions;
   var page;
+  var workspacePage;
   var fieldTypes = [
     {
       "cedarType"         : "textfield",
@@ -123,6 +125,7 @@ describe('element-creator', function () {
   // maximize the window area for clicking
   beforeEach(function () {
     page = TemplateCreatorPage;
+    workspacePage = WorkspacePage;
     page.get();
     page.createElement();
     browser.driver.manage().window().maximize();
@@ -132,32 +135,32 @@ describe('element-creator', function () {
   it("should show element editor header, title, description, and json preview", function () {
 
     // should have a top navigation element
-    expect(page.topNavigation.isDisplayed()).toBe(true);
+    expect(page.topNavigation().isDisplayed()).toBe(true);
     // should have a template editor top nav
-    expect(page.hasClass(page.topNavigation, page.element)).toBe(true);
+    expect(page.hasClass(page.topNavigation(), page.elementType())).toBe(true);
     // should have a back arrow in the header
-    expect(page.topNavBackArrow.isDisplayed()).toBe(true);
+    expect(page.topNavBackArrow().isDisplayed()).toBe(true);
     // should have a json preview in the header
-    expect(page.showJsonLink.isDisplayed()).toBe(true);
+    expect(page.showJsonLink().isDisplayed()).toBe(true);
 
     // should have an editable template title
-    expect(page.elementTitle.isDisplayed()).toBe(true);
-    browser.actions().doubleClick(page.elementTitle).perform();
-    page.elementTitle.sendKeys(page.testTitle);
+    expect(page.elementTitle().isDisplayed()).toBe(true);
+    browser.actions().doubleClick(page.elementTitle()).perform();
+    page.elementTitle().sendKeys(page.testTitle());
 
     // should have an editable description
-    expect(page.elementDescription.isDisplayed()).toBe(true);
-    browser.actions().doubleClick(page.elementDescription).perform();
-    page.elementDescription.sendKeys(page.testDescription);
+    expect(page.elementDescription().isDisplayed()).toBe(true);
+    browser.actions().doubleClick(page.elementDescription()).perform();
+    page.elementDescription().sendKeys(page.testDescription());
 
     // submit the form and check our edits
-    page.elementDescriptionForm.submit();
+    page.elementDescriptionForm().submit();
 
-    page.elementTitle.getAttribute('value').then(function (value) {
-      expect(_.isEqual(value, page.testTitle)).toBe(true);
+    page.elementTitle().getAttribute('value').then(function (value) {
+      expect(_.isEqual(value, page.testTitle())).toBe(true);
     });
-    page.elementDescription.getAttribute('value').then(function (value) {
-      expect(_.isEqual(value, page.testDescription)).toBe(true);
+    page.elementDescription().getAttribute('value').then(function (value) {
+      expect(_.isEqual(value, page.testDescription())).toBe(true);
     });
   });
 
@@ -180,7 +183,7 @@ describe('element-creator', function () {
     var fieldType = fieldTypes[0];
 
     // should have clear not displayed
-    expect(page.createClearElementButton.isDisplayed()).toBe(false);
+    expect(page.createClearElementButton().isDisplayed()).toBe(false);
 
     // save a copy of the clean template
     page.getJsonPreviewText().then(function (value) {
@@ -189,7 +192,7 @@ describe('element-creator', function () {
 
       // should have a clear button if the template is dirty
       page.addField(fieldType.cedarType);
-      expect(page.createClearElementButton.isDisplayed()).toBe(true);
+      expect(page.createClearElementButton().isDisplayed()).toBe(true);
 
       // save the dirty template
       page.getJsonPreviewText().then(function (value) {
@@ -199,9 +202,9 @@ describe('element-creator', function () {
 
         // clicking the clear should bring up confirmation dialog which has a confirm and cancel button
         page.clickClearElement();
-        expect(page.createConfirmationDialog.isDisplayed()).toBe(true);
-        expect(page.createConfirmationDialog.getAttribute(page.sweetAlertCancelAttribute)).toBe('true');
-        expect(page.createConfirmationDialog.getAttribute(page.sweetAlertConfirmAttribute)).toBe('true');
+        expect(page.createConfirmationDialog().isDisplayed()).toBe(true);
+        expect(page.createConfirmationDialog().getAttribute(page.sweetAlertCancelAttribute())).toBe('true');
+        expect(page.createConfirmationDialog().getAttribute(page.sweetAlertConfirmAttribute())).toBe('true');
 
         // expect confirm to clear the template,
         page.clickSweetAlertConfirmButton();
@@ -224,7 +227,7 @@ describe('element-creator', function () {
     var fieldType = fieldTypes[0];
 
     // should have clear not displayed
-    expect(page.createClearElementButton.isDisplayed()).toBe(false);
+    expect(page.createClearElementButton().isDisplayed()).toBe(false);
 
     // save a copy of the clean template
     page.getJsonPreviewText().then(function (value) {
@@ -233,7 +236,7 @@ describe('element-creator', function () {
 
       // should have a clear button if the template is dirty
       page.addField(fieldType.cedarType);
-      expect(page.createClearElementButton.isDisplayed()).toBe(true);
+      expect(page.createClearElementButton().isDisplayed()).toBe(true);
 
       // save the dirty template
       page.getJsonPreviewText().then(function (value) {
@@ -243,9 +246,9 @@ describe('element-creator', function () {
 
         // clicking the clear should bring up confirmation dialog which has a confirm and cancel button
         page.clickClearElement();
-        expect(page.createConfirmationDialog.isDisplayed()).toBe(true);
-        expect(page.createConfirmationDialog.getAttribute(page.sweetAlertCancelAttribute)).toBe('true');
-        expect(page.createConfirmationDialog.getAttribute(page.sweetAlertConfirmAttribute)).toBe('true');
+        expect(page.createConfirmationDialog().isDisplayed()).toBe(true);
+        expect(page.createConfirmationDialog().getAttribute(page.sweetAlertCancelAttribute())).toBe('true');
+        expect(page.createConfirmationDialog().getAttribute(page.sweetAlertConfirmAttribute())).toBe('true');
 
         // expect confirm to clear the template,
         page.clickSweetAlertCancelButton();
@@ -261,19 +264,17 @@ describe('element-creator', function () {
   // github issue #404 Part 3 of 4:  Verify that Cancel button is present and active,
   it("should have Cancel button present and active", function () {
 
-    var fieldType = fieldTypes[0];
-
     // should have save and cancel displayed
-    expect(page.createCancelElementButton.isDisplayed()).toBe(true);
+    expect(page.createCancelElementButton().isDisplayed()).toBe(true);
 
     // make the template dirty
-    page.addField(fieldType.cedarType);
+    page.addField(fieldTypes[0].cedarType);
 
     // clicking the cancel should cancel edits
     page.clickCancelElement();
 
     // should be back to dashboard
-    expect(page.hasClass(page.topNavigation, page.dashboard)).toBe(true);
+    expect(page.isDashboard()).toBe(true);
   });
 
   // github issue #404 Part 4 of 4:  Verify that save button is present and active,
@@ -284,7 +285,7 @@ describe('element-creator', function () {
     var fieldType = fieldTypes[0];
 
     // should have save and cancel displayed
-    expect(page.createSaveElementButton.isDisplayed()).toBe(true);
+    expect(page.createSaveElementButton().isDisplayed()).toBe(true);
 
     // save the clean template
     page.getJsonPreviewText().then(function (value) {
@@ -299,12 +300,20 @@ describe('element-creator', function () {
         expect(_.isEqual(cleanJson, dirtyJson)).toBe(false);
 
         page.clickSaveElement();
-        expect(page.createToastyConfirmationPopup.isDisplayed()).toBe(true);
+        expect(page.createToastyConfirmationPopup().isDisplayed()).toBe(true);
         page.getToastyMessageText().then(function (value) {
           expect(value.indexOf(page.hasBeenCreated) !== -1).toBe(true);
         });
       });
     });
+  });
+
+  it("should delete untitled element the workspace, ", function () {
+
+    // element left over from prior test
+    page.clickCancelElement();
+    workspacePage.deleteResource('Untitled', workspacePage.elementType());
+
   });
 
   // github issue #405 part 1 of 2:  Verify that fields and elements can be reordered
@@ -363,39 +372,36 @@ describe('element-creator', function () {
 
       // create an element and add a text field to it
       page.addTextField();
-      page.setElementTitle(page.sampleElementTitle);
-      page.setElementDescription(page.sampleElementDescription);
+      page.setElementTitle(page.sampleElementTitle());
+      page.setElementDescription(page.sampleElementDescription());
+      browser.sleep(3000);
       page.clickSaveElement();
 
     });
 
     it("should add and delete the sample element in a element", function () {
 
-      page.addElement(page.sampleElementTitle).then(function () {
+      page.addElement(page.sampleElementTitle()).then(function () {
 
-        // wait till the template is visible again
+        // wait till the element creator is visible again
         // this gives a warning if it finds more than one element in the form
-        browser.wait(EC.visibilityOf($('.item-root')), 10000);
+        browser.wait(page.createToolbar().isDisplayed());
 
-        // the element should include the sample element
-        var items = element.all(by.css('.element-root'));
+        // the element should include the sample element name
+        var items = element.all(by.css('.element-root .element-name-label'));
 
-        expect(items.count()).toBe(2);
-        var sampleElement = items.get(1);
-
-        var names = element.all(by.css('.element-name-label'));
-        expect(names.count()).toBe(3);
-
-        names.get(1).getText().then(function (text) {
+        // three names expected, and the sample is second in the list
+        expect(items.count()).toBe(3);
+        items.get(1).getText().then(function (text) {
 
           // and the name should be sampleElement
-          expect(_.isEqual(text, page.sampleElementTitle)).toBe(true);
+          expect(text === page.sampleElementTitle()).toBe(true);
 
-          // delete the sample element from the element
+          // remove the element from the template
           page.removeElement();
 
-          // is it removed?
-          expect(element(by.css(page.cssElementRoot)).isPresent()).toBe(false);
+          expect(element(by.css('.element-root .element-name-label')).isPresent()).toBe(false);
+
         });
       });
     });
@@ -403,7 +409,7 @@ describe('element-creator', function () {
     // TODO this feature does not work in the element creator page
     xit("should collapse and reopen the sample element", function () {
 
-      page.addElement(page.sampleElementTitle).then(function () {
+      page.addElement(page.sampleElementTitle()).then(function () {
 
         // wait till the template is visible again
         // this gives a warning if it finds more than one element in the form
@@ -437,7 +443,7 @@ describe('element-creator', function () {
       page.addField(fieldType.cedarType).then(function () {
 
         // add the sample element
-        page.addElement(page.sampleElementTitle).then(function () {
+        page.addElement(page.sampleElementTitle()).then(function () {
 
           // wait till the template is visible again
           // this gives a warning if it finds more than one element in the form
@@ -449,7 +455,7 @@ describe('element-creator', function () {
           sampleElementName.getText().then(function (text) {
 
             // and the name should be sampleElement
-            expect(_.isEqual(text, page.sampleElementTitle)).toBe(true);
+            expect(_.isEqual(text, page.sampleElementTitle())).toBe(true);
 
             // do we have three items, the element, its nested filed, and the field
             var items = element.all(by.css(page.cssItemRoot));
@@ -494,7 +500,7 @@ describe('element-creator', function () {
       page.addField(fieldType.cedarType).then(function () {
 
         // add the sample element
-        page.addElement(page.sampleElementTitle).then(function () {
+        page.addElement(page.sampleElementTitle()).then(function () {
 
           // wait till the template is visible again
           // this gives a warning if it finds more than one element in the form
@@ -557,119 +563,12 @@ describe('element-creator', function () {
     // github issue #400
     it("should delete the sample element from the workspace, ", function () {
 
-      var dashboardPage = page.clickCancelElement();
+      page.clickCancelElement();
+      workspacePage.deleteResource(page.sampleElementTitle(), workspacePage.elementType());
 
-      var searchInput = element(by.id('search'));
-
-      searchInput.sendKeys(page.sampleElementTitle).sendKeys(protractor.Key.ENTER).then(function () {
-
-        browser.wait(EC.textToBePresentInElementValue($('#search'), page.sampleElementTitle), 10000);
-
-
-        // click the search submit icon
-        element(by.css('.do-search')).click().then(function () {
-
-          browser.wait(EC.visibilityOf(page.getFirstElement()), 10000);
-
-          // the search browse modal should show some results
-          expect(page.getFirstElement().isPresent()).toBe(true);
-
-          // get the first element in the list of search results
-          page.getFirstElement().click().then(function () {
-
-            var buttons = page.topNavButtons;
-            expect(buttons.count()).toBe(6);
-
-            var deleteButton = buttons.first();
-            browser.wait(EC.visibilityOf(deleteButton), 10000);
-            deleteButton.getAttribute('tooltip').then(function (value) {
-
-              // make sure it really is delete
-              expect(_.isEqual(value, page.deleteButtonTooltip)).toBe(true);
-              deleteButton.click();
-
-              // TODO not sure why i need this sleep here
-              browser.sleep(1000);
-
-              browser.wait(EC.visibilityOf(page.createConfirmationDialog), 10000);
-              expect(page.createConfirmationDialog.isDisplayed()).toBe(true);
-              expect(page.createConfirmationDialog.getAttribute(page.sweetAlertCancelAttribute)).toBe('true');
-              expect(page.createConfirmationDialog.getAttribute(page.sweetAlertConfirmAttribute)).toBe('true');
-
-              // click confirm to delete the element
-              page.clickSweetAlertConfirmButton();
-
-              browser.wait(EC.visibilityOf(page.createToastyConfirmationPopup), 10000);
-              expect(page.createToastyConfirmationPopup.isDisplayed()).toBe(true);
-              page.getToastyMessageText().then(function (value) {
-                expect(value.indexOf(page.deleteElementMessage) !== -1).toBe(true);
-              });
-
-            });
-          });
-        });
-      });
     });
 
   });
-
-  it("should delete untitled template the workspace, ", function () {
-    var title = 'Untitled';
-
-    var dashboardPage = page.clickCancelElement();
-
-    var searchInput = element(by.id('search'));
-
-    searchInput.sendKeys(title).sendKeys(protractor.Key.ENTER).then(function () {
-
-      browser.wait(EC.textToBePresentInElementValue($('#search'), title), 10000);
-
-
-      // click the search submit icon
-      element(by.css('.do-search')).click().then(function () {
-
-        browser.wait(EC.visibilityOf(page.getFirstElement()), 10000);
-
-        // the search browse modal should show some results
-        expect(page.getFirstElement().isPresent()).toBe(true);
-
-        // get the first element in the list of search results
-        page.getFirstElement().click().then(function () {
-
-          var buttons = page.topNavButtons;
-          expect(buttons.count()).toBe(6);
-
-          var deleteButton = buttons.first();
-          browser.wait(EC.visibilityOf(deleteButton), 10000);
-          deleteButton.getAttribute('tooltip').then(function (value) {
-
-            // make sure it really is delete
-            expect(_.isEqual(value, page.deleteButtonTooltip)).toBe(true);
-            deleteButton.click();
-
-            // TODO not sure why i need this sleep here
-            browser.sleep(1000);
-
-            browser.wait(EC.visibilityOf(page.createConfirmationDialog), 10000);
-            expect(page.createConfirmationDialog.isDisplayed()).toBe(true);
-            expect(page.createConfirmationDialog.getAttribute(page.sweetAlertCancelAttribute)).toBe('true');
-            expect(page.createConfirmationDialog.getAttribute(page.sweetAlertConfirmAttribute)).toBe('true');
-
-            // click confirm to delete the element
-            page.clickSweetAlertConfirmButton();
-
-            browser.wait(EC.visibilityOf(page.createToastyConfirmationPopup), 10000);
-            expect(page.createToastyConfirmationPopup.isDisplayed()).toBe(true);
-            page.getToastyMessageText().then(function (value) {
-              expect(value.indexOf(page.deleteElementMessage) !== -1).toBe(true);
-            });
-
-          });
-        });
-      });
-    });
-  });
-
 
   // github issue #406
   for (var i = 1; i < fieldTypes.length; i++) {
@@ -694,8 +593,9 @@ describe('element-creator', function () {
         // before trying to remove the field
         // otherwise the textarea fails
         browser.actions().mouseMove(field).perform();
-        browser.sleep(1000);
+        browser.sleep(1000);  // for animation of tooltip
         page.removeField();
+
         // is it removed?
         expect(element(by.css(cssField)).isPresent()).toBe(false);
 
@@ -741,16 +641,16 @@ describe('element-creator', function () {
   // github issue #407:  Verify that JSON preview button shows template JSON; verify that this JSON is same as underlying JSON, Verify that clicking in JSON preview button hides visible JSON preview area
   it("clicking JSON preview button shows and hides element JSON", function () {
 
-    expect(page.templateJSON.isDisplayed()).toBe(false);
+    expect(page.templateJSON().isDisplayed()).toBe(false);
 
     page.getJsonPreviewText().then(function (value) {
       var json = JSON.parse(value);
       expect(_.isEqual(json, page.emptyElementJson)).toBe(true);
     });
 
-    expect(page.templateJSON.isDisplayed()).toBe(true);
+    expect(page.templateJSON().isDisplayed()).toBe(true);
     page.clickJsonPreview();
-    expect(page.templateJSON.isDisplayed()).toBe(false);
+    expect(page.templateJSON().isDisplayed()).toBe(false);
 
   });
 

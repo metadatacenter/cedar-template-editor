@@ -1,6 +1,6 @@
 'use strict';
 
-require ('../pages/dashboard-page.js');
+require ('../pages/workspace-page.js');
 
 var MetadataPage = function () {
   var url = 'https://cedar.metadatacenter.orgx/dashboard';
@@ -46,7 +46,7 @@ var MetadataPage = function () {
 
   this.clickCancelMetadata = function () {
     element(by.css('.back-arrow-click')).click();
-    return require('./dashboard-page.js');
+    return require('./workspace-page.js');
   };
 
   this.clickSaveMetadata = function () {
