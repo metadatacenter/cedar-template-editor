@@ -4,7 +4,9 @@ require('../pages/template-creator-page.js');
 
 
 var WorkspacePage = function () {
-  var url = 'https://cedar.metadatacenter.orgx/dashboard';
+  //var url = 'https://cedar.metadatacenter.orgx/dashboard';
+  var testConfig = require('../config/test-env.js');
+  var url = testConfig.baseUrl + '/dashboard';
 
   // header
   var createTopNavigation = element(by.id('top-navigation'));

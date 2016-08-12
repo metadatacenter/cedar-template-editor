@@ -4,7 +4,9 @@ require('../pages/template-creator-page.js');
 require('../pages/metadata-page.js');
 
 var DashboardPage = function () {
-  var url = 'https://cedar.metadatacenter.orgx/dashboard';
+  //var url = 'https://cedar.metadatacenter.orgx/dashboard';
+  var testConfig = require('../config/test-env.js');
+  var url = testConfig.baseUrl + '/dashboard';
   var EC = protractor.ExpectedConditions;
 
   var createButton = element(by.id('button-create'));
