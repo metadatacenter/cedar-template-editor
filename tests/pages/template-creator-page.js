@@ -3,7 +3,7 @@
 require('../pages/workspace-page.js');
 
 var TemplateCreatorPage = function () {
-  //var url = 'https://cedar.metadatacenter.orgx/dashboard';
+
   var testConfig = require('../config/test-env.js');
   var url = testConfig.baseUrl + '/dashboard';
   var showJsonLink = element(by.id('top-navigation')).element(by.css('.navbar-header')).element(by.id('show-json-link'));
@@ -20,12 +20,17 @@ var TemplateCreatorPage = function () {
   var createSearchElement = element(by.id('button-search-element'));
   var createSearchInput = element(by.id('search-browse-modal')).element(by.id('search'));
   var createSearchButton = element(by.id('search-browse-modal')).element(by.css('.do-search'));
+  var createSearchResult = element(by.id('search-browse-modal')).element(by.css('.search-result'));
+  var createFirstElement = element.all(by.css('.form-box .element')).first();
   var createElementButton = element(by.id('button-create-element'));
+  var createElementPage = element(by.css('#top-navigation.element'));
   var createSearchForm = element(by.css('.nav-search')).element(by.tagName('form'));
   var searchBrowseModalDialog = element(by.id("search-browse-modal"));
   var createSearchBreadcrumb = element(by.css('.breadcrumbs-sb  span'));
   var createSearchSubmitButton = element(by.css(".footer-buttons")).element(by.css('.subm'));
   var createSearchBreadcrumbText = element(by.id("search-browse-modal")).element(by.css('.controls-bar .as-modal')).element(by.css('.breadcrumbs-sb')).element(by.tagName('p')).element(by.tagName('span'));
+  var createFirstSelected = element(by.css('.form-box-container.selected'));
+  var createTopNavWorkspace = element(by.css('.navbar.dashboard'));
 
   var createDateButton = element(by.id('button-add-field-date'));
   var createEmailButton = element(by.id('button-add-field-email'));
@@ -75,7 +80,6 @@ var TemplateCreatorPage = function () {
   var elementType = 'element';
   var folderType = 'folder';
   var dashboardType = 'dashboard';
-  var cssNavDashboard = '.navbar.dashboard';
   var cssDetailOptions = '.detail-options';
 
   // template creator
@@ -271,7 +275,7 @@ var TemplateCreatorPage = function () {
 
   // are we on the dashboard page?
   this.isDashboard = function () {
-    return element(by.css(cssNavDashboard)).isDisplayed();
+    return createTopNavWorkspace.isDisplayed();
   };
   // template creator
 
@@ -286,8 +290,6 @@ var TemplateCreatorPage = function () {
   };
   this.get = function () {
     browser.get(url);
-// wait until loaded 
-// TODO: should use EC for this 
     browser.sleep(1000);
   };
 
@@ -380,18 +382,18 @@ var TemplateCreatorPage = function () {
     return createSearchBreadcrumb.getText();
   };
   this.getFirstElement = function () {
-    var firstElement = element.all(by.css('.form-box .element')).first();
-    return firstElement;
+    //var firstElement = element.all(by.css('.form-box .element')).first();
+    return createFirstElement;
 
   };
-  this.findSearchSubmit = function () {
-
-    var elm = element.all(by.css('.subm')).get(0);
-    browser.executeScript("arguments[0].scrollIntoView();", elm.getWebElement());
-    browser.sleep(3000);
-    return elm;
-
-  };
+  //this.findSearchSubmit = function () {
+  //
+  //  var elm = element.all(by.css('.subm')).get(0);
+  //  browser.executeScript("arguments[0].scrollIntoView();", elm.getWebElement());
+  //  browser.sleep(3000);
+  //  return elm;
+  //
+  //};
 
 
   // template creator
@@ -419,6 +421,7 @@ var TemplateCreatorPage = function () {
     createTemplateButton.click();
   };
 
+  // TODO see if the sleep can go away
   this.setTemplateTitle = function (text) {
 
     // should have an editable element title
@@ -428,7 +431,7 @@ var TemplateCreatorPage = function () {
     browser.sleep(3000);
     title.sendKeys(text);
     browser.sleep(3000);
-    element(by.css('.template-header form')).submit();
+    element.all(by.css('.template-header form')).first().submit();
   };
 
   this.setTemplateDescription = function (text) {
@@ -485,10 +488,8 @@ var TemplateCreatorPage = function () {
   this.createElement = function () {
     browser.actions().mouseMove(createButton).perform();
     createElementButton.click();
-  };
-  this.createElement = function () {
-    browser.actions().mouseMove(createButton).perform();
-    createElementButton.click();
+    browser.wait(createElementPage.isDisplayed());
+    browser.sleep(1000);
   };
   this.setElementTitle = function (text) {
 
@@ -678,21 +679,25 @@ var TemplateCreatorPage = function () {
       var searchButton = element(by.id('search-browse-modal')).element(by.css('.do-search'));
       searchButton.click().then(function () {
 
-        var firstElement = element.all(by.css('.form-box .element')).first();
-        browser.wait(EC.visibilityOf(firstElement), 10000);
+        browser.wait(createSearchResult.isDisplayed());
+        browser.wait(EC.visibilityOf(createFirstElement), 10000);
 
         // the search browse modal should show some results
-        expect(firstElement.isPresent()).toBe(true);
+        expect(createFirstElement.isPresent()).toBe(true);
 
-        // get the first element in the list of search results
-        firstElement.click().then(function () {
+        // get the first element in the list of search results and select it
+        createFirstElement.click().then(function () {
 
-          // select the first element in the list and click to submit the search browser modal
+          // wait for a selected item
+          browser.wait(createFirstSelected.isDisplayed());
+
+          // click to submit the search browser modal
           var searchSubmit = element.all(by.css('.subm')).get(0);
           browser.executeScript("arguments[0].scrollIntoView();", searchSubmit.getWebElement());
           //browser.sleep(3000);
 
           searchSubmit.click().then(function () {
+            //browser.sleep(3000);
             browser.wait(createToolbar.isDisplayed());
             browser.sleep(1000);  // add time for animation
             deferred.fulfill(true);

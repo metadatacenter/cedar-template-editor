@@ -7,34 +7,66 @@ var MetadataPage = function () {
   var testConfig = require('../config/test-env.js');
   var url = testConfig.baseUrl + '/dashboard';
 
-  this.topNavigation = element(by.id('top-navigation'));
-  this.topNavBackArrow = element(by.id('top-navigation')).element(by.css('.navbar-header')).element(by.css('.back-arrow-click'));
-  this.documentTitle = element(by.id('top-navigation')).element(by.css('.navbar-header')).element(by.css('.navbar-back')).element(by.css('.document-title'));
-  this.pageTitle = element(by.id('top-navigation')).element(by.css('.navbar-header')).element(by.css('.navbar-back')).element(by.css('.page-title'));
-  this.templateJson = element(by.id('show-json-link'));
-  this.metadataJson = element(By.css('#jsonTools a:nth-child(1)'));
-  this.firstItemTitle = element(by.css('.item-root')).element(by.model('model._value'));
-  this.sampleTitle = 'sample title';
-  this.deleteTemplateMessage = 'The template has been deleted.';
-  this.createToastyConfirmationPopup = element(by.id('toasty')).element(by.css('.toast'));
+  var createToastyConfirmationPopup = element(by.id('toasty')).element(by.css('.toast'));
+  var createMetadataMessage = 'The metadata have been created.';
+  var toastyMessageText = element(by.id('toasty')).element(by.css('.toast')).element(by.css('.toast-msg'));
+
+  var topNavigation = element(by.id('top-navigation'));
+  var topNavBackArrow = element(by.id('top-navigation')).element(by.css('.navbar-header')).element(by.css('.back-arrow-click'));
+  var documentTitle = element(by.id('top-navigation')).element(by.css('.navbar-header')).element(by.css('.navbar-back')).element(by.css('.document-title'));
+  var pageTitle = element(by.id('top-navigation')).element(by.css('.navbar-header')).element(by.css('.navbar-back')).element(by.css('.page-title'));
+  var templateJson = element(by.id('show-json-link'));
+  var metadataJson = element(By.css('#jsonTools a:nth-child(1)'));
+  var firstItemTitle = element(by.css('.item-root')).element(by.model('model._value'));
+  var sampleTitle = 'sample title';
+  var deleteTemplateMessage = 'The template has been deleted.';
 
 
   var cssNavDashboard = '.navbar.dashboard';
   var cssNavMetadata = '.navbar.metadata';
 
-  this.metadataPageTitle = 'Metadata Editor';
+  var metadataPageTitle = 'Metadata Editor';
 
 
   this.get = function () {
     browser.get(url);
-// wait until loaded 
-// TODO: should use EC for this 
     browser.sleep(1000);
   };
 
 
   this.test = function() {
     console.log('metadata  page test');
+  };
+
+  this.topNavigation = function() {
+    return topNavigation;
+  };
+  this.topNavBackArrow = function() {
+    return topNavBackArrow;
+  };
+  this.documentTitle = function() {
+    return documentTitle;
+  };
+  this.pageTitle = function() {
+    return pageTitle;
+  };
+  this.templateJson = function() {
+    return templateJson;
+  };
+  this.metadataJson = function() {
+    return metadataJson;
+  };
+  this.firstItemTitle = function() {
+    return firstItemTitle;
+  };
+  this.sampleTitle = function() {
+    return sampleTitle;
+  };
+  this.metadataPageTitle = function() {
+    return metadataPageTitle;
+  };
+  this.deleteTemplateMessage = function() {
+    return deleteTemplateMessage;
   };
 
 
@@ -53,16 +85,12 @@ var MetadataPage = function () {
 
   this.clickSaveMetadata = function () {
 
-    var EC = protractor.ExpectedConditions;
-    var createToastyConfirmationPopup = element(by.id('toasty')).element(by.css('.toast'));
-    var createMetadataMessage = 'The metadata have been created.';
-    var toastyMessageText = element(by.id('toasty')).element(by.css('.toast')).element(by.css('.toast-msg'));
-
     // click save the template
     element(by.css('.edit-actions button.btn.btn-save.metadata')).click();
 
-    browser.wait(EC.visibilityOf(createToastyConfirmationPopup), 10000);
-    expect(createToastyConfirmationPopup.isDisplayed()).toBe(true);
+    browser.wait(createToastyConfirmationPopup.isDisplayed());
+    //browser.wait(EC.visibilityOf(createToastyConfirmationPopup), 10000);
+    //expect(createToastyConfirmationPopup.isDisplayed()).toBe(true);
     toastyMessageText.getText().then(function (value) {
       expect(value.indexOf(createMetadataMessage) !== -1).toBe(true);
     });

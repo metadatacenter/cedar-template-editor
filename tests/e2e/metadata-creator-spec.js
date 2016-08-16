@@ -36,23 +36,23 @@ describe('metadata-creator', function () {
       expect(metadataPage.isMetadata()).toBe(true);
 
       // should have top nav basics
-      expect(metadataPage.topNavigation.isDisplayed()).toBe(true);
-      expect(metadataPage.topNavBackArrow.isDisplayed()).toBe(true);
-      expect(metadataPage.documentTitle.isDisplayed()).toBe(true);
-      expect(metadataPage.templateJson.isDisplayed()).toBe(true);
-      expect(metadataPage.metadataJson.isDisplayed()).toBe(true);
+      expect(metadataPage.topNavigation().isDisplayed()).toBe(true);
+      expect(metadataPage.topNavBackArrow().isDisplayed()).toBe(true);
+      expect(metadataPage.documentTitle().isDisplayed()).toBe(true);
+      expect(metadataPage.templateJson().isDisplayed()).toBe(true);
+      expect(metadataPage.metadataJson().isDisplayed()).toBe(true);
 
       // and the right document
-      metadataPage.documentTitle.getText().then(function (text) {
+      metadataPage.documentTitle().getText().then(function (text) {
         expect(workspacePage.sampleTemplateTitle() === text).toBe(true);
       });
 
       // and the right page title
-      metadataPage.pageTitle.getText().then(function (text) {
-        expect(metadataPage.metadataPageTitle === text).toBe(true);
+      metadataPage.pageTitle().getText().then(function (text) {
+        expect(metadataPage.metadataPageTitle() === text).toBe(true);
       });
 
-      metadataPage.topNavBackArrow.click().then(function () {
+      metadataPage.topNavBackArrow().click().then(function () {
         browser.sleep(1000);
         expect(metadataPage.isDashboard()).toBe(true);
       });
@@ -67,11 +67,11 @@ describe('metadata-creator', function () {
       expect(metadataPage.isMetadata()).toBe(true);
 
       // make the metadata  dirty
-      var firstTitle  = metadataPage.firstItemTitle;
+      var firstTitle  = metadataPage.firstItemTitle();
 
-      firstTitle.sendKeys(metadataPage.sampleTitle).sendKeys(protractor.Key.ENTER);
+      firstTitle.sendKeys(metadataPage.sampleTitle()).sendKeys(protractor.Key.ENTER);
       firstTitle.getAttribute('value').then(function (value) {
-        expect(value === metadataPage.sampleTitle).toBe(true);
+        expect(value === metadataPage.sampleTitle()).toBe(true);
       });
 
       // clicking the cancel should cancel edits
@@ -87,11 +87,11 @@ describe('metadata-creator', function () {
       expect(metadataPage.isMetadata()).toBe(true);
 
       // make the metadata  dirty
-      var firstTitle  = metadataPage.firstItemTitle;
+      var firstTitle  = metadataPage.firstItemTitle();
 
-      firstTitle.sendKeys(metadataPage.sampleTitle).sendKeys(protractor.Key.ENTER);
+      firstTitle.sendKeys(metadataPage.sampleTitle()).sendKeys(protractor.Key.ENTER);
       firstTitle.getAttribute('value').then(function (value) {
-        expect(value === metadataPage.sampleTitle).toBe(true);
+        expect(value === metadataPage.sampleTitle()).toBe(true);
       });
 
       // clicking the save should save edits
