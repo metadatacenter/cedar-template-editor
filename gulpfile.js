@@ -192,13 +192,13 @@ console.log();
 
 // Prepare task list
 var taskNameList = [];
-if (cedarProfile === 'development') {
+if (cedarProfile === 'local') {
     taskNameList.push('server-development');
     taskNameList.push('watch');
-} else if (cedarProfile === 'production') {
+} else if (cedarProfile === 'server') {
     console.log("Editor is configuring URLs, and exiting. The frontend content will be served by nginx");
 } else {
-    exitWithError("Invalid CEDAR_PROFILE value. Please set 'development' or 'production'");
+    exitWithError("Invalid CEDAR_PROFILE value. Please set to 'local' or 'server'");
 }
 
 taskNameList.push('lint', 'less', 'copy:resources', 'replace-url', 'replace-tracking', 'test-env');
