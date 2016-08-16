@@ -23,6 +23,7 @@ define([
         $rootScope.pageTitle = 'Template Designer';
 
         $rootScope.searchBrowseModalId = "search-browse-modal";
+        $rootScope.finderModalId = "finder-modal";
 
         var pageId = CONST.pageId.TEMPLATE;
         HeaderService.configure(pageId);
@@ -317,6 +318,11 @@ define([
           jQuery("#" + $scope.searchBrowseModalId).modal("show");
         };
 
+        $scope.elementFind = function () {
+          jQuery("body").trigger("click");
+          jQuery("#" + $scope.finderModalId).modal("show");
+        };
+
         $scope.addElementFromPicker = function () {
           if ($scope.pickerResource) {
             $scope.addElementToTemplate($scope.pickerResource);
@@ -339,6 +345,10 @@ define([
 
         $scope.hideSearchBrowsePicker = function () {
           jQuery("#" + $scope.searchBrowseModalId).modal('hide')
+        };
+
+        $scope.hideFinder = function () {
+          jQuery("#" + $scope.finderModalId).modal('hide')
         };
 
       }
