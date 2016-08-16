@@ -383,6 +383,7 @@ describe('element-creator', function () {
 
       page.addElement(page.sampleElementTitle()).then(function () {
 
+
         // the element should include the sample element name
         var items = element.all(by.css('.element-root .element-name-label'));
 
@@ -590,6 +591,7 @@ describe('element-creator', function () {
 
         var firstField;
         var lastField;
+        var EC = protractor.ExpectedConditions;
 
         // add two fields
         page.addField(fieldType.cedarType);
@@ -612,6 +614,7 @@ describe('element-creator', function () {
 
         // click on the first field
         browser.actions().mouseMove(firstField).perform();
+        browser.wait(EC.elementToBeClickable(firstField));
         firstField.click();
 
         // is the first selected and the second deselected

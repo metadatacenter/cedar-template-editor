@@ -12,6 +12,7 @@ var WorkspacePage = function () {
   var createTopNavigation = element(by.id('top-navigation'));
   var createLogo = createTopNavigation.element(by.css('.navbar-brand'));
   var createPageName = element(by.css('#top-navigation.dashboard'));
+  var createMetadataPage = element(by.css('#top-navigation.metadata'));
 
   // search nav
   var createSearchNav = element(by.css('#top-navigation  .nav-search'));
@@ -19,6 +20,8 @@ var WorkspacePage = function () {
   var createSearchNavInput = element(by.model('hc.searchTerm'));
   var createSearchNavSearchButton = element(by.css('#top-navigation .nav-search form a.do-search'));
   var createSearchNavClearButton = element(by.css('#top-navigation .nav-search form a.clear-search'));
+  var createTopNavWorkspace = element(by.css('.navbar.metadata'));
+  var createFirstSelected = element(by.css('.form-box-container.selected'));
 
   // toolbar
   var createToolbar = element(by.id('workspace-toolbar'));
@@ -38,7 +41,7 @@ var WorkspacePage = function () {
   var createSortByUpdatedMenuItem = createToolbar.element(by.css('#workspace-sort-tool [ng-click="dc.setSortOption(\\042lastUpdatedOnTS\\042)"]'));
   var createUserDropdownButton = createToolbar.element(by.css('#user-tool > div > button'));
   var createProfileMenuItem = createToolbar.element(by.css('#user-tool #user-profile-tool a'));
-  var createLogoutMenuItem  = createToolbar.element(by.css('#user-tool #user-logoout-tool a'));
+  var createLogoutMenuItem = createToolbar.element(by.css('#user-tool #user-logoout-tool a'));
   var trashTooltip = 'delete selection';
 
 
@@ -87,7 +90,7 @@ var WorkspacePage = function () {
   var createFirstFolder = element.all(by.css('.center-panel .grid-view .form-box .folder')).first();
   var createFirstElement = element.all(by.css('.center-panel .grid-view .form-box .element')).first();
   var createFirstTemplate = element.all(by.css('.center-panel .grid-view .form-box .template')).first();
-  var createFirstCss =  '.center-panel .grid-view .form-box .';
+  var createFirstCss = '.center-panel .grid-view .form-box .';
   var folderType = 'folder';
   var templateType = 'template';
   var elementType = 'element';
@@ -95,22 +98,23 @@ var WorkspacePage = function () {
 
   this.get = function () {
     browser.get(url);
-// wait until loaded 
-// TODO: should use EC for this 
     browser.sleep(1000);
   };
   this.test = function () {
-    console.log('workspace page test ' );
+    console.log('workspace page test ');
 
   };
   this.isDashboard = function () {
     return createPageName.isDisplayed();
   };
 
-  this.createMoreOptionsButton = function() {
+  this.createMoreOptionsButton = function () {
     return createMoreOptionsButton;
-  }
+  };
 
+  this.createFirstSelected = function () {
+    return createFirstSelected;
+  };
 
   this.folderType = function () {
     return folderType;
@@ -154,14 +158,15 @@ var WorkspacePage = function () {
   this.createElement = function () {
     browser.actions().mouseMove(createNewButton).perform();
     createNewElementButton.click();
+    browser.sleep(1000);
     return require('./template-creator-page.js');
   };
 
-  this.createFolderModal = function () {
-    browser.actions().mouseMove(createNewButton).perform();
-    createNewFolderButton.click();
-    browser.wait(createFolderModal.isPresent());
-  };
+  //this.createFolderModal = function () {
+  //  browser.actions().mouseMove(createNewButton).perform();
+  //  createNewFolderButton.click();
+  //  browser.wait(createFolderModal.isPresent());
+  //};
   this.createRandomFolderName = function () {
     return testFolderName + Math.random();
   };
@@ -199,10 +204,13 @@ var WorkspacePage = function () {
     var deferred = protractor.promise.defer();
     var EC = protractor.ExpectedConditions;
 
-    this.createFolderModal();
+    browser.actions().mouseMove(createNewButton).perform();
+    createNewFolderButton.click();
+    browser.wait(createFolderModal.isPresent());
 
     // give it a folder name
     createFolderName.sendKeys(name);
+    browser.wait(EC.elementToBeClickable(createFolderSubmitButton));
     createFolderSubmitButton.click();
 
     browser.wait(createToastyConfirmationPopup.isPresent());
@@ -221,23 +229,34 @@ var WorkspacePage = function () {
     var EC = protractor.ExpectedConditions;
 
     // search for the name
+    browser.wait(createSearchNavInput.isDisplayed());
+    browser.wait(EC.elementToBeClickable(createSearchNavInput));
     createSearchNavInput.sendKeys(name).sendKeys(protractor.Key.ENTER);
+
+    browser.sleep(1000);
 
     // wait for search results to show in the breadcrumb
     browser.wait(createBreadcrumbSearch.isDisplayed());
 
+    browser.sleep(1000);
+
     // select the first result
     var createFirst = element.all(by.css(createFirstCss + type)).first();
-    expect(createFirst.isDisplayed()).toBe(true);
+    browser.wait(createFirst.isDisplayed());
+    browser.wait(EC.elementToBeClickable(createFirst));
     createFirst.click();
 
+    // wait for a selected item and the trash button
+    browser.wait(createFirstSelected.isDisplayed());
     browser.wait(createTrashButton.isDisplayed());
+    browser.wait(EC.elementToBeClickable(createTrashButton));
     createTrashButton.click();
 
     browser.wait(createConfirmationDialog.isDisplayed());
     browser.sleep(1000);  // give it some time for animation
     expect(createConfirmationDialog.getAttribute(sweetAlertCancelAttribute)).toBe('true');
     expect(createConfirmationDialog.getAttribute(sweetAlertConfirmAttribute)).toBe('true');
+    browser.wait(EC.elementToBeClickable(createSweetAlertConfirmButton));
     createSweetAlertConfirmButton.click();
 
     browser.wait(createToastyConfirmationPopup.isDisplayed());
@@ -250,113 +269,6 @@ var WorkspacePage = function () {
     return deferred.promise;
   };
 
-
-  //// delete a folder by name
-  //this.deleteFolder = function (name) {
-  //  var deferred = protractor.promise.defer();
-  //  var EC = protractor.ExpectedConditions;
-  //
-  //  // search for the folder
-  //  createSearchNavInput.sendKeys(name).sendKeys(protractor.Key.ENTER);
-  //
-  //  // wait for search results to show in the breadcrumb
-  //  browser.wait(createBreadcrumbSearch.isDisplayed());
-  //
-  //  // select the first result
-  //  expect(createFirstFolder.isDisplayed()).toBe(true);
-  //  createFirstFolder.click();
-  //
-  //  browser.wait(createTrashButton.isDisplayed());
-  //  createTrashButton.click();
-  //
-  //  browser.wait(createConfirmationDialog.isDisplayed());
-  //  browser.sleep(1000);  // give it some time for animation
-  //  expect(createConfirmationDialog.getAttribute(sweetAlertCancelAttribute)).toBe('true');
-  //  expect(createConfirmationDialog.getAttribute(sweetAlertConfirmAttribute)).toBe('true');
-  //  createSweetAlertConfirmButton.click();
-  //
-  //  browser.wait(createToastyConfirmationPopup.isDisplayed());
-  //  createToastyMessageText.getText().then(function (value) {
-  //    var result = value.indexOf(toastyFolderMessage + name + toastyMessageCreated) !== -1;
-  //    browser.wait(EC.not(EC.presenceOf(createToastyConfirmationPopup)));
-  //    deferred.fulfill(result);
-  //  });
-  //
-  //  return deferred.promise;
-  //};
-  //
-  //// delete a folder by name
-  //this.deleteTemplate = function (name) {
-  //  var deferred = protractor.promise.defer();
-  //  var EC = protractor.ExpectedConditions;
-  //
-  //  // search for the folder
-  //  createSearchNavInput.sendKeys(name).sendKeys(protractor.Key.ENTER);
-  //
-  //  // wait for search results to show in the breadcrumb
-  //  browser.wait(createBreadcrumbSearch.isDisplayed());
-  //
-  //  // select the first result
-  //  expect(createFirstTemplate.isDisplayed()).toBe(true);
-  //  createFirstTemplate.click();
-  //
-  //  browser.wait(createTrashButton.isDisplayed());
-  //  createTrashButton.getAttribute('tooltip').then(function (value) {
-  //    expect(value === trashTooltip).toBe(true);
-  //  });
-  //  createTrashButton.click();
-  //
-  //  browser.wait(createConfirmationDialog.isDisplayed());
-  //  browser.sleep(1000);  // give it some time for animation
-  //  expect(createConfirmationDialog.getAttribute(sweetAlertCancelAttribute)).toBe('true');
-  //  expect(createConfirmationDialog.getAttribute(sweetAlertConfirmAttribute)).toBe('true');
-  //  createSweetAlertConfirmButton.click();
-  //
-  //  browser.wait(createToastyConfirmationPopup.isDisplayed());
-  //  createToastyMessageText.getText().then(function (value) {
-  //    var result = value.indexOf(toastyTemplateMessage + name + toastyMessageDeleted) !== -1;
-  //    browser.wait(EC.not(EC.presenceOf(createToastyConfirmationPopup)));
-  //    deferred.fulfill(result);
-  //  });
-  //
-  //  return deferred.promise;
-  //};
-  //
-  //// delete a element by name
-  //this.deleteElement= function (name) {
-  //  var deferred = protractor.promise.defer();
-  //
-  //  // search for the folder
-  //  createSearchNavInput.sendKeys(name).sendKeys(protractor.Key.ENTER);
-  //
-  //  // wait for search results to show in the breadcrumb
-  //  browser.wait(createBreadcrumbSearch.isDisplayed());
-  //
-  //  // select the first result
-  //  expect(createFirstElement.isDisplayed()).toBe(true);
-  //  createFirstElement.click();
-  //
-  //  browser.wait(createTrashButton.isDisplayed());
-  //  createTrashButton.getAttribute('tooltip').then(function (value) {
-  //    expect(value === trashTooltip).toBe(true);
-  //  });
-  //  createTrashButton.click();
-  //
-  //  browser.wait(createConfirmationDialog.isDisplayed());
-  //  browser.sleep(1000);  // give it some time for animation
-  //  expect(createConfirmationDialog.getAttribute(sweetAlertCancelAttribute)).toBe('true');
-  //  expect(createConfirmationDialog.getAttribute(sweetAlertConfirmAttribute)).toBe('true');
-  //  createSweetAlertConfirmButton.click();
-  //
-  //  browser.wait(createToastyConfirmationPopup.isDisplayed());
-  //  createToastyMessageText.getText().then(function (value) {
-  //    var result = value.indexOf(toastyElementMessage + name + toastyMessageDeleted) !== -1;
-  //    deferred.fulfill(result);
-  //  });
-  //
-  //  return deferred.promise;
-  //};
-  //
 
   // open the template by title
   this.openTemplate = function (name) {
@@ -372,7 +284,13 @@ var WorkspacePage = function () {
     expect(createFirstTemplate.isDisplayed()).toBe(true);
     createFirstTemplate.click();
 
+    // wait for the resource to be selected
+    browser.wait(createFirstSelected.isDisplayed());
+
     browser.actions().doubleClick(createFirstTemplate).perform();
+
+    // wait until metadata page is displayed
+    browser.wait(createMetadataPage.isDisplayed());
     deferred.fulfill(true);
 
     return deferred.promise;

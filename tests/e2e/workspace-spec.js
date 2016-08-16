@@ -39,31 +39,12 @@ describe('workspace', function () {
     page.openFolder(1);
   });
 
-  // github issue #376: functioning trash button
-  it("should have trash button", function () {
+  // github issue #376, #377: functioning trash and options buttons
+  it("should have trash and options button", function () {
     var name = page.createRandomFolderName();
 
     // trash should not be visible
     expect(page.createTrashButton().isPresent()).toBe(false);
-
-    //create a folder, select it, and expect the trash to be visible
-    page.createFolder(name).then(function () {
-
-      // until something is selected
-      page.createFirstFolder().click();
-
-      // now it should be displayed
-      browser.wait(page.createTrashButton().isDisplayed());
-
-      page.deleteResource(name, page.folderType());
-    });
-  });
-
-  // github issue #377: functioning more options dropdown
-  it("should have functioning more options dropdown", function () {
-    var name = page.createRandomFolderName();
-
-    // more button should not be visible
     expect(page.createMoreOptionsButton().isPresent()).toBe(false);
 
     //create a folder, select it, and expect the trash to be visible
@@ -71,8 +52,8 @@ describe('workspace', function () {
 
       // until something is selected
       page.createFirstFolder().click();
-
-      // now it should be displayed
+      browser.wait(page.createFirstSelected().isDisplayed());
+      browser.wait(page.createTrashButton().isDisplayed());
       browser.wait(page.createMoreOptionsButton().isDisplayed());
 
       page.deleteResource(name, page.folderType());
