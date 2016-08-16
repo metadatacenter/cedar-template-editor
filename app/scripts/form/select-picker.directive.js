@@ -30,7 +30,7 @@ define([
 
         if ($scope.model != undefined) {
           // If returning to an already populated select list field, load selections
-          default_array = $scope.model._value;
+          default_array = $scope.model['@value'];
 
         } else if ($scope.field && $scope.field._ui.defaultOption) {
           default_array = [];
@@ -45,7 +45,7 @@ define([
             }
           }
           $scope.model = $scope.model || {};
-          $scope.model['_value'] = default_array;
+          $scope.model['@value'] = default_array;
         }
 
         $timeout(function () {

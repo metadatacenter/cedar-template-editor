@@ -19,7 +19,7 @@
       "properties": {
       },
       "required": [
-        "_value"
+        "@value"
       ],
       "additionalProperties": false
     },

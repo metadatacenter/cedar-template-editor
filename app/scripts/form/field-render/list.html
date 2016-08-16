@@ -14,7 +14,7 @@
 			  data-max-options="1"
 			  field="field"
 			  title="{{$root.schemaOf(field)._ui.title}}"
-			  ng-model="valueElement._value"
+			  ng-model="valueElement['@value']"
               ng-disabled="!$root.isRuntime() || preview"
 			  defaults="$root.schemaOf(field)._ui.defaultOption"
 			  select-picker="">
@@ -29,7 +29,7 @@
 			  multiple=""
 			  field="field"
 			  title="{{$root.schemaOf(field)._ui.title}}"
-			  ng-model="valueElement._value"
+			  ng-model="valueElement['@value']"
               ng-disabled="!$root.isRuntime() || preview"
 			  defaults="$root.schemaOf(field)._ui.defaultOption"
 			  select-picker="">
@@ -51,7 +51,7 @@
           data-max-options="1"
           field="field"
           title="{{$root.schemaOf(field)._ui.title}}"
-          ng-model="model._value"
+          ng-model="model['@value']"
           ng-disabled="true"
           defaults="$root.schemaOf(field)._ui.defaultOption"
           select-picker="">
@@ -66,7 +66,7 @@
           multiple=""
           field="field"
           title="{{$root.schemaOf(field)._ui.title}}"
-          ng-model="model._value"
+          ng-model="model['@value']"
           ng-disabled="true"
           defaults="$root.schemaOf(field)._ui.defaultOption"
           select-picker="">
@@ -85,7 +85,7 @@
 			  data-max-options="1"
 			  field="field"
 			  title="{{$root.schemaOf(field)._ui.title}}"
-			  ng-model="model._value"
+			  ng-model="model['@value']"
               ng-disabled="!$root.isRuntime() || preview"
 			  defaults="$root.schemaOf(field)._ui.defaultOption"
 			  select-picker="">
@@ -100,7 +100,7 @@
 			  multiple=""
 			  field="field"
 			  title="{{$root.schemaOf(field)._ui.title}}"
-			  ng-model="model._value"
+			  ng-model="model['@value']"
               ng-disabled="!$root.isRuntime() || preview"
 			  defaults="$root.schemaOf(field)._ui.defaultOption"
 			  select-picker="">

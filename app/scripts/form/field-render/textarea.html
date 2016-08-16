@@ -12,7 +12,7 @@
         ng-class="{'required': $root.schemaOf(field)._valueConstraints.requiredValue}"
         placeholder="{{$root.schemaOf(field)._ui.title}}"
         aria-label="{{$root.schemaOf(field)._ui.description}}"
-        ng-model="valueElement._value"
+        ng-model="valueElement['@value']"
         ng-disabled="!$root.isRuntime() || preview"
         with-floating-label=""></textarea>
 
@@ -32,7 +32,7 @@
         class="form-control"
         placeholder="{{$root.schemaOf(field)._ui.title}}"
         aria-label="{{$root.schemaOf(field)._ui.description}}"
-        ng-model="model._value"
+        ng-model="model['@value']"
         ng-disabled="true"
         with-floating-label=""></textarea>
 
@@ -48,7 +48,7 @@
         class="form-control"
         placeholder="{{$root.schemaOf(field)._ui.title}}"
         aria-label="{{$root.schemaOf(field)._ui.description}}"
-        ng-model="model._value"
+        ng-model="model['@value']"
         ng-disabled="!$root.isRuntime() || preview"
         with-floating-label=""></textarea>
 

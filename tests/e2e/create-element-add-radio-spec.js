@@ -72,7 +72,7 @@ xdescribe('create-element-add-radio-button', function () {
                   browser.waitForAngular().then(function () {
                     page.getJsonPreviewText().then(function (value) {
                       var json = JSON.parse(value);
-                      expect(json.properties.simpleRadioButton && json.properties.simpleRadioButton.required.indexOf("_value") >= 0).toBe(true);
+                      expect(json.properties.simpleRadioButton && json.properties.simpleRadioButton.required.indexOf("@value") >= 0).toBe(true);
                     });
                   });
                 });
@@ -108,7 +108,7 @@ xdescribe('create-element-add-radio-button', function () {
                   browser.waitForAngular().then(function () {
                     page.getJsonPreviewText().then(function (value) {
                       var json = JSON.parse(value);
-                      expect(json.properties.simpleRadioButton && json.properties.simpleRadioButton.items.required.indexOf("_value") >= 0).toBe(true);
+                      expect(json.properties.simpleRadioButton && json.properties.simpleRadioButton.items.required.indexOf("@value") >= 0).toBe(true);
                     });
                   });
                 });

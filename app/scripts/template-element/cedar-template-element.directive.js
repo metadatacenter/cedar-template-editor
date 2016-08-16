@@ -36,7 +36,7 @@ define([
           }
 
           if (!DataUtilService.isSpecialKey(key)) {
-            if (key == "_value") {
+            if (key == '@value') {
               if (angular.isArray(model)) {
                 if ($rootScope.schemaOf(settings)._ui.inputType == "list") {
                   if ($rootScope.schemaOf(settings)._ui.defaultOption) {
@@ -47,14 +47,14 @@ define([
                 } else {
                   for (var i = 0; i < model.length; i++) {
                     if ($rootScope.schemaOf(settings)._ui.defaultOption) {
-                      model[i]["_value"] = angular.copy($rootScope.schemaOf(settings)._ui.defaultOption);
+                      model[i]['@value'] = angular.copy($rootScope.schemaOf(settings)._ui.defaultOption);
                     } else {
-                      if (typeof(model[i]["_value"]) == "string") {
-                        model[i]["_value"] = "";
-                      } else if (angular.isArray(model[i]["_value"])) {
-                        model[i]["_value"] = [];
-                      } else if (angular.isObject(model[i]["_value"])) {
-                        model[i]["_value"] = {};
+                      if (typeof(model[i]['@value']) == "string") {
+                        model[i]['@value'] = "";
+                      } else if (angular.isArray(model[i]['@value'])) {
+                        model[i]['@value'] = [];
+                      } else if (angular.isObject(model[i]['@value'])) {
+                        model[i]['@value'] = {};
                       }
                     }
                   }
@@ -78,7 +78,7 @@ define([
               } else {
                 // This case el is an array
                 angular.forEach(model, function (v, k) {
-                  if (k == "_value") {
+                  if (k == '@value') {
                     if (angular.isArray(v)) {
                       if ($rootScope.schemaOf(settings)._ui.inputType == "list") {
                         if ($rootScope.schemaOf(settings)._ui.defaultOption) {
@@ -89,14 +89,14 @@ define([
                       } else {
                         for (var i = 0; i < v.length; i++) {
                           if ($rootScope.schemaOf(settings)._ui.defaultOption) {
-                            v[i]["_value"] = angular.copy($rootScope.schemaOf(settings)._ui.defaultOption);
+                            v[i]['@value'] = angular.copy($rootScope.schemaOf(settings)._ui.defaultOption);
                           } else {
-                            if (typeof(v[i]["_value"]) == "string") {
-                              v[i]["_value"] = "";
-                            } else if (angular.isArray(v[i]["_value"])) {
-                              v[i]["_value"] = [];
-                            } else if (angular.isObject(v[i]["_value"])) {
-                              v[i]["_value"] = {};
+                            if (typeof(v[i]['@value']) == "string") {
+                              v[i]['@value'] = "";
+                            } else if (angular.isArray(v[i]['@value'])) {
+                              v[i]['@value'] = [];
+                            } else if (angular.isObject(v[i]['@value'])) {
+                              v[i]['@value'] = {};
                             }
                           }
                         }

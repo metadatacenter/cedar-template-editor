@@ -43,10 +43,10 @@ define([
         field = DataTemplateService.getStaticField(this.generateTempGUID());
       } else {
         field = DataTemplateService.getField(this.generateTempGUID());
-        field.properties._value.type = valueType;
+        field.properties['@value'].type = valueType;
       }
       field._ui.inputType = fieldType;
-      //field.properties._value.type = valueType;
+      //field.properties['@value'].type = valueType;
       return field;
     };
 

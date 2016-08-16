@@ -4,8 +4,7 @@
   "@type": "https://schema.metadatacenter.org/core/Template",
   "@context": {
     "pav": "http://purl.org/pav/",
-    "cedar": "https://schema.metadatacenter.org/core/",
-    "_value": "https://schema.org/value"
+    "cedar": "https://schema.metadatacenter.org/core/"
   },
   "type": "object",
   "title": "",
@@ -18,11 +17,6 @@
   "properties": {
     "@context": {
       "properties": {
-        "_value": {
-          "enum": [
-            "https://schema.org/value"
-          ]
-        },
         "pav": {
           "enum": [
             "http://purl.org/pav/"
@@ -35,7 +29,7 @@
         }
       },
       "required": [
-        "_value"
+        "@value"
       ],
       "additionalProperties": false
     },
