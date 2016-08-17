@@ -19,7 +19,7 @@ define([
             mode                  : '='
           },
           controller      : cedarFinderController,
-          controllerAs    : 'dc',
+          controllerAs    : 'finder',
           restrict        : 'E',
           scope           : {},
           templateUrl     : 'scripts/finder/cedar-finder.directive.html'
@@ -31,6 +31,7 @@ define([
           '$location',
           '$timeout',
           '$scope',
+          '$rootScope',
           '$translate',
           'CedarUser',
           'resourceService',
@@ -44,7 +45,7 @@ define([
           'CONST'
         ];
 
-        function cedarFinderController($location, $timeout, $scope, $translate, CedarUser, resourceService,
+        function cedarFinderController($location, $timeout, $scope, $rootScope, $translate, CedarUser, resourceService,
                                                    UIMessageService, UISettingsService, UrlService,
                                                    AuthorizedBackendService, TemplateInstanceService,
                                                    TemplateElementService, TemplateService, CONST) {
@@ -111,6 +112,13 @@ define([
           vm.isElement = isElement;
           vm.isFolder = isFolder;
           vm.isMeta = isMeta;
+
+          vm.finderModalId = 'finder-modal';
+
+          vm.testFinder = testFinder;
+          vm.search = search;
+          vm.openResource = openResource;
+          vm.hideFinder = hideFinder;
 
           vm.editingDescription = false;
 
@@ -402,6 +410,7 @@ define([
           }
 
           function doSearch(term) {
+            console.log('doSearch ' + term);
             var resourceTypes = activeResourceTypes();
             resourceService.searchResources(
                 term,
@@ -455,6 +464,22 @@ define([
             $location.url(url);
           }
 
+          function openResource(resource) {
+            var r = resource;
+            if (!r && vm.selectedResource) {
+              r = vm.selectedResource;
+            }
+
+            vm.params.search = null;
+
+            if (r.nodeType == 'folder') {
+              goToFolder(r['@id']);
+            } else {
+              editResource(r);
+              hideFinder();
+            }
+          }
+
           function goToResource(resource) {
             var r = resource;
             if (!r && vm.selectedResource) {
@@ -477,8 +502,8 @@ define([
           }
 
           function editResource(resource) {
-            //console.log('editResource');
-            //console.log(resource);
+            console.log('editResource');
+
 
             var id = resource['@id'];
             if (typeof vm.pickResourceCallback === 'function') {
@@ -808,16 +833,19 @@ define([
           });
 
           $scope.$on('search', function (event, searchTerm) {
-            if (onDashboard()) {
-              //$location.url(UrlService.getSearchPath(searchTerm));
-            } else {
+            console.log('on search ' + searchTerm);
               vm.params.search = searchTerm;
               initSearch();
-            }
           });
 
           $scope.hideModal = function (id) {
             jQuery('#' + id).modal('hide');
+          };
+
+          function search  (searchTerm) {
+            console.log('search ' + searchTerm);
+            vm.searchTerm = searchTerm;
+            $rootScope.$broadcast('search', vm.searchTerm || '');
           };
 
 
@@ -901,6 +929,42 @@ define([
           function setResourceViewMode(mode) {
             vm.resourceViewMode = mode;
             UISettingsService.saveUIPreference('folderView.viewMode', mode);
+          }
+
+
+
+
+          // finder
+          function testFinder() {
+            console.log('finder');
+          }
+          function showFinder() {
+            jQuery("body").trigger("click");
+            jQuery("#" + vm.finderModalId).modal("show");
+          }
+
+          function addElementFromFinder() {
+            if (vm.finderResource) {
+              addElementToElement(vm.finderResource);
+            }
+            hideFinder();
+          }
+
+          function pickElementFromFinder (resource) {
+            vm.addElementToElement(resource);
+            hideFinder();
+          }
+
+          function selectElementFromFinder  (resource) {
+            vm.finderResource = resource;
+          }
+
+          function showSFinder() {
+            vm.finderResource = null;
+          }
+
+          function hideFinder () {
+            jQuery("#" + vm.finderModalId).modal('hide');
           }
 
         }

@@ -13959,6 +13959,61 @@ table.apiKey td {
   /* Internet Explorer 10-11 */
   color: #bebebe;
 }
+.finder-modal {
+  margin: auto;
+}
+.finder-modal .modal-dialog {
+  padding: 0;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  background: white;
+}
+.finder-modal .modal-content {
+  background: white;
+  border-radius: 0;
+  border: 0;
+}
+.finder-modal .modal-header {
+  padding: 5px;
+}
+.finder-modal .modal-header .close {
+  margin-top: -20px;
+}
+.finder-modal .modal-body {
+  padding: 0 5px 5px;
+  max-height: calc(100% - 60px);
+  height: 400px;
+  overflow-y: scroll;
+}
+.finder-modal .modal-body .class-actions {
+  margin-top: 30px;
+  font-size: 1em;
+  text-align: center;
+}
+.finder-modal .element-title {
+  margin-bottom: 20px;
+  font-size: 1.2em;
+}
+.finder-modal .clear-search {
+  position: absolute;
+  top: -12px;
+  right: 15px;
+  margin: 20px;
+  font-size: 16px;
+  color: #ccc;
+}
+.finder-modal .search-input {
+  color: black;
+  font-size: 16px;
+  margin-top: 12px;
+}
+.finder-modal .do-search {
+  position: absolute;
+  top: -12px;
+  right: -20px;
+  margin: 20px;
+  font-size: 16px;
+}
 @font-face {
   font-family: "project-cedar";
   src: url("../media/fonts/project-cedar.eot");

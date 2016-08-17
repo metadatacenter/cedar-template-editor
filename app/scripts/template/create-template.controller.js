@@ -318,11 +318,6 @@ define([
           jQuery("#" + $scope.searchBrowseModalId).modal("show");
         };
 
-        $scope.elementFind = function () {
-          jQuery("body").trigger("click");
-          jQuery("#" + $scope.finderModalId).modal("show");
-        };
-
         $scope.addElementFromPicker = function () {
           if ($scope.pickerResource) {
             $scope.addElementToTemplate($scope.pickerResource);
@@ -345,6 +340,23 @@ define([
 
         $scope.hideSearchBrowsePicker = function () {
           jQuery("#" + $scope.searchBrowseModalId).modal('hide')
+        };
+
+        // finder
+        $scope.elementFind = function () {
+          jQuery("body").trigger("click");
+          jQuery("#" + $scope.finderModalId).modal("show");
+        };
+
+        $scope.addElementFromFinder = function () {
+          if ($scope.finderResource) {
+            $scope.addElementToTemplate($scope.finderResource);
+          }
+          $scope.hideFinder();
+        };
+
+        $scope.showFinder = function () {
+          $scope.finderResource = null;
         };
 
         $scope.hideFinder = function () {
