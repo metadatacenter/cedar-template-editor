@@ -14028,6 +14028,9 @@ table.apiKey td {
 .finder-modal .modal-body .list-view .box-row .cell {
   padding: 5px;
 }
+.finder-modal .modal-body .grid-view .group {
+  margin: 0 -8px;
+}
 .finder-modal .modal-body .grid-view .form-box {
   cursor: pointer;
 }

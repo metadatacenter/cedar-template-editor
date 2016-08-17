@@ -100,7 +100,7 @@
             <div class="grid-view" ng-if="finder.resourceViewMode == 'grid'">
 
               <!-- show the folders first -->
-              <div class="row">
+              <div class="group" >
                 <div ng-if="finder.isFolder(resource)"
                     class="form-box-container folder"
                     ng-class="{ selected: finder.isResourceSelected(resource) }"
@@ -122,7 +122,7 @@
               </div>
 
               <!-- then the elements -->
-              <div class="row">
+              <div class="group">
                 <div ng-if="!finder.isFolder(resource)"
                     class="form-box-container"
                     ng-class="{ selected: finder.isResourceSelected(resource) }"
