@@ -108,6 +108,7 @@ define([
           vm.toggleResourceInfo = toggleResourceInfo;
           vm.toggleResourceType = toggleResourceType;
           vm.setResourceViewMode = setResourceViewMode;
+          vm.isResourceViewMode = isResourceViewMode;
           vm.isTemplate = isTemplate;
           vm.isElement = isElement;
           vm.isFolder = isFolder;
@@ -115,7 +116,6 @@ define([
 
           vm.finderModalId = 'finder-modal';
 
-          vm.testFinder = testFinder;
           vm.search = search;
           vm.openResource = openResource;
           vm.hideFinder = hideFinder;
@@ -410,7 +410,6 @@ define([
           }
 
           function doSearch(term) {
-            console.log('doSearch ' + term);
             var resourceTypes = activeResourceTypes();
             resourceService.searchResources(
                 term,
@@ -502,9 +501,6 @@ define([
           }
 
           function editResource(resource) {
-            console.log('editResource');
-
-
             var id = resource['@id'];
             if (typeof vm.pickResourceCallback === 'function') {
               vm.pickResourceCallback(resource);
@@ -514,9 +510,6 @@ define([
                 $location.path(UrlService.getTemplateEdit(id));
                 break;
               case CONST.resourceType.ELEMENT:
-                if (vm.onDashboard()) {
-                  $location.path(UrlService.getElementEdit(id));
-                }
                 break;
               case CONST.resourceType.INSTANCE:
                 $location.path(UrlService.getInstanceEdit(id));
@@ -705,12 +698,9 @@ define([
 
 
           function goToFolder(folderId) {
-            if (vm.onDashboard()) {
-              $location.url(UrlService.getFolderContents(folderId));
-            } else {
+              vm.selectedResource = null;
               vm.params.folderId = folderId;
               init();
-            }
           };
 
           function isResourceTypeActive(type) {
@@ -783,16 +773,7 @@ define([
           }
 
           function workspaceClass() {
-            var width = 12;
-            if (vm.onDashboard()) {
-              if (vm.showFilters) {
-                width = width - 2;
-              }
-              if (vm.showResourceInfo) {
-                width = width - 3;
-              }
-            }
-            return 'col-sm-' + width;
+            return 'col-sm-12'
           }
 
 
@@ -833,7 +814,6 @@ define([
           });
 
           $scope.$on('search', function (event, searchTerm) {
-            console.log('on search ' + searchTerm);
               vm.params.search = searchTerm;
               initSearch();
           });
@@ -843,7 +823,6 @@ define([
           };
 
           function search  (searchTerm) {
-            console.log('search ' + searchTerm);
             vm.searchTerm = searchTerm;
             $rootScope.$broadcast('search', vm.searchTerm || '');
           };
@@ -857,14 +836,12 @@ define([
             var activeResourceTypes = [];
             angular.forEach(Object.keys(vm.resourceTypes), function (value, key) {
               if (vm.resourceTypes[value]) {
-                if (!vm.onDashboard()) {
+
                   // just elements can be selected
                   if (value == 'element') {
                     activeResourceTypes.push(value);
                   }
-                } else {
-                  activeResourceTypes.push(value);
-                }
+
               }
             });
             // always want to show folders
@@ -931,13 +908,12 @@ define([
             UISettingsService.saveUIPreference('folderView.viewMode', mode);
           }
 
-
+          function isResourceViewMode(mode) {
+            return mode === vm.resourceViewMode;
+          }
 
 
           // finder
-          function testFinder() {
-            console.log('finder');
-          }
           function showFinder() {
             jQuery("body").trigger("click");
             jQuery("#" + vm.finderModalId).modal("show");
@@ -965,6 +941,11 @@ define([
 
           function hideFinder () {
             jQuery("#" + vm.finderModalId).modal('hide');
+            vm.finderResource = null;
+            vm.params.search = null;
+            vm.params.folderId = null;
+            vm.selectedResource = null;
+            init();
           }
 
         }

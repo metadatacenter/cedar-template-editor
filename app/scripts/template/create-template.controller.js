@@ -344,6 +344,8 @@ define([
 
         // finder
         $scope.elementFind = function () {
+
+
           jQuery("body").trigger("click");
           jQuery("#" + $scope.finderModalId).modal("show");
         };

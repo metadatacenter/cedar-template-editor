@@ -13962,33 +13962,90 @@ table.apiKey td {
 .finder-modal {
   margin: auto;
 }
+.finder-modal .populate-form-boxes {
+  margin: 0 10px;
+}
+.finder-modal .toolbar {
+  padding: 20px;
+}
+.finder-modal .toolbar button.tool {
+  background: #ffffff;
+  border: 1px solid #d2d2d2;
+}
 .finder-modal .modal-dialog {
+  width: 80%;
+  max-width: 1200px;
   padding: 0;
   margin-top: 0px;
   margin-bottom: 0px;
   background: white;
 }
+@media (max-width: 768px) {
+  .finder-modal .modal-dialog {
+    width: calc(100% - 10px);
+    max-width: calc(100% - 10px);
+  }
+}
 .finder-modal .modal-content {
-  background: white;
   border-radius: 0;
   border: 0;
 }
 .finder-modal .modal-header {
-  padding: 5px;
+  padding: 0 20px;
 }
 .finder-modal .modal-header .close {
   margin-top: -20px;
 }
+.finder-modal .modal-footer {
+  padding: 10px 20px;
+}
+.finder-modal .modal-footer .breadcrumbs-sb {
+  text-align: left;
+  padding-left: 20px;
+}
 .finder-modal .modal-body {
-  padding: 0 5px 5px;
-  max-height: calc(100% - 60px);
+  background: #f0f0f0;
+  padding: 0;
   height: 400px;
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 .finder-modal .modal-body .class-actions {
   margin-top: 30px;
   font-size: 1em;
   text-align: center;
+}
+.finder-modal .modal-body .form-box-container {
+  margin: 2px;
+}
+.finder-modal .modal-body .form-box-container .form-box {
+  margin: 0 auto;
+}
+.finder-modal .modal-body .list-view .box-row {
+  position: relative;
+  cursor: pointer;
+  width: 100%;
+}
+.finder-modal .modal-body .list-view .box-row .cell {
+  padding: 5px;
+}
+.finder-modal .modal-body .grid-view .form-box {
+  cursor: pointer;
+}
+.finder-modal .modal-body .grid-view .form-box .title {
+  text-align: center;
+  height: 40px;
+  padding: 10px;
+  margin-top: 20px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.finder-modal .modal-body .grid-view .form-box .title-icon {
+  text-align: center;
+  padding-top: 20px;
+}
+.finder-modal .modal-body .grid-view .form-box .title-icon i {
+  font-size: 30px;
 }
 .finder-modal .element-title {
   margin-bottom: 20px;
@@ -14006,13 +14063,65 @@ table.apiKey td {
   color: black;
   font-size: 16px;
   margin-top: 12px;
+  padding-right: 50px;
 }
 .finder-modal .do-search {
   position: absolute;
   top: -12px;
-  right: -20px;
+  right: -10px;
   margin: 20px;
   font-size: 16px;
+}
+.finder-modal .finder-actions .favorite {
+  float: left;
+  padding-top: 17px;
+  cursor: pointer;
+}
+.finder-modal .finder-actions .favorite span {
+  text-transform: uppercase;
+  vertical-align: middle;
+}
+.finder-modal .finder-actions .favorite i {
+  padding-right: 10px;
+  -webkit-transition: all 0.3s 0.1s;
+          transition: all 0.3s 0.1s;
+  color: rgba(51, 51, 51, 0.43);
+}
+.finder-modal .finder-actions .favorite.true i {
+  color: #5795ba;
+}
+.finder-modal .finder-actions .clear-save {
+  float: right;
+}
+.finder-modal .finder-actions .clear-save .btn {
+  text-transform: uppercase;
+  padding: 10px 20px;
+  border: none;
+  -webkit-transition: all 0.3s 0.1s;
+          transition: all 0.3s 0.1s;
+}
+.finder-modal .finder-actions .clear-save .btn:focus {
+  outline: none;
+  box-shadow: none;
+}
+.finder-modal .finder-actions .clear-save .btn.btn-clear {
+  color: #5795ba;
+  background-color: transparent;
+  font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+  font-weight: 700;
+}
+.finder-modal .finder-actions .clear-save .btn.btn-clear:hover,
+.finder-modal .finder-actions .clear-save .btn.btn-clear:focus {
+  color: #2f7dab;
+}
+.finder-modal .finder-actions .clear-save .btn.btn-save {
+  color: #ffffff;
+  background-color: #5795ba;
+  font-size: 16px;
+}
+.finder-modal .finder-actions .clear-save .btn.btn-save:hover,
+.finder-modal .finder-actions .clear-save .btn.btn-save:focus {
+  background-color: #2f7dab;
 }
 @font-face {
   font-family: "project-cedar";
@@ -14444,10 +14553,16 @@ div.errorTechnicalDetails textarea {
   text-align: center;
   padding: 5px;
 }
+#toolbar ul li.divider {
+  border-top: 1px solid #ccc;
+  max-height: 1px;
+  padding: 0;
+  margin: 0;
+}
 #toolbar .other-elements {
   position: absolute;
   right: 70px;
-  border: 1px solid #fff;
+  border: 1px solid #d2d2d2;
   background: #fff;
   top: -3px;
   left: auto;

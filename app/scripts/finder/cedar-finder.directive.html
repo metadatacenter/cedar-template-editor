@@ -1,29 +1,33 @@
 <!-- finder modal for adding elements -->
 
-<div class="modal-dialog modal-lg" role="document">
+<div class="modal-dialog" role="document">
   <div class="modal-content">
     <div class="modal-header">
 
       <div class="row">
 
-        <div class="col-lg-7 ">
+        <div class="col-lg-8 toolbar">
           <button
+              class="tool"
               type="button"
               tooltip="view as grid"
               tooltip-trigger
               tooltip-animation="false"
               tooltip-placement="bottom"
               data-toggle="tooltip"
+              ng-disabled="finder.isResourceViewMode('grid')"
               ng-click="finder.setResourceViewMode('grid')"><i
-              class="fa fa-th inline"></i></button>
+              class="fa fa-th"></i></button>
           <button type="button"
+              class="tool"
               tooltip="view as list"
               tooltip-trigger
               tooltip-animation="false"
               tooltip-placement="bottom"
               data-toggle="tooltip"
+              ng-disabled="finder.isResourceViewMode('list')"
               ng-click="finder.setResourceViewMode('list')"><i
-              class="fa fa-list-ul inline "></i></button>
+              class="fa fa-list-ul"></i></button>
         </div>
 
         <div class="col-lg-4">
@@ -42,115 +46,133 @@
           </form>
         </div>
 
-        <div class="col-lg-1">
-          <button type="button"  data-dismiss="modal" aria-label="Close"><span
-              aria-hidden="true">&times;</span></button>
-        </div>
-
       </div>
     </div>
 
     <div class="modal-body">
 
       <!--all items view -->
-      <section class="all-items-view " ng-class="as-modal" >
+      <section class="all-items-view " ng-class="as-modal">
         <div class="container-fluid">
-          <div class="row ">
 
+          <div class="row populate-form-boxes">
 
-            <div class="row populate-form-boxes">
+            <div class="list-view" ng-if="finder.resourceViewMode == 'list' && finder.resources.length > 0">
 
-              <div class="list-view" ng-if="finder.resourceViewMode == 'list' && finder.resources.length > 0">
+              <div class="box-title">
+                <div class="cell type"></div>
+                <div class="cell resource">Title</div>
+                <div class="cell date">Created</div>
+                <div class="cell date">Modified</div>
+              </div>
 
-                <div class="box-title">
-                  <div class="cell type"></div>
-                  <div class="cell resource">Title</div>
-                  <div class="cell date">Created</div>
-                  <div class="cell date">Modified</div>
-                </div>
+              <!-- folders first -->
+              <div ng-if="finder.isFolder(resource)" class="box-row"
+                  ng-class="{ selected: finder.isResourceSelected(resource) }"
+                  ng-click="finder.selectResource(resource)"
+                  ng-dblclick="finder.openResource(resource)"
+                  ng-repeat="(index, resource) in finder.resources">
 
-                <!-- show the folders first -->
-                <div ng-if="finder.isFolder(resource)" class="box-row" style="position:relative;width:100%"
+                <div class="cell type"><i ng-class="finder.getResourceIconClass(resource)"
+                    class="btn btn-sm btn-info btn-circle fa large-icon " aria-hidden="true"></i></div>
+                <div class="cell resource">{{ resource.displayName }}</div>
+                <div class="cell date">{{ resource.createdOnTS | prettyDate }}</div>
+                <div class="cell date">{{ resource.lastUpdatedOnTS | prettyDate }}</div>
+              </div>
+
+              <!-- then elements -->
+              <div ng-if="!finder.isFolder(resource)" class="box-row"
+                  ng-class="{ selected: finder.isResourceSelected(resource) }"
+                  ng-click="finder.selectResource(resource)"
+                  ng-dblclick="finder.openResource(resource)"
+                  ng-repeat="(index, resource) in finder.resources">
+
+                <div class="cell type" ng-class="finder.getResourceTypeClass(resource)"><i
+                    ng-class="finder.getResourceIconClass(resource)"
+                    class="btn btn-sm btn-info btn-circle fa large-icon " aria-hidden="true"></i></div>
+                <div class="cell resource">{{ resource.displayName }}</div>
+                <div class="cell date">{{ resource.createdOnTS | prettyDate }}</div>
+                <div class="cell date">{{ resource.lastUpdatedOnTS | prettyDate }}</div>
+              </div>
+
+            </div>
+
+            <div class="grid-view" ng-if="finder.resourceViewMode == 'grid'">
+
+              <!-- show the folders first -->
+              <div class="row">
+                <div ng-if="finder.isFolder(resource)"
+                    class="form-box-container folder"
                     ng-class="{ selected: finder.isResourceSelected(resource) }"
-                    ng-click="finder.selectResource(resource)"
-                    ng-dblclick="finder.goToResource(resource)"
                     ng-repeat="(index, resource) in finder.resources">
 
-                  <div class="cell type"><i ng-class="finder.getResourceIconClass(resource)"
-                      class="btn btn-sm btn-info btn-circle fa large-icon " aria-hidden="true"></i></div>
-                  <div class="cell resource">{{ resource.displayName }}</div>
-                  <div class="cell date">{{ resource.createdOnTS | prettyDate }}</div>
-                  <div class="cell date">{{ resource.lastUpdatedOnTS | prettyDate }}</div>
-                </div>
 
+                  <div ng-click="finder.selectResource(resource)"
+                      ng-dblclick="finder.openResource(resource)"
+                      class="form-box  ">
+                    <div class="box-content text-center folder">
+                      <div class="folderIconContainer">
+                        <i style="font-size:20px" class="fa" ng-class="finder.getResourceIconClass(resource)"></i>
+                      </div>
+                      <div class="folderTitle">{{ resource.displayName }}</div>
 
-                <div ng-if="!finder.isFolder(resource)" class="box-row" style="position:relative;width:100%"
-                    ng-class="{ selected: finder.isResourceSelected(resource) }"
-                    ng-click="finder.selectResource(resource)"
-                    ng-dblclick="finder.goToResource(resource)"
-                    ng-repeat="(index, resource) in finder.resources">
-
-                  <div class="cell type" ng-class="finder.getResourceTypeClass(resource)"><i
-                      ng-class="finder.getResourceIconClass(resource)"
-                      class="btn btn-sm btn-info btn-circle fa large-icon " aria-hidden="true"></i></div>
-                  <div class="cell resource">{{ resource.displayName }}</div>
-                  <div class="cell date">{{ resource.createdOnTS | prettyDate }}</div>
-                  <div class="cell date">{{ resource.lastUpdatedOnTS | prettyDate }}</div>
+                    </div>
+                  </div>
                 </div>
               </div>
-              <div class="grid-view" ng-if="finder.resourceViewMode == 'grid'">
 
-                <div
+              <!-- then the elements -->
+              <div class="row">
+                <div ng-if="!finder.isFolder(resource)"
                     class="form-box-container"
                     ng-class="{ selected: finder.isResourceSelected(resource) }"
                     ng-repeat="(index, resource) in finder.resources">
 
-                  <div ng-click="finder.selectResource(resource)"
+                  <div
+                      ng-click="finder.selectResource(resource)"
                       ng-dblclick="finder.openResource(resource)"
                       class="form-box">
 
                     <div class="box-content text-center " ng-class="finder.getResourceTypeClass(resource)">
 
-                      <div style="text-align:center;padding-top:20px"><i style="font-size:30px;" class="fa"
+                      <div class="title-icon"><i  class="fa"
                           ng-class="finder.getResourceIconClass(resource)"></i>
 
                       </div>
-                      <div class="title"
-                          style="text-align:center;height:40px;padding:10px;margin-top:20px; overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
+                      <div class="title">
                         {{ resource.displayName }}
                       </div>
-
 
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-
           </div>
         </div>
       </section>
-
     </div>
 
     <div class="modal-footer">
 
       <div class="row">
-      <div class="col-lg-8 breadcrumbs-sb  " style="text-align:left;padding-left:20px">
-        <p>
+        <div class="col-lg-8 breadcrumbs-sb " >
+          <p>
           <span ng-repeat="folder in finder.pathInfo">
               <a ng-click="finder.goToFolder(folder['@id'])"
                   class="breadcrumbs">{{finder.breadcrumbName(folder.displayName)}}</a> /
             </span>
-          <a class="breadcrumbs">{{finder.breadcrumbName(finder.currentPath.displayName)}}</a>
-        </p>
-      </div>
-      <div class="col-lg-4 " >
-        <button ng-click="finder.hideFinder()" type="cancel" class="btn btn-clear template" class="canc">Cancel</button>
-        <button ng-disabled="!finder.hasSelection()" type="button" class="btn save template" ng-click="finder.openResource()" type="button" class="subm">Open
-        </button>
-
-      </div>
+            <a class="breadcrumbs">{{finder.breadcrumbName(finder.currentPath.displayName)}}</a>
+          </p>
+        </div>
+        <div class="col-lg-4 finder-actions">
+          <div class=" clear-save">
+            <button ng-click="finder.hideFinder()" type="cancel" class="btn btn-clear  " class="canc">Cancel</button>
+            <button ng-disabled="!finder.hasSelection()" type="button" class="btn btn-save  "
+                ng-click="finder.openResource()" type="button" class="subm">Open
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   </div>
