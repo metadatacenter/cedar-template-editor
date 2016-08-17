@@ -82,6 +82,10 @@ define([
       return ($location.path() === "/instances");
     };
 
+    vm.isProfile = function () {
+      return ($location.path() === "/profile");
+    };
+
     //*********** ENTRY POINT
 
     vm.searchTerm = $location.search().search;
