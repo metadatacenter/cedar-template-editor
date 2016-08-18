@@ -14547,14 +14547,20 @@ div.errorTechnicalDetails textarea {
   padding-left: 30px;
 }
 #toolbar ul {
-  margin: 10px;
-  padding: 5px;
+  margin: 10px 0;
+  padding: 0;
 }
 #toolbar ul li {
   list-style: none;
   margin: 5px auto;
   text-align: center;
-  padding: 5px;
+  padding: 0;
+  height: auto;
+}
+#toolbar ul li a i {
+  width: 40px;
+  height: 40px;
+  padding-top: 10px;
 }
 #toolbar ul li.divider {
   border-top: 1px solid #ccc;
