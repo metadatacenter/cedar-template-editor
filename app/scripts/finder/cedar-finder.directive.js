@@ -162,7 +162,9 @@ define([
 
           vm.selectResource = function (resource) {
             vm.cancelDescriptionEditing();
-            vm.getResourceDetails(resource);
+            if (vm.selectedResource == null || vm.selectedResource['@id'] != resource['@id']) {
+              vm.getResourceDetails(resource);
+            }
             if (typeof vm.selectResourceCallback === 'function') {
               vm.selectResourceCallback(resource);
             }
@@ -170,23 +172,6 @@ define([
 
           // show the info panel with this resource or find one
           vm.showInfoPanel = function (resource) {
-            // if this one is defined, then use it
-            if (resource) {
-              if (!vm.isResourceSelected(resource)) {
-                vm.selectResource(resource);
-              }
-            } else {
-              if (vm.currentPath) {
-                vm.selectResource(vm.currentPath);
-              } else {
-                if (vm.formFolder) {
-                  vm.selectResource(vm.formFolder);
-                }
-              }
-            }
-
-            vm.setResourceInfoVisibility(true);
-            vm.resizeCenterPanel();
           };
 
           vm.isResourceSelected = function (resource) {
@@ -203,15 +188,9 @@ define([
               vm.showInfoPanel(resource);
             } else {
               vm.setResourceInfoVisibility(false);
-              vm.resizeCenterPanel();
             }
           };
 
-          vm.resizeCenterPanel = function () {
-            var e = jQuery('#center-panel');
-            e.css("left", vm.showFilters ? "200px" : "0");
-            e.css("right", vm.showResourceInfo ? "400px" : "0");
-          };
 
           vm.getResourceDetails = function (resource) {
             if (!resource && vm.hasSelection()) {
@@ -300,7 +279,6 @@ define([
             vm.resourceViewMode = uip.folderView.viewMode;
             if (uip.hasOwnProperty('infoPanel')) {
               vm.showResourceInfo = uip.infoPanel.opened;
-              vm.resizeCenterPanel();
             } else {
               vm.showResourceInfo = false;
             }
@@ -769,7 +747,6 @@ define([
                 vm.filterSections[section] = !vm.filterSections[section];
               }
             }
-            vm.resizeCenterPanel();
           }
 
           function workspaceClass() {
@@ -795,7 +772,6 @@ define([
 
           function toggleResourceInfo() {
             vm.setResourceInfoVisibility(!vm.showResourceInfo);
-            vm.resizeCenterPanel();
           }
 
           function toggleResourceType(type) {
@@ -852,7 +828,6 @@ define([
           function resetSelected() {
             vm.selectedResource = null;
             vm.setResourceInfoVisibility(false);
-            vm.resizeCenterPanel();
           }
 
           function getSelection() {
