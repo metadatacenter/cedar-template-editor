@@ -90,7 +90,9 @@
     "GoodNews": "Good News!",
     "Cancel": "Cancel",
     "Copied": "Copied",
-    "More": "More"
+    "More": "More",
+    "Folders": "Folders",
+    "Elements": "Elements"
   },
   "SERVER": {
     "FOLDER": {

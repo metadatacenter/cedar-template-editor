@@ -5621,15 +5621,6 @@ table.apiKey {
 
   }
 
-  .toolbar {
-    padding: 20px;
-
-    button.tool {
-      background: @white;
-      border: 1px solid #d2d2d2;
-    }
-  }
-
   .modal-dialog {
     width: 80%;
     max-width: 1200px;
@@ -5653,15 +5644,40 @@ table.apiKey {
 
   .modal-header {
     padding: 0 20px;
-    .close {
-      margin-top: -20px;
+    .toolbar {
+      padding:10px 0 0;
+      .form-control{
+        height:40px;
+      }
+
+
+      button.tool {
+        background:@white;
+        &:disabled {
+          color:#ccc;
+        }
+      }
+      button {
+        padding-top: 10px;
+      }
+      label {
+        vertical-align: sub;
+        padding: 0;
+        font-size: .9em;
+      }
+      .bootstrap-select {
+        width: 120px;
+      }
+      .search-input {
+        margin-top: 0;
+      }
     }
   }
   .modal-footer {
     padding: 10px 20px;
     .breadcrumbs-sb {
       text-align: left;
-      padding-left: 20px
+      padding: 10px 0 0 10px;
     }
   }
 
@@ -5685,18 +5701,203 @@ table.apiKey {
     }
 
     .list-view {
-      .box-row {
-        position: relative;
-        cursor: pointer;
-        width: 100%;
-        .cell {
-          padding: 5px;
+
+      height: 400px;
+      overflow: hidden;
+
+      .title {
+        text-transform: uppercase;
+        padding: 10px 0 20px;
+
+        i {
+          color: @brand-primary;
         }
       }
+
+      tbody {
+        margin: 0;
+      }
+
+      .info-side {
+
+        height: 100%;
+        overflow: hidden;
+        width: 50%;
+        float: right;
+        border-left: 1px solid #e0e0e0;
+        padding: 20px;
+        background: @white;
+
+        .title-icon {
+          font-size: 40px;
+          text-align: center;
+
+          &.template {
+            color: @button-template;
+          }
+
+          &.element {
+            color: @button-element;
+          }
+
+          &.metadata, &.instance {
+            color: @button-metadata;
+          }
+
+          &.folder {
+            color: @button-folder;
+          }
+        }
+
+        .title {
+          text-align: center;
+        }
+        .description {
+          text-align: center;
+          padding: 10px 0 20px;
+        }
+
+        .table-details {
+
+          padding: 0;
+          margin: auto;
+          font-size: 1em;
+
+          .label {
+            text-transform: uppercase;
+            color: #888888;
+            font-size: .9em;
+            font-weight: normal;
+          }
+
+        }
+
+      }
+
+      .list-side {
+
+        height: 100%;
+        overflow-y: auto;
+        width: 50%;
+        padding-right: 8px;
+
+        .category {
+          padding: 10px;
+        }
+
+        .box-row {
+
+          border: 1px solid #ebebeb;
+          background: #ffffff;
+          font-size: 14px;
+          color: @graytxt;
+          position: relative;
+          cursor: pointer;
+          width: 100%;
+
+          .cell {
+            display: inline-block;
+            padding: 5px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+
+            i.large-icon {
+              color: #fff;
+            }
+
+            .disabled {
+              cursor: not-allowed;
+            }
+
+            .disabled > a {
+              pointer-events: none;
+            }
+          }
+
+          .resource {
+          }
+          .type {
+            min-width: 35px;
+          }
+
+          .btn-circle {
+            border-radius: 50%;
+            background: #fff;
+            width: 30px;
+            height: 30px;
+            padding-top: .5em;
+          }
+          .btn-info.btn-circle {
+            background: @brand-primary;
+            color: #fff;
+            border: none;
+
+            &.template {
+              background: @button-template;
+            }
+
+            &.element {
+              background: @button-element;
+            }
+
+            &.metadata, &.instance {
+              background: @button-metadata;
+            }
+
+            &.folder {
+              background: @button-folder;
+            }
+          }
+        }
+
+        .box-row.selected {
+          background: @brand-primary;
+          color: #fff;
+
+          .cell {
+
+            i.large-icon {
+              color: @brand-primary;
+
+            }
+          }
+
+          .btn-circle {
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+          }
+          .btn-info.btn-circle {
+            background: @white;
+
+            border: none;
+
+            &.template {
+              color: @button-template;
+            }
+
+            &.element {
+              color: @button-element;
+            }
+
+            &.metadata, &.instance {
+              color: @button-metadata;
+            }
+
+            &.folder {
+              color: @button-folder;
+            }
+
+          }
+
+        }
+      }
+
     }
+
     .grid-view {
       .group {
-        margin:0 -8px;
+        margin: 0 -8px;
       }
       .form-box {
         cursor: pointer;

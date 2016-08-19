@@ -80,6 +80,7 @@ define([
           vm.onDashboard = onDashboard;
           vm.narrowContent = narrowContent;
           vm.pathInfo = [];
+          vm.selectedPathInfo = [];
           vm.params = $location.search();
           vm.resources = [];
           vm.selectedResource = null;
@@ -119,8 +120,25 @@ define([
           vm.search = search;
           vm.openResource = openResource;
           vm.hideFinder = hideFinder;
+          vm.hasFolders = hasFolders;
+          vm.getFolders = getFolders;
+          vm.hasElements = hasElements;
+          vm.getElements = getElements;
+
+          vm.selectBy = "kind";
+          vm.groupBy = "kind";
+          vm.isKind = "element";
 
           vm.editingDescription = false;
+
+          vm.data = {
+            availableOptions: [
+              {id: '1', name: 'Option A'},
+              {id: '2', name: 'Option B'},
+              {id: '3', name: 'Option C'}
+            ],
+            selectedOption: {id: '3', name: 'Option C'} //This sets the default value of the select in the ui
+          };
 
           vm.startDescriptionEditing = function () {
             var resource = vm.getSelection();
@@ -193,6 +211,7 @@ define([
 
 
           vm.getResourceDetails = function (resource) {
+            console.log('getResourceDetails');
             if (!resource && vm.hasSelection()) {
               resource = vm.getSelection();
             }
@@ -201,12 +220,38 @@ define([
                 resource,
                 function (response) {
                   vm.selectedResource = response;
+
+                  // get path info for this resource
+                 getPathInfo(response.parentFolderId);
+
                 },
                 function (error) {
                   UIMessageService.showBackendError('SERVER.' + resource.nodeType.toUpperCase() + '.load.error', error);
                 }
             );
           };
+
+
+          function getPathInfo(folderId) {
+            var resourceTypes = activeResourceTypes();
+            if (resourceTypes.length > 0) {
+              return resourceService.getResources(
+                  {folderId: folderId, resourceTypes: resourceTypes, sort: sortField(), limit: 100, offset: 0},
+                  function (response) {
+                    //vm.currentFolderId = folderId;
+                    //vm.resources = response.resources;
+                    vm.selectedPathInfo = response.pathInfo;
+                    console.log(vm.selectedPathInfo);
+                    //vm.selectedPathInfo.pop();
+                  },
+                  function (error) {
+                    UIMessageService.showBackendError('SERVER.FOLDER.load.error', error);
+                  }
+              );
+            } else {
+              //vm.resources = [];
+            }
+          }
 
           vm.updateDescription = function () {
             vm.editingDescription = false;
@@ -286,6 +331,7 @@ define([
 
           function init() {
             vm.isSearching = false;
+            vm.searchTerm = null;
             if (vm.params.search) {
               vm.isSearching = true;
               if (vm.showFavorites) {
@@ -676,6 +722,7 @@ define([
 
 
           function goToFolder(folderId) {
+              vm.params.search = null;
               vm.selectedResource = null;
               vm.params.folderId = folderId;
               init();
@@ -879,8 +926,13 @@ define([
           }
 
           function setResourceViewMode(mode) {
+            console.log('setResourceViewMode' + mode);
             vm.resourceViewMode = mode;
-            UISettingsService.saveUIPreference('folderView.viewMode', mode);
+            if (mode === 'list' || mode === 'grid') {
+              UISettingsService.saveUIPreference('folderView.viewMode', mode);
+            } else {
+              console.log('dont save column view');
+            }
           }
 
           function isResourceViewMode(mode) {
@@ -921,6 +973,36 @@ define([
             vm.params.folderId = null;
             vm.selectedResource = null;
             init();
+          }
+
+          function getFolders() {
+            var result = [];
+
+            if (vm.resources) {
+              var result = vm.resources.filter(function( obj ) {
+                return obj.nodeType == CONST.resourceType.FOLDER;
+              });
+            }
+            return result;
+          }
+
+          function hasFolders() {
+            return getFolders().length > 0;
+          }
+
+          function getElements() {
+            var result = [];
+
+            if (vm.resources) {
+              var result = vm.resources.filter(function( obj ) {
+                return obj.nodeType == CONST.resourceType.ELEMENT;
+              });
+            }
+            return result;
+          }
+
+          function hasElements() {
+            return getElements().length > 0;
           }
 
         }

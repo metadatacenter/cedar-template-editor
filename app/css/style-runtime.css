@@ -13965,13 +13965,6 @@ table.apiKey td {
 .finder-modal .populate-form-boxes {
   margin: 0 10px;
 }
-.finder-modal .toolbar {
-  padding: 20px;
-}
-.finder-modal .toolbar button.tool {
-  background: #ffffff;
-  border: 1px solid #d2d2d2;
-}
 .finder-modal .modal-dialog {
   width: 80%;
   max-width: 1200px;
@@ -13993,15 +13986,38 @@ table.apiKey td {
 .finder-modal .modal-header {
   padding: 0 20px;
 }
-.finder-modal .modal-header .close {
-  margin-top: -20px;
+.finder-modal .modal-header .toolbar {
+  padding: 10px 0 0;
+}
+.finder-modal .modal-header .toolbar .form-control {
+  height: 40px;
+}
+.finder-modal .modal-header .toolbar button.tool {
+  background: #ffffff;
+}
+.finder-modal .modal-header .toolbar button.tool:disabled {
+  color: #ccc;
+}
+.finder-modal .modal-header .toolbar button {
+  padding-top: 10px;
+}
+.finder-modal .modal-header .toolbar label {
+  vertical-align: sub;
+  padding: 0;
+  font-size: .9em;
+}
+.finder-modal .modal-header .toolbar .bootstrap-select {
+  width: 120px;
+}
+.finder-modal .modal-header .toolbar .search-input {
+  margin-top: 0;
 }
 .finder-modal .modal-footer {
   padding: 10px 20px;
 }
 .finder-modal .modal-footer .breadcrumbs-sb {
   text-align: left;
-  padding-left: 20px;
+  padding: 10px 0 0 10px;
 }
 .finder-modal .modal-body {
   background: #f0f0f0;
@@ -14020,13 +14036,153 @@ table.apiKey td {
 .finder-modal .modal-body .form-box-container .form-box {
   margin: 0 auto;
 }
-.finder-modal .modal-body .list-view .box-row {
+.finder-modal .modal-body .list-view {
+  height: 400px;
+  overflow: hidden;
+}
+.finder-modal .modal-body .list-view .title {
+  text-transform: uppercase;
+  padding: 10px 0 20px;
+}
+.finder-modal .modal-body .list-view .title i {
+  color: #71a69c;
+}
+.finder-modal .modal-body .list-view tbody {
+  margin: 0;
+}
+.finder-modal .modal-body .list-view .info-side {
+  height: 100%;
+  overflow: hidden;
+  width: 50%;
+  float: right;
+  border-left: 1px solid #e0e0e0;
+  padding: 20px;
+  background: #ffffff;
+}
+.finder-modal .modal-body .list-view .info-side .title-icon {
+  font-size: 40px;
+  text-align: center;
+}
+.finder-modal .modal-body .list-view .info-side .title-icon.template {
+  color: #5097A5;
+}
+.finder-modal .modal-body .list-view .info-side .title-icon.element {
+  color: #71977F;
+}
+.finder-modal .modal-body .list-view .info-side .title-icon.metadata,
+.finder-modal .modal-body .list-view .info-side .title-icon.instance {
+  color: #6A8B92;
+}
+.finder-modal .modal-body .list-view .info-side .title-icon.folder {
+  color: #9E9E9E;
+}
+.finder-modal .modal-body .list-view .info-side .title {
+  text-align: center;
+}
+.finder-modal .modal-body .list-view .info-side .description {
+  text-align: center;
+  padding: 10px 0 20px;
+}
+.finder-modal .modal-body .list-view .info-side .table-details {
+  padding: 0;
+  margin: auto;
+  font-size: 1em;
+}
+.finder-modal .modal-body .list-view .info-side .table-details .label {
+  text-transform: uppercase;
+  color: #888888;
+  font-size: .9em;
+  font-weight: normal;
+}
+.finder-modal .modal-body .list-view .list-side {
+  height: 100%;
+  overflow-y: auto;
+  width: 50%;
+  padding-right: 8px;
+}
+.finder-modal .modal-body .list-view .list-side .category {
+  padding: 10px;
+}
+.finder-modal .modal-body .list-view .list-side .box-row {
+  border: 1px solid #ebebeb;
+  background: #ffffff;
+  font-size: 14px;
+  color: #666666;
   position: relative;
   cursor: pointer;
   width: 100%;
 }
-.finder-modal .modal-body .list-view .box-row .cell {
+.finder-modal .modal-body .list-view .list-side .box-row .cell {
+  display: inline-block;
   padding: 5px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.finder-modal .modal-body .list-view .list-side .box-row .cell i.large-icon {
+  color: #fff;
+}
+.finder-modal .modal-body .list-view .list-side .box-row .cell .disabled {
+  cursor: not-allowed;
+}
+.finder-modal .modal-body .list-view .list-side .box-row .cell .disabled > a {
+  pointer-events: none;
+}
+.finder-modal .modal-body .list-view .list-side .box-row .type {
+  min-width: 35px;
+}
+.finder-modal .modal-body .list-view .list-side .box-row .btn-circle {
+  border-radius: 50%;
+  background: #fff;
+  width: 30px;
+  height: 30px;
+  padding-top: .5em;
+}
+.finder-modal .modal-body .list-view .list-side .box-row .btn-info.btn-circle {
+  background: #71a69c;
+  color: #fff;
+  border: none;
+}
+.finder-modal .modal-body .list-view .list-side .box-row .btn-info.btn-circle.template {
+  background: #5097A5;
+}
+.finder-modal .modal-body .list-view .list-side .box-row .btn-info.btn-circle.element {
+  background: #71977F;
+}
+.finder-modal .modal-body .list-view .list-side .box-row .btn-info.btn-circle.metadata,
+.finder-modal .modal-body .list-view .list-side .box-row .btn-info.btn-circle.instance {
+  background: #6A8B92;
+}
+.finder-modal .modal-body .list-view .list-side .box-row .btn-info.btn-circle.folder {
+  background: #9E9E9E;
+}
+.finder-modal .modal-body .list-view .list-side .box-row.selected {
+  background: #71a69c;
+  color: #fff;
+}
+.finder-modal .modal-body .list-view .list-side .box-row.selected .cell i.large-icon {
+  color: #71a69c;
+}
+.finder-modal .modal-body .list-view .list-side .box-row.selected .btn-circle {
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+}
+.finder-modal .modal-body .list-view .list-side .box-row.selected .btn-info.btn-circle {
+  background: #ffffff;
+  border: none;
+}
+.finder-modal .modal-body .list-view .list-side .box-row.selected .btn-info.btn-circle.template {
+  color: #5097A5;
+}
+.finder-modal .modal-body .list-view .list-side .box-row.selected .btn-info.btn-circle.element {
+  color: #71977F;
+}
+.finder-modal .modal-body .list-view .list-side .box-row.selected .btn-info.btn-circle.metadata,
+.finder-modal .modal-body .list-view .list-side .box-row.selected .btn-info.btn-circle.instance {
+  color: #6A8B92;
+}
+.finder-modal .modal-body .list-view .list-side .box-row.selected .btn-info.btn-circle.folder {
+  color: #9E9E9E;
 }
 .finder-modal .modal-body .grid-view .group {
   margin: 0 -8px;
