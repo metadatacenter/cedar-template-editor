@@ -96,8 +96,7 @@ var TemplateCreatorPage = function () {
     "@type"               : "https://schema.metadatacenter.org/core/Template",
     "@context"            : {
       "pav"   : "http://purl.org/pav/",
-      "cedar" : "https://schema.metadatacenter.org/core/",
-      "_value": "https://schema.org/value"
+      "cedar" : "https://schema.metadatacenter.org/core/"
     },
     "type"                : "object",
     "title"               : "Untitled template schema",
@@ -110,11 +109,6 @@ var TemplateCreatorPage = function () {
     "properties"          : {
       "@context"           : {
         "properties"          : {
-          "_value": {
-            "enum": [
-              "https://schema.org/value"
-            ]
-          },
           "pav"   : {
             "enum": [
               "http://purl.org/pav/"
@@ -127,7 +121,7 @@ var TemplateCreatorPage = function () {
           }
         },
         "required"            : [
-          "_value"
+          "@value"
         ],
         "additionalProperties": false
       },
@@ -216,7 +210,7 @@ var TemplateCreatorPage = function () {
       "@context"           : {
         "properties"          : {},
         "required"            : [
-          "_value"
+          "@value"
         ],
         "additionalProperties": false
       },

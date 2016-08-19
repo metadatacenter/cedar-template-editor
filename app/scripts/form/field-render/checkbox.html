@@ -15,9 +15,9 @@
           <input type="checkbox"
               ng-click="console('click'); $event.stopPropagation();"
               id="checkbox-{{uuid}}-{{$parent.$index}}-{{index}}"
-              ng-model="valueElement._value[value.text]"
+              ng-model="valueElement['@value'][value.text]"
               ng-disabled="!$root.isRuntime() || preview"
-              ng-checked="valueElement._value[value.text]"/>
+              ng-checked="valueElement['@value'][value.text]"/>
           <label ng-click=" $event.stopPropagation();" for="checkbox-{{uuid}}-{{$parent.$index}}-{{index}}">{{$root.schemaOf(field)._ui.options[index]['text']}}</label>
 
         </div>
@@ -44,9 +44,9 @@
           <input type="checkbox"
               ng-click="console('click'); $event.stopPropagation();"
               id="checkbox-{{uuid}}-{{$parent.$index}}-{{index}}"
-              ng-model="model._value[value.text]"
+              ng-model="model['@value'][value.text]"
               ng-disabled="true"
-              ng-checked="model._value[value.text]"/>
+              ng-checked="model['@value'][value.text]"/>
           <label ng-click=" $event.stopPropagation();" for="checkbox-{{uuid}}-{{$parent.$index}}-{{index}}">{{$root.schemaOf(field)._ui.options[index]['text']}}</label>
         </div>
         <!-- ./checkbox -->
@@ -70,9 +70,9 @@
           <input type="checkbox"
               ng-click="console('click'); $event.stopPropagation();"
               id="checkbox-{{uuid}}-{{$parent.$index}}-{{index}}"
-              ng-model="model._value[value.text]"
+              ng-model="model['@value'][value.text]"
               ng-disabled="!$root.isRuntime() || preview"
-              ng-checked="model._value[value.text]"/>
+              ng-checked="model['@value'][value.text]"/>
           <label ng-click=" $event.stopPropagation();" for="checkbox-{{uuid}}-{{$parent.$index}}-{{index}}">{{$root.schemaOf(field)._ui.options[index]['text']}}</label>
 
         </div>

@@ -86,7 +86,7 @@ var ElementCreatorPage = function () {
       "@context"           : {
         "properties"          : {},
         "required"            : [
-          "_value"
+          "@value"
         ],
         "additionalProperties": false
       },

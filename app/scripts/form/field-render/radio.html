@@ -17,7 +17,7 @@
           <input type="radio"
               id="radio-{{uuid}}-{{$parent.$index}}-{{index}}"
               name="radio-{{uuid}}-{{$parent.$index}}-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}"
-              ng-model="valueElement._value"
+              ng-model="valueElement['@value']"
               ng-disabled="!$root.isRuntime() || preview"
               ng-value="$root.schemaOf(field)._ui.options[index]['text']"/>
           <label ng-click="$event.stopPropagation();" for="radio-{{uuid}}-{{$parent.$index}}-{{index}}">{{$root.schemaOf(field)._ui.options[index]['text']}}</label>
@@ -42,7 +42,7 @@
           <input type="radio"  ng-click="console('click'); $event.stopPropagation();"
               id="radio-{{uuid}}-{{$parent.$index}}-{{index}}"
               name="radio-{{uuid}}-{{$parent.$index}}-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}"
-              ng-model="model._value"
+              ng-model="model['@value']"
               ng-disabled="true"
               ng-value="$root.schemaOf(field)._ui.options[index]['text']"/>
           <label ng-click="$event.stopPropagation();" for="radio-{{uuid}}-{{$parent.$index}}-{{index}}">{{$root.schemaOf(field)._ui.options[index]['text']}}</label>
@@ -64,7 +64,7 @@
           <input type="radio" ng-click="console('click'); $event.stopPropagation();"
               id="radio-{{uuid}}-{{$parent.$index}}-{{index}}"
               name="radio-{{uuid}}-{{$parent.$index}}-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}"
-              ng-model="model._value"
+              ng-model="model['@value']"
               ng-disabled="!$root.isRuntime() || preview"
               ng-value="$root.schemaOf(field)._ui.options[index]['text']"/>
           <label ng-click="$event.stopPropagation();"

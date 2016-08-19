@@ -23,7 +23,7 @@ xdescribe('create-element', function () {
       "properties"          : {
         "@context"           : {
           "properties"          : {},
-          "required"            : ["_value"],
+          "required"            : ["@value"],
           "additionalProperties": false
         },
         "@id"                : {"format": "uri", "type": "string"},

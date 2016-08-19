@@ -97,28 +97,28 @@ define([
               allRequiredFieldsAreFilledIn = false;
             } else {
               angular.forEach($scope.model, function (valueElement) {
-                if (!valueElement || !valueElement._value) {
+                if (!valueElement || !valueElement['@value']) {
                   allRequiredFieldsAreFilledIn = false;
-                } else if (angular.isArray(valueElement._value)) {
+                } else if (angular.isArray(valueElement['@value'])) {
                   var hasValue = false;
-                  angular.forEach(valueElement._value, function (ve) {
+                  angular.forEach(valueElement['@value'], function (ve) {
                     hasValue = hasValue || !!ve;
                   });
 
                   if (!hasValue) {
                     allRequiredFieldsAreFilledIn = false;
                   }
-                } else if (angular.isObject(valueElement._value)) {
-                  if ($rootScope.isEmpty(valueElement._value)) {
+                } else if (angular.isObject(valueElement['@value'])) {
+                  if ($rootScope.isEmpty(valueElement['@value'])) {
                     allRequiredFieldsAreFilledIn = false;
                   } else if (DataManipulationService.getFieldSchema($scope.field)._ui.dateType == "date-range") {
-                    if (!valueElement._value.start || !valueElement._value.end) {
+                    if (!valueElement['@value'].start || !valueElement['@value'].end) {
                       allRequiredFieldsAreFilledIn = false;
                     }
                   } else {
                     // Require at least one checkbox is checked.
                     var hasValue = false;
-                    angular.forEach(valueElement._value, function (value, key) {
+                    angular.forEach(valueElement['@value'], function (value, key) {
                       hasValue = hasValue || value;
                     });
 
@@ -131,28 +131,28 @@ define([
             }
           } else {
             // allRequiredFieldsAreFilledIn = false;
-            if (!$scope.model || !$scope.model._value) {
+            if (!$scope.model || !$scope.model['@value']) {
               allRequiredFieldsAreFilledIn = false;
-            } else if (angular.isArray($scope.model._value)) {
+            } else if (angular.isArray($scope.model['@value'])) {
               var hasValue = false;
-              angular.forEach($scope.model._value, function (ve) {
+              angular.forEach($scope.model['@value'], function (ve) {
                 hasValue = hasValue || !!ve;
               });
 
               if (!hasValue) {
                 allRequiredFieldsAreFilledIn = false;
               }
-            } else if (angular.isObject($scope.model._value)) {
-              if ($rootScope.isEmpty($scope.model._value)) {
+            } else if (angular.isObject($scope.model['@value'])) {
+              if ($rootScope.isEmpty($scope.model['@value'])) {
                 allRequiredFieldsAreFilledIn = false;
               } else if (DataManipulationService.getFieldSchema($scope.field)._ui.dateType == "date-range") {
-                if (!$scope.model._value.start || !$scope.model._value.end) {
+                if (!$scope.model['@value'].start || !$scope.model['@value'].end) {
                   allRequiredFieldsAreFilledIn = false;
                 }
               } else {
                 // Require at least one checkbox is checked.
                 var hasValue = false;
-                angular.forEach($scope.model._value, function (value, key) {
+                angular.forEach($scope.model['@value'], function (value, key) {
                   hasValue = hasValue || value;
                 });
 
@@ -182,30 +182,30 @@ define([
 
           if (angular.isArray($scope.model)) {
             angular.forEach($scope.model, function (valueElement) {
-              if (angular.isArray(valueElement._value)) {
-                angular.forEach(valueElement._value, function (ve) {
+              if (angular.isArray(valueElement['@value'])) {
+                angular.forEach(valueElement['@value'], function (ve) {
                   if (!$rootScope.isValueConformedToConstraint(ve, $scope.field["@id"],
                           $rootScope.schemaOf($scope.field)._valueConstraints)) {
                     allFieldsAreValid = false;
                   }
                 });
-              } else if (angular.isObject(valueElement._value)) {
-                if (!$rootScope.isValueConformedToConstraint(valueElement._value, $scope.field["@id"],
+              } else if (angular.isObject(valueElement['@value'])) {
+                if (!$rootScope.isValueConformedToConstraint(valueElement['@value'], $scope.field["@id"],
                         $rootScope.schemaOf($scope.field)._valueConstraints)) {
                   allFieldsAreValid = false;
                 }
               }
             });
           } else {
-            if (angular.isArray($scope.model._value)) {
-              angular.forEach($scope.model._value, function (ve) {
+            if (angular.isArray($scope.model['@value'])) {
+              angular.forEach($scope.model['@value'], function (ve) {
                 if (!$rootScope.isValueConformedToConstraint(ve, $scope.field["@id"],
                         $rootScope.schemaOf($scope.field)._valueConstraints)) {
                   allFieldsAreValid = false;
                 }
               });
-            } else if (angular.isObject($scope.model._value)) {
-              if (!$rootScope.isValueConformedToConstraint($scope.model._value, $scope.field["@id"],
+            } else if (angular.isObject($scope.model['@value'])) {
+              if (!$rootScope.isValueConformedToConstraint($scope.model['@value'], $scope.field["@id"],
                       $rootScope.schemaOf($scope.field)._valueConstraints)) {
                 allFieldsAreValid = false;
               }
@@ -252,33 +252,33 @@ define([
 
               if (field.defaultOption) {
                 for (var i = 0; i < min; i++) {
-                  $scope.model[i]["_value"] = angular.copy(field.defaultOption);
+                  $scope.model[i]['@value'] = angular.copy(field.defaultOption);
                 }
               } else {
                 for (var i = 0; i < min; i++) {
                   if (['checkbox'].indexOf(field.inputType) >= 0 ||
                       ['date'].indexOf(field.inputType) >= 0 && field.dateType == "date-range") {
-                    $scope.model[i]['_value'] = {};
+                    $scope.model[i]['@value'] = {};
                   } else if (['list'].indexOf(field.inputType) >= 0) {
-                    $scope.model[i]['_value'] = [];
+                    $scope.model[i]['@value'] = [];
                   } else {
-                    $scope.model[i]['_value'] = "";
+                    $scope.model[i]['@value'] = "";
                   }
                 }
               }
             } else {
               angular.forEach($scope.model, function (m, i) {
-                if (!("_value" in m)) {
+                if (!('@value' in m)) {
                   if (field.defaultOption) {
-                    $scope.model[i]["_value"] = angular.copy(field.defaultOption);
+                    $scope.model[i]['@value'] = angular.copy(field.defaultOption);
                   } else {
                     if (['checkbox'].indexOf(field.inputType) >= 0 ||
                         ['date'].indexOf(field.inputType) >= 0 && field.dateType == "date-range") {
-                      $scope.model[i]['_value'] = {};
+                      $scope.model[i]['@value'] = {};
                     } else if (['list'].indexOf(field.inputType) >= 0) {
-                      $scope.model[i]['_value'] = [];
+                      $scope.model[i]['@value'] = [];
                     } else {
-                      $scope.model[i]['_value'] = "";
+                      $scope.model[i]['@value'] = "";
                     }
                   }
                 }
@@ -286,17 +286,17 @@ define([
               });
             }
           } else {
-            if (!("_value" in $scope.model)) {
+            if (!('@value' in $scope.model)) {
               if (field.defaultOption) {
-                $scope.model["_value"] = angular.copy(field.defaultOption);
+                $scope.model['@value'] = angular.copy(field.defaultOption);
               } else {
                 if (['checkbox'].indexOf(field.inputType) >= 0 ||
                     ['date'].indexOf(field.inputType) >= 0 && field.dateType == "date-range") {
-                  $scope.model['_value'] = {};
+                  $scope.model['@value'] = {};
                 } else if (['list'].indexOf(field.inputType) >= 0) {
-                  $scope.model['_value'] = [];
+                  $scope.model['@value'] = [];
                 } else {
-                  $scope.model['_value'] = "";
+                  $scope.model['@value'] = "";
                 }
               }
             }
@@ -359,15 +359,15 @@ define([
           }
 
           if (field.defaultOption) {
-            seed["_value"] = angular.copy(field.defaultOption);
+            seed['@value'] = angular.copy(field.defaultOption);
           } else {
             if (['checkbox'].indexOf(field.inputType) >= 0 ||
                 ['date'].indexOf(field.inputType) >= 0 && field.dateType == "date-range") {
-              seed['_value'] = {};
+              seed['@value'] = {};
             } else if (['list'].indexOf(field.inputType) >= 0) {
-              seed['_value'] = [];
+              seed['@value'] = [];
             } else {
-              seed['_value'] = "";
+              seed['@value'] = "";
             }
           }
 
@@ -390,20 +390,20 @@ define([
 
         if ($rootScope.isArray($scope.model)) {
           angular.forEach($scope.modelValue, function (m, i) {
-            if (m && m._value && m._value["@id"]) {
-              $scope.model[i]._value = m._value["id"];
-              $scope.model[i]._valueLabel = m._value.label;
+            if (m && m['@value'] && m['@value']["@id"]) {
+              $scope.model[i]['@value'] = m['@value']["id"];
+              $scope.model[i]._valueLabel = m['@value'].label;
             } else {
-              delete $scope.model[i]._value;
+              delete $scope.model[i]['@value'];
               delete $scope.model[i]._valueLabel;
             }
           });
         } else {
-          if (newValue && newValue._value && newValue._value["@id"]) {
-            $scope.model._value = newValue._value["@id"];
-            $scope.model._valueLabel = newValue._value.label;
+          if (newValue && newValue['@value'] && newValue['@value']["@id"]) {
+            $scope.model['@value'] = newValue['@value']["@id"];
+            $scope.model._valueLabel = newValue['@value'].label;
           } else if (oldValue) {
-            delete $scope.model._value;
+            delete $scope.model['@value'];
             delete $scope.model._valueLabel;
           }
         }
@@ -527,15 +527,15 @@ define([
             $scope.modelValue = [];
             angular.forEach($scope.model, function (m, i) {
               // TODO: Push valid value if m is present.
-              if (m._value) {
-                $scope.modelValue.push({_value: {"@id": m._value, label: m._valueLabel}});
+              if (m['@value']) {
+                $scope.modelValue.push({'@value': {"@id": m['@value'], label: m._valueLabel}});
               } else {
                 $scope.modelValue.push({});
               }
             });
           } else {
-            if ($scope.model && $scope.model._value) {
-              $scope.modelValue = {_value: {"@id": $scope.model._value, label: $scope.model._valueLabel}};
+            if ($scope.model && $scope.model['@value']) {
+              $scope.modelValue = {'@value': {"@id": $scope.model['@value'], label: $scope.model._valueLabel}};
             } else {
               $scope.modelValue = {};
             }
@@ -564,33 +564,33 @@ define([
 
                 if (field.defaultOption) {
                   for (var i = 0; i < min; i++) {
-                    $scope.model[i]["_value"] = angular.copy(field.defaultOption);
+                    $scope.model[i]['@value'] = angular.copy(field.defaultOption);
                   }
                 } else {
                   for (var i = 0; i < min; i++) {
                     if (['checkbox'].indexOf(field.inputType) >= 0 ||
                         ['date'].indexOf(field.inputType) >= 0 && field.dateType == "date-range") {
-                      $scope.model[i]['_value'] = {};
+                      $scope.model[i]['@value'] = {};
                     } else if (['list'].indexOf(field.inputType) >= 0) {
-                      $scope.model[i]['_value'] = [];
+                      $scope.model[i]['@value'] = [];
                     } else {
-                      $scope.model[i]['_value'] = "";
+                      $scope.model[i]['@value'] = "";
                     }
                   }
                 }
               } else {
                 angular.forEach($scope.model, function (m, i) {
-                  if (!("_value" in m)) {
+                  if (!('@value' in m)) {
                     if (field.defaultOption) {
-                      $scope.model[i]["_value"] = angular.copy(field.defaultOption);
+                      $scope.model[i]['@value'] = angular.copy(field.defaultOption);
                     } else {
                       if (['checkbox'].indexOf(field.inputType) >= 0 ||
                           ['date'].indexOf(field.inputType) >= 0 && field.dateType == "date-range") {
-                        $scope.model[i]['_value'] = {};
+                        $scope.model[i]['@value'] = {};
                       } else if (['list'].indexOf(field.inputType) >= 0) {
-                        $scope.model[i]['_value'] = [];
+                        $scope.model[i]['@value'] = [];
                       } else {
-                        $scope.model[i]['_value'] = "";
+                        $scope.model[i]['@value'] = "";
                       }
                     }
                   }
@@ -598,18 +598,18 @@ define([
                 });
               }
             } else {
-              if (!("_value" in $scope.model)) {
+              if (!('@value' in $scope.model)) {
 
                 if (field.defaultOption) {
-                  $scope.model["_value"] = angular.copy(field.defaultOption);
+                  $scope.model['@value'] = angular.copy(field.defaultOption);
                 } else {
                   if (['checkbox'].indexOf(field.inputType) >= 0 ||
                       ['date'].indexOf(field.inputType) >= 0 && field.dateType == "date-range") {
-                    $scope.model['_value'] = {};
+                    $scope.model['@value'] = {};
                   } else if (['list'].indexOf(field.inputType) >= 0) {
-                    $scope.model['_value'] = [];
+                    $scope.model['@value'] = [];
                   } else {
-                    $scope.model['_value'] = "";
+                    $scope.model['@value'] = "";
                   }
                 }
               }
@@ -622,7 +622,7 @@ define([
       /* Value Recommendation functionality */
       // Load values when opening an instance
       if ($scope.model) {
-        $scope.modelValueRecommendation = {'_value': {'value': $scope.model._value}}
+        $scope.modelValueRecommendation = {'@value': {'value': $scope.model['@value']}}
       }
 
       $scope.updateModelWhenChangeSelection = function (modelvr) {
@@ -630,15 +630,15 @@ define([
         $scope.modelValueRecommendation = modelvr;
         if ($rootScope.isArray($scope.model)) {
           angular.forEach(modelvr, function (m, i) {
-            if (m && m._value & m._value.value) {
-              $scope.model[i]._value = m._value.value;
+            if (m && m['@value'] & m['@value'].value) {
+              $scope.model[i]['@value'] = m['@value'].value;
             } else {
-              delete $scope.model[i]._value;
+              delete $scope.model[i]['@value'];
             }
           });
         } else {
-          var newValue = modelvr._value.value;
-          $scope.model._value = newValue;
+          var newValue = modelvr['@value'].value;
+          $scope.model['@value'] = newValue;
         }
       };
 
@@ -652,8 +652,8 @@ define([
           if ($rootScope.isArray($scope.model)) {
             // TODO
           } else {
-            $scope.model._value = select.search;
-            $scope.modelValueRecommendation._value.value = select.search;
+            $scope.model['@value'] = select.search;
+            $scope.modelValueRecommendation['@value'].value = select.search;
           }
         }
       };

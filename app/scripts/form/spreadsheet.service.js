@@ -49,16 +49,16 @@ define([
             if (inputType == 'dropdown') {
               var containerArray = [];
               containerArray.push(sds.tableData[row][col]);
-              sds.tableDataSource[row][col]._value = containerArray;
+              sds.tableDataSource[row][col]['@value'] = containerArray;
             } else if (cedarType == 'checkboxes') {
               var valueObject = JSON.parse(sds.tableData[row][col]);
               var value = {};
               for (var key in valueObject) {
                 value[key] = true;
               }
-              sds.tableDataSource[row][col]._value = value;
+              sds.tableDataSource[row][col]['@value'] = value;
             } else {
-              sds.tableDataSource[row][col]._value = sds.tableData[row][col];
+              sds.tableDataSource[row][col]['@value'] = sds.tableData[row][col];
             }
           }
         }
@@ -178,13 +178,13 @@ define([
         var inputType = columnDescriptor.type;
         var cedarType = columnDescriptor.cedarType;
         if (inputType == 'dropdown') {
-          rowData.push(cellDataObject._value[0]);
+          rowData.push(cellDataObject['@value'][0]);
         } else if (cedarType == 'checkboxes') {
-          rowData.push(JSON.stringify(cellDataObject._value));
+          rowData.push(JSON.stringify(cellDataObject['@value']));
         } else if (cedarType == 'deepObject') {
           rowData.push(columnDescriptor.cedarLabel);
         } else {
-          rowData.push(cellDataObject._valueLabel || cellDataObject._value);
+          rowData.push(cellDataObject._valueLabel || cellDataObject['@value']);
         }
       },
 
