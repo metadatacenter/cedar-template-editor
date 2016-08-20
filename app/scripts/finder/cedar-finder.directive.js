@@ -212,6 +212,7 @@ define([
                   vm.searchTerm = term;
                   vm.isSearching = true;
                   vm.resources = response.resources;
+                  vm.selectedResource = null;
                 },
                 function (error) {
                   UIMessageService.showBackendError('SERVER.SEARCH.error', error);
