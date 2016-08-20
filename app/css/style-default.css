@@ -13989,6 +13989,86 @@ table.apiKey td {
 .finder-modal .modal-header .toolbar {
   padding: 10px 0 0;
 }
+.finder-modal .modal-header .toolbar .list-inline label.title {
+  position: relative;
+  top: -3px;
+}
+.finder-modal .modal-header .toolbar .list-inline .spacer {
+  margin: 0 15px;
+}
+.finder-modal .modal-header .toolbar .list-inline .tool {
+  margin: 0 5px;
+}
+.finder-modal .modal-header .toolbar .list-inline > li {
+  display: inline-block;
+  padding-left: 0px;
+  padding-right: 0px;
+}
+.finder-modal .modal-header .toolbar ul.list-unstyled > li {
+  border-top: 1px solid #d2d2d2;
+  margin-bottom: 10px;
+}
+.finder-modal .modal-header .toolbar ul > li {
+  list-style-type: none;
+  padding-top: 5px;
+}
+.finder-modal .modal-header .toolbar li > ul {
+  padding-left: 15px;
+}
+.finder-modal .modal-header .toolbar li > ul li i {
+  padding-right: 10px;
+  color: #339933;
+}
+.finder-modal .modal-header .toolbar li > ul li a {
+  color: #666666;
+}
+.finder-modal .modal-header .toolbar ul.list-unstyled > li:last-child {
+  border-bottom: 1px solid #d2d2d2;
+}
+.finder-modal .modal-header .toolbar ul.list-unstyled > li > a {
+  display: block;
+  padding: 5px 20px;
+  text-transform: uppercase;
+  color: #666666;
+}
+.finder-modal .modal-header .toolbar ul.list-unstyled > li > a i {
+  color: #339933;
+}
+.finder-modal .modal-header .toolbar .reset-text {
+  text-transform: uppercase;
+  height: 55px;
+  padding: 20px;
+}
+.finder-modal .modal-header .toolbar button {
+  background: transparent;
+  border: 0px solid #ccc;
+}
+.finder-modal .modal-header .toolbar .btn-circle {
+  border-radius: 50%;
+  background: #94C795;
+  border: #94C795;
+  color: #fff;
+  width: 30px;
+  height: 30px;
+  padding-top: .5em;
+  opacity: 0.4;
+}
+.finder-modal .modal-header .toolbar .btn-circle.template {
+  background: #5097A5;
+}
+.finder-modal .modal-header .toolbar .btn-circle.element {
+  background: #71977F;
+}
+.finder-modal .modal-header .toolbar .btn-circle.metadata,
+.finder-modal .modal-header .toolbar .btn-circle.instance {
+  background: #6A8B92;
+}
+.finder-modal .modal-header .toolbar .btn-circle.folder {
+  background: #9E9E9E;
+}
+.finder-modal .modal-header .toolbar .active {
+  opacity: 1;
+}
 .finder-modal .modal-header .toolbar .form-control {
   height: 40px;
 }
@@ -13999,7 +14079,7 @@ table.apiKey td {
   color: #ccc;
 }
 .finder-modal .modal-header .toolbar button {
-  padding-top: 10px;
+  padding-top: 0px;
 }
 .finder-modal .modal-header .toolbar label {
   vertical-align: sub;
@@ -14007,7 +14087,7 @@ table.apiKey td {
   font-size: .9em;
 }
 .finder-modal .modal-header .toolbar .bootstrap-select {
-  width: 120px;
+  max-width: 120px;
 }
 .finder-modal .modal-header .toolbar .search-input {
   margin-top: 0;

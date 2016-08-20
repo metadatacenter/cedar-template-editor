@@ -5645,20 +5645,115 @@ table.apiKey {
   .modal-header {
     padding: 0 20px;
     .toolbar {
-      padding:10px 0 0;
-      .form-control{
-        height:40px;
+      padding: 10px 0 0;
+
+      .list-inline {
+        label.title {
+          position:relative;
+          top:-3px;
+        }
+        .spacer {
+          margin:0 15px;
+        }
+        .tool {
+          margin:0 5px;
+        }
+      }
+
+      .list-inline > li {
+        display: inline-block;
+        padding-left: 0px;
+        padding-right: 0px;
+
       }
 
 
+      ul.list-unstyled > li {
+        border-top: 1px solid @gray3;
+        margin-bottom: 10px;
+      }
+      ul > li {
+        list-style-type: none;
+        padding-top: 5px;
+      }
+      li > ul {
+        padding-left: 15px;
+
+        li i {
+          padding-right: 10px;
+          color: @brand-primary;
+        }
+        li a {
+          color: @graytxt
+        }
+      }
+      ul.list-unstyled > li:last-child {
+        border-bottom: 1px solid @gray3;
+      }
+      ul.list-unstyled > li > a {
+        display: block;
+        padding: 5px 20px;
+        text-transform: uppercase;
+        color: @graytxt;
+
+        i {
+          color: @brand-primary;
+        }
+      }
+      .reset-text {
+        text-transform: uppercase;
+        height: 55px;
+        padding: 20px;
+      }
+
+      button {
+        background: transparent;
+        border: 0px solid #ccc;
+      }
+
+      .btn-circle {
+        border-radius: 50%;
+        background: @brand-primary-disabled;
+        border: @brand-primary-disabled;
+        color: #fff;
+        width: 30px;
+        height: 30px;
+        padding-top: .5em;
+        opacity: 0.4;
+
+        &.template {
+          background: @button-template;
+        }
+
+        &.element {
+          background: @button-element;
+        }
+
+        &.metadata, &.instance {
+          background: @button-metadata;
+        }
+
+        &.folder {
+          background: @button-folder;
+        }
+      }
+
+      .active {
+        opacity: 1;
+      }
+
+      .form-control {
+        height: 40px;
+      }
+
       button.tool {
-        background:@white;
+        background: @white;
         &:disabled {
-          color:#ccc;
+          color: #ccc;
         }
       }
       button {
-        padding-top: 10px;
+        padding-top: 0px;
       }
       label {
         vertical-align: sub;
@@ -5666,7 +5761,7 @@ table.apiKey {
         font-size: .9em;
       }
       .bootstrap-select {
-        width: 120px;
+        max-width: 120px;
       }
       .search-input {
         margin-top: 0;
