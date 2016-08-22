@@ -250,9 +250,9 @@ define([
             if ($scope.model.length == 0) {
               var min = $scope.field._ui.minItems || 0;
 
-              if (field._valueConstraints.defaultOption) {
+              if (field._valueConstraints.defaultOptions) {
                 for (var i = 0; i < min; i++) {
-                  $scope.model[i]['@value'] = angular.copy(field._valueConstraints.defaultOption);
+                  $scope.model[i]['@value'] = angular.copy(field._valueConstraints.defaultOptions);
                 }
               } else {
                 for (var i = 0; i < min; i++) {
@@ -269,8 +269,8 @@ define([
             } else {
               angular.forEach($scope.model, function (m, i) {
                 if (!('@value' in m)) {
-                  if (field._valueConstraints.defaultOption) {
-                    $scope.model[i]['@value'] = angular.copy(field._valueConstraints.defaultOption);
+                  if (field._valueConstraints.defaultOptions) {
+                    $scope.model[i]['@value'] = angular.copy(field._valueConstraints.defaultOptions);
                   } else {
                     if (['checkbox'].indexOf(field._ui.inputType) >= 0 ||
                         ['date'].indexOf(field._ui.inputType) >= 0 && field._ui.dateType == "date-range") {
@@ -287,8 +287,8 @@ define([
             }
           } else {
             if (!('@value' in $scope.model)) {
-              if (field._valueConstraints.defaultOption) {
-                $scope.model['@value'] = angular.copy(field._valueConstraints.defaultOption);
+              if (field._valueConstraints.defaultOptions) {
+                $scope.model['@value'] = angular.copy(field._valueConstraints.defaultOptions);
               } else {
                 if (['checkbox'].indexOf(field._ui.inputType) >= 0 ||
                     ['date'].indexOf(field._ui.inputType) >= 0 && field._ui.dateType == "date-range") {
@@ -358,8 +358,8 @@ define([
             seed = angular.copy($scope.model[0]);
           }
 
-          if (field._valueConstraints.defaultOption) {
-            seed['@value'] = angular.copy(field._valueConstraints.defaultOption);
+          if (field._valueConstraints.defaultOptions) {
+            seed['@value'] = angular.copy(field._valueConstraints.defaultOptions);
           } else {
             if (['checkbox'].indexOf(field._ui.inputType) >= 0 ||
                 ['date'].indexOf(field._ui.inputType) >= 0 && field._ui.dateType == "date-range") {
@@ -573,9 +573,9 @@ define([
               if ($scope.model.length == 0) {
                 var min = $scope.field.minItems || 0;
 
-                if (field._valueConstraints.defaultOption) {
+                if (field._valueConstraints.defaultOptions) {
                   for (var i = 0; i < min; i++) {
-                    $scope.model[i]['@value'] = angular.copy(field._valueConstraints.defaultOption);
+                    $scope.model[i]['@value'] = angular.copy(field._valueConstraints.defaultOptions);
                   }
                 } else {
                   for (var i = 0; i < min; i++) {
@@ -592,8 +592,8 @@ define([
               } else {
                 angular.forEach($scope.model, function (m, i) {
                   if (!('@value' in m)) {
-                    if (field._valueConstraints.defaultOption) {
-                      $scope.model[i]['@value'] = angular.copy(field._valueConstraints.defaultOption);
+                    if (field._valueConstraints.defaultOptions) {
+                      $scope.model[i]['@value'] = angular.copy(field._valueConstraints.defaultOptions);
                     } else {
                       if (['checkbox'].indexOf(field._ui.inputType) >= 0 ||
                           ['date'].indexOf(field._ui.inputType) >= 0 && field._ui.dateType == "date-range") {
@@ -611,8 +611,8 @@ define([
             } else {
               if (!('@value' in $scope.model)) {
 
-                if (field._valueConstraints.defaultOption) {
-                  $scope.model['@value'] = angular.copy(field._valueConstraints.defaultOption);
+                if (field._valueConstraints.defaultOptions) {
+                  $scope.model['@value'] = angular.copy(field._valueConstraints.defaultOptions);
                 } else {
                   if (['checkbox'].indexOf(field._ui.inputType) >= 0 ||
                       ['date'].indexOf(field._ui.inputType) >= 0 && field._ui.dateType == "date-range") {

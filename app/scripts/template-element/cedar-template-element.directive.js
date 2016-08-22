@@ -39,15 +39,15 @@ define([
             if (key == '@value') {
               if (angular.isArray(model)) {
                 if ($rootScope.schemaOf(settings)._ui.inputType == "list") {
-                  if ($rootScope.schemaOf(settings)._valueConstraints.defaultOption) {
-                    el[key] = angular.copy($rootScope.schemaOf(settings)._valueConstraints.defaultOption);
+                  if ($rootScope.schemaOf(settings)._valueConstraints.defaultOptions) {
+                    el[key] = angular.copy($rootScope.schemaOf(settings)._valueConstraints.defaultOptions);
                   } else {
                     model.splice(0, model.length);
                   }
                 } else {
                   for (var i = 0; i < model.length; i++) {
-                    if ($rootScope.schemaOf(settings)._valueConstraints.defaultOption) {
-                      model[i]['@value'] = angular.copy($rootScope.schemaOf(settings)._valueConstraints.defaultOption);
+                    if ($rootScope.schemaOf(settings)._valueConstraints.defaultOptions) {
+                      model[i]['@value'] = angular.copy($rootScope.schemaOf(settings)._valueConstraints.defaultOptions);
                     } else {
                       if (typeof(model[i]['@value']) == "string") {
                         model[i]['@value'] = "";
@@ -60,8 +60,8 @@ define([
                   }
                 }
               } else {
-                if ($rootScope.schemaOf(settings)._valueConstraints.defaultOption) {
-                  el[key] = angular.copy($rootScope.schemaOf(settings)._valueConstraints.defaultOption);
+                if ($rootScope.schemaOf(settings)._valueConstraints.defaultOptions) {
+                  el[key] = angular.copy($rootScope.schemaOf(settings)._valueConstraints.defaultOptions);
                 } else {
                   if (typeof(model) == "string") {
                     el[key] = "";
@@ -81,15 +81,15 @@ define([
                   if (k == '@value') {
                     if (angular.isArray(v)) {
                       if ($rootScope.schemaOf(settings)._ui.inputType == "list") {
-                        if ($rootScope.schemaOf(settings)._valueConstraints.defaultOption) {
-                          model[k] = angular.copy($rootScope.schemaOf(settings)._valueConstraints.defaultOption);
+                        if ($rootScope.schemaOf(settings)._valueConstraints.defaultOptions) {
+                          model[k] = angular.copy($rootScope.schemaOf(settings)._valueConstraints.defaultOptions);
                         } else {
                           v.splice(0, v.length);
                         }
                       } else {
                         for (var i = 0; i < v.length; i++) {
-                          if ($rootScope.schemaOf(settings)._valueConstraints.defaultOption) {
-                            v[i]['@value'] = angular.copy($rootScope.schemaOf(settings)._valueConstraints.defaultOption);
+                          if ($rootScope.schemaOf(settings)._valueConstraints.defaultOptions) {
+                            v[i]['@value'] = angular.copy($rootScope.schemaOf(settings)._valueConstraints.defaultOptions);
                           } else {
                             if (typeof(v[i]['@value']) == "string") {
                               v[i]['@value'] = "";
@@ -102,8 +102,8 @@ define([
                         }
                       }
                     } else {
-                      if ($rootScope.schemaOf(settings)._valueConstraints.defaultOption) {
-                        model[k] = angular.copy($rootScope.schemaOf(settings)._valueConstraints.defaultOption);
+                      if ($rootScope.schemaOf(settings)._valueConstraints.defaultOptions) {
+                        model[k] = angular.copy($rootScope.schemaOf(settings)._valueConstraints.defaultOptions);
                       } else {
                         if (typeof(v) == "string") {
                           model[k] = "";

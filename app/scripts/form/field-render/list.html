@@ -16,7 +16,7 @@
 			  title="{{$root.schemaOf(field)._ui.title}}"
 			  ng-model="valueElement['@value']"
               ng-disabled="!$root.isRuntime() || preview"
-			  defaults="$root.schemaOf(field)._valueConstraints.defaultOption"
+			  defaults="$root.schemaOf(field)._valueConstraints.defaultOptions"
 			  select-picker="">
 		<option ng-repeat="(index, value) in $root.schemaOf(field)._valueConstraints.literals" value="{{$root.schemaOf(field)._valueConstraints.literals[index]['label']}}">{{$root.schemaOf(field)._valueConstraints.literals[index]['label']}}</option>
 	  </select>
@@ -31,7 +31,7 @@
 			  title="{{$root.schemaOf(field)._ui.title}}"
 			  ng-model="valueElement['@value']"
               ng-disabled="!$root.isRuntime() || preview"
-			  defaults="$root.schemaOf(field)._valueConstraints.defaultOption"
+			  defaults="$root.schemaOf(field)._valueConstraints.defaultOptions"
 			  select-picker="">
 		<option ng-repeat="(index, value) in $root.schemaOf(field)._valueConstraints.literals" value="{{$root.schemaOf(field)._valueConstraints.literals[index]['label']}}">{{$root.schemaOf(field)._valueConstraints.literals[index]['label']}}</option>
 	  </select>
@@ -53,7 +53,7 @@
           title="{{$root.schemaOf(field)._ui.title}}"
           ng-model="model['@value']"
           ng-disabled="true"
-          defaults="$root.schemaOf(field)._valueConstraints.defaultOption"
+          defaults="$root.schemaOf(field)._valueConstraints.defaultOptions"
           select-picker="">
         <option ng-repeat="(index, value) in $root.schemaOf(field)._valueConstraints.literals" value="{{$root.schemaOf(field)._valueConstraints.literals[index]['label']}}">{{$root.schemaOf(field)._valueConstraints.literals[index]['label']}}</option>
       </select>
@@ -68,7 +68,7 @@
           title="{{$root.schemaOf(field)._ui.title}}"
           ng-model="model['@value']"
           ng-disabled="true"
-          defaults="$root.schemaOf(field)._valueConstraints.defaultOption"
+          defaults="$root.schemaOf(field)._valueConstraints.defaultOptions"
           select-picker="">
         <option ng-repeat="(index, value) in $root.schemaOf(field)._valueConstraints.literals" value="{{$root.schemaOf(field)._valueConstraints.literals[index]['label']}}">{{$root.schemaOf(field)._valueConstraints.literals[index]['label']}}</option>
       </select>
@@ -87,7 +87,7 @@
 			  title="{{$root.schemaOf(field)._ui.title}}"
 			  ng-model="model['@value']"
               ng-disabled="!$root.isRuntime() || preview"
-			  defaults="$root.schemaOf(field)._valueConstraints.defaultOption"
+			  defaults="$root.schemaOf(field)._valueConstraints.defaultOptions"
 			  select-picker="">
 		<option ng-repeat="(index, value) in $root.schemaOf(field)._valueConstraints.literals" value="{{$root.schemaOf(field)._valueConstraints.literals[index]['label']}}">{{$root.schemaOf(field)._valueConstraints.literals[index]['label']}}</option>
 	  </select>
@@ -102,7 +102,7 @@
 			  title="{{$root.schemaOf(field)._ui.title}}"
 			  ng-model="model['@value']"
               ng-disabled="!$root.isRuntime() || preview"
-			  defaults="$root.schemaOf(field)._valueConstraints.defaultOption"
+			  defaults="$root.schemaOf(field)._valueConstraints.defaultOptions"
 			  select-picker="">
 		<option ng-repeat="(index, value) in $root.schemaOf(field)._valueConstraints.literals" value="{{$root.schemaOf(field)._valueConstraints.literals[index]['label']}}">{{$root.schemaOf(field)._valueConstraints.literals[index]['label']}}</option>
 	  </select>

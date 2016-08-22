@@ -32,11 +32,11 @@ define([
           // If returning to an already populated select list field, load selections
           default_array = $scope.model['@value'];
 
-        } else if ($scope.field && $scope.field._valueConstraints.defaultOption) {
+        } else if ($scope.field && $scope.field._valueConstraints.defaultOptions) {
           default_array = [];
 
           // If default select options have been set for an empty field
-          var defaultOptions = $scope.field._valueConstraints.defaultOption;
+          var defaultOptions = $scope.field._valueConstraints.defaultOptions;
 
           for (var property in defaultOptions) {
             if (defaultOptions.hasOwnProperty(property)) {

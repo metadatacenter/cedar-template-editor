@@ -35,7 +35,7 @@
             <div class="checkbox checkbox-primary checkbox-circle">
               <input ng-click="$event.stopPropagation();"  type="checkbox" id="checkbox-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}-{{index}}"
                   name="checkbox-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}"
-                  ng-model="$root.schemaOf(field)._valueConstraints.defaultOption[value.label]">
+                  ng-model="$root.schemaOf(field)._valueConstraints.defaultOptions[value.label]">
               <label for="checkbox-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}-{{index}}"></label>
             </div>
             <!-- /.checkbox -->
