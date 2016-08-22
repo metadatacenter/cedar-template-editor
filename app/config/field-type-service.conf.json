@@ -24,7 +24,7 @@
     "iconClass": "cedar-svg-multiple-choice",
     "label": "Multiple Choice",
     "allowedInElement": true,
-    "hasControlledTerms": true,
+    "hasControlledTerms": false,
     "staticField": false,
     "allowsMultiple": false
   },
@@ -33,7 +33,7 @@
     "iconClass": "cedar-svg-checkbox",
     "label": "Checkbox",
     "allowedInElement": true,
-    "hasControlledTerms": true,
+    "hasControlledTerms": false,
     "staticField": false,
     "allowsMultiple": false
   },
@@ -62,7 +62,7 @@
     "allowedInElement": true,
     "primaryField": true,
     "label": "List",
-    "hasControlledTerms": true,
+    "hasControlledTerms": false,
     "staticField": false,
     "allowsMultiple": false
   },

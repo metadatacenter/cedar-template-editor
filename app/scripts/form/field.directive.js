@@ -491,8 +491,6 @@ define([
       $scope.allowsMultiple = function () {
         var inputType = $rootScope.schemaOf($scope.field)._ui.inputType;
         var fieldTypes = FieldTypeService.getFieldTypes();
-        console.log(inputType);
-        console.log(fieldTypes);
         for (var i = 0; i < fieldTypes.length; i++) {
           if (fieldTypes[i].cedarType === inputType) {
             return fieldTypes[i].allowsMultiple;
