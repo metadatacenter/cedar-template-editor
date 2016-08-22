@@ -28,15 +28,15 @@ define([
       // If field is within multiple choice field types
       if (extraConditionInputs.indexOf(field._ui.inputType) !== -1) {
         var optionMessage = $translate.instant("VALIDATION.optionEmpty");
-        angular.forEach(field._ui.options, function (value, index) {
+        angular.forEach(field._valueConstraints.literals, function (value, index) {
           // If any 'option' title text is left empty, create error message
-          if (!value.text.length && unmetConditions.indexOf(optionMessage) == -1) {
+          if (!value.label.length && unmetConditions.indexOf(optionMessage) == -1) {
             unmetConditions.push(optionMessage);
           }
         });
       }
       // If field type is 'radio' or 'pick from a list' there must be more than one option created
-      if ((field._ui.inputType == 'radio' || field._ui.inputType == 'list') && field._ui.options && (field._ui.options.length <= 1)) {
+      if ((field._ui.inputType == 'radio' || field._ui.inputType == 'list') && field._valueConstraints.literals && (field._valueConstraints.literals.length <= 1)) {
         unmetConditions.push($translate.instant("VALIDATION.multipleChoiceTooFew"));
       }
       // Return array of error messages

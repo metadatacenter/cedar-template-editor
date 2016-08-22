@@ -10,15 +10,15 @@
     <div class="form-group field-wrapper-checkbox  ">
       <p class="extra-label-context">{{$root.schemaOf(field)._ui.title}}</p>
 
-      <div class=" checkbox-item" ng-repeat="(index, value) in $root.schemaOf(field)._ui.options">
+      <div class=" checkbox-item" ng-repeat="(index, value) in $root.schemaOf(field)._valueConstraints.literals">
         <div class="checkbox checkbox-primary">
           <input type="checkbox"
               ng-click="console('click'); $event.stopPropagation();"
               id="checkbox-{{uuid}}-{{$parent.$index}}-{{index}}"
-              ng-model="valueElement['@value'][value.text]"
+              ng-model="valueElement['@value'][value.label]"
               ng-disabled="!$root.isRuntime() || preview"
-              ng-checked="valueElement['@value'][value.text]"/>
-          <label ng-click=" $event.stopPropagation();" for="checkbox-{{uuid}}-{{$parent.$index}}-{{index}}">{{$root.schemaOf(field)._ui.options[index]['text']}}</label>
+              ng-checked="valueElement['@value'][value.label]"/>
+          <label ng-click=" $event.stopPropagation();" for="checkbox-{{uuid}}-{{$parent.$index}}-{{index}}">{{$root.schemaOf(field)._valueConstraints.literals[index]['label']}}</label>
 
         </div>
         <!-- ./checkbox -->
@@ -39,15 +39,15 @@
     <div class="form-group field-wrapper-checkbox  ">
       <p class="extra-label-context">{{$root.schemaOf(field)._ui.title}}</p>
 
-      <div class="form-group checkbox-item" ng-repeat="(index, value) in $root.schemaOf(field)._ui.options">
+      <div class="form-group checkbox-item" ng-repeat="(index, value) in $root.schemaOf(field)._valueConstraints.literals">
         <div class="checkbox checkbox-primary">
           <input type="checkbox"
               ng-click="console('click'); $event.stopPropagation();"
               id="checkbox-{{uuid}}-{{$parent.$index}}-{{index}}"
-              ng-model="model['@value'][value.text]"
+              ng-model="model['@value'][value.label]"
               ng-disabled="true"
-              ng-checked="model['@value'][value.text]"/>
-          <label ng-click=" $event.stopPropagation();" for="checkbox-{{uuid}}-{{$parent.$index}}-{{index}}">{{$root.schemaOf(field)._ui.options[index]['text']}}</label>
+              ng-checked="model['@value'][value.label]"/>
+          <label ng-click=" $event.stopPropagation();" for="checkbox-{{uuid}}-{{$parent.$index}}-{{index}}">{{$root.schemaOf(field)._valueConstraints.literals[index]['label']}}</label>
         </div>
         <!-- ./checkbox -->
       </div>
@@ -65,15 +65,15 @@
 
       <p class="extra-label-context">{{$root.schemaOf(field)._ui.title}}</p>
 
-      <div class="checkbox-item" ng-repeat="(index, value) in $root.schemaOf(field)._ui.options">
+      <div class="checkbox-item" ng-repeat="(index, value) in $root.schemaOf(field)._valueConstraints.literals">
         <div class="checkbox checkbox-primary">
           <input type="checkbox"
               ng-click="console('click'); $event.stopPropagation();"
               id="checkbox-{{uuid}}-{{$parent.$index}}-{{index}}"
-              ng-model="model['@value'][value.text]"
+              ng-model="model['@value'][value.label]"
               ng-disabled="!$root.isRuntime() || preview"
-              ng-checked="model['@value'][value.text]"/>
-          <label ng-click=" $event.stopPropagation();" for="checkbox-{{uuid}}-{{$parent.$index}}-{{index}}">{{$root.schemaOf(field)._ui.options[index]['text']}}</label>
+              ng-checked="model['@value'][value.label]"/>
+          <label ng-click=" $event.stopPropagation();" for="checkbox-{{uuid}}-{{$parent.$index}}-{{index}}">{{$root.schemaOf(field)._valueConstraints.literals[index]['label']}}</label>
 
         </div>
         <!-- ./checkbox -->

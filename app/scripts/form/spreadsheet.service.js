@@ -96,7 +96,7 @@ define([
       extractOptionsForList: function (options) {
         var list = [];
         for (var i in options) {
-          list.push(options[i].text);
+          list.push(options[i].label);
         }
         return list;
       },
@@ -104,7 +104,7 @@ define([
       extractOptionsForCheckboxes: function (options) {
         var list = [];
         for (var i in options) {
-          list.push(options[i].text);
+          list.push(options[i].label);
         }
         return list;
       },
@@ -147,16 +147,16 @@ define([
                 // http://numeraljs.com/
                 desc.type = 'numeric';
               } else if (inputType == 'list') {
-                var st = _ui.selectionType;
+                var st = _valueConstraints.selectionType;
                 if (st == 'single') {
                   desc.type = 'dropdown';
-                  var listOptions = this.extractOptionsForList(_ui.options);
+                  var listOptions = this.extractOptionsForList(_valueConstraints.literals);
                   desc.source = listOptions;
                 }
               } else if (inputType == 'checkbox') {
                 desc.renderer = this.customRenderer.checkboxes;
                 desc.editor = 'checkboxes';//MultiCheckboxEditor;
-                var checkboxOptions = this.extractOptionsForCheckboxes(_ui.options);
+                var checkboxOptions = this.extractOptionsForCheckboxes(_valueConstraints.literals);
                 desc.source = checkboxOptions;
                 desc.cedarType = 'checkboxes';
               }

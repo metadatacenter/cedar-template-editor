@@ -13,17 +13,17 @@
   </div><!-- /.form-group -->
     <div class="options-wrapper">
       <div class="multiple-container">
-        <span ng-repeat="(index, value) in $root.schemaOf(field)._ui.options">
+        <span ng-repeat="(index, value) in $root.schemaOf(field)._valueConstraints.literals">
           <div class="radio radio-primary">
             <input ng-click="$event.stopPropagation();"  type="radio" id="radio{{index}}"
                 name="radio-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}"
-                ng-model="$root.schemaOf(field)._ui.defaultOption"
-                value="{{$root.schemaOf(field)._ui.options[index]['text']}}">
+                ng-model="$root.schemaOf(field)._valueConstraints.defaultOption"
+                value="{{$root.schemaOf(field)._valueConstraints.literals[index]['label']}}">
             <label for="radio{{index}}">
               <div class="form-group floating-label-wrapper">
                 <input type="text" class="form-control"
                     id="placeholder-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}" placeholder="Option"
-                    aria-label="Option" ng-model="$root.schemaOf(field)._ui.options[index]['text']" with-floating-label>
+                    aria-label="Option" ng-model="$root.schemaOf(field)._valueConstraints.literals[index]['label']" with-floating-label>
               </div>
               <!-- /.form-group -->
             </label>
