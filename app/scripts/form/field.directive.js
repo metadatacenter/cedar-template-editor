@@ -471,7 +471,6 @@ define([
        * @returns {boolean} hasControlledTerms
        */
       $scope.hasControlledTerms = function () {
-
         var fieldTypes = FieldTypeService.getFieldTypes();
         var inputType = 'element';
         if (DataManipulationService.getFieldSchema($scope.field)._ui.inputType) {
@@ -485,12 +484,26 @@ define([
         return false;
       };
 
+      /**
+       * Use the fieldType to determine if the field supports multiple instances
+       * @returns {boolean} allowsMultiple
+       */
+      $scope.allowsMultiple = function () {
+        var inputType = $rootScope.schemaOf($scope.field)._ui.inputType;
+        var fieldTypes = FieldTypeService.getFieldTypes();
+        console.log(inputType);
+        console.log(fieldTypes);
+        for (var i = 0; i < fieldTypes.length; i++) {
+          if (fieldTypes[i].cedarType === inputType) {
+            return fieldTypes[i].allowsMultiple;
+          }
+        }
+      };
 
       $scope.hasDateRange = function () {
         var inputType = $rootScope.schemaOf($scope.field)._ui.inputType;
         return (inputType === "date");
       };
-
 
       /**
        * Turn my field into a youtube iframe.

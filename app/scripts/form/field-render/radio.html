@@ -9,7 +9,7 @@
   <div ng-if="$root.isArray(model)" class="form-group  floating-label-wrapper ng-scope"
       ng-class="{'required': $root.schemaOf(field)._valueConstraints.requiredValue}"
       ng-repeat="valueElement in model">
-    <div class="form-group field-wrapper-radio  ">
+    <div class="form-group field-wrapper-radio">
       <p class="extra-label-context">{{$root.schemaOf(field)._ui.title}}</p>
 
       <div class="form-group radio-item" ng-repeat="(index, value) in $root.schemaOf(field)._valueConstraints.literals">
