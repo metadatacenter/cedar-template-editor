@@ -470,7 +470,8 @@ define([
               r = vm.selectedResource;
             }
 
-            vm.params.search = null;
+            //vm.params.search = null;
+            var params = $location.search('');
 
             if (r.nodeType == 'folder') {
               goToFolder(r['@id']);
