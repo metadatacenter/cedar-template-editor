@@ -102,9 +102,11 @@ define([
           vm.toggleFavorites = toggleFavorites;
           vm.toggleFilters = toggleFilters;
           vm.workspaceClass = workspaceClass;
+          vm.showResourceInfo = false;
 
 
           vm.toggleResourceInfo = toggleResourceInfo;
+          vm.setResourceInfo = setResourceInfo;
           vm.toggleResourceType = toggleResourceType;
           vm.setResourceViewMode = setResourceViewMode;
           vm.isTemplate = isTemplate;
@@ -298,6 +300,12 @@ define([
             }
           }
 
+          function updateResourceInfoPanel() {
+            var uip = CedarUser.getUIPreferences();
+            vm.showResourceInfo = (uip.hasOwnProperty('infoPanel') && uip.infoPanel.opened );
+            vm.resizeCenterPanel();
+          }
+
           function init() {
             vm.isSearching = false;
             if (vm.params.search) {
@@ -318,6 +326,7 @@ define([
               getForms();
             }
             updateFavorites(false);
+            updateResourceInfoPanel();
           }
 
           function initSearch() {
@@ -726,6 +735,7 @@ define([
 
           function setResourceInfoVisibility(b) {
             vm.showResourceInfo = b;
+            CedarUser.saveUIPreference('infoPanel', 'opened', vm.showResourceInfo);
             UISettingsService.saveUIPreference('infoPanel.opened', vm.showResourceInfo);
           }
 
@@ -787,6 +797,11 @@ define([
             return result;
           }
 
+          function setResourceInfo(value) {
+            vm.setResourceInfoVisibility(value);
+            vm.resizeCenterPanel();
+          }
+
           function toggleResourceInfo() {
             vm.setResourceInfoVisibility(!vm.showResourceInfo);
             vm.resizeCenterPanel();
@@ -846,7 +861,6 @@ define([
 
           function resetSelected() {
             vm.selectedResource = null;
-            vm.setResourceInfoVisibility(false);
             vm.resizeCenterPanel();
           }
 

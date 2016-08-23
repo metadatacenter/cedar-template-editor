@@ -79,6 +79,10 @@ define([
       return getAppData().cedarUserProfile.uiPreferences;
     };
 
+    service.saveUIPreference = function (name, property ,value) {
+      getAppData().cedarUserProfile.uiPreferences[name][property] = value;
+    };
+
     return service;
   };
 });
