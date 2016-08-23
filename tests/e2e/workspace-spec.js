@@ -12,7 +12,9 @@ describe('workspace', function () {
   beforeEach(function () {
     page = WorkspacePage;
     page.get();
+    page.selectGridView();
     browser.driver.manage().window().maximize();
+
   });
 
 

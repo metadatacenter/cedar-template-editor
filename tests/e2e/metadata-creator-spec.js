@@ -18,7 +18,9 @@ describe('metadata-creator', function () {
     workspacePage = WorkspacePage;
     templatePage = TemplatePage;
     workspacePage.get();
+    workspacePage.selectGridView();
     browser.driver.manage().window().maximize();
+
   });
 
   it("should create the sample template", function () {

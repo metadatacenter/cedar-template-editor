@@ -95,6 +95,14 @@ var FinderPage = function () {
     return createSearchResult;
   };
 
+  this.selectGridView = function() {
+    createListView.isDisplayed().then(function (isList) {
+      if (isList) {
+        createGridViewButton.click();
+      }
+    });
+  };
+
 
 };
 

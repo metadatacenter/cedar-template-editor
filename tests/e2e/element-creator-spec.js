@@ -128,6 +128,7 @@ describe('element-creator', function () {
     page = TemplateCreatorPage;
     workspacePage = WorkspacePage;
     page.get();
+    workspacePage.selectGridView();
     page.createElement();
     browser.driver.manage().window().maximize();
   });
@@ -383,10 +384,13 @@ describe('element-creator', function () {
 
     it("should add and delete the sample element in a element", function () {
 
+
       page.addElement(page.sampleElementTitle()).then(function () {
+
 
         // the element should include the sample element name
         var items = element.all(by.css('.element-root .element-name-label'));
+
 
         // three names expected, and the sample is second in the list
         //expect(items.count()).toBe(3);

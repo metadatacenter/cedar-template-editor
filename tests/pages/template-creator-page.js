@@ -702,10 +702,15 @@ var TemplateCreatorPage = function () {
                 finderPage.createFirstElementGridView().click();
                 browser.wait(finderPage.createFirstSelectedElementGridView().isDisplayed()).then(function () {
 
+                  browser.sleep(1000);
+                  browser.wait(finderPage.createOpenButton().isDisplayed());
+                  browser.wait(finderPage.createOpenButton().isEnabled());
                   finderPage.createOpenButton().click();
+
                   browser.wait(createToolbar.isDisplayed());
                   browser.sleep(1000);  // add time for animation
                   deferred.fulfill(true);
+
                 });
 
               });

@@ -41,6 +41,10 @@ var WorkspacePage = function () {
   var createLogoutMenuItem  = createToolbar.element(by.css('#user-tool #user-logoout-tool a'));
   var trashTooltip = 'delete selection';
 
+  var createListView = element(by.css('.center-panel .list-view'));
+  var createGridView = element(by.css('.center-panel .grid-view'));
+
+
 
   // breadcrumbs
   var createBreadcrumb = element(by.css('.breadcrumbs-sb'));
@@ -416,6 +420,14 @@ var WorkspacePage = function () {
   };
   this.createBreadcrumbSearch = function () {
     return createBreadcrumbSearch;
+  };
+
+  this.selectGridView = function() {
+    createListView.isPresent().then(function (isList) {
+      if (isList) {
+        createGridViewButton.click();
+      }
+    });
   };
 
 
