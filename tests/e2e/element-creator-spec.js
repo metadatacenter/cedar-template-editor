@@ -1,6 +1,7 @@
 'use strict';
 var TemplateCreatorPage = require('../pages/template-creator-page.js');
 var WorkspacePage = require('../pages/workspace-page.js');
+
 var _ = require('../libs/lodash.min.js');
 
 
@@ -127,6 +128,7 @@ describe('element-creator', function () {
     page = TemplateCreatorPage;
     workspacePage = WorkspacePage;
     page.get();
+    workspacePage.selectGridView();
     page.createElement();
     browser.driver.manage().window().maximize();
   });
@@ -312,6 +314,7 @@ describe('element-creator', function () {
 
     // element left over from prior test
     page.clickCancelElement();
+    browser.sleep(3000);
     workspacePage.deleteResource('Untitled', workspacePage.elementType());
 
   });
@@ -381,11 +384,13 @@ describe('element-creator', function () {
 
     it("should add and delete the sample element in a element", function () {
 
+
       page.addElement(page.sampleElementTitle()).then(function () {
 
 
         // the element should include the sample element name
         var items = element.all(by.css('.element-root .element-name-label'));
+
 
         // three names expected, and the sample is second in the list
         //expect(items.count()).toBe(3);
@@ -549,7 +554,7 @@ describe('element-creator', function () {
     it("should delete the sample element from the workspace, ", function () {
 
       page.clickCancelElement();
-      workspacePage.deleteResource(page.sampleElementTitle(), workspacePage.elementType());
+      workspacePage.deleteResource(page.sampleElementTitle(), 'element');
 
     });
 

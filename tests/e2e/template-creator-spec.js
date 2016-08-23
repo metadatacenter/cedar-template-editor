@@ -131,7 +131,9 @@ describe('template-creator', function () {
     workspacePage = WorkspacePage;
     workspacePage.get();
     workspacePage.createTemplate();
+    workspacePage.selectGridView();
     browser.driver.manage().window().maximize();
+
   });
 
   // github issue #397:  Verify that the header is present and displays back button, name, description, title, JSON preview

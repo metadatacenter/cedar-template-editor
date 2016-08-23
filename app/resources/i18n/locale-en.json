@@ -90,7 +90,10 @@
     "GoodNews": "Good News!",
     "Cancel": "Cancel",
     "Copied": "Copied",
-    "More": "More"
+    "More": "More",
+    "Folders": "Folders",
+    "Elements": "Elements",
+    "FilterBy": "Filter by"
   },
   "SERVER": {
     "FOLDER": {
@@ -299,7 +302,7 @@
   },
   "EDITOR": {
     "TOOLBAR": {
-      "searchForMore": "Search for More Elements"
+      "searchForMore": "Search the workspace"
     }
   }
 }

@@ -20,6 +20,7 @@ define([
     $rootScope.showSearch = true;
 
     $rootScope.searchBrowseModalId = "search-browse-modal";
+    $rootScope.finderModalId = "finder-modal";
 
     // Set page title variable when this controller is active
     $rootScope.pageTitle = 'Element Designer';
@@ -335,6 +336,27 @@ define([
 
     $scope.hideSearchBrowsePicker = function () {
       jQuery("#" + $scope.searchBrowseModalId).modal('hide')
+    };
+
+    // finder
+    $scope.elementFind = function () {
+      jQuery("body").trigger("click");
+      jQuery("#" + $scope.finderModalId).modal("show");
+    };
+
+    $scope.addElementFromFinder = function () {
+      if ($scope.finderResource) {
+        $scope.addElementToTemplate($scope.finderResource);
+      }
+      $scope.hideFinder();
+    };
+
+    $scope.showFinder = function () {
+      $scope.finderResource = null;
+    };
+
+    $scope.hideFinder = function () {
+      jQuery("#" + $scope.finderModalId).modal('hide')
     };
 
 
