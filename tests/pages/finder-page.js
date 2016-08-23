@@ -22,6 +22,7 @@ var FinderPage = function () {
   var createSearchResult = createFinder.element(by.css('.toolbar .search-result'));
   var createListView = createFinder.element(by.css('.modal-body .list-view'));
   var createGridView = createFinder.element(by.css('.modal-body .grid-view'));
+  var cssSearchInput = 'finder-search-input';
 
 
       this.test = function () {
@@ -43,7 +44,6 @@ var FinderPage = function () {
 
 
   this.createDoSearch = function() {
-    console.log('createDoSearch');
     return createDoSearch;
   };
 
@@ -64,7 +64,7 @@ var FinderPage = function () {
   };
 
   this.cssSearchInput = function() {
-    return 'finder-search-input';
+    return cssSearchInput;
   };
 
   this.createOpenButton = function() {
@@ -92,7 +92,6 @@ var FinderPage = function () {
   };
 
   this.createSearchResult = function() {
-    console.log('createSearchResult');
     return createSearchResult;
   };
 
