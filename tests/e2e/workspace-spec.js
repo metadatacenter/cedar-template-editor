@@ -3,7 +3,7 @@ var WorkspacePage = require('../pages/workspace-page.js');
 var _ = require('../libs/lodash.min.js');
 
 
-describe('workspace', function () {
+xdescribe('workspace', function () {
   var page;
 
 

@@ -5,7 +5,7 @@ var TemplatePage = require('../pages/template-creator-page.js');
 var _ = require('../libs/lodash.min.js');
 
 
-describe('metadata-creator', function () {
+xdescribe('metadata-creator', function () {
   var metadataPage;
   var workspacePage;
   var templatePage;

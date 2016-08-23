@@ -1,6 +1,7 @@
 'use strict';
 var TemplateCreatorPage = require('../pages/template-creator-page.js');
 var WorkspacePage = require('../pages/workspace-page.js');
+
 var _ = require('../libs/lodash.min.js');
 
 
@@ -312,6 +313,7 @@ describe('element-creator', function () {
 
     // element left over from prior test
     page.clickCancelElement();
+    browser.sleep(3000);
     workspacePage.deleteResource('Untitled', workspacePage.elementType());
 
   });
@@ -548,7 +550,7 @@ describe('element-creator', function () {
     it("should delete the sample element from the workspace, ", function () {
 
       page.clickCancelElement();
-      workspacePage.deleteResource(page.sampleElementTitle(), workspacePage.elementType());
+      workspacePage.deleteResource(page.sampleElementTitle(), 'element');
 
     });
 

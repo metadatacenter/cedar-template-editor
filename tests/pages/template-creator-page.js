@@ -1,6 +1,7 @@
 'use strict';
 
 require('../pages/workspace-page.js');
+require('../pages/finder-page.js');
 
 var TemplateCreatorPage = function () {
   //var url = 'https://cedar.metadatacenter.orgx/dashboard';
@@ -15,6 +16,7 @@ var TemplateCreatorPage = function () {
   var createRadioButton = element(by.id('button-add-field-radio'));
   var createCheckboxButton = element(by.id('button-add-field-checkbox'));
   var createMore = element(by.id('button-add-more'));
+  var createFinder = element(by.id('finder-modal'));
 
 
   var createSearchElement = element(by.id('button-search-element'));
@@ -40,7 +42,6 @@ var TemplateCreatorPage = function () {
   var removeElementButton = element(by.css('.element-root  .remove'));
   var createToolbar = element(by.id('toolbar'));
 
-
   var createToastyConfirmationPopup = element(by.id('toasty')).element(by.css('.toast'));
   var toastyMessageText = element(by.id('toasty')).element(by.css('.toast')).element(by.css('.toast-msg'));
   var createConfirmationDialog = element(by.css('.sweet-alert'));
@@ -52,8 +53,6 @@ var TemplateCreatorPage = function () {
   var topNavigation = element(by.id('top-navigation'));
   var topNavBackArrow = element(by.id('top-navigation')).element(by.css('.navbar-header')).element(by.css('.back-arrow-click'));
   var topNavButtons = element.all(by.css('.controls-bar .list-inline li button'));
-
-
 
   var testTitle = 'test title';
   var testDescription = 'test description';
@@ -364,7 +363,6 @@ var TemplateCreatorPage = function () {
   };
 
 
-
   this.addSearchElements = function () {
     createSearchElement.click();
   };
@@ -661,41 +659,57 @@ var TemplateCreatorPage = function () {
     switches.get(1).click();
     browser.sleep(1000);
   };
+
+  this.openFinder = function () {
+    createSearchElement.click();
+    return require('./finder-page.js');
+  };
+
   this.addElement = function (title) {
     var deferred = protractor.promise.defer();
     var EC = protractor.ExpectedConditions;
 
     // add an element
-    this.addMore();
-    this.addSearchElements();
+    var finderPage = this.openFinder();
 
-    // search for the sampleElement
-    createSearchInput.sendKeys(title).sendKeys(protractor.Key.ENTER).then(function () {
+    browser.wait(finderPage.createFinder().isDisplayed()).then(function () {
 
-      browser.wait(EC.textToBePresentInElementValue($('#search'), title), 10000);
+      // search for the element
+      finderPage.createSearchInput().sendKeys(title).sendKeys(protractor.Key.ENTER);
+      browser.wait(EC.textToBePresentInElementValue($('#finder-search-input'), title), 10000).then(function () {
 
-      // click the search submit icon
-      var searchButton = element(by.id('search-browse-modal')).element(by.css('.do-search'));
-      searchButton.click().then(function () {
+        finderPage.createDoSearch().click();
+        browser.wait(finderPage.createSearchResult().isDisplayed()).then(function () {
 
-        var firstElement = element.all(by.css('.form-box .element')).first();
-        browser.wait(EC.visibilityOf(firstElement), 10000);
+          finderPage.createListView().isDisplayed().then(function (isList) {
 
-        // the search browse modal should show some results
-        expect(firstElement.isPresent()).toBe(true);
+            if (isList) {
 
-        // get the first element in the list of search results
-        firstElement.click().then(function () {
+              finderPage.createFirstElementListView().click();
+              browser.wait(finderPage.createFirstSelectedElementListView().isDisplayed()).then(function () {
 
-          // select the first element in the list and click to submit the search browser modal
-          var searchSubmit = element.all(by.css('.subm')).get(0);
-          browser.executeScript("arguments[0].scrollIntoView();", searchSubmit.getWebElement());
-          //browser.sleep(3000);
+                finderPage.createOpenButton().click();
+                browser.wait(createToolbar.isDisplayed());
+                browser.sleep(1000);  // add time for animation
+                deferred.fulfill(true);
+              });
 
-          searchSubmit.click().then(function () {
-            browser.wait(createToolbar.isDisplayed());
-            browser.sleep(1000);  // add time for animation
-            deferred.fulfill(true);
+            } else {
+
+              var first = finderPage.createFirstElementGridView();
+              browser.wait(first.isDisplayed()).then(function () {
+
+                finderPage.createFirstElementGridView().click();
+                browser.wait(finderPage.createFirstSelectedElementGridView().isDisplayed()).then(function () {
+
+                  finderPage.createOpenButton().click();
+                  browser.wait(createToolbar.isDisplayed());
+                  browser.sleep(1000);  // add time for animation
+                  deferred.fulfill(true);
+                });
+
+              });
+            }
           });
         });
       });
