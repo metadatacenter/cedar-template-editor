@@ -415,6 +415,13 @@ define([
 
     };
 
+    // look to see if this node has been identified by angular as an invalid pattern
+    service.isInvalidPattern =  function(node)  {
+      var target = jQuery('#' + node._tmp.domId + ' .ng-invalid-pattern');
+      return (target.length == 0);
+    };
+
+
 
     /**
      * add a domId to the node if there is not one present
@@ -620,6 +627,7 @@ define([
 
     // When user clicks Save button, we will switch field or element from creating state to completed state
     service.canDeselect = function (field, renameChildKey) {
+      console.log('canDeselect');
 
       if (!field) {
         return;
