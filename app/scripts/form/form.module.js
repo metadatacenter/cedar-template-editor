@@ -13,6 +13,7 @@ define([
   'cedar/template-editor/form/no-image.directive',
   'cedar/template-editor/form/right-click.directive',
   'cedar/template-editor/finder/cedar-finder.directive',
+  'cedar/template-editor/form/auto-focus.directive'
 ], function(angular) {
   angular.module('cedar.templateEditor.form', [
     'cedar.templateEditor.controlledTerm',
@@ -26,5 +27,6 @@ define([
     'cedar.templateEditor.form.noImageDirective',
     'cedar.templateEditor.form.rightClickDirective',
     'cedar.templateEditor.finder.cedarFinderDirective',
+    'cedar.templateEditor.form.autoFocusDirective',
   ]);
 });

@@ -166,6 +166,7 @@ define([
         };
 
         $scope.saveTemplate = function () {
+
           populateCreatingFieldOrElement();
           if (dontHaveCreatingFieldOrElement()) {
             UIMessageService.conditionalOrConfirmedExecution(
@@ -185,19 +186,20 @@ define([
           // First check to make sure Template Name, Template Description are not blank
           $scope.templateErrorMessages = [];
           $scope.templateSuccessMessages = [];
-          // If Template Name is blank, produce error message
-          if (!$scope.form._ui.title.length) {
-            $scope.templateErrorMessages.push($translate.instant("VALIDATION.templateNameEmpty"));
-          }
-          // If Template Description is blank, produce error message
-          if (!$scope.form._ui.description.length) {
-            $scope.templateErrorMessages.push($translate.instant("VALIDATION.templateDescriptionEmpty"));
-          }
+          //// If Template Name is blank, produce error message
+          //if (!$scope.form._ui.title.length) {
+          //  $scope.templateErrorMessages.push($translate.instant("VALIDATION.templateNameEmpty"));
+          //}
+          //// If Template Description is blank, produce error message
+          //if (!$scope.form._ui.description.length) {
+          //  $scope.templateErrorMessages.push($translate.instant("VALIDATION.templateDescriptionEmpty"));
+          //}
 
           // If there are no Template level error messages
           if ($scope.templateErrorMessages.length == 0) {
             // If maxItems is N, then remove maxItems
             DataManipulationService.removeUnnecessaryMaxItems($scope.form.properties);
+            DataManipulationService.defaultTitleAndDescription($scope.form._ui);
 
             // create a copy of the form and strip out the _tmp fields before saving it
             //var copiedForm = $scope.stripTmpFields();
