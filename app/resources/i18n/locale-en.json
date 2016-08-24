@@ -93,7 +93,9 @@
     "More": "More",
     "Folders": "Folders",
     "Elements": "Elements",
-    "FilterBy": "Filter by"
+    "FilterBy": "Filter by",
+    "Untitled": "Untitled",
+    "Description": "Description"
   },
   "SERVER": {
     "FOLDER": {
@@ -256,10 +258,10 @@
     "templateDescriptionEmpty": "Template Description input cannot be left empty.",
     "elementNameEmpty": "Element Name input cannot be left empty.",
     "elementDescriptionEmpty": "Element Description input cannot be left empty.",
-    "noNameField": "Untitled",
-    "noNameElement": "Untitled",
-    "noDescriptionField": "Description",
-    "noDescriptionElement": "Description",
+    "noNameField": "",
+    "noNameElement": "",
+    "noDescriptionField": "",
+    "noDescriptionElement": "",
     "groupHeader": {
       "requiredFields": "The following fields are required:",
       "invalidFields": "Values of the following fields are invalid:",
