@@ -14,13 +14,13 @@ define([
   function autoFocusDirective($timeout) {
 
 
-    // make the timeout 500;  0 doesn't seem to work for template and element titles
+    // make the timeout 500;  0 doesn't work for template and element titles
     return {
       restrict: 'AC',
       link    : function (_scope, _element) {
         $timeout(function () {
           _element[0].focus();
-          _element[0].setSelectionRange(0, _element[0].value.length);
+          _element[0].select();
         }, 500);
       }
     };
