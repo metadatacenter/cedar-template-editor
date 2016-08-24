@@ -23,13 +23,13 @@ define([
       var setDirectory = function () {
         var p = $rootScope.propertiesOf($scope.field);
         var state = p._tmp && p._tmp.state || "completed";
-
         if ((state == "creating") && !$scope.preview && !$rootScope.isRuntime()) {
           $scope.directory = "create";
         } else {
           $scope.directory = "render";
         }
       };
+
       setDirectory();
 
       $scope.console = function (value) {
@@ -63,9 +63,7 @@ define([
               $scope.model.push(obj);
             }
           }
-
           var p = $rootScope.propertiesOf($scope.field);
-
           // Add @type information to instance at the field level
           if (p && !angular.isUndefined(p['@type'])) {
             var type = DataManipulationService.generateInstanceType(p['@type']);
@@ -238,21 +236,39 @@ define([
       });
 
       var field = DataManipulationService.getFieldSchema($scope.field)
+
+      // This function creates the defaultOptions field when default options are selected. If the user does not select
+      // any default options, the field will not be shown.
+      $scope.initializeDefaultOptions = function() {
+        if (!(field._valueConstraints.defaultOptions.constructor === Array)) {
+          var tmp = field._valueConstraints.defaultOptions;
+          field._valueConstraints.defaultOptions = [];
+          for (var value in tmp) {
+            field._valueConstraints.defaultOptions.push(value);
+          }
+        }
+      }
+
       // Checking each field to see if required, will trigger flag for use to see there is required fields
       if (field._valueConstraints.requiredValue) {
         $scope.$emit('formHasRequiredfield._uis');
       }
 
-      // Added by cedar
       if ($scope.directory == 'render') {
         if ($scope.model) {
+
           if ($rootScope.isArray($scope.model)) {
             if ($scope.model.length == 0) {
               var min = $scope.field._ui.minItems || 0;
 
               if (field._valueConstraints.defaultOptions) {
                 for (var i = 0; i < min; i++) {
-                  $scope.model[i]['@value'] = angular.copy(field._valueConstraints.defaultOptions);
+                  $scope.model[i] = [];
+                  for (var j = 0; j < field._valueConstraints.defaultOptions.length; j++) {
+                    var v = new Object();
+                    v['@value'] = field._valueConstraints.literals[field._valueConstraints.defaultOptions[j]];
+                    $scope.model[i].push(v);
+                  }
                 }
               } else {
                 for (var i = 0; i < min; i++) {
@@ -288,10 +304,19 @@ define([
           } else {
             if (!('@value' in $scope.model)) {
               if (field._valueConstraints.defaultOptions) {
-                $scope.model['@value'] = angular.copy(field._valueConstraints.defaultOptions);
+                if (field._valueConstraints.defaultOptions.length == 1) {
+                  $scope.model['@value'] = field._valueConstraints.literals[field._valueConstraints.defaultOptions[0]].label;
+                }
+                else if  (field._valueConstraints.defaultOptions.length > 1) {
+                  $scope.model = [];
+                  for (var i = 0; i < field._valueConstraints.defaultOptions.length; i++) {
+                    var v = new Object();
+                    v['@value'] = field._valueConstraints.literals[field._valueConstraints.defaultOptions[i]].label;
+                    $scope.model.push(v);
+                  }
+                }
               } else {
-                if (['checkbox'].indexOf(field._ui.inputType) >= 0 ||
-                    ['date'].indexOf(field._ui.inputType) >= 0 && field._ui.dateType == "date-range") {
+                if (['checkbox'].indexOf(field._ui.inputType) >= 0 || ['date'].indexOf(field._ui.inputType) >= 0 && field._ui.dateType == "date-range") {
                   $scope.model['@value'] = {};
                 } else if (['list'].indexOf(field._ui.inputType) >= 0) {
                   $scope.model['@value'] = [];
@@ -610,7 +635,6 @@ define([
               }
             } else {
               if (!('@value' in $scope.model)) {
-
                 if (field._valueConstraints.defaultOptions) {
                   $scope.model['@value'] = angular.copy(field._valueConstraints.defaultOptions);
                 } else {
