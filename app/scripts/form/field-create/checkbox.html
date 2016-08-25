@@ -10,12 +10,12 @@
   <div class="form-group floating-label-wrapper">
     <div class="options-wrapper">
       <div class="multiple-container">
-        <span ng-repeat="(index, value) in $root.schemaOf(field)._valueConstraints.literals">
+        <span ng-init="setSelectedOptionsModel()" ng-repeat="(index, value) in $root.schemaOf(field)._valueConstraints.literals">
           <div class="checkbox checkbox-primary">
-            <input ng-click="$event.stopPropagation();" type="checkbox" id="checkbox-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}-{{index}}"
+            <input ng-click="setDefaultOptions(); $event.stopPropagation();" type="checkbox" id="checkbox-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}-{{index}}"
                 name="checkbox-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}"
-                ng-model="$root.schemaOf(field)._valueConstraints.defaultOptions[value.label]"
-                value="{{$root.schemaOf(field)._valueConstraints.literals[index]['label']}}">
+                ng-model="$root.selectedOptionsModel[index]"
+                value="{{index}}">
             <label for="checkbox-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}-{{index}}">
               <div class="form-group floating-label-wrapper">
                 <input type="text" class="form-control"

@@ -239,13 +239,59 @@ define([
 
       // This function creates the defaultOptions field when default options are selected. If the user does not select
       // any default options, the field will not be shown.
-      $scope.initializeDefaultOptions = function() {
+      $scope.initializeDefaultOptions = function () {
+        console.log('Initial result');
+        console.log(field._valueConstraints.defaultOptions);
         if (!(field._valueConstraints.defaultOptions.constructor === Array)) {
           var tmp = field._valueConstraints.defaultOptions;
           field._valueConstraints.defaultOptions = [];
           for (var value in tmp) {
             field._valueConstraints.defaultOptions.push(value);
           }
+        }
+        console.log(field._valueConstraints.defaultOptions);
+      }
+
+      // Sets the value of the variable that stores the ng-model for the checkbox/radio/list field
+      $scope.setSelectedOptionsModel = function() {
+        $rootScope.selectedOptionsModel = {};
+        if (field._valueConstraints.defaultOptions) {
+          for (var i=0; i<field._valueConstraints.defaultOptions.length; i++) {
+            var index = field._valueConstraints.defaultOptions[i];
+            $rootScope.selectedOptionsModel[index] = true;
+          }
+        }
+        console.log($rootScope.selectedOptionsModel);
+      }
+
+      // Sets the defaultOptions based on the selectedOptionsModel variable
+      $scope.setDefaultOptions = function() {
+        // Reset defaultOptions or remove it if necessary
+        field._valueConstraints.defaultOptions = [];
+        for (var defaultOptionIndex in $rootScope.defaultOptionsModel) {
+          if ($rootScope.defaultOptionsModel[defaultOptionIndex] == true) {
+            field._valueConstraints.defaultOptions.push(parseInt(defaultOptionIndex));
+          }
+        }
+        // If empty, remove it
+        if (field._valueConstraints.defaultOptions.length == 0) {
+          delete field._valueConstraints.defaultOptions;
+        }
+      }
+
+      // Sets the instance @value fields based on the selectedOptionsModel variable
+      $scope.setValues = function () {
+        $scope.model = [];
+        var noOptionsSelected = true;
+        for (var defaultOptionIndex in $rootScope.selectedOptionsModel) {
+          if ($rootScope.selectedOptionsModel[defaultOptionIndex] == true) {
+            noOptionsSelected = false;
+            $scope.model.push({'@value': field._valueConstraints.literals[defaultOptionIndex].label})
+          }
+        }
+        if (noOptionsSelected) {
+          // Default value
+          $scope.model = [{'@value': null}];
         }
       }
 
@@ -256,7 +302,7 @@ define([
 
       if ($scope.directory == 'render') {
         if ($scope.model) {
-
+          // It is an Array
           if ($rootScope.isArray($scope.model)) {
             if ($scope.model.length == 0) {
               var min = $scope.field._ui.minItems || 0;
@@ -301,13 +347,14 @@ define([
                 $scope.setValueType();
               });
             }
+            // It is not an array
           } else {
             if (!('@value' in $scope.model)) {
               if (field._valueConstraints.defaultOptions) {
                 if (field._valueConstraints.defaultOptions.length == 1) {
                   $scope.model['@value'] = field._valueConstraints.literals[field._valueConstraints.defaultOptions[0]].label;
                 }
-                else if  (field._valueConstraints.defaultOptions.length > 1) {
+                else if (field._valueConstraints.defaultOptions.length > 1) {
                   $scope.model = [];
                   for (var i = 0; i < field._valueConstraints.defaultOptions.length; i++) {
                     var v = new Object();
@@ -316,10 +363,11 @@ define([
                   }
                 }
               } else {
+                //if (['checkbox'].indexOf(field._ui.inputType) >= 0 || ['date'].indexOf(field._ui.inputType) >= 0 && field._ui.dateType == "date-range") {
                 if (['checkbox'].indexOf(field._ui.inputType) >= 0 || ['date'].indexOf(field._ui.inputType) >= 0 && field._ui.dateType == "date-range") {
                   $scope.model['@value'] = {};
-                } else if (['list'].indexOf(field._ui.inputType) >= 0) {
-                  $scope.model['@value'] = [];
+                //} else if (['list'].indexOf(field._ui.inputType) >= 0) {
+                //  $scope.model['@value'] = [];
                 } else {
                   $scope.model['@value'] = "";
                 }
