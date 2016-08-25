@@ -239,21 +239,22 @@ define([
 
       // This function creates the defaultOptions field when default options are selected. If the user does not select
       // any default options, the field will not be shown.
-      $scope.initializeDefaultOptions = function () {
-        console.log('Initial result');
-        console.log(field._valueConstraints.defaultOptions);
-        if (!(field._valueConstraints.defaultOptions.constructor === Array)) {
-          var tmp = field._valueConstraints.defaultOptions;
-          field._valueConstraints.defaultOptions = [];
-          for (var value in tmp) {
-            field._valueConstraints.defaultOptions.push(value);
-          }
-        }
-        console.log(field._valueConstraints.defaultOptions);
-      }
+      //$scope.initializeDefaultOptions = function () {
+      //  console.log('Initial result');
+      //  console.log(field._valueConstraints.defaultOptions);
+      //  if (!(field._valueConstraints.defaultOptions.constructor === Array)) {
+      //    var tmp = field._valueConstraints.defaultOptions;
+      //    field._valueConstraints.defaultOptions = [];
+      //    for (var value in tmp) {
+      //      field._valueConstraints.defaultOptions.push(value);
+      //    }
+      //  }
+      //  console.log(field._valueConstraints.defaultOptions);
+      //}
 
       // Sets the value of the variable that stores the ng-model for the checkbox/radio/list field
       $scope.setSelectedOptionsModel = function() {
+        //console.log('setting options');
         $rootScope.selectedOptionsModel = {};
         if (field._valueConstraints.defaultOptions) {
           for (var i=0; i<field._valueConstraints.defaultOptions.length; i++) {
@@ -261,16 +262,15 @@ define([
             $rootScope.selectedOptionsModel[index] = true;
           }
         }
-        console.log($rootScope.selectedOptionsModel);
       }
 
       // Sets the defaultOptions based on the selectedOptionsModel variable
       $scope.setDefaultOptions = function() {
         // Reset defaultOptions or remove it if necessary
         field._valueConstraints.defaultOptions = [];
-        for (var defaultOptionIndex in $rootScope.defaultOptionsModel) {
-          if ($rootScope.defaultOptionsModel[defaultOptionIndex] == true) {
-            field._valueConstraints.defaultOptions.push(parseInt(defaultOptionIndex));
+        for (var optionIndex in $rootScope.selectedOptionsModel) {
+          if ($rootScope.selectedOptionsModel[optionIndex] == true) {
+            field._valueConstraints.defaultOptions.push(parseInt(optionIndex));
           }
         }
         // If empty, remove it
@@ -646,7 +646,7 @@ define([
               if ($scope.model.length == 0) {
                 var min = $scope.field.minItems || 0;
 
-                if (field._valueConstraints.defaultOptions) {
+                if (field._valueConstraints && field._valueConstraints.defaultOptions) {
                   for (var i = 0; i < min; i++) {
                     $scope.model[i]['@value'] = angular.copy(field._valueConstraints.defaultOptions);
                   }
@@ -665,7 +665,7 @@ define([
               } else {
                 angular.forEach($scope.model, function (m, i) {
                   if (!('@value' in m)) {
-                    if (field._valueConstraints.defaultOptions) {
+                    if (field._valueConstraints && field._valueConstraints.defaultOptions) {
                       $scope.model[i]['@value'] = angular.copy(field._valueConstraints.defaultOptions);
                     } else {
                       if (['checkbox'].indexOf(field._ui.inputType) >= 0 ||
@@ -683,7 +683,7 @@ define([
               }
             } else {
               if (!('@value' in $scope.model)) {
-                if (field._valueConstraints.defaultOptions) {
+                if (field._valueConstraints && field._valueConstraints.defaultOptions) {
                   $scope.model['@value'] = angular.copy(field._valueConstraints.defaultOptions);
                 } else {
                   if (['checkbox'].indexOf(field._ui.inputType) >= 0 ||
