@@ -112,6 +112,8 @@ define([
           populateCreatingFieldOrElement();
           if (dontHaveCreatingFieldOrElement()) {
 
+            DataManipulationService.createDomIds(element);
+
             var domId = DataManipulationService.createDomId();
             StagingService.addElementToForm($scope.form, element["@id"], domId, function (e) {
 
@@ -208,13 +210,16 @@ define([
             if ($routeParams.id == undefined) {
               var queryParams = $location.search();
               $scope.form['parentId'] = queryParams.folderId;
+              DataManipulationService.stripTmps($scope.form);
               AuthorizedBackendService.doCall(
                   TemplateService.saveTemplate(queryParams.folderId, $scope.form),
                   function (response) {
                     // confirm message
                     UIMessageService.flashSuccess('SERVER.TEMPLATE.create.success', {"title": response.data._ui.title},
                         'GENERIC.Created');
+
                     // Reload page with template id
+                    DataManipulationService.createDomIds(response.data);
                     var newId = response.data['@id'];
                     $location.path(UrlService.getTemplateEdit(newId));
                   },
@@ -226,11 +231,15 @@ define([
             // Update template
             else {
               var id = $scope.form['@id'];
+              DataManipulationService.stripTmps($scope.form);
               //--//delete $scope.form['@id'];
               AuthorizedBackendService.doCall(
                   TemplateService.updateTemplate(id, $scope.form),
                   function (response) {
+
+                    DataManipulationService.createDomIds(response.data);
                     $scope.form = response.data;
+
                     UIMessageService.flashSuccess('SERVER.TEMPLATE.update.success',
                         {"title": response.data._ui.title}, 'GENERIC.Updated');
                   },

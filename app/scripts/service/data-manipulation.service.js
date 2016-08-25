@@ -448,6 +448,18 @@ define([
       return domId;
     };
 
+    service.newGetDomId = function (node) {
+
+
+      var domId = null;
+
+      if (node.hasOwnProperty("_tmp")) {
+        domId = node._tmp.domId;
+      }
+
+      return domId;
+    };
+
 
     /**
      * make a unique string that we can use for dom ids

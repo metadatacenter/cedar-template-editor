@@ -147,7 +147,6 @@ describe('element-creator', function () {
 
     // should have an editable template title
     expect(page.elementTitle().isDisplayed()).toBe(true);
-    browser.actions().doubleClick(page.elementTitle()).perform();
     page.elementTitle().sendKeys(page.testTitle());
 
     // should have an editable description
@@ -157,6 +156,7 @@ describe('element-creator', function () {
 
     // submit the form and check our edits
     page.elementDescriptionForm().submit();
+
 
     page.elementTitle().getAttribute('value').then(function (value) {
       expect(_.isEqual(value, page.testTitle())).toBe(true);
@@ -574,8 +574,11 @@ describe('element-creator', function () {
         // is the field there?
         var field = element(by.css(cssField));
         expect(field.isPresent()).toBe(true);
+
         // does it have a title and in edit mode?
         expect(element(by.model(page.modelFieldTitle)).isPresent()).toBe(true);
+        expect(element(by.model(page.modelFieldTitle)).isEnabled()).toBe(true);
+
         // does it have the help text field in edit mode?
         expect(element(by.model(page.modelFieldDescription)).isPresent()).toBe(true);
 
