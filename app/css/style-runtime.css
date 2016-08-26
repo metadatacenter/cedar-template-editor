@@ -9158,7 +9158,7 @@ button {
   color: #fff;
   background-color: #2e5365;
   margin-bottom: 0;
-  min-height: 100px;
+  height: 80px;
   border: none;
 }
 .navbar #page-title {
@@ -9351,17 +9351,20 @@ button {
   background-color: #34626B;
 }
 #angular-views-entry {
-  height: 100%;
-  margin-top: 100px;
+  position: fixed;
+  top: 80px;
+  width: 100%;
+  height: calc(100% - 80px);
 }
 .controls-bar {
   padding: 10px 15px;
   background: #2e5365;
   color: #ffffff;
-  top: 60px;
   height: 55px;
   box-shadow: 0 4px 4px #ccc;
   width: 100%;
+  top: 0;
+  position: relative;
 }
 .controls-bar .breadcrumbs-sb {
   margin: 5px 15px;
@@ -9529,9 +9532,6 @@ button {
   height: 55px;
   box-shadow: none;
 }
-.search-browse-spacer {
-  padding-top: 20px;
-}
 /* Begin Form Populate Gray Modal Slide Up/Down Section */
 .form-populate {
   color: #666666;
@@ -9642,7 +9642,7 @@ button {
   color: #666666;
   padding: 0;
   position: relative;
-  height: 100%;
+  height: calc(100% - 55px);
   /* Off Canvas */
 }
 .all-items-view .center-panel {
@@ -9651,7 +9651,7 @@ button {
   left: 200px;
   right: 0;
   padding: 30px 0;
-  height: calc(100% - 120px);
+  height: 100%;
 }
 .all-items-view .push-pull-box {
   position: absolute;
@@ -11569,6 +11569,7 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   border-top: 1px solid #ddd;
   padding: 50px 0;
   text-align: center;
+  height: 300px;
 }
 .edit-actions .btn {
   display: inline-block;
@@ -14368,6 +14369,7 @@ table.apiKey td {
 }
 .template-container {
   height: 100%;
+  width: 100%;
 }
 .scrollable-content {
   overflow-x: hidden;
