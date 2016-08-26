@@ -9351,7 +9351,7 @@ button {
   background-color: #34626B;
 }
 #angular-views-entry {
-  position: fixed;
+  position: relative;
   top: 80px;
   width: 100%;
   height: calc(100% - 80px);

@@ -276,6 +276,10 @@ define([
           // callback to load more resources for the current folder
           vm.loadMore = function () {
 
+            if (vm.isSearching) {
+              vm.searchMore();
+            } else {
+
             var limit = UISettingsService.getRequestLimit();
             vm.offset += limit;
             var offset = vm.offset;
@@ -299,6 +303,35 @@ define([
               } else {
                 vm.resources = [];
               }
+            }
+            }
+          };
+
+
+
+          // callback to load more resources for the current folder
+          vm.searchMore = function () {
+
+            var limit = UISettingsService.getRequestLimit();
+            vm.offset += limit;
+            var offset = vm.offset;
+            var term = vm.searchTerm;
+            var resourceTypes = activeResourceTypes();
+
+            // are there more?
+            if (offset < vm.totalCount) {
+
+                return resourceService.searchResources(
+                    term,
+                    {resourceTypes: resourceTypes, sort: sortField(), limit: limit, offset: offset},
+                    function (response) {
+                      vm.resources = vm.resources.concat(response.resources);
+                    },
+                    function (error) {
+                      UIMessageService.showBackendError('SERVER.SEARCH.error', error);
+                    }
+                );
+
             }
           };
 
