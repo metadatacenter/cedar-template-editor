@@ -1,6 +1,7 @@
 {
   "_comment": "Offset between the mini header appearing and making the left menu stick",
   "stickyThreshold": 0,
+  "scrollSelector" : ".template-container.scrollable-content",
   "_comment": "Settings for different pages",
   "ROLESELECTOR": {
     "enabled": false

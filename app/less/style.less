@@ -89,6 +89,8 @@ body {
   background: #f0f0f0;
   font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
   color: #333;
+  height:100%;
+  overflow:hidden;
 
 }
 
@@ -727,8 +729,8 @@ button {
     top: 0;
     left: 200px;
     right: 0;
-    padding-top: 30px;
-    height: 100%;
+    padding: 30px 0;
+    height: calc(~"100% - 120px");
 
   }
 
@@ -3858,6 +3860,7 @@ p.instructions {
 .element-actions {
   padding-top: 40px;
   border-top: 0px solid #ddd;
+  height:300px;
 
   .favorite {
     float: left;
@@ -3929,6 +3932,7 @@ p.instructions {
 .template-actions {
   padding-top: 40px;
   border-top: 1px solid #ddd;
+  height:300px;
 
   .favorite {
     float: left;
@@ -6110,4 +6114,23 @@ table.apiKey {
     }
   }
 
+}
+.template-container {
+  //height: calc(~"100% - 100px");
+  height:100%
+}
+
+.scrollable-content {
+  overflow-x:hidden;
+  overflow-y:auto; // manage scrollbar content overflow settings
+}
+.scrollable-content::-webkit-scrollbar {
+  width:10px; // manage scrollbar width here
+}
+.scrollable-content::-webkit-scrollbar  {
+  //display: none;
+  background:#f0f0f0;
+}
+.scrollable-content::-webkit-scrollbar-thumb {
+  background:#ccc; // manage scrollbar thumb background color here
 }

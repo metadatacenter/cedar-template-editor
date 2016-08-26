@@ -54,6 +54,9 @@ define([
           vm.cancelCreateEditFolder = cancelCreateEditFolder;
           vm.currentPath = "";
           vm.currentFolderId = "";
+          vm.offset = 0;
+
+          vm.totalCount = null;
           vm.deleteResource = deleteResource;
           vm.doCreateEditFolder = doCreateEditFolder;
           vm.doSearch = doSearch;
@@ -115,6 +118,7 @@ define([
           vm.isMeta = isMeta;
 
           vm.editingDescription = false;
+
 
           vm.startDescriptionEditing = function () {
             var resource = vm.getSelection();
@@ -269,6 +273,36 @@ define([
             }
           };
 
+          // callback to load more resources for the current folder
+          vm.loadMore = function () {
+
+            var limit = UISettingsService.getRequestLimit();
+            vm.offset += limit;
+            var offset = vm.offset;
+
+            var folderId = vm.currentFolderId;
+            var resourceTypes = activeResourceTypes();
+
+            // are there more?
+            if (offset < vm.totalCount) {
+
+              if (resourceTypes.length > 0) {
+                return resourceService.getResources(
+                    {folderId: folderId, resourceTypes: resourceTypes, sort: sortField(), limit: limit, offset: offset},
+                    function (response) {
+                      vm.resources = vm.resources.concat(response.resources);
+                    },
+                    function (error) {
+                      UIMessageService.showBackendError('SERVER.FOLDER.load.error', error);
+                    }
+                );
+              } else {
+                vm.resources = [];
+              }
+            }
+          };
+
+
           //*********** ENTRY POINT
 
           setUIPreferences();
@@ -412,9 +446,12 @@ define([
 
           function doSearch(term) {
             var resourceTypes = activeResourceTypes();
+            var limit = UISettingsService.getRequestLimit();
+            vm.offset = 0;
+            var offset = vm.offset;
             resourceService.searchResources(
                 term,
-                {resourceTypes: resourceTypes, sort: sortField(), limit: 100, offset: 0},
+                {resourceTypes: resourceTypes, sort: sortField(), limit: limit, offset: offset},
                 function (response) {
                   vm.searchTerm = term;
                   vm.isSearching = true;
@@ -470,48 +507,53 @@ define([
               r = vm.selectedResource;
             }
 
-            //vm.params.search = null;
-            var params = $location.search('');
+            if (r) {
 
-            if (r.nodeType == 'folder') {
-              goToFolder(r['@id']);
-            } else {
-              if (r.nodeType == 'template') {
-                launchInstance(r);
+              //vm.params.search = null;
+              var params = $location.search('');
+
+              if (r.nodeType == 'folder') {
+                goToFolder(r['@id']);
               } else {
-
-                editResource(r);
+                if (r.nodeType == 'template') {
+                  launchInstance(r);
+                } else {
+                  editResource(r);
+                }
               }
-
             }
           }
 
           function editResource(resource) {
-            //console.log('editResource');
-            //console.log(resource);
-
-            var id = resource['@id'];
-            if (typeof vm.pickResourceCallback === 'function') {
-              vm.pickResourceCallback(resource);
+            var r = resource;
+            if (!r && vm.selectedResource) {
+              r = vm.selectedResource;
             }
-            switch (resource.nodeType) {
-              case CONST.resourceType.TEMPLATE:
-                $location.path(UrlService.getTemplateEdit(id));
-                break;
-              case CONST.resourceType.ELEMENT:
-                if (vm.onDashboard()) {
-                  $location.path(UrlService.getElementEdit(id));
-                }
-                break;
-              case CONST.resourceType.INSTANCE:
-                $location.path(UrlService.getInstanceEdit(id));
-                break;
-              case CONST.resourceType.LINK:
-                $location.path(scope.href);
-                break;
-              case CONST.resourceType.FOLDER:
-                vm.showEditFolder(resource);
-                break;
+
+            if (r) {
+              var id = r['@id'];
+              if (typeof vm.pickResourceCallback === 'function') {
+                vm.pickResourceCallback(r);
+              }
+              switch (r.nodeType) {
+                case CONST.resourceType.TEMPLATE:
+                  $location.path(UrlService.getTemplateEdit(id));
+                  break;
+                case CONST.resourceType.ELEMENT:
+                  if (vm.onDashboard()) {
+                    $location.path(UrlService.getElementEdit(id));
+                  }
+                  break;
+                case CONST.resourceType.INSTANCE:
+                  $location.path(UrlService.getInstanceEdit(id));
+                  break;
+                case CONST.resourceType.LINK:
+                  $location.path(scope.href);
+                  break;
+                case CONST.resourceType.FOLDER:
+                  vm.showEditFolder(r);
+                  break;
+              }
             }
           }
 
@@ -567,17 +609,24 @@ define([
             );
           }
 
+
           // TODO: merge this with getFolderContents below
           function getFolderContentsById(folderId) {
             var resourceTypes = activeResourceTypes();
+            vm.offset = 0;
+            var offset = vm.offset;
+            // var limit = vm.limit;
+            var limit = UISettingsService.getRequestLimit();
+
             if (resourceTypes.length > 0) {
               return resourceService.getResources(
-                  {folderId: folderId, resourceTypes: resourceTypes, sort: sortField(), limit: 100, offset: 0},
+                  {folderId: folderId, resourceTypes: resourceTypes, sort: sortField(), limit: limit, offset: offset},
                   function (response) {
                     vm.currentFolderId = folderId;
                     vm.resources = response.resources;
                     vm.pathInfo = response.pathInfo;
                     vm.currentPath = vm.pathInfo.pop();
+                    vm.totalCount = response.totalCount;
                   },
                   function (error) {
                     UIMessageService.showBackendError('SERVER.FOLDER.load.error', error);
@@ -591,14 +640,20 @@ define([
           // TODO: merge this with getFolderContentsById above
           function getFolderContents(path) {
             var resourceTypes = activeResourceTypes();
+            vm.offset = 0;
+            var offset = vm.offset;
+            //var limit = vm.limit;
+            var limit = UISettingsService.getRequestLimit();
+
             if (resourceTypes.length > 0) {
               return resourceService.getResources(
-                  {path: path, resourceTypes: resourceTypes, sort: sortField(), limit: 100, offset: 0},
+                  {path: path, resourceTypes: resourceTypes, sort: sortField(), limit: limit, offset: offset},
                   function (response) {
                     vm.resources = response.resources;
                     vm.pathInfo = response.pathInfo;
                     vm.currentPath = vm.pathInfo.pop();
                     vm.currentFolderId = vm.currentPath['@id'];
+                    vm.totalCount = response.totalCount;
                   },
                   function (error) {
                     UIMessageService.showBackendError('SERVER.FOLDER.load.error', error);

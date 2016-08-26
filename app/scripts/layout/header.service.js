@@ -34,9 +34,17 @@ define([
     service.getScrollLimit = function () {
     return this.miniHeaderScrollLimit;
     };
+
+    service.getScrollSelector = function () {
+      return this.miniHeaderScrollSelector;
+    };
     
     service.getStickyThreshold = function () {
       return config.stickyThreshold;
+    };
+
+    service.getScrollSelector = function () {
+      return config.scrollSelector;
     };
     
     service.showMini = function (pageYOffset) {
