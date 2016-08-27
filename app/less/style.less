@@ -5629,7 +5629,6 @@ table.apiKey {
 
   .populate-form-boxes {
     margin: 0 10px;
-
   }
 
   .modal-dialog {
@@ -5639,6 +5638,7 @@ table.apiKey {
     margin-top: 0px;
     margin-bottom: 0px;
     background: white;
+    padding-right: 1px;
 
     @media (max-width: @screen-sm-min) {
       width: calc(~"100% - 10px");
@@ -5649,8 +5649,6 @@ table.apiKey {
   .modal-content {
     border-radius: 0;
     border: 0;
-
-    //height: calc(~"80% - 30px");
   }
 
   .modal-header {
@@ -5791,9 +5789,8 @@ table.apiKey {
     background: #f0f0f0;
     padding: 0;
     height: 400px;
-    //max-height:400px;
 
-    overflow-y: auto;
+
     .class-actions {
       margin-top: 30px;
       font-size: 1em;
@@ -5807,9 +5804,6 @@ table.apiKey {
     }
 
     .list-view {
-
-      height: 400px;
-      overflow: hidden;
 
       .title {
         text-transform: uppercase;
@@ -5825,18 +5819,24 @@ table.apiKey {
       }
 
       .info-side {
+        height:100%;
+        width:50%;
 
-        height: 100%;
-        overflow: hidden;
-        width: 50%;
-        float: right;
         border-left: 1px solid #e0e0e0;
-        padding: 20px;
         background: @white;
+
+        .info {
+          position: fixed;
+          left: 0%;
+          width: calc(~"50% - 10px");
+          background: @white;
+          height: 400px;
+        }
 
         .title-icon {
           font-size: 40px;
           text-align: center;
+          padding-top:30px;
 
           &.template {
             color: @button-template;
@@ -5882,10 +5882,9 @@ table.apiKey {
 
       .list-side {
 
-        height: 100%;
-        overflow-y: auto;
-        width: 50%;
-        padding-right: 8px;
+        padding: 0 0 0 10px;
+        width:50%;
+        float:right;
 
         .category {
           padding: 10px;

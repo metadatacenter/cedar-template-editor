@@ -194,6 +194,10 @@ define([
             }
           };
 
+          vm.testForMore = function ()  {
+            console.log('testForMore');
+          };
+
 
 
           function getPathInfo(folderId) {

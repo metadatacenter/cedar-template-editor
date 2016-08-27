@@ -13976,6 +13976,7 @@ table.apiKey td {
   margin-top: 0px;
   margin-bottom: 0px;
   background: white;
+  padding-right: 1px;
 }
 @media (max-width: 768px) {
   .finder-modal .modal-dialog {
@@ -14107,7 +14108,6 @@ table.apiKey td {
   background: #f0f0f0;
   padding: 0;
   height: 400px;
-  overflow-y: auto;
 }
 .finder-modal .modal-body .class-actions {
   margin-top: 30px;
@@ -14119,10 +14119,6 @@ table.apiKey td {
 }
 .finder-modal .modal-body .form-box-container .form-box {
   margin: 0 auto;
-}
-.finder-modal .modal-body .list-view {
-  height: 400px;
-  overflow: hidden;
 }
 .finder-modal .modal-body .list-view .title {
   text-transform: uppercase;
@@ -14136,16 +14132,21 @@ table.apiKey td {
 }
 .finder-modal .modal-body .list-view .info-side {
   height: 100%;
-  overflow: hidden;
   width: 50%;
-  float: right;
   border-left: 1px solid #e0e0e0;
-  padding: 20px;
   background: #ffffff;
+}
+.finder-modal .modal-body .list-view .info-side .info {
+  position: fixed;
+  left: 0%;
+  width: calc(50% - 10px);
+  background: #ffffff;
+  height: 400px;
 }
 .finder-modal .modal-body .list-view .info-side .title-icon {
   font-size: 40px;
   text-align: center;
+  padding-top: 30px;
 }
 .finder-modal .modal-body .list-view .info-side .title-icon.template {
   color: #5097A5;
@@ -14179,10 +14180,9 @@ table.apiKey td {
   font-weight: normal;
 }
 .finder-modal .modal-body .list-view .list-side {
-  height: 100%;
-  overflow-y: auto;
+  padding: 0 0 0 10px;
   width: 50%;
-  padding-right: 8px;
+  float: right;
 }
 .finder-modal .modal-body .list-view .list-side .category {
   padding: 10px;
