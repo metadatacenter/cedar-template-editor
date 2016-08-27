@@ -14143,6 +14143,11 @@ table.apiKey td {
   background: #ffffff;
   height: 400px;
 }
+.finder-modal .modal-body .list-view .info-side .info .no-title {
+  padding-top: 100px;
+  text-align: center;
+  font-size: 1em;
+}
 .finder-modal .modal-body .list-view .info-side .title-icon {
   font-size: 40px;
   text-align: center;
