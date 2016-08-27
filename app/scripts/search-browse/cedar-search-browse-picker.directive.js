@@ -275,6 +275,7 @@ define([
 
           // callback to load more resources for the current folder
           vm.loadMore = function () {
+            console.log('loadMore');
 
             if (vm.isSearching) {
               vm.searchMore();
@@ -489,6 +490,7 @@ define([
                   vm.searchTerm = term;
                   vm.isSearching = true;
                   vm.resources = response.resources;
+                  vm.totalCount = response.totalCount;
                 },
                 function (error) {
                   UIMessageService.showBackendError('SERVER.SEARCH.error', error);
