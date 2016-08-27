@@ -95,7 +95,8 @@
     "Elements": "Elements",
     "FilterBy": "Filter by",
     "Untitled": "Untitled",
-    "Description": "Description"
+    "Description": "Description",
+    "SelectToViewDetails": "Select a folder or resource to view its details."
   },
   "SERVER": {
     "FOLDER": {

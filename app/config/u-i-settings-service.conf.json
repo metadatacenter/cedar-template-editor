@@ -121,5 +121,8 @@
       "labelKey": "view.orderDropdown.relevance",
       "dataName": "relevance"
     }
-  ]
+  ],
+  "workspaceView": {
+    "requestLimit": 50
+  }
 }

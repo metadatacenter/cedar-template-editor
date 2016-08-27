@@ -89,6 +89,8 @@ body {
   background: #f0f0f0;
   font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
   color: #333;
+  height:100%;
+  overflow:hidden;
 
 }
 
@@ -175,7 +177,7 @@ button {
   color: @header-text-color;
   background-color: @header-bg-color;
   margin-bottom: 0;
-  min-height: 100px;
+  height: 80px;
   border: none;
 
   #page-title {
@@ -238,7 +240,7 @@ button {
     background-repeat: no-repeat;
     width: 140px;
     background-size: 140px;
-    margin-top: 8px;
+    margin-top: 20px;
     margin-left: 0;
     .text-hide();
 
@@ -371,15 +373,18 @@ button {
   .nav-search {
     float: right;
     width: 50%;
+    margin-top:6px;
   }
 }
 
 .navbar.template {
   background-color: @header-template;
+  margin-right:10px;
 }
 
 .navbar.element {
   background-color: @header-element;
+  margin-right:10px;
 }
 
 .navbar.dashboard {
@@ -391,18 +396,22 @@ button {
 }
 
 #angular-views-entry {
-  height: 100%;
-  margin-top: 100px;
+  position: relative;
+  top: 80px;
+  width: 100%;
+  //height: 100%;
+  height: calc(~"100% - 80px");
 }
 
 .controls-bar {
   padding: 10px 15px;
   background: @header-bg-color;
   color: @white;
-  top: 60px;
   height: 55px;
   box-shadow: 0 4px 4px #ccc;
   width: 100%;
+  top: 0;
+  position: relative;
 
   .breadcrumbs-sb {
     //text-transform: uppercase;
@@ -454,7 +463,7 @@ button {
         border-right-width: 0;
         border-left-width: 0;
         border-bottom-width: 0;
-        font-size: 18px;
+        margin:0 5px;
       }
       button:hover {
         color: #ccc;
@@ -587,7 +596,6 @@ button {
 }
 
 .search-browse-spacer {
-  padding-top: 20px;
 }
 
 /* Begin Form Populate Gray Modal Slide Up/Down Section */
@@ -720,15 +728,16 @@ button {
   color: @graytxt;
   padding: 0;
   position: relative;
-  height: 100%;
+  height: calc(~"100% - 55px");
 
   .center-panel {
     position: absolute;
     top: 0;
     left: 200px;
     right: 0;
-    padding-top: 30px;
+    padding: 30px 0;
     height: 100%;
+
 
   }
 
@@ -2765,6 +2774,7 @@ section.dashboard-elements {
   border-top: 1px solid #ddd;
   padding: 50px 0;
   text-align: center;
+  height: 300px;
 
   .btn {
     display: inline-block;
@@ -3858,6 +3868,7 @@ p.instructions {
 .element-actions {
   padding-top: 40px;
   border-top: 0px solid #ddd;
+  height:300px;
 
   .favorite {
     float: left;
@@ -3929,6 +3940,7 @@ p.instructions {
 .template-actions {
   padding-top: 40px;
   border-top: 1px solid #ddd;
+  height:300px;
 
   .favorite {
     float: left;
@@ -5112,13 +5124,12 @@ p.instructions {
 }
 
 .controlled-terms-modal {
-  position: absolute;
+
   .modal-dialog {
-    width: 1020px;
+    width: 80%;
     height: 100%;
     padding: 0;
-    margin-top: 0px;
-    margin-bottom: 0px;
+    margin: 0 auto;
   }
 
   .modal-content {
@@ -5618,7 +5629,6 @@ table.apiKey {
 
   .populate-form-boxes {
     margin: 0 10px;
-
   }
 
   .modal-dialog {
@@ -5628,6 +5638,7 @@ table.apiKey {
     margin-top: 0px;
     margin-bottom: 0px;
     background: white;
+    padding-right: 1px;
 
     @media (max-width: @screen-sm-min) {
       width: calc(~"100% - 10px");
@@ -5638,8 +5649,6 @@ table.apiKey {
   .modal-content {
     border-radius: 0;
     border: 0;
-
-    //height: calc(~"80% - 30px");
   }
 
   .modal-header {
@@ -5780,9 +5789,8 @@ table.apiKey {
     background: #f0f0f0;
     padding: 0;
     height: 400px;
-    //max-height:400px;
 
-    overflow-y: auto;
+
     .class-actions {
       margin-top: 30px;
       font-size: 1em;
@@ -5796,9 +5804,6 @@ table.apiKey {
     }
 
     .list-view {
-
-      height: 400px;
-      overflow: hidden;
 
       .title {
         text-transform: uppercase;
@@ -5814,18 +5819,29 @@ table.apiKey {
       }
 
       .info-side {
+        height:100%;
+        width:50%;
 
-        height: 100%;
-        overflow: hidden;
-        width: 50%;
-        float: right;
         border-left: 1px solid #e0e0e0;
-        padding: 20px;
         background: @white;
+
+        .info {
+          position: fixed;
+          left: 0%;
+          width: calc(~"50% - 10px");
+          background: @white;
+          height: 400px;
+          .no-title {
+            padding-top:100px;
+            text-align: center;
+            font-size:1em;
+          }
+        }
 
         .title-icon {
           font-size: 40px;
           text-align: center;
+          padding-top:30px;
 
           &.template {
             color: @button-template;
@@ -5871,10 +5887,9 @@ table.apiKey {
 
       .list-side {
 
-        height: 100%;
-        overflow-y: auto;
-        width: 50%;
-        padding-right: 8px;
+        padding: 0 0 0 10px;
+        width:50%;
+        float:right;
 
         .category {
           padding: 10px;
@@ -6110,4 +6125,24 @@ table.apiKey {
     }
   }
 
+}
+.template-container {
+  //height: calc(~"100% - 100px");
+  height:100%;
+  width:100%;
+}
+
+.scrollable-content {
+  overflow-x:hidden;
+  overflow-y:auto; // manage scrollbar content overflow settings
+}
+.scrollable-content::-webkit-scrollbar {
+  width:10px; // manage scrollbar width here
+}
+.scrollable-content::-webkit-scrollbar  {
+  //display: none;
+  background:#f0f0f0;
+}
+.scrollable-content::-webkit-scrollbar-thumb {
+  background:#ccc; // manage scrollbar thumb background color here
 }

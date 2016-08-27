@@ -9114,6 +9114,8 @@ body {
   background: #f0f0f0;
   font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
   color: #333;
+  height: 100%;
+  overflow: hidden;
 }
 a {
   -webkit-transition: all 0.3s 0.1s;
@@ -9156,7 +9158,7 @@ button {
   color: #fff;
   background-color: #2e5365;
   margin-bottom: 0;
-  min-height: 100px;
+  height: 80px;
   border: none;
 }
 .navbar #page-title {
@@ -9212,7 +9214,7 @@ button {
   background-repeat: no-repeat;
   width: 140px;
   background-size: 140px;
-  margin-top: 8px;
+  margin-top: 20px;
   margin-left: 0;
   font: 0/0 a;
   color: transparent;
@@ -9335,12 +9337,15 @@ button {
 .navbar .nav-search {
   float: right;
   width: 50%;
+  margin-top: 6px;
 }
 .navbar.template {
   background-color: #2e5365;
+  margin-right: 10px;
 }
 .navbar.element {
   background-color: #557260;
+  margin-right: 10px;
 }
 .navbar.dashboard {
   background-color: #ffffff;
@@ -9349,17 +9354,20 @@ button {
   background-color: #34626B;
 }
 #angular-views-entry {
-  height: 100%;
-  margin-top: 100px;
+  position: relative;
+  top: 80px;
+  width: 100%;
+  height: calc(100% - 80px);
 }
 .controls-bar {
   padding: 10px 15px;
   background: #2e5365;
   color: #ffffff;
-  top: 60px;
   height: 55px;
   box-shadow: 0 4px 4px #ccc;
   width: 100%;
+  top: 0;
+  position: relative;
 }
 .controls-bar .breadcrumbs-sb {
   margin: 5px 15px;
@@ -9405,7 +9413,7 @@ button {
   border-right-width: 0;
   border-left-width: 0;
   border-bottom-width: 0;
-  font-size: 18px;
+  margin: 0 5px;
 }
 .controls-bar ul li button:hover {
   color: #ccc;
@@ -9527,9 +9535,6 @@ button {
   height: 55px;
   box-shadow: none;
 }
-.search-browse-spacer {
-  padding-top: 20px;
-}
 /* Begin Form Populate Gray Modal Slide Up/Down Section */
 .form-populate {
   color: #666666;
@@ -9640,7 +9645,7 @@ button {
   color: #666666;
   padding: 0;
   position: relative;
-  height: 100%;
+  height: calc(100% - 55px);
   /* Off Canvas */
 }
 .all-items-view .center-panel {
@@ -9648,7 +9653,7 @@ button {
   top: 0;
   left: 200px;
   right: 0;
-  padding-top: 30px;
+  padding: 30px 0;
   height: 100%;
 }
 .all-items-view .push-pull-box {
@@ -11567,6 +11572,7 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   border-top: 1px solid #ddd;
   padding: 50px 0;
   text-align: center;
+  height: 300px;
 }
 .edit-actions .btn {
   display: inline-block;
@@ -12529,6 +12535,7 @@ p.instructions {
 .element-actions {
   padding-top: 40px;
   border-top: 0px solid #ddd;
+  height: 300px;
 }
 .element-actions .favorite {
   float: left;
@@ -12589,6 +12596,7 @@ p.instructions {
 .template-actions {
   padding-top: 40px;
   border-top: 1px solid #ddd;
+  height: 300px;
 }
 .template-actions .favorite {
   float: left;
@@ -13590,15 +13598,11 @@ p.instructions {
   left: 5px;
   font-size: 11px;
 }
-.controlled-terms-modal {
-  position: absolute;
-}
 .controlled-terms-modal .modal-dialog {
-  width: 1020px;
+  width: 80%;
   height: 100%;
   padding: 0;
-  margin-top: 0px;
-  margin-bottom: 0px;
+  margin: 0 auto;
 }
 .controlled-terms-modal .modal-content {
   height: 100%;
@@ -13972,6 +13976,7 @@ table.apiKey td {
   margin-top: 0px;
   margin-bottom: 0px;
   background: white;
+  padding-right: 1px;
 }
 @media (max-width: 768px) {
   .finder-modal .modal-dialog {
@@ -14103,7 +14108,6 @@ table.apiKey td {
   background: #f0f0f0;
   padding: 0;
   height: 400px;
-  overflow-y: auto;
 }
 .finder-modal .modal-body .class-actions {
   margin-top: 30px;
@@ -14115,10 +14119,6 @@ table.apiKey td {
 }
 .finder-modal .modal-body .form-box-container .form-box {
   margin: 0 auto;
-}
-.finder-modal .modal-body .list-view {
-  height: 400px;
-  overflow: hidden;
 }
 .finder-modal .modal-body .list-view .title {
   text-transform: uppercase;
@@ -14132,16 +14132,26 @@ table.apiKey td {
 }
 .finder-modal .modal-body .list-view .info-side {
   height: 100%;
-  overflow: hidden;
   width: 50%;
-  float: right;
   border-left: 1px solid #e0e0e0;
-  padding: 20px;
   background: #ffffff;
+}
+.finder-modal .modal-body .list-view .info-side .info {
+  position: fixed;
+  left: 0%;
+  width: calc(50% - 10px);
+  background: #ffffff;
+  height: 400px;
+}
+.finder-modal .modal-body .list-view .info-side .info .no-title {
+  padding-top: 100px;
+  text-align: center;
+  font-size: 1em;
 }
 .finder-modal .modal-body .list-view .info-side .title-icon {
   font-size: 40px;
   text-align: center;
+  padding-top: 30px;
 }
 .finder-modal .modal-body .list-view .info-side .title-icon.template {
   color: #5097A5;
@@ -14175,10 +14185,9 @@ table.apiKey td {
   font-weight: normal;
 }
 .finder-modal .modal-body .list-view .list-side {
-  height: 100%;
-  overflow-y: auto;
+  padding: 0 0 0 10px;
   width: 50%;
-  padding-right: 8px;
+  float: right;
 }
 .finder-modal .modal-body .list-view .list-side .category {
   padding: 10px;
@@ -14361,6 +14370,23 @@ table.apiKey td {
 .finder-modal .finder-actions .clear-save .btn.btn-save:hover,
 .finder-modal .finder-actions .clear-save .btn.btn-save:focus {
   background-color: #71a69c;
+}
+.template-container {
+  height: 100%;
+  width: 100%;
+}
+.scrollable-content {
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+.scrollable-content::-webkit-scrollbar {
+  width: 10px;
+}
+.scrollable-content::-webkit-scrollbar {
+  background: #f0f0f0;
+}
+.scrollable-content::-webkit-scrollbar-thumb {
+  background: #ccc;
 }
 @font-face {
   font-family: "project-cedar";
