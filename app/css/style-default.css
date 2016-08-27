@@ -13598,15 +13598,11 @@ p.instructions {
   left: 5px;
   font-size: 11px;
 }
-.controlled-terms-modal {
-  position: absolute;
-}
 .controlled-terms-modal .modal-dialog {
-  width: 1020px;
+  width: 80%;
   height: 100%;
   padding: 0;
-  margin-top: 0px;
-  margin-bottom: 0px;
+  margin: 0 auto;
 }
 .controlled-terms-modal .modal-content {
   height: 100%;
