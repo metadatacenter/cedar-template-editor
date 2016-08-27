@@ -136,7 +136,6 @@ define([
 
           // callback to load more resources for the current folder or search
           vm.loadMore = function () {
-            console.log('loadMore');
 
             if (vm.isSearching) {
               vm.searchMore();
@@ -193,12 +192,6 @@ define([
 
             }
           };
-
-          vm.testForMore = function ()  {
-            console.log('testForMore');
-          };
-
-
 
           function getPathInfo(folderId) {
             var resourceTypes = activeResourceTypes();

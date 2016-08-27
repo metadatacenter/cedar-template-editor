@@ -275,7 +275,6 @@ define([
 
           // callback to load more resources for the current folder
           vm.loadMore = function () {
-            console.log('loadMore');
 
             if (vm.isSearching) {
               vm.searchMore();
