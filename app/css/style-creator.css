@@ -9214,7 +9214,7 @@ button {
   background-repeat: no-repeat;
   width: 140px;
   background-size: 140px;
-  margin-top: 8px;
+  margin-top: 20px;
   margin-left: 0;
   font: 0/0 a;
   color: transparent;
@@ -9337,12 +9337,15 @@ button {
 .navbar .nav-search {
   float: right;
   width: 50%;
+  margin-top: 6px;
 }
 .navbar.template {
   background-color: #2e5365;
+  margin-right: 10px;
 }
 .navbar.element {
   background-color: #557260;
+  margin-right: 10px;
 }
 .navbar.dashboard {
   background-color: #ffffff;
@@ -9410,7 +9413,7 @@ button {
   border-right-width: 0;
   border-left-width: 0;
   border-bottom-width: 0;
-  font-size: 18px;
+  margin: 0 5px;
 }
 .controls-bar ul li button:hover {
   color: #ccc;
