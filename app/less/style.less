@@ -6147,7 +6147,7 @@ table.apiKey {
   background:#ccc; // manage scrollbar thumb background color here
 }
 
-#renameResourceModal, #newFolderModal {
+#renameResourceModal, #newFolderModal, #moveResourceModal {
   .modal-content{
     border-radius: 0;
     border: 0;
@@ -6157,6 +6157,22 @@ table.apiKey {
       padding: 5px;
       width: 100%;
       outline:none;
+    }
+    .modal-body{
+      max-height:300px;
+      overflow-y:auto;
+      .box-row {
+        padding:5px;
+
+        .disabled {
+          background: @med-gray;
+        }
+        &.selected {
+          background: @brand-primary;
+        }
+
+      }
+
     }
     .actions {
 
@@ -6223,6 +6239,20 @@ table.apiKey {
     }
   }
 
+}
+
+#moveResourceModal {
+  .modal-content {
+    .modal-body {
+      height: 300px;
+      cursor:pointer;
+      .box-row {
+        &.disabled {
+          opacity:0.5;
+        }
+      }
+    }
+  }
 }
 
 

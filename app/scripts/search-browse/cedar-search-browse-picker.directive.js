@@ -76,6 +76,22 @@ define([
           vm.folder.description = "folder description";
 
 
+          // move to...
+          vm.openParent = openParent;
+          vm.selectDestination = selectDestination;
+          vm.isDestinationSelected = isDestinationSelected;
+          vm.moveDisabled = moveDisabled;
+          vm.moveResource = moveResource;
+          vm.openDestination = openDestination;
+          vm.showMoveResourceModal = showMoveResourceModal;
+          vm.selectedDestination = null;
+          vm.currentDestination = null;
+          vm.destinationResources = [];
+          vm.currentDestinationID = null;
+          vm.destinationPathInfo = null;
+          vm.destinationPath = null;
+
+
           vm.getFacets = getFacets;
           vm.getForms = getForms;
           vm.getFolderContents = getFolderContents;
@@ -817,6 +833,7 @@ define([
                     vm.pathInfo = response.pathInfo;
                     vm.currentPath = vm.pathInfo.pop();
                     vm.totalCount = response.totalCount;
+
                   },
                   function (error) {
                     UIMessageService.showBackendError('SERVER.FOLDER.load.error', error);
@@ -1163,7 +1180,103 @@ define([
             UISettingsService.saveUIPreference('folderView.viewMode', mode);
           }
 
+
+          // move to...
+
+          function openParent() {
+            var length = vm.destinationPathInfo.length;
+            var parent = vm.destinationPathInfo[length - 1];
+            openDestination(parent);
+          }
+
+          function moveResource() {
+            console.log(vm.selectedDestination);
+
+            if (vm.selectedDestination) {
+              var folderId = vm.selectedDestination['@id'];
+
+
+              if (vm.selectedResource) {
+                var resource = vm.selectedResource;
+
+
+                resourceService.moveResource(
+                    resource, folderId,
+                    function (response) {
+
+                      // TODO refresh the current page just in case you copied to the current page
+                      vm.params = $location.search();
+                      init();
+
+                      UIMessageService.flashSuccess('SERVER.RESOURCE.moveResource.success', {"title": resource.name},
+                          'GENERIC.Moved');
+                    },
+                    function (response) {
+                      UIMessageService.showBackendError('SERVER.RESOURCE.moveResource.error', response);
+                    }
+                );
+
+              }
+            }
+          }
+
+          function selectDestination(resource) {
+            vm.selectedDestination = resource;
+          }
+
+          function openDestination(resource) {
+            if (resource) {
+              var id = resource['@id'];
+              getDestinationById(id);
+              vm.selectedDestination = null;
+              vm.currentDestination = resource;
+            }
+          }
+
+          function moveDisabled() {
+            return vm.selectedDestination == null;
+          }
+
+          function isDestinationSelected(resource) {
+            if (resource == null || vm.selectedDestination == null) {
+              return false;
+            } else {
+              return (vm.selectedDestination['@id'] == resource['@id']);
+            }
+          }
+
+          function showMoveResourceModal(id) {
+            vm.showFloatingMenu = false;
+            vm.currentDestination = vm.currentPath;
+            vm.selectedDestination = null;
+            getDestinationById(vm.currentFolderId);
+            $(id).modal('show');
+
+          }
+
+          function getDestinationById(folderId) {
+            var resourceTypes = activeResourceTypes();
+            if (resourceTypes.length > 0) {
+              return resourceService.getResources(
+                  {folderId: folderId, resourceTypes: resourceTypes, sort: sortField(), limit: 100, offset: 0},
+                  function (response) {
+                    vm.currentDestinationID = folderId;
+                    vm.destinationResources = response.resources;
+                    vm.destinationPathInfo = response.pathInfo;
+                    vm.destinationPath = vm.destinationPathInfo.pop();
+                  },
+                  function (error) {
+                    UIMessageService.showBackendError('SERVER.FOLDER.load.error', error);
+                  }
+              );
+            } else {
+              vm.destinationResources = [];
+            }
+          }
+
+
         }
+
       }
 
     }
