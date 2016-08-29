@@ -175,6 +175,10 @@
       "copyToWorkspace": {
         "success": "The resource '{{title}}' was copied to your workspace!",
         "error": "There was an error while copying the resource to your workspace!<br /><br />VIEW TECHNICAL DETAILS!"
+      },
+      "copyResource": {
+        "success": "The resource '{{title}}' was copied to your workspace!",
+        "error": "There was an error while copying the resource!<br /><br />VIEW TECHNICAL DETAILS!"
       }
     },
     "ELEMENTS": {
@@ -223,6 +227,13 @@
       "name": "Name",
       "createdOnTS": "Recently Created",
       "lastUpdatedOnTS": "Recently Updated"
+    },
+    "rename": {
+      "title": "Rename",
+      "label": "Please enter a new name for this resource:"
+    },
+    "newFolder": {
+      "title": "New folder"
     }
   },
   "ELEMENTEDITOR": {

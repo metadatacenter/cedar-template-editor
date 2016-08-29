@@ -14388,6 +14388,83 @@ table.apiKey td {
 .scrollable-content::-webkit-scrollbar-thumb {
   background: #ccc;
 }
+#renameResourceModal .modal-content,
+#newFolderModal .modal-content {
+  border-radius: 0;
+  border: 0;
+  max-width: 400px;
+  margin: 0 auto;
+}
+#renameResourceModal .modal-content input,
+#newFolderModal .modal-content input {
+  padding: 5px;
+  width: 100%;
+  outline: none;
+}
+#renameResourceModal .modal-content .actions .favorite,
+#newFolderModal .modal-content .actions .favorite {
+  float: left;
+  padding-top: 17px;
+  cursor: pointer;
+}
+#renameResourceModal .modal-content .actions .favorite span,
+#newFolderModal .modal-content .actions .favorite span {
+  text-transform: uppercase;
+  vertical-align: middle;
+}
+#renameResourceModal .modal-content .actions .favorite i,
+#newFolderModal .modal-content .actions .favorite i {
+  padding-right: 10px;
+  -webkit-transition: all 0.3s 0.1s;
+          transition: all 0.3s 0.1s;
+  color: rgba(51, 51, 51, 0.43);
+}
+#renameResourceModal .modal-content .actions .favorite.true i,
+#newFolderModal .modal-content .actions .favorite.true i {
+  color: #5795ba;
+}
+#renameResourceModal .modal-content .actions .clear-save,
+#newFolderModal .modal-content .actions .clear-save {
+  float: right;
+}
+#renameResourceModal .modal-content .actions .clear-save .btn,
+#newFolderModal .modal-content .actions .clear-save .btn {
+  text-transform: uppercase;
+  padding: 10px 20px;
+  border: none;
+  -webkit-transition: all 0.3s 0.1s;
+          transition: all 0.3s 0.1s;
+}
+#renameResourceModal .modal-content .actions .clear-save .btn:focus,
+#newFolderModal .modal-content .actions .clear-save .btn:focus {
+  outline: none;
+  box-shadow: none;
+}
+#renameResourceModal .modal-content .actions .clear-save .btn.btn-clear,
+#newFolderModal .modal-content .actions .clear-save .btn.btn-clear {
+  color: #5795ba;
+  background-color: transparent;
+  font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+  font-weight: 700;
+}
+#renameResourceModal .modal-content .actions .clear-save .btn.btn-clear:hover,
+#newFolderModal .modal-content .actions .clear-save .btn.btn-clear:hover,
+#renameResourceModal .modal-content .actions .clear-save .btn.btn-clear:focus,
+#newFolderModal .modal-content .actions .clear-save .btn.btn-clear:focus {
+  color: #2f7dab;
+}
+#renameResourceModal .modal-content .actions .clear-save .btn.btn-save,
+#newFolderModal .modal-content .actions .clear-save .btn.btn-save {
+  color: #ffffff;
+  background-color: #5795ba;
+  font-size: 16px;
+}
+#renameResourceModal .modal-content .actions .clear-save .btn.btn-save:hover,
+#newFolderModal .modal-content .actions .clear-save .btn.btn-save:hover,
+#renameResourceModal .modal-content .actions .clear-save .btn.btn-save:focus,
+#newFolderModal .modal-content .actions .clear-save .btn.btn-save:focus {
+  background-color: #2f7dab;
+}
 @font-face {
   font-family: "project-cedar";
   src: url("../media/fonts/project-cedar.eot");
