@@ -51,23 +51,23 @@ define([
           var vm = this;
 
           vm.breadcrumbName = breadcrumbName;
-          vm.cancelCreateEditFolder = cancelCreateEditFolder;
+          //vm.cancelCreateEditFolder = cancelCreateEditFolder;
           vm.currentPath = "";
           vm.currentFolderId = "";
           vm.offset = 0;
 
           vm.totalCount = null;
           vm.deleteResource = deleteResource;
-          vm.doCreateEditFolder = doCreateEditFolder;
+          //vm.doCreateEditFolder = doCreateEditFolder;
           vm.renameResource = renameResource;
           vm.doSearch = doSearch;
           vm.editResource = editResource;
           vm.facets = {};
           vm.forms = [];
 
-          vm.formFolder = null;
-          vm.formFolderName = null;
-          vm.formFolderDescription = null;
+          //vm.formFolder = null;
+          //vm.formFolderName = null;
+          //vm.formFolderDescription = null;
 
           vm.newFolder = newFolder;
           vm.showNewFolder = showNewFolder;
@@ -118,7 +118,7 @@ define([
           vm.sortName = sortName;
           vm.sortCreated = sortCreated;
           vm.sortUpdated = sortUpdated;
-          vm.showCreateFolder = showCreateFolder;
+          //vm.showCreateFolder = showCreateFolder;
           vm.showFilters = true;
           vm.filterShowing = filterShowing;
           vm.resetFilters = resetFilters;
@@ -164,22 +164,22 @@ define([
             }
           };
 
-          vm.showEditFolder = function (resource, selectDescription) {
-            vm.formFolder = resource;
-            vm.formFolderName = resource.name;
-            vm.formFolderDescription = resource.description;
-            $('#editFolderModal').modal('show');
-            $timeout(function () {
-              var selector = '#formFolderName';
-              if (selectDescription) {
-                selector = '#formFolderDescription';
-              }
-              var jqFolderProperty = $(selector);
-              jqFolderProperty.focus();
-              var l = jqFolderProperty.val().length;
-              jqFolderProperty[0].setSelectionRange(0, l);
-            });
-          };
+          //vm.showEditFolder = function (resource, selectDescription) {
+          //  vm.formFolder = resource;
+          //  vm.formFolderName = resource.name;
+          //  vm.formFolderDescription = resource.description;
+          //  $('#editFolderModal').modal('show');
+          //  $timeout(function () {
+          //    var selector = '#formFolderName';
+          //    if (selectDescription) {
+          //      selector = '#formFolderDescription';
+          //    }
+          //    var jqFolderProperty = $(selector);
+          //    jqFolderProperty.focus();
+          //    var l = jqFolderProperty.val().length;
+          //    jqFolderProperty[0].setSelectionRange(0, l);
+          //  });
+          //};
 
           vm.cancelDescriptionEditing = function () {
             vm.editingDescription = false;
@@ -204,8 +204,8 @@ define([
               if (vm.currentPath) {
                 vm.selectResource(vm.currentPath);
               } else {
-                if (vm.formFolder) {
-                  vm.selectResource(vm.formFolder);
+                if (vm.folder) {
+                  vm.selectResource(vm.folder);
                 }
               }
             }
@@ -458,26 +458,26 @@ define([
             return folderName;
           }
 
-          function cancelCreateEditFolder() {
-            vm.formFolderName = 'Untitled';
-            vm.formFolderDescription = 'Untitled';
-            vm.formFolder = null;
-            $('#editFolderModal').modal('hide');
-          }
+          //function cancelCreateEditFolder() {
+          //  vm.formFolderName = 'Untitled';
+          //  vm.formFolderDescription = 'Untitled';
+          //  vm.formFolder = null;
+          //  $('#editFolderModal').modal('hide');
+          //}
 
-          function showCreateFolder() {
-            vm.showFloatingMenu = false;
-            vm.formFolderName = 'Untitled';
-            vm.formFolderDescription = 'Untitled';
-            vm.formFolder = null;
-            $('#editFolderModal').modal('show');
-            $timeout(function () {
-              var jqFolderName = $('#formFolderName');
-              jqFolderName.focus();
-              var l = jqFolderName.val().length;
-              jqFolderName[0].setSelectionRange(0, l);
-            });
-          }
+          //function showCreateFolder() {
+          //  vm.showFloatingMenu = false;
+          //  vm.formFolderName = 'Untitled';
+          //  vm.formFolderDescription = 'Untitled';
+          //  vm.formFolder = null;
+          //  $('#editFolderModal').modal('show');
+          //  $timeout(function () {
+          //    var jqFolderName = $('#formFolderName');
+          //    jqFolderName.focus();
+          //    var l = jqFolderName.val().length;
+          //    jqFolderName[0].setSelectionRange(0, l);
+          //  });
+          //}
 
           function showNewFolder(id) {
             vm.showFloatingMenu = false;
@@ -581,48 +581,48 @@ define([
             }
           }
 
-          function doCreateEditFolder() {
-            $('#editFolderModal').modal('hide');
-            if (vm.formFolder) {
-              vm.formFolder.name = vm.formFolderName;
-              vm.formFolder.description = vm.formFolderDescription;
-              resourceService.updateFolder(
-                  vm.formFolder,
-                  function (response) {
-                    init();
-                    UIMessageService.flashSuccess('SERVER.FOLDER.update.success', {"title": vm.formFolderName},
-                        'GENERIC.Updated');
-                  },
-                  function (response) {
-                    UIMessageService.showBackendError('SERVER.FOLDER.update.error', response);
-                  }
-              );
-              // edit
-            } else {
-              resourceService.createFolder(
-                  vm.params.folderId,
-                  vm.formFolderName,
-                  vm.formFolderDescription,
-                  function (response) {
-                    init();
-                    UIMessageService.flashSuccess('SERVER.FOLDER.create.success', {"title": vm.formFolderName},
-                        'GENERIC.Created');
-                  },
-                  function (response) {
-                    if (response.status == 400) {
-                      UIMessageService.showWarning(
-                          'GENERIC.Warning',
-                          'SERVER.FOLDER.create.' + response.data.errorSubType,
-                          'GENERIC.Ok',
-                          response.data.errorParams
-                      );
-                    } else {
-                      UIMessageService.showBackendError('SERVER.FOLDER.create.error', response);
-                    }
-                  }
-              );
-            }
-          }
+          //function doCreateEditFolder() {
+          //  $('#editFolderModal').modal('hide');
+          //  if (vm.formFolder) {
+          //    vm.formFolder.name = vm.formFolderName;
+          //    vm.formFolder.description = vm.formFolderDescription;
+          //    resourceService.updateFolder(
+          //        vm.formFolder,
+          //        function (response) {
+          //          init();
+          //          UIMessageService.flashSuccess('SERVER.FOLDER.update.success', {"title": vm.formFolderName},
+          //              'GENERIC.Updated');
+          //        },
+          //        function (response) {
+          //          UIMessageService.showBackendError('SERVER.FOLDER.update.error', response);
+          //        }
+          //    );
+          //    // edit
+          //  } else {
+          //    resourceService.createFolder(
+          //        vm.params.folderId,
+          //        vm.formFolderName,
+          //        vm.formFolderDescription,
+          //        function (response) {
+          //          init();
+          //          UIMessageService.flashSuccess('SERVER.FOLDER.create.success', {"title": vm.formFolderName},
+          //              'GENERIC.Created');
+          //        },
+          //        function (response) {
+          //          if (response.status == 400) {
+          //            UIMessageService.showWarning(
+          //                'GENERIC.Warning',
+          //                'SERVER.FOLDER.create.' + response.data.errorSubType,
+          //                'GENERIC.Ok',
+          //                response.data.errorParams
+          //            );
+          //          } else {
+          //            UIMessageService.showBackendError('SERVER.FOLDER.create.error', response);
+          //          }
+          //        }
+          //    );
+          //  }
+          //}
 
           function doSearch(term) {
             var resourceTypes = activeResourceTypes();
