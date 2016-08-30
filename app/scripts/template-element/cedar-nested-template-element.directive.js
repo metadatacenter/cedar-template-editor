@@ -29,6 +29,7 @@ define([
     return directive;
 
     function linker(scope, element, attrs) {
+
       var nestElement = function () {
 
         setNested(scope.field);

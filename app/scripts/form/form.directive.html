@@ -6,6 +6,7 @@
   <div class="page" ng-if="$root.isRuntime()" ng-repeat="page in pagesArray">
     <div ng-repeat="item in page" class="animate-fade" ng-show="pageIndex == $parent.$index">
       <span ng-if="form.properties[item]">
+        <!--If Template field-->
         <div ng-if="form.properties[item]['@type']=='https://schema.metadatacenter.org/core/TemplateField' || form.properties[item]['@type']=='https://schema.metadatacenter.org/core/StaticTemplateField' ||
         form.properties[item].items['@type']=='https://schema.metadatacenter.org/core/TemplateField' || form.properties[item].items['@type']=='https://schema.metadatacenter.org/core/StaticTemplateField'"
             ng-class="{'field-instance':true, 'multiple-instance-field':form.properties[item].type == 'array'}">
@@ -14,8 +15,10 @@
               rename-child-key="renameChildKey"
               is-edit-data="isEditData"></field-directive>
         </div>
+        <!--If Template Element-->
         <div class=" element-group full "
             ng-if="form.properties[item]['@type']=='https://schema.metadatacenter.org/core/TemplateElement' || form.properties[item].items['@type']=='https://schema.metadatacenter.org/core/TemplateElement'">
+          <h1>{{model[item]}}</h1>
           <cedar-template-element element="form.properties[item]"
               key="item"
               model="model[item]"
@@ -32,7 +35,7 @@
   <div class="page" ng-if="!$root.isRuntime()" ui-sortable="$root.sortableOptions" ng-model="form._ui.order">
     <div ng-repeat="item in form._ui.order" class="animate-fade">
       <span ng-if="form.properties[item]">
-
+        <!--If Template field-->
         <div ng-if="form.properties[item]['@type']=='https://schema.metadatacenter.org/core/TemplateField' || form.properties[item]['@type']=='https://schema.metadatacenter.org/core/StaticTemplateField' ||
         form.properties[item].items['@type']=='https://schema.metadatacenter.org/core/TemplateField' || form.properties[item].items['@type']=='https://schema.metadatacenter.org/core/StaticTemplateField'"
 
@@ -41,9 +44,9 @@
               delete="removeChild(form.properties[item]); $event.stopPropagation();"
               rename-child-key="renameChildKey"></field-directive>
         </div>
+        <!--If Template Element-->
         <div class="element-group full"
             ng-if="form.properties[item]['@type']=='https://schema.metadatacenter.org/core/TemplateElement' || form.properties[item].items['@type']=='https://schema.metadatacenter.org/core/TemplateElement'">
-
           <cedar-template-element element="form.properties[item]"
               key="item"
               model="model[item]"

@@ -40,6 +40,7 @@ define([
             if (key == '@value') {
               if (angular.isArray(model)) {
                 if ($rootScope.schemaOf(settings)._ui.inputType == "list") {
+                  // TODO: defaultOptions are not stored there anymore
                   if ($rootScope.schemaOf(settings)._valueConstraints.defaultOptions) {
                     el[key] = angular.copy($rootScope.schemaOf(settings)._valueConstraints.defaultOptions);
                   } else {
@@ -47,6 +48,7 @@ define([
                   }
                 } else {
                   for (var i = 0; i < model.length; i++) {
+                    // TODO: defaultOptions are not stored there anymore
                     if ($rootScope.schemaOf(settings)._valueConstraints.defaultOptions) {
                       model[i]['@value'] = angular.copy($rootScope.schemaOf(settings)._valueConstraints.defaultOptions);
                     } else {
@@ -61,6 +63,7 @@ define([
                   }
                 }
               } else {
+                // TODO: defaultOptions are not stored there anymore
                 if ($rootScope.schemaOf(settings)._valueConstraints.defaultOptions) {
                   el[key] = angular.copy($rootScope.schemaOf(settings)._valueConstraints.defaultOptions);
                 } else {
@@ -82,6 +85,7 @@ define([
                   if (k == '@value') {
                     if (angular.isArray(v)) {
                       if ($rootScope.schemaOf(settings)._ui.inputType == "list") {
+                        // TODO: defaultOptions are not stored there anymore
                         if ($rootScope.schemaOf(settings)._valueConstraints.defaultOptions) {
                           model[k] = angular.copy($rootScope.schemaOf(settings)._valueConstraints.defaultOptions);
                         } else {
@@ -89,6 +93,7 @@ define([
                         }
                       } else {
                         for (var i = 0; i < v.length; i++) {
+                          // TODO: defaultOptions are not stored there anymore
                           if ($rootScope.schemaOf(settings)._valueConstraints.defaultOptions) {
                             v[i]['@value'] = angular.copy($rootScope.schemaOf(settings)._valueConstraints.defaultOptions);
                           } else {
@@ -103,6 +108,7 @@ define([
                         }
                       }
                     } else {
+                      // TODO: defaultOptions are not stored there anymore
                       if ($rootScope.schemaOf(settings)._valueConstraints.defaultOptions) {
                         model[k] = angular.copy($rootScope.schemaOf(settings)._valueConstraints.defaultOptions);
                       } else {

@@ -106,6 +106,7 @@
       <!-- have an array with at least one element -->
       <div ng-if="$root.isArray(model) && selectedTab == $index" class="element" ng-repeat="m in model"
           ng-class="['element-{{$index}}']">
+
         <div class="remove-element pull-right">
           <a class="" ng-show="model.length > element.minItems" ng-click="removeElement($index)" translate>GENERIC.Remove</a>
         </div>
@@ -135,7 +136,7 @@
               <cedar-nested-template-element key="key"
                   field="$root.propertiesOf(element)[key]"
                   model="m[key]"
-                  preview="preview" ,
+                  preview="preview"
                   remove-child="removeChild"
                   rename-child-key="renameChildKey"
                   >
