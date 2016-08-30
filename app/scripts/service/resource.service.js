@@ -29,7 +29,9 @@ define([
       getResources           : getResources,
       searchResources        : searchResources,
       updateFolder           : updateFolder,
-      copyResourceToWorkspace: copyResourceToWorkspace
+      copyResourceToWorkspace: copyResourceToWorkspace,
+      copyResource           : copyResource,
+      moveResource           : moveResource
     };
     return service;
 
@@ -335,6 +337,62 @@ define([
       );
     }
 
+    function copyResource(resource, folderId, successCallback, errorCallback) {
+      var postData = {};
+      postData['@id'] = resource['@id'];
+      postData['nodeType'] = resource['nodeType'];
+      postData['folderId'] = folderId;
+      postData['titleTemplate'] = "Copy of {{title}}";
+      var url = urlService.copyResourceToFolder();
+      authorizedBackendService.doCall(
+          httpBuilderService.post(url, postData),
+          function (response) {
+            successCallback(response.data);
+          },
+          errorCallback
+      );
+    }
+
+    function moveResource(resource, folderId, successCallback, errorCallback) {
+      var postData = {};
+      postData['@id'] = resource['@id'];
+      postData['nodeType'] = resource['nodeType'];
+      postData['folderId'] = folderId;
+      postData['titleTemplate'] = "{{title}}";
+      var url = urlService.copyResourceToFolder();
+      authorizedBackendService.doCall(
+          httpBuilderService.post(url, postData),
+          function (response) {
+
+            // now delete the original
+            var id = resource['@id'];
+            switch (resource.nodeType) {
+              case CONST.resourceType.FOLDER:
+                url = urlService.getFolder(id);
+                break;
+              case CONST.resourceType.TEMPLATE:
+                url = urlService.getTemplate(id);
+                break;
+              case CONST.resourceType.ELEMENT:
+                url = urlService.getTemplateElement(id);
+                break;
+              case CONST.resourceType.INSTANCE:
+                url = urlService.getTemplateInstance(id);
+                break;
+            }
+            authorizedBackendService.doCall(
+                httpBuilderService.delete(url),
+                function (response) {
+                  successCallback(response.data);
+                },
+                errorCallback
+            );
+          },
+          errorCallback
+      );
+    }
+
   }
 
-});
+})
+;

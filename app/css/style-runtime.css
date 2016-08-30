@@ -14388,6 +14388,126 @@ table.apiKey td {
 .scrollable-content::-webkit-scrollbar-thumb {
   background: #ccc;
 }
+#renameResourceModal .modal-content,
+#newFolderModal .modal-content,
+#moveResourceModal .modal-content {
+  border-radius: 0;
+  border: 0;
+  max-width: 400px;
+  margin: 0 auto;
+}
+#renameResourceModal .modal-content input,
+#newFolderModal .modal-content input,
+#moveResourceModal .modal-content input {
+  padding: 5px;
+  width: 100%;
+  outline: none;
+}
+#renameResourceModal .modal-content .modal-body,
+#newFolderModal .modal-content .modal-body,
+#moveResourceModal .modal-content .modal-body {
+  max-height: 300px;
+  overflow-y: auto;
+}
+#renameResourceModal .modal-content .modal-body .box-row,
+#newFolderModal .modal-content .modal-body .box-row,
+#moveResourceModal .modal-content .modal-body .box-row {
+  padding: 5px;
+}
+#renameResourceModal .modal-content .modal-body .box-row .disabled,
+#newFolderModal .modal-content .modal-body .box-row .disabled,
+#moveResourceModal .modal-content .modal-body .box-row .disabled {
+  background: #9E9E9E;
+}
+#renameResourceModal .modal-content .modal-body .box-row.selected,
+#newFolderModal .modal-content .modal-body .box-row.selected,
+#moveResourceModal .modal-content .modal-body .box-row.selected {
+  background: #71a69c;
+}
+#renameResourceModal .modal-content .actions .favorite,
+#newFolderModal .modal-content .actions .favorite,
+#moveResourceModal .modal-content .actions .favorite {
+  float: left;
+  padding-top: 17px;
+  cursor: pointer;
+}
+#renameResourceModal .modal-content .actions .favorite span,
+#newFolderModal .modal-content .actions .favorite span,
+#moveResourceModal .modal-content .actions .favorite span {
+  text-transform: uppercase;
+  vertical-align: middle;
+}
+#renameResourceModal .modal-content .actions .favorite i,
+#newFolderModal .modal-content .actions .favorite i,
+#moveResourceModal .modal-content .actions .favorite i {
+  padding-right: 10px;
+  -webkit-transition: all 0.3s 0.1s;
+          transition: all 0.3s 0.1s;
+  color: rgba(51, 51, 51, 0.43);
+}
+#renameResourceModal .modal-content .actions .favorite.true i,
+#newFolderModal .modal-content .actions .favorite.true i,
+#moveResourceModal .modal-content .actions .favorite.true i {
+  color: #71a69c;
+}
+#renameResourceModal .modal-content .actions .clear-save,
+#newFolderModal .modal-content .actions .clear-save,
+#moveResourceModal .modal-content .actions .clear-save {
+  float: right;
+}
+#renameResourceModal .modal-content .actions .clear-save .btn,
+#newFolderModal .modal-content .actions .clear-save .btn,
+#moveResourceModal .modal-content .actions .clear-save .btn {
+  text-transform: uppercase;
+  padding: 10px 20px;
+  border: none;
+  -webkit-transition: all 0.3s 0.1s;
+          transition: all 0.3s 0.1s;
+}
+#renameResourceModal .modal-content .actions .clear-save .btn:focus,
+#newFolderModal .modal-content .actions .clear-save .btn:focus,
+#moveResourceModal .modal-content .actions .clear-save .btn:focus {
+  outline: none;
+  box-shadow: none;
+}
+#renameResourceModal .modal-content .actions .clear-save .btn.btn-clear,
+#newFolderModal .modal-content .actions .clear-save .btn.btn-clear,
+#moveResourceModal .modal-content .actions .clear-save .btn.btn-clear {
+  color: #71a69c;
+  background-color: transparent;
+  font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+  font-weight: 700;
+}
+#renameResourceModal .modal-content .actions .clear-save .btn.btn-clear:hover,
+#newFolderModal .modal-content .actions .clear-save .btn.btn-clear:hover,
+#moveResourceModal .modal-content .actions .clear-save .btn.btn-clear:hover,
+#renameResourceModal .modal-content .actions .clear-save .btn.btn-clear:focus,
+#newFolderModal .modal-content .actions .clear-save .btn.btn-clear:focus,
+#moveResourceModal .modal-content .actions .clear-save .btn.btn-clear:focus {
+  color: #3c8e80;
+}
+#renameResourceModal .modal-content .actions .clear-save .btn.btn-save,
+#newFolderModal .modal-content .actions .clear-save .btn.btn-save,
+#moveResourceModal .modal-content .actions .clear-save .btn.btn-save {
+  color: #ffffff;
+  background-color: #71a69c;
+  font-size: 16px;
+}
+#renameResourceModal .modal-content .actions .clear-save .btn.btn-save:hover,
+#newFolderModal .modal-content .actions .clear-save .btn.btn-save:hover,
+#moveResourceModal .modal-content .actions .clear-save .btn.btn-save:hover,
+#renameResourceModal .modal-content .actions .clear-save .btn.btn-save:focus,
+#newFolderModal .modal-content .actions .clear-save .btn.btn-save:focus,
+#moveResourceModal .modal-content .actions .clear-save .btn.btn-save:focus {
+  background-color: #3c8e80;
+}
+#moveResourceModal .modal-content .modal-body {
+  height: 300px;
+  cursor: pointer;
+}
+#moveResourceModal .modal-content .modal-body .box-row.disabled {
+  opacity: 0.5;
+}
 @font-face {
   font-family: "project-cedar";
   src: url("../media/fonts/project-cedar.eot");

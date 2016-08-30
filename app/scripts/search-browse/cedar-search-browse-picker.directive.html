@@ -43,28 +43,27 @@
       </li>
       <li ng-if="dc.onDashboard() && dc.hasSelection()" id="more-options-tool">
         <div class="btn-group dropdown">
-          <button  data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><i
+          <button data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><i
               class="fa fa-ellipsis-v  inline "></i></button>
           <ul class="dropdown-menu dropdown-menu-right">
 
             <li ng-if="dc.isFolder()"><a href="#" ng-click="dc.goToResource()">Open</a></li>
             <li ng-if="dc.isTemplate()"><a href="#" ng-click="dc.launchInstance()">Populate</a></li>
-            <li><a href="#" ng-click="dc.editResource()">Edit</a></li>
+            <li ng-if="!dc.isFolder()"><a href="#" ng-click="dc.editResource()">Edit</a></li>
             <li role="separator" class="divider"></li>
-            <li class="disabled"><a href="#">Share</a></li>
-            <li class="disabled"><a href="#">Move to...</a></li>
-            <li class="disabled"><a href="#">Rename</a></li>
-            <li role="separator" class="divider"></li>
-            <li class="disabled"><a href="#">Make a copy</a></li>
+            <li><a href="#">Share...</a></li>
+            <li><a href="#"  ng-click="dc.showMoveResourceModal('#moveResourceModal')">Move to...</a></li>
+            <li><a href="#" data-toggle="modal" data-target="#renameResourceModal">Rename...</a></li>
+            <li ng-if="!dc.isFolder()"><a href="#" ng-click="dc.copyResource()">Copy</a></li>
             <li role="separator" class="divider"></li>
             <li><a href="#" ng-click="dc.deleteResource(resource)">Delete</a></li>
           </ul>
         </div>
       </li>
 
-      <li ng-if="dc.onDashboard() && dc.hasSelection()" class="inline divider-vertical " ></li>
+      <li ng-if="dc.onDashboard() && dc.hasSelection()" class="inline divider-vertical "></li>
 
-      <li ng-show="dc.onDashboard() && dc.resourceViewMode != 'grid'"  id="grid-view-tool">
+      <li ng-show="dc.onDashboard() && dc.resourceViewMode != 'grid'" id="grid-view-tool">
         <button
             type="button"
             tooltip="view as grid"
@@ -323,7 +322,7 @@
       <!-- END LEFT SIDE -->
 
       <!-- center panel -->
-      <div cedar-infinite-scroll  load-more="dc.loadMore()" class="center-panel scrollable-content" id="center-panel" >
+      <div cedar-infinite-scroll load-more="dc.loadMore()" class="center-panel scrollable-content" id="center-panel">
 
 
         <div class="row populate-form-boxes">
@@ -354,14 +353,12 @@
                     <ul class="dropdown-menu" aria-labelledby="{{getId(resource, 'populate')}}">
 
                       <li><a href="#" ng-click="dc.editResource()">Open</a></li>
-                      <li><a href="#" ng-click="dc.editResource(resource)">Edit</a></li>
+                      <li ng-if="!dc.isFolder()"><a href="#" ng-click="dc.editResource(resource)">Edit</a></li>
                       <li><a href="#" ng-click="dc.showInfoPanel(resource)">Info</a></li>
                       <li role="separator" class="divider"></li>
-                      <li class="disabled"><a href="#">Share</a></li>
-                      <li class="disabled"><a href="#">Move to...</a></li>
-                      <li class="disabled"><a href="#">Rename</a></li>
-                      <li role="separator" class="divider"></li>
-                      <li class="disabled"><a href="#">Make a copy</a></li>
+                      <li><a href="#">Share...</a></li>
+                      <li><a href="#"  ng-click="dc.showMoveResourceModal('#moveResourceModal')">Move to...</a></li>
+                      <li><a href="#" data-toggle="modal" data-target="#renameResourceModal">Rename...</a></li>
                       <li role="separator" class="divider"></li>
                       <li><a href="#" ng-click="dc.deleteResource(resource)">Delete</a></li>
                     </ul>
@@ -412,12 +409,10 @@
                           ng-click="dc.editResource(resource)">Edit</a></li>
                       <li><a href="#" ng-click="dc.showInfoPanel(resource)">Info</a></li>
                       <li role="separator" class="divider"></li>
-                      <li><a href="#" ng-click="dc.copyToWorkspace(resource)">Copy to workspace</a></li>
-                      <li class="disabled"><a href="#">Share</a></li>
-                      <li class="disabled"><a href="#">Move to...</a></li>
-                      <li class="disabled"><a href="#">Rename</a></li>
-                      <li role="separator" class="divider"></li>
-                      <li class="disabled"><a href="#">Make a copy</a></li>
+                      <li><a href="#">Share...</a></li>
+                      <li><a href="#"  ng-click="dc.showMoveResourceModal('#moveResourceModal')">Move to...</a></li>
+                      <li><a href="#" data-toggle="modal" data-target="#renameResourceModal">Rename...</a></li>
+                      <li><a href="#" ng-if="!dc.isFolder()" ng-click="dc.copyResource()">Copy</a></li>
                       <li role="separator" class="divider"></li>
                       <li><a href="#" ng-click="dc.deleteResource(resource)">Delete</a></li>
                     </ul>
@@ -467,11 +462,9 @@
                         ng-click="dc.editResource(resource)">Edit</a></li>
                     <li><a href="#" ng-click="dc.showInfoPanel(resource)">Info</a></li>
                     <li role="separator" class="divider"></li>
-                    <li class="disabled"><a href="#">Share</a></li>
-                    <li class="disabled"><a href="#">Move to...</a></li>
-                    <li class="disabled"><a href="#">Rename</a></li>
-                    <li role="separator" class="divider"></li>
-                    <li class="disabled"><a href="#">Make a copy</a></li>
+                    <li><a href="#">Share...</a></li>
+                    <li><a href="#"  ng-click="dc.showMoveResourceModal('#moveResourceModal')">Move to...</a></li>
+                    <li><a href="#" data-toggle="modal" data-target="#renameResourceModal">Rename...</a></li>
                     <li role="separator" class="divider"></li>
                     <li><a href="#" ng-click="dc.deleteResource(resource)">Delete</a></li>
                   </ul>
@@ -509,12 +502,10 @@
                         ng-click="dc.editResource(resource)">Edit</a></li>
                     <li><a href="#" ng-click="dc.showInfoPanel(resource)">Info</a></li>
                     <li role="separator" class="divider"></li>
-                    <li><a href="#" ng-click="dc.copyToWorkspace(resource)">Copy to workspace</a></li>
-                    <li class="disabled"><a href="#">Share</a></li>
-                    <li class="disabled"><a href="#">Move to...</a></li>
-                    <li class="disabled"><a href="#">Rename</a></li>
-                    <li role="separator" class="divider"></li>
-                    <li class="disabled"><a href="#">Make a copy</a></li>
+                    <li><a href="#">Share...</a></li>
+                    <li><a href="#"  ng-click="dc.showMoveResourceModal('#moveResourceModal')">Move to...</a></li>
+                    <li><a href="#" data-toggle="modal" data-target="#renameResourceModal">Rename...</a></li>
+                    <li><a href="#" ng-if="!dc.isFolder()" ng-click="dc.copyResource()">Copy</a></li>
                     <li role="separator" class="divider"></li>
                     <li><a href="#" ng-click="dc.deleteResource(resource)">Delete</a></li>
                   </ul>
@@ -638,8 +629,9 @@
                 tooltip-trigger
                 tooltip-animation="false"
                 tooltip-placement="left"
-                data-toggle="tooltip" class="btn btn-sm btn-info btn-circle folder"
-                ng-click="dc.showCreateFolder()"><i
+                data-toggle="tooltip"
+                class="btn btn-sm btn-info btn-circle folder"
+                ng-click="dc.showNewFolder('#newFolderModal')"><i
                 class="fa fa-folder-o"></i></button>
           </li>
 
@@ -695,78 +687,119 @@
   <!-- end floating plus section -->
 </section>
 
-<!-- add / edit folder modal -->
+<!-- add folder modal -->
 <section>
-  <!-- modal -->
-  <div id="editFolderModal" class="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <!-- dialog -->
+  <div id="newFolderModal" class="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
-      <!-- content -->
       <div class="modal-content">
-        <!-- header -->
         <div class="modal-header">
-          <div class="container">
-            <div class="row">
-              <div class="col-sm-12 clearfix">
-                <div class="pull-left">
-                  <h2><span ng-show="dc.formFolder">Edit</span><span ng-hide="dc.formFolder">Create</span> Folder</h2>
-                </div>
-                <div class="pull-right">
-                  <p><a href="#n" data-dismiss="modal">Less <i class="fa fa-arrow-up"></i></a></p>
-                </div>
-              </div>
-            </div>
-          </div>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+              aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" translate>DASHBOARD.newFolder.title</h4>
         </div>
-        <!-- header -->
-        <!-- body -->
         <div class="modal-body">
-          <div class="container">
-            <div class="row">
-              <div class="col-sm-12 clearfix">
-                <div class="pull-left">
-                  <h4>Name:</h4>
-
-                  <p><input size="40" type="text" id="formFolderName" ng-model="dc.formFolderName"/></p>
-                </div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-sm-12 clearfix">
-                <div class="pull-left">
-                  <h4>Description:</h4>
-
-                  <p><textarea ng-model="dc.formFolderDescription" id="formFolderDescription" cols="40"
-                      rows="5"></textarea></p>
-                </div>
-              </div>
-            </div>
+          <p><input size="40" type="text" id="folderName" ng-model="dc.folder.name"/></p>
+        </div>
+        <div class="modal-footer actions">
+          <div class="clear-save">
+            <button type="cancel" data-dismiss="modal" class="btn btn-clear">Cancel</button>
+            <button ng-click="dc.newFolder()" type="button" data-dismiss="modal" class="btn btn-save confirm"> Save
+            </button>
           </div>
         </div>
-        <!-- body -->
-        <!-- footer -->
-        <div class="modal-footer">
-          <div class="container">
-            <div class="row">
-              <div class="col-sm-12 clearfix">
-                <div class="pull-left">
-                  <button ng-click="dc.doCreateEditFolder()" type="button" class="btn btn-default confirm">
-                    <span ng-show="dc.formFolder">Update</span>
-                    <span ng-hide="dc.formFolder">Create</span>
-                  </button>
-                  <a ng-click="dc.cancelCreateEditFolder()">Cancel</a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <!--<div class="modal-footer"></div>-->
-        <!-- footer -->
       </div>
-      <!-- content -->
     </div>
-    <!-- dialog -->
   </div>
-  <!-- modal -->
 </section>
 <!-- end add / edit folder modal -->
+
+<!-- rename resource modal -->
+<section>
+  <div id="renameResourceModal" class="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+      aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+              aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" translate>DASHBOARD.rename.title</h4>
+        </div>
+        <div class="modal-body">
+          <h6 translate>DASHBOARD.rename.label</h6>
+
+          <p><input size="40" type="text" id="resourceName" ng-model="dc.selectedResource.name"/></p>
+        </div>
+        <div class="modal-footer actions">
+          <div class="clear-save">
+            <button type="cancel" data-dismiss="modal" class="btn btn-clear">Cancel</button>
+            <button ng-click="dc.renameResource()" type="button" data-dismiss="modal" class="btn btn-save confirm">
+              Save
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- rename resource modal -->
+
+<!-- move resource modal -->
+<section>
+  <div id="moveResourceModal" class="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+      aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <div class="row">
+            <div class="back-arrow-click col-sm-1" ng-click="dc.openParent()" aria-label="Back" tooltip="back to parent"
+                tooltip-trigger
+                tooltip-animation="false"
+                tooltip-placement="bottom"
+                data-toggle="tooltip"><i
+                class="fa fa-arrow-left"></i></div>
+
+            <div class="modal-title col-sm-10">{{dc.currentDestination.displayName}}</div>
+
+            <button class="close col-sm-1" type="button" data-dismiss="modal" aria-label="Close"><span
+                aria-hidden="true">&times;</span></button>
+          </div>
+        </div>
+        <div class="modal-body">
+
+          <!-- show the folders first -->
+          <div ng-if="dc.isFolder(resource)" class="box-row row"
+              ng-class="{ selected: dc.isDestinationSelected(resource)}"
+              ng-repeat="(index, resource) in dc.destinationResources">
+            <div class="col-sm-11" ng-click="dc.selectDestination(resource)"><i style="font-size:20px;padding-right:5px"
+                class="fa" ng-class="dc.getResourceIconClass(resource)"></i> {{resource.displayName}}
+            </div>
+            <div class="col-sm-1" ng-click="dc.openDestination(resource)" tooltip="open {{resource.displayName}}"
+                tooltip-trigger
+                tooltip-animation="false"
+                tooltip-placement="left"
+                data-toggle="tooltip"><i class="fa fa-arrow-right"></i></div>
+          </div>
+
+
+          <div ng-if="!dc.isFolder(resource)" class="box-row row disabled"
+              ng-repeat="(index, resource) in dc.destinationResources">
+            <div class="col-sm-11" disabled="disabled"><i style="font-size:20px;padding-right:5px" class="fa"
+                ng-class="dc.getResourceIconClass(resource)"></i>{{resource.displayName}}
+            </div>
+
+          </div>
+
+
+        </div>
+        <div class="modal-footer actions">
+          <div class="clear-save">
+            <button ng-disabled="dc.moveDisabled()" ng-click="dc.moveResource()" type="button" data-dismiss="modal"
+                class="btn btn-save confirm"> Move
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- move resource modal -->

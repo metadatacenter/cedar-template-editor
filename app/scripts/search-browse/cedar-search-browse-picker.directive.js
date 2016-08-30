@@ -51,21 +51,47 @@ define([
           var vm = this;
 
           vm.breadcrumbName = breadcrumbName;
-          vm.cancelCreateEditFolder = cancelCreateEditFolder;
+          //vm.cancelCreateEditFolder = cancelCreateEditFolder;
           vm.currentPath = "";
           vm.currentFolderId = "";
           vm.offset = 0;
 
           vm.totalCount = null;
           vm.deleteResource = deleteResource;
-          vm.doCreateEditFolder = doCreateEditFolder;
+          //vm.doCreateEditFolder = doCreateEditFolder;
+          vm.renameResource = renameResource;
           vm.doSearch = doSearch;
           vm.editResource = editResource;
           vm.facets = {};
           vm.forms = [];
-          vm.formFolder = null;
-          vm.formFolderName = null;
-          vm.formFolderDescription = null;
+
+          //vm.formFolder = null;
+          //vm.formFolderName = null;
+          //vm.formFolderDescription = null;
+
+          vm.newFolder = newFolder;
+          vm.showNewFolder = showNewFolder;
+          vm.folder = {};
+          vm.folder.name = "";
+          vm.folder.description = "folder description";
+
+
+          // move to...
+          vm.openParent = openParent;
+          vm.selectDestination = selectDestination;
+          vm.isDestinationSelected = isDestinationSelected;
+          vm.moveDisabled = moveDisabled;
+          vm.moveResource = moveResource;
+          vm.openDestination = openDestination;
+          vm.showMoveResourceModal = showMoveResourceModal;
+          vm.selectedDestination = null;
+          vm.currentDestination = null;
+          vm.destinationResources = [];
+          vm.currentDestinationID = null;
+          vm.destinationPathInfo = null;
+          vm.destinationPath = null;
+
+
           vm.getFacets = getFacets;
           vm.getForms = getForms;
           vm.getFolderContents = getFolderContents;
@@ -78,6 +104,7 @@ define([
           vm.isSearching = false;
           vm.launchInstance = launchInstance;
           vm.copyToWorkspace = copyToWorkspace;
+          vm.copyResource = copyResource;
           vm.setResourceInfoVisibility = setResourceInfoVisibility;
           vm.onDashboard = onDashboard;
           vm.narrowContent = narrowContent;
@@ -91,7 +118,7 @@ define([
           vm.sortName = sortName;
           vm.sortCreated = sortCreated;
           vm.sortUpdated = sortUpdated;
-          vm.showCreateFolder = showCreateFolder;
+          //vm.showCreateFolder = showCreateFolder;
           vm.showFilters = true;
           vm.filterShowing = filterShowing;
           vm.resetFilters = resetFilters;
@@ -123,36 +150,36 @@ define([
           vm.startDescriptionEditing = function () {
             var resource = vm.getSelection();
             if (resource != null) {
-              if (resource.nodeType == 'folder') {
-                vm.showEditFolder(resource, true);
-              } else {
-                vm.editingDescription = true;
-                $timeout(function () {
-                  var jqDescriptionField = $('#edit-description');
-                  jqDescriptionField.focus();
-                  var l = jqDescriptionField.val().length;
-                  jqDescriptionField[0].setSelectionRange(0, l);
-                });
-              }
+              //if (resource.nodeType == 'folder') {
+              //  vm.showEditFolder(resource, true);
+              //} else {
+              vm.editingDescription = true;
+              $timeout(function () {
+                var jqDescriptionField = $('#edit-description');
+                jqDescriptionField.focus();
+                var l = jqDescriptionField.val().length;
+                jqDescriptionField[0].setSelectionRange(0, l);
+              });
+              //}
             }
           };
 
-          vm.showEditFolder = function (resource, selectDescription) {
-            vm.formFolder = resource;
-            vm.formFolderName = resource.name;
-            vm.formFolderDescription = resource.description;
-            $('#editFolderModal').modal('show');
-            $timeout(function () {
-              var selector = '#formFolderName';
-              if (selectDescription) {
-                selector = '#formFolderDescription';
-              }
-              var jqFolderProperty = $(selector);
-              jqFolderProperty.focus();
-              var l = jqFolderProperty.val().length;
-              jqFolderProperty[0].setSelectionRange(0, l);
-            });
-          };
+          //vm.showEditFolder = function (resource, selectDescription) {
+          //  vm.formFolder = resource;
+          //  vm.formFolderName = resource.name;
+          //  vm.formFolderDescription = resource.description;
+          //  $('#editFolderModal').modal('show');
+          //  $timeout(function () {
+          //    var selector = '#formFolderName';
+          //    if (selectDescription) {
+          //      selector = '#formFolderDescription';
+          //    }
+          //    var jqFolderProperty = $(selector);
+          //    jqFolderProperty.focus();
+          //    var l = jqFolderProperty.val().length;
+          //    jqFolderProperty[0].setSelectionRange(0, l);
+          //  });
+          //};
 
           vm.cancelDescriptionEditing = function () {
             vm.editingDescription = false;
@@ -177,8 +204,8 @@ define([
               if (vm.currentPath) {
                 vm.selectResource(vm.currentPath);
               } else {
-                if (vm.formFolder) {
-                  vm.selectResource(vm.formFolder);
+                if (vm.folder) {
+                  vm.selectResource(vm.folder);
                 }
               }
             }
@@ -269,6 +296,19 @@ define([
                       UIMessageService.showBackendError('SERVER.TEMPLATE.update.error', err);
                     }
                 );
+              } else if (nodeType == 'folder') {
+                vm.selectedResource.description = description;
+                resourceService.updateFolder(
+                    vm.selectedResource,
+                    function (response) {
+                      init();
+                      UIMessageService.flashSuccess('SERVER.FOLDER.update.success', {"title": vm.selectedResource.name},
+                          'GENERIC.Updated');
+                    },
+                    function (response) {
+                      UIMessageService.showBackendError('SERVER.FOLDER.update.error', response);
+                    }
+                );
               }
             }
           };
@@ -280,33 +320,38 @@ define([
               vm.searchMore();
             } else {
 
-            var limit = UISettingsService.getRequestLimit();
-            vm.offset += limit;
-            var offset = vm.offset;
+              var limit = UISettingsService.getRequestLimit();
+              vm.offset += limit;
+              var offset = vm.offset;
 
-            var folderId = vm.currentFolderId;
-            var resourceTypes = activeResourceTypes();
+              var folderId = vm.currentFolderId;
+              var resourceTypes = activeResourceTypes();
 
-            // are there more?
-            if (offset < vm.totalCount) {
+              // are there more?
+              if (offset < vm.totalCount) {
 
-              if (resourceTypes.length > 0) {
-                return resourceService.getResources(
-                    {folderId: folderId, resourceTypes: resourceTypes, sort: sortField(), limit: limit, offset: offset},
-                    function (response) {
-                      vm.resources = vm.resources.concat(response.resources);
-                    },
-                    function (error) {
-                      UIMessageService.showBackendError('SERVER.FOLDER.load.error', error);
-                    }
-                );
-              } else {
-                vm.resources = [];
+                if (resourceTypes.length > 0) {
+                  return resourceService.getResources(
+                      {
+                        folderId     : folderId,
+                        resourceTypes: resourceTypes,
+                        sort         : sortField(),
+                        limit        : limit,
+                        offset       : offset
+                      },
+                      function (response) {
+                        vm.resources = vm.resources.concat(response.resources);
+                      },
+                      function (error) {
+                        UIMessageService.showBackendError('SERVER.FOLDER.load.error', error);
+                      }
+                  );
+                } else {
+                  vm.resources = [];
+                }
               }
             }
-            }
           };
-
 
 
           // callback to load more resources for the current folder
@@ -321,16 +366,16 @@ define([
             // are there more?
             if (offset < vm.totalCount) {
 
-                return resourceService.searchResources(
-                    term,
-                    {resourceTypes: resourceTypes, sort: sortField(), limit: limit, offset: offset},
-                    function (response) {
-                      vm.resources = vm.resources.concat(response.resources);
-                    },
-                    function (error) {
-                      UIMessageService.showBackendError('SERVER.SEARCH.error', error);
-                    }
-                );
+              return resourceService.searchResources(
+                  term,
+                  {resourceTypes: resourceTypes, sort: sortField(), limit: limit, offset: offset},
+                  function (response) {
+                    vm.resources = vm.resources.concat(response.resources);
+                  },
+                  function (error) {
+                    UIMessageService.showBackendError('SERVER.SEARCH.error', error);
+                  }
+              );
 
             }
           };
@@ -413,52 +458,111 @@ define([
             return folderName;
           }
 
-          function cancelCreateEditFolder() {
-            vm.formFolderName = 'Untitled';
-            vm.formFolderDescription = 'Untitled';
-            vm.formFolder = null;
-            $('#editFolderModal').modal('hide');
-          }
+          //function cancelCreateEditFolder() {
+          //  vm.formFolderName = 'Untitled';
+          //  vm.formFolderDescription = 'Untitled';
+          //  vm.formFolder = null;
+          //  $('#editFolderModal').modal('hide');
+          //}
 
-          function showCreateFolder() {
+          //function showCreateFolder() {
+          //  vm.showFloatingMenu = false;
+          //  vm.formFolderName = 'Untitled';
+          //  vm.formFolderDescription = 'Untitled';
+          //  vm.formFolder = null;
+          //  $('#editFolderModal').modal('show');
+          //  $timeout(function () {
+          //    var jqFolderName = $('#formFolderName');
+          //    jqFolderName.focus();
+          //    var l = jqFolderName.val().length;
+          //    jqFolderName[0].setSelectionRange(0, l);
+          //  });
+          //}
+
+          function showNewFolder(id) {
             vm.showFloatingMenu = false;
-            vm.formFolderName = 'Untitled';
-            vm.formFolderDescription = 'Untitled';
-            vm.formFolder = null;
-            $('#editFolderModal').modal('show');
+            vm.folder.name = '';
+            $(id).modal('show');
             $timeout(function () {
-              var jqFolderName = $('#formFolderName');
-              jqFolderName.focus();
-              var l = jqFolderName.val().length;
-              jqFolderName[0].setSelectionRange(0, l);
+              jQuery(id + ' input').focus();
             });
           }
 
-          function doCreateEditFolder() {
-            $('#editFolderModal').modal('hide');
-            if (vm.formFolder) {
-              vm.formFolder.name = vm.formFolderName;
-              vm.formFolder.description = vm.formFolderDescription;
-              resourceService.updateFolder(
-                  vm.formFolder,
-                  function (response) {
-                    init();
-                    UIMessageService.flashSuccess('SERVER.FOLDER.update.success', {"title": vm.formFolderName},
-                        'GENERIC.Updated');
-                  },
-                  function (response) {
-                    UIMessageService.showBackendError('SERVER.FOLDER.update.error', response);
-                  }
-              );
-              // edit
-            } else {
+          function renameResource() {
+            var resource = vm.getSelection();
+            if (resource != null) {
+              var postData = {};
+              var id = resource['@id'];
+              var nodeType = resource.nodeType;
+              var name = vm.selectedResource.name;
+
+              if (nodeType == 'instance') {
+                AuthorizedBackendService.doCall(
+                    TemplateInstanceService.updateTemplateInstance(id, {'_ui.title': name}),
+                    function (response) {
+                      init();
+                      vm.selectedResource.displayName = name;
+                      UIMessageService.flashSuccess('SERVER.INSTANCE.update.success', null, 'GENERIC.Updated');
+                    },
+                    function (err) {
+                      UIMessageService.showBackendError('SERVER.INSTANCE.update.error', err);
+                    }
+                );
+              } else if (nodeType == 'element') {
+                AuthorizedBackendService.doCall(
+                    TemplateElementService.updateTemplateElement(id, {'_ui.title': name}),
+                    function (response) {
+                      init();
+                      vm.selectedResource.displayName = name;
+                      UIMessageService.flashSuccess('SERVER.ELEMENT.update.success', {"title": response.data._ui.title},
+                          'GENERIC.Updated');
+                    },
+                    function (err) {
+                      UIMessageService.showBackendError('SERVER.ELEMENT.update.error', err);
+                    }
+                );
+              } else if (nodeType == 'template') {
+                AuthorizedBackendService.doCall(
+                    TemplateService.updateTemplate(id, {'_ui.title': name}),
+                    function (response) {
+                      //$scope.form = response.data;  // WTF?
+                      init();
+                      vm.selectedResource.displayName = name;
+                      UIMessageService.flashSuccess('SERVER.TEMPLATE.update.success',
+                          {"title": response.data._ui.title}, 'GENERIC.Updated');
+                    },
+                    function (err) {
+                      UIMessageService.showBackendError('SERVER.TEMPLATE.update.error', err);
+                    }
+                );
+              } else if (nodeType == 'folder') {
+
+                resourceService.updateFolder(
+                    vm.selectedResource,
+                    function (response) {
+                      init();
+                      vm.selectedResource.displayName = name;
+                      UIMessageService.flashSuccess('SERVER.FOLDER.update.success', {"title": vm.selectedResource.name},
+                          'GENERIC.Updated');
+                    },
+                    function (response) {
+                      UIMessageService.showBackendError('SERVER.FOLDER.update.error', response);
+                    }
+                );
+              }
+            }
+
+          }
+
+          function newFolder() {
+            if (vm.folder.name) {
               resourceService.createFolder(
                   vm.params.folderId,
-                  vm.formFolderName,
-                  vm.formFolderDescription,
+                  vm.folder.name,
+                  'description',
                   function (response) {
                     init();
-                    UIMessageService.flashSuccess('SERVER.FOLDER.create.success', {"title": vm.formFolderName},
+                    UIMessageService.flashSuccess('SERVER.FOLDER.create.success', {"title": vm.folder.name},
                         'GENERIC.Created');
                   },
                   function (response) {
@@ -476,6 +580,49 @@ define([
               );
             }
           }
+
+          //function doCreateEditFolder() {
+          //  $('#editFolderModal').modal('hide');
+          //  if (vm.formFolder) {
+          //    vm.formFolder.name = vm.formFolderName;
+          //    vm.formFolder.description = vm.formFolderDescription;
+          //    resourceService.updateFolder(
+          //        vm.formFolder,
+          //        function (response) {
+          //          init();
+          //          UIMessageService.flashSuccess('SERVER.FOLDER.update.success', {"title": vm.formFolderName},
+          //              'GENERIC.Updated');
+          //        },
+          //        function (response) {
+          //          UIMessageService.showBackendError('SERVER.FOLDER.update.error', response);
+          //        }
+          //    );
+          //    // edit
+          //  } else {
+          //    resourceService.createFolder(
+          //        vm.params.folderId,
+          //        vm.formFolderName,
+          //        vm.formFolderDescription,
+          //        function (response) {
+          //          init();
+          //          UIMessageService.flashSuccess('SERVER.FOLDER.create.success', {"title": vm.formFolderName},
+          //              'GENERIC.Created');
+          //        },
+          //        function (response) {
+          //          if (response.status == 400) {
+          //            UIMessageService.showWarning(
+          //                'GENERIC.Warning',
+          //                'SERVER.FOLDER.create.' + response.data.errorSubType,
+          //                'GENERIC.Ok',
+          //                response.data.errorParams
+          //            );
+          //          } else {
+          //            UIMessageService.showBackendError('SERVER.FOLDER.create.error', response);
+          //          }
+          //        }
+          //    );
+          //  }
+          //}
 
           function doSearch(term) {
             var resourceTypes = activeResourceTypes();
@@ -514,6 +661,31 @@ define([
                 },
                 function (response) {
                   UIMessageService.showBackendError('SERVER.RESOURCE.copyToWorkspace.error', response);
+                }
+            );
+          }
+
+          function copyResource(resource) {
+            if (!resource) {
+              resource = getSelection();
+            }
+            var folderId = vm.currentFolderId;
+            if (!folderId) {
+              folderId = CedarUser.getHomeFolderId();
+            }
+            resourceService.copyResource(
+                resource, folderId,
+                function (response) {
+
+                  // TODO refresh the current page just in case you copied to the current page
+                  vm.params = $location.search();
+                  init();
+
+                  UIMessageService.flashSuccess('SERVER.RESOURCE.copyResource.success', {"title": resource.name},
+                      'GENERIC.Copied');
+                },
+                function (response) {
+                  UIMessageService.showBackendError('SERVER.RESOURCE.copyResource.error', response);
                 }
             );
           }
@@ -584,9 +756,9 @@ define([
                 case CONST.resourceType.LINK:
                   $location.path(scope.href);
                   break;
-                case CONST.resourceType.FOLDER:
-                  vm.showEditFolder(r);
-                  break;
+                //case CONST.resourceType.FOLDER:
+                //  vm.showEditFolder(r);
+                //  break;
               }
             }
           }
@@ -661,6 +833,7 @@ define([
                     vm.pathInfo = response.pathInfo;
                     vm.currentPath = vm.pathInfo.pop();
                     vm.totalCount = response.totalCount;
+
                   },
                   function (error) {
                     UIMessageService.showBackendError('SERVER.FOLDER.load.error', error);
@@ -1007,7 +1180,103 @@ define([
             UISettingsService.saveUIPreference('folderView.viewMode', mode);
           }
 
+
+          // move to...
+
+          function openParent() {
+            var length = vm.destinationPathInfo.length;
+            var parent = vm.destinationPathInfo[length - 1];
+            openDestination(parent);
+          }
+
+          function moveResource() {
+            console.log(vm.selectedDestination);
+
+            if (vm.selectedDestination) {
+              var folderId = vm.selectedDestination['@id'];
+
+
+              if (vm.selectedResource) {
+                var resource = vm.selectedResource;
+
+
+                resourceService.moveResource(
+                    resource, folderId,
+                    function (response) {
+
+                      // TODO refresh the current page just in case you copied to the current page
+                      vm.params = $location.search();
+                      init();
+
+                      UIMessageService.flashSuccess('SERVER.RESOURCE.moveResource.success', {"title": resource.name},
+                          'GENERIC.Moved');
+                    },
+                    function (response) {
+                      UIMessageService.showBackendError('SERVER.RESOURCE.moveResource.error', response);
+                    }
+                );
+
+              }
+            }
+          }
+
+          function selectDestination(resource) {
+            vm.selectedDestination = resource;
+          }
+
+          function openDestination(resource) {
+            if (resource) {
+              var id = resource['@id'];
+              getDestinationById(id);
+              vm.selectedDestination = null;
+              vm.currentDestination = resource;
+            }
+          }
+
+          function moveDisabled() {
+            return vm.selectedDestination == null;
+          }
+
+          function isDestinationSelected(resource) {
+            if (resource == null || vm.selectedDestination == null) {
+              return false;
+            } else {
+              return (vm.selectedDestination['@id'] == resource['@id']);
+            }
+          }
+
+          function showMoveResourceModal(id) {
+            vm.showFloatingMenu = false;
+            vm.currentDestination = vm.currentPath;
+            vm.selectedDestination = null;
+            getDestinationById(vm.currentFolderId);
+            $(id).modal('show');
+
+          }
+
+          function getDestinationById(folderId) {
+            var resourceTypes = activeResourceTypes();
+            if (resourceTypes.length > 0) {
+              return resourceService.getResources(
+                  {folderId: folderId, resourceTypes: resourceTypes, sort: sortField(), limit: 100, offset: 0},
+                  function (response) {
+                    vm.currentDestinationID = folderId;
+                    vm.destinationResources = response.resources;
+                    vm.destinationPathInfo = response.pathInfo;
+                    vm.destinationPath = vm.destinationPathInfo.pop();
+                  },
+                  function (error) {
+                    UIMessageService.showBackendError('SERVER.FOLDER.load.error', error);
+                  }
+              );
+            } else {
+              vm.destinationResources = [];
+            }
+          }
+
+
         }
+
       }
 
     }

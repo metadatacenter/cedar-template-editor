@@ -6146,3 +6146,113 @@ table.apiKey {
 .scrollable-content::-webkit-scrollbar-thumb {
   background:#ccc; // manage scrollbar thumb background color here
 }
+
+#renameResourceModal, #newFolderModal, #moveResourceModal {
+  .modal-content{
+    border-radius: 0;
+    border: 0;
+    max-width: 400px;
+    margin: 0 auto;
+    input {
+      padding: 5px;
+      width: 100%;
+      outline:none;
+    }
+    .modal-body{
+      max-height:300px;
+      overflow-y:auto;
+      .box-row {
+        padding:5px;
+
+        .disabled {
+          background: @med-gray;
+        }
+        &.selected {
+          background: @brand-primary;
+        }
+
+      }
+
+    }
+    .actions {
+
+      .favorite {
+        float: left;
+        padding-top: 17px;
+        cursor: pointer;
+
+        span {
+          text-transform: uppercase;
+          vertical-align: middle;
+        }
+
+        i {
+          padding-right: 10px;
+          .link-transition;
+          color: rgba(51, 51, 51, 0.43);
+        }
+
+        &.true {
+          i {
+            color: @brand-primary;
+          }
+        }
+      }
+
+      .clear-save {
+        float: right;
+
+        .btn {
+          text-transform: uppercase;
+          padding: 10px 20px;
+          border: none;
+          .link-transition;
+
+          &:focus {
+            outline: none;
+            box-shadow: none;
+          }
+
+          &.btn-clear {
+            color: @brand-primary;
+            background-color: transparent;
+            .activ-grotesk-bold;
+
+            &:hover,
+            &:focus {
+              color: @brand-primary-hover;
+            }
+          }
+
+          &.btn-save {
+            color: @white;
+            background-color: @brand-primary;
+            font-size: 16px;
+
+            &:hover,
+            &:focus {
+              background-color: @brand-primary-hover;
+            }
+          }
+        }
+      }
+    }
+  }
+
+}
+
+#moveResourceModal {
+  .modal-content {
+    .modal-body {
+      height: 300px;
+      cursor:pointer;
+      .box-row {
+        &.disabled {
+          opacity:0.5;
+        }
+      }
+    }
+  }
+}
+
+
