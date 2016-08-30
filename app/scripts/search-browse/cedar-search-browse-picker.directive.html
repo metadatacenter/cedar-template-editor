@@ -356,7 +356,7 @@
                       <li ng-if="!dc.isFolder()"><a href="#" ng-click="dc.editResource(resource)">Edit</a></li>
                       <li><a href="#" ng-click="dc.showInfoPanel(resource)">Info</a></li>
                       <li role="separator" class="divider"></li>
-                      <li><a href="#">Share...</a></li>
+                      <li><a href="#"  data-toggle="modal" data-target="#shareResourceModal">Share...</a></li>
                       <li><a href="#"  ng-click="dc.showMoveResourceModal('#moveResourceModal')">Move to...</a></li>
                       <li><a href="#" data-toggle="modal" data-target="#renameResourceModal">Rename...</a></li>
                       <li role="separator" class="divider"></li>
@@ -409,7 +409,7 @@
                           ng-click="dc.editResource(resource)">Edit</a></li>
                       <li><a href="#" ng-click="dc.showInfoPanel(resource)">Info</a></li>
                       <li role="separator" class="divider"></li>
-                      <li><a href="#">Share...</a></li>
+                      <li><a href="#" data-toggle="modal" data-target="#shareResourceModal">Share...</a></li>
                       <li><a href="#"  ng-click="dc.showMoveResourceModal('#moveResourceModal')">Move to...</a></li>
                       <li><a href="#" data-toggle="modal" data-target="#renameResourceModal">Rename...</a></li>
                       <li><a href="#" ng-if="!dc.isFolder()" ng-click="dc.copyResource()">Copy</a></li>
@@ -462,7 +462,7 @@
                         ng-click="dc.editResource(resource)">Edit</a></li>
                     <li><a href="#" ng-click="dc.showInfoPanel(resource)">Info</a></li>
                     <li role="separator" class="divider"></li>
-                    <li><a href="#">Share...</a></li>
+                    <li><a href="#" data-toggle="modal" data-target="#shareResourceModal">Share...</a></li>
                     <li><a href="#"  ng-click="dc.showMoveResourceModal('#moveResourceModal')">Move to...</a></li>
                     <li><a href="#" data-toggle="modal" data-target="#renameResourceModal">Rename...</a></li>
                     <li role="separator" class="divider"></li>
@@ -502,7 +502,7 @@
                         ng-click="dc.editResource(resource)">Edit</a></li>
                     <li><a href="#" ng-click="dc.showInfoPanel(resource)">Info</a></li>
                     <li role="separator" class="divider"></li>
-                    <li><a href="#">Share...</a></li>
+                    <li><a href="#" data-toggle="modal" data-target="#shareResourceModal">Share...</a></li>
                     <li><a href="#"  ng-click="dc.showMoveResourceModal('#moveResourceModal')">Move to...</a></li>
                     <li><a href="#" data-toggle="modal" data-target="#renameResourceModal">Rename...</a></li>
                     <li><a href="#" ng-if="!dc.isFolder()" ng-click="dc.copyResource()">Copy</a></li>
@@ -803,3 +803,49 @@
   </div>
 </section>
 <!-- move resource modal -->
+
+
+<!-- share resource modal -->
+<section>
+  <div id="shareResourceModal" class="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+      aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+              aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" translate>DASHBOARD.share.title</h4>
+        </div>
+        <div class="modal-body">
+
+          <!-- show the users that it is shared with -->
+          <div class="row"  ng-repeat="user in dc.sharedUsers()">
+            <div class="col-sm-6" ng-click="dc.selectDestination(resource)"><i style="font-size:20px;padding-right:5px"
+                class="fa" ng-class="dc.getResourceIconClass(resource)"></i> {{resource.displayName}}
+            </div>
+            <div class="col-sm-5" ></div>
+
+            <button type="button" class="close col-sm-1" dc.unshareUser(user)><span aria-hidden="true">&times;</span></button>
+          </div>
+
+
+          <div ng-if="!dc.isFolder(resource)" class="box-row row disabled"
+              ng-repeat="(index, resource) in dc.destinationResources">
+            <div class="col-sm-11" disabled="disabled"><i style="font-size:20px;padding-right:5px" class="fa"
+                ng-class="dc.getResourceIconClass(resource)"></i>{{resource.displayName}}
+            </div>
+
+          </div>
+
+
+        </div>
+        <div class="modal-footer actions">
+          <div class="clear-save">
+            <button  type="button" data-dismiss="modal" aria-label="Close" class="btn btn-save confirm"> Close </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- share resource modal -->

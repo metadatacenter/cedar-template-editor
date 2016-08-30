@@ -239,6 +239,9 @@
     },
     "newFolder": {
       "title": "New folder"
+    },
+    "share": {
+      "title": "Share"
     }
   },
   "ELEMENTEDITOR": {
