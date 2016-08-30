@@ -139,7 +139,7 @@
 </div>
 
 
-<div class="search-browse-spacer"></div>
+
 <!--gray populate a form modal slide up/down section -->
 <!--<section ng-if="dc.onDashboard()" class="form-populate collapse in" id="favorites">-->
 <!--&lt;!&ndash; container &ndash;&gt;-->
@@ -242,7 +242,7 @@
     <div class="row ">
 
       <!-- START LEFT SIDE -->
-      <div class="row-offcanvas-left" id="sidebar-left" ng-if="dc.filterShowing() &&  dc.onDashboard()">
+      <div class="col-lg-2 row-offcanvas-left" id="sidebar-left" ng-if="dc.filterShowing() &&  dc.onDashboard()">
         <div class="filter-options">
           <div class="clearfix reset-text">
             <div class="pull-left">Filter By</div>
@@ -322,11 +322,12 @@
       <!-- END LEFT SIDE -->
 
       <!-- center panel -->
-      <div cedar-infinite-scroll load-more="dc.loadMore()" class="center-panel scrollable-content" id="center-panel">
+      <div cedar-infinite-scroll load-more="dc.loadMore()" class=" center-panel scrollable-content"  ng-class="{ 'col-lg-8': dc.infoShowing() , 'without-info': !dc.infoShowing()}"  id="center-panel" >
+        <div style="height:auto;">
 
 
-        <div class="row populate-form-boxes">
-          <div class="grid-view" ng-if="dc.resourceViewMode == 'grid'">
+        <div class="row populate-form-boxes" >
+          <div class="grid-view" style="height:auto" ng-if="dc.resourceViewMode == 'grid'">
 
             <!-- show the folders first -->
             <div ng-if="dc.isFolder(resource)"
@@ -367,7 +368,7 @@
               </div>
             </div>
           </div>
-          <div class="grid-view" ng-if="dc.resourceViewMode == 'grid'">
+          <div class="grid-view" style="height:auto" ng-if="dc.resourceViewMode == 'grid'">
 
 
             <div ng-if="!dc.isFolder(resource)"
@@ -422,7 +423,7 @@
             </div>
           </div>
 
-          <div class="list-view" ng-if="dc.resourceViewMode == 'list' && dc.resources.length > 0">
+          <div class="list-view" ng-if="dc.resourceViewMode == 'list' && dc.resources.length > 0" style="height:auto">
 
             <div class="box-title">
               <div class="cell type"></div>
@@ -515,12 +516,13 @@
           </div>
           <!-- here is the end of the list view- hidden initially -->
         </div>
+        </div>
 
       </div>
       <!-- end of center panel -->
 
       <!-- RIGHT SIDE -->
-      <div class="row-offcanvas-right" id="sidebar-right" ng-if="dc.infoShowing()">
+      <div class="col-lg-2 row-offcanvas-right" id="sidebar-right" ng-if="dc.infoShowing()">
         <div>
 
           <div class="title" ng-class="dc.selectedResource.nodeType"><i style="font-size:20px; text-align:left"

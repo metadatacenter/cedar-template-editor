@@ -233,9 +233,9 @@ define([
           };
 
           vm.resizeCenterPanel = function () {
-            var e = jQuery('#center-panel');
-            e.css("left", vm.showFilters ? "200px" : "0");
-            e.css("right", vm.showResourceInfo ? "400px" : "0");
+            //var e = jQuery('#center-panel');
+            //e.class("left", vm.showFilters ? "200px" : "0");
+            //e.css("right", vm.showResourceInfo ? "400px" : "0");
           };
 
           vm.getResourceDetails = function (resource) {

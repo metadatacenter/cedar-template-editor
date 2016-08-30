@@ -731,9 +731,9 @@ button {
   height: calc(~"100% - 55px");
 
   .center-panel {
-    position: absolute;
+   // position: absolute;
     top: 0;
-    left: 200px;
+    //left: 200px;
     right: 0;
     padding: 30px 0;
     height: 100%;
@@ -1088,20 +1088,20 @@ button {
     overflow: hidden;
   }
   .row-offcanvas-right {
-    position: absolute;
+    //position: absolute;
     top: 0;
     right: 0;
     padding: 20px;
-    width: 400px;
+    //width: 400px;
     height: 100%;
     background: #fafafa;
     border-left: 1px solid #ebebeb;
-    margin-bottom: -100%;
-    padding-bottom: 100%;
+    //margin-bottom: -100%;
+    //padding-bottom: 100%;
 
     .title {
       display: inline-block;
-      width: 225px;
+      //width: 225px;
       padding: 20px 0;
       font-size: 22px;
       opacity: .5;
@@ -1115,7 +1115,7 @@ button {
 
       .title {
         display: inline-block;
-        width: 200px;
+        //width: 200px;
         font-size: 14px;
         opacity: .9;
         padding: 3px;
@@ -1176,13 +1176,13 @@ button {
   }
 
   .row-offcanvas-left {
-    position: absolute;
+    //position: absolute;
     height: 100%;
     top: 0;
     left: 0;
-    width: 200px;
-    margin-bottom: -100%;
-    padding-bottom: 100%;
+    //width: 200px;
+    //margin-bottom: -100%;
+    //padding-bottom: 100%;
 
     .filter-options {
       padding: 20px 0;
@@ -5587,13 +5587,14 @@ table.apiKey {
 }
 
 ::-webkit-scrollbar-thumb {
-  border-radius: 8px;
-  border: 2px solid white; /* should match background, can't be transparent */
-  background-color: rgba(0, 0, 0, .5);
+  border-radius: 0px;
+  border: 0px solid white;
+  background-color: #ddd;
 }
 
+
 ::-webkit-scrollbar-track {
-  background-color: #fff;
+  background-color: #f0f0f0;
   border-radius: 0px;
 }
 
@@ -6251,6 +6252,59 @@ table.apiKey {
           opacity:0.5;
         }
       }
+    }
+  }
+}
+
+@media (min-width: 768px){
+  #sidebar-left {
+    position: absolute;
+    top: 0px;
+    bottom: 0;
+    left: 0;
+    width: 16.66666667%;
+    overflow-y: auto;
+  }
+
+  #center-panel {
+    position: absolute;
+    top: 0px;
+    bottom: 0;
+    left: 16.66666667%;
+    right: 16.66666667%;
+    overflow-y: auto;
+    &.without-info {
+      right:0;
+    }
+  }
+
+  #sidebar-right {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    overflow-y: auto;
+    &.without-info {
+      width:0;
+    }
+  }
+}
+
+@media (max-width: 768px){
+  body {
+    height:100%;
+    background-color: #f0f0f0;
+    overflow-y: auto;
+
+    #sidebar-left {
+    }
+
+    #center-panel {
+      max-height: 400px;
+      overflow-y: auto;
+    }
+
+    #sidebar-right {
     }
   }
 }
