@@ -52,7 +52,7 @@
             <li ng-if="!dc.isFolder()"><a href="#" ng-click="dc.editResource()">Edit</a></li>
             <li role="separator" class="divider"></li>
             <li><a href="#">Share...</a></li>
-            <li><a href="#"  ng-click="dc.showMoveResourceModal('#moveResourceModal')">Move to...</a></li>
+            <li><a href="#" ng-click="dc.showMoveResourceModal('#moveResourceModal')">Move to...</a></li>
             <li><a href="#" data-toggle="modal" data-target="#renameResourceModal">Rename...</a></li>
             <li ng-if="!dc.isFolder()"><a href="#" ng-click="dc.copyResource()">Copy</a></li>
             <li role="separator" class="divider"></li>
@@ -137,7 +137,6 @@
     </ul>
   </div>
 </div>
-
 
 
 <!--gray populate a form modal slide up/down section -->
@@ -322,43 +321,151 @@
       <!-- END LEFT SIDE -->
 
       <!-- center panel -->
-      <div cedar-infinite-scroll load-more="dc.loadMore()" class=" center-panel scrollable-content"  ng-class="{ 'col-lg-8': dc.infoShowing() , 'without-info': !dc.infoShowing()}"  id="center-panel" >
+      <div cedar-infinite-scroll load-more="dc.loadMore()" class=" center-panel scrollable-content"
+          ng-class="{ 'col-lg-8': dc.infoShowing() , 'without-info': !dc.infoShowing()}" id="center-panel">
         <div style="height:auto;">
 
 
-        <div class="row populate-form-boxes" >
-          <div class="grid-view" style="height:auto" ng-if="dc.resourceViewMode == 'grid'">
+          <div class="row populate-form-boxes">
+            <div class="grid-view" style="height:auto" ng-if="dc.resourceViewMode == 'grid'">
 
-            <!-- show the folders first -->
-            <div ng-if="dc.isFolder(resource)"
-                class="form-box-container folder"
-                ng-class="{ selected: dc.isResourceSelected(resource) }"
-                ng-repeat="(index, resource) in dc.resources">
+              <!-- show the folders first -->
+              <div ng-if="dc.isFolder(resource)"
+                  class="form-box-container folder"
+                  ng-class="{ selected: dc.isResourceSelected(resource) }"
+                  ng-repeat="(index, resource) in dc.resources">
 
 
-              <div rightclick offsetX="0" offsetY="5" dropdownId="{{getId(resource, 'populate')}}"
+                <div rightclick offsetX="0" offsetY="5" dropdownId="{{getId(resource, 'populate')}}"
+                    ng-click="dc.selectResource(resource)"
+                    ng-dblclick="dc.goToResource(resource)"
+                    class="form-box  ">
+                  <div class="box-content text-center folder">
+                    <div class="folderIconContainer">
+                      <i style="font-size:20px" class="fa" ng-class="dc.getResourceIconClass(resource)"></i>
+                    </div>
+                    <div class="folderTitle">{{ resource.displayName }}</div>
+
+                    <div ng-if="dc.onDashboard()" class="btn-group dropdown" id="{{getId(resource, 'populate')}}">
+                      <button style="display:none" title="More"
+                          data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><i
+                          class="fa fa-ellipsis-v"></i>
+                      </button>
+                      <ul class="dropdown-menu" aria-labelledby="{{getId(resource, 'populate')}}">
+
+                        <li><a href="#" ng-click="dc.editResource()">Open</a></li>
+                        <li ng-if="!dc.isFolder()"><a href="#" ng-click="dc.editResource(resource)">Edit</a></li>
+                        <li><a href="#" ng-click="dc.showInfoPanel(resource)">Info</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="#" data-toggle="modal" data-target="#shareResourceModal">Share...</a></li>
+                        <li><a href="#" ng-click="dc.showMoveResourceModal('#moveResourceModal')">Move to...</a></li>
+                        <li><a href="#" data-toggle="modal" data-target="#renameResourceModal">Rename...</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="#" ng-click="dc.deleteResource(resource)">Delete</a></li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="grid-view" style="height:auto" ng-if="dc.resourceViewMode == 'grid'">
+
+
+              <div ng-if="!dc.isFolder(resource)"
+                  class="form-box-container"
+                  ng-class="{ selected: dc.isResourceSelected(resource) }"
+                  ng-repeat="(index, resource) in dc.resources">
+
+                <div rightclick
+                    offsetX="0"
+                    offsetY="5"
+                    dropdownId="{{getId(resource, 'populate')}}"
+                    ng-click="dc.selectResource(resource)"
+                    ng-dblclick="dc.goToResource(resource)"
+                    class="form-box">
+
+                  <div class="box-content text-center " ng-class="dc.getResourceTypeClass(resource)">
+
+                    <div style="text-align:center;padding-top:20px"><i style="font-size:30px;" class="fa"
+                        ng-class="dc.getResourceIconClass(resource)"></i>
+
+
+                    </div>
+                    <div class="title"
+                        style="text-align:center;height:40px;padding:10px;margin-top:20px; overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
+                      {{ resource.displayName }}
+                    </div>
+
+                    <div ng-if="dc.onDashboard()" class="btn-group dropdown" id="{{getId(resource, 'populate')}}">
+                      <button style="display:none" title="More"
+                          data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><i
+                          class="fa fa-ellipsis-v"></i>
+                      </button>
+                      <ul class="dropdown-menu" aria-labelledby="{{getId(resource, 'populate')}}">
+
+                        <li ng-if="dc.isFolder()"><a href="#" ng-click="dc.editResource()">Open</a></li>
+                        <li ng-if="dc.isTemplate()"><a href="#" ng-click="dc.launchInstance(resource)">Populate</a>
+                        </li>
+                        <li ng-if="dc.isTemplate() || dc.isElement() ||dc.isFolder() || dc.isMeta()"><a href="#"
+                            ng-click="dc.editResource(resource)">Edit</a></li>
+                        <li><a href="#" ng-click="dc.showInfoPanel(resource)">Info</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="#" data-toggle="modal" data-target="#shareResourceModal">Share...</a></li>
+                        <li><a href="#" ng-click="dc.showMoveResourceModal('#moveResourceModal')">Move to...</a></li>
+                        <li><a href="#" data-toggle="modal" data-target="#renameResourceModal">Rename...</a></li>
+                        <li><a href="#" ng-if="!dc.isFolder()" ng-click="dc.copyResource()">Copy</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="#" ng-click="dc.deleteResource(resource)">Delete</a></li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="list-view" ng-if="dc.resourceViewMode == 'list' && dc.resources.length > 0" style="height:auto">
+
+              <div class="box-title">
+                <div class="cell type"></div>
+                <div class="cell resource">Title</div>
+                <div class="cell date">Created</div>
+                <div class="cell date">Modified</div>
+              </div>
+
+              <!-- show the folders first -->
+              <div ng-if="dc.isFolder(resource) && dc.onDashboard()" class="box-row"
+                  style="position:relative;width:100%"
+                  rightclick
+                  offsetx="0" offsety="0"
+                  dropdownId="{{getId(resource, 'list')}}"
+                  ng-class="{ selected: dc.isResourceSelected(resource) }"
                   ng-click="dc.selectResource(resource)"
                   ng-dblclick="dc.goToResource(resource)"
-                  class="form-box  ">
-                <div class="box-content text-center folder">
-                  <div class="folderIconContainer">
-                    <i style="font-size:20px" class="fa" ng-class="dc.getResourceIconClass(resource)"></i>
-                  </div>
-                  <div class="folderTitle">{{ resource.displayName }}</div>
+                  ng-repeat="(index, resource) in dc.resources">
 
-                  <div ng-if="dc.onDashboard()" class="btn-group dropdown" id="{{getId(resource, 'populate')}}">
-                    <button style="display:none" title="More"
+                <div class="cell type"><i ng-class="dc.getResourceIconClass(resource)"
+                    class="btn btn-sm btn-info btn-circle fa large-icon " aria-hidden="true"></i></div>
+                <div class="cell resource">{{ resource.displayName }}</div>
+                <div class="cell date">{{ resource.createdOnTS | prettyDate }}</div>
+                <div class="cell date">{{ resource.lastUpdatedOnTS | prettyDate }}
+
+                  <div class="btn-group dropdown" id="{{getId(resource, 'list')}}">
+                    <button style="display:none" title="More" class="btn btn-default dropdown-toggle trigger"
                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><i
-                        class="fa fa-ellipsis-v"></i>
+                        class="btn btn-sm btn-circle fa fa-ellipsis-v"></i>
                     </button>
-                    <ul class="dropdown-menu" aria-labelledby="{{getId(resource, 'populate')}}">
+                    <ul class="dropdown-menu" aria-labelledby="{{getId(resource, 'list')}}">
 
-                      <li><a href="#" ng-click="dc.editResource()">Open</a></li>
-                      <li ng-if="!dc.isFolder()"><a href="#" ng-click="dc.editResource(resource)">Edit</a></li>
+                      <li ng-if="dc.isFolder()"><a href="#" ng-click="dc.editResource()">Open</a></li>
+                      <li ng-if="dc.isTemplate() "><a href="#" ng-click="dc.launchInstance(resource)">Populate</a>
+
+                      </li>
+                      <li ng-if="dc.isTemplate() || dc.isElement() || dc.isFolder()"><a href="#"
+                          ng-click="dc.editResource(resource)">Edit</a></li>
                       <li><a href="#" ng-click="dc.showInfoPanel(resource)">Info</a></li>
                       <li role="separator" class="divider"></li>
-                      <li><a href="#"  data-toggle="modal" data-target="#shareResourceModal">Share...</a></li>
-                      <li><a href="#"  ng-click="dc.showMoveResourceModal('#moveResourceModal')">Move to...</a></li>
+                      <li><a href="#" data-toggle="modal" data-target="#shareResourceModal">Share...</a></li>
+                      <li><a href="#" ng-click="dc.showMoveResourceModal('#moveResourceModal')">Move to...</a></li>
                       <li><a href="#" data-toggle="modal" data-target="#renameResourceModal">Rename...</a></li>
                       <li role="separator" class="divider"></li>
                       <li><a href="#" ng-click="dc.deleteResource(resource)">Delete</a></li>
@@ -366,52 +473,39 @@
                   </div>
                 </div>
               </div>
-            </div>
-          </div>
-          <div class="grid-view" style="height:auto" ng-if="dc.resourceViewMode == 'grid'">
 
 
-            <div ng-if="!dc.isFolder(resource)"
-                class="form-box-container"
-                ng-class="{ selected: dc.isResourceSelected(resource) }"
-                ng-repeat="(index, resource) in dc.resources">
-
-              <div rightclick
-                  offsetX="0"
-                  offsetY="5"
-                  dropdownId="{{getId(resource, 'populate')}}"
+              <div ng-if="!dc.isFolder(resource)" class="box-row" style="position:relative;width:100%" rightclick
+                  offsetx="0" offsety="0"
+                  dropdownId="{{getId(resource, 'list')}}"
+                  ng-class="{ selected: dc.isResourceSelected(resource) }"
                   ng-click="dc.selectResource(resource)"
                   ng-dblclick="dc.goToResource(resource)"
-                  class="form-box">
+                  ng-repeat="(index, resource) in dc.resources">
 
-                <div class="box-content text-center " ng-class="dc.getResourceTypeClass(resource)">
+                <div class="cell type" ng-class="dc.getResourceTypeClass(resource)"><i
+                    ng-class="dc.getResourceIconClass(resource)"
+                    class="btn btn-sm btn-info btn-circle fa large-icon " aria-hidden="true"></i></div>
+                <div class="cell resource">{{ resource.displayName }}</div>
+                <div class="cell date">{{ resource.createdOnTS | prettyDate }}</div>
+                <div class="cell date">{{ resource.lastUpdatedOnTS | prettyDate }}
 
-                  <div style="text-align:center;padding-top:20px"><i style="font-size:30px;" class="fa"
-                      ng-class="dc.getResourceIconClass(resource)"></i>
-
-
-                  </div>
-                  <div class="title"
-                      style="text-align:center;height:40px;padding:10px;margin-top:20px; overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
-                    {{ resource.displayName }}
-                  </div>
-
-                  <div ng-if="dc.onDashboard()" class="btn-group dropdown" id="{{getId(resource, 'populate')}}">
-                    <button style="display:none" title="More"
+                  <div ng-if="dc.onDashboard()" class="btn-group dropdown" id="{{getId(resource, 'list')}}">
+                    <button style="display:none" title="More" class="btn btn-default dropdown-toggle trigger"
                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><i
-                        class="fa fa-ellipsis-v"></i>
+                        class="btn btn-sm btn-circle fa fa-ellipsis-v"></i>
                     </button>
-                    <ul class="dropdown-menu" aria-labelledby="{{getId(resource, 'populate')}}">
+                    <ul class="dropdown-menu" aria-labelledby="{{getId(resource, 'list')}}">
 
                       <li ng-if="dc.isFolder()"><a href="#" ng-click="dc.editResource()">Open</a></li>
-                      <li ng-if="dc.isTemplate()"><a href="#" ng-click="dc.launchInstance(resource)">Populate</a>
+                      <li ng-if="dc.isTemplate() "><a href="#" ng-click="dc.launchInstance(resource)">Populate</a>
                       </li>
-                      <li ng-if="dc.isTemplate() || dc.isElement() ||dc.isFolder() || dc.isMeta()"><a href="#"
+                      <li ng-if="dc.isTemplate() ||  dc.isElement() || dc.isFolder() || dc.isMeta()"><a href="#"
                           ng-click="dc.editResource(resource)">Edit</a></li>
                       <li><a href="#" ng-click="dc.showInfoPanel(resource)">Info</a></li>
                       <li role="separator" class="divider"></li>
                       <li><a href="#" data-toggle="modal" data-target="#shareResourceModal">Share...</a></li>
-                      <li><a href="#"  ng-click="dc.showMoveResourceModal('#moveResourceModal')">Move to...</a></li>
+                      <li><a href="#" ng-click="dc.showMoveResourceModal('#moveResourceModal')">Move to...</a></li>
                       <li><a href="#" data-toggle="modal" data-target="#renameResourceModal">Rename...</a></li>
                       <li><a href="#" ng-if="!dc.isFolder()" ng-click="dc.copyResource()">Copy</a></li>
                       <li role="separator" class="divider"></li>
@@ -421,101 +515,8 @@
                 </div>
               </div>
             </div>
+            <!-- here is the end of the list view- hidden initially -->
           </div>
-
-          <div class="list-view" ng-if="dc.resourceViewMode == 'list' && dc.resources.length > 0" style="height:auto">
-
-            <div class="box-title">
-              <div class="cell type"></div>
-              <div class="cell resource">Title</div>
-              <div class="cell date">Created</div>
-              <div class="cell date">Modified</div>
-            </div>
-
-            <!-- show the folders first -->
-            <div ng-if="dc.isFolder(resource) && dc.onDashboard()" class="box-row" style="position:relative;width:100%"
-                rightclick
-                offsetx="0" offsety="0"
-                dropdownId="{{getId(resource, 'list')}}"
-                ng-class="{ selected: dc.isResourceSelected(resource) }"
-                ng-click="dc.selectResource(resource)"
-                ng-dblclick="dc.goToResource(resource)"
-                ng-repeat="(index, resource) in dc.resources">
-
-              <div class="cell type"><i ng-class="dc.getResourceIconClass(resource)"
-                  class="btn btn-sm btn-info btn-circle fa large-icon " aria-hidden="true"></i></div>
-              <div class="cell resource">{{ resource.displayName }}</div>
-              <div class="cell date">{{ resource.createdOnTS | prettyDate }}</div>
-              <div class="cell date">{{ resource.lastUpdatedOnTS | prettyDate }}
-
-                <div class="btn-group dropdown" id="{{getId(resource, 'list')}}">
-                  <button style="display:none" title="More" class="btn btn-default dropdown-toggle trigger"
-                      data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><i
-                      class="btn btn-sm btn-circle fa fa-ellipsis-v"></i>
-                  </button>
-                  <ul class="dropdown-menu" aria-labelledby="{{getId(resource, 'list')}}">
-
-                    <li ng-if="dc.isFolder()"><a href="#" ng-click="dc.editResource()">Open</a></li>
-                    <li ng-if="dc.isTemplate() "><a href="#" ng-click="dc.launchInstance(resource)">Populate</a>
-
-                    </li>
-                    <li ng-if="dc.isTemplate() || dc.isElement() || dc.isFolder()"><a href="#"
-                        ng-click="dc.editResource(resource)">Edit</a></li>
-                    <li><a href="#" ng-click="dc.showInfoPanel(resource)">Info</a></li>
-                    <li role="separator" class="divider"></li>
-                    <li><a href="#" data-toggle="modal" data-target="#shareResourceModal">Share...</a></li>
-                    <li><a href="#"  ng-click="dc.showMoveResourceModal('#moveResourceModal')">Move to...</a></li>
-                    <li><a href="#" data-toggle="modal" data-target="#renameResourceModal">Rename...</a></li>
-                    <li role="separator" class="divider"></li>
-                    <li><a href="#" ng-click="dc.deleteResource(resource)">Delete</a></li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-
-
-            <div ng-if="!dc.isFolder(resource)" class="box-row" style="position:relative;width:100%" rightclick
-                offsetx="0" offsety="0"
-                dropdownId="{{getId(resource, 'list')}}"
-                ng-class="{ selected: dc.isResourceSelected(resource) }"
-                ng-click="dc.selectResource(resource)"
-                ng-dblclick="dc.goToResource(resource)"
-                ng-repeat="(index, resource) in dc.resources">
-
-              <div class="cell type" ng-class="dc.getResourceTypeClass(resource)"><i
-                  ng-class="dc.getResourceIconClass(resource)"
-                  class="btn btn-sm btn-info btn-circle fa large-icon " aria-hidden="true"></i></div>
-              <div class="cell resource">{{ resource.displayName }}</div>
-              <div class="cell date">{{ resource.createdOnTS | prettyDate }}</div>
-              <div class="cell date">{{ resource.lastUpdatedOnTS | prettyDate }}
-
-                <div ng-if="dc.onDashboard()" class="btn-group dropdown" id="{{getId(resource, 'list')}}">
-                  <button style="display:none" title="More" class="btn btn-default dropdown-toggle trigger"
-                      data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><i
-                      class="btn btn-sm btn-circle fa fa-ellipsis-v"></i>
-                  </button>
-                  <ul class="dropdown-menu" aria-labelledby="{{getId(resource, 'list')}}">
-
-                    <li ng-if="dc.isFolder()"><a href="#" ng-click="dc.editResource()">Open</a></li>
-                    <li ng-if="dc.isTemplate() "><a href="#" ng-click="dc.launchInstance(resource)">Populate</a>
-                    </li>
-                    <li ng-if="dc.isTemplate() ||  dc.isElement() || dc.isFolder() || dc.isMeta()"><a href="#"
-                        ng-click="dc.editResource(resource)">Edit</a></li>
-                    <li><a href="#" ng-click="dc.showInfoPanel(resource)">Info</a></li>
-                    <li role="separator" class="divider"></li>
-                    <li><a href="#" data-toggle="modal" data-target="#shareResourceModal">Share...</a></li>
-                    <li><a href="#"  ng-click="dc.showMoveResourceModal('#moveResourceModal')">Move to...</a></li>
-                    <li><a href="#" data-toggle="modal" data-target="#renameResourceModal">Rename...</a></li>
-                    <li><a href="#" ng-if="!dc.isFolder()" ng-click="dc.copyResource()">Copy</a></li>
-                    <li role="separator" class="divider"></li>
-                    <li><a href="#" ng-click="dc.deleteResource(resource)">Delete</a></li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </div>
-          <!-- here is the end of the list view- hidden initially -->
-        </div>
         </div>
 
       </div>
@@ -812,7 +813,7 @@
   <div id="shareResourceModal" class="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
       aria-hidden="true">
     <div class="modal-dialog">
-      <div class="modal-content">
+      <div class="modal-content" style="overflow-y:hidden;">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
               aria-hidden="true">&times;</span></button>
@@ -820,30 +821,44 @@
         </div>
         <div class="modal-body">
 
-          <!-- show the users that it is shared with -->
-          <div class="row"  ng-repeat="user in dc.sharedUsers()">
-            <div class="col-sm-6" ng-click="dc.selectDestination(resource)"><i style="font-size:20px;padding-right:5px"
-                class="fa" ng-class="dc.getResourceIconClass(resource)"></i> {{resource.displayName}}
-            </div>
-            <div class="col-sm-5" ></div>
+          <h5>Users with access</h5>
+          <div ng-model="dc.dummyPermissions" style="height:200px;overflow-y:scroll;overflow-x:hidden;border:1px solid #ccc;">
+            <div class="row" ng-repeat="access in dc.usersWithAccess()">
+              <div class="col-sm-8">{{access.user.displayName}}<br/>{{user.email}}</div>
+              <div class="col-sm-2">
+                <select ng-model="access.permission" on-change="dc.updatePermission(access, 'read')">
+                  <option value="read">read</option>
+                  <option value="write">write</option>
+                </select>
+              </div>
 
-            <button type="button" class="close col-sm-1" dc.unshareUser(user)><span aria-hidden="true">&times;</span></button>
+              <button class="close col-sm-2" type="button" ng-click="dc.removeAccess(access.user)"><span
+                  aria-hidden="true">&times;</span></button>
+            </div>
           </div>
 
-
-          <div ng-if="!dc.isFolder(resource)" class="box-row row disabled"
-              ng-repeat="(index, resource) in dc.destinationResources">
-            <div class="col-sm-11" disabled="disabled"><i style="font-size:20px;padding-right:5px" class="fa"
-                ng-class="dc.getResourceIconClass(resource)"></i>{{resource.displayName}}
+          <div style="margin-top:10px;">
+            <h5>Give access to user</h5>
+            <div class="row">
+              <div class="col-sm-8">
+              <select  name="select user" multiple="false" ng-model="dc.selectedShareUser"  style="height:200px;overflow-y:scroll;overflow-x:hidden;border:1px solid #ccc;width:100%;border:1px solid #ccc">
+                <option ng-repeat="user in dc.dummyAllUsers.users" ng-value="user.id" ng-click="dc.giveAccess(user);">{{user.displayName}}</option>
+              </select>
+              </div>
+              <div class="col-sm-4">
+              <select  ng-model="dc.giveAccessPermission" >
+                <option value="read">read</option>
+                <option value="write">write</option>
+              </select>
+                </div>
             </div>
 
           </div>
-
 
         </div>
         <div class="modal-footer actions">
           <div class="clear-save">
-            <button  type="button" data-dismiss="modal" aria-label="Close" class="btn btn-save confirm"> Close </button>
+            <button type="button" data-dismiss="modal" aria-label="Save" class="btn btn-save confirm"> Save </button>
           </div>
         </div>
       </div>

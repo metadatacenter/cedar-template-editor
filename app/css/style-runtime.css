@@ -14514,6 +14514,9 @@ table.apiKey td {
 #moveResourceModal .modal-content .modal-body .box-row.disabled {
   opacity: 0.5;
 }
+#shareResourceModal .modal-content .modal-body {
+  max-height: 500px;
+}
 @media (min-width: 768px) {
   #sidebar-left {
     position: absolute;
