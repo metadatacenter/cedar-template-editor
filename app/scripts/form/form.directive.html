@@ -11,14 +11,16 @@
             ng-class="{'field-instance':true, 'multiple-instance-field':form.properties[item].type == 'array'}">
           <field-directive field="form.properties[item]" model="model[item]"
               delete="removeChild(form.properties[item]); $event.stopPropagation();"
-              rename-child-key="renameChildKey"></field-directive>
+              rename-child-key="renameChildKey"
+              is-edit-data="isEditData"></field-directive>
         </div>
         <div class=" element-group full "
             ng-if="form.properties[item]['@type']=='https://schema.metadatacenter.org/core/TemplateElement' || form.properties[item].items['@type']=='https://schema.metadatacenter.org/core/TemplateElement'">
           <cedar-template-element element="form.properties[item]"
               key="item"
               model="model[item]"
-              delete="removeChild(form.properties[item])">
+              delete="removeChild(form.properties[item])"
+              is-edit-data="isEditData">
           </cedar-template-element>
         </div>
       </span>
@@ -40,14 +42,14 @@
               rename-child-key="renameChildKey"></field-directive>
         </div>
         <div class="element-group full"
-
             ng-if="form.properties[item]['@type']=='https://schema.metadatacenter.org/core/TemplateElement' || form.properties[item].items['@type']=='https://schema.metadatacenter.org/core/TemplateElement'">
 
           <cedar-template-element element="form.properties[item]"
               key="item"
               model="model[item]"
               delete="removeChild(form.properties[item])"
-              is-root-element="hideRootElement">
+              is-root-element="hideRootElement"
+              is-edit-data="isEditData">
           </cedar-template-element>
         </div>
       </span>

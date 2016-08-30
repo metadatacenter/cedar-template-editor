@@ -18,7 +18,8 @@ define([
         element      : '=',
         delete       : '&',
         model        : '=',
-        isRootElement: "="
+        isRootElement: "=",
+        isEditData   : "="
       },
       templateUrl: 'scripts/template-element/cedar-template-element.directive.html',
       link       : linker

@@ -12,13 +12,15 @@
 
   </div><!-- /.form-group -->
     <div class="options-wrapper">
-      <div class="multiple-container">
-        <span ng-init="setSelectedOptionsModel()" ng-repeat="(index, value) in $root.schemaOf(field)._valueConstraints.literals">
+      <div ng-init="initializeSelectionField()" class="multiple-container">
+        <span ng-repeat="(index, value) in $root.schemaOf(field)._valueConstraints.literals">
           <div class="radio radio-primary">
-            <input ng-click="setDefaultOptions(); $event.stopPropagation();"  type="radio" id="radio{{index}}"
+            <input ng-click="radioModelToDefaultOptions(index); $event.stopPropagation();"  type="radio" id="radio{{index}}"
                 name="radio-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}"
-                ng-model="$root.selectedOptionsModel[index]"
-                value="{{index}}">
+                ng-model="$root.schemaOf(field)._valueConstraints.literals[index].selectedByDefault"
+                ng-value="true"
+                ng-checked=""
+                >
             <label for="radio{{index}}">
               <div class="form-group floating-label-wrapper">
                 <input type="text" class="form-control"

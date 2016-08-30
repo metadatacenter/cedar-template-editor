@@ -22,6 +22,7 @@ define([
         hideRootElement: "="
       },
       controller : function ($scope) {
+
         $scope.model = $scope.model || {};
 
         // Initializing checkSubmission as false

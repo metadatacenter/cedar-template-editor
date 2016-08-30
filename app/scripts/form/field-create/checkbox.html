@@ -9,13 +9,12 @@
 
   <div class="form-group floating-label-wrapper">
     <div class="options-wrapper">
-      <div class="multiple-container">
-        <span ng-init="setSelectedOptionsModel()" ng-repeat="(index, value) in $root.schemaOf(field)._valueConstraints.literals">
+      <div ng-init="initializeSelectionField()" class="multiple-container">
+        <span ng-repeat="(index, value) in $root.schemaOf(field)._valueConstraints.literals">
           <div class="checkbox checkbox-primary">
-            <input ng-click="setDefaultOptions(); $event.stopPropagation();" type="checkbox" id="checkbox-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}-{{index}}"
+            <input ng-click="cleanSelectedByDefault(index); $event.stopPropagation();" type="checkbox" id="checkbox-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}-{{index}}"
                 name="checkbox-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}"
-                ng-model="$root.selectedOptionsModel[index]"
-                value="{{index}}">
+                ng-model="$root.schemaOf(field)._valueConstraints.literals[index].selectedByDefault">
             <label for="checkbox-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}-{{index}}">
               <div class="form-group floating-label-wrapper">
                 <input type="text" class="form-control"
@@ -34,7 +33,6 @@
     <!-- /.options-wrapper -->
   </div>
   <!-- /.form-group -->
-
 
   <!--<ng-include src="'scripts/form/partials/staging-area-footer.partial.html'" />-->
   <div class="configuration-options " ng-include="'scripts/form/partials/configuration-options.partial.html'"></div>
