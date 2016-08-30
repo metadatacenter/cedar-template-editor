@@ -294,8 +294,14 @@ define([
 
       // Sets the instance @value fields based on the options selected at the UI
       $scope.updateModelFromUI = function () {
-        // Remove all elements from the 'model' array. Note that using $scope.model = [] is dangerous because we have references to the original array
-        $scope.model.splice(0, $scope.model.length);
+        if (!$scope.model || !$rootScope.isArray($scope.model)) {
+          $scope.model = [];
+        }
+        else {
+          // Remove all elements from the 'model' array. Note that using $scope.model = []
+          // is dangerous because we have references to the original array
+          $scope.model.splice(0, $scope.model.length);
+        }
 
         if (field._ui.inputType == 'checkbox') {
           for (var option in $scope.optionsUI) {
