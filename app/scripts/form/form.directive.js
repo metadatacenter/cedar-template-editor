@@ -243,8 +243,17 @@ define([
 
                 // Assign empty field instance model to $scope.model only if it does not exist
                 if (parentModel[name] == undefined) {
+                  // Not multiple instance
                   if (!DataManipulationService.isCardinalElement(value)) {
-                    parentModel[name] = {};
+                    // Selection fields store an array of values
+                    if ((value._ui.inputType == 'radio') || (value._ui.inputType == 'checkbox') || (value._ui.inputType == 'list')) {
+                      parentModel[name] = [];
+                    }
+                    // All other fields
+                    else {
+                      parentModel[name] = {};
+                    }
+                    // Multiple instance
                   } else {
                     parentModel[name] = [];
                     for (var i = 0; i < min; i++) {

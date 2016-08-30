@@ -18,7 +18,6 @@
         <!--If Template Element-->
         <div class=" element-group full "
             ng-if="form.properties[item]['@type']=='https://schema.metadatacenter.org/core/TemplateElement' || form.properties[item].items['@type']=='https://schema.metadatacenter.org/core/TemplateElement'">
-          <h1>{{model[item]}}</h1>
           <cedar-template-element element="form.properties[item]"
               key="item"
               model="model[item]"

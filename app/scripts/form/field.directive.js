@@ -294,7 +294,9 @@ define([
 
       // Sets the instance @value fields based on the options selected at the UI
       $scope.updateModelFromUI = function () {
-        $scope.model = [];
+        // Remove all elements from the 'model' array. Note that using $scope.model = [] is dangerous because we have references to the original array
+        $scope.model.splice(0, $scope.model.length);
+
         if (field._ui.inputType == 'checkbox') {
           for (var option in $scope.optionsUI) {
             if ($scope.optionsUI[option] == true) {
@@ -359,6 +361,7 @@ define([
             }
             // If we are editing an instance we need to load the values stored into the model
             else {
+              console.log('editing instance');
               $scope.updateUIFromModel();
             }
           }
@@ -1078,7 +1081,8 @@ define([
         renameChildKey: "=",
         preview       : "=",
         delete        : '&',
-        ngDisabled    : "="
+        ngDisabled    : "=",
+        isEditData    : "="
       },
       controller : function ($scope, $element) {
         var addPopover = function ($scope) {
