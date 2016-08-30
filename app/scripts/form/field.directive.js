@@ -362,7 +362,6 @@ define([
             }
             // If we are editing an instance we need to load the values stored into the model
             else {
-              console.log('editing instance');
               $scope.updateUIFromModel();
             }
           }
