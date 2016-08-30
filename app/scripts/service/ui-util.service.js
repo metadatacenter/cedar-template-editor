@@ -17,7 +17,7 @@ define([
     service.scrollToAnchor = function (hash) {
       $timeout(function () {
         var target = angular.element('#' + hash);
-        if (target) {
+        if (target && target.offset()) {
           var y = target.offset().top;
           $window.scrollTo(0, y - 95);
         }
@@ -34,7 +34,7 @@ define([
       $timeout(function () {
 
             var target = angular.element('#' + id);
-            if (target) {
+            if (target && target.offset()) {
               var y = target.offset().top;
               $window.scrollTo(0, y - 95);
             }

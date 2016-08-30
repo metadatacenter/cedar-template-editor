@@ -13,17 +13,20 @@ define([
     function link(scope, element, attrs) {
 
       var resizeTimer;
-      var w = angular.element($window);
+      var w = angular.element( document.querySelector( HeaderService.getScrollSelector() ) );
+
       var initialOffset = element.offset().top;
 
       var windowScroll = function () {
-        if ($window.innerWidth >= 768 && ($window.pageYOffset > HeaderService.getScrollLimit() + HeaderService.getStickyThreshold() )) {
+
+        var pageYOffset = w.scrollTop();
+        if ($window.innerWidth >= 768 && (pageYOffset > HeaderService.getScrollLimit() + HeaderService.getStickyThreshold() )) {
           element.addClass('sticky');
           element.width(element.parent().width());
         } else {
           element.removeClass('sticky');
         }
-      }
+      };
 
       var onResizeFunction = function () {
         element.width(element.parent().width());

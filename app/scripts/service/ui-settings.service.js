@@ -17,6 +17,7 @@ define([
     var populateAForm = null;
     var resourceTypeFilters = null;
     var orderDropdown = null;
+    var workspaceView = null;
 
     var service = {
       serviceId: "UISettingsService"
@@ -28,6 +29,7 @@ define([
       populateAForm = config.populateAForm;
       resourceTypeFilters = config.resourceTypeFilters;
       orderDropdown = config.orderDropdown;
+      workspaceView = config.workspaceView;
 
       //TODO MJD
       /*
@@ -64,6 +66,10 @@ define([
 
     service.getOrderOptions = function () {
       return orderDropdown;
+    };
+
+    service.getRequestLimit = function () {
+      return workspaceView.requestLimit;
     };
 
     service.saveUIPreference = function (prefPath, prefValue) {

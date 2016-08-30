@@ -90,7 +90,14 @@
     "GoodNews": "Good News!",
     "Cancel": "Cancel",
     "Copied": "Copied",
-    "More": "More"
+    "Moved": "Moved",
+    "More": "More",
+    "Folders": "Folders",
+    "Elements": "Elements",
+    "FilterBy": "Filter by",
+    "Untitled": "Untitled",
+    "Description": "Description",
+    "SelectToViewDetails": "Select a folder or resource to view its details."
   },
   "SERVER": {
     "FOLDER": {
@@ -169,6 +176,14 @@
       "copyToWorkspace": {
         "success": "The resource '{{title}}' was copied to your workspace!",
         "error": "There was an error while copying the resource to your workspace!<br /><br />VIEW TECHNICAL DETAILS!"
+      },
+      "copyResource": {
+        "success": "The resource '{{title}}' was copied to your workspace!",
+        "error": "There was an error while copying the resource!<br /><br />VIEW TECHNICAL DETAILS!"
+      },
+      "moveResource": {
+        "success": "The resource '{{title}}' was moved!",
+        "error": "There was an error while moving the resource!<br /><br />VIEW TECHNICAL DETAILS!"
       }
     },
     "ELEMENTS": {
@@ -217,6 +232,13 @@
       "name": "Name",
       "createdOnTS": "Recently Created",
       "lastUpdatedOnTS": "Recently Updated"
+    },
+    "rename": {
+      "title": "Rename",
+      "label": "Please enter a new name for this resource:"
+    },
+    "newFolder": {
+      "title": "New folder"
     }
   },
   "ELEMENTEDITOR": {
@@ -299,7 +321,7 @@
   },
   "EDITOR": {
     "TOOLBAR": {
-      "searchForMore": "Search for More Elements"
+      "searchForMore": "Search the workspace"
     }
   }
 }

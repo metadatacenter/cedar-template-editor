@@ -17,6 +17,8 @@
             aria-label="Select a date"
             ng-model="valueElement['@value']"
             ng-disabled="!$root.isRuntime() || preview"
+            validate-on="blur"
+            ng-pattern= "/^\d\d\/\d\d\/\d\d\d\d \d\d:\d\d (A|P)M$/"
             with-floating-label=""/>
         <span class="input-group-addon">
           <i class="fa fa-calendar fa-2x"></i>
@@ -36,6 +38,8 @@
             aria-label="Select a start date"
             ng-model="valueElement['@value'].start"
             ng-disabled="!$root.isRuntime() || preview"
+            validate-on="blur"
+            ng-pattern= "/^\d\d\/\d\d\/\d\d\d\d \d\d:\d\d (A|P)M$/"
             with-floating-label=""/>
         <span class="input-group-addon">
           <i class="fa fa-calendar fa-2x"></i>
@@ -49,6 +53,8 @@
             aria-label="end date"
             ng-model="valueElement['@value'].end"
             ng-disabled="!$root.isRuntime() || preview"
+            validate-on="blur"
+            ng-pattern= "/^\d\d\/\d\d\/\d\d\d\d \d\d:\d\d (A|P)M$/"
             with-floating-label=""/>
         <span class="input-group-addon">
           <i class="fa fa-calendar fa-2x"></i>
@@ -133,6 +139,8 @@
             aria-label="Select a date"
             ng-model="model['@value']"
             ng-disabled="!$root.isRuntime() || preview"
+            validate-on="blur"
+            ng-pattern= "/^\d\d\/\d\d\/\d\d\d\d \d\d:\d\d (A|P)M$/"
             with-floating-label=""/>
         <span class="input-group-addon">
           <i class="fa fa-calendar fa-2x"></i>
@@ -153,6 +161,9 @@
             aria-label="Select a start date"
             ng-model="model['@value'].start"
             ng-disabled="!$root.isRuntime() || preview"
+            validate-on="blur"
+            ng-pattern= "/^\d\d\/\d\d\/\d\d\d\d \d\d:\d\d (A|P)M$/"
+
             with-floating-label=""/>
         <span class="input-group-addon">
           <i class="fa fa-calendar fa-2x"></i>
@@ -166,6 +177,8 @@
             aria-label="Select a end date"
             ng-model="model['@value'].end"
             ng-disabled="!$root.isRuntime() || preview"
+            validate-on="blur"
+            ng-pattern= "/^\d\d\/\d\d\/\d\d\d\d \d\d:\d\d (A|P)M$/"
             with-floating-label=""/>
         <span class="input-group-addon">
           <i class="fa fa-calendar fa-2x"></i>

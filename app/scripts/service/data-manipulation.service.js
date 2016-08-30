@@ -180,6 +180,16 @@ define([
       });
     };
 
+    // set a title and description in the object if there is none
+    service.defaultTitleAndDescription = function (obj) {
+      if (!obj.title || !obj.title.length) {
+        obj.title = $translate.instant("GENERIC.Untitled");
+      }
+      if (!obj.description || !obj.description.length) {
+        obj.description = $translate.instant("GENERIC.Description");
+      }
+    };
+
     service.getDivId = function (node) {
 
       var elProperties = service.getFieldProperties(node);
@@ -405,6 +415,13 @@ define([
 
     };
 
+    // look to see if this node has been identified by angular as an invalid pattern
+    service.isInvalidPattern =  function(node)  {
+      var target = jQuery('#' + node._tmp.domId + ' .ng-invalid-pattern');
+      return (target.length == 0);
+    };
+
+
 
     /**
      * add a domId to the node if there is not one present
@@ -412,7 +429,7 @@ define([
      */
     service.defaultTitle = function (node) {
 
-      node._ui.title = "Untitled";
+      node._ui.title = $translate.instant("GENERIC.Untitled");
 
     };
 
@@ -421,6 +438,18 @@ define([
      * @param node
      */
     service.getDomId = function (node) {
+
+      var domId = null;
+
+      if (node.hasOwnProperty("_tmp")) {
+        domId = node._tmp.domId;
+      }
+
+      return domId;
+    };
+
+    service.newGetDomId = function (node) {
+
 
       var domId = null;
 
@@ -610,6 +639,7 @@ define([
 
     // When user clicks Save button, we will switch field or element from creating state to completed state
     service.canDeselect = function (field, renameChildKey) {
+      console.log('canDeselect');
 
       if (!field) {
         return;
@@ -645,14 +675,14 @@ define([
       var schema = $rootScope.schemaOf(field);
 
       // default title
-      if (!schema._ui.title) {
-        schema._ui.title = $translate.instant("VALIDATION.noNameField");
+      if (!schema._ui.title || !schema._ui.title.length) {
+        schema._ui.title = $translate.instant("GENERIC.Untitled");
       }
 
       // default description
-      if (!schema._ui.description) {
-        schema._ui.description = $translate.instant("VALIDATION.noDescriptionField");
-      }
+      //if (!schema._ui.description || !schema._ui.description.length) {
+      //  schema._ui.description = $translate.instant("GENERIC.Description");
+      //}
 
       // if this is radio, checkbox or list,  add at least two options and set default values
       if (schema._ui.inputType == "radio" || schema._ui.inputType == "checkbox" || schema._ui.inputType == "list") {

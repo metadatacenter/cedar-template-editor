@@ -81,7 +81,6 @@ define([
 
       // When form submit event is fired, check field for simple validation
       $scope.$on('submitForm', function (event) {
-        //console.log('submitForm');
 
         // If field is required and is empty, emit failed emptyRequiredField event
         if ($rootScope.schemaOf($scope.field)._valueConstraints && $rootScope.schemaOf($scope.field)._valueConstraints.requiredValue) {
@@ -174,7 +173,9 @@ define([
               ['remove', DataManipulationService.getFieldSchema($scope.field)._ui.title, $scope.uuid]);
         }
 
-        var allFieldsAreValid = true;
+
+        // does the field have invalid data?
+        var allFieldsAreValid = DataManipulationService.isInvalidPattern($scope.field);
         if ($rootScope.hasValueConstraint($rootScope.schemaOf($scope.field)._valueConstraints)) {
 
           if (angular.isArray($scope.model)) {
@@ -208,22 +209,16 @@ define([
               }
             }
           }
-
-          if (!allFieldsAreValid) {
-            // add this field instance the the invalidFieldValues array
-            $scope.$emit('invalidFieldValues',
-                ['add', DataManipulationService.getFieldSchema($scope.field)._ui.title, $scope.uuid]);
-          }
         }
 
-        if (allFieldsAreValid) {
-          //remove from emptyRequiredField array
-          $scope.$emit('invalidFieldValues',
-              ['remove', DataManipulationService.getFieldSchema($scope.field)._ui.title, $scope.uuid]);
-        }
+        $scope.$emit('invalidFieldValues',
+            [allFieldsAreValid ? 'remove' : 'add', DataManipulationService.getFieldSchema($scope.field)._ui.title,
+             $scope.uuid]);
+
       });
 
       $scope.$on("saveForm", function () {
+        console.log('saveForm');
         //var p = $rootScope.propertiesOf($scope.field);
         if ($scope.isEditState() && !$scope.canDeselect($scope.field)) {
           $scope.$emit("invalidFieldState",
@@ -1073,6 +1068,10 @@ define([
 
       $scope.getShortId = function (uri, maxLength) {
         return StringUtilsService.getShortId(uri, maxLength);
+      }
+
+      $scope.validationCheck = function () {
+        console.log('validationCheck');
       }
 
 
