@@ -209,7 +209,6 @@ define([
             // Save template
             if ($routeParams.id == undefined) {
               var queryParams = $location.search();
-              $scope.form['parentId'] = queryParams.folderId;
               DataManipulationService.stripTmps($scope.form);
               AuthorizedBackendService.doCall(
                   TemplateService.saveTemplate(queryParams.folderId, $scope.form),
