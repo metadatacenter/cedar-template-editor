@@ -95,9 +95,9 @@ define([
       var optionInputs = ["radio", "checkbox", "list"];
 
       if (optionInputs.indexOf(fieldType) > -1) {
-        field._ui.options = [
+        field._valueConstraints.literals = [
           {
-            "text": ""
+            "label": ""
           }
         ];
       }
@@ -114,9 +114,9 @@ define([
 
       var optionInputs = ["radio", "checkbox", "list"];
       if (optionInputs.indexOf(fieldType) > -1) {
-        field._ui.options = [
+        field._valueConstraints.literals = [
           {
-            "text": ""
+            "label": ""
           }
         ];
       }
@@ -189,9 +189,9 @@ define([
 
       var optionInputs = ["radio", "checkbox", "list"];
       if (optionInputs.indexOf(fieldType) > -1) {
-        field._ui.options = [
+        field._valueConstraints.literals = [
           {
-            "text": ""
+            "label": ""
           }
         ];
       }

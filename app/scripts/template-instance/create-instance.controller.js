@@ -141,7 +141,6 @@ define([
       $scope.getInstance();
     }
 
-
     // Initialize array for required fields left empty that fail required empty check
     $scope.emptyRequiredFields = {};
     // Event listener waiting for emptyRequiredField $emit from field-directive.js
