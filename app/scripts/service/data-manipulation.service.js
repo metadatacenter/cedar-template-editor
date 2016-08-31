@@ -688,7 +688,7 @@ define([
       if (schema._ui.inputType == "radio" || schema._ui.inputType == "checkbox" || schema._ui.inputType == "list") {
 
         // make sure we have the minimum number of options
-        while (schema._valueConstraints.literals < MIN_OPTIONS) {
+        while (schema._valueConstraints.literals.length < MIN_OPTIONS) {
           var emptyOption = {
             "label": name || ""
           };

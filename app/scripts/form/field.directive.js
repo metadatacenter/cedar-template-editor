@@ -232,7 +232,7 @@ define([
       var field = DataManipulationService.getFieldSchema($scope.field);
 
       // Checking each field to see if required, will trigger flag for use to see there is required fields
-      if (field._valueConstraints.requiredValue) {
+      if (field._valueConstraints && field._valueConstraints.requiredValue) {
         $scope.$emit('formHasRequiredfield._uis');
       }
 
@@ -446,38 +446,40 @@ define([
       //  }
       //}
 
-      $scope.setDefaults = function (field) {
-        var schema = $rootScope.schemaOf(field);
-
-        // default title
-        if (!schema._ui.title) {
-          schema._ui.title = $translate.instant("VALIDATION.noNameField");
-        }
-
-        // default description
-        if (!schema._ui.description) {
-          schema._ui.description = $translate.instant("VALIDATION.noDescriptionField");
-        }
-
-        // if this is radio, checkbox or list,  add at least two options and set default values
-        if (schema._ui.inputType == "radio" || schema._ui.inputType == "checkbox" || schema._ui.inputType == "list") {
-
-          // make sure we have the minimum number of options
-          while (schema._valueConstraints.literals.length < MIN_OPTIONS) {
-            var emptyOption = {
-              "label": name || ""
-            };
-            schema._valueConstraints.literals.push(emptyOption);
-          }
-
-          // and they all have text fields filled in
-          for (var i = 0; i < schema._valueConstraints.literals.length; i++) {
-            if (schema._valueConstraints.literals[i].label.length == 0) {
-              schema._valueConstraints.literals[i].label = $translate.instant("VALIDATION.noNameField");
-            }
-          }
-        }
-      };
+      //$scope.setDefaults = function (field) {
+      //
+      //  console.log('setting defaults');
+      //  var schema = $rootScope.schemaOf(field);
+      //
+      //  // default title
+      //  if (!schema._ui.title) {
+      //    schema._ui.title = $translate.instant("VALIDATION.noNameField");
+      //  }
+      //
+      //  // default description
+      //  if (!schema._ui.description) {
+      //    schema._ui.description = $translate.instant("VALIDATION.noDescriptionField");
+      //  }
+      //
+      //  // if this is radio, checkbox or list,  add at least two options and set default values
+      //  if (schema._ui.inputType == "radio" || schema._ui.inputType == "checkbox" || schema._ui.inputType == "list") {
+      //
+      //    // make sure we have the minimum number of options
+      //    while (schema._valueConstraints.literals.length < MIN_OPTIONS) {
+      //      var emptyOption = {
+      //        "label": name || ""
+      //      };
+      //      schema._valueConstraints.literals.push(emptyOption);
+      //    }
+      //
+      //    // and they all have text fields filled in
+      //    for (var i = 0; i < schema._valueConstraints.literals.length; i++) {
+      //      if (schema._valueConstraints.literals[i].label.length == 0) {
+      //        schema._valueConstraints.literals[i].label = $translate.instant("VALIDATION.noNameField");
+      //      }
+      //    }
+      //  }
+      //};
 
       $scope.uuid = DataManipulationService.generateTempGUID();
 
