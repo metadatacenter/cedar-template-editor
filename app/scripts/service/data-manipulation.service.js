@@ -698,7 +698,7 @@ define([
         // and they all have text fields filled in
         for (var i = 0; i < schema._valueConstraints.literals.length; i++) {
           if (schema._valueConstraints.literals[i].label.length == 0) {
-            schema._valueConstraints.literals[i].label = $translate.instant("VALIDATION.noNameField");
+            schema._valueConstraints.literals[i].label = $translate.instant("VALIDATION.noNameField") + "-" + i;
           }
         }
       }
