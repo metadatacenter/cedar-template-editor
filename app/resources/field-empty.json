@@ -3,6 +3,7 @@
   "@id": null,
   "@type": "https://schema.metadatacenter.org/core/TemplateField",
   "@context": {
+    "schema": "http://schema.org/",
     "pav": "http://purl.org/pav/",
     "cedar": "https://schema.metadatacenter.org/core/"
   },
