@@ -245,6 +245,10 @@ define([
                 if (parentModel[name] == undefined) {
                   // Not multiple instance
                   if (!DataManipulationService.isCardinalElement(value)) {
+
+                    console.log('value');
+                    console.log(value);
+
                     // Selection fields store an array of values
                     if ((value._ui.inputType == 'radio') || (value._ui.inputType == 'checkbox') || (value._ui.inputType == 'list')) {
                       parentModel[name] = [];
