@@ -108,6 +108,11 @@ var TemplateCreatorPage = function () {
     "properties"          : {
       "@context"           : {
         "properties"          : {
+          "schema": {
+            "enum": [
+              "http://schema.org/"
+            ]
+          },
           "pav"   : {
             "enum": [
               "http://purl.org/pav/"
@@ -693,7 +698,7 @@ var TemplateCreatorPage = function () {
 
               var first = finderPage.createFirstElementGridView();
               browser.wait(first.isDisplayed()).then(function () {
-                
+
                 finderPage.createFirstElementGridView().click();
                 browser.wait(finderPage.createFirstSelectedElementGridView().isDisplayed()).then(function () {
 
