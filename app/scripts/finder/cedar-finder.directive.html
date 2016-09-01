@@ -100,7 +100,7 @@
       </div>
     </div>
   </div>
-  <div ng-show="finder.resourceViewMode == 'grid'" cedar-infinite-scroll load-more="finder.loadMore()"
+  <div ng-if="finder.resourceViewMode == 'grid'" cedar-infinite-scroll load-more="finder.loadMore()"
       class="modal-body scrollable-content">
     <section class="all-items-view " ng-class="as-modal">
       <div class="container-fluid">
@@ -160,7 +160,7 @@
       </div>
     </section>
   </div>
-  <div cedar-infinite-scroll load-more="finder.loadMore()" ng-show="finder.resourceViewMode == 'list'" class="modal-body scrollable-content" >
+  <div cedar-infinite-scroll load-more="finder.loadMore()" ng-if="finder.resourceViewMode == 'list'" class="modal-body scrollable-content" >
     <section class="all-items-view " ng-class="as-modal">
         <div class="populate-form-boxes">
           <div class="list-view">
