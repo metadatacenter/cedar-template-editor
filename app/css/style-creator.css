@@ -14514,8 +14514,72 @@ table.apiKey td {
 #moveResourceModal .modal-content .modal-body .box-row.disabled {
   opacity: 0.5;
 }
+#shareResourceModal .modal-content {
+  max-width: 500px;
+}
 #shareResourceModal .modal-content .modal-body {
   max-height: 500px;
+}
+#shareResourceModal .modal-content .modal-body .bootstrap-select.small {
+  width: 80px;
+}
+#shareResourceModal .modal-content .modal-body .bootstrap-select.open .dropdown-menu {
+  padding: 0 !important;
+  border-radius: 0px !important;
+}
+#shareResourceModal .modal-content .modal-body .btn-info {
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  font-size: 18px;
+  margin: 5px 0;
+}
+#shareResourceModal .modal-content .modal-body .btn-info.btn-circle {
+  background: #5795ba;
+  color: #ffffff;
+  border: none;
+}
+#shareResourceModal .modal-content .modal-body .btn-info.btn-circle.compose {
+  background: #FF5722;
+}
+#shareResourceModal .modal-content .modal-body .btn-info.btn-circle.template {
+  background: #5097A5;
+}
+#shareResourceModal .modal-content .modal-body .btn-info.btn-circle.element {
+  background: #71977F;
+}
+#shareResourceModal .modal-content .modal-body .btn-info.btn-circle.metadata,
+#shareResourceModal .modal-content .modal-body .btn-info.btn-circle.instance {
+  background: #6A8B92;
+}
+#shareResourceModal .modal-content .modal-body .btn-info.btn-circle.folder {
+  background: #9E9E9E;
+}
+#shareResourceModal .modal-content .modal-body .btn-info.btn-circle-outline {
+  box-shadow: none;
+  background: #ffffff;
+  color: #5795ba;
+  border: 1px solid #5795ba;
+}
+#shareResourceModal .modal-content .modal-body .btn-info.btn-close {
+  box-shadow: none;
+  background: #666666;
+  color: #ffffff;
+  border: none;
+}
+#shareResourceModal .modal-content .modal-body .btn-info.btn-add {
+  height: 25px;
+  width: 25px;
+  border-radius: 50%;
+  display: inline-block;
+  vertical-align: middle;
+  margin: 0 10px;
+  -webkit-transition: all 0.3s 0.1s;
+  transition: all 0.3s 0.1s;
+  cursor: pointer;
+  padding: 0px 1px 1px 2px;
+  margin: 6px 25px;
+  outline: none;
 }
 @media (min-width: 768px) {
   #sidebar-left {

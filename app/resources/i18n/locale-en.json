@@ -241,7 +241,10 @@
       "title": "New folder"
     },
     "share": {
-      "title": "Share"
+      "title": "Share",
+      "manage": "Current sharing",
+      "add": "Share with user or group",
+      "addHint": "Share with"
     }
   },
   "ELEMENTEDITOR": {

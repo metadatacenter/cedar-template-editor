@@ -561,7 +561,7 @@ describe('element-creator', function () {
   });
 
   // github issue #406
-  for (var i = 1; i < fieldTypes.length; i++) {
+  for (var i = 0; i < fieldTypes.length; i++) {
     (function (fieldType) {
 
       // github issue #406 part 1 of 2: Verify that surround, field icon, and field name are present, Verify that the X icon is present on an field in the template and element editors and deletes the field

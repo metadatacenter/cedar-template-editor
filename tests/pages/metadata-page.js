@@ -7,7 +7,7 @@ var MetadataPage = function () {
   var testConfig = require('../config/test-env.js');
   var url = testConfig.baseUrl + '/dashboard';
 
-  var createToastyConfirmationPopup = element(by.id('toasty')).element(by.css('.toast'));
+  var createToastyConfirmationPopup = element(by.id('toasty')).element(by.css('.toasty-test-success'));
   var createMetadataMessage = 'The metadata have been created.';
   var toastyMessageText = element(by.id('toasty')).element(by.css('.toast')).element(by.css('.toast-msg'));
 

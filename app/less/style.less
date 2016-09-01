@@ -89,8 +89,8 @@ body {
   background: #f0f0f0;
   font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
   color: #333;
-  height:100%;
-  overflow:hidden;
+  height: 100%;
+  overflow: hidden;
 
 }
 
@@ -373,18 +373,18 @@ button {
   .nav-search {
     float: right;
     width: 50%;
-    margin-top:6px;
+    margin-top: 6px;
   }
 }
 
 .navbar.template {
   background-color: @header-template;
-  margin-right:10px;
+  margin-right: 10px;
 }
 
 .navbar.element {
   background-color: @header-element;
-  margin-right:10px;
+  margin-right: 10px;
 }
 
 .navbar.dashboard {
@@ -463,7 +463,7 @@ button {
         border-right-width: 0;
         border-left-width: 0;
         border-bottom-width: 0;
-        margin:0 5px;
+        margin: 0 5px;
       }
       button:hover {
         color: #ccc;
@@ -731,13 +731,12 @@ button {
   height: calc(~"100% - 55px");
 
   .center-panel {
-   // position: absolute;
+    // position: absolute;
     top: 0;
     //left: 200px;
     right: 0;
     padding: 30px 0;
     height: 100%;
-
 
   }
 
@@ -3868,7 +3867,7 @@ p.instructions {
 .element-actions {
   padding-top: 40px;
   border-top: 0px solid #ddd;
-  height:300px;
+  height: 300px;
 
   .favorite {
     float: left;
@@ -3940,7 +3939,7 @@ p.instructions {
 .template-actions {
   padding-top: 40px;
   border-top: 1px solid #ddd;
-  height:300px;
+  height: 300px;
 
   .favorite {
     float: left;
@@ -5592,7 +5591,6 @@ table.apiKey {
   background-color: #ddd;
 }
 
-
 ::-webkit-scrollbar-track {
   background-color: #f0f0f0;
   border-radius: 0px;
@@ -5659,14 +5657,14 @@ table.apiKey {
 
       .list-inline {
         label.title {
-          position:relative;
-          top:-3px;
+          position: relative;
+          top: -3px;
         }
         .spacer {
-          margin:0 15px;
+          margin: 0 15px;
         }
         .tool {
-          margin:0 5px;
+          margin: 0 5px;
         }
       }
 
@@ -5676,7 +5674,6 @@ table.apiKey {
         padding-right: 0px;
 
       }
-
 
       ul.list-unstyled > li {
         border-top: 1px solid @gray3;
@@ -5791,7 +5788,6 @@ table.apiKey {
     padding: 0;
     height: 400px;
 
-
     .class-actions {
       margin-top: 30px;
       font-size: 1em;
@@ -5820,8 +5816,8 @@ table.apiKey {
       }
 
       .info-side {
-        height:100%;
-        width:50%;
+        height: 100%;
+        width: 50%;
 
         border-left: 1px solid #e0e0e0;
         background: @white;
@@ -5833,16 +5829,16 @@ table.apiKey {
           background: @white;
           height: 400px;
           .no-title {
-            padding-top:100px;
+            padding-top: 100px;
             text-align: center;
-            font-size:1em;
+            font-size: 1em;
           }
         }
 
         .title-icon {
           font-size: 40px;
           text-align: center;
-          padding-top:30px;
+          padding-top: 30px;
 
           &.template {
             color: @button-template;
@@ -5889,8 +5885,8 @@ table.apiKey {
       .list-side {
 
         padding: 0 0 0 10px;
-        width:50%;
-        float:right;
+        width: 50%;
+        float: right;
 
         .category {
           padding: 10px;
@@ -6127,29 +6123,33 @@ table.apiKey {
   }
 
 }
+
 .template-container {
   //height: calc(~"100% - 100px");
-  height:100%;
-  width:100%;
+  height: 100%;
+  width: 100%;
 }
 
 .scrollable-content {
-  overflow-x:hidden;
-  overflow-y:auto; // manage scrollbar content overflow settings
+  overflow-x: hidden;
+  overflow-y: auto; // manage scrollbar content overflow settings
 }
+
 .scrollable-content::-webkit-scrollbar {
-  width:10px; // manage scrollbar width here
+  width: 10px; // manage scrollbar width here
 }
-.scrollable-content::-webkit-scrollbar  {
+
+.scrollable-content::-webkit-scrollbar {
   //display: none;
-  background:#f0f0f0;
+  background: #f0f0f0;
 }
+
 .scrollable-content::-webkit-scrollbar-thumb {
-  background:#ccc; // manage scrollbar thumb background color here
+  background: #ccc; // manage scrollbar thumb background color here
 }
 
 #renameResourceModal, #newFolderModal, #moveResourceModal, #shareResourceModal {
-  .modal-content{
+  .modal-content {
     border-radius: 0;
     border: 0;
     max-width: 400px;
@@ -6157,13 +6157,13 @@ table.apiKey {
     input {
       padding: 5px;
       width: 100%;
-      outline:none;
+      outline: none;
     }
-    .modal-body{
-      max-height:300px;
-      overflow-y:auto;
+    .modal-body {
+      max-height: 300px;
+      overflow-y: auto;
       .box-row {
-        padding:5px;
+        padding: 5px;
 
         .disabled {
           background: @med-gray;
@@ -6246,10 +6246,10 @@ table.apiKey {
   .modal-content {
     .modal-body {
       height: 300px;
-      cursor:pointer;
+      cursor: pointer;
       .box-row {
         &.disabled {
-          opacity:0.5;
+          opacity: 0.5;
         }
       }
     }
@@ -6258,14 +6258,86 @@ table.apiKey {
 
 #shareResourceModal {
   .modal-content {
+    max-width: 500px;
     .modal-body {
       max-height: 500px;
+      .bootstrap-select {
+        &.small {
+          width: 80px;
+        }
+        &.open {
+          .dropdown-menu {
+            padding: 0 !important;
+            border-radius: 0px !important;
+          }
+        }
+      }
+
+      .btn-info {
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        font-size: 18px;
+        margin: 5px 0;
+      }
+
+      .btn-info.btn-circle {
+        background: @brand-primary;
+        color: @white;
+        border: none;
+
+        &.compose {
+          background: @primary-accent;
+        }
+
+        &.template {
+          background: @button-template;
+        }
+
+        &.element {
+          background: @button-element;
+        }
+
+        &.metadata, &.instance {
+          background: @button-metadata;
+        }
+
+        &.folder {
+          background: @button-folder;
+        }
+      }
+      .btn-info.btn-circle-outline {
+        box-shadow: none;
+        background: @white;
+        color: @brand-primary;
+        border: 1px solid @brand-primary;
+      }
+      .btn-info.btn-close {
+        box-shadow: none;
+        background: @graytxt;
+        color: @white;
+        border: none;
+      }
+      .btn-info.btn-add {
+        height: 25px;
+        width: 25px;
+        border-radius: 50%;
+        display: inline-block;
+        vertical-align: middle;
+        margin: 0 10px;
+        -webkit-transition: all 0.3s 0.1s;
+        transition: all 0.3s 0.1s;
+        cursor: pointer;
+        padding:0px 1px 1px 2px;
+        margin:6px 25px;
+
+        outline:none;
+      }
     }
   }
 }
 
-
-@media (min-width: 768px){
+@media (min-width: 768px) {
   #sidebar-left {
     position: absolute;
     top: 0px;
@@ -6283,7 +6355,7 @@ table.apiKey {
     right: 16.66666667%;
     overflow-y: auto;
     &.without-info {
-      right:0;
+      right: 0;
     }
   }
 
@@ -6294,14 +6366,14 @@ table.apiKey {
     right: 0;
     overflow-y: auto;
     &.without-info {
-      width:0;
+      width: 0;
     }
   }
 }
 
-@media (max-width: 768px){
+@media (max-width: 768px) {
   body {
-    height:100%;
+    height: 100%;
     background-color: #f0f0f0;
     overflow-y: auto;
 

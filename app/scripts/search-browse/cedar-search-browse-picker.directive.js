@@ -93,244 +93,213 @@ define([
 
           // share
           vm.removeAccess = removeAccess;
-          vm.giveAccess = giveAccess;
-          vm.usersWithAccess = usersWithAccess;
-          vm.sharedUsers = sharedUsers;
-          vm.allUsers = allUsers;
-          vm.refreshUsers = refreshUsers;
+          vm.getUserOrGroup = getUserOrGroup;
+          vm.resetAccessPermission = resetAccessPermission;
+          vm.getDisplayName = getDisplayName;
+          vm.canBeOwner = canBeOwner;
+          vm.newOwner = newOwner;
+          vm.togglePermission = togglePermission;
+          vm.addAccess = addAccess;
+          vm.withAccess = withAccess;
+          vm.sharedUsersOrGroups = sharedUsersOrGroups;
+          vm.allUsersAndGroups = allUsersAndGroups;
           vm.selectedUser = null;
+          vm.selectedUserId = null;
           vm.giveAccessPermission = 'read';
+          vm.owner = 'own';
           vm.dummyPermissions = {
-            "owner": {
-              "id": "https://metadatacenter.org/users/8c99c2ae-8633-47d4-a049-0dce14795a45",
-              "firstName": "Attila Levente",
-              "lastName": "Egyedi",
-              "email": "attila.egyedi@gmail.com"
+            "owner"      : {
+              "id"         : "https://metadatacenter.org/users/8c99c2ae-8633-47d4-a049-0dce14795a45",
+              "firstName"  : "Attila Levente",
+              "lastName"   : "Egyedi",
+              "email"      : "attila.egyedi@gmail.com",
+              "displayName": "Attila Levente Egyedi"
             },
-            "userPermissions": [
+            "permissions": [
               {
-                "permission": "read",
-                "user": {
-                  "id": "https://metadatacenter.org/users/a8a4bd16-91e1-46b9-a1f2-5ac359a5ab4c",
-                  "firstName": "Ãbel",
-                  "lastName": "Egyedi",
-                  "email": "abel.egyedi@gmail.com",
+                "permission" : "read",
+                "userOrGroup": {
+                  "id"         : "https://metadatacenter.org/users/a8a4bd16-91e1-46b9-a1f2-5ac359a5ab4c",
+                  "firstName"  : "Ãbel",
+                  "lastName"   : "Egyedi",
+                  "email"      : "abel.egyedi@gmail.com",
                   "displayName": "Ãbel Egyedi"
                 }
               },
               {
-                "permission": "write",
-                "user": {
-                  "id": "https://metadatacenter.org/users/8c99c2ae-8633-47d4-a049-0dce14795a40",
-                  "firstName": "Sixth",
-                  "lastName": "Last",
-                  "email": "Sixth.last@gmail.com",
+                "permission" : "write",
+                "userOrGroup": {
+                  "id"         : "https://metadatacenter.org/users/8c99c2ae-8633-47d4-a049-0dce14795a40",
+                  "firstName"  : "Sixth",
+                  "lastName"   : "Last",
+                  "email"      : "Sixth.last@gmail.com",
                   "displayName": "Sixth Middle Last"
                 }
               },
               {
-                "permission": "read",
-                "user": {
-                  "id": "https://metadatacenter.org/users/8c99c2ae-8633-47d4-a049-0dce14795a04",
-                  "firstName": "Fourth",
-                  "lastName": "Last",
-                  "email": "Fourth.last@gmail.com",
+                "permission" : "read",
+                "userOrGroup": {
+                  "id"         : "https://metadatacenter.org/users/8c99c2ae-8633-47d4-a049-0dce14795a04",
+                  "firstName"  : "Fourth",
+                  "lastName"   : "Last",
+                  "email"      : "Fourth.last@gmail.com",
                   "displayName": "Fourth Middle Last"
                 }
               },
               {
-                "permission": "write",
-                "user": {
-                  "id": "https://metadatacenter.org/users/8c99c2ae-8633-47d4-a049-0dce14795a41",
-                  "firstName": "Seventh",
-                  "lastName": "Last",
-                  "email": "Seventh.last@gmail.com",
+                "permission" : "write",
+                "userOrGroup": {
+                  "id"         : "https://metadatacenter.org/users/8c99c2ae-8633-47d4-a049-0dce14795a41",
+                  "firstName"  : "Seventh",
+                  "lastName"   : "Last",
+                  "email"      : "Seventh.last@gmail.com",
                   "displayName": "Seventh Middle Last"
                 }
               },
               {
-                "permission": "read",
-                "user": {
-                  "id": "https://metadatacenter.org/users/8c99c2ae-8633-47d4-a049-0dce14795a13",
-                  "firstName": "Thirteenth",
-                  "lastName": "Last",
-                  "email": "Thirteenth.last@gmail.com",
+                "permission" : "read",
+                "userOrGroup": {
+                  "id"         : "https://metadatacenter.org/users/8c99c2ae-8633-47d4-a049-0dce14795a13",
+                  "firstName"  : "Thirteenth",
+                  "lastName"   : "Last",
+                  "email"      : "Thirteenth.last@gmail.com",
                   "displayName": "Thirteenth Middle Last"
                 }
               }
-            ],
-            "groupPermissions": []
-          };
-          vm.dummyAllUsers =  {
-            "users": [
-              {
-                "id": "https://metadatacenter.org/users/8c99c2ae-8633-47d4-a049-0dce14795a45",
-                "firstName": "First",
-                "lastName": "Last",
-                "email": "first.last@gmail.com",
-                "displayName": "First Middle Last"
-              },
-              {
-                "id": "https://metadatacenter.org/users/8c99c2ae-8633-47d4-a049-0dce14795a46",
-                "firstName": "Second",
-                "lastName": "Last",
-                "email": "second.last@gmail.com",
-                "displayName": "Second Middle Last"
-              },
-              {
-                "id": "https://metadatacenter.org/users/8c99c2ae-8633-47d4-a049-0dce14795a47",
-                "firstName": "Third",
-                "lastName": "Last",
-                "email": "Third.last@gmail.com",
-                "displayName": "Third Middle Last"
-              },
-              {
-                "id": "https://metadatacenter.org/users/8c99c2ae-8633-47d4-a049-0dce14795a48",
-                "firstName": "Fourth",
-                "lastName": "Last",
-                "email": "Fourth.last@gmail.com",
-                "displayName": "Fourth Middle Last"
-              },
-              {
-                "id": "https://metadatacenter.org/users/8c99c2ae-8633-47d4-a049-0dce14795a49",
-                "firstName": "Fifth",
-                "lastName": "Last",
-                "email": "Fifth.last@gmail.com",
-                "displayName": "Fifth Middle Last"
-              },
-              {
-                "id": "https://metadatacenter.org/users/8c99c2ae-8633-47d4-a049-0dce14795a40",
-                "firstName": "Sixth",
-                "lastName": "Last",
-                "email": "Sixth.last@gmail.com",
-                "displayName": "Sixth Middle Last"
-              },
-              {
-                "id": "https://metadatacenter.org/users/8c99c2ae-8633-47d4-a049-0dce14795a41",
-                "firstName": "Seventh",
-                "lastName": "Last",
-                "email": "Seventh.last@gmail.com",
-                "displayName": "Seventh Middle Last"
-              },
-              {
-                "id": "https://metadatacenter.org/users/8c99c2ae-8633-47d4-a049-0dce14795a42",
-                "firstName": "Eighth",
-                "lastName": "Last",
-                "email": "Eighth.last@gmail.com",
-                "displayName": "Eighth Middle Last"
-              },
-
             ]
           };
 
-          vm.dummySharedUsers =  {
+          vm.dummyAllGroups = {
+            "groups": [
+              {
+                "id"         : "https://metadatacenter.org/users/8c99c2ae-8633-47d4-a049-0dce14795a99",
+                "displayName": "Everybody"
+              },
+              {
+                "id"         : "https://metadatacenter.org/users/8c99c2ae-8633-47d4-a049-0dce14795a88",
+                "displayName": "Stanford"
+              },
+              {
+                "id"         : "https://metadatacenter.org/users/8c99c2ae-8633-47d4-a049-0dce14795a77",
+                "displayName": "Yale"
+              }
+            ]
+          };
+
+          vm.dummyAllUsers = {
             "users": [
               {
-                "id": "https://metadatacenter.org/users/8c99c2ae-8633-47d4-a049-0dce14795a01",
-                "firstName": "First",
-                "lastName": "Last",
-                "email": "first.last@gmail.com",
+                "id"         : "https://metadatacenter.org/users/a8a4bd16-91e1-46b9-a1f2-5ac359a5ab4c",
+                "firstName"  : "Ãbel",
+                "lastName"   : "Egyedi",
+                "email"      : "abel.egyedi@gmail.com",
+                "displayName": "Ãbel Egyedi"
+              },
+              {
+                "id"         : "https://metadatacenter.org/users/8c99c2ae-8633-47d4-a049-0dce14795a01",
+                "firstName"  : "First",
+                "lastName"   : "Last",
+                "email"      : "first.last@gmail.com",
                 "displayName": "First Middle Last"
               },
               {
-                "id": "https://metadatacenter.org/users/8c99c2ae-8633-47d4-a049-0dce14795a02",
-                "firstName": "Second",
-                "lastName": "Last",
-                "email": "second.last@gmail.com",
+                "id"         : "https://metadatacenter.org/users/8c99c2ae-8633-47d4-a049-0dce14795a02",
+                "firstName"  : "Second",
+                "lastName"   : "Last",
+                "email"      : "second.last@gmail.com",
                 "displayName": "Second Middle Last"
               },
               {
-                "id": "https://metadatacenter.org/users/8c99c2ae-8633-47d4-a049-0dce14795a03",
-                "firstName": "Third",
-                "lastName": "Last",
-                "email": "Third.last@gmail.com",
+                "id"         : "https://metadatacenter.org/users/8c99c2ae-8633-47d4-a049-0dce14795a03",
+                "firstName"  : "Third",
+                "lastName"   : "Last",
+                "email"      : "Third.last@gmail.com",
                 "displayName": "Third Middle Last"
               },
               {
-                "id": "https://metadatacenter.org/users/8c99c2ae-8633-47d4-a049-0dce14795a04",
-                "firstName": "Fourth",
-                "lastName": "Last",
-                "email": "Fourth.last@gmail.com",
+                "id"         : "https://metadatacenter.org/users/8c99c2ae-8633-47d4-a049-0dce14795a04",
+                "firstName"  : "Fourth",
+                "lastName"   : "Last",
+                "email"      : "Fourth.last@gmail.com",
                 "displayName": "Fourth Middle Last"
               },
               {
-                "id": "https://metadatacenter.org/users/8c99c2ae-8633-47d4-a049-0dce14795a05",
-                "firstName": "Fifth",
-                "lastName": "Last",
-                "email": "Fifth.last@gmail.com",
+                "id"         : "https://metadatacenter.org/users/8c99c2ae-8633-47d4-a049-0dce14795a05",
+                "firstName"  : "Fifth",
+                "lastName"   : "Last",
+                "email"      : "Fifth.last@gmail.com",
                 "displayName": "Fifth Middle Last"
               },
               {
-                "id": "https://metadatacenter.org/users/8c99c2ae-8633-47d4-a049-0dce14795a06",
-                "firstName": "Sixth",
-                "lastName": "Last",
-                "email": "Sixth.last@gmail.com",
+                "id"         : "https://metadatacenter.org/users/8c99c2ae-8633-47d4-a049-0dce14795a40",
+                "firstName"  : "Sixth",
+                "lastName"   : "Last",
+                "email"      : "Sixth.last@gmail.com",
                 "displayName": "Sixth Middle Last"
               },
               {
-                "id": "https://metadatacenter.org/users/8c99c2ae-8633-47d4-a049-0dce14795a07",
-                "firstName": "Seventh",
-                "lastName": "Last",
-                "email": "Seventh.last@gmail.com",
+                "id"         : "https://metadatacenter.org/users/8c99c2ae-8633-47d4-a049-0dce14795a07",
+                "firstName"  : "Seventh",
+                "lastName"   : "Last",
+                "email"      : "Seventh.last@gmail.com",
                 "displayName": "Seventh Middle Last"
               },
               {
-                "id": "https://metadatacenter.org/users/8c99c2ae-8633-47d4-a049-0dce14795a08",
-                "firstName": "Eighth",
-                "lastName": "Last",
-                "email": "Eighth.last@gmail.com",
+                "id"         : "https://metadatacenter.org/users/8c99c2ae-8633-47d4-a049-0dce14795a08",
+                "firstName"  : "Eighth",
+                "lastName"   : "Last",
+                "email"      : "Eighth.last@gmail.com",
                 "displayName": "Eighth Middle Last"
               },
               {
-                "id": "https://metadatacenter.org/users/8c99c2ae-8633-47d4-a049-0dce14795a09",
-                "firstName": "Ninth",
-                "lastName": "Last",
-                "email": "Ninth.last@gmail.com",
+                "id"         : "https://metadatacenter.org/users/8c99c2ae-8633-47d4-a049-0dce14795a09",
+                "firstName"  : "Ninth",
+                "lastName"   : "Last",
+                "email"      : "Ninth.last@gmail.com",
                 "displayName": "Ninth Middle Last"
               },
               {
-                "id": "https://metadatacenter.org/users/8c99c2ae-8633-47d4-a049-0dce14795a10",
-                "firstName": "Tenth",
-                "lastName": "Last",
-                "email": "Tenth.last@gmail.com",
+                "id"         : "https://metadatacenter.org/users/8c99c2ae-8633-47d4-a049-0dce14795a10",
+                "firstName"  : "Tenth",
+                "lastName"   : "Last",
+                "email"      : "Tenth.last@gmail.com",
                 "displayName": "Tenth Middle Last"
               },
               {
-                "id": "https://metadatacenter.org/users/8c99c2ae-8633-47d4-a049-0dce14795a11",
-                "firstName": "Eleventh",
-                "lastName": "Last",
-                "email": "Eleventh.last@gmail.com",
+                "id"         : "https://metadatacenter.org/users/8c99c2ae-8633-47d4-a049-0dce14795a11",
+                "firstName"  : "Eleventh",
+                "lastName"   : "Last",
+                "email"      : "Eleventh.last@gmail.com",
                 "displayName": "Eleventh Middle Last"
               },
               {
-                "id": "https://metadatacenter.org/users/8c99c2ae-8633-47d4-a049-0dce14795a12",
-                "firstName": "Twelth",
-                "lastName": "Last",
-                "email": "Twelth.last@gmail.com",
+                "id"         : "https://metadatacenter.org/users/8c99c2ae-8633-47d4-a049-0dce14795a12",
+                "firstName"  : "Twelth",
+                "lastName"   : "Last",
+                "email"      : "Twelth.last@gmail.com",
                 "displayName": "Twelth Middle Last"
               },
               {
-                "id": "https://metadatacenter.org/users/8c99c2ae-8633-47d4-a049-0dce14795a13",
-                "firstName": "Thirteenth",
-                "lastName": "Last",
-                "email": "Thirteenth.last@gmail.com",
+                "id"         : "https://metadatacenter.org/users/8c99c2ae-8633-47d4-a049-0dce14795a13",
+                "firstName"  : "Thirteenth",
+                "lastName"   : "Last",
+                "email"      : "Thirteenth.last@gmail.com",
                 "displayName": "Thirteenth Middle Last"
               },
               {
-                "id": "https://metadatacenter.org/users/8c99c2ae-8633-47d4-a049-0dce14795a14",
-                "firstName": "Fourteenth",
-                "lastName": "Last",
-                "email": "Fourteenth.last@gmail.com",
+                "id"         : "https://metadatacenter.org/users/8c99c2ae-8633-47d4-a049-0dce14795a14",
+                "firstName"  : "Fourteenth",
+                "lastName"   : "Last",
+                "email"      : "Fourteenth.last@gmail.com",
                 "displayName": "Fourteenth Middle Last"
               },
               {
-                "id": "https://metadatacenter.org/users/8c99c2ae-8633-47d4-a049-0dce14795a15",
-                "firstName": "Fifteenth",
-                "lastName": "Last",
-                "email": "Fifteenth.last@gmail.com",
+                "id"         : "https://metadatacenter.org/users/8c99c2ae-8633-47d4-a049-0dce14795a15",
+                "firstName"  : "Fifteenth",
+                "lastName"   : "Last",
+                "email"      : "Fifteenth.last@gmail.com",
                 "displayName": "Fifteenth Middle Last"
-              },
-
+              }
             ]
           };
 
@@ -1519,38 +1488,145 @@ define([
 
           // share...
 
-          function sharedUsers() {
-            return vm.dummySharedUsers.users;
+          function togglePermission(access) {
+            access.permission = access.permission === 'read' ? 'write' : 'read';
           }
+
+          function sharedUsersOrGroups() {
+            return vm.dummySharedUsersOrGroups.usersOrGroups;
+          }
+
           function updatePermission(access, value) {
             console.log('updatePermission');
 
           }
-          function usersWithAccess() {
-            return vm.dummyPermissions.userPermissions;
+
+          function canBeOwner(userOrGroup) {
+            return userOrGroup.hasOwnProperty('email');
           }
-          function allUsers(user) {
-            return vm.dummyAllUsers.users;
+
+          function newOwner(access, domId) {
+            console.log('newOwner');
+            console.log(access);
+            addAccess(access.userOrGroup.id, 'own', domId);
           }
-          function refreshUsers() {
-            console.log('refreshUsers ');
+
+          function withAccess() {
+            return vm.dummyPermissions.permissions;
           }
-          function removeAccess(user) {
-            console.log('removeAccess');console.log(user);
-            for (var i = 0;i<  vm.dummyPermissions.userPermissions.length; i++) {
-              if(vm.dummyPermissions.userPermissions[i].user.id === user.id) {
-                vm.dummyPermissions.userPermissions.splice(i, 1);
+
+          function allUsersAndGroups() {
+            var allUsersAndGroups = vm.dummyAllUsers.users.concat(vm.dummyAllGroups.groups);
+            return allUsersAndGroups.sort(dynamicSort("displayName"));
+          }
+
+          function dynamicSort(property) {
+            var sortOrder = 1;
+            if (property[0] === "-") {
+              sortOrder = -1;
+              property = property.substr(1);
+            }
+            return function (a, b) {
+              var result = (a[property] < b[property]) ? -1 : (a[property] > b[property]) ? 1 : 0;
+              return result * sortOrder;
+            }
+          }
+
+          function removeAccess(userOrGroup) {
+            console.log('removeAccess');
+            console.log(userOrGroup);
+            for (var i = 0; i < vm.dummyPermissions.permissions.length; i++) {
+              if (vm.dummyPermissions.permissions[i].userOrGroup.id === userOrGroup.id) {
+                vm.dummyPermissions.permissions.splice(i, 1);
                 return;
               }
             }
           }
-          function giveAccess(user) {
-            removeAccess(user);
-            var access = {};
-            access.permission = vm.giveAccessPermission;
-            access.user = user;
-            vm.dummyPermissions.userPermissions.push(access);
+
+          function resetAccessPermission() {
+console.log('resetAccessPermission');
+
+            var userOrGroup = getUserOrGroup(vm.selectedUserId);
+            if (!isUser(userOrGroup) && vm.giveAccessPermission === 'own') {
+              vm.giveAccessPermission === 'read';
+            }
+
           }
+
+          function getUserOrGroup(id) {
+            for (var i = 0; i < vm.dummyAllGroups.groups.length; i++) {
+              if (vm.dummyAllGroups.groups[i].id === id) {
+                return vm.dummyAllGroups.groups[i];
+              }
+            }
+            for (var i = 0; i < vm.dummyAllUsers.users.length; i++) {
+              if (vm.dummyAllUsers.users[i].id === id) {
+                return vm.dummyAllUsers.users[i];
+              }
+            }
+          }
+          function getDisplayName(userOrGroup) {
+            var result = "";
+            if (isUser(userOrGroup)) {
+              result = userOrGroup.displayName;
+            } else {
+              result = "<strong>" + userOrGroup.displayName + "</strong>";
+            }
+            return result;
+          }
+
+          function isUser(obj) {
+            return obj.hasOwnProperty('email');
+          }
+
+          function addAccess(userOrGroupId, permission, domId) {
+            console.log('giveAccess ' + userOrGroupId + permission);
+
+            var userOrGroup = getUserOrGroup(userOrGroupId);
+            console.log(userOrGroup);
+
+
+            if (userOrGroup) {
+
+              if (permission === 'own') {
+                console.log('own');
+
+                // give write access to the current owner
+                var access = {};
+                access.permission = 'write';
+                access.userOrGroup = vm.dummyPermissions.owner;
+                vm.dummyPermissions.permissions.push(access);
+
+                // give owner access to userOrGroup
+                removeAccess(userOrGroup);
+                vm.dummyPermissions.owner = userOrGroup;
+                vm.owner = userOrGroup;
+
+                // scroll to new owner at the top
+                $timeout(function () {
+                  var scroller = document.getElementById(domId);
+                  scroller.scrollTop = 0;
+                }, 0, false);
+
+              } else {
+                // remove the current access just in case there is one
+                removeAccess(userOrGroup);
+
+                // create a new access for userOrGroup
+                var access = {};
+                access.permission = vm.giveAccessPermission;
+                access.userOrGroup = userOrGroup;
+                vm.dummyPermissions.permissions.push(access);
+
+                // scroll to this guy
+                $timeout(function () {
+                  var scroller = document.getElementById(domId);
+                  scroller.scrollTop = scroller.scrollHeight;
+                }, 0, false);
+              }
+            }
+          }
+
 
         }
 

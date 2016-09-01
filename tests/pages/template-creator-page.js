@@ -47,7 +47,7 @@ var TemplateCreatorPage = function () {
   var removeElementButton = element(by.css('.element-root  .remove'));
   var createToolbar = element(by.id('toolbar'));
 
-  var createToastyConfirmationPopup = element(by.id('toasty')).element(by.css('.toast'));
+  var createToastyConfirmationPopup = element(by.id('toasty')).element(by.css('.toasty-type-success'));
   var toastyMessageText = element(by.id('toasty')).element(by.css('.toast')).element(by.css('.toast-msg'));
   var createConfirmationDialog = element(by.css('.sweet-alert'));
   var sweetAlertCancelAttribute = 'data-has-cancel-button';

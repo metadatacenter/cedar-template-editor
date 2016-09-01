@@ -819,46 +819,77 @@
               aria-hidden="true">&times;</span></button>
           <h4 class="modal-title" translate>DASHBOARD.share.title</h4>
         </div>
-        <div class="modal-body">
 
-          <h5>Users with access</h5>
-          <div ng-model="dc.dummyPermissions" style="height:200px;overflow-y:scroll;overflow-x:hidden;border:1px solid #ccc;">
-            <div class="row" ng-repeat="access in dc.usersWithAccess()">
-              <div class="col-sm-8">{{access.user.displayName}}<br/>{{user.email}}</div>
-              <div class="col-sm-2">
-                <select ng-model="access.permission" on-change="dc.updatePermission(access, 'read')">
-                  <option value="read">read</option>
-                  <option value="write">write</option>
-                </select>
-              </div>
+        <div class="modal-body" style="overflow-y:scroll;">
 
-              <button class="close col-sm-2" type="button" ng-click="dc.removeAccess(access.user)"><span
+          <h5 translate>DASHBOARD.share.add</h5>
+
+
+          <div style="border-width:0px;margin-right:15px">
+            <div class="row" style="padding: 5px 0" ng-init="dc.selectedUserId = dc.allUsersAndGroups()[0].id">
+
+              <button class="col-sm-2 pull-right btn btn-sm btn-info btn-circle btn-add"  type="button" tooltip='{{"DASHBOARD.share.addHint" | translate}}'
+                  tooltip-trigger
+                  tooltip-animation="false"
+                  tooltip-placement="top"
+                  data-toggle="tooltip"
+                  ng-click="dc.addAccess(dc.selectedUserId, dc.giveAccessPermission, 'shared-users')">
+                <!--<span aria-hidden="true">&plus;</span>-->
+                <i class="fa fa-plus"></i>
+              </button>
+
+              <select data-size="5"  data-dropupAuto="false" class="dropup col-sm-6 "  select-picker ng-model="dc.selectedUserId"  ng-change="dc.resetAccessPermission()" ng-options="user.id as dc.getDisplayName(user) for user in dc.allUsersAndGroups()"></select>
+
+              <select  ng-model="dc.giveAccessPermission" class="dropup col-sm-4 pull-right" select-picker  ng-change="dc.resetAccessPermission()">
+                <option value="read">can read</option>
+                <option value="write">can write</option>
+                <option ng-if="dc.canBeOwner(dc.getUserOrGroup(dc.selectedUserId))" value="own">is owner</option>
+              </select>
+
+            </div>
+          </div>
+
+          <h5 translate>DASHBOARD.share.manage</h5>
+
+          <div ng-model="dc.dummyPermissions"  id="shared-users"
+              style="height:300px;overflow-y:scroll;overflow-x:hidden;border:1px solid #ccc">
+            <div class="row" style="padding: 5px 0">
+              <div class="col-sm-6" style="padding: 10px 0 0 20px;">{{dc.dummyPermissions.owner.displayName}}</div>
+              <select ng-model="dc.owner" class="col-sm-4" select-picker style="margin:5px 0">
+                <option value="own">is owner</option>
+              </select>
+            </div>
+
+            <div class="row" style="padding: 5px 0" ng-repeat="access in dc.withAccess()">
+              <div class="col-sm-6" style="padding: 10px 0 0 20px;">{{access.userOrGroup.displayName}}</div>
+              <select ng-model="access.permission" ng-change="dc.newOwner(access, 'shared-users')" class="col-sm-4" select-picker
+                  style="margin:5px 0">
+                <option value="read">can read</option>
+                <option value="write">can write</option>
+                <option ng-if="dc.canBeOwner(access.userOrGroup)" value="own">is owner</option>
+              </select>
+              <button class="close col-sm-2"  type="button" tooltip="remove"
+                  tooltip-trigger
+                  tooltip-animation="false"
+                  tooltip-placement="top"
+                  data-toggle="tooltip"
+                  ng-click="dc.removeAccess(access.userOrGroup)"><span
                   aria-hidden="true">&times;</span></button>
             </div>
           </div>
 
-          <div style="margin-top:10px;">
-            <h5>Give access to user</h5>
-            <div class="row">
-              <div class="col-sm-8">
-              <select  name="select user" multiple="false" ng-model="dc.selectedShareUser"  style="height:200px;overflow-y:scroll;overflow-x:hidden;border:1px solid #ccc;width:100%;border:1px solid #ccc">
-                <option ng-repeat="user in dc.dummyAllUsers.users" ng-value="user.id" ng-click="dc.giveAccess(user);">{{user.displayName}}</option>
-              </select>
-              </div>
-              <div class="col-sm-4">
-              <select  ng-model="dc.giveAccessPermission" >
-                <option value="read">read</option>
-                <option value="write">write</option>
-              </select>
-                </div>
-            </div>
 
-          </div>
 
+          <!--<div style="height:200px;overflow-y:scroll;overflow-x:hidden;border:1px solid #ccc">-->
+            <!--<div class="row">-->
+
+            <!--</div>-->
+          <!--</div>-->
         </div>
+
         <div class="modal-footer actions">
           <div class="clear-save">
-            <button type="button" data-dismiss="modal" aria-label="Save" class="btn btn-save confirm"> Save </button>
+            <button type="button" data-dismiss="modal" aria-label="Save" class="btn btn-save confirm"> Save</button>
           </div>
         </div>
       </div>
@@ -866,3 +897,4 @@
   </div>
 </section>
 <!-- share resource modal -->
+
