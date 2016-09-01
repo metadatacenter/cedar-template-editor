@@ -17,6 +17,11 @@
   "properties": {
     "@context": {
       "properties": {
+        "schema": {
+          "enum": [
+            "http://schema.org/"
+          ]
+        },
         "pav": {
           "enum": [
             "http://purl.org/pav/"

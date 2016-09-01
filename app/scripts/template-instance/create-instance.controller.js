@@ -38,7 +38,7 @@ define([
           function (instanceResponse) {
             $scope.instance = instanceResponse.data;
             $scope.isEditData = true;
-            $rootScope.documentTitle = $scope.instance._ui.title;
+            $rootScope.documentTitle = $scope.instance['schema:name'];
             AuthorizedBackendService.doCall(
                 TemplateService.getTemplate(instanceResponse.data._templateId),
                 function (templateResponse) {
@@ -67,12 +67,9 @@ define([
         // '@id' and 'templateId' haven't been populated yet, create now
         // $scope.instance['@id'] = $rootScope.idBasePath + $rootScope.generateGUID();
         $scope.instance['_templateId'] = $routeParams.templateId;
-        // Create _ui field that will store information used by the UI
-        $scope.instance._ui = {};
-        $scope.instance._ui['title'] = $translate.instant("GENERATEDVALUE.instanceTitle",
-            {title: $scope.form._ui.title});
-        $scope.instance._ui['description'] = $translate.instant("GENERATEDVALUE.instanceDescription",
-            {description: $scope.form._ui.description});
+        // Create fields that will store information used by the UI
+        $scope.instance['schema:name'] = $scope.form._ui.title + $translate.instant("GENERATEDVALUE.instanceTitle")
+        $scope.instance['schema:description'] = $scope.form._ui.description + $translate.instant("GENERATEDVALUE.instanceDescription");
         // Make create instance call
         var queryParams = $location.search();
         AuthorizedBackendService.doCall(
