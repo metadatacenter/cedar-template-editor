@@ -242,10 +242,10 @@
     },
     "share": {
       "title": "Share",
-      "manage": "Shared with users",
-      "add": "With user",
+      "manage": "",
+      "add": "With users",
       "addHint": "Share with",
-      "public": "With everybody"
+      "public": "With groups"
     }
   },
   "ELEMENTEDITOR": {

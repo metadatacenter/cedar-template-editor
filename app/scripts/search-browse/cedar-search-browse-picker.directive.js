@@ -102,14 +102,16 @@ define([
           vm.removeShare = removeShare;
           vm.newOwner = newOwner;
           vm.getName = getName;
-          vm.updateGroup = updateGroup;
 
-          vm.publicPermission = 'read';
-          vm.isPublic = null;
 
-          vm.selectedUser = null;
+          //vm.publicPermission = 'read';
+          //vm.isPublic = null;
+
+
           vm.selectedUserId = null;
-          vm.giveAccessPermission = 'read';
+          vm.giveUserPermission = 'read';
+          vm.selectedGroupId = null;
+          vm.giveGroupPermission = 'read';
           vm.owner = 'own';
           // from server
           vm.resourceUsers = null;
@@ -1316,10 +1318,19 @@ define([
 
 
           function updateShare(node, permission) {
+            console.log('updateShare')
             for (var i = 0; i < vm.resourcePermissions.userPermissions.length; i++) {
               if (node.id === vm.resourcePermissions.userPermissions[i].user.id) {
                 // found it, update to new permission
                 vm.resourcePermissions.userPermissions[i].permission = permission;
+                return true;
+              }
+            }
+            console.log(vm.resourcePermissions);
+            for (var i = 0; i < vm.resourcePermissions.groupPermissions.length; i++) {
+              if (node.id === vm.resourcePermissions.groupPermissions[i].group.id) {
+                // found it, update to new permission
+                vm.resourcePermissions.groupPermissions[i].permission = permission;
                 return true;
               }
             }
@@ -1329,7 +1340,7 @@ define([
           function resetAccessPermission() {
             var node = getNode(vm.selectedUserId);
             if (!vm.canBeOwner(node)) {
-              vm.giveAccessPermission === 'read';
+              vm.giveUserPermission === 'read';
             }
           }
 
@@ -1347,7 +1358,6 @@ define([
               }
             }
           }
-
 
 
           function isUser(node) {
@@ -1374,7 +1384,7 @@ define([
                 resource,
                 function (response) {
                   vm.resourcePermissions = response;
-                  console.log(response);
+                  //vm.isPublic = vm.resourcePermissions.groupPermissions.length > 0;
                 },
                 function (error) {
                   UIMessageService.showBackendError('SERVER.' + resource.nodeType.toUpperCase() + '.load.error', error);
@@ -1394,7 +1404,6 @@ define([
                 vm.resourcePermissions,
                 function (response) {
                   vm.resourcePermissions = response;
-                  console.log(response);
 
                 },
                 function (error) {
@@ -1402,10 +1411,6 @@ define([
                 }
             );
           };
-
-
-
-
 
           function getUsers() {
 
@@ -1431,6 +1436,7 @@ define([
             resourceService.getGroups(
                 function (response) {
                   vm.resourceGroups = response.groups;
+                  vm.selectedGroupId = vm.resourceGroups[0].id;
                 },
                 function (error) {
                   UIMessageService.showBackendError('SERVER.' + resource.nodeType.toUpperCase() + '.load.error', error);
@@ -1450,26 +1456,31 @@ define([
             for (var i = 0; i < vm.resourcePermissions.userPermissions.length; i++) {
               if (node.id === vm.resourcePermissions.userPermissions[i].user.id) {
                 vm.resourcePermissions.userPermissions.splice(i, 1);
-                console.log('removeShare');
-                console.log(vm.resourcePermissions);
+                return;
+              }
+            }
+            for (var i = 0; i < vm.resourcePermissions.groupPermissions.length; i++) {
+              if (node.id === vm.resourcePermissions.groupPermissions[i].group.id) {
+                vm.resourcePermissions.groupPermissions.splice(i, 1);
+                return;
               }
             }
           }
 
-          function updateGroup() {
-            console.log(vm.resourceGroups);
-
-            if (vm.isPublic && vm.resourceGroups.length > 0) {
-              var share = {};
-              share.group = vm.resourceGroups[0];
-              share.permission = vm.publicPermission;
-              vm.resourcePermissions.groupPermissions = [];
-              vm.resourcePermissions.groupPermissions.push(share);
-            } else {
-              vm.resourcePermissions.groupPermissions = [];
-            }
-            console.log(vm.resourcePermissions.groupPermissions);
-          }
+          //function updateGroup() {
+          //  console.log(vm.resourceGroups);
+          //
+          //  if (vm.isPublic && vm.resourceGroups.length > 0) {
+          //    var share = {};
+          //    share.group = vm.resourceGroups[0];
+          //    share.permission = vm.publicPermission;
+          //    vm.resourcePermissions.groupPermissions = [];
+          //    vm.resourcePermissions.groupPermissions.push(share);
+          //  } else {
+          //    vm.resourcePermissions.groupPermissions = [];
+          //  }
+          //  console.log(vm.resourcePermissions.groupPermissions);
+          //}
 
           function getName(node) {
             if (node) {
@@ -1479,11 +1490,14 @@ define([
 
           }
 
-          function addShare(id, permission, domId) {
+          function addShare(id, permission, domId, nodeType) {
+            console.log('addShare')
 
             var node = getNode(id);
             var share = {};
             if (node) {
+
+              console.log('got node' + permission)
 
               if (permission === 'own') {
 
@@ -1499,12 +1513,24 @@ define([
 
               } else {
                 // can we just update it
+                console.log(isOwner(node));
+                console.log(updateShare(node, permission));
+
                 if (!isOwner(node) && !updateShare(node, permission)) {
 
-                  // create the new share for this node
-                  share.permission = vm.giveAccessPermission;
-                  share.user = node;
-                  vm.resourcePermissions.userPermissions.push(share);
+                  if (nodeType === 'group') {
+                    // create the new share for this group
+                    console.log('addShare group ' + id + permission)
+                    share.permission = vm.giveGroupPermission;
+                    share.group = node;
+                    vm.resourcePermissions.groupPermissions.push(share);
+
+                  } else {
+                    // create the new share for this user
+                    share.permission = vm.givUserPermission;
+                    share.user = node;
+                    vm.resourcePermissions.userPermissions.push(share);
+                  }
                 }
               }
               // scroll to this node
@@ -1514,7 +1540,6 @@ define([
               }, 0, false);
             }
           }
-
 
         }
 

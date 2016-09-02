@@ -51,7 +51,8 @@
             <li ng-if="dc.isTemplate()"><a href="#" ng-click="dc.launchInstance()">Populate</a></li>
             <li ng-if="!dc.isFolder()"><a href="#" ng-click="dc.editResource()">Edit</a></li>
             <li role="separator" class="divider"></li>
-            <li><a href="#">Share...</a></li>
+            <li><a href="#" data-toggle="modal" ng-click="dc.openShare(resource)"
+                data-target="#shareResourceModal">Share...</a></li>
             <li><a href="#" ng-click="dc.showMoveResourceModal('#moveResourceModal')">Move to...</a></li>
             <li><a href="#" data-toggle="modal" data-target="#renameResourceModal">Rename...</a></li>
             <li ng-if="!dc.isFolder()"><a href="#" ng-click="dc.copyResource()">Copy</a></li>
@@ -466,7 +467,8 @@
                           ng-click="dc.editResource(resource)">Edit</a></li>
                       <li><a href="#" ng-click="dc.showInfoPanel(resource)">Info</a></li>
                       <li role="separator" class="divider"></li>
-                      <li><a href="#" data-toggle="modal" data-target="#shareResourceModal">Share...</a></li>
+                      <li><a href="#" data-toggle="modal" ng-click="dc.openShare(resource)"
+                          data-target="#shareResourceModal">Share...</a></li>
                       <li><a href="#" ng-click="dc.showMoveResourceModal('#moveResourceModal')">Move to...</a></li>
                       <li><a href="#" data-toggle="modal" data-target="#renameResourceModal">Rename...</a></li>
                       <li role="separator" class="divider"></li>
@@ -506,7 +508,8 @@
                           ng-click="dc.editResource(resource)">Edit</a></li>
                       <li><a href="#" ng-click="dc.showInfoPanel(resource)">Info</a></li>
                       <li role="separator" class="divider"></li>
-                      <li><a href="#" data-toggle="modal" data-target="#shareResourceModal">Share...</a></li>
+                      <li><a href="#" data-toggle="modal" ng-click="dc.openShare(resource)"
+                          data-target="#shareResourceModal">Share...</a></li>
                       <li><a href="#" ng-click="dc.showMoveResourceModal('#moveResourceModal')">Move to...</a></li>
                       <li><a href="#" data-toggle="modal" data-target="#renameResourceModal">Rename...</a></li>
                       <li><a href="#" ng-if="!dc.isFolder()" ng-click="dc.copyResource()">Copy</a></li>
@@ -827,27 +830,35 @@
 
           <h5 translate>DASHBOARD.share.public</h5>
 
+
           <div style="border-width:0px;margin-right:15px">
-          <div class="row">
+            <div class="row" style="padding: 5px 0">
 
-            <div class="col-sm-6"><span><input type="checkbox" name="public" ng-model="dc.isPublic" ng-click="dc.updateGroup()"></span></div>
+              <button class="col-sm-2 pull-right btn btn-sm btn-info btn-circle btn-add" type="button"
+                  tooltip='{{"DASHBOARD.share.addHint" | translate}}'
+                  tooltip-trigger
+                  tooltip-animation="false"
+                  tooltip-placement="top"
+                  data-toggle="tooltip"
+                  ng-click="dc.addShare(dc.selectedGroupId, dc.giveGroupPermission, 'shared-users', 'group')">
+                <!--<span aria-hidden="true">&plus;</span>-->
+                <i class="fa fa-plus"></i>
+              </button>
 
-            <div ng-if="dc.isPublic" >
-              <select ng-model="dc.resourcePermissions.groupPermissions[0].permission" class="col-sm-4">
+              <select id="select-picker-group" data-size="5" data-dropupAuto="false" class="dropdown col-sm-6"
+                  ng-model="dc.selectedGroupId"   select-model="dc.resourceGroups"
+                  select-picker cedar-live-search="true"
+                  ng-options="group.id as group.displayName for group in dc.resourceGroups"></select>
+
+              <select ng-model="dc.giveGroupPermission" class="dropdown col-sm-4 pull-right"  select-picker >
                 <option value="read">can read</option>
                 <option value="write">can write</option>
               </select>
-            </div>
-            <div ng-if="!dc.isPublic" >
-            <select ng-model="dc.everybodyPermission" class="col-sm-4">
-              <option value="read">can read</option>
-              <option value="write">can write</option>
-            </select>
-              </div>
-          </div>
-            </div>
 
-          <hr />
+            </div>
+          </div>
+
+
 
           <h5 translate>DASHBOARD.share.add</h5>
 
@@ -860,23 +871,26 @@
                   tooltip-animation="false"
                   tooltip-placement="top"
                   data-toggle="tooltip"
-                  ng-click="dc.addShare(dc.selectedUserId, dc.giveAccessPermission, 'shared-users')">
+                  ng-click="dc.addShare(dc.selectedUserId, dc.giveUserPermission, 'shared-users', 'user')">
                 <!--<span aria-hidden="true">&plus;</span>-->
                 <i class="fa fa-plus"></i>
               </button>
 
               <select id="select-picker-users" data-size="5" data-dropupAuto="false" class="dropdown col-sm-6"
-                  ng-model="dc.selectedUserId" ng-change="dc.resetOwner()"
+                  ng-model="dc.selectedUserId" ng-change="dc.resetOwner()"  select-model="dc.resourceUsers"
+                  select-picker cedar-live-search="true"
                   ng-options="user.id as dc.getName(user) for user in dc.resourceUsers"></select>
 
-              <select ng-model="dc.giveAccessPermission" class="dropdown col-sm-4 pull-right">
+              <select ng-model="dc.giveUserPermission" class="dropdown col-sm-4 pull-right"  select-picker >
                 <option value="read">can read</option>
                 <option value="write">can write</option>
-                <option ng-if="dc.canBeOwner(dc.getNode(dc.selectedUserId))" value="own">is owner</option>
+                <option value="own">is owner</option>
               </select>
 
             </div>
           </div>
+
+          <hr />
 
 
           <h5 translate>DASHBOARD.share.manage</h5>
@@ -886,16 +900,37 @@
             <div class="row" style="padding: 5px 0">
               <div class="col-sm-6" style="padding: 10px 0 0 20px;">{{dc.getName(dc.resourcePermissions.owner)}}
               </div>
-              <select class="col-sm-4" style="margin:5px 0">
+              <select class="col-sm-4" style="margin:5px 0"  select-picker  >
                 <option value="own">is owner</option>
               </select>
             </div>
 
+            <div class="row" style="padding: 5px 0" ng-repeat="share in dc.resourcePermissions.groupPermissions">
+              <div class="col-sm-6" style="padding: 10px 0 0 20px;">{{share.group.displayName}}
+              </div>
+
+              <select ng-model="share.permission"  class="col-sm-4"  select-model="dc.resourcePermissions.groupPermissions"
+                  select-picker cedar-live-search="true"
+                  style="margin:5px 0">
+                <option value="read">can read</option>
+                <option value="write">can write</option>
+              </select>
+              <button class="close col-sm-2" type="button" tooltip="remove"
+                  tooltip-trigger
+                  tooltip-animation="false"
+                  tooltip-placement="top"
+                  data-toggle="tooltip"
+                  ng-click="dc.removeShare(share.group)"><span
+                  aria-hidden="true">&times;</span></button>
+            </div>
+
+
             <div class="row" style="padding: 5px 0" ng-repeat="share in dc.resourcePermissions.userPermissions">
               <div class="col-sm-6" style="padding: 10px 0 0 20px;">{{dc.getName(share.user)}}
               </div>
-              <select ng-model="share.permission"  class="col-sm-4"
-                  style="margin:5px 0">
+
+              <select ng-model="share.permission"  class="col-sm-4"  select-model="dc.resourcePermissions.userPermissions"
+                  select-picker cedar-live-search="true" style="margin:5px 0">
                 <option value="read">can read</option>
                 <option value="write">can write</option>
               </select>
