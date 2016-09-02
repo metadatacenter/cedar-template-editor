@@ -59,7 +59,7 @@
         }
       ]
     },
-    "_templateId": {
+    "schema:isBasedOn": {
       "type": "string",
       "format": "uri"
     },
@@ -82,7 +82,7 @@
   },
   "required": [
     "@id",
-    "_templateId"
+    "schema:isBasedOn"
   ],
   "pav:createdOn": null,
   "pav:createdBy": null,

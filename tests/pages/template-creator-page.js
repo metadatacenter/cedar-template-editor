@@ -150,7 +150,7 @@ var TemplateCreatorPage = function () {
           }
         ]
       },
-      "_templateId"        : {
+      "schema:isBasedOn"        : {
         "type"  : "string",
         "format": "uri"
       },
@@ -173,7 +173,7 @@ var TemplateCreatorPage = function () {
     },
     "required"            : [
       "@id",
-      "_templateId"
+      "schema:isBasedOn"
     ],
     "pav:createdOn"       : null,
     "pav:createdBy"       : null,
