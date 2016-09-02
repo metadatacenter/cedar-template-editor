@@ -4,7 +4,7 @@
   "@type": "https://schema.metadatacenter.org/core/Template",
   "@context": {
     "pav": "http://purl.org/pav/",
-    "cedar": "https://schema.metadatacenter.org/core/"
+    "oslc": "http://open-services.net/ns/core#"
   },
   "type": "object",
   "title": "",
@@ -17,14 +17,19 @@
   "properties": {
     "@context": {
       "properties": {
+        "schema": {
+          "enum": [
+            "http://schema.org/"
+          ]
+        },
         "pav": {
           "enum": [
             "http://purl.org/pav/"
           ]
         },
-        "cedar": {
+        "oslc": {
           "enum": [
-            "https://schema.metadatacenter.org/core/"
+            "http://open-services.net/ns/core#"
           ]
         }
       },
@@ -54,7 +59,7 @@
         }
       ]
     },
-    "_templateId": {
+    "schema:isBasedOn": {
       "type": "string",
       "format": "uri"
     },
@@ -70,18 +75,18 @@
       "type": "string",
       "format": "date-time"
     },
-    "cedar:lastUpdatedBy": {
+    "oslc:modifiedBy": {
       "type": "string",
       "format": "uri"
     }
   },
   "required": [
     "@id",
-    "_templateId"
+    "schema:isBasedOn"
   ],
   "pav:createdOn": null,
   "pav:createdBy": null,
   "pav:lastUpdatedOn": null,
-  "cedar:lastUpdatedBy": null,
+  "oslc:modifiedBy": null,
   "additionalProperties": false
 }

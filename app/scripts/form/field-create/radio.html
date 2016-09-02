@@ -5,25 +5,23 @@
       ng-include="'scripts/form/partials/field-header.partial.html'"></div>
 
   <div class="definition-inputs" ng-include="'scripts/form/partials/field-definition.partial.html'"></div>
-  <!-- /.definition-inputs -->
 
   <div class="form-group floating-label-wrapper">
-    <!--<input type="text" class="form-control" id="placeholder-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}" placeholder="Field Title" aria-label="Field Title" ng-model="$root.schemaOf(field)._ui.title"  with-floating-label>--
-
-  </div><!-- /.form-group -->
     <div class="options-wrapper">
-      <div class="multiple-container">
-        <span ng-repeat="(index, value) in $root.schemaOf(field)._ui.options">
+      <div ng-init="initializeSelectionField()" class="multiple-container">
+        <span ng-repeat="(index, value) in $root.schemaOf(field)._valueConstraints.literals">
           <div class="radio radio-primary">
-            <input ng-click="$event.stopPropagation();"  type="radio" id="radio{{index}}"
+            <input ng-click="radioModelToDefaultOptions(index); $event.stopPropagation();"  type="radio" id="radio{{index}}"
                 name="radio-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}"
-                ng-model="$root.schemaOf(field)._ui.defaultOption"
-                value="{{$root.schemaOf(field)._ui.options[index]['text']}}">
+                ng-model="$root.schemaOf(field)._valueConstraints.literals[index].selectedByDefault"
+                ng-value="true"
+                ng-checked=""
+                >
             <label for="radio{{index}}">
               <div class="form-group floating-label-wrapper">
                 <input type="text" class="form-control"
                     id="placeholder-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}" placeholder="Option"
-                    aria-label="Option" ng-model="$root.schemaOf(field)._ui.options[index]['text']" with-floating-label>
+                    aria-label="Option" ng-model="$root.schemaOf(field)._valueConstraints.literals[index]['label']" with-floating-label>
               </div>
               <!-- /.form-group -->
             </label>
@@ -36,7 +34,6 @@
       <p class="instructions">Click choice to set as default</p>
     </div>
     <!-- /.options-wrapper -->
-
 
     <div class="configuration-options " ng-include="'scripts/form/partials/configuration-options.partial.html'"></div>
   </div>

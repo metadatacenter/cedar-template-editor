@@ -6,7 +6,8 @@
     "allowedInElement": true,
     "primaryField": true,
     "hasControlledTerms": true,
-    "staticField": false
+    "staticField": false,
+    "allowsMultiple": true
   },
   {
     "cedarType": "textarea",
@@ -15,23 +16,26 @@
     "allowedInElement": true,
     "primaryField": true,
     "hasControlledTerms": false,
-    "staticField": false
+    "staticField": false,
+    "allowsMultiple": true
   },
   {
     "cedarType": "radio",
     "iconClass": "cedar-svg-multiple-choice",
     "label": "Multiple Choice",
     "allowedInElement": true,
-    "hasControlledTerms": true,
-    "staticField": false
+    "hasControlledTerms": false,
+    "staticField": false,
+    "allowsMultiple": false
   },
   {
     "cedarType": "checkbox",
     "iconClass": "cedar-svg-checkbox",
     "label": "Checkbox",
     "allowedInElement": true,
-    "hasControlledTerms": true,
-    "staticField": false
+    "hasControlledTerms": false,
+    "staticField": false,
+    "allowsMultiple": false
   },
   {
     "cedarType": "date",
@@ -39,7 +43,8 @@
     "label": "Date",
     "allowedInElement": true,
     "hasControlledTerms": false,
-    "staticField": false
+    "staticField": false,
+    "allowsMultiple": true
   },
   {
     "cedarType": "email",
@@ -48,7 +53,8 @@
     "label": "Email",
     "allowedInElement": true,
     "hasControlledTerms": false,
-    "staticField": false
+    "staticField": false,
+    "allowsMultiple": true
   },
   {
     "cedarType": "list",
@@ -56,8 +62,9 @@
     "allowedInElement": true,
     "primaryField": true,
     "label": "List",
-    "hasControlledTerms": true,
-    "staticField": false
+    "hasControlledTerms": false,
+    "staticField": false,
+    "allowsMultiple": false
   },
   {
     "cedarType": "numeric",
@@ -66,7 +73,8 @@
     "primaryField": true,
     "Label": "Number",
     "hasControlledTerms": false,
-    "staticField": false
+    "staticField": false,
+    "allowsMultiple": true
   },
   {
     "cedarType": "phone-number",
@@ -74,7 +82,8 @@
     "allowedInElement": true,
     "label": "Phone Number",
     "hasControlledTerms": false,
-    "staticField": false
+    "staticField": false,
+    "allowsMultiple": true
   },
   {
     "cedarType": "section-break",
@@ -82,7 +91,8 @@
     "allowedInElement": true,
     "label": "Section Break",
     "hasControlledTerms": false,
-    "staticField": true
+    "staticField": true,
+    "allowsMultiple": false
   },
   {
     "cedarType": "richtext",
@@ -90,7 +100,8 @@
     "allowedInElement": true,
     "label": "Rich Text",
     "hasControlledTerms": false,
-    "staticField": true
+    "staticField": true,
+    "allowsMultiple": false
   },
   {
     "cedarType": "image",
@@ -98,7 +109,8 @@
     "allowedInElement": true,
     "label": "Image",
     "hasControlledTerms": false,
-    "staticField": true
+    "staticField": true,
+    "allowsMultiple": false
   },
   {
     "cedarType": "youtube",
@@ -106,6 +118,7 @@
     "allowedInElement": true,
     "label": "YouTube Video",
     "hasControlledTerms": false,
-    "staticField": true
+    "staticField": true,
+    "allowsMultiple": false
   }
 ]

@@ -3,7 +3,7 @@
 
   <!-- add button when you have no items in the model array and min cardinality is zero -->
   <button type="button" class="add" ng-click="addMoreInput()" ng-disabled="!$root.isRuntime()"
-      ng-show="$parent.model.length == 0"
+      ng-show="$parent.model.length == 0"></button>
 
   <button type="button" class="add" ng-show="$root.isRuntime()" ng-click="addMoreInput()"
       ng-show=" (!$parent.field.maxItems || $parent.model.length < $parent.field.maxItems )"

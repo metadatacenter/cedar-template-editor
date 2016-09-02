@@ -1,23 +1,28 @@
-<form name="templateForm" id="{{form['@id'].substr(form['@id'].lastIndexOf('/') + 1)}}" class="runtime" ng-class="{'validate': checkSubmission}" novalidate>
+<form name="templateForm" id="{{form['@id'].substr(form['@id'].lastIndexOf('/') + 1)}}" class="runtime"
+    ng-class="{'validate': checkSubmission}" novalidate>
   <!--Loop through top level "page" parameter in form element and call cedar-template-element or field-directive with contents -->
-  <div class="page" ng-repeat="page in pagesArray" ng-if="$root.isRuntime()">
+
+  <!--At Runtime-->
+  <div class="page" ng-if="$root.isRuntime()" ng-repeat="page in pagesArray">
     <div ng-repeat="item in page" class="animate-fade" ng-show="pageIndex == $parent.$index">
       <span ng-if="form.properties[item]">
-
+        <!--If Template field-->
         <div ng-if="form.properties[item]['@type']=='https://schema.metadatacenter.org/core/TemplateField' || form.properties[item]['@type']=='https://schema.metadatacenter.org/core/StaticTemplateField' ||
         form.properties[item].items['@type']=='https://schema.metadatacenter.org/core/TemplateField' || form.properties[item].items['@type']=='https://schema.metadatacenter.org/core/StaticTemplateField'"
-
-            ng-class="{'field-instance':true, 'multiple-instance-field':$root.isArray(model[item])}">
-          <field-directive field="form.properties[item]" model="model[item]" delete="removeChild(form.properties[item]); $event.stopPropagation();"
-              rename-child-key="renameChildKey"></field-directive>
+            ng-class="{'field-instance':true, 'multiple-instance-field':form.properties[item].type == 'array'}">
+          <field-directive field="form.properties[item]" model="model[item]"
+              delete="removeChild(form.properties[item]); $event.stopPropagation();"
+              rename-child-key="renameChildKey"
+              is-edit-data="isEditData"></field-directive>
         </div>
+        <!--If Template Element-->
         <div class=" element-group full "
-
             ng-if="form.properties[item]['@type']=='https://schema.metadatacenter.org/core/TemplateElement' || form.properties[item].items['@type']=='https://schema.metadatacenter.org/core/TemplateElement'">
           <cedar-template-element element="form.properties[item]"
               key="item"
               model="model[item]"
-              delete="removeChild(form.properties[item])">
+              delete="removeChild(form.properties[item])"
+              is-edit-data="isEditData">
           </cedar-template-element>
         </div>
       </span>
@@ -25,26 +30,28 @@
   </div>
   <p ng-if="form.requiredFields" class="required-text">Required</p>
 
+  <!--At Creation time-->
   <div class="page" ng-if="!$root.isRuntime()" ui-sortable="$root.sortableOptions" ng-model="form._ui.order">
     <div ng-repeat="item in form._ui.order" class="animate-fade">
       <span ng-if="form.properties[item]">
-
+        <!--If Template field-->
         <div ng-if="form.properties[item]['@type']=='https://schema.metadatacenter.org/core/TemplateField' || form.properties[item]['@type']=='https://schema.metadatacenter.org/core/StaticTemplateField' ||
         form.properties[item].items['@type']=='https://schema.metadatacenter.org/core/TemplateField' || form.properties[item].items['@type']=='https://schema.metadatacenter.org/core/StaticTemplateField'"
 
-            ng-class="{'field-instance':true, 'multiple-instance-field':$root.isArray(model[item])}">
-          <field-directive field="form.properties[item]" model="model[item]" delete="removeChild(form.properties[item]); $event.stopPropagation();"
+            ng-class="{'field-instance':true, 'multiple-instance-field':form.properties[item].type == 'array'}">
+          <field-directive field="form.properties[item]" model="model[item]"
+              delete="removeChild(form.properties[item]); $event.stopPropagation();"
               rename-child-key="renameChildKey"></field-directive>
         </div>
+        <!--If Template Element-->
         <div class="element-group full"
-
             ng-if="form.properties[item]['@type']=='https://schema.metadatacenter.org/core/TemplateElement' || form.properties[item].items['@type']=='https://schema.metadatacenter.org/core/TemplateElement'">
-
           <cedar-template-element element="form.properties[item]"
               key="item"
               model="model[item]"
               delete="removeChild(form.properties[item])"
-              is-root-element="hideRootElement">
+              is-root-element="hideRootElement"
+              is-edit-data="isEditData">
           </cedar-template-element>
         </div>
       </span>

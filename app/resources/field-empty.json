@@ -3,8 +3,9 @@
   "@id": null,
   "@type": "https://schema.metadatacenter.org/core/TemplateField",
   "@context": {
+    "schema": "http://schema.org/",
     "pav": "http://purl.org/pav/",
-    "cedar": "https://schema.metadatacenter.org/core/"
+    "oslc": "http://open-services.net/ns/core#"
   },
   "type": "object",
   "title": "",
@@ -50,7 +51,7 @@
       "type": "string",
       "format": "date-time"
     },
-    "cedar:lastUpdatedBy": {
+    "oslc:modifiedBy": {
       "type": "string",
       "format": "uri"
     }
@@ -61,6 +62,6 @@
   "pav:createdOn": null,
   "pav:createdBy": null,
   "pav:lastUpdatedOn": null,
-  "cedar:lastUpdatedBy": null,
+  "oslc:modifiedBy": null,
   "additionalProperties": false
 }

@@ -95,7 +95,7 @@ var TemplateCreatorPage = function () {
     "@type"               : "https://schema.metadatacenter.org/core/Template",
     "@context"            : {
       "pav"   : "http://purl.org/pav/",
-      "cedar" : "https://schema.metadatacenter.org/core/"
+      "oslc" : "http://open-services.net/ns/core#"
     },
     "type"                : "object",
     "title"               : "Untitled template schema",
@@ -108,14 +108,19 @@ var TemplateCreatorPage = function () {
     "properties"          : {
       "@context"           : {
         "properties"          : {
+          "schema": {
+            "enum": [
+              "http://schema.org/"
+            ]
+          },
           "pav"   : {
             "enum": [
               "http://purl.org/pav/"
             ]
           },
-          "cedar" : {
+          "oslc" : {
             "enum": [
-              "https://schema.metadatacenter.org/core/"
+              "http://open-services.net/ns/core#"
             ]
           }
         },
@@ -145,7 +150,7 @@ var TemplateCreatorPage = function () {
           }
         ]
       },
-      "_templateId"        : {
+      "schema:isBasedOn"        : {
         "type"  : "string",
         "format": "uri"
       },
@@ -161,19 +166,19 @@ var TemplateCreatorPage = function () {
         "type"  : "string",
         "format": "date-time"
       },
-      "cedar:lastUpdatedBy": {
+      "oslc:modifiedBy": {
         "type"  : "string",
         "format": "uri"
       }
     },
     "required"            : [
       "@id",
-      "_templateId"
+      "schema:isBasedOn"
     ],
     "pav:createdOn"       : null,
     "pav:createdBy"       : null,
     "pav:lastUpdatedOn"   : null,
-    "cedar:lastUpdatedBy" : null,
+    "oslc:modifiedBy" : null,
     "additionalProperties": false
   };
 
@@ -195,7 +200,7 @@ var TemplateCreatorPage = function () {
     "@type"               : "https://schema.metadatacenter.org/core/TemplateElement",
     "@context"            : {
       "pav"  : "http://purl.org/pav/",
-      "cedar": "https://schema.metadatacenter.org/core/"
+      "oslc": "http://open-services.net/ns/core#"
     },
     "type"                : "object",
     "title"               : "Untitled element schema",
@@ -246,7 +251,7 @@ var TemplateCreatorPage = function () {
         "type"  : "string",
         "format": "date-time"
       },
-      "cedar:lastUpdatedBy": {
+      "oslc:modifiedBy": {
         "type"  : "string",
         "format": "uri"
       }
@@ -257,7 +262,7 @@ var TemplateCreatorPage = function () {
     "pav:createdOn"       : null,
     "pav:createdBy"       : null,
     "pav:lastUpdatedOn"   : null,
-    "cedar:lastUpdatedBy" : null,
+    "oslc:modifiedBy" : null,
     "additionalProperties": false
   };
 
@@ -693,7 +698,7 @@ var TemplateCreatorPage = function () {
 
               var first = finderPage.createFirstElementGridView();
               browser.wait(first.isDisplayed()).then(function () {
-                
+
                 finderPage.createFirstElementGridView().click();
                 browser.wait(finderPage.createFirstSelectedElementGridView().isDisplayed()).then(function () {
 

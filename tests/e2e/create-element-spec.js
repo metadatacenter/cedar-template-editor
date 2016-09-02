@@ -14,7 +14,7 @@ xdescribe('create-element', function () {
       "@type"               : "https://schema.metadatacenter.org/core/TemplateElement",
       "@context"            : {
         "pav"  : "http://purl.org/pav/",
-        "cedar": "https://schema.metadatacenter.org/core/"
+        "oslc": "http://open-services.net/ns/core#"
       },
       "type"                : "object",
       "title"               : "",
@@ -34,14 +34,14 @@ xdescribe('create-element', function () {
         "pav:createdOn"      : {"type": "string", "format": "date-time"},
         "pav:createdBy"      : {"type": "string", "format": "uri"},
         "pav:lastUpdatedOn"  : {"type": "string", "format": "date-time"},
-        "cedar:lastUpdatedBy": {"type": "string", "format": "uri"},
+        "oslc:modifiedBy": {"type": "string", "format": "uri"},
         _tmp                 : {}
       },
       "required"            : ["@id"],
       "pav:createdOn"       : null,
       "pav:createdBy"       : null,
       "pav:lastUpdatedOn"   : null,
-      "cedar:lastUpdatedBy" : null,
+      "oslc:modifiedBy" : null,
       "additionalProperties": false
     };
     page.getJsonPreviewText().then(function (value) {

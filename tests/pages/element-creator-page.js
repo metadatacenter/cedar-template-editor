@@ -72,7 +72,7 @@ var ElementCreatorPage = function () {
     "@type"               : "https://schema.metadatacenter.org/core/TemplateElement",
     "@context"            : {
       "pav"  : "http://purl.org/pav/",
-      "cedar": "https://schema.metadatacenter.org/core/"
+      "oslc": "http://open-services.net/ns/core#"
     },
     "type"                : "object",
     "title"               : "Untitled element schema",
@@ -123,7 +123,7 @@ var ElementCreatorPage = function () {
         "type"  : "string",
         "format": "date-time"
       },
-      "cedar:lastUpdatedBy": {
+      "oslc:modifiedBy": {
         "type"  : "string",
         "format": "uri"
       }
@@ -134,7 +134,7 @@ var ElementCreatorPage = function () {
     "pav:createdOn"       : null,
     "pav:createdBy"       : null,
     "pav:lastUpdatedOn"   : null,
-    "cedar:lastUpdatedBy" : null,
+    "oslc:modifiedBy" : null,
     "additionalProperties": false
   };
 

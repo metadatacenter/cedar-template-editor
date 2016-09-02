@@ -125,7 +125,7 @@ define([
                   vm.selectedResource = response;
 
                   // get path info for this resource
-                 getPathInfo(response.parentFolderId);
+                 //getPathInfo(response.parentFolderId);
 
                 },
                 function (error) {

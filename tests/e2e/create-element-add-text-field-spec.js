@@ -14,7 +14,7 @@ xdescribe('create-element-add-text-field', function () {
       '@type'             : 'https://schema.metadatacenter.org/core/TemplateElement',
       '@context'          : {
         pav  : 'http://purl.org/pav/',
-        cedar: 'https://schema.metadatacenter.org/core/'
+        oslc: 'http://open-services.net/ns/core#'
       },
       type                : 'object',
       title               : '',
