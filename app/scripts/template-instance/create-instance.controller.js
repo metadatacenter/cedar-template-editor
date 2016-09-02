@@ -40,7 +40,7 @@ define([
             $scope.isEditData = true;
             $rootScope.documentTitle = $scope.instance['schema:name'];
             AuthorizedBackendService.doCall(
-                TemplateService.getTemplate(instanceResponse.data._templateId),
+                TemplateService.getTemplate(instanceResponse.data['schema:isBasedOn']),
                 function (templateResponse) {
                   // Assign returned form object from FormService to $scope.form
                   $scope.form = templateResponse.data;
@@ -66,7 +66,7 @@ define([
       if ($rootScope.isEmpty($scope.emptyRequiredFields) && $rootScope.isEmpty($scope.invalidFieldValues) && $scope.instance['@id'] == undefined) {
         // '@id' and 'templateId' haven't been populated yet, create now
         // $scope.instance['@id'] = $rootScope.idBasePath + $rootScope.generateGUID();
-        $scope.instance['_templateId'] = $routeParams.templateId;
+        $scope.instance['schema:isBasedOn'] = $routeParams.templateId;
         // Create fields that will store information used by the UI
         $scope.instance['schema:name'] = $scope.form._ui.title + $translate.instant("GENERATEDVALUE.instanceTitle")
         $scope.instance['schema:description'] = $scope.form._ui.description + $translate.instant("GENERATEDVALUE.instanceDescription");
