@@ -440,7 +440,7 @@ define([
           break;
       }
       authorizedBackendService.doCall(
-          httpBuilderService.put(url),
+          httpBuilderService.put(url, permissions),
           function (response) {
             successCallback(response.data);
           },
