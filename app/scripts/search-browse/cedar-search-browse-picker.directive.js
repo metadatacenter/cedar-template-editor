@@ -96,12 +96,16 @@ define([
           vm.saveShare = saveShare;
           vm.getNode = getNode;
           vm.resetAccessPermission = resetAccessPermission;
-          vm.getDisplayName = getDisplayName;
           vm.canBeOwner = canBeOwner;
           vm.addShare = addShare;
           vm.withShare = withShare;
           vm.removeShare = removeShare;
           vm.newOwner = newOwner;
+          vm.getName = getName;
+          vm.updateGroup = updateGroup;
+
+          vm.publicPermission = 'read';
+          vm.isPublic = null;
 
           vm.selectedUser = null;
           vm.selectedUserId = null;
@@ -185,22 +189,6 @@ define([
             }
           };
 
-          //vm.showEditFolder = function (resource, selectDescription) {
-          //  vm.formFolder = resource;
-          //  vm.formFolderName = resource.name;
-          //  vm.formFolderDescription = resource.description;
-          //  $('#editFolderModal').modal('show');
-          //  $timeout(function () {
-          //    var selector = '#formFolderName';
-          //    if (selectDescription) {
-          //      selector = '#formFolderDescription';
-          //    }
-          //    var jqFolderProperty = $(selector);
-          //    jqFolderProperty.focus();
-          //    var l = jqFolderProperty.val().length;
-          //    jqFolderProperty[0].setSelectionRange(0, l);
-          //  });
-          //};
 
           vm.cancelDescriptionEditing = function () {
             vm.editingDescription = false;
@@ -1302,7 +1290,7 @@ define([
           }
 
           function newOwner(node, domId) {
-            console.log('newOwner');
+            console.log('newOwner' );if (node) console.log(node.permission)
             addShare(node.id, 'own', domId);
           }
 
@@ -1325,15 +1313,7 @@ define([
             }
           }
 
-          function removeShare(node) {
-            for (var i = 0; i < vm.resourcePermissions.userPermissions.length; i++) {
-              if (node.id === vm.resourcePermissions.userPermissions[i].user.id) {
-                vm.resourcePermissions.userPermissions.splice(i, 1);
-                console.log('removeShare');
-                console.log(vm.resourcePermissions);
-              }
-            }
-          }
+
 
           function updateShare(node, permission) {
             for (var i = 0; i < vm.resourcePermissions.userPermissions.length; i++) {
@@ -1368,9 +1348,7 @@ define([
             }
           }
 
-          function getDisplayName(node) {
-            return node.displayName;
-          }
+
 
           function isUser(node) {
             return (node && node.nodeType === 'user');
@@ -1461,10 +1439,43 @@ define([
           }
 
           function isOwner(node) {
-            if (vm.resourePermissions && vm.resourePermissions.owner && node ) {
-              return vm.resourePermissions.owner.id === node.id;
+            if (vm.resourcePermissions && vm.resourcePermissions.owner && node ) {
+              return vm.resourcePermissions.owner.id === node.id;
             }
             return false;
+
+          }
+
+          function removeShare(node) {
+            for (var i = 0; i < vm.resourcePermissions.userPermissions.length; i++) {
+              if (node.id === vm.resourcePermissions.userPermissions[i].user.id) {
+                vm.resourcePermissions.userPermissions.splice(i, 1);
+                console.log('removeShare');
+                console.log(vm.resourcePermissions);
+              }
+            }
+          }
+
+          function updateGroup() {
+            console.log(vm.resourceGroups);
+
+            if (vm.isPublic && vm.resourceGroups.length > 0) {
+              var share = {};
+              share.group = vm.resourceGroups[0];
+              share.permission = vm.publicPermission;
+              vm.resourcePermissions.groupPermissions = [];
+              vm.resourcePermissions.groupPermissions.push(share);
+            } else {
+              vm.resourcePermissions.groupPermissions = [];
+            }
+            console.log(vm.resourcePermissions.groupPermissions);
+          }
+
+          function getName(node) {
+            if (node) {
+              return node.firstName + ' ' + node.lastName + ' (' + node.email + ')';
+            }
+            else return "tbd";
 
           }
 

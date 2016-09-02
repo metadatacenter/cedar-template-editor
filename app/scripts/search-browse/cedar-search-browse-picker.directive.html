@@ -830,16 +830,25 @@
           <div style="border-width:0px;margin-right:15px">
           <div class="row">
 
-            <div class="col-sm-6"><span><input type="checkbox" name="public" ng-model="dc.isPublic"></span></div>
+            <div class="col-sm-6"><span><input type="checkbox" name="public" ng-model="dc.isPublic" ng-click="dc.updateGroup()"></span></div>
 
-            <select ng-model="dc.publicPermission" class="col-sm-4">
+            <div ng-if="dc.isPublic" >
+              <select ng-model="dc.resourcePermissions.groupPermissions[0].permission" class="col-sm-4">
+                <option value="read">can read</option>
+                <option value="write">can write</option>
+              </select>
+            </div>
+            <div ng-if="!dc.isPublic" >
+            <select ng-model="dc.everybodyPermission" class="col-sm-4">
               <option value="read">can read</option>
               <option value="write">can write</option>
             </select>
+              </div>
           </div>
             </div>
 
-<hr>
+          <hr />
+          
           <h5 translate>DASHBOARD.share.add</h5>
 
           <div style="border-width:0px;margin-right:15px">
@@ -858,7 +867,7 @@
 
               <select id="select-picker-users" data-size="5" data-dropupAuto="false" class="dropdown col-sm-6"
                   ng-model="dc.selectedUserId" ng-change="dc.resetOwner()"
-                  ng-options="user.id as user.displayName for user in dc.resourceUsers"></select>
+                  ng-options="user.id as dc.getName(user) for user in dc.resourceUsers"></select>
 
               <select ng-model="dc.giveAccessPermission" class="dropdown col-sm-4 pull-right">
                 <option value="read">can read</option>
@@ -875,22 +884,20 @@
           <div ng-model="dc.resourcePermissions" id="shared-users"
               style="height:300px;overflow-y:scroll;overflow-x:hidden;border:1px solid #ccc">
             <div class="row" style="padding: 5px 0">
-              <div class="col-sm-6" style="padding: 10px 0 0 20px;">{{dc.resourcePermissions.owner.firstName}}
-                {{dc.resourcePermissions.owner.lastName}}
+              <div class="col-sm-6" style="padding: 10px 0 0 20px;">{{dc.getName(dc.resourcePermissions.owner)}}
               </div>
-              <select ng-model="dc.resourcePermissions.owner" class="col-sm-4" style="margin:5px 0">
+              <select class="col-sm-4" style="margin:5px 0">
                 <option value="own">is owner</option>
               </select>
             </div>
 
             <div class="row" style="padding: 5px 0" ng-repeat="share in dc.resourcePermissions.userPermissions">
-              <div class="col-sm-6" style="padding: 10px 0 0 20px;">{{share.user.firstName}} {{share.user.lastName}}
+              <div class="col-sm-6" style="padding: 10px 0 0 20px;">{{dc.getName(share.user)}}
               </div>
-              <select ng-model="share.permission" ng-change="dc.newOwner(share.user, 'shared-users')" class="col-sm-4"
+              <select ng-model="share.permission"  class="col-sm-4"
                   style="margin:5px 0">
                 <option value="read">can read</option>
                 <option value="write">can write</option>
-                <option ng-if="dc.canBeOwner(share.user)" value="own">is owner</option>
               </select>
               <button class="close col-sm-2" type="button" tooltip="remove"
                   tooltip-trigger

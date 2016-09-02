@@ -423,7 +423,8 @@ define([
     };
 
     function setResourceShare(resource, permissions, successCallback, errorCallback) {
-      var url;
+      console.log('setResourceShare');console.log(permissions)
+;      var url;
       var id = resource['@id'];
       switch (resource.nodeType) {
         case CONST.resourceType.FOLDER:
