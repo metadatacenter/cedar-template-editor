@@ -242,7 +242,7 @@
     },
     "share": {
       "title": "Share",
-      "manage": "Users",
+      "manage": "Shared with users",
       "add": "With user",
       "addHint": "Share with",
       "public": "With everybody"
