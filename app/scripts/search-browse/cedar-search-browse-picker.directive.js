@@ -92,216 +92,25 @@ define([
           vm.destinationPath = null;
 
           // share
-          vm.removeAccess = removeAccess;
-          vm.getUserOrGroup = getUserOrGroup;
+          vm.openShare = openShare;
+          vm.saveShare = saveShare;
+          vm.getNode = getNode;
           vm.resetAccessPermission = resetAccessPermission;
           vm.getDisplayName = getDisplayName;
           vm.canBeOwner = canBeOwner;
+          vm.addShare = addShare;
+          vm.withShare = withShare;
+          vm.removeShare = removeShare;
           vm.newOwner = newOwner;
-          vm.togglePermission = togglePermission;
-          vm.addAccess = addAccess;
-          vm.withAccess = withAccess;
-          vm.sharedUsersOrGroups = sharedUsersOrGroups;
-          vm.allUsersAndGroups = allUsersAndGroups;
+
           vm.selectedUser = null;
           vm.selectedUserId = null;
           vm.giveAccessPermission = 'read';
           vm.owner = 'own';
-          vm.dummyPermissions = {
-            "owner"      : {
-              "id"         : "https://metadatacenter.org/users/8c99c2ae-8633-47d4-a049-0dce14795a45",
-              "firstName"  : "Attila Levente",
-              "lastName"   : "Egyedi",
-              "email"      : "attila.egyedi@gmail.com",
-              "displayName": "Attila Levente Egyedi"
-            },
-            "permissions": [
-              {
-                "permission" : "read",
-                "userOrGroup": {
-                  "id"         : "https://metadatacenter.org/users/a8a4bd16-91e1-46b9-a1f2-5ac359a5ab4c",
-                  "firstName"  : "Ãbel",
-                  "lastName"   : "Egyedi",
-                  "email"      : "abel.egyedi@gmail.com",
-                  "displayName": "Ãbel Egyedi"
-                }
-              },
-              {
-                "permission" : "write",
-                "userOrGroup": {
-                  "id"         : "https://metadatacenter.org/users/8c99c2ae-8633-47d4-a049-0dce14795a40",
-                  "firstName"  : "Sixth",
-                  "lastName"   : "Last",
-                  "email"      : "Sixth.last@gmail.com",
-                  "displayName": "Sixth Middle Last"
-                }
-              },
-              {
-                "permission" : "read",
-                "userOrGroup": {
-                  "id"         : "https://metadatacenter.org/users/8c99c2ae-8633-47d4-a049-0dce14795a04",
-                  "firstName"  : "Fourth",
-                  "lastName"   : "Last",
-                  "email"      : "Fourth.last@gmail.com",
-                  "displayName": "Fourth Middle Last"
-                }
-              },
-              {
-                "permission" : "write",
-                "userOrGroup": {
-                  "id"         : "https://metadatacenter.org/users/8c99c2ae-8633-47d4-a049-0dce14795a41",
-                  "firstName"  : "Seventh",
-                  "lastName"   : "Last",
-                  "email"      : "Seventh.last@gmail.com",
-                  "displayName": "Seventh Middle Last"
-                }
-              },
-              {
-                "permission" : "read",
-                "userOrGroup": {
-                  "id"         : "https://metadatacenter.org/users/8c99c2ae-8633-47d4-a049-0dce14795a13",
-                  "firstName"  : "Thirteenth",
-                  "lastName"   : "Last",
-                  "email"      : "Thirteenth.last@gmail.com",
-                  "displayName": "Thirteenth Middle Last"
-                }
-              }
-            ]
-          };
-
-          vm.dummyAllGroups = {
-            "groups": [
-              {
-                "id"         : "https://metadatacenter.org/users/8c99c2ae-8633-47d4-a049-0dce14795a99",
-                "displayName": "Everybody"
-              },
-              {
-                "id"         : "https://metadatacenter.org/users/8c99c2ae-8633-47d4-a049-0dce14795a88",
-                "displayName": "Stanford"
-              },
-              {
-                "id"         : "https://metadatacenter.org/users/8c99c2ae-8633-47d4-a049-0dce14795a77",
-                "displayName": "Yale"
-              }
-            ]
-          };
-
-          vm.dummyAllUsers = {
-            "users": [
-              {
-                "id"         : "https://metadatacenter.org/users/a8a4bd16-91e1-46b9-a1f2-5ac359a5ab4c",
-                "firstName"  : "Ãbel",
-                "lastName"   : "Egyedi",
-                "email"      : "abel.egyedi@gmail.com",
-                "displayName": "Ãbel Egyedi"
-              },
-              {
-                "id"         : "https://metadatacenter.org/users/8c99c2ae-8633-47d4-a049-0dce14795a01",
-                "firstName"  : "First",
-                "lastName"   : "Last",
-                "email"      : "first.last@gmail.com",
-                "displayName": "First Middle Last"
-              },
-              {
-                "id"         : "https://metadatacenter.org/users/8c99c2ae-8633-47d4-a049-0dce14795a02",
-                "firstName"  : "Second",
-                "lastName"   : "Last",
-                "email"      : "second.last@gmail.com",
-                "displayName": "Second Middle Last"
-              },
-              {
-                "id"         : "https://metadatacenter.org/users/8c99c2ae-8633-47d4-a049-0dce14795a03",
-                "firstName"  : "Third",
-                "lastName"   : "Last",
-                "email"      : "Third.last@gmail.com",
-                "displayName": "Third Middle Last"
-              },
-              {
-                "id"         : "https://metadatacenter.org/users/8c99c2ae-8633-47d4-a049-0dce14795a04",
-                "firstName"  : "Fourth",
-                "lastName"   : "Last",
-                "email"      : "Fourth.last@gmail.com",
-                "displayName": "Fourth Middle Last"
-              },
-              {
-                "id"         : "https://metadatacenter.org/users/8c99c2ae-8633-47d4-a049-0dce14795a05",
-                "firstName"  : "Fifth",
-                "lastName"   : "Last",
-                "email"      : "Fifth.last@gmail.com",
-                "displayName": "Fifth Middle Last"
-              },
-              {
-                "id"         : "https://metadatacenter.org/users/8c99c2ae-8633-47d4-a049-0dce14795a40",
-                "firstName"  : "Sixth",
-                "lastName"   : "Last",
-                "email"      : "Sixth.last@gmail.com",
-                "displayName": "Sixth Middle Last"
-              },
-              {
-                "id"         : "https://metadatacenter.org/users/8c99c2ae-8633-47d4-a049-0dce14795a07",
-                "firstName"  : "Seventh",
-                "lastName"   : "Last",
-                "email"      : "Seventh.last@gmail.com",
-                "displayName": "Seventh Middle Last"
-              },
-              {
-                "id"         : "https://metadatacenter.org/users/8c99c2ae-8633-47d4-a049-0dce14795a08",
-                "firstName"  : "Eighth",
-                "lastName"   : "Last",
-                "email"      : "Eighth.last@gmail.com",
-                "displayName": "Eighth Middle Last"
-              },
-              {
-                "id"         : "https://metadatacenter.org/users/8c99c2ae-8633-47d4-a049-0dce14795a09",
-                "firstName"  : "Ninth",
-                "lastName"   : "Last",
-                "email"      : "Ninth.last@gmail.com",
-                "displayName": "Ninth Middle Last"
-              },
-              {
-                "id"         : "https://metadatacenter.org/users/8c99c2ae-8633-47d4-a049-0dce14795a10",
-                "firstName"  : "Tenth",
-                "lastName"   : "Last",
-                "email"      : "Tenth.last@gmail.com",
-                "displayName": "Tenth Middle Last"
-              },
-              {
-                "id"         : "https://metadatacenter.org/users/8c99c2ae-8633-47d4-a049-0dce14795a11",
-                "firstName"  : "Eleventh",
-                "lastName"   : "Last",
-                "email"      : "Eleventh.last@gmail.com",
-                "displayName": "Eleventh Middle Last"
-              },
-              {
-                "id"         : "https://metadatacenter.org/users/8c99c2ae-8633-47d4-a049-0dce14795a12",
-                "firstName"  : "Twelth",
-                "lastName"   : "Last",
-                "email"      : "Twelth.last@gmail.com",
-                "displayName": "Twelth Middle Last"
-              },
-              {
-                "id"         : "https://metadatacenter.org/users/8c99c2ae-8633-47d4-a049-0dce14795a13",
-                "firstName"  : "Thirteenth",
-                "lastName"   : "Last",
-                "email"      : "Thirteenth.last@gmail.com",
-                "displayName": "Thirteenth Middle Last"
-              },
-              {
-                "id"         : "https://metadatacenter.org/users/8c99c2ae-8633-47d4-a049-0dce14795a14",
-                "firstName"  : "Fourteenth",
-                "lastName"   : "Last",
-                "email"      : "Fourteenth.last@gmail.com",
-                "displayName": "Fourteenth Middle Last"
-              },
-              {
-                "id"         : "https://metadatacenter.org/users/8c99c2ae-8633-47d4-a049-0dce14795a15",
-                "firstName"  : "Fifteenth",
-                "lastName"   : "Last",
-                "email"      : "Fifteenth.last@gmail.com",
-                "displayName": "Fifteenth Middle Last"
-              }
-            ]
-          };
+          // from server
+          vm.resourceUsers = null;
+          vm.resourceGroups = null;
+          vm.resourcePermissions = null;
 
 
           vm.getFacets = getFacets;
@@ -1488,37 +1297,21 @@ define([
 
           // share...
 
-          function togglePermission(access) {
-            access.permission = access.permission === 'read' ? 'write' : 'read';
+          function canBeOwner(node) {
+            return node && node.nodeType === 'user';
           }
 
-          function sharedUsersOrGroups() {
-            return vm.dummySharedUsersOrGroups.usersOrGroups;
-          }
-
-          function updatePermission(access, value) {
-            console.log('updatePermission');
-
-          }
-
-          function canBeOwner(userOrGroup) {
-            return userOrGroup.hasOwnProperty('email');
-          }
-
-          function newOwner(access, domId) {
+          function newOwner(node, domId) {
             console.log('newOwner');
-            console.log(access);
-            addAccess(access.userOrGroup.id, 'own', domId);
+            addShare(node.id, 'own', domId);
           }
 
-          function withAccess() {
-            return vm.dummyPermissions.permissions;
+          function withShare() {
+            if (vm.resourcePermissions) {
+              return vm.resourcePermissions.userPermissions;
+            }
           }
 
-          function allUsersAndGroups() {
-            var allUsersAndGroups = vm.dummyAllUsers.users.concat(vm.dummyAllGroups.groups);
-            return allUsersAndGroups.sort(dynamicSort("displayName"));
-          }
 
           function dynamicSort(property) {
             var sortOrder = 1;
@@ -1532,98 +1325,182 @@ define([
             }
           }
 
-          function removeAccess(userOrGroup) {
-            console.log('removeAccess');
-            console.log(userOrGroup);
-            for (var i = 0; i < vm.dummyPermissions.permissions.length; i++) {
-              if (vm.dummyPermissions.permissions[i].userOrGroup.id === userOrGroup.id) {
-                vm.dummyPermissions.permissions.splice(i, 1);
-                return;
+          function removeShare(node) {
+            for (var i = 0; i < vm.resourcePermissions.userPermissions.length; i++) {
+              if (node.id === vm.resourcePermissions.userPermissions[i].user.id) {
+                vm.resourcePermissions.userPermissions.splice(i, 1);
+                console.log('removeShare');
+                console.log(vm.resourcePermissions);
               }
             }
+          }
+
+          function updateShare(node, permission) {
+            for (var i = 0; i < vm.resourcePermissions.userPermissions.length; i++) {
+              if (node.id === vm.resourcePermissions.userPermissions[i].user.id) {
+                // found it, update to new permission
+                vm.resourcePermissions.userPermissions[i].permission = permission;
+                return true;
+              }
+            }
+            return false;
           }
 
           function resetAccessPermission() {
-console.log('resetAccessPermission');
-
-            var userOrGroup = getUserOrGroup(vm.selectedUserId);
-            if (!isUser(userOrGroup) && vm.giveAccessPermission === 'own') {
+            var node = getNode(vm.selectedUserId);
+            if (!vm.canBeOwner(node)) {
               vm.giveAccessPermission === 'read';
             }
-
           }
 
-          function getUserOrGroup(id) {
-            for (var i = 0; i < vm.dummyAllGroups.groups.length; i++) {
-              if (vm.dummyAllGroups.groups[i].id === id) {
-                return vm.dummyAllGroups.groups[i];
+          function getNode(id) {
+            var all = [];
+            if (vm.resourceUsers) {
+              all = all.concat(vm.resourceUsers);
+            }
+            if (vm.resourceGroups) {
+              all = all.concat(vm.resourceGroups);
+            }
+            for (var i = 0; i < all.length; i++) {
+              if (all[i].id === id) {
+                return all[i];
               }
             }
-            for (var i = 0; i < vm.dummyAllUsers.users.length; i++) {
-              if (vm.dummyAllUsers.users[i].id === id) {
-                return vm.dummyAllUsers.users[i];
-              }
+          }
+
+          function getDisplayName(node) {
+            return node.displayName;
+          }
+
+          function isUser(node) {
+            return (node && node.nodeType === 'user');
+          }
+
+          function openShare(resource) {
+            getUsers();
+            getGroups();
+            getPermissions(resource);
+          };
+
+          function saveShare(resource) {
+            setPermissions(resource);
+          };
+
+          function getPermissions(resource) {
+            // get the sharing for this resource
+            if (!resource && vm.hasSelection()) {
+              resource = vm.getSelection();
             }
-          }
-          function getDisplayName(userOrGroup) {
-            var result = "";
-            if (isUser(userOrGroup)) {
-              result = userOrGroup.displayName;
-            } else {
-              result = "<strong>" + userOrGroup.displayName + "</strong>";
+            var id = resource['@id'];
+            resourceService.getResourceShare(
+                resource,
+                function (response) {
+                  vm.resourcePermissions = response;
+                  console.log(response);
+                },
+                function (error) {
+                  UIMessageService.showBackendError('SERVER.' + resource.nodeType.toUpperCase() + '.load.error', error);
+                }
+            );
+          };
+
+          function setPermissions(resource) {
+            console.log(vm.resourcePermissions);
+
+            if (!resource && vm.hasSelection()) {
+              resource = vm.getSelection();
             }
-            return result;
+            var id = resource['@id'];
+            resourceService.setResourceShare(
+                resource,
+                vm.resourcePermissions,
+                function (response) {
+                  vm.resourcePermissions = response;
+                  console.log(response);
+
+                },
+                function (error) {
+                  UIMessageService.showBackendError('SERVER.' + resource.nodeType.toUpperCase() + '.load.error', error);
+                }
+            );
+          };
+
+
+
+
+
+          function getUsers() {
+
+            // get the users
+            resourceService.getUsers(
+                function (response) {
+                  vm.resourceUsers = response.users;
+                  console.log(response);
+                  if (vm.resourceUsers.length > 0) {
+                    vm.selectedUserId = vm.resourceUsers[0].id;
+                    //jQuery('#select-picker-users').selectpicker('refresh');
+                    //console.log(jQuery('#select-picker-users'));
+                  }
+                },
+                function (error) {
+                  UIMessageService.showBackendError('SERVER.' + resource.nodeType.toUpperCase() + '.load.error', error);
+                }
+            );
           }
 
-          function isUser(obj) {
-            return obj.hasOwnProperty('email');
+          function getGroups() {
+
+            resourceService.getGroups(
+                function (response) {
+                  vm.resourceGroups = response.groups;
+                },
+                function (error) {
+                  UIMessageService.showBackendError('SERVER.' + resource.nodeType.toUpperCase() + '.load.error', error);
+                }
+            );
           }
 
-          function addAccess(userOrGroupId, permission, domId) {
-            console.log('giveAccess ' + userOrGroupId + permission);
+          function isOwner(node) {
+            if (vm.resourePermissions && vm.resourePermissions.owner && node ) {
+              return vm.resourePermissions.owner.id === node.id;
+            }
+            return false;
 
-            var userOrGroup = getUserOrGroup(userOrGroupId);
-            console.log(userOrGroup);
+          }
 
+          function addShare(id, permission, domId) {
 
-            if (userOrGroup) {
+            var node = getNode(id);
+            var share = {};
+            if (node) {
 
               if (permission === 'own') {
-                console.log('own');
 
-                // give write access to the current owner
-                var access = {};
-                access.permission = 'write';
-                access.userOrGroup = vm.dummyPermissions.owner;
-                vm.dummyPermissions.permissions.push(access);
+                // make the node the owner
+                removeShare(node);
+                console.log(vm.resourcePermissions);
+                var owner = vm.resourcePermissions.owner;
+                vm.resourcePermissions.owner = node;
 
-                // give owner access to userOrGroup
-                removeAccess(userOrGroup);
-                vm.dummyPermissions.owner = userOrGroup;
-                vm.owner = userOrGroup;
-
-                // scroll to new owner at the top
-                $timeout(function () {
-                  var scroller = document.getElementById(domId);
-                  scroller.scrollTop = 0;
-                }, 0, false);
+                share.permission = 'write';
+                share.user = owner;
+                vm.resourcePermissions.userPermissions.push(share);
 
               } else {
-                // remove the current access just in case there is one
-                removeAccess(userOrGroup);
+                // can we just update it
+                if (!isOwner(node) && !updateShare(node, permission)) {
 
-                // create a new access for userOrGroup
-                var access = {};
-                access.permission = vm.giveAccessPermission;
-                access.userOrGroup = userOrGroup;
-                vm.dummyPermissions.permissions.push(access);
-
-                // scroll to this guy
-                $timeout(function () {
-                  var scroller = document.getElementById(domId);
-                  scroller.scrollTop = scroller.scrollHeight;
-                }, 0, false);
+                  // create the new share for this node
+                  share.permission = vm.giveAccessPermission;
+                  share.user = node;
+                  vm.resourcePermissions.userPermissions.push(share);
+                }
               }
+              // scroll to this node
+              $timeout(function () {
+                var scroller = document.getElementById(domId);
+                scroller.scrollTop = scroller.scrollHeight;
+              }, 0, false);
             }
           }
 

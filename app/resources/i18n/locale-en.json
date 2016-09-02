@@ -242,9 +242,10 @@
     },
     "share": {
       "title": "Share",
-      "manage": "Current sharing",
-      "add": "Share with user or group",
-      "addHint": "Share with"
+      "manage": "Users",
+      "add": "With user",
+      "addHint": "Share with",
+      "public": "With everybody"
     }
   },
   "ELEMENTEDITOR": {

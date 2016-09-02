@@ -203,6 +203,14 @@ define([
       return this.resourceBase() + "/command/copy-resource-to-folder";
     };
 
+    service.getUsers = function () {
+      return this.resourceBase() + "/users";
+    };
+
+    service.getGroups = function () {
+      return this.resourceBase() + "/groups";
+    };
+
     return service;
   };
 
