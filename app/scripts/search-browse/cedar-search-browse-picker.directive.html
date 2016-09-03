@@ -909,7 +909,7 @@
               <div class="col-sm-6" style="padding: 10px 0 0 20px;">{{share.group.displayName}}
               </div>
 
-              <select ng-model="share.permission"  class="col-sm-4"  select-model="dc.resourcePermissions.groupPermissions"
+              <select ng-model="share.permission"  class="col-sm-4"  select-model="share"
                   select-picker cedar-live-search="true"
                   style="margin:5px 0">
                 <option value="read">can read</option>
@@ -929,8 +929,8 @@
               <div class="col-sm-6" style="padding: 10px 0 0 20px;">{{dc.getName(share.user)}}
               </div>
 
-              <select ng-model="share.permission"  class="col-sm-4"  select-model="dc.resourcePermissions.userPermissions"
-                  select-picker cedar-live-search="true" style="margin:5px 0">
+              <select ng-model="share.permission"  class="col-sm-4"  select-picker cedar-live-search="true" select-model="share"
+                   style="margin:5px 0">
                 <option value="read">can read</option>
                 <option value="write">can write</option>
               </select>
