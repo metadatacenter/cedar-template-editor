@@ -872,7 +872,6 @@
                   tooltip-placement="top"
                   data-toggle="tooltip"
                   ng-click="dc.addShare(dc.selectedUserId, dc.giveUserPermission, 'shared-users', 'user')">
-                <!--<span aria-hidden="true">&plus;</span>-->
                 <i class="fa fa-plus"></i>
               </button>
 
@@ -881,10 +880,11 @@
                   select-picker cedar-live-search="true"
                   ng-options="user.id as dc.getName(user) for user in dc.resourceUsers"></select>
 
-              <select ng-model="dc.giveUserPermission" class="dropdown col-sm-4 pull-right"  select-picker >
+              <select ng-model="dc.giveUserPermission"  class="dropdown col-sm-4 pull-right"  select-picker select-model="dc.canBeOwner(dc.selectedUserId)"
+                  cedar-live-search="true">
                 <option value="read">can read</option>
                 <option value="write">can write</option>
-                <option value="own">is owner</option>
+                <option ng-if="dc.canBeOwner(dc.selectedUserId)" value="own">is owner</option>
               </select>
 
             </div>
@@ -929,10 +929,11 @@
               <div class="col-sm-6" style="padding: 10px 0 0 20px;">{{dc.getName(share.user)}}
               </div>
 
-              <select ng-model="share.permission"  class="col-sm-4"  select-picker cedar-live-search="true" select-model="share"
+              <select ng-model="share.permission" ng-change="dc.addShare(share.user.id, share.permission, 'shared-users', 'user')"  class="col-sm-4"  select-picker cedar-live-search="true" select-model="share"
                    style="margin:5px 0">
                 <option value="read">can read</option>
                 <option value="write">can write</option>
+                <option ng-if="dc.canBeOwner(share.user.id)" value="own">is owner</option>
               </select>
               <button class="close col-sm-2" type="button" tooltip="remove"
                   tooltip-trigger

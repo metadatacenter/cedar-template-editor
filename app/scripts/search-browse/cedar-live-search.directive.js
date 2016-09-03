@@ -18,15 +18,13 @@ define([
       restrict: 'AC',
       link    : function (scope, element, attr) {
 
-        console.log('cedarLiveSearch');console.log(attr);
-        if (attr.ngOptions && / in /.test(attr.ngOptions)) {
-          scope.$watch(attr.ngOptions.split(' in ')[1], function() {
-            scope.$applyAsync(function () {
-              element.selectpicker('refresh');
-            });
+        if (attr.selectModel) {
+          scope.$watch(attr.selectModel, function() {
+                 scope.$applyAsync(function () {
+                   element.selectpicker('refresh');
+                 });
           }, true);
         }
-
       }
     };
   }

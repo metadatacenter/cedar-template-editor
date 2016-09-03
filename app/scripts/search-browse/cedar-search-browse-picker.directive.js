@@ -95,7 +95,7 @@ define([
           vm.openShare = openShare;
           vm.saveShare = saveShare;
           vm.getNode = getNode;
-          vm.resetAccessPermission = resetAccessPermission;
+          //vm.resetAccessPermission = resetAccessPermission;
           vm.canBeOwner = canBeOwner;
           vm.addShare = addShare;
           vm.withShare = withShare;
@@ -104,15 +104,12 @@ define([
           vm.getName = getName;
 
 
-          //vm.publicPermission = 'read';
-          //vm.isPublic = null;
-
-
           vm.selectedUserId = null;
           vm.giveUserPermission = 'read';
           vm.selectedGroupId = null;
           vm.giveGroupPermission = 'read';
           vm.owner = 'own';
+          vm.userIsOriginalOwner = false;
           // from server
           vm.resourceUsers = null;
           vm.resourceGroups = null;
@@ -1287,12 +1284,25 @@ define([
 
           // share...
 
-          function canBeOwner(node) {
-            return node && node.nodeType === 'user';
+          function userIsOwner() {
+
+            var userId = CedarUser.getUserId();
+            var ownerId = null;
+
+            if (vm.resourcePermissions) {
+              ownerId = vm.resourcePermissions.owner.id.substr(vm.resourcePermissions.owner.id.lastIndexOf('/') + 1);
+            }
+
+            return (ownerId === userId);
+          }
+
+
+          function canBeOwner(id) {
+            var node = getNode(id);
+            return id && node && node.nodeType === 'user' &&  vm.userIsOriginalOwner;
           }
 
           function newOwner(node, domId) {
-            console.log('newOwner' );if (node) console.log(node.permission)
             addShare(node.id, 'own', domId);
           }
 
@@ -1318,18 +1328,15 @@ define([
 
 
           function updateShare(node, permission) {
-            console.log('updateShare')
+
             for (var i = 0; i < vm.resourcePermissions.userPermissions.length; i++) {
               if (node.id === vm.resourcePermissions.userPermissions[i].user.id) {
-                // found it, update to new permission
                 vm.resourcePermissions.userPermissions[i].permission = permission;
                 return true;
               }
             }
-            console.log(vm.resourcePermissions);
             for (var i = 0; i < vm.resourcePermissions.groupPermissions.length; i++) {
               if (node.id === vm.resourcePermissions.groupPermissions[i].group.id) {
-                // found it, update to new permission
                 vm.resourcePermissions.groupPermissions[i].permission = permission;
                 return true;
               }
@@ -1337,12 +1344,12 @@ define([
             return false;
           }
 
-          function resetAccessPermission() {
-            var node = getNode(vm.selectedUserId);
-            if (!vm.canBeOwner(node)) {
-              vm.giveUserPermission === 'read';
-            }
-          }
+          //function resetAccessPermission() {
+          //  var node = getNode(vm.selectedUserId);
+          //  if (!vm.canBeOwner(node)) {
+          //    vm.giveUserPermission === 'read';
+          //  }
+          //}
 
           function getNode(id) {
             var all = [];
@@ -1359,12 +1366,22 @@ define([
             }
           }
 
-
           function isUser(node) {
             return (node && node.nodeType === 'user');
           }
 
           function openShare(resource) {
+            vm.selectedUserId = null;
+            vm.giveUserPermission = 'read';
+            vm.selectedGroupId = null;
+            vm.giveGroupPermission = 'read';
+            vm.owner = 'own';
+            vm.userIsOriginalOwner = false;
+           
+            vm.resourceUsers = null;
+            vm.resourceGroups = null;
+            vm.resourcePermissions = null;
+
             getUsers();
             getGroups();
             getPermissions(resource);
@@ -1384,7 +1401,7 @@ define([
                 resource,
                 function (response) {
                   vm.resourcePermissions = response;
-                  //vm.isPublic = vm.resourcePermissions.groupPermissions.length > 0;
+                  vm.userIsOriginalOwner = userIsOwner();
                 },
                 function (error) {
                   UIMessageService.showBackendError('SERVER.' + resource.nodeType.toUpperCase() + '.load.error', error);
@@ -1393,7 +1410,6 @@ define([
           };
 
           function setPermissions(resource) {
-            console.log(vm.resourcePermissions);
 
             if (!resource && vm.hasSelection()) {
               resource = vm.getSelection();
@@ -1418,11 +1434,8 @@ define([
             resourceService.getUsers(
                 function (response) {
                   vm.resourceUsers = response.users;
-                  console.log(response);
                   if (vm.resourceUsers.length > 0) {
                     vm.selectedUserId = vm.resourceUsers[0].id;
-                    //jQuery('#select-picker-users').selectpicker('refresh');
-                    //console.log(jQuery('#select-picker-users'));
                   }
                 },
                 function (error) {
@@ -1436,7 +1449,9 @@ define([
             resourceService.getGroups(
                 function (response) {
                   vm.resourceGroups = response.groups;
-                  vm.selectedGroupId = vm.resourceGroups[0].id;
+                  if (vm.resourceGroups.length > 0) {
+                    vm.selectedGroupId = vm.resourceGroups[0].id;
+                  }
                 },
                 function (error) {
                   UIMessageService.showBackendError('SERVER.' + resource.nodeType.toUpperCase() + '.load.error', error);
@@ -1467,43 +1482,25 @@ define([
             }
           }
 
-          //function updateGroup() {
-          //  console.log(vm.resourceGroups);
-          //
-          //  if (vm.isPublic && vm.resourceGroups.length > 0) {
-          //    var share = {};
-          //    share.group = vm.resourceGroups[0];
-          //    share.permission = vm.publicPermission;
-          //    vm.resourcePermissions.groupPermissions = [];
-          //    vm.resourcePermissions.groupPermissions.push(share);
-          //  } else {
-          //    vm.resourcePermissions.groupPermissions = [];
-          //  }
-          //  console.log(vm.resourcePermissions.groupPermissions);
-          //}
 
           function getName(node) {
             if (node) {
               return node.firstName + ' ' + node.lastName + ' (' + node.email + ')';
             }
-            else return "tbd";
 
           }
 
           function addShare(id, permission, domId, nodeType) {
-            console.log('addShare')
 
             var node = getNode(id);
             var share = {};
             if (node) {
 
-              console.log('got node' + permission)
-
               if (permission === 'own') {
+
 
                 // make the node the owner
                 removeShare(node);
-                console.log(vm.resourcePermissions);
                 var owner = vm.resourcePermissions.owner;
                 vm.resourcePermissions.owner = node;
 
@@ -1513,21 +1510,18 @@ define([
 
               } else {
                 // can we just update it
-                console.log(isOwner(node));
-                console.log(updateShare(node, permission));
 
                 if (!isOwner(node) && !updateShare(node, permission)) {
 
                   if (nodeType === 'group') {
                     // create the new share for this group
-                    console.log('addShare group ' + id + permission)
                     share.permission = vm.giveGroupPermission;
                     share.group = node;
                     vm.resourcePermissions.groupPermissions.push(share);
 
                   } else {
                     // create the new share for this user
-                    share.permission = vm.givUserPermission;
+                    share.permission = vm.giveUserPermission;
                     share.user = node;
                     vm.resourcePermissions.userPermissions.push(share);
                   }
