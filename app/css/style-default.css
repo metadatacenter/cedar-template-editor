@@ -14550,7 +14550,7 @@ table.apiKey td {
   overflow-y: scroll;
   overflow-x: hidden;
   border: 1px solid #ccc;
-  padding-right: 28px;
+  padding-right: 24px;
 }
 #shareResourceModal .modal-content .modal-body .bootstrap-select.small {
   width: 80px;

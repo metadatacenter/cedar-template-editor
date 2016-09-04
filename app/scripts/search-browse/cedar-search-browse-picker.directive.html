@@ -850,7 +850,7 @@
 
 
               <button
-                  class="col-sm-1  btn btn-sm btn-info btn-circle btn-plus"
+                  class="col-sm-1  btn btn-sm btn-info btn-circle btn-plus" ng-if="dc.canUpdate()" ng-model="dc.resourcePermissions"
                   type="button"
                   tooltip='{{"DASHBOARD.share.addHint" | translate}}'
                   tooltip-trigger
@@ -887,7 +887,7 @@
                 <option ng-if="dc.canBeOwner(dc.selectedUserId)" value="own">is owner</option>
               </select>
 
-              <button class="col-sm-1 btn btn-sm btn-info btn-circle btn-plus"
+              <button class="col-sm-1 btn btn-sm btn-info btn-circle btn-plus" ng-if="dc.canUpdate()" ng-model="dc.resourcePermissions"
                    type="button"
                   tooltip='{{"DASHBOARD.share.addHint" | translate}}'
                   tooltip-trigger
@@ -932,7 +932,7 @@
                 <option value="write">can write</option>
               </select>
 
-              <button class=" col-sm-1  btn  btn-info btn-circle btn-sm btn-delete"
+              <button class=" col-sm-1  btn  btn-info btn-circle btn-sm btn-delete" ng-if="dc.canUpdate()" ng-model="dc.resourcePermissions"
                    type="button" tooltip="remove"
                   tooltip-trigger
                   tooltip-animation="false"
@@ -959,7 +959,7 @@
                 <option ng-if="dc.canBeOwner(share.user.id)" value="own">is owner</option>
               </select>
 
-              <button class=" col-sm-1  btn  btn-info btn-circle  btn-sm btn-delete"
+              <button class=" col-sm-1  btn  btn-info btn-circle  btn-sm btn-delete"  ng-if="dc.canUpdate()" ng-model="dc.resourcePermissions"
                    type="button" tooltip="remove"
                   tooltip-trigger
                   tooltip-animation="false"
@@ -973,7 +973,7 @@
         </div>
 
 
-        <div class="modal-footer actions">
+        <div class="modal-footer actions" ng-if="dc.canUpdate()" ng-model="dc.resourcePermissions">
           <div class="clear-save">
             <button type="button" ng-click="dc.saveShare(resource)"
                 data-dismiss="modal" aria-label="Save"

@@ -95,22 +95,18 @@ define([
           vm.openShare = openShare;
           vm.saveShare = saveShare;
           vm.getNode = getNode;
-          //vm.resetAccessPermission = resetAccessPermission;
           vm.canBeOwner = canBeOwner;
+          vm.canUpdate = canUpdate;
           vm.addShare = addShare;
-          vm.withShare = withShare;
           vm.removeShare = removeShare;
-          vm.newOwner = newOwner;
           vm.getName = getName;
-
-
           vm.selectedUserId = null;
           vm.giveUserPermission = 'read';
           vm.selectedGroupId = null;
           vm.giveGroupPermission = 'read';
-          vm.owner = 'own';
           vm.userIsOriginalOwner = false;
-          // from server
+          vm.userIsOriginalWriter = false;
+          vm.everybodyIsOriginalWriter = false;
           vm.resourceUsers = null;
           vm.resourceGroups = null;
           vm.resourcePermissions = null;
@@ -1198,7 +1194,6 @@ define([
           }
 
           function moveResource() {
-            console.log(vm.selectedDestination);
 
             if (vm.selectedDestination) {
               var folderId = vm.selectedDestination['@id'];
@@ -1284,8 +1279,8 @@ define([
 
           // share...
 
+          // is the current user the owner?
           function userIsOwner() {
-
             var userId = CedarUser.getUserId();
             var ownerId = null;
 
@@ -1296,23 +1291,50 @@ define([
             return (ownerId === userId);
           }
 
+          // does the current user have write permissions?
+          function userIsWriter() {
+            var userId = CedarUser.getUserId();
+            if (vm.resourcePermissions) {
+              for (var i = 0; i < vm.resourcePermissions.userPermissions.length; i++) {
+                var id = vm.resourcePermissions.userPermissions[i].user.id;
+                id = id.substr(id.lastIndexOf('/') + 1);
+                if (userId === id) {
+                  return vm.resourcePermissions.userPermissions[i].permission === 'write';
+                }
+              }
+            }
+            return false;
+          }
 
+          // does the current user have write permissions?
+          function everybodyIsWriter() {
+            var userId = CedarUser.getUserId();
+            if (vm.resourcePermissions && vm.resourcePermissions.groupPermissions.length > 0) {
+              return vm.resourcePermissions.groupPermissions[0].permission === 'write'
+            }
+            return false;
+          }
+
+          // is the node's owner the same as the current owner
+          function isOwner(node) {
+            if (vm.resourcePermissions && vm.resourcePermissions.owner && node) {
+              return vm.resourcePermissions.owner.id === node.id;
+            }
+            return false;
+          }
+
+          // can ownership be assigned on this node by the current user
+          function canUpdate() {
+            return vm.userIsOriginalOwner || vm.userIsOriginalWriter || vm.everybodyIsOriginalWriter;
+          }
+
+          // can ownership be assigned on this node by the current user
           function canBeOwner(id) {
             var node = getNode(id);
-            return id && node && node.nodeType === 'user' &&  vm.userIsOriginalOwner;
+            return id && node && node.nodeType === 'user' && (vm.userIsOriginalOwner || vm.userIsOriginalWriter);
           }
 
-          function newOwner(node, domId) {
-            addShare(node.id, 'own', domId);
-          }
-
-          function withShare() {
-            if (vm.resourcePermissions) {
-              return vm.resourcePermissions.userPermissions;
-            }
-          }
-
-
+          // not using this at the moment, but for sorting the items in the select
           function dynamicSort(property) {
             var sortOrder = 1;
             if (property[0] === "-") {
@@ -1325,8 +1347,7 @@ define([
             }
           }
 
-
-
+          // update the permission for this node
           function updateShare(node, permission) {
 
             for (var i = 0; i < vm.resourcePermissions.userPermissions.length; i++) {
@@ -1344,13 +1365,7 @@ define([
             return false;
           }
 
-          //function resetAccessPermission() {
-          //  var node = getNode(vm.selectedUserId);
-          //  if (!vm.canBeOwner(node)) {
-          //    vm.giveUserPermission === 'read';
-          //  }
-          //}
-
+          // get the node for this id
           function getNode(id) {
             var all = [];
             if (vm.resourceUsers) {
@@ -1366,18 +1381,20 @@ define([
             }
           }
 
+          // is this node a user?
           function isUser(node) {
             return (node && node.nodeType === 'user');
           }
 
+          // initialize the share dialog
           function openShare(resource) {
             vm.selectedUserId = null;
-            vm.giveUserPermission = 'read';
             vm.selectedGroupId = null;
+            vm.giveUserPermission = 'read';
             vm.giveGroupPermission = 'read';
-            vm.owner = 'own';
             vm.userIsOriginalOwner = false;
-
+            vm.userIsOriginalWriter = false;
+            vm.everybodyIsOriginalWriter = false;
             vm.resourceUsers = null;
             vm.resourceGroups = null;
             vm.resourcePermissions = null;
@@ -1387,10 +1404,12 @@ define([
             getPermissions(resource);
           };
 
+          // save the modified permissions to the server
           function saveShare(resource) {
             setPermissions(resource);
           };
 
+          // read the permissions from the server
           function getPermissions(resource) {
             // get the sharing for this resource
             if (!resource && vm.hasSelection()) {
@@ -1402,6 +1421,8 @@ define([
                 function (response) {
                   vm.resourcePermissions = response;
                   vm.userIsOriginalOwner = userIsOwner();
+                  vm.userIsOriginalWriter = userIsWriter();
+                  vm.everybodyIsOriginalWriter = everybodyIsWriter();
                 },
                 function (error) {
                   UIMessageService.showBackendError('SERVER.' + resource.nodeType.toUpperCase() + '.load.error', error);
@@ -1409,6 +1430,7 @@ define([
             );
           };
 
+          // write the permissions to the server
           function setPermissions(resource) {
 
             if (!resource && vm.hasSelection()) {
@@ -1428,6 +1450,7 @@ define([
             );
           };
 
+          // get all the users on the system
           function getUsers() {
 
             // get the users
@@ -1444,6 +1467,7 @@ define([
             );
           }
 
+          // get all the groups on the system
           function getGroups() {
 
             resourceService.getGroups(
@@ -1459,14 +1483,7 @@ define([
             );
           }
 
-          function isOwner(node) {
-            if (vm.resourcePermissions && vm.resourcePermissions.owner && node ) {
-              return vm.resourcePermissions.owner.id === node.id;
-            }
-            return false;
-
-          }
-
+          // remove the share permission on this node
           function removeShare(node) {
             for (var i = 0; i < vm.resourcePermissions.userPermissions.length; i++) {
               if (node.id === vm.resourcePermissions.userPermissions[i].user.id) {
@@ -1482,14 +1499,14 @@ define([
             }
           }
 
-
+          // format a name for this node, should be using displayName but it is not there yet
           function getName(node) {
             if (node) {
               return node.firstName + ' ' + node.lastName + ' (' + node.email + ')';
             }
-
           }
 
+          // add a share permission for this node
           function addShare(id, permission, domId, nodeType) {
 
             var node = getNode(id);
@@ -1497,7 +1514,6 @@ define([
             if (node) {
 
               if (permission === 'own') {
-
 
                 // make the node the owner
                 removeShare(node);
@@ -1509,8 +1525,8 @@ define([
                 vm.resourcePermissions.userPermissions.push(share);
 
               } else {
-                // can we just update it
 
+                // can we just update it
                 if (!isOwner(node) && !updateShare(node, permission)) {
 
                   if (nodeType === 'group') {
@@ -1534,10 +1550,7 @@ define([
               }, 0, false);
             }
           }
-
         }
-
       }
-
     }
 );
