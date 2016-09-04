@@ -1377,7 +1377,7 @@ define([
             vm.giveGroupPermission = 'read';
             vm.owner = 'own';
             vm.userIsOriginalOwner = false;
-           
+
             vm.resourceUsers = null;
             vm.resourceGroups = null;
             vm.resourcePermissions = null;

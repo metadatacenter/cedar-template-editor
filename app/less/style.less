@@ -4015,7 +4015,7 @@ p.instructions {
     border-radius: 0;
     background-color: transparent;
     border-color: #ddd;
-    height: 40px;
+    //height: 40px;
 
     &:focus {
       outline: none !important;
@@ -6261,6 +6261,38 @@ table.apiKey {
     max-width: 500px;
     .modal-body {
       max-height: 500px;
+      .row {
+        padding: 5px 0;
+        .name {
+          padding:8px 0 0 20px;white-space:nowrap;
+        }
+        .btn-plus {
+          width: 25px;
+          height: 25px;
+          float: right;
+          outline: none;
+          background: @primary-accent !important;
+        }
+        .btn-delete {
+          width: 25px;
+          height: 25px;
+          float: right;
+          outline: none;
+          background: #999 !important;
+        }
+      }
+      .hidden-container {
+       border:0px solid #ccc;
+        padding-right: 28px;
+        margin-right:12px
+      }
+      .scroll-container {
+        height:250px;
+        overflow-y:scroll;
+        overflow-x:hidden;
+        border:1px solid #ccc;
+        padding-right: 28px;
+      }
       .bootstrap-select {
         &.small {
           width: 80px;

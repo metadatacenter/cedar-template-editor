@@ -12649,7 +12649,6 @@ p.instructions {
   border-radius: 0;
   background-color: transparent;
   border-color: #ddd;
-  height: 40px;
 }
 .bootstrap-select .btn-select-picker:focus {
   outline: none !important;
@@ -14519,6 +14518,39 @@ table.apiKey td {
 }
 #shareResourceModal .modal-content .modal-body {
   max-height: 500px;
+}
+#shareResourceModal .modal-content .modal-body .row {
+  padding: 5px 0;
+}
+#shareResourceModal .modal-content .modal-body .row .name {
+  padding: 8px 0 0 20px;
+  white-space: nowrap;
+}
+#shareResourceModal .modal-content .modal-body .row .btn-plus {
+  width: 25px;
+  height: 25px;
+  float: right;
+  outline: none;
+  background: #FF5722 !important;
+}
+#shareResourceModal .modal-content .modal-body .row .btn-delete {
+  width: 25px;
+  height: 25px;
+  float: right;
+  outline: none;
+  background: #999 !important;
+}
+#shareResourceModal .modal-content .modal-body .hidden-container {
+  border: 0px solid #ccc;
+  padding-right: 28px;
+  margin-right: 12px;
+}
+#shareResourceModal .modal-content .modal-body .scroll-container {
+  height: 250px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  border: 1px solid #ccc;
+  padding-right: 28px;
 }
 #shareResourceModal .modal-content .modal-body .bootstrap-select.small {
   width: 80px;
