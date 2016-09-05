@@ -7,13 +7,13 @@
   <div class="definition-inputs" ng-include="'scripts/form/partials/field-definition.partial.html'"></div>
   <!-- /.definition-inputs -->
 
-  <div class="type-toggle list" ng-init="$root.schemaOf(field)._valueConstraints.selectionType = 'single'">
-    <div class="single-date d-option" ng-click="$root.schemaOf(field)._valueConstraints.selectionType = 'single'"
-        ng-class="{active: $root.schemaOf(field)._valueConstraints.selectionType == 'single'}">
+  <div class="type-toggle list" ng-init="$root.schemaOf(field)._valueConstraints.multipleChoice = false">
+    <div class="single-date d-option" ng-click="$root.schemaOf(field)._valueConstraints.multipleChoice = false"
+        ng-class="{active: $root.schemaOf(field)._valueConstraints.multipleChoice == false}">
       <span>Single Select</span>
     </div>
-    <div class="date-range d-option" ng-click="$root.schemaOf(field)._valueConstraints.selectionType = 'multiple'"
-        ng-class="{active: $root.schemaOf(field)._valueConstraints.selectionType == 'multiple'}">
+    <div class="date-range d-option" ng-click="$root.schemaOf(field)._valueConstraints.multipleChoice = true"
+        ng-class="{active: $root.schemaOf(field)._valueConstraints.multipleChoice == true}">
       <span>Multi-Select</span>
     </div>
   </div>

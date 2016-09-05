@@ -7,7 +7,7 @@
   <div ng-init="initializeSelectionField()" class="field-list" ng-class="{'required': $root.schemaOf(field)._valueConstraints.requiredValue}">
 
     <!--Single selection-->
-    <div ng-if="$root.schemaOf(field)._valueConstraints.selectionType == 'single'"
+    <div ng-if="$root.schemaOf(field)._valueConstraints.multipleChoice == false"
         class="form-group form-group-narrow validation-pattern"
         ng-class="{'required': $root.schemaOf(field)._valueConstraints.requiredValue}">
       <select class="form-control"
@@ -27,7 +27,7 @@
     </div>
 
     <!--Multiple selection-->
-    <div ng-if="$root.schemaOf(field)._valueConstraints.selectionType == 'multiple'"
+    <div ng-if="$root.schemaOf(field)._valueConstraints.multipleChoice == true"
         class="form-group form-group-narrow validation-pattern"
         ng-class="{'required': $root.schemaOf(field)._valueConstraints.requiredValue}">
       <select class="form-control"

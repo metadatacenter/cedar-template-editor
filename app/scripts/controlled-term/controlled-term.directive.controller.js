@@ -41,8 +41,6 @@ define([
     vm.deleteFieldAddedValueSet = deleteFieldAddedValueSet;
     vm.depthOptions = null;
     vm.isLoadingClassDetails = false;
-    //vm.loadAllOntologies = loadAllOntologies;
-    //vm.loadAllValueSets = loadAllValueSets;
     vm.selectFieldFilter = selectFieldFilter;
     vm.selectValueFilter = selectValueFilter;
     vm.stagedBranchesValueConstraints = [];
@@ -693,7 +691,7 @@ define([
         vm.valueConstraint.valueSets = vm.valueConstraint.valueSets || [];
         vm.valueConstraint.classes = vm.valueConstraint.classes || [];
         vm.valueConstraint.branches = vm.valueConstraint.branches || [];
-        vm.valueConstraint.multipleChoice = vm.valueConstraint.multipleChoice || [];
+        vm.valueConstraint.multipleChoice = false;
       }
     };
 

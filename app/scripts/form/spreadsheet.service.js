@@ -147,8 +147,7 @@ define([
                 // http://numeraljs.com/
                 desc.type = 'numeric';
               } else if (inputType == 'list') {
-                var st = _valueConstraints.selectionType;
-                if (st == 'single') {
+                if (_valueConstraints.multipleChoice == false) {
                   desc.type = 'dropdown';
                   var listOptions = this.extractOptionsForList(_valueConstraints.literals);
                   desc.source = listOptions;

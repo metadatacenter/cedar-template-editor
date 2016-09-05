@@ -100,6 +100,12 @@ define([
             "label": ""
           }
         ];
+        if (fieldType == 'radio') {
+          field._valueConstraints.multipleChoice = false;
+        }
+        else if (fieldType == 'checkbox') {
+          field._valueConstraints.multipleChoice = true;
+        }
       }
       // empty staging object (only one field should be configurable at a time)
       $scope.staging = {};
@@ -119,6 +125,12 @@ define([
             "label": ""
           }
         ];
+        if (fieldType == 'radio') {
+          field._valueConstraints.multipleChoice = false;
+        }
+        else if (fieldType == 'checkbox') {
+          field._valueConstraints.multipleChoice = true;
+        }
       }
 
       // Converting title for irregular character handling
