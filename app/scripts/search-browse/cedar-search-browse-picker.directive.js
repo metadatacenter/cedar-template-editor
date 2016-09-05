@@ -99,17 +99,21 @@ define([
           vm.canUpdate = canUpdate;
           vm.addShare = addShare;
           vm.removeShare = removeShare;
+          vm.updateNodePermission = updateNodePermission;
           vm.getName = getName;
           vm.selectedUserId = null;
           vm.giveUserPermission = 'read';
           vm.selectedGroupId = null;
           vm.giveGroupPermission = 'read';
+          vm.selectedNodeId = null;
+          vm.giveNodePermission = 'read';
           vm.userIsOriginalOwner = false;
           vm.userIsOriginalWriter = false;
           vm.everybodyIsOriginalWriter = false;
           vm.resourceUsers = null;
           vm.resourceGroups = null;
           vm.resourcePermissions = null;
+          vm.resourceNodes = null;
 
 
           vm.getFacets = getFacets;
@@ -1334,6 +1338,7 @@ define([
             return id && node && node.nodeType === 'user' && (vm.userIsOriginalOwner || vm.userIsOriginalWriter);
           }
 
+
           // not using this at the moment, but for sorting the items in the select
           function dynamicSort(property) {
             var sortOrder = 1;
@@ -1350,15 +1355,9 @@ define([
           // update the permission for this node
           function updateShare(node, permission) {
 
-            for (var i = 0; i < vm.resourcePermissions.userPermissions.length; i++) {
-              if (node.id === vm.resourcePermissions.userPermissions[i].user.id) {
-                vm.resourcePermissions.userPermissions[i].permission = permission;
-                return true;
-              }
-            }
-            for (var i = 0; i < vm.resourcePermissions.groupPermissions.length; i++) {
-              if (node.id === vm.resourcePermissions.groupPermissions[i].group.id) {
-                vm.resourcePermissions.groupPermissions[i].permission = permission;
+            for (var i = 0; i < vm.resourcePermissions.shares.length; i++) {
+              if (node.id === vm.resourcePermissions.shares[i].node.id) {
+                vm.resourcePermissions.shares[i].permission = permission;
                 return true;
               }
             }
@@ -1367,16 +1366,11 @@ define([
 
           // get the node for this id
           function getNode(id) {
-            var all = [];
-            if (vm.resourceUsers) {
-              all = all.concat(vm.resourceUsers);
-            }
-            if (vm.resourceGroups) {
-              all = all.concat(vm.resourceGroups);
-            }
-            for (var i = 0; i < all.length; i++) {
-              if (all[i].id === id) {
-                return all[i];
+            if (vm.resourceNodes) {
+              for (var i = 0; i < vm.resourceNodes.length; i++) {
+                if (vm.resourceNodes[i].id === id) {
+                  return vm.resourceNodes[i];
+                }
               }
             }
           }
@@ -1388,19 +1382,16 @@ define([
 
           // initialize the share dialog
           function openShare(resource) {
-            vm.selectedUserId = null;
-            vm.selectedGroupId = null;
-            vm.giveUserPermission = 'read';
-            vm.giveGroupPermission = 'read';
+            vm.selectedNodeId = null;
+            vm.giveNodePermission = 'read';
             vm.userIsOriginalOwner = false;
             vm.userIsOriginalWriter = false;
             vm.everybodyIsOriginalWriter = false;
             vm.resourceUsers = null;
             vm.resourceGroups = null;
+            vm.resourceNodes = null;
             vm.resourcePermissions = null;
-
-            getUsers();
-            getGroups();
+            getNodes();
             getPermissions(resource);
           };
 
@@ -1423,6 +1414,7 @@ define([
                   vm.userIsOriginalOwner = userIsOwner();
                   vm.userIsOriginalWriter = userIsWriter();
                   vm.everybodyIsOriginalWriter = everybodyIsWriter();
+                  getShares();
                 },
                 function (error) {
                   UIMessageService.showBackendError('SERVER.' + resource.nodeType.toUpperCase() + '.load.error', error);
@@ -1430,8 +1422,57 @@ define([
             );
           };
 
+          function getShares() {
+            if (vm.resourcePermissions) {
+
+              vm.resourcePermissions.shares = [];
+              for (var i = 0; i < vm.resourcePermissions.groupPermissions.length; i++) {
+                var share = {};
+                share.permission = vm.resourcePermissions.groupPermissions[i].permission;
+                share.node = vm.resourcePermissions.groupPermissions[i].group;
+                share.node.nodeType = 'group';
+                share.node.name = share.node.displayName;
+                vm.resourcePermissions.shares.push(share);
+              }
+              for (var i = 0; i < vm.resourcePermissions.userPermissions.length; i++) {
+                var share = {};
+                share.permission = vm.resourcePermissions.userPermissions[i].permission;
+                share.node = vm.resourcePermissions.userPermissions[i].user;
+                share.node.nodeType = 'user';
+                share.node.name = share.node.firstName + ' ' + share.node.lastName + ' (' + share.node.email + ')';
+                vm.resourcePermissions.shares.push(share);
+              }
+
+              //if (vm.resourcePermissions.shares.length > 0) {
+              //  var id = vm.resourcePermissions.shares[0].node.id;
+              //  vm.selectedNodeId = id.substr(id.lastIndexOf('/') + 1);
+              //}
+            }
+            console.log('getShares' + vm.selectedNodeId);console.log(vm.resourcePermissions);
+          }
+
           // write the permissions to the server
           function setPermissions(resource) {
+
+            // rebuild permissions from shares
+            vm.resourcePermissions.groupPermissions = [];
+            vm.resourcePermissions.userPermissions = [];
+            for (var i=0;i<vm.resourcePermissions.shares.length;i++) {
+              var share = vm.resourcePermissions.shares[i];
+              if (share.node.nodeType === 'user') {
+                share.user = share.node;
+                delete share.node;
+                vm.resourcePermissions.userPermissions.push(share);
+              } else {
+                share.group = share.node;
+                delete share.node;
+                vm.resourcePermissions.groupPermissions.push(share);
+              }
+
+
+            }
+            delete vm.resourcePermissions.shares;
+
 
             if (!resource && vm.hasSelection()) {
               resource = vm.getSelection();
@@ -1442,13 +1483,51 @@ define([
                 vm.resourcePermissions,
                 function (response) {
                   vm.resourcePermissions = response;
-
                 },
                 function (error) {
                   UIMessageService.showBackendError('SERVER.' + resource.nodeType.toUpperCase() + '.load.error', error);
                 }
             );
           };
+
+          // get all the users and groups on the system
+          function getNodes() {
+
+            // get the users
+            resourceService.getUsers(
+                function (response) {
+                  vm.resourceUsers = response.users;
+
+
+                  // get groups
+                  resourceService.getGroups(
+                      function (response) {
+                        vm.resourceGroups = response.groups;
+
+                        vm.resourceNodes = [];
+                        vm.resourceNodes = vm.resourceNodes.concat(vm.resourceUsers);
+                        vm.resourceNodes = vm.resourceNodes.concat(vm.resourceGroups);
+                        vm.resourceNodes.sort(dynamicSort("displayName"));
+                        if (vm.resourceNodes.length > 0) {
+                          //var id = vm.resourceNodes[0].id;
+                          //vm.selectedNodeId = id.substr(id.lastIndexOf('/') + 1);
+
+                          vm.selectedNodeId = vm.resourceNodes[0].id;
+                          console.log(vm.selectedNodeId);
+                        }
+
+                      },
+                      function (error) {
+                        UIMessageService.showBackendError('SERVER.' + resource.nodeType.toUpperCase() + '.load.error',
+                            error);
+                      }
+                  );
+                },
+                function (error) {
+                  UIMessageService.showBackendError('SERVER.' + resource.nodeType.toUpperCase() + '.load.error', error);
+                }
+            );
+          }
 
           // get all the users on the system
           function getUsers() {
@@ -1485,6 +1564,11 @@ define([
 
           // remove the share permission on this node
           function removeShare(node) {
+            for (var i = 0; i < vm.resourcePermissions.shares.length; i++) {
+              if (node.id === vm.resourcePermissions.shares[i].node.id) {
+                vm.resourcePermissions.shares.splice(i, 1);
+              }
+            }
             for (var i = 0; i < vm.resourcePermissions.userPermissions.length; i++) {
               if (node.id === vm.resourcePermissions.userPermissions[i].user.id) {
                 vm.resourcePermissions.userPermissions.splice(i, 1);
@@ -1506,8 +1590,17 @@ define([
             }
           }
 
+          function updateNodePermission() {
+            console.log('updateNodePermission');
+            var node = getNode(vm.selectedNodeId);
+            if (node.nodeType === 'group' && vm.giveNodePermission === 'own') {
+              console.log('updateNodePermission to read');
+              vm.giveNodePermission = 'read';
+            }
+          }
+
           // add a share permission for this node
-          function addShare(id, permission, domId, nodeType) {
+          function addShare(id, permission, domId) {
 
             var node = getNode(id);
             var share = {};
@@ -1521,26 +1614,21 @@ define([
                 vm.resourcePermissions.owner = node;
 
                 share.permission = 'write';
-                share.user = owner;
-                vm.resourcePermissions.userPermissions.push(share);
+                share.node = owner;
+                share.node.nodeType = 'user';
+                share.node.name = share.node.firstName + ' ' + share.node.lastName + ' (' + share.node.email + ')';
+                vm.resourcePermissions.shares.push(share);
 
               } else {
 
                 // can we just update it
                 if (!isOwner(node) && !updateShare(node, permission)) {
 
-                  if (nodeType === 'group') {
-                    // create the new share for this group
-                    share.permission = vm.giveGroupPermission;
-                    share.group = node;
-                    vm.resourcePermissions.groupPermissions.push(share);
-
-                  } else {
-                    // create the new share for this user
-                    share.permission = vm.giveUserPermission;
-                    share.user = node;
-                    vm.resourcePermissions.userPermissions.push(share);
-                  }
+                  // create the new share for this group
+                  share.permission = vm.giveNodePermission;
+                  share.node = node;
+                  share.node.name = node.displayName;
+                  vm.resourcePermissions.shares.push(share);
                 }
               }
               // scroll to this node

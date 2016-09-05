@@ -244,8 +244,9 @@
       "title": "Share",
       "manage": "",
       "add": "With users",
-      "addHint": "Share with",
-      "public": "With groups"
+      "addHint": "Share with user",
+      "public": "With groups",
+      "usersAndGroups": "With users and groups"
     }
   },
   "ELEMENTEDITOR": {

@@ -830,81 +830,6 @@
 
         <div class="modal-body">
 
-          <h5 translate>DASHBOARD.share.public</h5>
-
-          <div class="hidden-container" >
-
-            <div class="row">
-
-              <select id="select-picker-group" data-size="5"
-                  data-dropupAuto="false" class="dropdown col-sm-7"
-                  ng-model="dc.selectedGroupId" select-model="dc.resourceGroups"
-                  select-picker cedar-live-search="true"
-                  ng-options="group.id as group.displayName for group in dc.resourceGroups"></select>
-
-              <select ng-model="dc.giveGroupPermission"
-                  class="dropdown col-sm-4" select-picker>
-                <option value="read">can read</option>
-                <option value="write">can write</option>
-              </select>
-
-
-              <button
-                  class="col-sm-1  btn btn-sm btn-info btn-circle btn-plus" ng-if="dc.canUpdate()" ng-model="dc.resourcePermissions"
-                  type="button"
-                  tooltip='{{"DASHBOARD.share.addHint" | translate}}'
-                  tooltip-trigger
-                  tooltip-animation="false"
-                  tooltip-placement="top"
-                  data-toggle="tooltip"
-                  ng-click="dc.addShare(dc.selectedGroupId, dc.giveGroupPermission, 'shared-users', 'group')">
-                <!--<span aria-hidden="true">&plus;</span>-->
-                <i class="fa fa-plus" style="margin: 0 -4px;vertical-align: top;"></i>
-              </button>
-
-            </div>
-
-          </div>
-
-
-          <h5 translate>DASHBOARD.share.add</h5>
-
-          <div class="hidden-container">
-
-            <div class="row">
-
-
-              <select id="select-picker-users" data-size="5" data-dropupAuto="false" class="dropdown col-sm-7"
-                  ng-model="dc.selectedUserId" ng-change="dc.resetOwner()" select-model="dc.resourceUsers"
-                  select-picker cedar-live-search="true"
-                  ng-options="user.id as dc.getName(user) for user in dc.resourceUsers"></select>
-
-              <select ng-model="dc.giveUserPermission" class="dropdown col-sm-4 " select-picker
-                  select-model="dc.canBeOwner(dc.selectedUserId)"
-                  cedar-live-search="true">
-                <option value="read">can read</option>
-                <option value="write">can write</option>
-                <option ng-if="dc.canBeOwner(dc.selectedUserId)" value="own">is owner</option>
-              </select>
-
-              <button class="col-sm-1 btn btn-sm btn-info btn-circle btn-plus" ng-if="dc.canUpdate()" ng-model="dc.resourcePermissions"
-                   type="button"
-                  tooltip='{{"DASHBOARD.share.addHint" | translate}}'
-                  tooltip-trigger
-                  tooltip-animation="false"
-                  tooltip-placement="top"
-                  data-toggle="tooltip"
-                  ng-click="dc.addShare(dc.selectedUserId, dc.giveUserPermission, 'shared-users', 'user')">
-                <i class="fa fa-plus" style="margin:0 -4px;vertical-align: top;"></i>
-              </button>
-
-            </div>
-
-          </div>
-
-          <hr/>
-
-
           <h5 translate>DASHBOARD.share.manage</h5>
 
 
@@ -919,57 +844,70 @@
               </select>
             </div>
 
-            <div class="row"  ng-repeat="share in dc.resourcePermissions.groupPermissions">
+            <div class="row"  ng-repeat="share in dc.resourcePermissions.shares">
 
 
-              <div class="col-sm-7 name" >{{share.group.displayName}}
+              <div class="col-sm-7 name" >{{share.node.name}}
               </div>
 
-              <select ng-model="share.permission" class="col-sm-4"
+              <select ng-model="share.permission" class="col-sm-4" ng-change="dc.addShare(share.node.id, share.permission, 'shared-users')"
                   select-model="share"
-                  select-picker cedar-live-search="true">
+                  select-picker cedar-live-search="true" >
                 <option value="read">can read</option>
                 <option value="write">can write</option>
+                <option ng-if="dc.canBeOwner(share.node.id)" value="own">is owner</option>
               </select>
 
               <button class=" col-sm-1  btn  btn-info btn-circle btn-sm btn-delete" ng-if="dc.canUpdate()" ng-model="dc.resourcePermissions"
-                   type="button" tooltip="remove"
+                  type="button" tooltip="remove"
                   tooltip-trigger
                   tooltip-animation="false"
                   tooltip-placement="top"
                   data-toggle="tooltip"
-                  ng-click="dc.removeShare(share.group)"><i class="fa fa-times"
+                  ng-click="dc.removeShare(share.node)"><i class="fa fa-times"
                   style="margin: -1px -4px;vertical-align: top;"></i></button>
 
 
             </div>
+            </div>
 
+            <hr />
+          <div ng-if="dc.canUpdate()">
 
-            <div class="row" style="padding: 5px 0;" ng-repeat="share in dc.resourcePermissions.userPermissions">
+          <h5 translate>DASHBOARD.share.usersAndGroups</h5>
 
+          <div class="hidden-container" >
+            <div class="row">
 
-              <div class="col-sm-7 name" >{{dc.getName(share.user)}}
-              </div>
+              <select id="select-picker-user-or-group" data-size="5" ng-change="dc.updateNodePermission()"
+                  data-dropup-auto="false" class="dropup col-sm-7"
+                  ng-model="dc.selectedNodeId" select-model="dc.resourceNodes"
+                  select-picker cedar-live-search="true"
+                  ng-options="node.id as node.displayName for node in dc.resourceNodes "></select>
 
-              <select ng-model="share.permission"
-                  ng-change="dc.addShare(share.user.id, share.permission, 'shared-users', 'user')" class="col-sm-4"
-                  select-picker cedar-live-search="true" select-model="share">
+              <select ng-model="dc.giveNodePermission"
+                  data-dropup-auto="false" class="dropup col-sm-4" select-picker select-model="dc.selectedNodeId"  cedar-live-search="true">
                 <option value="read">can read</option>
                 <option value="write">can write</option>
-                <option ng-if="dc.canBeOwner(share.user.id)" value="own">is owner</option>
+                <option ng-if="dc.canBeOwner(dc.selectedNodeId)" value="own">is owner</option>
               </select>
 
-              <button class=" col-sm-1  btn  btn-info btn-circle  btn-sm btn-delete"  ng-if="dc.canUpdate()" ng-model="dc.resourcePermissions"
-                   type="button" tooltip="remove"
+              <button
+                  class="col-sm-1  btn btn-sm btn-info btn-circle btn-plus" ng-if="dc.canUpdate()" ng-model="dc.resourcePermissions"
+                  type="button"
+                  tooltip='{{"DASHBOARD.share.addHint" | translate}}'
                   tooltip-trigger
                   tooltip-animation="false"
                   tooltip-placement="top"
                   data-toggle="tooltip"
-                  ng-click="dc.removeShare(share.user)"><i class="fa fa-times"
-                  style="margin: -1px -4px;vertical-align: top;"></i></button>
+                  ng-click="dc.addShare(dc.selectedNodeId, dc.giveNodePermission, 'shared-users')">
+                <!--<span aria-hidden="true">&plus;</span>-->
+                <i class="fa fa-plus" style="margin: 0 -4px;vertical-align: top;"></i>
+              </button>
 
             </div>
           </div>
+        </div>
         </div>
 
 
