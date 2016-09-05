@@ -239,6 +239,14 @@
     },
     "newFolder": {
       "title": "New folder"
+    },
+    "share": {
+      "title": "Share",
+      "manage": "",
+      "add": "With users",
+      "addHint": "Share with user",
+      "public": "With groups",
+      "usersAndGroups": "With users and groups"
     }
   },
   "ELEMENTEDITOR": {

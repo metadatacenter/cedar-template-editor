@@ -31,7 +31,11 @@ define([
       updateFolder           : updateFolder,
       copyResourceToWorkspace: copyResourceToWorkspace,
       copyResource           : copyResource,
-      moveResource           : moveResource
+      moveResource           : moveResource,
+      getResourceShare       : getResourceShare,
+      setResourceShare       : setResourceShare,
+      getUsers               : getUsers,
+      getGroups              : getGroups
     };
     return service;
 
@@ -391,6 +395,81 @@ define([
           errorCallback
       );
     }
+
+    function getResourceShare(resource, successCallback, errorCallback) {
+      var url;
+      var id = resource['@id'];
+      switch (resource.nodeType) {
+        case CONST.resourceType.FOLDER:
+          url = urlService.folders() + '/' + encodeURIComponent(id) + '/permissions';
+          break;
+        case CONST.resourceType.ELEMENT:
+          url = urlService.getTemplateElement(id) + '/permissions';
+          break;
+        case CONST.resourceType.TEMPLATE:
+          url = urlService.getTemplate(id) + '/permissions';
+          break;
+        case CONST.resourceType.INSTANCE:
+          url = urlService.getTemplateInstance(id) + '/permissions';
+          break;
+      }
+      authorizedBackendService.doCall(
+          httpBuilderService.get(url),
+          function (response) {
+            successCallback(response.data);
+          },
+          errorCallback
+      );
+    };
+
+    function setResourceShare(resource, permissions, successCallback, errorCallback) {
+      console.log('setResourceShare');console.log(permissions)
+;      var url;
+      var id = resource['@id'];
+      switch (resource.nodeType) {
+        case CONST.resourceType.FOLDER:
+          url = urlService.folders() + '/' + encodeURIComponent(id) + '/permissions';
+          break;
+        case CONST.resourceType.ELEMENT:
+          url = urlService.getTemplateElement(id) + '/permissions';
+          break;
+        case CONST.resourceType.TEMPLATE:
+          url = urlService.getTemplate(id) + '/permissions';
+          break;
+        case CONST.resourceType.INSTANCE:
+          url = urlService.getTemplateInstance(id) + '/permissions';
+          break;
+      }
+      authorizedBackendService.doCall(
+          httpBuilderService.put(url, permissions),
+          function (response) {
+            successCallback(response.data);
+          },
+          errorCallback
+      );
+    };
+
+    function getUsers(successCallback, errorCallback) {
+      var url = urlService.getUsers();
+      authorizedBackendService.doCall(
+          httpBuilderService.get(url),
+          function (response) {
+            successCallback(response.data);
+          },
+          errorCallback
+      );
+    };
+
+    function getGroups(successCallback, errorCallback) {
+      var url = urlService.getGroups();
+      authorizedBackendService.doCall(
+          httpBuilderService.get(url),
+          function (response) {
+            successCallback(response.data);
+          },
+          errorCallback
+      );
+    };
 
   }
 

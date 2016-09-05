@@ -9649,9 +9649,7 @@ button {
   /* Off Canvas */
 }
 .all-items-view .center-panel {
-  position: absolute;
   top: 0;
-  left: 200px;
   right: 0;
   padding: 30px 0;
   height: 100%;
@@ -9927,20 +9925,15 @@ button {
   overflow: hidden;
 }
 .all-items-view .row-offcanvas-right {
-  position: absolute;
   top: 0;
   right: 0;
   padding: 20px;
-  width: 400px;
   height: 100%;
   background: #fafafa;
   border-left: 1px solid #ebebeb;
-  margin-bottom: -100%;
-  padding-bottom: 100%;
 }
 .all-items-view .row-offcanvas-right .title {
   display: inline-block;
-  width: 225px;
   padding: 20px 0;
   font-size: 22px;
   opacity: .5;
@@ -9953,7 +9946,6 @@ button {
 }
 .all-items-view .row-offcanvas-right .description .title {
   display: inline-block;
-  width: 200px;
   font-size: 14px;
   opacity: .9;
   padding: 3px;
@@ -10000,13 +9992,9 @@ button {
   text-align: left;
 }
 .all-items-view .row-offcanvas-left {
-  position: absolute;
   height: 100%;
   top: 0;
   left: 0;
-  width: 200px;
-  margin-bottom: -100%;
-  padding-bottom: 100%;
 }
 .all-items-view .row-offcanvas-left .filter-options {
   padding: 20px 0;
@@ -12661,7 +12649,6 @@ p.instructions {
   border-radius: 0;
   background-color: transparent;
   border-color: #ddd;
-  height: 40px;
 }
 .bootstrap-select .btn-select-picker:focus {
   outline: none !important;
@@ -13936,13 +13923,12 @@ table.apiKey td {
   height: 11px;
 }
 ::-webkit-scrollbar-thumb {
-  border-radius: 8px;
-  border: 2px solid white;
-  /* should match background, can't be transparent */
-  background-color: rgba(0, 0, 0, 0.5);
+  border-radius: 0px;
+  border: 0px solid white;
+  background-color: #ddd;
 }
 ::-webkit-scrollbar-track {
-  background-color: #fff;
+  background-color: #f0f0f0;
   border-radius: 0px;
 }
 ::-webkit-input-placeholder {
@@ -14390,7 +14376,8 @@ table.apiKey td {
 }
 #renameResourceModal .modal-content,
 #newFolderModal .modal-content,
-#moveResourceModal .modal-content {
+#moveResourceModal .modal-content,
+#shareResourceModal .modal-content {
   border-radius: 0;
   border: 0;
   max-width: 400px;
@@ -14398,48 +14385,56 @@ table.apiKey td {
 }
 #renameResourceModal .modal-content input,
 #newFolderModal .modal-content input,
-#moveResourceModal .modal-content input {
+#moveResourceModal .modal-content input,
+#shareResourceModal .modal-content input {
   padding: 5px;
   width: 100%;
   outline: none;
 }
 #renameResourceModal .modal-content .modal-body,
 #newFolderModal .modal-content .modal-body,
-#moveResourceModal .modal-content .modal-body {
+#moveResourceModal .modal-content .modal-body,
+#shareResourceModal .modal-content .modal-body {
   max-height: 300px;
   overflow-y: auto;
 }
 #renameResourceModal .modal-content .modal-body .box-row,
 #newFolderModal .modal-content .modal-body .box-row,
-#moveResourceModal .modal-content .modal-body .box-row {
+#moveResourceModal .modal-content .modal-body .box-row,
+#shareResourceModal .modal-content .modal-body .box-row {
   padding: 5px;
 }
 #renameResourceModal .modal-content .modal-body .box-row .disabled,
 #newFolderModal .modal-content .modal-body .box-row .disabled,
-#moveResourceModal .modal-content .modal-body .box-row .disabled {
+#moveResourceModal .modal-content .modal-body .box-row .disabled,
+#shareResourceModal .modal-content .modal-body .box-row .disabled {
   background: #9E9E9E;
 }
 #renameResourceModal .modal-content .modal-body .box-row.selected,
 #newFolderModal .modal-content .modal-body .box-row.selected,
-#moveResourceModal .modal-content .modal-body .box-row.selected {
+#moveResourceModal .modal-content .modal-body .box-row.selected,
+#shareResourceModal .modal-content .modal-body .box-row.selected {
   background: #71a69c;
 }
 #renameResourceModal .modal-content .actions .favorite,
 #newFolderModal .modal-content .actions .favorite,
-#moveResourceModal .modal-content .actions .favorite {
+#moveResourceModal .modal-content .actions .favorite,
+#shareResourceModal .modal-content .actions .favorite {
   float: left;
   padding-top: 17px;
   cursor: pointer;
 }
 #renameResourceModal .modal-content .actions .favorite span,
 #newFolderModal .modal-content .actions .favorite span,
-#moveResourceModal .modal-content .actions .favorite span {
+#moveResourceModal .modal-content .actions .favorite span,
+#shareResourceModal .modal-content .actions .favorite span {
   text-transform: uppercase;
   vertical-align: middle;
 }
 #renameResourceModal .modal-content .actions .favorite i,
 #newFolderModal .modal-content .actions .favorite i,
-#moveResourceModal .modal-content .actions .favorite i {
+#moveResourceModal .modal-content .actions .favorite i,
+#shareResourceModal .modal-content .actions .favorite i {
   padding-right: 10px;
   -webkit-transition: all 0.3s 0.1s;
           transition: all 0.3s 0.1s;
@@ -14447,17 +14442,20 @@ table.apiKey td {
 }
 #renameResourceModal .modal-content .actions .favorite.true i,
 #newFolderModal .modal-content .actions .favorite.true i,
-#moveResourceModal .modal-content .actions .favorite.true i {
+#moveResourceModal .modal-content .actions .favorite.true i,
+#shareResourceModal .modal-content .actions .favorite.true i {
   color: #71a69c;
 }
 #renameResourceModal .modal-content .actions .clear-save,
 #newFolderModal .modal-content .actions .clear-save,
-#moveResourceModal .modal-content .actions .clear-save {
+#moveResourceModal .modal-content .actions .clear-save,
+#shareResourceModal .modal-content .actions .clear-save {
   float: right;
 }
 #renameResourceModal .modal-content .actions .clear-save .btn,
 #newFolderModal .modal-content .actions .clear-save .btn,
-#moveResourceModal .modal-content .actions .clear-save .btn {
+#moveResourceModal .modal-content .actions .clear-save .btn,
+#shareResourceModal .modal-content .actions .clear-save .btn {
   text-transform: uppercase;
   padding: 10px 20px;
   border: none;
@@ -14466,13 +14464,15 @@ table.apiKey td {
 }
 #renameResourceModal .modal-content .actions .clear-save .btn:focus,
 #newFolderModal .modal-content .actions .clear-save .btn:focus,
-#moveResourceModal .modal-content .actions .clear-save .btn:focus {
+#moveResourceModal .modal-content .actions .clear-save .btn:focus,
+#shareResourceModal .modal-content .actions .clear-save .btn:focus {
   outline: none;
   box-shadow: none;
 }
 #renameResourceModal .modal-content .actions .clear-save .btn.btn-clear,
 #newFolderModal .modal-content .actions .clear-save .btn.btn-clear,
-#moveResourceModal .modal-content .actions .clear-save .btn.btn-clear {
+#moveResourceModal .modal-content .actions .clear-save .btn.btn-clear,
+#shareResourceModal .modal-content .actions .clear-save .btn.btn-clear {
   color: #71a69c;
   background-color: transparent;
   font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
@@ -14481,14 +14481,17 @@ table.apiKey td {
 #renameResourceModal .modal-content .actions .clear-save .btn.btn-clear:hover,
 #newFolderModal .modal-content .actions .clear-save .btn.btn-clear:hover,
 #moveResourceModal .modal-content .actions .clear-save .btn.btn-clear:hover,
+#shareResourceModal .modal-content .actions .clear-save .btn.btn-clear:hover,
 #renameResourceModal .modal-content .actions .clear-save .btn.btn-clear:focus,
 #newFolderModal .modal-content .actions .clear-save .btn.btn-clear:focus,
-#moveResourceModal .modal-content .actions .clear-save .btn.btn-clear:focus {
+#moveResourceModal .modal-content .actions .clear-save .btn.btn-clear:focus,
+#shareResourceModal .modal-content .actions .clear-save .btn.btn-clear:focus {
   color: #3c8e80;
 }
 #renameResourceModal .modal-content .actions .clear-save .btn.btn-save,
 #newFolderModal .modal-content .actions .clear-save .btn.btn-save,
-#moveResourceModal .modal-content .actions .clear-save .btn.btn-save {
+#moveResourceModal .modal-content .actions .clear-save .btn.btn-save,
+#shareResourceModal .modal-content .actions .clear-save .btn.btn-save {
   color: #ffffff;
   background-color: #71a69c;
   font-size: 16px;
@@ -14496,9 +14499,11 @@ table.apiKey td {
 #renameResourceModal .modal-content .actions .clear-save .btn.btn-save:hover,
 #newFolderModal .modal-content .actions .clear-save .btn.btn-save:hover,
 #moveResourceModal .modal-content .actions .clear-save .btn.btn-save:hover,
+#shareResourceModal .modal-content .actions .clear-save .btn.btn-save:hover,
 #renameResourceModal .modal-content .actions .clear-save .btn.btn-save:focus,
 #newFolderModal .modal-content .actions .clear-save .btn.btn-save:focus,
-#moveResourceModal .modal-content .actions .clear-save .btn.btn-save:focus {
+#moveResourceModal .modal-content .actions .clear-save .btn.btn-save:focus,
+#shareResourceModal .modal-content .actions .clear-save .btn.btn-save:focus {
   background-color: #3c8e80;
 }
 #moveResourceModal .modal-content .modal-body {
@@ -14507,6 +14512,148 @@ table.apiKey td {
 }
 #moveResourceModal .modal-content .modal-body .box-row.disabled {
   opacity: 0.5;
+}
+#shareResourceModal .modal-content {
+  max-width: 500px;
+}
+#shareResourceModal .modal-content .modal-body {
+  max-height: 500px;
+}
+#shareResourceModal .modal-content .modal-body .row {
+  padding: 5px 0;
+}
+#shareResourceModal .modal-content .modal-body .row .name {
+  padding: 8px 0 0 20px;
+  white-space: nowrap;
+}
+#shareResourceModal .modal-content .modal-body .row .btn-plus {
+  width: 25px;
+  height: 25px;
+  float: right;
+  outline: none;
+  background: #FF5722 !important;
+}
+#shareResourceModal .modal-content .modal-body .row .btn-delete {
+  width: 25px;
+  height: 25px;
+  float: right;
+  outline: none;
+  background: #999 !important;
+}
+#shareResourceModal .modal-content .modal-body .hidden-container {
+  border: 0px solid #ccc;
+  padding-right: 24px;
+  margin-right: 12px;
+}
+#shareResourceModal .modal-content .modal-body .scroll-container {
+  height: 250px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  border: 1px solid #ccc;
+  padding-right: 24px;
+}
+#shareResourceModal .modal-content .modal-body .bootstrap-select.small {
+  width: 80px;
+}
+#shareResourceModal .modal-content .modal-body .bootstrap-select.open .dropdown-menu {
+  padding: 0 !important;
+  border-radius: 0px !important;
+}
+#shareResourceModal .modal-content .modal-body .btn-info {
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  font-size: 18px;
+  margin: 5px 0;
+}
+#shareResourceModal .modal-content .modal-body .btn-info.btn-circle {
+  background: #71a69c;
+  color: #ffffff;
+  border: none;
+}
+#shareResourceModal .modal-content .modal-body .btn-info.btn-circle.compose {
+  background: #FF5722;
+}
+#shareResourceModal .modal-content .modal-body .btn-info.btn-circle.template {
+  background: #5097A5;
+}
+#shareResourceModal .modal-content .modal-body .btn-info.btn-circle.element {
+  background: #71977F;
+}
+#shareResourceModal .modal-content .modal-body .btn-info.btn-circle.metadata,
+#shareResourceModal .modal-content .modal-body .btn-info.btn-circle.instance {
+  background: #6A8B92;
+}
+#shareResourceModal .modal-content .modal-body .btn-info.btn-circle.folder {
+  background: #9E9E9E;
+}
+#shareResourceModal .modal-content .modal-body .btn-info.btn-circle-outline {
+  box-shadow: none;
+  background: #ffffff;
+  color: #71a69c;
+  border: 1px solid #71a69c;
+}
+#shareResourceModal .modal-content .modal-body .btn-info.btn-close {
+  box-shadow: none;
+  background: #666666;
+  color: #ffffff;
+  border: none;
+}
+#shareResourceModal .modal-content .modal-body .btn-info.btn-add {
+  height: 25px;
+  width: 25px;
+  border-radius: 50%;
+  display: inline-block;
+  vertical-align: middle;
+  margin: 0 10px;
+  -webkit-transition: all 0.3s 0.1s;
+  transition: all 0.3s 0.1s;
+  cursor: pointer;
+  padding: 0px 1px 1px 2px;
+  margin: 6px 25px;
+  outline: none;
+}
+@media (min-width: 768px) {
+  #sidebar-left {
+    position: absolute;
+    top: 0px;
+    bottom: 0;
+    left: 0;
+    width: 16.66666667%;
+    overflow-y: auto;
+  }
+  #center-panel {
+    position: absolute;
+    top: 0px;
+    bottom: 0;
+    left: 16.66666667%;
+    right: 16.66666667%;
+    overflow-y: auto;
+  }
+  #center-panel.without-info {
+    right: 0;
+  }
+  #sidebar-right {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    overflow-y: auto;
+  }
+  #sidebar-right.without-info {
+    width: 0;
+  }
+}
+@media (max-width: 768px) {
+  body {
+    height: 100%;
+    background-color: #f0f0f0;
+    overflow-y: auto;
+  }
+  body #center-panel {
+    max-height: 400px;
+    overflow-y: auto;
+  }
 }
 @font-face {
   font-family: "project-cedar";

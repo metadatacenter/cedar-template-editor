@@ -72,7 +72,7 @@ var WorkspacePage = function () {
   var sampleElementDescription = 's';
 
   // toasty messages
-  var createToastyConfirmationPopup = element(by.id('toasty')).element(by.css('.toast'));
+  var createToastyConfirmationPopup = element(by.id('toasty')).element(by.css('.toasty-type-success'));
   var createToastyMessageText = element(by.id('toasty')).element(by.css('.toast')).element(by.css('.toast-msg'));
 
   var toastyFolderMessage = "The folder ";
