@@ -883,7 +883,7 @@
                   data-dropup-auto="false" class="dropup col-sm-7"
                   ng-model="dc.selectedNodeId" select-model="dc.resourceNodes"
                   select-picker cedar-live-search="true"
-                  ng-options="node.id as node.displayName for node in dc.resourceNodes "></select>
+                  ng-options="node.id as node.name for node in dc.resourceNodes "></select>
 
               <select ng-model="dc.giveNodePermission"
                   data-dropup-auto="false" class="dropup col-sm-4" select-picker select-model="dc.selectedNodeId"  cedar-live-search="true">
