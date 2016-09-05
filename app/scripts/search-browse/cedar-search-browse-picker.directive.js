@@ -1583,20 +1583,21 @@ define([
             }
           }
 
-          // format a name for this node, should be using displayName but it is not there yet
+          // format a name for this node
           function getName(node) {
+            var result = "";
             if (node) {
               if (isUser(node)) {
-                return node.firstName + ' ' + node.lastName + ' (' + node.email + ')';
+                result = node.firstName + ' ' + node.lastName + ' (' + node.email + ')';
               } else {
-                return node.displayName;
+                result = node.displayName;
               }
-
             }
+            return result;
           }
 
+          // when selected user changes, reset selected permisison
           function updateNodePermission() {
-
             var node = getNode(vm.selectedNodeId);
             if (node.nodeType === 'group' && vm.giveNodePermission === 'own') {
               vm.giveNodePermission = 'read';
