@@ -96,7 +96,7 @@ var FinderPage = function () {
   };
 
   this.selectGridView = function() {
-    createListView.isDisplayed().then(function (isList) {
+    createListView.isPresent().then(function (isList) {
       if (isList) {
         createGridViewButton.click();
       }

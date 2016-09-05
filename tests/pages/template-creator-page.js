@@ -681,7 +681,7 @@ var TemplateCreatorPage = function () {
         finderPage.createDoSearch().click();
         browser.wait(finderPage.createSearchResult().isDisplayed()).then(function () {
 
-          finderPage.createListView().isDisplayed().then(function (isList) {
+          finderPage.createListView().isPresent().then(function (isList) {
 
             if (isList) {
 
