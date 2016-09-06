@@ -1345,17 +1345,17 @@ define([
 
           // can ownership be assigned on this node by the current user
           function canUpdate() {
-            return vm.userIsOriginalOwner || vm.userIsOriginalWriter || vm.everybodyIsOriginalWriter;
+            return vm.userIsOriginalOwner || vm.userIsOriginalWriter || vm.everybodyIsOriginalWriter || vm.canWrite() || vm.canChangeOwner();
           }
 
           // can ownership be assigned on this node by the current user
           function canBeOwner(id) {
             var node = getNode(id);
-            return id && node && node.nodeType === 'user' && vm.userIsOriginalOwner;
+            return id && node && node.nodeType === 'user' && vm.userIsOriginalOwner || vm.canChangeOwner();
           }
 
 
-          // not using this at the moment, but for sorting the items in the select
+          // sorting strings
           function dynamicSort(property) {
             var sortOrder = 1;
             if (property[0] === "-") {
@@ -1363,7 +1363,7 @@ define([
               property = property.substr(1);
             }
             return function (a, b) {
-              var result = (a[property] < b[property]) ? -1 : (a[property] > b[property]) ? 1 : 0;
+              var result = (a[property].toUpperCase() < b[property].toUpperCase()) ? -1 : (a[property].toUpperCase() > b[property].toUpperCase()) ? 1 : 0;
               return result * sortOrder;
             }
           }
