@@ -9,11 +9,11 @@ define([
   // TODO: refactor to cedarFieldDirective <cedar-field-directive>
 
 
-  fieldDirective.$inject = ["$rootScope", "$sce", "$document", "$translate", "SpreadsheetService",
+  fieldDirective.$inject = ["$rootScope", "$sce", "$document", "$translate", "$filter", "SpreadsheetService",
                             "DataManipulationService", "FieldTypeService", "controlledTermDataService",
                             "StringUtilsService"];
 
-  function fieldDirective($rootScope, $sce, $document, $translate, SpreadsheetService, DataManipulationService,
+  function fieldDirective($rootScope, $sce, $document, $translate, $filter, SpreadsheetService, DataManipulationService,
                           FieldTypeService, controlledTermDataService, StringUtilsService) {
 
 
@@ -557,6 +557,12 @@ define([
       };
 
       $scope.$watch("field", function (newField, oldField) {
+        // Update schema title and description if necessary
+        if (newField._ui.title != oldField._ui.title) {
+          var capitalizedTitle = $filter('capitalizeFirst')(newField._ui.title);
+          newField.title = $translate.instant("GENERATEDVALUE.fieldTitle", {title: capitalizedTitle});
+          newField.description = $translate.instant("GENERATEDVALUE.fieldDescription", {title: capitalizedTitle});
+        }
         setDirectory();
       }, true);
 
