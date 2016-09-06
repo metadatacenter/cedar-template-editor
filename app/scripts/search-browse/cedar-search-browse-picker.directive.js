@@ -1355,7 +1355,7 @@ define([
           }
 
 
-          // not using this at the moment, but for sorting the items in the select
+          // sorting strings
           function dynamicSort(property) {
             var sortOrder = 1;
             if (property[0] === "-") {
@@ -1363,7 +1363,7 @@ define([
               property = property.substr(1);
             }
             return function (a, b) {
-              var result = (a[property] < b[property]) ? -1 : (a[property] > b[property]) ? 1 : 0;
+              var result = (a[property].toUpperCase() < b[property].toUpperCase()) ? -1 : (a[property].toUpperCase() > b[property].toUpperCase()) ? 1 : 0;
               return result * sortOrder;
             }
           }
