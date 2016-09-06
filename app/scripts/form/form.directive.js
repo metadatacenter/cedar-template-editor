@@ -290,6 +290,15 @@ define([
           //positionToolbar();
         });
 
+
+        $scope.forms = {};
+
+        $scope.$watch('forms.templateForm.$dirty', function () {
+          console.log('watch dirty '+ $scope.forms.templateForm.$dirty);
+          $rootScope.setDirty($scope.forms.templateForm.$dirty);
+        });
+
+
         $scope.$on("form:update", function () {
           startParseForm();
         });

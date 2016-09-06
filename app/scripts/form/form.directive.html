@@ -1,5 +1,7 @@
-<form name="templateForm" id="{{form['@id'].substr(form['@id'].lastIndexOf('/') + 1)}}" class="runtime"
+<form name="forms.templateForm" id="{{form['@id'].substr(form['@id'].lastIndexOf('/') + 1)}}" class="runtime"
     ng-class="{'validate': checkSubmission}" novalidate>
+
+  <p>{{forms.templateForm.$dirty}}</p>
   <!--Loop through top level "page" parameter in form element and call cedar-template-element or field-directive with contents -->
 
   <!--At Runtime-->
