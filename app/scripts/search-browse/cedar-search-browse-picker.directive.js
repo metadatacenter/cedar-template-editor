@@ -1345,13 +1345,13 @@ define([
 
           // can ownership be assigned on this node by the current user
           function canUpdate() {
-            return vm.userIsOriginalOwner || vm.userIsOriginalWriter || vm.everybodyIsOriginalWriter;
+            return vm.userIsOriginalOwner || vm.userIsOriginalWriter || vm.everybodyIsOriginalWriter || vm.canWrite() || vm.canChangeOwner();
           }
 
           // can ownership be assigned on this node by the current user
           function canBeOwner(id) {
             var node = getNode(id);
-            return id && node && node.nodeType === 'user' && vm.userIsOriginalOwner;
+            return id && node && node.nodeType === 'user' && vm.userIsOriginalOwner || vm.canChangeOwner();
           }
 
 
