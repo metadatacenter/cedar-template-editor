@@ -531,10 +531,10 @@
       <div class="col-lg-2 row-offcanvas-right" id="sidebar-right" ng-if="dc.infoShowing()" >
         <div>
 
-          <div class="title" ng-class="dc.selectedResource.nodeType"><i style="font-size:20px; text-align:left"
+          <div class="title" ng-class="dc.getSelectedNode().nodeType"><i style="font-size:20px; text-align:left"
               class="fa"
-              ng-class="dc.getResourceIconClass(dc.selectedResource)"></i>
-            {{ dc.selectedResource.displayName }}
+              ng-class="dc.getResourceIconClass(dc.getSelectedNode())"></i>
+            {{ dc.getSelectedNode().displayName }}
           </div>
 
           <div style="display:inline-block;" class="pull-right">
@@ -555,31 +555,31 @@
             <tbody>
             <tr>
               <td class="left">Type</td>
-              <td>{{ dc.getResourceTypeClass(dc.selectedResource)}}</td>
+              <td>{{ dc.getResourceTypeClass(dc.getSelectedNode())}}</td>
             </tr>
             <tr>
 
               <td class="left">Location</td>
-              <td>{{ dc.selectedResource.displayPath }}</td>
+              <td>{{ dc.getSelectedNode().displayPath }}</td>
             </tr>
             <tr>
               <td class="left">Owner</td>
-              <td>{{ dc.selectedResource.ownedByUserName }}</td>
+              <td>{{ dc.getSelectedNode().ownedByUserName }}</td>
             </tr>
             <tr>
               <td class="left">Modified</td>
               <td>
-                <span class="no-wrap">{{ dc.selectedResource.lastUpdatedOnTS | prettyDate }}</span>
+                <span class="no-wrap">{{ dc.getSelectedNode().lastUpdatedOnTS | prettyDate }}</span>
                 by
-                <span class="no-wrap">{{ dc.selectedResource.lastUpdatedByUserName }}</span>
+                <span class="no-wrap">{{ dc.getSelectedNode().lastUpdatedByUserName }}</span>
               </td>
             </tr>
             <tr>
               <td class="left">Created</td>
               <td>
-                <span class="no-wrap">{{ dc.selectedResource.createdOnTS | prettyDate }}</span>
+                <span class="no-wrap">{{ dc.getSelectedNode().createdOnTS | prettyDate }}</span>
                 by
-                <span class="no-wrap">{{ dc.selectedResource.createdByUserName }}</span>
+                <span class="no-wrap">{{ dc.getSelectedNode().createdByUserName }}</span>
               </td>
             </tr>
             <tr>
