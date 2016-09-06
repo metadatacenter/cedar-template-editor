@@ -255,11 +255,27 @@ define([
                 resource,
                 function (response) {
                   vm.selectedResource = response;
+                  console.log(vm.selectedResource);
                 },
                 function (error) {
                   UIMessageService.showBackendError('SERVER.' + resource.nodeType.toUpperCase() + '.load.error', error);
                 }
             );
+          };
+
+          vm.canRead= function () {
+            var perms = vm.selectedResource.currentUserPermissions;
+            return perms.indexOf("read") != -1;
+          };
+
+          vm.canWrite = function () {
+            var perms = vm.selectedResource.currentUserPermissions;
+            return perms.indexOf("write") != -1;
+          };
+
+          vm.canChangeOwner = function () {
+            var perms = vm.selectedResource.currentUserPermissions;
+            return perms.indexOf("changeowner") != -1;
           };
 
           vm.updateDescription = function () {
@@ -1335,7 +1351,7 @@ define([
           // can ownership be assigned on this node by the current user
           function canBeOwner(id) {
             var node = getNode(id);
-            return id && node && node.nodeType === 'user' && (vm.userIsOriginalOwner || vm.userIsOriginalWriter);
+            return id && node && node.nodeType === 'user' && vm.userIsOriginalOwner;
           }
 
 
