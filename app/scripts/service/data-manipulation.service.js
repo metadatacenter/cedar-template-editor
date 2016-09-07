@@ -29,13 +29,11 @@ define([
 
     // Function that generates a basic field definition
     service.generateField = function (fieldType) {
-      var valueType = "string";
+      var valueType = ["string", "null"];
       if (fieldType == "numeric") {
-        valueType = "number";
-      } else if (fieldType == "checkbox") {
-        valueType = "object";
-      } else if (fieldType == "list") {
-        valueType = "array";
+        valueType = ["number", "null"];
+      } else if ((fieldType == "checkbox") || (fieldType == "list") || (fieldType == "radio")) {
+        valueType = ["array", "null"];
       }
 
       var field;
