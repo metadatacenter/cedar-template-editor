@@ -16,6 +16,10 @@
     "inputType": null
   },
   "properties": {
+    "@id": {
+      "type": [ "string", "null" ],
+      "format": "uri"
+    },
     "@type": {
       "oneOf": [
         {
