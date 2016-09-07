@@ -17,10 +17,10 @@
   "properties": {
     "@context": {
       "properties": {
-      },
-      "required": [
-        "@value"
-      ],
+        "pav": { "type": "string", "format": "uri", "enum": [ "http://purl.org/pav/" ] },
+        "schema": { "type": "string", "format": "uri", "enum": [ "http://schema.org/" ] },
+        "oslc": { "type": "string", "format": "uri", "enum": [ "http://open-services.net/ns/core#" ] },
+        "patternProperties": {"^(?!pav)(?!schema)(?!oslc)[a-zA-Z][a-zA-Z0-9]*$": {"type": "string", "format": "uri"},
       "additionalProperties": false
     },
     "@id": {
