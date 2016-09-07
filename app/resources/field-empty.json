@@ -41,7 +41,7 @@
       ]
     },
     "@value": {
-      "type": null
+      "type" : ["string", "null"]
     },
     "pav:createdOn": {
       "type" : ["string", "null"],
