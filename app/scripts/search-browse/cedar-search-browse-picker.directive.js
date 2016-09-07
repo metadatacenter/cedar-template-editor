@@ -118,8 +118,9 @@ define([
 
           vm.getFacets = getFacets;
           vm.getForms = getForms;
-          vm.getFolderContents = getFolderContents;
+          vm.getCurrentFolderSummary = getCurrentFolderSummary;
           vm.getFolderContentsById = getFolderContentsById;
+          vm.getSelectedNode = getSelectedNode;
           vm.getResourceIconClass = getResourceIconClass;
           vm.getResourceTypeClass = getResourceTypeClass;
           vm.goToResource = goToResource;
@@ -136,6 +137,7 @@ define([
           vm.params = $location.search();
           vm.resources = [];
           vm.selectedResource = null;
+          vm.currentFolder = null;
           vm.hasSelection = hasSelection;
           vm.getSelection = getSelection;
           vm.setSortOption = setSortOption;
@@ -262,6 +264,39 @@ define([
             );
           };
 
+          vm.canRead = function () {
+            var node = this.getSelectedNode();
+            if (node != null) {
+              var perms = node.currentUserPermissions;
+              if (perms != null) {
+                return perms.indexOf("read") != -1;
+              }
+            }
+            return false;
+          };
+
+          vm.canWrite = function () {
+            var node = this.getSelectedNode();
+            if (node != null) {
+              var perms = node.currentUserPermissions;
+              if (perms != null) {
+                return perms.indexOf("write") != -1;
+              }
+            }
+            return false;
+          };
+
+          vm.canChangeOwner = function () {
+            var node = this.getSelectedNode();
+            if (node != null) {
+              var perms = node.currentUserPermissions;
+              if (perms != null) {
+                return perms.indexOf("changeowner") != -1;
+              }
+            }
+            return false;
+          };
+
           vm.updateDescription = function () {
             vm.editingDescription = false;
             var resource = vm.getSelection();
@@ -309,9 +344,9 @@ define([
                 resourceService.updateFolder(
                     vm.selectedResource,
                     function (response) {
-                      init();
                       UIMessageService.flashSuccess('SERVER.FOLDER.update.success', {"title": vm.selectedResource.name},
                           'GENERIC.Updated');
+                      init();
                     },
                     function (response) {
                       UIMessageService.showBackendError('SERVER.FOLDER.update.error', response);
@@ -437,8 +472,11 @@ define([
               getFacets();
               doSearch(vm.params.search);
             } else if (vm.params.folderId) {
+              vm.selectedResource = null;
               getFacets();
-              getFolderContentsById(decodeURIComponent(vm.params.folderId));
+              var currentFolderId = decodeURIComponent(vm.params.folderId);
+              getFolderContentsById(currentFolderId);
+              getCurrentFolderSummary(currentFolderId);
             } else {
               goToFolder(CedarUser.getHomeFolderId());
             }
@@ -508,9 +546,8 @@ define([
                 AuthorizedBackendService.doCall(
                     TemplateInstanceService.updateTemplateInstance(id, {'_ui.title': name}),
                     function (response) {
-                      init();
-                      vm.selectedResource.displayName = name;
                       UIMessageService.flashSuccess('SERVER.INSTANCE.update.success', null, 'GENERIC.Updated');
+                      init();
                     },
                     function (err) {
                       UIMessageService.showBackendError('SERVER.INSTANCE.update.error', err);
@@ -520,10 +557,9 @@ define([
                 AuthorizedBackendService.doCall(
                     TemplateElementService.updateTemplateElement(id, {'_ui.title': name}),
                     function (response) {
-                      init();
-                      vm.selectedResource.displayName = name;
                       UIMessageService.flashSuccess('SERVER.ELEMENT.update.success', {"title": response.data._ui.title},
                           'GENERIC.Updated');
+                      init();
                     },
                     function (err) {
                       UIMessageService.showBackendError('SERVER.ELEMENT.update.error', err);
@@ -534,24 +570,21 @@ define([
                     TemplateService.updateTemplate(id, {'_ui.title': name}),
                     function (response) {
                       //$scope.form = response.data;  // WTF?
-                      init();
-                      vm.selectedResource.displayName = name;
                       UIMessageService.flashSuccess('SERVER.TEMPLATE.update.success',
                           {"title": response.data._ui.title}, 'GENERIC.Updated');
+                      init();
                     },
                     function (err) {
                       UIMessageService.showBackendError('SERVER.TEMPLATE.update.error', err);
                     }
                 );
               } else if (nodeType == 'folder') {
-
                 resourceService.updateFolder(
                     vm.selectedResource,
                     function (response) {
-                      init();
-                      vm.selectedResource.displayName = name;
                       UIMessageService.flashSuccess('SERVER.FOLDER.update.success', {"title": vm.selectedResource.name},
                           'GENERIC.Updated');
+                      init();
                     },
                     function (response) {
                       UIMessageService.showBackendError('SERVER.FOLDER.update.error', response);
@@ -824,7 +857,6 @@ define([
           }
 
 
-          // TODO: merge this with getFolderContents below
           function getFolderContentsById(folderId) {
             var resourceTypes = activeResourceTypes();
             vm.offset = 0;
@@ -852,30 +884,27 @@ define([
             }
           }
 
-          // TODO: merge this with getFolderContentsById above
-          function getFolderContents(path) {
-            var resourceTypes = activeResourceTypes();
-            vm.offset = 0;
-            var offset = vm.offset;
-            //var limit = vm.limit;
-            var limit = UISettingsService.getRequestLimit();
+          function getCurrentFolderSummary(folderId) {
+            var params = {
+              '@id'     : folderId,
+              'nodeType': CONST.resourceType.FOLDER
+            };
+            resourceService.getResourceDetail(
+                params,
+                function (response) {
+                  vm.currentFolder = response;
+                },
+                function (error) {
+                  UIMessageService.showBackendError('SERVER.FOLDER.load.error', error);
+                }
+            );
+          }
 
-            if (resourceTypes.length > 0) {
-              return resourceService.getResources(
-                  {path: path, resourceTypes: resourceTypes, sort: sortField(), limit: limit, offset: offset},
-                  function (response) {
-                    vm.resources = response.resources;
-                    vm.pathInfo = response.pathInfo;
-                    vm.currentPath = vm.pathInfo.pop();
-                    vm.currentFolderId = vm.currentPath['@id'];
-                    vm.totalCount = response.totalCount;
-                  },
-                  function (error) {
-                    UIMessageService.showBackendError('SERVER.FOLDER.load.error', error);
-                  }
-              );
+          function getSelectedNode() {
+            if (vm.selectedResource == null) {
+              return vm.currentFolder;
             } else {
-              vm.resources = [];
+              return vm.selectedResource;
             }
           }
 
@@ -1329,17 +1358,19 @@ define([
 
           // can ownership be assigned on this node by the current user
           function canUpdate() {
-            return vm.userIsOriginalOwner || vm.userIsOriginalWriter || vm.everybodyIsOriginalWriter;
+            //return vm.userIsOriginalOwner || vm.userIsOriginalWriter || vm.everybodyIsOriginalWriter || vm.canWrite();
+            return vm.canWrite();
           }
 
           // can ownership be assigned on this node by the current user
           function canBeOwner(id) {
             var node = getNode(id);
-            return id && node && node.nodeType === 'user' && (vm.userIsOriginalOwner || vm.userIsOriginalWriter);
+            //return id && node && node.nodeType === 'user' && vm.userIsOriginalOwner || vm.canChangeOwner();
+            return id && node && node.nodeType === 'user' && vm.canChangeOwner();
           }
 
 
-          // not using this at the moment, but for sorting the items in the select
+          // sorting strings
           function dynamicSort(property) {
             var sortOrder = 1;
             if (property[0] === "-") {
@@ -1347,7 +1378,7 @@ define([
               property = property.substr(1);
             }
             return function (a, b) {
-              var result = (a[property] < b[property]) ? -1 : (a[property] > b[property]) ? 1 : 0;
+              var result = (a[property].toUpperCase() < b[property].toUpperCase()) ? -1 : (a[property].toUpperCase() > b[property].toUpperCase()) ? 1 : 0;
               return result * sortOrder;
             }
           }
@@ -1457,7 +1488,7 @@ define([
             // rebuild permissions from shares
             vm.resourcePermissions.groupPermissions = [];
             vm.resourcePermissions.userPermissions = [];
-            for (var i=0;i<vm.resourcePermissions.shares.length;i++) {
+            for (var i = 0; i < vm.resourcePermissions.shares.length; i++) {
               var share = vm.resourcePermissions.shares[i];
               if (share.node.nodeType === 'user') {
                 share.user = share.node;
@@ -1507,7 +1538,7 @@ define([
                         vm.resourceNodes = [];
                         vm.resourceNodes = vm.resourceNodes.concat(vm.resourceUsers);
                         vm.resourceNodes = vm.resourceNodes.concat(vm.resourceGroups);
-                        for (var i=0;i<vm.resourceNodes.length;i++) {
+                        for (var i = 0; i < vm.resourceNodes.length; i++) {
                           vm.resourceNodes[i].name = getName(vm.resourceNodes[i]);
                         }
                         vm.resourceNodes.sort(dynamicSort("name"));
