@@ -854,11 +854,13 @@ define([
       };
 
       $scope.initDateSingle = function () {
-        if (!$rootScope.schemaOf($scope.field)._ui.dateType) {
+        if ($rootScope.schemaOf($scope.field)._ui.inputType == 'date') {
           $rootScope.schemaOf($scope.field)._ui.dateType = 'single-date';
         }
+        else {
+          delete $rootScope.schemaOf($scope.field)._ui.dateType;
+        }
       };
-
 
       /**
        * only have one of these three divs open at a time
