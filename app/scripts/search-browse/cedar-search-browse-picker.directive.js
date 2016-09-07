@@ -257,7 +257,6 @@ define([
                 resource,
                 function (response) {
                   vm.selectedResource = response;
-                  console.log(vm.selectedResource);
                 },
                 function (error) {
                   UIMessageService.showBackendError('SERVER.' + resource.nodeType.toUpperCase() + '.load.error', error);
@@ -345,9 +344,9 @@ define([
                 resourceService.updateFolder(
                     vm.selectedResource,
                     function (response) {
-                      init();
                       UIMessageService.flashSuccess('SERVER.FOLDER.update.success', {"title": vm.selectedResource.name},
                           'GENERIC.Updated');
+                      init();
                     },
                     function (response) {
                       UIMessageService.showBackendError('SERVER.FOLDER.update.error', response);
@@ -547,9 +546,8 @@ define([
                 AuthorizedBackendService.doCall(
                     TemplateInstanceService.updateTemplateInstance(id, {'_ui.title': name}),
                     function (response) {
-                      init();
-                      vm.selectedResource.displayName = name;
                       UIMessageService.flashSuccess('SERVER.INSTANCE.update.success', null, 'GENERIC.Updated');
+                      init();
                     },
                     function (err) {
                       UIMessageService.showBackendError('SERVER.INSTANCE.update.error', err);
@@ -559,10 +557,9 @@ define([
                 AuthorizedBackendService.doCall(
                     TemplateElementService.updateTemplateElement(id, {'_ui.title': name}),
                     function (response) {
-                      init();
-                      vm.selectedResource.displayName = name;
                       UIMessageService.flashSuccess('SERVER.ELEMENT.update.success', {"title": response.data._ui.title},
                           'GENERIC.Updated');
+                      init();
                     },
                     function (err) {
                       UIMessageService.showBackendError('SERVER.ELEMENT.update.error', err);
@@ -573,24 +570,21 @@ define([
                     TemplateService.updateTemplate(id, {'_ui.title': name}),
                     function (response) {
                       //$scope.form = response.data;  // WTF?
-                      init();
-                      vm.selectedResource.displayName = name;
                       UIMessageService.flashSuccess('SERVER.TEMPLATE.update.success',
                           {"title": response.data._ui.title}, 'GENERIC.Updated');
+                      init();
                     },
                     function (err) {
                       UIMessageService.showBackendError('SERVER.TEMPLATE.update.error', err);
                     }
                 );
               } else if (nodeType == 'folder') {
-
                 resourceService.updateFolder(
                     vm.selectedResource,
                     function (response) {
-                      init();
-                      vm.selectedResource.displayName = name;
                       UIMessageService.flashSuccess('SERVER.FOLDER.update.success', {"title": vm.selectedResource.name},
                           'GENERIC.Updated');
+                      init();
                     },
                     function (response) {
                       UIMessageService.showBackendError('SERVER.FOLDER.update.error', response);
