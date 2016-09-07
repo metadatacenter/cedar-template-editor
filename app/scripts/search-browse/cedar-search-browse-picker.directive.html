@@ -528,13 +528,13 @@
       <!-- end of center panel -->
 
       <!-- RIGHT SIDE -->
-      <div class="col-lg-2 row-offcanvas-right" id="sidebar-right" ng-if="dc.infoShowing()">
+      <div class="col-lg-2 row-offcanvas-right" id="sidebar-right" ng-if="dc.infoShowing()" >
         <div>
 
-          <div class="title" ng-class="dc.selectedResource.nodeType"><i style="font-size:20px; text-align:left"
+          <div class="title" ng-class="dc.getSelectedNode().nodeType"><i style="font-size:20px; text-align:left"
               class="fa"
-              ng-class="dc.getResourceIconClass(dc.selectedResource)"></i>
-            {{ dc.selectedResource.displayName }}
+              ng-class="dc.getResourceIconClass(dc.getSelectedNode())"></i>
+            {{ dc.getSelectedNode().displayName }}
           </div>
 
           <div style="display:inline-block;" class="pull-right">
@@ -548,50 +548,54 @@
                 ><span aria-hidden="true"><img
                 src="/img/close_modal.png" width="22"/></span></button>
           </div>
-
-
+          
           <table class="table"
               style="padding:0;margin:0;font-size:13px;border-top:1px solid #ddd;border-bottom:1px solid #ddd;">
 
             <tbody>
             <tr>
               <td class="left">Type</td>
-              <td>{{ dc.getResourceTypeClass(dc.selectedResource)}}</td>
+              <td>{{ dc.getResourceTypeClass(dc.getSelectedNode())}}</td>
             </tr>
             <tr>
 
               <td class="left">Location</td>
-              <td>{{ dc.selectedResource.displayPath }}</td>
+              <td>{{ dc.getSelectedNode().displayPath }}</td>
             </tr>
             <tr>
               <td class="left">Owner</td>
-              <td>{{ dc.selectedResource.ownedByUserName }}</td>
+              <td>{{ dc.getSelectedNode().ownedByUserName }}</td>
             </tr>
             <tr>
               <td class="left">Modified</td>
               <td>
-                <span class="no-wrap">{{ dc.selectedResource.lastUpdatedOnTS | prettyDate }}</span>
+                <span class="no-wrap">{{ dc.getSelectedNode().lastUpdatedOnTS | prettyDate }}</span>
                 by
-                <span class="no-wrap">{{ dc.selectedResource.lastUpdatedByUserName }}</span>
+                <span class="no-wrap">{{ dc.getSelectedNode().lastUpdatedByUserName }}</span>
               </td>
             </tr>
             <tr>
               <td class="left">Created</td>
               <td>
-                <span class="no-wrap">{{ dc.selectedResource.createdOnTS | prettyDate }}</span>
+                <span class="no-wrap">{{ dc.getSelectedNode().createdOnTS | prettyDate }}</span>
                 by
-                <span class="no-wrap">{{ dc.selectedResource.createdByUserName }}</span>
+                <span class="no-wrap">{{ dc.getSelectedNode().createdByUserName }}</span>
               </td>
             </tr>
             <tr>
-              <td class="left"><strong>Publicly readable:</strong></td>
-              <td>{{ dc.selectedResource.isPubliclyReadable }}</td>
-              </td>
+              <td class="left"><strong>Can Read</strong></td>
+              <td>{{ dc.canRead() }}</td>
+
             </tr>
             <tr>
-              <td class="left"><strong>Publicly writable:</strong></td>
-              <td>{{ dc.selectedResource.isPubliclyWritable }}</td>
-              </td>
+              <td class="left"><strong>Can Write:</strong></td>
+              <td>{{ dc.canWrite() }}</td>
+
+            </tr>
+            <tr>
+              <td class="left"><strong>Can Change Owner:</strong></td>
+              <td>{{ dc.canChangeOwner() }}</td>
+
             </tr>
             </tbody>
           </table>
@@ -814,7 +818,7 @@
 
 <!--<section>-->
 <!--<cedar-share-resource id="shareResourceModal" class="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"-->
-    <!--aria-hidden="true" resource="vm.selectedResource"></cedar-share-resource>-->
+<!--aria-hidden="true" resource="vm.selectedResource"></cedar-share-resource>-->
 <!--</section>-->
 
 <!-- share resource modal -->
@@ -834,11 +838,10 @@
 
           <h5 translate>DASHBOARD.share.manage</h5>
 
-
           <div ng-model="dc.resourcePermissions" id="shared-users" class="scroll-container">
             <div class="row">
 
-              <div class="col-sm-7 name" >
+              <div class="col-sm-7 name">
                 {{dc.getName(dc.resourcePermissions.owner)}}
               </div>
               <select class="col-sm-4" select-picker>
@@ -846,21 +849,21 @@
               </select>
             </div>
 
-            <div class="row"  ng-repeat="share in dc.resourcePermissions.shares">
+            <div class="row" ng-repeat="share in dc.resourcePermissions.shares">
 
+              <div class="col-sm-7 name">{{share.node.name}}</div>
 
-              <div class="col-sm-7 name" >{{share.node.name}}
-              </div>
-
-              <select ng-model="share.permission" class="col-sm-4" ng-change="dc.addShare(share.node.id, share.permission, 'shared-users')"
+              <select ng-model="share.permission" class="col-sm-4"
+                  ng-change="dc.addShare(share.node.id, share.permission, 'shared-users')"
                   select-model="share"
-                  select-picker cedar-live-search="true" >
+                  select-picker cedar-live-search="true">
                 <option value="read">can read</option>
                 <option value="write">can write</option>
                 <option ng-if="dc.canBeOwner(share.node.id)" value="own">is owner</option>
               </select>
 
-              <button class=" col-sm-1  btn  btn-info btn-circle btn-sm btn-delete" ng-if="dc.canUpdate()" ng-model="dc.resourcePermissions"
+              <button class=" col-sm-1  btn  btn-info btn-circle btn-sm btn-delete" ng-if="dc.canUpdate()"
+                  ng-model="dc.resourcePermissions"
                   type="button" tooltip="remove"
                   tooltip-trigger
                   tooltip-animation="false"
@@ -869,47 +872,49 @@
                   ng-click="dc.removeShare(share.node)"><i class="fa fa-times"
                   style="margin: -1px -4px;vertical-align: top;"></i></button>
 
-
-            </div>
-            </div>
-
-            <hr />
-          <div ng-if="dc.canUpdate()">
-
-          <h5 translate>DASHBOARD.share.usersAndGroups</h5>
-
-          <div class="hidden-container" >
-            <div class="row">
-
-              <select id="select-picker-user-or-group" data-size="5" ng-change="dc.updateNodePermission()"
-                  data-dropup-auto="false" class="dropup col-sm-7"
-                  ng-model="dc.selectedNodeId" select-model="dc.resourceNodes"
-                  select-picker cedar-live-search="true"
-                  ng-options="node.id as node.name for node in dc.resourceNodes "></select>
-
-              <select ng-model="dc.giveNodePermission"
-                  data-dropup-auto="false" class="dropup col-sm-4" select-picker select-model="dc.selectedNodeId"  cedar-live-search="true">
-                <option value="read">can read</option>
-                <option value="write">can write</option>
-                <option ng-if="dc.canBeOwner(dc.selectedNodeId)" value="own">is owner</option>
-              </select>
-
-              <button
-                  class="col-sm-1  btn btn-sm btn-info btn-circle btn-plus" ng-if="dc.canUpdate()" ng-model="dc.resourcePermissions"
-                  type="button"
-                  tooltip='{{"DASHBOARD.share.addHint" | translate}}'
-                  tooltip-trigger
-                  tooltip-animation="false"
-                  tooltip-placement="top"
-                  data-toggle="tooltip"
-                  ng-click="dc.addShare(dc.selectedNodeId, dc.giveNodePermission, 'shared-users')">
-                <!--<span aria-hidden="true">&plus;</span>-->
-                <i class="fa fa-plus" style="margin: 0 -4px;vertical-align: top;"></i>
-              </button>
-
             </div>
           </div>
-        </div>
+
+          <hr/>
+
+          <div ng-if="dc.canUpdate()">
+
+            <h5 translate>DASHBOARD.share.usersAndGroups</h5>
+
+            <div class="hidden-container">
+              <div class="row">
+
+                <select id="select-picker-user-or-group" data-size="5" ng-change="dc.updateNodePermission()"
+                    data-dropup-auto="false" class="dropup col-sm-7"
+                    ng-model="dc.selectedNodeId" select-model="dc.resourceNodes"
+                    select-picker cedar-live-search="true"
+                    ng-options="node.id as node.name for node in dc.resourceNodes "></select>
+
+                <select ng-model="dc.giveNodePermission"
+                    data-dropup-auto="false" class="dropup col-sm-4" select-picker select-model="dc.selectedNodeId"
+                    cedar-live-search="true">
+                  <option value="read">can read</option>
+                  <option value="write">can write</option>
+                  <option ng-if="dc.canBeOwner(dc.selectedNodeId)" value="own">is owner</option>
+                </select>
+
+                <button
+                    class="col-sm-1  btn btn-sm btn-info btn-circle btn-plus" ng-if="dc.canUpdate()"
+                    ng-model="dc.resourcePermissions"
+                    type="button"
+                    tooltip='{{"DASHBOARD.share.addHint" | translate}}'
+                    tooltip-trigger
+                    tooltip-animation="false"
+                    tooltip-placement="top"
+                    data-toggle="tooltip"
+                    ng-click="dc.addShare(dc.selectedNodeId, dc.giveNodePermission, 'shared-users')">
+                  <!--<span aria-hidden="true">&plus;</span>-->
+                  <i class="fa fa-plus" style="margin: 0 -4px;vertical-align: top;"></i>
+                </button>
+
+              </div>
+            </div>
+          </div>
         </div>
 
 
