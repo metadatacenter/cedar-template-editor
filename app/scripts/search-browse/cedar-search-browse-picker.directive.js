@@ -1237,7 +1237,8 @@ define([
 
 
                 resourceService.moveResource(
-                    resource, folderId,
+                    resource,
+                    folderId,
                     function (response) {
 
                       // TODO refresh the current page just in case you copied to the current page

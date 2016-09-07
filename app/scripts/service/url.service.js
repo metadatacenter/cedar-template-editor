@@ -203,6 +203,10 @@ define([
       return this.resourceBase() + "/command/copy-resource-to-folder";
     };
 
+    service.moveNodeToFolder = function () {
+      return this.resourceBase() + "/command/move-node-to-folder";
+    };
+
     service.getUsers = function () {
       return this.resourceBase() + "/users";
     };
