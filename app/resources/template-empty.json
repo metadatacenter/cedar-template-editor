@@ -90,7 +90,13 @@
   },
   "required": [
     "@id",
-    "schema:isBasedOn"
+    "schema:isBasedOn",
+    "schema:name",
+    "schema:description",
+    "pav:createdOn",
+    "pav:createdBy",
+    "pav:lastUpdatedOn",
+    "oslc:modifiedBy"
   ],
   "pav:createdOn": null,
   "pav:createdBy": null,
