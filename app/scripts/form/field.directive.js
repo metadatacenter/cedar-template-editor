@@ -558,10 +558,12 @@ define([
 
       $scope.$watch("field", function (newField, oldField) {
         // Update schema title and description if necessary
-        if (newField._ui.title != oldField._ui.title) {
-          var capitalizedTitle = $filter('capitalizeFirst')(newField._ui.title);
-          newField.title = $translate.instant("GENERATEDVALUE.fieldTitle", {title: capitalizedTitle});
-          newField.description = $translate.instant("GENERATEDVALUE.fieldDescription", {title: capitalizedTitle});
+        if (oldField.type == 'object' && newField.type == 'object') {
+          if (newField._ui.title != oldField._ui.title) {
+            var capitalizedTitle = $filter('capitalizeFirst')(newField._ui.title);
+            newField.title = $translate.instant("GENERATEDVALUE.fieldTitle", {title: capitalizedTitle});
+            newField.description = $translate.instant("GENERATEDVALUE.fieldDescription", {title: capitalizedTitle});
+          }
         }
         setDirectory();
       }, true);
