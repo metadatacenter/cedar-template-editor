@@ -6266,6 +6266,8 @@ table.apiKey {
         padding: 5px 0;
         .name {
           padding:8px 0 0 20px;white-space:nowrap;
+          overflow:hidden;
+          text-overflow:ellipsis;
         }
         .btn-plus {
           width: 25px;
@@ -6295,6 +6297,15 @@ table.apiKey {
         padding-right: 24px;
       }
       .bootstrap-select {
+        button.disabled {
+          background: @white;
+          border:1px solid #ccc;
+          color: #333;
+          opacity:1;
+          .glyphicon {
+            display:none;
+          }
+        }
         &.small {
           width: 80px;
         }
