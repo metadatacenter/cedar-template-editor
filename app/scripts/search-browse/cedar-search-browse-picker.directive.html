@@ -55,7 +55,7 @@
                 data-target="#shareResourceModal">Share...</a></li>
             <li><a href="#" ng-click="dc.showMoveResourceModal('#moveResourceModal')">Move to...</a></li>
             <li><a href="#" data-toggle="modal" data-target="#renameResourceModal">Rename...</a></li>
-            <li ng-if="!dc.isFolder()"><a href="#" ng-click="dc.copyResource()">Copy</a></li>
+            <li ng-if="!dc.isFolder()"><a href="#" ng-click="dc.copyResource()">Make a copy</a></li>
             <li role="separator" class="divider"></li>
             <li><a href="#" ng-click="dc.deleteResource(resource)">Delete</a></li>
           </ul>
@@ -416,7 +416,7 @@
                             data-target="#shareResourceModal">Share...</a></li>
                         <li><a href="#" ng-click="dc.showMoveResourceModal('#moveResourceModal')">Move to...</a></li>
                         <li><a href="#" data-toggle="modal" data-target="#renameResourceModal">Rename...</a></li>
-                        <li><a href="#" ng-if="!dc.isFolder()" ng-click="dc.copyResource()">Copy</a></li>
+                        <li><a href="#" ng-if="!dc.isFolder()" ng-click="dc.copyResource()">Make a copy</a></li>
                         <li role="separator" class="divider"></li>
                         <li><a href="#" ng-click="dc.deleteResource(resource)">Delete</a></li>
                       </ul>
@@ -512,7 +512,7 @@
                           data-target="#shareResourceModal">Share...</a></li>
                       <li><a href="#" ng-click="dc.showMoveResourceModal('#moveResourceModal')">Move to...</a></li>
                       <li><a href="#" data-toggle="modal" data-target="#renameResourceModal">Rename...</a></li>
-                      <li><a href="#" ng-if="!dc.isFolder()" ng-click="dc.copyResource()">Copy</a></li>
+                      <li><a href="#" ng-if="!dc.isFolder()" ng-click="dc.copyResource()">Make a copy</a></li>
                       <li role="separator" class="divider"></li>
                       <li><a href="#" ng-click="dc.deleteResource(resource)">Delete</a></li>
                     </ul>

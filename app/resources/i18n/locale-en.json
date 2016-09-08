@@ -178,7 +178,7 @@
         "error": "There was an error while copying the resource to your workspace!<br /><br />VIEW TECHNICAL DETAILS!"
       },
       "copyResource": {
-        "success": "The resource '{{title}}' was copied to your workspace!",
+        "success": "The resource '{{title}}' was copied to the current folder!",
         "error": "There was an error while copying the resource!<br /><br />VIEW TECHNICAL DETAILS!"
       },
       "moveResource": {
