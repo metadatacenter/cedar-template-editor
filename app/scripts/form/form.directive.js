@@ -234,7 +234,8 @@ define([
               // If it is a template field
               } else {
                 // If it is not a static field
-                if (!FieldTypeService.isStaticField(value._ui.inputType)) {
+
+               if (!value._ui || !value._ui.inputType || !FieldTypeService.isStaticField(value._ui.inputType)) {
 
                   var min = value.minItems || 0;
 
