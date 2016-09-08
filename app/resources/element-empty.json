@@ -16,16 +16,21 @@
   },
   "properties": {
     "@context": {
+      "type": "object",
       "properties": {
+        "pav": { "type": "string", "format": "uri", "enum": [ "http://purl.org/pav/" ] },
+        "schema": { "type": "string", "format": "uri", "enum": [ "http://schema.org/" ] },
+        "oslc": { "type": "string", "format": "uri", "enum": [ "http://open-services.net/ns/core#" ] }
       },
-      "required": [
-        "@value"
-      ],
+      "patternProperties": {
+        "^(?!pav)(?!schema)(?!oslc)[a-zA-Z][a-zA-Z0-9]*$": {"type": "string", "format": "uri"}
+      },
+      "required" : [],
       "additionalProperties": false
     },
     "@id": {
-      "format": "uri",
-      "type": "string"
+      "type": [ "string", "null" ],
+      "format": "uri"
     },
     "@type": {
       "oneOf": [
@@ -45,19 +50,19 @@
       ]
     },
     "pav:createdOn": {
-      "type": "string",
+      "type" : ["string", "null"],
       "format": "date-time"
     },
     "pav:createdBy": {
-      "type": "string",
+      "type" : ["string", "null"],
       "format": "uri"
     },
     "pav:lastUpdatedOn": {
-      "type": "string",
+      "type" : ["string", "null"],
       "format": "date-time"
     },
     "oslc:modifiedBy": {
-      "type": "string",
+      "type" : ["string", "null"],
       "format": "uri"
     }
   },
