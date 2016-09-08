@@ -195,14 +195,7 @@ define([
         }
 
         $scope.parseForm = function (iterator, parentModel, parentKey) {
-          var ctx;
-          angular.forEach(iterator, function (value, name) {
-            // Add @context information to instance
-            if (name == '@context') {
-              ctx = DataManipulationService.generateInstanceContext(value);
-            }
-          });
-
+          
           angular.forEach(iterator, function (value, name) {
             // Add @context information to instance
             if (name == '@context') {
