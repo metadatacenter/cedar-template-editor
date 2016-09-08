@@ -844,8 +844,9 @@
               <div class="col-sm-7 name">
                 {{dc.getName(dc.resourcePermissions.owner)}}
               </div>
-              <select class="col-sm-4" select-picker>
-                <option value="own">is owner</option>
+
+              <select class="col-sm-4" select-picker  ng-disabled="!dc.canUpdate()">
+                <option value="own" >is owner</option>
               </select>
             </div>
 
@@ -853,12 +854,13 @@
 
               <div class="col-sm-7 name">{{share.node.name}}</div>
 
-              <select ng-model="share.permission" class="col-sm-4"
+              <select ng-model="share.permission" class="col-sm-4" select-picker
                   ng-change="dc.addShare(share.node.id, share.permission, 'shared-users')"
                   select-model="share"
-                  select-picker cedar-live-search="true">
-                <option value="read">can read</option>
-                <option value="write">can write</option>
+                   cedar-live-search="true" ng-disabled="!dc.canUpdate()" >
+
+                <option ng-show="(!dc.canUpdate() && share.permisison === 'read') || dc.canUpdate()" value="read">can read</option>
+                <option ng-show="(!dc.canUpdate() && share.permisison === 'write') || dc.canUpdate()" value="write">can write</option>
                 <option ng-if="dc.canBeOwner(share.node.id)" value="own">is owner</option>
               </select>
 

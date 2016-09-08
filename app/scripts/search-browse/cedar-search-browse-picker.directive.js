@@ -1645,16 +1645,21 @@ define([
 
               if (permission === 'own') {
 
-                // make the node the owner
-                removeShare(node);
                 var owner = vm.resourcePermissions.owner;
-                vm.resourcePermissions.owner = node;
 
-                share.permission = 'write';
-                share.node = owner;
-                share.node.nodeType = 'user';
-                share.node.name = getName(share.node);
-                vm.resourcePermissions.shares.push(share);
+                if (owner.id != id) {
+
+                  // make the node the owner
+                  removeShare(node);
+
+                  vm.resourcePermissions.owner = node;
+
+                  share.permission = 'write';
+                  share.node = owner;
+                  share.node.nodeType = 'user';
+                  share.node.name = getName(share.node);
+                  vm.resourcePermissions.shares.push(share);
+                }
 
               } else {
 
