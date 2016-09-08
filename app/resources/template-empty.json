@@ -4,7 +4,8 @@
   "@type": "https://schema.metadatacenter.org/core/Template",
   "@context": {
     "pav": "http://purl.org/pav/",
-    "oslc": "http://open-services.net/ns/core#"
+    "oslc": "http://open-services.net/ns/core#",
+    "schema": "http://schema.org/"
   },
   "type": "object",
   "title": "",
@@ -18,14 +19,39 @@
     "@context": {
       "type": "object",
       "properties": {
-        "pav": { "type": "string", "format": "uri", "enum": [ "http://purl.org/pav/" ] },
-        "schema": { "type": "string", "format": "uri", "enum": [ "http://schema.org/" ] },
-        "oslc": { "type": "string", "format": "uri", "enum": [ "http://open-services.net/ns/core#" ] }
+        "pav": {
+          "type": "string",
+          "format": "uri",
+          "enum": [
+            "http://purl.org/pav/"
+          ]
+        },
+        "schema": {
+          "type": "string",
+          "format": "uri",
+          "enum": [
+            "http://schema.org/"
+          ]
+        },
+        "oslc": {
+          "type": "string",
+          "format": "uri",
+          "enum": [
+            "http://open-services.net/ns/core#"
+          ]
+        }
       },
       "patternProperties": {
-        "^(?!pav)(?!schema)(?!oslc)[a-zA-Z][a-zA-Z0-9]*$": {"type": "string", "format": "uri"}
+        "^(?!pav)(?!schema)(?!oslc)[a-zA-Z][a-zA-Z0-9]*$": {
+          "type": "string",
+          "format": "uri"
+        }
       },
-      "required" : [],
+      "required": [
+        "pav",
+        "schema",
+        "oslc"
+      ],
       "additionalProperties": false
     },
     "@id": {
@@ -53,11 +79,15 @@
       ]
     },
     "schema:isBasedOn": {
-      "type": [
-        "string",
-        "null"
-      ],
+      "type": "string",
       "format": "uri"
+    },
+    "schema:name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "schema:description": {
+      "type": "string"
     },
     "pav:createdOn": {
       "type": [
@@ -90,7 +120,13 @@
   },
   "required": [
     "@id",
-    "schema:isBasedOn"
+    "schema:isBasedOn",
+    "schema:name",
+    "schema:description",
+    "pav:createdOn",
+    "pav:createdBy",
+    "pav:lastUpdatedOn",
+    "oslc:modifiedBy"
   ],
   "pav:createdOn": null,
   "pav:createdBy": null,
