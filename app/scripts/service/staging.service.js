@@ -8,12 +8,12 @@ define([
       .service('StagingService', StagingService);
 
   StagingService.$inject = ["$rootScope", "$document", "TemplateElementService", "DataManipulationService",
-                            "ClientSideValidationService", "UIMessageService", "$timeout", "AuthorizedBackendService",
+                            "ClientSideValidationService", "UIMessageService", "FieldTypeService", "$timeout", "AuthorizedBackendService",
                             "CONST"];
 
   function StagingService($rootScope, $document, TemplateElementService, DataManipulationService,
                           ClientSideValidationService,
-                          UIMessageService, $timeout, AuthorizedBackendService, CONST) {
+                          UIMessageService, FieldTypeService, $timeout, AuthorizedBackendService, CONST) {
 
     var service = {
       serviceId        : "StagingService",
@@ -114,7 +114,6 @@ define([
     };
 
     service.addFieldToForm = function (form, fieldType, divId, callback) {
-
       var field = DataManipulationService.generateField(fieldType);
       DataManipulationService.setSelected(field);
 
@@ -136,9 +135,11 @@ define([
       // Converting title for irregular character handling
       var fieldName = DataManipulationService.generateGUID(); //field['@id'];
 
-      // Adding corresponding property type to @context
-      form.properties["@context"].properties[fieldName] = DataManipulationService.generateFieldContextProperties(fieldName);
-      form.properties["@context"].required.push(fieldName);
+      // Adding corresponding property type to @context (only if the field is not static)
+      if (!FieldTypeService.isStaticField(fieldType)) {
+        form.properties["@context"].properties[fieldName] = DataManipulationService.generateFieldContextProperties(fieldName);
+        form.properties["@context"].required.push(fieldName);
+      }
 
       // Evaluate cardinality
       DataManipulationService.cardinalizeField(field);
@@ -211,10 +212,11 @@ define([
       // Converting title for irregular character handling
       var fieldName = DataManipulationService.generateGUID(); //field['@id'];
 
-      // Adding corresponding property type to @context
-      element.properties["@context"].properties[fieldName] = DataManipulationService.generateFieldContextProperties(fieldName);
-      element.properties["@context"].required.push(fieldName);
-
+      // Adding corresponding property type to @context (only if the field is not static)
+      if (!FieldTypeService.isStaticField(fieldType)) {
+        element.properties["@context"].properties[fieldName] = DataManipulationService.generateFieldContextProperties(fieldName);
+        element.properties["@context"].required.push(fieldName);
+      }
       // Evaluate cardinality
       DataManipulationService.cardinalizeField(field);
 
