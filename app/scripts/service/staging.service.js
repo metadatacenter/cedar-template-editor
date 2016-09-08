@@ -114,7 +114,6 @@ define([
     };
 
     service.addFieldToForm = function (form, fieldType, divId, callback) {
-
       var field = DataManipulationService.generateField(fieldType);
       DataManipulationService.setSelected(field);
 

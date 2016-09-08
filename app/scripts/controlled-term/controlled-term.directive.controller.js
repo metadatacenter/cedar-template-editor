@@ -466,8 +466,8 @@ define([
           'uri'      : selection['@id'],
           'prefLabel': selection.prefLabel,
           'type'     : type,
-          'label'    : selection.prefLabel,
-          'default'  : false
+          'label'    : selection.prefLabel
+          //'default'  : false
         };
         if (type == 'OntologyClass') {
           klass['source'] = vm.currentOntology.info.id;
@@ -521,7 +521,7 @@ define([
           'prefLabel': args.class.prefLabel,
           'type': 'OntologyClass',
           'label': args.class.prefLabel,
-          'default': false,
+          //'default': false,
           'source': args.ontology.details.ontology.acronym,
           //'provisionalClass': true,
         };
