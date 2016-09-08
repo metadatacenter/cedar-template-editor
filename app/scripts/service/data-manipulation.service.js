@@ -110,7 +110,11 @@ define([
           '_valueConstraints'   : field._valueConstraints,
           'properties'          : field.properties,
           'required'            : field.required,
-          'additionalProperties': field.additionalProperties
+          'additionalProperties': field.additionalProperties,
+          'pav:createdOn'       : field['pav:createdOn'],
+          'pav:createdBy'       : field['pav:createdBy'],
+          'pav:lastUpdatedOn'   : field['pav:lastUpdatedOn'],
+          'oslc:modifiedBy'     : field['oslc:modifiedBy']
         };
         field.type = 'array';
 
@@ -125,6 +129,10 @@ define([
         delete field._valueConstraints;
         delete field.required;
         delete field.additionalProperties;
+        delete field['pav:createdOn'];
+        delete field['pav:createdBy'];
+        delete field['pav:lastUpdatedOn'];
+        delete field['oslc:modifiedBy'];
 
         return true;
       } else {
@@ -147,6 +155,10 @@ define([
         field.properties = field.items.properties;
         field.required = field.items.required;
         field.additionalProperties = field.items.additionalProperties;
+        field['pav:createdOn'] = field.items['pav:createdOn'];
+        field['pav:createdBy'] = field.items['pav:createdBy'];
+        field['pav:lastUpdatedOn'] = field.items['pav:lastUpdatedOn'];
+        field['oslc:modifiedBy'] = field.items['oslc:modifiedBy'];
 
         delete field.items;
         delete field.maxItems;
