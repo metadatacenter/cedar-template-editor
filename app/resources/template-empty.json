@@ -4,7 +4,8 @@
   "@type": "https://schema.metadatacenter.org/core/Template",
   "@context": {
     "pav": "http://purl.org/pav/",
-    "oslc": "http://open-services.net/ns/core#"
+    "oslc": "http://open-services.net/ns/core#",
+    "schema": "http://schema.org/"
   },
   "type": "object",
   "title": "",
@@ -25,7 +26,7 @@
       "patternProperties": {
         "^(?!pav)(?!schema)(?!oslc)[a-zA-Z][a-zA-Z0-9]*$": {"type": "string", "format": "uri"}
       },
-      "required" : [],
+      "required" : ["pav", "schema", "oslc"],
       "additionalProperties": false
     },
     "@id": {
