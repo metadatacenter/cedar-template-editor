@@ -7,6 +7,7 @@
   <div ng-if="$root.isArray(model)" class="form-group floating-label-wrapper" ng-repeat="valueElement in model">
 
     <input type="number"
+        id="{{getId($index)}}"
         class="form-control"
         ng-class="{'required': $root.schemaOf(field)._valueConstraints.requiredValue}"
         placeholder="{{$root.schemaOf(field)._ui.title}}"
@@ -33,6 +34,7 @@
 
 
     <input type="number"
+        id="{{getId(0)}}"
         class="form-control"
         ng-class="{'required': $root.schemaOf(field)._valueConstraints.requiredValue}"
         placeholder="{{$root.schemaOf(field)._ui.title}}"
@@ -55,6 +57,7 @@
 
   <div ng-if="!$root.isArray(model)" class="form-group floating-label-wrapper">
     <input type="number"
+        id="{{getId(0)}}"
         class="form-control"
         ng-class="{'required': $root.schemaOf(field)._valueConstraints.requiredValue}"
         placeholder="{{$root.schemaOf(field)._ui.title}}"

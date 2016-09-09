@@ -415,11 +415,36 @@ define([
 
     };
 
-    // look to see if this node has been identified by angular as an invalid pattern
-    service.isInvalidPattern =  function(node)  {
-      var target = jQuery('#' + node._tmp.domId + ' .ng-invalid-pattern');
-      return (target.length == 0);
+    // get the id of the node
+    service.getNodeId = function (node) {
+      var nodeId = node['@id'] || node.items['@id'];
+      var id = nodeId.substring(nodeId.lastIndexOf('/') + 1);
+      return id;
     };
+
+    // get the locator for the node's dom object
+    service.getLocator = function (node, index) {
+      return 'dom-' + service.getNodeId(node)+ '-' + index;
+    };
+
+    // look to see if this node has been identified by angular as an invalid pattern
+    service.isValidPattern =  function(node, index)  {
+        var locator = service.getLocator(node,  index) + '.ng-invalid-pattern';
+        var target = jQuery('#' + locator);
+        return (target.length == 0);
+    };
+
+    // get the value of the dom object for this node
+    service.getDomValue =  function(node, index)  {
+      var result;
+      var locator = service.getLocator(node, index);
+      var target = jQuery('#' + locator);
+      if (target.length > 0) {
+        result = target[0].value;
+      }
+      return result;
+    };
+
 
 
 

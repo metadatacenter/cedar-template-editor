@@ -63,7 +63,8 @@ define([
       // Broadcast submitForm event to form-directive.js which will assign the form $scope.model to $scope.instance of this controller
       $scope.$broadcast('submitForm');
       // Create instance if there are no required field errors
-      if ($rootScope.isEmpty($scope.emptyRequiredFields) && $rootScope.isEmpty($scope.invalidFieldValues) && $scope.instance['@id'] == undefined) {
+      //if ($rootScope.isEmpty($scope.emptyRequiredFields) && $rootScope.isEmpty($scope.invalidFieldValues) && $scope.instance['@id'] == undefined) {
+      if ($scope.instance['@id'] == undefined) {
         // '@id' and 'templateId' haven't been populated yet, create now
         // $scope.instance['@id'] = $rootScope.idBasePath + $rootScope.generateGUID();
         $scope.instance['schema:isBasedOn'] = $routeParams.templateId;
@@ -77,8 +78,8 @@ define([
             function (response) {
               UIMessageService.flashSuccess('SERVER.INSTANCE.create.success', null, 'GENERIC.Created');
               // Reload page with element id
-              var newId = response.data['@id'];
-              $location.path(UrlService.getInstanceEdit(newId));
+              //var newId = response.data['@id'];
+              //$location.path(UrlService.getInstanceEdit(newId));
             },
             function (err) {
               UIMessageService.showBackendError('SERVER.INSTANCE.create.error', err);
@@ -86,7 +87,8 @@ define([
         );
       }
       // Update instance
-      else if ($rootScope.isEmpty($scope.emptyRequiredFields) && $rootScope.isEmpty($scope.invalidFieldValues)) {
+      //else if ($rootScope.isEmpty($scope.emptyRequiredFields) && $rootScope.isEmpty($scope.invalidFieldValues)) {
+      else  {
         AuthorizedBackendService.doCall(
             TemplateInstanceService.updateTemplateInstance($scope.instance['@id'], $scope.instance),
             function (response) {
