@@ -3,8 +3,9 @@
   "@id": null,
   "@type": "https://schema.metadatacenter.org/core/StaticTemplateField",
   "@context": {
+    "schema": "http://schema.org/",
     "pav": "http://purl.org/pav/",
-    "cedar": "https://schema.metadatacenter.org/core/"
+    "oslc": "http://open-services.net/ns/core#"
   },
   "type": "object",
   "title": "",
@@ -15,6 +16,10 @@
     "inputType": null
   },
   "properties": {
+    "@id": {
+      "type": [ "string", "null" ],
+      "format": "uri"
+    },
     "@type": {
       "oneOf": [
         {
@@ -33,19 +38,19 @@
       ]
     },
     "pav:createdOn": {
-      "type": "string",
+      "type" : ["string", "null"],
       "format": "date-time"
     },
     "pav:createdBy": {
-      "type": "string",
+      "type" : ["string", "null"],
       "format": "uri"
     },
     "pav:lastUpdatedOn": {
-      "type": "string",
+      "type" : ["string", "null"],
       "format": "date-time"
     },
-    "cedar:lastUpdatedBy": {
-      "type": "string",
+    "oslc:modifiedBy": {
+      "type" : ["string", "null"],
       "format": "uri"
     },
     "_content": null
@@ -56,6 +61,6 @@
   "pav:createdOn": null,
   "pav:createdBy": null,
   "pav:lastUpdatedOn": null,
-  "cedar:lastUpdatedBy": null,
+  "oslc:modifiedBy": null,
   "additionalProperties": false
 }

@@ -6,14 +6,13 @@
   <!--</div>-->
 
   <!-- field title first -->
-  <div menuDropDownId="" ng-show="$root.isArray(model) && $root.isRuntime()"
+  <div menuDropDownId="" ng-show="field.items && $root.isRuntime()"
       class="spreadsheetSwitch field"
       style="position:relative">
     <p class="element-name-label">
       <!--{{field.items._ui.inputType}}-->
       <!--<i class="{{fieldIconClass}}"></i>-->
       <!--<i class="cedar-svg-list"></i>-->
-      {{field.items._ui.title}}
 
        <span class="spreadsheetSwitch ">
             <button type="button"
@@ -24,14 +23,14 @@
                 data-toggle="tooltip"
                 ng-click="switchToSpreadsheet()"
                 class="spreadsheetSwitchLink"
-                ng-show="true"
+                ng-show="false"
                 ng-disabled="preview" style="background:transparent;border:0;outline:none">
               <i class="cedar-svg-spreadsheet"></i>
             </button>
        </span>
 
       <!-- show this add button only when you have minCardinality 0 and an empty list -->
-    <span class="zero-input-wrapper" ng-show="$root.isRuntime() && $root.isArray(model) && model.length == 0">
+    <span class="zero-input-wrapper" ng-show="$root.isRuntime() && field.items && model.length == 0">
       <button type="button" class="add noOutline"
           tooltip="add more {{field.items._ui.title}}"
           tooltip-trigger
@@ -53,7 +52,7 @@
     </p>
   </div>
 
-  <div menuDropDownId="" ng-show="!$root.isArray(model) && $root.isRuntime()"
+  <div menuDropDownId="" ng-show="!field.items && $root.isRuntime()"
       class="field"
       style="position:relative">
   </div>

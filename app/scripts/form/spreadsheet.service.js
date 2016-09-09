@@ -49,16 +49,16 @@ define([
             if (inputType == 'dropdown') {
               var containerArray = [];
               containerArray.push(sds.tableData[row][col]);
-              sds.tableDataSource[row][col]._value = containerArray;
+              sds.tableDataSource[row][col]['@value'] = containerArray;
             } else if (cedarType == 'checkboxes') {
               var valueObject = JSON.parse(sds.tableData[row][col]);
               var value = {};
               for (var key in valueObject) {
                 value[key] = true;
               }
-              sds.tableDataSource[row][col]._value = value;
+              sds.tableDataSource[row][col]['@value'] = value;
             } else {
-              sds.tableDataSource[row][col]._value = sds.tableData[row][col];
+              sds.tableDataSource[row][col]['@value'] = sds.tableData[row][col];
             }
           }
         }
@@ -96,7 +96,7 @@ define([
       extractOptionsForList: function (options) {
         var list = [];
         for (var i in options) {
-          list.push(options[i].text);
+          list.push(options[i].label);
         }
         return list;
       },
@@ -104,7 +104,7 @@ define([
       extractOptionsForCheckboxes: function (options) {
         var list = [];
         for (var i in options) {
-          list.push(options[i].text);
+          list.push(options[i].label);
         }
         return list;
       },
@@ -147,16 +147,15 @@ define([
                 // http://numeraljs.com/
                 desc.type = 'numeric';
               } else if (inputType == 'list') {
-                var st = _ui.selectionType;
-                if (st == 'single') {
+                if (_valueConstraints.multipleChoice == false) {
                   desc.type = 'dropdown';
-                  var listOptions = this.extractOptionsForList(_ui.options);
+                  var listOptions = this.extractOptionsForList(_valueConstraints.literals);
                   desc.source = listOptions;
                 }
               } else if (inputType == 'checkbox') {
                 desc.renderer = this.customRenderer.checkboxes;
                 desc.editor = 'checkboxes';//MultiCheckboxEditor;
-                var checkboxOptions = this.extractOptionsForCheckboxes(_ui.options);
+                var checkboxOptions = this.extractOptionsForCheckboxes(_valueConstraints.literals);
                 desc.source = checkboxOptions;
                 desc.cedarType = 'checkboxes';
               }
@@ -178,13 +177,13 @@ define([
         var inputType = columnDescriptor.type;
         var cedarType = columnDescriptor.cedarType;
         if (inputType == 'dropdown') {
-          rowData.push(cellDataObject._value[0]);
+          rowData.push(cellDataObject['@value'][0]);
         } else if (cedarType == 'checkboxes') {
-          rowData.push(JSON.stringify(cellDataObject._value));
+          rowData.push(JSON.stringify(cellDataObject['@value']));
         } else if (cedarType == 'deepObject') {
           rowData.push(columnDescriptor.cedarLabel);
         } else {
-          rowData.push(cellDataObject._valueLabel || cellDataObject._value);
+          rowData.push(cellDataObject._valueLabel || cellDataObject['@value']);
         }
       },
 

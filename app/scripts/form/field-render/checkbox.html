@@ -4,79 +4,22 @@
   <div ng-init="fieldTitle='Checkbox';fieldIconClass='cedar-svg-checkbox'"
       ng-include="'scripts/form/partials/field-header.partial.html'"></div>
 
-  <div ng-if="$root.isArray(model) " class="form-group  floating-label-wrapper ng-scope"
-      ng-class="{'required': $root.schemaOf(field)._valueConstraints.requiredValue}"
-      ng-repeat="valueElement in model">
-    <div class="form-group field-wrapper-checkbox  ">
-      <p class="extra-label-context">{{$root.schemaOf(field)._ui.title}}</p>
-
-      <div class=" checkbox-item" ng-repeat="(index, value) in $root.schemaOf(field)._ui.options">
-        <div class="checkbox checkbox-primary">
-          <input type="checkbox"
-              ng-click="console('click'); $event.stopPropagation();"
-              id="checkbox-{{uuid}}-{{$parent.$index}}-{{index}}"
-              ng-model="valueElement._value[value.text]"
-              ng-disabled="!$root.isRuntime() || preview"
-              ng-checked="valueElement._value[value.text]"/>
-          <label ng-click=" $event.stopPropagation();" for="checkbox-{{uuid}}-{{$parent.$index}}-{{index}}">{{$root.schemaOf(field)._ui.options[index]['text']}}</label>
-
-        </div>
-        <!-- ./checkbox -->
-      </div>
-      <div class="input-indicator-icons ng-valid ng-scope"
-          ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
-      <!--<div class="more-input-wrapper" ng-disabled="true"-->
-      <!--ng-include="'scripts/form/partials/more-input-buttons.partial.html'"></div>-->
-    </div>
-    <!-- /.form-group -->
-    <!--<div class="more-input-wrapper" ng-include="'scripts/form/partials/more-input-buttons.partial.html'"-->
-    <!--ng-show="!field.maxItems || field.maxItems > 1"></div>-->
-  </div>
-
-  <div ng-if="$root.isArray(model) && model.length == 0 && !$root.isRuntime()"
-      class="form-group  floating-label-wrapper ng-scope"
+  <div class="form-group floating-label-wrapper ng-scope"
       ng-class="{'required': $root.schemaOf(field)._valueConstraints.requiredValue}">
     <div class="form-group field-wrapper-checkbox  ">
       <p class="extra-label-context">{{$root.schemaOf(field)._ui.title}}</p>
-
-      <div class="form-group checkbox-item" ng-repeat="(index, value) in $root.schemaOf(field)._ui.options">
-        <div class="checkbox checkbox-primary">
-          <input type="checkbox"
-              ng-click="console('click'); $event.stopPropagation();"
-              id="checkbox-{{uuid}}-{{$parent.$index}}-{{index}}"
-              ng-model="model._value[value.text]"
-              ng-disabled="true"
-              ng-checked="model._value[value.text]"/>
-          <label ng-click=" $event.stopPropagation();" for="checkbox-{{uuid}}-{{$parent.$index}}-{{index}}">{{$root.schemaOf(field)._ui.options[index]['text']}}</label>
+      <div ng-init="initializeSelectionField()">
+        <div class="checkbox-item" ng-repeat="(index, value) in $root.schemaOf(field)._valueConstraints.literals">
+          <div class="checkbox checkbox-primary">
+            <input type="checkbox"
+                ng-click="updateModelFromUI(); $event.stopPropagation();"
+                id="checkbox-{{uuid}}-{{$parent.$index}}-{{index}}"
+                ng-model="optionsUI[value.label]"
+                ng-disabled="!$root.isRuntime() || preview"/>
+            <label ng-click=" $event.stopPropagation();" for="checkbox-{{uuid}}-{{$parent.$index}}-{{index}}">{{$root.schemaOf(field)._valueConstraints.literals[index]['label']}}</label>
+          </div>
+          <!-- ./checkbox -->
         </div>
-        <!-- ./checkbox -->
-      </div>
-      <!-- /.form-group -->
-      <div class="input-indicator-icons ng-valid ng-scope"
-          ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
-      <!--<div class="more-input-wrapper" ng-disabled="true"-->
-      <!--ng-include="'scripts/form/partials/more-input-buttons.partial.html'"></div>-->
-    </div>
-  </div>
-
-  <div ng-if="!$root.isArray(model)" class="form-group floating-label-wrapper ng-scope"
-      ng-class="{'required': $root.schemaOf(field)._valueConstraints.requiredValue}">
-    <div class="form-group field-wrapper-checkbox  ">
-
-      <p class="extra-label-context">{{$root.schemaOf(field)._ui.title}}</p>
-
-      <div class="checkbox-item" ng-repeat="(index, value) in $root.schemaOf(field)._ui.options">
-        <div class="checkbox checkbox-primary">
-          <input type="checkbox"
-              ng-click="console('click'); $event.stopPropagation();"
-              id="checkbox-{{uuid}}-{{$parent.$index}}-{{index}}"
-              ng-model="model._value[value.text]"
-              ng-disabled="!$root.isRuntime() || preview"
-              ng-checked="model._value[value.text]"/>
-          <label ng-click=" $event.stopPropagation();" for="checkbox-{{uuid}}-{{$parent.$index}}-{{index}}">{{$root.schemaOf(field)._ui.options[index]['text']}}</label>
-
-        </div>
-        <!-- ./checkbox -->
       </div>
       <div class="input-indicator-icons ng-valid ng-scope"
           ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>

@@ -7,7 +7,8 @@ var MetadataPage = function () {
   var testConfig = require('../config/test-env.js');
   var url = testConfig.baseUrl + '/dashboard';
 
-  var createToastyConfirmationPopup = element(by.id('toasty')).element(by.css('.toast'));
+  var createToastyConfirmationPopup = element(by.id('toasty'));
+  //var createToastyConfirmationPopup = element(by.id('toasty')).element(by.css('.toasty-test-success'));
   var createMetadataMessage = 'The metadata have been created.';
   var toastyMessageText = element(by.id('toasty')).element(by.css('.toast')).element(by.css('.toast-msg'));
 
@@ -17,7 +18,7 @@ var MetadataPage = function () {
   var pageTitle = element(by.id('top-navigation')).element(by.css('.navbar-header')).element(by.css('.navbar-back')).element(by.css('.page-title'));
   var templateJson = element(by.id('show-json-link'));
   var metadataJson = element(By.css('#jsonTools a:nth-child(1)'));
-  var firstItemTitle = element(by.css('.item-root')).element(by.model('model._value'));
+  var firstItemTitle = element(by.css('.item-root')).element(by.model('model[\'@value\']'));
   var sampleTitle = 'sample title';
   var deleteTemplateMessage = 'The template has been deleted.';
 

@@ -7,35 +7,32 @@
   <div class="definition-inputs" ng-include="'scripts/form/partials/field-definition.partial.html'"></div>
   <!-- /.definition-inputs -->
 
-  <div class="type-toggle list" ng-init="$root.schemaOf(field)._ui.selectionType = 'single'">
-    <div class="single-date d-option" ng-click="$root.schemaOf(field)._ui.selectionType = 'single'"
-        ng-class="{active: $root.schemaOf(field)._ui.selectionType == 'single'}">
+  <div class="type-toggle list" ng-init="$root.schemaOf(field)._valueConstraints.multipleChoice = false">
+    <div class="single-date d-option" ng-click="$root.schemaOf(field)._valueConstraints.multipleChoice = false"
+        ng-class="{active: $root.schemaOf(field)._valueConstraints.multipleChoice == false}">
       <span>Single Select</span>
     </div>
-    <div class="date-range d-option" ng-click="$root.schemaOf(field)._ui.selectionType = 'multiple'"
-        ng-class="{active: $root.schemaOf(field)._ui.selectionType == 'multiple'}">
+    <div class="date-range d-option" ng-click="$root.schemaOf(field)._valueConstraints.multipleChoice = true"
+        ng-class="{active: $root.schemaOf(field)._valueConstraints.multipleChoice == true}">
       <span>Multi-Select</span>
     </div>
   </div>
   <!-- /.date-type-toggle -->
 
   <div class="form-group">
-    <div class="form-group floating-label-wrapper">
-
-    </div>
+    <div class="form-group floating-label-wrapper"></div>
     <!-- /.form-group -->
     <div class="options-wrapper">
-      <div class="multiple-container">
-        <span ng-repeat="(index, value) in $root.schemaOf(field)._ui.options">
+      <div ng-init="initializeSelectionField()" class="multiple-container">
+        <span ng-repeat="(index, value) in $root.schemaOf(field)._valueConstraints.literals">
         	<div class="form-group floating-label-wrapper">
             <input type="text" class="form-control"
                 id="placeholder-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}" placeholder="Option"
-                aria-label="Option" ng-model="$root.schemaOf(field)._ui.options[index]['text']" with-floating-label>
-
+                aria-label="Option" ng-model="$root.schemaOf(field)._valueConstraints.literals[index]['label']" with-floating-label>
             <div class="checkbox checkbox-primary checkbox-circle">
-              <input ng-click="$event.stopPropagation();"  type="checkbox" id="checkbox-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}-{{index}}"
+              <input ng-click="cleanSelectedByDefault(index); $event.stopPropagation();"  type="checkbox" id="checkbox-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}-{{index}}"
                   name="checkbox-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}"
-                  ng-model="$root.schemaOf(field)._ui.defaultOption[value.text]">
+                  ng-model="$root.schemaOf(field)._valueConstraints.literals[index].selectedByDefault">
               <label for="checkbox-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}-{{index}}"></label>
             </div>
             <!-- /.checkbox -->

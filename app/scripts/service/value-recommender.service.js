@@ -60,7 +60,7 @@ define(['angular'], function (angular) {
       if (value) {
         var fieldName = DataManipulationService.getFieldName(field._ui.title);
         populatedFields[fieldId] = {
-          "name": fieldName + '._value',
+          "name": fieldName + '.[\'@value\']',
           "value": value
         }
       }
@@ -88,7 +88,7 @@ define(['angular'], function (angular) {
     service.updateValueRecommendationResults = function (field) {
       var fieldId = field['@id'];
       var fieldName = DataManipulationService.getFieldName(field._ui.title);
-      service.getRecommendation(fieldName + "._value",
+      service.getRecommendation(fieldName + "['@value']",
           service.getRelevantPopulatedFields(fieldId)).then(function (recommendation) {
         if (recommendation.recommendedValues && recommendation.recommendedValues.length == 0) {
           recommendation.recommendedValues.push({

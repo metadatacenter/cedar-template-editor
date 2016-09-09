@@ -8,11 +8,11 @@ define([
 
   CreateInstanceController.$inject = ["$translate", "$rootScope", "$scope", "$routeParams", "$location",
                                       "HeaderService", "UrlService", "TemplateService", "TemplateInstanceService",
-                                      "UIMessageService", "AuthorizedBackendService", "CONST"];
+                                      "UIMessageService", "AuthorizedBackendService", "CONST", "$timeout"];
 
   function CreateInstanceController($translate, $rootScope, $scope, $routeParams, $location, HeaderService, UrlService,
                                     TemplateService, TemplateInstanceService, UIMessageService,
-                                    AuthorizedBackendService, CONST) {
+                                    AuthorizedBackendService, CONST, $timeout) {
 
     // Get/read template with given id from $routeParams
     $scope.getTemplate = function () {
@@ -38,9 +38,9 @@ define([
           function (instanceResponse) {
             $scope.instance = instanceResponse.data;
             $scope.isEditData = true;
-            $rootScope.documentTitle = $scope.instance._ui.title;
+            $rootScope.documentTitle = $scope.instance['schema:name'];
             AuthorizedBackendService.doCall(
-                TemplateService.getTemplate(instanceResponse.data._templateId),
+                TemplateService.getTemplate(instanceResponse.data['schema:isBasedOn']),
                 function (templateResponse) {
                   // Assign returned form object from FormService to $scope.form
                   $scope.form = templateResponse.data;
@@ -58,6 +58,9 @@ define([
 
     // Stores the data (instance) into the databases
     $scope.saveInstance = function () {
+      this.disableSaveButton();
+      var owner = this;
+
       $scope.runtimeErrorMessages = [];
       $scope.runtimeSuccessMessages = [];
       // Broadcast submitForm event to form-directive.js which will assign the form $scope.model to $scope.instance of this controller
@@ -66,16 +69,12 @@ define([
       if ($rootScope.isEmpty($scope.emptyRequiredFields) && $rootScope.isEmpty($scope.invalidFieldValues) && $scope.instance['@id'] == undefined) {
         // '@id' and 'templateId' haven't been populated yet, create now
         // $scope.instance['@id'] = $rootScope.idBasePath + $rootScope.generateGUID();
-        $scope.instance['_templateId'] = $routeParams.templateId;
-        // Create _ui field that will store information used by the UI
-        $scope.instance._ui = {};
-        $scope.instance._ui['title'] = $translate.instant("GENERATEDVALUE.instanceTitle",
-            {title: $scope.form._ui.title});
-        $scope.instance._ui['description'] = $translate.instant("GENERATEDVALUE.instanceDescription",
-            {description: $scope.form._ui.description});
+        $scope.instance['schema:isBasedOn'] = $routeParams.templateId;
+        // Create fields that will store information used by the UI
+        $scope.instance['schema:name'] = $scope.form._ui.title + $translate.instant("GENERATEDVALUE.instanceTitle")
+        $scope.instance['schema:description'] = $scope.form._ui.description + $translate.instant("GENERATEDVALUE.instanceDescription");
         // Make create instance call
         var queryParams = $location.search();
-        $scope.instance['parentId'] = queryParams.folderId;
         AuthorizedBackendService.doCall(
             TemplateInstanceService.saveTemplateInstance(queryParams.folderId, $scope.instance),
             function (response) {
@@ -86,6 +85,7 @@ define([
             },
             function (err) {
               UIMessageService.showBackendError('SERVER.INSTANCE.create.error', err);
+              owner.enableSaveButton();
             }
         );
       }
@@ -95,9 +95,11 @@ define([
             TemplateInstanceService.updateTemplateInstance($scope.instance['@id'], $scope.instance),
             function (response) {
               UIMessageService.flashSuccess('SERVER.INSTANCE.update.success', null, 'GENERIC.Updated');
+              owner.enableSaveButton();
             },
             function (err) {
               UIMessageService.showBackendError('SERVER.INSTANCE.update.error', err);
+              owner.enableSaveButton();
             }
         );
       }
@@ -112,6 +114,8 @@ define([
 
     // Giving $scope access to window.location for checking active state
     $scope.$location = $location;
+
+    $scope.saveButtonDisabled = false;
 
     AuthorizedBackendService.doCall(
         TemplateService.getAllTemplatesSummary(),
@@ -140,7 +144,6 @@ define([
     if (!angular.isUndefined($routeParams.id)) {
       $scope.getInstance();
     }
-
 
     // Initialize array for required fields left empty that fail required empty check
     $scope.emptyRequiredFields = {};
@@ -173,6 +176,16 @@ define([
     $scope.cancelTemplate = function () {
       var params = $location.search();
       $location.url(UrlService.getFolderContents(params.folderId));
+    };
+
+    $scope.enableSaveButton = function () {
+      $timeout(function () {
+        $scope.saveButtonDisabled = false;
+      }, 1000);
+    };
+
+    $scope.disableSaveButton = function () {
+      $scope.saveButtonDisabled = true;
     };
 
   };

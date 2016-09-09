@@ -34,7 +34,7 @@ define([
       var url = $rootScope.util.buildUrl(baseUrl, queryParams);
       $location.url(url);
       $window.scrollTo(0, 0);
-      
+
     };
 
     vm.search = function (searchTerm) {
@@ -80,6 +80,10 @@ define([
 
     vm.isMetadata = function () {
       return ($location.path() === "/instances");
+    };
+
+    vm.isProfile = function () {
+      return ($location.path() === "/profile");
     };
 
     //*********** ENTRY POINT

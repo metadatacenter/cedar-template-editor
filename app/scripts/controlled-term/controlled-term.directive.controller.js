@@ -41,8 +41,6 @@ define([
     vm.deleteFieldAddedValueSet = deleteFieldAddedValueSet;
     vm.depthOptions = null;
     vm.isLoadingClassDetails = false;
-    //vm.loadAllOntologies = loadAllOntologies;
-    //vm.loadAllValueSets = loadAllValueSets;
     vm.selectFieldFilter = selectFieldFilter;
     vm.selectValueFilter = selectValueFilter;
     vm.stagedBranchesValueConstraints = [];
@@ -468,8 +466,8 @@ define([
           'uri'      : selection['@id'],
           'prefLabel': selection.prefLabel,
           'type'     : type,
-          'label'    : selection.prefLabel,
-          'default'  : false
+          'label'    : selection.prefLabel
+          //'default'  : false
         };
         if (type == 'OntologyClass') {
           klass['source'] = vm.currentOntology.info.id;
@@ -523,7 +521,7 @@ define([
           'prefLabel': args.class.prefLabel,
           'type': 'OntologyClass',
           'label': args.class.prefLabel,
-          'default': false,
+          //'default': false,
           'source': args.ontology.details.ontology.acronym,
           //'provisionalClass': true,
         };
@@ -693,7 +691,7 @@ define([
         vm.valueConstraint.valueSets = vm.valueConstraint.valueSets || [];
         vm.valueConstraint.classes = vm.valueConstraint.classes || [];
         vm.valueConstraint.branches = vm.valueConstraint.branches || [];
-        vm.valueConstraint.multipleChoice = vm.valueConstraint.multipleChoice || [];
+        vm.valueConstraint.multipleChoice = false;
       }
     };
 

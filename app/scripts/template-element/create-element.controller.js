@@ -20,6 +20,7 @@ define([
     $rootScope.showSearch = true;
 
     $rootScope.searchBrowseModalId = "search-browse-modal";
+    $rootScope.finderModalId = "finder-modal";
 
     // Set page title variable when this controller is active
     $rootScope.pageTitle = 'Element Designer';
@@ -49,6 +50,8 @@ define([
     $scope.primaryFieldTypes = FieldTypeService.getPrimaryFieldTypes();
     $scope.otherFieldTypes = FieldTypeService.getOtherFieldTypes();
     $scope.hideRootElement = true;
+
+    $scope.saveButtonDisabled = false;
 
     var getElement = function () {
       $scope.form = {};
@@ -122,6 +125,7 @@ define([
     $scope.addElementToElement = function (element) {
       populateCreatingFieldOrElement();
       if (dontHaveCreatingFieldOrElement()) {
+        DataManipulationService.createDomIds(element);
         StagingService.addElementToElement($scope.element, element["@id"]);
         $scope.$broadcast("form:update");
       }
@@ -176,14 +180,14 @@ define([
       $scope.elementSuccessMessages = [];
       // delete $scope.element._ui.is_root;
 
-      // If Element Name is blank, produce error message
-      if (!$scope.element._ui.title.length) {
-        $scope.elementErrorMessages.push($translate.instant("VALIDATION.elementNameEmpty"));
-      }
-      // If Element Description is blank, produce error message
-      if (!$scope.element._ui.description.length) {
-        $scope.elementErrorMessages.push($translate.instant("VALIDATION.elementDescriptionEmpty"));
-      }
+      //// If Element Name is blank, produce error message
+      //if (!$scope.element._ui.title.length) {
+      //  $scope.elementErrorMessages.push($translate.instant("VALIDATION.elementNameEmpty"));
+      //}
+      //// If Element Description is blank, produce error message
+      //if (!$scope.element._ui.description.length) {
+      //  $scope.elementErrorMessages.push($translate.instant("VALIDATION.elementDescriptionEmpty"));
+      //}
       // If there are no Element level error messages
       if ($scope.elementErrorMessages.length == 0) {
         // Build element 'order' array via $broadcast call
@@ -194,15 +198,19 @@ define([
 
         // If maxItems is N, then remove maxItems
         DataManipulationService.removeUnnecessaryMaxItems($scope.element.properties);
+        DataManipulationService.defaultTitleAndDescription($scope.element._ui);
 
         // create a copy of the element and strip out the _tmp fields before saving it
         // var copiedElement = $scope.stripTmpFields();
 
+        this.disableSaveButton();
+        var owner = this;
         // Save element
         // Check if the element is already stored into the DB
         if ($routeParams.id == undefined) {
           var queryParams = $location.search();
-          $scope.element['parentId'] = queryParams.folderId;
+          DataManipulationService.stripTmps($scope.element);
+
           AuthorizedBackendService.doCall(
               TemplateElementService.saveTemplateElement(queryParams.folderId, $scope.element),
               function (response) {
@@ -212,10 +220,12 @@ define([
                     'GENERIC.Created');
                 // Reload page with element id
                 var newId = response.data['@id'];
+                DataManipulationService.createDomIds(response.data);
                 $location.path(UrlService.getElementEdit(newId));
               },
               function (err) {
                 UIMessageService.showBackendError('SERVER.ELEMENT.create.error', err);
+                owner.enableSaveButton();
               }
           );
         }
@@ -223,15 +233,21 @@ define([
         else {
           var id = $scope.element['@id'];
           //--//delete $scope.element['@id'];
+          DataManipulationService.stripTmps($scope.element);
+
           AuthorizedBackendService.doCall(
               TemplateElementService.updateTemplateElement(id, $scope.element),
               function (response) {
                 angular.extend($scope.element, response.data);
+
+                DataManipulationService.createDomIds($scope.element);
                 UIMessageService.flashSuccess('SERVER.ELEMENT.update.success', {"title": response.data.title},
                     'GENERIC.Updated');
+                owner.enableSaveButton();
               },
               function (err) {
                 UIMessageService.showBackendError('SERVER.ELEMENT.update.error', err);
+                owner.enableSaveButton();
               }
           );
         }
@@ -337,6 +353,36 @@ define([
       jQuery("#" + $scope.searchBrowseModalId).modal('hide')
     };
 
+    // finder
+    $scope.elementFind = function () {
+      jQuery("body").trigger("click");
+      jQuery("#" + $scope.finderModalId).modal("show");
+    };
+
+    $scope.addElementFromFinder = function () {
+      if ($scope.finderResource) {
+        $scope.addElementToTemplate($scope.finderResource);
+      }
+      $scope.hideFinder();
+    };
+
+    $scope.showFinder = function () {
+      $scope.finderResource = null;
+    };
+
+    $scope.hideFinder = function () {
+      jQuery("#" + $scope.finderModalId).modal('hide');
+    };
+
+    $scope.enableSaveButton = function () {
+      $timeout(function () {
+        $scope.saveButtonDisabled = false;
+      }, 1000);
+    };
+
+    $scope.disableSaveButton = function () {
+      $scope.saveButtonDisabled = true;
+    };
 
   }
 

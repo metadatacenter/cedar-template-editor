@@ -44,6 +44,10 @@ var WorkspacePage = function () {
   var createLogoutMenuItem = createToolbar.element(by.css('#user-tool #user-logoout-tool a'));
   var trashTooltip = 'delete selection';
 
+  var createListView = element(by.css('.center-panel .list-view'));
+  var createGridView = element(by.css('.center-panel .grid-view'));
+
+
 
   // breadcrumbs
   var createBreadcrumb = element(by.css('.breadcrumbs-sb'));
@@ -57,10 +61,9 @@ var WorkspacePage = function () {
   var createNewFolderButton = element(by.css('.add-new button#button-create-folder'));
 
   // create folder modal
-  var createFolderModal = element(by.id('editFolderModal'));
-  var createFolderName = createFolderModal.element(by.model('dc.formFolderName'));
-  var createFolderDescription = createFolderModal.element(by.model('dc.formFolderDescription'));
-  var createFolderSubmitButton = createFolderModal.element(by.css('div.modal-footer button.confirm'));
+  var createFolderModal = element(by.id('newFolderModal'));
+  var createFolderName = createFolderModal.element(by.model('dc.folder.name'));
+   var createFolderSubmitButton = createFolderModal.element(by.css('div.modal-footer button.confirm'));
   var testFolderName = 'f';
   var testFolderDescription = 'd';
   var sampleTemplateTitle = 't';
@@ -69,7 +72,7 @@ var WorkspacePage = function () {
   var sampleElementDescription = 's';
 
   // toasty messages
-  var createToastyConfirmationPopup = element(by.id('toasty')).element(by.css('.toast'));
+  var createToastyConfirmationPopup = element(by.id('toasty')).element(by.css('.toasty-type-success'));
   var createToastyMessageText = element(by.id('toasty')).element(by.css('.toast')).element(by.css('.toast-msg'));
 
   var toastyFolderMessage = "The folder ";
@@ -334,6 +337,14 @@ var WorkspacePage = function () {
   };
   this.createBreadcrumbSearch = function () {
     return createBreadcrumbSearch;
+  };
+
+  this.selectGridView = function() {
+    createListView.isPresent().then(function (isList) {
+      if (isList) {
+        createGridViewButton.click();
+      }
+    });
   };
 
 

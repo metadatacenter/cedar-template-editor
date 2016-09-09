@@ -4,7 +4,7 @@
   "@type": "https://schema.metadatacenter.org/core/TemplateElement",
   "@context": {
     "pav": "http://purl.org/pav/",
-    "cedar": "https://schema.metadatacenter.org/core/"
+    "oslc": "http://open-services.net/ns/core#"
   },
   "type": "object",
   "title": "",
@@ -16,16 +16,20 @@
   },
   "properties": {
     "@context": {
+      "type": "object",
       "properties": {
+        "pav": { "type": "string", "format": "uri", "enum": [ "http://purl.org/pav/" ] },
+        "oslc": { "type": "string", "format": "uri", "enum": [ "http://open-services.net/ns/core#" ] }
       },
-      "required": [
-        "_value"
-      ],
+      "patternProperties": {
+        "^(?!pav)(?!schema)(?!oslc)[a-zA-Z][a-zA-Z0-9]*$": {"type": "string", "format": "uri"}
+      },
+      "required" : [],
       "additionalProperties": false
     },
     "@id": {
-      "format": "uri",
-      "type": "string"
+      "type": [ "string", "null" ],
+      "format": "uri"
     },
     "@type": {
       "oneOf": [
@@ -45,28 +49,26 @@
       ]
     },
     "pav:createdOn": {
-      "type": "string",
+      "type" : ["string", "null"],
       "format": "date-time"
     },
     "pav:createdBy": {
-      "type": "string",
+      "type" : ["string", "null"],
       "format": "uri"
     },
     "pav:lastUpdatedOn": {
-      "type": "string",
+      "type" : ["string", "null"],
       "format": "date-time"
     },
-    "cedar:lastUpdatedBy": {
-      "type": "string",
+    "oslc:modifiedBy": {
+      "type" : ["string", "null"],
       "format": "uri"
     }
   },
-  "required": [
-    "@id"
-  ],
+  "required": [],
   "pav:createdOn": null,
   "pav:createdBy": null,
   "pav:lastUpdatedOn": null,
-  "cedar:lastUpdatedBy": null,
+  "oslc:modifiedBy": null,
   "additionalProperties": false
 }

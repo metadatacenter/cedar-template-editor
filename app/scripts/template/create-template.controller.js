@@ -23,6 +23,7 @@ define([
         $rootScope.pageTitle = 'Template Designer';
 
         $rootScope.searchBrowseModalId = "search-browse-modal";
+        $rootScope.finderModalId = "finder-modal";
 
         var pageId = CONST.pageId.TEMPLATE;
         HeaderService.configure(pageId);
@@ -41,6 +42,7 @@ define([
         $scope.primaryFieldTypes = FieldTypeService.getPrimaryFieldTypes();
         $scope.otherFieldTypes = FieldTypeService.getOtherFieldTypes();
 
+        $scope.saveButtonDisabled = false;
 
         var getTemplate = function () {
           // Load existing form if $routeParams.id parameter is supplied
@@ -111,6 +113,8 @@ define([
           populateCreatingFieldOrElement();
           if (dontHaveCreatingFieldOrElement()) {
 
+            DataManipulationService.createDomIds(element);
+
             var domId = DataManipulationService.createDomId();
             StagingService.addElementToForm($scope.form, element["@id"], domId, function (e) {
 
@@ -165,6 +169,7 @@ define([
         };
 
         $scope.saveTemplate = function () {
+
           populateCreatingFieldOrElement();
           if (dontHaveCreatingFieldOrElement()) {
             UIMessageService.conditionalOrConfirmedExecution(
@@ -181,22 +186,26 @@ define([
 
         // Stores the template into the database
         $scope.doSaveTemplate = function () {
+          this.disableSaveButton();
+          var owner = this;
+
           // First check to make sure Template Name, Template Description are not blank
           $scope.templateErrorMessages = [];
           $scope.templateSuccessMessages = [];
-          // If Template Name is blank, produce error message
-          if (!$scope.form._ui.title.length) {
-            $scope.templateErrorMessages.push($translate.instant("VALIDATION.templateNameEmpty"));
-          }
-          // If Template Description is blank, produce error message
-          if (!$scope.form._ui.description.length) {
-            $scope.templateErrorMessages.push($translate.instant("VALIDATION.templateDescriptionEmpty"));
-          }
+          //// If Template Name is blank, produce error message
+          //if (!$scope.form._ui.title.length) {
+          //  $scope.templateErrorMessages.push($translate.instant("VALIDATION.templateNameEmpty"));
+          //}
+          //// If Template Description is blank, produce error message
+          //if (!$scope.form._ui.description.length) {
+          //  $scope.templateErrorMessages.push($translate.instant("VALIDATION.templateDescriptionEmpty"));
+          //}
 
           // If there are no Template level error messages
           if ($scope.templateErrorMessages.length == 0) {
             // If maxItems is N, then remove maxItems
             DataManipulationService.removeUnnecessaryMaxItems($scope.form.properties);
+            DataManipulationService.defaultTitleAndDescription($scope.form._ui);
 
             // create a copy of the form and strip out the _tmp fields before saving it
             //var copiedForm = $scope.stripTmpFields();
@@ -204,35 +213,44 @@ define([
             // Save template
             if ($routeParams.id == undefined) {
               var queryParams = $location.search();
-              $scope.form['parentId'] = queryParams.folderId;
+              DataManipulationService.stripTmps($scope.form);
               AuthorizedBackendService.doCall(
                   TemplateService.saveTemplate(queryParams.folderId, $scope.form),
                   function (response) {
                     // confirm message
                     UIMessageService.flashSuccess('SERVER.TEMPLATE.create.success', {"title": response.data._ui.title},
                         'GENERIC.Created');
+
                     // Reload page with template id
+                    DataManipulationService.createDomIds(response.data);
                     var newId = response.data['@id'];
                     $location.path(UrlService.getTemplateEdit(newId));
                   },
                   function (err) {
                     UIMessageService.showBackendError('SERVER.TEMPLATE.create.error', err);
+                    owner.enableSaveButton();
                   }
               );
             }
             // Update template
             else {
               var id = $scope.form['@id'];
+              DataManipulationService.stripTmps($scope.form);
               //--//delete $scope.form['@id'];
               AuthorizedBackendService.doCall(
                   TemplateService.updateTemplate(id, $scope.form),
                   function (response) {
+
+                    DataManipulationService.createDomIds(response.data);
                     $scope.form = response.data;
+
                     UIMessageService.flashSuccess('SERVER.TEMPLATE.update.success',
                         {"title": response.data._ui.title}, 'GENERIC.Updated');
+                    owner.enableSaveButton();
                   },
                   function (err) {
                     UIMessageService.showBackendError('SERVER.TEMPLATE.update.error', err);
+                    owner.enableSaveButton();
                   }
               );
             }
@@ -339,6 +357,37 @@ define([
 
         $scope.hideSearchBrowsePicker = function () {
           jQuery("#" + $scope.searchBrowseModalId).modal('hide')
+        };
+
+        // finder
+        $scope.elementFind = function () {
+          jQuery("body").trigger("click");
+          jQuery("#" + $scope.finderModalId).modal("show");
+        };
+
+        $scope.addElementFromFinder = function () {
+          if ($scope.finderResource) {
+            $scope.addElementToTemplate($scope.finderResource);
+          }
+          $scope.hideFinder();
+        };
+
+        $scope.showFinder = function () {
+          $scope.finderResource = null;
+        };
+
+        $scope.hideFinder = function () {
+          jQuery("#" + $scope.finderModalId).modal('hide')
+        };
+
+        $scope.enableSaveButton = function () {
+          $timeout(function () {
+            $scope.saveButtonDisabled = false;
+          }, 1000);
+        };
+
+        $scope.disableSaveButton = function () {
+          $scope.saveButtonDisabled = true;
         };
 
       }

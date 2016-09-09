@@ -58,7 +58,7 @@
           </tr>
           <tr>
             <td>Sample usage with CURL:</td>
-            <td><pre>curl -H "Content-Type: application/json" \<br/>-H "Authorization: apiKey {{apiKey.key}}" \<br/>-X GET {{urlService.base()}}/template-fields</pre></td>
+            <td><pre>curl -H "Content-Type: application/json" \<br/>-H "Authorization: apiKey {{apiKey.key}}" \<br/>-X GET "{{urlService.base()}}/search?q=*&amp;resource_types=template"</pre></td>
           </tr>
           <!--<tr>
             <td>REST API Documentation:</td>

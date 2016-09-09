@@ -18,7 +18,8 @@ define([
         element      : '=',
         delete       : '&',
         model        : '=',
-        isRootElement: "="
+        isRootElement: "=",
+        isEditData   : "="
       },
       templateUrl: 'scripts/template-element/cedar-template-element.directive.html',
       link       : linker
@@ -36,32 +37,35 @@ define([
           }
 
           if (!DataUtilService.isSpecialKey(key)) {
-            if (key == "_value") {
+            if (key == '@value') {
               if (angular.isArray(model)) {
                 if ($rootScope.schemaOf(settings)._ui.inputType == "list") {
-                  if ($rootScope.schemaOf(settings)._ui.defaultOption) {
-                    el[key] = angular.copy($rootScope.schemaOf(settings)._ui.defaultOption);
+                  // TODO: defaultOptions are not stored there anymore
+                  if ($rootScope.schemaOf(settings)._valueConstraints.defaultOptions) {
+                    el[key] = angular.copy($rootScope.schemaOf(settings)._valueConstraints.defaultOptions);
                   } else {
                     model.splice(0, model.length);
                   }
                 } else {
                   for (var i = 0; i < model.length; i++) {
-                    if ($rootScope.schemaOf(settings)._ui.defaultOption) {
-                      model[i]["_value"] = angular.copy($rootScope.schemaOf(settings)._ui.defaultOption);
+                    // TODO: defaultOptions are not stored there anymore
+                    if ($rootScope.schemaOf(settings)._valueConstraints.defaultOptions) {
+                      model[i]['@value'] = angular.copy($rootScope.schemaOf(settings)._valueConstraints.defaultOptions);
                     } else {
-                      if (typeof(model[i]["_value"]) == "string") {
-                        model[i]["_value"] = "";
-                      } else if (angular.isArray(model[i]["_value"])) {
-                        model[i]["_value"] = [];
-                      } else if (angular.isObject(model[i]["_value"])) {
-                        model[i]["_value"] = {};
+                      if (typeof(model[i]['@value']) == "string") {
+                        model[i]['@value'] = "";
+                      } else if (angular.isArray(model[i]['@value'])) {
+                        model[i]['@value'] = [];
+                      } else if (angular.isObject(model[i]['@value'])) {
+                        model[i]['@value'] = {};
                       }
                     }
                   }
                 }
               } else {
-                if ($rootScope.schemaOf(settings)._ui.defaultOption) {
-                  el[key] = angular.copy($rootScope.schemaOf(settings)._ui.defaultOption);
+                // TODO: defaultOptions are not stored there anymore
+                if ($rootScope.schemaOf(settings)._valueConstraints.defaultOptions) {
+                  el[key] = angular.copy($rootScope.schemaOf(settings)._valueConstraints.defaultOptions);
                 } else {
                   if (typeof(model) == "string") {
                     el[key] = "";
@@ -78,32 +82,35 @@ define([
               } else {
                 // This case el is an array
                 angular.forEach(model, function (v, k) {
-                  if (k == "_value") {
+                  if (k == '@value') {
                     if (angular.isArray(v)) {
                       if ($rootScope.schemaOf(settings)._ui.inputType == "list") {
-                        if ($rootScope.schemaOf(settings)._ui.defaultOption) {
-                          model[k] = angular.copy($rootScope.schemaOf(settings)._ui.defaultOption);
+                        // TODO: defaultOptions are not stored there anymore
+                        if ($rootScope.schemaOf(settings)._valueConstraints.defaultOptions) {
+                          model[k] = angular.copy($rootScope.schemaOf(settings)._valueConstraints.defaultOptions);
                         } else {
                           v.splice(0, v.length);
                         }
                       } else {
                         for (var i = 0; i < v.length; i++) {
-                          if ($rootScope.schemaOf(settings)._ui.defaultOption) {
-                            v[i]["_value"] = angular.copy($rootScope.schemaOf(settings)._ui.defaultOption);
+                          // TODO: defaultOptions are not stored there anymore
+                          if ($rootScope.schemaOf(settings)._valueConstraints.defaultOptions) {
+                            v[i]['@value'] = angular.copy($rootScope.schemaOf(settings)._valueConstraints.defaultOptions);
                           } else {
-                            if (typeof(v[i]["_value"]) == "string") {
-                              v[i]["_value"] = "";
-                            } else if (angular.isArray(v[i]["_value"])) {
-                              v[i]["_value"] = [];
-                            } else if (angular.isObject(v[i]["_value"])) {
-                              v[i]["_value"] = {};
+                            if (typeof(v[i]['@value']) == "string") {
+                              v[i]['@value'] = "";
+                            } else if (angular.isArray(v[i]['@value'])) {
+                              v[i]['@value'] = [];
+                            } else if (angular.isObject(v[i]['@value'])) {
+                              v[i]['@value'] = {};
                             }
                           }
                         }
                       }
                     } else {
-                      if ($rootScope.schemaOf(settings)._ui.defaultOption) {
-                        model[k] = angular.copy($rootScope.schemaOf(settings)._ui.defaultOption);
+                      // TODO: defaultOptions are not stored there anymore
+                      if ($rootScope.schemaOf(settings)._valueConstraints.defaultOptions) {
+                        model[k] = angular.copy($rootScope.schemaOf(settings)._valueConstraints.defaultOptions);
                       } else {
                         if (typeof(v) == "string") {
                           model[k] = "";

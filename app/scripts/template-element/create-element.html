@@ -1,4 +1,5 @@
-<div class="template-header element">
+<div class="template-container scrollable-content">
+  <div class="template-header element">
   <div class="container">
     <div class="row">
       <div class="left-sidebar col-sm-4 col-sm-offset-1">
@@ -6,7 +7,7 @@
           <i class="cedar-svg-element"></i>
           <form>
             <div class="form-group floating-label-wrapper">
-              <input type="text" class="form-control" id="element-name"
+              <input auto-focus type="text" class="form-control" id="element-name"
                   placeholder="{{'GENERIC.ElementName' | translate}}" aria-label="{{'GENERIC.ElementName' | translate}}"
                   ng-model="element._ui.title" with-floating-label>
             </div>
@@ -39,21 +40,21 @@
       <!-- /.right-body -->
     </div>
     <!-- /.row -->
-    <div class="row">
-      <div class="modal fade controlled-terms-modal" id="element_control_term">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"><img
-                  src="/img/close_modal.png" width="22"/></span></button>
-            </div>
-            <div class="modal-body">
-              <div controlled-term field="element" options="{filterSelection: 'field'}"></div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+    <!--<div class="row">-->
+      <!--<div class="modal fade controlled-terms-modal" id="element_control_term">-->
+        <!--<div class="modal-dialog">-->
+          <!--<div class="modal-content">-->
+            <!--<div class="modal-header">-->
+              <!--<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"><img-->
+                  <!--src="/img/close_modal.png" width="22"/></span></button>-->
+            <!--</div>-->
+            <!--<div class="modal-body">-->
+              <!--<div controlled-term field="element" options="{filterSelection: 'field'}"></div>-->
+            <!--</div>-->
+          <!--</div>-->
+        <!--</div>-->
+      <!--</div>-->
+    <!--</div>-->
   </div>
   <!-- /.container -->
 </div> <!-- /.template-header -->
@@ -114,7 +115,7 @@
             </button>
             <button type="button" id="button-cancel-element" class="btn btn-clear element" ng-click="cancelElement()" translate>GENERIC.Cancel
             </button>
-            <button type="button"  id="button-save-element" class="btn btn-save element" ng-click="saveElement()" translate>GENERIC.SaveElement
+            <button type="button" ng-disabled="saveButtonDisabled" id="button-save-element" class="btn btn-save element" ng-click="saveElement()" translate>GENERIC.SaveElement
             </button>
           </div>
         </div>
@@ -137,56 +138,11 @@
     </div>
     <!-- /.row -->
 
-    <!-- search browse modal for adding elements -->
-    <div class="modal fade controlled-terms-modal" tabindex="-1" id="{{searchBrowseModalId}}" data-backdrop="static">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close controlled-terms-modal-field-close" data-dismiss="modal"
-                aria-label="Close"><span aria-hidden="true"><img
-                src="/img/close_modal.png" width="22"/></span></button>
-
-            <div class="nav-container" id="headerCtrl" ng-controller="HeaderCtrl as hc">
-              <div class="navbar-header">
-                <div>
-
-                  <div class="center col-sm-8 col-sm-offset-2 nav-search">
-                    <form>
-                      <div class="form-group floating-label-wrapper">
-                        <input autocomplete="off" ng-keyup="$event.keyCode == 13 && hc.search(hc.searchTerm)"
-                            type="search"
-                            class="form-control search-input"
-                            id="search" placeholder="Search" aria-label="Search" ng-model="hc.searchTerm"
-                            with-floating-label/>
-
-                        <a class="clear do-search" ng-click="hc.search(hc.searchTerm)"><i class="fa fa-search"></i></a>
-                        <a class="clear clear-search" ng-show="hc.searchTerm" ng-click="hc.search('')">
-                          <span class="fa fa-remove"></span></a>
-                      </div>
-                    </form>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="modal-body">
-            <div class="search-browse-modal">
-              <cedar-search-browse-picker
-                  select-resource-callback="selectElementFromPicker"
-                  pick-resource-callback="pickElementFromPicker"
-                  mode="'modal'">
-              </cedar-search-browse-picker>
-              <div class="footer-buttons clearfix">
-                <div class="pull-right">
-                  <button ng-click="hideSearchBrowsePicker()" type="cancel" class="canc">Cancel</button>
-                  <button ng-click="addElementFromPicker()" type="button" class="subm">Submit</button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+    <!-- element finder -->
+    <cedar-finder  class="modal finder-modal fade" tabindex="-1" id="finder-modal" role="dialog" data-keyboard="true" data-backdrop="static" select-resource-callback="selectElementFromPicker"
+        pick-resource-callback="pickElementFromPicker"
+        mode="'modal'">
+    </cedar-finder>
   </div>
   <!-- /.container -->
 </div> <!-- /.template-body -->
@@ -195,3 +151,4 @@
 </div> <!-- /.row -->
 </div> <!-- /.container -->
 </div> <!-- /.template-body -->
+</div>

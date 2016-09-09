@@ -14,7 +14,7 @@ xdescribe('create-element-add-text-field', function () {
       '@type'             : 'https://schema.metadatacenter.org/core/TemplateElement',
       '@context'          : {
         pav  : 'http://purl.org/pav/',
-        cedar: 'https://schema.metadatacenter.org/core/'
+        oslc: 'http://open-services.net/ns/core#'
       },
       type                : 'object',
       title               : '',
@@ -23,7 +23,7 @@ xdescribe('create-element-add-text-field', function () {
       properties          : {
         '@context': {
           properties          : {},
-          required            : ['_value'],
+          required            : ['@value'],
           additionalProperties: false
         },
         '@id'     : {format: 'uri', type: 'string'},
@@ -230,7 +230,7 @@ xdescribe('create-element-add-text-field', function () {
                 browser.waitForAngular().then(function () {
                   page.getJsonPreviewText().then(function (value) {
                     var json = JSON.parse(value);
-                    expect(json.properties.simpleTextField && json.properties.simpleTextField.required.indexOf("_value") >= 0).toBe(true);
+                    expect(json.properties.simpleTextField && json.properties.simpleTextField.required.indexOf("@value") >= 0).toBe(true);
                   });
                 });
               });
@@ -262,7 +262,7 @@ xdescribe('create-element-add-text-field', function () {
                 browser.waitForAngular().then(function () {
                   page.getJsonPreviewText().then(function (value) {
                     var json = JSON.parse(value);
-                    expect(json.properties.simpleTextField && json.properties.simpleTextField.items.required.indexOf("_value") >= 0).toBe(true);
+                    expect(json.properties.simpleTextField && json.properties.simpleTextField.items.required.indexOf("@value") >= 0).toBe(true);
                   });
                 });
               });

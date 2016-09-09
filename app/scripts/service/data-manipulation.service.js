@@ -29,13 +29,11 @@ define([
 
     // Function that generates a basic field definition
     service.generateField = function (fieldType) {
-      var valueType = "string";
+      var valueType = ["string", "null"];
       if (fieldType == "numeric") {
-        valueType = "number";
-      } else if (fieldType == "checkbox") {
-        valueType = "object";
-      } else if (fieldType == "list") {
-        valueType = "array";
+        valueType = ["number", "null"];
+      } else if ((fieldType == "checkbox") || (fieldType == "list") || (fieldType == "radio")) {
+        valueType = ["array", "null"];
       }
 
       var field;
@@ -43,10 +41,10 @@ define([
         field = DataTemplateService.getStaticField(this.generateTempGUID());
       } else {
         field = DataTemplateService.getField(this.generateTempGUID());
-        field.properties._value.type = valueType;
+        field.properties['@value'].type = valueType;
       }
       field._ui.inputType = fieldType;
-      //field.properties._value.type = valueType;
+      //field.properties['@value'].type = valueType;
       return field;
     };
 
@@ -112,7 +110,11 @@ define([
           '_valueConstraints'   : field._valueConstraints,
           'properties'          : field.properties,
           'required'            : field.required,
-          'additionalProperties': field.additionalProperties
+          'additionalProperties': field.additionalProperties,
+          'pav:createdOn'       : field['pav:createdOn'],
+          'pav:createdBy'       : field['pav:createdBy'],
+          'pav:lastUpdatedOn'   : field['pav:lastUpdatedOn'],
+          'oslc:modifiedBy'     : field['oslc:modifiedBy']
         };
         field.type = 'array';
 
@@ -127,6 +129,10 @@ define([
         delete field._valueConstraints;
         delete field.required;
         delete field.additionalProperties;
+        delete field['pav:createdOn'];
+        delete field['pav:createdBy'];
+        delete field['pav:lastUpdatedOn'];
+        delete field['oslc:modifiedBy'];
 
         return true;
       } else {
@@ -149,6 +155,10 @@ define([
         field.properties = field.items.properties;
         field.required = field.items.required;
         field.additionalProperties = field.items.additionalProperties;
+        field['pav:createdOn'] = field.items['pav:createdOn'];
+        field['pav:createdBy'] = field.items['pav:createdBy'];
+        field['pav:lastUpdatedOn'] = field.items['pav:lastUpdatedOn'];
+        field['oslc:modifiedBy'] = field.items['oslc:modifiedBy'];
 
         delete field.items;
         delete field.maxItems;
@@ -178,6 +188,16 @@ define([
           }
         }
       });
+    };
+
+    // set a title and description in the object if there is none
+    service.defaultTitleAndDescription = function (obj) {
+      if (!obj.title || !obj.title.length) {
+        obj.title = $translate.instant("GENERIC.Untitled");
+      }
+      if (!obj.description || !obj.description.length) {
+        obj.description = $translate.instant("GENERIC.Description");
+      }
     };
 
     service.getDivId = function (node) {
@@ -234,9 +254,9 @@ define([
     // add an option to this field
     service.addOption = function (field) {
       var emptyOption = {
-        "text": ""
+        "label": ""
       };
-      field._ui.options.push(emptyOption);
+      field._valueConstraints.literals.push(emptyOption);
     };
 
     service.generateCardinalities = function (min, max, addUnlimited) {
@@ -349,6 +369,10 @@ define([
     service.stripTmps = function (node) {
       service.stripTmpIfPresent(node);
 
+      if (node.type == 'array') {
+        node = node.items;
+      }
+
       angular.forEach(node.properties, function (value, key) {
         if (!DataUtilService.isSpecialKey(key)) {
           service.stripTmps(value);
@@ -405,6 +429,13 @@ define([
 
     };
 
+    // look to see if this node has been identified by angular as an invalid pattern
+    service.isInvalidPattern =  function(node)  {
+      var target = jQuery('#' + node._tmp.domId + ' .ng-invalid-pattern');
+      return (target.length == 0);
+    };
+
+
 
     /**
      * add a domId to the node if there is not one present
@@ -412,7 +443,7 @@ define([
      */
     service.defaultTitle = function (node) {
 
-      node._ui.title = "Untitled";
+      node._ui.title = $translate.instant("GENERIC.Untitled");
 
     };
 
@@ -421,6 +452,18 @@ define([
      * @param node
      */
     service.getDomId = function (node) {
+
+      var domId = null;
+
+      if (node.hasOwnProperty("_tmp")) {
+        domId = node._tmp.domId;
+      }
+
+      return domId;
+    };
+
+    service.newGetDomId = function (node) {
+
 
       var domId = null;
 
@@ -610,6 +653,7 @@ define([
 
     // When user clicks Save button, we will switch field or element from creating state to completed state
     service.canDeselect = function (field, renameChildKey) {
+      console.log('canDeselect');
 
       if (!field) {
         return;
@@ -645,30 +689,30 @@ define([
       var schema = $rootScope.schemaOf(field);
 
       // default title
-      if (!schema._ui.title) {
-        schema._ui.title = $translate.instant("VALIDATION.noNameField");
+      if (!schema._ui.title || !schema._ui.title.length) {
+        schema._ui.title = $translate.instant("GENERIC.Untitled");
       }
 
       // default description
-      if (!schema._ui.description) {
-        schema._ui.description = $translate.instant("VALIDATION.noDescriptionField");
-      }
+      //if (!schema._ui.description || !schema._ui.description.length) {
+      //  schema._ui.description = $translate.instant("GENERIC.Description");
+      //}
 
       // if this is radio, checkbox or list,  add at least two options and set default values
       if (schema._ui.inputType == "radio" || schema._ui.inputType == "checkbox" || schema._ui.inputType == "list") {
 
         // make sure we have the minimum number of options
-        while (schema._ui.options.length < MIN_OPTIONS) {
+        while (schema._valueConstraints.literals.length < MIN_OPTIONS) {
           var emptyOption = {
-            "text": name || ""
+            "label": name || ""
           };
-          schema._ui.options.push(emptyOption);
+          schema._valueConstraints.literals.push(emptyOption);
         }
 
         // and they all have text fields filled in
-        for (var i = 0; i < schema._ui.options.length; i++) {
-          if (schema._ui.options[i].text.length == 0) {
-            schema._ui.options[i].text = $translate.instant("VALIDATION.noNameField");
+        for (var i = 0; i < schema._valueConstraints.literals.length; i++) {
+          if (schema._valueConstraints.literals[i].label.length == 0) {
+            schema._valueConstraints.literals[i].label = $translate.instant("VALIDATION.noNameField") + "-" + i;
           }
         }
       }
@@ -689,15 +733,15 @@ define([
       // If field is within multiple choice field types
       if (extraConditionInputs.indexOf(schema._ui.inputType) !== -1) {
         var optionMessage = '"Enter Option" input cannot be left empty.';
-        angular.forEach(schema._ui.options, function (value, index) {
+        angular.forEach(schema._valueConstraints.literals, function (value, index) {
           // If any 'option' title text is left empty, create error message
-          if (!value.text.length && unmetConditions.indexOf(optionMessage) == -1) {
+          if (!value.label.length && unmetConditions.indexOf(optionMessage) == -1) {
             unmetConditions.push(optionMessage);
           }
         });
       }
       // If field type is 'radio' or 'pick from a list' there must be more than one option created
-      if ((schema._ui.inputType == 'radio' || schema._ui.inputType == 'list') && schema._ui.options && (schema._ui.options.length <= 1)) {
+      if ((schema._ui.inputType == 'radio' || schema._ui.inputType == 'list') && schema._valueConstraints.literals && (schema._valueConstraints.literals.length <= 1)) {
         unmetConditions.push('Multiple Choice fields must have at least two possible options');
       }
       // Return array of error messages

@@ -53,7 +53,7 @@ xdescribe('create-element-add-text-field', function () {
                   browser.waitForAngular().then(function () {
                     page.getJsonPreviewText().then(function (value) {
                       var json = JSON.parse(value);
-                      expect(json.properties.simpleTextArea && json.properties.simpleTextArea.required.indexOf("_value") >= 0).toBe(true);
+                      expect(json.properties.simpleTextArea && json.properties.simpleTextArea.required.indexOf("@value") >= 0).toBe(true);
                     });
                   });
                 });
@@ -88,7 +88,7 @@ xdescribe('create-element-add-text-field', function () {
                   browser.waitForAngular().then(function () {
                     page.getJsonPreviewText().then(function (value) {
                       var json = JSON.parse(value);
-                      expect(json.properties.simpleTextArea && json.properties.simpleTextArea.items.required.indexOf("_value") >= 0).toBe(true);
+                      expect(json.properties.simpleTextArea && json.properties.simpleTextArea.items.required.indexOf("@value") >= 0).toBe(true);
                     });
                   });
                 });

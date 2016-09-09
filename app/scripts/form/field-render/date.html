@@ -15,8 +15,10 @@
             ng-class="{'required': $root.schemaOf(field)._valueConstraints.requiredValue}"
             placeholder="{{$root.schemaOf(field)._ui.title}}"
             aria-label="Select a date"
-            ng-model="valueElement._value"
+            ng-model="valueElement['@value']"
             ng-disabled="!$root.isRuntime() || preview"
+            validate-on="blur"
+            ng-pattern= "/^\d\d\/\d\d\/\d\d\d\d \d\d:\d\d (A|P)M$/"
             with-floating-label=""/>
         <span class="input-group-addon">
           <i class="fa fa-calendar fa-2x"></i>
@@ -34,8 +36,10 @@
             ng-class="{'required': $root.schemaOf(field)._valueConstraints.requiredValue}"
             placeholder="{{$root.schemaOf(field)._ui.title}} start"
             aria-label="Select a start date"
-            ng-model="valueElement._value.start"
+            ng-model="valueElement['@value'].start"
             ng-disabled="!$root.isRuntime() || preview"
+            validate-on="blur"
+            ng-pattern= "/^\d\d\/\d\d\/\d\d\d\d \d\d:\d\d (A|P)M$/"
             with-floating-label=""/>
         <span class="input-group-addon">
           <i class="fa fa-calendar fa-2x"></i>
@@ -47,8 +51,10 @@
             ng-class="{'required': $root.schemaOf(field)._valueConstraints.requiredValue}"
             placeholder="{{$root.schemaOf(field)._ui.title}} end"
             aria-label="end date"
-            ng-model="valueElement._value.end"
+            ng-model="valueElement['@value'].end"
             ng-disabled="!$root.isRuntime() || preview"
+            validate-on="blur"
+            ng-pattern= "/^\d\d\/\d\d\/\d\d\d\d \d\d:\d\d (A|P)M$/"
             with-floating-label=""/>
         <span class="input-group-addon">
           <i class="fa fa-calendar fa-2x"></i>
@@ -74,7 +80,7 @@
             ng-class="{'required': $root.schemaOf(field)._valueConstraints.requiredValue}"
             placeholder="{{$root.schemaOf(field)._ui.title}}"
             aria-label="Select a date"
-            ng-model="model._value"
+            ng-model="model['@value']"
             ng-disabled="true"
             with-floating-label=""/>
         <span class="input-group-addon">
@@ -93,7 +99,7 @@
             ng-class="{'required': $root.schemaOf(field)._valueConstraints.requiredValue}"
             placeholder="{{$root.schemaOf(field)._ui.title}} start"
             aria-label="Select a start date"
-            ng-model="model._value.start"
+            ng-model="model['@value'].start"
             ng-disabled="true"
             with-floating-label=""/>
         <span class="input-group-addon">
@@ -106,7 +112,7 @@
             ng-class="{'required': $root.schemaOf(field)._valueConstraints.requiredValue}"
             placeholder="{{$root.schemaOf(field)._ui.title}} end"
             aria-label="end date"
-            ng-model="model._value.end"
+            ng-model="model['@value'].end"
             ng-disabled="true"
             with-floating-label=""/>
         <span class="input-group-addon">
@@ -131,8 +137,10 @@
             ng-class="{'required': $root.schemaOf(field)._valueConstraints.requiredValue}"
             placeholder="{{$root.schemaOf(field)._ui.title}}"
             aria-label="Select a date"
-            ng-model="model._value"
+            ng-model="model['@value']"
             ng-disabled="!$root.isRuntime() || preview"
+            validate-on="blur"
+            ng-pattern= "/^\d\d\/\d\d\/\d\d\d\d \d\d:\d\d (A|P)M$/"
             with-floating-label=""/>
         <span class="input-group-addon">
           <i class="fa fa-calendar fa-2x"></i>
@@ -151,8 +159,11 @@
             ng-class="{'required': $root.schemaOf(field)._valueConstraints.requiredValue}"
             placeholder="{{$root.schemaOf(field)._ui.title}} start"
             aria-label="Select a start date"
-            ng-model="model._value.start"
+            ng-model="model['@value'].start"
             ng-disabled="!$root.isRuntime() || preview"
+            validate-on="blur"
+            ng-pattern= "/^\d\d\/\d\d\/\d\d\d\d \d\d:\d\d (A|P)M$/"
+
             with-floating-label=""/>
         <span class="input-group-addon">
           <i class="fa fa-calendar fa-2x"></i>
@@ -164,8 +175,10 @@
             ng-class="{'required': $root.schemaOf(field)._valueConstraints.requiredValue}"
             placeholder="{{$root.schemaOf(field)._ui.title}} end"
             aria-label="Select a end date"
-            ng-model="model._value.end"
+            ng-model="model['@value'].end"
             ng-disabled="!$root.isRuntime() || preview"
+            validate-on="blur"
+            ng-pattern= "/^\d\d\/\d\d\/\d\d\d\d \d\d:\d\d (A|P)M$/"
             with-floating-label=""/>
         <span class="input-group-addon">
           <i class="fa fa-calendar fa-2x"></i>

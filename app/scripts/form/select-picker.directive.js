@@ -30,13 +30,13 @@ define([
 
         if ($scope.model != undefined) {
           // If returning to an already populated select list field, load selections
-          default_array = $scope.model._value;
+          default_array = $scope.model['@value'];
 
-        } else if ($scope.field && $scope.field._ui.defaultOption) {
+        } else if ($scope.field && $scope.field._valueConstraints.defaultOptions) {
           default_array = [];
 
           // If default select options have been set for an empty field
-          var defaultOptions = $scope.field._ui.defaultOption;
+          var defaultOptions = $scope.field._valueConstraints.defaultOptions;
 
           for (var property in defaultOptions) {
             if (defaultOptions.hasOwnProperty(property)) {
@@ -45,7 +45,7 @@ define([
             }
           }
           $scope.model = $scope.model || {};
-          $scope.model['_value'] = default_array;
+          $scope.model['@value'] = default_array;
         }
 
         $timeout(function () {

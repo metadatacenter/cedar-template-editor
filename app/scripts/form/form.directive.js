@@ -8,9 +8,9 @@ define([
 
   // TODO: refactor to cedarFormDirective <cedar-form-directive>
 
-  formDirective.$inject = ['$rootScope', '$document', '$timeout', 'DataManipulationService', 'DataUtilService'];
+  formDirective.$inject = ['$rootScope', '$document', '$timeout', 'DataManipulationService', 'FieldTypeService', 'DataUtilService'];
 
-  function formDirective($rootScope, $document, $timeout, DataManipulationService, DataUtilService) {
+  function formDirective($rootScope, $document, $timeout, DataManipulationService, FieldTypeService, DataUtilService) {
     return {
       templateUrl: 'scripts/form/form.directive.html',
       restrict   : 'E',
@@ -22,6 +22,7 @@ define([
         hideRootElement: "="
       },
       controller : function ($scope) {
+
         $scope.model = $scope.model || {};
 
         // Initializing checkSubmission as false
@@ -194,13 +195,6 @@ define([
         }
 
         $scope.parseForm = function (iterator, parentModel, parentKey) {
-          var ctx;
-          angular.forEach(iterator, function (value, name) {
-            // Add @context information to instance
-            if (name == '@context') {
-              ctx = DataManipulationService.generateInstanceContext(value);
-            }
-          });
 
           angular.forEach(iterator, function (value, name) {
             // Add @context information to instance
@@ -237,35 +231,50 @@ define([
                 } else {
                   $scope.parseForm($rootScope.propertiesOf(value), parentModel[name], name);
                 }
+              // If it is a template field
               } else {
-                var min = value.minItems || 0;
+                // If it is not a static field
 
-                // Assign empty field instance model to $scope.model only if it does not exist
-                if (parentModel[name] == undefined) {
-                  if (!DataManipulationService.isCardinalElement(value)) {
-                    parentModel[name] = {};
-                  } else {
-                    parentModel[name] = [];
-                    for (var i = 0; i < min; i++) {
-                      var obj = {};
-                      parentModel[name].push(obj);
+               if (!value._ui || !value._ui.inputType || !FieldTypeService.isStaticField(value._ui.inputType)) {
+
+                  var min = value.minItems || 0;
+
+                  // Assign empty field instance model to $scope.model only if it does not exist
+                  if (parentModel[name] == undefined) {
+                    // Not multiple instance
+                    if (!DataManipulationService.isCardinalElement(value)) {
+                      // Selection fields store an array of values
+                      if ((value._ui.inputType == 'radio') || (value._ui.inputType == 'checkbox') || (value._ui.inputType == 'list')) {
+                        parentModel[name] = [];
+                      }
+                      // All other fields
+                      else {
+                        parentModel[name] = {};
+                      }
+                      // Multiple instance
+                    } else {
+                      parentModel[name] = [];
+                      for (var i = 0; i < min; i++) {
+                        var obj = {};
+                        parentModel[name].push(obj);
+                      }
                     }
                   }
-                }
 
-                var p = $rootScope.propertiesOf(value);
+                  var p = $rootScope.propertiesOf(value);
 
-                // Add @type information to instance at the field level
-                if (p && !angular.isUndefined(p['@type'])) {
-                  var type = DataManipulationService.generateInstanceType(p['@type']);
+                  // Add @type information to instance at the field level
+                  if (p && !angular.isUndefined(p['@type'])) {
+                    var type = DataManipulationService.generateInstanceType(p['@type']);
 
-                  if (type) {
-                    if (angular.isArray(parentModel[name])) {
-                      for (var i = 0; i < min; i++) {
-                        parentModel[name][i]["@type"] = type || "";
+                    if (type) {
+                      if (angular.isArray(parentModel[name])) {
+                        for (var i = 0; i < min; i++) {
+                          parentModel[name][i]["@type"] = type || "";
+                        }
+                      } else {
+                        parentModel[name]["@type"] = type || "";
                       }
-                    } else {
-                      parentModel[name]["@type"] = type || "";
                     }
                   }
                 }

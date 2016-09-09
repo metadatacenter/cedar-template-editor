@@ -1,6 +1,7 @@
 'use strict';
 
 require('../pages/workspace-page.js');
+require('../pages/finder-page.js');
 
 var TemplateCreatorPage = function () {
 
@@ -15,6 +16,7 @@ var TemplateCreatorPage = function () {
   var createRadioButton = element(by.id('button-add-field-radio'));
   var createCheckboxButton = element(by.id('button-add-field-checkbox'));
   var createMore = element(by.id('button-add-more'));
+  var createFinder = element(by.id('finder-modal'));
 
 
   var createSearchElement = element(by.id('button-search-element'));
@@ -45,8 +47,7 @@ var TemplateCreatorPage = function () {
   var removeElementButton = element(by.css('.element-root  .remove'));
   var createToolbar = element(by.id('toolbar'));
 
-
-  var createToastyConfirmationPopup = element(by.id('toasty')).element(by.css('.toast'));
+  var createToastyConfirmationPopup = element(by.id('toasty')).element(by.css('.toasty-type-success'));
   var toastyMessageText = element(by.id('toasty')).element(by.css('.toast')).element(by.css('.toast-msg'));
   var createConfirmationDialog = element(by.css('.sweet-alert'));
   var sweetAlertCancelAttribute = 'data-has-cancel-button';
@@ -57,8 +58,6 @@ var TemplateCreatorPage = function () {
   var topNavigation = element(by.id('top-navigation'));
   var topNavBackArrow = element(by.id('top-navigation')).element(by.css('.navbar-header')).element(by.css('.back-arrow-click'));
   var topNavButtons = element.all(by.css('.controls-bar .list-inline li button'));
-
-
 
   var testTitle = 'test title';
   var testDescription = 'test description';
@@ -96,8 +95,7 @@ var TemplateCreatorPage = function () {
     "@type"               : "https://schema.metadatacenter.org/core/Template",
     "@context"            : {
       "pav"   : "http://purl.org/pav/",
-      "cedar" : "https://schema.metadatacenter.org/core/",
-      "_value": "https://schema.org/value"
+      "oslc" : "http://open-services.net/ns/core#"
     },
     "type"                : "object",
     "title"               : "Untitled template schema",
@@ -110,9 +108,9 @@ var TemplateCreatorPage = function () {
     "properties"          : {
       "@context"           : {
         "properties"          : {
-          "_value": {
+          "schema": {
             "enum": [
-              "https://schema.org/value"
+              "http://schema.org/"
             ]
           },
           "pav"   : {
@@ -120,14 +118,14 @@ var TemplateCreatorPage = function () {
               "http://purl.org/pav/"
             ]
           },
-          "cedar" : {
+          "oslc" : {
             "enum": [
-              "https://schema.metadatacenter.org/core/"
+              "http://open-services.net/ns/core#"
             ]
           }
         },
         "required"            : [
-          "_value"
+          "@value"
         ],
         "additionalProperties": false
       },
@@ -152,7 +150,7 @@ var TemplateCreatorPage = function () {
           }
         ]
       },
-      "_templateId"        : {
+      "schema:isBasedOn"        : {
         "type"  : "string",
         "format": "uri"
       },
@@ -168,19 +166,19 @@ var TemplateCreatorPage = function () {
         "type"  : "string",
         "format": "date-time"
       },
-      "cedar:lastUpdatedBy": {
+      "oslc:modifiedBy": {
         "type"  : "string",
         "format": "uri"
       }
     },
     "required"            : [
       "@id",
-      "_templateId"
+      "schema:isBasedOn"
     ],
     "pav:createdOn"       : null,
     "pav:createdBy"       : null,
     "pav:lastUpdatedOn"   : null,
-    "cedar:lastUpdatedBy" : null,
+    "oslc:modifiedBy" : null,
     "additionalProperties": false
   };
 
@@ -202,7 +200,7 @@ var TemplateCreatorPage = function () {
     "@type"               : "https://schema.metadatacenter.org/core/TemplateElement",
     "@context"            : {
       "pav"  : "http://purl.org/pav/",
-      "cedar": "https://schema.metadatacenter.org/core/"
+      "oslc": "http://open-services.net/ns/core#"
     },
     "type"                : "object",
     "title"               : "Untitled element schema",
@@ -216,7 +214,7 @@ var TemplateCreatorPage = function () {
       "@context"           : {
         "properties"          : {},
         "required"            : [
-          "_value"
+          "@value"
         ],
         "additionalProperties": false
       },
@@ -253,7 +251,7 @@ var TemplateCreatorPage = function () {
         "type"  : "string",
         "format": "date-time"
       },
-      "cedar:lastUpdatedBy": {
+      "oslc:modifiedBy": {
         "type"  : "string",
         "format": "uri"
       }
@@ -264,7 +262,7 @@ var TemplateCreatorPage = function () {
     "pav:createdOn"       : null,
     "pav:createdBy"       : null,
     "pav:lastUpdatedOn"   : null,
-    "cedar:lastUpdatedBy" : null,
+    "oslc:modifiedBy" : null,
     "additionalProperties": false
   };
 
@@ -364,7 +362,6 @@ var TemplateCreatorPage = function () {
   this.sweetAlertConfirmAttribute = function () {
     return sweetAlertConfirmAttribute;
   };
-
 
 
   this.addSearchElements = function () {
@@ -662,45 +659,62 @@ var TemplateCreatorPage = function () {
     switches.get(1).click();
     browser.sleep(1000);
   };
+
+  this.openFinder = function () {
+    createSearchElement.click();
+    return require('./finder-page.js');
+  };
+
   this.addElement = function (title) {
     var deferred = protractor.promise.defer();
     var EC = protractor.ExpectedConditions;
 
     // add an element
-    this.addMore();
-    this.addSearchElements();
+    var finderPage = this.openFinder();
 
-    // search for the sampleElement
-    createSearchInput.sendKeys(title).sendKeys(protractor.Key.ENTER).then(function () {
+    browser.wait(finderPage.createFinder().isDisplayed()).then(function () {
 
-      browser.wait(EC.textToBePresentInElementValue($('#search'), title), 10000);
+      // search for the element
+      finderPage.createSearchInput().sendKeys(title).sendKeys(protractor.Key.ENTER);
+      browser.wait(EC.textToBePresentInElementValue($('#finder-search-input'), title), 10000).then(function () {
 
-      // click the search submit icon
-      var searchButton = element(by.id('search-browse-modal')).element(by.css('.do-search'));
-      searchButton.click().then(function () {
+        finderPage.createDoSearch().click();
+        browser.wait(finderPage.createSearchResult().isDisplayed()).then(function () {
 
-        browser.wait(createSearchResult.isDisplayed());
-        browser.wait(EC.visibilityOf(createFirstElement), 10000);
+          finderPage.createListView().isPresent().then(function (isList) {
 
-        // the search browse modal should show some results
-        expect(createFirstElement.isPresent()).toBe(true);
+            if (isList) {
 
-        // get the first element in the list of search results and select it
-        createFirstElement.click().then(function () {
+              finderPage.createFirstElementListView().click();
+              browser.wait(finderPage.createFirstSelectedElementListView().isDisplayed()).then(function () {
 
-          // wait for a selected item
-          browser.wait(createFirstSelected.isDisplayed());
+                finderPage.createOpenButton().click();
+                browser.wait(createToolbar.isDisplayed());
+                browser.sleep(1000);  // add time for animation
+                deferred.fulfill(true);
+              });
 
-          // click to submit the search browser modal
-          var searchSubmit = element.all(by.css('.subm')).get(0);
-          browser.executeScript("arguments[0].scrollIntoView();", searchSubmit.getWebElement());
-          //browser.sleep(3000);
+            } else {
 
-          searchSubmit.click().then(function () {
-            //browser.sleep(3000);
-            browser.wait(createToolbar.isDisplayed());
-            browser.sleep(1000);  // add time for animation
-            deferred.fulfill(true);
+              var first = finderPage.createFirstElementGridView();
+              browser.wait(first.isDisplayed()).then(function () {
+
+                finderPage.createFirstElementGridView().click();
+                browser.wait(finderPage.createFirstSelectedElementGridView().isDisplayed()).then(function () {
+
+                  browser.sleep(1000);
+                  browser.wait(finderPage.createOpenButton().isDisplayed());
+                  browser.wait(finderPage.createOpenButton().isEnabled());
+                  finderPage.createOpenButton().click();
+
+                  browser.wait(createToolbar.isDisplayed());
+                  browser.sleep(1000);  // add time for animation
+                  deferred.fulfill(true);
+
+                });
+
+              });
+            }
           });
         });
       });
