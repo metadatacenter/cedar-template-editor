@@ -59,7 +59,6 @@ define([
                   //closeAllElements();
                   $rootScope.keyOfRootElement = $scope.form["@id"];
                   $rootScope.rootElement = $scope.form;
-                  $rootScope.setDirty(false);
 
                 },
                 function (err) {
@@ -72,7 +71,6 @@ define([
             HeaderService.dataContainer.currentObjectScope = $scope.form;
             $rootScope.keyOfRootElement = $scope.form["@id"];
             $rootScope.rootElement = $scope.form;
-            $rootScope.setDirty(false);
           }
         };
         getTemplate();
@@ -167,7 +165,6 @@ define([
           $scope.form._ui.order = [];
           // Broadcast the reset event which will trigger the emptying of formFields formFieldsOrder
           $scope.$broadcast('resetForm');
-          $rootScope.setDirty(false);
         };
 
         $scope.saveTemplate = function () {
@@ -227,7 +224,6 @@ define([
                     DataManipulationService.createDomIds(response.data);
                     var newId = response.data['@id'];
                     $location.path(UrlService.getTemplateEdit(newId));
-                    $rootScope.setDirty(false);
                   },
                   function (err) {
                     UIMessageService.showBackendError('SERVER.TEMPLATE.create.error', err);

@@ -21,24 +21,24 @@ define([
 
     vm.confirmBack = function () {
 
-      if (!$rootScope.isDirty()) {
+      //if (!$rootScope.isDirty()) {
 
         vm.goToDashboardOrBack();
 
-      } else {
-
-        UIMessageService.confirmedExecution(
-            function () {
-              $timeout(function () {
-                vm.goToDashboardOrBack();
-              });
-
-            },
-            'GENERIC.AreYouSure',
-            'DASHBOARD.back',
-            'GENERIC.YesGoBack'
-        );
-      }
+      //} else {
+      //
+      //  UIMessageService.confirmedExecution(
+      //      function () {
+      //        $timeout(function () {
+      //          vm.goToDashboardOrBack();
+      //        });
+      //
+      //      },
+      //      'GENERIC.AreYouSure',
+      //      'DASHBOARD.back',
+      //      'GENERIC.YesGoBack'
+      //  );
+      //}
     };
 
     vm.goToDashboardOrBack = function () {

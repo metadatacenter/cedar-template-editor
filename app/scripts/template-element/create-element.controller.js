@@ -222,7 +222,6 @@ define([
                 var newId = response.data['@id'];
                 DataManipulationService.createDomIds(response.data);
                 $location.path(UrlService.getElementEdit(newId));
-                $rootScope.setDirty(false);
               },
               function (err) {
                 UIMessageService.showBackendError('SERVER.ELEMENT.create.error', err);
