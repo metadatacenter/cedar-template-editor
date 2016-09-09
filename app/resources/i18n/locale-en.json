@@ -54,6 +54,7 @@
     "AreYouSure": "Are you sure?",
     "YesDeleteIt": "Yes, delete it!",
     "YesSaveIt": "Yes, save it!",
+    "YesGoBack": "Yes, go back!",
     "YesClearIt": "Yes, clear it!",
     "NoResults": "No Results...",
     "Back": "Back",
@@ -233,6 +234,7 @@
       "createdOnTS": "Recently Created",
       "lastUpdatedOnTS": "Recently Updated"
     },
+    "back": "Your recent changes will be lost.",
     "rename": {
       "title": "Rename",
       "label": "Please enter a new name for this resource:"
