@@ -42,6 +42,7 @@ define([
         $scope.primaryFieldTypes = FieldTypeService.getPrimaryFieldTypes();
         $scope.otherFieldTypes = FieldTypeService.getOtherFieldTypes();
 
+        $scope.saveButtonDisabled = false;
 
         var getTemplate = function () {
           // Load existing form if $routeParams.id parameter is supplied
@@ -185,6 +186,9 @@ define([
 
         // Stores the template into the database
         $scope.doSaveTemplate = function () {
+          this.disableSaveButton();
+          var owner = this;
+
           // First check to make sure Template Name, Template Description are not blank
           $scope.templateErrorMessages = [];
           $scope.templateSuccessMessages = [];
@@ -224,6 +228,7 @@ define([
                   },
                   function (err) {
                     UIMessageService.showBackendError('SERVER.TEMPLATE.create.error', err);
+                    owner.enableSaveButton();
                   }
               );
             }
@@ -241,9 +246,11 @@ define([
 
                     UIMessageService.flashSuccess('SERVER.TEMPLATE.update.success',
                         {"title": response.data._ui.title}, 'GENERIC.Updated');
+                    owner.enableSaveButton();
                   },
                   function (err) {
                     UIMessageService.showBackendError('SERVER.TEMPLATE.update.error', err);
+                    owner.enableSaveButton();
                   }
               );
             }
@@ -371,6 +378,16 @@ define([
 
         $scope.hideFinder = function () {
           jQuery("#" + $scope.finderModalId).modal('hide')
+        };
+
+        $scope.enableSaveButton = function () {
+          $timeout(function () {
+            $scope.saveButtonDisabled = false;
+          }, 1000);
+        };
+
+        $scope.disableSaveButton = function () {
+          $scope.saveButtonDisabled = true;
         };
 
       }

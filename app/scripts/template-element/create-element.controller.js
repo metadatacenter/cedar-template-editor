@@ -51,6 +51,8 @@ define([
     $scope.otherFieldTypes = FieldTypeService.getOtherFieldTypes();
     $scope.hideRootElement = true;
 
+    $scope.saveButtonDisabled = false;
+
     var getElement = function () {
       $scope.form = {};
       // Load existing element if $routeParams.id parameter is supplied
@@ -201,6 +203,8 @@ define([
         // create a copy of the element and strip out the _tmp fields before saving it
         // var copiedElement = $scope.stripTmpFields();
 
+        this.disableSaveButton();
+        var owner = this;
         // Save element
         // Check if the element is already stored into the DB
         if ($routeParams.id == undefined) {
@@ -221,6 +225,7 @@ define([
               },
               function (err) {
                 UIMessageService.showBackendError('SERVER.ELEMENT.create.error', err);
+                owner.enableSaveButton();
               }
           );
         }
@@ -238,9 +243,11 @@ define([
                 DataManipulationService.createDomIds($scope.element);
                 UIMessageService.flashSuccess('SERVER.ELEMENT.update.success', {"title": response.data.title},
                     'GENERIC.Updated');
+                owner.enableSaveButton();
               },
               function (err) {
                 UIMessageService.showBackendError('SERVER.ELEMENT.update.error', err);
+                owner.enableSaveButton();
               }
           );
         }
@@ -364,9 +371,18 @@ define([
     };
 
     $scope.hideFinder = function () {
-      jQuery("#" + $scope.finderModalId).modal('hide')
+      jQuery("#" + $scope.finderModalId).modal('hide');
     };
 
+    $scope.enableSaveButton = function () {
+      $timeout(function () {
+        $scope.saveButtonDisabled = false;
+      }, 1000);
+    };
+
+    $scope.disableSaveButton = function () {
+      $scope.saveButtonDisabled = true;
+    };
 
   }
 
