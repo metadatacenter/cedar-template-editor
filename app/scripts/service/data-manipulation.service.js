@@ -369,6 +369,10 @@ define([
     service.stripTmps = function (node) {
       service.stripTmpIfPresent(node);
 
+      if (node.type == 'array') {
+        node = node.items;
+      }
+
       angular.forEach(node.properties, function (value, key) {
         if (!DataUtilService.isSpecialKey(key)) {
           service.stripTmps(value);
