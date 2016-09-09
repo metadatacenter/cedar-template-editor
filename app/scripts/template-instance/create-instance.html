@@ -35,7 +35,7 @@
             <p ng-repeat="message in runtimeSuccessMessages"><i class="fa fa-check"></i>{{message}}</p>
           </div>
           <button type="button" class="btn btn-clear metadata" ng-click="cancelTemplate()" translate>GENERIC.Cancel</button>
-          <button type="button" class="btn btn-save metadata" ng-click="saveInstance()" translate>GENERIC.Save</button>
+          <button type="button" ng-disabled="saveButtonDisabled" class="btn btn-save metadata" ng-click="saveInstance()" translate>GENERIC.Save</button>
         </div>
         <!-- /.edit-actions -->
       </div>

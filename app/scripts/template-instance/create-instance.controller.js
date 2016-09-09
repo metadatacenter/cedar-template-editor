@@ -8,11 +8,11 @@ define([
 
   CreateInstanceController.$inject = ["$translate", "$rootScope", "$scope", "$routeParams", "$location",
                                       "HeaderService", "UrlService", "TemplateService", "TemplateInstanceService",
-                                      "UIMessageService", "AuthorizedBackendService", "CONST"];
+                                      "UIMessageService", "AuthorizedBackendService", "CONST", "$timeout"];
 
   function CreateInstanceController($translate, $rootScope, $scope, $routeParams, $location, HeaderService, UrlService,
                                     TemplateService, TemplateInstanceService, UIMessageService,
-                                    AuthorizedBackendService, CONST) {
+                                    AuthorizedBackendService, CONST, $timeout) {
 
     // Get/read template with given id from $routeParams
     $scope.getTemplate = function () {
@@ -58,6 +58,9 @@ define([
 
     // Stores the data (instance) into the databases
     $scope.saveInstance = function () {
+      this.disableSaveButton();
+      var owner = this;
+
       $scope.runtimeErrorMessages = [];
       $scope.runtimeSuccessMessages = [];
       // Broadcast submitForm event to form-directive.js which will assign the form $scope.model to $scope.instance of this controller
@@ -83,6 +86,7 @@ define([
             },
             function (err) {
               UIMessageService.showBackendError('SERVER.INSTANCE.create.error', err);
+              owner.enableSaveButton();
             }
         );
       }
@@ -93,9 +97,11 @@ define([
             TemplateInstanceService.updateTemplateInstance($scope.instance['@id'], $scope.instance),
             function (response) {
               UIMessageService.flashSuccess('SERVER.INSTANCE.update.success', null, 'GENERIC.Updated');
+              owner.enableSaveButton();
             },
             function (err) {
               UIMessageService.showBackendError('SERVER.INSTANCE.update.error', err);
+              owner.enableSaveButton();
             }
         );
       }
@@ -110,6 +116,8 @@ define([
 
     // Giving $scope access to window.location for checking active state
     $scope.$location = $location;
+
+    $scope.saveButtonDisabled = false;
 
     AuthorizedBackendService.doCall(
         TemplateService.getAllTemplatesSummary(),
@@ -170,6 +178,16 @@ define([
     $scope.cancelTemplate = function () {
       var params = $location.search();
       $location.url(UrlService.getFolderContents(params.folderId));
+    };
+
+    $scope.enableSaveButton = function () {
+      $timeout(function () {
+        $scope.saveButtonDisabled = false;
+      }, 1000);
+    };
+
+    $scope.disableSaveButton = function () {
+      $scope.saveButtonDisabled = true;
     };
 
   };

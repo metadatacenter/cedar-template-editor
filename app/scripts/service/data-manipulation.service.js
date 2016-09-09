@@ -29,13 +29,11 @@ define([
 
     // Function that generates a basic field definition
     service.generateField = function (fieldType) {
-      var valueType = "string";
+      var valueType = ["string", "null"];
       if (fieldType == "numeric") {
-        valueType = "number";
-      } else if (fieldType == "checkbox") {
-        valueType = "object";
-      } else if (fieldType == "list") {
-        valueType = "array";
+        valueType = ["number", "null"];
+      } else if ((fieldType == "checkbox") || (fieldType == "list") || (fieldType == "radio")) {
+        valueType = ["array", "null"];
       }
 
       var field;
@@ -112,7 +110,11 @@ define([
           '_valueConstraints'   : field._valueConstraints,
           'properties'          : field.properties,
           'required'            : field.required,
-          'additionalProperties': field.additionalProperties
+          'additionalProperties': field.additionalProperties,
+          'pav:createdOn'       : field['pav:createdOn'],
+          'pav:createdBy'       : field['pav:createdBy'],
+          'pav:lastUpdatedOn'   : field['pav:lastUpdatedOn'],
+          'oslc:modifiedBy'     : field['oslc:modifiedBy']
         };
         field.type = 'array';
 
@@ -127,6 +129,10 @@ define([
         delete field._valueConstraints;
         delete field.required;
         delete field.additionalProperties;
+        delete field['pav:createdOn'];
+        delete field['pav:createdBy'];
+        delete field['pav:lastUpdatedOn'];
+        delete field['oslc:modifiedBy'];
 
         return true;
       } else {
@@ -149,6 +155,10 @@ define([
         field.properties = field.items.properties;
         field.required = field.items.required;
         field.additionalProperties = field.items.additionalProperties;
+        field['pav:createdOn'] = field.items['pav:createdOn'];
+        field['pav:createdBy'] = field.items['pav:createdBy'];
+        field['pav:lastUpdatedOn'] = field.items['pav:lastUpdatedOn'];
+        field['oslc:modifiedBy'] = field.items['oslc:modifiedBy'];
 
         delete field.items;
         delete field.maxItems;
@@ -358,6 +368,10 @@ define([
      */
     service.stripTmps = function (node) {
       service.stripTmpIfPresent(node);
+
+      if (node.type == 'array') {
+        node = node.items;
+      }
 
       angular.forEach(node.properties, function (value, key) {
         if (!DataUtilService.isSpecialKey(key)) {

@@ -55,7 +55,7 @@
                 data-target="#shareResourceModal">Share...</a></li>
             <li><a href="#" ng-click="dc.showMoveResourceModal('#moveResourceModal')">Move to...</a></li>
             <li><a href="#" data-toggle="modal" data-target="#renameResourceModal">Rename...</a></li>
-            <li ng-if="!dc.isFolder()"><a href="#" ng-click="dc.copyResource()">Copy</a></li>
+            <li ng-if="!dc.isFolder()"><a href="#" ng-click="dc.copyResource()">Make a copy</a></li>
             <li role="separator" class="divider"></li>
             <li><a href="#" ng-click="dc.deleteResource(resource)">Delete</a></li>
           </ul>
@@ -297,17 +297,17 @@
                 </ul>
 
               </li>
-              <li><a href="#" ng-click="dc.toggleFilters('author')">Author<i class="fa pull-right"
+              <li class="hidden"><a href="#" ng-click="dc.toggleFilters('author')">Author<i class="fa pull-right"
                   ng-class="{ 'fa-caret-down': dc.isFilterSection('author'), 'fa-caret-left': !dc.isFilterSection('author') }"></i></a>
 
                 <div ng-if="dc.isFilterSection('author')">&nbsp;</div>
               </li>
-              <li><a href="#" ng-click="dc.toggleFilters('status')">Status<i class="fa pull-right"
+              <li class="hidden"><a href="#" ng-click="dc.toggleFilters('status')">Status<i class="fa pull-right"
                   ng-class="{ 'fa-caret-down': dc.isFilterSection('status'), 'fa-caret-left': !dc.isFilterSection('status') }"></i></a>
 
                 <div ng-if="dc.isFilterSection('status')">&nbsp;</div>
               </li>
-              <li ui-tree=""><a href="#" ng-click="dc.toggleFilters('term')">Term<i class="fa pull-right"
+              <li class="hidden" ui-tree=""><a href="#" ng-click="dc.toggleFilters('term')">Term<i class="fa pull-right"
                   ng-class="{ 'fa-caret-down': dc.isFilterSection('term'), 'fa-caret-left': !dc.isFilterSection('term') }"></i></a>
 
                 <div ng-if="dc.isFilterSection('term')">&nbsp;</div>
@@ -416,7 +416,7 @@
                             data-target="#shareResourceModal">Share...</a></li>
                         <li><a href="#" ng-click="dc.showMoveResourceModal('#moveResourceModal')">Move to...</a></li>
                         <li><a href="#" data-toggle="modal" data-target="#renameResourceModal">Rename...</a></li>
-                        <li><a href="#" ng-if="!dc.isFolder()" ng-click="dc.copyResource()">Copy</a></li>
+                        <li><a href="#" ng-if="!dc.isFolder()" ng-click="dc.copyResource()">Make a copy</a></li>
                         <li role="separator" class="divider"></li>
                         <li><a href="#" ng-click="dc.deleteResource(resource)">Delete</a></li>
                       </ul>
@@ -512,7 +512,7 @@
                           data-target="#shareResourceModal">Share...</a></li>
                       <li><a href="#" ng-click="dc.showMoveResourceModal('#moveResourceModal')">Move to...</a></li>
                       <li><a href="#" data-toggle="modal" data-target="#renameResourceModal">Rename...</a></li>
-                      <li><a href="#" ng-if="!dc.isFolder()" ng-click="dc.copyResource()">Copy</a></li>
+                      <li><a href="#" ng-if="!dc.isFolder()" ng-click="dc.copyResource()">Make a copy</a></li>
                       <li role="separator" class="divider"></li>
                       <li><a href="#" ng-click="dc.deleteResource(resource)">Delete</a></li>
                     </ul>
@@ -844,8 +844,9 @@
               <div class="col-sm-7 name">
                 {{dc.getName(dc.resourcePermissions.owner)}}
               </div>
-              <select class="col-sm-4" select-picker>
-                <option value="own">is owner</option>
+
+              <select class="col-sm-4" select-picker  ng-disabled="!dc.canUpdate()">
+                <option value="own" >is owner</option>
               </select>
             </div>
 
@@ -853,12 +854,13 @@
 
               <div class="col-sm-7 name">{{share.node.name}}</div>
 
-              <select ng-model="share.permission" class="col-sm-4"
+              <select ng-model="share.permission" class="col-sm-4" select-picker
                   ng-change="dc.addShare(share.node.id, share.permission, 'shared-users')"
                   select-model="share"
-                  select-picker cedar-live-search="true">
-                <option value="read">can read</option>
-                <option value="write">can write</option>
+                   cedar-live-search="true" ng-disabled="!dc.canUpdate()" >
+
+                <option ng-show="(!dc.canUpdate() && share.permisison === 'read') || dc.canUpdate()" value="read">can read</option>
+                <option ng-show="(!dc.canUpdate() && share.permisison === 'write') || dc.canUpdate()" value="write">can write</option>
                 <option ng-if="dc.canBeOwner(share.node.id)" value="own">is owner</option>
               </select>
 

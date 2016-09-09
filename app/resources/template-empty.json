@@ -4,7 +4,8 @@
   "@type": "https://schema.metadatacenter.org/core/Template",
   "@context": {
     "pav": "http://purl.org/pav/",
-    "oslc": "http://open-services.net/ns/core#"
+    "oslc": "http://open-services.net/ns/core#",
+    "schema": "http://schema.org/"
   },
   "type": "object",
   "title": "",
@@ -16,30 +17,48 @@
   },
   "properties": {
     "@context": {
+      "type": "object",
       "properties": {
-        "schema": {
-          "enum": [
-            "http://schema.org/"
-          ]
-        },
         "pav": {
+          "type": "string",
+          "format": "uri",
           "enum": [
             "http://purl.org/pav/"
           ]
         },
+        "schema": {
+          "type": "string",
+          "format": "uri",
+          "enum": [
+            "http://schema.org/"
+          ]
+        },
         "oslc": {
+          "type": "string",
+          "format": "uri",
           "enum": [
             "http://open-services.net/ns/core#"
           ]
         }
       },
+      "patternProperties": {
+        "^(?!pav)(?!schema)(?!oslc)[a-zA-Z][a-zA-Z0-9]*$": {
+          "type": "string",
+          "format": "uri"
+        }
+      },
       "required": [
-        "@value"
+        "pav",
+        "schema",
+        "oslc"
       ],
       "additionalProperties": false
     },
     "@id": {
-      "type": "string",
+      "type": [
+        "string",
+        "null"
+      ],
       "format": "uri"
     },
     "@type": {
@@ -63,26 +82,51 @@
       "type": "string",
       "format": "uri"
     },
-    "pav:createdOn": {
+    "schema:name": {
       "type": "string",
+      "minLength": 1
+    },
+    "schema:description": {
+      "type": "string"
+    },
+    "pav:createdOn": {
+      "type": [
+        "string",
+        "null"
+      ],
       "format": "date-time"
     },
     "pav:createdBy": {
-      "type": "string",
+      "type": [
+        "string",
+        "null"
+      ],
       "format": "uri"
     },
     "pav:lastUpdatedOn": {
-      "type": "string",
+      "type": [
+        "string",
+        "null"
+      ],
       "format": "date-time"
     },
     "oslc:modifiedBy": {
-      "type": "string",
+      "type": [
+        "string",
+        "null"
+      ],
       "format": "uri"
     }
   },
   "required": [
     "@id",
-    "schema:isBasedOn"
+    "schema:isBasedOn",
+    "schema:name",
+    "schema:description",
+    "pav:createdOn",
+    "pav:createdBy",
+    "pav:lastUpdatedOn",
+    "oslc:modifiedBy"
   ],
   "pav:createdOn": null,
   "pav:createdBy": null,
