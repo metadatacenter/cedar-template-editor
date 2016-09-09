@@ -120,7 +120,6 @@ define([
 
               // now we are sure that the element was successfully added, scroll to it and hide its nested contents
               $rootScope.scrollToDomId(domId);
-              //$rootScope.toggleElement(domId);
 
             });
             $rootScope.$broadcast("form:update", element);

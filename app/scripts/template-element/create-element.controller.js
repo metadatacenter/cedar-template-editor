@@ -243,7 +243,9 @@ define([
                 DataManipulationService.createDomIds($scope.element);
                 UIMessageService.flashSuccess('SERVER.ELEMENT.update.success', {"title": response.data.title},
                     'GENERIC.Updated');
+
                 owner.enableSaveButton();
+
               },
               function (err) {
                 UIMessageService.showBackendError('SERVER.ELEMENT.update.error', err);

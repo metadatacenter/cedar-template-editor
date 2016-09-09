@@ -289,6 +289,12 @@ define([
           //positionToolbar();
         });
 
+
+        $scope.forms = {};
+
+
+
+
         $scope.$on("form:update", function () {
           startParseForm();
         });

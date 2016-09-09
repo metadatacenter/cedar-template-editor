@@ -8,6 +8,7 @@
     <!--<p class="extra-label-context" ng-if="!$root.isRuntime() && $root.schemaOf(field)._ui.title">-->
       <!--{{$root.schemaOf(field)._ui.title}}</p>-->
     <input type="text"
+        id="{{getId($index)}}"
         class="form-control"
         ng-class="{'required': $root.schemaOf(field)._valueConstraints.requiredValue}"
         placeholder="{{$root.schemaOf(field)._ui.title}}"
@@ -32,6 +33,7 @@
 
     <div >
       <input type="text"
+          id="{{getId(0)}}"
           class="form-control"
           ng-class="{'required': $root.schemaOf(field)._valueConstraints.requiredValue}"
           placeholder="{{$root.schemaOf(field)._ui.title}}"
@@ -52,7 +54,7 @@
   <!-- /.form-group -->
 
   <div ng-if="!$root.isArray(model)" class="form-group floating-label-wrapper">
-    <input type="text"
+    <input  id="{{getId(0)}}" type="text"
         class="form-control"
         ng-class="{'required': $root.schemaOf(field)._valueConstraints.requiredValue}"
         placeholder="{{$root.schemaOf(field)._ui.title}}"

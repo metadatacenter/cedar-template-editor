@@ -174,8 +174,23 @@ define([
         }
 
 
-        // does the field have invalid data?
-        var allFieldsAreValid = DataManipulationService.isInvalidPattern($scope.field);
+        var allFieldsAreValid = true;
+        if (angular.isArray($scope.model)) {
+          for (var i=0;i<$scope.model.length;i++) {
+            if (!DataManipulationService.isValidPattern($scope.field, i)) {
+              $scope.model[i]['@value'] = DataManipulationService.getDomValue($scope.field, i);
+              allFieldsAreValid = false;
+            }
+          }
+
+        } else {
+          if (!DataManipulationService.isValidPattern($scope.field, 0)) {
+            $scope.model['@value'] = DataManipulationService.getDomValue($scope.field, 0);
+            allFieldsAreValid = false;
+
+          }
+        }
+
         if ($rootScope.hasValueConstraint($rootScope.schemaOf($scope.field)._valueConstraints)) {
 
           if (angular.isArray($scope.model)) {
@@ -906,10 +921,9 @@ define([
         return StringUtilsService.getShortId(uri, maxLength);
       }
 
-      $scope.validationCheck = function () {
-        console.log('validationCheck');
-      }
-
+      $scope.getId = function (index) {
+        return DataManipulationService.getLocator($scope.field, index);
+      };
 
     };
 
