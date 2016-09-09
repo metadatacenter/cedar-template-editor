@@ -81,8 +81,8 @@ define([
             function (response) {
               UIMessageService.flashSuccess('SERVER.INSTANCE.create.success', null, 'GENERIC.Created');
               // Reload page with element id
-              //var newId = response.data['@id'];
-              //$location.path(UrlService.getInstanceEdit(newId));
+              var newId = response.data['@id'];
+              $location.path(UrlService.getInstanceEdit(newId));
             },
             function (err) {
               UIMessageService.showBackendError('SERVER.INSTANCE.create.error', err);

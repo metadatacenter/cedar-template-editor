@@ -481,6 +481,18 @@ define([
       }
     };
 
+    // keeping track of dirty documents, i.e. with edits or not
+    $rootScope.dirty = false;
+
+    $rootScope.setDirty = function(value) {
+      console.log('setDirty ' + value);
+      $rootScope.dirty = value;
+    };
+
+    $rootScope.isDirty = function() {
+      console.log('isDirty ' + $rootScope.dirty);
+      return $rootScope.dirty;
+    }
 
 
   };
