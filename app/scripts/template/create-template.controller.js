@@ -102,8 +102,6 @@ define([
             StagingService.addFieldToForm($scope.form, fieldType, domId, function (el) {
               // now we are sure that the element was successfully added
               $rootScope.scrollToDomId(domId);
-              console.log('addField');
-              $rootScope.setDirty(true);
             });
           }
         };
@@ -123,9 +121,6 @@ define([
 
               // now we are sure that the element was successfully added, scroll to it and hide its nested contents
               $rootScope.scrollToDomId(domId);
-              //$rootScope.toggleElement(domId);
-              console.log('addElementToTemplate')
-              $rootScope.setDirty(true);
 
             });
             $rootScope.$broadcast("form:update", element);

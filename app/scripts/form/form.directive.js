@@ -298,6 +298,15 @@ define([
           $rootScope.setDirty($scope.forms.templateForm.$dirty);
         });
 
+        $scope.$watch('forms.templateForm.$pristine', function () {
+          console.log('watch $pristine '+ $scope.forms.templateForm.$pristine);
+        });
+
+        $scope.$watch('forms.templateForm.$valid', function () {
+          console.log('watch $valid '+ $scope.forms.templateForm.$valid);
+
+        });
+
 
         $scope.$on("form:update", function () {
           startParseForm();

@@ -32,6 +32,7 @@
 
     <div >
       <input type="text"
+          id="{{getId()}}"
           class="form-control"
           ng-class="{'required': $root.schemaOf(field)._valueConstraints.requiredValue}"
           placeholder="{{$root.schemaOf(field)._ui.title}}"
@@ -52,7 +53,8 @@
   <!-- /.form-group -->
 
   <div ng-if="!$root.isArray(model)" class="form-group floating-label-wrapper">
-    <input type="text"
+    model {{model['@value']}}  viewValue {{model['@value'].$viewValue}} dirty {{model['@value'].$dirty}}  {{getVars("#12345")}}
+    <input id="{{field['@id']}}" type="text"
         class="form-control"
         ng-class="{'required': $root.schemaOf(field)._valueConstraints.requiredValue}"
         placeholder="{{$root.schemaOf(field)._ui.title}}"

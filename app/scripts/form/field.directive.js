@@ -900,6 +900,19 @@ define([
         console.log('validationCheck');
       }
 
+      $scope.getVars = function(id) {
+        var e = angular.element(id);
+        console.log(e);
+        console.log(e[0].value);
+      }
+
+      $scope.geId = function (isField) {
+        var fieldOrValue = isField ? "field" : "values";
+        var fieldId = $scope.field['@id'] || $scope.field.items['@id'];
+        var id = fieldId.substring(fieldId.lastIndexOf('/') + 1);
+        return "control-options-" + id + "-" + fieldOrValue;
+      };
+
 
     };
 

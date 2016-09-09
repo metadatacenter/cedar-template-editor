@@ -1,8 +1,10 @@
 <form name="forms.templateForm" id="{{form['@id'].substr(form['@id'].lastIndexOf('/') + 1)}}" class="runtime"
     ng-class="{'validate': checkSubmission}" novalidate>
 
-  <p>{{forms.templateForm.$dirty}}</p>
+  <p>dirty {{forms.templateForm.$dirty}}  pristine {{forms.templateForm.$pristine}} valid {{forms.templateForm.$valid}}</p>
   <!--Loop through top level "page" parameter in form element and call cedar-template-element or field-directive with contents -->
+
+
 
   <!--At Runtime-->
   <div class="page" ng-if="$root.isRuntime()" ng-repeat="page in pagesArray">
