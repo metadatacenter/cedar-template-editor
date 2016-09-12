@@ -634,7 +634,7 @@
       <!-- END RIGHT SIDE -->
 
       <!-- floating plus icon section -->
-      <div class="add-new  pull-right" ng-if="dc.onDashboard()" ng-mouseleave="dc.showFloatingMenu = false">
+      <div class="add-new  pull-right" ng-if="dc.onDashboard()  && dc.canWriteToCurrentFolder()" ng-mouseleave="dc.showFloatingMenu = false">
         <ul class="list-unstyled others">
           <li ng-show="dc.showFloatingMenu">
             <button type="button"
