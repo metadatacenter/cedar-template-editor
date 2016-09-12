@@ -74,6 +74,8 @@ define([
               $scope.form._ui.order.push(key);
               $rootScope.jsonToSave = $scope.element;
               $rootScope.documentTitle = $scope.form._ui.title;
+
+              $scope.$broadcast('form:clean');
             },
             function (err) {
               UIMessageService.showBackendError('SERVER.ELEMENT.load.error', err);
@@ -93,6 +95,8 @@ define([
         $scope.form._ui.order = $scope.form._ui.order || [];
         $scope.form._ui.order.push(key);
         $rootScope.jsonToSave = $scope.element;
+
+        $scope.$broadcast('form:clean');
       }
     };
     getElement();
@@ -118,6 +122,7 @@ define([
       populateCreatingFieldOrElement();
       if (dontHaveCreatingFieldOrElement()) {
         StagingService.addFieldToElement($scope.element, fieldType);
+        $scope.$broadcast("form:dirty");
       }
       $scope.showMenuPopover = false;
     };
@@ -154,7 +159,7 @@ define([
     $scope.doReset = function () {
       $scope.element = angular.copy($scope.resetElement);
       // Broadcast the reset event which will trigger the emptying of formFields formFieldsOrder
-      $scope.$broadcast('resetForm');
+      $scope.$broadcast('form:reset');
     };
 
     $scope.saveElement = function () {
@@ -222,6 +227,8 @@ define([
                 var newId = response.data['@id'];
                 DataManipulationService.createDomIds(response.data);
                 $location.path(UrlService.getElementEdit(newId));
+
+                $scope.$broadcast('form.clean');
               },
               function (err) {
                 UIMessageService.showBackendError('SERVER.ELEMENT.create.error', err);
@@ -245,6 +252,7 @@ define([
                     'GENERIC.Updated');
 
                 owner.enableSaveButton();
+                $scope.$broadcast('form.clean');
 
               },
               function (err) {
