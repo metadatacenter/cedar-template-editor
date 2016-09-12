@@ -83,6 +83,7 @@ define([
               // Reload page with element id
               var newId = response.data['@id'];
               $location.path(UrlService.getInstanceEdit(newId));
+              $rootScope.$broadcast("form:clean");
             },
             function (err) {
               UIMessageService.showBackendError('SERVER.INSTANCE.create.error', err);
@@ -98,6 +99,7 @@ define([
             function (response) {
               UIMessageService.flashSuccess('SERVER.INSTANCE.update.success', null, 'GENERIC.Updated');
               owner.enableSaveButton();
+              $rootScope.$broadcast("form:clean");
             },
             function (err) {
               UIMessageService.showBackendError('SERVER.INSTANCE.update.error', err);

@@ -490,7 +490,6 @@ define([
     };
 
     $rootScope.isDirty = function() {
-      console.log('isDirty ' + $rootScope.dirty);
       return $rootScope.dirty;
     }
 
