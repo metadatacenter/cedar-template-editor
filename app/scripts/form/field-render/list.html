@@ -10,11 +10,14 @@
     <div ng-if="$root.schemaOf(field)._valueConstraints.multipleChoice == false"
         class="form-group form-group-narrow validation-pattern"
         ng-class="{'required': $root.schemaOf(field)._valueConstraints.requiredValue}">
+
+      <p class="extra-label-context" style="padding-left:5px">{{$root.schemaOf(field)._ui.title}}</p>
+
       <select class="form-control"
           multiple=""
           data-max-options="1"
           field="field"
-          title="{{$root.schemaOf(field)._ui.title}}"
+          title="Please select"
           ng-model="optionsUI.options"
           ng-disabled="!$root.isRuntime() || preview"
           ng-change="updateModelFromUI(optionsUI)"
@@ -30,10 +33,13 @@
     <div ng-if="$root.schemaOf(field)._valueConstraints.multipleChoice == true"
         class="form-group form-group-narrow validation-pattern"
         ng-class="{'required': $root.schemaOf(field)._valueConstraints.requiredValue}">
+
+      <p class="extra-label-context" style="padding-left:5px">{{$root.schemaOf(field)._ui.title}}</p>
+
       <select class="form-control"
           multiple=""
           field="field"
-          title="{{$root.schemaOf(field)._ui.title}}"
+          title="Please select"
           ng-model="optionsUI.options"
           ng-disabled="!$root.isRuntime() || preview"
           ng-change="updateModelFromUI(optionsUI)"

@@ -12649,6 +12649,7 @@ p.instructions {
   border-radius: 0;
   background-color: transparent;
   border-color: #ddd;
+  height: 40px;
 }
 .bootstrap-select .btn-select-picker:focus {
   outline: none !important;
