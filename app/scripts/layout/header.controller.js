@@ -21,8 +21,7 @@ define([
 
     vm.confirmBack = function () {
 
-      //if (!$rootScope.isDirty()) {
-      if (true) {
+      if (!$rootScope.isDirty()) {
 
         vm.goToDashboardOrBack();
 
@@ -32,6 +31,7 @@ define([
             function () {
               $timeout(function () {
                 vm.goToDashboardOrBack();
+                $rootScope.setDirty(false);
               });
 
             },

@@ -59,6 +59,7 @@ define([
                   //closeAllElements();
                   $rootScope.keyOfRootElement = $scope.form["@id"];
                   $rootScope.rootElement = $scope.form;
+                  $scope.$broadcast('form:clean');
 
                 },
                 function (err) {
@@ -71,6 +72,7 @@ define([
             HeaderService.dataContainer.currentObjectScope = $scope.form;
             $rootScope.keyOfRootElement = $scope.form["@id"];
             $rootScope.rootElement = $scope.form;
+            $scope.$broadcast('form:clean');
           }
         };
         getTemplate();
@@ -101,6 +103,7 @@ define([
             StagingService.addFieldToForm($scope.form, fieldType, domId, function (el) {
               // now we are sure that the element was successfully added
               $rootScope.scrollToDomId(domId);
+              $rootScope.$broadcast("form:dirty");
             });
           }
         };
@@ -132,7 +135,6 @@ define([
           return ($scope.showCardinality && item == "cardinality");
         };
         $scope.toggleTab = function (item) {
-          console.log('toggleTab ' + $scope.showCardinality);
           $scope.showCardinality = !$scope.showCardinality;
         };
 
@@ -164,7 +166,7 @@ define([
           });
           $scope.form._ui.order = [];
           // Broadcast the reset event which will trigger the emptying of formFields formFieldsOrder
-          $scope.$broadcast('resetForm');
+          $scope.$broadcast('form:reset');
         };
 
         $scope.saveTemplate = function () {
@@ -224,6 +226,8 @@ define([
                     DataManipulationService.createDomIds(response.data);
                     var newId = response.data['@id'];
                     $location.path(UrlService.getTemplateEdit(newId));
+
+                    $scope.$broadcast('form:clean');
                   },
                   function (err) {
                     UIMessageService.showBackendError('SERVER.TEMPLATE.create.error', err);
@@ -246,6 +250,8 @@ define([
                     UIMessageService.flashSuccess('SERVER.TEMPLATE.update.success',
                         {"title": response.data._ui.title}, 'GENERIC.Updated');
                     owner.enableSaveButton();
+
+                    $scope.$broadcast('form:clean');
                   },
                   function (err) {
                     UIMessageService.showBackendError('SERVER.TEMPLATE.update.error', err);

@@ -485,12 +485,10 @@ define([
     $rootScope.dirty = false;
 
     $rootScope.setDirty = function(value) {
-      console.log('setDirty ' + value);
       $rootScope.dirty = value;
     };
 
     $rootScope.isDirty = function() {
-      console.log('isDirty ' + $rootScope.dirty);
       return $rootScope.dirty;
     }
 

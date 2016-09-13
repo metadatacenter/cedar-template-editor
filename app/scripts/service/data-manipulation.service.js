@@ -432,8 +432,7 @@ define([
     // get the id of the node
     service.getNodeId = function (node) {
       var nodeId = node['@id'] || node.items['@id'];
-      var id = nodeId.substring(nodeId.lastIndexOf('/') + 1);
-      return id;
+      return nodeId.substring(nodeId.lastIndexOf('/') + 1);
     };
 
     // get the locator for the node's dom object
@@ -443,7 +442,7 @@ define([
 
     // look to see if this node has been identified by angular as an invalid pattern
     service.isValidPattern =  function(node, index)  {
-        var locator = service.getLocator(node,  index) + '.ng-invalid-pattern';
+        var locator = service.getLocator(node,  index) + '.ng-invalid';
         var target = jQuery('#' + locator);
         return (target.length == 0);
     };
