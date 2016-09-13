@@ -1,13 +1,14 @@
 <div class="fields fields-numeric">
 
   <!-- header row -->
-  <div ng-init="fieldTitle='Numeric';fieldIconClass='cedar-svg-numeric'"
+  <div ng-init="fieldTitle='Numeric';fieldIconClass='cedar-svg-numeric';setDefaultValueIfEmpty(model)"
       ng-include="'scripts/form/partials/field-header.partial.html'"></div>
 
   <div ng-if="$root.isArray(model)" class="form-group floating-label-wrapper" ng-repeat="valueElement in model">
 
     <input type="text"
         id="{{getId($index)}}"
+        ng-change="setDefaultValueIfEmpty(model)"
         class="form-control"
         ng-class="{'required': $root.schemaOf(field)._valueConstraints.requiredValue}"
         placeholder="{{$root.schemaOf(field)._ui.title}}"
@@ -58,6 +59,7 @@
   <div ng-if="!$root.isArray(model)" class="form-group floating-label-wrapper">
     <input type="text"
         id="{{getId(0)}}"
+        ng-change="setDefaultValueIfEmpty(model)"
         class="form-control"
         ng-class="{'required': $root.schemaOf(field)._valueConstraints.requiredValue}"
         placeholder="{{$root.schemaOf(field)._ui.title}}"
