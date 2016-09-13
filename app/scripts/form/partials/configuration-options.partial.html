@@ -12,10 +12,10 @@
           ng-click="toggleControlledTerm('values');  $event.stopPropagation();">
         <span><i class="cedar-svg-controll-term collapsed" style="padding-bottom:10px"></i>Values</span>
       </div>
-      <div ng-if="hasDateRange()" class="element-toggle table-cell-style date-range-tab" ng-class="{active: isTabActive('range')}"
-          ng-click="toggleControlledTerm('range');  $event.stopPropagation();">
-        <span>Range</span>
-      </div>
+      <!--<div ng-if="hasDateRange()" class="element-toggle table-cell-style date-range-tab" ng-class="{active: isTabActive('range')}"-->
+          <!--ng-click="toggleControlledTerm('range');  $event.stopPropagation();">-->
+        <!--<span>Range</span>-->
+      <!--</div>-->
       <div ng-if="allowsMultiple()" class="element-toggle table-cell-style cardinality-tab" ng-class="{active: isTabActive('cardinality')}"
           ng-click="toggleControlledTerm('cardinality');  $event.stopPropagation();">
         <span>Multiple</span>

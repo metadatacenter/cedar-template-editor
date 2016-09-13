@@ -297,6 +297,17 @@ define([
             return false;
           };
 
+          vm.canWriteToCurrentFolder = function () {
+            var node = vm.currentFolder;
+            if (node != null) {
+              var perms = node.currentUserPermissions;
+              if (perms != null) {
+                return perms.indexOf("write") != -1;
+              }
+            }
+            return false;
+          };
+
           vm.updateDescription = function () {
             vm.editingDescription = false;
             var resource = vm.getSelection();
