@@ -298,9 +298,7 @@ define([
           };
 
           vm.canWriteToCurrentFolder = function () {
-            console.log('canWriteToCurrentFolder')
             var node = vm.currentFolder;
-            console.log(node)
             if (node != null) {
               var perms = node.currentUserPermissions;
               if (perms != null) {
