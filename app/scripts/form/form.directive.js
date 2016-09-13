@@ -335,6 +335,18 @@ define([
           $scope.form.requiredFields = true;
         });
 
+
+        // create a copy of the form with the _tmp fields stripped out
+        $scope.stripTmpFields = function () {
+          var copiedForm = jQuery.extend(true, {}, $scope.form);
+          if (copiedForm) {
+            DataManipulationService.stripTmps(copiedForm);
+          }
+          return copiedForm;
+        };
+
+
+
       }
     };
   };
