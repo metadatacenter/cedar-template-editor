@@ -111,6 +111,10 @@ define([
       return ($location.path() === "/profile");
     };
 
+    vm.isPrivacy = function () {
+      return ($location.path() === "/privacy");
+    };
+
     //*********** ENTRY POINT
 
     vm.searchTerm = $location.search().search;

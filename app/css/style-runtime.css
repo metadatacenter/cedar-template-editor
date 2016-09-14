@@ -13933,6 +13933,9 @@ table.apiKey td {
   background-color: #f0f0f0;
   border-radius: 0px;
 }
+::-webkit-scrollbar-corner {
+  background-color: #f0f0f0;
+}
 ::-webkit-input-placeholder {
   /* WebKit, Blink, Edge */
   color: #bebebe;
@@ -14667,6 +14670,40 @@ table.apiKey td {
     max-height: 400px;
     overflow-y: auto;
   }
+}
+#privacy-policy,
+#profile {
+  padding: 30px 0;
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: auto;
+}
+#privacy-policy .content,
+#profile .content {
+  height: 100%;
+}
+#privacy-policy .content .row,
+#profile .content .row {
+  padding: 10px 0;
+}
+#privacy-policy .content .title,
+#profile .content .title {
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+#privacy-policy .content table,
+#profile .content table {
+  border: 2px solid #ddd;
+  border-collapse: collapse;
+}
+#privacy-policy .content ul,
+#profile .content ul {
+  list-style: none;
+  padding: 0;
+}
+#privacy-policy .content ul li,
+#profile .content ul li {
+  padding: 0 0 5px 0;
 }
 @font-face {
   font-family: "project-cedar";

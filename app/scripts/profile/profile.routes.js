@@ -15,6 +15,10 @@ define([
         .when('/profile', {
           templateUrl: 'scripts/profile/profile.html',
           controller : 'ProfileController'
+        })
+        .when('/privacy', {
+          templateUrl: 'scripts/profile/privacy.html',
+          controller : 'PrivacyController'
         });
   }
 
