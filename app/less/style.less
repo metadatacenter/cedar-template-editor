@@ -5542,7 +5542,7 @@ body .template-header .controlled-terms-modal {
   margin-bottom: 10px;
   margin-top: 5px;
   background: #efefef;
-  min-height:70px;
+  min-height: 70px;
 }
 
 .sortable-icon {
@@ -5595,6 +5595,10 @@ table.apiKey {
 ::-webkit-scrollbar-track {
   background-color: #f0f0f0;
   border-radius: 0px;
+}
+
+::-webkit-scrollbar-corner {
+  background-color: #f0f0f0;
 }
 
 // Placeholder color
@@ -6265,9 +6269,10 @@ table.apiKey {
       .row {
         padding: 5px 0;
         .name {
-          padding:8px 0 0 20px;white-space:nowrap;
-          overflow:hidden;
-          text-overflow:ellipsis;
+          padding: 8px 0 0 20px;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
         }
         .btn-plus {
           width: 25px;
@@ -6285,25 +6290,25 @@ table.apiKey {
         }
       }
       .hidden-container {
-       border:0px solid #ccc;
+        border: 0px solid #ccc;
         padding-right: 24px;
-        margin-right:12px
+        margin-right: 12px
       }
       .scroll-container {
-        height:250px;
-        overflow-y:scroll;
-        overflow-x:hidden;
-        border:1px solid #ccc;
+        height: 250px;
+        overflow-y: scroll;
+        overflow-x: hidden;
+        border: 1px solid #ccc;
         padding-right: 24px;
       }
       .bootstrap-select {
         button.disabled {
           background: @white;
-          border:1px solid #ccc;
+          border: 1px solid #ccc;
           color: #333;
-          opacity:1;
+          opacity: 1;
           .glyphicon {
-            display:none;
+            display: none;
           }
         }
         &.small {
@@ -6372,10 +6377,10 @@ table.apiKey {
         -webkit-transition: all 0.3s 0.1s;
         transition: all 0.3s 0.1s;
         cursor: pointer;
-        padding:0px 1px 1px 2px;
-        margin:6px 25px;
+        padding: 0px 1px 1px 2px;
+        margin: 6px 25px;
 
-        outline:none;
+        outline: none;
       }
     }
   }
@@ -6433,5 +6438,37 @@ table.apiKey {
     }
   }
 }
+
+#privacy-policy, #profile {
+  padding: 30px 0;
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: auto;
+
+  .content {
+    height: 100%;
+    .row {
+      padding: 10px 0;
+    }
+    .title {
+      text-overflow: ellipsis;
+      overflow: hidden;
+    }
+    table {
+      border: 2px solid #ddd;
+      border-collapse: collapse;
+    }
+    ul.profile {
+      list-style: none;
+      padding: 0;
+      li {
+        padding: 0 0 5px 0;
+      }
+    }
+
+  }
+}
+
+
 
 
