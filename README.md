@@ -4,6 +4,10 @@ This is an AngularJS web application to create and fill in Metadata Templates. I
 
 To access the documentation, [click here](https://github.com/metadatacenter/cedar-docs/wiki).
 
-## Travis CI Status
+#### Questions
 
-[![Build Status](https://travis-ci.org/metadatacenter/cedar-template-editor.svg?branch=feature/karma-protractor)](https://travis-ci.org/metadatacenter/cedar-template-editor)
+If you have questions about this repository, please subscribe to the [CEDAR Developer Support
+mailing list](https://mailman.stanford.edu/mailman/listinfo/cedar-developers).
+After subscribing, send messages to cedar-developers at lists.stanford.edu.
+
+
