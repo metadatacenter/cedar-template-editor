@@ -59,6 +59,7 @@ define([
                   //closeAllElements();
                   $rootScope.keyOfRootElement = $scope.form["@id"];
                   $rootScope.rootElement = $scope.form;
+                  $rootScope.jsonToSave = $scope.form;
                   $scope.$broadcast('form:clean');
 
                 },
@@ -72,6 +73,7 @@ define([
             HeaderService.dataContainer.currentObjectScope = $scope.form;
             $rootScope.keyOfRootElement = $scope.form["@id"];
             $rootScope.rootElement = $scope.form;
+            $rootScope.jsonToSave = $scope.form;
             $scope.$broadcast('form:clean');
           }
         };
@@ -246,6 +248,7 @@ define([
 
                     DataManipulationService.createDomIds(response.data);
                     $scope.form = response.data;
+                    $rootScope.jsonToSave = $scope.form;
 
                     UIMessageService.flashSuccess('SERVER.TEMPLATE.update.success',
                         {"title": response.data._ui.title}, 'GENERIC.Updated');

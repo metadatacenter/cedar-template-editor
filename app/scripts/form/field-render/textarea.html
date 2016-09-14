@@ -1,7 +1,7 @@
 <div class="fields fields-textarea">
 
   <!-- header row -->
-  <div ng-init="fieldTitle='Paragraph';fieldIconClass='cedar-svg-paragraph'"
+  <div ng-init="fieldTitle='Paragraph';fieldIconClass='cedar-svg-paragraph';setDefaultValueIfEmpty(model)"
       ng-include="'scripts/form/partials/field-header.partial.html'"></div>
 
   <div ng-if="$root.isArray(model)" class="form-group floating-label-wrapper has-feedback"
@@ -9,6 +9,7 @@
     <textarea rows="5"
         id="comment"
         class="form-control"
+        ng-change="setDefaultValueIfEmpty(model)"
         ng-class="{'required': $root.schemaOf(field)._valueConstraints.requiredValue}"
         placeholder="{{$root.schemaOf(field)._ui.title}}"
         aria-label="{{$root.schemaOf(field)._ui.description}}"
@@ -45,6 +46,7 @@
   <div ng-if="!$root.isArray(model)" class="form-group floating-label-wrapper has-feedback">
     <textarea rows="5"
         id="comment"
+        ng-change="setDefaultValueIfEmpty(model)"
         class="form-control"
         placeholder="{{$root.schemaOf(field)._ui.title}}"
         aria-label="{{$root.schemaOf(field)._ui.description}}"

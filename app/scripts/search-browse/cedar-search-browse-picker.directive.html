@@ -131,8 +131,8 @@
               class="fa fa-user inline "></i></button>
           <ul class="dropdown-menu dropdown-menu-right">
             <li id="user-profile-tool"><a href="/profile">Profile</a></li>
-            <li id="user-help"><a href="http://metadatacenter.org/tools-training/support">Help</a></li>
-            <li id="user-about-us"><a href="http://metadatacenter.org/about-us">About Us</a></li>
+            <li id="user-help"><a target="_blank" href="http://metadatacenter.org/tools-training/support">Help</a></li>
+            <li id="user-about"><a target="_blank" href="http://metadatacenter.org/tools-training/orientation">About</a></li>
             <li id="user-logout-tool"><a href="/logout">Logout</a></li>
           </ul>
         </div>
@@ -357,7 +357,7 @@
                       <ul class="dropdown-menu" aria-labelledby="{{getId(resource, 'populate')}}">
 
                         <li><a href="#" ng-click="dc.editResource()">Open</a></li>
-                        <li ng-if="!dc.isFolder()"><a href="#" ng-click="dc.editResource(resource)">Edit</a></li>
+                        <!--<li ng-if="!dc.isFolder()"><a href="#" ng-click="dc.editResource(resource)">Edit</a></li>-->
                         <li><a href="#" ng-click="dc.showInfoPanel(resource)">Info</a></li>
                         <li role="separator" class="divider"></li>
                         <li><a href="#" data-toggle="modal" ng-click="dc.openShare(resource)"
@@ -406,16 +406,11 @@
                           class="fa fa-ellipsis-v"></i>
                       </button>
                       <ul class="dropdown-menu" aria-labelledby="{{getId(resource, 'populate')}}">
-
-                        <li ng-if="dc.isFolder()"><a href="#" ng-click="dc.editResource()">Open</a></li>
-                        <li ng-if="dc.isTemplate()"><a href="#" ng-click="dc.launchInstance(resource)">Populate</a>
-                        </li>
-                        <li ng-if="dc.isTemplate() || dc.isElement() ||dc.isFolder() || dc.isMeta()"><a href="#"
-                            ng-click="dc.editResource(resource)">Edit</a></li>
+                        <li ng-if="dc.isTemplate()"><a href="#" ng-click="dc.launchInstance(resource)">Populate</a></li>
+                        <li ><a href="#" ng-click="dc.editResource(resource)">Edit</a></li>
                         <li><a href="#" ng-click="dc.showInfoPanel(resource)">Info</a></li>
                         <li role="separator" class="divider"></li>
-                        <li><a href="#" data-toggle="modal" ng-click="dc.openShare(resource)"
-                            data-target="#shareResourceModal">Share...</a></li>
+                        <li><a href="#" data-toggle="modal" ng-click="dc.openShare(resource)" data-target="#shareResourceModal">Share...</a></li>
                         <li><a href="#" ng-click="dc.showMoveResourceModal('#moveResourceModal')">Move to...</a></li>
                         <li><a href="#" data-toggle="modal" data-target="#renameResourceModal">Rename...</a></li>
                         <li><a href="#" ng-if="!dc.isFolder()" ng-click="dc.copyResource()">Make a copy</a></li>
@@ -460,17 +455,10 @@
                         class="btn btn-sm btn-circle fa fa-ellipsis-v"></i>
                     </button>
                     <ul class="dropdown-menu" aria-labelledby="{{getId(resource, 'list')}}">
-
-                      <li ng-if="dc.isFolder()"><a href="#" ng-click="dc.editResource()">Open</a></li>
-                      <li ng-if="dc.isTemplate() "><a href="#" ng-click="dc.launchInstance(resource)">Populate</a>
-
-                      </li>
-                      <li ng-if="dc.isTemplate() || dc.isElement() || dc.isFolder()"><a href="#"
-                          ng-click="dc.editResource(resource)">Edit</a></li>
+                      <li ><a href="#" ng-click="dc.editResource()">Open</a></li>
                       <li><a href="#" ng-click="dc.showInfoPanel(resource)">Info</a></li>
                       <li role="separator" class="divider"></li>
-                      <li><a href="#" data-toggle="modal" ng-click="dc.openShare(resource)"
-                          data-target="#shareResourceModal">Share...</a></li>
+                      <li><a href="#" data-toggle="modal" ng-click="dc.openShare(resource)" data-target="#shareResourceModal">Share...</a></li>
                       <li><a href="#" ng-click="dc.showMoveResourceModal('#moveResourceModal')">Move to...</a></li>
                       <li><a href="#" data-toggle="modal" data-target="#renameResourceModal">Rename...</a></li>
                       <li role="separator" class="divider"></li>
@@ -502,19 +490,14 @@
                         class="btn btn-sm btn-circle fa fa-ellipsis-v"></i>
                     </button>
                     <ul class="dropdown-menu" aria-labelledby="{{getId(resource, 'list')}}">
-
-                      <li ng-if="dc.isFolder()"><a href="#" ng-click="dc.editResource()">Open</a></li>
-                      <li ng-if="dc.isTemplate() "><a href="#" ng-click="dc.launchInstance(resource)">Populate</a>
-                      </li>
-                      <li ng-if="dc.isTemplate() ||  dc.isElement() || dc.isFolder() || dc.isMeta()"><a href="#"
-                          ng-click="dc.editResource(resource)">Edit</a></li>
+                      <li ng-if="dc.isTemplate() "><a href="#" ng-click="dc.launchInstance(resource)">Populate</a></li>
+                      <li ><a href="#" ng-click="dc.editResource(resource)">Edit</a></li>
                       <li><a href="#" ng-click="dc.showInfoPanel(resource)">Info</a></li>
                       <li role="separator" class="divider"></li>
-                      <li><a href="#" data-toggle="modal" ng-click="dc.openShare(resource)"
-                          data-target="#shareResourceModal">Share...</a></li>
+                      <li><a href="#" data-toggle="modal" ng-click="dc.openShare(resource)" data-target="#shareResourceModal">Share...</a></li>
                       <li><a href="#" ng-click="dc.showMoveResourceModal('#moveResourceModal')">Move to...</a></li>
                       <li><a href="#" data-toggle="modal" data-target="#renameResourceModal">Rename...</a></li>
-                      <li><a href="#" ng-if="!dc.isFolder()" ng-click="dc.copyResource()">Make a copy</a></li>
+                      <li><a href="#"  ng-click="dc.copyResource()">Make a copy</a></li>
                       <li role="separator" class="divider"></li>
                       <li><a href="#" ng-click="dc.deleteResource(resource)">Delete</a></li>
                     </ul>
@@ -585,17 +568,17 @@
               </td>
             </tr>
             <tr>
-              <td class="left"><strong>Can Read</strong></td>
+              <td class="left">Can Read</td>
               <td>{{ dc.canRead() }}</td>
 
             </tr>
             <tr>
-              <td class="left"><strong>Can Write:</strong></td>
+              <td class="left">Can Write</td>
               <td>{{ dc.canWrite() }}</td>
 
             </tr>
             <tr>
-              <td class="left"><strong>Can Change Owner:</strong></td>
+              <td class="left">Can Change Owner</td>
               <td>{{ dc.canChangeOwner() }}</td>
 
             </tr>
@@ -677,15 +660,10 @@
             </a>
           </li>
 
-
-          <li ng-show="!dc.showFloatingMenu">
+          <li>
             <button type="button"
                 id="button-create"
-                tooltip="create template"
-                tooltip-trigger
-                tooltip-animation="false"
-                tooltip-placement="left"
-                data-toggle="tooltip" class="btn btn-sm btn-info btn-circle compose"
+                class="btn btn-sm btn-info btn-circle compose"
                 ng-mouseenter="dc.showFloatingMenu = true"><i
                 class="fa fa-plus template"></i>
             </button>
@@ -838,6 +816,47 @@
 
         <div class="modal-body">
 
+          <div ng-if="dc.canUpdate()">
+
+            <h5 translate>DASHBOARD.share.usersAndGroups</h5>
+
+            <div class="hidden-container">
+              <div class="row">
+
+                <select id="select-picker-user-or-group" data-size="5" ng-change="dc.updateNodePermission()"
+                    data-dropup-auto="false" class="dropdown col-sm-7"
+                    ng-model="dc.selectedNodeId" select-model="dc.resourceNodes"
+                    select-picker cedar-live-search="true"
+                    ng-options="node.id as node.name for node in dc.resourceNodes "></select>
+
+                <select ng-model="dc.giveNodePermission"
+                    data-dropup-auto="false" class="dropdown col-sm-4" select-picker select-model="dc.selectedNodeId"
+                    cedar-live-search="true">
+                  <option value="read">can read</option>
+                  <option value="write">can write</option>
+                  <option ng-if="dc.canBeOwner(dc.selectedNodeId)" value="own">is owner</option>
+                </select>
+
+                <button
+                    class="col-sm-1  btn btn-sm btn-info btn-circle btn-plus" ng-if="dc.canUpdate()"
+                    ng-model="dc.resourcePermissions"
+                    type="button"
+                    tooltip='add'
+                    tooltip-trigger
+                    tooltip-animation="false"
+                    tooltip-placement="top"
+                    data-toggle="tooltip"
+                    ng-click="dc.addShare(dc.selectedNodeId, dc.giveNodePermission, 'shared-users')">
+                  <!--<span aria-hidden="true">&plus;</span>-->
+                  <i class="fa fa-plus" style="margin: 0 -4px;vertical-align: top;"></i>
+                </button>
+
+              </div>
+            </div>
+          </div>
+
+          <hr/>
+
           <h5 translate>DASHBOARD.share.manage</h5>
 
           <div ng-model="dc.resourcePermissions" id="shared-users" class="scroll-container">
@@ -879,46 +898,6 @@
             </div>
           </div>
 
-          <hr/>
-
-          <div ng-if="dc.canUpdate()">
-
-            <h5 translate>DASHBOARD.share.usersAndGroups</h5>
-
-            <div class="hidden-container">
-              <div class="row">
-
-                <select id="select-picker-user-or-group" data-size="5" ng-change="dc.updateNodePermission()"
-                    data-dropup-auto="false" class="dropup col-sm-7"
-                    ng-model="dc.selectedNodeId" select-model="dc.resourceNodes"
-                    select-picker cedar-live-search="true"
-                    ng-options="node.id as node.name for node in dc.resourceNodes "></select>
-
-                <select ng-model="dc.giveNodePermission"
-                    data-dropup-auto="false" class="dropup col-sm-4" select-picker select-model="dc.selectedNodeId"
-                    cedar-live-search="true">
-                  <option value="read">can read</option>
-                  <option value="write">can write</option>
-                  <option ng-if="dc.canBeOwner(dc.selectedNodeId)" value="own">is owner</option>
-                </select>
-
-                <button
-                    class="col-sm-1  btn btn-sm btn-info btn-circle btn-plus" ng-if="dc.canUpdate()"
-                    ng-model="dc.resourcePermissions"
-                    type="button"
-                    tooltip='{{"DASHBOARD.share.addHint" | translate}}'
-                    tooltip-trigger
-                    tooltip-animation="false"
-                    tooltip-placement="top"
-                    data-toggle="tooltip"
-                    ng-click="dc.addShare(dc.selectedNodeId, dc.giveNodePermission, 'shared-users')">
-                  <!--<span aria-hidden="true">&plus;</span>-->
-                  <i class="fa fa-plus" style="margin: 0 -4px;vertical-align: top;"></i>
-                </button>
-
-              </div>
-            </div>
-          </div>
         </div>
 
 

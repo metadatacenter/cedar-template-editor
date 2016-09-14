@@ -42,8 +42,8 @@ define([
         ];
 
         function cedarFinderController($location, $timeout, $scope, $rootScope, $translate, CedarUser, resourceService,
-                                                   UIMessageService, UISettingsService,
-                                                   AuthorizedBackendService,  CONST) {
+                                       UIMessageService, UISettingsService,
+                                       AuthorizedBackendService, CONST) {
           var vm = this;
 
           vm.breadcrumbName = breadcrumbName;
@@ -61,7 +61,12 @@ define([
           vm.isSearching = false;
           vm.pathInfo = [];
           vm.selectedPathInfo = [];
-          vm.params = $location.search();
+
+          //vm.params = $location.search();
+          vm.params = {};
+          vm.params.folderId = $location.search().folderId;
+          vm.params.search = $location.search().search;
+
           vm.resources = [];
           vm.selectedResource = null;
           vm.hasSelection = hasSelection;
@@ -125,7 +130,7 @@ define([
                   vm.selectedResource = response;
 
                   // get path info for this resource
-                 //getPathInfo(response.parentFolderId);
+                  //getPathInfo(response.parentFolderId);
 
                 },
                 function (error) {
@@ -152,7 +157,13 @@ define([
 
                 if (resourceTypes.length > 0) {
                   return resourceService.getResources(
-                      {folderId: folderId, resourceTypes: resourceTypes, sort: sortField(), limit: limit, offset: offset},
+                      {
+                        folderId     : folderId,
+                        resourceTypes: resourceTypes,
+                        sort         : sortField(),
+                        limit        : limit,
+                        offset       : offset
+                      },
                       function (response) {
                         vm.resources = vm.resources.concat(response.resources);
                       },
@@ -176,20 +187,33 @@ define([
             var term = vm.searchTerm;
             var resourceTypes = activeResourceTypes();
 
+            // Temporary fix to load more results if the totalCount can't be computed by the backend
+            if (vm.totalCount == -1) {
+              // Search for more results
+              vm.totalCount = Number.MAX_VALUE;
+            }
+            else if (vm.totalCount == 0) {
+              // No more results available. Stop searching
+              vm.totalCount = -2;
+            }
+
             // are there more?
             if (offset < vm.totalCount) {
-
-              return resourceService.searchResources(
-                  term,
-                  {resourceTypes: resourceTypes, sort: sortField(), limit: limit, offset: offset},
+              return resourceService.searchResources(term,
+                  {
+                    resourceTypes: resourceTypes,
+                    sort: sortField(),
+                    limit: limit,
+                    offset: offset
+                  },
                   function (response) {
                     vm.resources = vm.resources.concat(response.resources);
+                    vm.totalCount = response.totalCount;
                   },
                   function (error) {
                     UIMessageService.showBackendError('SERVER.SEARCH.error', error);
                   }
               );
-
             }
           };
 
@@ -244,7 +268,6 @@ define([
               vm.isSearching = true;
               doSearch(vm.params.search);
             } else if (vm.params.folderId) {
-
               getFolderContentsById(decodeURIComponent(vm.params.folderId));
             } else {
               goToFolder(CedarUser.getHomeFolderId());
@@ -255,9 +278,12 @@ define([
             if (vm.params.search) {
               vm.isSearching = true;
               doSearch(vm.params.search);
+            } else if (vm.params.folderId) {
+              goToFolder(vm.params.folderId);
             } else {
               goToFolder(CedarUser.getHomeFolderId());
             }
+
           }
 
           function breadcrumbName(folderName) {
@@ -429,10 +455,14 @@ define([
 
 
           function goToFolder(folderId) {
-              vm.params.search = null;
-              vm.selectedResource = null;
-              vm.params.folderId = folderId;
-              init();
+            vm.params.search = null;
+            vm.selectedResource = null;
+            vm.params.folderId = folderId;
+
+            if (vm.params.folderId) {
+              getFolderContentsById(decodeURIComponent(vm.params.folderId));
+            }
+
           };
 
           function isResourceTypeActive(type) {
@@ -452,26 +482,26 @@ define([
           }
 
 
-
           /**
            * Watch functions.
            */
 
           $scope.$on('$routeUpdate', function () {
-            vm.params = $location.search();
-            init();
+            console.log('watch routeUpdate')
+            //vm.params = $location.search();
+            //init();
           });
 
           $scope.$on('search-finder', function (event, searchTerm) {
-              vm.params.search = searchTerm;
-              initSearch();
+            vm.params.search = searchTerm;
+            initSearch();
           });
 
           $scope.hideModal = function (id) {
             jQuery('#' + id).modal('hide');
           };
 
-          function search  (searchTerm) {
+          function search(searchTerm) {
             vm.searchTerm = searchTerm;
             $rootScope.$broadcast('search-finder', vm.searchTerm || '');
           };
@@ -486,10 +516,10 @@ define([
             angular.forEach(Object.keys(vm.resourceTypes), function (value, key) {
               if (vm.resourceTypes[value]) {
 
-                  // just elements can be selected
-                  if (value == 'element') {
-                    activeResourceTypes.push(value);
-                  }
+                // just elements can be selected
+                if (value == 'element') {
+                  activeResourceTypes.push(value);
+                }
 
               }
             });
@@ -541,20 +571,20 @@ define([
             return mode === vm.resourceViewMode;
           }
 
-          function hideFinder () {
+          function hideFinder() {
             jQuery("#" + vm.finderModalId).modal('hide');
             vm.finderResource = null;
             vm.params.search = null;
             vm.params.folderId = null;
             vm.selectedResource = null;
-            init();
+            //init();
           }
 
           function getFolders() {
             var result = [];
 
             if (vm.resources) {
-              var result = vm.resources.filter(function( obj ) {
+              var result = vm.resources.filter(function (obj) {
                 return obj.nodeType == CONST.resourceType.FOLDER;
               });
             }
@@ -569,7 +599,7 @@ define([
             var result = [];
 
             if (vm.resources) {
-              var result = vm.resources.filter(function( obj ) {
+              var result = vm.resources.filter(function (obj) {
                 return obj.nodeType == CONST.resourceType.ELEMENT;
               });
             }
