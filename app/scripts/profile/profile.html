@@ -20,7 +20,7 @@
         <div class="row">
           <div class="col-xs-3 text-right title" translate>API Keys</div>
           <div class="col-xs-9" ng-if="$root.cedarUser.isCedarProfileAvailable()">
-            <ul>
+            <ul class="profile">
             <li ng-repeat="apiKey in $root.cedarUser.getApiKeys()">
 
               <table class="apiKey" >
@@ -52,14 +52,14 @@
 
         <div class="row">
           <div class="col-xs-3 text-right title" translate>Roles</div>
-          <div class="col-xs-9" ng-if="$root.cedarUser.isCedarProfileAvailable()"> <ul>
+          <div class="col-xs-9" ng-if="$root.cedarUser.isCedarProfileAvailable()"> <ul class="profile">
             <li ng-repeat="roleName in $root.cedarUser.getRoles()">{{roleName}}</li>
           </ul></div>
         </div>
 
         <div class="row">
           <div class="col-xs-3 text-right title" translate>Permissions</div>
-          <div class="col-xs-9"> <ul>
+          <div class="col-xs-9"> <ul class="profile">
             <li ng-repeat="permissionName in $root.cedarUser.getPermissions()">{{permissionName}}</li>
           </ul></div>
         </div>

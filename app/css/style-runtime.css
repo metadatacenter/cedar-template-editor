@@ -14696,13 +14696,13 @@ table.apiKey td {
   border: 2px solid #ddd;
   border-collapse: collapse;
 }
-#privacy-policy .content ul,
-#profile .content ul {
+#privacy-policy .content ul.profile,
+#profile .content ul.profile {
   list-style: none;
   padding: 0;
 }
-#privacy-policy .content ul li,
-#profile .content ul li {
+#privacy-policy .content ul.profile li,
+#profile .content ul.profile li {
   padding: 0 0 5px 0;
 }
 @font-face {
