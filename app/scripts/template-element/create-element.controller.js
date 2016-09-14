@@ -228,7 +228,7 @@ define([
                 DataManipulationService.createDomIds(response.data);
                 $location.path(UrlService.getElementEdit(newId));
 
-                $scope.$broadcast('form.clean');
+                $scope.$broadcast('form:clean');
               },
               function (err) {
                 UIMessageService.showBackendError('SERVER.ELEMENT.create.error', err);

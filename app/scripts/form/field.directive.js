@@ -233,7 +233,6 @@ define([
       });
 
       $scope.$on("saveForm", function () {
-        console.log('saveForm');
         //var p = $rootScope.propertiesOf($scope.field);
         if ($scope.isEditState() && !$scope.canDeselect($scope.field)) {
           $scope.$emit("invalidFieldState",

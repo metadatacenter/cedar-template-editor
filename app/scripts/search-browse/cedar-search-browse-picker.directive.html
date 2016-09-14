@@ -660,15 +660,10 @@
             </a>
           </li>
 
-
-          <li ng-show="!dc.showFloatingMenu">
+          <li>
             <button type="button"
                 id="button-create"
-                tooltip="create template"
-                tooltip-trigger
-                tooltip-animation="false"
-                tooltip-placement="left"
-                data-toggle="tooltip" class="btn btn-sm btn-info btn-circle compose"
+                class="btn btn-sm btn-info btn-circle compose"
                 ng-mouseenter="dc.showFloatingMenu = true"><i
                 class="fa fa-plus template"></i>
             </button>
@@ -821,6 +816,47 @@
 
         <div class="modal-body">
 
+          <div ng-if="dc.canUpdate()">
+
+            <h5 translate>DASHBOARD.share.usersAndGroups</h5>
+
+            <div class="hidden-container">
+              <div class="row">
+
+                <select id="select-picker-user-or-group" data-size="5" ng-change="dc.updateNodePermission()"
+                    data-dropup-auto="false" class="dropdown col-sm-7"
+                    ng-model="dc.selectedNodeId" select-model="dc.resourceNodes"
+                    select-picker cedar-live-search="true"
+                    ng-options="node.id as node.name for node in dc.resourceNodes "></select>
+
+                <select ng-model="dc.giveNodePermission"
+                    data-dropup-auto="false" class="dropdown col-sm-4" select-picker select-model="dc.selectedNodeId"
+                    cedar-live-search="true">
+                  <option value="read">can read</option>
+                  <option value="write">can write</option>
+                  <option ng-if="dc.canBeOwner(dc.selectedNodeId)" value="own">is owner</option>
+                </select>
+
+                <button
+                    class="col-sm-1  btn btn-sm btn-info btn-circle btn-plus" ng-if="dc.canUpdate()"
+                    ng-model="dc.resourcePermissions"
+                    type="button"
+                    tooltip='add'
+                    tooltip-trigger
+                    tooltip-animation="false"
+                    tooltip-placement="top"
+                    data-toggle="tooltip"
+                    ng-click="dc.addShare(dc.selectedNodeId, dc.giveNodePermission, 'shared-users')">
+                  <!--<span aria-hidden="true">&plus;</span>-->
+                  <i class="fa fa-plus" style="margin: 0 -4px;vertical-align: top;"></i>
+                </button>
+
+              </div>
+            </div>
+          </div>
+
+          <hr/>
+
           <h5 translate>DASHBOARD.share.manage</h5>
 
           <div ng-model="dc.resourcePermissions" id="shared-users" class="scroll-container">
@@ -862,46 +898,6 @@
             </div>
           </div>
 
-          <hr/>
-
-          <div ng-if="dc.canUpdate()">
-
-            <h5 translate>DASHBOARD.share.usersAndGroups</h5>
-
-            <div class="hidden-container">
-              <div class="row">
-
-                <select id="select-picker-user-or-group" data-size="5" ng-change="dc.updateNodePermission()"
-                    data-dropup-auto="false" class="dropup col-sm-7"
-                    ng-model="dc.selectedNodeId" select-model="dc.resourceNodes"
-                    select-picker cedar-live-search="true"
-                    ng-options="node.id as node.name for node in dc.resourceNodes "></select>
-
-                <select ng-model="dc.giveNodePermission"
-                    data-dropup-auto="false" class="dropup col-sm-4" select-picker select-model="dc.selectedNodeId"
-                    cedar-live-search="true">
-                  <option value="read">can read</option>
-                  <option value="write">can write</option>
-                  <option ng-if="dc.canBeOwner(dc.selectedNodeId)" value="own">is owner</option>
-                </select>
-
-                <button
-                    class="col-sm-1  btn btn-sm btn-info btn-circle btn-plus" ng-if="dc.canUpdate()"
-                    ng-model="dc.resourcePermissions"
-                    type="button"
-                    tooltip='{{"DASHBOARD.share.addHint" | translate}}'
-                    tooltip-trigger
-                    tooltip-animation="false"
-                    tooltip-placement="top"
-                    data-toggle="tooltip"
-                    ng-click="dc.addShare(dc.selectedNodeId, dc.giveNodePermission, 'shared-users')">
-                  <!--<span aria-hidden="true">&plus;</span>-->
-                  <i class="fa fa-plus" style="margin: 0 -4px;vertical-align: top;"></i>
-                </button>
-
-              </div>
-            </div>
-          </div>
         </div>
 
 
