@@ -486,6 +486,7 @@ define([
 
     $rootScope.setDirty = function(value) {
       $rootScope.dirty = value;
+      console.log($rootScope.dirty);
     };
 
     $rootScope.isDirty = function() {
