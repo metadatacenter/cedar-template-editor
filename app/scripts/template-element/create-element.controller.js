@@ -246,6 +246,7 @@ define([
               TemplateElementService.updateTemplateElement(id, $scope.element),
               function (response) {
                 angular.extend($scope.element, response.data);
+                $rootScope.jsonToSave = $scope.element;
 
                 DataManipulationService.createDomIds($scope.element);
                 UIMessageService.flashSuccess('SERVER.ELEMENT.update.success', {"title": response.data.title},
@@ -321,7 +322,6 @@ define([
 
     // create a copy of the form with the _tmp fields stripped out
     $scope.stripTmpFields = function () {
-
       var copiedForm = jQuery.extend(true, {}, $scope.form);
       if (copiedForm) {
         DataManipulationService.stripTmps(copiedForm);

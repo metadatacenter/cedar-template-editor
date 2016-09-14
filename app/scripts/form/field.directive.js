@@ -363,7 +363,7 @@ define([
         }
       }
 
-      // Initialize selection fields (checkbox, radio and list). This function ensures that the UI element is
+      // Initializes model for selection fields (checkbox, radio and list). This function ensures that the UI element is
       $scope.initializeSelectionField = function () {
         if ($scope.directory == "render") {
           if ((field._ui.inputType == 'checkbox')
@@ -378,6 +378,31 @@ define([
             // If we are editing an instance we need to load the values stored into the model
             else {
               $scope.updateUIFromModel();
+            }
+          }
+        }
+      }
+
+      // Sets the default @value for non-selection fields (i.e., text, paragraph, date, email, numeric, phone)
+      $scope.setDefaultValueIfEmpty = function(m) {
+        if ($rootScope.isRuntime()) {
+          if (!$rootScope.isArray(m)) {
+            if (!m) {
+              m = {};
+            }
+            if (m.hasOwnProperty('@value')) {
+              // If empty string
+              if ((m['@value'] != null) && (m['@value'].length == 0)) {
+                m['@value'] = null;
+              }
+            }
+            else {
+              m['@value'] = null;
+            }
+          }
+          else {
+            for (var i = 0; i < m.length; i++) {
+              $scope.setDefaultValueIfEmpty(m[i]);
             }
           }
         }
@@ -412,7 +437,7 @@ define([
             } else if (['list'].indexOf(field._ui.inputType) >= 0) {
               seed['@value'] = [];
             } else {
-              seed['@value'] = "";
+              seed['@value'] = null;
             }
           }
 

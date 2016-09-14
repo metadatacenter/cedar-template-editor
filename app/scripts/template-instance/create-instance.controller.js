@@ -21,6 +21,7 @@ define([
           function (response) {
             // Assign returned form object from FormService to $scope.form
             $scope.form = response.data;
+            $rootScope.jsonToSave = $scope.form;
             HeaderService.dataContainer.currentObjectScope = $scope.form;
             $rootScope.documentTitle = $scope.form._ui.title;
           },
@@ -37,6 +38,7 @@ define([
           TemplateInstanceService.getTemplateInstance($routeParams.id),
           function (instanceResponse) {
             $scope.instance = instanceResponse.data;
+            $rootScope.instanceToSave = $scope.instance;
             $scope.isEditData = true;
             $rootScope.documentTitle = $scope.instance['schema:name'];
             AuthorizedBackendService.doCall(
@@ -44,6 +46,7 @@ define([
                 function (templateResponse) {
                   // Assign returned form object from FormService to $scope.form
                   $scope.form = templateResponse.data;
+                  $rootScope.jsonToSave = $scope.form;
                 },
                 function (templateErr) {
                   UIMessageService.showBackendError('SERVER.TEMPLATE.load-for-instance.error', templateErr);
@@ -121,16 +124,6 @@ define([
 
     $scope.saveButtonDisabled = false;
 
-    AuthorizedBackendService.doCall(
-        TemplateService.getAllTemplatesSummary(),
-        function (response) {
-          $scope.templateList = response.data;
-        },
-        function (err) {
-          UIMessageService.showBackendError('SERVER.TEMPLATES.load.error', err);
-        }
-    );
-
     var pageId = CONST.pageId.RUNTIME;
     HeaderService.configure(pageId);
 
@@ -138,6 +131,7 @@ define([
     // Create empty instance object
     $scope.form = {};
     $scope.instance = {};
+    $rootScope.instanceToSave = $scope.instance;
 
     // Create new instance
     if (!angular.isUndefined($routeParams.templateId)) {

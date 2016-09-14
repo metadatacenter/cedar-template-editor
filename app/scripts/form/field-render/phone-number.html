@@ -1,7 +1,7 @@
 <div class="fields fields-phone-number">
 
   <!-- header row -->
-  <div ng-init="fieldTitle='Phone Number';fieldIconClass='cedar-svg-phone'"
+  <div ng-init="fieldTitle='Phone Number';fieldIconClass='cedar-svg-phone';setDefaultValueIfEmpty(model)"
       ng-include="'scripts/form/partials/field-header.partial.html'"></div>
 
   <div ng-if="$root.isArray(model)" class="form-group floating-label-wrapper" ng-repeat="valueElement in model">
@@ -10,6 +10,7 @@
     <input type="text"
         id="{{getId($index)}}"
         class="form-control"
+        ng-change="setDefaultValueIfEmpty(model)"
         ng-class="{'required': $root.schemaOf(field)._valueConstraints.requiredValue}"
         placeholder="{{$root.schemaOf(field)._ui.title}}"
         aria-label="{{$root.schemaOf(field)._ui.description}}"
@@ -28,9 +29,7 @@
   </div>
   <!-- /.form-group -->
 
-
   <div ng-if="$root.isArray(model) && model.length == 0 && !$root.isRuntime()" class="form-group floating-label-wrapper">
-
     <div >
       <input type="text"
           id="{{getId(0)}}"
@@ -48,13 +47,13 @@
 
       <div class="input-indicator-icons ng-valid ng-scope"
           ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
-
     </div>
   </div>
   <!-- /.form-group -->
 
   <div ng-if="!$root.isArray(model)" class="form-group floating-label-wrapper">
-    <input  id="{{getId(0)}}" type="text"
+    <input id="{{getId(0)}}" type="text"
+        ng-change="setDefaultValueIfEmpty(model)"
         class="form-control"
         ng-class="{'required': $root.schemaOf(field)._valueConstraints.requiredValue}"
         placeholder="{{$root.schemaOf(field)._ui.title}}"

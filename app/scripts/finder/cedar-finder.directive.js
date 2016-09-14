@@ -187,20 +187,33 @@ define([
             var term = vm.searchTerm;
             var resourceTypes = activeResourceTypes();
 
+            // Temporary fix to load more results if the totalCount can't be computed by the backend
+            if (vm.totalCount == -1) {
+              // Search for more results
+              vm.totalCount = Number.MAX_VALUE;
+            }
+            else if (vm.totalCount == 0) {
+              // No more results available. Stop searching
+              vm.totalCount = -2;
+            }
+
             // are there more?
             if (offset < vm.totalCount) {
-
-              return resourceService.searchResources(
-                  term,
-                  {resourceTypes: resourceTypes, sort: sortField(), limit: limit, offset: offset},
+              return resourceService.searchResources(term,
+                  {
+                    resourceTypes: resourceTypes,
+                    sort: sortField(),
+                    limit: limit,
+                    offset: offset
+                  },
                   function (response) {
                     vm.resources = vm.resources.concat(response.resources);
+                    vm.totalCount = response.totalCount;
                   },
                   function (error) {
                     UIMessageService.showBackendError('SERVER.SEARCH.error', error);
                   }
               );
-
             }
           };
 
