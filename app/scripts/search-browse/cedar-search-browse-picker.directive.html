@@ -357,7 +357,7 @@
                       <ul class="dropdown-menu" aria-labelledby="{{getId(resource, 'populate')}}">
 
                         <li><a href="#" ng-click="dc.editResource()">Open</a></li>
-                        <li ng-if="!dc.isFolder()"><a href="#" ng-click="dc.editResource(resource)">Edit</a></li>
+                        <!--<li ng-if="!dc.isFolder()"><a href="#" ng-click="dc.editResource(resource)">Edit</a></li>-->
                         <li><a href="#" ng-click="dc.showInfoPanel(resource)">Info</a></li>
                         <li role="separator" class="divider"></li>
                         <li><a href="#" data-toggle="modal" ng-click="dc.openShare(resource)"
@@ -406,16 +406,11 @@
                           class="fa fa-ellipsis-v"></i>
                       </button>
                       <ul class="dropdown-menu" aria-labelledby="{{getId(resource, 'populate')}}">
-
-                        <li ng-if="dc.isFolder()"><a href="#" ng-click="dc.editResource()">Open</a></li>
-                        <li ng-if="dc.isTemplate()"><a href="#" ng-click="dc.launchInstance(resource)">Populate</a>
-                        </li>
-                        <li ng-if="dc.isTemplate() || dc.isElement() ||dc.isFolder() || dc.isMeta()"><a href="#"
-                            ng-click="dc.editResource(resource)">Edit</a></li>
+                        <li ng-if="dc.isTemplate()"><a href="#" ng-click="dc.launchInstance(resource)">Populate</a></li>
+                        <li ><a href="#" ng-click="dc.editResource(resource)">Edit</a></li>
                         <li><a href="#" ng-click="dc.showInfoPanel(resource)">Info</a></li>
                         <li role="separator" class="divider"></li>
-                        <li><a href="#" data-toggle="modal" ng-click="dc.openShare(resource)"
-                            data-target="#shareResourceModal">Share...</a></li>
+                        <li><a href="#" data-toggle="modal" ng-click="dc.openShare(resource)" data-target="#shareResourceModal">Share...</a></li>
                         <li><a href="#" ng-click="dc.showMoveResourceModal('#moveResourceModal')">Move to...</a></li>
                         <li><a href="#" data-toggle="modal" data-target="#renameResourceModal">Rename...</a></li>
                         <li><a href="#" ng-if="!dc.isFolder()" ng-click="dc.copyResource()">Make a copy</a></li>
@@ -460,17 +455,10 @@
                         class="btn btn-sm btn-circle fa fa-ellipsis-v"></i>
                     </button>
                     <ul class="dropdown-menu" aria-labelledby="{{getId(resource, 'list')}}">
-
-                      <li ng-if="dc.isFolder()"><a href="#" ng-click="dc.editResource()">Open</a></li>
-                      <li ng-if="dc.isTemplate() "><a href="#" ng-click="dc.launchInstance(resource)">Populate</a>
-
-                      </li>
-                      <li ng-if="dc.isTemplate() || dc.isElement() || dc.isFolder()"><a href="#"
-                          ng-click="dc.editResource(resource)">Edit</a></li>
+                      <li ><a href="#" ng-click="dc.editResource()">Open</a></li>
                       <li><a href="#" ng-click="dc.showInfoPanel(resource)">Info</a></li>
                       <li role="separator" class="divider"></li>
-                      <li><a href="#" data-toggle="modal" ng-click="dc.openShare(resource)"
-                          data-target="#shareResourceModal">Share...</a></li>
+                      <li><a href="#" data-toggle="modal" ng-click="dc.openShare(resource)" data-target="#shareResourceModal">Share...</a></li>
                       <li><a href="#" ng-click="dc.showMoveResourceModal('#moveResourceModal')">Move to...</a></li>
                       <li><a href="#" data-toggle="modal" data-target="#renameResourceModal">Rename...</a></li>
                       <li role="separator" class="divider"></li>
@@ -502,19 +490,14 @@
                         class="btn btn-sm btn-circle fa fa-ellipsis-v"></i>
                     </button>
                     <ul class="dropdown-menu" aria-labelledby="{{getId(resource, 'list')}}">
-
-                      <li ng-if="dc.isFolder()"><a href="#" ng-click="dc.editResource()">Open</a></li>
-                      <li ng-if="dc.isTemplate() "><a href="#" ng-click="dc.launchInstance(resource)">Populate</a>
-                      </li>
-                      <li ng-if="dc.isTemplate() ||  dc.isElement() || dc.isFolder() || dc.isMeta()"><a href="#"
-                          ng-click="dc.editResource(resource)">Edit</a></li>
+                      <li ng-if="dc.isTemplate() "><a href="#" ng-click="dc.launchInstance(resource)">Populate</a></li>
+                      <li ><a href="#" ng-click="dc.editResource(resource)">Edit</a></li>
                       <li><a href="#" ng-click="dc.showInfoPanel(resource)">Info</a></li>
                       <li role="separator" class="divider"></li>
-                      <li><a href="#" data-toggle="modal" ng-click="dc.openShare(resource)"
-                          data-target="#shareResourceModal">Share...</a></li>
+                      <li><a href="#" data-toggle="modal" ng-click="dc.openShare(resource)" data-target="#shareResourceModal">Share...</a></li>
                       <li><a href="#" ng-click="dc.showMoveResourceModal('#moveResourceModal')">Move to...</a></li>
                       <li><a href="#" data-toggle="modal" data-target="#renameResourceModal">Rename...</a></li>
-                      <li><a href="#" ng-if="!dc.isFolder()" ng-click="dc.copyResource()">Make a copy</a></li>
+                      <li><a href="#"  ng-click="dc.copyResource()">Make a copy</a></li>
                       <li role="separator" class="divider"></li>
                       <li><a href="#" ng-click="dc.deleteResource(resource)">Delete</a></li>
                     </ul>
