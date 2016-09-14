@@ -123,6 +123,6 @@
     }
   ],
   "workspaceView": {
-    "requestLimit": 50
+    "requestLimit": 10
   }
 }
