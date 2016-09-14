@@ -54,9 +54,9 @@ define([
       angular.forEach(schemaContext.properties, function (value, key) {
         if (value.enum) {
           context[key] = value.enum[0];
-        } else {
-          console.log('generateInstanceContext empty value');
-          console.log(value);
+        //} else {
+        //  console.log('generateInstanceContext empty value');
+        //  console.log(value);
         }
       });
       return context;
@@ -587,7 +587,6 @@ define([
         properties["@type"].oneOf[0].enum.splice(idx, 1);
         if (properties["@type"].oneOf[0].enum.length == 0) {
           delete properties["@type"].oneOf[0].enum;
-          console.log('delete');
         }
       }
 
@@ -597,7 +596,6 @@ define([
         properties['@type'].oneOf[1].items.enum.splice(idx, 1);
         if (properties["@type"].oneOf[1].items.enum.length == 0) {
           delete properties["@type"].oneOf[1].items.enum;
-          console.log('delete');
         }
       }
     };
@@ -677,7 +675,6 @@ define([
 
     // When user clicks Save button, we will switch field or element from creating state to completed state
     service.canDeselect = function (field, renameChildKey) {
-      console.log('canDeselect');
 
       if (!field) {
         return;
