@@ -44,6 +44,26 @@ define([
       }
     };
 
+    vm.goToDashboardOrBack = function () {
+      vm.searchTerm = null;
+      var params = $location.search();
+      var path = $location.path();
+      var baseUrl = '/dashboard';
+      if (path != baseUrl) {
+        var queryParams = {};
+        if (params.folderId) {
+          queryParams['folderId'] = params.folderId;
+        }
+        /*if (params.search) {
+          queryParams['search'] = params.search;
+        }*/
+      }
+      var url = $rootScope.util.buildUrl(baseUrl, queryParams);
+      $location.url(url);
+      $window.scrollTo(0, 0);
+
+    };
+
     vm.search = function (searchTerm) {
       if (vm.isDashboard()) {
         var params = $location.search();
