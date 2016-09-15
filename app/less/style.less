@@ -404,23 +404,19 @@ button {
 }
 
 .controls-bar {
-  padding: 10px 15px;
+  padding: 10px 5px 0 5px;
   background: @header-bg-color;
   color: @white;
-  height: 55px;
   box-shadow: 0 4px 4px #ccc;
   width: 100%;
   top: 0;
   position: relative;
 
   .breadcrumbs-sb {
-    //text-transform: uppercase;
-    margin: 5px 15px;
-    font-size: 16px;
+    margin: 5px 0;
+    font-size: 1.2em;
     width: auto;
     display: inline-block;
-    margin-left: 200px;
-    margin-right: 15px;
 
     a {
       color: @white;
@@ -737,6 +733,8 @@ button {
     right: 0;
     padding: 30px 0;
     height: 100%;
+    border-top:1px solid #ddd;
+    border-bottom:1px solid #ddd;
 
   }
 
@@ -1091,12 +1089,9 @@ button {
     top: 0;
     right: 0;
     padding: 20px;
-    //width: 400px;
     height: 100%;
     background: #fafafa;
     border-left: 1px solid #ebebeb;
-    //margin-bottom: -100%;
-    //padding-bottom: 100%;
 
     .title {
       display: inline-block;
@@ -1175,16 +1170,19 @@ button {
   }
 
   .row-offcanvas-left {
-    //position: absolute;
     height: 100%;
     top: 0;
     left: 0;
-    //width: 200px;
-    //margin-bottom: -100%;
-    //padding-bottom: 100%;
 
     .filter-options {
-      padding: 20px 0;
+      padding: 40px 0 20px 10px;
+
+      ul.list-inline {
+        padding:10px 0;
+        li {
+          padding:0;
+        }
+      }
 
       ul.list-unstyled > li {
         border-top: 1px solid @gray3;
@@ -1195,8 +1193,6 @@ button {
         padding-top: 5px;
       }
       li > ul {
-        padding-left: 15px;
-
         li i {
           padding-right: 10px;
           color: @brand-primary;
@@ -1210,7 +1206,7 @@ button {
       }
       ul.list-unstyled > li > a {
         display: block;
-        padding: 5px 20px;
+        padding: 0;
         text-transform: uppercase;
         color: @graytxt;
 
@@ -1220,8 +1216,7 @@ button {
       }
       .reset-text {
         text-transform: uppercase;
-        height: 55px;
-        padding: 20px;
+        height: 30px;
       }
 
       button {
@@ -6430,8 +6425,6 @@ table.apiKey {
     }
 
     #center-panel {
-      max-height: 400px;
-      overflow-y: auto;
     }
 
     #sidebar-right {
@@ -6467,6 +6460,9 @@ table.apiKey {
     }
 
   }
+}
+
+#workspace-toolbar {
 }
 
 

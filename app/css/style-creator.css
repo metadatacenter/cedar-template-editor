@@ -9360,22 +9360,19 @@ button {
   height: calc(100% - 80px);
 }
 .controls-bar {
-  padding: 10px 15px;
+  padding: 10px 5px 0 5px;
   background: #2e5365;
   color: #ffffff;
-  height: 55px;
   box-shadow: 0 4px 4px #ccc;
   width: 100%;
   top: 0;
   position: relative;
 }
 .controls-bar .breadcrumbs-sb {
-  margin: 5px 15px;
-  font-size: 16px;
+  margin: 5px 0;
+  font-size: 1.2em;
   width: auto;
   display: inline-block;
-  margin-left: 200px;
-  margin-right: 15px;
 }
 .controls-bar .breadcrumbs-sb a {
   color: #ffffff;
@@ -9653,6 +9650,8 @@ button {
   right: 0;
   padding: 30px 0;
   height: 100%;
+  border-top: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
 }
 .all-items-view .push-pull-box {
   position: absolute;
@@ -9997,7 +9996,13 @@ button {
   left: 0;
 }
 .all-items-view .row-offcanvas-left .filter-options {
-  padding: 20px 0;
+  padding: 40px 0 20px 10px;
+}
+.all-items-view .row-offcanvas-left .filter-options ul.list-inline {
+  padding: 10px 0;
+}
+.all-items-view .row-offcanvas-left .filter-options ul.list-inline li {
+  padding: 0;
 }
 .all-items-view .row-offcanvas-left .filter-options ul.list-unstyled > li {
   border-top: 1px solid #d2d2d2;
@@ -10006,9 +10011,6 @@ button {
 .all-items-view .row-offcanvas-left .filter-options ul > li {
   list-style-type: none;
   padding-top: 5px;
-}
-.all-items-view .row-offcanvas-left .filter-options li > ul {
-  padding-left: 15px;
 }
 .all-items-view .row-offcanvas-left .filter-options li > ul li i {
   padding-right: 10px;
@@ -10022,7 +10024,7 @@ button {
 }
 .all-items-view .row-offcanvas-left .filter-options ul.list-unstyled > li > a {
   display: block;
-  padding: 5px 20px;
+  padding: 0;
   text-transform: uppercase;
   color: #666666;
 }
@@ -10031,8 +10033,7 @@ button {
 }
 .all-items-view .row-offcanvas-left .filter-options .reset-text {
   text-transform: uppercase;
-  height: 55px;
-  padding: 20px;
+  height: 30px;
 }
 .all-items-view .row-offcanvas-left .filter-options button {
   background: transparent;
@@ -14664,10 +14665,6 @@ table.apiKey td {
   body {
     height: 100%;
     background-color: #f0f0f0;
-    overflow-y: auto;
-  }
-  body #center-panel {
-    max-height: 400px;
     overflow-y: auto;
   }
 }
