@@ -35,46 +35,28 @@ define([
           if (settings[key] && settings[key].minItems && angular.isArray(model)) {
             model.splice(settings[key].minItems, model.length);
           }
-
           if (!DataUtilService.isSpecialKey(key)) {
             if (key == '@value') {
               if (angular.isArray(model)) {
                 if ($rootScope.schemaOf(settings)._ui.inputType == "list") {
-                  // TODO: defaultOptions are not stored there anymore
-                  if ($rootScope.schemaOf(settings)._valueConstraints.defaultOptions) {
-                    el[key] = angular.copy($rootScope.schemaOf(settings)._valueConstraints.defaultOptions);
-                  } else {
-                    model.splice(0, model.length);
-                  }
+                  model.splice(0, model.length);
                 } else {
                   for (var i = 0; i < model.length; i++) {
-                    // TODO: defaultOptions are not stored there anymore
-                    if ($rootScope.schemaOf(settings)._valueConstraints.defaultOptions) {
-                      model[i]['@value'] = angular.copy($rootScope.schemaOf(settings)._valueConstraints.defaultOptions);
-                    } else {
-                      if (typeof(model[i]['@value']) == "string") {
-                        model[i]['@value'] = "";
-                      } else if (angular.isArray(model[i]['@value'])) {
-                        model[i]['@value'] = [];
-                      } else if (angular.isObject(model[i]['@value'])) {
-                        model[i]['@value'] = {};
-                      }
+                    if (typeof(model[i]['@value']) == "string") {
+                      model[i]['@value'] = "";
+                    } else if (angular.isArray(model[i]['@value'])) {
+                      model[i]['@value'] = [];
+                    } else if (angular.isObject(model[i]['@value'])) {
+                      model[i]['@value'] = {};
                     }
                   }
                 }
-              } else {
-                // TODO: defaultOptions are not stored there anymore
-                if ($rootScope.schemaOf(settings)._valueConstraints.defaultOptions) {
-                  el[key] = angular.copy($rootScope.schemaOf(settings)._valueConstraints.defaultOptions);
-                } else {
-                  if (typeof(model) == "string") {
-                    el[key] = "";
-                  } else if (angular.isArray(model)) {
-                    el[key] = [];
-                  } else if (angular.isObject(model)) {
-                    el[key] = {};
-                  }
-                }
+              } else if (typeof(model) == "string") {
+                el[key] = "";
+              } else if (angular.isArray(model)) {
+                el[key] = [];
+              } else if (angular.isObject(model)) {
+                el[key] = {};
               }
             } else {
               if (settings[key]) {
@@ -85,41 +67,26 @@ define([
                   if (k == '@value') {
                     if (angular.isArray(v)) {
                       if ($rootScope.schemaOf(settings)._ui.inputType == "list") {
-                        // TODO: defaultOptions are not stored there anymore
-                        if ($rootScope.schemaOf(settings)._valueConstraints.defaultOptions) {
-                          model[k] = angular.copy($rootScope.schemaOf(settings)._valueConstraints.defaultOptions);
-                        } else {
-                          v.splice(0, v.length);
-                        }
+                        v.splice(0, v.length);
                       } else {
                         for (var i = 0; i < v.length; i++) {
-                          // TODO: defaultOptions are not stored there anymore
-                          if ($rootScope.schemaOf(settings)._valueConstraints.defaultOptions) {
-                            v[i]['@value'] = angular.copy($rootScope.schemaOf(settings)._valueConstraints.defaultOptions);
-                          } else {
-                            if (typeof(v[i]['@value']) == "string") {
-                              v[i]['@value'] = "";
-                            } else if (angular.isArray(v[i]['@value'])) {
-                              v[i]['@value'] = [];
-                            } else if (angular.isObject(v[i]['@value'])) {
-                              v[i]['@value'] = {};
-                            }
+
+                          if (typeof(v[i]['@value']) == "string") {
+                            v[i]['@value'] = "";
+                          } else if (angular.isArray(v[i]['@value'])) {
+                            v[i]['@value'] = [];
+                          } else if (angular.isObject(v[i]['@value'])) {
+                            v[i]['@value'] = {};
                           }
+
                         }
                       }
-                    } else {
-                      // TODO: defaultOptions are not stored there anymore
-                      if ($rootScope.schemaOf(settings)._valueConstraints.defaultOptions) {
-                        model[k] = angular.copy($rootScope.schemaOf(settings)._valueConstraints.defaultOptions);
-                      } else {
-                        if (typeof(v) == "string") {
-                          model[k] = "";
-                        } else if (angular.isArray(v)) {
-                          model[k] = [];
-                        } else if (angular.isObject(v)) {
-                          model[k] = {};
-                        }
-                      }
+                    } else if (typeof(v) == "string") {
+                      model[k] = "";
+                    } else if (angular.isArray(v)) {
+                      model[k] = [];
+                    } else if (angular.isObject(v)) {
+                      model[k] = {};
                     }
                   } else if (k !== '@type') {
                     if (settings[k]) {
