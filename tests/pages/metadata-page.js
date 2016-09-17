@@ -22,11 +22,21 @@ var MetadataPage = function () {
   var sampleTitle = 'sample title';
   var deleteTemplateMessage = 'The template has been deleted.';
 
+  var createConfirmationDialog = element(by.css('.sweet-alert'));
+  var sweetAlertCancelAttribute = 'data-has-cancel-button';
+  var sweetAlertConfirmAttribute = 'data-has-confirm-button';
+  var sweetAlertDoneAttribute = 'data-has-done-function';
+  var createSweetAlertCancelButton = element(by.css('.sweet-alert')).element(by.css('.sa-button-container')).element(by.css('button.cancel'));
+  var createSweetAlertConfirmButton = element(by.css('.sweet-alert')).element(by.css('.sa-button-container')).element(by.css('button.confirm'));
+
+
 
   var cssNavDashboard = '.navbar.dashboard';
   var cssNavMetadata = '.navbar.metadata';
 
   var metadataPageTitle = 'Metadata Editor';
+  var createSaveMetadataButton = element(by.id('button-save-metadata'));
+  var createCancelMetadataButton = element(by.id('button-cancel-metadata'));
 
 
   this.get = function () {
@@ -69,6 +79,9 @@ var MetadataPage = function () {
   this.deleteTemplateMessage = function() {
     return deleteTemplateMessage;
   };
+  this.createCancelMetadataButton = function() {
+    return createCancelMetadataButton;
+  }
 
 
   this.isMetadata = function() {
@@ -81,7 +94,27 @@ var MetadataPage = function () {
 
   this.clickCancelMetadata = function () {
     element(by.css('.back-arrow-click')).click();
-    return require('./workspace-page.js');
+    //return require('./workspace-page.js');
+  };
+
+  this.clickCancel = function (cancel) {
+    var deferred = protractor.promise.defer();
+    var EC = protractor.ExpectedConditions;
+    var confirm = createSweetAlertConfirmButton;
+
+    cancel.click();
+    browser.wait(createConfirmationDialog.isDisplayed()).then(function () {
+
+      browser.wait(EC.elementToBeClickable(confirm)).then(function () {
+        browser.sleep(1000);
+        confirm.click();
+        deferred.fulfill(true);
+
+      });
+    });
+
+    return deferred.promise;
+
   };
 
   this.clickSaveMetadata = function () {
@@ -95,6 +128,27 @@ var MetadataPage = function () {
     toastyMessageText.getText().then(function (value) {
       expect(value.indexOf(createMetadataMessage) !== -1).toBe(true);
     });
+  };
+
+  // sweet
+  this.createConfirmationDialog = function () {
+    return createConfirmationDialog;
+  };
+
+  this.sweetAlertCancelAttribute = function () {
+    return sweetAlertCancelAttribute;
+  };
+
+  this.sweetAlertDoneAttribute = function () {
+    return sweetAlertDoneAttribute;
+  };
+
+  this.sweetAlertConfirmAttribute = function () {
+    return sweetAlertConfirmAttribute;
+  };
+
+  this.clickSweetConfirm = function () {
+    element(by.css(sweetAlertConfirmAttribute)).click();
   };
 
 };

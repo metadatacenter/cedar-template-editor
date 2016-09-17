@@ -77,8 +77,9 @@ describe('metadata-creator', function () {
       });
 
       // clicking the cancel should cancel edits
-      metadataPage.clickCancelMetadata();
-      expect(metadataPage.isDashboard()).toBe(true);
+      metadataPage.clickCancel(metadataPage.createCancelMetadataButton()).then(function () {
+        expect(metadataPage.isDashboard()).toBe(true);
+      });
     });
   });
 
@@ -98,6 +99,7 @@ describe('metadata-creator', function () {
 
       // clicking the save should save edits
       metadataPage.clickSaveMetadata();
+
 
     });
   });

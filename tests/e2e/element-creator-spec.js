@@ -271,15 +271,15 @@ describe('element-creator', function () {
 
     // make the template dirty
     page.addField(fieldTypes[0].cedarType);
+    page.addField(fieldTypes[0].cedarType);
 
     // clicking the cancel should cancel edits
-    page.clickCancelElement();
-
-    // should be back to dashboard
-    expect(page.isDashboard()).toBe(true);
+    page.clickCancel(page.createCancelElementButton()).then(function () {
+      expect(page.isDashboard()).toBe(true);
+    });
   });
 
-  // github issue #404 Part 4 of 4:  Verify that save button is present and active,
+// github issue #404 Part 4 of 4:  Verify that save button is present and active,
   it("should have Save button present and active", function () {
 
     var cleanJson;
@@ -311,16 +311,14 @@ describe('element-creator', function () {
   });
 
   it("should delete untitled element the workspace, ", function () {
-
-    // element left over from prior test
-    page.clickCancelElement();
-    browser.sleep(3000);
+    page.createCancelElementButton().click();
+    expect(page.isDashboard()).toBe(true);
     workspacePage.deleteResource('Untitled', workspacePage.elementType());
 
   });
 
-  // github issue #405 part 1 of 2:  Verify that fields and elements can be reordered
-  // TODO this fails because element creator is not putting dom ids on fields and elements
+// github issue #405 part 1 of 2:  Verify that fields and elements can be reordered
+// TODO this fails because element creator is not putting dom ids on fields and elements
   xit("should reorder fields in the element", function () {
 
     var fieldType = fieldTypes[0];
@@ -368,7 +366,7 @@ describe('element-creator', function () {
     });
   });
 
-  // github issue #405 part 2:  add element to an element
+// github issue #405 part 2:  add element to an element
   describe('should add an element to the element, ', function () {
 
     it("should create a sample element in the workspace, ", function () {
@@ -453,7 +451,7 @@ describe('element-creator', function () {
 
             // do we have three items, the element, its nested filed, and the field
             var items = element.all(by.css(page.cssItemRoot));
-           // expect(items.count()).toBe(3);
+            // expect(items.count()).toBe(3);
 
             var fieldItem = items.get(1);
             var elementItem = items.get(2);
@@ -552,15 +550,13 @@ describe('element-creator', function () {
 
     // github issue #400
     it("should delete the sample element from the workspace, ", function () {
-
-      page.clickCancelElement();
+      page.createCancelElementButton().click();
+      expect(page.isDashboard()).toBe(true);
       workspacePage.deleteResource(page.sampleElementTitle(), 'element');
-
     });
-
   });
 
-  // github issue #406
+// github issue #406
   for (var i = 0; i < fieldTypes.length; i++) {
     (function (fieldType) {
 
@@ -633,19 +629,19 @@ describe('element-creator', function () {
     })(fieldTypes[i]);
   }
 
-  // github issue #407:  Verify that JSON preview button shows template JSON; verify that this JSON is same as underlying JSON, Verify that clicking in JSON preview button hides visible JSON preview area
+// github issue #407:  Verify that JSON preview button shows template JSON; verify that this JSON is same as underlying JSON, Verify that clicking in JSON preview button hides visible JSON preview area
   it("clicking JSON preview button shows and hides element JSON", function () {
 
     expect(page.templateJSON().isDisplayed()).toBe(false);
 
     page.getJsonPreviewText().then(function (value) {
+
       var json = JSON.parse(value);
       expect(_.isEqual(json, page.emptyElementJson)).toBe(true);
+      expect(page.templateJSON().isDisplayed()).toBe(true);
+      page.clickJsonPreview();
+      expect(page.templateJSON().isDisplayed()).toBe(false);
     });
-
-    expect(page.templateJSON().isDisplayed()).toBe(true);
-    page.clickJsonPreview();
-    expect(page.templateJSON().isDisplayed()).toBe(false);
 
   });
 
