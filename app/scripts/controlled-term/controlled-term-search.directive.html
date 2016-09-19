@@ -67,14 +67,14 @@
                 placeholder="Add ontologies" replace-spaces-with-dashes="false"
                 add-from-autocomplete-only="true"
                 on-tag-added="tsc.search()"
-                on-tag-removed="tsc.search()">
+                on-tag-removed="tsc.search()"
+                min-length="2">
               <auto-complete source="tsc.searchOntologies($query)"
                   display-property="fullName"
                   min-length="0"
                   load-on-focus="false"
                   load-on-empty="false"
                   max-results-to-show="2000"
-                  minLength="2"
               </auto-complete>
             </tags-input>
           </div>
