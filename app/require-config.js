@@ -17,9 +17,8 @@ require.config({
     'jquery'      : 'bower_components/jquery/jquery.min',
     'moment'      : 'bower_components/moment/min/moment.min',
 
-    'lib'       : 'bower_components',
-    'lib/custom': 'cedar/scripts',
-    '3rdparty'  : 'third_party_components',
+    'lib'     : 'bower_components',
+    '3rdparty': 'third_party_components',
 
     // requirejs plugins
     'text': 'bower_components/requirejs-plugins/lib/text',
@@ -58,22 +57,19 @@ require.config({
       exports: 'fitVids'
     },
 
-    'lib/ng-ckeditor/ng-ckeditor.min': ['angular', 'ckeditor']
-    ,
+    'lib/ng-ckeditor/ng-ckeditor.min': ['angular', 'ckeditor'],
     'ckeditor'                       : {
       'exports': 'CKEDITOR'
     },
 
-    'lib/ngHandsontable/dist/ngHandsontable.min': ['angular',
-                                                   'lib/handsontable/dist/handsontable.full.min'],
-
+    'lib/ngHandsontable/dist/ngHandsontable.min'                                 : ['angular',
+                                                                                    'lib/handsontable/dist/handsontable.full.min'],
     'lib/handsontable/dist/handsontable.full.min'                                : {'exports': 'Handsontable'},
     'lib/bootstrap/dist/js/bootstrap.min'                                        : ['jquery'],
     'lib/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min': ['jquery'],
     'lib/bootstrap-select/dist/js/bootstrap-select.min'                          : ['lib/bootstrap/dist/js/bootstrap.min'],
-
-    'lib/custom/handsontable/SpreadsheetContext' : ['lib/handsontable/dist/handsontable.full.min'],
-    'lib/custom/handsontable/MultiCheckboxEditor': ['lib/handsontable/dist/handsontable.full.min'],
+    'cedar/template-editor/handsontable/SpreadsheetContext'                      : ['lib/handsontable/dist/handsontable.full.min'],
+    'cedar/template-editor/handsontable/MultiCheckboxEditor'                     : ['lib/handsontable/dist/handsontable.full.min'],
   },
   priority: [
     'jquery',
