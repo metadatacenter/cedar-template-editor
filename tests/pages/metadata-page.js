@@ -49,7 +49,6 @@ var MetadataPage = function () {
     return Math.floor(Math.random() * (max - min)) + min;
   };
 
-
   this.test = function () {
     console.log('metadata  page test');
   };
@@ -89,8 +88,7 @@ var MetadataPage = function () {
   };
   this.createSaveMetadataButton = function () {
     return createSaveMetadataButton;
-  }
-
+  };
 
   this.isMetadata = function () {
     return element(by.css(cssNavMetadata)).isDisplayed();
@@ -117,12 +115,10 @@ var MetadataPage = function () {
 
     browser.wait(createConfirmationDialog.isPresent()).then(function () {
       browser.wait(createConfirmationDialog.isDisplayed()).then(function () {
-
         browser.wait(EC.elementToBeClickable(confirm)).then(function () {
           browser.sleep(1000);
           confirm.click();
           deferred.fulfill(true);
-
         });
       });
     });

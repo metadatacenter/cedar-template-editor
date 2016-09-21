@@ -465,15 +465,6 @@ var TemplateCreatorPage = function () {
     return createFirstElement;
 
   };
-  //this.findSearchSubmit = function () {
-  //
-  //  var elm = element.all(by.css('.subm')).get(0);
-  //  browser.executeScript("arguments[0].scrollIntoView();", elm.getWebElement());
-  //  browser.sleep(3000);
-  //  return elm;
-  //
-  //};
-
 
   // template creator
   this.createSaveTemplateButton = function () {
