@@ -373,6 +373,7 @@ describe('template-creator', function () {
       elementPage.setElementDescription(page.sampleElementDescription());
       elementPage.clickSaveElement();
 
+
     });
 
     // github issue #400

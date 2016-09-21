@@ -97,6 +97,7 @@ var WorkspacePage = function () {
   var folderType = 'folder';
   var templateType = 'template';
   var elementType = 'element';
+  var metadataType = 'metadata';
 
 
   this.get = function () {
@@ -127,6 +128,9 @@ var WorkspacePage = function () {
   };
   this.elementType = function () {
     return elementType;
+  };
+  this.metadataType = function () {
+    return metadataType;
   };
   this.createLogo = function () {
     return createLogo;
@@ -170,8 +174,15 @@ var WorkspacePage = function () {
   //  createNewFolderButton.click();
   //  browser.wait(createFolderModal.isPresent());
   //};
+
+ var getRandomInt = function(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min)) + min;
+  };
+
   this.createRandomFolderName = function () {
-    return testFolderName + Math.random();
+    return testFolderName + getRandomInt(1,9999);
   };
   this.sampleTemplateTitle = function () {
     return sampleTemplateTitle;
@@ -281,21 +292,22 @@ var WorkspacePage = function () {
     createSearchNavInput.sendKeys(name).sendKeys(protractor.Key.ENTER);
 
     // wait for search results to show in the breadcrumb
-    browser.wait(createBreadcrumbSearch.isDisplayed());
+    browser.wait(createBreadcrumbSearch.isDisplayed()).then(function () {
+      // select the first result
+      expect(createFirstTemplate.isDisplayed()).toBe(true);
+      createFirstTemplate.click();
 
-    // select the first result
-    expect(createFirstTemplate.isDisplayed()).toBe(true);
-    createFirstTemplate.click();
+      // wait for the resource to be selected
+      browser.wait(createFirstSelected.isDisplayed()).then(function () {
+        browser.actions().doubleClick(createFirstTemplate).perform();
 
-    // wait for the resource to be selected
-    browser.wait(createFirstSelected.isDisplayed());
+        // wait until metadata page is displayed
+        browser.wait(createMetadataPage.isDisplayed()).then(function () {
+          deferred.fulfill(true);
+        });
 
-    browser.actions().doubleClick(createFirstTemplate).perform();
-
-    // wait until metadata page is displayed
-    browser.wait(createMetadataPage.isDisplayed());
-    deferred.fulfill(true);
-
+      });
+    });
     return deferred.promise;
   };
 

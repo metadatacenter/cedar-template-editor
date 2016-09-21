@@ -136,45 +136,34 @@ describe('element-creator', function () {
   // github issue #403:  Verify that the header is present and displays back button, name, description, title, JSON preview
   it("should show element editor header, title, description, and json preview", function () {
 
-    // should have a top navigation element
-    expect(page.topNavigation().isDisplayed()).toBe(true);
-    // should have a template editor top nav
-    expect(page.hasClass(page.topNavigation(), page.elementType())).toBe(true);
-    // should have a back arrow in the header
-    expect(page.topNavBackArrow().isDisplayed()).toBe(true);
-    // should have a json preview in the header
-    expect(page.showJsonLink().isDisplayed()).toBe(true);
+      // should have a top navigation element
+      expect(page.topNavigation().isDisplayed()).toBe(true);
+      // should have a template editor top nav
+      expect(page.hasClass(page.topNavigation(), page.elementType())).toBe(true);
+      // should have a back arrow in the header
+      expect(page.topNavBackArrow().isDisplayed()).toBe(true);
+      // should have a json preview in the header
+      expect(page.showJsonLink().isDisplayed()).toBe(true);
 
-    // should have an editable template title
-    expect(page.elementTitle().isDisplayed()).toBe(true);
-    page.elementTitle().sendKeys(page.testTitle());
+      // should have an editable template title
+      expect(page.elementTitle().isDisplayed()).toBe(true);
+      page.elementTitle().sendKeys(page.testTitle());
 
-    // should have an editable description
-    expect(page.elementDescription().isDisplayed()).toBe(true);
-    browser.actions().doubleClick(page.elementDescription()).perform();
-    page.elementDescription().sendKeys(page.testDescription());
+      // should have an editable description
+      expect(page.elementDescription().isDisplayed()).toBe(true);
+      browser.actions().doubleClick(page.elementDescription()).perform();
+      page.elementDescription().sendKeys(page.testDescription());
 
-    // submit the form and check our edits
-    page.elementDescriptionForm().submit();
+      // submit the form and check our edits
+      page.elementDescriptionForm().submit();
 
 
-    page.elementTitle().getAttribute('value').then(function (value) {
-      expect(_.isEqual(value, page.testTitle())).toBe(true);
-    });
-    page.elementDescription().getAttribute('value').then(function (value) {
-      expect(_.isEqual(value, page.testDescription())).toBe(true);
-    });
-  });
-
-  // github issue #403:  click backarrow and go back to dashboard
-  it("should go to dashboard when back arrow clicked", function () {
-
-    // click the back arrow to return to workspace
-    page.clickBackArrow();
-
-    browser.wait(EC.visibilityOf($('.navbar-brand')), 10000);
-    expect(page.isDashboard()).toBe(true);
-
+      page.elementTitle().getAttribute('value').then(function (value) {
+        expect(_.isEqual(value, page.testTitle())).toBe(true);
+      });
+      page.elementDescription().getAttribute('value').then(function (value) {
+        expect(_.isEqual(value, page.testDescription())).toBe(true);
+      });
   });
 
   // github issue #404 Part 1 of 4:  Verify that Clear button is present and active, expect clear to clear the element
@@ -221,6 +210,7 @@ describe('element-creator', function () {
     });
   });
 
+
   // github issue #404 Part 2 of 4:  Verify that Clear button is present and active, expect cancelling the clear to not modify the template
   it("should not change the element when clear clicked but then cancelled", function () {
 
@@ -261,6 +251,17 @@ describe('element-creator', function () {
         });
       });
     });
+  });
+
+  // github issue #403:  click backarrow and go back to dashboard
+  it("should go to dashboard when back arrow clicked", function () {
+
+    // click the back arrow to return to workspace
+    page.clickBackArrow();
+
+    browser.wait(EC.visibilityOf($('.navbar-brand')), 10000);
+    expect(page.isDashboard()).toBe(true);
+
   });
 
   // github issue #404 Part 3 of 4:  Verify that Cancel button is present and active,
@@ -644,5 +645,5 @@ describe('element-creator', function () {
     });
 
   });
+});
 
-}); 
