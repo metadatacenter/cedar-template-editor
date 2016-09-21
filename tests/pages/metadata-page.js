@@ -1,11 +1,12 @@
 'use strict';
 
-require ('../pages/workspace-page.js');
+require('../pages/workspace-page.js');
 
 var MetadataPage = function () {
   //var url = 'https://cedar.metadatacenter.orgx/dashboard';
   var testConfig = require('../config/test-env.js');
   var url = testConfig.baseUrl + '/dashboard';
+  var EC = protractor.ExpectedConditions;
 
   var createToastyConfirmationPopup = element(by.id('toasty'));
   //var createToastyConfirmationPopup = element(by.id('toasty')).element(by.css('.toasty-test-success'));
@@ -30,7 +31,6 @@ var MetadataPage = function () {
   var createSweetAlertConfirmButton = element(by.css('.sweet-alert')).element(by.css('.sa-button-container')).element(by.css('button.confirm'));
 
 
-
   var cssNavDashboard = '.navbar.dashboard';
   var cssNavMetadata = '.navbar.metadata';
 
@@ -41,75 +41,89 @@ var MetadataPage = function () {
 
   this.get = function () {
     browser.get(url);
-    browser.sleep(1000);
+    //browser.sleep(1000);
+  };
+  this.getRandomInt = function (min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min)) + min;
   };
 
 
-  this.test = function() {
+  this.test = function () {
     console.log('metadata  page test');
   };
 
-  this.topNavigation = function() {
+  this.topNavigation = function () {
     return topNavigation;
   };
-  this.topNavBackArrow = function() {
+  this.topNavBackArrow = function () {
     return topNavBackArrow;
   };
-  this.documentTitle = function() {
+  this.documentTitle = function () {
     return documentTitle;
   };
-  this.pageTitle = function() {
+  this.pageTitle = function () {
     return pageTitle;
   };
-  this.templateJson = function() {
+  this.templateJson = function () {
     return templateJson;
   };
-  this.metadataJson = function() {
+  this.metadataJson = function () {
     return metadataJson;
   };
-  this.firstItemTitle = function() {
+  this.firstItemTitle = function () {
     return firstItemTitle;
   };
-  this.sampleTitle = function() {
+  this.sampleTitle = function () {
     return sampleTitle;
   };
-  this.metadataPageTitle = function() {
+  this.metadataPageTitle = function () {
     return metadataPageTitle;
   };
-  this.deleteTemplateMessage = function() {
+  this.deleteTemplateMessage = function () {
     return deleteTemplateMessage;
   };
-  this.createCancelMetadataButton = function() {
+  this.createCancelMetadataButton = function () {
     return createCancelMetadataButton;
+  };
+  this.createSaveMetadataButton = function () {
+    return createSaveMetadataButton;
   }
 
 
-  this.isMetadata = function() {
+  this.isMetadata = function () {
     return element(by.css(cssNavMetadata)).isDisplayed();
   };
 
-  this.isDashboard = function() {
+  this.isDashboard = function () {
     return element(by.css(cssNavDashboard)).isDisplayed();
   };
 
   this.clickCancelMetadata = function () {
+    createCancelMetadataButton.click();
+  };
+
+  this.clickBackArrowMetadata = function () {
     element(by.css('.back-arrow-click')).click();
-    //return require('./workspace-page.js');
   };
 
   this.clickCancel = function (cancel) {
     var deferred = protractor.promise.defer();
-    var EC = protractor.ExpectedConditions;
+
     var confirm = createSweetAlertConfirmButton;
 
     cancel.click();
-    browser.wait(createConfirmationDialog.isDisplayed()).then(function () {
 
-      browser.wait(EC.elementToBeClickable(confirm)).then(function () {
-        browser.sleep(1000);
-        confirm.click();
-        deferred.fulfill(true);
+    browser.wait(createConfirmationDialog.isPresent()).then(function () {
+      browser.wait(createConfirmationDialog.isDisplayed()).then(function () {
 
+        browser.wait(EC.elementToBeClickable(confirm)).then(function () {
+          browser.sleep(1000);
+          confirm.click();
+          deferred.fulfill(true);
+
+        });
       });
     });
 
@@ -117,17 +131,27 @@ var MetadataPage = function () {
 
   };
 
+
   this.clickSaveMetadata = function () {
+    var deferred = protractor.promise.defer();
 
-    // click save the template
-    element(by.css('.edit-actions button.btn.btn-save.metadata')).click();
+    browser.wait(createSaveMetadataButton.isPresent()).then(function () {
+      browser.wait(createSaveMetadataButton.isDisplayed()).then(function () {
+          createSaveMetadataButton.click();
 
-    browser.wait(createToastyConfirmationPopup.isDisplayed());
-    //browser.wait(EC.visibilityOf(createToastyConfirmationPopup), 10000);
-    //expect(createToastyConfirmationPopup.isDisplayed()).toBe(true);
-    toastyMessageText.getText().then(function (value) {
-      expect(value.indexOf(createMetadataMessage) !== -1).toBe(true);
+          browser.wait(createToastyConfirmationPopup.isPresent()).then(function () {
+            browser.wait(createToastyConfirmationPopup.isDisplayed()).then(function () {
+              browser.sleep(1000);
+
+              toastyMessageText.getText().then(function (value) {
+                expect(value.indexOf(createMetadataMessage) !== -1).toBe(true);
+                deferred.fulfill(true);
+              });
+            });
+          });
+      });
     });
+    return deferred.promise;
   };
 
   // sweet
