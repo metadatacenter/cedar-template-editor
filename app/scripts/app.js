@@ -27,7 +27,7 @@ define([
   'lib/ng-ckeditor/ng-ckeditor.min',
   'ckeditor',
   'lib/handsontable/dist/handsontable.full.min',
-  'jquery.min',
+  'jquery',
   'lib/jquery-ui/jquery-ui.min',
   'lib/perfnow-polyfill/perfnow-polyfill',
   'lib/sweetalert/dist/sweetalert.min',
@@ -36,8 +36,8 @@ define([
   'lib/angulartics-google-analytics/dist/angulartics-google-analytics.min',
 
   // custom libraries
-  'lib/custom/handsontable/SpreadsheetContext',
-  'lib/custom/handsontable/MultiCheckboxEditor',
+  'cedar/template-editor/handsontable/SpreadsheetContext',
+  'cedar/template-editor/handsontable/MultiCheckboxEditor',
 
   // cedar template editor modules
   'cedar/template-editor/core/core.module',
@@ -54,7 +54,7 @@ define([
 
   // classic javascript, app data
   'cedar/template-editor/classic/app-data'
-], function(angular) {
+], function (angular) {
   return angular.module('cedar.templateEditor', [
     'ui.bootstrap',
     'ui.keypress',

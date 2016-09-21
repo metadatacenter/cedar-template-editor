@@ -2,7 +2,7 @@
   "name": "angularjsFormBuilder",
   "version": "0.2.1",
   "dependencies": {
-    "angular": "~1.5.0",
+    "angular": "~1.5.8",
     "angular-animate": "~1.5.0",
     "angular-md5": "^0.1.10",
     "angular-mocks": "~1.5.0",
@@ -31,6 +31,6 @@
     "angular-ui-keypress": "angular-ui-utils#bower-keypress"
   },
   "resolutions": {
-    "angular": "~1.5.0"
+    "angular": "~1.5.8"
   }
 }
