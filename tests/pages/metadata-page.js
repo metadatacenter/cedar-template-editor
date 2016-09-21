@@ -137,7 +137,6 @@ var MetadataPage = function () {
 
     browser.wait(createSaveMetadataButton.isPresent()).then(function () {
       browser.wait(createSaveMetadataButton.isDisplayed()).then(function () {
-        browser.wait(createSaveMetadataButton.isEnabled()).then(function () {
           createSaveMetadataButton.click();
 
           browser.wait(createToastyConfirmationPopup.isPresent()).then(function () {
@@ -150,7 +149,6 @@ var MetadataPage = function () {
               });
             });
           });
-        });
       });
     });
     return deferred.promise;
