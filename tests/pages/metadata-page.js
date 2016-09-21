@@ -41,7 +41,7 @@ var MetadataPage = function () {
 
   this.get = function () {
     browser.get(url);
-    browser.sleep(1000);
+    //browser.sleep(1000);
   };
   this.getRandomInt = function (min, max) {
     min = Math.ceil(min);
@@ -135,16 +135,21 @@ var MetadataPage = function () {
   this.clickSaveMetadata = function () {
     var deferred = protractor.promise.defer();
 
+    browser.wait(createSaveMetadataButton.isPresent()).then(function () {
+      browser.wait(createSaveMetadataButton.isDisplayed()).then(function () {
+        browser.wait(createSaveMetadataButton.isEnabled()).then(function () {
+          createSaveMetadataButton.click();
 
-    // click save the template
-    element(by.css('.edit-actions button.btn.btn-save.metadata')).click();
+          browser.wait(createToastyConfirmationPopup.isPresent()).then(function () {
+            browser.wait(createToastyConfirmationPopup.isDisplayed()).then(function () {
+              browser.sleep(1000);
 
-    browser.wait(createToastyConfirmationPopup.isPresent()).then(function () {
-      browser.wait(createToastyConfirmationPopup.isDisplayed()).then(function () {
-
-        toastyMessageText.getText().then(function (value) {
-          expect(value.indexOf(createMetadataMessage) !== -1).toBe(true);
-          deferred.fulfill(true);
+              toastyMessageText.getText().then(function (value) {
+                expect(value.indexOf(createMetadataMessage) !== -1).toBe(true);
+                deferred.fulfill(true);
+              });
+            });
+          });
         });
       });
     });

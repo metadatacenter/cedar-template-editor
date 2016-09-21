@@ -61,11 +61,7 @@ describe('metadata-creator', function () {
 
   it("should create metadata from the template", function () {
     workspacePage.openTemplate(sampleTitle).then(function () {
-      browser.wait(metadataPage.createSaveMetadataButton().isPresent()).then(function () {
-        browser.wait(metadataPage.createSaveMetadataButton().isDisplayed()).then(function () {
-          metadataPage.clickSaveMetadata();
-        });
-      });
+      metadataPage.clickSaveMetadata();
     });
   });
 
