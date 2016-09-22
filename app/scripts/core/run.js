@@ -457,9 +457,9 @@ define([
       }
     };
 
-    $rootScope.$on('$locationChangeStart', function (event) {
-      $rootScope.setHeader();
-    });
+    //$rootScope.$on('$locationChangeStart', function (event) {
+    //  $rootScope.setHeader();
+    //});
 
     $rootScope.setHeader = function () {
 

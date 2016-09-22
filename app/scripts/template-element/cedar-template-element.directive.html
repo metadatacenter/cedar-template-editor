@@ -35,7 +35,7 @@
          </span>
 
           <span class="multiple-instance-cardinality"
-              ng-show="!$root.isRuntime() &&  !isNested() && $root.elementIsMultiInstance(element)">
+              ng-show="!$root.isRuntime() && $root.elementIsMultiInstance(element)">
            {{element.minItems}} .. {{element.maxItems || "N"}}
           </span>
       </div>

@@ -311,7 +311,6 @@ define([
           // is dangerous because we have references to the original array
           $scope.model.splice(0, $scope.model.length);
         }
-
         if (field._ui.inputType == 'checkbox') {
           for (var option in $scope.optionsUI) {
             if ($scope.optionsUI[option] == true) {
@@ -334,6 +333,36 @@ define([
         // Default value
         if ($scope.model.length == 0) {
           $scope.model.push({'@value': null});
+        }
+      }
+
+      // Updates the model for fields whose values have been constrained using controlled terms
+      $scope.updateModelFromUIControlledField = function () {
+        // Multiple fields
+        if ($rootScope.isArray($scope.modelValue)) {
+          if ($scope.modelValue.length > 0) {
+            angular.forEach($scope.modelValue, function (m, i) {
+              if (m && m['@value'] && m['@value']['@id']) {
+                $scope.model[i] = {
+                  "@value"   : m['@value']['@id'],
+                  _valueLabel: m['@value'].label
+                };
+              }
+            });
+          }
+          else {
+            // Default value
+            $scope.model = [{'@value': null}];
+          }
+        }
+        // Single fields
+        else {
+          if ($scope.modelValue && $scope.modelValue['@value'] && $scope.modelValue['@value']["@id"]) {
+            $scope.model['@value'] = $scope.modelValue['@value']["@id"];
+            $scope.model._valueLabel = $scope.modelValue['@value'].label;
+          } else {
+            $scope.model['@value'] = null;
+          }
         }
       }
 
@@ -362,7 +391,27 @@ define([
         }
       }
 
-      // Initializes model for selection fields (checkbox, radio and list). This function ensures that the UI element is
+      $scope.updateUIFromModelControlledField = function () {
+        if ($rootScope.isArray($scope.model)) {
+          $scope.modelValue = [];
+          angular.forEach($scope.model, function (m, i) {
+            $scope.modelValue[i] = {};
+            $scope.modelValue[i]['@value'] = {
+              '@id': m['@value'],
+              label: m._valueLabel
+            };
+          });
+        }
+        else {
+          $scope.modelValue = {};
+          $scope.modelValue['@value'] = {
+            '@id': $scope.model['@value'],
+            label: $scope.model._valueLabel
+          };
+        }
+      }
+
+      // Initializes model for selection fields (checkbox, radio and list).
       $scope.initializeSelectionField = function () {
         if ($scope.directory == "render") {
           if ((field._ui.inputType == 'checkbox')
@@ -377,6 +426,35 @@ define([
             // If we are editing an instance we need to load the values stored into the model
             else {
               $scope.updateUIFromModel();
+            }
+          }
+        }
+      }
+
+      // Initializes model for fields constrained using controlled terms
+      $scope.initializeControlledField = function () {
+        // If modelValue has not been initialized
+        if (!$scope.modelValue) {
+          var isMultiple = false;
+          if ($scope.field.items) {
+            isMultiple = true;
+          }
+          if ($scope.directory == "render") {
+            if ($rootScope.schemaOf($scope.field)._ui.inputType == "textfield" &&
+                $rootScope.hasValueConstraint($rootScope.schemaOf($scope.field)._valueConstraints)) {
+              // We are populating the template
+              if ($scope.isEditData == null || $scope.isEditData == false) {
+                if (isMultiple) {
+                  $scope.modelValue = []
+                }
+                else {
+                  $scope.modelValue = {};
+                }
+              }
+              // We are editing an instance
+              else {
+                $scope.updateUIFromModelControlledField();
+              }
             }
           }
         }
@@ -422,25 +500,7 @@ define([
 
       $scope.addMoreInput = function () {
         if ((!$scope.field.maxItems || $scope.model.length < $scope.field.maxItems)) {
-          var seed = {};
-          if ($scope.model.length > 0) {
-            seed = angular.copy($scope.model[0]);
-          }
-
-          if (field._valueConstraints.defaultOptions) {
-            seed['@value'] = angular.copy(field._valueConstraints.defaultOptions);
-          } else {
-            if (['checkbox'].indexOf(field._ui.inputType) >= 0 ||
-                ['date'].indexOf(field._ui.inputType) >= 0 && field._ui.dateType == "date-range") {
-              seed['@value'] = {};
-            } else if (['list'].indexOf(field._ui.inputType) >= 0) {
-              seed['@value'] = [];
-            } else {
-              seed['@value'] = null;
-            }
-          }
-
-          $scope.model.push(seed);
+          $scope.model.push({'@value': null});
         }
       };
 
@@ -454,30 +514,6 @@ define([
       $scope.switchToSpreadsheet = function () {
         SpreadsheetService.switchToSpreadsheetField($scope, $element);
       };
-
-      $scope.$watch("modelValue", function (newValue, oldValue) {
-
-        if ($rootScope.isArray($scope.model)) {
-          angular.forEach($scope.modelValue, function (m, i) {
-            if (m && m['@value'] && m['@value']["@id"]) {
-              $scope.model[i]['@value'] = m['@value']["id"];
-              $scope.model[i]._valueLabel = m['@value'].label;
-            } else {
-              delete $scope.model[i]['@value'];
-              delete $scope.model[i]._valueLabel;
-            }
-          });
-        } else {
-          if (newValue && newValue['@value'] && newValue['@value']["@id"]) {
-            $scope.model['@value'] = newValue['@value']["@id"];
-            $scope.model._valueLabel = newValue['@value'].label;
-          } else if (oldValue) {
-            delete $scope.model['@value'];
-            delete $scope.model._valueLabel;
-          }
-        }
-
-      }, true);
 
       // look for errors
       $scope.checkFieldConditions = function (field) {
@@ -609,27 +645,6 @@ define([
 
       // Used just for text fields whose values have been constrained using controlled terms
       $scope.$watch("model", function () {
-        if ($scope.directory == "render" &&
-            DataManipulationService.getFieldSchema($scope.field)._ui.inputType == "textfield" &&
-            $rootScope.hasValueConstraint($rootScope.schemaOf($scope.field)._valueConstraints)) {
-          if ($rootScope.isArray($scope.model)) {
-            $scope.modelValue = [];
-            angular.forEach($scope.model, function (m, i) {
-              // TODO: Push valid value if m is present.
-              if (m['@value']) {
-                $scope.modelValue.push({'@value': {"@id": m['@value'], label: m._valueLabel}});
-              } else {
-                $scope.modelValue.push({});
-              }
-            });
-          } else {
-            if ($scope.model && $scope.model['@value']) {
-              $scope.modelValue = {'@value': {"@id": $scope.model['@value'], label: $scope.model._valueLabel}};
-            } else {
-              $scope.modelValue = {};
-            }
-          }
-        }
 
         $scope.isEditState = function () {
           return (DataManipulationService.isEditState($scope.field));
@@ -646,6 +661,7 @@ define([
       }, true);
 
       /* Value Recommendation functionality */
+
       // Load values when opening an instance
       if ($scope.model) {
         $scope.modelValueRecommendation = {'@value': {'value': $scope.model['@value']}}

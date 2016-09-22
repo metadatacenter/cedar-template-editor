@@ -51,15 +51,17 @@ describe('workspace', function () {
 
     //create a folder, select it, and expect the trash to be visible
     page.createFolder(name).then(function () {
+      browser.waitForAngular().then(function () {
+        // until something is selected
+        page.createFirstFolder().click();
+        browser.wait(page.createFirstSelected().isDisplayed());
+        browser.wait(page.createTrashButton().isDisplayed());
+        browser.wait(page.createMoreOptionsButton().isDisplayed());
 
-      // until something is selected
-      page.createFirstFolder().click();
-      browser.wait(page.createFirstSelected().isDisplayed());
-      browser.wait(page.createTrashButton().isDisplayed());
-      browser.wait(page.createMoreOptionsButton().isDisplayed());
-
-      page.deleteResource(name, page.folderType());
+        page.deleteResource(name, page.folderType());
+      });
     });
+
   });
 
 

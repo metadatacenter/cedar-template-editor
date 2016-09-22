@@ -12,14 +12,13 @@ if (window.__karma__) {
 
 require.config({
   paths   : {
-    'angular'     : 'bower_components/angular/angular',
+    'angular'     : 'bower_components/angular/angular.min',
     'angularMocks': 'bower_components/angular-mocks/angular-mocks',
-    'jquery'      : 'bower_components/jquery/jquery',
-    'moment'      : 'bower_components/moment/moment',
+    'jquery'      : 'bower_components/jquery/jquery.min',
+    'moment'      : 'bower_components/moment/min/moment.min',
 
-    'lib'       : 'bower_components',
-    'lib/custom': 'cedar/scripts',
-    '3rdparty'  : 'third_party_components',
+    'lib'     : 'bower_components',
+    '3rdparty': 'third_party_components',
 
     // requirejs plugins
     'text': 'bower_components/requirejs-plugins/lib/text',
@@ -31,49 +30,46 @@ require.config({
     'ckeditor': 'bower_components/ng-ckeditor/libs/ckeditor/ckeditor'
   },
   shim    : {
-    'angular'                                                                        : {
+    'angular'                                                                            : {
       'deps'   : ['jquery'],
       'exports': 'angular'
     },
-    'angularMocks'                                                                   : {
+    'angularMocks'                                                                       : {
       deps     : ['angular'],
       'exports': 'angular.mock'
     },
-    'lib/angucomplete-alt/angulcomplete-alt'                                         : ['angular'],
-    'lib/angular-animate/angular-animate'                                            : ['angular'],
-    'lib/angular-bootstrap/ui-bootstrap'                                             : ['angular'],
-    'lib/angular-bootstrap/ui-bootstrap-tpls'                                        : ['angular'],
-    'lib/angular-route/angular-route'                                                : ['angular'],
-    'lib/angular-sanitize/angular-sanitize'                                          : ['angular'],
-    'lib/angular-translate/angular-translate'                                        : ['angular'],
-    'lib/angular-translate-loader-static-files/angular-translate-loader-static-files': ['lib/angular-translate/angular-translate'],
-    'lib/angular-toasty/dist/angular-toasty'                                         : ['angular'],
-    'lib/angular-ui-select/dist/select'                                              : ['angular'],
-    'lib/angular-ui-sortable/sortable'                                               : ['angular'],
-    'lib/angulartics/dist/angulartics.min'                                           : ['angular'],
-    'lib/angulartics-google-analytics/dist/angulartics-google-analytics.min'         : ['angular'],
+    'lib/angucomplete-alt/angulcomplete-alt'                                             : ['angular'],
+    'lib/angular-animate/angular-animate.min'                                            : ['angular'],
+    'lib/angular-bootstrap/ui-bootstrap.min'                                             : ['angular'],
+    'lib/angular-bootstrap/ui-bootstrap-tpls.min'                                        : ['angular'],
+    'lib/angular-route/angular-route.min'                                                : ['angular'],
+    'lib/angular-sanitize/angular-sanitize.min'                                          : ['angular'],
+    'lib/angular-translate/angular-translate.min'                                        : ['angular'],
+    'lib/angular-translate-loader-static-files/angular-translate-loader-static-files.min': ['lib/angular-translate/angular-translate.min'],
+    'lib/angular-toasty/dist/angular-toasty.min'                                         : ['angular'],
+    'lib/angular-ui-select/dist/select.min'                                              : ['angular'],
+    'lib/angular-ui-sortable/sortable.min'                                               : ['angular'],
+    'lib/angulartics/dist/angulartics.min'                                               : ['angular'],
+    'lib/angulartics-google-analytics/dist/angulartics-google-analytics.min'             : ['angular'],
 
     '3rdparty/angular-fitvids/angular-fitvids': {
       deps   : ['angular', 'jquery'],
       exports: 'fitVids'
     },
 
-    'lib/ng-ckeditor/ng-ckeditor': ['angular', 'ckeditor']
-    ,
-    'ckeditor'                   : {
+    'lib/ng-ckeditor/ng-ckeditor.min': ['angular', 'ckeditor'],
+    'ckeditor'                       : {
       'exports': 'CKEDITOR'
     },
 
-    'lib/ngHandsontable/dist/ngHandsontable': ['angular',
-                                               'lib/handsontable/dist/handsontable.full'],
-
-    'lib/handsontable/dist/handsontable.full'                                    : {'exports': 'Handsontable'},
-    'lib/bootstrap/dist/js/bootstrap'                                            : ['jquery'],
+    'lib/ngHandsontable/dist/ngHandsontable.min'                                 : ['angular',
+                                                                                    'lib/handsontable/dist/handsontable.full.min'],
+    'lib/handsontable/dist/handsontable.full.min'                                : {'exports': 'Handsontable'},
+    'lib/bootstrap/dist/js/bootstrap.min'                                        : ['jquery'],
     'lib/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min': ['jquery'],
-    'lib/bootstrap-select/dist/js/bootstrap-select.min'                          : ['lib/bootstrap/dist/js/bootstrap'],
-
-    'lib/custom/handsontable/SpreadsheetContext' : ['lib/handsontable/dist/handsontable.full'],
-    'lib/custom/handsontable/MultiCheckboxEditor': ['lib/handsontable/dist/handsontable.full'],
+    'lib/bootstrap-select/dist/js/bootstrap-select.min'                          : ['lib/bootstrap/dist/js/bootstrap.min'],
+    'cedar/template-editor/handsontable/SpreadsheetContext'                      : ['lib/handsontable/dist/handsontable.full.min'],
+    'cedar/template-editor/handsontable/MultiCheckboxEditor'                     : ['lib/handsontable/dist/handsontable.full.min'],
   },
   priority: [
     'jquery',
@@ -82,7 +78,7 @@ require.config({
   deps    : window.__karma__ ? allTestFiles : [],
   callback: window.__karma__ ? window.__karma__.start : null,
   baseUrl : window.__karma__ ? '/base' : '',
-  urlArgs: "bust=" + (new Date()).getTime()
+  urlArgs: "bust=0.8.1"
 });
 
 // do not load the full app here.

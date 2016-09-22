@@ -269,17 +269,15 @@ describe('template-creator', function () {
   // github issue #398 Part 3 of 4:  Verify that Cancel button is present and active,
   it("should have Cancel button present and active", function () {
 
-    // should have save and cancel displayed
-    expect(page.createCancelTemplateButton().isDisplayed()).toBe(true);
-
     // make the template dirty
+    page.addField(fieldTypes[0].cedarType);
     page.addField(fieldTypes[0].cedarType);
 
     // clicking the cancel should cancel edits
-    page.clickCancelTemplate();
+    page.clickCancel(page.createCancelTemplateButton()).then(function () {
+      expect(page.isDashboard()).toBe(true);
+    });
 
-    // should be back to workspace
-    expect(page.isDashboard()).toBe(true);
   });
 
   // github issue #398 Part 4 of 4:  Verify that save button is present and active,
@@ -366,7 +364,7 @@ describe('template-creator', function () {
     // github issue #400
     it("should create a sample element in the workspace, ", function () {
 
-      var workspacePage = page.clickCancelTemplate();
+      page.createCancelTemplateButton().click();
       var elementPage = workspacePage.createElement();
 
       // create an element and add a text field to it
@@ -374,6 +372,7 @@ describe('template-creator', function () {
       elementPage.setElementTitle(page.sampleElementTitle());
       elementPage.setElementDescription(page.sampleElementDescription());
       elementPage.clickSaveElement();
+
 
     });
 
@@ -590,7 +589,7 @@ describe('template-creator', function () {
     // github issue #400
     it("should delete the sample element from the workspace, ", function () {
 
-      page.clickCancelTemplate();
+      page.createCancelTemplateButton().click();
       workspacePage.deleteResource(page.sampleElementTitle(), workspacePage.elementType());
 
     });

@@ -19,6 +19,8 @@ define([
 
     var vm = this;
 
+    vm.path = $location.path();
+
     vm.confirmBack = function () {
 
       if (!$rootScope.isDirty()) {
@@ -83,7 +85,7 @@ define([
     };
 
     vm.isDashboard = function () {
-      return ($location.path() === "/dashboard");
+      return (vm.path === "/dashboard");
     };
 
     vm.getDocumentTitle = function () {
@@ -96,29 +98,54 @@ define([
 
     vm.isTemplate = function () {
       //console.log('isTemplate' + ($location.path() === "/templates"));
-      return ($location.path() === "/templates");
+      return (vm.path === "/templates");
     };
 
     vm.isElement = function () {
-      return ($location.path() === "/elements");
+      return (vm.path === "/elements");
     };
 
     vm.isMetadata = function () {
-      return ($location.path() === "/instances");
+      return (vm.path === "/instances");
     };
 
     vm.isProfile = function () {
-      return ($location.path() === "/profile");
+      return (vm.path === "/profile");
     };
+
+    vm.isPrivacy = function () {
+      return (vm.path === "/privacy");
+    };
+
+    //*********** ENTRY POINT
 
     vm.isPrivacy = function () {
       return ($location.path() === "/privacy");
     };
+
+
+    $rootScope.$on('$locationChangeStart', function (event, next, current) {
+
+      vm.path = $location.path();
+      $rootScope.setHeader();
+
+      if ($rootScope.isDirty()) {
+
+        event.preventDefault();
+        vm.confirmBack();
+
+        $timeout(function () {
+
+          vm.path = $location.path();
+          $rootScope.setHeader();
+
+        });
+      }
+    });
 
     //*********** ENTRY POINT
 
     vm.searchTerm = $location.search().search;
 
   }
-
 });

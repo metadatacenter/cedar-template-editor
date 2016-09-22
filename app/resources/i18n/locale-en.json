@@ -249,7 +249,12 @@
       "addHint": "Share with user",
       "public": "With groups",
       "usersAndGroups": "With users and groups"
+    },
+    "filter": {
+      "filterBy": "Filter",
+      "reset": "Reset"
     }
+
   },
   "ELEMENTEDITOR": {
     "clear": {

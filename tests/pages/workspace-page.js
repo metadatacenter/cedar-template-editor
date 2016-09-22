@@ -48,7 +48,6 @@ var WorkspacePage = function () {
   var createGridView = element(by.css('.center-panel .grid-view'));
 
 
-
   // breadcrumbs
   var createBreadcrumb = element(by.css('.breadcrumbs-sb'));
   var createBreadcrumbFolders = element(by.css('.breadcrumbs-sb')).all(by.repeater('folder in dc.pathInfo'));
@@ -63,7 +62,7 @@ var WorkspacePage = function () {
   // create folder modal
   var createFolderModal = element(by.id('newFolderModal'));
   var createFolderName = createFolderModal.element(by.model('dc.folder.name'));
-   var createFolderSubmitButton = createFolderModal.element(by.css('div.modal-footer button.confirm'));
+  var createFolderSubmitButton = createFolderModal.element(by.css('div.modal-footer button.confirm'));
   var testFolderName = 'f';
   var testFolderDescription = 'd';
   var sampleTemplateTitle = 't';
@@ -97,11 +96,12 @@ var WorkspacePage = function () {
   var folderType = 'folder';
   var templateType = 'template';
   var elementType = 'element';
+  var metadataType = 'metadata';
 
 
   this.get = function () {
     browser.get(url);
-    browser.sleep(1000);
+    //browser.sleep(1000);
   };
   this.test = function () {
     console.log('workspace page test ');
@@ -127,6 +127,9 @@ var WorkspacePage = function () {
   };
   this.elementType = function () {
     return elementType;
+  };
+  this.metadataType = function () {
+    return metadataType;
   };
   this.createLogo = function () {
     return createLogo;
@@ -165,13 +168,14 @@ var WorkspacePage = function () {
     return require('./template-creator-page.js');
   };
 
-  //this.createFolderModal = function () {
-  //  browser.actions().mouseMove(createNewButton).perform();
-  //  createNewFolderButton.click();
-  //  browser.wait(createFolderModal.isPresent());
-  //};
+  var getRandomInt = function (min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min)) + min;
+  };
+
   this.createRandomFolderName = function () {
-    return testFolderName + Math.random();
+    return testFolderName + getRandomInt(1, 9999);
   };
   this.sampleTemplateTitle = function () {
     return sampleTemplateTitle;
@@ -187,7 +191,6 @@ var WorkspacePage = function () {
   this.sampleElementDescription = function () {
     return sampleElementDescription;
   };
-
 
   this.createToastyConfirmationPopup = function () {
     return createToastyConfirmationPopup;
@@ -232,31 +235,36 @@ var WorkspacePage = function () {
     var EC = protractor.ExpectedConditions;
 
     // search for the name
+    browser.wait(createSearchNavInput.isPresent());
     browser.wait(createSearchNavInput.isDisplayed());
     browser.wait(EC.elementToBeClickable(createSearchNavInput));
     createSearchNavInput.sendKeys(name).sendKeys(protractor.Key.ENTER);
-
     browser.sleep(1000);
 
     // wait for search results to show in the breadcrumb
+    browser.wait(createBreadcrumbSearch.isPresent());
     browser.wait(createBreadcrumbSearch.isDisplayed());
-
     browser.sleep(1000);
 
     // select the first result
     var createFirst = element.all(by.css(createFirstCss + type)).first();
+    browser.wait(createFirst.isPresent());
     browser.wait(createFirst.isDisplayed());
     browser.wait(EC.elementToBeClickable(createFirst));
     createFirst.click();
 
     // wait for a selected item and the trash button
+    browser.wait(createFirstSelected.isPresent());
     browser.wait(createFirstSelected.isDisplayed());
+    browser.wait(createTrashButton.isPresent());
     browser.wait(createTrashButton.isDisplayed());
     browser.wait(EC.elementToBeClickable(createTrashButton));
     createTrashButton.click();
 
+    browser.wait(createConfirmationDialog.isPresent());
     browser.wait(createConfirmationDialog.isDisplayed());
-    browser.sleep(1000);  // give it some time for animation
+    browser.sleep(1000);
+
     expect(createConfirmationDialog.getAttribute(sweetAlertCancelAttribute)).toBe('true');
     expect(createConfirmationDialog.getAttribute(sweetAlertConfirmAttribute)).toBe('true');
     browser.wait(EC.elementToBeClickable(createSweetAlertConfirmButton));
@@ -281,21 +289,27 @@ var WorkspacePage = function () {
     createSearchNavInput.sendKeys(name).sendKeys(protractor.Key.ENTER);
 
     // wait for search results to show in the breadcrumb
-    browser.wait(createBreadcrumbSearch.isDisplayed());
+    browser.wait(createBreadcrumbSearch.isPresent()).then(function () {
+      browser.wait(createBreadcrumbSearch.isDisplayed()).then(function () {
+        // select the first result
+        expect(createFirstTemplate.isDisplayed()).toBe(true);
+        createFirstTemplate.click();
 
-    // select the first result
-    expect(createFirstTemplate.isDisplayed()).toBe(true);
-    createFirstTemplate.click();
+        // wait for the resource to be selected
+        browser.wait(createFirstSelected.isPresent()).then(function () {
+          browser.wait(createFirstSelected.isDisplayed()).then(function () {
+            browser.actions().doubleClick(createFirstTemplate).perform();
 
-    // wait for the resource to be selected
-    browser.wait(createFirstSelected.isDisplayed());
-
-    browser.actions().doubleClick(createFirstTemplate).perform();
-
-    // wait until metadata page is displayed
-    browser.wait(createMetadataPage.isDisplayed());
-    deferred.fulfill(true);
-
+            // wait until metadata page is displayed
+            browser.wait(createMetadataPage.isPresent()).then(function () {
+              browser.wait(createMetadataPage.isDisplayed()).then(function () {
+                deferred.fulfill(true);
+              });
+            });
+          });
+        });
+      });
+    });
     return deferred.promise;
   };
 
@@ -339,7 +353,7 @@ var WorkspacePage = function () {
     return createBreadcrumbSearch;
   };
 
-  this.selectGridView = function() {
+  this.selectGridView = function () {
     createListView.isPresent().then(function (isList) {
       if (isList) {
         createGridViewButton.click();

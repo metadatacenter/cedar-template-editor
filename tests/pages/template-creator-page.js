@@ -52,8 +52,8 @@ var TemplateCreatorPage = function () {
   var createConfirmationDialog = element(by.css('.sweet-alert'));
   var sweetAlertCancelAttribute = 'data-has-cancel-button';
   var sweetAlertConfirmAttribute = 'data-has-confirm-button';
-  var createSweetAlertCancelButton = element(by.css('.sweet-alert')).element(by.css('.sa-button-container')).element(by.css('.cancel'));
-  var createSweetAlertConfirmButton = element(by.css('.sweet-alert')).element(by.css('.sa-button-container')).element(by.css('.confirm'));
+  var createSweetAlertCancelButton = element(by.css('.sweet-alert')).element(by.css('.sa-button-container')).element(by.css('button.cancel'));
+  var createSweetAlertConfirmButton = element(by.css('.sweet-alert')).element(by.css('.sa-button-container')).element(by.css('button.confirm'));
   var templateJSON = element(by.id('templateJSON'));
   var topNavigation = element(by.id('top-navigation'));
   var topNavBackArrow = element(by.id('top-navigation')).element(by.css('.navbar-header')).element(by.css('.back-arrow-click'));
@@ -95,7 +95,8 @@ var TemplateCreatorPage = function () {
     "@type"               : "https://schema.metadatacenter.org/core/Template",
     "@context"            : {
       "pav"   : "http://purl.org/pav/",
-      "oslc" : "http://open-services.net/ns/core#"
+      "oslc"  : "http://open-services.net/ns/core#",
+      "schema": "http://schema.org/"
     },
     "type"                : "object",
     "title"               : "Untitled template schema",
@@ -106,34 +107,52 @@ var TemplateCreatorPage = function () {
       "pages"      : []
     },
     "properties"          : {
-      "@context"           : {
+      "@context"          : {
+        "type"                : "object",
         "properties"          : {
-          "schema": {
-            "enum": [
-              "http://schema.org/"
-            ]
-          },
           "pav"   : {
-            "enum": [
+            "type"  : "string",
+            "format": "uri",
+            "enum"  : [
               "http://purl.org/pav/"
             ]
           },
-          "oslc" : {
-            "enum": [
+          "schema": {
+            "type"  : "string",
+            "format": "uri",
+            "enum"  : [
+              "http://schema.org/"
+            ]
+          },
+          "oslc"  : {
+            "type"  : "string",
+            "format": "uri",
+            "enum"  : [
               "http://open-services.net/ns/core#"
             ]
           }
         },
+        "patternProperties"   : {
+          "^(?!pav)(?!schema)(?!oslc)[a-zA-Z][a-zA-Z0-9]*$": {
+            "type"  : "string",
+            "format": "uri"
+          }
+        },
         "required"            : [
-          "@value"
+          "pav",
+          "schema",
+          "oslc"
         ],
         "additionalProperties": false
       },
-      "@id"                : {
-        "type"  : "string",
+      "@id"               : {
+        "type"  : [
+          "string",
+          "null"
+        ],
         "format": "uri"
       },
-      "@type"              : {
+      "@type"             : {
         "oneOf": [
           {
             "type"  : "string",
@@ -150,35 +169,60 @@ var TemplateCreatorPage = function () {
           }
         ]
       },
-      "schema:isBasedOn"        : {
+      "schema:isBasedOn"  : {
         "type"  : "string",
         "format": "uri"
       },
-      "pav:createdOn"      : {
-        "type"  : "string",
+      "schema:name"       : {
+        "type"     : "string",
+        "minLength": 1
+      },
+      "schema:description": {
+        "type": "string"
+      },
+      "pav:createdOn"     : {
+        "type"  : [
+          "string",
+          "null"
+        ],
         "format": "date-time"
       },
-      "pav:createdBy"      : {
-        "type"  : "string",
+      "pav:createdBy"     : {
+        "type"  : [
+          "string",
+          "null"
+        ],
         "format": "uri"
       },
-      "pav:lastUpdatedOn"  : {
-        "type"  : "string",
+      "pav:lastUpdatedOn" : {
+        "type"  : [
+          "string",
+          "null"
+        ],
         "format": "date-time"
       },
-      "oslc:modifiedBy": {
-        "type"  : "string",
+      "oslc:modifiedBy"   : {
+        "type"  : [
+          "string",
+          "null"
+        ],
         "format": "uri"
       }
     },
     "required"            : [
       "@id",
-      "schema:isBasedOn"
+      "schema:isBasedOn",
+      "schema:name",
+      "schema:description",
+      "pav:createdOn",
+      "pav:createdBy",
+      "pav:lastUpdatedOn",
+      "oslc:modifiedBy"
     ],
     "pav:createdOn"       : null,
     "pav:createdBy"       : null,
     "pav:lastUpdatedOn"   : null,
-    "oslc:modifiedBy" : null,
+    "oslc:modifiedBy"     : null,
     "additionalProperties": false
   };
 
@@ -199,7 +243,7 @@ var TemplateCreatorPage = function () {
     "@id"                 : null,
     "@type"               : "https://schema.metadatacenter.org/core/TemplateElement",
     "@context"            : {
-      "pav"  : "http://purl.org/pav/",
+      "pav" : "http://purl.org/pav/",
       "oslc": "http://open-services.net/ns/core#"
     },
     "type"                : "object",
@@ -211,18 +255,41 @@ var TemplateCreatorPage = function () {
       "order"      : []
     },
     "properties"          : {
-      "@context"           : {
-        "properties"          : {},
-        "required"            : [
-          "@value"
-        ],
+      "@context"         : {
+        "type"                : "object",
+        "properties"          : {
+          "pav" : {
+            "type"  : "string",
+            "format": "uri",
+            "enum"  : [
+              "http://purl.org/pav/"
+            ]
+          },
+          "oslc": {
+            "type"  : "string",
+            "format": "uri",
+            "enum"  : [
+              "http://open-services.net/ns/core#"
+            ]
+          }
+        },
+        "patternProperties"   : {
+          "^(?!pav)(?!schema)(?!oslc)[a-zA-Z][a-zA-Z0-9]*$": {
+            "type"  : "string",
+            "format": "uri"
+          }
+        },
+        "required"            : [],
         "additionalProperties": false
       },
-      "@id"                : {
-        "format": "uri",
-        "type"  : "string"
+      "@id"              : {
+        "type"  : [
+          "string",
+          "null"
+        ],
+        "format": "uri"
       },
-      "@type"              : {
+      "@type"            : {
         "oneOf": [
           {
             "type"  : "string",
@@ -239,30 +306,40 @@ var TemplateCreatorPage = function () {
           }
         ]
       },
-      "pav:createdOn"      : {
-        "type"  : "string",
+      "pav:createdOn"    : {
+        "type"  : [
+          "string",
+          "null"
+        ],
         "format": "date-time"
       },
-      "pav:createdBy"      : {
-        "type"  : "string",
+      "pav:createdBy"    : {
+        "type"  : [
+          "string",
+          "null"
+        ],
         "format": "uri"
       },
-      "pav:lastUpdatedOn"  : {
-        "type"  : "string",
+      "pav:lastUpdatedOn": {
+        "type"  : [
+          "string",
+          "null"
+        ],
         "format": "date-time"
       },
-      "oslc:modifiedBy": {
-        "type"  : "string",
+      "oslc:modifiedBy"  : {
+        "type"  : [
+          "string",
+          "null"
+        ],
         "format": "uri"
       }
     },
-    "required"            : [
-      "@id"
-    ],
+    "required"            : [],
     "pav:createdOn"       : null,
     "pav:createdBy"       : null,
     "pav:lastUpdatedOn"   : null,
-    "oslc:modifiedBy" : null,
+    "oslc:modifiedBy"     : null,
     "additionalProperties": false
   };
 
@@ -364,6 +441,11 @@ var TemplateCreatorPage = function () {
   };
 
 
+  this.clickConfirm = function () {
+    element(by.css(confirmAttribute)).click();
+  };
+
+
   this.addSearchElements = function () {
     createSearchElement.click();
   };
@@ -383,15 +465,6 @@ var TemplateCreatorPage = function () {
     return createFirstElement;
 
   };
-  //this.findSearchSubmit = function () {
-  //
-  //  var elm = element.all(by.css('.subm')).get(0);
-  //  browser.executeScript("arguments[0].scrollIntoView();", elm.getWebElement());
-  //  browser.sleep(3000);
-  //  return elm;
-  //
-  //};
-
 
   // template creator
   this.createSaveTemplateButton = function () {
@@ -406,9 +479,25 @@ var TemplateCreatorPage = function () {
   this.clickSaveTemplate = function () {
     createSaveTemplateButton.click();
   };
-  this.clickCancelTemplate = function () {
-    createCancelTemplateButton.click();
-    return require('./workspace-page.js');
+
+  this.clickCancel = function (cancel) {
+    var deferred = protractor.promise.defer();
+    var EC = protractor.ExpectedConditions;
+    var confirm = createSweetAlertConfirmButton;
+
+    cancel.click();
+    browser.wait(createConfirmationDialog.isDisplayed()).then(function () {
+
+      browser.wait(EC.elementToBeClickable(confirm)).then(function () {
+        browser.sleep(1000);
+        confirm.click();
+        deferred.fulfill(true);
+
+      });
+    });
+
+    return deferred.promise;
+
   };
   this.clickClearTemplate = function () {
     createClearTemplateButton.click();
@@ -475,10 +564,7 @@ var TemplateCreatorPage = function () {
   this.clickSaveElement = function () {
     createSaveElementButton.click();
   };
-  this.clickCancelElement = function () {
-    createCancelElementButton.click();
-    return require('./workspace-page.js');
-  };
+
   this.clickClearElement = function () {
     createClearElementButton.click();
   };
@@ -512,6 +598,15 @@ var TemplateCreatorPage = function () {
     createSweetAlertCancelButton.click();
     browser.sleep(1000);
   };
+
+  this.createSweetAlertCancelButton = function () {
+    return createSweetAlertCancelButton;
+  };
+
+  this.createSweetAlertConfirmButton = function () {
+    return createSweetAlertConfirmButton;
+  };
+
   this.clickSweetAlertConfirmButton = function () {
     createSweetAlertConfirmButton.click();
     browser.sleep(1000);
@@ -643,6 +738,7 @@ var TemplateCreatorPage = function () {
 
   };
 
+
   this.removeElement = function () {
     removeElementButton.click();
     browser.sleep(1000);
@@ -672,55 +768,74 @@ var TemplateCreatorPage = function () {
     // add an element
     var finderPage = this.openFinder();
 
-    browser.wait(finderPage.createFinder().isDisplayed()).then(function () {
+    browser.wait(finderPage.createFinder().isPresent()).then(function () {
+      browser.wait(finderPage.createFinder().isDisplayed()).then(function () {
 
-      // search for the element
-      finderPage.createSearchInput().sendKeys(title).sendKeys(protractor.Key.ENTER);
-      browser.wait(EC.textToBePresentInElementValue($('#finder-search-input'), title), 10000).then(function () {
+        // search for the element
+        finderPage.createSearchInput().sendKeys(title).sendKeys(protractor.Key.ENTER);
+        browser.wait(EC.textToBePresentInElementValue($('#finder-search-input'), title), 10000).then(function () {
 
-        finderPage.createDoSearch().click();
-        browser.wait(finderPage.createSearchResult().isDisplayed()).then(function () {
+          finderPage.createDoSearch().click();
+          browser.wait(finderPage.createSearchResult().isPresent()).then(function () {
+            browser.wait(finderPage.createSearchResult().isDisplayed()).then(function () {
 
-          finderPage.createListView().isPresent().then(function (isList) {
+              finderPage.createListView().isPresent().then(function (isList) {
 
-            if (isList) {
+                if (isList) {
 
-              finderPage.createFirstElementListView().click();
-              browser.wait(finderPage.createFirstSelectedElementListView().isDisplayed()).then(function () {
+                  finderPage.createFirstElementListView().click();
+                  browser.wait(finderPage.createFirstSelectedElementListView().isPresent()).then(function () {
+                    browser.wait(finderPage.createFirstSelectedElementListView().isDisplayed()).then(function () {
 
-                finderPage.createOpenButton().click();
-                browser.wait(createToolbar.isDisplayed());
-                browser.sleep(1000);  // add time for animation
-                deferred.fulfill(true);
+                      finderPage.createOpenButton().click();
+                      browser.wait(createToolbar.isPresent()).then(function () {
+                        browser.wait(createToolbar.isDisplayed()).then(function () {
+                          browser.sleep(1000);  // add time for animation
+                          deferred.fulfill(true);
+                        });
+                      });
+                    });
+                  });
+
+                } else {
+
+                  var first = finderPage.createFirstElementGridView();
+                  browser.wait(first.isPresent()).then(function () {
+                    browser.wait(first.isDisplayed()).then(function () {
+
+                      finderPage.createFirstElementGridView().click();
+                      browser.wait(finderPage.createFirstSelectedElementGridView().isPresent()).then(function () {
+                        browser.wait(finderPage.createFirstSelectedElementGridView().isDisplayed()).then(function () {
+
+                          browser.sleep(1000);
+                          browser.wait(finderPage.createOpenButton().isPresent()).then(function () {
+                            browser.wait(finderPage.createOpenButton().isDisplayed()).then(function () {
+                              browser.wait(finderPage.createOpenButton().isEnabled()).then(function () {
+                                finderPage.createOpenButton().click();
+
+                                browser.wait(createToolbar.isPresent()).then(function () {
+                                  browser.wait(createToolbar.isDisplayed()).then(function () {
+                                    browser.sleep(1000);  // add time for animation
+                                    deferred.fulfill(true);
+                                  });
+                                });
+                              });
+                            });
+                          });
+                        });
+                      });
+                    });
+                  });
+                }
               });
-
-            } else {
-
-              var first = finderPage.createFirstElementGridView();
-              browser.wait(first.isDisplayed()).then(function () {
-
-                finderPage.createFirstElementGridView().click();
-                browser.wait(finderPage.createFirstSelectedElementGridView().isDisplayed()).then(function () {
-
-                  browser.sleep(1000);
-                  browser.wait(finderPage.createOpenButton().isDisplayed());
-                  browser.wait(finderPage.createOpenButton().isEnabled());
-                  finderPage.createOpenButton().click();
-
-                  browser.wait(createToolbar.isDisplayed());
-                  browser.sleep(1000);  // add time for animation
-                  deferred.fulfill(true);
-
-                });
-
-              });
-            }
+            });
           });
         });
       });
     });
     return deferred.promise;
   };
+
 
 };
 

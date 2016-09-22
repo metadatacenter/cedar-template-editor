@@ -136,45 +136,34 @@ describe('element-creator', function () {
   // github issue #403:  Verify that the header is present and displays back button, name, description, title, JSON preview
   it("should show element editor header, title, description, and json preview", function () {
 
-    // should have a top navigation element
-    expect(page.topNavigation().isDisplayed()).toBe(true);
-    // should have a template editor top nav
-    expect(page.hasClass(page.topNavigation(), page.elementType())).toBe(true);
-    // should have a back arrow in the header
-    expect(page.topNavBackArrow().isDisplayed()).toBe(true);
-    // should have a json preview in the header
-    expect(page.showJsonLink().isDisplayed()).toBe(true);
+      // should have a top navigation element
+      expect(page.topNavigation().isDisplayed()).toBe(true);
+      // should have a template editor top nav
+      expect(page.hasClass(page.topNavigation(), page.elementType())).toBe(true);
+      // should have a back arrow in the header
+      expect(page.topNavBackArrow().isDisplayed()).toBe(true);
+      // should have a json preview in the header
+      expect(page.showJsonLink().isDisplayed()).toBe(true);
 
-    // should have an editable template title
-    expect(page.elementTitle().isDisplayed()).toBe(true);
-    page.elementTitle().sendKeys(page.testTitle());
+      // should have an editable template title
+      expect(page.elementTitle().isDisplayed()).toBe(true);
+      page.elementTitle().sendKeys(page.testTitle());
 
-    // should have an editable description
-    expect(page.elementDescription().isDisplayed()).toBe(true);
-    browser.actions().doubleClick(page.elementDescription()).perform();
-    page.elementDescription().sendKeys(page.testDescription());
+      // should have an editable description
+      expect(page.elementDescription().isDisplayed()).toBe(true);
+      browser.actions().doubleClick(page.elementDescription()).perform();
+      page.elementDescription().sendKeys(page.testDescription());
 
-    // submit the form and check our edits
-    page.elementDescriptionForm().submit();
+      // submit the form and check our edits
+      page.elementDescriptionForm().submit();
 
 
-    page.elementTitle().getAttribute('value').then(function (value) {
-      expect(_.isEqual(value, page.testTitle())).toBe(true);
-    });
-    page.elementDescription().getAttribute('value').then(function (value) {
-      expect(_.isEqual(value, page.testDescription())).toBe(true);
-    });
-  });
-
-  // github issue #403:  click backarrow and go back to dashboard
-  it("should go to dashboard when back arrow clicked", function () {
-
-    // click the back arrow to return to workspace
-    page.clickBackArrow();
-
-    browser.wait(EC.visibilityOf($('.navbar-brand')), 10000);
-    expect(page.isDashboard()).toBe(true);
-
+      page.elementTitle().getAttribute('value').then(function (value) {
+        expect(_.isEqual(value, page.testTitle())).toBe(true);
+      });
+      page.elementDescription().getAttribute('value').then(function (value) {
+        expect(_.isEqual(value, page.testDescription())).toBe(true);
+      });
   });
 
   // github issue #404 Part 1 of 4:  Verify that Clear button is present and active, expect clear to clear the element
@@ -221,6 +210,7 @@ describe('element-creator', function () {
     });
   });
 
+
   // github issue #404 Part 2 of 4:  Verify that Clear button is present and active, expect cancelling the clear to not modify the template
   it("should not change the element when clear clicked but then cancelled", function () {
 
@@ -263,6 +253,17 @@ describe('element-creator', function () {
     });
   });
 
+  // github issue #403:  click backarrow and go back to dashboard
+  it("should go to dashboard when back arrow clicked", function () {
+
+    // click the back arrow to return to workspace
+    page.clickBackArrow();
+
+    browser.wait(EC.visibilityOf($('.navbar-brand')), 10000);
+    expect(page.isDashboard()).toBe(true);
+
+  });
+
   // github issue #404 Part 3 of 4:  Verify that Cancel button is present and active,
   it("should have Cancel button present and active", function () {
 
@@ -271,15 +272,15 @@ describe('element-creator', function () {
 
     // make the template dirty
     page.addField(fieldTypes[0].cedarType);
+    page.addField(fieldTypes[0].cedarType);
 
     // clicking the cancel should cancel edits
-    page.clickCancelElement();
-
-    // should be back to dashboard
-    expect(page.isDashboard()).toBe(true);
+    page.clickCancel(page.createCancelElementButton()).then(function () {
+      expect(page.isDashboard()).toBe(true);
+    });
   });
 
-  // github issue #404 Part 4 of 4:  Verify that save button is present and active,
+// github issue #404 Part 4 of 4:  Verify that save button is present and active,
   it("should have Save button present and active", function () {
 
     var cleanJson;
@@ -311,16 +312,14 @@ describe('element-creator', function () {
   });
 
   it("should delete untitled element the workspace, ", function () {
-
-    // element left over from prior test
-    page.clickCancelElement();
-    browser.sleep(3000);
+    page.createCancelElementButton().click();
+    expect(page.isDashboard()).toBe(true);
     workspacePage.deleteResource('Untitled', workspacePage.elementType());
 
   });
 
-  // github issue #405 part 1 of 2:  Verify that fields and elements can be reordered
-  // TODO this fails because element creator is not putting dom ids on fields and elements
+// github issue #405 part 1 of 2:  Verify that fields and elements can be reordered
+// TODO this fails because element creator is not putting dom ids on fields and elements
   xit("should reorder fields in the element", function () {
 
     var fieldType = fieldTypes[0];
@@ -368,7 +367,7 @@ describe('element-creator', function () {
     });
   });
 
-  // github issue #405 part 2:  add element to an element
+// github issue #405 part 2:  add element to an element
   describe('should add an element to the element, ', function () {
 
     it("should create a sample element in the workspace, ", function () {
@@ -453,7 +452,7 @@ describe('element-creator', function () {
 
             // do we have three items, the element, its nested filed, and the field
             var items = element.all(by.css(page.cssItemRoot));
-           // expect(items.count()).toBe(3);
+            // expect(items.count()).toBe(3);
 
             var fieldItem = items.get(1);
             var elementItem = items.get(2);
@@ -552,15 +551,13 @@ describe('element-creator', function () {
 
     // github issue #400
     it("should delete the sample element from the workspace, ", function () {
-
-      page.clickCancelElement();
+      page.createCancelElementButton().click();
+      expect(page.isDashboard()).toBe(true);
       workspacePage.deleteResource(page.sampleElementTitle(), 'element');
-
     });
-
   });
 
-  // github issue #406
+// github issue #406
   for (var i = 0; i < fieldTypes.length; i++) {
     (function (fieldType) {
 
@@ -633,20 +630,20 @@ describe('element-creator', function () {
     })(fieldTypes[i]);
   }
 
-  // github issue #407:  Verify that JSON preview button shows template JSON; verify that this JSON is same as underlying JSON, Verify that clicking in JSON preview button hides visible JSON preview area
+// github issue #407:  Verify that JSON preview button shows template JSON; verify that this JSON is same as underlying JSON, Verify that clicking in JSON preview button hides visible JSON preview area
   it("clicking JSON preview button shows and hides element JSON", function () {
 
     expect(page.templateJSON().isDisplayed()).toBe(false);
 
     page.getJsonPreviewText().then(function (value) {
+
       var json = JSON.parse(value);
       expect(_.isEqual(json, page.emptyElementJson)).toBe(true);
+      expect(page.templateJSON().isDisplayed()).toBe(true);
+      page.clickJsonPreview();
+      expect(page.templateJSON().isDisplayed()).toBe(false);
     });
 
-    expect(page.templateJSON().isDisplayed()).toBe(true);
-    page.clickJsonPreview();
-    expect(page.templateJSON().isDisplayed()).toBe(false);
-
   });
+});
 
-}); 
