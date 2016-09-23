@@ -228,8 +228,8 @@ var TemplateCreatorPage = function () {
 
 
   // element creator
-  var elementTitle = element(by.id('element-name-container')).element(by.model('element._ui.title'));
-  var elementDescription = element(by.id('element-description-container')).element(by.model('element._ui.description'));
+  var elementTitle = element(by.id('element-name'));
+  var elementDescription = element(by.id('element-description'));
   var elementTitleForm = element(by.id('element-name-container')).element(by.tagName('form'));
   var elementDescriptionForm = element(by.id('element-description-container')).element(by.tagName('form'));
   var createSaveElementButton = element(by.id('button-save-element'));
@@ -365,7 +365,7 @@ var TemplateCreatorPage = function () {
   };
   this.get = function () {
     browser.get(url);
-    browser.sleep(1000);
+    //browser.sleep(1000);
   };
 
   this.topNavigation = function () {
@@ -477,6 +477,8 @@ var TemplateCreatorPage = function () {
     return createCancelTemplateButton;
   };
   this.clickSaveTemplate = function () {
+    browser.wait(createSaveTemplateButton.isPresent());
+    browser.wait(createSaveTemplateButton.isDisplayed());
     createSaveTemplateButton.click();
   };
 
@@ -485,16 +487,17 @@ var TemplateCreatorPage = function () {
     var EC = protractor.ExpectedConditions;
     var confirm = createSweetAlertConfirmButton;
 
+    browser.wait(cancel.isPresent());
+    browser.wait(cancel.isDisplayed());
     cancel.click();
-    browser.wait(createConfirmationDialog.isDisplayed()).then(function () {
 
-      browser.wait(EC.elementToBeClickable(confirm)).then(function () {
-        browser.sleep(1000);
-        confirm.click();
-        deferred.fulfill(true);
+    browser.wait(createConfirmationDialog.isPresent());
+    browser.wait(createConfirmationDialog.isDisplayed());
 
-      });
-    });
+    browser.wait(EC.elementToBeClickable(confirm));
+    browser.sleep(1000);
+    confirm.click();
+    deferred.fulfill(true);
 
     return deferred.promise;
 
@@ -507,23 +510,32 @@ var TemplateCreatorPage = function () {
     createTemplateButton.click();
   };
 
-  // TODO see if the sleep can go away
+
   this.setTemplateTitle = function (text) {
 
-    // should have an editable element title
     var title = element(by.id('template-name'));
-    expect(title.isDisplayed()).toBe(true);
+
+    // should have an editable element title
+    browser.wait(title.isPresent());
+    browser.wait(title.isDisplayed());
     browser.actions().doubleClick(title).perform();
-    browser.sleep(3000);
+    //browser.sleep(3000);
     title.sendKeys(text);
-    browser.sleep(3000);
-    element.all(by.css('.template-header form')).first().submit();
+    //browser.sleep(3000);
+
+    var result = element.all(by.css('.template-header form')).first();
+    browser.wait(result.isPresent());
+    browser.wait(result.isDisplayed());
+    result.submit();
   };
 
   this.setTemplateDescription = function (text) {
 
-    // should have an editable element title
+    // should have an editable description
+    browser.wait(elementDescription.isPresent());
+    browser.wait(elementDescription.isDisplayed());
     expect(elementDescription.isDisplayed()).toBe(true);
+
     browser.actions().doubleClick(elementDescription).perform();
     elementDescription.sendKeys(text);
     elementDescriptionForm.submit();
@@ -568,28 +580,55 @@ var TemplateCreatorPage = function () {
   this.clickClearElement = function () {
     createClearElementButton.click();
   };
+
   this.createElement = function () {
-    browser.actions().mouseMove(createButton).perform();
-    createElementButton.click();
-    browser.wait(createElementPage.isDisplayed());
-    browser.sleep(1000);
+
+    var deferred = protractor.promise.defer();
+
+    isReady(createButton).then(function () {
+      browser.actions().mouseMove(createButton).perform().then(function () {
+        isReady(createElementButton).then(function () {
+          createElementButton.click();
+          isReady(createElementPage).then(function () {
+            deferred.fulfill(true);
+
+          });
+        });
+      });
+    });
+    return deferred.promise;
   };
+
   this.setElementTitle = function (text) {
 
-    // should have an editable element title
-    expect(elementTitle.isDisplayed()).toBe(true);
-    browser.actions().doubleClick(elementTitle).perform();
-    elementTitle.sendKeys(text);
-    elementTitleForm.submit();
+    var deferred = protractor.promise.defer();
 
+    // should have an editable element title
+    isReady(elementTitle).then(function () {
+
+      browser.actions().doubleClick(elementTitle).perform();
+      elementTitle.sendKeys(text);
+      elementTitleForm.submit();
+      deferred.fulfill(true);
+
+    });
+    return deferred.promise;
   };
+
   this.setElementDescription = function (text) {
 
-    // should have an editable element title
-    expect(elementDescription.isDisplayed()).toBe(true);
-    browser.actions().doubleClick(elementDescription).perform();
-    elementDescription.sendKeys(text);
-    elementDescriptionForm.submit();
+    var deferred = protractor.promise.defer();
+
+    // should have an editable element description
+    isReady(elementDescription).then(function () {
+
+      browser.actions().doubleClick(elementDescription).perform();
+      elementDescription.sendKeys(text);
+      elementDescriptionForm.submit();
+      deferred.fulfill(true);
+
+    });
+    return deferred.promise;
 
   };
 
@@ -672,7 +711,10 @@ var TemplateCreatorPage = function () {
   };
   this.isSelected = function (item) {
     return item.element(by.css(cssDetailOptions)).isPresent();
-  }
+  };
+  this.removeFieldButton = function () {
+    return removeFieldButton;
+  };
   this.removeField = function () {
     removeFieldButton.click();
   };
@@ -738,6 +780,9 @@ var TemplateCreatorPage = function () {
 
   };
 
+  this.removeElementButton = function () {
+    return removeElementButton;
+  };
 
   this.removeElement = function () {
     removeElementButton.click();
@@ -833,6 +878,36 @@ var TemplateCreatorPage = function () {
         });
       });
     });
+    return deferred.promise;
+  };
+
+  this.getRandomInt = function (min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min)) + min;
+  };
+
+  var isReady = function (elm) {
+    var deferred = protractor.promise.defer();
+
+    browser.wait(elm.isPresent()).then(function () {
+      browser.wait(elm.isDisplayed()).then(function () {
+        deferred.fulfill(true);
+      });
+    });
+
+    return deferred.promise;
+  };
+
+  this.isReady = function (elm) {
+    var deferred = protractor.promise.defer();
+
+    browser.wait(elm.isPresent()).then(function () {
+      browser.wait(elm.isDisplayed()).then(function () {
+        deferred.fulfill(true);
+      });
+    });
+
     return deferred.promise;
   };
 

@@ -6,7 +6,7 @@ var WorkspacePage = require('../pages/workspace-page.js');
 var _ = require('../libs/lodash.min.js');
 
 
-describe('template-creator', function () {
+xdescribe('template-creator', function () {
   var EC = protractor.ExpectedConditions;
   //var flow = browser.controlFlow();
   var page;

@@ -34,6 +34,8 @@ var MetadataPage = function () {
   var cssNavDashboard = '.navbar.dashboard';
   var cssNavMetadata = '.navbar.metadata';
 
+  var createPageName = element(by.css('.navbar.metadata'));
+
   var metadataPageTitle = 'Metadata Editor';
   var createSaveMetadataButton = element(by.id('button-save-metadata'));
   var createCancelMetadataButton = element(by.id('button-cancel-metadata'));
@@ -94,6 +96,14 @@ var MetadataPage = function () {
     return element(by.css(cssNavMetadata)).isDisplayed();
   };
 
+  this.createPageName = function () {
+    return createPageName;
+  };
+
+  this.createNavMetadata = function () {
+    return element(by.css(cssNavMetadata));
+  };
+
   this.isDashboard = function () {
     return element(by.css(cssNavDashboard)).isDisplayed();
   };
@@ -111,14 +121,17 @@ var MetadataPage = function () {
 
     var confirm = createSweetAlertConfirmButton;
 
-    cancel.click();
+    isReady(cancel).then(function () {
+      cancel.click();
 
-    browser.wait(createConfirmationDialog.isPresent()).then(function () {
-      browser.wait(createConfirmationDialog.isDisplayed()).then(function () {
-        browser.wait(EC.elementToBeClickable(confirm)).then(function () {
-          browser.sleep(1000);
-          confirm.click();
-          deferred.fulfill(true);
+      isReady(createConfirmationDialog).then(function () {
+        isReady(confirm).then(function () {
+
+          browser.wait(EC.elementToBeClickable(confirm)).then(function () {
+            browser.sleep(1000);
+            confirm.click();
+            deferred.fulfill(true);
+          });
         });
       });
     });
@@ -131,23 +144,31 @@ var MetadataPage = function () {
   this.clickSaveMetadata = function () {
     var deferred = protractor.promise.defer();
 
-    browser.wait(createSaveMetadataButton.isPresent()).then(function () {
-      browser.wait(createSaveMetadataButton.isDisplayed()).then(function () {
-          createSaveMetadataButton.click();
+    isReady(createSaveMetadataButton).then(function () {
+      createSaveMetadataButton.click();
 
-          browser.wait(createToastyConfirmationPopup.isPresent()).then(function () {
-            browser.wait(createToastyConfirmationPopup.isDisplayed()).then(function () {
-              browser.sleep(1000);
+      isReady(createToastyConfirmationPopup).then(function () {
 
-              toastyMessageText.getText().then(function (value) {
-                expect(value.indexOf(createMetadataMessage) !== -1).toBe(true);
-                deferred.fulfill(true);
-              });
-            });
-          });
+        toastyMessageText.getText().then(function (value) {
+          expect(value.indexOf(createMetadataMessage) !== -1).toBe(true);
+          deferred.fulfill(true);
+        });
       });
     });
+
     return deferred.promise;
+  };
+
+  this.createToastyConfirmationPopup = function () {
+    return createToastyConfirmationPopup;
+  };
+
+  this.toastyMessageText = function () {
+    return toastyMessageText;
+  };
+
+  this.createMetadataMessage = function () {
+    return createMetadataMessage;
   };
 
   // sweet
@@ -169,6 +190,30 @@ var MetadataPage = function () {
 
   this.clickSweetConfirm = function () {
     element(by.css(sweetAlertConfirmAttribute)).click();
+  };
+
+  var isReady = function (elm) {
+    var deferred = protractor.promise.defer();
+
+    browser.wait(elm.isPresent()).then(function () {
+      browser.wait(elm.isDisplayed()).then(function () {
+        deferred.fulfill(true);
+      });
+    });
+
+    return deferred.promise;
+  };
+
+  this.isReady = function (elm) {
+    var deferred = protractor.promise.defer();
+
+    browser.wait(elm.isPresent()).then(function () {
+      browser.wait(elm.isDisplayed()).then(function () {
+        deferred.fulfill(true);
+      });
+    });
+
+    return deferred.promise;
   };
 
 };
