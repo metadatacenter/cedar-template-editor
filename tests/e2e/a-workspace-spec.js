@@ -18,18 +18,8 @@ describe('workspace', function () {
 
   });
 
-  // functioning trash and options buttons
-  it("should have trash and options button hidden", function () {
-
-    page.isDashboard().then(function () {
-
-      // trash and more should not be visible
-      expect(page.createTrashButton().isPresent()).toBe(false);
-      expect(page.createMoreOptionsButton().isPresent()).toBe(false);
-
-    });
-
-  });
+  for (var j = 0; j < 10; j++) {
+    (function () {
 
   // functioning trash and options buttons
   it("should create a folder", function () {
@@ -45,7 +35,20 @@ describe('workspace', function () {
   });
 
 
+  xdescribe('with sample folder', function () {
 
+    // functioning trash and options buttons
+    it("should have trash and options button hidden", function () {
+
+      page.isDashboard().then(function () {
+
+        // trash and more should not be visible
+        expect(page.createTrashButton().isPresent()).toBe(false);
+        expect(page.createMoreOptionsButton().isPresent()).toBe(false);
+
+      });
+
+    });
 
   // github issue #375
   it("should have logo, search nav, breadcrumbs, toolbar and create new buttons", function () {
@@ -95,6 +98,8 @@ describe('workspace', function () {
     });
   });
 
+  });
+
   // delete the folder
   it("should delete a folder", function () {
 
@@ -105,7 +110,9 @@ describe('workspace', function () {
     });
 
   });
-
+    })
+    (j);
+  }
 
 });
 

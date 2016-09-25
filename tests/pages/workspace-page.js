@@ -263,43 +263,48 @@ var WorkspacePage = function () {
 
           // wait for search results to show in the breadcrumb
           isReady(createBreadcrumbSearch).then(function () {
+            browser.sleep(2000);  // TODO not correctly waiting for search to return
 
             // select the first result
             var createFirst = element.all(by.css(createFirstCss + type)).first();
             isReady(createFirst).then(function () {
 
               browser.wait(EC.elementToBeClickable(createFirst)).then(function () {
-                createFirst.click();
+                createFirst.click().then(function () {
 
-                // wait for a selected item and the trash button
-                isReady(createFirstSelected).then(function () {
+                  // wait for a selected item and the trash button
+                  isReady(createFirstSelected).then(function () {
 
-                  isReady(createTrashButton).then(function () {
+                    isReady(createTrashButton).then(function () {
 
-                    browser.wait(EC.elementToBeClickable(createTrashButton)).then(function () {
-                      createTrashButton.click();
+                      browser.wait(EC.elementToBeClickable(createTrashButton)).then(function () {
+                        createTrashButton.click().then(function () {
 
-                      isReady(createConfirmationDialog).then(function () {
-                        browser.sleep(1000);
+                          isReady(createConfirmationDialog).then(function () {
 
-                        expect(createConfirmationDialog.getAttribute(sweetAlertCancelAttribute)).toBe('true');
-                        expect(createConfirmationDialog.getAttribute(sweetAlertConfirmAttribute)).toBe('true');
+                            expect(createConfirmationDialog.getAttribute(sweetAlertCancelAttribute)).toBe('true');
+                            expect(createConfirmationDialog.getAttribute(sweetAlertConfirmAttribute)).toBe('true');
 
-                        isReady(createSweetAlertConfirmButton).then(function () {
-                          browser.sleep(1000);
+                            isReady(createSweetAlertConfirmButton).then(function () {
+                              //browser.sleep(1000);
 
-                          browser.wait(EC.elementToBeClickable(createSweetAlertConfirmButton)).then(function () {
-                            browser.sleep(1000);
+                              browser.wait(EC.elementToBeClickable(createSweetAlertConfirmButton)).then(function () {
+                                browser.sleep(1000); // TODO animation needs to be turned off
 
-                            createSweetAlertConfirmButton.click();
+                                createSweetAlertConfirmButton.click().then(function () {
 
-                            isReady(createToastyConfirmationPopup).then(function () {
-                              browser.sleep(1000);
+                                  isReady(createToastyConfirmationPopup).then(function () {
+                                    //browser.sleep(1000);
 
-                              createToastyMessageText.getText().then(function (value) {
-                                var result = value.indexOf(toastyMessage + name + toastyMessageDeleted) !== -1;
-                                browser.wait(EC.not(EC.presenceOf(createToastyConfirmationPopup))).then(function () {
-                                  deferred.fulfill(result);
+                                    isReady(createToastyMessageText).then(function () {
+                                      createToastyMessageText.getText().then(function (value) {
+                                        var result = value.indexOf(toastyMessage + name + toastyMessageDeleted) !== -1;
+                                        browser.wait(EC.not(EC.presenceOf(createToastyConfirmationPopup))).then(function () {
+                                          deferred.fulfill(result);
+                                        });
+                                      });
+                                    });
+                                  });
                                 });
                               });
                             });
@@ -317,6 +322,7 @@ var WorkspacePage = function () {
     });
 
     return deferred.promise;
+
   };
 
   this.selectFolder = function (name) {
