@@ -7,6 +7,7 @@ var WorkspacePage = function () {
   //var url = 'https://cedar.metadatacenter.orgx/dashboard';
   var testConfig = require('../config/test-env.js');
   var url = testConfig.baseUrl + '/dashboard';
+  var EC = protractor.ExpectedConditions;
 
   // header
   var createTopNavigation = element(by.id('top-navigation'));
@@ -54,10 +55,10 @@ var WorkspacePage = function () {
   var createBreadcrumbSearch = element(by.css('.breadcrumbs-sb .search-result'));
 
   // create new
-  var createNewButton = element(by.css('.add-new button#button-create'));
-  var createNewTemplateButton = element(by.css('.add-new button#button-create-template'));
-  var createNewElementButton = element(by.css('.add-new button#button-create-element '));
-  var createNewFolderButton = element(by.css('.add-new button#button-create-folder'));
+  var createButton = element(by.id('button-create'));
+  var createTemplateButton = element(by.id('button-create-template'));
+  var createElementButton = element(by.id('button-create-element '));
+  var createFolderButton = element(by.id('button-create-folder'));
 
   // create folder modal
   var createFolderModal = element(by.id('newFolderModal'));
@@ -103,12 +104,21 @@ var WorkspacePage = function () {
     browser.get(url);
     //browser.sleep(1000);
   };
+
   this.test = function () {
     console.log('workspace page test ');
-
   };
+
   this.isDashboard = function () {
-    return createPageName.isDisplayed();
+    var deferred = protractor.promise.defer();
+    isReady(createPageName).then(function () {
+      deferred.fulfill(true);
+    });
+    return deferred.promise;
+  };
+
+  this.createPageName = function () {
+    return createPageName;
   };
 
   this.createMoreOptionsButton = function () {
@@ -137,6 +147,9 @@ var WorkspacePage = function () {
   this.createSearchNav = function () {
     return createSearchNav;
   };
+  this.createSearchNavInput = function () {
+    return createSearchNavInput;
+  };
   this.createSearchNavText = function () {
     return createSearchNavInput.getText();
   };
@@ -149,24 +162,13 @@ var WorkspacePage = function () {
   this.createBreadcrumb = function () {
     return createBreadcrumb;
   };
-  this.createNew = function () {
-    return createNewButton;
+  this.createButton = function () {
+    return createButton;
+  };
+  this.createTemplateButton = function () {
+    return createTemplateButton;
   };
 
-  // create a new template
-  this.createTemplate = function () {
-    browser.actions().mouseMove(createNewButton).perform();
-    createNewTemplateButton.click();
-    return require('./template-creator-page.js');
-  };
-
-  // create a new element
-  this.createElement = function () {
-    browser.actions().mouseMove(createNewButton).perform();
-    createNewElementButton.click();
-    browser.sleep(1000);
-    return require('./template-creator-page.js');
-  };
 
   var getRandomInt = function (min, max) {
     min = Math.ceil(min);
@@ -175,7 +177,7 @@ var WorkspacePage = function () {
   };
 
   this.createRandomFolderName = function () {
-    return testFolderName + getRandomInt(1, 9999);
+    return testFolderName + getRandomInt(1, 9999999999);
   };
   this.sampleTemplateTitle = function () {
     return sampleTemplateTitle;
@@ -210,116 +212,180 @@ var WorkspacePage = function () {
     var deferred = protractor.promise.defer();
     var EC = protractor.ExpectedConditions;
 
-    browser.actions().mouseMove(createNewButton).perform();
-    createNewFolderButton.click();
-    browser.wait(createFolderModal.isPresent());
+    isReady(createButton).then(function () {
+      browser.actions().mouseMove(createButton).perform().then(function () {
+        isReady(createFolderButton).then(function () {
+          createFolderButton.click().then(function () {
+            isReady(createFolderModal).then(function () {
 
-    // give it a folder name
-    createFolderName.sendKeys(name);
-    browser.wait(EC.elementToBeClickable(createFolderSubmitButton));
-    createFolderSubmitButton.click();
+              // give it a folder name
+              createFolderName.sendKeys(name).then(function () {
+                browser.wait(EC.elementToBeClickable(createFolderSubmitButton)).then(function () {
+                  createFolderSubmitButton.click().then(function () {
 
-    browser.wait(createToastyConfirmationPopup.isPresent());
-    createToastyMessageText.getText().then(function (value) {
-      var result = value.indexOf(toastyFolderMessage + name + toastyMessageCreated) !== -1;
-      browser.wait(EC.not(EC.presenceOf(createToastyConfirmationPopup)));
-      deferred.fulfill(result);
-    });
-
-    return deferred.promise;
-  };
-
-  // delete a resource by name
-  this.deleteResource = function (name, type) {
-    var deferred = protractor.promise.defer();
-    var EC = protractor.ExpectedConditions;
-
-    // search for the name
-    browser.wait(createSearchNavInput.isPresent());
-    browser.wait(createSearchNavInput.isDisplayed());
-    browser.wait(EC.elementToBeClickable(createSearchNavInput));
-    createSearchNavInput.sendKeys(name).sendKeys(protractor.Key.ENTER);
-    browser.sleep(1000);
-
-    // wait for search results to show in the breadcrumb
-    browser.wait(createBreadcrumbSearch.isPresent());
-    browser.wait(createBreadcrumbSearch.isDisplayed());
-    browser.sleep(1000);
-
-    // select the first result
-    var createFirst = element.all(by.css(createFirstCss + type)).first();
-    browser.wait(createFirst.isPresent());
-    browser.wait(createFirst.isDisplayed());
-    browser.wait(EC.elementToBeClickable(createFirst));
-    createFirst.click();
-
-    // wait for a selected item and the trash button
-    browser.wait(createFirstSelected.isPresent());
-    browser.wait(createFirstSelected.isDisplayed());
-    browser.wait(createTrashButton.isPresent());
-    browser.wait(createTrashButton.isDisplayed());
-    browser.wait(EC.elementToBeClickable(createTrashButton));
-    createTrashButton.click();
-
-    browser.wait(createConfirmationDialog.isPresent());
-    browser.wait(createConfirmationDialog.isDisplayed());
-    browser.sleep(1000);
-
-    expect(createConfirmationDialog.getAttribute(sweetAlertCancelAttribute)).toBe('true');
-    expect(createConfirmationDialog.getAttribute(sweetAlertConfirmAttribute)).toBe('true');
-    browser.wait(EC.elementToBeClickable(createSweetAlertConfirmButton));
-    createSweetAlertConfirmButton.click();
-
-    browser.wait(createToastyConfirmationPopup.isDisplayed());
-    createToastyMessageText.getText().then(function (value) {
-      var result = value.indexOf(toastyMessage + name + toastyMessageDeleted) !== -1;
-      browser.wait(EC.not(EC.presenceOf(createToastyConfirmationPopup)));
-      deferred.fulfill(result);
-    });
-
-    return deferred.promise;
-  };
-
-
-  // open the template by title
-  this.openTemplate = function (name) {
-    var deferred = protractor.promise.defer();
-
-    // search for the folder
-    createSearchNavInput.sendKeys(name).sendKeys(protractor.Key.ENTER);
-
-    // wait for search results to show in the breadcrumb
-    browser.wait(createBreadcrumbSearch.isPresent()).then(function () {
-      browser.wait(createBreadcrumbSearch.isDisplayed()).then(function () {
-        // select the first result
-        expect(createFirstTemplate.isDisplayed()).toBe(true);
-        createFirstTemplate.click();
-
-        // wait for the resource to be selected
-        browser.wait(createFirstSelected.isPresent()).then(function () {
-          browser.wait(createFirstSelected.isDisplayed()).then(function () {
-            browser.actions().doubleClick(createFirstTemplate).perform();
-
-            // wait until metadata page is displayed
-            browser.wait(createMetadataPage.isPresent()).then(function () {
-              browser.wait(createMetadataPage.isDisplayed()).then(function () {
-                deferred.fulfill(true);
+                    isReady(createToastyConfirmationPopup).then(function () {
+                      createToastyMessageText.getText().then(function (value) {
+                        var result = value.indexOf(toastyFolderMessage + name + toastyMessageCreated) !== -1;
+                        browser.wait(EC.not(EC.presenceOf(createToastyConfirmationPopup))).then(function () {
+                          deferred.fulfill(result);
+                        });
+                      });
+                    });
+                  });
+                });
               });
             });
           });
         });
       });
     });
+
+    return deferred.promise;
+  };
+
+// delete a resource by name
+  this.deleteResource = function (name, type) {
+
+    var deferred = protractor.promise.defer();
+
+    // search for the name
+    isReady(createSearchNavInput).then(function () {
+
+      browser.wait(EC.elementToBeClickable(createSearchNavInput)).then(function () {
+        createSearchNavInput.sendKeys(name).sendKeys(protractor.Key.ENTER).then(function () {
+
+          // wait for search results to show in the breadcrumb
+          isReady(createBreadcrumbSearch).then(function () {
+            browser.sleep(2000);  // TODO not correctly waiting for search to return
+
+            // select the first result
+            var createFirst = element.all(by.css(createFirstCss + type)).first();
+            isReady(createFirst).then(function () {
+
+              browser.wait(EC.elementToBeClickable(createFirst)).then(function () {
+                createFirst.click().then(function () {
+
+                  // wait for a selected item and the trash button
+                  isReady(createFirstSelected).then(function () {
+
+                    isReady(createTrashButton).then(function () {
+
+                      browser.wait(EC.elementToBeClickable(createTrashButton)).then(function () {
+                        createTrashButton.click().then(function () {
+
+                          isReady(createConfirmationDialog).then(function () {
+
+                            expect(createConfirmationDialog.getAttribute(sweetAlertCancelAttribute)).toBe('true');
+                            expect(createConfirmationDialog.getAttribute(sweetAlertConfirmAttribute)).toBe('true');
+
+                            isReady(createSweetAlertConfirmButton).then(function () {
+
+                              browser.wait(EC.elementToBeClickable(createSweetAlertConfirmButton)).then(function () {
+                                browser.sleep(1000); // TODO animation needs to be turned off
+
+                                createSweetAlertConfirmButton.click().then(function () {
+
+                                  isReady(createToastyConfirmationPopup).then(function () {
+
+                                    isReady(createToastyMessageText).then(function () {
+                                      createToastyMessageText.getText().then(function (value) {
+                                        var result = value.indexOf(toastyMessage + name + toastyMessageDeleted) !== -1;
+                                        browser.wait(EC.not(EC.presenceOf(createToastyConfirmationPopup))).then(function () {
+                                          deferred.fulfill(result);
+                                        });
+                                      });
+                                    });
+                                  });
+                                });
+                              });
+                            });
+                          });
+                        });
+                      });
+                    });
+                  });
+                });
+              });
+            });
+          });
+        });
+      });
+    });
+
+    return deferred.promise;
+
+  };
+
+  this.selectFolder = function (name) {
+    var deferred = protractor.promise.defer();
+
+    // search for the resource
+    createSearchNavInput.sendKeys(name).sendKeys(protractor.Key.ENTER);
+    isReady(createBreadcrumbSearch).then(function () {
+
+      // select the first result
+      isReady(createFirstTemplate).then(function () {
+        createFirstFolder.click();
+        deferred.fulfill(true);
+      });
+    });
+
+
     return deferred.promise;
   };
 
 
-  // open folder by the index in the breadcrumb
+// double click the template by title to open in metadata editor
+  this.doubleClickName = function (name, type) {
+    var deferred = protractor.promise.defer();
+
+    // search for the name
+    isReady(createSearchNavInput).then(function () {
+
+      browser.wait(EC.elementToBeClickable(createSearchNavInput)).then(function () {
+        createSearchNavInput.sendKeys(name).sendKeys(protractor.Key.ENTER).then(function () {
+
+          // wait for search results to show in the breadcrumb
+          isReady(createBreadcrumbSearch).then(function () {
+            browser.sleep(2000);  // TODO not correctly waiting for search to return
+
+
+            // select the first result
+            var createFirst = element.all(by.css(createFirstCss + type)).first();
+            isReady(createFirst).then(function () {
+
+              browser.actions().doubleClick(createFirst).perform().then(function () {
+
+                // wait until metadata page is displayed
+                isReady(createMetadataPage).then(function () {
+
+                  deferred.fulfill(true);
+                });
+              });
+            });
+          });
+        });
+      });
+    });
+
+    return deferred.promise;
+  };
+
+
+// open folder by the index in the breadcrumb
   this.openFolder = function (index) {
-    var folders = createBreadcrumbFolders;
-    var link = folders.get(index).element(by.tagName('a'));
-    expect(link.isDisplayed()).toBe(true);
-    link.click();
+    var deferred = protractor.promise.defer();
+
+    isReady(createBreadcrumb).then(function () {
+      var folder = createBreadcrumbFolders.get(index);
+      var link = folder.element(by.tagName('a'));
+      isReady(link).then(function () {
+        link.click().then(function () {
+          deferred.fulfill(true);
+        });
+      });
+    });
+    return deferred.promise;
   };
 
   this.createBreadcrumbFolders = function () {
@@ -361,6 +427,30 @@ var WorkspacePage = function () {
     });
   };
 
+  var isReady = function (elm) {
+    var deferred = protractor.promise.defer();
+
+    browser.wait(elm.isPresent()).then(function () {
+      browser.wait(elm.isDisplayed()).then(function () {
+        deferred.fulfill(true);
+      });
+    });
+
+    return deferred.promise;
+  };
+
+  this.isReady = function (elm) {
+    var deferred = protractor.promise.defer();
+
+    browser.wait(elm.isPresent()).then(function () {
+      browser.wait(elm.isDisplayed()).then(function () {
+        deferred.fulfill(true);
+      });
+    });
+
+    return deferred.promise;
+  };
 
 };
-module.exports = new WorkspacePage(); 
+
+module.exports = new WorkspacePage();

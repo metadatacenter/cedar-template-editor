@@ -143,7 +143,7 @@ var ElementCreatorPage = function () {
     browser.get(url);
 // wait until loaded 
 // TODO: should use EC for this 
-    browser.sleep(1000);
+    //browser.sleep(1000);
   };
 
   this.test = function() {
@@ -310,6 +310,32 @@ var ElementCreatorPage = function () {
     // needs to sleep to let the toolbar scroll back into the view
     // also move the mouse off the button so the tooltip is hidden
     browser.sleep(1000);
-  }
+  };
+
+  var isReady = function (elm) {
+    var deferred = protractor.promise.defer();
+
+    browser.wait(elm.isPresent()).then(function () {
+      browser.wait(elm.isDisplayed()).then(function () {
+        deferred.fulfill(true);
+      });
+    });
+
+    return deferred.promise;
+  };
+
+  this.isReady = function (elm) {
+    var deferred = protractor.promise.defer();
+
+    browser.wait(elm.isPresent()).then(function () {
+      browser.wait(elm.isDisplayed()).then(function () {
+        deferred.fulfill(true);
+      });
+    });
+
+    return deferred.promise;
+  };
+
+
 };
 module.exports =  new ElementCreatorPage; 
