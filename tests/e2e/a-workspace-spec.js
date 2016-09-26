@@ -87,15 +87,11 @@ describe('workspace', function () {
             page.createSearchNavInput().getText().then(function (value) {
               expect(value).toBe('');
 
-              // expect two folders in the breadcrumb  All / Users ....don't know user's name
-              // open the Users folder
-              page.openFolder(1).then(function () {
-              });
             });
           });
         });
 
-        it("should have open the folder in the bread crumb", function () {
+        it("should open the folder in the bread crumb", function () {
 
           page.isDashboard().then(function () {
             // expect two folders in the breadcrumb  All / Users ....don't know user's name
