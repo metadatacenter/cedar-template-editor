@@ -31,10 +31,4 @@ script:
   - gulp e2e
 
 env:
-  - CEDAR_HOST=staging.metadatacenter.net
-  - CEDAR_PROFILE=server
-  - CEDAR_ANALYTICS_KEY=false
-  - CEDAR_SELENIUM_SERVER_JAR=2.50.1-server.jar
-  - CEDAR_CHROME_DRIVER=2.21-x64-chromedriver
-  - CEDAR_TEST_USER=dsds
-  - CEDAR_TEST_PASSWORD=ddd
+  - CEDAR_HOST=staging.metadatacenter.net CEDAR_PROFILE=server CEDAR_ANALYTICS_KEY=false CEDAR_SELENIUM_SERVER_JAR=2.50.1-server.jar CEDAR_CHROME_DRIVER=2.21-x64-chromedriver
