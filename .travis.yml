@@ -1,6 +1,9 @@
-language: node_js
+language: node_js,cpp
 node_js:
 - '5.1'
+compiler:
+  - clang
+  - gcc
 branches:
   only:
   - develop
