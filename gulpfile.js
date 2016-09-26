@@ -127,8 +127,12 @@ gulp.task('test', function (done) {
 gulp.task('test-env', function () {
   gulp.src(['tests/config/src/test-env.js'])
       .pipe(replace('protractorBaseUrl', 'https://cedar.' + cedarHost))
-      .pipe(replace('protractorTestUser', cedarTestUser))
-      .pipe(replace('protractorTestPassword', cedarTestPassword))
+      .pipe(replace('protractorTestUser1', cedarTestUser1))
+      .pipe(replace('protractorTestPassword1', cedarTestPassword1))
+      .pipe(replace('protractorTestUser2', cedarTestUser2))
+      .pipe(replace('protractorTestPassword2', cedarTestPassword2))
+      .pipe(replace('protractorTestUser3', cedarTestUser3))
+      .pipe(replace('protractorTestPassword3', cedarTestPassword3))
       .pipe(replace('protractorSeleniumServerJar', cedarSeleniumServerJar))
       .pipe(replace('protractorChromeDriver', cedarChromeDriver))
       .pipe(gulp.dest('tests/config/'));
@@ -170,8 +174,12 @@ var envConfig = {
   'CEDAR_PROFILE'          : null,
   'CEDAR_HOST'             : null,
   'CEDAR_ANALYTICS_KEY'    : null,
-  'CEDAR_TEST_USER'        : null,
-  'CEDAR_TEST_PASSWORD'    : null,
+  'CEDAR_TEST_USER1'        : null,
+  'CEDAR_TEST_USER1_PASSWORD'    : null,
+  'CEDAR_TEST_USER2'        : null,
+  'CEDAR_TEST_USER2_PASSWORD'    : null,
+  'CEDAR_TEST_USER3'        : null,
+  'CEDAR_TEST_USER3_PASSWORD'    : null,
   'CEDAR_SELENIUM_SERVER_JAR' : null,
   'CEDAR_CHROME_DRIVER'    : null
 };
@@ -183,8 +191,12 @@ readAllEnvVarsOrFail();
 var cedarProfile = envConfig['CEDAR_PROFILE'];
 var cedarHost = envConfig['CEDAR_HOST'];
 var cedarAnalyticsKey = envConfig['CEDAR_ANALYTICS_KEY'];
-var cedarTestUser = envConfig['CEDAR_TEST_USER'];
-var cedarTestPassword = envConfig['CEDAR_TEST_PASSWORD'];
+var cedarTestUser1 = envConfig['CEDAR_TEST_USER1'];
+var cedarTestPassword1 = envConfig['CEDAR_TEST_USER1_PASSWORD'];
+var cedarTestUser2 = envConfig['CEDAR_TEST_USER2'];
+var cedarTestPassword2 = envConfig['CEDAR_TEST_USER2_PASSWORD'];
+var cedarTestUser3 = envConfig['CEDAR_TEST_USER3'];
+var cedarTestPassword3 = envConfig['CEDAR_TEST_USER3_PASSWORD'];
 var cedarSeleniumServerJar = envConfig['CEDAR_SELENIUM_SERVER_JAR'];
 var cedarChromeDriver = envConfig['CEDAR_CHROME_DRIVER'];
 console.log("-------------------------------------------- ************* --------------------------------------------".red);
