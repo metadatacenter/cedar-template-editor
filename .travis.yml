@@ -1,31 +1,47 @@
 language: node_js
 node_js:
-- '5.1'
+  - '5.1'
+
 branches:
   only:
-  - develop
+    - develop
+
 notifications:
   email:
     recipients:
-    - martin.oconnor@stanford.edu
+      - martin.oconnor@stanford.edu
     on_success: never
     on_failure: always
-before_install: 
-- export CHROME_BIN=chromium-browser
-before_script:
-- export CEDAR_HOST=staging.metadatacenter.net
-- export CEDAR_PROFILE=server
-- export CEDAR_ANALYTICS_KEY=false
-- export CEDAR_SELENIUM_SERVER_JAR=2.50.1-server.jar
-- export CEDAR_CHROME_DRIVER=2.21-x64-chromedriver
-- export DISPLAY=:99.0
-- sh -e /etc/init.d/xvfb start
+
+env:
+  - CXX=g++-4.8 
+
+addons:
+  apt:
+    sources:
+      - ubuntu-toolchain-r-test
+    packages:
+      - g++-4.8
+
+before_install:
+  - export CHROME_BIN=chromium-browser 
+  - export CEDAR_HOST=staging.metadatacenter.net
+  - export CEDAR_PROFILE=server 
+  - export CEDAR_ANALYTICS_KEY=false
+  - export CEDAR_SELENIUM_SERVER_JAR=2.50.1-server.jar
+  - export CEDAR_CHROME_DRIVER=2.21-x64-chromedriver
+  - export DISPLAY=:99.0
+  - sh -e /etc/init.d/xvfb start
+
+install:
+  - npm install
+  - npm install -g gulp
+  - npm install -g protractor
+  - ./node_modules/selenium-standalone/bin/selenium-standalone install
+
 script:
-- npm install
-- npm install -g gulp
-- npm install -g protractor
-- ./node_modules/selenium-standalone/bin/selenium-standalone install
-- gulp e2e
+  - gulp e2e
+
 env:
   global:
   - secure: brXMQHBMf0pZ69imCY/kN62AdkOG+B11C1wmNQOoEWNLsjWlxpjgWeBcwwY4pHMuK56bX7wpEbblHhj6WE8qbM3pSrUjjsEAi8x0xly3cVfTrFrxMS6F0ZLjzq9D05OH+lVTrbr+a1SXLWO0GSfWxcGDWY/IR7Mz3cX/jPaKcbI4SSJLon8w1KcNCRYYMK+m9FJS0cmjhkRRVkWdzjXoJdViP0vokqEvAMBMyQLb7AmffGDLlwbXOrPLXpNxELN1ALlgUsi81WhQJ7bENsJDV6LM8QAC6vnbAD8dwPgkAyQRpo1xS6tpXiuEeNeQjuTJ+V5m3IOfdwaEO1cEA56LnzQ+yf4CK0waDIi/iKrjYzkzH9GHOG1vEVHftbG9Z7whyqHq9UZya0yyvKzIK/z9oDOMUljycu3mwxG8uKOFoxfulkecadQNbiTZEXkHqfHv/tdAF+MkX4Jyg3d1h0lxyJ/k2POksLrEIQO140h4s7na8R/iyXFAv2IEuRGoJzAzBsODw4u+q84J3tmlfgVTezf/9fDxes+fK5V9KVcor8FQUigppE/aWAmHfpgzVFf9RsT0OXWh64lA0wVxFX3NrWCJdhU7iFg+Z/lRlLDT33TRCrvOIxkCY1NUYxCIHBEfVtMOr3souEAFdClkr56vtJTDVRhbgvEZNWtQcbB1QOk=
