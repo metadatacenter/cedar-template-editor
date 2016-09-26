@@ -55,10 +55,10 @@ var WorkspacePage = function () {
   var createBreadcrumbSearch = element(by.css('.breadcrumbs-sb .search-result'));
 
   // create new
-  var createNewButton = element(by.css('.add-new button#button-create'));
-  var createNewTemplateButton = element(by.css('.add-new button#button-create-template'));
-  var createNewElementButton = element(by.css('.add-new button#button-create-element '));
-  var createNewFolderButton = element(by.css('.add-new button#button-create-folder'));
+  var createButton = element(by.id('button-create'));
+  var createTemplateButton = element(by.id('button-create-template'));
+  var createElementButton = element(by.id('button-create-element '));
+  var createFolderButton = element(by.id('button-create-folder'));
 
   // create folder modal
   var createFolderModal = element(by.id('newFolderModal'));
@@ -147,6 +147,9 @@ var WorkspacePage = function () {
   this.createSearchNav = function () {
     return createSearchNav;
   };
+  this.createSearchNavInput = function () {
+    return createSearchNavInput;
+  };
   this.createSearchNavText = function () {
     return createSearchNavInput.getText();
   };
@@ -159,28 +162,13 @@ var WorkspacePage = function () {
   this.createBreadcrumb = function () {
     return createBreadcrumb;
   };
-  this.createNew = function () {
-    return createNewButton;
+  this.createButton = function () {
+    return createButton;
+  };
+  this.createTemplateButton = function () {
+    return createTemplateButton;
   };
 
-  this.createNewTemplateButton = function () {
-    return createNewTemplateButton;
-  };
-
-  // create a new template
-  this.createTemplate = function () {
-    browser.actions().mouseMove(createNewButton).perform();
-    createNewTemplateButton.click();
-    return require('./template-creator-page.js');
-  };
-
-  // create a new element
-  this.createElement = function () {
-    browser.actions().mouseMove(createNewButton).perform();
-    createNewElementButton.click();
-    browser.sleep(1000);
-    return require('./template-creator-page.js');
-  };
 
   var getRandomInt = function (min, max) {
     min = Math.ceil(min);
@@ -189,7 +177,7 @@ var WorkspacePage = function () {
   };
 
   this.createRandomFolderName = function () {
-    return testFolderName + getRandomInt(1, 9999);
+    return testFolderName + getRandomInt(1, 9999999999);
   };
   this.sampleTemplateTitle = function () {
     return sampleTemplateTitle;
@@ -224,22 +212,26 @@ var WorkspacePage = function () {
     var deferred = protractor.promise.defer();
     var EC = protractor.ExpectedConditions;
 
-    isReady(createNewButton).then(function () {
-      browser.actions().mouseMove(createNewButton).perform();
-      isReady(createNewFolderButton).then(function () {
-        createNewFolderButton.click();
-        isReady(createFolderModal).then(function () {
+    isReady(createButton).then(function () {
+      browser.actions().mouseMove(createButton).perform().then(function () {
+        isReady(createFolderButton).then(function () {
+          createFolderButton.click().then(function () {
+            isReady(createFolderModal).then(function () {
 
-          // give it a folder name
-          createFolderName.sendKeys(name);
-          browser.wait(EC.elementToBeClickable(createFolderSubmitButton)).then(function () {
-            createFolderSubmitButton.click();
+              // give it a folder name
+              createFolderName.sendKeys(name).then(function () {
+                browser.wait(EC.elementToBeClickable(createFolderSubmitButton)).then(function () {
+                  createFolderSubmitButton.click().then(function () {
 
-            isReady(createToastyConfirmationPopup).then(function () {
-              createToastyMessageText.getText().then(function (value) {
-                var result = value.indexOf(toastyFolderMessage + name + toastyMessageCreated) !== -1;
-                browser.wait(EC.not(EC.presenceOf(createToastyConfirmationPopup))).then(function () {
-                  deferred.fulfill(result);
+                    isReady(createToastyConfirmationPopup).then(function () {
+                      createToastyMessageText.getText().then(function (value) {
+                        var result = value.indexOf(toastyFolderMessage + name + toastyMessageCreated) !== -1;
+                        browser.wait(EC.not(EC.presenceOf(createToastyConfirmationPopup))).then(function () {
+                          deferred.fulfill(result);
+                        });
+                      });
+                    });
+                  });
                 });
               });
             });
@@ -258,6 +250,7 @@ var WorkspacePage = function () {
 
     // search for the name
     isReady(createSearchNavInput).then(function () {
+
       browser.wait(EC.elementToBeClickable(createSearchNavInput)).then(function () {
         createSearchNavInput.sendKeys(name).sendKeys(protractor.Key.ENTER).then(function () {
 
@@ -286,7 +279,6 @@ var WorkspacePage = function () {
                             expect(createConfirmationDialog.getAttribute(sweetAlertConfirmAttribute)).toBe('true');
 
                             isReady(createSweetAlertConfirmButton).then(function () {
-                              //browser.sleep(1000);
 
                               browser.wait(EC.elementToBeClickable(createSweetAlertConfirmButton)).then(function () {
                                 browser.sleep(1000); // TODO animation needs to be turned off
@@ -294,7 +286,6 @@ var WorkspacePage = function () {
                                 createSweetAlertConfirmButton.click().then(function () {
 
                                   isReady(createToastyConfirmationPopup).then(function () {
-                                    //browser.sleep(1000);
 
                                     isReady(createToastyMessageText).then(function () {
                                       createToastyMessageText.getText().then(function (value) {
@@ -344,22 +335,26 @@ var WorkspacePage = function () {
   };
 
 
-// open the template by title
-  this.openTemplate = function (name) {
+// double click the template by title to open in metadata editor
+  this.doubleClickName = function (name, type) {
     var deferred = protractor.promise.defer();
 
-    // search for the folder
-    createSearchNavInput.sendKeys(name).sendKeys(protractor.Key.ENTER).then(function () {
-      isReady(createBreadcrumbSearch).then(function () {
+    // search for the name
+    isReady(createSearchNavInput).then(function () {
 
-        // select the first result
-        isReady(createFirstTemplate).then(function () {
-          createFirstTemplate.click().then(function () {
+      browser.wait(EC.elementToBeClickable(createSearchNavInput)).then(function () {
+        createSearchNavInput.sendKeys(name).sendKeys(protractor.Key.ENTER).then(function () {
 
-            // double click the resource to create metadata
-            isReady(createFirstSelected).then(function () {
+          // wait for search results to show in the breadcrumb
+          isReady(createBreadcrumbSearch).then(function () {
+            browser.sleep(2000);  // TODO not correctly waiting for search to return
 
-              browser.actions().doubleClick(createFirstTemplate).perform().then(function () {
+
+            // select the first result
+            var createFirst = element.all(by.css(createFirstCss + type)).first();
+            isReady(createFirst).then(function () {
+
+              browser.actions().doubleClick(createFirst).perform().then(function () {
 
                 // wait until metadata page is displayed
                 isReady(createMetadataPage).then(function () {
@@ -379,10 +374,15 @@ var WorkspacePage = function () {
 
 // open folder by the index in the breadcrumb
   this.openFolder = function (index) {
+    var deferred = protractor.promise.defer();
+
     var folders = createBreadcrumbFolders;
     var link = folders.get(index).element(by.tagName('a'));
     expect(link.isDisplayed()).toBe(true);
-    link.click();
+    link.click().then(function () {
+      deferred.fulfill(true);
+    });
+    return deferred.promise;
   };
 
   this.createBreadcrumbFolders = function () {

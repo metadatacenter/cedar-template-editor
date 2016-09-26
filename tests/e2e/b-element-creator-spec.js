@@ -137,13 +137,14 @@ describe('element-creator', function () {
     browser.driver.manage().window().maximize();
   });
 
-  for (var j = 0; j < 10; j++) {
+  for (var j = 0; j < 1; j++) {
     (function () {
 
       // Verify that save button is present and active,
       it("should create the sample element", function () {
 
-        sampleTitle = "element" + page.getRandomInt(1, 99999);
+        sampleTitle = "element" + page.getRandomInt(1, 9999999999);
+        sampleElementUrl = null;
 
         page.createElement().then(function () {
 
@@ -155,6 +156,7 @@ describe('element-creator', function () {
                 page.isReady(page.createToastyConfirmationPopup()).then(function () {
 
                   page.getToastyMessageText().then(function (value) {
+
                     expect(value.indexOf(page.hasBeenCreated) !== -1).toBe(true);
 
                     // get the url of this element
@@ -169,7 +171,8 @@ describe('element-creator', function () {
         });
       });
 
-      xdescribe('with sample element', function () {
+
+      describe('with sample element', function () {
 
         describe('with template editor, ', function () {
 
@@ -180,41 +183,43 @@ describe('element-creator', function () {
               // github issue #406 part 1 of 2: Verify that surround, field icon, and field name are present, Verify that the X icon is present on an field in the template and element editors and deletes the field
               it("should create, edit, and delete a " + fieldType.cedarType, function () {
 
-                browser.get(sampleElementUrl).then(function () {
-                  page.isReady(element(by.css('#top-navigation.element'))).then(function () {
+                page.isReady(page.createPageName()).then(function () {
+                  browser.get(sampleElementUrl).then(function () {
+                    page.isReady(page.createElementPage()).then(function () {
 
-                    page.isReady(page.createSaveElementButton()).then(function () {
+                      page.isReady(page.createSaveElementButton()).then(function () {
 
-                      // css path for this field type
-                      var cssField = page.cssField(fieldType.iconClass);
+                        // css path for this field type
+                        var cssField = page.cssField(fieldType.iconClass);
 
-                      page.addField(fieldType.cedarType).then(function () {
+                        page.addField(fieldType.cedarType).then(function () {
 
-                        // is the field there?
-                        var field = element(by.css(cssField));
-                        page.isReady(field).then(function () {
+                          // is the field there?
+                          var field = element(by.css(cssField));
+                          page.isReady(field).then(function () {
 
-                          page.isReady(element(by.model(page.modelFieldTitle))).then(function () {
+                            page.isReady(element(by.model(page.modelFieldTitle))).then(function () {
 
 
-                            // does it have the help text field in edit mode?
-                            page.isReady(element(by.model(page.modelFieldDescription))).then(function () {
+                              // does it have the help text field in edit mode?
+                              page.isReady(element(by.model(page.modelFieldDescription))).then(function () {
 
-                              // move the mouse away from the toolbar so the tooltip is hidden
-                              // before trying to remove the field
-                              // otherwise the textarea fails
-                              browser.actions().mouseMove(field).perform().then(function () {
+                                // move the mouse away from the toolbar so the tooltip is hidden
+                                // before trying to remove the field
+                                // otherwise the textarea fails
+                                browser.actions().mouseMove(field).perform().then(function () {
 
-                                page.isReady(page.removeFieldButton()).then(function () {
+                                  page.isReady(page.removeFieldButton()).then(function () {
 
-                                  // TODO text area hits the tooltip even though the mouse has been moved away
-                                  if (fieldType.cedarType != 'textarea') {
-                                    page.removeFieldButton().click().then(function () {
-                                      // is it removed?
-                                      expect(element(by.css(cssField)).isPresent()).toBe(false);
-                                    });
-                                  }
+                                    // TODO text area hits the tooltip even though the mouse has been moved away
+                                    if (fieldType.cedarType != 'textarea') {
+                                      page.removeFieldButton().click().then(function () {
+                                        // is it removed?
+                                        expect(element(by.css(cssField)).isPresent()).toBe(false);
+                                      });
+                                    }
 
+                                  });
                                 });
                               });
                             });
@@ -232,37 +237,40 @@ describe('element-creator', function () {
                 var firstField;
                 var lastField;
 
-                browser.get(sampleElementUrl).then(function () {
-                  page.isReady(element(by.css('#top-navigation.element'))).then(function () {
-                    page.isReady(page.createSaveElementButton()).then(function () {
+                page.isReady(page.createPageName()).then(function () {
+                  browser.get(sampleElementUrl).then(function () {
+                    page.isReady(page.createElementPage()).then(function () {
 
-                      // add two fields
-                      page.addField(fieldType.cedarType).then(function () {
+                      page.isReady(page.createSaveElementButton()).then(function () {
+
+                        // add two fields
                         page.addField(fieldType.cedarType).then(function () {
+                          page.addField(fieldType.cedarType).then(function () {
 
-                          // do we have two fields
-                          var fields = element.all(by.css(page.cssFieldRoot));
-                          expect(fields.count()).toBe(2);
+                            // do we have two fields
+                            var fields = element.all(by.css(page.cssFieldRoot));
+                            expect(fields.count()).toBe(2);
 
-                          firstField = fields.first();
-                          lastField = fields.last();
+                            firstField = fields.first();
+                            lastField = fields.last();
 
-                          // do we have each field
-                          expect(firstField.isPresent()).toBe(true);
-                          expect(lastField.isPresent()).toBe(true);
+                            // do we have each field
+                            expect(firstField.isPresent()).toBe(true);
+                            expect(lastField.isPresent()).toBe(true);
 
-                          // is the second field selected and not the first
-                          expect(lastField.element(by.model(page.modelFieldTitle)).isPresent()).toBe(true);
-                          expect(firstField.element(by.model(page.modelFieldTitle)).isPresent()).toBe(false);
+                            // is the second field selected and not the first
+                            expect(lastField.element(by.model(page.modelFieldTitle)).isPresent()).toBe(true);
+                            expect(firstField.element(by.model(page.modelFieldTitle)).isPresent()).toBe(false);
 
-                          // click on the first field
-                          browser.actions().mouseMove(firstField).perform().then(function () {
-                            browser.wait(EC.elementToBeClickable(firstField)).then(function () {
-                              firstField.click().then(function () {
+                            // click on the first field
+                            browser.actions().mouseMove(firstField).perform().then(function () {
+                              browser.wait(EC.elementToBeClickable(firstField)).then(function () {
+                                firstField.click().then(function () {
 
-                                // is the first selected and the second deselected
-                                expect(firstField.element(by.model(page.modelFieldTitle)).isPresent()).toBe(true);
-                                expect(lastField.element(by.model(page.modelFieldTitle)).isPresent()).toBe(false);
+                                  // is the first selected and the second deselected
+                                  expect(firstField.element(by.model(page.modelFieldTitle)).isPresent()).toBe(true);
+                                  expect(lastField.element(by.model(page.modelFieldTitle)).isPresent()).toBe(false);
+                                });
                               });
                             });
                           });
@@ -280,20 +288,22 @@ describe('element-creator', function () {
           // Verify that Clear button is present and active, expect clear to clear the element
           it("should hang on to the sample element json", function () {
 
-            browser.get(sampleElementUrl).then(function () {
-              page.isReady(element(by.css('#top-navigation.element'))).then(function () {
+            page.isReady(page.createPageName()).then(function () {
+              browser.get(sampleElementUrl).then(function () {
+                page.isReady(page.createElementPage()).then(function () {
 
 
-                page.isReady(page.showJsonLink()).then(function () {
-                  page.showJsonLink().click().then(function () {
+                  page.isReady(page.showJsonLink()).then(function () {
+                    page.showJsonLink().click().then(function () {
 
-                    page.isReady(page.templateJSON()).then(function () {
-                      expect(page.templateJSON().isDisplayed()).toBe(true);
+                      page.isReady(page.templateJSON()).then(function () {
+                        expect(page.templateJSON().isDisplayed()).toBe(true);
 
-                      // get the dirty template
-                      page.jsonPreview().getText().then(function (value) {
-                        sampleElementJson = JSON.parse(value);
+                        // get the dirty template
+                        page.jsonPreview().getText().then(function (value) {
+                          sampleElementJson = JSON.parse(value);
 
+                        });
                       });
                     });
                   });
@@ -305,44 +315,46 @@ describe('element-creator', function () {
           // Verify that Clear button is present and active, expect clear to clear the element
           it("should should restore the template when clear is clicked and confirmed", function () {
 
-            browser.get(sampleElementUrl).then(function () {
-              page.isReady(element(by.css('#top-navigation.element'))).then(function () {
+            page.isReady(page.createPageName()).then(function () {
+              browser.get(sampleElementUrl).then(function () {
+                page.isReady(page.createElementPage()).then(function () {
 
-                page.addField(fieldType.cedarType);
-                page.addField(fieldType.cedarType);
+                  page.addField(fieldType.cedarType);
+                  page.addField(fieldType.cedarType);
 
 
-                page.isReady(page.createClearElementButton()).then(function () {
-                  page.createClearElementButton().click();
+                  page.isReady(page.createClearElementButton()).then(function () {
+                    page.createClearElementButton().click();
 
-                  page.isReady(page.createConfirmationDialog()).then(function () {
+                    page.isReady(page.createConfirmationDialog()).then(function () {
 
-                    expect(page.createConfirmationDialog().getAttribute(page.sweetAlertCancelAttribute())).toBe('true');
-                    expect(page.createConfirmationDialog().getAttribute(page.sweetAlertConfirmAttribute())).toBe('true');
+                      expect(page.createConfirmationDialog().getAttribute(page.sweetAlertCancelAttribute())).toBe('true');
+                      expect(page.createConfirmationDialog().getAttribute(page.sweetAlertConfirmAttribute())).toBe('true');
 
-                    // expect confirm to clear the template,
-                    page.isReady(page.createSweetAlertConfirmButton()).then(function () {
-                      page.createSweetAlertConfirmButton().click().then(function () {
+                      // expect confirm to clear the template,
+                      page.isReady(page.createSweetAlertConfirmButton()).then(function () {
+                        page.createSweetAlertConfirmButton().click().then(function () {
 
-                        page.isReady(page.showJsonLink()).then(function () {
-                          page.showJsonLink().click().then(function () {
+                          page.isReady(page.showJsonLink()).then(function () {
+                            page.showJsonLink().click().then(function () {
 
-                            page.isReady(page.templateJSON()).then(function () {
-                              expect(page.templateJSON().isDisplayed()).toBe(true);
+                              page.isReady(page.templateJSON()).then(function () {
+                                expect(page.templateJSON().isDisplayed()).toBe(true);
 
-                              // get the dirty template
-                              page.jsonPreview().getText().then(function (value) {
+                                // get the dirty template
+                                page.jsonPreview().getText().then(function (value) {
 
-                                var currentJson = JSON.parse(value);
-                                // TODO this one fails and needs to be fixed in code
-                                //expect(_.isEqual(currentJson, sampleElementJson)).toBe(true);
+                                  var currentJson = JSON.parse(value);
+                                  // TODO this one fails and needs to be fixed in code
+                                  //expect(_.isEqual(currentJson, sampleElementJson)).toBe(true);
+                                });
                               });
                             });
                           });
                         });
                       });
-                    });
 
+                    });
                   });
                 });
               });
@@ -465,7 +477,9 @@ describe('element-creator', function () {
           // github issue #403:  Verify that the header is present and displays back button, name, description, title, JSON preview
           it("should be on the workspace page", function () {
 
-            expect(page.isDashboard());
+            page.isReady(page.createPageName()).then(function () {
+              expect(page.isDashboard());
+            });
           });
 
           // Verify that the header is present and displays back button, name, description, title, JSON preview
@@ -631,7 +645,8 @@ describe('element-creator', function () {
 
           it("should create the second element", function () {
 
-            secondTitle = "element" + page.getRandomInt(1, 99999);
+            secondTitle = "element" + page.getRandomInt(1, 9999999999);
+
 
             page.createElement().then(function () {
               page.setElementTitle(secondTitle).then(function () {
@@ -641,6 +656,7 @@ describe('element-creator', function () {
 
                     page.isReady(page.createToastyConfirmationPopup()).then(function () {
                       page.getToastyMessageText().then(function (value) {
+
                         expect(value.indexOf(page.hasBeenCreated) !== -1).toBe(true);
 
                         // get the url of this element
@@ -657,27 +673,28 @@ describe('element-creator', function () {
 
           it("should add an element to an element", function () {
 
-            browser.get(sampleElementUrl).then(function () {
-              page.isReady(element(by.css('#top-navigation.element'))).then(function () {
+            page.isReady(page.createPageName()).then(function () {
+              browser.get(sampleElementUrl).then(function () {
+                page.isReady(page.createElementPage()).then(function () {
 
+                  page.addElement(secondTitle).then(function () {
 
-                page.addElement(secondTitle).then(function () {
+                    // the element should include the sample element name
+                    var items = element.all(by.css('.element-root .element-name-label'));
 
-                  // the element should include the sample element name
-                  var items = element.all(by.css('.element-root .element-name-label'));
+                    items.get(1).getText().then(function (text) {
 
-                  items.get(1).getText().then(function (text) {
+                      // and the name should be sampleElement
+                      expect(text === secondTitle).toBe(true);
 
-                    // and the name should be sampleElement
-                    expect(text === secondTitle).toBe(true);
-
+                    });
                   });
                 });
               });
             });
           });
 
-          it("should delete an element in a element", function () {
+          xit("should delete an element in a element", function () {
 
             browser.get(sampleElementUrl).then(function () {
               page.isReady(element(by.css('#top-navigation.element'))).then(function () {
@@ -697,7 +714,7 @@ describe('element-creator', function () {
             });
           });
 
-          it("should select and deselect the sample element", function () {
+          xit("should select and deselect the sample element", function () {
 
             browser.get(sampleElementUrl).then(function () {
               page.isReady(element(by.css('#top-navigation.element'))).then(function () {
@@ -754,8 +771,13 @@ describe('element-creator', function () {
 
           it("should delete the second element, ", function () {
 
-            expect(page.isDashboard()).toBe(true);
-            workspacePage.deleteResource(secondTitle, 'element');
+            page.isReady(page.createPageName()).then(function () {
+
+              workspacePage.isDashboard().then(function () {
+                workspacePage.deleteResource(secondTitle, page.elementType());
+
+              });
+            });
           });
         });
 
@@ -903,18 +925,21 @@ describe('element-creator', function () {
 
       it("should delete the sample element from the workspace, ", function () {
 
-        workspacePage.isDashboard().then(function () {
-          workspacePage.deleteResource(sampleTitle, workspacePage.elementType()).then(function () {
+        page.isReady(page.createPageName()).then(function () {
+          workspacePage.isDashboard().then(function () {
+            workspacePage.deleteResource(sampleTitle, page.elementType()).then(function () {
+            });
           });
         });
-
       });
+
 
     })
     (j);
   }
 
-});
+})
+;
 
 
 
