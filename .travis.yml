@@ -1,10 +1,40 @@
 language: node_js
+
 node_js:
   - "5.1"
+
+branches:
+  only:
+  - development
+
+notifications:
+  email:
+    recipients:
+    - martin.oconnor@stanford.edu
+    on_success: never
+    on_failure: always
+
 before_script:
   - export DISPLAY=:99.0
   - sh -e /etc/init.d/xvfb start
-  - echo '{"apiKey":"test"}' > app/config/provisional-class-service.conf.json
-  - echo '{"apiKey":"test"}' > app/config/controlled-term-data-service.conf.json
-  - echo '{"analyticsKey":"false"}' > app/config/tracking-service.conf.json
-  - echo '{"cedarRestAPI":"https://template.metadatacenter.orgx","userRestAPI":"https://user.metadatacenter.orgx","terminologyRestAPI":"https://terminology.metadatacenter.orgx","resourceRestAPI":"https://resource.metadatacenter.orgx","valueRecommenderRestAPI":"https://valuerecommender.metadatacenter.orgx","bioontologyRestAPI":"https://data.bioontology.org/"}' > app/config/url-service.conf.json
+  - wget http://chrome.richardlloyd.org.uk/install_chrome.sh
+  - chmod u+x install_chrome.sh
+  - ./install_chrome.sh
+
+script:
+  - yum update
+  - yum install node
+  - npm install
+  - npm install -g gulp
+  - npm install -g protractor
+  - ./node_modules/selenium-standalone/bin/selenium-standalone install
+  - gulp e2e
+
+env:
+  - CEDAR_HOST=staging.metadatacenter.net
+  - CEDAR_PROFILE=server
+  - CEDAR_ANALYTICS_KEY=false
+  - CEDAR_SELENIUM_SERVER_JAR=2.50.1-server.jar
+  - CEDAR_CHROME_DRIVER=2.21-x64-chromedriver
+  - CEDAR_TEST_USER=dsds
+  - CEDAR_TEST_PASSWORD=ddd
