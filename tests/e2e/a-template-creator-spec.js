@@ -365,16 +365,18 @@ describe('template-creator', function () {
 
           page.createTemplate().then(function () {
 
-            expect(page.templateJSON().isDisplayed()).toBe(false);
+            page.isReady(page.templateJSONHidden()).then(function () {
 
-            page.isReady(page.showJsonLink()).then(function () {
-              page.showJsonLink().click().then(function () {
+              page.isReady(page.showJsonLink()).then(function () {
+                page.showJsonLink().click().then(function () {
 
-                page.isReady(page.templateJSON()).then(function () {
-                  expect(page.templateJSON().isDisplayed()).toBe(true);
+                  page.isReady(page.templateJSON()).then(function () {
+                    expect(page.templateJSON().isDisplayed()).toBe(true);
 
-                  page.showJsonLink().click().then(function () {
-                    expect(page.templateJSON().isDisplayed()).toBe(false);
+                    page.showJsonLink().click().then(function () {
+                      page.isReady(page.templateJSONHidden()).then(function () {
+                      });
+                    });
                   });
                 });
               });
@@ -561,8 +563,8 @@ describe('template-creator', function () {
               page.isReady(page.createTemplatePage()).then(function () {
 
                 // TODO these fail
-              //  expect(page.createClearTemplateButton().isPresent()).toBe(true);
-              //  expect(page.createClearTemplateButton().isDisplayed()).toBe(false);
+                //  expect(page.createClearTemplateButton().isPresent()).toBe(true);
+                //  expect(page.createClearTemplateButton().isDisplayed()).toBe(false);
               });
             });
           });
