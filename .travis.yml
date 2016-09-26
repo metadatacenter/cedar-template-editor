@@ -40,6 +40,8 @@ install:
   - ./node_modules/selenium-standalone/bin/selenium-standalone install
 
 script:
+  - which chromium-browser
+  - ls /usr/bin
   - gulp e2e
 
 env:
