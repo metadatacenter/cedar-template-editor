@@ -1,13 +1,7 @@
 language: node_js
 node_js:
-- '5.1'
+  - '5.1'
 env:
-  - CXX=g++-4.8
-  - CEDAR_HOST=staging.metadatacenter.net
-  - CEDAR_PROFILE=server
-  - CEDAR_ANALYTICS_KEY=false
-  - CEDAR_SELENIUM_SERVER_JAR=2.50.1-server.jar
-  - CEDAR_CHROME_DRIVER=2.21-x64-chromedriver
 branches:
   only:
   - develop
@@ -23,18 +17,24 @@ addons:
       - ubuntu-toolchain-r-test
     packages:
       - g++-4.8
-before_install: 
-- export CHROME_BIN=chromium-browser
 before_script:
-- export DISPLAY=:99.0
-- sh -e /etc/init.d/xvfb start
+  - export CHROME_BIN=chromium-browser
+  - export CEDAR_HOST=staging.metadatacenter.net
+  - export CEDAR_PROFILE=server
+  - export CEDAR_ANALYTICS_KEY=false
+  - export CEDAR_SELENIUM_SERVER_JAR=2.50.1-server.jar
+  - export CEDAR_CHROME_DRIVER=2.21-x64-chromedriver
+  - export DISPLAY=:99.0
+  - sh -e /etc/init.d/xvfb start
+
 script:
-- npm install
-- npm install -g gulp
-- npm install -g protractor
-- ./node_modules/selenium-standalone/bin/selenium-standalone install
-- gulp e2e
+  - npm install
+  - npm install -g gulp
+  - npm install -g protractor
+  - ./node_modules/selenium-standalone/bin/selenium-standalone install
+  - gulp e2e
 env:
+  - CXX=g++-4.8
   global:
   - secure: brXMQHBMf0pZ69imCY/kN62AdkOG+B11C1wmNQOoEWNLsjWlxpjgWeBcwwY4pHMuK56bX7wpEbblHhj6WE8qbM3pSrUjjsEAi8x0xly3cVfTrFrxMS6F0ZLjzq9D05OH+lVTrbr+a1SXLWO0GSfWxcGDWY/IR7Mz3cX/jPaKcbI4SSJLon8w1KcNCRYYMK+m9FJS0cmjhkRRVkWdzjXoJdViP0vokqEvAMBMyQLb7AmffGDLlwbXOrPLXpNxELN1ALlgUsi81WhQJ7bENsJDV6LM8QAC6vnbAD8dwPgkAyQRpo1xS6tpXiuEeNeQjuTJ+V5m3IOfdwaEO1cEA56LnzQ+yf4CK0waDIi/iKrjYzkzH9GHOG1vEVHftbG9Z7whyqHq9UZya0yyvKzIK/z9oDOMUljycu3mwxG8uKOFoxfulkecadQNbiTZEXkHqfHv/tdAF+MkX4Jyg3d1h0lxyJ/k2POksLrEIQO140h4s7na8R/iyXFAv2IEuRGoJzAzBsODw4u+q84J3tmlfgVTezf/9fDxes+fK5V9KVcor8FQUigppE/aWAmHfpgzVFf9RsT0OXWh64lA0wVxFX3NrWCJdhU7iFg+Z/lRlLDT33TRCrvOIxkCY1NUYxCIHBEfVtMOr3souEAFdClkr56vtJTDVRhbgvEZNWtQcbB1QOk=
   - secure: NOtz6ntXdoxdMm4dePT6OF2lFWUwnHcIQ8s0JTFhRVulMDWfI5DyNsFPS/zo3Y5LQy1oZBKG5nK1n+m94QiO6dpYSQ2mj6hiMfgIjiuzDHmVlXfNFodKuHVRC9vumlXYnbL5liVWgA3Ja2e5GpaRYBeap5GOz/0rQFgzAK36hDjzj2UCkgnp0aIXExURanp1icyIAWnEJL0/NEaAv/yK/vVYayyaVbOjiiW14u/OBr8ZvJaDLAyfLTRGW1VP93GU9Rn1C7BPQ7J9onFu1K3TvGPnDpynk/7r6/Lbwv06jEy+L5ni9m1dR4xWuQuDXJAR5L3Nf602tbetq2qrhb71UmaZGvl0q1fcCDlGtHsXZud8mTz2sFLWC7tk2OUOJbhaBVRAJo08A/TpojuObCZpunAvlCvAS54TFSEsfeaXevSYK03GZAl/WlQBvgqqtUZCBKy2k5bBfNkv4u9Xd2MaQGXDue0hicrjRVeDqdDwy36J5ewFWQATJ0UatdNoMfGVx7/MEsuPZz2W5SIJR8riCxEeGEbIhYEtLn0ZC3M+OjQSolwBifpIBpemqoekq+onDe37R1ACRM8Cxu/pSqds4CfYbqH4nr1vn2NcDwfBPYsE1K++ykYWpf+rOpMnshqJiENkgZCqAsIcQzRnQY1cwcOHA0rxGjgZHrasvlplbYs=
