@@ -57,6 +57,7 @@ var TemplateCreatorPage = function () {
       var createSweetAlertCancelButton = element(by.css('.sweet-alert')).element(by.css('.sa-button-container')).element(by.css('button.cancel'));
       var createSweetAlertConfirmButton = element(by.css('.sweet-alert')).element(by.css('.sa-button-container')).element(by.css('button.confirm'));
       var templateJSON = element(by.id('templateJSON'));
+      var templateJSONHidden = element(by.css('#templateJSON.ng-hide'));
       var topNavigation = element(by.id('top-navigation'));
       var topNavBackArrow = element(by.id('top-navigation')).element(by.css('.navbar-header')).element(by.css('.back-arrow-click'));
       var topNavButtons = element.all(by.css('.controls-bar .list-inline li button'));
@@ -369,6 +370,10 @@ var TemplateCreatorPage = function () {
       this.templateJSON = function () {
         return templateJSON;
       };
+      this.templateJSONHidden = function () {
+        return templateJSONHidden;
+      };
+
       this.clickBackArrow = function () {
         topNavBackArrow.click();
       };
