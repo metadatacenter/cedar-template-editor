@@ -14,13 +14,7 @@ notifications:
     on_failure: always
 
 env:
-  - CXX=g++-4.8
-  - CHROME_BIN=chromium-browser
-  - CEDAR_HOST=staging.metadatacenter.net
-  - CEDAR_PROFILE=server
-  - CEDAR_ANALYTICS_KEY=false
-  - CEDAR_SELENIUM_SERVER_JAR=2.50.1-server.jar
-  - CEDAR_CHROME_DRIVER=2.21-x64-chromedriver
+  - CXX=g++-4.8 CHROME_BIN=chromium-browser CEDAR_HOST=staging.metadatacenter.net CEDAR_PROFILE=server CEDAR_ANALYTICS_KEY=false CEDAR_SELENIUM_SERVER_JAR=2.50.1-server.jar CEDAR_CHROME_DRIVER=2.21-x64-chromedriver
 
 addons:
   apt:
