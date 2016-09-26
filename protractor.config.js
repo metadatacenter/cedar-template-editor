@@ -47,8 +47,8 @@ exports.config = {
     browser.addMockModule('disableCssAnimate', disableCssAnimate);
 
 
-    browser.driver.findElement(by.id('username')).sendKeys(testConfig.testUser3);
-    browser.driver.findElement(by.id('password')).sendKeys(testConfig.testPassword3);
+    browser.driver.findElement(by.id('username')).sendKeys(testConfig.testUser1);
+    browser.driver.findElement(by.id('password')).sendKeys(testConfig.testPassword1);
     browser.driver.findElement(by.id('kc-login')).click();
 
     // wait for new page
