@@ -300,9 +300,11 @@ describe('element-creator', function () {
                         expect(page.templateJSON().isDisplayed()).toBe(true);
 
                         // get the dirty template
-                        page.jsonPreview().getText().then(function (value) {
-                          sampleElementJson = JSON.parse(value);
+                        page.isReady(page.jsonPreview()).then(function () {
+                          page.jsonPreview().getText().then(function (value) {
+                            sampleElementJson = JSON.parse(value);
 
+                          });
                         });
                       });
                     });
@@ -319,41 +321,44 @@ describe('element-creator', function () {
               browser.get(sampleElementUrl).then(function () {
                 page.isReady(page.createElementPage()).then(function () {
 
-                  page.addField(fieldType.cedarType);
-                  page.addField(fieldType.cedarType);
+                  page.addField(fieldType.cedarType).then(function () {
+                    page.addField(fieldType.cedarType).then(function () {
 
+                      page.isReady(page.createClearElementButton()).then(function () {
+                        page.createClearElementButton().click().then(function () {
 
-                  page.isReady(page.createClearElementButton()).then(function () {
-                    page.createClearElementButton().click();
+                          page.isReady(page.createConfirmationDialog()).then(function () {
 
-                    page.isReady(page.createConfirmationDialog()).then(function () {
+                            expect(page.createConfirmationDialog().getAttribute(page.sweetAlertCancelAttribute())).toBe('true');
+                            expect(page.createConfirmationDialog().getAttribute(page.sweetAlertConfirmAttribute())).toBe('true');
 
-                      expect(page.createConfirmationDialog().getAttribute(page.sweetAlertCancelAttribute())).toBe('true');
-                      expect(page.createConfirmationDialog().getAttribute(page.sweetAlertConfirmAttribute())).toBe('true');
+                            // expect confirm to clear the template,
+                            page.isReady(page.createSweetAlertConfirmButton()).then(function () {
+                              page.createSweetAlertConfirmButton().click().then(function () {
 
-                      // expect confirm to clear the template,
-                      page.isReady(page.createSweetAlertConfirmButton()).then(function () {
-                        page.createSweetAlertConfirmButton().click().then(function () {
+                                page.isReady(page.showJsonLink()).then(function () {
+                                  page.showJsonLink().click().then(function () {
 
-                          page.isReady(page.showJsonLink()).then(function () {
-                            page.showJsonLink().click().then(function () {
+                                    page.isReady(page.templateJSON()).then(function () {
+                                      expect(page.templateJSON().isDisplayed()).toBe(true);
 
-                              page.isReady(page.templateJSON()).then(function () {
-                                expect(page.templateJSON().isDisplayed()).toBe(true);
+                                      // get the dirty template
+                                      page.isReady(page.jsonPreview()).then(function () {
+                                        page.jsonPreview().getText().then(function (value) {
 
-                                // get the dirty template
-                                page.jsonPreview().getText().then(function (value) {
-
-                                  var currentJson = JSON.parse(value);
-                                  // TODO this one fails and needs to be fixed in code
-                                  //expect(_.isEqual(currentJson, sampleElementJson)).toBe(true);
+                                          var currentJson = JSON.parse(value);
+                                          // TODO this one fails and needs to be fixed in code
+                                          //expect(_.isEqual(currentJson, sampleElementJson)).toBe(true);
+                                        });
+                                      });
+                                    });
+                                  });
                                 });
                               });
                             });
                           });
                         });
                       });
-
                     });
                   });
                 });
@@ -368,14 +373,18 @@ describe('element-creator', function () {
 
               expect(page.templateJSON().isDisplayed()).toBe(false);
 
+              // show
               page.isReady(page.showJsonLink()).then(function () {
                 page.showJsonLink().click().then(function () {
 
                   page.isReady(page.templateJSON()).then(function () {
                     expect(page.templateJSON().isDisplayed()).toBe(true);
 
-                    page.showJsonLink().click().then(function () {
-                      expect(page.templateJSON().isDisplayed()).toBe(false);
+                    // hide
+                    page.isReady(page.showJsonLink()).then(function () {
+                      page.showJsonLink().click().then(function () {
+                        expect(page.templateJSON().isDisplayed()).toBe(false);
+                      });
                     });
                   });
                 });
@@ -393,7 +402,6 @@ describe('element-creator', function () {
                 page.showJsonLink().click().then(function () {
 
                   page.isReady(page.jsonPreview()).then(function () {
-
                     page.jsonPreview().getText().then(function (value) {
 
                       // hang on to this json for use later
@@ -412,21 +420,23 @@ describe('element-creator', function () {
 
             page.createElement().then(function () {
 
-              page.addField(fieldType.cedarType);
-              page.addField(fieldType.cedarType);
+              page.addField(fieldType.cedarType).then(function () {
+                page.addField(fieldType.cedarType).then(function () {
 
-              page.isReady(page.showJsonLink()).then(function () {
-                page.showJsonLink().click().then(function () {
+                  page.isReady(page.showJsonLink()).then(function () {
+                    page.showJsonLink().click().then(function () {
 
-                  page.isReady(page.jsonPreview()).then(function () {
+                      page.isReady(page.jsonPreview()).then(function () {
 
 
-                    // get the dirty template
-                    page.jsonPreview().getText().then(function (value) {
+                        // get the dirty template
+                        page.jsonPreview().getText().then(function (value) {
 
-                      dirtyJson = JSON.parse(value);
-                      expect(_.isEqual(page.emptyElementJson, dirtyJson)).toBe(false);
+                          dirtyJson = JSON.parse(value);
+                          expect(_.isEqual(page.emptyElementJson, dirtyJson)).toBe(false);
 
+                        });
+                      });
                     });
                   });
                 });
@@ -439,11 +449,13 @@ describe('element-creator', function () {
 
             page.createElement().then(function () {
 
-              page.addField(fieldType.cedarType);
-              page.addField(fieldType.cedarType);
+              page.addField(fieldType.cedarType).then(function () {
+                page.addField(fieldType.cedarType).then(function () {
 
-              page.isReady(page.createClearElementButton()).then(function () {
-                expect(page.createClearElementButton().isDisplayed()).toBe(true);
+                  page.isReady(page.createClearElementButton()).then(function () {
+                    expect(page.createClearElementButton().isDisplayed()).toBe(true);
+                  });
+                });
               });
             });
           });
@@ -453,20 +465,22 @@ describe('element-creator', function () {
 
             page.createElement().then(function () {
 
-              page.addField(fieldType.cedarType);
-              page.addField(fieldType.cedarType);
+              page.addField(fieldType.cedarType).then(function () {
+                page.addField(fieldType.cedarType).then(function () {
 
-              page.isReady(page.showJsonLink()).then(function () {
-                page.showJsonLink().click().then(function () {
+                  page.isReady(page.showJsonLink()).then(function () {
+                    page.showJsonLink().click().then(function () {
 
-                  page.isReady(page.jsonPreview()).then(function () {
+                      page.isReady(page.jsonPreview()).then(function () {
 
-                    // get the dirty template
-                    page.jsonPreview().getText().then(function (value) {
+                        // get the dirty template
+                        page.jsonPreview().getText().then(function (value) {
 
-                      dirtyJson = JSON.parse(value);
-                      expect(_.isEqual(page.emptyElementJson, dirtyJson)).toBe(false);
+                          dirtyJson = JSON.parse(value);
+                          expect(_.isEqual(page.emptyElementJson, dirtyJson)).toBe(false);
 
+                        });
+                      });
                     });
                   });
                 });
@@ -523,17 +537,19 @@ describe('element-creator', function () {
             page.createElement().then(function () {
 
               // make the template dirty
-              page.addField(fieldTypes[0].cedarType);
-              page.addField(fieldTypes[0].cedarType);
+              page.addField(fieldTypes[0].cedarType).then(function () {
+                page.addField(fieldTypes[0].cedarType).then(function () {
 
-              // clicking the cancel should cancel edits
-              page.clickCancel(page.createCancelElementButton()).then(function () {
+                  // clicking the cancel should cancel edits
+                  page.clickCancel(page.createCancelElementButton()).then(function () {
 
-                // and take us back to the workspace
-                page.isReady(workspacePage.createPageName()).then(function () {
-                  expect(workspacePage.isDashboard()).toBe(true);
+                    // and take us back to the workspace
+                    page.isReady(workspacePage.createPageName()).then(function () {
+                      expect(workspacePage.isDashboard()).toBe(true);
+                    });
+
+                  });
                 });
-
               });
             });
           });
@@ -880,41 +896,43 @@ describe('element-creator', function () {
           var fieldType = fieldTypes[0];
 
           // add two fields
-          page.addField(fieldType.cedarType);
-          page.addField(fieldType.cedarType);
+          page.addField(fieldType.cedarType).then(function () {
+            page.addField(fieldType.cedarType).then(function () {
 
-          // should have two field roots
-          var fieldRoots = element.all(by.css(page.cssFieldRoot));
-          expect(fieldRoots.count()).toBe(2);
+              // should have two field roots
+              var fieldRoots = element.all(by.css(page.cssFieldRoot));
+              expect(fieldRoots.count()).toBe(2);
 
-          fieldRoots.first().getAttribute('id').then(function (attr) {
-            var firstId = attr;
+              fieldRoots.first().getAttribute('id').then(function (attr) {
+                var firstId = attr;
 
-            fieldRoots.last().getAttribute('id').then(function (attr) {
-              var lastId = attr;
+                fieldRoots.last().getAttribute('id').then(function (attr) {
+                  var lastId = attr;
 
-              // get the fields by their sort handlers and drag last over first
-              var fields = element.all(by.css(page.cssFieldSortableIcon)).then(function () {
-                expect(fields.count()).toBe(2);
+                  // get the fields by their sort handlers and drag last over first
+                  var fields = element.all(by.css(page.cssFieldSortableIcon)).then(function () {
+                    expect(fields.count()).toBe(2);
 
-                var firstField = fields.first();
-                var lastField = fields.last();
-                browser.actions().mouseDown(lastField).perform();
-                browser.actions().mouseMove(firstField, {x: 0, y: 0}).perform();
-                browser.actions().mouseUp().perform();
+                    var firstField = fields.first();
+                    var lastField = fields.last();
+                    browser.actions().mouseDown(lastField).perform();
+                    browser.actions().mouseMove(firstField, {x: 0, y: 0}).perform();
+                    browser.actions().mouseUp().perform();
 
-                // now get the field roots again
-                fieldRoots = element.all(by.css(page.cssFieldRoot));
-                expect(fieldRoots.count()).toBe(2);
+                    // now get the field roots again
+                    fieldRoots = element.all(by.css(page.cssFieldRoot));
+                    expect(fieldRoots.count()).toBe(2);
 
-                fieldRoots.first().getAttribute('id').then(function (attr) {
-                  var newFirstId = attr;
+                    fieldRoots.first().getAttribute('id').then(function (attr) {
+                      var newFirstId = attr;
 
-                  fieldRoots.last().getAttribute('id').then(function (attr) {
-                    var newLastId = attr;
+                      fieldRoots.last().getAttribute('id').then(function (attr) {
+                        var newLastId = attr;
 
-                    expect(newFirstId === lastId).toBe(true);
-                    expect(newLastId === firstId).toBe(true);
+                        expect(newFirstId === lastId).toBe(true);
+                        expect(newLastId === firstId).toBe(true);
+                      });
+                    });
                   });
                 });
               });
@@ -938,8 +956,7 @@ describe('element-creator', function () {
     (j);
   }
 
-})
-;
+});
 
 
 

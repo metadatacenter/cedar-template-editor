@@ -376,10 +376,13 @@ var WorkspacePage = function () {
   this.openFolder = function (index) {
     var deferred = protractor.promise.defer();
 
-    var link = createBreadcrumbFolders.get(index).element(by.tagName('a'));
-    isReady(link).then(function () {
-      link.click().then(function () {
-        deferred.fulfill(true);
+    isReady(createBreadcrumb).then(function () {
+      var folder = createBreadcrumbFolders.get(index);
+      var link = folder.element(by.tagName('a'));
+      isReady(link).then(function () {
+        link.click().then(function () {
+          deferred.fulfill(true);
+        });
       });
     });
     return deferred.promise;
