@@ -14,6 +14,7 @@ notifications:
   email:
     recipients:
       - martin.oconnor@stanford.edu
+      - willrett@stanford.edu
     on_success: never
     on_failure: always
 
@@ -43,6 +44,7 @@ install:
   - ./node_modules/selenium-standalone/bin/selenium-standalone install
 
 script:
+  - cat /etc/init.d/xvfb
   - gulp e2e
 
 env:
