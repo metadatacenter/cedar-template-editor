@@ -37,6 +37,7 @@ install:
   - npm install
   - npm install -g gulp
   - npm install -g protractor
+  - npm install -g karma
   - ./node_modules/selenium-standalone/bin/selenium-standalone install
 
 script:
