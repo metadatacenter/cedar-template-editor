@@ -24,7 +24,7 @@ addons:
       - g++-4.8
 
 before_install:
-  - export CHROME_BIN=chromium-browser 
+  - export CHROME_BIN=/usr/bin/chromium-browser 
   - export CEDAR_HOST=staging.metadatacenter.net
   - export CEDAR_PROFILE=server 
   - export CEDAR_ANALYTICS_KEY=false
