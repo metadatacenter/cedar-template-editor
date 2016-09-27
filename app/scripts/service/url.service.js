@@ -11,7 +11,6 @@ define([
 
   function UrlService() {
 
-    var apiService = null;
     var userService = null;
     var terminologyService = null;
     var resourceService = null;
@@ -23,7 +22,6 @@ define([
     };
 
     service.init = function () {
-      apiService = config.cedarRestAPI;
       userService = config.userRestAPI;
       terminologyService = config.terminologyRestAPI;
       resourceService = config.resourceRestAPI;
@@ -51,44 +49,12 @@ define([
       return "/instances/edit/" + id;
     };
 
-    service.getDefaultTemplatesSummary = function (limit, offset) {
-      return this.templatesOld() + '?summary=true' + '&limit=' + limit + '&offset=' + offset;
-    };
-
-    service.getAllTemplatesSummary = function () {
-      return this.getDefaultTemplatesSummary(300, 0);
-    };
-
-    service.getDefaultTemplateElementsSummary = function (limit, offset) {
-      return this.templateElementsOld() + '?summary=true' + '&limit=' + limit + '&offset=' + offset;
-    };
-
-    service.getAllTemplateElementsSummary = function () {
-      return this.getDefaultTemplateElementsSummary(300, 0);
-    };
-
-    service.getDefaultTemplateInstancesSummary = function (limit, offset) {
-      return this.templateInstancesOld() + '?summary=true' + '&limit=' + limit + '&offset=' + offset;
-    };
-
-    service.getAllTemplateInstancesSummary = function () {
-      return this.getDefaultTemplateInstancesSummary(300, 0);
-    };
-
     service.base = function () {
       return resourceService;
     };
 
-    service.oldBase = function () {
-      return apiService;
-    };
-
     service.templates = function () {
       return this.base() + '/templates';
-    };
-
-    service.templatesOld = function () {
-      return this.oldBase() + '/templates';
     };
 
     service.getTemplate = function (id) {
@@ -103,10 +69,6 @@ define([
       return this.base() + '/template-elements';
     };
 
-    service.templateElementsOld = function () {
-      return this.oldBase() + '/template-elements';
-    };
-
     service.getTemplateElement = function (id) {
       return this.templateElements() + '/' + encodeURIComponent(id);
     };
@@ -117,10 +79,6 @@ define([
 
     service.templateInstances = function () {
       return this.base() + '/template-instances';
-    };
-
-    service.templateInstancesOld = function () {
-      return this.oldBase() + '/template-instances';
     };
 
     service.getTemplateInstance = function (id) {
