@@ -108,7 +108,7 @@ describe('workspace', function () {
           page.isDashboard().then(function () {
 
             page.isReady(page.createFirstFolder()).then(function () {
-              page.createFirstFolder().click();
+              page.createFirstFolder().click().then(function () {
               page.isReady(page.createFirstSelected()).then(function () {
                 page.isReady(page.createFirstSelected()).then(function () {
                   page.isReady(page.createTrashButton()).then(function () {
@@ -121,6 +121,7 @@ describe('workspace', function () {
                   });
                 });
               });
+            });
             });
           });
         });
