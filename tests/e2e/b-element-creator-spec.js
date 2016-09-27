@@ -336,19 +336,23 @@ describe('element-creator', function () {
                             page.isReady(page.createSweetAlertConfirmButton()).then(function () {
                               page.createSweetAlertConfirmButton().click().then(function () {
 
-                                page.isReady(page.showJsonLink()).then(function () {
-                                  page.showJsonLink().click().then(function () {
 
-                                    page.isReady(page.templateJSON()).then(function () {
-                                      expect(page.templateJSON().isDisplayed()).toBe(true);
 
-                                      // get the dirty template
-                                      page.isReady(page.jsonPreview()).then(function () {
-                                        page.jsonPreview().getText().then(function (value) {
+                                  page.isReady(page.showJsonLink()).then(function () {
+                                    browser.wait(EC.elementToBeClickable(page.showJsonLink())).then(function () {
+                                    page.showJsonLink().click().then(function () {
 
-                                          var currentJson = JSON.parse(value);
-                                          // TODO this one fails and needs to be fixed in code
-                                          //expect(_.isEqual(currentJson, sampleElementJson)).toBe(true);
+                                      page.isReady(page.templateJSON()).then(function () {
+                                        expect(page.templateJSON().isDisplayed()).toBe(true);
+
+                                        // get the dirty template
+                                        page.isReady(page.jsonPreview()).then(function () {
+                                          page.jsonPreview().getText().then(function (value) {
+
+                                            var currentJson = JSON.parse(value);
+                                            // TODO this one fails and needs to be fixed in code
+                                            //expect(_.isEqual(currentJson, sampleElementJson)).toBe(true);
+                                          });
                                         });
                                       });
                                     });

@@ -334,7 +334,10 @@ describe('template-creator', function () {
                     page.isReady(page.createSweetAlertConfirmButton()).then(function () {
                       page.createSweetAlertConfirmButton().click().then(function () {
 
+
+
                         page.isReady(page.showJsonLink()).then(function () {
+                          browser.wait(EC.elementToBeClickable(page.showJsonLink())).then(function () {
                           page.showJsonLink().click().then(function () {
 
                             page.isReady(page.templateJSON()).then(function () {
@@ -352,7 +355,7 @@ describe('template-creator', function () {
                         });
                       });
                     });
-
+                    });
                   });
                 });
               });
