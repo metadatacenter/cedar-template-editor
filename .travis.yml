@@ -24,12 +24,12 @@ addons:
       - g++-4.8
 
 before_install:
-  - export CHROME_BIN=/usr/bin/chromium-browser 
   - export CEDAR_HOST=staging.metadatacenter.net
   - export CEDAR_PROFILE=server 
   - export CEDAR_ANALYTICS_KEY=false
   - export CEDAR_SELENIUM_SERVER_JAR=2.50.1-server.jar
   - export CEDAR_CHROME_DRIVER=2.21-x64-chromedriver
+  - export CHROME_BIN=/usr/bin/chromium-browserxxx 
   - export DISPLAY=:99.0
   - sh -e /etc/init.d/xvfb start
 
@@ -41,7 +41,6 @@ install:
   - ./node_modules/selenium-standalone/bin/selenium-standalone install
 
 script:
-  - chromium-browser --version
   - gulp e2e
 
 env:
