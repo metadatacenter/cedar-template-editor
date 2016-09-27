@@ -41,6 +41,7 @@ install:
   - ./node_modules/selenium-standalone/bin/selenium-standalone install
 
 script:
+  - find ./node_modules/selenium_standalone/.selenium -print 
   - gulp e2e
 
 env:
