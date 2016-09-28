@@ -1,16 +1,21 @@
+
+
 # Ensure that we are using Ubuntu 14.04, which comes pre-installed with Chrome
 sudo: required
 dist: trusty
 
+# When deployed for testing the Template Editor is effectiveky a Node application
 language: node_js
 node_js:
   - '4'
 
+# Do CI only on the develop and master branches
 branches:
   only:
     - develop
     - master
 
+# Notify the CEDAR core developer mailing list on failures
 notifications:
   email:
     recipients:
@@ -19,7 +24,7 @@ notifications:
     on_success: never
     on_failure: always
 
-# Set variables needed by Template Editor and start Xvfb
+# Set variables needed by the Template Editor and then start the Xvfb frame buffer
 before_install:
   - export CEDAR_HOST=staging.metadatacenter.net
   - export CEDAR_PROFILE=server 
@@ -29,7 +34,7 @@ before_install:
   - export DISPLAY=:99.0
   - sh -e /etc/init.d/xvfb start
 
-# Install all dependencies and gulp, protractor, and Selenium
+# Install all dependencies and the install  gulp, protractor, and Selenium
 install:
   - npm install
   - npm install -g gulp
