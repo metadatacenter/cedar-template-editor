@@ -1,6 +1,7 @@
 'use strict';
 var TemplateCreatorPage = require('../pages/template-creator-page.js');
 var WorkspacePage = require('../pages/workspace-page.js');
+var ToastyPage = require('../pages/toasty-page.js');
 
 var _ = require('../libs/lodash.min.js');
 
@@ -9,6 +10,7 @@ describe('element-creator', function () {
   var EC = protractor.ExpectedConditions;
   var page;
   var workspacePage;
+  var toastyPage;
   var fieldTypes = [
     {
       "cedarType"         : "textfield",
@@ -133,6 +135,7 @@ describe('element-creator', function () {
   beforeEach(function () {
     page = TemplateCreatorPage;
     workspacePage = WorkspacePage;
+    toastyPage = ToastyPage;
     page.get();
     browser.driver.manage().window().maximize();
   });
@@ -153,19 +156,13 @@ describe('element-creator', function () {
             page.isReady(page.createSaveElementButton()).then(function () {
               page.createSaveElementButton().click().then(function () {
 
-                page.isReady(page.createToastyConfirmationPopup()).then(function () {
+                toastyPage.isToasty().then(function () {
 
-                  page.isReady(page.toastyMessageText()).then(function () {
-                    page.toastyMessageText().getText().then(function (value) {
-
-                      expect(value.indexOf(page.hasBeenCreated) !== -1).toBe(true);
-
-                      // get the url of this element
-                      browser.getCurrentUrl().then(function (value) {
-                        sampleElementUrl = value;
-                      });
-                    });
+                  // get the url of this element
+                  browser.getCurrentUrl().then(function (value) {
+                    sampleElementUrl = value;
                   });
+
                 });
               });
             });
@@ -339,9 +336,8 @@ describe('element-creator', function () {
                               page.createSweetAlertConfirmButton().click().then(function () {
 
 
-
-                                  page.isReady(page.showJsonLink()).then(function () {
-                                    browser.wait(EC.elementToBeClickable(page.showJsonLink())).then(function () {
+                                page.isReady(page.showJsonLink()).then(function () {
+                                  browser.wait(EC.elementToBeClickable(page.showJsonLink())).then(function () {
                                     page.showJsonLink().click().then(function () {
 
                                       page.isReady(page.templateJSON()).then(function () {
@@ -676,19 +672,13 @@ describe('element-creator', function () {
                 page.isReady(page.createSaveElementButton()).then(function () {
                   page.createSaveElementButton().click().then(function () {
 
-                    page.isReady(page.createToastyConfirmationPopup()).then(function () {
+                    toastyPage.isToasty().then(function () {
 
-                      page.isReady(page.toastyMessageText()).then(function () {
-                        page.toastyMessageText().getText().then(function (value) {
-
-                          expect(value.indexOf(page.hasBeenCreated) !== -1).toBe(true);
-
-                          // get the url of this element
-                          browser.getCurrentUrl().then(function (value) {
-                            secondElementUrl = value;
-                          });
-                        });
+                      // get the url of this element
+                      browser.getCurrentUrl().then(function (value) {
+                        secondElementUrl = value;
                       });
+
                     });
                   });
                 });

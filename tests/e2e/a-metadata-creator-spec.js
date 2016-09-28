@@ -2,6 +2,8 @@
 var WorkspacePage = require('../pages/workspace-page.js');
 var MetadataPage = require('../pages/metadata-page.js');
 var TemplatePage = require('../pages/template-creator-page.js');
+var ToastyPage = require('../pages/toasty-page.js');
+
 var _ = require('../libs/lodash.min.js');
 var sampleTitle;
 var sampleTemplateUrl;
@@ -13,6 +15,7 @@ describe('metadata-creator', function () {
   var metadataPage;
   var workspacePage;
   var templatePage;
+  var toastyPage;
 
 
   // before each test, load a new page and create a template
@@ -21,6 +24,7 @@ describe('metadata-creator', function () {
     workspacePage = WorkspacePage;
     metadataPage = MetadataPage;
     templatePage = TemplatePage;
+    toastyPage = ToastyPage;
     browser.driver.manage().window().maximize();
     workspacePage.get();
   });
@@ -44,20 +48,11 @@ describe('metadata-creator', function () {
               templatePage.isReady(templatePage.createSaveTemplateButton()).then(function () {
                 templatePage.createSaveTemplateButton().click().then(function () {
 
-                  templatePage.isReady(templatePage.createToastyConfirmationPopup()).then(function () {
+                  toastyPage.isToasty().then(function () {
 
-                    templatePage.isReady(templatePage.toastyMessageText()).then(function () {
-                    templatePage.toastyMessageText().getText().then(function (value) {
-
-                      expect(value.indexOf(templatePage.hasBeenCreated) !== -1).toBe(true);
-
-                      browser.wait(EC.not(EC.presenceOf(templatePage.createToastyConfirmationPopup()))).then(function () {
-                        // get the url of this element
-                        browser.getCurrentUrl().then(function (t) {
-                          sampleTemplateUrl = t;
-                        });
-                      });
-                    });
+                    // get the url of this element
+                    browser.getCurrentUrl().then(function (t) {
+                      sampleTemplateUrl = t;
                     });
                   });
                 });
@@ -95,19 +90,11 @@ describe('metadata-creator', function () {
                 metadataPage.createSaveMetadataButton().click().then(function () {
 
                   // this will bring up the popup with the confirmation message
-                  metadataPage.isReady(metadataPage.createToastyConfirmationPopup()).then(function () {
+                  toastyPage.isToasty().then(function () {
 
-                    metadataPage.isReady(metadataPage.toastyMessageText()).then(function () {
+                    browser.getCurrentUrl().then(function (t) {
+                      sampleMetadataUrl = t;
 
-                      metadataPage.toastyMessageText().getText().then(function (value) {
-                        expect(value.indexOf(metadataPage.createMetadataMessage()) !== -1).toBe(true);
-
-                        browser.getCurrentUrl().then(function (t) {
-                          sampleMetadataUrl = t;
-
-                        });
-
-                      });
                     });
                   });
                 });
