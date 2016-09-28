@@ -19,16 +19,6 @@ notifications:
     on_success: never
     on_failure: always
 
-#env:
-#  - CXX=g++-4.8 
-
-#addons:
-#  apt:
-#    sources:
-#      - ubuntu-toolchain-r-test
-#    packages:
-#      - g++-4.8
-
 # Set variables needed by Template Editor and start Xvfb
 before_install:
   - export CEDAR_HOST=staging.metadatacenter.net
