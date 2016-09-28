@@ -1,3 +1,4 @@
+# Ensure that we are using Ubuntu 14.04, which comes pre-installed with Chrome
 sudo: required
 dist: trusty
 
@@ -18,15 +19,15 @@ notifications:
     on_success: never
     on_failure: always
 
-env:
-  - CXX=g++-4.8 
+#env:
+#  - CXX=g++-4.8 
 
-addons:
-  apt:
-    sources:
-      - ubuntu-toolchain-r-test
-    packages:
-      - g++-4.8
+#addons:
+#  apt:
+#    sources:
+#      - ubuntu-toolchain-r-test
+#    packages:
+#      - g++-4.8
 
 before_install:
   - export CEDAR_HOST=staging.metadatacenter.net
@@ -44,7 +45,6 @@ install:
   - ./node_modules/selenium-standalone/bin/selenium-standalone install
 
 script:
-  - cat /etc/init.d/xvfb
   - gulp e2e
 
 env:
