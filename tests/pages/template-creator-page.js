@@ -449,6 +449,10 @@ var TemplateCreatorPage = function () {
         return createToastyConfirmationPopup;
       };
 
+      this.toastyMessageText = function () {
+        return toastyMessageText;
+      };
+
       // sweet
       this.createConfirmationDialog = function () {
         return createConfirmationDialog;

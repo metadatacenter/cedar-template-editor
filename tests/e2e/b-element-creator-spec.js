@@ -155,13 +155,15 @@ describe('element-creator', function () {
 
                 page.isReady(page.createToastyConfirmationPopup()).then(function () {
 
-                  page.getToastyMessageText().then(function (value) {
+                  page.isReady(page.toastyMessageText()).then(function () {
+                    page.toastyMessageText().getText().then(function (value) {
 
-                    expect(value.indexOf(page.hasBeenCreated) !== -1).toBe(true);
+                      expect(value.indexOf(page.hasBeenCreated) !== -1).toBe(true);
 
-                    // get the url of this element
-                    browser.getCurrentUrl().then(function (value) {
-                      sampleElementUrl = value;
+                      // get the url of this element
+                      browser.getCurrentUrl().then(function (value) {
+                        sampleElementUrl = value;
+                      });
                     });
                   });
                 });
@@ -675,13 +677,16 @@ describe('element-creator', function () {
                   page.createSaveElementButton().click().then(function () {
 
                     page.isReady(page.createToastyConfirmationPopup()).then(function () {
-                      page.getToastyMessageText().then(function (value) {
 
-                        expect(value.indexOf(page.hasBeenCreated) !== -1).toBe(true);
+                      page.isReady(page.toastyMessageText()).then(function () {
+                        page.toastyMessageText().getText().then(function (value) {
 
-                        // get the url of this element
-                        browser.getCurrentUrl().then(function (value) {
-                          secondElementUrl = value;
+                          expect(value.indexOf(page.hasBeenCreated) !== -1).toBe(true);
+
+                          // get the url of this element
+                          browser.getCurrentUrl().then(function (value) {
+                            secondElementUrl = value;
+                          });
                         });
                       });
                     });
