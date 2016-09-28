@@ -4,6 +4,11 @@ This is an AngularJS web application to create and fill in Metadata Templates. I
 
 To access the documentation, [click here](https://github.com/metadatacenter/cedar-docs/wiki).
 
+#### Running the End-to-End Tests
+
+Instructions for running the end-to-end tests in this repo can be foound 
+[here](https://github.com/metadatacenter/cedar-conf/wiki/Running-CEDAR-End-to-End-Tests).
+
 #### Travis
 
 The process for configuring the end-to-end tests associated with the repo to work with Travis is documented
