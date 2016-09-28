@@ -6,20 +6,12 @@ define([
   angular.module('cedar.templateEditor.service.templateService', [])
       .service('TemplateService', TemplateService);
 
-  TemplateService.$inject = ['HttpBuilderService', 'UrlService', 'CedarUser'];
+  TemplateService.$inject = ['HttpBuilderService', 'UrlService'];
 
-  function TemplateService(HttpBuilderService, UrlService, CedarUser) {
+  function TemplateService(HttpBuilderService, UrlService) {
 
     var service = {
       serviceId: 'TemplateService'
-    };
-
-    service.getDefaultTemplatesSummary = function () {
-      return HttpBuilderService.get(UrlService.getDefaultTemplatesSummary(3, 0));
-    };
-
-    service.getAllTemplatesSummary = function () {
-      return HttpBuilderService.get(UrlService.getAllTemplatesSummary());
     };
 
     service.getTemplate = function (id) {

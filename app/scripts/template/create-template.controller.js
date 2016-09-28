@@ -29,16 +29,6 @@ define([
         HeaderService.configure(pageId);
         StagingService.configure(pageId);
 
-        AuthorizedBackendService.doCall(
-            TemplateElementService.getAllTemplateElementsSummary(),
-            function (response) {
-              $scope.elementList = response.data;
-            },
-            function (err) {
-              UIMessageService.showBackendError('SERVER.ELEMENTS.load.error', err);
-            }
-        );
-
         $scope.primaryFieldTypes = FieldTypeService.getPrimaryFieldTypes();
         $scope.otherFieldTypes = FieldTypeService.getOtherFieldTypes();
 

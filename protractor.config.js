@@ -1,11 +1,16 @@
-//var testConfig = require('./tests/env.js');
+
 var testConfig = require('./tests/config/test-env.js');
 
 exports.config = {
   // seleniumAddress: 'http://localhost:4444/wd/hub',
+  directConnect: true,
   seleniumServerJar: './node_modules/selenium-standalone/.selenium/selenium-server/' + testConfig.seleniumServerJar,
   chromeDriver     : './node_modules/selenium-standalone/.selenium/chromedriver/' + testConfig.chromeDriver,
   specs            : ['tests/e2e/**/*.js'],
+
+  capabilities: {
+      'browserName': 'chrome'
+  },
 
   onPrepare: function () {
     // implicit and page load timeouts
@@ -16,7 +21,6 @@ exports.config = {
 
     // sign in before all tests
     browser.driver.get(testConfig.baseUrl);
-
 
     var disableNgAnimate = function () {
       angular
@@ -46,9 +50,8 @@ exports.config = {
     browser.addMockModule('disableNgAnimate', disableNgAnimate);
     browser.addMockModule('disableCssAnimate', disableCssAnimate);
 
-
-    browser.driver.findElement(by.id('username')).sendKeys(testConfig.testUser);
-    browser.driver.findElement(by.id('password')).sendKeys(testConfig.testPassword);
+    browser.driver.findElement(by.id('username')).sendKeys(testConfig.testUser1);
+    browser.driver.findElement(by.id('password')).sendKeys(testConfig.testPassword1);
     browser.driver.findElement(by.id('kc-login')).click();
 
     // wait for new page
@@ -57,7 +60,5 @@ exports.config = {
         return url == testConfig.baseUrl + '/';
       });
     }, 10000);
-
   }
-
 };
