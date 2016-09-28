@@ -158,15 +158,18 @@ describe('template-creator', function () {
 
                 page.isReady(page.createToastyConfirmationPopup()).then(function () {
 
-                  page.getToastyMessageText().then(function (value) {
-                    expect(value.indexOf(page.hasBeenCreated) !== -1).toBe(true);
+                  page.isReady(page.toastyMessageText()).then(function () {
+                    page.toastyMessageText().getText().then(function (value) {
 
-                    //browser.wait(EC.not(EC.presenceOf(page.createToastyConfirmationPopup()))).then(function () {
-                    // get the url of this element
-                    browser.getCurrentUrl().then(function (value) {
-                      sampleTemplateUrl = value;
+                      expect(value.indexOf(page.hasBeenCreated) !== -1).toBe(true);
+
+                      browser.wait(EC.not(EC.presenceOf(page.createToastyConfirmationPopup()))).then(function () {
+                        // get the url of this element
+                        browser.getCurrentUrl().then(function (value) {
+                          sampleTemplateUrl = value;
+                        });
+                        });
                     });
-                    //});
                   });
                 });
               });
@@ -291,17 +294,20 @@ describe('template-creator', function () {
             browser.get(sampleTemplateUrl).then(function () {
               page.isReady(page.createTemplatePage()).then(function () {
 
-
                 page.isReady(page.showJsonLink()).then(function () {
-                  page.showJsonLink().click().then(function () {
+                  browser.wait(EC.elementToBeClickable(page.showJsonLink())).then(function () {
+                    page.showJsonLink().click().then(function () {
 
-                    page.isReady(page.templateJSON()).then(function () {
-                      expect(page.templateJSON().isDisplayed()).toBe(true);
+                      page.isReady(page.templateJSON()).then(function () {
+                        expect(page.templateJSON().isDisplayed()).toBe(true);
 
-                      // get the dirty template
-                      page.jsonPreview().getText().then(function (value) {
-                        sampleTemplateJson = JSON.parse(value);
+                        // get the dirty template
+                        page.isReady(page.jsonPreview()).then(function () {
+                          page.jsonPreview().getText().then(function (value) {
+                            sampleTemplateJson = JSON.parse(value);
 
+                          });
+                        });
                       });
                     });
                   });
@@ -335,26 +341,25 @@ describe('template-creator', function () {
                       page.createSweetAlertConfirmButton().click().then(function () {
 
 
-
                         page.isReady(page.showJsonLink()).then(function () {
                           browser.wait(EC.elementToBeClickable(page.showJsonLink())).then(function () {
-                          page.showJsonLink().click().then(function () {
+                            page.showJsonLink().click().then(function () {
 
-                            page.isReady(page.templateJSON()).then(function () {
-                              expect(page.templateJSON().isDisplayed()).toBe(true);
+                              page.isReady(page.templateJSON()).then(function () {
+                                expect(page.templateJSON().isDisplayed()).toBe(true);
 
-                              // get the dirty template
-                              page.jsonPreview().getText().then(function (value) {
+                                // get the dirty template
+                                page.jsonPreview().getText().then(function (value) {
 
-                                var currentJson = JSON.parse(value);
-                                // TODO this one fails and needs to be fixed in code
-                                //expect(_.isEqual(currentJson, sampleElementJson)).toBe(true);
+                                  var currentJson = JSON.parse(value);
+                                  // TODO this one fails and needs to be fixed in code
+                                  //expect(_.isEqual(currentJson, sampleElementJson)).toBe(true);
+                                });
                               });
                             });
                           });
                         });
                       });
-                    });
                     });
                   });
                 });
@@ -371,13 +376,15 @@ describe('template-creator', function () {
             page.isReady(page.templateJSONHidden()).then(function () {
 
               page.isReady(page.showJsonLink()).then(function () {
-                page.showJsonLink().click().then(function () {
+                browser.wait(EC.elementToBeClickable(page.showJsonLink())).then(function () {
+                  page.showJsonLink().click().then(function () {
 
-                  page.isReady(page.templateJSON()).then(function () {
-                    expect(page.templateJSON().isDisplayed()).toBe(true);
+                    page.isReady(page.templateJSON()).then(function () {
+                      expect(page.templateJSON().isDisplayed()).toBe(true);
 
-                    page.showJsonLink().click().then(function () {
-                      page.isReady(page.templateJSONHidden()).then(function () {
+                      page.showJsonLink().click().then(function () {
+                        page.isReady(page.templateJSONHidden()).then(function () {
+                        });
                       });
                     });
                   });
@@ -394,16 +401,18 @@ describe('template-creator', function () {
             expect(page.templateJSON().isDisplayed()).toBe(false);
 
             page.isReady(page.showJsonLink()).then(function () {
-              page.showJsonLink().click().then(function () {
+              browser.wait(EC.elementToBeClickable(page.showJsonLink())).then(function () {
+                page.showJsonLink().click().then(function () {
 
-                page.isReady(page.jsonPreview()).then(function () {
+                  page.isReady(page.jsonPreview()).then(function () {
 
-                  page.jsonPreview().getText().then(function (value) {
+                    page.jsonPreview().getText().then(function (value) {
 
-                    // hang on to this json for use later
-                    cleanJson = JSON.parse(value);
+                      // hang on to this json for use later
+                      cleanJson = JSON.parse(value);
 
-                    expect(_.isEqual(cleanJson, page.emptyTemplateJson)).toBe(true);
+                      expect(_.isEqual(cleanJson, page.emptyTemplateJson)).toBe(true);
+                    });
                   });
                 });
               });
@@ -420,17 +429,19 @@ describe('template-creator', function () {
             page.addField(fieldType.cedarType);
 
             page.isReady(page.showJsonLink()).then(function () {
-              page.showJsonLink().click().then(function () {
+              browser.wait(EC.elementToBeClickable(page.showJsonLink())).then(function () {
+                page.showJsonLink().click().then(function () {
 
-                page.isReady(page.jsonPreview()).then(function () {
+                  page.isReady(page.jsonPreview()).then(function () {
 
 
-                  // get the dirty template
-                  page.jsonPreview().getText().then(function (value) {
+                    // get the dirty template
+                    page.jsonPreview().getText().then(function (value) {
 
-                    dirtyJson = JSON.parse(value);
-                    expect(_.isEqual(page.emptyTemplateJson, dirtyJson)).toBe(false);
+                      dirtyJson = JSON.parse(value);
+                      expect(_.isEqual(page.emptyTemplateJson, dirtyJson)).toBe(false);
 
+                    });
                   });
                 });
               });
@@ -461,16 +472,18 @@ describe('template-creator', function () {
             page.addField(fieldType.cedarType);
 
             page.isReady(page.showJsonLink()).then(function () {
-              page.showJsonLink().click().then(function () {
+              browser.wait(EC.elementToBeClickable(page.showJsonLink())).then(function () {
+                page.showJsonLink().click().then(function () {
 
-                page.isReady(page.jsonPreview()).then(function () {
+                  page.isReady(page.jsonPreview()).then(function () {
 
-                  // get the dirty template
-                  page.jsonPreview().getText().then(function (value) {
+                    // get the dirty template
+                    page.jsonPreview().getText().then(function (value) {
 
-                    dirtyJson = JSON.parse(value);
-                    expect(_.isEqual(page.emptyTemplateJson, dirtyJson)).toBe(false);
+                      dirtyJson = JSON.parse(value);
+                      expect(_.isEqual(page.emptyTemplateJson, dirtyJson)).toBe(false);
 
+                    });
                   });
                 });
               });
@@ -596,32 +609,34 @@ describe('template-creator', function () {
               page.addField(fieldType.cedarType).then(function () {
 
                 page.isReady(page.showJsonLink()).then(function () {
-                  page.showJsonLink().click().then(function () {
+                  browser.wait(EC.elementToBeClickable(page.showJsonLink())).then(function () {
+                    page.showJsonLink().click().then(function () {
 
-                    page.isReady(page.jsonPreview()).then(function () {
+                      page.isReady(page.jsonPreview()).then(function () {
 
-                      // get the dirty template
-                      page.jsonPreview().getText().then(function (value) {
-                        var beforeJson = JSON.parse(value);
+                        // get the dirty template
+                        page.jsonPreview().getText().then(function (value) {
+                          var beforeJson = JSON.parse(value);
 
 
-                        page.isReady(page.createClearTemplateButton()).then(function () {
-                          page.createClearTemplateButton().click().then(function () {
+                          page.isReady(page.createClearTemplateButton()).then(function () {
+                            page.createClearTemplateButton().click().then(function () {
 
-                            page.isReady(page.createConfirmationDialog()).then(function () {
+                              page.isReady(page.createConfirmationDialog()).then(function () {
 
-                              expect(page.createConfirmationDialog().getAttribute(page.sweetAlertCancelAttribute())).toBe('true');
-                              expect(page.createConfirmationDialog().getAttribute(page.sweetAlertConfirmAttribute())).toBe('true');
+                                expect(page.createConfirmationDialog().getAttribute(page.sweetAlertCancelAttribute())).toBe('true');
+                                expect(page.createConfirmationDialog().getAttribute(page.sweetAlertConfirmAttribute())).toBe('true');
 
-                              // expect confirm to clear the template,
-                              page.isReady(page.createSweetAlertCancelButton()).then(function () {
-                                page.createSweetAlertCancelButton().click().then(function () {
+                                // expect confirm to clear the template,
+                                page.isReady(page.createSweetAlertCancelButton()).then(function () {
+                                  page.createSweetAlertCancelButton().click().then(function () {
 
-                                  page.isReady(page.jsonPreview()).then(function () {
+                                    page.isReady(page.jsonPreview()).then(function () {
 
-                                    page.jsonPreview().getText().then(function (value) {
-                                      var afterJson = JSON.parse(value);
-                                      expect(_.isEqual(beforeJson, afterJson)).toBe(true);
+                                      page.jsonPreview().getText().then(function (value) {
+                                        var afterJson = JSON.parse(value);
+                                        expect(_.isEqual(beforeJson, afterJson)).toBe(true);
+                                      });
                                     });
                                   });
                                 });

@@ -46,9 +46,10 @@ describe('metadata-creator', function () {
 
                   templatePage.isReady(templatePage.createToastyConfirmationPopup()).then(function () {
 
-                    templatePage.getToastyMessageText().then(function (value) {
-                      expect(value.indexOf(templatePage.hasBeenCreated) !== -1).toBe(true);
+                    templatePage.isReady(templatePage.toastyMessageText()).then(function () {
+                    templatePage.toastyMessageText().getText().then(function (value) {
 
+                      expect(value.indexOf(templatePage.hasBeenCreated) !== -1).toBe(true);
 
                       browser.wait(EC.not(EC.presenceOf(templatePage.createToastyConfirmationPopup()))).then(function () {
                         // get the url of this element
@@ -56,6 +57,7 @@ describe('metadata-creator', function () {
                           sampleTemplateUrl = t;
                         });
                       });
+                    });
                     });
                   });
                 });
