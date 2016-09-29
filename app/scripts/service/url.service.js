@@ -16,6 +16,7 @@ define([
     var resourceService = null;
     var valueRecommenderService = null;
     var schemaService = null;
+    var permissionService = null;
 
     var service = {
       serviceId: "UrlService"
@@ -27,6 +28,7 @@ define([
       resourceService = config.resourceRestAPI;
       valueRecommenderService = config.valueRecommenderRestAPI;
       schemaService = config.schemaRestAPI;
+      permissionService = config.permissionRestAPI;
     };
 
     service.getRoleSelector = function () {
@@ -105,6 +107,10 @@ define([
       return valueRecommenderService;
     };
 
+    service.permission = function () {
+      return permissionService;
+    };
+
     service.getValueRecommendation = function () {
       return this.valueRecommender() + '/recommend';
     };
@@ -170,7 +176,23 @@ define([
     };
 
     service.getGroups = function () {
-      return this.resourceBase() + "/groups";
+      return this.permission() + "/groups";
+    };
+
+    service.templateElementPermission = function (id) {
+      return this.permission() + '/template-elements/' + encodeURIComponent(id) + "/permissions";
+    };
+
+    service.templatePermission = function (id) {
+      return this.permission() + '/templates/' + encodeURIComponent(id) + "/permissions";
+    };
+
+    service.templateInstancePermission = function (id) {
+      return this.permission() + '/template-instances/' + encodeURIComponent(id) + "/permissions";
+    };
+
+    service.folderPermission = function (id) {
+      return this.permission() + '/folders/' + encodeURIComponent(id) + "/permissions";
     };
 
     return service;
