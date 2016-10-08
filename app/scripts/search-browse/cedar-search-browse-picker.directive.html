@@ -368,7 +368,11 @@
                         <li><a href="#" ng-click="dc.showInfoPanel(resource)">Info</a></li>
                         <li role="separator" class="divider"></li>
                         <li><a href="#" data-toggle="modal" ng-click="dc.openShare(resource)"
-                            data-target="#shareResourceModal">Share...</a></li>
+                            data-target="#share-modal">Share...</a></li>
+
+                        <li><a href="#" data-toggle="modal"
+                            data-target="#myModalContent.html">Modal Share...</a></li>
+
                         <li><a href="#" ng-click="dc.showMoveResourceModal('#moveResourceModal')">Move to...</a></li>
                         <li><a href="#" data-toggle="modal" data-target="#renameResourceModal">Rename...</a></li>
                         <li role="separator" class="divider"></li>
@@ -417,7 +421,11 @@
                         <li ><a href="#" ng-click="dc.editResource(resource)">Edit</a></li>
                         <li><a href="#" ng-click="dc.showInfoPanel(resource)">Info</a></li>
                         <li role="separator" class="divider"></li>
-                        <li><a href="#" data-toggle="modal" ng-click="dc.openShare(resource)" data-target="#shareResourceModal">Share...</a></li>
+                        <li><a href="#" data-toggle="modal" ng-click="dc.openShare(resource)" data-target="#share-modal">Share...</a></li>
+
+                        <li><a href="#" data-toggle="modal"
+                            data-target="#myModalContent.html">Modal Share...</a></li>
+
                         <li><a href="#" ng-click="dc.showMoveResourceModal('#moveResourceModal')">Move to...</a></li>
                         <li><a href="#" data-toggle="modal" data-target="#renameResourceModal">Rename...</a></li>
                         <li><a href="#" ng-if="!dc.isFolder()" ng-click="dc.copyResource()">Make a copy</a></li>
@@ -465,7 +473,11 @@
                       <li ><a href="#" ng-click="dc.editResource()">Open</a></li>
                       <li><a href="#" ng-click="dc.showInfoPanel(resource)">Info</a></li>
                       <li role="separator" class="divider"></li>
-                      <li><a href="#" data-toggle="modal" ng-click="dc.openShare(resource)" data-target="#shareResourceModal">Share...</a></li>
+                      <li><a href="#" data-toggle="modal" ng-click="dc.openShare(resource)" data-target="#share-modal">Share...</a></li>
+
+                      <li><a href="#" data-toggle="modal"
+                          data-target="#myModalContent.html">Modal Share...</a></li>
+
                       <li><a href="#" ng-click="dc.showMoveResourceModal('#moveResourceModal')">Move to...</a></li>
                       <li><a href="#" data-toggle="modal" data-target="#renameResourceModal">Rename...</a></li>
                       <li role="separator" class="divider"></li>
@@ -501,7 +513,11 @@
                       <li ><a href="#" ng-click="dc.editResource(resource)">Edit</a></li>
                       <li><a href="#" ng-click="dc.showInfoPanel(resource)">Info</a></li>
                       <li role="separator" class="divider"></li>
-                      <li><a href="#" data-toggle="modal" ng-click="dc.openShare(resource)" data-target="#shareResourceModal">Share...</a></li>
+                      <li><a href="#" data-toggle="modal" ng-click="dc.openShare(resource)" data-target="#share-modal">Share...</a></li>
+
+                      <li><a href="#" data-toggle="modal"
+                          data-target="#myModalContent.html">Modal Share...</a></li>
+
                       <li><a href="#" ng-click="dc.showMoveResourceModal('#moveResourceModal')">Move to...</a></li>
                       <li><a href="#" data-toggle="modal" data-target="#renameResourceModal">Rename...</a></li>
                       <li><a href="#"  ng-click="dc.copyResource()">Make a copy</a></li>
@@ -803,11 +819,6 @@
 </section>
 <!-- move resource modal -->
 
-<!--<section>-->
-<!--<cedar-share-resource id="shareResourceModal" class="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"-->
-<!--aria-hidden="true" resource="vm.selectedResource"></cedar-share-resource>-->
-<!--</section>-->
-
 <!-- share resource modal -->
 <section>
   <div id="shareResourceModal" class="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
@@ -922,4 +933,222 @@
   </div>
 </section>
 <!-- share resource modal -->
+
+
+
+<!-- share resource modal with groups -->
+<section>
+  <div id="share-modal" class="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+      aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+
+          <!-- title changes for share vs groups -->
+          <h4 ng-show="!dc.showGroups" translate>DASHBOARD.share.title</h4>
+          <h4 ng-show="dc.showGroups"><a  href="" ng-click="dc.showGroups = false">
+            <i class="fa fa-arrow-left"></i> <span translate>DASHBOARD.share.titleGroups</span>
+          </a></h4>
+
+        </div>
+
+        <div class="modal-body">
+
+          <!-- body  for share  -->
+          <div ng-show="!dc.showGroups">
+
+            <div class="row">
+              <div class="col-sm-6">
+                <div ng-if="dc.canUpdate()">
+
+                  <h5 translate>DASHBOARD.share.withUsers</h5>
+
+                  <div class="hidden-container">
+                    <div class="row">
+
+                      <select id="select-picker-user" data-size="5" ng-change="dc.updateNodePermission()"
+                          data-dropup-auto="false" class="dropdown col-sm-7"
+                          ng-model="dc.selectedUserId" select-model="dc.resourceUsers"
+                          select-picker cedar-live-search="true"
+                          ng-options="node.id as node.name for node in dc.resourceUsers "></select>
+
+                      <select ng-model="dc.giveUserPermission"
+                          data-dropup-auto="false" class="dropdown col-sm-4" select-picker select-model="dc.selectedUserId"
+                          cedar-live-search="true">
+                        <option value="read">can read</option>
+                        <option value="write">can write</option>
+                        <option ng-if="dc.canBeOwner(dc.selectedUserId)" value="own">is owner</option>
+                      </select>
+
+                      <button
+                          class="col-sm-1  btn btn-sm btn-info btn-circle btn-plus" ng-if="dc.canUpdate()"
+                          ng-model="dc.resourcePermissions"
+                          type="button"
+                          tooltip='add'
+                          tooltip-trigger
+                          tooltip-animation="false"
+                          tooltip-placement="top"
+                          data-toggle="tooltip"
+                          ng-click="dc.addAndSaveShare(dc.selectedUserId, dc.giveUserPermission, 'shared-users', resource)">
+                        <!--<span aria-hidden="true">&plus;</span>-->
+                        <i class="fa fa-plus" style="margin: 0 -4px;vertical-align: top;"></i>
+                      </button>
+
+                    </div>
+                  </div>
+
+                  <h5 translate>DASHBOARD.share.withGroups</h5>
+
+                  <div class="hidden-container">
+                    <div class="row">
+
+                      <select id="select-picker-group" data-size="5" ng-change="dc.updateNodePermission()"
+                          data-dropup-auto="false" class="dropdown col-sm-7"
+                          ng-model="dc.selectedGroupId" select-model="dc.resourceGroups"
+                          select-picker cedar-live-search="true"
+                          ng-options="node.id as node.name for node in dc.resourceGroups "></select>
+
+                      <select ng-model="dc.giveGroupPermission"
+                          data-dropup-auto="false" class="dropdown col-sm-4" select-picker select-model="dc.selectedGroupId"
+                          cedar-live-search="true">
+                        <option value="read">can read</option>
+                        <option value="write">can write</option>
+                      </select>
+
+                      <button
+                          class="col-sm-1  btn btn-sm btn-info btn-circle btn-plus" ng-if="dc.canUpdate()"
+                          ng-model="dc.resourcePermissions"
+                          type="button"
+                          tooltip='add'
+                          tooltip-trigger
+                          tooltip-animation="false"
+                          tooltip-placement="top"
+                          data-toggle="tooltip"
+                          ng-click="dc.addShare(dc.selectedGroupId, dc.giveGroupPermission, 'shared-users')">
+                        <!--<span aria-hidden="true">&plus;</span>-->
+                        <i class="fa fa-plus" style="margin: 0 -4px;vertical-align: top;"></i>
+                      </button>
+
+                    </div>
+                  </div>
+
+                  <a href="" ng-click="dc.showGroups = true">
+
+                    <h5><span translate>DASHBOARD.share.manageGroups</span>  <i class="fa fa-users"></i></h5>
+
+                  </a>
+
+
+
+                </div>
+
+              </div>
+              <div class="col-sm-6">
+                <h5 translate>DASHBOARD.share.manage</h5>
+                <div ng-model="dc.resourcePermissions" id="shared-users-and-groups" class="scroll-container">
+                  <div class="row">
+
+                    <div class="col-sm-7 name">
+                      {{dc.getName(dc.resourcePermissions.owner)}}
+                    </div>
+
+                    <select class="col-sm-4" select-picker  ng-disabled="!dc.canUpdate()">
+                      <option value="own" >is owner</option>
+                    </select>
+                  </div>
+
+                  <div class="row" ng-repeat="share in dc.resourcePermissions.shares">
+
+                    <div class="col-sm-7 name">{{share.node.name}}</div>
+
+                    <select ng-model="share.permission" class="col-sm-4" select-picker
+                        ng-change="dc.addShare(share.node.id, share.permission, 'shared-users')"
+                        select-model="share"
+                        cedar-live-search="true" ng-disabled="!dc.canUpdate()" >
+
+                      <option ng-show="(!dc.canUpdate() && share.permisison === 'read') || dc.canUpdate()" value="read">can read</option>
+                      <option ng-show="(!dc.canUpdate() && share.permisison === 'write') || dc.canUpdate()" value="write">can write</option>
+                      <option ng-if="dc.canBeOwner(share.node.id)" value="own">is owner</option>
+                    </select>
+
+                    <button class=" col-sm-1  btn  btn-info btn-circle btn-sm btn-delete" ng-if="dc.canUpdate()"
+                        ng-model="dc.resourcePermissions"
+                        type="button" tooltip="remove"
+                        tooltip-trigger
+                        tooltip-animation="false"
+                        tooltip-placement="top"
+                        data-toggle="tooltip"
+                        ng-click="dc.removeAndSaveShare(share.node, resource)"><i class="fa fa-times"
+                        style="margin: -1px -4px;vertical-align: top;"></i></button>
+
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+
+          </div>
+
+          <!-- body  for groups  -->
+          <div ng-show="dc.showGroups">
+            groups
+          </div>
+
+        </div>
+
+
+        <div class="modal-footer actions" ng-if="dc.canUpdate()" ng-model="dc.resourcePermissions">
+          <div class="clear-save">
+            <button type="button" ng-click="toggleModal()"
+                data-dismiss="modal" aria-label="Done"
+                class="btn btn-save confirm"> Done
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+<!-- share resource modal with groups -->
+
+<!--- doesn't work yet --->
+<section>
+<cedar-share id="directive-modal" class="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+data-keyboard="true" data-backdrop="static"  share-resource="resource" >
+</cedar-share>
+</section>
+
+
+<!-- doesn't work yet --->
+<section>
+  <div ng-controller="ModalController as $ctrl">
+    <script type="text/ng-template" id="myModalContent.html">
+      <div class="modal-header">
+        <h3 class="modal-title" id="modal-title">I'm a modal!</h3>
+      </div>
+      <div class="modal-body" id="modal-body">
+        <ul>
+          <li ng-repeat="item in $ctrl.items">
+            <a href="#" ng-click="$event.preventDefault(); $ctrl.selected.item = item">{{ item }}</a>
+          </li>
+        </ul>
+        Selected: <b>{{ $ctrl.selected.item }}</b>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" type="button" ng-click="$ctrl.ok()">OK</button>
+        <button class="btn btn-warning" type="button" ng-click="$ctrl.cancel()">Cancel</button>
+      </div>
+    </script>
+
+    <button type="button" class="btn btn-default" ng-click="$ctrl.open()">Open me!</button>
+    <button type="button" class="btn btn-default" ng-click="$ctrl.open('lg')">Large modal</button>
+    <button type="button" class="btn btn-default" ng-click="$ctrl.open('sm')">Small modal</button>
+    <button type="button" class="btn btn-default" ng-click="$ctrl.toggleAnimation()">Toggle Animation ({{ $ctrl.animationsEnabled }})</button>
+    <button type="button" class="btn btn-default" ng-click="$ctrl.openComponentModal()">Open a component modal!</button>
+    <div ng-show="$ctrl.selected">Selection from a modal: {{ $ctrl.selected }}</div>
+  </div>
+</section>
+
 

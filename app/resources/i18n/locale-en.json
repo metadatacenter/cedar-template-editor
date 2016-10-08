@@ -244,16 +244,21 @@
     },
     "share": {
       "title": "Share",
+      "titleGroups": "Groups",
       "manage": "",
       "add": "With users",
       "addHint": "Share with user",
       "public": "With groups",
-      "usersAndGroups": "With users and groups"
+      "usersAndGroups": "With users and groups",
+      "withUsers": "With people",
+      "withGroups": "With groups",
+      "manageGroups": "Manage groups"
     },
     "filter": {
       "filterBy": "Filter",
       "reset": "Reset"
     }
+
 
   },
   "ELEMENTEDITOR": {
