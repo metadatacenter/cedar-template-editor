@@ -31,6 +31,7 @@ define([
           '$location',
           '$timeout',
           '$scope',
+          '$rootScope',
           '$translate',
           'CedarUser',
           'resourceService',
@@ -44,7 +45,7 @@ define([
           'CONST'
         ];
 
-        function cedarSearchBrowsePickerController($location, $timeout, $scope, $translate, CedarUser, resourceService,
+        function cedarSearchBrowsePickerController($location, $timeout, $scope, $rootScope,$translate, CedarUser, resourceService,
                                                    UIMessageService, UISettingsService, UrlService,
                                                    AuthorizedBackendService, TemplateInstanceService,
                                                    TemplateElementService, TemplateService, CONST) {
@@ -119,6 +120,7 @@ define([
           vm.resourcePermissions = null;
           vm.resourceNodes = null;
           vm.showGroups = false;
+          vm.openShareModal = openShareModal;
 
 
           vm.getFacets = getFacets;
@@ -1463,6 +1465,14 @@ define([
           function isUser(node) {
             return node && (!node.hasOwnProperty('nodeType') || node.nodeType === 'user');
           }
+
+
+
+          // initialize the modal share dialog
+          function openShareModal(resource) {
+            $rootScope.$broadcast('share-modal', resource);
+          };
+
 
           // initialize the share dialog
           function openShare(resource) {

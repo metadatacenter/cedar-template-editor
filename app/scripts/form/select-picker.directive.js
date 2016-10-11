@@ -25,22 +25,17 @@ define([
 
         if ($scope.$parent.model != undefined) {
           $scope.model = $scope.$parent.model;
-          console.log('use parent model');
-          console.log($scope.model);
+
         }
 
         var default_array;
 
         if ($scope.model != undefined) {
-          console.log('use model');
-          console.log($scope.model);
+
           // If returning to an already populated select list field, load selections
           default_array = $scope.model['@value'];
 
         } else if ($scope.field && $scope.field._valueConstraints.defaultOptions) {
-          console.log('use field');
-          console.log($scope.field);
-          console.log($scope.field._valueConstraints.defaultOptions);
 
           default_array = [];
 
@@ -56,17 +51,14 @@ define([
           $scope.model = $scope.model || {};
           $scope.model['@value'] = default_array;
         } else {
-          console.log('none');
         }
 
         $timeout(function () {
-          //console.log('on timeout ');
           $element.selectpicker({
             style   : 'btn-select-picker',
             iconBase: 'fa',
             tickIcon: 'fa-check',
           });
-          //console.log($element);
 
           if (default_array) {
             // If defaults were loaded during field item configuration, manually load defaults into the selectpicker
@@ -81,7 +73,6 @@ define([
           // assigned at the field-directive.js level
 
           $scope.model = $element.val();
-          console.log('on change ' + $scope.model);
         });
       }
     };

@@ -7,7 +7,7 @@ define([
   'cedar/template-editor/form/date-time-picker.directive',
   'cedar/template-editor/form/field.directive',
   'cedar/template-editor/form/form.directive',
-  'cedar/template-editor/form/git statselect-picker.directive',
+  'cedar/template-editor/form/select-picker.directive',
   'cedar/template-editor/form/spreadsheet.service',
   'cedar/template-editor/form/with-floating-label.directive',
   'cedar/template-editor/form/no-image.directive',
