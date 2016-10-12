@@ -253,7 +253,9 @@
       "withUsers": "With people",
       "withGroups": "With groups",
       "manageGroups": "Manage groups",
-      "manageShare": "Share settings"
+      "manageShare": "Share settings",
+      "groupMembers": "Members",
+      "groupDetails": "Details"
     },
     "filter": {
       "filterBy": "Filter",

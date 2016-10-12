@@ -54,6 +54,7 @@ define([
           vm.removeShare = removeShare;
           vm.updateUserPermission = updateUserPermission;
           vm.updateGroupPermission = updateGroupPermission;
+          vm.groupTypeaheadOnSelect = groupTypeaheadOnSelect;
           vm.getName = getName;
           vm.selectedUserId = null;
           vm.giveUserPermission = 'read';
@@ -69,6 +70,9 @@ define([
           vm.resourcePermissions = null;
           vm.resourceNodes = null;
           vm.showGroups = false;
+          vm.showGroupMembers = true;
+          vm.addUserToGroup = addUserToGroup;
+          vm.removePersonFromGroup = removePersonFromGroup;
 
           vm.selectedResource = null;
           vm.currentFolder = null;
@@ -77,6 +81,7 @@ define([
           vm.dummyGroupId = null;
           vm.autoCompleteUserId = null;
 
+          //TODO remove when we have real data
           vm.fillDummyGroups = function(response) {
             var group = response[0];
             vm.dummyGroups = response;
@@ -87,8 +92,7 @@ define([
               vm.dummyGroups.push(newGroup);
 
             }
-          }
-
+          };
 
 
           vm.getResourceDetails = function (resource) {
@@ -544,17 +548,33 @@ define([
 
           // when selected user changes, reset selected permisison
           function updateUserPermission(id) {
-            var node = getNode(id);
-            if (node.nodeType === 'group' && vm.giveNodePermission === 'own') {
-              vm.giveNodePermission = 'read';
+            if (id) {
+              var node = getNode(id);
+              if (node.nodeType === 'group' && vm.giveNodePermission === 'own') {
+                vm.giveNodePermission = 'read';
+              }
+            } else {
+              console.log('updateUserPermisison null');
             }
           }
 
           // when selected user changes, reset selected permisison
+          function addUserToGroup(userId, groupId) {
+              console.log('addUserToGroup ' + userId + ' ' + groupId);
+          }
+
+
+
+          // when selected user changes, reset selected permisison
           function updateGroupPermission(id) {
-            var node = getNode(id);
-            if (node.nodeType === 'group' && vm.giveNodePermission === 'own') {
-              vm.giveNodePermission = 'read';
+            if (id) {
+              var node = getNode(id);
+              if (node.nodeType === 'group' && vm.giveNodePermission === 'own') {
+                vm.giveNodePermission = 'read';
+              }
+            } else {
+              console.log('updateGroupPermission  null');
+
             }
           }
 
@@ -619,6 +639,18 @@ define([
                 scroller.scrollTop = scroller.scrollHeight;
               }, 0, false);
             }
+          }
+
+          function groupTypeaheadOnSelect(item, model, label) {
+            console.log('groupTypeaheadOnSelect ');
+            console.log(item);
+            console.log(model);
+            console.log(label);
+
+          }
+
+          function removePersonFromGroup() {
+            console.log('removePersonFromGroup');
           }
 
           $scope.$on('share-modal', function (event, resource) {
