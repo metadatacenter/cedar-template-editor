@@ -1,5 +1,5 @@
 <div class="modal-dialog">
-  <div class="modal-content"  ng-class="share.canWrite() ? 'canWrite' : 'cannotWrite'">
+  <div class="modal-content" ng-class="share.canWrite() ? 'canWrite' : 'cannotWrite'">
     <div class="modal-header" id="shareModalHeader">
       <h4 translate>DASHBOARD.share.title</h4>
     </div>
@@ -12,7 +12,7 @@
         <div class="row">
           <div ng-if="share.canWrite()" class="col-sm-6">
 
-            <div >
+            <div>
               <!-- share with groups -->
               <div class="row">
                 <div class="col-sm-12">
@@ -121,7 +121,7 @@
           <div ng-class="share.canWrite() ? 'col-sm-6' : 'col-sm-12'">
             <div class="row">
               <div class="col-sm-12">
-                <h5 translate>DASHBOARD.share.shareSettings</h5></div>
+                <h5 >&nbsp;</h5></div>
             </div>
 
             <div ng-model="share.resourcePermissions" id="shared-users" class="scroll-container">
@@ -251,7 +251,8 @@
             </div>
             <div class="row">
               <div class="col-sm-11">
-                <input ng-model="share.newGroupName" style="height:40px" type="text" placeholder="enter new group name"/>
+                <input ng-model="share.newGroupName" style="height:40px" type="text"
+                    placeholder="enter new group name"/>
               </div>
               <div class="col-sm-1 pull-right">
                 <button
@@ -271,7 +272,7 @@
             <div class="row">
               <div class="col-sm-12 center">
                 <a href="#" ng-click="share.showGroups = false">
-                  <h5><span translate>DASHBOARD.share.manageShare</span></h5>
+                  <h5><span translate>DASHBOARD.share.manageShare</span> <i class="fa fa-share"></i></h5>
                 </a>
               </div>
             </div>
@@ -324,7 +325,7 @@
             </div>
             <!-- details -->
             <div ng-if="!share.showGroupMembers" class=hidden-container">
-              <div  ng-if="share.hasSelectedGroup()">
+              <div ng-if="share.hasSelectedGroup()">
 
                 <div class="title">
                   <input type="text" value="name"/>
@@ -385,8 +386,8 @@
       </div>
     </div>
 
-
-    <div class="modal-footer actions" >
+    <!-- footer just closes the dialog -->
+    <div class="modal-footer actions">
       <div class="clear-save">
         <button type="button" ng-click="toggleModal()"
             data-dismiss="modal" aria-label="Done"
