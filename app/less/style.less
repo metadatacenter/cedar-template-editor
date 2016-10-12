@@ -6383,14 +6383,19 @@ table.apiKey {
 
 #share-modal {
 
-
-    .modal-dialog {
-      .modal-content {
+  .modal-dialog {
+    .modal-content {
       max-width: 800px;
       width:800px;
+      &.cannotWrite {
+        width:600px;
+        .bootstrap-select button {
+          padding-left: 40px;
+
+        }
       }
     }
-
+  }
 
   @media (max-width: @screen-sm-min) {
     .modal-content {
@@ -6401,9 +6406,34 @@ table.apiKey {
 
   .modal-content {
 
-
     .modal-body {
       max-height: 500px;
+      input {
+        color:#000;
+        outline:none;
+        border-radius:0px;
+        box-shadow:none;
+        border:1px solid #ddd;
+        height:40px
+      }
+      .checkbox {
+       margin-top:8px;
+        margin-bottom:0;
+      }
+      select {
+        outline:none;
+        height:40px;
+      }
+      .bootstrap-select  {
+        outline:none;
+      }
+      .bootstrap-select button {
+        padding-left: 5px;
+        outline:none;
+        height:40px;
+
+      }
+
       .row {
         padding: 5px 0;
         .name {

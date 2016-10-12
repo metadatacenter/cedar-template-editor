@@ -255,14 +255,18 @@
       "manageGroups": "Manage groups",
       "manageShare": "Share settings",
       "groupMembers": "Members",
-      "groupDetails": "Details"
+      "groupDetails": "Details",
+      "groupSettings": "Group settings",
+      "shareSettings": "Share settings",
+      "selectGroup": "Select group",
+      "newGroup": "New group",
+      "people": "People",
+      "admin": "admin"
     },
     "filter": {
       "filterBy": "Filter",
       "reset": "Reset"
     }
-
-
   },
   "ELEMENTEDITOR": {
     "clear": {
