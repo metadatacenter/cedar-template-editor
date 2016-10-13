@@ -45,30 +45,25 @@ define([
           'CONST'
         ];
 
-        function cedarSearchBrowsePickerController($location, $timeout, $scope, $rootScope,$translate, CedarUser, resourceService,
+        function cedarSearchBrowsePickerController($location, $timeout, $scope, $rootScope, $translate, CedarUser,
+                                                   resourceService,
                                                    UIMessageService, UISettingsService, UrlService,
                                                    AuthorizedBackendService, TemplateInstanceService,
                                                    TemplateElementService, TemplateService, CONST) {
           var vm = this;
 
           vm.breadcrumbName = breadcrumbName;
-          //vm.cancelCreateEditFolder = cancelCreateEditFolder;
           vm.currentPath = "";
           vm.currentFolderId = "";
           vm.offset = 0;
 
           vm.totalCount = null;
           vm.deleteResource = deleteResource;
-          //vm.doCreateEditFolder = doCreateEditFolder;
           vm.renameResource = renameResource;
           vm.doSearch = doSearch;
           vm.editResource = editResource;
           vm.facets = {};
           vm.forms = [];
-
-          //vm.formFolder = null;
-          //vm.formFolderName = null;
-          //vm.formFolderDescription = null;
 
           vm.newFolder = newFolder;
           vm.showNewFolder = showNewFolder;
@@ -76,53 +71,11 @@ define([
           vm.folder.name = "";
           vm.folder.description = "folder description";
 
-
-          // move to...
-          vm.openParent = openParent;
-          vm.selectDestination = selectDestination;
-          vm.isDestinationSelected = isDestinationSelected;
-          vm.moveDisabled = moveDisabled;
-          vm.moveResource = moveResource;
-          vm.openDestination = openDestination;
+          // modals
           vm.showMoveModal = showMoveModal;
           vm.showShareModal = showShareModal;
-          vm.selectedDestination = null;
-          vm.currentDestination = null;
-          vm.destinationResources = [];
-          vm.currentDestinationID = null;
-          vm.destinationPathInfo = null;
-          vm.destinationPath = null;
-
-          // share
-          vm.openShare = openShare;
-          vm.saveShare = saveShare;
-          vm.getNode = getNode;
-          vm.canBeOwner = canBeOwner;
-          vm.canUpdate = canUpdate;
-          vm.addShare = addShare;
-          vm.addAndSaveShare = addAndSaveShare;
-          vm.removeShare = removeShare;
-          vm.removeAndSaveShare = removeAndSaveShare;
-          vm.updateNodePermission = updateNodePermission;
-          vm.getName = getName;
-          vm.selectedUserId = null;
-          vm.giveUserPermission = 'read';
-          vm.selectedGroupId = null;
-          vm.giveGroupPermission = 'read';
-          vm.selectedNodeId = null;
-          vm.selectedUserId = null;
-          vm.selectedGroupId = null;
-          vm.giveNodePermission = 'read';
-          vm.userIsOriginalOwner = false;
-          vm.userIsOriginalWriter = false;
-          vm.everybodyIsOriginalWriter = false;
-          vm.resourceUsers = null;
-          vm.resourceGroups = null;
-          vm.resourcePermissions = null;
-          vm.resourceNodes = null;
-          vm.showGroups = false;
-
-
+          vm.moveModalVisible = false;
+          vm.shareModalVisible = false;
 
           vm.getFacets = getFacets;
           vm.getForms = getForms;
@@ -152,7 +105,6 @@ define([
           vm.sortName = sortName;
           vm.sortCreated = sortCreated;
           vm.sortUpdated = sortUpdated;
-          //vm.showCreateFolder = showCreateFolder;
           vm.showFilters = true;
           vm.filterShowing = filterShowing;
           vm.resetFilters = resetFilters;
@@ -180,23 +132,13 @@ define([
 
           vm.editingDescription = false;
 
-          vm.canAccessParentFunction = canAccessParentFunction;
-
-          vm.moveModalVisible = false;
-          vm.shareModalVisible = false;
-
-          vm.hideModal = function(visible) {
-            console.log('hideModal');
+          vm.hideModal = function (visible) {
             visible = false;
           };
-
 
           vm.startDescriptionEditing = function () {
             var resource = vm.getSelection();
             if (resource != null) {
-              //if (resource.nodeType == 'folder') {
-              //  vm.showEditFolder(resource, true);
-              //} else {
               vm.editingDescription = true;
               $timeout(function () {
                 var jqDescriptionField = $('#edit-description');
@@ -204,7 +146,6 @@ define([
                 var l = jqDescriptionField.val().length;
                 jqDescriptionField[0].setSelectionRange(0, l);
               });
-              //}
             }
           };
 
@@ -239,7 +180,6 @@ define([
             }
 
             vm.setResourceInfoVisibility(true);
-            vm.resizeCenterPanel();
           };
 
           vm.isResourceSelected = function (resource) {
@@ -256,15 +196,9 @@ define([
               vm.showInfoPanel(resource);
             } else {
               vm.setResourceInfoVisibility(false);
-              vm.resizeCenterPanel();
             }
           };
 
-          vm.resizeCenterPanel = function () {
-            //var e = jQuery('#center-panel');
-            //e.class("left", vm.showFilters ? "200px" : "0");
-            //e.css("right", vm.showResourceInfo ? "400px" : "0");
-          };
 
           vm.getResourceDetails = function (resource) {
             if (!resource && vm.hasSelection()) {
@@ -450,9 +384,9 @@ define([
               return resourceService.searchResources(term,
                   {
                     resourceTypes: resourceTypes,
-                    sort: sortField(),
-                    limit: limit,
-                    offset: offset
+                    sort         : sortField(),
+                    limit        : limit,
+                    offset       : offset
                   },
                   function (response) {
                     vm.resources = vm.resources.concat(response.resources);
@@ -464,10 +398,6 @@ define([
               );
             }
           };
-
-          vm.canAccessParent = 'can access parent';
-
-
 
 
           //*********** ENTRY POINT
@@ -495,7 +425,6 @@ define([
             vm.resourceViewMode = uip.folderView.viewMode;
             if (uip.hasOwnProperty('infoPanel')) {
               vm.showResourceInfo = uip.infoPanel.opened;
-              vm.resizeCenterPanel();
             } else {
               vm.showResourceInfo = false;
             }
@@ -504,7 +433,6 @@ define([
           function updateResourceInfoPanel() {
             var uip = CedarUser.getUIPreferences();
             vm.showResourceInfo = (uip.hasOwnProperty('infoPanel') && uip.infoPanel.opened );
-            vm.resizeCenterPanel();
           }
 
           function init() {
@@ -550,26 +478,6 @@ define([
             return folderName;
           }
 
-          //function cancelCreateEditFolder() {
-          //  vm.formFolderName = 'Untitled';
-          //  vm.formFolderDescription = 'Untitled';
-          //  vm.formFolder = null;
-          //  $('#editFolderModal').modal('hide');
-          //}
-
-          //function showCreateFolder() {
-          //  vm.showFloatingMenu = false;
-          //  vm.formFolderName = 'Untitled';
-          //  vm.formFolderDescription = 'Untitled';
-          //  vm.formFolder = null;
-          //  $('#editFolderModal').modal('show');
-          //  $timeout(function () {
-          //    var jqFolderName = $('#formFolderName');
-          //    jqFolderName.focus();
-          //    var l = jqFolderName.val().length;
-          //    jqFolderName[0].setSelectionRange(0, l);
-          //  });
-          //}
 
           function showNewFolder(id) {
             vm.showFloatingMenu = false;
@@ -668,48 +576,6 @@ define([
             }
           }
 
-          //function doCreateEditFolder() {
-          //  $('#editFolderModal').modal('hide');
-          //  if (vm.formFolder) {
-          //    vm.formFolder.name = vm.formFolderName;
-          //    vm.formFolder.description = vm.formFolderDescription;
-          //    resourceService.updateFolder(
-          //        vm.formFolder,
-          //        function (response) {
-          //          init();
-          //          UIMessageService.flashSuccess('SERVER.FOLDER.update.success', {"title": vm.formFolderName},
-          //              'GENERIC.Updated');
-          //        },
-          //        function (response) {
-          //          UIMessageService.showBackendError('SERVER.FOLDER.update.error', response);
-          //        }
-          //    );
-          //    // edit
-          //  } else {
-          //    resourceService.createFolder(
-          //        vm.params.folderId,
-          //        vm.formFolderName,
-          //        vm.formFolderDescription,
-          //        function (response) {
-          //          init();
-          //          UIMessageService.flashSuccess('SERVER.FOLDER.create.success', {"title": vm.formFolderName},
-          //              'GENERIC.Created');
-          //        },
-          //        function (response) {
-          //          if (response.status == 400) {
-          //            UIMessageService.showWarning(
-          //                'GENERIC.Warning',
-          //                'SERVER.FOLDER.create.' + response.data.errorSubType,
-          //                'GENERIC.Ok',
-          //                response.data.errorParams
-          //            );
-          //          } else {
-          //            UIMessageService.showBackendError('SERVER.FOLDER.create.error', response);
-          //          }
-          //        }
-          //    );
-          //  }
-          //}
 
           function doSearch(term) {
             var resourceTypes = activeResourceTypes();
@@ -850,9 +716,6 @@ define([
             }
           }
 
-          function canAccessParentFunction() {
-            return vm.canAccessParent;
-          }
 
           function deleteResource(resource) {
             if (!resource && hasSelection()) {
@@ -1114,7 +977,6 @@ define([
                 vm.filterSections[section] = !vm.filterSections[section];
               }
             }
-            vm.resizeCenterPanel();
           }
 
           function workspaceClass() {
@@ -1149,12 +1011,10 @@ define([
 
           function setResourceInfo(value) {
             vm.setResourceInfoVisibility(value);
-            vm.resizeCenterPanel();
           }
 
           function toggleResourceInfo() {
             vm.setResourceInfoVisibility(!vm.showResourceInfo);
-            vm.resizeCenterPanel();
           }
 
           function toggleResourceType(type) {
@@ -1173,12 +1033,8 @@ define([
           });
 
           $scope.$on('search', function (event, searchTerm) {
-            if (onDashboard()) {
-              //$location.url(UrlService.getSearchPath(searchTerm));
-            } else {
-              vm.params.search = searchTerm;
-              initSearch();
-            }
+            vm.params.search = searchTerm;
+            initSearch();
           });
 
           $scope.hideModal = function (id) {
@@ -1211,7 +1067,6 @@ define([
 
           function resetSelected() {
             vm.selectedResource = null;
-            vm.resizeCenterPanel();
           }
 
           function getSelection() {
@@ -1267,78 +1122,12 @@ define([
             UISettingsService.saveUIPreference('folderView.viewMode', mode);
           }
 
-
-          // move to...
-
-          function openParent() {
-            var length = vm.destinationPathInfo.length;
-            var parent = vm.destinationPathInfo[length - 1];
-            openDestination(parent);
-          }
-
-          function moveResource() {
-
-            if (vm.selectedDestination) {
-              var folderId = vm.selectedDestination['@id'];
-
-
-              if (vm.selectedResource) {
-                var resource = vm.selectedResource;
-
-
-                resourceService.moveResource(
-                    resource,
-                    folderId,
-                    function (response) {
-
-                      // TODO refresh the current page just in case you copied to the current page
-                      vm.params = $location.search();
-                      init();
-
-                      UIMessageService.flashSuccess('SERVER.RESOURCE.moveResource.success', {"title": resource.name},
-                          'GENERIC.Moved');
-                    },
-                    function (response) {
-                      UIMessageService.showBackendError('SERVER.RESOURCE.moveResource.error', response);
-                    }
-                );
-
-              }
-            }
-          }
-
-          function selectDestination(resource) {
-            vm.selectedDestination = resource;
-          }
-
-          function openDestination(resource) {
-            if (resource) {
-              var id = resource['@id'];
-              getDestinationById(id);
-              vm.selectedDestination = null;
-              vm.currentDestination = resource;
-            }
-          }
-
-          function moveDisabled() {
-            return vm.selectedDestination == null;
-          }
-
-          function isDestinationSelected(resource) {
-            if (resource == null || vm.selectedDestination == null) {
-              return false;
-            } else {
-              return (vm.selectedDestination['@id'] == resource['@id']);
-            }
-          }
-
           // open the move modal
-          function showMoveModal() {
-            vm.showFloatingMenu = false;
-            vm.currentDestination = vm.currentPath;
-            vm.selectedDestination = null;
-            getDestinationById(vm.currentFolderId);
+          function showMoveModal(resource) {
             vm.moveModalVisible = true;
+            $scope.$broadcast('moveModalVisible',
+                [vm.moveModalVisible, resource, vm.currentPath, vm.currentFolderId, vm.resourceTypes,
+                 vm.sortOptionField]);
           }
 
           // open the share modal
@@ -1348,490 +1137,6 @@ define([
           }
 
 
-          function getDestinationById(folderId) {
-            var resourceTypes = activeResourceTypes();
-            if (resourceTypes.length > 0) {
-              return resourceService.getResources(
-                  {folderId: folderId, resourceTypes: resourceTypes, sort: sortField(), limit: 100, offset: 0},
-                  function (response) {
-                    vm.currentDestinationID = folderId;
-                    vm.destinationResources = response.resources;
-                    vm.destinationPathInfo = response.pathInfo;
-                    vm.destinationPath = vm.destinationPathInfo.pop();
-                  },
-                  function (error) {
-                    UIMessageService.showBackendError('SERVER.FOLDER.load.error', error);
-                  }
-              );
-            } else {
-              vm.destinationResources = [];
-            }
-          }
-
-          // share...
-
-          // is the current user the owner?
-          function userIsOwner() {
-            var userId = CedarUser.getUserId();
-            var ownerId = null;
-
-            if (vm.resourcePermissions) {
-              ownerId = vm.resourcePermissions.owner.id.substr(vm.resourcePermissions.owner.id.lastIndexOf('/') + 1);
-            }
-
-            return (ownerId === userId);
-          }
-
-          // does the current user have write permissions?
-          function userIsWriter() {
-            var userId = CedarUser.getUserId();
-            if (vm.resourcePermissions) {
-              for (var i = 0; i < vm.resourcePermissions.userPermissions.length; i++) {
-                var id = vm.resourcePermissions.userPermissions[i].user.id;
-                id = id.substr(id.lastIndexOf('/') + 1);
-                if (userId === id) {
-                  return vm.resourcePermissions.userPermissions[i].permission === 'write';
-                }
-              }
-            }
-            return false;
-          }
-
-          // does the current user have write permissions?
-          function everybodyIsWriter() {
-            var userId = CedarUser.getUserId();
-            if (vm.resourcePermissions && vm.resourcePermissions.groupPermissions.length > 0) {
-              return vm.resourcePermissions.groupPermissions[0].permission === 'write'
-            }
-            return false;
-          }
-
-          // is the node's owner the same as the current owner
-          function isOwner(node) {
-            if (vm.resourcePermissions && vm.resourcePermissions.owner && node) {
-              return vm.resourcePermissions.owner.id === node.id;
-            }
-            return false;
-          }
-
-          // can ownership be assigned on this node by the current user
-          function canUpdate() {
-            //return vm.userIsOriginalOwner || vm.userIsOriginalWriter || vm.everybodyIsOriginalWriter || vm.canWrite();
-            return vm.canWrite();
-          }
-
-          // can ownership be assigned on this node by the current user
-          function canBeOwner(id) {
-            var node = getNode(id);
-            //return id && node && node.nodeType === 'user' && vm.userIsOriginalOwner || vm.canChangeOwner();
-            return id && node && node.nodeType === 'user' && vm.canChangeOwner();
-          }
-
-
-          // sorting strings
-          function dynamicSort(property) {
-            var sortOrder = 1;
-            if (property[0] === "-") {
-              sortOrder = -1;
-              property = property.substr(1);
-            }
-            return function (a, b) {
-              var result = (a[property].toUpperCase() < b[property].toUpperCase()) ? -1 : (a[property].toUpperCase() > b[property].toUpperCase()) ? 1 : 0;
-              return result * sortOrder;
-            }
-          }
-
-          // update the permission for this node
-          function updateShare(node, permission) {
-
-            for (var i = 0; i < vm.resourcePermissions.shares.length; i++) {
-              if (node.id === vm.resourcePermissions.shares[i].node.id) {
-                vm.resourcePermissions.shares[i].permission = permission;
-                return true;
-              }
-            }
-            return false;
-          }
-
-          // update the permission for this node
-          function updateAndSaveShare(node, permission, resource) {
-
-            for (var i = 0; i < vm.resourcePermissions.shares.length; i++) {
-              if (node.id === vm.resourcePermissions.shares[i].node.id) {
-                vm.resourcePermissions.shares[i].permission = permission;
-                saveShare(resource);
-                return true;
-              }
-            }
-            return false;
-          }
-
-          // get the node for this id
-          function getNode(id) {
-            if (vm.resourceNodes) {
-              for (var i = 0; i < vm.resourceNodes.length; i++) {
-                if (vm.resourceNodes[i].id === id) {
-                  return vm.resourceNodes[i];
-                }
-              }
-            }
-          }
-
-          // is this node a user?
-          function isUser(node) {
-            return node && (!node.hasOwnProperty('nodeType') || node.nodeType === 'user');
-          }
-
-
-
-          // initialize the share dialog
-          function openShare(resource) {
-            vm.selectedNodeId = null;
-            vm.selectedUserId = null;
-            vm.selectedGroupId = null;
-            vm.giveNodePermission = 'read';
-            vm.userIsOriginalOwner = false;
-            vm.userIsOriginalWriter = false;
-            vm.everybodyIsOriginalWriter = false;
-            vm.resourceUsers = null;
-            vm.resourceGroups = null;
-            vm.resourceNodes = null;
-            vm.resourcePermissions = null;
-            vm.showGroups = false;
-            getNodes();
-            getPermissions(resource);
-          };
-
-          // save the modified permissions to the server
-          function saveShare(resource) {
-            setPermissions(resource);
-          };
-
-          // read the permissions from the server
-          function getPermissions(resource) {
-            // get the sharing for this resource
-            if (!resource && vm.hasSelection()) {
-              resource = vm.getSelection();
-            }
-            var id = resource['@id'];
-            resourceService.getResourceShare(
-                resource,
-                function (response) {
-                  vm.resourcePermissions = response;
-                  vm.userIsOriginalOwner = userIsOwner();
-                  vm.userIsOriginalWriter = userIsWriter();
-                  vm.everybodyIsOriginalWriter = everybodyIsWriter();
-                  vm.resourcePermissions.owner.name = getName(vm.resourcePermissions.owner);
-                  getShares();
-                },
-                function (error) {
-                  UIMessageService.showBackendError('SERVER.' + resource.nodeType.toUpperCase() + '.load.error', error);
-                }
-            );
-          };
-
-          function getShares() {
-            if (vm.resourcePermissions) {
-
-              vm.resourcePermissions.shares = [];
-              for (var i = 0; i < vm.resourcePermissions.groupPermissions.length; i++) {
-                var share = {};
-                share.permission = vm.resourcePermissions.groupPermissions[i].permission;
-                share.node = vm.resourcePermissions.groupPermissions[i].group;
-                share.node.nodeType = 'group';
-                share.node.name = getName(share.node);
-                vm.resourcePermissions.shares.push(share);
-              }
-              for (var i = 0; i < vm.resourcePermissions.userPermissions.length; i++) {
-                var share = {};
-                share.permission = vm.resourcePermissions.userPermissions[i].permission;
-                share.node = vm.resourcePermissions.userPermissions[i].user;
-                share.node.nodeType = 'user';
-                share.node.name = getName(share.node);
-                vm.resourcePermissions.shares.push(share);
-              }
-
-              //if (vm.resourcePermissions.shares.length > 0) {
-              //  var id = vm.resourcePermissions.shares[0].node.id;
-              //  vm.selectedNodeId = id.substr(id.lastIndexOf('/') + 1);
-              //}
-            }
-          }
-
-          // write the permissions to the server
-          function setPermissions(resource) {
-
-            // rebuild permissions from shares
-            vm.resourcePermissions.groupPermissions = [];
-            vm.resourcePermissions.userPermissions = [];
-            for (var i = 0; i < vm.resourcePermissions.shares.length; i++) {
-              var share = vm.resourcePermissions.shares[i];
-              if (share.node.nodeType === 'user') {
-                share.user = share.node;
-                delete share.node;
-                vm.resourcePermissions.userPermissions.push(share);
-              } else {
-                share.group = share.node;
-                delete share.node;
-                vm.resourcePermissions.groupPermissions.push(share);
-              }
-            }
-            delete vm.resourcePermissions.shares;
-
-            if (!resource && vm.hasSelection()) {
-              resource = vm.getSelection();
-            }
-            var id = resource['@id'];
-            resourceService.setResourceShare(
-                resource,
-                vm.resourcePermissions,
-                function (response) {
-                  vm.resourcePermissions = response;
-                  getShares();
-                },
-                function (error) {
-                  UIMessageService.showBackendError('SERVER.' + resource.nodeType.toUpperCase() + '.load.error', error);
-                }
-            );
-          };
-
-          function initNodes(nodes) {
-
-            var result;
-            for (var i = 0; i < nodes.length; i++) {
-              nodes[i].name = getName(nodes[i]);
-            }
-            nodes.sort(dynamicSort("name"));
-            if (nodes.length > 0) {
-              result = nodes[0].id;
-            }
-            return result;
-
-          }
-
-          // get all the users and groups on the system
-          function getNodes() {
-
-            // get the users
-            resourceService.getUsers(
-                function (response) {
-                  vm.resourceUsers = response.users;
-                  vm.selectedUserId = initNodes(vm.resourceUsers);
-
-
-                  // get groups
-                  resourceService.getGroups(
-                      function (response) {
-                        vm.resourceGroups = response.groups;
-                        vm.selectedGroupId = initNodes(vm.resourceGroups);
-
-                        // resource nodes is the users and groups combined
-                        vm.resourceNodes = [];
-                        vm.resourceNodes = vm.resourceNodes.concat(vm.resourceUsers);
-                        vm.resourceNodes = vm.resourceNodes.concat(vm.resourceGroups);
-                        vm.selectedNodeId = initNodes(vm.resourceNodes);
-
-                      },
-                      function (error) {
-                        UIMessageService.showBackendError('SERVER.' + resource.nodeType.toUpperCase() + '.load.error',
-                            error);
-                      }
-                  );
-                },
-                function (error) {
-                  UIMessageService.showBackendError('SERVER.' + resource.nodeType.toUpperCase() + '.load.error', error);
-                }
-            );
-          }
-
-          // get all the users on the system
-          function getUsers() {
-
-            // get the users
-            resourceService.getUsers(
-                function (response) {
-                  vm.resourceUsers = response.users;
-                  if (vm.resourceUsers.length > 0) {
-                    vm.selectedUserId = vm.resourceUsers[0].id;
-                  }
-                },
-                function (error) {
-                  UIMessageService.showBackendError('SERVER.' + resource.nodeType.toUpperCase() + '.load.error', error);
-                }
-            );
-          }
-
-          // get all the groups on the system
-          function getGroups() {
-
-            resourceService.getGroups(
-                function (response) {
-                  vm.resourceGroups = response.groups;
-                  if (vm.resourceGroups.length > 0) {
-                    vm.selectedGroupId = vm.resourceGroups[0].id;
-                  }
-                },
-                function (error) {
-                  UIMessageService.showBackendError('SERVER.' + resource.nodeType.toUpperCase() + '.load.error', error);
-                }
-            );
-          }
-
-          // remove the share permission on this node
-          function removeShare(node) {
-            for (var i = 0; i < vm.resourcePermissions.shares.length; i++) {
-              if (node.id === vm.resourcePermissions.shares[i].node.id) {
-                vm.resourcePermissions.shares.splice(i, 1);
-              }
-            }
-            for (var i = 0; i < vm.resourcePermissions.userPermissions.length; i++) {
-              if (node.id === vm.resourcePermissions.userPermissions[i].user.id) {
-                vm.resourcePermissions.userPermissions.splice(i, 1);
-                return;
-              }
-            }
-            for (var i = 0; i < vm.resourcePermissions.groupPermissions.length; i++) {
-              if (node.id === vm.resourcePermissions.groupPermissions[i].group.id) {
-                vm.resourcePermissions.groupPermissions.splice(i, 1);
-                return;
-              }
-            }
-          }
-
-          // remove the share permission on this node
-          function removeAndSaveShare(node, resource) {
-            for (var i = 0; i < vm.resourcePermissions.shares.length; i++) {
-              if (node.id === vm.resourcePermissions.shares[i].node.id) {
-                vm.resourcePermissions.shares.splice(i, 1);
-              }
-            }
-            for (var i = 0; i < vm.resourcePermissions.userPermissions.length; i++) {
-              if (node.id === vm.resourcePermissions.userPermissions[i].user.id) {
-                vm.resourcePermissions.userPermissions.splice(i, 1);
-                saveShare(resource);
-                return;
-              }
-            }
-            for (var i = 0; i < vm.resourcePermissions.groupPermissions.length; i++) {
-              if (node.id === vm.resourcePermissions.groupPermissions[i].group.id) {
-                vm.resourcePermissions.groupPermissions.splice(i, 1);
-                saveShare(resource);
-                return;
-              }
-            }
-          }
-
-          // format a name for this node
-          function getName(node) {
-            var result = "";
-            if (node) {
-              if (isUser(node)) {
-                result = node.firstName + ' ' + node.lastName + ' (' + node.email + ')';
-              } else {
-                result = node.displayName;
-              }
-            }
-            return result;
-          }
-
-          // when selected user changes, reset selected permisison
-          function updateNodePermission() {
-            var node = getNode(vm.selectedNodeId);
-            if (node.nodeType === 'group' && vm.giveNodePermission === 'own') {
-              vm.giveNodePermission = 'read';
-            }
-          }
-
-          // add a share permission for this node
-          function addShare(id, permission, domId) {
-
-            var node = getNode(id);
-            var share = {};
-            if (node) {
-
-              if (permission === 'own') {
-
-                var owner = vm.resourcePermissions.owner;
-
-                if (owner.id != id) {
-
-                  // make the node the owner
-                  removeShare(node);
-
-                  vm.resourcePermissions.owner = node;
-
-                  share.permission = 'write';
-                  share.node = owner;
-                  share.node.nodeType = 'user';
-                  share.node.name = getName(share.node);
-                  vm.resourcePermissions.shares.push(share);
-                }
-
-              } else {
-
-                // can we just update it
-                if (!isOwner(node) && !updateShare(node, permission)) {
-
-                  // create the new share for this group
-                  share.permission = permission;
-                  share.node = node;
-                  share.node.name = getName(node);
-                  vm.resourcePermissions.shares.push(share);
-                }
-              }
-              // scroll to this node
-              $timeout(function () {
-                var scroller = document.getElementById(domId);
-                scroller.scrollTop = scroller.scrollHeight;
-              }, 0, false);
-            }
-          }
-
-          function addAndSaveShare(id, permission, domId, resource) {
-
-            var node = getNode(id);
-            var share = {};
-            if (node) {
-
-              if (permission === 'own') {
-
-                var owner = vm.resourcePermissions.owner;
-
-                if (owner.id != id) {
-
-                  // make the node the owner
-                  removeShare(node);
-
-                  vm.resourcePermissions.owner = node;
-
-                  share.permission = 'write';
-                  share.node = owner;
-                  share.node.nodeType = 'user';
-                  share.node.name = getName(share.node);
-                  vm.resourcePermissions.shares.push(share);
-                  saveShare(resource);
-                }
-
-              } else {
-
-                // can we just update it
-                if (!isOwner(node) && !updateAndSaveShare(node, permission, resource)) {
-
-                  // create the new share for this group
-                  share.permission = permission;
-                  share.node = node;
-                  share.node.name = getName(node);
-                  vm.resourcePermissions.shares.push(share);
-                  saveShare(resource);
-                }
-              }
-              // scroll to this node
-              $timeout(function () {
-                var scroller = document.getElementById(domId);
-                scroller.scrollTop = scroller.scrollHeight;
-              }, 0, false);
-            }
-          }
         }
       }
     }

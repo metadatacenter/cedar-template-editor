@@ -582,8 +582,6 @@ define([
             $timeout(function () {
               $scope.$apply();
             });
-
-
           }
 
           function hasSelectedGroup() {

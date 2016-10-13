@@ -58,7 +58,7 @@
             <li ng-if="!dc.isFolder()"><a href="#" ng-click="dc.editResource()">Edit</a></li>
             <li role="separator" class="divider"></li>
             <li><a href="#" ng-click="dc.showShareModal(resource)">Share...</a></li>
-            <li><a href="#" ng-click="dc.showMoveModal()">Move to...</a></li>
+            <li><a href="#" ng-click="dc.showMoveModal(resource)">Move to...</a></li>
             <li><a href="#" data-toggle="modal" data-target="#renameResourceModal">Rename...</a></li>
             <li ng-if="!dc.isFolder()"><a href="#" ng-click="dc.copyResource()">Make a copy</a></li>
             <li role="separator" class="divider"></li>
@@ -368,7 +368,7 @@
                         <li role="separator" class="divider"></li>
                         <li><a href="#"   ng-click="dc.showShareModal(resource)"
                             >Share...</a></li>
-                        <li><a href="#" ng-click="dc.showMoveModal()">Move to...</a></li>
+                        <li><a href="#" ng-click="dc.showMoveModal(resource)">Move to...</a></li>
                         <li><a href="#" data-toggle="modal" data-target="#renameResourceModal">Rename...</a></li>
                         <li role="separator" class="divider"></li>
                         <li><a href="#" ng-click="dc.deleteResource(resource)">Delete</a></li>
@@ -417,7 +417,7 @@
                         <li><a href="#" ng-click="dc.showInfoPanel(resource)">Info</a></li>
                         <li role="separator" class="divider"></li>
                         <li><a href="#"   ng-click="dc.showShareModal(resource)">Share...</a></li>
-                        <li><a href="#" ng-click="dc.showMoveModal()">Move to...</a></li>
+                        <li><a href="#" ng-click="dc.showMoveModal(resource)">Move to...</a></li>
                         <li><a href="#" data-toggle="modal" data-target="#renameResourceModal">Rename...</a></li>
                         <li><a href="#" ng-if="!dc.isFolder()" ng-click="dc.copyResource()">Make a copy</a></li>
                         <li role="separator" class="divider"></li>
@@ -465,7 +465,7 @@
                       <li><a href="#" ng-click="dc.showInfoPanel(resource)">Info</a></li>
                       <li role="separator" class="divider"></li>
                       <li><a href="#"   ng-click="dc.showShareModal(resource)">Share...</a></li>
-                      <li><a href="#" ng-click="dc.showMoveModal()">Move to...</a></li>
+                      <li><a href="#" ng-click="dc.showMoveModal(resource)">Move to...</a></li>
                       <li><a href="#" data-toggle="modal" data-target="#renameResourceModal">Rename...</a></li>
                       <li role="separator" class="divider"></li>
                       <li><a href="#" ng-click="dc.deleteResource(resource)">Delete</a></li>
@@ -501,7 +501,7 @@
                       <li><a href="#" ng-click="dc.showInfoPanel(resource)">Info</a></li>
                       <li role="separator" class="divider"></li>
                       <li><a href="#" ng-click="dc.showShareModal(resource)">Share...</a></li>
-                      <li><a href="#" ng-click="dc.showMoveModal()">Move to...</a></li>
+                      <li><a href="#" ng-click="dc.showMoveModal(resource)">Move to...</a></li>
                       <li><a href="#" data-toggle="modal" data-target="#renameResourceModal">Rename...</a></li>
                       <li><a href="#"  ng-click="dc.copyResource()">Make a copy</a></li>
                       <li role="separator" class="divider"></li>
@@ -741,70 +741,17 @@
 </section>
 <!-- rename resource modal -->
 
-<!-- move resource modal -->
+
+<!-- move modal -->
 <section>
-  <div cedar-modal-show  modal-visible="dc.moveModalVisible" class="modal fade" id="moveResourceModal"  tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-      aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <div class="row">
-            <div class="back-arrow-click col-sm-1" ng-click="dc.openParent()" aria-label="Back" tooltip="back to parent"
-                tooltip-trigger
-                tooltip-animation="false"
-                tooltip-placement="bottom"
-                data-toggle="tooltip"><i
-                class="fa fa-arrow-left"></i></div>
-
-            <div class="modal-title col-sm-10">{{dc.currentDestination.displayName}}</div>
-
-            <button class="close col-sm-1" type="button" ng-click="dc.moveModalVisible=false;" aria-label="Close"><span
-                aria-hidden="true">&times;</span></button>
-          </div>
-        </div>
-        <div class="modal-body">
-
-          <!-- show the folders first -->
-          <div ng-if="dc.isFolder(resource)" class="box-row row"
-              ng-class="{ selected: dc.isDestinationSelected(resource)}"
-              ng-repeat="(index, resource) in dc.destinationResources">
-            <div class="col-sm-11" ng-click="dc.selectDestination(resource)"><i style="font-size:20px;padding-right:5px"
-                class="fa" ng-class="dc.getResourceIconClass(resource)"></i> {{resource.displayName}}
-            </div>
-            <div class="col-sm-1" ng-click="dc.openDestination(resource)" tooltip="open {{resource.displayName}}"
-                tooltip-trigger
-                tooltip-animation="false"
-                tooltip-placement="left"
-                data-toggle="tooltip"><i class="fa fa-arrow-right"></i></div>
-          </div>
-
-
-          <div ng-if="!dc.isFolder(resource)" class="box-row row disabled"
-              ng-repeat="(index, resource) in dc.destinationResources">
-            <div class="col-sm-11" disabled="disabled"><i style="font-size:20px;padding-right:5px" class="fa"
-                ng-class="dc.getResourceIconClass(resource)"></i>{{resource.displayName}}
-            </div>
-
-          </div>
-
-
-        </div>
-        <div class="modal-footer actions">
-          <div class="clear-save">
-            <button ng-disabled="dc.moveDisabled()" ng-click="dc.moveResource();dc.moveModalVisible=false;" type="button"
-                class="btn btn-save confirm"> Move
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+  <cedar-move-modal cedar-modal-show  modal-visible="dc.moveModalVisible" class="modal fade" id="move-modal"  tabindex="-1" role="dialog" aria-labelledby="moveModalHeader"
+      data-keyboard="true" data-backdrop="static"  move-resource="resource" >
+  </cedar-move-modal>
 </section>
-<!-- move resource modal -->
 
 <!--- share modal  --->
 <section>
-<cedar-share-modal cedar-modal-show  modal-visible="dc.shareModalVisible" class="modal fade" id="share-modal" class="modal" tabindex="-1" role="dialog" aria-labelledby="shareModalHeader"
+<cedar-share-modal cedar-modal-show  modal-visible="dc.shareModalVisible" class="modal fade" id="share-modal"  tabindex="-1" role="dialog" aria-labelledby="shareModalHeader"
 data-keyboard="true" data-backdrop="static"  share-resource="resource" >
 </cedar-share-modal>
 </section>
