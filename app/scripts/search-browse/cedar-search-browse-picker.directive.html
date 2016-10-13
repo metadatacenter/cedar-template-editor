@@ -59,7 +59,7 @@
             <li role="separator" class="divider"></li>
             <li><a href="#" ng-click="dc.showShareModal(resource)">Share...</a></li>
             <li><a href="#" ng-click="dc.showMoveModal(resource)">Move to...</a></li>
-            <li><a href="#" data-toggle="modal" data-target="#renameResourceModal">Rename...</a></li>
+            <li><a href="#" ng-click="dc.showRenameModal(resource)">Rename...</a></li>
             <li ng-if="!dc.isFolder()"><a href="#" ng-click="dc.copyResource()">Make a copy</a></li>
             <li role="separator" class="divider"></li>
             <li><a href="#" ng-click="dc.deleteResource(resource)">Delete</a></li>
@@ -369,7 +369,7 @@
                         <li><a href="#"   ng-click="dc.showShareModal(resource)"
                             >Share...</a></li>
                         <li><a href="#" ng-click="dc.showMoveModal(resource)">Move to...</a></li>
-                        <li><a href="#" data-toggle="modal" data-target="#renameResourceModal">Rename...</a></li>
+                        <li><a href="#" ng-click="dc.showRenameModal(resource)">Rename...</a></li>
                         <li role="separator" class="divider"></li>
                         <li><a href="#" ng-click="dc.deleteResource(resource)">Delete</a></li>
                       </ul>
@@ -418,7 +418,7 @@
                         <li role="separator" class="divider"></li>
                         <li><a href="#"   ng-click="dc.showShareModal(resource)">Share...</a></li>
                         <li><a href="#" ng-click="dc.showMoveModal(resource)">Move to...</a></li>
-                        <li><a href="#" data-toggle="modal" data-target="#renameResourceModal">Rename...</a></li>
+                        <li><a href="#" ng-click="dc.showRenameModal(resource)">Rename...</a></li>
                         <li><a href="#" ng-if="!dc.isFolder()" ng-click="dc.copyResource()">Make a copy</a></li>
                         <li role="separator" class="divider"></li>
                         <li><a href="#" ng-click="dc.deleteResource(resource)">Delete</a></li>
@@ -466,7 +466,7 @@
                       <li role="separator" class="divider"></li>
                       <li><a href="#"   ng-click="dc.showShareModal(resource)">Share...</a></li>
                       <li><a href="#" ng-click="dc.showMoveModal(resource)">Move to...</a></li>
-                      <li><a href="#" data-toggle="modal" data-target="#renameResourceModal">Rename...</a></li>
+                      <li><a href="#" ng-click="dc.showRenameModal(resource)">Rename...</a></li>
                       <li role="separator" class="divider"></li>
                       <li><a href="#" ng-click="dc.deleteResource(resource)">Delete</a></li>
                     </ul>
@@ -502,7 +502,7 @@
                       <li role="separator" class="divider"></li>
                       <li><a href="#" ng-click="dc.showShareModal(resource)">Share...</a></li>
                       <li><a href="#" ng-click="dc.showMoveModal(resource)">Move to...</a></li>
-                      <li><a href="#" data-toggle="modal" data-target="#renameResourceModal">Rename...</a></li>
+                      <li><a href="#" ng-click="dc.showRenameModal(resource)">Rename...</a></li>
                       <li><a href="#"  ng-click="dc.copyResource()">Make a copy</a></li>
                       <li role="separator" class="divider"></li>
                       <li><a href="#" ng-click="dc.deleteResource(resource)">Delete</a></li>
@@ -711,36 +711,12 @@
 </section>
 <!-- end add / edit folder modal -->
 
-<!-- rename resource modal -->
+<!-- rename modal -->
 <section>
-  <div id="renameResourceModal" class="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-      aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-              aria-hidden="true">&times;</span></button>
-          <h4 class="modal-title" translate>DASHBOARD.rename.title</h4>
-        </div>
-        <div class="modal-body">
-          <h6 translate>DASHBOARD.rename.label</h6>
-
-          <p><input size="40" type="text" id="resourceName" ng-model="dc.selectedResource.name"/></p>
-        </div>
-        <div class="modal-footer actions">
-          <div class="clear-save">
-            <button type="cancel" data-dismiss="modal" class="btn btn-clear">Cancel</button>
-            <button ng-click="dc.renameResource()" type="button" data-dismiss="modal" class="btn btn-save confirm">
-              Save
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+  <cedar-rename-modal cedar-modal-show  modal-visible="dc.renameModalVisible" class="modal fade" id="rename-modal"  tabindex="-1" role="dialog" aria-labelledby="renameModalHeader"
+      data-keyboard="true" data-backdrop="static"  rename-resource="resource" >
+  </cedar-rename-modal>
 </section>
-<!-- rename resource modal -->
-
 
 <!-- move modal -->
 <section>

@@ -59,7 +59,6 @@ define([
 
           vm.totalCount = null;
           vm.deleteResource = deleteResource;
-          vm.renameResource = renameResource;
           vm.doSearch = doSearch;
           vm.editResource = editResource;
           vm.facets = {};
@@ -74,8 +73,10 @@ define([
           // modals
           vm.showMoveModal = showMoveModal;
           vm.showShareModal = showShareModal;
+          vm.showRenameModal = showRenameModal;
           vm.moveModalVisible = false;
           vm.shareModalVisible = false;
+          vm.renameModalVisible = false;
 
           vm.getFacets = getFacets;
           vm.getForms = getForms;
@@ -486,67 +487,6 @@ define([
             $timeout(function () {
               jQuery(id + ' input').focus();
             });
-          }
-
-          function renameResource() {
-            var resource = vm.getSelection();
-            if (resource != null) {
-              var postData = {};
-              var id = resource['@id'];
-              var nodeType = resource.nodeType;
-              var name = vm.selectedResource.name;
-
-              if (nodeType == 'instance') {
-                AuthorizedBackendService.doCall(
-                    TemplateInstanceService.updateTemplateInstance(id, {'_ui.title': name}),
-                    function (response) {
-                      UIMessageService.flashSuccess('SERVER.INSTANCE.update.success', null, 'GENERIC.Updated');
-                      init();
-                    },
-                    function (err) {
-                      UIMessageService.showBackendError('SERVER.INSTANCE.update.error', err);
-                    }
-                );
-              } else if (nodeType == 'element') {
-                AuthorizedBackendService.doCall(
-                    TemplateElementService.updateTemplateElement(id, {'_ui.title': name}),
-                    function (response) {
-                      UIMessageService.flashSuccess('SERVER.ELEMENT.update.success', {"title": response.data._ui.title},
-                          'GENERIC.Updated');
-                      init();
-                    },
-                    function (err) {
-                      UIMessageService.showBackendError('SERVER.ELEMENT.update.error', err);
-                    }
-                );
-              } else if (nodeType == 'template') {
-                AuthorizedBackendService.doCall(
-                    TemplateService.updateTemplate(id, {'_ui.title': name}),
-                    function (response) {
-                      //$scope.form = response.data;  // WTF?
-                      UIMessageService.flashSuccess('SERVER.TEMPLATE.update.success',
-                          {"title": response.data._ui.title}, 'GENERIC.Updated');
-                      init();
-                    },
-                    function (err) {
-                      UIMessageService.showBackendError('SERVER.TEMPLATE.update.error', err);
-                    }
-                );
-              } else if (nodeType == 'folder') {
-                resourceService.updateFolder(
-                    vm.selectedResource,
-                    function (response) {
-                      UIMessageService.flashSuccess('SERVER.FOLDER.update.success', {"title": vm.selectedResource.name},
-                          'GENERIC.Updated');
-                      init();
-                    },
-                    function (response) {
-                      UIMessageService.showBackendError('SERVER.FOLDER.update.error', response);
-                    }
-                );
-              }
-            }
-
           }
 
           function newFolder() {
@@ -1032,7 +972,18 @@ define([
             init();
           });
 
+          $scope.$on('refreshWorkspace', function () {
+            vm.params = $location.search();
+            init();
+          });
+
           $scope.$on('search', function (event, searchTerm) {
+            console.log('on search');
+            vm.params.search = searchTerm;
+            initSearch();
+          });
+
+          $scope.$on('refreshWorkspace', function (event, searchTerm) {
             vm.params.search = searchTerm;
             initSearch();
           });
@@ -1097,10 +1048,6 @@ define([
             return (vm.sortOptionField == 'lastUpdatedOnTS') ? "" : 'invisible';
           };
 
-          $scope.$on('$routeUpdate', function () {
-            vm.params = $location.search();
-            init();
-          });
 
 
           function updateFavorites(saveData) {
@@ -1134,6 +1081,12 @@ define([
           function showShareModal(resource) {
             vm.shareModalVisible = true;
             $scope.$broadcast('shareModalVisible', [vm.shareModalVisible, resource]);
+          }
+
+          // open the rename modal
+          function showRenameModal(resource) {
+            vm.renameModalVisible = true;
+            $scope.$broadcast('renameModalVisible', [vm.renameModalVisible, resource]);
           }
 
 

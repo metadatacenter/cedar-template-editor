@@ -1,0 +1,24 @@
+<div class="modal-dialog">
+  <div class="modal-content">
+    <div class="modal-header" id="renameModalHeader">
+      <button type="button" class="close" ng-click="dc.renameModalVisible=false" aria-label="Close"><span
+          aria-hidden="true">&times;</span></button>
+      <h4 class="modal-title" translate>DASHBOARD.rename.title</h4>
+    </div>
+    <div class="modal-body">
+      <h5 translate>DASHBOARD.rename.label</h5>
+
+      <form ng-submit="rename.updateResource();dc.renameModalVisible=false">
+        <p><input size="40" type="text" id="renameResourceName" ng-model="rename.renameResource.name"/></p>
+      </form>
+    </div>
+    <div class="modal-footer actions">
+      <div class="clear-save">
+        <button ng-click="rename.updateResource();dc.renameModalVisible=false" type="button"
+            class="btn btn-save confirm" translate>
+          GENERIC.Save
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -14380,7 +14380,7 @@ table.apiKey td {
 .scrollable-content::-webkit-scrollbar-thumb {
   background: #ccc;
 }
-#renameResourceModal .modal-content,
+#rename-modal .modal-content,
 #newFolderModal .modal-content,
 #move-modal .modal-content,
 #share-modal .modal-content {
@@ -14389,7 +14389,7 @@ table.apiKey td {
   max-width: 400px;
   margin: 0 auto;
 }
-#renameResourceModal .modal-content input,
+#rename-modal .modal-content input,
 #newFolderModal .modal-content input,
 #move-modal .modal-content input,
 #share-modal .modal-content input {
@@ -14397,32 +14397,32 @@ table.apiKey td {
   width: 100%;
   outline: none;
 }
-#renameResourceModal .modal-content .modal-body,
+#rename-modal .modal-content .modal-body,
 #newFolderModal .modal-content .modal-body,
 #move-modal .modal-content .modal-body,
 #share-modal .modal-content .modal-body {
   max-height: 300px;
   overflow-y: auto;
 }
-#renameResourceModal .modal-content .modal-body .box-row,
+#rename-modal .modal-content .modal-body .box-row,
 #newFolderModal .modal-content .modal-body .box-row,
 #move-modal .modal-content .modal-body .box-row,
 #share-modal .modal-content .modal-body .box-row {
   padding: 5px;
 }
-#renameResourceModal .modal-content .modal-body .box-row .disabled,
+#rename-modal .modal-content .modal-body .box-row .disabled,
 #newFolderModal .modal-content .modal-body .box-row .disabled,
 #move-modal .modal-content .modal-body .box-row .disabled,
 #share-modal .modal-content .modal-body .box-row .disabled {
   background: #9E9E9E;
 }
-#renameResourceModal .modal-content .modal-body .box-row.selected,
+#rename-modal .modal-content .modal-body .box-row.selected,
 #newFolderModal .modal-content .modal-body .box-row.selected,
 #move-modal .modal-content .modal-body .box-row.selected,
 #share-modal .modal-content .modal-body .box-row.selected {
   background: #5795ba;
 }
-#renameResourceModal .modal-content .actions .favorite,
+#rename-modal .modal-content .actions .favorite,
 #newFolderModal .modal-content .actions .favorite,
 #move-modal .modal-content .actions .favorite,
 #share-modal .modal-content .actions .favorite {
@@ -14430,14 +14430,14 @@ table.apiKey td {
   padding-top: 17px;
   cursor: pointer;
 }
-#renameResourceModal .modal-content .actions .favorite span,
+#rename-modal .modal-content .actions .favorite span,
 #newFolderModal .modal-content .actions .favorite span,
 #move-modal .modal-content .actions .favorite span,
 #share-modal .modal-content .actions .favorite span {
   text-transform: uppercase;
   vertical-align: middle;
 }
-#renameResourceModal .modal-content .actions .favorite i,
+#rename-modal .modal-content .actions .favorite i,
 #newFolderModal .modal-content .actions .favorite i,
 #move-modal .modal-content .actions .favorite i,
 #share-modal .modal-content .actions .favorite i {
@@ -14446,19 +14446,19 @@ table.apiKey td {
           transition: all 0.3s 0.1s;
   color: rgba(51, 51, 51, 0.43);
 }
-#renameResourceModal .modal-content .actions .favorite.true i,
+#rename-modal .modal-content .actions .favorite.true i,
 #newFolderModal .modal-content .actions .favorite.true i,
 #move-modal .modal-content .actions .favorite.true i,
 #share-modal .modal-content .actions .favorite.true i {
   color: #5795ba;
 }
-#renameResourceModal .modal-content .actions .clear-save,
+#rename-modal .modal-content .actions .clear-save,
 #newFolderModal .modal-content .actions .clear-save,
 #move-modal .modal-content .actions .clear-save,
 #share-modal .modal-content .actions .clear-save {
   float: right;
 }
-#renameResourceModal .modal-content .actions .clear-save .btn,
+#rename-modal .modal-content .actions .clear-save .btn,
 #newFolderModal .modal-content .actions .clear-save .btn,
 #move-modal .modal-content .actions .clear-save .btn,
 #share-modal .modal-content .actions .clear-save .btn {
@@ -14468,14 +14468,14 @@ table.apiKey td {
   -webkit-transition: all 0.3s 0.1s;
           transition: all 0.3s 0.1s;
 }
-#renameResourceModal .modal-content .actions .clear-save .btn:focus,
+#rename-modal .modal-content .actions .clear-save .btn:focus,
 #newFolderModal .modal-content .actions .clear-save .btn:focus,
 #move-modal .modal-content .actions .clear-save .btn:focus,
 #share-modal .modal-content .actions .clear-save .btn:focus {
   outline: none;
   box-shadow: none;
 }
-#renameResourceModal .modal-content .actions .clear-save .btn.btn-clear,
+#rename-modal .modal-content .actions .clear-save .btn.btn-clear,
 #newFolderModal .modal-content .actions .clear-save .btn.btn-clear,
 #move-modal .modal-content .actions .clear-save .btn.btn-clear,
 #share-modal .modal-content .actions .clear-save .btn.btn-clear {
@@ -14484,17 +14484,17 @@ table.apiKey td {
   font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
   font-weight: 700;
 }
-#renameResourceModal .modal-content .actions .clear-save .btn.btn-clear:hover,
+#rename-modal .modal-content .actions .clear-save .btn.btn-clear:hover,
 #newFolderModal .modal-content .actions .clear-save .btn.btn-clear:hover,
 #move-modal .modal-content .actions .clear-save .btn.btn-clear:hover,
 #share-modal .modal-content .actions .clear-save .btn.btn-clear:hover,
-#renameResourceModal .modal-content .actions .clear-save .btn.btn-clear:focus,
+#rename-modal .modal-content .actions .clear-save .btn.btn-clear:focus,
 #newFolderModal .modal-content .actions .clear-save .btn.btn-clear:focus,
 #move-modal .modal-content .actions .clear-save .btn.btn-clear:focus,
 #share-modal .modal-content .actions .clear-save .btn.btn-clear:focus {
   color: #2f7dab;
 }
-#renameResourceModal .modal-content .actions .clear-save .btn.btn-save,
+#rename-modal .modal-content .actions .clear-save .btn.btn-save,
 #newFolderModal .modal-content .actions .clear-save .btn.btn-save,
 #move-modal .modal-content .actions .clear-save .btn.btn-save,
 #share-modal .modal-content .actions .clear-save .btn.btn-save {
@@ -14502,11 +14502,11 @@ table.apiKey td {
   background-color: #5795ba;
   font-size: 16px;
 }
-#renameResourceModal .modal-content .actions .clear-save .btn.btn-save:hover,
+#rename-modal .modal-content .actions .clear-save .btn.btn-save:hover,
 #newFolderModal .modal-content .actions .clear-save .btn.btn-save:hover,
 #move-modal .modal-content .actions .clear-save .btn.btn-save:hover,
 #share-modal .modal-content .actions .clear-save .btn.btn-save:hover,
-#renameResourceModal .modal-content .actions .clear-save .btn.btn-save:focus,
+#rename-modal .modal-content .actions .clear-save .btn.btn-save:focus,
 #newFolderModal .modal-content .actions .clear-save .btn.btn-save:focus,
 #move-modal .modal-content .actions .clear-save .btn.btn-save:focus,
 #share-modal .modal-content .actions .clear-save .btn.btn-save:focus {

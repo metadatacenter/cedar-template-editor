@@ -9,6 +9,7 @@ define([
   'cedar/template-editor/search-browse/cedar-modal-show.directive',
   'cedar/template-editor/search-browse/cedar-share-modal.directive',
   'cedar/template-editor/search-browse/cedar-move-modal.directive',
+  'cedar/template-editor/search-browse/cedar-rename-modal.directive',
   'cedar/template-editor/search-browse/cedar-live-search.directive',
   'cedar/template-editor/form/auto-focus.directive',
 ], function(angular) {
@@ -20,6 +21,7 @@ define([
     'cedar.templateEditor.searchBrowse.cedarModalShowDirective',
     'cedar.templateEditor.searchBrowse.cedarShareModalDirective',
     'cedar.templateEditor.searchBrowse.cedarMoveModalDirective',
+    'cedar.templateEditor.searchBrowse.cedarRenameModalDirective',
     'cedar.templateEditor.searchBrowse.cedarLiveSearchDirective',
     'cedar.templateEditor.form.autoFocusDirective',
   ]);

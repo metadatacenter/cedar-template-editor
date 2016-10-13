@@ -237,7 +237,7 @@
     "back": "Your recent changes will be lost.",
     "rename": {
       "title": "Rename",
-      "label": "Please enter a new name for this resource:"
+      "label": "Enter a name"
     },
     "newFolder": {
       "title": "New folder"
