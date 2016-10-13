@@ -634,7 +634,7 @@
                 tooltip-placement="left"
                 data-toggle="tooltip"
                 class="btn btn-sm btn-info btn-circle folder"
-                ng-click="dc.showNewFolder('#newFolderModal')"><i
+                ng-click="dc.showNewFolderModal()"><i
                 class="fa fa-folder-o"></i></button>
           </li>
 
@@ -687,29 +687,10 @@
 
 <!-- add folder modal -->
 <section>
-  <div id="newFolderModal" class="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-              aria-hidden="true">&times;</span></button>
-          <h4 class="modal-title" translate>DASHBOARD.newFolder.title</h4>
-        </div>
-        <div class="modal-body">
-          <p><input size="40" type="text" id="folderName" ng-model="dc.folder.name"/></p>
-        </div>
-        <div class="modal-footer actions">
-          <div class="clear-save">
-            <button type="cancel" data-dismiss="modal" class="btn btn-clear">Cancel</button>
-            <button ng-click="dc.newFolder()" type="button" data-dismiss="modal" class="btn btn-save confirm"> Save
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+  <cedar-new-folder-modal cedar-modal-show  modal-visible="dc.newFolderModalVisible" class="modal fade" id="new-folder-modal"  tabindex="-1" role="dialog" aria-labelledby="newFolderModalHeader"
+      data-keyboard="true" data-backdrop="static"   >
+  </cedar-new-folder-modal>
 </section>
-<!-- end add / edit folder modal -->
 
 <!-- rename modal -->
 <section>

@@ -64,19 +64,17 @@ define([
           vm.facets = {};
           vm.forms = [];
 
-          vm.newFolder = newFolder;
-          vm.showNewFolder = showNewFolder;
-          vm.folder = {};
-          vm.folder.name = "";
-          vm.folder.description = "folder description";
+
 
           // modals
           vm.showMoveModal = showMoveModal;
           vm.showShareModal = showShareModal;
           vm.showRenameModal = showRenameModal;
+          vm.showNewFolderModal = showNewFolderModal;
           vm.moveModalVisible = false;
           vm.shareModalVisible = false;
           vm.renameModalVisible = false;
+          vm.newFolderModalVisible = false;
 
           vm.getFacets = getFacets;
           vm.getForms = getForms;
@@ -480,41 +478,8 @@ define([
           }
 
 
-          function showNewFolder(id) {
-            vm.showFloatingMenu = false;
-            vm.folder.name = '';
-            $(id).modal('show');
-            $timeout(function () {
-              jQuery(id + ' input').focus();
-            });
-          }
 
-          function newFolder() {
-            if (vm.folder.name) {
-              resourceService.createFolder(
-                  vm.params.folderId,
-                  vm.folder.name,
-                  'description',
-                  function (response) {
-                    init();
-                    UIMessageService.flashSuccess('SERVER.FOLDER.create.success', {"title": vm.folder.name},
-                        'GENERIC.Created');
-                  },
-                  function (response) {
-                    if (response.status == 400) {
-                      UIMessageService.showWarning(
-                          'GENERIC.Warning',
-                          'SERVER.FOLDER.create.' + response.data.errorSubType,
-                          'GENERIC.Ok',
-                          response.data.errorParams
-                      );
-                    } else {
-                      UIMessageService.showBackendError('SERVER.FOLDER.create.error', response);
-                    }
-                  }
-              );
-            }
-          }
+
 
 
           function doSearch(term) {
@@ -1088,6 +1053,21 @@ define([
             vm.renameModalVisible = true;
             $scope.$broadcast('renameModalVisible', [vm.renameModalVisible, resource]);
           }
+
+          // open the new folder modal
+          function showNewFolderModal() {
+            vm.newFolderModalVisible = true;
+            var params = $location.search();
+            var folderId;
+            if (params.folderId) {
+              folderId = params.folderId;
+            } else {
+              folderId = vm.currentFolderId
+            }
+            $scope.$broadcast('newFolderModalVisible', [vm.newFolderModalVisible, folderId]);
+          }
+
+
 
 
         }

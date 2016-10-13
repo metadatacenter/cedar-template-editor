@@ -1,0 +1,20 @@
+<div class="modal-dialog">
+  <div class="modal-content">
+    <div class="modal-header" id="newFolderModalHeader">
+      <button type="button" class="close"  ng-click="dc.newFolderModalVisible=false"  aria-label="Close"><span
+          aria-hidden="true">&times;</span></button>
+      <h4 class="modal-title" translate>DASHBOARD.newFolder.title</h4>
+    </div>
+    <div class="modal-body">
+      <form ng-submit="folder.newFolder();dc.newFolderModalVisible=false">
+      <p><input size="40" type="text"  ng-model="folder.folder.name"/></p>
+      </form>
+    </div>
+    <div class="modal-footer actions">
+      <div class="clear-save">
+        <button ng-click="folder.newFolder();dc.newFolderModalVisible=false" type="button"  class="btn btn-save confirm" translate>GENERIC.Save
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
