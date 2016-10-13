@@ -13,7 +13,6 @@ define([
   'cedar/template-editor/form/no-image.directive',
   'cedar/template-editor/form/right-click.directive',
   'cedar/template-editor/finder/cedar-finder.directive',
-  'cedar/template-editor/search-browse/cedar-share.directive',
   'cedar/template-editor/form/auto-focus.directive',
   'cedar/template-editor/search-browse/cedar-infinite-scroll.directive'
 ], function(angular) {
@@ -29,7 +28,6 @@ define([
     'cedar.templateEditor.form.noImageDirective',
     'cedar.templateEditor.form.rightClickDirective',
     'cedar.templateEditor.finder.cedarFinderDirective',
-    'cedar.templateEditor.searchBrowse.cedarShareDirective',
     'cedar.templateEditor.form.autoFocusDirective',
     'cedar.templateEditor.searchBrowse.cedarInfiniteScrollDirective'
   ]);

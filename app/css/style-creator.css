@@ -14649,9 +14649,20 @@ table.apiKey td {
   margin: 6px 25px;
   outline: none;
 }
+@media (max-width: 768px) {
+  #share-modal .modal-content {
+    width: calc(100% - 10px);
+    max-width: calc(100% - 10px);
+  }
+}
+#share-modal .modal-dialog {
+  max-width: 800px;
+  width: 800px;
+}
 #share-modal .modal-dialog .modal-content {
   max-width: 800px;
   width: 800px;
+  margin: 0 auto;
 }
 #share-modal .modal-dialog .modal-content.cannotWrite {
   width: 600px;
@@ -14659,16 +14670,10 @@ table.apiKey td {
 #share-modal .modal-dialog .modal-content.cannotWrite .bootstrap-select button {
   padding-left: 40px;
 }
-@media (max-width: 768px) {
-  #share-modal .modal-content {
-    width: calc(100% - 10px);
-    max-width: calc(100% - 10px);
-  }
-}
-#share-modal .modal-content .modal-body {
+#share-modal .modal-dialog .modal-content .modal-body {
   max-height: 500px;
 }
-#share-modal .modal-content .modal-body input {
+#share-modal .modal-dialog .modal-content .modal-body input {
   color: #000;
   outline: none;
   border-radius: 0px;
@@ -14676,114 +14681,114 @@ table.apiKey td {
   border: 1px solid #ddd;
   height: 40px;
 }
-#share-modal .modal-content .modal-body .checkbox {
+#share-modal .modal-dialog .modal-content .modal-body .checkbox {
   margin-top: 8px;
   margin-bottom: 0;
 }
-#share-modal .modal-content .modal-body select {
+#share-modal .modal-dialog .modal-content .modal-body select {
   outline: none;
   height: 40px;
 }
-#share-modal .modal-content .modal-body .bootstrap-select {
+#share-modal .modal-dialog .modal-content .modal-body .bootstrap-select {
   outline: none;
 }
-#share-modal .modal-content .modal-body .bootstrap-select button {
+#share-modal .modal-dialog .modal-content .modal-body .bootstrap-select button {
   padding-left: 5px;
   outline: none;
   height: 40px;
 }
-#share-modal .modal-content .modal-body .row {
+#share-modal .modal-dialog .modal-content .modal-body .row {
   padding: 5px 0;
 }
-#share-modal .modal-content .modal-body .row .name {
+#share-modal .modal-dialog .modal-content .modal-body .row .name {
   padding: 8px 0 0 20px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
-#share-modal .modal-content .modal-body .row .btn-plus {
+#share-modal .modal-dialog .modal-content .modal-body .row .btn-plus {
   width: 25px;
   height: 25px;
   float: right;
   outline: none;
   background: #5097A5;
 }
-#share-modal .modal-content .modal-body .row .btn-delete {
+#share-modal .modal-dialog .modal-content .modal-body .row .btn-delete {
   width: 25px;
   height: 25px;
   float: right;
   outline: none;
   background: #999 !important;
 }
-#share-modal .modal-content .modal-body .hidden-container {
+#share-modal .modal-dialog .modal-content .modal-body .hidden-container {
   border: 0px solid #ccc;
   padding-right: 24px;
   margin-right: 12px;
 }
-#share-modal .modal-content .modal-body .scroll-container {
+#share-modal .modal-dialog .modal-content .modal-body .scroll-container {
   height: 250px;
   overflow-y: scroll;
   overflow-x: hidden;
   border: 1px solid #ccc;
   padding-right: 24px;
 }
-#share-modal .modal-content .modal-body .bootstrap-select button.disabled {
+#share-modal .modal-dialog .modal-content .modal-body .bootstrap-select button.disabled {
   background: #ffffff;
   border: 1px solid #ccc;
   color: #333;
   opacity: 1;
 }
-#share-modal .modal-content .modal-body .bootstrap-select button.disabled .glyphicon {
+#share-modal .modal-dialog .modal-content .modal-body .bootstrap-select button.disabled .glyphicon {
   display: none;
 }
-#share-modal .modal-content .modal-body .bootstrap-select.small {
+#share-modal .modal-dialog .modal-content .modal-body .bootstrap-select.small {
   width: 80px;
 }
-#share-modal .modal-content .modal-body .bootstrap-select.open .dropdown-menu {
+#share-modal .modal-dialog .modal-content .modal-body .bootstrap-select.open .dropdown-menu {
   padding: 0 !important;
   border-radius: 0px !important;
 }
-#share-modal .modal-content .modal-body .btn-info {
+#share-modal .modal-dialog .modal-content .modal-body .btn-info {
   border-radius: 50%;
   width: 40px;
   height: 40px;
   font-size: 18px;
   margin: 5px 0;
 }
-#share-modal .modal-content .modal-body .btn-info.btn-circle {
+#share-modal .modal-dialog .modal-content .modal-body .btn-info.btn-circle {
   background: #5795ba;
   color: #ffffff;
   border: none;
 }
-#share-modal .modal-content .modal-body .btn-info.btn-circle.compose {
+#share-modal .modal-dialog .modal-content .modal-body .btn-info.btn-circle.compose {
   background: #FF5722;
 }
-#share-modal .modal-content .modal-body .btn-info.btn-circle.template {
+#share-modal .modal-dialog .modal-content .modal-body .btn-info.btn-circle.template {
   background: #5097A5;
 }
-#share-modal .modal-content .modal-body .btn-info.btn-circle.element {
+#share-modal .modal-dialog .modal-content .modal-body .btn-info.btn-circle.element {
   background: #71977F;
 }
-#share-modal .modal-content .modal-body .btn-info.btn-circle.metadata,
-#share-modal .modal-content .modal-body .btn-info.btn-circle.instance {
+#share-modal .modal-dialog .modal-content .modal-body .btn-info.btn-circle.metadata,
+#share-modal .modal-dialog .modal-content .modal-body .btn-info.btn-circle.instance {
   background: #6A8B92;
 }
-#share-modal .modal-content .modal-body .btn-info.btn-circle.folder {
+#share-modal .modal-dialog .modal-content .modal-body .btn-info.btn-circle.folder {
   background: #9E9E9E;
 }
-#share-modal .modal-content .modal-body .btn-info.btn-circle-outline {
+#share-modal .modal-dialog .modal-content .modal-body .btn-info.btn-circle-outline {
   box-shadow: none;
   background: #ffffff;
   color: #5795ba;
   border: 1px solid #5795ba;
 }
-#share-modal .modal-content .modal-body .btn-info.btn-close {
+#share-modal .modal-dialog .modal-content .modal-body .btn-info.btn-close {
   box-shadow: none;
   background: #666666;
   color: #ffffff;
   border: none;
 }
-#share-modal .modal-content .modal-body .btn-info.btn-add {
+#share-modal .modal-dialog .modal-content .modal-body .btn-info.btn-add {
   height: 25px;
   width: 25px;
   border-radius: 50%;

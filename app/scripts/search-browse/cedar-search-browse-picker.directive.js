@@ -84,7 +84,8 @@ define([
           vm.moveDisabled = moveDisabled;
           vm.moveResource = moveResource;
           vm.openDestination = openDestination;
-          vm.showMoveResourceModal = showMoveResourceModal;
+          vm.showMoveModal = showMoveModal;
+          vm.showShareModal = showShareModal;
           vm.selectedDestination = null;
           vm.currentDestination = null;
           vm.destinationResources = [];
@@ -120,7 +121,7 @@ define([
           vm.resourcePermissions = null;
           vm.resourceNodes = null;
           vm.showGroups = false;
-          vm.openShareModal = openShareModal;
+
 
 
           vm.getFacets = getFacets;
@@ -180,6 +181,14 @@ define([
           vm.editingDescription = false;
 
           vm.canAccessParentFunction = canAccessParentFunction;
+
+          vm.moveModalVisible = false;
+          vm.shareModalVisible = false;
+
+          vm.hideModal = function(visible) {
+            console.log('hideModal');
+            visible = false;
+          };
 
 
           vm.startDescriptionEditing = function () {
@@ -1323,14 +1332,21 @@ define([
             }
           }
 
-          function showMoveResourceModal(id) {
+          // open the move modal
+          function showMoveModal() {
             vm.showFloatingMenu = false;
             vm.currentDestination = vm.currentPath;
             vm.selectedDestination = null;
             getDestinationById(vm.currentFolderId);
-            $(id).modal('show');
-
+            vm.moveModalVisible = true;
           }
+
+          // open the share modal
+          function showShareModal(resource) {
+            vm.shareModalVisible = true;
+            $scope.$broadcast('shareModalVisible', [vm.shareModalVisible, resource]);
+          }
+
 
           function getDestinationById(folderId) {
             var resourceTypes = activeResourceTypes();
@@ -1466,12 +1482,6 @@ define([
             return node && (!node.hasOwnProperty('nodeType') || node.nodeType === 'user');
           }
 
-
-
-          // initialize the modal share dialog
-          function openShareModal(resource) {
-            $rootScope.$broadcast('share-modal', resource);
-          };
 
 
           // initialize the share dialog

@@ -1,5 +1,5 @@
 <div class="modal-dialog">
-  <div class="modal-content" ng-class="share.canWrite() ? 'canWrite' : 'cannotWrite'">
+  <div class="modal-content" ng-class="share.canWrite() ? '' : 'cannotWrite'">
     <div class="modal-header" id="shareModalHeader">
       <h4 translate>DASHBOARD.share.title</h4>
     </div>
@@ -213,7 +213,7 @@
             <!-- add users to group -->
             <div class="row">
               <div class="col-sm-12">
-                <h5 translate>DASHBOARD.share.withUsers</h5></div>
+                <h5 translate>DASHBOARD.share.addPeople</h5></div>
             </div>
             <div class="row">
 
@@ -258,7 +258,7 @@
                 <button
                     class="btn btn-sm btn-info btn-circle btn-plus"
                     type="button"
-                    tooltip='add new group'
+                    tooltip='create new group'
                     tooltip-trigger
                     tooltip-animation="false"
                     tooltip-placement="top"
@@ -324,11 +324,11 @@
               </div>
             </div>
             <!-- details -->
-            <div ng-if="!share.showGroupMembers" class=hidden-container">
+            <div ng-if="!share.showGroupMembers" class="hidden-container" >
               <div ng-if="share.hasSelectedGroup()">
 
                 <div class="title">
-                  <input type="text" value="name"/>
+                  <input type="text" ng-model="share.typeaheadGroup.name"  />
                 </div>
 
                 <table class="table"
@@ -352,32 +352,13 @@
                       <span class="no-wrap">{{ share.getSelectedGroup().lastUpdatedByUserName }}</span>
                     </td>
                   </tr>
-                  <tr>
-                    <td class="left">Admin</td>
-                    <td>
-                      <div class="scroll-container" style="max-height:100px;">
-                        <div class="row">
-                          <div class="col-sm-12">First Last (name@stanford.edu)</div>
-                          <div class="col-sm-12">First Last (name@stanford.edu)</div>
-                          <div class="col-sm-12">First Last (name@stanford.edu)</div>
-                          <div class="col-sm-12">First Last (name@stanford.edu)</div>
-                          <div class="col-sm-12">First Last (name@stanford.edu)</div>
-                          <div class="col-sm-12">First Last (name@stanford.edu)</div>
-                          <div class="col-sm-12">First Last (name@stanford.edu)</div>
-                          <div class="col-sm-12">First Last (name@stanford.edu)</div>
-                          <div class="col-sm-12">First Last (name@stanford.edu)</div>
-                        </div>
-                      </div>
-
-                    </td>
-                  </tr>
 
                   </tbody>
                 </table>
 
 
                 <div class="description">
-                  <input type="text" value="description"/>
+                  <input type="text" ng-model="share.typeaheadGroup.description" />
                 </div>
               </div>
             </div>
@@ -389,7 +370,7 @@
     <!-- footer just closes the dialog -->
     <div class="modal-footer actions">
       <div class="clear-save">
-        <button type="button" ng-click="toggleModal()"
+        <button type="button" ng-click="dc.shareModalVisible=false"
             data-dismiss="modal" aria-label="Done"
             class="btn btn-save confirm"> Done
         </button>

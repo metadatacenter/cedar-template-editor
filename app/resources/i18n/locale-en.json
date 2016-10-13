@@ -261,7 +261,8 @@
       "selectGroup": "Select group",
       "newGroup": "New group",
       "people": "People",
-      "admin": "admin"
+      "admin": "admin",
+      "addPeople": "Add people"
     },
     "filter": {
       "filterBy": "Filter",
