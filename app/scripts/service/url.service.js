@@ -16,7 +16,7 @@ define([
     var resourceService = null;
     var valueRecommenderService = null;
     var schemaService = null;
-    var permissionService = null;
+    var groupService = null;
 
     var service = {
       serviceId: "UrlService"
@@ -28,7 +28,7 @@ define([
       resourceService = config.resourceRestAPI;
       valueRecommenderService = config.valueRecommenderRestAPI;
       schemaService = config.schemaRestAPI;
-      permissionService = config.permissionRestAPI;
+      groupService = config.groupRestAPI;
     };
 
     service.getRoleSelector = function () {
@@ -107,8 +107,8 @@ define([
       return valueRecommenderService;
     };
 
-    service.permission = function () {
-      return permissionService;
+    service.groupBase = function () {
+      return groupService;
     };
 
     service.getValueRecommendation = function () {
@@ -176,23 +176,23 @@ define([
     };
 
     service.getGroups = function () {
-      return this.permission() + "/groups";
+      return this.groupBase() + "/groups";
     };
 
     service.templateElementPermission = function (id) {
-      return this.permission() + '/template-elements/' + encodeURIComponent(id) + "/permissions";
+      return this.resourceBase() + '/template-elements/' + encodeURIComponent(id) + "/permissions";
     };
 
     service.templatePermission = function (id) {
-      return this.permission() + '/templates/' + encodeURIComponent(id) + "/permissions";
+      return this.resourceBase() + '/templates/' + encodeURIComponent(id) + "/permissions";
     };
 
     service.templateInstancePermission = function (id) {
-      return this.permission() + '/template-instances/' + encodeURIComponent(id) + "/permissions";
+      return this.resourceBase() + '/template-instances/' + encodeURIComponent(id) + "/permissions";
     };
 
     service.folderPermission = function (id) {
-      return this.permission() + '/folders/' + encodeURIComponent(id) + "/permissions";
+      return this.resourceBase() + '/folders/' + encodeURIComponent(id) + "/permissions";
     };
 
     return service;

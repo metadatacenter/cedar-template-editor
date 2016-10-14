@@ -5,6 +5,6 @@
   "resourceRestAPI": "resourceServerUrl",
   "valueRecommenderRestAPI": "valueRecommenderServerUrl",
   "schemaRestAPI": "schemaServerUrl",
-  "permissionRestAPI": "permissionServerUrl",
+  "groupRestAPI": "groupServerUrl",
   "bioontologyRestAPI": "https://data.bioontology.org/"
 }
