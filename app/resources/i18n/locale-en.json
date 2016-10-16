@@ -65,6 +65,7 @@
     "AddElement": "Add Element",
     "AddField": "Add Field",
     "Clear": "Clear",
+    "Done": "Done",
     "SaveTemplate": "Save Template",
     "FillOutATemplate": "Fill Out a Template",
     "Templates": "Templates",
@@ -98,7 +99,10 @@
     "FilterBy": "Filter by",
     "Untitled": "Untitled",
     "Description": "Description",
-    "SelectToViewDetails": "Select a folder or resource to view its details."
+    "SelectToViewDetails": "Select a folder or resource to view its details.",
+    "canRead": "can read",
+    "canWrite": "can write",
+    "isOwner": "isOwner"
   },
   "SERVER": {
     "FOLDER": {
@@ -243,13 +247,11 @@
       "title": "New folder"
     },
     "share": {
-      "title": "Share",
-      "titleGroups": "Groups",
-      "manage": "",
+      "share": "Share",
+      "groups": "Groups",
       "add": "With users",
       "addHint": "Share with user",
       "public": "With groups",
-      "usersAndGroups": "With users and groups",
       "withUsers": "With people",
       "withGroups": "With groups",
       "manageGroups": "Manage groups",

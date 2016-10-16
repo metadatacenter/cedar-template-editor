@@ -10,12 +10,17 @@ define([
 
       cedarShareModalDirective.$inject = ['CedarUser'];
 
+      /**
+       *
+       * share and group modal
+       *
+       */
       function cedarShareModalDirective(CedarUser) {
 
         var directive = {
           bindToController: {
             shareResource: '=',
-            modalVisible: '='
+            modalVisible : '='
           },
           controller      : cedarShareModalController,
           controllerAs    : 'share',
@@ -40,10 +45,104 @@ define([
           'CONST'
         ];
 
-        function cedarShareModalController($location, $timeout, $scope, $rootScope, $translate, $modal,  CedarUser,
-                                      resourceService,
-                                      UIMessageService, UISettingsService,
-                                      AuthorizedBackendService, CONST) {
+        function cedarShareModalController($location, $timeout, $scope, $rootScope, $translate, $modal, CedarUser,
+                                           resourceService,
+                                           UIMessageService, UISettingsService,
+                                           AuthorizedBackendService, CONST) {
+
+
+          //POST           /groups                                    controllers.GroupController.createGroup()
+          //{
+          //    "name": "Group name",
+          //    "description": "Group description"
+          //}
+          //GET            /groups                                    controllers.GroupController.findGroups()
+          //{
+          //  "groups": [
+          //  {
+          //    "id": "https://repo.metadatacenter.orgx/groups/a3447634-39f7-4909-a845-7a2b6f318d46",
+          //    "name": "Everybody",
+          //    "displayName": "Everybody",
+          //  }
+          //]
+          //}
+          //GET            /groups/:id                                controllers.GroupController.findGroup(id: String)
+          //PATCH          /groups/:id                                controllers.GroupController.patchGroup(id: String)
+          //PUT            /groups/:id                                controllers.GroupController.updateGroup(id: String)
+          //{
+          //    "name": "Group name",
+          //    "description": "Group description"
+          //}
+          //DELETE         /groups/:id                                controllers.GroupController.deleteGroup(id: String)
+          //GET            /groups/:id/members                        controllers.GroupController.getGroupMembers(id: String)
+          //{
+          //  "users": [
+          //  {
+          //    "id": "https://metadatacenter.org/users/095fc857-0012-4bcc-92f6-0502b31148f6",
+          //    "createdOn": "2016-09-13T15 :16:58-0700",
+          //    "createdOnTS": 1473805018,
+          //    "lastUpdatedOn": "2016-09-13T15:16:58-0700",
+          //    "lastUpdatedOnTS": 1473805018,
+          //    "firstName": "Aaron",
+          //    "lastName": "Browne",
+          //    "email": "brownea@email.chop.edu",
+          //    "displayName": "Aaron Browne",
+          //    "nodeType": "user",
+          //    "isAdministrator" : true,
+          //    "isMember" : true
+          //  },
+          //  {
+          //    "id": "https://metadatacenter.org/users/f1605349-743c-4acc-be4b-ace07554f6d9",
+          //    "createdOn": "2016-09-09T16:40:03-0700",
+          //    "createdOnTS": 1473464403,
+          //    "lastUpdatedOn": "2016-09-09T16:40:03-0700",
+          //    "lastUpdatedOnTS": 1473464403,
+          //    "firstName": "Aaron",
+          //    "lastName": "Carlton",
+          //    "email": "aaron@ordinaryexperts.com",
+          //    "displayName": "Aaron Carlton",
+          //    "nodeType": "user"
+          //    "isAdministrator" : false,
+          //    "isMember" : true
+          //  },
+          //  {
+          //    "id": "https://metadatacenter.org/users/ae6bc5e2-8afd-4558-a9ae-ea694c3e4bea",
+          //    "createdOn": "2016-09-09T16:40:04-0700",
+          //    "createdOnTS": 1473464404,
+          //    "lastUpdatedOn": "2016-09-09T16:40:04-0700",
+          //    "lastUpdatedOnTS": 1473464404,
+          //    "firstName": "Alejandra",
+          //    "lastName": "Gonzalez-Beltran",
+          //    "email": "alejandra .gonzalez.beltran@gmail.com",
+          //    "displayName": "Alejandra Gonzalez-Beltran",
+          //    "nodeType": "user"
+          //    "isAdministrator" : true,
+          //    "isMember" : false
+          //  }
+          //]
+          //}
+          //PUT            /groups/:id/members                        controllers.GroupController.updateGroupMembers(id: String)
+          //{
+          //  "users": [
+          //  {
+          //    "id": "https://metadatacenter.org/users/095fc857-0012-4bcc-92f6-0502b31148f6",
+          //    "isAdministrator" : true,
+          //    "isMember" : true
+          //  },
+          //  {
+          //    "id": "https://metadatacenter.org/users/f1605349-743c-4acc-be4b-ace07554f6d9",
+          //    "isAdministrator" : false,
+          //    "isMember" : true
+          //  },
+          //  {
+          //    "id": "https://metadatacenter.org/users/ae6bc5e2-8afd-4558-a9ae-ea694c3e4bea",
+          //    "isAdministrator" : true,
+          //    "isMember" : false
+          //  }
+          //]
+          //}
+
+
           var vm = this;
 
           // share
@@ -57,32 +156,51 @@ define([
           vm.addShare = addShare;
           vm.removeShare = removeShare;
           vm.updateUserPermission = updateUserPermission;
-          vm.updateGroupPermission = updateGroupPermission;
-          vm.groupTypeaheadOnSelect = groupTypeaheadOnSelect;
-          vm.addUserToGroup = addUserToGroup;
-          vm.removePersonFromGroup = removePersonFromGroup;
-          vm.canWriteGroup = canWriteGroup;
-          vm.addGroup = addGroup;
-          vm.getName = getName;
-          vm.getSelectedGroup = getSelectedGroup;
-          vm.hasSelectedGroup = hasSelectedGroup;
           vm.selectedUserId = null;
           vm.giveUserPermission = 'read';
           vm.selectedGroupId = null;
-          vm.giveGroupPermission = 'read';
           vm.selectedNodeId = null;
           vm.giveNodePermission = 'read';
           vm.resourceUsers = null;
-          vm.resourceGroups = null;
           vm.resourcePermissions = null;
           vm.resourceNodes = null;
+          vm.selectedResource = null;
+          vm.typeaheadUser = null;
+          vm.autoCompleteUserId = null;
+          vm.getName = getName;
+
+          // groups
+          vm.addGroup = addGroup;
+          vm.createGroup = createGroup;
+          vm.updateGroup = updateGroup;
+          vm.deleteGroup = deleteGroup;
+          vm.getGroupMembers = getGroupMembers;
+          vm.updateGroupMembers = updateGroupMembers;
+          vm.updateGroupAdmin = updateGroupAdmin;
+          vm.updateGroupPermission = updateGroupPermission;
+          vm.groupTypeaheadOnSelect = groupTypeaheadOnSelect;
+          vm.addUserToGroup = addUserToGroup;
+          vm.removeFromGroup = removeFromGroup;
+          vm.canWriteGroup = canWriteGroup;
+          vm.getSelectedGroup = getSelectedGroup;
+          vm.hasSelectedGroup = hasSelectedGroup;
+          vm.updateGroupName = updateGroupName;
+          vm.updateGroupDescription = updateGroupDescription;
+          vm.showRemoveGroupConfirm = false;
+
+
+          vm.groupAdmins = [];
           vm.showGroups = false;
           vm.showGroupMembers = true;
-          vm.selectedResource = null;
+          vm.resourceGroups = null;
+          vm.giveGroupPermission = 'read';
           vm.typeaheadGroup = null;
-          vm.typeaheadUser = null;
           vm.newGroupName = null;
-          vm.autoCompleteUserId = null;
+          vm.getId = getId;
+
+
+
+          // user permisssions
 
           function canRead() {
             return hasPermission('read');
@@ -94,6 +212,17 @@ define([
 
           function canChangeOwner() {
             return hasPermission('changeowner');
+          };
+
+          function hasPermission(permission) {
+            var node = getSelectedNode();
+            if (node != null) {
+              var perms = node.currentUserPermissions;
+              if (perms != null) {
+                return perms.indexOf(permission) != -1;
+              }
+            }
+            return false;
           };
 
           function isOwner(node) {
@@ -108,123 +237,18 @@ define([
             return id && node && node.nodeType === 'user' && vm.canChangeOwner();
           }
 
-          //TODO remove when we have real data
-          function fillDummyGroups(response) {
-            var group = response[0];
-            var dummyGroups = response;
-            for (var i = 0; i < 10; i++) {
-              var newGroup = jQuery.extend(true, {}, group);
-              newGroup.id = newGroup.id + i;
-              newGroup.displayName = newGroup.displayName + i;
-              dummyGroups.push(newGroup);
-            }
-          };
 
-          function getResourceDetails(resource) {
-            if (!resource && vm.hasSelection()) {
-              resource = vm.getSelection();
-            }
-            var id = resource['@id'];
-            resourceService.getResourceDetail(
-                resource,
-                function (response) {
-                  vm.selectedResource = response;
-                },
-                function (error) {
-                  UIMessageService.showBackendError('SERVER.' + resource.nodeType.toUpperCase() + '.load.error', error);
-                }
-            );
-          };
-
-          function hasPermission(permission) {
-            var node = getSelectedNode();
-            if (node != null) {
-              var perms = node.currentUserPermissions;
-              if (perms != null) {
-                return perms.indexOf(permission) != -1;
-              }
-            }
-            return false;
-          };
 
           function getSelectedNode() {
             return vm.selectedResource;
           }
 
-          function updateDescription() {
-            vm.editingDescription = false;
-            var resource = vm.getSelection();
-            if (resource != null) {
-              var postData = {};
-              var id = resource['@id'];
-              var nodeType = resource.nodeType;
-              var description = resource.description;
-
-              if (nodeType == 'instance') {
-                AuthorizedBackendService.doCall(
-                    TemplateInstanceService.updateTemplateInstance(id, {'_ui.description': description}),
-                    function (response) {
-                      UIMessageService.flashSuccess('SERVER.INSTANCE.update.success', null, 'GENERIC.Updated');
-                    },
-                    function (err) {
-                      UIMessageService.showBackendError('SERVER.INSTANCE.update.error', err);
-                    }
-                );
-              } else if (nodeType == 'element') {
-                AuthorizedBackendService.doCall(
-                    TemplateElementService.updateTemplateElement(id, {'_ui.description': description}),
-                    function (response) {
-                      UIMessageService.flashSuccess('SERVER.ELEMENT.update.success', {"title": response.data._ui.title},
-                          'GENERIC.Updated');
-                    },
-                    function (err) {
-                      UIMessageService.showBackendError('SERVER.ELEMENT.update.error', err);
-                    }
-                );
-              } else if (nodeType == 'template') {
-                AuthorizedBackendService.doCall(
-                    TemplateService.updateTemplate(id, {'_ui.description': description}),
-                    function (response) {
-                      $scope.form = response.data;
-                      UIMessageService.flashSuccess('SERVER.TEMPLATE.update.success',
-                          {"title": response.data._ui.title}, 'GENERIC.Updated');
-                    },
-                    function (err) {
-                      UIMessageService.showBackendError('SERVER.TEMPLATE.update.error', err);
-                    }
-                );
-              } else if (nodeType == 'folder') {
-                vm.selectedResource.description = description;
-                resourceService.updateFolder(
-                    vm.selectedResource,
-                    function (response) {
-                      UIMessageService.flashSuccess('SERVER.FOLDER.update.success', {"title": vm.selectedResource.name},
-                          'GENERIC.Updated');
-                      init();
-                    },
-                    function (response) {
-                      UIMessageService.showBackendError('SERVER.FOLDER.update.error', response);
-                    }
-                );
-              }
-            }
-          };
 
 
-          $scope.hideModal = function (id) {
-            jQuery('#' + id).modal('hide');
-            console.log('hidemodal');
-          };
-
-          $scope.openModal = function (id) {
-            jQuery('#' + id).modal('open');
-            console.log('openModal');
-          };
 
           function getSelection() {
             return vm.shareResource;
           }
-
 
           // get the node for this id
           function getNode(id) {
@@ -394,7 +418,7 @@ define([
                   resourceService.getGroups(
                       function (response) {
                         vm.resourceGroups = response.groups;
-                        fillDummyGroups(vm.resourceGroups);
+                        fillDummyGroups(vm.resourceGroups, vm.resourceUsers);
                         vm.selectedGroupId = initNodes(vm.resourceGroups);
 
                         // resource nodes is the users and groups combined
@@ -464,11 +488,13 @@ define([
           }
 
           // when selected user changes, reset selected permisison
-          function addUserToGroup() {
-            console.log('addUserToGroup ');
-            console.log(vm.typeaheadUser);
-            console.log(vm.typeaheadGroup);
+          function addUserToGroup(person, group) {
+            var index = group.people.indexOf(person);
+            if (index <= -1) {
+              group.people.push(person);
+            }
           }
+
 
           // when selected user changes, reset selected permisison
           function updateGroupPermission(id) {
@@ -494,7 +520,6 @@ define([
           }
 
           function addShare(id, permission, domId, resource) {
-            console.log('addShare ' + id);
 
             var node = getNode(id);
             var share = {};
@@ -541,15 +566,21 @@ define([
           }
 
           function groupTypeaheadOnSelect(item, model, label) {
-            console.log('groupTypeaheadOnSelect ');
             console.log(item);
             console.log(model);
             console.log(label);
-
           }
 
-          function removePersonFromGroup() {
-            console.log('removePersonFromGroup');
+          function isAdmin(id) {
+            var index = vm.groupAdmins.indexOf(id);
+            return (index > -1);
+          }
+
+          function removeFromGroup(group, person) {
+            var index = group.people.indexOf(person);
+            group.people.splice(index, 1);
+
+            updateGroupMembers(group)
           }
 
           function canWriteGroup() {
@@ -584,6 +615,109 @@ define([
             });
           }
 
+          function createGroup(name) {
+            resourceService.createGroup(name, '',
+                function (response) {
+
+                  console.log(response);
+                  // update display
+
+                },
+                function (error) {
+                  UIMessageService.showBackendError('SERVER.' + 'group' + '.load.error',
+                      error);
+                }
+            );
+          }
+
+          function updateGroupDescription(group) {
+            vm.editingDescription = false;
+              updateGroup(group);
+          };
+
+          function updateGroupName(group) {
+            vm.editingName = false;
+            if (group.name.length > 0) {
+              updateGroup(group);
+            }
+          };
+
+          function updateGroup(group) {
+            resourceService.updateGroup(group,
+                function (response) {
+
+                  console.log(response);
+                  // update display
+
+                },
+                function (error) {
+                  UIMessageService.showBackendError('SERVER.' + group.nodeType.toUpperCase() + '.load.error',
+                      error);
+                }
+            );
+          };
+
+
+
+          function deleteGroup(group) {
+            resourceService.deleteGroup(group.id,
+                function (response) {
+
+                  console.log(response);
+                  vm.typeaheadGroup = null;
+
+                },
+                function (error) {
+                  UIMessageService.showBackendError('SERVER.' + group.nodeType.toUpperCase() + '.load.error',
+                      error);
+
+                  vm.typeaheadGroup = null;  // just for now
+                }
+            );
+          };
+
+          function getGroupMembers(group, successCallback, errorCallback) {
+            resourceService.getGroupMembers(group.id,
+                function (response) {
+
+                  console.log(response);
+                  // update display
+
+                },
+                function (error) {
+                  UIMessageService.showBackendError('SERVER.' + group.nodeType.toUpperCase() + '.load.error',
+                      error);
+                }
+            );
+          };
+
+          function updateGroupAdmin(group, person, value, successCallback, errorCallback) {
+
+            // find the person in this group and update the value
+            var users = group.users;
+            var index = group.people.indexOf(person);
+            if (index > -1) {
+              group.people[index].isAdmin = value;
+              updateGroupMembers(group);
+            }
+          };
+
+          function updateGroupMembers(group) {
+            resourceService.updateGroupMembers(group,
+                function (response) {
+
+                  console.log(response);
+                  // update display
+
+                },
+                function (error) {
+                  UIMessageService.showBackendError('SERVER.' + group.nodeType.toUpperCase() + '.load.error',
+                      error);
+                }
+            );
+          };
+
+
           function hasSelectedGroup() {
             return vm.typeaheadGroup != null;
           }
@@ -603,6 +737,65 @@ define([
               openShare(vm.shareResource);
             }
           });
+
+          //TODO remove when we have groups from server
+          function getId(group, person) {
+            return group.id + ',' + person.id;
+          }
+
+          //TODO remove when we have groups from server
+          function fillDummyGroups(groups, people) {
+            var group = groups[0];
+            vm.groupAdmins = [];
+
+
+            // give the group some people ids
+            group.people = [];
+            for (var j = 0; j < people.length; j++) {
+              var person = people[j];
+              group.people.push(person);
+              var obj = {};
+              obj.id = group.id + ',' + person.id;
+              obj.isAdmin = true;
+              vm.groupAdmins.push(obj);
+            }
+
+            var dummyGroups = groups;
+            for (var i = 0; i < 10; i++) {
+
+              var newGroup = jQuery.extend(true, {}, group);
+              newGroup.id = newGroup.id + i;
+              newGroup.displayName = newGroup.displayName + i;
+              dummyGroups.push(newGroup);
+
+              for (var j = 0; j < people.length; j++) {
+                var person = people[j];
+                var obj = {};
+                obj.id = newGroup.id + ',' + person.id;
+                obj.isAdmin = true;
+                vm.groupAdmins[obj.id] = obj;
+
+              }
+
+            }
+            console.log(vm.groupAdmins);
+          };
+
+          function getResourceDetails(resource) {
+            if (!resource && vm.hasSelection()) {
+              resource = vm.getSelection();
+            }
+            var id = resource['@id'];
+            resourceService.getResourceDetail(
+                resource,
+                function (response) {
+                  vm.selectedResource = response;
+                },
+                function (error) {
+                  UIMessageService.showBackendError('SERVER.' + resource.nodeType.toUpperCase() + '.load.error', error);
+                }
+            );
+          };
 
         }
       }

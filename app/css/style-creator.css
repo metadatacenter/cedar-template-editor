@@ -14542,13 +14542,14 @@ table.apiKey td {
 }
 #share-modal .modal-dialog .modal-content .modal-body {
   max-height: 500px;
+  overflow-y: scroll;
 }
 #share-modal .modal-dialog .modal-content .modal-body input {
   color: #000;
   outline: none;
   border-radius: 0px;
   box-shadow: none;
-  border: 1px solid #ddd;
+  border: 1px solid #ccc;
   height: 40px;
 }
 #share-modal .modal-dialog .modal-content .modal-body .checkbox {

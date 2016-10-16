@@ -134,13 +134,12 @@ define([
               vm.renameResource = resource;
 
               $timeout(function () {
-                jQuery("#rename-modal" + ' input').focus().select();
+                jQuery('#rename-modal input').focus().select();
               },500);
             }
           });
 
         }
       }
-
     }
 );
