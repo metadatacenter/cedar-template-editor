@@ -330,7 +330,7 @@
               <div ng-model="share.resourcePermissions" id="group-members" class="scroll-container">
 
                 <div ng-if="!share.typeaheadGroup" class="row" >
-                  <div class="center" style="margin-top:100px;">Select a group name to display</div>
+                  <div class="center" style="margin-top:100px;">Select a group to display</div>
                 </div>
 
                 <div ng-if="share.typeaheadGroup" class="row" ng-repeat="person in share.typeaheadGroup.people">
@@ -338,15 +338,12 @@
                   <div class="col-sm-8 name">{{person.name}}</div>
 
                   <div class="col-sm-3">
-
-
                     <div class="checkbox checkbox-primary">
                       <input type="checkbox"  ng-change="share.updateGroupAdmin(share.typeaheadGroup, person, share.groupAdmins[share.getId(share.typeaheadGroup, person)].isAdmin)"
                           id="{{share.getId(share.typeaheadGroup, person)}}"
                           ng-model='share.groupAdmins[share.getId(share.typeaheadGroup, person)].isAdmin'>
                       <label for="{{share.getId(share.typeaheadGroup, person)}}" translate>DASHBOARD.share.admin</label>
                     </div>
-
                   </div>
 
                   <button class=" col-sm-1  btn  btn-info btn-circle btn-sm btn-delete" ng-if="share.canWriteGroup()"
@@ -358,7 +355,6 @@
                       data-toggle="tooltip"
                       ng-click="share.removeFromGroup(share.typeaheadGroup, person)"><i class="fa fa-times"
                       style="margin: -1px -5px;vertical-align: top;"></i></button>
-
                 </div>
               </div>
             </div>
@@ -366,7 +362,7 @@
             <!-- group details -->
             <div ng-if="!share.showGroupMembers" class="hidden-container">
               <div ng-if="!share.typeaheadGroup" class="row" >
-                <div class="center" style="margin-top:100px;">Select a group name to display</div>
+                <div class="center" style="margin-top:100px;">Select a group to display</div>
               </div>
               <div ng-if="share.hasSelectedGroup()">
 
