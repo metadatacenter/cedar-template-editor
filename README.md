@@ -1,13 +1,20 @@
 # cedar-template-editor
 
+[![Build Status](https://travis-ci.org/metadatacenter/cedar-template-editor.svg?branch=master)](https://travis-ci.org/metadatacenter/cedar-template-editor)
+
 This is an AngularJS web application to create and fill in Metadata Templates. It is part of the CEDAR application.
 
 To access the documentation, [click here](https://github.com/metadatacenter/cedar-docs/wiki).
 
+
 #### Running the End-to-End Tests
 
-Instructions for running the end-to-end tests in this repo can be foound 
+Instructions for running the end-to-end tests in this repo can be found 
 [here](https://github.com/metadatacenter/cedar-conf/wiki/Running-CEDAR-End-to-End-Tests).
+
+The end-to-end tests are controlled by Protractor.
+
+Note that there are currently no unit tests in this project so the Karma configuration is not used.
 
 #### Travis
 

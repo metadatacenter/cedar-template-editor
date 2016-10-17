@@ -201,19 +201,19 @@ define([
             ]
           }
         }
-      }
+      };
       var response = {data: dummyData};
       successCallback(response.data);
       return;
 
-      var url = UrlService.facets();
-      authorizedBackendService.doCall(
-          httpBuilderService.get(url),
-          function (response) {
-            successCallback(response.data);
-          },
-          errorCallback
-      );
+      /*var url = UrlService.facets();
+       authorizedBackendService.doCall(
+       httpBuilderService.get(url),
+       function (response) {
+       successCallback(response.data);
+       },
+       errorCallback
+       );*/
     }
 
     function getResourceDetail(resource, successCallback, errorCallback) {
@@ -382,16 +382,16 @@ define([
       var id = resource['@id'];
       switch (resource.nodeType) {
         case CONST.resourceType.FOLDER:
-          url = urlService.folders() + '/' + encodeURIComponent(id) + '/permissions';
+          url = urlService.folderPermission(id);
           break;
         case CONST.resourceType.ELEMENT:
-          url = urlService.getTemplateElement(id) + '/permissions';
+          url = urlService.templateElementPermission(id);
           break;
         case CONST.resourceType.TEMPLATE:
-          url = urlService.getTemplate(id) + '/permissions';
+          url = urlService.templatePermission(id);
           break;
         case CONST.resourceType.INSTANCE:
-          url = urlService.getTemplateInstance(id) + '/permissions';
+          url = urlService.templateInstancePermission(id);
           break;
       }
       authorizedBackendService.doCall(
@@ -401,24 +401,25 @@ define([
           },
           errorCallback
       );
-    };
+    }
 
     function setResourceShare(resource, permissions, successCallback, errorCallback) {
-      console.log('setResourceShare');console.log(permissions)
-;      var url;
+      //console.log('setResourceShare');
+      //console.log(permissions);
+      var url;
       var id = resource['@id'];
       switch (resource.nodeType) {
         case CONST.resourceType.FOLDER:
-          url = urlService.folders() + '/' + encodeURIComponent(id) + '/permissions';
+          url = urlService.folderPermission(id);
           break;
         case CONST.resourceType.ELEMENT:
-          url = urlService.getTemplateElement(id) + '/permissions';
+          url = urlService.templateElementPermission(id);
           break;
         case CONST.resourceType.TEMPLATE:
-          url = urlService.getTemplate(id) + '/permissions';
+          url = urlService.templatePermission(id);
           break;
         case CONST.resourceType.INSTANCE:
-          url = urlService.getTemplateInstance(id) + '/permissions';
+          url = urlService.templateInstancePermission(id);
           break;
       }
       authorizedBackendService.doCall(
@@ -428,7 +429,7 @@ define([
           },
           errorCallback
       );
-    };
+    }
 
     function getUsers(successCallback, errorCallback) {
       var url = urlService.getUsers();
@@ -439,7 +440,7 @@ define([
           },
           errorCallback
       );
-    };
+    }
 
     function getGroups(successCallback, errorCallback) {
       var url = urlService.getGroups();
@@ -450,7 +451,7 @@ define([
           },
           errorCallback
       );
-    };
+    }
 
     function createGroup(name, description, successCallback, errorCallback) {
       var url = urlService.getGroups();
@@ -517,5 +518,4 @@ define([
 
   }
 
-})
-;
+});
