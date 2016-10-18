@@ -17,12 +17,13 @@
 
 
             <!-- share with users -->
-            <div class="row">
-              <div class="col-sm-12">
+            <div class="row" class="minTop">
+              <div class="col-sm-12" >
                 <h5 translate>DASHBOARD.share.withUsers</h5></div>
             </div>
             <div class="row">
               <div class="col-sm-7">
+
                 <input auto-focus placeholder="enter user name" type="text"
                     ng-change="share.updateUserPermission(share.typeaheadUser.id)"
                     ng-model="share.typeaheadUser"
@@ -142,7 +143,7 @@
           <div ng-class="share.canWrite() ? 'col-sm-6' : 'col-sm-12'">
 
 
-            <div ng-model="share.resourcePermissions" id="shared-users" class="scroll-container" style="height:240px">
+            <div ng-model="share.resourcePermissions" id="shared-users" class="scroll-container" >
               <div class="row">
 
                 <div class="col-sm-7 name">
@@ -204,7 +205,7 @@
 
             <!-- add users to group -->
             <div class="row">
-              <div class="col-sm-12">
+              <div class="col-sm-12" class="topMinus10">
                 <h5 translate>DASHBOARD.share.addPeople</h5></div>
             </div>
             <div class="row">
@@ -241,7 +242,7 @@
             <!-- select group -->
             <div class="row">
               <div class="col-sm-12">
-                <h5 translate>DASHBOARD.share.selectGroup</h5></div>
+                <h5  translate>DASHBOARD.share.selectGroup</h5></div>
             </div>
             <div class="row">
               <div class="col-sm-11">
@@ -314,7 +315,7 @@
             <div class="row">
               <div class="col-sm-12 center">
                 <a href="#" ng-click="share.showGroups=false;share.showRemoveGroupConfirm=false">
-                  <h5><span translate>DASHBOARD.share.manageShare</span> <i class="fa fa-share"></i></h5>
+                  <h5 ><span translate>DASHBOARD.share.manageShare</span> <i class="fa fa-share"></i></h5>
                 </a>
               </div>
             </div>
@@ -325,7 +326,7 @@
             <!-- group members -->
             <div ng-if="share.showGroupMembers">
               <div ng-model="share.resourcePermissions" id="group-members" class="scroll-container"
-                  style="height:240px">
+                 >
 
                 <div ng-if="!share.typeaheadGroup" class="row">
                   <div class="center" style="margin-top:100px;">Select a group to display</div>
@@ -361,7 +362,7 @@
             </div>
 
             <!-- group details -->
-            <div ng-if="!share.showGroupMembers" class="hidden-container" style="height:240px;overflow:hidden">
+            <div ng-if="!share.showGroupMembers" class="hidden-container" style="height:250px;overflow:hidden">
               <div ng-if="!share.typeaheadGroup" class="row">
                 <div class="center" style="margin-top:100px;">Select a group to display</div>
               </div>
@@ -396,12 +397,8 @@
                       <span class="no-wrap">{{share.typeaheadGroup.users.length}}</span>
                     </td>
                   </tr>
-
-
                   </tbody>
                 </table>
-
-
 
 
                 <div class="description" style="margin:5px 0">
@@ -417,12 +414,12 @@
             <div class="row">
               <div class="col-sm-6 center">
                 <a href="#" ng-click="share.showGroupMembers = true">
-                  <h5><span translate>DASHBOARD.share.people</span></h5>
+                  <h5 ><span translate>DASHBOARD.share.people</span></h5>
                 </a>
               </div>
               <div class="col-sm-6 center">
                 <a href="#" ng-click="share.showGroupMembers = false">
-                  <h5><span translate>DASHBOARD.share.groupDetails</span></h5>
+                  <h5 ><span translate>DASHBOARD.share.groupDetails</span></h5>
                 </a>
               </div>
             </div>

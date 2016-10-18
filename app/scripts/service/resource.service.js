@@ -507,8 +507,11 @@ define([
     function updateGroupMembers(group, successCallback, errorCallback) {
       var url = urlService.getGroupMembers(group.id);
 
+      var payload = {};
+      payload.users = group.users;
+
       authorizedBackendService.doCall(
-          httpBuilderService.put(url, angular.toJson(group.users)),
+          httpBuilderService.put(url, angular.toJson(payload)),
           function (response) {
             successCallback(response.data);
           },

@@ -14673,6 +14673,13 @@ table.apiKey td {
   margin: 6px 25px;
   outline: none;
 }
+#share-modal .modal-dialog .modal-content .modal-body h5,
+#share-modal .modal-dialog .modal-content .modal-body .minTop {
+  margin: 5px 0;
+}
+#share-modal .modal-dialog .modal-content .modal-body .topMinus10 {
+  margin-top: -10px;
+}
 @media (min-width: 768px) {
   #sidebar-left {
     position: absolute;
