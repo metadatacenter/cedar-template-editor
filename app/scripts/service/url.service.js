@@ -196,13 +196,11 @@ define([
     };
 
     service.getGroup = function (id) {
-      console.log(id);
-      console.log(encodeURIComponent(id));
-      return this.resourceBase() + "/groups" + '/' + encodeURIComponent(id);
+      return this.getGroups() + '/' + encodeURIComponent(id);
     };
 
     service.getGroupMembers = function (id) {
-      return this.resourceBase() + "/groups" +  '/' + encodeURIComponent(id);  + "/members";
+      return  this.getGroups() +  '/' + encodeURIComponent(id)  + "/users";
     };
 
 

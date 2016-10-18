@@ -199,7 +199,6 @@ define([
           vm.getId = getId;
 
 
-
           // user permisssions
 
           function canRead() {
@@ -238,12 +237,9 @@ define([
           }
 
 
-
           function getSelectedNode() {
             return vm.selectedResource;
           }
-
-
 
 
           function getSelection() {
@@ -303,6 +299,8 @@ define([
             vm.resourcePermissions = null;
             vm.showGroups = false;
             vm.newGroupName = '';
+            vm.typeaheadUser = null;
+            vm.typeaheadGroup = null;
             getNodes();
             getPermissions(resource);
           };
@@ -418,7 +416,7 @@ define([
                   resourceService.getGroups(
                       function (response) {
                         vm.resourceGroups = response.groups;
-                        fillDummyGroups(vm.resourceGroups, vm.resourceUsers);
+                        //fillDummyGroups(vm.resourceGroups, vm.resourceUsers);
                         vm.selectedGroupId = initNodes(vm.resourceGroups);
 
                         // resource nodes is the users and groups combined
@@ -488,11 +486,22 @@ define([
           }
 
           // when selected user changes, reset selected permisison
-          function addUserToGroup(person, group) {
-            var index = group.people.indexOf(person);
-            if (index <= -1) {
-              group.people.push(person);
+          function addUserToGroup(user, group) {
+
+            for (var i = 0; i < group.users.length; i++) {
+              if (group.users[i].user.id === user.id) {
+                return;
+              }
             }
+
+            // not there, so add this user
+            var member = {};
+            member.user = user;
+            member.administrator = false;
+            member.member = true;
+            group.users.push(member);
+
+            updateGroupMembers(group);
           }
 
 
@@ -566,9 +575,7 @@ define([
           }
 
           function groupTypeaheadOnSelect(item, model, label) {
-            console.log(item);
-            console.log(model);
-            console.log(label);
+            getGroupMembers(vm.typeaheadGroup);
           }
 
           function isAdmin(id) {
@@ -576,11 +583,12 @@ define([
             return (index > -1);
           }
 
-          function removeFromGroup(group, person) {
-            var index = group.people.indexOf(person);
-            group.people.splice(index, 1);
-
-            updateGroupMembers(group)
+          function removeFromGroup(member, group) {
+            var index = group.users.indexOf(member);
+            if (index > -1) {
+              group.users.splice(index, 1);
+              updateGroupMembers(group);
+            }
           }
 
           function canWriteGroup() {
@@ -589,18 +597,13 @@ define([
           }
 
           // TODO add a new group by calling server, when done rebuild group selectors
-          function addGroup(name) {
+          function addGroup(group) {
 
-            var group = vm.resourceGroups[0];
-            var newGroup = jQuery.extend(true, {}, group);
-            newGroup.id = newGroup.id + 'new';
-            newGroup.displayName = name;
-            vm.resourceGroups.push(newGroup);
-
+            vm.resourceGroups.push(group);
 
             // select the new group
-            vm.typeaheadGroup = newGroup;
-            vm.typeaheadGroup.name = getName(newGroup);
+            vm.typeaheadGroup = group;
+            vm.typeaheadGroup.name = getName(group);
             vm.newGroupName = '';
 
 
@@ -620,7 +623,8 @@ define([
                 function (response) {
 
                   console.log(response);
-                  // update display
+                  addGroup(response);
+                  getGroupMembers(response);
 
                 },
                 function (error) {
@@ -632,7 +636,7 @@ define([
 
           function updateGroupDescription(group) {
             vm.editingDescription = false;
-              updateGroup(group);
+            updateGroup(group);
           };
 
           function updateGroupName(group) {
@@ -645,43 +649,44 @@ define([
           function updateGroup(group) {
             resourceService.updateGroup(group,
                 function (response) {
-
                   console.log(response);
-                  // update display
-
+                  //vm.typeaheadGroup = response;
                 },
                 function (error) {
+                  console.log(error);
                   UIMessageService.showBackendError('SERVER.' + group.nodeType.toUpperCase() + '.load.error',
                       error);
                 }
             );
           };
-
 
 
           function deleteGroup(group) {
             resourceService.deleteGroup(group.id,
                 function (response) {
 
-                  console.log(response);
+                  var i = vm.resourceGroups.indexOf(vm.typeaheadGroup);
+                  vm.resourceGroups.splice(i, 1);
+                  var j = vm.resourceNodes.indexOf(vm.typeaheadGroup);
+                  vm.resourceNodes.splice(j, 1);
                   vm.typeaheadGroup = null;
 
                 },
                 function (error) {
                   UIMessageService.showBackendError('SERVER.' + group.nodeType.toUpperCase() + '.load.error',
                       error);
-
-                  vm.typeaheadGroup = null;  // just for now
                 }
             );
           };
 
           function getGroupMembers(group, successCallback, errorCallback) {
+
             resourceService.getGroupMembers(group.id,
                 function (response) {
 
                   console.log(response);
-                  // update display
+                  group.users = response.users;
+
 
                 },
                 function (error) {
@@ -691,18 +696,18 @@ define([
             );
           };
 
-          function updateGroupAdmin(group, person, value, successCallback, errorCallback) {
+          function updateGroupAdmin(member, group, value, successCallback, errorCallback) {
 
-            // find the person in this group and update the value
-            var users = group.users;
-            var index = group.people.indexOf(person);
+            var index = group.users.indexOf(member);
             if (index > -1) {
-              group.people[index].isAdmin = value;
+              group.users[index].administrator = value;
               updateGroupMembers(group);
             }
+
           };
 
           function updateGroupMembers(group) {
+
             resourceService.updateGroupMembers(group,
                 function (response) {
 
@@ -738,48 +743,12 @@ define([
             }
           });
 
+
           //TODO remove when we have groups from server
           function getId(group, person) {
             return group.id + ',' + person.id;
           }
 
-          //TODO remove when we have groups from server
-          function fillDummyGroups(groups, people) {
-            var group = groups[0];
-            vm.groupAdmins = [];
-
-
-            // give the group some people ids
-            group.people = [];
-            for (var j = 0; j < people.length; j++) {
-              var person = people[j];
-              group.people.push(person);
-              var obj = {};
-              obj.id = group.id + ',' + person.id;
-              obj.isAdmin = true;
-              vm.groupAdmins.push(obj);
-            }
-
-            var dummyGroups = groups;
-            for (var i = 0; i < 10; i++) {
-
-              var newGroup = jQuery.extend(true, {}, group);
-              newGroup.id = newGroup.id + i;
-              newGroup.displayName = newGroup.displayName + i;
-              dummyGroups.push(newGroup);
-
-              for (var j = 0; j < people.length; j++) {
-                var person = people[j];
-                var obj = {};
-                obj.id = newGroup.id + ',' + person.id;
-                obj.isAdmin = true;
-                vm.groupAdmins[obj.id] = obj;
-
-              }
-
-            }
-            console.log(vm.groupAdmins);
-          };
 
           function getResourceDetails(resource) {
             if (!resource && vm.hasSelection()) {
