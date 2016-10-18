@@ -230,7 +230,7 @@
                     tooltip-animation="false"
                     tooltip-placement="top"
                     data-toggle="tooltip"
-                    ng-disabled="!share.typeaheadUser || !share.typeaheadGroup"
+                    ng-disabled="!share.typeaheadUser || !share.typeaheadGroup ||  share.typeaheadGroup.specialGroup"
                     ng-click="share.addUserToGroup(share.typeaheadUser, share.typeaheadGroup)">
                   <i class="fa fa-plus" style="margin: 0 -4px;vertical-align: top;"></i>
                 </button>
@@ -339,6 +339,7 @@
                     <div class="checkbox checkbox-primary">
                       <input type="checkbox"
                           ng-change="share.updateGroupAdmin(member, share.typeaheadGroup, member.administrator)"
+                          ng-disabled="share.typeaheadGroup.specialGroup"
                           id="{{member.user.id}}"
                           ng-model='member.administrator'>
                       <label for="{{member.user.id}}" translate>DASHBOARD.share.admin</label>
@@ -352,6 +353,7 @@
                       tooltip-animation="false"
                       tooltip-placement="top"
                       data-toggle="tooltip"
+                      ng-disabled="share.typeaheadGroup.specialGroup"
                       ng-click="share.removeFromGroup(member, share.typeaheadGroup)"><i class="fa fa-times"
                       style="margin: -1px -5px;vertical-align: top;"></i></button>
                 </div>
@@ -366,8 +368,8 @@
               <div ng-if="share.hasSelectedGroup()">
 
                 <h4>
-                  <form ng-submit="share.updateGroupName(share.typeaheadGroup)">
-                    <input type="text" ng-model="share.typeaheadGroup.name" placeholder="enter group name"/>
+                  <form  ng-submit="share.updateGroupName(share.typeaheadGroup)">
+                    <input ng-disabled="share.typeaheadGroup.specialGroup" type="text" ng-model="share.typeaheadGroup.name" placeholder="enter group name"/>
                   </form>
                 </h4>
 
@@ -379,19 +381,19 @@
                   <tr>
                     <td class="left">Modified</td>
                     <td>
-                      <span class="no-wrap">{{ share.getSelectedGroup().lastUpdatedOnTS | prettyDate }}</span>
+                      <span class="no-wrap">{{ share.typeaheadGroup.lastUpdatedOnTS | prettyDate }}</span>
                     </td>
                   </tr>
                   <tr>
                     <td class="left">Created</td>
                     <td>
-                      <span class="no-wrap">{{ share.getSelectedGroup().lastUpdatedOnTS | prettyDate }}</span>
+                      <span class="no-wrap">{{ share.typeaheadGroup.lastUpdatedOnTS | prettyDate }}</span>
                     </td>
                   </tr>
                   <tr>
                     <td class="left">Members</td>
                     <td>
-                      <span class="no-wrap">count</span>
+                      <span class="no-wrap">{{share.typeaheadGroup.users.length}}</span>
                     </td>
                   </tr>
 
@@ -404,7 +406,7 @@
 
                 <div class="description" style="margin:5px 0">
                   <form ng-submit="share.updateGroupDescription(share.typeaheadGroup)">
-                    <input type="text" ng-model="share.typeaheadGroup.description"
+                    <input ng-disabled="share.typeaheadGroup.specialGroup" type="text" ng-model="share.typeaheadGroup.description"
                         placeholder="enter group description"/>
                   </form>
                 </div>

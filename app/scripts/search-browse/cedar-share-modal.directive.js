@@ -416,7 +416,6 @@ define([
                   resourceService.getGroups(
                       function (response) {
                         vm.resourceGroups = response.groups;
-                        //fillDummyGroups(vm.resourceGroups, vm.resourceUsers);
                         vm.selectedGroupId = initNodes(vm.resourceGroups);
 
                         // resource nodes is the users and groups combined
@@ -424,6 +423,8 @@ define([
                         vm.resourceNodes = vm.resourceNodes.concat(vm.resourceUsers);
                         vm.resourceNodes = vm.resourceNodes.concat(vm.resourceGroups);
                         vm.selectedNodeId = initNodes(vm.resourceNodes);
+
+                        console.log(vm.resourceGroups);
 
                       },
                       function (error) {
@@ -639,9 +640,20 @@ define([
             updateGroup(group);
           };
 
+          function isUniqueName(group) {
+            for (var i=0;i<vm.resourceGroups.length;i++) {
+              if ((vm.resourceGroups[i].id != group.id) && (vm.resourceGroups[i].name === group.name)) {
+                return false;
+              }
+            }
+           return true;
+          };
+
           function updateGroupName(group) {
             vm.editingName = false;
-            if (group.name.length > 0) {
+            if (group.name.length > 0  && isUniqueName(group)) {
+              group.displayName = group.name;
+              vm.typeaheadGroup.displayName = group.name;
               updateGroup(group);
             }
           };
@@ -650,7 +662,9 @@ define([
             resourceService.updateGroup(group,
                 function (response) {
                   console.log(response);
-                  //vm.typeaheadGroup = response;
+                  $timeout(function () {
+                    $scope.$apply();
+                  });
                 },
                 function (error) {
                   console.log(error);
