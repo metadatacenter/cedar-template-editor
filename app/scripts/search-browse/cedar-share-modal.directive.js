@@ -163,6 +163,7 @@ define([
           vm.giveNodePermission = 'read';
           vm.resourceUsers = null;
           vm.resourcePermissions = null;
+          vm.shares = null;
           vm.resourceNodes = null;
           vm.selectedResource = null;
           vm.typeaheadUser = null;
@@ -332,15 +333,16 @@ define([
 
           function getShares() {
             if (vm.resourcePermissions) {
+              vm.shares = [];
 
-              vm.resourcePermissions.shares = [];
+              //vm.resourcePermissions.shares = [];
               for (var i = 0; i < vm.resourcePermissions.groupPermissions.length; i++) {
                 var share = {};
                 share.permission = vm.resourcePermissions.groupPermissions[i].permission;
                 share.node = vm.resourcePermissions.groupPermissions[i].group;
                 share.node.nodeType = 'group';
                 share.node.name = getName(share.node);
-                vm.resourcePermissions.shares.push(share);
+                vm.shares.push(share);
               }
               for (var i = 0; i < vm.resourcePermissions.userPermissions.length; i++) {
                 var share = {};
@@ -348,9 +350,8 @@ define([
                 share.node = vm.resourcePermissions.userPermissions[i].user;
                 share.node.nodeType = 'user';
                 share.node.name = getName(share.node);
-                vm.resourcePermissions.shares.push(share);
+                vm.shares.push(share);
               }
-
             }
           }
 
@@ -360,8 +361,9 @@ define([
             // rebuild permissions from shares
             vm.resourcePermissions.groupPermissions = [];
             vm.resourcePermissions.userPermissions = [];
-            for (var i = 0; i < vm.resourcePermissions.shares.length; i++) {
-              var share = vm.resourcePermissions.shares[i];
+            for (var i = 0; i < vm.shares.length; i++) {
+              var share =  jQuery.extend(true, {}, vm.shares[i]);
+
               if (share.node.nodeType === 'user') {
                 share.user = share.node;
                 delete share.node;
@@ -372,15 +374,12 @@ define([
                 vm.resourcePermissions.groupPermissions.push(share);
               }
             }
-            delete vm.resourcePermissions.shares;
 
             var id = resource['@id'];
             resourceService.setResourceShare(
                 resource,
                 vm.resourcePermissions,
                 function (response) {
-                  vm.resourcePermissions = response;
-                  getShares();
                 },
                 function (error) {
                   UIMessageService.showBackendError('SERVER.' + resource.nodeType.toUpperCase() + '.load.error', error);
@@ -424,8 +423,6 @@ define([
                         vm.resourceNodes = vm.resourceNodes.concat(vm.resourceGroups);
                         vm.selectedNodeId = initNodes(vm.resourceNodes);
 
-                        console.log(vm.resourceGroups);
-
                       },
                       function (error) {
                         UIMessageService.showBackendError('SERVER.' + resource.nodeType.toUpperCase() + '.load.error',
@@ -442,9 +439,9 @@ define([
 
           // remove the share permission on this node
           function removeShare(node, resource) {
-            for (var i = 0; i < vm.resourcePermissions.shares.length; i++) {
-              if (node.id === vm.resourcePermissions.shares[i].node.id) {
-                vm.resourcePermissions.shares.splice(i, 1);
+            for (var i = 0; i < vm.shares.length; i++) {
+              if (node.id === vm.shares[i].node.id) {
+                vm.shares.splice(i, 1);
               }
             }
             for (var i = 0; i < vm.resourcePermissions.userPermissions.length; i++) {
@@ -519,9 +516,9 @@ define([
           // update the permission for this node
           function updateShare(node, permission, resource) {
 
-            for (var i = 0; i < vm.resourcePermissions.shares.length; i++) {
-              if (node.id === vm.resourcePermissions.shares[i].node.id) {
-                vm.resourcePermissions.shares[i].permission = permission;
+            for (var i = 0; i < vm.shares.length; i++) {
+              if (node.id === vm.shares[i].node.id) {
+                vm.shares[i].permission = permission;
                 saveShare(resource);
                 return true;
               }
@@ -550,7 +547,7 @@ define([
                   share.node = owner;
                   share.node.nodeType = 'user';
                   share.node.name = getName(share.node);
-                  vm.resourcePermissions.shares.push(share);
+                  vm.shares.push(share);
                   saveShare(resource);
                 }
 
@@ -563,7 +560,7 @@ define([
                   share.permission = permission;
                   share.node = node;
                   share.node.name = getName(node);
-                  vm.resourcePermissions.shares.push(share);
+                  vm.shares.push(share);
                   saveShare(resource);
                 }
               }
@@ -623,7 +620,6 @@ define([
             resourceService.createGroup(name, '',
                 function (response) {
 
-                  console.log(response);
                   addGroup(response);
                   getGroupMembers(response);
 
@@ -661,13 +657,13 @@ define([
           function updateGroup(group) {
             resourceService.updateGroup(group,
                 function (response) {
-                  console.log(response);
+
                   $timeout(function () {
                     $scope.$apply();
                   });
                 },
                 function (error) {
-                  console.log(error);
+
                   UIMessageService.showBackendError('SERVER.' + group.nodeType.toUpperCase() + '.load.error',
                       error);
                 }
@@ -698,7 +694,6 @@ define([
             resourceService.getGroupMembers(group.id,
                 function (response) {
 
-                  console.log(response);
                   group.users = response.users;
 
 
@@ -724,10 +719,6 @@ define([
 
             resourceService.updateGroupMembers(group,
                 function (response) {
-
-                  console.log(response);
-                  // update display
-
                 },
                 function (error) {
                   UIMessageService.showBackendError('SERVER.' + group.nodeType.toUpperCase() + '.load.error',
@@ -735,7 +726,6 @@ define([
                 }
             );
           };
-
 
           function hasSelectedGroup() {
             return vm.typeaheadGroup != null;

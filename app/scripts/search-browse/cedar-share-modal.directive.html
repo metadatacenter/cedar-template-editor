@@ -28,7 +28,7 @@
                     ng-change="share.updateUserPermission(share.typeaheadUser.id)"
                     ng-model="share.typeaheadUser"
                     typeahead-editable="false"
-                    typeahead="user as user.name for user in share.resourceUsers | filter:$viewValue | limitTo:5 "
+                    typeahead="user as user.name for user in share.resourceUsers | filter:$viewValue | limitTo:8 "
                     typeahead-select-on-exact="true"
                     class="form-control"></div>
 
@@ -73,7 +73,7 @@
                     ng-change="share.updateGroupPermission(share.typeaheadGroup.id)"
                     ng-model="share.typeaheadGroup"
                     typeahead-editable="false"
-                    typeahead="group as group.displayName for group in share.resourceGroups | filter:$viewValue | limitTo:8 "
+                    typeahead="group as group.displayName for group in share.resourceGroups | filter:$viewValue | limitTo:5 "
                     typeahead-on-select="share.groupTypeaheadOnSelect($item, $model, $label)"
                     typeahead-select-on-exact="true"
                     class="form-control">
@@ -155,7 +155,7 @@
                 </select>
               </div>
 
-              <div class="row" ng-repeat="sh in share.resourcePermissions.shares">
+              <div class="row" ng-repeat="sh in share.shares">
 
                 <div class="col-sm-7 name">{{sh.node.name}}</div>
 
@@ -215,7 +215,7 @@
                     ng-change="share.updateUserPermission(share.typeaheadUser.id)"
                     ng-model="share.typeaheadUser"
                     typeahead-editable="false"
-                    typeahead="user as user.name for user in share.resourceUsers | filter:$viewValue | limitTo:5 "
+                    typeahead="user as user.name for user in share.resourceUsers | filter:$viewValue | limitTo:8 "
                     typeahead-select-on-exact="true"
                     ng-disabled="!share.typeaheadGroup"
                     class="form-control"></div>
@@ -250,7 +250,7 @@
                     ng-change="share.updateGroupPermission(share.typeaheadGroup.id)"
                     ng-model="share.typeaheadGroup"
                     typeahead-editable="false"
-                    typeahead="group as group.displayName for group in share.resourceGroups | filter:$viewValue | limitTo:8 "
+                    typeahead="group as group.displayName for group in share.resourceGroups | filter:$viewValue | limitTo:5 "
                     typeahead-select-on-exact="true"
                     typeahead-on-select="share.groupTypeaheadOnSelect($item, $model, $label)"
                     class="form-control">
@@ -368,11 +368,18 @@
               </div>
               <div ng-if="share.hasSelectedGroup()">
 
-                <h4>
+                <h4 ng-if="!vm.editingTitle">{{share.typeaheadGroup.name}}</h4>
+                <h4 ng-if="vm.editingTitle">
                   <form  ng-submit="share.updateGroupName(share.typeaheadGroup)">
                     <input ng-disabled="share.typeaheadGroup.specialGroup" type="text" ng-model="share.typeaheadGroup.name" placeholder="enter group name"/>
+                    <button type="button" ng-click="share.updateGroupName(share.typeaheadGroup);vm.editingTitle=false" aria-label="ok">check</button>
+                    <button type="button" ng-click="vm.editingTitle=false"
+>cancel
+                    </button>
+
                   </form>
                 </h4>
+
 
                 <table class="table"
                     style="padding:0;margin:0;font-size:13px;">
