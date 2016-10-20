@@ -188,6 +188,10 @@ define([
           vm.updateGroupName = updateGroupName;
           vm.updateGroupDescription = updateGroupDescription;
           vm.showRemoveGroupConfirm = false;
+          vm.editingTitle = false;
+          vm.editingDescription = false;
+          vm.newTitle = '';
+          vm.newDescription = '';
 
 
           vm.groupAdmins = [];
@@ -302,6 +306,10 @@ define([
             vm.newGroupName = '';
             vm.typeaheadUser = null;
             vm.typeaheadGroup = null;
+            vm.editingTitle = false;
+            vm.editingDescription = false;
+            vm.newTitle = "";
+            vm.newDescription = '';
             getNodes();
             getPermissions(resource);
           };
@@ -362,7 +370,7 @@ define([
             vm.resourcePermissions.groupPermissions = [];
             vm.resourcePermissions.userPermissions = [];
             for (var i = 0; i < vm.shares.length; i++) {
-              var share =  jQuery.extend(true, {}, vm.shares[i]);
+              var share = jQuery.extend(true, {}, vm.shares[i]);
 
               if (share.node.nodeType === 'user') {
                 share.user = share.node;
@@ -574,6 +582,8 @@ define([
 
           function groupTypeaheadOnSelect(item, model, label) {
             getGroupMembers(vm.typeaheadGroup);
+            vm.newTitle = vm.typeaheadGroup.name;
+            vm.newDescription = vm.typeaheadGroup.description;
           }
 
           function isAdmin(id) {
@@ -631,25 +641,33 @@ define([
             );
           }
 
-          function updateGroupDescription(group) {
+          function updateGroupDescription(group, description) {
+            console.log(group);
             vm.editingDescription = false;
-            updateGroup(group);
+            if (description.length > 0) {
+              group.description = description;
+              vm.typeaheadGroup.description = description;
+              updateGroup(group);
+            }
           };
 
-          function isUniqueName(group) {
-            for (var i=0;i<vm.resourceGroups.length;i++) {
-              if ((vm.resourceGroups[i].id != group.id) && (vm.resourceGroups[i].name === group.name)) {
+          function isUniqueName(name) {
+            for (var i = 0; i < vm.resourceGroups.length; i++) {
+              if ((group.name && vm.resourceGroups[i].name === group.name)) {
                 return false;
               }
             }
-           return true;
+            return true;
           };
 
-          function updateGroupName(group) {
-            vm.editingName = false;
-            if (group.name.length > 0  && isUniqueName(group)) {
-              group.displayName = group.name;
-              vm.typeaheadGroup.displayName = group.name;
+          function updateGroupName(group, name) {
+            ;
+            vm.editingTitle = false;
+            if (name.length > 0) {
+              group.displayName = name;
+              group.name = name;
+              vm.typeaheadGroup.displayName = name;
+              vm.typeaheadGroup.name = name;
               updateGroup(group);
             }
           };

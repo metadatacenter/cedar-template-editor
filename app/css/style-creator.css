@@ -14422,6 +14422,26 @@ table.apiKey td {
 #share-modal .modal-content .modal-body .box-row.selected {
   background: #5795ba;
 }
+#rename-modal .modal-content .modal-body .inline-editing button,
+#new-folder-modal .modal-content .modal-body .inline-editing button,
+#move-modal .modal-content .modal-body .inline-editing button,
+#share-modal .modal-content .modal-body .inline-editing button {
+  margin: 10px 0;
+}
+#rename-modal .modal-content .modal-body .inline-editing input.borderless,
+#new-folder-modal .modal-content .modal-body .inline-editing input.borderless,
+#move-modal .modal-content .modal-body .inline-editing input.borderless,
+#share-modal .modal-content .modal-body .inline-editing input.borderless {
+  border: 0px solid #fff;
+}
+#rename-modal .modal-content .modal-body table.details,
+#new-folder-modal .modal-content .modal-body table.details,
+#move-modal .modal-content .modal-body table.details,
+#share-modal .modal-content .modal-body table.details {
+  padding: 0;
+  margin: 0;
+  font-size: 13px;
+}
 #rename-modal .modal-content .actions .favorite,
 #new-folder-modal .modal-content .actions .favorite,
 #move-modal .modal-content .actions .favorite,

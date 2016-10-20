@@ -18,7 +18,7 @@
 
             <!-- share with users -->
             <div class="row" class="minTop">
-              <div class="col-sm-12" >
+              <div class="col-sm-12">
                 <h5 translate>DASHBOARD.share.withUsers</h5></div>
             </div>
             <div class="row">
@@ -143,7 +143,7 @@
           <div ng-class="share.canWrite() ? 'col-sm-6' : 'col-sm-12'">
 
 
-            <div ng-model="share.resourcePermissions" id="shared-users" class="scroll-container" >
+            <div ng-model="share.resourcePermissions" id="shared-users" class="scroll-container">
               <div class="row">
 
                 <div class="col-sm-7 name">
@@ -242,7 +242,7 @@
             <!-- select group -->
             <div class="row">
               <div class="col-sm-12">
-                <h5  translate>DASHBOARD.share.selectGroup</h5></div>
+                <h5 translate>DASHBOARD.share.selectGroup</h5></div>
             </div>
             <div class="row">
               <div class="col-sm-11">
@@ -315,7 +315,7 @@
             <div class="row">
               <div class="col-sm-12 center">
                 <a href="#" ng-click="share.showGroups=false;share.showRemoveGroupConfirm=false">
-                  <h5 ><span translate>DASHBOARD.share.manageShare</span> <i class="fa fa-share"></i></h5>
+                  <h5><span translate>DASHBOARD.share.manageShare</span> <i class="fa fa-share"></i></h5>
                 </a>
               </div>
             </div>
@@ -326,7 +326,7 @@
             <!-- group members -->
             <div ng-if="share.showGroupMembers">
               <div ng-model="share.resourcePermissions" id="group-members" class="scroll-container"
-                 >
+                  >
 
                 <div ng-if="!share.typeaheadGroup" class="row">
                   <div class="center" style="margin-top:100px;">Select a group to display</div>
@@ -362,27 +362,28 @@
             </div>
 
             <!-- group details -->
-            <div ng-if="!share.showGroupMembers" class="hidden-container" style="height:250px;overflow:hidden">
+            <div ng-if="!share.showGroupMembers" class="scroll-container" style="padding-left:20px;height:250px;overflow:hidden">
               <div ng-if="!share.typeaheadGroup" class="row">
-                <div class="center" style="margin-top:100px;">Select a group to display</div>
+                <div class="center" style="margin-top:100px;" >Select a group to display</div>
               </div>
               <div ng-if="share.hasSelectedGroup()">
 
-                <h4 ng-if="!vm.editingTitle">{{share.typeaheadGroup.name}}</h4>
-                <h4 ng-if="vm.editingTitle">
-                  <form  ng-submit="share.updateGroupName(share.typeaheadGroup)">
-                    <input ng-disabled="share.typeaheadGroup.specialGroup" type="text" ng-model="share.typeaheadGroup.name" placeholder="enter group name"/>
-                    <button type="button" ng-click="share.updateGroupName(share.typeaheadGroup);vm.editingTitle=false" aria-label="ok">check</button>
-                    <button type="button" ng-click="vm.editingTitle=false"
->cancel
-                    </button>
-
+                <h5>
+                  <form ng-submit="share.updateGroupName(share.typeaheadGroup, share.newTitle)">
+                    <div class="row inline-editing">
+                      <div class="col-sm-9 ">
+                        <input  class="borderless" ng-click="share.editingTitle=true;" ng-disabled="share.typeaheadGroup.specialGroup" type="text"
+                            ng-model="share.newTitle" placeholder="enter group name"/></div>
+                      <div class="col-sm-3" >
+                        <button ng-if="share.editingTitle" type="button" ng-click="share.editingTitle=false;share.newTitle=share.typeaheadGroup.name"><i class="fa fa-remove"></i></button>
+                        <button ng-if="share.editingTitle" type="button"  ng-click="share.updateGroupName(share.typeaheadGroup, share.newTitle)" aria-label="ok"><i class="fa fa-check"></i></button>
+                      </div>
+                    </div>
                   </form>
-                </h4>
+                </h5>
 
 
-                <table class="table"
-                    style="padding:0;margin:0;font-size:13px;">
+                <table class="table details">
 
                   <tbody>
 
@@ -407,13 +408,21 @@
                   </tbody>
                 </table>
 
-
-                <div class="description" style="margin:5px 0">
-                  <form ng-submit="share.updateGroupDescription(share.typeaheadGroup)">
-                    <input ng-disabled="share.typeaheadGroup.specialGroup" type="text" ng-model="share.typeaheadGroup.description"
-                        placeholder="enter group description"/>
+                <h5>
+                  <form ng-submit="share.updateGroupDescription(share.typeaheadGroup, share.newDescription)">
+                    <div class="row inline-editing">
+                      <div class="col-sm-9">
+                        <input class="borderless" ng-disabled="share.typeaheadGroup.specialGroup" type="text"  ng-click="share.editingDescription=true;"
+                            ng-model="share.newDescription" placeholder="enter group description"/>
+                        </div>
+                      <div class="col-sm-3" >
+                        <button ng-if="share.editingDescription" type="button" ng-click="share.newDescription=false;share.newDescription=share.typeaheadGroup.description" aria-label="ok"><i class="fa fa-remove"></i></button>
+                        <button ng-if="share.editingDescription" type="button" ng-click="share.updateGroupDescription(share.typeaheadGroup, share.newDescription)"><i class="fa fa-check"></i></button>
+                      </div>
+                    </div>
                   </form>
-                </div>
+                </h5>
+
               </div>
             </div>
 
@@ -421,12 +430,12 @@
             <div class="row">
               <div class="col-sm-6 center">
                 <a href="#" ng-click="share.showGroupMembers = true">
-                  <h5 ><span translate>DASHBOARD.share.people</span></h5>
+                  <h5><span translate>DASHBOARD.share.people</span></h5>
                 </a>
               </div>
               <div class="col-sm-6 center">
                 <a href="#" ng-click="share.showGroupMembers = false">
-                  <h5 ><span translate>DASHBOARD.share.groupDetails</span></h5>
+                  <h5><span translate>DASHBOARD.share.groupDetails</span></h5>
                 </a>
               </div>
             </div>
