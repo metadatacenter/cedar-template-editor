@@ -195,6 +195,15 @@ define([
       return this.resourceBase() + '/folders/' + encodeURIComponent(id) + "/permissions";
     };
 
+    service.getGroup = function (id) {
+      return this.getGroups() + '/' + encodeURIComponent(id);
+    };
+
+    service.getGroupMembers = function (id) {
+      return  this.getGroups() +  '/' + encodeURIComponent(id)  + "/users";
+    };
+
+
     return service;
   };
 

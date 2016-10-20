@@ -61,7 +61,7 @@ var WorkspacePage = function () {
   var createFolderButton = element(by.id('button-create-folder'));
 
   // create folder modal
-  var createFolderModal = element(by.id('newFolderModal'));
+  var createFolderModal = element(by.id('new-folder-modal'));
   var createFolderName = createFolderModal.element(by.model('dc.folder.name'));
   var createFolderSubmitButton = createFolderModal.element(by.css('div.modal-footer button.confirm'));
   var testFolderName = 'f';

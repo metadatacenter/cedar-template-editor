@@ -35,7 +35,13 @@ define([
       getResourceShare       : getResourceShare,
       setResourceShare       : setResourceShare,
       getUsers               : getUsers,
-      getGroups              : getGroups
+      getGroups              : getGroups,
+      createGroup           : createGroup,
+      updateGroup            : updateGroup,
+      deleteGroup            : deleteGroup,
+      getGroupMembers        : getGroupMembers,
+      updateGroupMembers     : updateGroupMembers
+
     };
     return service;
 
@@ -446,6 +452,72 @@ define([
           errorCallback
       );
     }
+
+    function createGroup(name, description, successCallback, errorCallback) {
+      var url = urlService.getGroups();
+      var payload = {
+        name       : name,
+        description: description
+      };
+      authorizedBackendService.doCall(
+          httpBuilderService.post(url, payload),
+          function (response) {
+            successCallback(response.data);
+          },
+          errorCallback
+      );
+    }
+
+    function updateGroup(group, successCallback, errorCallback) {
+      var url = urlService.getGroup(group.id);
+
+      authorizedBackendService.doCall(
+          httpBuilderService.put(url, angular.toJson(group)),
+          function (response) {
+            successCallback(response.data);
+          },
+          errorCallback
+      );
+    };
+
+    function deleteGroup(id, successCallback, errorCallback) {
+      var url = urlService.getGroup(id);
+
+      authorizedBackendService.doCall(
+          httpBuilderService.delete(url),
+          function (response) {
+            successCallback(response.data);
+          },
+          errorCallback
+      );
+    };
+
+    function getGroupMembers(id, successCallback, errorCallback) {
+      var url = urlService.getGroupMembers(id);
+
+      authorizedBackendService.doCall(
+          httpBuilderService.get(url),
+          function (response) {
+            successCallback(response.data);
+          },
+          errorCallback
+      );
+    };
+
+    function updateGroupMembers(group, successCallback, errorCallback) {
+      var url = urlService.getGroupMembers(group.id);
+
+      var payload = {};
+      payload.users = group.users;
+
+      authorizedBackendService.doCall(
+          httpBuilderService.put(url, angular.toJson(payload)),
+          function (response) {
+            successCallback(response.data);
+          },
+          errorCallback
+      );
+    };
 
   }
 

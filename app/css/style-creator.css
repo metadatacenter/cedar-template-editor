@@ -14380,243 +14380,306 @@ table.apiKey td {
 .scrollable-content::-webkit-scrollbar-thumb {
   background: #ccc;
 }
-#renameResourceModal .modal-content,
-#newFolderModal .modal-content,
-#moveResourceModal .modal-content,
-#shareResourceModal .modal-content {
+#rename-modal .modal-content,
+#new-folder-modal .modal-content,
+#move-modal .modal-content,
+#share-modal .modal-content {
   border-radius: 0;
   border: 0;
   max-width: 400px;
   margin: 0 auto;
 }
-#renameResourceModal .modal-content input,
-#newFolderModal .modal-content input,
-#moveResourceModal .modal-content input,
-#shareResourceModal .modal-content input {
+#rename-modal .modal-content input,
+#new-folder-modal .modal-content input,
+#move-modal .modal-content input,
+#share-modal .modal-content input {
   padding: 5px;
   width: 100%;
   outline: none;
 }
-#renameResourceModal .modal-content .modal-body,
-#newFolderModal .modal-content .modal-body,
-#moveResourceModal .modal-content .modal-body,
-#shareResourceModal .modal-content .modal-body {
+#rename-modal .modal-content .modal-body,
+#new-folder-modal .modal-content .modal-body,
+#move-modal .modal-content .modal-body,
+#share-modal .modal-content .modal-body {
   max-height: 300px;
   overflow-y: auto;
 }
-#renameResourceModal .modal-content .modal-body .box-row,
-#newFolderModal .modal-content .modal-body .box-row,
-#moveResourceModal .modal-content .modal-body .box-row,
-#shareResourceModal .modal-content .modal-body .box-row {
+#rename-modal .modal-content .modal-body .box-row,
+#new-folder-modal .modal-content .modal-body .box-row,
+#move-modal .modal-content .modal-body .box-row,
+#share-modal .modal-content .modal-body .box-row {
   padding: 5px;
 }
-#renameResourceModal .modal-content .modal-body .box-row .disabled,
-#newFolderModal .modal-content .modal-body .box-row .disabled,
-#moveResourceModal .modal-content .modal-body .box-row .disabled,
-#shareResourceModal .modal-content .modal-body .box-row .disabled {
+#rename-modal .modal-content .modal-body .box-row .disabled,
+#new-folder-modal .modal-content .modal-body .box-row .disabled,
+#move-modal .modal-content .modal-body .box-row .disabled,
+#share-modal .modal-content .modal-body .box-row .disabled {
   background: #9E9E9E;
 }
-#renameResourceModal .modal-content .modal-body .box-row.selected,
-#newFolderModal .modal-content .modal-body .box-row.selected,
-#moveResourceModal .modal-content .modal-body .box-row.selected,
-#shareResourceModal .modal-content .modal-body .box-row.selected {
+#rename-modal .modal-content .modal-body .box-row.selected,
+#new-folder-modal .modal-content .modal-body .box-row.selected,
+#move-modal .modal-content .modal-body .box-row.selected,
+#share-modal .modal-content .modal-body .box-row.selected {
   background: #5795ba;
 }
-#renameResourceModal .modal-content .actions .favorite,
-#newFolderModal .modal-content .actions .favorite,
-#moveResourceModal .modal-content .actions .favorite,
-#shareResourceModal .modal-content .actions .favorite {
+#rename-modal .modal-content .modal-body .inline-editing button,
+#new-folder-modal .modal-content .modal-body .inline-editing button,
+#move-modal .modal-content .modal-body .inline-editing button,
+#share-modal .modal-content .modal-body .inline-editing button {
+  margin: 10px 0;
+}
+#rename-modal .modal-content .modal-body .inline-editing input.borderless,
+#new-folder-modal .modal-content .modal-body .inline-editing input.borderless,
+#move-modal .modal-content .modal-body .inline-editing input.borderless,
+#share-modal .modal-content .modal-body .inline-editing input.borderless {
+  border: 0px solid #fff;
+}
+#rename-modal .modal-content .modal-body table.details,
+#new-folder-modal .modal-content .modal-body table.details,
+#move-modal .modal-content .modal-body table.details,
+#share-modal .modal-content .modal-body table.details {
+  padding: 0;
+  margin: 0;
+  font-size: 13px;
+}
+#rename-modal .modal-content .actions .favorite,
+#new-folder-modal .modal-content .actions .favorite,
+#move-modal .modal-content .actions .favorite,
+#share-modal .modal-content .actions .favorite {
   float: left;
   padding-top: 17px;
   cursor: pointer;
 }
-#renameResourceModal .modal-content .actions .favorite span,
-#newFolderModal .modal-content .actions .favorite span,
-#moveResourceModal .modal-content .actions .favorite span,
-#shareResourceModal .modal-content .actions .favorite span {
+#rename-modal .modal-content .actions .favorite span,
+#new-folder-modal .modal-content .actions .favorite span,
+#move-modal .modal-content .actions .favorite span,
+#share-modal .modal-content .actions .favorite span {
   text-transform: uppercase;
   vertical-align: middle;
 }
-#renameResourceModal .modal-content .actions .favorite i,
-#newFolderModal .modal-content .actions .favorite i,
-#moveResourceModal .modal-content .actions .favorite i,
-#shareResourceModal .modal-content .actions .favorite i {
+#rename-modal .modal-content .actions .favorite i,
+#new-folder-modal .modal-content .actions .favorite i,
+#move-modal .modal-content .actions .favorite i,
+#share-modal .modal-content .actions .favorite i {
   padding-right: 10px;
   -webkit-transition: all 0.3s 0.1s;
           transition: all 0.3s 0.1s;
   color: rgba(51, 51, 51, 0.43);
 }
-#renameResourceModal .modal-content .actions .favorite.true i,
-#newFolderModal .modal-content .actions .favorite.true i,
-#moveResourceModal .modal-content .actions .favorite.true i,
-#shareResourceModal .modal-content .actions .favorite.true i {
+#rename-modal .modal-content .actions .favorite.true i,
+#new-folder-modal .modal-content .actions .favorite.true i,
+#move-modal .modal-content .actions .favorite.true i,
+#share-modal .modal-content .actions .favorite.true i {
   color: #5795ba;
 }
-#renameResourceModal .modal-content .actions .clear-save,
-#newFolderModal .modal-content .actions .clear-save,
-#moveResourceModal .modal-content .actions .clear-save,
-#shareResourceModal .modal-content .actions .clear-save {
+#rename-modal .modal-content .actions .clear-save,
+#new-folder-modal .modal-content .actions .clear-save,
+#move-modal .modal-content .actions .clear-save,
+#share-modal .modal-content .actions .clear-save {
   float: right;
 }
-#renameResourceModal .modal-content .actions .clear-save .btn,
-#newFolderModal .modal-content .actions .clear-save .btn,
-#moveResourceModal .modal-content .actions .clear-save .btn,
-#shareResourceModal .modal-content .actions .clear-save .btn {
+#rename-modal .modal-content .actions .clear-save .btn,
+#new-folder-modal .modal-content .actions .clear-save .btn,
+#move-modal .modal-content .actions .clear-save .btn,
+#share-modal .modal-content .actions .clear-save .btn {
   text-transform: uppercase;
   padding: 10px 20px;
   border: none;
   -webkit-transition: all 0.3s 0.1s;
           transition: all 0.3s 0.1s;
 }
-#renameResourceModal .modal-content .actions .clear-save .btn:focus,
-#newFolderModal .modal-content .actions .clear-save .btn:focus,
-#moveResourceModal .modal-content .actions .clear-save .btn:focus,
-#shareResourceModal .modal-content .actions .clear-save .btn:focus {
+#rename-modal .modal-content .actions .clear-save .btn:focus,
+#new-folder-modal .modal-content .actions .clear-save .btn:focus,
+#move-modal .modal-content .actions .clear-save .btn:focus,
+#share-modal .modal-content .actions .clear-save .btn:focus {
   outline: none;
   box-shadow: none;
 }
-#renameResourceModal .modal-content .actions .clear-save .btn.btn-clear,
-#newFolderModal .modal-content .actions .clear-save .btn.btn-clear,
-#moveResourceModal .modal-content .actions .clear-save .btn.btn-clear,
-#shareResourceModal .modal-content .actions .clear-save .btn.btn-clear {
+#rename-modal .modal-content .actions .clear-save .btn.btn-clear,
+#new-folder-modal .modal-content .actions .clear-save .btn.btn-clear,
+#move-modal .modal-content .actions .clear-save .btn.btn-clear,
+#share-modal .modal-content .actions .clear-save .btn.btn-clear {
   color: #5795ba;
   background-color: transparent;
   font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
   font-weight: 700;
 }
-#renameResourceModal .modal-content .actions .clear-save .btn.btn-clear:hover,
-#newFolderModal .modal-content .actions .clear-save .btn.btn-clear:hover,
-#moveResourceModal .modal-content .actions .clear-save .btn.btn-clear:hover,
-#shareResourceModal .modal-content .actions .clear-save .btn.btn-clear:hover,
-#renameResourceModal .modal-content .actions .clear-save .btn.btn-clear:focus,
-#newFolderModal .modal-content .actions .clear-save .btn.btn-clear:focus,
-#moveResourceModal .modal-content .actions .clear-save .btn.btn-clear:focus,
-#shareResourceModal .modal-content .actions .clear-save .btn.btn-clear:focus {
+#rename-modal .modal-content .actions .clear-save .btn.btn-clear:hover,
+#new-folder-modal .modal-content .actions .clear-save .btn.btn-clear:hover,
+#move-modal .modal-content .actions .clear-save .btn.btn-clear:hover,
+#share-modal .modal-content .actions .clear-save .btn.btn-clear:hover,
+#rename-modal .modal-content .actions .clear-save .btn.btn-clear:focus,
+#new-folder-modal .modal-content .actions .clear-save .btn.btn-clear:focus,
+#move-modal .modal-content .actions .clear-save .btn.btn-clear:focus,
+#share-modal .modal-content .actions .clear-save .btn.btn-clear:focus {
   color: #2f7dab;
 }
-#renameResourceModal .modal-content .actions .clear-save .btn.btn-save,
-#newFolderModal .modal-content .actions .clear-save .btn.btn-save,
-#moveResourceModal .modal-content .actions .clear-save .btn.btn-save,
-#shareResourceModal .modal-content .actions .clear-save .btn.btn-save {
+#rename-modal .modal-content .actions .clear-save .btn.btn-save,
+#new-folder-modal .modal-content .actions .clear-save .btn.btn-save,
+#move-modal .modal-content .actions .clear-save .btn.btn-save,
+#share-modal .modal-content .actions .clear-save .btn.btn-save {
   color: #ffffff;
   background-color: #5795ba;
   font-size: 16px;
 }
-#renameResourceModal .modal-content .actions .clear-save .btn.btn-save:hover,
-#newFolderModal .modal-content .actions .clear-save .btn.btn-save:hover,
-#moveResourceModal .modal-content .actions .clear-save .btn.btn-save:hover,
-#shareResourceModal .modal-content .actions .clear-save .btn.btn-save:hover,
-#renameResourceModal .modal-content .actions .clear-save .btn.btn-save:focus,
-#newFolderModal .modal-content .actions .clear-save .btn.btn-save:focus,
-#moveResourceModal .modal-content .actions .clear-save .btn.btn-save:focus,
-#shareResourceModal .modal-content .actions .clear-save .btn.btn-save:focus {
+#rename-modal .modal-content .actions .clear-save .btn.btn-save:hover,
+#new-folder-modal .modal-content .actions .clear-save .btn.btn-save:hover,
+#move-modal .modal-content .actions .clear-save .btn.btn-save:hover,
+#share-modal .modal-content .actions .clear-save .btn.btn-save:hover,
+#rename-modal .modal-content .actions .clear-save .btn.btn-save:focus,
+#new-folder-modal .modal-content .actions .clear-save .btn.btn-save:focus,
+#move-modal .modal-content .actions .clear-save .btn.btn-save:focus,
+#share-modal .modal-content .actions .clear-save .btn.btn-save:focus {
   background-color: #2f7dab;
 }
-#moveResourceModal .modal-content .modal-body {
+#move-modal .modal-content .modal-body {
   height: 300px;
   cursor: pointer;
 }
-#moveResourceModal .modal-content .modal-body .box-row.disabled {
+#move-modal .modal-content .modal-body .box-row.disabled {
   opacity: 0.5;
 }
-#shareResourceModal .modal-content {
-  max-width: 500px;
+@media (max-width: 768px) {
+  #share-modal .modal-content {
+    width: calc(100% - 10px);
+    max-width: calc(100% - 10px);
+  }
 }
-#shareResourceModal .modal-content .modal-body {
+#share-modal .modal-dialog {
+  max-width: 800px;
+  width: 800px;
+}
+#share-modal .modal-dialog .modal-content {
+  max-width: 800px;
+  width: 800px;
+  margin: 0 auto;
+}
+#share-modal .modal-dialog .modal-content.cannotWrite {
+  width: 600px;
+}
+#share-modal .modal-dialog .modal-content.cannotWrite .bootstrap-select button {
+  padding-left: 40px;
+}
+#share-modal .modal-dialog .modal-content .modal-body {
   max-height: 500px;
+  overflow-y: scroll;
 }
-#shareResourceModal .modal-content .modal-body .row {
+#share-modal .modal-dialog .modal-content .modal-body input {
+  color: #000;
+  outline: none;
+  border-radius: 0px;
+  box-shadow: none;
+  border: 1px solid #ccc;
+  height: 40px;
+}
+#share-modal .modal-dialog .modal-content .modal-body .checkbox {
+  margin-top: 8px;
+  margin-bottom: 0;
+}
+#share-modal .modal-dialog .modal-content .modal-body select {
+  outline: none;
+  height: 40px;
+}
+#share-modal .modal-dialog .modal-content .modal-body .bootstrap-select {
+  outline: none;
+}
+#share-modal .modal-dialog .modal-content .modal-body .bootstrap-select button {
+  padding-left: 5px;
+  outline: none;
+  height: 40px;
+}
+#share-modal .modal-dialog .modal-content .modal-body .row {
   padding: 5px 0;
 }
-#shareResourceModal .modal-content .modal-body .row .name {
+#share-modal .modal-dialog .modal-content .modal-body .row .name {
   padding: 8px 0 0 20px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
-#shareResourceModal .modal-content .modal-body .row .btn-plus {
+#share-modal .modal-dialog .modal-content .modal-body .row .btn-plus {
   width: 25px;
   height: 25px;
   float: right;
   outline: none;
-  background: #FF5722 !important;
+  background: #5097A5;
 }
-#shareResourceModal .modal-content .modal-body .row .btn-delete {
+#share-modal .modal-dialog .modal-content .modal-body .row .btn-delete {
   width: 25px;
   height: 25px;
   float: right;
   outline: none;
   background: #999 !important;
 }
-#shareResourceModal .modal-content .modal-body .hidden-container {
+#share-modal .modal-dialog .modal-content .modal-body .hidden-container {
   border: 0px solid #ccc;
   padding-right: 24px;
   margin-right: 12px;
 }
-#shareResourceModal .modal-content .modal-body .scroll-container {
+#share-modal .modal-dialog .modal-content .modal-body .scroll-container {
   height: 250px;
   overflow-y: scroll;
   overflow-x: hidden;
   border: 1px solid #ccc;
   padding-right: 24px;
 }
-#shareResourceModal .modal-content .modal-body .bootstrap-select button.disabled {
+#share-modal .modal-dialog .modal-content .modal-body .bootstrap-select button.disabled {
   background: #ffffff;
   border: 1px solid #ccc;
   color: #333;
   opacity: 1;
 }
-#shareResourceModal .modal-content .modal-body .bootstrap-select button.disabled .glyphicon {
+#share-modal .modal-dialog .modal-content .modal-body .bootstrap-select button.disabled .glyphicon {
   display: none;
 }
-#shareResourceModal .modal-content .modal-body .bootstrap-select.small {
+#share-modal .modal-dialog .modal-content .modal-body .bootstrap-select.small {
   width: 80px;
 }
-#shareResourceModal .modal-content .modal-body .bootstrap-select.open .dropdown-menu {
+#share-modal .modal-dialog .modal-content .modal-body .bootstrap-select.open .dropdown-menu {
   padding: 0 !important;
   border-radius: 0px !important;
 }
-#shareResourceModal .modal-content .modal-body .btn-info {
+#share-modal .modal-dialog .modal-content .modal-body .btn-info {
   border-radius: 50%;
   width: 40px;
   height: 40px;
   font-size: 18px;
   margin: 5px 0;
 }
-#shareResourceModal .modal-content .modal-body .btn-info.btn-circle {
+#share-modal .modal-dialog .modal-content .modal-body .btn-info.btn-circle {
   background: #5795ba;
   color: #ffffff;
   border: none;
 }
-#shareResourceModal .modal-content .modal-body .btn-info.btn-circle.compose {
+#share-modal .modal-dialog .modal-content .modal-body .btn-info.btn-circle.compose {
   background: #FF5722;
 }
-#shareResourceModal .modal-content .modal-body .btn-info.btn-circle.template {
+#share-modal .modal-dialog .modal-content .modal-body .btn-info.btn-circle.template {
   background: #5097A5;
 }
-#shareResourceModal .modal-content .modal-body .btn-info.btn-circle.element {
+#share-modal .modal-dialog .modal-content .modal-body .btn-info.btn-circle.element {
   background: #71977F;
 }
-#shareResourceModal .modal-content .modal-body .btn-info.btn-circle.metadata,
-#shareResourceModal .modal-content .modal-body .btn-info.btn-circle.instance {
+#share-modal .modal-dialog .modal-content .modal-body .btn-info.btn-circle.metadata,
+#share-modal .modal-dialog .modal-content .modal-body .btn-info.btn-circle.instance {
   background: #6A8B92;
 }
-#shareResourceModal .modal-content .modal-body .btn-info.btn-circle.folder {
+#share-modal .modal-dialog .modal-content .modal-body .btn-info.btn-circle.folder {
   background: #9E9E9E;
 }
-#shareResourceModal .modal-content .modal-body .btn-info.btn-circle-outline {
+#share-modal .modal-dialog .modal-content .modal-body .btn-info.btn-circle-outline {
   box-shadow: none;
   background: #ffffff;
   color: #5795ba;
   border: 1px solid #5795ba;
 }
-#shareResourceModal .modal-content .modal-body .btn-info.btn-close {
+#share-modal .modal-dialog .modal-content .modal-body .btn-info.btn-close {
   box-shadow: none;
   background: #666666;
   color: #ffffff;
   border: none;
 }
-#shareResourceModal .modal-content .modal-body .btn-info.btn-add {
+#share-modal .modal-dialog .modal-content .modal-body .btn-info.btn-add {
   height: 25px;
   width: 25px;
   border-radius: 50%;
@@ -14629,6 +14692,13 @@ table.apiKey td {
   padding: 0px 1px 1px 2px;
   margin: 6px 25px;
   outline: none;
+}
+#share-modal .modal-dialog .modal-content .modal-body h5,
+#share-modal .modal-dialog .modal-content .modal-body .minTop {
+  margin: 5px 0;
+}
+#share-modal .modal-dialog .modal-content .modal-body .topMinus10 {
+  margin-top: -10px;
 }
 @media (min-width: 768px) {
   #sidebar-left {

@@ -1,0 +1,55 @@
+<div class="modal-dialog">
+  <div class="modal-content">
+    <div class="modal-header" id="moveModalHeader">
+      <div class="row">
+
+        <div class="modal-title col-sm-11">
+          <h5 role="button" class="back-arrow-click" ng-click="move.openParent()" aria-label="Back"
+              tooltip="back to {{move.currentDestination.displayName}}"
+              tooltip-trigger
+              tooltip-animation="false"
+              tooltip-placement="left"
+              data-toggle="tooltip">
+            <i class="fa fa-arrow-left"></i> {{move.currentDestination.displayName}}
+          </h5>
+        </div>
+
+        <button class="close col-sm-1" type="button" ng-click="dc.moveModalVisible=false;" aria-label="Close"><span
+            aria-hidden="true">&times;</span></button>
+      </div>
+    </div>
+    <div class="modal-body">
+
+      <!-- show the folders first -->
+      <div ng-if="dc.isFolder(resource)" class="box-row row"
+          ng-class="{ selected: move.isDestinationSelected(resource)}"
+          ng-repeat="(index, resource) in move.destinationResources">
+        <div class="col-sm-11" ng-click="move.selectDestination(resource)"><i style="font-size:20px;padding-right:5px"
+            class="fa" ng-class="move.getResourceIconClass(resource)"></i> {{resource.displayName}}
+        </div>
+        <div class="col-sm-1" ng-click="move.openDestination(resource)" tooltip="open {{resource.displayName}}"
+            tooltip-trigger
+            tooltip-animation="false"
+            tooltip-placement="left"
+            data-toggle="tooltip"><i class="fa fa-arrow-right"></i></div>
+      </div>
+
+
+      <div ng-if="!move.isFolder(resource)" class="box-row row disabled"
+          ng-repeat="(index, resource) in move.destinationResources">
+        <div class="col-sm-11" disabled="disabled"><i style="font-size:20px;padding-right:5px" class="fa"
+            ng-class="move.getResourceIconClass(resource)"></i>{{resource.displayName}}
+        </div>
+      </div>
+
+    </div>
+    <div class="modal-footer actions">
+      <div class="clear-save">
+        <button ng-disabled="move.moveDisabled()" ng-click="move.updateResource();dc.moveModalVisible=false;"
+            type="button"
+            class="btn btn-save confirm"> Move
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
