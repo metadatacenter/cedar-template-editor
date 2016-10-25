@@ -3,13 +3,13 @@
 define([
   'angular'
 ], function (angular) {
-  angular.module('cedar.templateEditor.templateElement.cedarTemplateElementDirective', [])
-      .directive('cedarTemplateElement', cedarTemplateElementDirective);
+  angular.module('cedar.templateEditor.templateElement.cedarRuntimeElement', [])
+      .directive('cedarRuntimeElement', cedarRuntimeElement);
 
-  cedarTemplateElementDirective.$inject = ['$rootScope', 'DataManipulationService', 'DataUtilService',
-                                           'SpreadsheetService'];
+  cedarRuntimeElement.$inject = ['$rootScope', 'DataManipulationService', 'DataUtilService',
+                                 'SpreadsheetService'];
 
-  function cedarTemplateElementDirective($rootScope, DataManipulationService, DataUtilService, SpreadsheetService) {
+  function cedarRuntimeElement($rootScope, DataManipulationService, DataUtilService, SpreadsheetService) {
 
     var directive = {
       restrict   : 'EA',
@@ -19,16 +19,23 @@ define([
         delete       : '&',
         model        : '=',
         isRootElement: "=",
-        isEditData   : "="
+        depth:'='
       },
-      templateUrl: 'scripts/template-element/cedar-template-element.directive.html',
+      templateUrl: 'scripts/template-element/cedar-runtime-element.directive.html',
       link       : linker
     };
 
     return directive;
 
-    function linker(scope, element, attrs) {
+    function linker(scope, el, attrs) {
+
       scope.elementId = DataManipulationService.idOf(scope.element) || DataManipulationService.generateGUID();
+      scope.uuid = DataManipulationService.generateTempGUID();
+      scope.showCardinality = false;
+      scope.selectedTab = 0;
+      scope.expanded = false;
+
+
 
       var resetElement = function (el, settings) {
         angular.forEach(el, function (model, key) {
@@ -100,88 +107,58 @@ define([
         });
       }
 
-      var parseElement = function () {
-        if (!$rootScope.isRuntime() && scope.element) {
-          if (angular.isArray(scope.model)) {
-            angular.forEach(scope.model, function (m) {
-              $rootScope.findChildren($rootScope.propertiesOf(scope.element), m);
-            });
-          } else {
-            $rootScope.findChildren($rootScope.propertiesOf(scope.element), scope.model);
-          }
-        }
-      }
-
-      if (!$rootScope.isRuntime()) {
-        if (!scope.model) {
-          if (scope.element.items) {
-            scope.model = [];
-          } else {
-            scope.model = {};
-          }
-        }
-
-        parseElement();
-      }
-
-      if (!scope.state) {
-        if (scope.element && $rootScope.schemaOf(scope.element)._ui && $rootScope.schemaOf(scope.element)._ui.title) {
-          scope.state = "completed";
-        } else {
-          scope.state = "creating";
-        }
-      }
-
-      scope.selectedTab = scope.selectedTab || 0;
       scope.selectTab = function (index) {
         scope.selectedTab = index;
       }
 
-      scope.isEditState = function () {
-        return (DataManipulationService.isEditState(scope.element));
-      };
-
       scope.isNested = function () {
-        return (DataManipulationService.isNested(scope.element));
+        return DataManipulationService.isNested(scope.element);
       };
 
-      // add a multiple cardinality element
+      scope.getNestingDepth = function () {
+        return scope.depth;
+      };
+
+      scope.getNestingMargin = function () {
+        return 'margin-left: ' + scope.depth * 20 + 'px';
+      }
 
 
+      scope.getParentTitle = function () {
+        return 'parent';
+      };
 
-      // add a multiple cardinality element
-      scope.selectedTab = 0;
+      scope.getTitle = function () {
+        return DataManipulationService.getFieldSchema(scope.element)._ui.title;
+      };
+
       scope.addElement = function () {
-        console.log('addElement');
-        if ($rootScope.isRuntime()) {
-          if ((!scope.element.maxItems || scope.model.length < scope.element.maxItems)) {
-            var seed = {};
-            console.log(scope.model);
-            if (scope.model.length > 0) {
-              seed = angular.copy(scope.model[0]);
-              console.log(seed);
-              resetElement(seed, scope.element);
-             console.log (angular.isArray(scope.model));
-              scope.model.push(seed);
+
+        if ((!scope.element.maxItems || scope.model.length < scope.element.maxItems)) {
+          var seed = {};
+
+          if (scope.model.length > 0) {
+
+            seed = angular.copy(scope.model[0]);
+            resetElement(seed, scope.element);
+            scope.model.push(seed);
+
+          } else {
+
+            scope.model.push(seed);
+            if (angular.isArray(scope.model)) {
+              angular.forEach(scope.model, function (m) {
+                $rootScope.findChildren($rootScope.propertiesOf(scope.element), m);
+              });
             } else {
-              console.log ('else ' +angular.isArray(scope.model));
-              console.log (scope.model);
-              scope.model.push(seed);
-              if (angular.isArray(scope.model)) {
-                angular.forEach(scope.model, function (m) {
-                  $rootScope.findChildren($rootScope.propertiesOf(scope.element), m);
-                });
-              } else {
-                $rootScope.findChildren($rootScope.propertiesOf(scope.element), scope.model);
-              }
-              resetElement(seed, scope.element);
+              $rootScope.findChildren($rootScope.propertiesOf(scope.element), scope.model);
             }
-            scope.selectedTab = scope.model.length - 1;
+            resetElement(seed, scope.element);
           }
+          scope.selectedTab = scope.model.length - 1;
         }
       };
 
-      // remove a multiple cardinality element
       scope.removeElement = function (index) {
         if (scope.model.length > scope.element.minItems) {
           scope.model.splice(index, 1);
@@ -195,10 +172,13 @@ define([
         SpreadsheetService.switchToSpreadsheetElement(scope, element);
       };
 
-      scope.switchExpandedState = function (domId) {
-        $rootScope.toggleElement(domId);
+      scope.toggleExpanded = function () {
+        scope.expanded = !scope.expanded
       };
 
+      scope.isExpanded = function () {
+        return scope.expanded;
+      };
 
       scope.removeChild = function (fieldOrElement) {
         // fieldOrElement must contain the schema level
@@ -228,31 +208,18 @@ define([
         }
       };
 
-      // is the cardinality details table open?
-      scope.showCardinality = false;
-
       scope.isCardinal = function () {
         return DataManipulationService.isCardinalElement(scope.element);
       };
 
-      // try to deselect this element
-      scope.canDeselect = function (element) {
-        return DataManipulationService.canDeselect(element);
+      scope.canDeselect = function (fieldOrElement) {
+        return DataManipulationService.canDeselect(fieldOrElement);
       };
 
-      // try to select this element
       scope.canSelect = function (select) {
         if (select)
           DataManipulationService.canSelect(scope.element);
       };
-
-      // when element is deseleted, look at errors and parse if none
-      scope.$on('deselect', function (event, element, errorMessages) {
-        if (element == scope.element) {
-          scope.errorMessages = errorMessages;
-          if (errorMessages.length == 0) parseElement();
-        }
-      });
 
       scope.renameChildKey = function (child, newKey) {
         if (!child) {
@@ -297,35 +264,79 @@ define([
         }
       }
 
-
-
-      // try to deselect this field
-      scope.canDeselect = function (field) {
-        return DataManipulationService.canDeselect(field, scope.renameChildKey);
+      scope.isMultiple = function () {
+        return $rootScope.isArray(scope.model);
       };
 
-      scope.$on('saveForm', function (event) {
-      if (scope.isEditState() && !scope.canDeselect(scope.element)) {
+      scope.getDomId = function (e) {
+        var s = $rootScope.schemaOf(e);
+        console.log(s);
+        return DataManipulationService.getDomId(s);
+      }
 
-          scope.$emit("invalidElementState",
-              ["add", $rootScope.schemaOf(scope.element)._ui.title, scope.element["@id"]]);
-        } else {
-          scope.$emit("invalidElementState",
-              ["remove", $rootScope.schemaOf(scope.element)._ui.title, scope.element["@id"]]);
+      scope.nextChild = function (fieldOrElement) {
+
+        console.log('nextChild');
+        if (fieldOrElement) {}
+
+        var id = $rootScope.schemaOf(fieldOrElement)["@id"];
+        var title = $rootScope.schemaOf(fieldOrElement)._ui.title;
+        var selectedKey;
+        var props = scope.element.properties;
+
+        // find the field or element in the form's properties
+        angular.forEach(props, function (value, key) {
+          if ($rootScope.schemaOf(value)["@id"] == id) {
+            selectedKey = key;
+          }
+        });
+
+        if (selectedKey) {
+
+          // and the order array
+          var order = $rootScope.schemaOf(scope.element)._ui.order;
+          var idx = order.indexOf(selectedKey);
+
+          idx += 1;
+          if (idx < order.length) {
+            var nextKey = order[idx];
+            return props[nextKey];
+          } else {
+            console.log('go up one level');
+          }
+        }
+        return null;
+      };
+
+      scope.$on('setActive', function (event, args) {
+        var id = args[0];
+
+        if (id === $rootScope.schemaOf(scope.element)['@id']) {
+          scope.setActive();
         }
       });
 
-      scope.$watchCollection("element.properties['@context'].properties", function () {
-        parseElement();
-      });
+      scope.activeFieldOrElement;
 
-      scope.$watchCollection("element.properties", function () {
-        parseElement();
-      });
+      // set this element active by choosing the next field or element in this element
+      scope.setActive = function () {
 
-      scope.$watchCollection("element.items.properties", function () {
-        parseElement();
-      });
+        console.log('setActive ' + scope.activeFieldOrElement);
+        var next = scope.nextChild(scope.activeFieldOrElement);
+
+
+        // get the first child and set it active
+        var props = scope.element.properties;
+        var order = $rootScope.schemaOf(scope.element)._ui.order;
+        var id = props[order[0]]['@id'];
+
+        console.log('broadcast setActive ' + id);
+
+        $rootScope.$broadcast("setActive", [id]);
+
+      };
+
+
     }
 
   };

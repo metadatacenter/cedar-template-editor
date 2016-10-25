@@ -552,6 +552,13 @@ var TemplateCreatorPage = function () {
         return deferred.promise;
       };
 
+      this.createTemplateNew = function () {
+
+        browser.actions().mouseMove(createButton).perform();
+        createTemplateButton.click();
+
+      };
+
 
       this.setTemplateTitle = function (text) {
 
@@ -569,6 +576,14 @@ var TemplateCreatorPage = function () {
           });
         });
         return deferred.promise;
+      };
+
+      this.setTemplateTitleNew = function (text) {
+
+          browser.actions().doubleClick(templateTitle).perform();
+          templateTitle.sendKeys(text);
+          templateTitleForm.submit();
+
       };
 
       this.setTemplateDescription = function (text) {

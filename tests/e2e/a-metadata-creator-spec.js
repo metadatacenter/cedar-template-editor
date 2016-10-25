@@ -21,174 +21,178 @@ describe('metadata-creator', function () {
   // before each test, load a new page and create a template
   // maximize the window area for clicking
   beforeEach(function () {
+    browser.ignoreSynchronization = false;
     workspacePage = WorkspacePage;
     metadataPage = MetadataPage;
     templatePage = TemplatePage;
     toastyPage = ToastyPage;
     browser.driver.manage().window().maximize();
     workspacePage.get();
+    expect(workspacePage.createPageName().isPresent()).toBe(true);
+    expect(workspacePage.createPageName().isDisplayed()).toBe(true);
   });
 
   for (var j = 0; j < 1; j++) {
     (function () {
 
 
-      // create the sample template
-      it("should create the sample template", function () {
+          // create the sample template
+          it("should create the sample template", function () {
 
-        sampleTitle = "template" + templatePage.getRandomInt(1, 9999999999);
-        sampleTemplateUrl = null;
+            sampleTitle = "template" + templatePage.getRandomInt(1, 9999999999);
+            sampleTemplateUrl = null;
 
-        workspacePage.isReady(workspacePage.createPageName()).then(function () {
+            templatePage.createTemplateNew();
+            templatePage.setTemplateTitleNew(sampleTitle);
+            templatePage.createSaveTemplateButton().click();
 
-          templatePage.createTemplate().then(function () {
+            toastyPage.isToastyNew();
 
-            templatePage.setTemplateTitle(sampleTitle).then(function () {
+            // get the url of this element
+            browser.getCurrentUrl().then(function (t) {
+              sampleTemplateUrl = t;
+              console.log('sampleTemplateUrl ' + sampleTemplateUrl);
+            });
 
-              templatePage.isReady(templatePage.createSaveTemplateButton()).then(function () {
-                templatePage.createSaveTemplateButton().click().then(function () {
+          });
 
-                  toastyPage.isToasty().then(function () {
 
-                    // get the url of this element
-                    browser.getCurrentUrl().then(function (t) {
-                      sampleTemplateUrl = t;
+          xit("should open the sample template", function () {
+            browser.get(sampleTemplateUrl);
+            expect(templatePage.createPageName().isPresent()).toBe(true);
+            expect(templatePage.createPageName().isDisplayed()).toBe(true);
+          });
+
+          it("should create metadata from the template", function () {
+
+            sampleMetadataUrl = null;
+
+            workspacePage.doubleClickNameNew(sampleTitle, 'template');
+            metadataPage.createSaveMetadataButton().click();
+
+            // this will bring up the popup with the confirmation message
+            toastyPage.isToastyNew();
+
+            browser.getCurrentUrl().then(function (t) {
+              sampleMetadataUrl = t;
+              console.log('sampleMetadataUrl ' + sampleMetadataUrl);
+
+            });
+
+          });
+
+
+          xdescribe('with sample template', function () {
+
+
+            it("should open metadata editor", function () {
+
+              workspacePage.isReady(workspacePage.createPageName()).then(function () {
+                workspacePage.doubleClickName(sampleTitle, 'template').then(function () {
+                  metadataPage.isReady(metadataPage.createPageName()).then(function () {
+                    expect(metadataPage.isMetadata()).toBe(true);
+                  });
+                });
+              });
+            });
+
+            it("should show metadata editor header, back arrow, title, and json preview", function () {
+
+              workspacePage.isReady(workspacePage.createPageName()).then(function () {
+                browser.get(sampleMetadataUrl).then(function () {
+                  metadataPage.isReady(metadataPage.createPageName()).then(function () {
+
+                    // should have top nav basics displayed
+                    expect(metadataPage.topNavigation().isDisplayed()).toBe(true);
+                    expect(metadataPage.topNavBackArrow().isDisplayed()).toBe(true);
+                    expect(metadataPage.documentTitle().isDisplayed()).toBe(true);
+                    expect(metadataPage.templateJson().isDisplayed()).toBe(true);
+                    expect(metadataPage.metadataJson().isDisplayed()).toBe(true);
+
+                  });
+                });
+              });
+            });
+
+            it("should have the correct document title", function () {
+
+              workspacePage.isReady(workspacePage.createPageName()).then(function () {
+                browser.get(sampleMetadataUrl).then(function () {
+                  metadataPage.isReady(metadataPage.createPageName()).then(function () {
+
+                    // and the right document
+                    metadataPage.isReady(metadataPage.documentTitle()).then(function () {
+                      metadataPage.documentTitle().getText().then(function (text) {
+                        var result = text.indexOf(sampleTitle) !== -1;
+                        expect(result).toBe(true);
+                      });
                     });
                   });
                 });
               });
             });
-          });
-        });
-      });
 
+            it("should have the correct page title", function () {
 
-      it("should open the sample template", function () {
+              workspacePage.isReady(workspacePage.createPageName()).then(function () {
+                browser.get(sampleMetadataUrl).then(function () {
+                  metadataPage.isReady(metadataPage.createPageName()).then(function () {
 
-        workspacePage.isReady(workspacePage.createPageName()).then(function () {
-          browser.get(sampleTemplateUrl).then(function () {
-            templatePage.isReady(templatePage.createTemplatePage()).then(function () {
-            });
-          });
-        });
-      });
-
-      it("should create metadata from the template", function () {
-
-        sampleMetadataUrl = null;
-
-        workspacePage.isReady(workspacePage.createPageName()).then(function () {
-
-          workspacePage.doubleClickName(sampleTitle, 'template').then(function () {
-
-            // wait for the metadata form to be displayed
-            metadataPage.isReady(metadataPage.createPageName()).then(function () {
-
-              // save the metadata, don't need to enter anything into form
-              metadataPage.isReady(metadataPage.createSaveMetadataButton()).then(function () {
-
-                metadataPage.createSaveMetadataButton().click().then(function () {
-
-                  // this will bring up the popup with the confirmation message
-                  toastyPage.isToasty().then(function () {
-
-                    browser.getCurrentUrl().then(function (t) {
-                      sampleMetadataUrl = t;
-
+                    // and the right page title
+                    metadataPage.isReady(metadataPage.pageTitle()).then(function () {
+                      metadataPage.pageTitle().getText().then(function (text) {
+                        expect(metadataPage.metadataPageTitle() === text).toBe(true);
+                      });
                     });
                   });
                 });
               });
             });
+
           });
-        });
-      });
+
+          it("should delete metadata from the workspace, ", function () {
+
+            if (sampleMetadataUrl) {
+              //workspacePage.deleteResourceNew(sampleTitle, workspacePage.metadataType());
+
+              createSearchNavInput.sendKeys(name + protractor.Key.ENTER);
 
 
-      describe('with sample template', function () {
+              var createFirst = element.all(by.css(createFirstCss + type)).first();
 
+              createFirst.click();
 
-        it("should open metadata editor", function () {
+              createTrashButton.click();
 
-          workspacePage.isReady(workspacePage.createPageName()).then(function () {
-            workspacePage.doubleClickName(sampleTitle, 'template').then(function () {
-              metadataPage.isReady(metadataPage.createPageName()).then(function () {
-                expect(metadataPage.isMetadata()).toBe(true);
+              expect(createConfirmationDialog.getAttribute(sweetAlertCancelAttribute)).toBe('true');
+              expect(createConfirmationDialog.getAttribute(sweetAlertConfirmAttribute)).toBe('true');
+
+              createSweetAlertConfirmButton.click();
+
+              createToastyMessageText.getText().then(function (value) {
+               console.log('createToastyMessageText');
+                console.log(value);
+
+                var result = value.indexOf(toastyMessage + name + toastyMessageDeleted) !== -1;
+                console.log('result');
+                console.log(result);
               });
-            });
+            }
+
           });
-        });
 
-        it("should show metadata editor header, back arrow, title, and json preview", function () {
 
-          workspacePage.isReady(workspacePage.createPageName()).then(function () {
-            browser.get(sampleMetadataUrl).then(function () {
-              metadataPage.isReady(metadataPage.createPageName()).then(function () {
+          it("should delete template from the workspace, ", function () {
 
-                // should have top nav basics displayed
-                expect(metadataPage.topNavigation().isDisplayed()).toBe(true);
-                expect(metadataPage.topNavBackArrow().isDisplayed()).toBe(true);
-                expect(metadataPage.documentTitle().isDisplayed()).toBe(true);
-                expect(metadataPage.templateJson().isDisplayed()).toBe(true);
-                expect(metadataPage.metadataJson().isDisplayed()).toBe(true);
+            if (sampleTemplateUrl) {
+              workspacePage.deleteResourceNew(sampleTitle, workspacePage.templateType());
+            }
 
-              });
-            });
           });
-        });
-
-        it("should have the correct document title", function () {
-
-          workspacePage.isReady(workspacePage.createPageName()).then(function () {
-            browser.get(sampleMetadataUrl).then(function () {
-              metadataPage.isReady(metadataPage.createPageName()).then(function () {
-
-                // and the right document
-                metadataPage.isReady(metadataPage.documentTitle()).then(function () {
-                  metadataPage.documentTitle().getText().then(function (text) {
-                    var result = text.indexOf(sampleTitle) !== -1;
-                    expect(result).toBe(true);
-                  });
-                });
-              });
-            });
-          });
-        });
-
-        it("should have the correct page title", function () {
-
-          workspacePage.isReady(workspacePage.createPageName()).then(function () {
-            browser.get(sampleMetadataUrl).then(function () {
-              metadataPage.isReady(metadataPage.createPageName()).then(function () {
-
-                // and the right page title
-                metadataPage.isReady(metadataPage.pageTitle()).then(function () {
-                  metadataPage.pageTitle().getText().then(function (text) {
-                    expect(metadataPage.metadataPageTitle() === text).toBe(true);
-                  });
-                });
-              });
-            });
-          });
-        });
-
-      });
-
-      it("should delete metadata from the workspace, ", function () {
-        workspacePage.isReady(workspacePage.createPageName()).then(function () {
-          workspacePage.deleteResource(sampleTitle, workspacePage.metadataType());
-        });
-      });
 
 
-      it("should delete template from the workspace, ", function () {
-        workspacePage.isReady(workspacePage.createPageName()).then(function () {
-          workspacePage.deleteResource(sampleTitle, workspacePage.templateType());
-        });
-      });
-
-
-    })
+        })
     (j);
   }
 
@@ -198,15 +202,12 @@ describe('metadata-creator', function () {
 
 
       it("should delete template from the workspace, ", function () {
-        workspacePage.isReady(workspacePage.createPageName()).then(function () {
-          workspacePage.deleteResource('*', workspacePage.templateType());
-        });
+        workspacePage.deleteResourceNew('*', workspacePage.templateType());
+
       });
 
-      it("should delete metadata from the workspace, ", function () {
-        workspacePage.isReady(workspacePage.createPageName()).then(function () {
-          workspacePage.deleteResource('*', workspacePage.metadataType());
-        });
+      xit("should delete metadata from the workspace, ", function () {
+        workspacePage.deleteResourceNew('*', workspacePage.metadataType());
       });
 
     })

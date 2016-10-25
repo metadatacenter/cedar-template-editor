@@ -1,0 +1,33 @@
+<div class="row" ng-class="{'isActive' : isActive(index)}" id="{{getId(index)}}">
+  <div class="col-sm-3">
+    <div class="pull-right title" ng-class="{'isActive' : isActive(index)}">{{getTitle()}}</div>
+  </div>
+  <div class="col-sm-9">
+
+    <form name="list-edit-form" ng-submit="onSubmit()">
+    <div ng-init="initializeSelectionField()" class="field-list" >
+
+      <div class="form-group form-group-narrow validation-pattern" ng-class="{'required': $root.schemaOf(field)._valueConstraints.requiredValue}">
+
+        <select class="form-control"
+            ng-class="{'isActive' : isActive(index), 'required': $root.schemaOf(field)._valueConstraints.requiredValue}"
+            multiple="false"
+            data-max-options="1"
+            field="field"
+            title="Please select"
+            ng-model="optionsUI.options"
+            ng-click="setActive(index)"
+            ng-change="updateModelFromUI(optionsUI)"
+            select-picker="">
+          <option  ng-click="setActive(index)"  ng-repeat="(i, value) in $root.schemaOf(field)._valueConstraints.literals"
+              value="{{$root.schemaOf(field)._valueConstraints.literals[i]['label']}}">
+            {{$root.schemaOf(field)._valueConstraints.literals[i]['label']}}
+          </option>
+        </select>
+      </div>
+
+     </div>
+      </form>
+
+  </div>
+</div>

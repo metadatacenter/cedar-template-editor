@@ -140,7 +140,7 @@ describe('element-creator', function () {
     browser.driver.manage().window().maximize();
   });
 
-  for (var j = 0; j < 1; j++) {
+  for (var j = 0; j < 0; j++) {
     (function () {
 
       // Verify that save button is present and active,

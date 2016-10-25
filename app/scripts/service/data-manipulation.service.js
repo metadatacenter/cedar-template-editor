@@ -251,6 +251,27 @@ define([
       $rootScope.selectedFieldOrElement = field;
     };
 
+
+    // set this field instance active
+    service.setActive = function (field, index, value) {
+        $rootScope.activeFieldOrElement = value ? $rootScope.schemaOf(field)['@id'] : null;
+        $rootScope.activeFieldOrElementIndex = value ? index : null;
+    };
+
+    service.isMultiple = function (fieldOrElement) {
+      return $rootScope.isArray(fieldOrElement);
+    };
+
+    service.hasNext = function (fieldOrElement) {
+      return true;
+    };
+
+
+    // is this field active
+    service.isActive = function (field, index) {
+      return $rootScope.activeFieldOrElement && ($rootScope.activeFieldOrElement === $rootScope.schemaOf(field)['@id'] && $rootScope.activeFieldOrElementIndex === index);
+    };
+
     // add an option to this field
     service.addOption = function (field) {
       var emptyOption = {
@@ -429,6 +450,8 @@ define([
 
     };
 
+
+
     // get the id of the node
     service.getNodeId = function (node) {
       var nodeId = node['@id'] || node.items['@id'];
@@ -437,18 +460,18 @@ define([
 
     // get the locator for the node's dom object
     service.getLocator = function (node, index) {
-      return 'dom-' + service.getNodeId(node)+ '-' + index;
+      return 'dom-' + service.getNodeId(node) + '-' + index;
     };
 
     // look to see if this node has been identified by angular as an invalid pattern
-    service.isValidPattern =  function(node, index)  {
-        var locator = service.getLocator(node,  index) + '.ng-invalid';
-        var target = jQuery('#' + locator);
-        return (target.length == 0);
+    service.isValidPattern = function (node, index) {
+      var locator = service.getLocator(node, index) + '.ng-invalid';
+      var target = jQuery('#' + locator);
+      return (target.length == 0);
     };
 
     // get the value of the dom object for this node
-    service.getDomValue =  function(node, index)  {
+    service.getDomValue = function (node, index) {
       var result;
       var locator = service.getLocator(node, index);
       var target = jQuery('#' + locator);
@@ -457,8 +480,6 @@ define([
       }
       return result;
     };
-
-
 
 
     /**
@@ -666,7 +687,7 @@ define([
       var result = true;
       if (!service.isEditState(field)) {
         if ($rootScope.selectedFieldOrElement && service.isEditState($rootScope.selectedFieldOrElement)) {
-            result = service.canDeselect($rootScope.selectedFieldOrElement);
+          result = service.canDeselect($rootScope.selectedFieldOrElement);
         }
         if (result) service.setSelected(field);
       }

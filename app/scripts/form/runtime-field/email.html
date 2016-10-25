@@ -1,0 +1,31 @@
+<div class="row" ng-class="{'isActive' : isActive(index)}" id="{{getId(index)}}">
+  <div class="col-sm-3">
+    <div class="pull-right title" ng-class="{'isActive' : isActive(index)}">{{getTitle()}}</div>
+  </div>
+  <div class="col-sm-9">
+
+    <form name="email-edit-form" ng-submit="onSubmit()">
+
+    <input type="email"  ng-click="setActive(index)"
+        class="form-control"
+        ng-class="{'isActive' : isActive(index), 'required': $root.schemaOf(field)._valueConstraints.requiredValue}"
+        placeholder="enter answer"
+        aria-label="enter answer"
+        ng-model="model['@value']"
+        validate-on="blur"
+        ng-pattern= "/^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/"/>
+
+    <!-- show whether text entry is valid or not -->
+    <div class="input-indicator-icons" ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
+
+    <!-- add + and x for add and delete -->
+    <div ng-if="isMultiple()" class="more-input-wrapper " ng-include="'scripts/form/partials/more-input-buttons.partial.html'"
+        ng-show="!$root.schemaOf(field).maxItems || $root.schemaOf(field).maxItems > 1 || ($root.schemaOf(field).maxItems ==1 && $root.schemaOf(field).minItems ==0)"></div>
+
+    <button ng-if="isActive(index)" type="submit" ng-click="onSubmit(index)"
+        class="btn btn-save confirm" >OK
+    </button>
+    </form>
+
+  </div>
+</div>

@@ -316,6 +316,35 @@ var WorkspacePage = function () {
 
   };
 
+  // delete a resource by name
+  this.deleteResourceNew = function (name, type) {
+
+
+    createSearchNavInput.sendKeys(name + protractor.Key.ENTER);
+
+
+    //var createFirst = element.all(by.css(createFirstCss + type)).first();
+    //
+    //createFirst.click();
+    //
+    //createTrashButton.click();
+    //
+    //expect(createConfirmationDialog.getAttribute(sweetAlertCancelAttribute)).toBe('true');
+    //expect(createConfirmationDialog.getAttribute(sweetAlertConfirmAttribute)).toBe('true');
+    //
+    //createSweetAlertConfirmButton.click();
+    //
+    //createToastyMessageText.getText().then(function (value) {
+    // console.log('createToastyMessageText');
+    //  console.log(value);
+    //
+    //  var result = value.indexOf(toastyMessage + name + toastyMessageDeleted) !== -1;
+    //  console.log('result');
+    //  console.log(result);
+    //});
+
+  };
+
   this.selectFolder = function (name) {
     var deferred = protractor.promise.defer();
 
@@ -369,6 +398,20 @@ var WorkspacePage = function () {
     });
 
     return deferred.promise;
+  };
+
+  // double click the template by title to open in metadata editor
+  this.doubleClickNameNew = function (name, type) {
+
+    createSearchNavInput.sendKeys(name).sendKeys(protractor.Key.ENTER);
+
+    // wait for search results to show in the breadcrumb
+    browser.sleep(2000);  // TODO not correctly waiting for search to return
+
+    // select the first result
+    var createFirst = element.all(by.css(createFirstCss + type)).first();
+    browser.actions().doubleClick(createFirst).perform();
+
   };
 
 

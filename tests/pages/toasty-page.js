@@ -51,6 +51,23 @@ var ToastyPage = function () {
     return deferred.promise;
   };
 
+  this.isToastyNew = function () {
+
+
+
+      createToastyToasts.each(function (toast) {
+
+        var message = toast.element(by.css('.toast-msg'));
+        message.getText().then(function (value) {
+
+          console.log('toast message ' + value);
+
+          createToastyClose.click();
+        });
+      });
+
+  };
+
 
 
 

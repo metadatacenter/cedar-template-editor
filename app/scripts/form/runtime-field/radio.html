@@ -1,0 +1,30 @@
+<div class="row" ng-class="{'isActive' : isActive(index)}" id="{{getId(index)}}">
+  <div class="col-sm-3">
+    <div class="pull-right title" ng-class="{'isActive' : isActive(index)}">{{getTitle()}}</div>
+  </div>
+  <div class="col-sm-9">
+
+    <form name="radio-edit-form" ng-submit="onSubmit()">
+          <div ng-init="initializeSelectionField()">
+            <div class="form-group radio-item"  ng-repeat="(i, value) in $root.schemaOf(field)._valueConstraints.literals">
+              <div class="radio radio-primary">
+                <input type="radio"
+                    ng-click="updateModelFromUI(value.label); $event.stopPropagation();setActive(index)"
+                    id="radio-{{uuid}}-{{index}}-{{i}}"
+                    name="radio-{{uuid}}-{{index}}-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}"
+                    ng-model="optionsUI.option"
+                    ng-value="value.label"/>
+                <label ng-click="$event.stopPropagation();"
+                    for="radio-{{uuid}}-{{index}}-{{i}}">{{$root.schemaOf(field)._valueConstraints.literals[i]['label']}}</label>
+              </div>
+              <div class="input-indicator-icons ng-valid ng-scope"
+                  ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
+            </div>
+          </div>
+
+      </form>
+
+
+  </div>
+</div>
+

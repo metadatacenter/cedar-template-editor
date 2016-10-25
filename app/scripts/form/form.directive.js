@@ -8,7 +8,8 @@ define([
 
   // TODO: refactor to cedarFormDirective <cedar-form-directive>
 
-  formDirective.$inject = ['$rootScope', '$document', '$timeout', 'DataManipulationService', 'FieldTypeService', 'DataUtilService'];
+  formDirective.$inject = ['$rootScope', '$document', '$timeout', 'DataManipulationService', 'FieldTypeService',
+                           'DataUtilService'];
 
   function formDirective($rootScope, $document, $timeout, DataManipulationService, FieldTypeService, DataUtilService) {
     return {
@@ -182,6 +183,8 @@ define([
 
             if ($rootScope.isRuntime()) {
               $scope.parseForm($scope.form.properties, model);
+
+              $rootScope.formModel = model;
             } else {
               $rootScope.findChildren($scope.form.properties, model);
             }
@@ -231,11 +234,11 @@ define([
                 } else {
                   $scope.parseForm($rootScope.propertiesOf(value), parentModel[name], name);
                 }
-              // If it is a template field
+                // If it is a template field
               } else {
                 // If it is not a static field
 
-               if (!value._ui || !value._ui.inputType || !FieldTypeService.isStaticField(value._ui.inputType)) {
+                if (!value._ui || !value._ui.inputType || !FieldTypeService.isStaticField(value._ui.inputType)) {
 
                   var min = value.minItems || 0;
 
@@ -345,6 +348,54 @@ define([
           return copiedForm;
         };
 
+        $scope.getType = function (item) {
+          var obj = $scope.form.properties[item];
+          var schema = $rootScope.schemaOf(obj);
+          return schema['@type'];
+        };
+
+        $scope.isField = function (item) {
+          return ($scope.getType(item) === 'https://schema.metadatacenter.org/core/TemplateField');
+        };
+
+        $scope.isStaticField = function (item) {
+          return ($scope.getType(item) === 'https://schema.metadatacenter.org/core/StaticTemplateField');
+        };
+
+        $scope.isElement = function (item) {
+          return ($scope.getType(item) === 'https://schema.metadatacenter.org/core/TemplateElement');
+        };
+
+        $scope.nextChild = function (fieldOrElement) {
+          console.log('nextChild');
+
+          var id = $rootScope.schemaOf(fieldOrElement)["@id"];
+          var selectedKey;
+          var props = $scope.form.properties;
+
+          // find the field or element in the form's properties
+          angular.forEach(props, function (value, key) {
+            if ($rootScope.schemaOf(value)["@id"] == id) {
+              selectedKey = key;
+            }
+          });
+
+          // if it is there, delete it
+          if (selectedKey) {
+
+            // and the order array
+            var idx = $scope.form._ui.order.indexOf(selectedKey);
+            idx += 1;
+            if (idx < $scope.form._ui.order.length) {
+
+              var nextKey = $scope.form._ui.order[idx];
+              console.log(props[nextKey]);
+              return props[nextKey];
+            }
+          }
+          console.log('null');
+          return null;
+        };
 
 
       }

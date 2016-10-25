@@ -39,7 +39,7 @@
   <div class="nav-container" id="headerCtrl" ng-controller="HeaderCtrl as hc">
     <div class="navbar-header">
 
-      <!-- if we are on the dashboard --->
+      <!-- if we are in the workspace --->
       <div ng-if="hc.isDashboard()">
         <div>
           <div class=" nav-search" >
@@ -59,7 +59,7 @@
         <a class="navbar-brand pull-left" ng-click="hc.goToDashboardOrBack()" href="javascript:">Cedar</a>
       </div>
 
-      <!-- otherwise on an edit page--->
+      <!-- otherwise on a form page--->
       <div ng-if="!hc.isDashboard()">
         <div class="navbar-back col-sm-12" >
           <div class="back-arrow-click" ng-click="hc.confirmBack()"></div>
@@ -81,17 +81,9 @@
             </span>
 
           </div>
-
-
           </div>
         </div>
       </div>
-
-
-      <!--<div ng-if="!hc.showSearch()" class="pull-right" style="padding:20px">-->
-      <!--<h4>{{$root.pageTitle}}</h4>-->
-      <!--</div>-->
-
 
   </div>
 </nav>
