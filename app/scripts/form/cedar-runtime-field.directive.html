@@ -3,25 +3,72 @@
   <!-- field content  -->
   <div class="elementTotalContent visible">
 
+    <!-- spreadsheet -->
     <div ng-show="isMultiple()">
       <div class="spreadsheetViewDetector"></div>
       <div class="spreadsheetViewContainer"></div>
     </div>
 
-    <!--  a list of fields, or just one field -->
     <div class="fields text-fields">
-      <div ng-if="isMultiple()" ng-init="setDefaultValueIfEmpty(model)" class="form-group has-feedback"
-          ng-repeat="(index, valueElement) in model">
-        <div class="originalContent" ng-include="getFieldUrl()"></div>
-      </div>
-      <div ng-if="!isMultiple()" class="form-group has-feedback" ng-init="index=0;valueElement=model">
-        <div class="originalContent" ng-include="getFieldUrl()"></div>
-      </div>
-    </div>
 
-    <!-- error messages last -->
-    <div class="errors" ng-if="errorMessages">
-      <div class="alert alert-danger" ng-repeat="message in errorMessages">{{message}}</div>
+      <!-- a list of fields -->
+      <div    ng-repeat="(index, valueElement) in valueArray">
+
+
+
+        <div class="row" ng-class="{'isActive' : isActive(index)}" id="{{getId(index)}}">
+          <div class="col-sm-3">
+            <div class="pull-right title" ng-class="{'isActive' : isActive(index)}">{{getTitle()}}</div>
+          </div>
+          <div class="col-sm-9">
+            <form name="field-edit-form" ng-submit="onSubmit(index)">
+
+              <div class="row">
+                <div class="col-sm-10">
+                  <div class="originalContent" ng-include="getFieldUrl()"></div>
+                </div>
+                <div class="col-sm-2" ng-if="isActive(index) && isMultiple()">
+
+                    <button type="button" class="add" ng-click="addMoreInput()"
+                        ng-show=" (!field.maxItems || model.length < field.maxItems )"
+                        tooltip="add"
+                        tooltip-trigger
+                        tooltip-animation="false"
+                        tooltip-placement="top"
+                        data-toggle="tooltip"
+                        ng-click="addMoreInput()">
+                      <i class="fa fa-plus-circle"></i>
+                    </button>
+
+                    <button type="button" class="remove" ng-click="removeInput(index)"
+                        ng-show="model.length > field.minItems"
+                        tooltip="remove"
+                        tooltip-trigger
+                        tooltip-animation="false"
+                        tooltip-placement="top"
+                        data-toggle="tooltip">
+                      <i class="fa fa-trash"></i>
+                    </button>
+
+                </div>
+              </div>
+
+
+              <button ng-if="isActive(index)" type="submit" ng-click="onSubmit(index)"
+                  class="btn btn-save confirm active" translate>GENERIC.Ok
+              </button>
+
+            </form>
+          </div>
+
+        </div>
+      </div>
+
+
+      <!-- error messages last -->
+      <div class="errors" ng-if="errorMessages">
+        <div class="alert alert-danger" ng-repeat="message in errorMessages">{{message}}</div>
+      </div>
     </div>
   </div>
 </div>

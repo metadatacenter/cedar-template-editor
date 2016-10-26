@@ -10555,7 +10555,6 @@ body.search-browse-modal a.navbar-brand {
   padding: 0 0 30px 0;
 }
 .template-body.metadata {
-  background: aliceblue;
   height: 100%;
 }
 .template-body .right-body {
@@ -11553,6 +11552,36 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   vertical-align: top;
   color: red;
 }
+.navbar.metadata .template-container {
+  background-color: aquamarine;
+}
+.template-body form .runtime button {
+  margin: 5px 2px;
+  vertical-align: middle;
+  -webkit-transition: all 0.3s ease 0.1s;
+          transition: all 0.3s ease 0.1s;
+  background-color: transparent;
+}
+.template-body form .runtime button.add {
+  color: #5795ba;
+}
+.template-body form .runtime button.remove {
+  color: #999;
+}
+.template-body form .runtime button i {
+  font-size: 25px;
+  line-height: 25px;
+}
+.template-body form .runtime button:disabled {
+  color: rgba(87, 149, 186, 0.35);
+}
+.template-body form .runtime .btn.btn-save.active {
+  background-color: #5097A5;
+  color: #ffffff;
+}
+.template-body form .runtime .btn.btn-save.active:hover {
+  background-color: #2f7dab;
+}
 .template-body form .runtime .field-instance {
   padding-left: 0;
   padding-right: 0;
@@ -11589,9 +11618,17 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   background: transparent;
   min-height: 10px;
 }
-.template-body form .runtime .field-root .originalContent .row.isActive {
-  margin-top: 100px;
-  margin-bottom: 100px;
+.template-body form .runtime .field-root .title {
+  font-size: 1em;
+  color: #666;
+}
+.template-body form .runtime .field-root .row.isActive {
+  padding-top: 100px;
+  padding-bottom: 100px;
+}
+.template-body form .runtime .field-root .row.isActive .title {
+  font-size: 1.5em;
+  color: green;
 }
 .template-body form .runtime .field-root .title {
   height: 20px;
@@ -11605,12 +11642,20 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   border-width: 0px;
   background: transparent;
   height: 20px;
-  line-height: 20px;
 }
 .template-body form .runtime .field-root input.isActive {
   border: 1px dashed #888;
   height: 40px;
-  line-height: 40px;
+}
+.template-body form .runtime .field-root textarea {
+  border-width: 0px;
+  background: transparent;
+}
+.template-body form .runtime .field-root textarea.isActive {
+  border: 1px dashed #888;
+}
+.template-body form .runtime .form-group {
+  margin-right: 0px;
 }
 .template-body form .runtime .form-group.radio-item,
 .template-body form .runtime .form-group.checkbox-item {

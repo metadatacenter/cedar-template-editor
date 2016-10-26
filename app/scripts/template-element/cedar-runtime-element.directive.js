@@ -321,19 +321,24 @@ define([
       // set this element active by choosing the next field or element in this element
       scope.setActive = function () {
 
+        var next;
+
         console.log('setActive ' + scope.activeFieldOrElement);
-        var next = scope.nextChild(scope.activeFieldOrElement);
+        if (scope.activeFieldOrElement) {
+          next = scope.nextChild(scope.activeFieldOrElement);
+        } else {
+          // get the first child and set it active
+          var props = scope.element.properties;
+          var order = $rootScope.schemaOf(scope.element)._ui.order;
+          next = props[order[0]];
 
+        }
 
-        // get the first child and set it active
-        var props = scope.element.properties;
-        var order = $rootScope.schemaOf(scope.element)._ui.order;
-        var id = props[order[0]]['@id'];
-
-        console.log('broadcast setActive ' + id);
-
-        $rootScope.$broadcast("setActive", [id]);
-
+        if (next) {
+          var id = $rootScope.schemaOf(next)['@id'];
+          console.log('broadcast setActive ' + id);
+          $rootScope.$broadcast("setActive", [id]);
+        }
       };
 
 

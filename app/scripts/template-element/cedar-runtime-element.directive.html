@@ -6,125 +6,95 @@
       <div class="spreadsheetViewContainer"></div>
     </div>
 
-    <div class="elements originalContent">
 
-      <!-- have an array with at least one element -->
-      <div ng-if="$root.isArray(model)" class="element" ng-repeat="m in model"
-          ng-class="['element-{{$index}}']">
+    <!-- have an array with at least one element -->
+    <div ng-if="$root.isArray(model)" class="element" ng-repeat="m in model"
+        ng-class="['element-{{$index}}']">
 
-        <div class="row">
+      <div class="row">
+        <div class="col-sm-10">
 
-          <div class="col-sm-9 ">
-          <span style="{{getNestingMargin(element, 0)}}">
-            {{$root.schemaOf(element)._ui.title}}
-          </span>
-          </div>
-          <div class="col-sm-3">
+             <span style="{{getNestingMargin(element, 0)}}"><button type="button"
+                 ng-click="toggleExpanded()"
+                 class="add">
+               <i ng-class="{'fa fa-minus-square' : isExpanded(), 'fa fa-plus-square' : !isExpanded()}"></i></button>{{$root.schemaOf(element)._ui.title}}</span>
+        </div>
+        <div class="col-sm-2">
 
-            ({{$index}} of {{element.maxItems || 'N'}})
-
-            <a ng-click="toggleExpanded()"><i class="add"
-                ng-class="{'fa fa-minus-square' : isExpanded(), 'fa fa-plus-square' : !isExpanded()}"></i></a>
-
-
-          <span ng-if="(!element.maxItems || model.length < element.maxItems) && $root.isArray(model)"
-              class="add-element">
+          <span>
             <button type="button"
-                tooltip="add a {{$root.schemaOf(element)._ui.title}}"
-                tooltip-trigger
-                tooltip-animation="false"
-                tooltip-placement="top"
-                data-toggle="tooltip"
-                ng-click="addElement(); $event.stopPropagation();"
-                class="add zero noOutline"
-                ng-show="true"
-                ng-disabled="preview"
-                style="outline:none">
-              <i class="fa fa-plus"></i>
+                ng-click="addElement()"
+                class="add">
+              <i class="fa fa-plus-circle"></i>
             </button>
           </span>
 
 
-        <span ng-if="model.length > element.minItems " class="remove-element">
-          <button
+        <span>
+          <button type="button"
               ng-click="removeElement($index)"
-              class="btn btn-sm btn-info btn-circle btn-delete"
-              type="button">
-            <i class="fa fa-remove"></i>
+              class="remove">
+            <i class="fa fa-times-circle"></i>
           </button>
         </span>
 
-          <span ng-if="$root.isArray(model)" class="spreadsheetSwitch element hidden">
-            <button type="button"
-                tooltip="show as spreadsheet"
-                tooltip-trigger
-                tooltip-animation="false"
-                tooltip-placement="top"
-                data-toggle="tooltip"
-                ng-click="switchToSpreadsheet()"
-                class="spreadsheetSwitchLink"
-                style="background:transparent;border:0;outline:none">
-              <i class="cedar-svg-spreadsheet"></i>
-            </button>
-         </span>
-          </div>
-        </div>
 
-        <div ng-if="isExpanded()" ui-sortable="$root.sortableOptions" ng-model="$root.schemaOf(element)._ui.order"
-            class="sortable-container">
-          <div ng-repeat="key in $root.schemaOf(element)['_ui']['order']">
-            <div ng-if="$root.propertiesOf(element)[key]">
-              <cedar-runtime-nested-element key="key"
-                  field="$root.propertiesOf(element)[key]"
-                  model="m[key]"
-                  remove-child="removeChild"
-                  rename-child-key="renameChildKey"
-                  is-edit-data="isEditData"
-                  depth="depth+1">
-              </cedar-runtime-nested-element>
-            </div>
-          </div>
         </div>
       </div>
 
-      <div ng-if="!$root.isArray(model)" class="element">
-
-        <div class="row">
-
-          <div class="col-sm-9 ">
-          <span style="{{getNestingMargin(element, 0)}}">
-            {{$root.schemaOf(element)._ui.title}}
-          </span>
-          </div>
-          <div class="col-sm-3">
-
-
-            <a ng-click="toggleExpanded()"><i class="add"
-                ng-class="{'fa fa-minus-square' : isExpanded(), 'fa fa-plus-square' : !isExpanded()}"></i></a>
-
-
-          </div>
-        </div>
-
-        <!-- not an array -->
-        <div ng-if="isExpanded()" class="element only-element"
-            ui-sortable="$root.sortableOptions"
-            ng-model="element._ui.order">
-          <div ng-repeat="key in $root.schemaOf(element)['_ui']['order']">
-            <div ng-if="$root.propertiesOf(element)[key]">
-              <cedar-runtime-nested-element key="key"
-                  field="$root.propertiesOf(element)[key]"
-                  model="model[key]"
-                  remove-child="removeChild"
-                  rename-child-key="renameChildKey"
-                  is-edit-data="isEditData"
-                  depth="depth+1">
-              </cedar-runtime-nested-element>
-            </div>
+      <div ng-if="isExpanded()" ui-sortable="$root.sortableOptions" ng-model="$root.schemaOf(element)._ui.order"
+          class="sortable-container">
+        <div ng-repeat="key in $root.schemaOf(element)['_ui']['order']">
+          <div ng-if="$root.propertiesOf(element)[key]">
+            <cedar-runtime-nested-element key="key"
+                field="$root.propertiesOf(element)[key]"
+                model="m[key]"
+                remove-child="removeChild"
+                rename-child-key="renameChildKey"
+                is-edit-data="isEditData"
+                depth="depth+1">
+            </cedar-runtime-nested-element>
           </div>
         </div>
       </div>
     </div>
 
+    <!-- not an array -->
+    <div ng-if="!$root.isArray(model)" class="element">
+
+      <div class="row">
+
+        <div class="col-sm-9 ">
+          <span style="{{getNestingMargin(element, 0)}}">
+            <button type="button" ng-click="toggleExpanded()" class="add">
+              <i ng-class="{'fa fa-minus-square' : isExpanded(), 'fa fa-plus-square' : !isExpanded()}"></i></button>
+            {{$root.schemaOf(element)._ui.title}}
+          </span>
+        </div>
+        <div class="col-sm-3">
+
+        </div>
+      </div>
+
+      <div ng-if="isExpanded()" class="element only-element"
+          ui-sortable="$root.sortableOptions"
+          ng-model="element._ui.order">
+        <div ng-repeat="key in $root.schemaOf(element)['_ui']['order']">
+          <div ng-if="$root.propertiesOf(element)[key]">
+            <cedar-runtime-nested-element key="key"
+                field="$root.propertiesOf(element)[key]"
+                model="model[key]"
+                remove-child="removeChild"
+                rename-child-key="renameChildKey"
+                is-edit-data="isEditData"
+                depth="depth+1">
+            </cedar-runtime-nested-element>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
   </div>
+</div>
 

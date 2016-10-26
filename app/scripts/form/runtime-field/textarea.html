@@ -1,42 +1,20 @@
-<div class="row" ng-class="{'isActive' : isActive(index)}" id="{{getId(index)}}">
-  <div class="col-sm-3">
-    <div class="pull-right title" ng-class="{'isActive' : isActive(index)}">{{getTitle()}}</div>
-  </div>
-  <div class="col-sm-9">
 
-    <form name="textarea-edit-form" ng-submit="onSubmit()">
-    <div ng-if="$root.isArray(model)" class="form-group  has-feedback"
-        ng-repeat="valueElement in model">
-    <textarea rows="5"
-        id="comment"
+      
+    <div  class="form-group  has-feedback">
+    <textarea
+        ng-click="setActive(index,true)"
+        rows="{{isActive(index) ? 5 : 1}}"
         class="form-control"
-        ng-click="setActive(index)"
-        ng-class="{'isActive' : isActive(index),'required': $root.schemaOf(field)._valueConstraints.requiredValue}"
-        ng-change="setDefaultValueIfEmpty(model)"
-        placeholder="{{$root.schemaOf(field)._ui.title}}"
-        aria-label="{{$root.schemaOf(field)._ui.description}}"
+        ng-class="{'isActive' : isActive(index), 'required': isRequired()}"
+        ng-change="setDefaultValueIfEmpty(valueElement)"
+        placeholder="enter answer"
+        aria-label="{{getDescription()}}"
         ng-model="valueElement['@value']"></textarea>
 
-      <div class="input-indicator-icons" ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
-      <div class="more-input-wrapper yy"
-          ng-include="'scripts/form/partials/more-input-buttons.partial.html'"
-          ng-show="!field.maxItems || field.maxItems > 1"></div>
+      <div ng-if="isActive(index)" class="input-indicator-icons" ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
     </div>
 
 
-    <div ng-if="!$root.isArray(model)" class="form-group floating-label-wrapper has-feedback">
-    <textarea rows="5"
-        id="comment"
-        ng-change="setDefaultValueIfEmpty(model)"
-        class="form-control"
-        placeholder="{{$root.schemaOf(field)._ui.title}}"
-        aria-label="{{$root.schemaOf(field)._ui.description}}"
-        ng-model="model['@value']"
-        ng-disabled="!$root.isRuntime() || preview"
-        with-floating-label=""></textarea>
 
-      <div class="input-indicator-icons" ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
-    </div>
-</form>
-  </div>
-</div>
+
+

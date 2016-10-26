@@ -1804,7 +1804,6 @@ body.search-browse-modal {
   padding: 0 0 30px 0;
 
   &.metadata {
-    background:aliceblue;
     height:100%;
   }
 
@@ -2443,7 +2442,7 @@ section.dashboard-elements {
 === Form Template Fields
 ================================================
 */
-.template-body form .build, #element_control_term {
+.template-body form .build,  #element_control_term {
 
   .form-group {
     margin-bottom: 14px;
@@ -2758,7 +2757,45 @@ section.dashboard-elements {
   }
 }
 
+.navbar.metadata {
+  .template-container {
+    background-color:aquamarine;
+  }
+}
+
 .template-body form .runtime {
+
+  button {
+
+    margin: 5px 2px;
+    vertical-align: middle;
+    transition: all 0.3s ease 0.1s;
+    background-color: transparent;
+
+    &.add {
+      color: @brand-primary;
+    }
+    &.remove {
+      color: #999;
+    }
+    i {
+      font-size: 25px;
+      line-height: 25px;
+    }
+
+    &:disabled {
+      // opacity: 0.5;
+      color: @brand-primary-disabled;
+    }
+  }
+
+  .btn.btn-save.active {
+    background-color: @button-template;
+    color:@white;
+    &:hover {
+      background-color: @hover-template;
+    }
+  }
 
   .field-instance {
     padding-left: 0;
@@ -2771,7 +2808,6 @@ section.dashboard-elements {
       background-color: transparent;
     }
   }
-
 
   .element-group {
 
@@ -2801,13 +2837,22 @@ section.dashboard-elements {
     background: transparent;
     min-height: 10px;
 
-    .originalContent {
+
+
+      .title {
+        font-size: 1em;
+        color: #666;
+      }
 
       .row.isActive {
-        margin-top: 100px;
-        margin-bottom: 100px;
+        padding-top: 100px;
+        padding-bottom: 100px;
+        .title {
+            font-size: 1.5em;
+            color: green;
+        }
       }
-    }
+
 
     .title {
       height: 20px;
@@ -2822,16 +2867,28 @@ section.dashboard-elements {
       border-width: 0px;
       background: transparent;
       height: 20px;
-      line-height: 20px;
+
       &.isActive {
         border: 1px dashed #888;
         height: 40px;
-        line-height: 40px;
+
+      }
+    }
+
+    textarea {
+      border-width: 0px;
+      background: transparent;
+
+      &.isActive {
+        border: 1px dashed #888;
+
       }
     }
   }
 
   .form-group {
+
+    margin-right: 0px;
 
 
     &.radio-item,

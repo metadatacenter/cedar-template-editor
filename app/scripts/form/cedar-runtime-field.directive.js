@@ -11,7 +11,7 @@ define([
                                "DataManipulationService", "FieldTypeService", "controlledTermDataService",
                                "StringUtilsService"];
 
-  function cedarRuntimeField($rootScope,  $sce, $document, $translate, $filter, SpreadsheetService,
+  function cedarRuntimeField($rootScope, $sce, $document, $translate, $filter, SpreadsheetService,
                              DataManipulationService,
                              FieldTypeService, controlledTermDataService, StringUtilsService) {
 
@@ -256,39 +256,42 @@ define([
       }
 
       // Sets the instance @value fields based on the options selected at the UI
-      $scope.updateModelFromUI = function () {
-        if (!$scope.model || !$rootScope.isArray($scope.model)) {
-          $scope.model = [];
+      $scope.updateModelFromUI = function (valueElement) {
+        console.log('updateModelFromUI'); console.log(valueElement);
+        if (!valueElement || !$rootScope.isArray(valueElement)) {
+          valueElement = [];
         }
         else {
           // Remove all elements from the 'model' array. Note that using $scope.model = []
           // is dangerous because we have references to the original array
-          $scope.model.splice(0, $scope.model.length);
+          valueElement.splice(0, $scope.model.length);
         }
 
         if ($scope.getInputType() == 'checkbox') {
           for (var option in $scope.optionsUI) {
             if ($scope.optionsUI[option] == true) {
-              $scope.model.push({'@value': option});
+              valueElement.push({'@value': option});
             }
           }
         }
         else if ($scope.getInputType() == 'radio') {
           // If 'updateModelFromUI' was invoked from the UI (option is not null)
           if ($scope.optionsUI.option != null) {
-            $scope.model.push({'@value': $scope.optionsUI.option});
+            valueElement.push({'@value': $scope.optionsUI.option});
           }
         }
         else if ($scope.getInputType() == 'list') {
           // Update model
           for (var i = 0; i < $scope.optionsUI.options.length; i++) {
-            $scope.model.push({'@value': $scope.optionsUI.options[i]});
+            valueElement.push({'@value': $scope.optionsUI.options[i]});
           }
         }
         // Default value
-        if ($scope.model.length == 0) {
-          $scope.model.push({'@value': null});
+        if (valueElement.length == 0) {
+          valueElement.push({'@value': null});
         }
+
+        console.log(valueElement);
       }
 
       // Updates the model for fields whose values have been constrained using controlled terms
@@ -322,28 +325,31 @@ define([
       }
 
       // Set the UI with the values (@value) from the model
-      $scope.updateUIFromModel = function () {
+      $scope.updateUIFromModel = function (valueElement) {
+        console.log('updateUIFromModel'); console.log(valueElement);
         if ($scope.getInputType() == 'checkbox') {
           $scope.optionsUI = {};
-          for (var item in $scope.model) {
-            var valueLabel = $scope.model[item]['@value'];
+          for (var item in valueElement) {
+            var valueLabel = valueElement[item]['@value'];
             $scope.optionsUI[valueLabel] = true;
           }
         }
         else if ($scope.getInputType() == 'radio') {
           $scope.optionsUI = {option: null};
           // Note that for this element only one selected option is possible
-          if ($scope.model[0]['@value'] != null) {
-            $scope.optionsUI.option = $scope.model[0]['@value'];
+          if (valueElement[0]['@value'] != null) {
+            $scope.optionsUI.option = valueElement[0]['@value'];
           }
         }
         else if ($scope.getInputType() == 'list') {
           $scope.optionsUI = {options: []};
-          for (var item in $scope.model) {
-            var valueLabel = $scope.model[item]['@value'];
+          for (var item in valueElement) {
+            var valueLabel = valueElement[item]['@value'];
             $scope.optionsUI.options.push(valueLabel);
           }
         }
+        console.log($scope.optionsUI);
+
       }
 
       $scope.updateUIFromModelControlledField = function () {
@@ -367,14 +373,16 @@ define([
       }
 
       // Initializes model for selection fields (checkbox, radio and list).
-      $scope.initializeSelectionField = function () {
+      $scope.initializeSelectionField = function (valueElement) {
+        console.log('initializeSelectionField');
         if (($scope.getInputType() == 'checkbox')
             || ($scope.getInputType() == 'radio')
             || ($scope.getInputType() == 'list')) {
 
-          $scope.updateUIFromModel();
+          $scope.updateUIFromModel(valueElement);
 
         }
+        console.log(valueElement);
       };
 
       // Initializes model for fields constrained using controlled terms
@@ -392,7 +400,8 @@ define([
 
       // Sets the default @value for non-selection fields (i.e., text, paragraph, date, email, numeric, phone)
       $scope.setDefaultValueIfEmpty = function (m) {
-        if ($rootScope.isRuntime()) {
+        console.log('setDefaultValueIfEmpty');
+
           if (!$rootScope.isArray(m)) {
             if (!m) {
               m = {};
@@ -412,7 +421,7 @@ define([
               $scope.setDefaultValueIfEmpty(m[i]);
             }
           }
-        }
+console.log($scope.model);
       }
 
       $scope.uuid = DataManipulationService.generateTempGUID();
@@ -481,7 +490,7 @@ define([
         var id = args[0];
 
         if (id === $rootScope.schemaOf($scope.field)['@id']) {
-          $scope.setActive(0);
+          $scope.setActive(0, true);
         }
       });
 
@@ -813,7 +822,7 @@ define([
       };
 
       $scope.initDateSingle = function () {
-        if ( $scope.getInputType() == 'date') {
+        if ($scope.getInputType() == 'date') {
           $rootScope.schemaOf($scope.field)._ui.dateType = 'single-date';
         }
         else {
@@ -884,37 +893,51 @@ define([
         return $rootScope.schemaOf($scope.field)._ui.inputType;
       };
 
+      // is the field multiple cardinality?
       $scope.isMultiple = function () {
         return $scope.field.items;
+      };
+
+      $scope.isRequired = function() {
+        return $rootScope.schemaOf($scope.field)._valueConstraints.requiredValue;
+      };
+
+      $scope.getDescription = function() {
+        return  $rootScope.schemaOf($scope.field)._ui.description;
       };
 
       $scope.isActive = function (index) {
         return DataManipulationService.isActive($scope.field, index);
       };
 
-      $scope.setActive = function (index) {
-        DataManipulationService.setActive($scope.field, index, true);
-        $rootScope.scrollToDomId($scope.getId(index));
+      $scope.setActive = function (index, value) {
+        var active = (typeof value === "undefined") ? true : value;
 
-        // select the field
-        var inputType = $scope.getInputType();
-        var tag = 'input';
-        if (inputType === 'textarea') {
-          tag = 'textarea';
-        }
-        if (inputType === 'list') {
-          tag = 'select';
-        }
 
-        console.log("#" + $scope.getId(index) + ' ' + tag);
-        jQuery("#" + $scope.getId(index) + ' ' + tag).focus().select();
+        DataManipulationService.setActive($scope.field, index, active);
+        if (active) {
+
+          $rootScope.scrollToDomId($scope.getId(index));
+
+          // select the field
+          var inputType = $scope.getInputType();
+          var tag = 'input';
+          if (inputType === 'textarea') {
+            tag = 'textarea';
+          }
+          if (inputType === 'list') {
+            tag = 'select';
+          }
+          jQuery("#" + $scope.getId(index) + ' ' + tag).focus().select();
+
+        }
 
       };
 
       $scope.onSubmit = function (index) {
 
         if ($scope.isMultiple() && (index + 1 < $scope.model.length)) {
-          $scope.setActive(index + 1);
+          $scope.setActive(index + 1, true);
 
         } else {
           var next = $scope.$parent.nextChild($scope.field);
@@ -936,6 +959,37 @@ define([
 
         }
       };
+
+      // allows us to look a the model as an array whether it is or not
+      $scope.valueArray;
+      $scope.setValueArray = function () {
+
+        if ($scope.model instanceof Array && $scope.model.length > 0) {
+          $scope.valueArray = $scope.model;
+
+        } else if ($scope.model instanceof Object) {
+            $scope.valueArray = [];
+            $scope.valueArray.push($scope.model);
+        } else {
+          $scope.model = {};
+          $scope.valueArray = [];
+          $scope.valueArray.push($scope.model);
+
+        }
+        console.log('setValueArray');
+        console.log($scope.model)
+      };
+
+
+      console.log('init');
+        console.log($scope.field);
+        console.log($scope.model);
+        $scope.setValueArray();
+        console.log($scope.model);
+        console.log($scope.valueArray);
+
+
+
 
 
     };

@@ -1,29 +1,34 @@
-<div class="row" ng-class="{'isActive' : isActive(index)}" id="{{getId(index)}}">
-  <div class="col-sm-3">
-    <div class="pull-right title" ng-class="{'isActive' : isActive(index)}">{{getTitle()}}</div>
-  </div>
-  <div class="col-sm-9">
 
-    <form name="email-edit-form" ng-submit="onSubmit()">
-    <div class="form-group field-wrapper-checkbox  ">
-      <div ng-init="initializeSelectionField()">
-        <div class="checkbox-item" ng-repeat="(i, value) in $root.schemaOf(field)._valueConstraints.literals">
-          <div class="checkbox checkbox-primary">
-            <input type="checkbox"
-                ng-click="updateModelFromUI(); setActive(index)"
-                ng-class="{'isActive' : isActive(index),'required': $root.schemaOf(field)._valueConstraints.requiredValue}"
-                id="checkbox-{{uuid}}-{{index}}-{{i}}"
-                ng-model="optionsUI[value.label]"/>
-            <label ng-click="setActive(index)" for="checkbox-{{uuid}}-{{index}}-{{i}}">{{$root.schemaOf(field)._valueConstraints.literals[index]['label']}}</label>
-          </div>
+    <!--<div class="form-group   ">-->
+      <!--<div >-->
+        <!--<div class="checkbox-item" ng-repeat="(i, value) in $root.schemaOf(field)._valueConstraints.literals">-->
+          <!--<div class="checkbox checkbox-primary">-->
+            <!--<input  type="checkbox"-->
+                <!--ng-click="updateModelFromUI(); setActive(index)"-->
+                <!--ng-class="{'isActive' : isActive(index),'required': isRequired()}"-->
+                <!--id="checkbox-{{uuid}}-{{index}}-{{i}}"-->
+                <!--ng-model="optionsUI[value.label]"/>-->
+            <!--<label  ng-click="setActive(index)" for="checkbox-{{uuid}}-{{index}}-{{i}}">{{$root.schemaOf(field)._valueConstraints.literals[i]['label']}}</label>-->
+          <!--</div>-->
 
+        <!--</div>-->
+      <!--</div>-->
+      <!--<div class="input-indicator-icons ng-valid ng-scope"-->
+          <!--ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>-->
+    <!--</div>-->
+
+
+    <div ng-init="initializeSelectionField(valueElement)">
+      <div class="checkbox-item" ng-repeat="(index, value) in $root.schemaOf(field)._valueConstraints.literals">
+        <div class="checkbox checkbox-primary">
+          <input type="checkbox"
+              ng-click="updateModelFromUI(valueElement)"
+              id="checkbox-{{uuid}}-{{$parent.$index}}-{{index}}"
+              ng-model="optionsUI[value.label]"
+              ng-disabled="!$root.isRuntime() || preview"/>
+          <label  for="checkbox-{{uuid}}-{{$parent.$index}}-{{index}}">{{$root.schemaOf(field)._valueConstraints.literals[index]['label']}}</label>
         </div>
       </div>
-      <div class="input-indicator-icons ng-valid ng-scope"
-          ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
     </div>
-      </form>
-  </div>
 
 
-</div>
