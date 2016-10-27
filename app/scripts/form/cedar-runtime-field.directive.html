@@ -1,7 +1,7 @@
 <div class="item-root field-root">
 
   <!-- field content  -->
-  <div class="elementTotalContent visible">
+  <div class="elementTotalContent visible" style="position:relative">
 
     <!-- spreadsheet -->
     <div ng-show="isMultiple()">
@@ -13,6 +13,14 @@
 
       <!-- a list of fields -->
       <div ng-repeat="(index, valueElement) in valueArray">
+
+        <button type="button"
+            style="position:absolute;top:0;right:0;"
+            class="remove"
+            ng-if="isActive(index)"
+            ng-click="setActive(index, false)">
+          <i class="fa fa-remove"></i>
+        </button>
 
         <div class="row" ng-class="{'isActive' : isActive(index)}" id="{{getId(index)}}">
           <div class="col-sm-3">
