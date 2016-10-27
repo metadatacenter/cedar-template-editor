@@ -1,4 +1,4 @@
-<div class="item-root field-root">
+<div class="item-root field-root"
 
   <!-- field content  -->
   <div class="elementTotalContent visible" style="position:relative">
@@ -15,16 +15,15 @@
       <div ng-repeat="(index, valueElement) in valueArray">
 
         <button type="button"
-            style="position:absolute;top:0;right:0;"
-            class="remove"
+            class="remove goaway"
             ng-if="isActive(index)"
             ng-click="setActive(index, false)">
           <i class="fa fa-remove"></i>
         </button>
 
-        <div class="row" ng-class="{'isActive' : isActive(index)}" id="{{getId(index)}}">
+        <div class="row"  ng-class="{'isActive' : isActive(index)}" id="{{getId(index)}}">
           <div class="col-sm-3">
-            <div class="pull-right title" ng-class="{'isActive' : isActive(index)}">{{getTitle()}}</div>
+            <div ng-click="setActive(index, true)" class="pull-right title" ng-class="{'isActive' : isActive(index)}">{{getTitle()}}</div>
           </div>
           <div class="col-sm-9">
             <form name="field-edit-form" ng-submit="onSubmit(index)">
@@ -59,7 +58,7 @@
                 </div>
               </div>
 
-              <button ng-if="isActive(index)" type="submit" ng-click="onSubmit(index)"
+              <button style="margin:10px 0" ng-if="isActive(index)" type="submit" ng-click="onSubmit(index)"
                   class="btn btn-save confirm active" translate>GENERIC.Ok
               </button>
 
@@ -69,7 +68,7 @@
         </div>
       </div>
 
-      <!-- error messages last -->
+      <!-- error messages  -->
       <div class="errors" ng-if="errorMessages">
         <div class="alert alert-danger" ng-repeat="message in errorMessages">{{message}}</div>
       </div>

@@ -2769,6 +2769,11 @@ section.dashboard-elements {
     vertical-align: middle;
     transition: all 0.3s ease 0.1s;
     background-color: transparent;
+    &.goaway {
+     position:absolute;
+      top:0;
+      right:0;
+    }
 
     &.add {
       color: @brand-primary;
@@ -2845,6 +2850,8 @@ section.dashboard-elements {
       .row.isActive {
         padding-top: 100px;
         padding-bottom: 100px;
+        border-top: 1px solid #ddd;
+        border-bottom: 1px solid #ddd;
         .title {
             font-size: 1.5em;
             color: green;
@@ -2898,6 +2905,7 @@ section.dashboard-elements {
   .form-group {
 
     margin-right: 0px;
+    margin-bottom:0px;
 
 
     &.radio-item,

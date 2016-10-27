@@ -310,9 +310,10 @@ define([
 
       scope.$on('setActive', function (event, args) {
         var id = args[0];
+        var value = args[1];
 
         if (id === $rootScope.schemaOf(scope.element)['@id']) {
-          scope.setActive();
+          scope.setActive(true);
         }
       });
 

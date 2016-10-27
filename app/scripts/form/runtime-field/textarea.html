@@ -6,7 +6,6 @@
         rows="{{isActive(index) ? 5 : 1}}"
         class="form-control"
         ng-class="{'isActive' : isActive(index), 'required': isRequired()}"
-        ng-change="setDefaultValueIfEmpty(valueElement)"
         placeholder="enter answer"
         aria-label="{{getDescription()}}"
         ng-model="valueElement['@value']"></textarea>

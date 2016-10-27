@@ -11561,6 +11561,11 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
           transition: all 0.3s ease 0.1s;
   background-color: transparent;
 }
+.template-body form .runtime button.goaway {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
 .template-body form .runtime button.add {
   color: #5795ba;
 }
@@ -11624,6 +11629,8 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
 .template-body form .runtime .field-root .row.isActive {
   padding-top: 100px;
   padding-bottom: 100px;
+  border-top: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
 }
 .template-body form .runtime .field-root .row.isActive .title {
   font-size: 1.5em;
@@ -11664,6 +11671,7 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
 }
 .template-body form .runtime .form-group {
   margin-right: 0px;
+  margin-bottom: 0px;
 }
 .template-body form .runtime .form-group.radio-item,
 .template-body form .runtime .form-group.checkbox-item {

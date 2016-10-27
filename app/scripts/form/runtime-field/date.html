@@ -1,7 +1,6 @@
 <div class='form-group has-feedback' date-time-picker>
   <input type="text" ng-click="setActive(index)"
       ng-click="setActive(index, true)"
-      ng-change="setDefaultValueIfEmpty(model)"
       class="form-control"
       ng-class="{'isActive' : isActive(index),'required': $root.schemaOf(field)._valueConstraints.requiredValue}"
       placeholder="enter date"

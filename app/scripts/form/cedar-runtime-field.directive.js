@@ -7,11 +7,13 @@ define([
       .directive('cedarRuntimeField', cedarRuntimeField);
 
 
-  cedarRuntimeField.$inject = ["$rootScope", "$sce", "$document", "$translate", "$filter", "SpreadsheetService",
+  cedarRuntimeField.$inject = ["$rootScope", "$sce", "$document", "$translate", "$filter", "$location", "$anchorScroll",
+                               "SpreadsheetService",
                                "DataManipulationService", "FieldTypeService", "controlledTermDataService",
                                "StringUtilsService"];
 
-  function cedarRuntimeField($rootScope, $sce, $document, $translate, $filter, SpreadsheetService,
+  function cedarRuntimeField($rootScope, $sce, $document, $translate, $filter, $location, $anchorScroll,
+                             SpreadsheetService,
                              DataManipulationService,
                              FieldTypeService, controlledTermDataService, StringUtilsService) {
 
@@ -355,7 +357,7 @@ define([
 
       };
 
-      $scope.console = function(obj) {
+      $scope.console = function (obj) {
         console.log(obj);
       };
 
@@ -918,6 +920,14 @@ define([
         return DataManipulationService.isActive($scope.field, index);
       };
 
+      $scope.goToElement = function (id) {
+        // set the location.hash to the id of
+        // the element you wish to scroll to.
+        $location.hash('anchor' + id);
+        $anchorScroll();
+
+      };
+
       $scope.setActive = function (index, value) {
         var active = (typeof value === "undefined") ? true : value;
 
@@ -936,11 +946,13 @@ define([
           if (inputType === 'list') {
             tag = 'select';
           }
-          jQuery("#" + $scope.getId(index) + ' ' + tag).focus().select();
-
+          var id = $scope.getId(index);
+          $scope.goToElement(id);
+          jQuery("#" + id + ' ' + tag).focus().select();
         }
 
       };
+
 
       $scope.onSubmit = function (index) {
 
