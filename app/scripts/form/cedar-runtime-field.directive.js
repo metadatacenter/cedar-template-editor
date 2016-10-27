@@ -7,12 +7,12 @@ define([
       .directive('cedarRuntimeField', cedarRuntimeField);
 
 
-  cedarRuntimeField.$inject = ["$rootScope", "$sce", "$document", "$translate", "$filter", "$location", "$anchorScroll",
+  cedarRuntimeField.$inject = ["$rootScope", "$sce", "$document", "$translate", "$filter", "$location", "$anchorScroll", "$window",
                                "SpreadsheetService",
                                "DataManipulationService", "FieldTypeService", "controlledTermDataService",
                                "StringUtilsService"];
 
-  function cedarRuntimeField($rootScope, $sce, $document, $translate, $filter, $location, $anchorScroll,
+  function cedarRuntimeField($rootScope, $sce, $document, $translate, $filter, $location, $anchorScroll, $window,
                              SpreadsheetService,
                              DataManipulationService,
                              FieldTypeService, controlledTermDataService, StringUtilsService) {
@@ -920,13 +920,22 @@ define([
         return DataManipulationService.isActive($scope.field, index);
       };
 
-      $scope.goToElement = function (id) {
+      $scope.goToElement = function (id, offset) {
         // set the location.hash to the id of
         // the element you wish to scroll to.
+        console.log('goToElement ' + ('anchor' + id));
+
         $location.hash('anchor' + id);
         $anchorScroll();
+        $anchorScroll.yOffset = offset;
+
+
+
+
 
       };
+
+
 
       $scope.setActive = function (index, value) {
         var active = (typeof value === "undefined") ? true : value;
@@ -947,8 +956,21 @@ define([
             tag = 'select';
           }
           var id = $scope.getId(index);
-          $scope.goToElement(id);
+
+
+          var target = angular.element('#' + id);
+          if (target && target.offset()) {
+            var top = target.offset().top;
+            var height = target.height;
+            var center = top + height/2;
+            var windowCenter = $window.height/2;
+            var y = windowCenter + height/2;
+            console.log('scrollTo ' + y);
+            $window.scrollTo(0, y);
+          }
+          
           jQuery("#" + id + ' ' + tag).focus().select();
+
         }
 
       };

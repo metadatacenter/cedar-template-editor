@@ -135,7 +135,7 @@ define([
       if ($rootScope.isDirty()) {
 
         event.preventDefault();
-        vm.confirmBack();
+        //vm.confirmBack();
 
         $timeout(function () {
 

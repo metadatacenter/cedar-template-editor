@@ -37,6 +37,7 @@ define([
             var target = angular.element('#' + id);
             if (target && target.offset()) {
               var y = target.offset().top;
+              var center = $window.height/2;
               console.log('scrollTo ' + 0 + (y - 95));
               $window.scrollTo(0, y - 95);
             } else {
