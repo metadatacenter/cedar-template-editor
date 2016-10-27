@@ -196,6 +196,28 @@
         "error": "There was an error while loading the template elements!<br /><br />VIEW TECHNICAL DETAILS!"
       }
     },
+    "GROUPS": {
+      "load": {
+        "error": "There was an error while loading the groups!<br /><br />VIEW TECHNICAL DETAILS!"
+      },
+      "delete": {
+        "success": "The template has been deleted.",
+        "error": "There was an error while deleting the template!<br /><br />VIEW TECHNICAL DETAILS!"
+      },
+      "create": {
+        "success": "The group <b>{{title}}</b> has been created.",
+        "error": "There was an error while creating the group!<br /><br />VIEW TECHNICAL DETAILS!"
+      },
+      "update": {
+        "success": "The group <b>{{title}}</b> has been saved.",
+        "error": "There was an error while saving the group!<br /><br />VIEW TECHNICAL DETAILS!"
+      }
+    },
+    "USERS": {
+      "load": {
+        "error": "There was an error while loading the groups!<br /><br />VIEW TECHNICAL DETAILS!"
+      }
+    },
     "TEMPLATES": {
       "load": {
         "error": "There was an error while loading the templates!<br /><br />VIEW TECHNICAL DETAILS!"

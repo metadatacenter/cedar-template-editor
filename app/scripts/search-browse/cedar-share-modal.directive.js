@@ -433,13 +433,13 @@ define([
 
                       },
                       function (error) {
-                        UIMessageService.showBackendError('SERVER.' + resource.nodeType.toUpperCase() + '.load.error',
+                        UIMessageService.showBackendError('SERVER.GROUPS.load.error',
                             error);
                       }
                   );
                 },
                 function (error) {
-                  UIMessageService.showBackendError('SERVER.' + resource.nodeType.toUpperCase() + '.load.error', error);
+                  UIMessageService.showBackendError('SERVER.USERS.load.error', error);
                 }
             );
           }
@@ -635,7 +635,7 @@ define([
 
                 },
                 function (error) {
-                  UIMessageService.showBackendError('SERVER.' + 'group' + '.load.error',
+                  UIMessageService.showBackendError('SERVER.GROUPS.load.error',
                       error);
                 }
             );
@@ -682,7 +682,7 @@ define([
                 },
                 function (error) {
 
-                  UIMessageService.showBackendError('SERVER.' + group.nodeType.toUpperCase() + '.load.error',
+                  UIMessageService.showBackendError('SERVER.GROUPS.update.error',
                       error);
                 }
             );
@@ -701,7 +701,7 @@ define([
 
                 },
                 function (error) {
-                  UIMessageService.showBackendError('SERVER.' + group.nodeType.toUpperCase() + '.load.error',
+                  UIMessageService.showBackendError('SERVER.GROUPS.delete.error',
                       error);
                 }
             );
@@ -717,7 +717,7 @@ define([
 
                 },
                 function (error) {
-                  UIMessageService.showBackendError('SERVER.' + group.nodeType.toUpperCase() + '.load.error',
+                  UIMessageService.showBackendError('SERVER.GROUPS.load.error',
                       error);
                 }
             );
@@ -739,7 +739,7 @@ define([
                 function (response) {
                 },
                 function (error) {
-                  UIMessageService.showBackendError('SERVER.' + group.nodeType.toUpperCase() + '.load.error',
+                  UIMessageService.showBackendError('SERVER.GROUPS.load.error',
                       error);
                 }
             );
