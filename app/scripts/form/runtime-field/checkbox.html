@@ -1,34 +1,15 @@
+<div class="checkbox-item" ng-repeat="(i, value) in getLiterals()">
 
-    <!--<div class="form-group   ">-->
-      <!--<div >-->
-        <!--<div class="checkbox-item" ng-repeat="(i, value) in $root.schemaOf(field)._valueConstraints.literals">-->
-          <!--<div class="checkbox checkbox-primary">-->
-            <!--<input  type="checkbox"-->
-                <!--ng-click="updateModelFromUI(); setActive(index)"-->
-                <!--ng-class="{'isActive' : isActive(index),'required': isRequired()}"-->
-                <!--id="checkbox-{{uuid}}-{{index}}-{{i}}"-->
-                <!--ng-model="optionsUI[value.label]"/>-->
-            <!--<label  ng-click="setActive(index)" for="checkbox-{{uuid}}-{{index}}-{{i}}">{{$root.schemaOf(field)._valueConstraints.literals[i]['label']}}</label>-->
-          <!--</div>-->
+  <div class="checkbox checkbox-primary">
+    <input type="checkbox"
+        ng-click="setActive(index, true)"
+        id="checkbox-{{uuid}}-{{index}}-{{i}}"
+        ng-model="valueElement[i]['@value']"
+        ng-true-value="'{{value.label}}'"
+        />
+    <label for="checkbox-{{uuid}}-{{index}}-{{i}}">{{getLiterals()[i].label}}</label>
+  </div>
+</div>
 
-        <!--</div>-->
-      <!--</div>-->
-      <!--<div class="input-indicator-icons ng-valid ng-scope"-->
-          <!--ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>-->
-    <!--</div>-->
-
-
-    <div ng-init="initializeSelectionField(valueElement)">
-      <div class="checkbox-item" ng-repeat="(index, value) in $root.schemaOf(field)._valueConstraints.literals">
-        <div class="checkbox checkbox-primary">
-          <input type="checkbox"
-              ng-click="updateModelFromUI(valueElement)"
-              id="checkbox-{{uuid}}-{{$parent.$index}}-{{index}}"
-              ng-model="optionsUI[value.label]"
-              ng-disabled="!$root.isRuntime() || preview"/>
-          <label  for="checkbox-{{uuid}}-{{$parent.$index}}-{{index}}">{{$root.schemaOf(field)._valueConstraints.literals[index]['label']}}</label>
-        </div>
-      </div>
-    </div>
 
 

@@ -11556,7 +11556,6 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   background-color: aquamarine;
 }
 .template-body form .runtime button {
-  margin: 5px 2px;
   vertical-align: middle;
   -webkit-transition: all 0.3s ease 0.1s;
           transition: all 0.3s ease 0.1s;
@@ -11631,8 +11630,8 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   color: green;
 }
 .template-body form .runtime .field-root .title {
-  height: 20px;
-  line-height: 20px;
+  height: 40px;
+  line-height: 40px;
 }
 .template-body form .runtime .field-root .title.isActive {
   height: 40px;
@@ -11647,9 +11646,18 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   border: 1px dashed #888;
   height: 40px;
 }
+.template-body form .runtime .field-root select {
+  border-width: 0px;
+  background: transparent;
+  padding-top: 10px;
+}
+.template-body form .runtime .field-root select.isActive {
+  border: 1px dashed #888;
+}
 .template-body form .runtime .field-root textarea {
   border-width: 0px;
   background: transparent;
+  padding-top: 10px;
 }
 .template-body form .runtime .field-root textarea.isActive {
   border: 1px dashed #888;
@@ -11669,6 +11677,7 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   color: #000000;
   -webkit-transition: border-color 0.3s linear;
           transition: border-color 0.3s linear;
+  height: 40px;
 }
 .template-body form .runtime .form-group textarea.form-control {
   height: auto;

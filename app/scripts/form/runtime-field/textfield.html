@@ -4,7 +4,7 @@
     <div ng-if="!$root.hasValueConstraint($root.schemaOf(field)._valueConstraints)" class="form-group  has-feedback">
 
       <input type="text"
-          ng-click="setActive(index)"
+          ng-click="setActive(index, true)"
           class="form-control"
           ng-class="{'isActive' : isActive(index), 'required': isRequired()}"
           ng-change="setDefaultValueIfEmpty(valueElement)"

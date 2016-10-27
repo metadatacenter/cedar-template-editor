@@ -257,7 +257,8 @@ define([
 
       // Sets the instance @value fields based on the options selected at the UI
       $scope.updateModelFromUI = function (valueElement) {
-        console.log('updateModelFromUI'); console.log(valueElement);
+        console.log('updateModelFromUI');
+        console.log(valueElement);
         if (!valueElement || !$rootScope.isArray(valueElement)) {
           valueElement = [];
         }
@@ -326,7 +327,9 @@ define([
 
       // Set the UI with the values (@value) from the model
       $scope.updateUIFromModel = function (valueElement) {
-        console.log('updateUIFromModel'); console.log(valueElement);
+        console.log('updateUIFromModel');
+        console.log(valueElement);
+
         if ($scope.getInputType() == 'checkbox') {
           $scope.optionsUI = {};
           for (var item in valueElement) {
@@ -350,7 +353,11 @@ define([
         }
         console.log($scope.optionsUI);
 
-      }
+      };
+
+      $scope.console = function(obj) {
+        console.log(obj);
+      };
 
       $scope.updateUIFromModelControlledField = function () {
         if ($rootScope.isArray($scope.model)) {
@@ -375,12 +382,8 @@ define([
       // Initializes model for selection fields (checkbox, radio and list).
       $scope.initializeSelectionField = function (valueElement) {
         console.log('initializeSelectionField');
-        if (($scope.getInputType() == 'checkbox')
-            || ($scope.getInputType() == 'radio')
-            || ($scope.getInputType() == 'list')) {
-
+        if ($scope.isMultiAnswer()) {
           $scope.updateUIFromModel(valueElement);
-
         }
         console.log(valueElement);
       };
@@ -402,26 +405,26 @@ define([
       $scope.setDefaultValueIfEmpty = function (m) {
         console.log('setDefaultValueIfEmpty');
 
-          if (!$rootScope.isArray(m)) {
-            if (!m) {
-              m = {};
-            }
-            if (m.hasOwnProperty('@value')) {
-              // If empty string
-              if ((m['@value'] != null) && (m['@value'].length == 0)) {
-                m['@value'] = null;
-              }
-            }
-            else {
+        if (!$rootScope.isArray(m)) {
+          if (!m) {
+            m = {};
+          }
+          if (m.hasOwnProperty('@value')) {
+            // If empty string
+            if ((m['@value'] != null) && (m['@value'].length == 0)) {
               m['@value'] = null;
             }
           }
           else {
-            for (var i = 0; i < m.length; i++) {
-              $scope.setDefaultValueIfEmpty(m[i]);
-            }
+            m['@value'] = null;
           }
-console.log($scope.model);
+        }
+        else {
+          for (var i = 0; i < m.length; i++) {
+            $scope.setDefaultValueIfEmpty(m[i]);
+          }
+        }
+        console.log($scope.model);
       }
 
       $scope.uuid = DataManipulationService.generateTempGUID();
@@ -898,12 +901,17 @@ console.log($scope.model);
         return $scope.field.items;
       };
 
-      $scope.isRequired = function() {
+      $scope.isRequired = function () {
         return $rootScope.schemaOf($scope.field)._valueConstraints.requiredValue;
       };
 
-      $scope.getDescription = function() {
-        return  $rootScope.schemaOf($scope.field)._ui.description;
+      // is this a checkbox, radio or list question
+      $scope.isMultiAnswer = function () {
+        return (($scope.getInputType() == 'checkbox') || ($scope.getInputType() == 'radio') || ($scope.getInputType() == 'list'));
+      };
+
+      $scope.getDescription = function () {
+        return $rootScope.schemaOf($scope.field)._ui.description;
       };
 
       $scope.isActive = function (index) {
@@ -959,37 +967,45 @@ console.log($scope.model);
 
         }
       };
+      $scope.getLiterals = function () {
+        return $rootScope.schemaOf(field)._valueConstraints.literals;
+      }
+
 
       // allows us to look a the model as an array whether it is or not
       $scope.valueArray;
       $scope.setValueArray = function () {
 
-        if ($scope.model instanceof Array && $scope.model.length > 0) {
+        $scope.valueArray = [];
+        if ($scope.isMultiAnswer()) {
+
+          $scope.valueArray.push($scope.model);
+
+        } else if ($scope.model instanceof Array) {
+
           $scope.valueArray = $scope.model;
 
-        } else if ($scope.model instanceof Object) {
-            $scope.valueArray = [];
-            $scope.valueArray.push($scope.model);
         } else {
-          $scope.model = {};
+
+          if (!$scope.model) {
+            $scope.model = {};
+          }
+
           $scope.valueArray = [];
           $scope.valueArray.push($scope.model);
 
         }
         console.log('setValueArray');
-        console.log($scope.model)
+        console.log($scope.valueArray)
       };
 
 
       console.log('init');
-        console.log($scope.field);
-        console.log($scope.model);
-        $scope.setValueArray();
-        console.log($scope.model);
-        console.log($scope.valueArray);
-
-
-
+      console.log($scope.field);
+      console.log($scope.model);
+      $scope.setValueArray();
+      console.log($scope.model);
+      console.log($scope.valueArray);
 
 
     };

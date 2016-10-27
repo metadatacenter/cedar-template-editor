@@ -12,9 +12,7 @@
     <div class="fields text-fields">
 
       <!-- a list of fields -->
-      <div    ng-repeat="(index, valueElement) in valueArray">
-
-
+      <div ng-repeat="(index, valueElement) in valueArray">
 
         <div class="row" ng-class="{'isActive' : isActive(index)}" id="{{getId(index)}}">
           <div class="col-sm-3">
@@ -29,30 +27,29 @@
                 </div>
                 <div class="col-sm-2" ng-if="isActive(index) && isMultiple()">
 
-                    <button type="button" class="add" ng-click="addMoreInput()"
-                        ng-show=" (!field.maxItems || model.length < field.maxItems )"
-                        tooltip="add"
-                        tooltip-trigger
-                        tooltip-animation="false"
-                        tooltip-placement="top"
-                        data-toggle="tooltip"
-                        ng-click="addMoreInput()">
-                      <i class="fa fa-plus-circle"></i>
-                    </button>
+                  <button type="button" class="add" ng-click="addMoreInput()"
+                      ng-show=" (!field.maxItems || model.length < field.maxItems )"
+                      tooltip="add"
+                      tooltip-trigger
+                      tooltip-animation="false"
+                      tooltip-placement="top"
+                      data-toggle="tooltip"
+                      ng-click="addMoreInput()">
+                    <i class="fa fa-plus-circle"></i>
+                  </button>
 
-                    <button type="button" class="remove" ng-click="removeInput(index)"
-                        ng-show="model.length > field.minItems"
-                        tooltip="remove"
-                        tooltip-trigger
-                        tooltip-animation="false"
-                        tooltip-placement="top"
-                        data-toggle="tooltip">
-                      <i class="fa fa-trash"></i>
-                    </button>
+                  <button type="button" class="remove" ng-click="removeInput(index)"
+                      ng-show="model.length > field.minItems"
+                      tooltip="remove"
+                      tooltip-trigger
+                      tooltip-animation="false"
+                      tooltip-placement="top"
+                      data-toggle="tooltip">
+                    <i class="fa fa-trash"></i>
+                  </button>
 
                 </div>
               </div>
-
 
               <button ng-if="isActive(index)" type="submit" ng-click="onSubmit(index)"
                   class="btn btn-save confirm active" translate>GENERIC.Ok
@@ -63,7 +60,6 @@
 
         </div>
       </div>
-
 
       <!-- error messages last -->
       <div class="errors" ng-if="errorMessages">

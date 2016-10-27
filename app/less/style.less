@@ -2766,8 +2766,6 @@ section.dashboard-elements {
 .template-body form .runtime {
 
   button {
-
-    margin: 5px 2px;
     vertical-align: middle;
     transition: all 0.3s ease 0.1s;
     background-color: transparent;
@@ -2855,8 +2853,8 @@ section.dashboard-elements {
 
 
     .title {
-      height: 20px;
-      line-height: 20px;
+      height: 40px;
+      line-height: 40px;
       &.isActive {
         height: 40px;
         line-height: 40px;
@@ -2875,9 +2873,20 @@ section.dashboard-elements {
       }
     }
 
+    select {
+      border-width: 0px;
+      background: transparent;
+      padding-top: 10px;
+
+      &.isActive {
+        border: 1px dashed #888;
+      }
+    }
+
     textarea {
       border-width: 0px;
       background: transparent;
+      padding-top: 10px;
 
       &.isActive {
         border: 1px dashed #888;
@@ -2908,6 +2917,7 @@ section.dashboard-elements {
       font-size: 14px;
       color: @black;
       transition: border-color 0.3s linear;
+      height:40px;
     }
 
     textarea.form-control {

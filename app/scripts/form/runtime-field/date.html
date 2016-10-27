@@ -1,17 +1,17 @@
-
-      <div class='form-group has-feedback' date-time-picker>
-        <input type="text" ng-click="setActive(index)"
-            ng-change="setDefaultValueIfEmpty(model)"
-            class="form-control"
-            ng-class="{'isActive' : isActive(index),'required': $root.schemaOf(field)._valueConstraints.requiredValue}"
-            placeholder="enter date"
-            aria-label="Select a date"
-            ng-model="valueElement['@value']"
-            validate-on="blur"
-            ng-pattern="/^\d\d\/\d\d\/\d\d\d\d \d\d:\d\d (A|P)M$/"/>
+<div class='form-group has-feedback' date-time-picker>
+  <input type="text" ng-click="setActive(index)"
+      ng-click="setActive(index, true)"
+      ng-change="setDefaultValueIfEmpty(model)"
+      class="form-control"
+      ng-class="{'isActive' : isActive(index),'required': $root.schemaOf(field)._valueConstraints.requiredValue}"
+      placeholder="enter date"
+      aria-label="Select a date"
+      ng-model="valueElement['@value']"
+      validate-on="blur"
+      ng-pattern="/^\d\d\/\d\d\/\d\d\d\d \d\d:\d\d (A|P)M$/"/>
         <span class="input-group-addon" ng-class="{'hidden' : !isActive(index)}">
           <i class="fa fa-calendar fa-2x"></i>
         </span>
-      </div>
+</div>
 
 
