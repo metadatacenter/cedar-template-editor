@@ -514,7 +514,7 @@ define([
             return true;
 
           }
-          
+
           function addGroup(group) {
 
             vm.resourceGroups.push(group);
