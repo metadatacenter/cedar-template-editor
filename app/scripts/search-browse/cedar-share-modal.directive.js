@@ -51,98 +51,6 @@ define([
                                            AuthorizedBackendService, CONST) {
 
 
-          //POST           /groups                                    controllers.GroupController.createGroup()
-          //{
-          //    "name": "Group name",
-          //    "description": "Group description"
-          //}
-          //GET            /groups                                    controllers.GroupController.findGroups()
-          //{
-          //  "groups": [
-          //  {
-          //    "id": "https://repo.metadatacenter.orgx/groups/a3447634-39f7-4909-a845-7a2b6f318d46",
-          //    "name": "Everybody",
-          //    "displayName": "Everybody",
-          //  }
-          //]
-          //}
-          //GET            /groups/:id                                controllers.GroupController.findGroup(id: String)
-          //PATCH          /groups/:id                                controllers.GroupController.patchGroup(id: String)
-          //PUT            /groups/:id                                controllers.GroupController.updateGroup(id: String)
-          //{
-          //    "name": "Group name",
-          //    "description": "Group description"
-          //}
-          //DELETE         /groups/:id                                controllers.GroupController.deleteGroup(id: String)
-          //GET            /groups/:id/members                        controllers.GroupController.getGroupMembers(id: String)
-          //{
-          //  "users": [
-          //  {
-          //    "id": "https://metadatacenter.org/users/095fc857-0012-4bcc-92f6-0502b31148f6",
-          //    "createdOn": "2016-09-13T15 :16:58-0700",
-          //    "createdOnTS": 1473805018,
-          //    "lastUpdatedOn": "2016-09-13T15:16:58-0700",
-          //    "lastUpdatedOnTS": 1473805018,
-          //    "firstName": "Aaron",
-          //    "lastName": "Browne",
-          //    "email": "brownea@email.chop.edu",
-          //    "displayName": "Aaron Browne",
-          //    "nodeType": "user",
-          //    "isAdministrator" : true,
-          //    "isMember" : true
-          //  },
-          //  {
-          //    "id": "https://metadatacenter.org/users/f1605349-743c-4acc-be4b-ace07554f6d9",
-          //    "createdOn": "2016-09-09T16:40:03-0700",
-          //    "createdOnTS": 1473464403,
-          //    "lastUpdatedOn": "2016-09-09T16:40:03-0700",
-          //    "lastUpdatedOnTS": 1473464403,
-          //    "firstName": "Aaron",
-          //    "lastName": "Carlton",
-          //    "email": "aaron@ordinaryexperts.com",
-          //    "displayName": "Aaron Carlton",
-          //    "nodeType": "user"
-          //    "isAdministrator" : false,
-          //    "isMember" : true
-          //  },
-          //  {
-          //    "id": "https://metadatacenter.org/users/ae6bc5e2-8afd-4558-a9ae-ea694c3e4bea",
-          //    "createdOn": "2016-09-09T16:40:04-0700",
-          //    "createdOnTS": 1473464404,
-          //    "lastUpdatedOn": "2016-09-09T16:40:04-0700",
-          //    "lastUpdatedOnTS": 1473464404,
-          //    "firstName": "Alejandra",
-          //    "lastName": "Gonzalez-Beltran",
-          //    "email": "alejandra .gonzalez.beltran@gmail.com",
-          //    "displayName": "Alejandra Gonzalez-Beltran",
-          //    "nodeType": "user"
-          //    "isAdministrator" : true,
-          //    "isMember" : false
-          //  }
-          //]
-          //}
-          //PUT            /groups/:id/members                        controllers.GroupController.updateGroupMembers(id: String)
-          //{
-          //  "users": [
-          //  {
-          //    "id": "https://metadatacenter.org/users/095fc857-0012-4bcc-92f6-0502b31148f6",
-          //    "isAdministrator" : true,
-          //    "isMember" : true
-          //  },
-          //  {
-          //    "id": "https://metadatacenter.org/users/f1605349-743c-4acc-be4b-ace07554f6d9",
-          //    "isAdministrator" : false,
-          //    "isMember" : true
-          //  },
-          //  {
-          //    "id": "https://metadatacenter.org/users/ae6bc5e2-8afd-4558-a9ae-ea694c3e4bea",
-          //    "isAdministrator" : true,
-          //    "isMember" : false
-          //  }
-          //]
-          //}
-
-
           var vm = this;
 
           // share
@@ -473,7 +381,7 @@ define([
             var result = "";
             if (node) {
               if (isUser(node)) {
-                result = node.firstName + ' ' + node.lastName + ' (' + node.email + ')';
+                result = node.firstName + ' ' + node.lastName;
               } else {
                 result = node.displayName;
               }
