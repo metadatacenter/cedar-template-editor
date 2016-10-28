@@ -109,7 +109,7 @@ define([
           vm.giveGroupPermission = 'read';
           vm.typeaheadGroup = null;
           vm.newGroupName = null;
-          vm.getId = getId;
+
 
 
           // user permisssions
@@ -131,6 +131,7 @@ define([
             if (node != null) {
               var perms = node.currentUserPermissions;
               if (perms != null) {
+
                 return perms.indexOf(permission) != -1;
               }
             }
@@ -218,6 +219,7 @@ define([
             vm.editingDescription = false;
             vm.newTitle = "";
             vm.newDescription = '';
+
             getNodes();
             getPermissions(resource);
           };
@@ -320,37 +322,38 @@ define([
           // get all the users and groups on the system
           function getNodes() {
 
-            // get the users
-            resourceService.getUsers(
-                function (response) {
-                  vm.resourceUsers = response.users;
-                  vm.selectedUserId = initNodes(vm.resourceUsers);
+              // get the users
+              resourceService.getUsers(
+                  function (response) {
+                    vm.resourceUsers = response.users;
+                    vm.selectedUserId = initNodes(vm.resourceUsers);
 
 
-                  // get groups
-                  resourceService.getGroups(
-                      function (response) {
-                        vm.resourceGroups = response.groups;
-                        vm.selectedGroupId = initNodes(vm.resourceGroups);
+                    // get groups
+                    resourceService.getGroups(
+                        function (response) {
+                          vm.resourceGroups = response.groups;
+                          vm.selectedGroupId = initNodes(vm.resourceGroups);
 
-                        // resource nodes is the users and groups combined
-                        vm.resourceNodes = [];
-                        vm.resourceNodes = vm.resourceNodes.concat(vm.resourceUsers);
-                        vm.resourceNodes = vm.resourceNodes.concat(vm.resourceGroups);
-                        vm.selectedNodeId = initNodes(vm.resourceNodes);
+                          // resource nodes is the users and groups combined
+                          vm.resourceNodes = [];
+                          vm.resourceNodes = vm.resourceNodes.concat(vm.resourceUsers);
+                          vm.resourceNodes = vm.resourceNodes.concat(vm.resourceGroups);
+                          vm.selectedNodeId = initNodes(vm.resourceNodes);
 
-                      },
-                      function (error) {
-                        UIMessageService.showBackendError('SERVER.GROUPS.load.error',
-                            error);
-                      }
-                  );
-                },
-                function (error) {
-                  UIMessageService.showBackendError('SERVER.USERS.load.error', error);
-                }
-            );
-          }
+                        },
+                        function (error) {
+                          UIMessageService.showBackendError('SERVER.GROUPS.load.error',
+                              error);
+                        }
+                    );
+                  },
+                  function (error) {
+                    UIMessageService.showBackendError('SERVER.USERS.load.error', error);
+                  }
+              );
+            }
+
 
 
           // remove the share permission on this node
@@ -511,8 +514,7 @@ define([
             return true;
 
           }
-
-          // TODO add a new group by calling server, when done rebuild group selectors
+          
           function addGroup(group) {
 
             vm.resourceGroups.push(group);
@@ -550,7 +552,7 @@ define([
           }
 
           function updateGroupDescription(group, description) {
-            console.log(group);
+
             vm.editingDescription = false;
             if (description.length > 0) {
               group.description = description;
@@ -673,11 +675,6 @@ define([
             }
           });
 
-
-          //TODO remove when we have groups from server
-          function getId(group, person) {
-            return group.id + ',' + person.id;
-          }
 
 
           function getResourceDetails(resource) {
