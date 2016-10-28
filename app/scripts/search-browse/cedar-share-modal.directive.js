@@ -51,98 +51,6 @@ define([
                                            AuthorizedBackendService, CONST) {
 
 
-          //POST           /groups                                    controllers.GroupController.createGroup()
-          //{
-          //    "name": "Group name",
-          //    "description": "Group description"
-          //}
-          //GET            /groups                                    controllers.GroupController.findGroups()
-          //{
-          //  "groups": [
-          //  {
-          //    "id": "https://repo.metadatacenter.orgx/groups/a3447634-39f7-4909-a845-7a2b6f318d46",
-          //    "name": "Everybody",
-          //    "displayName": "Everybody",
-          //  }
-          //]
-          //}
-          //GET            /groups/:id                                controllers.GroupController.findGroup(id: String)
-          //PATCH          /groups/:id                                controllers.GroupController.patchGroup(id: String)
-          //PUT            /groups/:id                                controllers.GroupController.updateGroup(id: String)
-          //{
-          //    "name": "Group name",
-          //    "description": "Group description"
-          //}
-          //DELETE         /groups/:id                                controllers.GroupController.deleteGroup(id: String)
-          //GET            /groups/:id/members                        controllers.GroupController.getGroupMembers(id: String)
-          //{
-          //  "users": [
-          //  {
-          //    "id": "https://metadatacenter.org/users/095fc857-0012-4bcc-92f6-0502b31148f6",
-          //    "createdOn": "2016-09-13T15 :16:58-0700",
-          //    "createdOnTS": 1473805018,
-          //    "lastUpdatedOn": "2016-09-13T15:16:58-0700",
-          //    "lastUpdatedOnTS": 1473805018,
-          //    "firstName": "Aaron",
-          //    "lastName": "Browne",
-          //    "email": "brownea@email.chop.edu",
-          //    "displayName": "Aaron Browne",
-          //    "nodeType": "user",
-          //    "isAdministrator" : true,
-          //    "isMember" : true
-          //  },
-          //  {
-          //    "id": "https://metadatacenter.org/users/f1605349-743c-4acc-be4b-ace07554f6d9",
-          //    "createdOn": "2016-09-09T16:40:03-0700",
-          //    "createdOnTS": 1473464403,
-          //    "lastUpdatedOn": "2016-09-09T16:40:03-0700",
-          //    "lastUpdatedOnTS": 1473464403,
-          //    "firstName": "Aaron",
-          //    "lastName": "Carlton",
-          //    "email": "aaron@ordinaryexperts.com",
-          //    "displayName": "Aaron Carlton",
-          //    "nodeType": "user"
-          //    "isAdministrator" : false,
-          //    "isMember" : true
-          //  },
-          //  {
-          //    "id": "https://metadatacenter.org/users/ae6bc5e2-8afd-4558-a9ae-ea694c3e4bea",
-          //    "createdOn": "2016-09-09T16:40:04-0700",
-          //    "createdOnTS": 1473464404,
-          //    "lastUpdatedOn": "2016-09-09T16:40:04-0700",
-          //    "lastUpdatedOnTS": 1473464404,
-          //    "firstName": "Alejandra",
-          //    "lastName": "Gonzalez-Beltran",
-          //    "email": "alejandra .gonzalez.beltran@gmail.com",
-          //    "displayName": "Alejandra Gonzalez-Beltran",
-          //    "nodeType": "user"
-          //    "isAdministrator" : true,
-          //    "isMember" : false
-          //  }
-          //]
-          //}
-          //PUT            /groups/:id/members                        controllers.GroupController.updateGroupMembers(id: String)
-          //{
-          //  "users": [
-          //  {
-          //    "id": "https://metadatacenter.org/users/095fc857-0012-4bcc-92f6-0502b31148f6",
-          //    "isAdministrator" : true,
-          //    "isMember" : true
-          //  },
-          //  {
-          //    "id": "https://metadatacenter.org/users/f1605349-743c-4acc-be4b-ace07554f6d9",
-          //    "isAdministrator" : false,
-          //    "isMember" : true
-          //  },
-          //  {
-          //    "id": "https://metadatacenter.org/users/ae6bc5e2-8afd-4558-a9ae-ea694c3e4bea",
-          //    "isAdministrator" : true,
-          //    "isMember" : false
-          //  }
-          //]
-          //}
-
-
           var vm = this;
 
           // share
@@ -201,7 +109,7 @@ define([
           vm.giveGroupPermission = 'read';
           vm.typeaheadGroup = null;
           vm.newGroupName = null;
-          vm.getId = getId;
+
 
 
           // user permisssions
@@ -223,6 +131,7 @@ define([
             if (node != null) {
               var perms = node.currentUserPermissions;
               if (perms != null) {
+
                 return perms.indexOf(permission) != -1;
               }
             }
@@ -310,6 +219,7 @@ define([
             vm.editingDescription = false;
             vm.newTitle = "";
             vm.newDescription = '';
+
             getNodes();
             getPermissions(resource);
           };
@@ -412,37 +322,38 @@ define([
           // get all the users and groups on the system
           function getNodes() {
 
-            // get the users
-            resourceService.getUsers(
-                function (response) {
-                  vm.resourceUsers = response.users;
-                  vm.selectedUserId = initNodes(vm.resourceUsers);
+              // get the users
+              resourceService.getUsers(
+                  function (response) {
+                    vm.resourceUsers = response.users;
+                    vm.selectedUserId = initNodes(vm.resourceUsers);
 
 
-                  // get groups
-                  resourceService.getGroups(
-                      function (response) {
-                        vm.resourceGroups = response.groups;
-                        vm.selectedGroupId = initNodes(vm.resourceGroups);
+                    // get groups
+                    resourceService.getGroups(
+                        function (response) {
+                          vm.resourceGroups = response.groups;
+                          vm.selectedGroupId = initNodes(vm.resourceGroups);
 
-                        // resource nodes is the users and groups combined
-                        vm.resourceNodes = [];
-                        vm.resourceNodes = vm.resourceNodes.concat(vm.resourceUsers);
-                        vm.resourceNodes = vm.resourceNodes.concat(vm.resourceGroups);
-                        vm.selectedNodeId = initNodes(vm.resourceNodes);
+                          // resource nodes is the users and groups combined
+                          vm.resourceNodes = [];
+                          vm.resourceNodes = vm.resourceNodes.concat(vm.resourceUsers);
+                          vm.resourceNodes = vm.resourceNodes.concat(vm.resourceGroups);
+                          vm.selectedNodeId = initNodes(vm.resourceNodes);
 
-                      },
-                      function (error) {
-                        UIMessageService.showBackendError('SERVER.' + resource.nodeType.toUpperCase() + '.load.error',
-                            error);
-                      }
-                  );
-                },
-                function (error) {
-                  UIMessageService.showBackendError('SERVER.' + resource.nodeType.toUpperCase() + '.load.error', error);
-                }
-            );
-          }
+                        },
+                        function (error) {
+                          UIMessageService.showBackendError('SERVER.GROUPS.load.error',
+                              error);
+                        }
+                    );
+                  },
+                  function (error) {
+                    UIMessageService.showBackendError('SERVER.USERS.load.error', error);
+                  }
+              );
+            }
+
 
 
           // remove the share permission on this node
@@ -473,7 +384,7 @@ define([
             var result = "";
             if (node) {
               if (isUser(node)) {
-                result = node.firstName + ' ' + node.lastName + ' (' + node.email + ')';
+                result = node.firstName + ' ' + node.lastName;
               } else {
                 result = node.displayName;
               }
@@ -604,7 +515,6 @@ define([
 
           }
 
-          // TODO add a new group by calling server, when done rebuild group selectors
           function addGroup(group) {
 
             vm.resourceGroups.push(group);
@@ -635,14 +545,14 @@ define([
 
                 },
                 function (error) {
-                  UIMessageService.showBackendError('SERVER.' + 'group' + '.load.error',
+                  UIMessageService.showBackendError('SERVER.GROUPS.load.error',
                       error);
                 }
             );
           }
 
           function updateGroupDescription(group, description) {
-            console.log(group);
+
             vm.editingDescription = false;
             if (description.length > 0) {
               group.description = description;
@@ -682,7 +592,7 @@ define([
                 },
                 function (error) {
 
-                  UIMessageService.showBackendError('SERVER.' + group.nodeType.toUpperCase() + '.load.error',
+                  UIMessageService.showBackendError('SERVER.GROUPS.update.error',
                       error);
                 }
             );
@@ -701,7 +611,7 @@ define([
 
                 },
                 function (error) {
-                  UIMessageService.showBackendError('SERVER.' + group.nodeType.toUpperCase() + '.load.error',
+                  UIMessageService.showBackendError('SERVER.GROUPS.delete.error',
                       error);
                 }
             );
@@ -717,7 +627,7 @@ define([
 
                 },
                 function (error) {
-                  UIMessageService.showBackendError('SERVER.' + group.nodeType.toUpperCase() + '.load.error',
+                  UIMessageService.showBackendError('SERVER.GROUPS.load.error',
                       error);
                 }
             );
@@ -739,7 +649,7 @@ define([
                 function (response) {
                 },
                 function (error) {
-                  UIMessageService.showBackendError('SERVER.' + group.nodeType.toUpperCase() + '.load.error',
+                  UIMessageService.showBackendError('SERVER.GROUPS.load.error',
                       error);
                 }
             );
@@ -765,11 +675,6 @@ define([
             }
           });
 
-
-          //TODO remove when we have groups from server
-          function getId(group, person) {
-            return group.id + ',' + person.id;
-          }
 
 
           function getResourceDetails(resource) {

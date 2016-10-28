@@ -14952,11 +14952,19 @@ table.apiKey td {
   border: 1px solid #ccc;
   height: 40px;
 }
+#share-modal .modal-dialog .modal-content .modal-body .typeaheadDropUp ul.dropdown-menu {
+  bottom: 100% !important;
+  top: auto !important;
+}
 #share-modal .modal-dialog .modal-content .modal-body .checkbox {
   margin-top: 8px;
   margin-bottom: 0;
 }
 #share-modal .modal-dialog .modal-content .modal-body select {
+  outline: none;
+  height: 40px;
+}
+#share-modal .modal-dialog .modal-content .modal-body select.select-picker {
   outline: none;
   height: 40px;
 }
@@ -14967,6 +14975,18 @@ table.apiKey td {
   padding-left: 5px;
   outline: none;
   height: 40px;
+}
+#share-modal .modal-dialog .modal-content .modal-body button i.fa-plus {
+  margin: 0 -4px;
+  vertical-align: top;
+}
+#share-modal .modal-dialog .modal-content .modal-body button i.fa-remove {
+  margin: -1px -5px;
+  vertical-align: top;
+}
+#share-modal .modal-dialog .modal-content .modal-body button i.fa-times {
+  margin: -1px -5px;
+  vertical-align: top;
 }
 #share-modal .modal-dialog .modal-content .modal-body .row {
   padding: 5px 0;
@@ -15072,13 +15092,6 @@ table.apiKey td {
   padding: 0px 1px 1px 2px;
   margin: 6px 25px;
   outline: none;
-}
-#share-modal .modal-dialog .modal-content .modal-body h5,
-#share-modal .modal-dialog .modal-content .modal-body .minTop {
-  margin: 5px 0;
-}
-#share-modal .modal-dialog .modal-content .modal-body .topMinus10 {
-  margin-top: -10px;
 }
 @media (min-width: 768px) {
   #sidebar-left {
