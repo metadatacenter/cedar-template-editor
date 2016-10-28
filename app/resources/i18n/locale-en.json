@@ -102,7 +102,7 @@
     "SelectToViewDetails": "Select a folder or resource to view its details.",
     "canRead": "can read",
     "canWrite": "can write",
-    "isOwner": "isOwner"
+    "isOwner": "owner"
   },
   "SERVER": {
     "FOLDER": {
