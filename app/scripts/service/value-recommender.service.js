@@ -65,9 +65,8 @@ define(['angular'], function (angular) {
     service.updatePopulatedFields = function (field, value) {
       var fieldId = field['@id'];
       if (value) {
-        var fieldName = DataManipulationService.getFieldName(field._ui.title);
         populatedFields[fieldId] = {
-          "name": fieldName + '.[\'@value\']',
+          "path": field._path,
           "value": value
         }
       }
@@ -94,11 +93,8 @@ define(['angular'], function (angular) {
 
     service.updateValueRecommendationResults = function (field) {
       var fieldId = field['@id'];
-      console.log(field);
       var targetFieldPath = field._path;
-      //var targetFieldPath = DataManipulationService.getFieldName(field._ui.title);
-      service.getRecommendation(targetFieldPath,
-          service.getRelevantPopulatedFields(fieldId)).then(function (recommendation) {
+      service.getRecommendation(targetFieldPath, service.getRelevantPopulatedFields(fieldId)).then(function (recommendation) {
         if (recommendation.recommendedValues && recommendation.recommendedValues.length == 0) {
           recommendation.recommendedValues.push({
             'value': $translate.instant('VALUERECOMMENDER.noResults'),
