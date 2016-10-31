@@ -24,6 +24,10 @@ define([
             $rootScope.jsonToSave = $scope.form;
             HeaderService.dataContainer.currentObjectScope = $scope.form;
             $rootScope.documentTitle = $scope.form._ui.title;
+
+            // Initialize value recommender service
+            $rootScope.vrs.init($routeParams.templateId, $scope.form);
+
           },
           function (err) {
             UIMessageService.showBackendError('SERVER.TEMPLATE.load.error', err);
@@ -166,9 +170,6 @@ define([
         delete $scope.invalidFieldValues[args[2]];
       }
     });
-
-    // Initialize value recommender service
-    $rootScope.vrs.init($routeParams.templateId);
 
     // cancel the form and go back to folder
     $scope.cancelTemplate = function () {

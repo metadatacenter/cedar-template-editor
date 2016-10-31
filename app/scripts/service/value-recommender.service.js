@@ -12,6 +12,8 @@ define(['angular'], function (angular) {
     var isValueRecommendationEnabled = false;
     var valueRecommendationResults;
     var populatedFields;
+    var templateId;
+    var template;
 
     var service = {
       serviceId: 'ValueRecommenderService'
@@ -20,7 +22,12 @@ define(['angular'], function (angular) {
     /**
      * Initialize service
      */
-    service.init = function (templateId) {
+    service.init = function (templId, templ) {
+      templateId = templId;
+      template = templ;
+
+      DataManipulationService.addPathInfo(template, null);
+
       valueRecommendationResults = [];
       populatedFields = [];
       http_default_config = {
@@ -87,8 +94,10 @@ define(['angular'], function (angular) {
 
     service.updateValueRecommendationResults = function (field) {
       var fieldId = field['@id'];
-      var fieldName = DataManipulationService.getFieldName(field._ui.title);
-      service.getRecommendation(fieldName + "['@value']",
+      console.log(field);
+      var targetFieldPath = field._path;
+      //var targetFieldPath = DataManipulationService.getFieldName(field._ui.title);
+      service.getRecommendation(targetFieldPath,
           service.getRelevantPopulatedFields(fieldId)).then(function (recommendation) {
         if (recommendation.recommendedValues && recommendation.recommendedValues.length == 0) {
           recommendation.recommendedValues.push({
@@ -111,12 +120,13 @@ define(['angular'], function (angular) {
     }
 
     // Invoke the Value Recommender service
-    service.getRecommendation = function (targetFieldName, populatedFields) {
+    service.getRecommendation = function (targetFieldPath, populatedFields) {
       var inputData = {};
       if (populatedFields.length > 0) {
         inputData['populatedFields'] = populatedFields;
       }
-      inputData['targetField'] = {'name': targetFieldName};
+      inputData['templateId'] = templateId;
+      inputData['targetField'] = {'path': targetFieldPath};
       return $http.post(UrlService.getValueRecommendation(), inputData, http_default_config).then(function (response) {
         return response.data;
       }).catch(function (err) {
