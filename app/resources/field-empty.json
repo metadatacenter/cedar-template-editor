@@ -43,6 +43,9 @@
     "@value": {
       "type" : ["string", "null"]
     },
+    "_valueLabel": {
+      "type" : ["string", "null"]
+    },
     "pav:createdOn": {
       "type" : ["string", "null"],
       "format": "date-time"
