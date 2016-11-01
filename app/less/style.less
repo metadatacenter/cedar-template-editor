@@ -6301,8 +6301,15 @@ table.apiKey {
           border-radius: 0px;
           box-shadow: none;
           border: 1px solid #ccc;
-          height: 40px
+          height: 40px;
+
+
         }
+        .typeaheadDropUp ul.dropdown-menu {
+          bottom:100% !important;
+          top:auto !important;
+        }
+
         .checkbox {
           margin-top: 8px;
           margin-bottom: 0;
@@ -6310,6 +6317,10 @@ table.apiKey {
         select {
           outline: none;
           height: 40px;
+          &.select-picker {
+            outline:none;
+            height:40px;
+          }
         }
         .bootstrap-select {
           outline: none;
@@ -6319,6 +6330,18 @@ table.apiKey {
           outline: none;
           height: 40px;
 
+        }
+
+        button i.fa-plus {
+          margin: 0 -4px;vertical-align: top;
+        }
+
+        button i.fa-remove {
+         margin: -1px -5px;vertical-align: top;
+        }
+
+        button i.fa-times {
+          margin: -1px -5px;vertical-align: top;
         }
 
         .row {
@@ -6438,12 +6461,7 @@ table.apiKey {
           outline: none;
         }
 
-        h5, .minTop {
-          margin:5px 0;
-        }
-        .topMinus10 {
-          margin-top:-10px;
-        }
+
       }
     }
   }
