@@ -667,6 +667,22 @@ define([
         $scope.modelValueRecommendation = {'@value': {'value': $scope.model['@value']}}
       }
 
+      $scope.initializeValueRecommendationField = function () {
+        $scope.modelValueRecommendation['@value'];
+        $scope.modelValueRecommendation = {};
+        if ($scope.model['_valueLabel']) {
+          $scope.modelValueRecommendation['@value'] = {
+            'value'   : $scope.model._valueLabel,
+            'valueUri': $scope.model['@value'],
+          };
+        }
+        else {
+          $scope.modelValueRecommendation['@value'] = {
+            'value': $scope.model['@value']
+          };
+        }
+      };
+
       $scope.updateModelWhenChangeSelection = function (modelvr) {
         // This variable will be used at textfield.html
         $scope.modelValueRecommendation = modelvr;
@@ -674,13 +690,22 @@ define([
           angular.forEach(modelvr, function (m, i) {
             if (m && m['@value'] & m['@value'].value) {
               $scope.model[i]['@value'] = m['@value'].value;
+              if (m['@value'].valueUri) {
+                $scope.model[i]['_valueLabel'] = m['@value'].valueUri;
+              }
             } else {
               delete $scope.model[i]['@value'];
             }
           });
         } else {
-          var newValue = modelvr['@value'].value;
-          $scope.model['@value'] = newValue;
+          if (modelvr['@value'].valueUri) {
+            $scope.model['@value'] = modelvr['@value'].valueUri;
+            $scope.model['_valueLabel'] = modelvr['@value'].value;
+          }
+          else {
+            $scope.model['@value'] = modelvr['@value'].value;
+            delete $scope.model['_valueLabel'];
+          }
         }
       };
 
@@ -689,13 +714,17 @@ define([
         $scope.isFirstRefresh = isFirstRefresh;
       };
 
-      $scope.updateModelWhenRefresh = function (select) {
+      $scope.updateModelWhenRefresh = function (select, modelvr) {
         if (!$scope.isFirstRefresh) {
           if ($rootScope.isArray($scope.model)) {
             // TODO
           } else {
-            $scope.model['@value'] = select.search;
-            $scope.modelValueRecommendation['@value'].value = select.search;
+            // If the user entered a new value
+            if (select.search != modelvr['@value'].value) {
+              $scope.model['@value'] = select.search;
+              delete $scope.model['_valueLabel'];
+              $scope.modelValueRecommendation['@value'].value = select.search;
+            }
           }
         }
       };

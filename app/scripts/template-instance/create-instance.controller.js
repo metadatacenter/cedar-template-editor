@@ -51,6 +51,9 @@ define([
                   // Assign returned form object from FormService to $scope.form
                   $scope.form = templateResponse.data;
                   $rootScope.jsonToSave = $scope.form;
+                  // Initialize value recommender service
+                  var templateId = instanceResponse.data['schema:isBasedOn'];
+                  $rootScope.vrs.init(templateId, $scope.form);
                 },
                 function (templateErr) {
                   UIMessageService.showBackendError('SERVER.TEMPLATE.load-for-instance.error', templateErr);

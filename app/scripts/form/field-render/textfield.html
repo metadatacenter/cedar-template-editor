@@ -127,7 +127,7 @@
     </div>
 
     <!-- Field with value recommendation functionality -->
-    <div
+    <div ng-init="initializeValueRecommendationField()"
         ng-if="!$root.hasValueConstraint($root.schemaOf(field)._valueConstraints) && $root.vrs.getIsValueRecommendationEnabled()"
         class="has-constraint autocomplete-label-wrapper"
         ng-class="{'has-selected': modelValueRecommendation['@value'].value}">
@@ -142,10 +142,11 @@
         <ui-select-match placeholder="">{{$select.selected.value}}</ui-select-match>
         <ui-select-choices
             ui-disable-choice="option.value == $root.vrs.getNoResultsMsg()"
-            refresh="updateModelWhenRefresh($select); $root.vrs.updatePopulatedFields(field, $select.search)"
+            refresh="updateModelWhenRefresh($select, modelValueRecommendation); $root.vrs.updatePopulatedFields(field, $select.search)"
             refresh-delay="200"
             repeat="option in $root.vrs.getValueRecommendationResults(field['@id']) | propsFilter: {value: $select.search} | limitTo:50">
-          <div><span ng-bind-html="option.value | highlight: $select.search"></span>&nbsp;
+          <div>
+            <span ng-bind-html="option.value | highlight: $select.search"></span>&nbsp;
             <small ng-if="option.score!=undefined">(<span
                 ng-bind-html="option.score * 100 | highlight: $select.search * 100 | number : 0"></span>%)
             </small>
