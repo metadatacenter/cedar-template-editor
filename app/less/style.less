@@ -733,8 +733,8 @@ button {
     right: 0;
     padding: 30px 0;
     height: 100%;
-    border-top:1px solid #ddd;
-    border-bottom:1px solid #ddd;
+    border-top: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
 
   }
 
@@ -1178,9 +1178,9 @@ button {
       padding: 40px 0 20px 10px;
 
       ul.list-inline {
-        padding:10px 0;
+        padding: 10px 0;
         li {
-          padding:0;
+          padding: 0;
         }
       }
 
@@ -6148,7 +6148,7 @@ table.apiKey {
   background: #ccc; // manage scrollbar thumb background color here
 }
 
-#renameResourceModal, #newFolderModal, #moveResourceModal, #shareResourceModal {
+#rename-modal, #new-folder-modal, #move-modal,  #share-modal {
   .modal-content {
     border-radius: 0;
     border: 0;
@@ -6173,8 +6173,22 @@ table.apiKey {
         }
 
       }
+      .inline-editing {
+        button {
+          margin:10px 0;
+        }
+        input.borderless {
+          border:0px solid #fff;
+        }
+
+      }
+      table.details {
+        padding:0;margin:0;font-size:13px;
+      }
 
     }
+
+
     .actions {
 
       .favorite {
@@ -6242,7 +6256,7 @@ table.apiKey {
 
 }
 
-#moveResourceModal {
+#move-modal {
   .modal-content {
     .modal-body {
       height: 300px;
@@ -6256,129 +6270,202 @@ table.apiKey {
   }
 }
 
-#shareResourceModal {
-  .modal-content {
-    max-width: 500px;
-    .modal-body {
-      max-height: 500px;
-      .row {
-        padding: 5px 0;
-        .name {
-          padding: 8px 0 0 20px;
-          white-space: nowrap;
-          overflow: hidden;
-          text-overflow: ellipsis;
+#share-modal {
+
+  @media (max-width: @screen-sm-min) {
+    .modal-content {
+      width: calc(~"100% - 10px");
+      max-width: calc(~"100% - 10px");
+    }
+  }
+  .modal-dialog {
+    max-width: 800px;
+    width: 800px;
+    .modal-content {
+      max-width: 800px;
+      width: 800px;
+      margin: 0 auto;
+      &.cannotWrite {
+        width: 600px;
+        .bootstrap-select button {
+          padding-left: 40px;
+
         }
-        .btn-plus {
-          width: 25px;
-          height: 25px;
-          float: right;
+      }
+      .modal-body {
+        max-height: 500px;
+        overflow-y:scroll;
+        input {
+          color: #000;
           outline: none;
-          background: @primary-accent !important;
-        }
-        .btn-delete {
-          width: 25px;
-          height: 25px;
-          float: right;
-          outline: none;
-          background: #999 !important;
-        }
-      }
-      .hidden-container {
-        border: 0px solid #ccc;
-        padding-right: 24px;
-        margin-right: 12px
-      }
-      .scroll-container {
-        height: 250px;
-        overflow-y: scroll;
-        overflow-x: hidden;
-        border: 1px solid #ccc;
-        padding-right: 24px;
-      }
-      .bootstrap-select {
-        button.disabled {
-          background: @white;
+          border-radius: 0px;
+          box-shadow: none;
           border: 1px solid #ccc;
-          color: #333;
-          opacity: 1;
-          .glyphicon {
-            display: none;
+          height: 40px;
+
+
+        }
+        .typeaheadDropUp ul.dropdown-menu {
+          bottom:100% !important;
+          top:auto !important;
+        }
+
+        .checkbox {
+          margin-top: 8px;
+          margin-bottom: 0;
+        }
+        select {
+          outline: none;
+          height: 40px;
+          &.select-picker {
+            outline:none;
+            height:40px;
           }
         }
-        &.small {
-          width: 80px;
+        .bootstrap-select {
+          outline: none;
         }
-        &.open {
-          .dropdown-menu {
-            padding: 0 !important;
-            border-radius: 0px !important;
+        .bootstrap-select button {
+          padding-left: 5px;
+          outline: none;
+          height: 40px;
+
+        }
+
+        button i.fa-plus {
+          margin: 0 -4px;vertical-align: top;
+        }
+
+        button i.fa-remove {
+         margin: -1px -5px;vertical-align: top;
+        }
+
+        button i.fa-times {
+          margin: -1px -5px;vertical-align: top;
+        }
+
+        .row {
+          padding: 5px 0;
+          .name {
+            padding: 8px 0 0 20px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+          }
+          .btn-plus {
+            width: 25px;
+            height: 25px;
+            float: right;
+            outline: none;
+            background: @button-template;
+          }
+          .btn-delete {
+            width: 25px;
+            height: 25px;
+            float: right;
+            outline: none;
+            background: #999 !important;
           }
         }
-      }
-
-      .btn-info {
-        border-radius: 50%;
-        width: 40px;
-        height: 40px;
-        font-size: 18px;
-        margin: 5px 0;
-      }
-
-      .btn-info.btn-circle {
-        background: @brand-primary;
-        color: @white;
-        border: none;
-
-        &.compose {
-          background: @primary-accent;
+        .hidden-container {
+          border: 0px solid #ccc;
+          padding-right: 24px;
+          margin-right: 12px
+        }
+        .scroll-container {
+          height: 250px;
+          overflow-y: scroll;
+          overflow-x: hidden;
+          border: 1px solid #ccc;
+          padding-right: 24px;
+        }
+        .bootstrap-select {
+          button.disabled {
+            background: @white;
+            border: 1px solid #ccc;
+            color: #333;
+            opacity: 1;
+            .glyphicon {
+              display: none;
+            }
+          }
+          &.small {
+            width: 80px;
+          }
+          &.open {
+            .dropdown-menu {
+              padding: 0 !important;
+              border-radius: 0px !important;
+            }
+          }
         }
 
-        &.template {
-          background: @button-template;
+        .btn-info {
+          border-radius: 50%;
+          width: 40px;
+          height: 40px;
+          font-size: 18px;
+          margin: 5px 0;
         }
 
-        &.element {
-          background: @button-element;
+        .btn-info.btn-circle {
+          background: @brand-primary;
+          color: @white;
+          border: none;
+
+          &.compose {
+            background: @primary-accent;
+          }
+
+          &.template {
+            background: @button-template;
+          }
+
+          &.element {
+            background: @button-element;
+          }
+
+          &.metadata, &.instance {
+            background: @button-metadata;
+          }
+
+          &.folder {
+            background: @button-folder;
+          }
+        }
+        .btn-info.btn-circle-outline {
+          box-shadow: none;
+          background: @white;
+          color: @brand-primary;
+          border: 1px solid @brand-primary;
+        }
+        .btn-info.btn-close {
+          box-shadow: none;
+          background: @graytxt;
+          color: @white;
+          border: none;
+        }
+        .btn-info.btn-add {
+          height: 25px;
+          width: 25px;
+          border-radius: 50%;
+          display: inline-block;
+          vertical-align: middle;
+          margin: 0 10px;
+          -webkit-transition: all 0.3s 0.1s;
+          transition: all 0.3s 0.1s;
+          cursor: pointer;
+          padding: 0px 1px 1px 2px;
+          margin: 6px 25px;
+
+          outline: none;
         }
 
-        &.metadata, &.instance {
-          background: @button-metadata;
-        }
 
-        &.folder {
-          background: @button-folder;
-        }
-      }
-      .btn-info.btn-circle-outline {
-        box-shadow: none;
-        background: @white;
-        color: @brand-primary;
-        border: 1px solid @brand-primary;
-      }
-      .btn-info.btn-close {
-        box-shadow: none;
-        background: @graytxt;
-        color: @white;
-        border: none;
-      }
-      .btn-info.btn-add {
-        height: 25px;
-        width: 25px;
-        border-radius: 50%;
-        display: inline-block;
-        vertical-align: middle;
-        margin: 0 10px;
-        -webkit-transition: all 0.3s 0.1s;
-        transition: all 0.3s 0.1s;
-        cursor: pointer;
-        padding: 0px 1px 1px 2px;
-        margin: 6px 25px;
-
-        outline: none;
       }
     }
   }
+
 }
 
 @media (min-width: 768px) {
