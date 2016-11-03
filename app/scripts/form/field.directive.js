@@ -721,9 +721,16 @@ define([
           } else {
             // If the user entered a new value
             if (select.search != modelvr['@value'].value) {
-              $scope.model['@value'] = select.search;
+              var modelValue;
+              if (select.search == "" || select.search == undefined) {
+                modelValue = null;
+              }
+              else {
+                modelValue = select.search;
+              }
+              $scope.model['@value'] = modelValue;
               delete $scope.model['_valueLabel'];
-              $scope.modelValueRecommendation['@value'].value = select.search;
+              $scope.modelValueRecommendation['@value'].value = modelValue;
             }
           }
         }
@@ -737,29 +744,17 @@ define([
       };
 
       $scope.clearSelection = function ($event, select) {
-
         $event.stopPropagation();
-
         $scope.modelValueRecommendation = {
           '@value': {'value': null, 'valueUri': null},
         }
-        $scope.model['@value'] = null;
-        delete $scope.model['_valueLabel'];
-
-        console.log('---------');
-        console.log($scope.modelValueRecommendation);
-        console.log($scope.model);
-
-
         select.selected = undefined;
         select.search = "";
-        console.log(select.search);
-
+        $scope.model['@value'] = null;
+        delete $scope.model['_valueLabel'];
       };
 
       $scope.calculateUIScore = function(score) {
-        console.log("im here");
-        console.log(score);
         var s = Math.floor(score * 100);
         if (s < 1) {
           return "<1%";
