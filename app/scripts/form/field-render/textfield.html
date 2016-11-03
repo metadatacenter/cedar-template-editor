@@ -139,7 +139,9 @@
           close-on-select="true"
           reset-search-input="false"
           aria-label="{{$root.schemaOf(field)._ui.description}}">
-        <ui-select-match placeholder="">{{$select.selected.value}}</ui-select-match>
+        <ui-select-match class="selection-field" placeholder="">{{$select.selected.value}}
+          <i class="fa fa-times" aria-hidden="true" ng-click="clearSelection($event, $select)"></i>
+        </ui-select-match>
         <ui-select-choices
             ui-disable-choice="option.value == $root.vrs.getNoResultsMsg()"
             refresh="updateModelWhenRefresh($select, modelValueRecommendation); $root.vrs.updatePopulatedFields(field, $select.search)"
@@ -147,8 +149,7 @@
             repeat="option in $root.vrs.getValueRecommendationResults(field['@id']) | propsFilter: {value: $select.search} | limitTo:50">
           <div>
             <span ng-bind-html="option.value | highlight: $select.search"></span>&nbsp;
-            <small ng-if="option.score!=undefined">(<span
-                ng-bind-html="option.score * 100 | highlight: $select.search * 100 | number : 0"></span>%)
+            <small ng-if="option.score!=undefined">(<span>{{calculateUIScore(option.score)}}</span>)
             </small>
           </div>
         </ui-select-choices>

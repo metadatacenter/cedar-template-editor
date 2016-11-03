@@ -735,6 +735,40 @@ define([
           select.search = select.selected.value;
         }
       };
+
+      $scope.clearSelection = function ($event, select) {
+
+        $event.stopPropagation();
+
+        $scope.modelValueRecommendation = {
+          '@value': {'value': null, 'valueUri': null},
+        }
+        $scope.model['@value'] = null;
+        delete $scope.model['_valueLabel'];
+
+        console.log('---------');
+        console.log($scope.modelValueRecommendation);
+        console.log($scope.model);
+
+
+        select.selected = undefined;
+        select.search = "";
+        console.log(select.search);
+
+      };
+
+      $scope.calculateUIScore = function(score) {
+        console.log("im here");
+        console.log(score);
+        var s = Math.floor(score * 100);
+        if (s < 1) {
+          return "<1%";
+        }
+        else {
+          return s.toString() + "%";
+        }
+      };
+
       /* end of Value Recommendation functionality */
 
 

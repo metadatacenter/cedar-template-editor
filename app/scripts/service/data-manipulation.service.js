@@ -392,8 +392,6 @@ define([
                 fieldPath = fieldPath + '.' + name;
               }
               properties[name]['_path'] = fieldPath;
-              console.log(properties);
-              console.log(fieldPath);
             }
           }
         }

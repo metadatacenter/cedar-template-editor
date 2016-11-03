@@ -12922,6 +12922,11 @@ p.instructions {
 .fields .form-group.form-group-narrow {
   margin-right: 0px;
 }
+.fields .selection-field i.fa-times {
+  margin: -1px -5px;
+  vertical-align: top;
+  color: #999999;
+}
 .fields-checkbox .field-checkbox,
 .fields-radio .field-radio,
 .fields-date .field-date,
