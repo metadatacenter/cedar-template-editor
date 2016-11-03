@@ -24,6 +24,10 @@
           ng-click="toggleControlledTerm('required');  $event.stopPropagation();">
         <span>Required</span>
       </div>
+      <div ng-if="allowsValueRecommendation()" class="element-toggle table-cell-style value-recommendation-tab" ng-class="{active: isTabActive('value-recommendation')}"
+          ng-click="toggleControlledTerm('value-recommendation');  $event.stopPropagation();">
+        <span>Suggestions</span>
+      </div>
     </div>
   </div>
 
@@ -49,6 +53,20 @@
       </div>
       <div class="date-range d-option" ng-click="$root.schemaOf(field)._valueConstraints.requiredValue = true;  $event.stopPropagation();"
           ng-class="{active: $root.schemaOf(field)._valueConstraints.requiredValue}">
+        <span>Yes</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Value Recommendation tab  -->
+  <div id="value-recommendation" class="value-recommendation-options" ng-show="isTabActive('value-recommendation')"  >
+    <div class="type-toggle date">
+      <div class="single-date d-option" ng-click="removeValueRecommendationField($root.schemaOf(field));  $event.stopPropagation();"
+          ng-class="{active: $root.schemaOf(field)._ui.valueRecommendationEnabled == undefined}">
+        <span>No</span>
+      </div>
+      <div class="date-range d-option" ng-click="$root.schemaOf(field)._ui.valueRecommendationEnabled = true;  $event.stopPropagation();"
+          ng-class="{active: $root.schemaOf(field)._ui.valueRecommendationEnabled}">
         <span>Yes</span>
       </div>
     </div>

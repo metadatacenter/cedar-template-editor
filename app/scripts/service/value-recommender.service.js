@@ -10,6 +10,7 @@ define(['angular'], function (angular) {
 
     var http_default_config = {};
     var isValueRecommendationEnabled = false;
+    var hasInstances;
     var valueRecommendationResults;
     var populatedFields;
     var templateId;
@@ -37,17 +38,24 @@ define(['angular'], function (angular) {
       };
       // Set isValueRecommendationEnabled using the templateId
       service.hasInstances(templateId).then(function(results) {
-        isValueRecommendationEnabled = results;
-        if (results == true)
-          UIMessageService.flashSuccess($translate.instant('VALUERECOMMENDER.enabled'), null, $translate.instant('GENERIC.GoodNews'));
+        hasInstances = results;
+        //isValueRecommendationEnabled = results;
+        //if (results == true)
+        //  UIMessageService.flashSuccess($translate.instant('VALUERECOMMENDER.enabled'), null, $translate.instant('GENERIC.GoodNews'));
       });
     }
 
     /**
      * Getters and Setters
      */
-    service.getIsValueRecommendationEnabled = function () {
-      return isValueRecommendationEnabled;
+    service.getIsValueRecommendationEnabled = function (field) {
+      if (field._ui.valueRecommendationEnabled && hasInstances) {
+        return true;
+      }
+      else {
+        return false;
+      }
+      //return isValueRecommendationEnabled;
     }
 
     service.getValueRecommendationResults = function (fieldId) {

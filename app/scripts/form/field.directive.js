@@ -603,6 +603,20 @@ define([
         }
       };
 
+      /**
+       * Use the fieldType to determine if the field supports value recommendation
+       * @returns {boolean} allowsValueRecommendation
+       */
+      $scope.allowsValueRecommendation = function () {
+        var inputType = $rootScope.schemaOf($scope.field)._ui.inputType;
+        var fieldTypes = FieldTypeService.getFieldTypes();
+        for (var i = 0; i < fieldTypes.length; i++) {
+          if (fieldTypes[i].cedarType === inputType) {
+            return fieldTypes[i].allowsValueRecommendation;
+          }
+        }
+      };
+
       $scope.hasDateRange = function () {
         var inputType = $rootScope.schemaOf($scope.field)._ui.inputType;
         return (inputType === "date");
@@ -763,6 +777,10 @@ define([
           return s.toString() + "%";
         }
       };
+
+      $scope.removeValueRecommendationField = function(field) {
+        delete field._ui.valueRecommendationEnabled;
+      }
 
       /* end of Value Recommendation functionality */
 
@@ -960,12 +978,15 @@ define([
       $scope.showCardinality = false;
       $scope.showRequired = false;
       $scope.showRange = false;
+      $scope.showValueRecommendation = false;
       $scope.isTabActive = function (item) {
         return ($scope.showControlledTermsField && item == "field") ||
             ($scope.showControlledTermsValues && item == "values") ||
             ($scope.showCardinality && item == "cardinality") ||
             ($scope.showRange && item == "range") ||
-            ($scope.showRequired && item == "required");
+            ($scope.showRequired && item == "required") ||
+            ($scope.showValueRecommendation && item == "value-recommendation")
+            ;
       };
 
       $scope.initDateSingle = function () {
@@ -988,6 +1009,7 @@ define([
         $scope.showCardinality = (item === 'cardinality') ? !$scope.showCardinality : false;
         $scope.showRequired = (item === 'required') ? !$scope.showRequired : false;
         $scope.showRange = (item === 'range') ? !$scope.showRange : false;
+        $scope.showValueRecommendation = (item === 'value-recommendation') ? !$scope.showValueRecommendation : false;
         //$rootScope.schemaOf($scope.field)._ui.is_cardinal_field = $scope.showCardinality;
 
         $scope.setAddedFieldMap();
