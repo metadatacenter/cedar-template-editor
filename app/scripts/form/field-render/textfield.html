@@ -29,7 +29,7 @@
     </div>
 
     <!--Field whose values have been constrained using controlled terms -->
-    <div ng-init="initializeControlledField()" ng-if="$root.hasValueConstraint($root.schemaOf(field)._valueConstraints)"
+    <div ng-init="initializeControlledField()" ng-if="$root.hasValueConstraint($root.schemaOf(field)._valueConstraints) && !$root.vrs.getIsValueRecommendationEnabled($root.schemaOf(field))"
         class="has-constraint autocomplete-label-wrapper" ng-class="{'has-selected': modelValue[index]['@value'].label}">
       <ui-select ng-change="updateModelFromUIControlledField()" ng-model="modelValue[index]['@value']" theme="bootstrap" close-on-select="true"
           ng-disabled="!$root.isRuntime() || preview" aria-label="{{$root.schemaOf(field)._ui.description}}">
@@ -71,7 +71,7 @@
     </div>
 
     <!-- Field whose values have been constrained using controlled terms -->
-    <div ng-if="$root.hasValueConstraint($root.schemaOf(field)._valueConstraints)"
+    <div ng-if="$root.hasValueConstraint($root.schemaOf(field)._valueConstraints) && !$root.vrs.getIsValueRecommendationEnabled($root.schemaOf(field))"
         class="has-constraint autocomplete-label-wrapper" ng-class="{'has-selected': modelValue['@value'].label}">
       <ui-select ng-model="modelValue['@value']" theme="bootstrap" close-on-select="true" ng-disabled="true"
           aria-label="{{$root.schemaOf(field)._ui.description}}">
@@ -108,7 +108,7 @@
     </div>
 
     <!-- Field whose values have been constrained using controlled terms -->
-    <div ng-init="initializeControlledField()" ng-if="$root.hasValueConstraint($root.schemaOf(field)._valueConstraints)"
+    <div ng-init="initializeControlledField()" ng-if="$root.hasValueConstraint($root.schemaOf(field)._valueConstraints) && !$root.vrs.getIsValueRecommendationEnabled($root.schemaOf(field))"
         class="has-constraint autocomplete-label-wrapper" ng-class="{'has-selected': modelValue['@value'].label}">
       <ui-select
           ng-change="updateModelFromUIControlledField()"
@@ -128,7 +128,7 @@
 
     <!-- Field with value recommendation functionality -->
     <div ng-init="initializeValueRecommendationField()"
-        ng-if="!$root.hasValueConstraint($root.schemaOf(field)._valueConstraints) && $root.vrs.getIsValueRecommendationEnabled($root.schemaOf(field))"
+        ng-if="$root.vrs.getIsValueRecommendationEnabled($root.schemaOf(field))"
         class="has-constraint autocomplete-label-wrapper"
         ng-class="{'has-selected': modelValueRecommendation['@value'].value}">
       <ui-select
