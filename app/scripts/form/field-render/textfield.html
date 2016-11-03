@@ -140,7 +140,7 @@
           reset-search-input="false"
           aria-label="{{$root.schemaOf(field)._ui.description}}">
         <ui-select-match class="selection-field" placeholder="">{{$select.selected.value}}
-          <i class="fa fa-times" aria-hidden="true" ng-click="clearSelection($event, $select)"></i>
+          <i ng-if="$select.search" class="fa fa-times" aria-hidden="true" ng-click="clearSelection($event, $select)"></i>
         </ui-select-match>
         <ui-select-choices
             ui-disable-choice="option.value == $root.vrs.getNoResultsMsg()"
