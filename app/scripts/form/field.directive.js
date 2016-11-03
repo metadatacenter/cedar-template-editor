@@ -778,6 +778,15 @@ define([
         }
       };
 
+      $scope.getRecommendationType = function(type) {
+        if (type == 'CONTEXT_INDEPENDENT') {
+          return '*';
+        }
+        else {
+          return '';
+        }
+      };
+
       $scope.removeValueRecommendationField = function(field) {
         delete field._ui.valueRecommendationEnabled;
       }

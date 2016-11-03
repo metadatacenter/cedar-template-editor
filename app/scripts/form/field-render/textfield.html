@@ -149,8 +149,8 @@
             repeat="option in $root.vrs.getValueRecommendationResults(field['@id']) | propsFilter: {value: $select.search} | limitTo:50">
           <div>
             <span ng-bind-html="option.value | highlight: $select.search"></span>&nbsp;
-            <small ng-if="option.score!=undefined">(<span>{{calculateUIScore(option.score)}}</span>)
-            </small>
+            <small ng-if="option.score!=undefined">(<span>{{calculateUIScore(option.score)}}</span>)</small>
+            <small ng-if="option.type!=undefined"><span>{{getRecommendationType(option.type)}}</span></small>
           </div>
         </ui-select-choices>
       </ui-select>
