@@ -113,9 +113,7 @@ define([
 
 
           } else {
-            console.log('nextChild is up one level'); console.log($rootScope.rootElement);
-            var order = [];
-            console.log(DataManipulationService.createOrder($rootScope.rootElement,order));
+            console.log('nextChild is up one level' + $rootScope.schemaOf(scope.$parent.element)["@id"]);
             $rootScope.$broadcast("setActive", [DataManipulationService.getId(scope.$parent.element), index,  scope.$parent.path, true]);
             return;
 

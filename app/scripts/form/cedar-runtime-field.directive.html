@@ -21,7 +21,8 @@
           <i class="fa fa-remove"></i>
         </button>
 
-        <div class="row"  ng-class="{'isActive' : isActive(index)}" id="{{getLocator(index)}}">
+
+        <div class="row"  id="{{getLocator(index)}}"  ng-class="{'isActive' : isActive(index)}">
           <div class="col-sm-3">
             <div class="leader" ng-class="{'isActive' : isActive(index)}"></div>
             <div ng-click="setActive(index, true)" class=" title" ng-class="{'isActive' : isActive(index)}">{{getTitle()}}</div>
@@ -67,6 +68,7 @@
           </div>
 
         </div>
+
       </div>
 
       <!-- error messages  -->

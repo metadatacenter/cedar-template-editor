@@ -8,12 +8,12 @@ define([
 
 
   cedarRuntimeField.$inject = ["$rootScope", "$sce", "$document", "$translate", "$filter", "$location", "$anchorScroll",
-                               "$window",
+                               "$window", '$timeout',
                                "SpreadsheetService",
                                "DataManipulationService", "FieldTypeService", "controlledTermDataService",
                                "StringUtilsService"];
 
-  function cedarRuntimeField($rootScope, $sce, $document, $translate, $filter, $location, $anchorScroll, $window,
+  function cedarRuntimeField($rootScope, $sce, $document, $translate, $filter, $location, $anchorScroll, $window,$timeout,
                              SpreadsheetService,
                              DataManipulationService,
                              FieldTypeService, controlledTermDataService, StringUtilsService) {
@@ -966,20 +966,25 @@ define([
           // scroll to and select the field
           var target = angular.element('#' + locator);
           if (target && target.offset()) {
+            
+            var window = angular.element($window);
+            $scope.setHeight = function () {
 
-            var windowHeight = $(window).height();
-            var targetTop = $("#" + locator).offset().top;
-            var targetHeight = $("#" + locator).outerHeight(true);  // TODO outerHeight incorrect, should include margin + submit button = 265
+              var windowHeight = $(window).height();
+              var targetTop = $("#" + locator).offset().top;
+              var targetHeight = $("#" + locator).outerHeight(true);
 
-            var newTop = targetTop - ( windowHeight - targetHeight ) / 2;
-            console.log(newTop);
+              var newTop = targetTop - ( windowHeight - targetHeight ) / 2;
+              console.log('newTop' + newTop);
+              console.log('outerHeight' + targetHeight);
 
-            jQuery('.template-container').animate({scrollTop: newTop}, 'slow');
-            jQuery("#" + locator + ' ' + tag).focus().select();
+              jQuery('.template-container').animate({scrollTop: newTop}, 'slow');
+              jQuery("#" + locator + ' ' + tag).focus().select();
+            };
+            $timeout($scope.setHeight, 0);
           }
 
         } else {
-          console.log('deactivate');
           jQuery("#" + locator + ' ' + tag).blur();
         }
       };
