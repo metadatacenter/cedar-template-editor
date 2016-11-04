@@ -10,8 +10,11 @@ define(['angular'], function (angular) {
 
     var http_default_config = {};
     var isValueRecommendationEnabled = false;
+    var hasInstances;
     var valueRecommendationResults;
     var populatedFields;
+    var templateId;
+    var template;
 
     var service = {
       serviceId: 'ValueRecommenderService'
@@ -20,7 +23,12 @@ define(['angular'], function (angular) {
     /**
      * Initialize service
      */
-    service.init = function (templateId) {
+    service.init = function (templId, templ) {
+      templateId = templId;
+      template = templ;
+
+      DataManipulationService.addPathInfo(template, null);
+
       valueRecommendationResults = [];
       populatedFields = [];
       http_default_config = {
@@ -30,17 +38,24 @@ define(['angular'], function (angular) {
       };
       // Set isValueRecommendationEnabled using the templateId
       service.hasInstances(templateId).then(function(results) {
-        isValueRecommendationEnabled = results;
-        if (results == true)
-          UIMessageService.flashSuccess($translate.instant('VALUERECOMMENDER.enabled'), null, $translate.instant('GENERIC.GoodNews'));
+        hasInstances = results;
+        //isValueRecommendationEnabled = results;
+        //if (results == true)
+        //  UIMessageService.flashSuccess($translate.instant('VALUERECOMMENDER.enabled'), null, $translate.instant('GENERIC.GoodNews'));
       });
     }
 
     /**
      * Getters and Setters
      */
-    service.getIsValueRecommendationEnabled = function () {
-      return isValueRecommendationEnabled;
+    service.getIsValueRecommendationEnabled = function (field) {
+      if (field._ui.valueRecommendationEnabled && hasInstances) {
+        return true;
+      }
+      else {
+        return false;
+      }
+      //return isValueRecommendationEnabled;
     }
 
     service.getValueRecommendationResults = function (fieldId) {
@@ -58,9 +73,8 @@ define(['angular'], function (angular) {
     service.updatePopulatedFields = function (field, value) {
       var fieldId = field['@id'];
       if (value) {
-        var fieldName = DataManipulationService.getFieldName(field._ui.title);
         populatedFields[fieldId] = {
-          "name": fieldName + '.[\'@value\']',
+          "path": field._path,
           "value": value
         }
       }
@@ -87,9 +101,8 @@ define(['angular'], function (angular) {
 
     service.updateValueRecommendationResults = function (field) {
       var fieldId = field['@id'];
-      var fieldName = DataManipulationService.getFieldName(field._ui.title);
-      service.getRecommendation(fieldName + "['@value']",
-          service.getRelevantPopulatedFields(fieldId)).then(function (recommendation) {
+      var targetFieldPath = field._path;
+      service.getRecommendation(targetFieldPath, service.getRelevantPopulatedFields(fieldId)).then(function (recommendation) {
         if (recommendation.recommendedValues && recommendation.recommendedValues.length == 0) {
           recommendation.recommendedValues.push({
             'value': $translate.instant('VALUERECOMMENDER.noResults'),
@@ -111,12 +124,13 @@ define(['angular'], function (angular) {
     }
 
     // Invoke the Value Recommender service
-    service.getRecommendation = function (targetFieldName, populatedFields) {
+    service.getRecommendation = function (targetFieldPath, populatedFields) {
       var inputData = {};
       if (populatedFields.length > 0) {
         inputData['populatedFields'] = populatedFields;
       }
-      inputData['targetField'] = {'name': targetFieldName};
+      inputData['templateId'] = templateId;
+      inputData['targetField'] = {'path': targetFieldPath};
       return $http.post(UrlService.getValueRecommendation(), inputData, http_default_config).then(function (response) {
         return response.data;
       }).catch(function (err) {

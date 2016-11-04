@@ -24,6 +24,10 @@ define([
             $rootScope.jsonToSave = $scope.form;
             HeaderService.dataContainer.currentObjectScope = $scope.form;
             $rootScope.documentTitle = $scope.form._ui.title;
+
+            // Initialize value recommender service
+            $rootScope.vrs.init($routeParams.templateId, $scope.form);
+
           },
           function (err) {
             UIMessageService.showBackendError('SERVER.TEMPLATE.load.error', err);
@@ -47,6 +51,9 @@ define([
                   // Assign returned form object from FormService to $scope.form
                   $scope.form = templateResponse.data;
                   $rootScope.jsonToSave = $scope.form;
+                  // Initialize value recommender service
+                  var templateId = instanceResponse.data['schema:isBasedOn'];
+                  $rootScope.vrs.init(templateId, $scope.form);
                 },
                 function (templateErr) {
                   UIMessageService.showBackendError('SERVER.TEMPLATE.load-for-instance.error', templateErr);
@@ -166,9 +173,6 @@ define([
         delete $scope.invalidFieldValues[args[2]];
       }
     });
-
-    // Initialize value recommender service
-    $rootScope.vrs.init($routeParams.templateId);
 
     // cancel the form and go back to folder
     $scope.cancelTemplate = function () {
