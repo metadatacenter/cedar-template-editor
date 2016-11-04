@@ -966,27 +966,54 @@ define([
           // scroll to and select the field
           var target = angular.element('#' + locator);
           if (target && target.offset()) {
-            
-            var window = angular.element($window);
+
+
             $scope.setHeight = function () {
 
+              var window = angular.element($window);
               var windowHeight = $(window).height();
               var targetTop = $("#" + locator).offset().top;
               var targetHeight = $("#" + locator).outerHeight(true);
-
-              var newTop = targetTop - ( windowHeight - targetHeight ) / 2;
-              console.log('newTop' + newTop);
-              console.log('outerHeight' + targetHeight);
+              //var newTop = targetTop - ( windowHeight - targetHeight ) / 2;
+              var newTop = targetTop;
+              console.log('targetTop' + targetTop + ' outerHeight' + targetHeight + 'newTop' + newTop);
+              console.log($("#" + locator).offset());
+              console.log('scrollTop ' + jQuery('.template-container').scrollTop());
 
               jQuery('.template-container').animate({scrollTop: newTop}, 'slow');
+              console.log('scrollTop ' + jQuery('.template-container').scrollTop());
               jQuery("#" + locator + ' ' + tag).focus().select();
             };
-            $timeout($scope.setHeight, 0);
+            $timeout($scope.setHeight, 100);
           }
 
         } else {
           jQuery("#" + locator + ' ' + tag).blur();
         }
+      };
+
+      $scope.getNesting = function()  {
+
+        var path = $scope.path || '';
+        var arr = path.split('-');
+        var result = [];
+        for (var i=0;i<arr.length;i++) {
+          result.push(i);
+        }
+        console.log(result);
+        return result;
+      };
+
+      $scope.getNestingCount = function()  {
+
+        var path = $scope.path || '';
+        var arr = path.split('-');
+        return arr.length;
+      };
+
+      $scope.getNestingStyle = function(index)  {
+
+        return 'left:' + (-15 * (index-1)) + 'px';
       };
 
 

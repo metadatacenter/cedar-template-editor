@@ -22,10 +22,18 @@
         </button>
 
 
-        <div class="row"  id="{{getLocator(index)}}"  ng-class="{'isActive' : isActive(index)}">
+
+
+
+
+        <div class="row"  id="{{getLocator(index)}}"  ng-class="{'isActive' : isActive(index)}"  >
           <div class="col-sm-3">
             <div class="leader" ng-class="{'isActive' : isActive(index)}"></div>
-            <div ng-click="setActive(index, true)" class=" title" ng-class="{'isActive' : isActive(index)}">{{getTitle()}}</div>
+            <div ng-click="setActive(index, true)" class=" title " ng-class="{'isActive' : isActive(index)}">
+               <span ng-repeat="nest in getNesting()" >
+             <span class="down-tick"   style="{{getNestingStyle(nest)}}"></span>
+            </span>
+            </span> {{getTitle()}}</div>
           </div>
           <div class="col-sm-9">
             <form name="field-edit-form-{{index}}" ng-submit="onSubmit(index)">

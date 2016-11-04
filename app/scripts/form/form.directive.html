@@ -9,8 +9,8 @@
 
       <div class="col-sm-9 ">
           <span>
-            <button type="button" ng-click="toggleExpanded()" ng-class="{'xxx' : isExpanded(i), 'expand' : !isExpanded(i)}">
-              <i ng-class="{'fa fa-caret-down' : isExpanded(i), 'fa fa-caret-right' : !isExpanded(i)}"></i> </button>
+            <button type="button" ng-click="toggleExpanded()" ng-class="{'xxx' : isExpanded(i), 'expand' : !isExpanded()}">
+              <i ng-class="{'fa fa-caret-down' : isExpanded(), 'fa fa-caret-right' : !isExpanded()}"></i> </button>
             <span class="title">{{$root.schemaOf(form)._ui.title}}</span>
           </span>
       </div>
@@ -19,7 +19,7 @@
       </div>
     </div>
 
-    <div ng-repeat="item in page" class="animate-fade" ng-show="pageIndex == $parent.$index">
+    <div ng-repeat="item in page" class="animate-fade"  ng-show="pageIndex == $parent.$index">
       <span ng-if="form.properties[item]">
 
         <!--If static field-->

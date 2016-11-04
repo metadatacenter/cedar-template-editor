@@ -13,16 +13,21 @@
     <!-- a list of elements -->
     <div ng-repeat="(i, valueElement) in valueArray">
 
-      <div class="element" id="{{getLocator(i)}}" class='element-{{i}}'  ng-class="{'expand' : isExpanded(i)}">
+      <div class="element" id="{{getLocator(i)}}" class='element-{{i}}'  ng-class="{'expand' : isExpanded(i)}" style="position:relative">
+
+        <div  class="left-tick"></div>
 
         <div class="row">
           <div class="col-sm-10">
-            <div style="background-color:#ccc;position:relative;bottom:50%;height:1px;width:15px;top:13px;left:-16px"></div>
+
 
             <button type="button" ng-click="toggleExpanded(i)"  ng-class="{'xxx' : isExpanded(i), 'expand' : !isExpanded(i)}">
               <i ng-class="{'fa fa-caret-down ' : isExpanded(i), 'fa fa-caret-right ' : !isExpanded(i)}"></i>
             </button>
-            <span class="title">{{getTitle()}}</span>
+             <span ng-repeat="nest in getNesting()" >
+             <span class="down-tick"   style="{{getNestingStyle(nest)}}"></span>
+            </span>
+           <span ng-if="valueArray.length-1" class="count">{{i}}.</span> <span class="title">{{getTitle()}}</span>
           </div>
           <div class="col-sm-2">
 

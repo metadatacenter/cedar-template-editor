@@ -2773,15 +2773,39 @@ section.dashboard-elements {
 
 
   &.page {
-    border-left: 1px solid #ccc;
+
   }
 
+  .down-tick {
+    height: 36px;
+    width: 1px;
+    background-color: #aaa;
+    width: 1px;
+    position: absolute;
+    top: -40px;
+    left: 0;
+    margin: 20px 0
+  }
+
+  .left-tick {
+    background-color:#aaa;
+    position:relative;
+    bottom:50%;
+    height:1px;
+    width:15px;
+    top:1.2em;
+    left:-15px;
+  }
+
+
   .title {
-    font-size: 1em;
-    color: @brand-primary;
+    font-size: 1.5em;
+
+    font-family: "Source Sans Pro",sans-serif;
+    font-weight:lighter;
   }
   .leader {
-    background-color:#ccc;position:relative;bottom:50%;height:1px;width:15px;top:16px;
+    background-color:#aaa;position:relative;bottom:50%;height:1px;width:15px;top:16px;
     &.isActive {
       top:20px;
     }
@@ -2806,7 +2830,7 @@ section.dashboard-elements {
     &.xxx {
       color: #aaa;
       font-size: 1em;
-      margin-left:-13px;
+      margin-left:-12px;
       margin-top:1px;
     }
 
@@ -2869,10 +2893,10 @@ section.dashboard-elements {
   .element-root {
     .element {
       &.expand {
-        border-left: 1px solid #ccc;
+
       }
       &.collapse {
-        border-left: 1px solid #ccc;
+
       }
     }
   }
@@ -2892,7 +2916,8 @@ section.dashboard-elements {
       color: #333;
       font-weight:lighter;
       padding-left: 20px;
-      font-size: 1.0em;
+      font-size: 1.2em;
+
     }
 
     .row.isActive {
@@ -2915,7 +2940,7 @@ section.dashboard-elements {
 
     .title {
       height: 30px;
-      line-height: 30px;
+      line-height: 28px;
       padding-left: 20px;
       &.isActive {
         height: 40px;

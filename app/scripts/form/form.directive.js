@@ -367,9 +367,16 @@ define([
           return ($scope.getType(item) === 'https://schema.metadatacenter.org/core/TemplateElement');
         };
 
-        $scope.isExpanded = function () {
-          return true;
+
+        $scope.expanded = true;
+        $scope.toggleExpanded = function () {
+          $scope.expanded = !$scope.expanded;
         };
+
+        $scope.isExpanded = function () {
+          return $scope.expanded;
+        };
+
 
         $scope.nextChild = function (fieldOrElement) {
           console.log('nextChild')

@@ -11555,15 +11555,31 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
 .navbar.metadata .template-container {
   background-color: aquamarine;
 }
-.template-body form .runtime.page {
-  border-left: 1px solid #ccc;
+.template-body form .runtime .down-tick {
+  height: 36px;
+  background-color: #aaa;
+  width: 1px;
+  position: absolute;
+  top: -40px;
+  left: 0;
+  margin: 20px 0;
+}
+.template-body form .runtime .left-tick {
+  background-color: #aaa;
+  position: relative;
+  bottom: 50%;
+  height: 1px;
+  width: 15px;
+  top: 1.2em;
+  left: -15px;
 }
 .template-body form .runtime .title {
-  font-size: 1em;
-  color: #5795ba;
+  font-size: 1.5em;
+  font-family: "Source Sans Pro", sans-serif;
+  font-weight: lighter;
 }
 .template-body form .runtime .leader {
-  background-color: #ccc;
+  background-color: #aaa;
   position: relative;
   bottom: 50%;
   height: 1px;
@@ -11591,7 +11607,7 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
 .template-body form .runtime button.xxx {
   color: #aaa;
   font-size: 1em;
-  margin-left: -13px;
+  margin-left: -12px;
   margin-top: 1px;
 }
 .template-body form .runtime button.add {
@@ -11642,12 +11658,6 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   margin-bottom: 0px;
   font-size: 1.3em;
 }
-.template-body form .runtime .element-root .element.expand {
-  border-left: 1px solid #ccc;
-}
-.template-body form .runtime .element-root .element.collapse {
-  border-left: 1px solid #ccc;
-}
 .template-body form .runtime .field-root {
   padding: 0px;
   border-width: 0px;
@@ -11660,7 +11670,7 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   color: #333;
   font-weight: lighter;
   padding-left: 20px;
-  font-size: 1.0em;
+  font-size: 1.2em;
 }
 .template-body form .runtime .field-root .row.isActive {
   padding-top: 100px;
@@ -11677,7 +11687,7 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
 }
 .template-body form .runtime .field-root .title {
   height: 30px;
-  line-height: 30px;
+  line-height: 28px;
   padding-left: 20px;
 }
 .template-body form .runtime .field-root .title.isActive {

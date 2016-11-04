@@ -119,6 +119,30 @@ define([
         return 'margin-left: ' + 15 + 'px';
       }
 
+      scope.getNesting = function()  {
+
+        var path = scope.path || '';
+        var arr = path.split('-');
+        var result = [];
+        for (var i=0;i<arr.length;i++) {
+          result.push(i);
+        }
+        console.log(result);
+        return result;
+      };
+
+      scope.getNestingCount = function()  {
+
+        var path = scope.path || '';
+        var arr = path.split('-');
+        return arr.length;
+      };
+
+      scope.getNestingStyle = function(index)  {
+
+        return 'left:' + (-15 * (index)) + 'px';
+      };
+
 
       scope.getParentTitle = function () {
         return 'parent';
