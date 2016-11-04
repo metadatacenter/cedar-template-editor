@@ -181,7 +181,7 @@ button {
   border: none;
 
   &.metadata {
-    height:50px;
+    height: 50px;
   }
 
   #page-title {
@@ -1804,7 +1804,7 @@ body.search-browse-modal {
   padding: 0 0 30px 0;
 
   &.metadata {
-    height:100%;
+    height: 100%;
   }
 
   .right-body {
@@ -2442,7 +2442,7 @@ section.dashboard-elements {
 === Form Template Fields
 ================================================
 */
-.template-body form .build,  #element_control_term {
+.template-body form .build, #element_control_term {
 
   .form-group {
     margin-bottom: 14px;
@@ -2759,20 +2759,55 @@ section.dashboard-elements {
 
 .navbar.metadata {
   .template-container {
-    background-color:aquamarine;
+    background-color: aquamarine;
   }
 }
 
+//.template-body {
+//  &.metadata {
+//    background-color: rgba(80, 151, 165, 0.15);
+//  }
+//}
 .template-body form .runtime {
+
+
+
+  &.page {
+    border-left: 1px solid #ccc;
+  }
+
+  .title {
+    font-size: 1em;
+    color: @brand-primary;
+  }
+  .leader {
+    background-color:#ccc;position:relative;bottom:50%;height:1px;width:15px;top:16px;
+    &.isActive {
+      top:20px;
+    }
+  }
 
   button {
     vertical-align: middle;
-    transition: all 0.3s ease 0.1s;
+
     background-color: transparent;
     &.goaway {
-     position:absolute;
-      top:0;
-      right:0;
+      position: absolute;
+      top: 0;
+      right: 0;
+    }
+    &.expand {
+      color: #aaa;
+      font-size: 1em;
+      margin-left:-10px;
+      margin-top:0px;
+    }
+
+    &.xxx {
+      color: #aaa;
+      font-size: 1em;
+      margin-left:-13px;
+      margin-top:1px;
     }
 
     &.add {
@@ -2794,7 +2829,7 @@ section.dashboard-elements {
 
   .btn.btn-save.active {
     background-color: @button-template;
-    color:@white;
+    color: @white;
     &:hover {
       background-color: @hover-template;
     }
@@ -2826,10 +2861,23 @@ section.dashboard-elements {
       .element-title {
         margin-left: 20px;
         margin-bottom: 0px;
-        font-size: 1.2em;
+        font-size: 1.3em;
       }
     }
   }
+
+  .element-root {
+    .element {
+      &.expand {
+        border-left: 1px solid #ccc;
+      }
+      &.collapse {
+        border-left: 1px solid #ccc;
+      }
+    }
+  }
+
+
 
   .field-root {
 
@@ -2840,29 +2888,35 @@ section.dashboard-elements {
     background: transparent;
     min-height: 10px;
 
+    .title {
+      color: #333;
+      font-weight:lighter;
+      padding-left: 20px;
+      font-size: 1.0em;
+    }
+
+    .row.isActive {
+     padding-top: 100px;
+      padding-bottom: 100px;
 
 
       .title {
-        font-size: 1em;
-        color: #666;
+        font-size: 1.5em;
+        color: green;
       }
+    }
 
-      .row.isActive {
-        padding-top: 100px;
-        padding-bottom: 100px;
-        border-top: 1px solid #ddd;
-        border-bottom: 1px solid #ddd;
+    .row.isActive:before {
 
-        .title {
-            font-size: 1.5em;
-            color: green;
-        }
-      }
-
+      display: inline-block;
+      height: 100%;
+      vertical-align: middle;
+    }
 
     .title {
-      height: 40px;
-      line-height: 40px;
+      height: 30px;
+      line-height: 30px;
+      padding-left: 20px;
       &.isActive {
         height: 40px;
         line-height: 40px;
@@ -2903,11 +2957,10 @@ section.dashboard-elements {
     }
   }
 
-  .form-group {
+  .form-group, .input-group {
 
     margin-right: 0px;
-    margin-bottom:0px;
-
+    margin-bottom: 0px;
 
     &.radio-item,
     &.checkbox-item {
@@ -2926,7 +2979,7 @@ section.dashboard-elements {
       font-size: 14px;
       color: @black;
       transition: border-color 0.3s linear;
-      height:40px;
+      height: 30px;
     }
 
     textarea.form-control {
@@ -3196,7 +3249,7 @@ section.dashboard-elements {
 }
 
 .edit-actions {
-  border-top: 1px solid #ddd;
+
   padding: 50px 0;
   text-align: center;
   height: 300px;
@@ -5588,7 +5641,7 @@ p.instructions {
 
   .element-title {
     margin-bottom: 20px;
-    font-size: 1.2em;
+    font-size: 1.3em;
   }
 }
 
@@ -6462,7 +6515,7 @@ table.apiKey {
 
   .element-title {
     margin-bottom: 20px;
-    font-size: 1.2em;
+    font-size: 1.3em;
   }
 
   .clear-search {
@@ -6735,11 +6788,10 @@ table.apiKey {
           border: 1px solid #ccc;
           height: 40px;
 
-
         }
         .typeaheadDropUp ul.dropdown-menu {
-          bottom:100% !important;
-          top:auto !important;
+          bottom: 100% !important;
+          top: auto !important;
         }
 
         .checkbox {
@@ -6750,8 +6802,8 @@ table.apiKey {
           outline: none;
           height: 40px;
           &.select-picker {
-            outline:none;
-            height:40px;
+            outline: none;
+            height: 40px;
           }
         }
         .bootstrap-select {
@@ -6765,15 +6817,18 @@ table.apiKey {
         }
 
         button i.fa-plus {
-          margin: 0 -4px;vertical-align: top;
+          margin: 0 -4px;
+          vertical-align: top;
         }
 
         button i.fa-remove {
-         margin: -1px -5px;vertical-align: top;
+          margin: -1px -5px;
+          vertical-align: top;
         }
 
         button i.fa-times {
-          margin: -1px -5px;vertical-align: top;
+          margin: -1px -5px;
+          vertical-align: top;
         }
 
         .row {
@@ -6892,7 +6947,6 @@ table.apiKey {
 
           outline: none;
         }
-
 
       }
     }

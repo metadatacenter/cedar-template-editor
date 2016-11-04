@@ -1,7 +1,7 @@
 
 
     <!--Regular field-->
-    <div ng-if="!$root.hasValueConstraint($root.schemaOf(field)._valueConstraints)" class="form-group  has-feedback">
+    <div ng-if="!hasValueConstraint()" class="form-group  has-feedback">
 
       <input type="text"
           ng-click="setActive(index, true)"
@@ -17,7 +17,7 @@
 
 
     <!--Field whose values have been constrained using controlled terms -->
-    <div ng-if="$root.hasValueConstraint($root.schemaOf(field)._valueConstraints)" ng-init="initializeControlledField()"
+    <div ng-if="hasValueConstraint()" ng-init="initializeControlledField()"
         class="has-constraint autocomplete-label-wrapper" ng-class="{'has-selected': valueElement['@value'].label}">
       <ui-select ng-change="updateModelFromUIControlledField()" ng-model="valueElement['@value']" theme="bootstrap"
           close-on-select="true"

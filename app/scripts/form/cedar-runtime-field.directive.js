@@ -7,7 +7,8 @@ define([
       .directive('cedarRuntimeField', cedarRuntimeField);
 
 
-  cedarRuntimeField.$inject = ["$rootScope", "$sce", "$document", "$translate", "$filter", "$location", "$anchorScroll", "$window",
+  cedarRuntimeField.$inject = ["$rootScope", "$sce", "$document", "$translate", "$filter", "$location", "$anchorScroll",
+                               "$window",
                                "SpreadsheetService",
                                "DataManipulationService", "FieldTypeService", "controlledTermDataService",
                                "StringUtilsService"];
@@ -490,15 +491,6 @@ define([
       };
 
 
-      // watch for this field's active state
-      $scope.$on('setActive', function (event, args) {
-        var id = args[0];
-
-        if (id === $rootScope.schemaOf($scope.field)['@id']) {
-          $scope.setActive(0, true);
-        }
-      });
-
       /**
        * Use the fieldType to determine if the field supports using controlled terms
        * @returns {boolean} hasControlledTerms
@@ -873,10 +865,6 @@ define([
         return StringUtilsService.getShortId(uri, maxLength);
       }
 
-      // get the dom id
-      $scope.getId = function (index) {
-        return DataManipulationService.getLocator($scope.field, index);
-      };
 
       // get the field title
       $scope.getTitle = function () {
@@ -916,9 +904,6 @@ define([
         return $rootScope.schemaOf($scope.field)._ui.description;
       };
 
-      $scope.isActive = function (index) {
-        return DataManipulationService.isActive($scope.field, index);
-      };
 
       $scope.goToElement = function (id, offset) {
         // set the location.hash to the id of
@@ -929,81 +914,100 @@ define([
         $anchorScroll();
         $anchorScroll.yOffset = offset;
 
-
-
-
-
       };
 
 
+      $scope.getLocator = function (index) {
+        return DataManipulationService.getLocator($scope.field, index, $scope.path);
+      };
+
+      $scope.getId = function () {
+        return $rootScope.schemaOf($scope.field)['@id'];
+      };
+
+
+      $scope.isActive = function (index) {
+
+        return DataManipulationService.isActive(DataManipulationService.getLocator($scope.field, index, $scope.path));
+      };
+
+
+      // watch for this field's active state
+      $scope.$on('setActive', function (event, args) {
+        var id = args[0];
+        var index = args[1];
+        var path = args[2];
+        var value = args[3];
+
+
+        if (id === $scope.getId()) {
+          console.log('on setActive id=' + id + ' index=' + index + ' path=' + path + ' value=' + value);
+          $scope.setActive(index, value);
+        }
+      });
 
       $scope.setActive = function (index, value) {
+        console.log('setActive ' + $scope.getTitle() + ' ' + index + ' ' + $scope.path + ' ' + value);
+
         var active = (typeof value === "undefined") ? true : value;
+        DataManipulationService.setActive($scope.field, index, $scope.path, active);
 
-
-        DataManipulationService.setActive($scope.field, index, active);
-        if (active) {
-
-          $rootScope.scrollToDomId($scope.getId(index));
-
-          // select the field
-          var inputType = $scope.getInputType();
-          var tag = 'input';
-          if (inputType === 'textarea') {
-            tag = 'textarea';
-          }
-          if (inputType === 'list') {
-            tag = 'select';
-          }
-          var id = $scope.getId(index);
-
-
-          var target = angular.element('#' + id);
-          if (target && target.offset()) {
-            var top = target.offset().top;
-            var height = target.height;
-            var center = top + height/2;
-            var windowCenter = $window.height/2;
-            var y = windowCenter + height/2;
-            console.log('scrollTo ' + y);
-            $window.scrollTo(0, y);
-          }
-          
-          jQuery("#" + id + ' ' + tag).focus().select();
-
+        var locator = $scope.getLocator(index);
+        var inputType = $scope.getInputType();
+        var tag = 'input';
+        if (inputType === 'textarea') {
+          tag = 'textarea';
+        }
+        if (inputType === 'list') {
+          tag = 'select';
         }
 
+        if (active) {
+          // scroll to and select the field
+          var target = angular.element('#' + locator);
+          if (target && target.offset()) {
+
+            var windowHeight = $(window).height();
+            var targetTop = $("#" + locator).offset().top;
+            var targetHeight = $("#" + locator).outerHeight(true);  // TODO outerHeight incorrect, should include margin + submit button = 265
+
+            var newTop = targetTop - ( windowHeight - targetHeight ) / 2;
+            console.log(newTop);
+
+            jQuery('.template-container').animate({scrollTop: newTop}, 'slow');
+            jQuery("#" + locator + ' ' + tag).focus().select();
+          }
+
+        } else {
+          console.log('deactivate');
+          jQuery("#" + locator + ' ' + tag).blur();
+        }
       };
 
 
       $scope.onSubmit = function (index) {
+        console.log('onSubmit ' + index + $scope.isMultiple() + $scope.model.length);
+        console.log($scope.model)
 
         if ($scope.isMultiple() && (index + 1 < $scope.model.length)) {
           $scope.setActive(index + 1, true);
 
         } else {
-          var next = $scope.$parent.nextChild($scope.field);
-          if (next) {
-            var id = $rootScope.schemaOf(next)['@id'];
-            $rootScope.$broadcast("setActive", [id]);
-          } else {
-            DataManipulationService.setActive($scope.field, index, false);
-            var id = $scope.getId(index);
-            var e = jQuery('#' + id + ' input');
-            if (!e) {
-              e = jQuery('#' + id + ' textarea');
-            }
-            if (!e) {
-              e = jQuery('#' + id + ' select');
-            }
-            e.blur();
-          }
+          console.log('parent nextchild');
+
+          // go to next field or element
+          $scope.$parent.nextChild($scope.field, index, $scope.path);
 
         }
       };
+
+      $scope.hasValueConstraint = function () {
+        return $rootScope.hasValueConstraint($rootScope.schemaOf(field)._valueConstraints);
+      };
+
       $scope.getLiterals = function () {
         return $rootScope.schemaOf(field)._valueConstraints.literals;
-      }
+      };
 
 
       // allows us to look a the model as an array whether it is or not
@@ -1029,17 +1033,9 @@ define([
           $scope.valueArray.push($scope.model);
 
         }
-        console.log('setValueArray');
-        console.log($scope.valueArray)
       };
 
-
-      console.log('init');
-      console.log($scope.field);
-      console.log($scope.model);
       $scope.setValueArray();
-      console.log($scope.model);
-      console.log($scope.valueArray);
 
 
     };
@@ -1053,7 +1049,8 @@ define([
         renameChildKey: "=",
         preview       : "=",
         delete        : '&',
-        ngDisabled    : "="
+        ngDisabled    : "=",
+        path          : '='
       },
       controller : function ($scope, $element) {
         var addPopover = function ($scope) {
@@ -1076,4 +1073,5 @@ define([
 
   }
 
-});
+})
+;

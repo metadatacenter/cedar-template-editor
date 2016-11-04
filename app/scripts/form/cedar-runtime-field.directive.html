@@ -1,4 +1,4 @@
-<div class="item-root field-root"
+<div class="item-root field-root">
 
   <!-- field content  -->
   <div class="elementTotalContent visible" style="position:relative">
@@ -21,12 +21,13 @@
           <i class="fa fa-remove"></i>
         </button>
 
-        <div class="row"  ng-class="{'isActive' : isActive(index)}" id="{{getId(index)}}">
+        <div class="row"  ng-class="{'isActive' : isActive(index)}" id="{{getLocator(index)}}">
           <div class="col-sm-3">
-            <div ng-click="setActive(index, true)" class="pull-right title" ng-class="{'isActive' : isActive(index)}">{{getTitle()}}</div>
+            <div class="leader" ng-class="{'isActive' : isActive(index)}"></div>
+            <div ng-click="setActive(index, true)" class=" title" ng-class="{'isActive' : isActive(index)}">{{getTitle()}}</div>
           </div>
           <div class="col-sm-9">
-            <form name="field-edit-form" ng-submit="onSubmit(index)">
+            <form name="field-edit-form-{{index}}" ng-submit="onSubmit(index)">
 
               <div class="row">
                 <div class="col-sm-10">
@@ -58,7 +59,7 @@
                 </div>
               </div>
 
-              <button style="margin:10px 0" ng-if="isActive(index)" type="submit" ng-click="onSubmit(index)"
+              <button style="margin:10px 0" ng-if="isActive(index)" type="submit"
                   class="btn btn-save confirm active" translate>GENERIC.Ok
               </button>
 

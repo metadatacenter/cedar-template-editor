@@ -22,6 +22,7 @@ define([
             // Assign returned form object from FormService to $scope.form
             $scope.form = response.data;
             $rootScope.jsonToSave = $scope.form;
+            $rootScope.rootElement = $scope.form;
             HeaderService.dataContainer.currentObjectScope = $scope.form;
             $rootScope.documentTitle = $scope.form._ui.title;
           },

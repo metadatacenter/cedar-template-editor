@@ -20,7 +20,8 @@ define([
         form           : '=',
         isEditData     : "=",
         model          : '=',
-        hideRootElement: "="
+        hideRootElement: "=",
+        path: '='
       },
       controller : function ($scope) {
 
@@ -366,35 +367,39 @@ define([
           return ($scope.getType(item) === 'https://schema.metadatacenter.org/core/TemplateElement');
         };
 
-        $scope.nextChild = function (fieldOrElement) {
-          console.log('nextChild');
+        $scope.isExpanded = function () {
+          return true;
+        };
 
-          var id = $rootScope.schemaOf(fieldOrElement)["@id"];
+        $scope.nextChild = function (fieldOrElement) {
+          console.log('nextChild')
+
+          var id = DataManipulationService.getId(fieldOrElement);
           var selectedKey;
           var props = $scope.form.properties;
 
+
           // find the field or element in the form's properties
           angular.forEach(props, function (value, key) {
-            if ($rootScope.schemaOf(value)["@id"] == id) {
+            if (DataManipulationService.getId(value) == id) {
               selectedKey = key;
             }
           });
 
-          // if it is there, delete it
           if (selectedKey) {
-
-            // and the order array
             var idx = $scope.form._ui.order.indexOf(selectedKey);
             idx += 1;
             if (idx < $scope.form._ui.order.length) {
-
               var nextKey = $scope.form._ui.order[idx];
-              console.log(props[nextKey]);
-              return props[nextKey];
+              var next = props[nextKey];
+              console.log('nextChild ' + $rootScope.schemaOf(next)._ui.title);
+              $rootScope.$broadcast("setActive", [DataManipulationService.getId(next), 0,  $scope.path, true]);
+            } else {
+              console.log('out of fields');
+              $rootScope.$broadcast("setActive", [id, 0,  $scope.path, false]);
+
             }
           }
-          console.log('null');
-          return null;
         };
 
 

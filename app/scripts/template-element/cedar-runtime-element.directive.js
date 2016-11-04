@@ -19,7 +19,8 @@ define([
         delete       : '&',
         model        : '=',
         isRootElement: "=",
-        depth:'='
+        depth:'=',
+        path:'='
       },
       templateUrl: 'scripts/template-element/cedar-runtime-element.directive.html',
       link       : linker
@@ -31,9 +32,7 @@ define([
 
       scope.elementId = DataManipulationService.idOf(scope.element) || DataManipulationService.generateGUID();
       scope.uuid = DataManipulationService.generateTempGUID();
-      scope.showCardinality = false;
-      scope.selectedTab = 0;
-      scope.expanded = false;
+      scope.expanded = [];
 
 
 
@@ -107,9 +106,6 @@ define([
         });
       }
 
-      scope.selectTab = function (index) {
-        scope.selectedTab = index;
-      }
 
       scope.isNested = function () {
         return DataManipulationService.isNested(scope.element);
@@ -120,7 +116,7 @@ define([
       };
 
       scope.getNestingMargin = function () {
-        return 'margin-left: ' + scope.depth * 20 + 'px';
+        return 'margin-left: ' + 15 + 'px';
       }
 
 
@@ -155,16 +151,21 @@ define([
             }
             resetElement(seed, scope.element);
           }
-          scope.selectedTab = scope.model.length - 1;
         }
+      };
+
+      scope.getId = function (index) {
+        return DataManipulationService.getId(scope.element);
+      };
+
+      // get the dom id
+      scope.getLocator = function (index) {
+        return DataManipulationService.getLocator(scope.element, index, scope.path);
       };
 
       scope.removeElement = function (index) {
         if (scope.model.length > scope.element.minItems) {
           scope.model.splice(index, 1);
-          if (index + 1 > scope.model.length) {
-            scope.selectedTab = scope.model.length - 1;
-          }
         }
       };
 
@@ -172,12 +173,12 @@ define([
         SpreadsheetService.switchToSpreadsheetElement(scope, element);
       };
 
-      scope.toggleExpanded = function () {
-        scope.expanded = !scope.expanded
+      scope.toggleExpanded = function (index) {
+        scope.expanded[index] = !scope.expanded[index];
       };
 
-      scope.isExpanded = function () {
-        return scope.expanded;
+      scope.isExpanded = function (index) {
+        return scope.expanded[index];
       };
 
       scope.removeChild = function (fieldOrElement) {
@@ -268,21 +269,39 @@ define([
         return $rootScope.isArray(scope.model);
       };
 
-      scope.getDomId = function (e) {
-        var s = $rootScope.schemaOf(e);
-        console.log(s);
-        return DataManipulationService.getDomId(s);
-      }
+      // allows us to look a the model as an array whether it is or not
+      scope.valueArray;
+      scope.setValueArray = function () {
 
-      scope.nextChild = function (fieldOrElement) {
+        scope.valueArray = [];
+        if (scope.model instanceof Array) {
 
-        console.log('nextChild');
-        if (fieldOrElement) {}
+          scope.valueArray = scope.model;
 
-        var id = $rootScope.schemaOf(fieldOrElement)["@id"];
-        var title = $rootScope.schemaOf(fieldOrElement)._ui.title;
+        } else {
+
+          if (!scope.model) {
+            scope.model = {};
+          }
+
+          scope.valueArray = [];
+          scope.valueArray.push(scope.model);
+
+        }
+      };
+      scope.setValueArray();
+
+
+      scope.nextChild = function (field) {
+
+        var id = $rootScope.schemaOf(field)["@id"];
+        var props = $rootScope.schemaOf(scope.$parent.element).properties;
+        var order = $rootScope.schemaOf(scope.$parent.element)._ui.order;
         var selectedKey;
-        var props = scope.element.properties;
+
+        console.log('nextChild of ' + id);
+        console.log(props);
+        console.log(order);
 
         // find the field or element in the form's properties
         angular.forEach(props, function (value, key) {
@@ -293,53 +312,47 @@ define([
 
         if (selectedKey) {
 
-          // and the order array
-          var order = $rootScope.schemaOf(scope.element)._ui.order;
+          console.log('selectedKey ' + selectedKey);
+
           var idx = order.indexOf(selectedKey);
 
           idx += 1;
           if (idx < order.length) {
             var nextKey = order[idx];
+            console.log('nextChild is next sibling ' + nextKey);
             return props[nextKey];
           } else {
-            console.log('go up one level');
+            console.log('nextChild is up one level to ' + DataManipulationService.getId(scope.$parent.element));
+            return scope.$parent.element;
           }
         }
+        console.log('nextChild no next child available');
         return null;
       };
 
+
+      // watch for this field's active state
       scope.$on('setActive', function (event, args) {
         var id = args[0];
-        var value = args[1];
+        var index = args[1];
+        var path = args[2];
+        var value = args[3];
 
-        if (id === $rootScope.schemaOf(scope.element)['@id']) {
-          scope.setActive(true);
+        if (id === scope.getId() && path === scope.path) {
+          console.log('on setActive '+scope.getTitle() + ' ' + index + ' ' + (id === scope.getId()) +(path === scope.path) +   path +  ' ' + scope.path);
+          var props = $rootScope.schemaOf(scope.element).properties;
+          var order = $rootScope.schemaOf(scope.element)._ui.order;
+          var nextKey = order[0];
+          var next= props[nextKey];
+          $rootScope.$broadcast("setActive", [DataManipulationService.getId(next), 0,  scope.path, true]);
+
         }
       });
 
-      scope.activeFieldOrElement;
 
-      // set this element active by choosing the next field or element in this element
-      scope.setActive = function () {
-
-        var next;
-
-        console.log('setActive ' + scope.activeFieldOrElement);
-        if (scope.activeFieldOrElement) {
-          next = scope.nextChild(scope.activeFieldOrElement);
-        } else {
-          // get the first child and set it active
-          var props = scope.element.properties;
-          var order = $rootScope.schemaOf(scope.element)._ui.order;
-          next = props[order[0]];
-
-        }
-
-        if (next) {
-          var id = $rootScope.schemaOf(next)['@id'];
-          console.log('broadcast setActive ' + id);
-          $rootScope.$broadcast("setActive", [id]);
-        }
+      scope.setActive = function (index, value) {
+        console.log('setActive ' + index + value);
+        DataManipulationService.setActive(scope.element, index, scope.path, value);
       };
 
 

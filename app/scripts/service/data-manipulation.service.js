@@ -252,11 +252,6 @@ define([
     };
 
 
-    // set this field instance active
-    service.setActive = function (field, index, value) {
-        $rootScope.activeFieldOrElement = value ? $rootScope.schemaOf(field)['@id'] : null;
-        $rootScope.activeFieldOrElementIndex = value ? index : null;
-    };
 
     service.isMultiple = function (fieldOrElement) {
       return $rootScope.isArray(fieldOrElement);
@@ -266,10 +261,20 @@ define([
       return true;
     };
 
+    // set this field instance active
+    service.setActive = function (field, index, path,  value) {
+      if (value) {
+        $rootScope.activeLocator = service.getLocator(field, index, path);
+      } else {
+        console.log('clear activelocator');
+        $rootScope.activeLocator =  null;
+      }
+
+    };
 
     // is this field active
-    service.isActive = function (field, index) {
-      return $rootScope.activeFieldOrElement && ($rootScope.activeFieldOrElement === $rootScope.schemaOf(field)['@id'] && $rootScope.activeFieldOrElementIndex === index);
+    service.isActive = function (locator) {
+      return ($rootScope.activeLocator === locator);
     };
 
     // add an option to this field
@@ -418,6 +423,21 @@ define([
 
     };
 
+
+    service.createOrder = function (node, order) {
+
+      if (node.hasOwnProperty("@id")) {
+        order.push(node['@id']);
+      }
+
+      angular.forEach(node.properties, function (value, key) {
+        if (!DataUtilService.isSpecialKey(key)) {
+          service.createOrder(value, order);
+        }
+      });
+      return order;
+    };
+
     /**
      * create domIds for node and children
      * @param node
@@ -458,22 +478,26 @@ define([
       return nodeId.substring(nodeId.lastIndexOf('/') + 1);
     };
 
+    service.getId = function (fieldOrElement) {
+      return $rootScope.schemaOf(fieldOrElement)['@id'];
+    };
+
     // get the locator for the node's dom object
-    service.getLocator = function (node, index) {
-      return 'dom-' + service.getNodeId(node) + '-' + index;
+    service.getLocator = function (node, index, path) {
+      return 'dom-' + service.getNodeId(node) + '-' + (path || 0).toString() + '-' + (index || 0).toString();
     };
 
     // look to see if this node has been identified by angular as an invalid pattern
-    service.isValidPattern = function (node, index) {
-      var locator = service.getLocator(node, index) + '.ng-invalid';
+    service.isValidPattern = function (node, index, path) {
+      var locator = service.getLocator(node, index, path) + '.ng-invalid';
       var target = jQuery('#' + locator);
       return (target.length == 0);
     };
 
     // get the value of the dom object for this node
-    service.getDomValue = function (node, index) {
+    service.getDomValue = function (node, index, path) {
       var result;
-      var locator = service.getLocator(node, index);
+      var locator = service.getLocator(node, index, path);
       var target = jQuery('#' + locator);
       if (target.length > 0) {
         result = target[0].value;

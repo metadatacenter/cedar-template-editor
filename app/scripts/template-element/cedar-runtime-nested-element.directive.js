@@ -6,9 +6,9 @@ define([
   angular.module('cedar.templateEditor.templateElement.cedarRuntimeNestedElementDirective', [])
       .directive('cedarRuntimeNestedElement', cedarRuntimeNestedElementDirective);
 
-  cedarRuntimeNestedElementDirective.$inject = ["$rootScope", "$compile", 'DataUtilService'];
+  cedarRuntimeNestedElementDirective.$inject = ["$rootScope", "$compile", 'DataUtilService', 'DataManipulationService'];
 
-  function cedarRuntimeNestedElementDirective($rootScope, $compile, DataUtilService) {
+  function cedarRuntimeNestedElementDirective($rootScope, $compile, DataUtilService, DataManipulationService) {
 
     var directive = {
       template: '<div></div>',
@@ -21,8 +21,9 @@ define([
         removeChild   : '=',
         ngDisabled    : "=",
         renameChildKey: "=",
-        isEditData:     "=",
-        depth: '='
+        isEditData    : "=",
+        depth         : '=',
+        path          : '='
       },
       replace : true,
       link    : linker
@@ -35,7 +36,7 @@ define([
       var nestElement = function () {
 
         setNested(scope.field);
-        var template = '<div ng-if="$root.schemaOf(field)._ui.inputType" > <cedar-runtime-field field="field" model="model" delete="removeChild(field)" preview="false" rename-child-key="renameChildKey" is-edit-data="isEditData" ></cedar-runtime-field></div><div ng-if="!$root.schemaOf(field)._ui.inputType" class="nested-element"><cedar-runtime-element key="key" model="model" element="field" preview="preview" delete="removeChild(field)" depth="depth"></cedar-runtime-element></div>';
+        var template = '<div ng-if="$root.schemaOf(field)._ui.inputType" > <cedar-runtime-field field="field" model="model" delete="removeChild(field)" preview="false" rename-child-key="renameChildKey" is-edit-data="isEditData" path="path"></cedar-runtime-field></div><div ng-if="!$root.schemaOf(field)._ui.inputType" class="nested-element"><cedar-runtime-element key="key" model="model" element="field" preview="preview" delete="removeChild(field)" depth="depth" path="path"></cedar-runtime-element></div>';
         $compile(template)(scope, function (cloned, scope) {
           element.html(cloned);
         });
@@ -75,14 +76,23 @@ define([
         return result;
       };
 
-      scope.nextChild = function (field) {
+      scope.lastIndex = function (path) {
+        if (path) {
+        var indices = path.split('-');
+        return indices[indices.length - 1];
+        }
+      }
 
+
+      scope.nextChild = function (field, path) {
+        console.log('nextCHild')
 
         var id = $rootScope.schemaOf(field)["@id"];
+        var props = $rootScope.schemaOf(scope.$parent.element).properties;
+        var order = $rootScope.schemaOf(scope.$parent.element)._ui.order;
         var selectedKey;
-        var props = scope.$parent.element.properties;
-        console.log('nextChild' + id);
-        console.log(props);
+        var index = scope.lastIndex(path) || 0;
+        var result = false;
 
         // find the field or element in the form's properties
         angular.forEach(props, function (value, key) {
@@ -92,24 +102,28 @@ define([
         });
 
         if (selectedKey) {
-
-          // and the order array
-          var order = $rootScope.schemaOf(scope.$parent.element)._ui.order;
           var idx = order.indexOf(selectedKey);
-
           idx += 1;
           if (idx < order.length) {
             var nextKey = order[idx];
-            console.log(props[nextKey]);
-            return props[nextKey];
+            console.log('nextChild is next sibling ' + nextKey);
+            var next = props[nextKey];
+            $rootScope.$broadcast("setActive", [DataManipulationService.getId(next), index,  scope.path, true]);
+            return;
+
+
           } else {
-            console.log('go up one level');
-            var parentId = $rootScope.schemaOf(scope.$parent.element)['@id'];
-            console.log('broadcast setActive for ' + parentId);
-            $rootScope.$broadcast("setActive", [parentId]);
+            console.log('nextChild is up one level'); console.log($rootScope.rootElement);
+            var order = [];
+            console.log(DataManipulationService.createOrder($rootScope.rootElement,order));
+            $rootScope.$broadcast("setActive", [DataManipulationService.getId(scope.$parent.element), index,  scope.$parent.path, true]);
+            return;
+
           }
         }
-        return null;
+
+        console.log('no nextChild ');
+        $rootScope.$broadcast("setActive", [id, index,  path, false]);
       };
 
       if (scope.field) {

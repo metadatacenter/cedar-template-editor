@@ -962,7 +962,7 @@ define([
       }
 
       $scope.getId = function (index) {
-        return DataManipulationService.getLocator($scope.field, index);
+        return DataManipulationService.getLocator($scope.field, 0,index);
       };
 
     };

@@ -1,18 +1,22 @@
-<div class="form-group " ng-class="{'required': isRequired()}">
+<div class="form-group has-feedback" ng-click="setActive(index)">
 
-  <select ng-click="setActive(index)" class="form-control"
+  <select ng-click="setActive(index)"
+      class="form-control"
       ng-class="{'isActive' : isActive(index), 'required': isRequired()}"
       ng-click="setActive(index, true)"
       multiple="false"
       data-max-options="1"
       field="field"
       title="Please select"
+      close-on-select="true"
       ng-model="valueElement[0]['@value']"
       select-picker="">
+
     <option ng-click="setActive(index,true)" ng-repeat="(i, v) in getLiterals()"
         value="{{v.label}}">
       {{v.label}}
     </option>
+
   </select>
 </div>
 
