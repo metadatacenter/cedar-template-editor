@@ -445,7 +445,12 @@ define([
 
       $scope.addMoreInput = function () {
         if ((!$scope.field.maxItems || $scope.model.length < $scope.field.maxItems)) {
+
+          // add another instance in the model
           $scope.model.push({'@value': null});
+
+          // activate the new instance
+          $scope.setActive($scope.getId(),$scope.model.length-1,true);
         }
       };
 
@@ -931,23 +936,28 @@ define([
         return DataManipulationService.isActive(DataManipulationService.getLocator($scope.field, index, $scope.path));
       };
 
+      $scope.isInactive = function (index) {
+        console.log('isInactive' + DataManipulationService.isInactive(DataManipulationService.getLocator($scope.field, index, $scope.path)));
+
+        return DataManipulationService.isInactive(DataManipulationService.getLocator($scope.field, index, $scope.path));
+      };
+
 
       // watch for this field's active state
       $scope.$on('setActive', function (event, args) {
         var id = args[0];
-        var index = args[1];
         var path = args[2];
-        var value = args[3];
 
-
-        if (id === $scope.getId()) {
-          console.log('on setActive id=' + id + ' index=' + index + ' path=' + path + ' value=' + value);
+        if (id === $scope.getId() && path === $scope.path) {
+          var index = args[1];
+          var value = args[3];
+          console.log('on setActive id=' + id + ' index=' + index + ' path=' + path + ' scope.path=' + $scope.path + ' value=' + value);
           $scope.setActive(index, value);
         }
       });
 
       $scope.setActive = function (index, value) {
-        console.log('setActive ' + $scope.getTitle() + ' ' + index + ' ' + $scope.path + ' ' + value);
+        console.log('setActive ' + $scope.getId() + ' ' + index + ' ' + $scope.path + ' ' + value);
 
         var active = (typeof value === "undefined") ? true : value;
         DataManipulationService.setActive($scope.field, index, $scope.path, active);
@@ -963,32 +973,32 @@ define([
         }
 
         if (active) {
-          // scroll to and select the field
-          var target = angular.element('#' + locator);
-          if (target && target.offset()) {
-
-
-            $scope.setHeight = function () {
-
-              var window = angular.element($window);
-              var windowHeight = $(window).height();
-              var targetTop = $("#" + locator).offset().top;
-              var targetHeight = $("#" + locator).outerHeight(true);
-              //var newTop = targetTop - ( windowHeight - targetHeight ) / 2;
-              var newTop = targetTop;
-              console.log('targetTop' + targetTop + ' outerHeight' + targetHeight + 'newTop' + newTop);
-              console.log($("#" + locator).offset());
-              console.log('scrollTop ' + jQuery('.template-container').scrollTop());
-
-              jQuery('.template-container').animate({scrollTop: newTop}, 'slow');
-              console.log('scrollTop ' + jQuery('.template-container').scrollTop());
-              jQuery("#" + locator + ' ' + tag).focus().select();
-            };
-            $timeout($scope.setHeight, 100);
-          }
+          $scope.scrollTo(locator, tag);
 
         } else {
           jQuery("#" + locator + ' ' + tag).blur();
+        }
+      };
+
+      // scroll within the template-container to the field with id locator
+      $scope.scrollTo = function(locator, tag) {
+
+        var target = angular.element('#' + locator);
+        if (target && target.offset()) {
+
+          $scope.setHeight = function () {
+
+            var window = angular.element($window);
+            var windowHeight = $(window).height();
+            var targetTop = $("#" + locator).offset().top;
+            var targetHeight = $("#" + locator).outerHeight(true);
+            var scrollTop = jQuery('.template-container').scrollTop();
+            var newTop = scrollTop + targetTop - ( windowHeight - targetHeight ) / 2;
+            console.log('setHeight scrollTop' + scrollTop + ' targetTop' + targetTop + ' outerHeight' + targetHeight + 'newTop' + newTop);
+            jQuery('.template-container').animate({scrollTop: newTop}, 'slow');
+            jQuery("#" + locator + ' ' + tag).focus().select();
+          };
+          $timeout($scope.setHeight, 100);
         }
       };
 
@@ -1000,7 +1010,6 @@ define([
         for (var i=0;i<arr.length;i++) {
           result.push(i);
         }
-        console.log(result);
         return result;
       };
 

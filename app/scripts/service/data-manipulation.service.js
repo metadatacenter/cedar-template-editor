@@ -277,6 +277,11 @@ define([
       return ($rootScope.activeLocator === locator);
     };
 
+    // is some other field active
+    service.isInactive = function (locator) {
+      return ($rootScope.activeLocator &&  $rootScope.activeLocator != locator);
+    };
+
     // add an option to this field
     service.addOption = function (field) {
       var emptyOption = {

@@ -84,8 +84,11 @@ define([
       }
 
 
+      scope.isMultiple = function () {
+        return $rootScope.isArray(scope.model);
+      };
+
       scope.nextChild = function (field, path) {
-        console.log('nextCHild')
 
         var id = $rootScope.schemaOf(field)["@id"];
         var props = $rootScope.schemaOf(scope.$parent.element).properties;
@@ -106,21 +109,25 @@ define([
           idx += 1;
           if (idx < order.length) {
             var nextKey = order[idx];
-            console.log('nextChild is next sibling ' + nextKey);
             var next = props[nextKey];
+            console.log('broadcast next sibling' + DataManipulationService.getId(next));
             $rootScope.$broadcast("setActive", [DataManipulationService.getId(next), index,  scope.path, true]);
             return;
 
+          } else if (scope.isMultiple() && (index + 1 < scope.model.length)) {
+            console.log('nextChild is next index ' + id);
+            scope.setActive(index + 1, true);
+
 
           } else {
-            console.log('nextChild is up one level' + $rootScope.schemaOf(scope.$parent.element)["@id"]);
+            console.log('broadcast nextChild up one level' + DataManipulationService.getId(scope.$parent.element));
             $rootScope.$broadcast("setActive", [DataManipulationService.getId(scope.$parent.element), index,  scope.$parent.path, true]);
             return;
 
           }
         }
 
-        console.log('no nextChild ');
+        console.log('broadcast deselect ');
         $rootScope.$broadcast("setActive", [id, index,  path, false]);
       };
 

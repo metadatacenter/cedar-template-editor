@@ -67,7 +67,7 @@ define([
 
             $scope.pagesArray = orderArray;
           }
-        }
+        };
 
         $scope.removeChild = function (fieldOrElement) {
           var id = $rootScope.schemaOf(fieldOrElement)["@id"];
@@ -170,6 +170,7 @@ define([
         };
 
         var startParseForm = function () {
+          console.log('startParseForm');
           if ($scope.form) {
             var model;
             if ($rootScope.isRuntime()) {
@@ -199,6 +200,7 @@ define([
         }
 
         $scope.parseForm = function (iterator, parentModel, parentKey) {
+          console.log('parseForm');
 
           angular.forEach(iterator, function (value, name) {
             // Add @context information to instance
@@ -290,7 +292,6 @@ define([
         // Angular's $watch function to call $scope.parseForm on form.properties initial population and on update
         $scope.$watch('form.properties', function () {
           startParseForm();
-          //positionToolbar();
         });
 
 
@@ -377,9 +378,7 @@ define([
           return $scope.expanded;
         };
 
-
         $scope.nextChild = function (fieldOrElement) {
-          console.log('nextChild')
 
           var id = DataManipulationService.getId(fieldOrElement);
           var selectedKey;
@@ -399,10 +398,8 @@ define([
             if (idx < $scope.form._ui.order.length) {
               var nextKey = $scope.form._ui.order[idx];
               var next = props[nextKey];
-              console.log('nextChild ' + $rootScope.schemaOf(next)._ui.title);
               $rootScope.$broadcast("setActive", [DataManipulationService.getId(next), 0,  $scope.path, true]);
             } else {
-              console.log('out of fields');
               $rootScope.$broadcast("setActive", [id, 0,  $scope.path, false]);
 
             }

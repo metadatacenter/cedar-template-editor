@@ -6,10 +6,11 @@ define([
   angular.module('cedar.templateEditor.templateElement.cedarRuntimeElement', [])
       .directive('cedarRuntimeElement', cedarRuntimeElement);
 
-  cedarRuntimeElement.$inject = ['$rootScope', 'DataManipulationService', 'DataUtilService',
+  cedarRuntimeElement.$inject = ['$rootScope', '$timeout', '$window', 'DataManipulationService', 'DataUtilService',
                                  'SpreadsheetService'];
 
-  function cedarRuntimeElement($rootScope, DataManipulationService, DataUtilService, SpreadsheetService) {
+  function cedarRuntimeElement($rootScope, $timeout, $window, DataManipulationService, DataUtilService,
+                               SpreadsheetService) {
 
     var directive = {
       restrict   : 'EA',
@@ -19,8 +20,8 @@ define([
         delete       : '&',
         model        : '=',
         isRootElement: "=",
-        depth:'=',
-        path:'='
+        depth        : '=',
+        path         : '='
       },
       templateUrl: 'scripts/template-element/cedar-runtime-element.directive.html',
       link       : linker
@@ -33,7 +34,6 @@ define([
       scope.elementId = DataManipulationService.idOf(scope.element) || DataManipulationService.generateGUID();
       scope.uuid = DataManipulationService.generateTempGUID();
       scope.expanded = [];
-
 
 
       var resetElement = function (el, settings) {
@@ -107,6 +107,10 @@ define([
       }
 
 
+      scope.isInactive = function (index) {
+        return DataManipulationService.isInactive(DataManipulationService.getLocator(scope.element, index, scope.path));
+      };
+
       scope.isNested = function () {
         return DataManipulationService.isNested(scope.element);
       };
@@ -119,27 +123,25 @@ define([
         return 'margin-left: ' + 15 + 'px';
       }
 
-      scope.getNesting = function()  {
+      scope.getNesting = function () {
 
         var path = scope.path || '';
         var arr = path.split('-');
         var result = [];
-        for (var i=0;i<arr.length;i++) {
+        for (var i = 0; i < arr.length; i++) {
           result.push(i);
         }
-        console.log(result);
         return result;
       };
 
-      scope.getNestingCount = function()  {
+      scope.getNestingCount = function () {
 
         var path = scope.path || '';
         var arr = path.split('-');
         return arr.length;
       };
 
-      scope.getNestingStyle = function(index)  {
-
+      scope.getNestingStyle = function (index) {
         return 'left:' + (-15 * (index)) + 'px';
       };
 
@@ -175,6 +177,14 @@ define([
             }
             resetElement(seed, scope.element);
           }
+          // activate the new instance
+          var index = scope.model.length-1;
+          scope.setActive(index,true);
+          scope.toggleExpanded(index);
+
+          // select the first field in the element
+
+
         }
       };
 
@@ -199,6 +209,9 @@ define([
 
       scope.toggleExpanded = function (index) {
         scope.expanded[index] = !scope.expanded[index];
+        if (scope.expanded[index]) {
+          scope.setActive(index, true);
+        }
       };
 
       scope.isExpanded = function (index) {
@@ -336,10 +349,7 @@ define([
 
         if (selectedKey) {
 
-          console.log('selectedKey ' + selectedKey);
-
           var idx = order.indexOf(selectedKey);
-
           idx += 1;
           if (idx < order.length) {
             var nextKey = order[idx];
@@ -363,20 +373,57 @@ define([
         var value = args[3];
 
         if (id === scope.getId() && path === scope.path) {
-          console.log('on setActive '+scope.getTitle() + ' ' + index + ' ' + (id === scope.getId()) +(path === scope.path) +   path +  ' ' + scope.path);
-          var props = $rootScope.schemaOf(scope.element).properties;
-          var order = $rootScope.schemaOf(scope.element)._ui.order;
-          var nextKey = order[0];
-          var next= props[nextKey];
-          $rootScope.$broadcast("setActive", [DataManipulationService.getId(next), 0,  scope.path, true]);
 
+
+          console.log('on setActive ' + scope.getTitle() + ' ' + index + ' ' + (id === scope.getId()) + (path === scope.path) + path + ' ' + scope.path);
+          scope.expanded[index] = true;
+          $timeout(function () {
+
+                var props = $rootScope.schemaOf(scope.element).properties;
+                var order = $rootScope.schemaOf(scope.element)._ui.order;
+                var nextKey = order[0];
+                var next = props[nextKey];
+                console.log('broadcast setActive id ' + DataManipulationService.getId(next) + ' index 0 ' + ' path ' + scope.path + '-0');
+                $rootScope.$broadcast("setActive", [DataManipulationService.getId(next), 0, scope.path + '-0', true]);
+              }, 0);
         }
       });
+
+      scope.getLocator = function (index) {
+        return DataManipulationService.getLocator(scope.element, index, scope.path);
+      };
+
+
+      // scroll within the template-container to the field with id locator
+      scope.scrollTo = function (locator, tag) {
+
+        var target = angular.element('#' + locator);
+        if (target && target.offset()) {
+
+          scope.setHeight = function () {
+
+            var window = angular.element($window);
+            var windowHeight = $(window).height();
+            var targetTop = $("#" + locator).offset().top;
+            var targetHeight = $("#" + locator).outerHeight(true);
+            var scrollTop = jQuery('.template-container').scrollTop();
+            var newTop = scrollTop + targetTop - ( windowHeight - targetHeight ) / 2;
+            console.log('setHeight scrollTop' + scrollTop + ' targetTop' + targetTop + ' outerHeight' + targetHeight + 'newTop' + newTop);
+            jQuery('.template-container').animate({scrollTop: newTop}, 'slow');
+            jQuery("#" + locator + ' ' + tag).focus().select();
+          };
+          $timeout(scope.setHeight, 100);
+        }
+      };
 
 
       scope.setActive = function (index, value) {
         console.log('setActive ' + index + value);
         DataManipulationService.setActive(scope.element, index, scope.path, value);
+        var locator = scope.getLocator(index);
+        scope.scrollTo(locator);
+
+
       };
 
 

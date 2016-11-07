@@ -2773,6 +2773,7 @@ section.dashboard-elements {
 
 
   &.page {
+    margin-top:200px;margin-bottom:200px
 
   }
 
@@ -2800,7 +2801,6 @@ section.dashboard-elements {
 
   .title {
     font-size: 1.5em;
-
     font-family: "Source Sans Pro",sans-serif;
     font-weight:lighter;
   }
@@ -2852,6 +2852,7 @@ section.dashboard-elements {
   }
 
   .btn.btn-save.active {
+    margin:50px 0;
     background-color: @button-template;
     color: @white;
     &:hover {
@@ -2917,17 +2918,42 @@ section.dashboard-elements {
       font-weight:lighter;
       padding-left: 20px;
       font-size: 1.2em;
-
+      height: 30px;
+      line-height: 28px;
+      &.isActive {
+        height: 40px;
+        line-height: 40px;
+      }
     }
 
+
+    //.row.isInactive {
+    //  .title {
+    //    color:#ccc;
+    //  }
+    //}
+    //.title.isInactive {
+    //    color: #ccc;
+    //}
+
     .row.isActive {
-     padding-top: 100px;
-      padding-bottom: 100px;
+     padding-top: 50px;
+      padding-bottom: 50px;
 
 
       .title {
         font-size: 1.5em;
+        padding-left:0px;
+        margin:30px 0;
         color: green;
+        &.remove {
+          color:#999;
+          padding-left:10px;
+        }
+        &.question {
+          color: @brand-primary;
+          padding-left:0px;
+        }
       }
     }
 
@@ -2938,15 +2964,7 @@ section.dashboard-elements {
       vertical-align: middle;
     }
 
-    .title {
-      height: 30px;
-      line-height: 28px;
-      padding-left: 20px;
-      &.isActive {
-        height: 40px;
-        line-height: 40px;
-      }
-    }
+
 
     input {
       border-width: 0px;
