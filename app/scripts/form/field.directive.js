@@ -682,7 +682,6 @@ define([
       }
 
       $scope.initializeValueRecommendationField = function () {
-        $scope.modelValueRecommendation['@value'];
         $scope.modelValueRecommendation = {};
         if ($scope.model['_valueLabel']) {
           $scope.modelValueRecommendation['@value'] = {
