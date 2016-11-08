@@ -773,7 +773,7 @@ define([
         delete $scope.model['_valueLabel'];
       };
 
-      $scope.calculateUIScore = function(score) {
+      $scope.calculateUIScore_old = function(score) {
         var s = Math.floor(score * 100);
         if (s < 1) {
           return "<1%";
@@ -781,6 +781,10 @@ define([
         else {
           return s.toString() + "%";
         }
+      };
+
+      $scope.calculateUIScore = function(score) {
+        return score.toFixed(2);
       };
 
       $scope.getRecommendationType = function(type) {
