@@ -10,7 +10,7 @@ var sampleTemplateUrl;
 var sampleMetadataUrl;
 
 
-describe('metadata-creator', function () {
+xdescribe('metadata-creator', function () {
   var EC = protractor.ExpectedConditions;
   var metadataPage;
   var workspacePage;
@@ -57,7 +57,7 @@ describe('metadata-creator', function () {
           });
 
 
-          xit("should open the sample template", function () {
+          it("should open the sample template", function () {
             browser.get(sampleTemplateUrl);
             expect(templatePage.createPageName().isPresent()).toBe(true);
             expect(templatePage.createPageName().isDisplayed()).toBe(true);
@@ -82,7 +82,7 @@ describe('metadata-creator', function () {
           });
 
 
-          xdescribe('with sample template', function () {
+          describe('with sample template', function () {
 
 
             it("should open metadata editor", function () {
@@ -151,7 +151,7 @@ describe('metadata-creator', function () {
 
           });
 
-          it("should delete metadata from the workspace, ", function () {
+          xit("should delete metadata from the workspace, ", function () {
 
             if (sampleMetadataUrl) {
               //workspacePage.deleteResourceNew(sampleTitle, workspacePage.metadataType());
