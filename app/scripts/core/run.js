@@ -492,6 +492,8 @@ define([
       return $rootScope.dirty;
     }
 
+    $rootScope.useRunTimeCode = true ;
+
 
   };
 

@@ -4,7 +4,7 @@
         ng-click="setActive(index, true)"
         class="form-control"
         ng-class="{'isActive' : isActive(index), 'required': $root.schemaOf(field)._valueConstraints.requiredValue}"
-        placeholder="enter email"
+        placeholder="{{isActive(index) ? 'enter email' : ''}}"
         aria-label="{{$root.schemaOf(field)._ui.description}}"
         ng-model="valueElement['@value']"
         validate-on="blur"

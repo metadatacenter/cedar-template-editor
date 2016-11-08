@@ -937,7 +937,6 @@ define([
       };
 
       $scope.isInactive = function (index) {
-        console.log('isInactive' + DataManipulationService.isInactive(DataManipulationService.getLocator($scope.field, index, $scope.path)));
 
         return DataManipulationService.isInactive(DataManipulationService.getLocator($scope.field, index, $scope.path));
       };
@@ -951,13 +950,13 @@ define([
         if (id === $scope.getId() && path === $scope.path) {
           var index = args[1];
           var value = args[3];
-          console.log('on setActive id=' + id + ' index=' + index + ' path=' + path + ' scope.path=' + $scope.path + ' value=' + value);
+          console.log('$on setActive id=' + id + ' index=' + index + ' path=' + path + ' scope.path=' + $scope.path + ' value=' + value);
           $scope.setActive(index, value);
         }
       });
 
       $scope.setActive = function (index, value) {
-        console.log('setActive ' + $scope.getId() + ' ' + index + ' ' + $scope.path + ' ' + value);
+        console.log('setActive ' + $scope.getTitle() + ' index ' + index +  ' value ' + value);
 
         var active = (typeof value === "undefined") ? true : value;
         DataManipulationService.setActive($scope.field, index, $scope.path, active);
@@ -994,7 +993,6 @@ define([
             var targetHeight = $("#" + locator).outerHeight(true);
             var scrollTop = jQuery('.template-container').scrollTop();
             var newTop = scrollTop + targetTop - ( windowHeight - targetHeight ) / 2;
-            console.log('setHeight scrollTop' + scrollTop + ' targetTop' + targetTop + ' outerHeight' + targetHeight + 'newTop' + newTop);
             jQuery('.template-container').animate({scrollTop: newTop}, 'slow');
             jQuery("#" + locator + ' ' + tag).focus().select();
           };
@@ -1027,16 +1025,14 @@ define([
 
 
       $scope.onSubmit = function (index) {
-        console.log('onSubmit ' + index + $scope.isMultiple() + $scope.model.length);
-        console.log($scope.model)
 
+        // go to next index
         if ($scope.isMultiple() && (index + 1 < $scope.model.length)) {
           $scope.setActive(index + 1, true);
 
         } else {
-          console.log('parent nextchild');
 
-          // go to next field or element
+          // or go to parent's next field
           $scope.$parent.nextChild($scope.field, index, $scope.path);
 
         }

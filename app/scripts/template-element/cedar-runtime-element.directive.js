@@ -178,8 +178,8 @@ define([
             resetElement(seed, scope.element);
           }
           // activate the new instance
-          var index = scope.model.length-1;
-          scope.setActive(index,true);
+          var index = scope.model.length - 1;
+          scope.setActive(index, true);
           scope.toggleExpanded(index);
 
           // select the first field in the element
@@ -364,6 +364,25 @@ define([
         return null;
       };
 
+      // watch for this field's next sibling
+      scope.$on('nextSibling', function (event, args) {
+        var id = args[0];
+        var index = args[1];
+        var path = args[2];
+        var value = args[3];
+
+        if (id === scope.getId() && path === scope.path) {
+          console.log('found parents next sibling request ' + scope.getTitle() + ' ' +  path + ' scope.element ' + scope.element + ' scope.$parent.element' + scope.$parent.element );
+          var next = DataManipulationService.nextSibling(scope.element, scope.$parent.element);
+          if (next) {
+            console.log('broadcast setActive id ' + DataManipulationService.getId(next) + ' index  ' + 0 + ' path ' + scope.path + '-' + index);
+            $rootScope.$broadcast("setActive", [DataManipulationService.getId(next), 0, path, true]);
+          }
+
+
+        }
+      });
+
 
       // watch for this field's active state
       scope.$on('setActive', function (event, args) {
@@ -375,7 +394,7 @@ define([
         if (id === scope.getId() && path === scope.path) {
 
 
-          console.log('on setActive ' + scope.getTitle() + ' ' + index + ' ' + (id === scope.getId()) + (path === scope.path) + path + ' ' + scope.path);
+          console.log('on setActive ' + scope.getTitle() + ' index ' + index + ' path ' + path + ' scope.path ' + scope.path);
           scope.expanded[index] = true;
           $timeout(function () {
 
@@ -383,8 +402,13 @@ define([
                 var order = $rootScope.schemaOf(scope.element)._ui.order;
                 var nextKey = order[0];
                 var next = props[nextKey];
-                console.log('broadcast setActive id ' + DataManipulationService.getId(next) + ' index 0 ' + ' path ' + scope.path + '-0');
-                $rootScope.$broadcast("setActive", [DataManipulationService.getId(next), 0, scope.path + '-0', true]);
+
+
+
+                console.log('broadcast setActive id ' + DataManipulationService.getId(next) + ' index 0 ' + ' path ' + scope.path + '-' + index);
+                $rootScope.$broadcast("setActive", [DataManipulationService.getId(next), 0, scope.path + '-' + index, true]);
+
+
               }, 0);
         }
       });
@@ -408,7 +432,6 @@ define([
             var targetHeight = $("#" + locator).outerHeight(true);
             var scrollTop = jQuery('.template-container').scrollTop();
             var newTop = scrollTop + targetTop - ( windowHeight - targetHeight ) / 2;
-            console.log('setHeight scrollTop' + scrollTop + ' targetTop' + targetTop + ' outerHeight' + targetHeight + 'newTop' + newTop);
             jQuery('.template-container').animate({scrollTop: newTop}, 'slow');
             jQuery("#" + locator + ' ' + tag).focus().select();
           };
@@ -418,7 +441,7 @@ define([
 
 
       scope.setActive = function (index, value) {
-        console.log('setActive ' + index + value);
+        console.log('setActive index ' + index + ' value ' + value);
         DataManipulationService.setActive(scope.element, index, scope.path, value);
         var locator = scope.getLocator(index);
         scope.scrollTo(locator);

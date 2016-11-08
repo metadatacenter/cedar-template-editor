@@ -6,7 +6,7 @@
         rows="{{isActive(index) ? 5 : 1}}"
         class="form-control"
         ng-class="{'isActive' : isActive(index), 'required': isRequired()}"
-        placeholder="enter answer"
+        placeholder="{{isActive(index) ? 'enter answer' : ''}}"
         aria-label="{{getDescription()}}"
         ng-model="valueElement['@value']"></textarea>
 

@@ -54,9 +54,9 @@ define([
       angular.forEach(schemaContext.properties, function (value, key) {
         if (value.enum) {
           context[key] = value.enum[0];
-        //} else {
-        //  console.log('generateInstanceContext empty value');
-        //  console.log(value);
+          //} else {
+          //  console.log('generateInstanceContext empty value');
+          //  console.log(value);
         }
       });
       return context;
@@ -252,7 +252,6 @@ define([
     };
 
 
-
     service.isMultiple = function (fieldOrElement) {
       return $rootScope.isArray(fieldOrElement);
     };
@@ -262,12 +261,12 @@ define([
     };
 
     // set this field instance active
-    service.setActive = function (field, index, path,  value) {
+    service.setActive = function (field, index, path, value) {
       if (value) {
         $rootScope.activeLocator = service.getLocator(field, index, path);
       } else {
         console.log('clear activelocator');
-        $rootScope.activeLocator =  null;
+        $rootScope.activeLocator = null;
       }
 
     };
@@ -279,7 +278,7 @@ define([
 
     // is some other field active
     service.isInactive = function (locator) {
-      return ($rootScope.activeLocator &&  $rootScope.activeLocator != locator);
+      return ($rootScope.activeLocator && $rootScope.activeLocator != locator);
     };
 
     // add an option to this field
@@ -476,7 +475,6 @@ define([
     };
 
 
-
     // get the id of the node
     service.getNodeId = function (node) {
       var nodeId = node['@id'] || node.items['@id'];
@@ -485,6 +483,38 @@ define([
 
     service.getId = function (fieldOrElement) {
       return $rootScope.schemaOf(fieldOrElement)['@id'];
+    };
+
+    service.getTitle = function (fieldOrElement) {
+      return service.getFieldSchema(fieldOrElement)._ui.title;
+    };
+
+    service.nextSibling = function (field, parent) {
+
+      if (field && parent) {
+
+        var id = service.getFieldSchema(field)["@id"];
+        var props = service.getFieldSchema(parent).properties;
+        var order = service.getFieldSchema(parent)._ui.order;
+        var selectedKey;
+
+        angular.forEach(props, function (value, key) {
+          if (service.getFieldSchema(value)["@id"] == id) {
+            selectedKey = key;
+          }
+        });
+
+        if (selectedKey) {
+          var idx = order.indexOf(selectedKey);
+          idx += 1;
+          if (idx < order.length) {
+            var nextKey = order[idx];
+            var next = props[nextKey];
+            return next;
+          }
+        }
+
+      }
     };
 
     // get the locator for the node's dom object

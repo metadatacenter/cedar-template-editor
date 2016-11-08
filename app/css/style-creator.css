@@ -9187,7 +9187,7 @@ button {
 .navbar .search-input {
   color: black;
   font-size: 16px;
-  margin-top: 12px;
+  margin-top: 0px;
 }
 .navbar .do-search {
   position: absolute;
@@ -9217,7 +9217,7 @@ button {
   background-repeat: no-repeat;
   width: 140px;
   background-size: 140px;
-  margin-top: 20px;
+  margin-top: 5px;
   margin-left: 0;
   font: 0/0 a;
   color: transparent;
@@ -10703,7 +10703,7 @@ body.search-browse-modal a.navbar-brand {
 .template-body .right-body .element-group .nested-element {
   border: 1px solid #ddd;
   padding: 0px 16px 0px 16px;
-  margin: 0 0 16px 20px;
+  margin-bottom: 16px;
 }
 @media (min-width: 768px) {
   .left-sidebar {
@@ -12022,6 +12022,7 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   padding-right: 10px;
 }
 .edit-actions {
+  border-top: 1px solid #ddd;
   padding: 50px 0;
   text-align: center;
   height: 300px;

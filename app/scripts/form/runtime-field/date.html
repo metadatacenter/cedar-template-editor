@@ -4,7 +4,7 @@
       ng-click="setActive(index, true)"
       class="form-control"
       ng-class="{'isActive' : isActive(index),'required': isRequired()}"
-      placeholder="enter date"
+      placeholder="{{isActive(index) ? 'enter date' : ''}}"
       aria-label="Select a date"
       ng-model="valueElement['@value']"
       validate-on="blur"

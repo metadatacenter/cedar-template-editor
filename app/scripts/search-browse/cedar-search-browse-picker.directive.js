@@ -88,6 +88,7 @@ define([
           vm.isResourceTypeActive = isResourceTypeActive;
           vm.isSearching = false;
           vm.launchInstance = launchInstance;
+          vm.fillInstance = fillInstance;
           vm.copyToWorkspace = copyToWorkspace;
           vm.copyResource = copyResource;
           vm.setResourceInfoVisibility = setResourceInfoVisibility;
@@ -554,6 +555,24 @@ define([
             }
 
 
+            $rootScope.useRunTimeCode = false;
+            var params = $location.search();
+            var folderId;
+            if (params.folderId) {
+              folderId = params.folderId;
+            } else {
+              folderId = vm.currentFolderId
+            }
+            var url = UrlService.getInstanceCreate(resource['@id'], folderId);
+            $location.url(url);
+          }
+
+          function fillInstance(resource) {
+            if (!resource) {
+              resource = getSelection();
+            }
+
+            $rootScope.useRunTimeCode = true;
             var params = $location.search();
             var folderId;
             if (params.folderId) {
@@ -580,7 +599,7 @@ define([
                 goToFolder(r['@id']);
               } else {
                 if (r.nodeType == 'template') {
-                  launchInstance(r);
+                  fillInstance(r);
                 } else {
                   editResource(r);
                 }

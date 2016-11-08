@@ -78,58 +78,46 @@ define([
 
       scope.lastIndex = function (path) {
         if (path) {
-        var indices = path.split('-');
-        return indices[indices.length - 1];
+          var indices = path.split('-');
+          console.log(indices);
+          return indices[indices.length - 1];
         }
-      }
-
+      };
 
       scope.isMultiple = function () {
         return $rootScope.isArray(scope.model);
       };
 
-      scope.nextChild = function (field, path) {
-
-        var id = $rootScope.schemaOf(field)["@id"];
-        var props = $rootScope.schemaOf(scope.$parent.element).properties;
-        var order = $rootScope.schemaOf(scope.$parent.element)._ui.order;
-        var selectedKey;
-        var index = scope.lastIndex(path) || 0;
-        var result = false;
-
-        // find the field or element in the form's properties
-        angular.forEach(props, function (value, key) {
-          if ($rootScope.schemaOf(value)["@id"] == id) {
-            selectedKey = key;
-          }
-        });
-
-        if (selectedKey) {
-          var idx = order.indexOf(selectedKey);
-          idx += 1;
-          if (idx < order.length) {
-            var nextKey = order[idx];
-            var next = props[nextKey];
-            console.log('broadcast next sibling' + DataManipulationService.getId(next));
-            $rootScope.$broadcast("setActive", [DataManipulationService.getId(next), index,  scope.path, true]);
-            return;
-
-          } else if (scope.isMultiple() && (index + 1 < scope.model.length)) {
-            console.log('nextChild is next index ' + id);
-            scope.setActive(index + 1, true);
+      scope.getId = function () {
+        return $rootScope.schemaOf(scope.field)['@id'];
+      };
 
 
-          } else {
-            console.log('broadcast nextChild up one level' + DataManipulationService.getId(scope.$parent.element));
-            $rootScope.$broadcast("setActive", [DataManipulationService.getId(scope.$parent.element), index,  scope.$parent.path, true]);
-            return;
 
-          }
+      scope.nextChild = function (field, index, path) {
+
+        var next = DataManipulationService.nextSibling(field, scope.$parent.element);
+        var parentIndex = parseInt(scope.lastIndex(path)) || 0;
+        var parentPath = path.substring(0, path.lastIndexOf('-'));
+        if (next) {
+
+          // field's next sibling
+          $rootScope.$broadcast("setActive", [DataManipulationService.getId(next), index, scope.path, true]);
+          return;
         }
 
-        console.log('broadcast deselect ');
-        $rootScope.$broadcast("setActive", [id, index,  path, false]);
+        if (scope.$parent.isMultiple() && (parentIndex + 1 < scope.$parent.model.length)) {
+
+          // next parent index if multiple
+          $rootScope.$broadcast("setActive",
+              [DataManipulationService.getId(scope.$parent.element), parentIndex + 1, scope.$parent.path, true]);
+          return;
+        }
+
+        // look for the next sibling of the parent
+        $rootScope.$broadcast("nextSibling", [DataManipulationService.getId(scope.$parent.element), parentIndex, parentPath, true]);
       };
+
 
       if (scope.field) {
         nestElement();
@@ -142,6 +130,8 @@ define([
       });
     }
 
-  };
+  }
+  ;
 
-});
+})
+;
