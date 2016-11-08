@@ -683,16 +683,18 @@ define([
 
       $scope.initializeValueRecommendationField = function () {
         $scope.modelValueRecommendation = {};
-        if ($scope.model['_valueLabel']) {
-          $scope.modelValueRecommendation['@value'] = {
-            'value'   : $scope.model._valueLabel,
-            'valueUri': $scope.model['@value'],
-          };
-        }
-        else {
-          $scope.modelValueRecommendation['@value'] = {
-            'value': $scope.model['@value']
-          };
+        if ($scope.model) {
+          if ($scope.model['_valueLabel']) {
+            $scope.modelValueRecommendation['@value'] = {
+              'value'   : $scope.model._valueLabel,
+              'valueUri': $scope.model['@value'],
+            };
+          }
+          else {
+            $scope.modelValueRecommendation['@value'] = {
+              'value': $scope.model['@value']
+            };
+          }
         }
       };
 
@@ -750,10 +752,14 @@ define([
       };
 
       // Updates the search using the selected value
-      $scope.updateSearch = function (select) {
-        if (select.selected.value) {
-          select.search = select.selected.value;
-        }
+      //$scope.updateSearch = function (select) {
+      //  if (select.selected.value) {
+      //    select.search = select.selected.value;
+      //  }
+      //};
+
+      $scope.clearSearch = function (select) {
+        select.search = '';
       };
 
       $scope.clearSelection = function ($event, select) {

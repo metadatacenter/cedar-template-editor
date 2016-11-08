@@ -10,7 +10,7 @@ define([
 
   cedarTemplateEditorCoreRun.$inject = ['$rootScope', '$window', '$sce', '$translate', 'DataTemplateService',
                                         'DataManipulationService', 'FieldTypeService', 'UrlService', 'UIUtilService',
-                                        'UserService', 'RichTextConfigService', 'CONST', 'controlledTermDataService',
+                                        'UserService', 'RichTextConfigService', 'CONST', 'controlledTermService', 'controlledTermDataService',
                                         'provisionalClassService', 'CedarUser', 'UISettingsService',
                                         'ValueRecommenderService', 'DataUtilService', 'TrackingService',
                                         '$httpParamSerializer', '$location'];
@@ -18,7 +18,7 @@ define([
 
   function cedarTemplateEditorCoreRun($rootScope, $window, $sce, $translate, DataTemplateService,
                                       DataManipulationService, FieldTypeService, UrlService, UIUtilService, UserService,
-                                      RichTextConfigService, CONST, controlledTermDataService, provisionalClassService,
+                                      RichTextConfigService, CONST, ControlledTermService, controlledTermDataService, provisionalClassService,
                                       CedarUser, UISettingsService, ValueRecommenderService, DataUtilService,
                                       TrackingService, $httpParamSerializer, $location) {
 
@@ -444,6 +444,7 @@ define([
     TrackingService.init();
 
     // Make objects available through rootScope
+    $rootScope.cts = ControlledTermService;
     $rootScope.vrs = ValueRecommenderService;
     $rootScope.editorOptions = RichTextConfigService.getConfig("default");
 
