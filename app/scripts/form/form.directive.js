@@ -406,6 +406,38 @@ define([
           }
         };
 
+        $scope.lastIndex = function (path) {
+          if (path) {
+            var indices = path.split('-');
+            return indices[indices.length - 1];
+          }
+        };
+
+        // watch for this field's next sibling
+        $scope.$on('nextSibling', function (event, args) {
+          var id = args[0];
+          var index = args[1];
+          var path = args[2];
+          var value = args[3];
+
+
+          if (id === DataManipulationService.getId($scope.form)) {
+            console.log('on nextSibling of form ' );
+
+            var next = DataManipulationService.nextSibling($scope.field, $scope.form);
+            var parentIndex = 0;
+            var parentPath = '0';
+            if (next) {
+
+              console.log('got parent next sibling');
+              $rootScope.$broadcast("setActive", [DataManipulationService.getId(next), 0, path, true]);
+
+
+            }
+          }
+        });
+
+
 
       }
     };

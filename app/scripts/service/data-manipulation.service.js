@@ -491,20 +491,32 @@ define([
 
     service.nextSibling = function (field, parent) {
 
+
       if (field && parent) {
+
+
 
         var id = service.getFieldSchema(field)["@id"];
         var props = service.getFieldSchema(parent).properties;
         var order = service.getFieldSchema(parent)._ui.order;
         var selectedKey;
 
+        console.log('nextSibling of '+ id);
+        console.log(props);
+        console.log(order);
+
         angular.forEach(props, function (value, key) {
+          var valueId = service.getFieldSchema(value)["@id"];
+          if (valueId) {
+            console.log(valueId);
           if (service.getFieldSchema(value)["@id"] == id) {
             selectedKey = key;
+          }
           }
         });
 
         if (selectedKey) {
+          console.log(selectedKey);
           var idx = order.indexOf(selectedKey);
           idx += 1;
           if (idx < order.length) {

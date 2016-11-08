@@ -79,7 +79,6 @@ define([
       scope.lastIndex = function (path) {
         if (path) {
           var indices = path.split('-');
-          console.log(indices);
           return indices[indices.length - 1];
         }
       };
@@ -93,8 +92,8 @@ define([
       };
 
 
-
       scope.nextChild = function (field, index, path) {
+        console.log('nextCHild');
 
         var next = DataManipulationService.nextSibling(field, scope.$parent.element);
         var parentIndex = parseInt(scope.lastIndex(path)) || 0;
@@ -115,8 +114,43 @@ define([
         }
 
         // look for the next sibling of the parent
-        $rootScope.$broadcast("nextSibling", [DataManipulationService.getId(scope.$parent.element), parentIndex, parentPath, true]);
+        $rootScope.$broadcast("nextSibling",
+            [DataManipulationService.getId(scope.$parent.element), parentIndex, parentPath, true]);
       };
+
+      // watch for this field's next sibling
+      scope.$on('nextSibling', function (event, args) {
+        var id = args[0];
+        var index = args[1];
+        var path = args[2];
+        var value = args[3];
+
+
+
+
+        if (id === scope.getId() && path === scope.path) {
+            console.log('on nextSibling of ' + DataManipulationService.getTitle(scope.field));
+
+
+            var next = DataManipulationService.nextSibling(scope.field, scope.$parent.element);
+            var parentIndex = parseInt(scope.lastIndex(path)) || 0;
+            var parentPath = path.substring(0, path.lastIndexOf('-'));
+            if (next) {
+
+              console.log('got parent next sibling');
+              $rootScope.$broadcast("setActive", [DataManipulationService.getId(next), 0, path, true]);
+
+            } else {
+
+              console.log('broadcast nextSibling of ' + DataManipulationService.getTitle(scope.$parent.element) + ' ' +  parentPath);
+
+              // look for the next sibling of the parent
+              $rootScope.$broadcast("nextSibling",
+                  [DataManipulationService.getId(scope.$parent.element), parentIndex, parentPath, true]);
+            }
+
+        }
+      });
 
 
       if (scope.field) {

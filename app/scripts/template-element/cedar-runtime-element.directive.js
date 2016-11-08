@@ -192,7 +192,6 @@ define([
         return DataManipulationService.getId(scope.element);
       };
 
-      // get the dom id
       scope.getLocator = function (index) {
         return DataManipulationService.getLocator(scope.element, index, scope.path);
       };
@@ -306,7 +305,7 @@ define([
         return $rootScope.isArray(scope.model);
       };
 
-      // allows us to look a the model as an array whether it is or not
+      // allows us to look a the model as an array
       scope.valueArray;
       scope.setValueArray = function () {
 
@@ -328,42 +327,6 @@ define([
       };
       scope.setValueArray();
 
-
-      scope.nextChild = function (field) {
-
-        var id = $rootScope.schemaOf(field)["@id"];
-        var props = $rootScope.schemaOf(scope.$parent.element).properties;
-        var order = $rootScope.schemaOf(scope.$parent.element)._ui.order;
-        var selectedKey;
-
-        console.log('nextChild of ' + id);
-        console.log(props);
-        console.log(order);
-
-        // find the field or element in the form's properties
-        angular.forEach(props, function (value, key) {
-          if ($rootScope.schemaOf(value)["@id"] == id) {
-            selectedKey = key;
-          }
-        });
-
-        if (selectedKey) {
-
-          var idx = order.indexOf(selectedKey);
-          idx += 1;
-          if (idx < order.length) {
-            var nextKey = order[idx];
-            console.log('nextChild is next sibling ' + nextKey);
-            return props[nextKey];
-          } else {
-            console.log('nextChild is up one level to ' + DataManipulationService.getId(scope.$parent.element));
-            return scope.$parent.element;
-          }
-        }
-        console.log('nextChild no next child available');
-        return null;
-      };
-
       // watch for this field's next sibling
       scope.$on('nextSibling', function (event, args) {
         var id = args[0];
@@ -371,18 +334,17 @@ define([
         var path = args[2];
         var value = args[3];
 
-        if (id === scope.getId() && path === scope.path) {
-          console.log('found parents next sibling request ' + scope.getTitle() + ' ' +  path + ' scope.element ' + scope.element + ' scope.$parent.element' + scope.$parent.element );
-          var next = DataManipulationService.nextSibling(scope.element, scope.$parent.element);
+        // only look at first level elements
+        if (id === scope.getId() && path === '0' ) {
+          var parent = $rootScope.rootElement;
+          var next = DataManipulationService.nextSibling(scope.element, parent);
           if (next) {
-            console.log('broadcast setActive id ' + DataManipulationService.getId(next) + ' index  ' + 0 + ' path ' + scope.path + '-' + index);
-            $rootScope.$broadcast("setActive", [DataManipulationService.getId(next), 0, path, true]);
+            $rootScope.$broadcast("setActive", [DataManipulationService.getId(next), 0, '0', true]);
+          } else {
+            DataManipulationService.setActive(id, false);
           }
-
-
         }
       });
-
 
       // watch for this field's active state
       scope.$on('setActive', function (event, args) {
@@ -391,31 +353,23 @@ define([
         var path = args[2];
         var value = args[3];
 
-        if (id === scope.getId() && path === scope.path) {
+        if (id === scope.getId() && path.toString() === scope.path.toString()) {
 
-
-          console.log('on setActive ' + scope.getTitle() + ' index ' + index + ' path ' + path + ' scope.path ' + scope.path);
           scope.expanded[index] = true;
           $timeout(function () {
 
-                var props = $rootScope.schemaOf(scope.element).properties;
-                var order = $rootScope.schemaOf(scope.element)._ui.order;
-                var nextKey = order[0];
-                var next = props[nextKey];
+            var props = $rootScope.schemaOf(scope.element).properties;
+            var order = $rootScope.schemaOf(scope.element)._ui.order;
+            var nextKey = order[0];
+            var next = props[nextKey];
+            $rootScope.$broadcast("setActive",
+                [DataManipulationService.getId(next), 0, scope.path + '-' + index, true]);
 
-
-
-                console.log('broadcast setActive id ' + DataManipulationService.getId(next) + ' index 0 ' + ' path ' + scope.path + '-' + index);
-                $rootScope.$broadcast("setActive", [DataManipulationService.getId(next), 0, scope.path + '-' + index, true]);
-
-
-              }, 0);
+          }, 0);
         }
       });
 
-      scope.getLocator = function (index) {
-        return DataManipulationService.getLocator(scope.element, index, scope.path);
-      };
+
 
 
       // scroll within the template-container to the field with id locator
