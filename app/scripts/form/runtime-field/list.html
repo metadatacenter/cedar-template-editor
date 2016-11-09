@@ -1,6 +1,6 @@
 <div class="form-group has-feedback" ng-click="setActive(index)">
 
-  <select ng-click="setActive(index)"
+  <select ng-if="isActive(index)" ng-click="setActive(index)"
       class="form-control"
       ng-class="{'isActive' : isActive(index), 'required': isRequired()}"
       ng-click="setActive(index, true)"
@@ -18,6 +18,14 @@
     </option>
 
   </select>
+
+  <!--- not active --->
+  <div ng-if="!isActive(index)" class="form-group  has-feedback">
+    <div
+        ng-click="setActive(index,true)"
+        aria-label="{{getDescription()}}"
+        style="cursor:pointer;font-size: 1.2em;line-height: 28px;">{{getValueSelection(valueElement[index])}}</div>
+  </div>
 </div>
 
 

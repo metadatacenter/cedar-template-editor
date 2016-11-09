@@ -11756,6 +11756,17 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
           transition: border-color 0.3s linear;
   height: 30px;
 }
+.template-body form .runtime .form-group .bootstrap-select,
+.template-body form .runtime .input-group .bootstrap-select {
+  border: 1px dashed #ccc;
+  background: transparent;
+  height: 50px;
+}
+.template-body form .runtime .form-group .bootstrap-select .btn-select-picker,
+.template-body form .runtime .input-group .bootstrap-select .btn-select-picker {
+  font-size: 1em;
+  height: 50px;
+}
 .template-body form .runtime .form-group textarea.form-control,
 .template-body form .runtime .input-group textarea.form-control {
   height: auto;

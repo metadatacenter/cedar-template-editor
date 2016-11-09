@@ -1082,6 +1082,12 @@ define([
 
       $scope.setValueArray();
 
+      $scope.getValueSelection = function(value) {
+        if (value) {
+          return value['@value'][0];
+        }
+      }
+
 
     };
 

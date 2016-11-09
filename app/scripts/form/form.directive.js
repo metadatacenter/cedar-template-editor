@@ -170,7 +170,6 @@ define([
         };
 
         var startParseForm = function () {
-          console.log('startParseForm');
           if ($scope.form) {
             var model;
             if ($rootScope.isRuntime()) {
@@ -200,7 +199,6 @@ define([
         }
 
         $scope.parseForm = function (iterator, parentModel, parentKey) {
-          console.log('parseForm');
 
           angular.forEach(iterator, function (value, name) {
             // Add @context information to instance
