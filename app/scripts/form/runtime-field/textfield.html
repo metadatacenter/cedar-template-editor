@@ -3,7 +3,9 @@
     <!--Regular field-->
     <div ng-if="!hasValueConstraint()" class="form-group  has-feedback">
 
-      <input type="text"
+      <!-- active -->
+      <div ng-if="isActive(index)">
+      <input  type="text"
           ng-click="setActive(index, true)"
           class="form-control"
           ng-class="{'isActive' : isActive(index), 'required': isRequired()}"
@@ -11,14 +13,35 @@
           aria-label="{{getDescription()}}"
           ng-model="valueElement['@value']">
       </input>
-      <div ng-if="isActive(index)" class="input-indicator-icons" ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
+      <div  class="input-indicator-icons" ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
+      </div>
 
+      <!--- not active --->
+      <div ng-if="!isActive(index)" class="form-group  has-feedback">
+        <div
+            ng-click="setActive(index,true)"
+            aria-label="{{getDescription()}}"
+            style="cursor:pointer;font-size: 1.2em;line-height: 28px;">{{valueElement['@value']}}</div>
+      </div>
     </div>
 
 
     <!--Field whose values have been constrained using controlled terms -->
     <div ng-if="hasValueConstraint()" ng-init="initializeControlledField()"
         class="has-constraint autocomplete-label-wrapper" ng-class="{'has-selected': valueElement['@value'].label}">
+
+      <div ng-if="!isActive(index)">
+        <input type="text"
+            ng-click="setActive(index, true)"
+            class="form-control"
+            ng-class="{'isActive' : isActive(index), 'required': isRequired()}"
+            placeholder="{{isActive(index) ? 'enter answer' : ''}}"
+            aria-label="{{getDescription()}}"
+            ng-model="valueElement['@value']">
+        </input>
+      </div>
+
+      <div ng-if="isActive(index)">
       <ui-select ng-change="updateModelFromUIControlledField()" ng-model="valueElement['@value']" theme="bootstrap"
           close-on-select="true"
           aria-label="{{getDescription()}}">
@@ -29,6 +52,9 @@
           <div ng-bind-html="option.label | highlight: $select.search"></div>
         </ui-select-choices>
       </ui-select>
+      </div>
+
+
     </div>
 
 

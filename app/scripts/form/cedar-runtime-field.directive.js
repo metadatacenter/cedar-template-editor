@@ -13,7 +13,8 @@ define([
                                "DataManipulationService", "FieldTypeService", "controlledTermDataService",
                                "StringUtilsService"];
 
-  function cedarRuntimeField($rootScope, $sce, $document, $translate, $filter, $location, $anchorScroll, $window,$timeout,
+  function cedarRuntimeField($rootScope, $sce, $document, $translate, $filter, $location, $anchorScroll, $window,
+                             $timeout,
                              SpreadsheetService,
                              DataManipulationService,
                              FieldTypeService, controlledTermDataService, StringUtilsService) {
@@ -450,7 +451,7 @@ define([
           $scope.model.push({'@value': null});
 
           // activate the new instance
-          $scope.setActive($scope.getId(),$scope.model.length-1,true);
+          $timeout($scope.setActive($scope.model.length - 1, true), 100);
         }
       };
 
@@ -945,23 +946,27 @@ define([
       // watch for this field's active state
       $scope.$on('setActive', function (event, args) {
         var id = args[0];
+        var index = args[1];
         var path = args[2];
+        var value = args[3];
+
 
         if (id === $scope.getId() && path === $scope.path) {
-          var index = args[1];
-          var value = args[3];
+
           console.log('$on setActive id=' + id + ' index=' + index + ' path=' + path + ' scope.path=' + $scope.path + ' value=' + value);
           $scope.setActive(index, value);
         }
       });
 
       $scope.setActive = function (index, value) {
-        console.log('setActive ' + $scope.getTitle() + ' index ' + index +  ' value ' + value);
+        console.log('setActive index ' + index + ' value ' + value);
+
 
         var active = (typeof value === "undefined") ? true : value;
         DataManipulationService.setActive($scope.field, index, $scope.path, active);
 
         var locator = $scope.getLocator(index);
+        console.log('locator ' + locator);
         var inputType = $scope.getInputType();
         var tag = 'input';
         if (inputType === 'textarea') {
@@ -980,12 +985,15 @@ define([
       };
 
       // scroll within the template-container to the field with id locator
-      $scope.scrollTo = function(locator, tag) {
+      $scope.scrollTo = function (locator, tag) {
+        console.log('scrollTo ' + locator + ' ' + tag);
 
         var target = angular.element('#' + locator);
         if (target && target.offset()) {
+          console.log('have target');
 
           $scope.setHeight = function () {
+            console.log('setHeight');
 
             var window = angular.element($window);
             var windowHeight = $(window).height();
@@ -1000,27 +1008,27 @@ define([
         }
       };
 
-      $scope.getNesting = function()  {
+      $scope.getNesting = function () {
 
         var path = $scope.path || '';
         var arr = path.split('-');
         var result = [];
-        for (var i=0;i<arr.length;i++) {
+        for (var i = 0; i < arr.length; i++) {
           result.push(i);
         }
         return result;
       };
 
-      $scope.getNestingCount = function()  {
+      $scope.getNestingCount = function () {
 
         var path = $scope.path || '';
         var arr = path.split('-');
         return arr.length;
       };
 
-      $scope.getNestingStyle = function(index)  {
+      $scope.getNestingStyle = function (index) {
 
-        return 'left:' + (-15 * (index-1)) + 'px';
+        return 'left:' + (-15 * (index - 1)) + 'px';
       };
 
 

@@ -14,34 +14,77 @@
       <!-- a list of fields -->
       <div ng-repeat="(index, valueElement) in valueArray">
 
-        <div class="row" ng-if="!isActive()" ng-class="{'isInactive' : isInactive(i)}" id="{{getLocator(index)}}">
+        <!-- inactive -->
+        <div class="row" ng-if="!isActive(index)" ng-class="{'isInactive' : isInactive(index)}"  id="{{getLocator(index)}}">
           <div class="col-sm-3">
             <div class="leader"></div>
-            <div ng-click="setActive(index, true)" class=" title " style="cursor:pointer">
+            <span ng-click="setActive(index, true)" class=" title " style="cursor:pointer">
                <span ng-repeat="nest in getNesting()">
-             <span class="down-tick" style="{{getNestingStyle(nest)}}"></span>
+                 <span class="down-tick" style="{{getNestingStyle(nest)}}"></span>
+               </span>
+              <span ng-if="isMultiple()" style="font-size:smaller">{{index+1}}.</span>
+              {{getTitle()}}
             </span>
-              </span> {{getTitle()}}
-            </div>
+
           </div>
-          <div class="col-sm-9">
+
+          <div class="col-sm-7">
             <div class="row">
               <div class="col-sm-10">
                 <div class="originalContent" ng-include="getFieldUrl()"></div>
               </div>
             </div>
           </div>
+
+          <div class="col-sm-2">
+            <span ng-if="isMultiple()">
+
+
+              <button type="button" class="remove pull-right" ng-click="removeInput(index)"
+                  ng-show="model.length > field.minItems"
+                  tooltip="remove"
+                  tooltip-trigger
+                  tooltip-animation="false"
+                  tooltip-placement="top"
+                  data-toggle="tooltip">
+                <i class="fa fa-trash"></i>
+              </button>
+
+              <button type="button" class="add pull-right" ng-click="addMoreInput()"
+                  ng-show=" (!field.maxItems || model.length < field.maxItems )"
+                  tooltip="add"
+                  tooltip-trigger
+                  tooltip-animation="false"
+                  tooltip-placement="top"
+                  data-toggle="tooltip"
+                  ng-click="addMoreInput()">
+                <i class="fa fa-plus-circle"></i>
+              </button>
+
+
+            </span>
+          </div>
         </div>
 
-        <div class="row isActive" ng-if="isActive()" id="{{getLocator(index)}}">
+        <!-- active -->
+        <div class="row isActive" ng-if="isActive(index)" id="{{getLocator(index)}}">
           <div class="col-sm-12">
-            <div class="row">
+            <div class="row" style="margin-bottom:40px">
               <div class="col-sm-10">
-                <div ng-click="setActive(index, true)" class="title isActive">{{getTitle()}}</div>
-              </div>
+              <span ng-click="setActive(index, true)" class="title isActive"><span
+                  ng-if="isMultiple()" style="font-size:smaller">{{index+1}}.</span> {{getTitle()}}</span>
+                </div>
               <div class="col-sm-2">
 
-                <button type="button" class="title question" tooltip="{{getDescription()}}"
+
+                <button type="button"
+                    class="title remove pull-right"
+                    ng-if="isActive(index)"
+                    ng-click="setActive(index, false)">
+                  <i class="fa fa-remove "></i>
+                </button>
+
+                <button type="button" class="title question pull-right " tooltip="{{getDescription()}}"
                     tooltip-trigger
                     tooltip-animation="true"
                     tooltip-placement="left"
@@ -49,51 +92,15 @@
                   <i class="fa fa-question-circle"></i>
                 </button>
 
-                <button type="button"
-                    class="title remove "
-                    ng-if="isActive(index)"
-                    ng-click="setActive(index, false)">
-                  <i class="fa fa-remove "></i>
-                </button>
               </div>
             </div>
+
 
             <div class="row">
               <div class="col-sm-12">
                 <form name="field-edit-form-{{index}}" ng-submit="onSubmit(index)">
-
-                  <div class="row">
-                    <div class="col-sm-10">
-                      <div class="originalContent" ng-include="getFieldUrl()"></div>
-                    </div>
-                    <div class="col-sm-2" ng-if="isMultiple()">
-
-                      <button type="button" class="add" ng-click="addMoreInput()"
-                          ng-show=" (!field.maxItems || model.length < field.maxItems )"
-                          tooltip="add"
-                          tooltip-trigger
-                          tooltip-animation="false"
-                          tooltip-placement="top"
-                          data-toggle="tooltip"
-                          ng-click="addMoreInput()">
-                        <i class="fa fa-plus-circle"></i>
-                      </button>
-
-                      <button type="button" class="remove" ng-click="removeInput(index)"
-                          ng-show="model.length > field.minItems"
-                          tooltip="remove"
-                          tooltip-trigger
-                          tooltip-animation="false"
-                          tooltip-placement="top"
-                          data-toggle="tooltip">
-                        <i class="fa fa-trash"></i>
-                      </button>
-
-                    </div>
-                  </div>
-
+                  <div class="originalContent" ng-include="getFieldUrl()"></div>
                   <button type="submit" class="btn btn-save confirm active" translate>GENERIC.Ok</button>
-
                 </form>
               </div>
             </div>

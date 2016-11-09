@@ -1,18 +1,20 @@
-<div class="form-group radio-item" ng-repeat="(i, value) in getLiterals() ">
+<div ng-if="isActive(index)" class="form-group radio-item" ng-repeat="(i, value) in getLiterals() ">
 
-  <div class="radio radio-primary">
-    <input
-        type="radio"
-        ng-click="setActive(index, true)"
-        id="radio-{{uuid}}-{{index}}-{{i}}"
-        name="radio-{{uuid}}-{{index}}-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}"
-        ng-model="valueElement[0]['@value']"
-        ng-value="value.label"/>
-    <label
-        for="radio-{{uuid}}-{{index}}-{{i}}">{{getLiterals()[i]['label']}}</label>
-  </div>
-  <div class="input-indicator-icons ng-valid ng-scope"
-      ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
+    <div class="radio radio-primary">
+      <input
+          type="radio"
+          ng-click="setActive(index, true)"
+          id="radio-{{uuid}}-{{index}}-{{i}}"
+          name="radio-{{uuid}}-{{index}}-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}"
+          ng-model="valueElement[0]['@value']"
+          ng-value="value.label"/>
+      <label for="radio-{{uuid}}-{{index}}-{{i}}">{{getLiterals()[i]['label']}}</label>
+    </div>
+
+</div>
+
+<div ng-if="!isActive(index)">
+  <span ng-if="valueElement[0]['@value']"   ng-class="{'isActive' : isActive(index)}" style="font-size: 1.2em;height: 30px;line-height: 28px;">{{valueElement[0]['@value']}}</span>
 </div>
 
 

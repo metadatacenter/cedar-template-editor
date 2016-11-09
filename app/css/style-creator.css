@@ -11556,8 +11556,8 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   background-color: aquamarine;
 }
 .template-body form .runtime.page {
-  margin-top: 200px;
-  margin-bottom: 200px;
+  margin-top: 100px;
+  margin-bottom: 100px;
 }
 .template-body form .runtime .down-tick {
   height: 36px;
@@ -11610,7 +11610,7 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
 }
 .template-body form .runtime button.xxx {
   color: #aaa;
-  font-size: 1em;
+  font-size: 1.6em;
   margin-left: -12px;
   margin-top: 1px;
 }
@@ -11621,8 +11621,8 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   color: #999;
 }
 .template-body form .runtime button i {
-  font-size: 25px;
-  line-height: 25px;
+  font-size: 20px;
+  min-width: 12px;
 }
 .template-body form .runtime button:disabled {
   color: rgba(87, 149, 186, 0.35);
@@ -11631,6 +11631,7 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   margin: 50px 0;
   background-color: #5097A5;
   color: #ffffff;
+  font-size: 1.8em;
 }
 .template-body form .runtime .btn.btn-save.active:hover {
   background-color: #2f7dab;
@@ -11688,18 +11689,19 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   padding-bottom: 50px;
 }
 .template-body form .runtime .field-root .row.isActive .title {
-  font-size: 1.5em;
+  font-size: 2.5em;
   padding-left: 0px;
-  margin: 30px 0;
   color: green;
 }
 .template-body form .runtime .field-root .row.isActive .title.remove {
   color: #999;
   padding-left: 10px;
+  font-size: 1.5em;
 }
 .template-body form .runtime .field-root .row.isActive .title.question {
   color: #5795ba;
   padding-left: 0px;
+  font-size: 1.5em;
 }
 .template-body form .runtime .field-root .row.isActive:before {
   display: inline-block;
@@ -11713,7 +11715,8 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
 }
 .template-body form .runtime .field-root input.isActive {
   border: 1px dashed #888;
-  height: 40px;
+  height: 50px;
+  font-size: 20px;
 }
 .template-body form .runtime .field-root select {
   border-width: 0px;

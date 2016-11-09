@@ -26,27 +26,29 @@
              <span ng-repeat="nest in getNesting()" >
              <span ng-if="!isActive" class="down-tick"   style="{{getNestingStyle(nest)}}"></span>
             </span>
-           <span ng-if="valueArray.length-1" class="count">{{i}}.</span>
+           <span ng-if="valueArray.length-1" class="count">{{i+1}}.</span>
             <a ng-click="toggleExpanded(i)" class="title"  ng-class="{'isInactive' : isInactive(i)}">{{getTitle()}}</a>
-          </div>
+            </div>
           <div class="col-sm-2">
-
-          <span ng-if="$root.isArray(model)">
-            <button type="button"
-                ng-click="addElement()"
-                class="add">
-              <i class="fa fa-plus-circle"></i>
-            </button>
-          </span>
 
 
         <span ng-if="$root.isArray(model)">
           <button type="button"
               ng-click="removeElement(i)"
-              class="remove">
-            <i class="fa fa-times-circle"></i>
+              class="remove pull-right">
+            <i style="font-size:1.5em;line-height:normal" class="fa fa-times-circle"></i>
           </button>
         </span>
+
+          <span ng-if="$root.isArray(model)">
+            <button type="button"
+                ng-click="addElement()"
+                class="add pull-right">
+              <i style="font-size:1.5em;line-height:normal"  class="fa fa-plus-circle"></i>
+            </button>
+          </span>
+
+
 
 
           </div>
