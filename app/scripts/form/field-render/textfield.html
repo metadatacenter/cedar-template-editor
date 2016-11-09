@@ -150,7 +150,7 @@
             <!--<span ng-if="((option.score != undefined) && (option.score >= 0.9))" class='recommendedValue fa fa-star'></span>-->
             <!--<span ng-if="option.score != undefined && ((option.score >= 0.5) && (option.score < 0.9))" class='recommendedValue fa fa-star-half-o'></span>-->
             <!--<span ng-if="option.score != undefined && (option.score < 0.5)" class='recommendedValue fa fa-star-o'></span>-->
-            <span ng-if="option.valueUri != undefined" class='controlledTerm fa fa-share-alt-square'></span>&nbsp;
+            <span ng-if="option.valueUri != undefined" class='controlledTerm fa fa-share-alt-square fa-rotate-90'></span>&nbsp;
             <span ng-bind-html="option.value | highlight: $select.search"></span>&nbsp;
             <span ng-if="option.valueUri != undefined">({{$root.cts.getAcronymFromTermUri(option.valueUri)}})</span>&nbsp;
             <!--<span ng-if="((option.score != undefined) && (option.score >= 0))" class='recommendedValue fa fa-star'></span>-->
