@@ -12923,7 +12923,7 @@ p.instructions {
   margin-right: 0px;
 }
 .fields .selection-field i.fa-times {
-  margin: -1px -5px;
+  margin: -3px -5px;
   vertical-align: top;
   color: #999999;
   -webkit-transition: all 0s 0s;
@@ -13587,6 +13587,16 @@ p.instructions {
   top: 15px;
   left: 10px;
   font-size: 16px;
+}
+.ui-select-bootstrap .ui-select-choices-row.active > span {
+  color: #333 !important;
+  background-color: #f5f5f5 !important;
+}
+.ui-select-choices .recommendedValue {
+  color: #70967d;
+}
+.ui-select-choices .controlledTerm {
+  color: #325364;
 }
 .ui-select-container.open ~ .floating-label,
 .autocomplete-label-wrapper.has-selected .ui-select-container ~ .floating-label {

@@ -731,21 +731,24 @@ define([
 
       $scope.updateModelWhenRefresh = function (select, modelvr) {
         if (!$scope.isFirstRefresh) {
-          if ($rootScope.isArray($scope.model)) {
-            // TODO
-          } else {
-            // If the user entered a new value
-            if (select.search != modelvr['@value'].value) {
-              var modelValue;
-              if (select.search == "" || select.search == undefined) {
-                modelValue = null;
+          // Check that there are no controlled terms selected
+          if (select.selected.valueUri == null) {
+            if ($rootScope.isArray($scope.model)) {
+              // TODO
+            } else {
+              // If the user entered a new value
+              if (select.search != modelvr['@value'].value) {
+                var modelValue;
+                if (select.search == "" || select.search == undefined) {
+                  modelValue = null;
+                }
+                else {
+                  modelValue = select.search;
+                }
+                $scope.model['@value'] = modelValue;
+                delete $scope.model['_valueLabel'];
+                $scope.modelValueRecommendation['@value'].value = modelValue;
               }
-              else {
-                modelValue = select.search;
-              }
-              $scope.model['@value'] = modelValue;
-              delete $scope.model['_valueLabel'];
-              $scope.modelValueRecommendation['@value'].value = modelValue;
             }
           }
         }

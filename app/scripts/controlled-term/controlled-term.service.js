@@ -52,6 +52,13 @@ define([
         return m.substring(baseUri2.length, m.length-1);
       }
 
+      // Regex for NCIT terms
+      var regex3 = new RegExp('http:\/\/ncicb\.nci\.nih\.gov\/xml\/owl\/EVS\/Thesaurus\.owl.*');
+      var match3 = regex3.exec(uri);
+      if (match3) {
+        return 'NCIT';
+      }
+
       return '';
     }
 

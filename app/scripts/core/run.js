@@ -266,7 +266,7 @@ define([
           };
         }
 
-        if (vcst.classes.length > 0) {
+        if (vcst.classes && vcst.classes.length > 0) {
           $rootScope.removeAutocompleteResultsForSource(field_id, 'template');
           angular.forEach(vcst.classes, function (klass) {
             if (term == '*') {
@@ -301,7 +301,7 @@ define([
           }
         }
 
-        if (vcst.valueSets.length > 0) {
+        if (vcst.valueSets && vcst.valueSets.length > 0) {
           angular.forEach(vcst.valueSets, function (valueSet) {
             if (term == '*') {
               $rootScope.removeAutocompleteResultsForSource(field_id, valueSet.uri);
@@ -313,7 +313,7 @@ define([
           });
         }
 
-        if (vcst.ontologies.length > 0) {
+        if (vcst.ontologies && vcst.ontologies.length > 0) {
           angular.forEach(vcst.ontologies, function (ontology) {
             if (term == '*') {
               $rootScope.removeAutocompleteResultsForSource(field_id, ontology.uri);
@@ -324,7 +324,7 @@ define([
           });
         }
 
-        if (vcst.branches.length > 0) {
+        if (vcst.branches && vcst.branches.length > 0) {
           angular.forEach(vcst.branches, function (branch) {
             if (term == '*') {
               $rootScope.removeAutocompleteResultsForSource(field_id, branch.uri);

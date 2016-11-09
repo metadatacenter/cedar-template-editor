@@ -65,6 +65,9 @@ define(['angular'], function (angular) {
       else {
         return valueRecommendationResults[fieldId];
       }
+
+
+
     }
 
     /**
@@ -109,9 +112,26 @@ define(['angular'], function (angular) {
             'score': undefined
           })
         }
+
+        var recommendedLabels = [];
+        for (var i=0; i < recommendation.recommendedValues.length; i++) {
+          recommendedLabels.push(recommendation.recommendedValues[i].value.toLowerCase());
+        }
+
+        // Add the list of controlled terms to the recommendation results (if any)
+        var controlledTerms = $rootScope.autocompleteResultsCache[fieldId]['results'];
+        for (var i=0; i < controlledTerms.length; i++) {
+          // Check if the ontology term has been already recommended or not
+          if ($.inArray(controlledTerms[i].label.toLowerCase(), recommendedLabels) == -1) {
+            recommendation.recommendedValues.push({
+              'value'   : controlledTerms[i].label,
+              'valueUri': controlledTerms[i]['@id'],
+              'score'   : undefined
+            });
+          }
+        }
         valueRecommendationResults[fieldId] = recommendation.recommendedValues;
       });
-
     }
 
     service.hasInstances = function(templateId) {
