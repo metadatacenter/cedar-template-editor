@@ -153,11 +153,16 @@
             <span ng-if="option.valueUri != undefined" class='controlledTerm fa fa-share-alt-square'></span>&nbsp;
             <span ng-bind-html="option.value | highlight: $select.search"></span>&nbsp;
             <span ng-if="option.valueUri != undefined">({{$root.cts.getAcronymFromTermUri(option.valueUri)}})</span>&nbsp;
-            <span ng-if="((option.score != undefined) && (option.score >= 0))" class='recommendedValue fa fa-star'></span>
-            <span ng-if="((option.score != undefined) && (option.score >= 0.2))" class='recommendedValue fa fa-star'></span>
-            <span ng-if="((option.score != undefined) && (option.score >= 0.4))" class='recommendedValue fa fa-star'></span>
-            <span ng-if="((option.score != undefined) && (option.score >= 0.6))" class='recommendedValue fa fa-star'></span>
-            <span ng-if="((option.score != undefined) && (option.score >= 0.8))" class='recommendedValue fa fa-star'></span>
+            <!--<span ng-if="((option.score != undefined) && (option.score >= 0))" class='recommendedValue fa fa-star'></span>-->
+            <!--<span ng-if="((option.score != undefined) && (option.score >= 0.2))" class='recommendedValue fa fa-star'></span>-->
+            <!--<span ng-if="((option.score != undefined) && (option.score >= 0.4))" class='recommendedValue fa fa-star'></span>-->
+            <!--<span ng-if="((option.score != undefined) && (option.score >= 0.6))" class='recommendedValue fa fa-star'></span>-->
+            <!--<span ng-if="((option.score != undefined) && (option.score >= 0.8))" class='recommendedValue fa fa-star'></span>-->
+            <span ng-if="option.score != undefined" class="recommendedValue fa fa-star"></span>
+            <span ng-if="option.score != undefined" ng-class="{'recommendedValue fa fa-star': option.score >= 0.2, 'recommendedValue fa fa-star-o': option.score < 0.2}"></span>
+            <span ng-if="option.score != undefined" ng-class="{'recommendedValue fa fa-star': option.score >= 0.4, 'recommendedValue fa fa-star-o': option.score < 0.4}"></span>
+            <span ng-if="option.score != undefined" ng-class="{'recommendedValue fa fa-star': option.score >= 0.6, 'recommendedValue fa fa-star-o': option.score < 0.6}"></span>
+            <span ng-if="option.score != undefined" ng-class="{'recommendedValue fa fa-star': option.score >= 0.8, 'recommendedValue fa fa-star-o': option.score < 0.8}"></span>
             <!--<small ng-if="option.score != undefined">(<span>{{calculateUIScore(option.score)}}</span>)</small>&nbsp;-->
             <!--<small ng-if="option.type!=undefined"><span>{{getRecommendationType(option.type)}}</span></small>-->
           </div>
@@ -167,7 +172,7 @@
       <div class="input-indicator-icons" ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
     </div>
     <!-- end of Field with value recommendation functionality -->
-    
+
   </div>
   <!-- /.form-group -->
 
