@@ -25,6 +25,10 @@ define([
             $rootScope.rootElement = $scope.form;
             HeaderService.dataContainer.currentObjectScope = $scope.form;
             $rootScope.documentTitle = $scope.form._ui.title;
+
+            // Initialize value recommender service
+            $rootScope.vrs.init($routeParams.templateId, $scope.form);
+
           },
           function (err) {
             UIMessageService.showBackendError('SERVER.TEMPLATE.load.error', err);
@@ -48,6 +52,9 @@ define([
                   // Assign returned form object from FormService to $scope.form
                   $scope.form = templateResponse.data;
                   $rootScope.jsonToSave = $scope.form;
+                  // Initialize value recommender service
+                  var templateId = instanceResponse.data['schema:isBasedOn'];
+                  $rootScope.vrs.init(templateId, $scope.form);
                 },
                 function (templateErr) {
                   UIMessageService.showBackendError('SERVER.TEMPLATE.load-for-instance.error', templateErr);
@@ -156,6 +163,18 @@ define([
       }
     });
 
+    // Initialize array for validation errors
+    $scope.validationErrors = {};
+    // Event listener waiting for validationError $emit from form-directive.js
+    $scope.$on('validationError', function (event, args) {
+      if (args[0] == 'add') {
+        $scope.validationErrors[args[2]] = args[1];
+      }
+      if (args[0] == 'remove') {
+        delete $scope.validationErrors[args[2]];
+      }
+    });
+
     // Initialize array for fields that are not conform to valueConstraints
     $scope.invalidFieldValues = {};
     // Event listener waiting for emptyRequiredField $emit from field-directive.js
@@ -167,9 +186,6 @@ define([
         delete $scope.invalidFieldValues[args[2]];
       }
     });
-
-    // Initialize value recommender service
-    $rootScope.vrs.init($routeParams.templateId);
 
     // cancel the form and go back to folder
     $scope.cancelTemplate = function () {

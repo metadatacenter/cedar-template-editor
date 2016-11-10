@@ -30,79 +30,12 @@ function UserProfileHandler() {
     }
   };
 
-  this.userProfileLoaded = function (userData) {
-    this.userHandler.cedarUserProfile = userData;
-    this.homeFolderId = userData.homeFolderId;
-    var service = this;
-    if (this.homeFolderId == null) {
-      // touch a folder, this should create the home folder
-      jQuery.ajax(
-          service.foldersUrl + "/contents?resource_types=folder&path=" + encodeURIComponent("/Users/" + userData.userId),
-          {
-            'method' : 'GET',
-            'headers': service.getHeaders(),
-            'success': function (folderData) {
-              var userHome = folderData.pathInfo[folderData.pathInfo.length - 1];
-              console.log(userHome);
-              var putData = {
-                'homeFolderId': userHome['@id']
-              };
-              jQuery.ajax(
-                  service.userUrl,
-                  {
-                    'data'       : JSON.stringify(putData),
-                    'dataType'   : 'json',
-                    'method'     : 'PUT',
-                    'contentType': 'application/json; charset=utf-8',
-                    'headers'    : service.getHeaders(),
-                    'success'    : function (userData) {
-                      console.log("PUT success");
-                      console.log(userData);
-                      service.userProfileLoadedDoCallback(userData);
-                    },
-                    'error'      : function (error) {
-                    }
-                  }
-              );
-
-              // do nothing, this folder should not be present
-            },
-            'error'  : function (error) {
-              // expected behaviour. Home folder was created in the background
-              service.loadUserProfile(false);
-            }
-          }
-      );
-    } else {
-      service.userProfileLoadedDoCallback(userData);
-    }
-  };
-
   this.userProfileLoadedDoCallback = function (userData) {
     this.userHandler.cedarUserProfile = userData;
     this.callback();
   };
 
-  this.createUser = function () {
-    var service = this;
-    jQuery.ajax(
-        service.usersUrl,
-        {
-          'method' : 'POST',
-          'headers': service.getHeaders(),
-          'success': function (userData) {
-            console.log("User was created:");
-            service.userProfileLoaded(userData);
-          },
-          'error'  : function (error) {
-            console.log("User profile creation error:");
-            console.log(error);
-          }
-        }
-    );
-  };
-
-  this.loadUserProfile = function (createUserAndTouchHomeFolder) {
+  this.loadUserProfile = function () {
     var service = this;
     jQuery.ajax(
         service.userUrl,
@@ -110,20 +43,14 @@ function UserProfileHandler() {
           'method' : 'GET',
           'headers': service.getHeaders(),
           'success': function (userData) {
-            if (createUserAndTouchHomeFolder) {
-              service.userProfileLoaded(userData);
-            } else {
-              service.userProfileLoadedDoCallback(userData);
-            }
+            service.userHandler.cedarUserProfile = userData;
+            service.homeFolderId = userData.homeFolderId;
+            service.userProfileLoadedDoCallback(userData);
           },
           'error'  : function (error) {
             if (error.status == 404) {
-              if (createUserAndTouchHomeFolder) {
-                console.log("User was not found using the REST API. Create it!");
-                service.createUser();
-              } else {
-                service.userProfileLoadedDoCallback(userData);
-              }
+              console.log("User was not found using the REST API. Create it!");
+              service.userProfileLoadedDoCallback(null);
             }
           }
         }
@@ -139,7 +66,7 @@ function UserProfileHandler() {
 
     var service = this;
     this.loadUrlServiceConf(userId, function () {
-      service.loadUserProfile(true);
+      service.loadUserProfile();
     });
   };
 }

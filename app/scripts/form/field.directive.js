@@ -603,6 +603,20 @@ define([
         }
       };
 
+      /**
+       * Use the fieldType to determine if the field supports value recommendation
+       * @returns {boolean} allowsValueRecommendation
+       */
+      $scope.allowsValueRecommendation = function () {
+        var inputType = $rootScope.schemaOf($scope.field)._ui.inputType;
+        var fieldTypes = FieldTypeService.getFieldTypes();
+        for (var i = 0; i < fieldTypes.length; i++) {
+          if (fieldTypes[i].cedarType === inputType) {
+            return fieldTypes[i].allowsValueRecommendation;
+          }
+        }
+      };
+
       $scope.hasDateRange = function () {
         var inputType = $rootScope.schemaOf($scope.field)._ui.inputType;
         return (inputType === "date");
@@ -667,6 +681,23 @@ define([
         $scope.modelValueRecommendation = {'@value': {'value': $scope.model['@value']}}
       }
 
+      $scope.initializeValueRecommendationField = function () {
+        $scope.modelValueRecommendation = {};
+        if ($scope.model) {
+          if ($scope.model['_valueLabel']) {
+            $scope.modelValueRecommendation['@value'] = {
+              'value'   : $scope.model._valueLabel,
+              'valueUri': $scope.model['@value'],
+            };
+          }
+          else {
+            $scope.modelValueRecommendation['@value'] = {
+              'value': $scope.model['@value']
+            };
+          }
+        }
+      };
+
       $scope.updateModelWhenChangeSelection = function (modelvr) {
         // This variable will be used at textfield.html
         $scope.modelValueRecommendation = modelvr;
@@ -674,13 +705,22 @@ define([
           angular.forEach(modelvr, function (m, i) {
             if (m && m['@value'] & m['@value'].value) {
               $scope.model[i]['@value'] = m['@value'].value;
+              if (m['@value'].valueUri) {
+                $scope.model[i]['_valueLabel'] = m['@value'].valueUri;
+              }
             } else {
               delete $scope.model[i]['@value'];
             }
           });
         } else {
-          var newValue = modelvr['@value'].value;
-          $scope.model['@value'] = newValue;
+          if (modelvr['@value'].valueUri) {
+            $scope.model['@value'] = modelvr['@value'].valueUri;
+            $scope.model['_valueLabel'] = modelvr['@value'].value;
+          }
+          else {
+            $scope.model['@value'] = modelvr['@value'].value;
+            delete $scope.model['_valueLabel'];
+          }
         }
       };
 
@@ -689,23 +729,80 @@ define([
         $scope.isFirstRefresh = isFirstRefresh;
       };
 
-      $scope.updateModelWhenRefresh = function (select) {
+      $scope.updateModelWhenRefresh = function (select, modelvr) {
         if (!$scope.isFirstRefresh) {
-          if ($rootScope.isArray($scope.model)) {
-            // TODO
-          } else {
-            $scope.model['@value'] = select.search;
-            $scope.modelValueRecommendation['@value'].value = select.search;
+          // Check that there are no controlled terms selected
+          if (select.selected.valueUri == null) {
+            if ($rootScope.isArray($scope.model)) {
+              // TODO
+            } else {
+              // If the user entered a new value
+              if (select.search != modelvr['@value'].value) {
+                var modelValue;
+                if (select.search == "" || select.search == undefined) {
+                  modelValue = null;
+                }
+                else {
+                  modelValue = select.search;
+                }
+                $scope.model['@value'] = modelValue;
+                delete $scope.model['_valueLabel'];
+                $scope.modelValueRecommendation['@value'].value = modelValue;
+              }
+            }
           }
         }
       };
 
       // Updates the search using the selected value
-      $scope.updateSearch = function (select) {
-        if (select.selected.value) {
-          select.search = select.selected.value;
+      //$scope.updateSearch = function (select) {
+      //  if (select.selected.value) {
+      //    select.search = select.selected.value;
+      //  }
+      //};
+
+      $scope.clearSearch = function (select) {
+        select.search = '';
+      };
+
+      $scope.clearSelection = function ($event, select) {
+        $event.stopPropagation();
+        $scope.modelValueRecommendation = {
+          '@value': {'value': null, 'valueUri': null},
+        }
+        select.selected = undefined;
+        select.search = "";
+        $scope.model['@value'] = null;
+        delete $scope.model['_valueLabel'];
+      };
+
+      $scope.calculateUIScore_old = function(score) {
+        var s = Math.floor(score * 100);
+        if (s < 1) {
+          return "<1%";
+        }
+        else {
+          return s.toString() + "%";
         }
       };
+
+      $scope.calculateUIScore = function(score) {
+        return score.toFixed(2);
+      };
+
+      $scope.getRecommendationType = function(type) {
+        if (type == 'CONTEXT_INDEPENDENT') {
+          return '*';
+        }
+        else {
+          return '';
+        }
+      };
+
+      $scope.removeValueRecommendationField = function(field) {
+        delete field._ui.valueRecommendationEnabled;
+      }
+
       /* end of Value Recommendation functionality */
 
 
@@ -902,12 +999,15 @@ define([
       $scope.showCardinality = false;
       $scope.showRequired = false;
       $scope.showRange = false;
+      $scope.showValueRecommendation = false;
       $scope.isTabActive = function (item) {
         return ($scope.showControlledTermsField && item == "field") ||
             ($scope.showControlledTermsValues && item == "values") ||
             ($scope.showCardinality && item == "cardinality") ||
             ($scope.showRange && item == "range") ||
-            ($scope.showRequired && item == "required");
+            ($scope.showRequired && item == "required") ||
+            ($scope.showValueRecommendation && item == "value-recommendation")
+            ;
       };
 
       $scope.initDateSingle = function () {
@@ -930,6 +1030,7 @@ define([
         $scope.showCardinality = (item === 'cardinality') ? !$scope.showCardinality : false;
         $scope.showRequired = (item === 'required') ? !$scope.showRequired : false;
         $scope.showRange = (item === 'range') ? !$scope.showRange : false;
+        $scope.showValueRecommendation = (item === 'value-recommendation') ? !$scope.showValueRecommendation : false;
         //$rootScope.schemaOf($scope.field)._ui.is_cardinal_field = $scope.showCardinality;
 
         $scope.setAddedFieldMap();

@@ -30,7 +30,7 @@ module.exports = function(config) {
 
       { pattern: 'scripts/**/*.js', included: false },
       { pattern: 'scripts/app.js', included: false },
-      'scripts/keycloak/keycloak.js',
+      'scripts/keycloak/keycloak.min.js',
       'scripts/handlers/KeycloakUserHandler.js',
       'scripts/handlers/NoauthUserHandler.js',
       'scripts/handlers/UserProfileHandler.js',

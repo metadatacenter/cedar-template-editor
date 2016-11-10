@@ -8,10 +8,14 @@ define([
 
   // TODO: refactor to cedarFormDirective <cedar-form-directive>
 
-  formDirective.$inject = ['$rootScope', '$document', '$timeout', 'DataManipulationService', 'FieldTypeService',
-                           'DataUtilService'];
 
-  function formDirective($rootScope, $document, $timeout, DataManipulationService, FieldTypeService, DataUtilService) {
+  formDirective.$inject = ['$rootScope', '$document', '$timeout', '$http', 'DataManipulationService',
+                           'FieldTypeService', 'DataUtilService', 'BiosampleService',
+                           'UIMessageService', 'UrlService'];
+
+
+  function formDirective($rootScope, $document, $timeout, $http, DataManipulationService, FieldTypeService,
+                         DataUtilService, BiosampleService,  UIMessageService, UrlService) {
     return {
       templateUrl: 'scripts/form/form.directive.html',
       restrict   : 'E',
@@ -327,11 +331,51 @@ define([
           $scope.addPopover();
         });
 
+
+        // validate a biosample template
+        $scope.checkBiosample = function (instance) {
+
+          if ($rootScope.documentTitle === 'BioSample metadata') {
+
+
+            // one way to make the call
+            var config = {};
+            var url = UrlService.biosampleValidation();
+            $http.post(url, instance, config).then(
+                function successCallback(response) {
+
+                  var data = response.data;
+
+                  if (!data.isValid) {
+                    var errors = data.messages;
+                    for (var i = 0; i < errors.length; i++) {
+
+                      $scope.$emit('validationError',
+                          ['add', errors[i], 'bioSample']);
+                    }
+                  } else {
+
+                    $scope.$emit('validationError',
+                        ['remove', '', 'bioSample']);
+                  }
+
+                },
+                function errorCallback(err) {
+                  UIMessageService.showBackendError('BioSample Validation Error', err);
+
+                });
+
+          }
+
+        };
+
         // Watching for the 'submitForm' event to be $broadcast from parent 'RuntimeController'
         $scope.$on('submitForm', function (event) {
           // Make the model (populated template) available to the parent
           $scope.$parent.instance = $scope.model;
           $scope.checkSubmission = true;
+          $scope.checkBiosample($scope.$parent.instance);
+
         });
 
         $scope.$on('formHasRequiredFields', function (event) {

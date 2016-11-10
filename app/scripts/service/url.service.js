@@ -17,6 +17,7 @@ define([
     var valueRecommenderService = null;
     var schemaService = null;
     var groupService = null;
+    var biosampleService = null;
 
     var service = {
       serviceId: "UrlService"
@@ -29,6 +30,7 @@ define([
       valueRecommenderService = config.valueRecommenderRestAPI;
       schemaService = config.schemaRestAPI;
       groupService = config.groupRestAPI;
+      biosampleService = config.biosampleRestAPI;
     };
 
     service.getRoleSelector = function () {
@@ -201,6 +203,10 @@ define([
 
     service.getGroupMembers = function (id) {
       return  this.getGroups() +  '/' + encodeURIComponent(id)  + "/users";
+    };
+
+    service.biosampleValidation = function (instance) {
+      return biosampleService + '/validate';
     };
 
 
