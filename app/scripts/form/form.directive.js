@@ -361,7 +361,7 @@ define([
 
                 },
                 function errorCallback(err) {
-                  UIMessageService.showBackendError('BioSample Validation Error', err);
+                  //UIMessageService.showBackendError('BioSample Server Error', err);
 
                 });
 
