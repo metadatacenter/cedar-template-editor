@@ -25,7 +25,9 @@ define([
   'cedar/template-editor/service/cedar-user',
   'cedar/template-editor/service/ui-settings.service',
   'cedar/template-editor/service/tracking.service',
-  'cedar/template-editor/service/string-utils.service'
+  'cedar/template-editor/service/string-utils.service',
+  'cedar/template-editor/service/biosample.service'
+
 
 ], function(angular) {
   angular.module('cedar.templateEditor.service', [
@@ -52,6 +54,7 @@ define([
     'cedar.templateEditor.service.cedarUser',
     'cedar.templateEditor.service.uISettingsService',
     'cedar.templateEditor.service.trackingService',
-    'cedar.templateEditor.service.stringUtilsService'
+    'cedar.templateEditor.service.stringUtilsService',
+    'cedar.templateEditor.service.biosampleService'
   ]);
 });
