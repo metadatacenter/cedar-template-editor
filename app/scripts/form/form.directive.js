@@ -341,23 +341,32 @@ define([
                 function successCallback(response) {
 
                   var data = response.data;
+                  console.log(data);
+
 
                   if (!data.isValid) {
+
+                    $scope.$emit('validationError',
+                        ['remove', '', 'biosample']);
+
                     var errors = data.messages;
                     for (var i = 0; i < errors.length; i++) {
 
+                      console.log(errors[i]);
+
+
                       $scope.$emit('validationError',
-                          ['add', errors[i], 'bioSample']);
+                          ['add', errors[i], 'biosample'+i]);
                     }
                   } else {
 
                     $scope.$emit('validationError',
-                        ['remove', '', 'bioSample']);
+                        ['remove', '', 'biosample']);
                   }
 
                 },
                 function errorCallback(err) {
-                  UIMessageService.showBackendError('BioSample Validation Error', err);
+                  //UIMessageService.showBackendError('BioSample Validation Error', err);
 
                 });
 

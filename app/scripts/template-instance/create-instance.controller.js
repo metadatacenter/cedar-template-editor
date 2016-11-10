@@ -170,7 +170,9 @@ define([
         $scope.validationErrors[args[2]] = args[1];
       }
       if (args[0] == 'remove') {
-        delete $scope.validationErrors[args[2]];
+        // remove all of them
+        $scope.validationErrors = {};
+        //delete $scope.validationErrors[args[2]];
       }
     });
 
