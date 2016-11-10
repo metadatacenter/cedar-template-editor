@@ -360,7 +360,7 @@ define([
                   UIMessageService.showBackendError('BioSample Validation Error', err);
 
                 });
-            
+
           }
 
         };
