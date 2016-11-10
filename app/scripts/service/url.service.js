@@ -205,12 +205,8 @@ define([
       return  this.getGroups() +  '/' + encodeURIComponent(id)  + "/users";
     };
 
-    service.biosampleBase = function () {
-      return biosampleService;
-    };
-
     service.biosampleValidation = function (instance) {
-      return this.biosampleBase + '/validate';
+      return biosampleService + '/validate';
     };
 
 

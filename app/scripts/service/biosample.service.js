@@ -15,7 +15,8 @@ define([
     };
 
     service.validateInstance = function (instance) {
-      return HttpBuilderService.post(UrlService.postBiosample(), angular.toJson(instance));
+
+      return HttpBuilderService.post(UrlService.biosampleValidation(), angular.toJson(instance));
     };
 
     return service;
