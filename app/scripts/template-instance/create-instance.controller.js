@@ -162,6 +162,20 @@ define([
       }
     });
 
+    // Initialize array for validation errors
+    $scope.validationErrors = {};
+    // Event listener waiting for validationError $emit from form-directive.js
+    $scope.$on('validationError', function (event, args) {
+      console.log('on validationError');
+      if (args[0] == 'add') {
+        $scope.validationErrors[args[2]] = args[1];
+      }
+      if (args[0] == 'remove') {
+        delete $scope.validationErrors[args[2]];
+      }
+      console.log($scope.validationErrors )
+    });
+
     // Initialize array for fields that are not conform to valueConstraints
     $scope.invalidFieldValues = {};
     // Event listener waiting for emptyRequiredField $emit from field-directive.js

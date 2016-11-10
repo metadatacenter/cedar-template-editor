@@ -28,6 +28,13 @@
               <li ng-repeat="field in invalidFieldValues">{{field}}</li>
             </ul>
           </div>
+          <div ng-if="!isEmpty(validationErrors)" class="alert alert-danger" role="alert">
+            <p><i class="fa fa-exclamation-triangle"></i><span translate>VALIDATION.groupHeader.validationErrors</span>
+            </p>
+            <ul>
+              <li ng-repeat="field in validationErrors">{{field}}</li>
+            </ul>
+          </div>
           <div ng-if="runtimeErrorMessages.length" class="alert alert-danger" role="alert">
             <p ng-repeat="message in runtimeErrorMessages"><i class="fa fa-exclamation-triangle"></i>{{message}}</p>
           </div>

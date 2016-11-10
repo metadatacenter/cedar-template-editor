@@ -8,9 +8,9 @@ define([
 
   // TODO: refactor to cedarFormDirective <cedar-form-directive>
 
-  formDirective.$inject = ['$rootScope', '$document', '$timeout', 'DataManipulationService', 'FieldTypeService', 'DataUtilService'];
+  formDirective.$inject = ['$rootScope', '$document', '$timeout', '$http', 'DataManipulationService', 'FieldTypeService', 'DataUtilService', 'BiosampleService', 'AuthorizedBackendService'];
 
-  function formDirective($rootScope, $document, $timeout, DataManipulationService, FieldTypeService, DataUtilService) {
+  function formDirective($rootScope, $document, $timeout, $http,DataManipulationService, FieldTypeService, DataUtilService, BiosampleService, AuthorizedBackendService) {
     return {
       templateUrl: 'scripts/form/form.directive.html',
       restrict   : 'E',
@@ -325,10 +325,67 @@ define([
         });
 
         // Watching for the 'submitForm' event to be $broadcast from parent 'RuntimeController'
+        //$scope.$on('submitForm', function (event) {
+        //  // Make the model (populated template) available to the parent
+        //  $scope.$parent.instance = $scope.model;
+        //  $scope.checkSubmission = true;
+        //});
+
+        // Watching for the 'submitForm' event to be $broadcast from parent 'RuntimeController'
         $scope.$on('submitForm', function (event) {
           // Make the model (populated template) available to the parent
           $scope.$parent.instance = $scope.model;
           $scope.checkSubmission = true;
+
+          var config = {};
+          var data = $scope.$parent.instance;
+          $http.post('https://biosample.metadatacenter.orgx/validate', data , config).then(
+              function successCallback(response) {
+
+                var data = response.data;
+
+                console.log(data);
+
+                if (!data.isValid) {
+                  var errors = data.messages;
+                  console.log(errors);
+                  console.log(errors.length);
+                  for (var i=0;i<errors.length; i++) {
+                    console.log(errors[i]);
+
+                    $scope.$emit('validationError',
+                        ['add', errors[i], 'bioSample']);
+                  }
+                }
+
+              },
+              function errorCallback(response) {
+                console.log(response);
+
+
+              });
+
+          // Get/read template with given id from $routeParams
+          $scope.getTemplate = function () {
+            AuthorizedBackendService.doCall(
+                TemplateService.getTemplate($routeParams.templateId),
+                function (response) {
+                  // Assign returned form object from FormService to $scope.form
+                  $scope.form = response.data;
+                  $rootScope.jsonToSave = $scope.form;
+                  HeaderService.dataContainer.currentObjectScope = $scope.form;
+                  $rootScope.documentTitle = $scope.form._ui.title;
+
+                  // Initialize value recommender service
+                  $rootScope.vrs.init($routeParams.templateId, $scope.form);
+
+                },
+                function (err) {
+                  UIMessageService.showBackendError('SERVER.TEMPLATE.load.error', err);
+                }
+            );
+          };
+
         });
 
         $scope.$on('formHasRequiredFields', function (event) {
