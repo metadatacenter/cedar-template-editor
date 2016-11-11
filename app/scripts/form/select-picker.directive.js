@@ -22,17 +22,21 @@ define([
       },
       link    : function ($scope, $element, attrs) {
         // update local $scope.model to value of $parent.model if available
+
         if ($scope.$parent.model != undefined) {
           $scope.model = $scope.$parent.model;
+
         }
 
         var default_array;
 
         if ($scope.model != undefined) {
+
           // If returning to an already populated select list field, load selections
           default_array = $scope.model['@value'];
 
         } else if ($scope.field && $scope.field._valueConstraints.defaultOptions) {
+
           default_array = [];
 
           // If default select options have been set for an empty field
@@ -46,6 +50,7 @@ define([
           }
           $scope.model = $scope.model || {};
           $scope.model['@value'] = default_array;
+        } else {
         }
 
         $timeout(function () {
@@ -66,6 +71,7 @@ define([
         $element.on('change', function () {
           // Runtime document output is 3 $scope levels above this directive at this point, passing the $model up to be
           // assigned at the field-directive.js level
+
           $scope.model = $element.val();
         });
       }

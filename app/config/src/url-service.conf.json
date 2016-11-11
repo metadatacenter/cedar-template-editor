@@ -5,5 +5,7 @@
   "resourceRestAPI": "resourceServerUrl",
   "valueRecommenderRestAPI": "valueRecommenderServerUrl",
   "schemaRestAPI": "schemaServerUrl",
-  "bioontologyRestAPI": "https://data.bioontology.org/"
+  "groupRestAPI": "groupServerUrl",
+  "bioontologyRestAPI": "https://data.bioontology.org/",
+  "biosampleRestAPI": "biosampleServerUrl"
 }

@@ -8,9 +8,12 @@ define([
 
   // TODO: refactor to cedarFormDirective <cedar-form-directive>
 
-  formDirective.$inject = ['$rootScope', '$document', '$timeout', 'DataManipulationService', 'FieldTypeService', 'DataUtilService'];
+  formDirective.$inject = ['$rootScope', '$document', '$timeout', '$http', 'DataManipulationService',
+                           'FieldTypeService', 'DataUtilService', 'BiosampleService', 'AuthorizedBackendService',
+                           'UIMessageService', 'UrlService'];
 
-  function formDirective($rootScope, $document, $timeout, DataManipulationService, FieldTypeService, DataUtilService) {
+  function formDirective($rootScope, $document, $timeout, $http, DataManipulationService, FieldTypeService,
+                         DataUtilService, BiosampleService, AuthorizedBackendService, UIMessageService, UrlService) {
     return {
       templateUrl: 'scripts/form/form.directive.html',
       restrict   : 'E',
@@ -231,11 +234,11 @@ define([
                 } else {
                   $scope.parseForm($rootScope.propertiesOf(value), parentModel[name], name);
                 }
-              // If it is a template field
+                // If it is a template field
               } else {
                 // If it is not a static field
 
-               if (!value._ui || !value._ui.inputType || !FieldTypeService.isStaticField(value._ui.inputType)) {
+                if (!value._ui || !value._ui.inputType || !FieldTypeService.isStaticField(value._ui.inputType)) {
 
                   var min = value.minItems || 0;
 
@@ -324,11 +327,77 @@ define([
           $scope.addPopover();
         });
 
+        $scope.isBiosampleTemplate = function () {
+          return ($rootScope.documentTitle && $rootScope.documentTitle.toLowerCase().indexOf('biosample') > -1);
+        };
+
+
+        // validate a biosample template
+        $scope.checkBiosample = function (instance) {
+
+          if ($scope.isBiosampleTemplate()) {
+
+
+            // one way to make the call
+            var config = {};
+            var url = UrlService.biosampleValidation();
+            $http.post(url, instance, config).then(
+                function successCallback(response) {
+
+                  var data = response.data;
+                  console.log(data);
+
+
+                  if (!data.isValid) {
+
+                    $scope.$emit('validationError',
+                        ['remove', '', 'biosample']);
+
+                    var errors = data.messages;
+                    for (var i = 0; i < errors.length; i++) {
+
+                      console.log(errors[i]);
+
+
+                      $scope.$emit('validationError',
+                          ['add', errors[i], 'biosample'+i]);
+
+
+
+                    }
+                  } else {
+
+                    $scope.$emit('validationError',
+                        ['remove', '', 'biosample']);
+
+                    UIMessageService.flashSuccess('BioSample Submission Validated', {"title": "title"},
+                        'Success');
+                  }
+
+                },
+                function errorCallback(err) {
+                  UIMessageService.showBackendError('BioSample Server Error', err);
+
+                });
+
+          }
+
+        };
+
+        // Watching for the 'submitForm' event to be $broadcast from parent 'RuntimeController'
+        $scope.$on('biosampleValidation', function (event) {
+          // Make the model (populated template) available to the parent
+          $scope.checkBiosample( $scope.model);
+
+        });
+
         // Watching for the 'submitForm' event to be $broadcast from parent 'RuntimeController'
         $scope.$on('submitForm', function (event) {
           // Make the model (populated template) available to the parent
           $scope.$parent.instance = $scope.model;
           $scope.checkSubmission = true;
+          $scope.checkBiosample($scope.$parent.instance);
+
         });
 
         $scope.$on('formHasRequiredFields', function (event) {

@@ -57,10 +57,9 @@
             <li ng-if="dc.isTemplate()"><a href="#" ng-click="dc.launchInstance()">Populate</a></li>
             <li ng-if="!dc.isFolder()"><a href="#" ng-click="dc.editResource()">Edit</a></li>
             <li role="separator" class="divider"></li>
-            <li><a href="#" data-toggle="modal" ng-click="dc.openShare(resource)"
-                data-target="#shareResourceModal">Share...</a></li>
-            <li><a href="#" ng-click="dc.showMoveResourceModal('#moveResourceModal')">Move to...</a></li>
-            <li><a href="#" data-toggle="modal" data-target="#renameResourceModal">Rename...</a></li>
+            <li><a href="#" ng-click="dc.showShareModal(resource)">Share...</a></li>
+            <li><a href="#" ng-click="dc.showMoveModal(resource)">Move to...</a></li>
+            <li><a href="#" ng-click="dc.showRenameModal(resource)">Rename...</a></li>
             <li ng-if="!dc.isFolder()"><a href="#" ng-click="dc.copyResource()">Make a copy</a></li>
             <li role="separator" class="divider"></li>
             <li><a href="#" ng-click="dc.deleteResource(resource)">Delete</a></li>
@@ -280,8 +279,8 @@
                         tooltip-placement="top"
                         data-toggle="tooltip"
                         ng-click="dc.toggleResourceType('template')"><i
-                        class="btn btn-sm btn-info btn-circle fa large-icon fa-file-o template"
-                        ng-class="{ active: dc.isResourceTypeActive('template') }"></i></button>
+                        class="btn btn-sm btn-info btn-circle fa large-icon fa-file-text template"
+                        ng-class="{ active: dc.isResourceTypeActive('template') }"  ></i></button>
                   </li>
                   <li>
                     <button tooltip="{{dc.showOrHide('element')}} element"
@@ -290,8 +289,8 @@
                         tooltip-placement="top"
                         data-toggle="tooltip"
                         ng-click="dc.toggleResourceType('element')"><i
-                        class="btn btn-sm btn-info btn-circle fa large-icon  fa-file-text-o element"
-                        ng-class="{ active: dc.isResourceTypeActive('element') }"></i></button>
+                        class="btn btn-sm btn-info btn-circle fa large-icon  fa-sitemap element"
+                        ng-class="{ active: dc.isResourceTypeActive('element') }" style="padding:5px" ></i></button>
                   </li>
                   <li>
                     <button tooltip="{{dc.showOrHide('instance')}} metadata"
@@ -300,8 +299,8 @@
                         tooltip-placement="top"
                         data-toggle="tooltip"
                         ng-click="dc.toggleResourceType('instance')"><i
-                        class="btn btn-sm btn-info btn-circle fa large-icon  fa-tags metadata"
-                        ng-class="{ active: dc.isResourceTypeActive('instance') }"></i></button>
+                        class="btn btn-sm btn-info btn-circle fa large-icon  fa-tag metadata"
+                        ng-class="{ active: dc.isResourceTypeActive('instance') }" ></i></button>
                   </li>
                 </ul>
 
@@ -367,10 +366,10 @@
                         <!--<li ng-if="!dc.isFolder()"><a href="#" ng-click="dc.editResource(resource)">Edit</a></li>-->
                         <li><a href="#" ng-click="dc.showInfoPanel(resource)">Info</a></li>
                         <li role="separator" class="divider"></li>
-                        <li><a href="#" data-toggle="modal" ng-click="dc.openShare(resource)"
-                            data-target="#shareResourceModal">Share...</a></li>
-                        <li><a href="#" ng-click="dc.showMoveResourceModal('#moveResourceModal')">Move to...</a></li>
-                        <li><a href="#" data-toggle="modal" data-target="#renameResourceModal">Rename...</a></li>
+                        <li><a href="#"   ng-click="dc.showShareModal(resource)"
+                            >Share...</a></li>
+                        <li><a href="#" ng-click="dc.showMoveModal(resource)">Move to...</a></li>
+                        <li><a href="#" ng-click="dc.showRenameModal(resource)">Rename...</a></li>
                         <li role="separator" class="divider"></li>
                         <li><a href="#" ng-click="dc.deleteResource(resource)">Delete</a></li>
                       </ul>
@@ -417,9 +416,9 @@
                         <li ><a href="#" ng-click="dc.editResource(resource)">Edit</a></li>
                         <li><a href="#" ng-click="dc.showInfoPanel(resource)">Info</a></li>
                         <li role="separator" class="divider"></li>
-                        <li><a href="#" data-toggle="modal" ng-click="dc.openShare(resource)" data-target="#shareResourceModal">Share...</a></li>
-                        <li><a href="#" ng-click="dc.showMoveResourceModal('#moveResourceModal')">Move to...</a></li>
-                        <li><a href="#" data-toggle="modal" data-target="#renameResourceModal">Rename...</a></li>
+                        <li><a href="#"   ng-click="dc.showShareModal(resource)">Share...</a></li>
+                        <li><a href="#" ng-click="dc.showMoveModal(resource)">Move to...</a></li>
+                        <li><a href="#" ng-click="dc.showRenameModal(resource)">Rename...</a></li>
                         <li><a href="#" ng-if="!dc.isFolder()" ng-click="dc.copyResource()">Make a copy</a></li>
                         <li role="separator" class="divider"></li>
                         <li><a href="#" ng-click="dc.deleteResource(resource)">Delete</a></li>
@@ -465,9 +464,9 @@
                       <li ><a href="#" ng-click="dc.editResource()">Open</a></li>
                       <li><a href="#" ng-click="dc.showInfoPanel(resource)">Info</a></li>
                       <li role="separator" class="divider"></li>
-                      <li><a href="#" data-toggle="modal" ng-click="dc.openShare(resource)" data-target="#shareResourceModal">Share...</a></li>
-                      <li><a href="#" ng-click="dc.showMoveResourceModal('#moveResourceModal')">Move to...</a></li>
-                      <li><a href="#" data-toggle="modal" data-target="#renameResourceModal">Rename...</a></li>
+                      <li><a href="#"   ng-click="dc.showShareModal(resource)">Share...</a></li>
+                      <li><a href="#" ng-click="dc.showMoveModal(resource)">Move to...</a></li>
+                      <li><a href="#" ng-click="dc.showRenameModal(resource)">Rename...</a></li>
                       <li role="separator" class="divider"></li>
                       <li><a href="#" ng-click="dc.deleteResource(resource)">Delete</a></li>
                     </ul>
@@ -501,9 +500,9 @@
                       <li ><a href="#" ng-click="dc.editResource(resource)">Edit</a></li>
                       <li><a href="#" ng-click="dc.showInfoPanel(resource)">Info</a></li>
                       <li role="separator" class="divider"></li>
-                      <li><a href="#" data-toggle="modal" ng-click="dc.openShare(resource)" data-target="#shareResourceModal">Share...</a></li>
-                      <li><a href="#" ng-click="dc.showMoveResourceModal('#moveResourceModal')">Move to...</a></li>
-                      <li><a href="#" data-toggle="modal" data-target="#renameResourceModal">Rename...</a></li>
+                      <li><a href="#" ng-click="dc.showShareModal(resource)">Share...</a></li>
+                      <li><a href="#" ng-click="dc.showMoveModal(resource)">Move to...</a></li>
+                      <li><a href="#" ng-click="dc.showRenameModal(resource)">Rename...</a></li>
                       <li><a href="#"  ng-click="dc.copyResource()">Make a copy</a></li>
                       <li role="separator" class="divider"></li>
                       <li><a href="#" ng-click="dc.deleteResource(resource)">Delete</a></li>
@@ -635,8 +634,8 @@
                 tooltip-placement="left"
                 data-toggle="tooltip"
                 class="btn btn-sm btn-info btn-circle folder"
-                ng-click="dc.showNewFolder('#newFolderModal')"><i
-                class="fa fa-folder-o"></i></button>
+                ng-click="dc.showNewFolderModal()"><i
+                class="fa fa-folder"></i></button>
           </li>
 
           <li ng-show="dc.showFloatingMenu">
@@ -647,7 +646,7 @@
                   tooltip-trigger
                   tooltip-animation="false"
                   tooltip-placement="left"
-                  data-toggle="tooltip" class="btn btn-sm btn-info btn-circle element"><i class="fa fa-file-text-o"></i>
+                  data-toggle="tooltip" class="btn btn-sm btn-info btn-circle element"><i class="fa fa-sitemap"></i>
               </button>
             </a>
           </li>
@@ -662,7 +661,7 @@
                   tooltip-placement="left"
                   data-toggle="tooltip"
                   class="btn btn-sm btn-info btn-circle template">
-                <i class="fa fa-file-o"></i>
+                <i class="fa fa-file-text"></i>
               </button>
             </a>
           </li>
@@ -688,238 +687,33 @@
 
 <!-- add folder modal -->
 <section>
-  <div id="newFolderModal" class="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-              aria-hidden="true">&times;</span></button>
-          <h4 class="modal-title" translate>DASHBOARD.newFolder.title</h4>
-        </div>
-        <div class="modal-body">
-          <p><input size="40" type="text" id="folderName" ng-model="dc.folder.name"/></p>
-        </div>
-        <div class="modal-footer actions">
-          <div class="clear-save">
-            <button type="cancel" data-dismiss="modal" class="btn btn-clear">Cancel</button>
-            <button ng-click="dc.newFolder()" type="button" data-dismiss="modal" class="btn btn-save confirm"> Save
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+  <cedar-new-folder-modal cedar-modal-show  modal-visible="dc.newFolderModalVisible" class="modal fade" id="new-folder-modal"  tabindex="-1" role="dialog" aria-labelledby="newFolderModalHeader"
+      data-keyboard="true" data-backdrop="static"   >
+  </cedar-new-folder-modal>
 </section>
-<!-- end add / edit folder modal -->
 
-<!-- rename resource modal -->
+<!-- rename modal -->
 <section>
-  <div id="renameResourceModal" class="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-      aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-              aria-hidden="true">&times;</span></button>
-          <h4 class="modal-title" translate>DASHBOARD.rename.title</h4>
-        </div>
-        <div class="modal-body">
-          <h6 translate>DASHBOARD.rename.label</h6>
-
-          <p><input size="40" type="text" id="resourceName" ng-model="dc.selectedResource.name"/></p>
-        </div>
-        <div class="modal-footer actions">
-          <div class="clear-save">
-            <button type="cancel" data-dismiss="modal" class="btn btn-clear">Cancel</button>
-            <button ng-click="dc.renameResource()" type="button" data-dismiss="modal" class="btn btn-save confirm">
-              Save
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+  <cedar-rename-modal cedar-modal-show  modal-visible="dc.renameModalVisible" class="modal fade" id="rename-modal"  tabindex="-1" role="dialog" aria-labelledby="renameModalHeader"
+      data-keyboard="true" data-backdrop="static"  rename-resource="resource" >
+  </cedar-rename-modal>
 </section>
-<!-- rename resource modal -->
 
-<!-- move resource modal -->
+<!-- move modal -->
 <section>
-  <div id="moveResourceModal" class="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-      aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <div class="row">
-            <div class="back-arrow-click col-sm-1" ng-click="dc.openParent()" aria-label="Back" tooltip="back to parent"
-                tooltip-trigger
-                tooltip-animation="false"
-                tooltip-placement="bottom"
-                data-toggle="tooltip"><i
-                class="fa fa-arrow-left"></i></div>
-
-            <div class="modal-title col-sm-10">{{dc.currentDestination.displayName}}</div>
-
-            <button class="close col-sm-1" type="button" data-dismiss="modal" aria-label="Close"><span
-                aria-hidden="true">&times;</span></button>
-          </div>
-        </div>
-        <div class="modal-body">
-
-          <!-- show the folders first -->
-          <div ng-if="dc.isFolder(resource)" class="box-row row"
-              ng-class="{ selected: dc.isDestinationSelected(resource)}"
-              ng-repeat="(index, resource) in dc.destinationResources">
-            <div class="col-sm-11" ng-click="dc.selectDestination(resource)"><i style="font-size:20px;padding-right:5px"
-                class="fa" ng-class="dc.getResourceIconClass(resource)"></i> {{resource.displayName}}
-            </div>
-            <div class="col-sm-1" ng-click="dc.openDestination(resource)" tooltip="open {{resource.displayName}}"
-                tooltip-trigger
-                tooltip-animation="false"
-                tooltip-placement="left"
-                data-toggle="tooltip"><i class="fa fa-arrow-right"></i></div>
-          </div>
-
-
-          <div ng-if="!dc.isFolder(resource)" class="box-row row disabled"
-              ng-repeat="(index, resource) in dc.destinationResources">
-            <div class="col-sm-11" disabled="disabled"><i style="font-size:20px;padding-right:5px" class="fa"
-                ng-class="dc.getResourceIconClass(resource)"></i>{{resource.displayName}}
-            </div>
-
-          </div>
-
-
-        </div>
-        <div class="modal-footer actions">
-          <div class="clear-save">
-            <button ng-disabled="dc.moveDisabled()" ng-click="dc.moveResource()" type="button" data-dismiss="modal"
-                class="btn btn-save confirm"> Move
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+  <cedar-move-modal cedar-modal-show  modal-visible="dc.moveModalVisible" class="modal fade" id="move-modal"  tabindex="-1" role="dialog" aria-labelledby="moveModalHeader"
+      data-keyboard="true" data-backdrop="static"  move-resource="resource" >
+  </cedar-move-modal>
 </section>
-<!-- move resource modal -->
 
-<!--<section>-->
-<!--<cedar-share-resource id="shareResourceModal" class="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"-->
-<!--aria-hidden="true" resource="vm.selectedResource"></cedar-share-resource>-->
-<!--</section>-->
-
-<!-- share resource modal -->
+<!--- share modal  --->
 <section>
-  <div id="shareResourceModal" class="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-      aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-              aria-hidden="true">&times;</span></button>
-          <h4 class="modal-title" translate>DASHBOARD.share.title</h4>
-        </div>
-
-        <div class="modal-body">
-
-          <div ng-if="dc.canUpdate()">
-
-            <h5 translate>DASHBOARD.share.usersAndGroups</h5>
-
-            <div class="hidden-container">
-              <div class="row">
-
-                <select id="select-picker-user-or-group" data-size="5" ng-change="dc.updateNodePermission()"
-                    data-dropup-auto="false" class="dropdown col-sm-7"
-                    ng-model="dc.selectedNodeId" select-model="dc.resourceNodes"
-                    select-picker cedar-live-search="true"
-                    ng-options="node.id as node.name for node in dc.resourceNodes "></select>
-
-                <select ng-model="dc.giveNodePermission"
-                    data-dropup-auto="false" class="dropdown col-sm-4" select-picker select-model="dc.selectedNodeId"
-                    cedar-live-search="true">
-                  <option value="read">can read</option>
-                  <option value="write">can write</option>
-                  <option ng-if="dc.canBeOwner(dc.selectedNodeId)" value="own">is owner</option>
-                </select>
-
-                <button
-                    class="col-sm-1  btn btn-sm btn-info btn-circle btn-plus" ng-if="dc.canUpdate()"
-                    ng-model="dc.resourcePermissions"
-                    type="button"
-                    tooltip='add'
-                    tooltip-trigger
-                    tooltip-animation="false"
-                    tooltip-placement="top"
-                    data-toggle="tooltip"
-                    ng-click="dc.addShare(dc.selectedNodeId, dc.giveNodePermission, 'shared-users')">
-                  <!--<span aria-hidden="true">&plus;</span>-->
-                  <i class="fa fa-plus" style="margin: 0 -4px;vertical-align: top;"></i>
-                </button>
-
-              </div>
-            </div>
-          </div>
-
-          <hr/>
-
-          <h5 translate>DASHBOARD.share.manage</h5>
-
-          <div ng-model="dc.resourcePermissions" id="shared-users" class="scroll-container">
-            <div class="row">
-
-              <div class="col-sm-7 name">
-                {{dc.getName(dc.resourcePermissions.owner)}}
-              </div>
-
-              <select class="col-sm-4" select-picker  ng-disabled="!dc.canUpdate()">
-                <option value="own" >is owner</option>
-              </select>
-            </div>
-
-            <div class="row" ng-repeat="share in dc.resourcePermissions.shares">
-
-              <div class="col-sm-7 name">{{share.node.name}}</div>
-
-              <select ng-model="share.permission" class="col-sm-4" select-picker
-                  ng-change="dc.addShare(share.node.id, share.permission, 'shared-users')"
-                  select-model="share"
-                   cedar-live-search="true" ng-disabled="!dc.canUpdate()" >
-
-                <option ng-show="(!dc.canUpdate() && share.permisison === 'read') || dc.canUpdate()" value="read">can read</option>
-                <option ng-show="(!dc.canUpdate() && share.permisison === 'write') || dc.canUpdate()" value="write">can write</option>
-                <option ng-if="dc.canBeOwner(share.node.id)" value="own">is owner</option>
-              </select>
-
-              <button class=" col-sm-1  btn  btn-info btn-circle btn-sm btn-delete" ng-if="dc.canUpdate()"
-                  ng-model="dc.resourcePermissions"
-                  type="button" tooltip="remove"
-                  tooltip-trigger
-                  tooltip-animation="false"
-                  tooltip-placement="top"
-                  data-toggle="tooltip"
-                  ng-click="dc.removeShare(share.node)"><i class="fa fa-times"
-                  style="margin: -1px -4px;vertical-align: top;"></i></button>
-
-            </div>
-          </div>
-
-        </div>
-
-
-        <div class="modal-footer actions" ng-if="dc.canUpdate()" ng-model="dc.resourcePermissions">
-          <div class="clear-save">
-            <button type="button" ng-click="dc.saveShare(resource)"
-                data-dismiss="modal" aria-label="Save"
-                class="btn btn-save confirm"> Save
-            </button>
-          </div>
-        </div>
-
-      </div>
-    </div>
-  </div>
+<cedar-share-modal cedar-modal-show  modal-visible="dc.shareModalVisible" class="modal fade" id="share-modal"  tabindex="-1" role="dialog" aria-labelledby="shareModalHeader"
+data-keyboard="true" data-backdrop="static"  share-resource="resource" >
+</cedar-share-modal>
 </section>
-<!-- share resource modal -->
+
+
+
+
 

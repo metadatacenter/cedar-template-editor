@@ -88,7 +88,11 @@ define([
                     } else if (angular.isObject(v)) {
                       model[k] = {};
                     }
-                  } else if (k !== '@type') {
+                  }
+                  else if (k == '_valueLabel') {
+                    delete model[k];
+                  }
+                  else if (k !== '@type') {
                     if (settings[k]) {
                       resetElement(v, settings[k]);
                     }

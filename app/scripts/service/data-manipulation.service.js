@@ -363,6 +363,43 @@ define([
     };
 
     /**
+     * Add path for every field in the template
+     */
+    service.addPathInfo = function (template, path) {
+      var properties = $rootScope.propertiesOf(template);
+      angular.forEach(properties, function (value, name) {
+        if (!DataUtilService.isSpecialKey(name)) {
+          // We can tell we've reached an element level by its '@type' property
+          if ($rootScope.schemaOf(value)['@type'] == 'https://schema.metadatacenter.org/core/TemplateElement') {
+            //console.log(name);
+            if (path == null) {
+              service.addPathInfo(value, name);
+            }
+            else {
+              service.addPathInfo(value, path + '.' + name);
+            }
+          }
+          // If it is a template field
+          else {
+            // If it is not a static field
+            if (!value._ui || !value._ui.inputType || !FieldTypeService.isStaticField(value._ui.inputType)) {
+
+              var fieldPath = path;
+              if (fieldPath == null || fieldPath.length == 0) {
+                fieldPath = name;
+              }
+              else {
+                fieldPath = fieldPath + '.' + name;
+              }
+              properties[name]['_path'] = fieldPath;
+            }
+          }
+        }
+      });
+    };
+
+
+    /**
      * strip tmps for node and children
      * @param node
      */

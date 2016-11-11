@@ -17,7 +17,7 @@ describe('workspace', function () {
 
   });
 
-  for (var j = 0; j < 1; j++) {
+  for (var j = 0; j < 0; j++) {
     (function () {
 
       // functioning trash and options buttons

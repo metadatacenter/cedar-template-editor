@@ -1,6 +1,7 @@
 'use strict';
 var TemplateCreatorPage = require('../pages/template-creator-page.js');
 var WorkspacePage = require('../pages/workspace-page.js');
+var ToastyPage = require('../pages/toasty-page.js');
 
 
 var _ = require('../libs/lodash.min.js');
@@ -11,6 +12,7 @@ describe('template-creator', function () {
   //var flow = browser.controlFlow();
   var page;
   var workspacePage;
+  var toastyPage;
   var fieldTypes = [
     {
       "cedarType"         : "textfield",
@@ -135,6 +137,7 @@ describe('template-creator', function () {
   beforeEach(function () {
     page = TemplateCreatorPage;
     workspacePage = WorkspacePage;
+    toastyPage = ToastyPage;
     page.get();
     browser.driver.manage().window().maximize();
 
@@ -156,20 +159,11 @@ describe('template-creator', function () {
             page.isReady(page.createSaveTemplateButton()).then(function () {
               page.createSaveTemplateButton().click().then(function () {
 
-                page.isReady(page.createToastyConfirmationPopup()).then(function () {
+                toastyPage.isToasty().then(function () {
 
-                  page.isReady(page.toastyMessageText()).then(function () {
-                    page.toastyMessageText().getText().then(function (value) {
-
-                      expect(value.indexOf(page.hasBeenCreated) !== -1).toBe(true);
-
-                      browser.wait(EC.not(EC.presenceOf(page.createToastyConfirmationPopup()))).then(function () {
-                        // get the url of this element
-                        browser.getCurrentUrl().then(function (value) {
-                          sampleTemplateUrl = value;
-                        });
-                        });
-                    });
+                  // get the url of this element
+                  browser.getCurrentUrl().then(function (value) {
+                    sampleTemplateUrl = value;
                   });
                 });
               });

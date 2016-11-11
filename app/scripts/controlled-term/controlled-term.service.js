@@ -12,6 +12,7 @@ define([
 
     var service = {
       getAcronym             : getAcronym,
+      getAcronymFromTermUri  : getAcronymFromTermUri,
       getSelfUrl             : getSelfUrl,
       loadOntologyRootClasses: loadOntologyRootClasses,
       loadTreeOfClass        : loadTreeOfClass,
@@ -30,6 +31,35 @@ define([
 
     function getAcronym(subtree) {
       return subtree.ontology.substr(subtree.ontology.lastIndexOf('/') + 1);
+    }
+
+    function getAcronymFromTermUri(uri) {
+      // Regex for URIs like http://purl.bioontology.org/ontology/ontologyId/termId
+      var baseUri1 = 'http://purl.bioontology.org/ontology/';
+      var regex1 = new RegExp('http:\/\/purl\.bioontology\.org\/ontology\/.*\/');
+      var match1 = regex1.exec(uri);
+      if (match1) {
+        var m = match1[0];
+        return m.substring(baseUri1.length, m.length-1);
+      }
+
+      // Regex for URIs like http://purl.obolibrary.org/obo/BFO_0000005
+      var baseUri2 = 'http://purl.obolibrary.org/obo/';
+      var regex2 = new RegExp('http:\/\/purl\.obolibrary\.org\/obo\/.*_');
+      var match2 = regex2.exec(uri);
+      if (match2) {
+        var m = match2[0];
+        return m.substring(baseUri2.length, m.length-1);
+      }
+
+      // Regex for NCIT terms
+      var regex3 = new RegExp('http:\/\/ncicb\.nci\.nih\.gov\/xml\/owl\/EVS\/Thesaurus\.owl.*');
+      var match3 = regex3.exec(uri);
+      if (match3) {
+        return 'NCIT';
+      }
+
+      return '';
     }
 
     function getSelfUrl(resource) {
