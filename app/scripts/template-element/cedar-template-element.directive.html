@@ -1,10 +1,11 @@
-<div ng-if="model !== undefined" class="item-root element-root" id="{{$root.getDomId(element)}}" ng-click="canSelect(!isRootElement && !$root.isRuntime()); $event.preventDefault();">
+<div ng-if="model !== undefined" class="item-root element-root" id="{{$root.getDomId(element)}}"
+    ng-click="canSelect(!isRootElement && !$root.isRuntime()); $event.preventDefault();">
 
-  <div class="element-header input-type-container" style="position:relative;margin-top:10px"
+  <div class="element-header input-type-container" style="position:relative;"
       ng-class="{'sortable-handler': !$root.isRuntime()}">
     <div class="row">
 
-      <div class="col-lg-9 pull-left">
+      <div class="col-lg-6 pull-left">
 
         <a ng-click="switchExpandedState($root.getDomId(element))" class="visibilitySwitch"><i
             class="cedar-svg-collapse"></i></a>
@@ -39,15 +40,43 @@
            {{element.minItems}} .. {{element.maxItems || "N"}}
           </span>
       </div>
+      <div class="col-lg-5">
+        <div class="element-toggles list" ng-if="$root.isRuntime() && $root.elementIsMultiInstance(element)">
+
+          <div class="element-toggle"
+              ng-class="{active: selectedTab == $index}"
+              ng-repeat="m in model"
+              ng-click="selectTab($index)"
+              ng-if="$root.isArray(model) && model.length > 0">
+            <span>{{$index + 1}}</span>
+          </div>
+          <div class="add-element">
+            <button type="button"
+                tooltip="add a {{$root.schemaOf(element)._ui.title}}"
+                tooltip-trigger
+                tooltip-animation="false"
+                tooltip-placement="top"
+                data-toggle="tooltip"
+                ng-click="addElement(); $event.stopPropagation();"
+                class="add zero noOutline"
+                ng-show="true"
+                ng-disabled="preview"
+                style="outline:none">
+              <i class="fa fa-plus"></i>
+            </button>
+          </div>
+          <div class="clearfix"></div>
+        </div>
+      </div>
 
       <div ng-if="!$root.isRuntime() &&  !isRootElement && !isNested()" class="preview-container">
         <!--<div class="row preview-edit-options pull-right" style="margin-right:5px">-->
-        <div class="row preview-edit-options pull-right" >
+        <div class="row preview-edit-options pull-right">
           <div class="toggle-options col-lg-12 pull-right">
             <div class="save-options">
               <div class="save-options" ng-if="$root.propertiesOf(element)._tmp.state != 'creating'">
                 <!--<div class="edit" ng-click="edit()" title="Edit element">-->
-                  <!--<i class="fa fa-pencil" style="transform: translate(6px, 1px);"></i>-->
+                <!--<i class="fa fa-pencil" style="transform: translate(6px, 1px);"></i>-->
                 <!--</div>-->
                 <div class="remove" style="margin-right: 0;" ng-click="delete()" title="Delete element">
                   <i class="fa fa-times"></i>
@@ -55,7 +84,7 @@
               </div>
               <div class="save-options" ng-if="$root.propertiesOf(element)._tmp.state == 'creating'">
                 <!--<div class="add" ng-click="add(element)" title="Add element">-->
-                  <!--<i class="fa fa-plus"></i>-->
+                <!--<i class="fa fa-plus"></i>-->
                 <!--</div>-->
                 <div class="remove" style="margin-right: 0;" ng-click="delete()" title="Delete element">
                   <i class="fa fa-times"></i>
@@ -68,39 +97,39 @@
     </div>
   </div>
 
-  <div class="elementTotalContent visible" >
+  <div class="elementTotalContent visible">
     <div ng-show="$root.isArray(model)">
       <div class="spreadsheetViewDetector"></div>
       <div class="spreadsheetViewContainer"></div>
     </div>
 
     <div class="elements originalContent">
-      <div class="element-toggles list" ng-if="$root.isRuntime() && $root.elementIsMultiInstance(element)">
+      <!--<div class="element-toggles list" ng-if="$root.isRuntime() && $root.elementIsMultiInstance(element)">-->
 
-        <div class="element-toggle"
-            ng-class="{active: selectedTab == $index}"
-            ng-repeat="m in model"
-            ng-click="selectTab($index)"
-            ng-if="$root.isArray(model) && model.length > 0">
-          <span>{{$index + 1}}</span>
-        </div>
-        <div class="add-element">
-          <button type="button"
-              tooltip="add a {{$root.schemaOf(element)._ui.title}}"
-              tooltip-trigger
-              tooltip-animation="false"
-              tooltip-placement="top"
-              data-toggle="tooltip"
-              ng-click="addElement(); $event.stopPropagation();"
-              class="add zero noOutline"
-              ng-show="true"
-              ng-disabled="preview"
-              style="outline:none">
-            <i class="fa fa-plus"></i>
-          </button>
-        </div>
-        <div class="clearfix"></div>
-      </div>
+      <!--<div class="element-toggle"-->
+      <!--ng-class="{active: selectedTab == $index}"-->
+      <!--ng-repeat="m in model"-->
+      <!--ng-click="selectTab($index)"-->
+      <!--ng-if="$root.isArray(model) && model.length > 0">-->
+      <!--<span>{{$index + 1}}</span>-->
+      <!--</div>-->
+      <!--<div class="add-element">-->
+      <!--<button type="button"-->
+      <!--tooltip="add a {{$root.schemaOf(element)._ui.title}}"-->
+      <!--tooltip-trigger-->
+      <!--tooltip-animation="false"-->
+      <!--tooltip-placement="top"-->
+      <!--data-toggle="tooltip"-->
+      <!--ng-click="addElement(); $event.stopPropagation();"-->
+      <!--class="add zero noOutline"-->
+      <!--ng-show="true"-->
+      <!--ng-disabled="preview"-->
+      <!--style="outline:none">-->
+      <!--<i class="fa fa-plus"></i>-->
+      <!--</button>-->
+      <!--</div>-->
+      <!--<div class="clearfix"></div>-->
+      <!--</div>-->
       <!-- /.date-type-toggle -->
 
       <!-- have an array with at least one element -->
@@ -108,7 +137,8 @@
           ng-class="['element-{{$index}}']">
 
         <div class="remove-element pull-right">
-          <a class="" ng-show="model.length > element.minItems" ng-click="removeElement($index)" translate>GENERIC.Remove</a>
+          <a class="" ng-if="$root.isRuntime()" ng-show="model.length > element.minItems"
+              ng-click="removeElement($index)" translate>GENERIC.Remove</a>
         </div>
 
         <div ui-sortable="$root.sortableOptions" ng-model="$root.schemaOf(element)._ui.order"

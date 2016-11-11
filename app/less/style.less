@@ -327,6 +327,7 @@ button {
     color: #000;
     padding-left: 0;
 
+
     &:before {
       font-family: "project-cedar" !important;
       content: "n";
@@ -336,8 +337,8 @@ button {
 
   .floating-label {
     font-size: 16px;
-    top: 5px;
-    color: @graytxt;
+    top: 10px;
+    color: black;
   }
 
   #element-name-container,
@@ -1755,7 +1756,7 @@ body.search-browse-modal {
 
   .floating-label {
     font-size: 16px;
-    top: 5px;
+    top: 10px;
     color: @white;
   }
 
@@ -1926,9 +1927,9 @@ body.search-browse-modal {
       width: 100%;
       //border-bottom:2px dashed #ddd;
       border: 1px solid @gray3;
-      padding: 12px 14px 12px 16px;
+      padding: 0px 14px 0px 16px;
       margin-bottom: 16px;
-      background-color: @gray2;
+      background-color: #e8e8e8;
 
       &:not(.full) {
         padding-right: 65px;
@@ -1941,6 +1942,7 @@ body.search-browse-modal {
         margin-left: -14px;
         min-width: 100%;
         position: relative;
+        padding-top:10px;
 
         .preview-edit-options {
           float: right;
@@ -1961,7 +1963,7 @@ body.search-browse-modal {
       }
 
       .nested-element {
-        border: 1px solid #ddd;
+        border: 1px solid #ccc;
         padding: 0px 16px 0px 16px;
         margin-bottom: 16px;
       }
@@ -1992,7 +1994,7 @@ body.search-browse-modal {
 }
 
 .form-control.empty ~ .floating-label {
-  opacity: 0.6;
+  opacity: 1;
 }
 
 .form-control:focus ~ .floating-label,
@@ -2438,7 +2440,7 @@ section.dashboard-elements {
 .template-body form, #element_control_term {
 
   .form-group {
-    margin-bottom: 14px;
+    margin-bottom: 5px;
     min-height: 1em;
 
     &.radio-item,
@@ -2460,9 +2462,12 @@ section.dashboard-elements {
       font-size: 14px;
       color: @black;
       transition: border-color 0.3s linear;
+      background: #fff;
 
       &.empty ~ .floating-label {
-        top: 12px;
+        top: 10px;
+        color:black;
+
       }
 
       &:focus ~ .floating-label,
@@ -2766,7 +2771,7 @@ section.dashboard-elements {
 
 .edit-actions {
   border-top: 1px solid #ddd;
-  padding: 50px 0;
+  padding: 10px 0;
   text-align: center;
   height: 300px;
 
@@ -4307,6 +4312,8 @@ p.instructions {
   }
 
   .selection-field {
+    outline:none;
+    box-shadow:none;
     i.fa-times {
       margin: -3px -5px;
       vertical-align: top;
@@ -4374,8 +4381,8 @@ p.instructions {
 
       i {
         color: #FFF;
-        font-size: 14px;
-        line-height: 25px;
+        font-size: 16px;
+        transform: translate(0px, 1px);
       }
 
       &:disabled {
@@ -5108,15 +5115,17 @@ p.instructions {
 
 .autocomplete-label-wrapper {
   position: relative;
+  height:40px;
   .floating-label {
     opacity: 1;
   }
 }
 
 .ui-select-container ~ .floating-label {
-  top: 15px;
-  left: 10px;
-  font-size: 16px;
+  top: 12px;
+  color:black;
+
+
 }
 
 //.ui-select-bootstrap .ui-select-choices-row>span {
@@ -5147,6 +5156,7 @@ p.instructions {
   top: 5px;
   left: 5px;
   font-size: 11px;
+  color: #5795ba;
 }
 
 .controlled-terms-modal {
@@ -5566,10 +5576,10 @@ body .template-header .controlled-terms-modal {
 .field-root {
   padding: 5px;
   border: 1px solid @gray3;
-  margin-bottom: 10px;
+  margin-bottom: 5px;
   margin-top: 5px;
-  background: #efefef;
-  min-height: 70px;
+  background: #f8f8f8;
+  padding-bottom: 0;
 }
 
 .sortable-icon {

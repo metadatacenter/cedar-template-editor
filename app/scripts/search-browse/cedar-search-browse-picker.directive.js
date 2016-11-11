@@ -733,21 +733,21 @@ define([
 
               switch (resource.nodeType) {
                 case CONST.resourceType.FOLDER:
-                  result += "fa-folder-o";
+                  result += "fa-folder";
                   break;
                 case CONST.resourceType.TEMPLATE:
-                  result += "fa-file-o";
+                  result += "fa-file-text";
                   break;
                 case CONST.resourceType.INSTANCE:
-                  result += "fa-tags";
+                  result += "fa-tag";
                   break;
                 case CONST.resourceType.ELEMENT:
-                  result += "fa-file-text-o";
+                  result += "fa-sitemap";
                   break;
                 case CONST.resourceType.FIELD:
                   result += "fa-file-code-o";
                   break;
-                  result += "fa-file-text-o";
+                  result += "fa-sitemap";
                   break;
 
               }
