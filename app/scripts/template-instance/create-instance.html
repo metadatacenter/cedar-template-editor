@@ -42,6 +42,7 @@
             <p ng-repeat="message in runtimeSuccessMessages"><i class="fa fa-check"></i>{{message}}</p>
           </div>
           <button type="button" id="button-cancel-metadata" class="btn btn-clear metadata" ng-click="cancelTemplate()" translate>GENERIC.Cancel</button>
+          <button type="button" ng-if="isBiosampleTemplate()" id="button-validate-metadata" ng-disabled="saveButtonDisabled" class="btn  metadata" style="outline:none" ng-click="biosampleValidation()" translate>Validate</button>
           <button type="button" id="button-save-metadata" ng-disabled="saveButtonDisabled" class="btn btn-save metadata" ng-click="saveInstance()" translate>GENERIC.Save</button>
         </div>
         <!-- /.edit-actions -->

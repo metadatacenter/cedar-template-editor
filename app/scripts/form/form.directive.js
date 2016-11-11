@@ -331,11 +331,15 @@ define([
           $scope.addPopover();
         });
 
+        $scope.isBiosampleTemplate = function () {
+          return ($rootScope.documentTitle && $rootScope.documentTitle.toLowerCase().indexOf('biosample') > -1);
+        };
+
 
         // validate a biosample template
         $scope.checkBiosample = function (instance) {
 
-          if ($rootScope.documentTitle === 'BioSample metadata') {
+          if ($scope.isBiosampleTemplate()) {
 
 
             // one way to make the call
@@ -345,29 +349,53 @@ define([
                 function successCallback(response) {
 
                   var data = response.data;
+                  console.log(data);
+
 
                   if (!data.isValid) {
+
+                    $scope.$emit('validationError',
+                        ['remove', '', 'biosample']);
+
                     var errors = data.messages;
                     for (var i = 0; i < errors.length; i++) {
 
+                      console.log(errors[i]);
+
+
                       $scope.$emit('validationError',
-                          ['add', errors[i], 'bioSample']);
+                          ['add', errors[i], 'biosample'+i]);
+
+
+
                     }
                   } else {
 
                     $scope.$emit('validationError',
-                        ['remove', '', 'bioSample']);
+                        ['remove', '', 'biosample']);
+
+                    UIMessageService.flashSuccess('BioSample Submission Validated', {"title": "title"},
+                        'Success');
                   }
 
                 },
                 function errorCallback(err) {
-                  //UIMessageService.showBackendError('BioSample Server Error', err);
+
+                  UIMessageService.showBackendError('BioSample Server Error', err);
+
 
                 });
 
           }
 
         };
+
+        // Watching for the 'submitForm' event to be $broadcast from parent 'RuntimeController'
+        $scope.$on('biosampleValidation', function (event) {
+          // Make the model (populated template) available to the parent
+          $scope.checkBiosample( $scope.model);
+
+        });
 
         // Watching for the 'submitForm' event to be $broadcast from parent 'RuntimeController'
         $scope.$on('submitForm', function (event) {

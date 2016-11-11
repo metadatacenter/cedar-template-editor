@@ -282,6 +282,7 @@
                         ng-click="dc.toggleResourceType('template')"><i
                         class="btn btn-sm btn-info btn-circle fa large-icon fa-file-text template"
                         ng-class="{ active: dc.isResourceTypeActive('template') }"></i></button>
+
                   </li>
                   <li>
                     <button tooltip="{{dc.showOrHide('element')}} element"
@@ -291,7 +292,7 @@
                         data-toggle="tooltip"
                         ng-click="dc.toggleResourceType('element')"><i
                         class="btn btn-sm btn-info btn-circle fa large-icon  fa-sitemap element"
-                        ng-class="{ active: dc.isResourceTypeActive('element') }"></i></button>
+                        ng-class="{ active: dc.isResourceTypeActive('element') }" style="padding:5px" ></i></button>
                   </li>
                   <li>
                     <button tooltip="{{dc.showOrHide('instance')}} metadata"
@@ -301,7 +302,7 @@
                         data-toggle="tooltip"
                         ng-click="dc.toggleResourceType('instance')"><i
                         class="btn btn-sm btn-info btn-circle fa large-icon  fa-tag metadata"
-                        ng-class="{ active: dc.isResourceTypeActive('instance') }"></i></button>
+                        ng-class="{ active: dc.isResourceTypeActive('instance') }" ></i></button>
                   </li>
                 </ul>
 
@@ -638,7 +639,7 @@
                 data-toggle="tooltip"
                 class="btn btn-sm btn-info btn-circle folder"
                 ng-click="dc.showNewFolderModal()"><i
-                class="fa fa-folder-o"></i></button>
+                class="fa fa-folder"></i></button>
           </li>
 
           <li ng-show="dc.showFloatingMenu">
@@ -649,7 +650,7 @@
                   tooltip-trigger
                   tooltip-animation="false"
                   tooltip-placement="left"
-                  data-toggle="tooltip" class="btn btn-sm btn-info btn-circle element"><i class="fa fa-file-text"></i>
+                  data-toggle="tooltip" class="btn btn-sm btn-info btn-circle element"><i class="fa fa-sitemap"></i>
               </button>
             </a>
           </li>
@@ -664,7 +665,7 @@
                   tooltip-placement="left"
                   data-toggle="tooltip"
                   class="btn btn-sm btn-info btn-circle template">
-                <i class="fa fa-file-o"></i>
+                <i class="fa fa-file-text"></i>
               </button>
             </a>
           </li>

@@ -171,7 +171,9 @@ define([
         $scope.validationErrors[args[2]] = args[1];
       }
       if (args[0] == 'remove') {
-        delete $scope.validationErrors[args[2]];
+        // remove all of them
+        $scope.validationErrors = {};
+        //delete $scope.validationErrors[args[2]];
       }
     });
 
@@ -202,6 +204,16 @@ define([
     $scope.disableSaveButton = function () {
       $scope.saveButtonDisabled = true;
     };
+
+    $scope.isBiosampleTemplate = function () {
+      return ($rootScope.documentTitle && $rootScope.documentTitle.toLowerCase().indexOf('biosample') > -1);
+    };
+
+    $scope.biosampleValidation = function () {
+      $scope.$broadcast('biosampleValidation');
+    };
+
+
 
   };
 

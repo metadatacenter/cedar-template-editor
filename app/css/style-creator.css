@@ -15626,11 +15626,11 @@ body {
   padding-right: 14px;
 }
 .field-instance.multiple-instance-field {
-  border: 1px solid rgba(87, 149, 186, 0.35);
+  border: 1px solid #ddd;
   padding-top: 12px;
   padding-bottom: 12px;
   margin-bottom: 16px;
-  background-color: #f4f4f7;
+  background-color: #e8e8e8;
 }
 /* The base CSS styles for the animation property */
 .animate-fade.ng-hide-add,
