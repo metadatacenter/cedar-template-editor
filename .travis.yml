@@ -6,6 +6,13 @@
 sudo: required
 dist: trusty
 
+addons:
+  apt:
+    sources:
+    - google-chrome
+    packages:
+    - google-chrome-stable
+
 # When deployed for testing the Template Editor is effectively a Node application
 language: node_js
 node_js:

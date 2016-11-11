@@ -327,11 +327,15 @@ define([
           $scope.addPopover();
         });
 
+        $scope.isBiosampleTemplate = function () {
+          return ($rootScope.documentTitle && $rootScope.documentTitle.toLowerCase().indexOf('biosample') > -1);
+        };
+
 
         // validate a biosample template
         $scope.checkBiosample = function (instance) {
 
-          if ($rootScope.documentTitle === 'BioSample metadata') {
+          if ($scope.isBiosampleTemplate()) {
 
 
             // one way to make the call
@@ -357,11 +361,17 @@ define([
 
                       $scope.$emit('validationError',
                           ['add', errors[i], 'biosample'+i]);
+
+
+
                     }
                   } else {
 
                     $scope.$emit('validationError',
                         ['remove', '', 'biosample']);
+
+                    UIMessageService.flashSuccess('BioSample Submission Validated', {"title": "title"},
+                        'Success');
                   }
 
                 },
@@ -373,6 +383,13 @@ define([
           }
 
         };
+
+        // Watching for the 'submitForm' event to be $broadcast from parent 'RuntimeController'
+        $scope.$on('biosampleValidation', function (event) {
+          // Make the model (populated template) available to the parent
+          $scope.checkBiosample( $scope.model);
+
+        });
 
         // Watching for the 'submitForm' event to be $broadcast from parent 'RuntimeController'
         $scope.$on('submitForm', function (event) {

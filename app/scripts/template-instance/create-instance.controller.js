@@ -204,6 +204,16 @@ define([
       $scope.saveButtonDisabled = true;
     };
 
+    $scope.isBiosampleTemplate = function () {
+      return ($rootScope.documentTitle && $rootScope.documentTitle.toLowerCase().indexOf('biosample') > -1);
+    };
+
+    $scope.biosampleValidation = function () {
+      $scope.$broadcast('biosampleValidation');
+    };
+
+
+
   };
 
 });
