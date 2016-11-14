@@ -1,5 +1,5 @@
 
-<div  class="form-group  has-feedback">
+<div  ng-if="isActive(index)" class="form-group  has-feedback">
     <input type="email"  ng-click="setActive(index)"
         ng-click="setActive(index, true)"
         class="form-control"
@@ -14,4 +14,13 @@
     <div ng-if="isActive(index)" class="input-indicator-icons" ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
 
 
+</div>
+
+<!--- not active --->
+<div ng-if="!isActive(index)" class="form-group  has-feedback">
+  <div
+      ng-click="setActive(index,true)"
+      aria-label="{{getDescription()}}"
+      style="cursor:pointer;font-size: 1.2em;line-height: 28px;">{{valueElement['@value']}}</div>
+</div>
 </div>

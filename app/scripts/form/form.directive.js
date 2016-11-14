@@ -449,6 +449,7 @@ define([
         };
 
         $scope.nextChild = function (fieldOrElement) {
+          console.log('nextCHild');
 
           var id = DataManipulationService.getId(fieldOrElement);
           var selectedKey;
@@ -463,11 +464,13 @@ define([
           });
 
           if (selectedKey) {
+            console.log(selectedKey);
             var idx = $scope.form._ui.order.indexOf(selectedKey);
             idx += 1;
             if (idx < $scope.form._ui.order.length) {
               var nextKey = $scope.form._ui.order[idx];
               var next = props[nextKey];
+              console.log(next);
               $rootScope.$broadcast("setActive", [DataManipulationService.getId(next), 0,  $scope.path, true]);
             } else {
               $rootScope.$broadcast("setActive", [id, 0,  $scope.path, false]);

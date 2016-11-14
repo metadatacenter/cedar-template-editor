@@ -950,10 +950,12 @@ define([
         var path = args[2];
         var value = args[3];
 
+        console.log('$on setActive id=' + id + ' index=' + index + ' path=' + path + ' scope.path=' + $scope.path + ' value=' + value)
+
 
         if (id === $scope.getId() && path === $scope.path) {
 
-          console.log('$on setActive id=' + id + ' index=' + index + ' path=' + path + ' scope.path=' + $scope.path + ' value=' + value);
+          console.log('$on setActive found id=' + id + ' index=' + index + ' path=' + path + ' scope.path=' + $scope.path + ' value=' + value);
           $scope.setActive(index, value);
         }
       });
@@ -1033,6 +1035,7 @@ define([
 
 
       $scope.onSubmit = function (index) {
+        console.log('onSubmit');
 
         // go to next index
         if ($scope.isMultiple() && (index + 1 < $scope.model.length)) {

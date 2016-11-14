@@ -9305,8 +9305,8 @@ button {
 }
 .navbar .floating-label {
   font-size: 16px;
-  top: 5px;
-  color: #666666;
+  top: 10px;
+  color: black;
 }
 .navbar #element-name-container .cedar-svg-element,
 .navbar #element-controlled-term-container .cedar-svg-element,
@@ -10514,7 +10514,7 @@ body.search-browse-modal a.navbar-brand {
 }
 .template-header .floating-label {
   font-size: 16px;
-  top: 5px;
+  top: 10px;
   color: #ffffff;
 }
 .template-header #element-name-container .cedar-svg-element,
@@ -10673,9 +10673,9 @@ body.search-browse-modal a.navbar-brand {
 .template-body .right-body .element-group {
   width: 100%;
   border: 1px solid #d2d2d2;
-  padding: 12px 14px 12px 16px;
+  padding: 0px 14px 0px 16px;
   margin-bottom: 16px;
-  background-color: #f4f4f7;
+  background-color: #e8e8e8;
 }
 .template-body .right-body .element-group:not(.full) {
   padding-right: 65px;
@@ -10686,6 +10686,7 @@ body.search-browse-modal a.navbar-brand {
   margin-left: -14px;
   min-width: 100%;
   position: relative;
+  padding-top: 10px;
 }
 .template-body .right-body .element-group .element-header .preview-edit-options {
   float: right;
@@ -10701,7 +10702,7 @@ body.search-browse-modal a.navbar-brand {
   padding-right: 10px;
 }
 .template-body .right-body .element-group .nested-element {
-  border: 1px solid #ddd;
+  border: 1px solid #ccc;
   padding: 0px 16px 0px 16px;
   margin-bottom: 16px;
 }
@@ -10725,7 +10726,7 @@ body.search-browse-modal a.navbar-brand {
   z-index: 2;
 }
 .form-control.empty ~ .floating-label {
-  opacity: 0.6;
+  opacity: 1;
 }
 .form-control:focus ~ .floating-label,
 .form-control:not(.empty) ~ .floating-label,
@@ -11202,7 +11203,7 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
 */
 .template-body form .build .form-group,
 #element_control_term .form-group {
-  margin-bottom: 14px;
+  margin-bottom: 5px;
   min-height: 1em;
 }
 .template-body form .build .form-group.radio-item,
@@ -11223,10 +11224,12 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   color: #000000;
   -webkit-transition: border-color 0.3s linear;
           transition: border-color 0.3s linear;
+  background: #fff;
 }
 .template-body form .build .form-group .form-control.empty ~ .floating-label,
 #element_control_term .form-group .form-control.empty ~ .floating-label {
-  top: 12px;
+  top: 10px;
+  color: black;
 }
 .template-body form .build .form-group .form-control:focus ~ .floating-label,
 #element_control_term .form-group .form-control:focus ~ .floating-label,
@@ -11726,6 +11729,9 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
 .template-body form .runtime .field-root select.isActive {
   border: 1px dashed #888;
 }
+.template-body form .runtime .field-root select.isActive div.btn-group.bootstrap-select button.btn.dropdown-toggle.dropdown-toggle {
+  box-shadow: none;
+}
 .template-body form .runtime .field-root textarea {
   border-width: 0px;
   background: transparent;
@@ -12037,7 +12043,7 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
 }
 .edit-actions {
   border-top: 1px solid #ddd;
-  padding: 50px 0;
+  padding: 10px 0;
   text-align: center;
   height: 300px;
 }
@@ -13400,6 +13406,10 @@ p.instructions {
 .fields .form-group.form-group-narrow {
   margin-right: 0px;
 }
+.fields .selection-field {
+  outline: none;
+  box-shadow: none;
+}
 .fields .selection-field i.fa-times {
   margin: -3px -5px;
   vertical-align: top;
@@ -13492,8 +13502,10 @@ p.instructions {
 .element-toggles .add-element .add i,
 .element-toggles-values .add-element .add i {
   color: #FFF;
-  font-size: 14px;
-  line-height: 25px;
+  font-size: 16px;
+  -webkit-transform: translate(0px, 1px);
+      -ms-transform: translate(0px, 1px);
+          transform: translate(0px, 1px);
 }
 .element-toggles .add-element .add:disabled,
 .element-toggles-values .add-element .add:disabled {
@@ -14057,14 +14069,14 @@ p.instructions {
 }
 .autocomplete-label-wrapper {
   position: relative;
+  height: 40px;
 }
 .autocomplete-label-wrapper .floating-label {
   opacity: 1;
 }
 .ui-select-container ~ .floating-label {
-  top: 15px;
-  left: 10px;
-  font-size: 16px;
+  top: 12px;
+  color: black;
 }
 .ui-select-bootstrap .ui-select-choices-row.active > span {
   color: #333 !important;
@@ -14081,6 +14093,7 @@ p.instructions {
   top: 5px;
   left: 5px;
   font-size: 11px;
+  color: #5795ba;
 }
 .controlled-terms-modal .modal-dialog {
   width: 80%;
@@ -14382,10 +14395,10 @@ body .template-header .controlled-terms-modal {
 .field-root {
   padding: 5px;
   border: 1px solid #d2d2d2;
-  margin-bottom: 10px;
+  margin-bottom: 5px;
   margin-top: 5px;
-  background: #efefef;
-  min-height: 70px;
+  background: #f8f8f8;
+  padding-bottom: 0;
 }
 .sortable-icon {
   background: url("/img/drag-me.png") no-repeat;
@@ -15839,6 +15852,9 @@ body.modal-open {
 }
 .highlighted {
   font-weight: bold;
+}
+.btn-sm.fa.fa-sitemap {
+  padding: 5px;
 }
 /*
 ================================================

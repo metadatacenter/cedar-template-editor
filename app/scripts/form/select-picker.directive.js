@@ -73,6 +73,10 @@ define([
           // assigned at the field-directive.js level
 
           $scope.model = $element.val();
+          console.log($element);
+          jQuery('.bootstrap-select').toggleClass('open');
+
+
         });
       }
     };
