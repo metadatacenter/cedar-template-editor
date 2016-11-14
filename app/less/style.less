@@ -327,7 +327,6 @@ button {
     color: #000;
     padding-left: 0;
 
-
     &:before {
       font-family: "project-cedar" !important;
       content: "n";
@@ -1942,7 +1941,7 @@ body.search-browse-modal {
         margin-left: -14px;
         min-width: 100%;
         position: relative;
-        padding-top:10px;
+        padding-top: 10px;
 
         .preview-edit-options {
           float: right;
@@ -2466,7 +2465,7 @@ section.dashboard-elements {
 
       &.empty ~ .floating-label {
         top: 10px;
-        color:black;
+        color: black;
 
       }
 
@@ -4312,8 +4311,8 @@ p.instructions {
   }
 
   .selection-field {
-    outline:none;
-    box-shadow:none;
+    outline: none;
+    box-shadow: none;
     i.fa-times {
       margin: -3px -5px;
       vertical-align: top;
@@ -5115,7 +5114,7 @@ p.instructions {
 
 .autocomplete-label-wrapper {
   position: relative;
-  height:40px;
+  height: 40px;
   .floating-label {
     opacity: 1;
   }
@@ -5123,8 +5122,7 @@ p.instructions {
 
 .ui-select-container ~ .floating-label {
   top: 12px;
-  color:black;
-
+  color: black;
 
 }
 
@@ -5132,7 +5130,7 @@ p.instructions {
 //  background-color: #F8FFA2;
 //}
 
-.ui-select-bootstrap .ui-select-choices-row.active>span {
+.ui-select-bootstrap .ui-select-choices-row.active > span {
   color: #333 !important;
   background-color: #f5f5f5 !important;
 }
@@ -6190,7 +6188,7 @@ table.apiKey {
   background: #ccc; // manage scrollbar thumb background color here
 }
 
-#rename-modal, #new-folder-modal, #move-modal,  #share-modal {
+#rename-modal, #new-folder-modal, #move-modal, #share-modal {
   .modal-content {
     border-radius: 0;
     border: 0;
@@ -6217,19 +6215,20 @@ table.apiKey {
       }
       .inline-editing {
         button {
-          margin:10px 0;
+          margin: 10px 0;
         }
         input.borderless {
-          border:0px solid #fff;
+          border: 0px solid #fff;
         }
 
       }
       table.details {
-        padding:0;margin:0;font-size:13px;
+        padding: 0;
+        margin: 0;
+        font-size: 13px;
       }
 
     }
-
 
     .actions {
 
@@ -6336,7 +6335,7 @@ table.apiKey {
       }
       .modal-body {
         max-height: 500px;
-        overflow-y:scroll;
+        overflow-y: scroll;
         input {
           color: #000;
           outline: none;
@@ -6345,11 +6344,10 @@ table.apiKey {
           border: 1px solid #ccc;
           height: 40px;
 
-
         }
         .typeaheadDropUp ul.dropdown-menu {
-          bottom:100% !important;
-          top:auto !important;
+          bottom: 100% !important;
+          top: auto !important;
         }
 
         .checkbox {
@@ -6360,8 +6358,8 @@ table.apiKey {
           outline: none;
           height: 40px;
           &.select-picker {
-            outline:none;
-            height:40px;
+            outline: none;
+            height: 40px;
           }
         }
         .bootstrap-select {
@@ -6375,15 +6373,18 @@ table.apiKey {
         }
 
         button i.fa-plus {
-          margin: 0 -4px;vertical-align: top;
+          margin: 0 -4px;
+          vertical-align: top;
         }
 
         button i.fa-remove {
-         margin: -1px -5px;vertical-align: top;
+          margin: -1px -5px;
+          vertical-align: top;
         }
 
         button i.fa-times {
-          margin: -1px -5px;vertical-align: top;
+          margin: -1px -5px;
+          vertical-align: top;
         }
 
         .row {
@@ -6503,7 +6504,6 @@ table.apiKey {
           outline: none;
         }
 
-
       }
     }
   }
@@ -6540,6 +6540,35 @@ table.apiKey {
     overflow-y: auto;
     &.without-info {
       width: 0;
+    }
+
+    #edit-description {
+      outline: none;
+    }
+
+    .header {
+      .title {
+        font-size: 20px;
+        padding: 10px 5px;
+      }
+      .goaway {
+        font-size: 20px;
+        padding: 10px 5px;
+        color: black;
+      }
+    }
+    .info {
+      padding: 0;
+      margin: 0;
+      font-size: 13px;
+      border-top: 1px solid #ddd;
+      border-bottom: 1px solid #ddd;
+      .row {
+        margin: 15px 0;
+        .location {
+          min-height: 60px;
+        }
+      }
     }
   }
 }

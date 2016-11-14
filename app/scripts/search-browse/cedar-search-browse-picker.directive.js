@@ -136,6 +136,7 @@ define([
           };
 
           vm.startDescriptionEditing = function () {
+            console.log('startDescriptionEditing')
             var resource = vm.getSelection();
             if (resource != null) {
               vm.editingDescription = true;
@@ -155,6 +156,7 @@ define([
 
           vm.selectResource = function (resource) {
             vm.cancelDescriptionEditing();
+            vm.selectedResource = resource;
             vm.getResourceDetails(resource);
             if (typeof vm.selectResourceCallback === 'function') {
               vm.selectResourceCallback(resource);
@@ -207,7 +209,11 @@ define([
             resourceService.getResourceDetail(
                 resource,
                 function (response) {
-                  vm.selectedResource = response;
+
+                  $timeout(function () {
+                    vm.selectedResource = response;
+                  },0);
+
                 },
                 function (error) {
                   UIMessageService.showBackendError('SERVER.' + resource.nodeType.toUpperCase() + '.load.error', error);
