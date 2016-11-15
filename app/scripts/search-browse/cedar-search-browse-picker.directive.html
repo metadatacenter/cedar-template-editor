@@ -1,18 +1,4 @@
 <div class="controls-bar clearfix row-fluid navbar-fixed-top " ng-class="{'as-modal': !dc.onDashboard()}">
-  <!--<div style="position:absolute;width:300px;">-->
-  <!--<ul class="list-inline ">-->
-  <!--<li ng-if="dc.onDashboard()">-->
-  <!--<button-->
-  <!--type="button"-->
-  <!--tooltip="filter results"-->
-  <!--tooltip-trigger-->
-  <!--tooltip-animation="false"-->
-  <!--tooltip-placement="top"-->
-  <!--data-toggle="tooltip"-->
-  <!--ng-click="dc.toggleFilters()"><i class="fa fa-filter graytext"></i></button>-->
-  <!--</li>-->
-  <!--</ul>-->
-  <!--</div>-->
 
   <div class="col-sm-2"></div>
   <div class="col-sm-7">
@@ -240,13 +226,6 @@
 
 <!--all items view -->
 <section class="all-items-view " ng-class="{'as-modal': !dc.onDashboard()}">
-
-  <!--<a ng-if="dc.onDashboard()" class="push-pull-box" ng-click="dc.toggleFavorites()" href="javascript:"-->
-  <!--aria-expanded="false" ng-class="{'collapsed': !dc.showFavorites}">-->
-
-  <!--<i class="fa fa-caret-down"></i>-->
-  <!--<i class="fa fa-caret-up"></i>-->
-  <!--</a>-->
 
   <!-- container -->
   <div class="container-fluid">
@@ -523,170 +502,167 @@
 
       <!-- RIGHT SIDE -->
       <div class="col-sm-3 row-offcanvas-right" id="sidebar-right" ng-if="dc.infoShowing()">
-        <div>
 
-          <div class="header">
-
+        <div class="header">
           <div class="row">
-            <div class="col-sm-1 title" ng-class="dc.getSelectedNode().nodeType">
-              <i class="fa"
-                ng-class="dc.getResourceIconClass(dc.getSelectedNode())"></i>
-            </div>
-          <div class="col-sm-9 title" ng-class="dc.getSelectedNode().nodeType">
-            {{ dc.getSelectedNode().displayName }}
-          </div>
 
-          <div class="col-sm-2 goaway" >
-            <button
-                ng-click="dc.setResourceInfo(false)"
-                type="button"
-                class="close"
-                aria-label="Close"
-                ><span aria-hidden="true"><img
-                src="/img/close_modal.png" width="22"/></span></button>
-          </div>
-            </div>
-            </div>
-
-
-          <div class="info" >
-            <div class="row" >
-              <div class="col-sm-4"  >Type</div>
-              <div class="col-sm-8">{{ dc.getResourceTypeClass(dc.getSelectedNode())}}</div>
-            </div>
-            <div class="row">
-              <div class="col-sm-4 " >Location</div>
-              <div class="col-sm-8 location" >{{ dc.getSelectedNode().displayPath }}</div>
-            </div>
-            <div class="row" >
-              <div class="col-sm-4 left">Owner</div>
-              <div class="col-sm-8">{{ dc.getSelectedNode().ownedByUserName }}</div>
-            </div>
-            <div class="row" >
-              <div class="col-sm-4 left">Modified</div>
-              <div class="col-sm-8">
-                <span class="no-wrap">{{ dc.getSelectedNode().lastUpdatedOnTS | prettyDate }}</span>
-                by
-                <span class="no-wrap">{{ dc.getSelectedNode().lastUpdatedByUserName }}</span>
+            <div class="col-sm-2 pull-right ">
+              <div class="goaway">
+                <button
+                    ng-click="dc.setResourceInfo(false)"
+                    type="button"
+                    class="close"
+                    aria-label="Close"
+                    ><span aria-hidden="true"><img
+                    src="/img/close_modal.png" width="22"/></span></button>
               </div>
             </div>
-            <div class="row" >
-              <div class="col-sm-4 left">Created</div>
-              <div class="col-sm-8">
-                <span class="no-wrap">{{ dc.getSelectedNode().createdOnTS | prettyDate }}</span>
-                by
-                <span class="no-wrap">{{ dc.getSelectedNode().createdByUserName }}</span>
+
+            <div class="col-sm-10">
+              <div class="title" ng-class="dc.getSelectedNode().nodeType">
+                <i class="fa" ng-class="dc.getResourceIconClass(dc.getSelectedNode())"></i> {{ dc.getSelectedNode().displayName }}
               </div>
             </div>
-            <div class="row" >
-              <div class="col-sm-4 left">Can Read</div>
-              <div class="col-sm-8">{{ dc.canRead() }}</div>
-            </div>
-            <div class="row" >
-              <div class="col-sm-4 left">Can Write</div>
-              <div class="col-sm-8">{{ dc.canWrite() }}</div>
-            </div>
-            <div class="row" >
-              <div class="col-sm-4 left">Can Change Owner</div>
-              <div class="col-sm-8">{{ dc.cancanChangeOwnerRead() }}</div>
-            </div>
 
-            </div>
-          </div>
-
-
-          <div class="description">
-            <div ng-if="dc.editingDescription" class="editing">
-
-              <form class="form-inline" ng-submit="dc.updateDescription()">
-                <fieldset>
-                  <input id="edit-description" type="text" ng-model="dc.selectedResource.description"
-                      ui-keypress="{'esc':'dc.cancelDescriptionEditing()'}">
-                  <button type="submit" style=" display:none">Add</button>
-                </fieldset>
-              </form>
-
-            </div>
-            <div ng-if="!dc.editingDescription" class="title">
-              {{ dc.selectedResource.description }}
-            </div>
-            <div ng-if="!dc.editingDescription" class="edit pull-right">
-              <button
-                  type="button"
-                  tooltip="edit description"
-                  tooltip-trigger
-                  tooltip-animation="false"
-                  tooltip-placement="left"
-                  data-toggle="tooltip"
-                  ng-click="dc.startDescriptionEditing()"><i class="fa fa-pencil graytext"></i></button>
-            </div>
           </div>
         </div>
-      </div>
-      <!-- END RIGHT SIDE -->
 
-      <!-- floating plus icon section -->
-      <div class="add-new  pull-right" ng-if="dc.onDashboard()  && dc.canWriteToCurrentFolder()"
-          ng-mouseleave="dc.showFloatingMenu = false">
-        <ul class="list-unstyled others">
-          <li ng-show="dc.showFloatingMenu">
-            <button type="button"
-                id="button-create-folder"
-                tooltip="create folder"
+
+        <div class="info">
+          <div class="row">
+            <div class="col-sm-4" translate>Type</div>
+            <div class="col-sm-8">{{ dc.getResourceTypeClass(dc.getSelectedNode())}}</div>
+          </div>
+          <div class="row">
+            <div class="col-sm-4 ">Location</div>
+            <div class="col-sm-8 location">{{ dc.getSelectedNode().displayPath }}</div>
+          </div>
+          <div class="row">
+            <div class="col-sm-4 left">Owner</div>
+            <div class="col-sm-8">{{ dc.getSelectedNode().ownedByUserName }}</div>
+          </div>
+          <div class="row">
+            <div class="col-sm-4 left">Modified</div>
+            <div class="col-sm-8">
+              <span class="no-wrap">{{ dc.getSelectedNode().lastUpdatedOnTS | prettyDate }}</span>
+              by
+              <span class="no-wrap">{{ dc.getSelectedNode().lastUpdatedByUserName }}</span>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-4 left">Created</div>
+            <div class="col-sm-8">
+              <span class="no-wrap">{{ dc.getSelectedNode().createdOnTS | prettyDate }}</span>
+              by
+              <span class="no-wrap">{{ dc.getSelectedNode().createdByUserName }}</span>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-4 left">Can read</div>
+            <div class="col-sm-8">{{ dc.canRead() }}</div>
+          </div>
+          <div class="row">
+            <div class="col-sm-4 left">Can write</div>
+            <div class="col-sm-8">{{ dc.canWrite() }}</div>
+          </div>
+          <div class="row">
+            <div class="col-sm-4 left">Can change owner</div>
+            <div class="col-sm-8">{{ dc.canChangeOwner() }}</div>
+          </div>
+        </div>
+
+
+        <div class="description">
+          <div ng-if="dc.editingDescription" class="editing">
+
+            <form class="form-inline" ng-submit="dc.updateDescription()">
+              <fieldset>
+                <input id="edit-description" type="text" ng-model="dc.selectedResource.description"
+                    ui-keypress="{'esc':'dc.cancelDescriptionEditing()'}">
+                <button type="submit" style=" display:none">Add</button>
+              </fieldset>
+            </form>
+
+          </div>
+          <div ng-if="!dc.editingDescription" class="title">
+            {{ dc.selectedResource.description }}
+          </div>
+          <div ng-if="!dc.editingDescription" class="edit pull-right">
+            <button
+                type="button"
+                tooltip="edit description"
                 tooltip-trigger
                 tooltip-animation="false"
                 tooltip-placement="left"
                 data-toggle="tooltip"
-                class="btn btn-sm btn-info btn-circle folder"
-                ng-click="dc.showNewFolderModal()"><i
-                class="fa fa-folder"></i></button>
-          </li>
-
-          <li ng-show="dc.showFloatingMenu">
-            <a ng-href="/elements/create?folderId={{dc.currentFolderId | encodeURIComponent}}">
-              <button type="button"
-                  id="button-create-element"
-                  tooltip="create element"
-                  tooltip-trigger
-                  tooltip-animation="false"
-                  tooltip-placement="left"
-                  data-toggle="tooltip" class="btn btn-sm btn-info btn-circle element"><i class="fa fa-sitemap"></i>
-              </button>
-            </a>
-          </li>
-
-          <li ng-show="dc.showFloatingMenu">
-            <a ng-href="/templates/create?folderId={{dc.currentFolderId | encodeURIComponent}}">
-              <button type="button"
-                  id="button-create-template"
-                  tooltip="create template"
-                  tooltip-trigger
-                  tooltip-animation="false"
-                  tooltip-placement="left"
-                  data-toggle="tooltip"
-                  class="btn btn-sm btn-info btn-circle template">
-                <i class="fa fa-file-text"></i>
-              </button>
-            </a>
-          </li>
-
-          <li>
-            <button type="button"
-                id="button-create"
-                class="btn btn-sm btn-info btn-circle compose"
-                ng-mouseenter="dc.showFloatingMenu = true"><i
-                class="fa fa-plus template"></i>
-            </button>
-          </li>
-
-        </ul>
+                ng-click="dc.startDescriptionEditing()"><i class="fa fa-pencil graytext"></i></button>
+          </div>
+        </div>
       </div>
-      <!-- end of floating plus icon section -->
-
     </div>
+    <!-- END RIGHT SIDE -->
+
+    <!-- floating plus icon section -->
+    <div class="add-new  pull-right" ng-if="dc.onDashboard()  && dc.canWriteToCurrentFolder()"
+        ng-mouseleave="dc.showFloatingMenu = false">
+      <ul class="list-unstyled others">
+        <li ng-show="dc.showFloatingMenu">
+          <button type="button"
+              id="button-create-folder"
+              tooltip="create folder"
+              tooltip-trigger
+              tooltip-animation="false"
+              tooltip-placement="left"
+              data-toggle="tooltip"
+              class="btn btn-sm btn-info btn-circle folder"
+              ng-click="dc.showNewFolderModal()"><i
+              class="fa fa-folder"></i></button>
+        </li>
+
+        <li ng-show="dc.showFloatingMenu">
+          <a ng-href="/elements/create?folderId={{dc.currentFolderId | encodeURIComponent}}">
+            <button type="button"
+                id="button-create-element"
+                tooltip="create element"
+                tooltip-trigger
+                tooltip-animation="false"
+                tooltip-placement="left"
+                data-toggle="tooltip" class="btn btn-sm btn-info btn-circle element"><i class="fa fa-sitemap"></i>
+            </button>
+          </a>
+        </li>
+
+        <li ng-show="dc.showFloatingMenu">
+          <a ng-href="/templates/create?folderId={{dc.currentFolderId | encodeURIComponent}}">
+            <button type="button"
+                id="button-create-template"
+                tooltip="create template"
+                tooltip-trigger
+                tooltip-animation="false"
+                tooltip-placement="left"
+                data-toggle="tooltip"
+                class="btn btn-sm btn-info btn-circle template">
+              <i class="fa fa-file-text"></i>
+            </button>
+          </a>
+        </li>
+
+        <li>
+          <button type="button"
+              id="button-create"
+              class="btn btn-sm btn-info btn-circle compose"
+              ng-mouseenter="dc.showFloatingMenu = true"><i
+              class="fa fa-plus template"></i>
+          </button>
+        </li>
+
+      </ul>
+    </div>
+    <!-- end of floating plus icon section -->
+
+  </div>
   </div>
 
-  <!-- end floating plus section -->
 </section>
 
 <!-- add folder modal -->
