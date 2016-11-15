@@ -15251,6 +15251,32 @@ table.apiKey td {
   #sidebar-right.without-info {
     width: 0;
   }
+  #sidebar-right #edit-description {
+    outline: none;
+  }
+  #sidebar-right .header .title {
+    font-size: 20px;
+    padding: 10px 5px;
+  }
+  #sidebar-right .header .goaway {
+    font-size: 20px;
+    padding: 10px 5px;
+    color: black;
+  }
+  #sidebar-right .info {
+    padding: 0;
+    margin: 0;
+    font-size: 14px;
+    border-top: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+  }
+  #sidebar-right .info .row {
+    margin-top: 15px;
+    margin-bottom: 15px;
+  }
+  #sidebar-right .info .row .location {
+    min-height: 60px;
+  }
 }
 @media (max-width: 768px) {
   body {

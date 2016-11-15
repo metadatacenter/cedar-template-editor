@@ -293,7 +293,6 @@ button {
     color: #000;
     padding-left: 0;
 
-
     &:before {
       font-family: "project-cedar" !important;
       content: "n";
@@ -1912,7 +1911,7 @@ body.search-browse-modal {
         margin-left: -14px;
         min-width: 100%;
         position: relative;
-        padding-top:10px;
+        padding-top: 10px;
 
         .preview-edit-options {
           float: right;
@@ -2436,7 +2435,7 @@ section.dashboard-elements {
 
       &.empty ~ .floating-label {
         top: 10px;
-        color:black;
+        color: black;
 
       }
 
@@ -4823,8 +4822,8 @@ p.instructions {
   }
 
   .selection-field {
-    outline:none;
-    box-shadow:none;
+    outline: none;
+    box-shadow: none;
     i.fa-times {
       margin: -3px -5px;
       vertical-align: top;
@@ -5626,7 +5625,7 @@ p.instructions {
 
 .autocomplete-label-wrapper {
   position: relative;
-  height:40px;
+  height: 40px;
   .floating-label {
     opacity: 1;
   }
@@ -5634,8 +5633,7 @@ p.instructions {
 
 .ui-select-container ~ .floating-label {
   top: 12px;
-  color:black;
-
+  color: black;
 
 }
 
@@ -5643,7 +5641,7 @@ p.instructions {
 //  background-color: #F8FFA2;
 //}
 
-.ui-select-bootstrap .ui-select-choices-row.active>span {
+.ui-select-bootstrap .ui-select-choices-row.active > span {
   color: #333 !important;
   background-color: #f5f5f5 !important;
 }
@@ -7053,6 +7051,36 @@ table.apiKey {
     overflow-y: auto;
     &.without-info {
       width: 0;
+    }
+
+    #edit-description {
+      outline: none;
+    }
+
+    .header {
+      .title {
+        font-size: 20px;
+        padding: 10px 5px;
+      }
+      .goaway {
+        font-size: 20px;
+        padding: 10px 5px;
+        color: black;
+      }
+    }
+    .info {
+      padding: 0;
+      margin: 0;
+      font-size: 14px;
+      border-top: 1px solid #ddd;
+      border-bottom: 1px solid #ddd;
+      .row {
+        margin-top: 15px;
+        margin-bottom:15px;
+        .location {
+          min-height: 60px;
+        }
+      }
     }
   }
 }

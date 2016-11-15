@@ -37,7 +37,6 @@ var ToastyPage = function () {
           var message = toast.element(by.css('.toast-msg'));
           message.getText().then(function (value) {
 
-            console.log('toast message ' + value);
             //expect(value.indexOf(text) !== -1).toBe(true);
 
             createToastyClose.click().then(function () {

@@ -776,7 +776,7 @@ define([
         delete $scope.model['_valueLabel'];
       };
 
-      $scope.calculateUIScore_old = function(score) {
+      $scope.calculateUIScore = function(score) {
         var s = Math.floor(score * 100);
         if (s < 1) {
           return "<1%";
@@ -786,9 +786,9 @@ define([
         }
       };
 
-      $scope.calculateUIScore = function(score) {
-        return score.toFixed(2);
-      };
+      //$scope.calculateUIScore = function(score) {
+      //  return score.toFixed(2);
+      //};
 
       $scope.getRecommendationType = function(type) {
         if (type == 'CONTEXT_INDEPENDENT') {
