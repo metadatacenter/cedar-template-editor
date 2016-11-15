@@ -954,11 +954,6 @@ define([
             initSearch();
           });
 
-          $scope.$on('refreshWorkspace', function (event, searchTerm) {
-            vm.params.search = searchTerm;
-            initSearch();
-          });
-
           $scope.hideModal = function (id) {
             jQuery('#' + id).modal('hide');
           };
