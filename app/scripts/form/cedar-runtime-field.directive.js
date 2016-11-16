@@ -299,6 +299,7 @@ define([
         console.log(valueElement);
       }
 
+
       // Updates the model for fields whose values have been constrained using controlled terms
       $scope.updateModelFromUIControlledField = function () {
         // Multiple fields
@@ -327,7 +328,8 @@ define([
             $scope.model['@value'] = null;
           }
         }
-      }
+      };
+
 
       // Set the UI with the values (@value) from the model
       $scope.updateUIFromModel = function (valueElement) {
@@ -429,7 +431,7 @@ define([
           }
         }
         console.log($scope.model);
-      }
+      };
 
       $scope.uuid = DataManipulationService.generateTempGUID();
 
@@ -444,6 +446,7 @@ define([
         return 'scripts/form/field-' + $scope.directory + '/' + inputType + '.html';
       };
 
+      // add more instances to a multiple cardinality field
       $scope.addMoreInput = function () {
         if ((!$scope.field.maxItems || $scope.model.length < $scope.field.maxItems)) {
 
@@ -582,6 +585,7 @@ define([
       }
 
       $scope.updateModelWhenChangeSelection = function (modelvr) {
+
         // This variable will be used at textfield.html
         $scope.modelValueRecommendation = modelvr;
         if ($rootScope.isArray($scope.model)) {
@@ -596,6 +600,28 @@ define([
           var newValue = modelvr['@value'].value;
           $scope.model['@value'] = newValue;
         }
+        console.log($scope.model);
+      };
+
+      $scope.initializeValueRecommendationField = function () {
+        $scope.modelValueRecommendation = {};
+        if ($scope.model) {
+          if ($scope.model['_valueLabel']) {
+            $scope.modelValueRecommendation['@value'] = {
+              'value'   : $scope.model._valueLabel,
+              'valueUri': $scope.model['@value'],
+            };
+          }
+          else {
+            $scope.modelValueRecommendation['@value'] = {
+              'value': $scope.model['@value']
+            };
+          }
+        }
+      };
+
+      $scope.clearSearch = function (select) {
+        select.search = '';
       };
 
       $scope.isFirstRefresh = true;
@@ -603,14 +629,47 @@ define([
         $scope.isFirstRefresh = isFirstRefresh;
       };
 
-      $scope.updateModelWhenRefresh = function (select) {
+      $scope.updateModelWhenRefresh = function (select, modelvr) {
         if (!$scope.isFirstRefresh) {
-          if ($rootScope.isArray($scope.model)) {
-            // TODO
-          } else {
-            $scope.model['@value'] = select.search;
-            $scope.modelValueRecommendation['@value'].value = select.search;
+          // Check that there are no controlled terms selected
+          if (select.selected.valueUri == null) {
+
+            // If the user entered a new value
+            if (select.search != modelvr['@value'].value) {
+              var modelValue;
+              if (select.search == "" || select.search == undefined) {
+                modelValue = null;
+              }
+              else {
+                modelValue = select.search;
+              }
+              $scope.model['@value'] = modelValue;
+              delete $scope.model['_valueLabel'];
+              $scope.modelValueRecommendation['@value'].value = modelValue;
+            }
+
           }
+        }
+      };
+
+      $scope.clearSelection = function ($event, select) {
+        $event.stopPropagation();
+        $scope.modelValueRecommendation = {
+          '@value': {'value': null, 'valueUri': null},
+        }
+        select.selected = undefined;
+        select.search = "";
+        $scope.model['@value'] = null;
+        delete $scope.model['_valueLabel'];
+      };
+
+      $scope.calculateUIScore = function(score) {
+        var s = Math.floor(score * 100);
+        if (s < 1) {
+          return "<1%";
+        }
+        else {
+          return s.toString() + "%";
         }
       };
 
@@ -869,12 +928,16 @@ define([
 
       $scope.getShortId = function (uri, maxLength) {
         return StringUtilsService.getShortId(uri, maxLength);
-      }
+      };
 
 
       // get the field title
       $scope.getTitle = function () {
         return DataManipulationService.getFieldSchema($scope.field)._ui.title;
+      };
+
+      $scope.getDescription = function () {
+        return DataManipulationService.getFieldSchema($scope.field)._ui.description;
       };
 
       // Retrieve appropriate field template file
@@ -906,21 +969,6 @@ define([
         return (($scope.getInputType() == 'checkbox') || ($scope.getInputType() == 'radio') || ($scope.getInputType() == 'list'));
       };
 
-      $scope.getDescription = function () {
-        return $rootScope.schemaOf($scope.field)._ui.description;
-      };
-
-
-      $scope.goToElement = function (id, offset) {
-        // set the location.hash to the id of
-        // the element you wish to scroll to.
-        console.log('goToElement ' + ('anchor' + id));
-
-        $location.hash('anchor' + id);
-        $anchorScroll();
-        $anchorScroll.yOffset = offset;
-
-      };
 
 
       $scope.getLocator = function (index) {
@@ -950,25 +998,25 @@ define([
         var path = args[2];
         var value = args[3];
 
-        console.log('$on setActive id=' + id + ' index=' + index + ' path=' + path + ' scope.path=' + $scope.path + ' value=' + value)
-
-
         if (id === $scope.getId() && path === $scope.path) {
 
           console.log('$on setActive found id=' + id + ' index=' + index + ' path=' + path + ' scope.path=' + $scope.path + ' value=' + value);
-          $scope.setActive(index, value);
+          if ((angular.isArray($scope.model) && $scope.model.length > 0) || !angular.isArray($scope.model)) {
+            $scope.setActive(index, value);
+          } else {
+            console.log('pick the next one');
+            // or go to parent's next field
+            $scope.$parent.nextChild($scope.field, 0, $scope.path);
+          }
         }
       });
 
       $scope.setActive = function (index, value) {
-        console.log('setActive index ' + index + ' value ' + value);
-
 
         var active = (typeof value === "undefined") ? true : value;
         DataManipulationService.setActive($scope.field, index, $scope.path, active);
 
         var locator = $scope.getLocator(index);
-        console.log('locator ' + locator);
         var inputType = $scope.getInputType();
         var tag = 'input';
         if (inputType === 'textarea') {
@@ -988,14 +1036,11 @@ define([
 
       // scroll within the template-container to the field with id locator
       $scope.scrollTo = function (locator, tag) {
-        console.log('scrollTo ' + locator + ' ' + tag);
 
         var target = angular.element('#' + locator);
         if (target && target.offset()) {
-          console.log('have target');
 
           $scope.setHeight = function () {
-            console.log('setHeight');
 
             var window = angular.element($window);
             var windowHeight = $(window).height();
@@ -1035,7 +1080,6 @@ define([
 
 
       $scope.onSubmit = function (index) {
-        console.log('onSubmit');
 
         // go to next index
         if ($scope.isMultiple() && (index + 1 < $scope.model.length)) {
@@ -1091,6 +1135,21 @@ define([
         }
       }
 
+
+
+
+      $scope.isRegular = function() {
+        return !$scope.isConstrained() && !$scope.isRecommended();
+      };
+
+      $scope.isConstrained = function() {
+        //return $scope.hasValueConstraint() ;
+        return $scope.hasValueConstraint() && !$scope.isRecommended();
+      };
+
+      $scope.isRecommended = function() {
+        return $rootScope.vrs.getIsValueRecommendationEnabled($rootScope.schemaOf($scope.field));
+      };
 
     };
 

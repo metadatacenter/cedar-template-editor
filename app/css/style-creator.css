@@ -11754,13 +11754,12 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
 .template-body form .runtime .form-group .form-control,
 .template-body form .runtime .input-group .form-control {
   border-radius: 0;
-  border-color: #ddd;
   box-shadow: none;
-  font-size: 14px;
+  font-size: 16px;
   color: #000000;
   -webkit-transition: border-color 0.3s linear;
           transition: border-color 0.3s linear;
-  height: 30px;
+  height: 40px;
 }
 .template-body form .runtime .form-group .bootstrap-select,
 .template-body form .runtime .input-group .bootstrap-select {
@@ -14077,6 +14076,26 @@ p.instructions {
 .ui-select-container ~ .floating-label {
   top: 12px;
   color: black;
+}
+.ui-select-container {
+  font-size: 16px;
+  height: 40px;
+  background-color: transparent;
+  border-width: 0;
+}
+.ui-select-container.open {
+  border: 1px solid #ccc;
+}
+.ui-select-container .ui-select-match {
+  background-color: transparent;
+  border-width: 0;
+}
+.ui-select-container span {
+  font-size: 16px;
+}
+.ui-select-container .ui-select-match.btn-default-focus {
+  outline: none;
+  box-shadow: none;
 }
 .ui-select-bootstrap .ui-select-choices-row.active > span {
   color: #333 !important;

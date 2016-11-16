@@ -74,6 +74,7 @@ define(['angular'], function (angular) {
      * Service methods.
      */
     service.updatePopulatedFields = function (field, value) {
+      console.log('updatePopulatedFields');
       var fieldId = field['@id'];
       if (value) {
         populatedFields[fieldId] = {
@@ -84,6 +85,7 @@ define(['angular'], function (angular) {
       else {
         delete populatedFields[fieldId];
       }
+      console.log(value);
     }
 
     // Returns all populated fields (name and value) except excludedFieldId, which is the field that is being filled out

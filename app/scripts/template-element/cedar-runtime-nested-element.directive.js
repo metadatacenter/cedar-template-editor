@@ -93,7 +93,7 @@ define([
 
 
       scope.nextChild = function (field, index, path) {
-        console.log('nextCHild');
+        console.log('nextChild');
 
         var next = DataManipulationService.nextSibling(field, scope.$parent.element);
         var parentIndex = parseInt(scope.lastIndex(path)) || 0;

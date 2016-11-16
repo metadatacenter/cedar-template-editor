@@ -2995,12 +2995,12 @@ section.dashboard-elements {
     .form-control {
 
       border-radius: 0;
-      border-color: #ddd;
+
       box-shadow: none;
-      font-size: 14px;
+      font-size: 16px;
       color: @black;
       transition: border-color 0.3s linear;
-      height: 30px;
+      height: 40px;
     }
 
     .bootstrap-select {
@@ -5634,12 +5634,30 @@ p.instructions {
 .ui-select-container ~ .floating-label {
   top: 12px;
   color: black;
-
+}
+.ui-select-container {
+  font-size:16px;
+  height:40px;
+  background-color:transparent;
+  border-width:0;
+  &.open {
+    border:1px solid #ccc;
+  }
+  .ui-select-match {
+    background-color:transparent;
+    border-width: 0;
+  }
+  span {
+    font-size: 16px;
+  }
 }
 
-//.ui-select-bootstrap .ui-select-choices-row>span {
-//  background-color: #F8FFA2;
-//}
+.ui-select-container .ui-select-match.btn-default-focus  {
+    outline: none;
+    box-shadow: none;
+}
+
+
 
 .ui-select-bootstrap .ui-select-choices-row.active > span {
   color: #333 !important;
@@ -5647,6 +5665,7 @@ p.instructions {
 }
 
 .ui-select-choices {
+
 
   .recommendedValue {
     //color: #32a94a;
