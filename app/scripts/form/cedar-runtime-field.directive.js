@@ -7,13 +7,13 @@ define([
       .directive('cedarRuntimeField', cedarRuntimeField);
 
 
-  cedarRuntimeField.$inject = ["$rootScope", "$sce", "$document", "$translate", "$filter", "$location", "$anchorScroll",
+  cedarRuntimeField.$inject = ["$rootScope", "$sce", "$document", "$translate", "$filter", "$location",
                                "$window", '$timeout',
                                "SpreadsheetService",
                                "DataManipulationService", "FieldTypeService", "controlledTermDataService",
                                "StringUtilsService"];
 
-  function cedarRuntimeField($rootScope, $sce, $document, $translate, $filter, $location, $anchorScroll, $window,
+  function cedarRuntimeField($rootScope, $sce, $document, $translate, $filter, $location,  $window,
                              $timeout,
                              SpreadsheetService,
                              DataManipulationService,
