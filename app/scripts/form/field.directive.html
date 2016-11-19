@@ -5,25 +5,25 @@
   <div menuDropDownId="" ng-show="field.items && $root.isRuntime()"
       class="spreadsheetSwitch field"
       style="position:relative">
-    <p class="element-name-label">
+    <div >
 
-       <span class="spreadsheetSwitch ">
-            <button type="button"
-                tooltip="show as spreadsheet"
-                tooltip-trigger
-                tooltip-animation="false"
-                tooltip-placement="top"
-                data-toggle="tooltip"
-                ng-click="switchToSpreadsheet()"
-                class="spreadsheetSwitchLink"
-                ng-show="false"
-                ng-disabled="preview" style="background:transparent;border:0;outline:none">
-              <i class="cedar-svg-spreadsheet"></i>
-            </button>
-       </span>
+       <!--<span class="spreadsheetSwitch ">-->
+            <!--<button type="button"-->
+                <!--tooltip="show as spreadsheet"-->
+                <!--tooltip-trigger-->
+                <!--tooltip-animation="false"-->
+                <!--tooltip-placement="top"-->
+                <!--data-toggle="tooltip"-->
+                <!--ng-click="switchToSpreadsheet()"-->
+                <!--class="spreadsheetSwitchLink"-->
+                <!--ng-show="false"-->
+                <!--ng-disabled="preview" style="background:transparent;border:0;outline:none">-->
+              <!--<i class="cedar-svg-spreadsheet"></i>-->
+            <!--</button>-->
+       <!--</span>-->
 
       <!-- show this add button only when you have minCardinality 0 and an empty list -->
-    <span class="zero-input-wrapper" ng-show="$root.isRuntime() && field.items && model.length == 0">
+    <span class="zero-input-wrapper" ng-if="$root.isRuntime() && field.items && model.length == 0">
       <button type="button" class="add noOutline"
           tooltip="add more"
           tooltip-trigger
@@ -35,7 +35,7 @@
 
       </button>
     </span>
-    </p>
+    </div>
   </div>
 
   <div menuDropDownId="" ng-show="!field.items && $root.isRuntime()"

@@ -14175,19 +14175,19 @@ body.modal-open .modal-backdrop {
 body .template-header .controlled-terms-modal {
   margin-left: 0;
 }
-.template-body form .autocomplete-label-wrapper.has-constraint .ui-select-container ~ .input-indicator-icons .cedar-svg-help-circle {
+.template-body form .build .autocomplete-label-wrapper.has-constraint .ui-select-container ~ .input-indicator-icons .cedar-svg-help-circle {
   display: block;
   margin-top: -7px;
 }
-.template-body form .has-selected.has-constraint .ui-select-container ~ .input-indicator-icons .cedar-svg-help-circle {
+.template-body form .build .has-selected.has-constraint .ui-select-container ~ .input-indicator-icons .cedar-svg-help-circle {
   display: none;
   margin-top: -7px;
 }
-.template-body form .autocomplete-label-wrapper.has-constraint .ui-select-container ~ .input-indicator-icons .cedar-svg-check-circle {
+.template-body form .build .autocomplete-label-wrapper.has-constraint .ui-select-container ~ .input-indicator-icons .cedar-svg-check-circle {
   display: none;
   margin-top: -7px;
 }
-.template-body form .has-selected.has-constraint .ui-select-container ~ .input-indicator-icons .cedar-svg-check-circle {
+.template-body form .build .has-selected.has-constraint .ui-select-container ~ .input-indicator-icons .cedar-svg-check-circle {
   display: block;
   margin-top: -7px;
 }
