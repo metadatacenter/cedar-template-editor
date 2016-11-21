@@ -366,36 +366,6 @@ define([
         }
       }
 
-      // Updates the model for fields whose values have been constrained using controlled terms
-      $scope.updateModelFromUIControlledFieldNew = function () {
-        // Multiple fields
-        if ($rootScope.isArray($scope.modelValue)) {
-          if ($scope.modelValue.length > 0) {
-            angular.forEach($scope.modelValue, function (m, i) {
-              if (m && m['@value'] && m['@value']['@id']) {
-                $scope.model[i] = {
-                  "@value"   : m['@value']['@id'],
-                  _valueLabel: m['@value'].label
-                };
-              }
-            });
-          }
-          else {
-            // Default value
-            $scope.model = [{'@value': null}];
-          }
-        }
-        // Single fields
-        else {
-          if ($scope.modelValue && $scope.modelValue['@value'] && $scope.modelValue['@value']["@id"]) {
-            $scope.model['@value'] = $scope.modelValue['@value']["@id"];
-            $scope.model._valueLabel = $scope.modelValue['@value'].label;
-          } else {
-            $scope.model['@value'] = null;
-          }
-        }
-      }
-
       // Set the UI with the values (@value) from the model
       $scope.updateUIFromModel = function () {
         if (field._ui.inputType == 'checkbox') {
@@ -422,26 +392,6 @@ define([
       }
 
       $scope.updateUIFromModelControlledField = function () {
-        if ($rootScope.isArray($scope.model)) {
-          $scope.modelValue = [];
-          angular.forEach($scope.model, function (m, i) {
-            $scope.modelValue[i] = {};
-            $scope.modelValue[i]['@value'] = {
-              '@id': m['@value'],
-              label: m._valueLabel
-            };
-          });
-        }
-        else {
-          $scope.modelValue = {};
-          $scope.modelValue['@value'] = {
-            '@id': $scope.model['@value'],
-            label: $scope.model._valueLabel
-          };
-        }
-      }
-
-      $scope.updateUIFromModelControlledFieldNew = function () {
         if ($rootScope.isArray($scope.model)) {
           $scope.modelValue = [];
           angular.forEach($scope.model, function (m, i) {
@@ -510,24 +460,7 @@ define([
         }
       }
 
-      // Initializes model for fields constrained using controlled terms
-      $scope.initializeControlledFieldNew = function () {
-        // If modelValue has not been initialized
-        if (!$scope.modelValue) {
-          var isMultiple = false;
-          if ($scope.field.items) {
-            isMultiple = true;
-          }
-          if ($scope.directory == "render") {
-            if ($rootScope.schemaOf($scope.field)._ui.inputType == "textfield" &&
-                $rootScope.hasValueConstraint($rootScope.schemaOf($scope.field)._valueConstraints)) {
 
-                $scope.updateUIFromModelControlledFieldNew();
-
-            }
-          }
-        }
-      }
 
       // Sets the default @value for non-selection fields (i.e., text, paragraph, date, email, numeric, phone)
       $scope.setDefaultValueIfEmpty = function(m) {

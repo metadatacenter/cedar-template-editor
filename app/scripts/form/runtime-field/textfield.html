@@ -5,7 +5,7 @@
       ng-click="setActive(index,true)"
       aria-label="{{getDescription()}}"
       style="cursor:pointer;font-size: 1.2em;line-height: 28px;"> {{isRegular() ? valueElement['@value'] :
-    (isConstrained() ? valueElement['_valueLabel'] : modelValueRecommendation['@value'].value)}}
+    (isConstrained() ? valueElement['_valueLabel']: modelValueRecommendation['@value'].value)}}
 
   </div>
 </div>
@@ -17,8 +17,7 @@
   <div ng-if="isRegular()"
       class="form-group  has-feedback">
 
-    <input ng-if="!hasValueConstraint() && !$root.vrs.getIsValueRecommendationEnabled($root.schemaOf(field))"
-        type="text"
+    <input type="text"
         ng-click="setActive(index, true)"
         class="form-control"
         ng-class="{'isActive' : isActive(index), 'required': isRequired()}"
@@ -34,23 +33,27 @@
   <div ng-if="isConstrained()" class="form-group  has-feedback">
 
     <div ng-init="initializeControlledField()"
-        class="has-constraint " ng-class="{'has-selected': valueElement['@value'].label}"
+        class="has-constraint " ng-class="{'has-selected': (valueElement['@value'].label || valueElement['_valueLabel'])}"
         style="border:1px solid #ddd;box-shadow:none;">
 
+       <!--valueElement {{valueElement}}  modelValue {{modelValue[index] || modelValue}}-->
 
-      <ui-select style=""
+
+      <ui-select
           ng-change="updateModelFromUIControlledField()"
-          ng-model="modelValue['@value']" close-on-select="true"
-          ng-disabled="!$root.isRuntime() || preview"
+          ng-model="modelValue[index]['@value']"
+          theme="bootstrap"
+          close-on-select="true"
           aria-label="{{$root.schemaOf(field)._ui.description}}">
         <ui-select-match placeholder="">{{$select.selected.label}}</ui-select-match>
-        <ui-select-choices ui-disable-choice="option.label == 'No Results...'"
-            refresh="$root.updateFieldAutocomplete(field, $select.search)" refresh-delay="200"
-            repeat="option in $root.autocompleteResultsCache[field['@id']]['results'] | propsFilter: {label: $select.search} | limitTo:500">
+        <ui-select-choices
+            ui-disable-choice="option.label == 'No Results...'"
+            refresh="$root.updateFieldAutocomplete($root.schemaOf(field), $select.search)"
+            refresh-delay="200"
+            repeat="option in $root.autocompleteResultsCache[$root.schemaOf(field)['@id']]['results'] | propsFilter: {label: $select.search} | limitTo:500">
           <div ng-bind-html="option.label | highlight: $select.search"></div>
         </ui-select-choices>
       </ui-select>
-
     </div>
   </div>
 
