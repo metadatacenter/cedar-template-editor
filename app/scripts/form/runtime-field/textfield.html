@@ -1,12 +1,9 @@
 <!--- not active --->
 <div ng-if="!isActive(index)" class="form-group  has-feedback">
-
   <div
       ng-click="setActive(index,true)"
       aria-label="{{getDescription()}}"
-      style="cursor:pointer;font-size: 1.2em;line-height: 28px;"> {{isRegular() ? valueElement['@value'] :
-    (isConstrained() ? valueElement['_valueLabel']: modelValueRecommendation['@value'].value)}}
-
+      class="value"> {{isRegular() ? valueElement['@value'] : valueElement['_valueLabel']}}
   </div>
 </div>
 
@@ -36,9 +33,6 @@
         class="has-constraint " ng-class="{'has-selected': (valueElement['@value'].label || valueElement['_valueLabel'])}"
         style="border:1px solid #ddd;box-shadow:none;">
 
-       <!--valueElement {{valueElement}}  modelValue {{modelValue[index] || modelValue}}-->
-
-
       <ui-select
           ng-change="updateModelFromUIControlledField()"
           ng-model="modelValue[index]['@value']"
@@ -60,6 +54,7 @@
 
   <!-- Field with value recommendation functionality -->
   <div ng-if="isRecommended()" class="form-group  has-feedback">
+
 
     <div ng-init="initializeValueRecommendationField()"
         class="has-constraint autocomplete-label-wrapper"

@@ -11585,6 +11585,11 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   font-family: "Source Sans Pro", sans-serif;
   font-weight: lighter;
 }
+.template-body form .runtime .value {
+  cursor: pointer;
+  font-size: 1.2em;
+  line-height: 28px;
+}
 .template-body form .runtime .leader {
   background-color: #aaa;
   position: relative;
@@ -15685,8 +15690,8 @@ body {
 }
 .field-instance.multiple-instance-field {
   border: 1px solid #ddd;
-  padding-top: 5px;
-  padding-bottom: 5px;
+  padding-top: 12px;
+  padding-bottom: 12px;
   margin-bottom: 16px;
   background-color: #e8e8e8;
 }

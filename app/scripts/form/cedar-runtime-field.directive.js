@@ -591,6 +591,8 @@ define([
       }
 
       $scope.updateModelWhenChangeSelection = function (modelvr) {
+        console.log('updateModelWhenChangeSelection');
+        console.log(modelvr);
 
         // This variable will be used at textfield.html
         $scope.modelValueRecommendation = modelvr;
@@ -603,13 +605,19 @@ define([
             }
           });
         } else {
-          var newValue = modelvr['@value'].value;
-          $scope.model['@value'] = newValue;
+          console.log('not an array');
+          //var newValue = modelvr['@value'].value;
+          $scope.model['@value'] = modelvr['@value'].valueUri;
+          $scope.model['_valueLabel'] = modelvr['@value'].value;
+
         }
         console.log($scope.model);
       };
 
       $scope.initializeValueRecommendationField = function () {
+        console.log('initializeValueRecommendationField');
+        console.log($scope.modelValueRecommendation);
+        console.log($scope.model);
         $scope.modelValueRecommendation = {};
         if ($scope.model) {
           if ($scope.model['_valueLabel']) {
@@ -624,6 +632,8 @@ define([
             };
           }
         }
+
+        console.log($scope.modelValueRecommendation);
       };
 
       $scope.clearSearch = function (select) {
@@ -1146,7 +1156,6 @@ define([
       };
 
       $scope.isConstrained = function () {
-        //return $scope.hasValueConstraint() ;
         return $scope.hasValueConstraint() && !$scope.isRecommended();
       };
 
