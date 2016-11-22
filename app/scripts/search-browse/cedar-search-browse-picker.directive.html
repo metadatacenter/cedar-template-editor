@@ -1,150 +1,138 @@
 <div class="controls-bar clearfix row-fluid navbar-fixed-top " ng-class="{'as-modal': !dc.onDashboard()}">
-  <!--<div style="position:absolute;width:300px;">-->
-  <!--<ul class="list-inline ">-->
-  <!--<li ng-if="dc.onDashboard()">-->
-  <!--<button-->
-  <!--type="button"-->
-  <!--tooltip="filter results"-->
-  <!--tooltip-trigger-->
-  <!--tooltip-animation="false"-->
-  <!--tooltip-placement="top"-->
-  <!--data-toggle="tooltip"-->
-  <!--ng-click="dc.toggleFilters()"><i class="fa fa-filter graytext"></i></button>-->
-  <!--</li>-->
-  <!--</ul>-->
-  <!--</div>-->
 
   <div class="col-sm-2"></div>
   <div class="col-sm-7">
 
     <div class="breadcrumbs-sb ">
-    <p ng-if="dc.isSearching">
-      <span class="search-result">Search Results For: '{{dc.searchTerm}}' </span>
-    </p>
+      <p ng-if="dc.isSearching">
+        <span class="search-result">Search Results For: '{{dc.searchTerm}}' </span>
+      </p>
 
-    <p ng-if="!dc.isSearching">
+      <p ng-if="!dc.isSearching">
             <span ng-repeat="folder in dc.pathInfo">
               <a ng-click="dc.goToFolder(folder['@id'])"
                   class="breadcrumbs">{{dc.breadcrumbName(folder.displayName)}}</a> /
             </span>
-      <a class="breadcrumbs">{{dc.breadcrumbName(dc.currentPath.displayName)}}</a>
+        <a class="breadcrumbs">{{dc.breadcrumbName(dc.currentPath.displayName)}}</a>
 
-    </p>
-  </div>
+      </p>
+    </div>
 
   </div>
   <div class="col-sm-3">
 
-  <div  class=" list-inline pull-right" id="workspace-toolbar">
-    <ul class="list-inline pull-right">
-      <li ng-if="dc.onDashboard() && dc.hasSelection()" id="delete-tool">
-        <button
-            type="button"
-            tooltip="delete selection"
-            tooltip-trigger
-            tooltip-animation="false"
-            tooltip-placement="bottom"
-            data-toggle="tooltip"
-            ng-click="dc.deleteResource()"><i class="fa fa-trash "></i></button>
-      </li>
-      <li ng-if="dc.onDashboard() && dc.hasSelection()" id="more-options-tool">
-        <div class="btn-group dropdown">
-          <button data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><i
-              class="fa fa-ellipsis-v  inline "></i></button>
-          <ul class="dropdown-menu dropdown-menu-right">
+    <div class=" list-inline pull-right" id="workspace-toolbar">
+      <ul class="list-inline pull-right">
+        <li ng-if="dc.onDashboard() && dc.hasSelection()" id="delete-tool">
+          <button
+              type="button"
+              tooltip="delete selection"
+              tooltip-trigger
+              tooltip-animation="false"
+              tooltip-placement="bottom"
+              data-toggle="tooltip"
+              ng-click="dc.deleteResource()"><i class="fa fa-trash "></i></button>
+        </li>
+        <li ng-if="dc.onDashboard() && dc.hasSelection()" id="more-options-tool">
+          <div class="btn-group dropdown">
+            <button data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><i
+                class="fa fa-ellipsis-v  inline "></i></button>
+            <ul class="dropdown-menu dropdown-menu-right">
 
-            <li ng-if="dc.isFolder()"><a href="#" ng-click="dc.goToResource()">Open</a></li>
-            <li ng-if="dc.isTemplate()"><a href="#" ng-click="dc.launchInstance()">Populate</a></li>
-            <li ng-if="!dc.isFolder()"><a href="#" ng-click="dc.editResource()">Edit</a></li>
-            <li role="separator" class="divider"></li>
-            <li><a href="#" ng-click="dc.showShareModal(resource)">Share...</a></li>
-            <li><a href="#" ng-click="dc.showMoveModal(resource)">Move to...</a></li>
-            <li><a href="#" ng-click="dc.showRenameModal(resource)">Rename...</a></li>
-            <li ng-if="!dc.isFolder()"><a href="#" ng-click="dc.copyResource()">Make a copy</a></li>
-            <li role="separator" class="divider"></li>
-            <li><a href="#" ng-click="dc.deleteResource(resource)">Delete</a></li>
-          </ul>
-        </div>
-      </li>
+              <li ng-if="dc.isFolder()"><a href="#" ng-click="dc.goToResource()">Open</a></li>
+              <li ng-if="dc.isTemplate()"><a href="#" ng-click="dc.launchInstance()">Populate</a></li>
+              <li ng-if="!dc.isFolder()"><a href="#" ng-click="dc.editResource()">Edit</a></li>
+              <li role="separator" class="divider"></li>
+              <li><a href="#" ng-click="dc.showShareModal(resource)">Share...</a></li>
+              <li><a href="#" ng-click="dc.showMoveModal(resource)">Move to...</a></li>
+              <li><a href="#" ng-click="dc.showRenameModal(resource)">Rename...</a></li>
+              <li ng-if="!dc.isFolder()"><a href="#" ng-click="dc.copyResource()">Make a copy</a></li>
+              <li role="separator" class="divider"></li>
+              <li><a href="#" ng-click="dc.deleteResource(resource)">Delete</a></li>
+            </ul>
+          </div>
+        </li>
 
-      <li ng-if="dc.onDashboard() && dc.hasSelection()" class="inline divider-vertical "></li>
+        <li ng-if="dc.onDashboard() && dc.hasSelection()" class="inline divider-vertical "></li>
 
-      <li ng-show="dc.onDashboard() && dc.resourceViewMode != 'grid'" id="grid-view-tool">
-        <button
-            type="button"
-            tooltip="view as grid"
-            tooltip-trigger
-            tooltip-animation="false"
-            tooltip-placement="bottom"
-            data-toggle="tooltip"
-            ng-click="dc.setResourceViewMode('grid')"><i
-            class="fa fa-th inline"></i></button>
-      </li>
+        <li ng-show="dc.onDashboard() && dc.resourceViewMode != 'grid'" id="grid-view-tool">
+          <button
+              type="button"
+              tooltip="view as grid"
+              tooltip-trigger
+              tooltip-animation="false"
+              tooltip-placement="bottom"
+              data-toggle="tooltip"
+              ng-click="dc.setResourceViewMode('grid')"><i
+              class="fa fa-th inline"></i></button>
+        </li>
 
-      <li ng-show="dc.onDashboard() && dc.resourceViewMode != 'list'" id="list-view-tool">
-        <button type="button"
-            tooltip="view as list"
-            tooltip-trigger
-            tooltip-animation="false"
-            tooltip-placement="bottom"
-            data-toggle="tooltip"
-            ng-click="dc.setResourceViewMode('list')"><i
-            class="fa fa-list-ul inline "></i></button>
-      </li>
+        <li ng-show="dc.onDashboard() && dc.resourceViewMode != 'list'" id="list-view-tool">
+          <button type="button"
+              tooltip="view as list"
+              tooltip-trigger
+              tooltip-animation="false"
+              tooltip-placement="bottom"
+              data-toggle="tooltip"
+              ng-click="dc.setResourceViewMode('list')"><i
+              class="fa fa-list-ul inline "></i></button>
+        </li>
 
 
-      <li ng-show="!dc.infoShowing()" ng-if="dc.onDashboard()" id="details-view-tool">
-        <button type="button"
-            tooltip="view details"
-            tooltip-trigger
-            tooltip-animation="false"
-            tooltip-placement="bottom"
-            data-toggle="tooltip"
-            ng-click="dc.toggleInfoPanel()"><i class="fa fa-info "></i></button>
-      </li>
+        <li ng-show="!dc.infoShowing()" ng-if="dc.onDashboard()" id="details-view-tool">
+          <button type="button"
+              tooltip="view details"
+              tooltip-trigger
+              tooltip-animation="false"
+              tooltip-placement="bottom"
+              data-toggle="tooltip"
+              ng-click="dc.toggleInfoPanel()"><i class="fa fa-info "></i></button>
+        </li>
 
-      <li ng-show="dc.infoShowing()" ng-if="dc.onDashboard()" id="details-hide-tool">
-        <button type="button"
-            tooltip="hide details"
-            tooltip-trigger
-            tooltip-animation="false"
-            tooltip-placement="bottom"
-            data-toggle="tooltip"
-            ng-click="dc.toggleInfoPanel()"><i class="fa fa-info "></i></button>
-      </li>
+        <li ng-show="dc.infoShowing()" ng-if="dc.onDashboard()" id="details-hide-tool">
+          <button type="button"
+              tooltip="hide details"
+              tooltip-trigger
+              tooltip-animation="false"
+              tooltip-placement="bottom"
+              data-toggle="tooltip"
+              ng-click="dc.toggleInfoPanel()"><i class="fa fa-info "></i></button>
+        </li>
 
-      <li ng-if="dc.onDashboard()" id="workspace-sort-tool">
-        <div class="btn-group dropdown">
-          <button data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><i
-              class="fa fa-sort  inline "></i></button>
-          <ul class="dropdown-menu dropdown-menu-right">
-            <li><a ng-click="dc.setSortOption('name')"><i class="fa fa-check" ng-class="dc.sortName()"></i><span
-                translate="DASHBOARD.sort.name"></span></a></li>
-            <li><a ng-click="dc.setSortOption('createdOnTS')"><i class="fa fa-check"
-                ng-class="dc.sortCreated()"></i><span translate="DASHBOARD.sort.createdOnTS"></span></a></li>
-            <li><a ng-click="dc.setSortOption('lastUpdatedOnTS')"><i class="fa fa-check"
-                ng-class="dc.sortUpdated()"></i><span
-                translate="DASHBOARD.sort.lastUpdatedOnTS"></span></a>
-            </li>
-          </ul>
-        </div>
-      </li>
+        <li ng-if="dc.onDashboard()" id="workspace-sort-tool">
+          <div class="btn-group dropdown">
+            <button data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><i
+                class="fa fa-sort  inline "></i></button>
+            <ul class="dropdown-menu dropdown-menu-right">
+              <li><a ng-click="dc.setSortOption('name')"><i class="fa fa-check" ng-class="dc.sortName()"></i><span
+                  translate="DASHBOARD.sort.name"></span></a></li>
+              <li><a ng-click="dc.setSortOption('createdOnTS')"><i class="fa fa-check"
+                  ng-class="dc.sortCreated()"></i><span translate="DASHBOARD.sort.createdOnTS"></span></a></li>
+              <li><a ng-click="dc.setSortOption('lastUpdatedOnTS')"><i class="fa fa-check"
+                  ng-class="dc.sortUpdated()"></i><span
+                  translate="DASHBOARD.sort.lastUpdatedOnTS"></span></a>
+              </li>
+            </ul>
+          </div>
+        </li>
 
-      <li ng-if="dc.onDashboard()" id="user-tool">
-        <div class="btn-group dropdown">
-          <button data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><i
-              class="fa fa-user inline "></i></button>
-          <ul class="dropdown-menu dropdown-menu-right">
-            <li id="user-profile-tool"><a href="/profile">Profile</a></li>
-            <li id="user-help"><a target="_blank" href="http://metadatacenter.org/tools-training/support">Help</a></li>
-            <li id="user-about"><a target="_blank" href="http://metadatacenter.org/tools-training/orientation">About</a></li>
-            <li id="user-privacy"><a href="/privacy">Privacy</a></li>
-            <li id="user-logout-tool"><a href="/logout">Logout</a></li>
-          </ul>
-        </div>
-      </li>
-    </ul>
-  </div>
+        <li ng-if="dc.onDashboard()" id="user-tool">
+          <div class="btn-group dropdown">
+            <button data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><i
+                class="fa fa-user inline "></i></button>
+            <ul class="dropdown-menu dropdown-menu-right">
+              <li id="user-profile-tool"><a href="/profile">Profile</a></li>
+              <li id="user-help"><a target="_blank" href="http://metadatacenter.org/tools-training/support">Help</a>
+              </li>
+              <li id="user-about"><a target="_blank"
+                  href="http://metadatacenter.org/tools-training/orientation">About</a></li>
+              <li id="user-privacy"><a href="/privacy">Privacy</a></li>
+              <li id="user-logout-tool"><a href="/logout">Logout</a></li>
+            </ul>
+          </div>
+        </li>
+      </ul>
+    </div>
   </div>
 </div>
 
@@ -239,13 +227,6 @@
 <!--all items view -->
 <section class="all-items-view " ng-class="{'as-modal': !dc.onDashboard()}">
 
-  <!--<a ng-if="dc.onDashboard()" class="push-pull-box" ng-click="dc.toggleFavorites()" href="javascript:"-->
-  <!--aria-expanded="false" ng-class="{'collapsed': !dc.showFavorites}">-->
-
-  <!--<i class="fa fa-caret-down"></i>-->
-  <!--<i class="fa fa-caret-up"></i>-->
-  <!--</a>-->
-
   <!-- container -->
   <div class="container-fluid">
     <div class="row ">
@@ -260,7 +241,8 @@
           <div>
             <!-- nested facet template -->
             <script type="text/ng-template" id="facet_renderer.html">
-              <a href="#"><i class="fa fa-caret-right" aria-hidden="true"></i>{{ node.label }} ({{ node.numberOfMatches}})</a>
+              <a href="#"><i class="fa fa-caret-right" aria-hidden="true"></i>{{ node.label }} ({{
+                node.numberOfMatches}})</a>
               <ul ui-tree-nodes="" ng-model="node.nodes">
                 <li ng-repeat="node in node.nodes" ui-tree-node="" ng-include="'facet_renderer.html'"></li>
               </ul>
@@ -271,7 +253,7 @@
                   ng-class="{ 'fa-caret-down': dc.isFilterSection('type'), 'fa-caret-left': !dc.isFilterSection('type') }"
                   aria-hidden="true"></i></a>
 
-                <ul ng-if="dc.isFilterSection('type')" class="list-inline " >
+                <ul ng-if="dc.isFilterSection('type')" class="list-inline ">
                   <li>
                     <button tooltip="{{dc.showOrHide('template')}} template"
                         tooltip-trigger
@@ -280,7 +262,7 @@
                         data-toggle="tooltip"
                         ng-click="dc.toggleResourceType('template')"><i
                         class="btn btn-sm btn-info btn-circle fa large-icon fa-file-text template"
-                        ng-class="{ active: dc.isResourceTypeActive('template') }"  ></i></button>
+                        ng-class="{ active: dc.isResourceTypeActive('template') }"></i></button>
                   </li>
                   <li>
                     <button tooltip="{{dc.showOrHide('element')}} element"
@@ -290,7 +272,7 @@
                         data-toggle="tooltip"
                         ng-click="dc.toggleResourceType('element')"><i
                         class="btn btn-sm btn-info btn-circle fa large-icon  fa-sitemap element"
-                        ng-class="{ active: dc.isResourceTypeActive('element') }" style="padding:5px" ></i></button>
+                        ng-class="{ active: dc.isResourceTypeActive('element') }" style="padding:5px"></i></button>
                   </li>
                   <li>
                     <button tooltip="{{dc.showOrHide('instance')}} metadata"
@@ -300,7 +282,7 @@
                         data-toggle="tooltip"
                         ng-click="dc.toggleResourceType('instance')"><i
                         class="btn btn-sm btn-info btn-circle fa large-icon  fa-tag metadata"
-                        ng-class="{ active: dc.isResourceTypeActive('instance') }" ></i></button>
+                        ng-class="{ active: dc.isResourceTypeActive('instance') }"></i></button>
                   </li>
                 </ul>
 
@@ -366,7 +348,7 @@
                         <!--<li ng-if="!dc.isFolder()"><a href="#" ng-click="dc.editResource(resource)">Edit</a></li>-->
                         <li><a href="#" ng-click="dc.showInfoPanel(resource)">Info</a></li>
                         <li role="separator" class="divider"></li>
-                        <li><a href="#"   ng-click="dc.showShareModal(resource)"
+                        <li><a href="#" ng-click="dc.showShareModal(resource)"
                             >Share...</a></li>
                         <li><a href="#" ng-click="dc.showMoveModal(resource)">Move to...</a></li>
                         <li><a href="#" ng-click="dc.showRenameModal(resource)">Rename...</a></li>
@@ -413,10 +395,10 @@
                       </button>
                       <ul class="dropdown-menu" aria-labelledby="{{getId(resource, 'populate')}}">
                         <li ng-if="dc.isTemplate()"><a href="#" ng-click="dc.launchInstance(resource)">Populate</a></li>
-                        <li ><a href="#" ng-click="dc.editResource(resource)">Edit</a></li>
+                        <li><a href="#" ng-click="dc.editResource(resource)">Edit</a></li>
                         <li><a href="#" ng-click="dc.showInfoPanel(resource)">Info</a></li>
                         <li role="separator" class="divider"></li>
-                        <li><a href="#"   ng-click="dc.showShareModal(resource)">Share...</a></li>
+                        <li><a href="#" ng-click="dc.showShareModal(resource)">Share...</a></li>
                         <li><a href="#" ng-click="dc.showMoveModal(resource)">Move to...</a></li>
                         <li><a href="#" ng-click="dc.showRenameModal(resource)">Rename...</a></li>
                         <li><a href="#" ng-if="!dc.isFolder()" ng-click="dc.copyResource()">Make a copy</a></li>
@@ -461,10 +443,10 @@
                         class="btn btn-sm btn-circle fa fa-ellipsis-v"></i>
                     </button>
                     <ul class="dropdown-menu" aria-labelledby="{{getId(resource, 'list')}}">
-                      <li ><a href="#" ng-click="dc.editResource()">Open</a></li>
+                      <li><a href="#" ng-click="dc.editResource()">Open</a></li>
                       <li><a href="#" ng-click="dc.showInfoPanel(resource)">Info</a></li>
                       <li role="separator" class="divider"></li>
-                      <li><a href="#"   ng-click="dc.showShareModal(resource)">Share...</a></li>
+                      <li><a href="#" ng-click="dc.showShareModal(resource)">Share...</a></li>
                       <li><a href="#" ng-click="dc.showMoveModal(resource)">Move to...</a></li>
                       <li><a href="#" ng-click="dc.showRenameModal(resource)">Rename...</a></li>
                       <li role="separator" class="divider"></li>
@@ -497,13 +479,13 @@
                     </button>
                     <ul class="dropdown-menu" aria-labelledby="{{getId(resource, 'list')}}">
                       <li ng-if="dc.isTemplate() "><a href="#" ng-click="dc.launchInstance(resource)">Populate</a></li>
-                      <li ><a href="#" ng-click="dc.editResource(resource)">Edit</a></li>
+                      <li><a href="#" ng-click="dc.editResource(resource)">Edit</a></li>
                       <li><a href="#" ng-click="dc.showInfoPanel(resource)">Info</a></li>
                       <li role="separator" class="divider"></li>
                       <li><a href="#" ng-click="dc.showShareModal(resource)">Share...</a></li>
                       <li><a href="#" ng-click="dc.showMoveModal(resource)">Move to...</a></li>
                       <li><a href="#" ng-click="dc.showRenameModal(resource)">Rename...</a></li>
-                      <li><a href="#"  ng-click="dc.copyResource()">Make a copy</a></li>
+                      <li><a href="#" ng-click="dc.copyResource()">Make a copy</a></li>
                       <li role="separator" class="divider"></li>
                       <li><a href="#" ng-click="dc.deleteResource(resource)">Delete</a></li>
                     </ul>
@@ -519,198 +501,200 @@
       <!-- end of center panel -->
 
       <!-- RIGHT SIDE -->
-      <div class="col-sm-3 row-offcanvas-right" id="sidebar-right" ng-if="dc.infoShowing()" >
-        <div>
+      <div class="col-sm-3 row-offcanvas-right" id="sidebar-right" ng-if="dc.infoShowing()">
 
-          <div class="title" ng-class="dc.getSelectedNode().nodeType"><i style="font-size:20px; text-align:left"
-              class="fa"
-              ng-class="dc.getResourceIconClass(dc.getSelectedNode())"></i>
-            {{ dc.getSelectedNode().displayName }}
-          </div>
+        <div class="header">
+          <div class="row">
 
-          <div style="display:inline-block;" class="pull-right">
-            <button
-                ng-click="dc.setResourceInfo(false)"
-                type="button"
-                class="close"
-                aria-label="Close"
-                tooltip="Close Info Panel"
-                tooltip-placement="left"
-                ><span aria-hidden="true"><img
-                src="/img/close_modal.png" width="22"/></span></button>
-          </div>
-          
-          <table class="table"
-              style="padding:0;margin:0;font-size:13px;border-top:1px solid #ddd;border-bottom:1px solid #ddd;">
-
-            <tbody>
-            <tr>
-              <td class="left">Type</td>
-              <td>{{ dc.getResourceTypeClass(dc.getSelectedNode())}}</td>
-            </tr>
-            <tr>
-
-              <td class="left">Location</td>
-              <td>{{ dc.getSelectedNode().displayPath }}</td>
-            </tr>
-            <tr>
-              <td class="left">Owner</td>
-              <td>{{ dc.getSelectedNode().ownedByUserName }}</td>
-            </tr>
-            <tr>
-              <td class="left">Modified</td>
-              <td>
-                <span class="no-wrap">{{ dc.getSelectedNode().lastUpdatedOnTS | prettyDate }}</span>
-                by
-                <span class="no-wrap">{{ dc.getSelectedNode().lastUpdatedByUserName }}</span>
-              </td>
-            </tr>
-            <tr>
-              <td class="left">Created</td>
-              <td>
-                <span class="no-wrap">{{ dc.getSelectedNode().createdOnTS | prettyDate }}</span>
-                by
-                <span class="no-wrap">{{ dc.getSelectedNode().createdByUserName }}</span>
-              </td>
-            </tr>
-            <tr>
-              <td class="left">Can Read</td>
-              <td>{{ dc.canRead() }}</td>
-
-            </tr>
-            <tr>
-              <td class="left">Can Write</td>
-              <td>{{ dc.canWrite() }}</td>
-
-            </tr>
-            <tr>
-              <td class="left">Can Change Owner</td>
-              <td>{{ dc.canChangeOwner() }}</td>
-
-            </tr>
-            </tbody>
-          </table>
-
-
-          <div class="description">
-            <div ng-if="dc.editingDescription" class="editing">
-
-              <form class="form-inline" ng-submit="dc.updateDescription()">
-                <fieldset>
-                  <input id="edit-description" type="text" ng-model="dc.selectedResource.description"
-                      ui-keypress="{'esc':'dc.cancelDescriptionEditing()'}">
-                  <button type="submit" style=" display:none">Add</button>
-                </fieldset>
-              </form>
-
+            <div class="col-sm-2 pull-right ">
+              <div class="goaway">
+                <button
+                    ng-click="dc.setResourceInfo(false)"
+                    type="button"
+                    class="close"
+                    aria-label="Close"
+                    ><span aria-hidden="true"><img
+                    src="/img/close_modal.png" width="22"/></span></button>
+              </div>
             </div>
-            <div ng-if="!dc.editingDescription" class="title">
-              {{ dc.selectedResource.description }}
+
+            <div class="col-sm-10">
+              <div class="title" ng-class="dc.getSelectedNode().nodeType">
+                <i class="fa" ng-class="dc.getResourceIconClass(dc.getSelectedNode())"></i> {{ dc.getSelectedNode().displayName }}
+              </div>
             </div>
-            <div ng-if="!dc.editingDescription" class="edit pull-right">
-              <button
-                  type="button"
-                  tooltip="edit description"
-                  tooltip-trigger
-                  tooltip-animation="false"
-                  tooltip-placement="left"
-                  data-toggle="tooltip"
-                  ng-click="dc.startDescriptionEditing()"><i class="fa fa-pencil graytext"></i></button>
-            </div>
+
           </div>
         </div>
-      </div>
-      <!-- END RIGHT SIDE -->
 
-      <!-- floating plus icon section -->
-      <div class="add-new  pull-right" ng-if="dc.onDashboard()  && dc.canWriteToCurrentFolder()" ng-mouseleave="dc.showFloatingMenu = false">
-        <ul class="list-unstyled others">
-          <li ng-show="dc.showFloatingMenu">
-            <button type="button"
-                id="button-create-folder"
-                tooltip="create folder"
+
+        <div class="info">
+          <div class="row">
+            <div class="col-sm-4" translate>Type</div>
+            <div class="col-sm-8">{{ dc.getResourceTypeClass(dc.getSelectedNode())}}</div>
+          </div>
+          <div class="row">
+            <div class="col-sm-4 ">Location</div>
+            <div class="col-sm-8 location">{{ dc.getSelectedNode().displayPath }}</div>
+          </div>
+          <div class="row">
+            <div class="col-sm-4 left">Owner</div>
+            <div class="col-sm-8">{{ dc.getSelectedNode().ownedByUserName }}</div>
+          </div>
+          <div class="row">
+            <div class="col-sm-4 left">Modified</div>
+            <div class="col-sm-8">
+              <span class="no-wrap">{{ dc.getSelectedNode().lastUpdatedOnTS | prettyDate }}</span>
+              by
+              <span class="no-wrap">{{ dc.getSelectedNode().lastUpdatedByUserName }}</span>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-4 left">Created</div>
+            <div class="col-sm-8">
+              <span class="no-wrap">{{ dc.getSelectedNode().createdOnTS | prettyDate }}</span>
+              by
+              <span class="no-wrap">{{ dc.getSelectedNode().createdByUserName }}</span>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-4 left">Can read</div>
+            <div class="col-sm-8">{{ dc.canRead() }}</div>
+          </div>
+          <div class="row">
+            <div class="col-sm-4 left">Can write</div>
+            <div class="col-sm-8">{{ dc.canWrite() }}</div>
+          </div>
+          <div class="row">
+            <div class="col-sm-4 left">Can change owner</div>
+            <div class="col-sm-8">{{ dc.canChangeOwner() }}</div>
+          </div>
+        </div>
+
+
+        <div class="description">
+          <div ng-if="dc.editingDescription" class="editing">
+
+            <form class="form-inline" ng-submit="dc.updateDescription()">
+              <fieldset>
+                <input id="edit-description" type="text" ng-model="dc.selectedResource.description"
+                    ui-keypress="{'esc':'dc.cancelDescriptionEditing()'}">
+                <button type="submit" style=" display:none">Add</button>
+              </fieldset>
+            </form>
+
+          </div>
+          <div ng-if="!dc.editingDescription" class="title">
+            {{ dc.selectedResource.description }}
+          </div>
+          <div ng-if="!dc.editingDescription" class="edit pull-right">
+            <button
+                type="button"
+                tooltip="edit description"
                 tooltip-trigger
                 tooltip-animation="false"
                 tooltip-placement="left"
                 data-toggle="tooltip"
-                class="btn btn-sm btn-info btn-circle folder"
-                ng-click="dc.showNewFolderModal()"><i
-                class="fa fa-folder"></i></button>
-          </li>
-
-          <li ng-show="dc.showFloatingMenu">
-            <a ng-href="/elements/create?folderId={{dc.currentFolderId | encodeURIComponent}}">
-              <button type="button"
-                  id="button-create-element"
-                  tooltip="create element"
-                  tooltip-trigger
-                  tooltip-animation="false"
-                  tooltip-placement="left"
-                  data-toggle="tooltip" class="btn btn-sm btn-info btn-circle element"><i class="fa fa-sitemap"></i>
-              </button>
-            </a>
-          </li>
-
-          <li ng-show="dc.showFloatingMenu">
-            <a ng-href="/templates/create?folderId={{dc.currentFolderId | encodeURIComponent}}">
-              <button type="button"
-                  id="button-create-template"
-                  tooltip="create template"
-                  tooltip-trigger
-                  tooltip-animation="false"
-                  tooltip-placement="left"
-                  data-toggle="tooltip"
-                  class="btn btn-sm btn-info btn-circle template">
-                <i class="fa fa-file-text"></i>
-              </button>
-            </a>
-          </li>
-
-          <li>
-            <button type="button"
-                id="button-create"
-                class="btn btn-sm btn-info btn-circle compose"
-                ng-mouseenter="dc.showFloatingMenu = true"><i
-                class="fa fa-plus template"></i>
-            </button>
-          </li>
-
-        </ul>
+                ng-click="dc.startDescriptionEditing()"><i class="fa fa-pencil graytext"></i></button>
+          </div>
+        </div>
       </div>
-      <!-- end of floating plus icon section -->
-
     </div>
+    <!-- END RIGHT SIDE -->
+
+    <!-- floating plus icon section -->
+    <div class="add-new  pull-right" ng-if="dc.onDashboard()  && dc.canWriteToCurrentFolder()"
+        ng-mouseleave="dc.showFloatingMenu = false">
+      <ul class="list-unstyled others">
+        <li ng-show="dc.showFloatingMenu">
+          <button type="button"
+              id="button-create-folder"
+              tooltip="create folder"
+              tooltip-trigger
+              tooltip-animation="false"
+              tooltip-placement="left"
+              data-toggle="tooltip"
+              class="btn btn-sm btn-info btn-circle folder"
+              ng-click="dc.showNewFolderModal()"><i
+              class="fa fa-folder"></i></button>
+        </li>
+
+        <li ng-show="dc.showFloatingMenu">
+          <a ng-href="/elements/create?folderId={{dc.currentFolderId | encodeURIComponent}}">
+            <button type="button"
+                id="button-create-element"
+                tooltip="create element"
+                tooltip-trigger
+                tooltip-animation="false"
+                tooltip-placement="left"
+                data-toggle="tooltip" class="btn btn-sm btn-info btn-circle element"><i class="fa fa-sitemap"></i>
+            </button>
+          </a>
+        </li>
+
+        <li ng-show="dc.showFloatingMenu">
+          <a ng-href="/templates/create?folderId={{dc.currentFolderId | encodeURIComponent}}">
+            <button type="button"
+                id="button-create-template"
+                tooltip="create template"
+                tooltip-trigger
+                tooltip-animation="false"
+                tooltip-placement="left"
+                data-toggle="tooltip"
+                class="btn btn-sm btn-info btn-circle template">
+              <i class="fa fa-file-text"></i>
+            </button>
+          </a>
+        </li>
+
+        <li>
+          <button type="button"
+              id="button-create"
+              class="btn btn-sm btn-info btn-circle compose"
+              ng-mouseenter="dc.showFloatingMenu = true"><i
+              class="fa fa-plus template"></i>
+          </button>
+        </li>
+
+      </ul>
+    </div>
+    <!-- end of floating plus icon section -->
+
+  </div>
   </div>
 
-  <!-- end floating plus section -->
 </section>
 
 <!-- add folder modal -->
 <section>
-  <cedar-new-folder-modal cedar-modal-show  modal-visible="dc.newFolderModalVisible" class="modal fade" id="new-folder-modal"  tabindex="-1" role="dialog" aria-labelledby="newFolderModalHeader"
-      data-keyboard="true" data-backdrop="static"   >
+  <cedar-new-folder-modal cedar-modal-show modal-visible="dc.newFolderModalVisible" class="modal fade"
+      id="new-folder-modal" tabindex="-1" role="dialog" aria-labelledby="newFolderModalHeader"
+      data-keyboard="true" data-backdrop="static">
   </cedar-new-folder-modal>
 </section>
 
 <!-- rename modal -->
 <section>
-  <cedar-rename-modal cedar-modal-show  modal-visible="dc.renameModalVisible" class="modal fade" id="rename-modal"  tabindex="-1" role="dialog" aria-labelledby="renameModalHeader"
-      data-keyboard="true" data-backdrop="static"  rename-resource="resource" >
+  <cedar-rename-modal cedar-modal-show modal-visible="dc.renameModalVisible" class="modal fade" id="rename-modal"
+      tabindex="-1" role="dialog" aria-labelledby="renameModalHeader"
+      data-keyboard="true" data-backdrop="static" rename-resource="resource">
   </cedar-rename-modal>
 </section>
 
 <!-- move modal -->
 <section>
-  <cedar-move-modal cedar-modal-show  modal-visible="dc.moveModalVisible" class="modal fade" id="move-modal"  tabindex="-1" role="dialog" aria-labelledby="moveModalHeader"
-      data-keyboard="true" data-backdrop="static"  move-resource="resource" >
+  <cedar-move-modal cedar-modal-show modal-visible="dc.moveModalVisible" class="modal fade" id="move-modal"
+      tabindex="-1" role="dialog" aria-labelledby="moveModalHeader"
+      data-keyboard="true" data-backdrop="static" move-resource="resource">
   </cedar-move-modal>
 </section>
 
 <!--- share modal  --->
 <section>
-<cedar-share-modal cedar-modal-show  modal-visible="dc.shareModalVisible" class="modal fade" id="share-modal"  tabindex="-1" role="dialog" aria-labelledby="shareModalHeader"
-data-keyboard="true" data-backdrop="static"  share-resource="resource" >
-</cedar-share-modal>
+  <cedar-share-modal cedar-modal-show modal-visible="dc.shareModalVisible" class="modal fade" id="share-modal"
+      tabindex="-1" role="dialog" aria-labelledby="shareModalHeader"
+      data-keyboard="true" data-backdrop="static" share-resource="resource">
+  </cedar-share-modal>
 </section>
 
 

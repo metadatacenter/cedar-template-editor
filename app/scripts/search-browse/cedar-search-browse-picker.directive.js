@@ -136,6 +136,7 @@ define([
           };
 
           vm.startDescriptionEditing = function () {
+            console.log('startDescriptionEditing')
             var resource = vm.getSelection();
             if (resource != null) {
               vm.editingDescription = true;
@@ -155,6 +156,7 @@ define([
 
           vm.selectResource = function (resource) {
             vm.cancelDescriptionEditing();
+            vm.selectedResource = resource;
             vm.getResourceDetails(resource);
             if (typeof vm.selectResourceCallback === 'function') {
               vm.selectResourceCallback(resource);
@@ -207,7 +209,11 @@ define([
             resourceService.getResourceDetail(
                 resource,
                 function (response) {
-                  vm.selectedResource = response;
+
+                  $timeout(function () {
+                    vm.selectedResource = response;
+                  },0);
+
                 },
                 function (error) {
                   UIMessageService.showBackendError('SERVER.' + resource.nodeType.toUpperCase() + '.load.error', error);
@@ -948,11 +954,6 @@ define([
             initSearch();
           });
 
-          $scope.$on('refreshWorkspace', function (event, searchTerm) {
-            vm.params.search = searchTerm;
-            initSearch();
-          });
-
           $scope.hideModal = function (id) {
             jQuery('#' + id).modal('hide');
           };
@@ -1036,22 +1037,36 @@ define([
 
           // open the move modal
           function showMoveModal(resource) {
+            var r = resource;
+            if (!r && vm.selectedResource) {
+              r = vm.selectedResource;
+            }
             vm.moveModalVisible = true;
             $scope.$broadcast('moveModalVisible',
-                [vm.moveModalVisible, resource, vm.currentPath, vm.currentFolderId, vm.resourceTypes,
+                [vm.moveModalVisible, r, vm.currentPath, vm.currentFolderId, vm.resourceTypes,
                  vm.sortOptionField]);
           }
 
           // open the share modal
           function showShareModal(resource) {
+            var r = resource;
+            if (!r && vm.selectedResource) {
+              r = vm.selectedResource;
+            }
             vm.shareModalVisible = true;
-            $scope.$broadcast('shareModalVisible', [vm.shareModalVisible, resource]);
+            $scope.$broadcast('shareModalVisible', [vm.shareModalVisible, r]);
           }
 
           // open the rename modal
           function showRenameModal(resource) {
+
+            var r = resource;
+            if (!r && vm.selectedResource) {
+              r = vm.selectedResource;
+            }
+
             vm.renameModalVisible = true;
-            $scope.$broadcast('renameModalVisible', [vm.renameModalVisible, resource]);
+            $scope.$broadcast('renameModalVisible', [vm.renameModalVisible, r]);
           }
 
           // open the new folder modal
