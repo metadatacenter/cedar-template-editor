@@ -11229,7 +11229,7 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
 .template-body form .build .form-group .form-control.empty ~ .floating-label,
 #element_control_term .form-group .form-control.empty ~ .floating-label {
   top: 10px;
-  color: black;
+  color: #5795ba;
 }
 .template-body form .build .form-group .form-control:focus ~ .floating-label,
 #element_control_term .form-group .form-control:focus ~ .floating-label,
@@ -14080,7 +14080,7 @@ p.instructions {
 }
 .ui-select-container ~ .floating-label {
   top: 12px;
-  color: black;
+  color: #5795ba;
 }
 .ui-select-container {
   font-size: 16px;
@@ -14322,6 +14322,13 @@ body .template-header .controlled-terms-modal {
 }
 .class-action .btn-add-term {
   min-width: 120px;
+}
+.runtime .field-instance.multiple-instance-field {
+  border: 1px solid #ddd;
+  padding-top: 2px;
+  padding-bottom: 2px;
+  margin-bottom: 5px;
+  background-color: #e8e8e8;
 }
 .element .field-instance.multiple-instance-field {
   border: none;
@@ -15290,13 +15297,12 @@ table.apiKey td {
   #sidebar-right .info {
     padding: 0;
     margin: 0;
-    font-size: 14px;
+    font-size: 13px;
     border-top: 1px solid #ddd;
     border-bottom: 1px solid #ddd;
   }
   #sidebar-right .info .row {
-    margin-top: 15px;
-    margin-bottom: 15px;
+    margin: 15px 0;
   }
   #sidebar-right .info .row .location {
     min-height: 60px;

@@ -138,12 +138,14 @@ xdescribe('metadata-creator', function () {
                 browser.get(sampleMetadataUrl).then(function () {
                   metadataPage.isReady(metadataPage.createPageName()).then(function () {
 
+
                     // and the right page title
                     metadataPage.isReady(metadataPage.pageTitle()).then(function () {
                       metadataPage.pageTitle().getText().then(function (text) {
                         expect(metadataPage.metadataPageTitle() === text).toBe(true);
                       });
                     });
+
                   });
                 });
               });

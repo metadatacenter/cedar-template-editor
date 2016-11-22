@@ -1056,22 +1056,36 @@ define([
 
           // open the move modal
           function showMoveModal(resource) {
+            var r = resource;
+            if (!r && vm.selectedResource) {
+              r = vm.selectedResource;
+            }
             vm.moveModalVisible = true;
             $scope.$broadcast('moveModalVisible',
-                [vm.moveModalVisible, resource, vm.currentPath, vm.currentFolderId, vm.resourceTypes,
+                [vm.moveModalVisible, r, vm.currentPath, vm.currentFolderId, vm.resourceTypes,
                  vm.sortOptionField]);
           }
 
           // open the share modal
           function showShareModal(resource) {
+            var r = resource;
+            if (!r && vm.selectedResource) {
+              r = vm.selectedResource;
+            }
             vm.shareModalVisible = true;
-            $scope.$broadcast('shareModalVisible', [vm.shareModalVisible, resource]);
+            $scope.$broadcast('shareModalVisible', [vm.shareModalVisible, r]);
           }
 
           // open the rename modal
           function showRenameModal(resource) {
+
+            var r = resource;
+            if (!r && vm.selectedResource) {
+              r = vm.selectedResource;
+            }
+
             vm.renameModalVisible = true;
-            $scope.$broadcast('renameModalVisible', [vm.renameModalVisible, resource]);
+            $scope.$broadcast('renameModalVisible', [vm.renameModalVisible, r]);
           }
 
           // open the new folder modal
