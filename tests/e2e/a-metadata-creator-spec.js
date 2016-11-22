@@ -148,8 +148,6 @@ describe('metadata-creator', function () {
                   metadataPage.documentTitle().getText().then(function (text) {
 
                     var result = text.indexOf(sampleTitle) !== -1;
-                    console.log('sampletitle ' + sampleTitle);
-                    console.log('documentTitle ' + text + (text.indexOf(sampleTitle)));
                     //expect(result).toBe(true);
                   });
                 });

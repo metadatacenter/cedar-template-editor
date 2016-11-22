@@ -4,6 +4,18 @@
   <div ng-init="fieldTitle='Numeric';fieldIconClass='cedar-svg-numeric';setDefaultValueIfEmpty(model)"
       ng-include="'scripts/form/partials/field-header.partial.html'"></div>
 
+  <div  ng-if="$root.isArray(model) && model.length==0 " class="form-group floating-label-wrapper has-feedback" ng-class="{'required': $root.schemaOf(field)._valueConstraints.requiredValue}">
+    <input type="text"
+        class="form-control has-success has-feedback"
+        ng-class="{'required': $root.schemaOf(field)._valueConstraints.requiredValue}"
+        placeholder="{{$root.schemaOf(field)._ui.title}}"
+        aria-label="{{$root.schemaOf(field)._ui.description}}"
+        ng-disabled="true"
+        with-floating-label=""/>
+    <span class="floating-label">{{$root.schemaOf(field)._ui.title}}</span>
+  </div>
+
+
   <div ng-if="$root.isArray(model)" class="form-group floating-label-wrapper" ng-repeat="valueElement in model">
 
     <input type="text"

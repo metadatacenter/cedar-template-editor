@@ -9,25 +9,22 @@
   <div menuDropDownId="" ng-show="field.items && $root.isRuntime()"
       class="spreadsheetSwitch field"
       style="position:relative">
-    <p class="element-name-label">
-      <!--{{field.items._ui.inputType}}-->
-      <!--<i class="{{fieldIconClass}}"></i>-->
-      <!--<i class="cedar-svg-list"></i>-->
+    <!--<p >-->
 
-       <span class="spreadsheetSwitch ">
-            <button type="button"
-                tooltip="show as spreadsheet"
-                tooltip-trigger
-                tooltip-animation="false"
-                tooltip-placement="top"
-                data-toggle="tooltip"
-                ng-click="switchToSpreadsheet()"
-                class="spreadsheetSwitchLink"
-                ng-show="false"
-                ng-disabled="preview" style="background:transparent;border:0;outline:none">
-              <i class="cedar-svg-spreadsheet"></i>
-            </button>
-       </span>
+       <!--<span class="spreadsheetSwitch ">-->
+            <!--<button type="button"-->
+                <!--tooltip="show as spreadsheet"-->
+                <!--tooltip-trigger-->
+                <!--tooltip-animation="false"-->
+                <!--tooltip-placement="top"-->
+                <!--data-toggle="tooltip"-->
+                <!--ng-click="switchToSpreadsheet()"-->
+                <!--class="spreadsheetSwitchLink"-->
+                <!--ng-show="false"-->
+                <!--ng-disabled="preview" style="background:transparent;border:0;outline:none">-->
+              <!--<i class="cedar-svg-spreadsheet"></i>-->
+            <!--</button>-->
+       <!--</span>-->
 
       <!-- show this add button only when you have minCardinality 0 and an empty list -->
     <span class="zero-input-wrapper" ng-show="$root.isRuntime() && field.items && model.length == 0">
@@ -49,7 +46,7 @@
         <!--</div>-->
       </button>
     </span>
-    </p>
+    <!--</p>-->
   </div>
 
   <div menuDropDownId="" ng-show="!field.items && $root.isRuntime()"
