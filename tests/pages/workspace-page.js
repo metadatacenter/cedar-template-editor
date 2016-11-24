@@ -102,7 +102,7 @@ var WorkspacePage = function () {
 
   this.get = function () {
     browser.get(url);
-    //browser.sleep(1000);
+    browser.sleep(1000);
   };
 
   this.test = function () {
@@ -319,30 +319,17 @@ var WorkspacePage = function () {
   // delete a resource by name
   this.deleteResourceNew = function (name, type) {
 
-
+    // find the resource
     createSearchNavInput.sendKeys(name + protractor.Key.ENTER);
 
+    var createFirst = element.all(by.css(createFirstCss + type)).first();
+    browser.wait(EC.presenceOf(createFirst));
 
-    //var createFirst = element.all(by.css(createFirstCss + type)).first();
-    //
-    //createFirst.click();
-    //
-    //createTrashButton.click();
-    //
-    //expect(createConfirmationDialog.getAttribute(sweetAlertCancelAttribute)).toBe('true');
-    //expect(createConfirmationDialog.getAttribute(sweetAlertConfirmAttribute)).toBe('true');
-    //
-    //createSweetAlertConfirmButton.click();
-    //
-    //createToastyMessageText.getText().then(function (value) {
-    // console.log('createToastyMessageText');
-    //  console.log(value);
-    //
-    //  var result = value.indexOf(toastyMessage + name + toastyMessageDeleted) !== -1;
-    //  console.log('result');
-    //  console.log(result);
-    //});
+    createFirst.click();
+    createTrashButton.click();
 
+    browser.wait(EC.presenceOf(createSweetAlertConfirmButton));
+    createSweetAlertConfirmButton.click();
   };
 
   this.selectFolder = function (name) {
@@ -406,11 +393,30 @@ var WorkspacePage = function () {
     createSearchNavInput.sendKeys(name).sendKeys(protractor.Key.ENTER);
 
     // wait for search results to show in the breadcrumb
-    browser.sleep(2000);  // TODO not correctly waiting for search to return
+    // TODO not correctly waiting for search to return
+    browser.sleep(2000);
 
     // select the first result
     var createFirst = element.all(by.css(createFirstCss + type)).first();
     browser.actions().doubleClick(createFirst).perform();
+
+  };
+
+  // double click the template by title to open in metadata editor
+  this.editTemplateNew = function (name, type) {
+
+    createSearchNavInput.sendKeys(name).sendKeys(protractor.Key.ENTER);
+
+    // wait for search results to show in the breadcrumb
+    // TODO not correctly waiting for search to return
+    browser.sleep(2000);
+
+    // select the first result
+    var createFirst = element.all(by.css(createFirstCss + type)).first();
+    browser.actions().click(createFirst).perform();
+
+    createMoreOptionsButton().click();
+    createEditResourceButton().click();
 
   };
 

@@ -5,6 +5,8 @@ require('../pages/finder-page.js');
 
 var TemplateCreatorPage = function () {
 
+      var EC = protractor.ExpectedConditions;
+
       var testConfig = require('../config/test-env.js');
       var url = testConfig.baseUrl + '/dashboard';
       var showJsonLink = element(by.id('top-navigation')).element(by.css('.navbar-header')).element(by.id('show-json-link'));
@@ -48,6 +50,8 @@ var TemplateCreatorPage = function () {
       var removeFieldButton = element(by.css('.field-root  .remove'));
       var removeElementButton = element(by.css('.element-root  .remove'));
       var createToolbar = element(by.id('toolbar'));
+      var createFieldTitle = element(by.css('.field-title-definition'));
+      var createFieldDescription = element(by.css('.field-description-definition'));
 
       var createToastyConfirmationPopup = element(by.id('toasty')).element(by.css('.toasty-type-success'));
       var toastyMessageText = element(by.id('toasty')).element(by.css('.toast')).element(by.css('.toast-msg'));
@@ -84,6 +88,118 @@ var TemplateCreatorPage = function () {
       var metadataType = 'metadata';
       var dashboardType = 'dashboard';
       var cssDetailOptions = '.detail-options';
+
+      this.fieldTypes = [
+        {
+          "cedarType"         : "textfield",
+          "iconClass"         : "cedar-svg-text",
+          "label"             : "Text",
+          "allowedInElement"  : true,
+          "primaryField"      : true,
+          "hasControlledTerms": true,
+          "staticField"       : false
+        },
+        {
+          "cedarType"         : "textarea",
+          "iconClass"         : "cedar-svg-paragraph",
+          "label"             : "Paragraph",
+          "allowedInElement"  : true,
+          "primaryField"      : true,
+          "hasControlledTerms": false,
+          "staticField"       : false
+        },
+        {
+          "cedarType"         : "radio",
+          "iconClass"         : "cedar-svg-multiple-choice",
+          "label"             : "Multiple Choice",
+          "allowedInElement"  : true,
+          "hasControlledTerms": true,
+          "staticField"       : false
+        },
+        {
+          "cedarType"         : "checkbox",
+          "iconClass"         : "cedar-svg-checkbox",
+          "label"             : "Checkbox",
+          "allowedInElement"  : true,
+          "hasControlledTerms": true,
+          "staticField"       : false
+        },
+        {
+          "cedarType"         : "date",
+          "iconClass"         : "cedar-svg-calendar",
+          "label"             : "Date",
+          "allowedInElement"  : true,
+          "hasControlledTerms": false,
+          "staticField"       : false
+        },
+        {
+          "cedarType"         : "email",
+          "iconClass"         : "cedar-svg-at",
+          "primaryField"      : true,
+          "label"             : "Email",
+          "allowedInElement"  : true,
+          "hasControlledTerms": false,
+          "staticField"       : false
+        },
+        {
+          "cedarType"         : "list",
+          "iconClass"         : "cedar-svg-list",
+          "allowedInElement"  : true,
+          "primaryField"      : true,
+          "label"             : "List",
+          "hasControlledTerms": true,
+          "staticField"       : false
+        },
+        {
+          "cedarType"         : "numeric",
+          "iconClass"         : "cedar-svg-numeric",
+          "allowedInElement"  : true,
+          "primaryField"      : true,
+          "Label"             : "Number",
+          "hasControlledTerms": false,
+          "staticField"       : false
+        },
+        {
+          "cedarType"         : "phone-number",
+          "iconClass"         : "cedar-svg-phone",
+          "allowedInElement"  : true,
+          "label"             : "Phone Number",
+          "hasControlledTerms": false,
+          "staticField"       : false
+        },
+        {
+          "cedarType"         : "section-break",
+          "iconClass"         : "cedar-svg-section-break",
+          "allowedInElement"  : true,
+          "label"             : "Section Break",
+          "hasControlledTerms": false,
+          "staticField"       : true
+        },
+        {
+          "cedarType"         : "richtext",
+          "iconClass"         : "cedar-svg-rich-text",
+          "allowedInElement"  : true,
+          "label"             : "Rich Text",
+          "hasControlledTerms": false,
+          "staticField"       : true
+        },
+        {
+          "cedarType"         : "image",
+          "iconClass"         : "cedar-svg-image",
+          "allowedInElement"  : true,
+          "label"             : "Image",
+          "hasControlledTerms": false,
+          "staticField"       : true
+        },
+        {
+          "cedarType"         : "youtube",
+          "iconClass"         : "cedar-svg-youtube",
+          "allowedInElement"  : true,
+          "label"             : "YouTube Video",
+          "hasControlledTerms": false,
+          "staticField"       : true
+        }
+      ];
 
       // template creator
       var templateTitle = element(by.id('template-name'));
@@ -580,9 +696,9 @@ var TemplateCreatorPage = function () {
 
       this.setTemplateTitleNew = function (text) {
 
-          browser.actions().doubleClick(templateTitle).perform();
-          templateTitle.sendKeys(text);
-          templateTitleForm.submit();
+        browser.actions().doubleClick(templateTitle).perform();
+        templateTitle.sendKeys(text);
+        templateTitleForm.submit();
 
       };
 
@@ -761,32 +877,32 @@ var TemplateCreatorPage = function () {
             break;
           case "textarea":
             isReady(createTextAreaButton).then(function () {
-            createTextAreaButton.click().then(function () {
-              isReady(createToolbar).then(function () {
-                browser.sleep(1000);  // add time for animation
-                deferred.fulfill(true);
+              createTextAreaButton.click().then(function () {
+                isReady(createToolbar).then(function () {
+                  browser.sleep(1000);  // add time for animation
+                  deferred.fulfill(true);
+                });
               });
-            });
             });
             break;
           case "radio":
             isReady(createRadioButton).then(function () {
-            createRadioButton.click().then(function () {
-              isReady(createToolbar).then(function () {
-                browser.sleep(1000);  // add time for animation
-                deferred.fulfill(true);
+              createRadioButton.click().then(function () {
+                isReady(createToolbar).then(function () {
+                  browser.sleep(1000);  // add time for animation
+                  deferred.fulfill(true);
+                });
               });
-            });
             });
             break;
           case "checkbox":
             isReady(createCheckboxButton).then(function () {
-            createCheckboxButton.click().then(function () {
-              isReady(createToolbar).then(function () {
-                browser.sleep(1000);  // add time for animation
-                deferred.fulfill(true);
+              createCheckboxButton.click().then(function () {
+                isReady(createToolbar).then(function () {
+                  browser.sleep(1000);  // add time for animation
+                  deferred.fulfill(true);
+                });
               });
-            });
             });
             break;
           case "date":
@@ -921,13 +1037,83 @@ var TemplateCreatorPage = function () {
 
       };
 
+      this.addFieldNew = function (cedarType, isMore, title, description) {
+        if (isMore) {
+          browser.wait(EC.elementToBeClickable(createMore));
+          createMore.click();
+        }
+        switch (cedarType) {
+          case "textfield":
+            browser.wait(EC.elementToBeClickable(createTextFieldButton));
+            createTextFieldButton.click();
+            break;
+          case "textarea":
+            browser.wait(EC.elementToBeClickable(createTextAreaButton));
+            createTextAreaButton.click();
+            break;
+          case "radio":
+            browser.wait(EC.elementToBeClickable(createRadioButton));
+            createRadioButton.click();
+            break;
+          case "checkbox":
+            browser.wait(EC.elementToBeClickable(createCheckboxButton));
+            createCheckboxButton.click();
+            break;
+          case "date":
+            browser.wait(EC.elementToBeClickable(createDateButton));
+            createDateButton.click();
+            break;
+          case "email":
+            browser.wait(EC.elementToBeClickable(createEmailButton));
+            createEmailButton.click();
+            break;
+          case "list":
+            browser.wait(EC.elementToBeClickable(createListButton));
+            createListButton.click();
+            break;
+          case"numeric":
+            browser.wait(EC.elementToBeClickable(createNumericButton));
+            createNumericButton.click();
+            break;
+          case "phone-number":
+            browser.wait(EC.elementToBeClickable(createPhoneNumberButton));
+            createPhoneNumberButton.click();
+            break;
+          case"section-break":
+            //browser.wait(EC.elementToBeClickable(createSectionBreakButton));
+            createSectionBreakButton.click();
+            break;
+          case"richtext":
+            browser.wait(EC.elementToBeClickable(createRichTextButton));
+            createRichTextButton.click();
+            break;
+          case "image":
+            browser.wait(EC.elementToBeClickable(createImageButton));
+            createImageButton.click();
+            break;
+          case "youtube":
+            browser.wait(EC.elementToBeClickable(createVideoButton));
+            createVideoButton.click();
+            break;
+        }
+        if (cedarType != "youtube") {
+
+          // enter the name and description
+          browser.wait(EC.elementToBeClickable(createFieldTitle));
+          createFieldTitle.click().sendKeys(title).sendKeys(protractor.Key.ENTER);
+          browser.wait(EC.elementToBeClickable(createFieldDescription));
+          createFieldDescription.click().sendKeys(description).sendKeys(protractor.Key.ENTER);
+        }
+
+
+      };
+
       this.removeElementButton = function () {
         return removeElementButton;
       };
 
       this.removeElement = function () {
         removeElementButton.click();
-        browser.sleep(1000);
       };
       this.collapseElement = function (item) {
         var switches = item.all(By.css('.visibilitySwitch'));
