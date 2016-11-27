@@ -172,12 +172,6 @@ describe('template-creator', function () {
   for (var j = 0; j < pageNames.length; j++) {
     (function (pageName) {
 
-      it("should be on the workspace page", function () {
-
-        browser.wait(EC.visibilityOf(workspacePage.createPageName()));
-
-      });
-
       it("should create the sample ", function () {
 
         sampleTitle = pageName + page.getRandomInt(1, 99999999);
@@ -188,10 +182,10 @@ describe('template-creator', function () {
         toastyPage.isToastyNew();
 
         // get the url of this element
-        browser.getCurrentUrl().then(function (value) {
-          sampleUrl = value;
-          // TODO: can't reliable load from url later using browser.get(sampleUrl)
-        });
+        //browser.getCurrentUrl().then(function (value) {
+        //  sampleUrl = value;
+        //  // TODO: can't reliable load from url later using browser.get(sampleUrl)
+        //});
 
       });
 
@@ -213,12 +207,13 @@ describe('template-creator', function () {
         workspacePage.deleteResourceNew(sampleTitle, pageName);
       });
 
-      it("should delete any resource from the workspace, ", function () {
+      xit("should delete any resource from the workspace, ", function () {
         workspacePage.deleteResourceNew('*', pageName);
       });
 
 
       // for each field type
+      //for (var k = 0; k < 0; k++) {
       for (var k = 0; k < fieldTypes.length; k++) {
         (function (fieldType) {
 

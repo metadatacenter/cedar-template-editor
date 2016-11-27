@@ -143,11 +143,11 @@ describe('metadata-creator', function () {
         workspacePage.deleteResourceNew(sampleTitle, 'metadata');
       });
 
-      it("should delete template from the workspace, ", function () {
+      xit("should delete template from the workspace, ", function () {
         workspacePage.deleteResourceNew('*', 'template');
       });
 
-      it("should delete metadata from the workspace, ", function () {
+      xit("should delete metadata from the workspace, ", function () {
         workspacePage.deleteResourceNew('*', 'metadata');
       });
 

@@ -207,6 +207,20 @@ var WorkspacePage = function () {
     return toastyMessageCreated;
   };
 
+  this.createFolderNew = function (name) {
+
+    browser.wait(EC.visibilityOf(createButton));
+
+    browser.actions().mouseMove(createButton).perform();
+    browser.wait(EC.elementToBeClickable(createFolderButton));
+    createFolderButton.click();
+
+    browser.wait(EC.visibilityOf(createFolderModal));
+    createFolderName.sendKeys(name);
+    browser.wait(EC.elementToBeClickable(createFolderSubmitButton));
+    createFolderSubmitButton.click();
+  };
+
   // create a new folder with name
   this.createFolder = function (name) {
     var deferred = protractor.promise.defer();
@@ -318,15 +332,27 @@ var WorkspacePage = function () {
 
   // open a resource by name
   this.openResource = function (type, title) {
+    console.log('openResource');
 
     // find the resource
     createSearchNavInput.sendKeys(title + protractor.Key.ENTER);
 
+    var result = "Search Results For: '" + title + "'";
+    var searchResult = element(by.css('.search-result'));
+    browser.wait(EC.textToBePresentInElement(searchResult, result),10000);
+
     var createFirst = element.all(by.css(createFirstCss + type)).first();
+    browser.wait(EC.visibilityOf(createFirst));
+
     browser.wait(EC.elementToBeClickable(createFirst));
     createFirst.click();
+    browser.sleep(2000);
+
+    browser.wait(EC.visibilityOf(element(by.css('.form-box-container.selected'))));
+
     browser.wait(EC.elementToBeClickable(createMoreOptionsButton));
     createMoreOptionsButton.click();
+
     browser.wait(EC.elementToBeClickable(createEditResourceButton));
     createEditResourceButton.click();
 

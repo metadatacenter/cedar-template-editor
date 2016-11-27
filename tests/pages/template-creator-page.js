@@ -470,15 +470,20 @@ var TemplateCreatorPage = function () {
       this.createPage = function (type, title, description) {
 
         browser.actions().mouseMove(createButton).perform();
+
         if (type === 'template') {
 
+          browser.wait(EC.elementToBeClickable(createTemplateButton));
           createTemplateButton.click();
+
           if (title) {
+            browser.wait(EC.elementToBeClickable(templateTitle));
             browser.actions().doubleClick(templateTitle).perform();
             templateTitle.sendKeys(title);
             templateTitleForm.submit();
           }
           if (description) {
+            browser.wait(EC.elementToBeClickable(templateDescription));
             browser.actions().doubleClick(templateDescription).perform();
             templateDescription.sendKeys(description);
             templateDescriptionForm.submit();
@@ -489,14 +494,17 @@ var TemplateCreatorPage = function () {
           browser.wait(EC.presenceOf(element(by.model('form._ui.description'))));
 
         } else {
+          browser.wait(EC.elementToBeClickable(createElementButton));
           createElementButton.click();
 
           if (title) {
+            browser.wait(EC.elementToBeClickable(elementTitle));
             browser.actions().doubleClick(elementTitle).perform();
             elementTitle.sendKeys(title);
             elementTitleForm.submit();
           }
           if (description) {
+            browser.wait(EC.elementToBeClickable(elementDescription));
             browser.actions().doubleClick(elementDescription).perform();
             elementDescription.sendKeys(description);
             elementDescriptionForm.submit();
