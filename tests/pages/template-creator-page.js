@@ -89,117 +89,6 @@ var TemplateCreatorPage = function () {
       var dashboardType = 'dashboard';
       var cssDetailOptions = '.detail-options';
 
-      this.fieldTypes = [
-        {
-          "cedarType"         : "textfield",
-          "iconClass"         : "cedar-svg-text",
-          "label"             : "Text",
-          "allowedInElement"  : true,
-          "primaryField"      : true,
-          "hasControlledTerms": true,
-          "staticField"       : false
-        },
-        {
-          "cedarType"         : "textarea",
-          "iconClass"         : "cedar-svg-paragraph",
-          "label"             : "Paragraph",
-          "allowedInElement"  : true,
-          "primaryField"      : true,
-          "hasControlledTerms": false,
-          "staticField"       : false
-        },
-        {
-          "cedarType"         : "radio",
-          "iconClass"         : "cedar-svg-multiple-choice",
-          "label"             : "Multiple Choice",
-          "allowedInElement"  : true,
-          "hasControlledTerms": true,
-          "staticField"       : false
-        },
-        {
-          "cedarType"         : "checkbox",
-          "iconClass"         : "cedar-svg-checkbox",
-          "label"             : "Checkbox",
-          "allowedInElement"  : true,
-          "hasControlledTerms": true,
-          "staticField"       : false
-        },
-        {
-          "cedarType"         : "date",
-          "iconClass"         : "cedar-svg-calendar",
-          "label"             : "Date",
-          "allowedInElement"  : true,
-          "hasControlledTerms": false,
-          "staticField"       : false
-        },
-        {
-          "cedarType"         : "email",
-          "iconClass"         : "cedar-svg-at",
-          "primaryField"      : true,
-          "label"             : "Email",
-          "allowedInElement"  : true,
-          "hasControlledTerms": false,
-          "staticField"       : false
-        },
-        {
-          "cedarType"         : "list",
-          "iconClass"         : "cedar-svg-list",
-          "allowedInElement"  : true,
-          "primaryField"      : true,
-          "label"             : "List",
-          "hasControlledTerms": true,
-          "staticField"       : false
-        },
-        {
-          "cedarType"         : "numeric",
-          "iconClass"         : "cedar-svg-numeric",
-          "allowedInElement"  : true,
-          "primaryField"      : true,
-          "Label"             : "Number",
-          "hasControlledTerms": false,
-          "staticField"       : false
-        },
-        {
-          "cedarType"         : "phone-number",
-          "iconClass"         : "cedar-svg-phone",
-          "allowedInElement"  : true,
-          "label"             : "Phone Number",
-          "hasControlledTerms": false,
-          "staticField"       : false
-        },
-        {
-          "cedarType"         : "section-break",
-          "iconClass"         : "cedar-svg-section-break",
-          "allowedInElement"  : true,
-          "label"             : "Section Break",
-          "hasControlledTerms": false,
-          "staticField"       : true
-        },
-        {
-          "cedarType"         : "richtext",
-          "iconClass"         : "cedar-svg-rich-text",
-          "allowedInElement"  : true,
-          "label"             : "Rich Text",
-          "hasControlledTerms": false,
-          "staticField"       : true
-        },
-        {
-          "cedarType"         : "image",
-          "iconClass"         : "cedar-svg-image",
-          "allowedInElement"  : true,
-          "label"             : "Image",
-          "hasControlledTerms": false,
-          "staticField"       : true
-        },
-        {
-          "cedarType"         : "youtube",
-          "iconClass"         : "cedar-svg-youtube",
-          "allowedInElement"  : true,
-          "label"             : "YouTube Video",
-          "hasControlledTerms": false,
-          "staticField"       : true
-        }
-      ];
 
       // template creator
       var templateTitle = element(by.id('template-name'));
@@ -465,9 +354,275 @@ var TemplateCreatorPage = function () {
         "additionalProperties": false
       };
 
+      var fieldTypes = [
+        {
+          "cedarType"         : "textfield",
+          "iconClass"         : "cedar-svg-text",
+          "label"             : "Text",
+          "allowedInElement"  : true,
+          "primaryField"      : true,
+          "hasControlledTerms": true,
+          "staticField"       : false
+        },
+        {
+          "cedarType"         : "textarea",
+          "iconClass"         : "cedar-svg-paragraph",
+          "label"             : "Paragraph",
+          "allowedInElement"  : true,
+          "primaryField"      : true,
+          "hasControlledTerms": false,
+          "staticField"       : false
+        },
+        {
+          "cedarType"         : "radio",
+          "iconClass"         : "cedar-svg-multiple-choice",
+          "label"             : "Multiple Choice",
+          "allowedInElement"  : true,
+          "hasControlledTerms": true,
+          "staticField"       : false
+        },
+        {
+          "cedarType"         : "checkbox",
+          "iconClass"         : "cedar-svg-checkbox",
+          "label"             : "Checkbox",
+          "allowedInElement"  : true,
+          "hasControlledTerms": true,
+          "staticField"       : false
+        },
+        {
+          "cedarType"         : "date",
+          "iconClass"         : "cedar-svg-calendar",
+          "label"             : "Date",
+          "allowedInElement"  : true,
+          "hasControlledTerms": false,
+          "staticField"       : false
+        },
+        {
+          "cedarType"         : "email",
+          "iconClass"         : "cedar-svg-at",
+          "primaryField"      : true,
+          "label"             : "Email",
+          "allowedInElement"  : true,
+          "hasControlledTerms": false,
+          "staticField"       : false
+        },
+        {
+          "cedarType"         : "list",
+          "iconClass"         : "cedar-svg-list",
+          "allowedInElement"  : true,
+          "primaryField"      : true,
+          "label"             : "List",
+          "hasControlledTerms": true,
+          "staticField"       : false
+        },
+        {
+          "cedarType"         : "numeric",
+          "iconClass"         : "cedar-svg-numeric",
+          "allowedInElement"  : true,
+          "primaryField"      : true,
+          "Label"             : "Number",
+          "hasControlledTerms": false,
+          "staticField"       : false
+        },
+        {
+          "cedarType"         : "phone-number",
+          "iconClass"         : "cedar-svg-phone",
+          "allowedInElement"  : true,
+          "label"             : "Phone Number",
+          "hasControlledTerms": false,
+          "staticField"       : false
+        },
+        {
+          "cedarType"         : "section-break",
+          "iconClass"         : "cedar-svg-section-break",
+          "allowedInElement"  : true,
+          "label"             : "Section Break",
+          "hasControlledTerms": false,
+          "staticField"       : true
+        },
+        {
+          "cedarType"         : "richtext",
+          "iconClass"         : "cedar-svg-rich-text",
+          "allowedInElement"  : true,
+          "label"             : "Rich Text",
+          "hasControlledTerms": false,
+          "staticField"       : true
+        },
+        {
+          "cedarType"         : "image",
+          "iconClass"         : "cedar-svg-image",
+          "allowedInElement"  : true,
+          "label"             : "Image",
+          "hasControlledTerms": false,
+          "staticField"       : true
+        },
+        {
+          "cedarType"         : "youtube",
+          "iconClass"         : "cedar-svg-youtube",
+          "allowedInElement"  : true,
+          "label"             : "YouTube Video",
+          "hasControlledTerms": false,
+          "staticField"       : true
+        }
+      ];
 
-      this.test = function () {
-        console.log('template creator  page test');
+
+      this.createPage = function (type, title, description) {
+
+        browser.actions().mouseMove(createButton).perform();
+        if (type === 'template') {
+
+          createTemplateButton.click();
+          if (title) {
+            browser.actions().doubleClick(templateTitle).perform();
+            templateTitle.sendKeys(title);
+            templateTitleForm.submit();
+          }
+          if (description) {
+            browser.actions().doubleClick(templateDescription).perform();
+            templateDescription.sendKeys(description);
+            templateDescriptionForm.submit();
+          }
+
+          browser.wait(EC.presenceOf(createSaveTemplateButton));
+          browser.wait(EC.presenceOf(element(by.model('form._ui.title'))));
+          browser.wait(EC.presenceOf(element(by.model('form._ui.description'))));
+
+        } else {
+          createElementButton.click();
+
+          if (title) {
+            browser.actions().doubleClick(elementTitle).perform();
+            elementTitle.sendKeys(title);
+            elementTitleForm.submit();
+          }
+          if (description) {
+            browser.actions().doubleClick(elementDescription).perform();
+            elementDescription.sendKeys(description);
+            elementDescriptionForm.submit();
+          }
+
+          browser.wait(EC.presenceOf(createSaveElementButton));
+          browser.wait(EC.presenceOf(element(by.model('element._ui.title'))));
+          browser.wait(EC.presenceOf(element(by.model('element._ui.description'))));
+        }
+      };
+
+
+
+      this.clickSave = function (type) {
+        if (type === 'template') {
+          browser.wait(EC.elementToBeClickable(createSaveTemplateButton));
+          createSaveTemplateButton.click();
+
+        } else {
+          browser.wait(EC.elementToBeClickable(createSaveElementButton));
+          createSaveElementButton.click();
+        }
+      };
+
+      this.confirmCancel = function (type) {
+
+        if (type === 'template') {
+          browser.wait(EC.elementToBeClickable(createCancelTemplateButton));
+          createCancelTemplateButton.click();
+        } else {
+          browser.wait(EC.elementToBeClickable(createCancelElementButton));
+          createCancelElementButton.click();
+        }
+
+        browser.wait(EC.visibilityOf(createConfirmationDialog));
+        var confirm = createSweetAlertConfirmButton;
+        browser.wait(EC.elementToBeClickable(confirm));
+        confirm.click();
+      };
+
+      this.clickClear = function (type) {
+        if (type === 'template') {
+          browser.wait(EC.elementToBeClickable(createClearTemplateButton));
+          createClearTemplateButton.click();
+        } else {
+          browser.wait(EC.elementToBeClickable(createClearElementButton));
+          createClearElementButton.click();
+        }
+      };
+
+      this.clickCancel = function (type) {
+        if (type === 'template') {
+          browser.wait(EC.elementToBeClickable(createCancelTemplateButton));
+          createCancelTemplateButton.click();
+        } else {
+          browser.wait(EC.elementToBeClickable(createCancelElementButton));
+          createCancelElementButton.click();
+        }
+      };
+
+      this.setTitle = function (type, text) {
+        if (type === 'template') {
+          browser.actions().doubleClick(templateTitle).perform();
+          templateTitle.sendKeys(text);
+          templateTitle.submit();
+          templateTitle.getAttribute('value').then(function (value) {
+            expect(value === text).toBe(true);
+          });
+        } else {
+          browser.actions().doubleClick(elementTitle).perform();
+          elementTitle.sendKeys(text);
+          elementTitle.submit();
+          elementTitle.getAttribute('value').then(function (value) {
+            expect(value === text).toBe(true);
+          });
+        }
+      };
+
+      this.isTitle = function (type, text) {
+        if (type === 'template') {
+          //browser.actions().doubleClick(templateTitle).perform();
+          templateTitle.getAttribute('value').then(function (value) {
+            expect(value === text).toBe(true);
+          });
+        } else {
+          //browser.actions().doubleClick(elementTitle).perform();
+          elementTitle.getAttribute('value').then(function (value) {
+            expect(value === text).toBe(true);
+          });
+        }
+      };
+
+      this.setDescription = function (type, text) {
+        if (type === 'template') {
+          browser.actions().doubleClick(templateDescription).perform();
+          templateDescription.sendKeys(text);
+          templateDescription.submit();
+          templateDescription.getAttribute('value').then(function (value) {
+            expect(value === text).toBe(true);
+          });
+        } else {
+          browser.actions().doubleClick(elementDescription).perform();
+          elementDescription.sendKeys(text);
+          elementDescription.submit();
+          elementDescription.getAttribute('value').then(function (value) {
+            expect(value === text).toBe(true);
+          });
+        }
+      };
+
+      this.isDescription = function (type, text) {
+        if (type === 'template') {
+          browser.actions().doubleClick(templateDescription).perform();
+          templateDescription.getAttribute('value').then(function (value) {
+            expect(value === text).toBe(true);
+          });
+        } else {
+          browser.actions().doubleClick(elementDescription).perform();
+          elementDescription.getAttribute('value').then(function (value) {
+            expect(value === text).toBe(true);
+          });
+        }
+      };
+
+      this.fieldType = function (index) {
+        return fieldTypes[index];
       };
 
       // are we on the dashboard page?
@@ -498,7 +653,6 @@ var TemplateCreatorPage = function () {
       };
       this.get = function () {
         browser.get(url);
-        //browser.sleep(1000);
       };
 
       this.topNavigation = function () {
@@ -510,21 +664,27 @@ var TemplateCreatorPage = function () {
       this.templateTitle = function () {
         return templateTitle;
       };
+
       this.templateDescription = function () {
         return templateDescription;
       };
+
       this.templateForm = function () {
         return templateForm;
       };
+
       this.testTitle = function () {
         return testTitle;
       };
+
       this.testDescription = function () {
         return testDescription;
       };
+
       this.sampleElementTitle = function () {
         return sampleElementTitle;
       };
+
       this.sampleElementDescription = function () {
         return sampleElementDescription;
       };
@@ -581,26 +741,28 @@ var TemplateCreatorPage = function () {
         return sweetAlertConfirmAttribute;
       };
 
-
       this.clickConfirm = function () {
         element(by.css(confirmAttribute)).click();
       };
 
-
       this.addSearchElements = function () {
         createSearchElement.click();
       };
+
       this.addSearch = function (keys) {
         createSearchInput.sendKeys(keys).then(function () {
           createSearchButton.click();
         });
       };
+
       this.addSearchButton = function (keys) {
         createSearchButton.click();
       };
+
       this.getSearchBreadcrumbText = function () {
         return createSearchBreadcrumb.getText();
       };
+
       this.getFirstElement = function () {
         //var firstElement = element.all(by.css('.form-box .element')).first();
         return createFirstElement;
@@ -611,6 +773,7 @@ var TemplateCreatorPage = function () {
       this.createSaveTemplateButton = function () {
         return createSaveTemplateButton;
       };
+
       this.createClearTemplateButton = function () {
         return createClearTemplateButton.getText();
       };
@@ -623,26 +786,8 @@ var TemplateCreatorPage = function () {
         createSaveTemplateButton.click();
       };
 
-      this.clickCancel = function (cancel) {
-        var deferred = protractor.promise.defer();
-        var EC = protractor.ExpectedConditions;
-        var confirm = createSweetAlertConfirmButton;
 
-        browser.wait(cancel.isPresent());
-        browser.wait(cancel.isDisplayed());
-        cancel.click();
 
-        browser.wait(createConfirmationDialog.isPresent());
-        browser.wait(createConfirmationDialog.isDisplayed());
-
-        browser.wait(EC.elementToBeClickable(confirm));
-        browser.sleep(1000);
-        confirm.click();
-        deferred.fulfill(true);
-
-        return deferred.promise;
-
-      };
       this.clickClearTemplate = function () {
         createClearTemplateButton.click();
       };
@@ -674,53 +819,25 @@ var TemplateCreatorPage = function () {
         createTemplateButton.click();
 
       };
+      this.createElementNew = function () {
 
-
-      this.setTemplateTitle = function (text) {
-
-        var deferred = protractor.promise.defer();
-
-        // should have an editable element title
-        isReady(templateTitle).then(function () {
-
-          browser.actions().doubleClick(templateTitle).perform().then(function () {
-            templateTitle.sendKeys(text).then(function () {
-              templateTitleForm.submit().then(function () {
-                deferred.fulfill(true);
-              });
-            });
-          });
-        });
-        return deferred.promise;
-      };
-
-      this.setTemplateTitleNew = function (text) {
-
-        browser.actions().doubleClick(templateTitle).perform();
-        templateTitle.sendKeys(text);
-        templateTitleForm.submit();
+        browser.actions().mouseMove(createButton).perform();
+        createElementButton.click();
 
       };
 
-      this.setTemplateDescription = function (text) {
+      this.createTemplateNew = function () {
 
-        var deferred = protractor.promise.defer();
+        browser.actions().mouseMove(createButton).perform();
+        createTemplateButton.click();
 
-        // should have an editable element description
-        isReady(templateDescription).then(function () {
-
-          browser.actions().doubleClick(templateDescription).perform().then(function () {
-            templateDescription.sendKeys(text).then(function () {
-              templateDescriptionForm.submit().then(function () {
-                browser.sleep(1000);
-                deferred.fulfill(true);
-              });
-            });
-          });
-        });
-        return deferred.promise;
       };
+      this.createElementNew = function () {
 
+        browser.actions().mouseMove(createButton).perform();
+        createElementButton.click();
+
+      };
 
       // element creator
       this.elementTitle = function () {
@@ -1036,6 +1153,7 @@ var TemplateCreatorPage = function () {
         return deferred.promise;
 
       };
+
 
       this.addFieldNew = function (cedarType, isMore, title, description) {
         if (isMore) {

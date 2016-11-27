@@ -6,8 +6,10 @@ var ToastyPage = require('../pages/toasty-page.js');
 
 var _ = require('../libs/lodash.min.js');
 var sampleTitle;
+var sampleDescription;
 var sampleTemplateUrl;
 var sampleMetadataUrl;
+var pageName = 'template';
 
 
 describe('metadata-creator', function () {
@@ -45,6 +47,7 @@ describe('metadata-creator', function () {
   for (var j = 0; j < 1; j++) {
 
     sampleTitle = null;
+    sampleDescription = null;
     sampleTemplateUrl = null;
     sampleMetadataUrl = null;
 
@@ -54,11 +57,11 @@ describe('metadata-creator', function () {
       // create the sample template
       it("should create the sample template", function () {
 
-        sampleTitle = "template" + templatePage.getRandomInt(1, 9999999999);
+        sampleTitle = pageName + templatePage.getRandomInt(1, 9999999999);
+        sampleDescription = sampleTitle + ' description';
 
-        templatePage.createTemplateNew();
-        templatePage.setTemplateTitleNew(sampleTitle);
-        templatePage.createSaveTemplateButton().click();
+        templatePage.createPage(pageName, sampleTitle, sampleDescription);
+        templatePage.clickSave(pageName);
         toastyPage.isToastyNew();
 
         // get the url of this element
@@ -69,13 +72,13 @@ describe('metadata-creator', function () {
 
       it("should open the sample template", function () {
 
-        workspacePage.doubleClickNameNew(sampleTitle, 'template');
+        workspacePage.doubleClickName(sampleTitle, 'template');
         browser.wait(EC.presenceOf(element(by.id('top-navigation'))));
       });
 
       it("should create metadata from the template", function () {
 
-        workspacePage.doubleClickNameNew(sampleTitle, 'template');
+        workspacePage.doubleClickName(sampleTitle, 'template');
         browser.wait(EC.presenceOf(element(by.id('top-navigation'))));
 
         browser.wait(EC.presenceOf(metadataPage.createSaveMetadataButton()));
@@ -89,14 +92,14 @@ describe('metadata-creator', function () {
 
       it("should open metadata editor", function () {
 
-        workspacePage.doubleClickNameNew(sampleTitle, 'metadata');
+        workspacePage.doubleClickName(sampleTitle, 'metadata');
         browser.wait(EC.presenceOf(element(by.css('.navbar.metadata'))));
 
       });
 
       it("should show metadata editor header, back arrow, title, and json preview", function () {
 
-        workspacePage.doubleClickNameNew(sampleTitle, 'metadata');
+        workspacePage.doubleClickName(sampleTitle, 'metadata');
         browser.wait(EC.presenceOf(element(by.css('.navbar.metadata'))));
 
         expect(metadataPage.topNavigation().isDisplayed()).toBe(true);
@@ -109,7 +112,7 @@ describe('metadata-creator', function () {
 
       it("should have the correct document title", function () {
 
-        workspacePage.doubleClickNameNew(sampleTitle, 'metadata');
+        workspacePage.doubleClickName(sampleTitle, 'metadata');
         browser.wait(EC.presenceOf(element(by.id('top-navigation'))));
         browser.wait(EC.presenceOf(metadataPage.documentTitle()));
 
@@ -120,14 +123,14 @@ describe('metadata-creator', function () {
 
       });
 
-      // not showing the page title in the new form
       xit("should have the correct page title", function () {
 
-        workspacePage.doubleClickNameNew(sampleTitle, 'metadata');
+        workspacePage.doubleClickName(sampleTitle, 'metadata');
         browser.wait(EC.presenceOf(element(by.id('top-navigation'))));
         browser.wait(EC.presenceOf(metadataPage.pageTitle()));
 
        metadataPage.pageTitle().getText().then(function (text) {
+         // we are not showing the page title in the new form
          expect(text === 'Metadata Editor').toBe(true);
         });
       });

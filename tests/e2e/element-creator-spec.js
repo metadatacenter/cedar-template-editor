@@ -1,5 +1,5 @@
 'use strict';
-var TemplateCreatorPage = require('../pages/template-creator-page.js');
+var TemplatePage = require('../pages/template-creator-page.js');
 var WorkspacePage = require('../pages/workspace-page.js');
 var ToastyPage = require('../pages/toasty-page.js');
 
@@ -133,152 +133,115 @@ xdescribe('element-creator', function () {
   // before each test, load a new page and create a template
   // maximize the window area for clicking
   beforeEach(function () {
-    page = TemplateCreatorPage;
+
     workspacePage = WorkspacePage;
+    page = TemplatePage;
     toastyPage = ToastyPage;
-    page.get();
     browser.driver.manage().window().maximize();
+    workspacePage.get();
+    browser.wait(EC.presenceOf(element(by.css('.navbar.dashboard'))));
+    browser.ignoreSynchronization = null;
+
   });
 
-  for (var j = 0; j < 0; j++) {
+  afterEach(function () {
+
+    browser.ignoreSynchronization = true;
+
+  });
+
+  for (var j = 0; j < 1; j++) {
     (function () {
 
-      // Verify that save button is present and active,
+      it("should be on the workspace page", function () {
+        browser.wait(EC.visibilityOf(workspacePage.createPageName()));
+      });
+
+      // create the sample template
       it("should create the sample element", function () {
 
         sampleTitle = "element" + page.getRandomInt(1, 9999999999);
-        sampleElementUrl = null;
+        page.createPage('element', sampleTitle);
+        page.createSaveElementButton().click();
 
-        page.createElement().then(function () {
+        toastyPage.isToastyNew();
 
-          page.setElementTitle(sampleTitle).then(function () {
-
-            page.isReady(page.createSaveElementButton()).then(function () {
-              page.createSaveElementButton().click().then(function () {
-
-                toastyPage.isToasty().then(function () {
-
-                  // get the url of this element
-                  browser.getCurrentUrl().then(function (value) {
-                    sampleElementUrl = value;
-                  });
-
-                });
-              });
-            });
-          });
+        // get the url of this element
+        browser.getCurrentUrl().then(function (value) {
+          sampleElementUrl = value;
+          // TODO: can't reliable load from url later using browser.get(sampleTemplateUrl)
         });
+
       });
 
 
       describe('with sample element', function () {
 
-        describe('with template editor, ', function () {
+        describe('with element editor, ', function () {
 
           // check each field type by adding it to the sample element
           for (var i = 0; i < fieldTypes.length; i++) {
             (function (fieldType) {
 
-              // github issue #406 part 1 of 2: Verify that surround, field icon, and field name are present, Verify that the X icon is present on an field in the template and element editors and deletes the field
-              it("should create, edit, and delete a " + fieldType.cedarType, function () {
+              var field = element(by.css('.field-root .' + fieldType.iconClass));
+              var type = fieldType.cedarType;
+              var isMore = !fieldType.primaryField;
+              var title = fieldType.label;
+              var description = fieldType.label + ' description';
 
-                page.isReady(page.createPageName()).then(function () {
-                  browser.get(sampleElementUrl).then(function () {
-                    page.isReady(page.createElementPage()).then(function () {
+              it("should add and delete a " + fieldType.cedarType, function () {
 
-                      page.isReady(page.createSaveElementButton()).then(function () {
+                page.createPage('element');
 
-                        // css path for this field type
-                        var cssField = page.cssField(fieldType.iconClass);
+                // create the field
+                page.addFieldNew(type, isMore, title, description);
+                browser.wait(EC.presenceOf(field));
 
-                        page.addField(fieldType.cedarType).then(function () {
+                // delete the field
+                browser.actions().mouseMove(field).perform();
+                browser.wait(EC.elementToBeClickable(page.removeFieldButton()));
+                page.removeFieldButton().click();
+                browser.wait(EC.not(EC.presenceOf(field)));
 
-                          // is the field there?
-                          var field = element(by.css(cssField));
-                          page.isReady(field).then(function () {
-
-                            page.isReady(element(by.model(page.modelFieldTitle))).then(function () {
-
-
-                              // does it have the help text field in edit mode?
-                              page.isReady(element(by.model(page.modelFieldDescription))).then(function () {
-
-                                // move the mouse away from the toolbar so the tooltip is hidden
-                                // before trying to remove the field
-                                // otherwise the textarea fails
-                                browser.actions().mouseMove(field).perform().then(function () {
-
-                                  page.isReady(page.removeFieldButton()).then(function () {
-
-                                    // TODO text area hits the tooltip even though the mouse has been moved away
-                                    if (fieldType.cedarType != 'textarea') {
-                                      page.removeFieldButton().click().then(function () {
-                                        // is it removed?
-                                        expect(element(by.css(cssField)).isPresent()).toBe(false);
-                                      });
-                                    }
-
-                                  });
-                                });
-                              });
-                            });
-                          });
-                        });
-                      });
-                    });
-                  });
-                });
               });
 
-              // github issue #406 part 2 of 2:  Verify that clicking on an field  puts it in edit mode, Verify that clicking outside a field  takes it out of edit mode
               it("should select and deselect a " + fieldType.cedarType, function () {
 
                 var firstField;
                 var lastField;
 
-                page.isReady(page.createPageName()).then(function () {
-                  browser.get(sampleElementUrl).then(function () {
-                    page.isReady(page.createElementPage()).then(function () {
+                page.createPage('element');
 
-                      page.isReady(page.createSaveElementButton()).then(function () {
+                // add two fields
+                page.addFieldNew(fieldType.cedarType, isMore, title, description);
+                page.addFieldNew(fieldType.cedarType, isMore, title, description);
 
-                        // add two fields
-                        page.addField(fieldType.cedarType).then(function () {
-                          page.addField(fieldType.cedarType).then(function () {
+                // do we have two fields
+                var fields = element.all(by.css(page.cssFieldRoot));
+                expect(fields.count()).toBe(2);
 
-                            // do we have two fields
-                            var fields = element.all(by.css(page.cssFieldRoot));
-                            expect(fields.count()).toBe(2);
+                firstField = fields.first();
+                lastField = fields.last();
 
-                            firstField = fields.first();
-                            lastField = fields.last();
+                // do we have each field
+                expect(firstField.isPresent()).toBe(true);
+                expect(lastField.isPresent()).toBe(true);
 
-                            // do we have each field
-                            expect(firstField.isPresent()).toBe(true);
-                            expect(lastField.isPresent()).toBe(true);
+                // is the second field selected and not the first
+                expect(lastField.element(by.model(page.modelFieldTitle)).isPresent()).toBe(true);
+                expect(firstField.element(by.model(page.modelFieldTitle)).isPresent()).toBe(false);
 
-                            // is the second field selected and not the first
-                            expect(lastField.element(by.model(page.modelFieldTitle)).isPresent()).toBe(true);
-                            expect(firstField.element(by.model(page.modelFieldTitle)).isPresent()).toBe(false);
+                // click on the first field
+                browser.actions().mouseMove(firstField).perform();
+                browser.wait(EC.elementToBeClickable(firstField));
+                firstField.click();
 
-                            // click on the first field
-                            browser.actions().mouseMove(firstField).perform().then(function () {
-                              browser.wait(EC.elementToBeClickable(firstField)).then(function () {
-                                firstField.click().then(function () {
+                // is the first selected and the second deselected
+                expect(firstField.element(by.model(page.modelFieldTitle)).isPresent()).toBe(true);
+                expect(lastField.element(by.model(page.modelFieldTitle)).isPresent()).toBe(false);
 
-                                  // is the first selected and the second deselected
-                                  expect(firstField.element(by.model(page.modelFieldTitle)).isPresent()).toBe(true);
-                                  expect(lastField.element(by.model(page.modelFieldTitle)).isPresent()).toBe(false);
-                                });
-                              });
-                            });
-                          });
-                        });
-                      });
-                    });
-                  });
-                });
               });
+
             })
             (fieldTypes[i]);
           }
@@ -940,14 +903,9 @@ xdescribe('element-creator', function () {
         });
       });
 
-      it("should delete the sample element from the workspace, ", function () {
 
-        page.isReady(page.createPageName()).then(function () {
-          workspacePage.isDashboard().then(function () {
-            workspacePage.deleteResource(sampleTitle, page.elementType()).then(function () {
-            });
-          });
-        });
+      it("should delete the sample element from the workspace, ", function () {
+        workspacePage.deleteResourceNew(sampleTitle, 'element');
       });
 
 

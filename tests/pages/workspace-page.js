@@ -316,6 +316,22 @@ var WorkspacePage = function () {
 
   };
 
+  // open a resource by name
+  this.openResource = function (type, title) {
+
+    // find the resource
+    createSearchNavInput.sendKeys(title + protractor.Key.ENTER);
+
+    var createFirst = element.all(by.css(createFirstCss + type)).first();
+    browser.wait(EC.elementToBeClickable(createFirst));
+    createFirst.click();
+    browser.wait(EC.elementToBeClickable(createMoreOptionsButton));
+    createMoreOptionsButton.click();
+    browser.wait(EC.elementToBeClickable(createEditResourceButton));
+    createEditResourceButton.click();
+
+  };
+
   // delete a resource by name
   this.deleteResourceNew = function (name, type) {
 
@@ -351,44 +367,8 @@ var WorkspacePage = function () {
   };
 
 
-// double click the template by title to open in metadata editor
-  this.doubleClickName = function (name, type) {
-    var deferred = protractor.promise.defer();
-
-    // search for the name
-    isReady(createSearchNavInput).then(function () {
-
-      browser.wait(EC.elementToBeClickable(createSearchNavInput)).then(function () {
-        createSearchNavInput.sendKeys(name).sendKeys(protractor.Key.ENTER).then(function () {
-
-          // wait for search results to show in the breadcrumb
-          isReady(createBreadcrumbSearch).then(function () {
-            browser.sleep(2000);  // TODO not correctly waiting for search to return
-
-
-            // select the first result
-            var createFirst = element.all(by.css(createFirstCss + type)).first();
-            isReady(createFirst).then(function () {
-
-              browser.actions().doubleClick(createFirst).perform().then(function () {
-
-                // wait until metadata page is displayed
-                isReady(createMetadataPage).then(function () {
-
-                  deferred.fulfill(true);
-                });
-              });
-            });
-          });
-        });
-      });
-    });
-
-    return deferred.promise;
-  };
-
   // double click the template by title to open in metadata editor
-  this.doubleClickNameNew = function (name, type) {
+  this.doubleClickName = function (name, type) {
 
     createSearchNavInput.sendKeys(name).sendKeys(protractor.Key.ENTER);
 
