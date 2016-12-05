@@ -18,6 +18,7 @@ describe('metadata-creator', function () {
   var workspacePage;
   var templatePage;
   var toastyPage;
+  var firstTimeOnly = true;
 
 
   // before each test, load a new page and create a template
@@ -30,130 +31,160 @@ describe('metadata-creator', function () {
     toastyPage = ToastyPage;
     browser.driver.manage().window().maximize();
 
-    workspacePage.get();
-
-    browser.wait(EC.presenceOf(element(by.css('.navbar.dashboard'))));
-    browser.ignoreSynchronization = null;
+    //TODO local needs sleep here, staging can handle sleep in the onPrepare
+    if (firstTimeOnly) {
+      browser.sleep(1000);
+      firstTimeOnly = false;
+    }
+    console.log(jasmine.getEnv().currentSpec.description);
 
   });
 
   afterEach(function () {
-
-    browser.ignoreSynchronization = true;
-
   });
 
 
-  for (var j = 0; j < 1; j++) {
+  sampleTitle = null;
+  sampleDescription = null;
+  sampleTemplateUrl = null;
+  sampleMetadataUrl = null;
 
-    sampleTitle = null;
-    sampleDescription = null;
-    sampleTemplateUrl = null;
-    sampleMetadataUrl = null;
+  it("should have a logo", function () {
+
+    browser.wait(EC.presenceOf(element(by.css('.navbar-brand'))));
+
+  });
+
+  it("should create the sample template", function () {
+
+    sampleTitle = pageName + templatePage.getRandomInt(1, 9999999999);
+    sampleDescription = sampleTitle + ' description';
+
+    templatePage.createPage(pageName, sampleTitle, sampleDescription);
+    templatePage.clickSave(pageName);
+
+    // should check toasty message for success
+
+    // get the url of this element
+    browser.getCurrentUrl().then(function (url) {
+      sampleTemplateUrl = url;
+    });
+
+    templatePage.topNavBackArrow().click();
+    browser.wait(EC.presenceOf(element(by.css('.navbar.dashboard'))));
 
 
-    (function () {
+  });
 
-      // create the sample template
-      it("should create the sample template", function () {
+  it("should have a task bar", function () {
 
-        sampleTitle = pageName + templatePage.getRandomInt(1, 9999999999);
-        sampleDescription = sampleTitle + ' description';
+    browser.wait(EC.presenceOf(element(by.css('.controls-bar'))));
 
-        templatePage.createPage(pageName, sampleTitle, sampleDescription);
-        templatePage.clickSave(pageName);
-        toastyPage.isToastyNew();
+  });
 
-        // get the url of this element
-        browser.getCurrentUrl().then(function (url) {
-          sampleTemplateUrl = url;
-        });
+  it("should create metadata from the template", function () {
+
+    workspacePage.populateResource(sampleTitle, 'template');
+    browser.wait(EC.presenceOf(element(by.css('.navbar.metadata'))));
+
+    browser.wait(EC.presenceOf(metadataPage.createSaveMetadataButton()));
+    metadataPage.createSaveMetadataButton().click().then(function() {
+      browser.sleep(500);
+      browser.ignoreSynchronization = true;
+      var toast = element(by.css('#toasty .toast .toast-msg'));
+      toast.getAttribute('value').then(function (v) {
+        console.log(v);
+      });
+      var toastyClose = element(by.css('#toasty .toast .close-button'));
+      toastyClose.click();
+
+
+      browser.getCurrentUrl().then(function (url) {
+        sampleMetadataUrl = url;
       });
 
-      it("should open the sample template", function () {
+      browser.sleep(500);
+      browser.ignoreSynchronization = false;
+    });
 
-        workspacePage.doubleClickName(sampleTitle, 'template');
-        browser.wait(EC.presenceOf(element(by.id('top-navigation'))));
-      });
 
-      it("should create metadata from the template", function () {
+    //browser.getCurrentUrl().then(function (url) {
+    //  sampleMetadataUrl = url;
+    //});
 
-        workspacePage.doubleClickName(sampleTitle, 'template');
-        browser.wait(EC.presenceOf(element(by.id('top-navigation'))));
+  });
 
-        browser.wait(EC.presenceOf(metadataPage.createSaveMetadataButton()));
-        metadataPage.createSaveMetadataButton().click();
-        toastyPage.isToastyNew();
+  it("should show metadata header, back arrow, title, and json preview", function () {
 
-        browser.getCurrentUrl().then(function (url) {
-          sampleMetadataUrl = url;
-        });
-      });
+    expect(metadataPage.topNavigation().isDisplayed()).toBe(true);
+    expect(metadataPage.topNavBackArrow().isDisplayed()).toBe(true);
+    expect(metadataPage.documentTitle().isDisplayed()).toBe(true);
+    expect(metadataPage.templateJson().isDisplayed()).toBe(true);
+    expect(metadataPage.metadataJson().isDisplayed()).toBe(true);
 
-      it("should open metadata editor", function () {
+  });
 
-        workspacePage.doubleClickName(sampleTitle, 'metadata');
-        browser.wait(EC.presenceOf(element(by.css('.navbar.metadata'))));
+  it("should have the correct document title", function () {
 
-      });
+    browser.wait(EC.presenceOf(metadataPage.documentTitle()));
+    metadataPage.documentTitle().getText().then(function (text) {
+      expect(text === sampleTitle + ' metadata').toBe(true);
+    });
+  });
 
-      it("should show metadata editor header, back arrow, title, and json preview", function () {
+  it("should return to workspace by clicking back arrow", function () {
+    metadataPage.topNavBackArrow().click();
+    browser.wait(EC.presenceOf(element(by.css('.navbar.dashboard'))));
+  });
 
-        workspacePage.doubleClickName(sampleTitle, 'metadata');
-        browser.wait(EC.presenceOf(element(by.css('.navbar.metadata'))));
+  it("should open existing metadata", function () {
 
-        expect(metadataPage.topNavigation().isDisplayed()).toBe(true);
-        expect(metadataPage.topNavBackArrow().isDisplayed()).toBe(true);
-        expect(metadataPage.documentTitle().isDisplayed()).toBe(true);
-        expect(metadataPage.templateJson().isDisplayed()).toBe(true);
-        expect(metadataPage.metadataJson().isDisplayed()).toBe(true);
+    workspacePage.editResource(sampleTitle, 'metadata');
+    browser.wait(EC.presenceOf(element(by.css('.navbar.metadata'))));
 
-      });
+  });
 
-      it("should have the correct document title", function () {
+  it("should return to workspace by clicking back arrow", function () {
+    metadataPage.topNavBackArrow().click();
+    browser.wait(EC.presenceOf(element(by.css('.navbar.dashboard'))));
+  });
 
-        workspacePage.doubleClickName(sampleTitle, 'metadata');
-        browser.wait(EC.presenceOf(element(by.id('top-navigation'))));
-        browser.wait(EC.presenceOf(metadataPage.documentTitle()));
+  it("should open existing metadata with a double click", function () {
 
-        // and the right document
-        metadataPage.documentTitle().getText().then(function (text) {
-          expect(text === sampleTitle + ' metadata').toBe(true);
-        });
+    workspacePage.doubleClickName(sampleTitle, 'metadata');
+    browser.wait(EC.presenceOf(element(by.css('.navbar.metadata'))));
 
-      });
+  });
 
-      xit("should have the correct page title", function () {
+  it("should return to workspace by clicking back arrow", function () {
+    metadataPage.topNavBackArrow().click();
+    browser.wait(EC.presenceOf(element(by.css('.navbar.dashboard'))));
+  });
 
-        workspacePage.doubleClickName(sampleTitle, 'metadata');
-        browser.wait(EC.presenceOf(element(by.id('top-navigation'))));
-        browser.wait(EC.presenceOf(metadataPage.pageTitle()));
+  xit("should have the correct page title", function () {
 
-       metadataPage.pageTitle().getText().then(function (text) {
-         // we are not showing the page title in the new form
-         expect(text === 'Metadata Editor').toBe(true);
-        });
-      });
+    browser.wait(EC.presenceOf(metadataPage.pageTitle()));
+    metadataPage.pageTitle().getText().then(function (text) {
+      expect(text === 'Metadata Editor').toBe(true);
+    });
+  });
 
-      it("should delete template from the workspace, ", function () {
-        workspacePage.deleteResourceNew(sampleTitle, 'template');
-      });
+  it("should delete sample metadata from the workspace", function () {
+    workspacePage.deleteResource(sampleTitle, 'metadata');
+  });
 
-      it("should delete metadata from the workspace, ", function () {
-        workspacePage.deleteResourceNew(sampleTitle, 'metadata');
-      });
+  it('should delete the sample template from the workspace', function () {
+    workspacePage.deleteResource(sampleTitle, 'template');
+  });
 
-      xit("should delete template from the workspace, ", function () {
-        workspacePage.deleteResourceNew('*', 'template');
-      });
+  it("should delete any test metadata from the workspace", function () {
+    workspacePage.deleteResource('template', 'metadata');
+  });
 
-      xit("should delete metadata from the workspace, ", function () {
-        workspacePage.deleteResourceNew('*', 'metadata');
-      });
+  it('should delete the any test template from the workspace', function () {
+    workspacePage.deleteResource('template', 'template');
+  });
 
-    })
-    (j);
-  }
 
 });
 

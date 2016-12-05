@@ -517,16 +517,23 @@ var TemplateCreatorPage = function () {
       };
 
 
-
       this.clickSave = function (type) {
-        if (type === 'template') {
-          browser.wait(EC.elementToBeClickable(createSaveTemplateButton));
-          createSaveTemplateButton.click();
+        var btn = (type === 'template') ? createSaveTemplateButton : createSaveElementButton;
 
-        } else {
-          browser.wait(EC.elementToBeClickable(createSaveElementButton));
-          createSaveElementButton.click();
-        }
+        browser.wait(EC.elementToBeClickable(btn));
+        createSaveTemplateButton.click().then(function () {
+
+          browser.sleep(500);
+          browser.ignoreSynchronization = true;
+
+          var toastyClose = element(by.css('#toasty .toast .close-button'));
+          toastyClose.click();
+
+          browser.sleep(500);
+          browser.ignoreSynchronization = false;
+        });
+
+
       };
 
       this.confirmCancel = function (type) {
@@ -793,7 +800,6 @@ var TemplateCreatorPage = function () {
         browser.wait(createSaveTemplateButton.isDisplayed());
         createSaveTemplateButton.click();
       };
-
 
 
       this.clickClearTemplate = function () {

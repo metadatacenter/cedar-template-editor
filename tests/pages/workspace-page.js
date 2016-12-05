@@ -28,6 +28,7 @@ var WorkspacePage = function () {
   var createToolbar = element(by.id('workspace-toolbar'));
   var createTrashButton = createToolbar.element(by.css('#delete-tool button[tooltip="delete selection"]'));
   var createMoreOptionsButton = createToolbar.element(by.css('#more-options-tool > div > button'));
+  var createPopulateResourceButton = createToolbar.element(by.css('#more-options-tool [ng-click="dc.launchInstance()"]'));
   var createEditResourceButton = createToolbar.element(by.css('#more-options-tool [ng-click="dc.editResource()"]'));
   var createOpenResourceButton = createToolbar.element(by.css('#more-options-tool [ng-click="dc.goToResource()"]'));
   var createDeleteResourceButton = createToolbar.element(by.css('#more-options-tool [ng-click="dc.deleteResource(resource)"]'));
@@ -258,7 +259,7 @@ var WorkspacePage = function () {
   };
 
 // delete a resource by name
-  this.deleteResource = function (name, type) {
+  this.deleteResourceOld = function (name, type) {
 
     var deferred = protractor.promise.defer();
 
@@ -359,19 +360,141 @@ var WorkspacePage = function () {
   };
 
   // delete a resource by name
-  this.deleteResourceNew = function (name, type) {
+  this.deleteNextResource = function (name, type) {
+
+    //// find the resource
+    //createSearchNavInput.sendKeys(name + protractor.Key.ENTER);
+    //browser.sleep(1000);
+
+    var createFirst = element.all(by.css(createFirstCss + type)).first();
+    browser.wait(EC.visibilityOf(createFirst));
+    browser.wait(EC.elementToBeClickable(createFirst));
+    createFirst.click();
+
+    browser.sleep(1000);
+
+    browser.wait(EC.visibilityOf(createTrashButton));
+    browser.wait(EC.elementToBeClickable(createTrashButton));
+    createTrashButton.click();
+    browser.sleep(1000);
+
+
+    browser.wait(EC.visibilityOf(createSweetAlertConfirmButton));
+    browser.sleep(1000);
+
+    browser.wait(EC.elementToBeClickable(createSweetAlertConfirmButton));
+    createSweetAlertConfirmButton.click();
+
+  };
+
+  // delete a resource by name
+  this.deleteResource = function (name, type) {
 
     // find the resource
     createSearchNavInput.sendKeys(name + protractor.Key.ENTER);
+    browser.sleep(1000);
+
+    var result = "Search Results For: '" + name + "'";
+    var searchResult = element(by.css('.search-result'));
+    browser.wait(EC.textToBePresentInElement(searchResult, result),10000);
 
     var createFirst = element.all(by.css(createFirstCss + type)).first();
-    browser.wait(EC.presenceOf(createFirst));
-
+    browser.wait(EC.visibilityOf(createFirst));
+    browser.wait(EC.elementToBeClickable(createFirst));
     createFirst.click();
-    createTrashButton.click();
 
-    browser.wait(EC.presenceOf(createSweetAlertConfirmButton));
+    browser.sleep(1000);
+
+    browser.wait(EC.visibilityOf(createTrashButton));
+    browser.wait(EC.elementToBeClickable(createTrashButton));
+    createTrashButton.click();
+    browser.sleep(1000);
+
+
+    browser.wait(EC.visibilityOf(createSweetAlertConfirmButton));
+    browser.sleep(1000);
+
+    browser.wait(EC.elementToBeClickable(createSweetAlertConfirmButton));
     createSweetAlertConfirmButton.click();
+
+
+    browser.sleep(500);
+    browser.ignoreSynchronization = true;
+    var toast = element(by.css('#toasty .toast .toast-msg'));
+    toast.getAttribute('value').then(function (v) {
+      console.log(v);
+    });
+    var toastyClose = element(by.css('#toasty .toast .close-button'));
+    toastyClose.click();
+    element(by.css('.navbar-brand')).click();
+
+    browser.sleep(500);
+    browser.ignoreSynchronization = false;
+
+  };
+  // populate a resource by name
+  this.populateResource = function (name, type) {
+
+    // find the resource
+    createSearchNavInput.sendKeys(name + protractor.Key.ENTER);
+    browser.sleep(1000);
+
+    var createFirst = element.all(by.css(createFirstCss + type)).first();
+    browser.wait(EC.visibilityOf(createFirst));
+    browser.wait(EC.elementToBeClickable(createFirst));
+    createFirst.click();
+
+    browser.sleep(1000);
+
+    browser.wait(EC.visibilityOf(createMoreOptionsButton));
+    browser.wait(EC.elementToBeClickable(createMoreOptionsButton));
+    createMoreOptionsButton.click();
+
+    browser.wait(EC.visibilityOf(createPopulateResourceButton));
+    browser.wait(EC.elementToBeClickable(createPopulateResourceButton));
+    createPopulateResourceButton.click();
+
+  };
+  // edit a resource by name
+  this.editResource = function (name, type) {
+
+    // find the resource
+    createSearchNavInput.sendKeys(name + protractor.Key.ENTER);
+    browser.sleep(1000);
+
+    var createFirst = element.all(by.css(createFirstCss + type)).first();
+    browser.wait(EC.visibilityOf(createFirst),20000);
+    browser.wait(EC.elementToBeClickable(createFirst),20000);
+    createFirst.click();
+
+    browser.sleep(1000);
+
+    browser.wait(EC.visibilityOf(createMoreOptionsButton),20000);
+    browser.wait(EC.elementToBeClickable(createMoreOptionsButton));
+    createMoreOptionsButton.click();
+
+    browser.wait(EC.visibilityOf(createEditResourceButton));
+    browser.wait(EC.elementToBeClickable(createEditResourceButton),20000);
+    createEditResourceButton.click();
+
+  };
+
+
+
+  this.toastAndHome = function() {
+    browser.sleep(500);
+    browser.ignoreSynchronization = true;
+    var toast = element(by.css('#toasty .toast .toast-msg'));
+    toast.getAttribute('value').then(function (v) {
+      console.log(v);
+    });
+    var toastyClose = element(by.css('#toasty .toast .close-button'));
+    toastyClose.click();
+    element(by.css('.navbar-brand')).click();
+
+    browser.sleep(500);
+    browser.ignoreSynchronization = false;
+
   };
 
   this.selectFolder = function (name) {
@@ -396,15 +519,27 @@ var WorkspacePage = function () {
   // double click the template by title to open in metadata editor
   this.doubleClickName = function (name, type) {
 
-    createSearchNavInput.sendKeys(name).sendKeys(protractor.Key.ENTER);
+    // find the resource
+    createSearchNavInput.sendKeys(name + protractor.Key.ENTER);
 
-    // wait for search results to show in the breadcrumb
-    // TODO not correctly waiting for search to return
-    browser.sleep(2000);
+    var result = "Search Results For: '" + name + "'";
+    var searchResult = element(by.css('.search-result'));
+    browser.wait(EC.textToBePresentInElement(searchResult, result));
 
-    // select the first result
     var createFirst = element.all(by.css(createFirstCss + type)).first();
+    browser.wait(EC.visibilityOf(createFirst));
+
+    // TODO staging needs this
+    browser.sleep(500);
+
+    browser.wait(EC.elementToBeClickable(createFirst));
     browser.actions().doubleClick(createFirst).perform();
+
+    // TODO staging needs this
+    browser.sleep(500);
+
+    browser.wait(EC.presenceOf(element(by.css('.navbar.metadata'))));
+
 
   };
 

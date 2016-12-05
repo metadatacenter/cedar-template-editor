@@ -3,15 +3,16 @@
 
 var ToastyPage = function () {
 
-
+  var EC = protractor.ExpectedConditions;
 
   // toasty
  var createToastyConfirmationPopup = element(by.id('toasty'));
-  var createToastySuccess = element(by.id('toasty')).element(by.css('.toasty-type-success'));
-  var createToastyToasts = element.all(by.css('.toast'));
+  var createToastySuccesses = element.all(by.css('#toasty .toast.toasty-type-success'));
+  var createToastySuccess = createToastySuccesses.first();
+  var createToastyToasts = element.all(by.css('#toasty .toast'));
   var createToastyToast = createToastyToasts.first();
   var createToastyMessage = createToastyToast.element(by.css('.toast-msg'));
-  var createToastyClose = createToastyConfirmationPopup.element(by.css('.close-button'));
+  var createToastyClose = element.all(by.css('#toasty .toast .close-button')).first();
 
 
   var isReady = function (elm) {
@@ -51,23 +52,28 @@ var ToastyPage = function () {
   };
 
   this.isToastyNew = function () {
+    browser.sleep(500);
+    browser.ignoreSynchronization = true;
+    var toast = element(by.css('#toasty .toast .toast-msg'));
+    toast.getAttribute('value').then(function (v) {
+      console.log(v);
+    });
+    var toastyClose = element(by.css('#toasty .toast .close-button'));
+    toastyClose.click();
+    element(by.css('.navbar-brand')).click();
 
-
-
-      createToastyToasts.each(function (toast) {
-
-        var message = toast.element(by.css('.toast-msg'));
-        message.getText().then(function (value) {
-
-          console.log('toast message ' + value);
-
-          createToastyClose.click();
-        });
-      });
-
+    browser.sleep(500);
+    browser.ignoreSynchronization = false;
   };
 
 
+  this.isSuccess = function () {
+
+    browser.wait(EC.presenceOf(element.all(by.css('.toast')).first()));
+    //browser.wait(EC.visibilityOf(createToastyClose));
+    //browser.wait(EC.elementToBeClickable(createToastyClose));
+    //createToastyClose.click();
+  };
 
 
 };
