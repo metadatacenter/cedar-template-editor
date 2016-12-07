@@ -170,7 +170,7 @@ describe('template-creator', function () {
     }
 
     // log the name of the test
-    console.log(jasmine.getEnv().currentSpec.description);
+    // console.log(jasmine.getEnv().currentSpec.description);
 
   });
 

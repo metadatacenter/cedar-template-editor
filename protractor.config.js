@@ -7,6 +7,11 @@ exports.config = {
   chromeDriver     : './node_modules/selenium-standalone/.selenium/chromedriver/' + testConfig.chromeDriver,
   specs            : ['tests/e2e/**/*.js'],
   allScriptsTimeout: 100000,
+  jasmineNodeOpts: {
+    showColors: true,
+    defaultTimeoutInterval: 100000,
+    isVerbose: true
+  },
   capabilities: {
     'browserName': 'chrome'
   },
