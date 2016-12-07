@@ -53,6 +53,7 @@ install:
 script:
   - free -lm
   - pip install speedtest-cli
+  - speedtest-cli --simple
   - gulp e2e
 
 # Variables containing CEDAR test users and passwords
