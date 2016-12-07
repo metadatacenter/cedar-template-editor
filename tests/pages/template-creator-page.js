@@ -466,6 +466,10 @@ var TemplateCreatorPage = function () {
         }
       ];
 
+      this.isWorkspace = function() {
+        browser.wait(EC.presenceOf(element(by.css('.navbar.dashboard'))));
+      }
+
 
       this.createPage = function (type, title, description) {
 
@@ -516,12 +520,30 @@ var TemplateCreatorPage = function () {
         }
       };
 
+      this.showJson = function() {
+
+        expect(templateJSON.isDisplayed()).toBe(false);
+        browser.wait(EC.visibilityOf(showJsonLink));
+        browser.wait(EC.elementToBeClickable(showJsonLink));
+        showJsonLink.click();
+        browser.wait(EC.visibilityOf(templateJSON));
+      };
+
+      this.hideJson = function() {
+
+        expect(templateJSON.isDisplayed()).toBe(true);
+        browser.wait(EC.visibilityOf(showJsonLink));
+        browser.wait(EC.elementToBeClickable(showJsonLink));
+        showJsonLink.click();
+        browser.wait(EC.invisibilityOf(templateJSON));
+      };
+
 
       this.clickSave = function (type) {
-        var btn = (type === 'template') ? createSaveTemplateButton : createSaveElementButton;
+        var button = (type === 'template') ? createSaveTemplateButton : createSaveElementButton;
 
-        browser.wait(EC.elementToBeClickable(btn));
-        createSaveTemplateButton.click().then(function () {
+        browser.wait(EC.elementToBeClickable(button));
+        button.click().then(function () {
 
           browser.sleep(500);
           browser.ignoreSynchronization = true;
@@ -992,7 +1014,7 @@ var TemplateCreatorPage = function () {
         return removeFieldButton;
       };
 
-      this.addField = function (cedarType) {
+      this.addFieldOld = function (cedarType) {
         var deferred = protractor.promise.defer();
 
         switch (cedarType) {
@@ -1169,8 +1191,9 @@ var TemplateCreatorPage = function () {
       };
 
 
-      this.addFieldNew = function (cedarType, isMore, title, description) {
+      this.addField = function (cedarType, isMore, title, description) {
         if (isMore) {
+          browser.wait(EC.visibilityOf(createMore));
           browser.wait(EC.elementToBeClickable(createMore));
           createMore.click();
         }

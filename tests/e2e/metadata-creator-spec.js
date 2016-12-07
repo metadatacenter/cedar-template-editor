@@ -1,8 +1,9 @@
 'use strict';
-var WorkspacePage = require('../pages/workspace-page.js');
+var WorkspacePage = require('../pages/workspace-new-page.js');
 var MetadataPage = require('../pages/metadata-page.js');
 var TemplatePage = require('../pages/template-creator-page.js');
 var ToastyPage = require('../pages/toasty-page.js');
+var SweetAlertPage = require('../pages/sweet-alert-page.js');
 
 var _ = require('../libs/lodash.min.js');
 var sampleTitle;
@@ -18,6 +19,7 @@ describe('metadata-creator', function () {
   var workspacePage;
   var templatePage;
   var toastyPage;
+  var sweetAlertPage;
   var firstTimeOnly = true;
 
 
@@ -29,6 +31,7 @@ describe('metadata-creator', function () {
     metadataPage = MetadataPage;
     templatePage = TemplatePage;
     toastyPage = ToastyPage;
+    sweetAlertPage = SweetAlertPage;
     browser.driver.manage().window().maximize();
 
     //TODO local needs sleep here, staging can handle sleep in the onPrepare
@@ -36,6 +39,8 @@ describe('metadata-creator', function () {
       browser.sleep(1000);
       firstTimeOnly = false;
     }
+
+    // log the name of the test
     console.log(jasmine.getEnv().currentSpec.description);
 
   });
@@ -43,7 +48,7 @@ describe('metadata-creator', function () {
   afterEach(function () {
   });
 
-
+  // in case we put this in a loop
   sampleTitle = null;
   sampleDescription = null;
   sampleTemplateUrl = null;
@@ -51,25 +56,32 @@ describe('metadata-creator', function () {
 
   it("should have a logo", function () {
 
-    browser.wait(EC.presenceOf(element(by.css('.navbar-brand'))));
+    browser.wait(EC.presenceOf(workspacePage.createLogo()));
 
   });
 
   it("should create the sample template", function () {
 
-    sampleTitle = pageName + templatePage.getRandomInt(1, 9999999999);
-    sampleDescription = sampleTitle + ' description';
+    // generate a title and description
+    sampleTitle = workspacePage.createTitle('template');
+    sampleDescription = workspacePage.createDescription('template');
 
-    templatePage.createPage(pageName, sampleTitle, sampleDescription);
-    templatePage.clickSave(pageName);
+    // create the template
+    workspacePage.createResource('template');
+    templatePage.setTitle('template', sampleTitle);
+    templatePage.setDescription('template', sampleDescription);
+    templatePage.isTitle('template', sampleTitle);
+    templatePage.isDescription('template', sampleDescription);
+    templatePage.clickSave('template');
 
-    // should check toasty message for success
+    // TODO check toasty message for success
 
     // get the url of this element
     browser.getCurrentUrl().then(function (url) {
       sampleTemplateUrl = url;
     });
 
+    // get back to the workspace page
     templatePage.topNavBackArrow().click();
     browser.wait(EC.presenceOf(element(by.css('.navbar.dashboard'))));
 
@@ -88,7 +100,7 @@ describe('metadata-creator', function () {
     browser.wait(EC.presenceOf(element(by.css('.navbar.metadata'))));
 
     browser.wait(EC.presenceOf(metadataPage.createSaveMetadataButton()));
-    metadataPage.createSaveMetadataButton().click().then(function() {
+    metadataPage.createSaveMetadataButton().click().then(function () {
       browser.sleep(500);
       browser.ignoreSynchronization = true;
       var toast = element(by.css('#toasty .toast .toast-msg'));
@@ -106,12 +118,6 @@ describe('metadata-creator', function () {
       browser.sleep(500);
       browser.ignoreSynchronization = false;
     });
-
-
-    //browser.getCurrentUrl().then(function (url) {
-    //  sampleMetadataUrl = url;
-    //});
-
   });
 
   it("should show metadata header, back arrow, title, and json preview", function () {
@@ -137,7 +143,7 @@ describe('metadata-creator', function () {
     browser.wait(EC.presenceOf(element(by.css('.navbar.dashboard'))));
   });
 
-  it("should open existing metadata", function () {
+  it("should open existing metadata with edit menu", function () {
 
     workspacePage.editResource(sampleTitle, 'metadata');
     browser.wait(EC.presenceOf(element(by.css('.navbar.metadata'))));
@@ -150,10 +156,8 @@ describe('metadata-creator', function () {
   });
 
   it("should open existing metadata with a double click", function () {
-
-    workspacePage.doubleClickName(sampleTitle, 'metadata');
+    workspacePage.doubleClickResource(sampleTitle, 'metadata');
     browser.wait(EC.presenceOf(element(by.css('.navbar.metadata'))));
-
   });
 
   it("should return to workspace by clicking back arrow", function () {
@@ -171,18 +175,40 @@ describe('metadata-creator', function () {
 
   it("should delete sample metadata from the workspace", function () {
     workspacePage.deleteResource(sampleTitle, 'metadata');
+
+    sweetAlertPage.confirm();
+    toastyPage.isSuccess();
+
+    // clear the search left from delete
+    workspacePage.clickLogo();
   });
 
   it('should delete the sample template from the workspace', function () {
     workspacePage.deleteResource(sampleTitle, 'template');
+
+    sweetAlertPage.confirm();
+    toastyPage.isSuccess();
+
+    // clear the search left from delete
+    workspacePage.clickLogo();
   });
 
-  it("should delete any test metadata from the workspace", function () {
+  xit("should delete any test metadata from the workspace", function () {
     workspacePage.deleteResource('template', 'metadata');
+
+    sweetAlertPage.confirm();
+    toastyPage.isSuccess();
+
+    workspacePage.clickLogo();
   });
 
-  it('should delete the any test template from the workspace', function () {
+  xit('should delete the any test template from the workspace', function () {
     workspacePage.deleteResource('template', 'template');
+
+    sweetAlertPage.confirm();
+    toastyPage.isSuccess();
+
+    workspacePage.clickLogo();
   });
 
 

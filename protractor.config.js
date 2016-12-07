@@ -52,8 +52,8 @@ exports.config = {
     browser.driver.findElement(by.id('username')).sendKeys(testConfig.testUser1).then(function () {
       browser.driver.findElement(by.id('password')).sendKeys(testConfig.testPassword1).then(function () {
         browser.driver.findElement(by.id('kc-login')).click().then(function () {
-          browser.driver.wait(browser.driver.isElementPresent(by.id('top-navigation')), 20000);
-          console.log('top-navigation');
+          browser.driver.wait(browser.driver.isElementPresent(by.id('top-navigation')));
+
         });
       });
     });
