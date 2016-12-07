@@ -52,6 +52,7 @@ install:
 # Run the end-to-end tests
 script:
   - free -lm
+  - pip install speedtest-cli
   - gulp e2e
 
 # Variables containing CEDAR test users and passwords
