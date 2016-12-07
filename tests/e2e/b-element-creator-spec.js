@@ -6,7 +6,7 @@ var ToastyPage = require('../pages/toasty-page.js');
 var _ = require('../libs/lodash.min.js');
 
 
-describe('element-creator', function () {
+xdescribe('element-creator', function () {
   var EC = protractor.ExpectedConditions;
   var page;
   var workspacePage;

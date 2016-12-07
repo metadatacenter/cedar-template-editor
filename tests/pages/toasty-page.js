@@ -3,54 +3,59 @@
 
 var ToastyPage = function () {
 
-
+  var EC = protractor.ExpectedConditions;
 
   // toasty
- var createToastyConfirmationPopup = element(by.id('toasty'));
-  var createToastySuccess = element(by.id('toasty')).element(by.css('.toasty-type-success'));
-  var createToastyToasts = element.all(by.css('.toast'));
+  var createToastyConfirmationPopup = element(by.id('toasty'));
+  var createToastySuccesses = element.all(by.css('#toasty .toast.toasty-type-success'));
+  var createToastySuccess = createToastySuccesses.first();
+  var createToastyToasts = element.all(by.css('#toasty .toast'));
   var createToastyToast = createToastyToasts.first();
   var createToastyMessage = createToastyToast.element(by.css('.toast-msg'));
-  var createToastyClose = createToastyConfirmationPopup.element(by.css('.close-button'));
+  var createToastyClose = element.all(by.css('#toasty .toast .close-button')).first();
+  var toastyFolderMessage = "The folder ";
+  var toastyTemplateMessage = "The template ";
+  var toastyElementMessage = "The element ";
+  var toastyMessage = "The ";
+  var toastyMessageCreated = " has been created.";
+  var toastyMessageDeleted = " has been deleted.";
 
 
-  var isReady = function (elm) {
-    var deferred = protractor.promise.defer();
+  // look for the first toast to be a success
+  this.isSuccess = function () {
 
-    browser.wait(elm.isPresent()).then(function () {
-      browser.wait(elm.isDisplayed()).then(function () {
-        deferred.fulfill(true);
-      });
+    // toasty is blocked because of animations, so we need to turn off synchronization to click the close
+    browser.sleep(500);
+    browser.ignoreSynchronization = true;
+
+    // is it a success?
+    expect(createToastySuccess.isPresent()).toBe(true);
+
+    // close the toast
+    var toastyClose = element(by.css('#toasty .toast .close-button'));
+    toastyClose.click();
+
+    browser.sleep(500);
+    browser.ignoreSynchronization = false;
+  };
+
+  // look for the first toast to be a success
+  this.isMessage = function (message) {
+
+    // toasty is blocked because of animations, so we need to turn off synchronization to read the message
+    browser.sleep(500);
+    browser.ignoreSynchronization = true;
+
+    // read the message
+    createToastyMessage.getAttribute('value').then(function (v) {
+      console.log('value ' + v);
+      result = (message === v);
     });
 
-    return deferred.promise;
+    browser.sleep(500);
+    browser.ignoreSynchronization = false;
+    return result;
   };
-
-  // toasty
-  this.isToasty = function () {
-    var deferred = protractor.promise.defer();
-    isReady(createToastySuccess).then(function () {
-
-
-      createToastyToasts.each(function (toast) {
-
-          var message = toast.element(by.css('.toast-msg'));
-          message.getText().then(function (value) {
-
-            //expect(value.indexOf(text) !== -1).toBe(true);
-
-            createToastyClose.click().then(function () {
-              deferred.fulfill(true);
-
-            });
-          });
-        });
-      });
-
-    return deferred.promise;
-  };
-
-
 
 
 };
