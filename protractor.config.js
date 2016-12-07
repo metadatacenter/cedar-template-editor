@@ -6,7 +6,7 @@ exports.config = {
   seleniumServerJar: './node_modules/selenium-standalone/.selenium/selenium-server/' + testConfig.seleniumServerJar,
   chromeDriver     : './node_modules/selenium-standalone/.selenium/chromedriver/' + testConfig.chromeDriver,
   specs            : ['tests/e2e/**/*.js'],
-  allScriptsTimeout: 100000,
+  allScriptsTimeout: 40000,
   capabilities: {
     'browserName': 'chrome'
   },
