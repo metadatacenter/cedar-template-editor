@@ -19,7 +19,7 @@ exports.config = {
   onPrepare: function () {
     // implicit and page load timeouts
     browser.manage().timeouts().pageLoadTimeout(100000);
-    browser.manage().timeouts().implicitlyWait(20000);
+    browser.manage().timeouts().implicitlyWait(90000);
 
     browser.ignoreSynchronization = true;
 

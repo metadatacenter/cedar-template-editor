@@ -438,7 +438,7 @@ define([
     FieldTypeService.init();
     UrlService.init();
     provisionalClassService.init();
-    //controlledTermDataService.init();
+    controlledTermDataService.init();
     DataManipulationService.init();
     UISettingsService.init();
     TrackingService.init();
