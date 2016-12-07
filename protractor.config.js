@@ -19,7 +19,7 @@ exports.config = {
   onPrepare: function () {
     // implicit and page load timeouts
     browser.manage().timeouts().pageLoadTimeout(100000);
-    browser.manage().timeouts().implicitlyWait(90000);
+    browser.manage().timeouts().implicitlyWait(5000);
 
     browser.ignoreSynchronization = true;
 
@@ -66,10 +66,13 @@ exports.config = {
     // wait for new page
     return browser.driver.wait(function () {
       return browser.driver.getCurrentUrl().then(function (url) {
-        browser.ignoreSynchronization = false;
-        return url === testConfig.baseUrl + '/';
+        return browser.driver.isElementPresent(by.className('ng-app')).then(function () {
+          browser.ignoreSynchronization = false;
+          //return url === testConfig.baseUrl + '/';
+          return true;
+        });
       });
-    }, 20000);
+    });
 
 
   }

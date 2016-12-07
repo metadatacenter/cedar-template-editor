@@ -96,6 +96,12 @@ require([
         'app',
       ], function (angular, app) {
         angular.bootstrap(document, ['cedar.templateEditor']);
+
+        // Set the ng-app class for Angular Protractor tests
+        var root = document.documentElement;
+
+        angular.element(root).addClass('ng-app');
+
       });
     }
 
