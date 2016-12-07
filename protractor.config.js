@@ -6,14 +6,14 @@ exports.config = {
   seleniumServerJar: './node_modules/selenium-standalone/.selenium/selenium-server/' + testConfig.seleniumServerJar,
   chromeDriver     : './node_modules/selenium-standalone/.selenium/chromedriver/' + testConfig.chromeDriver,
   specs            : ['tests/e2e/**/*.js'],
-  allScriptsTimeout: 40000,
+  allScriptsTimeout: 100000,
   capabilities: {
     'browserName': 'chrome'
   },
 
   onPrepare: function () {
     // implicit and page load timeouts
-    browser.manage().timeouts().pageLoadTimeout(40000);
+    browser.manage().timeouts().pageLoadTimeout(100000);
     browser.manage().timeouts().implicitlyWait(20000);
 
     browser.ignoreSynchronization = true;
