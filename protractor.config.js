@@ -6,14 +6,21 @@ exports.config = {
   seleniumServerJar: './node_modules/selenium-standalone/.selenium/selenium-server/' + testConfig.seleniumServerJar,
   chromeDriver     : './node_modules/selenium-standalone/.selenium/chromedriver/' + testConfig.chromeDriver,
   specs            : ['tests/e2e/**/*.js'],
-  allScriptsTimeout: 30000,
+
+  allScriptsTimeout: 100000,
+  jasmineNodeOpts: {
+    showColors: true,
+    defaultTimeoutInterval: 100000,
+    isVerbose: true
+  },
+
   capabilities: {
     'browserName': 'chrome'
   },
 
   onPrepare: function () {
     // implicit and page load timeouts
-    browser.manage().timeouts().pageLoadTimeout(40000);
+    browser.manage().timeouts().pageLoadTimeout(100000);
     browser.manage().timeouts().implicitlyWait(5000);
 
     browser.ignoreSynchronization = true;
@@ -61,14 +68,14 @@ exports.config = {
     // wait for new page
     return browser.driver.wait(function () {
       return browser.driver.getCurrentUrl().then(function (url) {
-        browser.ignoreSynchronization = false;
-
-        // TODO local causes this to fail, but it works in staging
-        //browser.sleep(1000);
-
-        return url === testConfig.baseUrl + '/';
+        return browser.driver.isElementPresent(by.className('ng-app')).then(function () {
+          browser.ignoreSynchronization = false;
+          //return url === testConfig.baseUrl + '/';
+          return true;
+        });
       });
-    }, 20000);
+    });
+
 
 
   }
