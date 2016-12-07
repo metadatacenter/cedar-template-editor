@@ -6,7 +6,7 @@ exports.config = {
   seleniumServerJar: './node_modules/selenium-standalone/.selenium/selenium-server/' + testConfig.seleniumServerJar,
   chromeDriver     : './node_modules/selenium-standalone/.selenium/chromedriver/' + testConfig.chromeDriver,
   specs            : ['tests/e2e/**/*.js'],
-  allScriptsTimeout: 30000,
+  allScriptsTimeout: 100000,
   capabilities: {
     'browserName': 'chrome'
   },
@@ -14,7 +14,7 @@ exports.config = {
   onPrepare: function () {
     // implicit and page load timeouts
     browser.manage().timeouts().pageLoadTimeout(40000);
-    browser.manage().timeouts().implicitlyWait(5000);
+    browser.manage().timeouts().implicitlyWait(20000);
 
     browser.ignoreSynchronization = true;
 
@@ -62,10 +62,6 @@ exports.config = {
     return browser.driver.wait(function () {
       return browser.driver.getCurrentUrl().then(function (url) {
         browser.ignoreSynchronization = false;
-
-        // TODO local causes this to fail, but it works in staging
-        //browser.sleep(1000);
-
         return url === testConfig.baseUrl + '/';
       });
     }, 20000);
