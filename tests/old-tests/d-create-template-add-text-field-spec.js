@@ -26,52 +26,9 @@ xdescribe('create-template-add-text-field', function () {
       });
     });
   });
-  xit("Should show errors if create template without title or description", function () {
-    var options = {};
-    options.fieldTitle = "Simple text field";
-    page.addTextField(options).then(function () {
-      page.composeTemplateSaveButton().click().then(function () {
-        page.errorMessageTexts().then(function (texts) {
-          expect(texts.length).toBe(2);
-          expect(texts[0].indexOf("Template Name input cannot be left empty.") >= 0).toBe(true);
-          expect(texts[1].indexOf("Template Description input cannot be left empty") >= 0).toBe(true);
-          page.setTemplateTitle("Template 1");
-          page.composeTemplateSaveButton().click().then(function () {
-            page.errorMessageTexts().then(function (texts) {
-              expect(texts.length).toBe(1);
-              expect(texts[0].indexOf("Template Description input cannot be left empty.") >= 0).toBe(true)
-            });
-          });
-        });
-      });
-    });
-  });
-  xit("Should show errors if save template without title or description", function () {
-    var options = {};
-    options.fieldTitle = "Simple text field";
-    page.setTemplateTitle("Simple template");
-    page.setTemplateDescription("A simple template");
-    page.addTextField(options).then(function () {
-      page.composeTemplateSaveButton().click().then(function () {
-        browser.sleep(1000).then(function () {
-          browser.getCurrentUrl().then(function (url) {
-            expect(url.indexOf("/templates/edit") > 0).toBe(true);
-            page.setTemplateTitle("");
-            page.setTemplateDescription("");
-            browser.waitForAngular().then(function () {
-              page.composeTemplateSaveButton().click().then(function () {
-                page.errorMessageTexts().then(function (texts) {
-                  expect(texts.length).toBe(2);
-                  expect(texts[0].indexOf("Template Name input cannot be left empty.") >= 0).toBe(true);
-                  expect(texts[1].indexOf("Template Description input cannot be left empty.") >= 0).toBe(true)
-                });
-              });
-            });
-          });
-        });
-      });
-    });
-  });
+
+
+
   xit("Should allow to create template with 1 element", function () {
     var options = {};
     options.elementTitle = "Element at " + ((new Date()).getTime());

@@ -1,7 +1,7 @@
 'use strict';
 
 
-var SweetAlertPage = function () {
+var SweetAlertModal = function () {
 
   var EC = protractor.ExpectedConditions;
 
@@ -57,4 +57,4 @@ var SweetAlertPage = function () {
 
 
 };
-module.exports = new SweetAlertPage(); 
+module.exports = new SweetAlertModal(); 

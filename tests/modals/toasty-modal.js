@@ -1,7 +1,7 @@
 'use strict';
 
 
-var ToastyPage = function () {
+var ToastyModal = function () {
 
   var EC = protractor.ExpectedConditions;
 
@@ -59,4 +59,4 @@ var ToastyPage = function () {
 
 
 };
-module.exports = new ToastyPage(); 
+module.exports = new ToastyModal(); 

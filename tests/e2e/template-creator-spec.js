@@ -1,8 +1,8 @@
 'use strict';
 var TemplatePage = require('../pages/template-creator-page.js');
 var WorkspacePage = require('../pages/workspace-new-page.js');
-var ToastyPage = require('../pages/toasty-page.js');
-var SweetAlertPage = require('../pages/sweet-alert-page.js');
+var ToastyModal = require('../modals/toasty-modal.js');
+var SweetAlertModal = require('../modals/sweet-alert-modal.js');
 var _ = require('../libs/lodash.min.js');
 
 
@@ -12,9 +12,8 @@ describe('template-creator', function () {
 
   var workspacePage;
   var templatePage;
-  var toastyPage;
-  var sweetAlertPage;
-  var firstTimeOnly = true;
+  var toastyModal;
+  var sweetAlertModal;
 
   var cleanJson;
   var dirtyJson;
@@ -158,16 +157,10 @@ describe('template-creator', function () {
 
     workspacePage = WorkspacePage;
     templatePage = TemplatePage;
-    toastyPage = ToastyPage;
-    sweetAlertPage = SweetAlertPage;
+    toastyModal = ToastyModal;
+    sweetAlertModal = SweetAlertModal;
 
     browser.driver.manage().window().maximize();
-    element(by.css('body')).allowAnimations(false);
-
-    if (firstTimeOnly) {
-      browser.sleep(1000);
-      firstTimeOnly = false;
-    }
 
     // log the name of the test
     // console.log(jasmine.getEnv().currentSpec.description);
@@ -227,8 +220,8 @@ describe('template-creator', function () {
 
         workspacePage.deleteResource(sampleTitle, pageType);
 
-        sweetAlertPage.confirm();
-        toastyPage.isSuccess();
+        sweetAlertModal.confirm();
+        toastyModal.isSuccess();
 
         // clear the search left from delete
         workspacePage.clickLogo();
@@ -261,7 +254,7 @@ describe('template-creator', function () {
             browser.wait(EC.stalenessOf(field));
 
             templatePage.topNavBackArrow().click();
-            sweetAlertPage.confirm();
+            sweetAlertModal.confirm();
             browser.wait(EC.presenceOf(element(by.css('.navbar.dashboard'))));
 
           });
@@ -306,7 +299,7 @@ describe('template-creator', function () {
             templatePage.topNavBackArrow().click();
             // TODO richtext does not make the template dirty
             if (type != 'richtext') {
-              sweetAlertPage.confirm();
+              sweetAlertModal.confirm();
             }
             browser.wait(EC.presenceOf(element(by.css('.navbar.dashboard'))));
 
@@ -396,7 +389,7 @@ describe('template-creator', function () {
         templatePage.hideJson();
 
         templatePage.topNavBackArrow().click();
-        sweetAlertPage.confirm();
+        sweetAlertModal.confirm();
         templatePage.isWorkspace();
       });
 
@@ -423,7 +416,7 @@ describe('template-creator', function () {
         templatePage.hideJson();
 
         templatePage.topNavBackArrow().click();
-        sweetAlertPage.confirm();
+        sweetAlertModal.confirm();
         templatePage.isWorkspace();
 
       });
@@ -481,7 +474,7 @@ describe('template-creator', function () {
           var beforeJson = JSON.parse(value);
 
           templatePage.clickClear(pageType);
-          sweetAlertPage.cancel();
+          sweetAlertModal.cancel();
 
           browser.wait(EC.visibilityOf(templatePage.jsonPreview()));
 
@@ -494,7 +487,7 @@ describe('template-creator', function () {
         templatePage.hideJson();
 
         templatePage.topNavBackArrow().click();
-        sweetAlertPage.confirm();
+        sweetAlertModal.confirm();
         templatePage.isWorkspace();
       });
 
@@ -508,11 +501,11 @@ describe('template-creator', function () {
 
         // clear and confirm
         templatePage.clickClear(pageType);
-        sweetAlertPage.confirm();
-        sweetAlertPage.isHidden();
+        sweetAlertModal.confirm();
+        sweetAlertModal.isHidden();
 
         templatePage.topNavBackArrow().click();
-        sweetAlertPage.confirm();
+        sweetAlertModal.confirm();
         templatePage.isWorkspace();
 
       });
@@ -527,8 +520,8 @@ describe('template-creator', function () {
 
         // clear and confirm
         templatePage.clickClear(pageType);
-        sweetAlertPage.confirm();
-        sweetAlertPage.isHidden();
+        sweetAlertModal.confirm();
+        sweetAlertModal.isHidden();
 
         templatePage.showJson();
 
@@ -544,7 +537,7 @@ describe('template-creator', function () {
 
         // back to workspace
         templatePage.topNavBackArrow().click();
-        sweetAlertPage.confirm();
+        sweetAlertModal.confirm();
         templatePage.isWorkspace();
 
       });
