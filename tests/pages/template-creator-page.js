@@ -1,7 +1,7 @@
 'use strict';
 
 require('../pages/workspace-page.js');
-require('../pages/finder-page.js');
+require('../modals/finder-modal.js');
 
 var TemplateCreatorPage = function () {
 
@@ -1285,7 +1285,7 @@ var TemplateCreatorPage = function () {
 
       this.openFinder = function () {
         createSearchElement.click();
-        return require('./finder-page.js');
+        return require('../modals/finder-modal.js');
       };
 
       this.addElement = function (title) {
