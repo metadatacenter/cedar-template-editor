@@ -1,33 +1,52 @@
 'use strict';
-var WorkspacePage = require('../pages/workspace-page.js');
+var WorkspacePage = require('../pages/workspace-new-page.js');
+var MetadataPage = require('../pages/metadata-page.js');
+var TemplatePage = require('../pages/template-creator-page.js');
 var ToastyPage = require('../pages/toasty-page.js');
+var SweetAlertPage = require('../pages/sweet-alert-page.js');
+
 var _ = require('../libs/lodash.min.js');
+var sampleTitle;
+var sampleDescription;
+var sampleTemplateUrl;
+var sampleMetadataUrl;
+var pageName = 'template';
 
-
-xdescribe('workspace', function () {
+describe('workspace', function () {
   var EC = protractor.ExpectedConditions;
-  var page;
+  var metadataPage;
+  var workspacePage;
+  var templatePage;
   var toastyPage;
-  var sampleFolder;
+  var sweetAlertPage;
+  var firstTimeOnly = true;
 
 
   // before each test, load a new page and create a template
   // maximize the window area for clicking
   beforeEach(function () {
 
-    page = WorkspacePage;
+    workspacePage = WorkspacePage;
+    metadataPage = MetadataPage;
+    templatePage = TemplatePage;
     toastyPage = ToastyPage;
+    sweetAlertPage = SweetAlertPage;
     browser.driver.manage().window().maximize();
 
-    page.get();
-    browser.ignoreSynchronization = null;
-    browser.wait(EC.presenceOf(element(by.css('.navbar.dashboard'))));
+    //TODO local needs sleep here, staging can handle sleep in the onPrepare
+    if (firstTimeOnly) {
+      browser.sleep(1000);
+      firstTimeOnly = false;
+    }
 
   });
 
   afterEach(function () {
+  });
 
-    browser.ignoreSynchronization = true;
+  it("should have a logo", function () {
+
+    browser.wait(EC.presenceOf(workspacePage.createLogo()));
 
   });
 
@@ -35,69 +54,56 @@ xdescribe('workspace', function () {
     (function () {
 
       // functioning trash and options buttons
-      xit("should create a folder", function () {
+      it("should create a folder", function () {
 
-        sampleFolder = 'folder' + page.getRandomInt(1, 99999999);
-        page.createFolderNew(sampleFolder);
-        toastyPage.isToastyNew();
+        sampleTitle = workspacePage.createTitle('folder');
+
+        // create the folder
+        workspacePage.createResource('folder', sampleTitle);
+        toastyPage.isSuccess();
 
       });
 
       // functioning trash and options buttons
-      xit("should have trash and options buttons hidden, search, breadcrumbs, and create buttons visible", function () {
+      it("should have trash and options buttons hidden, search, breadcrumbs, and create buttons visible", function () {
 
-        browser.wait(EC.invisibilityOf(page.createTrashButton()));
-        browser.wait(EC.invisibilityOf(page.createMoreOptionsButton()));
-        browser.wait(EC.visibilityOf(page.createLogo()));
+        browser.wait(EC.invisibilityOf(workspacePage.createTrashButton()));
+        browser.wait(EC.invisibilityOf(workspacePage.createMoreOptionsButton()));
 
-        browser.wait(EC.visibilityOf(page.createSearchNav()));
-        page.createSearchNavInput().getText().then(function (value) {
+        browser.wait(EC.visibilityOf(workspacePage.createSearchNav()));
+        workspacePage.createSearchNavInput().getText().then(function (value) {
           expect(value).toBe('');
         });
 
-        browser.wait(EC.visibilityOf(page.createBreadcrumb()));
-        browser.wait(EC.visibilityOf(page.createButton()));
-
+        browser.wait(EC.visibilityOf(workspacePage.createBreadcrumb()));
+        browser.wait(EC.visibilityOf(workspacePage.createButton()));
 
       });
 
-      xit("should open the folder in the bread crumb", function () {
+      it("should open the folder in the bread crumb", function () {
 
-        page.isDashboard().then(function () {
-          // expect two folders in the breadcrumb  All / Users ....don't know user's name
-          // open the Users folder
-          page.openFolder(1).then(function () {
-          });
-        });
+        workspacePage.clickBreadcrumb(1);
+        workspacePage.clickLogo();
+
       });
 
       // functioning trash and options buttons
-      xit("should have trash and options button visible if something is selected", function () {
+      it("should have trash and options button visible if folder is selected", function () {
 
-        page.isDashboard().then(function () {
+        browser.wait(EC.elementToBeClickable(workspacePage.createFirstFolder()));
+        workspacePage.createFirstFolder().click();
 
-          page.isReady(page.createFirstFolder()).then(function () {
-            page.createFirstFolder().click().then(function () {
-              page.isReady(page.createFirstSelected()).then(function () {
-                page.isReady(page.createFirstSelected()).then(function () {
-                  page.isReady(page.createTrashButton()).then(function () {
-                    page.isReady(page.createMoreOptionsButton()).then(function () {
+        expect(workspacePage.createTrashButton().isPresent()).toBe(true);
+        expect(workspacePage.createMoreOptionsButton().isPresent()).toBe(true);
 
-                      expect(page.createTrashButton().isPresent()).toBe(true);
-                      expect(page.createMoreOptionsButton().isPresent()).toBe(true);
-
-                    });
-                  });
-                });
-              });
-            });
-          });
-        });
       });
 
-      xit("should delete the sample folder", function () {
-        page.deleteResourceNew('folder', sampleFolder);
-        toastyPage.isToastyNew();
+      it("should delete the sample folder", function () {
+
+        workspacePage.deleteResource(sampleTitle, 'folder');
+        sweetAlertPage.confirm();
+        toastyPage.isSuccess();
+
       });
     })
     (j);

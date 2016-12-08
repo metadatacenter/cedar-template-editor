@@ -75,7 +75,7 @@ var WorkspacePage = function () {
 
   // create folder modal
   var createFolderModal = element(by.id('new-folder-modal'));
-  var createFolderName = createFolderModal.element(by.model('dc.folder.name'));
+  var createFolderName = createFolderModal.element(by.model('folder.folder.name'));
   var createFolderSubmitButton = createFolderModal.element(by.css('div.modal-footer button.confirm'));
 
 
@@ -166,7 +166,7 @@ var WorkspacePage = function () {
   };
 
   // create a resource
-  this.createResource = function (type) {
+  this.createResource = function (type, title) {
 
     browser.wait(EC.visibilityOf(createButton));
     browser.wait(EC.elementToBeClickable(createButton));
@@ -178,7 +178,9 @@ var WorkspacePage = function () {
 
     if (type === 'folder') {
       browser.wait(EC.visibilityOf(createFolderModal));
-      createFolderName.sendKeys(name);
+      if (title) {
+        createFolderName.sendKeys(title);
+      }
       browser.wait(EC.elementToBeClickable(createFolderSubmitButton));
       createFolderSubmitButton.click();
     }
@@ -268,6 +270,18 @@ var WorkspacePage = function () {
 
     // is this the metadata editor?
     browser.wait(EC.presenceOf(element(by.css('.navbar.metadata'))));
+
+  };
+
+  // click on the item at index in the breadcrumb
+  this.clickBreadcrumb = function (index) {
+
+    browser.wait(EC.visibilityOf(createBreadcrumb));
+    var folders = createBreadcrumbFolders;
+    var folder = folders.get(index);
+    var link = folder.element(by.tagName('a'));
+    browser.wait(EC.elementToBeClickable(link));
+    link.click();
 
   };
 

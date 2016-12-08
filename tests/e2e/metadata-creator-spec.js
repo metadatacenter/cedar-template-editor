@@ -13,7 +13,7 @@ var sampleMetadataUrl;
 var pageName = 'template';
 
 
-describe('metadata-creator', function () {
+xdescribe('metadata-creator', function () {
   var EC = protractor.ExpectedConditions;
   var metadataPage;
   var workspacePage;
@@ -39,11 +39,6 @@ describe('metadata-creator', function () {
       browser.sleep(1000);
       firstTimeOnly = false;
     }
-
-    // log the name of the test
-    //console.log(jasmine.getEnv().currentSpec.description);
-
-
   });
 
   afterEach(function () {
