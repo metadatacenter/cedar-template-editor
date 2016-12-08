@@ -2,8 +2,9 @@
 var WorkspacePage = require('../pages/workspace-new-page.js');
 var MetadataPage = require('../pages/metadata-page.js');
 var TemplatePage = require('../pages/template-creator-page.js');
-var ToastyPage = require('../pages/toasty-page.js');
-var SweetAlertPage = require('../pages/sweet-alert-page.js');
+var ToastyModal = require('../modals/toasty-modal.js');
+var SweetAlertModal = require('../modals/sweet-alert-modal.js');
+
 
 var _ = require('../libs/lodash.min.js');
 var sampleTitle;
@@ -17,10 +18,8 @@ describe('workspace', function () {
   var metadataPage;
   var workspacePage;
   var templatePage;
-  var toastyPage;
-  var sweetAlertPage;
-  var firstTimeOnly = true;
-
+  var toastyModal;
+  var sweetAlertModal;
 
   // before each test, load a new page and create a template
   // maximize the window area for clicking
@@ -29,15 +28,9 @@ describe('workspace', function () {
     workspacePage = WorkspacePage;
     metadataPage = MetadataPage;
     templatePage = TemplatePage;
-    toastyPage = ToastyPage;
-    sweetAlertPage = SweetAlertPage;
+    toastyModal = ToastyModal;
+    sweetAlertModal = SweetAlertModal;
     browser.driver.manage().window().maximize();
-
-    //TODO local needs sleep here, staging can handle sleep in the onPrepare
-    if (firstTimeOnly) {
-      browser.sleep(1000);
-      firstTimeOnly = false;
-    }
 
   });
 
@@ -60,7 +53,7 @@ describe('workspace', function () {
 
         // create the folder
         workspacePage.createResource('folder', sampleTitle);
-        toastyPage.isSuccess();
+        toastyModal.isSuccess();
 
       });
 
@@ -85,6 +78,11 @@ describe('workspace', function () {
         workspacePage.clickBreadcrumb(1);
         workspacePage.clickLogo();
 
+
+        workspacePage.clickBreadcrumb(1);
+        workspacePage.clickLogo();
+
+
       });
 
       // functioning trash and options buttons
@@ -101,8 +99,10 @@ describe('workspace', function () {
       it("should delete the sample folder", function () {
 
         workspacePage.deleteResource(sampleTitle, 'folder');
-        sweetAlertPage.confirm();
-        toastyPage.isSuccess();
+        sweetAlertModal.confirm();
+        toastyModal.isSuccess();
+        workspacePage.clickLogo();
+
 
       });
     })

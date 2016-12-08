@@ -2,7 +2,7 @@
 
 require('../pages/workspace-page.js');
 
-var FinderPage = function () {
+var FinderModal = function () {
 
 
   var createFinder = element(by.id('finder-modal'));
@@ -25,7 +25,7 @@ var FinderPage = function () {
   var cssSearchInput = 'finder-search-input';
 
 
-      this.test = function () {
+  this.test = function () {
     console.log('finder page test');
   };
 
@@ -106,4 +106,4 @@ var FinderPage = function () {
 
 };
 
-module.exports = new FinderPage(); 
+module.exports = new FinderModal(); 
