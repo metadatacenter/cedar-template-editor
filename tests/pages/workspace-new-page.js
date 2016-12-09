@@ -283,7 +283,6 @@ var WorkspacePage = function () {
     browser.wait(EC.elementToBeClickable(link));
     link.click();
 
-
   };
 
   this.clickLogo = function () {
