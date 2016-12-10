@@ -6198,11 +6198,21 @@ table.apiKey {
 }
 
 #rename-modal, #new-folder-modal, #move-modal, #share-modal {
+  .modal-header{
+    border-bottom:0px solid #aaa;
+  }
   .modal-content {
     border-radius: 0;
     border: 0;
     max-width: 400px;
     margin: 0 auto;
+    border-top:1px solid #ccc;
+
+    .arrow-click {
+      cursor: pointer;
+      font-size:18px;
+      color: #9E9E9E;
+    }
     input {
       padding: 5px;
       width: 100%;
@@ -6211,6 +6221,7 @@ table.apiKey {
     .modal-body {
       max-height: 300px;
       overflow-y: auto;
+      border-top:1px solid #d2d2d2;
       .box-row {
         padding: 5px;
 
@@ -6219,6 +6230,7 @@ table.apiKey {
         }
         &.selected {
           background: @brand-primary;
+          color:#fff;
         }
 
       }

@@ -29,12 +29,13 @@ define([
           '$scope',
           '$modal',
           'CedarUser',
+          '$timeout',
           'resourceService',
           'UIMessageService',
           'CONST'
         ];
 
-        function cedarMoveModalController($scope, $modal, CedarUser,
+        function cedarMoveModalController($scope, $modal, CedarUser, $timeout,
                                           resourceService,
                                           UIMessageService,
                                           CONST) {
@@ -43,6 +44,9 @@ define([
 
           // move to...
           vm.openParent = openParent;
+          vm.currentTitle = currentTitle;
+          vm.parentTitle = parentTitle;
+          vm.selectCurrent = selectCurrent;
           vm.selectDestination = selectDestination;
           vm.isDestinationSelected = isDestinationSelected;
           vm.moveDisabled = moveDisabled;
@@ -50,6 +54,7 @@ define([
           vm.openDestination = openDestination;
           vm.getResourceIconClass = getResourceIconClass;
           vm.isFolder = isFolder;
+          vm.canWrite = canWrite;
           vm.selectedDestination = null;
           vm.currentDestination = null;
           vm.destinationResources = [];
@@ -59,6 +64,21 @@ define([
           vm.resourceTypes = null;
           vm.sortOptionField = null;
 
+          function canWrite() {
+            return hasPermission('write');
+          };
+
+          function hasPermission(permission, resource) {
+            var node = resource;
+            if (node != null) {
+              var perms = node.currentUserPermissions;
+              if (perms != null) {
+
+                return perms.indexOf(permission) != -1;
+              }
+            }
+            return false;
+          };
 
           function openParent() {
             var length = vm.destinationPathInfo.length;
@@ -66,26 +86,35 @@ define([
             openDestination(parent);
           }
 
+          function parentTitle() {
+            var result = '';
+            if (vm.destinationPathInfo && vm.destinationPathInfo.length > 1) {
+
+              var length = vm.destinationPathInfo.length;
+              var parent = vm.destinationPathInfo[length - 1];
+              result = parent.displayName;
+
+            }
+            return result;
+          }
+
           function updateResource() {
 
             if (vm.selectedDestination) {
               var folderId = vm.selectedDestination['@id'];
 
-
               if (vm.moveResource) {
                 var resource = vm.moveResource;
-
 
                 resourceService.moveResource(
                     resource,
                     folderId,
                     function (response) {
 
-                      // refresh the dashboard
-                      $scope.$broadcast('search');
-
                       UIMessageService.flashSuccess('SERVER.RESOURCE.moveResource.success', {"title": resource.name},
                           'GENERIC.Moved');
+
+                      refresh();
                     },
                     function (response) {
                       UIMessageService.showBackendError('SERVER.RESOURCE.moveResource.error', response);
@@ -96,15 +125,27 @@ define([
             }
           }
 
+          function refresh() {
+            $scope.$broadcast('refreshWorkspace');
+          }
+
+          function currentTitle() {
+              return  vm.currentDestination ? vm.currentDestination.displayName : 'none';
+          }
+
           function selectDestination(resource) {
             vm.selectedDestination = resource;
+          }
+
+          function selectCurrent() {
+            vm.selectedDestination = vm.currentDestination;
           }
 
           function openDestination(resource) {
             if (resource) {
               var id = resource['@id'];
               getDestinationById(id);
-              vm.selectedDestination = null;
+              vm.selectedDestination = resource;
               vm.currentDestination = resource;
             }
           }
@@ -139,6 +180,7 @@ define([
                     vm.destinationResources = response.resources;
                     vm.destinationPathInfo = response.pathInfo;
                     vm.destinationPath = vm.destinationPathInfo.pop();
+                    vm.selectCurrent();
                   },
                   function (error) {
                     UIMessageService.showBackendError('SERVER.FOLDER.load.error', error);
@@ -220,6 +262,7 @@ define([
               vm.sortOptionField = sortOptionField;
               vm.selectedDestination = null;
               getDestinationById(vm.currentFolderId);
+
 
             }
           });

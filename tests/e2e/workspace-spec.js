@@ -4,9 +4,11 @@ var MetadataPage = require('../pages/metadata-page.js');
 var TemplatePage = require('../pages/template-creator-page.js');
 var ToastyModal = require('../modals/toasty-modal.js');
 var SweetAlertModal = require('../modals/sweet-alert-modal.js');
+var MoveModal = require('../modals/move-modal.js');
 
 var _ = require('../libs/lodash.min.js');
 var sampleTitle;
+var sampleTemplateTitle;
 var sampleDescription;
 var sampleTemplateUrl;
 var sampleMetadataUrl;
@@ -19,6 +21,7 @@ describe('workspace', function () {
   var templatePage;
   var toastyModal;
   var sweetAlertModal;
+  var moveModal;
 
   // before each test, load a new page and create a template
   // maximize the window area for clicking
@@ -29,6 +32,7 @@ describe('workspace', function () {
     templatePage = TemplatePage;
     toastyModal = ToastyModal;
     sweetAlertModal = SweetAlertModal;
+    moveModal = MoveModal;
     browser.driver.manage().window().maximize();
 
   });
@@ -90,6 +94,32 @@ describe('workspace', function () {
 
       });
 
+      it("should create a sample template", function () {
+
+        sampleTemplateTitle = workspacePage.createTitle('template');
+
+        // create a template
+        workspacePage.createResource( 'template', sampleTemplateTitle);
+        templatePage.setTitle('template', sampleTemplateTitle);
+        templatePage.clickSave('template');
+
+        // go back to the workspace
+        templatePage.topNavBackArrow().click();
+
+
+      });
+
+      it("should move the template into the sample folder", function () {
+
+        // now move the template into the sample folder
+        workspacePage.moveResource(sampleTemplateTitle, 'template');
+        moveModal.moveToDestination(sampleTitle);
+        toastyModal.isSuccess();
+
+        workspacePage.clickLogo();
+
+      });
+
       it("should delete the sample folder", function () {
 
         workspacePage.deleteResource(sampleTitle, 'folder');
@@ -98,6 +128,7 @@ describe('workspace', function () {
         workspacePage.clickLogo();
 
       });
+
     })
     (j);
   }
