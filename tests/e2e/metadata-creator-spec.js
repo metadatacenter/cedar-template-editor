@@ -13,7 +13,7 @@ var sampleMetadataUrl;
 var pageName = 'template';
 
 
-describe('metadata-creator', function () {
+xdescribe('metadata-creator', function () {
   var EC = protractor.ExpectedConditions;
   var metadataPage;
   var workspacePage;

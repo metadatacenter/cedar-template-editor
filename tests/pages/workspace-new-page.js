@@ -269,8 +269,8 @@ var WorkspacePage = function () {
     createMoreOptionsButton.click();
 
     // move menu item
-    browser.wait(EC.visibilityOf(createEditResourceButton));
-    browser.wait(EC.elementToBeClickable(createEditResourceButton));
+    browser.wait(EC.visibilityOf(createMoveToResourceButton));
+    browser.wait(EC.elementToBeClickable(createMoveToResourceButton));
     createMoveToResourceButton.click();
 
 
