@@ -814,6 +814,7 @@ define([
 
           function goToFolder(folderId) {
             if (vm.onDashboard()) {
+              console.log('goToFolder ' + folderId);
               $location.url(UrlService.getFolderContents(folderId));
             } else {
               vm.params.folderId = folderId;

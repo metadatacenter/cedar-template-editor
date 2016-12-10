@@ -38,6 +38,7 @@ var WorkspacePage = function () {
   var createMoreOptionsButton = createToolbar.element(by.css('#more-options-tool > div > button'));
   var createPopulateResourceButton = createToolbar.element(by.css('#more-options-tool [ng-click="dc.launchInstance()"]'));
   var createEditResourceButton = createToolbar.element(by.css('#more-options-tool [ng-click="dc.editResource()"]'));
+  var createMoveToResourceButton = createToolbar.element(by.css('#more-options-tool [ng-click="dc.showMoveModal(resource)"]'));
   var createOpenResourceButton = createToolbar.element(by.css('#more-options-tool [ng-click="dc.goToResource()"]'));
   var createDeleteResourceButton = createToolbar.element(by.css('#more-options-tool [ng-click="dc.deleteResource(resource)"]'));
   var createGridViewButton = createToolbar.element(by.css('#grid-view-tool [tooltip="view as grid"]'));
@@ -249,6 +250,47 @@ var WorkspacePage = function () {
     browser.wait(EC.visibilityOf(createEditResourceButton));
     browser.wait(EC.elementToBeClickable(createEditResourceButton));
     createEditResourceButton.click();
+
+  };
+
+  // move a resource
+  this.moveResource = function (name, type) {
+
+    // search for the resource
+    createSearchNavInput.sendKeys(name + protractor.Key.ENTER);
+    var createFirst = element.all(by.css(createFirstCss + type)).first();
+    browser.wait(EC.visibilityOf(createFirst));
+    browser.wait(EC.elementToBeClickable(createFirst));
+    createFirst.click();
+
+    // create more on the toolbar
+    browser.wait(EC.visibilityOf(createMoreOptionsButton));
+    browser.wait(EC.elementToBeClickable(createMoreOptionsButton));
+    createMoreOptionsButton.click();
+
+    // move menu item
+    browser.wait(EC.visibilityOf(createEditResourceButton));
+    browser.wait(EC.elementToBeClickable(createEditResourceButton));
+    createMoveToResourceButton.click();
+
+
+
+  };
+
+  this.selectResource = function (name, type) {
+
+    // search for the resource
+    createSearchNavInput.sendKeys(name + protractor.Key.ENTER);
+    var result = "Search Results For: '" + name + "'";
+    var searchResult = element(by.css('.search-result'));
+    browser.wait(EC.textToBePresentInElement(searchResult, result));
+
+    // single click on the first result
+    var createFirst = element.all(by.css(createFirstCss + type)).first();
+    browser.wait(EC.visibilityOf(createFirst));
+    browser.wait(EC.elementToBeClickable(createFirst));
+    createFirst.click();
+
 
   };
 

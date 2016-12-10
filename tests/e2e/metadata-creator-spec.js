@@ -13,7 +13,7 @@ var sampleMetadataUrl;
 var pageName = 'template';
 
 
-describe('metadata-creator', function () {
+xdescribe('metadata-creator', function () {
   var EC = protractor.ExpectedConditions;
   var metadataPage;
   var workspacePage;
@@ -66,7 +66,6 @@ describe('metadata-creator', function () {
     templatePage.isDescription('template', sampleDescription);
     templatePage.clickSave('template');
 
-    // TODO check toasty message for success
 
     // get the url of this element
     browser.getCurrentUrl().then(function (url) {
