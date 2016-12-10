@@ -14436,6 +14436,7 @@ table.apiKey td {
 #share-modal .modal-content .arrow-click {
   cursor: pointer;
   font-size: 18px;
+  color: #9E9E9E;
 }
 #rename-modal .modal-content input,
 #new-folder-modal .modal-content input,

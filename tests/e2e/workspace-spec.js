@@ -118,7 +118,6 @@ describe('workspace', function () {
 
         workspacePage.clickLogo();
 
-
       });
 
       it("should delete the sample folder", function () {
