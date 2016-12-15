@@ -14927,6 +14927,12 @@ table.apiKey td {
 .scrollable-content::-webkit-scrollbar-thumb {
   background: #ccc;
 }
+#rename-modal .modal-header,
+#new-folder-modal .modal-header,
+#move-modal .modal-header,
+#share-modal .modal-header {
+  border-bottom: 0px solid #aaa;
+}
 #rename-modal .modal-content,
 #new-folder-modal .modal-content,
 #move-modal .modal-content,
@@ -14935,6 +14941,15 @@ table.apiKey td {
   border: 0;
   max-width: 400px;
   margin: 0 auto;
+  border-top: 1px solid #ccc;
+}
+#rename-modal .modal-content .arrow-click,
+#new-folder-modal .modal-content .arrow-click,
+#move-modal .modal-content .arrow-click,
+#share-modal .modal-content .arrow-click {
+  cursor: pointer;
+  font-size: 18px;
+  color: #9E9E9E;
 }
 #rename-modal .modal-content input,
 #new-folder-modal .modal-content input,
@@ -14950,6 +14965,7 @@ table.apiKey td {
 #share-modal .modal-content .modal-body {
   max-height: 300px;
   overflow-y: auto;
+  border-top: 1px solid #d2d2d2;
 }
 #rename-modal .modal-content .modal-body .box-row,
 #new-folder-modal .modal-content .modal-body .box-row,
@@ -14968,6 +14984,7 @@ table.apiKey td {
 #move-modal .modal-content .modal-body .box-row.selected,
 #share-modal .modal-content .modal-body .box-row.selected {
   background: #5795ba;
+  color: #fff;
 }
 #rename-modal .modal-content .modal-body .inline-editing button,
 #new-folder-modal .modal-content .modal-body .inline-editing button,

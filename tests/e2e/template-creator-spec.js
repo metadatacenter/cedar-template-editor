@@ -194,7 +194,6 @@ describe('template-creator', function () {
         templatePage.setDescription(pageType, sampleDescription);
         templatePage.clickSave(pageType);
 
-        // TODO check toasty message for success
 
         // get the url of this element
         browser.getCurrentUrl().then(function (url) {
