@@ -1171,9 +1171,9 @@ define([
 
       $scope.getValueSelection = function (value) {
         if (value) {
-          return value['@value'][0];
+          return value['@value'];
         }
-      }
+      };
 
       $scope.isRegular = function () {
         return !$scope.isConstrained() && !$scope.isRecommended();
