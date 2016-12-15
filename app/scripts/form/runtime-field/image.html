@@ -1,0 +1,21 @@
+
+<!-- actively editing the field --->
+<div ng-if="isActive(index)" >
+  <figure>
+    <img ng-src="{{$root.propertiesOf(field)._content}}" no-image alt="{{$root.schemaOf(field)._ui.title}}"
+        type="image/png" width="100%"/>
+    <figcaption><label>{{$root.schemaOf(field)._ui.title}}</label></figcaption>
+  </figure>
+
+</div>
+
+<!-- not editing --->
+<div ng-if="!isActive(index)" class="form-group  has-feedback value">
+  <div  ng-click="setActive(index,true)"
+      aria-label="{{getDescription()}}">{{$root.schemaOf(field)._ui.title}}</div>
+</div>
+
+
+
+
+

@@ -1,0 +1,16 @@
+
+<!-- actively editing the field --->
+<div ng-if="isActive(index)" >
+  <h3 class="section-title">{{$root.schemaOf(field)._ui.title}}</h3>
+
+  <p ng-if="$root.schemaOf(field)._ui.description.length > 0" class="section-body">
+    {{$root.schemaOf(field)._ui.description}}</p>
+
+</div>
+
+<!-- not editing --->
+<div ng-if="!isActive(index)" class="form-group  has-feedback value">
+  <div  ng-click="setActive(index,true)"
+      aria-label="{{getDescription()}}">{{$root.schemaOf(field)._ui.title}}</div>
+</div>
+

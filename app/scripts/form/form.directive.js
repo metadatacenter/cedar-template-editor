@@ -449,9 +449,10 @@ define([
         };
 
         $scope.nextChild = function (fieldOrElement) {
-          console.log('nextCHild');
+
 
           var id = DataManipulationService.getId(fieldOrElement);
+          console.log('get nextCHild of ' + id);
           var selectedKey;
           var props = $scope.form.properties;
 

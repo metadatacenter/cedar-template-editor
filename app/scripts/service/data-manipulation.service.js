@@ -265,7 +265,6 @@ define([
       if (value) {
         $rootScope.activeLocator = service.getLocator(field, index, path);
       } else {
-        console.log('clear activelocator');
         $rootScope.activeLocator = null;
       }
 

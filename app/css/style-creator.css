@@ -11680,20 +11680,28 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   background: transparent;
   min-height: 10px;
 }
+.template-body form .runtime .field-root .toolbar {
+  padding-top: 12px;
+  padding-right: 22px;
+}
+.template-body form .runtime .field-root .add {
+  color: #ff8c00;
+}
+.template-body form .runtime .field-root .question {
+  color: #5795ba;
+}
 .template-body form .runtime .field-root .title {
   color: #333;
   font-weight: lighter;
+  font-family: "Source Sans Pro", sans-serif;
   padding-left: 20px;
   font-size: 1.2em;
-  height: 30px;
-  line-height: 28px;
+  cursor: pointer;
 }
-.template-body form .runtime .field-root .title.isActive {
-  height: 40px;
-  line-height: 40px;
+.template-body form .runtime .field-root .title .count {
+  font-size: smaller;
 }
 .template-body form .runtime .field-root .row.isActive {
-  padding-top: 50px;
   padding-bottom: 50px;
 }
 .template-body form .runtime .field-root .row.isActive .title {
@@ -11707,7 +11715,7 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   font-size: 1.5em;
 }
 .template-body form .runtime .field-root .row.isActive .title.question {
-  color: #5795ba;
+  color: #ff8c00;
   padding-left: 0px;
   font-size: 1.5em;
 }

@@ -2770,7 +2770,7 @@ section.dashboard-elements {
     font-weight: lighter;
   }
   .value {
-    cursor:pointer;font-size: 1.2em;line-height: 28px
+    cursor:pointer;font-size: 1.2em;line-height: 28px;
   }
   .leader {
     background-color: #aaa;
@@ -2886,43 +2886,48 @@ section.dashboard-elements {
     background: transparent;
     min-height: 10px;
 
+    .toolbar {
+      padding-top:12px;
+      padding-right:22px;
+    }
+
+    .add {
+      color: @brand-accent;
+    }
+
+    .question {
+      color: @brand-primary;
+    }
+
     .title {
       color: #333;
       font-weight: lighter;
+      font-family: "Source Sans Pro", sans-serif;
       padding-left: 20px;
       font-size: 1.2em;
-      height: 30px;
-      line-height: 28px;
-      &.isActive {
-        height: 40px;
-        line-height: 40px;
+      cursor:pointer;
+
+      .count {
+        font-size:smaller
       }
     }
 
-    //.row.isInactive {
-    //  .title {
-    //    color:#ccc;
-    //  }
-    //}
-    //.title.isInactive {
-    //    color: #ccc;
-    //}
-
     .row.isActive {
-      padding-top: 50px;
       padding-bottom: 50px;
 
       .title {
         font-size: 2.5em;
         padding-left: 0px;
         color: green;
+
         &.remove {
           color: #999;
           padding-left: 10px;
           font-size: 1.5em;
         }
         &.question {
-          color: @brand-primary;
+          color: @brand-accent;
+
           padding-left: 0px;
           font-size: 1.5em;
         }

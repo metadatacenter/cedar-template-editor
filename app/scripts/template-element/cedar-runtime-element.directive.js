@@ -336,8 +336,10 @@ define([
 
         // only look at first level elements
         if (id === scope.getId() && path === '0' ) {
+
           var parent = $rootScope.rootElement;
           var next = DataManipulationService.nextSibling(scope.element, parent);
+
           if (next) {
             $rootScope.$broadcast("setActive", [DataManipulationService.getId(next), 0, '0', true]);
           } else {
@@ -353,7 +355,7 @@ define([
         var path = args[2];
         var value = args[3];
 
-        if (id === scope.getId() && path.toString() === scope.path.toString()) {
+        if (id === scope.getId() && path == scope.path) {
 
           scope.expanded[index] = true;
           $timeout(function () {
@@ -368,8 +370,6 @@ define([
           }, 0);
         }
       });
-
-
 
 
       // scroll within the template-container to the field with id locator
@@ -388,6 +388,8 @@ define([
             var newTop = scrollTop + targetTop - ( windowHeight - targetHeight ) / 2;
             jQuery('.template-container').animate({scrollTop: newTop}, 'slow');
             jQuery("#" + locator + ' ' + tag).focus().select();
+
+            console.log("#" + locator + ' ' + tag);
           };
           $timeout(scope.setHeight, 100);
         }
@@ -395,17 +397,13 @@ define([
 
 
       scope.setActive = function (index, value) {
-        console.log('setActive index ' + index + ' value ' + value);
         DataManipulationService.setActive(scope.element, index, scope.path, value);
         var locator = scope.getLocator(index);
-        scope.scrollTo(locator);
+        scope.scrollTo(locator, 'input.select');
 
 
       };
-
-
     }
-
   };
 
 });

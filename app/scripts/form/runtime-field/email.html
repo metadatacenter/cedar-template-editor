@@ -1,8 +1,8 @@
 
-<div  ng-if="isActive(index)" class="form-group  has-feedback">
-    <input type="email"  ng-click="setActive(index)"
-        ng-click="setActive(index, true)"
-        class="form-control"
+<!-- actively being edited -->
+<div  ng-if="isActive(index)" class="form-group  has-feedback ">
+    <input type="email"
+        class="form-control select"
         ng-class="{'isActive' : isActive(index), 'required': $root.schemaOf(field)._valueConstraints.requiredValue}"
         placeholder="{{isActive(index) ? 'enter email' : ''}}"
         aria-label="{{$root.schemaOf(field)._ui.description}}"
@@ -17,10 +17,13 @@
 </div>
 
 <!--- not active --->
-<div ng-if="!isActive(index)" class="form-group  has-feedback">
-  <div
-      ng-click="setActive(index,true)"
-      aria-label="{{getDescription()}}"
-      style="cursor:pointer;font-size: 1.2em;line-height: 28px;">{{valueElement['@value']}}</div>
+<div ng-if="!isActive(index)" class="form-group  has-feedback value">
+
+
+
+  <div  ng-click="setActive(index)"
+      aria-label="{{$root.schemaOf(field)._ui.description}}">
+     {{valueElement['@value']}}</div>
+
 </div>
-</div>
+

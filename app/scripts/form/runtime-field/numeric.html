@@ -1,0 +1,27 @@
+
+<!-- actively editing the field --->
+<div ng-if="isActive(index)" class="form-group  has-feedback ">
+  <input type="text"
+      ng-click="setActive(index, true)"
+      class="form-control isActive select"
+      ng-class="{'required': isRequired()}"
+      placeholder="{{isActive(index) ? 'enter answer' : ''}}"
+      aria-label="{{getDescription()}}"
+      validate-on="blur"
+      ng-pattern="/^[-+]?[0-9]*\.?[0-9]*$/"
+      ng-model="valueElement['@value']">
+  </input>
+
+  <div ng-if="isActive(index)" class="input-indicator-icons" ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
+</div>
+
+<!-- not editing --->
+<div ng-if="!isActive(index)" class="form-group  has-feedback value">
+  <div  ng-click="setActive(index,true)"
+      aria-label="{{getDescription()}}">{{valueElement['@value']}}</div>
+</div>
+
+
+
+
+

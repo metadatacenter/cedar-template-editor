@@ -2,10 +2,10 @@
       
     <div ng-if="isActive(index)" class="form-group  has-feedback">
     <textarea
-        ng-click="setActive(index,true)"
-        rows="{{isActive(index) ? 5 : 1}}"
-        class="form-control"
-        ng-class="{'isActive' : isActive(index), 'required': isRequired()}"
+        ng-keypress="isSubmit($event, index)"
+        rows="5"
+        class="form-control isActive select"
+        ng-class="{'required': isRequired()}"
         placeholder="{{isActive(index) ? 'enter answer' : ''}}"
         aria-label="{{getDescription()}}"
         ng-model="valueElement['@value']"></textarea>
@@ -13,11 +13,12 @@
       <div ng-if="isActive(index)" class="input-indicator-icons" ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
     </div>
 
-    <div ng-if="!isActive(index)" class="form-group  has-feedback">
+    <div ng-if="!isActive(index)" class="form-group  has-feedback value">
     <div
         ng-click="setActive(index,true)"
         aria-label="{{getDescription()}}"
-        style="cursor:pointer;font-size: 1.2em;line-height: 28px;">{{valueElement['@value']}}</div>
+        class="isInactive">{{valueElement['@value']}}</div>
+
     </div>
 
 

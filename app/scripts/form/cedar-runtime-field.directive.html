@@ -3,7 +3,7 @@
   <!-- field content  -->
   <div class="elementTotalContent visible" style="position:relative">
 
-    <!-- spreadsheet -->
+    <!-- spreadsheet, currently disabled -->
     <div ng-show="isMultiple()">
       <div class="spreadsheetViewDetector"></div>
       <div class="spreadsheetViewContainer"></div>
@@ -11,81 +11,55 @@
 
     <div class="fields text-fields">
 
-      <!-- for zero cardinality, just show the title -->
+      <!-- for zero cardinality just show the field title because the valueArray is empty  -->
       <div ng-if="valueArray.length == 0">
         <div class="row" id="{{getLocator(index)}}">
           <div class="col-sm-3">
             <div class="leader"></div>
-            <span  class=" title " style="cursor:pointer;font-size:1.2em">
-               <span ng-repeat="nest in getNesting()">
-                 <span class="down-tick" style="{{getNestingStyle(nest)}}"></span>
-               </span><span ng-if="isMultiple()" style="font-size:smaller">0.</span>
-              {{getTitle()}}
-            </span>
-          </div>
-          <div class="col-sm-2 pull-right">
-            <span ng-if="isMultiple()">
-
-
-              <button type="button" class="remove pull-right" ng-click="removeInput(index)"
-                  ng-show="model.length > field.minItems"
-                  tooltip="remove"
-                  tooltip-trigger
-                  tooltip-animation="false"
-                  tooltip-placement="top"
-                  data-toggle="tooltip">
-                <i class="fa fa-trash"></i>
-              </button>
-
-              <button type="button" class="add pull-right" ng-click="addMoreInput()"
-                  ng-show=" (!field.maxItems || model.length < field.maxItems )"
-                  tooltip="add"
-                  tooltip-trigger
-                  tooltip-animation="false"
-                  tooltip-placement="top"
-                  data-toggle="tooltip"
-                  ng-click="addMoreInput()">
-                <i class="fa fa-plus-circle"></i>
-              </button>
-
-
-            </span>
-          </div>
-        </div>
-      </div>
-
-      <!-- a list of fields -->
-      <div ng-repeat="(index, valueElement) in valueArray">
-
-        <!-- inactive -->
-        <div class="row" ng-if="!isActive(index)" ng-class="{'isInactive' : isInactive(index)}"
-            id="{{getLocator(index)}}">
-          <div class="col-sm-3">
-            <div class="leader"></div>
-            <span ng-click="setActive(index, true)" class=" title " style="cursor:pointer">
-               <span ng-repeat="nest in getNesting()">
+             <span ng-repeat="nest in getNesting()">
                  <span class="down-tick" style="{{getNestingStyle(nest)}}"></span>
                </span>
-              <span ng-if="isMultiple()" style="font-size:smaller">{{index+1}}.</span>
+
+            <div class="title" ng-click="addMoreInput()">
+              <!--<i  ng-class="getIconClass()" class="fa" ></i>-->
               {{getTitle()}}
-            </span>
-
-          </div>
-
-          <div class="col-sm-7">
-            <div class="row">
-              <div class="col-sm-10">
-                <div class="originalContent" ng-include="getFieldUrl()"></div>
-              </div>
             </div>
           </div>
+        </div>
+      </div>
 
-          <div class="col-sm-2">
-            <span ng-if="isMultiple()">
+      <!-- show a list of fields from the valueArray -->
+      <div ng-repeat="(index, valueElement) in valueArray">
 
+        <!-- inactive,not being edited at the moment -->
+        <div class="row" ng-if="!isActive(index)" class="isInactive" id="{{getLocator(index)}}">
+          <div class="col-sm-3">
+            <div class="leader"></div>
+            <!-- indentation-->
+            <span ng-repeat="nest in getNesting()">
+                 <span class="down-tick" style="{{getNestingStyle(nest)}}"></span>
+               </span>
+            <!-- title-->
+            <div ng-click="setActive(index, true)" class="title " ng-mouseenter="hover=true"
+                ng-mouseleave="hover=false">
+
+              <!--<i  ng-class="getIconClass()" class="fa"></i>-->
+              <span ng-if="isMultiple()" style="font-size:smaller">{{index+1}}.</span>{{getTitle()}}
+            </div>
+
+          </div>
+          <div class="col-sm-9">
+            <div class="originalContent" ng-include="getFieldUrl()"></div>
+          </div>
+        </div>
+
+        <!-- actively being edited -->
+        <div ng-if="isActive(index)">
+          <div class="row">
+            <div class="col-xs-4 col-sm-4 pull-right toolbar">
 
               <button type="button" class="remove pull-right" ng-click="removeInput(index)"
-                  ng-show="model.length > field.minItems"
+                  ng-if="model.length > field.minItems"
                   tooltip="remove"
                   tooltip-trigger
                   tooltip-animation="false"
@@ -94,66 +68,58 @@
                 <i class="fa fa-trash"></i>
               </button>
 
-              <button type="button" class="add pull-right" ng-click="addMoreInput()"
-                  ng-show=" (!field.maxItems || model.length < field.maxItems )"
+              <button type="button" class=" remove pull-right"
+                  ng-if="isActive(index)"
+                  tooltip="close"
+                  ng-click="setActive(index, false)">
+                <i class="fa fa-remove "></i>
+              </button>
+
+              <button ng-if="getDescription().length > 0" type="button" class=" question  pull-right"
+                  tooltip="{{getDescription() || 'help'}}"
+                  tooltip-trigger
+                  tooltip-animation="true"
+                  tooltip-placement="top"
+                  data-toggle="tooltip">
+                <i class="fa fa-question-circle"></i>
+              </button>
+
+              <button type="button" class=" add  pull-right" ng-click="addMoreInput()"
+                  ng-if="isMultiple() && (!field.maxItems || model.length < field.maxItems )"
                   tooltip="add"
                   tooltip-trigger
                   tooltip-animation="false"
                   tooltip-placement="top"
-                  data-toggle="tooltip"
-                  ng-click="addMoreInput()">
+                  data-toggle="tooltip">
                 <i class="fa fa-plus-circle"></i>
               </button>
 
 
-            </span>
+            </div>
           </div>
-        </div>
-
-        <!-- active -->
-        <div class="row isActive" ng-if="isActive(index)" id="{{getLocator(index)}}">
-          <div class="col-sm-12">
-            <div class="row" style="margin-bottom:40px">
-              <div class="col-sm-10">
-              <span ng-click="setActive(index, true)" class="title isActive"><span
-                  ng-if="isMultiple()" style="font-size:smaller">{{index+1}}.</span> {{getTitle()}}</span>
-              </div>
-              <div class="col-sm-2">
-
-
-                <button type="button"
-                    class="title remove pull-right"
-                    ng-if="isActive(index)"
-                    ng-click="setActive(index, false)">
-                  <i class="fa fa-remove "></i>
-                </button>
-
-                <button type="button" class="title question pull-right " tooltip="{{getDescription()}}"
-                    tooltip-trigger
-                    tooltip-animation="true"
-                    tooltip-placement="left"
-                    data-toggle="tooltip">
-                  <i class="fa fa-question-circle"></i>
-                </button>
-
+          <div class="row isActive" id="{{getLocator(index)}}">
+            <div class="col-xs-12 col-sm-12">
+              <div ng-click="setActive(index, true)" class="title ">
+                <span ng-if="isMultiple()" class="count">{{index+1}}.</span>
+                {{getTitle()}}
               </div>
             </div>
 
-            <div class="row">
-              <div class="col-sm-12">
-                <form name="field-edit-form-{{index}}" ng-submit="onSubmit(index)">
-                  <div class="originalContent" ng-include="getFieldUrl()"></div>
-                  <button type="submit" class="btn btn-save confirm active" translate>GENERIC.Ok</button>
-                </form>
-              </div>
-            </div>
+          </div>
 
+          <div class="row isActive" ng-if="isActive(index)">
+            <div class="col-xs-12 col-sm-12">
+              <form name="field-edit-form-{{index}}" ng-submit="onSubmit(index)">
+                <div class="originalContent" ng-include="getFieldUrl()"></div>
+                <button type="submit" class="btn btn-save confirm active" translate>GENERIC.Ok</button>
+              </form>
+            </div>
           </div>
         </div>
 
       </div>
 
-      <!-- error messages  -->
+      <!-- all error messages for this field  -->
       <div class="errors" ng-if="errorMessages">
         <div class="alert alert-danger" ng-repeat="message in errorMessages">{{message}}</div>
       </div>

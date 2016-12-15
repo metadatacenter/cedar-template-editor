@@ -176,7 +176,7 @@ define([
 
         var allFieldsAreValid = true;
         if (angular.isArray($scope.model)) {
-          for (var i=0;i<$scope.model.length;i++) {
+          for (var i = 0; i < $scope.model.length; i++) {
             if (!DataManipulationService.isValidPattern($scope.field, i)) {
               $scope.model[i]['@value'] = DataManipulationService.getDomValue($scope.field, i);
               allFieldsAreValid = false;
@@ -461,9 +461,8 @@ define([
       }
 
 
-
       // Sets the default @value for non-selection fields (i.e., text, paragraph, date, email, numeric, phone)
-      $scope.setDefaultValueIfEmpty = function(m) {
+      $scope.setDefaultValueIfEmpty = function (m) {
         if ($rootScope.isRuntime()) {
           if (!$rootScope.isArray(m)) {
             if (!m) {
@@ -778,7 +777,7 @@ define([
         delete $scope.model['_valueLabel'];
       };
 
-      $scope.calculateUIScore = function(score) {
+      $scope.calculateUIScore = function (score) {
         var s = Math.floor(score * 100);
         if (s < 1) {
           return "<1%";
@@ -792,7 +791,7 @@ define([
       //  return score.toFixed(2);
       //};
 
-      $scope.getRecommendationType = function(type) {
+      $scope.getRecommendationType = function (type) {
         if (type == 'CONTEXT_INDEPENDENT') {
           return '*';
         }
@@ -801,7 +800,7 @@ define([
         }
       };
 
-      $scope.removeValueRecommendationField = function(field) {
+      $scope.removeValueRecommendationField = function (field) {
         delete field._ui.valueRecommendationEnabled;
       }
 
@@ -1065,7 +1064,7 @@ define([
       }
 
       $scope.getId = function (index) {
-        return DataManipulationService.getLocator($scope.field, 0,index);
+        return DataManipulationService.getLocator($scope.field, 0, index);
       };
 
     };

@@ -4,7 +4,7 @@ var ToastyPage = require('../pages/toasty-page.js');
 var _ = require('../libs/lodash.min.js');
 
 
-xdescribe('workspace', function () {
+describe('workspace', function () {
   var EC = protractor.ExpectedConditions;
   var page;
   var toastyPage;

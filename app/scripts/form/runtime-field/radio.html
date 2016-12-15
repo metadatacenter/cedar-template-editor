@@ -3,7 +3,7 @@
     <div class="radio radio-primary">
       <input
           type="radio"
-          ng-click="setActive(index, true)"
+          class="select"
           id="radio-{{uuid}}-{{index}}-{{i}}"
           name="radio-{{uuid}}-{{index}}-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}"
           ng-model="valueElement[0]['@value']"
@@ -13,8 +13,11 @@
 
 </div>
 
-<div ng-if="!isActive(index)">
-  <span ng-if="valueElement[0]['@value']"   ng-class="{'isActive' : isActive(index)}" style="font-size: 1.2em;height: 30px;line-height: 28px;">{{valueElement[0]['@value']}}</span>
+<div ng-if="!isActive(index)" class="value">
+  <div
+      ng-click="setActive(index,true)"
+      aria-label="{{getDescription()}}">{{valueElement[0]['@value']}}</div>
+
 </div>
 
 

@@ -1,0 +1,16 @@
+
+<!-- actively editing the field --->
+<div ng-if="isActive(index)" >
+  <figure>
+    <!-- fit-vids directive automatically resizes the video to full width -->
+    <div fit-vids ng-bind-html="getYouTubeEmbedFrame(field)"></div>
+    <figcaption><label>{{$root.schemaOf(field)._ui.title}}</label></figcaption>
+  </figure>
+
+</div>
+
+<!-- not editing --->
+<div ng-if="!isActive(index)" class="form-group  has-feedback value">
+  <div  ng-click="setActive(index,true)"
+      aria-label="{{getDescription()}}">{{$root.schemaOf(field)._ui.title}}</div>
+</div>

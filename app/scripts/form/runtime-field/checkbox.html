@@ -1,7 +1,7 @@
 <div ng-if="isActive(index)" class="checkbox-item" ng-repeat="(i, value) in getLiterals()">
 
   <div class="checkbox checkbox-primary">
-    <input type="checkbox"
+    <input class='select' type="checkbox"
         ng-click="setActive(index, true)"
         id="checkbox-{{uuid}}-{{index}}-{{i}}"
         ng-model="valueElement[i]['@value']"
@@ -12,10 +12,10 @@
 </div>
 
 
-<div ng-if="!isActive(index)">
-  <span ng-repeat="(i, value) in valueElement" ng-if="valueElement[0]['@value']"   ng-class="{'isActive' : isActive(index)}" style="font-size: 1.2em;height: 30px;line-height: 28px;">
-    {{value['@value']}}<span ng-if="!$last" >,&nbsp;</span>
-  </span>
+<div ng-if="!isActive(index)" class="value">
+  <div
+      ng-click="setActive(index,true)"
+      aria-label="{{getDescription()}}">{{getValueString(valueElement)}}</div>
 </div>
 
 

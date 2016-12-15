@@ -1,7 +1,8 @@
 <div class="form-group has-feedback" ng-click="setActive(index)">
 
   <select ng-if="isActive(index)" ng-click="setActive(index)"
-      class="form-control"
+      ng-keypress="isSubmit($event, index)"
+      class="form-control select"
       ng-class="{'isActive' : isActive(index), 'required': isRequired()}"
       ng-click="setActive(index, true)"
       multiple="false"
@@ -12,7 +13,7 @@
       ng-model="valueElement[0]['@value']"
       select-picker="">
 
-    <option ng-click="setActive(index,true)" ng-repeat="(i, v) in getLiterals()"
+    <option ng-keypress="isSubmit($event, index)" ng-click="setActive(index,true)" ng-repeat="(i, v) in getLiterals()"
         value="{{v.label}}">
       {{v.label}}
     </option>
@@ -20,11 +21,10 @@
   </select>
 
   <!--- not active --->
-  <div ng-if="!isActive(index)" class="form-group  has-feedback">
+  <div ng-if="!isActive(index)" class="form-group  has-feedback value">
     <div
         ng-click="setActive(index,true)"
-        aria-label="{{getDescription()}}"
-        style="cursor:pointer;font-size: 1.2em;line-height: 28px;">{{getValueSelection(valueElement[index])}}</div>
+        aria-label="{{getDescription()}}">{{getValueSelection(valueElement[index])}}</div>
   </div>
 </div>
 

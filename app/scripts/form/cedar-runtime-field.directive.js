@@ -25,6 +25,8 @@ define([
       $scope.directory = 'runtime';
 
 
+
+      // set the @type field in the model
       $scope.setValueType = function () {
         var properties = $rootScope.propertiesOf($scope.field);
         var typeEnum = properties['@type'].oneOf[0].enum;
@@ -209,9 +211,146 @@ define([
         $scope.$emit('formHasRequiredfield._uis');
       }
 
-      // beginning of controlled and  recommended stuff
+      $scope.uuid = DataManipulationService.generateTempGUID();
 
-      // If selectedByDefault is false, it is removed from the model
+      // Retrieve appropriate field template file
+      $scope.getTemplateUrl = function () {
+        var inputType = 'element';
+        var schema = $rootScope.schemaOf($scope.field);
+
+        if (schema._ui.inputType) {
+          inputType = schema._ui.inputType;
+        }
+        return 'scripts/form/field-' + $scope.directory + '/' + inputType + '.html';
+      };
+
+      // add more instances to a multiple cardinality field
+      $scope.addMoreInput = function () {
+        if ((!$scope.field.maxItems || $scope.model.length < $scope.field.maxItems)) {
+
+          // add another instance in the model
+          $scope.model.push({'@value': null});
+
+          // activate the new instance
+          $timeout($scope.setActive($scope.model.length - 1, true), 100);
+        }
+      };
+
+
+      $scope.removeInput = function (index) {
+        var min = $scope.field.minItems || 0;
+        if ($scope.model.length > min) {
+          $scope.model.splice(index, 1);
+        }
+      };
+
+      $scope.switchToSpreadsheet = function () {
+        SpreadsheetService.switchToSpreadsheetField($scope, $element);
+      };
+
+      // look for errors
+      $scope.checkFieldConditions = function (field) {
+        field = $rootScope.schemaOf(field);
+
+        var unmetConditions = [],
+            extraConditionInputs = ['checkbox', 'radio', 'list'];
+
+        // Field title is required, if it's empty create error message
+        if (!field._ui.title) {
+          unmetConditions.push('"Enter Field Title" input cannot be left empty.');
+        }
+
+        // If field is within multiple choice field types
+        if (extraConditionInputs.indexOf($scope.getInputType()) !== -1) {
+          var optionMessage = '"Enter Option" input cannot be left empty.';
+          angular.forEach(field._valueConstraints.literals, function (value, index) {
+            // If any 'option' title text is left empty, create error message
+            if (!value.label.length && unmetConditions.indexOf(optionMessage) == -1) {
+              unmetConditions.push(optionMessage);
+            }
+          });
+        }
+        // If field type is 'radio' or 'pick from a list' there must be more than one option created
+        if (($scope.getInputType() == 'radio' || $scope.getInputType() == 'list') && field._valueConstraints.literals && (field._valueConstraints.literals.length <= 1)) {
+          unmetConditions.push('Multiple Choice fields must have at least two possible options');
+        }
+        // Return array of error messages
+        return unmetConditions;
+      };
+
+      $scope.hasControlledTerms = function () {
+        var fieldTypes = FieldTypeService.getFieldTypes();
+        var inputType = 'element';
+        if (DataManipulationService.getFieldSchema($scope.field)._ui.inputType) {
+          inputType = DataManipulationService.getFieldSchema($scope.field)._ui.inputType;
+          for (var i = 0; i < fieldTypes.length; i++) {
+            if (fieldTypes[i].cedarType === inputType) {
+              return fieldTypes[i].hasControlledTerms;
+            }
+          }
+        }
+        return false;
+      };
+
+      $scope.allowsMultiple = function () {
+        var inputType = $scope.getInputType();
+        var fieldTypes = FieldTypeService.getFieldTypes();
+        for (var i = 0; i < fieldTypes.length; i++) {
+          if (fieldTypes[i].cedarType === inputType) {
+            return fieldTypes[i].allowsMultiple;
+          }
+        }
+      };
+
+      $scope.hasDateRange = function () {
+        return ( $scope.getInputType() === "date");
+      };
+
+      $scope.getYouTubeEmbedFrame = function (field) {
+
+        var width = 560;
+        var height = 315;
+        var content = $rootScope.propertiesOf(field)._content.replace(/<(?:.|\n)*?>/gm, '');
+
+        if ($rootScope.propertiesOf(field)._size && $rootScope.propertiesOf(field)._size.width && Number.isInteger($rootScope.propertiesOf(field)._size.width)) {
+          width = $rootScope.propertiesOf(field)._size.width;
+        }
+        if ($rootScope.propertiesOf(field)._size && $rootScope.propertiesOf(field)._size.height && Number.isInteger($rootScope.propertiesOf(field)._size.height)) {
+          height = $rootScope.propertiesOf(field)._size.height;
+        }
+
+        // if I say trust as html, then better make sure it is safe first
+        return $sce.trustAsHtml('<iframe width="' + width + '" height="' + height + '" src="https://www.youtube.com/embed/' + content + '" frameborder="0" allowfullscreen></iframe>');
+
+      };
+
+
+      // Used just for text fields whose values have been constrained using controlled terms
+      $scope.$watch("model", function () {
+
+        $scope.isEditState = function () {
+          return (DataManipulationService.isEditState($scope.field));
+        };
+
+        $scope.isNested = function () {
+          return (DataManipulationService.isNested($scope.field));
+        };
+
+        $scope.addOption = function () {
+          return (DataManipulationService.addOption($scope.field));
+        };
+
+      }, true);
+
+
+
+      /**
+       *
+       * beginning of controlled and  recommended stuff
+       *
+       */
+
+        // If selectedByDefault is false, it is removed from the model
       $scope.cleanSelectedByDefault = function (index) {
         if (field._valueConstraints.literals[index].selectedByDefault == false) {
           delete field._valueConstraints.literals[index].selectedByDefault;
@@ -437,153 +576,6 @@ define([
         console.log(msg);
       };
 
-      // end of controlled and recommended stuff
-
-      $scope.uuid = DataManipulationService.generateTempGUID();
-
-      // Retrieve appropriate field template file
-      $scope.getTemplateUrl = function () {
-        var inputType = 'element';
-        var schema = $rootScope.schemaOf($scope.field);
-
-        if (schema._ui.inputType) {
-          inputType = schema._ui.inputType;
-        }
-        return 'scripts/form/field-' + $scope.directory + '/' + inputType + '.html';
-      };
-
-      // add more instances to a multiple cardinality field
-      $scope.addMoreInput = function () {
-        if ((!$scope.field.maxItems || $scope.model.length < $scope.field.maxItems)) {
-
-          // add another instance in the model
-          $scope.model.push({'@value': null});
-
-          // activate the new instance
-          $timeout($scope.setActive($scope.model.length - 1, true), 100);
-        }
-      };
-
-      $scope.removeInput = function (index) {
-        var min = $scope.field.minItems || 0;
-        if ($scope.model.length > min) {
-          $scope.model.splice(index, 1);
-        }
-      };
-
-      $scope.switchToSpreadsheet = function () {
-        SpreadsheetService.switchToSpreadsheetField($scope, $element);
-      };
-
-      // look for errors
-      $scope.checkFieldConditions = function (field) {
-        field = $rootScope.schemaOf(field);
-
-        var unmetConditions = [],
-            extraConditionInputs = ['checkbox', 'radio', 'list'];
-
-        // Field title is required, if it's empty create error message
-        if (!field._ui.title) {
-          unmetConditions.push('"Enter Field Title" input cannot be left empty.');
-        }
-
-        // If field is within multiple choice field types
-        if (extraConditionInputs.indexOf($scope.getInputType()) !== -1) {
-          var optionMessage = '"Enter Option" input cannot be left empty.';
-          angular.forEach(field._valueConstraints.literals, function (value, index) {
-            // If any 'option' title text is left empty, create error message
-            if (!value.label.length && unmetConditions.indexOf(optionMessage) == -1) {
-              unmetConditions.push(optionMessage);
-            }
-          });
-        }
-        // If field type is 'radio' or 'pick from a list' there must be more than one option created
-        if (($scope.getInputType() == 'radio' || $scope.getInputType() == 'list') && field._valueConstraints.literals && (field._valueConstraints.literals.length <= 1)) {
-          unmetConditions.push('Multiple Choice fields must have at least two possible options');
-        }
-        // Return array of error messages
-        return unmetConditions;
-      };
-
-
-      /**
-       * Use the fieldType to determine if the field supports using controlled terms
-       * @returns {boolean} hasControlledTerms
-       */
-      $scope.hasControlledTerms = function () {
-        var fieldTypes = FieldTypeService.getFieldTypes();
-        var inputType = 'element';
-        if (DataManipulationService.getFieldSchema($scope.field)._ui.inputType) {
-          inputType = DataManipulationService.getFieldSchema($scope.field)._ui.inputType;
-          for (var i = 0; i < fieldTypes.length; i++) {
-            if (fieldTypes[i].cedarType === inputType) {
-              return fieldTypes[i].hasControlledTerms;
-            }
-          }
-        }
-        return false;
-      };
-
-      /**
-       * Use the fieldType to determine if the field supports multiple instances
-       * @returns {boolean} allowsMultiple
-       */
-      $scope.allowsMultiple = function () {
-        var inputType = $scope.getInputType();
-        var fieldTypes = FieldTypeService.getFieldTypes();
-        for (var i = 0; i < fieldTypes.length; i++) {
-          if (fieldTypes[i].cedarType === inputType) {
-            return fieldTypes[i].allowsMultiple;
-          }
-        }
-      };
-
-      $scope.hasDateRange = function () {
-        return ( $scope.getInputType() === "date");
-      };
-
-      /**
-       * Turn my field into a youtube iframe.
-       * @param field
-       * @returns {string} html
-       */
-      $scope.getYouTubeEmbedFrame = function (field) {
-
-        var width = 560;
-        var height = 315;
-        var content = $rootScope.propertiesOf(field)._content.replace(/<(?:.|\n)*?>/gm, '');
-
-        if ($rootScope.propertiesOf(field)._size && $rootScope.propertiesOf(field)._size.width && Number.isInteger($rootScope.propertiesOf(field)._size.width)) {
-          width = $rootScope.propertiesOf(field)._size.width;
-        }
-        if ($rootScope.propertiesOf(field)._size && $rootScope.propertiesOf(field)._size.height && Number.isInteger($rootScope.propertiesOf(field)._size.height)) {
-          height = $rootScope.propertiesOf(field)._size.height;
-        }
-
-        // if I say trust as html, then better make sure it is safe first
-        return $sce.trustAsHtml('<iframe width="' + width + '" height="' + height + '" src="https://www.youtube.com/embed/' + content + '" frameborder="0" allowfullscreen></iframe>');
-
-      };
-
-
-      // Used just for text fields whose values have been constrained using controlled terms
-      $scope.$watch("model", function () {
-
-        $scope.isEditState = function () {
-          return (DataManipulationService.isEditState($scope.field));
-        };
-
-        $scope.isNested = function () {
-          return (DataManipulationService.isNested($scope.field));
-        };
-
-        $scope.addOption = function () {
-          return (DataManipulationService.addOption($scope.field));
-        };
-
-      }, true);
-
-      /* Value Recommendation functionality */
 
       // Load values when opening an instance
       if ($scope.model) {
@@ -695,14 +687,9 @@ define([
           select.search = select.selected.value;
         }
       };
-      /* end of Value Recommendation functionality */
-
-
-      /* start of controlled terms functionality */
 
       $scope.addedFields = new Map();
       $scope.addedFieldKeys = [];
-
 
       /**
        * build a map with the added field controlled term id as the key and the details for that class as the value
@@ -931,7 +918,13 @@ define([
         return "control-options-" + id + "-" + fieldOrValue;
       };
 
-      /* end of controlled terms functionality */
+      /*
+       *
+       * end of controlled terms functionality
+       *
+       *
+       */
+
 
       $scope.clearMinMax = function () {
         delete $scope.field.minItems;
@@ -946,7 +939,6 @@ define([
         return StringUtilsService.getShortId(uri, maxLength);
       };
 
-
       // get the field title
       $scope.getTitle = function () {
         return DataManipulationService.getFieldSchema($scope.field)._ui.title;
@@ -954,6 +946,19 @@ define([
 
       $scope.getDescription = function () {
         return DataManipulationService.getFieldSchema($scope.field)._ui.description;
+      };
+
+      $scope.getIconClass = function () {
+        var result = '';
+        var fieldType = '';
+
+
+        var schema = $rootScope.schemaOf($scope.field);
+        if (schema._ui.inputType) {
+          fieldType = schema._ui.inputType;
+          result =  FieldTypeService.getFieldIconClass(fieldType);
+        }
+        return result;
       };
 
       // Retrieve appropriate field template file
@@ -985,7 +990,6 @@ define([
         return (($scope.getInputType() == 'checkbox') || ($scope.getInputType() == 'radio') || ($scope.getInputType() == 'list'));
       };
 
-
       $scope.getLocator = function (index) {
         return DataManipulationService.getLocator($scope.field, index, $scope.path);
       };
@@ -993,7 +997,6 @@ define([
       $scope.getId = function () {
         return $rootScope.schemaOf($scope.field)['@id'];
       };
-
 
       $scope.isActive = function (index) {
 
@@ -1005,6 +1008,17 @@ define([
         return DataManipulationService.isInactive(DataManipulationService.getLocator($scope.field, index, $scope.path));
       };
 
+      // string together the values for a checkbox, list or radio item
+      $scope.getValueString = function (valueElement) {
+        var result = '';
+        for (var i = 0; i < valueElement.length; i++) {
+          result += valueElement[i]['@value'];
+          if (i < valueElement.length - 1) {
+            result += ', ';
+          }
+        }
+        return result;
+      };
 
       // watch for this field's active state
       $scope.$on('setActive', function (event, args) {
@@ -1013,39 +1027,30 @@ define([
         var path = args[2];
         var value = args[3];
 
-        if (id === $scope.getId() && path === $scope.path) {
-
-          console.log('$on setActive found id=' + id + ' index=' + index + ' path=' + path + ' scope.path=' + $scope.path + ' value=' + value);
-          if ((angular.isArray($scope.model) && $scope.model.length > 0) || !angular.isArray($scope.model)) {
-            $scope.setActive(index, value);
-          } else {
-            console.log('pick the next one');
-            // or go to parent's next field
-            $scope.$parent.nextChild($scope.field, 0, $scope.path);
-          }
+        if (id === $scope.getId() && path == $scope.path) {
+          $scope.setActive(index, value);
         }
       });
 
       $scope.setActive = function (index, value) {
 
+        // off or on
         var active = (typeof value === "undefined") ? true : value;
+        var locator = $scope.getLocator(index);
+
+        // if zero cardinality,  add a new item
+        if ($scope.isMultiple() && $scope.model.length <= 0) {
+          $scope.addMoreInput();
+        }
+
+        // set it active or inactive
         DataManipulationService.setActive($scope.field, index, $scope.path, active);
 
-        var locator = $scope.getLocator(index);
-        var inputType = $scope.getInputType();
-        var tag = 'input';
-        if (inputType === 'textarea') {
-          tag = 'textarea';
-        }
-        if (inputType === 'list') {
-          tag = 'select';
-        }
-
         if (active) {
-          $scope.scrollTo(locator, tag);
+          $scope.scrollTo(locator, ' .select');
 
         } else {
-          jQuery("#" + locator + ' ' + tag).blur();
+          jQuery("#" + locator ).blur();
         }
       };
 
@@ -1064,7 +1069,20 @@ define([
             var scrollTop = jQuery('.template-container').scrollTop();
             var newTop = scrollTop + targetTop - ( windowHeight - targetHeight ) / 2;
             jQuery('.template-container').animate({scrollTop: newTop}, 'slow');
-            jQuery("#" + locator + ' ' + tag).focus().select();
+
+            // select and focus the tag
+            if (tag) {
+              var e = jQuery(tag);
+              if (e.length) {
+                console.log(e);
+
+                console.log(jQuery.type(e));
+                e[0].focus();
+                if (!e.is('select')) {
+                  e[0].select();
+                }
+              }
+            }
           };
           $timeout($scope.setHeight, 100);
         }
@@ -1093,7 +1111,6 @@ define([
         return 'left:' + (-15 * (index - 1)) + 'px';
       };
 
-
       $scope.onSubmit = function (index) {
 
         // go to next index
@@ -1108,6 +1125,15 @@ define([
         }
       };
 
+      // is this a submit?  shift-enter qualified as a submit for any field
+      $scope.isSubmit = function (keyEvent, index) {
+        console.log('isSubmit');
+
+        if (keyEvent.which === 13 && keyEvent.shiftKey) {
+          $scope.onSubmit(index);
+        }
+      };
+
       $scope.hasValueConstraint = function () {
         return $rootScope.hasValueConstraint($rootScope.schemaOf(field)._valueConstraints);
       };
@@ -1117,7 +1143,6 @@ define([
       };
 
 
-      // allows us to look a the model as an array whether it is or not
       $scope.valueArray;
       $scope.setValueArray = function () {
 
@@ -1149,7 +1174,6 @@ define([
           return value['@value'][0];
         }
       }
-
 
       $scope.isRegular = function () {
         return !$scope.isConstrained() && !$scope.isRecommended();
