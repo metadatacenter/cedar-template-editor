@@ -2731,11 +2731,11 @@ section.dashboard-elements {
   }
 }
 
-//.template-body {
-//  &.metadata {
-//    background-color: rgba(80, 151, 165, 0.15);
-//  }
-//}
+/*
+================================================
+=== Runtime Form
+================================================
+*/
 .template-body form .runtime {
 
   .flagpole {
@@ -2772,7 +2772,7 @@ section.dashboard-elements {
     height: 1px;
     width: 15px;
     top: 1.2em;
-    left: -15px;
+    left: -16px;
   }
 
   .title {
@@ -2815,7 +2815,7 @@ section.dashboard-elements {
       color: #aaa;
       font-size: 1.6em;
       margin-left: -12px;
-      margin-top: 1px;
+      margin-top: -1px;
     }
 
     &.add {
@@ -2841,6 +2841,7 @@ section.dashboard-elements {
     background-color: @button-template;
     color: @white;
     font-size: 1.8em;
+    outline:none;
     &:hover {
       background-color: @hover-template;
     }

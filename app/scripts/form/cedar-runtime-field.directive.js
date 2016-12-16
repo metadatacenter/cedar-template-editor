@@ -11,19 +11,19 @@ define([
                                "$window", '$timeout',
                                "SpreadsheetService",
                                "DataManipulationService", "FieldTypeService", "controlledTermDataService",
-                               "StringUtilsService"];
+                               "StringUtilsService",   'UISettingsService'];
 
   function cedarRuntimeField($rootScope, $sce, $document, $translate, $filter, $location, $window,
                              $timeout,
                              SpreadsheetService,
                              DataManipulationService,
-                             FieldTypeService, controlledTermDataService, StringUtilsService) {
+                             FieldTypeService, controlledTermDataService, StringUtilsService,   UISettingsService) {
 
 
     var linker = function ($scope, $element, attrs) {
 
       $scope.directory = 'runtime';
-
+      $scope.midnight = $translate.instant('GENERIC.midnight');
 
 
       // set the @type field in the model
@@ -341,7 +341,6 @@ define([
         };
 
       }, true);
-
 
 
       /**
@@ -956,7 +955,7 @@ define([
         var schema = $rootScope.schemaOf($scope.field);
         if (schema._ui.inputType) {
           fieldType = schema._ui.inputType;
-          result =  FieldTypeService.getFieldIconClass(fieldType);
+          result = FieldTypeService.getFieldIconClass(fieldType);
         }
         return result;
       };
@@ -1050,11 +1049,11 @@ define([
           $scope.scrollTo(locator, ' .select');
 
         } else {
-          jQuery("#" + locator ).blur();
+          jQuery("#" + locator).blur();
         }
       };
 
-      // scroll within the template-container to the field with id locator
+      // scroll within the template to the field with the locator, focus and select the tag
       $scope.scrollTo = function (locator, tag) {
 
         var target = angular.element('#' + locator);
@@ -1070,13 +1069,10 @@ define([
             var newTop = scrollTop + targetTop - ( windowHeight - targetHeight ) / 2;
             jQuery('.template-container').animate({scrollTop: newTop}, 'slow');
 
-            // select and focus the tag
+            // focus and maybe select the tag
             if (tag) {
               var e = jQuery(tag);
               if (e.length) {
-                console.log(e);
-
-                console.log(jQuery.type(e));
                 e[0].focus();
                 if (!e.is('select')) {
                   e[0].select();
@@ -1099,7 +1095,7 @@ define([
         return result;
       };
 
-      $scope.getPageWidth = function() {
+      $scope.getPageWidth = function () {
         var result = '100%';
         var e = jQuery('.right-body');
         if (e.length > 0) {
@@ -1195,6 +1191,20 @@ define([
       $scope.isRecommended = function () {
         return $rootScope.vrs.getIsValueRecommendationEnabled($rootScope.schemaOf($scope.field));
       };
+
+      // strip midnight off the date time string
+      $scope.formatDateTime = function (value) {
+
+        var result = value;
+        if (value) {
+
+          var index = value.indexOf($scope.midnight);
+          if (index != -1) {
+            result = value.substring(0, index);
+          }
+        }
+        return result;
+      }
 
     };
 

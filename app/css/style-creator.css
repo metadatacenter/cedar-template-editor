@@ -11558,6 +11558,11 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
 .navbar.metadata .template-container {
   background-color: aquamarine;
 }
+/*
+================================================
+=== Runtime Form
+================================================
+*/
 .template-body form .runtime .flagpole {
   border-left: 1px solid #eee;
   width: 1px;
@@ -11588,7 +11593,7 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   height: 1px;
   width: 15px;
   top: 1.2em;
-  left: -15px;
+  left: -16px;
 }
 .template-body form .runtime .title {
   font-size: 1.5em;
@@ -11630,7 +11635,7 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   color: #aaa;
   font-size: 1.6em;
   margin-left: -12px;
-  margin-top: 1px;
+  margin-top: -1px;
 }
 .template-body form .runtime button.add {
   color: #5795ba;
@@ -11650,6 +11655,7 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   background-color: #5097A5;
   color: #ffffff;
   font-size: 1.8em;
+  outline: none;
 }
 .template-body form .runtime .btn.btn-save.active:hover {
   background-color: #2f7dab;
