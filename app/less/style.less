@@ -2740,7 +2740,9 @@ section.dashboard-elements {
 
   &.page {
     margin-top: 100px;
-    margin-bottom: 100px
+    margin-bottom: 100px;
+    position:relative;
+    border-left:1px solid #aaa;
   }
 
   .down-tick {
@@ -2867,8 +2869,10 @@ section.dashboard-elements {
   }
 
   .element-root {
+
     .element {
       &.expand {
+        border-left:1px solid #aaa;
 
       }
       &.collapse {
@@ -2914,6 +2918,7 @@ section.dashboard-elements {
 
     .row.isActive {
       padding-bottom: 50px;
+
 
       .title {
         font-size: 2.5em;

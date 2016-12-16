@@ -23,9 +23,9 @@
             <button type="button" ng-click="toggleExpanded(i)"  ng-class="{'xxx' : isExpanded(i), 'expand' : !isExpanded(i)}">
               <i ng-class="{'fa fa-caret-down ' : isExpanded(i), 'fa fa-caret-right ' : !isExpanded(i)}"></i>
             </button>
-             <span ng-repeat="nest in getNesting()" >
-             <span ng-if="!isActive" class="down-tick"   style="{{getNestingStyle(nest)}}"></span>
-            </span>
+             <!--<span ng-repeat="nest in getNesting()" >-->
+             <!--<span ng-if="!isActive" class="down-tick"   style="{{getNestingStyle(nest)}}"></span>-->
+            <!--</span>-->
            <span ng-if="valueArray.length-1" class="count">{{i+1}}.</span>
             <a ng-click="toggleExpanded(i)" class="title"  ng-class="{'isInactive' : isInactive(i)}">{{getTitle()}}</a>
             </div>

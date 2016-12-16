@@ -16,9 +16,9 @@
         <div class="row" id="{{getLocator(index)}}">
           <div class="col-sm-3">
             <div class="leader"></div>
-             <span ng-repeat="nest in getNesting()">
-                 <span class="down-tick" style="{{getNestingStyle(nest)}}"></span>
-               </span>
+             <!--<span ng-repeat="nest in getNesting()">-->
+                 <!--<span class="down-tick" style="{{getNestingStyle(nest)}}"></span>-->
+               <!--</span>-->
 
             <div class="title" ng-click="addMoreInput()">
               <!--<i  ng-class="getIconClass()" class="fa" ></i>-->
@@ -36,9 +36,9 @@
           <div class="col-sm-3">
             <div class="leader"></div>
             <!-- indentation-->
-            <span ng-repeat="nest in getNesting()">
-                 <span class="down-tick" style="{{getNestingStyle(nest)}}"></span>
-               </span>
+            <!--<span ng-repeat="nest in getNesting()">-->
+                 <!--<span class="down-tick" style="{{getNestingStyle(nest)}}"></span>-->
+               <!--</span>-->
             <!-- title-->
             <div ng-click="setActive(index, true)" class="title " ng-mouseenter="hover=true"
                 ng-mouseleave="hover=false">
@@ -54,9 +54,11 @@
         </div>
 
         <!-- actively being edited -->
-        <div ng-if="isActive(index)">
-          <div class="row">
+        <div ng-if="isActive(index)" style="border-left:1px solid #f0f0f0;;position:relative;right:0;background:#f0f0f0;" ng-style="{'left' : (-16 * (getNestingCount()-1) - 1) + 'px', 'width': getPageWidth() }">
+          <div class="row" >
             <div class="col-xs-4 col-sm-4 pull-right toolbar">
+
+
 
               <button type="button" class="remove pull-right" ng-click="removeInput(index)"
                   ng-if="model.length > field.minItems"

@@ -1099,6 +1099,15 @@ define([
         return result;
       };
 
+      $scope.getPageWidth = function() {
+        var result = '100%';
+        var e = jQuery('.right-body');
+        if (e.length > 0) {
+          result = e[0].clientWidth + 'px';
+        }
+        return result;
+      }
+
       $scope.getNestingCount = function () {
 
         var path = $scope.path || '';
