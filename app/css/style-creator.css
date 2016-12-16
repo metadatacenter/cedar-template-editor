@@ -11558,6 +11558,14 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
 .navbar.metadata .template-container {
   background-color: aquamarine;
 }
+.template-body form .runtime .flagpole {
+  border-left: 1px solid #eee;
+  width: 1px;
+  height: 17px;
+  position: absolute;
+  top: 0;
+  left: -1px;
+}
 .template-body form .runtime.page {
   margin-top: 100px;
   margin-bottom: 100px;

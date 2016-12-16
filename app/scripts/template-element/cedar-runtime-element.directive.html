@@ -2,7 +2,6 @@
 <div ng-if="model !== undefined" class="item-root element-root"
     style="{{getNestingMargin(element, 0)}}">
 
-
   <div class="elementTotalContent ">
     <div ng-show="$root.isArray(model)">
       <div class="spreadsheetViewDetector"></div>
@@ -14,6 +13,7 @@
     <div ng-repeat="(i, valueElement) in valueArray">
 
       <div class="element" id="{{getLocator(i)}}" class='element-{{i}}'  ng-class="{'expand' : isExpanded(i)}" style="position:relative">
+        <div class="flagpole"></div>
 
         <div ng-if="!isActive" class="left-tick"></div>
 
@@ -75,5 +75,7 @@
     </div>
 
   </div>
+
 </div>
+
 
