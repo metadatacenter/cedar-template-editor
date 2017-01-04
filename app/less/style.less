@@ -2738,6 +2738,10 @@ section.dashboard-elements {
 */
 .template-body form .runtime {
 
+  .active-container {
+    border-left:1px solid #f0f0f0;;position:relative;right:0;background:#f0f0f0;
+  }
+
   .flagpole {
     border-left: 1px solid #eee;
     width: 1px;
@@ -2845,6 +2849,11 @@ section.dashboard-elements {
     &:hover {
       background-color: @hover-template;
     }
+  }
+  label.submit-info {
+    font-size:1.2em;
+    padding-left:10px;
+    color: @brand-primary;
   }
 
   .field-instance {

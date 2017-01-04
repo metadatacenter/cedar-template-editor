@@ -389,7 +389,6 @@ define([
             jQuery('.template-container').animate({scrollTop: newTop}, 'slow');
             jQuery("#" + locator + ' ' + tag).focus().select();
 
-            console.log("#" + locator + ' ' + tag);
           };
           $timeout(scope.setHeight, 100);
         }

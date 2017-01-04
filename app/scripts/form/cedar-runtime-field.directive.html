@@ -1,7 +1,5 @@
 <div class="item-root field-root">
 
-
-
   <!-- field content  -->
   <div class="elementTotalContent visible" style="position:relative">
 
@@ -18,12 +16,8 @@
         <div class="row" id="{{getLocator(index)}}">
           <div class="col-sm-3">
             <div class="leader"></div>
-             <!--<span ng-repeat="nest in getNesting()">-->
-                 <!--<span class="down-tick" style="{{getNestingStyle(nest)}}"></span>-->
-               <!--</span>-->
 
             <div class="title" ng-click="addMoreInput()">
-              <!--<i  ng-class="getIconClass()" class="fa" ></i>-->
               {{getTitle()}}
             </div>
           </div>
@@ -37,15 +31,10 @@
         <div class="row" ng-if="!isActive(index)" class="isInactive" id="{{getLocator(index)}}">
           <div class="col-sm-3">
             <div class="leader"></div>
-            <!-- indentation-->
-            <!--<span ng-repeat="nest in getNesting()">-->
-                 <!--<span class="down-tick" style="{{getNestingStyle(nest)}}"></span>-->
-               <!--</span>-->
-            <!-- title-->
+
             <div ng-click="setActive(index, true)" class="title " ng-mouseenter="hover=true"
                 ng-mouseleave="hover=false">
 
-              <!--<i  ng-class="getIconClass()" class="fa"></i>-->
               <span ng-if="isMultiple()" style="font-size:smaller">{{index+1}}.</span>{{getTitle()}}
             </div>
 
@@ -56,11 +45,9 @@
         </div>
 
         <!-- actively being edited -->
-        <div ng-if="isActive(index)" style="border-left:1px solid #f0f0f0;;position:relative;right:0;background:#f0f0f0;" ng-style="{'left' : (-16 * (getNestingCount()-1) - 1) + 'px', 'width': getPageWidth() }">
+        <div ng-if="isActive(index)"  class="active-container"  ng-style="{'left' : getNestingStyle(), 'width': getPageWidth() }">
           <div class="row" >
             <div class="col-xs-4 col-sm-4 pull-right toolbar">
-
-
 
               <button type="button" class="remove pull-right" ng-click="removeInput(index)"
                   ng-if="model.length > field.minItems"
@@ -98,7 +85,6 @@
                 <i class="fa fa-plus-circle"></i>
               </button>
 
-
             </div>
           </div>
           <div class="row isActive" id="{{getLocator(index)}}">
@@ -116,6 +102,7 @@
               <form name="field-edit-form-{{index}}" ng-submit="onSubmit(index)">
                 <div class="originalContent" ng-include="getFieldUrl()"></div>
                 <button type="submit" class="btn btn-save confirm active" translate>GENERIC.Ok</button>
+                <label class="submit-info"> or Shift-Enter</label>
               </form>
             </div>
           </div>

@@ -11563,6 +11563,12 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
 === Runtime Form
 ================================================
 */
+.template-body form .runtime .active-container {
+  border-left: 1px solid #f0f0f0;
+  position: relative;
+  right: 0;
+  background: #f0f0f0;
+}
 .template-body form .runtime .flagpole {
   border-left: 1px solid #eee;
   width: 1px;
@@ -11659,6 +11665,11 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
 }
 .template-body form .runtime .btn.btn-save.active:hover {
   background-color: #2f7dab;
+}
+.template-body form .runtime label.submit-info {
+  font-size: 1.2em;
+  padding-left: 10px;
+  color: #5795ba;
 }
 .template-body form .runtime .field-instance {
   padding-left: 0;
