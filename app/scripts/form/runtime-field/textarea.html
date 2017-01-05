@@ -2,7 +2,6 @@
       
     <div ng-if="isActive(index)" class="form-group  has-feedback">
     <textarea
-        ng-keypress="isSubmit($event, index)"
         rows="5"
         class="form-control isActive select"
         ng-class="{'required': isRequired()}"

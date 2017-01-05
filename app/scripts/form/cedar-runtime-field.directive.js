@@ -120,15 +120,9 @@ define([
         return false;
       };
 
-      //$scope.allowsMultiple = function () {
-      //  var inputType = $scope.getInputType();
-      //  var fieldTypes = FieldTypeService.getFieldTypes();
-      //  for (var i = 0; i < fieldTypes.length; i++) {
-      //    if (fieldTypes[i].cedarType === inputType) {
-      //      return fieldTypes[i].allowsMultiple;
-      //    }
-      //  }
-      //};
+      $scope.isMultipleChoice = function () {
+        return $rootScope.schemaOf(field)._valueConstraints.multipleChoice;
+      };
 
       $scope.hasDateRange = function () {
         return ( $scope.getInputType() === "date");
@@ -282,6 +276,10 @@ define([
 
         if (active) {
           $scope.scrollTo(locator, ' .select');
+          $document.unbind('keypress');
+          $document.bind('keypress', function(e) {
+            $scope.isSubmit(e);
+          });
 
         } else {
           jQuery("#" + locator).blur();
@@ -302,7 +300,8 @@ define([
             var targetHeight = $("#" + locator).outerHeight(true);
             var scrollTop = jQuery('.template-container').scrollTop();
             var newTop = scrollTop + targetTop - ( windowHeight - targetHeight ) / 2;
-            jQuery('.template-container').animate({scrollTop: newTop}, 'slow');
+       
+            jQuery('.template-container').animate({scrollTop: newTop}, 'fast');
 
             // focus and maybe select the tag
             if (tag) {
@@ -343,6 +342,11 @@ define([
 
       $scope.onSubmit = function (index) {
 
+        console.log('onSubmit');
+        if ($scope.isActive(index) ) {
+
+
+
         // go to next index
         if ($scope.isMultiple() && (index + 1 < $scope.model.length)) {
           $scope.setActive(index + 1, true);
@@ -353,6 +357,7 @@ define([
           $scope.$parent.nextChild($scope.field, index, $scope.path);
 
         }
+        }
       };
 
       // is this a submit?  shift-enter qualified as a submit for any field
@@ -361,6 +366,15 @@ define([
         if (keyEvent.which === 13 && keyEvent.shiftKey) {
           $scope.onSubmit(index);
         }
+      };
+
+      //// watch for a request to set this field active
+      //$scope.$on('keypress', function (event, params) {
+      //  $scope.isSubmit(params[0], 0);
+      //});
+
+      $scope.mylog = function (msg) {
+        console.log(msg);
       };
 
       // does this field have a value constraint?

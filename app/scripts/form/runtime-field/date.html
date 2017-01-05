@@ -1,7 +1,6 @@
 <div ng-if="isActive(index)" class='input-group' date-time-picker>
 
   <input type="text"
-      ng-keypress="isSubmit($event,index)"
       class="form-control select"
       ng-class="{'isActive' : isActive(index),'required': isRequired()}"
       placeholder="{{isActive(index) ? 'enter date' : ''}}"
