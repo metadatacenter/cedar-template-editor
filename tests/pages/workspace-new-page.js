@@ -52,7 +52,8 @@ var WorkspacePage = function () {
   var createSortByUpdatedMenuItem = createToolbar.element(by.css('#workspace-sort-tool [ng-click="dc.setSortOption(\\042lastUpdatedOnTS\\042)"]'));
   var createUserDropdownButton = createToolbar.element(by.css('#user-tool > div > button'));
   var createProfileMenuItem = createToolbar.element(by.css('#user-tool #user-profile-tool a'));
-  var createLogoutMenuItem = createToolbar.element(by.css('#user-tool #user-logoout-tool a'));
+  var createLogoutMenuItem = createToolbar.element(by.css('#user-tool #user-logout-tool a'));
+  var createShareMenuItem = createToolbar.element(by.css('#more-options-tool > div > ul > li[ng-click="dc.showShareModal(resource)"] > a'));
   var trashTooltip = 'delete selection';
   var createListView = element(by.css('.center-panel .list-view'));
   var createGridView = element(by.css('.center-panel .grid-view'));
@@ -143,6 +144,15 @@ var WorkspacePage = function () {
   };
   this.createFirstFolder = function () {
     return createFirstFolder;
+  };
+  this.createUserDropdownButton = function () {
+    return createUserDropdownButton;
+  };
+  this.createLogoutMenuItem = function () {
+    return createLogoutMenuItem;
+  };
+  this.createShareMenuItem = function () {
+    return createShareMenuItem;
   };
 
 
