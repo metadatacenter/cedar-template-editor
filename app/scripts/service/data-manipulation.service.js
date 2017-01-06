@@ -62,6 +62,27 @@ define([
       return context;
     };
 
+    // Function that generates a basic field definition
+    service.isStaticField = function (field) {
+      var schema = $rootScope.schemaOf(field);
+      var type =  schema._ui.inputType;
+      return FieldTypeService.isStaticField(type);
+    };
+
+    // Function that generates the @context for an instance, based on the schema @context definition
+    service.generateInstanceContext = function (schemaContext) {
+      var context = {};
+      angular.forEach(schemaContext.properties, function (value, key) {
+        if (value.enum) {
+          context[key] = value.enum[0];
+          //} else {
+          //  console.log('generateInstanceContext empty value');
+          //  console.log(value);
+        }
+      });
+      return context;
+    };
+
 
     // Function that generates the @type for an instance, based on the schema @type definition
     service.generateInstanceType = function (schemaType) {
@@ -546,9 +567,14 @@ define([
         if (selectedKey) {
           var idx = order.indexOf(selectedKey);
           idx += 1;
-          if (idx < order.length) {
+          var found = false;
+          while (idx < order.length && !found) {
             var nextKey = order[idx];
             var next = props[nextKey];
+            found = !service.isStaticField(next);
+            idx += 1;
+          }
+          if (found) {
             return next;
           }
         }
