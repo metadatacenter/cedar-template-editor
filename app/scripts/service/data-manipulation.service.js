@@ -263,7 +263,7 @@ define([
       return (p._tmp.state == "creating");
     };
 
-    // are we editing this field?
+    // set as selected
     service.setSelected = function (field) {
       var p = $rootScope.propertiesOf(field);
       p._tmp = p._tmp || {};
@@ -272,10 +272,39 @@ define([
       $rootScope.selectedFieldOrElement = field;
     };
 
-
-    service.isMultiple = function (fieldOrElement) {
-      return $rootScope.isArray(fieldOrElement);
+    // is this an array of fields or elements?
+    service.isMultiple = function (obj) {
+      return $rootScope.isArray(obj);
     };
+
+    // is the field multiple cardinality?
+    service.isMultipleCardinality = function (fieldOrElement) {
+      return fieldOrElement.items;
+    };
+
+
+    // what is the max cardinality?
+    service.getMaxItems = function (fieldOrElement) {
+      return fieldOrElement.maxItems;
+    };
+
+    // what is the min cardinality?
+    service.getMinItems = function (fieldOrElement) {
+      return fieldOrElement.minItems;
+    };
+
+
+    // is this field required?
+    service.isRequired = function (fieldOrElement) {
+      return $rootScope.schemaOf(fieldOrElement)._valueConstraints.requiredValue;
+    };
+
+    // is the previous field static?
+    service.isDateRange = function (fieldOrElement) {
+      return DataManipulationService.getFieldSchema(fieldOrElement)._ui.dateType == "date-range";
+    };
+
+
 
     service.hasNext = function (fieldOrElement) {
       return true;
@@ -542,8 +571,78 @@ define([
       return $rootScope.schemaOf(fieldOrElement)['@id'];
     };
 
+    // what is the icon for this field?
+    service.getIconClass = function (fieldOrElement) {
+      var result = '';
+      var fieldType = '';
+      var schema = $rootScope.schemaOf(fieldOrElement);
+      if (schema._ui.inputType) {
+        fieldType = schema._ui.inputType;
+        result = FieldTypeService.getFieldIconClass(fieldType);
+      }
+      return result;
+    };
+
+    service.getType = function (fieldOrElement) {
+      var schema = $rootScope.schemaOf(fieldOrElement);
+      return schema['@type'];
+    };
+
+    // Retrieve appropriate input type
+    service.getInputType = function (fieldOrElement) {
+      //return $rootScope.schemaOf($scope.field)._ui.inputType;
+      var inputType = 'element';
+      var schema = $rootScope.schemaOf(fieldOrElement);
+
+      if (schema._ui.inputType) {
+        inputType = schema._ui.inputType;
+      }
+      return inputType;
+    };
+
+    // is this a checkbox, radio or list question?
+    service.isMultiAnswer = function (fieldOrElement) {
+      var inputType = service.getInputType(fieldOrElement);
+      return ((inputType == 'checkbox') || (inputType == 'radio') || (inputType == 'list'));
+    };
+
+    // is this a youTube field?
+    service.isYouTube = function (field) {
+      return field && $rootScope.schemaOf(field)._ui.inputType === 'youtube';
+    };
+
+    // is this richText?
+    service.isRichText = function (field) {
+      return field && $rootScope.schemaOf(field)._ui.inputType === 'richtext';
+    };
+
+
+    service.getContent = function (fieldOrElement) {
+      var schema = $rootScope.schemaOf(fieldOrElement);
+      return schema['_content'];
+    };
+
+
     service.getTitle = function (fieldOrElement) {
       return service.getFieldSchema(fieldOrElement)._ui.title;
+    };
+
+    service.getDescription = function (fieldOrElement) {
+      return service.getFieldSchema(fieldOrElement)._ui.description;
+    };
+
+    // does this field have a value constraint?
+    service.hasValueConstraint = function (fieldOrElement) {
+      return $rootScope.hasValueConstraint($rootScope.schemaOf(fieldOrElement)._valueConstraints);
+    };
+
+    // get the value constraint literal values
+    service.getLiterals = function (fieldOrElement) {
+      return $rootScope.schemaOf(fieldOrElement)._valueConstraints.literals;
+    };
+
+    service.isMultipleChoice = function (fieldOrElement) {
+      return $rootScope.schemaOf(fieldOrElement)._valueConstraints.multipleChoice;
     };
 
     service.nextSibling = function (field, parent) {

@@ -4,7 +4,7 @@
   <div class="elementTotalContent visible" style="position:relative">
 
     <!-- spreadsheet, currently disabled -->
-    <div ng-show="isMultiple()">
+    <div ng-show="isMultipleCardinality()">
       <div class="spreadsheetViewDetector"></div>
       <div class="spreadsheetViewContainer"></div>
     </div>
@@ -35,7 +35,7 @@
             <div ng-click="setActive(index, true)" class="title " ng-mouseenter="hover=true"
                 ng-mouseleave="hover=false">
 
-              <span ng-if="isMultiple()" style="font-size:smaller">{{index+1}}.</span>{{getTitle()}}
+              <span ng-if="isMultipleCardinality()" style="font-size:smaller">{{index+1}}.</span>{{getTitle()}}
             </div>
 
           </div>
@@ -76,7 +76,7 @@
               </button>
 
               <button type="button" class=" add  pull-right" ng-click="addMoreInput()"
-                  ng-if="isMultiple() && (!field.maxItems || model.length < field.maxItems )"
+                  ng-if="isMultipleCardinality() && (!field.maxItems || model.length < field.maxItems )"
                   tooltip="add"
                   tooltip-trigger
                   tooltip-animation="false"
@@ -90,7 +90,7 @@
           <div class="row isActive" id="{{getLocator(index)}}">
             <div class="col-xs-12 col-sm-12">
               <div ng-click="setActive(index, true)" class="title ">
-                <span ng-if="isMultiple()" class="count">{{index+1}}.</span>
+                <span ng-if="isMultipleCardinality()" class="count">{{index+1}}.</span>
                 {{getTitle()}}
               </div>
                 <div ng-if="isPreviousStatic()  && isRichText(previous)" ng-bind-html="$root.getUnescapedContent(previous)"></div>
