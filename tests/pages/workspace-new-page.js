@@ -53,7 +53,7 @@ var WorkspacePage = function () {
   var createUserDropdownButton = createToolbar.element(by.css('#user-tool > div > button'));
   var createProfileMenuItem = createToolbar.element(by.css('#user-tool #user-profile-tool a'));
   var createLogoutMenuItem = createToolbar.element(by.css('#user-tool #user-logout-tool a'));
-  var createShareMenuItem = createToolbar.element(by.css('#more-options-tool > div > ul > li[ng-click="dc.showShareModal(resource)"] > a'));
+  var createShareMenuItem = createToolbar.element(by.css('#more-options-tool > div > ul > li > a[ng-click="dc.showShareModal(resource)"]'));
   var trashTooltip = 'delete selection';
   var createListView = element(by.css('.center-panel .list-view'));
   var createGridView = element(by.css('.center-panel .grid-view'));
@@ -80,6 +80,13 @@ var WorkspacePage = function () {
   var createFolderName = createFolderModal.element(by.model('folder.folder.name'));
   var createFolderSubmitButton = createFolderModal.element(by.css('div.modal-footer button.confirm'));
 
+  // share modal
+  var createShareModal = element(by.id('share-modal'));
+  var shareWithUserRow = createShareModal.element(by.css('div > div > div.modal-body > div > div > div.col-sm-6.ng-scope > div:nth-child(5)'));
+  var createShareModalUserName =
+    shareWithUserRow.element(by.css('div.col-sm-7.typeaheadDropUp > input'));
+  var createShareModalAddUserButton = shareWithUserRow.element(by.css('div.col-sm-1.pull-right > button'));
+  var createShareModalDoneButton = createShareModal.element(by.css('div > div > div.modal-footer > div > button'));
 
   // access to locators
   this.createPageName = function () {
@@ -153,6 +160,18 @@ var WorkspacePage = function () {
   };
   this.createShareMenuItem = function () {
     return createShareMenuItem;
+  };
+  this.createShareModal = function () {
+    return createShareModal;
+  };
+  this.createShareModalUserName = function () {
+    return createShareModalUserName;
+  };
+  this.createShareModalDoneButton = function () {
+    return createShareModalDoneButton;
+  };
+  this.createShareModalAddUserButton = function () {
+    return createShareModalAddUserButton;
   };
 
 
