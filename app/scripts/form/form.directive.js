@@ -420,19 +420,43 @@ define([
           return copiedForm;
         };
 
-        $scope.getType = function (item) {
-          var obj = $scope.form.properties[item];
-          var schema = $rootScope.schemaOf(obj);
-          return schema['@type'];
-        };
+
 
         $scope.isField = function (item) {
           return ($scope.getType(item) === 'https://schema.metadatacenter.org/core/TemplateField');
         };
 
-        $scope.isStaticField = function (item) {
-          return ($scope.getType(item) === 'https://schema.metadatacenter.org/core/StaticTemplateField');
+
+
+
+        $scope.getPreviousItem = function (index) {
+          console.log('getPreviousItem' + index);
+          if (index) {
+            return $scope.pagesArray[$scope.pageIndex][index];
+          }
         };
+
+        $scope.getPreviousField = function (page,index) {
+          if ($scope.getPreviousItem(page, index)) {
+            return $scope.form.properties[$scope.getPreviousItem(index)];
+          }
+        };
+
+        $scope.getStaticPrevious = function (page, index) {
+          if (index) {
+            return ($scope.getType($scope.getPreviousItem(page,index)) === 'https://schema.metadatacenter.org/core/StaticTemplateField');
+          } else {
+            return false;
+          }
+        };
+
+        $scope.getStaticField = function (item) {
+          // if the previous item is static, then return it here
+          var isStatic = ($scope.getType(item) === 'https://schema.metadatacenter.org/core/StaticTemplateField');
+          return null;
+        };
+
+
 
         $scope.isElement = function (item) {
           return ($scope.getType(item) === 'https://schema.metadatacenter.org/core/TemplateElement');
@@ -448,7 +472,7 @@ define([
           return $scope.expanded;
         };
 
-        $scope.nextChild = function (fieldOrElement) {
+        $scope.nextChildOld = function (fieldOrElement) {
 
 
           var id = DataManipulationService.getId(fieldOrElement);
@@ -476,6 +500,57 @@ define([
             } else {
               $rootScope.$broadcast("setActive", [id, 0,  $scope.path, false]);
 
+            }
+          }
+        };
+
+        $scope.getType = function (item) {
+          var obj = $scope.form.properties[item];
+          var schema = $rootScope.schemaOf(obj);
+          return schema['@type'];
+        };
+
+        $scope.isStaticField = function (field) {
+          if (field) {
+            var schema = $rootScope.schemaOf(field);
+            var type = schema['@type'];
+            return (type === 'https://schema.metadatacenter.org/core/StaticTemplateField');
+          }
+        };
+
+        $scope.nextChild = function (fieldOrElement) {
+
+          var id = DataManipulationService.getId(fieldOrElement);
+          console.log('get nextChild of ' + id);
+          var selectedKey;
+          var props = $scope.form.properties;
+
+
+          // find the field or element in the form's properties
+          angular.forEach(props, function (value, key) {
+            if (DataManipulationService.getId(value) == id) {
+              selectedKey = key;
+            }
+          });
+
+          if (selectedKey) {
+            console.log(selectedKey);
+            var idx = $scope.form._ui.order.indexOf(selectedKey);
+
+            idx += 1;
+            var found = false;
+            while (idx < $scope.form._ui.order.length && !found) {
+              var nextKey = $scope.form._ui.order[idx];
+              var next = props[nextKey];
+              console.log(next);
+              found = !$scope.isStaticField(next);
+              idx += 1;
+            }
+
+            if (found) {
+              $rootScope.$broadcast("setActive", [DataManipulationService.getId(next), 0,  $scope.path, true]);
+            } else {
+              $rootScope.$broadcast("setActive", [id, 0,  $scope.path, false]);
             }
           }
         };

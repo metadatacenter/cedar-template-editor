@@ -1,7 +1,23 @@
 <div class="form-group has-feedback" ng-click="setActive(index)">
 
+  <select ng-if="isActive(index) && isMultipleChoice()"
+      ng-click="setActive(index)"
+      class="form-control select "
+      multiple="true"
+      field="field"
+      title="Please select multiple"
+      ng-model="valueElement[0]['@value']"
+      select-picker="">
+
+    <option ng-keypress="isSubmit($event, index)" ng-click="setActive(index,true)" ng-repeat="(i, v) in getLiterals()"
+        value="{{v.label}}">
+      {{v.label}}
+    </option>
+
+  </select>
+
+
   <select  ng-if="isActive(index) && !isMultipleChoice()"
-      ng-keypress="isSubmit($event, index)"
       class="form-control select"
       ng-class="{'isActive' : isActive(index), 'required': isRequired()}"
       ng-click="setActive(index, true)"
@@ -12,31 +28,12 @@
       ng-model="valueElement[0]['@value']"
       select-picker="">
 
-    <option ng-keypress="isSubmit($event, index)" ng-click="setActive(index,true)" ng-repeat="(i, v) in getLiterals()"  ng-keyup="mylog('u[')"  ng-keydown="mylog('down')"  ng-keypress="mylog('press')"
+    <option ng-keypress="isSubmit($event, index)" ng-click="setActive(index,true)" ng-repeat="(i, v) in getLiterals()"
         value="{{v.label}}">
       {{v.label}}
     </option>
 
   </select>
-
-
-
-    <select ng-if="isActive(index) && isMultipleChoice()"
-        ng-click="setActive(index)"
-        ng-keypress="isSubmit($event, index)"
-        class="form-control select "
-        multiple="true"
-        field="field"
-        title="Please select multiple"
-        ng-model="valueElement[0]['@value']"
-        select-picker="">
-
-      <option ng-keypress="isSubmit($event, index)" ng-click="setActive(index,true)" ng-repeat="(i, v) in getLiterals()"
-          value="{{v.label}}">
-        {{v.label}}
-      </option>
-
-    </select>
 
 
   <!--- not active --->

@@ -93,8 +93,13 @@
                 <span ng-if="isMultiple()" class="count">{{index+1}}.</span>
                 {{getTitle()}}
               </div>
+                <div ng-if="isPreviousStatic()  && isRichText(previous)" ng-bind-html="$root.getUnescapedContent(previous)"></div>
+                <div ng-if="isPreviousStatic()  && isYouTube(previous)">
+                <figure>
+                  <div fit-vids ng-bind-html="getYouTubeEmbedFrame(previous)"></div>
+                </figure>
+                </div>
             </div>
-
           </div>
 
           <div class="row isActive" ng-if="isActive(index)">

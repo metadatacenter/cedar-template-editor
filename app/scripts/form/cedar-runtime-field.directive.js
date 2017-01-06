@@ -26,7 +26,6 @@ define([
       $scope.midnight = $translate.instant('GENERIC.midnight');
       $scope.uuid = DataManipulationService.generateTempGUID();
 
-
       // Retrieve appropriate field template file
       $scope.getTemplateUrl = function () {
         var inputType = 'element';
@@ -199,6 +198,37 @@ define([
         return 'scripts/form/runtime-field' + '/' + inputType + '.html';
       };
 
+
+      $scope.getType = function (field) {
+        var schema = $rootScope.schemaOf(field);
+        return schema['@type'];
+      };
+
+      $scope.getContent = function (field) {
+        var schema = $rootScope.schemaOf(field);
+        return schema['_content'];
+      };
+
+      // is the previous field static?
+      $scope.isPreviousStatic = function () {
+        if ($scope.previous) {
+          var schema = $rootScope.schemaOf($scope.previous);
+          var type = schema['@type'];
+          return (type === 'https://schema.metadatacenter.org/core/StaticTemplateField');
+
+        }
+      };
+
+      // is this a youTube field?
+      $scope.isYouTube = function (field) {
+        return field && $rootScope.schemaOf(field)._ui.inputType === 'youtube';
+      };
+
+      // is this richText?
+      $scope.isRichText = function (field) {
+        return field && $rootScope.schemaOf(field)._ui.inputType === 'richtext';
+      };
+
       // what kind of field is this?
       $scope.getInputType = function () {
         return $rootScope.schemaOf($scope.field)._ui.inputType;
@@ -300,7 +330,10 @@ define([
             var targetHeight = $("#" + locator).outerHeight(true);
             var scrollTop = jQuery('.template-container').scrollTop();
             var newTop = scrollTop + targetTop - ( windowHeight - targetHeight ) / 2;
-       
+
+            console.log('locator ' + locator + ' newTop ' + newTop + ' scrollTop ' + scrollTop + ' targetHeight ' + targetHeight + ' targetTop ' +  targetTop +  ' windowHeight ' + windowHeight);
+            console.log($("#" + locator).offset());
+
             jQuery('.template-container').animate({scrollTop: newTop}, 'fast');
 
             // focus and maybe select the tag
@@ -366,15 +399,6 @@ define([
         if (keyEvent.which === 13 && keyEvent.shiftKey) {
           $scope.onSubmit(index);
         }
-      };
-
-      //// watch for a request to set this field active
-      //$scope.$on('keypress', function (event, params) {
-      //  $scope.isSubmit(params[0], 0);
-      //});
-
-      $scope.mylog = function (msg) {
-        console.log(msg);
       };
 
       // does this field have a value constraint?
@@ -1187,7 +1211,9 @@ define([
         preview       : "=",
         delete        : '&',
         ngDisabled    : "=",
-        path          : '='
+        path          : '=',
+        previous : '='
+
       },
       controller : function ($scope, $element) {
         var addPopover = function ($scope) {
