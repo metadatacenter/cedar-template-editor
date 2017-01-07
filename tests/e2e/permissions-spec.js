@@ -74,8 +74,8 @@ describe('permissions', function () {
 
         // move created folder to shared folder
         workspacePage.moveResource(folderTitle, 'folder');
-        moveModal.moveToDestination(sharedFolderTitle);
-        toastyModal.isSuccess();
+        moveModal.moveToDestination(sharedFolderTitle); // TODO unable to find the shared folder
+        toastyModal.isSuccess(); // TODO should fail (insufficient permissions)
       });
 
 
@@ -85,15 +85,15 @@ describe('permissions', function () {
         workspacePage.createResource('folder', sourceFolder);
         toastyModal.isSuccess();
 
-        // create target folder
+        // create target shared folder
         var targetFolder = workspacePage.createTitle('target-shared-folder');
         workspacePage.createResource('folder', targetFolder);
         toastyModal.isSuccess();
 
-        shareResource(sourceFolder, 'folder', testUserName1);
-        browser.sleep(1000);
+        shareResource(sourceFolder, 'folder', testUserName1); // TODO give write permissions
+        browser.sleep(2000);
         workspacePage.clickLogo(); // reset search
-        shareResource(targetFolder, 'folder', testUserName1);
+        shareResource(targetFolder, 'folder', testUserName1);  // TODO give write permissions
 
         logout();
         login(testConfig.testUser1, testConfig.testPassword1);
@@ -101,8 +101,51 @@ describe('permissions', function () {
         workspacePage.moveResource(sourceFolder, 'folder');
         moveModal.moveToDestination(targetFolder);
         toastyModal.isSuccess();
+        workspacePage.clickLogo();
       });
 
+
+      it("should move a writable folder not owned by current user to an unwritable folder", function () {
+        // create source shared folder
+        var sourceFolder = workspacePage.createTitle('writable-shared-folder');
+        workspacePage.createResource('folder', sourceFolder);
+        toastyModal.isSuccess();
+
+        // create target shared folder
+        var targetFolder = workspacePage.createTitle('target-shared-folder');
+        workspacePage.createResource('folder', targetFolder);
+        toastyModal.isSuccess();
+
+        shareResource(sourceFolder, 'folder', testUserName2);  // TODO give write permissions
+        browser.sleep(2000);
+        workspacePage.clickLogo(); // reset search
+        shareResource(targetFolder, 'folder', testUserName2);
+
+        logout();
+        login(testConfig.testUser2, testConfig.testPassword2);
+
+        workspacePage.moveResource(sourceFolder, 'folder');
+        moveModal.moveToDestination(targetFolder);
+        toastyModal.isSuccess(); // TODO should fail (insufficient permissions)
+        workspacePage.clickLogo();
+      });
+
+
+      it("should move an unwritable folder not owned by current user to an unwritable folder", function () {
+        // TODO
+      });
+
+
+      it("should delete test resources", function () {
+        logout();
+        login(testConfig.testUser1, testConfig.testPassword1);
+        deleteResource(targetFolderTitle, 'folder');
+        deleteResource(sharedFolderTitle, 'folder');
+      });
+
+
+
+      /* auxiliary functions */
 
       function logout() {
         browser.sleep(1000);
@@ -126,6 +169,7 @@ describe('permissions', function () {
         });
       }
 
+
       function shareResource(name, type, username) {
         workspacePage.selectResource(name, type);
         workspacePage.createMoreOptionsButton().click();
@@ -144,6 +188,16 @@ describe('permissions', function () {
         var doneButton = workspacePage.createShareModalDoneButton();
         browser.wait(EC.elementToBeClickable(doneButton));
         doneButton.click();
+      }
+
+
+      function deleteResource(name, type) {
+        workspacePage.selectResource(name, type);
+        workspacePage.createTrashButton().click();
+        sweetAlertModal.confirm();
+        toastyModal.isSuccess();
+        browser.sleep(1000);
+        workspacePage.clickLogo();
       }
 
     })
