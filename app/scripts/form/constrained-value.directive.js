@@ -24,6 +24,20 @@ define([
 
       $scope.valueElement = $scope.$parent.valueArray[$scope.index];
 
+      // does this field have a value constraint?
+      $scope.hasValueConstraint = function () {
+        return DataManipulationService.hasValueConstraint($scope.field);
+      };
+
+      // is this field required?
+      $scope.isRequired = function () {
+        return DataManipulationService.isRequired($scope.field);
+      };
+
+      if ($scope.hasValueConstraint() && $scope.isRequired()) {
+        $scope.$emit('formHasRequiredfield._uis');
+      }
+
 
       // is the field multiple cardinality?
       $scope.isMultipleCardinality = function () {
@@ -100,101 +114,7 @@ define([
         }
       };
 
-      //
-      // initialization
-      //
 
-      // Initializes model for fields constrained using controlled terms
-      $scope.updateUIFromModelControlledField();
-      // Load values when opening an instance
-      if ($scope.model) {
-        $scope.modelValueRecommendation = {'@value': {'value': $scope.model['@value']}}
-      }
-
-
-      $scope.updateModelWhenChangeSelection = function (modelvr) {
-
-        // This variable will be used at textfield.html
-        $scope.modelValueRecommendation = modelvr;
-        if ($rootScope.isArray($scope.model)) {
-          angular.forEach(modelvr, function (m, i) {
-            if (m && m['@value'] & m['@value'].value) {
-              $scope.model[i]['@value'] = m['@value'].value;
-            } else {
-              delete $scope.model[i]['@value'];
-            }
-          });
-        } else {
-          //var newValue = modelvr['@value'].value;
-          $scope.model['@value'] = modelvr['@value'].valueUri;
-          $scope.model['_valueLabel'] = modelvr['@value'].value;
-
-        }
-      };
-
-
-      $scope.initializeValueRecommendationField = function () {
-
-        $scope.modelValueRecommendation = {};
-        if ($scope.model) {
-          if ($scope.model['_valueLabel']) {
-            $scope.modelValueRecommendation['@value'] = {
-              'value'   : $scope.model._valueLabel,
-              'valueUri': $scope.model['@value'],
-            };
-          }
-          else {
-            $scope.modelValueRecommendation['@value'] = {
-              'value': $scope.model['@value']
-            };
-          }
-        }
-
-        console.log($scope.modelValueRecommendation);
-      };
-
-      $scope.clearSearch = function (select) {
-        select.search = '';
-      };
-
-      $scope.isFirstRefresh = true;
-      $scope.setIsFirstRefresh = function (isFirstRefresh) {
-        $scope.isFirstRefresh = isFirstRefresh;
-      };
-
-      $scope.updateModelWhenRefresh = function (select, modelvr) {
-        if (!$scope.isFirstRefresh) {
-          // Check that there are no controlled terms selected
-          if (select.selected.valueUri == null) {
-
-            // If the user entered a new value
-            if (select.search != modelvr['@value'].value) {
-              var modelValue;
-              if (select.search == "" || select.search == undefined) {
-                modelValue = null;
-              }
-              else {
-                modelValue = select.search;
-              }
-              $scope.model['@value'] = modelValue;
-              delete $scope.model['_valueLabel'];
-              $scope.modelValueRecommendation['@value'].value = modelValue;
-            }
-
-          }
-        }
-      };
-
-      $scope.clearSelection = function ($event, select) {
-        $event.stopPropagation();
-        $scope.modelValueRecommendation = {
-          '@value': {'value': null, 'valueUri': null},
-        }
-        select.selected = undefined;
-        select.search = "";
-        $scope.model['@value'] = null;
-        delete $scope.model['_valueLabel'];
-      };
 
       $scope.calculateUIScore = function (score) {
         var s = Math.floor(score * 100);
@@ -205,6 +125,18 @@ define([
           return s.toString() + "%";
         }
       };
+
+      //
+      // initialization
+      //
+
+      // Initializes model for fields constrained using controlled terms
+      $scope.updateUIFromModelControlledField();
+
+      // Load values when opening an instance
+      if ($scope.model) {
+        $scope.modelValueRecommendation = {'@value': {'value': $scope.model['@value']}}
+      }
 
 
     };

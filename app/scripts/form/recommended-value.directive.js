@@ -25,11 +25,19 @@ define([
       $scope.valueElement = $scope.$parent.valueArray[$scope.index];
       $scope.isFirstRefresh = true;
 
-
-      // is the field multiple cardinality?
-      $scope.isMultipleCardinality = function () {
-        return DataManipulationService.isMultipleCardinality($scope.field);
+      // does this field have a value constraint?
+      $scope.hasValueConstraint = function () {
+        return DataManipulationService.hasValueConstraint($scope.field);
       };
+
+      // is this field required?
+      $scope.isRequired = function () {
+        return DataManipulationService.isRequired($scope.field);
+      };
+
+      if ($scope.hasValueConstraint() && $scope.isRequired()) {
+        $scope.$emit('formHasRequiredfield._uis');
+      }
 
 
       // Used just for text fields whose values have been constrained using controlled terms
@@ -50,64 +58,7 @@ define([
       }, true);
 
 
-      // Updates the model for fields whose values have been constrained using controlled terms
-      $scope.updateModelFromUIControlledField = function () {
 
-        // Multiple fields
-        if ($scope.isMultipleCardinality()) {
-          if ($scope.modelValue.length > 0) {
-            angular.forEach($scope.modelValue, function (m, i) {
-              if (m && m['@value'] && m['@value']['@id']) {
-                $scope.model[i] = {
-                  "@value"   : m['@value']['@id'],
-                  _valueLabel: m['@value'].label
-                };
-              }
-            });
-          }
-          else {
-            // Default value
-            $scope.model = [{'@value': null}];
-          }
-
-        }
-        // Single fields
-        else {
-          $scope.model['@value'] = $scope.modelValue[0]['@value']['@id'];
-          $scope.model._valueLabel = $scope.modelValue[0]['@value']['label'];
-        }
-      };
-
-
-      $scope.updateUIFromModelControlledField = function () {
-
-        if ($rootScope.isArray($scope.model)) {
-          $scope.modelValue = [];
-          angular.forEach($scope.model, function (m, i) {
-            $scope.modelValue[i] = {};
-            $scope.modelValue[i]['@value'] = {
-              '@id': m['@value'],
-              label: m._valueLabel
-            };
-          });
-        }
-        else {
-          $scope.modelValue = [];
-          $scope.modelValue[0] = {};
-          $scope.modelValue[0]['@value'] = {
-            '@id': $scope.model['@value'],
-            label: $scope.model._valueLabel
-          };
-        }
-      };
-
-      //
-      // initialization
-      //
-
-      // Initializes model for fields constrained using controlled terms
-      $scope.updateUIFromModelControlledField();
-      // Load values when opening an instance
       if ($scope.model) {
         $scope.modelValueRecommendation = {'@value': {'value': $scope.model['@value']}}
       }
@@ -153,7 +104,6 @@ define([
           }
         }
 
-        console.log($scope.modelValueRecommendation);
       };
 
 
@@ -163,13 +113,11 @@ define([
 
 
       $scope.setIsFirstRefresh = function (value) {
-
         $scope.isFirstRefresh = value;
         console.log('setIsFirstRefresh' + $scope.isFirstRefresh);
       };
 
       $scope.updateModelWhenRefresh = function (select, modelvr) {
-        console.log("updateModelWhenRefresh" + $scope.isFirstRefresh);
         if (!$scope.isFirstRefresh) {
           // Check that there are no controlled terms selected
           if (select.selected.valueUri == null) {
@@ -213,9 +161,7 @@ define([
         }
       };
 
-      //
-      // initialize value recommendation directive
-      //
+
       $scope.initializeValueRecommendationField();
 
 

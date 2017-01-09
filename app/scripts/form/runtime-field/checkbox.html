@@ -6,11 +6,11 @@
         id="checkbox-{{uuid}}-{{index}}-{{i}}"
         ng-model="valueElement[i]['@value']"
         ng-true-value="'{{value.label}}'"
+        ng-false-value="{{ null }}"
         />
     <label for="checkbox-{{uuid}}-{{index}}-{{i}}">{{getLiterals()[i].label}}</label>
   </div>
 </div>
-
 
 <div ng-if="!isActive(index)" class="value">
   <div

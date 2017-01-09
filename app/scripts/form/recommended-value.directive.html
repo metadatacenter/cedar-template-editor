@@ -3,7 +3,6 @@
 <div ng-init="initializeValueRecommendationField();console.log('ng-init');"
     class="has-constraint autocomplete-label-wrapper"
     ng-class="{'has-selected': modelValueRecommendation['@value'].value}">
-  select {{$select}}
   <ui-select
       ng-model="modelValueRecommendation['@value']"
       ng-change="updateModelWhenChangeSelection(modelValueRecommendation); $root.vrs.updatePopulatedFields(field, modelValueRecommendation['@value'].value)"
