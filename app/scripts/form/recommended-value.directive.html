@@ -1,0 +1,34 @@
+
+
+<div ng-init="initializeValueRecommendationField();console.log('ng-init');"
+    class="has-constraint autocomplete-label-wrapper"
+    ng-class="{'has-selected': modelValueRecommendation['@value'].value}">
+  select {{$select}}
+  <ui-select
+      ng-model="modelValueRecommendation['@value']"
+      ng-change="updateModelWhenChangeSelection(modelValueRecommendation); $root.vrs.updatePopulatedFields(field, modelValueRecommendation['@value'].value)"
+      ng-click="$root.vrs.updateValueRecommendationResults(field); setIsFirstRefresh(false); clearSearch($select)"
+      close-on-select="true"
+      reset-search-input="false"
+      aria-label="getDescription()">
+    <ui-select-match class="selection-field" placeholder="">{{$select.selected.value}}
+      <i ng-if="$select.selected.value" class="fa fa-times" aria-hidden="true"
+          ng-click="clearSelection($event, $select); $root.vrs.updatePopulatedFields(field, null)"></i>
+    </ui-select-match>
+    <ui-select-choices
+        ui-disable-choice="option.value == $root.vrs.getNoResultsMsg()"
+        refresh="updateModelWhenRefresh($select, modelValueRecommendation); $root.vrs.updatePopulatedFields(field, $select.search); $root.updateFieldAutocomplete(field, $select.search)"
+        refresh-delay="200"
+        repeat="option in $root.vrs.getValueRecommendationResults(field['@id']) | propsFilter: {value: $select.search} | limitTo:100">
+      <div>
+            <span ng-if="option.valueUri != undefined"
+                class='controlledTerm fa fa-share-alt-square fa-rotate-90'></span>&nbsp;
+        <span ng-bind-html="option.value | highlight: $select.search"></span>&nbsp;
+        <span ng-if="option.valueUri != undefined">({{$root.cts.getAcronymFromTermUri(option.valueUri)}})</span>&nbsp;
+        <small ng-if="option.score != undefined">(<span>{{calculateUIScore(option.score)}}</span>)</small>
+        &nbsp;
+        <!--<small ng-if="option.type!=undefined"><span>{{getRecommendationType(option.type)}}</span></small>-->
+      </div>
+    </ui-select-choices>
+  </ui-select>
+</div>

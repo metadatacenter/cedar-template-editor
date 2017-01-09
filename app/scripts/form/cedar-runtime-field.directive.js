@@ -578,11 +578,11 @@ define([
        *
        */
 
-      // Checking each field to see if required, will trigger flag for use to see there is required fields
-      var field = DataManipulationService.getFieldSchema($scope.field);
-      if (field._valueConstraints && field._valueConstraints.requiredValue) {
-        $scope.$emit('formHasRequiredfield._uis');
-      }
+      //// Checking each field to see if required, will trigger flag for use to see there is required fields
+      ////var field = DataManipulationService.getFieldSchema($scope.field);
+      //if ($scope.hasValueConstraint() && $scope.isRequired()) {
+      //  $scope.$emit('formHasRequiredfield._uis');
+      //}
 
 
       // Used just for text fields whose values have been constrained using controlled terms
@@ -602,91 +602,7 @@ define([
 
       }, true);
 
-      // If selectedByDefault is false, it is removed from the model
-      $scope.cleanSelectedByDefault = function (index) {
-        if (field._valueConstraints.literals[index].selectedByDefault == false) {
-          delete field._valueConstraints.literals[index].selectedByDefault;
-        }
-      }
 
-      // Sets the default options for the 'radio' button based on the options selected at the UI
-      $scope.radioModelToDefaultOptions = function (index) {
-        for (var i = 0; i < field._valueConstraints.literals.length; i++) {
-          if (i != index) {
-            delete field._valueConstraints.literals[i].selectedByDefault;
-          }
-        }
-      }
-
-      // Sets UI selections based on the default options
-      $scope.defaultOptionsToUI = function () {
-        if (field._ui.inputType == 'checkbox') {
-          $scope.optionsUI = {};
-          for (var i = 0; i < field._valueConstraints.literals.length; i++) {
-            var literal = field._valueConstraints.literals[i];
-            if (literal.selectedByDefault == true) {
-              $scope.optionsUI[literal.label] = true;
-            }
-            else {
-              $scope.optionsUI[literal.label] = false;
-            }
-          }
-        }
-        else if (field._ui.inputType == 'radio') {
-          $scope.optionsUI = {option: null};
-          for (var i = 0; i < field._valueConstraints.literals.length; i++) {
-            var literal = field._valueConstraints.literals[i];
-            if (literal.selectedByDefault == true) {
-              $scope.optionsUI.option = literal.label;
-            }
-          }
-        }
-        else if (field._ui.inputType == 'list') {
-          // We use an object here instead of a primitive to ensure two-way data binding with the UI element (ng-model)
-          $scope.optionsUI = {options: []};
-          for (var i = 0; i < field._valueConstraints.literals.length; i++) {
-            var literal = field._valueConstraints.literals[i];
-            if (literal.selectedByDefault == true) {
-              $scope.optionsUI.options.push(literal.label);
-            }
-          }
-        }
-      }
-
-      // Sets the instance @value fields based on the options selected at the UI
-      $scope.updateModelFromUI = function () {
-        if (!$scope.model || !$rootScope.isArray($scope.model)) {
-          $scope.model = [];
-        }
-        else {
-          // Remove all elements from the 'model' array. Note that using $scope.model = []
-          // is dangerous because we have references to the original array
-          $scope.model.splice(0, $scope.model.length);
-        }
-        if (field._ui.inputType == 'checkbox') {
-          for (var option in $scope.optionsUI) {
-            if ($scope.optionsUI[option] == true) {
-              $scope.model.push({'@value': option});
-            }
-          }
-        }
-        else if (field._ui.inputType == 'radio') {
-          // If 'updateModelFromUI' was invoked from the UI (option is not null)
-          if ($scope.optionsUI.option != null) {
-            $scope.model.push({'@value': $scope.optionsUI.option});
-          }
-        }
-        else if (field._ui.inputType == 'list') {
-          // Update model
-          for (var i = 0; i < $scope.optionsUI.options.length; i++) {
-            $scope.model.push({'@value': $scope.optionsUI.options[i]});
-          }
-        }
-        // Default value
-        if ($scope.model.length == 0) {
-          $scope.model.push({'@value': null});
-        }
-      }
 
       // Updates the model for fields whose values have been constrained using controlled terms
       $scope.updateModelFromUIControlledField = function () {
@@ -716,30 +632,7 @@ define([
         }
       }
 
-      // Set the UI with the values (@value) from the model
-      $scope.updateUIFromModel = function () {
-        if (field._ui.inputType == 'checkbox') {
-          $scope.optionsUI = {};
-          for (var item in $scope.model) {
-            var valueLabel = $scope.model[item]['@value'];
-            $scope.optionsUI[valueLabel] = true;
-          }
-        }
-        else if (field._ui.inputType == 'radio') {
-          $scope.optionsUI = {option: null};
-          // Note that for this element only one selected option is possible
-          if ($scope.model[0]['@value'] != null) {
-            $scope.optionsUI.option = $scope.model[0]['@value'];
-          }
-        }
-        else if (field._ui.inputType == 'list') {
-          $scope.optionsUI = {options: []};
-          for (var item in $scope.model) {
-            var valueLabel = $scope.model[item]['@value'];
-            $scope.optionsUI.options.push(valueLabel);
-          }
-        }
-      }
+
       $scope.updateUIFromModelControlledField = function () {
 
         if ($rootScope.isArray($scope.model)) {
@@ -760,27 +653,8 @@ define([
             label: $scope.model._valueLabel
           };
         }
-      }
+      };
 
-      // Initializes model for selection fields (checkbox, radio and list).
-      $scope.initializeSelectionField = function () {
-        if ($scope.directory == "render") {
-          if ((field._ui.inputType == 'checkbox')
-              || (field._ui.inputType == 'radio')
-              || (field._ui.inputType == 'list')) {
-            // If we are populating a template, we need to initialize the model with the default values (if they exist)
-            // Note that $scope.isEditData = false means that we are populating the template
-            if ($scope.isEditData == null || $scope.isEditData == false) {
-              $scope.defaultOptionsToUI();
-              $scope.updateModelFromUI();
-            }
-            // If we are editing an instance we need to load the values stored into the model
-            else {
-              $scope.updateUIFromModel();
-            }
-          }
-        }
-      }
 
       // Initializes model for fields constrained using controlled terms
       $scope.initializeControlledField = function () {
@@ -797,37 +671,14 @@ define([
           }
         }
 
-      }
+      };
 
-      // Sets the default @value for non-selection fields (i.e., text, paragraph, date, email, numeric, phone)
-      $scope.setDefaultValueIfEmpty = function (m) {
-        if ($rootScope.isRuntime()) {
-          if (!$rootScope.isArray(m)) {
-            if (!m) {
-              m = {};
-            }
-            if (m.hasOwnProperty('@value')) {
-              // If empty string
-              if ((m['@value'] != null) && (m['@value'].length == 0)) {
-                m['@value'] = null;
-              }
-            }
-            else {
-              m['@value'] = null;
-            }
-          }
-          else {
-            for (var i = 0; i < m.length; i++) {
-              $scope.setDefaultValueIfEmpty(m[i]);
-            }
-          }
-        }
-      }
 
       // Load values when opening an instance
       if ($scope.model) {
         $scope.modelValueRecommendation = {'@value': {'value': $scope.model['@value']}}
       }
+
 
       $scope.updateModelWhenChangeSelection = function (modelvr) {
         console.log('updateModelWhenChangeSelection');
@@ -852,6 +703,7 @@ define([
         }
         console.log($scope.model);
       };
+
 
       $scope.initializeValueRecommendationField = function () {
         console.log('initializeValueRecommendationField');
@@ -928,200 +780,6 @@ define([
         }
       };
 
-      // Updates the search using the selected value
-      $scope.updateSearch = function (select) {
-        if (select.selected.value) {
-          select.search = select.selected.value;
-        }
-      };
-
-      $scope.addedFields = new Map();
-      $scope.addedFieldKeys = [];
-
-      /**
-       * build a map with the added field controlled term id as the key and the details for that class as the value
-       */
-      $scope.setAddedFieldMap = function () {
-
-
-        var fields = DataManipulationService.getFieldControlledTerms($scope.field);
-
-        if (fields) {
-
-          // create a new map to avoid any duplicates coming from the modal
-          var myMap = new Map();
-
-          // move the keys into the new map
-          for (var i = 0; i < fields.length; i++) {
-            var key = fields[i];
-            if (myMap.has(key)) {
-
-              // here is a duplicate, so delete it
-              DataManipulationService.deleteFieldControlledTerm(key, $scope.field);
-            } else {
-              myMap.set(key, "");
-            }
-          }
-
-          // copy over any responses from the old map
-          myMap.forEach(function (value, key) {
-
-            if ($scope.addedFields.has(key)) {
-              myMap.set(key, $scope.addedFields.get(key));
-            }
-          }, myMap);
-
-
-          // get any missing responses
-          myMap.forEach(function (value, key) {
-            if (myMap.get(key) == "") {
-              setResponse(key, DataManipulationService.parseOntologyName(key),
-                  DataManipulationService.parseClassLabel(key));
-            }
-          }, myMap);
-
-
-          // fill up the key array
-          $scope.addedFieldKeys = [];
-          myMap.forEach(function (value, key) {
-            $scope.addedFieldKeys.push(key);
-          }, myMap);
-
-          // hang on to the new map
-          $scope.addedFields = myMap;
-
-        }
-        else {
-          // If there are no controlled terms for the field type defined in the model, the map will be empty
-          $scope.addedFields = new Map();
-          $scope.addedFieldKeys = [];
-        }
-      };
-
-
-      /**
-       * get the class details from the server.
-       * @param item
-       * @param ontologyName
-       * @param className
-       */
-      var setResponse = function (item, ontologyName, className) {
-
-        // Get selected class details from the links.self endpoint provided.
-        controlledTermDataService.getClassById(ontologyName, className).then(function (response) {
-          $scope.addedFields.set(item, response);
-        });
-      };
-
-      /**
-       * get the ontology name from the addedFields map
-       * @param item
-       * @returns {string}
-       */
-      $scope.getOntologyName = function (item) {
-        var result = "";
-        if ($scope.addedFields && $scope.addedFields.has(item)) {
-          result = $scope.addedFields.get(item).ontology;
-        }
-        return result;
-      };
-
-      /**
-       * get the class description from the addedFields map
-       * @param item
-       * @returns {string}
-       */
-      $scope.getPrefLabel = function (item) {
-        var result = "";
-        if ($scope.addedFields && $scope.addedFields.has(item)) {
-          result = $scope.addedFields.get(item).prefLabel;
-        }
-        return result;
-      };
-
-      $scope.showModal = function (id) {
-        jQuery("#" + id).modal('show');
-      };
-
-      /**
-       * get the class description from the the addedFields map
-       * @param item
-       * @returns {string}
-       */
-      $scope.getClassDescription = function (item) {
-        var result = "";
-        if ($scope.addedFields && $scope.addedFields.has(item)) {
-          if ($scope.addedFields.get(item).definitions && $scope.addedFields.get(item).definitions.length > 0) {
-            result = $scope.addedFields.get(item).definitions[0];
-          }
-        }
-        return result;
-      };
-
-      $scope.getClassId = function (item) {
-        var result = "";
-        if ($scope.addedFields && $scope.addedFields.has(item)) {
-          if ($scope.addedFields.get(item).id) {
-            result = $scope.addedFields.get(item).id;
-          }
-        }
-        return result;
-      };
-
-
-      $scope.deleteFieldAddedItem = function (itemDataId) {
-        DataManipulationService.deleteFieldControlledTerm(itemDataId, $scope.field);
-        // adjust the map
-        $scope.setAddedFieldMap();
-      };
-
-      $scope.parseOntologyCode = function (source) {
-        return DataManipulationService.parseOntologyCode(source);
-      };
-
-      $scope.parseOntologyName = function (dataItemsId) {
-        return DataManipulationService.parseOntologyName(dataItemsId);
-      };
-
-      $scope.deleteFieldAddedBranch = function (branch) {
-        DataManipulationService.deleteFieldAddedBranch(branch, $scope.field);
-      };
-
-      $scope.deleteFieldAddedClass = function (ontologyClass) {
-        DataManipulationService.deleteFieldAddedClass(ontologyClass, $scope.field);
-      };
-
-      $scope.deleteFieldAddedOntology = function (ontology) {
-        DataManipulationService.deleteFieldAddedOntology(ontology, $scope.field);
-      };
-
-      $scope.deleteFieldAddedValueSet = function (valueSet) {
-        DataManipulationService.deleteFieldAddedValueSet(valueSet, $scope.field);
-      };
-
-      $scope.getOntologyCode = function (ontology) {
-        var ontologyDetails = controlledTermDataService.getOntologyByLdId(ontology);
-      };
-
-      //TODO this event resets modal state and closes modal
-      $scope.$on("field:controlledTermAdded", function () {
-        console.log('on field:controlledTermAdded');
-
-        jQuery("#" + $scope.getModalId(true)).modal('hide');
-        jQuery("#" + $scope.getModalId(false)).modal('hide');
-
-        // build the added fields map in this case
-        $scope.setAddedFieldMap();
-
-      });
-
-
-      $scope.getModalId = function (isField) {
-        var fieldOrValue = isField ? "field" : "values";
-        var fieldId = $scope.field['@id'] || $scope.field.items['@id'];
-        var id = fieldId.substring(fieldId.lastIndexOf('/') + 1);
-        return "control-options-" + id + "-" + fieldOrValue;
-      };
 
       /*
        *

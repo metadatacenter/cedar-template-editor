@@ -407,6 +407,7 @@ define([
         });
 
         $scope.$on('formHasRequiredFields', function (event) {
+          console.log('on formHasRequiredFields');
           $scope.form.requiredFields = true;
         });
 
