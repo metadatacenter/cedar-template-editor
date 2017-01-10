@@ -9,7 +9,7 @@
       ng-click="$root.vrs.updateValueRecommendationResults(field); setIsFirstRefresh(false); clearSearch($select)"
       close-on-select="true"
       reset-search-input="false"
-      aria-label="getDescription()">
+      aria-label="getDescription(field)">
     <ui-select-match class="selection-field" placeholder="">{{$select.selected.value}}
       <i ng-if="$select.selected.value" class="fa fa-times" aria-hidden="true"
           ng-click="clearSelection($event, $select); $root.vrs.updatePopulatedFields(field, null)"></i>

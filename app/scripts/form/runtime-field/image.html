@@ -12,7 +12,7 @@
 <!-- not editing --->
 <div ng-if="!isActive(index)" class="form-group  has-feedback value">
   <div  ng-click="setActive(index,true)"
-      aria-label="{{getDescription()}}">{{$root.schemaOf(field)._ui.title}}</div>
+      aria-label="{{getDescription(field)}}">{{$root.schemaOf(field)._ui.title}}</div>
 </div>
 
 

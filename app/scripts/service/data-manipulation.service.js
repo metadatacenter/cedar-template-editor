@@ -616,6 +616,11 @@ define([
       return field && $rootScope.schemaOf(field)._ui.inputType === 'richtext';
     };
 
+    // is this an image?
+    service.isImage = function (field) {
+      return field && $rootScope.schemaOf(field)._ui.inputType === 'image';
+    };
+
 
     service.getContent = function (fieldOrElement) {
       var schema = $rootScope.schemaOf(fieldOrElement);

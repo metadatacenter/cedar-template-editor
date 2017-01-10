@@ -522,7 +522,6 @@ define([
         $scope.nextChild = function (fieldOrElement) {
 
           var id = DataManipulationService.getId(fieldOrElement);
-          console.log('get nextChild of ' + id);
           var selectedKey;
           var props = $scope.form.properties;
 
@@ -535,7 +534,6 @@ define([
           });
 
           if (selectedKey) {
-            console.log(selectedKey);
             var idx = $scope.form._ui.order.indexOf(selectedKey);
 
             idx += 1;
@@ -543,7 +541,6 @@ define([
             while (idx < $scope.form._ui.order.length && !found) {
               var nextKey = $scope.form._ui.order[idx];
               var next = props[nextKey];
-              console.log(next);
               found = !$scope.isStaticField(next);
               idx += 1;
             }

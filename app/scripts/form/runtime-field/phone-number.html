@@ -6,7 +6,7 @@
       class="form-control isActive select"
       ng-class="{'required': isRequired()}"
       placeholder="{{isActive(index) ? 'enter answer' : ''}}"
-      aria-label="{{getDescription()}}"
+      aria-label="{{getDescription(field)}}"
       ng-model-options="{allowInvalid:true}"
       validate-on="blur"
       ng-pattern="/([0-9\s\-]{7,})(?:\s*(?:#|x\.?|ext\.?|extension)\s*(\d+))?$/"
@@ -21,7 +21,7 @@
   <div
       ng-click="setActive(index,true)"
       class="isInactive"
-      aria-label="{{getDescription()}}">{{valueElement['@value']}}</div>
+      aria-label="{{getDescription(field)}}">{{valueElement['@value']}}</div>
 </div>
 
 

@@ -25,15 +25,19 @@ define([
       $scope.directory = 'runtime';
       $scope.midnight = $translate.instant('GENERIC.midnight');
       $scope.uuid = DataManipulationService.generateTempGUID();
+      $scope.data = {
+        model: null
+      };
+
 
       // get the field title
-      $scope.getTitle = function () {
-        return DataManipulationService.getTitle($scope.field);
+      $scope.getTitle = function (field) {
+        return DataManipulationService.getTitle(field);
       };
 
       // get the field description
-      $scope.getDescription = function () {
-        return DataManipulationService.getDescription($scope.field);
+      $scope.getDescription = function (field) {
+        return DataManipulationService.getDescription(field);
       };
 
       // get the field id?
@@ -112,6 +116,11 @@ define([
       // is this richText?
       $scope.isRichText = function (field) {
         return DataManipulationService.isRichText(field);
+      };
+
+      // is this a static image?
+      $scope.isImage = function (field) {
+        return DataManipulationService.isImage(field);
       };
 
       // is the previous field static?
@@ -377,12 +386,54 @@ define([
       };
       $scope.setValueArray();
 
-      $scope.getValueSelection = function (value) {
-        if (value) {
-          return value['@value'];
+      // handle the multiple option list by using data.model for its model
+      $scope.initMultiple = function () {
+
+        $scope.data.model = [];
+        if ($scope.model[0] && Array.isArray($scope.model[0])) {
+
+          for (var i = 0; i < $scope.model[0].length; i++) {
+            $scope.data.model.push($scope.model[0][i]['@value']);
+          }
+        }
+
+      };
+
+      // put the multiple selections into our model
+      $scope.updateMultiple = function () {
+
+        $scope.model[0] = [];
+
+        for (var i = 0; i < $scope.data.model.length; i++) {
+          var obj = {};
+          obj["@value"] = $scope.data.model[i];
+          $scope.model[0].push(obj);
         }
       };
 
+      // get the printable list of selections
+      $scope.getMultiple = function () {
+        var result = '';
+
+        var value = $scope.model[0];
+
+        if (Array.isArray(value)) {
+          for (var i = 0; i < value.length; i++) {
+
+            result += value[i]['@value'];
+            if (i < value.length - 1) {
+              result += ', ';
+            }
+          }
+
+        } else {
+          result = value;
+        }
+
+        return result;
+      };
+
+      
       $scope.isRecommended = function () {
         return $rootScope.vrs.getIsValueRecommendationEnabled($rootScope.schemaOf($scope.field));
       };
@@ -500,7 +551,7 @@ define([
             $rootScope.schemaOf($scope.field)._valueConstraints.requiredValue && allRequiredFieldsAreFilledIn) {
           //remove from emptyRequiredField array
           $scope.$emit('emptyRequiredField',
-              ['remove', $scope.getTitle(), $scope.uuid]);
+              ['remove', $scope.getTitle($scope.field), $scope.uuid]);
         }
 
 
@@ -567,7 +618,7 @@ define([
 
         var id = DataManipulationService.getId($scope.field);
         var title = DataManipulationService.getTitle($scope.field);
-        var action =  ($scope.isEditState() && !$scope.canDeselect($scope.field)) ? 'add' : 'remove';
+        var action = ($scope.isEditState() && !$scope.canDeselect($scope.field)) ? 'add' : 'remove';
 
         $scope.$emit("invalidFieldState", [action, title, id]);
 

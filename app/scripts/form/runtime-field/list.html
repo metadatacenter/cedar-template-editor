@@ -1,12 +1,14 @@
 <div class="form-group has-feedback" ng-click="setActive(index)">
 
-  <select ng-if="isActive(index) && isMultipleChoice()"
+
+  <select ng-if="isActive(index) && isMultipleChoice()"  ng-init="initMultiple()"
       ng-click="setActive(index)"
       class="form-control select "
       multiple="true"
       field="field"
       title="Please select multiple"
-      ng-model="valueElement[0]['@value']"
+      ng-change="updateMultiple(valueElement[0])"
+      ng-model="data.model"
       select-picker="">
 
     <option ng-keypress="isSubmit($event, index)" ng-click="setActive(index,true)" ng-repeat="(i, v) in getLiterals()"
@@ -37,10 +39,16 @@
 
 
   <!--- not active --->
-  <div ng-if="!isActive(index)" class="form-group  has-feedback value">
+  <div ng-if="!isActive(index)  && isMultipleChoice()" class="form-group  has-feedback value">
     <div
         ng-click="setActive(index,true)"
-        aria-label="{{getDescription()}}">{{getValueSelection(valueElement[index])}}</div>
+        aria-label="{{getDescription(field)}}">{{getMultiple()}}</div>
+  </div>
+
+  <div ng-if="!isActive(index)  && !isMultipleChoice()" class="form-group  has-feedback value">
+    <div
+        ng-click="setActive(index,true)"
+        aria-label="{{getDescription(field)}}">{{valueElement[0]['@value']}}</div>
   </div>
 </div>
 

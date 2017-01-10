@@ -18,7 +18,7 @@
             <div class="leader"></div>
 
             <div class="title" ng-click="addMoreInput()">
-              {{getTitle()}}
+              {{getTitle(field)}}
             </div>
           </div>
         </div>
@@ -35,7 +35,7 @@
             <div ng-click="setActive(index, true)" class="title " ng-mouseenter="hover=true"
                 ng-mouseleave="hover=false">
 
-              <span ng-if="isMultipleCardinality()" style="font-size:smaller">{{index+1}}.</span>{{getTitle()}}
+              <span ng-if="isMultipleCardinality()" style="font-size:smaller">{{index+1}}.</span>{{getTitle(field)}}
             </div>
 
           </div>
@@ -66,8 +66,8 @@
                 <i class="fa fa-remove "></i>
               </button>
 
-              <button ng-if="getDescription().length > 0" type="button" class=" question  pull-right"
-                  tooltip="{{getDescription() || 'help'}}"
+              <button ng-if="getDescription(field).length > 0" type="button" class=" question  pull-right"
+                  tooltip="{{getDescription(field) || 'help'}}"
                   tooltip-trigger
                   tooltip-animation="true"
                   tooltip-placement="top"
@@ -91,14 +91,24 @@
             <div class="col-xs-12 col-sm-12">
               <div ng-click="setActive(index, true)" class="title ">
                 <span ng-if="isMultipleCardinality()" class="count">{{index+1}}.</span>
-                {{getTitle()}}
+                {{getTitle(field)}}
               </div>
-                <div ng-if="isPreviousStatic()  && isRichText(previous)" ng-bind-html="$root.getUnescapedContent(previous)"></div>
-                <div ng-if="isPreviousStatic()  && isYouTube(previous)">
+              <div ng-if="isPreviousStatic()" >
+
+              <div ng-if="isImage(previous)" >
+                <figure>
+                  <img ng-src="{{getContent(previous)}}" no-image alt="{{getTitle(previous)}}"
+                      type="image/png" width="100%"/>
+                  <figcaption><label>{{getTitle(previous)}}</label></figcaption>
+                </figure>
+              </div>
+                <div ng-if="isRichText(previous)" ng-bind-html="$root.getUnescapedContent(previous)"></div>
+                <div ng-if="isYouTube(previous)">
                 <figure>
                   <div fit-vids ng-bind-html="getYouTubeEmbedFrame(previous)"></div>
                 </figure>
                 </div>
+              </div>
             </div>
           </div>
 
