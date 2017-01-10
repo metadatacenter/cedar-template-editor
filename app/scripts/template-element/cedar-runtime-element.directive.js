@@ -336,9 +336,15 @@ define([
 
         // only look at first level elements
         if (id === scope.getId() && path === '0' ) {
+          console.log('on nextSibling of parent');
 
           var parent = $rootScope.rootElement;
+          console.log(parent);
           var next = DataManipulationService.nextSibling(scope.element, parent);
+
+
+          console.log(next);
+
 
           if (next) {
             $rootScope.$broadcast("setActive", [DataManipulationService.getId(next), 0, '0', true]);

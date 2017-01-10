@@ -52,7 +52,7 @@ define([
 
       // what is the content
       $scope.getContent = function (field) {
-        return DataManipulationService.getContent($scope.field);
+        return DataManipulationService.getContent(field);
       };
 
       // does this field have a value constraint?
@@ -249,40 +249,53 @@ define([
 
       // set this field and index active
       $scope.setActive = function (index, value) {
+        console.log('setActive' + value);
+
 
         // off or on
         var active = (typeof value === "undefined") ? true : value;
         var locator = $scope.getLocator(index);
 
-        // if zero cardinality,  add a new item
-        if ($scope.isMultipleCardinality() && $scope.model.length <= 0) {
-          $scope.addMoreInput();
-        }
+        if (active != DataManipulationService.isActive(locator)) {
 
-        // set it active or inactive
-        DataManipulationService.setActive($scope.field, index, $scope.path, active);
 
-        if (active) {
+          // if zero cardinality,  add a new item
+          if ($scope.isMultipleCardinality() && $scope.model.length <= 0) {
+            $scope.addMoreInput();
+          }
 
-          // scroll it into the center of the screen and listen for shift-enter
-          $scope.scrollTo(locator, ' .select');
-          $document.unbind('keypress');
-          $document.bind('keypress', function (e) {
-            $scope.isSubmit(e);
-          });
+          // set it active or inactive
+          DataManipulationService.setActive($scope.field, index, $scope.path, active);
 
-        } else {
-          jQuery("#" + locator).blur();
+          if (active) {
+
+            // scroll it into the center of the screen and listen for shift-enter
+            $scope.scrollToLocator(locator, ' .select');
+            $document.unbind('keypress');
+            $document.bind('keypress', function (e) {
+              $scope.isSubmit(e);
+            });
+
+          } else {
+            // set blur and force a redraw
+            jQuery("#" + locator).blur();
+            $scope.$apply();
+          }
         }
       };
 
       // scroll within the template to the field with the locator, focus and select the tag
-      $scope.scrollTo = function (locator, tag) {
+      $scope.scrollToLocator = function (locator, tag) {
+        //console.log('scrollToLocator ' + locator + ' ' + tag);
+
 
         var target = angular.element('#' + locator);
         if (target && target.offset()) {
 
           $scope.setHeight = function () {
+
+            // apply any changes first before examining dom elements
+            $scope.$apply();
 
             var window = angular.element($window);
             var windowHeight = $(window).height();
@@ -292,7 +305,7 @@ define([
             var newTop = scrollTop + targetTop - ( windowHeight - targetHeight ) / 2;
 
             //console.log('locator ' + locator + ' newTop ' + newTop + ' scrollTop ' + scrollTop + ' targetHeight ' + targetHeight + ' targetTop ' + targetTop + ' windowHeight ' + windowHeight);
-            //console.log($("#" + locator).offset());
+
 
             jQuery('.template-container').animate({scrollTop: newTop}, 'fast');
 
@@ -307,7 +320,7 @@ define([
               }
             }
           };
-          $timeout($scope.setHeight, 100);
+          $timeout($scope.setHeight, 0);
         }
       };
 
@@ -354,7 +367,7 @@ define([
       // is this a submit?  shift-enter qualifies as a submit for any field
       $scope.isSubmit = function (keyEvent, index) {
 
-        if (keyEvent.which === 13 && keyEvent.shiftKey) {
+        if (keyEvent.which === 13 && keyEvent.ctrlKey) {
           $scope.onSubmit(index);
         }
       };
@@ -433,7 +446,7 @@ define([
         return result;
       };
 
-      
+
       $scope.isRecommended = function () {
         return $rootScope.vrs.getIsValueRecommendationEnabled($rootScope.schemaOf($scope.field));
       };

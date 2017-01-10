@@ -94,19 +94,18 @@
                 {{getTitle(field)}}
               </div>
               <div ng-if="isPreviousStatic()" >
-
-              <div ng-if="isImage(previous)" >
-                <figure>
-                  <img ng-src="{{getContent(previous)}}" no-image alt="{{getTitle(previous)}}"
+                <div ng-if="isImage(previous)" >
+                 <figure>
+                    <img ng-src="{{getContent(previous)}}" no-image alt="{{getTitle(previous)}}"
                       type="image/png" width="100%"/>
-                  <figcaption><label>{{getTitle(previous)}}</label></figcaption>
-                </figure>
-              </div>
+                    <figcaption><label>{{getTitle(previous)}}</label></figcaption>
+                  </figure>
+                 </div>
                 <div ng-if="isRichText(previous)" ng-bind-html="$root.getUnescapedContent(previous)"></div>
                 <div ng-if="isYouTube(previous)">
-                <figure>
-                  <div fit-vids ng-bind-html="getYouTubeEmbedFrame(previous)"></div>
-                </figure>
+                  <figure>
+                    <div fit-vids ng-bind-html="getYouTubeEmbedFrame(previous)"></div>
+                  </figure>
                 </div>
               </div>
             </div>
@@ -117,7 +116,7 @@
               <form name="field-edit-form-{{index}}" ng-submit="onSubmit(index)">
                 <div class="originalContent" ng-include="getFieldUrl()"></div>
                 <button type="submit" class="btn btn-save confirm active" translate>GENERIC.Ok</button>
-                <label class="submit-info"> or Shift-Enter</label>
+                <label class="submit-info" translate>GENERIC.Submit</label>
               </form>
             </div>
           </div>

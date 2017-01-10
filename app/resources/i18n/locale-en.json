@@ -103,7 +103,8 @@
     "canRead": "can read",
     "canWrite": "can write",
     "isOwner": "owner",
-    "midnight": "12:00 AM"
+    "midnight": "12:00 AM",
+    "Submit": "or Ctrl-Enter"
   },
   "SERVER": {
     "FOLDER": {

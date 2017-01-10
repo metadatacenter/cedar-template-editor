@@ -621,12 +621,10 @@ define([
       return field && $rootScope.schemaOf(field)._ui.inputType === 'image';
     };
 
-
     service.getContent = function (fieldOrElement) {
       var schema = $rootScope.schemaOf(fieldOrElement);
-      return schema['_content'];
+      return schema.properties['_content'];
     };
-
 
     service.getTitle = function (fieldOrElement) {
       return service.getFieldSchema(fieldOrElement)._ui.title;

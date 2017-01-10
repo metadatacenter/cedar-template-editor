@@ -113,6 +113,7 @@ define([
           return;
         }
 
+        console.log('broadcast for nextSibling of parent' + DataManipulationService.getId(scope.$parent.element));
         // look for the next sibling of the parent
         $rootScope.$broadcast("nextSibling",
             [DataManipulationService.getId(scope.$parent.element), parentIndex, parentPath, true]);
@@ -124,6 +125,7 @@ define([
         var index = args[1];
         var path = args[2];
         var value = args[3];
+
 
 
 

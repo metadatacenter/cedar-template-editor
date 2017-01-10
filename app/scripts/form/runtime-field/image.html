@@ -2,9 +2,9 @@
 <!-- actively editing the field --->
 <div ng-if="isActive(index)" >
   <figure>
-    <img ng-src="{{$root.propertiesOf(field)._content}}" no-image alt="{{$root.schemaOf(field)._ui.title}}"
-        type="image/png" width="100%"/>
-    <figcaption><label>{{$root.schemaOf(field)._ui.title}}</label></figcaption>
+    <img ng-src="{{getContent(field)}}" no-image alt="{{getTitle(field)}}"
+        type="image/png" />
+    <figcaption><label>{{getTitle(field)}}</label></figcaption>
   </figure>
 
 </div>
