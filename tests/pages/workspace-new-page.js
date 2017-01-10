@@ -324,7 +324,6 @@ var WorkspacePage = function () {
     var link = folder.element(by.tagName('a'));
     browser.wait(EC.elementToBeClickable(link));
     link.click();
-    browser.sleep(3000);
 
   };
 

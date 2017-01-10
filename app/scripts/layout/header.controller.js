@@ -22,6 +22,7 @@ define([
     vm.path = $location.path();
 
     vm.confirmBack = function () {
+      console.log('confirmBack');
 
       if (!$rootScope.isDirty()) {
 
@@ -126,13 +127,15 @@ define([
 
     $rootScope.$on('$locationChangeStart', function (event, next, current) {
 
+   
+
       vm.path = $location.path();
       $rootScope.setHeader();
 
       if ($rootScope.isDirty()) {
 
         event.preventDefault();
-        vm.confirmBack();
+        //vm.confirmBack();
 
         $timeout(function () {
 

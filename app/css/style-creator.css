@@ -9161,6 +9161,9 @@ button {
   height: 80px;
   border: none;
 }
+.navbar.metadata {
+  height: 50px;
+}
 .navbar #page-title {
   float: right;
   font-size: 20px;
@@ -9184,7 +9187,7 @@ button {
 .navbar .search-input {
   color: black;
   font-size: 16px;
-  margin-top: 12px;
+  margin-top: 0px;
 }
 .navbar .do-search {
   position: absolute;
@@ -9214,7 +9217,7 @@ button {
   background-repeat: no-repeat;
   width: 140px;
   background-size: 140px;
-  margin-top: 20px;
+  margin-top: 5px;
   margin-left: 0;
   font: 0/0 a;
   color: transparent;
@@ -9230,8 +9233,7 @@ button {
   }
 }
 .navbar .navbar-back {
-  height: 80px;
-  margin-top: 10px;
+  margin-top: 5px;
   margin-left: 10px;
 }
 .navbar .navbar-back .back-arrow {
@@ -9351,13 +9353,13 @@ button {
   background-color: #ffffff;
 }
 .navbar.metadata {
-  background-color: #34626B;
+  background-color: black;
 }
 #angular-views-entry {
   position: relative;
-  top: 80px;
+  top: 50px;
   width: 100%;
-  height: calc(100% - 80px);
+  height: calc(100% - 50px);
 }
 .controls-bar {
   padding: 10px 5px 0 5px;
@@ -10552,6 +10554,9 @@ body.search-browse-modal a.navbar-brand {
 .template-body {
   padding: 0 0 30px 0;
 }
+.template-body.metadata {
+  height: 100%;
+}
 .template-body .right-body {
   padding-top: 30px;
 }
@@ -11196,18 +11201,18 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
 === Form Template Fields
 ================================================
 */
-.template-body form .form-group,
+.template-body form .build .form-group,
 #element_control_term .form-group {
   margin-bottom: 5px;
   min-height: 1em;
 }
-.template-body form .form-group.radio-item,
+.template-body form .build .form-group.radio-item,
 #element_control_term .form-group.radio-item,
-.template-body form .form-group.checkbox-item,
+.template-body form .build .form-group.checkbox-item,
 #element_control_term .form-group.checkbox-item {
   margin-bottom: 10px;
 }
-.template-body form .form-group .form-control,
+.template-body form .build .form-group .form-control,
 #element_control_term .form-group .form-control {
   border-radius: 0;
   border-color: #ddd;
@@ -11221,96 +11226,96 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
           transition: border-color 0.3s linear;
   background: #fff;
 }
-.template-body form .form-group .form-control.empty ~ .floating-label,
+.template-body form .build .form-group .form-control.empty ~ .floating-label,
 #element_control_term .form-group .form-control.empty ~ .floating-label {
   top: 10px;
   color: #5795ba;
 }
-.template-body form .form-group .form-control:focus ~ .floating-label,
+.template-body form .build .form-group .form-control:focus ~ .floating-label,
 #element_control_term .form-group .form-control:focus ~ .floating-label,
-.template-body form .form-group .form-control:not(.empty) ~ .floating-label,
+.template-body form .build .form-group .form-control:not(.empty) ~ .floating-label,
 #element_control_term .form-group .form-control:not(.empty) ~ .floating-label,
-.template-body form .form-group .form-control.ng-invalid ~ .floating-label,
+.template-body form .build .form-group .form-control.ng-invalid ~ .floating-label,
 #element_control_term .form-group .form-control.ng-invalid ~ .floating-label {
   top: 4px;
   left: 8px;
   color: #bcbcc3;
 }
-.template-body form .form-group .form-control:not(.empty):not(:focus):not(.ng-invalid) ~ .floating-label,
+.template-body form .build .form-group .form-control:not(.empty):not(:focus):not(.ng-invalid) ~ .floating-label,
 #element_control_term .form-group .form-control:not(.empty):not(:focus):not(.ng-invalid) ~ .floating-label {
   color: #5795ba;
 }
-.template-body form .form-group .form-control:not(.empty):not(:focus):not(.ng-invalid) ~ .floating-label:after,
+.template-body form .build .form-group .form-control:not(.empty):not(:focus):not(.ng-invalid) ~ .floating-label:after,
 #element_control_term .form-group .form-control:not(.empty):not(:focus):not(.ng-invalid) ~ .floating-label:after {
   color: #5795ba;
 }
-.template-body form .form-group .form-control.ng-invalid:not(.empty):not(:focus) ~ .floating-label,
+.template-body form .build .form-group .form-control.ng-invalid:not(.empty):not(:focus) ~ .floating-label,
 #element_control_term .form-group .form-control.ng-invalid:not(.empty):not(:focus) ~ .floating-label {
   color: #dfbd00;
 }
-.template-body form .form-group .form-control.ng-invalid:not(.empty):not(:focus) ~ .floating-label:after,
+.template-body form .build .form-group .form-control.ng-invalid:not(.empty):not(:focus) ~ .floating-label:after,
 #element_control_term .form-group .form-control.ng-invalid:not(.empty):not(:focus) ~ .floating-label:after {
   color: #dfbd00;
 }
-.template-body form .form-group .form-control.required ~ .floating-label:after,
+.template-body form .build .form-group .form-control.required ~ .floating-label:after,
 #element_control_term .form-group .form-control.required ~ .floating-label:after {
   content: '*';
   color: red;
 }
-.template-body form .form-group textarea.form-control,
+.template-body form .build .form-group textarea.form-control,
 #element_control_term .form-group textarea.form-control {
   height: auto;
 }
-.template-body form .form-group input[type=number]::-webkit-inner-spin-button,
+.template-body form .build .form-group input[type=number]::-webkit-inner-spin-button,
 #element_control_term .form-group input[type=number]::-webkit-inner-spin-button,
-.template-body form .form-group input[type=number]::-webkit-outer-spin-button,
+.template-body form .build .form-group input[type=number]::-webkit-outer-spin-button,
 #element_control_term .form-group input[type=number]::-webkit-outer-spin-button {
   -webkit-appearance: none;
   margin: 0px;
 }
-.template-body form .form-group .input-indicator-icons,
+.template-body form .build .form-group .input-indicator-icons,
 #element_control_term .form-group .input-indicator-icons {
   position: absolute;
   top: 10px;
   right: 10px;
 }
-.template-body form .form-group .input-indicator-icons .cedar-svg-check-circle,
+.template-body form .build .form-group .input-indicator-icons .cedar-svg-check-circle,
 #element_control_term .form-group .input-indicator-icons .cedar-svg-check-circle {
   color: #5795ba;
   display: none;
 }
-.template-body form .form-group .input-indicator-icons .cedar-svg-help-circle,
+.template-body form .build .form-group .input-indicator-icons .cedar-svg-help-circle,
 #element_control_term .form-group .input-indicator-icons .cedar-svg-help-circle {
   color: rgba(51, 51, 51, 0.24);
   display: none;
   cursor: pointer;
 }
-.template-body form .form-group .input-indicator-icons .cedar-svg-warning,
+.template-body form .build .form-group .input-indicator-icons .cedar-svg-warning,
 #element_control_term .form-group .input-indicator-icons .cedar-svg-warning {
   color: #dfbd00;
   display: none;
 }
-.template-body form .form-group .empty.ng-invalid ~ .input-indicator-icons .cedar-svg-help-circle,
+.template-body form .build .form-group .empty.ng-invalid ~ .input-indicator-icons .cedar-svg-help-circle,
 #element_control_term .form-group .empty.ng-invalid ~ .input-indicator-icons .cedar-svg-help-circle {
   display: none;
   margin-top: -7px;
 }
-.template-body form .form-group .empty ~ .input-indicator-icons .cedar-svg-help-circle,
+.template-body form .build .form-group .empty ~ .input-indicator-icons .cedar-svg-help-circle,
 #element_control_term .form-group .empty ~ .input-indicator-icons .cedar-svg-help-circle {
   display: block;
   margin-top: -7px;
 }
-.template-body form .form-group .ng-valid:not(.empty) ~ .input-indicator-icons .cedar-svg-check-circle,
+.template-body form .build .form-group .ng-valid:not(.empty) ~ .input-indicator-icons .cedar-svg-check-circle,
 #element_control_term .form-group .ng-valid:not(.empty) ~ .input-indicator-icons .cedar-svg-check-circle {
   display: block;
   margin-top: -7px;
 }
-.template-body form .form-group .ng-invalid ~ .input-indicator-icons .cedar-svg-warning,
+.template-body form .build .form-group .ng-invalid ~ .input-indicator-icons .cedar-svg-warning,
 #element_control_term .form-group .ng-invalid ~ .input-indicator-icons .cedar-svg-warning {
   display: block;
   margin-top: -7px;
 }
-.template-body form .form-group .warning-text,
+.template-body form .build .form-group .warning-text,
 #element_control_term .form-group .warning-text {
   font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
   font-weight: 400;
@@ -11321,16 +11326,16 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   bottom: -25px;
   display: none;
 }
-.template-body form .form-group .ng-invalid ~ .warning-text,
+.template-body form .build .form-group .ng-invalid ~ .warning-text,
 #element_control_term .form-group .ng-invalid ~ .warning-text {
   display: block;
 }
-.template-body form .form-group .additional-options,
+.template-body form .build .form-group .additional-options,
 #element_control_term .form-group .additional-options {
   padding-top: 20px;
   padding-left: 10px;
 }
-.template-body form .form-group .additional-options span.or,
+.template-body form .build .form-group .additional-options span.or,
 #element_control_term .form-group .additional-options span.or {
   font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
   font-weight: 700;
@@ -11339,7 +11344,7 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   font-size: 11px;
   padding-right: 10px;
 }
-.template-body form .form-group .additional-options .btn-file,
+.template-body form .build .form-group .additional-options .btn-file,
 #element_control_term .form-group .additional-options .btn-file {
   position: relative;
   overflow: hidden;
@@ -11355,11 +11360,11 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   -webkit-transition: all 0.3s 0.1s;
           transition: all 0.3s 0.1s;
 }
-.template-body form .form-group .additional-options .btn-file:hover,
+.template-body form .build .form-group .additional-options .btn-file:hover,
 #element_control_term .form-group .additional-options .btn-file:hover {
   background-color: #2f7dab;
 }
-.template-body form .form-group .additional-options .btn-file input[type="file"],
+.template-body form .build .form-group .additional-options .btn-file input[type="file"],
 #element_control_term .form-group .additional-options .btn-file input[type="file"] {
   position: absolute;
   top: 0;
@@ -11375,7 +11380,7 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   cursor: inherit;
   display: block;
 }
-.template-body form .required > .extra-label-context:after,
+.template-body form .build .required > .extra-label-context:after,
 #element_control_term .required > .extra-label-context:after {
   content: '*';
   color: red;
@@ -11383,7 +11388,7 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   vertical-align: top;
   font-size: 14px;
 }
-.template-body form .date-group .date-label,
+.template-body form .build .date-group .date-label,
 #element_control_term .date-group .date-label {
   display: block;
   padding-bottom: 7px;
@@ -11394,71 +11399,71 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   font-weight: 500;
   color: #999;
 }
-.template-body form .date-group .input-group-addon,
+.template-body form .build .date-group .input-group-addon,
 #element_control_term .date-group .input-group-addon {
   padding: 2px 10px;
   border-radius: 0;
   background-color: #ffffff;
   cursor: pointer;
 }
-.template-body form .date-group .input-group-addon:hover i,
+.template-body form .build .date-group .input-group-addon:hover i,
 #element_control_term .date-group .input-group-addon:hover i {
   color: #5795ba;
 }
-.template-body form .date-group .bootstrap-datetimepicker-widget ~ .input-group-addon i,
+.template-body form .build .date-group .bootstrap-datetimepicker-widget ~ .input-group-addon i,
 #element_control_term .date-group .bootstrap-datetimepicker-widget ~ .input-group-addon i {
   color: #5795ba;
 }
-.template-body form .date-group.range:before,
+.template-body form .build .date-group.range:before,
 #element_control_term .date-group.range:before,
-.template-body form .date-group.range:after,
+.template-body form .build .date-group.range:after,
 #element_control_term .date-group.range:after {
   content: " ";
   display: table;
 }
-.template-body form .date-group.range:after,
+.template-body form .build .date-group.range:after,
 #element_control_term .date-group.range:after {
   clear: both;
 }
-.template-body form .date-group.range:before,
+.template-body form .build .date-group.range:before,
 #element_control_term .date-group.range:before,
-.template-body form .date-group.range:after,
+.template-body form .build .date-group.range:after,
 #element_control_term .date-group.range:after {
   content: " ";
   display: table;
 }
-.template-body form .date-group.range:after,
+.template-body form .build .date-group.range:after,
 #element_control_term .date-group.range:after {
   clear: both;
 }
-.template-body form .date-group.range .input-group,
+.template-body form .build .date-group.range .input-group,
 #element_control_term .date-group.range .input-group {
   padding-bottom: 10px;
   float: left;
 }
 @media (min-width: 768px) {
-  .template-body form .date-group.range .input-group,
+  .template-body form .build .date-group.range .input-group,
   #element_control_term .date-group.range .input-group {
     width: calc(50% - 10px);
   }
-  .template-body form .date-group.range .input-group:first-of-type,
+  .template-body form .build .date-group.range .input-group:first-of-type,
   #element_control_term .date-group.range .input-group:first-of-type {
     margin-right: 10px;
   }
-  .template-body form .date-group.range .input-group:last-of-type,
+  .template-body form .build .date-group.range .input-group:last-of-type,
   #element_control_term .date-group.range .input-group:last-of-type {
     margin-left: 10px;
   }
 }
-.template-body form .date-field-title,
+.template-body form .build .date-field-title,
 #element_control_term .date-field-title,
-.template-body form .extra-label-context,
+.template-body form .build .extra-label-context,
 #element_control_term .extra-label-context {
   color: #999999;
   font-size: 14px;
   margin-bottom: 8px;
 }
-.template-body form h3.section-title,
+.template-body form .build h3.section-title,
 #element_control_term h3.section-title {
   text-transform: uppercase;
   font-size: 24px;
@@ -11467,46 +11472,46 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   padding-top: 40px;
   margin-top: 0;
 }
-.template-body form h3.section-title.page-title,
+.template-body form .build h3.section-title.page-title,
 #element_control_term h3.section-title.page-title {
   border-top: none;
   padding-top: 0;
 }
-.template-body form p.section-body,
+.template-body form .build p.section-body,
 #element_control_term p.section-body {
   font-size: 16px;
   line-height: 28px;
   margin-bottom: 25px;
 }
-.template-body form .type-toggle,
+.template-body form .build .type-toggle,
 #element_control_term .type-toggle {
   text-align: center;
   margin: 0 auto;
   margin-bottom: 10px;
 }
-.template-body form .type-toggle:before,
+.template-body form .build .type-toggle:before,
 #element_control_term .type-toggle:before,
-.template-body form .type-toggle:after,
+.template-body form .build .type-toggle:after,
 #element_control_term .type-toggle:after {
   content: " ";
   display: table;
 }
-.template-body form .type-toggle:after,
+.template-body form .build .type-toggle:after,
 #element_control_term .type-toggle:after {
   clear: both;
 }
-.template-body form .type-toggle:before,
+.template-body form .build .type-toggle:before,
 #element_control_term .type-toggle:before,
-.template-body form .type-toggle:after,
+.template-body form .build .type-toggle:after,
 #element_control_term .type-toggle:after {
   content: " ";
   display: table;
 }
-.template-body form .type-toggle:after,
+.template-body form .build .type-toggle:after,
 #element_control_term .type-toggle:after {
   clear: both;
 }
-.template-body form .type-toggle .d-option,
+.template-body form .build .type-toggle .d-option,
 #element_control_term .type-toggle .d-option {
   width: 50%;
   float: left;
@@ -11517,7 +11522,7 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   -webkit-transition: all 0.3s 0.1s;
           transition: all 0.3s 0.1s;
 }
-.template-body form .type-toggle .d-option span,
+.template-body form .build .type-toggle .d-option span,
 #element_control_term .type-toggle .d-option span {
   text-transform: uppercase;
   font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
@@ -11525,26 +11530,544 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   font-size: 12px;
   color: #666;
 }
-.template-body form .type-toggle .d-option.active,
+.template-body form .build .type-toggle .d-option.active,
 #element_control_term .type-toggle .d-option.active,
-.template-body form .type-toggle .d-option:hover,
+.template-body form .build .type-toggle .d-option:hover,
 #element_control_term .type-toggle .d-option:hover {
   border-color: #5795ba;
 }
-.template-body form .type-toggle.date,
+.template-body form .build .type-toggle.date,
 #element_control_term .type-toggle.date {
   width: 240px;
 }
-.template-body form .type-toggle.list,
+.template-body form .build .type-toggle.list,
 #element_control_term .type-toggle.list {
   width: 300px;
 }
-.template-body form .required-text,
+.template-body form .build .required-text,
 #element_control_term .required-text {
   font-style: italic;
 }
-.template-body form .required-text:before,
+.template-body form .build .required-text:before,
 #element_control_term .required-text:before {
+  content: '*';
+  display: inline-block;
+  vertical-align: top;
+  color: red;
+}
+.navbar.metadata .template-container {
+  background-color: aquamarine;
+}
+/*
+================================================
+=== Runtime Form
+================================================
+*/
+.template-body form .runtime .active-container {
+  border-left: 1px solid #f0f0f0;
+  position: relative;
+  right: 0;
+  background: #f0f0f0;
+}
+.template-body form .runtime .flagpole {
+  border-left: 1px solid #eee;
+  width: 1px;
+  height: 17px;
+  position: absolute;
+  top: 0;
+  left: -1px;
+}
+.template-body form .runtime.page {
+  margin-top: 100px;
+  margin-bottom: 100px;
+  position: relative;
+  border-left: 1px solid #aaa;
+}
+.template-body form .runtime .down-tick {
+  height: 36px;
+  background-color: #aaa;
+  width: 1px;
+  position: absolute;
+  top: -40px;
+  left: 0;
+  margin: 20px 0;
+}
+.template-body form .runtime .left-tick {
+  background-color: #aaa;
+  position: relative;
+  bottom: 50%;
+  height: 1px;
+  width: 15px;
+  top: 1.2em;
+  left: -16px;
+}
+.template-body form .runtime .title {
+  font-size: 1.5em;
+  font-family: "Source Sans Pro", sans-serif;
+  font-weight: lighter;
+}
+.template-body form .runtime .value {
+  cursor: pointer;
+  font-size: 1.2em;
+  line-height: 28px;
+}
+.template-body form .runtime .leader {
+  background-color: #aaa;
+  position: relative;
+  bottom: 50%;
+  height: 1px;
+  width: 15px;
+  top: 16px;
+}
+.template-body form .runtime .leader.isActive {
+  top: 20px;
+}
+.template-body form .runtime button {
+  vertical-align: middle;
+  background-color: transparent;
+}
+.template-body form .runtime button.goaway {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+.template-body form .runtime button.expand {
+  color: #aaa;
+  font-size: 1em;
+  margin-left: -10px;
+  margin-top: 0px;
+}
+.template-body form .runtime button.xxx {
+  color: #aaa;
+  font-size: 1.6em;
+  margin-left: -12px;
+  margin-top: -1px;
+}
+.template-body form .runtime button.add {
+  color: #5795ba;
+}
+.template-body form .runtime button.remove {
+  color: #999;
+}
+.template-body form .runtime button i {
+  font-size: 20px;
+  min-width: 12px;
+}
+.template-body form .runtime button:disabled {
+  color: rgba(87, 149, 186, 0.35);
+}
+.template-body form .runtime .btn.btn-save.active {
+  margin: 50px 0;
+  background-color: #5097A5;
+  color: #ffffff;
+  font-size: 1.8em;
+  outline: none;
+}
+.template-body form .runtime .btn.btn-save.active:hover {
+  background-color: #2f7dab;
+}
+.template-body form .runtime label.submit-info {
+  font-size: 1.2em;
+  padding-left: 10px;
+  color: #5795ba;
+}
+.template-body form .runtime .field-instance {
+  padding-left: 0;
+  padding-right: 0;
+}
+.template-body form .runtime .field-instance.multiple-instance-field {
+  border: 0px solid rgba(87, 149, 186, 0.35);
+  padding-top: 0px;
+  padding-bottom: 0px;
+  margin-bottom: 0px;
+  background-color: transparent;
+}
+.template-body form .runtime .element-group {
+  width: 100%;
+  border: 0px solid #d2d2d2;
+  padding: 0px;
+  margin-bottom: 0px;
+  background-color: transparent;
+}
+.template-body form .runtime .element-group .nested-element {
+  border: 0px solid #ddd;
+  padding: 0px;
+  margin: 0;
+}
+.template-body form .runtime .element-group .nested-element .element-title {
+  margin-left: 20px;
+  margin-bottom: 0px;
+  font-size: 1.3em;
+}
+.template-body form .runtime .element-root .element.expand {
+  border-left: 1px solid #aaa;
+}
+.template-body form .runtime .field-root {
+  padding: 0px;
+  border-width: 0px;
+  margin-bottom: 0px;
+  margin-top: 0px;
+  background: transparent;
+  min-height: 10px;
+}
+.template-body form .runtime .field-root .toolbar {
+  padding-top: 12px;
+  padding-right: 22px;
+}
+.template-body form .runtime .field-root .add {
+  color: #ff8c00;
+}
+.template-body form .runtime .field-root .question {
+  color: #5795ba;
+}
+.template-body form .runtime .field-root .title {
+  color: #333;
+  font-weight: lighter;
+  font-family: "Source Sans Pro", sans-serif;
+  padding-left: 20px;
+  font-size: 1.2em;
+  cursor: pointer;
+}
+.template-body form .runtime .field-root .title .count {
+  font-size: smaller;
+}
+.template-body form .runtime .field-root .row.isActive {
+  padding-bottom: 50px;
+}
+.template-body form .runtime .field-root .row.isActive .title {
+  font-size: 2.5em;
+  padding-left: 0px;
+  color: green;
+}
+.template-body form .runtime .field-root .row.isActive .title.remove {
+  color: #999;
+  padding-left: 10px;
+  font-size: 1.5em;
+}
+.template-body form .runtime .field-root .row.isActive .title.question {
+  color: #ff8c00;
+  padding-left: 0px;
+  font-size: 1.5em;
+}
+.template-body form .runtime .field-root .row.isActive:before {
+  display: inline-block;
+  height: 100%;
+  vertical-align: middle;
+}
+.template-body form .runtime .field-root input {
+  border-width: 0px;
+  background: transparent;
+  height: 20px;
+}
+.template-body form .runtime .field-root input.isActive {
+  border: 1px dashed #888;
+  height: 50px;
+  font-size: 20px;
+}
+.template-body form .runtime .field-root select {
+  border-width: 0px;
+  background: transparent;
+  padding-top: 10px;
+}
+.template-body form .runtime .field-root select.isActive {
+  border: 1px dashed #888;
+}
+.template-body form .runtime .field-root select.isActive div.btn-group.bootstrap-select button.btn.dropdown-toggle.dropdown-toggle {
+  box-shadow: none;
+}
+.template-body form .runtime .field-root textarea {
+  border-width: 0px;
+  background: transparent;
+  padding-top: 10px;
+}
+.template-body form .runtime .field-root textarea.isActive {
+  border: 1px dashed #888;
+}
+.template-body form .runtime .form-group,
+.template-body form .runtime .input-group {
+  margin-right: 0px;
+  margin-bottom: 0px;
+}
+.template-body form .runtime .form-group.radio-item,
+.template-body form .runtime .input-group.radio-item,
+.template-body form .runtime .form-group.checkbox-item,
+.template-body form .runtime .input-group.checkbox-item {
+  margin-bottom: 10px;
+}
+.template-body form .runtime .form-group .form-control,
+.template-body form .runtime .input-group .form-control {
+  border-radius: 0;
+  box-shadow: none;
+  font-size: 16px;
+  color: #000000;
+  -webkit-transition: border-color 0.3s linear;
+          transition: border-color 0.3s linear;
+  height: 40px;
+}
+.template-body form .runtime .form-group .bootstrap-select,
+.template-body form .runtime .input-group .bootstrap-select {
+  border: 1px dashed #ccc;
+  background: transparent;
+  height: 50px;
+}
+.template-body form .runtime .form-group .bootstrap-select .btn-select-picker,
+.template-body form .runtime .input-group .bootstrap-select .btn-select-picker {
+  font-size: 1em;
+  height: 50px;
+}
+.template-body form .runtime .form-group textarea.form-control,
+.template-body form .runtime .input-group textarea.form-control {
+  height: auto;
+}
+.template-body form .runtime .form-group input[type=number]::-webkit-inner-spin-button,
+.template-body form .runtime .input-group input[type=number]::-webkit-inner-spin-button,
+.template-body form .runtime .form-group input[type=number]::-webkit-outer-spin-button,
+.template-body form .runtime .input-group input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0px;
+}
+.template-body form .runtime .form-group .input-indicator-icons,
+.template-body form .runtime .input-group .input-indicator-icons {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+.template-body form .runtime .form-group .input-indicator-icons .cedar-svg-check-circle,
+.template-body form .runtime .input-group .input-indicator-icons .cedar-svg-check-circle {
+  color: #5795ba;
+  display: none;
+}
+.template-body form .runtime .form-group .input-indicator-icons .cedar-svg-help-circle,
+.template-body form .runtime .input-group .input-indicator-icons .cedar-svg-help-circle {
+  color: rgba(51, 51, 51, 0.24);
+  display: none;
+  cursor: pointer;
+}
+.template-body form .runtime .form-group .input-indicator-icons .cedar-svg-warning,
+.template-body form .runtime .input-group .input-indicator-icons .cedar-svg-warning {
+  color: #dfbd00;
+  display: none;
+}
+.template-body form .runtime .form-group .empty.ng-invalid ~ .input-indicator-icons .cedar-svg-help-circle,
+.template-body form .runtime .input-group .empty.ng-invalid ~ .input-indicator-icons .cedar-svg-help-circle {
+  display: none;
+  margin-top: -7px;
+}
+.template-body form .runtime .form-group .empty ~ .input-indicator-icons .cedar-svg-help-circle,
+.template-body form .runtime .input-group .empty ~ .input-indicator-icons .cedar-svg-help-circle {
+  display: block;
+  margin-top: -7px;
+}
+.template-body form .runtime .form-group .ng-valid:not(.empty) ~ .input-indicator-icons .cedar-svg-check-circle,
+.template-body form .runtime .input-group .ng-valid:not(.empty) ~ .input-indicator-icons .cedar-svg-check-circle {
+  display: block;
+  margin-top: -7px;
+}
+.template-body form .runtime .form-group .ng-invalid ~ .input-indicator-icons .cedar-svg-warning,
+.template-body form .runtime .input-group .ng-invalid ~ .input-indicator-icons .cedar-svg-warning {
+  display: block;
+  margin-top: -7px;
+}
+.template-body form .runtime .form-group .warning-text,
+.template-body form .runtime .input-group .warning-text {
+  font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+  font-weight: 400;
+  font-style: italic;
+  font-size: 13px;
+  position: absolute;
+  left: 10px;
+  bottom: -25px;
+  display: none;
+}
+.template-body form .runtime .form-group .ng-invalid ~ .warning-text,
+.template-body form .runtime .input-group .ng-invalid ~ .warning-text {
+  display: block;
+}
+.template-body form .runtime .form-group .additional-options,
+.template-body form .runtime .input-group .additional-options {
+  padding-top: 20px;
+  padding-left: 10px;
+}
+.template-body form .runtime .form-group .additional-options span.or,
+.template-body form .runtime .input-group .additional-options span.or {
+  font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+  font-weight: 700;
+  color: #999;
+  text-transform: uppercase;
+  font-size: 11px;
+  padding-right: 10px;
+}
+.template-body form .runtime .form-group .additional-options .btn-file,
+.template-body form .runtime .input-group .additional-options .btn-file {
+  position: relative;
+  overflow: hidden;
+  background-color: #5795ba;
+  border-radius: 0;
+  color: #ffffff;
+  font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+  font-weight: 400;
+  border: none;
+  vertical-align: middle;
+  text-transform: uppercase;
+  padding: 18px 30px;
+  -webkit-transition: all 0.3s 0.1s;
+          transition: all 0.3s 0.1s;
+}
+.template-body form .runtime .form-group .additional-options .btn-file:hover,
+.template-body form .runtime .input-group .additional-options .btn-file:hover {
+  background-color: #2f7dab;
+}
+.template-body form .runtime .form-group .additional-options .btn-file input[type="file"],
+.template-body form .runtime .input-group .additional-options .btn-file input[type="file"] {
+  position: absolute;
+  top: 0;
+  right: 0;
+  min-width: 100%;
+  min-height: 100%;
+  font-size: 100px;
+  text-align: right;
+  filter: alpha(opacity=0);
+  opacity: 0;
+  outline: none;
+  background: white;
+  cursor: inherit;
+  display: block;
+}
+.template-body form .runtime .required > .extra-label-context:after {
+  content: '*';
+  color: red;
+  display: inline-block;
+  vertical-align: top;
+  font-size: 14px;
+}
+.template-body form .runtime .date-group .date-label {
+  display: block;
+  padding-bottom: 7px;
+  padding-left: 5px;
+  font-size: 12px;
+  text-transform: uppercase;
+  font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+  font-weight: 500;
+  color: #999;
+}
+.template-body form .runtime .date-group .input-group-addon {
+  padding: 2px 10px;
+  border-radius: 0;
+  background-color: #ffffff;
+  cursor: pointer;
+}
+.template-body form .runtime .date-group .input-group-addon:hover i {
+  color: #5795ba;
+}
+.template-body form .runtime .date-group .bootstrap-datetimepicker-widget ~ .input-group-addon i {
+  color: #5795ba;
+}
+.template-body form .runtime .date-group.range:before,
+.template-body form .runtime .date-group.range:after {
+  content: " ";
+  display: table;
+}
+.template-body form .runtime .date-group.range:after {
+  clear: both;
+}
+.template-body form .runtime .date-group.range:before,
+.template-body form .runtime .date-group.range:after {
+  content: " ";
+  display: table;
+}
+.template-body form .runtime .date-group.range:after {
+  clear: both;
+}
+.template-body form .runtime .date-group.range .input-group {
+  padding-bottom: 10px;
+  float: left;
+}
+@media (min-width: 768px) {
+  .template-body form .runtime .date-group.range .input-group {
+    width: calc(50% - 10px);
+  }
+  .template-body form .runtime .date-group.range .input-group:first-of-type {
+    margin-right: 10px;
+  }
+  .template-body form .runtime .date-group.range .input-group:last-of-type {
+    margin-left: 10px;
+  }
+}
+.template-body form .runtime .date-field-title,
+.template-body form .runtime .extra-label-context {
+  color: #999999;
+  font-size: 14px;
+  margin-bottom: 8px;
+}
+.template-body form .runtime h3.section-title {
+  text-transform: uppercase;
+  font-size: 24px;
+  color: #5795ba;
+  border-top: 1px solid #ddd;
+  padding-top: 40px;
+  margin-top: 0;
+}
+.template-body form .runtime h3.section-title.page-title {
+  border-top: none;
+  padding-top: 0;
+}
+.template-body form .runtime p.section-body {
+  font-size: 16px;
+  line-height: 28px;
+  margin-bottom: 25px;
+}
+.template-body form .runtime .type-toggle {
+  text-align: center;
+  margin: 0 auto;
+  margin-bottom: 10px;
+}
+.template-body form .runtime .type-toggle:before,
+.template-body form .runtime .type-toggle:after {
+  content: " ";
+  display: table;
+}
+.template-body form .runtime .type-toggle:after {
+  clear: both;
+}
+.template-body form .runtime .type-toggle:before,
+.template-body form .runtime .type-toggle:after {
+  content: " ";
+  display: table;
+}
+.template-body form .runtime .type-toggle:after {
+  clear: both;
+}
+.template-body form .runtime .type-toggle .d-option {
+  width: 50%;
+  float: left;
+  padding-bottom: 7px;
+  border-bottom: 5px solid;
+  border-color: #ddd;
+  cursor: pointer;
+  -webkit-transition: all 0.3s 0.1s;
+          transition: all 0.3s 0.1s;
+}
+.template-body form .runtime .type-toggle .d-option span {
+  text-transform: uppercase;
+  font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+  font-weight: 500;
+  font-size: 12px;
+  color: #666;
+}
+.template-body form .runtime .type-toggle .d-option.active,
+.template-body form .runtime .type-toggle .d-option:hover {
+  border-color: #5795ba;
+}
+.template-body form .runtime .type-toggle.date {
+  width: 240px;
+}
+.template-body form .runtime .type-toggle.list {
+  width: 300px;
+}
+.template-body form .runtime .required-text {
+  font-style: italic;
+}
+.template-body form .runtime .required-text:before {
   content: '*';
   display: inline-block;
   vertical-align: top;
@@ -13597,6 +14120,26 @@ p.instructions {
   top: 12px;
   color: #5795ba;
 }
+.ui-select-container {
+  font-size: 16px;
+  height: 40px;
+  background-color: transparent;
+  border-width: 0;
+}
+.ui-select-container.open {
+  border: 1px solid #ccc;
+}
+.ui-select-container .ui-select-match {
+  background-color: transparent;
+  border-width: 0;
+}
+.ui-select-container span {
+  font-size: 16px;
+}
+.ui-select-container .ui-select-match.btn-default-focus {
+  outline: none;
+  box-shadow: none;
+}
 .ui-select-bootstrap .ui-select-choices-row.active > span {
   color: #333 !important;
   background-color: #f5f5f5 !important;
@@ -13646,7 +14189,7 @@ p.instructions {
 }
 .controlled-terms-modal .element-title {
   margin-bottom: 20px;
-  font-size: 1.2em;
+  font-size: 1.3em;
 }
 body.modal-open {
   overflow: auto;
@@ -13675,19 +14218,19 @@ body.modal-open .modal-backdrop {
 body .template-header .controlled-terms-modal {
   margin-left: 0;
 }
-.template-body form .autocomplete-label-wrapper.has-constraint .ui-select-container ~ .input-indicator-icons .cedar-svg-help-circle {
+.template-body form .build .autocomplete-label-wrapper.has-constraint .ui-select-container ~ .input-indicator-icons .cedar-svg-help-circle {
   display: block;
   margin-top: -7px;
 }
-.template-body form .has-selected.has-constraint .ui-select-container ~ .input-indicator-icons .cedar-svg-help-circle {
+.template-body form .build .has-selected.has-constraint .ui-select-container ~ .input-indicator-icons .cedar-svg-help-circle {
   display: none;
   margin-top: -7px;
 }
-.template-body form .autocomplete-label-wrapper.has-constraint .ui-select-container ~ .input-indicator-icons .cedar-svg-check-circle {
+.template-body form .build .autocomplete-label-wrapper.has-constraint .ui-select-container ~ .input-indicator-icons .cedar-svg-check-circle {
   display: none;
   margin-top: -7px;
 }
-.template-body form .has-selected.has-constraint .ui-select-container ~ .input-indicator-icons .cedar-svg-check-circle {
+.template-body form .build .has-selected.has-constraint .ui-select-container ~ .input-indicator-icons .cedar-svg-check-circle {
   display: block;
   margin-top: -7px;
 }
@@ -14323,7 +14866,7 @@ table.apiKey td {
 }
 .finder-modal .element-title {
   margin-bottom: 20px;
-  font-size: 1.2em;
+  font-size: 1.3em;
 }
 .finder-modal .clear-search {
   position: absolute;
@@ -15420,6 +15963,9 @@ body.modal-open {
 }
 .highlighted {
   font-weight: bold;
+}
+.btn-sm.fa.fa-sitemap {
+  padding: 5px;
 }
 /*
 ================================================

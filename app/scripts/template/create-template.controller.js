@@ -136,6 +136,7 @@ define([
 
         // Reverts to empty form and removes all previously added fields/elements
         $scope.reset = function () {
+          console.log('reset')
           UIMessageService.confirmedExecution(
               function () {
                 $timeout(function () {

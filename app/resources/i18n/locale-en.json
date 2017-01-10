@@ -87,7 +87,7 @@
     "NotAvailable": "Not Available",
     "Deleted": "Deleted",
     "Warning": "Warning",
-    "Ok": "Ok",
+    "Ok": "OK",
     "Info": "Info",
     "GoodNews": "Good News!",
     "Cancel": "Cancel",
@@ -102,7 +102,9 @@
     "SelectToViewDetails": "Select a folder or resource to view its details.",
     "canRead": "can read",
     "canWrite": "can write",
-    "isOwner": "owner"
+    "isOwner": "owner",
+    "midnight": "12:00 AM",
+    "Submit": "or Ctrl-Enter"
   },
   "SERVER": {
     "FOLDER": {

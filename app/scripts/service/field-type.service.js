@@ -48,6 +48,15 @@ define([
       return false;
     };
 
+    service.getFieldIconClass = function (fieldType) {
+      for (var ft in fieldTypes) {
+        if (fieldTypes[ft].cedarType == fieldType) {
+          return fieldTypes[ft].iconClass;
+        }
+      }
+      return false;
+    };
+
     return service;
 
   };

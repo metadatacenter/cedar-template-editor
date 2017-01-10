@@ -65,7 +65,6 @@ define([
           vm.forms = [];
 
 
-
           // modals
           vm.showMoveModal = showMoveModal;
           vm.showShareModal = showShareModal;
@@ -212,7 +211,7 @@ define([
 
                   $timeout(function () {
                     vm.selectedResource = response;
-                  },0);
+                  }, 0);
 
                 },
                 function (error) {
@@ -484,10 +483,6 @@ define([
           }
 
 
-
-
-
-
           function doSearch(term) {
             var resourceTypes = activeResourceTypes();
             var limit = UISettingsService.getRequestLimit();
@@ -554,11 +549,16 @@ define([
             );
           }
 
-          function launchInstance(resource) {
+          function launchInstance(resource, newForm) {
+
+            // may be setting which form to use
+            if (newForm != null) {
+              $rootScope.useRunTimeCode = newForm;
+            }
+
             if (!resource) {
               resource = getSelection();
             }
-
 
             var params = $location.search();
             var folderId;
@@ -570,6 +570,8 @@ define([
             var url = UrlService.getInstanceCreate(resource['@id'], folderId);
             $location.url(url);
           }
+
+
 
           function goToResource(resource) {
             var r = resource;
@@ -1016,7 +1018,6 @@ define([
           };
 
 
-
           function updateFavorites(saveData) {
             $timeout(function () {
               if (vm.showFavorites) {
@@ -1082,8 +1083,6 @@ define([
             }
             $scope.$broadcast('newFolderModalVisible', [vm.newFolderModalVisible, folderId]);
           }
-
-
 
 
         }
