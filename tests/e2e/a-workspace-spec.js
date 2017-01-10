@@ -4,7 +4,7 @@ var ToastyPage = require('../pages/toasty-page.js');
 var _ = require('../libs/lodash.min.js');
 
 
-describe('workspace', function () {
+xdescribe('workspace', function () {
   var EC = protractor.ExpectedConditions;
   var page;
   var toastyPage;
@@ -32,7 +32,7 @@ describe('workspace', function () {
 
   });
 
-  for (var j = 0; j < 1; j++) {
+  for (var j = 0; j < 0; j++) {
     (function () {
 
       // functioning trash and options buttons

@@ -336,16 +336,9 @@ define([
 
         // only look at first level elements
         if (id === scope.getId() && path === '0' ) {
-          console.log('on nextSibling of parent');
 
           var parent = $rootScope.rootElement;
-          console.log($rootScope.rootElement);
-          console.log(scope.isRootElement);
-          console.log(scope.depth);
-          console.log(scope.path);
-
           var next = DataManipulationService.nextSibling(scope.element, parent);
-          console.log(next);
 
 
           if (next) {
@@ -380,38 +373,9 @@ define([
       });
 
 
-      // scroll within the template-container to the field with id locator
-      scope.scrollToLocator = function (locator, tag) {
-        console.log('scrollToLocator');
-
-        var target = angular.element('#' + locator);
-        if (target && target.offset()) {
-
-          scope.setHeight = function () {
-
-            $scope.$apply();
-
-            var window = angular.element($window);
-            var windowHeight = $(window).height();
-            var targetTop = $("#" + locator).offset().top;
-            var targetHeight = $("#" + locator).outerHeight(true);
-            var scrollTop = jQuery('.template-container').scrollTop();
-            var newTop = scrollTop + targetTop - ( windowHeight - targetHeight ) / 2;
-            jQuery('.template-container').animate({scrollTop: newTop}, 'slow');
-            jQuery("#" + locator + ' ' + tag).focus().select();
-
-          };
-          $timeout(scope.setHeight, 0);
-        }
-      };
-
 
       scope.setActive = function (index, value) {
-        console.log('setActive');
         DataManipulationService.setActive(scope.element, index, scope.path, value);
-        var locator = scope.getLocator(index);
-        scope.scrollToLocator(locator, 'input.select');
-
 
       };
     }

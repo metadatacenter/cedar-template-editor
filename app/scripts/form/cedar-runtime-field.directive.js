@@ -249,7 +249,6 @@ define([
 
       // set this field and index active
       $scope.setActive = function (index, value) {
-        console.log('setActive' + value);
 
 
         // off or on
@@ -286,7 +285,6 @@ define([
 
       // scroll within the template to the field with the locator, focus and select the tag
       $scope.scrollToLocator = function (locator, tag) {
-        //console.log('scrollToLocator ' + locator + ' ' + tag);
 
 
         var target = angular.element('#' + locator);
@@ -304,8 +302,7 @@ define([
             var scrollTop = jQuery('.template-container').scrollTop();
             var newTop = scrollTop + targetTop - ( windowHeight - targetHeight ) / 2;
 
-            //console.log('locator ' + locator + ' newTop ' + newTop + ' scrollTop ' + scrollTop + ' targetHeight ' + targetHeight + ' targetTop ' + targetTop + ' windowHeight ' + windowHeight);
-
+            console.log('scrollToLocator ' + locator + ' newTop ' + newTop + ' scrollTop ' + scrollTop + ' targetHeight ' + targetHeight + ' targetTop ' + targetTop + ' windowHeight ' + windowHeight);
 
             jQuery('.template-container').animate({scrollTop: newTop}, 'fast');
 
@@ -320,7 +317,7 @@ define([
               }
             }
           };
-          $timeout($scope.setHeight, 0);
+          $timeout($scope.setHeight, 100);
         }
       };
 

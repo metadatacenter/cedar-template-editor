@@ -30,8 +30,6 @@ define([
       controller : function ($scope) {
 
         $scope.model = $scope.model || {};
-        console.log('init form');
-
 
         // Initializing checkSubmission as false
         $scope.checkSubmission = false;
@@ -435,7 +433,6 @@ define([
 
 
         $scope.getPreviousItem = function (index) {
-          console.log('getPreviousItem' + index);
           if (index) {
             return $scope.pagesArray[$scope.pageIndex][index];
           }
@@ -481,7 +478,6 @@ define([
 
 
           var id = DataManipulationService.getId(fieldOrElement);
-          console.log('get nextCHild of ' + id);
           var selectedKey;
           var props = $scope.form.properties;
 
@@ -494,13 +490,11 @@ define([
           });
 
           if (selectedKey) {
-            console.log(selectedKey);
             var idx = $scope.form._ui.order.indexOf(selectedKey);
             idx += 1;
             if (idx < $scope.form._ui.order.length) {
               var nextKey = $scope.form._ui.order[idx];
               var next = props[nextKey];
-              console.log(next);
               $rootScope.$broadcast("setActive", [DataManipulationService.getId(next), 0,  $scope.path, true]);
             } else {
               $rootScope.$broadcast("setActive", [id, 0,  $scope.path, false]);
@@ -573,14 +567,12 @@ define([
 
 
           if (id === DataManipulationService.getId($scope.form)) {
-            console.log('on nextSibling of form ' );
 
             var next = DataManipulationService.nextSibling($scope.field, $scope.form);
             var parentIndex = 0;
             var parentPath = '0';
             if (next) {
 
-              console.log('got parent next sibling');
               $rootScope.$broadcast("setActive", [DataManipulationService.getId(next), 0, path, true]);
 
 
