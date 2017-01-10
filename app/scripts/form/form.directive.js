@@ -30,6 +30,8 @@ define([
       controller : function ($scope) {
 
         $scope.model = $scope.model || {};
+        console.log('init form');
+
 
         // Initializing checkSubmission as false
         $scope.checkSubmission = false;
@@ -42,6 +44,7 @@ define([
 
         var paginate = function () {
           if ($scope.form) {
+
             var orderArray = [];
             var dimension = 0;
 
@@ -190,6 +193,7 @@ define([
               $scope.parseForm($scope.form.properties, model);
 
               $rootScope.formModel = model;
+              $rootScope.rootElement = $scope.form;
             } else {
               $rootScope.findChildren($scope.form.properties, model);
             }

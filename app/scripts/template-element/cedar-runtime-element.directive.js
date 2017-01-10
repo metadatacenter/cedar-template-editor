@@ -339,10 +339,12 @@ define([
           console.log('on nextSibling of parent');
 
           var parent = $rootScope.rootElement;
-          console.log(parent);
+          console.log($rootScope.rootElement);
+          console.log(scope.isRootElement);
+          console.log(scope.depth);
+          console.log(scope.path);
+
           var next = DataManipulationService.nextSibling(scope.element, parent);
-
-
           console.log(next);
 
 
@@ -379,12 +381,15 @@ define([
 
 
       // scroll within the template-container to the field with id locator
-      scope.scrollTo = function (locator, tag) {
+      scope.scrollToLocator = function (locator, tag) {
+        console.log('scrollToLocator');
 
         var target = angular.element('#' + locator);
         if (target && target.offset()) {
 
           scope.setHeight = function () {
+
+            $scope.$apply();
 
             var window = angular.element($window);
             var windowHeight = $(window).height();
@@ -396,15 +401,16 @@ define([
             jQuery("#" + locator + ' ' + tag).focus().select();
 
           };
-          $timeout(scope.setHeight, 100);
+          $timeout(scope.setHeight, 0);
         }
       };
 
 
       scope.setActive = function (index, value) {
+        console.log('setActive');
         DataManipulationService.setActive(scope.element, index, scope.path, value);
         var locator = scope.getLocator(index);
-        scope.scrollTo(locator, 'input.select');
+        scope.scrollToLocator(locator, 'input.select');
 
 
       };
