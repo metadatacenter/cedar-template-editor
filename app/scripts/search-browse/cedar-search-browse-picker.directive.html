@@ -41,8 +41,8 @@
           <ul class="dropdown-menu dropdown-menu-right">
 
             <li ng-if="dc.isFolder()"><a href="#" ng-click="dc.goToResource()">Open</a></li>
-            <li ng-if="dc.isTemplate()"><a href="#" ng-click="dc.launchInstance()">Populate</a></li>
-            <li ng-if="dc.isTemplate()"><a href="#" ng-click="dc.fillInstance()">Fill</a></li>
+            <li ng-if="dc.isTemplate()"><a href="#" ng-click="dc.launchInstance()">Populate (Old)</a></li>
+            <li ng-if="dc.isTemplate()"><a href="#" ng-click="dc.launchInstance()">Populate (New)</a></li>
             <li ng-if="!dc.isFolder()"><a href="#" ng-click="dc.editResource()">Edit</a></li>
             <li role="separator" class="divider"></li>
             <li><a href="#" ng-click="dc.showShareModal(resource)">Share...</a></li>
@@ -397,9 +397,8 @@
                           class="fa fa-ellipsis-v"></i>
                       </button>
                       <ul class="dropdown-menu" aria-labelledby="{{getId(resource, 'populate')}}">
-                        <li ng-if="dc.isTemplate()"><a href="#" ng-click="dc.launchInstance(resource)">Populate</a></li>
-
-                        <li ng-if="dc.isTemplate()"><a href="#" ng-click="dc.fillInstance(resource)">Fill</a></li>
+                        <li ng-if="dc.isTemplate()"><a href="#" ng-click="dc.launchInstance(resource, false)">Populate (Old)</a></li>
+                        <li ng-if="dc.isTemplate()"><a href="#" ng-click="dc.launchInstance(resource, true)">Populate (New)</a></li>
                         <li ><a href="#" ng-click="dc.editResource(resource)">Edit</a></li>
 
                         <li><a href="#" ng-click="dc.showInfoPanel(resource)">Info</a></li>
@@ -484,9 +483,8 @@
                         class="btn btn-sm btn-circle fa fa-ellipsis-v"></i>
                     </button>
                     <ul class="dropdown-menu" aria-labelledby="{{getId(resource, 'list')}}">
-                      <li ng-if="dc.isTemplate() "><a href="#" ng-click="dc.launchInstance(resource)">Populate</a></li>
-
-                      <li ng-if="dc.isTemplate() "><a href="#" ng-click="dc.fillInstance(resource)">Fill</a></li>
+                      <li ng-if="dc.isTemplate() "><a href="#" ng-click="dc.launchInstance(resource, false)">Populate (Old)</a></li>
+                      <li ng-if="dc.isTemplate() "><a href="#" ng-click="dc.launchInstance(resource, true)">Populate (New)</a></li>
                       <li ><a href="#" ng-click="dc.editResource(resource)">Edit</a></li>
 
                       <li><a href="#" ng-click="dc.showInfoPanel(resource)">Info</a></li>

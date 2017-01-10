@@ -65,7 +65,6 @@ define([
           vm.forms = [];
 
 
-
           // modals
           vm.showMoveModal = showMoveModal;
           vm.showShareModal = showShareModal;
@@ -88,7 +87,6 @@ define([
           vm.isResourceTypeActive = isResourceTypeActive;
           vm.isSearching = false;
           vm.launchInstance = launchInstance;
-          vm.fillInstance = fillInstance;
           vm.copyToWorkspace = copyToWorkspace;
           vm.copyResource = copyResource;
           vm.setResourceInfoVisibility = setResourceInfoVisibility;
@@ -213,7 +211,7 @@ define([
 
                   $timeout(function () {
                     vm.selectedResource = response;
-                  },0);
+                  }, 0);
 
                 },
                 function (error) {
@@ -485,10 +483,6 @@ define([
           }
 
 
-
-
-
-
           function doSearch(term) {
             var resourceTypes = activeResourceTypes();
             var limit = UISettingsService.getRequestLimit();
@@ -555,13 +549,17 @@ define([
             );
           }
 
-          function launchInstance(resource) {
+          function launchInstance(resource, newForm) {
+
+            // may be setting which form to use
+            if (newForm != null) {
+              $rootScope.useRunTimeCode = newForm;
+            }
+
             if (!resource) {
               resource = getSelection();
             }
 
-
-            $rootScope.useRunTimeCode = false;
             var params = $location.search();
             var folderId;
             if (params.folderId) {
@@ -573,22 +571,7 @@ define([
             $location.url(url);
           }
 
-          function fillInstance(resource) {
-            if (!resource) {
-              resource = getSelection();
-            }
 
-            $rootScope.useRunTimeCode = true;
-            var params = $location.search();
-            var folderId;
-            if (params.folderId) {
-              folderId = params.folderId;
-            } else {
-              folderId = vm.currentFolderId
-            }
-            var url = UrlService.getInstanceCreate(resource['@id'], folderId);
-            $location.url(url);
-          }
 
           function goToResource(resource) {
             var r = resource;
@@ -605,7 +588,7 @@ define([
                 goToFolder(r['@id']);
               } else {
                 if (r.nodeType == 'template') {
-                  fillInstance(r);
+                  launchInstance(r);
                 } else {
                   editResource(r);
                 }
@@ -1035,7 +1018,6 @@ define([
           };
 
 
-
           function updateFavorites(saveData) {
             $timeout(function () {
               if (vm.showFavorites) {
@@ -1101,8 +1083,6 @@ define([
             }
             $scope.$broadcast('newFolderModalVisible', [vm.newFolderModalVisible, folderId]);
           }
-
-
 
 
         }
