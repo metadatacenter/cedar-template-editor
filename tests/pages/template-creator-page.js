@@ -377,6 +377,7 @@ var TemplateCreatorPage = function () {
           "cedarType"         : "radio",
           "iconClass"         : "cedar-svg-multiple-choice",
           "label"             : "Multiple Choice",
+          "primaryField"      : false,
           "allowedInElement"  : true,
           "hasControlledTerms": true,
           "staticField"       : false
@@ -385,6 +386,7 @@ var TemplateCreatorPage = function () {
           "cedarType"         : "checkbox",
           "iconClass"         : "cedar-svg-checkbox",
           "label"             : "Checkbox",
+          "primaryField"      : false,
           "allowedInElement"  : true,
           "hasControlledTerms": true,
           "staticField"       : false
@@ -393,6 +395,7 @@ var TemplateCreatorPage = function () {
           "cedarType"         : "date",
           "iconClass"         : "cedar-svg-calendar",
           "label"             : "Date",
+          "primaryField"      : true,
           "allowedInElement"  : true,
           "hasControlledTerms": false,
           "staticField"       : false
@@ -400,7 +403,7 @@ var TemplateCreatorPage = function () {
         {
           "cedarType"         : "email",
           "iconClass"         : "cedar-svg-at",
-          "primaryField"      : true,
+          "primaryField"      : false,
           "label"             : "Email",
           "allowedInElement"  : true,
           "hasControlledTerms": false,
@@ -410,7 +413,7 @@ var TemplateCreatorPage = function () {
           "cedarType"         : "list",
           "iconClass"         : "cedar-svg-list",
           "allowedInElement"  : true,
-          "primaryField"      : true,
+          "primaryField"      : false,
           "label"             : "List",
           "hasControlledTerms": true,
           "staticField"       : false
@@ -428,6 +431,7 @@ var TemplateCreatorPage = function () {
           "cedarType"         : "phone-number",
           "iconClass"         : "cedar-svg-phone",
           "allowedInElement"  : true,
+          "primaryField"      : false,
           "label"             : "Phone Number",
           "hasControlledTerms": false,
           "staticField"       : false
@@ -436,6 +440,7 @@ var TemplateCreatorPage = function () {
           "cedarType"         : "section-break",
           "iconClass"         : "cedar-svg-section-break",
           "allowedInElement"  : true,
+          "primaryField"      : false,
           "label"             : "Section Break",
           "hasControlledTerms": false,
           "staticField"       : true
@@ -444,6 +449,7 @@ var TemplateCreatorPage = function () {
           "cedarType"         : "richtext",
           "iconClass"         : "cedar-svg-rich-text",
           "allowedInElement"  : true,
+          "primaryField"      : false,
           "label"             : "Rich Text",
           "hasControlledTerms": false,
           "staticField"       : true
@@ -452,6 +458,7 @@ var TemplateCreatorPage = function () {
           "cedarType"         : "image",
           "iconClass"         : "cedar-svg-image",
           "allowedInElement"  : true,
+          "primaryField"      : false,
           "label"             : "Image",
           "hasControlledTerms": false,
           "staticField"       : true
@@ -460,6 +467,7 @@ var TemplateCreatorPage = function () {
           "cedarType"         : "youtube",
           "iconClass"         : "cedar-svg-youtube",
           "allowedInElement"  : true,
+          "primaryField"      : false,
           "label"             : "YouTube Video",
           "hasControlledTerms": false,
           "staticField"       : true

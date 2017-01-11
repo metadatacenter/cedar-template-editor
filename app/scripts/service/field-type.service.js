@@ -15,7 +15,6 @@ define([
     var fieldTypes = [];
     var primaryFieldTypes = [];
     var otherFieldTypes = [];
-    var primaryFieldTypeCount = 4;
 
     var service = {
       serviceId: "FieldTypeService"
@@ -23,8 +22,17 @@ define([
 
     service.init = function () {
       fieldTypes = config;
-      primaryFieldTypes = fieldTypes.slice(0, primaryFieldTypeCount);
-      otherFieldTypes = fieldTypes.slice(primaryFieldTypeCount);
+      primaryFieldTypes = [];
+      otherFieldTypes = [];
+
+      // find the fields that are in the toolbar
+      for (var ft in fieldTypes) {
+        if (fieldTypes[ft].primaryField) {
+          primaryFieldTypes.push(fieldTypes[ft]);
+        } else {
+          otherFieldTypes.push(fieldTypes[ft]);
+        }
+      }
     };
 
     service.getFieldTypes = function () {

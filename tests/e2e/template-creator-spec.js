@@ -46,7 +46,7 @@ describe('template-creator', function () {
       "iconClass"         : "cedar-svg-multiple-choice",
       "label"             : "Multiple Choice",
       "allowedInElement"  : true,
-      "primaryField"      : true,
+      "primaryField"      : false,
       "hasControlledTerms": true,
       "staticField"       : false
     },
@@ -55,7 +55,7 @@ describe('template-creator', function () {
       "iconClass"         : "cedar-svg-checkbox",
       "label"             : "Checkbox",
       "allowedInElement"  : true,
-      "primaryField"      : true,
+      "primaryField"      : false,
       "hasControlledTerms": true,
       "staticField"       : false
     },
@@ -64,7 +64,7 @@ describe('template-creator', function () {
       "iconClass"         : "cedar-svg-calendar",
       "label"             : "Date",
       "allowedInElement"  : true,
-      "primaryField"      : false,
+      "primaryField"      : true,
       "hasControlledTerms": false,
       "staticField"       : false
     },
@@ -90,7 +90,7 @@ describe('template-creator', function () {
       "cedarType"         : "numeric",
       "iconClass"         : "cedar-svg-numeric",
       "allowedInElement"  : true,
-      "primaryField"      : false,
+      "primaryField"      : true,
       "label"             : "Number",
       "hasControlledTerms": false,
       "staticField"       : false

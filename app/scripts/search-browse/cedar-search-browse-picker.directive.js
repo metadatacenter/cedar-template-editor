@@ -87,6 +87,7 @@ define([
           vm.isResourceTypeActive = isResourceTypeActive;
           vm.isSearching = false;
           vm.launchInstance = launchInstance;
+          vm.launchInstanceNew = launchInstanceNew;
           vm.copyToWorkspace = copyToWorkspace;
           vm.copyResource = copyResource;
           vm.setResourceInfoVisibility = setResourceInfoVisibility;
@@ -551,6 +552,32 @@ define([
 
           function launchInstance(resource, newForm) {
 
+            console.log('launchInstance ' + newForm);
+
+            // may be setting which form to use
+            if (newForm != null) {
+              $rootScope.useRunTimeCode = newForm;
+            }
+
+            if (!resource) {
+              resource = getSelection();
+            }
+
+            var params = $location.search();
+            var folderId;
+            if (params.folderId) {
+              folderId = params.folderId;
+            } else {
+              folderId = vm.currentFolderId
+            }
+            var url = UrlService.getInstanceCreate(resource['@id'], folderId);
+            $location.url(url);
+          }
+
+          function launchInstanceNew(resource, newForm) {
+
+            console.log('launchInstanceNew  ' + newForm);
+
             // may be setting which form to use
             if (newForm != null) {
               $rootScope.useRunTimeCode = newForm;
@@ -574,6 +601,7 @@ define([
 
 
           function goToResource(resource) {
+            console.log('goToResource');
             var r = resource;
             if (!r && vm.selectedResource) {
               r = vm.selectedResource;
@@ -588,7 +616,12 @@ define([
                 goToFolder(r['@id']);
               } else {
                 if (r.nodeType == 'template') {
-                  launchInstance(r);
+                  if ($rootScope.useRunTimeCode) {
+                    launchInstanceNew(r, $rootScope.useRunTimeCode);
+                  } else {
+                    launchInstance(r, $rootScope.useRunTimeCode);
+                  }
+
                 } else {
                   editResource(r);
                 }
@@ -597,6 +630,7 @@ define([
           }
 
           function editResource(resource) {
+            console.log('editResource');
             var r = resource;
             if (!r && vm.selectedResource) {
               r = vm.selectedResource;
