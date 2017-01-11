@@ -62,6 +62,7 @@ var WorkspacePage = function () {
   var createBreadcrumb = element(by.css('.breadcrumbs-sb'));
   var createBreadcrumbFolders = element(by.css('.breadcrumbs-sb')).all(by.repeater('folder in dc.pathInfo'));
   var createBreadcrumbSearch = element(by.css('.breadcrumbs-sb .search-result'));
+  var createBreadcrumbUsersLink = createBreadcrumb.element(by.linkText("Users"));
 
   // create new buttons
   var createButton = element(by.id('button-create'));
@@ -85,8 +86,11 @@ var WorkspacePage = function () {
   var shareWithUserRow = createShareModal.element(by.css('div > div > div.modal-body > div > div > div.col-sm-6.ng-scope > div:nth-child(5)'));
   var createShareModalUserName =
     shareWithUserRow.element(by.css('div.col-sm-7.typeaheadDropUp > input'));
+  var permissionsList = shareWithUserRow.element(by.css('div.btn-group.bootstrap-select.dropdown.col-sm-4.select-picker.ng-pristine.ng-untouched.ng-valid.ng-isolate-scope.ng-not-empty'));
+  var createShareModalPermissions = permissionsList.element(by.css('button'));
+  var createShareModalWritePermission = permissionsList.element(by.css('div > ul > li:nth-child(2) > a'));
   var createShareModalAddUserButton = shareWithUserRow.element(by.css('div.col-sm-1.pull-right > button'));
-  var createShareModalDoneButton = createShareModal.element(by.css('div > div > div.modal-footer > div > button'));
+  var createShareModalDoneButton = createShareModal.element(by.css('div > div > div.modal-footer.actions > div > button'));
 
   // access to locators
   this.createPageName = function () {
@@ -124,6 +128,9 @@ var WorkspacePage = function () {
   };
   this.createBreadcrumbSearch = function () {
     return createBreadcrumbSearch;
+  };
+  this.createBreadcrumbUsers = function () {
+    return createBreadcrumbUsersLink;
   };
   this.createToolbar = function () {
     return createToolbar;
@@ -172,6 +179,12 @@ var WorkspacePage = function () {
   };
   this.createShareModalAddUserButton = function () {
     return createShareModalAddUserButton;
+  };
+  this.createShareModalPermissions = function () {
+    return createShareModalPermissions;
+  };
+  this.createShareModalWritePermission = function () {
+    return createShareModalWritePermission;
   };
 
 
