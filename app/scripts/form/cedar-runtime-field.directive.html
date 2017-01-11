@@ -51,7 +51,7 @@
 
               <button type="button" class="remove pull-right" ng-click="removeInput(index)"
                   ng-if="model.length > field.minItems"
-                  tooltip="remove"
+                  tooltip="{{'GENERIC.Remove' | translate}}"
                   tooltip-trigger
                   tooltip-animation="false"
                   tooltip-placement="top"
@@ -61,13 +61,13 @@
 
               <button type="button" class=" remove pull-right"
                   ng-if="isActive(index)"
-                  tooltip="close"
+                  tooltip="{{'GENERIC.Close' | translate}}"
                   ng-click="setActive(index, false)">
                 <i class="fa fa-remove "></i>
               </button>
 
               <button ng-if="getDescription(field).length > 0" type="button" class=" question  pull-right"
-                  tooltip="{{getDescription(field) || 'help'}}"
+                  tooltip="{{(getDescription(field) || 'GENERIC.Help') | translate}}"
                   tooltip-trigger
                   tooltip-animation="true"
                   tooltip-placement="top"
@@ -77,7 +77,7 @@
 
               <button type="button" class=" add  pull-right" ng-click="addMoreInput()"
                   ng-if="isMultipleCardinality() && (!field.maxItems || model.length < field.maxItems )"
-                  tooltip="add"
+                  tooltip="{{'GENERIC.Add' | translate}}"
                   tooltip-trigger
                   tooltip-animation="false"
                   tooltip-placement="top"

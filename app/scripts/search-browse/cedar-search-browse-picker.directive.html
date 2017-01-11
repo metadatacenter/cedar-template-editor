@@ -27,7 +27,7 @@
       <li ng-if="dc.onDashboard() && dc.hasSelection()" id="delete-tool">
         <button
             type="button"
-            tooltip="delete selection"
+            tooltip='{{"HELP.deleteSelection" | translate}}'
             tooltip-trigger
             tooltip-animation="false"
             tooltip-placement="bottom"
@@ -42,7 +42,7 @@
 
             <li ng-if="dc.isFolder()"><a href="#" ng-click="dc.goToResource()">Open</a></li>
             <li ng-if="dc.isTemplate()"><a href="#" ng-click="dc.launchInstance()">Populate (Old)</a></li>
-            <li ng-if="dc.isTemplate()"><a href="#" ng-click="dc.launchInstance()">Populate (New)</a></li>
+            <li ng-if="dc.isTemplate()"><a href="#" ng-click="dc.launchInstanceNew()">Populate (New)</a></li>
             <li ng-if="!dc.isFolder()"><a href="#" ng-click="dc.editResource()">Edit</a></li>
             <li role="separator" class="divider"></li>
             <li><a href="#" ng-click="dc.showShareModal(resource)">Share...</a></li>
@@ -60,7 +60,7 @@
       <li ng-show="dc.onDashboard() && dc.resourceViewMode != 'grid'" id="grid-view-tool">
         <button
             type="button"
-            tooltip="view as grid"
+            tooltip='{{"HELP.viewAsGrid" | translate}}'
             tooltip-trigger
             tooltip-animation="false"
             tooltip-placement="bottom"
@@ -71,7 +71,7 @@
 
       <li ng-show="dc.onDashboard() && dc.resourceViewMode != 'list'" id="list-view-tool">
         <button type="button"
-            tooltip="view as list"
+            tooltip='{{"HELP.viewAsList" | translate}}'
             tooltip-trigger
             tooltip-animation="false"
             tooltip-placement="bottom"
@@ -83,7 +83,7 @@
 
       <li ng-show="!dc.infoShowing()" ng-if="dc.onDashboard()" id="details-view-tool">
         <button type="button"
-            tooltip="view details"
+            tooltip='{{"HELP.viewDetails" | translate}}'
             tooltip-trigger
             tooltip-animation="false"
             tooltip-placement="bottom"
@@ -93,7 +93,7 @@
 
       <li ng-show="dc.infoShowing()" ng-if="dc.onDashboard()" id="details-hide-tool">
         <button type="button"
-            tooltip="hide details"
+            tooltip='{{"HELP.hideDetails" | translate}}'
             tooltip-trigger
             tooltip-animation="false"
             tooltip-placement="bottom"
@@ -256,7 +256,7 @@
 
                 <ul ng-if="dc.isFilterSection('type')" class="list-inline ">
                   <li>
-                    <button tooltip="{{dc.showOrHide('template')}} template"
+                    <button tooltip="{{dc.showOrHide('template')}} {{'GENERIC.Template' | translate}}"
                         tooltip-trigger
                         tooltip-animation="false"
                         tooltip-placement="top"
@@ -267,7 +267,7 @@
 
                   </li>
                   <li>
-                    <button tooltip="{{dc.showOrHide('element')}} element"
+                    <button tooltip="{{dc.showOrHide('template')}} {{'GENERIC.Element' | translate}}"
                         tooltip-trigger
                         tooltip-animation="false"
                         tooltip-placement="top"
@@ -278,7 +278,7 @@
 
                   </li>
                   <li>
-                    <button tooltip="{{dc.showOrHide('instancsvg-mete')}} metadata"
+                    <button tooltip="{{dc.showOrHide('instance')}} {{'GENERIC.Metadata' | translate}}"
                         tooltip-trigger
                         tooltip-animation="false"
                         tooltip-placement="top"
@@ -398,7 +398,7 @@
                       </button>
                       <ul class="dropdown-menu" aria-labelledby="{{getId(resource, 'populate')}}">
                         <li ng-if="dc.isTemplate()"><a href="#" ng-click="dc.launchInstance(resource, false)">Populate (Old)</a></li>
-                        <li ng-if="dc.isTemplate()"><a href="#" ng-click="dc.launchInstance(resource, true)">Populate (New)</a></li>
+                        <li ng-if="dc.isTemplate()"><a href="#" ng-click="dc.launchInstanceNew(resource, true)">Populate (New)</a></li>
                         <li ><a href="#" ng-click="dc.editResource(resource)">Edit</a></li>
 
                         <li><a href="#" ng-click="dc.showInfoPanel(resource)">Info</a></li>
@@ -484,7 +484,7 @@
                     </button>
                     <ul class="dropdown-menu" aria-labelledby="{{getId(resource, 'list')}}">
                       <li ng-if="dc.isTemplate() "><a href="#" ng-click="dc.launchInstance(resource, false)">Populate (Old)</a></li>
-                      <li ng-if="dc.isTemplate() "><a href="#" ng-click="dc.launchInstance(resource, true)">Populate (New)</a></li>
+                      <li ng-if="dc.isTemplate() "><a href="#" ng-click="dc.launchInstanceNew(resource, true)">Populate (New)</a></li>
                       <li ><a href="#" ng-click="dc.editResource(resource)">Edit</a></li>
 
                       <li><a href="#" ng-click="dc.showInfoPanel(resource)">Info</a></li>
@@ -597,7 +597,7 @@
           <div ng-if="!dc.editingDescription" class="edit pull-right">
             <button
                 type="button"
-                tooltip="edit description"
+                tooltip='{{"HELP.editDescription" | translate}}'
                 tooltip-trigger
                 tooltip-animation="false"
                 tooltip-placement="left"
@@ -617,7 +617,7 @@
         <li ng-show="dc.showFloatingMenu">
           <button type="button"
               id="button-create-folder"
-              tooltip="create folder"
+              tooltip='{{"HELP.createFolder" | translate}}'
               tooltip-trigger
               tooltip-animation="false"
               tooltip-placement="left"
@@ -632,7 +632,7 @@
 
             <button type="button"
                 id="button-create-element"
-                tooltip="create element"
+                tooltip='{{"HELP.createElement" | translate}}'
                 tooltip-trigger
                 tooltip-animation="false"
                 tooltip-placement="left"
@@ -645,7 +645,7 @@
           <a ng-href="/templates/create?folderId={{dc.currentFolderId | encodeURIComponent}}">
             <button type="button"
                 id="button-create-template"
-                tooltip="create template"
+                tooltip='{{"HELP.createTemplate" | translate}}'
                 tooltip-trigger
                 tooltip-animation="false"
                 tooltip-placement="left"

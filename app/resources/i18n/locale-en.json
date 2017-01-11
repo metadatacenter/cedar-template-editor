@@ -104,7 +104,41 @@
     "canWrite": "can write",
     "isOwner": "owner",
     "midnight": "12:00 AM",
-    "Submit": "or Ctrl-Enter"
+    "Submit": "or Ctrl-Enter",
+    "Show": "Show",
+    "Hide": "Hide",
+    "Template": "Template",
+    "Element": "Element",
+    "Folder": "Folder",
+    "Metadata": "Metadata",
+    "Help": "Help",
+    "Close": "Close",
+    "Add": "Add"
+  },
+  "HELP": {
+    "createFolder":  "Create folder",
+    "createTemplate":  "Create template",
+    "createElement":  "Create element",
+    "viewDetails": "View details",
+    "deleteSelection": "Delete selection",
+    "viewAsGrid": "View as grid",
+    "viewAsList": "View as list",
+    "hideDetails": "Hide details",
+    "editDescription": "Edit description",
+    "backToParent": "Back to parent",
+    "openFolder": "Open folder",
+    "shareWithGroup": "Share with group",
+    "createNewGroup": "Create new group",
+    "shareWithPerson": "Share with person",
+    "removeShare": "Remove share",
+    "removeGroup": "Remove group",
+    "addToGroup": "Add to group",
+    "removeFromGroup": "Remove from group",
+    "showAsSpreadsheet": "Show as spreadsheet",
+    "addMore": "Add more",
+    "deleteTerm": "Delete term",
+    "deleteMapping": "Delete mapping"
+
   },
   "SERVER": {
     "FOLDER": {

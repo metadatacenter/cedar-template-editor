@@ -22,7 +22,7 @@
 
          <span ng-show="$root.isArray(model) && $root.isRuntime()" class="spreadsheetSwitch element">
             <button type="button"
-                tooltip="show as spreadsheet"
+                tooltip="{{'HELP.showAsSpreadsheet' | translate}}"
                 tooltip-trigger
                 tooltip-animation="false"
                 tooltip-placement="top"
@@ -52,7 +52,7 @@
           </div>
           <div class="add-element">
             <button type="button"
-                tooltip="add a {{$root.schemaOf(element)._ui.title}}"
+                tooltip="{{'GENERIC.Add' | translate}} {{$root.schemaOf(element)._ui.title}}"
                 tooltip-trigger
                 tooltip-animation="false"
                 tooltip-placement="top"

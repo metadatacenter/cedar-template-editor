@@ -11,7 +11,7 @@
 
        <!--<span class="spreadsheetSwitch ">-->
             <!--<button type="button"-->
-                <!--tooltip="show as spreadsheet"-->
+                <!--"{{'HELP.showAsSpreadsheet' | translate}}"-->
                 <!--tooltip-trigger-->
                 <!--tooltip-animation="false"-->
                 <!--tooltip-placement="top"-->
@@ -27,7 +27,7 @@
       <!-- show this add button only when you have minCardinality 0 and an empty list -->
     <span class="zero-input-wrapper" ng-if="$root.isRuntime() && field.items && model.length == 0">
       <button type="button" class="add noOutline"
-          tooltip="add more"
+          tooltip="{{'HELP.addMore' | translate}}"
           tooltip-trigger
           tooltip-animation="false"
           tooltip-placement="top"
