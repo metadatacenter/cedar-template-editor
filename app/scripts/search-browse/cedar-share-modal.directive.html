@@ -47,7 +47,7 @@
                     class="btn btn-sm btn-info btn-circle btn-plus" ng-if="share.canWrite()"
                     ng-model="share.resourcePermissions"
                     type="button"
-                    tooltip='share with group'
+                    tooltip="{{'HELP.shareWithGroup' | translate}}"
                     tooltip-trigger
                     tooltip-animation="false"
                     tooltip-placement="top"
@@ -72,7 +72,7 @@
                 <button
                     class="btn btn-sm btn-info btn-circle btn-plus"
                     type="button"
-                    tooltip='create new group'
+                    tooltip="{{'HELP.createNewGroup' | translate}}"
                     tooltip-trigger
                     tooltip-animation="false"
                     tooltip-placement="top"
@@ -116,7 +116,7 @@
                     class="btn btn-sm btn-info btn-circle btn-plus" ng-if="share.canWrite()"
                     ng-model="share.resourcePermissions"
                     type="button"
-                    tooltip='share with person'
+                    tooltip="{{'HELP.shareWithPerson' | translate}}"
                     tooltip-trigger
                     tooltip-animation="false"
                     tooltip-placement="top"
@@ -177,7 +177,8 @@
 
                 <button class=" col-sm-1  btn  btn-info btn-circle btn-sm btn-delete" ng-if="share.canWrite()"
                     ng-model="share.resourcePermissions"
-                    type="button" tooltip="remove share"
+                    type="button"
+                    tooltip="{{'HELP.removeShare' | translate}}"
                     tooltip-trigger
                     tooltip-animation="false"
                     tooltip-placement="top"
@@ -223,7 +224,7 @@
                     class="btn btn-sm btn-info btn-circle btn-delete" ng-if="share.canWriteGroup()"
                     ng-model="share.resourcePermissions"
                     type="button"
-                    tooltip='remove group'
+                    tooltip="{{'HELP.removeGroup' | translate}}"
                     tooltip-trigger
                     tooltip-animation="false"
                     tooltip-placement="top"
@@ -261,7 +262,7 @@
                 <button
                     class="btn btn-sm btn-info btn-circle btn-plus"
                     type="button"
-                    tooltip='create new group'
+                    ooltip="{{'HELP.createNewGrpi[' | translate}}"
                     tooltip-trigger
                     tooltip-animation="false"
                     tooltip-placement="top"
@@ -296,7 +297,7 @@
                     class="btn btn-sm btn-info btn-circle btn-plus" ng-if="share.canWriteGroup()"
                     ng-model="share.resourcePermissions"
                     type="button"
-                    tooltip='add to group'
+                    tooltip="{{'HELP.addToGroup' | translate}}"
                     tooltip-trigger
                     tooltip-animation="false"
                     tooltip-placement="top"
@@ -348,7 +349,8 @@
 
                   <button class=" col-sm-1  btn  btn-info btn-circle btn-sm btn-delete" ng-if="share.canWriteGroup()"
                       ng-model="share.resourcePermissions"
-                      type="button" tooltip="remove from group"
+                      type="button"
+                      tooltip="{{'HELP.removeFromGroup' | translate}}"
                       tooltip-trigger
                       tooltip-animation="false"
                       tooltip-placement="top"

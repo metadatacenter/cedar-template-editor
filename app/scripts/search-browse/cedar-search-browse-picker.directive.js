@@ -829,7 +829,7 @@ define([
           }
 
           function showOrHide(type) {
-            return isResourceTypeActive(type) ? 'hide' : 'show';
+            return $translate.instant(isResourceTypeActive(type) ? 'GENERIC.Hide' : 'GENERIC.Show');
           }
 
           function onDashboard() {
