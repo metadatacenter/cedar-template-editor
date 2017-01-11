@@ -1,0 +1,81 @@
+
+<div ng-if="model !== undefined" class="item-root element-root"
+    style="{{getNestingMargin(element, 0)}}">
+
+  <div class="elementTotalContent ">
+    <div ng-show="$root.isArray(model)">
+      <div class="spreadsheetViewDetector"></div>
+      <div class="spreadsheetViewContainer"></div>
+    </div>
+
+
+    <!-- a list of elements -->
+    <div ng-repeat="(i, valueElement) in valueArray">
+
+      <div class="element" id="{{getLocator(i)}}" class='element-{{i}}'  ng-class="{'expand' : isExpanded(i)}" style="position:relative">
+        <div class="flagpole"></div>
+
+        <div ng-if="!isActive" class="left-tick"></div>
+
+        <div class="row">
+          <div class="col-sm-10">
+
+            <button type="button" ng-click="toggleExpanded(i)"  ng-class="{'xxx' : isExpanded(i), 'expand' : !isExpanded(i)}">
+              <i ng-class="{'fa fa-caret-down ' : isExpanded(i), 'fa fa-caret-right ' : !isExpanded(i)}"></i>
+            </button>
+             <!--<span ng-repeat="nest in getNesting()" >-->
+             <!--<span ng-if="!isActive" class="down-tick"   style="{{getNestingStyle(nest)}}"></span>-->
+            <!--</span>-->
+           <span ng-if="valueArray.length-1" class="count">{{i+1}}.</span>
+            <a ng-click="toggleExpanded(i)" class="title"  ng-class="{'isInactive' : isInactive(i)}">{{getTitle()}}</a>
+            </div>
+          <div class="col-sm-2">
+
+
+        <span ng-if="$root.isArray(model)">
+          <button type="button"
+              ng-click="removeElement(i)"
+              class="remove pull-right">
+            <i style="font-size:1.5em;line-height:normal" class="fa fa-times-circle"></i>
+          </button>
+        </span>
+
+          <span ng-if="$root.isArray(model)">
+            <button type="button"
+                ng-click="addElement()"
+                class="add pull-right">
+              <i style="font-size:1.5em;line-height:normal"  class="fa fa-plus-circle"></i>
+            </button>
+          </span>
+
+
+
+
+          </div>
+        </div>
+
+        <div ng-if="isExpanded(i)" ui-sortable="$root.sortableOptions" ng-model="$root.schemaOf(element)._ui.order"
+            class="sortable-container">
+          <div ng-repeat="key in $root.schemaOf(element)['_ui']['order']">
+            <div ng-if="$root.propertiesOf(element)[key]">
+              <cedar-runtime-nested-element key="key"
+                  field="$root.propertiesOf(element)[key]"
+                  model="valueElement[key]"
+                  remove-child="removeChild"
+                  rename-child-key="renameChildKey"
+                  is-edit-data="isEditData"
+                  depth="depth+1"
+                  path="path+'-'+i"
+                  index="i">
+              </cedar-runtime-nested-element>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+

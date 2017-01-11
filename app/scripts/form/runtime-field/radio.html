@@ -1,0 +1,26 @@
+
+
+<div ng-if="isActive(index)" class="form-group radio-item" ng-repeat="(i, value) in getLiterals() ">
+
+    <div class="radio radio-primary">
+      <input
+          type="radio"
+          class="select"
+          id="radio-{{uuid}}-{{index}}-{{i}}"
+          name="radio-{{uuid}}-{{index}}-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}"
+          ng-model="valueElement[0]['@value']"
+          ng-value="value.label"/>
+      <label for="radio-{{uuid}}-{{index}}-{{i}}">{{getLiterals()[i]['label']}}</label>
+    </div>
+
+</div>
+
+<div ng-if="!isActive(index)" class="value">
+  <div
+      ng-click="setActive(index,true)"
+      aria-label="{{getDescription(field)}}">{{valueElement[0]['@value']}}</div>
+
+</div>
+
+
+

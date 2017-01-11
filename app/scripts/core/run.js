@@ -493,6 +493,8 @@ define([
       return $rootScope.dirty;
     }
 
+    $rootScope.useRunTimeCode = false ;
+
 
   };
 

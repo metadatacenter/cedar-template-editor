@@ -1,0 +1,27 @@
+<div ng-if="isActive(index)" class='input-group' date-time-picker>
+
+  <input type="text"
+      class="form-control select"
+      ng-class="{'isActive' : isActive(index),'required': isRequired()}"
+      placeholder="{{isActive(index) ? 'enter date' : ''}}"
+      aria-label="Select a date"
+      ng-model="valueElement['@value']"
+      ng-model-options="{allowInvalid:true}"
+      validate-on="blur"
+      ng-pattern="/^\d\d\/\d\d\/\d\d\d\d \d\d:\d\d (A|P)M$/"/>
+
+        <span class="input-group-addon" ng-class="{'hidden' : !isActive(index)}">
+          <i class="fa fa-calendar fa-2x"></i>
+        </span>
+
+</div>
+
+<!--- not active --->
+<div ng-if="!isActive(index)" class="form-group  has-feedback value">
+  <div
+      ng-click="setActive(index,true)"
+      aria-label="{{getDescription(field)}}">{{formatDateTime(valueElement['@value'])}}</div>
+</div>
+</div>
+
+

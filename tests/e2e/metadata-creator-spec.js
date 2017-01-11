@@ -21,7 +21,7 @@ describe('metadata-creator', function () {
   var toastyModal;
   var sweetAlertModal;
 
-  // before each test, load a new page and create a template
+  // before each test
   // maximize the window area for clicking
   beforeEach(function () {
 
@@ -32,8 +32,10 @@ describe('metadata-creator', function () {
     sweetAlertModal = SweetAlertModal;
     browser.driver.manage().window().maximize();
 
+
     // log the name of the test
     //console.log(jasmine.getEnv().currentSpec.description);
+
 
   });
 

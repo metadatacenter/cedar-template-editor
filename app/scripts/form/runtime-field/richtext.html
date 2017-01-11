@@ -1,0 +1,12 @@
+
+<!-- actively editing the field --->
+<div ng-if="isActive(index)" >
+  <div ng-bind-html="$root.getUnescapedContent(field)"></div>
+</div>
+
+<!-- not editing --->
+<div ng-if="!isActive(index)" class="form-group  has-feedback value">
+  <div ng-click="setActive(index,true)" ng-bind-html="$root.getUnescapedContent(field)"></div>
+</div>
+
+

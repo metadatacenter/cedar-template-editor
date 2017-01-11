@@ -1,0 +1,21 @@
+<div ng-if="isActive(index)" class="checkbox-item" ng-repeat="(i, value) in getLiterals()">
+
+  <div class="checkbox checkbox-primary">
+    <input class='select' type="checkbox"
+        ng-click="setActive(index, true)"
+        id="checkbox-{{uuid}}-{{index}}-{{i}}"
+        ng-model="valueElement[i]['@value']"
+        ng-true-value="'{{value.label}}'"
+        ng-false-value="{{ null }}"
+        />
+    <label for="checkbox-{{uuid}}-{{index}}-{{i}}">{{getLiterals()[i].label}}</label>
+  </div>
+</div>
+
+<div ng-if="!isActive(index)" class="value">
+  <div
+      ng-click="setActive(index,true)"
+      aria-label="{{getDescription(field)}}">{{getValueString(valueElement)}}</div>
+</div>
+
+

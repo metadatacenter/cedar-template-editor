@@ -39,7 +39,7 @@
   <div class="nav-container" id="headerCtrl" ng-controller="HeaderCtrl as hc">
     <div class="navbar-header">
 
-      <!-- if we are on the dashboard --->
+      <!-- if we are in the workspace --->
       <div ng-if="hc.isDashboard()">
         <div>
           <div class=" nav-search" >
@@ -47,7 +47,7 @@
               <div class="form-group floating-label-wrapper search-input">
                 <input autocomplete="off" ng-keyup="$event.keyCode == 13 && hc.search(hc.searchTerm)" type="search"
                     class="form-control search-input"
-                    id="search" placeholder="Search" aria-label="Search" ng-model="hc.searchTerm" with-floating-label/>
+                    id="search" placeholder="Search" aria-label="Search" ng-model="hc.searchTerm" />
                 <a class="clear clear-search " ng-show="hc.searchTerm" ng-click="hc.search('')">
                   <span class="fa fa-remove"></span></a>
                 <a class="clear do-search " ng-click="hc.search(hc.searchTerm)"><i class="fa fa-search "></i></a>
@@ -59,12 +59,12 @@
         <a class="navbar-brand pull-left" ng-click="hc.goToDashboardOrBack()" href="javascript:">Cedar</a>
       </div>
 
-      <!-- otherwise on an edit page--->
+      <!-- otherwise on a form page--->
       <div ng-if="!hc.isDashboard()">
         <div class="navbar-back col-sm-12" >
           <div class="back-arrow-click" ng-click="hc.confirmBack()"></div>
           <i class="back-arrow fa fa-arrow-left"></i> <span class="document-title">{{hc.getDocumentTitle()}}</span>
-          <div class="page-title pull-right" >{{hc.getPageTitle()}}
+          <div class="page-title pull-right" >
             <span ng-show="!hc.isProfile() && !hc.isPrivacy()" id="jsonTools" cedar-position-json-tools="true">
 
               <a id='show-json-link' ng-click="$root.showRender = !$root.showRender; $root.scrollToAnchor('templateJSON')"
@@ -81,17 +81,9 @@
             </span>
 
           </div>
-
-
           </div>
         </div>
       </div>
-
-
-      <!--<div ng-if="!hc.showSearch()" class="pull-right" style="padding:20px">-->
-      <!--<h4>{{$root.pageTitle}}</h4>-->
-      <!--</div>-->
-
 
   </div>
 </nav>

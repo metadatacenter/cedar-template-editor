@@ -54,9 +54,30 @@ define([
       angular.forEach(schemaContext.properties, function (value, key) {
         if (value.enum) {
           context[key] = value.enum[0];
-        //} else {
-        //  console.log('generateInstanceContext empty value');
-        //  console.log(value);
+          //} else {
+          //  console.log('generateInstanceContext empty value');
+          //  console.log(value);
+        }
+      });
+      return context;
+    };
+
+    // Function that generates a basic field definition
+    service.isStaticField = function (field) {
+      var schema = $rootScope.schemaOf(field);
+      var type =  schema._ui.inputType;
+      return FieldTypeService.isStaticField(type);
+    };
+
+    // Function that generates the @context for an instance, based on the schema @context definition
+    service.generateInstanceContext = function (schemaContext) {
+      var context = {};
+      angular.forEach(schemaContext.properties, function (value, key) {
+        if (value.enum) {
+          context[key] = value.enum[0];
+          //} else {
+          //  console.log('generateInstanceContext empty value');
+          //  console.log(value);
         }
       });
       return context;
@@ -242,13 +263,71 @@ define([
       return (p._tmp.state == "creating");
     };
 
-    // are we editing this field?
+    // set as selected
     service.setSelected = function (field) {
       var p = $rootScope.propertiesOf(field);
       p._tmp = p._tmp || {};
       p._tmp.state = "creating";
 
       $rootScope.selectedFieldOrElement = field;
+    };
+
+    // is this an array of fields or elements?
+    service.isMultiple = function (obj) {
+      return $rootScope.isArray(obj);
+    };
+
+    // is the field multiple cardinality?
+    service.isMultipleCardinality = function (fieldOrElement) {
+      return fieldOrElement.items;
+    };
+
+
+    // what is the max cardinality?
+    service.getMaxItems = function (fieldOrElement) {
+      return fieldOrElement.maxItems;
+    };
+
+    // what is the min cardinality?
+    service.getMinItems = function (fieldOrElement) {
+      return fieldOrElement.minItems;
+    };
+
+
+    // is this field required?
+    service.isRequired = function (fieldOrElement) {
+      return $rootScope.schemaOf(fieldOrElement)._valueConstraints.requiredValue;
+    };
+
+    // is the previous field static?
+    service.isDateRange = function (fieldOrElement) {
+      return DataManipulationService.getFieldSchema(fieldOrElement)._ui.dateType == "date-range";
+    };
+
+
+
+    service.hasNext = function (fieldOrElement) {
+      return true;
+    };
+
+    // set this field instance active
+    service.setActive = function (field, index, path, value) {
+      if (value) {
+        $rootScope.activeLocator = service.getLocator(field, index, path);
+      } else {
+        $rootScope.activeLocator = null;
+      }
+
+    };
+
+    // is this field active
+    service.isActive = function (locator) {
+      return ($rootScope.activeLocator === locator);
+    };
+
+    // is some other field active
+    service.isInactive = function (locator) {
+      return ($rootScope.activeLocator && $rootScope.activeLocator != locator);
     };
 
     // add an option to this field
@@ -434,6 +513,21 @@ define([
 
     };
 
+
+    service.createOrder = function (node, order) {
+
+      if (node.hasOwnProperty("@id")) {
+        order.push(node['@id']);
+      }
+
+      angular.forEach(node.properties, function (value, key) {
+        if (!DataUtilService.isSpecialKey(key)) {
+          service.createOrder(value, order);
+        }
+      });
+      return order;
+    };
+
     /**
      * create domIds for node and children
      * @param node
@@ -466,36 +560,151 @@ define([
 
     };
 
+
     // get the id of the node
     service.getNodeId = function (node) {
       var nodeId = node['@id'] || node.items['@id'];
       return nodeId.substring(nodeId.lastIndexOf('/') + 1);
     };
 
+    service.getId = function (fieldOrElement) {
+      return $rootScope.schemaOf(fieldOrElement)['@id'];
+    };
+
+    // what is the icon for this field?
+    service.getIconClass = function (fieldOrElement) {
+      var result = '';
+      var fieldType = '';
+      var schema = $rootScope.schemaOf(fieldOrElement);
+      if (schema._ui.inputType) {
+        fieldType = schema._ui.inputType;
+        result = FieldTypeService.getFieldIconClass(fieldType);
+      }
+      return result;
+    };
+
+    service.getType = function (fieldOrElement) {
+      var schema = $rootScope.schemaOf(fieldOrElement);
+      return schema['@type'];
+    };
+
+    // Retrieve appropriate input type
+    service.getInputType = function (fieldOrElement) {
+      //return $rootScope.schemaOf($scope.field)._ui.inputType;
+      var inputType = 'element';
+      var schema = $rootScope.schemaOf(fieldOrElement);
+
+      if (schema._ui.inputType) {
+        inputType = schema._ui.inputType;
+      }
+      return inputType;
+    };
+
+    // is this a checkbox, radio or list question?
+    service.isMultiAnswer = function (fieldOrElement) {
+      var inputType = service.getInputType(fieldOrElement);
+      return ((inputType == 'checkbox') || (inputType == 'radio') || (inputType == 'list'));
+    };
+
+    // is this a youTube field?
+    service.isYouTube = function (field) {
+      return field && $rootScope.schemaOf(field)._ui.inputType === 'youtube';
+    };
+
+    // is this richText?
+    service.isRichText = function (field) {
+      return field && $rootScope.schemaOf(field)._ui.inputType === 'richtext';
+    };
+
+    // is this an image?
+    service.isImage = function (field) {
+      return field && $rootScope.schemaOf(field)._ui.inputType === 'image';
+    };
+
+    service.getContent = function (fieldOrElement) {
+      var schema = $rootScope.schemaOf(fieldOrElement);
+      return schema.properties['_content'];
+    };
+
+    service.getTitle = function (fieldOrElement) {
+      return service.getFieldSchema(fieldOrElement)._ui.title;
+    };
+
+    service.getDescription = function (fieldOrElement) {
+      return service.getFieldSchema(fieldOrElement)._ui.description;
+    };
+
+    // does this field have a value constraint?
+    service.hasValueConstraint = function (fieldOrElement) {
+      return $rootScope.hasValueConstraint($rootScope.schemaOf(fieldOrElement)._valueConstraints);
+    };
+
+    // get the value constraint literal values
+    service.getLiterals = function (fieldOrElement) {
+      return $rootScope.schemaOf(fieldOrElement)._valueConstraints.literals;
+    };
+
+    service.isMultipleChoice = function (fieldOrElement) {
+      return $rootScope.schemaOf(fieldOrElement)._valueConstraints.multipleChoice;
+    };
+
+    service.nextSibling = function (field, parent) {
+
+      if (field && parent) {
+
+        var id = service.getFieldSchema(field)["@id"];
+        var props = service.getFieldSchema(parent).properties;
+        var order = service.getFieldSchema(parent)._ui.order;
+        var selectedKey;
+
+        angular.forEach(props, function (value, key) {
+          var valueId = service.getFieldSchema(value)["@id"];
+          if (valueId) {
+            if (service.getFieldSchema(value)["@id"] == id) {
+              selectedKey = key;
+            }
+          }
+        });
+
+        if (selectedKey) {
+          var idx = order.indexOf(selectedKey);
+          idx += 1;
+          var found = false;
+          while (idx < order.length && !found) {
+            var nextKey = order[idx];
+            var next = props[nextKey];
+            found = !service.isStaticField(next);
+            idx += 1;
+          }
+          if (found) {
+            return next;
+          }
+        }
+      }
+    };
+
     // get the locator for the node's dom object
-    service.getLocator = function (node, index) {
-      return 'dom-' + service.getNodeId(node)+ '-' + index;
+    service.getLocator = function (node, index, path) {
+      return 'dom-' + service.getNodeId(node) + '-' + (path || 0).toString() + '-' + (index || 0).toString();
     };
 
     // look to see if this node has been identified by angular as an invalid pattern
-    service.isValidPattern =  function(node, index)  {
-        var locator = service.getLocator(node,  index) + '.ng-invalid';
-        var target = jQuery('#' + locator);
-        return (target.length == 0);
+    service.isValidPattern = function (node, index, path) {
+      var locator = service.getLocator(node, index, path) + '.ng-invalid';
+      var target = jQuery('#' + locator);
+      return (target.length == 0);
     };
 
     // get the value of the dom object for this node
-    service.getDomValue =  function(node, index)  {
+    service.getDomValue = function (node, index, path) {
       var result;
-      var locator = service.getLocator(node, index);
+      var locator = service.getLocator(node, index, path);
       var target = jQuery('#' + locator);
       if (target.length > 0) {
         result = target[0].value;
       }
       return result;
     };
-
-
 
 
     /**
@@ -703,7 +912,7 @@ define([
       var result = true;
       if (!service.isEditState(field)) {
         if ($rootScope.selectedFieldOrElement && service.isEditState($rootScope.selectedFieldOrElement)) {
-            result = service.canDeselect($rootScope.selectedFieldOrElement);
+          result = service.canDeselect($rootScope.selectedFieldOrElement);
         }
         if (result) service.setSelected(field);
       }

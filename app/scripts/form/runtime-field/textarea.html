@@ -1,0 +1,26 @@
+
+      
+    <div ng-if="isActive(index)" class="form-group  has-feedback">
+    <textarea
+        rows="5"
+        class="form-control isActive select"
+        ng-class="{'required': isRequired()}"
+        placeholder="{{isActive(index) ? 'enter answer' : ''}}"
+        aria-label="{{getDescription(field)}}"
+        ng-model="valueElement['@value']"></textarea>
+
+      <div ng-if="isActive(index)" class="input-indicator-icons" ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
+    </div>
+
+    <div ng-if="!isActive(index)" class="form-group  has-feedback value">
+    <div
+        ng-click="setActive(index,true)"
+        aria-label="{{getDescription(field)}}"
+        class="isInactive">{{valueElement['@value']}}</div>
+
+    </div>
+
+
+
+
+
