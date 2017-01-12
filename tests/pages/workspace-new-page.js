@@ -373,7 +373,81 @@ var WorkspacePage = function () {
   this.clickLogo = function () {
 
     createLogo.click();
-  }
+  };
+
+
+  this.logout = function () {
+    var createUserDropdownButton = this.createUserDropdownButton();
+    browser.wait(EC.visibilityOf(createUserDropdownButton));
+    browser.wait(EC.elementToBeClickable(createUserDropdownButton));
+    createUserDropdownButton.click();
+    var logoutMenuItem = this.createLogoutMenuItem();
+    browser.wait(EC.elementToBeClickable(logoutMenuItem));
+    logoutMenuItem.click();
+  };
+
+
+  this.login = function (username, password) {
+    browser.driver.findElement(by.id('username')).sendKeys(username).then(function () {
+      browser.driver.findElement(by.id('password')).sendKeys(password).then(function () {
+        browser.driver.findElement(by.id('kc-login')).click().then(function () {
+          browser.driver.wait(browser.driver.isElementPresent(by.id('top-navigation')));
+          browser.driver.wait(browser.driver.isElementPresent(by.className('ng-app')));
+        });
+      });
+    });
+  };
+
+
+  this.shareResource = function (name, type, username, canWrite) {
+    this.selectResource(name, type);
+    this.createMoreOptionsButton().click();
+    var shareMenuItem = this.createShareMenuItem();
+    browser.wait(EC.elementToBeClickable(shareMenuItem));
+    shareMenuItem.click();
+
+    var usernameField = this.createShareModalUserName();
+    usernameField.sendKeys(username);
+    browser.actions().sendKeys(protractor.Key.ENTER).perform();
+
+    if (canWrite) {
+      var permissionsList = this.createShareModalPermissions();
+      permissionsList.click();
+      this.createShareModalWritePermission().click();
+    }
+
+    var addButton = this.createShareModalAddUserButton();
+    browser.wait(EC.elementToBeClickable(addButton)).then(function () {
+      addButton.click();
+    });
+
+    var doneButton = this.createShareModalDoneButton();
+    browser.wait(EC.visibilityOf(doneButton));
+    browser.actions().mouseMove(doneButton).perform();
+    browser.wait(EC.elementToBeClickable(doneButton)).then(function () {
+      doneButton.click();
+    });
+  };
+
+
+  this.deleteResource = function (name, type) {
+    this.selectResource(name, type);
+    this.createTrashButton().click();
+    sweetAlertModal.confirm();
+    toastyModal.isSuccess();
+    browser.sleep(1000);
+    this.clickLogo();
+  };
+
+
+  this.navigateToUserFolder = function (username) {
+    this.clickBreadcrumb(1);
+    var centerPanel = element(by.id('center-panel'));
+    var userFolder = centerPanel.element(by.cssContainingText('.folderTitle.ng-binding', username));
+    browser.actions().doubleClick(userFolder).perform();
+  };
+
+
 };
 
 module.exports = new WorkspacePage();
