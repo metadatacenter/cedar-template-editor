@@ -28,6 +28,7 @@ define([
       getResourceDetail      : getResourceDetail,
       getResources           : getResources,
       searchResources        : searchResources,
+      sharedWithMeResources  : sharedWithMeResources,
       updateFolder           : updateFolder,
       copyResourceToWorkspace: copyResourceToWorkspace,
       copyResource           : copyResource,
@@ -298,6 +299,27 @@ define([
           errorCallback
       );
     }
+
+    function sharedWithMeResources(options, successCallback, errorCallback) {
+      if (options == null) {
+        options = {};
+      }
+      var params = {};
+      var baseUrl = urlService.sharedWithMe();
+
+      addCommonParameters(params, options);
+
+      var url = $rootScope.util.buildUrl(baseUrl, params);
+
+      authorizedBackendService.doCall(
+          httpBuilderService.get(url),
+          function (response) {
+            successCallback(response.data);
+          },
+          errorCallback
+      );
+    }
+
 
     // private function
     function addCommonParameters(params, options) {

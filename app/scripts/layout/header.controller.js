@@ -77,8 +77,6 @@ define([
         var url = $rootScope.util.buildUrl(baseUrl, queryParams);
         $location.url(url);
       }
-      vm.searchTerm = searchTerm;
-      $rootScope.$broadcast('search', vm.searchTerm || '');
     };
 
     vm.showSearch = function () {

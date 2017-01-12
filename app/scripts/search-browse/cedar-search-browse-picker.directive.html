@@ -235,13 +235,13 @@
       <!-- START LEFT SIDE -->
       <div class="col-sm-2 row-offcanvas-left" id="sidebar-left" ng-if="dc.filterShowing() &&  dc.onDashboard()">
         <div style="height:40px;margin-top:20px;">
-          <a href="/dashboard" translate>DASHBOARD.sidebar.myWorkspace</a>
+          <a href="#" ng-click="dc.goToMyWorkspace()" translate>DASHBOARD.sidebar.myWorkspace</a>
         </div>
         <div style="height:40px;">
-          <a href="/search?q=" translate>DASHBOARD.sidebar.all</a>
+          <a href="#" ng-click="dc.goToSearchAll()" translate>DASHBOARD.sidebar.all</a>
         </div>
         <div style="height:40px;">
-          <a href="/search?sharing=shared-with-me" translate>DASHBOARD.sidebar.sharedWithMe</a>
+          <a href="#" ng-click="dc.goToSharedWithMe()" translate>DASHBOARD.sidebar.sharedWithMe</a>
         </div>
 
         <div class="filter-options">
