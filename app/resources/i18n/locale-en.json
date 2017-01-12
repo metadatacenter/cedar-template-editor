@@ -293,6 +293,11 @@
     "filter": {
       "filterBy": "Filter",
       "reset": "Reset"
+    },
+    "sidebar": {
+      "myWorkspace": "My Workspace",
+      "sharedWithMe": "Shared with Me",
+      "all": "All"
     }
   },
   "ELEMENTEDITOR": {
