@@ -21,126 +21,153 @@ describe('template-creator', function () {
   var sampleDescription;
   var sampleUrl;
   var sampleJson;
-
   var fieldTypes = [
     {
-      "cedarType"         : "textfield",
-      "iconClass"         : "cedar-svg-text",
-      "label"             : "Text",
-      "allowedInElement"  : true,
-      "primaryField"      : true,
+      "cedarType": "textfield",
+      "iconClass": "cedar-svg-text",
+      "label": "Text",
+      "allowedInElement": true,
+      "primaryField": true,
       "hasControlledTerms": true,
-      "staticField"       : false
+      "staticField": false,
+      "allowsMultiple": true,
+      "allowsValueRecommendation": true
     },
     {
-      "cedarType"         : "textarea",
-      "iconClass"         : "cedar-svg-paragraph",
-      "label"             : "Paragraph",
-      "allowedInElement"  : true,
-      "primaryField"      : true,
+      "cedarType": "textarea",
+      "iconClass": "cedar-svg-paragraph",
+      "label": "Text Area",
+      "allowedInElement": true,
+      "primaryField": true,
       "hasControlledTerms": false,
-      "staticField"       : false
+      "staticField": false,
+      "allowsMultiple": true,
+      "allowsValueRecommendation": false
     },
     {
-      "cedarType"         : "radio",
-      "iconClass"         : "cedar-svg-multiple-choice",
-      "label"             : "Multiple Choice",
-      "allowedInElement"  : true,
-      "primaryField"      : true,
-      "hasControlledTerms": true,
-      "staticField"       : false
-    },
-    {
-      "cedarType"         : "checkbox",
-      "iconClass"         : "cedar-svg-checkbox",
-      "label"             : "Checkbox",
-      "allowedInElement"  : true,
-      "primaryField"      : true,
-      "hasControlledTerms": true,
-      "staticField"       : false
-    },
-    {
-      "cedarType"         : "date",
-      "iconClass"         : "cedar-svg-calendar",
-      "label"             : "Date",
-      "allowedInElement"  : true,
-      "primaryField"      : false,
+      "cedarType": "date",
+      "iconClass": "cedar-svg-calendar",
+      "label": "Date",
+      "allowedInElement": true,
+      "primaryField": true,
       "hasControlledTerms": false,
-      "staticField"       : false
+      "staticField": false,
+      "allowsMultiple": true,
+      "allowsValueRecommendation": false
     },
     {
-      "cedarType"         : "email",
-      "iconClass"         : "cedar-svg-at",
-      "label"             : "Email",
-      "allowedInElement"  : true,
-      "primaryField"      : false,
+      "cedarType": "numeric",
+      "iconClass": "cedar-svg-numeric",
+      "allowedInElement": true,
+      "primaryField": true,
+      "Label": "Number",
       "hasControlledTerms": false,
-      "staticField"       : false
+      "staticField": false,
+      "allowsMultiple": true,
+      "allowsValueRecommendation": false
     },
     {
-      "cedarType"         : "list",
-      "iconClass"         : "cedar-svg-list",
-      "allowedInElement"  : true,
-      "primaryField"      : false,
-      "label"             : "List",
-      "hasControlledTerms": true,
-      "staticField"       : false
-    },
-    {
-      "cedarType"         : "numeric",
-      "iconClass"         : "cedar-svg-numeric",
-      "allowedInElement"  : true,
-      "primaryField"      : false,
-      "label"             : "Number",
+      "cedarType": "radio",
+      "iconClass": "cedar-svg-multiple-choice",
+      "label": "Multiple Choice",
+      "allowedInElement": true,
+      "primaryField": false,
       "hasControlledTerms": false,
-      "staticField"       : false
+      "staticField": false,
+      "allowsMultiple": false,
+      "allowsValueRecommendation": false
     },
     {
-      "cedarType"         : "phone-number",
-      "iconClass"         : "cedar-svg-phone",
-      "allowedInElement"  : true,
-      "label"             : "Phone Number",
-      "primaryField"      : false,
+      "cedarType": "checkbox",
+      "iconClass": "cedar-svg-checkbox",
+      "label": "Checkbox",
+      "allowedInElement": true,
+      "primaryField": false,
       "hasControlledTerms": false,
-      "staticField"       : false
+      "staticField": false,
+      "allowsMultiple": false,
+      "allowsValueRecommendation": false
     },
     {
-      "cedarType"         : "section-break",
-      "iconClass"         : "cedar-svg-section-break",
-      "allowedInElement"  : true,
-      "label"             : "Section Break",
+      "cedarType": "email",
+      "iconClass": "cedar-svg-at",
+      "label": "Email",
+      "allowedInElement": true,
+      "primaryField": false,
       "hasControlledTerms": false,
-      "primaryField"      : false,
-      "staticField"       : true
+      "staticField": false,
+      "allowsMultiple": true,
+      "allowsValueRecommendation": false
     },
     {
-      "cedarType"         : "richtext",
-      "iconClass"         : "cedar-svg-rich-text",
-      "allowedInElement"  : true,
-      "label"             : "Rich Text",
+      "cedarType": "list",
+      "iconClass": "cedar-svg-list",
+      "allowedInElement": true,
+      "primaryField": false,
+      "label": "List",
       "hasControlledTerms": false,
-      "primaryField"      : false,
-      "staticField"       : true
+      "staticField": false,
+      "allowsMultiple": false,
+      "allowsValueRecommendation": false
     },
     {
-      "cedarType"         : "image",
-      "iconClass"         : "cedar-svg-image",
-      "allowedInElement"  : true,
-      "label"             : "Image",
+      "cedarType": "phone-number",
+      "iconClass": "cedar-svg-phone",
+      "allowedInElement": true,
+      "label": "Phone Number",
+      "primaryField": false,
       "hasControlledTerms": false,
-      "primaryField"      : false,
-      "staticField"       : true
+      "staticField": false,
+      "allowsMultiple": true,
+      "allowsValueRecommendation": false
     },
     {
-      "cedarType"         : "youtube",
-      "iconClass"         : "cedar-svg-youtube",
-      "allowedInElement"  : true,
-      "label"             : "YouTube Video",
-      "primaryField"      : false,
+      "cedarType": "section-break",
+      "iconClass": "cedar-svg-section-break",
+      "allowedInElement": true,
+      "label": "Section Break",
+      "primaryField": false,
       "hasControlledTerms": false,
-      "staticField"       : true
+      "staticField": true,
+      "allowsMultiple": false,
+      "allowsValueRecommendation": false
+    },
+    {
+      "cedarType": "richtext",
+      "iconClass": "cedar-svg-rich-text",
+      "allowedInElement": true,
+      "label": "Rich Text",
+      "primaryField": false,
+      "hasControlledTerms": false,
+      "staticField": true,
+      "allowsMultiple": false,
+      "allowsValueRecommendation": false
+    },
+    {
+      "cedarType": "image",
+      "iconClass": "cedar-svg-image",
+      "allowedInElement": true,
+      "label": "Image",
+      "primaryField": false,
+      "hasControlledTerms": false,
+      "staticField": true,
+      "allowsMultiple": false,
+      "allowsValueRecommendation": false
+    },
+    {
+      "cedarType": "youtube",
+      "iconClass": "cedar-svg-youtube",
+      "allowedInElement": true,
+      "label": "YouTube Video",
+      "primaryField": false,
+      "hasControlledTerms": false,
+      "staticField": true,
+      "allowsMultiple": false,
+      "allowsValueRecommendation": false
     }
   ];
+
+
   var fieldType = fieldTypes[0];
   var field = element(by.css('.field-root .' + fieldType.iconClass));
   var isMore = !fieldType.primaryField;
@@ -239,7 +266,7 @@ describe('template-creator', function () {
           var description = fieldType.label + ' description';
           var type = fieldType.cedarType;
 
-          it("should add and delete a " + type + " in " + pageType, function () {
+          xit("should add and delete a " + type + " in " + pageType + ' from popup ' + isMore, function () {
 
             workspacePage.createResource(pageType);
 
@@ -259,7 +286,7 @@ describe('template-creator', function () {
 
           });
 
-          it("should select and deselect a " + type + " in " + pageType, function () {
+          xit("should select and deselect a " + type + " in " + pageType, function () {
 
             var firstField;
             var lastField;

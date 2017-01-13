@@ -7,7 +7,7 @@
 
   <button type="button" class="add" ng-show="$root.isRuntime()" ng-click="addMoreInput()"
       ng-show=" (!$parent.field.maxItems || $parent.model.length < $parent.field.maxItems )"
-  tooltip="add more {{$parent.field.items._ui.title}}"
+  tooltip="{{'HELP.addMore' | translate}} {{$parent.field.items._ui.title}}"
   tooltip-trigger
   tooltip-animation="false"
   tooltip-placement="top"
@@ -27,7 +27,7 @@
   <!-- remove button when the model has more than the min items -->
   <button type="button" class="remove" ng-click="removeInput($parent.$index)"
       ng-show="$parent.field.minItems && ($parent.field.maxItems || $parent.model.length > $parent.field.minItems) && $parent.$index >= $parent.field.minItems"
-      tooltip="remove {{$parent.field.items._ui.title}}"
+      tooltip="{{'GENERIC.Remove' | translate}} {{$parent.field.items._ui.title}}"
       tooltip-trigger
       tooltip-animation="false"
       tooltip-placement="top"

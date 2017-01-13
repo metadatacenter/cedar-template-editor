@@ -2,7 +2,7 @@
 
   <button type="button" class="add"  ng-click="addMoreInput()"
       ng-show=" (!$parent.field.maxItems || $parent.model.length < $parent.field.maxItems )"
-      tooltip="add more {{$parent.field.items._ui.title}}"
+      tooltip="{{'HELP.addMore' | translate}} {{$parent.field.items._ui.title}}"
       tooltip-trigger
       tooltip-animation="false"
       tooltip-placement="top"
@@ -14,7 +14,7 @@
 
   <button type="button" class="remove"  ng-click="removeInput($parent.$index)"
       ng-show="$parent.model.length > $parent.field.minItems"
-      tooltip="remove {{$parent.field.items._ui.title}}"
+      tooltip="{{'GENERIC.Remove' | translate}} {{$parent.field.items._ui.title}}"
       tooltip-trigger
       tooltip-animation="false"
       tooltip-placement="top"
