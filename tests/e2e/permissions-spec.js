@@ -71,9 +71,6 @@ describe('permissions', function () {
 
 
   it("should move a writable folder not owned by current user to a writable folder", function () {
-    workspacePage.logout();
-    workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
-
     // create source and target shared folders
     var sourceFolder = createFolder('Source');
     var targetFolder = createFolder('Target');
@@ -141,6 +138,7 @@ describe('permissions', function () {
   });
 
 
+  // TODO include toasty and sweetAlert modals in workspace-page, and shift these functions to the page
   function deleteResource (name, type) {
     workspacePage.selectResource(name, type);
     workspacePage.createTrashButton().click();
