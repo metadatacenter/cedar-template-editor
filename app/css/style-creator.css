@@ -11617,7 +11617,7 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   bottom: 50%;
   height: 1px;
   width: 15px;
-  top: 16px;
+  top: 10px;
 }
 .template-body form .runtime .leader.isActive {
   top: 20px;
