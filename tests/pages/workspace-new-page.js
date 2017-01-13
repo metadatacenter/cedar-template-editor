@@ -377,6 +377,7 @@ var WorkspacePage = function () {
 
 
   this.logout = function () {
+    browser.sleep(1000);
     var createUserDropdownButton = this.createUserDropdownButton();
     browser.wait(EC.visibilityOf(createUserDropdownButton));
     browser.wait(EC.elementToBeClickable(createUserDropdownButton));
@@ -401,18 +402,27 @@ var WorkspacePage = function () {
 
   this.shareResource = function (name, type, username, canWrite) {
     this.selectResource(name, type);
-    this.createMoreOptionsButton().click();
+
+    var optionsButton = this.createMoreOptionsButton();
+    browser.wait(EC.visibilityOf(optionsButton));
+    browser.wait(EC.elementToBeClickable(optionsButton));
+    optionsButton.click();
+
     var shareMenuItem = this.createShareMenuItem();
+    browser.wait(EC.visibilityOf(shareMenuItem));
     browser.wait(EC.elementToBeClickable(shareMenuItem));
     shareMenuItem.click();
 
     var usernameField = this.createShareModalUserName();
+    browser.wait(EC.visibilityOf(usernameField));
     usernameField.sendKeys(username);
     browser.actions().sendKeys(protractor.Key.ENTER).perform();
 
     if (canWrite) {
       var permissionsList = this.createShareModalPermissions();
+      browser.wait(EC.elementToBeClickable(permissionsList));
       permissionsList.click();
+      browser.wait(EC.elementToBeClickable(this.createShareModalWritePermission()));
       this.createShareModalWritePermission().click();
     }
 
@@ -427,16 +437,6 @@ var WorkspacePage = function () {
     browser.wait(EC.elementToBeClickable(doneButton)).then(function () {
       doneButton.click();
     });
-  };
-
-
-  this.deleteResource = function (name, type) {
-    this.selectResource(name, type);
-    this.createTrashButton().click();
-    sweetAlertModal.confirm();
-    toastyModal.isSuccess();
-    browser.sleep(1000);
-    this.clickLogo();
   };
 
 
