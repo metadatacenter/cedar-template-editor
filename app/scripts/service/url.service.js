@@ -145,6 +145,10 @@ define([
       return this.resourceBase() + "/search";
     };
 
+    service.sharedWithMe = function () {
+      return this.resourceBase() + "/view/shared-with-me";
+    };
+
     service.facets = function () {
       return this.resourceBase() + "/facets";
     };
@@ -209,6 +213,17 @@ define([
       return biosampleService + '/validate';
     };
 
+    service.getMyWorkspace = function () {
+      return '/dashboard';
+    };
+
+    service.getSearchAll = function (folderId) {
+      return '/dashboard?search=&folderId=' + folderId;
+    };
+
+    service.getSharedWithMe = function (folderId) {
+      return '/dashboard?sharing=shared-with-me&folderId=' + folderId;
+    };
 
     return service;
   };

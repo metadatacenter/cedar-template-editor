@@ -53,7 +53,7 @@ define([
             'GENERIC.Warning',
             'AUTHORIZATION-ERROR.suggestedAction.requestRole',
             'GENERIC.Ok',
-            errorResponse.data.errorParams
+            errorResponse.data.parameters
         );
         return true;
       }
@@ -75,7 +75,7 @@ define([
         //console.log("Original backend call failed:");
         //console.log(err);
         if ("data" in err && err.data !== null) {
-          if (err.data.errorSubType == "authException") {
+          if (err.data.errorType == "authorization") {
             var handled = owner.handleAuthException(err);
             if (handled) {
               return;
