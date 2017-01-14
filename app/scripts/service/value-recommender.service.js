@@ -4,9 +4,11 @@ define(['angular'], function (angular) {
   angular.module('cedar.templateEditor.service.valueRecommenderService', [])
       .service('ValueRecommenderService', ValueRecommenderService);
 
-  ValueRecommenderService.$inject = ['$rootScope', '$http', 'DataManipulationService', '$translate', 'UrlService', 'UIMessageService'];
+  ValueRecommenderService.$inject = ['$rootScope', 'DataManipulationService', '$translate', 'UrlService',
+                                     'UIMessageService', 'AuthorizedBackendService', 'HttpBuilderService'];
 
-  function ValueRecommenderService($rootScope, $http, DataManipulationService, $translate, UrlService, UIMessageService) {
+  function ValueRecommenderService($rootScope, DataManipulationService, $translate, UrlService,
+                                   UIMessageService, AuthorizedBackendService, HttpBuilderService) {
 
     var http_default_config = {};
     var isValueRecommendationEnabled = false;
@@ -37,13 +39,13 @@ define(['angular'], function (angular) {
         }
       };
       // Set isValueRecommendationEnabled using the templateId
-      service.hasInstances(templateId).then(function(results) {
+      service.hasInstances(templateId).then(function (results) {
         hasInstances = results;
         //isValueRecommendationEnabled = results;
         //if (results == true)
         //  UIMessageService.flashSuccess($translate.instant('VALUERECOMMENDER.enabled'), null, $translate.instant('GENERIC.GoodNews'));
       });
-    }
+    };
 
     /**
      * Getters and Setters
@@ -56,7 +58,7 @@ define(['angular'], function (angular) {
         return false;
       }
       //return isValueRecommendationEnabled;
-    }
+    };
 
     service.getValueRecommendationResults = function (fieldId) {
       if (angular.isUndefined(valueRecommendationResults[fieldId])) {
@@ -65,10 +67,7 @@ define(['angular'], function (angular) {
       else {
         return valueRecommendationResults[fieldId];
       }
-
-
-
-    }
+    };
 
     /**
      * Service methods.
@@ -77,14 +76,14 @@ define(['angular'], function (angular) {
       var fieldId = field['@id'];
       if (value) {
         populatedFields[fieldId] = {
-          "path": field._path,
+          "path" : field._path,
           "value": value
         }
       }
       else {
         delete populatedFields[fieldId];
       }
-    }
+    };
 
     // Returns all populated fields (name and value) except excludedFieldId, which is the field that is being filled out
     service.getRelevantPopulatedFields = function (excludedFieldId) {
@@ -100,48 +99,52 @@ define(['angular'], function (angular) {
         });
       }
       return relevantPopulatedFieldsArray;
-    }
+    };
 
     service.updateValueRecommendationResults = function (field) {
       var fieldId = field['@id'];
       var targetFieldPath = field._path;
       service.getRecommendation(targetFieldPath, service.getRelevantPopulatedFields(fieldId)).then(function (recommendation) {
-        if (recommendation.recommendedValues && recommendation.recommendedValues.length == 0) {
-          recommendation.recommendedValues.push({
-            'value': $translate.instant('VALUERECOMMENDER.noResults'),
-            'score': undefined
-          })
-        }
+            if (recommendation.recommendedValues && recommendation.recommendedValues.length == 0) {
+              recommendation.recommendedValues.push({
+                'value': $translate.instant('VALUERECOMMENDER.noResults'),
+                'score': undefined
+              })
+            }
 
-        var recommendedLabels = [];
-        for (var i=0; i < recommendation.recommendedValues.length; i++) {
-          recommendedLabels.push(recommendation.recommendedValues[i].value.toLowerCase());
-        }
+            var recommendedLabels = [];
+            for (var i = 0; i < recommendation.recommendedValues.length; i++) {
+              recommendedLabels.push(recommendation.recommendedValues[i].value.toLowerCase());
+            }
 
-        // Add the list of controlled terms to the recommendation results (if any)
-        var controlledTerms = $rootScope.autocompleteResultsCache[fieldId]['results'];
-        for (var i=0; i < controlledTerms.length; i++) {
-          // Check if the ontology term has been already recommended or not
-          if ($.inArray(controlledTerms[i].label.toLowerCase(), recommendedLabels) == -1) {
-            recommendation.recommendedValues.push({
-              'value'   : controlledTerms[i].label,
-              'valueUri': controlledTerms[i]['@id'],
-              'score'   : undefined
-            });
+            // Add the list of controlled terms to the recommendation results (if any)
+            var controlledTerms = $rootScope.autocompleteResultsCache[fieldId]['results'];
+            for (var i = 0; i < controlledTerms.length; i++) {
+              // Check if the ontology term has been already recommended or not
+              if ($.inArray(controlledTerms[i].label.toLowerCase(), recommendedLabels) == -1) {
+                recommendation.recommendedValues.push({
+                  'value'   : controlledTerms[i].label,
+                  'valueUri': controlledTerms[i]['@id'],
+                  'score'   : undefined
+                });
+              }
+            }
+            valueRecommendationResults[fieldId] = recommendation.recommendedValues;
+          });
+    };
+
+    service.hasInstances = function (templateId) {
+      return AuthorizedBackendService.doCall(
+          HttpBuilderService.get(UrlService.hasInstances(templateId)),
+          function (response) {
+            return response.data;
+          },
+          function (err) {
+            //UIMessageService.showBackendError($translate.instant('VALUERECOMMENDER.errorCallingService'), err);
+            console.log($translate.instant('VALUERECOMMENDER.errorCallingService'));
           }
-        }
-        valueRecommendationResults[fieldId] = recommendation.recommendedValues;
-      });
-    }
-
-    service.hasInstances = function(templateId) {
-      return $http.get(UrlService.hasInstances(templateId), http_default_config).then(function (response) {
-        return response.data;
-      }).catch(function (err) {
-        //UIMessageService.showBackendError($translate.instant('VALUERECOMMENDER.errorCallingService'), err);
-        console.log($translate.instant('VALUERECOMMENDER.errorCallingService'));
-      });
-    }
+      );
+    };
 
     // Invoke the Value Recommender service
     service.getRecommendation = function (targetFieldPath, populatedFields) {
@@ -151,11 +154,16 @@ define(['angular'], function (angular) {
       }
       inputData['templateId'] = templateId;
       inputData['targetField'] = {'path': targetFieldPath};
-      return $http.post(UrlService.getValueRecommendation(), inputData, http_default_config).then(function (response) {
-        return response.data;
-      }).catch(function (err) {
-        UIMessageService.showBackendError($translate.instant('VALUERECOMMENDER.errorCallingService'), err);
-      });
+
+      return AuthorizedBackendService.doCall(
+          HttpBuilderService.post(UrlService.getValueRecommendation(), angular.toJson(inputData)),
+          function (response) {
+            return response.data;
+          },
+          function (err) {
+            UIMessageService.showBackendError($translate.instant('VALUERECOMMENDER.errorCallingService'), err);
+          }
+      );
     };
 
     /**

@@ -139,35 +139,35 @@ define([
           }
           bioportalSearch(vm.searchQuery, sources, maxResults, searchClasses, searchValues,
               searchValueSets).then(function (response) {
-                if (response.collection && response.collection.length > 0) {
-                  var tArry = [], i;
-                  for (var i = 0; i < response.collection.length; i += 1) {
-                    var source = null;
-                    if (response.collection[i].type == "OntologyClass") {
-                      source = controlledTermDataService.getOntologyByLdId(response.collection[i].source);
-                    }
-                    else if (response.collection[i].type == "Value" || response.collection[i].type == "ValueSet") {
-                      source = controlledTermDataService.getVsCollectionByLdId(response.collection[i].source);
-                    }
-                    // Ignore results for which the ontology or value set collection was not found in the cache
-                    if (source) {
-                      tArry.push({
-                        resultId : i,
-                        prefLabel: response.collection[i].prefLabel,
-                        details  : response.collection[i],
-                        source   : source
-                      });
-                    }
-                  }
-                  vm.searchResults = tArry;
-                  vm.resultsFound = true;
-                } else {
-                  vm.resultsFound = false;
+            if (response.collection && response.collection.length > 0) {
+              var tArry = [], i;
+              for (var i = 0; i < response.collection.length; i += 1) {
+                var source = null;
+                if (response.collection[i].type == "OntologyClass") {
+                  source = controlledTermDataService.getOntologyByLdId(response.collection[i].source);
                 }
-                // Hide 'Searching...' message
-                vm.showSearchPreloader = false;
-                endSearch();
-              });
+                else if (response.collection[i].type == "Value" || response.collection[i].type == "ValueSet") {
+                  source = controlledTermDataService.getVsCollectionByLdId(response.collection[i].source);
+                }
+                // Ignore results for which the ontology or value set collection was not found in the cache
+                if (source) {
+                  tArry.push({
+                    resultId : i,
+                    prefLabel: response.collection[i].prefLabel,
+                    details  : response.collection[i],
+                    source   : source
+                  });
+                }
+              }
+              vm.searchResults = tArry;
+              vm.resultsFound = true;
+            } else {
+              vm.resultsFound = false;
+            }
+            // Hide 'Searching...' message
+            vm.showSearchPreloader = false;
+            endSearch();
+          });
         }
         else {
           vm.showEmptyQueryMsg = true;
@@ -266,35 +266,35 @@ define([
        */
 
       function isFieldTypesMode() {
-        return vm.searchMode == 'field' ? true : false;
+        return vm.searchMode == 'field';
       }
 
       function isFieldValuesMode() {
-        return vm.searchMode == 'values' ? true : false;
+        return vm.searchMode == 'values';
       }
 
       function isSearching() {
-        return (vm.action == 'search') ? true : false;
+        return (vm.action == 'search');
       }
 
       function isSearchingClasses() {
-        return (vm.action == 'search' && vm.searchScope == 'classes') ? true : false;
+        return (vm.action == 'search' && vm.searchScope == 'classes');
       }
 
       function isSearchingOntologies() {
-        return (vm.action == 'search' && vm.searchScope == 'ontologies') ? true : false;
+        return (vm.action == 'search' && vm.searchScope == 'ontologies');
       }
 
       function isSearchingValueSets() {
-        return (vm.action == 'search' && vm.searchScope == 'value-sets') ? true : false;
+        return (vm.action == 'search' && vm.searchScope == 'value-sets');
       }
 
       function isCreating() {
-        return (vm.action == 'create') ? true : false;
+        return (vm.action == 'create');
       }
 
       function isEmptySearchQuery() {
-        return (vm.searchQuery == '' || vm.searchQuery == null) ? true : false;
+        return (vm.searchQuery == '' || vm.searchQuery == null);
       }
 
       /**
@@ -431,7 +431,7 @@ define([
         vm.treeVisible = false;
         vm.currentOntology = '';
         vm.classDetails = '';
-      };
+      }
 
       /**
        * Watch functions
