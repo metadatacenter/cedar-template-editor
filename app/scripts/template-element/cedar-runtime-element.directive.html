@@ -16,7 +16,7 @@
 
         <div ng-if="!isActive" class="left-tick"></div>
 
-        <div class="row isInactive" ng-click="toggleExpanded(i)">
+        <div class="row isInactive" ng-click="toggleExpanded(i);addElement()">
           <div class="col-sm-10">
 
             <button type="button" ng-click="toggleExpanded(i)"
@@ -25,19 +25,15 @@
             </button>
             <a class="element title" ng-class="{'isInactive' : isInactive(i)}">{{getTitle()}}</a>
           </div>
-          <div class="col-sm-2 ">
-
-
-          <span ng-if="$root.isArray(model)">
-            <button type="button"
-                ng-click="addElement()"
-                class="add pull-right">
-              <i style="font-size:1.5em;line-height:normal" class="fa fa-plus-circle"></i>
-            </button>
-          </span>
-
-
-          </div>
+          <!--<div class="col-sm-2 ">-->
+          <!--<span ng-if="$root.isArray(model)">-->
+          <!--<button type="button"-->
+          <!--ng-click="addElement()"-->
+          <!--class="add pull-right">-->
+          <!--<i style="font-size:1.5em;line-height:normal" class="fa fa-plus-circle"></i>-->
+          <!--</button>-->
+          <!--</span>-->
+          <!--</div>-->
         </div>
       </div>
     </div>
@@ -67,21 +63,33 @@
           <div class="col-sm-2 ">
 
 
-        <span ng-if="$root.isArray(model)">
+            <div class="toolbar" style="padding-right:7px">
+        <span ng-if="$root.isArray(model) && isExpanded(i)">
           <button type="button"
               ng-click="removeElement(i)"
-              class="remove pull-right">
-            <i style="font-size:1.5em;line-height:normal" class="fa fa-times-circle"></i>
+              class="remove pull-right"
+              tooltip="{{'GENERIC.Remove' | translate}}"
+              tooltip-trigger
+              tooltip-animation="false"
+              tooltip-placement="top"
+              data-toggle="tooltip">
+            <i class="fa fa-trash"></i>
           </button>
         </span>
 
-          <span ng-if="$root.isArray(model)">
+          <span ng-if="$root.isArray(model) && isExpanded(i)">
             <button type="button"
                 ng-click="addElement()"
-                class="add pull-right">
-              <i style="font-size:1.5em;line-height:normal" class="fa fa-plus-circle"></i>
+                class="add pull-right"
+                tooltip="{{'GENERIC.Add' | translate}}"
+                tooltip-trigger
+                tooltip-animation="false"
+                tooltip-placement="top"
+                data-toggle="tooltip">
+              <i class="fa fa-plus-circle"></i>
             </button>
           </span>
+            </div>
 
 
           </div>

@@ -11563,6 +11563,10 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
 === Runtime Form
 ================================================
 */
+.template-body form .runtime {
+  line-height: 1.8em;
+  font-size: 1.0em;
+}
 .template-body form .runtime .active-container {
   border-left: 1px solid #f0f0f0;
   position: relative;
@@ -11604,6 +11608,9 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   width: 15px;
   top: 1.2em;
   left: -16px;
+}
+.template-body form .runtime .toolbar {
+  padding: 5px 22px 5px 0;
 }
 .template-body form .runtime .answer {
   border: 1px solid transparent;
@@ -11683,10 +11690,10 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   color: #aaa;
   font-size: 1.6em;
   margin-left: -12px;
-  margin-top: -4px;
+  margin-top: -2px;
 }
 .template-body form .runtime button.add {
-  color: #5795ba;
+  color: #ff8c00;
 }
 .template-body form .runtime button.remove {
   color: #999;
@@ -11766,10 +11773,6 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   margin-top: 0px;
   background: transparent;
   min-height: 10px;
-}
-.template-body form .runtime .field-root .toolbar {
-  padding: 5px 0;
-  padding-right: 22px;
 }
 .template-body form .runtime .field-root .add {
   color: #ff8c00;

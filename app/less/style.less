@@ -2738,6 +2738,9 @@ section.dashboard-elements {
 */
 .template-body form .runtime {
 
+  line-height:1.8em;
+  font-size:1.0em;
+
   .active-container {
     border-left:1px solid #f0f0f0;position:relative;right:0;background:#f0f0f0;
   }
@@ -2781,6 +2784,10 @@ section.dashboard-elements {
     width: 15px;
     top: 1.2em;
     left: -16px;
+  }
+
+  .toolbar {
+    padding:5px 22px 5px 0;
   }
 
   .answer {
@@ -2876,11 +2883,11 @@ section.dashboard-elements {
       color: #aaa;
       font-size: 1.6em;
       margin-left: -12px;
-      margin-top: -4px;
+      margin-top: -2px;
     }
 
     &.add {
-      color: @brand-primary;
+      color: @brand-accent;
     }
     &.remove {
       color: #999;
@@ -2957,6 +2964,7 @@ section.dashboard-elements {
     }
 
     .element {
+
       &.expand {
         border-left:1px solid #aaa;
       }
@@ -2987,10 +2995,7 @@ section.dashboard-elements {
     background: transparent;
     min-height: 10px;
 
-    .toolbar {
-      padding:5px 0;
-      padding-right:22px;
-    }
+
 
     .add {
       color: @brand-accent;
