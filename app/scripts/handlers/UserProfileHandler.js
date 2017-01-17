@@ -15,19 +15,12 @@ function UserProfileHandler() {
 
   this.loadUrlServiceConf = function (userId, success) {
     var service = this;
-    if (window.__karma__) {
-      //service.usersUrl = 'https://user.metadatacenter.orgx/users';
-      service.usersUrl = '/users';
+    jQuery.get('config/url-service.conf.json', function (urlConfigData) {
+      service.usersUrl = urlConfigData.userRestAPI + '/users';
       service.userUrl = service.usersUrl + '/' + userId;
+      service.foldersUrl = urlConfigData.resourceRestAPI + '/folders';
       success();
-    } else {
-      jQuery.get('config/url-service.conf.json', function (urlConfigData) {
-        service.usersUrl = urlConfigData.userRestAPI + '/users';
-        service.userUrl = service.usersUrl + '/' + userId;
-        service.foldersUrl = urlConfigData.resourceRestAPI + '/folders';
-        success();
-      });
-    }
+    });
   };
 
   this.userProfileLoadedDoCallback = function (userData) {
