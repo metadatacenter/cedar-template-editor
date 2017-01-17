@@ -441,9 +441,9 @@ define([
           }
 
           function init() {
-            console.log("SearchAndBrowse.init()");
-            console.log(vm.params);
-            console.log($location.search());
+            //console.log("SearchAndBrowse.init()");
+            //console.log(vm.params);
+            //console.log($location.search());
             vm.isSearching = false;
             if (vm.params.sharing) {
               if (vm.params.sharing == 'shared-with-me') {
@@ -508,7 +508,7 @@ define([
           }
 
           function doSharedWithMe() {
-            console.log("DO shared with me");
+            //console.log("DO shared with me");
             var resourceTypes = activeResourceTypes();
             var limit = UISettingsService.getRequestLimit();
             vm.offset = 0;

@@ -105,6 +105,10 @@ define([
       return terminologyService;
     };
 
+    service.controlledTerm = function () {
+      return terminologyService + "/bioportal";
+    };
+
     service.valueRecommender = function () {
       return valueRecommenderService;
     };
@@ -206,7 +210,7 @@ define([
     };
 
     service.getGroupMembers = function (id) {
-      return  this.getGroups() +  '/' + encodeURIComponent(id)  + "/users";
+      return this.getGroups() + '/' + encodeURIComponent(id) + "/users";
     };
 
     service.biosampleValidation = function (instance) {
@@ -225,7 +229,143 @@ define([
       return '/dashboard?sharing=shared-with-me&folderId=' + folderId;
     };
 
+    service.getOntologies = function () {
+      return this.controlledTerm() + "/ontologies";
+    };
+
+    service.getValueSetsCollections = function () {
+      return this.controlledTerm() + "/vs-collections";
+    };
+
+    service.getValueSetsCache = function () {
+      return this.controlledTerm() + "/value-sets";
+    };
+
+    service.getRootClasses = function (ontology) {
+      return this.controlledTerm() + "/ontologies/" + ontology + "/classes/roots";
+    };
+
+    service.getClassById = function (acronym, classId) {
+      return this.controlledTerm() + '/ontologies/' + acronym + '/classes/' + encodeURIComponent(classId);
+    };
+
+    service.getValueTree = function (vsId, vsCollection) {
+      return this.controlledTerm() + '/vs-collections/' + vsCollection + '/values/' + encodeURIComponent(vsId)
+          + "/tree";
+    };
+
+    service.getValueSetTree = function (valueId, vsCollection) {
+      return this.controlledTerm() + '/vs-collections/' + vsCollection + '/value-sets/' + encodeURIComponent(valueId)
+          + "/tree";
+    };
+
+    service.getAllValuesInValueSetByValue = function (valueId, vsCollection) {
+      return this.controlledTerm() + '/vs-collections/' + vsCollection + '/values/' + encodeURIComponent(valueId)
+          + "/all-values?page=1&pageSize=1000";
+    };
+
+    service.getClassChildren = function (acronym, classId) {
+      return this.controlledTerm() + '/ontologies/' + acronym + '/classes/' + encodeURIComponent(classId)
+          + "/children?page=1&pageSize=1000";
+    };
+
+    service.getClassDescendants = function (acronym, classId) {
+      return this.controlledTerm() + '/ontologies/' + acronym + '/classes/' + encodeURIComponent(classId)
+          + "/descendants?page=1&pageSize=1000";
+    };
+
+    service.getClassById = function (acronym, classId) {
+      return this.controlledTerm() + '/ontologies/' + acronym + '/classes/' + encodeURIComponent(classId);
+    };
+
+    service.getValueById = function (acronym, valueId) {
+      return this.controlledTerm() + '/vs-collections/' + acronym + '/values/' + encodeURIComponent(valueId);
+    };
+
+    service.getClassParents = function (acronym, classId) {
+      return this.controlledTerm() + '/ontologies/' + acronym + '/classes/' + encodeURIComponent(classId)
+          + '/parents?include=hasChildren,prefLabel';
+    };
+
+    service.getClassTree = function (acronym, classId) {
+      return this.controlledTerm() + '/ontologies/' + acronym + '/classes/' + encodeURIComponent(classId) + '/tree';
+    };
+
+    service.getValuesInValueSet = function (vsCollection, vsId) {
+      return this.controlledTerm() + '/vs-collections/' + vsCollection + '/value-sets/' + encodeURIComponent(vsId)
+          + "/values";
+    };
+
+    service.searchClasses = function (query, sources, size) {
+      var url = this.controlledTerm() + "/search?q=" + encodeURIComponent(query)
+          + "&scope=classes" + "&page=1&page_size=" + size;
+      if (sources) {
+        url += "&sources=" + sources;
+      }
+      return url;
+    };
+
+    service.searchClassesAndValues = function (query, sources, size) {
+      var url = this.controlledTerm() + "/search?q=" + encodeURIComponent(query)
+          + "&scope=classes,values" + "&page=1&page_size=" + size;
+      if (sources) {
+        url += "&sources=" + sources;
+      }
+      return url;
+    };
+
+    service.searchClassesValueSetsAndValues = function (query, sources, size) {
+      var url = this.controlledTerm() + "/search?q=" + encodeURIComponent(query) +
+          "&scope=all" + "&page=1&page_size=" + size;
+      if (sources) {
+        url += "&sources=" + sources;
+      }
+      return url;
+    };
+
+    service.searchValueSetsAndValues = function (query, sources, size) {
+      var url = this.controlledTerm() + "/search?q=" + encodeURIComponent(query) +
+          "&scope=value_sets,values" + "&page=1&page_size=" + size;
+      if (sources) {
+        url += "&sources=" + sources;
+      }
+      return url;
+    };
+
+    service.searchValueSets = function (query, sources, size) {
+      var url = this.controlledTerm() + "/search?q=" + encodeURIComponent(query) +
+          "&scope=value_sets" + "&page=1&page_size=" + size
+      if (sources) {
+        url += "&sources=" + sources;
+      }
+      return url;
+    };
+
+    service.autocompleteOntology = function (query, acronym) {
+      var url = this.controlledTerm();
+      if (query == '*') {
+        url += "/ontologies/" + acronym + "/classes?page=1&page_size=500";
+      } else {
+        url += "/search?q=" + encodeURIComponent(query) +
+            "&scope=classes&sources=" + acronym + "&suggest=true&page=1&page_size=500";
+      }
+      return url;
+    };
+
+    service.autocompleteOntologySubtree = function (query, acronym, subtree_root_id, max_depth) {
+      var url = this.controlledTerm();
+      if (query == '*') {
+        url += '/ontologies/' + acronym + '/classes/' + encodeURIComponent(subtree_root_id)
+            + '/descendants?page=1&page_size=500';
+      } else {
+        url = '/search?q=' + encodeURIComponent(query) + '&scope=classes' + '&source=' + acronym +
+            '&subtree_root_id=' + encodeURIComponent(subtree_root_id) + '&max_depth=' + max_depth +
+            "&suggest=true&page=1&page_size=500";
+      }
+      return url;
+    };
+
     return service;
-  };
+  }
 
 });
