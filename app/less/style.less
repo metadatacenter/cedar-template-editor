@@ -2739,7 +2739,7 @@ section.dashboard-elements {
 .template-body form .runtime {
 
   .active-container {
-    border-left:1px solid #f0f0f0;;position:relative;right:0;background:#f0f0f0;
+    border-left:1px solid #f0f0f0;position:relative;right:0;background:#f0f0f0;
   }
 
   .flagpole {
@@ -2749,6 +2749,10 @@ section.dashboard-elements {
     position: absolute;
     top: 0;
     left: -1px;
+    &.down {
+      top:12px;
+      height:18px;
+    }
   }
 
   &.page {
@@ -2779,14 +2783,62 @@ section.dashboard-elements {
     left: -16px;
   }
 
+  .answer {
+    border:1px solid transparent;
+    font-size:1.2em;
+    cursor:pointer;
+    line-height: 20px;
+    min-height:25px;
+    padding-top:2px;
+    padding-bottom:2px;
+    margin-bottom:2px;
+  }
+
+  @media (max-width: @screen-sm-min) {
+    .answer {
+      margin-left:20px;
+      margin-right:5px;
+    }
+  }
+
+  .row.isActive {
+    .answer {
+      border:1px solid #ccc;
+    }
+  }
+
+  .isRowInactive:hover {
+    .answer {
+      border:1px solid #ccc;
+    }
+    .value {
+      font-weight:bold !important;
+    }
+    .title {
+      font-weight:bold !important;
+    }
+  }
+
   .title {
-    font-size: 1.5em;
+    font-size: 1.3em;
     font-family: "Source Sans Pro", sans-serif;
-    font-weight: lighter;
+    font-weight: 200;
+    border:1px solid transparent;
+    line-height: 20px;
+    color:#666;
+    &:hover {
+      font-weight:bold;
+    }
+    &.element {
+      color:#71977F;
+    }
+    &.form {
+      color:@brand-primary;
+    }
   }
-  .value {
-    cursor:pointer;font-size: 1.2em;line-height: 28px;
-  }
+
+
+
   .leader {
     background-color: #aaa;
     position: relative;
@@ -2797,12 +2849,17 @@ section.dashboard-elements {
     &.isActive {
       top: 20px;
     }
+    &.zero {
+      left:-15px;
+    }
   }
 
   button {
     vertical-align: middle;
 
     background-color: transparent;
+
+
     &.goaway {
       position: absolute;
       top: 0;
@@ -2819,7 +2876,7 @@ section.dashboard-elements {
       color: #aaa;
       font-size: 1.6em;
       margin-left: -12px;
-      margin-top: -1px;
+      margin-top: -4px;
     }
 
     &.add {
@@ -2841,17 +2898,17 @@ section.dashboard-elements {
   }
 
   .btn.btn-save.active {
-    margin: 50px 0;
+    margin: 20px 0;
     background-color: @button-template;
     color: @white;
-    font-size: 1.8em;
+    font-size: 1em;
     outline:none;
     &:hover {
       background-color: @hover-template;
     }
   }
   label.submit-info {
-    font-size:1.2em;
+    font-size:1em;
     padding-left:10px;
     color: @brand-primary;
   }
@@ -2882,22 +2939,41 @@ section.dashboard-elements {
       .element-title {
         margin-left: 20px;
         margin-bottom: 0px;
-        font-size: 1.3em;
+        font-size: 1em;
       }
     }
   }
 
   .element-root {
 
+    .left-tick {
+      background-color: #aaa;
+      position: relative;
+      bottom: 50%;
+      height: 1px;
+      width: 15px;
+      top: 12px;
+      left: -16px;
+    }
+
     .element {
       &.expand {
         border-left:1px solid #aaa;
-
-
-
       }
       &.collapse {
+      }
 
+
+
+      .row.isInactive {
+        &:hover {
+          cursor:pointer;
+          .title {
+            font-weight:bold;
+
+          }
+
+        }
       }
     }
   }
@@ -2912,7 +2988,7 @@ section.dashboard-elements {
     min-height: 10px;
 
     .toolbar {
-      padding-top:12px;
+      padding:5px 0;
       padding-right:22px;
     }
 
@@ -2925,26 +3001,25 @@ section.dashboard-elements {
     }
 
     .title {
-      color: #333;
-      font-weight: lighter;
-      font-family: "Source Sans Pro", sans-serif;
+      color: #666;
+      font-weight: 200;
+      font-family: "Helvetica Neue Light", sans-serif;
+      font-size: 1em;
       padding-left: 20px;
-      font-size: 1.2em;
       cursor:pointer;
-
       .count {
         font-size:smaller
+      }
+      &.isActive {
+        font-weight:bold;
       }
     }
 
     .row.isActive {
-      padding-bottom: 50px;
+      padding-bottom: 5px;
 
 
       .title {
-        font-size: 2.5em;
-        padding-left: 0px;
-        color: green;
 
         &.remove {
           color: #999;
@@ -2974,8 +3049,7 @@ section.dashboard-elements {
 
       &.isActive {
         border: 1px dashed #888;
-        height: 50px;
-        font-size: 20px;
+
       }
     }
 

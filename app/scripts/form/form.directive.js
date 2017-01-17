@@ -518,6 +518,7 @@ define([
         };
 
         $scope.nextChild = function (fieldOrElement) {
+          console.log('nextChild');
 
           var id = DataManipulationService.getId(fieldOrElement);
           var selectedKey;
@@ -530,6 +531,8 @@ define([
               selectedKey = key;
             }
           });
+
+          console.log(selectedKey);
 
           if (selectedKey) {
             var idx = $scope.form._ui.order.indexOf(selectedKey);
@@ -544,8 +547,10 @@ define([
             }
 
             if (found) {
+              console.log('found' + DataManipulationService.getId(next));
               $rootScope.$broadcast("setActive", [DataManipulationService.getId(next), 0,  $scope.path, true]);
             } else {
+              console.log('not found')
               $rootScope.$broadcast("setActive", [id, 0,  $scope.path, false]);
             }
           }

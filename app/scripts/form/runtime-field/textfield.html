@@ -1,16 +1,16 @@
 
 <!--- not active --->
-<div ng-if="!isActive(index)" class="form-group  has-feedback value">
+<div ng-if="!isActive(index)" class="form-group  has-feedback value"  >
 
   <div ng-if="isRegular()"
       ng-click="setActive(index,true)"
       aria-label="{{getDescription(field)}}"
-      class="isInactive">{{valueElement['@value']}}</div>
+      class="isInactive ">{{valueElement['@value']}}</div>
 
   <div ng-if="!isRegular()"
       ng-click="setActive(index,true)"
       aria-label="{{getDescription(field)}}"
-      class="isInactive">{{valueElement['_valueLabel']}}</div>
+      class="isInactive ">{{valueElement['_valueLabel']}}</div>
 
 </div>
 

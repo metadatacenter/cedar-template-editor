@@ -11577,6 +11577,10 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   top: 0;
   left: -1px;
 }
+.template-body form .runtime .flagpole.down {
+  top: 12px;
+  height: 18px;
+}
 .template-body form .runtime.page {
   margin-top: 100px;
   margin-bottom: 100px;
@@ -11601,15 +11605,50 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   top: 1.2em;
   left: -16px;
 }
-.template-body form .runtime .title {
-  font-size: 1.5em;
-  font-family: "Source Sans Pro", sans-serif;
-  font-weight: lighter;
-}
-.template-body form .runtime .value {
-  cursor: pointer;
+.template-body form .runtime .answer {
+  border: 1px solid transparent;
   font-size: 1.2em;
-  line-height: 28px;
+  cursor: pointer;
+  line-height: 20px;
+  min-height: 25px;
+  padding-top: 2px;
+  padding-bottom: 2px;
+  margin-bottom: 2px;
+}
+@media (max-width: 768px) {
+  .template-body form .runtime .answer {
+    margin-left: 20px;
+    margin-right: 5px;
+  }
+}
+.template-body form .runtime .row.isActive .answer {
+  border: 1px solid #ccc;
+}
+.template-body form .runtime .isRowInactive:hover .answer {
+  border: 1px solid #ccc;
+}
+.template-body form .runtime .isRowInactive:hover .value {
+  font-weight: bold !important;
+}
+.template-body form .runtime .isRowInactive:hover .title {
+  font-weight: bold !important;
+}
+.template-body form .runtime .title {
+  font-size: 1.3em;
+  font-family: "Source Sans Pro", sans-serif;
+  font-weight: 200;
+  border: 1px solid transparent;
+  line-height: 20px;
+  color: #666;
+}
+.template-body form .runtime .title:hover {
+  font-weight: bold;
+}
+.template-body form .runtime .title.element {
+  color: #71977F;
+}
+.template-body form .runtime .title.form {
+  color: #5795ba;
 }
 .template-body form .runtime .leader {
   background-color: #aaa;
@@ -11621,6 +11660,9 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
 }
 .template-body form .runtime .leader.isActive {
   top: 20px;
+}
+.template-body form .runtime .leader.zero {
+  left: -15px;
 }
 .template-body form .runtime button {
   vertical-align: middle;
@@ -11641,7 +11683,7 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   color: #aaa;
   font-size: 1.6em;
   margin-left: -12px;
-  margin-top: -1px;
+  margin-top: -4px;
 }
 .template-body form .runtime button.add {
   color: #5795ba;
@@ -11657,17 +11699,17 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   color: rgba(87, 149, 186, 0.35);
 }
 .template-body form .runtime .btn.btn-save.active {
-  margin: 50px 0;
+  margin: 20px 0;
   background-color: #5097A5;
   color: #ffffff;
-  font-size: 1.8em;
+  font-size: 1em;
   outline: none;
 }
 .template-body form .runtime .btn.btn-save.active:hover {
   background-color: #2f7dab;
 }
 .template-body form .runtime label.submit-info {
-  font-size: 1.2em;
+  font-size: 1em;
   padding-left: 10px;
   color: #5795ba;
 }
@@ -11697,10 +11739,25 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
 .template-body form .runtime .element-group .nested-element .element-title {
   margin-left: 20px;
   margin-bottom: 0px;
-  font-size: 1.3em;
+  font-size: 1em;
+}
+.template-body form .runtime .element-root .left-tick {
+  background-color: #aaa;
+  position: relative;
+  bottom: 50%;
+  height: 1px;
+  width: 15px;
+  top: 12px;
+  left: -16px;
 }
 .template-body form .runtime .element-root .element.expand {
   border-left: 1px solid #aaa;
+}
+.template-body form .runtime .element-root .element .row.isInactive:hover {
+  cursor: pointer;
+}
+.template-body form .runtime .element-root .element .row.isInactive:hover .title {
+  font-weight: bold;
 }
 .template-body form .runtime .field-root {
   padding: 0px;
@@ -11711,7 +11768,7 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   min-height: 10px;
 }
 .template-body form .runtime .field-root .toolbar {
-  padding-top: 12px;
+  padding: 5px 0;
   padding-right: 22px;
 }
 .template-body form .runtime .field-root .add {
@@ -11721,23 +11778,21 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   color: #5795ba;
 }
 .template-body form .runtime .field-root .title {
-  color: #333;
-  font-weight: lighter;
-  font-family: "Source Sans Pro", sans-serif;
+  color: #666;
+  font-weight: 200;
+  font-family: "Helvetica Neue Light", sans-serif;
+  font-size: 1em;
   padding-left: 20px;
-  font-size: 1.2em;
   cursor: pointer;
 }
 .template-body form .runtime .field-root .title .count {
   font-size: smaller;
 }
-.template-body form .runtime .field-root .row.isActive {
-  padding-bottom: 50px;
+.template-body form .runtime .field-root .title.isActive {
+  font-weight: bold;
 }
-.template-body form .runtime .field-root .row.isActive .title {
-  font-size: 2.5em;
-  padding-left: 0px;
-  color: green;
+.template-body form .runtime .field-root .row.isActive {
+  padding-bottom: 5px;
 }
 .template-body form .runtime .field-root .row.isActive .title.remove {
   color: #999;
@@ -11761,8 +11816,6 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
 }
 .template-body form .runtime .field-root input.isActive {
   border: 1px dashed #888;
-  height: 50px;
-  font-size: 20px;
 }
 .template-body form .runtime .field-root select {
   border-width: 0px;

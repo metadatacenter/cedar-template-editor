@@ -372,6 +372,11 @@ define([
         }
       });
 
+      scope.addMoreInput = function () {
+        console.log('addMoreInput');
+        scope.addElement();
+      };
+
 
 
       scope.setActive = function (index, value) {

@@ -149,6 +149,7 @@ define([
 
       // add more instances to a multiple cardinality field if possible
       $scope.addMoreInput = function () {
+        console.log('addMoreInput');
         var maxItems = DataManipulationService.getMaxItems($scope.field);
         if ((!maxItems || $scope.model.length < maxItems)) {
 
@@ -340,24 +341,30 @@ define([
 
       // turn the nesting into a px amount
       $scope.getNestingStyle = function () {
-        return (-16 * ($scope.getNestingCount() - 1) - 1) + 'px';
+        return (-16 * ($scope.getNestingCount() - 2) - 1) + 'px';
       };
 
       // submit this edit
       $scope.onSubmit = function (index) {
+        console.log('onSubmit ' + index);
 
         if ($scope.isActive(index)) {
 
           // go to next index
           if ($scope.isMultipleCardinality() && (index + 1 < $scope.model.length)) {
+            console.log('setActive ' + (index+1));
             $scope.setActive(index + 1, true);
 
           } else {
+
+
 
             // or go to parent's next field
             $scope.$parent.nextChild($scope.field, index, $scope.path);
 
           }
+        } else {
+          console.log("error: not active")
         }
       };
 
