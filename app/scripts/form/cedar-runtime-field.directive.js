@@ -28,6 +28,8 @@ define([
       $scope.data = {
         model: null
       };
+      $scope.multipleStates = ['expanded', 'paged', 'spreadsheet'];
+      $scope.multipleState = $scope.multipleStates[1];
 
 
       // get the field title
@@ -451,6 +453,17 @@ define([
       };
 
 
+      $scope.showMultiple = function (state) {
+        return ($scope.multipleState === state);
+      };
+
+      $scope.toggleMultiple = function () {
+        var index = $scope.multipleStates.indexOf($scope.multipleState);
+        index = (index == $scope.multipleStates.length) ? 0: index++;
+        $scope.multipleState = $scope.multipleStates[index];
+        return  $scope.multipleState;
+      };
+
       $scope.isRecommended = function () {
         return $rootScope.vrs.getIsValueRecommendationEnabled($rootScope.schemaOf($scope.field));
       };
@@ -640,6 +653,8 @@ define([
         $scope.$emit("invalidFieldState", [action, title, id]);
 
       });
+
+
 
 
     };
