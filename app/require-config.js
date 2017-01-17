@@ -78,7 +78,7 @@ require.config({
   deps    : window.__karma__ ? allTestFiles : [],
   callback: window.__karma__ ? window.__karma__.start : null,
   baseUrl : window.__karma__ ? '/base' : '',
-  urlArgs: "bust=0.8.3"
+  urlArgs : "bust=0.8.3"
 });
 
 // do not load the full app here.
@@ -119,13 +119,7 @@ require([
       alert("There was an error initializing the application!");
     }
 
-    if (window.__karma__) {
-      // use this for unauthorized access during development
-      window.bootstrapUserHandler = new NoauthUserHandler();
-    } else {
-      // use this for live servers
-      window.bootstrapUserHandler = new KeycloakUserHandler();
-    }
+    window.bootstrapUserHandler = new KeycloakUserHandler();
     window.bootstrapUserHandler.initUserHandler(successInitUserHandler, failInitUserHandler);
   });
 
