@@ -484,6 +484,10 @@ define([
         return ($scope.multipleState === state);
       };
 
+      $scope.cardinalityString = function () {
+        return DataManipulationService.cardinalityString($scope.field);
+      };
+
       $scope.toggleMultiple = function () {
         var index = $scope.multipleStates.indexOf($scope.multipleState);
         index = (index + 1) % $scope.multipleStates.length;

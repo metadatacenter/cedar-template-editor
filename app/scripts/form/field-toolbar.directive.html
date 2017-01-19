@@ -1,0 +1,48 @@
+<div class=" toolbar">
+
+  <button type="button" class="remove pull-right" ng-click="remove(index)"
+      ng-if="model.length > field.minItems"
+      tooltip="{{'GENERIC.Remove' | translate}}"
+      tooltip-trigger
+      tooltip-animation="false"
+      tooltip-placement="top"
+      data-toggle="tooltip">
+    <i class="fa fa-trash"></i>
+  </button>
+
+  <button type="button" class=" remove pull-right"
+      ng-if="isActive(index)"
+      tooltip="{{'GENERIC.Close' | translate}}"
+      ng-click="setActive(index, false)">
+    <i class="fa fa-remove "></i>
+  </button>
+
+  <button ng-if="description(field).length > 0" type="button" class=" question  pull-right"
+      tooltip="{{(description(field) || 'GENERIC.Help') | translate}}"
+      tooltip-trigger
+      tooltip-animation="true"
+      tooltip-placement="top"
+      data-toggle="tooltip">
+    <i class="fa fa-question-circle"></i>
+  </button>
+
+  <button type="button" class=" add  pull-right" ng-click="add()"
+      ng-if="isMultiple() && (!field.maxItems || model.length < field.maxItems )"
+      tooltip="{{'GENERIC.Add' | translate}}"
+      tooltip-trigger
+      tooltip-animation="false"
+      tooltip-placement="top"
+      data-toggle="tooltip">
+    <i class="fa fa-plus-circle"></i>
+  </button>
+
+  <button ng-if="isMultiple()" type="button" class=" remove pull-right"
+      ng-if="isActive(index)"
+      tooltip="Page {{cardinality()}}"
+      ng-click="toggle()">
+
+    <i ng-if="paged" class="fa fa-toggle-on "></i>
+    <i ng-if="expanded" class="fa fa-toggle-off "></i>
+  </button>
+
+</div>

@@ -18,6 +18,7 @@ define([
   'cedar/template-editor/form/constrained-value.directive',
   'cedar/template-editor/form/recommended-value.directive',
   'cedar/template-editor/form/cedar-pager.directive',
+  'cedar/template-editor/form/field-toolbar.directive',
   'cedar/template-editor/search-browse/cedar-infinite-scroll.directive'
 ], function(angular) {
   angular.module('cedar.templateEditor.form', [
@@ -37,6 +38,7 @@ define([
     'cedar.templateEditor.form.constrainedValue',
     'cedar.templateEditor.form.recommendedValue',
     'cedar.templateEditor.form.cedarPager',
+    'cedar.templateEditor.form.fieldToolbar',
     'cedar.templateEditor.searchBrowse.cedarInfiniteScrollDirective'
   ]);
 });

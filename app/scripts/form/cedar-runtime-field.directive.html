@@ -19,14 +19,14 @@
       </div>
 
 
-      <div ng-if="showMultiple('spreadsheet')">
-      <div class="spreadsheetViewDetector"></div>
-      <div class="spreadsheetViewContainer"></div>
-      </div>
+      <!--<div ng-if="showMultiple('spreadsheet')">-->
+        <!--<div class="spreadsheetViewDetector"></div>-->
+        <!--<div class="spreadsheetViewContainer"></div>-->
+      <!--</div>-->
 
 
       <!-- show a paged list of fields from the valueArray -->
-      <div ng-if="showMultiple('paged') && valueArray.length > 0" ng-model="index">
+      <div ng-if="showMultiple('paged') && valueArray.length > 0">
 
         <!-- inactive,not being edited at the moment -->
         <div class="row isRowInactive" ng-if="!isActive(index)" id="{{getLocator(index)}}">
@@ -35,7 +35,7 @@
 
             <div ng-click="setActive(index, true)" class="title isInactive" ng-mouseenter="hover=true"
                 ng-mouseleave="hover=false">
-              {{getTitle(field)}}
+              {{getTitle(field)}} {{path}}
             </div>
 
           </div>
@@ -52,6 +52,7 @@
 
             <div class="title isActive">
               <span ng-if="isMultipleCardinality()" style="font-size:smaller;padding-right:5px;">{{index+1}}.</span>{{getTitle(field)}}
+              {{path}}
             </div>
 
           </div>
@@ -59,56 +60,16 @@
 
             <div class="row">
 
-              <!-- pager -->
-              <cedar-pager  values="valueArray" index="index" min="pageMin" max="pageMax" select="selectPage" range="pageRange"  class="col-xs-8 " >
+              <cedar-pager values="valueArray" index="index" min="pageMin" max="pageMax" select="selectPage"
+                  range="pageRange" class="col-xs-8 ">
               </cedar-pager>
 
-              <!-- toolbar-->
-              <div class="col-xs-4  pull-right toolbar">
-                <button type="button" class="remove pull-right" ng-click="removeInput(index)"
-                    ng-if="model.length > field.minItems"
-                    tooltip="{{'GENERIC.Remove' | translate}}"
-                    tooltip-trigger
-                    tooltip-animation="false"
-                    tooltip-placement="top"
-                    data-toggle="tooltip">
-                  <i class="fa fa-trash"></i>
-                </button>
+              <field-toolbar class="col-xs-4 col-sm-4 pull-right " model="model" field="field" index="index"
+                  remove="removeInput" add="addMoreInput" is-active="isActive" set-active="setActive"
+                  description="getDescription" toggle="toggleMultiple" paged="showMultiple('paged')"
+                  expanded="showMultiple('expanded')" cardinality="cardinalityString"
+                  is-multiple="isMultipleCardinality"></field-toolbar>
 
-                <button type="button" class=" remove pull-right"
-                    ng-if="isActive(index)"
-                    tooltip="{{'GENERIC.Close' | translate}}"
-                    ng-click="setActive(index, false)">
-                  <i class="fa fa-remove "></i>
-                </button>
-
-                <button ng-if="getDescription(field).length > 0" type="button" class=" question  pull-right"
-                    tooltip="{{(getDescription(field) || 'GENERIC.Help') | translate}}"
-                    tooltip-trigger
-                    tooltip-animation="true"
-                    tooltip-placement="top"
-                    data-toggle="tooltip">
-                  <i class="fa fa-question-circle"></i>
-                </button>
-
-                <button type="button" class=" add  pull-right" ng-click="addMoreInput();$event.stopPropagation()"
-                    ng-if="isMultipleCardinality() && (!field.maxItems || model.length < field.maxItems )"
-                    tooltip="{{'GENERIC.Add' | translate}}"
-                    tooltip-trigger
-                    tooltip-animation="false"
-                    tooltip-placement="top"
-                    data-toggle="tooltip">
-                  <i class="fa fa-plus-circle"></i>
-                </button>
-
-                <button ng-if="isMultipleCardinality()" type="button" class=" remove pull-right"
-                    ng-if="isActive(index)"
-                    tooltip="Page"
-                    ng-click="toggleMultiple()">
-                  <i ng-if="showMultiple('paged')" class="fa fa-toggle-on "></i>
-                  <i ng-if="showMultiple('expanded')" class="fa fa-toggle-off "></i>
-                </button>
-              </div>
             </div>
 
             <form name="field-edit-form-{{index}}" ng-submit="onSubmit(index)">
@@ -121,7 +82,6 @@
         </div>
       </div>
 
-
       <!-- show an expanded list of fields from the valueArray -->
       <div ng-if="showMultiple('expanded')" ng-repeat="(index, valueElement) in valueArray">
 
@@ -133,7 +93,7 @@
             <div ng-click="setActive(index, true)" class="title isInactive" ng-mouseenter="hover=true"
                 ng-mouseleave="hover=false">
 
-              <span ng-if="isMultipleCardinality()" style="font-size:smaller;padding-right:5px;">{{index+1}}.</span>{{getTitle(field)}}
+              <span ng-if="isMultipleCardinality()" style="font-size:smaller;padding-right:5px;">{{index+1}}.</span>{{getTitle(field)}} {{path}}
             </div>
 
           </div>
@@ -149,61 +109,18 @@
             <div class="leader"></div>
 
             <div class="title isActive">
-              <span ng-if="isMultipleCardinality()" style="font-size:smaller;padding-right:5px;">{{index+1}}.</span>{{getTitle(field)}}
+              <span ng-if="isMultipleCardinality()" style="font-size:smaller;padding-right:5px;">{{index+1}}.</span>{{getTitle(field)}} {{path}}
             </div>
 
           </div>
           <div class="col-sm-9 answer">
 
             <div class="row">
-              <div class="col-xs-4 col-sm-4 pull-right toolbar">
-
-                <button type="button" class="remove pull-right" ng-click="removeInput(index)"
-                    ng-if="model.length > field.minItems"
-                    tooltip="{{'GENERIC.Remove' | translate}}"
-                    tooltip-trigger
-                    tooltip-animation="false"
-                    tooltip-placement="top"
-                    data-toggle="tooltip">
-                  <i class="fa fa-trash"></i>
-                </button>
-
-                <button type="button" class=" remove pull-right"
-                    ng-if="isActive(index)"
-                    tooltip="{{'GENERIC.Close' | translate}}"
-                    ng-click="setActive(index, false)">
-                  <i class="fa fa-remove "></i>
-                </button>
-
-                <button ng-if="getDescription(field).length > 0" type="button" class=" question  pull-right"
-                    tooltip="{{(getDescription(field) || 'GENERIC.Help') | translate}}"
-                    tooltip-trigger
-                    tooltip-animation="true"
-                    tooltip-placement="top"
-                    data-toggle="tooltip">
-                  <i class="fa fa-question-circle"></i>
-                </button>
-
-                <button type="button" class=" add  pull-right" ng-click="addMoreInput()"
-                    ng-if="isMultipleCardinality() && (!field.maxItems || model.length < field.maxItems )"
-                    tooltip="{{'GENERIC.Add' | translate}}"
-                    tooltip-trigger
-                    tooltip-animation="false"
-                    tooltip-placement="top"
-                    data-toggle="tooltip">
-                  <i class="fa fa-plus-circle"></i>
-                </button>
-
-                <button ng-if="isMultipleCardinality()" type="button" class=" remove pull-right"
-                    ng-if="isActive(index)"
-                    tooltip="Page"
-                    ng-click="toggleMultiple()">
-
-                  <i ng-if="showMultiple('paged')" class="fa fa-toggle-on "></i>
-                  <i ng-if="showMultiple('expanded')" class="fa fa-toggle-off "></i>
-                </button>
-
-              </div>
+              <field-toolbar class="col-xs-4 col-sm-4 pull-right " model="model" field="field" index="index"
+                  remove="removeInput" add="addMoreInput" is-active="isActive" set-active="setActive"
+                  description="getDescription" toggle="toggleMultiple" paged="showMultiple('paged')"
+                  expanded="showMultiple('expanded')" cardinality="cardinalityString"
+                  is-multiple="isMultipleCardinality"></field-toolbar>
             </div>
 
 
@@ -215,7 +132,6 @@
                 </figure>
               </div>
             </div>
-
 
             <form name="field-edit-form-{{index}}" ng-submit="onSubmit(index)">
               <div class="originalContent" ng-include="getFieldUrl()"></div>

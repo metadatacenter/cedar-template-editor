@@ -1,0 +1,51 @@
+<div class="toolbar" style="padding-right:7px;">
+
+   <span ng-if="$root.isArray(model)">
+       <button type="button"
+           ng-click="remove(index)"
+           class="remove pull-right"
+           tooltip="{{'GENERIC.Remove' | translate}}"
+           tooltip-trigger
+           tooltip-animation="false"
+           tooltip-placement="top"
+           data-toggle="tooltip">
+         <i class="fa fa-trash"></i>
+       </button>
+        </span>
+
+  <button type="button" class=" remove pull-right"
+      ng-if="isActive(index)"
+      tooltip="{{'GENERIC.Close' | translate}}"
+      ng-click="setActive(index, false)">
+    <i class="fa fa-remove "></i>
+  </button>
+
+    <span ng-if="$root.isArray(model)">
+       <button type="button"
+           ng-click="add()"
+           class="add pull-right"
+           tooltip="{{'GENERIC.Add' | translate}}"
+           tooltip-trigger
+           tooltip-animation="false"
+           tooltip-placement="top"
+           data-toggle="tooltip">
+         <i class="fa fa-plus-circle"></i>
+       </button>
+          </span>
+
+
+  <button ng-if="$root.isArray(model)" type="button" class=" remove pull-right"
+      ng-if="isActive(index)"
+      tooltip="Page {{cardinality()}}"
+      ng-click="toggle()">
+    <i ng-if="paged" class="fa fa-toggle-on "></i>
+    <i ng-if="expanded" class="fa fa-toggle-off "></i>
+  </button>
+
+
+</div>
+
+
+
+
+

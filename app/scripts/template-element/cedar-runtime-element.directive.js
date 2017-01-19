@@ -110,7 +110,7 @@ define([
             }
           }
         });
-      }
+      };
 
 
       scope.isInactive = function (index) {
@@ -127,7 +127,7 @@ define([
 
       scope.getNestingMargin = function () {
         return 'margin-left: ' + 15 + 'px';
-      }
+      };
 
       scope.getNesting = function () {
 
@@ -160,6 +160,9 @@ define([
         return DataManipulationService.getFieldSchema(scope.element)._ui.title;
       };
 
+
+
+
       scope.addElement = function () {
 
         if ((!scope.element.maxItems || scope.model.length < scope.element.maxItems)) {
@@ -170,6 +173,7 @@ define([
             seed = angular.copy(scope.model[0]);
             resetElement(seed, scope.element);
             scope.model.push(seed);
+
 
           } else {
 
@@ -305,11 +309,16 @@ define([
             }
           });
         }
-      }
+      };
 
       scope.isMultiple = function () {
         return $rootScope.isArray(scope.model);
       };
+
+      scope.cardinalityString = function () {
+        return DataManipulationService.cardinalityString(scope.element);
+      };
+
 
       // allows us to look a the model as an array
       scope.valueArray;
@@ -384,9 +393,7 @@ define([
         scope.pageMin = Math.max(0, scope.pageMax - scope.pageRange);
       };
 
-      scope.selectPage = function (i) {
-        scope.setActive(i, true);
-      };
+
 
       scope.addMoreInput = function () {
         scope.addElement();
@@ -394,15 +401,17 @@ define([
       };
 
       scope.setActive = function (index, value) {
+        console.log('setActive ' + index + ' '  + value);
         DataManipulationService.setActive(scope.element, index, scope.path, value);
-        if (value) {
+        //if (value) {
           scope.index = index;
           scope.pageMinMax();
-        }
+        //}
       };
 
       scope.selectPage = function (i) {
-        scope.setActive(scope.index, i);
+        console.log('selectPage' + i);
+        scope.setActive(i, true);
       };
 
       scope.showMultiple = function (state) {
@@ -410,9 +419,9 @@ define([
       };
 
       scope.toggleMultiple = function () {
-        var index = scope.multipleStates.indexOf(scope.multipleState);
-        index = (index + 1) % scope.multipleStates.length;
-        scope.multipleState = scope.multipleStates[index];
+        var i = scope.multipleStates.indexOf(scope.multipleState);
+        i = (i + 1) % scope.multipleStates.length;
+        scope.multipleState = scope.multipleStates[i];
         return scope.multipleState;
       };
 

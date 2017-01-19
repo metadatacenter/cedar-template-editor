@@ -1,5 +1,5 @@
-<div  style="font-size:smaller;padding-top:6px;user-select:none;">
-  {{index}}
+<div  style="font-size:14px;padding-top:6px;user-select:none;">
+
   <a ng-click="firstPage();$event.stopPropagation()">
     <i class="fa fa-angle-double-left"></i>
   </a>
@@ -10,8 +10,8 @@
   <span ng-repeat="(i, valueElement) in values">
     <a ng-if="i >= min && i <= max" ng-click="select(i);">
 
-      <span ng-if="i===index" style="font-weight:bold">{{i+1}}</span>
-      <span ng-if="i!==index" style="font-size:small">{{i+1}}</span>
+      <span ng-if="i===index" style="font-size:larger;font-weight:bold">{{i+1}}</span>
+      <span ng-if="i!==index" >{{i+1}}</span>
     </a>
    </span>
 

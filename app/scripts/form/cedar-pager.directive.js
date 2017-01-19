@@ -18,24 +18,28 @@ define([
 
 
       $scope.nextPage = function () {
+        console.log('nextPage');
         if ($scope.index + 1 < $scope.values.length) {
           $scope.select($scope.index + 1);
         }
       };
 
       $scope.previousPage = function () {
+        console.log('previousPage');
         if ($scope.index > 0) {
           $scope.select($scope.index - 1);
         }
       };
 
       $scope.firstPage = function () {
+        console.log('firstPage');
         if ($scope.index > 0) {
           $scope.select(0);
         }
       };
 
       $scope.lastPage = function () {
+        console.log('lastPage');
         var last = $scope.values.length;
         if ($scope.index !== last - 1) {
           $scope.select(last - 1);

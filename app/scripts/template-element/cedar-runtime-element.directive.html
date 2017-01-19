@@ -1,16 +1,17 @@
 <div ng-if="model !== undefined" class="item-root element-root"
     style="{{getNestingMargin(element, 0)}}">
 
+
   <div class="elementTotalContent ">
-    <div ng-show="$root.isArray(model)">
-      <div class="spreadsheetViewDetector"></div>
-      <div class="spreadsheetViewContainer"></div>
-    </div>
+
+    <!--<div ng-show="$root.isArray(model)">-->
+      <!--<div class="spreadsheetViewDetector"></div>-->
+      <!--<div class="spreadsheetViewContainer"></div>-->
+    <!--</div>-->
 
     <!-- for zero cardinality just show the element title because the valueArray is empty  -->
     <div ng-if="valueArray.length == 0">
-      <div class="element" id="{{getLocator(i)}}" class='element-{{i}}' ng-class="{'expand' : isExpanded(i)}"
-          style="position:relative">
+      <div class="element " id="{{getLocator(i)}}" style="position:relative">
         <div class="flagpole"></div>
 
         <div ng-if="!isActive" class="left-tick"></div>
@@ -29,83 +30,48 @@
     </div>
 
     <!-- a paged list of elements -->
-    <div ng-if="showMultiple('paged') && valueArray.length > 0" ng-init="i=index;valueElement=valueArray[index]">
+    <div ng-if="showMultiple('paged') && valueArray.length > 0">
+      {{index}} {{valueArray}}
 
-      <div class="element" id="{{getLocator(i)}}" class='element-{{i}}' ng-class="{'expand' : isExpanded(i)}"
-          style="position:relative">
+      <div class="element expand" id="{{getLocator(index)}}" style="position:relative">
         <div class="flagpole"></div>
 
         <div ng-if="!isActive" class="left-tick"></div>
 
-        <div class="row isInactive" ng-click="toggleExpanded(i)">
+        <div class="row isInactive">
           <div class="col-sm-6">
 
-            <button type="button" ng-click="toggleExpanded(i)"
-                ng-class="{'xxx' : isExpanded(i), 'expand' : !isExpanded(i)}">
-              <i ng-class="{'fa fa-caret-down ' : isExpanded(i), 'fa fa-caret-right ' : !isExpanded(i)}"></i>
+            <button type="button" class="xxx">
+              <i class="fa fa-caret-down"></i>
             </button>
 
-            <span ng-if="valueArray.length-1" class="count">{{i+1}}.</span>
-            <a class="element title" ng-class="{'isInactive' : isInactive(i)}">{{getTitle()}}</a>
+            <span ng-if="valueArray.length-1" class="count">{{index+1}}.</span>
+            <a class="element title" ng-class="{'isInactive' : isInactive(index)}">{{getTitle()}}</a>
           </div>
 
-            <cedar-pager  values="valueArray" index="index" min="pageMin" max="pageMax" select="selectPage" range="pageRange"  class="col-xs-4 " >
-            </cedar-pager>
+          <cedar-pager values="valueArray" index="index" min="pageMin" max="pageMax" select="selectPage"
+              range="pageRange" class="col-xs-4 " >
+          </cedar-pager>
 
+          <element-toolbar class="col-xs-2 "  model="model" index="index"
+              remove="removeElement" add="addElement" active="isActive" toggle="toggleMultiple"
+              paged="showMultiple('paged')" expanded="showMultiple('expanded')" cardinality="cardinalityString">
+          </element-toolbar>
 
-          <div class="col-sm-2 ">
-            <div class="toolbar" style="padding-right:7px">
-        <span ng-if="$root.isArray(model) && isExpanded(i)">
-          <button type="button"
-              ng-click="removeElement(i)"
-              class="remove pull-right"
-              tooltip="{{'GENERIC.Remove' | translate}}"
-              tooltip-trigger
-              tooltip-animation="false"
-              tooltip-placement="top"
-              data-toggle="tooltip">
-            <i class="fa fa-trash"></i>
-          </button>
-        </span>
-
-          <span ng-if="$root.isArray(model) && isExpanded(i)">
-            <button type="button"
-                ng-click="addElement()"
-                class="add pull-right"
-                tooltip="{{'GENERIC.Add' | translate}}"
-                tooltip-trigger
-                tooltip-animation="false"
-                tooltip-placement="top"
-                data-toggle="tooltip">
-              <i class="fa fa-plus-circle"></i>
-            </button>
-          </span>
-
-              <button ng-if="$root.isArray(model)" type="button" class=" remove pull-right"
-                  ng-if="isActive(i)"
-                  tooltip="Page"
-                  ng-click="toggleMultiple()">
-
-                <i ng-if="showMultiple('paged')" class="fa fa-toggle-on "></i>
-                <i ng-if="showMultiple('expanded')" class="fa fa-toggle-off "></i>
-              </button>
-            </div>
-          </div>
         </div>
 
-        <div ng-if="isExpanded(i)" ui-sortable="$root.sortableOptions" ng-model="$root.schemaOf(element)._ui.order"
+        <div ui-sortable="$root.sortableOptions" ng-model="$root.schemaOf(element)._ui.order"
             class="sortable-container">
           <div ng-repeat="key in $root.schemaOf(element)['_ui']['order']">
             <div ng-if="$root.propertiesOf(element)[key]">
               <cedar-runtime-nested-element key="key"
                   field="$root.propertiesOf(element)[key]"
-                  model="valueElement[key]"
+                  model="valueArray[index][key]"
                   remove-child="removeChild"
                   rename-child-key="renameChildKey"
                   is-edit-data="isEditData"
                   depth="depth+1"
-                  path="path+'-'+i"
-                  index="i">
+                  path="path+'-'+index">
               </cedar-runtime-nested-element>
             </div>
           </div>
@@ -129,55 +95,19 @@
                 ng-class="{'xxx' : isExpanded(i), 'expand' : !isExpanded(i)}">
               <i ng-class="{'fa fa-caret-down ' : isExpanded(i), 'fa fa-caret-right ' : !isExpanded(i)}"></i>
             </button>
-            <!--<span ng-repeat="nest in getNesting()" >-->
-            <!--<span ng-if="!isActive" class="down-tick"   style="{{getNestingStyle(nest)}}"></span>-->
-            <!--</span>-->
+
             <span ng-if="valueArray.length-1" class="count">{{i+1}}.</span>
             <a class="element title" ng-class="{'isInactive' : isInactive(i)}">{{getTitle()}}</a>
           </div>
-          <div class="col-sm-2 ">
 
 
-            <div class="toolbar" style="padding-right:7px">
-        <span ng-if="$root.isArray(model) && isExpanded(i)">
-          <button type="button"
-              ng-click="removeElement(i)"
-              class="remove pull-right"
-              tooltip="{{'GENERIC.Remove' | translate}}"
-              tooltip-trigger
-              tooltip-animation="false"
-              tooltip-placement="top"
-              data-toggle="tooltip">
-            <i class="fa fa-trash"></i>
-          </button>
-        </span>
-
-          <span ng-if="$root.isArray(model) && isExpanded(i)">
-            <button type="button"
-                ng-click="addElement()"
-                class="add pull-right"
-                tooltip="{{'GENERIC.Add' | translate}}"
-                tooltip-trigger
-                tooltip-animation="false"
-                tooltip-placement="top"
-                data-toggle="tooltip">
-              <i class="fa fa-plus-circle"></i>
-            </button>
-          </span>
-
-              <span ng-if="$root.isArray(model) && isExpanded(i)">
-              <button  type="button" class=" remove pull-right"
-                  tooltip="Page"
-                  ng-click="toggleMultiple()">
-
-                <i ng-if="showMultiple('paged')" class="fa fa-toggle-on "></i>
-                <i ng-if="showMultiple('expanded')" class="fa fa-toggle-off "></i>
-              </button>
-                </span>
-            </div>
+          <element-toolbar ng-if="isExpanded(i)" class="col-xs-2"  model="model"
+              index="index"
+              remove="removeElement" add="addElement" is-active="isActive" set-active="setActive" toggle="toggleMultiple"
+              paged="showMultiple('paged')" expanded="showMultiple('expanded')"  cardinality="cardinalityString">
+          </element-toolbar>
 
 
-          </div>
         </div>
 
         <div ng-if="isExpanded(i)" ui-sortable="$root.sortableOptions" ng-model="$root.schemaOf(element)._ui.order"
