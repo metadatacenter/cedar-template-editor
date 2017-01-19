@@ -34,6 +34,11 @@ define([
       scope.elementId = DataManipulationService.idOf(scope.element) || DataManipulationService.generateGUID();
       scope.uuid = DataManipulationService.generateTempGUID();
       scope.expanded = [];
+      scope.multipleStates = ['expanded', 'paged'];
+      scope.multipleState = scope.multipleStates[0];
+      scope.index = 0;
+      scope.pageMin = 0;
+      scope.pageMax = 0;
 
 
       var resetElement = function (el, settings) {
@@ -372,17 +377,79 @@ define([
         }
       });
 
+      var pageMinMax = function () {
+
+        scope.pageMax = Math.min(scope.model.length, scope.index + 10);
+        scope.pageMin = Math.max(0, scope.pageMax - 10);
+        console.log('pageMinMax ' + scope.pageMin + ' ' + scope.pageMax);
+      };
+
       scope.addMoreInput = function () {
         console.log('addMoreInput');
         scope.addElement();
+        pageMinMax();
       };
 
 
 
       scope.setActive = function (index, value) {
         DataManipulationService.setActive(scope.element, index, scope.path, value);
+        if (value) {
+          scope.index = index;
+          pageMinMax();
+        }
 
       };
+
+      scope.showMultiple = function (state) {
+        console.log('showMultiple' + (scope.multipleState === state));
+        return (scope.multipleState === state);
+      };
+
+      scope.toggleMultiple = function () {
+        var index = scope.multipleStates.indexOf(scope.multipleState);
+        index = (index + 1) % scope.multipleStates.length;
+        scope.multipleState = scope.multipleStates[index];
+        return scope.multipleState;
+      };
+
+
+
+      scope.nextPage = function () {
+        if (scope.index + 1 < scope.model.length) {
+          $scope.setActive(scope.index, scope.index + 1);
+          pageMinMax();
+        }
+      };
+
+      scope.previousPage = function () {
+        if (scope.index > 0) {
+          scope.setActive(scope.index, scope.index - 1);
+          pageMinMax();
+        }
+      };
+
+      scope.firstPage = function () {
+        if (scope.index > 0) {
+          scope.setActive(scope.index, 0);
+          pageMinMax();
+        }
+      };
+
+      scope.lastPage = function () {
+        var last = scope.valueArray.length;
+        if (scope.index !== last-1) {
+          scope.setActive(scope.index, last-1);
+          pageMinMax();
+        }
+      };
+
+      scope.selectPage = function (i) {
+        scope.setActive(scope.index, i);
+        pageMinMax();
+      };
+
+
     }
   };
 

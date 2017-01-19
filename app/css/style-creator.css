@@ -11563,6 +11563,10 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
 === Runtime Form
 ================================================
 */
+.template-body form .runtime {
+  line-height: 1.8em;
+  font-size: 1.1em;
+}
 .template-body form .runtime .active-container {
   border-left: 1px solid #f0f0f0;
   position: relative;
@@ -11686,7 +11690,7 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   color: #aaa;
   font-size: 1.6em;
   margin-left: -12px;
-  margin-top: -2px;
+  margin-top: -4px;
 }
 .template-body form .runtime button.add {
   color: #ff8c00;
@@ -11750,7 +11754,7 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   bottom: 50%;
   height: 1px;
   width: 15px;
-  top: 12px;
+  top: 14px;
   left: -16px;
 }
 .template-body form .runtime .element-root .element.expand {

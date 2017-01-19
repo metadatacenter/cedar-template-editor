@@ -2,15 +2,23 @@
 <!--- not active --->
 <div ng-if="!isActive(index)" class="form-group  has-feedback value"  >
 
-  <div ng-if="isRegular()"
+  <div ng-if="isRegular() && showMultiple('expanded')"
       ng-click="setActive(index,true)"
       aria-label="{{getDescription(field)}}"
-      class="isInactive ">{{valueElement['@value']}}</div>
+      class="isInactive ">{{valueArray[index]['@value']}}</div>
+
+  <div ng-if="isRegular() && showMultiple('paged')"
+      ng-click="setActive(index,true)"
+      aria-label="{{getDescription(field)}}"
+      class="isInactive ">{{getValueString(valueArray)}}
+    </span>
+  </div>
+
 
   <div ng-if="!isRegular()"
       ng-click="setActive(index,true)"
       aria-label="{{getDescription(field)}}"
-      class="isInactive ">{{valueElement['_valueLabel']}}</div>
+      class="isInactive ">{{valueArray[index]['_valueLabel']}}</div>
 
 </div>
 
@@ -26,7 +34,7 @@
         ng-class="{'isActive' : isActive(index), 'required': isRequired()}"
         placeholder="{{isActive(index) ? 'enter answer' : ''}}"
         aria-label="{{getDescription(field)}}"
-        ng-model="valueElement['@value']">
+        ng-model="valueArray[index]['@value']">
     </input>
     <div class="input-indicator-icons" ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
   </div>

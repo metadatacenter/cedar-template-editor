@@ -28,8 +28,11 @@ define([
       $scope.data = {
         model: null
       };
-      $scope.multipleStates = ['expanded', 'paged', 'spreadsheet'];
-      $scope.multipleState = $scope.multipleStates[1];
+      $scope.multipleStates = ['expanded', 'paged'];
+      $scope.multipleState = $scope.multipleStates[0];
+      $scope.index = 0;
+      $scope.pageMin = 0;
+      $scope.pageMax = $scope.model.length;
 
 
       // get the field title
@@ -158,9 +161,51 @@ define([
           // add another instance in the model
           $scope.model.push({'@value': null});
 
+
           // activate the new instance
           $timeout($scope.setActive($scope.model.length - 1, true), 100);
         }
+      };
+
+      var pageMinMax = function () {
+
+        $scope.pageMax = Math.min($scope.model.length, $scope.index + 10);
+        $scope.pageMin = Math.max(0, $scope.pageMax - 10);
+        console.log('pageMinMax ' + $scope.pageMin + ' ' + $scope.pageMax);
+      };
+
+      $scope.nextPage = function () {
+        if ($scope.index + 1 < $scope.model.length) {
+          $scope.onSubmit($scope.index, $scope.index + 1);
+          pageMinMax();
+        }
+      };
+
+      $scope.previousPage = function () {
+        if ($scope.index > 0) {
+          $scope.onSubmit($scope.index, $scope.index - 1);
+          pageMinMax();
+        }
+      };
+
+      $scope.firstPage = function () {
+        if ($scope.index > 0) {
+          $scope.onSubmit($scope.index, 0);
+          pageMinMax();
+        }
+      };
+
+      $scope.lastPage = function () {
+        var last = $scope.valueArray.length;
+        if ($scope.index !== last-1) {
+          $scope.onSubmit($scope.index, last-1);
+          pageMinMax();
+        }
+      };
+
+      $scope.selectPage = function (i) {
+        $scope.onSubmit($scope.index, i);
+        pageMinMax();
       };
 
       // remove the value of field at index
@@ -235,7 +280,7 @@ define([
             }
           }
         }
-        return result;
+        return result.trim().replace(/,\s*$/, "");
       };
 
       // watch for a request to set this field active
@@ -252,13 +297,16 @@ define([
 
       // set this field and index active
       $scope.setActive = function (index, value) {
-
+        console.log('setActive' + index + value + $scope.index);
 
         // off or on
         var active = (typeof value === "undefined") ? true : value;
         var locator = $scope.getLocator(index);
+        var current = DataManipulationService.isActive(locator);
 
-        if (active != DataManipulationService.isActive(locator)) {
+        console.log(locator + ' ' + active + ' ' + current);
+
+        if (active !== current) {
 
 
           // if zero cardinality,  add a new item
@@ -271,6 +319,10 @@ define([
 
           if (active) {
 
+            $scope.index = index;
+            pageMinMax();
+
+
             // scroll it into the center of the screen and listen for shift-enter
             $scope.scrollToLocator(locator, ' .select');
             $document.unbind('keypress');
@@ -281,7 +333,11 @@ define([
           } else {
             // set blur and force a redraw
             jQuery("#" + locator).blur();
-            $scope.$apply();
+
+            setTimeout(function () {
+              $scope.$apply();
+            }, 0);
+
           }
         }
       };
@@ -300,22 +356,26 @@ define([
 
             var window = angular.element($window);
             var windowHeight = $(window).height();
-            var targetTop = $("#" + locator).offset().top;
-            var targetHeight = $("#" + locator).outerHeight(true);
-            var scrollTop = jQuery('.template-container').scrollTop();
-            var newTop = scrollTop + targetTop - ( windowHeight - targetHeight ) / 2;
+            var target = $("#" + locator);
+            if (target) {
+              console.log(locator);
+              var targetTop = target.offset().top;
+              var targetHeight = target.outerHeight(true);
+              var scrollTop = jQuery('.template-container').scrollTop();
+              var newTop = scrollTop + targetTop - ( windowHeight - targetHeight ) / 2;
 
-            console.log('scrollToLocator ' + locator + ' newTop ' + newTop + ' scrollTop ' + scrollTop + ' targetHeight ' + targetHeight + ' targetTop ' + targetTop + ' windowHeight ' + windowHeight);
+              console.log('scrollToLocator ' + locator + ' newTop ' + newTop + ' scrollTop ' + scrollTop + ' targetHeight ' + targetHeight + ' targetTop ' + targetTop + ' windowHeight ' + windowHeight);
 
-            jQuery('.template-container').animate({scrollTop: newTop}, 'fast');
+              jQuery('.template-container').animate({scrollTop: newTop}, 'fast');
 
-            // focus and maybe select the tag
-            if (tag) {
-              var e = jQuery(tag);
-              if (e.length) {
-                e[0].focus();
-                if (!e.is('select')) {
-                  e[0].select();
+              // focus and maybe select the tag
+              if (tag) {
+                var e = jQuery(tag);
+                if (e.length) {
+                  e[0].focus();
+                  if (!e.is('select')) {
+                    e[0].select();
+                  }
                 }
               }
             }
@@ -347,20 +407,18 @@ define([
       };
 
       // submit this edit
-      $scope.onSubmit = function (index) {
-        console.log('onSubmit ' + index);
+      $scope.onSubmit = function (index, next) {
+        console.log('onSubmit ' + index + next);
 
         if ($scope.isActive(index)) {
 
-          // go to next index
-          if ($scope.isMultipleCardinality() && (index + 1 < $scope.model.length)) {
-            console.log('setActive ' + (index+1));
+          if (next != null && $scope.isMultipleCardinality() && (next < $scope.model.length)) {
+            console.log('setActive ' + next);
+            $scope.setActive(next, true);
+          } else if ($scope.isMultipleCardinality() && (index + 1 < $scope.model.length)) {
             $scope.setActive(index + 1, true);
 
           } else {
-
-
-
             // or go to parent's next field
             $scope.$parent.nextChild($scope.field, index, $scope.path);
 
@@ -459,9 +517,9 @@ define([
 
       $scope.toggleMultiple = function () {
         var index = $scope.multipleStates.indexOf($scope.multipleState);
-        index = (index == $scope.multipleStates.length) ? 0: index++;
+        index = (index + 1) % $scope.multipleStates.length;
         $scope.multipleState = $scope.multipleStates[index];
-        return  $scope.multipleState;
+        return $scope.multipleState;
       };
 
       $scope.isRecommended = function () {
@@ -653,8 +711,6 @@ define([
         $scope.$emit("invalidFieldState", [action, title, id]);
 
       });
-
-
 
 
     };

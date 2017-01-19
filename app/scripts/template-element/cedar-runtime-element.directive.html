@@ -25,21 +25,122 @@
             </button>
             <a class="element title" ng-class="{'isInactive' : isInactive(i)}">{{getTitle()}}</a>
           </div>
-          <!--<div class="col-sm-2 ">-->
-          <!--<span ng-if="$root.isArray(model)">-->
-          <!--<button type="button"-->
-          <!--ng-click="addElement()"-->
-          <!--class="add pull-right">-->
-          <!--<i style="font-size:1.5em;line-height:normal" class="fa fa-plus-circle"></i>-->
-          <!--</button>-->
-          <!--</span>-->
-          <!--</div>-->
         </div>
       </div>
     </div>
 
-    <!-- a list of elements -->
-    <div ng-repeat="(i, valueElement) in valueArray">
+    <!-- a paged list of elements -->
+    <div ng-if="showMultiple('paged') && valueArray.length > 0" ng-init="i=index;valueElement=valueArray[index]">
+
+      <div class="element" id="{{getLocator(i)}}" class='element-{{i}}' ng-class="{'expand' : isExpanded(i)}"
+          style="position:relative">
+        <div class="flagpole"></div>
+
+        <div ng-if="!isActive" class="left-tick"></div>
+
+        <div class="row isInactive" ng-click="toggleExpanded(i)">
+          <div class="col-sm-6">
+
+            <button type="button" ng-click="toggleExpanded(i)"
+                ng-class="{'xxx' : isExpanded(i), 'expand' : !isExpanded(i)}">
+              <i ng-class="{'fa fa-caret-down ' : isExpanded(i), 'fa fa-caret-right ' : !isExpanded(i)}"></i>
+            </button>
+            <!--<span ng-repeat="nest in getNesting()" >-->
+            <!--<span ng-if="!isActive" class="down-tick"   style="{{getNestingStyle(nest)}}"></span>-->
+            <!--</span>-->
+            <span ng-if="valueArray.length-1" class="count">{{i+1}}.</span>
+            <a class="element title" ng-class="{'isInactive' : isInactive(i)}">{{getTitle()}}</a>
+          </div>
+
+          <div class="col-sm-4">
+            <!-- pager -->
+            <div class="col-xs-8 " style="font-size:smaller;padding-top:6px;user-select:none;">
+              <a ng-click="firstPage();$event.stopPropagation()">
+                <i class="fa fa-angle-double-left"></i>
+              </a>
+              <a style="padding:0 5px;" ng-if="index>0" ng-click="previousPage();$event.stopPropagation()">
+                <i class="fa fa-angle-left"></i>
+              </a>
+                <span ng-repeat="(i, valueElement) in valueArray">
+                    <a ng-if="i >= pageMin && i <= pageMax"
+                        ng-click="selectPage(i);">
+
+                      <span ng-if="i===index" style="font-weight:bold">{{i+1}}</span>
+                      <span ng-if="i!==index" style="font-size:small">{{i+1}}</span>
+                    </a>
+                  </span>
+              <a style="padding:0 5px;" ng-if="index+1<valueArray.length"
+                  ng-click="nextPage();$event.stopPropagation()">
+                <i class="fa fa-angle-right"></i>
+              </a>
+              <a ng-if="index+1<valueArray.length" ng-click="lastPage();$event.stopPropagation()">
+                <i class="fa fa-angle-double-right"></i>
+              </a>
+            </div>
+          </div>
+
+          <div class="col-sm-2 ">
+            <div class="toolbar" style="padding-right:7px">
+        <span ng-if="$root.isArray(model) && isExpanded(i)">
+          <button type="button"
+              ng-click="removeElement(i)"
+              class="remove pull-right"
+              tooltip="{{'GENERIC.Remove' | translate}}"
+              tooltip-trigger
+              tooltip-animation="false"
+              tooltip-placement="top"
+              data-toggle="tooltip">
+            <i class="fa fa-trash"></i>
+          </button>
+        </span>
+
+          <span ng-if="$root.isArray(model) && isExpanded(i)">
+            <button type="button"
+                ng-click="addElement()"
+                class="add pull-right"
+                tooltip="{{'GENERIC.Add' | translate}}"
+                tooltip-trigger
+                tooltip-animation="false"
+                tooltip-placement="top"
+                data-toggle="tooltip">
+              <i class="fa fa-plus-circle"></i>
+            </button>
+          </span>
+
+              <button ng-if="$root.isArray(model)" type="button" class=" remove pull-right"
+                  ng-if="isActive(i)"
+                  tooltip="Page"
+                  ng-click="toggleMultiple()">
+
+                <i ng-if="showMultiple('paged')" class="fa fa-toggle-on "></i>
+                <i ng-if="showMultiple('expanded')" class="fa fa-toggle-off "></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div ng-if="isExpanded(i)" ui-sortable="$root.sortableOptions" ng-model="$root.schemaOf(element)._ui.order"
+            class="sortable-container">
+          <div ng-repeat="key in $root.schemaOf(element)['_ui']['order']">
+            <div ng-if="$root.propertiesOf(element)[key]">
+              <cedar-runtime-nested-element key="key"
+                  field="$root.propertiesOf(element)[key]"
+                  model="valueElement[key]"
+                  remove-child="removeChild"
+                  rename-child-key="renameChildKey"
+                  is-edit-data="isEditData"
+                  depth="depth+1"
+                  path="path+'-'+i"
+                  index="i">
+              </cedar-runtime-nested-element>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- an expanded list of elements -->
+    <div ng-if="showMultiple('expanded')" ng-repeat="(i, valueElement) in valueArray">
 
       <div class="element" id="{{getLocator(i)}}" class='element-{{i}}' ng-class="{'expand' : isExpanded(i)}"
           style="position:relative">
@@ -89,6 +190,16 @@
               <i class="fa fa-plus-circle"></i>
             </button>
           </span>
+
+              <span ng-if="$root.isArray(model) && isExpanded(i)">
+              <button  type="button" class=" remove pull-right"
+                  tooltip="Page"
+                  ng-click="toggleMultiple()">
+
+                <i ng-if="showMultiple('paged')" class="fa fa-toggle-on "></i>
+                <i ng-if="showMultiple('expanded')" class="fa fa-toggle-off "></i>
+              </button>
+                </span>
             </div>
 
 
