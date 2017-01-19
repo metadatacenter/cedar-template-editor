@@ -1,0 +1,24 @@
+<div  style="font-size:smaller;padding-top:6px;user-select:none;">
+  {{index}}
+  <a ng-click="firstPage();$event.stopPropagation()">
+    <i class="fa fa-angle-double-left"></i>
+  </a>
+  <a style="padding:0 5px;" ng-if="index>0" ng-click="previousPage();$event.stopPropagation()">
+    <i class="fa fa-angle-left"></i>
+  </a>
+
+  <span ng-repeat="(i, valueElement) in values">
+    <a ng-if="i >= min && i <= max" ng-click="select(i);">
+
+      <span ng-if="i===index" style="font-weight:bold">{{i+1}}</span>
+      <span ng-if="i!==index" style="font-size:small">{{i+1}}</span>
+    </a>
+   </span>
+
+  <a style="padding:0 5px;" ng-if="index+1<values.length" ng-click="nextPage();$event.stopPropagation()">
+    <i class="fa fa-angle-right"></i>
+  </a>
+  <a ng-if="index+1<values.length" ng-click="lastPage();$event.stopPropagation()">
+    <i class="fa fa-angle-double-right"></i>
+  </a>
+</div>

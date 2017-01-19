@@ -33,6 +33,7 @@ define([
       $scope.index = 0;
       $scope.pageMin = 0;
       $scope.pageMax = $scope.model.length;
+      $scope.pageRange = 10;
 
 
       // get the field title
@@ -167,45 +168,13 @@ define([
         }
       };
 
-      var pageMinMax = function () {
-
-        $scope.pageMax = Math.min($scope.model.length, $scope.index + 10);
-        $scope.pageMin = Math.max(0, $scope.pageMax - 10);
-        console.log('pageMinMax ' + $scope.pageMin + ' ' + $scope.pageMax);
-      };
-
-      $scope.nextPage = function () {
-        if ($scope.index + 1 < $scope.model.length) {
-          $scope.onSubmit($scope.index, $scope.index + 1);
-          pageMinMax();
-        }
-      };
-
-      $scope.previousPage = function () {
-        if ($scope.index > 0) {
-          $scope.onSubmit($scope.index, $scope.index - 1);
-          pageMinMax();
-        }
-      };
-
-      $scope.firstPage = function () {
-        if ($scope.index > 0) {
-          $scope.onSubmit($scope.index, 0);
-          pageMinMax();
-        }
-      };
-
-      $scope.lastPage = function () {
-        var last = $scope.valueArray.length;
-        if ($scope.index !== last-1) {
-          $scope.onSubmit($scope.index, last-1);
-          pageMinMax();
-        }
+      $scope.pageMinMax = function () {
+        $scope.pageMax = Math.min($scope.valueArray.length, $scope.index + $scope.pageRange);
+        $scope.pageMin = Math.max(0, $scope.pageMax - $scope.pageRange);
       };
 
       $scope.selectPage = function (i) {
         $scope.onSubmit($scope.index, i);
-        pageMinMax();
       };
 
       // remove the value of field at index
@@ -320,7 +289,7 @@ define([
           if (active) {
 
             $scope.index = index;
-            pageMinMax();
+            $scope.pageMinMax();
 
 
             // scroll it into the center of the screen and listen for shift-enter
