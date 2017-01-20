@@ -32,8 +32,8 @@ describe('permissions', function () {
 
   it("should move a folder owned by current user to a writable folder", function () {
     // create source and target folders
-    var sourceFolder = createFolder('Source');
-    var targetFolder = createFolder('Target');
+    var sourceFolder = workspacePage.createFolder('Source');
+    var targetFolder = workspacePage.createFolder('Target');
 
     // move source to target folder
     workspacePage.moveResource(sourceFolder, 'folder');
@@ -41,13 +41,13 @@ describe('permissions', function () {
     toastyModal.isSuccess();
 
     workspacePage.clickLogo();
-    deleteResource(targetFolder, 'folder');
+    workspacePage.deleteResource(targetFolder, 'folder');
   });
 
 
   it("should move a folder owned by current user to an unwritable folder", function () {
     // create a folder to share with another user
-    var sharedFolderTitle = createFolder('Shared');
+    var sharedFolderTitle = workspacePage.createFolder('Shared');
 
     // share folder
     workspacePage.shareResource(sharedFolderTitle, 'folder', testUserName2, false);
@@ -57,7 +57,7 @@ describe('permissions', function () {
     workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
 
     // create a folder to move to the shared folder
-    var folderTitle = createFolder('Source');
+    var folderTitle = workspacePage.createFolder('Source');
 
     // move created folder to shared folder
     workspacePage.moveResource(folderTitle, 'folder');
@@ -66,14 +66,14 @@ describe('permissions', function () {
 
     // delete folder
     workspacePage.clickLogo();
-    deleteResource(folderTitle, 'folder');
+    workspacePage.deleteResource(folderTitle, 'folder');
   });
 
 
   it("should move a writable folder not owned by current user to a writable folder", function () {
     // create source and target shared folders
-    var sourceFolder = createFolder('Source');
-    var targetFolder = createFolder('Target');
+    var sourceFolder = workspacePage.createFolder('Source');
+    var targetFolder = workspacePage.createFolder('Target');
 
     // share both folders
     workspacePage.shareResource(sourceFolder, 'folder', testUserName1, true);
@@ -96,8 +96,8 @@ describe('permissions', function () {
 
   it("should move a writable folder not owned by current user to an unwritable folder", function () {
     // create source and target shared folders
-    var sourceFolder = createFolder('Source');
-    var targetFolder = createFolder('Target');
+    var sourceFolder = workspacePage.createFolder('Source');
+    var targetFolder = workspacePage.createFolder('Target');
 
     workspacePage.shareResource(sourceFolder, 'folder', testUserName2, true);
     browser.sleep(2000);
@@ -116,8 +116,8 @@ describe('permissions', function () {
 
   it("should move an unwritable folder not owned by current user to an unwritable folder", function () {
     // create source and target shared folders
-    var sourceFolder = createFolder('Source');
-    var targetFolder = createFolder('Target');
+    var sourceFolder = workspacePage.createFolder('Source');
+    var targetFolder = workspacePage.createFolder('Target');
 
     // share both folders
     workspacePage.shareResource(sourceFolder, 'folder', testUserName1, false);
@@ -136,25 +136,6 @@ describe('permissions', function () {
     moveModal.moveToDestination(testUserName2, targetFolder);
     toastyModal.isError();
   });
-
-
-  // TODO include toasty and sweetAlert modals in workspace-page, and shift these functions to the page
-  function deleteResource (name, type) {
-    workspacePage.selectResource(name, type);
-    workspacePage.createTrashButton().click();
-    sweetAlertModal.confirm();
-    toastyModal.isSuccess();
-    browser.sleep(1000);
-    workspacePage.clickLogo();
-  }
-
-
-  function createFolder(name) {
-    var folderTitle = workspacePage.createTitle(name);
-    workspacePage.createResource('folder', folderTitle);
-    toastyModal.isSuccess();
-    return folderTitle;
-  }
 
 
 });

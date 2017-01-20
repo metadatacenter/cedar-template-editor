@@ -4,6 +4,9 @@
 var WorkspacePage = function () {
 
   var testConfig = require('../config/test-env.js');
+  var toastyModal = require('../modals/toasty-modal.js');
+  var sweetAlertModal = require('../modals/sweet-alert-modal.js');
+
   var url = testConfig.baseUrl + '/dashboard';
   var EC = protractor.ExpectedConditions;
 
@@ -229,26 +232,30 @@ var WorkspacePage = function () {
     }
   };
 
+  // create a folder
+  this.createFolder = function (name) {
+    var folderTitle = this.createTitle(name);
+    this.createResource('folder', folderTitle);
+    toastyModal.isSuccess();
+    return folderTitle;
+  };
+
+  // create a folder
+  this.createTemplate = function (name) {
+    var templateTitle = this.createTitle(name);
+    this.createResource('template', templateTitle);
+    toastyModal.isSuccess();
+    return templateTitle;
+  };
+
   // delete a resource
   this.deleteResource = function (name, type) {
-
-    // find the resource
-    createSearchNavInput.sendKeys(name + protractor.Key.ENTER);
-    var result = "Search Results For: '" + name + "'";
-    var searchResult = element(by.css('.search-result'));
-    browser.wait(EC.textToBePresentInElement(searchResult, result));
-
-    // select the first result
-    var createFirst = element.all(by.css(createFirstCss + type)).first();
-    browser.wait(EC.visibilityOf(createFirst));
-    browser.wait(EC.elementToBeClickable(createFirst));
-    createFirst.click();
-
-    // delete it
-    browser.wait(EC.visibilityOf(createTrashButton));
-    browser.wait(EC.elementToBeClickable(createTrashButton));
-    createTrashButton.click();
-
+    this.selectResource(name, type);
+    this.createTrashButton().click();
+    sweetAlertModal.confirm();
+    toastyModal.isSuccess();
+    browser.sleep(1000);
+    this.clickLogo();
   };
 
   // populate a template resource
