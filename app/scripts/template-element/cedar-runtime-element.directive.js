@@ -427,9 +427,14 @@ define([
 
           $timeout(function () {
             scope.switchToSpreadsheet();
+            scope.$apply();
           }, 0);
 
         }
+
+        $timeout(function () {
+          scope.$apply();
+        }, 100);
         return scope.multipleState;
       };
 

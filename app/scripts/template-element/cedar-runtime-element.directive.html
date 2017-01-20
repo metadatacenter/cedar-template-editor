@@ -50,22 +50,18 @@
 
         <div class="row">
           <div class="col-sm-12" style="background:red">
-
           <div class="spreadsheetViewDetector"></div>
           <div class="spreadsheetViewContainer"></div>
-
           </div>
         </div>
-
 
       </div>
     </div>
 
     <!-- a paged list of elements -->
-    <div ng-if="showMultiple('paged') && valueArray.length > 0">
-      <!--{{index}} {{valueArray}}-->
+    <div ng-if="showMultiple('paged')" ng-repeat="(i, valueElement) in valueArray">
 
-      <div class="element expand" id="{{getLocator(index)}}" style="position:relative">
+      <div ng-if="index === i" class="element expand" id="{{getLocator(i)}}" style="position:relative">
         <div class="flagpole"></div>
 
         <div ng-if="!isActive" class="left-tick"></div>
@@ -77,8 +73,8 @@
               <i class="fa fa-caret-down"></i>
             </button>
 
-            <span ng-if="valueArray.length-1" class="count">{{index+1}}.</span>
-            <a class="element title" ng-class="{'isInactive' : isInactive(index)}">{{getTitle()}}</a>
+            <span ng-if="valueArray.length-1" class="count">{{i+1}}.</span>
+            <a class="element title" ng-class="{'isInactive' : isInactive(i)}">{{getTitle()}}</a>
           </div>
 
           <cedar-pager values="valueArray" index="index" min="pageMin" max="pageMax" select="selectPage"
@@ -98,12 +94,12 @@
             <div ng-if="$root.propertiesOf(element)[key]">
               <cedar-runtime-nested-element key="key"
                   field="$root.propertiesOf(element)[key]"
-                  model="valueArray[index][key]"
+                  model="valueArray[i][key]"
                   remove-child="removeChild"
                   rename-child-key="renameChildKey"
                   is-edit-data="isEditData"
                   depth="depth+1"
-                  path="path+'-'+index">
+                  path="path+'-'+i">
               </cedar-runtime-nested-element>
             </div>
           </div>
@@ -114,7 +110,7 @@
     <!-- an expanded list of elements -->
     <div ng-if="showMultiple('expanded')" ng-repeat="(i, valueElement) in valueArray">
 
-      <div class="element" id="{{getLocator(i)}}" class='element-{{i}}' ng-class="{'expand' : isExpanded(i)}"
+      <div  class="element" id="{{getLocator(i)}}" class='element-{{i}}' ng-class="{'expand' : isExpanded(i)}"
           style="position:relative">
         <div class="flagpole"></div>
 
