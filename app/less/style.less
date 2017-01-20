@@ -2741,6 +2741,8 @@ section.dashboard-elements {
   line-height:1.8em;
   font-size:1.1em;
 
+
+
   .active-container {
     border-left:1px solid #f0f0f0;position:relative;right:0;background:#f0f0f0;
   }
@@ -2971,9 +2973,19 @@ section.dashboard-elements {
       &.collapse {
       }
 
+      .row {
+        .toolbar, .pager {
+          visibility:hidden;
+        }
+        &:hover {
+          .toolbar, .pager {
+            visibility:visible;
+          }
+        }
+      }
+
       .row.isInactive {
         &:hover {
-          //background-color:#f4f4f4;
           cursor:pointer;
           .title {
             font-weight:bold;

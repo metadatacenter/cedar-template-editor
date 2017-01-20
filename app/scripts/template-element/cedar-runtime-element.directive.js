@@ -42,6 +42,7 @@ define([
       scope.pageRange = 10;
 
 
+
       var resetElement = function (el, settings) {
         angular.forEach(el, function (model, key) {
           if (settings[key] && settings[key].minItems && angular.isArray(model)) {
@@ -342,6 +343,7 @@ define([
       };
       scope.setValueArray();
 
+
       // watch for this field's next sibling
       scope.$on('nextSibling', function (event, args) {
         var id = args[0];
@@ -392,6 +394,7 @@ define([
         scope.pageMax = Math.min(scope.valueArray.length, scope.index + scope.pageRange);
         scope.pageMin = Math.max(0, scope.pageMax - scope.pageRange);
       };
+      scope.pageMinMax();
 
 
 

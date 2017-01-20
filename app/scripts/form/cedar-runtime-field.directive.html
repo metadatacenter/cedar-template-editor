@@ -3,7 +3,6 @@
   <!-- field content  -->
   <div class="elementTotalContent visible" style="position:relative">
 
-
     <div class="fields text-fields">
 
       <!-- for zero cardinality just show the field title because the valueArray is empty  -->
@@ -18,8 +17,8 @@
         </div>
       </div>
 
-
-      <div ng-show="showMultiple('spreadsheet')">
+      <!-- show the spreadsheet -->
+      <div ng-if="showMultiple('spreadsheet')">
         <!-- inactive,not being edited at the moment -->
         <div class="row isRowInactive" ng-if="!isActive(index)" id="{{getLocator(index)}}">
           <div class="col-sm-3 col-xs-* ">
@@ -53,7 +52,8 @@
 
               <field-toolbar class="col-xs-4 col-sm-4 pull-right " model="model" field="field" index="index"
                   remove="removeInput" add="addMoreInput" is-active="isActive" set-active="setActive"
-                  description="getDescription" toggle="toggleMultiple" show-multiple="showMultiple"  cardinality="cardinalityString"
+                  description="getDescription" toggle="toggleMultiple" show-multiple="showMultiple"
+                  cardinality="cardinalityString"
                   is-multiple="isMultipleCardinality" spreadsheet="switchToSpreadsheet"></field-toolbar>
 
             </div>
@@ -77,58 +77,61 @@
 
       </div>
 
-
       <!-- show a paged list of fields from the valueArray -->
-      <div ng-if="showMultiple('paged') && valueArray.length > 0">
+      <div ng-if="showMultiple('paged')" ng-repeat="(i, valueElement) in valueArray">
+        <div ng-if="i===index">
 
-        <!-- inactive,not being edited at the moment -->
-        <div class="row isRowInactive" ng-if="!isActive(index)" id="{{getLocator(index)}}">
-          <div class="col-sm-3 col-xs-* ">
-            <div class="leader"></div>
+          <!-- inactive,not being edited at the moment -->
+          <div class="row isRowInactive" ng-if="!isActive(i)" id="{{getLocator(i)}}">
+            <div class="col-sm-3 col-xs-* ">
+              <div class="leader"></div>
 
-            <div ng-click="setActive(index, true)" class="title isInactive" ng-mouseenter="hover=true"
-                ng-mouseleave="hover=false">
-              {{getTitle(field)}}
-            </div>
-
-          </div>
-          <div class="col-sm-9 col-xs-* answer" ng-click="setActive(index, true)">
-            <div class="originalContent" ng-include="getFieldUrl()"></div>
-          </div>
-        </div>
-
-
-        <!-- active --->
-        <div class="row isActive" ng-if="isActive(index)" id="{{getLocator(index)}}">
-          <div class="col-sm-3">
-            <div class="leader"></div>
-
-            <div class="title isActive">
-              <span ng-if="isMultipleCardinality()" style="font-size:smaller;padding-right:5px;">{{index+1}}.</span>{{getTitle(field)}}
-            </div>
-
-          </div>
-          <div class="col-sm-9 answer">
-
-            <div class="row">
-
-              <cedar-pager values="valueArray" index="index" min="pageMin" max="pageMax" select="selectPage"
-                  range="pageRange" class="col-xs-8 ">
-              </cedar-pager>
-
-              <field-toolbar class="col-xs-4 col-sm-4 pull-right " model="model" field="field" index="index"
-                  remove="removeInput" add="addMoreInput" is-active="isActive" set-active="setActive"
-                  description="getDescription" toggle="toggleMultiple" show-multiple="showMultiple" cardinality="cardinalityString"
-                  is-multiple="isMultipleCardinality" spreadsheet="switchToSpreadsheet"></field-toolbar>
+              <div ng-click="setActive(i, true)" class="title isInactive" ng-mouseenter="hover=true"
+                  ng-mouseleave="hover=false">
+                {{getTitle(field)}}
+              </div>
 
             </div>
-
-            <form name="field-edit-form-{{index}}" ng-submit="onSubmit(index)">
+            <div class="col-sm-9 col-xs-* answer" ng-click="setActive(i, true)">
               <div class="originalContent" ng-include="getFieldUrl()"></div>
-              <button type="submit" class="btn btn-save confirm active" translate>GENERIC.Ok</button>
-              <label class="submit-info" translate>GENERIC.Submit</label>
-            </form>
+            </div>
+          </div>
 
+
+          <!-- active --->
+          <div class="row isActive" ng-if="isActive(i)" id="{{getLocator(i)}}">
+            <div class="col-sm-3">
+              <div class="leader"></div>
+
+              <div class="title isActive">
+                <span ng-if="isMultipleCardinality()" style="font-size:smaller;padding-right:5px;">{{i+1}}.</span>{{getTitle(field)}}
+              </div>
+
+            </div>
+            <div class="col-sm-9 answer">
+
+              <div class="row">
+
+                <cedar-pager ng-if="isMultipleCardinality()" values="valueArray" index="i" min="pageMin"
+                    max="pageMax" select="selectPage"
+                    range="pageRange" class="col-xs-8 ">
+                </cedar-pager>
+
+                <field-toolbar class="col-xs-4 col-sm-4 pull-right " model="model" field="field" index="i"
+                    remove="removeInput" add="addMoreInput" is-active="isActive" set-active="setActive"
+                    description="getDescription" toggle="toggleMultiple" show-multiple="showMultiple"
+                    cardinality="cardinalityString"
+                    is-multiple="isMultipleCardinality" spreadsheet="switchToSpreadsheet"></field-toolbar>
+
+              </div>
+
+              <form name="field-edit-form-{{i}}" ng-submit="onSubmit(i)">
+                <div class="originalContent" ng-include="getFieldUrl()"></div>
+                <button type="submit" class="btn btn-save confirm active" translate>GENERIC.Ok</button>
+                <label class="submit-info" translate>GENERIC.Submit</label>
+              </form>
+
+            </div>
           </div>
         </div>
       </div>
@@ -160,7 +163,7 @@
             <div class="leader"></div>
 
             <div class="title isActive">
-              <span ng-if="isMultipleCardinality()" style="font-size:smaller;padding-right:5px;">{{index+1}}.</span>{{getTitle(field)}} 
+              <span ng-if="isMultipleCardinality()" style="font-size:smaller;padding-right:5px;">{{index+1}}.</span>{{getTitle(field)}}
             </div>
 
           </div>
@@ -169,7 +172,8 @@
             <div class="row">
               <field-toolbar class="col-xs-4 col-sm-4 pull-right " model="model" field="field" index="index"
                   remove="removeInput" add="addMoreInput" is-active="isActive" set-active="setActive"
-                  description="getDescription" toggle="toggleMultiple" show-multiple="showMultiple" cardinality="cardinalityString"
+                  description="getDescription" toggle="toggleMultiple" show-multiple="showMultiple"
+                  cardinality="cardinalityString"
                   is-multiple="isMultipleCardinality" spreadsheet="switchToSpreadsheet"></field-toolbar>
             </div>
 

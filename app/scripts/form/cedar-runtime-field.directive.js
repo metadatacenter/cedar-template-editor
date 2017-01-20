@@ -317,8 +317,11 @@ define([
       $scope.scrollToLocator = function (locator, tag) {
 
 
+
         var target = angular.element('#' + locator);
+
         if (target && target.offset()) {
+
 
           $scope.setHeight = function () {
 
@@ -327,21 +330,20 @@ define([
 
             var window = angular.element($window);
             var windowHeight = $(window).height();
-            var target = $("#" + locator);
+            var target = jQuery("#" + locator);
             if (target) {
-              console.log(locator);
+
               var targetTop = target.offset().top;
               var targetHeight = target.outerHeight(true);
               var scrollTop = jQuery('.template-container').scrollTop();
               var newTop = scrollTop + targetTop - ( windowHeight - targetHeight ) / 2;
-
-              console.log('scrollToLocator ' + locator + ' newTop ' + newTop + ' scrollTop ' + scrollTop + ' targetHeight ' + targetHeight + ' targetTop ' + targetTop + ' windowHeight ' + windowHeight);
+              //console.log('scrollToLocator found target tag=' + tag +  ' locator=' + locator + ' newTop ' + newTop + ' scrollTop ' + scrollTop + ' targetHeight ' + targetHeight + ' targetTop ' + targetTop + ' windowHeight ' + windowHeight);
 
               jQuery('.template-container').animate({scrollTop: newTop}, 'fast');
 
               // focus and maybe select the tag
               if (tag) {
-                var e = jQuery(tag);
+                var e = jQuery("#" + locator + ' ' + tag);
                 if (e.length) {
                   e[0].focus();
                   if (!e.is('select')) {

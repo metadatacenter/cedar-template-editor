@@ -17,7 +17,7 @@
   <div ng-if="!isRegular()"
       ng-click="setActive(index,true)"
       aria-label="{{getDescription(field)}}"
-      class="isInactive ">{{valueArray[index]['_valueLabel']}}</div>
+      class="isInactive ">{{valueElement['_valueLabel']}}</div>
 
 </div>
 
@@ -33,7 +33,7 @@
         ng-class="{'isActive' : isActive(index), 'required': isRequired()}"
         placeholder="{{isActive(index) ? 'enter answer' : ''}}"
         aria-label="{{getDescription(field)}}"
-        ng-model="valueArray[index]['@value']">
+        ng-model="valueElement['@value']">
     </input>
     <div class="input-indicator-icons" ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
   </div>

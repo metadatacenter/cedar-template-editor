@@ -1,8 +1,8 @@
 <div class="toolbar" style="padding-right:7px;">
 
-   <span ng-if="$root.isArray(model)">
+   <span ng-if="$root.isArray(model) && model.length > 0">
        <button type="button"
-           ng-click="remove(index)"
+           ng-click="remove(index);$event.stopPropagation()"
            class="remove pull-right"
            tooltip="{{'GENERIC.Remove' | translate}}"
            tooltip-trigger
@@ -16,13 +16,13 @@
   <button type="button" class=" remove pull-right"
       ng-if="isActive(index)"
       tooltip="{{'GENERIC.Close' | translate}}"
-      ng-click="setActive(index, false)">
+      ng-click="setActive(index, false);$event.stopPropagation()">
     <i class="fa fa-remove "></i>
   </button>
 
     <span ng-if="$root.isArray(model)">
        <button type="button"
-           ng-click="add()"
+           ng-click="add();$event.stopPropagation()"
            class="add pull-right"
            tooltip="{{'GENERIC.Add' | translate}}"
            tooltip-trigger
@@ -36,10 +36,9 @@
 
   <button ng-if="$root.isArray(model)" type="button" class=" remove pull-right"
       ng-if="isActive(index)"
-      tooltip="Page {{cardinality()}}"
-      ng-click="toggle()">
-    <i ng-if="showMultiple('paged')" class="fa fa-angle-left "></i>
-    <i ng-if="showMultiple('paged')" class="fa fa-angle-right "></i>
+      tooltip="{{cardinality()}}"
+      ng-click="toggle();$event.stopPropagation()">
+    <i ng-if="showMultiple('paged')" class="fa   fa-sort  fa-rotate-90 "></i>
     <i ng-if="showMultiple('expanded')" class="fa fa-list-ol "></i>
     <i ng-if="showMultiple('spreadsheet')" class="fa fa-table "></i>
   </button>

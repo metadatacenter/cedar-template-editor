@@ -1,6 +1,7 @@
 <div ng-if="model !== undefined" class="item-root element-root" style="{{getNestingMargin(element, 0)}}">
 
   <div class="elementTotalContent ">
+    <!--{{valueArray}}-->
 
     <!-- zero cardinality  -->
     <div ng-if="valueArray.length == 0">
@@ -18,6 +19,12 @@
             </button>
             <a class="element title" ng-class="{'isInactive' : isInactive(i)}">{{getTitle()}}</a>
           </div>
+
+          <element-toolbar  class="col-xs-2"  model="model"
+              index="index"
+              remove="removeElement" add="addElement" is-active="isActive" set-active="setActive" toggle="toggleMultiple"
+              show-multiple="showMultiple"  cardinality="cardinalityString" spreadsheet="switchToSpreadsheet">
+          </element-toolbar>
         </div>
       </div>
     </div>
@@ -49,7 +56,7 @@
         </div>
 
         <div class="row">
-          <div class="col-sm-12" style="background:red">
+          <div class="col-sm-12" >
           <div class="spreadsheetViewDetector"></div>
           <div class="spreadsheetViewContainer"></div>
           </div>
@@ -64,9 +71,9 @@
       <div ng-if="index === i" class="element expand" id="{{getLocator(i)}}" style="position:relative">
         <div class="flagpole"></div>
 
-        <div ng-if="!isActive" class="left-tick"></div>
+        <!--<div ng-if="!isActive" class="left-tick"></div>-->
 
-        <div class="row isInactive">
+        <div class="row ">
           <div class="col-sm-6">
 
             <button type="button" class="xxx">
@@ -77,14 +84,15 @@
             <a class="element title" ng-class="{'isInactive' : isInactive(i)}">{{getTitle()}}</a>
           </div>
 
-          <cedar-pager values="valueArray" index="index" min="pageMin" max="pageMax" select="selectPage"
-              range="pageRange" class="col-xs-4 " >
-          </cedar-pager>
 
-          <element-toolbar class="col-xs-2 "  model="model" index="index"
+          <element-toolbar class="col-xs-2 pull-right "  model="model" index="index"
               remove="removeElement" add="addElement" active="isActive" toggle="toggleMultiple"
               show-multiple="showMultiple"  cardinality="cardinalityString" spreadsheet="switchToSpreadsheet" >
           </element-toolbar>
+
+          <cedar-pager ng-if="isMultiple() && valueArray.length > 1" values="valueArray" index="index" min="pageMin" max="pageMax" select="selectPage"
+              range="pageRange" class="col-xs-4 pull-right  " >
+          </cedar-pager>
 
         </div>
 
@@ -129,7 +137,7 @@
           </div>
 
 
-          <element-toolbar ng-if="isExpanded(i)" class="col-xs-2"  model="model"
+          <element-toolbar  class="col-xs-2"  model="model"
               index="index"
               remove="removeElement" add="addElement" is-active="isActive" set-active="setActive" toggle="toggleMultiple"
               show-multiple="showMultiple"  cardinality="cardinalityString" spreadsheet="switchToSpreadsheet">
