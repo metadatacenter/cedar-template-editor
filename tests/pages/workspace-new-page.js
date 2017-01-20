@@ -6,6 +6,7 @@ var WorkspacePage = function () {
   var testConfig = require('../config/test-env.js');
   var toastyModal = require('../modals/toasty-modal.js');
   var sweetAlertModal = require('../modals/sweet-alert-modal.js');
+  var templateCreatorPage = require('../pages/template-creator-page.js');
 
   var url = testConfig.baseUrl + '/dashboard';
   var EC = protractor.ExpectedConditions;
@@ -77,7 +78,6 @@ var WorkspacePage = function () {
     "element" : createElementButton,
     "folder"  : createFolderButton
   };
-
 
   // create folder modal
   var createFolderModal = element(by.id('new-folder-modal'));
@@ -230,6 +230,11 @@ var WorkspacePage = function () {
       browser.wait(EC.elementToBeClickable(createFolderSubmitButton));
       createFolderSubmitButton.click();
     }
+    else if (type === 'template') {
+      templateCreatorPage.setTitle('template', title);
+      templateCreatorPage.clickSave('template');
+      templateCreatorPage.clickBackArrow();
+    }
   };
 
   // create a folder
@@ -240,11 +245,10 @@ var WorkspacePage = function () {
     return folderTitle;
   };
 
-  // create a folder
+  // create a template
   this.createTemplate = function (name) {
     var templateTitle = this.createTitle(name);
     this.createResource('template', templateTitle);
-    toastyModal.isSuccess();
     return templateTitle;
   };
 
