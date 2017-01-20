@@ -27,18 +27,18 @@ function KeycloakUserHandler() {
   };
 
   this.refreshToken = function (minValidity, successCallback, errorCallback) {
-    keycloak.updateToken(minValidity).success(function (refreshed) {
-      successCallback(refreshed);
+    return keycloak.updateToken(minValidity).success(function (refreshed) {
+      return successCallback(refreshed);
     }).error(function () {
-      errorCallback();
+      return errorCallback();
     });
   };
 
   this.initUserHandler = function (successCallback, failureCallback) {
-    keycloak.init().success(function (authenticated) {
-      successCallback(authenticated);
+    return keycloak.init().success(function (authenticated) {
+      return successCallback(authenticated);
     }).error(function () {
-      failureCallback();
+      return failureCallback();
     });
   };
 }

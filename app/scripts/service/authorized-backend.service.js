@@ -53,7 +53,7 @@ define([
             'GENERIC.Warning',
             'AUTHORIZATION-ERROR.suggestedAction.requestRole',
             'GENERIC.Ok',
-            errorResponse.data.errorParams
+            errorResponse.data.parameters
         );
         return true;
       }
@@ -62,20 +62,20 @@ define([
 
     service.getTokenValidityMessage = function () {
       return 'Token validity:' + UserService.getTokenValiditySeconds() + ' seconds';
-    }
+    };
 
     service.doCall = function (httpConfigObject, thenFunction, catchFunction) {
       //console.log("AuthorizedBackendService.doCall:" + httpConfigObject.url);
       //console.log(this.getTokenValidityMessage());
       var owner = this;
 
-      owner.getHttpPromise(httpConfigObject).then(function (response) {
-        thenFunction(response);
+      return owner.getHttpPromise(httpConfigObject).then(function (response) {
+        return thenFunction(response);
       }).catch(function (err) {
         //console.log("Original backend call failed:");
         //console.log(err);
         if ("data" in err && err.data !== null) {
-          if (err.data.errorSubType == "authException") {
+          if (err.data.errorType == "authorization") {
             var handled = owner.handleAuthException(err);
             if (handled) {
               return;
@@ -84,21 +84,24 @@ define([
 
             if (suggestedAction == "refreshToken") {
               console.log("DO refresh token");
-              UserService.refreshToken(null,
+              return UserService.refreshToken(null,
                   function (refreshed) {
                     if (refreshed) {
                       console.log("Token successfully refreshed");
                       //console.log(UserService.getParsedToken());
                       console.log("Execute original call once again");
-                      owner.getHttpPromise(httpConfigObject).then(function (response) {
-                        thenFunction(response);
+                      return owner.getHttpPromise(httpConfigObject).then(function (response) {
+                        return thenFunction(response);
                       }).catch(function (err) {
                         console.log("Second backend call failed:");
                         console.log(err);
-                        catchFunction(err);
+                        return catchFunction(err);
                       });
                     } else {
+                      console.log("Token was not refreshed");
                       console.log(owner.getTokenValidityMessage());
+                      owner.notifyAndLogout();
+                      return;
                     }
                   },
                   function () {
@@ -107,16 +110,15 @@ define([
                     return;
                   }
               );
-              return;
             }
           }
         }
         // original catch function
-        catchFunction(err);
+        return catchFunction(err);
       });
     };
 
     return service;
-  };
+  }
 
 });

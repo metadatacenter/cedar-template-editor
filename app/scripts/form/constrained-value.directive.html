@@ -1,0 +1,19 @@
+<div class="has-constraint " ng-class="{'has-selected': (valueElement['@value'].label || valueElement['_valueLabel'])}"
+    style="border:1px solid #ddd;box-shadow:none;">
+
+  <ui-select
+      ng-change="updateModelFromUIControlledField()"
+      ng-model="modelValue[index]['@value']"
+      theme="bootstrap"
+      close-on-select="true"
+      aria-label="getDescription(field)">
+    <ui-select-match placeholder="">{{$select.selected.label}}</ui-select-match>
+    <ui-select-choices
+        ui-disable-choice="option.label == 'No Results...'"
+        refresh="$root.updateFieldAutocomplete($root.schemaOf(field), $select.search)"
+        refresh-delay="200"
+        repeat="option in $root.autocompleteResultsCache[$root.schemaOf(field)['@id']]['results'] | propsFilter: {label: $select.search} | limitTo:500">
+      <div ng-bind-html="option.label | highlight: $select.search"></div>
+    </ui-select-choices>
+  </ui-select>
+</div>

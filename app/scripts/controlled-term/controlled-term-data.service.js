@@ -6,16 +6,16 @@ define([
   angular.module('cedar.templateEditor.controlledTerm.controlledTermDataService', [])
       .service('controlledTermDataService', controlledTermDataService);
 
-  controlledTermDataService.$inject = ['$http', '$q', 'UrlService', 'UIMessageService', '$translate'];
+  controlledTermDataService.$inject = ['UIMessageService', 'ControlledTermHttpService', 'AuthorizedBackendService',
+                                       '$translate'];
 
-  function controlledTermDataService($http, $q, UrlService, UIMessageService, $translate) {
-
-    var base = null;
-    var http_default_config = {};
+  function controlledTermDataService(UIMessageService, ControlledTermHttpService, AuthorizedBackendService,
+                                     $translate) {
 
     var ontologiesCache = {};
     var valueSetsCollectionsCache = {};
     var valueSetsCache = {};
+    var initialized = false;
 
     var service = {
       initValueSetsCache             : initValueSetsCache,
@@ -26,10 +26,15 @@ define([
       getVsCollectionByLdId          : getVsCollectionByLdId,
       getAllValueSetCollections      : getAllValueSetCollections,
       getAllValuesInValueSetByValue  : getAllValuesInValueSetByValue,
+      createValueSet                 : createValueSet,
+      getValueSetById                : getValueSetById,
+      getNotCachedValueSetById       : getNotCachedValueSetById,
       getAllValueSets                : getAllValueSets,
       getValueSetByLdId              : getValueSetByLdId,
+      createValue                    : createValue,
       getValueTree                   : getValueTree,
       getValueSetTree                : getValueSetTree,
+      createClass                    : createClass,
       getRootClasses                 : getRootClasses,
       getClassChildren               : getClassChildren,
       getClassById                   : getClassById,
@@ -57,77 +62,80 @@ define([
      * Initialize service.
      */
     function init() {
-      base = UrlService.terminology() + "/bioportal";
-      http_default_config = {};
-      initOntologiesCache();
-      initValueSetsCollectionsCache();
-      initValueSetsCache();
+      if (!initialized) {
+        initOntologiesCache();
+        initValueSetsCollectionsCache();
+        initValueSetsCache();
+        initialized = true;
+      }
+    }
+
+    /**
+     * Generic error handling
+     */
+    function handleServerError(err) {
+      if (err.status == 502) {
+        UIMessageService.showBackendError($translate.instant("TERMINOLOGY.errorTerminology"), err);
+      } else {
+        UIMessageService.showBackendError($translate.instant("TERMINOLOGY.errorBioPortal"), err);
+      }
+      return err;
     }
 
     /**
      * Initialize caches
      */
-
     function initOntologiesCache() {
-      var url = base + "/ontologies";
       // Get ontologies
-      $http.get(url, http_default_config).then(function (response) {
-        var ontologies = response.data;
-        angular.forEach(ontologies, function (value) {
-          // Ignore empty ontologies (without submissions), except for CEDARPC
-          if (((value.details.numberOfClasses > 0) || (value.id == 'CEDARPC')) && value.id != "NLMVS" && value.id != 'CEDARVS') {
-            value.fullName = value.name + ' (' + value.id + ')';
-            ontologiesCache[value.id] = value;
+      return AuthorizedBackendService.doCall(
+          ControlledTermHttpService.getOntologies(),
+          function (response) {
+            var ontologies = response.data;
+            angular.forEach(ontologies, function (value) {
+              // Ignore empty ontologies (without submissions), except for CEDARPC
+              if (((value.details.numberOfClasses > 0) || (value.id == 'CEDARPC')) && value.id != "NLMVS" && value.id != 'CEDARVS') {
+                value.fullName = value.name + ' (' + value.id + ')';
+                ontologiesCache[value.id] = value;
+              }
+            });
+          },
+          function (err) {
+            return handleServerError(err);
           }
-        });
-      }).catch(function (err) {
-        if (err.status == 502) {
-          UIMessageService.showBackendError($translate.instant("TERMINOLOGY.errorTerminology"), err);
-        }
-        else {
-          UIMessageService.showBackendError($translate.instant("TERMINOLOGY.errorBioPortal"), err);
-        }
-        return err;
-      });
+      );
     }
 
     function initValueSetsCollectionsCache() {
-      var url = base + "/vs-collections";
       // Get vs collections
-      $http.get(url, http_default_config).then(function (response) {
-        var vscs = response.data;
-        angular.forEach(vscs, function (vsc) {
-          vsc.fullName = vsc.name + ' (' + vsc.id + ')';
-          valueSetsCollectionsCache[vsc.id] = vsc;
-        });
-      }).catch(function (err) {
-        if (err.status == 502) {
-          UIMessageService.showBackendError($translate.instant("TERMINOLOGY.errorTerminology"), err);
-        }
-        else {
-          UIMessageService.showBackendError($translate.instant("TERMINOLOGY.errorBioPortal"), err);
-        }
-        return err;
-      });
+      return AuthorizedBackendService.doCall(
+          ControlledTermHttpService.getValueSetsCollections(),
+          function (response) {
+            var vscs = response.data;
+            angular.forEach(vscs, function (vsc) {
+              vsc.fullName = vsc.name + ' (' + vsc.id + ')';
+              valueSetsCollectionsCache[vsc.id] = vsc;
+            });
+          },
+          function (err) {
+            return handleServerError(err);
+          }
+      );
     }
 
     function initValueSetsCache() {
-      var url = base + "/value-sets";
       // Get value sets
-      return $http.get(url, http_default_config).then(function (response) {
-        var valueSets = response.data;
-        angular.forEach(valueSets, function (element) {
-          valueSetsCache[element['@id']] = element;
-        });
-      }).catch(function (err) {
-        if (err.status == 502) {
-          UIMessageService.showBackendError($translate.instant("TERMINOLOGY.errorTerminology"), err);
-        }
-        else {
-          UIMessageService.showBackendError($translate.instant("TERMINOLOGY.errorBioPortal"), err);
-        }
-        return err;
-      });
+      return AuthorizedBackendService.doCall(
+          ControlledTermHttpService.getValueSetsCache(),
+          function (response) {
+            var valueSets = response.data;
+            angular.forEach(valueSets, function (element) {
+              valueSetsCache[element['@id']] = element;
+            });
+          },
+          function (err) {
+            return handleServerError(err);
+          }
+      );
     }
 
     /**
@@ -135,234 +143,271 @@ define([
      */
 
     function getAllOntologies() {
+      init();
       var ontologies = [];
       for (var key in ontologiesCache) {
         ontologies.push(ontologiesCache[key]);
       }
       return ontologies;
-    };
+    }
 
     function getAllValueSetCollections() {
+      init();
       var valueSetCollections = [];
       for (var key in valueSetsCollectionsCache) {
         valueSetCollections.push(valueSetsCollectionsCache[key]);
       }
       return valueSetCollections;
-    };
+    }
+
+    function createValueSet(valueSet) {
+      init();
+      return AuthorizedBackendService.doCall(
+          ControlledTermHttpService.createValueSet(valueSet),
+          function (response) {
+            return response.data;
+          },
+          function (err) {
+            return handleServerError(err);
+          }
+      );
+    }
+
+    function getNotCachedValueSetById(vsId) {
+      init();
+      return AuthorizedBackendService.doCall(
+          ControlledTermHttpService.getValueSetById(vsId),
+          function (response) {
+            return response.data;
+          },
+          function (err) {
+            return handleServerError(err);
+          }
+      );
+    }
 
     function getAllValueSets() {
+      init();
       var valueSets = [];
       for (var key in valueSetsCache) {
         valueSets.push(valueSetsCache[key]);
       }
       return valueSets;
-    };
+    }
 
     function getOntologyById(ontologyId) {
+      init();
       return ontologiesCache[ontologyId];
     }
 
     function getOntologyByLdId(ontologyLdId) {
+      init();
       var ontologyId = ontologyLdId.substr(ontologyLdId.lastIndexOf('/') + 1);
       return getOntologyById(ontologyId);
     }
 
     function getValueSetById(vsId) {
+      init();
       return valueSetsCache[vsId];
     }
 
     function getValueSetByLdId(vsLdId) {
+      init();
       var vsId = vsLdId.substr(vsLdId.lastIndexOf('/') + 1);
       return getValueSetById(vsId);
     }
 
     function getVsCollectionById(vscId) {
+      init();
       return valueSetsCollectionsCache[vscId];
     }
 
     function getVsCollectionByLdId(vscLdId) {
+      init();
       var vscId = vscLdId.substr(vscLdId.lastIndexOf('/') + 1);
       return getVsCollectionById(vscId);
     }
 
+    function createClass(newClass) {
+      init();
+      return AuthorizedBackendService.doCall(
+          ControlledTermHttpService.createClass(newClass),
+          function (response) {
+            return response.data;
+          },
+          function (err) {
+            return handleServerError(err);
+          }
+      );
+    }
+
     function getRootClasses(ontology) {
-      var url = base + "/ontologies/" + ontology + "/classes/roots"
-      return $http.get(url, http_default_config).then(function (response) {
-        return response.data;
-      }).catch(function (err) {
-        if (err.status == 502) {
-          UIMessageService.showBackendError($translate.instant("TERMINOLOGY.errorTerminology"), err);
-        }
-        else {
-          UIMessageService.showBackendError($translate.instant("TERMINOLOGY.errorBioPortal"), err);
-        }
-        return err;
-      });
-    };
+      init();
+      return AuthorizedBackendService.doCall(
+          ControlledTermHttpService.getRootClasses(ontology),
+          function (response) {
+            return response.data;
+          },
+          function (err) {
+            return handleServerError(err);
+          }
+      );
+    }
 
     function getClassById(acronym, classId) {
-      var url = base + '/ontologies/' + acronym + '/classes/' + encodeURIComponent(classId);
-      return $http.get(url, http_default_config).then(function (response) {
-        return response.data;
-      }).catch(function (err) {
-        if (err.status == 502) {
-          UIMessageService.showBackendError($translate.instant("TERMINOLOGY.errorTerminology"), err);
-        }
-        else {
-          UIMessageService.showBackendError($translate.instant("TERMINOLOGY.errorBioPortal"), err);
-        }
-        return err;
-      });
+      init();
+      return AuthorizedBackendService.doCall(
+          ControlledTermHttpService.getClassById(acronym, classId),
+          function (response) {
+            return response.data;
+          },
+          function (err) {
+            return handleServerError(err);
+          }
+      );
+    }
+
+    function createValue(vsId, value) {
+      init();
+      return AuthorizedBackendService.doCall(
+          ControlledTermHttpService.createValue(vsId, value),
+          function (response) {
+            return response.data;
+          },
+          function (err) {
+            return handleServerError(err);
+          }
+      );
     }
 
     function getValueTree(vsId, vsCollection) {
-      return $http.get(base + '/vs-collections/' + vsCollection + '/values/' + encodeURIComponent(vsId) + "/tree",
-          http_default_config).then(function (response) {
+      init();
+      return AuthorizedBackendService.doCall(
+          ControlledTermHttpService.getValueTree(vsId, vsCollection),
+          function (response) {
             return response.data;
-          }).catch(function (err) {
-            if (err.status == 502) {
-              UIMessageService.showBackendError($translate.instant("TERMINOLOGY.errorTerminology"), err);
-            }
-            else {
-              UIMessageService.showBackendError($translate.instant("TERMINOLOGY.errorBioPortal"), err);
-            }
-            return err;
-          });
-    };
+          },
+          function (err) {
+            return handleServerError(err);
+          }
+      );
+    }
 
     function getValueSetTree(valueId, vsCollection) {
-      return $http.get(base + '/vs-collections/' + vsCollection + '/value-sets/' + encodeURIComponent(valueId) + "/tree",
-          http_default_config).then(function (response) {
+      init();
+      return AuthorizedBackendService.doCall(
+          ControlledTermHttpService.getValueSetTree(valueId, vsCollection),
+          function (response) {
             return response.data;
-          }).catch(function (err) {
-            if (err.status == 502) {
-              UIMessageService.showBackendError($translate.instant("TERMINOLOGY.errorTerminology"), err);
-            }
-            else {
-              UIMessageService.showBackendError($translate.instant("TERMINOLOGY.errorBioPortal"), err);
-            }
-            return err;
-          });
-    };
+          },
+          function (err) {
+            return handleServerError(err);
+          }
+      );
+    }
 
     function getAllValuesInValueSetByValue(valueId, vsCollection) {
-      return $http.get(base + '/vs-collections/' + vsCollection + '/values/' + encodeURIComponent(valueId) + "/all-values?page=1&pageSize=1000",
-          http_default_config).then(function (response) {
+      init();
+      return AuthorizedBackendService.doCall(
+          ControlledTermHttpService.getAllValuesInValueSetByValue(valueId, vsCollection),
+          function (response) {
             return response.data.collection;
-          }).catch(function (err) {
-            if (err.status == 502) {
-              UIMessageService.showBackendError($translate.instant("TERMINOLOGY.errorTerminology"), err);
-            }
-            else {
-              UIMessageService.showBackendError($translate.instant("TERMINOLOGY.errorBioPortal"), err);
-            }
-            return err;
-          });
-    };
+          },
+          function (err) {
+            return handleServerError(err);
+          }
+      );
+    }
 
     function getClassChildren(acronym, classId) {
-      return $http.get(base + '/ontologies/' + acronym + '/classes/' + encodeURIComponent(classId) + "/children?page=1&pageSize=1000",
-          http_default_config).then(function (response) {
+      init();
+      return AuthorizedBackendService.doCall(
+          ControlledTermHttpService.getClassChildren(acronym, classId),
+          function (response) {
             return response.data.collection;
-          }).catch(function (err) {
-            if (err.status == 502) {
-              UIMessageService.showBackendError($translate.instant("TERMINOLOGY.errorTerminology"), err);
-            }
-            else {
-              UIMessageService.showBackendError($translate.instant("TERMINOLOGY.errorBioPortal"), err);
-            }
-            return err;
-          });
-    };
+          },
+          function (err) {
+            return handleServerError(err);
+          }
+      );
+    }
 
     function getClassDescendants(acronym, classId) {
-      return $http.get(base + '/ontologies/' + acronym + '/classes/' + encodeURIComponent(classId) + "/descendants?page=1&pageSize=1000",
-          http_default_config).then(function (response) {
+      init();
+      return AuthorizedBackendService.doCall(
+          ControlledTermHttpService.getClassDescendants(acronym, classId),
+          function (response) {
             return response.data.collection;
-          }).catch(function (err) {
-            if (err.status == 502) {
-              UIMessageService.showBackendError($translate.instant("TERMINOLOGY.errorTerminology"), err);
-            }
-            else {
-              UIMessageService.showBackendError($translate.instant("TERMINOLOGY.errorBioPortal"), err);
-            }
-            return err;
-          });
-    };
+          },
+          function (err) {
+            return handleServerError(err);
+          }
+      );
+    }
 
     function getClassById(acronym, classId) {
-      var url = base + '/ontologies/' + acronym + '/classes/' + encodeURIComponent(classId);
-      return $http.get(url, http_default_config).then(function (response) {
-        return response.data;
-      }).catch(function (err) {
-        if (err.status == 502) {
-          UIMessageService.showBackendError($translate.instant("TERMINOLOGY.errorTerminology"), err);
-        }
-        else {
-          UIMessageService.showBackendError($translate.instant("TERMINOLOGY.errorBioPortal"), err);
-        }
-        return err;
-      });
+      init();
+      return AuthorizedBackendService.doCall(
+          ControlledTermHttpService.getClassById(acronym, classId),
+          function (response) {
+            return response.data;
+          },
+          function (err) {
+            return handleServerError(err);
+          }
+      );
     }
 
     function getValueById(acronym, valueId) {
-      var url = base + '/vs-collections/' + acronym + '/values/' + encodeURIComponent(valueId);
-      return $http.get(url, http_default_config).then(function (response) {
-        return response.data;
-      }).catch(function (err) {
-        if (err.status == 502) {
-          UIMessageService.showBackendError($translate.instant("TERMINOLOGY.errorTerminology"), err);
-        }
-        else {
-          UIMessageService.showBackendError($translate.instant("TERMINOLOGY.errorBioPortal"), err);
-        }
-        return err;
-      });
+      init();
+      return AuthorizedBackendService.doCall(
+          ControlledTermHttpService.getValueById(acronym, valueId),
+          function (response) {
+            return response.data;
+          },
+          function (err) {
+            return handleServerError(err);
+          }
+      );
     }
 
     function getClassParents(acronym, classId) {
-      return $http.get(base + '/ontologies/' + acronym + '/classes/' + encodeURIComponent(classId) + '/parents?include=hasChildren,prefLabel',
-          http_default_config).then(function (response) {
+      init();
+      return AuthorizedBackendService.doCall(
+          ControlledTermHttpService.getClassParents(acronym, classId),
+          function (response) {
             return response.data;
-          }).catch(function (err) {
-            if (err.status == 502) {
-              UIMessageService.showBackendError($translate.instant("TERMINOLOGY.errorTerminology"), err);
-            }
-            else {
-              UIMessageService.showBackendError($translate.instant("TERMINOLOGY.errorBioPortal"), err);
-            }
-            return err;
-          });
-    };
+          },
+          function (err) {
+            return handleServerError(err);
+          }
+      );
+    }
 
     function getClassTree(acronym, classId) {
-      return $http.get(base + '/ontologies/' + acronym + '/classes/' + encodeURIComponent(classId) + '/tree',
-          http_default_config).then(function (response) {
+      init();
+      return AuthorizedBackendService.doCall(
+          ControlledTermHttpService.getClassTree(acronym, classId),
+          function (response) {
             return response.data;
-          }).catch(function (err) {
-            if (err.status == 502) {
-              UIMessageService.showBackendError($translate.instant("TERMINOLOGY.errorTerminology"), err);
-            }
-            else {
-              UIMessageService.showBackendError($translate.instant("TERMINOLOGY.errorBioPortal"), err);
-            }
-            return err;
-          });
-    };
+          },
+          function (err) {
+            return handleServerError(err);
+          }
+      );
+    }
 
     function getValuesInValueSet(vsCollection, vsId) {
-      var url = base + '/vs-collections/' + vsCollection + '/value-sets/' + encodeURIComponent(vsId) + "/values";
-      return $http.get(url, http_default_config).then(function (response) {
-        return response.data.collection;
-      }).catch(function (err) {
-        if (err.status == 502) {
-          UIMessageService.showBackendError($translate.instant("TERMINOLOGY.errorTerminology"), err);
-        }
-        else {
-          UIMessageService.showBackendError($translate.instant("TERMINOLOGY.errorBioPortal"), err);
-        }
-        return err;
-      });
+      init();
+      return AuthorizedBackendService.doCall(
+          ControlledTermHttpService.getValuesInValueSet(vsCollection, vsId),
+          function (response) {
+            return response.data.collection;
+          },
+          function (err) {
+            return handleServerError(err);
+          }
+      );
     }
 
     function getAcronym(result) {
@@ -383,156 +428,112 @@ define([
     }
 
     function searchClasses(query, sources, size) {
-      var url = base + "/search?q=" + encodeURIComponent(query) + "&scope=classes" + "&page=1&page_size=" + size;
-      if (sources) {
-        url = url + "&sources=" + sources;
-      }
-      return $http.get(url, http_default_config).then(function (response) {
-        return response.data;
-      }).catch(function (err) {
-        if (err.status == 502) {
-          UIMessageService.showBackendError($translate.instant("TERMINOLOGY.errorTerminology"), err);
-        }
-        else {
-          UIMessageService.showBackendError($translate.instant("TERMINOLOGY.errorBioPortal"), err);
-        }
-        return err;
-      });
-    };
+      init();
+      return AuthorizedBackendService.doCall(
+          ControlledTermHttpService.searchClasses(query, sources, size),
+          function (response) {
+            return response.data;
+          },
+          function (err) {
+            return handleServerError(err);
+          }
+      );
+    }
 
     function searchClassesAndValues(query, sources, size) {
-      var url = base + "/search?q=" + encodeURIComponent(query) + "&scope=classes,values" + "&page=1&page_size=" + size;
-      if (sources) {
-        url = url + "&sources=" + sources;
-      }
-      return $http.get(url, http_default_config).then(function (response) {
-        return response.data;
-      }).catch(function (err) {
-        if (err.status == 502) {
-          UIMessageService.showBackendError($translate.instant("TERMINOLOGY.errorTerminology"), err);
-        }
-        else {
-          UIMessageService.showBackendError($translate.instant("TERMINOLOGY.errorBioPortal"), err);
-        }
-        return err;
-      });
-    };
-
+      init();
+      return AuthorizedBackendService.doCall(
+          ControlledTermHttpService.searchClassesAndValues(query, sources, size),
+          function (response) {
+            return response.data;
+          },
+          function (err) {
+            return handleServerError(err);
+          }
+      );
+    }
 
     function searchClassesValueSetsAndValues(query, sources, size) {
-      var url = base + "/search?q=" + encodeURIComponent(query) + "&scope=all" + "&page=1&page_size=" + size;
-      if (sources) {
-        url = url + "&sources=" + sources;
-      }
-      return $http.get(url, http_default_config).then(function (response) {
-        return response.data;
-      }).catch(function (err) {
-        if (err.status == 502) {
-          UIMessageService.showBackendError($translate.instant("TERMINOLOGY.errorTerminology"), err);
-        }
-        else {
-          UIMessageService.showBackendError($translate.instant("TERMINOLOGY.errorBioPortal"), err);
-        }
-        return err;
-      });
-    };
+      init();
+      return AuthorizedBackendService.doCall(
+          ControlledTermHttpService.searchClassesValueSetsAndValues(query, sources, size),
+          function (response) {
+            return response.data;
+          },
+          function (err) {
+            return handleServerError(err);
+          }
+      );
+    }
 
     function searchValueSetsAndValues(query, sources, size) {
-      var url = base + "/search?q=" + encodeURIComponent(query) + "&scope=value_sets,values" + "&page=1&page_size=" + size;
-      if (sources) {
-        url = url + "&sources=" + sources;
-      }
-      return $http.get(url, http_default_config).then(function (response) {
-        return response.data;
-      }).catch(function (err) {
-        if (err.status == 502) {
-          UIMessageService.showBackendError($translate.instant("TERMINOLOGY.errorTerminology"), err);
-        }
-        else {
-          UIMessageService.showBackendError($translate.instant("TERMINOLOGY.errorBioPortal"), err);
-        }
-        return err;
-      });
-    };
+      init();
+      return AuthorizedBackendService.doCall(
+          ControlledTermHttpService.searchValueSetsAndValues(query, sources, size),
+          function (response) {
+            return response.data;
+          },
+          function (err) {
+            return handleServerError(err);
+          }
+      );
+    }
 
     function searchValueSets(query, sources, size) {
-      var url = base + "/search?q=" + encodeURIComponent(query) + "&scope=value_sets" + "&page=1&page_size=" + size;
-      if (sources) {
-        url = url + "&sources=" + sources;
-      }
-      return $http.get(url, http_default_config).then(function (response) {
-        return response.data;
-      }).catch(function (err) {
-        if (err.status == 502) {
-          UIMessageService.showBackendError($translate.instant("TERMINOLOGY.errorTerminology"), err);
-        }
-        else {
-          UIMessageService.showBackendError($translate.instant("TERMINOLOGY.errorBioPortal"), err);
-        }
-        return err;
-      });
-    };
+      init();
+      return AuthorizedBackendService.doCall(
+          ControlledTermHttpService.searchValueSets(query, sources, size),
+          function (response) {
+            return response.data;
+          },
+          function (err) {
+            return handleServerError(err);
+          }
+      );
+    }
 
     function autocompleteOntology(query, acronym) {
-      var url;
-      if (query == '*') {
-        url = base + "/ontologies/" + acronym + "/classes?page=1&page_size=500";
-      }
-      else {
-        var url = base + "/search?q=" + encodeURIComponent(query) + "&scope=classes" +
-            "&sources=" + acronym + "&suggest=true&page=1&page_size=500";
-      }
-      return $http.get(url, http_default_config).then(function (response) {
-        return response.data;
-      }).catch(function (err) {
-        if (err.status == 502) {
-          UIMessageService.showBackendError($translate.instant("TERMINOLOGY.errorTerminology"), err);
-        }
-        else {
-          UIMessageService.showBackendError($translate.instant("TERMINOLOGY.errorBioPortal"), err);
-        }
-        return err;
-      });
-    };
+      init();
+      return AuthorizedBackendService.doCall(
+          ControlledTermHttpService.autocompleteOntology(query, acronym),
+          function (response) {
+            return response.data;
+          },
+          function (err) {
+            return handleServerError(err);
+          }
+      );
+    }
 
     function autocompleteOntologySubtree(query, acronym, subtree_root_id, max_depth) {
-      var url = "";
-      if (query == '*') {
-        url += base + '/ontologies/' + acronym + '/classes/' + encodeURIComponent(subtree_root_id) + '/descendants?page=1&page_size=500';
-      } else {
-        url = base + '/search?q=' + encodeURIComponent(query) + '&scope=classes' + '&source=' + acronym +
-            '&subtree_root_id=' + encodeURIComponent(subtree_root_id) + '&max_depth=' + max_depth + "&suggest=true&page=1&page_size=500";
-      }
-      return $http.get(url, http_default_config).then(function (response) {
-        return response.data;
-      }).catch(function (err) {
-        if (err.status == 502) {
-          UIMessageService.showBackendError($translate.instant("TERMINOLOGY.errorTerminology"), err);
-        }
-        else {
-          UIMessageService.showBackendError($translate.instant("TERMINOLOGY.errorBioPortal"), err);
-        }
-        return err;
-      });
-    };
+      init();
+      return AuthorizedBackendService.doCall(
+          ControlledTermHttpService.autocompleteOntologySubtree(query, acronym, subtree_root_id, max_depth),
+          function (response) {
+            return response.data;
+          },
+          function (err) {
+            return handleServerError(err);
+          }
+      );
+    }
 
     function autocompleteValueSetClasses(query, vsCollection, vsId) {
+      init();
       var acronym = vsCollection.substr(vsCollection.lastIndexOf('/') + 1);
       // use descendants
-      return getValuesInValueSet(acronym, vsId).then(function (r) {
-        var response = {};
-        response["collection"] = r;
-        return response;
-      }).catch(function (err) {
-        if (err.status == 502) {
-          UIMessageService.showBackendError($translate.instant("TERMINOLOGY.errorTerminology"), err);
-        }
-        else {
-          UIMessageService.showBackendError($translate.instant("TERMINOLOGY.errorBioPortal"), err);
-        }
-        return err;
-      });
-    };
+      return AuthorizedBackendService.doCall(
+          ControlledTermHttpService.getValuesInValueSet(acronym, vsId),
+          function (r) {
+            var response = {};
+            response["collection"] = r;
+            return response;
+          },
+          function (err) {
+            return handleServerError(err);
+          }
+      );
+    }
 
     // This is a more complex version of the previous function. It uses BioPortal subtree search for autocomplete. This is not needed for a small amount of values.
     //function autocompleteValueSetClasses(query, vsCollection, vsId) {

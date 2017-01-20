@@ -43,7 +43,9 @@
         <td>{{tsc.getShortId(value.source)}}</td>
         <td>
           <div class="value-delete">
-            <i class="fa fa-times-circle" tooltip="Delete term" ng-click="pcc.deleteProvisionalValueSetValue($index)"></i>
+            <i class="fa fa-times-circle"
+                tooltip="{{'HELP.deleteTerm' | translate}}"
+                ng-click="pcc.deleteProvisionalValueSetValue($index)"></i>
           </div>
         </td>
       </tr>

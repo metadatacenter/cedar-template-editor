@@ -28,6 +28,7 @@ var WorkspacePage = function () {
   var createToolbar = element(by.id('workspace-toolbar'));
   var createTrashButton = createToolbar.element(by.css('#delete-tool button[tooltip="delete selection"]'));
   var createMoreOptionsButton = createToolbar.element(by.css('#more-options-tool > div > button'));
+  var createPopulateResourceButton = createToolbar.element(by.css('#more-options-tool [ng-click="dc.launchInstance()"]'));
   var createEditResourceButton = createToolbar.element(by.css('#more-options-tool [ng-click="dc.editResource()"]'));
   var createOpenResourceButton = createToolbar.element(by.css('#more-options-tool [ng-click="dc.goToResource()"]'));
   var createDeleteResourceButton = createToolbar.element(by.css('#more-options-tool [ng-click="dc.deleteResource(resource)"]'));
@@ -102,7 +103,7 @@ var WorkspacePage = function () {
 
   this.get = function () {
     browser.get(url);
-    //browser.sleep(1000);
+    browser.sleep(1000);
   };
 
   this.test = function () {
@@ -207,6 +208,20 @@ var WorkspacePage = function () {
     return toastyMessageCreated;
   };
 
+  this.createFolderNew = function (name) {
+
+    browser.wait(EC.visibilityOf(createButton));
+
+    browser.actions().mouseMove(createButton).perform();
+    browser.wait(EC.elementToBeClickable(createFolderButton));
+    createFolderButton.click();
+
+    browser.wait(EC.visibilityOf(createFolderModal));
+    createFolderName.sendKeys(name);
+    browser.wait(EC.elementToBeClickable(createFolderSubmitButton));
+    createFolderSubmitButton.click();
+  };
+
   // create a new folder with name
   this.createFolder = function (name) {
     var deferred = protractor.promise.defer();
@@ -244,7 +259,7 @@ var WorkspacePage = function () {
   };
 
 // delete a resource by name
-  this.deleteResource = function (name, type) {
+  this.deleteResourceOld = function (name, type) {
 
     var deferred = protractor.promise.defer();
 
@@ -316,6 +331,172 @@ var WorkspacePage = function () {
 
   };
 
+  // open a resource by name
+  this.openResource = function (type, title) {
+    console.log('openResource');
+
+    // find the resource
+    createSearchNavInput.sendKeys(title + protractor.Key.ENTER);
+
+    var result = "Search Results For: '" + title + "'";
+    var searchResult = element(by.css('.search-result'));
+    browser.wait(EC.textToBePresentInElement(searchResult, result),10000);
+
+    var createFirst = element.all(by.css(createFirstCss + type)).first();
+    browser.wait(EC.visibilityOf(createFirst));
+
+    browser.wait(EC.elementToBeClickable(createFirst));
+    createFirst.click();
+    browser.sleep(2000);
+
+    browser.wait(EC.visibilityOf(element(by.css('.form-box-container.selected'))));
+
+    browser.wait(EC.elementToBeClickable(createMoreOptionsButton));
+    createMoreOptionsButton.click();
+
+    browser.wait(EC.elementToBeClickable(createEditResourceButton));
+    createEditResourceButton.click();
+
+  };
+
+  // delete a resource by name
+  this.deleteNextResource = function (name, type) {
+
+    //// find the resource
+    //createSearchNavInput.sendKeys(name + protractor.Key.ENTER);
+    //browser.sleep(1000);
+
+    var createFirst = element.all(by.css(createFirstCss + type)).first();
+    browser.wait(EC.visibilityOf(createFirst));
+    browser.wait(EC.elementToBeClickable(createFirst));
+    createFirst.click();
+
+    browser.sleep(1000);
+
+    browser.wait(EC.visibilityOf(createTrashButton));
+    browser.wait(EC.elementToBeClickable(createTrashButton));
+    createTrashButton.click();
+    browser.sleep(1000);
+
+
+    browser.wait(EC.visibilityOf(createSweetAlertConfirmButton));
+    browser.sleep(1000);
+
+    browser.wait(EC.elementToBeClickable(createSweetAlertConfirmButton));
+    createSweetAlertConfirmButton.click();
+
+  };
+
+  // delete a resource by name
+  this.deleteResource = function (name, type) {
+
+    // find the resource
+    createSearchNavInput.sendKeys(name + protractor.Key.ENTER);
+    browser.sleep(1000);
+
+    var result = "Search Results For: '" + name + "'";
+    var searchResult = element(by.css('.search-result'));
+    browser.wait(EC.textToBePresentInElement(searchResult, result),10000);
+
+    var createFirst = element.all(by.css(createFirstCss + type)).first();
+    browser.wait(EC.visibilityOf(createFirst));
+    browser.wait(EC.elementToBeClickable(createFirst));
+    createFirst.click();
+
+    browser.sleep(1000);
+
+    browser.wait(EC.visibilityOf(createTrashButton));
+    browser.wait(EC.elementToBeClickable(createTrashButton));
+    createTrashButton.click();
+    browser.sleep(1000);
+
+
+    browser.wait(EC.visibilityOf(createSweetAlertConfirmButton));
+    browser.sleep(1000);
+
+    browser.wait(EC.elementToBeClickable(createSweetAlertConfirmButton));
+    createSweetAlertConfirmButton.click();
+
+
+    browser.sleep(500);
+    browser.ignoreSynchronization = true;
+    var toast = element(by.css('#toasty .toast .toast-msg'));
+    toast.getAttribute('value').then(function (v) {
+      console.log(v);
+    });
+    var toastyClose = element(by.css('#toasty .toast .close-button'));
+    toastyClose.click();
+    element(by.css('.navbar-brand')).click();
+
+    browser.sleep(500);
+    browser.ignoreSynchronization = false;
+
+  };
+  // populate a resource by name
+  this.populateResource = function (name, type) {
+
+    // find the resource
+    createSearchNavInput.sendKeys(name + protractor.Key.ENTER);
+    browser.sleep(1000);
+
+    var createFirst = element.all(by.css(createFirstCss + type)).first();
+    browser.wait(EC.visibilityOf(createFirst));
+    browser.wait(EC.elementToBeClickable(createFirst));
+    createFirst.click();
+
+    browser.sleep(1000);
+
+    browser.wait(EC.visibilityOf(createMoreOptionsButton));
+    browser.wait(EC.elementToBeClickable(createMoreOptionsButton));
+    createMoreOptionsButton.click();
+
+    browser.wait(EC.visibilityOf(createPopulateResourceButton));
+    browser.wait(EC.elementToBeClickable(createPopulateResourceButton));
+    createPopulateResourceButton.click();
+
+  };
+  // edit a resource by name
+  this.editResource = function (name, type) {
+
+    // find the resource
+    createSearchNavInput.sendKeys(name + protractor.Key.ENTER);
+    browser.sleep(1000);
+
+    var createFirst = element.all(by.css(createFirstCss + type)).first();
+    browser.wait(EC.visibilityOf(createFirst),20000);
+    browser.wait(EC.elementToBeClickable(createFirst),20000);
+    createFirst.click();
+
+    browser.sleep(1000);
+
+    browser.wait(EC.visibilityOf(createMoreOptionsButton),20000);
+    browser.wait(EC.elementToBeClickable(createMoreOptionsButton));
+    createMoreOptionsButton.click();
+
+    browser.wait(EC.visibilityOf(createEditResourceButton));
+    browser.wait(EC.elementToBeClickable(createEditResourceButton),20000);
+    createEditResourceButton.click();
+
+  };
+
+
+
+  this.toastAndHome = function() {
+    browser.sleep(500);
+    browser.ignoreSynchronization = true;
+    var toast = element(by.css('#toasty .toast .toast-msg'));
+    toast.getAttribute('value').then(function (v) {
+      console.log(v);
+    });
+    var toastyClose = element(by.css('#toasty .toast .close-button'));
+    toastyClose.click();
+    element(by.css('.navbar-brand')).click();
+
+    browser.sleep(500);
+    browser.ignoreSynchronization = false;
+
+  };
+
   this.selectFolder = function (name) {
     var deferred = protractor.promise.defer();
 
@@ -335,40 +516,49 @@ var WorkspacePage = function () {
   };
 
 
-// double click the template by title to open in metadata editor
+  // double click the template by title to open in metadata editor
   this.doubleClickName = function (name, type) {
-    var deferred = protractor.promise.defer();
 
-    // search for the name
-    isReady(createSearchNavInput).then(function () {
+    // find the resource
+    createSearchNavInput.sendKeys(name + protractor.Key.ENTER);
 
-      browser.wait(EC.elementToBeClickable(createSearchNavInput)).then(function () {
-        createSearchNavInput.sendKeys(name).sendKeys(protractor.Key.ENTER).then(function () {
+    var result = "Search Results For: '" + name + "'";
+    var searchResult = element(by.css('.search-result'));
+    browser.wait(EC.textToBePresentInElement(searchResult, result));
 
-          // wait for search results to show in the breadcrumb
-          isReady(createBreadcrumbSearch).then(function () {
-            browser.sleep(2000);  // TODO not correctly waiting for search to return
+    var createFirst = element.all(by.css(createFirstCss + type)).first();
+    browser.wait(EC.visibilityOf(createFirst));
+
+    // TODO staging needs this
+    browser.sleep(500);
+
+    browser.wait(EC.elementToBeClickable(createFirst));
+    browser.actions().doubleClick(createFirst).perform();
+
+    // TODO staging needs this
+    browser.sleep(500);
+
+    browser.wait(EC.presenceOf(element(by.css('.navbar.metadata'))));
 
 
-            // select the first result
-            var createFirst = element.all(by.css(createFirstCss + type)).first();
-            isReady(createFirst).then(function () {
+  };
 
-              browser.actions().doubleClick(createFirst).perform().then(function () {
+  // double click the template by title to open in metadata editor
+  this.editTemplateNew = function (name, type) {
 
-                // wait until metadata page is displayed
-                isReady(createMetadataPage).then(function () {
+    createSearchNavInput.sendKeys(name).sendKeys(protractor.Key.ENTER);
 
-                  deferred.fulfill(true);
-                });
-              });
-            });
-          });
-        });
-      });
-    });
+    // wait for search results to show in the breadcrumb
+    // TODO not correctly waiting for search to return
+    browser.sleep(2000);
 
-    return deferred.promise;
+    // select the first result
+    var createFirst = element.all(by.css(createFirstCss + type)).first();
+    browser.actions().click(createFirst).perform();
+
+    createMoreOptionsButton().click();
+    createEditResourceButton().click();
+
   };
 
 

@@ -1,0 +1,133 @@
+<div class="item-root field-root">
+
+  <!-- field content  -->
+  <div class="elementTotalContent visible" style="position:relative">
+
+    <!-- spreadsheet, currently disabled -->
+    <div ng-show="isMultipleCardinality()">
+      <div class="spreadsheetViewDetector"></div>
+      <div class="spreadsheetViewContainer"></div>
+    </div>
+
+    <div class="fields text-fields">
+
+      <!-- for zero cardinality just show the field title because the valueArray is empty  -->
+      <div ng-if="valueArray.length == 0">
+        <div class="row" id="{{getLocator(index)}}">
+          <div class="col-sm-3">
+            <div class="leader"></div>
+
+            <div class="title" ng-click="addMoreInput()">
+              {{getTitle(field)}}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- show a list of fields from the valueArray -->
+      <div ng-repeat="(index, valueElement) in valueArray">
+
+        <!-- inactive,not being edited at the moment -->
+        <div class="row" ng-if="!isActive(index)" class="isInactive" id="{{getLocator(index)}}">
+          <div class="col-sm-3">
+            <div class="leader"></div>
+
+            <div ng-click="setActive(index, true)" class="title " ng-mouseenter="hover=true"
+                ng-mouseleave="hover=false">
+
+              <span ng-if="isMultipleCardinality()" style="font-size:smaller">{{index+1}}.</span>{{getTitle(field)}}
+            </div>
+
+          </div>
+          <div class="col-sm-9">
+            <div class="originalContent" ng-include="getFieldUrl()"></div>
+          </div>
+        </div>
+
+        <!-- actively being edited -->
+        <div ng-if="isActive(index)"  class="active-container"  ng-style="{'left' : getNestingStyle(), 'width': getPageWidth() }">
+          <div class="row" >
+            <div class="col-xs-4 col-sm-4 pull-right toolbar">
+
+              <button type="button" class="remove pull-right" ng-click="removeInput(index)"
+                  ng-if="model.length > field.minItems"
+                  tooltip="{{'GENERIC.Remove' | translate}}"
+                  tooltip-trigger
+                  tooltip-animation="false"
+                  tooltip-placement="top"
+                  data-toggle="tooltip">
+                <i class="fa fa-trash"></i>
+              </button>
+
+              <button type="button" class=" remove pull-right"
+                  ng-if="isActive(index)"
+                  tooltip="{{'GENERIC.Close' | translate}}"
+                  ng-click="setActive(index, false)">
+                <i class="fa fa-remove "></i>
+              </button>
+
+              <button ng-if="getDescription(field).length > 0" type="button" class=" question  pull-right"
+                  tooltip="{{(getDescription(field) || 'GENERIC.Help') | translate}}"
+                  tooltip-trigger
+                  tooltip-animation="true"
+                  tooltip-placement="top"
+                  data-toggle="tooltip">
+                <i class="fa fa-question-circle"></i>
+              </button>
+
+              <button type="button" class=" add  pull-right" ng-click="addMoreInput()"
+                  ng-if="isMultipleCardinality() && (!field.maxItems || model.length < field.maxItems )"
+                  tooltip="{{'GENERIC.Add' | translate}}"
+                  tooltip-trigger
+                  tooltip-animation="false"
+                  tooltip-placement="top"
+                  data-toggle="tooltip">
+                <i class="fa fa-plus-circle"></i>
+              </button>
+
+            </div>
+          </div>
+          <div class="row isActive" id="{{getLocator(index)}}">
+            <div class="col-xs-12 col-sm-12">
+              <div ng-click="setActive(index, true)" class="title ">
+                <span ng-if="isMultipleCardinality()" class="count">{{index+1}}.</span>
+                {{getTitle(field)}}
+              </div>
+              <div ng-if="isPreviousStatic()" >
+                <div ng-if="isImage(previous)" >
+                 <figure>
+                    <img ng-src="{{getContent(previous)}}" no-image alt="{{getTitle(previous)}}"
+                      type="image/png" width="100%"/>
+                    <figcaption><label>{{getTitle(previous)}}</label></figcaption>
+                  </figure>
+                 </div>
+                <div ng-if="isRichText(previous)" ng-bind-html="$root.getUnescapedContent(previous)"></div>
+                <div ng-if="isYouTube(previous)">
+                  <figure>
+                    <div fit-vids ng-bind-html="getYouTubeEmbedFrame(previous)"></div>
+                  </figure>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row isActive" ng-if="isActive(index)">
+            <div class="col-xs-12 col-sm-12">
+              <form name="field-edit-form-{{index}}" ng-submit="onSubmit(index)">
+                <div class="originalContent" ng-include="getFieldUrl()"></div>
+                <button type="submit" class="btn btn-save confirm active" translate>GENERIC.Ok</button>
+                <label class="submit-info" translate>GENERIC.Submit</label>
+              </form>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- all error messages for this field  -->
+      <div class="errors" ng-if="errorMessages">
+        <div class="alert alert-danger" ng-repeat="message in errorMessages">{{message}}</div>
+      </div>
+    </div>
+  </div>
+</div>

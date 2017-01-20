@@ -11,17 +11,18 @@ define([
     '$location',
     '$window',
     '$timeout',
-    'UrlService',
+    'QueryParamUtilsService',
     'UIMessageService'
   ];
 
-  function HeaderController($rootScope, $location, $window, $timeout, UrlService, UIMessageService) {
+  function HeaderController($rootScope, $location, $window, $timeout, QueryParamUtilsService, UIMessageService) {
 
     var vm = this;
 
     vm.path = $location.path();
 
     vm.confirmBack = function () {
+      console.log('confirmBack');
 
       if (!$rootScope.isDirty()) {
 
@@ -46,17 +47,17 @@ define([
 
     vm.goToDashboardOrBack = function () {
       vm.searchTerm = null;
-      var params = $location.search();
       var path = $location.path();
       var baseUrl = '/dashboard';
       if (path != baseUrl) {
         var queryParams = {};
-        if (params.folderId) {
-          queryParams['folderId'] = params.folderId;
+        var folderId = QueryParamUtilsService.getFolderId();
+        if (folderId) {
+          queryParams['folderId'] = folderId;
         }
         /*if (params.search) {
-          queryParams['search'] = params.search;
-        }*/
+         queryParams['search'] = params.search;
+         }*/
       }
       var url = $rootScope.util.buildUrl(baseUrl, queryParams);
       $location.url(url);
@@ -66,18 +67,16 @@ define([
 
     vm.search = function (searchTerm) {
       if (vm.isDashboard()) {
-        var params = $location.search();
         var baseUrl = '/dashboard';
         var queryParams = {};
-        if (params.folderId) {
-          queryParams['folderId'] = params.folderId;
+        var folderId = QueryParamUtilsService.getFolderId();
+        if (folderId) {
+          queryParams['folderId'] = folderId;
         }
         queryParams['search'] = searchTerm;
         var url = $rootScope.util.buildUrl(baseUrl, queryParams);
         $location.url(url);
       }
-      vm.searchTerm = searchTerm;
-      $rootScope.$broadcast('search', vm.searchTerm || '');
     };
 
     vm.showSearch = function () {
@@ -126,13 +125,14 @@ define([
 
     $rootScope.$on('$locationChangeStart', function (event, next, current) {
 
+
       vm.path = $location.path();
       $rootScope.setHeader();
 
       if ($rootScope.isDirty()) {
 
         event.preventDefault();
-        vm.confirmBack();
+        //vm.confirmBack();
 
         $timeout(function () {
 

@@ -1,0 +1,30 @@
+
+<!-- actively being edited -->
+<div  ng-if="isActive(index)" class="form-group  has-feedback ">
+    <input type="email"
+        class="form-control select"
+        ng-class="{'isActive' : isActive(index), 'required': $root.schemaOf(field)._valueConstraints.requiredValue}"
+        placeholder="{{isActive(index) ? 'enter email' : ''}}"
+        aria-label="{{$root.schemaOf(field)._ui.description}}"
+        ng-model="valueElement['@value']"
+        ng-model-options="{allowInvalid:true}"
+        validate-on="blur"
+        ng-pattern= "/^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/"/>
+
+    <!-- show whether text entry is valid or not -->
+    <div ng-if="isActive(index)" class="input-indicator-icons" ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
+
+
+</div>
+
+<!--- not active --->
+<div ng-if="!isActive(index)" class="form-group  has-feedback value">
+
+
+
+  <div  ng-click="setActive(index)"
+      aria-label="{{getDescription(field)}}">
+     {{valueElement['@value']}}</div>
+
+</div>
+

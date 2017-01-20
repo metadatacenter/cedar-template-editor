@@ -37,19 +37,20 @@ define([
           'resourceService',
           'UIMessageService',
           'UISettingsService',
-          'UrlService',
+          'QueryParamUtilsService',
           'AuthorizedBackendService',
           'TemplateInstanceService',
           'TemplateElementService',
           'TemplateService',
+          'FrontendUrlService',
           'CONST'
         ];
 
         function cedarSearchBrowsePickerController($location, $timeout, $scope, $rootScope, $translate, CedarUser,
                                                    resourceService,
-                                                   UIMessageService, UISettingsService, UrlService,
+                                                   UIMessageService, UISettingsService, QueryParamUtilsService,
                                                    AuthorizedBackendService, TemplateInstanceService,
-                                                   TemplateElementService, TemplateService, CONST) {
+                                                   TemplateElementService, TemplateService, FrontendUrlService, CONST) {
           var vm = this;
 
           vm.breadcrumbName = breadcrumbName;
@@ -63,7 +64,6 @@ define([
           vm.editResource = editResource;
           vm.facets = {};
           vm.forms = [];
-
 
 
           // modals
@@ -88,6 +88,7 @@ define([
           vm.isResourceTypeActive = isResourceTypeActive;
           vm.isSearching = false;
           vm.launchInstance = launchInstance;
+          vm.launchInstanceNew = launchInstanceNew;
           vm.copyToWorkspace = copyToWorkspace;
           vm.copyResource = copyResource;
           vm.setResourceInfoVisibility = setResourceInfoVisibility;
@@ -212,7 +213,7 @@ define([
 
                   $timeout(function () {
                     vm.selectedResource = response;
-                  },0);
+                  }, 0);
 
                 },
                 function (error) {
@@ -441,8 +442,22 @@ define([
           }
 
           function init() {
+            //console.log("SearchAndBrowse.init()");
+            //console.log(vm.params);
+            //console.log($location.search());
             vm.isSearching = false;
-            if (vm.params.search) {
+            if (vm.params.sharing) {
+              if (vm.params.sharing == 'shared-with-me') {
+                vm.isSearching = true;
+                if (vm.showFavorites) {
+                  vm.showFavorites = false;
+                  updateFavorites();
+                }
+                // TODO: DO WE NEED THIS??
+                getFacets();
+                doSharedWithMe();
+              }
+            } else if (vm.params.search) {
               vm.isSearching = true;
               if (vm.showFavorites) {
                 vm.showFavorites = false;
@@ -466,27 +481,12 @@ define([
             updateResourceInfoPanel();
           }
 
-          function initSearch() {
-            if (vm.params.search) {
-              vm.isSearching = true;
-              getFacets();
-              doSearch(vm.params.search);
-            } else {
-              goToFolder(CedarUser.getHomeFolderId());
-            }
-          }
-
           function breadcrumbName(folderName) {
             if (folderName == '/') {
               return 'All';
             }
             return folderName;
           }
-
-
-
-
-
 
           function doSearch(term) {
             var resourceTypes = activeResourceTypes();
@@ -507,6 +507,25 @@ define([
                 }
             );
           }
+
+          function doSharedWithMe() {
+            //console.log("DO shared with me");
+            var resourceTypes = activeResourceTypes();
+            var limit = UISettingsService.getRequestLimit();
+            vm.offset = 0;
+            var offset = vm.offset;
+            resourceService.sharedWithMeResources(
+                {resourceTypes: resourceTypes, sort: sortField(), limit: limit, offset: offset},
+                function (response) {
+                  vm.isSearching = true;
+                  vm.resources = response.resources;
+                  vm.totalCount = response.totalCount;
+                },
+                function (error) {
+                  UIMessageService.showBackendError('SERVER.SEARCH.error', error);
+                }
+            );
+          };
 
           function copyToWorkspace(resource) {
             if (!resource) {
@@ -554,24 +573,43 @@ define([
             );
           }
 
-          function launchInstance(resource) {
+          function launchInstance(resource, newForm) {
+
+            console.log('launchInstance ' + newForm);
+
+            // may be setting which form to use
+            if (newForm != null) {
+              $rootScope.useRunTimeCode = newForm;
+            }
+
             if (!resource) {
               resource = getSelection();
             }
 
-
-            var params = $location.search();
-            var folderId;
-            if (params.folderId) {
-              folderId = params.folderId;
-            } else {
-              folderId = vm.currentFolderId
-            }
-            var url = UrlService.getInstanceCreate(resource['@id'], folderId);
+            var url = FrontendUrlService.getInstanceCreate(resource['@id'], vm.getFolderId());
             $location.url(url);
           }
 
+          function launchInstanceNew(resource, newForm) {
+
+            console.log('launchInstanceNew  ' + newForm);
+
+            // may be setting which form to use
+            if (newForm != null) {
+              $rootScope.useRunTimeCode = newForm;
+            }
+
+            if (!resource) {
+              resource = getSelection();
+            }
+
+            var url = FrontendUrlService.getInstanceCreate(resource['@id'], vm.getFolderId());
+            $location.url(url);
+          }
+
+
           function goToResource(resource) {
+            console.log('goToResource');
             var r = resource;
             if (!r && vm.selectedResource) {
               r = vm.selectedResource;
@@ -586,7 +624,12 @@ define([
                 goToFolder(r['@id']);
               } else {
                 if (r.nodeType == 'template') {
-                  launchInstance(r);
+                  if ($rootScope.useRunTimeCode) {
+                    launchInstanceNew(r, $rootScope.useRunTimeCode);
+                  } else {
+                    launchInstance(r, $rootScope.useRunTimeCode);
+                  }
+
                 } else {
                   editResource(r);
                 }
@@ -595,6 +638,7 @@ define([
           }
 
           function editResource(resource) {
+            console.log('editResource');
             var r = resource;
             if (!r && vm.selectedResource) {
               r = vm.selectedResource;
@@ -607,22 +651,22 @@ define([
               }
               switch (r.nodeType) {
                 case CONST.resourceType.TEMPLATE:
-                  $location.path(UrlService.getTemplateEdit(id));
+                  $location.path(FrontendUrlService.getTemplateEdit(id));
                   break;
                 case CONST.resourceType.ELEMENT:
                   if (vm.onDashboard()) {
-                    $location.path(UrlService.getElementEdit(id));
+                    $location.path(FrontendUrlService.getElementEdit(id));
                   }
                   break;
                 case CONST.resourceType.INSTANCE:
-                  $location.path(UrlService.getInstanceEdit(id));
+                  $location.path(FrontendUrlService.getInstanceEdit(id));
                   break;
                 case CONST.resourceType.LINK:
                   $location.path(scope.href);
                   break;
-                //case CONST.resourceType.FOLDER:
-                //  vm.showEditFolder(r);
-                //  break;
+                  //case CONST.resourceType.FOLDER:
+                  //  vm.showEditFolder(r);
+                  //  break;
               }
             }
           }
@@ -815,7 +859,7 @@ define([
           function goToFolder(folderId) {
             if (vm.onDashboard()) {
               console.log('goToFolder ' + folderId);
-              $location.url(UrlService.getFolderContents(folderId));
+              $location.url(FrontendUrlService.getFolderContents(folderId));
             } else {
               vm.params.folderId = folderId;
               init();
@@ -827,7 +871,7 @@ define([
           }
 
           function showOrHide(type) {
-            return isResourceTypeActive(type) ? 'hide' : 'show';
+            return $translate.instant(isResourceTypeActive(type) ? 'GENERIC.Hide' : 'GENERIC.Show');
           }
 
           function onDashboard() {
@@ -949,12 +993,6 @@ define([
             init();
           });
 
-          $scope.$on('search', function (event, searchTerm) {
-            console.log('on search');
-            vm.params.search = searchTerm;
-            initSearch();
-          });
-
           $scope.hideModal = function (id) {
             jQuery('#' + id).modal('hide');
           };
@@ -1016,7 +1054,6 @@ define([
           };
 
 
-
           function updateFavorites(saveData) {
             $timeout(function () {
               if (vm.showFavorites) {
@@ -1073,18 +1110,34 @@ define([
           // open the new folder modal
           function showNewFolderModal() {
             vm.newFolderModalVisible = true;
-            var params = $location.search();
-            var folderId;
-            if (params.folderId) {
-              folderId = params.folderId;
-            } else {
-              folderId = vm.currentFolderId
-            }
-            $scope.$broadcast('newFolderModalVisible', [vm.newFolderModalVisible, folderId]);
+            $scope.$broadcast('newFolderModalVisible', [vm.newFolderModalVisible, vm.getFolderId()]);
           }
 
+          vm.getFolderId = function () {
+            var folderId;
+            var queryStringFolderId = QueryParamUtilsService.getFolderId();
+            if (queryStringFolderId) {
+              folderId = queryStringFolderId;
+            } else {
+              folderId = vm.currentFolderId;
+            }
+            return folderId;
+          };
 
+          vm.goToMyWorkspace = function () {
+            var url = FrontendUrlService.getMyWorkspace();
+            $location.url(url);
+          };
 
+          vm.goToSearchAll = function () {
+            var url = FrontendUrlService.getSearchAll(vm.getFolderId());
+            $location.url(url);
+          };
+
+          vm.goToSharedWithMe = function () {
+            var url = FrontendUrlService.getSharedWithMe(vm.getFolderId());
+            $location.url(url);
+          };
 
         }
       }

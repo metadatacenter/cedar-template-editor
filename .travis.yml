@@ -38,7 +38,7 @@ before_install:
   - export CEDAR_PROFILE=server 
   - export CEDAR_ANALYTICS_KEY=false
   - export CEDAR_SELENIUM_SERVER_JAR=2.53.1-server.jar
-  - export CEDAR_CHROME_DRIVER=2.25-x64-chromedriver
+  - export CEDAR_CHROME_DRIVER=2.27-x64-chromedriver
   - export DISPLAY=:99.0
   - sh -e /etc/init.d/xvfb start
 

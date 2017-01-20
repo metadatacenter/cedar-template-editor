@@ -38,17 +38,17 @@ var WorkspacePage = function () {
 
   // toolbar
   var createToolbar = element(by.id('workspace-toolbar'));
-  var createTrashButton = createToolbar.element(by.css('#delete-tool button[tooltip="delete selection"]'));
+  var createTrashButton = createToolbar.element(by.css('#delete-tool button'));
   var createMoreOptionsButton = createToolbar.element(by.css('#more-options-tool > div > button'));
   var createPopulateResourceButton = createToolbar.element(by.css('#more-options-tool [ng-click="dc.launchInstance()"]'));
   var createEditResourceButton = createToolbar.element(by.css('#more-options-tool [ng-click="dc.editResource()"]'));
   var createMoveToResourceButton = createToolbar.element(by.css('#more-options-tool [ng-click="dc.showMoveModal(resource)"]'));
   var createOpenResourceButton = createToolbar.element(by.css('#more-options-tool [ng-click="dc.goToResource()"]'));
   var createDeleteResourceButton = createToolbar.element(by.css('#more-options-tool [ng-click="dc.deleteResource(resource)"]'));
-  var createGridViewButton = createToolbar.element(by.css('#grid-view-tool [tooltip="view as grid"]'));
-  var createListViewButton = createToolbar.element(by.css('#list-view-tool [tooltip="view as list"]'));
-  var createViewDetailsButton = createToolbar.element(by.css('#details-view-tool [ng-click="dc.toggleInfoPanel()" tooltip="view details"]'));
-  var createHideDetailsButton = createToolbar.element(by.css('#details-hide-tool [ng-click="dc.toggleInfoPanel()" tooltip="hide details"]'));
+  var createGridViewButton = createToolbar.element(by.css('#grid-view-tool'));
+  var createListViewButton = createToolbar.element(by.css('#list-view-tool'));
+  var createViewDetailsButton = createToolbar.element(by.css('#details-view-tool [ng-click="dc.toggleInfoPanel()"'));
+  var createHideDetailsButton = createToolbar.element(by.css('#details-hide-tool [ng-click="dc.toggleInfoPanel()"'));
   var createDetailsPanel = element(by.id('sidebar-right'));
   var createSortDropdownButton = createToolbar.element(by.css('#workspace-sort-tool [ng-click="dc.deleteResource()"]'));
   var createSortByNameMenuItem = createToolbar.element(by.css('#workspace-sort-tool [ng-click="dc.setSortOption(\\042name\\042)"]'));
@@ -377,7 +377,6 @@ var WorkspacePage = function () {
     var link = folder.element(by.tagName('a'));
     browser.wait(EC.elementToBeClickable(link));
     link.click();
-    browser.sleep(3000);
 
   };
 
