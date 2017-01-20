@@ -34,7 +34,7 @@ define([
       scope.elementId = DataManipulationService.idOf(scope.element) || DataManipulationService.generateGUID();
       scope.uuid = DataManipulationService.generateTempGUID();
       scope.expanded = [];
-      scope.multipleStates = ['expanded', 'paged'];
+      scope.multipleStates = ['expanded', 'paged','spreadsheet'];
       scope.multipleState = scope.multipleStates[0];
       scope.index = 0;
       scope.pageMin = 0;
@@ -213,7 +213,7 @@ define([
       };
 
       scope.switchToSpreadsheet = function () {
-        SpreadsheetService.switchToSpreadsheetElement(scope, element);
+        SpreadsheetService.switchToSpreadsheetElement(scope, scope.element);
       };
 
       scope.toggleExpanded = function (index) {
@@ -422,6 +422,14 @@ define([
         var i = scope.multipleStates.indexOf(scope.multipleState);
         i = (i + 1) % scope.multipleStates.length;
         scope.multipleState = scope.multipleStates[i];
+
+        if (scope.multipleState === 'spreadsheet') {
+
+          $timeout(function () {
+            scope.switchToSpreadsheet();
+          }, 0);
+
+        }
         return scope.multipleState;
       };
 

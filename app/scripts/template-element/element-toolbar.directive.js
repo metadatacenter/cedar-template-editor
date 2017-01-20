@@ -17,9 +17,6 @@ define([
     var linker = function ($scope, $element, attrs) {
 
 
-
-
-
     };
 
     return {
@@ -33,9 +30,9 @@ define([
         isActive: '=',
         setActive: '=',
         toggle:  '=',
-        paged: '=',
-        expanded: '=',
-        cardinality : "="
+        showMultiple: '=',
+        cardinality : "=",
+        spreadsheet:"="
       },
       controller : function ($scope, $element) {
 

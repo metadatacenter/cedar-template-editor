@@ -19,10 +19,64 @@
       </div>
 
 
-      <!--<div ng-if="showMultiple('spreadsheet')">-->
-        <!--<div class="spreadsheetViewDetector"></div>-->
-        <!--<div class="spreadsheetViewContainer"></div>-->
-      <!--</div>-->
+      <div ng-show="showMultiple('spreadsheet')">
+        <!-- inactive,not being edited at the moment -->
+        <div class="row isRowInactive" ng-if="!isActive(index)" id="{{getLocator(index)}}">
+          <div class="col-sm-3 col-xs-* ">
+            <div class="leader"></div>
+
+            <div ng-click="setActive(index, true)" class="title isInactive" ng-mouseenter="hover=true"
+                ng-mouseleave="hover=false">
+              {{getTitle(field)}} {{path}}
+            </div>
+
+          </div>
+          <div class="col-sm-9 col-xs-* answer" ng-click="setActive(index, true)">
+            <div class="originalContent" ng-include="getFieldUrl()"></div>
+          </div>
+        </div>
+
+        <!-- active --->
+        <div class="row isActive" ng-if="isActive(index)" id="{{getLocator(index)}}">
+          <div class="col-sm-3">
+            <div class="leader"></div>
+
+            <div class="title isActive">
+              <span ng-if="isMultipleCardinality()" style="font-size:smaller;padding-right:5px;">{{index+1}}.</span>{{getTitle(field)}}
+              {{path}}
+            </div>
+
+          </div>
+          <div class="col-sm-9 answer">
+
+            <div class="row">
+
+
+              <field-toolbar class="col-xs-4 col-sm-4 pull-right " model="model" field="field" index="index"
+                  remove="removeInput" add="addMoreInput" is-active="isActive" set-active="setActive"
+                  description="getDescription" toggle="toggleMultiple" show-multiple="showMultiple"  cardinality="cardinalityString"
+                  is-multiple="isMultipleCardinality" spreadsheet="switchToSpreadsheet"></field-toolbar>
+
+            </div>
+
+            <div class="row">
+
+              <div class="spreadsheetViewDetector"></div>
+              <div class="spreadsheetViewContainer"></div>
+
+            </div>
+
+            <form name="field-edit-form-{{index}}" ng-submit="onSubmit(index)">
+              <div class="originalContent" ng-include="getFieldUrl()"></div>
+              <button type="submit" class="btn btn-save confirm active" translate>GENERIC.Ok</button>
+              <label class="submit-info" translate>GENERIC.Submit</label>
+            </form>
+
+          </div>
+        </div>
+
+
+      </div>
 
 
       <!-- show a paged list of fields from the valueArray -->
@@ -66,9 +120,8 @@
 
               <field-toolbar class="col-xs-4 col-sm-4 pull-right " model="model" field="field" index="index"
                   remove="removeInput" add="addMoreInput" is-active="isActive" set-active="setActive"
-                  description="getDescription" toggle="toggleMultiple" paged="showMultiple('paged')"
-                  expanded="showMultiple('expanded')" cardinality="cardinalityString"
-                  is-multiple="isMultipleCardinality"></field-toolbar>
+                  description="getDescription" toggle="toggleMultiple" show-multiple="showMultiple" cardinality="cardinalityString"
+                  is-multiple="isMultipleCardinality" spreadsheet="switchToSpreadsheet"></field-toolbar>
 
             </div>
 
@@ -118,9 +171,8 @@
             <div class="row">
               <field-toolbar class="col-xs-4 col-sm-4 pull-right " model="model" field="field" index="index"
                   remove="removeInput" add="addMoreInput" is-active="isActive" set-active="setActive"
-                  description="getDescription" toggle="toggleMultiple" paged="showMultiple('paged')"
-                  expanded="showMultiple('expanded')" cardinality="cardinalityString"
-                  is-multiple="isMultipleCardinality"></field-toolbar>
+                  description="getDescription" toggle="toggleMultiple" show-multiple="showMultiple" cardinality="cardinalityString"
+                  is-multiple="isMultipleCardinality" spreadsheet="switchToSpreadsheet"></field-toolbar>
             </div>
 
 

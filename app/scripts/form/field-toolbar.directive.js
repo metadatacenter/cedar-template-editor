@@ -35,9 +35,9 @@ define([
         isMultiple: '=',
         description: '=',
         toggle:  '=',
-        paged: '=',
-        expanded: '=',
-        cardinality : "="
+        showMultiple: '=',
+        cardinality : "=",
+        spreadsheet: "="
       },
       controller : function ($scope, $element) {
 

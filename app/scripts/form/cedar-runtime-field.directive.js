@@ -28,7 +28,7 @@ define([
       $scope.data = {
         model: null
       };
-      $scope.multipleStates = ['expanded', 'paged'];
+      $scope.multipleStates = ['expanded', 'paged','spreadsheet'];
       $scope.multipleState = $scope.multipleStates[0];
       $scope.index = 0;
       $scope.pageMin = 0;
@@ -187,6 +187,8 @@ define([
 
       // show this field as a spreadsheet
       $scope.switchToSpreadsheet = function () {
+        console.log('switchToSpreadhseet');
+
         SpreadsheetService.switchToSpreadsheetField($scope, $element);
       };
 
@@ -492,6 +494,11 @@ define([
         var index = $scope.multipleStates.indexOf($scope.multipleState);
         index = (index + 1) % $scope.multipleStates.length;
         $scope.multipleState = $scope.multipleStates[index];
+        if ($scope.multipleState ==='spreadsheet') {
+          setTimeout(function () {
+            $scope.switchToSpreadsheet();
+          }, 0);
+        }
         return $scope.multipleState;
       };
 

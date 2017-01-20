@@ -36,13 +36,17 @@
     <i class="fa fa-plus-circle"></i>
   </button>
 
+
   <button ng-if="isMultiple()" type="button" class=" remove pull-right"
       ng-if="isActive(index)"
-      tooltip="Page {{cardinality()}}"
+      tooltip="{{cardinality()}}"
       ng-click="toggle()">
 
-    <i ng-if="paged" class="fa fa-toggle-on "></i>
-    <i ng-if="expanded" class="fa fa-toggle-off "></i>
+    <i ng-if="showMultiple('paged')" class="fa fa-angle-left "></i>
+    <i ng-if="showMultiple('paged')" class="fa fa-angle-right "></i>
+    <i ng-if="showMultiple('expanded')" class="fa fa-list-ol "></i>
+    <i ng-if="showMultiple('spreadsheet')" class="fa fa-table "></i>
   </button>
+
 
 </div>

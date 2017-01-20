@@ -1,15 +1,8 @@
-<div ng-if="model !== undefined" class="item-root element-root"
-    style="{{getNestingMargin(element, 0)}}">
-
+<div ng-if="model !== undefined" class="item-root element-root" style="{{getNestingMargin(element, 0)}}">
 
   <div class="elementTotalContent ">
 
-    <!--<div ng-show="$root.isArray(model)">-->
-      <!--<div class="spreadsheetViewDetector"></div>-->
-      <!--<div class="spreadsheetViewContainer"></div>-->
-    <!--</div>-->
-
-    <!-- for zero cardinality just show the element title because the valueArray is empty  -->
+    <!-- zero cardinality  -->
     <div ng-if="valueArray.length == 0">
       <div class="element " id="{{getLocator(i)}}" style="position:relative">
         <div class="flagpole"></div>
@@ -29,9 +22,48 @@
       </div>
     </div>
 
+    <!-- a speadsheet list of elements -->
+    <div ng-if="showMultiple('spreadsheet') && valueArray.length > 0">
+
+      <div class="element expand" id="{{getLocator(index)}}" style="position:relative">
+        <div class="flagpole"></div>
+
+        <div ng-if="!isActive" class="left-tick"></div>
+
+        <div class="row isInactive">
+          <div class="col-sm-10">
+
+            <button type="button" class="xxx">
+              <i class="fa fa-caret-down"></i>
+            </button>
+
+            <span ng-if="valueArray.length-1" class="count">{{index+1}}.</span>
+            <a class="element title" ng-class="{'isInactive' : isInactive(index)}">{{getTitle()}}</a>
+          </div>
+
+          <element-toolbar class="col-xs-2 "  model="model" index="index"
+              remove="removeElement" add="addElement" active="isActive" toggle="toggleMultiple"
+              show-multiple="showMultiple"  cardinality="cardinalityString" spreadsheet="switchToSpreadsheet">
+          </element-toolbar>
+
+        </div>
+
+        <div class="row">
+          <div class="col-sm-12" style="background:red">
+
+          <div class="spreadsheetViewDetector"></div>
+          <div class="spreadsheetViewContainer"></div>
+
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+
     <!-- a paged list of elements -->
     <div ng-if="showMultiple('paged') && valueArray.length > 0">
-      {{index}} {{valueArray}}
+      <!--{{index}} {{valueArray}}-->
 
       <div class="element expand" id="{{getLocator(index)}}" style="position:relative">
         <div class="flagpole"></div>
@@ -55,7 +87,7 @@
 
           <element-toolbar class="col-xs-2 "  model="model" index="index"
               remove="removeElement" add="addElement" active="isActive" toggle="toggleMultiple"
-              paged="showMultiple('paged')" expanded="showMultiple('expanded')" cardinality="cardinalityString">
+              show-multiple="showMultiple"  cardinality="cardinalityString" spreadsheet="switchToSpreadsheet" >
           </element-toolbar>
 
         </div>
@@ -104,7 +136,7 @@
           <element-toolbar ng-if="isExpanded(i)" class="col-xs-2"  model="model"
               index="index"
               remove="removeElement" add="addElement" is-active="isActive" set-active="setActive" toggle="toggleMultiple"
-              paged="showMultiple('paged')" expanded="showMultiple('expanded')"  cardinality="cardinalityString">
+              show-multiple="showMultiple"  cardinality="cardinalityString" spreadsheet="switchToSpreadsheet">
           </element-toolbar>
 
 
