@@ -197,6 +197,14 @@ define([
       return this.controlledTerm() + "/vs-collections";
     };
 
+    service.createValueSet = function () {
+      return this.controlledTerm() + '/vs-collections/CEDARVS/value-sets';
+    };
+
+    service.getValueSetById = function (vsId) {
+      return this.controlledTerm() + '/vs-collections/CEDARVS/value-sets/' + encodeURIComponent(vsId);
+    };
+
     service.getValueSetsCache = function () {
       return this.controlledTerm() + "/value-sets";
     };
@@ -205,8 +213,16 @@ define([
       return this.controlledTerm() + "/ontologies/" + ontology + "/classes/roots";
     };
 
+    service.createClass = function () {
+      return this.controlledTerm() + '/ontologies/CEDARPC/classes';
+    };
+
     service.getClassById = function (acronym, classId) {
       return this.controlledTerm() + '/ontologies/' + acronym + '/classes/' + encodeURIComponent(classId);
+    };
+
+    service.createValue = function (vsId) {
+      return this.controlledTerm() + '/vs-collections/CEDARVS/value-sets/' + encodeURIComponent(vsId) + '/values';
     };
 
     service.getValueTree = function (vsId, vsCollection) {

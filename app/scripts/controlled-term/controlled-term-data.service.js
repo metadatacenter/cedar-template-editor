@@ -25,10 +25,15 @@ define([
       getVsCollectionByLdId          : getVsCollectionByLdId,
       getAllValueSetCollections      : getAllValueSetCollections,
       getAllValuesInValueSetByValue  : getAllValuesInValueSetByValue,
+      createValueSet                 : createValueSet,
+      getValueSetById                : getValueSetById,
+      getNotCachedValueSetById       : getNotCachedValueSetById,
       getAllValueSets                : getAllValueSets,
       getValueSetByLdId              : getValueSetByLdId,
+      createValue                    : createValue,
       getValueTree                   : getValueTree,
       getValueSetTree                : getValueSetTree,
+      createClass                    : createClass,
       getRootClasses                 : getRootClasses,
       getClassChildren               : getClassChildren,
       getClassById                   : getClassById,
@@ -149,6 +154,30 @@ define([
       return valueSetCollections;
     }
 
+    function createValueSet(valueSet) {
+      return AuthorizedBackendService.doCall(
+          ControlledTermHttpService.createValueSet(valueSet),
+          function (response) {
+            return response.data;
+          },
+          function (err) {
+            return handleServerError(err);
+          }
+      );
+    }
+
+    function getNotCachedValueSetById(vsId) {
+      return AuthorizedBackendService.doCall(
+          ControlledTermHttpService.getValueSetById(vsId),
+          function (response) {
+            return response.data;
+          },
+          function (err) {
+            return handleServerError(err);
+          }
+      );
+    }
+
     function getAllValueSets() {
       var valueSets = [];
       for (var key in valueSetsCache) {
@@ -184,6 +213,18 @@ define([
       return getVsCollectionById(vscId);
     }
 
+    function createClass(newClass) {
+      return AuthorizedBackendService.doCall(
+          ControlledTermHttpService.createClass(newClass),
+          function (response) {
+            return response.data;
+          },
+          function (err) {
+            return handleServerError(err);
+          }
+      );
+    }
+
     function getRootClasses(ontology) {
       return AuthorizedBackendService.doCall(
           ControlledTermHttpService.getRootClasses(ontology),
@@ -199,6 +240,18 @@ define([
     function getClassById(acronym, classId) {
       return AuthorizedBackendService.doCall(
           ControlledTermHttpService.getClassById(acronym, classId),
+          function (response) {
+            return response.data;
+          },
+          function (err) {
+            return handleServerError(err);
+          }
+      );
+    }
+
+    function createValue(vsId, value) {
+      return AuthorizedBackendService.doCall(
+          ControlledTermHttpService.createValue(vsId, value),
           function (response) {
             return response.data;
           },

@@ -30,8 +30,24 @@ define([
       return HttpBuilderService.get(UrlService.getRootClasses(ontology));
     };
 
+    service.createClass = function(newClass) {
+      return HttpBuilderService.post(UrlService.createClass(), angular.toJson(newClass));
+    };
+
     service.getClassById = function (acronym, classId) {
       return HttpBuilderService.get(UrlService.getClassById(acronym, classId));
+    };
+
+    service.createValue = function(vsId, value) {
+      return HttpBuilderService.post(UrlService.createValue(vsId), angular.toJson(value));
+    };
+
+    service.createValueSet = function(valueSet) {
+      return HttpBuilderService.post(UrlService.createValueSet(), angular.toJson(valueSet));
+    };
+
+    service.getValueSetById = function (vsId) {
+      return HttpBuilderService.get(UrlService.getValueSetById(vsId));
     };
 
     service.getValueTree = function (vsId, vsCollection) {
@@ -103,7 +119,6 @@ define([
     };
 
     return service;
-
   }
 
 });
