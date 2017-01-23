@@ -125,10 +125,6 @@ define([
         var path = args[2];
         var value = args[3];
 
-
-
-
-
         if (id === scope.getId() && path === scope.path) {
             console.log('on nextSibling of ' + DataManipulationService.getTitle(scope.field));
 

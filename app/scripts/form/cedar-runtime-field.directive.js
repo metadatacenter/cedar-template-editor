@@ -186,6 +186,13 @@ define([
         }
       };
 
+      $scope.isExpandable = function () {
+        return false;
+      };
+
+      $scope.expandAll = function () {
+      };
+
       // show this field as a spreadsheet
       $scope.switchToSpreadsheet = function () {
         console.log('switchToSpreadhseet');

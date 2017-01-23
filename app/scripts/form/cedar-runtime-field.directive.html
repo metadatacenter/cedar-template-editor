@@ -5,7 +5,7 @@
 
     <div class="fields text-fields">
 
-      <!-- for zero cardinality   -->
+      <!-- show zero cardinality   -->
       <div ng-if="valueArray.length == 0">
         <div class="row isRowInactive" ng-click="addMoreInput()" id="{{getLocator(0)}}">
           <div class="col-xs-12">
@@ -52,7 +52,9 @@
                   remove="removeInput" add="addMoreInput" is-active="isActive" set-active="setActive"
                   description="getDescription" toggle="toggleMultiple" show-multiple="showMultiple"
                   cardinality="cardinalityString" close="setInactive"
-                  is-multiple="isMultipleCardinality" spreadsheet="switchToSpreadsheet"></field-toolbar>
+                  is-multiple="isMultipleCardinality" spreadsheet="switchToSpreadsheet"
+                  expand-all="expandAll"
+                  is-expandable="isExpandable"></field-toolbar>
 
             </div>
 
@@ -89,22 +91,23 @@
           </div>
 
           <div class="col-sm-9 answer" ng-click="setActive(index, true)">
+
+            <div class="row tools" ng-if="isActive(index)">
+              <cedar-pager ng-if="isMultipleCardinality()" values="valueArray" index="index" min="pageMin"
+                  max="pageMax" select="selectPage"
+                  range="pageRange" class="col-xs-6 ">
+              </cedar-pager>
+
+              <field-toolbar class="col-xs-6 pull-right" model="model" field="field" index="index"
+                  remove="removeInput" add="addMoreInput" is-active="isActive" set-active="setActive"
+                  description="getDescription" toggle="toggleMultiple" show-multiple="showMultiple"
+                  cardinality="cardinalityString" close="setInactive" expand-all="expandAll"
+                  is-expandable="isExpandable"
+                  is-multiple="isMultipleCardinality" spreadsheet="switchToSpreadsheet"></field-toolbar>
+            </div>
+
             <div ng-repeat="(i, valueElement) in valueArray">
               <div ng-if="i===index"  >
-
-                <div class="row tools" ng-if="isActive(index)">
-                  <cedar-pager ng-if="isMultipleCardinality()" values="valueArray" index="index" min="pageMin"
-                      max="pageMax" select="selectPage"
-                      range="pageRange" class="col-xs-6 ">
-                  </cedar-pager>
-
-                  <field-toolbar class="col-xs-6 pull-right" model="model" field="field" index="index"
-                      remove="removeInput" add="addMoreInput" is-active="isActive" set-active="setActive"
-                      description="getDescription" toggle="toggleMultiple" show-multiple="showMultiple"
-                      cardinality="cardinalityString" close="setInactive"
-                      is-multiple="isMultipleCardinality" spreadsheet="switchToSpreadsheet"></field-toolbar>
-                </div>
-
                 <div ng-if="!isActive(i)"  class="originalContent" ng-include="getFieldUrl()"></div>
                 <form ng-if="isActive(i)" name="field-edit-form-{{i}}" ng-submit="onSubmit(i)">
                   <div class="originalContent" ng-include="getFieldUrl()"></div>
@@ -149,7 +152,8 @@
                   index="index"
                   remove="removeInput" add="addMoreInput" is-active="isActive" set-active="setActive"
                   description="getDescription" toggle="toggleMultiple" show-multiple="showMultiple"
-                  cardinality="cardinalityString" close="setInactive"
+                  cardinality="cardinalityString" close="setInactive" expand-all="expandAll"
+                  is-expandable="isExpandable"
                   is-multiple="isMultipleCardinality" spreadsheet="switchToSpreadsheet"></field-toolbar>
             </div>
 

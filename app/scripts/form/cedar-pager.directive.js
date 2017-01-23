@@ -18,6 +18,18 @@ define([
 
       $scope.pagingIndex = $scope.index+1;
 
+      $scope.$watch("index", function (newIndex, oldIndex) {
+        $scope.pagingIndex = $scope.index+1;
+      }, true);
+
+      $scope.$watch("min", function (newMin, oldMin) {
+        $scope.pagingIndex = $scope.index+1;
+      }, true);
+
+      $scope.$watch("max", function (newMax, oldMax) {
+        $scope.pagingIndex = $scope.index+1;
+      }, true);
+
 
     };
 
@@ -26,7 +38,7 @@ define([
       restrict   : 'EA',
       scope      : {
         values: '=',
-        index     : '=',
+        index : '=',
         min   : "=",
         max   : "=",
         select: '=',

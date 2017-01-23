@@ -10,6 +10,13 @@
     <i class="fa fa-trash"></i>
   </button>
 
+  <button type="button" class=" expand-all pull-right"
+      ng-if="isActive(index) && isExpandable()"
+      tooltip="{{'GENERIC.ExpandAll' | translate}}"
+      ng-click="expandAll(index)">
+    <i class="fa fa-expand "></i>
+  </button>
+
   <button type="button" class=" remove pull-right"
       tooltip="{{'GENERIC.Close' | translate}}"
       ng-click="close(index);$event.stopPropagation()">
@@ -45,6 +52,5 @@
     <i ng-if="showMultiple('expanded')" class="fa fa-list-ol "></i>
     <i ng-if="showMultiple('spreadsheet')" class="fa fa-table "></i>
   </button>
-
 
 </div>

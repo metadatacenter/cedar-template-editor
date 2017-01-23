@@ -41,6 +41,7 @@ define([
       scope.pageMin = 0;
       scope.pageMax = scope.model.length;
       scope.pageRange = 6;
+      scope.nestingMargin = 15;
 
 
       var resetElement = function (el, settings) {
@@ -127,7 +128,7 @@ define([
       };
 
       scope.getNestingMargin = function () {
-        return 'margin-left: ' + 15 + 'px';
+        return 'margin-left: ' + scope.nestingMargin + 'px';
       };
 
       scope.getNesting = function () {
@@ -149,7 +150,7 @@ define([
       };
 
       scope.getNestingStyle = function (index) {
-        return 'left:' + (-15 * (index)) + 'px';
+        return 'left:' + (-scope.nestingMargin * (index)) + 'px';
       };
 
 
@@ -160,8 +161,6 @@ define([
       scope.getTitle = function () {
         return DataManipulationService.getFieldSchema(scope.element)._ui.title;
       };
-
-
 
 
       scope.addElement = function () {
@@ -236,6 +235,52 @@ define([
         scope.expanded[index] = false;
         scope.setActive(index, false);
       };
+
+      scope.isExpandable = function () {
+        return true;
+      };
+
+
+      scope.expandAll = function () {
+
+        // expand all the items in the valueArray
+        if (scope.valueArray.length == 0) {
+          scope.addMoreInput();
+        } else {
+          for (var i = 0; i < scope.valueArray.length; i++) {
+            scope.expanded[i] = true;
+            scope.setActive(0, true);
+          }
+        }
+
+        // let these draw, then send out expandAll to the newly drawn elements
+        $timeout(function () {
+          var schema = $rootScope.schemaOf(scope.element);
+          var selectedKey;
+          var props = $rootScope.propertiesOf(scope.element);
+          angular.forEach(props, function (value, key) {
+
+            var valueSchema = $rootScope.schemaOf(value);
+            var valueId = valueSchema["@id"];
+
+            if ($rootScope.isElement(valueSchema)) {
+              scope.$broadcast("expandAll", [valueId]);
+            }
+          });
+
+        }, 0);
+      };
+
+      scope.$on('expandAll', function (event, args) {
+        var id = args[0];
+
+        // only look at first level elements
+        if (id === scope.getId()) {
+
+          scope.expandAll();
+        }
+      });
+
 
       scope.removeChild = function (fieldOrElement) {
         // fieldOrElement must contain the schema level
@@ -366,7 +411,7 @@ define([
         var value = args[3];
 
         // only look at first level elements
-        if (id === scope.getId() && path === '0' ) {
+        if (id === scope.getId() && path === '0') {
 
           var parent = $rootScope.rootElement;
           var next = DataManipulationService.nextSibling(scope.element, parent);
@@ -411,23 +456,20 @@ define([
       scope.pageMinMax();
 
 
-
       scope.addMoreInput = function () {
         scope.addElement();
         scope.pageMinMax();
       };
 
       scope.setActive = function (index, value) {
-        console.log('setActive ' + index + ' '  + value);
         DataManipulationService.setActive(scope.element, index, scope.path, value);
         //if (value) {
-          scope.index = index;
-          scope.pageMinMax();
+        scope.index = index;
+        scope.pageMinMax();
         //}
       };
 
       scope.selectPage = function (i) {
-        console.log('selectPage' + i);
         scope.setActive(i, true);
       };
 
@@ -459,4 +501,5 @@ define([
     }
   };
 
-});
+})
+;

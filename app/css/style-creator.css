@@ -11721,6 +11721,9 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
 .template-body form .runtime button.add {
   color: #ff8c00;
 }
+.template-body form .runtime button.expand-all {
+  color: #999;
+}
 .template-body form .runtime button.remove {
   color: #999;
 }

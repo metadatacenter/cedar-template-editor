@@ -38,7 +38,9 @@ define([
         toggle:  '=',
         showMultiple: '=',
         cardinality : "=",
-        spreadsheet: "="
+        spreadsheet: "=",
+        expandAll: '=',
+        isExpandable: '='
       },
       controller : function ($scope, $element) {
 
