@@ -11620,7 +11620,7 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   left: -16px;
 }
 .template-body form .runtime .toolbar {
-  padding: 0px 22px 0px 0;
+  padding: 3px 22px 4px 0;
 }
 .template-body form .runtime .answer {
   border: 1px solid transparent;
@@ -11637,6 +11637,12 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
     margin-left: 20px;
     margin-right: 5px;
   }
+}
+.template-body form .runtime .myhover:hover {
+  cursor: pointer;
+}
+.template-body form .runtime .row.tools {
+  padding: 5px 0;
 }
 .template-body form .runtime .row.isActive .title,
 .template-body form .runtime .row:hover .title {

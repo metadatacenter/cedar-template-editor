@@ -30,7 +30,7 @@ define([
       };
       //$scope.multipleStates = ['expanded', 'paged','spreadsheet'];
       $scope.multipleStates = ['expanded', 'paged'];
-      $scope.multipleState = $scope.multipleStates[0];
+      $scope.multipleState = 'paged';
       $scope.index = 0;
       $scope.pageMin = 0;
       $scope.pageMax = $scope.model.length;
@@ -243,7 +243,7 @@ define([
 
       // string together the values for a checkbox, list or radio item
       $scope.getValueString = function (valueElement) {
-        var result = '';
+        var result = ' ';
         for (var i = 0; i < valueElement.length; i++) {
           if (valueElement[i]['@value']) {
             result += valueElement[i]['@value'];
