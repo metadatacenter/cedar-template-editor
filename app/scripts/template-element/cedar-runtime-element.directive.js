@@ -34,13 +34,13 @@ define([
       scope.elementId = DataManipulationService.idOf(scope.element) || DataManipulationService.generateGUID();
       scope.uuid = DataManipulationService.generateTempGUID();
       scope.expanded = [];
-      scope.multipleStates = ['expanded', 'paged','spreadsheet'];
-      scope.multipleState = scope.multipleStates[0];
+      //scope.multipleStates = ['expanded', 'paged','spreadsheet'];
+      scope.multipleStates = ['expanded', 'paged'];
+      scope.multipleState = 'paged';
       scope.index = 0;
       scope.pageMin = 0;
-      scope.pageMax = 0;
-      scope.pageRange = 10;
-
+      scope.pageMax = scope.model.length;
+      scope.pageRange = 6;
 
 
       var resetElement = function (el, settings) {
@@ -228,6 +228,15 @@ define([
         return scope.expanded[index];
       };
 
+      scope.setExpanded = function (index, value) {
+        return scope.expanded[index] = value;
+      };
+
+      scope.unExpand = function (index) {
+        scope.expanded[index] = false;
+        scope.setActive(index, false);
+      };
+
       scope.removeChild = function (fieldOrElement) {
         // fieldOrElement must contain the schema level
         fieldOrElement = $rootScope.schemaOf(fieldOrElement);
@@ -314,6 +323,11 @@ define([
 
       scope.isMultiple = function () {
         return $rootScope.isArray(scope.model);
+      };
+
+      // is this field actively being edited?
+      scope.isActive = function (index) {
+        return DataManipulationService.isActive(DataManipulationService.getLocator(scope.element));
       };
 
       scope.cardinalityString = function () {
@@ -435,9 +449,9 @@ define([
 
         }
 
-        $timeout(function () {
-          scope.$apply();
-        }, 100);
+        //$timeout(function () {
+        //  scope.$apply();
+        //}, 100);
         return scope.multipleState;
       };
 

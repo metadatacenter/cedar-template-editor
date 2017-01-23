@@ -3,28 +3,23 @@
   <div class="elementTotalContent ">
     <!--{{valueArray}}-->
 
+
     <!-- zero cardinality  -->
     <div ng-if="valueArray.length == 0">
-      <div class="element " id="{{getLocator(i)}}" style="position:relative">
-        <div class="flagpole"></div>
+      <div class="element " id="{{getLocator(0)}}" style="position:relative">
 
-        <div ng-if="!isActive" class="left-tick"></div>
+        <div class="flagpole"></div>
+        <div class="left-tick"></div>
 
         <div class="row isInactive" ng-click="toggleExpanded(i);addElement()">
-          <div class="col-sm-10">
+          <div class="col-sm-12">
 
-            <button type="button" ng-click="toggleExpanded(i)"
-                ng-class="{'xxx' : isExpanded(i), 'expand' : !isExpanded(i)}">
+            <button type="button" class="xxx expand">
               <i ng-class="{'fa fa-caret-down ' : isExpanded(i), 'fa fa-caret-right ' : !isExpanded(i)}"></i>
             </button>
-            <a class="element title" ng-class="{'isInactive' : isInactive(i)}">{{getTitle()}}</a>
+            <a class="element title" ng-class="{'isInactive' : isInactive(0)}">{{getTitle()}}</a>
           </div>
 
-          <element-toolbar  class="col-xs-2"  model="model"
-              index="index"
-              remove="removeElement" add="addElement" is-active="isActive" set-active="setActive" toggle="toggleMultiple"
-              show-multiple="showMultiple"  cardinality="cardinalityString" spreadsheet="switchToSpreadsheet">
-          </element-toolbar>
         </div>
       </div>
     </div>
@@ -33,9 +28,9 @@
     <div ng-if="showMultiple('spreadsheet') && valueArray.length > 0">
 
       <div class="element expand" id="{{getLocator(index)}}" style="position:relative">
-        <div class="flagpole"></div>
 
-        <div ng-if="!isActive" class="left-tick"></div>
+        <div class="flagpole"></div>
+        <div class="left-tick"></div>
 
         <div class="row isInactive">
           <div class="col-sm-10">
@@ -48,17 +43,17 @@
             <a class="element title" ng-class="{'isInactive' : isInactive(index)}">{{getTitle()}}</a>
           </div>
 
-          <element-toolbar class="col-xs-2 "  model="model" index="index"
+          <field-toolbar class="col-xs-2 " model="model" index="index"
               remove="removeElement" add="addElement" active="isActive" toggle="toggleMultiple"
-              show-multiple="showMultiple"  cardinality="cardinalityString" spreadsheet="switchToSpreadsheet">
-          </element-toolbar>
+              show-multiple="showMultiple" cardinality="cardinalityString" spreadsheet="switchToSpreadsheet">
+          </field-toolbar>
 
         </div>
 
         <div class="row">
-          <div class="col-sm-12" >
-          <div class="spreadsheetViewDetector"></div>
-          <div class="spreadsheetViewContainer"></div>
+          <div class="col-sm-12">
+            <div class="spreadsheetViewDetector"></div>
+            <div class="spreadsheetViewContainer"></div>
           </div>
         </div>
 
@@ -66,49 +61,57 @@
     </div>
 
     <!-- a paged list of elements -->
-    <div ng-if="showMultiple('paged')" ng-repeat="(i, valueElement) in valueArray">
+    <div ng-if="showMultiple('paged') && valueArray.length > 0" class="element" ng-class="{'expand':isExpanded(index)}">
 
-      <div ng-if="index === i" class="element expand" id="{{getLocator(i)}}" style="position:relative">
-        <div class="flagpole"></div>
+      <div class="row " style="cursor:pointer" ng-class="{'isInactive': !isActive()}">
 
-        <!--<div ng-if="!isActive" class="left-tick"></div>-->
+        <!-- title -->
+        <div ng-class="{'col-xs-6': isExpanded(index), 'col-xs-12': !isExpanded(index)}"  ng-click="toggleExpanded(index)" >
 
-        <div class="row ">
-          <div class="col-sm-6">
+          <div class="flagpole shift"></div>
+          <div  class="left-tick" ></div>
 
-            <button type="button" class="xxx">
-              <i class="fa fa-caret-down"></i>
-            </button>
+          <button type="button" class="xxx expand">
+            <i ng-class="{'fa fa-caret-down ' : isExpanded(index), 'fa fa-caret-right ' : !isExpanded(index)}"></i>
+          </button>
 
-            <span ng-if="valueArray.length-1" class="count">{{i+1}}.</span>
-            <a class="element title" ng-class="{'isInactive' : isInactive(i)}">{{getTitle()}}</a>
-          </div>
-
-
-          <element-toolbar class="col-xs-2 pull-right "  model="model" index="index"
-              remove="removeElement" add="addElement" active="isActive" toggle="toggleMultiple"
-              show-multiple="showMultiple"  cardinality="cardinalityString" spreadsheet="switchToSpreadsheet" >
-          </element-toolbar>
-
-          <cedar-pager ng-if="isMultiple() && valueArray.length > 1" values="valueArray" index="index" min="pageMin" max="pageMax" select="selectPage"
-              range="pageRange" class="col-xs-4 pull-right  " >
-          </cedar-pager>
-
+          <a class="element title" ng-class="{'isInactive' : isInactive(index)}">
+            <span ng-if="isExpanded(index) && valueArray.length-1" class="count">{{index+1}}.</span>
+            {{getTitle()}}
+          </a>
         </div>
 
-        <div ui-sortable="$root.sortableOptions" ng-model="$root.schemaOf(element)._ui.order"
-            class="sortable-container">
-          <div ng-repeat="key in $root.schemaOf(element)['_ui']['order']">
-            <div ng-if="$root.propertiesOf(element)[key]">
-              <cedar-runtime-nested-element key="key"
-                  field="$root.propertiesOf(element)[key]"
-                  model="valueArray[i][key]"
-                  remove-child="removeChild"
-                  rename-child-key="renameChildKey"
-                  is-edit-data="isEditData"
-                  depth="depth+1"
-                  path="path+'-'+i">
-              </cedar-runtime-nested-element>
+        <!-- tools -->
+        <cedar-pager ng-if="isMultiple() && isExpanded(index)" values="valueArray" index="index" min="pageMin" max="pageMax"
+            select="selectPage"
+            range="pageRange" class="col-xs-4   ">
+        </cedar-pager>
+
+        <field-toolbar ng-if="isExpanded(index)" class="col-xs-2 " field="element" model="valueArray" index="index"
+            remove="removeElement" add="addElement" is-active="isActive" set-active="setActive" toggle="toggleMultiple"
+            show-multiple="showMultiple" is-multiple="isMultiple" cardinality="cardinalityString"
+            spreadsheet="switchToSpreadsheet" toggle-expanded="toggleExpanded" close="unExpand">
+        </field-toolbar>
+
+      </div>
+
+      <!-- value -->
+      <div ng-if="isExpanded(index)" ng-repeat="(i, valueElement) in valueArray">
+        <div ng-if="index === i"  id="{{getLocator(i)}}" style="position:relative">
+          <div ui-sortable="$root.sortableOptions" ng-model="$root.schemaOf(element)._ui.order"
+              class="sortable-container">
+            <div ng-repeat="key in $root.schemaOf(element)['_ui']['order']">
+              <div ng-if="$root.propertiesOf(element)[key]">
+                <cedar-runtime-nested-element key="key"
+                    field="$root.propertiesOf(element)[key]"
+                    model="valueArray[i][key]"
+                    remove-child="removeChild"
+                    rename-child-key="renameChildKey"
+                    is-edit-data="isEditData"
+                    depth="depth+1"
+                    path="path+'-'+i">
+                </cedar-runtime-nested-element>
+              </div>
             </div>
           </div>
         </div>
@@ -118,14 +121,14 @@
     <!-- an expanded list of elements -->
     <div ng-if="showMultiple('expanded')" ng-repeat="(i, valueElement) in valueArray">
 
-      <div  class="element" id="{{getLocator(i)}}" class='element-{{i}}' ng-class="{'expand' : isExpanded(i)}"
+      <div class="element element-{{i}}" id="{{getLocator(i)}}"  ng-class="{'expand' : isExpanded(i)}"
           style="position:relative">
-        <div class="flagpole"></div>
 
-        <div ng-if="!isActive" class="left-tick"></div>
+        <div class="flagpole"></div>
+        <div class="left-tick"></div>
 
         <div class="row isInactive" ng-click="toggleExpanded(i)">
-          <div class="col-sm-10">
+          <div class="col-sm-8">
 
             <button type="button" ng-click="toggleExpanded(i)"
                 ng-class="{'xxx' : isExpanded(i), 'expand' : !isExpanded(i)}">
@@ -136,12 +139,13 @@
             <a class="element title" ng-class="{'isInactive' : isInactive(i)}">{{getTitle()}}</a>
           </div>
 
-
-          <element-toolbar  class="col-xs-2"  model="model"
-              index="index"
+          <field-toolbar  class="col-xs-4 " field="element" model="valueArray" index="index"
               remove="removeElement" add="addElement" is-active="isActive" set-active="setActive" toggle="toggleMultiple"
-              show-multiple="showMultiple"  cardinality="cardinalityString" spreadsheet="switchToSpreadsheet">
-          </element-toolbar>
+              show-multiple="showMultiple" is-multiple="isMultiple" cardinality="cardinalityString"
+              spreadsheet="switchToSpreadsheet" close="unExpand">
+          </field-toolbar>
+
+
 
 
         </div>

@@ -28,12 +28,13 @@ define([
       $scope.data = {
         model: null
       };
-      $scope.multipleStates = ['expanded', 'paged','spreadsheet'];
+      //$scope.multipleStates = ['expanded', 'paged','spreadsheet'];
+      $scope.multipleStates = ['expanded', 'paged'];
       $scope.multipleState = $scope.multipleStates[0];
       $scope.index = 0;
       $scope.pageMin = 0;
       $scope.pageMax = $scope.model.length;
-      $scope.pageRange = 10;
+      $scope.pageRange = 6;
 
 
       // get the field title
@@ -42,8 +43,8 @@ define([
       };
 
       // get the field description
-      $scope.getDescription = function (field) {
-        return DataManipulationService.getDescription(field);
+      $scope.getDescription = function () {
+        return DataManipulationService.getDescription($scope.field);
       };
 
       // get the field id?
@@ -266,6 +267,10 @@ define([
         }
       });
 
+      $scope.setInactive = function(index) {
+        $scope.setActive(index, false);
+      };
+
       // set this field and index active
       $scope.setActive = function (index, value) {
         console.log('setActive' + index + value + $scope.index);
@@ -305,9 +310,9 @@ define([
             // set blur and force a redraw
             jQuery("#" + locator).blur();
 
-            setTimeout(function () {
-              $scope.$apply();
-            }, 0);
+            //setTimeout(function () {
+            //  $scope.$apply();
+            //}, 0);
 
           }
         }

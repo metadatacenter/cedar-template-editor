@@ -1,4 +1,5 @@
 
+
 <!--- not active --->
 <div ng-if="!isActive(index)" class="form-group  has-feedback value"  >
 
@@ -26,13 +27,14 @@
 
   <!--Regular field-->
   <div ng-if="isRegular()"
-      class="form-group  has-feedback ">
+      class="form-group has-success has-feedback"   >
 
     <input type="text"
         class="form-control select"
         ng-class="{'isActive' : isActive(index), 'required': isRequired()}"
         placeholder="{{isActive(index) ? 'enter answer' : ''}}"
         aria-label="{{getDescription(field)}}"
+        ng-required="isRequired()"
         ng-model="valueElement['@value']">
     </input>
     <div class="input-indicator-icons" ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>

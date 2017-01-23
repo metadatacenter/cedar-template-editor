@@ -11567,6 +11567,13 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   line-height: 1.8em;
   font-size: 1.1em;
 }
+.template-body form .runtime .paging li a {
+  padding: 3px 6px;
+  background-color: #e8e8e8;
+}
+.template-body form .runtime .paging li.active a {
+  background-color: #5795ba;
+}
 .template-body form .runtime .active-container {
   border-left: 1px solid #f0f0f0;
   position: relative;
@@ -11584,6 +11591,9 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
 .template-body form .runtime .flagpole.down {
   top: 12px;
   height: 18px;
+}
+.template-body form .runtime .flagpole.shift {
+  left: 14px;
 }
 .template-body form .runtime.page {
   margin-top: 100px;
@@ -11610,7 +11620,7 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   left: -16px;
 }
 .template-body form .runtime .toolbar {
-  padding: 5px 22px 5px 0;
+  padding: 0px 22px 0px 0;
 }
 .template-body form .runtime .answer {
   border: 1px solid transparent;
@@ -11628,17 +11638,25 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
     margin-right: 5px;
   }
 }
-.template-body form .runtime .row.isActive .answer {
+.template-body form .runtime .row.isActive .title,
+.template-body form .runtime .row:hover .title {
+  cursor: pointer;
+}
+.template-body form .runtime .row.isActive .title.field,
+.template-body form .runtime .row:hover .title.field {
+  text-shadow: 1px 0px 0px #666;
+}
+.template-body form .runtime .row.isActive .title.element,
+.template-body form .runtime .row:hover .title.element {
+  text-shadow: 1px 0px 0px #71977F;
+}
+.template-body form .runtime .row.isActive .title.form,
+.template-body form .runtime .row:hover .title.form {
+  text-shadow: 1px 0px 0px #5795ba;
+}
+.template-body form .runtime .row.isActive .answer,
+.template-body form .runtime .row:hover .answer {
   border: 1px solid #ccc;
-}
-.template-body form .runtime .isRowInactive:hover .answer {
-  border: 1px solid #ccc;
-}
-.template-body form .runtime .isRowInactive:hover .value {
-  font-weight: bold !important;
-}
-.template-body form .runtime .isRowInactive:hover .title {
-  font-weight: bold !important;
 }
 .template-body form .runtime .title {
   font-size: 1.3em;
@@ -11646,10 +11664,12 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   font-weight: 200;
   border: 1px solid transparent;
   line-height: 20px;
-  color: #666;
 }
-.template-body form .runtime .title:hover {
-  font-weight: bold;
+.template-body form .runtime .title .count {
+  font-size: smaller;
+}
+.template-body form .runtime .title.field {
+  color: #666;
 }
 .template-body form .runtime .title.element {
   color: #71977F;
@@ -11764,18 +11784,12 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   border-left: 1px solid #aaa;
 }
 .template-body form .runtime .element-root .element .row .toolbar,
-.template-body form .runtime .element-root .element .row .pager {
+.template-body form .runtime .element-root .element .row .paging {
   visibility: hidden;
 }
 .template-body form .runtime .element-root .element .row:hover .toolbar,
-.template-body form .runtime .element-root .element .row:hover .pager {
+.template-body form .runtime .element-root .element .row:hover .paging {
   visibility: visible;
-}
-.template-body form .runtime .element-root .element .row.isInactive:hover {
-  cursor: pointer;
-}
-.template-body form .runtime .element-root .element .row.isInactive:hover .title {
-  font-weight: bold;
 }
 .template-body form .runtime .field-root {
   padding: 0px;
@@ -11797,13 +11811,6 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   font-family: "Helvetica Neue Light", sans-serif;
   font-size: 1em;
   padding-left: 20px;
-  cursor: pointer;
-}
-.template-body form .runtime .field-root .title .count {
-  font-size: smaller;
-}
-.template-body form .runtime .field-root .title.isActive {
-  font-weight: bold;
 }
 .template-body form .runtime .field-root .row.isActive {
   padding-bottom: 5px;

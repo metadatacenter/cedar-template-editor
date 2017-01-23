@@ -2743,6 +2743,16 @@ section.dashboard-elements {
 
 
 
+  .paging li {
+    a {
+      padding: 3px 6px;
+      background-color:#e8e8e8;
+    }
+    &.active a {
+      background-color:@brand-primary;
+    }
+  }
+
   .active-container {
     border-left:1px solid #f0f0f0;position:relative;right:0;background:#f0f0f0;
   }
@@ -2757,6 +2767,9 @@ section.dashboard-elements {
     &.down {
       top:12px;
       height:18px;
+    }
+    &.shift {
+      left: 14px;
     }
   }
 
@@ -2789,7 +2802,7 @@ section.dashboard-elements {
   }
 
   .toolbar {
-    padding:5px 22px 5px 0;
+    padding:0px 22px 0px 0;
   }
 
   .answer {
@@ -2810,23 +2823,26 @@ section.dashboard-elements {
     }
   }
 
-  .row.isActive {
+
+  .row.isActive, .row:hover {
+    .title {
+      cursor:pointer;
+    }
+    .title.field {
+      text-shadow:1px 0px 0px #666;
+    }
+    .title.element {
+      text-shadow:1px 0px 0px #71977F;
+    }
+    .title.form {
+      text-shadow:1px 0px 0px @brand-primary;
+    }
     .answer {
       border:1px solid #ccc;
     }
   }
 
-  .isRowInactive:hover {
-    .answer {
-      border:1px solid #ccc;
-    }
-    .value {
-      font-weight:bold !important;
-    }
-    .title {
-      font-weight:bold !important;
-    }
-  }
+
 
   .title {
     font-size: 1.3em;
@@ -2834,9 +2850,11 @@ section.dashboard-elements {
     font-weight: 200;
     border:1px solid transparent;
     line-height: 20px;
-    color:#666;
-    &:hover {
-      font-weight:bold;
+    .count {
+      font-size:smaller;
+    }
+    &.field {
+      color:#666;
     }
     &.element {
       color:#71977F;
@@ -2974,24 +2992,17 @@ section.dashboard-elements {
       }
 
       .row {
-        .toolbar, .pager {
+        .toolbar, .paging {
           visibility:hidden;
         }
         &:hover {
-          .toolbar, .pager {
+          .toolbar, .paging {
             visibility:visible;
           }
         }
       }
 
-      .row.isInactive {
-        &:hover {
-          cursor:pointer;
-          .title {
-            font-weight:bold;
-          }
-        }
-      }
+
     }
   }
 
@@ -3020,13 +3031,7 @@ section.dashboard-elements {
       font-family: "Helvetica Neue Light", sans-serif;
       font-size: 1em;
       padding-left: 20px;
-      cursor:pointer;
-      .count {
-        font-size:smaller
-      }
-      &.isActive {
-        font-weight:bold;
-      }
+
     }
 
     .row.isActive {
@@ -3034,6 +3039,7 @@ section.dashboard-elements {
 
 
       .title {
+
 
         &.remove {
           color: #999;

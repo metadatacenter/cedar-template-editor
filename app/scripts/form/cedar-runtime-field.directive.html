@@ -5,12 +5,12 @@
 
     <div class="fields text-fields">
 
-      <!-- for zero cardinality just show the field title because the valueArray is empty  -->
+      <!-- for zero cardinality   -->
       <div ng-if="valueArray.length == 0">
-        <div class="row isRowInactive" id="{{getLocator(index)}}">
-          <div class="col-sm-3">
+        <div class="row isRowInactive" ng-click="addMoreInput()" id="{{getLocator(0)}}">
+          <div class="col-xs-12">
             <div class="leader"></div>
-            <div class="title" ng-click="addMoreInput()">
+            <div class="title field" >
               {{getTitle(field)}}
             </div>
           </div>
@@ -24,8 +24,7 @@
           <div class="col-sm-3 col-xs-* ">
             <div class="leader"></div>
 
-            <div ng-click="setActive(index, true)" class="title isInactive" ng-mouseenter="hover=true"
-                ng-mouseleave="hover=false">
+            <div ng-click="setActive(index, true)" class="title isInactive" >
               {{getTitle(field)}}
             </div>
 
@@ -40,7 +39,7 @@
           <div class="col-sm-3">
             <div class="leader"></div>
 
-            <div class="title isActive">
+            <div class="title field isActive">
               <span ng-if="isMultipleCardinality()" style="font-size:smaller;padding-right:5px;">{{index+1}}.</span>{{getTitle(field)}}
             </div>
 
@@ -53,7 +52,7 @@
               <field-toolbar class="col-xs-4 col-sm-4 pull-right " model="model" field="field" index="index"
                   remove="removeInput" add="addMoreInput" is-active="isActive" set-active="setActive"
                   description="getDescription" toggle="toggleMultiple" show-multiple="showMultiple"
-                  cardinality="cardinalityString"
+                  cardinality="cardinalityString" close="setInactive"
                   is-multiple="isMultipleCardinality" spreadsheet="switchToSpreadsheet"></field-toolbar>
 
             </div>
@@ -74,67 +73,52 @@
           </div>
         </div>
 
-
       </div>
 
-      <!-- show a paged list of fields from the valueArray -->
-      <div ng-if="showMultiple('paged')" ng-repeat="(i, valueElement) in valueArray">
-        <div ng-if="i===index">
+      <!-- show a paged list of fields  -->
+      <div ng-if="showMultiple('paged')">
 
-          <!-- inactive,not being edited at the moment -->
-          <div class="row isRowInactive" ng-if="!isActive(i)" id="{{getLocator(i)}}">
-            <div class="col-sm-3 col-xs-* ">
-              <div class="leader"></div>
+        <div class="row"  ng-class="{'isRowInactive' : !isActive(index), 'isActive': isActive(index)}" id="{{getLocator(index)}}">
 
-              <div ng-click="setActive(i, true)" class="title isInactive" ng-mouseenter="hover=true"
-                  ng-mouseleave="hover=false">
-                {{getTitle(field)}}
-              </div>
+          <div class="col-sm-3 col-xs-* ">
+            <div class="leader"></div>
 
-            </div>
-            <div class="col-sm-9 col-xs-* answer" ng-click="setActive(i, true)">
-              <div class="originalContent" ng-include="getFieldUrl()"></div>
+            <div ng-click="setActive(index, true)" class="title field isInactive" ng-class="{'isInactive':!isActive(index)}" >
+              {{getTitle(field)}}
             </div>
           </div>
 
+          <div class="col-sm-9 answer" >
+            <div class="row" ng-if="isActive(index)" style="padding:5px 0">
+              <cedar-pager ng-if="isMultipleCardinality()" values="valueArray" index="index" min="pageMin"
+                  max="pageMax" select="selectPage"
+                  range="pageRange" class="col-xs-6 ">
+              </cedar-pager>
 
-          <!-- active --->
-          <div class="row isActive" ng-if="isActive(i)" id="{{getLocator(i)}}">
-            <div class="col-sm-3">
-              <div class="leader"></div>
-
-              <div class="title isActive">
-                <span ng-if="isMultipleCardinality()" style="font-size:smaller;padding-right:5px;">{{i+1}}.</span>{{getTitle(field)}}
-              </div>
-
+              <field-toolbar class="col-xs-6  " model="model" field="field" index="index"
+                  remove="removeInput" add="addMoreInput" is-active="isActive" set-active="setActive"
+                  description="getDescription" toggle="toggleMultiple" show-multiple="showMultiple"
+                  cardinality="cardinalityString" close="setInactive"
+                  is-multiple="isMultipleCardinality" spreadsheet="switchToSpreadsheet"></field-toolbar>
             </div>
-            <div class="col-sm-9 answer">
 
-              <div class="row">
+            <div ng-repeat="(i, valueElement) in valueArray">
+              <div ng-if="i===index">
 
-                <cedar-pager ng-if="isMultipleCardinality()" values="valueArray" index="i" min="pageMin"
-                    max="pageMax" select="selectPage"
-                    range="pageRange" class="col-xs-8 ">
-                </cedar-pager>
+                <div ng-if="!isActive(i)" class="originalContent" ng-include="getFieldUrl()"></div>
 
-                <field-toolbar class="col-xs-4 col-sm-4 pull-right " model="model" field="field" index="i"
-                    remove="removeInput" add="addMoreInput" is-active="isActive" set-active="setActive"
-                    description="getDescription" toggle="toggleMultiple" show-multiple="showMultiple"
-                    cardinality="cardinalityString"
-                    is-multiple="isMultipleCardinality" spreadsheet="switchToSpreadsheet"></field-toolbar>
-
+                <form ng-if="isActive(i)" name="field-edit-form-{{i}}" ng-submit="onSubmit(i)">
+                  <div class="originalContent" ng-include="getFieldUrl()"></div>
+                  <button type="submit" class="btn btn-save confirm active" translate>GENERIC.Ok</button>
+                  <label class="submit-info" translate>GENERIC.Submit</label>
+                </form>
               </div>
-
-              <form name="field-edit-form-{{i}}" ng-submit="onSubmit(i)">
-                <div class="originalContent" ng-include="getFieldUrl()"></div>
-                <button type="submit" class="btn btn-save confirm active" translate>GENERIC.Ok</button>
-                <label class="submit-info" translate>GENERIC.Submit</label>
-              </form>
-
             </div>
+
           </div>
         </div>
       </div>
+
 
       <!-- show an expanded list of fields from the valueArray -->
       <div ng-if="showMultiple('expanded')" ng-repeat="(index, valueElement) in valueArray">
@@ -144,8 +128,7 @@
           <div class="col-sm-3 col-xs-* ">
             <div class="leader"></div>
 
-            <div ng-click="setActive(index, true)" class="title isInactive" ng-mouseenter="hover=true"
-                ng-mouseleave="hover=false">
+            <div ng-click="setActive(index, true)" class="title field isInactive" >
 
               <span ng-if="isMultipleCardinality()" style="font-size:smaller;padding-right:5px;">{{index+1}}.</span>{{getTitle(field)}}
             </div>
@@ -162,8 +145,8 @@
           <div class="col-sm-3">
             <div class="leader"></div>
 
-            <div class="title isActive">
-              <span ng-if="isMultipleCardinality()" style="font-size:smaller;padding-right:5px;">{{index+1}}.</span>{{getTitle(field)}}
+            <div class="title field isActive">
+              <span ng-if="isMultipleCardinality()" class="count">{{index+1}}.</span>{{getTitle(field)}}
             </div>
 
           </div>
@@ -173,7 +156,7 @@
               <field-toolbar class="col-xs-4 col-sm-4 pull-right " model="model" field="field" index="index"
                   remove="removeInput" add="addMoreInput" is-active="isActive" set-active="setActive"
                   description="getDescription" toggle="toggleMultiple" show-multiple="showMultiple"
-                  cardinality="cardinalityString"
+                  cardinality="cardinalityString" close="setInactive"
                   is-multiple="isMultipleCardinality" spreadsheet="switchToSpreadsheet"></field-toolbar>
             </div>
 
@@ -187,7 +170,7 @@
               </div>
             </div>
 
-            <form name="field-edit-form-{{index}}" ng-submit="onSubmit(index)">
+            <form name="field-edit-form-{{index}}" ng-submit="onSubmit(i)">
               <div class="originalContent" ng-include="getFieldUrl()"></div>
               <button type="submit" class="btn btn-save confirm active" translate>GENERIC.Ok</button>
               <label class="submit-info" translate>GENERIC.Submit</label>
@@ -195,164 +178,6 @@
 
           </div>
         </div>
-
-        <!-- actively being edited -->
-        <!--<div ng-if="isActive(index)"  class="active-container"  ng-style="{'left' : getNestingStyle(), 'width': getPageWidth() }">-->
-        <!--<div class="row" >-->
-        <!--<div class="col-xs-4 col-sm-4 pull-right toolbar">-->
-
-        <!--<button type="button" class="remove pull-right" ng-click="removeInput(index)"-->
-        <!--ng-if="model.length > field.minItems"-->
-        <!--tooltip="{{'GENERIC.Remove' | translate}}"-->
-        <!--tooltip-trigger-->
-        <!--tooltip-animation="false"-->
-        <!--tooltip-placement="top"-->
-        <!--data-toggle="tooltip">-->
-        <!--<i class="fa fa-trash"></i>-->
-        <!--</button>-->
-
-        <!--<button type="button" class=" remove pull-right"-->
-        <!--ng-if="isActive(index)"-->
-        <!--tooltip="{{'GENERIC.Close' | translate}}"-->
-        <!--ng-click="setActive(index, false)">-->
-        <!--<i class="fa fa-remove "></i>-->
-        <!--</button>-->
-
-        <!--<button ng-if="getDescription(field).length > 0" type="button" class=" question  pull-right"-->
-        <!--tooltip="{{(getDescription(field) || 'GENERIC.Help') | translate}}"-->
-        <!--tooltip-trigger-->
-        <!--tooltip-animation="true"-->
-        <!--tooltip-placement="top"-->
-        <!--data-toggle="tooltip">-->
-        <!--<i class="fa fa-question-circle"></i>-->
-        <!--</button>-->
-
-        <!--<button type="button" class=" add  pull-right" ng-click="addMoreInput()"-->
-        <!--ng-if="isMultipleCardinality() && (!field.maxItems || model.length < field.maxItems )"-->
-        <!--tooltip="{{'GENERIC.Add' | translate}}"-->
-        <!--tooltip-trigger-->
-        <!--tooltip-animation="false"-->
-        <!--tooltip-placement="top"-->
-        <!--data-toggle="tooltip">-->
-        <!--<i class="fa fa-plus-circle"></i>-->
-        <!--</button>-->
-
-        <!--</div>-->
-        <!--</div>-->
-        <!--<div class="row isActive" id="{{getLocator(index)}}">-->
-        <!--<div class="col-xs-12 col-sm-12">-->
-        <!--<div ng-click="setActive(index, true)" class="title ">-->
-        <!--<span ng-if="isMultipleCardinality()" class="count">{{index+1}}.</span>-->
-        <!--{{getTitle(field)}}-->
-        <!--</div>-->
-        <!--<div ng-if="isPreviousStatic()" >-->
-        <!--<div ng-if="isImage(previous)" >-->
-        <!--<figure>-->
-        <!--<img ng-src="{{getContent(previous)}}" no-image alt="{{getTitle(previous)}}"-->
-        <!--type="image/png" width="100%"/>-->
-        <!--<figcaption><label>{{getTitle(previous)}}</label></figcaption>-->
-        <!--</figure>-->
-        <!--</div>-->
-        <!--<div ng-if="isRichText(previous)" ng-bind-html="$root.getUnescapedContent(previous)"></div>-->
-        <!--<div ng-if="isYouTube(previous)">-->
-        <!--<figure>-->
-        <!--<div fit-vids ng-bind-html="getYouTubeEmbedFrame(previous)"></div>-->
-        <!--</figure>-->
-        <!--</div>-->
-        <!--</div>-->
-        <!--</div>-->
-        <!--</div>-->
-
-        <!--<div class="row isActive" ng-if="isActive(index)">-->
-        <!--<div class="col-xs-12 col-sm-12">-->
-        <!--<form name="field-edit-form-{{index}}" ng-submit="onSubmit(index)">-->
-        <!--<div class="originalContent" ng-include="getFieldUrl()"></div>-->
-        <!--<button type="submit" class="btn btn-save confirm active" translate>GENERIC.Ok</button>-->
-        <!--<label class="submit-info" translate>GENERIC.Submit</label>-->
-        <!--</form>-->
-        <!--</div>-->
-        <!--</div>-->
-        <!--</div>-->
-
-
-        <!--&lt;!&ndash; actively being edited &ndash;&gt;-->
-        <!--<div ng-if="isActive(index)"  class="active-container"  ng-style="{'left' : getNestingStyle(), 'width': getPageWidth() }">-->
-        <!--<div class="row" >-->
-        <!--<div class="col-xs-4 col-sm-4 pull-right toolbar">-->
-
-        <!--<button type="button" class="remove pull-right" ng-click="removeInput(index)"-->
-        <!--ng-if="model.length > field.minItems"-->
-        <!--tooltip="{{'GENERIC.Remove' | translate}}"-->
-        <!--tooltip-trigger-->
-        <!--tooltip-animation="false"-->
-        <!--tooltip-placement="top"-->
-        <!--data-toggle="tooltip">-->
-        <!--<i class="fa fa-trash"></i>-->
-        <!--</button>-->
-
-        <!--<button type="button" class=" remove pull-right"-->
-        <!--ng-if="isActive(index)"-->
-        <!--tooltip="{{'GENERIC.Close' | translate}}"-->
-        <!--ng-click="setActive(index, false)">-->
-        <!--<i class="fa fa-remove "></i>-->
-        <!--</button>-->
-
-        <!--<button ng-if="getDescription(field).length > 0" type="button" class=" question  pull-right"-->
-        <!--tooltip="{{(getDescription(field) || 'GENERIC.Help') | translate}}"-->
-        <!--tooltip-trigger-->
-        <!--tooltip-animation="true"-->
-        <!--tooltip-placement="top"-->
-        <!--data-toggle="tooltip">-->
-        <!--<i class="fa fa-question-circle"></i>-->
-        <!--</button>-->
-
-        <!--<button type="button" class=" add  pull-right" ng-click="addMoreInput()"-->
-        <!--ng-if="isMultipleCardinality() && (!field.maxItems || model.length < field.maxItems )"-->
-        <!--tooltip="{{'GENERIC.Add' | translate}}"-->
-        <!--tooltip-trigger-->
-        <!--tooltip-animation="false"-->
-        <!--tooltip-placement="top"-->
-        <!--data-toggle="tooltip">-->
-        <!--<i class="fa fa-plus-circle"></i>-->
-        <!--</button>-->
-
-        <!--</div>-->
-        <!--</div>-->
-        <!--<div class="row isActive" id="{{getLocator(index)}}">-->
-        <!--<div class="col-xs-12 col-sm-12">-->
-        <!--<div ng-click="setActive(index, true)" class="title ">-->
-        <!--<span ng-if="isMultipleCardinality()" class="count">{{index+1}}.</span>-->
-        <!--{{getTitle(field)}}-->
-        <!--</div>-->
-        <!--<div ng-if="isPreviousStatic()" >-->
-        <!--<div ng-if="isImage(previous)" >-->
-        <!--<figure>-->
-        <!--<img ng-src="{{getContent(previous)}}" no-image alt="{{getTitle(previous)}}"-->
-        <!--type="image/png" width="100%"/>-->
-        <!--<figcaption><label>{{getTitle(previous)}}</label></figcaption>-->
-        <!--</figure>-->
-        <!--</div>-->
-        <!--<div ng-if="isRichText(previous)" ng-bind-html="$root.getUnescapedContent(previous)"></div>-->
-        <!--<div ng-if="isYouTube(previous)">-->
-        <!--<figure>-->
-        <!--<div fit-vids ng-bind-html="getYouTubeEmbedFrame(previous)"></div>-->
-        <!--</figure>-->
-        <!--</div>-->
-        <!--</div>-->
-        <!--</div>-->
-        <!--</div>-->
-
-        <!--<div class="row isActive" ng-if="isActive(index)">-->
-        <!--<div class="col-xs-12 col-sm-12">-->
-        <!--<form name="field-edit-form-{{index}}" ng-submit="onSubmit(index)">-->
-        <!--<div class="originalContent" ng-include="getFieldUrl()"></div>-->
-        <!--<button type="submit" class="btn btn-save confirm active" translate>GENERIC.Ok</button>-->
-        <!--<label class="submit-info" translate>GENERIC.Submit</label>-->
-        <!--</form>-->
-        <!--</div>-->
-        <!--</div>-->
-        <!--</div>-->
-
       </div>
 
       <!-- all error messages for this field  -->

@@ -11,9 +11,8 @@
   </button>
 
   <button type="button" class=" remove pull-right"
-      ng-if="isActive(index)"
       tooltip="{{'GENERIC.Close' | translate}}"
-      ng-click="setActive(index, false)">
+      ng-click="close(index);$event.stopPropagation()">
     <i class="fa fa-remove "></i>
   </button>
 

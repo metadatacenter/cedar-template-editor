@@ -30,6 +30,7 @@ define([
         index     : '=',
         remove   : "=",
         add   : "=",
+        close : "=",
         isActive: '=',
         setActive: '=',
         isMultiple: '=',
