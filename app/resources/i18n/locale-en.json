@@ -116,9 +116,9 @@
     "Add": "Add"
   },
   "HELP": {
-    "createFolder":  "Create folder",
-    "createTemplate":  "Create template",
-    "createElement":  "Create element",
+    "createFolder": "Create folder",
+    "createTemplate": "Create template",
+    "createElement": "Create element",
     "viewDetails": "View details",
     "deleteSelection": "Delete selection",
     "viewAsGrid": "View as grid",
@@ -138,7 +138,6 @@
     "addMore": "Add more",
     "deleteTerm": "Delete term",
     "deleteMapping": "Delete mapping"
-
   },
   "SERVER": {
     "FOLDER": {
@@ -419,5 +418,10 @@
     "TOOLBAR": {
       "searchForMore": "Search the workspace"
     }
+  },
+  "BreadcrumbTitle": {
+    "sharedWithMe": "Shared with Me",
+    "viewAll": "View All",
+    "searchResult": "Search Results For: '{{searchTerm}}'"
   }
 }

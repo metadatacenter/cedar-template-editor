@@ -129,6 +129,7 @@ define([
           vm.isElement = isElement;
           vm.isFolder = isFolder;
           vm.isMeta = isMeta;
+          vm.buildBreadcrumbTitle = buildBreadcrumbTitle;
 
           vm.editingDescription = false;
 
@@ -488,6 +489,18 @@ define([
             return folderName;
           }
 
+          function buildBreadcrumbTitle(nodeListQueryType, searchTerm) {
+            if (nodeListQueryType == 'view-shared-with-me') {
+              return $translate.instant("BreadcrumbTitle.sharedWithMe");
+            } else if (nodeListQueryType == 'view-all') {
+              return $translate.instant("BreadcrumbTitle.viewAll");
+            } else if (nodeListQueryType == 'search-term') {
+              return $translate.instant("BreadcrumbTitle.searchResult", {searchTerm: searchTerm});
+            } else {
+              return "";
+            }
+          }
+
           function doSearch(term) {
             var resourceTypes = activeResourceTypes();
             var limit = UISettingsService.getRequestLimit();
@@ -501,6 +514,7 @@ define([
                   vm.isSearching = true;
                   vm.resources = response.resources;
                   vm.totalCount = response.totalCount;
+                  vm.breadcrumbTitle = vm.buildBreadcrumbTitle(response.nodeListQueryType, response.request.q);
                 },
                 function (error) {
                   UIMessageService.showBackendError('SERVER.SEARCH.error', error);
@@ -520,6 +534,7 @@ define([
                   vm.isSearching = true;
                   vm.resources = response.resources;
                   vm.totalCount = response.totalCount;
+                  vm.breadcrumbTitle = vm.buildBreadcrumbTitle(response.nodeListQueryType);
                 },
                 function (error) {
                   UIMessageService.showBackendError('SERVER.SEARCH.error', error);
