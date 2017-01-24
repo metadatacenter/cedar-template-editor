@@ -807,6 +807,8 @@ define([
         }
         result = m[1];
       }
+      // Decode the class URI
+      result = decodeURIComponent(result);
       return result;
     };
 

@@ -7,15 +7,17 @@ define([
           .controller('CreateTemplateController', CreateTemplateController);
 
       CreateTemplateController.$inject = ["$rootScope", "$scope", "$routeParams", "$timeout", "$location", "$translate",
-                                          "$filter", "TrackingService", "HeaderService", "UrlService", "StagingService",
-                                          "DataTemplateService", "FieldTypeService", "TemplateElementService",
+                                          "$filter", "TrackingService", "HeaderService", "StagingService",
+                                          "DataTemplateService", "FieldTypeService",
                                           "TemplateService", "UIMessageService", "DataManipulationService",
-                                          "DataUtilService", "AuthorizedBackendService", "CONST"];
+                                          "DataUtilService", "AuthorizedBackendService",
+                                          "FrontendUrlService", "QueryParamUtilsService", "CONST"];
 
       function CreateTemplateController($rootScope, $scope, $routeParams, $timeout, $location, $translate, $filter,
-                                        TrackingService, HeaderService, UrlService, StagingService, DataTemplateService,
-                                        FieldTypeService, TemplateElementService, TemplateService, UIMessageService,
-                                        DataManipulationService, DataUtilService, AuthorizedBackendService, CONST) {
+                                        TrackingService, HeaderService, StagingService, DataTemplateService,
+                                        FieldTypeService, TemplateService, UIMessageService,
+                                        DataManipulationService, DataUtilService, AuthorizedBackendService,
+                                        FrontendUrlService, QueryParamUtilsService, CONST) {
 
         $rootScope.showSearch = false;
 
@@ -206,10 +208,9 @@ define([
 
             // Save template
             if ($routeParams.id == undefined) {
-              var queryParams = $location.search();
               DataManipulationService.stripTmps($scope.form);
               AuthorizedBackendService.doCall(
-                  TemplateService.saveTemplate(queryParams.folderId, $scope.form),
+                  TemplateService.saveTemplate(QueryParamUtilsService.getFolderId(), $scope.form),
                   function (response) {
                     // confirm message
                     UIMessageService.flashSuccess('SERVER.TEMPLATE.create.success', {"title": response.data._ui.title},
@@ -218,7 +219,7 @@ define([
                     // Reload page with template id
                     DataManipulationService.createDomIds(response.data);
                     var newId = response.data['@id'];
-                    $location.path(UrlService.getTemplateEdit(newId));
+                    $location.path(FrontendUrlService.getTemplateEdit(newId));
 
                     $scope.$broadcast('form:clean');
                   },
@@ -324,8 +325,7 @@ define([
 
         // cancel the form and go back to the current folder
         $scope.cancelTemplate = function () {
-          var params = $location.search();
-          $location.url(UrlService.getFolderContents(params.folderId));
+          $location.url(FrontendUrlService.getFolderContents(QueryParamUtilsService.getFolderId()));
         };
 
 

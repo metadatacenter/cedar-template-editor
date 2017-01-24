@@ -33,26 +33,6 @@ define([
       biosampleService = config.biosampleRestAPI;
     };
 
-    service.getRoleSelector = function () {
-      return "/role-selector/";
-    };
-
-    service.getTemplateEdit = function (id) {
-      return "/templates/edit/" + id;
-    };
-
-    service.getElementEdit = function (id) {
-      return "/elements/edit/" + id;
-    };
-
-    service.getInstanceCreate = function (id, folderId) {
-      return '/instances/create/' + id + '?folderId=' + encodeURIComponent(folderId);
-    };
-
-    service.getInstanceEdit = function (id) {
-      return "/instances/edit/" + id;
-    };
-
     service.base = function () {
       return resourceService;
     };
@@ -66,7 +46,7 @@ define([
     };
 
     service.postTemplate = function (folderId) {
-      return this.templates() + '?folderId=' + encodeURIComponent(folderId);
+      return this.templates() + '?folder_id=' + encodeURIComponent(folderId);
     };
 
     service.templateElements = function () {
@@ -78,7 +58,7 @@ define([
     };
 
     service.postTemplateElement = function (folderId) {
-      return this.templateElements() + '?folderId=' + encodeURIComponent(folderId);
+      return this.templateElements() + '?folder_id=' + encodeURIComponent(folderId);
     };
 
     service.templateInstances = function () {
@@ -90,7 +70,7 @@ define([
     };
 
     service.postTemplateInstance = function (folderId) {
-      return this.templateInstances() + '?folderId=' + encodeURIComponent(folderId);
+      return this.templateInstances() + '?folder_id=' + encodeURIComponent(folderId);
     };
 
     service.users = function () {
@@ -127,14 +107,6 @@ define([
 
     service.resourceBase = function () {
       return resourceService;
-    };
-
-    service.getSearchPath = function (term) {
-      return '/dashboard?search=' + encodeURIComponent(term);
-    };
-
-    service.getFolderContents = function (folderId) {
-      return '/dashboard?folderId=' + encodeURIComponent(folderId);
     };
 
     service.getFolder = function (id) {
@@ -217,24 +189,20 @@ define([
       return biosampleService + '/validate';
     };
 
-    service.getMyWorkspace = function () {
-      return '/dashboard';
-    };
-
-    service.getSearchAll = function (folderId) {
-      return '/dashboard?search=&folderId=' + folderId;
-    };
-
-    service.getSharedWithMe = function (folderId) {
-      return '/dashboard?sharing=shared-with-me&folderId=' + folderId;
-    };
-
     service.getOntologies = function () {
       return this.controlledTerm() + "/ontologies";
     };
 
     service.getValueSetsCollections = function () {
       return this.controlledTerm() + "/vs-collections";
+    };
+
+    service.createValueSet = function () {
+      return this.controlledTerm() + '/vs-collections/CEDARVS/value-sets';
+    };
+
+    service.getValueSetById = function (vsId) {
+      return this.controlledTerm() + '/vs-collections/CEDARVS/value-sets/' + encodeURIComponent(vsId);
     };
 
     service.getValueSetsCache = function () {
@@ -245,8 +213,16 @@ define([
       return this.controlledTerm() + "/ontologies/" + ontology + "/classes/roots";
     };
 
+    service.createClass = function () {
+      return this.controlledTerm() + '/ontologies/CEDARPC/classes';
+    };
+
     service.getClassById = function (acronym, classId) {
       return this.controlledTerm() + '/ontologies/' + acronym + '/classes/' + encodeURIComponent(classId);
+    };
+
+    service.createValue = function (vsId) {
+      return this.controlledTerm() + '/vs-collections/CEDARVS/value-sets/' + encodeURIComponent(vsId) + '/values';
     };
 
     service.getValueTree = function (vsId, vsCollection) {

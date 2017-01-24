@@ -13,7 +13,6 @@ define([
     var http_default_config = {};
 
     var service = {
-      getAllProvisionalClasses: getAllProvisionalClasses,
       getValueSet             : getValueSet,
       getValueSetValues       : getValueSetValues,
       init                    : init,
@@ -37,35 +36,15 @@ define([
      * Service methods.
      */
 
-    function getAllProvisionalClasses() {
-      var endpoint = base + '/bioportal/classes/provisional';
-      return $http.get(endpoint, http_default_config).then(function (response) {
-        return response.data;
-      }).catch(function (error) {
-        return error;
-      });
+    function getValueSet(vsId) {
+      return controlledTermDataService.getNotCachedValueSetById(vsId);
     }
 
-    function getValueSet(valueSetId) {
-      var endpoint = base + '/bioportal/vs-collections/CEDARVS/value-sets/' + encodeURIComponent(valueSetId);
-      return $http.get(endpoint, http_default_config).then(function (response) {
-        return response.data;
-      }).catch(function (error) {
-        return error;
-      });
-    }
-
-    function getValueSetValues(valueSetId) {
-      var endpoint = base + '/bioportal/vs-collections/CEDARVS/value-sets/' + encodeURIComponent(valueSetId) + '/values';
-      return $http.get(endpoint, http_default_config).then(function (response) {
-        return response.data;
-      }).catch(function (error) {
-        return error;
-      });
+    function getValueSetValues(vsId) {
+      return controlledTermDataService.getValuesInValueSet("CEDARVS", vsId);
     }
 
     function saveClass(newClass, mappings) {
-      var endpoint = base + '/bioportal/ontologies/CEDARPC/classes';
       var payload = {
         'prefLabel'  : newClass.prefLabel,
         'creator'    : 'http://data.bioontology.org/users/cedar-mjd',
@@ -83,47 +62,35 @@ define([
           });
         }
       }
-      return $http.post(endpoint, payload, http_default_config).then(function (response) {
-        return response.data;
-      }).catch(function (err) {
-        return err;
-      });
+      return controlledTermDataService.createClass(payload);
     }
 
-    function saveValue(valueSetId, newValue) {
-      var endpoint = base + '/bioportal/vs-collections/CEDARVS/value-sets/' + encodeURIComponent(valueSetId) + '/values';
+    function saveValue(vsId, newValue) {
       var payload = {
         'creator'    : 'http://data.bioontology.org/users/cedar-mjd',
         'definitions': newValue.definition,
         'prefLabel'  : newValue.prefLabel,
       };
-      return $http.post(endpoint, payload, http_default_config).then(function (response) {
-        return response.data;
-      }).catch(function (err) {
-        return err;
-      });
+      return controlledTermDataService.createValue(vsId, payload);
     }
 
     function saveValueSet(newValueSet, newValues) {
-      var endpoint = base + '/bioportal/vs-collections/CEDARVS/value-sets';
       var payload = {
         'creator'    : 'http://data.bioontology.org/users/cedar-mjd',
         'definitions': [newValueSet.description],
         'prefLabel'  : newValueSet.prefLabel,
       };
-      return $http.post(endpoint, payload, http_default_config).then(function (valueSetCreateResponse) {
+      return controlledTermDataService.createValueSet(payload).then(function (valueSetCreateResponse) {
         if (newValues && newValues.length > 0) {
           var promises = [];
           for (var i = 0; i < newValues.length; i++) {
-            promises.push(saveValue(valueSetCreateResponse.data['@id'], newValues[i]));
+            promises.push(saveValue(valueSetCreateResponse['@id'], newValues[i]));
           }
           return $q.all(promises).then(function (valueResponses) {
-            return getValueSet(valueSetCreateResponse.data['id']).then(function (valueSetGetResponse) {
-              return valueSetGetResponse;
-            });
+            return getValueSet(valueSetCreateResponse['id']);
           });
         } else {
-          return response.data;
+          return valueSetCreateResponse;
         }
       }).catch(function (err) {
         return err;

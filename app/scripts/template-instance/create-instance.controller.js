@@ -7,12 +7,14 @@ define([
       .controller('CreateInstanceController', CreateInstanceController);
 
   CreateInstanceController.$inject = ["$translate", "$rootScope", "$scope", "$routeParams", "$location",
-                                      "HeaderService", "UrlService", "TemplateService", "TemplateInstanceService",
-                                      "UIMessageService", "AuthorizedBackendService", "CONST", "$timeout"];
+                                      "HeaderService", "TemplateService", "TemplateInstanceService",
+                                      "UIMessageService", "AuthorizedBackendService", "CONST", "$timeout",
+                                      "QueryParamUtilsService", "FrontendUrlService"];
 
-  function CreateInstanceController($translate, $rootScope, $scope, $routeParams, $location, HeaderService, UrlService,
-                                    TemplateService, TemplateInstanceService, UIMessageService,
-                                    AuthorizedBackendService, CONST, $timeout) {
+  function CreateInstanceController($translate, $rootScope, $scope, $routeParams, $location,
+                                    HeaderService, TemplateService, TemplateInstanceService,
+                                    UIMessageService, AuthorizedBackendService, CONST, $timeout,
+                                    QueryParamUtilsService, FrontendUrlService) {
 
     // Get/read template with given id from $routeParams
     $scope.getTemplate = function () {
@@ -84,16 +86,16 @@ define([
         $scope.instance['schema:isBasedOn'] = $routeParams.templateId;
         // Create fields that will store information used by the UI
         $scope.instance['schema:name'] = $scope.form._ui.title + $translate.instant("GENERATEDVALUE.instanceTitle")
-        $scope.instance['schema:description'] = $scope.form._ui.description + $translate.instant("GENERATEDVALUE.instanceDescription");
+        $scope.instance['schema:description'] = $scope.form._ui.description + $translate.instant(
+                "GENERATEDVALUE.instanceDescription");
         // Make create instance call
-        var queryParams = $location.search();
         AuthorizedBackendService.doCall(
-            TemplateInstanceService.saveTemplateInstance(queryParams.folderId, $scope.instance),
+            TemplateInstanceService.saveTemplateInstance(QueryParamUtilsService.getFolderId(), $scope.instance),
             function (response) {
               UIMessageService.flashSuccess('SERVER.INSTANCE.create.success', null, 'GENERIC.Created');
               // Reload page with element id
               var newId = response.data['@id'];
-              $location.path(UrlService.getInstanceEdit(newId));
+              $location.path(FrontendUrlService.getInstanceEdit(newId));
               $rootScope.$broadcast("form:clean");
             },
             function (err) {
@@ -104,7 +106,7 @@ define([
       }
       // Update instance
       //else if ($rootScope.isEmpty($scope.emptyRequiredFields) && $rootScope.isEmpty($scope.invalidFieldValues)) {
-      else  {
+      else {
         AuthorizedBackendService.doCall(
             TemplateInstanceService.updateTemplateInstance($scope.instance['@id'], $scope.instance),
             function (response) {
@@ -191,8 +193,7 @@ define([
 
     // cancel the form and go back to folder
     $scope.cancelTemplate = function () {
-      var params = $location.search();
-      $location.url(UrlService.getFolderContents(params.folderId));
+      $location.url(FrontendUrlService.getFolderContents(QueryParamUtilsService.getFolderId()));
     };
 
     $scope.enableSaveButton = function () {
@@ -212,7 +213,6 @@ define([
     $scope.biosampleValidation = function () {
       $scope.$broadcast('biosampleValidation');
     };
-
 
 
   };
