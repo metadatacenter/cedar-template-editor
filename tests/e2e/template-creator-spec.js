@@ -266,7 +266,7 @@ describe('template-creator', function () {
           var description = fieldType.label + ' description';
           var type = fieldType.cedarType;
 
-          xit("should add and delete a " + type + " in " + pageType + ' from popup ' + isMore, function () {
+          it("should add and delete a " + type + " in " + pageType + ' from popup ' + isMore, function () {
 
             workspacePage.createResource(pageType);
 
@@ -286,7 +286,7 @@ describe('template-creator', function () {
 
           });
 
-          xit("should select and deselect a " + type + " in " + pageType, function () {
+          it("should select and deselect a " + type + " in " + pageType, function () {
 
             var firstField;
             var lastField;

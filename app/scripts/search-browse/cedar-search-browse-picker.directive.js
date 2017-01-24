@@ -75,6 +75,7 @@ define([
           vm.shareModalVisible = false;
           vm.renameModalVisible = false;
           vm.newFolderModalVisible = false;
+          vm.runTimeVisible = runTimeVisible;
 
           vm.getFacets = getFacets;
           vm.getForms = getForms;
@@ -573,9 +574,12 @@ define([
             );
           }
 
-          function launchInstance(resource, newForm) {
 
-            console.log('launchInstance ' + newForm);
+          function runTimeVisible() {
+            return $rootScope.runTimeVisible;
+          }
+
+          function launchInstance(resource, newForm) {
 
             // may be setting which form to use
             if (newForm != null) {
@@ -591,8 +595,6 @@ define([
           }
 
           function launchInstanceNew(resource, newForm) {
-
-            console.log('launchInstanceNew  ' + newForm);
 
             // may be setting which form to use
             if (newForm != null) {

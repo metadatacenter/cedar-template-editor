@@ -9,6 +9,7 @@ define([
   'cedar/template-editor/template-element/cedar-runtime-element.directive',
   'cedar/template-editor/template-element/create-element.controller',
   'cedar/template-editor/template-element/template-element.routes',
+  'cedar/template-editor/template-element/element-toolbar.directive',
 ], function(angular) {
   angular.module('cedar.templateEditor.templateElement', [
     'cedar.templateEditor.form',
@@ -18,5 +19,6 @@ define([
     'cedar.templateEditor.templateElement.cedarRuntimeElement',
     'cedar.templateEditor.templateElement.createElementController',
     'cedar.templateEditor.templateElement.routes',
+    'cedar.templateEditor.templateElement.elementToolbar',
   ]);
 });

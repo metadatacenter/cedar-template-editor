@@ -34,6 +34,14 @@ define([
       scope.elementId = DataManipulationService.idOf(scope.element) || DataManipulationService.generateGUID();
       scope.uuid = DataManipulationService.generateTempGUID();
       scope.expanded = [];
+      //scope.multipleStates = ['expanded', 'paged','spreadsheet'];
+      scope.multipleStates = ['expanded', 'paged'];
+      scope.multipleState = 'paged';
+      scope.index = 0;
+      scope.pageMin = 0;
+      scope.pageMax = scope.model.length;
+      scope.pageRange = 6;
+      scope.nestingMargin = 15;
 
 
       var resetElement = function (el, settings) {
@@ -104,7 +112,7 @@ define([
             }
           }
         });
-      }
+      };
 
 
       scope.isInactive = function (index) {
@@ -120,8 +128,8 @@ define([
       };
 
       scope.getNestingMargin = function () {
-        return 'margin-left: ' + 15 + 'px';
-      }
+        return 'margin-left: ' + scope.nestingMargin + 'px';
+      };
 
       scope.getNesting = function () {
 
@@ -142,7 +150,7 @@ define([
       };
 
       scope.getNestingStyle = function (index) {
-        return 'left:' + (-15 * (index)) + 'px';
+        return 'left:' + (-scope.nestingMargin * (index)) + 'px';
       };
 
 
@@ -154,6 +162,7 @@ define([
         return DataManipulationService.getFieldSchema(scope.element)._ui.title;
       };
 
+
       scope.addElement = function () {
 
         if ((!scope.element.maxItems || scope.model.length < scope.element.maxItems)) {
@@ -164,6 +173,7 @@ define([
             seed = angular.copy(scope.model[0]);
             resetElement(seed, scope.element);
             scope.model.push(seed);
+
 
           } else {
 
@@ -203,7 +213,7 @@ define([
       };
 
       scope.switchToSpreadsheet = function () {
-        SpreadsheetService.switchToSpreadsheetElement(scope, element);
+        SpreadsheetService.switchToSpreadsheetElement(scope, scope.element);
       };
 
       scope.toggleExpanded = function (index) {
@@ -216,6 +226,61 @@ define([
       scope.isExpanded = function (index) {
         return scope.expanded[index];
       };
+
+      scope.setExpanded = function (index, value) {
+        return scope.expanded[index] = value;
+      };
+
+      scope.unExpand = function (index) {
+        scope.expanded[index] = false;
+        scope.setActive(index, false);
+      };
+
+      scope.isExpandable = function () {
+        return true;
+      };
+
+
+      scope.expandAll = function () {
+
+        // expand all the items in the valueArray
+        if (scope.valueArray.length == 0) {
+          scope.addMoreInput();
+        } else {
+          for (var i = 0; i < scope.valueArray.length; i++) {
+            scope.expanded[i] = true;
+            scope.setActive(0, true);
+          }
+        }
+
+        // let these draw, then send out expandAll to the newly drawn elements
+        $timeout(function () {
+          var schema = $rootScope.schemaOf(scope.element);
+          var selectedKey;
+          var props = $rootScope.propertiesOf(scope.element);
+          angular.forEach(props, function (value, key) {
+
+            var valueSchema = $rootScope.schemaOf(value);
+            var valueId = valueSchema["@id"];
+
+            if ($rootScope.isElement(valueSchema)) {
+              scope.$broadcast("expandAll", [valueId]);
+            }
+          });
+
+        }, 0);
+      };
+
+      scope.$on('expandAll', function (event, args) {
+        var id = args[0];
+
+        // only look at first level elements
+        if (id === scope.getId()) {
+
+          scope.expandAll();
+        }
+      });
+
 
       scope.removeChild = function (fieldOrElement) {
         // fieldOrElement must contain the schema level
@@ -299,11 +364,21 @@ define([
             }
           });
         }
-      }
+      };
 
       scope.isMultiple = function () {
         return $rootScope.isArray(scope.model);
       };
+
+      // is this field actively being edited?
+      scope.isActive = function (index) {
+        return DataManipulationService.isActive(DataManipulationService.getLocator(scope.element));
+      };
+
+      scope.cardinalityString = function () {
+        return DataManipulationService.cardinalityString(scope.element);
+      };
+
 
       // allows us to look a the model as an array
       scope.valueArray;
@@ -327,6 +402,7 @@ define([
       };
       scope.setValueArray();
 
+
       // watch for this field's next sibling
       scope.$on('nextSibling', function (event, args) {
         var id = args[0];
@@ -335,7 +411,7 @@ define([
         var value = args[3];
 
         // only look at first level elements
-        if (id === scope.getId() && path === '0' ) {
+        if (id === scope.getId() && path === '0') {
 
           var parent = $rootScope.rootElement;
           var next = DataManipulationService.nextSibling(scope.element, parent);
@@ -373,12 +449,57 @@ define([
       });
 
 
+      scope.pageMinMax = function () {
+        scope.pageMax = Math.min(scope.valueArray.length, scope.index + scope.pageRange);
+        scope.pageMin = Math.max(0, scope.pageMax - scope.pageRange);
+      };
+      scope.pageMinMax();
+
+
+      scope.addMoreInput = function () {
+        scope.addElement();
+        scope.pageMinMax();
+      };
 
       scope.setActive = function (index, value) {
         DataManipulationService.setActive(scope.element, index, scope.path, value);
-
+        //if (value) {
+        scope.index = index;
+        scope.pageMinMax();
+        //}
       };
+
+      scope.selectPage = function (i) {
+        scope.setActive(i, true);
+      };
+
+      scope.showMultiple = function (state) {
+        return (scope.multipleState === state);
+      };
+
+      scope.toggleMultiple = function () {
+        var i = scope.multipleStates.indexOf(scope.multipleState);
+        i = (i + 1) % scope.multipleStates.length;
+        scope.multipleState = scope.multipleStates[i];
+
+        if (scope.multipleState === 'spreadsheet') {
+
+          $timeout(function () {
+            scope.switchToSpreadsheet();
+            scope.$apply();
+          }, 0);
+
+        }
+
+        //$timeout(function () {
+        //  scope.$apply();
+        //}, 100);
+        return scope.multipleState;
+      };
+
+
     }
   };
 
-});
+})
+;

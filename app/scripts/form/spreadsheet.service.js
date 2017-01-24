@@ -226,17 +226,17 @@ define([
       },
 
       switchToSpreadsheetField: function ($scope, $element) {
-        //console.log("Switch to spreadsheet on FIELD");
-        //console.log($scope);
-        //console.log($element);
+        console.log("Switch to spreadsheet on FIELD");
+        console.log($scope);
+        console.log($element);
         var context = new SpreadsheetContext("field", $element);
         this.switchToSpreadsheet(context, $scope, $element);
       },
 
       switchToSpreadsheetElement: function ($scope, $element) {
-        //console.log("Switch to spreadsheet on ELEMENT");
-        //console.log($scope);
-        //console.log($element);
+        console.log("Switch to spreadsheet on ELEMENT");
+        console.log($scope);
+        console.log($element);
         var context = new SpreadsheetContext("element", $element);
         this.switchToSpreadsheet(context, $scope, $element);
       },
@@ -253,16 +253,21 @@ define([
       },
 
       switchToSpreadsheet: function (ctx, $scope, $element) {
+        console.log('switchToSpreadsheet');
         var context = ctx;
         if ($scope.hasOwnProperty('spreadsheetContext')) {
+          console.log('hasOwnProperty');
           context = $scope.spreadsheetContext;
           context.switchVisibility();
           if (context.isOriginalContentVisible()) {
+            console.log('already visible');
             context.getTable().destroy();
             jQuery(context.getSpreadsheetContainer()).html("");
+            console.log('apply visibility to existing container')
             this.applyVisibility($scope);
             return;
           } else {
+            console.log('switchvisibility');
             context.switchVisibility();
           }
         } else {
@@ -272,10 +277,9 @@ define([
         var owner = this;
         console.log($scope);
         var scopeElement = (context.isField() ? $scope.field : $scope.element);
-        //console.log("scopeElement:");
-        //console.log(scopeElement);
-
-        //console.log(context);
+        console.log("scopeElement:");
+        console.log(scopeElement);
+        console.log(context);
 
 
         // handsOnTable config object
@@ -312,13 +316,16 @@ define([
         }
         hotConfig.colHeaders = colHeaders;
 
-        //console.log(hotConfig);
+       console.log(hotConfig);
 
         // DOM detector element
         var detectorElement = angular.element('.spreadsheetViewDetector', context.getPlaceholderContext());
         // DOM element that contains the part to be replaced with HOT
         var container = angular.element('.spreadsheetViewContainer', context.getPlaceholderContext())[0];
+        console.log(container);
         context.setSpreadsheetContainer(container);
+
+
 
         // Compute size based on available width and number of rows
         var spreadsheetRowCount = tableData.length;
@@ -331,6 +338,8 @@ define([
         context.setOriginalContentContainer(angular.element('.originalContent', context.getPlaceholderContext())[0]);
         context.switchVisibility();
         this.applyVisibility($scope);
+
+        console.log(context);
 
 
         // launch hot
