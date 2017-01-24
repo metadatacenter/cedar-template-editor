@@ -11601,6 +11601,9 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   position: relative;
   border-left: 1px solid #aaa;
 }
+.template-body form .runtime.page.not-expanded {
+  border-left: 1px solid transparent;
+}
 .template-body form .runtime .down-tick {
   height: 36px;
   background-color: #aaa;
@@ -11620,7 +11623,7 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   left: -16px;
 }
 .template-body form .runtime .toolbar {
-  padding: 3px 22px 4px 0;
+  padding: 0px 22px 4px 0;
 }
 .template-body form .runtime .answer {
   border: 1px solid transparent;
@@ -11665,7 +11668,7 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   border: 1px solid #ccc;
 }
 .template-body form .runtime .title {
-  font-size: 1.3em;
+  font-size: 1.1em;
   font-family: "Source Sans Pro", sans-serif;
   font-weight: 200;
   border: 1px solid transparent;
@@ -11675,12 +11678,15 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   font-size: smaller;
 }
 .template-body form .runtime .title.field {
+  font-size: 1.1em;
   color: #666;
 }
 .template-body form .runtime .title.element {
+  font-size: 1.2em;
   color: #71977F;
 }
 .template-body form .runtime .title.form {
+  font-size: 1.2em;
   color: #5795ba;
 }
 .template-body form .runtime .leader {
@@ -11706,20 +11712,18 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   top: 0;
   right: 0;
 }
-.template-body form .runtime button.expand {
-  color: #aaa;
-  font-size: 1em;
-  margin-left: -10px;
-  margin-top: 0px;
-}
 .template-body form .runtime button.xxx {
   color: #aaa;
   font-size: 1.6em;
   margin-left: -12px;
-  margin-top: -4px;
+  margin-top: -7px;
 }
 .template-body form .runtime button.add {
   color: #ff8c00;
+}
+.template-body form .runtime button.delete {
+  color: #999;
+  margin-left: 20px;
 }
 .template-body form .runtime button.expand-all {
   color: #999;

@@ -1,6 +1,6 @@
 <div class="toolbar">
 
-  <button type="button" class="remove pull-right" ng-click="remove(index)"
+  <button type="button" class="delete pull-right" ng-click="remove(index)"
       ng-if="model.length > field.minItems"
       tooltip="{{'GENERIC.Remove' | translate}}"
       tooltip-trigger
@@ -11,7 +11,7 @@
   </button>
 
   <button type="button" class=" expand-all pull-right"
-      ng-if="isActive(index) && isExpandable()"
+      ng-if="isExpandable()"
       tooltip="{{'GENERIC.ExpandAll' | translate}}"
       ng-click="expandAll(index)">
     <i class="fa fa-expand "></i>

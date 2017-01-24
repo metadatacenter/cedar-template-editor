@@ -2778,6 +2778,9 @@ section.dashboard-elements {
     margin-bottom: 100px;
     position:relative;
     border-left:1px solid #aaa;
+    &.not-expanded {
+      border-left:1px solid transparent;
+    }
   }
 
   .down-tick {
@@ -2802,7 +2805,7 @@ section.dashboard-elements {
   }
 
   .toolbar {
-    padding:3px 22px 4px 0;
+    padding:0px 22px 4px 0;
 
   }
 
@@ -2851,7 +2854,7 @@ section.dashboard-elements {
   }
 
   .title {
-    font-size: 1.3em;
+    font-size: 1.1em;
     font-family: "Source Sans Pro", sans-serif;
     font-weight: 200;
     border:1px solid transparent;
@@ -2860,12 +2863,15 @@ section.dashboard-elements {
       font-size:smaller;
     }
     &.field {
+      font-size:1.1em;
       color:#666;
     }
     &.element {
+      font-size: 1.2em;
       color:#71977F;
     }
     &.form {
+      font-size: 1.2em;
       color:@brand-primary;
     }
   }
@@ -2896,22 +2902,20 @@ section.dashboard-elements {
       top: 0;
       right: 0;
     }
-    &.expand {
-      color: #aaa;
-      font-size: 1em;
-      margin-left: -10px;
-      margin-top: 0px;
-    }
 
     &.xxx {
       color: #aaa;
       font-size: 1.6em;
       margin-left: -12px;
-      margin-top: -4px;
+      margin-top: -7px;
     }
 
     &.add {
       color: @brand-accent;
+    }
+    &.delete {
+      color: #999;
+      margin-left:20px;
     }
     &.expand-all {
       color: #999;

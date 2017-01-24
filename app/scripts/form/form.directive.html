@@ -30,32 +30,33 @@
   </div>
 
   <!--At runtime, the new form-->
-  <div class="page runtime" ng-if="$root.isRuntime() && $root.useRunTimeCode " ng-repeat="page in pagesArray">
+  <div class="page runtime"  ng-class="{'not-expanded': !isExpanded()}" ng-if="$root.isRuntime() && $root.useRunTimeCode " ng-repeat="page in pagesArray">
 
     <div class="flagpole"></div>
 
-    <div class="row">
-      <div class="col-xs-9 ">
+    <div class="row ">
+      <div class="col-xs-9 " >
 
           <div ng-click="toggleExpanded()">
             <button type="button"
-                ng-class="{'xxx' : isExpanded(), 'expand' : !isExpanded()}">
+                class="xxx">
               <i ng-class="{'fa fa-caret-down' : isExpanded(), 'fa fa-caret-right' : !isExpanded()}"></i></button>
             <span  class="title form">{{$root.schemaOf(form)._ui.title}}</span>
           </div>
       </div>
 
-        <field-toolbar class="col-xs-3 pull-right" field="form"
+      <div class="col-xs-3 pull-right tools">
+        <field-toolbar  field="form"
             close="close"  is-active="isActive"
             expand-all="expandAll" is-expandable="isExpandable">
         </field-toolbar>
-
+      </div>
     </div>
 
 
-    <div ng-repeat="item in page" class="animate-fade" ng-show="pageIndex == $parent.$index">
+    <div  ng-repeat="item in page" class="animate-fade" ng-show="pageIndex == $parent.$index && isExpanded()">
 
-      <span ng-if="form.properties[item]  && isExpanded()">
+      <span ng-if="form.properties[item]">
 
         <!--If field-->
         <div ng-if="isField(item)" class="field-instance">
