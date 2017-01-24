@@ -34,18 +34,16 @@
 
     <div class="flagpole"></div>
 
-    <div class="row ">
+    <div class="row">
       <div class="col-xs-9 " >
-
           <div ng-click="toggleExpanded()">
-            <button type="button"
-                class="xxx">
+            <button type="button"  class="xxx">
               <i ng-class="{'fa fa-caret-down' : isExpanded(), 'fa fa-caret-right' : !isExpanded()}"></i></button>
             <span  class="title form">{{$root.schemaOf(form)._ui.title}}</span>
           </div>
       </div>
 
-      <div class="col-xs-3 pull-right tools">
+      <div class="col-xs-3 pull-right tools " style="visibility:hidden">
         <field-toolbar  field="form"
             close="close"  is-active="isActive"
             expand-all="expandAll" is-expandable="isExpandable">
@@ -53,9 +51,7 @@
       </div>
     </div>
 
-
     <div  ng-repeat="item in page" class="animate-fade" ng-show="pageIndex == $parent.$index && isExpanded()">
-
       <span ng-if="form.properties[item]">
 
         <!--If field-->

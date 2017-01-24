@@ -1143,6 +1143,15 @@ button {
     .filter-options {
       padding: 40px 0 20px 10px;
 
+      .shares {
+        margin:0 0 20px 0;
+        .share {
+          margin:5px 0;
+          display:block;
+        }
+      }
+
+
       ul.list-inline {
         padding: 10px 0;
         li {
@@ -2811,7 +2820,7 @@ section.dashboard-elements {
 
   .answer {
     border:1px solid transparent;
-    font-size:1.2em;
+    font-size:1.1em;
     cursor:pointer;
     line-height: 20px;
     min-height:25px;
@@ -2835,9 +2844,12 @@ section.dashboard-elements {
     padding:5px 0;
   }
 
+
+
   .row.isActive, .row:hover {
-    .title {
-      cursor:pointer;
+    cursor:pointer;
+    .tools {
+      visibility: visible !important;
     }
     .title.field {
       text-shadow:1px 0px 0px #666;
@@ -3845,6 +3857,7 @@ section.dashboard-elements {
       .no-search-results {
         padding: 20px 0 19px 3.06%;
         width: 100%;
+        min-height:1em;
       }
     }
 

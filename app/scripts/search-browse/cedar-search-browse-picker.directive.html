@@ -5,7 +5,12 @@
 
     <div class="breadcrumbs-sb ">
       <p ng-if="dc.isSearching">
-        <span class="search-result">Search Results For: '{{dc.searchTerm}}' </span>
+        <span class="search-result">
+            <span ng-class="{'no-search-results':dc.searchTerm}">
+              <span ng-if="dc.searchTerm">Search Results For: '{{dc.searchTerm}}'</span>
+              <span ng-if="!dc.searchTerm">&nbsp;</span>
+            </span>
+          </span>
       </p>
 
       <p ng-if="!dc.isSearching">
@@ -236,21 +241,20 @@
 
       <!-- START LEFT SIDE -->
       <div class="col-sm-2 row-offcanvas-left" id="sidebar-left" ng-if="dc.filterShowing() &&  dc.onDashboard()">
-        <div style="height:40px;margin-top:20px;">
-          <a href="#" ng-click="dc.goToMyWorkspace()" translate>DASHBOARD.sidebar.myWorkspace</a>
-        </div>
-        <div style="height:40px;">
-          <a href="#" ng-click="dc.goToSearchAll()" translate>DASHBOARD.sidebar.all</a>
-        </div>
-        <div style="height:40px;">
-          <a href="#" ng-click="dc.goToSharedWithMe()" translate>DASHBOARD.sidebar.sharedWithMe</a>
-        </div>
 
         <div class="filter-options">
+
+          <div class="shares"><a class="share" href="#" ng-click="dc.goToMyWorkspace()" translate>DASHBOARD.sidebar.myWorkspace</a>
+            <a class="share" href="#" ng-click="dc.goToSharedWithMe()" translate>DASHBOARD.sidebar.sharedWithMe</a>
+            <!--<a class="share" href="#" ng-click="dc.goToSearchAll()" translate>DASHBOARD.sidebar.all</a>-->
+          </div>
+
+
           <div class="clearfix reset-text">
             <div class="pull-left " translate>DASHBOARD.filter.filterBy</div>
             <div class="pull-right"><a href="#" ng-click="dc.resetFilters()" translate>DASHBOARD.filter.reset</a></div>
           </div>
+
           <div>
             <!-- nested facet template -->
             <script type="text/ng-template" id="facet_renderer.html">

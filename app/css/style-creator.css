@@ -10000,6 +10000,13 @@ button {
 .all-items-view .row-offcanvas-left .filter-options {
   padding: 40px 0 20px 10px;
 }
+.all-items-view .row-offcanvas-left .filter-options .shares {
+  margin: 0 0 20px 0;
+}
+.all-items-view .row-offcanvas-left .filter-options .shares .share {
+  margin: 5px 0;
+  display: block;
+}
 .all-items-view .row-offcanvas-left .filter-options ul.list-inline {
   padding: 10px 0;
 }
@@ -11627,7 +11634,7 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
 }
 .template-body form .runtime .answer {
   border: 1px solid transparent;
-  font-size: 1.2em;
+  font-size: 1.1em;
   cursor: pointer;
   line-height: 20px;
   min-height: 25px;
@@ -11647,9 +11654,13 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
 .template-body form .runtime .row.tools {
   padding: 5px 0;
 }
-.template-body form .runtime .row.isActive .title,
-.template-body form .runtime .row:hover .title {
+.template-body form .runtime .row.isActive,
+.template-body form .runtime .row:hover {
   cursor: pointer;
+}
+.template-body form .runtime .row.isActive .tools,
+.template-body form .runtime .row:hover .tools {
+  visibility: visible !important;
 }
 .template-body form .runtime .row.isActive .title.field,
 .template-body form .runtime .row:hover .title.field {
@@ -12561,6 +12572,7 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
 .controlled-term-options .search-results-section .search-results .no-search-results {
   padding: 20px 0 19px 3.06%;
   width: 100%;
+  min-height: 1em;
 }
 .controlled-term-options .search-results-section .results-table-container {
   background: #ffffff;
