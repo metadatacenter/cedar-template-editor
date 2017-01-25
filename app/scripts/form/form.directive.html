@@ -30,36 +30,29 @@
   </div>
 
   <!--At runtime, the new form-->
-  <div class="page runtime"  ng-if="$root.isRuntime() && $root.useRunTimeCode" ng-repeat="page in pagesArray">
+  <div class="page runtime"  ng-class="{'not-expanded': !isExpanded()}" ng-if="$root.isRuntime() && $root.useRunTimeCode " ng-repeat="page in pagesArray">
 
     <div class="flagpole"></div>
 
     <div class="row">
-      <div class="col-sm-9 ">
-
-          <span>
-            <button type="button" ng-click="toggleExpanded()" ng-class="{'xxx' : isExpanded(i), 'expand' : !isExpanded()}">
-              <i ng-class="{'fa fa-caret-down' : isExpanded(), 'fa fa-caret-right' : !isExpanded()}"></i> </button>
-            <span class="title">{{$root.schemaOf(form)._ui.title}}</span>
-          </span>
+      <div class="col-xs-9 " >
+          <div ng-click="toggleExpanded()">
+            <button type="button"  class="xxx">
+              <i ng-class="{'fa fa-caret-down' : isExpanded(), 'fa fa-caret-right' : !isExpanded()}"></i></button>
+            <span  class="title form">{{$root.schemaOf(form)._ui.title}}</span>
+          </div>
       </div>
-      <div class="col-sm-3">
+
+      <div class="col-xs-3 pull-right tools " style="visibility:hidden">
+        <field-toolbar  field="form"
+            close="close"  is-active="isActive"
+            expand-all="expandAll" is-expandable="isExpandable">
+        </field-toolbar>
       </div>
     </div>
 
-
-    <div ng-repeat="item in page" class="animate-fade"  ng-show="pageIndex == $parent.$index">
-
+    <div  ng-repeat="item in page" class="animate-fade" ng-show="pageIndex == $parent.$index && isExpanded()">
       <span ng-if="form.properties[item]">
-
-        <!--If static field-->
-        <!--<div ng-if="isStaticField(item)" class="static-field-instance">-->
-          <!--<cedar-runtime-field field="form.properties[item]" model="model[item]"-->
-              <!--delete="removeChild(form.properties[item]);"-->
-              <!--rename-child-key="renameChildKey"-->
-              <!--is-edit-data="isEditData" depth="1"-->
-              <!--path="0"></cedar-runtime-field>-->
-        <!--</div>-->
 
         <!--If field-->
         <div ng-if="isField(item)" class="field-instance">
@@ -72,9 +65,8 @@
               previous="form.properties[page[$index-1]]"></cedar-runtime-field>
         </div>
 
-
         <!--If element-->
-        <div ng-if="isElement(item)"  class="element-group full" >
+        <div ng-if="isElement(item)" class="element-group full">
           <cedar-runtime-element element="form.properties[item]"
               key="item"
               model="model[item]"
@@ -112,7 +104,7 @@
               model="model[item]"
               delete="removeChild(form.properties[item])"
               is-root-element="hideRootElement"
-              is-edit-data="isEditData",
+              is-edit-data="isEditData" ,
               depth="1">
           </cedar-template-element>
         </div>

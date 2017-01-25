@@ -113,7 +113,8 @@
     "Metadata": "Metadata",
     "Help": "Help",
     "Close": "Close",
-    "Add": "Add"
+    "Add": "Add",
+    "ExpandAll": "Expand"
   },
   "HELP": {
     "createFolder": "Create folder",
