@@ -1146,6 +1146,11 @@ define([
 
           vm.getVisibleCount = function () {
             return Math.min(vm.offset + vm.requestLimit, vm.totalCount);
+          };
+
+          // should we show the resource count at the end of the workspace?
+          vm.showResourceCount = function () {
+            return  vm.totalCount !== Number.MAX_VALUE && vm.totalCount > vm.requestLimit;
           }
 
 

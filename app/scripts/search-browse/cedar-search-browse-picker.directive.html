@@ -538,7 +538,7 @@
             <!-- here is the end of the list view- hidden initially -->
           </div>
 
-          <div class="row resource-count" ng-if="dc.totalCount">
+          <div class="row resource-count" ng-if="dc.showResourceCount()">
             <div class="col-xs-12  center" >
               <span translate>GENERIC.Displaying</span> 1 - {{dc.getVisibleCount()}} <span translate>GENERIC.Of</span> {{dc.totalCount}}
             </div>
