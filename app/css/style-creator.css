@@ -9655,6 +9655,11 @@ button {
   border-top: 1px solid #ddd;
   border-bottom: 1px solid #ddd;
 }
+.all-items-view .center-panel .resource-count {
+  margin: 40px 0;
+  font-size: 1.2em;
+  color: #666;
+}
 .all-items-view .push-pull-box {
   position: absolute;
   background: #eaeaea;

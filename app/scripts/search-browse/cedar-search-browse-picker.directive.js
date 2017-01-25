@@ -57,6 +57,7 @@ define([
           vm.currentPath = "";
           vm.currentFolderId = "";
           vm.offset = 0;
+          vm.requestLimit = UISettingsService.getRequestLimit();
 
           vm.totalCount = null;
           vm.deleteResource = deleteResource;
@@ -334,8 +335,8 @@ define([
             } else {
 
               var limit = UISettingsService.getRequestLimit();
-              vm.offset += limit;
               var offset = vm.offset;
+              offset += limit;
 
               var folderId = vm.currentFolderId;
               var resourceTypes = activeResourceTypes();
@@ -354,6 +355,7 @@ define([
                       },
                       function (response) {
                         vm.resources = vm.resources.concat(response.resources);
+                        vm.offset = offset;
                       },
                       function (error) {
                         UIMessageService.showBackendError('SERVER.FOLDER.load.error', error);
@@ -371,8 +373,8 @@ define([
           vm.searchMore = function () {
 
             var limit = UISettingsService.getRequestLimit();
-            vm.offset += limit;
             var offset = vm.offset;
+            offset += limit;
             var term = vm.searchTerm;
             var resourceTypes = activeResourceTypes();
 
@@ -398,6 +400,7 @@ define([
                   function (response) {
                     vm.resources = vm.resources.concat(response.resources);
                     vm.totalCount = response.totalCount;
+                    vm.offset = offset;
                   },
                   function (error) {
                     UIMessageService.showBackendError('SERVER.SEARCH.error', error);
@@ -1140,6 +1143,17 @@ define([
             var url = FrontendUrlService.getSharedWithMe(vm.getFolderId());
             $location.url(url);
           };
+
+          vm.getVisibleCount = function () {
+            return Math.min(vm.offset + vm.requestLimit, vm.totalCount);
+          };
+
+          // should we show the resource count at the end of the workspace?
+          vm.showResourceCount = function () {
+            return  vm.totalCount !== Number.MAX_VALUE && vm.totalCount > vm.requestLimit;
+          }
+
+
 
         }
       }

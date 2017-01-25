@@ -47,7 +47,8 @@
 
               <li ng-if="dc.isFolder()"><a href="#" ng-click="dc.goToResource()">Open</a></li>
               <li ng-if="dc.isTemplate()"><a href="#" ng-click="dc.launchInstance()">Populate</a></li>
-              <li ng-if="dc.isTemplate() && dc.runTimeVisible()"><a href="#" ng-click="dc.launchInstanceNew()">New Populate</a></li>
+              <li ng-if="dc.isTemplate() && dc.runTimeVisible()"><a href="#" ng-click="dc.launchInstanceNew()">New
+                Populate</a></li>
               <li ng-if="!dc.isFolder()"><a href="#" ng-click="dc.editResource()">Edit</a></li>
               <li role="separator" class="divider"></li>
               <li><a href="#" ng-click="dc.showShareModal(resource)">Share...</a></li>
@@ -416,7 +417,8 @@
                       <ul ng-if="dc.isTemplate()" class="dropdown-menu"
                           aria-labelledby="{{getId(resource, 'populate')}}">
                         <li><a href="#" ng-click="dc.launchInstance(resource, false)">Populate</a></li>
-                        <li ng-if="dc.runTimeVisible()"><a href="#" ng-click="dc.launchInstanceNew(resource, true)">New Populate</a></li>
+                        <li ng-if="dc.runTimeVisible()"><a href="#" ng-click="dc.launchInstanceNew(resource, true)">New
+                          Populate</a></li>
                         <li><a href="#" ng-click="dc.editResource(resource)">Edit</a></li>
                         <li><a href="#" ng-click="dc.showInfoPanel(resource)">Info</a></li>
                         <li role="separator" class="divider"></li>
@@ -514,9 +516,10 @@
                     </button>
                     <ul class="dropdown-menu" aria-labelledby="{{getId(resource, 'list')}}">
                       <li ng-if="dc.isTemplate() "><a href="#" ng-click="dc.launchInstance(resource, false)">Populate
-                        </a></li>
-                      <li ng-if="dc.isTemplate() && dc.runTimeVisible()"><a href="#" ng-click="dc.launchInstanceNew(resource, true)">New Populate
-                        </a></li>
+                      </a></li>
+                      <li ng-if="dc.isTemplate() && dc.runTimeVisible()"><a href="#"
+                          ng-click="dc.launchInstanceNew(resource, true)">New Populate
+                      </a></li>
                       <li><a href="#" ng-click="dc.editResource(resource)">Edit</a></li>
 
                       <li><a href="#" ng-click="dc.showInfoPanel(resource)">Info</a></li>
@@ -534,6 +537,13 @@
             </div>
             <!-- here is the end of the list view- hidden initially -->
           </div>
+
+          <div class="row resource-count" ng-if="dc.showResourceCount()">
+            <div class="col-xs-12  center" >
+              <span translate>GENERIC.Displaying</span> 1 - {{dc.getVisibleCount()}} <span translate>GENERIC.Of</span> {{dc.totalCount}}
+            </div>
+          </div>
+
         </div>
 
       </div>

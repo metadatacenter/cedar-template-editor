@@ -114,7 +114,9 @@
     "Help": "Help",
     "Close": "Close",
     "Add": "Add",
-    "ExpandAll": "Expand"
+    "ExpandAll": "Expand",
+    "Displaying": "Displaying",
+    "Of": "of"
   },
   "HELP": {
     "createFolder":  "Create folder",
