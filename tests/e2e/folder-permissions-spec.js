@@ -3,23 +3,25 @@ var WorkspacePage = require('../pages/workspace-new-page.js');
 var ToastyModal = require('../modals/toasty-modal.js');
 var SweetAlertModal = require('../modals/sweet-alert-modal.js');
 var MoveModal = require('../modals/move-modal.js');
+var ShareModal = require('../modals/share-modal.js');
 var testConfig = require('../config/test-env.js');
 
 var testUserName1 = 'Test User 1';
 var testUserName2 = 'Test User 2';
 
-describe('permissions', function () {
-  var EC = protractor.ExpectedConditions;
+describe('folder-permissions', function () {
   var workspacePage;
   var toastyModal;
   var sweetAlertModal;
   var moveModal;
+  var shareModal;
 
   beforeEach(function () {
     workspacePage = WorkspacePage;
     toastyModal = ToastyModal;
     sweetAlertModal = SweetAlertModal;
     moveModal = MoveModal;
+    shareModal = ShareModal;
     browser.driver.manage().window().maximize();
 
     console.log(jasmine.getEnv().currentSpec.description);
@@ -50,7 +52,7 @@ describe('permissions', function () {
     var sharedFolderTitle = workspacePage.createFolder('Shared');
 
     // share folder
-    workspacePage.shareResource(sharedFolderTitle, 'folder', testUserName2, false);
+    shareModal.shareResource(sharedFolderTitle, 'folder', testUserName2, false);
 
     // logout current user and login as the user with whom the folder was shared
     workspacePage.logout();
@@ -76,10 +78,9 @@ describe('permissions', function () {
     var targetFolder = workspacePage.createFolder('Target');
 
     // share both folders
-    workspacePage.shareResource(sourceFolder, 'folder', testUserName1, true);
-    browser.sleep(2000);
+    shareModal.shareResource(sourceFolder, 'folder', testUserName1, true);
     workspacePage.clickLogo(); // reset search
-    workspacePage.shareResource(targetFolder, 'folder', testUserName1, true); // TODO fails because of refresh issue #273 (when this resource is about to be shared, the view shows the sharing options for the previously created folder...)
+    shareModal.shareResource(targetFolder, 'folder', testUserName1, true); // TODO fails because of refresh issue #273 (when this resource is about to be shared, the view shows the sharing options for the previously created folder...)
 
     workspacePage.logout();
     workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
@@ -99,10 +100,9 @@ describe('permissions', function () {
     var sourceFolder = workspacePage.createFolder('Source');
     var targetFolder = workspacePage.createFolder('Target');
 
-    workspacePage.shareResource(sourceFolder, 'folder', testUserName2, true);
-    browser.sleep(2000);
+    shareModal.shareResource(sourceFolder, 'folder', testUserName2, true);
     workspacePage.clickLogo(); // reset search
-    workspacePage.shareResource(targetFolder, 'folder', testUserName2, false); // TODO fails because of refresh issue #273
+    shareModal.shareResource(targetFolder, 'folder', testUserName2, false); // TODO fails because of refresh issue #273
 
     workspacePage.logout();
     workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
@@ -120,10 +120,9 @@ describe('permissions', function () {
     var targetFolder = workspacePage.createFolder('Target');
 
     // share both folders
-    workspacePage.shareResource(sourceFolder, 'folder', testUserName1, false);
-    browser.sleep(2000);
+    shareModal.shareResource(sourceFolder, 'folder', testUserName1, false);
     workspacePage.clickLogo(); // reset search
-    workspacePage.shareResource(targetFolder, 'folder', testUserName1, false); // TODO fails because of refresh issue #273
+    shareModal.shareResource(targetFolder, 'folder', testUserName1, false); // TODO fails because of refresh issue #273
 
     workspacePage.logout();
     workspacePage.login(testConfig.testUser1, testConfig.testPassword1);

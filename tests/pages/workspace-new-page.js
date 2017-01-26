@@ -84,16 +84,6 @@ var WorkspacePage = function () {
   var createFolderName = createFolderModal.element(by.model('folder.folder.name'));
   var createFolderSubmitButton = createFolderModal.element(by.css('div.modal-footer button.confirm'));
 
-  // share modal
-  var createShareModal = element(by.id('share-modal'));
-  var shareWithUserRow = createShareModal.element(by.css('div > div > div.modal-body > div > div > div.col-sm-6.ng-scope > div:nth-child(5)'));
-  var createShareModalUserName =
-    shareWithUserRow.element(by.css('div.col-sm-7.typeaheadDropUp > input'));
-  var permissionsList = shareWithUserRow.element(by.css('div.btn-group.bootstrap-select.dropdown.col-sm-4.select-picker.ng-pristine.ng-untouched.ng-valid.ng-isolate-scope.ng-not-empty'));
-  var createShareModalPermissions = permissionsList.element(by.css('button'));
-  var createShareModalWritePermission = permissionsList.element(by.css('div > ul > li:nth-child(2) > a'));
-  var createShareModalAddUserButton = shareWithUserRow.element(by.css('div.col-sm-1.pull-right > button'));
-  var createShareModalDoneButton = createShareModal.element(by.css('div > div > div.modal-footer.actions > div > button'));
 
   // access to locators
   this.createPageName = function () {
@@ -171,25 +161,6 @@ var WorkspacePage = function () {
   this.createShareMenuItem = function () {
     return createShareMenuItem;
   };
-  this.createShareModal = function () {
-    return createShareModal;
-  };
-  this.createShareModalUserName = function () {
-    return createShareModalUserName;
-  };
-  this.createShareModalDoneButton = function () {
-    return createShareModalDoneButton;
-  };
-  this.createShareModalAddUserButton = function () {
-    return createShareModalAddUserButton;
-  };
-  this.createShareModalPermissions = function () {
-    return createShareModalPermissions;
-  };
-  this.createShareModalWritePermission = function () {
-    return createShareModalWritePermission;
-  };
-
 
   // page load
   this.get = function () {
@@ -258,7 +229,7 @@ var WorkspacePage = function () {
     this.createTrashButton().click();
     sweetAlertModal.confirm();
     toastyModal.isSuccess();
-    browser.sleep(1000);
+    browser.wait(EC.elementToBeClickable(createLogo));
     this.clickLogo();
   };
 
@@ -381,7 +352,8 @@ var WorkspacePage = function () {
   };
 
   this.clickLogo = function () {
-
+    browser.wait(EC.visibilityOf(createLogo));
+    browser.wait(EC.elementToBeClickable(createLogo));
     createLogo.click();
   };
 
@@ -406,46 +378,6 @@ var WorkspacePage = function () {
           browser.driver.wait(browser.driver.isElementPresent(by.className('ng-app')));
         });
       });
-    });
-  };
-
-
-  this.shareResource = function (name, type, username, canWrite) {
-    this.selectResource(name, type);
-
-    var optionsButton = this.createMoreOptionsButton();
-    browser.wait(EC.visibilityOf(optionsButton));
-    browser.wait(EC.elementToBeClickable(optionsButton));
-    optionsButton.click();
-
-    var shareMenuItem = this.createShareMenuItem();
-    browser.wait(EC.visibilityOf(shareMenuItem));
-    browser.wait(EC.elementToBeClickable(shareMenuItem));
-    shareMenuItem.click();
-
-    var usernameField = this.createShareModalUserName();
-    browser.wait(EC.visibilityOf(usernameField));
-    usernameField.sendKeys(username);
-    browser.actions().sendKeys(protractor.Key.ENTER).perform();
-
-    if (canWrite) {
-      var permissionsList = this.createShareModalPermissions();
-      browser.wait(EC.elementToBeClickable(permissionsList));
-      permissionsList.click();
-      browser.wait(EC.elementToBeClickable(this.createShareModalWritePermission()));
-      this.createShareModalWritePermission().click();
-    }
-
-    var addButton = this.createShareModalAddUserButton();
-    browser.wait(EC.elementToBeClickable(addButton)).then(function () {
-      addButton.click();
-    });
-
-    var doneButton = this.createShareModalDoneButton();
-    browser.wait(EC.visibilityOf(doneButton));
-    browser.actions().mouseMove(doneButton).perform();
-    browser.wait(EC.elementToBeClickable(doneButton)).then(function () {
-      doneButton.click();
     });
   };
 
