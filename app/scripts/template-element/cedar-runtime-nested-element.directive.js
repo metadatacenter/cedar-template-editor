@@ -93,7 +93,6 @@ define([
 
 
       scope.nextChild = function (field, index, path) {
-        console.log('nextChild');
 
         var next = DataManipulationService.nextSibling(field, scope.$parent.element);
         var parentIndex = parseInt(scope.lastIndex(path)) || 0;
@@ -125,10 +124,6 @@ define([
         var index = args[1];
         var path = args[2];
         var value = args[3];
-
-
-
-
 
         if (id === scope.getId() && path === scope.path) {
             console.log('on nextSibling of ' + DataManipulationService.getTitle(scope.field));

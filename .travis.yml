@@ -24,6 +24,11 @@ branches:
     - develop
     - master
 
+# Caching node modules
+cache:
+  directories:
+  - $HOME/node_modules
+
 # Notify the CEDAR core developer mailing list on failures
 notifications:
   email:

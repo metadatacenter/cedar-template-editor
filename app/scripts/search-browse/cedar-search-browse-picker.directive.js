@@ -75,6 +75,7 @@ define([
           vm.shareModalVisible = false;
           vm.renameModalVisible = false;
           vm.newFolderModalVisible = false;
+          vm.runTimeVisible = runTimeVisible;
 
           vm.getFacets = getFacets;
           vm.getForms = getForms;
@@ -129,6 +130,7 @@ define([
           vm.isElement = isElement;
           vm.isFolder = isFolder;
           vm.isMeta = isMeta;
+          vm.buildBreadcrumbTitle = buildBreadcrumbTitle;
 
           vm.editingDescription = false;
 
@@ -488,6 +490,18 @@ define([
             return folderName;
           }
 
+          function buildBreadcrumbTitle(nodeListQueryType, searchTerm) {
+            if (nodeListQueryType == 'view-shared-with-me') {
+              return $translate.instant("BreadcrumbTitle.sharedWithMe");
+            } else if (nodeListQueryType == 'view-all') {
+              return $translate.instant("BreadcrumbTitle.viewAll");
+            } else if (nodeListQueryType == 'search-term') {
+              return $translate.instant("BreadcrumbTitle.searchResult", {searchTerm: searchTerm});
+            } else {
+              return "";
+            }
+          }
+
           function doSearch(term) {
             var resourceTypes = activeResourceTypes();
             var limit = UISettingsService.getRequestLimit();
@@ -501,6 +515,7 @@ define([
                   vm.isSearching = true;
                   vm.resources = response.resources;
                   vm.totalCount = response.totalCount;
+                  vm.breadcrumbTitle = vm.buildBreadcrumbTitle(response.nodeListQueryType, response.request.q);
                 },
                 function (error) {
                   UIMessageService.showBackendError('SERVER.SEARCH.error', error);
@@ -520,6 +535,7 @@ define([
                   vm.isSearching = true;
                   vm.resources = response.resources;
                   vm.totalCount = response.totalCount;
+                  vm.breadcrumbTitle = vm.buildBreadcrumbTitle(response.nodeListQueryType);
                 },
                 function (error) {
                   UIMessageService.showBackendError('SERVER.SEARCH.error', error);
@@ -573,9 +589,12 @@ define([
             );
           }
 
-          function launchInstance(resource, newForm) {
 
-            console.log('launchInstance ' + newForm);
+          function runTimeVisible() {
+            return $rootScope.runTimeVisible;
+          }
+
+          function launchInstance(resource, newForm) {
 
             // may be setting which form to use
             if (newForm != null) {
@@ -591,8 +610,6 @@ define([
           }
 
           function launchInstanceNew(resource, newForm) {
-
-            console.log('launchInstanceNew  ' + newForm);
 
             // may be setting which form to use
             if (newForm != null) {

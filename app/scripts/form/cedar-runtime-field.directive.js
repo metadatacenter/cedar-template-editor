@@ -28,6 +28,13 @@ define([
       $scope.data = {
         model: null
       };
+      //$scope.multipleStates = ['expanded', 'paged','spreadsheet'];
+      $scope.multipleStates = ['expanded', 'paged'];
+      $scope.multipleState = 'paged';
+      $scope.index = 0;
+      $scope.pageMin = 0;
+      $scope.pageMax = $scope.model.length;
+      $scope.pageRange = 6;
 
 
       // get the field title
@@ -36,8 +43,8 @@ define([
       };
 
       // get the field description
-      $scope.getDescription = function (field) {
-        return DataManipulationService.getDescription(field);
+      $scope.getDescription = function () {
+        return DataManipulationService.getDescription($scope.field);
       };
 
       // get the field id?
@@ -149,15 +156,26 @@ define([
 
       // add more instances to a multiple cardinality field if possible
       $scope.addMoreInput = function () {
+        console.log('addMoreInput');
         var maxItems = DataManipulationService.getMaxItems($scope.field);
         if ((!maxItems || $scope.model.length < maxItems)) {
 
           // add another instance in the model
           $scope.model.push({'@value': null});
 
+
           // activate the new instance
           $timeout($scope.setActive($scope.model.length - 1, true), 100);
         }
+      };
+
+      $scope.pageMinMax = function () {
+        $scope.pageMax = Math.min($scope.valueArray.length, $scope.index + $scope.pageRange);
+        $scope.pageMin = Math.max(0, $scope.pageMax - $scope.pageRange);
+      };
+
+      $scope.selectPage = function (i) {
+        $scope.onSubmit($scope.index, i);
       };
 
       // remove the value of field at index
@@ -168,8 +186,17 @@ define([
         }
       };
 
+      $scope.isExpandable = function () {
+        return false;
+      };
+
+      $scope.expandAll = function () {
+      };
+
       // show this field as a spreadsheet
       $scope.switchToSpreadsheet = function () {
+        console.log('switchToSpreadhseet');
+
         SpreadsheetService.switchToSpreadsheetField($scope, $element);
       };
 
@@ -223,7 +250,7 @@ define([
 
       // string together the values for a checkbox, list or radio item
       $scope.getValueString = function (valueElement) {
-        var result = '';
+        var result = ' ';
         for (var i = 0; i < valueElement.length; i++) {
           if (valueElement[i]['@value']) {
             result += valueElement[i]['@value'];
@@ -232,7 +259,7 @@ define([
             }
           }
         }
-        return result;
+        return result.trim().replace(/,\s*$/, "");
       };
 
       // watch for a request to set this field active
@@ -247,15 +274,22 @@ define([
         }
       });
 
+      $scope.setInactive = function(index) {
+        $scope.setActive(index, false);
+      };
+
       // set this field and index active
       $scope.setActive = function (index, value) {
-
+        console.log('setActive' + index + value + $scope.index);
 
         // off or on
         var active = (typeof value === "undefined") ? true : value;
         var locator = $scope.getLocator(index);
+        var current = DataManipulationService.isActive(locator);
 
-        if (active != DataManipulationService.isActive(locator)) {
+        console.log(locator + ' ' + active + ' ' + current);
+
+        if (active !== current) {
 
 
           // if zero cardinality,  add a new item
@@ -268,6 +302,10 @@ define([
 
           if (active) {
 
+            $scope.index = index;
+            $scope.pageMinMax();
+
+
             // scroll it into the center of the screen and listen for shift-enter
             $scope.scrollToLocator(locator, ' .select');
             $document.unbind('keypress');
@@ -278,7 +316,11 @@ define([
           } else {
             // set blur and force a redraw
             jQuery("#" + locator).blur();
-            $scope.$apply();
+
+            //setTimeout(function () {
+            //  $scope.$apply();
+            //}, 0);
+
           }
         }
       };
@@ -287,8 +329,11 @@ define([
       $scope.scrollToLocator = function (locator, tag) {
 
 
+
         var target = angular.element('#' + locator);
+
         if (target && target.offset()) {
+
 
           $scope.setHeight = function () {
 
@@ -297,22 +342,25 @@ define([
 
             var window = angular.element($window);
             var windowHeight = $(window).height();
-            var targetTop = $("#" + locator).offset().top;
-            var targetHeight = $("#" + locator).outerHeight(true);
-            var scrollTop = jQuery('.template-container').scrollTop();
-            var newTop = scrollTop + targetTop - ( windowHeight - targetHeight ) / 2;
+            var target = jQuery("#" + locator);
+            if (target) {
 
-            console.log('scrollToLocator ' + locator + ' newTop ' + newTop + ' scrollTop ' + scrollTop + ' targetHeight ' + targetHeight + ' targetTop ' + targetTop + ' windowHeight ' + windowHeight);
+              var targetTop = target.offset().top;
+              var targetHeight = target.outerHeight(true);
+              var scrollTop = jQuery('.template-container').scrollTop();
+              var newTop = scrollTop + targetTop - ( windowHeight - targetHeight ) / 2;
+              //console.log('scrollToLocator found target tag=' + tag +  ' locator=' + locator + ' newTop ' + newTop + ' scrollTop ' + scrollTop + ' targetHeight ' + targetHeight + ' targetTop ' + targetTop + ' windowHeight ' + windowHeight);
 
-            jQuery('.template-container').animate({scrollTop: newTop}, 'fast');
+              jQuery('.template-container').animate({scrollTop: newTop}, 'fast');
 
-            // focus and maybe select the tag
-            if (tag) {
-              var e = jQuery(tag);
-              if (e.length) {
-                e[0].focus();
-                if (!e.is('select')) {
-                  e[0].select();
+              // focus and maybe select the tag
+              if (tag) {
+                var e = jQuery("#" + locator + ' ' + tag);
+                if (e.length) {
+                  e[0].focus();
+                  if (!e.is('select')) {
+                    e[0].select();
+                  }
                 }
               }
             }
@@ -340,24 +388,28 @@ define([
 
       // turn the nesting into a px amount
       $scope.getNestingStyle = function () {
-        return (-16 * ($scope.getNestingCount() - 1) - 1) + 'px';
+        return (-16 * ($scope.getNestingCount() - 2) - 1) + 'px';
       };
 
       // submit this edit
-      $scope.onSubmit = function (index) {
+      $scope.onSubmit = function (index, next) {
+        console.log('onSubmit ' + index + next);
 
         if ($scope.isActive(index)) {
 
-          // go to next index
-          if ($scope.isMultipleCardinality() && (index + 1 < $scope.model.length)) {
+          if (next != null && $scope.isMultipleCardinality() && (next < $scope.model.length)) {
+            console.log('setActive ' + next);
+            $scope.setActive(next, true);
+          } else if ($scope.isMultipleCardinality() && (index + 1 < $scope.model.length)) {
             $scope.setActive(index + 1, true);
 
           } else {
-
             // or go to parent's next field
             $scope.$parent.nextChild($scope.field, index, $scope.path);
 
           }
+        } else {
+          console.log("error: not active")
         }
       };
 
@@ -443,6 +495,26 @@ define([
         return result;
       };
 
+
+      $scope.showMultiple = function (state) {
+        return ($scope.multipleState === state);
+      };
+
+      $scope.cardinalityString = function () {
+        return DataManipulationService.cardinalityString($scope.field);
+      };
+
+      $scope.toggleMultiple = function () {
+        var index = $scope.multipleStates.indexOf($scope.multipleState);
+        index = (index + 1) % $scope.multipleStates.length;
+        $scope.multipleState = $scope.multipleStates[index];
+        if ($scope.multipleState ==='spreadsheet') {
+          setTimeout(function () {
+            $scope.switchToSpreadsheet();
+          }, 0);
+        }
+        return $scope.multipleState;
+      };
 
       $scope.isRecommended = function () {
         return $rootScope.vrs.getIsValueRecommendationEnabled($rootScope.schemaOf($scope.field));

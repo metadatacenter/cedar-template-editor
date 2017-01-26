@@ -260,77 +260,77 @@ describe('template-creator', function () {
       for (var k = 0; k < fieldTypes.length - 1; k++) {
         (function (fieldType) {
 
-          var field = element(by.css('.field-root .' + fieldType.iconClass));
-          var isMore = !fieldType.primaryField;
-          var title = fieldType.label;
-          var description = fieldType.label + ' description';
-          var type = fieldType.cedarType;
+            var field = element(by.css('.field-root .' + fieldType.iconClass));
+            var isMore = !fieldType.primaryField;
+            var title = fieldType.label;
+            var description = fieldType.label + ' description';
+            var type = fieldType.cedarType;
 
-          xit("should add and delete a " + type + " in " + pageType + ' from popup ' + isMore, function () {
+            xit("should add and delete a " + type + " in " + pageType + ' from popup ' + isMore, function () {
 
-            workspacePage.createResource(pageType);
+              workspacePage.createResource(pageType);
 
-            // create the field
-            templatePage.addField(type, isMore, title, description);
-            browser.wait(EC.visibilityOf(field));
+              // create the field
+              templatePage.addField(type, isMore, title, description);
+              browser.wait(EC.visibilityOf(field));
 
-            // delete the field
-            browser.actions().mouseMove(field).perform();
-            browser.wait(EC.elementToBeClickable(templatePage.removeFieldButton()));
-            templatePage.removeFieldButton().click();
-            browser.wait(EC.stalenessOf(field));
+              // delete the field
+              browser.actions().mouseMove(field).perform();
+              browser.wait(EC.elementToBeClickable(templatePage.removeFieldButton()));
+              templatePage.removeFieldButton().click();
+              browser.wait(EC.stalenessOf(field));
 
-            templatePage.topNavBackArrow().click();
-            sweetAlertModal.confirm();
-            browser.wait(EC.presenceOf(element(by.css('.navbar.dashboard'))));
+              templatePage.topNavBackArrow().click();
+              sweetAlertModal.confirm();
+              browser.wait(EC.presenceOf(element(by.css('.navbar.dashboard'))));
 
-          });
-
-          xit("should select and deselect a " + type + " in " + pageType, function () {
-
-            var firstField;
-            var lastField;
-
-            workspacePage.createResource(pageType);
-
-            // add two fields
-            // TODO adding just one field doesn't make the template dirty
-            templatePage.addField(type, isMore, title, description);
-            templatePage.addField(type, isMore, title, description);
-
-            var fields = element.all(by.css(templatePage.cssFieldRoot));
-            fields.count().then(function (value) {
-              expect(value).toBe(2);
             });
 
-            firstField = fields.first();
-            lastField = fields.last();
+            xit("should select and deselect a " + type + " in " + pageType, function () {
 
-            // do we have each field
-            expect(firstField.isPresent()).toBe(true);
-            expect(lastField.isPresent()).toBe(true);
+              var firstField;
+              var lastField;
 
-            // is the second field selected and not the first
-            expect(lastField.element(by.model(templatePage.modelFieldTitle)).isPresent()).toBe(true);
-            expect(firstField.element(by.model(templatePage.modelFieldTitle)).isPresent()).toBe(false);
+              workspacePage.createResource(pageType);
 
-            // click on the first field
-            browser.actions().mouseMove(firstField).perform();
-            browser.wait(EC.elementToBeClickable(firstField));
-            firstField.click();
+              // add two fields
+              // TODO adding just one field doesn't make the template dirty
+              templatePage.addField(type, isMore, title, description);
+              templatePage.addField(type, isMore, title, description);
 
-            // is the first selected and the second deselected
-            expect(firstField.element(by.model(templatePage.modelFieldTitle)).isPresent()).toBe(true);
-            expect(lastField.element(by.model(templatePage.modelFieldTitle)).isPresent()).toBe(false);
+              var fields = element.all(by.css(templatePage.cssFieldRoot));
+              fields.count().then(function (value) {
+                expect(value).toBe(2);
+              });
 
-            templatePage.topNavBackArrow().click();
-            // TODO richtext does not make the template dirty
-            if (type != 'richtext') {
-              sweetAlertModal.confirm();
-            }
-            browser.wait(EC.presenceOf(element(by.css('.navbar.dashboard'))));
+              firstField = fields.first();
+              lastField = fields.last();
 
-          });
+              // do we have each field
+              expect(firstField.isPresent()).toBe(true);
+              expect(lastField.isPresent()).toBe(true);
+
+              // is the second field selected and not the first
+              expect(lastField.element(by.model(templatePage.modelFieldTitle)).isPresent()).toBe(true);
+              expect(firstField.element(by.model(templatePage.modelFieldTitle)).isPresent()).toBe(false);
+
+              // click on the first field
+              browser.actions().mouseMove(firstField).perform();
+              browser.wait(EC.elementToBeClickable(firstField));
+              firstField.click();
+
+              // is the first selected and the second deselected
+              expect(firstField.element(by.model(templatePage.modelFieldTitle)).isPresent()).toBe(true);
+              expect(lastField.element(by.model(templatePage.modelFieldTitle)).isPresent()).toBe(false);
+
+              templatePage.topNavBackArrow().click();
+              // TODO richtext does not make the template dirty
+              if (type != 'richtext') {
+                sweetAlertModal.confirm();
+              }
+              browser.wait(EC.presenceOf(element(by.css('.navbar.dashboard'))));
+
+            });
 
 
         })

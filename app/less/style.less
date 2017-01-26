@@ -1143,6 +1143,15 @@ button {
     .filter-options {
       padding: 40px 0 20px 10px;
 
+      .shares {
+        margin:0 0 20px 0;
+        .share {
+          margin:5px 0;
+          display:block;
+        }
+      }
+
+
       ul.list-inline {
         padding: 10px 0;
         li {
@@ -2738,8 +2747,23 @@ section.dashboard-elements {
 */
 .template-body form .runtime {
 
+  line-height:1.8em;
+  font-size:1.1em;
+
+
+
+  .paging li {
+    a {
+      padding: 3px 6px;
+      background-color:#e8e8e8;
+    }
+    &.active a {
+      background-color:@brand-primary;
+    }
+  }
+
   .active-container {
-    border-left:1px solid #f0f0f0;;position:relative;right:0;background:#f0f0f0;
+    border-left:1px solid #f0f0f0;position:relative;right:0;background:#f0f0f0;
   }
 
   .flagpole {
@@ -2749,6 +2773,13 @@ section.dashboard-elements {
     position: absolute;
     top: 0;
     left: -1px;
+    &.down {
+      top:12px;
+      height:18px;
+    }
+    &.shift {
+      left: 14px;
+    }
   }
 
   &.page {
@@ -2756,6 +2787,9 @@ section.dashboard-elements {
     margin-bottom: 100px;
     position:relative;
     border-left:1px solid #aaa;
+    &.not-expanded {
+      border-left:1px solid transparent;
+    }
   }
 
   .down-tick {
@@ -2779,23 +2813,93 @@ section.dashboard-elements {
     left: -16px;
   }
 
+  .toolbar {
+    padding:0px 22px 4px 0;
+
+  }
+
+  .answer {
+    border:1px solid transparent;
+    font-size:1.1em;
+    cursor:pointer;
+    line-height: 20px;
+    min-height:25px;
+    padding-top:2px;
+    padding-bottom:2px;
+    margin-bottom:2px;
+  }
+
+  @media (max-width: @screen-sm-min) {
+    .answer {
+      margin-left:20px;
+      margin-right:5px;
+    }
+  }
+
+  .myhover:hover {
+    cursor:pointer;
+  }
+
+  .row.tools {
+    padding:5px 0;
+  }
+
+
+
+  .row.isActive, .row:hover {
+    cursor:pointer;
+    .tools {
+      visibility: visible !important;
+    }
+    .title.field {
+      text-shadow:1px 0px 0px #666;
+    }
+    .title.element {
+      text-shadow:1px 0px 0px #71977F;
+    }
+    .title.form {
+      text-shadow:1px 0px 0px @brand-primary;
+    }
+    .answer {
+      border:1px solid #ccc;
+    }
+  }
+
   .title {
-    font-size: 1.5em;
+    font-size: 1.1em;
     font-family: "Source Sans Pro", sans-serif;
-    font-weight: lighter;
+    font-weight: 200;
+    border:1px solid transparent;
+    line-height: 20px;
+    .count {
+      font-size:smaller;
+    }
+    &.field {
+      font-size:1.1em;
+      color:#666;
+    }
+    &.element {
+      font-size: 1.2em;
+      color:#71977F;
+    }
+    &.form {
+      font-size: 1.2em;
+      color:@brand-primary;
+    }
   }
-  .value {
-    cursor:pointer;font-size: 1.2em;line-height: 28px;
-  }
+
   .leader {
     background-color: #aaa;
     position: relative;
     bottom: 50%;
     height: 1px;
     width: 15px;
-    top: 16px;
+    top: 10px;
     &.isActive {
       top: 20px;
+    }
+    &.zero {
+      left:-15px;
     }
   }
 
@@ -2803,30 +2907,36 @@ section.dashboard-elements {
     vertical-align: middle;
 
     background-color: transparent;
+
+
     &.goaway {
       position: absolute;
       top: 0;
       right: 0;
-    }
-    &.expand {
-      color: #aaa;
-      font-size: 1em;
-      margin-left: -10px;
-      margin-top: 0px;
     }
 
     &.xxx {
       color: #aaa;
       font-size: 1.6em;
       margin-left: -12px;
-      margin-top: -1px;
+      margin-top: -7px;
     }
 
     &.add {
-      color: @brand-primary;
+      color: @brand-accent;
+    }
+    &.delete {
+      color: #999;
+      margin-left:20px;
+    }
+    &.expand-all {
+      color: #999;
     }
     &.remove {
       color: #999;
+    }
+    &.spreadsheet {
+      color:#999;
     }
     i {
       font-size: 20px;
@@ -2835,23 +2945,22 @@ section.dashboard-elements {
     }
 
     &:disabled {
-      // opacity: 0.5;
       color: @brand-primary-disabled;
     }
   }
 
   .btn.btn-save.active {
-    margin: 50px 0;
+    margin: 20px 0;
     background-color: @button-template;
     color: @white;
-    font-size: 1.8em;
+    font-size: 1em;
     outline:none;
     &:hover {
       background-color: @hover-template;
     }
   }
   label.submit-info {
-    font-size:1.2em;
+    font-size:1em;
     padding-left:10px;
     color: @brand-primary;
   }
@@ -2882,23 +2991,43 @@ section.dashboard-elements {
       .element-title {
         margin-left: 20px;
         margin-bottom: 0px;
-        font-size: 1.3em;
+        font-size: 1em;
       }
     }
   }
 
   .element-root {
 
+    .left-tick {
+      background-color: #aaa;
+      position: relative;
+      bottom: 50%;
+      height: 1px;
+      width: 15px;
+      top: 14px;
+      left: -16px;
+    }
+
     .element {
+
       &.expand {
         border-left:1px solid #aaa;
-
-
-
       }
       &.collapse {
-
       }
+
+      .row {
+        .toolbar, .paging {
+          visibility:hidden;
+        }
+        &:hover {
+          .toolbar, .paging {
+            visibility:visible;
+          }
+        }
+      }
+
+
     }
   }
 
@@ -2911,10 +3040,7 @@ section.dashboard-elements {
     background: transparent;
     min-height: 10px;
 
-    .toolbar {
-      padding-top:12px;
-      padding-right:22px;
-    }
+
 
     .add {
       color: @brand-accent;
@@ -2925,26 +3051,20 @@ section.dashboard-elements {
     }
 
     .title {
-      color: #333;
-      font-weight: lighter;
-      font-family: "Source Sans Pro", sans-serif;
+      color: #666;
+      font-weight: 200;
+      font-family: "Helvetica Neue Light", sans-serif;
+      font-size: 1em;
       padding-left: 20px;
-      font-size: 1.2em;
-      cursor:pointer;
 
-      .count {
-        font-size:smaller
-      }
     }
 
     .row.isActive {
-      padding-bottom: 50px;
+      padding-bottom: 5px;
 
 
       .title {
-        font-size: 2.5em;
-        padding-left: 0px;
-        color: green;
+
 
         &.remove {
           color: #999;
@@ -2974,8 +3094,7 @@ section.dashboard-elements {
 
       &.isActive {
         border: 1px dashed #888;
-        height: 50px;
-        font-size: 20px;
+
       }
     }
 
@@ -3738,6 +3857,7 @@ section.dashboard-elements {
       .no-search-results {
         padding: 20px 0 19px 3.06%;
         width: 100%;
+        min-height:1em;
       }
     }
 

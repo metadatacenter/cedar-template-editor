@@ -5,7 +5,11 @@
 
     <div class="breadcrumbs-sb ">
       <p ng-if="dc.isSearching">
-        <span class="search-result">Search Results For: '{{dc.searchTerm}}' </span>
+        <span class="search-result">
+            <span ng-class="{'no-search-results':dc.searchTerm}">
+              <span>{{dc.breadcrumbTitle}}</span>
+            </span>
+          </span>
       </p>
 
       <p ng-if="!dc.isSearching">
@@ -41,8 +45,8 @@
             <ul class="dropdown-menu dropdown-menu-right">
 
               <li ng-if="dc.isFolder()"><a href="#" ng-click="dc.goToResource()">Open</a></li>
-              <li ng-if="dc.isTemplate()"><a href="#" ng-click="dc.launchInstance()">Populate (Old)</a></li>
-              <li ng-if="dc.isTemplate()"><a href="#" ng-click="dc.launchInstanceNew()">Populate (New)</a></li>
+              <li ng-if="dc.isTemplate()"><a href="#" ng-click="dc.launchInstance()">Populate</a></li>
+              <li ng-if="dc.isTemplate() && dc.runTimeVisible()"><a href="#" ng-click="dc.launchInstanceNew()">New Populate</a></li>
               <li ng-if="!dc.isFolder()"><a href="#" ng-click="dc.editResource()">Edit</a></li>
               <li role="separator" class="divider"></li>
               <li><a href="#" ng-click="dc.showShareModal(resource)">Share...</a></li>
@@ -236,21 +240,20 @@
 
       <!-- START LEFT SIDE -->
       <div class="col-sm-2 row-offcanvas-left" id="sidebar-left" ng-if="dc.filterShowing() &&  dc.onDashboard()">
-        <div style="height:40px;margin-top:20px;">
-          <a href="#" ng-click="dc.goToMyWorkspace()" translate>DASHBOARD.sidebar.myWorkspace</a>
-        </div>
-        <div style="height:40px;">
-          <a href="#" ng-click="dc.goToSearchAll()" translate>DASHBOARD.sidebar.all</a>
-        </div>
-        <div style="height:40px;">
-          <a href="#" ng-click="dc.goToSharedWithMe()" translate>DASHBOARD.sidebar.sharedWithMe</a>
-        </div>
 
         <div class="filter-options">
+
+          <div class="shares"><a class="share" href="#" ng-click="dc.goToMyWorkspace()" translate>DASHBOARD.sidebar.myWorkspace</a>
+            <a class="share" href="#" ng-click="dc.goToSharedWithMe()" translate>DASHBOARD.sidebar.sharedWithMe</a>
+            <!--<a class="share" href="#" ng-click="dc.goToSearchAll()" translate>DASHBOARD.sidebar.all</a>-->
+          </div>
+
+
           <div class="clearfix reset-text">
             <div class="pull-left " translate>DASHBOARD.filter.filterBy</div>
             <div class="pull-right"><a href="#" ng-click="dc.resetFilters()" translate>DASHBOARD.filter.reset</a></div>
           </div>
+
           <div>
             <!-- nested facet template -->
             <script type="text/ng-template" id="facet_renderer.html">
@@ -411,8 +414,8 @@
                       <!-- need to duplicate these blocks because otherwise the popup flickers --->
                       <ul ng-if="dc.isTemplate()" class="dropdown-menu"
                           aria-labelledby="{{getId(resource, 'populate')}}">
-                        <li><a href="#" ng-click="dc.launchInstance(resource, false)">Populate (Old)</a></li>
-                        <li><a href="#" ng-click="dc.launchInstanceNew(resource, true)">Populate (New)</a></li>
+                        <li><a href="#" ng-click="dc.launchInstance(resource, false)">Populate</a></li>
+                        <li ng-if="dc.runTimeVisible()"><a href="#" ng-click="dc.launchInstanceNew(resource, true)">New Populate</a></li>
                         <li><a href="#" ng-click="dc.editResource(resource)">Edit</a></li>
                         <li><a href="#" ng-click="dc.showInfoPanel(resource)">Info</a></li>
                         <li role="separator" class="divider"></li>
@@ -510,9 +513,9 @@
                     </button>
                     <ul class="dropdown-menu" aria-labelledby="{{getId(resource, 'list')}}">
                       <li ng-if="dc.isTemplate() "><a href="#" ng-click="dc.launchInstance(resource, false)">Populate
-                        (Old)</a></li>
-                      <li ng-if="dc.isTemplate() "><a href="#" ng-click="dc.launchInstanceNew(resource, true)">Populate
-                        (New)</a></li>
+                        </a></li>
+                      <li ng-if="dc.isTemplate() && dc.runTimeVisible()"><a href="#" ng-click="dc.launchInstanceNew(resource, true)">New Populate
+                        </a></li>
                       <li><a href="#" ng-click="dc.editResource(resource)">Edit</a></li>
 
                       <li><a href="#" ng-click="dc.showInfoPanel(resource)">Info</a></li>
