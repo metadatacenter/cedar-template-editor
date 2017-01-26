@@ -42,7 +42,7 @@ define([
     };
 
     service.getSearchAll = function (folderId) {
-      return '/dashboard?search=&folderId=' + folderId;
+      return '/dashboard?search=*&folderId=' + folderId;
     };
 
     service.getSharedWithMe = function (folderId) {

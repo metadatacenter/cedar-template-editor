@@ -122,7 +122,7 @@ define([
     };
 
     service.sharedWithMe = function () {
-      return this.resourceBase() + "/view/shared-with-me";
+      return this.resourceBase() + "/search?sharing=shared-with-me";
     };
 
     service.facets = function () {

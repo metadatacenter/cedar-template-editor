@@ -7,8 +7,7 @@
       <p ng-if="dc.isSearching">
         <span class="search-result">
             <span ng-class="{'no-search-results':dc.searchTerm}">
-              <span ng-if="dc.searchTerm">Search Results For: '{{dc.searchTerm}}'</span>
-              <span ng-if="!dc.searchTerm">&nbsp;</span>
+              <span>{{dc.breadcrumbTitle}}</span>
             </span>
           </span>
       </p>
