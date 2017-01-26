@@ -32,7 +32,6 @@ module.exports = function(config) {
       { pattern: 'scripts/app.js', included: false },
       'scripts/keycloak/keycloak.min.js',
       'scripts/handlers/KeycloakUserHandler.js',
-      'scripts/handlers/NoauthUserHandler.js',
       'scripts/handlers/UserProfileHandler.js',
       'require-config.js',
     ],
@@ -71,6 +70,8 @@ module.exports = function(config) {
 
     // enable / disable watching file and executing tests whenever any file changes
     autoWatch: true,
+
+    browserNoActivityTimeout: 100000,
 
 
     // start these browsers

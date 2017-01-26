@@ -29,7 +29,6 @@ define([
 
         cedarFinderController.$inject = [
           '$location',
-          '$timeout',
           '$scope',
           '$rootScope',
           '$translate',
@@ -37,13 +36,13 @@ define([
           'resourceService',
           'UIMessageService',
           'UISettingsService',
-          'AuthorizedBackendService',
+          'QueryParamUtilsService',
           'CONST'
         ];
 
-        function cedarFinderController($location, $timeout, $scope, $rootScope, $translate, CedarUser, resourceService,
+        function cedarFinderController($location, $scope, $rootScope, $translate, CedarUser, resourceService,
                                        UIMessageService, UISettingsService,
-                                       AuthorizedBackendService, CONST) {
+                                       QueryParamUtilsService, CONST) {
           var vm = this;
 
           vm.breadcrumbName = breadcrumbName;
@@ -64,7 +63,7 @@ define([
 
           //vm.params = $location.search();
           vm.params = {};
-          vm.params.folderId = $location.search().folderId;
+          vm.params.folderId = QueryParamUtilsService.getFolderId();
           vm.params.search = $location.search().search;
 
           vm.resources = [];
@@ -202,9 +201,9 @@ define([
               return resourceService.searchResources(term,
                   {
                     resourceTypes: resourceTypes,
-                    sort: sortField(),
-                    limit: limit,
-                    offset: offset
+                    sort         : sortField(),
+                    limit        : limit,
+                    offset       : offset
                   },
                   function (response) {
                     vm.resources = vm.resources.concat(response.resources);

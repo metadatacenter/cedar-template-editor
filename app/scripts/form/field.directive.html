@@ -1,19 +1,17 @@
 <div class="item-root field-root" id="{{$root.getDomId(field)}}"
     ng-click="canSelect(!$root.isRuntime()); $event.preventDefault();">
 
-  <!-- add the edit and delete buttons at the top of the content -->
-  <!--<div id="{{field.items._ui.title}}" ng-if="!$root.isRuntime()" ng-include="'scripts/form/partials/preview-edit-options.partial.html'"  ng-init="childType='field'">-->
-  <!--</div>-->
-
   <!-- field title first -->
   <div menuDropDownId="" ng-show="field.items && $root.isRuntime()"
       class="spreadsheetSwitch field"
       style="position:relative">
-    <!--<p >-->
+
+    <div >
+
 
        <!--<span class="spreadsheetSwitch ">-->
             <!--<button type="button"-->
-                <!--tooltip="show as spreadsheet"-->
+                <!--"{{'HELP.showAsSpreadsheet' | translate}}"-->
                 <!--tooltip-trigger-->
                 <!--tooltip-animation="false"-->
                 <!--tooltip-placement="top"-->
@@ -27,9 +25,9 @@
        <!--</span>-->
 
       <!-- show this add button only when you have minCardinality 0 and an empty list -->
-    <span class="zero-input-wrapper" ng-show="$root.isRuntime() && field.items && model.length == 0">
+    <span class="zero-input-wrapper" ng-if="$root.isRuntime() && field.items && model.length == 0">
       <button type="button" class="add noOutline"
-          tooltip="add more {{field.items._ui.title}}"
+          tooltip="{{'HELP.addMore' | translate}}"
           tooltip-trigger
           tooltip-animation="false"
           tooltip-placement="top"
@@ -37,16 +35,11 @@
           ng-click="addMoreInput()">
         <i class="fa fa-plus"></i>
 
-        <!--<div class="cardinality-_ui-container">-->
-        <!--<div class="cardinality-_ui">-->
-        <!--<div class="cardinality-_ui-text"><span translate="GENERIC.MultipleMinMaxMsg"-->
-        <!--translate-values="{min:($parent.field.minItems || 0), max:($parent.field.maxItems || 'GENERIC.Unlimited' | translate)}"></span>-->
-        <!--</div>-->
-        <!--</div>-->
-        <!--</div>-->
       </button>
     </span>
-    <!--</p>-->
+
+    </div>
+
   </div>
 
   <div menuDropDownId="" ng-show="!field.items && $root.isRuntime()"

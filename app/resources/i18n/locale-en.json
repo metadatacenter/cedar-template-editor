@@ -87,7 +87,7 @@
     "NotAvailable": "Not Available",
     "Deleted": "Deleted",
     "Warning": "Warning",
-    "Ok": "Ok",
+    "Ok": "OK",
     "Info": "Info",
     "GoodNews": "Good News!",
     "Cancel": "Cancel",
@@ -102,7 +102,43 @@
     "SelectToViewDetails": "Select a folder or resource to view its details.",
     "canRead": "can read",
     "canWrite": "can write",
-    "isOwner": "owner"
+    "isOwner": "owner",
+    "midnight": "12:00 AM",
+    "Submit": "or Ctrl-Enter",
+    "Show": "Show",
+    "Hide": "Hide",
+    "Template": "Template",
+    "Element": "Element",
+    "Folder": "Folder",
+    "Metadata": "Metadata",
+    "Help": "Help",
+    "Close": "Close",
+    "Add": "Add",
+    "ExpandAll": "Expand"
+  },
+  "HELP": {
+    "createFolder": "Create folder",
+    "createTemplate": "Create template",
+    "createElement": "Create element",
+    "viewDetails": "View details",
+    "deleteSelection": "Delete selection",
+    "viewAsGrid": "View as grid",
+    "viewAsList": "View as list",
+    "hideDetails": "Hide details",
+    "editDescription": "Edit description",
+    "backToParent": "Back to parent",
+    "openFolder": "Open folder",
+    "shareWithGroup": "Share with group",
+    "createNewGroup": "Create new group",
+    "shareWithPerson": "Share with person",
+    "removeShare": "Remove share",
+    "removeGroup": "Remove group",
+    "addToGroup": "Add to group",
+    "removeFromGroup": "Remove from group",
+    "showAsSpreadsheet": "Show as spreadsheet",
+    "addMore": "Add more",
+    "deleteTerm": "Delete term",
+    "deleteMapping": "Delete mapping"
   },
   "SERVER": {
     "FOLDER": {
@@ -291,6 +327,11 @@
     "filter": {
       "filterBy": "Filter",
       "reset": "Reset"
+    },
+    "sidebar": {
+      "myWorkspace": "My Workspace",
+      "sharedWithMe": "Shared with Me",
+      "all": "All"
     }
   },
   "ELEMENTEDITOR": {
@@ -378,5 +419,10 @@
     "TOOLBAR": {
       "searchForMore": "Search the workspace"
     }
+  },
+  "BreadcrumbTitle": {
+    "sharedWithMe": "Shared with Me",
+    "viewAll": "View All",
+    "searchResult": "Search Results For: '{{searchTerm}}'"
   }
 }

@@ -438,7 +438,6 @@ define([
     FieldTypeService.init();
     UrlService.init();
     provisionalClassService.init();
-    controlledTermDataService.init();
     DataManipulationService.init();
     UISettingsService.init();
     TrackingService.init();
@@ -492,6 +491,10 @@ define([
     $rootScope.isDirty = function() {
       return $rootScope.dirty;
     }
+
+
+    $rootScope.runTimeVisible = false;
+    $rootScope.useRunTimeCode = false;
 
 
   };

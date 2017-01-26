@@ -2,7 +2,7 @@
 
   <button type="button" class="add" ng-show="$root.isRuntime()" ng-click="addMoreInput()"
       ng-show=" (!$parent.field.maxItems || $parent.model.length < $parent.field.maxItems )"
-  tooltip="add more {{$parent.field.items._ui.title}}"
+  tooltip="{{'HELP.addMore' | translate}} {{$parent.field.items._ui.title}}"
   tooltip-trigger
   tooltip-animation="false"
   tooltip-placement="top"
@@ -10,19 +10,11 @@
   style="border:0;outline:none"
   ng-click="addMoreInput()">
   <i class="fa fa-plus"></i>
-
-  <!--<div class="cardinality-_ui-container">-->
-  <!--<div class="cardinality-_ui">-->
-  <!--<div class="cardinality-_ui-text"><span translate="GENERIC.MultipleMinMaxMsg"-->
-  <!--translate-values="{min:($parent.field.minItems || 0), max:($parent.field.maxItems || 'GENERIC.Unlimited' | translate)}"></span>-->
-  <!--</div>-->
-  <!--</div>-->
-  <!--</div>-->
   </button>
 
-  <button type="button" class="remove" ng-disabled="!$root.isRuntime()" ng-click="removeInput($parent.$index)"
+  <button type="button" class="remove"  ng-click="removeInput($parent.$index)"
       ng-show="$parent.model.length > $parent.field.minItems"
-      tooltip="remove {{$parent.field.items._ui.title}}"
+      tooltip="{{'GENERIC.Remove' | translate}} {{$parent.field.items._ui.title}}"
       tooltip-trigger
       tooltip-animation="false"
       tooltip-placement="top"

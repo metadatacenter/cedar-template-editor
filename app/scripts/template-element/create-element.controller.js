@@ -7,15 +7,16 @@ define([
       .controller('CreateElementController', CreateElementController);
 
   CreateElementController.$inject = ["$rootScope", "$scope", "$routeParams", "$timeout", "$location", "$translate",
-                                     "$filter", "HeaderService", "UrlService", "StagingService", "DataTemplateService",
+                                     "$filter", "HeaderService", "StagingService", "DataTemplateService",
                                      "FieldTypeService", "TemplateElementService", "UIMessageService",
-                                     "DataManipulationService", "DataUtilService", "AuthorizedBackendService", "CONST"];
+                                     "DataManipulationService", "DataUtilService", "AuthorizedBackendService",
+                                     "FrontendUrlService", "QueryParamUtilsService", "CONST"];
 
 
   function CreateElementController($rootScope, $scope, $routeParams, $timeout, $location, $translate, $filter,
-                                   HeaderService, UrlService, StagingService, DataTemplateService, FieldTypeService,
+                                   HeaderService, StagingService, DataTemplateService, FieldTypeService,
                                    TemplateElementService, UIMessageService, DataManipulationService, DataUtilService,
-                                   AuthorizedBackendService, CONST) {
+                                   AuthorizedBackendService, FrontendUrlService, QueryParamUtilsService, CONST) {
 
     $rootScope.showSearch = true;
 
@@ -127,8 +128,7 @@ define([
     };
 
     $scope.backToFolder = function () {
-      var params = $location.search();
-      $location.url(UrlService.getFolderContents(params.folderId));
+      $location.url(FrontendUrlService.getFolderContents(QueryParamUtilsService.getFolderId()));
     };
 
     // Reverts to empty form and removes all previously added fields/elements
@@ -203,11 +203,10 @@ define([
         // Save element
         // Check if the element is already stored into the DB
         if ($routeParams.id == undefined) {
-          var queryParams = $location.search();
           DataManipulationService.stripTmps($scope.element);
 
           AuthorizedBackendService.doCall(
-              TemplateElementService.saveTemplateElement(queryParams.folderId, $scope.element),
+              TemplateElementService.saveTemplateElement(QueryParamUtilsService.getFolderId(), $scope.element),
               function (response) {
                 // confirm message
                 UIMessageService.flashSuccess('SERVER.ELEMENT.create.success',
@@ -216,7 +215,7 @@ define([
                 // Reload page with element id
                 var newId = response.data['@id'];
                 DataManipulationService.createDomIds(response.data);
-                $location.path(UrlService.getElementEdit(newId));
+                $location.path(FrontendUrlService.getElementEdit(newId));
 
                 $scope.$broadcast('form:clean');
               },
@@ -320,8 +319,7 @@ define([
     };
 
     $scope.cancelElement = function () {
-      var params = $location.search();
-      $location.url(UrlService.getFolderContents(params.folderId));
+      $location.url(FrontendUrlService.getFolderContents(QueryParamUtilsService.getFolderId()));
     };
 
     $scope.elementSearch = function () {

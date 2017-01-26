@@ -8,12 +8,12 @@ define([
 
   // TODO: refactor to cedarSelectPicker <cedar-select-picker>
 
-  selectPickerDirective.$inject = ['$rootScope', '$timeout'];
+  selectPickerDirective.$inject = ['$rootScope', '$timeout', '$document'];
 
   /**
    * Enables Bootstrap datepickers for date inputs.
    */
-  function selectPickerDirective($rootScope, $timeout) {
+  function selectPickerDirective($rootScope, $timeout, $document) {
 
     return {
       restrict: 'A',
@@ -73,6 +73,9 @@ define([
           // assigned at the field-directive.js level
 
           $scope.model = $element.val();
+          jQuery('.bootstrap-select').toggleClass('open');
+
+
         });
       }
     };

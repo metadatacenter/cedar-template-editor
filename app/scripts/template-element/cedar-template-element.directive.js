@@ -301,7 +301,7 @@ define([
         }
       }
 
-      scope.uuid = DataManipulationService.generateTempGUID();
+
 
       // try to deselect this field
       scope.canDeselect = function (field) {

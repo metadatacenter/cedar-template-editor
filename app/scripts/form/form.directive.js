@@ -8,12 +8,14 @@ define([
 
   // TODO: refactor to cedarFormDirective <cedar-form-directive>
 
+
   formDirective.$inject = ['$rootScope', '$document', '$timeout', '$http', 'DataManipulationService',
-                           'FieldTypeService', 'DataUtilService', 'BiosampleService', 'AuthorizedBackendService',
+                           'FieldTypeService', 'DataUtilService', 'BiosampleService',
                            'UIMessageService', 'UrlService'];
 
+
   function formDirective($rootScope, $document, $timeout, $http, DataManipulationService, FieldTypeService,
-                         DataUtilService, BiosampleService, AuthorizedBackendService, UIMessageService, UrlService) {
+                         DataUtilService, BiosampleService, UIMessageService, UrlService) {
     return {
       templateUrl: 'scripts/form/form.directive.html',
       restrict   : 'E',
@@ -22,9 +24,11 @@ define([
         form           : '=',
         isEditData     : "=",
         model          : '=',
-        hideRootElement: "="
+        hideRootElement: "=",
+        path           : '='
       },
       controller : function ($scope) {
+
 
         $scope.model = $scope.model || {};
 
@@ -36,9 +40,12 @@ define([
             $scope.pageIndex = 0,
             $scope.pagesArray = [];
 
+        $scope.expanded = true;
+
 
         var paginate = function () {
           if ($scope.form) {
+
             var orderArray = [];
             var dimension = 0;
 
@@ -68,7 +75,7 @@ define([
 
             $scope.pagesArray = orderArray;
           }
-        }
+        };
 
         $scope.removeChild = function (fieldOrElement) {
           var id = $rootScope.schemaOf(fieldOrElement)["@id"];
@@ -185,6 +192,9 @@ define([
 
             if ($rootScope.isRuntime()) {
               $scope.parseForm($scope.form.properties, model);
+
+              $rootScope.formModel = model;
+              $rootScope.rootElement = $scope.form;
             } else {
               $rootScope.findChildren($scope.form.properties, model);
             }
@@ -289,7 +299,6 @@ define([
         // Angular's $watch function to call $scope.parseForm on form.properties initial population and on update
         $scope.$watch('form.properties', function () {
           startParseForm();
-          //positionToolbar();
         });
 
 
@@ -360,8 +369,7 @@ define([
 
 
                       $scope.$emit('validationError',
-                          ['add', errors[i], 'biosample'+i]);
-
+                          ['add', errors[i], 'biosample' + i]);
 
 
                     }
@@ -376,7 +384,9 @@ define([
 
                 },
                 function errorCallback(err) {
+
                   UIMessageService.showBackendError('BioSample Server Error', err);
+
 
                 });
 
@@ -387,7 +397,7 @@ define([
         // Watching for the 'submitForm' event to be $broadcast from parent 'RuntimeController'
         $scope.$on('biosampleValidation', function (event) {
           // Make the model (populated template) available to the parent
-          $scope.checkBiosample( $scope.model);
+          $scope.checkBiosample($scope.model);
 
         });
 
@@ -401,6 +411,7 @@ define([
         });
 
         $scope.$on('formHasRequiredFields', function (event) {
+          console.log('on formHasRequiredFields');
           $scope.form.requiredFields = true;
         });
 
@@ -414,6 +425,173 @@ define([
           return copiedForm;
         };
 
+
+        $scope.isField = function (item) {
+          return ($scope.getType(item) === 'https://schema.metadatacenter.org/core/TemplateField');
+        };
+
+
+        $scope.getPreviousItem = function (index) {
+          if (index) {
+            return $scope.pagesArray[$scope.pageIndex][index];
+          }
+        };
+
+        $scope.getPreviousField = function (page, index) {
+          if ($scope.getPreviousItem(page, index)) {
+            return $scope.form.properties[$scope.getPreviousItem(index)];
+          }
+        };
+
+        $scope.getStaticPrevious = function (page, index) {
+          if (index) {
+            return ($scope.getType($scope.getPreviousItem(page,
+                index)) === 'https://schema.metadatacenter.org/core/StaticTemplateField');
+          } else {
+            return false;
+          }
+        };
+
+        $scope.getStaticField = function (item) {
+          // if the previous item is static, then return it here
+          var isStatic = ($scope.getType(item) === 'https://schema.metadatacenter.org/core/StaticTemplateField');
+          return null;
+        };
+
+
+        $scope.isElement = function (item) {
+          return ($scope.getType(item) === 'https://schema.metadatacenter.org/core/TemplateElement');
+        };
+
+
+        $scope.toggleExpanded = function () {
+          $scope.expanded = !$scope.expanded;
+        };
+
+        $scope.close = function () {
+          $scope.expanded = false;
+        };
+
+        $scope.isExpanded = function () {
+          return $scope.expanded;
+        };
+
+
+        $scope.getType = function (item) {
+          var obj = $scope.form.properties[item];
+          var schema = $rootScope.schemaOf(obj);
+          return schema['@type'];
+        };
+
+        $scope.isStaticField = function (field) {
+          if (field) {
+            var schema = $rootScope.schemaOf(field);
+            var type = schema['@type'];
+            return (type === 'https://schema.metadatacenter.org/core/StaticTemplateField');
+          }
+        };
+
+        $scope.nextChild = function (fieldOrElement) {
+
+          var id = DataManipulationService.getId(fieldOrElement);
+          var selectedKey;
+          var props = $scope.form.properties;
+
+
+          // find the field or element in the form's properties
+          angular.forEach(props, function (value, key) {
+            if (DataManipulationService.getId(value) == id) {
+              selectedKey = key;
+            }
+          });
+
+
+          if (selectedKey) {
+            var idx = $scope.form._ui.order.indexOf(selectedKey);
+
+            idx += 1;
+            var found = false;
+            while (idx < $scope.form._ui.order.length && !found) {
+              var nextKey = $scope.form._ui.order[idx];
+              var next = props[nextKey];
+              found = !$scope.isStaticField(next);
+              idx += 1;
+            }
+
+            if (found) {
+              console.log('found' + DataManipulationService.getId(next));
+              $rootScope.$broadcast("setActive", [DataManipulationService.getId(next), 0, $scope.path, true]);
+            } else {
+              console.log('not found')
+              $rootScope.$broadcast("setActive", [id, 0, $scope.path, false]);
+            }
+          }
+        };
+
+        $scope.lastIndex = function (path) {
+          if (path) {
+            var indices = path.split('-');
+            return indices[indices.length - 1];
+          }
+        };
+
+        // watch for this field's next sibling
+        $scope.$on('nextSibling', function (event, args) {
+          var id = args[0];
+          var index = args[1];
+          var path = args[2];
+          var value = args[3];
+
+
+          if (id === DataManipulationService.getId($scope.form)) {
+
+            var next = DataManipulationService.nextSibling($scope.field, $scope.form);
+            var parentIndex = 0;
+            var parentPath = '0';
+            if (next) {
+
+              $rootScope.$broadcast("setActive", [DataManipulationService.getId(next), 0, path, true]);
+
+
+            }
+          }
+        });
+
+        $scope.isActive = function () {
+          return true;
+        };
+
+        $scope.getTitle = function () {
+          return DataManipulationService.getTitle($scope.form);
+        };
+
+        $scope.isExpandable = function () {
+          return true;
+        };
+
+        // expand all the elements nested inside the form
+        $scope.expandAll = function () {
+
+          // expand the form
+          $scope.expanded = true;
+
+          $timeout(function () {
+
+            // expand all the elements inside the form
+            var schema = $rootScope.schemaOf($scope.form);
+            var selectedKey;
+            var props = $rootScope.propertiesOf($scope.form);
+            angular.forEach(props, function (value, key) {
+              var valueSchema = $rootScope.schemaOf(value);
+              var valueId = valueSchema["@id"];
+              var isElement = $rootScope.isElement(valueSchema);
+              if ($rootScope.isElement(valueSchema)) {
+                $scope.$broadcast("expandAll", [valueId]);
+              }
+            });
+
+          }, 0);
+        };
 
 
       }
