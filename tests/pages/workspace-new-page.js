@@ -47,9 +47,12 @@ var WorkspacePage = function () {
   var createDeleteResourceButton = createToolbar.element(by.css('#more-options-tool [ng-click="dc.deleteResource(resource)"]'));
   var createGridViewButton = createToolbar.element(by.css('#grid-view-tool'));
   var createListViewButton = createToolbar.element(by.css('#list-view-tool'));
-  var createViewDetailsButton = createToolbar.element(by.css('#details-view-tool [ng-click="dc.toggleInfoPanel()"'));
-  var createHideDetailsButton = createToolbar.element(by.css('#details-hide-tool [ng-click="dc.toggleInfoPanel()"'));
+  var createViewDetailsButton = createToolbar.element(by.css('#details-view-tool > button'));
+  var createHideDetailsButton = createToolbar.element(by.css('#details-hide-tool [ng-click="dc.toggleInfoPanel()"]'));
   var createDetailsPanel = element(by.id('sidebar-right'));
+  var createDetailsPanelTitle = createDetailsPanel.element(by.css('div > div.title.ng-binding.folder'));
+  var createDetailsPanelOwner = createDetailsPanel.element(by.css('div.info > div.row > div:contains("Owner")'));
+  var createDetailsPanelOwnerValue = createDetailsPanelOwner.element(by.xpath('../div[@class="col-sm-8 ng-binding"]'));
   var createSortDropdownButton = createToolbar.element(by.css('#workspace-sort-tool [ng-click="dc.deleteResource()"]'));
   var createSortByNameMenuItem = createToolbar.element(by.css('#workspace-sort-tool [ng-click="dc.setSortOption(\\042name\\042)"]'));
   var createSortByCreatedMenuItem = createToolbar.element(by.css('#workspace-sort-tool [ng-click="dc.setSortOption(\\042createdOnTS\\042)"]'));
@@ -67,6 +70,7 @@ var WorkspacePage = function () {
   var createBreadcrumbFolders = element(by.css('.breadcrumbs-sb')).all(by.repeater('folder in dc.pathInfo'));
   var createBreadcrumbSearch = element(by.css('.breadcrumbs-sb .search-result'));
   var createBreadcrumbUsersLink = createBreadcrumb.element(by.linkText("Users"));
+  var createBreadcrumbUserName = createBreadcrumb.element(by.css('p > a.breadcrumbs.ng-binding'));
 
   // create new buttons
   var createButton = element(by.id('button-create'));
@@ -160,6 +164,36 @@ var WorkspacePage = function () {
   };
   this.createShareMenuItem = function () {
     return createShareMenuItem;
+  };
+  this.createViewDetailsButton = function () {
+    return createViewDetailsButton;
+  };
+  this.createHideDetailsButton = function () {
+    return createHideDetailsButton;
+  };
+  this.createDetailsPanel = function () {
+  return createDetailsPanel;
+  };
+  this.createDetailsPanelTitle = function () {
+    return createDetailsPanelTitle;
+  };
+  this.createBreadcrumbUserName = function () {
+    return createBreadcrumbUserName;
+  };
+  this.createFolderButton = function() {
+    return createFolderButton;
+  };
+  this.createFolderName = function() {
+    return createFolderName;
+  };
+  this.createFolderSubmitButton = function() {
+    return createFolderSubmitButton;
+  };
+  this.createDetailsPanelOwner = function() {
+    return createDetailsPanelOwner;
+  };
+  this.createDetailsPanelOwnerValue = function() {
+    return createDetailsPanelOwnerValue;
   };
 
   // page load
@@ -315,7 +349,7 @@ var WorkspacePage = function () {
     browser.wait(EC.elementToBeClickable(createFirst));
     createFirst.click();
 
-
+    return createFirst;
   };
 
 

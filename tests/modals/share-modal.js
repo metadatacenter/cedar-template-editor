@@ -10,7 +10,9 @@ var ShareModal = function () {
   var shareModalUserName = shareWithUserRow.element(by.css('div.col-sm-7.typeaheadDropUp > input'));
   var sharedModalPermissionsList = shareWithUserRow.element(by.css('div.btn-group.bootstrap-select.dropdown.col-sm-4.select-picker.ng-pristine.ng-untouched.ng-valid.ng-isolate-scope.ng-not-empty'));
   var shareModalPermissions = sharedModalPermissionsList.element(by.css('button'));
+  var shareModalReadPermission = sharedModalPermissionsList.element(by.css('div > ul > li:nth-child(1) > a'));
   var shareModalWritePermission = sharedModalPermissionsList.element(by.css('div > ul > li:nth-child(2) > a'));
+  var shareModalOwnerPermission = sharedModalPermissionsList.element(by.css('div > ul > li:nth-child(3) > a'));
   var shareModalAddUserButton = shareWithUserRow.element(by.css('div.col-sm-1.pull-right > button'));
   var shareModalDoneButton = shareModal.element(by.css('div > div > div.modal-footer.actions > div > button'));
 
@@ -35,12 +37,20 @@ var ShareModal = function () {
     return shareModalPermissions;
   };
 
+  this.createShareModalReadPermission = function () {
+    return shareModalReadPermission;
+  };
+
   this.createShareModalWritePermission = function () {
     return shareModalWritePermission;
   };
 
+  this.createShareModalOwnerPermission = function () {
+    return shareModalOwnerPermission;
+  };
 
-  this.shareResource = function (name, type, username, canWrite) {
+
+  this.openDialogViaMoreOptions = function (name, type) {
     WorkspacePage.selectResource(name, type);
 
     var optionsButton = WorkspacePage.createMoreOptionsButton();
@@ -52,18 +62,43 @@ var ShareModal = function () {
     browser.wait(EC.visibilityOf(shareMenuItem));
     browser.wait(EC.elementToBeClickable(shareMenuItem));
     shareMenuItem.click();
+  };
 
+
+  this.openDialogViaRightClick = function (name, type) {
+    // TODO
+    var element = WorkspacePage.selectResource(name, type);
+    browser.actions().mouseMove(element).perform();
+    browser.actions().click(protractor.Button.RIGHT).perform();
+
+  };
+
+
+  this.shareResource = function(name, type, username, canWrite, isOwner) {
+    this.openDialogViaMoreOptions(name, type);
+    this.shareWith(username, canWrite, isOwner);
+  };
+
+
+  this.shareWith = function (username, canWrite, isOwner) {
     var usernameField = this.createShareModalUserName();
     browser.wait(EC.visibilityOf(usernameField));
     usernameField.sendKeys(username);
     browser.actions().sendKeys(protractor.Key.ENTER).perform();
 
-    if (canWrite) {
+    if (canWrite || isOwner) {
       var permissionsList = this.createShareModalPermissions();
       browser.wait(EC.elementToBeClickable(permissionsList));
       permissionsList.click();
-      browser.wait(EC.elementToBeClickable(this.createShareModalWritePermission()));
-      this.createShareModalWritePermission().click();
+
+      if(canWrite) {
+        browser.wait(EC.elementToBeClickable(this.createShareModalWritePermission()));
+        this.createShareModalWritePermission().click();
+      }
+      else if(isOwner) {
+        browser.wait(EC.elementToBeClickable(this.createShareModalOwnerPermission()));
+        this.createShareModalOwnerPermission().click();
+      }
     }
 
     var addButton = this.createShareModalAddUserButton();
@@ -77,11 +112,6 @@ var ShareModal = function () {
     browser.wait(EC.elementToBeClickable(doneButton)).then(function () {
       doneButton.click();
     });
-  };
-
-
-  this.shareResourceWithRightClick = function (name, type, username, canWrite) {
-    // TODO
   };
 
 

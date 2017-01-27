@@ -3,6 +3,7 @@ var WorkspacePage = require('../pages/workspace-new-page.js');
 var ToastyModal = require('../modals/toasty-modal.js');
 var SweetAlertModal = require('../modals/sweet-alert-modal.js');
 var MoveModal = require('../modals/move-modal.js');
+var ShareModal = require('../modals/share-modal.js');
 var testConfig = require('../config/test-env.js');
 
 var testUserName1 = 'Test User 1';
@@ -13,12 +14,14 @@ describe('resource-permissions', function () {
   var toastyModal;
   var sweetAlertModal;
   var moveModal;
+  var shareModal;
 
   beforeEach(function () {
     workspacePage = WorkspacePage;
     toastyModal = ToastyModal;
     sweetAlertModal = SweetAlertModal;
     moveModal = MoveModal;
+    shareModal = ShareModal;
     browser.driver.manage().window().maximize();
 
     console.log(jasmine.getEnv().currentSpec.description);
@@ -28,6 +31,8 @@ describe('resource-permissions', function () {
     workspacePage.clickLogo();
   });
 
+
+  /* Move tests */
 
   it("should move a resource owned by current user to a writable folder", function () {
     // create template and target folder
@@ -50,7 +55,7 @@ describe('resource-permissions', function () {
     var sharedFolderTitle = workspacePage.createFolder('Shared');
 
     // share folder
-    workspacePage.shareResource(sharedFolderTitle, 'folder', testUserName2, false);
+    shareModal.shareResource(sharedFolderTitle, 'folder', testUserName2, false);
 
     // logout current user and login as the user with whom the folder was shared
     workspacePage.logout();
@@ -76,10 +81,9 @@ describe('resource-permissions', function () {
     var targetFolder = workspacePage.createFolder('Target');
 
     // share the template and folder
-    workspacePage.shareResource(sourceTemplate, 'template', testUserName1, true);
-    browser.sleep(2000);
+    shareModal.shareResource(sourceTemplate, 'template', testUserName1, true);
     workspacePage.clickLogo(); // reset search
-    workspacePage.shareResource(targetFolder, 'folder', testUserName1, true); // TODO fails due to #273
+    shareModal.shareResource(targetFolder, 'folder', testUserName1, true); // TODO fails due to #273
 
     workspacePage.logout();
     workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
@@ -99,10 +103,9 @@ describe('resource-permissions', function () {
     var sourceTemplate = workspacePage.createTemplate('Source');
     var targetFolder = workspacePage.createFolder('Target');
 
-    workspacePage.shareResource(sourceTemplate, 'template', testUserName2, true);
-    browser.sleep(2000);
+    shareModal.shareResource(sourceTemplate, 'template', testUserName2, true);
     workspacePage.clickLogo(); // reset search
-    workspacePage.shareResource(targetFolder, 'folder', testUserName2, false); // TODO fails due to issue #273
+    shareModal.shareResource(targetFolder, 'folder', testUserName2, false); // TODO fails due to issue #273
 
     workspacePage.logout();
     workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
@@ -120,10 +123,9 @@ describe('resource-permissions', function () {
     var targetFolder = workspacePage.createFolder('Target');
 
     // share both folders
-    workspacePage.shareResource(sourceTemplate, 'template', testUserName1, false);
-    browser.sleep(2000);
+    shareModal.shareResource(sourceTemplate, 'template', testUserName1, false);
     workspacePage.clickLogo(); // reset search
-    workspacePage.shareResource(targetFolder, 'folder', testUserName1, false); // TODO fails due to issue #273
+    shareModal.shareResource(targetFolder, 'folder', testUserName1, false); // TODO fails due to issue #273
 
     workspacePage.logout();
     workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
