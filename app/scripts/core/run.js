@@ -493,8 +493,8 @@ define([
     }
 
 
-    $rootScope.runTimeVisible = false;
-    $rootScope.useRunTimeCode = false;
+    $rootScope.runTimeVisible = true;
+    $rootScope.useRunTimeCode = true;
 
 
   };

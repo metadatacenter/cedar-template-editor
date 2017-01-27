@@ -106,6 +106,15 @@
                   is-multiple="isMultipleCardinality" spreadsheet="switchToSpreadsheet"></field-toolbar>
             </div>
 
+            <div ng-if="isActive(index) && isPreviousStatic()" style="margin-bottom:20px;">
+              <div ng-if="isRichText(previous)" ng-bind-html="$root.getUnescapedContent(previous)"></div>
+              <div ng-if="isYouTube(previous)">
+                <figure>
+                  <div fit-vids ng-bind-html="getYouTubeEmbedFrame(previous)"></div>
+                </figure>
+              </div>
+            </div>
+
             <div ng-repeat="(i, valueElement) in valueArray">
               <div ng-if="i===index"  >
                 <div ng-if="!isActive(i)"  class="originalContent" ng-include="getFieldUrl()"></div>
