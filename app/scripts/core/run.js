@@ -490,7 +490,7 @@ define([
 
     $rootScope.isDirty = function() {
       return $rootScope.dirty;
-    }
+    };
 
 
     $rootScope.runTimeVisible = true;
