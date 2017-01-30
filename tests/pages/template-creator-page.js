@@ -1004,6 +1004,7 @@ var TemplateCreatorPage = function () {
             createCheckboxButton.click();
             break;
           case "date":
+            console.log('createDateButton ');
             browser.wait(EC.elementToBeClickable(createDateButton));
             createDateButton.click();
             break;
@@ -1040,7 +1041,7 @@ var TemplateCreatorPage = function () {
             createVideoButton.click();
             break;
         }
-        if (cedarType != "youtube") {
+        if (cedarType != "youtube" && cedarType != "date") {
 
           // enter the name and description
           browser.wait(EC.elementToBeClickable(createFieldTitle));

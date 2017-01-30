@@ -96,7 +96,7 @@
 
 
       <ul class="tv" ng-if="isExpanded(index) && index === i" ng-repeat="(i, valueElement) in valueArray">
-        <li class="tv" ng-class="{'last':$last}" ng-repeat="key in $root.schemaOf(element)['_ui']['order']" ng-if="$root.propertiesOf(element)[key]">
+        <li class="tv"  ng-class="{'last':$last, 'first':$first}" ng-repeat="key in $root.schemaOf(element)['_ui']['order']" ng-if="$root.propertiesOf(element)[key]">
 
           <cedar-runtime-nested-element key="key"
               field="$root.propertiesOf(element)[key]"

@@ -11619,6 +11619,14 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
 .template-body form .runtime .treeview > li.tv:last-child::after {
   display: none;
 }
+.template-body form .runtime .treeview li.tv.first::after {
+  top: 0;
+  height: 10px;
+}
+.template-body form .runtime .treeview > li.tv.first::after {
+  top: 10px;
+  height: 100%;
+}
 .template-body form .runtime .paging {
   max-height: 17px;
   overflow: visible;
