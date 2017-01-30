@@ -156,7 +156,7 @@ define([
 
       // add more instances to a multiple cardinality field if possible
       $scope.addMoreInput = function () {
-        console.log('addMoreInput');
+
         var maxItems = DataManipulationService.getMaxItems($scope.field);
         if ((!maxItems || $scope.model.length < maxItems)) {
 
@@ -175,6 +175,7 @@ define([
       };
 
       $scope.selectPage = function (i) {
+
         $scope.onSubmit($scope.index, i);
       };
 
@@ -195,7 +196,6 @@ define([
 
       // show this field as a spreadsheet
       $scope.switchToSpreadsheet = function () {
-        console.log('switchToSpreadhseet');
 
         SpreadsheetService.switchToSpreadsheetField($scope, $element);
       };
@@ -270,30 +270,36 @@ define([
         var value = args[3];
 
         if (id === $scope.getId() && path == $scope.path) {
+
           $scope.setActive(index, value);
         }
       });
 
-      $scope.setInactive = function(index) {
+      $scope.setInactive = function (index) {
         $scope.setActive(index, false);
       };
 
+      $scope.setActiveMaybe = function (index) {
+        if (!$scope.isActive(index)) {
+          $scope.setActive(index, true);
+        }
+      };
+
+
+
       // set this field and index active
-      $scope.setActive = function (index, value) {
-        console.log('setActive' + index + value + $scope.index);
+      $scope.setActive = function (index, value, other) {
+        console.log('setActive ' + index + value + other);
 
         // off or on
         var active = (typeof value === "undefined") ? true : value;
         var locator = $scope.getLocator(index);
         var current = DataManipulationService.isActive(locator);
 
-        console.log(locator + ' ' + active + ' ' + current);
-
         if (active !== current) {
 
-
           // if zero cardinality,  add a new item
-          if ($scope.isMultipleCardinality() && $scope.model.length <= 0) {
+          if (active && $scope.isMultipleCardinality() && $scope.model.length <= 0) {
             $scope.addMoreInput();
           }
 
@@ -310,16 +316,16 @@ define([
             $scope.scrollToLocator(locator, ' .select');
             $document.unbind('keypress');
             $document.bind('keypress', function (e) {
-              $scope.isSubmit(e);
+              $scope.isSubmit(e, index);
             });
 
           } else {
             // set blur and force a redraw
             jQuery("#" + locator).blur();
 
-            //setTimeout(function () {
-            //  $scope.$apply();
-            //}, 0);
+            setTimeout(function () {
+              $scope.$apply();
+            }, 0);
 
           }
         }
@@ -328,12 +334,9 @@ define([
       // scroll within the template to the field with the locator, focus and select the tag
       $scope.scrollToLocator = function (locator, tag) {
 
-
-
         var target = angular.element('#' + locator);
 
         if (target && target.offset()) {
-
 
           $scope.setHeight = function () {
 
@@ -349,7 +352,6 @@ define([
               var targetHeight = target.outerHeight(true);
               var scrollTop = jQuery('.template-container').scrollTop();
               var newTop = scrollTop + targetTop - ( windowHeight - targetHeight ) / 2;
-              //console.log('scrollToLocator found target tag=' + tag +  ' locator=' + locator + ' newTop ' + newTop + ' scrollTop ' + scrollTop + ' targetHeight ' + targetHeight + ' targetTop ' + targetTop + ' windowHeight ' + windowHeight);
 
               jQuery('.template-container').animate({scrollTop: newTop}, 'fast');
 
@@ -393,34 +395,33 @@ define([
 
       // submit this edit
       $scope.onSubmit = function (index, next) {
-        console.log('onSubmit ' + index + next);
 
         if ($scope.isActive(index)) {
 
-          if (next != null && $scope.isMultipleCardinality() && (next < $scope.model.length)) {
-            console.log('setActive ' + next);
-            $scope.setActive(next, true);
-          } else if ($scope.isMultipleCardinality() && (index + 1 < $scope.model.length)) {
-            $scope.setActive(index + 1, true);
+          DataManipulationService.setActive($scope.field, index, $scope.path, false);
 
+          // is there a next one to set active, go to the next index,  or go to parent's next field
+          if (next != null && $scope.isMultipleCardinality() && (next < $scope.model.length)) {
+            if (next != null) {
+              $scope.setActive(next, true);
+            } else {
+              $scope.setActive(index + 1, true);
+            }
           } else {
-            // or go to parent's next field
             $scope.$parent.nextChild($scope.field, index, $scope.path);
 
           }
         } else {
-          console.log("error: not active")
+          console.log("error: not active");
         }
       };
 
       // is this a submit?  shift-enter qualifies as a submit for any field
       $scope.isSubmit = function (keyEvent, index) {
-
         if (keyEvent.which === 13 && keyEvent.ctrlKey) {
-          $scope.onSubmit(index);
+          $scope.onSubmit(index, 'isSubmit');
         }
       };
-
 
       // an array of model values
       $scope.valueArray;
@@ -508,7 +509,7 @@ define([
         var index = $scope.multipleStates.indexOf($scope.multipleState);
         index = (index + 1) % $scope.multipleStates.length;
         $scope.multipleState = $scope.multipleStates[index];
-        if ($scope.multipleState ==='spreadsheet') {
+        if ($scope.multipleState === 'spreadsheet') {
           setTimeout(function () {
             $scope.switchToSpreadsheet();
           }, 0);
