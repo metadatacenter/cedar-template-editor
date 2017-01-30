@@ -71,7 +71,7 @@ describe('update-ownership', function () {
 
 
   it("should fail to change ownership of a folder shared as writable with current user", function () {
-    var folder = workspacePage.createFolder('Readable');
+    var folder = workspacePage.createFolder('Writable');
 
     shareModal.shareResource(folder, 'folder', testUserName1, true, false); // TODO fails due to issue #273
 
