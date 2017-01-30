@@ -13,7 +13,7 @@
             <!--<button type="button" class="xxx ">-->
               <!--<i ng-class="{'fa fa-caret-down ' : isExpanded(i), 'fa fa-caret-right ' : !isExpanded(i)}"></i>-->
             <!--</button>-->
-            <a class="element title" ng-class="{'isInactive' : isInactive(0)}">{{getTitle()}}</a>
+            <a class="element title" ng-class="{'isInactive' : isInactive(0)}"> {{getTitle()}} </a>
           </div>
 
         </div>
@@ -62,12 +62,16 @@
       <div class="row " style="cursor:pointer" ng-class="{'isInactive': !isActive()}">
 
         <!-- title -->
-        <div ng-class="{'col-xs-3': isExpanded(index), 'col-xs-12': !isExpanded(index)}"
-            ng-click="toggleExpanded(index)">
+        <div ng-class="{'col-xs-3 ': isExpanded(index), 'col-xs-12': !isExpanded(index)}"
+            ng-click="toggleExpanded(index)"  style="overflow:hidden;white-space:nowrap;text-overflow:ellipsis;">
 
-          <span>
-          <a class="element title" ng-class="{'isInactive' : isInactive(index)}">
-            {{getTitle()}}  <span ng-if="isExpanded(index) && valueArray.length-1" class="count">({{index+1}})</span>
+          <!--<button type="button" ng-click="toggleExpanded(i)" class="xxx">-->
+          <!--<i ng-class="{'fa fa-caret-down ' : isExpanded(i), 'fa fa-caret-right ' : !isExpanded(i)}"></i>-->
+          <!--</button>-->
+
+          <span >
+          <a class="element title "  ng-class="{'isInactive' : isInactive(index)}">
+            {{getTitle()}} <span ng-if="isExpanded(index) && valueArray.length-1" class="count">({{index+1}})</span>
           </a>
             </span>
         </div>

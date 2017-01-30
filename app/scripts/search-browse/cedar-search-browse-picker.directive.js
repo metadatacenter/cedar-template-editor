@@ -494,6 +494,7 @@ define([
           }
 
           function buildBreadcrumbTitle(nodeListQueryType, searchTerm) {
+            console.log('buildBreadcrumbTitle '+ nodeListQueryType + ' ' + searchTerm);
             if (nodeListQueryType == 'view-shared-with-me') {
               return $translate.instant("BreadcrumbTitle.sharedWithMe");
             } else if (nodeListQueryType == 'view-all') {
@@ -506,6 +507,7 @@ define([
           }
 
           function doSearch(term) {
+            console.log('doSearch ' + term);
             var resourceTypes = activeResourceTypes();
             var limit = UISettingsService.getRequestLimit();
             vm.offset = 0;
@@ -519,6 +521,7 @@ define([
                   vm.resources = response.resources;
                   vm.totalCount = response.totalCount;
                   vm.breadcrumbTitle = vm.buildBreadcrumbTitle(response.nodeListQueryType, response.request.q);
+                  console.log(vm.breadcrumbTitle);
                 },
                 function (error) {
                   UIMessageService.showBackendError('SERVER.SEARCH.error', error);
