@@ -83,10 +83,17 @@ var WorkspacePage = function () {
     "folder"  : createFolderButton
   };
 
+  // main center panel
+  var createCenterPanel = element(by.id('center-panel'));
+
   // create folder modal
   var createFolderModal = element(by.id('new-folder-modal'));
   var createFolderName = createFolderModal.element(by.model('folder.folder.name'));
   var createFolderSubmitButton = createFolderModal.element(by.css('div.modal-footer button.confirm'));
+
+  // share menu item from the option list following a right click on a resource
+  var createRightClickShareMenuItem = createCenterPanel.element(by.css('div > div > div > div.form-box-container.folder.ng-scope.selected > div > div > ' +
+    'div.btn-group.dropdown.ng-scope.open > ul > li > a[ng-click="dc.showShareModal(resource)"]'));
 
 
   // access to locators
@@ -180,20 +187,26 @@ var WorkspacePage = function () {
   this.createBreadcrumbUserName = function () {
     return createBreadcrumbUserName;
   };
-  this.createFolderButton = function() {
+  this.createFolderButton = function () {
     return createFolderButton;
   };
-  this.createFolderName = function() {
+  this.createFolderName = function () {
     return createFolderName;
   };
-  this.createFolderSubmitButton = function() {
+  this.createFolderSubmitButton = function () {
     return createFolderSubmitButton;
   };
-  this.createDetailsPanelOwner = function() {
+  this.createDetailsPanelOwner = function () {
     return createDetailsPanelOwner;
   };
-  this.createDetailsPanelOwnerValue = function() {
+  this.createDetailsPanelOwnerValue = function () {
     return createDetailsPanelOwnerValue;
+  };
+  this.createCenterPanel = function () {
+    return createCenterPanel;
+  };
+  this.createRightClickShareMenuItem = function () {
+    return createRightClickShareMenuItem;
   };
 
   // page load
@@ -418,8 +431,7 @@ var WorkspacePage = function () {
 
   this.navigateToUserFolder = function (username) {
     this.clickBreadcrumb(1);
-    var centerPanel = element(by.id('center-panel'));
-    var userFolder = centerPanel.element(by.cssContainingText('.folderTitle.ng-binding', username));
+    var userFolder = this.createCenterPanel().element(by.cssContainingText('.folderTitle.ng-binding', username));
     browser.actions().doubleClick(userFolder).perform();
   };
 

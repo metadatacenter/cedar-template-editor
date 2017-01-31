@@ -103,22 +103,24 @@ var ShareModal = function () {
 
 
   this.openDialogViaRightClick = function (name, type) {
-    // TODO
     var element = WorkspacePage.selectResource(name, type);
     browser.actions().mouseMove(element).perform();
     browser.actions().click(protractor.Button.RIGHT).perform();
 
+    var shareMenuItem = WorkspacePage.createRightClickShareMenuItem();
+    browser.wait(EC.elementToBeClickable(shareMenuItem));
+    shareMenuItem.click();
   };
 
 
   this.shareResource = function(name, type, username, canWrite, isOwner) {
-    this.openDialogViaMoreOptions(name, type);
+    this.openDialogViaRightClick(name, type);
     this.shareWithUser(username, canWrite, isOwner);
   };
 
 
   this.shareResourceWithGroup = function(name, type, groupname, canWrite, isOwner) {
-    this.openDialogViaMoreOptions(name, type);
+    this.openDialogViaRightClick(name, type);
     this.shareWithGroup(groupname, canWrite, isOwner);
   };
 
