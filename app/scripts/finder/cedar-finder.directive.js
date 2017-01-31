@@ -181,8 +181,9 @@ define([
           vm.searchMore = function () {
 
             var limit = UISettingsService.getRequestLimit();
-            vm.offset += limit;
+            //vm.offset += limit;
             var offset = vm.offset;
+            offset += limit;
             var term = vm.searchTerm;
             var resourceTypes = activeResourceTypes();
 
@@ -208,6 +209,7 @@ define([
                   function (response) {
                     vm.resources = vm.resources.concat(response.resources);
                     vm.totalCount = response.totalCount;
+                    vm.offset = offset;
                   },
                   function (error) {
                     UIMessageService.showBackendError('SERVER.SEARCH.error', error);
