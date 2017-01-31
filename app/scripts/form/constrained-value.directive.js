@@ -65,6 +65,7 @@ define([
 
       // Updates the model for fields whose values have been constrained using controlled terms
       $scope.updateModelFromUIControlledField = function () {
+        console.log('onChange');
 
         // Multiple fields
         if ($scope.isMultipleCardinality()) {
@@ -75,6 +76,8 @@ define([
                   "@value"   : m['@value']['@id'],
                   _valueLabel: m['@value'].label
                 };
+              } else {
+                delete $scope.model[i]['@value']
               }
             });
           }
@@ -86,8 +89,14 @@ define([
         }
         // Single fields
         else {
-          $scope.model['@value'] = $scope.modelValue[0]['@value']['@id'];
-          $scope.model._valueLabel = $scope.modelValue[0]['@value']['label'];
+          if ($scope.modelValue[0]['@value']) {
+            $scope.model['@value'] = $scope.modelValue[0]['@value']['@id'];
+            $scope.model._valueLabel = $scope.modelValue[0]['@value']['label'];
+          } else {
+            console.log('should be cleared');
+            $scope.model['@value'] = null;
+            delete $scope.model['_valueLabel'];
+          }
         }
       };
 

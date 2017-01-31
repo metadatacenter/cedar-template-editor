@@ -333,7 +333,7 @@ define([
 
       // scroll within the template to the field with the locator, focus and select the tag
       $scope.scrollToLocator = function (locator, tag) {
-        console.log('scrollToLocator '+ locator + ' ' + tag);
+        //console.log('scrollToLocator '+ locator + ' ' + tag);
 
         var target = angular.element('#' + locator);
 
@@ -354,13 +354,13 @@ define([
               var scrollTop = jQuery('.template-container').scrollTop();
               var newTop = scrollTop + targetTop - ( windowHeight - targetHeight ) / 2;
 
-              console.log(target);
-              console.log('target.offset()' );
-              console.log(target.offset());
-              console.log('targetTop ' + targetTop);
-              console.log('targetHeight ' + targetHeight);
-              console.log('scrollTop ' + scrollTop);
-              console.log('newTop ' + newTop);
+              //console.log(target);
+              //console.log('target.offset()' );
+              //console.log(target.offset());
+              //console.log('targetTop ' + targetTop);
+              //console.log('targetHeight ' + targetHeight);
+              //console.log('scrollTop ' + scrollTop);
+              //console.log('newTop ' + newTop);
 
               jQuery('.template-container').animate({scrollTop: newTop}, 'fast');
 

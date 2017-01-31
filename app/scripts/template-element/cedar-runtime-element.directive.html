@@ -15,36 +15,24 @@
 
     <!-- a speadsheet list of elements -->
     <div ng-if="showMultiple('spreadsheet') && valueArray.length > 0">
-
       <div class="element expand" id="{{getLocator(index)}}" style="position:relative">
-
-
         <div class="row isInactive">
           <div class="col-sm-10">
-
-            <!--<button type="button" class="xxx">-->
-            <!--<i class="fa fa-caret-down"></i>-->
-            <!--</button>-->
-
-
             <a class="element title" ng-class="{'isInactive' : isInactive(index)}">{{getTitle()}} <span
                 ng-if="valueArray.length-1" class="count">({{index+1}})</span></a>
           </div>
-
           <field-toolbar class="col-xs-2 " model="model" index="index"
               remove="removeElement" add="addElement" active="isActive" toggle="toggleMultiple"
               show-multiple="showMultiple" cardinality="cardinalityString" spreadsheet="switchToSpreadsheet"
               expand-all="expandAll" is-expandable="isExpandable">
           </field-toolbar>
         </div>
-
         <div class="row">
           <div class="col-sm-12">
             <div class="spreadsheetViewDetector"></div>
             <div class="spreadsheetViewContainer"></div>
           </div>
         </div>
-
       </div>
     </div>
 
@@ -131,7 +119,7 @@
         </div>
       </div>
     </div>
-    
+
   </div>
 </div>
 

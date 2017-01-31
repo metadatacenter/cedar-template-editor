@@ -293,6 +293,7 @@ button {
     border-radius: 0;
     color: #000;
     padding-left: 0;
+    outline:none;
 
     &:before {
       font-family: "project-cedar" !important;
@@ -3185,12 +3186,10 @@ section.dashboard-elements {
     }
 
     .bootstrap-select {
-      border: 1px dashed #ccc;
       background: transparent;
-      height: 50px;
       .btn-select-picker {
         font-size: 1em;
-        height: 50px;
+        box-shadow:none;
       }
     }
 
@@ -4717,6 +4716,7 @@ p.instructions {
 
   .dropdown-menu li a {
     padding: 8px 20px;
+    outline:none;
 
     &:hover {
       background-color: @brand-primary;
@@ -5828,6 +5828,13 @@ color:@brand-primary;
   .ui-select-match {
     background-color:transparent;
     border-width: 0;
+    .ui-select-toggle {
+      a {
+        i {
+          top:5px;
+        }
+      }
+    }
   }
   span {
     font-size: 16px;

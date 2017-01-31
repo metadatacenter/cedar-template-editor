@@ -1,18 +1,19 @@
 
 
 <div ng-init="initializeValueRecommendationField();console.log('ng-init');"
-    class="has-constraint autocomplete-label-wrapper"
+    class="has-constraint "
     ng-class="{'has-selected': modelValueRecommendation['@value'].value}">
   <ui-select
       ng-model="modelValueRecommendation['@value']"
-      ng-change="updateModelWhenChangeSelection(modelValueRecommendation); $root.vrs.updatePopulatedFields(field, modelValueRecommendation['@value'].value)"
+      ng-change="updateModelWhenChangeSelection(modelValueRecommendation); $root.vrs.updatePopulatedFields(field, modelValueRecommendation['@value'].value)  ;console.log('onChange')"
       ng-click="$root.vrs.updateValueRecommendationResults(field); setIsFirstRefresh(false); clearSearch($select)"
       close-on-select="true"
+
       reset-search-input="false"
       aria-label="getDescription(field)">
-    <ui-select-match class="selection-field" placeholder="">{{$select.selected.value}}
-      <i ng-if="$select.selected.value" class="fa fa-times" aria-hidden="true"
-          ng-click="clearSelection($event, $select); $root.vrs.updatePopulatedFields(field, null)"></i>
+    <ui-select-match   allow-clear="true"  class="selection-field" placeholder="">{{$select.selected.value}}
+      <!--<i ng-if="$select.selected.value" class="fa fa-trash" aria-hidden="true"-->
+          <!--ng-click="clearSelection($event, $select); $root.vrs.updatePopulatedFields(field, null)"></i>-->
     </ui-select-match>
     <ui-select-choices
         ui-disable-choice="option.value == $root.vrs.getNoResultsMsg()"

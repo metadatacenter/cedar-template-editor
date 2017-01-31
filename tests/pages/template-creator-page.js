@@ -1006,7 +1006,9 @@ var TemplateCreatorPage = function () {
           case "date":
             console.log('createDateButton ');
             browser.wait(EC.elementToBeClickable(createDateButton));
+            console.log('createDateButton clickable ');
             createDateButton.click();
+            console.log('createDateButton clicked ');
             break;
           case "email":
             browser.wait(EC.elementToBeClickable(createEmailButton));
@@ -1041,7 +1043,7 @@ var TemplateCreatorPage = function () {
             createVideoButton.click();
             break;
         }
-        if (cedarType != "youtube" && cedarType != "date") {
+        if (cedarType != "youtube") {
 
           // enter the name and description
           browser.wait(EC.elementToBeClickable(createFieldTitle));

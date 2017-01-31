@@ -81,7 +81,8 @@
       <!-- show a paged list of fields  -->
       <div ng-if="showMultiple('paged') && valueArray.length > 0">
 
-        <div class="row"  ng-class="{'isRowInactive' : !isActive(index), 'isActive': isActive(index)}"  id="{{getLocator(index)}}">
+        <div class="row" ng-class="{'isRowInactive' : !isActive(index), 'isActive': isActive(index)}"
+            id="{{getLocator(index)}}">
 
           <div class="col-sm-3 col-xs-* question">
             <div ng-click="setActive(index, true, 'ng-click title')" class="title field isInactive"
@@ -90,8 +91,8 @@
             </div>
           </div>
 
-          <div class="col-sm-9" >
-            <div class="answer" >
+          <div class="col-sm-9">
+            <div class="answer">
 
               <div class="row tools" ng-if="isActive(index)">
                 <cedar-pager ng-if="isMultipleCardinality()" values="valueArray" index="index" min="pageMin"
@@ -116,9 +117,9 @@
                 </div>
               </div>
 
-              <div  ng-repeat="(i, valueElement) in valueArray">
+              <div ng-repeat="(i, valueElement) in valueArray">
                 <div ng-if="i===index">
-                  <div ng-if="!isActive(index)"  ng-include="getFieldUrl()"></div>
+                  <div ng-if="!isActive(index)" ng-include="getFieldUrl()"></div>
                   <form ng-if="isActive(index)" name="field-edit-form-{{index}}" ng-submit="onSubmit(index,'paged')">
                     <div ng-include="getFieldUrl()"></div>
                     <button type="submit" class="btn btn-save confirm active" translate>GENERIC.Ok</button>
@@ -127,16 +128,14 @@
                 </div>
               </div>
             </div>
-
           </div>
-
         </div>
       </div>
 
       <!-- show an expanded list of fields from the valueArray -->
       <div ng-if="showMultiple('expanded')" ng-repeat="(index, valueElement) in valueArray">
 
-        <!-- inactive,not being edited at the moment -->
+        <!-- inactive, not being edited  -->
         <div class="row isRowInactive" ng-if="!isActive(index)" id="{{getLocator(index)}}">
           <div class="col-sm-3 col-xs-* ">
 
@@ -146,12 +145,12 @@
           </div>
           <div class="col-sm-9 col-xs-* " ng-click="setActive(index, true)">
             <div class="answer">
-            <div class="originalContent" ng-include="getFieldUrl()"></div>
+              <div class="originalContent" ng-include="getFieldUrl()"></div>
             </div>
           </div>
         </div>
 
-        <!-- active --->
+        <!-- active, being edited --->
         <div class="row isActive" ng-if="isActive(index)" id="{{getLocator(index)}}">
           <div class="col-sm-3">
             <div class="leader"></div>
@@ -159,34 +158,32 @@
               {{getTitle(field)}} <span ng-if="isMultipleCardinality()" class="count">({{index+1}})</span>
             </div>
           </div>
-          <div class="col-sm-9 "><div class="answer">
-            <div class="row tools">
-              <field-toolbar class="col-sm-12 pull-right" model="model" field="field"
-                  index="index"
-                  remove="removeInput" add="addMoreInput" is-active="isActive" set-active="setActive"
-                  description="getDescription" toggle="toggleMultiple" show-multiple="showMultiple"
-                  cardinality="cardinalityString" close="setInactive" expand-all="expandAll"
-                  is-expandable="isExpandable"
-                  is-multiple="isMultipleCardinality" spreadsheet="switchToSpreadsheet"></field-toolbar>
-            </div>
-
-
-            <div ng-if="isPreviousStatic()">
-              <div ng-if="isRichText(previous)" ng-bind-html="$root.getUnescapedContent(previous)"></div>
-              <div ng-if="isYouTube(previous)">
-                <figure>
-                  <div fit-vids ng-bind-html="getYouTubeEmbedFrame(previous)"></div>
-                </figure>
+          <div class="col-sm-9 ">
+            <div class="answer">
+              <div class="row tools">
+                <field-toolbar class="col-sm-12 pull-right" model="model" field="field"
+                    index="index"
+                    remove="removeInput" add="addMoreInput" is-active="isActive" set-active="setActive"
+                    description="getDescription" toggle="toggleMultiple" show-multiple="showMultiple"
+                    cardinality="cardinalityString" close="setInactive" expand-all="expandAll"
+                    is-expandable="isExpandable"
+                    is-multiple="isMultipleCardinality" spreadsheet="switchToSpreadsheet"></field-toolbar>
               </div>
+              <div ng-if="isPreviousStatic()">
+                <div ng-if="isRichText(previous)" ng-bind-html="$root.getUnescapedContent(previous)"></div>
+                <div ng-if="isYouTube(previous)">
+                  <figure>
+                    <div fit-vids ng-bind-html="getYouTubeEmbedFrame(previous)"></div>
+                  </figure>
+                </div>
+              </div>
+              <form name="field-edit-form-{{index}}" ng-submit="onSubmit(index,'expanded')">
+                <div class="originalContent" ng-include="getFieldUrl()"></div>
+                <button type="submit" class="btn btn-save confirm active" translate>GENERIC.Ok</button>
+                <label class="submit-info" translate>GENERIC.Submit</label>
+              </form>
             </div>
-
-            <form name="field-edit-form-{{index}}" ng-submit="onSubmit(index,'expanded')">
-              <div class="originalContent" ng-include="getFieldUrl()"></div>
-              <button type="submit" class="btn btn-save confirm active" translate>GENERIC.Ok</button>
-              <label class="submit-info" translate>GENERIC.Submit</label>
-            </form>
-
-          </div></div>
+          </div>
         </div>
       </div>
 
