@@ -11625,12 +11625,16 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   top: 0;
   height: 100%;
 }
-.template-body form .runtime .treeview li.tv.first.last::after,
+.template-body form .runtime .treeview li.tv.first.last::after {
+  top: 0;
+  height: 10px;
+}
 .template-body form .runtime .treeview li.tv.first.element::after {
   top: 0;
   height: 10px;
 }
 .template-body form .runtime .treeview > li.tv.first::after {
+  top: 10px;
   height: 100%;
 }
 .template-body form .runtime .paging {

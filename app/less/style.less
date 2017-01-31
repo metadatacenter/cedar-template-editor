@@ -2810,13 +2810,20 @@ section.dashboard-elements {
     height:100%;
   }
 
-  .treeview  li.tv.first.last::after, .treeview  li.tv.first.element::after{
+  .treeview  li.tv.first.last::after{
     top:0;
     height:10px;
   }
 
+  .treeview  li.tv.first.element::after{
+    top:0;
+    height:10px;
+
+  }
+
   /*  very first field or element */
   .treeview  > li.tv.first::after{
+    top:10px;
     height:100%;
   }
 
