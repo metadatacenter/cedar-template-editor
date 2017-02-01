@@ -347,7 +347,7 @@ define([
       };
       field._valueConstraints.literals.push(emptyOption);
     };
-    
+
 
     // TODO: remove this if not needed
     // Generating a RFC4122 version 4 compliant GUID

@@ -9,11 +9,13 @@ define([
   // TODO: refactor to cedarFieldDirective <cedar-field-directive>
 
 
-  fieldDirective.$inject = ["$rootScope", "$sce", "$document", "$translate", "$filter", "$timeout","SpreadsheetService",
+  fieldDirective.$inject = ["$rootScope", "$sce", "$document", "$translate", "$filter", "$timeout",
+                            "SpreadsheetService",
                             "DataManipulationService", "FieldTypeService", "controlledTermDataService",
                             "StringUtilsService"];
 
-  function fieldDirective($rootScope, $sce, $document, $translate, $filter, $timeout, SpreadsheetService, DataManipulationService,
+  function fieldDirective($rootScope, $sce, $document, $translate, $filter, $timeout, SpreadsheetService,
+                          DataManipulationService,
                           FieldTypeService, controlledTermDataService, StringUtilsService) {
 
 
@@ -1061,46 +1063,21 @@ define([
 
       $scope.getShortId = function (uri, maxLength) {
         return StringUtilsService.getShortId(uri, maxLength);
-      }
+      };
 
       $scope.getId = function (index) {
         return DataManipulationService.getLocator($scope.field, 0, index);
       };
 
 
-
+      // for cardinality selectors
       $scope.cardinality = {
-         min:null,
-         max:null,
-         mins: [{
-           value: '0',
-           label: 'none'
-         }, {
-           value: '1',
-           label: 'one'
-         }, {
-           value: '2',
-           label: 'two'
-         }, {
-           value: '3',
-           label: 'three'
-         }, {
-           value: '4',
-           label: 'four'
-         },{
-           value: '5',
-           label: 'five'
-         },{
-           value: '6',
-           label: 'six'
-         },{
-           value: '7',
-           label: 'seven'
-         },{
-           value: '8',
-           label: 'eight'
-         }],
-        maxes:[{
+        min  : null,
+        max  : null,
+        mins : [{
+          value: '0',
+          label: 'none'
+        }, {
           value: '1',
           label: 'one'
         }, {
@@ -1112,19 +1089,44 @@ define([
         }, {
           value: '4',
           label: 'four'
-        },{
+        }, {
           value: '5',
           label: 'five'
-        },{
+        }, {
           value: '6',
           label: 'six'
-        },{
+        }, {
           value: '7',
           label: 'seven'
-        },{
+        }, {
           value: '8',
           label: 'eight'
-        },{
+        }],
+        maxes: [{
+          value: '1',
+          label: 'one'
+        }, {
+          value: '2',
+          label: 'two'
+        }, {
+          value: '3',
+          label: 'three'
+        }, {
+          value: '4',
+          label: 'four'
+        }, {
+          value: '5',
+          label: 'five'
+        }, {
+          value: '6',
+          label: 'six'
+        }, {
+          value: '7',
+          label: 'seven'
+        }, {
+          value: '8',
+          label: 'eight'
+        }, {
           value: '0',
           label: 'unlimited'
         }]
@@ -1138,7 +1140,7 @@ define([
       $scope.initMultiple = function () {
         if ($scope.isMultiple()) {
           $scope.cardinality.min = $scope.field.minItems.toString();
-          $scope.cardinality.max = $scope.field.maxItems.toString();
+          $scope.cardinality.max = typeof $scope.field.maxItems === 'undefined' ? '0' : $scope.field.maxItems.toString();
         }
       };
 
@@ -1152,8 +1154,8 @@ define([
       };
 
       $scope.defaultMinMax = function () {
-          $scope.field.minItems = '1';
-          $scope.field.maxItems = '0';
+        $scope.field.minItems = 1;
+        $scope.field.maxItems = 0;
       };
 
 
