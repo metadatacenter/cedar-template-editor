@@ -84,6 +84,8 @@
     "Cardinality": "Cardinality",
     "Min": "Min:",
     "Max": "Max:",
+    "No": "No",
+    "Yes": "Yes",
     "NotAvailable": "Not Available",
     "Deleted": "Deleted",
     "Warning": "Warning",

@@ -73,20 +73,31 @@
   </div>
 
   <!-- Cardinality tab  -->
-  <div id="cardinality-options" class="cardinality-options cardinality-selectors" ng-show="isTabActive('cardinality')" >
-      <div class="form-group validation-pattern pull-left min-items-option" >
-        <label translate>GENERIC.Min</label>
-        <select class="" ng-model="$parent.field.minItems" title=""
-            ng-options="v.value as v.label for v in $root.minCardinalities" select-picker="$event.stopPropagation();">
-        </select>
+  <div id="cardinality-options" class="cardinality-options " ng-show="isTabActive('cardinality')" ng-init="xxx()">
+
+    <div class="type-toggle date">
+      <div class="d-option"  ng-class="{active: !isMultiple()}" ng-click="clearMinMax()">
+        <span translate>GENERIC.No</span>
       </div>
-      <div class="form-group validation-pattern pull-left max-items-option" >
-        <label translate>GENERIC.Max</label>
-        <select class="" ng-model="$parent.field.maxItems"
-            ng-options="v.value as v.label for v in $root.maxCardinalities"
-            title="" select-picker="$event.stopPropagation();">
-        </select>
+      <div class="d-option"  ng-class="{active: isMultiple()}" ng-click="defaultMinMax()">
+        <span translate>GENERIC.Yes</span>
       </div>
+    </div>
+
+    <div class="cardinality-selectors" ng-if="field.minItems > -1" >
+      <span  class=" form-group validation-pattern  min-items-option" >
+        <span  translate>GENERIC.Min</span>
+        <select class="center" select-picker ng-model="cardinality.min" ng-init="initMultiple()" ng-change="updateMultiple()">
+          <option ng-repeat="i in cardinality.mins" value="{{ i.value }}">{{ i.label }}</option>
+        </select>
+      </span>
+      <span  class=" form-group validation-pattern  max-items-option" >
+        <span  translate>GENERIC.Max</span>
+        <select  select-picker ng-model="cardinality.max"  ng-init="initMultiple()" ng-change="updateMultiple()">
+          <option ng-repeat="i in cardinality.maxes" value="{{ i.value }}">{{ i.label }}</option>
+        </select>
+      </span>
+    </div>
     <!-- /.form-group -->
   </div>
 

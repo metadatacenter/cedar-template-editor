@@ -13455,11 +13455,15 @@ p.instructions {
 .cardinality-options select {
   padding: 5px;
 }
+.cardinality-options .cardinality-selectors {
+  text-align: center;
+  padding-bottom: 10px;
+}
 .cardinality-options .min-items-option {
   margin-right: 10px;
 }
 #cardinality-options .bootstrap-select {
-  width: 80px;
+  width: 100px;
 }
 .more-input-wrapper {
   position: absolute;

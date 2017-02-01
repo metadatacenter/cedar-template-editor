@@ -347,19 +347,7 @@ define([
       };
       field._valueConstraints.literals.push(emptyOption);
     };
-
-    service.generateCardinalities = function (min, max, addUnlimited) {
-      var results = [];
-      for (var i = min; i <= max; i++) {
-        results.push({value: i, label: i});
-      }
-      if (addUnlimited) {
-        results.push({value: 0, label: "N"});
-      }
-      results.push({value: -1, label: ""});
-
-      return results;
-    };
+    
 
     // TODO: remove this if not needed
     // Generating a RFC4122 version 4 compliant GUID
