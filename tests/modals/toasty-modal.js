@@ -23,6 +23,11 @@ var ToastyModal = function () {
   var toastyMessageDeleted = " has been deleted.";
 
 
+  this.createToastyConfirmationPopup = function() {
+    return createToastyConfirmationPopup;
+  };
+
+
   // look for the first toast to be a success
   this.isSuccess = function () {
 

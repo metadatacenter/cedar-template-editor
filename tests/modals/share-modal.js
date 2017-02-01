@@ -131,19 +131,21 @@ var ShareModal = function () {
     usernameField.sendKeys(username);
     browser.actions().sendKeys(protractor.Key.ENTER).perform();
 
-    if (canWrite || isOwner) {
-      var permissionsList = this.createShareModalUserPermissions();
-      browser.wait(EC.elementToBeClickable(permissionsList));
-      permissionsList.click();
+    var permissionsList = this.createShareModalUserPermissions();
+    browser.wait(EC.elementToBeClickable(permissionsList));
+    permissionsList.click();
 
-      if(canWrite) {
-        browser.wait(EC.elementToBeClickable(this.createShareModalUserWritePermission()));
-        this.createShareModalUserWritePermission().click();
-      }
-      else if(isOwner) {
-        browser.wait(EC.elementToBeClickable(this.createShareModalUserOwnerPermission()));
-        this.createShareModalUserOwnerPermission().click();
-      }
+    if (canWrite) {
+      browser.wait(EC.elementToBeClickable(this.createShareModalUserWritePermission()));
+      this.createShareModalUserWritePermission().click();
+    }
+    else if (isOwner) {
+      browser.wait(EC.elementToBeClickable(this.createShareModalUserOwnerPermission()));
+      this.createShareModalUserOwnerPermission().click();
+    }
+    else {
+      browser.wait(EC.elementToBeClickable(this.createShareModalUserReadPermission()));
+      this.createShareModalUserReadPermission().click();
     }
 
     var addButton = this.createShareModalAddUserButton();
@@ -161,19 +163,21 @@ var ShareModal = function () {
     groupnameField.sendKeys(groupName);
     browser.actions().sendKeys(protractor.Key.ENTER).perform();
 
-    if (canWrite || isOwner) {
-      var permissionsList = this.createShareModalGroupPermissions();
-      browser.wait(EC.elementToBeClickable(permissionsList));
-      permissionsList.click();
+    var permissionsList = this.createShareModalGroupPermissions();
+    browser.wait(EC.elementToBeClickable(permissionsList));
+    permissionsList.click();
 
-      if(canWrite) {
-        browser.wait(EC.elementToBeClickable(this.createShareModalGroupWritePermission()));
-        this.createShareModalGroupWritePermission().click();
-      }
-      else if(isOwner) {
-        browser.wait(EC.elementToBeClickable(this.createShareModalGroupOwnerPermission()));
-        this.createShareModalGroupOwnerPermission().click();
-      }
+    if (canWrite) {
+      browser.wait(EC.elementToBeClickable(this.createShareModalGroupWritePermission()));
+      this.createShareModalGroupWritePermission().click();
+    }
+    else if (isOwner) {
+      browser.wait(EC.elementToBeClickable(this.createShareModalGroupOwnerPermission()));
+      this.createShareModalGroupOwnerPermission().click();
+    }
+    else {
+      browser.wait(EC.elementToBeClickable(this.createShareModalUserReadPermission()));
+      this.createShareModalUserReadPermission().click();
     }
 
     var addButton = this.createShareModalAddGroupButton();
@@ -185,14 +189,14 @@ var ShareModal = function () {
   };
 
 
-  // assuming the share modal is open, this checks whether this user can share the selected item
+  // checks whether the current user can share the selected item
   this.canShare = function() {
     var usernameField = this.createShareModalUserName();
     return usernameField.isPresent();
   };
 
 
-  // assuming the share modal is open, this checks whether the current user can change ownership of the selected item
+  // checks whether the current user can change ownership of the selected item
   this.canChangeOwnership = function () {
     var permissionsList = this.createShareModalUserPermissions();
     if(!permissionsList.isPresent()) {

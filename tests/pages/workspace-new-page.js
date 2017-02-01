@@ -432,6 +432,7 @@ var WorkspacePage = function () {
   this.navigateToUserFolder = function (username) {
     this.clickBreadcrumb(1);
     var userFolder = this.createCenterPanel().element(by.cssContainingText('.folderTitle.ng-binding', username));
+    browser.wait(EC.elementToBeClickable(userFolder));
     browser.actions().doubleClick(userFolder).perform();
   };
 

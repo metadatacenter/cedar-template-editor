@@ -10,6 +10,7 @@ var testUserName1 = 'Test User 1';
 var testUserName2 = 'Test User 2';
 
 describe('folder-permissions', function () {
+  var EC = protractor.ExpectedConditions;
   var workspacePage;
   var toastyModal;
   var sweetAlertModal;
@@ -52,7 +53,7 @@ describe('folder-permissions', function () {
     var sharedFolderTitle = workspacePage.createFolder('Shared');
 
     // share folder
-    shareModal.shareResource(sharedFolderTitle, 'folder', testUserName2, false);
+    shareModal.shareResource(sharedFolderTitle, 'folder', testUserName2, false, false);
 
     // logout current user and login as the user with whom the folder was shared
     workspacePage.logout();
@@ -78,9 +79,10 @@ describe('folder-permissions', function () {
     var targetFolder = workspacePage.createFolder('Target');
 
     // share both folders
-    shareModal.shareResource(sourceFolder, 'folder', testUserName1, true);
+    shareModal.shareResource(sourceFolder, 'folder', testUserName1, true, false);
+    browser.wait(EC.invisibilityOf(shareModal.createShareModal()));
     workspacePage.clickLogo(); // reset search
-    shareModal.shareResource(targetFolder, 'folder', testUserName1, true); // TODO fails because of refresh issue #273 (when this resource is about to be shared, the view shows the sharing options for the previously created folder...)
+    shareModal.shareResource(targetFolder, 'folder', testUserName1, true, false);
 
     workspacePage.logout();
     workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
@@ -90,7 +92,7 @@ describe('folder-permissions', function () {
 
     // move source to target folder
     workspacePage.moveResource(sourceFolder, 'folder');
-    moveModal.moveToDestination(testUserName2, targetFolder);
+    moveModal.moveToDestination(targetFolder);
     toastyModal.isSuccess();
   });
 
@@ -100,9 +102,10 @@ describe('folder-permissions', function () {
     var sourceFolder = workspacePage.createFolder('Source');
     var targetFolder = workspacePage.createFolder('Target');
 
-    shareModal.shareResource(sourceFolder, 'folder', testUserName2, true);
+    shareModal.shareResource(sourceFolder, 'folder', testUserName2, true, false);
+    browser.wait(EC.invisibilityOf(shareModal.createShareModal()));
     workspacePage.clickLogo(); // reset search
-    shareModal.shareResource(targetFolder, 'folder', testUserName2, false); // TODO fails because of refresh issue #273
+    shareModal.shareResource(targetFolder, 'folder', testUserName2, false, false);
 
     workspacePage.logout();
     workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
@@ -120,9 +123,10 @@ describe('folder-permissions', function () {
     var targetFolder = workspacePage.createFolder('Target');
 
     // share both folders
-    shareModal.shareResource(sourceFolder, 'folder', testUserName1, false);
+    shareModal.shareResource(sourceFolder, 'folder', testUserName1, false, false);
+    browser.wait(EC.invisibilityOf(shareModal.createShareModal()));
     workspacePage.clickLogo(); // reset search
-    shareModal.shareResource(targetFolder, 'folder', testUserName1, false); // TODO fails because of refresh issue #273
+    shareModal.shareResource(targetFolder, 'folder', testUserName1, false, false);
 
     workspacePage.logout();
     workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
@@ -132,7 +136,7 @@ describe('folder-permissions', function () {
 
     // move source to target folder
     workspacePage.moveResource(sourceFolder, 'folder');
-    moveModal.moveToDestination(testUserName2, targetFolder);
+    moveModal.moveToDestination(targetFolder);
     toastyModal.isError();
   });
 

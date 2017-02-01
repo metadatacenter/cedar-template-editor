@@ -48,7 +48,6 @@ describe('update-ownership', function () {
     var sidebarBtn = workspacePage.createViewDetailsButton();
     browser.wait(EC.elementToBeClickable(sidebarBtn));
     sidebarBtn.click();
-    expect(workspacePage.createDetailsPanel().isDisplayed()).toBe(true);
 
     // verify that the presented owner username is the new one assigned above
     expect(workspacePage.createDetailsPanelOwnerValue().getText()).toBe(testUserName2); // TODO fails due to issue #290
@@ -63,7 +62,7 @@ describe('update-ownership', function () {
     workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
 
     workspacePage.navigateToUserFolder(testUserName1);
-    shareModal.openDialogViaMoreOptions(folder, 'folder');
+    shareModal.openDialogViaRightClick(folder, 'folder');
 
     expect(shareModal.canShare()).toBe(false);
     shareModal.clickDone();
@@ -72,13 +71,13 @@ describe('update-ownership', function () {
 
   it("should fail to change ownership of a folder shared as writable with current user", function () {
     var folder = workspacePage.createFolder('Writable');
-    shareModal.shareResource(folder, 'folder', testUserName1, true, false); // TODO fails due to issue #273
+    shareModal.shareResource(folder, 'folder', testUserName1, true, false);
 
     workspacePage.logout();
     workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
 
     workspacePage.navigateToUserFolder(testUserName2);
-    shareModal.openDialogViaMoreOptions(folder, 'folder');
+    shareModal.openDialogViaRightClick(folder, 'folder');
 
     expect(shareModal.canChangeOwnership()).toBe(false);
     shareModal.clickDone();
@@ -93,7 +92,7 @@ describe('update-ownership', function () {
     workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
 
     workspacePage.navigateToUserFolder(testUserName1);
-    shareModal.openDialogViaMoreOptions(folder, 'folder');
+    shareModal.openDialogViaRightClick(folder, 'folder');
 
     expect(shareModal.canShare()).toBe(false);
     shareModal.clickDone();
@@ -102,13 +101,13 @@ describe('update-ownership', function () {
 
   it("should fail to change ownership of a folder shared as writable with Everybody group", function () {
     var folder = workspacePage.createFolder('Writable');
-    shareModal.shareResourceWithGroup(folder, 'folder', everybodyGroup, true, false); // TODO fails due to issue #273
+    shareModal.shareResourceWithGroup(folder, 'folder', everybodyGroup, true, false);
 
     workspacePage.logout();
     workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
 
     workspacePage.navigateToUserFolder(testUserName2);
-    shareModal.openDialogViaMoreOptions(folder, 'folder');
+    shareModal.openDialogViaRightClick(folder, 'folder');
 
     expect(shareModal.canChangeOwnership()).toBe(false);
     shareModal.clickDone();
