@@ -1,13 +1,13 @@
-<div class="controls-bar clearfix row-fluid navbar-fixed-top " ng-class="{'as-modal': !dc.onDashboard()}">
+<div class="controls-bar clearfix row-fluid navbar-fixed-top " ng-class="{'as-modal': !dc.onDashboard()}" >
 
   <div class="col-sm-2"></div>
-  <div class="col-sm-7">
+  <div class="col-sm-7" >
 
-    <div class="breadcrumbs-sb ">
+    <div class="breadcrumbs-sb " >
       <p ng-if="dc.isSearching">
         <span class="search-result">
             <span ng-class="{'no-search-results':dc.searchTerm}">
-              <span>{{dc.breadcrumbTitle}}</span>
+              <span >{{dc.breadcrumbTitle}}</span>
             </span>
           </span>
       </p>
@@ -45,9 +45,8 @@
             <ul class="dropdown-menu dropdown-menu-right">
 
               <li ng-if="dc.isFolder()"><a href="#" ng-click="dc.goToResource()">Open</a></li>
-              <li ng-if="dc.isTemplate()"><a href="#" ng-click="dc.launchInstance()">Populate</a></li>
-              <li ng-if="dc.isTemplate() && dc.runTimeVisible()"><a href="#" ng-click="dc.launchInstanceNew()">New
-                Populate</a></li>
+              <li ng-if="dc.isTemplate() && !dc.runTimeVisible()"><a href="#" ng-click="dc.launchInstance()">Populate</a></li>
+              <li ng-if="dc.isTemplate() && dc.runTimeVisible()"><a href="#" ng-click="dc.launchInstanceNew()">Populate</a></li>
               <li ng-if="!dc.isFolder()"><a href="#" ng-click="dc.editResource()">Edit</a></li>
               <li role="separator" class="divider"></li>
               <li><a href="#" ng-click="dc.showShareModal(resource)">Share...</a></li>
@@ -244,8 +243,9 @@
 
         <div class="filter-options">
 
-          <div class="shares"><a class="share" href="#" ng-click="dc.goToMyWorkspace()" translate>DASHBOARD.sidebar.myWorkspace</a>
-            <a class="share" href="#" ng-click="dc.goToSharedWithMe()" translate>DASHBOARD.sidebar.sharedWithMe</a>
+          <div class="shares">
+            <a class="share" ng-class="{active: !dc.isSharedMode()}" href="#" ng-click="dc.goToMyWorkspace()" translate>DASHBOARD.sidebar.myWorkspace</a>
+            <a class="share" ng-class="{active: dc.isSharedMode()}" href="#" ng-click="dc.goToSharedWithMe()" translate>DASHBOARD.sidebar.sharedWithMe</a>
             <!--<a class="share" href="#" ng-click="dc.goToSearchAll()" translate>DASHBOARD.sidebar.all</a>-->
           </div>
 
@@ -415,9 +415,8 @@
                       <!-- need to duplicate these blocks because otherwise the popup flickers --->
                       <ul ng-if="dc.isTemplate()" class="dropdown-menu"
                           aria-labelledby="{{getId(resource, 'populate')}}">
-                        <li><a href="#" ng-click="dc.launchInstance(resource, false)">Populate</a></li>
-                        <li ng-if="dc.runTimeVisible()"><a href="#" ng-click="dc.launchInstanceNew(resource, true)">New
-                          Populate</a></li>
+                        <li ng-if="!dc.runTimeVisible()"><a href="#" ng-click="dc.launchInstance(resource, false)">Populate</a></li>
+                        <li ng-if="dc.runTimeVisible()"><a href="#" ng-click="dc.launchInstanceNew(resource, true)">Populate</a></li>
                         <li><a href="#" ng-click="dc.editResource(resource)">Edit</a></li>
                         <li><a href="#" ng-click="dc.showInfoPanel(resource)">Info</a></li>
                         <li role="separator" class="divider"></li>
@@ -514,10 +513,10 @@
                         class="btn btn-sm btn-circle fa fa-ellipsis-v"></i>
                     </button>
                     <ul class="dropdown-menu" aria-labelledby="{{getId(resource, 'list')}}">
-                      <li ng-if="dc.isTemplate() "><a href="#" ng-click="dc.launchInstance(resource, false)">Populate
+                      <li ng-if="dc.isTemplate() && !dc.runTimeVisible()"><a href="#" ng-click="dc.launchInstance(resource, false)">Populate
                       </a></li>
                       <li ng-if="dc.isTemplate() && dc.runTimeVisible()"><a href="#"
-                          ng-click="dc.launchInstanceNew(resource, true)">New Populate
+                          ng-click="dc.launchInstanceNew(resource, true)">Populate
                       </a></li>
                       <li><a href="#" ng-click="dc.editResource(resource)">Edit</a></li>
 
@@ -580,27 +579,27 @@
         <div class="info">
           <div class="row">
             <div class="col-sm-4" translate>Type</div>
-            <div class="col-sm-8">{{ dc.getResourceTypeClass(dc.getSelectedNode())}}</div>
+            <div class="col-sm-8 type">{{ dc.getResourceTypeClass(dc.getSelectedNode())}}</div>
           </div>
           <div class="row">
             <div class="col-sm-4 ">Location</div>
             <div class="col-sm-8 location">{{ dc.getSelectedNode().displayPath }}</div>
           </div>
           <div class="row">
-            <div class="col-sm-4 left">Owner</div>
-            <div class="col-sm-8">{{ dc.getSelectedNode().ownedByUserName }}</div>
+            <div class="col-sm-4 left ">Owner</div>
+            <div class="col-sm-8 owner">{{ dc.getSelectedNode().ownedByUserName }}</div>
           </div>
           <div class="row">
-            <div class="col-sm-4 left">Modified</div>
-            <div class="col-sm-8">
+            <div class="col-sm-4 left ">Modified</div>
+            <div class="col-sm-8 modified">
               <span class="no-wrap">{{ dc.getSelectedNode().lastUpdatedOnTS | prettyDate }}</span>
               by
               <span class="no-wrap">{{ dc.getSelectedNode().lastUpdatedByUserName }}</span>
             </div>
           </div>
           <div class="row">
-            <div class="col-sm-4 left">Created</div>
-            <div class="col-sm-8">
+            <div class="col-sm-4 left ">Created</div>
+            <div class="col-sm-8 created">
               <span class="no-wrap">{{ dc.getSelectedNode().createdOnTS | prettyDate }}</span>
               by
               <span class="no-wrap">{{ dc.getSelectedNode().createdByUserName }}</span>
@@ -608,15 +607,15 @@
           </div>
           <div class="row">
             <div class="col-sm-4 left">Can read</div>
-            <div class="col-sm-8">{{ dc.canRead() }}</div>
+            <div class="col-sm-8 can-read">{{ dc.canRead() }}</div>
           </div>
           <div class="row">
             <div class="col-sm-4 left">Can write</div>
-            <div class="col-sm-8">{{ dc.canWrite() }}</div>
+            <div class="col-sm-8 can-write">{{ dc.canWrite() }}</div>
           </div>
           <div class="row">
             <div class="col-sm-4 left">Can change owner</div>
-            <div class="col-sm-8">{{ dc.canChangeOwner() }}</div>
+            <div class="col-sm-8 can-change-owner">{{ dc.canChangeOwner() }}</div>
           </div>
         </div>
 

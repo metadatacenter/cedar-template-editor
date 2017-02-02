@@ -1,13 +1,13 @@
-<div class="has-constraint " ng-class="{'has-selected': (valueElement['@value'].label || valueElement['_valueLabel'])}"
-    style="border:1px solid #ddd;box-shadow:none;">
+<div class="has-constraint " ng-class="{'has-selected': (valueElement['@value'].label || valueElement['_valueLabel'])}">
 
   <ui-select
       ng-change="updateModelFromUIControlledField()"
       ng-model="modelValue[index]['@value']"
       theme="bootstrap"
       close-on-select="true"
+
       aria-label="getDescription(field)">
-    <ui-select-match placeholder="">{{$select.selected.label}}</ui-select-match>
+    <ui-select-match  allow-clear="true" placeholder="">{{$select.selected.label}}</ui-select-match>
     <ui-select-choices
         ui-disable-choice="option.label == 'No Results...'"
         refresh="$root.updateFieldAutocomplete($root.schemaOf(field), $select.search)"

@@ -348,18 +348,6 @@ define([
       field._valueConstraints.literals.push(emptyOption);
     };
 
-    service.generateCardinalities = function (min, max, addUnlimited) {
-      var results = [];
-      for (var i = min; i <= max; i++) {
-        results.push({value: i, label: i});
-      }
-      if (addUnlimited) {
-        results.push({value: 0, label: "N"});
-      }
-      results.push({value: -1, label: ""});
-
-      return results;
-    };
 
     // TODO: remove this if not needed
     // Generating a RFC4122 version 4 compliant GUID
@@ -659,6 +647,7 @@ define([
     };
 
     service.nextSibling = function (field, parent) {
+      console.log('nextSibling');
 
       if (field && parent) {
 
@@ -666,6 +655,9 @@ define([
         var props = service.getFieldSchema(parent).properties;
         var order = service.getFieldSchema(parent)._ui.order;
         var selectedKey;
+
+        console.log('id' + id);
+
 
         angular.forEach(props, function (value, key) {
           var valueId = service.getFieldSchema(value)["@id"];
@@ -675,6 +667,8 @@ define([
             }
           }
         });
+
+        console.log('selectedKey ' + selectedKey);
 
         if (selectedKey) {
           var idx = order.indexOf(selectedKey);
@@ -687,7 +681,11 @@ define([
             idx += 1;
           }
           if (found) {
+            console.log('found');
             return next;
+          } else {
+            console.log('not found');
+
           }
         }
       }

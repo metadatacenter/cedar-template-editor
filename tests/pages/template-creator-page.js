@@ -1004,8 +1004,11 @@ var TemplateCreatorPage = function () {
             createCheckboxButton.click();
             break;
           case "date":
+            console.log('createDateButton ');
             browser.wait(EC.elementToBeClickable(createDateButton));
+            console.log('createDateButton clickable ');
             createDateButton.click();
+            console.log('createDateButton clicked ');
             break;
           case "email":
             browser.wait(EC.elementToBeClickable(createEmailButton));
