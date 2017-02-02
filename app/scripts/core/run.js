@@ -491,9 +491,8 @@ define([
       return $rootScope.dirty;
     };
 
-
-    $rootScope.runTimeVisible = true;
-    $rootScope.useRunTimeCode = true;
+    // use the new form and hide the old form
+    $rootScope.useNewForm = true;
 
 
   };
