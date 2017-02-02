@@ -76,7 +76,6 @@ define([
           vm.shareModalVisible = false;
           vm.renameModalVisible = false;
           vm.newFolderModalVisible = false;
-          vm.runTimeVisible = runTimeVisible;
 
           vm.getFacets = getFacets;
           vm.getForms = getForms;
@@ -90,7 +89,6 @@ define([
           vm.isResourceTypeActive = isResourceTypeActive;
           vm.isSearching = false;
           vm.launchInstance = launchInstance;
-          vm.launchInstanceNew = launchInstanceNew;
           vm.copyToWorkspace = copyToWorkspace;
           vm.copyResource = copyResource;
           vm.setResourceInfoVisibility = setResourceInfoVisibility;
@@ -598,31 +596,11 @@ define([
           }
 
 
-          function runTimeVisible() {
-            return $rootScope.runTimeVisible;
+          function useNewForm() {
+            return $rootScope.useNewForm;
           }
 
-          function launchInstance(resource, newForm) {
-
-            // may be setting which form to use
-            if (newForm != null) {
-              $rootScope.useRunTimeCode = newForm;
-            }
-
-            if (!resource) {
-              resource = getSelection();
-            }
-
-            var url = FrontendUrlService.getInstanceCreate(resource['@id'], vm.getFolderId());
-            $location.url(url);
-          }
-
-          function launchInstanceNew(resource, newForm) {
-
-            // may be setting which form to use
-            if (newForm != null) {
-              $rootScope.useRunTimeCode = newForm;
-            }
+          function launchInstance(resource) {
 
             if (!resource) {
               resource = getSelection();
@@ -648,12 +626,7 @@ define([
                 goToFolder(r['@id']);
               } else {
                 if (r.nodeType == 'template') {
-                  if ($rootScope.useRunTimeCode) {
-                    launchInstanceNew(r, $rootScope.useRunTimeCode);
-                  } else {
-                    launchInstance(r, $rootScope.useRunTimeCode);
-                  }
-
+                  launchInstance(r);
                 } else {
                   editResource(r);
                 }

@@ -3,7 +3,7 @@
   <!--Loop through top level "page" parameter in form element and call cedar-template-element or field-directive with contents -->
 
   <!--At Runtime, the old form-->
-  <div class="page build" ng-if="$root.isRuntime() && !$root.useRunTimeCode" ng-repeat="page in pagesArray">
+  <div class="page build" ng-if="$root.isRuntime() && !$root.useNewForm" ng-repeat="page in pagesArray">
     <div ng-repeat="item in page" class="animate-fade" ng-show="pageIndex == $parent.$index">
       <span ng-if="form.properties[item]">
         <!--If Template field-->
@@ -31,7 +31,7 @@
 
   <!--At runtime, the new form-->
   <div class=" page runtime" ng-class="{'not-expanded': !isExpanded()}"
-      ng-if="$root.isRuntime() && $root.useRunTimeCode " ng-repeat="page in pagesArray">
+      ng-if="$root.isRuntime() && $root.useNewForm " ng-repeat="page in pagesArray">
 
       <div class="row">
         <div class="col-xs-9 ">
