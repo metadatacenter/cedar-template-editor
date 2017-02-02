@@ -66,7 +66,7 @@
 
               </div>
 
-              <form name="field-edit-form-{{index}}" ng-submit="onSubmit(index,'spreadsheet')">
+              <form name="field-edit-form-{{index}}" ng-submit="onSubmit(index)">
                 <div class="originalContent" ng-include="getFieldUrl()"></div>
                 <button type="submit" class="btn btn-save confirm active" translate>GENERIC.Ok</button>
                 <label class="submit-info" translate>GENERIC.Submit</label>
@@ -81,8 +81,7 @@
       <!-- show a paged list of fields  -->
       <div ng-if="showMultiple('paged') && valueArray.length > 0">
 
-        <div class="row" ng-class="{'isRowInactive' : !isActive(index), 'isActive': isActive(index)}"
-            id="{{getLocator(index)}}">
+        <div class="row" id="{{getLocator(index)}}" ng-class="{'isRowInactive' : !isActive(index), 'isActive': isActive(index)}" >
 
           <div class="col-sm-3 col-xs-* question">
             <div ng-click="setActive(index, true, 'ng-click title')" class="title field isInactive"
@@ -120,7 +119,7 @@
               <div ng-repeat="(i, valueElement) in valueArray">
                 <div ng-if="i===index">
                   <div ng-if="!isActive(index)" ng-include="getFieldUrl()"></div>
-                  <form ng-if="isActive(index)" name="field-edit-form-{{index}}" ng-submit="onSubmit(index,'paged')">
+                  <form ng-if="isActive(index)" name="field-edit-form-{{index}}" ng-submit="onSubmit(index)">
                     <div ng-include="getFieldUrl()"></div>
                     <button type="submit" class="btn btn-save confirm active" translate>GENERIC.Ok</button>
                     <label class="submit-info" translate>GENERIC.Submit</label>
@@ -140,7 +139,7 @@
           <div class="col-sm-3 col-xs-* ">
 
             <div ng-click="setActive(index, true)" class="title field isInactive">
-              <span ng-if="isMultipleCardinality()" class="" count>{{index+1}}.</span>{{getTitle(field)}}
+              {{getTitle(field)}}  <span ng-if="isMultipleCardinality()" class="" count>({{index+1}})</span>
             </div>
           </div>
           <div class="col-sm-9 col-xs-* " ng-click="setActive(index, true)">
@@ -177,7 +176,7 @@
                   </figure>
                 </div>
               </div>
-              <form name="field-edit-form-{{index}}" ng-submit="onSubmit(index,'expanded')">
+              <form name="field-edit-form-{{index}}" ng-submit="onSubmit(index)">
                 <div class="originalContent" ng-include="getFieldUrl()"></div>
                 <button type="submit" class="btn btn-save confirm active" translate>GENERIC.Ok</button>
                 <label class="submit-info" translate>GENERIC.Submit</label>

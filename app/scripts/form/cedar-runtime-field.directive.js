@@ -270,7 +270,6 @@ define([
         var value = args[3];
 
         if (id === $scope.getId() && path == $scope.path) {
-
           $scope.setActive(index, value);
         }
       });
@@ -289,7 +288,7 @@ define([
 
       // set this field and index active
       $scope.setActive = function (index, value, other) {
-        console.log('setActive ' + index + value + other);
+
 
         // off or on
         var active = (typeof value === "undefined") ? true : value;
@@ -333,51 +332,42 @@ define([
 
       // scroll within the template to the field with the locator, focus and select the tag
       $scope.scrollToLocator = function (locator, tag) {
-        //console.log('scrollToLocator '+ locator + ' ' + tag);
-
-        var target = angular.element('#' + locator);
-
-        if (target && target.offset()) {
 
           $scope.setHeight = function () {
 
-            // apply any changes first before examining dom elements
-            $scope.$apply();
+            var target = angular.element('#' + locator);
+            if (target && target.offset()) {
 
-            var window = angular.element($window);
-            var windowHeight = $(window).height();
-            var target = jQuery("#" + locator);
-            if (target) {
+              // apply any changes first before examining dom elements
+              $scope.$apply();
 
-              var targetTop = target.offset().top;
-              var targetHeight = target.outerHeight(true);
-              var scrollTop = jQuery('.template-container').scrollTop();
-              var newTop = scrollTop + targetTop - ( windowHeight - targetHeight ) / 2;
+              var window = angular.element($window);
+              var windowHeight = $(window).height();
+              var target = jQuery("#" + locator);
+              if (target) {
 
-              //console.log(target);
-              //console.log('target.offset()' );
-              //console.log(target.offset());
-              //console.log('targetTop ' + targetTop);
-              //console.log('targetHeight ' + targetHeight);
-              //console.log('scrollTop ' + scrollTop);
-              //console.log('newTop ' + newTop);
+                var targetTop = target.offset().top;
+                var targetHeight = target.outerHeight(true);
+                var scrollTop = jQuery('.template-container').scrollTop();
+                var newTop = scrollTop + targetTop - ( windowHeight - targetHeight ) / 2;
 
-              jQuery('.template-container').animate({scrollTop: newTop}, 'fast');
+                jQuery('.template-container').animate({scrollTop: newTop}, 'fast');
 
-              // focus and maybe select the tag
-              if (tag) {
-                var e = jQuery("#" + locator + ' ' + tag);
-                if (e.length) {
-                  e[0].focus();
-                  if (!e.is('select')) {
-                    e[0].select();
+                // focus and maybe select the tag
+                if (tag) {
+                  var e = jQuery("#" + locator + ' ' + tag);
+                  if (e.length) {
+                    e[0].focus();
+                    if (!e.is('select')) {
+                      e[0].select();
+                    }
                   }
                 }
               }
             }
           };
           $timeout($scope.setHeight, 100);
-        }
+
       };
 
       $scope.getPageWidth = function () {
@@ -410,26 +400,27 @@ define([
           DataManipulationService.setActive($scope.field, index, $scope.path, false);
 
           // is there a next one to set active, go to the next index,  or go to parent's next field
-          if (next != null && $scope.isMultipleCardinality() && (next < $scope.model.length)) {
+          if ($scope.isMultipleCardinality()) {
             if (next != null) {
               $scope.setActive(next, true);
             } else {
-              $scope.setActive(index + 1, true);
+              if (index+1 < $scope.model.length) {
+                $scope.setActive(index + 1, true);
+              }
             }
           } else {
             $scope.$parent.nextChild($scope.field, index, $scope.path);
 
           }
         } else {
-          console.log("error: not active");
+          //console.log("error: not active");
         }
       };
 
       // is this a submit?  shift-enter qualifies as a submit for any field
       $scope.isSubmit = function (keyEvent, index) {
         if (keyEvent.which === 13 && keyEvent.ctrlKey) {
-          console.log('isSubmit');
-          $scope.onSubmit(index, 'isSubmit');
+          $scope.onSubmit(index);
         }
       };
 

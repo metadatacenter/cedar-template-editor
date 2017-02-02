@@ -647,6 +647,7 @@ define([
     };
 
     service.nextSibling = function (field, parent) {
+      console.log('nextSibling');
 
       if (field && parent) {
 
@@ -654,6 +655,9 @@ define([
         var props = service.getFieldSchema(parent).properties;
         var order = service.getFieldSchema(parent)._ui.order;
         var selectedKey;
+
+        console.log('id' + id);
+
 
         angular.forEach(props, function (value, key) {
           var valueId = service.getFieldSchema(value)["@id"];
@@ -663,6 +667,8 @@ define([
             }
           }
         });
+
+        console.log('selectedKey ' + selectedKey);
 
         if (selectedKey) {
           var idx = order.indexOf(selectedKey);
@@ -675,7 +681,11 @@ define([
             idx += 1;
           }
           if (found) {
+            console.log('found');
             return next;
+          } else {
+            console.log('not found');
+
           }
         }
       }
