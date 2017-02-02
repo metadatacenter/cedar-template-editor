@@ -244,8 +244,9 @@
 
         <div class="filter-options">
 
-          <div class="shares"><a class="share" href="#" ng-click="dc.goToMyWorkspace()" translate>DASHBOARD.sidebar.myWorkspace</a>
-            <a class="share" href="#" ng-click="dc.goToSharedWithMe()" translate>DASHBOARD.sidebar.sharedWithMe</a>
+          <div class="shares">
+            <a class="share" ng-class="{active: !dc.isSharedMode()}" href="#" ng-click="dc.goToMyWorkspace()" translate>DASHBOARD.sidebar.myWorkspace</a>
+            <a class="share" ng-class="{active: dc.isSharedMode()}" href="#" ng-click="dc.goToSharedWithMe()" translate>DASHBOARD.sidebar.sharedWithMe</a>
             <!--<a class="share" href="#" ng-click="dc.goToSearchAll()" translate>DASHBOARD.sidebar.all</a>-->
           </div>
 

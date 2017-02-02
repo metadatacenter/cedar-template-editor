@@ -134,6 +134,7 @@ define([
           vm.buildBreadcrumbTitle = buildBreadcrumbTitle;
 
           vm.editingDescription = false;
+          vm.isSharedMode = isSharedMode;
 
           vm.hideModal = function (visible) {
             visible = false;
@@ -505,6 +506,10 @@ define([
             }
           }
 
+          function isSharedMode() {
+            return vm.isSearching && (vm.breadcrumbTitle === $translate.instant("BreadcrumbTitle.sharedWithMe"));
+          }
+
           function doSearch(term) {
             var resourceTypes = activeResourceTypes();
             var limit = UISettingsService.getRequestLimit();
@@ -682,9 +687,9 @@ define([
                 case CONST.resourceType.LINK:
                   $location.path(scope.href);
                   break;
-                  //case CONST.resourceType.FOLDER:
-                  //  vm.showEditFolder(r);
-                  //  break;
+                //case CONST.resourceType.FOLDER:
+                //  vm.showEditFolder(r);
+                //  break;
               }
             }
           }
@@ -1162,9 +1167,8 @@ define([
 
           // should we show the resource count at the end of the workspace?
           vm.showResourceCount = function () {
-            return  vm.totalCount !== Number.MAX_VALUE && vm.totalCount > vm.requestLimit;
+            return vm.totalCount !== Number.MAX_VALUE && vm.totalCount > vm.requestLimit;
           }
-
 
 
         }

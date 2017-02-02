@@ -10005,14 +10005,19 @@ button {
   left: 0;
 }
 .all-items-view .row-offcanvas-left .filter-options {
-  padding: 40px 0 20px 10px;
+  padding: 10px 0 0 10px;
 }
 .all-items-view .row-offcanvas-left .filter-options .shares {
-  margin: 0 0 20px 0;
+  margin: 30px 0 40px 0;
 }
 .all-items-view .row-offcanvas-left .filter-options .shares .share {
-  margin: 5px 0;
+  color: #5795ba;
+  margin: 10px 0;
   display: block;
+}
+.all-items-view .row-offcanvas-left .filter-options .shares .share.active {
+  font-weight: bold;
+  font-size: larger;
 }
 .all-items-view .row-offcanvas-left .filter-options ul.list-inline {
   padding: 10px 0;

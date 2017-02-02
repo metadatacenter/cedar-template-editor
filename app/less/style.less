@@ -1151,13 +1151,18 @@ button {
     left: 0;
 
     .filter-options {
-      padding: 40px 0 20px 10px;
+      padding: 10px 0 0 10px;
 
       .shares {
-        margin:0 0 20px 0;
+        margin: 30px 0 40px 0;
         .share {
-          margin:5px 0;
+          color:@brand-primary;
+          margin:10px 0;
           display:block;
+          &.active {
+            font-weight:bold;
+            font-size:larger;
+          }
         }
       }
 
