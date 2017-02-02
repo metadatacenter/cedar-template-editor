@@ -492,10 +492,12 @@ define([
         };
 
         $scope.nextChild = function (fieldOrElement) {
+          console.log('nextChild');
 
           var id = DataManipulationService.getId(fieldOrElement);
           var selectedKey;
           var props = $scope.form.properties;
+          console.log('find nextChild of ' + id);
 
 
           // find the field or element in the form's properties
@@ -519,10 +521,11 @@ define([
             }
 
             if (found) {
-              console.log('found' + DataManipulationService.getId(next));
+              console.log('nextChild found ' + DataManipulationService.getId(next));
               $rootScope.$broadcast("setActive", [DataManipulationService.getId(next), 0, $scope.path, true]);
             } else {
-              console.log('not found')
+              console.log('nextChild none found');
+              console.log($scope.form._ui.order);
               $rootScope.$broadcast("setActive", [id, 0, $scope.path, false]);
             }
           }

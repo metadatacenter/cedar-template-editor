@@ -93,10 +93,20 @@ define([
 
 
       scope.nextChild = function (field, index, path) {
+        console.log('nextChild ' + index + ' ' + path);
+        console.log(field);
+        console.log(scope.$parent.element);
 
         var next = DataManipulationService.nextSibling(field, scope.$parent.element);
         var parentIndex = parseInt(scope.lastIndex(path)) || 0;
         var parentPath = path.substring(0, path.lastIndexOf('-'));
+
+        console.log(next);
+        console.log('parentIndex ' + parentIndex);
+        console.log('parentPath ' + parentPath);
+        console.log(scope.$parent.isMultiple());
+        console.log(parentIndex + 1 < scope.$parent.model.length);
+
         if (next) {
 
           // field's next sibling
@@ -106,13 +116,14 @@ define([
 
         if (scope.$parent.isMultiple() && (parentIndex + 1 < scope.$parent.model.length)) {
 
+          console.log('broadcast ' +DataManipulationService.getId(scope.$parent.element) + ' ' + scope.$parent.path + ' '  + (parentIndex+1));
           // next parent index if multiple
           $rootScope.$broadcast("setActive",
               [DataManipulationService.getId(scope.$parent.element), parentIndex + 1, scope.$parent.path, true]);
           return;
         }
 
-        console.log('broadcast for nextSibling of parent' + DataManipulationService.getId(scope.$parent.element));
+        console.log('broadcast for nextSibling of parent' + DataManipulationService.getId(scope.$parent.element) + ' '  + parentIndex + ' ' + parentPath);
         // look for the next sibling of the parent
         $rootScope.$broadcast("nextSibling",
             [DataManipulationService.getId(scope.$parent.element), parentIndex, parentPath, true]);

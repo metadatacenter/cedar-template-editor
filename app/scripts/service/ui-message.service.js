@@ -106,33 +106,41 @@ define([
         //timeout: false,
         onClick: function () {
           //console.log(response);
-          var message, string, stackTraceHtml, statusCode, statusText, url, method;
+          var message, exception, stackTraceHtml, statusCode, statusText, url, method, errorKey;
           statusCode = response.status;
           statusText = response.statusText;
           url = response.config.url;
           method = response.config.method;
           //console.log(response);
-          if (response.status == 404) {
-            message = $translate.instant('SERVER.ERROR.NotFoundMessage');
-            string = $translate.instant('SERVER.ERROR.NotFoundString');
-            stackTraceHtml = $translate.instant('GENERIC.NotAvailable');
-          } else if (response.status == 0 || response.status == 502) {
+          if (response.status == -1) {
             message = $translate.instant('SERVER.ERROR.InaccessibleMessage');
-            string = $translate.instant('SERVER.ERROR.InaccessibleMessageString');
+            exception = $translate.instant('SERVER.ERROR.InaccessibleMessageString');
             stackTraceHtml = $translate.instant('GENERIC.NotAvailable');
           } else {
             if (errorObject !== null) {
               message = errorObject.message;
-              string = errorObject.string;
-              if (errorObject.hasOwnProperty('stackTrace')) {
-                stackTraceHtml = "<textarea>" + errorObject.stackTrace.join('<br />') + "</textarea>";
+              errorKey = errorObject.errorKey;
+              if (errorObject.hasOwnProperty('sourceException')) {
+                var ex = errorObject.sourceException;
+                exception = ex.message;
+                if (ex.hasOwnProperty('stackTrace')) {
+                  stackTraceHtml = "<textarea>";
+                  for (var i in ex.stackTrace) {
+                    stackTraceHtml += ex.stackTrace[i].className
+                        + " -> " + ex.stackTrace[i].methodName
+                        + " ( " + ex.stackTrace[i].lineNumber + " )"
+                        + "\n";
+                  }
+                  stackTraceHtml += "</textarea>";
+                }
               }
             }
           }
 
           var content = $translate.instant('SERVER.ERROR.technicalDetailsTemplate', {
             message   : message,
-            string    : string,
+            errorKey  : errorKey,
+            exception : exception,
             statusCode: statusCode,
             statusText: statusText,
             url       : url,

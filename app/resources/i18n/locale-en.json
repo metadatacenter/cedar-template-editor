@@ -84,6 +84,8 @@
     "Cardinality": "Cardinality",
     "Min": "Min:",
     "Max": "Max:",
+    "No": "No",
+    "Yes": "Yes",
     "NotAvailable": "Not Available",
     "Deleted": "Deleted",
     "Warning": "Warning",
@@ -114,7 +116,9 @@
     "Help": "Help",
     "Close": "Close",
     "Add": "Add",
-    "ExpandAll": "Expand"
+    "ExpandAll": "Expand All",
+    "Displaying": "Displaying",
+    "Of": "of"
   },
   "HELP": {
     "createFolder": "Create folder",
@@ -275,7 +279,7 @@
     "ERROR": {
       "title": "Server Error",
       "technicalDetailsTitle": "Technical details of error",
-      "technicalDetailsTemplate": "Status: {{statusCode}}, {{statusText}}<br/>URL: {{url}}<br/>Method: {{method}}<br/><br/>Message: {{message}}<br />Exception: {{string}}<br /><br />Stack trace:<br/>",
+      "technicalDetailsTemplate": "<b>Status</b>: {{statusCode}}, {{statusText}}<br/><b>URL</b>: {{url}}<br/><b>Method</b>: {{method}}<br/><br/><b>Message</b>: {{message}}<br/><b>Error key</b>: {{errorKey}}<br /><b>Exception</b>: {{exception}}<br /><br /><b>Stack trace</b>:<br/>",
       "NotFoundMessage": "Not Found.",
       "NotFoundString": "The object with the requested id can not be found.",
       "InaccessibleMessage": "Can not access endpoint.",

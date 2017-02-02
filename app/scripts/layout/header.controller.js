@@ -22,7 +22,6 @@ define([
     vm.path = $location.path();
 
     vm.confirmBack = function () {
-      console.log('confirmBack');
 
       if (!$rootScope.isDirty()) {
 
@@ -67,6 +66,7 @@ define([
 
     vm.search = function (searchTerm) {
       if (vm.isDashboard()) {
+        vm.searchTerm = searchTerm;
         var baseUrl = '/dashboard';
         var queryParams = {};
         var folderId = QueryParamUtilsService.getFolderId();
@@ -124,8 +124,7 @@ define([
 
 
     $rootScope.$on('$locationChangeStart', function (event, next, current) {
-
-
+      vm.searchTerm = $location.search().search;
       vm.path = $location.path();
       $rootScope.setHeader();
 

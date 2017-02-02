@@ -266,7 +266,7 @@ describe('template-creator', function () {
             var description = fieldType.label + ' description';
             var type = fieldType.cedarType;
 
-            xit("should add and delete a " + type + " in " + pageType + ' from popup ' + isMore, function () {
+            xit("should add and delete a " + type + " in " + pageType + ' isMore ' + isMore, function () {
 
               workspacePage.createResource(pageType);
 
