@@ -36,7 +36,7 @@ var WorkspacePage = function () {
   var createToolbar = element(by.id('workspace-toolbar'));
   var createTrashButton = createToolbar.element(by.css('#delete-tool button'));
   var createMoreOptionsButton = createToolbar.element(by.css('#more-options-tool > div > button'));
-  var createPopulateResourceButton = createToolbar.element(by.css('#more-options-tool [ng-click="dc.launchInstance()"]'));
+  var createPopulateResourceButton = createToolbar.element(by.css('#more-options-tool [ng-click="dc.launchInstanceNew()"]'));
   var createEditResourceButton = createToolbar.element(by.css('#more-options-tool [ng-click="dc.editResource()"]'));
   var createMoveToResourceButton = createToolbar.element(by.css('#more-options-tool [ng-click="dc.showMoveModal(resource)"]'));
   var createOpenResourceButton = createToolbar.element(by.css('#more-options-tool [ng-click="dc.goToResource()"]'));
