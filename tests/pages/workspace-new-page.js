@@ -218,10 +218,38 @@ var WorkspacePage = function () {
     browser.wait(EC.elementToBeClickable(createFirst));
     createFirst.click();
 
+    console.log('selected template resource');
+
     // create more on the toolbar
     browser.wait(EC.visibilityOf(createMoreOptionsButton));
     browser.wait(EC.elementToBeClickable(createMoreOptionsButton));
     createMoreOptionsButton.click();
+
+    console.log('clicked create more');
+
+    // populate menu item
+    browser.wait(EC.visibilityOf(createPopulateResourceButton));
+    browser.wait(EC.elementToBeClickable(createPopulateResourceButton));
+    createPopulateResourceButton.click();
+
+    console.log('clicked populate');
+
+  };
+
+  // populate a template resource
+  this.populateResourceStepOne = function (name, type) {
+
+    // find the resource
+    createSearchNavInput.sendKeys(name + protractor.Key.ENTER);
+    var createFirst = element.all(by.css(createFirstCss + type)).first();
+    browser.wait(EC.visibilityOf(createFirst));
+    browser.wait(EC.elementToBeClickable(createFirst));
+    createFirst.click();
+
+  };
+
+  // populate a template resource
+  this.populateResourceStepTwo = function (name, type) {
 
     // populate menu item
     browser.wait(EC.visibilityOf(createPopulateResourceButton));
