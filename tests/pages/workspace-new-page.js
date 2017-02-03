@@ -58,7 +58,7 @@ var WorkspacePage = function () {
 
   // breadcrumbs
   var createBreadcrumb = element(by.css('.breadcrumbs-sb'));
-  var createBreadcrumbFolders = element(by.css('.breadcrumbs-sb')).all(by.repeater('folder in dc.pathInfo'));
+  var createBreadcrumbFolders = element(by.css('.breadcrumbs-sb .folder-path'));
   var createBreadcrumbSearch = element(by.css('.breadcrumbs-sb .search-result'));
 
   // create new buttons
@@ -218,25 +218,37 @@ var WorkspacePage = function () {
     browser.wait(EC.elementToBeClickable(createFirst));
     createFirst.click();
 
-    console.log('selected template resource');
-
     // create more on the toolbar
     browser.wait(EC.visibilityOf(createMoreOptionsButton));
     browser.wait(EC.elementToBeClickable(createMoreOptionsButton));
     createMoreOptionsButton.click();
-
-    console.log('clicked create more');
 
     // populate menu item
     browser.wait(EC.visibilityOf(createPopulateResourceButton));
     browser.wait(EC.elementToBeClickable(createPopulateResourceButton));
     createPopulateResourceButton.click();
 
-    console.log('clicked populate');
+  };
+
+  // search for a particular resource
+  this.searchForResource = function (name, type) {
+
+    // find the resource
+    createSearchNavInput.sendKeys(name + protractor.Key.ENTER);
+    var createFirst = element.all(by.css(createFirstCss + type)).first();
+    browser.wait(EC.visibilityOf(createFirst));
+
+    // clear the search
+    browser.wait(EC.visibilityOf(createSearchNavClearButton));
+    browser.wait(EC.elementToBeClickable(createSearchNavClearButton));
+    createSearchNavClearButton.click();
+    browser.wait(EC.visibilityOf(createBreadcrumbFolders));
 
   };
 
-  // populate a template resource
+
+
+  // break populate into two steps, populate a template resource
   this.populateResourceStepOne = function (name, type) {
 
     // find the resource
@@ -248,8 +260,13 @@ var WorkspacePage = function () {
 
   };
 
-  // populate a template resource
+  // to see which step if failing on travis,  populate a template resource
   this.populateResourceStepTwo = function (name, type) {
+
+    // create more on the toolbar
+    browser.wait(EC.visibilityOf(createMoreOptionsButton));
+    browser.wait(EC.elementToBeClickable(createMoreOptionsButton));
+    createMoreOptionsButton.click();
 
     // populate menu item
     browser.wait(EC.visibilityOf(createPopulateResourceButton));

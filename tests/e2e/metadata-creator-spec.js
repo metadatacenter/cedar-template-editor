@@ -72,14 +72,21 @@ describe('metadata-creator', function () {
     // get the url of this element
     browser.getCurrentUrl().then(function (url) {
       sampleTemplateUrl = url;
+      console.log(sampleTemplateUrl);
     });
 
     // get back to the workspace page
     templatePage.topNavBackArrow().click();
     browser.wait(EC.presenceOf(element(by.css('.navbar.dashboard'))));
 
+  });
+
+  it("should have the sample template in the workspace", function () {
+
+    workspacePage.searchForResource(sampleTitle, 'template');
 
   });
+
 
   it("should have a task bar", function () {
 
@@ -90,7 +97,6 @@ describe('metadata-creator', function () {
   it("should create metadata from the template, step one", function () {
 
     workspacePage.populateResourceStepOne(sampleTitle, 'template');
-    browser.wait(EC.presenceOf(element(by.css('.navbar.metadata'))));
 
   });
 
