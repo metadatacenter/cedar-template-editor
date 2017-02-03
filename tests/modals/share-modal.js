@@ -108,6 +108,7 @@ var ShareModal = function () {
     browser.actions().click(protractor.Button.RIGHT).perform();
 
     var shareMenuItem = WorkspacePage.createRightClickShareMenuItem();
+    browser.wait(EC.visibilityOf(shareMenuItem));
     browser.wait(EC.elementToBeClickable(shareMenuItem));
     shareMenuItem.click();
   };
@@ -116,12 +117,14 @@ var ShareModal = function () {
   this.shareResource = function(name, type, username, canWrite, isOwner) {
     this.openDialogViaRightClick(name, type);
     this.shareWithUser(username, canWrite, isOwner);
+    browser.wait(EC.invisibilityOf(shareModal));
   };
 
 
   this.shareResourceWithGroup = function(name, type, groupname, canWrite, isOwner) {
     this.openDialogViaRightClick(name, type);
     this.shareWithGroup(groupname, canWrite, isOwner);
+    browser.wait(EC.invisibilityOf(shareModal));
   };
 
 
@@ -176,8 +179,8 @@ var ShareModal = function () {
       this.createShareModalGroupOwnerPermission().click();
     }
     else {
-      browser.wait(EC.elementToBeClickable(this.createShareModalUserReadPermission()));
-      this.createShareModalUserReadPermission().click();
+      browser.wait(EC.elementToBeClickable(this.createShareModalGroupReadPermission()));
+      this.createShareModalGroupReadPermission().click();
     }
 
     var addButton = this.createShareModalAddGroupButton();

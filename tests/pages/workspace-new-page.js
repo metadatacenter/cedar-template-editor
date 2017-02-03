@@ -92,7 +92,7 @@ var WorkspacePage = function () {
   var createFolderSubmitButton = createFolderModal.element(by.css('div.modal-footer button.confirm'));
 
   // share menu item from the option list following a right click on a resource
-  var createRightClickShareMenuItem = createCenterPanel.element(by.css('div > div > div > div.form-box-container.folder.ng-scope.selected > div > div > ' +
+  var createRightClickShareMenuItem = createCenterPanel.element(by.css('div > div > div > div.form-box-container.ng-scope.selected > div > div > ' +
     'div.btn-group.dropdown.ng-scope.open > ul > li > a[ng-click="dc.showShareModal(resource)"]'));
 
 

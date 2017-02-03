@@ -35,12 +35,11 @@ describe('update-ownership', function () {
   });
 
 
-  it("should give ownership of a folder owned by current user to another user", function () {
+  xit("should give ownership of a folder owned by current user to another user", function () {
     var folder = workspacePage.createFolder('Owned');
 
     // change ownership of created folder to another user
     shareModal.shareResource(folder, 'folder', testUserName2, false, true);
-    browser.sleep(1000);
     workspacePage.clickLogo();
 
     // select resource and open details sidebar
