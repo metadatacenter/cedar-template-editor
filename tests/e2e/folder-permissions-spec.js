@@ -5,9 +5,7 @@ var SweetAlertModal = require('../modals/sweet-alert-modal.js');
 var MoveModal = require('../modals/move-modal.js');
 var ShareModal = require('../modals/share-modal.js');
 var testConfig = require('../config/test-env.js');
-
-var testUserName1 = 'Test User 1';
-var testUserName2 = 'Test User 2';
+var permissions = require('../config/permissions.js');
 
 describe('folder-permissions', function () {
   var EC = protractor.ExpectedConditions;
@@ -53,7 +51,7 @@ describe('folder-permissions', function () {
     var sharedFolderTitle = workspacePage.createFolder('Shared');
 
     // share folder
-    shareModal.shareResource(sharedFolderTitle, 'folder', testUserName2, false, false);
+    shareModal.shareResource(sharedFolderTitle, 'folder', permissions.testUserName2, false, false);
 
     // logout current user and login as the user with whom the folder was shared
     workspacePage.logout();
@@ -64,7 +62,7 @@ describe('folder-permissions', function () {
 
     // move created folder to shared folder
     workspacePage.moveResource(folderTitle, 'folder');
-    moveModal.moveToUserFolder(testUserName1, sharedFolderTitle);
+    moveModal.moveToUserFolder(permissions.testUserName1, sharedFolderTitle);
     toastyModal.isError();
 
     // delete folder
@@ -79,16 +77,16 @@ describe('folder-permissions', function () {
     var targetFolder = workspacePage.createFolder('Target');
 
     // share both folders
-    shareModal.shareResource(sourceFolder, 'folder', testUserName1, true, false);
+    shareModal.shareResource(sourceFolder, 'folder', permissions.testUserName1, true, false);
     browser.wait(EC.invisibilityOf(shareModal.createShareModal()));
     workspacePage.clickLogo(); // reset search
-    shareModal.shareResource(targetFolder, 'folder', testUserName1, true, false);
+    shareModal.shareResource(targetFolder, 'folder', permissions.testUserName1, true, false);
 
     workspacePage.logout();
     workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
 
     // go to Test User 2's folder to see the shared folders
-    workspacePage.navigateToUserFolder(testUserName2);
+    workspacePage.navigateToUserFolder(permissions.testUserName2);
 
     // move source to target folder
     workspacePage.moveResource(sourceFolder, 'folder');
@@ -102,14 +100,14 @@ describe('folder-permissions', function () {
     var sourceFolder = workspacePage.createFolder('Source');
     var targetFolder = workspacePage.createFolder('Target');
 
-    shareModal.shareResource(sourceFolder, 'folder', testUserName2, true, false);
+    shareModal.shareResource(sourceFolder, 'folder', permissions.testUserName2, true, false);
     browser.wait(EC.invisibilityOf(shareModal.createShareModal()));
     workspacePage.clickLogo(); // reset search
-    shareModal.shareResource(targetFolder, 'folder', testUserName2, false, false);
+    shareModal.shareResource(targetFolder, 'folder', permissions.testUserName2, false, false);
 
     workspacePage.logout();
     workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
-    workspacePage.navigateToUserFolder(testUserName1);
+    workspacePage.navigateToUserFolder(permissions.testUserName1);
 
     workspacePage.moveResource(sourceFolder, 'folder');
     moveModal.moveToDestination(targetFolder);
@@ -123,16 +121,16 @@ describe('folder-permissions', function () {
     var targetFolder = workspacePage.createFolder('Target');
 
     // share both folders
-    shareModal.shareResource(sourceFolder, 'folder', testUserName1, false, false);
+    shareModal.shareResource(sourceFolder, 'folder', permissions.testUserName1, false, false);
     browser.wait(EC.invisibilityOf(shareModal.createShareModal()));
     workspacePage.clickLogo(); // reset search
-    shareModal.shareResource(targetFolder, 'folder', testUserName1, false, false);
+    shareModal.shareResource(targetFolder, 'folder', permissions.testUserName1, false, false);
 
     workspacePage.logout();
     workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
 
     // go to Test User 2's folder to see the shared folders
-    workspacePage.navigateToUserFolder(testUserName2);
+    workspacePage.navigateToUserFolder(permissions.testUserName2);
 
     // move source to target folder
     workspacePage.moveResource(sourceFolder, 'folder');
