@@ -9,6 +9,8 @@ var ToastyModal = function () {
   var createToastyConfirmationPopup = element(by.id('toasty'));
   var createToastySuccesses = element.all(by.css('#toasty .toast.toasty-type-success'));
   var createToastySuccess = createToastySuccesses.first();
+  var createToastyErrors = element.all(by.css('#toasty .toast.toasty-type-error'));
+  var createToastyError = createToastyErrors.first();
   var createToastyToasts = element.all(by.css('#toasty .toast'));
   var createToastyToast = createToastyToasts.first();
   var createToastyMessage = createToastyToast.element(by.css('.toast-msg'));
@@ -21,6 +23,11 @@ var ToastyModal = function () {
   var toastyMessageDeleted = " has been deleted.";
 
 
+  this.createToastyConfirmationPopup = function() {
+    return createToastyConfirmationPopup;
+  };
+
+
   // look for the first toast to be a success
   this.isSuccess = function () {
 
@@ -30,6 +37,22 @@ var ToastyModal = function () {
 
     // is it a success?
     expect(createToastySuccess.isPresent()).toBe(true);
+
+    // close the toast
+    var toastyClose = element(by.css('#toasty .toast .close-button'));
+    toastyClose.click();
+
+    browser.sleep(500);
+    browser.ignoreSynchronization = false;
+  };
+
+  // look for the first toast to be an error
+  this.isError = function () {
+    browser.sleep(500);
+    browser.ignoreSynchronization = true;
+
+    // is it an error?
+    expect(createToastyError.isPresent()).toBe(true);
 
     // close the toast
     var toastyClose = element(by.css('#toasty .toast .close-button'));
