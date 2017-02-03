@@ -209,26 +209,26 @@ var WorkspacePage = function () {
   };
 
   // populate a template resource
-  this.populateResource = function (name, type) {
-
-    // find the resource
-    createSearchNavInput.sendKeys(name + protractor.Key.ENTER);
-    var createFirst = element.all(by.css(createFirstCss + type)).first();
-    browser.wait(EC.visibilityOf(createFirst));
-    browser.wait(EC.elementToBeClickable(createFirst));
-    createFirst.click();
-
-    // create more on the toolbar
-    browser.wait(EC.visibilityOf(createMoreOptionsButton));
-    browser.wait(EC.elementToBeClickable(createMoreOptionsButton));
-    createMoreOptionsButton.click();
-
-    // populate menu item
-    browser.wait(EC.visibilityOf(createPopulateResourceButton));
-    browser.wait(EC.elementToBeClickable(createPopulateResourceButton));
-    createPopulateResourceButton.click();
-
-  };
+  //this.populateResource = function (name, type) {
+  //
+  //  // find the resource
+  //  createSearchNavInput.sendKeys(name + protractor.Key.ENTER);
+  //  var createFirst = element.all(by.css(createFirstCss + type)).first();
+  //  browser.wait(EC.visibilityOf(createFirst));
+  //  browser.wait(EC.elementToBeClickable(createFirst));
+  //  createFirst.click();
+  //
+  //  // create more on the toolbar
+  //  browser.wait(EC.visibilityOf(createMoreOptionsButton));
+  //  browser.wait(EC.elementToBeClickable(createMoreOptionsButton));
+  //  createMoreOptionsButton.click();
+  //
+  //  // populate menu item
+  //  browser.wait(EC.visibilityOf(createPopulateResourceButton));
+  //  browser.wait(EC.elementToBeClickable(createPopulateResourceButton));
+  //  createPopulateResourceButton.click();
+  //
+  //};
 
   // search for a particular resource
   this.searchForResource = function (name, type) {
@@ -249,7 +249,7 @@ var WorkspacePage = function () {
 
 
   // break populate into two steps, populate a template resource
-  this.populateResourceStepOne = function (name, type) {
+  this.populateResource = function (name, type) {
 
     // find the resource
     createSearchNavInput.sendKeys(name + protractor.Key.ENTER);
@@ -257,11 +257,6 @@ var WorkspacePage = function () {
     browser.wait(EC.visibilityOf(createFirst));
     browser.wait(EC.elementToBeClickable(createFirst));
     createFirst.click();
-
-  };
-
-  // to see which step if failing on travis,  populate a template resource
-  this.populateResourceStepTwo = function (name, type) {
 
     // create more on the toolbar
     browser.wait(EC.visibilityOf(createMoreOptionsButton));

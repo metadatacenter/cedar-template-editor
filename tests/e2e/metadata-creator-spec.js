@@ -94,15 +94,11 @@ describe('metadata-creator', function () {
 
   });
 
-  it("should create metadata from the template, step one", function () {
 
-    workspacePage.populateResourceStepOne(sampleTitle, 'template');
-
-  });
 
   it("should create metadata from the template, step two", function () {
 
-    workspacePage.populateResourceStepTwo(sampleTitle, 'template');
+    workspacePage.populateResource(sampleTitle, 'template');
     browser.wait(EC.presenceOf(element(by.css('.navbar.metadata'))));
 
   });
