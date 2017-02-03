@@ -81,7 +81,7 @@ describe('metadata-creator', function () {
 
   });
 
-  it("should have the sample template in the workspace", function () {
+  xit("should have the sample template in the workspace", function () {
 
     workspacePage.searchForResource(sampleTitle, 'template');
 
