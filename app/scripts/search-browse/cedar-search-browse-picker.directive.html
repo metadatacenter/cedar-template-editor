@@ -4,7 +4,7 @@
   <div class="col-sm-7" >
 
     <div class="breadcrumbs-sb " >
-      <p ng-if="dc.isSearching">
+      <p ng-if="dc.isSearching" >
         <span class="search-result">
             <span ng-class="{'no-search-results':dc.searchTerm}">
               <span >{{dc.breadcrumbTitle}}</span>
@@ -12,8 +12,8 @@
           </span>
       </p>
 
-      <p ng-if="!dc.isSearching">
-            <span ng-repeat="folder in dc.pathInfo">
+      <p ng-if="!dc.isSearching"  >
+            <span class="folder-path" ng-repeat="folder in dc.pathInfo">
               <a ng-click="dc.goToFolder(folder['@id'])"
                   class="breadcrumbs">{{dc.breadcrumbName(folder.displayName)}}</a> /
             </span>
