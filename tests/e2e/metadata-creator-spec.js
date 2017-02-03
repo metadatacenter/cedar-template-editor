@@ -87,13 +87,25 @@ describe('metadata-creator', function () {
 
   });
 
-  it("should create metadata from the template", function () {
+  it("should create metadata from the template, step one", function () {
 
-    workspacePage.populateResource(sampleTitle, 'template');
+    workspacePage.populateResourceStepOne(sampleTitle, 'template');
     browser.wait(EC.presenceOf(element(by.css('.navbar.metadata'))));
+
+  });
+
+  it("should create metadata from the template, step two", function () {
+
+    workspacePage.populateResourceStepTwo(sampleTitle, 'template');
+    browser.wait(EC.presenceOf(element(by.css('.navbar.metadata'))));
+
+  });
+
+  it("should create metadata from the template, click save", function () {
 
     browser.wait(EC.presenceOf(metadataPage.createSaveMetadataButton()));
     metadataPage.createSaveMetadataButton().click().then(function () {
+      console.log('clicked save in metadata editor');
       browser.sleep(500);
       browser.ignoreSynchronization = true;
       var toast = element(by.css('#toasty .toast .toast-msg'));
