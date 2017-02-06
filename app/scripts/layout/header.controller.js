@@ -11,11 +11,12 @@ define([
     '$location',
     '$window',
     '$timeout',
+    '$document',
     'QueryParamUtilsService',
     'UIMessageService'
   ];
 
-  function HeaderController($rootScope, $location, $window, $timeout, QueryParamUtilsService, UIMessageService) {
+  function HeaderController($rootScope, $location, $window, $timeout, $document, QueryParamUtilsService, UIMessageService) {
 
     var vm = this;
 
@@ -127,6 +128,8 @@ define([
       vm.searchTerm = $location.search().search;
       vm.path = $location.path();
       $rootScope.setHeader();
+      $document.unbind('keypress');
+      $document.unbind('keyup');
 
       if ($rootScope.isDirty()) {
 
