@@ -15,11 +15,9 @@
 
 </div>
 
-<div ng-if="!isActive(index)" class="value">
-  <div
+<div ng-if="!isActive(index)" class="value"
       ng-click="setActive(index,true)"
-      aria-label="{{getDescription(field)}}">{{valueElement[0]['@value']}} &nbsp;</div>
-
+      aria-label="{{getDescription(field)}}">{{valueArray[index]['@value']}}
 </div>
 
 

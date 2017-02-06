@@ -10,8 +10,19 @@
 
   <div ng-if="isRegular() && showMultiple('paged')"
       aria-label="{{getDescription(field)}}"
-      class="isInactive " > {{getValueString(valueArray)}} &nbsp;</span>
+      class="isInactive "> {{getValueString(valueArray)}} &nbsp;</span>
   </div>
+
+  <!--<div ng-if="isRegular() && showMultiple('paged')">-->
+  <!--<input  type="text"-->
+      <!--class="form-control select"-->
+      <!--ng-class="{'isActive' : isActive(index), 'required': isRequired()}"-->
+      <!--aria-label="{{getDescription(field)}}"-->
+      <!--ng-required="isRequired()"-->
+      <!--ng-model="valueArray[index]['@value']">-->
+  <!--</input>-->
+  <!--<div class="input-indicator-icons" ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>-->
+  <!--</div>-->
 
   <div ng-if="!isRegular()"
       aria-label="{{getDescription(field)}}"

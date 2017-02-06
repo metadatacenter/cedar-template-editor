@@ -38,7 +38,11 @@
           <div ng-click="toggleExpanded()">
             <!--<button type="button" class="xxx">-->
               <!--<i ng-class="{'fa fa-caret-down' : isExpanded(), 'fa fa-caret-right' : !isExpanded()}"></i></button>-->
-            <span class="title form">{{$root.schemaOf(form)._ui.title}}</span>
+            <span class="title form">
+              <button type="button" class="expand">
+                <i  class="fa " ng-class="{'fa-caret-down': isExpanded(),'fa-caret-right':!isExpanded()}"></i>
+              </button>
+              {{$root.schemaOf(form)._ui.title}}</span>
           </div>
         </div>
 
@@ -51,7 +55,7 @@
       </div>
 
     <ul class="treeview tv">
-      <li ng-repeat="item in page" class="animate-fade tv"  ng-class="{'last':$last, 'first':$first}"  ng-if="pageIndex == $parent.$index && isExpanded() && (isField(item) || isElement(item))">
+      <li ng-repeat="item in page" class="animate-fade tv"  ng-class="{'last':$last, 'first':$first, 'element':isElement(item)}"  ng-if="pageIndex == $parent.$index && isExpanded() && (isField(item) || isElement(item))">
 
         <!--If field-->
         <div ng-if="isField(item)" class="field-instance">

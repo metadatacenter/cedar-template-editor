@@ -35,17 +35,14 @@
 
   </select>
 
-
   <!--- not active --->
   <div ng-if="!isActive(index)">
-    <div ng-if="isMultipleChoice()" class="form-group  has-feedback value">
-      <div ng-click="setActive(index,true)"
-          aria-label="{{getDescription(field)}}">{{getMultiple()}} &nbsp;</div>
+    <div ng-if="isMultipleChoice()" class=" value" ng-click="setActive(index,true)"
+          aria-label="{{getDescription(field)}}">{{getMultiple()}}
     </div>
 
-    <div ng-if="!isMultipleChoice()" class="form-group  has-feedback value">
-      <div ng-click="setActive(index,true)"
-          aria-label="{{getDescription(field)}}">{{valueElement[0]['@value']}} &nbsp;</div>
+    <div ng-if="!isMultipleChoice()" class="value" ng-click="setActive(index,true)" aria-label="{{getDescription(field)}}">
+      {{valueArray[index][0]['@value']}}
     </div>
   </div>
 </div>
