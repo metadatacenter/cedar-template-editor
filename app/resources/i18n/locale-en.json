@@ -428,5 +428,8 @@
     "sharedWithMe": "Shared with Me",
     "viewAll": "View All",
     "searchResult": "Search Results For: '{{searchTerm}}'"
+  },
+  "RESTERROR" :{
+    "nodeAlreadyPresent": "There is already a(n) {{conflictingNodeType}} with the same name at this location! Please try to create it with a different name."
   }
 }

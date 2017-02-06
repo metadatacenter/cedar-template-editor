@@ -97,9 +97,38 @@ define([
       });
     };
 
+    service.showBackendWarning = function (title, text) {
+      swal({
+        title             : title,
+        text              : text,
+        type              : "warning",
+        showCancelButton  : false,
+        confirmButtonText : $translate.instant('GENERIC.Ok'),
+        closeOnConfirm    : true,
+        customClass       : 'cedarSWAL',
+        confirmButtonColor: null,
+        html              : true
+      });
+    };
+
 
     service.showBackendError = function (messageKey, response) {
       var errorObject = response.data;
+      // Test if this is an error that we are expecting:
+      // If yes, show a warning, and return
+      // If not, this is a server error, and we should show it.
+      if (errorObject.hasOwnProperty("errorKey")) {
+        var errorKey = errorObject.errorKey;
+        var interpolatedServerError = $translate.instant('RESTERROR.' + errorKey, errorObject.parameters);
+        if (interpolatedServerError != errorKey) {
+          service.showBackendWarning(
+              $translate.instant('GENERIC.Warning'),
+              interpolatedServerError
+          );
+          return;
+        }
+      }
+
       toasty.error({
         title  : $translate.instant('SERVER.ERROR.title'),
         msg    : $translate.instant(messageKey),
