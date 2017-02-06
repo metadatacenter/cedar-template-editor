@@ -267,7 +267,7 @@ define([
           if (Array.isArray(valueElement)) {
             for (var i = 0; i < valueElement.length; i++) {
               if (valueElement[i] && valueElement[i]['@value']) {
-                result += valueElement[i]['@value'] +  ', ';
+                result += valueElement[i]['@value'] + ', ';
               }
             }
           }
@@ -349,43 +349,43 @@ define([
 
       // scroll within the template to the field with the locator, focus and select the tag
       $scope.scrollToLocator = function (locator, tag) {
-        console.log('scrollToLocator ' + locator + ' '  + tag);
 
         $scope.setHeight = function () {
 
-          var target = angular.element('#' + locator);
-          if (target && target.offset()) {
 
-            console.log('scrollToLocator found target');
+          // apply any changes first before examining dom elements
+          $scope.$apply();
 
-            // apply any changes first before examining dom elements
-            $scope.$apply();
+          var window = angular.element($window);
+          var windowHeight = $(window).height();
+          var target = jQuery("#" + locator);
+          if (target) {
+            console.log('scrollToLocator found target' + locator + ' ' + tag);
 
-            var window = angular.element($window);
-            var windowHeight = $(window).height();
-            var target = jQuery("#" + locator);
-            if (target) {
+            var targetTop = target.offset().top;
+            var targetHeight = target.outerHeight(true);
+            var scrollTop = jQuery('.template-container').scrollTop();
+            var newTop = scrollTop + targetTop - ( windowHeight - targetHeight ) / 2;
 
-              var targetTop = target.offset().top;
-              var targetHeight = target.outerHeight(true);
-              var scrollTop = jQuery('.template-container').scrollTop();
-              var newTop = scrollTop + targetTop - ( windowHeight - targetHeight ) / 2;
 
-              jQuery('.template-container').animate({scrollTop: newTop}, 'fast');
+            console.log('scroll from ' + scrollTop + ' to ' + newTop);
+            console.log('targetHeight ' + targetHeight + ' targetTop ' + targetTop +  ' windowHeight ' + windowHeight) ;
 
-              // focus and maybe select the tag
-              if (tag) {
-                var e = jQuery("#" + locator + ' ' + tag);
-                if (e.length) {
-                  e[0].focus();
-                  if (!e.is('select')) {
-                    e[0].select();
-                  }
+            jQuery('.template-container').animate({scrollTop: newTop}, 'fast');
+
+            // focus and maybe select the tag
+            if (tag) {
+              var e = jQuery("#" + locator + ' ' + tag);
+              if (e.length) {
+                e[0].focus();
+                if (!e.is('select')) {
+                  e[0].select();
                 }
               }
             }
           }
         };
+
         $timeout($scope.setHeight, 100);
 
       };
@@ -440,12 +440,9 @@ define([
       // is this a submit?  shift-enter qualifies as a submit for any field
       $scope.isSubmit = function (keyEvent, index) {
         if (keyEvent.type === 'keypress' && keyEvent.which === 13 && keyEvent.ctrlKey) {
-          keyEvent.stopPropagation();
-          keyEvent.preventDefault();
           $scope.onSubmit(index);
         }
         if (keyEvent.type === 'keyup' && keyEvent.which === 9) {
-          keyEvent.stopPropagation();
           keyEvent.preventDefault();
           $scope.onSubmit(index);
         }
