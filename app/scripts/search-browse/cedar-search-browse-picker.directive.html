@@ -36,7 +36,7 @@
               tooltip-animation="false"
               tooltip-placement="bottom"
               data-toggle="tooltip"
-              ng-click="dc.deleteResource()"><i class="fa fa-trash "></i></button>
+              ng-click="dc.deleteResource(dc.getSelection())"><i class="fa fa-trash "></i></button>
         </li>
         <li ng-if="dc.onDashboard() && dc.hasSelection()" id="more-options-tool">
           <div class="btn-group dropdown">
