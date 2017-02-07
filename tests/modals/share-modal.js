@@ -117,14 +117,14 @@ var ShareModal = function () {
   this.shareResource = function(name, type, username, canWrite, isOwner) {
     this.openDialogViaRightClick(name, type);
     this.shareWithUser(username, canWrite, isOwner);
-    browser.wait(EC.invisibilityOf(shareModalBody));
+    browser.wait(EC.stalenessOf(shareModalBody));
   };
 
 
   this.shareResourceWithGroup = function(name, type, groupname, canWrite, isOwner) {
     this.openDialogViaRightClick(name, type);
     this.shareWithGroup(groupname, canWrite, isOwner);
-    browser.wait(EC.invisibilityOf(shareModalBody));
+    browser.wait(EC.stalenessOf(shareModalBody));
   };
 
 
