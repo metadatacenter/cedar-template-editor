@@ -7,7 +7,7 @@ var ShareModal = require('../modals/share-modal.js');
 var testConfig = require('../config/test-env.js');
 var permissions = require('../config/permissions.js');
 
-xdescribe('resource-permissions', function () {
+describe('resource-permissions', function () {
   var workspacePage;
   var toastyModal;
   var sweetAlertModal;
@@ -39,10 +39,6 @@ xdescribe('resource-permissions', function () {
     workspacePage.moveResource(sourceTemplate, 'template');
     moveModal.moveToDestination(targetFolder);
     toastyModal.isSuccess();
-
-    workspacePage.clickLogo();
-    workspacePage.deleteResource(sourceTemplate, 'template');
-    workspacePage.deleteResource(targetFolder, 'folder');
   });
 
 
@@ -64,10 +60,6 @@ xdescribe('resource-permissions', function () {
     workspacePage.moveResource(sourceTemplate, 'template');
     moveModal.moveToUserFolder(permissions.testUserName1, sharedFolderTitle);
     toastyModal.isError();
-
-    // delete template
-    workspacePage.clickLogo();
-    workspacePage.deleteResource(sourceTemplate, 'template');
   });
 
 
