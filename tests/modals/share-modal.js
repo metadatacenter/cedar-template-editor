@@ -152,9 +152,8 @@ var ShareModal = function () {
     }
 
     var addButton = this.createShareModalAddUserButton();
-    browser.wait(EC.elementToBeClickable(addButton)).then(function () {
-      addButton.click();
-    });
+    browser.wait(EC.elementToBeClickable(addButton));
+    addButton.click();
 
     this.clickDone();
   };
@@ -184,9 +183,8 @@ var ShareModal = function () {
     }
 
     var addButton = this.createShareModalAddGroupButton();
-    browser.wait(EC.elementToBeClickable(addButton)).then(function () {
-      addButton.click();
-    });
+    browser.wait(EC.elementToBeClickable(addButton));
+    addButton.click();
 
     this.clickDone();
   };

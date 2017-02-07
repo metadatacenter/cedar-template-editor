@@ -8,7 +8,6 @@ var testConfig = require('../config/test-env.js');
 var permissions = require('../config/permissions.js');
 
 describe('folder-permissions', function () {
-  var EC = protractor.ExpectedConditions;
   var workspacePage;
   var toastyModal;
   var sweetAlertModal;
