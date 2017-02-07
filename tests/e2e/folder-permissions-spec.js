@@ -22,8 +22,6 @@ describe('folder-permissions', function () {
     moveModal = MoveModal;
     shareModal = ShareModal;
     browser.driver.manage().window().maximize();
-
-    console.log(jasmine.getEnv().currentSpec.description);
   });
 
   afterEach(function () {
@@ -40,9 +38,6 @@ describe('folder-permissions', function () {
     workspacePage.moveResource(sourceFolder, 'folder');
     moveModal.moveToDestination(targetFolder);
     toastyModal.isSuccess();
-
-    workspacePage.clickLogo();
-    workspacePage.deleteResource(targetFolder, 'folder');
   });
 
 
@@ -64,10 +59,6 @@ describe('folder-permissions', function () {
     workspacePage.moveResource(folderTitle, 'folder');
     moveModal.moveToUserFolder(permissions.testUserName1, sharedFolderTitle);
     toastyModal.isError();
-
-    // delete folder
-    workspacePage.clickLogo();
-    workspacePage.deleteResource(folderTitle, 'folder');
   });
 
 
@@ -78,7 +69,6 @@ describe('folder-permissions', function () {
 
     // share both folders
     shareModal.shareResource(sourceFolder, 'folder', permissions.testUserName1, true, false);
-    browser.wait(EC.invisibilityOf(shareModal.createShareModal()));
     workspacePage.clickLogo(); // reset search
     shareModal.shareResource(targetFolder, 'folder', permissions.testUserName1, true, false);
 
@@ -101,7 +91,6 @@ describe('folder-permissions', function () {
     var targetFolder = workspacePage.createFolder('Target');
 
     shareModal.shareResource(sourceFolder, 'folder', permissions.testUserName2, true, false);
-    browser.wait(EC.invisibilityOf(shareModal.createShareModal()));
     workspacePage.clickLogo(); // reset search
     shareModal.shareResource(targetFolder, 'folder', permissions.testUserName2, false, false);
 
@@ -122,7 +111,6 @@ describe('folder-permissions', function () {
 
     // share both folders
     shareModal.shareResource(sourceFolder, 'folder', permissions.testUserName1, false, false);
-    browser.wait(EC.invisibilityOf(shareModal.createShareModal()));
     workspacePage.clickLogo(); // reset search
     shareModal.shareResource(targetFolder, 'folder', permissions.testUserName1, false, false);
 

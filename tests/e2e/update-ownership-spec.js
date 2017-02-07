@@ -8,7 +8,7 @@ var testConfig = require('../config/test-env.js');
 var permissions = require('../config/permissions.js');
 var EC = protractor.ExpectedConditions;
 
-describe('update-ownership', function () {
+xdescribe('update-ownership', function () {
   var workspacePage;
   var toastyModal;
   var sweetAlertModal;
@@ -22,8 +22,6 @@ describe('update-ownership', function () {
     moveModal = MoveModal;
     shareModal = ShareModal;
     browser.driver.manage().window().maximize();
-
-    console.log(jasmine.getEnv().currentSpec.description);
   });
 
   afterEach(function () {
