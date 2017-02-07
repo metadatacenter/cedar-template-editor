@@ -470,7 +470,7 @@ define([
               getFacets();
               doSearch(vm.params.search);
             } else if (vm.params.folderId) {
-              vm.selectedResource = null;
+              //vm.selectedResource = null;
               getFacets();
               var currentFolderId = decodeURIComponent(vm.params.folderId);
               getFolderContentsById(currentFolderId);
