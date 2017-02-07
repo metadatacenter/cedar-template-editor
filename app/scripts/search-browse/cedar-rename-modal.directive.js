@@ -120,7 +120,7 @@ define([
           }
 
           function refresh() {
-            $scope.$broadcast('refreshWorkspace');
+            $scope.$broadcast('refreshWorkspace', [vm.renameResource]);
           }
 
           // modal open or closed

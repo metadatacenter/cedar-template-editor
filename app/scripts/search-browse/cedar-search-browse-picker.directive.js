@@ -677,10 +677,19 @@ define([
                   resourceService.deleteResource(
                       resource,
                       function (response) {
+
                         // remove resource from list
-                        var index = vm.resources.indexOf(resource);
-                        vm.resources.splice(index, 1);
-                        resetSelected();
+                        var index;
+                        for(var i = 0, len = vm.resources.length; i < len; i++) {
+                          if (vm.resources[i]['@id'] === resource['@id']) {
+                            index = i;
+                            break;
+                          }
+                        }
+                        if (i > -1) {
+                          vm.resources.splice(index, 1);
+                        }
+
                         UIMessageService.flashSuccess('SERVER.' + resource.nodeType.toUpperCase() + '.delete.success',
                             {"title": resource.nodeType},
                             'GENERIC.Deleted');
@@ -983,9 +992,18 @@ define([
             init();
           });
 
-          $scope.$on('refreshWorkspace', function () {
+
+          $scope.refreshWorkspace = function(selectedResource) {
             vm.params = $location.search();
             init();
+            if (selectedResource) {
+              vm.selectedResource = selectedResource;
+            }
+          };
+
+          $scope.$on('refreshWorkspace', function (event, args) {
+            var selectedResource = args ? args[0] : null;
+            $scope.refreshWorkspace(selectedResource);
           });
 
           $scope.hideModal = function (id) {
