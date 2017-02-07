@@ -15531,6 +15531,12 @@ table.apiKey td {
 #profile .content ul.profile li {
   padding: 0 0 5px 0;
 }
+textarea.curlSample {
+  width: 650px;
+  height: 100px;
+  font-family: Courier;
+  font-size: 11px;
+}
 @font-face {
   font-family: "project-cedar";
   src: url("../media/fonts/project-cedar.eot");
