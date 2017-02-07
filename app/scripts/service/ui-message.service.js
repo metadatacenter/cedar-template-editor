@@ -6,9 +6,9 @@ define([
   angular.module('cedar.templateEditor.service.uIMessageService', [])
       .service('UIMessageService', UIMessageService);
 
-  UIMessageService.$inject = ['toasty', '$translate'];
+  UIMessageService.$inject = ['toasty', '$translate', '$timeout'];
 
-  function UIMessageService(toasty, $translate) {
+  function UIMessageService(toasty, $translate, $timeout) {
 
     var service = {
       serviceId: "UIMessageService"
@@ -118,13 +118,22 @@ define([
       // If yes, show a warning, and return
       // If not, this is a server error, and we should show it.
       if (errorObject.hasOwnProperty("errorKey")) {
-        var errorKey = errorObject.errorKey;
-        var interpolatedServerError = $translate.instant('RESTERROR.' + errorKey, errorObject.parameters);
-        if (interpolatedServerError != errorKey) {
-          service.showBackendWarning(
-              $translate.instant('GENERIC.Warning'),
-              interpolatedServerError
-          );
+        var i18nKey = 'REST_ERROR.' + errorObject.errorKey;
+        var interpolatedServerError = $translate.instant(i18nKey, errorObject.parameters);
+        if (interpolatedServerError != i18nKey) {
+          if (errorObject.hasOwnProperty("errorReasonKey")) {
+            var i18nReasonKey = 'REST_ERROR_REASON.' + errorObject.errorReasonKey;
+            var interpolatedServerReason = $translate.instant(i18nReasonKey, errorObject.parameters);
+            if (interpolatedServerReason != i18nReasonKey) {
+              interpolatedServerError += "<br /><br />" + interpolatedServerReason;
+            }
+          }
+          $timeout(function () {
+            service.showBackendWarning(
+                $translate.instant('GENERIC.Warning'),
+                interpolatedServerError
+            );
+          }, 500);
           return;
         }
       }
