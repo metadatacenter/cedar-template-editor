@@ -42,29 +42,22 @@ describe('folder-permissions', function () {
 
 
   it("should move a folder owned by current user to an unwritable folder", function () {
-    console.log("creating shared folder");
     // create a folder to share with another user
     var sharedFolderTitle = workspacePage.createFolder('Shared');
-    console.log("sharing folder");
 
     // share folder
     shareModal.shareResource(sharedFolderTitle, 'folder', permissions.testUserName2, false, false);
 
-    console.log("logging out");
     // logout current user and login as the user with whom the folder was shared
     workspacePage.logout();
     workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
 
-    console.log("create folder");
     // create a folder to move to the shared folder
     var folderTitle = workspacePage.createFolder('Source');
 
-    console.log("move resource");
     // move created folder to shared folder
     workspacePage.moveResource(folderTitle, 'folder');
-    console.log("move to user folder");
     moveModal.moveToUserFolder(permissions.testUserName1, sharedFolderTitle);
-    console.log("check if toasty is error");
     toastyModal.isError();
   });
 
