@@ -47,23 +47,7 @@ define([
       //field.properties['@value'].type = valueType;
       return field;
     };
-
-    // Function that generates the @context for an instance, based on the schema @context definition
-    service.generateInstanceContext = function (schemaContext) {
-      var context = {};
-      angular.forEach(schemaContext.properties, function (value, key) {
-        if (value.enum) {
-          context[key] = value.enum[0];
-          //} else {
-          //  console.log('generateInstanceContext empty value');
-          //  console.log(value);
-        }
-      });
-      return context;
-    };
-
-
-
+    
     // Function that generates a basic field definition
     service.isStaticField = function (field) {
       var schema = $rootScope.schemaOf(field);
