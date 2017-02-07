@@ -8,7 +8,7 @@ var testConfig = require('../config/test-env.js');
 var permissions = require('../config/permissions.js');
 var EC = protractor.ExpectedConditions;
 
-xdescribe('update-ownership', function () {
+describe('update-ownership', function () {
   var workspacePage;
   var toastyModal;
   var sweetAlertModal;
