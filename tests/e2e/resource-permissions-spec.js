@@ -7,7 +7,7 @@ var ShareModal = require('../modals/share-modal.js');
 var testConfig = require('../config/test-env.js');
 var permissions = require('../config/permissions.js');
 
-describe('resource-permissions', function () {
+xdescribe('resource-permissions', function () {
   var workspacePage;
   var toastyModal;
   var sweetAlertModal;
@@ -21,8 +21,6 @@ describe('resource-permissions', function () {
     moveModal = MoveModal;
     shareModal = ShareModal;
     browser.driver.manage().window().maximize();
-
-    console.log(jasmine.getEnv().currentSpec.description);
   });
 
   afterEach(function () {
