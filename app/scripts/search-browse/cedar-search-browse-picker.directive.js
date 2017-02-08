@@ -264,6 +264,7 @@ define([
           };
 
           vm.updateDescription = function () {
+            console.log('updateDescription')
             vm.editingDescription = false;
             var resource = vm.getSelection();
             if (resource != null) {
@@ -312,7 +313,6 @@ define([
                     function (response) {
                       UIMessageService.flashSuccess('SERVER.FOLDER.update.success', {"title": vm.selectedResource.name},
                           'GENERIC.Updated');
-                      init();
                     },
                     function (response) {
                       UIMessageService.showBackendError('SERVER.FOLDER.update.error', response);
