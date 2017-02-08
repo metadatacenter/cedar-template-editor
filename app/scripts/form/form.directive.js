@@ -346,7 +346,6 @@ define([
 
           if ($scope.isBiosampleTemplate()) {
 
-
             // one way to make the call
             var config = {};
             var url = UrlService.biosampleValidation();
@@ -394,11 +393,8 @@ define([
 
         };
 
-        // Watching for the 'submitForm' event to be $broadcast from parent 'RuntimeController'
         $scope.$on('biosampleValidation', function (event) {
-          // Make the model (populated template) available to the parent
           $scope.checkBiosample($scope.model);
-
         });
 
         // Watching for the 'submitForm' event to be $broadcast from parent 'RuntimeController'
