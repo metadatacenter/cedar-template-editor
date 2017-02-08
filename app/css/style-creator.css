@@ -15547,6 +15547,16 @@ table.apiKey td {
   #sidebar-right .info .row .location {
     min-height: 60px;
   }
+  #sidebar-right .info.no-selection {
+    padding: 50px 0 100px 0;
+    color: #ccc;
+  }
+  #sidebar-right .info.no-selection .no-file {
+    font-size: 50px;
+  }
+  #sidebar-right .info.no-selection .no-message {
+    font-size: 18px;
+  }
 }
 @media (max-width: 768px) {
   body {

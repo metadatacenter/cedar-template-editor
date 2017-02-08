@@ -561,16 +561,26 @@
             </div>
 
             <div class="col-sm-10">
-              <div class="title" ng-class="dc.getSelectedNode().nodeType">
-                <i class="fa" ng-class="dc.getResourceIconClass(dc.getSelectedNode())"></i> <span ng-bind="dc.selectedResource && dc.selectedResource.displayName"></span>
+              <div class="title" ng-if="dc.getSelectedNode()" ng-class="dc.getSelectedNode().nodeType">
+                <i class="fa" ng-class="dc.getResourceIconClass(dc.getSelectedNode())"></i> <span ng-bind="dc.getSelectedNode().displayName"></span>
+              </div>
+              <div class="title" ng-if="!dc.getSelectedNode()">
+                &nbsp;
               </div>
             </div>
-
           </div>
         </div>
 
+        <div class="info no-selection" ng-if="!dc.getSelectedNode()" >
+          <div class="row no-file"  >
+            <div class="col-sm-12 center" ><i class="fa fa-file" ></i></div>
+          </div>
+          <div class="row no-message"  >
+            <div class="col-sm-12 center " translate>Select a file or folder to view.</div>
+          </div>
+        </div>
 
-        <div class="info">
+        <div class="info" ng-if="dc.getSelectedNode()" >
           <div class="row">
             <div class="col-sm-4" translate>Type</div>
             <div class="col-sm-8 type">{{ dc.getResourceTypeClass(dc.getSelectedNode())}}</div>
@@ -614,7 +624,7 @@
         </div>
 
 
-        <div class="description">
+        <div class="description" ng-if="dc.getSelectedNode()">
           <div ng-if="dc.editingDescription" class="editing">
 
             <form class="form-inline" ng-submit="dc.updateDescription()">

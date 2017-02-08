@@ -118,7 +118,8 @@
     "Add": "Add",
     "ExpandAll": "Expand All",
     "Displaying": "Displaying",
-    "Of": "of"
+    "Of": "of",
+    "CopyOfTitle": "Copy of {{title}}"
   },
   "HELP": {
     "createFolder": "Create folder",
