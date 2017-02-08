@@ -6912,7 +6912,9 @@ table.apiKey {
   background: #ccc; // manage scrollbar thumb background color here
 }
 
-#rename-modal, #new-folder-modal, #move-modal, #share-modal {
+
+#rename-modal, #new-folder-modal, #move-modal, #share-modal, #airr-submission-modal {
+
   .modal-header {
     border-bottom: 0px solid #aaa;
   }
@@ -7042,6 +7044,42 @@ table.apiKey {
         &.disabled {
           opacity: 0.5;
         }
+      }
+    }
+  }
+}
+
+#airr-submission-modal {
+
+  @media (max-width: @screen-sm-min) {
+    .modal-content {
+      width: calc(~"100% - 10px");
+      max-width: calc(~"100% - 10px");
+    }
+  }
+  .modal-dialog {
+    max-width: 400px;
+    width: 400px;
+    .modal-content {
+      max-width: 400px;
+      width: 400px;
+      margin: 0 auto;
+
+      .modal-body {
+        max-height: 300px;
+        overflow-y: scroll;
+        .file-upload {
+          .row {
+            margin-top:10px ;
+            .asset-upload {
+              display:table-cell;text-align:center;vertical-align:middle;width:180px;height:180px;border:3px dashed #ccc;background:#eee;
+            }
+            .upload-result {
+              min-height:30px;
+            }
+          }
+        }
+
       }
     }
   }

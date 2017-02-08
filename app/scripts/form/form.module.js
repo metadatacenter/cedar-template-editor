@@ -19,7 +19,10 @@ define([
   'cedar/template-editor/form/recommended-value.directive',
   'cedar/template-editor/form/cedar-pager.directive',
   'cedar/template-editor/form/field-toolbar.directive',
-  'cedar/template-editor/search-browse/cedar-infinite-scroll.directive'
+  'cedar/template-editor/search-browse/cedar-infinite-scroll.directive',
+  'cedar/template-editor/search-browse/cedar-modal-show.directive',
+  'cedar/template-editor/form/airr-submission-modal.directive',
+  'cedar/template-editor/form/file-upload.directive'
 ], function(angular) {
   angular.module('cedar.templateEditor.form', [
     'cedar.templateEditor.controlledTerm',
@@ -39,6 +42,9 @@ define([
     'cedar.templateEditor.form.recommendedValue',
     'cedar.templateEditor.form.cedarPager',
     'cedar.templateEditor.form.fieldToolbar',
-    'cedar.templateEditor.searchBrowse.cedarInfiniteScrollDirective'
+    'cedar.templateEditor.searchBrowse.cedarInfiniteScrollDirective',
+    'cedar.templateEditor.searchBrowse.cedarModalShowDirective',
+    'cedar.templateEditor.form.airrSubmissionModal',
+    'cedar.templateEditor.form.fileUpload',
   ]);
 });
