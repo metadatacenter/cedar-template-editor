@@ -6,7 +6,7 @@ var SweetAlertModal = require('../modals/sweet-alert-modal.js');
 var _ = require('../libs/lodash.min.js');
 
 
-xdescribe('template-creator', function () {
+describe('template-creator', function () {
   var EC = protractor.ExpectedConditions;
 
 
