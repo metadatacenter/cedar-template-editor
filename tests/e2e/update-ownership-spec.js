@@ -22,8 +22,6 @@ describe('update-ownership', function () {
     moveModal = MoveModal;
     shareModal = ShareModal;
     browser.driver.manage().window().maximize();
-
-    console.log(jasmine.getEnv().currentSpec.description);
   });
 
   afterEach(function () {

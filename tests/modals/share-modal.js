@@ -117,14 +117,14 @@ var ShareModal = function () {
   this.shareResource = function(name, type, username, canWrite, isOwner) {
     this.openDialogViaRightClick(name, type);
     this.shareWithUser(username, canWrite, isOwner);
-    browser.wait(EC.invisibilityOf(shareModal));
+    browser.wait(EC.stalenessOf(shareModalBody));
   };
 
 
   this.shareResourceWithGroup = function(name, type, groupname, canWrite, isOwner) {
     this.openDialogViaRightClick(name, type);
     this.shareWithGroup(groupname, canWrite, isOwner);
-    browser.wait(EC.invisibilityOf(shareModal));
+    browser.wait(EC.stalenessOf(shareModalBody));
   };
 
 
@@ -152,9 +152,8 @@ var ShareModal = function () {
     }
 
     var addButton = this.createShareModalAddUserButton();
-    browser.wait(EC.elementToBeClickable(addButton)).then(function () {
-      addButton.click();
-    });
+    browser.wait(EC.elementToBeClickable(addButton));
+    addButton.click();
 
     this.clickDone();
   };
@@ -184,9 +183,8 @@ var ShareModal = function () {
     }
 
     var addButton = this.createShareModalAddGroupButton();
-    browser.wait(EC.elementToBeClickable(addButton)).then(function () {
-      addButton.click();
-    });
+    browser.wait(EC.elementToBeClickable(addButton));
+    addButton.click();
 
     this.clickDone();
   };

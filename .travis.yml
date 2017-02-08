@@ -23,6 +23,7 @@ branches:
   only:
     - develop
     - master
+    - testing/permissions
 
 # Caching node modules
 #cache:

@@ -237,6 +237,7 @@ var WorkspacePage = function () {
     browser.actions().mouseMove(createButton).perform();
 
     var button = createResourceButtons[type];
+    browser.wait(EC.visibilityOf(button));
     browser.wait(EC.elementToBeClickable(button));
     button.click();
 
