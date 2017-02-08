@@ -43,8 +43,20 @@ define([
       return getAppData().authUserProfile.email;
     };
 
-    service.getScreenName = function () {
-      return getAppData().cedarUserProfile.screenName;
+    service.getFirstName = function () {
+      return getAppData().cedarUserProfile.firstName;
+    };
+
+    service.getLastName = function () {
+      return getAppData().cedarUserProfile.lastName;
+    };
+
+    service.getHomeFolderId = function () {
+      return getAppData().cedarUserProfile.homeFolderId;
+    };
+
+    service.getHomeFolderIdEncoded = function () {
+      return window.encodeURIComponent(getAppData().cedarUserProfile.homeFolderId);
     };
 
     service.getApiKeys = function () {
