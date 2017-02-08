@@ -562,8 +562,7 @@
 
             <div class="col-sm-10">
               <div class="title" ng-class="dc.getSelectedNode().nodeType">
-                <i class="fa" ng-class="dc.getResourceIconClass(dc.getSelectedNode())"></i> {{
-                dc.getSelectedNode().displayName }}
+                <i class="fa" ng-class="dc.getResourceIconClass(dc.getSelectedNode())"></i> <span ng-bind="dc.selectedResource && dc.selectedResource.displayName"></span>
               </div>
             </div>
 

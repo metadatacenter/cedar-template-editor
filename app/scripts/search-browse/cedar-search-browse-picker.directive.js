@@ -987,18 +987,27 @@ define([
             init();
           });
 
+          $scope.selectResourceById = function(id) {
+            if (id) {
+              for (var i=0;i<vm.resources.length;i++) {
+                if (id === vm.resources[i]['@id']) {
+                  vm.selectResource(vm.resources[i]);
+                  break;
+                }
+              }
+            }
+          };
 
-          $scope.refreshWorkspace = function(selectedResource) {
-            console.log('refreshWorkspace');
+
+          $scope.refreshWorkspace = function(resource) {
             vm.params = $location.search();
             init();
-            if (selectedResource) {
-              vm.selectedResource = selectedResource;
+            if (resource) {
+              $scope.selectResourceById(resource['@id']);
             }
           };
 
           $scope.$on('refreshWorkspace', function (event, args) {
-            console.log('on refreshWorkspace');
             var selectedResource = args ? args[0] : null;
             $scope.refreshWorkspace(selectedResource);
           });
