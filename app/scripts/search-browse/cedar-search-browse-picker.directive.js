@@ -167,13 +167,8 @@ define([
           };
 
           // show the info panel with this resource or find one
-          vm.showInfoPanel = function (resource) {
-            // if this one is defined, then use it
-            if (resource) {
-              if (!vm.isResourceSelected(resource)) {
-                vm.selectResource(resource);
-              }
-            } else {
+          vm.showInfoPanel = function () {
+            if (!vm.selectedResource) {
               if (vm.currentPath) {
                 vm.selectResource(vm.currentPath);
               } else {
@@ -195,9 +190,9 @@ define([
           };
 
           // toggle the info panel with this resource or find one
-          vm.toggleInfoPanel = function (resource) {
+          vm.toggleInfoPanel = function () {
             if (!vm.showResourceInfo) {
-              vm.showInfoPanel(resource);
+              vm.showInfoPanel();
             } else {
               vm.setResourceInfoVisibility(false);
             }
@@ -994,6 +989,7 @@ define([
 
 
           $scope.refreshWorkspace = function(selectedResource) {
+            console.log('refreshWorkspace');
             vm.params = $location.search();
             init();
             if (selectedResource) {
@@ -1002,6 +998,7 @@ define([
           };
 
           $scope.$on('refreshWorkspace', function (event, args) {
+            console.log('on refreshWorkspace');
             var selectedResource = args ? args[0] : null;
             $scope.refreshWorkspace(selectedResource);
           });
