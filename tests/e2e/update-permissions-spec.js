@@ -24,7 +24,6 @@ describe('update-permissions', function () {
   });
 
   afterEach(function () {
-    browser.sleep(1000);
     workspacePage.clickLogo();
   });
 
