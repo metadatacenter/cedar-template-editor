@@ -92,8 +92,11 @@ var WorkspacePage = function () {
   var createFolderSubmitButton = createFolderModal.element(by.css('div.modal-footer button.confirm'));
 
   // share menu item from the option list following a right click on a resource
-  var createRightClickShareMenuItem = createCenterPanel.element(by.css('div > div > div > div.form-box-container.ng-scope.selected > div > div > ' +
-    'div.btn-group.dropdown.ng-scope.open > ul > li > a[ng-click="dc.showShareModal(resource)"]'));
+  var createRightClickMenuItemList = createCenterPanel.element(by.css('div > div > div > div.form-box-container.ng-scope.selected > div > div > ' +
+    'div.btn-group.dropdown.ng-scope.open > ul'));
+  var createRightClickShareMenuItem = createRightClickMenuItemList.element(by.css('li > a[ng-click="dc.showShareModal(resource)"]'));
+  var createRightClickRenameMenuItem = createRightClickMenuItemList.element(by.css('li > a[ng-click="dc.showRenameModal(resource)"]'));
+
 
 
   // access to locators
@@ -208,6 +211,9 @@ var WorkspacePage = function () {
   this.createRightClickShareMenuItem = function () {
     return createRightClickShareMenuItem;
   };
+  this.createRightClickRenameMenuItem = function () {
+    return createRightClickRenameMenuItem;
+  };
 
   // page load
   this.get = function () {
@@ -282,6 +288,46 @@ var WorkspacePage = function () {
   };
 
   // populate a template resource
+  //this.populateResource = function (name, type) {
+  //
+  //  // find the resource
+  //  createSearchNavInput.sendKeys(name + protractor.Key.ENTER);
+  //  var createFirst = element.all(by.css(createFirstCss + type)).first();
+  //  browser.wait(EC.visibilityOf(createFirst));
+  //  browser.wait(EC.elementToBeClickable(createFirst));
+  //  createFirst.click();
+  //
+  //  // create more on the toolbar
+  //  browser.wait(EC.visibilityOf(createMoreOptionsButton));
+  //  browser.wait(EC.elementToBeClickable(createMoreOptionsButton));
+  //  createMoreOptionsButton.click();
+  //
+  //  // populate menu item
+  //  browser.wait(EC.visibilityOf(createPopulateResourceButton));
+  //  browser.wait(EC.elementToBeClickable(createPopulateResourceButton));
+  //  createPopulateResourceButton.click();
+  //
+  //};
+
+  // search for a particular resource
+  this.searchForResource = function (name, type) {
+
+    // find the resource
+    createSearchNavInput.sendKeys(name + protractor.Key.ENTER);
+    var createFirst = element.all(by.css(createFirstCss + type)).first();
+    browser.wait(EC.visibilityOf(createFirst));
+
+    // clear the search
+    browser.wait(EC.visibilityOf(createSearchNavClearButton));
+    browser.wait(EC.elementToBeClickable(createSearchNavClearButton));
+    createSearchNavClearButton.click();
+    browser.wait(EC.visibilityOf(createBreadcrumbFolders));
+
+  };
+
+
+
+  // break populate into two steps, populate a template resource
   this.populateResource = function (name, type) {
 
     // find the resource
@@ -435,6 +481,13 @@ var WorkspacePage = function () {
     var userFolder = this.createCenterPanel().element(by.cssContainingText('.folderTitle.ng-binding', username));
     browser.wait(EC.elementToBeClickable(userFolder));
     browser.actions().doubleClick(userFolder).perform();
+  };
+
+
+  this.rightClickResource = function (name, type) {
+    var element = this.selectResource(name, type);
+    browser.actions().mouseMove(element).perform();
+    browser.actions().click(protractor.Button.RIGHT).perform();
   };
 
 

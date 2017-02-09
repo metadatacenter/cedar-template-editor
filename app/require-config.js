@@ -78,7 +78,7 @@ require.config({
   deps    : window.__karma__ ? allTestFiles : [],
   callback: window.__karma__ ? window.__karma__.start : null,
   baseUrl : window.__karma__ ? '/base' : '',
-  urlArgs : "bust=0.8.3"
+  urlArgs : "v=0.9.3-2"
 });
 
 // do not load the full app here.

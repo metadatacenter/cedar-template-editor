@@ -1,19 +1,19 @@
-<div class="controls-bar clearfix row-fluid navbar-fixed-top " ng-class="{'as-modal': !dc.onDashboard()}" >
+<div class="controls-bar clearfix row-fluid navbar-fixed-top " ng-class="{'as-modal': !dc.onDashboard()}">
 
   <div class="col-sm-2"></div>
-  <div class="col-sm-7" >
+  <div class="col-sm-7">
 
-    <div class="breadcrumbs-sb " >
+    <div class="breadcrumbs-sb ">
       <p ng-if="dc.isSearching">
         <span class="search-result">
             <span ng-class="{'no-search-results':dc.searchTerm}">
-              <span >{{dc.breadcrumbTitle}}</span>
+              <span>{{dc.breadcrumbTitle}}</span>
             </span>
           </span>
       </p>
 
       <p ng-if="!dc.isSearching">
-            <span ng-repeat="folder in dc.pathInfo">
+            <span class="folder-path" ng-repeat="folder in dc.pathInfo">
               <a ng-click="dc.goToFolder(folder['@id'])"
                   class="breadcrumbs">{{dc.breadcrumbName(folder.displayName)}}</a> /
             </span>
@@ -36,7 +36,7 @@
               tooltip-animation="false"
               tooltip-placement="bottom"
               data-toggle="tooltip"
-              ng-click="dc.deleteResource()"><i class="fa fa-trash "></i></button>
+              ng-click="dc.deleteResource(dc.getSelection())"><i class="fa fa-trash "></i></button>
         </li>
         <li ng-if="dc.onDashboard() && dc.hasSelection()" id="more-options-tool">
           <div class="btn-group dropdown">
@@ -51,7 +51,7 @@
               <li><a href="#" ng-click="dc.showShareModal(resource)">Share...</a></li>
               <li><a href="#" ng-click="dc.showMoveModal(resource)">Move to...</a></li>
               <li><a href="#" ng-click="dc.showRenameModal(resource)">Rename...</a></li>
-              <li ng-if="!dc.isFolder()"><a href="#" ng-click="dc.copyResource()">Make a copy</a></li>
+              <li ng-if="!dc.isFolder() && dc.canWriteToCurrentFolder()"><a href="#" ng-click="dc.copyResource()">Make a copy</a></li>
               <li role="separator" class="divider"></li>
               <li><a href="#" ng-click="dc.deleteResource(resource)">Delete</a></li>
             </ul>
@@ -364,7 +364,7 @@
 
                         <li><a href="#" ng-click="dc.editResource()">Open</a></li>
                         <!--<li ng-if="!dc.isFolder()"><a href="#" ng-click="dc.editResource(resource)">Edit</a></li>-->
-                        <li><a href="#" ng-click="dc.showInfoPanel(resource)">Info</a></li>
+                        <li><a href="#" ng-click="dc.showInfoPanel()">Info</a></li>
                         <li role="separator" class="divider"></li>
                         <li><a href="#" ng-click="dc.showShareModal(resource)"
                             >Share...</a></li>
@@ -414,14 +414,14 @@
                       <!-- need to duplicate these blocks because otherwise the popup flickers --->
                       <ul ng-if="dc.isTemplate()" class="dropdown-menu"
                           aria-labelledby="{{getId(resource, 'populate')}}">
-                        <li ><a href="#" class="populate" ng-click="dc.launchInstance(resource)">Populate</a></li>
+                        <li><a href="#" class="populate" ng-click="dc.launchInstance(resource)">Populate</a></li>
                         <li><a href="#" ng-click="dc.editResource(resource)">Edit</a></li>
-                        <li><a href="#" ng-click="dc.showInfoPanel(resource)">Info</a></li>
+                        <li><a href="#" ng-click="dc.showInfoPanel()">Info</a></li>
                         <li role="separator" class="divider"></li>
                         <li><a href="#" ng-click="dc.showShareModal(resource)">Share...</a></li>
                         <li><a href="#" ng-click="dc.showMoveModal(resource)">Move to...</a></li>
                         <li><a href="#" ng-click="dc.showRenameModal(resource)">Rename...</a></li>
-                        <li><a href="#" ng-if="!dc.isFolder()" ng-click="dc.copyResource()">Make a copy</a></li>
+                        <li><a href="#" ng-if="!dc.isFolder() && dc.canWriteToCurrentFolder()" ng-click="dc.copyResource()">Make a copy</a></li>
                         <li role="separator" class="divider"></li>
                         <li><a href="#" ng-click="dc.deleteResource(resource)">Delete</a></li>
                       </ul>
@@ -429,12 +429,12 @@
                       <ul ng-if="!dc.isTemplate()" class="dropdown-menu"
                           aria-labelledby="{{getId(resource, 'populate')}}">
                         <li><a href="#" ng-click="dc.editResource(resource)">Edit</a></li>
-                        <li><a href="#" ng-click="dc.showInfoPanel(resource)">Info</a></li>
+                        <li><a href="#" ng-click="dc.showInfoPanel()">Info</a></li>
                         <li role="separator" class="divider"></li>
                         <li><a href="#" ng-click="dc.showShareModal(resource)">Share...</a></li>
                         <li><a href="#" ng-click="dc.showMoveModal(resource)">Move to...</a></li>
                         <li><a href="#" ng-click="dc.showRenameModal(resource)">Rename...</a></li>
-                        <li><a href="#" ng-if="!dc.isFolder()" ng-click="dc.copyResource()">Make a copy</a></li>
+                        <li><a href="#" ng-if="!dc.isFolder() && dc.canWriteToCurrentFolder()" ng-click="dc.copyResource()">Make a copy</a></li>
                         <li role="separator" class="divider"></li>
                         <li><a href="#" ng-click="dc.deleteResource(resource)">Delete</a></li>
                       </ul>
@@ -477,7 +477,7 @@
                     </button>
                     <ul class="dropdown-menu" aria-labelledby="{{getId(resource, 'list')}}">
                       <li><a href="#" ng-click="dc.editResource()">Open</a></li>
-                      <li><a href="#" ng-click="dc.showInfoPanel(resource)">Info</a></li>
+                      <li><a href="#" ng-click="dc.showInfoPanel()">Info</a></li>
                       <li role="separator" class="divider"></li>
                       <li><a href="#" ng-click="dc.showShareModal(resource)">Share...</a></li>
                       <li><a href="#" ng-click="dc.showMoveModal(resource)">Move to...</a></li>
@@ -511,16 +511,16 @@
                         class="btn btn-sm btn-circle fa fa-ellipsis-v"></i>
                     </button>
                     <ul class="dropdown-menu" aria-labelledby="{{getId(resource, 'list')}}">
-                      <li ng-if="dc.isTemplate()"><a class="populate"  href="#" ng-click="dc.launchInstance(resource)">Populate
+                      <li ng-if="dc.isTemplate()"><a class="populate" href="#" ng-click="dc.launchInstance(resource)">Populate
                       </a></li>
                       <li><a href="#" ng-click="dc.editResource(resource)">Edit</a></li>
 
-                      <li><a href="#" ng-click="dc.showInfoPanel(resource)">Info</a></li>
+                      <li><a href="#" ng-click="dc.showInfoPanel()">Info</a></li>
                       <li role="separator" class="divider"></li>
                       <li><a href="#" ng-click="dc.showShareModal(resource)">Share...</a></li>
                       <li><a href="#" ng-click="dc.showMoveModal(resource)">Move to...</a></li>
                       <li><a href="#" ng-click="dc.showRenameModal(resource)">Rename...</a></li>
-                      <li><a href="#" ng-click="dc.copyResource()">Make a copy</a></li>
+                      <li><a href="#" ng-if="dc.canWriteToCurrentFolder()" ng-click="dc.copyResource()">Make a copy</a></li>
                       <li role="separator" class="divider"></li>
                       <li><a href="#" ng-click="dc.deleteResource(resource)">Delete</a></li>
                     </ul>
@@ -532,8 +532,9 @@
           </div>
 
           <div class="row resource-count" ng-if="dc.showResourceCount()">
-            <div class="col-xs-12  center" >
-              <span translate>GENERIC.Displaying</span> 1 - {{dc.getVisibleCount()}} <span translate>GENERIC.Of</span> {{dc.totalCount}}
+            <div class="col-xs-12  center">
+              <span translate>GENERIC.Displaying</span> 1 - {{dc.getVisibleCount()}} <span translate>GENERIC.Of</span>
+              {{dc.totalCount}}
             </div>
           </div>
 
@@ -561,17 +562,27 @@
             </div>
 
             <div class="col-sm-10">
-              <div class="title" ng-class="dc.getSelectedNode().nodeType">
-                <i class="fa" ng-class="dc.getResourceIconClass(dc.getSelectedNode())"></i> {{
-                dc.getSelectedNode().displayName }}
+              <div class="title" ng-if="dc.getSelectedNode()" ng-class="dc.getSelectedNode().nodeType">
+                <i class="fa" ng-class="dc.getResourceIconClass(dc.getSelectedNode())"></i> <span
+                  ng-bind="dc.getSelectedNode().displayName"></span>
+              </div>
+              <div class="title" ng-if="!dc.getSelectedNode()">
+                &nbsp;
               </div>
             </div>
-
           </div>
         </div>
 
+        <div class="info no-selection" ng-if="!dc.getSelectedNode()">
+          <div class="row no-file">
+            <div class="col-sm-12 center"><i class="fa fa-file"></i></div>
+          </div>
+          <div class="row no-message">
+            <div class="col-sm-12 center " translate>Select a file or folder to view.</div>
+          </div>
+        </div>
 
-        <div class="info">
+        <div class="info" ng-if="dc.getSelectedNode()">
           <div class="row">
             <div class="col-sm-4" translate>Type</div>
             <div class="col-sm-8 type">{{ dc.getResourceTypeClass(dc.getSelectedNode())}}</div>
@@ -615,7 +626,7 @@
         </div>
 
 
-        <div class="description">
+        <div class="description" ng-if="dc.getSelectedNode()">
           <div ng-if="dc.editingDescription" class="editing">
 
             <form class="form-inline" ng-submit="dc.updateDescription()">
@@ -638,7 +649,7 @@
                 tooltip-animation="false"
                 tooltip-placement="left"
                 data-toggle="tooltip"
-
+                ng-show="dc.canWrite()"
                 ng-click="dc.startDescriptionEditing()"><i class="fa fa-pencil graytext"></i></button>
           </div>
         </div>

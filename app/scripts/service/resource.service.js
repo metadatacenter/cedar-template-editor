@@ -353,12 +353,12 @@ define([
 
     }
 
-    function copyResourceToWorkspace(resource, successCallback, errorCallback) {
+    function copyResourceToWorkspace(resource, newTitle, successCallback, errorCallback) {
       var postData = {};
       postData['@id'] = resource['@id'];
       postData['nodeType'] = resource['nodeType'];
       postData['folderId'] = CedarUser.getHomeFolderId();
-      postData['titleTemplate'] = "Copy of {{title}}";
+      postData['titleTemplate'] = newTitle;
       var url = urlService.copyResourceToFolder();
       authorizedBackendService.doCall(
           httpBuilderService.post(url, postData),
@@ -369,12 +369,12 @@ define([
       );
     }
 
-    function copyResource(resource, folderId, successCallback, errorCallback) {
+    function copyResource(resource, folderId, newTitle, successCallback, errorCallback) {
       var postData = {};
       postData['@id'] = resource['@id'];
       postData['nodeType'] = resource['nodeType'];
       postData['folderId'] = folderId;
-      postData['titleTemplate'] = "Copy of {{title}}";
+      postData['titleTemplate'] = newTitle;
       var url = urlService.copyResourceToFolder();
       authorizedBackendService.doCall(
           httpBuilderService.post(url, postData),

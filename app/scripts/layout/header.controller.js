@@ -11,11 +11,12 @@ define([
     '$location',
     '$window',
     '$timeout',
+    '$document',
     'QueryParamUtilsService',
     'UIMessageService'
   ];
 
-  function HeaderController($rootScope, $location, $window, $timeout, QueryParamUtilsService, UIMessageService) {
+  function HeaderController($rootScope, $location, $window, $timeout, $document, QueryParamUtilsService, UIMessageService) {
 
     var vm = this;
 
@@ -65,6 +66,7 @@ define([
     };
 
     vm.search = function (searchTerm) {
+      console.log('searchTerm ' + searchTerm);
       if (vm.isDashboard()) {
         vm.searchTerm = searchTerm;
         var baseUrl = '/dashboard';
@@ -123,10 +125,12 @@ define([
     };
 
 
-    $rootScope.$on('$locationChangeStart', function (event, next, current) {
+    $rootScope.$on('$locationChangeSuccess', function (event, next, current) {
       vm.searchTerm = $location.search().search;
       vm.path = $location.path();
       $rootScope.setHeader();
+      $document.unbind('keypress');
+      $document.unbind('keyup');
 
       if ($rootScope.isDirty()) {
 

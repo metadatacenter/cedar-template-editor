@@ -103,10 +103,7 @@ var ShareModal = function () {
 
 
   this.openDialogViaRightClick = function (name, type) {
-    var element = WorkspacePage.selectResource(name, type);
-    browser.actions().mouseMove(element).perform();
-    browser.actions().click(protractor.Button.RIGHT).perform();
-
+    WorkspacePage.rightClickResource(name, type);
     var shareMenuItem = WorkspacePage.createRightClickShareMenuItem();
     browser.wait(EC.visibilityOf(shareMenuItem));
     browser.wait(EC.elementToBeClickable(shareMenuItem));
