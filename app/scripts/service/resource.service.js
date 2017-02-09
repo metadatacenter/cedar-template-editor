@@ -358,7 +358,7 @@ define([
       postData['@id'] = resource['@id'];
       postData['nodeType'] = resource['nodeType'];
       postData['folderId'] = CedarUser.getHomeFolderId();
-      postData['title'] = newTitle;
+      postData['titleTemplate'] = newTitle;
       var url = urlService.copyResourceToFolder();
       authorizedBackendService.doCall(
           httpBuilderService.post(url, postData),
@@ -374,7 +374,7 @@ define([
       postData['@id'] = resource['@id'];
       postData['nodeType'] = resource['nodeType'];
       postData['folderId'] = folderId;
-      postData['title'] = newTitle;
+      postData['titleTemplate'] = newTitle;
       var url = urlService.copyResourceToFolder();
       authorizedBackendService.doCall(
           httpBuilderService.post(url, postData),
