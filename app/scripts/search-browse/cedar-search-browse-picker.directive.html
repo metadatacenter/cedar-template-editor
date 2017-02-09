@@ -51,7 +51,7 @@
               <li><a href="#" ng-click="dc.showShareModal(resource)">Share...</a></li>
               <li><a href="#" ng-click="dc.showMoveModal(resource)">Move to...</a></li>
               <li><a href="#" ng-click="dc.showRenameModal(resource)">Rename...</a></li>
-              <li ng-if="!dc.isFolder()"><a href="#" ng-click="dc.copyResource()">Make a copy</a></li>
+              <li ng-if="!dc.isFolder() && dc.canWriteToCurrentFolder()"><a href="#" ng-click="dc.copyResource()">Make a copy</a></li>
               <li role="separator" class="divider"></li>
               <li><a href="#" ng-click="dc.deleteResource(resource)">Delete</a></li>
             </ul>
@@ -421,7 +421,7 @@
                         <li><a href="#" ng-click="dc.showShareModal(resource)">Share...</a></li>
                         <li><a href="#" ng-click="dc.showMoveModal(resource)">Move to...</a></li>
                         <li><a href="#" ng-click="dc.showRenameModal(resource)">Rename...</a></li>
-                        <li><a href="#" ng-if="!dc.isFolder()" ng-click="dc.copyResource()">Make a copy</a></li>
+                        <li><a href="#" ng-if="!dc.isFolder() && dc.canWriteToCurrentFolder()" ng-click="dc.copyResource()">Make a copy</a></li>
                         <li role="separator" class="divider"></li>
                         <li><a href="#" ng-click="dc.deleteResource(resource)">Delete</a></li>
                       </ul>
@@ -434,7 +434,7 @@
                         <li><a href="#" ng-click="dc.showShareModal(resource)">Share...</a></li>
                         <li><a href="#" ng-click="dc.showMoveModal(resource)">Move to...</a></li>
                         <li><a href="#" ng-click="dc.showRenameModal(resource)">Rename...</a></li>
-                        <li><a href="#" ng-if="!dc.isFolder()" ng-click="dc.copyResource()">Make a copy</a></li>
+                        <li><a href="#" ng-if="!dc.isFolder() && dc.canWriteToCurrentFolder()" ng-click="dc.copyResource()">Make a copy</a></li>
                         <li role="separator" class="divider"></li>
                         <li><a href="#" ng-click="dc.deleteResource(resource)">Delete</a></li>
                       </ul>
@@ -520,7 +520,7 @@
                       <li><a href="#" ng-click="dc.showShareModal(resource)">Share...</a></li>
                       <li><a href="#" ng-click="dc.showMoveModal(resource)">Move to...</a></li>
                       <li><a href="#" ng-click="dc.showRenameModal(resource)">Rename...</a></li>
-                      <li><a href="#" ng-click="dc.copyResource()">Make a copy</a></li>
+                      <li><a href="#" ng-if="dc.canWriteToCurrentFolder()" ng-click="dc.copyResource()">Make a copy</a></li>
                       <li role="separator" class="divider"></li>
                       <li><a href="#" ng-click="dc.deleteResource(resource)">Delete</a></li>
                     </ul>
