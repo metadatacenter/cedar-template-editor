@@ -93,6 +93,17 @@
             }
           }
         },
+        "pav:createdOn": {
+          "type": "object",
+          "properties": {
+            "@type": {
+              "type": "string",
+              "enum": [
+                "xsd:dateTime"
+              ]
+            }
+          }
+        },
         "pav:createdBy": {
           "type": "object",
           "properties": {
