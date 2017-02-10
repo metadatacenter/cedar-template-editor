@@ -40,7 +40,7 @@
     <div ng-if="showMultiple('paged') && valueArray.length > 0" class="element" ng-class="{'expand':isExpanded(index)}">
       <div class="row " style="cursor:pointer" ng-class="{'isInactive': !isActive()}">
         <div ng-class="{'col-xs-3 ': isExpanded(index), 'col-xs-12': !isExpanded(index)}"
-            ng-click="toggleExpanded(index)" style="overflow:hidden;white-space:nowrap;text-overflow:ellipsis;">
+            ng-click="toggleExpanded(index)" >
           <span>
           <a class="element title " ng-class="{'isInactive' : isInactive(index)}">
             {{getTitle()}} <span ng-if="valueArray.length-1" class="count">({{index+1}})</span>

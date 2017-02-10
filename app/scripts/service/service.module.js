@@ -26,7 +26,7 @@ define([
   'cedar/template-editor/service/ui-settings.service',
   'cedar/template-editor/service/tracking.service',
   'cedar/template-editor/service/string-utils.service',
-  'cedar/template-editor/service/biosample.service',
+  'cedar/template-editor/service/submission.service',
   'cedar/template-editor/service/controlled-term-http.service',
   'cedar/template-editor/service/query-param-utils.service',
   'cedar/template-editor/service/frontend-url.service'
@@ -57,7 +57,7 @@ define([
     'cedar.templateEditor.service.uISettingsService',
     'cedar.templateEditor.service.trackingService',
     'cedar.templateEditor.service.stringUtilsService',
-    'cedar.templateEditor.service.biosampleService',
+    'cedar.templateEditor.service.submissionService',
     'cedar.templateEditor.service.controlledTermHttpService',
     'cedar.templateEditor.service.queryParamUtilsService',
     'cedar.templateEditor.service.frontendUrlService'

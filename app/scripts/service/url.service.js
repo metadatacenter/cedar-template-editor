@@ -17,7 +17,7 @@ define([
     var valueRecommenderService = null;
     var schemaService = null;
     var groupService = null;
-    var biosampleService = null;
+    var submissionService = null;
 
     var service = {
       serviceId: "UrlService"
@@ -30,7 +30,7 @@ define([
       valueRecommenderService = config.valueRecommenderRestAPI;
       schemaService = config.schemaRestAPI;
       groupService = config.groupRestAPI;
-      biosampleService = config.biosampleRestAPI;
+      submissionService = config.submissionRestAPI;
     };
 
     service.base = function () {
@@ -186,7 +186,11 @@ define([
     };
 
     service.biosampleValidation = function (instance) {
-      return biosampleService + '/validate';
+      return submissionService + '/command/validate-biosample';
+    };
+
+    service.airrSubmission = function (instance) {
+      return submissionService + '/command/submit-airr';
     };
 
     service.getOntologies = function () {
