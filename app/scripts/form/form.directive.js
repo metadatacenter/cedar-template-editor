@@ -92,14 +92,18 @@ define([
 
           // if it is there, delete it
           if (selectedKey) {
-
-            // delete it from the template's properties
+            // remove it from the template's properties
             delete props[selectedKey];
-
-            // and the order array
-            var idx = $scope.form._ui.order.indexOf(selectedKey);
-            $scope.form._ui.order.splice(idx, 1);
+            // remove it from the order array
+            var id1 = $scope.form._ui.order.indexOf(selectedKey);
+            $scope.form._ui.order.splice(id1, 1);
             $scope.$emit("invalidElementState", ["remove", title, id]);
+            // remove it from @context.properties
+            delete props['@context'].properties[selectedKey];
+            // remove it from @context.required
+            delete props['@context'].properties[selectedKey];
+            var id2 = props['@context'].required.indexOf(selectedKey);
+            props['@context'].required.splice(id2, 1);
           }
         };
 
