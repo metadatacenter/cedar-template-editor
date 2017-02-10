@@ -15286,6 +15286,40 @@ table.apiKey td {
   opacity: 0.5;
 }
 @media (max-width: 768px) {
+  #airr-submission-modal .modal-content {
+    width: calc(100% - 10px);
+    max-width: calc(100% - 10px);
+  }
+}
+#airr-submission-modal .modal-dialog {
+  max-width: 400px;
+  width: 400px;
+}
+#airr-submission-modal .modal-dialog .modal-content {
+  max-width: 400px;
+  width: 400px;
+  margin: 0 auto;
+}
+#airr-submission-modal .modal-dialog .modal-content .modal-body {
+  max-height: 300px;
+  overflow-y: scroll;
+}
+#airr-submission-modal .modal-dialog .modal-content .modal-body .file-upload .row {
+  margin-top: 10px ;
+}
+#airr-submission-modal .modal-dialog .modal-content .modal-body .file-upload .row .asset-upload {
+  display: table-cell;
+  text-align: center;
+  vertical-align: middle;
+  width: 180px;
+  height: 180px;
+  border: 3px dashed #ccc;
+  background: #eee;
+}
+#airr-submission-modal .modal-dialog .modal-content .modal-body .file-upload .row .upload-result {
+  min-height: 30px;
+}
+@media (max-width: 768px) {
   #share-modal .modal-content {
     width: calc(100% - 10px);
     max-width: calc(100% - 10px);
@@ -15514,6 +15548,16 @@ table.apiKey td {
   #sidebar-right .info .row .location {
     min-height: 60px;
   }
+  #sidebar-right .info.no-selection {
+    padding: 50px 0 100px 0;
+    color: #ccc;
+  }
+  #sidebar-right .info.no-selection .no-file {
+    font-size: 50px;
+  }
+  #sidebar-right .info.no-selection .no-message {
+    font-size: 18px;
+  }
 }
 @media (max-width: 768px) {
   body {
@@ -15555,6 +15599,12 @@ table.apiKey td {
 #privacy-policy .content ul.profile li,
 #profile .content ul.profile li {
   padding: 0 0 5px 0;
+}
+textarea.curlSample {
+  width: 650px;
+  height: 100px;
+  font-family: Courier;
+  font-size: 11px;
 }
 @font-face {
   font-family: "project-cedar";

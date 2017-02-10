@@ -4,6 +4,10 @@
 var WorkspacePage = function () {
 
   var testConfig = require('../config/test-env.js');
+  var toastyModal = require('../modals/toasty-modal.js');
+  var sweetAlertModal = require('../modals/sweet-alert-modal.js');
+  var templateCreatorPage = require('../pages/template-creator-page.js');
+
   var url = testConfig.baseUrl + '/dashboard';
   var EC = protractor.ExpectedConditions;
 
@@ -43,23 +47,30 @@ var WorkspacePage = function () {
   var createDeleteResourceButton = createToolbar.element(by.css('#more-options-tool [ng-click="dc.deleteResource(resource)"]'));
   var createGridViewButton = createToolbar.element(by.css('#grid-view-tool'));
   var createListViewButton = createToolbar.element(by.css('#list-view-tool'));
-  var createViewDetailsButton = createToolbar.element(by.css('#details-view-tool [ng-click="dc.toggleInfoPanel()"'));
-  var createHideDetailsButton = createToolbar.element(by.css('#details-hide-tool [ng-click="dc.toggleInfoPanel()"'));
+  var createViewDetailsButton = createToolbar.element(by.css('#details-view-tool > button'));
+  var createHideDetailsButton = createToolbar.element(by.css('#details-hide-tool [ng-click="dc.toggleInfoPanel()"]'));
   var createDetailsPanel = element(by.id('sidebar-right'));
+  var createDetailsPanelTitle = createDetailsPanel.element(by.css('div > div.title.ng-binding.folder'));
+  var createDetailsPanelOwner = createDetailsPanel.element(by.css('div.info > div:nth-child(3)')).element(by.cssContainingText('div','Owner'));
+  var createDetailsPanelOwnerValue = createDetailsPanelOwner.element(by.xpath('../div[@class="col-sm-8 ng-binding"]'));
   var createSortDropdownButton = createToolbar.element(by.css('#workspace-sort-tool [ng-click="dc.deleteResource()"]'));
   var createSortByNameMenuItem = createToolbar.element(by.css('#workspace-sort-tool [ng-click="dc.setSortOption(\\042name\\042)"]'));
   var createSortByCreatedMenuItem = createToolbar.element(by.css('#workspace-sort-tool [ng-click="dc.setSortOption(\\042createdOnTS\\042)"]'));
   var createSortByUpdatedMenuItem = createToolbar.element(by.css('#workspace-sort-tool [ng-click="dc.setSortOption(\\042lastUpdatedOnTS\\042)"]'));
   var createUserDropdownButton = createToolbar.element(by.css('#user-tool > div > button'));
   var createProfileMenuItem = createToolbar.element(by.css('#user-tool #user-profile-tool a'));
-  var createLogoutMenuItem = createToolbar.element(by.css('#user-tool #user-logoout-tool a'));
+  var createLogoutMenuItem = createToolbar.element(by.css('#user-tool #user-logout-tool a'));
+  var createShareMenuItem = createToolbar.element(by.css('#more-options-tool > div > ul > li > a[ng-click="dc.showShareModal(resource)"]'));
+  var trashTooltip = 'delete selection';
   var createListView = element(by.css('.center-panel .list-view'));
   var createGridView = element(by.css('.center-panel .grid-view'));
 
   // breadcrumbs
   var createBreadcrumb = element(by.css('.breadcrumbs-sb'));
-  var createBreadcrumbFolders = element(by.css('.breadcrumbs-sb .folder-path'));
+  var createBreadcrumbFolders = element(by.css('.breadcrumbs-sb')).all(by.repeater('folder in dc.pathInfo'));
   var createBreadcrumbSearch = element(by.css('.breadcrumbs-sb .search-result'));
+  var createBreadcrumbUsersLink = createBreadcrumb.element(by.linkText("Users"));
+  var createBreadcrumbUserName = createBreadcrumb.element(by.css('p > a.breadcrumbs.ng-binding'));
 
   // create new buttons
   var createButton = element(by.id('button-create'));
@@ -72,11 +83,20 @@ var WorkspacePage = function () {
     "folder"  : createFolderButton
   };
 
+  // main center panel
+  var createCenterPanel = element(by.id('center-panel'));
 
   // create folder modal
   var createFolderModal = element(by.id('new-folder-modal'));
   var createFolderName = createFolderModal.element(by.model('folder.folder.name'));
   var createFolderSubmitButton = createFolderModal.element(by.css('div.modal-footer button.confirm'));
+
+  // share menu item from the option list following a right click on a resource
+  var createRightClickMenuItemList = createCenterPanel.element(by.css('div > div > div > div.form-box-container.ng-scope.selected > div > div > ' +
+    'div.btn-group.dropdown.ng-scope.open > ul'));
+  var createRightClickShareMenuItem = createRightClickMenuItemList.element(by.css('li > a[ng-click="dc.showShareModal(resource)"]'));
+  var createRightClickRenameMenuItem = createRightClickMenuItemList.element(by.css('li > a[ng-click="dc.showRenameModal(resource)"]'));
+
 
 
   // access to locators
@@ -116,6 +136,9 @@ var WorkspacePage = function () {
   this.createBreadcrumbSearch = function () {
     return createBreadcrumbSearch;
   };
+  this.createBreadcrumbUsers = function () {
+    return createBreadcrumbUsersLink;
+  };
   this.createToolbar = function () {
     return createToolbar;
   };
@@ -143,7 +166,54 @@ var WorkspacePage = function () {
   this.createFirstFolder = function () {
     return createFirstFolder;
   };
-
+  this.createUserDropdownButton = function () {
+    return createUserDropdownButton;
+  };
+  this.createLogoutMenuItem = function () {
+    return createLogoutMenuItem;
+  };
+  this.createShareMenuItem = function () {
+    return createShareMenuItem;
+  };
+  this.createViewDetailsButton = function () {
+    return createViewDetailsButton;
+  };
+  this.createHideDetailsButton = function () {
+    return createHideDetailsButton;
+  };
+  this.createDetailsPanel = function () {
+  return createDetailsPanel;
+  };
+  this.createDetailsPanelTitle = function () {
+    return createDetailsPanelTitle;
+  };
+  this.createBreadcrumbUserName = function () {
+    return createBreadcrumbUserName;
+  };
+  this.createFolderButton = function () {
+    return createFolderButton;
+  };
+  this.createFolderName = function () {
+    return createFolderName;
+  };
+  this.createFolderSubmitButton = function () {
+    return createFolderSubmitButton;
+  };
+  this.createDetailsPanelOwner = function () {
+    return createDetailsPanelOwner;
+  };
+  this.createDetailsPanelOwnerValue = function () {
+    return createDetailsPanelOwnerValue;
+  };
+  this.createCenterPanel = function () {
+    return createCenterPanel;
+  };
+  this.createRightClickShareMenuItem = function () {
+    return createRightClickShareMenuItem;
+  };
+  this.createRightClickRenameMenuItem = function () {
+    return createRightClickRenameMenuItem;
+  };
 
   // page load
   this.get = function () {
@@ -173,6 +243,7 @@ var WorkspacePage = function () {
     browser.actions().mouseMove(createButton).perform();
 
     var button = createResourceButtons[type];
+    browser.wait(EC.visibilityOf(button));
     browser.wait(EC.elementToBeClickable(button));
     button.click();
 
@@ -184,28 +255,36 @@ var WorkspacePage = function () {
       browser.wait(EC.elementToBeClickable(createFolderSubmitButton));
       createFolderSubmitButton.click();
     }
+    else if (type === 'template') {
+      templateCreatorPage.setTitle('template', title);
+      templateCreatorPage.clickSave('template');
+      templateCreatorPage.clickBackArrow();
+    }
+  };
+
+  // create a folder
+  this.createFolder = function (name) {
+    var folderTitle = this.createTitle(name);
+    this.createResource('folder', folderTitle);
+    toastyModal.isSuccess();
+    return folderTitle;
+  };
+
+  // create a template
+  this.createTemplate = function (name) {
+    var templateTitle = this.createTitle(name);
+    this.createResource('template', templateTitle);
+    return templateTitle;
   };
 
   // delete a resource
   this.deleteResource = function (name, type) {
-
-    // find the resource
-    createSearchNavInput.sendKeys(name + protractor.Key.ENTER);
-    var result = "Search Results For: '" + name + "'";
-    var searchResult = element(by.css('.search-result'));
-    browser.wait(EC.textToBePresentInElement(searchResult, result));
-
-    // select the first result
-    var createFirst = element.all(by.css(createFirstCss + type)).first();
-    browser.wait(EC.visibilityOf(createFirst));
-    browser.wait(EC.elementToBeClickable(createFirst));
-    createFirst.click();
-
-    // delete it
-    browser.wait(EC.visibilityOf(createTrashButton));
-    browser.wait(EC.elementToBeClickable(createTrashButton));
-    createTrashButton.click();
-
+    this.selectResource(name, type);
+    this.createTrashButton().click();
+    sweetAlertModal.confirm();
+    toastyModal.isSuccess();
+    browser.wait(EC.elementToBeClickable(createLogo));
+    this.clickLogo();
   };
 
   // populate a template resource
@@ -330,7 +409,7 @@ var WorkspacePage = function () {
     browser.wait(EC.elementToBeClickable(createFirst));
     createFirst.click();
 
-
+    return createFirst;
   };
 
 
@@ -367,9 +446,51 @@ var WorkspacePage = function () {
   };
 
   this.clickLogo = function () {
-
+    browser.wait(EC.visibilityOf(createLogo));
+    browser.wait(EC.elementToBeClickable(createLogo));
     createLogo.click();
-  }
+  };
+
+
+  this.logout = function () {
+    browser.sleep(1000);
+    var createUserDropdownButton = this.createUserDropdownButton();
+    browser.wait(EC.visibilityOf(createUserDropdownButton));
+    browser.wait(EC.elementToBeClickable(createUserDropdownButton));
+    createUserDropdownButton.click();
+    var logoutMenuItem = this.createLogoutMenuItem();
+    browser.wait(EC.elementToBeClickable(logoutMenuItem));
+    logoutMenuItem.click();
+  };
+
+
+  this.login = function (username, password) {
+    browser.driver.findElement(by.id('username')).sendKeys(username).then(function () {
+      browser.driver.findElement(by.id('password')).sendKeys(password).then(function () {
+        browser.driver.findElement(by.id('kc-login')).click().then(function () {
+          browser.driver.wait(browser.driver.isElementPresent(by.id('top-navigation')));
+          browser.driver.wait(browser.driver.isElementPresent(by.className('ng-app')));
+        });
+      });
+    });
+  };
+
+
+  this.navigateToUserFolder = function (username) {
+    this.clickBreadcrumb(1);
+    var userFolder = this.createCenterPanel().element(by.cssContainingText('.folderTitle.ng-binding', username));
+    browser.wait(EC.elementToBeClickable(userFolder));
+    browser.actions().doubleClick(userFolder).perform();
+  };
+
+
+  this.rightClickResource = function (name, type) {
+    var element = this.selectResource(name, type);
+    browser.actions().mouseMove(element).perform();
+    browser.actions().click(protractor.Button.RIGHT).perform();
+  };
+
+
 };
 
 module.exports = new WorkspacePage();

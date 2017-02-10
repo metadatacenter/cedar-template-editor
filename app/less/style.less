@@ -2762,7 +2762,9 @@ section.dashboard-elements {
 */
 .template-body form .runtime {
 
+
   font-size: 16px;
+
 
   .treeview, .treeview ul.tv {
     list-style-type: none;
@@ -2770,6 +2772,7 @@ section.dashboard-elements {
     padding: 0;
     position: relative;
   }
+
 
   .treeview {
 
@@ -2822,11 +2825,13 @@ section.dashboard-elements {
       height: 12px;
     }
 
+
     li.tv.first.element::after {
       top: 0;
       height: 12px;
     }
   }
+
 
   /* lower line on list items from the first level because they don't have parents */
   .treeview > li.tv::after {
@@ -2843,6 +2848,7 @@ section.dashboard-elements {
     top: 12px;
     height: 100%;
   }
+
 
   .paging {
     max-height: 17px;
@@ -2861,6 +2867,7 @@ section.dashboard-elements {
   }
 
   .active-container {
+
     border-left: 1px solid @lt-gray;
     position: relative;
     right: 0;
@@ -2920,7 +2927,6 @@ section.dashboard-elements {
     }
     .title.element {
       text-shadow: 1px 0px 0px #71977F;
-
     }
     .title.form {
       text-shadow: 1px 0px 0px @brand-primary;
@@ -2947,6 +2953,7 @@ section.dashboard-elements {
       font-size: smaller;
     }
     &.field {
+
       color: #666;
     }
     &.element {
@@ -3078,6 +3085,7 @@ section.dashboard-elements {
       }
       &.collapse {
       }
+
 
     }
   }
@@ -6936,7 +6944,9 @@ table.apiKey {
   background: #ccc; // manage scrollbar thumb background color here
 }
 
+
 #rename-modal, #new-folder-modal, #move-modal, #share-modal {
+
   .modal-header {
     border-bottom: 0px solid #aaa;
   }
@@ -7066,6 +7076,42 @@ table.apiKey {
         &.disabled {
           opacity: 0.5;
         }
+      }
+    }
+  }
+}
+
+#airr-submission-modal {
+
+  @media (max-width: @screen-sm-min) {
+    .modal-content {
+      width: calc(~"100% - 10px");
+      max-width: calc(~"100% - 10px");
+    }
+  }
+  .modal-dialog {
+    max-width: 400px;
+    width: 400px;
+    .modal-content {
+      max-width: 400px;
+      width: 400px;
+      margin: 0 auto;
+
+      .modal-body {
+        max-height: 300px;
+        overflow-y: scroll;
+        .file-upload {
+          .row {
+            margin-top:10px ;
+            .asset-upload {
+              display:table-cell;text-align:center;vertical-align:middle;width:180px;height:180px;border:3px dashed #ccc;background:#eee;
+            }
+            .upload-result {
+              min-height:30px;
+            }
+          }
+        }
+
       }
     }
   }
@@ -7329,6 +7375,16 @@ table.apiKey {
           min-height: 60px;
         }
       }
+      &.no-selection {
+        padding: 50px 0 100px 0;
+        color:#ccc;
+        .no-file {
+          font-size:50px
+        }
+        .no-message {
+          font-size:18px
+        }
+      }
     }
   }
 }
@@ -7383,6 +7439,11 @@ table.apiKey {
 #workspace-toolbar {
 }
 
-
+textarea.curlSample {
+  width: 650px;
+  height: 100px;
+  font-family: Courier;
+  font-size: 11px
+}
 
 

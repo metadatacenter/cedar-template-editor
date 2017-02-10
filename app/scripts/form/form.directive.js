@@ -10,12 +10,12 @@ define([
 
 
   formDirective.$inject = ['$rootScope', '$document', '$timeout', '$http', 'DataManipulationService',
-                           'FieldTypeService', 'DataUtilService', 'BiosampleService',
+                           'FieldTypeService', 'DataUtilService', 'SubmissionService',
                            'UIMessageService', 'UrlService'];
 
 
   function formDirective($rootScope, $document, $timeout, $http, DataManipulationService, FieldTypeService,
-                         DataUtilService, BiosampleService, UIMessageService, UrlService) {
+                         DataUtilService, SubmissionService, UIMessageService, UrlService) {
     return {
       templateUrl: 'scripts/form/form.directive.html',
       restrict   : 'E',
@@ -340,12 +340,15 @@ define([
           return ($rootScope.documentTitle && $rootScope.documentTitle.toLowerCase().indexOf('biosample') > -1);
         };
 
+        $scope.isAIRRTemplate = function () {
+          return ($rootScope.documentTitle && $rootScope.documentTitle.toLowerCase().indexOf('airr') > -1);
+        };
+
 
         // validate a biosample template
         $scope.checkBiosample = function (instance) {
 
-          if ($scope.isBiosampleTemplate()) {
-
+          if ($scope.isBiosampleTemplate() || $scope.isAIRRTemplate()) {
 
             // one way to make the call
             var config = {};
@@ -394,11 +397,8 @@ define([
 
         };
 
-        // Watching for the 'submitForm' event to be $broadcast from parent 'RuntimeController'
         $scope.$on('biosampleValidation', function (event) {
-          // Make the model (populated template) available to the parent
           $scope.checkBiosample($scope.model);
-
         });
 
         // Watching for the 'submitForm' event to be $broadcast from parent 'RuntimeController'

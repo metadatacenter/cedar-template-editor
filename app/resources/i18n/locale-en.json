@@ -118,7 +118,8 @@
     "Add": "Add",
     "ExpandAll": "Expand All",
     "Displaying": "Displaying",
-    "Of": "of"
+    "Of": "of",
+    "CopyOfTitle": "Copy of {{title}}"
   },
   "HELP": {
     "createFolder": "Create folder",
@@ -382,7 +383,8 @@
       "invalidFieldState": "The following fields are still not finished editing:",
       "invalidElementState": "The following elements are still not finished editing:",
       "validationErrors": "BioSample validation errors:"
-    }
+    },
+    "AIRRsubmission": "AIRR Submisssion"
   },
   "PAGES": {
     "DASHBOARDLIST-ELEMENT": {
@@ -428,5 +430,15 @@
     "sharedWithMe": "Shared with Me",
     "viewAll": "View All",
     "searchResult": "Search Results For: '{{searchTerm}}'"
+  },
+  "REST_ERROR": {
+    "nodeAlreadyPresent": "There is already a(n) {{conflictingNodeType}} with the same name at this location! Please try to create it with a different name.",
+    "folderCanNotBeDeleted": "The folder can not be deleted!",
+    "noWriteAccessToFolder": "The requested operation can not be performed!<br />You do not have write access to the folder."
+  },
+  "REST_ERROR_REASON": {
+    "userHomeFolder": "The selected folder is a user home folder.",
+    "systemFolder": "The selected folder is a system folder.",
+    "nonEmptyFolder": "The selected folder is not empty."
   }
 }

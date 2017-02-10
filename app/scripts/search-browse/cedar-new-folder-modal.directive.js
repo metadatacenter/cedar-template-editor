@@ -70,16 +70,7 @@ define([
                         'GENERIC.Created');
                   },
                   function (response) {
-                    if (response.status == 400) {
-                      UIMessageService.showWarning(
-                          'GENERIC.Warning',
-                          'SERVER.FOLDER.create.' + response.data.errorSubType,
-                          'GENERIC.Ok',
-                          response.data.errorParams
-                      );
-                    } else {
-                      UIMessageService.showBackendError('SERVER.FOLDER.create.error', response);
-                    }
+                    UIMessageService.showBackendError('SERVER.FOLDER.create.error', response);
                   }
               );
             }
@@ -101,7 +92,7 @@ define([
               vm.folder.name = '';
               $timeout(function () {
                 jQuery('#new-folder-modal input').focus().select();
-              },500);
+              }, 500);
             }
           });
         }

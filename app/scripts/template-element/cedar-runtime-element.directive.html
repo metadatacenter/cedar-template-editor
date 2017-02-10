@@ -39,12 +39,14 @@
     <!-- a paged list of elements -->
     <div ng-if="showMultiple('paged') && valueArray.length > 0" class="element" ng-class="{'expand':isExpanded(index)}">
       <div class="row " style="cursor:pointer" ng-class="{'isInactive': !isActive()}">
+
         <div class="col-xs-6" ng-click="toggleExpanded(index)">
 
           <div class="element title " ng-class="{'isInactive' : isInactive(index)}">
             <button type="button" class="expand">
               <i class="fa " ng-class="{'fa-caret-down': isExpanded(index),'fa-caret-right':!isExpanded(index)}"></i>
             </button>
+
             {{getTitle()}} <span ng-if="valueArray.length-1" class="count">({{index+1}})</span>
           </div>
 

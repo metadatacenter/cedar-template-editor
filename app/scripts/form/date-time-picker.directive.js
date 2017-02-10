@@ -31,7 +31,9 @@ define([
             next    : 'fa fa-lg fa-angle-right',
             today   : 'glyphicon glyphicon-screenshot',
             clear   : 'fa fa-trash',
-          }
+          },
+          format:'MM/DD/YYYY'
+
         }).on('dp.change', function () {
           // Each time the date-time-picker date is changed trigger change function
           // ngModel listens for "input" event, so need to let Angular know to listen for when change event happens
