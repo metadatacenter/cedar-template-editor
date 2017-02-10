@@ -7,5 +7,5 @@
   "schemaRestAPI": "schemaServerUrl",
   "groupRestAPI": "groupServerUrl",
   "bioontologyRestAPI": "https://data.bioontology.org/",
-  "biosampleRestAPI": "biosampleServerUrl"
+  "submissionRestAPI": "submissionServerUrl"
 }
