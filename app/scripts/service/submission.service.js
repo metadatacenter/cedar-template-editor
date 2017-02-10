@@ -14,14 +14,19 @@ define([
       serviceId: 'SubmissionService'
     };
 
-    service.validateInstance = function (instance) {
+    service.validateBiosample = function (instance) {
 
       return HttpBuilderService.post(UrlService.biosampleValidation(), angular.toJson(instance));
     };
 
-    service.submitInstance = function (instance) {
+    service.submitAirr = function (instance) {
 
       return HttpBuilderService.post(UrlService.airrSubmission(), angular.toJson(instance));
+    };
+
+    service.validateAirr = function (instance) {
+
+      return HttpBuilderService.post(UrlService.airrValidation(), angular.toJson(instance));
     };
 
     return service;

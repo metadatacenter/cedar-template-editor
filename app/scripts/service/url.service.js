@@ -193,6 +193,10 @@ define([
       return submissionService + '/command/submit-airr';
     };
 
+    service.airrValidation = function () {
+      return submissionService + '/command/validate-airr';
+    };
+
     service.getOntologies = function () {
       return this.controlledTerm() + "/ontologies";
     };
