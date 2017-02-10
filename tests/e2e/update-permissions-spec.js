@@ -1,24 +1,15 @@
 'use strict';
 var WorkspacePage = require('../pages/workspace-new-page.js');
-var ToastyModal = require('../modals/toasty-modal.js');
-var SweetAlertModal = require('../modals/sweet-alert-modal.js');
-var MoveModal = require('../modals/move-modal.js');
 var ShareModal = require('../modals/share-modal.js');
 var testConfig = require('../config/test-env.js');
 var permissions = require('../config/permissions.js');
 
 describe('update-permissions', function () {
   var workspacePage;
-  var toastyModal;
-  var sweetAlertModal;
-  var moveModal;
   var shareModal;
 
   beforeEach(function () {
     workspacePage = WorkspacePage;
-    toastyModal = ToastyModal;
-    sweetAlertModal = SweetAlertModal;
-    moveModal = MoveModal;
     shareModal = ShareModal;
     browser.driver.manage().window().maximize();
   });

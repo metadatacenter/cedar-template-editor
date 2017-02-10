@@ -14,7 +14,7 @@ var sampleTemplateUrl;
 var sampleMetadataUrl;
 var pageName = 'template';
 
-describe('workspace', function () {
+xdescribe('workspace', function () {
   var EC = protractor.ExpectedConditions;
   var metadataPage;
   var workspacePage;
