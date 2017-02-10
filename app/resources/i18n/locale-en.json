@@ -118,7 +118,8 @@
     "Add": "Add",
     "ExpandAll": "Expand All",
     "Displaying": "Displaying",
-    "Of": "of"
+    "Of": "of",
+    "CopyOfTitle": "Copy of {{title}}"
   },
   "HELP": {
     "createFolder": "Create folder",
@@ -382,7 +383,8 @@
       "invalidFieldState": "The following fields are still not finished editing:",
       "invalidElementState": "The following elements are still not finished editing:",
       "validationErrors": "BioSample validation errors:"
-    }
+    },
+    "AIRRsubmission": "AIRR Submisssion"
   },
   "PAGES": {
     "DASHBOARDLIST-ELEMENT": {

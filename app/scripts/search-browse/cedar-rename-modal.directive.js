@@ -62,7 +62,7 @@ define([
 
               if (nodeType == 'instance') {
                 AuthorizedBackendService.doCall(
-                    TemplateInstanceService.updateTemplateInstance(id, {'_ui.title': name}),
+                    TemplateInstanceService.updateTemplateInstance(id, {'schema:name': name}),
                     function (response) {
                       UIMessageService.flashSuccess('SERVER.INSTANCE.update.success', null, 'GENERIC.Updated');
 

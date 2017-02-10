@@ -67,7 +67,7 @@ var WorkspacePage = function () {
 
   // breadcrumbs
   var createBreadcrumb = element(by.css('.breadcrumbs-sb'));
-  var createBreadcrumbFolders = element(by.css('.breadcrumbs-sb .folder-path'));
+  var createBreadcrumbFolders = element(by.css('.breadcrumbs-sb')).all(by.repeater('folder in dc.pathInfo'));
   var createBreadcrumbSearch = element(by.css('.breadcrumbs-sb .search-result'));
   var createBreadcrumbUsersLink = createBreadcrumb.element(by.linkText("Users"));
   var createBreadcrumbUserName = createBreadcrumb.element(by.css('p > a.breadcrumbs.ng-binding'));
@@ -92,8 +92,11 @@ var WorkspacePage = function () {
   var createFolderSubmitButton = createFolderModal.element(by.css('div.modal-footer button.confirm'));
 
   // share menu item from the option list following a right click on a resource
-  var createRightClickShareMenuItem = createCenterPanel.element(by.css('div > div > div > div.form-box-container.ng-scope.selected > div > div > ' +
-    'div.btn-group.dropdown.ng-scope.open > ul > li > a[ng-click="dc.showShareModal(resource)"]'));
+  var createRightClickMenuItemList = createCenterPanel.element(by.css('div > div > div > div.form-box-container.ng-scope.selected > div > div > ' +
+    'div.btn-group.dropdown.ng-scope.open > ul'));
+  var createRightClickShareMenuItem = createRightClickMenuItemList.element(by.css('li > a[ng-click="dc.showShareModal(resource)"]'));
+  var createRightClickRenameMenuItem = createRightClickMenuItemList.element(by.css('li > a[ng-click="dc.showRenameModal(resource)"]'));
+
 
 
   // access to locators
@@ -208,6 +211,9 @@ var WorkspacePage = function () {
   this.createRightClickShareMenuItem = function () {
     return createRightClickShareMenuItem;
   };
+  this.createRightClickRenameMenuItem = function () {
+    return createRightClickRenameMenuItem;
+  };
 
   // page load
   this.get = function () {
@@ -237,6 +243,7 @@ var WorkspacePage = function () {
     browser.actions().mouseMove(createButton).perform();
 
     var button = createResourceButtons[type];
+    browser.wait(EC.visibilityOf(button));
     browser.wait(EC.elementToBeClickable(button));
     button.click();
 
@@ -474,6 +481,13 @@ var WorkspacePage = function () {
     var userFolder = this.createCenterPanel().element(by.cssContainingText('.folderTitle.ng-binding', username));
     browser.wait(EC.elementToBeClickable(userFolder));
     browser.actions().doubleClick(userFolder).perform();
+  };
+
+
+  this.rightClickResource = function (name, type) {
+    var element = this.selectResource(name, type);
+    browser.actions().mouseMove(element).perform();
+    browser.actions().click(protractor.Button.RIGHT).perform();
   };
 
 

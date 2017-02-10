@@ -21,8 +21,6 @@ describe('resource-permissions', function () {
     moveModal = MoveModal;
     shareModal = ShareModal;
     browser.driver.manage().window().maximize();
-
-    console.log(jasmine.getEnv().currentSpec.description);
   });
 
   afterEach(function () {
@@ -41,10 +39,6 @@ describe('resource-permissions', function () {
     workspacePage.moveResource(sourceTemplate, 'template');
     moveModal.moveToDestination(targetFolder);
     toastyModal.isSuccess();
-
-    workspacePage.clickLogo();
-    workspacePage.deleteResource(sourceTemplate, 'template');
-    workspacePage.deleteResource(targetFolder, 'folder');
   });
 
 
@@ -66,10 +60,6 @@ describe('resource-permissions', function () {
     workspacePage.moveResource(sourceTemplate, 'template');
     moveModal.moveToUserFolder(permissions.testUserName1, sharedFolderTitle);
     toastyModal.isError();
-
-    // delete template
-    workspacePage.clickLogo();
-    workspacePage.deleteResource(sourceTemplate, 'template');
   });
 
 

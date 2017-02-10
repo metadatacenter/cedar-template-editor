@@ -133,6 +133,7 @@ define([
 
           vm.editingDescription = false;
           vm.isSharedMode = isSharedMode;
+          vm.isSearchMode = isSearchMode;
 
           vm.hideModal = function (visible) {
             visible = false;
@@ -167,13 +168,11 @@ define([
           };
 
           // show the info panel with this resource or find one
-          vm.showInfoPanel = function (resource) {
-            // if this one is defined, then use it
-            if (resource) {
-              if (!vm.isResourceSelected(resource)) {
-                vm.selectResource(resource);
-              }
-            } else {
+          vm.showInfoPanel = function () {
+            console.log('showInfoPanel');
+            if (vm.isSharedMode) {
+              resetSelected();
+            } else if (!vm.selectedResource) {
               if (vm.currentPath) {
                 vm.selectResource(vm.currentPath);
               } else {
@@ -195,9 +194,9 @@ define([
           };
 
           // toggle the info panel with this resource or find one
-          vm.toggleInfoPanel = function (resource) {
+          vm.toggleInfoPanel = function () {
             if (!vm.showResourceInfo) {
-              vm.showInfoPanel(resource);
+              vm.showInfoPanel();
             } else {
               vm.setResourceInfoVisibility(false);
             }
@@ -269,6 +268,7 @@ define([
           };
 
           vm.updateDescription = function () {
+            console.log('updateDescription')
             vm.editingDescription = false;
             var resource = vm.getSelection();
             if (resource != null) {
@@ -317,7 +317,6 @@ define([
                     function (response) {
                       UIMessageService.flashSuccess('SERVER.FOLDER.update.success', {"title": vm.selectedResource.name},
                           'GENERIC.Updated');
-                      init();
                     },
                     function (response) {
                       UIMessageService.showBackendError('SERVER.FOLDER.update.error', response);
@@ -508,6 +507,10 @@ define([
             return vm.isSearching && (vm.breadcrumbTitle === $translate.instant("BreadcrumbTitle.sharedWithMe"));
           }
 
+          function isSearchMode() {
+            return vm.isSearching;
+          }
+
           function doSearch(term) {
             var resourceTypes = activeResourceTypes();
             var limit = UISettingsService.getRequestLimit();
@@ -553,16 +556,16 @@ define([
             if (!resource) {
               resource = getSelection();
             }
-            resourceService.copyResourceToWorkspace(
-                resource,
-                function (response) {
+            var newTitle = $translate.instant('GENERIC.CopyOfTitle', {"title": resource.name});
 
-                  // TODO refresh the current page just in case you copied to the current page
-                  vm.params = $location.search();
-                  init();
+            resourceService.copyResourceToWorkspace(
+                resource, newTitle,
+                function (response) {
 
                   UIMessageService.flashSuccess('SERVER.RESOURCE.copyToWorkspace.success', {"title": resource.name},
                       'GENERIC.Copied');
+
+                  $scope.refreshWorkspace(resource);
                 },
                 function (response) {
                   UIMessageService.showBackendError('SERVER.RESOURCE.copyToWorkspace.error', response);
@@ -574,20 +577,20 @@ define([
             if (!resource) {
               resource = getSelection();
             }
+            var newTitle = $translate.instant('GENERIC.CopyOfTitle', {"title": resource.name});
             var folderId = vm.currentFolderId;
             if (!folderId) {
               folderId = CedarUser.getHomeFolderId();
             }
             resourceService.copyResource(
-                resource, folderId,
+                resource, folderId, newTitle,
                 function (response) {
-
-                  // TODO refresh the current page just in case you copied to the current page
-                  vm.params = $location.search();
-                  init();
 
                   UIMessageService.flashSuccess('SERVER.RESOURCE.copyResource.success', {"title": resource.name},
                       'GENERIC.Copied');
+
+                  $scope.refreshWorkspace(resource);
+
                 },
                 function (response) {
                   UIMessageService.showBackendError('SERVER.RESOURCE.copyResource.error', response);
@@ -667,6 +670,23 @@ define([
             }
           }
 
+          function removeResource(resource) {
+
+            // remove resource from list
+            var index;
+            for (var i = 0, len = vm.resources.length; i < len; i++) {
+              if (vm.resources[i]['@id'] === resource['@id']) {
+                index = i;
+                break;
+              }
+            }
+            if (i > -1) {
+              vm.resources.splice(index, 1);
+            }
+            // remove current selection
+            vm.selectedResource = null;
+          }
+
 
           function deleteResource(resource) {
             if (!resource && hasSelection()) {
@@ -678,21 +698,10 @@ define([
                       resource,
                       function (response) {
 
-                        // remove resource from list
-                        var index;
-                        for(var i = 0, len = vm.resources.length; i < len; i++) {
-                          if (vm.resources[i]['@id'] === resource['@id']) {
-                            index = i;
-                            break;
-                          }
-                        }
-                        if (i > -1) {
-                          vm.resources.splice(index, 1);
-                        }
-
                         UIMessageService.flashSuccess('SERVER.' + resource.nodeType.toUpperCase() + '.delete.success',
                             {"title": resource.nodeType},
                             'GENERIC.Deleted');
+                        removeResource(resource);
                       },
                       function (error) {
                         UIMessageService.showBackendError('SERVER.' + resource.nodeType.toUpperCase() + '.delete.error',
@@ -774,11 +783,17 @@ define([
           }
 
           function getSelectedNode() {
-            if (vm.selectedResource == null) {
-              return vm.currentFolder;
+            var result = null;
+            if (vm.selectedResource == null && (vm.isSharedMode() || vm.isSearchMode())) {
+              // nothing selected in share or search mode
             } else {
-              return vm.selectedResource;
+              if (vm.selectedResource == null) {
+                result = vm.currentFolder;
+              } else {
+                result = vm.selectedResource;
+              }
             }
+            return result;
           }
 
           function getResourceIconClass(resource) {
@@ -992,12 +1007,23 @@ define([
             init();
           });
 
+          $scope.selectResourceById = function (id) {
+            if (id) {
+              for (var i = 0; i < vm.resources.length; i++) {
+                if (id === vm.resources[i]['@id']) {
+                  vm.selectResource(vm.resources[i]);
+                  break;
+                }
+              }
+            }
+          };
 
-          $scope.refreshWorkspace = function(selectedResource) {
+
+          $scope.refreshWorkspace = function (resource) {
             vm.params = $location.search();
             init();
-            if (selectedResource) {
-              vm.selectedResource = selectedResource;
+            if (resource) {
+              $scope.selectResourceById(resource['@id']);
             }
           };
 
@@ -1150,6 +1176,10 @@ define([
           vm.goToSharedWithMe = function () {
             var url = FrontendUrlService.getSharedWithMe(vm.getFolderId());
             $location.url(url);
+
+            if (vm.infoShowing) {
+              vm.showInfoPanel();
+            }
           };
 
           vm.getVisibleCount = function () {
