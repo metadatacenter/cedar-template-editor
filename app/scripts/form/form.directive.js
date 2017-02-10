@@ -401,9 +401,67 @@ define([
 
         };
 
+        // validate a AIRR template
+        $scope.checkAirr = function (instance) {
+
+          if ( $scope.isAIRRTemplate()) {
+
+            // one way to make the call
+            var config = {};
+            var url = UrlService.airrValidation();
+            $http.post(url, instance, config).then(
+                function successCallback(response) {
+
+                  var data = response.data;
+                  console.log(data);
+
+
+                  if (!data.isValid) {
+
+                    $scope.$emit('validationError',
+                        ['remove', '', 'airr']);
+
+                    var errors = data.messages;
+                    for (var i = 0; i < errors.length; i++) {
+
+                      console.log(errors[i]);
+
+
+                      $scope.$emit('validationError',
+                          ['add', errors[i], 'airr' + i]);
+
+
+                    }
+                  } else {
+
+                    $scope.$emit('validationError',
+                        ['remove', '', 'biosample']);
+
+                    UIMessageService.flashSuccess('AIRR Submission Validated', {"title": "title"},
+                        'Success');
+                  }
+
+                },
+                function errorCallback(err) {
+
+                  UIMessageService.showBackendError('AIRR Server Error', err);
+
+
+                });
+
+          }
+
+        };
+
+
         $scope.$on('biosampleValidation', function (event) {
           $scope.checkBiosample($scope.model);
         });
+
+        $scope.$on('airrValidation', function (event) {
+          $scope.checkAirr($scope.model);
+        });
+
 
         // Watching for the 'submitForm' event to be $broadcast from parent 'RuntimeController'
         $scope.$on('submitForm', function (event) {
