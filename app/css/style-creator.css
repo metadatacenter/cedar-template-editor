@@ -9111,7 +9111,7 @@ body {
   height: 100%;
 }
 body {
-  background: #F8F8F8;
+  background: #F0F0F0;
   font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
   color: #333;
   height: 100%;
@@ -11613,7 +11613,7 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   left: 0;
 }
 .template-body form .runtime .treeview li.tv::before {
-  border-top: 1px solid #DDDDDD;
+  border-top: 1px solid #CCCCCC;
   top: 15px;
   width: 10px;
   height: 0;
@@ -11625,7 +11625,7 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   width: 100%;
 }
 .template-body form .runtime .treeview li.tv::after {
-  border-left: 1px solid #DDDDDD;
+  border-left: 1px solid #CCCCCC;
   height: 100%;
   width: 0px;
   top: -16px;
@@ -11665,10 +11665,10 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   background-color: #5795ba;
 }
 .template-body form .runtime .active-container {
-  border-left: 1px solid #F8F8F8;
+  border-left: 1px solid #F0F0F0;
   position: relative;
   right: 0;
-  background: #F8F8F8;
+  background: #F0F0F0;
 }
 .template-body form .runtime.page {
   margin-top: 10px;
@@ -11681,13 +11681,13 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
 }
 .template-body form .runtime .toolbar button,
 .template-body form .runtime .toolbar .paging {
-  background-color: #F8F8F8;
+  background-color: #F0F0F0;
 }
 .template-body form .runtime .answer {
   border: 1px solid #aaa;
   font-size: 1em;
   cursor: pointer;
-  background-color: white;
+  background-color: #f8f8f8;
   min-height: 30px;
   padding-left: 10px;
 }
@@ -11731,7 +11731,7 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
 .template-body form .runtime .row.isActive .answer,
 .template-body form .runtime .row:hover .answer {
   border: 1px solid #ccc;
-  background: #fff;
+  background: #f8f8f8;
 }
 .template-body form .runtime .row.isActive .answer .edit,
 .template-body form .runtime .row:hover .answer .edit {
@@ -11745,7 +11745,7 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   font-family: "Source Sans Pro", sans-serif;
   font-weight: normal;
   border: 1px solid transparent;
-  background-color: #F8F8F8;
+  background-color: #F0F0F0;
 }
 .template-body form .runtime .title .count {
   font-size: smaller;
@@ -11903,7 +11903,7 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
 }
 .template-body form .runtime .field-root input {
   border-width: 0px;
-  background: transparent;
+  background: #fff;
   height: 20px;
 }
 .template-body form .runtime .field-root input.isActive {
@@ -11911,7 +11911,7 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
 }
 .template-body form .runtime .field-root select {
   border-width: 0px;
-  background: transparent;
+  background: #fff;
   padding-top: 10px;
 }
 .template-body form .runtime .field-root select.isActive {
@@ -11922,7 +11922,7 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
 }
 .template-body form .runtime .field-root textarea {
   border-width: 0px;
-  background: transparent;
+  background: #fff;
   padding-top: 10px;
 }
 .template-body form .runtime .field-root textarea.isActive {
@@ -11951,7 +11951,7 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
 }
 .template-body form .runtime .form-group .bootstrap-select,
 .template-body form .runtime .input-group .bootstrap-select {
-  background: transparent;
+  background: #fff;
 }
 .template-body form .runtime .form-group .bootstrap-select .btn-select-picker,
 .template-body form .runtime .input-group .bootstrap-select .btn-select-picker {
@@ -14660,11 +14660,11 @@ table.apiKey td {
   background-color: #ddd;
 }
 ::-webkit-scrollbar-track {
-  background-color: #F8F8F8;
+  background-color: #F0F0F0;
   border-radius: 0px;
 }
 ::-webkit-scrollbar-corner {
-  background-color: #F8F8F8;
+  background-color: #F0F0F0;
 }
 ::-webkit-input-placeholder {
   /* WebKit, Blink, Edge */
@@ -14826,7 +14826,7 @@ table.apiKey td {
   padding: 10px 0 0 10px;
 }
 .finder-modal .modal-body {
-  background: #F8F8F8;
+  background: #F0F0F0;
   padding: 0;
   height: 400px;
 }
@@ -15562,7 +15562,7 @@ table.apiKey td {
 @media (max-width: 768px) {
   body {
     height: 100%;
-    background-color: #F8F8F8;
+    background-color: #F0F0F0;
     overflow-y: auto;
   }
 }
