@@ -53,6 +53,8 @@ var WorkspacePage = function () {
   var createDetailsPanelTitle = createDetailsPanel.element(by.css('div > div.title.ng-binding.folder'));
   var createDetailsPanelOwner = createDetailsPanel.element(by.css('div.info > div:nth-child(3)')).element(by.cssContainingText('div','Owner'));
   var createDetailsPanelOwnerValue = createDetailsPanelOwner.element(by.xpath('../div[@class="col-sm-8 ng-binding"]'));
+  var createDetailsPanelDescription = createDetailsPanel.element(by.id('edit-description'));
+  var createDetailsPanelDescriptionEditButton = createDetailsPanel.element(by.css('div.description > div.edit.pull-right.ng-scope > button'));
   var createSortDropdownButton = createToolbar.element(by.css('#workspace-sort-tool [ng-click="dc.deleteResource()"]'));
   var createSortByNameMenuItem = createToolbar.element(by.css('#workspace-sort-tool [ng-click="dc.setSortOption(\\042name\\042)"]'));
   var createSortByCreatedMenuItem = createToolbar.element(by.css('#workspace-sort-tool [ng-click="dc.setSortOption(\\042createdOnTS\\042)"]'));
@@ -96,6 +98,7 @@ var WorkspacePage = function () {
     'div.btn-group.dropdown.ng-scope.open > ul'));
   var createRightClickShareMenuItem = createRightClickMenuItemList.element(by.css('li > a[ng-click="dc.showShareModal(resource)"]'));
   var createRightClickRenameMenuItem = createRightClickMenuItemList.element(by.css('li > a[ng-click="dc.showRenameModal(resource)"]'));
+  var createRightClickInfoMenuItem = createRightClickMenuItemList.element(by.css('li > a[ng-click="dc.showInfoPanel(resource)"]'));
 
 
 
@@ -205,6 +208,12 @@ var WorkspacePage = function () {
   this.createDetailsPanelOwnerValue = function () {
     return createDetailsPanelOwnerValue;
   };
+  this.createDetailsPanelDescription = function () {
+    return createDetailsPanelDescription;
+  };
+  this.createDetailsPanelDescriptionEditButton = function () {
+    return createDetailsPanelDescriptionEditButton;
+  };
   this.createCenterPanel = function () {
     return createCenterPanel;
   };
@@ -214,6 +223,10 @@ var WorkspacePage = function () {
   this.createRightClickRenameMenuItem = function () {
     return createRightClickRenameMenuItem;
   };
+  this.createRightClickInfoMenuItem = function () {
+    return createRightClickInfoMenuItem;
+  };
+
 
   // page load
   this.get = function () {
