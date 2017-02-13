@@ -158,7 +158,7 @@ button {
     padding: 5px 30px;
   }
   i.fa.fa-search {
-    font-size: 22px;
+    font-size: 16px;
   }
 
   .clear-search {
@@ -230,12 +230,12 @@ button {
 
     .back-arrow {
       color: @white;
-      font-size: 18px;
+      font-size: 16px;
       margin: 0 0 0 10px;
       font-weight: 100;
 
       @media (min-width: @screen-sm-min) {
-        font-size: 22px;
+        font-size: 16px;
       }
     }
 
@@ -406,7 +406,7 @@ button {
   }
 
   i {
-    font-size: 18px;
+    font-size: 16px;
     visibility: none;
 
     .invisible {
@@ -421,7 +421,7 @@ button {
       padding-right: 1px;
 
       button {
-        width: 26px;
+        width: 22px;
         height: 30px;
         background: transparent;
         border-top-width: 0;
@@ -429,6 +429,20 @@ button {
         border-left-width: 0;
         border-bottom-width: 0;
         margin: 0 5px;
+        &.menu {
+          width: 15px;
+          margin:0;
+          position:relative;
+          left:-12px;
+          i {
+            font-size:12px;
+
+          }
+
+        }
+      }
+      button:disabled {
+        color:#ccc;
       }
       button:hover {
         color: #ccc;
@@ -4213,7 +4227,7 @@ p.instructions {
   width: 80%;
 
   i.fa.fa-search, i.fa.fa-cog {
-    font-size: 22px;
+    font-size: 16px;
     color: @gray3;
   }
 

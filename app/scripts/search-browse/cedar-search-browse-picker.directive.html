@@ -26,21 +26,13 @@
   <div class="col-sm-3">
 
 
-    <div class=" list-inline pull-right" id="workspace-toolbar">
-      <ul class="list-inline pull-right">
-        <li ng-if="dc.onDashboard() && dc.hasSelection()" id="delete-tool">
-          <button
-              type="button"
-              tooltip='{{"HELP.deleteSelection" | translate}}'
-              tooltip-trigger
-              tooltip-animation="false"
-              tooltip-placement="bottom"
-              data-toggle="tooltip"
-              ng-click="dc.deleteResource(dc.getSelection())"><i class="fa fa-trash "></i></button>
-        </li>
-        <li ng-if="dc.onDashboard() && dc.hasSelection()" id="more-options-tool">
+    <div class="  pull-right no-wrap" id="workspace-toolbar">
+      <ul class="list-inline">
+
+        <li ng-if="dc.onDashboard() " id="more-options-tool">
           <div class="btn-group dropdown">
-            <button data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><i
+            <button class="{'disabled': !dc.hasSelection()}"
+                ng-disabled="!dc.hasSelection()" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><i
                 class="fa fa-ellipsis-v  inline "></i></button>
             <ul class="dropdown-menu dropdown-menu-right">
 
@@ -57,8 +49,6 @@
             </ul>
           </div>
         </li>
-
-        <li ng-if="dc.onDashboard() && dc.hasSelection()" class="inline divider-vertical "></li>
 
         <li ng-show="dc.onDashboard() && dc.resourceViewMode != 'grid'" id="grid-view-tool">
           <button
@@ -106,8 +96,14 @@
 
         <li ng-if="dc.onDashboard()" id="workspace-sort-tool">
           <div class="btn-group dropdown">
-            <button data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><i
-                class="fa fa-sort  inline "></i></button>
+            <button type="button"
+                tooltip='{{"HELP.sortBy" | translate}}'
+                tooltip-trigger
+                tooltip-animation="false"
+                tooltip-placement="bottom"
+                data-toggle="tooltip"><i class="fa fa-sort-amount-asc " ></i></button>
+            <button  class="menu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><i
+                class="fa fa-caret-down  " ></i></button>
             <ul class="dropdown-menu dropdown-menu-right">
               <li><a ng-click="dc.setSortOption('name')"><i class="fa fa-check" ng-class="dc.sortName()"></i><span
                   translate="DASHBOARD.sort.name"></span></a></li>

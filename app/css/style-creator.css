@@ -9174,7 +9174,7 @@ button {
   padding: 5px 30px;
 }
 .navbar i.fa.fa-search {
-  font-size: 22px;
+  font-size: 16px;
 }
 .navbar .clear-search {
   position: absolute;
@@ -9238,13 +9238,13 @@ button {
 }
 .navbar .navbar-back .back-arrow {
   color: #ffffff;
-  font-size: 18px;
+  font-size: 16px;
   margin: 0 0 0 10px;
   font-weight: 100;
 }
 @media (min-width: 768px) {
   .navbar .navbar-back .back-arrow {
-    font-size: 22px;
+    font-size: 16px;
   }
 }
 .navbar .navbar-back .back-arrow-click {
@@ -9392,7 +9392,7 @@ button {
   border-radius: 0px;
 }
 .controls-bar i {
-  font-size: 18px;
+  font-size: 16px;
   visibility: none;
 }
 .controls-bar i .invisible {
@@ -9407,7 +9407,7 @@ button {
   padding-right: 1px;
 }
 .controls-bar ul li button {
-  width: 26px;
+  width: 22px;
   height: 30px;
   background: transparent;
   border-top-width: 0;
@@ -9415,6 +9415,18 @@ button {
   border-left-width: 0;
   border-bottom-width: 0;
   margin: 0 5px;
+}
+.controls-bar ul li button.menu {
+  width: 15px;
+  margin: 0;
+  position: relative;
+  left: -12px;
+}
+.controls-bar ul li button.menu i {
+  font-size: 12px;
+}
+.controls-bar ul li button:disabled {
+  color: #ccc;
 }
 .controls-bar ul li button:hover {
   color: #ccc;
@@ -12857,7 +12869,7 @@ p.instructions {
 }
 .field-search i.fa.fa-search,
 .field-search i.fa.fa-cog {
-  font-size: 22px;
+  font-size: 16px;
   color: #d2d2d2;
 }
 .field-search i.fa.fa-search:hover {
