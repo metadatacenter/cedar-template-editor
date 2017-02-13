@@ -37,17 +37,24 @@ describe('folder-permissions', function () {
   });
 
 
-  it("should move a folder owned by current user to an unwritable folder", function () {
+  it("should move a folder owned by current user to an unwritable folder, step 1", function () {
     // create a folder to share with another user
     var sharedFolderTitle = workspacePage.createFolder('Shared');
 
     // share folder
     shareModal.shareResource(sharedFolderTitle, 'folder', permissions.testUserName2, false, false);
 
+  });
+
+
+  it("should move a folder owned by current user to an unwritable folder, step 2", function () {
     // logout current user and login as the user with whom the folder was shared
     workspacePage.logout();
     workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
+  });
 
+
+  it("should move a folder owned by current user to an unwritable folder, step 3", function () {
     // create a folder to move to the shared folder
     var folderTitle = workspacePage.createFolder('Source');
 
