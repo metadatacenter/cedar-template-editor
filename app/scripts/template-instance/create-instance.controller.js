@@ -211,7 +211,11 @@ define([
     };
 
     $scope.isAIRRTemplate = function () {
-      return ($rootScope.documentTitle && $rootScope.documentTitle.toLowerCase().indexOf('airr') > -1);
+      return ($rootScope.documentTitle && $rootScope.documentTitle.toLowerCase().indexOf('airr template') > -1);
+    };
+
+    $scope.airrValidation = function () {
+      $scope.$broadcast('airrValidation');
     };
 
     $scope.biosampleValidation = function () {

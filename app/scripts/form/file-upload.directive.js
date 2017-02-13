@@ -63,7 +63,7 @@ define([
           }).success(function () {
             UIMessageService.flashSuccess('AIRR Submission Posted', {"title": "title"},
                 'Success');
-          }).error(function () {
+          }).error(function (err) {
             UIMessageService.showBackendError('AIRR Server Error', err);
           });
         };

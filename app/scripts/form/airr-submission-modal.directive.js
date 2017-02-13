@@ -31,14 +31,16 @@ define([
           '$timeout',
           '$window',
           'CedarUser',
+          'UrlService'
 
         ];
 
-        function airrSubmissionModalController($scope, $timeout, $window, $http, CedarUser
+        function airrSubmissionModalController($scope, $timeout, $window, $http, CedarUser, UrlService
                                               ) {
           var vm = this;
           var vm = $scope;
-          vm.url = "https://httpbin.org/post";
+          //vm.url = "https://httpbin.org/post";
+          vm.url =  UrlService.airrSubmission();
           var config = {
             headers: {
               "Content-Type": undefined

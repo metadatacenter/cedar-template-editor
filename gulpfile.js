@@ -100,7 +100,7 @@ gulp.task('replace-url', function () {
       .pipe(replace('valueRecommenderServerUrl', 'https://valuerecommender.' + cedarHost))
       .pipe(replace('groupServerUrl', 'https://group.' + cedarHost))
       .pipe(replace('schemaServerUrl', 'https://schema.' + cedarHost))
-      .pipe(replace('biosampleServerUrl', 'https://biosample.' + cedarHost))
+      .pipe(replace('submissionServerUrl', 'https://submission.' + cedarHost))
       .pipe(gulp.dest('app/config/'));
 });
 
