@@ -227,6 +227,10 @@
         "success": "The resource '{{title}}' was copied to the current folder!",
         "error": "There was an error while copying the resource!<br /><br />VIEW TECHNICAL DETAILS!"
       },
+      "copyToResource": {
+        "success": "The resource '{{title}}' was copied to the selected folder!",
+        "error": "There was an error while copying the resource!<br /><br />VIEW TECHNICAL DETAILS!"
+      },
       "moveResource": {
         "success": "The resource '{{title}}' was moved!",
         "error": "There was an error while moving the resource!<br /><br />VIEW TECHNICAL DETAILS!"

@@ -69,9 +69,11 @@ define([
 
           // modals
           vm.showMoveModal = showMoveModal;
+          vm.showCopyModal = showCopyModal;
           vm.showShareModal = showShareModal;
           vm.showRenameModal = showRenameModal;
           vm.showNewFolderModal = showNewFolderModal;
+          vm.copyModalVisible = false;
           vm.moveModalVisible = false;
           vm.shareModalVisible = false;
           vm.renameModalVisible = false;
@@ -1110,6 +1112,19 @@ define([
           function setResourceViewMode(mode) {
             vm.resourceViewMode = mode;
             UISettingsService.saveUIPreference('folderView.viewMode', mode);
+          }
+
+          // open the move modal
+          function showCopyModal(resource) {
+            console.log('showCopyModal');
+            var r = resource;
+            if (!r && vm.selectedResource) {
+              r = vm.selectedResource;
+            }
+            vm.copyModalVisible = true;
+            $scope.$broadcast('copyModalVisible',
+                [vm.copyModalVisible, r, vm.currentPath, vm.currentFolderId, vm.resourceTypes,
+                 vm.sortOptionField]);
           }
 
           // open the move modal
