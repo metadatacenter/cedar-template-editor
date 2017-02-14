@@ -78,7 +78,7 @@ require.config({
   deps    : window.__karma__ ? allTestFiles : [],
   callback: window.__karma__ ? window.__karma__.start : null,
   baseUrl : window.__karma__ ? '/base' : '',
-  urlArgs : "v=0.9.3-2"
+  urlArgs : "v=" + window.cedarVersion
 });
 
 // do not load the full app here.
