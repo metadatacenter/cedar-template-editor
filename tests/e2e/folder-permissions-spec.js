@@ -36,10 +36,10 @@ describe('folder-permissions', function () {
     toastyModal.isSuccess();
   });
 
-
+  var sharedFolderTitle;
   it("should move a folder owned by current user to an unwritable folder, step 1", function () {
     // create a folder to share with another user
-    var sharedFolderTitle = workspacePage.createFolder('Shared');
+    sharedFolderTitle = workspacePage.createFolder('Shared');
 
     // share folder
     shareModal.shareResource(sharedFolderTitle, 'folder', permissions.testUserName2, false, false);
