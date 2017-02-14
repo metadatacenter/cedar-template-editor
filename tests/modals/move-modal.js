@@ -36,20 +36,28 @@ var MoveModal = function () {
 
   this.moveToUserFolder = function(userName, title) {
     browser.wait(EC.visibilityOf(createBackToParentButon));
+    browser.wait(EC.elementToBeClickable(createBackToParentButon));
     browser.actions().doubleClick(createBackToParentButon).perform();
 
     // click user folder
     var user = createMoveToModal.element(by.linkText(userName));
     browser.wait(EC.visibilityOf(user));
+    browser.wait(EC.elementToBeClickable(user));
     user.click();
 
     // open user folder
+    browser.wait(EC.visibilityOf(createOpenFolderArrowButton));
+    browser.wait(EC.elementToBeClickable(createOpenFolderArrowButton));
     createOpenFolderArrowButton.click();
 
     // select destination folder
     var folder = createMoveToModal.element(by.linkText(title));
+    browser.wait(EC.visibilityOf(folder));
     browser.wait(EC.elementToBeClickable(folder));
     folder.click();
+
+    browser.wait(EC.visibilityOf(createMoveButton));
+    browser.wait(EC.elementToBeClickable(createMoveButton));
     createMoveButton.click();
   };
 

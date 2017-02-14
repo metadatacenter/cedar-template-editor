@@ -60,6 +60,11 @@ describe('folder-permissions', function () {
 
     // move created folder to shared folder
     workspacePage.moveResource(folderTitle, 'folder');
+
+  });
+
+  
+  it("should move a folder owned by current user to an unwritable folder, step 4", function () {
     moveModal.moveToUserFolder(permissions.testUserName1, sharedFolderTitle);
     toastyModal.isError();
   });
