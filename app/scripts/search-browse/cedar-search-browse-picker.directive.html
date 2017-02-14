@@ -26,21 +26,13 @@
   <div class="col-sm-3">
 
 
-    <div class=" list-inline pull-right" id="workspace-toolbar">
-      <ul class="list-inline pull-right">
-        <li ng-if="dc.onDashboard() && dc.hasSelection()" id="delete-tool">
-          <button
-              type="button"
-              tooltip='{{"HELP.deleteSelection" | translate}}'
-              tooltip-trigger
-              tooltip-animation="false"
-              tooltip-placement="bottom"
-              data-toggle="tooltip"
-              ng-click="dc.deleteResource(dc.getSelection())"><i class="fa fa-trash "></i></button>
-        </li>
-        <li ng-if="dc.onDashboard() && dc.hasSelection()" id="more-options-tool">
+    <div class="  pull-right no-wrap" id="workspace-toolbar">
+      <ul class="list-inline">
+
+        <li ng-if="dc.onDashboard() " id="more-options-tool">
           <div class="btn-group dropdown">
-            <button data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><i
+            <button class="{'disabled': !dc.hasSelection()}"
+                ng-disabled="!dc.hasSelection()" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><i
                 class="fa fa-ellipsis-v  inline "></i></button>
             <ul class="dropdown-menu dropdown-menu-right">
 
@@ -49,16 +41,14 @@
               <li ng-if="!dc.isFolder()"><a href="#" ng-click="dc.editResource()">Edit</a></li>
               <li role="separator" class="divider"></li>
               <li><a href="#" ng-click="dc.showShareModal(resource)">Share...</a></li>
+              <li><a href="#" ng-click="dc.showCopyModal(resource)">Copy to...</a></li>
               <li><a href="#" ng-click="dc.showMoveModal(resource)">Move to...</a></li>
               <li><a href="#" ng-click="dc.showRenameModal(resource)">Rename...</a></li>
-              <li ng-if="!dc.isFolder() && dc.canWriteToCurrentFolder()"><a href="#" ng-click="dc.copyResource()">Make a copy</a></li>
               <li role="separator" class="divider"></li>
               <li><a href="#" ng-click="dc.deleteResource(resource)">Delete</a></li>
             </ul>
           </div>
         </li>
-
-        <li ng-if="dc.onDashboard() && dc.hasSelection()" class="inline divider-vertical "></li>
 
         <li ng-show="dc.onDashboard() && dc.resourceViewMode != 'grid'" id="grid-view-tool">
           <button
@@ -106,8 +96,14 @@
 
         <li ng-if="dc.onDashboard()" id="workspace-sort-tool">
           <div class="btn-group dropdown">
-            <button data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><i
-                class="fa fa-sort  inline "></i></button>
+            <button type="button"
+                tooltip='{{"HELP.sortBy" | translate}}'
+                tooltip-trigger
+                tooltip-animation="false"
+                tooltip-placement="bottom"
+                data-toggle="tooltip"><i class="fa fa-sort-amount-asc " ></i></button>
+            <button  class="menu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><i
+                class="fa fa-caret-down  " ></i></button>
             <ul class="dropdown-menu dropdown-menu-right">
               <li><a ng-click="dc.setSortOption('name')"><i class="fa fa-check" ng-class="dc.sortName()"></i><span
                   translate="DASHBOARD.sort.name"></span></a></li>
@@ -363,11 +359,9 @@
                       <ul class="dropdown-menu" aria-labelledby="{{getId(resource, 'populate')}}">
 
                         <li><a href="#" ng-click="dc.editResource()">Open</a></li>
-                        <!--<li ng-if="!dc.isFolder()"><a href="#" ng-click="dc.editResource(resource)">Edit</a></li>-->
                         <li><a href="#" ng-click="dc.showInfoPanel()">Info</a></li>
                         <li role="separator" class="divider"></li>
-                        <li><a href="#" ng-click="dc.showShareModal(resource)"
-                            >Share...</a></li>
+                        <li><a href="#" ng-click="dc.showShareModal(resource)">Share...</a></li>
                         <li><a href="#" ng-click="dc.showMoveModal(resource)">Move to...</a></li>
                         <li><a href="#" ng-click="dc.showRenameModal(resource)">Rename...</a></li>
                         <li role="separator" class="divider"></li>
@@ -419,9 +413,9 @@
                         <li><a href="#" ng-click="dc.showInfoPanel()">Info</a></li>
                         <li role="separator" class="divider"></li>
                         <li><a href="#" ng-click="dc.showShareModal(resource)">Share...</a></li>
+                        <li><a href="#" ng-click="dc.showCopyModal(resource)">Copy to...</a></li>
                         <li><a href="#" ng-click="dc.showMoveModal(resource)">Move to...</a></li>
                         <li><a href="#" ng-click="dc.showRenameModal(resource)">Rename...</a></li>
-                        <li><a href="#" ng-if="!dc.isFolder() && dc.canWriteToCurrentFolder()" ng-click="dc.copyResource()">Make a copy</a></li>
                         <li role="separator" class="divider"></li>
                         <li><a href="#" ng-click="dc.deleteResource(resource)">Delete</a></li>
                       </ul>
@@ -432,9 +426,9 @@
                         <li><a href="#" ng-click="dc.showInfoPanel()">Info</a></li>
                         <li role="separator" class="divider"></li>
                         <li><a href="#" ng-click="dc.showShareModal(resource)">Share...</a></li>
+                        <li><a href="#" ng-click="dc.showCopyModal(resource)">Copy to...</a></li>
                         <li><a href="#" ng-click="dc.showMoveModal(resource)">Move to...</a></li>
                         <li><a href="#" ng-click="dc.showRenameModal(resource)">Rename...</a></li>
-                        <li><a href="#" ng-if="!dc.isFolder() && dc.canWriteToCurrentFolder()" ng-click="dc.copyResource()">Make a copy</a></li>
                         <li role="separator" class="divider"></li>
                         <li><a href="#" ng-click="dc.deleteResource(resource)">Delete</a></li>
                       </ul>
@@ -518,9 +512,9 @@
                       <li><a href="#" ng-click="dc.showInfoPanel()">Info</a></li>
                       <li role="separator" class="divider"></li>
                       <li><a href="#" ng-click="dc.showShareModal(resource)">Share...</a></li>
+                      <li><a href="#" ng-click="dc.showCopyModal(resource)">Copy to...</a></li>
                       <li><a href="#" ng-click="dc.showMoveModal(resource)">Move to...</a></li>
                       <li><a href="#" ng-click="dc.showRenameModal(resource)">Rename...</a></li>
-                      <li><a href="#" ng-if="dc.canWriteToCurrentFolder()" ng-click="dc.copyResource()">Make a copy</a></li>
                       <li role="separator" class="divider"></li>
                       <li><a href="#" ng-click="dc.deleteResource(resource)">Delete</a></li>
                     </ul>
@@ -735,6 +729,14 @@
       tabindex="-1" role="dialog" aria-labelledby="renameModalHeader"
       data-keyboard="true" data-backdrop="static" rename-resource="resource">
   </cedar-rename-modal>
+</section>
+
+<!-- copy modal -->
+<section>
+  <cedar-copy-modal cedar-modal-show modal-visible="dc.copyModalVisible" class="modal fade" id="copy-modal"
+      tabindex="-1" role="dialog" aria-labelledby="copyModalHeader"
+      data-keyboard="true" data-backdrop="static" copy-resource="resource">
+  </cedar-copy-modal>
 </section>
 
 <!-- move modal -->
