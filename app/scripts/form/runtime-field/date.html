@@ -10,7 +10,7 @@
       validate-on="blur"
       ng-pattern="/^\d\d\/\d\d\/\d\d\d\d \d\d:\d\d (A|P)M$/"/>
 
-        <span class="input-group-addon" ng-class="{'hidden' : !isActive(index)}">
+  <span class="input-group-addon" ng-class="{'hidden' : !isActive(index)}">
           <i class="fa fa-calendar fa-2x"></i>
         </span>
 
@@ -21,7 +21,6 @@
   <div
       ng-click="setActive(index,true)"
       aria-label="{{getDescription(field)}}">{{formatDateTime(valueElement['@value'])}} &nbsp;</div>
-</div>
 </div>
 
 
