@@ -140,19 +140,46 @@ define([
         return DataManipulationService.isDateRange($scope.field);
       };
 
-
-      // set the @type field in the model
-      $scope.setValueType = function () {
-        var properties = $rootScope.propertiesOf($scope.field);
-        var typeEnum = properties['@type'].oneOf[0].enum;
-        if (angular.isDefined(typeEnum) && angular.isArray(typeEnum)) {
-          if (typeEnum.length == 1) {
-            $scope.model['@type'] = properties['@type'].oneOf[0].enum[0];
-          } else {
-            $scope.model['@type'] = properties['@type'].oneOf[0].enum;
+      $scope.initializeValueType = function(field) {
+        // TODO: read the @type from the template
+        // If the @type has not been defined yet
+        if (angular.isUndefined($scope.model['@type'])) {
+          if (field.type == 'object') {
+            var fieldType = field._ui.inputType;
+            if (fieldType == 'date') {
+              $scope.model['@type'] = 'xsd:dateTime';
+            }
+            else if (fieldType == 'numeric') {
+              $scope.model['@type'] = 'xsd:decimal';
+            }
           }
+          else if (fieldType == 'array') {
+            var fieldType = field.items._ui.inputType;
+          }
+
+
         }
       };
+
+      // $scope.initializeValue = function(field) {
+      //   var fieldType = field._ui.inputType;
+      //   if (fieldType == 'date') {
+      //     $scope.model['@value'] = null;
+      //   }
+      // };
+
+      // set the @type field in the model
+      // $scope.setValueType = function () {
+      //   var properties = $rootScope.propertiesOf($scope.field);
+      //   var typeEnum = properties['@type'].oneOf[0].enum;
+      //   if (angular.isDefined(typeEnum) && angular.isArray(typeEnum)) {
+      //     if (typeEnum.length == 1) {
+      //       $scope.model['@type'] = properties['@type'].oneOf[0].enum[0];
+      //     } else {
+      //       $scope.model['@type'] = properties['@type'].oneOf[0].enum;
+      //     }
+      //   }
+      // };
 
       // add more instances to a multiple cardinality field if possible
       $scope.addMoreInput = function () {
