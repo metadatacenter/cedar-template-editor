@@ -426,7 +426,7 @@ define([
               template: uip.resourceTypeFilters.template
             };
             vm.filterSections = {
-              type  : false,
+              type  : true,
               author: false,
               status: false,
               term  : false
@@ -1204,6 +1204,11 @@ define([
           // should we show the resource count at the end of the workspace?
           vm.showResourceCount = function () {
             return vm.totalCount !== Number.MAX_VALUE && vm.totalCount > vm.requestLimit;
+          }
+
+          // do we have any resources to show?
+          vm.hasResources = function () {
+            return vm.totalCount > 0;
           }
 
 
