@@ -1,4 +1,5 @@
-<div ng-init="initializeValueType(field)" class="form-group has-feedback" ng-click="setActive(index)">
+<div class="form-group has-feedback" ng-click="setActive(index)">
+
 
   <select ng-if="isActive(index) && isMultipleChoice()" ng-init="initMultiple()"
       ng-click="setActive(index)"
@@ -16,6 +17,7 @@
 
   </select>
 
+
   <select ng-if="isActive(index) && !isMultipleChoice()"
       class="form-control select"
       ng-class="{'isActive' : isActive(index), 'required': isRequired()}"
@@ -32,6 +34,7 @@
     </option>
 
   </select>
+
 
   <!--- not active --->
   <div ng-if="!isActive(index)">

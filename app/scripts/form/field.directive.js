@@ -65,19 +65,19 @@ define([
           }
           var p = $rootScope.propertiesOf($scope.field);
           // Add @type information to instance at the field level
-          if (p && !angular.isUndefined(p['@type'])) {
-            var type = DataManipulationService.generateInstanceType(p['@type']);
-
-            if (type) {
-              if (angular.isArray($scope.model)) {
-                for (var i = 0; i < min; i++) {
-                  $scope.model[i]["@type"] = type || "";
-                }
-              } else {
-                $scope.model["@type"] = type || "";
-              }
-            }
-          }
+          // if (p && !angular.isUndefined(p['@type'])) {
+          //   var type = DataManipulationService.generateInstanceType(p['@type']);
+          //
+          //   if (type) {
+          //     if (angular.isArray($scope.model)) {
+          //       for (var i = 0; i < min; i++) {
+          //         $scope.model[i]["@type"] = type || "";
+          //       }
+          //     } else {
+          //       $scope.model["@type"] = type || "";
+          //     }
+          //   }
+          // }
         }
       };
 

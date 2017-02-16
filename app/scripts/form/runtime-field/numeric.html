@@ -1,4 +1,5 @@
 <div ng-init="initializeValueType(field)">
+
   <!-- actively editing the field --->
   <div ng-if="isActive(index)" class="form-group  has-feedback ">
     <input type="text"
@@ -22,9 +23,5 @@
     <div ng-click="setActive(index,true)"
         aria-label="{{getDescription(field)}}">{{valueElement['@value']}} &nbsp;</div>
   </div>
+
 </div>
-
-
-
-
-

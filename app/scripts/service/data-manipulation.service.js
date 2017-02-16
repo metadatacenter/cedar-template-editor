@@ -30,9 +30,7 @@ define([
     // Function that generates a basic field definition
     service.generateField = function (fieldType) {
       var valueType = ["string", "null"];
-      if (fieldType == "numeric") {
-        valueType = ["number", "null"];
-      } else if ((fieldType == "checkbox") || (fieldType == "list") || (fieldType == "radio")) {
+      if ((fieldType == "checkbox") || (fieldType == "list") || (fieldType == "radio")) {
         valueType = ["array", "null"];
       }
 
@@ -44,7 +42,26 @@ define([
         field.properties['@value'].type = valueType;
       }
       field._ui.inputType = fieldType;
-      //field.properties['@value'].type = valueType;
+
+      // Constrain the @type of @value according to the field type
+      var valueAtType = null;
+      if (fieldType == 'date' || fieldType == 'numeric') {
+        valueAtType = { };
+        valueAtType.type = 'string';
+        if (fieldType == 'date') {
+          valueAtType.enum = ['xsd:dateTime'];
+          // Make @type required
+          field.required.push('@type');
+        }
+        else if (fieldType == 'numeric') {
+          valueAtType.enum = ['xsd:decimal'];
+          // Make @type required
+          field.required.push('@type');
+        }
+        delete field.properties['@type'];
+        field.properties['@type'] = valueAtType;
+      }
+
       return field;
     };
 
@@ -76,22 +93,38 @@ define([
       return context;
     };
 
-    // Function that generates the @type for an instance, based on the schema @type definition
-    service.generateInstanceType = function (schemaType) {
+    // Function that generates the @type for a field in an instance, based on the schema @type definition
+    service.generateInstanceType = function (schemaType, valueConstraints) {
+      var enumeration = {};
+      var format = null;
+      var instanceType = null;
+      if (angular.isUndefined(schemaType.oneOf)) {
+        enumeration = schemaType.enum;
+        format = schemaType.format;
+      }
+      else {
+        enumeration = schemaType.oneOf[0].enum;
+        format = schemaType.oneOf[0].format;
+      }
       // If there is no type defined at the schema level
-      if (angular.isUndefined(schemaType.oneOf[0].enum)) {
-        return null;
+      if (angular.isUndefined(enumeration)) {
+        if (format == 'uri') {
+          // If the value has been constrained to ontology terms, @type must be set to @id
+          if (valueConstraints.branches != null || valueConstraints.classes != null
+              || valueConstraints.ontologies != null || valueConstraints.valueSets != null) {
+            instanceType = '@id';
+          }
+        }
       } else {
-        if (schemaType.oneOf[0].enum.length === 0) {
-          return null;
-          // If only one type has been defined, a string is returned
-        } else if (schemaType.oneOf[0].enum.length == 1) {
-          return schemaType.oneOf[0].enum[0];
+          // If only one type has been defined, it is returned
+        if (enumeration.length == 1) {
+          instanceType = enumeration[0];
           // If more than one types have been defined for the template/element/field, an array is returned
         } else {
-          return schemaType.oneOf[0].enum;
+          instanceType =  enumeration;
         }
       }
+      return instanceType;
     };
 
     // resolve min or max as necessary and cardinalize or uncardinalize field

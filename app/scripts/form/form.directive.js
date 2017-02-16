@@ -219,11 +219,11 @@ define([
               parentModel['@context'] = DataManipulationService.generateInstanceContext(value);
             }
             // Add @type information to instance
-            else if (name == '@type') {
-              var type = DataManipulationService.generateInstanceType(value);
-              if (type != null)
-                parentModel['@type'] = type;
-            }
+            // else if (name == '@type') {
+            //   var type = DataManipulationService.generateInstanceType(value);
+            //   if (type != null)
+            //     parentModel['@type'] = type;
+            // }
 
             if (!DataUtilService.isSpecialKey(name)) {
               // We can tell we've reached an element level by its '@type' property
@@ -251,7 +251,6 @@ define([
                 // If it is a template field
               } else {
                 // If it is not a static field
-
                 if (!value._ui || !value._ui.inputType || !FieldTypeService.isStaticField(value._ui.inputType)) {
 
                   var min = value.minItems || 0;
@@ -281,19 +280,18 @@ define([
                   var p = $rootScope.propertiesOf(value);
 
                   // Add @type information to instance at the field level
-                  if (p && !angular.isUndefined(p['@type'])) {
-                    var type = DataManipulationService.generateInstanceType(p['@type']);
-
-                    if (type) {
-                      if (angular.isArray(parentModel[name])) {
-                        for (var i = 0; i < min; i++) {
-                          parentModel[name][i]["@type"] = type || "";
-                        }
-                      } else {
-                        parentModel[name]["@type"] = type || "";
-                      }
-                    }
-                  }
+                  // if (p && !angular.isUndefined(p['@type'])) {
+                  //   var type = DataManipulationService.generateInstanceType(p['@type']);
+                  //   if (type) {
+                  //     if (angular.isArray(parentModel[name])) {
+                  //       for (var i = 0; i < min; i++) {
+                  //         parentModel[name][i]["@type"] = type || "";
+                  //       }
+                  //     } else {
+                  //       parentModel[name]["@type"] = type || "";
+                  //     }
+                  //   }
+                  // }
                 }
               }
             }

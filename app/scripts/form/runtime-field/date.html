@@ -1,4 +1,5 @@
 <div ng-init="initializeValueType(field)">
+
   <div ng-if="isActive(index)" class='input-group' date-time-picker>
 
     <input type="text"
@@ -23,6 +24,7 @@
         ng-click="setActive(index,true)"
         aria-label="{{getDescription(field)}}">{{formatDateTime(valueElement['@value'])}} &nbsp;</div>
   </div>
+
 </div>
 
 

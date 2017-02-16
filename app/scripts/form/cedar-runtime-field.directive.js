@@ -140,40 +140,33 @@ define([
         return DataManipulationService.isDateRange($scope.field);
       };
 
-      $scope.getFieldXsdType = function (fieldType) {
-        if (fieldType == 'date') {
-          return 'xsd:dateTime';
-        }
-        else if (fieldType == 'numeric') {
-          return 'xsd:decimal';
-        }
-        else return 'xsd:string';
-      }
-
-      // TODO: read the @type from the template
+      // This function initializes the value @type field if it has not been initialized yet
       $scope.initializeValueType = function (field) {
-        // It is not an array
-        if (field.type == 'object') {
-          var fieldType = field._ui.inputType;
-          // If the @type has not been defined yet, define it
-          if (angular.isUndefined($scope.model['@type'])) {
-            var xsdType = $scope.getFieldXsdType(fieldType);
-            // No need to set the type if it is xsd:string. It is the type by default
-            if (xsdType != "xsd:string") {
-              $scope.model['@type'] = xsdType;
+        var fieldSchema = $rootScope.schemaOf(field);
+        var properties = fieldSchema.properties;
+        if (properties && !angular.isUndefined(properties['@type'])) {
+          var fieldType = DataManipulationService.generateInstanceType(properties['@type'], fieldSchema._valueConstraints);
+          if (fieldType) {
+            // It is not an array
+            if (field.type == 'object') {
+              // If the @type has not been defined yet, define it
+              if (angular.isUndefined($scope.model['@type'])) {
+                // No need to set the type if it is xsd:string. It is the type by default
+                if (fieldType != "xsd:string") {
+                  $scope.model['@type'] = fieldType;
+                }
+              }
             }
-          }
-        }
-        // It is an array
-        else if (field.type == 'array') {
-          var fieldType = field.items._ui.inputType;
-          for (var i = 0; i < $scope.model.length; i++) {
-            // If there is an item in the array for which the @type has not been defined, define it
-            if (angular.isUndefined($scope.model[i]['@type'])) {
-              var xsdType = $scope.getFieldXsdType(fieldType);
-              // No need to set the type if it is xsd:string. It is the type by default
-              if (xsdType != "xsd:string") {
-                $scope.model[i]['@type'] = $scope.getFieldXsdType(fieldType);
+            // It is an array
+            else if (field.type == 'array') {
+              for (var i = 0; i < $scope.model.length; i++) {
+                // If there is an item in the array for which the @type has not been defined, define it
+                if (angular.isUndefined($scope.model[i]['@type'])) {
+                  // No need to set the type if it is xsd:string. It is the type by default
+                  if (fieldType != "xsd:string") {
+                    $scope.model[i]['@type'] = fieldType;
+                  }
+                }
               }
             }
           }

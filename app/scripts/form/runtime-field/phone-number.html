@@ -1,30 +1,29 @@
-<div ng-init="initializeValueType(field)">
-  <!-- actively editing the field -->
-  <div ng-if="isActive(index)" class="form-group  has-feedback">
-    <input type="text"
-        ng-click="setActive(index, true)"
-        class="form-control isActive select"
-        ng-class="{'required': isRequired()}"
-        placeholder="{{isActive(index) ? 'enter answer' : ''}}"
-        aria-label="{{getDescription(field)}}"
-        ng-model-options="{allowInvalid:true}"
-        validate-on="blur"
-        ng-pattern="/([0-9\s\-]{7,})(?:\s*(?:#|x\.?|ext\.?|extension)\s*(\d+))?$/"
-        ng-model="valueElement['@value']">
-    </input>
 
-    <div ng-if="isActive(index)" class="input-indicator-icons"
-        ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
-  </div>
+<!-- actively editing the field -->
+<div ng-if="isActive(index)" class="form-group  has-feedback">
+  <input type="text"
+      ng-click="setActive(index, true)"
+      class="form-control isActive select"
+      ng-class="{'required': isRequired()}"
+      placeholder="{{isActive(index) ? 'enter answer' : ''}}"
+      aria-label="{{getDescription(field)}}"
+      ng-model-options="{allowInvalid:true}"
+      validate-on="blur"
+      ng-pattern="/([0-9\s\-]{7,})(?:\s*(?:#|x\.?|ext\.?|extension)\s*(\d+))?$/"
+      ng-model="valueElement['@value']">
+  </input>
 
-  <!-- not editing -->
-  <div ng-if="!isActive(index)" class="form-group  has-feedback value">
-    <div
-        ng-click="setActive(index,true)"
-        class="isInactive"
-        aria-label="{{getDescription(field)}}">{{valueElement['@value']}} &nbsp;</div>
-  </div>
+  <div ng-if="isActive(index)" class="input-indicator-icons" ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
 </div>
+
+<!-- not editing -->
+<div ng-if="!isActive(index)" class="form-group  has-feedback value">
+  <div
+      ng-click="setActive(index,true)"
+      class="isInactive"
+      aria-label="{{getDescription(field)}}">{{valueElement['@value']}} &nbsp;</div>
+</div>
+
 
 
 

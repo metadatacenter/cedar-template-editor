@@ -80,12 +80,12 @@ define([
           parentModel['@context'] = DataManipulationService.generateInstanceContext(value);
         }
         // Add @type information to instance
-        else if (name == '@type') {
-          type = DataManipulationService.generateInstanceType(value);
-          if (type) {
-            parentModel['@type'] = type;
-          }
-        }
+        // else if (name == '@type') {
+        //   type = DataManipulationService.generateInstanceType(value);
+        //   if (type) {
+        //     parentModel['@type'] = type;
+        //   }
+        // }
 
         min = value.minItems || 0;
 
@@ -126,19 +126,19 @@ define([
             var p = $rootScope.propertiesOf(value);
 
             // Add @type information to instance at the field level
-            if (p && !angular.isUndefined(p['@type'])) {
-              type = DataManipulationService.generateInstanceType(p['@type']);
-
-              if (type) {
-                if (angular.isArray(parentModel[name])) {
-                  for (i = 0; i < min; i++) {
-                    parentModel[name][i]["@type"] = type || "";
-                  }
-                } else {
-                  parentModel[name]["@type"] = type || "";
-                }
-              }
-            }
+            // if (p && !angular.isUndefined(p['@type'])) {
+            //   type = DataManipulationService.generateInstanceType(p['@type']);
+            //
+            //   if (type) {
+            //     if (angular.isArray(parentModel[name])) {
+            //       for (i = 0; i < min; i++) {
+            //         parentModel[name][i]["@type"] = type || "";
+            //       }
+            //     } else {
+            //       parentModel[name]["@type"] = type || "";
+            //     }
+            //   }
+            // }
           }
         }
       });
