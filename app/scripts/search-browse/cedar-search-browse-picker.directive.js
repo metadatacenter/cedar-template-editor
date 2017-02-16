@@ -69,9 +69,11 @@ define([
 
           // modals
           vm.showMoveModal = showMoveModal;
+          vm.showCopyModal = showCopyModal;
           vm.showShareModal = showShareModal;
           vm.showRenameModal = showRenameModal;
           vm.showNewFolderModal = showNewFolderModal;
+          vm.copyModalVisible = false;
           vm.moveModalVisible = false;
           vm.shareModalVisible = false;
           vm.renameModalVisible = false;
@@ -424,7 +426,7 @@ define([
               template: uip.resourceTypeFilters.template
             };
             vm.filterSections = {
-              type  : false,
+              type  : true,
               author: false,
               status: false,
               term  : false
@@ -685,6 +687,9 @@ define([
             }
             // remove current selection
             vm.selectedResource = null;
+
+            //reset total count
+            vm.totalCount--;
           }
 
 
@@ -1113,6 +1118,19 @@ define([
           }
 
           // open the move modal
+          function showCopyModal(resource) {
+            console.log('showCopyModal');
+            var r = resource;
+            if (!r && vm.selectedResource) {
+              r = vm.selectedResource;
+            }
+            vm.copyModalVisible = true;
+            $scope.$broadcast('copyModalVisible',
+                [vm.copyModalVisible, r, vm.currentPath, vm.currentFolderId, vm.resourceTypes,
+                 vm.sortOptionField]);
+          }
+
+          // open the move modal
           function showMoveModal(resource) {
             var r = resource;
             if (!r && vm.selectedResource) {
@@ -1189,6 +1207,11 @@ define([
           // should we show the resource count at the end of the workspace?
           vm.showResourceCount = function () {
             return vm.totalCount !== Number.MAX_VALUE && vm.totalCount > vm.requestLimit;
+          }
+
+          // do we have any resources to show?
+          vm.hasResources = function () {
+            return vm.totalCount > 0;
           }
 
 
