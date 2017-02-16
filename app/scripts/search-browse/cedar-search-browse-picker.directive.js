@@ -687,6 +687,9 @@ define([
             }
             // remove current selection
             vm.selectedResource = null;
+
+            //reset total count
+            vm.totalCount--;
           }
 
 
