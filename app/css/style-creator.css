@@ -9111,7 +9111,7 @@ body {
   height: 100%;
 }
 body {
-  background: #F8F8F8;
+  background: #EEEEEE;
   font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
   color: #333;
   height: 100%;
@@ -9158,7 +9158,7 @@ button {
   color: #fff;
   background-color: #2e5365;
   margin-bottom: 0;
-  height: 80px;
+  height: 50px;
   border: none;
 }
 .navbar.metadata {
@@ -9354,7 +9354,7 @@ button {
   background-color: #ffffff;
 }
 .navbar.metadata {
-  background-color: black;
+  background-color: #2e5365;
 }
 #angular-views-entry {
   position: relative;
@@ -9673,6 +9673,17 @@ button {
   margin: 40px 0;
   font-size: 1.2em;
   color: #666;
+}
+.all-items-view .center-panel .no-selection {
+  padding: 100px 0;
+  color: #ccc;
+}
+.all-items-view .center-panel .no-selection .no-file {
+  font-size: 50px;
+}
+.all-items-view .center-panel .no-selection .no-message {
+  font-size: 18px;
+  padding: 20px;
 }
 .all-items-view .push-pull-box {
   position: absolute;
@@ -10086,6 +10097,7 @@ button {
 }
 .all-items-view .row-offcanvas-left .filter-options .btn-circle.element {
   background: #71977F;
+  padding: 6px;
 }
 .all-items-view .row-offcanvas-left .filter-options .btn-circle.metadata,
 .all-items-view .row-offcanvas-left .filter-options .btn-circle.instance {

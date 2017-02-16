@@ -49,6 +49,7 @@
 @divider: #B6B6B6;
 
 @lt-gray: #F8F8F8;
+@background-gray:#EEEEEE;
 @dark-gray: #616161;
 @med-gray: #9E9E9E;
 
@@ -87,7 +88,7 @@ html, body {
 }
 
 body {
-  background: @lt-gray;
+  background: @background-gray;
   font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
   color: #333;
   height: 100%;
@@ -141,7 +142,7 @@ button {
   color: @header-text-color;
   background-color: @header-bg-color;
   margin-bottom: 0;
-  height: 80px;
+  height: 50px;
   border: none;
 
   &.metadata {
@@ -360,7 +361,7 @@ button {
 }
 
 .navbar.metadata {
-  background-color: black;
+  background-color: @header-template;
 }
 
 #angular-views-entry {
@@ -368,7 +369,6 @@ button {
   top: 50px;
   width: 100%;
   height: calc(~"100% - 50px");
-
 }
 
 .controls-bar {
@@ -723,6 +723,18 @@ button {
       margin: 40px 0;
       font-size: 1.2em;
       color: #666;
+    }
+
+    .no-selection {
+        padding: 100px 0;
+        color: #ccc;
+        .no-file {
+          font-size: 50px
+        }
+        .no-message {
+          font-size: 18px;
+          padding:20px;
+        }
     }
 
   }
@@ -1241,6 +1253,7 @@ button {
 
         &.element {
           background: @button-element;
+          padding:6px;
         }
 
         &.metadata, &.instance {
