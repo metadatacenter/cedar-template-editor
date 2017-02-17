@@ -6,10 +6,10 @@
 
       <div class="col-lg-6 pull-left">
 
-        <a  ng-if="!isNested(element)" ng-click="switchExpandedState($root.getDomId(element))"
+        <a  ng-if="!isNested(element)" ng-click="switchExpandedState($root.getDomId(element)); $event.preventDefault();"
             class="visibilitySwitch"><i
             class="cedar-svg-collapse"></i></a>
-        <a  ng-if="!isNested(element)" ng-click="switchExpandedState($root.getDomId(element))" class="visibilitySwitch"
+        <a  ng-if="!isNested(element)" ng-click="switchExpandedState($root.getDomId(element)); $event.preventDefault();" class="visibilitySwitch"
             style="display:none;"><i
             class="cedar-svg-expand"></i></a>
 

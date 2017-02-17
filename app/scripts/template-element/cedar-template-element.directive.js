@@ -31,7 +31,6 @@ define([
 
 
     function linker(scope, element, attrs) {
-      console.log('nested ' + scope.nested + ' isRootElement ' + scope.isRootElement);
 
       scope.elementId = DataManipulationService.idOf(scope.element) || DataManipulationService.generateGUID();
 
@@ -144,21 +143,14 @@ define([
       scope.selectedTab = scope.selectedTab || 0;
       scope.selectTab = function (index) {
         scope.selectedTab = index;
-      }
+      };
 
       scope.isEditState = function () {
         return (DataManipulationService.isEditState(scope.element));
       };
 
       scope.isNested = function () {
-        var result;
-        if (scope.isRootElement === 'true') {
-          result = false;
-        } else {
-          result = (scope.nested === 'true');
-        }
-        return result;
-
+        return  (scope.nested === 'true');
       };
 
       // add a multiple cardinality element
@@ -167,16 +159,13 @@ define([
         if ($rootScope.isRuntime()) {
           if ((!scope.element.maxItems || scope.model.length < scope.element.maxItems)) {
             var seed = {};
-            console.log(scope.model);
+
             if (scope.model.length > 0) {
               seed = angular.copy(scope.model[0]);
-              console.log(seed);
               resetElement(seed, scope.element);
-              console.log(angular.isArray(scope.model));
               scope.model.push(seed);
             } else {
-              console.log('else ' + angular.isArray(scope.model));
-              console.log(scope.model);
+
               scope.model.push(seed);
               if (angular.isArray(scope.model)) {
                 angular.forEach(scope.model, function (m) {
@@ -253,12 +242,9 @@ define([
 
       // try to select this element
       scope.canSelect = function (select) {
-
         if (select) {
-          console.log('canSelect ' + $rootScope.schemaOf(scope.element)._ui.title);
           DataManipulationService.canSelect(scope.element);
         }
-
       };
 
       // when element is deseleted, look at errors and parse if none
