@@ -99,7 +99,7 @@ define([
               $rootScope.$broadcast("form:clean");
 
               $timeout(function () {
-                // don't show validaiton errors until after any redraws are done
+                // don't show validation errors until after any redraws are done
                 // thus, call this within a timeout
                 $scope.$broadcast('submitForm');
               }, 0);
