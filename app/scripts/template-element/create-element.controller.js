@@ -171,38 +171,21 @@ define([
 
     // Stores the element into the database
     $scope.doSaveElement = function () {
-      //console.log("doSaveElement")
+
       // First check to make sure Element Name, Element Description are not blank
       $scope.elementErrorMessages = [];
       $scope.elementSuccessMessages = [];
-      // delete $scope.element._ui.is_root;
 
-      //// If Element Name is blank, produce error message
-      //if (!$scope.element._ui.title.length) {
-      //  $scope.elementErrorMessages.push($translate.instant("VALIDATION.elementNameEmpty"));
-      //}
-      //// If Element Description is blank, produce error message
-      //if (!$scope.element._ui.description.length) {
-      //  $scope.elementErrorMessages.push($translate.instant("VALIDATION.elementDescriptionEmpty"));
-      //}
       // If there are no Element level error messages
       if ($scope.elementErrorMessages.length == 0) {
-        // Build element 'order' array via $broadcast call
-        // $scope.$broadcast('initOrderArray');
-        // Console.log full working form example on save, just to show demonstration of something happening
-        //console.log('saving element...');
-        //console.log($scope.element);
 
         // If maxItems is N, then remove maxItems
         DataManipulationService.removeUnnecessaryMaxItems($scope.element.properties);
         DataManipulationService.defaultTitleAndDescription($scope.element._ui);
 
-        // create a copy of the element and strip out the _tmp fields before saving it
-        // var copiedElement = $scope.stripTmpFields();
-
         this.disableSaveButton();
         var owner = this;
-        // Save element
+
         // Check if the element is already stored into the DB
         if ($routeParams.id == undefined) {
           DataManipulationService.stripTmps($scope.element);
@@ -230,16 +213,14 @@ define([
         // Update element
         else {
           var id = $scope.element['@id'];
-          //--//delete $scope.element['@id'];
           DataManipulationService.stripTmps($scope.element);
 
           AuthorizedBackendService.doCall(
               TemplateElementService.updateTemplateElement(id, $scope.element),
               function (response) {
+                DataManipulationService.createDomIds(response.data);
                 angular.extend($scope.element, response.data);
                 $rootScope.jsonToSave = $scope.element;
-
-                DataManipulationService.createDomIds($scope.element);
                 UIMessageService.flashSuccess('SERVER.ELEMENT.update.success', {"title": response.data.title},
                     'GENERIC.Updated');
 
