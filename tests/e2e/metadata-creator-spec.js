@@ -72,14 +72,21 @@ describe('metadata-creator', function () {
     // get the url of this element
     browser.getCurrentUrl().then(function (url) {
       sampleTemplateUrl = url;
+      console.log(sampleTemplateUrl);
     });
 
     // get back to the workspace page
     templatePage.topNavBackArrow().click();
     browser.wait(EC.presenceOf(element(by.css('.navbar.dashboard'))));
 
+  });
+
+  xit("should have the sample template in the workspace", function () {
+
+    workspacePage.searchForResource(sampleTitle, 'template');
 
   });
+
 
   it("should have a task bar", function () {
 
@@ -87,13 +94,20 @@ describe('metadata-creator', function () {
 
   });
 
-  it("should create metadata from the template", function () {
+
+
+  it("should create metadata from the template, step two", function () {
 
     workspacePage.populateResource(sampleTitle, 'template');
     browser.wait(EC.presenceOf(element(by.css('.navbar.metadata'))));
 
+  });
+
+  it("should create metadata from the template, click save", function () {
+
     browser.wait(EC.presenceOf(metadataPage.createSaveMetadataButton()));
     metadataPage.createSaveMetadataButton().click().then(function () {
+      console.log('clicked save in metadata editor');
       browser.sleep(500);
       browser.ignoreSynchronization = true;
       var toast = element(by.css('#toasty .toast .toast-msg'));

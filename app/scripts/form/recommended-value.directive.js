@@ -77,10 +77,14 @@ define([
             }
           });
         } else {
-          //var newValue = modelvr['@value'].value;
-          $scope.model['@value'] = modelvr['@value'].valueUri;
-          $scope.model['_valueLabel'] = modelvr['@value'].value;
-
+           if (modelvr['@value']) {
+             //var newValue = modelvr['@value'].value;
+             $scope.model['@value'] = modelvr['@value'].valueUri;
+             $scope.model['_valueLabel'] = modelvr['@value'].value;
+           } else {
+             $scope.model['@value'] = null;
+             delete $scope.model['_valueLabel'];
+           }
         }
       };
 

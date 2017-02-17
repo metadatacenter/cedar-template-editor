@@ -3,7 +3,7 @@
   <!--Loop through top level "page" parameter in form element and call cedar-template-element or field-directive with contents -->
 
   <!--At Runtime, the old form-->
-  <div class="page build" ng-if="$root.isRuntime() && !$root.useRunTimeCode" ng-repeat="page in pagesArray">
+  <div class="page build" ng-if="$root.isRuntime() && !$root.useNewForm" ng-repeat="page in pagesArray">
     <div ng-repeat="item in page" class="animate-fade" ng-show="pageIndex == $parent.$index">
       <span ng-if="form.properties[item]">
         <!--If Template field-->
@@ -30,29 +30,28 @@
   </div>
 
   <!--At runtime, the new form-->
-  <div class="page runtime"  ng-class="{'not-expanded': !isExpanded()}" ng-if="$root.isRuntime() && $root.useRunTimeCode " ng-repeat="page in pagesArray">
+  <div class=" page runtime" ng-class="{'not-expanded': !isExpanded()}"
+      ng-if="$root.isRuntime() && $root.useNewForm " ng-repeat="page in pagesArray">
 
-    <div class="flagpole"></div>
-
-    <div class="row">
-      <div class="col-xs-9 " >
+      <div class="row">
+        <div class="col-xs-9 ">
           <div ng-click="toggleExpanded()">
-            <button type="button"  class="xxx">
-              <i ng-class="{'fa fa-caret-down' : isExpanded(), 'fa fa-caret-right' : !isExpanded()}"></i></button>
-            <span  class="title form">{{$root.schemaOf(form)._ui.title}}</span>
+            <!--<button type="button" class="xxx">-->
+              <!--<i ng-class="{'fa fa-caret-down' : isExpanded(), 'fa fa-caret-right' : !isExpanded()}"></i></button>-->
+            <span class="title form">{{$root.schemaOf(form)._ui.title}}</span>
           </div>
+        </div>
+
+        <div class="col-xs-3 pull-right tools " style="visibility:hidden">
+          <field-toolbar field="form"
+              close="close" is-active="isActive"
+              expand-all="expandAll" is-expandable="isExpandable">
+          </field-toolbar>
+        </div>
       </div>
 
-      <div class="col-xs-3 pull-right tools " style="visibility:hidden">
-        <field-toolbar  field="form"
-            close="close"  is-active="isActive"
-            expand-all="expandAll" is-expandable="isExpandable">
-        </field-toolbar>
-      </div>
-    </div>
-
-    <div  ng-repeat="item in page" class="animate-fade" ng-show="pageIndex == $parent.$index && isExpanded()">
-      <span ng-if="form.properties[item]">
+    <ul class="treeview tv">
+      <li ng-repeat="item in page" class="animate-fade tv"  ng-class="{'last':$last, 'first':$first}"  ng-if="pageIndex == $parent.$index && isExpanded() && (isField(item) || isElement(item))">
 
         <!--If field-->
         <div ng-if="isField(item)" class="field-instance">
@@ -66,7 +65,7 @@
         </div>
 
         <!--If element-->
-        <div ng-if="isElement(item)" class="element-group full">
+        <div ng-if="isElement(item)" class=" element-group full">
           <cedar-runtime-element element="form.properties[item]"
               key="item"
               model="model[item]"
@@ -76,8 +75,11 @@
               path="0">
           </cedar-runtime-element>
         </div>
-      </span>
-    </div>
+
+      </li>
+    </ul>
+
+
   </div>
   <p ng-if="form.requiredFields" class="required-text">Required</p>
 

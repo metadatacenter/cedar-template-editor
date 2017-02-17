@@ -148,8 +148,7 @@ define([
     $rootScope.scrollToDomId = UIUtilService.scrollToDomId;
     $rootScope.toggleElement = UIUtilService.toggleElement;
     $rootScope.getDomId = DataManipulationService.getDomId;
-    $rootScope.minCardinalities = DataManipulationService.generateCardinalities(0, 8, false);
-    $rootScope.maxCardinalities = DataManipulationService.generateCardinalities(1, 8, true);
+
 
     // BioPortal term selection integration code.
     // TODO: separate the calls, create a service for these
@@ -490,11 +489,10 @@ define([
 
     $rootScope.isDirty = function() {
       return $rootScope.dirty;
-    }
+    };
 
-
-    $rootScope.runTimeVisible = false;
-    $rootScope.useRunTimeCode = false;
+    // use the new form and hide the old form
+    $rootScope.useNewForm = true;
 
 
   };

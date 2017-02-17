@@ -6,6 +6,7 @@ require('../modals/finder-modal.js');
 var TemplateCreatorPage = function () {
 
       var EC = protractor.ExpectedConditions;
+      var toastyModal = require('../modals/toasty-modal.js');
 
       var testConfig = require('../config/test-env.js');
       var url = testConfig.baseUrl + '/dashboard';
@@ -549,21 +550,9 @@ var TemplateCreatorPage = function () {
 
       this.clickSave = function (type) {
         var button = (type === 'template') ? createSaveTemplateButton : createSaveElementButton;
-
         browser.wait(EC.elementToBeClickable(button));
-        button.click().then(function () {
-
-          browser.sleep(500);
-          browser.ignoreSynchronization = true;
-
-          var toastyClose = element(by.css('#toasty .toast .close-button'));
-          toastyClose.click();
-
-          browser.sleep(500);
-          browser.ignoreSynchronization = false;
-        });
-
-
+        button.click();
+        toastyModal.isSuccess();
       };
 
       this.confirmCancel = function (type) {
@@ -1004,8 +993,11 @@ var TemplateCreatorPage = function () {
             createCheckboxButton.click();
             break;
           case "date":
+            console.log('createDateButton ');
             browser.wait(EC.elementToBeClickable(createDateButton));
+            console.log('createDateButton clickable ');
             createDateButton.click();
+            console.log('createDateButton clicked ');
             break;
           case "email":
             browser.wait(EC.elementToBeClickable(createEmailButton));

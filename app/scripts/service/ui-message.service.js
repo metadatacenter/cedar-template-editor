@@ -6,9 +6,9 @@ define([
   angular.module('cedar.templateEditor.service.uIMessageService', [])
       .service('UIMessageService', UIMessageService);
 
-  UIMessageService.$inject = ['toasty', '$translate'];
+  UIMessageService.$inject = ['toasty', '$translate', '$timeout'];
 
-  function UIMessageService(toasty, $translate) {
+  function UIMessageService(toasty, $translate, $timeout) {
 
     var service = {
       serviceId: "UIMessageService"
@@ -97,9 +97,47 @@ define([
       });
     };
 
+    service.showBackendWarning = function (title, text) {
+      swal({
+        title             : title,
+        text              : text,
+        type              : "warning",
+        showCancelButton  : false,
+        confirmButtonText : $translate.instant('GENERIC.Ok'),
+        closeOnConfirm    : true,
+        customClass       : 'cedarSWAL',
+        confirmButtonColor: null,
+        html              : true
+      });
+    };
+
 
     service.showBackendError = function (messageKey, response) {
       var errorObject = response.data;
+      // Test if this is an error that we are expecting:
+      // If yes, show a warning, and return
+      // If not, this is a server error, and we should show it.
+      if (errorObject.hasOwnProperty("errorKey")) {
+        var i18nKey = 'REST_ERROR.' + errorObject.errorKey;
+        var interpolatedServerError = $translate.instant(i18nKey, errorObject.parameters);
+        if (interpolatedServerError != i18nKey) {
+          if (errorObject.hasOwnProperty("errorReasonKey")) {
+            var i18nReasonKey = 'REST_ERROR_REASON.' + errorObject.errorReasonKey;
+            var interpolatedServerReason = $translate.instant(i18nReasonKey, errorObject.parameters);
+            if (interpolatedServerReason != i18nReasonKey) {
+              interpolatedServerError += "<br /><br />" + interpolatedServerReason;
+            }
+          }
+          $timeout(function () {
+            service.showBackendWarning(
+                $translate.instant('GENERIC.Warning'),
+                interpolatedServerError
+            );
+          }, 500);
+          return;
+        }
+      }
+
       toasty.error({
         title  : $translate.instant('SERVER.ERROR.title'),
         msg    : $translate.instant(messageKey),

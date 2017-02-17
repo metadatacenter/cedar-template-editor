@@ -210,10 +210,25 @@ define([
       return ($rootScope.documentTitle && $rootScope.documentTitle.toLowerCase().indexOf('biosample') > -1);
     };
 
+    $scope.isAIRRTemplate = function () {
+      return ($rootScope.documentTitle && $rootScope.documentTitle.toLowerCase().indexOf('airr template') > -1);
+    };
+
+    $scope.airrValidation = function () {
+      $scope.$broadcast('airrValidation');
+    };
+
     $scope.biosampleValidation = function () {
       $scope.$broadcast('biosampleValidation');
     };
 
+    // open the airr submission modal
+    $scope.airrSubmissionModalVisible = false;
+
+    $scope.showAirrSubmissionModal = function () {
+      $scope.airrSubmissionModalVisible = true;
+      $scope.$broadcast('airrSubmissionModalVisible', [$scope.airrSubmissionModalVisible, $rootScope.instanceToSave]);
+    };
 
   };
 

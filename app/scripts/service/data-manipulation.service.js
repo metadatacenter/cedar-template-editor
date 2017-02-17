@@ -48,22 +48,6 @@ define([
       return field;
     };
 
-    // Function that generates the @context for an instance, based on the schema @context definition
-    service.generateInstanceContext = function (schemaContext) {
-      var context = {};
-      angular.forEach(schemaContext.properties, function (value, key) {
-        if (value.enum) {
-          context[key] = value.enum[0];
-          //} else {
-          //  console.log('generateInstanceContext empty value');
-          //  console.log(value);
-        }
-      });
-      return context;
-    };
-
-
-
     // Function that generates a basic field definition
     service.isStaticField = function (field) {
       var schema = $rootScope.schemaOf(field);
@@ -75,16 +59,22 @@ define([
     service.generateInstanceContext = function (schemaContext) {
       var context = {};
       angular.forEach(schemaContext.properties, function (value, key) {
-        if (value.enum) {
-          context[key] = value.enum[0];
-          //} else {
-          //  console.log('generateInstanceContext empty value');
-          //  console.log(value);
+        if (value.type == "object") {
+          context[key] = {};
+          angular.forEach(schemaContext.properties[key].properties, function (value2, key2) {
+            if (value2.enum) {
+              context[key][key2] = value2.enum[0];
+            }
+          });
+        }
+        else {
+          if (value.enum) {
+            context[key] = value.enum[0];
+          }
         }
       });
       return context;
     };
-
 
     // Function that generates the @type for an instance, based on the schema @type definition
     service.generateInstanceType = function (schemaType) {
@@ -348,18 +338,6 @@ define([
       field._valueConstraints.literals.push(emptyOption);
     };
 
-    service.generateCardinalities = function (min, max, addUnlimited) {
-      var results = [];
-      for (var i = min; i <= max; i++) {
-        results.push({value: i, label: i});
-      }
-      if (addUnlimited) {
-        results.push({value: 0, label: "N"});
-      }
-      results.push({value: -1, label: ""});
-
-      return results;
-    };
 
     // TODO: remove this if not needed
     // Generating a RFC4122 version 4 compliant GUID
@@ -659,6 +637,7 @@ define([
     };
 
     service.nextSibling = function (field, parent) {
+      console.log('nextSibling');
 
       if (field && parent) {
 
@@ -666,6 +645,9 @@ define([
         var props = service.getFieldSchema(parent).properties;
         var order = service.getFieldSchema(parent)._ui.order;
         var selectedKey;
+
+        console.log('id' + id);
+
 
         angular.forEach(props, function (value, key) {
           var valueId = service.getFieldSchema(value)["@id"];
@@ -675,6 +657,8 @@ define([
             }
           }
         });
+
+        console.log('selectedKey ' + selectedKey);
 
         if (selectedKey) {
           var idx = order.indexOf(selectedKey);
@@ -687,7 +671,11 @@ define([
             idx += 1;
           }
           if (found) {
+            console.log('found');
             return next;
+          } else {
+            console.log('not found');
+
           }
         }
       }

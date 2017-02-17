@@ -434,8 +434,12 @@ define([
 
         if (id === scope.getId() && path == scope.path) {
 
+          scope.setActive(index,value);
           scope.expanded[index] = true;
+
           $timeout(function () {
+
+            scope.$apply();
 
             var props = $rootScope.schemaOf(scope.element).properties;
             var order = $rootScope.schemaOf(scope.element)._ui.order;
@@ -463,10 +467,10 @@ define([
 
       scope.setActive = function (index, value) {
         DataManipulationService.setActive(scope.element, index, scope.path, value);
-        //if (value) {
+        if (value) {
         scope.index = index;
         scope.pageMinMax();
-        //}
+        }
       };
 
       scope.selectPage = function (i) {

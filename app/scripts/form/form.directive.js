@@ -10,12 +10,12 @@ define([
 
 
   formDirective.$inject = ['$rootScope', '$document', '$timeout', '$http', 'DataManipulationService',
-                           'FieldTypeService', 'DataUtilService', 'BiosampleService',
+                           'FieldTypeService', 'DataUtilService', 'SubmissionService',
                            'UIMessageService', 'UrlService'];
 
 
   function formDirective($rootScope, $document, $timeout, $http, DataManipulationService, FieldTypeService,
-                         DataUtilService, BiosampleService, UIMessageService, UrlService) {
+                         DataUtilService, SubmissionService, UIMessageService, UrlService) {
     return {
       templateUrl: 'scripts/form/form.directive.html',
       restrict   : 'E',
@@ -92,14 +92,18 @@ define([
 
           // if it is there, delete it
           if (selectedKey) {
-
-            // delete it from the template's properties
+            // remove it from the template's properties
             delete props[selectedKey];
-
-            // and the order array
-            var idx = $scope.form._ui.order.indexOf(selectedKey);
-            $scope.form._ui.order.splice(idx, 1);
+            // remove it from the order array
+            var id1 = $scope.form._ui.order.indexOf(selectedKey);
+            $scope.form._ui.order.splice(id1, 1);
             $scope.$emit("invalidElementState", ["remove", title, id]);
+            // remove it from @context.properties
+            delete props['@context'].properties[selectedKey];
+            // remove it from @context.required
+            delete props['@context'].properties[selectedKey];
+            var id2 = props['@context'].required.indexOf(selectedKey);
+            props['@context'].required.splice(id2, 1);
           }
         };
 
@@ -340,12 +344,15 @@ define([
           return ($rootScope.documentTitle && $rootScope.documentTitle.toLowerCase().indexOf('biosample') > -1);
         };
 
+        $scope.isAIRRTemplate = function () {
+          return ($rootScope.documentTitle && $rootScope.documentTitle.toLowerCase().indexOf('airr') > -1);
+        };
+
 
         // validate a biosample template
         $scope.checkBiosample = function (instance) {
 
-          if ($scope.isBiosampleTemplate()) {
-
+          if ($scope.isBiosampleTemplate() || $scope.isAIRRTemplate()) {
 
             // one way to make the call
             var config = {};
@@ -394,12 +401,67 @@ define([
 
         };
 
-        // Watching for the 'submitForm' event to be $broadcast from parent 'RuntimeController'
-        $scope.$on('biosampleValidation', function (event) {
-          // Make the model (populated template) available to the parent
-          $scope.checkBiosample($scope.model);
+        // validate a AIRR template
+        $scope.checkAirr = function (instance) {
 
+          if ( $scope.isAIRRTemplate()) {
+
+            // one way to make the call
+            var config = {};
+            var url = UrlService.airrValidation();
+            $http.post(url, instance, config).then(
+                function successCallback(response) {
+
+                  var data = response.data;
+                  console.log(data);
+
+
+                  if (!data.isValid) {
+
+                    $scope.$emit('validationError',
+                        ['remove', '', 'airr']);
+
+                    var errors = data.messages;
+                    for (var i = 0; i < errors.length; i++) {
+
+                      console.log(errors[i]);
+
+
+                      $scope.$emit('validationError',
+                          ['add', errors[i], 'airr' + i]);
+
+
+                    }
+                  } else {
+
+                    $scope.$emit('validationError',
+                        ['remove', '', 'biosample']);
+
+                    UIMessageService.flashSuccess('AIRR Submission Validated', {"title": "title"},
+                        'Success');
+                  }
+
+                },
+                function errorCallback(err) {
+
+                  UIMessageService.showBackendError('AIRR Server Error', err);
+
+
+                });
+
+          }
+
+        };
+
+
+        $scope.$on('biosampleValidation', function (event) {
+          $scope.checkBiosample($scope.model);
         });
+
+        $scope.$on('airrValidation', function (event) {
+          $scope.checkAirr($scope.model);
+        });
+
 
         // Watching for the 'submitForm' event to be $broadcast from parent 'RuntimeController'
         $scope.$on('submitForm', function (event) {
@@ -497,7 +559,6 @@ define([
           var selectedKey;
           var props = $scope.form.properties;
 
-
           // find the field or element in the form's properties
           angular.forEach(props, function (value, key) {
             if (DataManipulationService.getId(value) == id) {
@@ -519,10 +580,8 @@ define([
             }
 
             if (found) {
-              console.log('found' + DataManipulationService.getId(next));
               $rootScope.$broadcast("setActive", [DataManipulationService.getId(next), 0, $scope.path, true]);
             } else {
-              console.log('not found')
               $rootScope.$broadcast("setActive", [id, 0, $scope.path, false]);
             }
           }

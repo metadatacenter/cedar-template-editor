@@ -69,14 +69,15 @@ define([
 
           // modals
           vm.showMoveModal = showMoveModal;
+          vm.showCopyModal = showCopyModal;
           vm.showShareModal = showShareModal;
           vm.showRenameModal = showRenameModal;
           vm.showNewFolderModal = showNewFolderModal;
+          vm.copyModalVisible = false;
           vm.moveModalVisible = false;
           vm.shareModalVisible = false;
           vm.renameModalVisible = false;
           vm.newFolderModalVisible = false;
-          vm.runTimeVisible = runTimeVisible;
 
           vm.getFacets = getFacets;
           vm.getForms = getForms;
@@ -90,7 +91,6 @@ define([
           vm.isResourceTypeActive = isResourceTypeActive;
           vm.isSearching = false;
           vm.launchInstance = launchInstance;
-          vm.launchInstanceNew = launchInstanceNew;
           vm.copyToWorkspace = copyToWorkspace;
           vm.copyResource = copyResource;
           vm.setResourceInfoVisibility = setResourceInfoVisibility;
@@ -134,6 +134,8 @@ define([
           vm.buildBreadcrumbTitle = buildBreadcrumbTitle;
 
           vm.editingDescription = false;
+          vm.isSharedMode = isSharedMode;
+          vm.isSearchMode = isSearchMode;
 
           vm.hideModal = function (visible) {
             visible = false;
@@ -168,13 +170,11 @@ define([
           };
 
           // show the info panel with this resource or find one
-          vm.showInfoPanel = function (resource) {
-            // if this one is defined, then use it
-            if (resource) {
-              if (!vm.isResourceSelected(resource)) {
-                vm.selectResource(resource);
-              }
-            } else {
+          vm.showInfoPanel = function () {
+            console.log('showInfoPanel');
+            if (vm.isSharedMode) {
+              resetSelected();
+            } else if (!vm.selectedResource) {
               if (vm.currentPath) {
                 vm.selectResource(vm.currentPath);
               } else {
@@ -196,9 +196,9 @@ define([
           };
 
           // toggle the info panel with this resource or find one
-          vm.toggleInfoPanel = function (resource) {
+          vm.toggleInfoPanel = function () {
             if (!vm.showResourceInfo) {
-              vm.showInfoPanel(resource);
+              vm.showInfoPanel();
             } else {
               vm.setResourceInfoVisibility(false);
             }
@@ -270,6 +270,7 @@ define([
           };
 
           vm.updateDescription = function () {
+            console.log('updateDescription')
             vm.editingDescription = false;
             var resource = vm.getSelection();
             if (resource != null) {
@@ -318,7 +319,6 @@ define([
                     function (response) {
                       UIMessageService.flashSuccess('SERVER.FOLDER.update.success', {"title": vm.selectedResource.name},
                           'GENERIC.Updated');
-                      init();
                     },
                     function (response) {
                       UIMessageService.showBackendError('SERVER.FOLDER.update.error', response);
@@ -426,7 +426,7 @@ define([
               template: uip.resourceTypeFilters.template
             };
             vm.filterSections = {
-              type  : false,
+              type  : true,
               author: false,
               status: false,
               term  : false
@@ -505,6 +505,14 @@ define([
             }
           }
 
+          function isSharedMode() {
+            return vm.isSearching && (vm.breadcrumbTitle === $translate.instant("BreadcrumbTitle.sharedWithMe"));
+          }
+
+          function isSearchMode() {
+            return vm.isSearching;
+          }
+
           function doSearch(term) {
             var resourceTypes = activeResourceTypes();
             var limit = UISettingsService.getRequestLimit();
@@ -550,16 +558,16 @@ define([
             if (!resource) {
               resource = getSelection();
             }
-            resourceService.copyResourceToWorkspace(
-                resource,
-                function (response) {
+            var newTitle = $translate.instant('GENERIC.CopyOfTitle', {"title": resource.name});
 
-                  // TODO refresh the current page just in case you copied to the current page
-                  vm.params = $location.search();
-                  init();
+            resourceService.copyResourceToWorkspace(
+                resource, newTitle,
+                function (response) {
 
                   UIMessageService.flashSuccess('SERVER.RESOURCE.copyToWorkspace.success', {"title": resource.name},
                       'GENERIC.Copied');
+
+                  $scope.refreshWorkspace(resource);
                 },
                 function (response) {
                   UIMessageService.showBackendError('SERVER.RESOURCE.copyToWorkspace.error', response);
@@ -571,20 +579,20 @@ define([
             if (!resource) {
               resource = getSelection();
             }
+            var newTitle = $translate.instant('GENERIC.CopyOfTitle', {"title": resource.name});
             var folderId = vm.currentFolderId;
             if (!folderId) {
               folderId = CedarUser.getHomeFolderId();
             }
             resourceService.copyResource(
-                resource, folderId,
+                resource, folderId, newTitle,
                 function (response) {
-
-                  // TODO refresh the current page just in case you copied to the current page
-                  vm.params = $location.search();
-                  init();
 
                   UIMessageService.flashSuccess('SERVER.RESOURCE.copyResource.success', {"title": resource.name},
                       'GENERIC.Copied');
+
+                  $scope.refreshWorkspace(resource);
+
                 },
                 function (response) {
                   UIMessageService.showBackendError('SERVER.RESOURCE.copyResource.error', response);
@@ -593,31 +601,11 @@ define([
           }
 
 
-          function runTimeVisible() {
-            return $rootScope.runTimeVisible;
+          function useNewForm() {
+            return $rootScope.useNewForm;
           }
 
-          function launchInstance(resource, newForm) {
-
-            // may be setting which form to use
-            if (newForm != null) {
-              $rootScope.useRunTimeCode = newForm;
-            }
-
-            if (!resource) {
-              resource = getSelection();
-            }
-
-            var url = FrontendUrlService.getInstanceCreate(resource['@id'], vm.getFolderId());
-            $location.url(url);
-          }
-
-          function launchInstanceNew(resource, newForm) {
-
-            // may be setting which form to use
-            if (newForm != null) {
-              $rootScope.useRunTimeCode = newForm;
-            }
+          function launchInstance(resource) {
 
             if (!resource) {
               resource = getSelection();
@@ -629,7 +617,6 @@ define([
 
 
           function goToResource(resource) {
-            console.log('goToResource');
             var r = resource;
             if (!r && vm.selectedResource) {
               r = vm.selectedResource;
@@ -644,12 +631,7 @@ define([
                 goToFolder(r['@id']);
               } else {
                 if (r.nodeType == 'template') {
-                  if ($rootScope.useRunTimeCode) {
-                    launchInstanceNew(r, $rootScope.useRunTimeCode);
-                  } else {
-                    launchInstance(r, $rootScope.useRunTimeCode);
-                  }
-
+                  launchInstance(r);
                 } else {
                   editResource(r);
                 }
@@ -658,7 +640,6 @@ define([
           }
 
           function editResource(resource) {
-            console.log('editResource');
             var r = resource;
             if (!r && vm.selectedResource) {
               r = vm.selectedResource;
@@ -684,11 +665,31 @@ define([
                 case CONST.resourceType.LINK:
                   $location.path(scope.href);
                   break;
-                  //case CONST.resourceType.FOLDER:
-                  //  vm.showEditFolder(r);
-                  //  break;
+                //case CONST.resourceType.FOLDER:
+                //  vm.showEditFolder(r);
+                //  break;
               }
             }
+          }
+
+          function removeResource(resource) {
+
+            // remove resource from list
+            var index;
+            for (var i = 0, len = vm.resources.length; i < len; i++) {
+              if (vm.resources[i]['@id'] === resource['@id']) {
+                index = i;
+                break;
+              }
+            }
+            if (i > -1) {
+              vm.resources.splice(index, 1);
+            }
+            // remove current selection
+            vm.selectedResource = null;
+
+            //reset total count
+            vm.totalCount--;
           }
 
 
@@ -701,13 +702,11 @@ define([
                   resourceService.deleteResource(
                       resource,
                       function (response) {
-                        // remove resource from list
-                        var index = vm.resources.indexOf(resource);
-                        vm.resources.splice(index, 1);
-                        resetSelected();
+
                         UIMessageService.flashSuccess('SERVER.' + resource.nodeType.toUpperCase() + '.delete.success',
                             {"title": resource.nodeType},
                             'GENERIC.Deleted');
+                        removeResource(resource);
                       },
                       function (error) {
                         UIMessageService.showBackendError('SERVER.' + resource.nodeType.toUpperCase() + '.delete.error',
@@ -789,11 +788,17 @@ define([
           }
 
           function getSelectedNode() {
-            if (vm.selectedResource == null) {
-              return vm.currentFolder;
+            var result = null;
+            if (vm.selectedResource == null && (vm.isSharedMode() || vm.isSearchMode())) {
+              // nothing selected in share or search mode
             } else {
-              return vm.selectedResource;
+              if (vm.selectedResource == null) {
+                result = vm.currentFolder;
+              } else {
+                result = vm.selectedResource;
+              }
             }
+            return result;
           }
 
           function getResourceIconClass(resource) {
@@ -878,7 +883,6 @@ define([
 
           function goToFolder(folderId) {
             if (vm.onDashboard()) {
-              console.log('goToFolder ' + folderId);
               $location.url(FrontendUrlService.getFolderContents(folderId));
             } else {
               vm.params.folderId = folderId;
@@ -1008,9 +1012,29 @@ define([
             init();
           });
 
-          $scope.$on('refreshWorkspace', function () {
+          $scope.selectResourceById = function (id) {
+            if (id) {
+              for (var i = 0; i < vm.resources.length; i++) {
+                if (id === vm.resources[i]['@id']) {
+                  vm.selectResource(vm.resources[i]);
+                  break;
+                }
+              }
+            }
+          };
+
+
+          $scope.refreshWorkspace = function (resource) {
             vm.params = $location.search();
             init();
+            if (resource) {
+              $scope.selectResourceById(resource['@id']);
+            }
+          };
+
+          $scope.$on('refreshWorkspace', function (event, args) {
+            var selectedResource = args ? args[0] : null;
+            $scope.refreshWorkspace(selectedResource);
           });
 
           $scope.hideModal = function (id) {
@@ -1094,6 +1118,19 @@ define([
           }
 
           // open the move modal
+          function showCopyModal(resource) {
+            console.log('showCopyModal');
+            var r = resource;
+            if (!r && vm.selectedResource) {
+              r = vm.selectedResource;
+            }
+            vm.copyModalVisible = true;
+            $scope.$broadcast('copyModalVisible',
+                [vm.copyModalVisible, r, vm.currentPath, vm.currentFolderId, vm.resourceTypes,
+                 vm.sortOptionField]);
+          }
+
+          // open the move modal
           function showMoveModal(resource) {
             var r = resource;
             if (!r && vm.selectedResource) {
@@ -1157,6 +1194,10 @@ define([
           vm.goToSharedWithMe = function () {
             var url = FrontendUrlService.getSharedWithMe(vm.getFolderId());
             $location.url(url);
+
+            if (vm.infoShowing) {
+              vm.showInfoPanel();
+            }
           };
 
           vm.getVisibleCount = function () {
@@ -1165,9 +1206,13 @@ define([
 
           // should we show the resource count at the end of the workspace?
           vm.showResourceCount = function () {
-            return  vm.totalCount !== Number.MAX_VALUE && vm.totalCount > vm.requestLimit;
+            return vm.totalCount !== Number.MAX_VALUE && vm.totalCount > vm.requestLimit;
           }
 
+          // do we have any resources to show?
+          vm.hasResources = function () {
+            return vm.totalCount > 0;
+          }
 
 
         }
