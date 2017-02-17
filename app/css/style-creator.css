@@ -10658,6 +10658,14 @@ body.search-browse-modal a.navbar-brand {
   margin-bottom: 0px;
   padding: 5px 15px;
 }
+.template-body .right-body .preview-edit-options .trash {
+  cursor: pointer;
+  color: #9E9E9E;
+  font-size: 26px;
+}
+.template-body .right-body .preview-edit-options .trash:hover {
+  color: #616161;
+}
 .template-body .right-body .preview-edit-options .add,
 .template-body .right-body .preview-edit-options .remove,
 .template-body .right-body .preview-edit-options .edit {
@@ -10736,9 +10744,11 @@ body.search-browse-modal a.navbar-brand {
   margin-bottom: 0;
 }
 .template-body .right-body .element-group .element-name-label {
-  margin-bottom: 10px;
-  text-align: left;
+  margin: 0 0 10px 0;
   display: inline-block;
+}
+.template-body .right-body .element-group .element-name-label.nested {
+  margin-left: 20px;
 }
 .template-body .right-body .element-group .element-name-label i {
   padding-right: 10px;

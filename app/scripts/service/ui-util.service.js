@@ -32,13 +32,10 @@ define([
     service.scrollToDomId = function (id) {
 
       $timeout(function () {
-            console.log('scrollToDomId ' + id);
-
             var target = angular.element('#' + id);
             if (target && target.offset()) {
               var y = target.offset().top;
               var center = $window.height/2;
-              console.log('scrollTo ' + 0 + (y - 95));
               $window.scrollTo(0, y - 95);
             } else {
               console.log('not found' + target );
