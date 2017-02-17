@@ -22,9 +22,7 @@
   <div ng-if="isActive(index)">
 
     <!--Regular field-->
-    <div ng-if="isRegular()"
-        class="form-group has-success has-feedback">
-
+    <div ng-if="isRegular()" class="form-group has-success has-feedback">
       <input type="text"
           class="form-control select"
           ng-class="{'isActive' : isActive(index), 'required': isRequired()}"

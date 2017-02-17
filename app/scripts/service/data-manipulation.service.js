@@ -110,8 +110,7 @@ define([
       if (angular.isUndefined(enumeration)) {
         if (format == 'uri') {
           // If the value has been constrained to ontology terms, @type must be set to @id
-          if (valueConstraints.branches != null || valueConstraints.classes != null
-              || valueConstraints.ontologies != null || valueConstraints.valueSets != null) {
+          if ($rootScope.hasValueConstraint(valueConstraints)) {
             instanceType = '@id';
           }
         }
@@ -126,6 +125,42 @@ define([
       }
       return instanceType;
     };
+
+    // If necessary, updates the field schema according to whether the field is controlled or not
+    service.initializeSchema = function(field) {
+      var fieldSchema = $rootScope.schemaOf(field);
+      // If regular field
+      if(!service.hasValueConstraint(field)) {
+        if (fieldSchema.required[0] != "@value") {
+          fieldSchema.required = [];
+          fieldSchema.required.push("@value")
+        }
+        if (angular.isUndefined(fieldSchema.properties["@value"])) {
+          var valueField = {};
+          valueField.type = [];
+          valueField.type.push("string");
+          valueField.type.push("null");
+          fieldSchema.properties["@value"] = valueField;
+          delete fieldSchema.properties["@id"];
+        }
+      }
+      // If controlled field
+      else {
+        if (fieldSchema.required[0] != "@id") {
+          fieldSchema.required = [];
+          fieldSchema.required.push("@id")
+        }
+        if (angular.isUndefined(fieldSchema.properties["@id"])) {
+          var idField = {};
+          idField.type = [];
+          idField.type.push("string");
+          idField.type.push("null");
+          idField.format = "uri";
+          fieldSchema.properties["@id"] = idField;
+          delete fieldSchema.properties["@value"];
+        }
+      }
+    }
 
     // resolve min or max as necessary and cardinalize or uncardinalize field
     service.setMinMax = function (field) {
@@ -857,8 +892,6 @@ define([
      * @param itemDataId
      */
     service.deleteFieldControlledTerm = function (itemDataId, node) {
-
-
       var properties = service.getFieldProperties(node);
       var idx = properties["@type"].oneOf[0].enum.indexOf(itemDataId);
 
@@ -877,6 +910,7 @@ define([
           delete properties["@type"].oneOf[1].items.enum;
         }
       }
+      service.initializeSchema(node);
     };
 
     /**
@@ -892,6 +926,7 @@ define([
           break;
         }
       }
+      service.initializeSchema(node);
     };
 
     /**
@@ -907,6 +942,7 @@ define([
           break;
         }
       }
+      service.initializeSchema(node);
     };
 
 
@@ -923,6 +959,7 @@ define([
           break;
         }
       }
+      service.initializeSchema(node);
     };
 
     /**
@@ -938,6 +975,7 @@ define([
           break;
         }
       }
+      service.initializeSchema(node);
     };
 
     // deselect any current selected items, then select this one

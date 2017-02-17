@@ -168,7 +168,6 @@ define([
           vcst.valueSets && vcst.valueSets.length > 0 ||
           vcst.classes && vcst.classes.length > 0 ||
           vcst.branches && vcst.branches.length > 0);
-
       return result;
     };
 

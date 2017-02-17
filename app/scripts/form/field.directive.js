@@ -462,7 +462,6 @@ define([
         }
       }
 
-
       // Sets the default @value for non-selection fields (i.e., text, paragraph, date, email, numeric, phone)
       $scope.setDefaultValueIfEmpty = function (m) {
         if ($rootScope.isRuntime()) {

@@ -19,10 +19,6 @@
     "requiredValue": false
   },
   "properties": {
-    "@id": {
-      "type": [ "string", "null" ],
-      "format": "uri"
-    },
     "@type": {
       "oneOf": [
         {
