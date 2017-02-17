@@ -253,8 +253,12 @@ define([
 
       // try to select this element
       scope.canSelect = function (select) {
-        if (select)
+
+        if (select) {
+          console.log('canSelect ' + $rootScope.schemaOf(scope.element)._ui.title);
           DataManipulationService.canSelect(scope.element);
+        }
+
       };
 
       // when element is deseleted, look at errors and parse if none

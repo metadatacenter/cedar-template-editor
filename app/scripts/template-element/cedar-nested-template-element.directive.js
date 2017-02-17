@@ -32,6 +32,13 @@ define([
     function linker(scope, element, attrs) {
 
       scope.nestElement = function () {
+
+        //var setNested = function (node,value) {
+        //  var p = $rootScope.propertiesOf(node);
+        //  p._tmp = p._tmp || {};
+        //  p._tmp.nested = value;
+        //};
+
        var getId = function (node) {
           var id;
           if (node.items) {
@@ -50,6 +57,7 @@ define([
             var parentId = getId(scope.$parent.element);
             result = parentId && nodeId != rootId && parentId != rootId;
           }
+          //setNested(node,result);
           return result;
         };
 

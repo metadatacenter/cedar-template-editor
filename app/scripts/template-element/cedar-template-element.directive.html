@@ -1,5 +1,5 @@
 <div ng-if="model !== undefined" class="item-root element-root" id="{{$root.getDomId(element)}}"
-    ng-click="canSelect(!isRootElement && !$root.isRuntime()); $event.preventDefault();">
+    ng-click="canSelect(!isNested(element) && !$root.isRuntime()); $event.preventDefault();">
 
   <div class="element-header input-type-container" style="position:relative;"  ng-class="{'sortable-handler': !$root.isRuntime() && !isNested(element)}">
     <div class="row" >
@@ -180,10 +180,10 @@
         </div>
       </div>
     </div>
-    {{$root.propertiesOf(element)._tmp}}
+
 
     <div class=""
-        ng-if="!$root.isRuntime() && !isRootElement && !isNested() && $root.propertiesOf(element)._tmp.state == 'creating'">
+        ng-if="!$root.isRuntime()  && !isNested() && $root.propertiesOf(element)._tmp.state == 'creating'">
       <div class="detail-options">
         <div class="element-toggles list table-style">
           <div class="element-toggle table-cell-style" ng-class="{active: showCardinality}"
