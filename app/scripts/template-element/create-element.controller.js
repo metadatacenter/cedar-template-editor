@@ -65,6 +65,7 @@ define([
               $scope.form._ui.order.push(key);
               $rootScope.jsonToSave = $scope.element;
               $rootScope.documentTitle = $scope.form._ui.title;
+              DataManipulationService.createDomIds($scope.element);
 
               $scope.$broadcast('form:clean');
             },
@@ -86,6 +87,7 @@ define([
         $scope.form._ui.order = $scope.form._ui.order || [];
         $scope.form._ui.order.push(key);
         $rootScope.jsonToSave = $scope.element;
+        DataManipulationService.createDomIds($scope.element);
 
         $scope.$broadcast('form:clean');
       }
