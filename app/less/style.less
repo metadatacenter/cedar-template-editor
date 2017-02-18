@@ -1881,6 +1881,15 @@ body.search-browse-modal {
       margin-bottom: 0px;
       padding: 5px 15px;
 
+      .trash {
+        cursor: pointer;
+        color: @med-gray;
+        font-size:26px;
+        &:hover {
+          color: @dark-gray;
+        }
+      }
+
       .add,
       .remove,
       .edit {
@@ -1969,9 +1978,12 @@ body.search-browse-modal {
       }
 
       .element-name-label {
-        margin-bottom: 10px;
-        text-align: left;
+        margin: 0 0 10px 0;
         display: inline-block;
+
+        &.nested {
+          margin-left:20px;
+        }
 
         i {
           //color:@gray;
