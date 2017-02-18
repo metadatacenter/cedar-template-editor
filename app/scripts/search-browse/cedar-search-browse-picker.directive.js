@@ -145,7 +145,6 @@ define([
           };
 
           vm.startDescriptionEditing = function () {
-            console.log('startDescriptionEditing')
             var resource = vm.getSelection();
             if (resource != null) {
               vm.editingDescription = true;
@@ -272,7 +271,6 @@ define([
           };
 
           vm.updateDescription = function () {
-            console.log('updateDescription')
             vm.editingDescription = false;
             var resource = vm.getSelection();
             if (resource != null) {
@@ -449,9 +447,6 @@ define([
           }
 
           function init() {
-            //console.log("SearchAndBrowse.init()");
-            //console.log(vm.params);
-            //console.log($location.search());
             vm.isSearching = false;
             if (vm.params.sharing) {
               if (vm.params.sharing == 'shared-with-me') {
@@ -497,7 +492,6 @@ define([
           }
 
           function buildBreadcrumbTitle(searchTerm) {
-            console.log(vm.nodeListQueryType);
             if (vm.nodeListQueryType == 'view-shared-with-me') {
               return $translate.instant("BreadcrumbTitle.sharedWithMe");
             } else if (vm.nodeListQueryType == 'folder-content') {
@@ -545,7 +539,6 @@ define([
           }
 
           function doSharedWithMe() {
-            //console.log("DO shared with me");
             var resourceTypes = activeResourceTypes();
             var limit = UISettingsService.getRequestLimit();
             vm.offset = 0;
@@ -1135,7 +1128,6 @@ define([
 
           // open the move modal
           function showCopyModal(resource) {
-            console.log('showCopyModal');
             var r = resource;
             if (!r && vm.selectedResource) {
               r = vm.selectedResource;
