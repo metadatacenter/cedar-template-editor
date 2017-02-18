@@ -10037,6 +10037,7 @@ button {
   color: #5795ba;
   margin: 10px 0;
   display: block;
+  font-size: 16px;
 }
 .all-items-view .row-offcanvas-left .filter-options .shares .share.active {
   font-weight: bold;

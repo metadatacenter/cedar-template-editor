@@ -136,6 +136,9 @@ define([
           vm.editingDescription = false;
           vm.isSharedMode = isSharedMode;
           vm.isSearchMode = isSearchMode;
+          vm.isHomeMode = isHomeMode;
+          vm.nodeListQueryType = null;
+          vm.breadcrumbTitle = null;
 
           vm.hideModal = function (visible) {
             visible = false;
@@ -171,8 +174,7 @@ define([
 
           // show the info panel with this resource or find one
           vm.showInfoPanel = function () {
-            console.log('showInfoPanel');
-            if (vm.isSharedMode) {
+            if (vm.isSharedMode()) {
               resetSelected();
             } else if (!vm.selectedResource) {
               if (vm.currentPath) {
@@ -477,7 +479,8 @@ define([
               getFolderContentsById(currentFolderId);
               getCurrentFolderSummary(currentFolderId);
             } else {
-              goToFolder(CedarUser.getHomeFolderId());
+              //goToFolder(CedarUser.getHomeFolderId());
+              goToHomeFolder();
             }
             if (vm.showFavorites) {
               getForms();
@@ -493,12 +496,13 @@ define([
             return folderName;
           }
 
-          function buildBreadcrumbTitle(nodeListQueryType, searchTerm) {
-            if (nodeListQueryType == 'view-shared-with-me') {
+          function buildBreadcrumbTitle(searchTerm) {
+            console.log(vm.nodeListQueryType);
+            if (vm.nodeListQueryType == 'view-shared-with-me') {
               return $translate.instant("BreadcrumbTitle.sharedWithMe");
-            } else if (nodeListQueryType == 'view-all') {
+            } else if (vm.nodeListQueryType == 'folder-content') {
               return $translate.instant("BreadcrumbTitle.viewAll");
-            } else if (nodeListQueryType == 'search-term') {
+            } else if (vm.nodeListQueryType == 'search-term') {
               return $translate.instant("BreadcrumbTitle.searchResult", {searchTerm: searchTerm});
             } else {
               return "";
@@ -506,11 +510,16 @@ define([
           }
 
           function isSharedMode() {
-            return vm.isSearching && (vm.breadcrumbTitle === $translate.instant("BreadcrumbTitle.sharedWithMe"));
+            return (vm.nodeListQueryType === 'view-shared-with-me');
           }
 
           function isSearchMode() {
-            return vm.isSearching;
+            return (vm.nodeListQueryType === 'search-term');
+          }
+
+
+          function isHomeMode() {
+            return (vm.nodeListQueryType === 'folder-content') && (vm.params.folderId === CedarUser.getHomeFolderId());
           }
 
           function doSearch(term) {
@@ -526,7 +535,8 @@ define([
                   vm.isSearching = true;
                   vm.resources = response.resources;
                   vm.totalCount = response.totalCount;
-                  vm.breadcrumbTitle = vm.buildBreadcrumbTitle(response.nodeListQueryType, response.request.q);
+                  vm.nodeListQueryType = response.nodeListQueryType;
+                  vm.breadcrumbTitle = vm.buildBreadcrumbTitle(response.request.q);
                 },
                 function (error) {
                   UIMessageService.showBackendError('SERVER.SEARCH.error', error);
@@ -546,7 +556,8 @@ define([
                   vm.isSearching = true;
                   vm.resources = response.resources;
                   vm.totalCount = response.totalCount;
-                  vm.breadcrumbTitle = vm.buildBreadcrumbTitle(response.nodeListQueryType);
+                  vm.nodeListQueryType = response.nodeListQueryType;
+                  vm.breadcrumbTitle = vm.buildBreadcrumbTitle();
                 },
                 function (error) {
                   UIMessageService.showBackendError('SERVER.SEARCH.error', error);
@@ -760,7 +771,8 @@ define([
                     vm.pathInfo = response.pathInfo;
                     vm.currentPath = vm.pathInfo.pop();
                     vm.totalCount = response.totalCount;
-
+                    vm.nodeListQueryType = response.nodeListQueryType;
+                    vm.breadcrumbTitle = vm.buildBreadcrumbTitle();
                   },
                   function (error) {
                     UIMessageService.showBackendError('SERVER.FOLDER.load.error', error);
@@ -878,6 +890,10 @@ define([
 
           function isMeta() {
             return (hasSelection() && (vm.selectedResource.nodeType == CONST.resourceType.INSTANCE));
+          }
+
+          function goToHomeFolder() {
+             goToFolder(CedarUser.getHomeFolderId());
           }
 
 
@@ -1195,9 +1211,9 @@ define([
             var url = FrontendUrlService.getSharedWithMe(vm.getFolderId());
             $location.url(url);
 
-            if (vm.infoShowing) {
-              vm.showInfoPanel();
-            }
+            //if (vm.infoShowing) {
+              //vm.showInfoPanel();
+            //}
           };
 
           vm.getVisibleCount = function () {
