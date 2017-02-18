@@ -114,6 +114,18 @@ define([
 
     service.showBackendError = function (messageKey, response) {
       var errorObject = response.data;
+      if (response.status == -1) {
+        var params = {};
+        params.url = response.config.url;
+        var interpolatedServerError = $translate.instant("SERVER.ERROR.BackendIsNotResponding", params);
+        $timeout(function () {
+          service.showBackendWarning(
+              $translate.instant('GENERIC.Error'),
+              interpolatedServerError
+          );
+        }, 500);
+        return;
+      }
       // Test if this is an error that we are expecting:
       // If yes, show a warning, and return
       // If not, this is a server error, and we should show it.
@@ -144,7 +156,7 @@ define([
         //timeout: false,
         onClick: function () {
           //console.log(response);
-          var message, exception, stackTraceHtml, statusCode, statusText, url, method, errorKey;
+          var message, exceptionMessage, stackTraceHtml, statusCode, statusText, url, method, errorKey;
           statusCode = response.status;
           statusText = response.statusText;
           url = response.config.url;
@@ -152,7 +164,7 @@ define([
           //console.log(response);
           if (response.status == -1) {
             message = $translate.instant('SERVER.ERROR.InaccessibleMessage');
-            exception = $translate.instant('SERVER.ERROR.InaccessibleMessageString');
+            exceptionMessage = $translate.instant('SERVER.ERROR.InaccessibleMessageString');
             stackTraceHtml = $translate.instant('GENERIC.NotAvailable');
           } else {
             if (errorObject !== null) {
@@ -160,16 +172,20 @@ define([
               errorKey = errorObject.errorKey;
               if (errorObject.hasOwnProperty('sourceException')) {
                 var ex = errorObject.sourceException;
-                exception = ex.message;
-                if (ex.hasOwnProperty('stackTrace')) {
-                  stackTraceHtml = "<textarea>";
-                  for (var i in ex.stackTrace) {
-                    stackTraceHtml += ex.stackTrace[i].className
-                        + " -> " + ex.stackTrace[i].methodName
-                        + " ( " + ex.stackTrace[i].lineNumber + " )"
-                        + "\n";
+                if (ex != null) {
+                  if (ex.hasOwnProperty('message')) {
+                    exceptionMessage = ex.message;
                   }
-                  stackTraceHtml += "</textarea>";
+                  if (ex.hasOwnProperty('stackTrace') && ex.stackTrace != null) {
+                    stackTraceHtml = "<textarea>";
+                    for (var i in ex.stackTrace) {
+                      stackTraceHtml += ex.stackTrace[i].className
+                          + " -> " + ex.stackTrace[i].methodName
+                          + " ( " + ex.stackTrace[i].lineNumber + " )"
+                          + "\n";
+                    }
+                    stackTraceHtml += "</textarea>";
+                  }
                 }
               }
             }
@@ -178,7 +194,7 @@ define([
           var content = $translate.instant('SERVER.ERROR.technicalDetailsTemplate', {
             message   : message,
             errorKey  : errorKey,
-            exception : exception,
+            exception : exceptionMessage,
             statusCode: statusCode,
             statusText: statusText,
             url       : url,
