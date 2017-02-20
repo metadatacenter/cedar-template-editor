@@ -126,6 +126,7 @@ define([
 
 
     $rootScope.$on('$locationChangeSuccess', function (event, next, current) {
+
       vm.searchTerm = $location.search().search;
       vm.path = $location.path();
       $rootScope.setHeader();
@@ -144,6 +145,7 @@ define([
 
         });
       }
+
     });
 
     //*********** ENTRY POINT

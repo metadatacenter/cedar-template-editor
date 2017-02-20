@@ -76,8 +76,8 @@ define([
 
       $scope.runtimeErrorMessages = [];
       $scope.runtimeSuccessMessages = [];
-      // Broadcast submitForm event to form-directive.js which will assign the form $scope.model to $scope.instance of this controller
-      $scope.$broadcast('submitForm');
+
+
       // Create instance if there are no required field errors
       //if ($rootScope.isEmpty($scope.emptyRequiredFields) && $rootScope.isEmpty($scope.invalidFieldValues) && $scope.instance['@id'] == undefined) {
       if ($scope.instance['@id'] == undefined) {
@@ -97,6 +97,13 @@ define([
               var newId = response.data['@id'];
               $location.path(FrontendUrlService.getInstanceEdit(newId));
               $rootScope.$broadcast("form:clean");
+
+              $timeout(function () {
+                // don't show validation errors until after any redraws are done
+                // thus, call this within a timeout
+                $scope.$broadcast('submitForm');
+              }, 0);
+
             },
             function (err) {
               UIMessageService.showBackendError('SERVER.INSTANCE.create.error', err);
@@ -113,6 +120,7 @@ define([
               UIMessageService.flashSuccess('SERVER.INSTANCE.update.success', null, 'GENERIC.Updated');
               owner.enableSaveButton();
               $rootScope.$broadcast("form:clean");
+              $scope.$broadcast('submitForm');
             },
             function (err) {
               UIMessageService.showBackendError('SERVER.INSTANCE.update.error', err);

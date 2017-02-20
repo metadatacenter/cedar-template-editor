@@ -667,7 +667,8 @@ define([
         };
 
         $scope.isNested = function () {
-          return (DataManipulationService.isNested($scope.field));
+          return $scope.nested;
+          //return (DataManipulationService.isNested($scope.field));
         };
 
         $scope.addOption = function () {
@@ -1170,7 +1171,8 @@ define([
         preview       : "=",
         delete        : '&',
         ngDisabled    : "=",
-        isEditData    : "="
+        isEditData    : "=",
+        nested:'='
       },
       controller : function ($scope, $element) {
         var addPopover = function ($scope) {
