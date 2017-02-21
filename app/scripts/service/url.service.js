@@ -185,12 +185,16 @@ define([
       return this.getGroups() + '/' + encodeURIComponent(id) + "/users";
     };
 
-    service.biosampleValidation = function (instance) {
+    service.biosampleValidation = function () {
       return submissionService + '/command/validate-biosample';
     };
 
-    service.airrSubmission = function (instance) {
+    service.airrSubmission = function () {
       return submissionService + '/command/submit-airr';
+    };
+
+    service.airrValidation = function () {
+      return submissionService + '/command/validate-airr';
     };
 
     service.getOntologies = function () {

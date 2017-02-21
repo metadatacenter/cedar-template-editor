@@ -92,14 +92,18 @@ define([
 
           // if it is there, delete it
           if (selectedKey) {
-
-            // delete it from the template's properties
+            // remove it from the template's properties
             delete props[selectedKey];
-
-            // and the order array
-            var idx = $scope.form._ui.order.indexOf(selectedKey);
-            $scope.form._ui.order.splice(idx, 1);
+            // remove it from the order array
+            var id1 = $scope.form._ui.order.indexOf(selectedKey);
+            $scope.form._ui.order.splice(id1, 1);
             $scope.$emit("invalidElementState", ["remove", title, id]);
+            // remove it from @context.properties
+            delete props['@context'].properties[selectedKey];
+            // remove it from @context.required
+            delete props['@context'].properties[selectedKey];
+            var id2 = props['@context'].required.indexOf(selectedKey);
+            props['@context'].required.splice(id2, 1);
           }
         };
 
@@ -397,9 +401,67 @@ define([
 
         };
 
+        // validate a AIRR template
+        $scope.checkAirr = function (instance) {
+
+          if ( $scope.isAIRRTemplate()) {
+
+            // one way to make the call
+            var config = {};
+            var url = UrlService.airrValidation();
+            $http.post(url, instance, config).then(
+                function successCallback(response) {
+
+                  var data = response.data;
+                  console.log(data);
+
+
+                  if (!data.isValid) {
+
+                    $scope.$emit('validationError',
+                        ['remove', '', 'airr']);
+
+                    var errors = data.messages;
+                    for (var i = 0; i < errors.length; i++) {
+
+                      console.log(errors[i]);
+
+
+                      $scope.$emit('validationError',
+                          ['add', errors[i], 'airr' + i]);
+
+
+                    }
+                  } else {
+
+                    $scope.$emit('validationError',
+                        ['remove', '', 'biosample']);
+
+                    UIMessageService.flashSuccess('AIRR Submission Validated', {"title": "title"},
+                        'Success');
+                  }
+
+                },
+                function errorCallback(err) {
+
+                  UIMessageService.showBackendError('AIRR Server Error', err);
+
+
+                });
+
+          }
+
+        };
+
+
         $scope.$on('biosampleValidation', function (event) {
           $scope.checkBiosample($scope.model);
         });
+
+        $scope.$on('airrValidation', function (event) {
+          $scope.checkAirr($scope.model);
+        });
+
 
         // Watching for the 'submitForm' event to be $broadcast from parent 'RuntimeController'
         $scope.$on('submitForm', function (event) {

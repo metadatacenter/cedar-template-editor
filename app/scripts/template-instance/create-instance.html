@@ -42,7 +42,8 @@
             <p ng-repeat="message in runtimeSuccessMessages"><i class="fa fa-check"></i>{{message}}</p>
           </div>
           <button type="button" id="button-cancel-metadata" class="btn btn-clear metadata" ng-click="cancelTemplate()" style="outline:none;" translate>GENERIC.Cancel</button>
-          <button type="button" ng-if="isBiosampleTemplate() || isAIRRTemplate()" id="button-BioSample-metadata" ng-disabled="saveButtonDisabled" class="btn btn-clear metadata" style="outline:none;"  ng-click="biosampleValidation()" translate>Validate</button>
+          <button type="button" ng-if="isBiosampleTemplate()" id="button-BioSample-metadata" ng-disabled="saveButtonDisabled" class="btn btn-clear metadata" style="outline:none;"  ng-click="biosampleValidation()" translate>Validate</button>
+          <button type="button" ng-if="isAIRRTemplate()" id="button-AIRR-metadata" ng-disabled="saveButtonDisabled" class="btn btn-clear metadata" style="outline:none;"  ng-click="airrValidation()" translate>Validate</button>
           <button type="button" ng-if="isAIRRTemplate()" id="button-Airr-metadata" ng-disabled="saveButtonDisabled" class="btn btn-clear metadata" style="outline:none;"  ng-click="showAirrSubmissionModal()" translate>Submit</button>
           <button type="button" id="button-save-metadata" ng-disabled="saveButtonDisabled" class="btn btn-save metadata" ng-click="saveInstance()" style="outline:none;"  translate>GENERIC.Save</button>
         </div>

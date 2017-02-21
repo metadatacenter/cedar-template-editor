@@ -1,26 +1,27 @@
 <div ng-if="model !== undefined" class="item-root element-root" id="{{$root.getDomId(element)}}"
-    ng-click="canSelect(!isRootElement && !$root.isRuntime()); $event.preventDefault();">
+    ng-click="canSelect(!isNested(element) && !$root.isRuntime()); $event.preventDefault();">
 
-  <div class="element-header input-type-container" style="position:relative;"
-      ng-class="{'sortable-handler': !$root.isRuntime()}">
-    <div class="row">
+  <div class="element-header input-type-container" style="position:relative;"  ng-class="{'sortable-handler': !$root.isRuntime() && !isNested(element)}">
+    <div class="row" >
 
       <div class="col-lg-6 pull-left">
 
-        <a ng-click="switchExpandedState($root.getDomId(element))" class="visibilitySwitch"><i
+        <a  ng-if="!isNested(element)" ng-click="switchExpandedState($root.getDomId(element)); $event.preventDefault();"
+            class="visibilitySwitch"><i
             class="cedar-svg-collapse"></i></a>
-        <a ng-click="switchExpandedState($root.getDomId(element))" class="visibilitySwitch" style="display:none;"><i
+        <a  ng-if="!isNested(element)" ng-click="switchExpandedState($root.getDomId(element)); $event.preventDefault();" class="visibilitySwitch"
+            style="display:none;"><i
             class="cedar-svg-expand"></i></a>
 
-        <div class="sortable-handler " style="padding-top:5px; display:inline-block"
+        <div  ng-if="!isNested(element)" class="sortable-handler " style="padding-top:5px; display:inline-block"
             ng-if="!isRootElement && !$root.isRuntime() && !preview "><span
             class="sortable-icon"></span></div>
 
-        <p class="element-name-label ">
-          <i class="cedar-svg-element"></i>{{$root.schemaOf(element)._ui.title}}
+        <p class="element-name-label " ng-class="{'nested': isNested(element)}">
+          {{$root.schemaOf(element)._ui.title}}
         </p>
 
-         <span ng-show="$root.isArray(model) && $root.isRuntime()" class="spreadsheetSwitch element">
+         <span ng-if="!isNested(element)" ng-show="$root.isArray(model) && $root.isRuntime()" class="spreadsheetSwitch element">
             <button type="button"
                 tooltip="{{'HELP.showAsSpreadsheet' | translate}}"
                 tooltip-trigger
@@ -69,26 +70,12 @@
         </div>
       </div>
 
-      <div ng-if="!$root.isRuntime() &&  !isRootElement && !isNested()" class="preview-container">
-        <!--<div class="row preview-edit-options pull-right" style="margin-right:5px">-->
+      <div ng-if="!$root.isRuntime() &&   !isNested(element)" class="preview-container">
         <div class="row preview-edit-options pull-right">
           <div class="toggle-options col-lg-12 pull-right">
             <div class="save-options">
-              <div class="save-options" ng-if="$root.propertiesOf(element)._tmp.state != 'creating'">
-                <!--<div class="edit" ng-click="edit()" title="Edit element">-->
-                <!--<i class="fa fa-pencil" style="transform: translate(6px, 1px);"></i>-->
-                <!--</div>-->
-                <div class="remove" style="margin-right: 0;" ng-click="delete()" title="Delete element">
-                  <i class="fa fa-times"></i>
-                </div>
-              </div>
-              <div class="save-options" ng-if="$root.propertiesOf(element)._tmp.state == 'creating'">
-                <!--<div class="add" ng-click="add(element)" title="Add element">-->
-                <!--<i class="fa fa-plus"></i>-->
-                <!--</div>-->
-                <div class="remove" style="margin-right: 0;" ng-click="delete()" title="Delete element">
-                  <i class="fa fa-times"></i>
-                </div>
+              <div class="trash" ng-click="delete()" title="Delete element">
+                <i class="fa fa-times-circle"></i>
               </div>
             </div>
           </div>
@@ -194,8 +181,9 @@
       </div>
     </div>
 
+
     <div class=""
-        ng-if="!$root.isRuntime() && !isRootElement && !isNested() && $root.propertiesOf(element)._tmp.state == 'creating'">
+        ng-if="!$root.isRuntime()  && !isNested() && $root.propertiesOf(element)._tmp.state == 'creating'">
       <div class="detail-options">
         <div class="element-toggles list table-style">
           <div class="element-toggle table-cell-style" ng-class="{active: showCardinality}"
@@ -207,20 +195,32 @@
 
       <!-- Cardinality tab  -->
       <div id="cardinality-options" class="cardinality-options cardinality-selectors" ng-show="showCardinality">
-        <div class="form-group validation-pattern pull-left min-items-option">
-          <label translate>GENERIC.Min</label>
-          <select class="" ng-model="element.minItems" title=""
-              ng-options="v.value as v.label for v in $root.minCardinalities" select-picker="">
-          </select>
+
+        <div class="type-toggle date">
+          <div class="d-option" ng-class="{active: !isMultiple()}" ng-click="clearMinMax()">
+            <span translate>GENERIC.No</span>
+          </div>
+          <div class="d-option" ng-class="{active: isMultiple()}" ng-click="defaultMinMax()">
+            <span translate>GENERIC.Yes</span>
+          </div>
         </div>
-        <div class="form-group validation-pattern pull-left max-items-option">
-          <label translate>GENERIC.Max</label>
-          <select class="" ng-model="element.maxItems"
-              ng-options="v.value as v.label for v in $root.maxCardinalities"
-              title="" select-picker="">
-          </select>
+
+        <div class="cardinality-selectors" ng-if="element.minItems > -1">
+      <span class=" form-group validation-pattern  min-items-option">
+        <span translate>GENERIC.Min</span>
+        <select class="center" select-picker ng-model="cardinality.min" ng-init="initMultiple()"
+            ng-change="updateMultiple()">
+          <option ng-repeat="i in cardinality.mins" value="{{ i.value }}">{{ i.label }}</option>
+        </select>
+      </span>
+      <span class=" form-group validation-pattern  max-items-option">
+        <span translate>GENERIC.Max</span>
+        <select select-picker ng-model="cardinality.max" ng-init="initMultiple()" ng-change="updateMultiple()">
+          <option ng-repeat="i in cardinality.maxes" value="{{ i.value }}">{{ i.label }}</option>
+        </select>
+      </span>
         </div>
-        <!-- /.form-group -->
+
       </div>
       <div class="clearfix"></div>
     </div>

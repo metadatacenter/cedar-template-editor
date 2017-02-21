@@ -18,8 +18,9 @@ define([
         element      : '=',
         delete       : '&',
         model        : '=',
-        isRootElement: "=",
-        isEditData   : "="
+        isRootElement: "@",
+        isEditData   : "=",
+        nested       : '@'
       },
       templateUrl: 'scripts/template-element/cedar-template-element.directive.html',
       link       : linker
@@ -27,7 +28,10 @@ define([
 
     return directive;
 
+
+
     function linker(scope, element, attrs) {
+
       scope.elementId = DataManipulationService.idOf(scope.element) || DataManipulationService.generateGUID();
 
       var resetElement = function (el, settings) {
@@ -102,7 +106,7 @@ define([
             }
           }
         });
-      }
+      };
 
       var parseElement = function () {
         if (!$rootScope.isRuntime() && scope.element) {
@@ -114,7 +118,7 @@ define([
             $rootScope.findChildren($rootScope.propertiesOf(scope.element), scope.model);
           }
         }
-      }
+      };
 
       if (!$rootScope.isRuntime()) {
         if (!scope.model) {
@@ -139,37 +143,29 @@ define([
       scope.selectedTab = scope.selectedTab || 0;
       scope.selectTab = function (index) {
         scope.selectedTab = index;
-      }
+      };
 
       scope.isEditState = function () {
         return (DataManipulationService.isEditState(scope.element));
       };
 
       scope.isNested = function () {
-        return (DataManipulationService.isNested(scope.element));
+        return  (scope.nested === 'true');
       };
-
-      // add a multiple cardinality element
-
-
 
       // add a multiple cardinality element
       scope.selectedTab = 0;
       scope.addElement = function () {
-        console.log('addElement');
         if ($rootScope.isRuntime()) {
           if ((!scope.element.maxItems || scope.model.length < scope.element.maxItems)) {
             var seed = {};
-            console.log(scope.model);
+
             if (scope.model.length > 0) {
               seed = angular.copy(scope.model[0]);
-              console.log(seed);
               resetElement(seed, scope.element);
-             console.log (angular.isArray(scope.model));
               scope.model.push(seed);
             } else {
-              console.log ('else ' +angular.isArray(scope.model));
-              console.log (scope.model);
+
               scope.model.push(seed);
               if (angular.isArray(scope.model)) {
                 angular.forEach(scope.model, function (m) {
@@ -246,8 +242,9 @@ define([
 
       // try to select this element
       scope.canSelect = function (select) {
-        if (select)
+        if (select) {
           DataManipulationService.canSelect(scope.element);
+        }
       };
 
       // when element is deseleted, look at errors and parse if none
@@ -302,14 +299,13 @@ define([
       }
 
 
-
       // try to deselect this field
       scope.canDeselect = function (field) {
         return DataManipulationService.canDeselect(field, scope.renameChildKey);
       };
 
       scope.$on('saveForm', function (event) {
-      if (scope.isEditState() && !scope.canDeselect(scope.element)) {
+        if (scope.isEditState() && !scope.canDeselect(scope.element)) {
 
           scope.$emit("invalidElementState",
               ["add", $rootScope.schemaOf(scope.element)._ui.title, scope.element["@id"]]);
@@ -330,6 +326,104 @@ define([
       scope.$watchCollection("element.items.properties", function () {
         parseElement();
       });
+
+
+      // for cardinality selectors
+      scope.cardinality = {
+        min  : null,
+        max  : null,
+        mins : [{
+          value: '0',
+          label: 'none'
+        }, {
+          value: '1',
+          label: 'one'
+        }, {
+          value: '2',
+          label: 'two'
+        }, {
+          value: '3',
+          label: 'three'
+        }, {
+          value: '4',
+          label: 'four'
+        }, {
+          value: '5',
+          label: 'five'
+        }, {
+          value: '6',
+          label: 'six'
+        }, {
+          value: '7',
+          label: 'seven'
+        }, {
+          value: '8',
+          label: 'eight'
+        }],
+        maxes: [{
+          value: '1',
+          label: 'one'
+        }, {
+          value: '2',
+          label: 'two'
+        }, {
+          value: '3',
+          label: 'three'
+        }, {
+          value: '4',
+          label: 'four'
+        }, {
+          value: '5',
+          label: 'five'
+        }, {
+          value: '6',
+          label: 'six'
+        }, {
+          value: '7',
+          label: 'seven'
+        }, {
+          value: '8',
+          label: 'eight'
+        }, {
+          value: '0',
+          label: 'unlimited'
+        }]
+      };
+
+
+      scope.defaultMinMax = function () {
+        scope.element.minItems = 1;
+        scope.element.maxItems = 0;
+      };
+
+
+      scope.clearMinMax = function () {
+        delete scope.element.minItems;
+        delete scope.element.maxItems;
+      };
+
+
+      scope.isMultiple = function () {
+        return scope.element.minItems != null;
+      };
+
+      scope.initMultiple = function () {
+        if (scope.isMultiple()) {
+          scope.cardinality.min = scope.element.minItems.toString();
+          scope.cardinality.max = typeof scope.element.maxItems === 'undefined' ? '0' : scope.element.maxItems.toString();
+        }
+      };
+
+      scope.updateMultiple = function () {
+        scope.element.minItems = parseInt(scope.cardinality.min);
+        scope.element.maxItems = parseInt(scope.cardinality.max);
+        if (scope.element.maxItems && scope.element.maxItems < scope.element.minItems) {
+          scope.element.maxItems = 0;
+          scope.cardinality.max = '0';
+        }
+      };
+
+
     }
 
   };
