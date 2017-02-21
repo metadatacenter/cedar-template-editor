@@ -140,51 +140,15 @@ define([
         return DataManipulationService.isDateRange($scope.field);
       };
 
-      // This function initializes the value @type field if it has not been initialized yet
-      $scope.initializeValueType = function (field) {
-        var fieldSchema = $rootScope.schemaOf(field);
-        var properties = fieldSchema.properties;
-        if (properties && !angular.isUndefined(properties['@type'])) {
-          var fieldType = DataManipulationService.generateInstanceType(properties['@type'], fieldSchema._valueConstraints);
-          if (fieldType) {
-            // It is not an array
-            if (field.type == 'object') {
-              // If the @type has not been defined yet, define it
-              if (angular.isUndefined($scope.model['@type'])) {
-                // No need to set the type if it is xsd:string. It is the type by default
-                if (fieldType != "xsd:string") {
-                  $scope.model['@type'] = fieldType;
-                }
-              }
-            }
-            // It is an array
-            else if (field.type == 'array') {
-              for (var i = 0; i < $scope.model.length; i++) {
-                // If there is an item in the array for which the @type has not been defined, define it
-                if (angular.isUndefined($scope.model[i]['@type'])) {
-                  // No need to set the type if it is xsd:string. It is the type by default
-                  if (fieldType != "xsd:string") {
-                    $scope.model[i]['@type'] = fieldType;
-                  }
-                }
-              }
-            }
-          }
-        }
+      // This function initializes the value field to null (either @id or @value) if it has not been initialized yet
+      $scope.initializeValue = function (field) {
+        DataManipulationService.initializeValue(field, $scope.model);
       };
 
-      // set the @type field in the model
-      // $scope.setValueType = function () {
-      //   var properties = $rootScope.propertiesOf($scope.field);
-      //   var typeEnum = properties['@type'].oneOf[0].enum;
-      //   if (angular.isDefined(typeEnum) && angular.isArray(typeEnum)) {
-      //     if (typeEnum.length == 1) {
-      //       $scope.model['@type'] = properties['@type'].oneOf[0].enum[0];
-      //     } else {
-      //       $scope.model['@type'] = properties['@type'].oneOf[0].enum;
-      //     }
-      //   }
-      // };
+      // This function initializes the value @type field if it has not been initialized yet
+      $scope.initializeValueType = function(field) {
+        DataManipulationService.initializeValueType(field, $scope.model);
+      };
 
       // add more instances to a multiple cardinality field if possible
       $scope.addMoreInput = function () {

@@ -162,6 +162,83 @@ define([
       }
     }
 
+    // This function initializes the value field to null (either @id or @value) if it has not been initialized yet
+    service.initializeValue = function (field, model) {
+      var fieldValue = "@value";
+      if (service.hasValueConstraint(field)) {
+        fieldValue = "@id";
+      }
+      // It is not an array
+      if (field.type == 'object') {
+        // TODO: value initialization for multiple answer fields
+        //If it is a multiple answer field
+        // if (service.isMultiAnswer()) {
+        //   // If the array is empty, create an item
+        //   if (model.length == 0) {
+        //     model.push({});
+        //   }
+        //   for (var i = 0; i < model.length; i++) {
+        //     // If there is any item in the array for which @id/@value was not defined, define it
+        //     if (angular.isUndefined(model[i][fieldValue]) || (!angular.isUndefined(model[i][fieldValue] && model[i][fieldValue].length == 0))) {
+        //       model[i][fieldValue] = null;
+        //     }
+        //   }
+        // }
+        // else
+        if (angular.isUndefined(model[fieldValue]) || (!angular.isUndefined(model[fieldValue] && model[fieldValue].length == 0))) {
+          model[fieldValue] = null;
+        }
+      }
+      // It is an array
+      // TODO: value initialization for arrays
+      // else if (field.type == 'array') {
+      //   // If the array is empty, create an item
+      //   if (model.length == 0) {
+      //     model.push({});
+      //   }
+      //   for (var i = 0; i < model.length; i++) {
+      //     // If there is any item in the array for which @id/@value was not defined, define it
+      //     if (angular.isUndefined(model[i][fieldValue]) || (!angular.isUndefined(model[i][fieldValue] && model[i][fieldValue].length == 0))) {
+      //       model[i][fieldValue] = null;
+      //     }
+      //   }
+      // }
+    };
+
+    // This function initializes the value @type field if it has not been initialized yet
+    service.initializeValueType = function (field, model) {
+      var fieldSchema = $rootScope.schemaOf(field);
+      var properties = fieldSchema.properties;
+      if (properties && !angular.isUndefined(properties['@type'])) {
+        var fieldType = service.generateInstanceType(properties['@type'],
+            fieldSchema._valueConstraints);
+        if (fieldType) {
+          // It is not an array
+          if (field.type == 'object') {
+            // If the @type has not been defined yet, define it
+            if (angular.isUndefined(model['@type'])) {
+              // No need to set the type if it is xsd:string. It is the type by default
+              if (fieldType != "xsd:string") {
+                model['@type'] = fieldType;
+              }
+            }
+          }
+          // It is an array
+          else if (field.type == 'array') {
+            for (var i = 0; i < model.length; i++) {
+              // If there is an item in the array for which the @type has not been defined, define it
+              if (angular.isUndefined(model[i]['@type'])) {
+                // No need to set the type if it is xsd:string. It is the type by default
+                if (fieldType != "xsd:string") {
+                  model[i]['@type'] = fieldType;
+                }
+              }
+            }
+          }
+        }
+      }
+    };
+
     // resolve min or max as necessary and cardinalize or uncardinalize field
     service.setMinMax = function (field) {
       if (!field.hasOwnProperty('minItems') || typeof field.minItems == 'undefined' || field.minItems < 0) {
