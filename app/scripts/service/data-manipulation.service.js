@@ -162,48 +162,35 @@ define([
       }
     }
 
-    // This function initializes the value field to null (either @id or @value) if it has not been initialized yet
+    // This function initializes the value field to null (either @id or @value) if it has not been initialized yet.
+    // It only applies to non-selection fields (i.e., text, paragraph, date, email, numeric, phone)
     service.initializeValue = function (field, model) {
-      var fieldValue = "@value";
-      if (service.hasValueConstraint(field)) {
-        fieldValue = "@id";
-      }
-      // It is not an array
-      if (field.type == 'object') {
-        // TODO: value initialization for multiple answer fields
-        //If it is a multiple answer field
-        // if (service.isMultiAnswer()) {
-        //   // If the array is empty, create an item
-        //   if (model.length == 0) {
-        //     model.push({});
-        //   }
-        //   for (var i = 0; i < model.length; i++) {
-        //     // If there is any item in the array for which @id/@value was not defined, define it
-        //     if (angular.isUndefined(model[i][fieldValue]) || (!angular.isUndefined(model[i][fieldValue] && model[i][fieldValue].length == 0))) {
-        //       model[i][fieldValue] = null;
-        //     }
-        //   }
-        // }
-        // else
-        if (angular.isUndefined(model[fieldValue]) || (!angular.isUndefined(model[fieldValue] && model[fieldValue].length == 0))) {
-          model[fieldValue] = null;
+      if ($rootScope.isRuntime()) {
+        var fieldValue = "@value";
+        if (service.hasValueConstraint(field)) {
+          fieldValue = "@id";
+        }
+        if (!$rootScope.isArray(model)) {
+          if (!model) {
+            model = {};
+          }
+          if (model.hasOwnProperty(fieldValue)) {
+            // If empty string
+            if ((model[fieldValue] != null) && (model[fieldValue].length == 0)) {
+              model[fieldValue] = null;
+            }
+          }
+          else {
+            model[fieldValue] = null;
+          }
+        }
+        else {
+          for (var i = 0; i < model.length; i++) {
+            service.initializeValue(field, model[i]);
+          }
         }
       }
-      // It is an array
-      // TODO: value initialization for arrays
-      // else if (field.type == 'array') {
-      //   // If the array is empty, create an item
-      //   if (model.length == 0) {
-      //     model.push({});
-      //   }
-      //   for (var i = 0; i < model.length; i++) {
-      //     // If there is any item in the array for which @id/@value was not defined, define it
-      //     if (angular.isUndefined(model[i][fieldValue]) || (!angular.isUndefined(model[i][fieldValue] && model[i][fieldValue].length == 0))) {
-      //       model[i][fieldValue] = null;
-      //     }
-      //   }
-      // }
-    };
+    }
 
     // This function initializes the value @type field if it has not been initialized yet
     service.initializeValueType = function (field, model) {
