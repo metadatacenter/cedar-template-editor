@@ -620,41 +620,31 @@ define([
           }
 
 
-          function goToResource(resource) {
-            var r = resource;
-            if (!r && vm.selectedResource) {
-              r = vm.selectedResource;
-            }
+          function goToResource(value) {
 
-            if (r) {
-
-              //vm.params.search = null;
-              var params = $location.search('');
-
-              if (r.nodeType == 'folder') {
-                goToFolder(r['@id']);
+            var resource = value || vm.selectedResource;
+            if (resource) {
+              if (resource.nodeType == 'folder') {
+                goToFolder(resource['@id']);
               } else {
-                if (r.nodeType == 'template') {
-                  launchInstance(r);
+                if (resource.nodeType == 'template') {
+                  launchInstance(resource);
                 } else {
-                  editResource(r);
+                  editResource(resource);
                 }
               }
             }
           }
 
-          function editResource(resource) {
-            var r = resource;
-            if (!r && vm.selectedResource) {
-              r = vm.selectedResource;
-            }
+          function editResource(value) {
 
-            if (r) {
-              var id = r['@id'];
+            var resource = value || vm.selectedResource;
+            if (resource) {
+              var id = resource['@id'];
               if (typeof vm.pickResourceCallback === 'function') {
-                vm.pickResourceCallback(r);
+                vm.pickResourceCallback(resource);
               }
-              switch (r.nodeType) {
+              switch (resource.nodeType) {
                 case CONST.resourceType.TEMPLATE:
                   $location.path(FrontendUrlService.getTemplateEdit(id));
                   break;
@@ -1127,14 +1117,16 @@ define([
           }
 
           // open the move modal
-          function showCopyModal(resource) {
-            var r = resource;
-            if (!r && vm.selectedResource) {
-              r = vm.selectedResource;
-            }
+          function showCopyModal(value) {
+            //var r = resource;
+            //if (!r && vm.selectedResource) {
+            //  r = vm.selectedResource;
+            //}
+            var resource = value || vm.selectedResource;
+            var folderId = vm.currentFolderId || CedarUser.getHomeFolderId();
             vm.copyModalVisible = true;
             $scope.$broadcast('copyModalVisible',
-                [vm.copyModalVisible, r, vm.currentPath, vm.currentFolderId, vm.resourceTypes,
+                [vm.copyModalVisible, resource, vm.currentPath, folderId, vm.resourceTypes,
                  vm.sortOptionField]);
           }
 
