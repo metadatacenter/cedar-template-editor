@@ -30,9 +30,7 @@ define([
     // Function that generates a basic field definition
     service.generateField = function (fieldType) {
       var valueType = ["string", "null"];
-      if (fieldType == "numeric") {
-        valueType = ["number", "null"];
-      } else if ((fieldType == "checkbox") || (fieldType == "list") || (fieldType == "radio")) {
+      if ((fieldType == "checkbox") || (fieldType == "list") || (fieldType == "radio")) {
         valueType = ["array", "null"];
       }
 
@@ -44,7 +42,26 @@ define([
         field.properties['@value'].type = valueType;
       }
       field._ui.inputType = fieldType;
-      //field.properties['@value'].type = valueType;
+
+      // Constrain the @type of @value according to the field type
+      var valueAtType = null;
+      if (fieldType == 'date' || fieldType == 'numeric') {
+        valueAtType = { };
+        valueAtType.type = 'string';
+        if (fieldType == 'date') {
+          valueAtType.enum = ['xsd:dateTime'];
+          // Make @type required
+          field.required.push('@type');
+        }
+        else if (fieldType == 'numeric') {
+          valueAtType.enum = ['xsd:decimal'];
+          // Make @type required
+          field.required.push('@type');
+        }
+        delete field.properties['@type'];
+        field.properties['@type'] = valueAtType;
+      }
+
       return field;
     };
 
@@ -76,23 +93,145 @@ define([
       return context;
     };
 
-    // Function that generates the @type for an instance, based on the schema @type definition
-    service.generateInstanceType = function (schemaType) {
+    // Function that generates the @type for a field in an instance, based on the schema @type definition
+    service.generateInstanceType = function (schemaType, valueConstraints) {
+      var enumeration = {};
+      var format = null;
+      var instanceType = null;
+      if (angular.isUndefined(schemaType.oneOf)) {
+        enumeration = schemaType.enum;
+        format = schemaType.format;
+      }
+      else {
+        enumeration = schemaType.oneOf[0].enum;
+        format = schemaType.oneOf[0].format;
+      }
       // If there is no type defined at the schema level
-      if (angular.isUndefined(schemaType.oneOf[0].enum)) {
-        return null;
+      if (angular.isUndefined(enumeration)) {
+        if (format == 'uri') {
+          // If the value has been constrained to ontology terms, @type must be set to @id
+          if ($rootScope.hasValueConstraint(valueConstraints)) {
+            instanceType = '@id';
+          }
+        }
       } else {
-        if (schemaType.oneOf[0].enum.length === 0) {
-          return null;
-          // If only one type has been defined, a string is returned
-        } else if (schemaType.oneOf[0].enum.length == 1) {
-          return schemaType.oneOf[0].enum[0];
+          // If only one type has been defined, it is returned
+        if (enumeration.length == 1) {
+          instanceType = enumeration[0];
           // If more than one types have been defined for the template/element/field, an array is returned
         } else {
-          return schemaType.oneOf[0].enum;
+          instanceType =  enumeration;
+        }
+      }
+      return instanceType;
+    };
+
+    // If necessary, updates the field schema according to whether the field is controlled or not
+    service.initializeSchema = function(field) {
+      var fieldSchema = $rootScope.schemaOf(field);
+      // If regular field
+      if(!service.hasValueConstraint(field)) {
+        if (fieldSchema.required[0] != "@value") {
+          fieldSchema.required = [];
+          fieldSchema.required.push("@value")
+        }
+        if (angular.isUndefined(fieldSchema.properties["@value"])) {
+          var valueField = {};
+          valueField.type = [];
+          valueField.type.push("string");
+          valueField.type.push("null");
+          fieldSchema.properties["@value"] = valueField;
+          delete fieldSchema.properties["@id"];
+        }
+      }
+      // If controlled field
+      else {
+        if (fieldSchema.required[0] != "@id") {
+          fieldSchema.required = [];
+          fieldSchema.required.push("@id")
+        }
+        if (angular.isUndefined(fieldSchema.properties["@id"])) {
+          var idField = {};
+          idField.type = [];
+          idField.type.push("string");
+          idField.type.push("null");
+          idField.format = "uri";
+          fieldSchema.properties["@id"] = idField;
+          delete fieldSchema.properties["@value"];
+        }
+      }
+    }
+
+    // This function initializes the value field to null (either @id or @value) if it has not been initialized yet.
+    // It only applies to non-selection fields (i.e., text, paragraph, date, email, numeric, phone)
+    service.initializeValue = function (field, model) {
+      if ($rootScope.isRuntime()) {
+        var fieldValue = service.getFieldValue(field);
+        if (!$rootScope.isArray(model)) {
+          if (!model) {
+            model = {};
+          }
+          if (model.hasOwnProperty(fieldValue)) {
+            // If empty string
+            if ((model[fieldValue] != null) && (model[fieldValue].length == 0)) {
+              model[fieldValue] = null;
+            }
+          }
+          else {
+            model[fieldValue] = null;
+          }
+        }
+        else {
+          for (var i = 0; i < model.length; i++) {
+            service.initializeValue(field, model[i]);
+          }
+        }
+      }
+    }
+
+    // This function initializes the value @type field if it has not been initialized yet
+    service.initializeValueType = function (field, model) {
+      var fieldSchema = $rootScope.schemaOf(field);
+      var properties = fieldSchema.properties;
+      if (properties && !angular.isUndefined(properties['@type'])) {
+        var fieldType = service.generateInstanceType(properties['@type'],
+            fieldSchema._valueConstraints);
+        if (fieldType) {
+          // It is not an array
+          if (field.type == 'object') {
+            // If the @type has not been defined yet, define it
+            if (angular.isUndefined(model['@type'])) {
+              // No need to set the type if it is xsd:string. It is the type by default
+              if (fieldType != "xsd:string") {
+                model['@type'] = fieldType;
+              }
+            }
+          }
+          // It is an array
+          else if (field.type == 'array') {
+            for (var i = 0; i < model.length; i++) {
+              // If there is an item in the array for which the @type has not been defined, define it
+              if (angular.isUndefined(model[i]['@type'])) {
+                // No need to set the type if it is xsd:string. It is the type by default
+                if (fieldType != "xsd:string") {
+                  model[i]['@type'] = fieldType;
+                }
+              }
+            }
+          }
         }
       }
     };
+
+    // Returns the appropriate field to store the value (i.e., @id or @value,
+    // depending on whether the field has been constrained to ontology terms or not
+    service.getFieldValue = function(field) {
+      var fieldValue = "@value";
+      if (service.hasValueConstraint(field)) {
+        fieldValue = "@id";
+      }
+      return fieldValue;
+    }
 
     // resolve min or max as necessary and cardinalize or uncardinalize field
     service.setMinMax = function (field) {
@@ -824,8 +963,6 @@ define([
      * @param itemDataId
      */
     service.deleteFieldControlledTerm = function (itemDataId, node) {
-
-
       var properties = service.getFieldProperties(node);
       var idx = properties["@type"].oneOf[0].enum.indexOf(itemDataId);
 
@@ -844,6 +981,7 @@ define([
           delete properties["@type"].oneOf[1].items.enum;
         }
       }
+      service.initializeSchema(node);
     };
 
     /**
@@ -859,6 +997,7 @@ define([
           break;
         }
       }
+      service.initializeSchema(node);
     };
 
     /**
@@ -874,6 +1013,7 @@ define([
           break;
         }
       }
+      service.initializeSchema(node);
     };
 
 
@@ -890,6 +1030,7 @@ define([
           break;
         }
       }
+      service.initializeSchema(node);
     };
 
     /**
@@ -905,6 +1046,7 @@ define([
           break;
         }
       }
+      service.initializeSchema(node);
     };
 
     // deselect any current selected items, then select this one

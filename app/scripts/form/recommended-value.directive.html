@@ -2,13 +2,12 @@
 
 <div ng-init="initializeValueRecommendationField();console.log('ng-init');"
     class="has-constraint "
-    ng-class="{'has-selected': modelValueRecommendation['@value'].value}">
+    ng-class="{'has-selected': modelValueRecommendation.valueInfo.value}">
   <ui-select
-      ng-model="modelValueRecommendation['@value']"
-      ng-change="updateModelWhenChangeSelection(modelValueRecommendation); $root.vrs.updatePopulatedFields(field, modelValueRecommendation['@value'].value)  ;console.log('onChange')"
+      ng-model="modelValueRecommendation.valueInfo"
+      ng-change="updateModelWhenChangeSelection(modelValueRecommendation); $root.vrs.updatePopulatedFields(field, modelValueRecommendation.valueInfo.value)"
       ng-click="$root.vrs.updateValueRecommendationResults(field); setIsFirstRefresh(false); clearSearch($select)"
       close-on-select="true"
-
       reset-search-input="false"
       aria-label="getDescription(field)">
     <ui-select-match   allow-clear="true"  class="selection-field" placeholder="">{{$select.selected.value}}
@@ -24,9 +23,8 @@
             <span ng-if="option.valueUri != undefined"
                 class='controlledTerm fa fa-share-alt-square fa-rotate-90'></span>&nbsp;
         <span ng-bind-html="option.value | highlight: $select.search"></span>&nbsp;
-        <span ng-if="option.valueUri != undefined">({{$root.cts.getAcronymFromTermUri(option.valueUri)}})</span>&nbsp;
-        <small ng-if="option.score != undefined">(<span>{{calculateUIScore(option.score)}}</span>)</small>
-        &nbsp;
+        <!--<span ng-if="option.valueUri != undefined">({{$root.cts.getAcronymFromTermUri(option.valueUri)}})</span>&nbsp;-->
+        <small ng-if="option.score != undefined">(<span>{{calculateUIScore(option.score)}}</span>)</small>&nbsp;
         <!--<small ng-if="option.type!=undefined"><span>{{getRecommendationType(option.type)}}</span></small>-->
       </div>
     </ui-select-choices>

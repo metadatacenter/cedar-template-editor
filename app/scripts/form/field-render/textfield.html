@@ -1,13 +1,11 @@
-<div class="fields text-fields" ng-class="{preview: preview}" >
+<div class="fields text-fields" ng-class="{preview: preview}">
 
   <!-- header row -->
-
-
-
   <div ng-init="fieldTitle='Text';fieldIconClass='cedar-svg-text'"
       ng-include="'scripts/form/partials/field-header.partial.html'"></div>
 
-  <div  ng-if="$root.isArray(model) && model.length==0 " class="form-group floating-label-wrapper has-feedback" ng-class="{'required': $root.schemaOf(field)._valueConstraints.requiredValue}">
+  <div ng-if="$root.isArray(model) && model.length==0 " class="form-group floating-label-wrapper has-feedback"
+      ng-class="{'required': $root.schemaOf(field)._valueConstraints.requiredValue}">
 
     <input type="text"
         class="form-control has-success has-feedback"
@@ -22,10 +20,9 @@
 
   <!-- List of text fields -->
 
-  <div ng-init="setDefaultValueIfEmpty(model)" ng-if="$root.isArray(model)" class="form-group floating-label-wrapper has-feedback"
+  <div ng-init="setDefaultValueIfEmpty(model)" ng-if="$root.isArray(model)"
+      class="form-group floating-label-wrapper has-feedback"
       ng-repeat="(index, valueElement) in model">
-
-
 
     <!--Regular field-->
     <div ng-if="!$root.hasValueConstraint($root.schemaOf(field)._valueConstraints)" class="has-no-constraint">
@@ -38,13 +35,16 @@
           ng-model="valueElement['@value']"
           ng-disabled="!$root.isRuntime() || preview"
           with-floating-label=""/>
-      <span class="input-indicator-icons form-control-feedback" ng-include="'scripts/form/partials/indicator-icons.partial.html'"></span>
+      <span class="input-indicator-icons form-control-feedback"
+          ng-include="'scripts/form/partials/indicator-icons.partial.html'"></span>
       <span class="floating-label">{{$root.schemaOf(field)._ui.title}}</span>
     </div>
 
     <!--Field whose values have been constrained using controlled terms -->
-    <div ng-init="initializeControlledField()" ng-if="$root.hasValueConstraint($root.schemaOf(field)._valueConstraints) && !$root.vrs.getIsValueRecommendationEnabled($root.schemaOf(field))"
-        class="has-constraint autocomplete-label-wrapper" ng-class="{'has-selected': modelValue[index]['@value'].label}">
+    <div ng-init="initializeControlledField()"
+        ng-if="$root.hasValueConstraint($root.schemaOf(field)._valueConstraints) && !$root.vrs.getIsValueRecommendationEnabled($root.schemaOf(field))"
+        class="has-constraint autocomplete-label-wrapper"
+        ng-class="{'has-selected': modelValue[index]['@value'].label}">
 
       <ui-select
           ng-change="updateModelFromUIControlledField()"
@@ -66,17 +66,13 @@
       <div class="input-indicator-icons" ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
     </div>
 
-
-
-
-
     <!-- Field with value recommendation functionality -->
-    <div  ng-init="initializeValueRecommendationField()"
+    <div ng-init="initializeValueRecommendationField()"
         ng-if="$root.vrs.getIsValueRecommendationEnabled($root.schemaOf(field))"
         class="has-constraint autocomplete-label-wrapper"
         ng-class="{'has-selected': modelValueRecommendation['@value'].value}">
 
-     model= {{model}}  modelValueRecommendation= {{modelValueRecommendation}}
+      model= {{model}} modelValueRecommendation= {{modelValueRecommendation}}
 
       <ui-select
           ng-model="modelValueRecommendation['@value']"
@@ -87,7 +83,8 @@
           reset-search-input="false"
           aria-label="{{$root.schemaOf(field)._ui.description}}">
         <ui-select-match class="selection-field" placeholder="">{{$select.selected.value}}
-          <i ng-if="$select.selected.value" class="fa fa-times" aria-hidden="true" ng-click="clearSelection($event, $select); $root.vrs.updatePopulatedFields(field, null)"></i>
+          <i ng-if="$select.selected.value" class="fa fa-times" aria-hidden="true"
+              ng-click="clearSelection($event, $select); $root.vrs.updatePopulatedFields(field, null)"></i>
         </ui-select-match>
         <ui-select-choices
             ui-disable-choice="option.value == $root.vrs.getNoResultsMsg()"
@@ -98,7 +95,8 @@
             <!--<span ng-if="((option.score != undefined) && (option.score >= 0.9))" class='recommendedValue fa fa-star'></span>-->
             <!--<span ng-if="option.score != undefined && ((option.score >= 0.5) && (option.score < 0.9))" class='recommendedValue fa fa-star-half-o'></span>-->
             <!--<span ng-if="option.score != undefined && (option.score < 0.5)" class='recommendedValue fa fa-star-o'></span>-->
-            <span ng-if="option.valueUri != undefined" class='controlledTerm fa fa-share-alt-square fa-rotate-90'></span>&nbsp;
+            <span ng-if="option.valueUri != undefined"
+                class='controlledTerm fa fa-share-alt-square fa-rotate-90'></span>&nbsp;
             <span ng-bind-html="option.value | highlight: $select.search"></span>&nbsp;
             <span ng-if="option.valueUri != undefined">({{$root.cts.getAcronymFromTermUri(option.valueUri)}})</span>&nbsp;
             <!--<span ng-if="option.score != undefined" class="recommendedValue fa fa-star"></span>-->
@@ -106,26 +104,26 @@
             <!--<span ng-if="option.score != undefined" ng-class="{'recommendedValue fa fa-star': option.score >= 0.4, 'recommendedValue fa fa-star-o': option.score < 0.4}"></span>-->
             <!--<span ng-if="option.score != undefined" ng-class="{'recommendedValue fa fa-star': option.score >= 0.6, 'recommendedValue fa fa-star-o': option.score < 0.6}"></span>-->
             <!--<span ng-if="option.score != undefined" ng-class="{'recommendedValue fa fa-star': option.score >= 0.8, 'recommendedValue fa fa-star-o': option.score < 0.8}"></span>-->
-            <small ng-if="option.score != undefined">(<span>{{calculateUIScore(option.score)}}</span>)</small>&nbsp;
+            <small ng-if="option.score != undefined">(<span>{{calculateUIScore(option.score)}}</span>)</small>
+            &nbsp;
             <!--<small ng-if="option.type!=undefined"><span>{{getRecommendationType(option.type)}}</span></small>-->
           </div>
         </ui-select-choices>
       </ui-select>
-      <div class="floating-label">{{$root.schemaOf(field)._ui.title}}</div>&nbsp;
+      <div class="floating-label">{{$root.schemaOf(field)._ui.title}}</div>
+      &nbsp;
       <div class="input-indicator-icons" ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
     </div>
     <!-- end of Field with value recommendation functionality -->
 
-
-    <div ng-if="$root.isRuntime()" class="more-input-wrapper " ng-include="'scripts/form/partials/more-input-buttons.partial.html'"
+    <div ng-if="$root.isRuntime()" class="more-input-wrapper "
+        ng-include="'scripts/form/partials/more-input-buttons.partial.html'"
         ng-show="!$root.schemaOf(field).maxItems || $root.schemaOf(field).maxItems > 1 || ($root.schemaOf(field).maxItems ==1 && $root.schemaOf(field).minItems ==0)"></div>
   </div>
 
-
   <!-- got a list -->
-  <div ng-if="!$root.isRuntime() && $root.isArray(model) && model.length > 0" class="form-group floating-label-wrapper has-feedback">
-
-
+  <div ng-if="!$root.isRuntime() && $root.isArray(model) && model.length > 0"
+      class="form-group floating-label-wrapper has-feedback">
 
     <div class="extra-label-content" ng-if="preview">
       {{$root.schemaOf(field)._ui.title}}
@@ -145,7 +143,8 @@
     </div>
 
     <!-- Field whose values have been constrained using controlled terms -->
-    <div ng-if="$root.hasValueConstraint($root.schemaOf(field)._valueConstraints) && !$root.vrs.getIsValueRecommendationEnabled($root.schemaOf(field))"
+    <div
+        ng-if="$root.hasValueConstraint($root.schemaOf(field)._valueConstraints) && !$root.vrs.getIsValueRecommendationEnabled($root.schemaOf(field))"
         class="has-constraint autocomplete-label-wrapper" ng-class="{'has-selected': modelValue['@value'].label}">
       <ui-select ng-model="modelValue['@value']" theme="bootstrap" close-on-select="true" ng-disabled="true"
           aria-label="{{$root.schemaOf(field)._ui.description}}">
@@ -160,16 +159,13 @@
       <div class="input-indicator-icons" ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
     </div>
 
-
-
-
     <!-- Field with value recommendation functionality -->
-    <div  ng-init="initializeValueRecommendationField()"
+    <div ng-init="initializeValueRecommendationField()"
         ng-if="$root.vrs.getIsValueRecommendationEnabled($root.schemaOf(field))"
         class="has-constraint autocomplete-label-wrapper"
         ng-class="{'has-selected': modelValueRecommendation['@value'].value}">
 
-      model= {{model}}  modelValueRecommendation= {{modelValueRecommendation}}
+      model= {{model}} modelValueRecommendation= {{modelValueRecommendation}}
 
       <ui-select
           ng-model="modelValueRecommendation['@value']"
@@ -180,7 +176,8 @@
           reset-search-input="false"
           aria-label="{{$root.schemaOf(field)._ui.description}}">
         <ui-select-match class="selection-field" placeholder="">{{$select.selected.value}}
-          <i ng-if="$select.selected.value" class="fa fa-times" aria-hidden="true" ng-click="clearSelection($event, $select); $root.vrs.updatePopulatedFields(field, null)"></i>
+          <i ng-if="$select.selected.value" class="fa fa-times" aria-hidden="true"
+              ng-click="clearSelection($event, $select); $root.vrs.updatePopulatedFields(field, null)"></i>
         </ui-select-match>
         <ui-select-choices
             ui-disable-choice="option.value == $root.vrs.getNoResultsMsg()"
@@ -191,7 +188,8 @@
             <!--<span ng-if="((option.score != undefined) && (option.score >= 0.9))" class='recommendedValue fa fa-star'></span>-->
             <!--<span ng-if="option.score != undefined && ((option.score >= 0.5) && (option.score < 0.9))" class='recommendedValue fa fa-star-half-o'></span>-->
             <!--<span ng-if="option.score != undefined && (option.score < 0.5)" class='recommendedValue fa fa-star-o'></span>-->
-            <span ng-if="option.valueUri != undefined" class='controlledTerm fa fa-share-alt-square fa-rotate-90'></span>&nbsp;
+            <span ng-if="option.valueUri != undefined"
+                class='controlledTerm fa fa-share-alt-square fa-rotate-90'></span>&nbsp;
             <span ng-bind-html="option.value | highlight: $select.search"></span>&nbsp;
             <span ng-if="option.valueUri != undefined">({{$root.cts.getAcronymFromTermUri(option.valueUri)}})</span>&nbsp;
             <!--<span ng-if="option.score != undefined" class="recommendedValue fa fa-star"></span>-->
@@ -199,26 +197,26 @@
             <!--<span ng-if="option.score != undefined" ng-class="{'recommendedValue fa fa-star': option.score >= 0.4, 'recommendedValue fa fa-star-o': option.score < 0.4}"></span>-->
             <!--<span ng-if="option.score != undefined" ng-class="{'recommendedValue fa fa-star': option.score >= 0.6, 'recommendedValue fa fa-star-o': option.score < 0.6}"></span>-->
             <!--<span ng-if="option.score != undefined" ng-class="{'recommendedValue fa fa-star': option.score >= 0.8, 'recommendedValue fa fa-star-o': option.score < 0.8}"></span>-->
-            <small ng-if="option.score != undefined">(<span>{{calculateUIScore(option.score)}}</span>)</small>&nbsp;
+            <small ng-if="option.score != undefined">(<span>{{calculateUIScore(option.score)}}</span>)</small>
+            &nbsp;
             <!--<small ng-if="option.type!=undefined"><span>{{getRecommendationType(option.type)}}</span></small>-->
           </div>
         </ui-select-choices>
       </ui-select>
-      <div class="floating-label">{{$root.schemaOf(field)._ui.title}}</div>&nbsp;
+      <div class="floating-label">{{$root.schemaOf(field)._ui.title}}</div>
+      &nbsp;
       <div class="input-indicator-icons" ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
     </div>
     <!-- end of Field with value recommendation functionality -->
 
-
-    <div ng-if="$root.isRuntime()" class="more-input-wrapper" ng-include="'scripts/form/partials/more-input-buttons.partial.html'"
+    <div ng-if="$root.isRuntime()" class="more-input-wrapper"
+        ng-include="'scripts/form/partials/more-input-buttons.partial.html'"
         ng-show="!field.maxItems || field.maxItems > 1 || (field.maxItems ==1 && field.minItems ==0)"></div>
   </div>
 
   <!-- not a list, just show the object -->
-  <div ng-valid="false" ng-init="setDefaultValueIfEmpty(model)" ng-if="!$root.isArray(model)" class="form-group floating-label-wrapper has-feedback">
-
-
-
+  <div ng-valid="false" ng-init="setDefaultValueIfEmpty(model)" ng-if="!$root.isArray(model)"
+      class="form-group floating-label-wrapper has-feedback">
     <div
         ng-if="!$root.hasValueConstraint($root.schemaOf(field)._valueConstraints) && !$root.vrs.getIsValueRecommendationEnabled($root.schemaOf(field))"
         class="has-no-constraint">
@@ -236,11 +234,13 @@
     </div>
 
     <!-- Field whose values have been constrained using controlled terms -->
-    <div  ng-init="initializeControlledField()" ng-if="$root.hasValueConstraint($root.schemaOf(field)._valueConstraints) && !$root.vrs.getIsValueRecommendationEnabled($root.schemaOf(field))"
-        class="has-constraint autocomplete-label-wrapper " ng-class="{'has-selected': modelValue.hasOwnProperty('@value')}">
+    <div ng-init="initializeControlledField()"
+        ng-if="$root.hasValueConstraint($root.schemaOf(field)._valueConstraints) && !$root.vrs.getIsValueRecommendationEnabled($root.schemaOf(field))"
+        class="has-constraint autocomplete-label-wrapper "
+        ng-class="{'has-selected': modelValue.hasOwnProperty('@value')}">
       <ui-select
           ng-change="updateModelFromUIControlledField()"
-          ng-model="modelValue['@value']"  close-on-select="true"
+          ng-model="modelValue['@value']" close-on-select="true"
           ng-disabled="!$root.isRuntime() || preview"
           aria-label="{{$root.schemaOf(field)._ui.description}}">
         <ui-select-match placeholder="">{{$select.selected.label}}</ui-select-match>
@@ -253,15 +253,12 @@
       <div class="floating-label">{{$root.schemaOf(field)._ui.title}}</div>
       <div class="input-indicator-icons" ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
     </div>
-
-
-
+    
     <!-- Field with value recommendation functionality -->
-    <div  ng-init="initializeValueRecommendationField()"
+    <div ng-init="initializeValueRecommendationField()"
         ng-if="$root.vrs.getIsValueRecommendationEnabled($root.schemaOf(field))"
         class="has-constraint autocomplete-label-wrapper"
         ng-class="{'has-selected': modelValueRecommendation['@value'].value}">
-
 
 
       <ui-select
@@ -273,7 +270,8 @@
           reset-search-input="false"
           aria-label="{{$root.schemaOf(field)._ui.description}}">
         <ui-select-match class="selection-field" placeholder="">{{$select.selected.value}}
-          <i ng-if="$select.selected.value" class="fa fa-times" aria-hidden="true" ng-click="clearSelection($event, $select); $root.vrs.updatePopulatedFields(field, null)"></i>
+          <i ng-if="$select.selected.value" class="fa fa-times" aria-hidden="true"
+              ng-click="clearSelection($event, $select); $root.vrs.updatePopulatedFields(field, null)"></i>
         </ui-select-match>
         <ui-select-choices
             ui-disable-choice="option.value == $root.vrs.getNoResultsMsg()"
@@ -284,7 +282,8 @@
             <!--<span ng-if="((option.score != undefined) && (option.score >= 0.9))" class='recommendedValue fa fa-star'></span>-->
             <!--<span ng-if="option.score != undefined && ((option.score >= 0.5) && (option.score < 0.9))" class='recommendedValue fa fa-star-half-o'></span>-->
             <!--<span ng-if="option.score != undefined && (option.score < 0.5)" class='recommendedValue fa fa-star-o'></span>-->
-            <span ng-if="option.valueUri != undefined" class='controlledTerm fa fa-share-alt-square fa-rotate-90'></span>&nbsp;
+            <span ng-if="option.valueUri != undefined"
+                class='controlledTerm fa fa-share-alt-square fa-rotate-90'></span>&nbsp;
             <span ng-bind-html="option.value | highlight: $select.search"></span>&nbsp;
             <span ng-if="option.valueUri != undefined">({{$root.cts.getAcronymFromTermUri(option.valueUri)}})</span>&nbsp;
             <!--<span ng-if="option.score != undefined" class="recommendedValue fa fa-star"></span>-->
@@ -292,12 +291,14 @@
             <!--<span ng-if="option.score != undefined" ng-class="{'recommendedValue fa fa-star': option.score >= 0.4, 'recommendedValue fa fa-star-o': option.score < 0.4}"></span>-->
             <!--<span ng-if="option.score != undefined" ng-class="{'recommendedValue fa fa-star': option.score >= 0.6, 'recommendedValue fa fa-star-o': option.score < 0.6}"></span>-->
             <!--<span ng-if="option.score != undefined" ng-class="{'recommendedValue fa fa-star': option.score >= 0.8, 'recommendedValue fa fa-star-o': option.score < 0.8}"></span>-->
-            <small ng-if="option.score != undefined">(<span>{{calculateUIScore(option.score)}}</span>)</small>&nbsp;
+            <small ng-if="option.score != undefined">(<span>{{calculateUIScore(option.score)}}</span>)</small>
+            &nbsp;
             <!--<small ng-if="option.type!=undefined"><span>{{getRecommendationType(option.type)}}</span></small>-->
           </div>
         </ui-select-choices>
       </ui-select>
-      <div class="floating-label">{{$root.schemaOf(field)._ui.title}}</div>&nbsp;
+      <div class="floating-label">{{$root.schemaOf(field)._ui.title}}</div>
+      &nbsp;
       <div class="input-indicator-icons" ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
     </div>
     <!-- end of Field with value recommendation functionality -->
