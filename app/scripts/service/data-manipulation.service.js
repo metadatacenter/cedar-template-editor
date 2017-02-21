@@ -166,10 +166,7 @@ define([
     // It only applies to non-selection fields (i.e., text, paragraph, date, email, numeric, phone)
     service.initializeValue = function (field, model) {
       if ($rootScope.isRuntime()) {
-        var fieldValue = "@value";
-        if (service.hasValueConstraint(field)) {
-          fieldValue = "@id";
-        }
+        var fieldValue = service.getFieldValue(field);
         if (!$rootScope.isArray(model)) {
           if (!model) {
             model = {};
@@ -225,6 +222,16 @@ define([
         }
       }
     };
+
+    // Returns the appropriate field to store the value (i.e., @id or @value,
+    // depending on whether the field has been constrained to ontology terms or not
+    service.getFieldValue = function(field) {
+      var fieldValue = "@value";
+      if (service.hasValueConstraint(field)) {
+        fieldValue = "@id";
+      }
+      return fieldValue;
+    }
 
     // resolve min or max as necessary and cardinalize or uncardinalize field
     service.setMinMax = function (field) {

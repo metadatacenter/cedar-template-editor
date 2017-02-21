@@ -208,11 +208,13 @@ define([
           continue;
         }
         found = false;
-        for (i = 0; i < response.collection.length; i++) {
-          if (response.collection[i]['@id'] == $rootScope.autocompleteResultsCache[field_id].results[j]['@id']) {
-            // this option still in the result set -- mark it
-            response.collection[i].found = true;
-            found = true;
+        if (angular.isDefined(response.collection)) {
+          for (i = 0; i < response.collection.length; i++) {
+            if (response.collection[i]['@id'] == $rootScope.autocompleteResultsCache[field_id].results[j]['@id']) {
+              // this option still in the result set -- mark it
+              response.collection[i].found = true;
+              found = true;
+            }
           }
         }
         if (!found) {
@@ -220,16 +222,18 @@ define([
           $rootScope.autocompleteResultsCache[field_id].results.splice(j, 1);
         }
       }
-      for (i = 0; i < response.collection.length; i++) {
-        if (!response.collection[i].found) {
-          $rootScope.autocompleteResultsCache[field_id].results.push(
-              {
-                '@id'      : response.collection[i]['@id'],
-                'label'    : response.collection[i].prefLabel,
-                'type'     : field_type,
-                'sourceUri': source_uri
-              }
-          );
+      if (angular.isDefined(response.collection)) {
+        for (i = 0; i < response.collection.length; i++) {
+          if (!response.collection[i].found) {
+            $rootScope.autocompleteResultsCache[field_id].results.push(
+                {
+                  '@id'      : response.collection[i]['@id'],
+                  'label'    : response.collection[i].prefLabel,
+                  'type'     : field_type,
+                  'sourceUri': source_uri
+                }
+            );
+          }
         }
       }
       if ($rootScope.autocompleteResultsCache[field_id].results.length === 0) {
