@@ -112,18 +112,21 @@ define(['angular'], function (angular) {
       var targetFieldPath = field._path;
       service.getRecommendation(targetFieldPath, service.getRelevantPopulatedFields(fieldId)).then(
           function (recommendation) {
+            console.log('Recommendation: ');
+            console.log(recommendation);
             var controlledTerms = $rootScope.autocompleteResultsCache[fieldId]['results'];
 
-            if (recommendation.recommendedValues && recommendation.recommendedValues.length == 0 && controlledTerms.length == 0) {
-              recommendation.recommendedValues.push({
-                'value': $translate.instant('VALUERECOMMENDER.noResults'),
-                'score': undefined
-              })
-            }
-
-            var recommendedLabels = [];
-            for (var i = 0; i < recommendation.recommendedValues.length; i++) {
-              recommendedLabels.push(recommendation.recommendedValues[i].value.toLowerCase());
+            if (recommendation.recommendedValues) {
+              if (recommendation.recommendedValues.length == 0 && controlledTerms.length == 0) {
+                recommendation.recommendedValues.push({
+                  'value': $translate.instant('VALUERECOMMENDER.noResults'),
+                  'score': undefined
+                })
+              }
+              var recommendedLabels = [];
+              for (var i = 0; i < recommendation.recommendedValues.length; i++) {
+                recommendedLabels.push(recommendation.recommendedValues[i].value.toLowerCase());
+              }
             }
 
             // Add the list of controlled terms to the recommendation results (if any)
