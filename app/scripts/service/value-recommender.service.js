@@ -102,10 +102,19 @@ define(['angular'], function (angular) {
     };
 
     service.updateValueRecommendationResults = function (field) {
-      var fieldId = field['@id'];
+      var fieldId;
+      if (field.type == 'array') {
+        fieldId = field.items['@id'];
+      }
+      else {
+        fieldId = field['@id'];
+      }
       var targetFieldPath = field._path;
-      service.getRecommendation(targetFieldPath, service.getRelevantPopulatedFields(fieldId)).then(function (recommendation) {
-            if (recommendation.recommendedValues && recommendation.recommendedValues.length == 0) {
+      service.getRecommendation(targetFieldPath, service.getRelevantPopulatedFields(fieldId)).then(
+          function (recommendation) {
+            var controlledTerms = $rootScope.autocompleteResultsCache[fieldId]['results'];
+
+            if (recommendation.recommendedValues && recommendation.recommendedValues.length == 0 && controlledTerms.length == 0) {
               recommendation.recommendedValues.push({
                 'value': $translate.instant('VALUERECOMMENDER.noResults'),
                 'score': undefined
@@ -118,7 +127,6 @@ define(['angular'], function (angular) {
             }
 
             // Add the list of controlled terms to the recommendation results (if any)
-            var controlledTerms = $rootScope.autocompleteResultsCache[fieldId]['results'];
             for (var i = 0; i < controlledTerms.length; i++) {
               // Check if the ontology term has been already recommended or not
               if ($.inArray(controlledTerms[i].label.toLowerCase(), recommendedLabels) == -1) {

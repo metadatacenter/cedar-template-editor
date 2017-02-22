@@ -68,7 +68,6 @@ define([
           });
         } else {
            if (modelvr.valueInfo) {
-             //var newValue = modelvr['@value'].value;
              $scope.model[fieldValue] = modelvr.valueInfo.valueUri;
              $scope.model['_valueLabel'] = modelvr.valueInfo.value;
            } else {
