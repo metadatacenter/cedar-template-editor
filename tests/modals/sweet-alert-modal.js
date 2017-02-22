@@ -11,6 +11,9 @@ var SweetAlertModal = function () {
   var sweetAlertConfirmAttribute = 'data-has-confirm-button';
   var createSweetAlertCancelButton = element(by.css('.sweet-alert')).element(by.css('.sa-button-container')).element(by.css('.cancel'));
   var createSweetAlertConfirmButton = element(by.css('.sweet-alert')).element(by.css('.sa-button-container')).element(by.css('.confirm'));
+  var message = element.all(by.css('div.sweet-alert > p')).first();
+
+  var insufficientRightsMessagePartial = "You do not have write access";
 
 
   this.createConfirmationDialog = function () {
@@ -54,6 +57,11 @@ var SweetAlertModal = function () {
 
   };
 
+
+  this.hasInsufficientPermissions = function () {
+    browser.wait(EC.visibilityOf(message));
+    expect(message.getText()).toContain(insufficientRightsMessagePartial);
+  };
 
 
 };

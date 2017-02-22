@@ -3,6 +3,7 @@ var WorkspacePage = require('../pages/workspace-new-page.js');
 var ToastyModal = require('../modals/toasty-modal.js');
 var MoveModal = require('../modals/move-modal.js');
 var ShareModal = require('../modals/share-modal.js');
+var SweetAlertModal = require('../modals/sweet-alert-modal.js');
 var testConfig = require('../config/test-env.js');
 var permissions = require('../config/permissions.js');
 
@@ -11,12 +12,14 @@ describe('folder-permissions', function () {
   var toastyModal;
   var moveModal;
   var shareModal;
+  var sweetAlertModal;
 
   beforeEach(function () {
     workspacePage = WorkspacePage;
     toastyModal = ToastyModal;
     moveModal = MoveModal;
     shareModal = ShareModal;
+    sweetAlertModal = SweetAlertModal;
     browser.driver.manage().window().maximize();
   });
 
@@ -36,37 +39,26 @@ describe('folder-permissions', function () {
     toastyModal.isSuccess();
   });
 
-  var sharedFolderTitle;
+
   it("should move a folder owned by current user to an unwritable folder, step 1", function () {
     // create a folder to share with another user
-    sharedFolderTitle = workspacePage.createFolder('Shared');
+    var sharedFolderTitle = workspacePage.createFolder('Shared');
 
     // share folder
     shareModal.shareResource(sharedFolderTitle, 'folder', permissions.testUserName2, false, false);
 
-  });
-
-
-  it("should move a folder owned by current user to an unwritable folder, step 2", function () {
     // logout current user and login as the user with whom the folder was shared
     workspacePage.logout();
     workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
-  });
 
-
-  it("should move a folder owned by current user to an unwritable folder, step 3", function () {
     // create a folder to move to the shared folder
     var folderTitle = workspacePage.createFolder('Source');
 
     // move created folder to shared folder
     workspacePage.moveResource(folderTitle, 'folder');
-
-  });
-
-  
-  it("should move a folder owned by current user to an unwritable folder, step 4", function () {
     moveModal.moveToUserFolder(permissions.testUserName1, sharedFolderTitle);
-    toastyModal.isError();
+    sweetAlertModal.hasInsufficientPermissions();
+    sweetAlertModal.confirm();
   });
 
 
@@ -108,7 +100,8 @@ describe('folder-permissions', function () {
 
     workspacePage.moveResource(sourceFolder, 'folder');
     moveModal.moveToDestination(targetFolder);
-    toastyModal.isError();
+    sweetAlertModal.hasInsufficientPermissions();
+    sweetAlertModal.confirm();
   });
 
 
@@ -131,7 +124,8 @@ describe('folder-permissions', function () {
     // move source to target folder
     workspacePage.moveResource(sourceFolder, 'folder');
     moveModal.moveToDestination(targetFolder);
-    toastyModal.isError();
+    sweetAlertModal.hasInsufficientPermissions();
+    sweetAlertModal.confirm();
   });
 
 

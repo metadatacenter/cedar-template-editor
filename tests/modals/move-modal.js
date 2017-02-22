@@ -24,13 +24,12 @@ var MoveModal = function () {
 
 
   this.moveToDestination = function(title) {
-
     var folder = createMoveToModal.element(by.linkText(title));
-
     browser.wait(EC.elementToBeClickable(folder));
     folder.click();
-    createMoveButton.click();
 
+    browser.wait(EC.elementToBeClickable(createMoveButton));
+    createMoveButton.click();
   };
 
 
@@ -41,22 +40,18 @@ var MoveModal = function () {
 
     // click user folder
     var user = createMoveToModal.element(by.linkText(userName));
-    browser.wait(EC.visibilityOf(user));
     browser.wait(EC.elementToBeClickable(user));
     user.click();
 
     // open user folder
-    browser.wait(EC.visibilityOf(createOpenFolderArrowButton));
     browser.wait(EC.elementToBeClickable(createOpenFolderArrowButton));
     createOpenFolderArrowButton.click();
 
     // select destination folder
     var folder = createMoveToModal.element(by.linkText(title));
-    browser.wait(EC.visibilityOf(folder));
     browser.wait(EC.elementToBeClickable(folder));
     folder.click();
 
-    browser.wait(EC.visibilityOf(createMoveButton));
     browser.wait(EC.elementToBeClickable(createMoveButton));
     createMoveButton.click();
   };

@@ -99,6 +99,7 @@ var WorkspacePage = function () {
   var createRightClickShareMenuItem = createRightClickMenuItemList.element(by.css('li > a[ng-click="dc.showShareModal(resource)"]'));
   var createRightClickRenameMenuItem = createRightClickMenuItemList.element(by.css('li > a[ng-click="dc.showRenameModal(resource)"]'));
   var createRightClickInfoMenuItem = createRightClickMenuItemList.element(by.css('li > a[ng-click="dc.showInfoPanel(resource)"]'));
+  var createRightClickMoveToMenuItem = createRightClickMenuItemList.element(by.css('li > a[ng-click="dc.showMoveModal(resource)"]'));
 
 
 
@@ -226,6 +227,9 @@ var WorkspacePage = function () {
   this.createRightClickInfoMenuItem = function () {
     return createRightClickInfoMenuItem;
   };
+  this.createRightClickMoveToMenuItem = function () {
+    return createRightClickMoveToMenuItem;
+  };
 
 
   // page load
@@ -296,7 +300,6 @@ var WorkspacePage = function () {
     this.createTrashButton().click();
     sweetAlertModal.confirm();
     toastyModal.isSuccess();
-    browser.wait(EC.elementToBeClickable(createLogo));
     this.clickLogo();
   };
 

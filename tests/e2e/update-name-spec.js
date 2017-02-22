@@ -36,8 +36,9 @@ describe('update-name', function () {
     workspacePage.rightClickResource(folder, 'folder');
 
     // change name
+    var newFolderName = workspacePage.createTitle('NewReadable');
     workspacePage.createRightClickRenameMenuItem().click();
-    renameModal.renameTo('New name');
+    renameModal.renameTo(newFolderName);
     toastyModal.isError();
   });
 
@@ -53,8 +54,9 @@ describe('update-name', function () {
     workspacePage.rightClickResource(folder, 'folder');
 
     // change name
+    var newFolderName = workspacePage.createTitle('NewReadable');
     workspacePage.createRightClickRenameMenuItem().click();
-    renameModal.renameTo('New name');
+    renameModal.renameTo(newFolderName);
     toastyModal.isError();
   });
 
@@ -70,8 +72,9 @@ describe('update-name', function () {
     workspacePage.rightClickResource(folder, 'folder');
 
     // change name
+    var newFolderName = workspacePage.createTitle('NewWritable');
     workspacePage.createRightClickRenameMenuItem().click();
-    renameModal.renameTo(workspacePage.createTitle('New name'));
+    renameModal.renameTo(newFolderName);
     toastyModal.isSuccess();
   });
 
@@ -87,8 +90,9 @@ describe('update-name', function () {
     workspacePage.rightClickResource(folder, 'folder');
 
     // change name
+    var newFolderName = workspacePage.createTitle('NewWritable');
     workspacePage.createRightClickRenameMenuItem().click();
-    renameModal.renameTo('New name');
+    renameModal.renameTo(newFolderName);
     toastyModal.isSuccess();
   });
 
