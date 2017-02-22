@@ -7,17 +7,9 @@ define([
       .directive('recommendedValue', recommendedValue);
 
 
-  recommendedValue.$inject = ["$rootScope", "$sce", "$document", "$translate", "$filter", "$location",
-                              "$window", '$timeout',
-                              "SpreadsheetService",
-                              "DataManipulationService", "controlledTermDataService",
-                              "StringUtilsService", 'UISettingsService'];
+  recommendedValue.$inject = ["$rootScope", "DataManipulationService"];
 
-  function recommendedValue($rootScope, $sce, $document, $translate, $filter, $location, $window,
-                            $timeout,
-                            SpreadsheetService,
-                            DataManipulationService,
-                            controlledTermDataService, StringUtilsService, UISettingsService) {
+  function recommendedValue($rootScope, DataManipulationService) {
 
 
     var linker = function ($scope, $element, attrs) {
@@ -39,7 +31,6 @@ define([
         $scope.$emit('formHasRequiredfield._uis');
       }
 
-
       // Used just for text fields whose values have been constrained using controlled terms
       $scope.$watch("model", function () {
 
@@ -58,63 +49,57 @@ define([
       }, true);
 
 
-
       if ($scope.model) {
-        $scope.modelValueRecommendation = {'@value': {'value': $scope.model['@value']}}
+        var fieldValue = DataManipulationService.getFieldValue($scope.field);
+        $scope.modelValueRecommendation = {valueInfo: {'value': $scope.model[fieldValue]}}
       }
 
-
       $scope.updateModelWhenChangeSelection = function (modelvr) {
-
+        var fieldValue = DataManipulationService.getFieldValue($scope.field);
         // This variable will be used at textfield.html
         $scope.modelValueRecommendation = modelvr;
         if ($rootScope.isArray($scope.model)) {
           angular.forEach(modelvr, function (m, i) {
-            if (m && m['@value'] & m['@value'].value) {
-              $scope.model[i]['@value'] = m['@value'].value;
+            if (m && m.valueInfo & m.valueInfo.value) {
+              $scope.model[i][fieldValue] = m.valueInfo.value;
             } else {
-              delete $scope.model[i]['@value'];
+              delete $scope.model[i][fieldValue];
             }
           });
         } else {
-           if (modelvr['@value']) {
-             //var newValue = modelvr['@value'].value;
-             $scope.model['@value'] = modelvr['@value'].valueUri;
-             $scope.model['_valueLabel'] = modelvr['@value'].value;
+           if (modelvr.valueInfo) {
+             $scope.model[fieldValue] = modelvr.valueInfo.valueUri;
+             $scope.model['_valueLabel'] = modelvr.valueInfo.value;
            } else {
-             $scope.model['@value'] = null;
+             $scope.model[fieldValue] = null;
              delete $scope.model['_valueLabel'];
            }
         }
       };
 
-
       $scope.initializeValueRecommendationField = function () {
-
+        var fieldValue = DataManipulationService.getFieldValue($scope.field);
         $scope.isFirstRefresh = true;
 
         $scope.modelValueRecommendation = {};
         if ($scope.model) {
           if ($scope.model['_valueLabel']) {
-            $scope.modelValueRecommendation['@value'] = {
+            $scope.modelValueRecommendation.valueInfo = {
               'value'   : $scope.model._valueLabel,
-              'valueUri': $scope.model['@value'],
+              'valueUri': $scope.model[fieldValue],
             };
           }
           else {
-            $scope.modelValueRecommendation['@value'] = {
-              'value': $scope.model['@value']
+            $scope.modelValueRecommendation.valueInfo = {
+              'value': $scope.model[fieldValue]
             };
           }
         }
-
       };
-
 
       $scope.clearSearch = function (select) {
         select.search = '';
       };
-
 
       $scope.setIsFirstRefresh = function (value) {
         $scope.isFirstRefresh = value;
@@ -122,12 +107,13 @@ define([
       };
 
       $scope.updateModelWhenRefresh = function (select, modelvr) {
+        var fieldValue = DataManipulationService.getFieldValue($scope.field);
         if (!$scope.isFirstRefresh) {
           // Check that there are no controlled terms selected
           if (select.selected.valueUri == null) {
 
             // If the user entered a new value
-            if (select.search != modelvr['@value'].value) {
+            if (select.search != modelvr.valueInfo.value) {
               var modelValue;
               if (select.search == "" || select.search == undefined) {
                 modelValue = null;
@@ -135,23 +121,23 @@ define([
               else {
                 modelValue = select.search;
               }
-              $scope.model['@value'] = modelValue;
+              $scope.model[fieldValue] = modelValue;
               delete $scope.model['_valueLabel'];
-              $scope.modelValueRecommendation['@value'].value = modelValue;
+              $scope.modelValueRecommendation.valueInfo.value = modelValue;
             }
-
           }
         }
       };
 
       $scope.clearSelection = function ($event, select) {
+        var fieldValue = DataManipulationService.getFieldValue($scope.field);
         $event.stopPropagation();
         $scope.modelValueRecommendation = {
-          '@value': {'value': null, 'valueUri': null},
+          valueInfo: {'value': null, 'valueUri': null},
         }
         select.selected = undefined;
         select.search = "";
-        $scope.model['@value'] = null;
+        $scope.model[fieldValue] = null;
         delete $scope.model['_valueLabel'];
       };
 
@@ -165,21 +151,16 @@ define([
         }
       };
 
-
       $scope.initializeValueRecommendationField();
-
-
-
-
     };
 
     return {
       templateUrl: 'scripts/form/recommended-value.directive.html',
       restrict   : 'EA',
       scope      : {
-        field  : '=',
-        'model': '=',
-        index  : '=',
+        field    : '=',
+        model    : '=',
+        index    : '=',
 
       },
       controller : function ($scope, $element) {
@@ -193,15 +174,10 @@ define([
             }
           }, 1000);
         };
-
         addPopover($scope);
-
       },
       replace    : true,
       link       : linker
     };
-
   }
-
-})
-;
+});

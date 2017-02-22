@@ -1,0 +1,67 @@
+<div class="modal-dialog">
+  <div class="modal-content">
+    <div class="modal-header row"  id="copyModalHeader">
+
+      <div class="col-sm-1">
+        <h4 class="modal-title ">
+          <span class="arrow-click"  ng-click="copyto.openParent()" aria-label="Back"
+              tooltip="{{'HELP.backToParent' | translate}}"
+              tooltip-trigger
+              tooltip-animation="false"
+              tooltip-placement="left"
+              data-toggle="tooltip"><i class="fa fa-arrow-left"></i></span>
+        </h4>
+      </div>
+      <div class="col-sm-10">
+        <h4 class="modal-title ">
+          <a  role="button" ng-click="copyto.selectCurrent();">{{copyto.currentTitle()}}</a>
+        </h4>
+      </div>
+
+      <div class="col-sm-1 pull-right">
+        <button class="close" type="button" ng-click="dc.copyModalVisible=false;" aria-label="Close"><span
+            aria-hidden="true">&times;</span></button></div>
+
+    </div>
+    <div class="modal-body">
+
+      <!-- show the folders first -->
+      <div ng-if="dc.isFolder(resource)" class="box-row row"
+          ng-class="{ selected: copyto.isDestinationSelected(resource)}"
+          ng-repeat="(index, resource) in copyto.destinationResources">
+        <div class="col-sm-1 " ng-click="copyto.selectDestination(resource)"><i style="color:#9e9e9e;font-size:20px;padding-right:5px"
+            class="fa" ng-class="copyto.getResourceIconClass(resource)"></i>
+        </div>
+        <a class="col-sm-10" ng-click="copyto.selectDestination(resource)">{{resource.displayName}}
+        </a>
+        <div class="col-sm-1 arrow-click"
+            ng-click="copyto.openDestination(resource)"
+            tooltip="{{'HELP.openFolder' | translate}}"
+            tooltip-trigger
+            tooltip-animation="false"
+            tooltip-placement="left"
+            data-toggle="tooltip"><i class="fa fa-arrow-right"></i></div>
+      </div>
+
+
+      <div ng-if="!copyto.isFolder(resource)" class="box-row row disabled"
+          ng-repeat="(index, resource) in copyto.destinationResources">
+        <div class="col-sm-1" ng-click="copyto.selectDestination(resource)" disabled="disabled"><i style="font-size:20px;padding-right:5px" class="fa"
+            ng-class="copyto.getResourceIconClass(resource)"></i>
+        </div>
+        <div class="col-sm-10" ng-click="copyto.selectDestination(resource)"  disabled="disabled">{{resource.displayName}}
+        </div>
+
+      </div>
+
+    </div>
+    <div class="modal-footer actions">
+      <div class="clear-save">
+        <button ng-disabled="copyto.copyDisabled()" ng-click="copyto.updateResource();dc.copyModalVisible=false;"
+            type="button"
+            class="btn btn-save confirm"> Copy
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

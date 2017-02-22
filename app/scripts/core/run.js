@@ -80,12 +80,12 @@ define([
           parentModel['@context'] = DataManipulationService.generateInstanceContext(value);
         }
         // Add @type information to instance
-        else if (name == '@type') {
-          type = DataManipulationService.generateInstanceType(value);
-          if (type) {
-            parentModel['@type'] = type;
-          }
-        }
+        // else if (name == '@type') {
+        //   type = DataManipulationService.generateInstanceType(value);
+        //   if (type) {
+        //     parentModel['@type'] = type;
+        //   }
+        // }
 
         min = value.minItems || 0;
 
@@ -126,19 +126,19 @@ define([
             var p = $rootScope.propertiesOf(value);
 
             // Add @type information to instance at the field level
-            if (p && !angular.isUndefined(p['@type'])) {
-              type = DataManipulationService.generateInstanceType(p['@type']);
-
-              if (type) {
-                if (angular.isArray(parentModel[name])) {
-                  for (i = 0; i < min; i++) {
-                    parentModel[name][i]["@type"] = type || "";
-                  }
-                } else {
-                  parentModel[name]["@type"] = type || "";
-                }
-              }
-            }
+            // if (p && !angular.isUndefined(p['@type'])) {
+            //   type = DataManipulationService.generateInstanceType(p['@type']);
+            //
+            //   if (type) {
+            //     if (angular.isArray(parentModel[name])) {
+            //       for (i = 0; i < min; i++) {
+            //         parentModel[name][i]["@type"] = type || "";
+            //       }
+            //     } else {
+            //       parentModel[name]["@type"] = type || "";
+            //     }
+            //   }
+            // }
           }
         }
       });
@@ -168,7 +168,6 @@ define([
           vcst.valueSets && vcst.valueSets.length > 0 ||
           vcst.classes && vcst.classes.length > 0 ||
           vcst.branches && vcst.branches.length > 0);
-
       return result;
     };
 
@@ -209,11 +208,13 @@ define([
           continue;
         }
         found = false;
-        for (i = 0; i < response.collection.length; i++) {
-          if (response.collection[i]['@id'] == $rootScope.autocompleteResultsCache[field_id].results[j]['@id']) {
-            // this option still in the result set -- mark it
-            response.collection[i].found = true;
-            found = true;
+        if (angular.isDefined(response.collection)) {
+          for (i = 0; i < response.collection.length; i++) {
+            if (response.collection[i]['@id'] == $rootScope.autocompleteResultsCache[field_id].results[j]['@id']) {
+              // this option still in the result set -- mark it
+              response.collection[i].found = true;
+              found = true;
+            }
           }
         }
         if (!found) {
@@ -221,16 +222,18 @@ define([
           $rootScope.autocompleteResultsCache[field_id].results.splice(j, 1);
         }
       }
-      for (i = 0; i < response.collection.length; i++) {
-        if (!response.collection[i].found) {
-          $rootScope.autocompleteResultsCache[field_id].results.push(
-              {
-                '@id'      : response.collection[i]['@id'],
-                'label'    : response.collection[i].prefLabel,
-                'type'     : field_type,
-                'sourceUri': source_uri
-              }
-          );
+      if (angular.isDefined(response.collection)) {
+        for (i = 0; i < response.collection.length; i++) {
+          if (!response.collection[i].found) {
+            $rootScope.autocompleteResultsCache[field_id].results.push(
+                {
+                  '@id'      : response.collection[i]['@id'],
+                  'label'    : response.collection[i].prefLabel,
+                  'type'     : field_type,
+                  'sourceUri': source_uri
+                }
+            );
+          }
         }
       }
       if ($rootScope.autocompleteResultsCache[field_id].results.length === 0) {

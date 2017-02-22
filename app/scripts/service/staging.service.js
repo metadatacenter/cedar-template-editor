@@ -250,6 +250,8 @@ define([
             // Adding field to the element.properties object
             element.properties[elName] = el;
             element._ui.order.push(elName);
+
+           DataManipulationService.createDomIds(element);
           },
           function (err) {
             UIMessageService.showBackendError('SERVER.ELEMENT.load.error', err);

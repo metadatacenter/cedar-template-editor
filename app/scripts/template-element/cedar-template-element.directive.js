@@ -18,8 +18,9 @@ define([
         element      : '=',
         delete       : '&',
         model        : '=',
-        isRootElement: "=",
-        isEditData   : "="
+        isRootElement: "@",
+        isEditData   : "=",
+        nested       : '@'
       },
       templateUrl: 'scripts/template-element/cedar-template-element.directive.html',
       link       : linker
@@ -27,7 +28,10 @@ define([
 
     return directive;
 
+
+
     function linker(scope, element, attrs) {
+
       scope.elementId = DataManipulationService.idOf(scope.element) || DataManipulationService.generateGUID();
 
       var resetElement = function (el, settings) {
@@ -102,7 +106,7 @@ define([
             }
           }
         });
-      }
+      };
 
       var parseElement = function () {
         if (!$rootScope.isRuntime() && scope.element) {
@@ -114,7 +118,7 @@ define([
             $rootScope.findChildren($rootScope.propertiesOf(scope.element), scope.model);
           }
         }
-      }
+      };
 
       if (!$rootScope.isRuntime()) {
         if (!scope.model) {
@@ -139,37 +143,29 @@ define([
       scope.selectedTab = scope.selectedTab || 0;
       scope.selectTab = function (index) {
         scope.selectedTab = index;
-      }
+      };
 
       scope.isEditState = function () {
         return (DataManipulationService.isEditState(scope.element));
       };
 
       scope.isNested = function () {
-        return (DataManipulationService.isNested(scope.element));
+        return  (scope.nested === 'true');
       };
-
-      // add a multiple cardinality element
-
-
 
       // add a multiple cardinality element
       scope.selectedTab = 0;
       scope.addElement = function () {
-        console.log('addElement');
         if ($rootScope.isRuntime()) {
           if ((!scope.element.maxItems || scope.model.length < scope.element.maxItems)) {
             var seed = {};
-            console.log(scope.model);
+
             if (scope.model.length > 0) {
               seed = angular.copy(scope.model[0]);
-              console.log(seed);
               resetElement(seed, scope.element);
-             console.log (angular.isArray(scope.model));
               scope.model.push(seed);
             } else {
-              console.log ('else ' +angular.isArray(scope.model));
-              console.log (scope.model);
+
               scope.model.push(seed);
               if (angular.isArray(scope.model)) {
                 angular.forEach(scope.model, function (m) {
@@ -246,8 +242,9 @@ define([
 
       // try to select this element
       scope.canSelect = function (select) {
-        if (select)
+        if (select) {
           DataManipulationService.canSelect(scope.element);
+        }
       };
 
       // when element is deseleted, look at errors and parse if none
@@ -302,14 +299,13 @@ define([
       }
 
 
-
       // try to deselect this field
       scope.canDeselect = function (field) {
         return DataManipulationService.canDeselect(field, scope.renameChildKey);
       };
 
       scope.$on('saveForm', function (event) {
-      if (scope.isEditState() && !scope.canDeselect(scope.element)) {
+        if (scope.isEditState() && !scope.canDeselect(scope.element)) {
 
           scope.$emit("invalidElementState",
               ["add", $rootScope.schemaOf(scope.element)._ui.title, scope.element["@id"]]);

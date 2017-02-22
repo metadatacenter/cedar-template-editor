@@ -69,9 +69,11 @@ define([
 
           // modals
           vm.showMoveModal = showMoveModal;
+          vm.showCopyModal = showCopyModal;
           vm.showShareModal = showShareModal;
           vm.showRenameModal = showRenameModal;
           vm.showNewFolderModal = showNewFolderModal;
+          vm.copyModalVisible = false;
           vm.moveModalVisible = false;
           vm.shareModalVisible = false;
           vm.renameModalVisible = false;
@@ -134,13 +136,15 @@ define([
           vm.editingDescription = false;
           vm.isSharedMode = isSharedMode;
           vm.isSearchMode = isSearchMode;
+          vm.isHomeMode = isHomeMode;
+          vm.nodeListQueryType = null;
+          vm.breadcrumbTitle = null;
 
           vm.hideModal = function (visible) {
             visible = false;
           };
 
           vm.startDescriptionEditing = function () {
-            console.log('startDescriptionEditing')
             var resource = vm.getSelection();
             if (resource != null) {
               vm.editingDescription = true;
@@ -169,8 +173,7 @@ define([
 
           // show the info panel with this resource or find one
           vm.showInfoPanel = function () {
-            console.log('showInfoPanel');
-            if (vm.isSharedMode) {
+            if (vm.isSharedMode()) {
               resetSelected();
             } else if (!vm.selectedResource) {
               if (vm.currentPath) {
@@ -268,7 +271,6 @@ define([
           };
 
           vm.updateDescription = function () {
-            console.log('updateDescription')
             vm.editingDescription = false;
             var resource = vm.getSelection();
             if (resource != null) {
@@ -424,7 +426,7 @@ define([
               template: uip.resourceTypeFilters.template
             };
             vm.filterSections = {
-              type  : false,
+              type  : true,
               author: false,
               status: false,
               term  : false
@@ -445,9 +447,6 @@ define([
           }
 
           function init() {
-            //console.log("SearchAndBrowse.init()");
-            //console.log(vm.params);
-            //console.log($location.search());
             vm.isSearching = false;
             if (vm.params.sharing) {
               if (vm.params.sharing == 'shared-with-me') {
@@ -475,7 +474,8 @@ define([
               getFolderContentsById(currentFolderId);
               getCurrentFolderSummary(currentFolderId);
             } else {
-              goToFolder(CedarUser.getHomeFolderId());
+              //goToFolder(CedarUser.getHomeFolderId());
+              goToHomeFolder();
             }
             if (vm.showFavorites) {
               getForms();
@@ -491,12 +491,12 @@ define([
             return folderName;
           }
 
-          function buildBreadcrumbTitle(nodeListQueryType, searchTerm) {
-            if (nodeListQueryType == 'view-shared-with-me') {
+          function buildBreadcrumbTitle(searchTerm) {
+            if (vm.nodeListQueryType == 'view-shared-with-me') {
               return $translate.instant("BreadcrumbTitle.sharedWithMe");
-            } else if (nodeListQueryType == 'view-all') {
+            } else if (vm.nodeListQueryType == 'folder-content') {
               return $translate.instant("BreadcrumbTitle.viewAll");
-            } else if (nodeListQueryType == 'search-term') {
+            } else if (vm.nodeListQueryType == 'search-term') {
               return $translate.instant("BreadcrumbTitle.searchResult", {searchTerm: searchTerm});
             } else {
               return "";
@@ -504,11 +504,16 @@ define([
           }
 
           function isSharedMode() {
-            return vm.isSearching && (vm.breadcrumbTitle === $translate.instant("BreadcrumbTitle.sharedWithMe"));
+            return (vm.nodeListQueryType === 'view-shared-with-me');
           }
 
           function isSearchMode() {
-            return vm.isSearching;
+            return (vm.nodeListQueryType === 'search-term');
+          }
+
+
+          function isHomeMode() {
+            return (vm.nodeListQueryType === 'folder-content') && (vm.params.folderId === CedarUser.getHomeFolderId());
           }
 
           function doSearch(term) {
@@ -524,7 +529,8 @@ define([
                   vm.isSearching = true;
                   vm.resources = response.resources;
                   vm.totalCount = response.totalCount;
-                  vm.breadcrumbTitle = vm.buildBreadcrumbTitle(response.nodeListQueryType, response.request.q);
+                  vm.nodeListQueryType = response.nodeListQueryType;
+                  vm.breadcrumbTitle = vm.buildBreadcrumbTitle(response.request.q);
                 },
                 function (error) {
                   UIMessageService.showBackendError('SERVER.SEARCH.error', error);
@@ -533,7 +539,6 @@ define([
           }
 
           function doSharedWithMe() {
-            //console.log("DO shared with me");
             var resourceTypes = activeResourceTypes();
             var limit = UISettingsService.getRequestLimit();
             vm.offset = 0;
@@ -544,7 +549,8 @@ define([
                   vm.isSearching = true;
                   vm.resources = response.resources;
                   vm.totalCount = response.totalCount;
-                  vm.breadcrumbTitle = vm.buildBreadcrumbTitle(response.nodeListQueryType);
+                  vm.nodeListQueryType = response.nodeListQueryType;
+                  vm.breadcrumbTitle = vm.buildBreadcrumbTitle();
                 },
                 function (error) {
                   UIMessageService.showBackendError('SERVER.SEARCH.error', error);
@@ -614,41 +620,31 @@ define([
           }
 
 
-          function goToResource(resource) {
-            var r = resource;
-            if (!r && vm.selectedResource) {
-              r = vm.selectedResource;
-            }
+          function goToResource(value) {
 
-            if (r) {
-
-              //vm.params.search = null;
-              var params = $location.search('');
-
-              if (r.nodeType == 'folder') {
-                goToFolder(r['@id']);
+            var resource = value || vm.selectedResource;
+            if (resource) {
+              if (resource.nodeType == 'folder') {
+                goToFolder(resource['@id']);
               } else {
-                if (r.nodeType == 'template') {
-                  launchInstance(r);
+                if (resource.nodeType == 'template') {
+                  launchInstance(resource);
                 } else {
-                  editResource(r);
+                  editResource(resource);
                 }
               }
             }
           }
 
-          function editResource(resource) {
-            var r = resource;
-            if (!r && vm.selectedResource) {
-              r = vm.selectedResource;
-            }
+          function editResource(value) {
 
-            if (r) {
-              var id = r['@id'];
+            var resource = value || vm.selectedResource;
+            if (resource) {
+              var id = resource['@id'];
               if (typeof vm.pickResourceCallback === 'function') {
-                vm.pickResourceCallback(r);
+                vm.pickResourceCallback(resource);
               }
-              switch (r.nodeType) {
+              switch (resource.nodeType) {
                 case CONST.resourceType.TEMPLATE:
                   $location.path(FrontendUrlService.getTemplateEdit(id));
                   break;
@@ -685,6 +681,9 @@ define([
             }
             // remove current selection
             vm.selectedResource = null;
+
+            //reset total count
+            vm.totalCount--;
           }
 
 
@@ -755,7 +754,8 @@ define([
                     vm.pathInfo = response.pathInfo;
                     vm.currentPath = vm.pathInfo.pop();
                     vm.totalCount = response.totalCount;
-
+                    vm.nodeListQueryType = response.nodeListQueryType;
+                    vm.breadcrumbTitle = vm.buildBreadcrumbTitle();
                   },
                   function (error) {
                     UIMessageService.showBackendError('SERVER.FOLDER.load.error', error);
@@ -873,6 +873,10 @@ define([
 
           function isMeta() {
             return (hasSelection() && (vm.selectedResource.nodeType == CONST.resourceType.INSTANCE));
+          }
+
+          function goToHomeFolder() {
+             goToFolder(CedarUser.getHomeFolderId());
           }
 
 
@@ -1113,6 +1117,20 @@ define([
           }
 
           // open the move modal
+          function showCopyModal(value) {
+            //var r = resource;
+            //if (!r && vm.selectedResource) {
+            //  r = vm.selectedResource;
+            //}
+            var resource = value || vm.selectedResource;
+            var folderId = vm.currentFolderId || CedarUser.getHomeFolderId();
+            vm.copyModalVisible = true;
+            $scope.$broadcast('copyModalVisible',
+                [vm.copyModalVisible, resource, vm.currentPath, folderId, vm.resourceTypes,
+                 vm.sortOptionField]);
+          }
+
+          // open the move modal
           function showMoveModal(resource) {
             var r = resource;
             if (!r && vm.selectedResource) {
@@ -1177,9 +1195,9 @@ define([
             var url = FrontendUrlService.getSharedWithMe(vm.getFolderId());
             $location.url(url);
 
-            if (vm.infoShowing) {
-              vm.showInfoPanel();
-            }
+            //if (vm.infoShowing) {
+              //vm.showInfoPanel();
+            //}
           };
 
           vm.getVisibleCount = function () {
@@ -1189,6 +1207,11 @@ define([
           // should we show the resource count at the end of the workspace?
           vm.showResourceCount = function () {
             return vm.totalCount !== Number.MAX_VALUE && vm.totalCount > vm.requestLimit;
+          }
+
+          // do we have any resources to show?
+          vm.hasResources = function () {
+            return vm.totalCount > 0;
           }
 
 

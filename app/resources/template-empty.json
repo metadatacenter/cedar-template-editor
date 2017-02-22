@@ -26,7 +26,8 @@
   "_ui": {
     "title": "",
     "description": "",
-    "pages": []
+    "pages": [],
+    "order": []
   },
   "properties": {
     "@context": {

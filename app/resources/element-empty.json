@@ -3,8 +3,22 @@
   "@id": null,
   "@type": "https://schema.metadatacenter.org/core/TemplateElement",
   "@context": {
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
     "pav": "http://purl.org/pav/",
-    "oslc": "http://open-services.net/ns/core#"
+    "oslc": "http://open-services.net/ns/core#",
+    "schema": "http://schema.org/",
+    "pav:createdOn": {
+      "@type": "xsd:dateTime"
+    },
+    "pav:createdBy": {
+      "@type": "@id"
+    },
+    "pav:lastUpdatedOn": {
+      "@type": "xsd:dateTime"
+    },
+    "oslc:modifiedBy": {
+      "@type": "@id"
+    }
   },
   "type": "object",
   "title": "",

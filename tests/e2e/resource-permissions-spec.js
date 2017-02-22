@@ -6,7 +6,7 @@ var ShareModal = require('../modals/share-modal.js');
 var testConfig = require('../config/test-env.js');
 var permissions = require('../config/permissions.js');
 
-describe('resource-permissions', function () {
+xdescribe('resource-permissions', function () {
   var workspacePage;
   var toastyModal;
   var moveModal;
