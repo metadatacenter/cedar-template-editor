@@ -2877,7 +2877,7 @@ section.dashboard-elements {
 
   /*  very first field or element */
   .treeview > li.tv.first::after {
-    top: 12px;
+    top: 15px;
     height: 100%;
   }
 
@@ -2915,8 +2915,15 @@ section.dashboard-elements {
   .toolbar {
     padding: 0px 22px 0 0;
     font-size: 18px;
+    visibility:hidden;
     button, .paging {
       background-color: @lt-gray;
+    }
+  }
+
+  .row:hover {
+    .toolbar {
+      visibility:visible;
     }
   }
 

@@ -11694,7 +11694,7 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   display: none;
 }
 .template-body form .runtime .treeview > li.tv.first::after {
-  top: 12px;
+  top: 15px;
   height: 100%;
 }
 .template-body form .runtime .paging {
@@ -11723,10 +11723,14 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
 .template-body form .runtime .toolbar {
   padding: 0px 22px 0 0;
   font-size: 18px;
+  visibility: hidden;
 }
 .template-body form .runtime .toolbar button,
 .template-body form .runtime .toolbar .paging {
   background-color: #F0F0F0;
+}
+.template-body form .runtime .row:hover .toolbar {
+  visibility: visible;
 }
 .template-body form .runtime .answer {
   border: 1px solid transparent;

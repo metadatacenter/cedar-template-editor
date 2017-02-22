@@ -7,7 +7,7 @@
       <div class="element " id="{{getLocator(0)}}" style="position:relative">
         <div class="row isInactive myhover" ng-click="toggleExpanded(i);addElement()">
           <div class="col-sm-12">
-            <a class="element title" ng-class="{'isInactive' : isInactive(0)}"> {{getTitle()}} </a>
+            <a class="element title aaa" ng-class="{'isInactive' : isInactive(0)}"> {{getTitle()}} </a>
           </div>
         </div>
       </div>
@@ -18,7 +18,7 @@
       <div class="element expand" id="{{getLocator(index)}}" style="position:relative">
         <div class="row isInactive">
           <div class="col-sm-10">
-            <a class="element title" ng-class="{'isInactive' : isInactive(index)}">{{getTitle()}} <span
+            <a class="element title bbb" ng-class="{'isInactive' : isInactive(index)}">{{getTitle()}} <span
                 ng-if="valueArray.length-1" class="count">({{index+1}})</span></a>
           </div>
           <field-toolbar class="col-xs-2 " model="model" index="index"
@@ -42,7 +42,7 @@
 
         <div class="col-xs-6" ng-click="toggleExpanded(index)">
 
-          <div class="element title " ng-class="{'isInactive' : isInactive(index)}">
+          <div class="element title ccc" ng-class="{'isInactive' : isInactive(index)}">
             <button type="button" class="expand">
               <i class="fa " ng-class="{'fa-caret-down': isExpanded(index),'fa-caret-right':!isExpanded(index)}"></i>
             </button>
@@ -96,8 +96,13 @@
           style="position:relative">
         <div class="row isInactive " ng-click="toggleExpanded(i)">
           <div class="col-sm-8 ">
-            <a class="element title " ng-class="{'isInactive' : isInactive(i)}">{{getTitle()}} <span
-                ng-if="valueArray.length-1" class="count">({{i+1}})</span></a>
+
+            <a class="element title ddd" ng-class="{'isInactive' : isInactive(i)}">
+              <button type="button" class="expand">
+                <i class="fa " ng-class="{'fa-caret-down': isExpanded(index),'fa-caret-right':!isExpanded(index)}"></i>
+              </button>
+
+              {{getTitle()}} <span ng-if="valueArray.length-1" class="count">({{i+1}})</span></a>
           </div>
           <field-toolbar class="col-xs-4 " field="element" model="valueArray" index="index"
               remove="removeElement" add="addElement" is-active="isActive" set-active="setActive"
@@ -108,7 +113,7 @@
         </div>
         <div ng-if="isExpanded(i)">
           <ul class="tv" ng-repeat="key in $root.schemaOf(element)['_ui']['order']">
-            <li class="tv" ng-if="$root.propertiesOf(element)[key]">
+            <li class="tv" ng-if="$root.propertiesOf(element)[key]" ng-class="{'last':$last, 'first':$first, 'element' : $root.isElement($root.schemaOf($root.propertiesOf(element)[key]))}">
               <cedar-runtime-nested-element key="key"
                   field="$root.propertiesOf(element)[key]"
                   model="valueElement[key]"
