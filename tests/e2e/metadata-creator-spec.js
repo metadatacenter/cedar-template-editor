@@ -6,10 +6,10 @@ var ToastyModal = require('../modals/toasty-modal.js');
 var SweetAlertModal = require('../modals/sweet-alert-modal.js');
 
 var _ = require('../libs/lodash.min.js');
-var sampleTitle = null;
-var sampleDescription = null;
-var sampleTemplateUrl = null;
-var sampleMetadataUrl = null;
+var sampleTitle;
+var sampleDescription;
+var sampleTemplateUrl;
+var sampleMetadataUrl ;
 var pageName = 'template';
 
 
