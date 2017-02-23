@@ -1,6 +1,6 @@
 'use strict';
 
-require('../pages/workspace-page.js');
+//require('../pages/workspace-page.js');
 require('../modals/finder-modal.js');
 
 var TemplateCreatorPage = function () {
