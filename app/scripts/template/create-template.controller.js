@@ -23,17 +23,14 @@ define([
 
         // Set Page Title variable when this controller is active
         $rootScope.pageTitle = 'Template Designer';
-
         $rootScope.searchBrowseModalId = "search-browse-modal";
         $rootScope.finderModalId = "finder-modal";
 
         var pageId = CONST.pageId.TEMPLATE;
         HeaderService.configure(pageId);
         StagingService.configure(pageId);
-
         $scope.primaryFieldTypes = FieldTypeService.getPrimaryFieldTypes();
         $scope.otherFieldTypes = FieldTypeService.getOtherFieldTypes();
-
         $scope.saveButtonDisabled = false;
 
         var getTemplate = function () {
@@ -46,12 +43,10 @@ define([
                   $scope.form = response.data;
                   HeaderService.dataContainer.currentObjectScope = $scope.form;
 
-                  // stick a domId on fields and elements
-                  DataManipulationService.createDomIds($scope.form);
-                  //closeAllElements();
                   $rootScope.keyOfRootElement = $scope.form["@id"];
                   $rootScope.rootElement = $scope.form;
                   $rootScope.jsonToSave = $scope.form;
+                  DataManipulationService.createDomIds($scope.form);
                   $scope.$broadcast('form:clean');
 
                 },
@@ -66,6 +61,7 @@ define([
             $rootScope.keyOfRootElement = $scope.form["@id"];
             $rootScope.rootElement = $scope.form;
             $rootScope.jsonToSave = $scope.form;
+            DataManipulationService.createDomIds($scope.form);
             $scope.$broadcast('form:clean');
           }
         };

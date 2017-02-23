@@ -13,11 +13,12 @@
   <button type="button" class=" expand-all pull-right"
       ng-if="isExpandable()"
       tooltip="{{'GENERIC.ExpandAll' | translate}}"
-      ng-click="expandAll(index)">
+      ng-click="expandAll(index);$event.stopPropagation()">
     <i class="fa fa-expand "></i>
   </button>
 
   <button type="button" class=" remove pull-right"
+      ng-if="isField"
       tooltip="{{'GENERIC.Close' | translate}}"
       ng-click="close(index);$event.stopPropagation()">
     <i class="fa fa-remove "></i>
@@ -32,7 +33,8 @@
     <i class="fa fa-question-circle"></i>
   </button>
 
-  <button type="button" class=" add  pull-right" ng-click="add()"
+  <button type="button" class=" add  pull-right"
+      ng-click="add();$event.stopPropagation()"
       ng-if="isMultiple() && (!field.maxItems || model.length < field.maxItems )"
       tooltip="{{'GENERIC.Add' | translate}}"
       tooltip-trigger
@@ -46,11 +48,16 @@
   <button ng-if="isMultiple()" type="button" class=" remove pull-right"
       ng-if="isActive(index)"
       tooltip="{{cardinality()}}"
-      ng-click="toggle()">
+      ng-click="toggle();$event.stopPropagation()">
 
     <i ng-if="showMultiple('paged')" class="fa fa-sort  fa-rotate-90 "></i>
-    <i ng-if="showMultiple('git')" class="fa fa-list-ol "></i>
+    <i ng-if="showMultiple('expanded')" class="fa fa-list-ol "></i>
     <i ng-if="showMultiple('spreadsheet')" class="fa fa-table "></i>
   </button>
+
+
+  <cedar-pager ng-click="$event.stopPropagation()" class="pull-right" style="padding-right:20px" ng-if="isMultiple()" values="values" index="index" min="min" max="max" select="select"
+      range="range">
+  </cedar-pager>
 
 </div>

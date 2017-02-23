@@ -119,7 +119,8 @@
     "ExpandAll": "Expand All",
     "Displaying": "Displaying",
     "Of": "of",
-    "CopyOfTitle": "Copy of {{title}}"
+    "CopyOfTitle": "Copy of {{title}}",
+    "Error": "Error"
   },
   "HELP": {
     "createFolder": "Create folder",
@@ -289,7 +290,8 @@
       "NotFoundMessage": "Not Found.",
       "NotFoundString": "The object with the requested id can not be found.",
       "InaccessibleMessage": "Can not access endpoint.",
-      "InaccessibleMessageString": "The endpoint can not be accessed. There is a problem contacting the server."
+      "InaccessibleMessageString": "The endpoint can not be accessed. There is a problem contacting the server.",
+      "BackendIsNotResponding": "The server is not responding to the request: {{url}}"
     }
   },
   "DASHBOARD": {
@@ -339,7 +341,7 @@
       "reset": "Reset"
     },
     "sidebar": {
-      "myWorkspace": "My Workspace",
+      "myWorkspace": "Workspace",
       "sharedWithMe": "Shared with Me",
       "all": "All"
     }
@@ -439,7 +441,9 @@
   "REST_ERROR": {
     "nodeAlreadyPresent": "There is already a(n) {{conflictingNodeType}} with the same name at this location! Please try to create it with a different name.",
     "folderCanNotBeDeleted": "The folder can not be deleted!",
-    "noWriteAccessToFolder": "The requested operation can not be performed!<br />You do not have write access to the folder."
+    "noWriteAccessToFolder": "The requested operation can not be performed!<br />You do not have write access to the folder.",
+    "groupAlreadyPresent": "There is already a group with the same name present in the system!<br>Please choose a different name.",
+    "folderPermissionsCanNotBeChanged": "The permissions of the selected folder can not be changed!"
   },
   "REST_ERROR_REASON": {
     "userHomeFolder": "The selected folder is a user home folder.",

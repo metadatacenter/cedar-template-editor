@@ -1,6 +1,6 @@
 'use strict';
 
-require('../pages/workspace-page.js');
+//require('../pages/workspace-page.js');
 
 var FinderModal = function () {
 

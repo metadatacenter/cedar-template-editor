@@ -236,10 +236,31 @@ define([
         scope.setActive(index, false);
       };
 
+      // can we recursively expand this element, i.e. does it have nested elements?
       scope.isExpandable = function () {
-        return true;
+
+        var schema = $rootScope.schemaOf(scope.element);
+        var result = false;
+        var props = $rootScope.propertiesOf(scope.element);
+        angular.forEach(props, function (value, key) {
+
+          var valueSchema = $rootScope.schemaOf(value);
+          var valueId = valueSchema["@id"];
+
+          if ($rootScope.isElement(valueSchema)) {
+            result = true;
+          }
+        });
+        return result;
       };
 
+      scope.isField = function () {
+        return false;
+      };
+
+      scope.isElement = function () {
+        return true;
+      };
 
       scope.expandAll = function () {
 

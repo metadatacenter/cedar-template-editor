@@ -7,22 +7,14 @@ define([
       .directive('recommendedValue', recommendedValue);
 
 
-  recommendedValue.$inject = ["$rootScope", "$sce", "$document", "$translate", "$filter", "$location",
-                              "$window", '$timeout',
-                              "SpreadsheetService",
-                              "DataManipulationService", "controlledTermDataService",
-                              "StringUtilsService", 'UISettingsService'];
+  recommendedValue.$inject = ["$rootScope", "DataManipulationService"];
 
-  function recommendedValue($rootScope, $sce, $document, $translate, $filter, $location, $window,
-                            $timeout,
-                            SpreadsheetService,
-                            DataManipulationService,
-                            controlledTermDataService, StringUtilsService, UISettingsService) {
+  function recommendedValue($rootScope, DataManipulationService) {
 
 
     var linker = function ($scope, $element, attrs) {
 
-      $scope.valueElement = $scope.$parent.valueArray[$scope.index];
+      $scope.valueElement = $scope.$parent.valueArray;
       $scope.isFirstRefresh = true;
 
       // does this field have a value constraint?
@@ -38,7 +30,6 @@ define([
       if ($scope.hasValueConstraint() && $scope.isRequired()) {
         $scope.$emit('formHasRequiredfield._uis');
       }
-
 
       // Used just for text fields whose values have been constrained using controlled terms
       $scope.$watch("model", function () {
@@ -57,77 +48,96 @@ define([
 
       }, true);
 
+      // if ($scope.model) {
+      //   var fieldValue = DataManipulationService.getFieldValue($scope.field);
+      //   $scope.modelValueRecommendation = {valueInfo: {'value': $scope.model[fieldValue]}}
+      // }
 
-
-      if ($scope.model) {
-        $scope.modelValueRecommendation = {'@value': {'value': $scope.model['@value']}}
-      }
-
-
-      $scope.updateModelWhenChangeSelection = function (modelvr) {
-
-        // This variable will be used at textfield.html
-        $scope.modelValueRecommendation = modelvr;
-        if ($rootScope.isArray($scope.model)) {
-          angular.forEach(modelvr, function (m, i) {
-            if (m && m['@value'] & m['@value'].value) {
-              $scope.model[i]['@value'] = m['@value'].value;
-            } else {
-              delete $scope.model[i]['@value'];
-            }
-          });
-        } else {
-           if (modelvr['@value']) {
-             //var newValue = modelvr['@value'].value;
-             $scope.model['@value'] = modelvr['@value'].valueUri;
-             $scope.model['_valueLabel'] = modelvr['@value'].value;
-           } else {
-             $scope.model['@value'] = null;
-             delete $scope.model['_valueLabel'];
-           }
-        }
-      };
-
-
-      $scope.initializeValueRecommendationField = function () {
-
-        $scope.isFirstRefresh = true;
-
-        $scope.modelValueRecommendation = {};
-        if ($scope.model) {
-          if ($scope.model['_valueLabel']) {
-            $scope.modelValueRecommendation['@value'] = {
-              'value'   : $scope.model._valueLabel,
-              'valueUri': $scope.model['@value'],
-            };
+      $scope.updateModelWhenChangeSelection = function (modelvr, index) {
+        if (modelvr[index] && modelvr[index].valueInfo && modelvr[index].valueInfo.valueUri) {
+          if ($rootScope.isArray($scope.model)) {
+            $scope.model[index]['@id'] = modelvr[index].valueInfo.valueUri;
+            $scope.model[index]['_valueLabel'] = modelvr[index].valueInfo.value;
+            delete $scope.model[index]['@value'];
           }
           else {
-            $scope.modelValueRecommendation['@value'] = {
-              'value': $scope.model['@value']
-            };
+            $scope.model['@id'] = modelvr[index].valueInfo.valueUri;
+            $scope.model['_valueLabel'] = modelvr[index].valueInfo.value;
+            delete $scope.model['@value'];
           }
         }
-
+        else {
+          if ($rootScope.isArray($scope.model)) {
+            $scope.model[index]['@value'] = modelvr[index].valueInfo.value;
+            delete $scope.model[index]['_valueLabel'];
+          }
+          else {
+            $scope.model['@value'] = modelvr[index].valueInfo.value;
+            delete $scope.model['_valueLabel'];
+          }
+        }
       };
 
+      $scope.initializeValueRecommendationField = function () {
+        var fieldValue = DataManipulationService.getFieldValue($scope.field);
+        $scope.isFirstRefresh = true;
+        $scope.modelValueRecommendation = [];
+        // If $scope.model is an Array
+        if ($rootScope.isArray($scope.model)) {
+          angular.forEach($scope.model, function (m, i) {
+            $scope.modelValueRecommendation.push($scope.getModelVR(m, fieldValue));
+          })
+        }
+        // If $scope.model is a single object
+        else {
+          $scope.modelValueRecommendation.push($scope.getModelVR($scope.model, fieldValue));
+        }
+      }
+
+      // Generates modelValueRecommendation from a given model
+      $scope.getModelVR = function (model, fieldValue) {
+        // if controlled value
+        if ($scope.isControlledValue(model)) {
+          return {
+            'valueInfo': {
+              'value'   : model._valueLabel,
+              'valueUri': model[fieldValue]
+            }
+          };
+        }
+        // if plain text value
+        else {
+          return {
+            'valueInfo': {'value': model[fieldValue]}
+          };
+        }
+      }
+
+      $scope.isControlledValue = function(model) {
+        var isControlled = false;
+        if (model['_valueLabel']) {
+          isControlled = true;
+        }
+        else if (model['@type'] && model['@type'] == '@id') {
+          isControlled = true;
+        }
+        return isControlled;
+      }
 
       $scope.clearSearch = function (select) {
         select.search = '';
       };
 
-
       $scope.setIsFirstRefresh = function (value) {
         $scope.isFirstRefresh = value;
-        console.log('setIsFirstRefresh' + $scope.isFirstRefresh);
       };
 
-      $scope.updateModelWhenRefresh = function (select, modelvr) {
+      $scope.updateModelWhenRefresh = function (select, modelvr, index) {
         if (!$scope.isFirstRefresh) {
           // Check that there are no controlled terms selected
           if (select.selected.valueUri == null) {
-
             // If the user entered a new value
-            if (select.search != modelvr['@value'].value) {
+            if (select.search != modelvr[index].valueInfo.value) {
               var modelValue;
               if (select.search == "" || select.search == undefined) {
                 modelValue = null;
@@ -135,25 +145,29 @@ define([
               else {
                 modelValue = select.search;
               }
-              $scope.model['@value'] = modelValue;
-              delete $scope.model['_valueLabel'];
-              $scope.modelValueRecommendation['@value'].value = modelValue;
+              if ($rootScope.isArray($scope.model)) {
+                $scope.model[index]['@value'] = modelValue;
+              }
+              else {
+                $scope.model['@value'] = modelValue;
+              }
+              modelvr[index].valueInfo.value = modelValue;
             }
-
           }
         }
       };
 
-      $scope.clearSelection = function ($event, select) {
-        $event.stopPropagation();
-        $scope.modelValueRecommendation = {
-          '@value': {'value': null, 'valueUri': null},
-        }
-        select.selected = undefined;
-        select.search = "";
-        $scope.model['@value'] = null;
-        delete $scope.model['_valueLabel'];
-      };
+      // $scope.clearSelection = function ($event, select) {
+      //   var fieldValue = DataManipulationService.getFieldValue($scope.field);
+      //   $event.stopPropagation();
+      //   $scope.modelValueRecommendation = {
+      //     valueInfo: {'value': null, 'valueUri': null},
+      //   }
+      //   select.selected = undefined;
+      //   select.search = "";
+      //   $scope.model[fieldValue] = null;
+      //   delete $scope.model['_valueLabel'];
+      // };
 
       $scope.calculateUIScore = function (score) {
         var s = Math.floor(score * 100);
@@ -165,21 +179,16 @@ define([
         }
       };
 
-
       $scope.initializeValueRecommendationField();
-
-
-
-
     };
 
     return {
       templateUrl: 'scripts/form/recommended-value.directive.html',
       restrict   : 'EA',
       scope      : {
-        field  : '=',
-        'model': '=',
-        index  : '=',
+        field: '=',
+        model: '=',
+        index: '=',
 
       },
       controller : function ($scope, $element) {
@@ -193,15 +202,10 @@ define([
             }
           }, 1000);
         };
-
         addPopover($scope);
-
       },
       replace    : true,
       link       : linker
     };
-
   }
-
-})
-;
+});

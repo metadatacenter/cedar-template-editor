@@ -18,7 +18,7 @@
         <!--If Template Element-->
         <div class=" element-group full "
             ng-if="form.properties[item]['@type']=='https://schema.metadatacenter.org/core/TemplateElement' || form.properties[item].items['@type']=='https://schema.metadatacenter.org/core/TemplateElement'">
-          <cedar-template-element element="form.properties[item]"
+          <cedar-template-element nested="false" element="form.properties[item]"
               key="item"
               model="model[item]"
               delete="removeChild(form.properties[item])"
@@ -38,7 +38,11 @@
           <div ng-click="toggleExpanded()">
             <!--<button type="button" class="xxx">-->
               <!--<i ng-class="{'fa fa-caret-down' : isExpanded(), 'fa fa-caret-right' : !isExpanded()}"></i></button>-->
-            <span class="title form">{{$root.schemaOf(form)._ui.title}}</span>
+            <span class="title form">
+              <button type="button" class="expand">
+                <i  class="fa " ng-class="{'fa-caret-down': isExpanded(),'fa-caret-right':!isExpanded()}"></i>
+              </button>
+              {{$root.schemaOf(form)._ui.title}}</span>
           </div>
         </div>
 
@@ -51,11 +55,11 @@
       </div>
 
     <ul class="treeview tv">
-      <li ng-repeat="item in page" class="animate-fade tv"  ng-class="{'last':$last, 'first':$first}"  ng-if="pageIndex == $parent.$index && isExpanded() && (isField(item) || isElement(item))">
+      <li ng-repeat="item in page" class="animate-fade tv"  ng-class="{'last':$last, 'first':$first, 'element':isElement(item)}"  ng-if="pageIndex == $parent.$index && isExpanded() && (isField(item) || isElement(item))">
 
         <!--If field-->
         <div ng-if="isField(item)" class="field-instance">
-          <cedar-runtime-field field="form.properties[item]" model="model[item]"
+          <cedar-runtime-field nested="false" field="form.properties[item]" model="model[item]"
               delete="removeChild(form.properties[item]);"
               rename-child-key="renameChildKey"
               is-edit-data="isEditData"
@@ -66,7 +70,7 @@
 
         <!--If element-->
         <div ng-if="isElement(item)" class=" element-group full">
-          <cedar-runtime-element element="form.properties[item]"
+          <cedar-runtime-element nested="false" element="form.properties[item]"
               key="item"
               model="model[item]"
               delete="removeChild(form.properties[item])"
@@ -85,31 +89,71 @@
 
   <!--At build time, the old form-->
   <div class="page build" ng-if="!$root.isRuntime()" ui-sortable="$root.sortableOptions" ng-model="form._ui.order">
+
+
     <div ng-repeat="item in form._ui.order" class="animate-fade">
       <span ng-if="form.properties[item]">
+
 
         <!--If  field-->
         <div ng-if="form.properties[item]['@type']=='https://schema.metadatacenter.org/core/TemplateField' || form.properties[item]['@type']=='https://schema.metadatacenter.org/core/StaticTemplateField' ||
         form.properties[item].items['@type']=='https://schema.metadatacenter.org/core/TemplateField' || form.properties[item].items['@type']=='https://schema.metadatacenter.org/core/StaticTemplateField'"
 
             ng-class="{'field-instance':true, 'multiple-instance-field':form.properties[item].type == 'array'}">
-          <field-directive field="form.properties[item]" model="model[item]"
+          <field-directive nested="false" field="form.properties[item]" model="model[item]"
               delete="removeChild(form.properties[item]); $event.stopPropagation();"
               rename-child-key="renameChildKey"></field-directive>
         </div>
 
-        <!--If  Element-->
-        <div class="element-group full"
-            ng-if="form.properties[item]['@type']=='https://schema.metadatacenter.org/core/TemplateElement' || form.properties[item].items['@type']=='https://schema.metadatacenter.org/core/TemplateElement'">
-          <cedar-template-element element="form.properties[item]"
-              key="item"
-              model="model[item]"
-              delete="removeChild(form.properties[item])"
-              is-root-element="hideRootElement"
-              is-edit-data="isEditData" ,
-              depth="1">
-          </cedar-template-element>
+        <!--If  Element with a template root-->
+        <div ng-if="$root.schemaOf(form.properties[item])['@type'] === 'https://schema.metadatacenter.org/core/Template'">
+          <div class="element-group full"
+              ng-if="form.properties[item]['@type']=='https://schema.metadatacenter.org/core/TemplateElement' || form.properties[item].items['@type']=='https://schema.metadatacenter.org/core/TemplateElement'">
+            <cedar-template-element   element="form.properties[item]"
+                key="item"
+                model="model[item]"
+                delete="removeChild(form.properties[item])"
+                nested="false"
+                is-root-element="false"
+                is-edit-data="isEditData"
+                depth="1">
+            </cedar-template-element>
+          </div>
+
         </div>
+
+        <!-- if element with element root -->
+
+         <div ng-if="$root.schemaOf(form.properties[item])['@type'] === 'https://schema.metadatacenter.org/core/TemplateElement'">
+           <div class="element-group full"
+               ng-if="$root.schemaOf(form.properties[item])['@id'] == $root.keyOfRootElement">
+
+             <cedar-template-element   element="form.properties[item]"
+                 key="item"
+                 model="model[item]"
+                 delete="removeChild(form.properties[item])"
+                 nested="true"
+                 is-root-element="false"
+                 is-edit-data="isEditData"
+                 depth="1">
+             </cedar-template-element>
+           </div>
+
+           <div class="element-group full"
+               ng-if="$root.schemaOf(form.properties[item])['@id'] !== $root.keyOfRootElement">
+
+             <cedar-template-element   element="form.properties[item]"
+                 key="item"
+                 model="model[item]"
+                 delete="removeChild(form.properties[item])"
+                 nested="false"
+                 is-root-element="false"
+                 is-edit-data="isEditData"
+                 depth="1">
+             </cedar-template-element>
+           </div>
+         </div>
+
       </span>
     </div>
   </div>
