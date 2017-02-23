@@ -60,12 +60,18 @@ define(['angular'], function (angular) {
       //return isValueRecommendationEnabled;
     };
 
-    service.getValueRecommendationResults = function (fieldId) {
-      if (angular.isUndefined(valueRecommendationResults[fieldId])) {
-        return [];
+    service.getValueRecommendationResults = function (field) {
+      var fieldId = service.getFieldId(field);
+      if (fieldId) {
+        if (angular.isUndefined(valueRecommendationResults[fieldId])) {
+          return [];
+        }
+        else {
+          return valueRecommendationResults[fieldId];
+        }
       }
       else {
-        return valueRecommendationResults[fieldId];
+        return [];
       }
     };
 
@@ -73,15 +79,17 @@ define(['angular'], function (angular) {
      * Service methods.
      */
     service.updatePopulatedFields = function (field, value) {
-      var fieldId = field['@id'];
-      if (value) {
-        populatedFields[fieldId] = {
-          "path" : field._path,
-          "value": value
+      var fieldId = service.getFieldId(field);
+      if (fieldId) {
+        if (value) {
+          populatedFields[fieldId] = {
+            "path" : field._path,
+            "value": value
+          }
         }
-      }
-      else {
-        delete populatedFields[fieldId];
+        else {
+          delete populatedFields[fieldId];
+        }
       }
     };
 
@@ -102,37 +110,42 @@ define(['angular'], function (angular) {
     };
 
     service.updateValueRecommendationResults = function (field) {
-      var fieldId = field['@id'];
-      var targetFieldPath = field._path;
-      service.getRecommendation(targetFieldPath, service.getRelevantPopulatedFields(fieldId)).then(function (recommendation) {
-            if (recommendation.recommendedValues && recommendation.recommendedValues.length == 0) {
-              recommendation.recommendedValues.push({
-                'value': $translate.instant('VALUERECOMMENDER.noResults'),
-                'score': undefined
-              })
-            }
+      var fieldId = service.getFieldId(field);
+      if (fieldId) {
+        var targetFieldPath = field._path;
+        service.getRecommendation(targetFieldPath, service.getRelevantPopulatedFields(fieldId)).then(
+            function (recommendation) {
+              var controlledTerms = $rootScope.autocompleteResultsCache[fieldId]['results'];
 
-            var recommendedLabels = [];
-            for (var i = 0; i < recommendation.recommendedValues.length; i++) {
-              recommendedLabels.push(recommendation.recommendedValues[i].value.toLowerCase());
-            }
-
-            // Add the list of controlled terms to the recommendation results (if any)
-            var controlledTerms = $rootScope.autocompleteResultsCache[fieldId]['results'];
-            for (var i = 0; i < controlledTerms.length; i++) {
-              // Check if the ontology term has been already recommended or not
-              if ($.inArray(controlledTerms[i].label.toLowerCase(), recommendedLabels) == -1) {
-                recommendation.recommendedValues.push({
-                  'value'   : controlledTerms[i].label,
-                  'valueUri': controlledTerms[i]['@id'],
-                  'score'   : undefined
-                });
+              if (recommendation.recommendedValues) {
+                if (recommendation.recommendedValues.length == 0 && controlledTerms.length == 0) {
+                  recommendation.recommendedValues.push({
+                    'value': $translate.instant('VALUERECOMMENDER.noResults'),
+                    'score': undefined
+                  })
+                }
+                var recommendedLabels = [];
+                for (var i = 0; i < recommendation.recommendedValues.length; i++) {
+                  recommendedLabels.push(recommendation.recommendedValues[i].value.toLowerCase());
+                }
               }
-            }
-            valueRecommendationResults[fieldId] = recommendation.recommendedValues;
-          });
-    };
 
+              // Add the list of controlled terms to the recommendation results (if any)
+              for (var i = 0; i < controlledTerms.length; i++) {
+                // Check if the ontology term has been already recommended or not
+                if ($.inArray(controlledTerms[i].label.toLowerCase(), recommendedLabels) == -1) {
+                  recommendation.recommendedValues.push({
+                    'value'   : controlledTerms[i].label,
+                    'valueUri': controlledTerms[i]['@id'],
+                    'score'   : undefined
+                  });
+                }
+              }
+              valueRecommendationResults[fieldId] = recommendation.recommendedValues;
+            });
+      }
+    }
+    
     service.hasInstances = function (templateId) {
       return AuthorizedBackendService.doCall(
           HttpBuilderService.get(UrlService.hasInstances(templateId)),
@@ -165,6 +178,18 @@ define(['angular'], function (angular) {
           }
       );
     };
+
+    service.getFieldId = function (field) {
+      if (!field && !field.type) {
+        return undefined;
+      }
+      if (field.type == 'array') {
+        return field.items['@id'];
+      }
+      else {
+        return field['@id'];
+      }
+    }
 
     /**
      * Messages

@@ -140,18 +140,14 @@ define([
         return DataManipulationService.isDateRange($scope.field);
       };
 
+      // This function initializes the value field to null (either @id or @value) if it has not been initialized yet
+      $scope.initializeValue = function (field) {
+        DataManipulationService.initializeValue(field, $scope.model);
+      };
 
-      // set the @type field in the model
-      $scope.setValueType = function () {
-        var properties = $rootScope.propertiesOf($scope.field);
-        var typeEnum = properties['@type'].oneOf[0].enum;
-        if (angular.isDefined(typeEnum) && angular.isArray(typeEnum)) {
-          if (typeEnum.length == 1) {
-            $scope.model['@type'] = properties['@type'].oneOf[0].enum[0];
-          } else {
-            $scope.model['@type'] = properties['@type'].oneOf[0].enum;
-          }
-        }
+      // This function initializes the value @type field if it has not been initialized yet
+      $scope.initializeValueType = function(field) {
+        DataManipulationService.initializeValueType(field, $scope.model);
       };
 
       // add more instances to a multiple cardinality field if possible
@@ -262,13 +258,20 @@ define([
       $scope.getValueString = function (valueElement) {
 
         var result = ' ';
-        if (valueElement) {
 
-          if (Array.isArray(valueElement)) {
-            for (var i = 0; i < valueElement.length; i++) {
-              if (valueElement[i] && valueElement[i]['@value']) {
-                result += valueElement[i]['@value'] + ', ';
-              }
+        for (var i = 0; i < valueElement.length; i++) {
+          var fieldValueLabel = null;
+          if (valueElement[i]['@value'] && valueElement[i]['@value'] != null) {
+            fieldValueLabel = '@value';
+          }
+          else if (valueElement[i]['@id'] && valueElement[i]['@id'] != null) {
+            fieldValueLabel = '_valueLabel';
+          }
+          if (fieldValueLabel != null) {
+            result += valueElement[i][fieldValueLabel];
+            if (i < valueElement.length - 1) {
+              result += ', ';
+
             }
           }
         }
@@ -296,6 +299,7 @@ define([
           $scope.setActive(index, true);
         }
       };
+
 
 
       // set this field and index active

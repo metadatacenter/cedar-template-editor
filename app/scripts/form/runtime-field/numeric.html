@@ -1,27 +1,29 @@
 
-<!-- actively editing the field --->
-<div ng-if="isActive(index)" class="form-group  has-feedback ">
-  <input type="text"
-      ng-click="setActive(index, true)"
-      class="form-control isActive select"
-      ng-class="{'required': isRequired()}"
-      placeholder="enter answer"
-      ng-model-options="{allowInvalid:true}"
-      aria-label="{{getDescription(field)}}"
-      validate-on="blur"
-      ng-pattern="/^[-+]?[0-9]*\.?[0-9]*$/"
-      ng-model="valueElement['@value']">
-  </input>
+<div ng-init="initializeValue(field); initializeValueType(field)">
 
-  <div ng-if="isActive(index)" class="input-indicator-icons" ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
+  <!-- actively editing the field --->
+  <div ng-if="isActive(index)" class="form-group  has-feedback ">
+    <input type="text"
+        ng-click="setActive(index, true)"
+        class="form-control isActive select"
+        ng-class="{'required': isRequired()}"
+        placeholder="enter answer"
+        ng-model-options="{allowInvalid:true}"
+        aria-label="{{getDescription(field)}}"
+        validate-on="blur"
+        ng-pattern="/^[-+]?[0-9]*\.?[0-9]*$/"
+        ng-model="valueElement['@value']">
+    </input>
+
+    <div ng-if="isActive(index)" class="input-indicator-icons"
+        ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
+  </div>
+
+  <!-- not editing --->
+  <div ng-if="!isActive(index)" class="form-group  has-feedback value">
+    <div ng-click="setActive(index,true)"
+        aria-label="{{getDescription(field)}}">{{valueElement['@value']}} &nbsp;</div>
+  </div>
+
 </div>
-
-<!-- not editing --->
-<div ng-if="!isActive(index)" class="value" ng-click="setActive(index,true)"
-      aria-label="{{getDescription(field)}}">{{valueArray[index]['@value']}}
-</div>
-
-
-
-
 

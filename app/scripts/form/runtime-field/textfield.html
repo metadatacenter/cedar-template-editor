@@ -1,63 +1,50 @@
+<div ng-init="initializeValue(field); initializeValueType(field)">
+  <!--- not active --->
+  <div ng-if="!isActive(index)" ng-click="setActive(index,true)" class="form-group  has-feedback value">
 
 
-<!--- not active --->
-<div ng-if="!isActive(index)" ng-click="setActive(index,true)" class="form-group  has-feedback value" >
-
-
-  <div ng-if="isRegular() && showMultiple('expanded')"
-      aria-label="{{getDescription(field)}}"
-      class="isInactive ">{{valueArray[index]['@value']}} &nbsp;</div>
-
-  <div ng-if="isRegular() && showMultiple('paged')"
-      aria-label="{{getDescription(field)}}"
-      class="isInactive "> {{getValueString(valueArray)}} &nbsp;</span>
-  </div>
-
-  <!--<div ng-if="isRegular() && showMultiple('paged')">-->
-  <!--<input  type="text"-->
-      <!--class="form-control select"-->
-      <!--ng-class="{'isActive' : isActive(index), 'required': isRequired()}"-->
-      <!--aria-label="{{getDescription(field)}}"-->
-      <!--ng-required="isRequired()"-->
-      <!--ng-model="valueArray[index]['@value']">-->
-  <!--</input>-->
-  <!--<div class="input-indicator-icons" ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>-->
-  <!--</div>-->
-
-  <div ng-if="!isRegular()"
-      aria-label="{{getDescription(field)}}"
-      class="isInactive ">{{valueElement['_valueLabel']}} &nbsp;</div>
-
-</div>
-
-<!-- actively being edited -->
-<div ng-if="isActive(index)">
-
-  <!--Regular field-->
-  <div ng-if="isRegular()"
-      class="form-group has-success has-feedback"   >
-
-    <input type="text"
-        class="form-control select"
-        ng-class="{'isActive' : isActive(index), 'required': isRequired()}"
-        placeholder="{{isActive(index) ? 'enter answer' : ''}}"
+    <div ng-if="isRegular() && showMultiple('expanded')"
         aria-label="{{getDescription(field)}}"
-        ng-required="isRequired()"
-        ng-model="valueElement['@value']">
-    </input>
-    <div class="input-indicator-icons" ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
+        class="isInactive ">{{valueArray[index]['@value']}} &nbsp;</div>
+
+    <div ng-if="isRegular() && showMultiple('paged')"
+        aria-label="{{getDescription(field)}}"
+        class="isInactive "> {{getValueString(valueArray)}} &nbsp;</span>
+    </div>
+
+    <div ng-if="!isRegular()"
+        aria-label="{{getDescription(field)}}"
+        class="isInactive ">{{getValueString(valueArray)}} &nbsp;</div>
+
+
   </div>
 
-  <!--Field with values have been constrained using controlled terms -->
-  <constrained-value ng-if="isConstrained()" class="form-group  has-feedback" model="model" index="index"   field="field" ></constrained-value>
+  <!-- actively being edited -->
+  <div ng-if="isActive(index)">
 
-  <!-- Field with value recommendation functionality -->
-  <recommended-value ng-if="isRecommended()" class="form-group  has-feedback" model="model" index="index"   field="field" ></recommended-value>
+    <!--Regular field-->
+    <div ng-if="isRegular()" class="form-group has-success has-feedback">
+      <input type="text"
+          class="form-control select"
+          ng-class="{'isActive' : isActive(index), 'required': isRequired()}"
+          placeholder="{{isActive(index) ? 'enter answer' : ''}}"
+          aria-label="{{getDescription(field)}}"
+          ng-required="isRequired()"
+          ng-model="valueElement['@value']">
+      </input>
+      <div class="input-indicator-icons" ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
+    </div>
 
+    <!--Field with values have been constrained using controlled terms -->
+    <constrained-value ng-if="isConstrained()" class="form-group  has-feedback" model="model" index="index"
+        field="field"></constrained-value>
 
+    <!-- Field with value recommendation functionality -->
+    <recommended-value ng-if="isRecommended()" class="form-group  has-feedback" model="model" index="index"
+        field="field"></recommended-value>
+
+  </div>
 </div>
-
-
 
 
 

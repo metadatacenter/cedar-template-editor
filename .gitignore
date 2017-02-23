@@ -8,6 +8,9 @@ npm-debug.log
 .sass-cache
 .idea/
 *.iml
+.project
+.classpath
+.settings
 
 .DS_Store
 

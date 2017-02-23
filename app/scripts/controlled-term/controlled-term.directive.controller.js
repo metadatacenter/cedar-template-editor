@@ -15,13 +15,14 @@ define([
     '$timeout',
     'controlledTermDataService',
     'controlledTermService',
-    'provisionalClassService'
+    'provisionalClassService',
+    'DataManipulationService'
   ];
 
   /**
    * Controller for the functionality of adding controlled terms to fields and elements.
    */
-  function controlledTermDirectiveController($element, $http, $q, $rootScope, $scope, $timeout, controlledTermDataService, controlledTermService, provisionalClassService) {
+  function controlledTermDirectiveController($element, $http, $q, $rootScope, $scope, $timeout, controlledTermDataService, controlledTermService, provisionalClassService, DataManipulationService) {
     var vm = this;
 
     vm.addBranchToValueConstraint = addBranchToValueConstraint;
@@ -183,6 +184,8 @@ define([
       else if (action == 'add_entire_value_set') {
         addValueSetToValueConstraint();
       }
+      // Updates the field schema according to whether the field is controlled or not
+      DataManipulationService.initializeSchema(vm.field);
     }
 
     /**

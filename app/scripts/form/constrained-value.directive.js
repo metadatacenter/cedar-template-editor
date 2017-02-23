@@ -7,22 +7,12 @@ define([
       .directive('constrainedValue', constrainedValue);
 
 
-  constrainedValue.$inject = ["$rootScope", "$sce", "$document", "$translate", "$filter", "$location",
-                              "$window", '$timeout',
-                              "SpreadsheetService",
-                              "DataManipulationService", "controlledTermDataService",
-                              "StringUtilsService", 'UISettingsService'];
+  constrainedValue.$inject = ["$rootScope", "DataManipulationService"];
 
-  function constrainedValue($rootScope, $sce, $document, $translate, $filter, $location, $window,
-                            $timeout,
-                            SpreadsheetService,
-                            DataManipulationService,
-                            controlledTermDataService, StringUtilsService, UISettingsService) {
+  function constrainedValue($rootScope, DataManipulationService) {
 
 
     var linker = function ($scope, $element, attrs) {
-
-      $scope.valueElement = $scope.$parent.valueArray[$scope.index];
 
       // does this field have a value constraint?
       $scope.hasValueConstraint = function () {
@@ -38,12 +28,10 @@ define([
         $scope.$emit('formHasRequiredfield._uis');
       }
 
-
       // is the field multiple cardinality?
       $scope.isMultipleCardinality = function () {
         return DataManipulationService.isMultipleCardinality($scope.field);
       };
-
 
       // Used just for text fields whose values have been constrained using controlled terms
       $scope.$watch("model", function () {
@@ -62,53 +50,47 @@ define([
 
       }, true);
 
-
       // Updates the model for fields whose values have been constrained using controlled terms
       $scope.updateModelFromUIControlledField = function () {
-        console.log('onChange');
-
         // Multiple fields
         if ($scope.isMultipleCardinality()) {
           if ($scope.modelValue.length > 0) {
             angular.forEach($scope.modelValue, function (m, i) {
-              if (m && m['@value'] && m['@value']['@id']) {
+              if (m && m['termInfo'] && m['termInfo']['@id']) {
                 $scope.model[i] = {
-                  "@value"   : m['@value']['@id'],
-                  _valueLabel: m['@value'].label
+                  "@id"      : m['termInfo']['@id'],
+                  _valueLabel: m['termInfo'].label
                 };
               } else {
-                delete $scope.model[i]['@value']
+                delete $scope.model[i]['termInfo']
               }
             });
           }
           else {
             // Default value
-            $scope.model = [{'@value': null}];
+            $scope.model = [{'@id': null}];
           }
 
         }
         // Single fields
         else {
-          if ($scope.modelValue[0]['@value']) {
-            $scope.model['@value'] = $scope.modelValue[0]['@value']['@id'];
-            $scope.model._valueLabel = $scope.modelValue[0]['@value']['label'];
+          if ($scope.modelValue[0]['termInfo']) {
+            $scope.model['@id'] = $scope.modelValue[0]['termInfo']['@id'];
+            $scope.model._valueLabel = $scope.modelValue[0]['termInfo']['label'];
           } else {
-            console.log('should be cleared');
-            $scope.model['@value'] = null;
+            $scope.model['@id'] = null;
             delete $scope.model['_valueLabel'];
           }
         }
       };
 
-
       $scope.updateUIFromModelControlledField = function () {
-
         if ($rootScope.isArray($scope.model)) {
           $scope.modelValue = [];
           angular.forEach($scope.model, function (m, i) {
             $scope.modelValue[i] = {};
-            $scope.modelValue[i]['@value'] = {
-              '@id': m['@value'],
+            $scope.modelValue[i]['termInfo'] = {
+              '@id': m['termInfo'],
               label: m._valueLabel
             };
           });
@@ -116,38 +98,20 @@ define([
         else {
           $scope.modelValue = [];
           $scope.modelValue[0] = {};
-          $scope.modelValue[0]['@value'] = {
-            '@id': $scope.model['@value'],
+          $scope.modelValue[0]['termInfo'] = {
+            '@id': $scope.model['termInfo'],
             label: $scope.model._valueLabel
           };
         }
       };
 
-
-
-      $scope.calculateUIScore = function (score) {
-        var s = Math.floor(score * 100);
-        if (s < 1) {
-          return "<1%";
-        }
-        else {
-          return s.toString() + "%";
-        }
-      };
-
-      //
-      // initialization
-      //
-
       // Initializes model for fields constrained using controlled terms
       $scope.updateUIFromModelControlledField();
 
       // Load values when opening an instance
-      if ($scope.model) {
-        $scope.modelValueRecommendation = {'@value': {'value': $scope.model['@value']}}
-      }
-
-
+      // if ($scope.model) {
+      //   $scope.modelValueRecommendation = {'@id': {'value': $scope.model['termInfo']}}
+      // }
     };
 
     return {
@@ -155,7 +119,7 @@ define([
       restrict   : 'EA',
       scope      : {
         field  : '=',
-        'model': '=',
+        model  : '=',
         index  : '=',
 
       },
@@ -170,7 +134,6 @@ define([
             }
           }, 1000);
         };
-
         addPopover($scope);
 
       },

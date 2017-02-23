@@ -65,19 +65,19 @@ define([
           }
           var p = $rootScope.propertiesOf($scope.field);
           // Add @type information to instance at the field level
-          if (p && !angular.isUndefined(p['@type'])) {
-            var type = DataManipulationService.generateInstanceType(p['@type']);
-
-            if (type) {
-              if (angular.isArray($scope.model)) {
-                for (var i = 0; i < min; i++) {
-                  $scope.model[i]["@type"] = type || "";
-                }
-              } else {
-                $scope.model["@type"] = type || "";
-              }
-            }
-          }
+          // if (p && !angular.isUndefined(p['@type'])) {
+          //   var type = DataManipulationService.generateInstanceType(p['@type']);
+          //
+          //   if (type) {
+          //     if (angular.isArray($scope.model)) {
+          //       for (var i = 0; i < min; i++) {
+          //         $scope.model[i]["@type"] = type || "";
+          //       }
+          //     } else {
+          //       $scope.model["@type"] = type || "";
+          //     }
+          //   }
+          // }
         }
       };
 
@@ -462,7 +462,6 @@ define([
         }
       }
 
-
       // Sets the default @value for non-selection fields (i.e., text, paragraph, date, email, numeric, phone)
       $scope.setDefaultValueIfEmpty = function (m) {
         if ($rootScope.isRuntime()) {
@@ -683,47 +682,50 @@ define([
 
       // Load values when opening an instance
       if ($scope.model) {
-        $scope.modelValueRecommendation = {'@value': {'value': $scope.model['@value']}}
+        var fieldValue = DataManipulationService.getFieldValue(field);
+        $scope.modelValueRecommendation = {valueInfo: {'value': $scope.model[fieldValue]}}
       }
 
       $scope.initializeValueRecommendationField = function () {
+        var fieldValue = DataManipulationService.getFieldValue(field);
         $scope.modelValueRecommendation = {};
         if ($scope.model) {
           if ($scope.model['_valueLabel']) {
-            $scope.modelValueRecommendation['@value'] = {
+            $scope.modelValueRecommendation.valueInfo = {
               'value'   : $scope.model._valueLabel,
-              'valueUri': $scope.model['@value'],
+              'valueUri': $scope.model[fieldValue],
             };
           }
           else {
-            $scope.modelValueRecommendation['@value'] = {
-              'value': $scope.model['@value']
+            $scope.modelValueRecommendation.valueInfo = {
+              'value': $scope.model[fieldValue]
             };
           }
         }
       };
 
       $scope.updateModelWhenChangeSelection = function (modelvr) {
+        var fieldValue = DataManipulationService.getFieldValue(field);
         // This variable will be used at textfield.html
         $scope.modelValueRecommendation = modelvr;
         if ($rootScope.isArray($scope.model)) {
           angular.forEach(modelvr, function (m, i) {
-            if (m && m['@value'] & m['@value'].value) {
-              $scope.model[i]['@value'] = m['@value'].value;
-              if (m['@value'].valueUri) {
-                $scope.model[i]['_valueLabel'] = m['@value'].valueUri;
+            if (m && m.valueInfo & m.valueInfo.value) {
+              $scope.model[i][fieldValue] = m.valueInfo.value;
+              if (m.valueInfo.valueUri) {
+                $scope.model[i]['_valueLabel'] = m.valueInfo.valueUri;
               }
             } else {
-              delete $scope.model[i]['@value'];
+              delete $scope.model[i][fieldValue];
             }
           });
         } else {
-          if (modelvr['@value'].valueUri) {
-            $scope.model['@value'] = modelvr['@value'].valueUri;
-            $scope.model['_valueLabel'] = modelvr['@value'].value;
+          if (modelvr.valueInfo.valueUri) {
+            $scope.model[fieldValue] = modelvr.valueInfo.valueUri;
+            $scope.model['_valueLabel'] = modelvr.valueInfo.value;
           }
           else {
-            $scope.model['@value'] = modelvr['@value'].value;
+            $scope.model[fieldValue] = modelvr.valueInfo.value;
             delete $scope.model['_valueLabel'];
           }
         }
@@ -735,6 +737,7 @@ define([
       };
 
       $scope.updateModelWhenRefresh = function (select, modelvr) {
+        var fieldValue = DataManipulationService.getFieldValue(field);
         if (!$scope.isFirstRefresh) {
           // Check that there are no controlled terms selected
           if (select.selected.valueUri == null) {
@@ -742,7 +745,7 @@ define([
               // TODO
             } else {
               // If the user entered a new value
-              if (select.search != modelvr['@value'].value) {
+              if (select.search != modelvr.valueInfo.value) {
                 var modelValue;
                 if (select.search == "" || select.search == undefined) {
                   modelValue = null;
@@ -750,9 +753,9 @@ define([
                 else {
                   modelValue = select.search;
                 }
-                $scope.model['@value'] = modelValue;
+                $scope.model[fieldValue] = modelValue;
                 delete $scope.model['_valueLabel'];
-                $scope.modelValueRecommendation['@value'].value = modelValue;
+                $scope.modelValueRecommendation.valueInfo.value = modelValue;
               }
             }
           }
@@ -771,13 +774,14 @@ define([
       };
 
       $scope.clearSelection = function ($event, select) {
+        var fieldValue = DataManipulationService.getFieldValue(field);
         $event.stopPropagation();
         $scope.modelValueRecommendation = {
-          '@value': {'value': null, 'valueUri': null},
+          valueInfo: {'value': null, 'valueUri': null},
         }
         select.selected = undefined;
         select.search = "";
-        $scope.model['@value'] = null;
+        $scope.model[fieldValue] = null;
         delete $scope.model['_valueLabel'];
       };
 
@@ -790,10 +794,6 @@ define([
           return s.toString() + "%";
         }
       };
-
-      //$scope.calculateUIScore = function(score) {
-      //  return score.toFixed(2);
-      //};
 
       $scope.getRecommendationType = function (type) {
         if (type == 'CONTEXT_INDEPENDENT') {

@@ -19,6 +19,7 @@ define([
       return {
         "headers": {
           "Authorization": token == null ? "" : "Bearer " + token,
+          "CEDAR-Debug" : true
         }
       };
     };
