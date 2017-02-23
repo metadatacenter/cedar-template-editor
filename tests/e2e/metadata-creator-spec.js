@@ -7,9 +7,9 @@ var SweetAlertModal = require('../modals/sweet-alert-modal.js');
 
 var _ = require('../libs/lodash.min.js');
 var sampleTitle = null;
-var sampleDescription  = null;
-var sampleTemplateUrl  = null;
-var sampleMetadataUrl  = null;
+var sampleDescription = null;
+var sampleTemplateUrl = null;
+var sampleMetadataUrl = null;
 var pageName = 'template';
 
 
@@ -43,18 +43,22 @@ describe('metadata-creator', function () {
     workspacePage.onWorkspace();
   });
 
+  it("should have a control bar", function () {
+    workspacePage.hasControlBar();
+    workspacePage.onWorkspace();
+  });
+
   it("should create the sample template", function () {
     sampleTitle = workspacePage.createTitle('template');
     workspacePage.createResource('template', sampleTitle);
     workspacePage.onWorkspace();
   });
 
-  it("should have a control bar", function () {
-    workspacePage.hasControlBar();
-    workspacePage.onWorkspace();
+  it("should wait for sample template to be indexed", function () {
+    browser.sleep(5000);
   });
 
-  it("should search for the sample template in the workspace", function () {
+  it("should search for the sample template in the workspace " + sampleTitle, function () {
     workspacePage.searchForResource(sampleTitle, 'template');
     workspacePage.onWorkspace();
   });
@@ -131,18 +135,54 @@ describe('metadata-creator', function () {
     workspacePage.deleteResource(sampleTitle, 'template');
   });
 
+  xit('should delete the any test template from the workspace', function () {
+    workspacePage.deleteResource('Protractor', 'template');
+  });
 
   // turn these one if you need to clean up the workspace
   xit('should delete the any test template from the workspace', function () {
-    workspacePage.deleteResource('template', 'template');
+    workspacePage.deleteResource('Protractor', 'metadata');
   });
+
 
   // turn these one if you need to clean up the workspace
-  xit("should delete any test metadata from the workspace", function () {
-    workspacePage.deleteResource('metadata', 'metadata');
-  });
+  for (var i = 0; i < 0; i++) {
 
+    it('should delete the any test template from the workspace', function () {
+      workspacePage.deleteResource('Protractor', 'template');
+    });
 
+    // turn these one if you need to clean up the workspace
+    it("should delete any test metadata from the workspace", function () {
+      workspacePage.deleteResource('Protractor', 'folder');
+    });
+
+    // turn these one if you need to clean up the workspace
+    it('should delete the any test template from the workspace', function () {
+      workspacePage.deleteResource('Protractor', 'metadata');
+    });
+
+    // turn these one if you need to clean up the workspace
+    it("should delete any test metadata from the workspace", function () {
+      workspacePage.deleteResource('Readable', 'folder');
+    });
+
+    // turn these one if you need to clean up the workspace
+    it('should delete the any test template from the workspace', function () {
+      workspacePage.deleteResource('Shared', 'folder');
+    });
+
+    // turn these one if you need to clean up the workspace
+    it("should delete any test metadata from the workspace", function () {
+      workspacePage.deleteResource('Target', 'folder');
+    });
+
+    // turn these one if you need to clean up the workspace
+    it("should delete any test metadata from the workspace", function () {
+      workspacePage.deleteResource('Source', 'folder');
+    });
+
+  }
 
 
 });
