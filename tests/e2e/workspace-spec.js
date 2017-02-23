@@ -12,7 +12,7 @@ var sampleTemplateTitle;
 var sampleDescription;
 var sampleTemplateUrl;
 var sampleMetadataUrl;
-var pageName = 'template'; 
+var pageName = 'template';
 
 describe('workspace', function () {
   var EC = protractor.ExpectedConditions;
