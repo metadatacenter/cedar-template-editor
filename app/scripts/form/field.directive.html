@@ -1,5 +1,5 @@
 <div class="item-root field-root" id="{{$root.getDomId(field)}}"
-    ng-click="canSelect(!$root.isRuntime()); $event.preventDefault();">
+    ng-click="canSelect(!$root.isRuntime()); $event.preventDefault(); $event.stopPropagation()">
 
   <!-- field title first -->
   <div menuDropDownId="" ng-show="field.items && $root.isRuntime()"

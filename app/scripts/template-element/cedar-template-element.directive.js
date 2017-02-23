@@ -242,6 +242,7 @@ define([
 
       // try to select this element
       scope.canSelect = function (select) {
+        console.log('canSelect ' + select);
         if (select) {
           DataManipulationService.canSelect(scope.element);
         }

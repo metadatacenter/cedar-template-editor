@@ -550,6 +550,7 @@ define([
 
       // try to select this field
       $scope.canSelect = function (select) {
+        console.log('canSelect ' + select);
         var result = select;
         if (select) {
           result = DataManipulationService.canSelect($scope.field);

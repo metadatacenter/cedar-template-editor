@@ -41,6 +41,7 @@ var WorkspacePage = function () {
   var createTrashButton = createToolbar.element(by.css('#delete-tool button'));
   var createMoreOptionsButton = createToolbar.element(by.css('#more-options-tool > div > button'));
   var createPopulateResourceButton = createToolbar.element(by.css('#more-options-tool .populate'));
+  var createDeleteResourceButton = createToolbar.element(by.css('#more-options-tool .deleteResource'));
   var createEditResourceButton = createToolbar.element(by.css('#more-options-tool [ng-click="dc.editResource()"]'));
   var createMoveToResourceButton = createToolbar.element(by.css('#more-options-tool [ng-click="dc.showMoveModal(resource)"]'));
   var createOpenResourceButton = createToolbar.element(by.css('#more-options-tool [ng-click="dc.goToResource()"]'));
@@ -51,7 +52,8 @@ var WorkspacePage = function () {
   var createHideDetailsButton = createToolbar.element(by.css('#details-hide-tool [ng-click="dc.toggleInfoPanel()"]'));
   var createDetailsPanel = element(by.id('sidebar-right'));
   var createDetailsPanelTitle = createDetailsPanel.element(by.css('div > div.title.ng-binding.folder'));
-  var createDetailsPanelOwner = createDetailsPanel.element(by.css('div.info > div:nth-child(3)')).element(by.cssContainingText('div','Owner'));
+  var createDetailsPanelOwner = createDetailsPanel.element(by.css('div.info > div:nth-child(3)')).element(by.cssContainingText('div',
+      'Owner'));
   var createDetailsPanelOwnerValue = createDetailsPanelOwner.element(by.xpath('../div[@class="col-sm-8 ng-binding"]'));
   var createSortDropdownButton = createToolbar.element(by.css('#workspace-sort-tool [ng-click="dc.deleteResource()"]'));
   var createSortByNameMenuItem = createToolbar.element(by.css('#workspace-sort-tool [ng-click="dc.setSortOption(\\042name\\042)"]'));
@@ -67,6 +69,7 @@ var WorkspacePage = function () {
 
   // breadcrumbs
   var createBreadcrumb = element(by.css('.breadcrumbs-sb'));
+  var createBreadcrumbFirstFolder = element.all(by.css('.breadcrumbs-sb .folder-path')).first();
   var createBreadcrumbFolders = element(by.css('.breadcrumbs-sb')).all(by.repeater('folder in dc.pathInfo'));
   var createBreadcrumbSearch = element(by.css('.breadcrumbs-sb .search-result'));
   var createBreadcrumbUsersLink = createBreadcrumb.element(by.linkText("Users"));
@@ -77,6 +80,7 @@ var WorkspacePage = function () {
   var createTemplateButton = element(by.id('button-create-template'));
   var createElementButton = element(by.id('button-create-element '));
   var createFolderButton = element(by.id('button-create-folder'));
+  var createMetadataButton = element(by.id('button-save-metadata'));
   var createResourceButtons = {
     "template": createTemplateButton,
     "element" : createElementButton,
@@ -93,10 +97,9 @@ var WorkspacePage = function () {
 
   // share menu item from the option list following a right click on a resource
   var createRightClickMenuItemList = createCenterPanel.element(by.css('div > div > div > div.form-box-container.ng-scope.selected > div > div > ' +
-    'div.btn-group.dropdown.ng-scope.open > ul'));
+      'div.btn-group.dropdown.ng-scope.open > ul'));
   var createRightClickShareMenuItem = createRightClickMenuItemList.element(by.css('li > a[ng-click="dc.showShareModal(resource)"]'));
   var createRightClickRenameMenuItem = createRightClickMenuItemList.element(by.css('li > a[ng-click="dc.showRenameModal(resource)"]'));
-
 
 
   // access to locators
@@ -182,7 +185,7 @@ var WorkspacePage = function () {
     return createHideDetailsButton;
   };
   this.createDetailsPanel = function () {
-  return createDetailsPanel;
+    return createDetailsPanel;
   };
   this.createDetailsPanelTitle = function () {
     return createDetailsPanelTitle;
@@ -232,11 +235,30 @@ var WorkspacePage = function () {
     return type + getRandomInt(1, 9999999999);
   };
   this.createDescription = function (type) {
-    return type + ' description';
+    return type + getRandomInt(1, 9999999999) + ' description';
   };
 
-  // create a resource
-  this.createResource = function (type, title) {
+  this.onWorkspace = function () {
+    browser.wait(EC.presenceOf(element(by.css('.navbar.dashboard'))));
+  };
+
+  this.onMetadata = function () {
+    browser.wait(EC.presenceOf(element(by.css('.navbar.metadata'))));
+  };
+
+  this.hasControlBar = function () {
+    browser.wait(EC.presenceOf(element(by.css('.controls-bar'))));
+  };
+
+  this.hasLogo = function () {
+    browser.wait(EC.presenceOf(createLogo));
+  };
+
+
+
+
+  // create a template or folder resource and set the title, return to the workspace
+  this.createResource = function (type, title, description) {
 
     browser.wait(EC.visibilityOf(createButton));
     browser.wait(EC.elementToBeClickable(createButton));
@@ -256,8 +278,24 @@ var WorkspacePage = function () {
       createFolderSubmitButton.click();
     }
     else if (type === 'template') {
-      templateCreatorPage.setTitle('template', title);
+      if (title) {
+        templateCreatorPage.setTitle('template', title);
+      }
+      if (description) {
+        templateCreatorPage.setDescription('template', description);
+      }
       templateCreatorPage.clickSave('template');
+      toastyModal.isSuccess();
+      templateCreatorPage.clickBackArrow();
+    } else if (type === 'element') {
+      if (title) {
+        templateCreatorPage.setTitle('element', title);
+      }
+      if (description) {
+        templateCreatorPage.setDescription('element', description);
+      }
+      templateCreatorPage.clickSave('element');
+      toastyModal.isSuccess();
       templateCreatorPage.clickBackArrow();
     }
   };
@@ -280,11 +318,21 @@ var WorkspacePage = function () {
   // delete a resource
   this.deleteResource = function (name, type) {
     this.selectResource(name, type);
-    this.createTrashButton().click();
+
+    // create more on the toolbar
+    browser.wait(EC.visibilityOf(createMoreOptionsButton));
+    browser.wait(EC.elementToBeClickable(createMoreOptionsButton));
+    createMoreOptionsButton.click();
+
+    // delete menu item
+    browser.wait(EC.visibilityOf(createDeleteResourceButton));
+    browser.wait(EC.elementToBeClickable(createDeleteResourceButton));
+    createDeleteResourceButton.click();
+
     sweetAlertModal.confirm();
     toastyModal.isSuccess();
-    browser.wait(EC.elementToBeClickable(createLogo));
-    this.clickLogo();
+    this.clearSearch();
+
   };
 
   // populate a template resource
@@ -312,22 +360,24 @@ var WorkspacePage = function () {
   // search for a particular resource
   this.searchForResource = function (name, type) {
 
-    // find the resource
     createSearchNavInput.sendKeys(name + protractor.Key.ENTER);
     var createFirst = element.all(by.css(createFirstCss + type)).first();
     browser.wait(EC.visibilityOf(createFirst));
 
-    // clear the search
+  };
+
+
+  // clear any ongoing search
+  this.clearSearch = function () {
+
     browser.wait(EC.visibilityOf(createSearchNavClearButton));
     browser.wait(EC.elementToBeClickable(createSearchNavClearButton));
     createSearchNavClearButton.click();
-    browser.wait(EC.visibilityOf(createBreadcrumbFolders));
+    browser.wait(EC.visibilityOf(createBreadcrumbFirstFolder));
 
   };
 
 
-
-  // break populate into two steps, populate a template resource
   this.populateResource = function (name, type) {
 
     // find the resource
@@ -346,6 +396,18 @@ var WorkspacePage = function () {
     browser.wait(EC.visibilityOf(createPopulateResourceButton));
     browser.wait(EC.elementToBeClickable(createPopulateResourceButton));
     createPopulateResourceButton.click();
+
+    // save this instance and check for success
+    browser.wait(EC.visibilityOf(createMetadataButton));
+    browser.wait(EC.elementToBeClickable(createMetadataButton));
+    createMetadataButton.click();
+    toastyModal.isSuccess();
+
+    // return to workspace
+    var backArrow = element(by.css('.back-arrow-click'));
+    browser.wait(EC.visibilityOf(backArrow));
+    browser.wait(EC.elementToBeClickable(backArrow));
+    backArrow.click();
 
   };
 
@@ -390,7 +452,6 @@ var WorkspacePage = function () {
     browser.wait(EC.visibilityOf(createMoveToResourceButton));
     browser.wait(EC.elementToBeClickable(createMoveToResourceButton));
     createMoveToResourceButton.click();
-
 
 
   };
