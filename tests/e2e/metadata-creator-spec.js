@@ -50,6 +50,7 @@ describe('metadata-creator', function () {
 
   it("should create the sample template", function () {
     sampleTitle = workspacePage.createTitle('template');
+    console.log('sampleTitle' + sampleTitle);
     workspacePage.createResource('template', sampleTitle);
     workspacePage.onWorkspace();
   });
@@ -58,7 +59,8 @@ describe('metadata-creator', function () {
     browser.sleep(5000);
   });
 
-  it("should search for the sample template in the workspace " + sampleTitle, function () {
+  it("should search for the sample template in the workspace ", function () {
+    console.log('sampleTitle' + sampleTitle);
     workspacePage.searchForResource(sampleTitle, 'template');
     workspacePage.onWorkspace();
   });
