@@ -14,7 +14,7 @@ var sampleTemplateUrl;
 var sampleMetadataUrl;
 var pageName = 'template';
 
-xdescribe('workspace', function () {
+describe('workspace', function () {
   var EC = protractor.ExpectedConditions;
   var metadataPage;
   var workspacePage;
@@ -41,9 +41,7 @@ xdescribe('workspace', function () {
   });
 
   it("should have a logo", function () {
-
     browser.wait(EC.presenceOf(workspacePage.createLogo()));
-
   });
 
   for (var j = 0; j < 1; j++) {
@@ -51,62 +49,37 @@ xdescribe('workspace', function () {
 
       // functioning trash and options buttons
       it("should create a folder", function () {
-
         sampleTitle = workspacePage.createTitle('folder');
-
-        // create the folder
         workspacePage.createResource('folder', sampleTitle);
         toastyModal.isSuccess();
-
       });
 
-      // functioning trash and options buttons
-      it("should have trash and options buttons hidden, search, breadcrumbs, and create buttons visible", function () {
-
-        browser.wait(EC.invisibilityOf(workspacePage.createTrashButton()));
-        browser.wait(EC.invisibilityOf(workspacePage.createMoreOptionsButton()));
-
+      it("should have search visible and empty", function () {
         browser.wait(EC.visibilityOf(workspacePage.createSearchNav()));
         workspacePage.createSearchNavInput().getText().then(function (value) {
           expect(value).toBe('');
         });
-
-        browser.wait(EC.visibilityOf(workspacePage.createBreadcrumb()));
-        browser.wait(EC.visibilityOf(workspacePage.createButton()));
-
       });
 
-      xit("should open the folder in the bread crumb", function () {
+      it("should have breadcrumb visible and empty", function () {
+        browser.wait(EC.visibilityOf(workspacePage.createBreadcrumb()));
+      });
 
-        workspacePage.clickBreadcrumb(1);
-        workspacePage.clickLogo();
-
+      it("should have create visible and empty", function () {
+        browser.wait(EC.visibilityOf(workspacePage.createButton()));
       });
 
       // functioning trash and options buttons
-      it("should have trash and options button visible if folder is selected", function () {
-
+      it("should have more options button visible if folder is selected", function () {
         browser.wait(EC.elementToBeClickable(workspacePage.createFirstFolder()));
         workspacePage.createFirstFolder().click();
-
-        expect(workspacePage.createTrashButton().isPresent()).toBe(true);
         expect(workspacePage.createMoreOptionsButton().isPresent()).toBe(true);
-
       });
 
       it("should create a sample template", function () {
-
         sampleTemplateTitle = workspacePage.createTitle('template');
-
-        // create a template
-        workspacePage.createResource( 'template', sampleTemplateTitle);
-        templatePage.setTitle('template', sampleTemplateTitle);
-        templatePage.clickSave('template');
-
-        // go back to the workspace
-        templatePage.topNavBackArrow().click();
-
-
+        workspacePage.createResource( 'template', sampleTemplateTitle, "sample description");
+        workspacePage.onWorkspace();
       });
 
       // TODO not working on Travis
@@ -122,13 +95,24 @@ xdescribe('workspace', function () {
 
       });
 
-      it("should delete the sample folder", function () {
-
-        workspacePage.deleteResource(sampleTitle, 'folder');
-        sweetAlertModal.confirm();
-        toastyModal.isSuccess();
+      it("should open the folder in the bread crumb", function () {
+        workspacePage.clickBreadcrumb(1);
         workspacePage.clickLogo();
+      });
 
+      it("should delete the sample template", function () {
+        workspacePage.deleteResource(sampleTemplateTitle, 'template');
+        workspacePage.onWorkspace();
+      });
+
+      xit("should delete any sample folder", function () {
+        workspacePage.deleteResource('Readable', 'folder');
+        workspacePage.onWorkspace();
+      });
+
+      xit("should delete the any template", function () {
+        workspacePage.deleteResource('Readable', 'template');
+        workspacePage.onWorkspace();
       });
 
     })

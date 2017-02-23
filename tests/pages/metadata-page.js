@@ -1,6 +1,6 @@
 'use strict';
 
-require('../pages/workspace-page.js');
+//require('../pages/workspace-page.js');
 
 var MetadataPage = function () {
   //var url = 'https://cedar.metadatacenter.orgx/dashboard';

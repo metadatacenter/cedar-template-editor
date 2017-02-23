@@ -41,7 +41,6 @@ var WorkspacePage = function () {
   var createTrashButton = createToolbar.element(by.css('#delete-tool button'));
   var createMoreOptionsButton = createToolbar.element(by.css('#more-options-tool > div > button'));
   var createPopulateResourceButton = createToolbar.element(by.css('#more-options-tool .populate'));
-  var createDeleteResourceButton = createToolbar.element(by.css('#more-options-tool .deleteResource'));
   var createEditResourceButton = createToolbar.element(by.css('#more-options-tool [ng-click="dc.editResource()"]'));
   var createMoveToResourceButton = createToolbar.element(by.css('#more-options-tool [ng-click="dc.showMoveModal(resource)"]'));
   var createOpenResourceButton = createToolbar.element(by.css('#more-options-tool [ng-click="dc.goToResource()"]'));
@@ -224,16 +223,17 @@ var WorkspacePage = function () {
     browser.sleep(1000);
   };
 
-
   // create resources
   var getRandomInt = function (min, max) {
     min = Math.ceil(min);
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min)) + min;
   };
+
   this.createTitle = function (type) {
-    return type + getRandomInt(1, 9999999999);
+    return 'Protractor' + type + getRandomInt(1, 9999999999);
   };
+
   this.createDescription = function (type) {
     return type + getRandomInt(1, 9999999999) + ' description';
   };
@@ -253,8 +253,6 @@ var WorkspacePage = function () {
   this.hasLogo = function () {
     browser.wait(EC.presenceOf(createLogo));
   };
-
-
 
 
   // create a template or folder resource and set the title, return to the workspace
@@ -335,28 +333,6 @@ var WorkspacePage = function () {
 
   };
 
-  // populate a template resource
-  //this.populateResource = function (name, type) {
-  //
-  //  // find the resource
-  //  createSearchNavInput.sendKeys(name + protractor.Key.ENTER);
-  //  var createFirst = element.all(by.css(createFirstCss + type)).first();
-  //  browser.wait(EC.visibilityOf(createFirst));
-  //  browser.wait(EC.elementToBeClickable(createFirst));
-  //  createFirst.click();
-  //
-  //  // create more on the toolbar
-  //  browser.wait(EC.visibilityOf(createMoreOptionsButton));
-  //  browser.wait(EC.elementToBeClickable(createMoreOptionsButton));
-  //  createMoreOptionsButton.click();
-  //
-  //  // populate menu item
-  //  browser.wait(EC.visibilityOf(createPopulateResourceButton));
-  //  browser.wait(EC.elementToBeClickable(createPopulateResourceButton));
-  //  createPopulateResourceButton.click();
-  //
-  //};
-
   // search for a particular resource
   this.searchForResource = function (name, type) {
 
@@ -365,7 +341,6 @@ var WorkspacePage = function () {
     browser.wait(EC.visibilityOf(createFirst));
 
   };
-
 
   // clear any ongoing search
   this.clearSearch = function () {
@@ -376,7 +351,6 @@ var WorkspacePage = function () {
     browser.wait(EC.visibilityOf(createBreadcrumbFirstFolder));
 
   };
-
 
   this.populateResource = function (name, type) {
 

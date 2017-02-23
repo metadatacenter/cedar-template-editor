@@ -120,50 +120,6 @@ describe('template-creator', function () {
       "staticField"              : false,
       "allowsMultiple"           : true,
       "allowsValueRecommendation": false
-    },
-    {
-      "cedarType"                : "section-break",
-      "iconClass"                : "cedar-svg-section-break",
-      "allowedInElement"         : true,
-      "label"                    : "Section Break",
-      "primaryField"             : false,
-      "hasControlledTerms"       : false,
-      "staticField"              : true,
-      "allowsMultiple"           : false,
-      "allowsValueRecommendation": false
-    },
-    {
-      "cedarType"                : "richtext",
-      "iconClass"                : "cedar-svg-rich-text",
-      "allowedInElement"         : true,
-      "label"                    : "Rich Text",
-      "primaryField"             : false,
-      "hasControlledTerms"       : false,
-      "staticField"              : true,
-      "allowsMultiple"           : false,
-      "allowsValueRecommendation": false
-    },
-    {
-      "cedarType"                : "image",
-      "iconClass"                : "cedar-svg-image",
-      "allowedInElement"         : true,
-      "label"                    : "Image",
-      "primaryField"             : false,
-      "hasControlledTerms"       : false,
-      "staticField"              : true,
-      "allowsMultiple"           : false,
-      "allowsValueRecommendation": false
-    },
-    {
-      "cedarType"                : "youtube",
-      "iconClass"                : "cedar-svg-youtube",
-      "allowedInElement"         : true,
-      "label"                    : "YouTube Video",
-      "primaryField"             : false,
-      "hasControlledTerms"       : false,
-      "staticField"              : true,
-      "allowsMultiple"           : false,
-      "allowsValueRecommendation": false
     }
   ];
 
@@ -218,8 +174,7 @@ describe('template-creator', function () {
       });
 
       // for each field type
-      // TODO doesn't work for youtube
-      for (var k = 0; k < fieldTypes.length - 1; k++) {
+      for (var k = 0; k < fieldTypes.length; k++) {
         (function (fieldType) {
 
           var field = element(by.css('.field-root .' + fieldType.iconClass));
@@ -239,9 +194,12 @@ describe('template-creator', function () {
 
 
               // delete the field
+              // TODO the removeFieldButton in the templatePage is not working, but locally it is ok
               browser.actions().mouseMove(field).perform();
-              browser.wait(EC.elementToBeClickable(templatePage.removeFieldButton()));
-              templatePage.removeFieldButton().click();
+              var removeFieldButton = element(by.css('.field-root  [ng-click="delete(); $event.stopPropagation();"]'));
+              browser.wait(EC.visibilityOf(removeFieldButton));
+              browser.wait(EC.elementToBeClickable(removeFieldButton));
+              removeFieldButton.click();
               browser.wait(EC.stalenessOf(field));
 
               templatePage.topNavBackArrow().click();

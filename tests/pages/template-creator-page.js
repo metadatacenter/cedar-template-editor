@@ -973,62 +973,62 @@ var TemplateCreatorPage = function () {
         createClearElementButton.click();
       };
 
-      this.createElement = function () {
+      //this.createElement = function () {
+      //
+      //  var deferred = protractor.promise.defer();
+      //
+      //  isReady(createButton).then(function () {
+      //    browser.actions().mouseMove(createButton).perform().then(function () {
+      //      isReady(createElementButton).then(function () {
+      //        createElementButton.click().then(function () {
+      //          isReady(createElementPage).then(function () {
+      //            deferred.fulfill(true);
+      //
+      //          });
+      //        });
+      //      });
+      //    });
+      //  });
+      //  return deferred.promise;
+      //};
 
-        var deferred = protractor.promise.defer();
+      //this.setElementTitle = function (text) {
+      //
+      //  var deferred = protractor.promise.defer();
+      //
+      //  // should have an editable element title
+      //  isReady(elementTitle).then(function () {
+      //
+      //    browser.actions().doubleClick(elementTitle).perform().then(function () {
+      //      elementTitle.sendKeys(text).then(function () {
+      //        elementTitleForm.submit().then(function () {
+      //          deferred.fulfill(true);
+      //        });
+      //      });
+      //    });
+      //
+      //  });
+      //  return deferred.promise;
+      //};
 
-        isReady(createButton).then(function () {
-          browser.actions().mouseMove(createButton).perform().then(function () {
-            isReady(createElementButton).then(function () {
-              createElementButton.click().then(function () {
-                isReady(createElementPage).then(function () {
-                  deferred.fulfill(true);
-
-                });
-              });
-            });
-          });
-        });
-        return deferred.promise;
-      };
-
-      this.setElementTitle = function (text) {
-
-        var deferred = protractor.promise.defer();
-
-        // should have an editable element title
-        isReady(elementTitle).then(function () {
-
-          browser.actions().doubleClick(elementTitle).perform().then(function () {
-            elementTitle.sendKeys(text).then(function () {
-              elementTitleForm.submit().then(function () {
-                deferred.fulfill(true);
-              });
-            });
-          });
-
-        });
-        return deferred.promise;
-      };
-
-      this.setElementDescription = function (text) {
-
-        var deferred = protractor.promise.defer();
-
-        // should have an editable element description
-        isReady(elementDescription).then(function () {
-
-          browser.actions().doubleClick(elementDescription).perform().then(function () {
-            elementDescription.sendKeys(text).then(function () {
-              elementDescriptionForm.submit();
-              deferred.fulfill(true);
-            });
-          });
-        });
-
-        return deferred.promise;
-
-      };
+      //this.setElementDescription = function (text) {
+      //
+      //  var deferred = protractor.promise.defer();
+      //
+      //  // should have an editable element description
+      //  isReady(elementDescription).then(function () {
+      //
+      //    browser.actions().doubleClick(elementDescription).perform().then(function () {
+      //      elementDescription.sendKeys(text).then(function () {
+      //        elementDescriptionForm.submit();
+      //        deferred.fulfill(true);
+      //      });
+      //    });
+      //  });
+      //
+      //  return deferred.promise;
+      //
+      //};
 
 // sweet alerts
       this.clickSweetAlertCancelButton = function () {
@@ -1154,87 +1154,87 @@ var TemplateCreatorPage = function () {
         return require('../modals/finder-modal.js');
       };
 
-      this.addElement = function (title) {
-        var EC = protractor.ExpectedConditions;
-        var deferred = protractor.promise.defer();
-
-        // add an element
-        var finderPage = this.openFinder();
-
-        isReady(finderPage.createFinder()).then(function () {
-          isReady(finderPage.createSearchInput()).then(function () {
-
-            // search for the element
-            finderPage.createSearchInput().sendKeys(title).sendKeys(protractor.Key.ENTER).then(function () {
-
-              //browser.wait(EC.textToBePresentInElementValue($('#finder-search-input'), title)).then(function () {
-
-
-              isReady(finderPage.createDoSearch()).then(function () {
-                finderPage.createDoSearch().click().then(function () {
-                  browser.sleep(2000);
-                  isReady(finderPage.createSearchResult()).then(function () {
-
-                    finderPage.createListView().isPresent().then(function (isList) {
-
-                      if (isList) {
-
-                        isReady(finderPage.createFirstElementListView()).then(function () {
-                          finderPage.createFirstElementListView().click().then(function () {
-                            isReady(finderPage.createFirstSelectedElementListView()).then(function () {
-
-                              isReady(finderPage.createOpenButton()).then(function () {
-                                finderPage.createOpenButton().click().then(function () {
-                                  isReady(createToolbar).then(function () {
-
-                                    browser.sleep(1000);  // add time for animation
-                                    deferred.fulfill(true);
-                                  });
-                                });
-                              });
-                            });
-                          });
-                        });
-
-
-                      } else {
-
-                        var first = finderPage.createFirstElementGridView();
-                        isReady(first).then(function () {
-                          isReady(finderPage.createFirstElementGridView()).then(function () {
-
-                            finderPage.createFirstElementGridView().click();
-                            isReady(finderPage.createFirstSelectedElementGridView()).then(function () {
-
-                              browser.sleep(1000);
-                              isReady(finderPage.createOpenButton()).then(function () {
-
-                                browser.wait(finderPage.createOpenButton().isEnabled()).then(function () {
-                                  finderPage.createOpenButton().click().then(function () {
-
-                                    isReady(createToolbar).then(function () {
-
-                                      browser.sleep(1000);  // add time for animation
-                                      deferred.fulfill(true);
-                                    });
-                                  });
-                                });
-                              });
-                            });
-                          });
-                        });
-                      }
-                    });
-                  });
-                  //});
-                });
-              });
-            });
-          });
-        });
-
-        return deferred.promise;
-      };
+      //this.addElement = function (title) {
+      //  var EC = protractor.ExpectedConditions;
+      //  var deferred = protractor.promise.defer();
+      //
+      //  // add an element
+      //  var finderPage = this.openFinder();
+      //
+      //  isReady(finderPage.createFinder()).then(function () {
+      //    isReady(finderPage.createSearchInput()).then(function () {
+      //
+      //      // search for the element
+      //      finderPage.createSearchInput().sendKeys(title).sendKeys(protractor.Key.ENTER).then(function () {
+      //
+      //        //browser.wait(EC.textToBePresentInElementValue($('#finder-search-input'), title)).then(function () {
+      //
+      //
+      //        isReady(finderPage.createDoSearch()).then(function () {
+      //          finderPage.createDoSearch().click().then(function () {
+      //            browser.sleep(2000);
+      //            isReady(finderPage.createSearchResult()).then(function () {
+      //
+      //              finderPage.createListView().isPresent().then(function (isList) {
+      //
+      //                if (isList) {
+      //
+      //                  isReady(finderPage.createFirstElementListView()).then(function () {
+      //                    finderPage.createFirstElementListView().click().then(function () {
+      //                      isReady(finderPage.createFirstSelectedElementListView()).then(function () {
+      //
+      //                        isReady(finderPage.createOpenButton()).then(function () {
+      //                          finderPage.createOpenButton().click().then(function () {
+      //                            isReady(createToolbar).then(function () {
+      //
+      //                              browser.sleep(1000);  // add time for animation
+      //                              deferred.fulfill(true);
+      //                            });
+      //                          });
+      //                        });
+      //                      });
+      //                    });
+      //                  });
+      //
+      //
+      //                } else {
+      //
+      //                  var first = finderPage.createFirstElementGridView();
+      //                  isReady(first).then(function () {
+      //                    isReady(finderPage.createFirstElementGridView()).then(function () {
+      //
+      //                      finderPage.createFirstElementGridView().click();
+      //                      isReady(finderPage.createFirstSelectedElementGridView()).then(function () {
+      //
+      //                        browser.sleep(1000);
+      //                        isReady(finderPage.createOpenButton()).then(function () {
+      //
+      //                          browser.wait(finderPage.createOpenButton().isEnabled()).then(function () {
+      //                            finderPage.createOpenButton().click().then(function () {
+      //
+      //                              isReady(createToolbar).then(function () {
+      //
+      //                                browser.sleep(1000);  // add time for animation
+      //                                deferred.fulfill(true);
+      //                              });
+      //                            });
+      //                          });
+      //                        });
+      //                      });
+      //                    });
+      //                  });
+      //                }
+      //              });
+      //            });
+      //            //});
+      //          });
+      //        });
+      //      });
+      //    });
+      //  });
+      //
+      //  return deferred.promise;
+      //};
 
 
       this.getRandomInt = function (min, max) {
