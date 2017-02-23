@@ -1,6 +1,6 @@
 'use strict';
 
-require('../pages/workspace-page.js');
+//require('../pages/workspace-page.js');
 
 var MetadataPage = function () {
   //var url = 'https://cedar.metadatacenter.orgx/dashboard';
@@ -49,6 +49,10 @@ var MetadataPage = function () {
     min = Math.ceil(min);
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min)) + min;
+  };
+
+  this.onMetadata = function () {
+    browser.wait(EC.presenceOf(element(by.css('.navbar.metadata'))));
   };
 
   this.test = function () {

@@ -8,15 +8,13 @@ define([
 
 
   fieldToolbar.$inject = ["$rootScope", "$sce", "$document", "$translate", "$filter", "$location",
-                            "$window", '$timeout'];
+                          "$window", '$timeout'];
 
   function fieldToolbar($rootScope, $sce, $document, $translate, $filter, $location, $window,
-                          $timeout) {
+                        $timeout) {
 
 
     var linker = function ($scope, $element, attrs) {
-
-
 
 
     };
@@ -25,22 +23,29 @@ define([
       templateUrl: 'scripts/form/field-toolbar.directive.html',
       restrict   : 'EA',
       scope      : {
-        field: "=",
-        model: '=',
-        index     : '=',
-        remove   : "=",
-        add   : "=",
-        close : "=",
-        isActive: '=',
-        setActive: '=',
-        isMultiple: '=',
-        description: '=',
-        toggle:  '=',
+        field       : "=",
+        model       : '=',
+        index       : '=',
+        remove      : "=",
+        add         : "=",
+        close       : "=",
+        isActive    : '=',
+        setActive   : '=',
+        isMultiple  : '=',
+        description : '=',
+        toggle      : '=',
         showMultiple: '=',
         cardinality : "=",
-        spreadsheet: "=",
-        expandAll: '=',
-        isExpandable: '='
+        spreadsheet : "=",
+        expandAll   : '=',
+        isExpandable: '=',
+        values      : '=',
+        min         : '=',
+        max         : '=',
+        select      : '=',
+        range       : '=',
+        isField: '='
+
       },
       controller : function ($scope, $element) {
 

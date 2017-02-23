@@ -45,7 +45,7 @@
               <li ng-if="dc.canWrite()"><a href="#" ng-click="dc.showMoveModal(resource)">Move to...</a></li>
               <li ng-if="dc.canWrite()"><a href="#" ng-click="dc.showRenameModal(resource)">Rename...</a></li>
               <li ng-if="dc.canWrite()" role="separator" class="divider"></li>
-              <li ng-if="dc.canWrite()"><a href="#" ng-click="dc.deleteResource(resource)">Delete</a></li>
+              <li ng-if="dc.canWrite()"><a href="#" class="deleteResource" ng-click="dc.deleteResource(resource)">Delete</a></li>
             </ul>
           </div>
         </li>
@@ -376,7 +376,7 @@
                           <li><a href="#" ng-click="dc.showMoveModal(resource)">Move to...</a></li>
                           <li><a href="#" ng-click="dc.showRenameModal(resource)">Rename...</a></li>
                           <li role="separator" class="divider"></li>
-                          <li><a href="#" ng-click="dc.deleteResource(resource)">Delete</a></li>
+                          <li><a href="#" class="deleteResource" ng-click="dc.deleteResource(resource)">Delete</a></li>
                         </ul>
                       </div>
                     </div>
@@ -428,7 +428,7 @@
                           <li ng-if="dc.canWrite()"><a href="#" ng-click="dc.showMoveModal(resource)">Move to...</a></li>
                           <li ng-if="dc.canWrite()"><a href="#" ng-click="dc.showRenameModal(resource)">Rename...</a></li>
                           <li role="separator" class="divider"></li>
-                          <li ng-if="dc.canWrite()"><a href="#" ng-click="dc.deleteResource(resource)">Delete</a></li>
+                          <li ng-if="dc.canWrite()"><a href="#" class="deleteResource" ng-click="dc.deleteResource(resource)">Delete</a></li>
                         </ul>
                         <!-- need to duplicate these blocks because otherwise the popup flickers --->
                         <ul ng-if="!dc.isTemplate()" class="dropdown-menu"
@@ -441,7 +441,7 @@
                           <li ng-if="dc.canWrite()"><a href="#" ng-click="dc.showMoveModal(resource)">Move to...</a></li>
                           <li ng-if="dc.canWrite()"><a href="#" ng-click="dc.showRenameModal(resource)">Rename...</a></li>
                           <li role="separator" class="divider"></li>
-                          <li ng-if="dc.canWrite()"><a href="#" ng-click="dc.deleteResource(resource)">Delete</a></li>
+                          <li ng-if="dc.canWrite()"><a href="#" class="deleteResource" ng-click="dc.deleteResource(resource)">Delete</a></li>
                         </ul>
                       </div>
                     </div>
@@ -489,7 +489,7 @@
                         <li ng-if="dc.canWrite()"><a href="#" ng-click="dc.showMoveModal(resource)">Move to...</a></li>
                         <li ng-if="dc.canWrite()"><a href="#" ng-click="dc.showRenameModal(resource)">Rename...</a></li>
                         <li ng-if="dc.canWrite()" role="separator" class="divider"></li>
-                        <li ng-if="dc.canWrite()"><a href="#" ng-click="dc.deleteResource(resource)">Delete</a></li>
+                        <li ng-if="dc.canWrite()"><a href="#" class="deleteResource" ng-click="dc.deleteResource(resource)">Delete</a></li>
                       </ul>
                     </div>
                   </div>
@@ -528,7 +528,7 @@
                         <li ng-if="dc.canWrite()"><a href="#" ng-click="dc.showMoveModal(resource)">Move to...</a></li>
                         <li ng-if="dc.canWrite()"><a href="#" ng-click="dc.showRenameModal(resource)">Rename...</a></li>
                         <li ng-if="dc.canWrite()" role="separator" class="divider"></li>
-                        <li ng-if="dc.canWrite()"><a href="#" ng-click="dc.deleteResource(resource)">Delete</a></li>
+                        <li ng-if="dc.canWrite()"><a href="#" class="deleteResource" ng-click="dc.deleteResource(resource)">Delete</a></li>
                       </ul>
                     </div>
                   </div>

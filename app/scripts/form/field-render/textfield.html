@@ -81,7 +81,6 @@
   <!-- LIST OF TEXT FIELDS (Minimum cardinality = 0) -->
   <div ng-if="$root.isArray(model) && model.length==0 " class="form-group floating-label-wrapper has-feedback"
       ng-class="{'required': $root.schemaOf(field)._valueConstraints.requiredValue}">
-
     <input type="text"
         class="form-control has-success has-feedback"
         ng-class="{'required': $root.schemaOf(field)._valueConstraints.requiredValue}"
@@ -99,7 +98,7 @@
       ng-repeat="(index, valueElement) in model">
 
     <!--Regular field-->
-    <div ng-if="!$root.hasValueConstraint($root.schemaOf(field)._valueConstraints)" class="has-no-constraint">
+    <div ng-if="!$root.hasValueConstraint($root.schemaOf(field)._valueConstraints) && !$root.vrs.getIsValueRecommendationEnabled($root.schemaOf(field))" class="has-no-constraint">
       <input type="text"
           class="form-control has-success has-feedback"
           ng-change="setDefaultValueIfEmpty(model)"
@@ -168,7 +167,6 @@
             <span ng-if="option.valueUri != undefined">({{$root.cts.getAcronymFromTermUri(option.valueUri)}})</span>&nbsp;
             <small ng-if="option.score != undefined">(<span>{{calculateUIScore(option.score)}}</span>)</small>
             &nbsp;
-            <!--<small ng-if="option.type!=undefined"><span>{{getRecommendationType(option.type)}}</span></small>-->
           </div>
         </ui-select-choices>
       </ui-select>
@@ -176,7 +174,6 @@
       &nbsp;
       <div class="input-indicator-icons" ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
     </div>
-    <!-- end of Field with value recommendation functionality -->
 
     <div ng-if="$root.isRuntime()" class="more-input-wrapper "
         ng-include="'scripts/form/partials/more-input-buttons.partial.html'"

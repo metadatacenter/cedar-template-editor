@@ -187,6 +187,16 @@ define([
         return false;
       };
 
+      $scope.isField = function () {
+
+        console.log('isField true');
+        return true;
+      };
+
+      $scope.isElement = function () {
+        return false;
+      };
+
       $scope.expandAll = function () {
       };
 
@@ -246,12 +256,22 @@ define([
 
       // string together the values for a checkbox, list or radio item
       $scope.getValueString = function (valueElement) {
+
         var result = ' ';
+
         for (var i = 0; i < valueElement.length; i++) {
-          if (valueElement[i]['@value']) {
-            result += valueElement[i]['@value'];
+          var fieldValueLabel = null;
+          if (valueElement[i]['@value'] && valueElement[i]['@value'] != null) {
+            fieldValueLabel = '@value';
+          }
+          else if (valueElement[i]['@id'] && valueElement[i]['@id'] != null) {
+            fieldValueLabel = '_valueLabel';
+          }
+          if (fieldValueLabel != null) {
+            result += valueElement[i][fieldValueLabel];
             if (i < valueElement.length - 1) {
               result += ', ';
+
             }
           }
         }
@@ -286,6 +306,7 @@ define([
       $scope.setActive = function (index, value, other) {
 
 
+
         // off or on
         var active = (typeof value === "undefined") ? true : value;
         var locator = $scope.getLocator(index);
@@ -313,6 +334,10 @@ define([
             $document.bind('keypress', function (e) {
               $scope.isSubmit(e, index);
             });
+            $document.unbind('keyup');
+            $document.bind('keyup', function (e) {
+              $scope.isSubmit(e, index);
+            });
 
           } else {
             // set blur and force a redraw
@@ -329,40 +354,43 @@ define([
       // scroll within the template to the field with the locator, focus and select the tag
       $scope.scrollToLocator = function (locator, tag) {
 
-          $scope.setHeight = function () {
+        $scope.setHeight = function () {
 
-            var target = angular.element('#' + locator);
-            if (target && target.offset()) {
 
-              // apply any changes first before examining dom elements
-              $scope.$apply();
+          // apply any changes first before examining dom elements
+          $scope.$apply();
 
-              var window = angular.element($window);
-              var windowHeight = $(window).height();
-              var target = jQuery("#" + locator);
-              if (target) {
+          var window = angular.element($window);
+          var windowHeight = $(window).height();
+          var target = jQuery("#" + locator);
+          if (target) {
+            console.log('scrollToLocator found target' + locator + ' ' + tag);
 
-                var targetTop = target.offset().top;
-                var targetHeight = target.outerHeight(true);
-                var scrollTop = jQuery('.template-container').scrollTop();
-                var newTop = scrollTop + targetTop - ( windowHeight - targetHeight ) / 2;
+            var targetTop = target.offset().top;
+            var targetHeight = target.outerHeight(true);
+            var scrollTop = jQuery('.template-container').scrollTop();
+            var newTop = scrollTop + targetTop - ( windowHeight - targetHeight ) / 2;
 
-                jQuery('.template-container').animate({scrollTop: newTop}, 'fast');
 
-                // focus and maybe select the tag
-                if (tag) {
-                  var e = jQuery("#" + locator + ' ' + tag);
-                  if (e.length) {
-                    e[0].focus();
-                    if (!e.is('select')) {
-                      e[0].select();
-                    }
-                  }
+            console.log('scroll from ' + scrollTop + ' to ' + newTop);
+            console.log('targetHeight ' + targetHeight + ' targetTop ' + targetTop +  ' windowHeight ' + windowHeight) ;
+
+            jQuery('.template-container').animate({scrollTop: newTop}, 'fast');
+
+            // focus and maybe select the tag
+            if (tag) {
+              var e = jQuery("#" + locator + ' ' + tag);
+              if (e.length) {
+                e[0].focus();
+                if (!e.is('select')) {
+                  e[0].select();
                 }
               }
             }
-          };
-          $timeout($scope.setHeight, 100);
+          }
+        };
+
+        $timeout($scope.setHeight, 100);
 
       };
 
@@ -400,7 +428,7 @@ define([
             if (next != null) {
               $scope.setActive(next, true);
             } else {
-              if (index+1 < $scope.model.length) {
+              if (index + 1 < $scope.model.length) {
                 $scope.setActive(index + 1, true);
               }
             }
@@ -415,7 +443,11 @@ define([
 
       // is this a submit?  shift-enter qualifies as a submit for any field
       $scope.isSubmit = function (keyEvent, index) {
-        if (keyEvent.which === 13 && keyEvent.ctrlKey) {
+        if (keyEvent.type === 'keypress' && keyEvent.which === 13 && keyEvent.ctrlKey) {
+          $scope.onSubmit(index);
+        }
+        if (keyEvent.type === 'keyup' && keyEvent.which === 9) {
+          keyEvent.preventDefault();
           $scope.onSubmit(index);
         }
       };

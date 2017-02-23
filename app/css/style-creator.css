@@ -9081,6 +9081,16 @@ button.close {
   height: 100% !important;
   opacity: 0;
 }
+/* Overriding Bootstrap library variables */
+/* Definine local variables */
+/*
+  blue green combo
+ 557260	6A8B92	8A9875	34626B	EAEEEA	3291B1
+ */
+/*@button-template:#5795ba;*/
+/*@header-metadata:#557260;
+@header-metadata:#9a9a75;*/
+/* Definine local mixins */
 .activ-grotesk-regular {
   font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
   font-weight: 400;
@@ -11334,7 +11344,7 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
 }
 .template-body form .build .form-group .input-indicator-icons .cedar-svg-check-circle,
 #element_control_term .form-group .input-indicator-icons .cedar-svg-check-circle {
-  color: #5795ba;
+  color: #0ab831;
   display: none;
 }
 .template-body form .build .form-group .input-indicator-icons .cedar-svg-help-circle,
@@ -11617,13 +11627,9 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
 ================================================
 */
 .template-body form .runtime {
-  line-height: 1.8em;
-  font-size: 1.1em;
-  /* horizontal line on inner list items */
-  /* vertical line on list items */
+  font-size: 16px;
   /* lower line on list items from the first level because they don't have parents */
   /* hide line from the last of the first level list items */
-  /* first field */
   /*  very first field or element */
 }
 .template-body form .runtime .treeview,
@@ -11633,9 +11639,16 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   padding: 0;
   position: relative;
 }
+.template-body form .runtime .treeview {
+  /* horizontal line on inner list items */
+  /* horizontal line on inner list items */
+  /* horizontal line on inner list items */
+  /* vertical line on list items */
+  /* first field */
+}
 .template-body form .runtime .treeview li.tv {
   margin: 0;
-  padding: 0 12px;
+  padding: 0 0 0 12px;
   position: relative;
 }
 .template-body form .runtime .treeview li.tv::before,
@@ -11645,22 +11658,22 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   left: 0;
 }
 .template-body form .runtime .treeview li.tv::before {
-  border-top: 1px solid #999;
-  top: 10px;
+  border-top: 1px solid #9E9E9E;
+  top: 15px;
   width: 10px;
   height: 0;
 }
+.template-body form .runtime .treeview li.tv::before {
+  width: 10px;
+}
+.template-body form .runtime .treeview li.tv.element::before {
+  width: 10px;
+}
 .template-body form .runtime .treeview li.tv::after {
-  border-left: 1px solid #999;
+  border-left: 1px solid #9E9E9E;
   height: 100%;
   width: 0px;
-  top: -16px;
-}
-.template-body form .runtime .treeview > li.tv::after {
-  top: 10px;
-}
-.template-body form .runtime .treeview > li.tv:last-child::after {
-  display: none;
+  top: -20px;
 }
 .template-body form .runtime .treeview li.tv.first::after {
   top: 0;
@@ -11668,14 +11681,20 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
 }
 .template-body form .runtime .treeview li.tv.first.last::after {
   top: 0;
-  height: 10px;
+  height: 15px;
 }
 .template-body form .runtime .treeview li.tv.first.element::after {
   top: 0;
-  height: 10px;
+  height: 16px;
+}
+.template-body form .runtime .treeview > li.tv::after {
+  top: 15px;
+}
+.template-body form .runtime .treeview > li.tv:last-child::after {
+  display: none;
 }
 .template-body form .runtime .treeview > li.tv.first::after {
-  top: 10px;
+  top: 15px;
   height: 100%;
 }
 .template-body form .runtime .paging {
@@ -11685,33 +11704,46 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
 .template-body form .runtime .paging li a {
   padding: 3px 6px;
   background-color: #e8e8e8;
+  font-size: 12px;
 }
 .template-body form .runtime .paging li.active a {
   background-color: #5795ba;
 }
 .template-body form .runtime .active-container {
-  border-left: 1px solid #f8f8f8;
+  border-left: 1px solid #F0F0F0;
   position: relative;
   right: 0;
-  background: #f8f8f8;
+  background: #F0F0F0;
 }
 .template-body form .runtime.page {
-  margin-top: 100px;
-  margin-bottom: 100px;
+  margin-top: 10px;
+  margin-bottom: 10px;
   position: relative;
 }
 .template-body form .runtime .toolbar {
   padding: 0px 22px 0 0;
+  font-size: 18px;
+  visibility: hidden;
+}
+.template-body form .runtime .toolbar button,
+.template-body form .runtime .toolbar .paging {
+  background-color: #F0F0F0;
+}
+.template-body form .runtime .row:hover .toolbar {
+  visibility: visible;
 }
 .template-body form .runtime .answer {
   border: 1px solid transparent;
-  font-size: 1.1em;
+  font-size: 1em;
   cursor: pointer;
-  line-height: 20px;
-  min-height: 25px;
-  padding: 2px;
-  margin-bottom: 1px;
-  margin-right: 1px;
+  padding-top: 4px;
+  min-height: 30px;
+  padding-left: 10px;
+}
+.template-body form .runtime .answer .edit {
+  visibility: hidden;
+  margin-right: 20px;
+  color: #9E9E9E;
 }
 @media (max-width: 768px) {
   .template-body form .runtime .answer {
@@ -11748,25 +11780,32 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
 .template-body form .runtime .row.isActive .answer,
 .template-body form .runtime .row:hover .answer {
   border: 1px solid #ccc;
-  background: #fff;
+  background: #f8f8f8;
+}
+.template-body form .runtime .row.isActive .answer .edit,
+.template-body form .runtime .row:hover .answer .edit {
+  visibility: visible;
 }
 .template-body form .runtime .title {
-  font-size: 1.1em;
+  text-align: left;
+  display: table-cell;
+  vertical-align: middle;
+  height: 35px;
   font-family: "Source Sans Pro", sans-serif;
-  font-weight: 200;
+  font-weight: normal;
   border: 1px solid transparent;
-  line-height: 20px;
+  background-color: #F0F0F0;
 }
 .template-body form .runtime .title .count {
   font-size: smaller;
 }
 .template-body form .runtime .title.field {
-  font-size: 1.1em;
   color: #666;
 }
 .template-body form .runtime .title.element {
-  font-size: 1.2em;
   color: #71977F;
+  position: relative;
+  left: -5px;
 }
 .template-body form .runtime .title.form {
   font-size: 1.2em;
@@ -11797,6 +11836,15 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
 .template-body form .runtime button.expand-all {
   color: #999;
 }
+.template-body form .runtime button.expand {
+  margin-right: 0;
+  padding-right: 0;
+  margin-left: 0;
+  padding-left: 0;
+}
+.template-body form .runtime button.edit {
+  color: #999;
+}
 .template-body form .runtime button.remove {
   color: #999;
 }
@@ -11804,7 +11852,6 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   color: #999;
 }
 .template-body form .runtime button i {
-  font-size: 20px;
   min-width: 12px;
 }
 .template-body form .runtime button:disabled {
@@ -11862,14 +11909,6 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   top: 14px;
   left: -16px;
 }
-.template-body form .runtime .element-root .element .row .toolbar,
-.template-body form .runtime .element-root .element .row .paging {
-  visibility: hidden;
-}
-.template-body form .runtime .element-root .element .row:hover .toolbar,
-.template-body form .runtime .element-root .element .row:hover .paging {
-  visibility: visible;
-}
 .template-body form .runtime .field-root {
   padding: 0px;
   border-width: 0px;
@@ -11913,7 +11952,7 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
 }
 .template-body form .runtime .field-root input {
   border-width: 0px;
-  background: transparent;
+  background: #fff;
   height: 20px;
 }
 .template-body form .runtime .field-root input.isActive {
@@ -11921,7 +11960,7 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
 }
 .template-body form .runtime .field-root select {
   border-width: 0px;
-  background: transparent;
+  background: #fff;
   padding-top: 10px;
 }
 .template-body form .runtime .field-root select.isActive {
@@ -11932,7 +11971,7 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
 }
 .template-body form .runtime .field-root textarea {
   border-width: 0px;
-  background: transparent;
+  background: #fff;
   padding-top: 10px;
 }
 .template-body form .runtime .field-root textarea.isActive {
@@ -11961,7 +12000,7 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
 }
 .template-body form .runtime .form-group .bootstrap-select,
 .template-body form .runtime .input-group .bootstrap-select {
-  background: transparent;
+  background: #fff;
 }
 .template-body form .runtime .form-group .bootstrap-select .btn-select-picker,
 .template-body form .runtime .input-group .bootstrap-select .btn-select-picker {
@@ -11987,7 +12026,7 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
 }
 .template-body form .runtime .form-group .input-indicator-icons .cedar-svg-check-circle,
 .template-body form .runtime .input-group .input-indicator-icons .cedar-svg-check-circle {
-  color: #5795ba;
+  color: #0ab831;
   display: none;
 }
 .template-body form .runtime .form-group .input-indicator-icons .cedar-svg-help-circle,
@@ -12237,7 +12276,7 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   padding-right: 10px;
 }
 .edit-actions {
-  border-top: 1px solid #ddd;
+  border-top: 1px solid transparent;
   padding: 10px 0;
   text-align: center;
   height: 300px;
@@ -14655,6 +14694,7 @@ table.apiKey td {
   padding: 5px;
   margin: 0px;
 }
+/* Always show scroll bars */
 ::-webkit-scrollbar {
   -webkit-appearance: none;
 }
@@ -14670,12 +14710,13 @@ table.apiKey td {
   background-color: #ddd;
 }
 ::-webkit-scrollbar-track {
-  background-color: #F8F8F8;
+  background-color: #F0F0F0;
   border-radius: 0px;
 }
 ::-webkit-scrollbar-corner {
-  background-color: #F8F8F8;
+  background-color: #F0F0F0;
 }
+/* Placeholder color */
 ::-webkit-input-placeholder {
   /* WebKit, Blink, Edge */
   color: #bebebe;
@@ -14694,6 +14735,7 @@ table.apiKey td {
   /* Internet Explorer 10-11 */
   color: #bebebe;
 }
+/* finder */
 .finder-modal {
   margin: auto;
 }
@@ -14836,7 +14878,7 @@ table.apiKey td {
   padding: 10px 0 0 10px;
 }
 .finder-modal .modal-body {
-  background: #F8F8F8;
+  background: #F0F0F0;
   padding: 0;
   height: 400px;
 }
@@ -15622,7 +15664,7 @@ table.apiKey td {
 @media (max-width: 768px) {
   body {
     height: 100%;
-    background-color: #F8F8F8;
+    background-color: #F0F0F0;
     overflow-y: auto;
   }
 }
