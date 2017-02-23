@@ -34,9 +34,7 @@ describe('update-description', function () {
 
     // change description
     workspacePage.createRightClickInfoMenuItem().click();
-    workspacePage.createDetailsPanelDescriptionEditButton().click();
-    workspacePage.createDetailsPanelDescription().sendKeys('New description' + protractor.Key.ENTER);
-    toastyModal.isError();
+    expect(workspacePage.createDetailsPanelDescriptionEditButton().isDisplayed()).toBe(false);
   });
 
 
@@ -70,9 +68,7 @@ describe('update-description', function () {
 
     // change description
     workspacePage.createRightClickInfoMenuItem().click();
-    workspacePage.createDetailsPanelDescriptionEditButton().click();
-    workspacePage.createDetailsPanelDescription().sendKeys('New description' + protractor.Key.ENTER);
-    toastyModal.isError();
+    expect(workspacePage.createDetailsPanelDescriptionEditButton().isDisplayed()).toBe(false);
   });
 
 

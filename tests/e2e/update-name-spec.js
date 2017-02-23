@@ -3,20 +3,23 @@ var WorkspacePage = require('../pages/workspace-new-page.js');
 var ToastyModal = require('../modals/toasty-modal.js');
 var ShareModal = require('../modals/share-modal.js');
 var RenameModal = require('../modals/rename-modal.js');
+var SweetAlertModal = require('../modals/sweet-alert-modal.js');
 var testConfig = require('../config/test-env.js');
 var permissions = require('../config/permissions.js');
 
-xdescribe('update-name', function () {
+describe('update-name', function () {
   var workspacePage;
   var toastyModal;
   var shareModal;
   var renameModal;
+  var sweetAlertModal;
 
   beforeEach(function () {
     workspacePage = WorkspacePage;
     toastyModal = ToastyModal;
     shareModal = ShareModal;
     renameModal = RenameModal;
+    sweetAlertModal = SweetAlertModal;
     browser.driver.manage().window().maximize();
   });
 
@@ -39,7 +42,8 @@ xdescribe('update-name', function () {
     var newFolderName = workspacePage.createTitle('NewReadable');
     workspacePage.createRightClickRenameMenuItem().click();
     renameModal.renameTo(newFolderName);
-    toastyModal.isError();
+    sweetAlertModal.hasInsufficientPermissions();
+    sweetAlertModal.confirm();
   });
 
 
@@ -57,7 +61,8 @@ xdescribe('update-name', function () {
     var newFolderName = workspacePage.createTitle('NewReadable');
     workspacePage.createRightClickRenameMenuItem().click();
     renameModal.renameTo(newFolderName);
-    toastyModal.isError();
+    sweetAlertModal.hasInsufficientPermissions();
+    sweetAlertModal.confirm();
   });
 
 

@@ -4,7 +4,7 @@ var ShareModal = require('../modals/share-modal.js');
 var testConfig = require('../config/test-env.js');
 var permissions = require('../config/permissions.js');
 
-xdescribe('update-permissions', function () {
+describe('update-permissions', function () {
   var workspacePage;
   var shareModal;
 

@@ -210,9 +210,8 @@ var ShareModal = function () {
 
   this.clickDone = function() {
     var doneButton = this.createShareModalDoneButton();
-    browser.wait(EC.visibilityOf(doneButton));
-    browser.wait(EC.elementToBeClickable(doneButton));
     doneButton.click();
+    browser.wait(EC.stalenessOf(doneButton));
   }
 
 

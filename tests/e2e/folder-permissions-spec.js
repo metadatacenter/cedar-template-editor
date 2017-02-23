@@ -7,7 +7,7 @@ var SweetAlertModal = require('../modals/sweet-alert-modal.js');
 var testConfig = require('../config/test-env.js');
 var permissions = require('../config/permissions.js');
 
-xdescribe('folder-permissions', function () {
+describe('folder-permissions', function () {
   var workspacePage;
   var toastyModal;
   var moveModal;
@@ -40,7 +40,7 @@ xdescribe('folder-permissions', function () {
   });
 
 
-  it("should move a folder owned by current user to an unwritable folder, step 1", function () {
+  it("should move a folder owned by current user to an unwritable folder", function () {
     // create a folder to share with another user
     var sharedFolderTitle = workspacePage.createFolder('Shared');
 

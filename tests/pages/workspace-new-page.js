@@ -51,10 +51,9 @@ var WorkspacePage = function () {
   var createHideDetailsButton = createToolbar.element(by.css('#details-hide-tool [ng-click="dc.toggleInfoPanel()"]'));
   var createDetailsPanel = element(by.id('sidebar-right'));
   var createDetailsPanelTitle = createDetailsPanel.element(by.css('div > div.title.ng-binding.folder'));
-  var createDetailsPanelOwner = createDetailsPanel.element(by.css('div.info > div:nth-child(3)')).element(by.cssContainingText('div','Owner'));
-  var createDetailsPanelOwnerValue = createDetailsPanelOwner.element(by.xpath('../div[@class="col-sm-8 ng-binding"]'));
+  var createDetailsPanelOwnerValue = createDetailsPanel.element(by.css('div.info > div > div.owner'));
   var createDetailsPanelDescription = createDetailsPanel.element(by.id('edit-description'));
-  var createDetailsPanelDescriptionEditButton = createDetailsPanel.element(by.css('div.description > div.edit.pull-right.ng-scope > button'));
+  var createDetailsPanelDescriptionEditButton = createDetailsPanel.element(by.css('div.description > div.edit > button'));
   var createSortDropdownButton = createToolbar.element(by.css('#workspace-sort-tool [ng-click="dc.deleteResource()"]'));
   var createSortByNameMenuItem = createToolbar.element(by.css('#workspace-sort-tool [ng-click="dc.setSortOption(\\042name\\042)"]'));
   var createSortByCreatedMenuItem = createToolbar.element(by.css('#workspace-sort-tool [ng-click="dc.setSortOption(\\042createdOnTS\\042)"]'));
@@ -98,7 +97,7 @@ var WorkspacePage = function () {
     'div.btn-group.dropdown.ng-scope.open > ul'));
   var createRightClickShareMenuItem = createRightClickMenuItemList.element(by.css('li > a[ng-click="dc.showShareModal(resource)"]'));
   var createRightClickRenameMenuItem = createRightClickMenuItemList.element(by.css('li > a[ng-click="dc.showRenameModal(resource)"]'));
-  var createRightClickInfoMenuItem = createRightClickMenuItemList.element(by.css('li > a[ng-click="dc.showInfoPanel(resource)"]'));
+  var createRightClickInfoMenuItem = createRightClickMenuItemList.element(by.css('li > a[ng-click="dc.showInfoPanel()"]'));
   var createRightClickMoveToMenuItem = createRightClickMenuItemList.element(by.css('li > a[ng-click="dc.showMoveModal(resource)"]'));
 
 
@@ -202,9 +201,6 @@ var WorkspacePage = function () {
   };
   this.createFolderSubmitButton = function () {
     return createFolderSubmitButton;
-  };
-  this.createDetailsPanelOwner = function () {
-    return createDetailsPanelOwner;
   };
   this.createDetailsPanelOwnerValue = function () {
     return createDetailsPanelOwnerValue;
@@ -389,26 +385,8 @@ var WorkspacePage = function () {
 
   // move a resource
   this.moveResource = function (name, type) {
-
-    // search for the resource
-    createSearchNavInput.sendKeys(name + protractor.Key.ENTER);
-    var createFirst = element.all(by.css(createFirstCss + type)).first();
-    browser.wait(EC.visibilityOf(createFirst));
-    browser.wait(EC.elementToBeClickable(createFirst));
-    createFirst.click();
-
-    // create more on the toolbar
-    browser.wait(EC.visibilityOf(createMoreOptionsButton));
-    browser.wait(EC.elementToBeClickable(createMoreOptionsButton));
-    createMoreOptionsButton.click();
-
-    // move menu item
-    browser.wait(EC.visibilityOf(createMoveToResourceButton));
-    browser.wait(EC.elementToBeClickable(createMoveToResourceButton));
-    createMoveToResourceButton.click();
-
-
-
+    this.rightClickResource(name, type);
+    this.createRightClickMoveToMenuItem().click();
   };
 
   this.selectResource = function (name, type) {

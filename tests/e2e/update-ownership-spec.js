@@ -3,9 +3,8 @@ var WorkspacePage = require('../pages/workspace-new-page.js');
 var ShareModal = require('../modals/share-modal.js');
 var testConfig = require('../config/test-env.js');
 var permissions = require('../config/permissions.js');
-var EC = protractor.ExpectedConditions;
 
-xdescribe('update-ownership', function () {
+describe('update-ownership', function () {
   var workspacePage;
   var shareModal;
 
@@ -20,7 +19,7 @@ xdescribe('update-ownership', function () {
   });
 
 
-  xit("should give ownership of a folder owned by current user to another user", function () {
+  it("should give ownership of a folder owned by current user to another user", function () {
     var folder = workspacePage.createFolder('Owned');
 
     // change ownership of created folder to another user
@@ -28,13 +27,11 @@ xdescribe('update-ownership', function () {
     workspacePage.clickLogo();
 
     // select resource and open details sidebar
-    workspacePage.selectResource(folder, 'folder');
-    var sidebarBtn = workspacePage.createViewDetailsButton();
-    browser.wait(EC.elementToBeClickable(sidebarBtn));
-    sidebarBtn.click();
+    workspacePage.rightClickResource(folder, 'folder');
+    workspacePage.createRightClickInfoMenuItem().click();
 
     // verify that the presented owner username is the new one assigned above
-    expect(workspacePage.createDetailsPanelOwnerValue().getText()).toBe(permissions.testUserName2); // TODO fails due to issue #290
+    expect(workspacePage.createDetailsPanelOwnerValue().getText()).toBe(permissions.testUserName2);
   });
 
 

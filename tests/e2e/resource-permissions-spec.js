@@ -3,6 +3,7 @@ var WorkspacePage = require('../pages/workspace-new-page.js');
 var ToastyModal = require('../modals/toasty-modal.js');
 var MoveModal = require('../modals/move-modal.js');
 var ShareModal = require('../modals/share-modal.js');
+var SweetAlertModal = require('../modals/sweet-alert-modal.js');
 var testConfig = require('../config/test-env.js');
 var permissions = require('../config/permissions.js');
 
@@ -11,12 +12,14 @@ xdescribe('resource-permissions', function () {
   var toastyModal;
   var moveModal;
   var shareModal;
+  var sweetAlertModal;
 
   beforeEach(function () {
     workspacePage = WorkspacePage;
     toastyModal = ToastyModal;
     moveModal = MoveModal;
     shareModal = ShareModal;
+    sweetAlertModal = SweetAlertModal;
     browser.driver.manage().window().maximize();
   });
 
@@ -56,7 +59,8 @@ xdescribe('resource-permissions', function () {
     // move created template to shared folder
     workspacePage.moveResource(sourceTemplate, 'template');
     moveModal.moveToUserFolder(permissions.testUserName1, sharedFolderTitle);
-    toastyModal.isError();
+    sweetAlertModal.hasInsufficientPermissions();
+    sweetAlertModal.confirm();
   });
 
 
@@ -98,7 +102,8 @@ xdescribe('resource-permissions', function () {
 
     workspacePage.moveResource(sourceTemplate, 'template');
     moveModal.moveToDestination(targetFolder);
-    toastyModal.isError();
+    sweetAlertModal.hasInsufficientPermissions();
+    sweetAlertModal.confirm();
   });
 
 
@@ -118,10 +123,9 @@ xdescribe('resource-permissions', function () {
     // go to Test User 2's folder to see the shared folders
     workspacePage.navigateToUserFolder(permissions.testUserName2);
 
-    // move source template to target folder
-    workspacePage.moveResource(sourceTemplate, 'template');
-    moveModal.moveToDestination(permissions.testUserName2, targetFolder);
-    toastyModal.isError();
+    // check that the resource does not have an option to be moved
+    workspacePage.rightClickResource(sourceTemplate, 'template');
+    expect(workspacePage.createRightClickMoveToMenuItem().isPresent()).toBe(false);
   });
 
 
