@@ -248,8 +248,15 @@ define([
       $scope.getValueString = function (valueElement) {
         var result = ' ';
         for (var i = 0; i < valueElement.length; i++) {
-          if (valueElement[i]['@value']) {
-            result += valueElement[i]['@value'];
+          var fieldValueLabel = null;
+          if (valueElement[i]['@value'] && valueElement[i]['@value'] != null) {
+            fieldValueLabel = '@value';
+          }
+          else if (valueElement[i]['@id'] && valueElement[i]['@id'] != null) {
+            fieldValueLabel = '_valueLabel';
+          }
+          if (fieldValueLabel != null) {
+            result += valueElement[i][fieldValueLabel];
             if (i < valueElement.length - 1) {
               result += ', ';
             }
@@ -279,8 +286,6 @@ define([
           $scope.setActive(index, true);
         }
       };
-
-
 
       // set this field and index active
       $scope.setActive = function (index, value, other) {

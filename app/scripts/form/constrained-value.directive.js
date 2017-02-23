@@ -14,8 +14,6 @@ define([
 
     var linker = function ($scope, $element, attrs) {
 
-      $scope.valueElement = $scope.$parent.valueArray[$scope.index];
-
       // does this field have a value constraint?
       $scope.hasValueConstraint = function () {
         return DataManipulationService.hasValueConstraint($scope.field);
@@ -106,10 +104,6 @@ define([
           };
         }
       };
-
-      //
-      // Initialization
-      //
 
       // Initializes model for fields constrained using controlled terms
       $scope.updateUIFromModelControlledField();
