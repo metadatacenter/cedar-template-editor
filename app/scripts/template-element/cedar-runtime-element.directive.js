@@ -495,6 +495,8 @@ define([
       };
 
       scope.selectPage = function (i) {
+        // TODO: the following line is a temporary fix to expand the pages when clicking on them.
+        scope.expanded[i] = true;
         scope.setActive(i, true);
       };
 
