@@ -444,7 +444,8 @@
     "noWriteAccessToFolder": "The requested operation can not be performed!<br />You do not have write access to the folder.",
     "groupAlreadyPresent": "There is already a group with the same name present in the system!<br>Please choose a different name.",
     "folderPermissionsCanNotBeChanged": "The permissions of the selected folder can not be changed!",
-    "templateNotDeleted": "The template was not deleted!"
+    "templateNotDeleted": "The template was not deleted!",
+    "folderNotFound": "Folder not found!<br>Please use the UI elements to navigate to an existing folder!"
   },
   "REST_ERROR_REASON": {
     "userHomeFolder": "The selected folder is a user home folder.",
