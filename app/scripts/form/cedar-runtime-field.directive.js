@@ -33,7 +33,7 @@ define([
       $scope.multipleState = 'paged';
       $scope.index = 0;
       $scope.pageMin = 0;
-      $scope.pageMax = $scope.model.length;
+      $scope.pageMax = 0;
       $scope.pageRange = 6;
 
 
