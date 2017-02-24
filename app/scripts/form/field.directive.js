@@ -662,7 +662,7 @@ define([
             );
             f.description = $translate.instant(
                 "GENERATEDVALUE.fieldDescription",
-                {title: capitalizedTitle}
+                {title: capitalizedTitle, version:window.cedarVersion}
             );
           } else {
             f.title = "";

@@ -289,7 +289,7 @@ define([
               var capitalizedTitle = $filter('capitalizeFirst')(title);
               $scope.form.title = $translate.instant("GENERATEDVALUE.templateTitle", {title: capitalizedTitle});
               $scope.form.description = $translate.instant("GENERATEDVALUE.templateDescription",
-                  {title: capitalizedTitle});
+                  {title: capitalizedTitle, version:window.cedarVersion});
             } else {
               $scope.form._ui.title = "";
               $scope.form._ui.description = "";
