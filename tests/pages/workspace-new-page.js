@@ -27,9 +27,12 @@ var WorkspacePage = function () {
   var createFirstSelected = element(by.css('.form-box-container.selected'));
 
   // resources
-  var createFirstFolder = element.all(by.css('.center-panel .grid-view .form-box .folder')).first();
-  var createFirstElement = element.all(by.css('.center-panel .grid-view .form-box .element')).first();
-  var createFirstTemplate = element.all(by.css('.center-panel .grid-view .form-box .template')).first();
+  var folders = element.all(by.css('.folderTitle'));
+  var createFirstFolder = folders.first();
+  var elements = element.all(by.css('.center-panel .grid-view .form-box .element'));
+  var createFirstElement = elements.first();
+  var templates = element.all(by.css('.center-panel .grid-view .form-box .template'));
+  var createFirstTemplate = templates.first();
   var createFirstCss = '.center-panel .grid-view .form-box .';
   var folderType = 'folder';
   var templateType = 'template';
@@ -43,6 +46,7 @@ var WorkspacePage = function () {
   var createPopulateResourceButton = createToolbar.element(by.css('#more-options-tool .populate'));
   var createEditResourceButton = createToolbar.element(by.css('#more-options-tool [ng-click="dc.editResource()"]'));
   var createMoveToResourceButton = createToolbar.element(by.css('#more-options-tool [ng-click="dc.showMoveModal(resource)"]'));
+  var createCopyToResourceButton = createToolbar.element(by.css('#more-options-tool [ng-click="dc.showCopyModal(resource)"]'));
   var createOpenResourceButton = createToolbar.element(by.css('#more-options-tool [ng-click="dc.goToResource()"]'));
   var createDeleteResourceButton = createToolbar.element(by.css('#more-options-tool [ng-click="dc.deleteResource(resource)"]'));
   var createGridViewButton = createToolbar.element(by.css('#grid-view-tool'));
@@ -101,6 +105,7 @@ var WorkspacePage = function () {
   var createRightClickRenameMenuItem = createRightClickMenuItemList.element(by.css('li > a[ng-click="dc.showRenameModal(resource)"]'));
   var createRightClickInfoMenuItem = createRightClickMenuItemList.element(by.css('li > a[ng-click="dc.showInfoPanel()"]'));
   var createRightClickMoveToMenuItem = createRightClickMenuItemList.element(by.css('li > a[ng-click="dc.showMoveModal(resource)"]'));
+  var createRightClickCopyToMenuItem = createRightClickMenuItemList.element(by.css('li > a[ng-click="dc.showCopyModal(resource)"]'));
 
 
   // access to locators
@@ -226,6 +231,21 @@ var WorkspacePage = function () {
   };
   this.createRightClickMoveToMenuItem = function () {
     return createRightClickMoveToMenuItem;
+  };
+  this.createRightClickCopyToMenuItem = function () {
+    return createRightClickCopyToMenuItem;
+  };
+  this.createFolders = function () {
+    return folders;
+  };
+  this.createTemplates = function () {
+    return templates;
+  };
+  this.createElements = function () {
+    return elements;
+  };
+  this.createDeleteResourceButton = function () {
+    return createDeleteResourceButton;
   };
 
 
@@ -441,6 +461,14 @@ var WorkspacePage = function () {
 
 
   };
+
+
+  this.copyResource = function (name, type) {
+    this.rightClickResource(name, type);
+    browser.wait(EC.elementToBeClickable(createRightClickCopyToMenuItem));
+    createRightClickCopyToMenuItem.click();
+  };
+
 
   this.selectResource = function (name, type) {
 
