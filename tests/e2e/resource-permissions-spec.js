@@ -6,7 +6,6 @@ var CopyModal = require('../modals/copy-modal.js');
 var ShareModal = require('../modals/share-modal.js');
 var SweetAlertModal = require('../modals/sweet-alert-modal.js');
 var testConfig = require('../config/test-env.js');
-var permissions = require('../config/permissions.js');
 
 describe('resource-permissions', function () {
   var workspacePage;
@@ -50,7 +49,7 @@ describe('resource-permissions', function () {
     var sharedFolderTitle = workspacePage.createFolder('Shared');
 
     // share folder
-    shareModal.shareResource(sharedFolderTitle, 'folder', permissions.testUserName2, false, false);
+    shareModal.shareResource(sharedFolderTitle, 'folder', testConfig.testUserName2, false, false);
 
     // logout current user and login as the user with whom the folder was shared
     workspacePage.logout();
@@ -61,7 +60,7 @@ describe('resource-permissions', function () {
 
     // move created template to shared folder
     workspacePage.moveResource(sourceTemplate, 'template');
-    moveModal.moveToUserFolder(permissions.testUserName1, sharedFolderTitle);
+    moveModal.moveToUserFolder(testConfig.testUserName1, sharedFolderTitle);
     sweetAlertModal.hasInsufficientPermissions();
     sweetAlertModal.confirm();
   });
@@ -73,15 +72,15 @@ describe('resource-permissions', function () {
     var targetFolder = workspacePage.createFolder('Target');
 
     // share the template and folder
-    shareModal.shareResource(sourceTemplate, 'template', permissions.testUserName1, true, false);
+    shareModal.shareResource(sourceTemplate, 'template', testConfig.testUserName1, true, false);
     workspacePage.clickLogo(); // reset search
-    shareModal.shareResource(targetFolder, 'folder', permissions.testUserName1, true, false);
+    shareModal.shareResource(targetFolder, 'folder', testConfig.testUserName1, true, false);
 
     workspacePage.logout();
     workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
 
     // go to Test User 2's folder to see the shared folders
-    workspacePage.navigateToUserFolder(permissions.testUserName2);
+    workspacePage.navigateToUserFolder(testConfig.testUserName2);
 
     // move source to target folder
     workspacePage.moveResource(sourceTemplate, 'template');
@@ -95,13 +94,13 @@ describe('resource-permissions', function () {
     var sourceTemplate = workspacePage.createTemplate('Source');
     var targetFolder = workspacePage.createFolder('Target');
 
-    shareModal.shareResource(sourceTemplate, 'template', permissions.testUserName2, true, false);
+    shareModal.shareResource(sourceTemplate, 'template', testConfig.testUserName2, true, false);
     workspacePage.clickLogo(); // reset search
-    shareModal.shareResource(targetFolder, 'folder', permissions.testUserName2, false, false);
+    shareModal.shareResource(targetFolder, 'folder', testConfig.testUserName2, false, false);
 
     workspacePage.logout();
     workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
-    workspacePage.navigateToUserFolder(permissions.testUserName1);
+    workspacePage.navigateToUserFolder(testConfig.testUserName1);
 
     workspacePage.moveResource(sourceTemplate, 'template');
     moveModal.moveToDestination(targetFolder);
@@ -116,15 +115,15 @@ describe('resource-permissions', function () {
     var targetFolder = workspacePage.createFolder('Target');
 
     // share both folders
-    shareModal.shareResource(sourceTemplate, 'template', permissions.testUserName1, false, false);
+    shareModal.shareResource(sourceTemplate, 'template', testConfig.testUserName1, false, false);
     workspacePage.clickLogo(); // reset search
-    shareModal.shareResource(targetFolder, 'folder', permissions.testUserName1, false, false);
+    shareModal.shareResource(targetFolder, 'folder', testConfig.testUserName1, false, false);
 
     workspacePage.logout();
     workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
 
     // go to Test User 2's folder to see the shared folders
-    workspacePage.navigateToUserFolder(permissions.testUserName2);
+    workspacePage.navigateToUserFolder(testConfig.testUserName2);
 
     // check that the resource does not have an option to be moved
     workspacePage.rightClickResource(sourceTemplate, 'template');
@@ -152,7 +151,7 @@ describe('resource-permissions', function () {
     var sharedFolderTitle = workspacePage.createFolder('Shared');
 
     // share folder
-    shareModal.shareResource(sharedFolderTitle, 'folder', permissions.testUserName2, false, false);
+    shareModal.shareResource(sharedFolderTitle, 'folder', testConfig.testUserName2, false, false);
 
     // logout current user and login as the user with whom the folder was shared
     workspacePage.logout();
@@ -163,7 +162,7 @@ describe('resource-permissions', function () {
 
     // copy created template to shared folder
     workspacePage.copyResource(sourceTemplate, 'template');
-    copyModal.copyToUserFolder(permissions.testUserName1, sharedFolderTitle);
+    copyModal.copyToUserFolder(testConfig.testUserName1, sharedFolderTitle);
     sweetAlertModal.hasInsufficientPermissions();
     sweetAlertModal.confirm();
   });
@@ -175,15 +174,15 @@ describe('resource-permissions', function () {
     var targetFolder = workspacePage.createFolder('Target');
 
     // share the template and folder
-    shareModal.shareResource(sourceTemplate, 'template', permissions.testUserName1, true, false);
+    shareModal.shareResource(sourceTemplate, 'template', testConfig.testUserName1, true, false);
     workspacePage.clickLogo(); // reset search
-    shareModal.shareResource(targetFolder, 'folder', permissions.testUserName1, true, false);
+    shareModal.shareResource(targetFolder, 'folder', testConfig.testUserName1, true, false);
 
     workspacePage.logout();
     workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
 
     // go to Test User 2's folder to see the shared folders
-    workspacePage.navigateToUserFolder(permissions.testUserName2);
+    workspacePage.navigateToUserFolder(testConfig.testUserName2);
 
     // copy source to target folder
     workspacePage.copyResource(sourceTemplate, 'template');
@@ -197,13 +196,13 @@ describe('resource-permissions', function () {
     var sourceTemplate = workspacePage.createTemplate('Source');
     var targetFolder = workspacePage.createFolder('Target');
 
-    shareModal.shareResource(sourceTemplate, 'template', permissions.testUserName2, true, false);
+    shareModal.shareResource(sourceTemplate, 'template', testConfig.testUserName2, true, false);
     workspacePage.clickLogo(); // reset search
-    shareModal.shareResource(targetFolder, 'folder', permissions.testUserName2, false, false);
+    shareModal.shareResource(targetFolder, 'folder', testConfig.testUserName2, false, false);
 
     workspacePage.logout();
     workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
-    workspacePage.navigateToUserFolder(permissions.testUserName1);
+    workspacePage.navigateToUserFolder(testConfig.testUserName1);
 
     workspacePage.copyResource(sourceTemplate, 'template');
     copyModal.copyToDestination(targetFolder);
@@ -218,15 +217,15 @@ describe('resource-permissions', function () {
     var targetFolder = workspacePage.createFolder('Target');
 
     // share both folders
-    shareModal.shareResource(sourceTemplate, 'template', permissions.testUserName1, false, false);
+    shareModal.shareResource(sourceTemplate, 'template', testConfig.testUserName1, false, false);
     workspacePage.clickLogo(); // reset search
-    shareModal.shareResource(targetFolder, 'folder', permissions.testUserName1, false, false);
+    shareModal.shareResource(targetFolder, 'folder', testConfig.testUserName1, false, false);
 
     workspacePage.logout();
     workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
 
     // go to Test User 2's folder to see the shared folders
-    workspacePage.navigateToUserFolder(permissions.testUserName2);
+    workspacePage.navigateToUserFolder(testConfig.testUserName2);
 
     workspacePage.copyResource(sourceTemplate, 'template');
     copyModal.copyToDestination(targetFolder);
