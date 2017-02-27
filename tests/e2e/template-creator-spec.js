@@ -1,6 +1,6 @@
 'use strict';
 var TemplatePage = require('../pages/template-creator-page.js');
-var WorkspacePage = require('../pages/workspace-new-page.js');
+var WorkspacePage = require('../pages/workspace-page.js');
 var ToastyModal = require('../modals/toasty-modal.js');
 var SweetAlertModal = require('../modals/sweet-alert-modal.js');
 var _ = require('../libs/lodash.min.js');
@@ -185,7 +185,7 @@ describe('template-creator', function () {
           if (!fieldType.staticField) {
 
 
-            it("should add and delete a " + type + " in " + pageType + ' isMore ' + isMore, function () {
+            it("should add and delete a " + type + " in " + pageType , function () {
 
               templatePage.createPage(pageType);
               templatePage.addField(type, isMore, title, description);
