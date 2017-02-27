@@ -263,7 +263,7 @@ var WorkspacePage = function () {
   };
 
   this.createTitle = function (type) {
-    return 'Protractor' + type + getRandomInt(1, 9999999999);
+    return 'Protractor' + getRandomInt(1, 999999);
   };
 
   this.createDescription = function (type) {
