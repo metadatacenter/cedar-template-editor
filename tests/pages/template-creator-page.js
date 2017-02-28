@@ -156,6 +156,7 @@ var TemplateCreatorPage = function () {
               "http://schema.org/"
             ]
           },
+
           "oslc"              : {
             "type"  : "string",
             "format": "uri",
@@ -165,6 +166,7 @@ var TemplateCreatorPage = function () {
           },
           "schema:isBasedOn"  : {
             "type"      : "object",
+
             "properties": {
               "@type": {
                 "type": "string",
@@ -261,6 +263,7 @@ var TemplateCreatorPage = function () {
           "oslc:modifiedBy"
         ],
         "additionalProperties": false
+
       },
       "@id"               : {
         "type"  : [
@@ -273,6 +276,7 @@ var TemplateCreatorPage = function () {
         "oneOf": [
           {
             "type"  : "string",
+
             "format": "uri"
           },
           {

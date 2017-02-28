@@ -648,6 +648,7 @@ define([
 
       };
 
+
       $scope.$watch("field", function (newField, oldField) {
         // Update schema title and description if necessary
         if (oldField.type == 'object' && newField.type == 'object') {
@@ -659,6 +660,29 @@ define([
         }
         setDirectory();
       }, true);
+
+      // This function watches for changes in the _ui.title field and autogenerates the schema title and description fields
+      // $scope.$watch('field._ui.title', function (v) {
+      //   var f = $rootScope.schemaOf($scope.field);
+      //   if (f && f._ui) {
+      //     var title = f._ui.title;
+      //     if (title.length > 0) {
+      //       console.log(title);
+      //       var capitalizedTitle = $filter('capitalizeFirst')(title);
+      //       f.title = $translate.instant(
+      //           "GENERATEDVALUE.fieldTitle",
+      //           {title: capitalizedTitle}
+      //       );
+      //       f.description = $translate.instant(
+      //           "GENERATEDVALUE.fieldDescription",
+      //           {title: capitalizedTitle, version:window.cedarVersion}
+      //       );
+      //     } else {
+      //       f.title = "";
+      //       f.description = "";
+      //     }
+      //   }
+      // });
 
       // Used just for text fields whose values have been constrained using controlled terms
       $scope.$watch("model", function () {

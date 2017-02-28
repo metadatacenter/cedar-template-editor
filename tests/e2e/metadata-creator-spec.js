@@ -166,7 +166,8 @@ describe('metadata-creator', function () {
     workspacePage.onWorkspace();
   });
 
-  it('should delete the sample metadata from the workspace', function () {
+  it('should delete both sample metadata from the workspace', function () {
+    workspacePage.deleteResource(sampleTitle, 'metadata');
     workspacePage.deleteResource(sampleTitle, 'metadata');
     workspacePage.deleteResource(sampleTitle, 'metadata');
   });

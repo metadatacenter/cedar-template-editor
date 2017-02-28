@@ -270,7 +270,7 @@ define([
           );
           $scope.element.description = $translate.instant(
               "GENERATEDVALUE.elementDescription",
-              {title: capitalizedTitle}
+              {title: capitalizedTitle, version:window.cedarVersion}
           );
         } else {
           $scope.element.title = "";

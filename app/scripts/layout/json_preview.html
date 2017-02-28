@@ -3,7 +3,7 @@
   <pre id='form-json-preview'>{{ ($root.jsonToSave || stripTmpFields()) | json }}</pre>
 </div>
 <div ng-show="$root.showOutput" id="outputJSON" ng-if="($root.instanceToSave || stripTmpFields()) | json">
-  <h5>Output JSON</h5>
+  <h5>Metadata JSON</h5>
   <pre>{{ ($root.instanceToSave || stripTmpFields()) | json }}</pre>
 </div>
 
