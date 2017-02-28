@@ -23,7 +23,7 @@ describe('clean-up', function () {
   });
 
   // reset user selections to defaults
-  xit('should default user selections', function () {
+  it('should default user selections', function () {
     workspacePage.resetFiltering();
     workspacePage.closeInfoPanel();
     workspacePage.setSortOrder('sortCreated');

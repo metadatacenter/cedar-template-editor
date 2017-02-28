@@ -1154,9 +1154,7 @@ var TemplateCreatorPage = function () {
   };
 
   this.addFirstElement = function (title) {
-    console.log('addFirstElement'+ title);
     var finderPage = this.openFinder();
-
 
     // TODO search is filled with template name
     var clearSearch = finderPage.createClearSearch()();
