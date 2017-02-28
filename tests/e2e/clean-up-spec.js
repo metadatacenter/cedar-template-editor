@@ -23,7 +23,8 @@ describe('clean-up', function () {
   });
 
   // reset user selections to defaults
-  it('should default user selections', function () {
+  // TODO turn this on once we have updated staging
+  xit('should default user selections', function () {
     workspacePage.resetFiltering();
     workspacePage.closeInfoPanel();
     workspacePage.setSortOrder('sortCreated');
@@ -31,6 +32,7 @@ describe('clean-up', function () {
 
   // turn this on if you need to clean up the workspace
   // this deletes by searching for resources by type
+  // this fails if we have resource inside folders that we cannot write
   it('should delete any Protractor resource from the user workspace by searching', function () {
     workspacePage.resourceTypes().forEach(function(type) {
       workspacePage.deleteAllBySearching(workspacePage.defaultTitle(), type);

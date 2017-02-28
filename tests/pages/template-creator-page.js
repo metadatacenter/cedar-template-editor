@@ -976,62 +976,6 @@ var TemplateCreatorPage = function () {
     createClearElementButton.click();
   };
 
-  //this.createElement = function () {
-  //
-  //  var deferred = protractor.promise.defer();
-  //
-  //  isReady(createButton).then(function () {
-  //    browser.actions().mouseMove(createButton).perform().then(function () {
-  //      isReady(createElementButton).then(function () {
-  //        createElementButton.click().then(function () {
-  //          isReady(createElementPage).then(function () {
-  //            deferred.fulfill(true);
-  //
-  //          });
-  //        });
-  //      });
-  //    });
-  //  });
-  //  return deferred.promise;
-  //};
-
-  //this.setElementTitle = function (text) {
-  //
-  //  var deferred = protractor.promise.defer();
-  //
-  //  // should have an editable element title
-  //  isReady(elementTitle).then(function () {
-  //
-  //    browser.actions().doubleClick(elementTitle).perform().then(function () {
-  //      elementTitle.sendKeys(text).then(function () {
-  //        elementTitleForm.submit().then(function () {
-  //          deferred.fulfill(true);
-  //        });
-  //      });
-  //    });
-  //
-  //  });
-  //  return deferred.promise;
-  //};
-
-  //this.setElementDescription = function (text) {
-  //
-  //  var deferred = protractor.promise.defer();
-  //
-  //  // should have an editable element description
-  //  isReady(elementDescription).then(function () {
-  //
-  //    browser.actions().doubleClick(elementDescription).perform().then(function () {
-  //      elementDescription.sendKeys(text).then(function () {
-  //        elementDescriptionForm.submit();
-  //        deferred.fulfill(true);
-  //      });
-  //    });
-  //  });
-  //
-  //  return deferred.promise;
-  //
-  //};
 
 // sweet alerts
   this.clickSweetAlertCancelButton = function () {
@@ -1143,13 +1087,13 @@ var TemplateCreatorPage = function () {
     var switches = item.all(By.css('.visibilitySwitch'));
     expect(switches.count()).toBe(2);
     switches.get(0).click();
-    browser.sleep(1000);
+    //browser.sleep(1000);
   };
   this.openElement = function (item) {
     var switches = item.all(By.css('.visibilitySwitch'));
     expect(switches.count()).toBe(2);
     switches.get(1).click();
-    browser.sleep(1000);
+    //browser.sleep(1000);
   };
 
   this.openFinder = function () {

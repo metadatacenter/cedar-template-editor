@@ -75,7 +75,6 @@ describe('metadata-creator', function () {
 
   it("should create an element", function () {
     sampleElementTitle = workspacePage.createTitle('element');
-    console.log(sampleElementTitle);
     workspacePage.createResource('element', sampleElementTitle);
     workspacePage.onWorkspace();
   });
@@ -96,9 +95,8 @@ describe('metadata-creator', function () {
     workspacePage.onWorkspace();
   });
 
-
+  // TODO not working
   xit("should add the element to our template", function () {
-    console.log('add element to template');
     workspacePage.editResource(sampleTitle, 'template');
     templatePage.addFirstElement(sampleElementTitle);
     templatePage.clickSave('template');
@@ -167,7 +165,6 @@ describe('metadata-creator', function () {
   });
 
   it('should delete both sample metadata from the workspace', function () {
-    workspacePage.deleteResource(sampleTitle, 'metadata');
     workspacePage.deleteResource(sampleTitle, 'metadata');
     workspacePage.deleteResource(sampleTitle, 'metadata');
   });
