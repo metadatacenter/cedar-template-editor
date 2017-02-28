@@ -29,7 +29,7 @@ describe('clean-up', function () {
     workspacePage.closeInfoPanel();
     workspacePage.setSortOrder('sortCreated');
   });
-  
+
 
   // turn this on if you need to clean up the workspace
   // this deletes by searching for resources by type

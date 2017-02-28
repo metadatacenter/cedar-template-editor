@@ -65,7 +65,6 @@ define([
                     TemplateInstanceService.updateTemplateInstance(id, {'schema:name': name}),
                     function (response) {
                       UIMessageService.flashSuccess('SERVER.INSTANCE.update.success', null, 'GENERIC.Updated');
-
                       refresh();
                     },
                     function (err) {
@@ -78,7 +77,6 @@ define([
                     function (response) {
                       UIMessageService.flashSuccess('SERVER.ELEMENT.update.success', {"title": response.data._ui.title},
                           'GENERIC.Updated');
-
                       refresh();
                     },
                     function (err) {
@@ -92,7 +90,6 @@ define([
 
                       UIMessageService.flashSuccess('SERVER.TEMPLATE.update.success',
                           {"title": response.data._ui.title}, 'GENERIC.Updated');
-
                       refresh();
                     },
                     function (err) {
@@ -106,7 +103,6 @@ define([
 
                       UIMessageService.flashSuccess('SERVER.FOLDER.update.success', {"title": vm.renameResource.name},
                           'GENERIC.Updated');
-
                       refresh();
                     },
                     function (response) {
