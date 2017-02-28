@@ -369,6 +369,15 @@ define([
             }
           };
 
+          vm.refreshWorkspace = function (resource) {
+            console.log('refreshWorkspace');
+            vm.params = $location.search();
+            init();
+            if (resource) {
+              $scope.selectResourceById(resource['@id']);
+            }
+          };
+
 
           // callback to load more resources for the current folder
           vm.searchMore = function () {
@@ -571,7 +580,7 @@ define([
                   UIMessageService.flashSuccess('SERVER.RESOURCE.copyToWorkspace.success', {"title": resource.name},
                       'GENERIC.Copied');
 
-                  $scope.refreshWorkspace(resource);
+                  vm.refreshWorkspace(resource);
                 },
                 function (response) {
                   UIMessageService.showBackendError('SERVER.RESOURCE.copyToWorkspace.error', response);
@@ -595,7 +604,7 @@ define([
                   UIMessageService.flashSuccess('SERVER.RESOURCE.copyResource.success', {"title": resource.name},
                       'GENERIC.Copied');
 
-                  $scope.refreshWorkspace(resource);
+                  vm.refreshWorkspace(resource);
 
                 },
                 function (response) {
@@ -1022,18 +1031,9 @@ define([
             }
           };
 
-
-          $scope.refreshWorkspace = function (resource) {
-            vm.params = $location.search();
-            init();
-            if (resource) {
-              $scope.selectResourceById(resource['@id']);
-            }
-          };
-
           $scope.$on('refreshWorkspace', function (event, args) {
             var selectedResource = args ? args[0] : null;
-            $scope.refreshWorkspace(selectedResource);
+            vm.refreshWorkspace(selectedResource);
           });
 
           $scope.hideModal = function (id) {
