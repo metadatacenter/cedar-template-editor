@@ -7,6 +7,7 @@ var SweetAlertModal = require('../modals/sweet-alert-modal.js');
 
 var _ = require('../libs/lodash.min.js');
 var sampleTitle;
+var sampleElementTitle;
 var sampleDescription;
 var sampleTemplateUrl;
 var sampleMetadataUrl ;
@@ -57,11 +58,52 @@ describe('metadata-creator', function () {
 
   it("should search for the sample template in the workspace ", function () {
     workspacePage.searchForResource(sampleTitle, 'template');
+    workspacePage.clearSearch();
     workspacePage.onWorkspace();
   });
 
-  it("should clear any ongoing search", function () {
-    workspacePage.clearSearch();
+
+  it("should add some fields to our template", function () {
+    workspacePage.editResource(sampleTitle, 'template');
+    templatePage.addField('textfield', false, 'one', 'one');
+    templatePage.addField('textfield', false, 'two', 'two');
+    templatePage.clickSave('template');
+    toastyModal.isSuccess();
+    templatePage.topNavBackArrow().click();
+    workspacePage.onWorkspace();
+  });
+
+  it("should create an element", function () {
+    sampleElementTitle = workspacePage.createTitle('element');
+    console.log(sampleElementTitle);
+    workspacePage.createResource('element', sampleElementTitle);
+    workspacePage.onWorkspace();
+  });
+
+
+  it("should add some fields to the element", function () {
+    workspacePage.editResource(sampleElementTitle, 'element');
+    templatePage.addField('textfield', false, 'one', 'one');
+    templatePage.addField('textfield', false, 'two', 'two');
+    templatePage.clickSave('element');
+    toastyModal.isSuccess();
+    templatePage.topNavBackArrow().click();
+
+    //TODO confirm should not be required but it is here
+    sweetAlertModal.confirm();
+    sweetAlertModal.isHidden();
+
+    workspacePage.onWorkspace();
+  });
+
+
+  xit("should add the element to our template", function () {
+    console.log('add element to template');
+    workspacePage.editResource(sampleTitle, 'template');
+    templatePage.addFirstElement(sampleElementTitle);
+    templatePage.clickSave('template');
+    toastyModal.isSuccess();
+    templatePage.topNavBackArrow().click();
     workspacePage.onWorkspace();
   });
 
@@ -98,7 +140,7 @@ describe('metadata-creator', function () {
 
   it("should open existing metadata with edit menu", function () {
     workspacePage.editResource(sampleTitle, 'metadata');
-    browser.wait(EC.presenceOf(element(by.css('.navbar.metadata'))));
+    workspacePage.onMetadata();
   });
 
   it("should return to workspace by clicking back arrow", function () {
@@ -108,7 +150,7 @@ describe('metadata-creator', function () {
 
   it("should open existing metadata with a double click", function () {
     workspacePage.doubleClickResource(sampleTitle, 'metadata');
-    metadataPage.onMetadata();
+    workspacePage.onMetadata();
   });
 
   // TODO we currently don't have the page titled embedded here anymore...used to
@@ -125,6 +167,7 @@ describe('metadata-creator', function () {
   });
 
   it('should delete the sample metadata from the workspace', function () {
+    workspacePage.deleteResource(sampleTitle, 'metadata');
     workspacePage.deleteResource(sampleTitle, 'metadata');
   });
 

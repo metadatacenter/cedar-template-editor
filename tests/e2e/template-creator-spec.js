@@ -136,23 +136,23 @@ describe('template-creator', function () {
   // before each test, load a new page and create a template
   // maximize the window area for clicking
   beforeEach(function () {
-
     workspacePage = WorkspacePage;
     templatePage = TemplatePage;
     toastyModal = ToastyModal;
     sweetAlertModal = SweetAlertModal;
-
     browser.driver.manage().window().maximize();
   });
 
   afterEach(function () {
   });
 
+  // repeat tests for both template and element editors
   for (var j = 0; j < pageTypes.length; j++) {
     (function (pageType) {
 
-      it("should have a logo", function () {
-        browser.wait(EC.visibilityOf(workspacePage.createLogo()));
+      it("should have a logo on the workspace page", function () {
+        workspacePage.hasLogo();
+        workspacePage.onWorkspace();
       });
 
       it("should create the sample template " + pageType, function () {

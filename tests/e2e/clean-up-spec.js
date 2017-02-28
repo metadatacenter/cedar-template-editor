@@ -1,35 +1,20 @@
 'use strict';
 var WorkspacePage = require('../pages/workspace-page.js');
-var MetadataPage = require('../pages/metadata-page.js');
-var TemplatePage = require('../pages/template-creator-page.js');
-var ToastyModal = require('../modals/toasty-modal.js');
-var SweetAlertModal = require('../modals/sweet-alert-modal.js');
-
 var _ = require('../libs/lodash.min.js');
-var sampleTitle;
-var sampleDescription;
-var sampleTemplateUrl;
-var sampleMetadataUrl ;
-var pageName = 'template';
 
-
+/**
+ *
+ * clean up the workspace by resetting the default user permisisons and deleting any leftover resources
+ *
+ */
 describe('clean-up', function () {
   var EC = protractor.ExpectedConditions;
-  var metadataPage;
   var workspacePage;
-  var templatePage;
-  var toastyModal;
-  var sweetAlertModal;
 
-  // before each test
-  // maximize the window area for clicking
+
+  // before each test maximize the window area for clicking
   beforeEach(function () {
-
     workspacePage = WorkspacePage;
-    metadataPage = MetadataPage;
-    templatePage = TemplatePage;
-    toastyModal = ToastyModal;
-    sweetAlertModal = SweetAlertModal;
     browser.driver.manage().window().maximize();
 
   });
@@ -37,32 +22,29 @@ describe('clean-up', function () {
   afterEach(function () {
   });
 
-
-  it("should have a logo", function () {
-    workspacePage.hasLogo();
-    workspacePage.onWorkspace();
-  });
-
-  // rereset user selections to defaults
-  it('should reset user selections', function () {
-    workspacePage.closeInfoPanel(false);
+  // reset user selections to defaults
+  xit('should default user selections', function () {
+    workspacePage.resetFiltering();
+    workspacePage.closeInfoPanel();
     workspacePage.setSortOrder('sortCreated');
-    workspacePage.setTypeFilters();
   });
 
-
-
-
-  // turn these on if you need to clean up the workspace
-  for (var i = 0; i < 10; i++) {
-
-    it('should delete any Protractor resource from the workspace', function () {
-
-      workspacePage.canDeleteNew();
-
+  // turn this on if you need to clean up the workspace
+  // this deletes by searching for resources by type
+  it('should delete any Protractor resource from the user workspace by searching', function () {
+    workspacePage.resourceTypes().forEach(function(type) {
+      workspacePage.deleteAllBySearching(workspacePage.defaultTitle(), type);
     });
+  });
 
-  }
+  // this deletes resources without using search
+  // but will fail if we have resources inside folders
+  xit('should delete any resource from the user workspace', function () {
+    workspacePage.resourceTypes().forEach(function(type) {
+      workspacePage.deleteAll( type);
+    });
+  });
+
 
 });
 
