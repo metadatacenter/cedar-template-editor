@@ -105,11 +105,11 @@
             <button  class="menu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><i
                 class="fa fa-caret-down  " ></i></button>
             <ul class="dropdown-menu dropdown-menu-right">
-              <li><a ng-click="dc.setSortOption('name')"><i class="fa fa-check" ng-class="dc.sortName()"></i><span
+              <li><a class="sortName" ng-click="dc.setSortOption('name')"><i class="fa fa-check" ng-class="dc.sortName()"></i><span
                   translate="DASHBOARD.sort.name"></span></a></li>
-              <li><a ng-click="dc.setSortOption('createdOnTS')"><i class="fa fa-check"
+              <li><a class="sortCreated" ng-click="dc.setSortOption('createdOnTS')"><i class="fa fa-check"
                   ng-class="dc.sortCreated()"></i><span translate="DASHBOARD.sort.createdOnTS"></span></a></li>
-              <li><a ng-click="dc.setSortOption('lastUpdatedOnTS')"><i class="fa fa-check"
+              <li><a class="sortUpdated" ng-click="dc.setSortOption('lastUpdatedOnTS')"><i class="fa fa-check"
                   ng-class="dc.sortUpdated()"></i><span
                   translate="DASHBOARD.sort.lastUpdatedOnTS"></span></a>
               </li>
@@ -272,6 +272,7 @@
                         tooltip-animation="false"
                         tooltip-placement="top"
                         data-toggle="tooltip"
+                        class="template"
                         ng-click="dc.toggleResourceType('template')"><i
                         class="btn btn-sm btn-info btn-circle fa large-icon fa-file-text template"
                         ng-class="{ active: dc.isResourceTypeActive('template') }"></i></button>
@@ -283,6 +284,7 @@
                         tooltip-animation="false"
                         tooltip-placement="top"
                         data-toggle="tooltip"
+                        class="element"
                         ng-click="dc.toggleResourceType('element')"><i
                         class="btn btn-sm btn-info btn-circle fa large-icon  fa-sitemap element"
                         ng-class="{ active: dc.isResourceTypeActive('element') }" ></i></button>
@@ -294,6 +296,7 @@
                         tooltip-animation="false"
                         tooltip-placement="top"
                         data-toggle="tooltip"
+                        class="metadata"
                         ng-click="dc.toggleResourceType('instance')"><i
                         class="btn btn-sm btn-info btn-circle fa large-icon  fa-tag metadata"
                         ng-class="{ active: dc.isResourceTypeActive('instance') }"></i></button>

@@ -1,6 +1,6 @@
 'use strict';
 
-var WorkspacePage = require('../pages/workspace-new-page.js');
+var WorkspacePage = require('../pages/workspace-page.js');
 
 var ShareModal = function () {
   var EC = protractor.ExpectedConditions;

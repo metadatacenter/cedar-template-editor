@@ -1,6 +1,6 @@
 'use strict';
 var TemplatePage = require('../pages/template-creator-page.js');
-var WorkspacePage = require('../pages/workspace-new-page.js');
+var WorkspacePage = require('../pages/workspace-page.js');
 var ToastyModal = require('../modals/toasty-modal.js');
 var SweetAlertModal = require('../modals/sweet-alert-modal.js');
 var _ = require('../libs/lodash.min.js');
@@ -136,23 +136,23 @@ describe('template-creator', function () {
   // before each test, load a new page and create a template
   // maximize the window area for clicking
   beforeEach(function () {
-
     workspacePage = WorkspacePage;
     templatePage = TemplatePage;
     toastyModal = ToastyModal;
     sweetAlertModal = SweetAlertModal;
-
     browser.driver.manage().window().maximize();
   });
 
   afterEach(function () {
   });
 
+  // repeat tests for both template and element editors
   for (var j = 0; j < pageTypes.length; j++) {
     (function (pageType) {
 
-      it("should have a logo", function () {
-        browser.wait(EC.visibilityOf(workspacePage.createLogo()));
+      it("should have a logo on the workspace page", function () {
+        workspacePage.hasLogo();
+        workspacePage.onWorkspace();
       });
 
       it("should create the sample template " + pageType, function () {
@@ -185,7 +185,7 @@ describe('template-creator', function () {
           if (!fieldType.staticField) {
 
 
-            it("should add and delete a " + type + " in " + pageType + ' isMore ' + isMore, function () {
+            it("should add and delete a " + type + " in " + pageType , function () {
 
               templatePage.createPage(pageType);
               templatePage.addField(type, isMore, title, description);
