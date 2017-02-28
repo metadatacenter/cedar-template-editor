@@ -121,7 +121,7 @@ describe('folder-permissions', function () {
     workspacePage.navigateToUserFolder(testConfig.testUserName2);
 
     // move source to target folder
-    workspacePage.moveResource(sourceFolder, 'folder');
+    workspacePage.moveResourceViaRightClick(sourceFolder, 'folder');
     moveModal.moveToDestination(targetFolder);
     sweetAlertModal.hasInsufficientPermissions();
     sweetAlertModal.confirm();

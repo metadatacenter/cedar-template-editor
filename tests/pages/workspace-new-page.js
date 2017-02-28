@@ -106,6 +106,7 @@ var WorkspacePage = function () {
   var createRightClickInfoMenuItem = createRightClickMenuItemList.element(by.css('li > a[ng-click="dc.showInfoPanel()"]'));
   var createRightClickMoveToMenuItem = createRightClickMenuItemList.element(by.css('li > a[ng-click="dc.showMoveModal(resource)"]'));
   var createRightClickCopyToMenuItem = createRightClickMenuItemList.element(by.css('li > a[ng-click="dc.showCopyModal(resource)"]'));
+  var createRightClickDeleteMenuItem = createRightClickMenuItemList.element(by.css('li > a[ng-click="dc.deleteResource(resource)"]'));
 
 
   // access to locators
@@ -234,6 +235,9 @@ var WorkspacePage = function () {
   };
   this.createRightClickCopyToMenuItem = function () {
     return createRightClickCopyToMenuItem;
+  };
+  this.createRightClickDeleteMenuItem = function () {
+    return createRightClickDeleteMenuItem;
   };
   this.createFolders = function () {
     return folders;
@@ -365,6 +369,13 @@ var WorkspacePage = function () {
 
   };
 
+  this.deleteResourceViaRightClick = function (name, type) {
+    this.rightClickResource(name, type);
+    browser.wait(EC.elementToBeClickable(createRightClickDeleteMenuItem));
+    createRightClickDeleteMenuItem.click();
+    sweetAlertModal.confirm();
+  };
+
   // search for a particular resource
   this.searchForResource = function (name, type) {
 
@@ -458,8 +469,13 @@ var WorkspacePage = function () {
     browser.wait(EC.visibilityOf(createMoveToResourceButton));
     browser.wait(EC.elementToBeClickable(createMoveToResourceButton));
     createMoveToResourceButton.click();
+  };
 
 
+  this.moveResourceViaRightClick = function(name, type) {
+    this.rightClickResource(name, type);
+    browser.wait(EC.elementToBeClickable(createRightClickMoveToMenuItem));
+    createRightClickMoveToMenuItem.click();
   };
 
 
