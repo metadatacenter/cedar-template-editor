@@ -98,6 +98,7 @@ define([
           vm.narrowContent = narrowContent;
           vm.pathInfo = [];
           vm.params = $location.search();
+          vm.hash = $location.hash();
           vm.resources = [];
           vm.selectedResource = null;
           vm.currentFolder = null;
@@ -163,8 +164,12 @@ define([
           };
 
           vm.selectResource = function (resource) {
+
             vm.cancelDescriptionEditing();
             vm.selectedResource = resource;
+            var id = resource['@id'];
+            $location.hash(id);
+            vm.hash = id;
             vm.getResourceDetails(resource);
             if (typeof vm.selectResourceCallback === 'function') {
               vm.selectResourceCallback(resource);
@@ -370,8 +375,8 @@ define([
           };
 
           vm.refreshWorkspace = function (resource) {
-            console.log('refreshWorkspace');
             vm.params = $location.search();
+            vm.hash = $location.hash();
             init();
             if (resource) {
               $scope.selectResourceById(resource['@id']);
@@ -480,11 +485,11 @@ define([
               vm.selectedResource = null;
               getFacets();
               var currentFolderId = decodeURIComponent(vm.params.folderId);
-              getFolderContentsById(currentFolderId);
+              getFolderContentsById(currentFolderId, vm.hash);
               getCurrentFolderSummary(currentFolderId);
             } else {
               //goToFolder(CedarUser.getHomeFolderId());
-              goToHomeFolder();
+              goToHomeFolder(vm.hash);
             }
             if (vm.showFavorites) {
               getForms();
@@ -752,7 +757,7 @@ define([
           }
 
 
-          function getFolderContentsById(folderId) {
+          function getFolderContentsById(folderId, resourceId) {
             var resourceTypes = activeResourceTypes();
             vm.offset = 0;
             var offset = vm.offset;
@@ -770,6 +775,7 @@ define([
                     vm.totalCount = response.totalCount;
                     vm.nodeListQueryType = response.nodeListQueryType;
                     vm.breadcrumbTitle = vm.buildBreadcrumbTitle();
+                    $scope.selectResourceById(resourceId);
                   },
                   function (error) {
                     UIMessageService.showBackendError('SERVER.FOLDER.load.error', error);
@@ -889,8 +895,8 @@ define([
             return (hasSelection() && (vm.selectedResource.nodeType == CONST.resourceType.INSTANCE));
           }
 
-          function goToHomeFolder() {
-            goToFolder(CedarUser.getHomeFolderId());
+          function goToHomeFolder(resourceId) {
+            goToFolder(CedarUser.getHomeFolderId(), resourceId);
           }
 
 
@@ -1029,7 +1035,13 @@ define([
             if (id) {
               for (var i = 0; i < vm.resources.length; i++) {
                 if (id === vm.resources[i]['@id']) {
-                  vm.selectResource(vm.resources[i]);
+                  var resource = vm.resources[i];
+                  vm.cancelDescriptionEditing();
+                  vm.selectedResource = resource;
+                  vm.getResourceDetails(resource);
+                  if (typeof vm.selectResourceCallback === 'function') {
+                    vm.selectResourceCallback(resource);
+                  }
                   break;
                 }
               }
