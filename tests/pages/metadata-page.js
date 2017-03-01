@@ -51,14 +51,6 @@ var MetadataPage = function () {
     return Math.floor(Math.random() * (max - min)) + min;
   };
 
-  this.onMetadata = function () {
-    browser.wait(EC.presenceOf(element(by.css('.navbar.metadata'))));
-  };
-
-  this.test = function () {
-    console.log('metadata  page test');
-  };
-
   this.topNavigation = function () {
     return topNavigation;
   };
@@ -120,49 +112,6 @@ var MetadataPage = function () {
     element(by.css('.back-arrow-click')).click();
   };
 
-  this.clickCancel = function (cancel) {
-    var deferred = protractor.promise.defer();
-
-    var confirm = createSweetAlertConfirmButton;
-
-    isReady(cancel).then(function () {
-      cancel.click();
-
-      isReady(createConfirmationDialog).then(function () {
-        isReady(confirm).then(function () {
-
-          browser.wait(EC.elementToBeClickable(confirm)).then(function () {
-            browser.sleep(1000);
-            confirm.click();
-            deferred.fulfill(true);
-          });
-        });
-      });
-    });
-
-    return deferred.promise;
-
-  };
-
-
-  this.clickSaveMetadata = function () {
-    var deferred = protractor.promise.defer();
-
-    isReady(createSaveMetadataButton).then(function () {
-      createSaveMetadataButton.click();
-
-      isReady(createToastyConfirmationPopup).then(function () {
-
-        toastyMessageText.getText().then(function (value) {
-          expect(value.indexOf(createMetadataMessage) !== -1).toBe(true);
-          deferred.fulfill(true);
-        });
-      });
-    });
-
-    return deferred.promise;
-  };
-
   this.createToastyConfirmationPopup = function () {
     return createToastyConfirmationPopup;
   };
@@ -196,29 +145,6 @@ var MetadataPage = function () {
     element(by.css(sweetAlertConfirmAttribute)).click();
   };
 
-  var isReady = function (elm) {
-    var deferred = protractor.promise.defer();
-
-    browser.wait(elm.isPresent()).then(function () {
-      browser.wait(elm.isDisplayed()).then(function () {
-        deferred.fulfill(true);
-      });
-    });
-
-    return deferred.promise;
-  };
-
-  this.isReady = function (elm) {
-    var deferred = protractor.promise.defer();
-
-    browser.wait(elm.isPresent()).then(function () {
-      browser.wait(elm.isDisplayed()).then(function () {
-        deferred.fulfill(true);
-      });
-    });
-
-    return deferred.promise;
-  };
 
 };
 module.exports = new MetadataPage(); 

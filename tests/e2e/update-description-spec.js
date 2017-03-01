@@ -1,5 +1,5 @@
 'use strict';
-var WorkspacePage = require('../pages/workspace-new-page.js');
+var WorkspacePage = require('../pages/workspace-page.js');
 var ToastyModal = require('../modals/toasty-modal.js');
 var ShareModal = require('../modals/share-modal.js');
 var testConfig = require('../config/test-env.js');

@@ -1,5 +1,5 @@
 'use strict';
-var WorkspacePage = require('../pages/workspace-new-page.js');
+var WorkspacePage = require('../pages/workspace-page.js');
 var ToastyModal = require('../modals/toasty-modal.js');
 var MoveModal = require('../modals/move-modal.js');
 var ShareModal = require('../modals/share-modal.js');
@@ -111,7 +111,7 @@ describe('folder-permissions', function () {
 
     // share both folders
     shareModal.shareResource(sourceFolder, 'folder', testConfig.testUserName1, false, false);
-    workspacePage.clickLogo(); // reset search
+    workspacePage.clearSearch(); // reset search
     shareModal.shareResource(targetFolder, 'folder', testConfig.testUserName1, false, false);
 
     workspacePage.logout();
