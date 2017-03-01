@@ -1,9 +1,0 @@
-<div ng-show="$root.showRender" id="templateJSON" ng-if="($root.jsonToSave || stripTmpFields()) | json">
-  <h5>Template JSON</h5>
-  <pre id='form-json-preview'>{{ ($root.jsonToSave || stripTmpFields()) | json }}</pre>
-</div>
-<div ng-show="$root.showOutput" id="outputJSON" ng-if="($root.instanceToSave || stripTmpFields()) | json">
-  <h5>Metadata JSON</h5>
-  <pre>{{ ($root.instanceToSave || stripTmpFields()) | json }}</pre>
-</div>
-

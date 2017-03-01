@@ -234,9 +234,9 @@ define([
                   TemplateService.updateTemplate(id, $scope.form),
                   function (response) {
 
+                    $rootScope.jsonToSave = response.data;
                     DataManipulationService.createDomIds(response.data);
                     $scope.form = response.data;
-                    $rootScope.jsonToSave = $scope.form;
 
                     UIMessageService.flashSuccess('SERVER.TEMPLATE.update.success',
                         {"title": response.data._ui.title}, 'GENERIC.Updated');
