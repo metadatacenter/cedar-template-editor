@@ -167,9 +167,12 @@ define([
 
             vm.cancelDescriptionEditing();
             vm.selectedResource = resource;
-            var id = resource['@id'];
-            $location.hash(id);
-            vm.hash = id;
+
+            // TODO this makes the hash work but messes up the right click context menu
+            //var id = resource['@id'];
+            //$location.hash(id);
+            //vm.hash = id;
+
             vm.getResourceDetails(resource);
             if (typeof vm.selectResourceCallback === 'function') {
               vm.selectResourceCallback(resource);
