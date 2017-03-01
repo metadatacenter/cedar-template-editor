@@ -9372,6 +9372,11 @@ button {
   width: 100%;
   height: calc(100% - 50px);
 }
+.link-disabled,
+.link-disabled:hover {
+  color: #ccc !important;
+  background: #f8f8f8 !important;
+}
 .controls-bar {
   padding: 10px 5px 0 5px;
   background: #2e5365;

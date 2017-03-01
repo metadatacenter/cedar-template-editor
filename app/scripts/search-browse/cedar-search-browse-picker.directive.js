@@ -227,7 +227,7 @@ define([
           };
 
           vm.canRead = function () {
-            var node = this.getSelectedNode();
+            var node = vm.getSelectedNode();
             if (node != null) {
               var perms = node.currentUserPermissions;
               if (perms != null) {
@@ -238,7 +238,7 @@ define([
           };
 
           vm.canWrite = function () {
-            var node = this.getSelectedNode();
+            var node = vm.getSelectedNode();
             if (node != null) {
               var perms = node.currentUserPermissions;
               if (perms != null) {
@@ -249,7 +249,7 @@ define([
           };
 
           vm.canChangeOwner = function () {
-            var node = this.getSelectedNode();
+            var node = vm.getSelectedNode();
             if (node != null) {
               var perms = node.currentUserPermissions;
               if (perms != null) {
@@ -629,14 +629,16 @@ define([
           }
 
 
-          function goToResource(value) {
+          function goToResource(value, action) {
 
             var resource = value || vm.selectedResource;
             if (resource) {
-              if (resource.nodeType == 'folder') {
-                goToFolder(resource['@id']);
+              if (resource.nodeType === 'folder' ) {
+                if (action !== 'populate') {
+                  goToFolder(resource['@id']);
+                }
               } else {
-                if (resource.nodeType == 'template') {
+                if (resource.nodeType === 'template' && action === 'populate') {
                   launchInstance(resource);
                 } else {
                   editResource(resource);
@@ -700,27 +702,30 @@ define([
             if (!resource && hasSelection()) {
               resource = getSelection();
             }
-            UIMessageService.confirmedExecution(
-                function () {
-                  resourceService.deleteResource(
-                      resource,
-                      function (response) {
+            if (vm.canWrite(resource)) {
 
-                        UIMessageService.flashSuccess('SERVER.' + resource.nodeType.toUpperCase() + '.delete.success',
-                            {"title": resource.nodeType},
-                            'GENERIC.Deleted');
-                        removeResource(resource);
-                      },
-                      function (error) {
-                        UIMessageService.showBackendError('SERVER.' + resource.nodeType.toUpperCase() + '.delete.error',
-                            error);
-                      }
-                  );
-                },
-                'GENERIC.AreYouSure',
-                'DASHBOARD.delete.confirm.' + resource.nodeType,
-                'GENERIC.YesDeleteIt'
-            );
+              UIMessageService.confirmedExecution(
+                  function () {
+                    resourceService.deleteResource(
+                        resource,
+                        function (response) {
+
+                          UIMessageService.flashSuccess('SERVER.' + resource.nodeType.toUpperCase() + '.delete.success',
+                              {"title": resource.nodeType},
+                              'GENERIC.Deleted');
+                          removeResource(resource);
+                        },
+                        function (error) {
+                          UIMessageService.showBackendError('SERVER.' + resource.nodeType.toUpperCase() + '.delete.error',
+                              error);
+                        }
+                    );
+                  },
+                  'GENERIC.AreYouSure',
+                  'DASHBOARD.delete.confirm.' + resource.nodeType,
+                  'GENERIC.YesDeleteIt'
+              );
+            }
           }
 
           function getFacets() {
@@ -885,7 +890,7 @@ define([
           }
 
           function goToHomeFolder() {
-             goToFolder(CedarUser.getHomeFolderId());
+            goToFolder(CedarUser.getHomeFolderId());
           }
 
 
@@ -1132,14 +1137,18 @@ define([
 
           // open the move modal
           function showMoveModal(resource) {
+
             var r = resource;
             if (!r && vm.selectedResource) {
               r = vm.selectedResource;
             }
-            vm.moveModalVisible = true;
-            $scope.$broadcast('moveModalVisible',
-                [vm.moveModalVisible, r, vm.currentPath, vm.currentFolderId, vm.resourceTypes,
-                 vm.sortOptionField]);
+
+            if (vm.canWrite(r)) {
+              vm.moveModalVisible = true;
+              $scope.$broadcast('moveModalVisible',
+                  [vm.moveModalVisible, r, vm.currentPath, vm.currentFolderId, vm.resourceTypes,
+                   vm.sortOptionField]);
+            }
           }
 
           // open the share modal
@@ -1160,8 +1169,10 @@ define([
               r = vm.selectedResource;
             }
 
-            vm.renameModalVisible = true;
-            $scope.$broadcast('renameModalVisible', [vm.renameModalVisible, r]);
+            if (vm.canWrite(r)) {
+              vm.renameModalVisible = true;
+              $scope.$broadcast('renameModalVisible', [vm.renameModalVisible, r]);
+            }
           }
 
           // open the new folder modal
@@ -1196,7 +1207,7 @@ define([
             $location.url(url);
 
             //if (vm.infoShowing) {
-              //vm.showInfoPanel();
+            //vm.showInfoPanel();
             //}
           };
 
