@@ -621,21 +621,21 @@ var WorkspacePage = function () {
     createMoveToResourceButton.click();
   };
 
-
+  // move a resource using the right-click menu item
   this.moveResourceViaRightClick = function (name, type) {
     this.rightClickResource(name, type);
     browser.wait(EC.elementToBeClickable(createRightClickMoveToMenuItem));
     createRightClickMoveToMenuItem.click();
   };
 
-
+  // copy a resource using the right-click menu item
   this.copyResource = function (name, type) {
     this.rightClickResource(name, type);
     browser.wait(EC.elementToBeClickable(createRightClickCopyToMenuItem));
     createRightClickCopyToMenuItem.click();
   };
 
-
+  // select a resource
   this.selectResource = function (name, type) {
 
     // search for the resource
@@ -685,12 +685,14 @@ var WorkspacePage = function () {
 
   };
 
+  // click on the cedar logo
   this.clickLogo = function () {
     browser.wait(EC.visibilityOf(createLogo));
     browser.wait(EC.elementToBeClickable(createLogo));
     createLogo.click();
   };
 
+  // logout from the account currently logged in to
   this.logout = function () {
     browser.sleep(1000);
     browser.wait(EC.visibilityOf(createUserDropdownButton));
@@ -700,6 +702,7 @@ var WorkspacePage = function () {
     createLogoutMenuItem.click();
   };
 
+  // login as the specified user with the given password
   this.login = function (username, password) {
     browser.driver.findElement(by.id('username')).sendKeys(username).then(function () {
       browser.driver.findElement(by.id('password')).sendKeys(password).then(function () {
@@ -711,6 +714,7 @@ var WorkspacePage = function () {
     });
   };
 
+  // navigate to the home folder of the specified user
   this.navigateToUserFolder = function (username) {
     this.clickBreadcrumb(1);
     var userFolder = createCenterPanel.element(by.cssContainingText('.folderTitle.ng-binding', username));
@@ -718,6 +722,7 @@ var WorkspacePage = function () {
     browser.actions().doubleClick(userFolder).perform();
   };
 
+  // right-click on a resource
   this.rightClickResource = function (name, type) {
     var element = this.selectResource(name, type);
     browser.actions().mouseMove(element).perform();

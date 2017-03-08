@@ -15,6 +15,11 @@ describe('resource-permissions', function () {
   var shareModal;
   var sweetAlertModal;
 
+  var foldersUser1 = [];
+  var templatesUser1 = [];
+  var foldersUser2 = [];
+  var templatesUser2 = [];
+
   beforeEach(function () {
     workspacePage = WorkspacePage;
     toastyModal = ToastyModal;
@@ -36,6 +41,8 @@ describe('resource-permissions', function () {
     // create template and target folder
     var sourceTemplate = workspacePage.createTemplate('Source');
     var targetFolder = workspacePage.createFolder('Target');
+    templatesUser1.push(sourceTemplate);
+    foldersUser1.push(targetFolder);
 
     // move template to target folder
     workspacePage.moveResource(sourceTemplate, 'template');
@@ -47,6 +54,7 @@ describe('resource-permissions', function () {
   it("should move a resource owned by current user to an unwritable folder", function () {
     // create a folder to share with another user
     var sharedFolderTitle = workspacePage.createFolder('Shared');
+    foldersUser1.push(sharedFolderTitle);
 
     // share folder
     shareModal.shareResource(sharedFolderTitle, 'folder', testConfig.testUserName2, false, false);
@@ -57,6 +65,7 @@ describe('resource-permissions', function () {
 
     // create a template to move to the shared folder
     var sourceTemplate = workspacePage.createTemplate('Source');
+    templatesUser2.push(sourceTemplate);
 
     // move created template to shared folder
     workspacePage.moveResource(sourceTemplate, 'template');
@@ -70,6 +79,8 @@ describe('resource-permissions', function () {
     // create source template and target shared folder
     var sourceTemplate = workspacePage.createTemplate('Source');
     var targetFolder = workspacePage.createFolder('Target');
+    templatesUser1.push(sourceTemplate);
+    foldersUser1.push(targetFolder);
 
     // share the template and folder
     shareModal.shareResource(sourceTemplate, 'template', testConfig.testUserName1, true, false);
@@ -93,6 +104,8 @@ describe('resource-permissions', function () {
     // create source template and target shared folder
     var sourceTemplate = workspacePage.createTemplate('Source');
     var targetFolder = workspacePage.createFolder('Target');
+    templatesUser1.push(sourceTemplate);
+    foldersUser1.push(targetFolder);
 
     shareModal.shareResource(sourceTemplate, 'template', testConfig.testUserName2, true, false);
     workspacePage.clickLogo(); // reset search
@@ -113,6 +126,8 @@ describe('resource-permissions', function () {
     // create source template and target shared folder
     var sourceTemplate = workspacePage.createTemplate('Source');
     var targetFolder = workspacePage.createFolder('Target');
+    templatesUser2.push(sourceTemplate);
+    foldersUser2.push(targetFolder);
 
     // share both folders
     shareModal.shareResource(sourceTemplate, 'template', testConfig.testUserName1, false, false);
@@ -138,17 +153,21 @@ describe('resource-permissions', function () {
     // create template and target folder
     var sourceTemplate = workspacePage.createTemplate('Source');
     var targetFolder = workspacePage.createFolder('Target');
+    templatesUser1.push(sourceTemplate);
+    foldersUser1.push(targetFolder);
 
     // copy template to target folder
     workspacePage.copyResource(sourceTemplate, 'template');
     copyModal.copyToDestination(targetFolder);
     toastyModal.isSuccess();
+    templatesUser1.push(sourceTemplate);
   });
 
 
   it("should copy a resource owned by current user to an unwritable folder", function () {
     // create a folder to share with another user
     var sharedFolderTitle = workspacePage.createFolder('Shared');
+    foldersUser1.push(sharedFolderTitle);
 
     // share folder
     shareModal.shareResource(sharedFolderTitle, 'folder', testConfig.testUserName2, false, false);
@@ -159,6 +178,7 @@ describe('resource-permissions', function () {
 
     // create a template to copy to the shared folder
     var sourceTemplate = workspacePage.createTemplate('Source');
+    templatesUser2.push(sourceTemplate);
 
     // copy created template to shared folder
     workspacePage.copyResource(sourceTemplate, 'template');
@@ -172,6 +192,8 @@ describe('resource-permissions', function () {
     // create source template and target shared folder
     var sourceTemplate = workspacePage.createTemplate('Source');
     var targetFolder = workspacePage.createFolder('Target');
+    templatesUser1.push(sourceTemplate);
+    foldersUser1.push(targetFolder);
 
     // share the template and folder
     shareModal.shareResource(sourceTemplate, 'template', testConfig.testUserName1, true, false);
@@ -188,6 +210,7 @@ describe('resource-permissions', function () {
     workspacePage.copyResource(sourceTemplate, 'template');
     copyModal.copyToDestination(targetFolder);
     toastyModal.isSuccess();
+    templatesUser1.push(sourceTemplate);
   });
 
 
@@ -195,6 +218,8 @@ describe('resource-permissions', function () {
     // create source template and target shared folder
     var sourceTemplate = workspacePage.createTemplate('Source');
     var targetFolder = workspacePage.createFolder('Target');
+    templatesUser1.push(sourceTemplate);
+    foldersUser1.push(targetFolder);
 
     shareModal.shareResource(sourceTemplate, 'template', testConfig.testUserName2, true, false);
     workspacePage.clickLogo(); // reset search
@@ -215,6 +240,8 @@ describe('resource-permissions', function () {
     // create source template and target shared folder
     var sourceTemplate = workspacePage.createTemplate('Source');
     var targetFolder = workspacePage.createFolder('Target');
+    templatesUser2.push(sourceTemplate);
+    foldersUser2.push(targetFolder);
 
     // share both folders
     shareModal.shareResource(sourceTemplate, 'template', testConfig.testUserName1, false, false);
@@ -232,7 +259,52 @@ describe('resource-permissions', function () {
     sweetAlertModal.hasInsufficientPermissions();
     sweetAlertModal.confirm();
   });
-  
+
+
+  it("should delete the test templates created by " + testConfig.testUserName1, function () {
+    for (var i = 0; i < templatesUser1.length; i++) {
+      workspacePage.deleteResourceViaRightClick(templatesUser1[i], 'template');
+      toastyModal.isSuccess();
+      workspacePage.clearSearch();
+    }
+  });
+
+
+  it("should delete the test templates created by " + testConfig.testUserName2, function () {
+    workspacePage.logout();
+    workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
+
+    for (var i = 0; i < templatesUser2.length; i++) {
+      workspacePage.deleteResourceViaRightClick(templatesUser2[i], 'template');
+      toastyModal.isSuccess();
+      workspacePage.clearSearch();
+    }
+  });
+
+
+  it("should delete the test folders created by " + testConfig.testUserName1, function () {
+    workspacePage.logout();
+    workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
+
+    for (var i = 0; i < foldersUser1.length; i++) {
+      workspacePage.deleteResourceViaRightClick(foldersUser1[i], 'folder');
+      toastyModal.isSuccess();
+      workspacePage.clearSearch();
+    }
+  });
+
+
+  it("should delete the test folders created by " + testConfig.testUserName2, function () {
+    workspacePage.logout();
+    workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
+
+    for(var j = 0; j < foldersUser2.length; j++) {
+      workspacePage.deleteResourceViaRightClick(foldersUser2[j], 'folder');
+      toastyModal.isSuccess();
+      workspacePage.clearSearch();
+    }
+  });
+
 
 });
 

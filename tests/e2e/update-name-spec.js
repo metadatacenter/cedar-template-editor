@@ -13,6 +13,9 @@ describe('update-name', function () {
   var renameModal;
   var sweetAlertModal;
 
+  var resourcesUser1 = [];
+  var resourcesUser2 = [];
+
   beforeEach(function () {
     workspacePage = WorkspacePage;
     toastyModal = ToastyModal;
@@ -29,6 +32,7 @@ describe('update-name', function () {
 
   it("should fail to update name of a resource shared as readable with Everybody group", function () {
     var folder = workspacePage.createFolder('Readable');
+    resourcesUser1.push(folder);
     shareModal.shareResourceWithGroup(folder, 'folder', testConfig.everybodyGroup, false, false);
 
     workspacePage.logout();
@@ -48,6 +52,7 @@ describe('update-name', function () {
 
   it("should fail to update name of a resource shared as readable with a user", function () {
     var folder = workspacePage.createFolder('Readable');
+    resourcesUser2.push(folder);
     shareModal.shareResource(folder, 'folder', testConfig.testUserName1, false, false);
 
     workspacePage.logout();
@@ -77,6 +82,7 @@ describe('update-name', function () {
 
     // change name
     var newFolderName = workspacePage.createTitle('NewWritable');
+    resourcesUser1.push(newFolderName);
     workspacePage.createRightClickRenameMenuItem().click();
     renameModal.renameTo(newFolderName);
     toastyModal.isSuccess();
@@ -95,9 +101,31 @@ describe('update-name', function () {
 
     // change name
     var newFolderName = workspacePage.createTitle('NewWritable');
+    resourcesUser2.push(newFolderName);
     workspacePage.createRightClickRenameMenuItem().click();
     renameModal.renameTo(newFolderName);
     toastyModal.isSuccess();
+  });
+
+
+  it("should delete the test resources created by " + testConfig.testUserName1, function () {
+    for (var i = 0; i < resourcesUser1.length; i++) {
+      workspacePage.deleteResourceViaRightClick(resourcesUser1[i], 'folder');
+      toastyModal.isSuccess();
+      workspacePage.clearSearch();
+    }
+  });
+
+
+  it("should delete the test resources created by " + testConfig.testUserName2, function () {
+    workspacePage.logout();
+    workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
+
+    for(var j = 0; j < resourcesUser2.length; j++) {
+      workspacePage.deleteResourceViaRightClick(resourcesUser2[j], 'folder');
+      toastyModal.isSuccess();
+      workspacePage.clearSearch();
+    }
   });
 
 

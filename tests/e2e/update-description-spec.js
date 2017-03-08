@@ -9,6 +9,8 @@ describe('update-description', function () {
   var toastyModal;
   var shareModal;
 
+  var resources = [];
+
   beforeEach(function () {
     workspacePage = WorkspacePage;
     toastyModal = ToastyModal;
@@ -23,6 +25,7 @@ describe('update-description', function () {
 
   it("should fail to update description of a resource shared as readable with Everybody group", function () {
     var template = workspacePage.createTemplate('Readable');
+    resources.push(template);
     shareModal.shareResourceWithGroup(template, 'template', testConfig.everybodyGroup, false, false);
 
     workspacePage.logout();
@@ -39,6 +42,7 @@ describe('update-description', function () {
 
   it("should update description of a resource shared as writable with Everybody group", function () {
     var template = workspacePage.createTemplate('Writable');
+    resources.push(template);
     shareModal.shareResourceWithGroup(template, 'template', testConfig.everybodyGroup, true, false);
 
     workspacePage.logout();
@@ -57,6 +61,7 @@ describe('update-description', function () {
 
   it("should fail to update description of a resource shared as readable with a user", function () {
     var template = workspacePage.createTemplate('Readable');
+    resources.push(template);
     shareModal.shareResource(template, 'template', testConfig.testUserName2, false, false);
 
     workspacePage.logout();
@@ -73,6 +78,7 @@ describe('update-description', function () {
 
   it("should update description of a resource shared as writable with a user", function () {
     var template = workspacePage.createTemplate('Writable');
+    resources.push(template);
     shareModal.shareResource(template, 'template', testConfig.testUserName1, true, false);
 
     workspacePage.logout();
@@ -86,6 +92,15 @@ describe('update-description', function () {
     workspacePage.createDetailsPanelDescriptionEditButton().click();
     workspacePage.createDetailsPanelDescription().sendKeys(workspacePage.createTitle('New description') + protractor.Key.ENTER);
     toastyModal.isSuccess();
+  });
+
+
+  it("should delete the test resources created", function () {
+    for (var i = 0; i < resources.length; i++) {
+      workspacePage.deleteResourceViaRightClick(resources[i], 'template');
+      toastyModal.isSuccess();
+      workspacePage.clearSearch();
+    }
   });
 
 

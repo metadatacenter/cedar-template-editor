@@ -13,6 +13,9 @@ describe('folder-permissions', function () {
   var shareModal;
   var sweetAlertModal;
 
+  var resourcesUser1 = [];
+  var resourcesUser2 = [];
+
   beforeEach(function () {
     workspacePage = WorkspacePage;
     toastyModal = ToastyModal;
@@ -23,7 +26,6 @@ describe('folder-permissions', function () {
   });
 
   afterEach(function () {
-    workspacePage.clickLogo();
   });
 
 
@@ -31,17 +33,21 @@ describe('folder-permissions', function () {
     // create source and target folders
     var sourceFolder = workspacePage.createFolder('Source');
     var targetFolder = workspacePage.createFolder('Target');
+    resourcesUser1.push(sourceFolder);
+    resourcesUser1.push(targetFolder);
 
     // move source to target folder
     workspacePage.moveResource(sourceFolder, 'folder');
     moveModal.moveToDestination(targetFolder);
     toastyModal.isSuccess();
+    workspacePage.clickLogo();
   });
 
 
   it("should move a folder owned by current user to an unwritable folder", function () {
     // create a folder to share with another user
     var sharedFolderTitle = workspacePage.createFolder('Shared');
+    resourcesUser1.push(sharedFolderTitle);
 
     // share folder
     shareModal.shareResource(sharedFolderTitle, 'folder', testConfig.testUserName2, false, false);
@@ -52,12 +58,14 @@ describe('folder-permissions', function () {
 
     // create a folder to move to the shared folder
     var folderTitle = workspacePage.createFolder('Source');
+    resourcesUser2.push(folderTitle);
 
     // move created folder to shared folder
     workspacePage.moveResource(folderTitle, 'folder');
     moveModal.moveToUserFolder(testConfig.testUserName1, sharedFolderTitle);
     sweetAlertModal.hasInsufficientPermissions();
     sweetAlertModal.confirm();
+    workspacePage.clickLogo();
   });
 
 
@@ -65,10 +73,12 @@ describe('folder-permissions', function () {
     // create source and target shared folders
     var sourceFolder = workspacePage.createFolder('Source');
     var targetFolder = workspacePage.createFolder('Target');
+    resourcesUser2.push(sourceFolder);
+    resourcesUser2.push(targetFolder);
 
     // share both folders
     shareModal.shareResource(sourceFolder, 'folder', testConfig.testUserName1, true, false);
-    workspacePage.clickLogo(); // reset search
+    workspacePage.clearSearch(); // reset search
     shareModal.shareResource(targetFolder, 'folder', testConfig.testUserName1, true, false);
 
     workspacePage.logout();
@@ -81,6 +91,7 @@ describe('folder-permissions', function () {
     workspacePage.moveResource(sourceFolder, 'folder');
     moveModal.moveToDestination(targetFolder);
     toastyModal.isSuccess();
+    workspacePage.clickLogo();
   });
 
 
@@ -88,9 +99,11 @@ describe('folder-permissions', function () {
     // create source and target shared folders
     var sourceFolder = workspacePage.createFolder('Source');
     var targetFolder = workspacePage.createFolder('Target');
+    resourcesUser1.push(sourceFolder);
+    resourcesUser1.push(targetFolder);
 
     shareModal.shareResource(sourceFolder, 'folder', testConfig.testUserName2, true, false);
-    workspacePage.clickLogo(); // reset search
+    workspacePage.clearSearch(); // reset search
     shareModal.shareResource(targetFolder, 'folder', testConfig.testUserName2, false, false);
 
     workspacePage.logout();
@@ -101,6 +114,7 @@ describe('folder-permissions', function () {
     moveModal.moveToDestination(targetFolder);
     sweetAlertModal.hasInsufficientPermissions();
     sweetAlertModal.confirm();
+    workspacePage.clickLogo();
   });
 
 
@@ -108,6 +122,8 @@ describe('folder-permissions', function () {
     // create source and target shared folders
     var sourceFolder = workspacePage.createFolder('Source');
     var targetFolder = workspacePage.createFolder('Target');
+    resourcesUser2.push(sourceFolder);
+    resourcesUser2.push(targetFolder);
 
     // share both folders
     shareModal.shareResource(sourceFolder, 'folder', testConfig.testUserName1, false, false);
@@ -125,6 +141,28 @@ describe('folder-permissions', function () {
     moveModal.moveToDestination(targetFolder);
     sweetAlertModal.hasInsufficientPermissions();
     sweetAlertModal.confirm();
+    workspacePage.clickLogo();
+  });
+
+
+  it("should delete the test resources created by " + testConfig.testUserName1, function () {
+    for (var i = 0; i < resourcesUser1.length; i++) {
+      workspacePage.deleteResourceViaRightClick(resourcesUser1[i], 'folder');
+      toastyModal.isSuccess();
+      workspacePage.clearSearch();
+    }
+  });
+
+
+  it("should delete the test resources created by " + testConfig.testUserName2, function () {
+    workspacePage.logout();
+    workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
+
+    for(var j = 0; j < resourcesUser2.length; j++) {
+      workspacePage.deleteResourceViaRightClick(resourcesUser2[j], 'folder');
+      toastyModal.isSuccess();
+      workspacePage.clearSearch();
+    }
   });
 
 
