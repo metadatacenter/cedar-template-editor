@@ -42,37 +42,29 @@ var WorkspacePage = function () {
 
       // toolbar
       var createToolbar = element(by.id('workspace-toolbar'));
-      var createTrashButton = createToolbar.element(by.css('#delete-tool button'));
-      var createMoreOptionsButton = createToolbar.element(by.css('#more-options-tool > div > button'));
-      var createPopulateResourceButton = createToolbar.element(by.css('#more-options-tool .populate'));
-      var createEditResourceButton = createToolbar.element(by.css('#more-options-tool [ng-click="dc.editResource()"]'));
-      var createMoveToResourceButton = createToolbar.element(by.css('#more-options-tool [ng-click="dc.showMoveModal(resource)"]'));
-      var createOpenResourceButton = createToolbar.element(by.css('#more-options-tool [ng-click="dc.goToResource()"]'));
-      var createDeleteResourceButton = createToolbar.element(by.css('#more-options-tool [ng-click="dc.deleteResource(resource)"]'));
+      var createMoreOptionsButton = createToolbar.element(by.css('.more-options > div > button'));
+      var createPopulateResourceButton = createToolbar.element(by.css('.more-options .dropdown .populate'));
+      var createMoveToResourceButton = createToolbar.element(by.css('.more-options .dropdown .move'));
+      var createOpenResourceButton = createToolbar.element(by.css('.more-options .dropdown .open'));
+      var createCopyResourceButton = createToolbar.element(by.css('.more-options .dropdown .copy'));
+      var createRenameResourceButton = createToolbar.element(by.css('.more-options .dropdown .rename'));
+      var createShareMenuItem = createToolbar.element(by.css('.more-options .dropdown .share'));
+      var createDeleteResourceButton = createToolbar.element(by.css('.more-options .dropdown .delete'));
       var createGridViewButton = createToolbar.element(by.css('#grid-view-tool'));
       var createListViewButton = createToolbar.element(by.css('#list-view-tool'));
-      var createViewDetailsButton = createToolbar.element(by.css('#details-view-tool > button'));
-      var createHideDetailsButton = createToolbar.element(by.css('#details-hide-tool [ng-click="dc.toggleInfoPanel()"]'));
-      var createDetailsPanel = element(by.id('sidebar-right'));
-      var createDetailsPanelTitle = createDetailsPanel.element(by.css('div > div.title.ng-binding.folder'));
-      var createDetailsPanelOwner = createDetailsPanel.element(by.css('div.info > div:nth-child(3)')).element(by.cssContainingText('div',
-          'Owner'));
-      var createDetailsPanelOwnerValue = createDetailsPanelOwner.element(by.xpath('../div[@class="col-sm-8 ng-binding"]'));
-      var createSortButton = element.all(by.css('#workspace-sort-tool button')).first();
+      var createShowDetailsButton = createToolbar.element(by.css('.toggleDetails.showPanel'));
+      var createHideDetailsButton = createToolbar.element(by.css('.toggleDetails.hidePanel'));
       var createSortDropdownButton = createToolbar.element(by.css('#workspace-sort-tool .menu'));
-      var createSortByNameMenuItem = createToolbar.element(by.css('#workspace-sort-tool [ng-click="dc.setSortOption(\\042name\\042)"]'));
-      var createSortByCreatedMenuItem = createToolbar.element(by.css('#workspace-sort-tool [ng-click="dc.setSortOption(\\042createdOnTS\\042)"]'));
-      var createSortByUpdatedMenuItem = createToolbar.element(by.css('#workspace-sort-tool [ng-click="dc.setSortOption(\\042lastUpdatedOnTS\\042)"]'));
       var createUserDropdownButton = createToolbar.element(by.css('#user-tool > div > button'));
       var createProfileMenuItem = createToolbar.element(by.css('#user-tool #user-profile-tool a'));
       var createLogoutMenuItem = createToolbar.element(by.css('#user-tool #user-logout-tool a'));
-      var createShareMenuItem = createToolbar.element(by.css('#more-options-tool > div > ul > li > a[ng-click="dc.showShareModal(resource)"]'));
-      var trashTooltip = 'delete selection';
       var createListView = element(by.css('.center-panel .list-view'));
       var createGridView = element(by.css('.center-panel .grid-view'));
-      var createSortMenuItem = function(order) {
-        element(by.css('#workspace-sort-tool' + ' .' + order));
-      };
+
+      // details panel
+      var createDetailsPanel = element(by.id('sidebar-right'));
+      var createDetailsPanelTitle = createDetailsPanel.element(by.css('.title span'));
+      var createDetailsPanelOwner = createDetailsPanel.element(by.css('.owner'));
 
       // breadcrumbs
       var createBreadcrumb = element(by.css('.breadcrumbs-sb'));
@@ -472,9 +464,9 @@ var WorkspacePage = function () {
         createMoreOptionsButton.click();
 
         // edit menu item
-        browser.wait(EC.visibilityOf(createEditResourceButton));
-        browser.wait(EC.elementToBeClickable(createEditResourceButton));
-        createEditResourceButton.click();
+        browser.wait(EC.visibilityOf(createOpenResourceButton));
+        browser.wait(EC.elementToBeClickable(createOpenResourceButton));
+        createOpenResourceButton.click();
 
       };
 

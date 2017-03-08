@@ -122,12 +122,14 @@ define([
           vm.toggleFilters = toggleFilters;
           vm.workspaceClass = workspaceClass;
           vm.showResourceInfo = false;
+          vm.resourceViewMode = 'grid';
 
 
           vm.toggleResourceInfo = toggleResourceInfo;
           vm.setResourceInfo = setResourceInfo;
           vm.toggleResourceType = toggleResourceType;
           vm.setResourceViewMode = setResourceViewMode;
+          vm.toggleViewMode = toggleViewMode;
           vm.isTemplate = isTemplate;
           vm.isElement = isElement;
           vm.isFolder = isFolder;
@@ -211,6 +213,11 @@ define([
             } else {
               vm.setResourceInfoVisibility(false);
             }
+          };
+
+          // toggle the info panel with this resource or find one
+          vm.toggleDirection = function () {
+            return (vm.showResourceInfo ? 'Hide' : 'Show') + ' details';
           };
 
 
@@ -450,7 +457,9 @@ define([
             };
             var option = CedarUser.getUIPreferences().folderView.sortBy;
             setSortOptionUI(option);
-            vm.resourceViewMode = uip.folderView.viewMode;
+            if (uip.hasOwnProperty('folderView') && uip.folderView.hasOwnProperty('viewMode')) {
+                vm.resourceViewMode = uip.folderView.viewMode;
+            }
             if (uip.hasOwnProperty('infoPanel')) {
               vm.showResourceInfo = uip.infoPanel.opened;
             } else {
@@ -1129,6 +1138,13 @@ define([
             if (saveData == null || saveData) {
               UISettingsService.saveUIPreference('populateATemplate.opened', vm.showFavorites);
             }
+          }
+
+          function toggleViewMode() {
+            console.log('toggleViewMode' + vm.resourceViewMode);
+            var mode = vm.resourceViewMode === 'grid' ? 'list': 'grid';
+            vm.resourceViewMode = mode;
+            UISettingsService.saveUIPreference('folderView.viewMode', mode);
           }
 
           function setResourceViewMode(mode) {

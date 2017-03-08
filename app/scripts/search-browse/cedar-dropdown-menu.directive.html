@@ -1,15 +1,15 @@
 
 
 
-<ul>
-  <li><a  href="#" ng-click="goTo(resource)">Open</a></li>
+<ul class="dropdown">
+  <li><a  href="#" class="open" ng-click="goTo(resource)">Open</a></li>
   <li><a ng-class="{'link-disabled':!isTemplate()}" class="populate" href="#" ng-click="goTo(resource, 'populate')">Populate</a></li>
   <li role="separator" class="divider"></li>
-  <li><a href="#" ng-click="share(resource)">Share...</a></li>
-  <li><a href="#" ng-click="copy(resource)">Copy to...</a></li>
-  <li><a ng-class="{'link-disabled':!canWrite()}" href="#" ng-click="move(resource)">Move to...</a></li>
-  <li><a ng-class="{'link-disabled':!canWrite()}" href="#" ng-click="rename(resource)">Rename...</a></li>
+  <li><a href="#" class="share" ng-click="share(resource)">Share...</a></li>
+  <li><a href="#" class="copy" ng-click="copy(resource)">Copy to...</a></li>
+  <li><a class="move" ng-class="{'link-disabled':!canWrite()}" href="#" ng-click="move(resource)">Move to...</a></li>
+  <li><a class="rename" ng-class="{'link-disabled':!canWrite()}" href="#" ng-click="rename(resource)">Rename...</a></li>
   <li  role="separator" class="divider"></li>
-  <li><a ng-class="{'link-disabled':!canWrite()}" href="#" class="deleteResource" ng-click="delete(resource)">Delete</a></li>
+  <li><a ng-class="{'link-disabled':!canWrite()}" href="#" class="delete" ng-click="delete(resource)">Delete</a></li>
 
 </ul>
