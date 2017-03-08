@@ -25,15 +25,15 @@
             </form>
           </div>
         </div>
-        <button type="button" style="background:transparent;color: white;"
+        <button type="button" class="show-type"
             ng-click="showModal('control-options-template-field');$root.finalTitle=form._ui.title">
           <i class="cedar-svg-controll-term collapsed" style="padding-bottom:10px"></i>
         </button>
         <div class="btn-group dropdown">
-          <button  data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="background:transparent;color: white;"><i
+          <button  data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" class="show-type"><i
               class="fa fa-caret-down  inline "></i></button>
-          <div class="dropdown-menu dropdown-menu-right" >
-            <class-list field="form"></class-list>
+          <div class="dropdown-menu dropdown-menu-right" style=" border-radius: 0;margin:0;padding:0">
+            <class-list field="form" ></class-list>
           </div>
         </div>
       </div>

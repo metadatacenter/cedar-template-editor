@@ -10575,6 +10575,13 @@ body.search-browse-modal a.navbar-brand {
   top: 10px;
   color: #ffffff;
 }
+.template-header .show-type {
+  background: transparent;
+  color: white;
+}
+.template-header .show-type i.fa-caret-down {
+  margin-left: -12px;
+}
 .template-header #element-name-container .cedar-svg-element,
 .template-header #element-controlled-term-container .cedar-svg-element,
 .template-header #element-name-container .cedar-svg-metadata,
@@ -15412,7 +15419,7 @@ table.apiKey td {
   overflow-y: scroll;
 }
 #airr-submission-modal .modal-dialog .modal-content .modal-body .file-upload .row {
-  margin-top: 10px ;
+  margin-top: 10px;
 }
 #airr-submission-modal .modal-dialog .modal-content .modal-body .file-upload .row .asset-upload {
   display: table-cell;
