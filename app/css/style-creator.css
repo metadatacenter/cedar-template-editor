@@ -9372,6 +9372,11 @@ button {
   width: 100%;
   height: calc(100% - 50px);
 }
+.link-disabled,
+.link-disabled:hover {
+  color: #ccc !important;
+  background: #f8f8f8 !important;
+}
 .controls-bar {
   padding: 10px 5px 0 5px;
   background: #2e5365;
@@ -10569,6 +10574,13 @@ body.search-browse-modal a.navbar-brand {
   font-size: 16px;
   top: 10px;
   color: #ffffff;
+}
+.template-header .show-type {
+  background: transparent;
+  color: white;
+}
+.template-header .show-type i.fa-caret-down {
+  margin-left: -12px;
 }
 .template-header #element-name-container .cedar-svg-element,
 .template-header #element-controlled-term-container .cedar-svg-element,
@@ -15407,7 +15419,7 @@ table.apiKey td {
   overflow-y: scroll;
 }
 #airr-submission-modal .modal-dialog .modal-content .modal-body .file-upload .row {
-  margin-top: 10px ;
+  margin-top: 10px;
 }
 #airr-submission-modal .modal-dialog .modal-content .modal-body .file-upload .row .asset-upload {
   display: table-cell;

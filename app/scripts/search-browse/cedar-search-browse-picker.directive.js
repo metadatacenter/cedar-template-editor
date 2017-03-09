@@ -98,6 +98,7 @@ define([
           vm.narrowContent = narrowContent;
           vm.pathInfo = [];
           vm.params = $location.search();
+          vm.hash = $location.hash();
           vm.resources = [];
           vm.selectedResource = null;
           vm.currentFolder = null;
@@ -121,12 +122,14 @@ define([
           vm.toggleFilters = toggleFilters;
           vm.workspaceClass = workspaceClass;
           vm.showResourceInfo = false;
+          vm.resourceViewMode = 'grid';
 
 
           vm.toggleResourceInfo = toggleResourceInfo;
           vm.setResourceInfo = setResourceInfo;
           vm.toggleResourceType = toggleResourceType;
           vm.setResourceViewMode = setResourceViewMode;
+          vm.toggleViewMode = toggleViewMode;
           vm.isTemplate = isTemplate;
           vm.isElement = isElement;
           vm.isFolder = isFolder;
@@ -163,8 +166,15 @@ define([
           };
 
           vm.selectResource = function (resource) {
+
             vm.cancelDescriptionEditing();
             vm.selectedResource = resource;
+
+            // TODO this makes the hash work but messes up the right click context menu
+            //var id = resource['@id'];
+            //$location.hash(id);
+            //vm.hash = id;
+
             vm.getResourceDetails(resource);
             if (typeof vm.selectResourceCallback === 'function') {
               vm.selectResourceCallback(resource);
@@ -205,6 +215,11 @@ define([
             }
           };
 
+          // toggle the info panel with this resource or find one
+          vm.toggleDirection = function () {
+            return (vm.showResourceInfo ? 'Hide' : 'Show') + ' details';
+          };
+
 
           vm.getResourceDetails = function (resource) {
             if (!resource && vm.hasSelection()) {
@@ -227,7 +242,7 @@ define([
           };
 
           vm.canRead = function () {
-            var node = this.getSelectedNode();
+            var node = vm.getSelectedNode();
             if (node != null) {
               var perms = node.currentUserPermissions;
               if (perms != null) {
@@ -238,7 +253,7 @@ define([
           };
 
           vm.canWrite = function () {
-            var node = this.getSelectedNode();
+            var node = vm.getSelectedNode();
             if (node != null) {
               var perms = node.currentUserPermissions;
               if (perms != null) {
@@ -249,7 +264,7 @@ define([
           };
 
           vm.canChangeOwner = function () {
-            var node = this.getSelectedNode();
+            var node = vm.getSelectedNode();
             if (node != null) {
               var perms = node.currentUserPermissions;
               if (perms != null) {
@@ -369,6 +384,15 @@ define([
             }
           };
 
+          vm.refreshWorkspace = function (resource) {
+            vm.params = $location.search();
+            vm.hash = $location.hash();
+            init();
+            if (resource) {
+              $scope.selectResourceById(resource['@id']);
+            }
+          };
+
 
           // callback to load more resources for the current folder
           vm.searchMore = function () {
@@ -433,7 +457,9 @@ define([
             };
             var option = CedarUser.getUIPreferences().folderView.sortBy;
             setSortOptionUI(option);
-            vm.resourceViewMode = uip.folderView.viewMode;
+            if (uip.hasOwnProperty('folderView') && uip.folderView.hasOwnProperty('viewMode')) {
+                vm.resourceViewMode = uip.folderView.viewMode;
+            }
             if (uip.hasOwnProperty('infoPanel')) {
               vm.showResourceInfo = uip.infoPanel.opened;
             } else {
@@ -471,11 +497,11 @@ define([
               vm.selectedResource = null;
               getFacets();
               var currentFolderId = decodeURIComponent(vm.params.folderId);
-              getFolderContentsById(currentFolderId);
+              getFolderContentsById(currentFolderId, vm.hash);
               getCurrentFolderSummary(currentFolderId);
             } else {
               //goToFolder(CedarUser.getHomeFolderId());
-              goToHomeFolder();
+              goToHomeFolder(vm.hash);
             }
             if (vm.showFavorites) {
               getForms();
@@ -571,7 +597,7 @@ define([
                   UIMessageService.flashSuccess('SERVER.RESOURCE.copyToWorkspace.success', {"title": resource.name},
                       'GENERIC.Copied');
 
-                  $scope.refreshWorkspace(resource);
+                  vm.refreshWorkspace(resource);
                 },
                 function (response) {
                   UIMessageService.showBackendError('SERVER.RESOURCE.copyToWorkspace.error', response);
@@ -595,7 +621,7 @@ define([
                   UIMessageService.flashSuccess('SERVER.RESOURCE.copyResource.success', {"title": resource.name},
                       'GENERIC.Copied');
 
-                  $scope.refreshWorkspace(resource);
+                  vm.refreshWorkspace(resource);
 
                 },
                 function (response) {
@@ -620,14 +646,16 @@ define([
           }
 
 
-          function goToResource(value) {
+          function goToResource(value, action) {
 
             var resource = value || vm.selectedResource;
             if (resource) {
-              if (resource.nodeType == 'folder') {
-                goToFolder(resource['@id']);
+              if (resource.nodeType === 'folder' ) {
+                if (action !== 'populate') {
+                  goToFolder(resource['@id']);
+                }
               } else {
-                if (resource.nodeType == 'template') {
+                if (resource.nodeType === 'template' && action === 'populate') {
                   launchInstance(resource);
                 } else {
                   editResource(resource);
@@ -691,27 +719,30 @@ define([
             if (!resource && hasSelection()) {
               resource = getSelection();
             }
-            UIMessageService.confirmedExecution(
-                function () {
-                  resourceService.deleteResource(
-                      resource,
-                      function (response) {
+            if (vm.canWrite(resource)) {
 
-                        UIMessageService.flashSuccess('SERVER.' + resource.nodeType.toUpperCase() + '.delete.success',
-                            {"title": resource.nodeType},
-                            'GENERIC.Deleted');
-                        removeResource(resource);
-                      },
-                      function (error) {
-                        UIMessageService.showBackendError('SERVER.' + resource.nodeType.toUpperCase() + '.delete.error',
-                            error);
-                      }
-                  );
-                },
-                'GENERIC.AreYouSure',
-                'DASHBOARD.delete.confirm.' + resource.nodeType,
-                'GENERIC.YesDeleteIt'
-            );
+              UIMessageService.confirmedExecution(
+                  function () {
+                    resourceService.deleteResource(
+                        resource,
+                        function (response) {
+
+                          UIMessageService.flashSuccess('SERVER.' + resource.nodeType.toUpperCase() + '.delete.success',
+                              {"title": resource.nodeType},
+                              'GENERIC.Deleted');
+                          removeResource(resource);
+                        },
+                        function (error) {
+                          UIMessageService.showBackendError('SERVER.' + resource.nodeType.toUpperCase() + '.delete.error',
+                              error);
+                        }
+                    );
+                  },
+                  'GENERIC.AreYouSure',
+                  'DASHBOARD.delete.confirm.' + resource.nodeType,
+                  'GENERIC.YesDeleteIt'
+              );
+            }
           }
 
           function getFacets() {
@@ -738,7 +769,7 @@ define([
           }
 
 
-          function getFolderContentsById(folderId) {
+          function getFolderContentsById(folderId, resourceId) {
             var resourceTypes = activeResourceTypes();
             vm.offset = 0;
             var offset = vm.offset;
@@ -756,6 +787,7 @@ define([
                     vm.totalCount = response.totalCount;
                     vm.nodeListQueryType = response.nodeListQueryType;
                     vm.breadcrumbTitle = vm.buildBreadcrumbTitle();
+                    $scope.selectResourceById(resourceId);
                   },
                   function (error) {
                     UIMessageService.showBackendError('SERVER.FOLDER.load.error', error);
@@ -875,8 +907,8 @@ define([
             return (hasSelection() && (vm.selectedResource.nodeType == CONST.resourceType.INSTANCE));
           }
 
-          function goToHomeFolder() {
-             goToFolder(CedarUser.getHomeFolderId());
+          function goToHomeFolder(resourceId) {
+            goToFolder(CedarUser.getHomeFolderId(), resourceId);
           }
 
 
@@ -1015,25 +1047,22 @@ define([
             if (id) {
               for (var i = 0; i < vm.resources.length; i++) {
                 if (id === vm.resources[i]['@id']) {
-                  vm.selectResource(vm.resources[i]);
+                  var resource = vm.resources[i];
+                  vm.cancelDescriptionEditing();
+                  vm.selectedResource = resource;
+                  vm.getResourceDetails(resource);
+                  if (typeof vm.selectResourceCallback === 'function') {
+                    vm.selectResourceCallback(resource);
+                  }
                   break;
                 }
               }
             }
           };
 
-
-          $scope.refreshWorkspace = function (resource) {
-            vm.params = $location.search();
-            init();
-            if (resource) {
-              $scope.selectResourceById(resource['@id']);
-            }
-          };
-
           $scope.$on('refreshWorkspace', function (event, args) {
             var selectedResource = args ? args[0] : null;
-            $scope.refreshWorkspace(selectedResource);
+            vm.refreshWorkspace(selectedResource);
           });
 
           $scope.hideModal = function (id) {
@@ -1111,6 +1140,13 @@ define([
             }
           }
 
+          function toggleViewMode() {
+            console.log('toggleViewMode' + vm.resourceViewMode);
+            var mode = vm.resourceViewMode === 'grid' ? 'list': 'grid';
+            vm.resourceViewMode = mode;
+            UISettingsService.saveUIPreference('folderView.viewMode', mode);
+          }
+
           function setResourceViewMode(mode) {
             vm.resourceViewMode = mode;
             UISettingsService.saveUIPreference('folderView.viewMode', mode);
@@ -1132,14 +1168,18 @@ define([
 
           // open the move modal
           function showMoveModal(resource) {
+
             var r = resource;
             if (!r && vm.selectedResource) {
               r = vm.selectedResource;
             }
-            vm.moveModalVisible = true;
-            $scope.$broadcast('moveModalVisible',
-                [vm.moveModalVisible, r, vm.currentPath, vm.currentFolderId, vm.resourceTypes,
-                 vm.sortOptionField]);
+
+            if (vm.canWrite(r)) {
+              vm.moveModalVisible = true;
+              $scope.$broadcast('moveModalVisible',
+                  [vm.moveModalVisible, r, vm.currentPath, vm.currentFolderId, vm.resourceTypes,
+                   vm.sortOptionField]);
+            }
           }
 
           // open the share modal
@@ -1160,8 +1200,10 @@ define([
               r = vm.selectedResource;
             }
 
-            vm.renameModalVisible = true;
-            $scope.$broadcast('renameModalVisible', [vm.renameModalVisible, r]);
+            if (vm.canWrite(r)) {
+              vm.renameModalVisible = true;
+              $scope.$broadcast('renameModalVisible', [vm.renameModalVisible, r]);
+            }
           }
 
           // open the new folder modal
@@ -1196,7 +1238,7 @@ define([
             $location.url(url);
 
             //if (vm.infoShowing) {
-              //vm.showInfoPanel();
+            //vm.showInfoPanel();
             //}
           };
 

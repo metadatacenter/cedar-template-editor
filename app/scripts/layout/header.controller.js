@@ -48,6 +48,7 @@ define([
     vm.goToDashboardOrBack = function () {
       vm.searchTerm = null;
       var path = $location.path();
+      var hash = $location.hash();
       var baseUrl = '/dashboard';
       if (path != baseUrl) {
         var queryParams = {};
@@ -60,13 +61,15 @@ define([
          }*/
       }
       var url = $rootScope.util.buildUrl(baseUrl, queryParams);
+      if (hash) {
+        url += '#' + hash;
+      }
       $location.url(url);
       $window.scrollTo(0, 0);
 
     };
 
     vm.search = function (searchTerm) {
-      console.log('searchTerm ' + searchTerm);
       if (vm.isDashboard()) {
         vm.searchTerm = searchTerm;
         var baseUrl = '/dashboard';
@@ -98,7 +101,6 @@ define([
     };
 
     vm.isTemplate = function () {
-      //console.log('isTemplate' + ($location.path() === "/templates"));
       return (vm.path === "/templates");
     };
 

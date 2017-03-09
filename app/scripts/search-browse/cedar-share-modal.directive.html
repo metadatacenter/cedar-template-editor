@@ -449,7 +449,7 @@
     <!-- footer closes the dialog -->
     <div class="modal-footer actions">
       <div class="clear-save">
-        <button type="button" ng-click="dc.shareModalVisible=false;"
+        <button type="button" ng-click="dc.shareModalVisible=false;dc.refreshWorkspace(dc.selectedResource);"
             data-dismiss="modal" aria-label="Done"
             class="btn btn-save confirm" translate>GENERIC.Done
         </button>

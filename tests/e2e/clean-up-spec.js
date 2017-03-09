@@ -30,6 +30,7 @@ xdescribe('clean-up', function () {
     workspacePage.setSortOrder('sortCreated');
   });
 
+
   // turn this on if you need to clean up the workspace
   // this deletes by searching for resources by type
   // this fails if we have resource inside folders that we cannot write
