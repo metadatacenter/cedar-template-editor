@@ -396,9 +396,7 @@ define([
 
         //TODO this event resets modal state and closes modal
         $scope.$on("field:controlledTermAdded", function () {
-          console.log('field:controlledTermAdded');
           jQuery("#control-options-template-field").modal('hide');
-          //$scope.getType();
         });
 
 

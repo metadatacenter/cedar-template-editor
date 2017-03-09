@@ -9,10 +9,14 @@ define([
   classListDirective.$inject = ["DataManipulationService","controlledTermDataService", "StringUtilsService"];
 
   /**
-   * focus and select all input
+   * display a list of field types for the node
+   *
+   * @param DataManipulationService
+   * @param controlledTermDataService
+   * @param StringUtilsService
+   * @returns {{restrict: string, scope: {field: string}, templateUrl: string, link: Function}}
    */
   function classListDirective( DataManipulationService, controlledTermDataService, StringUtilsService) {
-
 
     return {
       restrict: 'E',
@@ -26,7 +30,7 @@ define([
         scope.addedFields = new Map();
         scope.terms = null;
 
-
+        // update terms when field changes
         scope.$watch("field", function(newValue, oldValue) {
           if (newValue !== undefined) {
             var newTerms = DataManipulationService.getFieldControlledTerms(newValue);
@@ -36,16 +40,12 @@ define([
           }
         });
 
-        //TODO this event resets modal state and closes modal
+        // new class added
         scope.$on("field:controlledTermAdded", function () {
-          console.log('field:controlledTermAdded');
           scope.getType();
         });
 
-
-
         var setResponse = function (item, ontologyName, className) {
-
           // Get selected class details from the links.self endpoint provided.
           controlledTermDataService.getClassById(ontologyName, className).then(function (response) {
             scope.addedFields.set(item, response);
@@ -54,10 +54,10 @@ define([
 
         scope.deleteFieldAddedItem = function (itemDataId) {
           DataManipulationService.deleteFieldControlledTerm(itemDataId, scope.field);
-          // adjust the map
           scope.getType();
         };
 
+        // build the map of terms
         scope.getType = function() {
 
           scope.terms = DataManipulationService.getFieldControlledTerms(scope.field);
@@ -112,10 +112,7 @@ define([
             scope.addedFields = new Map();
             scope.addedFieldKeys = [];
           }
-
         };
-
-
 
         scope.getShortText = function (text, maxLength, finalString, emptyString) {
           return StringUtilsService.getShortText(text, maxLength, finalString, emptyString);
@@ -160,13 +157,7 @@ define([
         scope.parseOntologyName = function (dataItemsId) {
           return DataManipulationService.parseOntologyName(dataItemsId);
         };
-
-
-
-
-
       }
-
     }
   }
 });
