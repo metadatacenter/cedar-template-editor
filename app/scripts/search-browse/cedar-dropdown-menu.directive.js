@@ -26,8 +26,8 @@ define([
         delete    : '=',
         copy      : '=',
         rename    : '=',
-        isTemplate: '=',
-        canWrite  : '='
+        canNotPopulate: '=',
+        canNotWrite  : '='
       },
       controller : function ($scope, $element) {
       },
