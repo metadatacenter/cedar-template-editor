@@ -117,14 +117,13 @@ var WorkspacePage = function () {
   var createFolderSubmitButton = createFolderModal.element(by.css('div.modal-footer button.confirm'));
 
   // share menu item from the option list following a right click on a resource
-  var createRightClickMenuItemList = createCenterPanel.element(by.css('div > div > div > div.form-box-container.ng-scope.selected > div > div > ' +
-    'div.btn-group.dropdown.ng-scope.open > ul'));
-  var createRightClickShareMenuItem = createRightClickMenuItemList.element(by.css('li > a[ng-click="dc.showShareModal(resource)"]'));
-  var createRightClickRenameMenuItem = createRightClickMenuItemList.element(by.css('li > a[ng-click="dc.showRenameModal(resource)"]'));
-  var createRightClickInfoMenuItem = createRightClickMenuItemList.element(by.css('li > a[ng-click="dc.showInfoPanel()"]'));
-  var createRightClickMoveToMenuItem = createRightClickMenuItemList.element(by.css('li > a[ng-click="dc.showMoveModal(resource)"]'));
-  var createRightClickCopyToMenuItem = createRightClickMenuItemList.element(by.css('li > a[ng-click="dc.showCopyModal(resource)"]'));
-  var createRightClickDeleteMenuItem = createRightClickMenuItemList.element(by.css('li > a[ng-click="dc.deleteResource(resource)"]'));
+  var createRightClickMenuItemList = createCenterPanel.element(by.css('div > div > div > ' +
+      'div.form-box-container.ng-scope.selected > div > div > div.btn-group.dropdown.ng-scope.open > ul'));
+  var createRightClickShareMenuItem = createRightClickMenuItemList.element(by.css('li > a[ng-click="share(resource)"]'));
+  var createRightClickRenameMenuItem = createRightClickMenuItemList.element(by.css('li > a[ng-click="rename(resource)"]'));
+  var createRightClickMoveToMenuItem = createRightClickMenuItemList.element(by.css('li > a[ng-click="move(resource)"]'));
+  var createRightClickCopyToMenuItem = createRightClickMenuItemList.element(by.css('li > a[ng-click="copy(resource)"]'));
+  var createRightClickDeleteMenuItem = createRightClickMenuItemList.element(by.css('li > a[ng-click="delete(resource)"]'));
 
 
 
@@ -235,10 +234,6 @@ var WorkspacePage = function () {
 
   this.createRightClickRenameMenuItem = function () {
     return createRightClickRenameMenuItem;
-  };
-
-  this.createRightClickInfoMenuItem = function () {
-    return createRightClickInfoMenuItem;
   };
 
   this.createRightClickMoveToMenuItem = function () {
@@ -389,6 +384,7 @@ var WorkspacePage = function () {
 
   this.deleteResourceViaRightClick = function (name, type) {
     this.rightClickResource(name, type);
+    browser.wait(EC.visibilityOf(createRightClickDeleteMenuItem));
     browser.wait(EC.elementToBeClickable(createRightClickDeleteMenuItem));
     createRightClickDeleteMenuItem.click();
     sweetAlertModal.confirm();
@@ -689,7 +685,6 @@ var WorkspacePage = function () {
 
   // logout from the account currently logged in to
   this.logout = function () {
-    browser.sleep(1000);
     browser.wait(EC.visibilityOf(createUserDropdownButton));
     browser.wait(EC.elementToBeClickable(createUserDropdownButton));
     createUserDropdownButton.click();
