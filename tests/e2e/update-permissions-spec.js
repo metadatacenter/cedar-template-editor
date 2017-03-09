@@ -24,6 +24,7 @@ describe('update-permissions', function () {
 
 
   it("should fail to change permissions of a folder shared as readable with current user", function () {
+    workspacePage.onWorkspace();
     var folder = workspacePage.createFolder('Readable');
     resources.push(folder);
     shareModal.shareResource(folder, 'folder', testConfig.testUserName2, false, false);

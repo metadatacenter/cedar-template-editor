@@ -24,6 +24,7 @@ describe('update-description', function () {
 
 
   it("should fail to update description of a resource shared as readable with Everybody group", function () {
+    workspacePage.onWorkspace();
     var template = workspacePage.createTemplate('Readable');
     resources.push(template);
     shareModal.shareResourceWithGroup(template, 'template', testConfig.everybodyGroup, false, false);
@@ -41,6 +42,7 @@ describe('update-description', function () {
 
 
   it("should update description of a resource shared as writable with Everybody group", function () {
+    workspacePage.onWorkspace();
     var template = workspacePage.createTemplate('Writable');
     resources.push(template);
     shareModal.shareResourceWithGroup(template, 'template', testConfig.everybodyGroup, true, false);

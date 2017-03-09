@@ -24,6 +24,7 @@ describe('update-ownership', function () {
 
 
   it("should give ownership of a folder owned by current user to another user", function () {
+    workspacePage.onWorkspace();
     var folder = workspacePage.createFolder('Owned');
     resources.push(folder);
 
