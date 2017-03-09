@@ -365,6 +365,16 @@ define([
       $scope.saveButtonDisabled = true;
     };
 
+    $scope.showModal = function (id) {
+      jQuery("#" + id).modal('show');
+    };
+
+    //TODO this event resets modal state and closes modal
+    $scope.$on("field:controlledTermAdded", function () {
+      console.log('field:controlledTermAdded');
+      jQuery("#control-options-element-field").modal('hide');
+    });
+
   }
 
 });

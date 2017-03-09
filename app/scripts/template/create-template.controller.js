@@ -9,14 +9,14 @@ define([
       CreateTemplateController.$inject = ["$rootScope", "$scope", "$routeParams", "$timeout", "$location", "$translate",
                                           "$filter", "TrackingService", "HeaderService", "StagingService",
                                           "DataTemplateService", "FieldTypeService",
-                                          "TemplateService", "UIMessageService", "DataManipulationService",
+                                          "TemplateService", "UIMessageService", "DataManipulationService","controlledTermDataService", "StringUtilsService",
                                           "DataUtilService", "AuthorizedBackendService",
                                           "FrontendUrlService", "QueryParamUtilsService", "CONST"];
 
       function CreateTemplateController($rootScope, $scope, $routeParams, $timeout, $location, $translate, $filter,
                                         TrackingService, HeaderService, StagingService, DataTemplateService,
                                         FieldTypeService, TemplateService, UIMessageService,
-                                        DataManipulationService, DataUtilService, AuthorizedBackendService,
+                                        DataManipulationService, controlledTermDataService, StringUtilsService, DataUtilService, AuthorizedBackendService,
                                         FrontendUrlService, QueryParamUtilsService, CONST) {
 
         $rootScope.showSearch = false;
@@ -32,6 +32,8 @@ define([
         $scope.primaryFieldTypes = FieldTypeService.getPrimaryFieldTypes();
         $scope.otherFieldTypes = FieldTypeService.getOtherFieldTypes();
         $scope.saveButtonDisabled = false;
+        //$scope.addedFieldKeys = [];
+        //$scope.addedFields = new Map();
 
         var getTemplate = function () {
           // Load existing form if $routeParams.id parameter is supplied
@@ -47,7 +49,9 @@ define([
                   $rootScope.rootElement = $scope.form;
                   $rootScope.jsonToSave = $scope.form;
                   DataManipulationService.createDomIds($scope.form);
+                  //$scope.getType();
                   $scope.$broadcast('form:clean');
+
 
                 },
                 function (err) {
@@ -62,6 +66,7 @@ define([
             $rootScope.rootElement = $scope.form;
             $rootScope.jsonToSave = $scope.form;
             DataManipulationService.createDomIds($scope.form);
+            //$scope.getType();
             $scope.$broadcast('form:clean');
           }
         };
@@ -384,6 +389,16 @@ define([
         $scope.disableSaveButton = function () {
           $scope.saveButtonDisabled = true;
         };
+
+        $scope.showModal = function (id) {
+          jQuery("#" + id).modal('show');
+        };
+
+        //TODO this event resets modal state and closes modal
+        $scope.$on("field:controlledTermAdded", function () {
+          jQuery("#control-options-template-field").modal('hide');
+        });
+
 
       }
 

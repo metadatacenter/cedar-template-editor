@@ -8,10 +8,6 @@ var SweetAlertModal = require('../modals/sweet-alert-modal.js');
 var _ = require('../libs/lodash.min.js');
 var sampleTitle;
 var sampleElementTitle;
-var sampleDescription;
-var sampleTemplateUrl;
-var sampleMetadataUrl ;
-var pageName = 'template';
 
 
 describe('metadata-creator', function () {
@@ -32,7 +28,6 @@ describe('metadata-creator', function () {
     toastyModal = ToastyModal;
     sweetAlertModal = SweetAlertModal;
     browser.driver.manage().window().maximize();
-
   });
 
   afterEach(function () {
@@ -91,7 +86,6 @@ describe('metadata-creator', function () {
     //TODO confirm should not be required but it is here
     sweetAlertModal.confirm();
     sweetAlertModal.isHidden();
-
     workspacePage.onWorkspace();
   });
 
@@ -120,7 +114,6 @@ describe('metadata-creator', function () {
     expect(metadataPage.topNavigation().isDisplayed()).toBe(true);
     expect(metadataPage.topNavBackArrow().isDisplayed()).toBe(true);
     expect(metadataPage.documentTitle().isDisplayed()).toBe(true);
-    expect(metadataPage.templateJson().isDisplayed()).toBe(true);
     expect(metadataPage.metadataJson().isDisplayed()).toBe(true);
   });
 
@@ -136,7 +129,7 @@ describe('metadata-creator', function () {
     workspacePage.onWorkspace();
   });
 
-  it("should open existing metadata with edit menu", function () {
+  it("should open existing metadata with open menu", function () {
     workspacePage.editResource(sampleTitle, 'metadata');
     workspacePage.onMetadata();
   });
@@ -149,14 +142,6 @@ describe('metadata-creator', function () {
   it("should open existing metadata with a double click", function () {
     workspacePage.doubleClickResource(sampleTitle, 'metadata');
     workspacePage.onMetadata();
-  });
-
-  // TODO we currently don't have the page titled embedded here anymore...used to
-  xit("should have the correct page title", function () {
-    browser.wait(EC.presenceOf(metadataPage.pageTitle()));
-    metadataPage.pageTitle().getText().then(function (text) {
-      expect(text === 'Metadata Editor').toBe(true);
-    });
   });
 
   it("should return to workspace by clicking back arrow", function () {

@@ -29,7 +29,7 @@
     <div class="  pull-right no-wrap" id="workspace-toolbar">
       <ul class="list-inline">
 
-        <li ng-if="dc.onDashboard() " id="more-options-tool">
+        <li ng-if="dc.onDashboard() " class="more-options">
           <div class="btn-group dropdown">
             <button class="{'disabled': !dc.hasSelection()}"
                 ng-disabled="!dc.hasSelection()" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><i
@@ -44,33 +44,33 @@
           </div>
         </li>
 
-        <li ng-show="dc.onDashboard() && dc.resourceViewMode != 'grid'" id="grid-view-tool">
-          <button
-              type="button"
-              tooltip='{{"HELP.viewAsGrid" | translate}}'
-              tooltip-trigger
-              tooltip-animation="false"
-              tooltip-placement="bottom"
-              data-toggle="tooltip"
-              ng-click="dc.setResourceViewMode('grid')"><i
-              class="fa fa-th inline"></i></button>
-        </li>
+        <!--<li ng-show="dc.onDashboard() && dc.resourceViewMode != 'grid'" id="grid-view-tool">-->
+          <!--<button-->
+              <!--type="button"-->
+              <!--tooltip='{{"HELP.viewAsGrid" | translate}}'-->
+              <!--tooltip-trigger-->
+              <!--tooltip-animation="false"-->
+              <!--tooltip-placement="bottom"-->
+              <!--data-toggle="tooltip"-->
+              <!--ng-click="dc.setResourceViewMode('grid')"><i-->
+              <!--class="fa fa-th inline"></i></button>-->
+        <!--</li>-->
 
-        <li ng-show="dc.onDashboard() && dc.resourceViewMode != 'list'" id="list-view-tool">
+        <li ng-show="dc.onDashboard()" id="grid-view-tool">
           <button type="button"
               tooltip='{{"HELP.viewAsList" | translate}}'
               tooltip-trigger
               tooltip-animation="false"
               tooltip-placement="bottom"
               data-toggle="tooltip"
-              ng-click="dc.setResourceViewMode('list')"><i
-              class="fa fa-list-ul inline "></i></button>
+              ng-click="dc.toggleViewMode()">
+            <i class="inline fa " ng-class="{'fa-list-ul': dc.resourceViewMode === 'grid', 'fa-th': dc.resourceViewMode === 'list'}"></i></button>
         </li>
 
 
-        <li ng-show="!dc.infoShowing()" ng-if="dc.onDashboard()" id="details-view-tool">
+        <li  ng-if="dc.onDashboard()" class="toggleDetails" ng-class="{'hidePanel':dc.infoShowing(), 'showPanel':!dc.infoShowing()}" >
           <button type="button"
-              tooltip='{{"HELP.viewDetails" | translate}}'
+              tooltip="{{ dc.toggleDirection() | translate  }}"
               tooltip-trigger
               tooltip-animation="false"
               tooltip-placement="bottom"
@@ -78,15 +78,6 @@
               ng-click="dc.toggleInfoPanel()"><i class="fa fa-info "></i></button>
         </li>
 
-        <li ng-show="dc.infoShowing()" ng-if="dc.onDashboard()" id="details-hide-tool">
-          <button type="button"
-              tooltip='{{"HELP.hideDetails" | translate}}'
-              tooltip-trigger
-              tooltip-animation="false"
-              tooltip-placement="bottom"
-              data-toggle="tooltip"
-              ng-click="dc.toggleInfoPanel()"><i class="fa fa-info "></i></button>
-        </li>
 
         <li ng-if="dc.onDashboard()" id="workspace-sort-tool">
           <div class="btn-group dropdown">

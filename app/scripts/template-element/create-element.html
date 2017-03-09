@@ -15,7 +15,6 @@
             </form>
           </div>
         </div>
-        <!-- /.left-sidebar -->
         <div class="right-body col-sm-6">
           <div id="element-description-container">
             <form>
@@ -28,37 +27,20 @@
             </form>
           </div>
         </div>
-        <!-- /.right-body -->
-        <div class="right-body col-sm-1">
-          <div id="element-controlled-term-container">
-            <div class="toggle-controlled-term">
-              <!--<i class="cedar-svg-controll-term collapsed" data-toggle="modal" data-target="#element_control_term"></i>-->
-              <i class="cedar-svg-controll-term collapsed" data-toggle="modal"></i>
+            <button type="button" class="show-type"
+                ng-click="showModal('control-options-element-field');$root.finalTitle = $root.schemaOf(element)._ui.title">
+              <i class="cedar-svg-controll-term collapsed" style="padding-bottom:10px"></i>
+            </button>
+            <div class="btn-group dropdown">
+              <button  data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="background:transparent;color: white;"><i
+                  class="fa fa-caret-down  inline "></i></button>
+              <div class="dropdown-menu dropdown-menu-right" >
+                <class-list field="element"></class-list>
+              </div>
             </div>
-          </div>
-          <!-- /#element-controlled-term-container -->
-        </div>
-        <!-- /.right-body -->
       </div>
-      <!-- /.row -->
-      <!--<div class="row">-->
-      <!--<div class="modal fade controlled-terms-modal" id="element_control_term">-->
-      <!--<div class="modal-dialog">-->
-      <!--<div class="modal-content">-->
-      <!--<div class="modal-header">-->
-      <!--<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"><img-->
-      <!--src="/img/close_modal.png" width="22"/></span></button>-->
-      <!--</div>-->
-      <!--<div class="modal-body">-->
-      <!--<div controlled-term field="element" options="{filterSelection: 'field'}"></div>-->
-      <!--</div>-->
-      <!--</div>-->
-      <!--</div>-->
-      <!--</div>-->
-      <!--</div>-->
     </div>
-    <!-- /.container -->
-  </div> <!-- /.template-header -->
+  </div>
 
   <div class="template-body element">
     <div class="container">
@@ -149,6 +131,23 @@
           pick-resource-callback="pickElementFromPicker"
           mode="'modal'">
       </cedar-finder>
+
+      <!-- field modal -->
+      <div class="modal fade controlled-terms-modal" id="control-options-element-field" data-backdrop="static">
+        <div class="modal-dialog">
+          <div class="modal-content" style="overflow:auto">
+            <div class="modal-header">
+              <button type="button" class="close controlled-terms-modal-field-close" data-dismiss="modal"
+                  aria-label="Close"><span aria-hidden="true"><img
+                  src="/img/close_modal.png" width="22"/></span></button>
+            </div>
+            <div class="modal-body">
+              <div controlled-term field="form"
+                  options='{"filterSelection":"field", "modalId":"control-options-template-field"}'></div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
     <!-- /.container -->
   </div> <!-- /.template-body -->

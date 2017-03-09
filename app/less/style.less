@@ -50,11 +50,10 @@
 
 @divider: #B6B6B6;
 
-
 @very-lt-gray: #CCCCCC;
 @lt-gray-1: #FAFAFA;
 @lt-gray: #F0F0F0;
-@background-gray:#EEEEEE;
+@background-gray: #EEEEEE;
 
 @dark-gray: #616161;
 @med-gray: #9E9E9E;
@@ -382,8 +381,8 @@ button {
 }
 
 .link-disabled, .link-disabled:hover {
-  color:#ccc !important;
-  background:#f8f8f8 !important;
+  color: #ccc !important;
+  background: #f8f8f8 !important;
 }
 
 .controls-bar {
@@ -395,8 +394,6 @@ button {
   top: 0;
   position: relative;
   min-height: 50px;
-
-
 
   .breadcrumbs-sb {
     margin: 5px 0;
@@ -448,18 +445,18 @@ button {
         margin: 0 5px;
         &.menu {
           width: 15px;
-          margin:0;
-          position:relative;
-          left:-12px;
+          margin: 0;
+          position: relative;
+          left: -12px;
           i {
-            font-size:12px;
+            font-size: 12px;
 
           }
 
         }
       }
       button:disabled {
-        color:#ccc;
+        color: #ccc;
       }
       button:hover {
         color: #ccc;
@@ -740,15 +737,15 @@ button {
     }
 
     .no-selection {
-        padding: 100px 0;
-        color: #ccc;
-        .no-file {
-          font-size: 50px
-        }
-        .no-message {
-          font-size: 18px;
-          padding:20px;
-        }
+      padding: 100px 0;
+      color: #ccc;
+      .no-file {
+        font-size: 50px
+      }
+      .no-message {
+        font-size: 18px;
+        padding: 20px;
+      }
     }
 
   }
@@ -1194,7 +1191,7 @@ button {
           color: @brand-primary;
           margin: 10px 0;
           display: block;
-          font-size:16px;
+          font-size: 16px;
           &.active {
             font-weight: bold;
           }
@@ -1264,7 +1261,7 @@ button {
 
         &.element {
           background: @button-element;
-          padding:6px;
+          padding: 6px;
         }
 
         &.metadata, &.instance {
@@ -1313,7 +1310,6 @@ button {
     position: fixed;
     bottom: 10px;
     right: 30px;
-
 
     &:hover {
     }
@@ -1779,6 +1775,14 @@ body.search-browse-modal {
     color: @white;
   }
 
+  .show-type {
+    background: transparent;
+    color: white;
+    i.fa-caret-down {
+      margin-left: -12px;
+    }
+  }
+
   #element-name-container,
   #element-controlled-term-container {
 
@@ -1889,7 +1893,7 @@ body.search-browse-modal {
       .trash {
         cursor: pointer;
         color: @med-gray;
-        font-size:26px;
+        font-size: 26px;
         &:hover {
           color: @dark-gray;
         }
@@ -1987,7 +1991,7 @@ body.search-browse-modal {
         display: inline-block;
 
         &.nested {
-          margin-left:20px;
+          margin-left: 20px;
         }
 
         i {
@@ -2802,9 +2806,7 @@ section.dashboard-elements {
 */
 .template-body form .runtime {
 
-
   font-size: 16px;
-
 
   .treeview, .treeview ul.tv {
     list-style-type: none;
@@ -2864,13 +2866,11 @@ section.dashboard-elements {
       height: 15px;
     }
 
-
     li.tv.first.element::after {
       top: 0;
       height: 16px;
     }
   }
-
 
   /* lower line on list items from the first level because they don't have parents */
   .treeview > li.tv::after {
@@ -2887,7 +2887,6 @@ section.dashboard-elements {
     top: 15px;
     height: 100%;
   }
-
 
   .paging {
     max-height: 17px;
@@ -2922,7 +2921,7 @@ section.dashboard-elements {
   .toolbar {
     padding: 0px 22px 0 0;
     font-size: 18px;
-    visibility:hidden;
+    visibility: hidden;
     button, .paging {
       background-color: @lt-gray;
     }
@@ -2930,7 +2929,7 @@ section.dashboard-elements {
 
   .row:hover {
     .toolbar {
-      visibility:visible;
+      visibility: visible;
     }
   }
 
@@ -2939,7 +2938,7 @@ section.dashboard-elements {
     font-size: 1em;
     cursor: pointer;
 
-    padding-top:4px;
+    padding-top: 4px;
     min-height: 30px;
     padding-left: 10px;
     .edit {
@@ -3131,7 +3130,6 @@ section.dashboard-elements {
       }
       &.collapse {
       }
-
 
     }
   }
@@ -3844,7 +3842,6 @@ section.dashboard-elements {
   background-color: @brand-primary-hover;
 }
 
-
 .create-value-set-widget-actions {
   padding-left: 230px;
 }
@@ -3868,7 +3865,6 @@ section.dashboard-elements {
 .controlled-term-options {
   float: none;
   width: 100%;
-
 
   #field-value-tooltip {
     color: #cacacb;
@@ -4254,8 +4250,6 @@ p.instructions {
   text-align: left;
 
 }
-
-
 
 .field-search {
   border: 1px solid #ddd;
@@ -5281,7 +5275,6 @@ p.instructions {
     float: left;
     margin-left: -6px;
 
-
   }
 
   li:last-child:before {
@@ -5404,7 +5397,6 @@ p.instructions {
           border: none;
           border-bottom: 1px solid #DDD;
 
-
           &:first-child {
             width: 100px;
           }
@@ -5505,7 +5497,6 @@ p.instructions {
         width: 200px
       }
 
-
     }
 
     > thead > tr > th {
@@ -5591,8 +5582,6 @@ p.instructions {
   }
 }
 
-
-
 .values-search {
   display: block;
   float: left;
@@ -5634,8 +5623,6 @@ p.instructions {
   width: 33%;
   overflow: hidden;
 }
-
-
 
 .inline-block {
   display: inline-block;
@@ -6171,8 +6158,6 @@ body .template-header .controlled-terms-modal {
       text-align: left;
       padding: 12px;
     }
-
-
 
     select {
       width: 60px;
@@ -6872,10 +6857,7 @@ table.apiKey {
   background: #ccc;
 }
 
-
-
 #rename-modal, #new-folder-modal, #move-modal, #copy-modal, #share-modal, #airr-submission-modal {
-
 
   .modal-header {
     border-bottom: 0px solid #aaa;
@@ -7032,12 +7014,18 @@ table.apiKey {
         overflow-y: scroll;
         .file-upload {
           .row {
-            margin-top:10px ;
+            margin-top: 10px;
             .asset-upload {
-              display:table-cell;text-align:center;vertical-align:middle;width:180px;height:180px;border:3px dashed #ccc;background:#eee;
+              display: table-cell;
+              text-align: center;
+              vertical-align: middle;
+              width: 180px;
+              height: 180px;
+              border: 3px dashed #ccc;
+              background: #eee;
             }
             .upload-result {
-              min-height:30px;
+              min-height: 30px;
             }
           }
         }
@@ -7307,12 +7295,12 @@ table.apiKey {
       }
       &.no-selection {
         padding: 50px 0 100px 0;
-        color:#ccc;
+        color: #ccc;
         .no-file {
-          font-size:50px
+          font-size: 50px
         }
         .no-message {
-          font-size:18px
+          font-size: 18px
         }
       }
     }
