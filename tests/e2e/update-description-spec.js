@@ -25,6 +25,8 @@ describe('update-description', function () {
 
   it("should fail to update description of a resource shared as readable with Everybody group", function () {
     workspacePage.onWorkspace();
+    workspacePage.openInfoPanel();
+
     var template = workspacePage.createTemplate('Readable');
     resources.push(template);
     shareModal.shareResourceWithGroup(template, 'template', testConfig.everybodyGroup, false, false);
@@ -33,16 +35,15 @@ describe('update-description', function () {
     workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
 
     workspacePage.navigateToUserFolder(testConfig.testUserName1);
-    workspacePage.rightClickResource(template, 'template');
-
-    // change description
-    workspacePage.createRightClickInfoMenuItem().click();
+    workspacePage.selectResource(template, 'template');
     expect(workspacePage.createDetailsPanelDescriptionEditButton().isDisplayed()).toBe(false);
   });
 
 
   it("should update description of a resource shared as writable with Everybody group", function () {
     workspacePage.onWorkspace();
+    workspacePage.openInfoPanel();
+
     var template = workspacePage.createTemplate('Writable');
     resources.push(template);
     shareModal.shareResourceWithGroup(template, 'template', testConfig.everybodyGroup, true, false);
@@ -51,10 +52,8 @@ describe('update-description', function () {
     workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
 
     workspacePage.navigateToUserFolder(testConfig.testUserName2);
-    workspacePage.rightClickResource(template, 'template');
+    workspacePage.selectResource(template, 'template');
 
-    // change description
-    workspacePage.createRightClickInfoMenuItem().click();
     workspacePage.createDetailsPanelDescriptionEditButton().click();
     workspacePage.createDetailsPanelDescription().sendKeys(workspacePage.createTitle('New description') + protractor.Key.ENTER);
     toastyModal.isSuccess();
@@ -62,6 +61,7 @@ describe('update-description', function () {
 
 
   it("should fail to update description of a resource shared as readable with a user", function () {
+    workspacePage.openInfoPanel();
     var template = workspacePage.createTemplate('Readable');
     resources.push(template);
     shareModal.shareResource(template, 'template', testConfig.testUserName2, false, false);
@@ -70,15 +70,13 @@ describe('update-description', function () {
     workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
 
     workspacePage.navigateToUserFolder(testConfig.testUserName1);
-    workspacePage.rightClickResource(template, 'template');
-
-    // change description
-    workspacePage.createRightClickInfoMenuItem().click();
+    workspacePage.selectResource(template, 'template');
     expect(workspacePage.createDetailsPanelDescriptionEditButton().isDisplayed()).toBe(false);
   });
 
 
   it("should update description of a resource shared as writable with a user", function () {
+    workspacePage.openInfoPanel();
     var template = workspacePage.createTemplate('Writable');
     resources.push(template);
     shareModal.shareResource(template, 'template', testConfig.testUserName1, true, false);
@@ -87,10 +85,8 @@ describe('update-description', function () {
     workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
 
     workspacePage.navigateToUserFolder(testConfig.testUserName2);
-    workspacePage.rightClickResource(template, 'template');
+    workspacePage.selectResource(template, 'template');
 
-    // change description
-    workspacePage.createRightClickInfoMenuItem().click();
     workspacePage.createDetailsPanelDescriptionEditButton().click();
     workspacePage.createDetailsPanelDescription().sendKeys(workspacePage.createTitle('New description') + protractor.Key.ENTER);
     toastyModal.isSuccess();

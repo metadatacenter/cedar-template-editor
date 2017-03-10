@@ -38,7 +38,7 @@ describe('delete-resource', function () {
     workspacePage.navigateToUserFolder(testConfig.testUserName1);
     workspacePage.selectResource(folder, 'folder');
     workspacePage.createMoreOptionsButton().click();
-    expect(workspacePage.createDeleteResourceButton().isPresent()).toBe(false);
+    expect(workspacePage.createDeleteResourceButton().getAttribute('class')).toMatch('link-disabled');
   });
 
 
@@ -65,7 +65,7 @@ describe('delete-resource', function () {
     workspacePage.navigateToUserFolder(testConfig.testUserName1);
     workspacePage.selectResource(folder, 'folder');
     workspacePage.createMoreOptionsButton().click();
-    expect(workspacePage.createDeleteResourceButton().isPresent()).toBe(false);
+    expect(workspacePage.createDeleteResourceButton().getAttribute('class')).toMatch('link-disabled');
   });
 
 
@@ -92,10 +92,8 @@ describe('delete-resource', function () {
     workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
 
     workspacePage.navigateToUserFolder(testConfig.testUserName1);
-    workspacePage.deleteResourceViaRightClick(folder, 'folder');
-
-    sweetAlertModal.hasInsufficientPermissions();
-    sweetAlertModal.confirm();
+    workspacePage.rightClickResource(folder, 'folder');
+    expect(workspacePage.createRightClickDeleteMenuItem().getAttribute('class')).toMatch('link-disabled');
   });
 
 
@@ -122,10 +120,8 @@ describe('delete-resource', function () {
     workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
 
     workspacePage.navigateToUserFolder(testConfig.testUserName1);
-    workspacePage.deleteResourceViaRightClick(folder, 'folder');
-
-    sweetAlertModal.hasInsufficientPermissions();
-    sweetAlertModal.confirm();
+    workspacePage.rightClickResource(folder, 'folder');
+    expect(workspacePage.createRightClickDeleteMenuItem().getAttribute('class')).toMatch('link-disabled');
   });
 
 

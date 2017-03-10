@@ -137,10 +137,8 @@ describe('folder-permissions', function () {
     workspacePage.navigateToUserFolder(testConfig.testUserName2);
 
     // move source to target folder
-    workspacePage.moveResourceViaRightClick(sourceFolder, 'folder');
-    moveModal.moveToDestination(targetFolder);
-    sweetAlertModal.hasInsufficientPermissions();
-    sweetAlertModal.confirm();
+    workspacePage.rightClickResource(sourceFolder, 'folder');
+    expect(workspacePage.createRightClickMoveToMenuItem().getAttribute('class')).toMatch('link-disabled');
     workspacePage.clickLogo();
   });
 

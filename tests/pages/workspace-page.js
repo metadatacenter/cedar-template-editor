@@ -264,6 +264,10 @@ var WorkspacePage = function () {
     return createDeleteResourceButton;
   };
 
+  this.createRenameResourceButton = function () {
+    return createRenameResourceButton;
+  };
+
   // page load
   this.get = function () {
     browser.get(url);
@@ -411,6 +415,16 @@ var WorkspacePage = function () {
         browser.wait(EC.visibilityOf(createHideDetailsButton));
         browser.wait(EC.elementToBeClickable(createHideDetailsButton));
         createHideDetailsButton.click();
+      }
+    });
+  };
+
+  this.openInfoPanel = function () {
+    createSidebarRight.isPresent().then(function (result) {
+      if (!result) {
+        browser.wait(EC.visibilityOf(createShowDetailsButton));
+        browser.wait(EC.elementToBeClickable(createShowDetailsButton));
+        createShowDetailsButton.click();
       }
     });
   };

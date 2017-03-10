@@ -31,6 +31,7 @@ describe('update-name', function () {
 
 
   it("should fail to update name of a resource shared as readable with Everybody group", function () {
+    workspacePage.onWorkspace();
     var folder = workspacePage.createFolder('Readable');
     resourcesUser1.push(folder);
     shareModal.shareResourceWithGroup(folder, 'folder', testConfig.everybodyGroup, false, false);
@@ -38,15 +39,9 @@ describe('update-name', function () {
     workspacePage.logout();
     workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
 
-    workspacePage.navigateToUserFolder(testConfig.testUserName1);
-    workspacePage.rightClickResource(folder, 'folder');
-
-    // change name
-    var newFolderName = workspacePage.createTitle('NewReadable');
-    workspacePage.createRightClickRenameMenuItem().click();
-    renameModal.renameTo(newFolderName);
-    sweetAlertModal.hasInsufficientPermissions();
-    sweetAlertModal.confirm();
+    workspacePage.selectResource(folder, 'folder');
+    workspacePage.createMoreOptionsButton().click();
+    expect(workspacePage.createRenameResourceButton().getAttribute('class')).toMatch('link-disabled');
   });
 
 
@@ -58,15 +53,9 @@ describe('update-name', function () {
     workspacePage.logout();
     workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
 
-    workspacePage.navigateToUserFolder(testConfig.testUserName2);
-    workspacePage.rightClickResource(folder, 'folder');
-
-    // change name
-    var newFolderName = workspacePage.createTitle('NewReadable');
-    workspacePage.createRightClickRenameMenuItem().click();
-    renameModal.renameTo(newFolderName);
-    sweetAlertModal.hasInsufficientPermissions();
-    sweetAlertModal.confirm();
+    workspacePage.selectResource(folder, 'folder');
+    workspacePage.createMoreOptionsButton().click();
+    expect(workspacePage.createRenameResourceButton().getAttribute('class')).toMatch('link-disabled');
   });
 
 

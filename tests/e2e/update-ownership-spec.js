@@ -33,8 +33,8 @@ describe('update-ownership', function () {
     workspacePage.clickLogo();
 
     // select resource and open details sidebar
-    workspacePage.rightClickResource(folder, 'folder');
-    workspacePage.createRightClickInfoMenuItem().click();
+    workspacePage.openInfoPanel();
+    workspacePage.selectResource(folder, 'folder');
 
     // verify that the presented owner username is the new one assigned above
     expect(workspacePage.createDetailsPanelOwnerValue().getText()).toBe(testConfig.testUserName2);
