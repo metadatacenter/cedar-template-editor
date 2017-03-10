@@ -127,30 +127,17 @@ define([
 
           // can this user read the selected resource
           function canRead() {
-            return hasPermission('read');
+            return resourceService.canRead(getSelectedNode());
           }
 
           // can this user write the selected resource
           function canWrite() {
-            return hasPermission('write');
+            return resourceService.canWrite(getSelectedNode());
           }
 
           // can this user change the owner of the selected resource
           function canChangeOwner() {
-            return hasPermission('changeowner');
-          }
-
-          // does this user have a particular permission for the selected resource
-          function hasPermission(permission) {
-            var node = getSelectedNode();
-            if (node != null) {
-              var perms = node.currentUserPermissions;
-              if (perms != null) {
-
-                return perms.indexOf(permission) != -1;
-              }
-            }
-            return false;
+            return resourceService.canChangeOwner(getSelectedNode());
           }
 
           // is this user the owner of the selected resource

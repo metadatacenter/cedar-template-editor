@@ -235,7 +235,6 @@ define([
                 function (response) {
 
                   $timeout(function () {
-                    console.log('got details');
                     vm.selectedResource = response;
                     vm.canNotWrite = !vm.canWrite();
                     vm.canNotPopulate = !vm.isTemplate();
@@ -249,47 +248,19 @@ define([
           };
 
           vm.canRead = function () {
-            var node = vm.getSelectedNode();
-            if (node != null) {
-              var perms = node.currentUserPermissions;
-              if (perms != null) {
-                return perms.indexOf("read") != -1;
-              }
-            }
-            return false;
+            return resourceService.canRead(vm.getSelectedNode());
           };
 
           vm.canWrite = function () {
-            var node = vm.getSelectedNode();
-            if (node != null) {
-              var perms = node.currentUserPermissions;
-              if (perms != null) {
-                return perms.indexOf("write") != -1;
-              }
-            }
-            return false;
+            return resourceService.canWrite(vm.getSelectedNode());
           };
 
           vm.canChangeOwner = function () {
-            var node = vm.getSelectedNode();
-            if (node != null) {
-              var perms = node.currentUserPermissions;
-              if (perms != null) {
-                return perms.indexOf("changeowner") != -1;
-              }
-            }
-            return false;
+            return resourceService.canChangeOwner(vm.getSelectedNode());
           };
 
           vm.canWriteToCurrentFolder = function () {
-            var node = vm.currentFolder;
-            if (node != null) {
-              var perms = node.currentUserPermissions;
-              if (perms != null) {
-                return perms.indexOf("write") != -1;
-              }
-            }
-            return false;
+            return resourceService.canWrite(vm.currentFolder);
           };
 
           vm.updateDescription = function () {
