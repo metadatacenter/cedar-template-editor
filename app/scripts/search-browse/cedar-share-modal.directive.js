@@ -34,7 +34,7 @@ define([
           '$timeout',
           '$scope',
           '$translate',
-          '$modal',
+          '$uibModal',
           'CedarUser',
           'resourceService',
           'UIMessageService',
@@ -43,7 +43,7 @@ define([
           'CONST'
         ];
 
-        function cedarShareModalController($timeout, $scope,  $translate, $modal, CedarUser,
+        function cedarShareModalController($timeout, $scope,  $translate, $uibModal, CedarUser,
                                            resourceService,
                                            UIMessageService, UISettingsService,
                                            AuthorizedBackendService, CONST) {

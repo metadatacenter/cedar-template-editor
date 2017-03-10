@@ -25,7 +25,7 @@
       <!-- show this add button only when you have minCardinality 0 and an empty list -->
       <span class="zero-input-wrapper" ng-if="$root.isRuntime() && field.items && model.length == 0">
       <button type="button" class="add noOutline"
-          tooltip="{{'HELP.addMore' | translate}}"
+          uib-tooltip="{{'HELP.addMore' | translate}}"
           tooltip-trigger
           tooltip-animation="false"
           tooltip-placement="top"

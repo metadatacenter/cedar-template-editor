@@ -47,6 +47,12 @@
     "sync-request": "^2.1.0"
   },
   "dependencies": {
-    "gulp-replace": "^0.5.4"
+    "angular-animate": "^1.6.3",
+    "angular-touch": "^1.6.3",
+    "angular-ui-bootstrap": "^2.5.0",
+    "bootstrap": "^3.3.7",
+    "gulp-replace": "^0.5.4",
+    "install": "^0.8.7",
+    "npm": "^4.4.1"
   }
 }

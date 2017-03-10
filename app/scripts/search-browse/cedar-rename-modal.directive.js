@@ -27,7 +27,7 @@ define([
 
         cedarRenameModalController.$inject = [
           '$scope',
-          '$modal',
+          '$uibModal',
           '$timeout',
           'CedarUser',
           'resourceService',
@@ -39,7 +39,7 @@ define([
           , 'CONST'
         ];
 
-        function cedarRenameModalController($scope, $modal, $timeout, CedarUser,
+        function cedarRenameModalController($scope, $uibModal, $timeout, CedarUser,
                                             resourceService,
                                             UIMessageService,
                                             AuthorizedBackendService,

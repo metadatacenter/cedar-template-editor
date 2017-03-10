@@ -3,15 +3,15 @@
     <li ng-repeat="fieldType in primaryFieldTypes">
       <a ng-click="addField(fieldType.cedarType)"
           id='button-add-field-{{fieldType.cedarType}}'
-          tooltip='{{"FIELDS.FIELD_TYPE." + fieldType.cedarType + ".NAME" | translate}}'
+          uib-tooltip='{{"FIELDS.FIELD_TYPE." + fieldType.cedarType + ".NAME" | translate}}'
           tooltip-placement="left"
           ><i class="{{fieldType.iconClass}}"></i></a>
     </li>
     <li>
-      <div dropdown auto-close="outsideClick">
+      <div uib-dropdown auto-close="outsideClick">
         <a class="more" id='button-add-more' data-toggle="dropdown" data-target=".field-selector" aria-expanded="false"
-            dropdown-toggle uib-dropdown keyboard-nav dropdown-append-to-body
-            tooltip='{{"GENERIC.More" | translate}}'
+            uib-dropdown-toggle  keyboard-nav dropdown-append-to-body
+            uib-tooltip='{{"GENERIC.More" | translate}}'
             tooltip-placement="left"
             ><i class="fa fa-ellipsis-h"></i></a>
 
@@ -24,7 +24,7 @@
                 <a data-toggle="dropdown" data-target=".field-selector" dropdown-toggle
                     id='button-add-field-{{fieldType.cedarType}}'
                     ng-click="addField(fieldType.cedarType)"
-                    tooltip='{{"FIELDS.FIELD_TYPE." + fieldType.cedarType + ".NAME" | translate}}'
+                    uib-tooltip='{{"FIELDS.FIELD_TYPE." + fieldType.cedarType + ".NAME" | translate}}'
                     tooltip-placement="left"
                     ><i class="{{fieldType.iconClass}}"></i><span translate>{{"FIELDS.FIELD_TYPE." + fieldType.cedarType + ".NAME"}}</span></a>
               </li>
@@ -36,7 +36,7 @@
                 <a data-toggle="dropdown" data-target=".field-selector" dropdown-toggle
                     id='button-add-field-{{fieldType.cedarType}}'
                     ng-click="addField(fieldType.cedarType)"
-                    tooltip='{{"FIELDS.FIELD_TYPE." + fieldType.cedarType + ".NAME" | translate}}'
+                    uib-tooltip='{{"FIELDS.FIELD_TYPE." + fieldType.cedarType + ".NAME" | translate}}'
                     tooltip-placement="left"
                     ><i class="{{fieldType.iconClass}}"></i><span translate>{{"FIELDS.FIELD_TYPE." + fieldType.cedarType + ".NAME"}}</span></a>
               </li>
@@ -50,7 +50,7 @@
     <li >
       <a data-toggle="modal" data-target="#finder-modal" dropdown-toggle
           id='button-search-element'
-          tooltip='{{"EDITOR.TOOLBAR.searchForMore" | translate}}'
+          uib-tooltip='{{"EDITOR.TOOLBAR.searchForMore" | translate}}'
           tooltip-placement="left"
           ><i class="fa fa-search "></i></a>
     </li>
