@@ -7,7 +7,7 @@ var ShareModal = require('../modals/share-modal.js');
 var SweetAlertModal = require('../modals/sweet-alert-modal.js');
 var testConfig = require('../config/test-env.js');
 
-xdescribe('resource-permissions', function () {
+describe('resource-permissions', function () {
   var workspacePage;
   var toastyModal;
   var moveModal;
@@ -38,6 +38,8 @@ xdescribe('resource-permissions', function () {
   /* Move tests */
 
   it("should move a resource owned by current user to a writable folder", function () {
+    workspacePage.onWorkspace();
+
     // create template and target folder
     var sourceTemplate = workspacePage.createTemplate('Source');
     var targetFolder = workspacePage.createFolder('Target');
@@ -139,10 +141,8 @@ xdescribe('resource-permissions', function () {
 
     // go to Test User 2's folder to see the shared folders
     workspacePage.navigateToUserFolder(testConfig.testUserName2);
-
-    // check that the resource does not have an option to be moved
     workspacePage.rightClickResource(sourceTemplate, 'template');
-    expect(workspacePage.createRightClickMoveToMenuItem().isPresent()).toBe(false);
+    expect(workspacePage.createRightClickMoveToMenuItem().getAttribute('class')).toMatch('link-disabled');
   });
 
 
@@ -267,7 +267,7 @@ xdescribe('resource-permissions', function () {
       toastyModal.isSuccess();
       workspacePage.clearSearch();
     }
-  });
+  }, 200000); // increase timeout as the cleanup can take longer than the default
 
 
   it("should delete the test templates created by " + testConfig.testUserName2, function () {
@@ -279,7 +279,7 @@ xdescribe('resource-permissions', function () {
       toastyModal.isSuccess();
       workspacePage.clearSearch();
     }
-  });
+  }, 200000); // increase timeout as the cleanup can take longer than the default
 
 
   it("should delete the test folders created by " + testConfig.testUserName1, function () {
@@ -291,7 +291,7 @@ xdescribe('resource-permissions', function () {
       toastyModal.isSuccess();
       workspacePage.clearSearch();
     }
-  });
+  }, 200000); // increase timeout as the cleanup can take longer than the default
 
 
   it("should delete the test folders created by " + testConfig.testUserName2, function () {
@@ -303,7 +303,7 @@ xdescribe('resource-permissions', function () {
       toastyModal.isSuccess();
       workspacePage.clearSearch();
     }
-  });
+  }, 200000); // increase timeout as the cleanup can take longer than the default
 
 
 });
