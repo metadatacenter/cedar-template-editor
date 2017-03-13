@@ -60,7 +60,9 @@ var SweetAlertModal = function () {
 
   this.hasInsufficientPermissions = function () {
     browser.wait(EC.visibilityOf(message));
-    expect(message.getText()).toContain(insufficientRightsMessagePartial);
+    message.getText().then(function(text) {
+      expect(text).toContain(insufficientRightsMessagePartial);
+    });
   };
 
 

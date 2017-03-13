@@ -37,7 +37,9 @@ describe('update-ownership', function () {
     workspacePage.selectResource(folder, 'folder');
 
     // verify that the presented owner username is the new one assigned above
-    expect(workspacePage.createDetailsPanelOwnerValue().getText()).toBe(testConfig.testUserName2);
+    workspacePage.createDetailsPanelOwnerValue().getText().then(function(text) {
+      expect(text).toBe(testConfig.testUserName2);
+    });
   });
 
 
@@ -68,7 +70,9 @@ describe('update-ownership', function () {
     workspacePage.navigateToUserFolder(testConfig.testUserName2);
     shareModal.openDialogViaRightClick(folder, 'folder');
 
-    expect(shareModal.canChangeOwnership()).toBe(false);
+    shareModal.canChangeOwnership().then(function(canChange) {
+      expect(canChange).toBe(false);
+    });
     shareModal.clickDone();
   });
 
@@ -100,7 +104,9 @@ describe('update-ownership', function () {
     workspacePage.navigateToUserFolder(testConfig.testUserName2);
     shareModal.openDialogViaRightClick(folder, 'folder');
 
-    expect(shareModal.canChangeOwnership()).toBe(false);
+    shareModal.canChangeOwnership().then(function(canChange) {
+      expect(canChange).toBe(false);
+    });
     shareModal.clickDone();
   });
 
@@ -111,7 +117,7 @@ describe('update-ownership', function () {
       toastyModal.isSuccess();
       workspacePage.clearSearch();
     }
-  });
+  }, 200000);
 
 
 });

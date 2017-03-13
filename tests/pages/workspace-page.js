@@ -425,8 +425,13 @@ var WorkspacePage = function () {
         browser.wait(EC.visibilityOf(createShowDetailsButton));
         browser.wait(EC.elementToBeClickable(createShowDetailsButton));
         createShowDetailsButton.click();
+        browser.wait(EC.visibilityOf(createSidebarRight));
       }
     });
+  };
+
+  this.isInfoPanelOpen = function () {
+    return createSidebarRight.isPresent();
   };
 
   this.resetFiltering = function () {
