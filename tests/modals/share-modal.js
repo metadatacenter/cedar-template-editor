@@ -7,7 +7,7 @@ var ShareModal = function () {
 
   var shareModal = element(by.id('share-modal'));
   var shareModalBody = shareModal.element(by.css('div > div > div.modal-body '));
-  var shareWithGroups = shareModalBody.element(by.css('div [ng-show="share.showGroups"]'));
+  var shareColumn = shareModalBody.element(by.css('div [ng-show="!share.showGroups"] > div > div.col-sm-6.ng-scope'));
   var shareWithGroupRow = shareModalBody.element(by.css('div > div > div.col-sm-6.ng-scope > div:nth-child(2)'));
   var shareWithUserRow = shareModalBody.element(by.css('div > div > div.col-sm-6.ng-scope > div:nth-child(5)'));
   var shareModalUserName = shareWithUserRow.element(by.css('div.col-sm-7.typeaheadDropUp > input'));
@@ -196,7 +196,7 @@ var ShareModal = function () {
 
   // checks whether the current user can share the selected item
   this.canShare = function() {
-    return shareWithGroups.classList.contains("ng-hide");
+    return shareColumn.isPresent();
   };
 
 
