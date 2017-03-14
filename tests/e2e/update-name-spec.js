@@ -115,6 +115,9 @@ describe('update-name', function () {
       toastyModal.isSuccess();
       workspacePage.clearSearch();
     }
+
+    workspacePage.logout();
+    workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
   });
 
 
