@@ -704,8 +704,8 @@ var WorkspacePage = function () {
 
   // logout from the account currently logged in to
   this.logout = function () {
-    browser.wait(EC.visibilityOf(createUserDropdownButton));
-    browser.wait(EC.elementToBeClickable(createUserDropdownButton));
+    browser.wait(EC.visibilityOf(createUserDropdownButton), 2000);
+    browser.wait(EC.elementToBeClickable(createUserDropdownButton), 2000);
     createUserDropdownButton.click();
     browser.wait(EC.elementToBeClickable(createLogoutMenuItem));
     createLogoutMenuItem.click();

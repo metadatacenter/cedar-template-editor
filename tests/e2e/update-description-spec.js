@@ -24,8 +24,7 @@ describe('update-description', function () {
 
 
   it("should fail to update description of a resource shared as readable with Everybody group", function () {
-    workspacePage.onWorkspace();
-
+    workspacePage.closeInfoPanel();
     var template = workspacePage.createTemplate('Readable');
     resources.push(template);
     shareModal.shareResourceWithGroup(template, 'template', testConfig.everybodyGroup, false, false);
@@ -34,19 +33,14 @@ describe('update-description', function () {
     workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
 
     workspacePage.navigateToUserFolder(testConfig.testUserName1);
-    workspacePage.isInfoPanelOpen().then(function(isOpen) {
-      if(!isOpen) {
-        workspacePage.openInfoPanel();
-      }
-      workspacePage.selectResource(template, 'template');
-      expect(workspacePage.createDetailsPanelDescriptionEditButton().isDisplayed()).toBe(false);
-    });
+    workspacePage.selectResource(template, 'template');
+    workspacePage.openInfoPanel();
+    expect(workspacePage.createDetailsPanelDescriptionEditButton().isDisplayed()).toBe(false);
+    workspacePage.closeInfoPanel();
   });
 
 
   it("should update description of a resource shared as writable with Everybody group", function () {
-    workspacePage.onWorkspace();
-
     var template = workspacePage.createTemplate('Writable');
     resources.push(template);
     shareModal.shareResourceWithGroup(template, 'template', testConfig.everybodyGroup, true, false);
@@ -55,15 +49,13 @@ describe('update-description', function () {
     workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
 
     workspacePage.navigateToUserFolder(testConfig.testUserName2);
-    workspacePage.isInfoPanelOpen().then(function(isOpen) {
-      if(!isOpen) {
-        workspacePage.openInfoPanel();
-      }
-      workspacePage.selectResource(template, 'template');
-      workspacePage.createDetailsPanelDescriptionEditButton().click();
-      workspacePage.createDetailsPanelDescription().sendKeys(workspacePage.createTitle('New description') + protractor.Key.ENTER);
-      toastyModal.isSuccess();
-    });
+    workspacePage.selectResource(template, 'template');
+    workspacePage.openInfoPanel();
+
+    workspacePage.createDetailsPanelDescriptionEditButton().click();
+    workspacePage.createDetailsPanelDescription().sendKeys(workspacePage.createTitle('New description') + protractor.Key.ENTER);
+    toastyModal.isSuccess();
+    workspacePage.closeInfoPanel();
   });
 
 
@@ -76,13 +68,11 @@ describe('update-description', function () {
     workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
 
     workspacePage.navigateToUserFolder(testConfig.testUserName1);
-    workspacePage.isInfoPanelOpen().then(function(isOpen) {
-      if(!isOpen) {
-        workspacePage.openInfoPanel();
-      }
-      workspacePage.selectResource(template, 'template');
-      expect(workspacePage.createDetailsPanelDescriptionEditButton().isDisplayed()).toBe(false);
-    });
+    workspacePage.selectResource(template, 'template');
+    workspacePage.openInfoPanel();
+
+    expect(workspacePage.createDetailsPanelDescriptionEditButton().isDisplayed()).toBe(false);
+    workspacePage.closeInfoPanel();
   });
 
 
@@ -95,16 +85,13 @@ describe('update-description', function () {
     workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
 
     workspacePage.navigateToUserFolder(testConfig.testUserName2);
+    workspacePage.selectResource(template, 'template');
+    workspacePage.openInfoPanel();
 
-    workspacePage.isInfoPanelOpen().then(function(isOpen) {
-      if(!isOpen) {
-        workspacePage.openInfoPanel();
-      }
-      workspacePage.selectResource(template, 'template');
-      workspacePage.createDetailsPanelDescriptionEditButton().click();
-      workspacePage.createDetailsPanelDescription().sendKeys(workspacePage.createTitle('New description') + protractor.Key.ENTER);
-      toastyModal.isSuccess();
-    });
+    workspacePage.createDetailsPanelDescriptionEditButton().click();
+    workspacePage.createDetailsPanelDescription().sendKeys(workspacePage.createTitle('New description') + protractor.Key.ENTER);
+    toastyModal.isSuccess();
+    workspacePage.closeInfoPanel();
   });
 
 
