@@ -303,6 +303,9 @@ describe('resource-permissions', function () {
       toastyModal.isSuccess();
       workspacePage.clearSearch();
     }
+
+    workspacePage.logout();
+    workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
   }, 200000); // increase timeout as the cleanup can take longer than the default
 
 
