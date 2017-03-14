@@ -165,6 +165,8 @@ define([
     // This function initializes the value field to null (either @id or @value) if it has not been initialized yet.
     // It only applies to non-selection fields (i.e., text, paragraph, date, email, numeric, phone)
     service.initializeValue = function (field, model) {
+      console.log('Model')
+      console.log(model)
       if ($rootScope.isRuntime()) {
         var fieldValue = service.getFieldValue(field);
         if (!$rootScope.isArray(model)) {

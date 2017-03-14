@@ -258,20 +258,21 @@ define([
       $scope.getValueString = function (valueElement) {
 
         var result = ' ';
+        if (valueElement) {
+          for (var i = 0; i < valueElement.length; i++) {
+            var fieldValueLabel = null;
+            if (valueElement[i]['@value'] && valueElement[i]['@value'] != null) {
+              fieldValueLabel = '@value';
+            }
+            else if (valueElement[i]['@id'] && valueElement[i]['@id'] != null) {
+              fieldValueLabel = '_valueLabel';
+            }
+            if (fieldValueLabel != null) {
+              result += valueElement[i][fieldValueLabel];
+              if (i < valueElement.length - 1) {
+                result += ', ';
 
-        for (var i = 0; i < valueElement.length; i++) {
-          var fieldValueLabel = null;
-          if (valueElement[i]['@value'] && valueElement[i]['@value'] != null) {
-            fieldValueLabel = '@value';
-          }
-          else if (valueElement[i]['@id'] && valueElement[i]['@id'] != null) {
-            fieldValueLabel = '_valueLabel';
-          }
-          if (fieldValueLabel != null) {
-            result += valueElement[i][fieldValueLabel];
-            if (i < valueElement.length - 1) {
-              result += ', ';
-
+              }
             }
           }
         }
