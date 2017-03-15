@@ -139,7 +139,7 @@ define([
           }
 
           function currentTitle() {
-            return  vm.currentDestination ? vm.currentDestination.displayName : '';
+            return vm.currentDestination ? vm.currentDestination.displayName : '';
           }
 
           function selectDestination(resource) {
@@ -279,6 +279,5 @@ define([
 
         }
       }
-
     }
 );

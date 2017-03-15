@@ -24,7 +24,7 @@ xdescribe('clean-up', function () {
 
   // reset user selections to defaults
   // TODO turn this on once we have updated staging
-  xit('should default user selections', function () {
+  it('should default user selections', function () {
     workspacePage.resetFiltering();
     workspacePage.closeInfoPanel();
     workspacePage.setSortOrder('sortCreated');
