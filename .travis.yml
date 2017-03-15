@@ -16,7 +16,7 @@ addons:
 # When deployed for testing the Template Editor is effectively a Node application
 language: node_js
 node_js:
-  - '4'
+  - '6'
 
 # Do CI only on the develop and master branches
 branches:
