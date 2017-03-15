@@ -11,7 +11,7 @@ var sampleFolderTitle;
 var sampleTemplateTitle;
 
 
-xdescribe('workspace', function () {
+describe('workspace', function () {
   var EC = protractor.ExpectedConditions;
   var metadataPage;
   var workspacePage;

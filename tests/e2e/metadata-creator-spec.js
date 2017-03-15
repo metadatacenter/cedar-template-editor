@@ -10,7 +10,7 @@ var sampleTitle;
 var sampleElementTitle;
 
 
-xdescribe('metadata-creator', function () {
+describe('metadata-creator', function () {
   var EC = protractor.ExpectedConditions;
   var metadataPage;
   var workspacePage;
