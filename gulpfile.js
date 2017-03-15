@@ -135,8 +135,6 @@ gulp.task('test-env', function () {
       .pipe(replace('protractorTestPassword2', cedarTestPassword2))
       .pipe(replace('protractorTestUser3', cedarTestUser3))
       .pipe(replace('protractorTestPassword3', cedarTestPassword3))
-      .pipe(replace('protractorSeleniumServerJar', cedarSeleniumServerJar))
-      .pipe(replace('protractorChromeDriver', cedarChromeDriver))
       .pipe(gulp.dest('tests/config/'));
 });
 
@@ -183,9 +181,7 @@ var envConfig = {
   'CEDAR_TEST_USER2'         : null,
   'CEDAR_TEST_USER2_PASSWORD': null,
   'CEDAR_TEST_USER3'         : null,
-  'CEDAR_TEST_USER3_PASSWORD': null,
-  'CEDAR_SELENIUM_SERVER_JAR': null,
-  'CEDAR_CHROME_DRIVER'      : null
+  'CEDAR_TEST_USER3_PASSWORD': null
 };
 console.log();
 console.log();
@@ -201,8 +197,6 @@ var cedarTestUser2 = envConfig['CEDAR_TEST_USER2'];
 var cedarTestPassword2 = envConfig['CEDAR_TEST_USER2_PASSWORD'];
 var cedarTestUser3 = envConfig['CEDAR_TEST_USER3'];
 var cedarTestPassword3 = envConfig['CEDAR_TEST_USER3_PASSWORD'];
-var cedarSeleniumServerJar = envConfig['CEDAR_SELENIUM_SERVER_JAR'];
-var cedarChromeDriver = envConfig['CEDAR_CHROME_DRIVER'];
 console.log("-------------------------------------------- ************* --------------------------------------------".red);
 console.log();
 

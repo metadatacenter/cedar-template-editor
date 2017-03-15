@@ -24,6 +24,7 @@ branches:
     - develop
     - master
     - testing/permissions
+    - feature/update-bootstrap
 
 # Notify the CEDAR core developer mailing list on failures
 notifications:
@@ -38,8 +39,6 @@ before_install:
   - export CEDAR_HOST=staging.metadatacenter.net
   - export CEDAR_PROFILE=server 
   - export CEDAR_ANALYTICS_KEY=false
-  - export CEDAR_SELENIUM_SERVER_JAR=2.53.1-server.jar
-  - export CEDAR_CHROME_DRIVER=2.27-x64-chromedriver
   - export DISPLAY=:99.0
   - sh -e /etc/init.d/xvfb start
 
@@ -48,7 +47,8 @@ install:
   - npm install
   - npm install -g gulp
   - npm install -g protractor
-  - ./node_modules/selenium-standalone/bin/selenium-standalone install
+  - webdriver-manager update
+  - webdriver-manager start
 
 # Run the end-to-end tests
 script:
