@@ -1,13 +1,11 @@
 var testConfig = require('./tests/config/test-env.js');
 
 exports.config = {
-  framework: 'jasmine',
+  //framework: 'jasmine',
   seleniumAddress: 'http://localhost:4444/wd/hub',
-
-  // seleniumAddress: 'http://localhost:4444/wd/hub',
   //directConnect    : true,
   //seleniumServerJar: './node_modules/selenium-standalone/.selenium/selenium-server/' + testConfig.seleniumServerJar,
-  chromeDriver     : './node_modules/selenium-standalone/.selenium/chromedriver/' + testConfig.chromeDriver,
+  //chromeDriver     : './node_modules/selenium-standalone/.selenium/chromedriver/' + testConfig.chromeDriver,
   specs            : ['tests/e2e/**/*.js'],
 
   allScriptsTimeout: 100000,
