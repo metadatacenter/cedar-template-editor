@@ -99,9 +99,17 @@ define([
               // now we are sure that the element was successfully added
               $rootScope.scrollToDomId(domId);
               $rootScope.$broadcast("form:dirty");
+              $scope.toggleMore();
             });
           }
         };
+
+
+        $scope.moreIsOpen = false;
+        $scope.toggleMore = function() {
+          $scope.moreIsOpen = !$scope.moreIsOpen;
+          console.log('toggleMore ' + $scope.moreIsOpen);
+        }
 
         $scope.getTitle = function (element) {
           return $rootScope.schemaOf(element)._ui.title;

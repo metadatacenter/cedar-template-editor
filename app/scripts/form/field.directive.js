@@ -23,6 +23,7 @@ define([
 
       var MIN_OPTIONS = 2;
 
+
       var setDirectory = function () {
         var p = $rootScope.propertiesOf($scope.field);
         var state = p._tmp && p._tmp.state || "completed";

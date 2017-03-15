@@ -60,7 +60,7 @@ describe('template-creator', function () {
       "iconClass"                : "cedar-svg-numeric",
       "allowedInElement"         : true,
       "primaryField"             : true,
-      "Label"                    : "Number",
+      "label"                    : "Number",
       "hasControlledTerms"       : false,
       "staticField"              : false,
       "allowsMultiple"           : true,
@@ -122,7 +122,6 @@ describe('template-creator', function () {
       "allowsValueRecommendation": false
     }
   ];
-
 
   var fieldType = fieldTypes[0];
   var field = element(by.css('.field-root .' + fieldType.iconClass));
@@ -189,7 +188,6 @@ describe('template-creator', function () {
 
               templatePage.createPage(pageType);
               templatePage.addField(type, isMore, title, description);
-              //templatePage.addField(type, isMore, title, description);
               browser.wait(EC.visibilityOf(field));
 
 
@@ -290,7 +288,7 @@ describe('template-creator', function () {
         workspacePage.onWorkspace();
       });
 
-      xit("should have the correct json for an empty " + pageType, function () {
+      it("should have the correct json for an empty " + pageType, function () {
 
         templatePage.createPage(pageType);
         templatePage.showJson();
@@ -354,7 +352,7 @@ describe('template-creator', function () {
         templatePage.jsonPreview().getText().then(function (value) {
           var json = JSON.parse(value);
           delete json._tmp;
-          console.log(json);
+          //console.log(json);
           if (pageType === 'template') {
             expect(_.isEqual(templatePage.emptyTemplateJson, json)).toBe(false);
           } else {

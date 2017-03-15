@@ -93,7 +93,7 @@ var WorkspacePage = function () {
       // create new buttons
       var createButton = element(by.id('button-create'));
       var createTemplateButton = element(by.id('button-create-template'));
-      var createElementButton = element(by.id('button-create-element '));
+      var createElementButton = element(by.id('button-create-element'));
       var createFolderButton = element(by.id('button-create-folder'));
       var createMetadataButton = element(by.id('button-save-metadata'));
       var createResourceButtons = {
@@ -178,6 +178,10 @@ var WorkspacePage = function () {
         browser.wait(EC.presenceOf(createNavbarWorkspace));
       };
 
+      this.topNavigation = function () {
+        return createTopNavigation;
+      };
+
       // are we on the metadata page
       this.onMetadata = function () {
         browser.wait(EC.presenceOf(createNavbarMetadata));
@@ -204,34 +208,37 @@ var WorkspacePage = function () {
         browser.wait(EC.elementToBeClickable(button));
         button.click();
 
-        if (type === 'folder') {
-          browser.wait(EC.visibilityOf(createFolderModal));
-          if (title) {
-            createFolderName.sendKeys(title);
-          }
-          browser.wait(EC.elementToBeClickable(createFolderSubmitButton));
-          createFolderSubmitButton.click();
-        }
-        else if (type === 'template') {
-          if (title) {
-            templateCreatorPage.setTitle('template', title);
-          }
-          if (description) {
-            templateCreatorPage.setDescription('template', description);
-          }
-          templateCreatorPage.clickSave('template');
-          toastyModal.isSuccess();
-          templateCreatorPage.clickBackArrow();
-        } else if (type === 'element') {
-          if (title) {
-            templateCreatorPage.setTitle('element', title);
-          }
-          if (description) {
-            templateCreatorPage.setDescription('element', description);
-          }
-          templateCreatorPage.clickSave('element');
-          toastyModal.isSuccess();
-          templateCreatorPage.clickBackArrow();
+        switch (type) {
+          case "template":
+            if (title) {
+              templateCreatorPage.setTitle('template', title);
+            }
+            if (description) {
+              templateCreatorPage.setDescription('template', description);
+            }
+            templateCreatorPage.clickSave('template');
+            toastyModal.isSuccess();
+            templateCreatorPage.clickBackArrow();
+            break;
+          case "element":
+            if (title) {
+              templateCreatorPage.setTitle('element', title);
+            }
+            if (description) {
+              templateCreatorPage.setDescription('element', description);
+            }
+            templateCreatorPage.clickSave('element');
+            toastyModal.isSuccess();
+            templateCreatorPage.clickBackArrow();
+            break;
+          case "folder":
+            browser.wait(EC.visibilityOf(createFolderModal));
+            if (title) {
+              createFolderName.sendKeys(title);
+            }
+            browser.wait(EC.elementToBeClickable(createFolderSubmitButton));
+            createFolderSubmitButton.click();
+            break;
         }
       };
 
@@ -241,6 +248,14 @@ var WorkspacePage = function () {
         this.createResource('folder', folderTitle);
         toastyModal.isSuccess();
         return folderTitle;
+      };
+
+      // create an element
+      this.createElement = function (name) {
+        var elementTitle = this.createTitle(name);
+        var elementDescription = this.createDescription(name);
+        this.createResource('element', elementTitle, elementDescription);
+        return elementTitle;
       };
 
       // create a template
@@ -266,7 +281,7 @@ var WorkspacePage = function () {
 
         sweetAlertModal.confirm();
         toastyModal.isSuccess();
-        this.clearSearch();
+        clearSearch();
       };
 
       this.setSortOrder = function (order) {
@@ -563,8 +578,13 @@ var WorkspacePage = function () {
         browser.driver.findElement(by.id('username')).sendKeys(username).then(function () {
           browser.driver.findElement(by.id('password')).sendKeys(password).then(function () {
             browser.driver.findElement(by.id('kc-login')).click().then(function () {
-              browser.driver.wait(browser.driver.isElementPresent(by.id('top-navigation')));
-              browser.driver.wait(browser.driver.isElementPresent(by.className('ng-app')));
+              //browser.driver.wait(browser.driver.isElementPresent(by.id('top-navigation')));
+              //browser.driver.wait(browser.driver.isElementPresent(by.className('ng-app')));
+              browser.driver.findElements(By.id('top-navigation')).then(function (found) {
+                browser.driver.findElements(By.id('ng-app')).then(function (found) {
+                  return true;
+                });
+              });
             });
           });
         });

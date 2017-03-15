@@ -23,8 +23,8 @@ describe('clean-up', function () {
   });
 
   // reset user selections to defaults
-  // TODO turn this on once we have updated staging
   it('should default user selections', function () {
+    workspacePage.onWorkspace();
     workspacePage.resetFiltering();
     workspacePage.closeInfoPanel();
     workspacePage.setSortOrder('sortCreated');

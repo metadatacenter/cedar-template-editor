@@ -116,8 +116,16 @@ define([
       if (dontHaveCreatingFieldOrElement()) {
         StagingService.addFieldToElement($scope.element, fieldType);
         $scope.$broadcast("form:dirty");
+        $scope.toggleMore();
       }
       $scope.showMenuPopover = false;
+    };
+
+
+    $scope.moreIsOpen = false;
+    $scope.toggleMore = function() {
+      $scope.moreIsOpen = !$scope.moreIsOpen;
+      console.log('toggleMore ' + $scope.moreIsOpen);
     };
 
     $scope.addElementToElement = function (element) {
@@ -294,7 +302,7 @@ define([
 
     // create a copy of the form with the _tmp fields stripped out
     $scope.stripTmpFields = function () {
-      var copiedForm = jQuery.extend(true, {}, $scope.form);
+      var copiedForm = jQuery.extend(true, {}, $scope.element);
       if (copiedForm) {
         DataManipulationService.stripTmps(copiedForm);
       }
