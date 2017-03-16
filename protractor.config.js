@@ -1,22 +1,20 @@
 var testConfig = require('./tests/config/test-env.js');
 
 exports.config = {
-  //framework: 'jasmine',
   seleniumAddress: 'http://localhost:4444/wd/hub',
-  //directConnect    : true,
-  //seleniumServerJar: './node_modules/selenium-standalone/.selenium/selenium-server/' + testConfig.seleniumServerJar,
-  //chromeDriver     : './node_modules/selenium-standalone/.selenium/chromedriver/' + testConfig.chromeDriver,
   specs            : ['tests/e2e/**/*.js'],
+
+  capabilities: {
+    browserName: 'chrome',
+    shardTestFiles: true,
+    maxInstances:12
+  },
 
   allScriptsTimeout: 100000,
   jasmineNodeOpts: {
     showColors: true,
     defaultTimeoutInterval: 100000,
     isVerbose: true
-  },
-
-  capabilities: {
-    'browserName': 'chrome'
   },
 
   onPrepare: function () {

@@ -11,7 +11,7 @@ var sampleFolderTitle;
 var sampleTemplateTitle;
 
 // TODO turned off so we do not run out of time on Travis
-xdescribe('workspace', function () {
+describe('workspace', function () {
   var EC = protractor.ExpectedConditions;
   var metadataPage;
   var workspacePage;
