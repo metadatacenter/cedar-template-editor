@@ -189,9 +189,7 @@ var envConfig = {
   'CEDAR_TEST_USER3'         : null,
   'CEDAR_TEST_USER3_NAME'    : null,
   'CEDAR_TEST_USER3_PASSWORD': null,
-  'CEDAR_EVERYBODY_GROUP'    : null,
-  'CEDAR_SELENIUM_SERVER_JAR': null,
-  'CEDAR_CHROME_DRIVER'      : null
+  'CEDAR_EVERYBODY_GROUP'    : null
 
 };
 console.log();
