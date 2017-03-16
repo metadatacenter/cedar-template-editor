@@ -117,7 +117,6 @@ var WorkspacePage = function () {
     "folder"  : createFolderButton
   };
 
-
   // main center panel
   var createCenterPanel = element(by.id('center-panel'));
 
@@ -126,15 +125,15 @@ var WorkspacePage = function () {
   var createFolderName = createFolderModal.element(by.model('folder.folder.name'));
   var createFolderSubmitButton = createFolderModal.element(by.css('div.modal-footer button.confirm'));
 
-
   // share menu item from the option list following a right click on a resource
-  var createRightClickMenuItemList = createCenterPanel.element(by.css('div > div > div > div.form-box-container.ng-scope.selected > div > div > ' +
-      'div.btn-group.dropdown.ng-scope.open > ul'));
-  var createRightClickShareMenuItem = createRightClickMenuItemList.element(by.css('li > a[ng-click="dc.showShareModal(resource)"]'));
-  var createRightClickRenameMenuItem = createRightClickMenuItemList.element(by.css('li > a[ng-click="dc.showRenameModal(resource)"]'));
-  var createRightClickMoveToMenuItem = createRightClickMenuItemList.element(by.css('li > a[ng-click="move(resource)"]'));
-  var createRightClickCopyToMenuItem = createRightClickMenuItemList.element(by.css('li > a[ng-click="copy(resource)"]'));
-  var createRightClickDeleteMenuItem = createRightClickMenuItemList.element(by.css('li > a[ng-click="delete(resource)"]'));
+  var createRightClickMenuItemList = createCenterPanel.element(by.css('div.form-box-container.selected  ul'));
+  var createRightClickOpenMenuItem = createRightClickMenuItemList.element(by.css('li > a.open'));
+  var createRightClickPopulateMenuItem = createRightClickMenuItemList.element(by.css('li > a.populate'));
+  var createRightClickShareMenuItem = createRightClickMenuItemList.element(by.css('li > a.share'));
+  var createRightClickRenameMenuItem = createRightClickMenuItemList.element(by.css('li > a.rename'));
+  var createRightClickMoveToMenuItem = createRightClickMenuItemList.element(by.css('li > a.move'));
+  var createRightClickCopyToMenuItem = createRightClickMenuItemList.element(by.css('li > a.copy'));
+  var createRightClickDeleteMenuItem = createRightClickMenuItemList.element(by.css('li > a.delete'));
 
 
   this.createMoreOptionsButton = function () {
@@ -240,6 +239,14 @@ var WorkspacePage = function () {
     return createCenterPanel;
   };
 
+  this.createRightClickOpenMenuItem = function () {
+    return createRightClickOpenMenuItem;
+  };
+
+  this.createRightClickPopulateMenuItem = function () {
+    return createRightClickPopulateMenuItem;
+  };
+
   this.createRightClickShareMenuItem = function () {
     return createRightClickShareMenuItem;
   };
@@ -307,6 +314,10 @@ var WorkspacePage = function () {
     browser.wait(EC.presenceOf(createNavbarWorkspace));
   };
 
+      this.topNavigation = function () {
+        return createTopNavigation;
+      };
+
   // are we on the metadata page
   this.onMetadata = function () {
     browser.wait(EC.presenceOf(createNavbarMetadata));
@@ -320,12 +331,6 @@ var WorkspacePage = function () {
   this.hasLogo = function () {
     browser.wait(EC.presenceOf(createLogo));
   };
-
-
-  this.topNavigation = function () {
-    return createTopNavigation;
-  };
-
 
   // create a template or folder resource and set the title, return to the workspace
   this.createResource = function (type, title, description) {
@@ -381,6 +386,14 @@ var WorkspacePage = function () {
     toastyModal.isSuccess();
     return folderTitle;
   };
+
+      // create an element
+      this.createElement = function (name) {
+        var elementTitle = this.createTitle(name);
+        var elementDescription = this.createDescription(name);
+        this.createResource('element', elementTitle, elementDescription);
+        return elementTitle;
+      };
 
   // create a template
   this.createTemplate = function (name) {
@@ -465,7 +478,6 @@ var WorkspacePage = function () {
           browser.wait(EC.visibilityOf(btn));
           browser.wait(EC.elementToBeClickable(btn));
           btn.click();
-
         }
       });
     });
@@ -474,22 +486,18 @@ var WorkspacePage = function () {
   // delete a resource whose name contains this string if possible
   var deleteAllBySearching = function (name, type) {
 
-
     // search for the resource
     createSearchNavInput.sendKeys(name + protractor.Key.ENTER);
     var result = "Search Results For: '" + name + "'";
     var searchResult = element(by.css('.search-result'));
     browser.wait(EC.textToBePresentInElement(searchResult, result));
 
-
     // single click on the first result
     var results = element.all(by.css('.center-panel .grid-view .form-box' + ' .' + type));
 
     results.count().then(function (count) {
 
-
       if (count) {
-
 
         results.first().isPresent().then(function (value) {
 
@@ -722,14 +730,12 @@ var WorkspacePage = function () {
 
   };
 
-  // click on the cedar logo
   this.clickLogo = function () {
     browser.wait(EC.visibilityOf(createLogo));
     browser.wait(EC.elementToBeClickable(createLogo));
     createLogo.click();
   };
 
-  // logout from the account currently logged in to
   this.logout = function () {
     browser.wait(EC.visibilityOf(createUserDropdownButton), 2000);
     browser.wait(EC.elementToBeClickable(createUserDropdownButton), 2000);
@@ -738,7 +744,6 @@ var WorkspacePage = function () {
     createLogoutMenuItem.click();
   };
 
-  // login as the specified user with the given password
   this.login = function (username, password) {
     browser.driver.findElement(by.id('username')).sendKeys(username).then(function () {
       browser.driver.findElement(by.id('password')).sendKeys(password).then(function () {
@@ -753,7 +758,6 @@ var WorkspacePage = function () {
     });
   };
 
-  // navigate to the home folder of the specified user
   this.navigateToUserFolder = function (username) {
     this.clickBreadcrumb(1);
     var userFolder = createCenterPanel.element(by.cssContainingText('.folderTitle.ng-binding', username));
@@ -761,7 +765,6 @@ var WorkspacePage = function () {
     browser.actions().doubleClick(userFolder).perform();
   };
 
-  // right-click on a resource
   this.rightClickResource = function (name, type) {
     var element = this.selectResource(name, type);
     browser.actions().mouseMove(element).perform();
