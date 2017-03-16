@@ -48,7 +48,7 @@ install:
   - npm install -g gulp
   - npm install -g protractor
   - webdriver-manager update
-  - nohup bash -c "webdriver-manager start > &"
+  - webdriver-manager start > /dev/null &
 
 # Run the end-to-end tests
 script:
