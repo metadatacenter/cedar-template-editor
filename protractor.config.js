@@ -14,9 +14,12 @@ exports.config = {
     isVerbose: true
   },
 
-  capabilities: {
-    'browserName': 'chrome'
-  },
+  multiCapabilities: [{
+    'browserName': 'chrome',
+    shardTestFiles: true,
+    maxInstances: 10,
+    splitTestsBetweenCapabilities: true
+  }],
 
   onPrepare: function () {
     // implicit and page load timeouts
