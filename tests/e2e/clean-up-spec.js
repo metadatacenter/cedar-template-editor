@@ -7,7 +7,7 @@ var _ = require('../libs/lodash.min.js');
  * clean up the workspace by resetting the default user permisisons and deleting any leftover resources
  *
  */
-describe('clean-up', function () {
+xdescribe('clean-up', function () {
   var EC = protractor.ExpectedConditions;
   var workspacePage;
 
