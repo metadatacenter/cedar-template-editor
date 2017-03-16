@@ -28,7 +28,7 @@ define([
 
         cedarNewFolderModalController.$inject = [
           '$scope',
-          '$modal',
+          '$uibModal',
           '$timeout',
           'CedarUser',
           'resourceService',
@@ -40,7 +40,7 @@ define([
           , 'CONST'
         ];
 
-        function cedarNewFolderModalController($scope, $modal, $timeout, CedarUser,
+        function cedarNewFolderModalController($scope, $uibModal, $timeout, CedarUser,
                                                resourceService,
                                                UIMessageService,
                                                AuthorizedBackendService,

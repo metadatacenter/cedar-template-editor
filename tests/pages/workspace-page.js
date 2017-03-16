@@ -3,6 +3,7 @@
 
 var WorkspacePage = function () {
 
+
   var testConfig = require('../config/test-env.js');
   var toastyModal = require('../modals/toasty-modal.js');
   var sweetAlertModal = require('../modals/sweet-alert-modal.js');
@@ -10,6 +11,7 @@ var WorkspacePage = function () {
 
   var url = testConfig.baseUrl + '/dashboard';
   var EC = protractor.ExpectedConditions;
+
 
   // page header
   var createTopNavigation = element(by.id('top-navigation'));
@@ -20,8 +22,10 @@ var WorkspacePage = function () {
   var createNavbarMetadata = element(by.css('.navbar.metadata'));
   var createControlsBar = element(by.css('.controls-bar'));
 
+
   // page content
   var createSidebarRight = element(by.css('#sidebar-right'));
+
 
   // search navigation
   var createSearchNav = element(by.css('#top-navigation  .nav-search'));
@@ -31,6 +35,7 @@ var WorkspacePage = function () {
   var createSearchNavClearButton = element(by.css('#top-navigation .nav-search form a.clear-search'));
   var createTopNavWorkspace = element(by.css('.navbar.metadata'));
   var createFirstSelected = element(by.css('.form-box-container.selected'));
+
 
   // resources
   var folders = element.all(by.css('.center-panel .grid-view .form-box .folder'));
@@ -42,6 +47,7 @@ var WorkspacePage = function () {
   var createFirstCss = '.center-panel .grid-view .form-box .';
   var resourceTypes = ['metadata', 'element', 'template', 'folder'];
   var defaultTitle = 'Protractor';
+
 
   // toolbar
   var createToolbar = element(by.id('workspace-toolbar'));
@@ -64,6 +70,7 @@ var WorkspacePage = function () {
   var createListView = element(by.css('.center-panel .list-view'));
   var createGridView = element(by.css('.center-panel .grid-view'));
 
+
   // details panel
   var createDetailsPanel = element(by.id('sidebar-right'));
   var createDetailsPanelTitle = createDetailsPanel.element(by.css('.title span'));
@@ -79,6 +86,7 @@ var WorkspacePage = function () {
   var createBreadcrumbSearch = element(by.css('.breadcrumbs-sb .search-result'));
   var createBreadcrumbUsersLink = createBreadcrumb.element(by.linkText("Users"));
   var createBreadcrumbUserName = createBreadcrumb.element(by.css('p > a.breadcrumbs.ng-binding'));
+
 
   // filtering
   var filterButtons = [
@@ -96,16 +104,17 @@ var WorkspacePage = function () {
     }
   ];
 
+
   // create new buttons
   var createButton = element(by.id('button-create'));
   var createTemplateButton = element(by.id('button-create-template'));
-  var createElementButton = element(by.id('button-create-element '));
+  var createElementButton = element(by.id('button-create-element'));
   var createFolderButton = element(by.id('button-create-folder'));
   var createMetadataButton = element(by.id('button-save-metadata'));
   var createResourceButtons = {
     "template": createTemplateButton,
-    "element": createElementButton,
-    "folder": createFolderButton
+    "element" : createElementButton,
+    "folder"  : createFolderButton
   };
 
   // main center panel
@@ -117,14 +126,14 @@ var WorkspacePage = function () {
   var createFolderSubmitButton = createFolderModal.element(by.css('div.modal-footer button.confirm'));
 
   // share menu item from the option list following a right click on a resource
-  var createRightClickMenuItemList = createCenterPanel.element(by.css('div > div > div > ' +
-      'div.form-box-container.ng-scope.selected > div > div > div.btn-group.dropdown.ng-scope.open > ul'));
-  var createRightClickShareMenuItem = createRightClickMenuItemList.element(by.css('li > a[ng-click="share(resource)"]'));
-  var createRightClickRenameMenuItem = createRightClickMenuItemList.element(by.css('li > a[ng-click="rename(resource)"]'));
-  var createRightClickMoveToMenuItem = createRightClickMenuItemList.element(by.css('li > a[ng-click="move(resource)"]'));
-  var createRightClickCopyToMenuItem = createRightClickMenuItemList.element(by.css('li > a[ng-click="copy(resource)"]'));
-  var createRightClickDeleteMenuItem = createRightClickMenuItemList.element(by.css('li > a[ng-click="delete(resource)"]'));
-
+  var createRightClickMenuItemList = createCenterPanel.element(by.css('div.form-box-container.selected  ul'));
+  var createRightClickOpenMenuItem = createRightClickMenuItemList.element(by.css('li > a.open'));
+  var createRightClickPopulateMenuItem = createRightClickMenuItemList.element(by.css('li > a.populate'));
+  var createRightClickShareMenuItem = createRightClickMenuItemList.element(by.css('li > a.share'));
+  var createRightClickRenameMenuItem = createRightClickMenuItemList.element(by.css('li > a.rename'));
+  var createRightClickMoveToMenuItem = createRightClickMenuItemList.element(by.css('li > a.move'));
+  var createRightClickCopyToMenuItem = createRightClickMenuItemList.element(by.css('li > a.copy'));
+  var createRightClickDeleteMenuItem = createRightClickMenuItemList.element(by.css('li > a.delete'));
 
 
   this.createMoreOptionsButton = function () {
@@ -146,6 +155,7 @@ var WorkspacePage = function () {
   this.createButton = function () {
     return createButton;
   };
+
 
   this.createTemplateButton = function () {
     return createTemplateButton;
@@ -188,6 +198,7 @@ var WorkspacePage = function () {
     return createHideDetailsButton;
   };
 
+
   this.createDetailsPanel = function () {
     return createDetailsPanel;
   };
@@ -226,6 +237,14 @@ var WorkspacePage = function () {
 
   this.createCenterPanel = function () {
     return createCenterPanel;
+  };
+
+  this.createRightClickOpenMenuItem = function () {
+    return createRightClickOpenMenuItem;
+  };
+
+  this.createRightClickPopulateMenuItem = function () {
+    return createRightClickPopulateMenuItem;
   };
 
   this.createRightClickShareMenuItem = function () {
@@ -295,6 +314,10 @@ var WorkspacePage = function () {
     browser.wait(EC.presenceOf(createNavbarWorkspace));
   };
 
+      this.topNavigation = function () {
+        return createTopNavigation;
+      };
+
   // are we on the metadata page
   this.onMetadata = function () {
     browser.wait(EC.presenceOf(createNavbarMetadata));
@@ -321,36 +344,40 @@ var WorkspacePage = function () {
     browser.wait(EC.elementToBeClickable(button));
     button.click();
 
-    if (type === 'folder') {
-      browser.wait(EC.visibilityOf(createFolderModal));
-      if (title) {
-        createFolderName.sendKeys(title);
-      }
-      browser.wait(EC.elementToBeClickable(createFolderSubmitButton));
-      createFolderSubmitButton.click();
-    }
-    else if (type === 'template') {
-      if (title) {
-        templateCreatorPage.setTitle('template', title);
-      }
-      if (description) {
-        templateCreatorPage.setDescription('template', description);
-      }
-      templateCreatorPage.clickSave('template');
-      toastyModal.isSuccess();
-      templateCreatorPage.clickBackArrow();
-    } else if (type === 'element') {
-      if (title) {
-        templateCreatorPage.setTitle('element', title);
-      }
-      if (description) {
-        templateCreatorPage.setDescription('element', description);
-      }
-      templateCreatorPage.clickSave('element');
-      toastyModal.isSuccess();
-      templateCreatorPage.clickBackArrow();
+    switch (type) {
+      case "template":
+        if (title) {
+          templateCreatorPage.setTitle('template', title);
+        }
+        if (description) {
+          templateCreatorPage.setDescription('template', description);
+        }
+        templateCreatorPage.clickSave('template');
+        toastyModal.isSuccess();
+        templateCreatorPage.clickBackArrow();
+        break;
+      case "element":
+        if (title) {
+          templateCreatorPage.setTitle('element', title);
+        }
+        if (description) {
+          templateCreatorPage.setDescription('element', description);
+        }
+        templateCreatorPage.clickSave('element');
+        toastyModal.isSuccess();
+        templateCreatorPage.clickBackArrow();
+        break;
+      case "folder":
+        browser.wait(EC.visibilityOf(createFolderModal));
+        if (title) {
+          createFolderName.sendKeys(title);
+        }
+        browser.wait(EC.elementToBeClickable(createFolderSubmitButton));
+        createFolderSubmitButton.click();
+        break;
     }
   };
+
 
   // create a folder
   this.createFolder = function (name) {
@@ -359,6 +386,14 @@ var WorkspacePage = function () {
     toastyModal.isSuccess();
     return folderTitle;
   };
+
+      // create an element
+      this.createElement = function (name) {
+        var elementTitle = this.createTitle(name);
+        var elementDescription = this.createDescription(name);
+        this.createResource('element', elementTitle, elementDescription);
+        return elementTitle;
+      };
 
   // create a template
   this.createTemplate = function (name) {
@@ -604,9 +639,9 @@ var WorkspacePage = function () {
     createMoreOptionsButton.click();
 
     // edit menu item
-        browser.wait(EC.visibilityOf(createOpenResourceButton));
-        browser.wait(EC.elementToBeClickable(createOpenResourceButton));
-        createOpenResourceButton.click();
+    browser.wait(EC.visibilityOf(createOpenResourceButton));
+    browser.wait(EC.elementToBeClickable(createOpenResourceButton));
+    createOpenResourceButton.click();
 
   };
 
@@ -695,14 +730,12 @@ var WorkspacePage = function () {
 
   };
 
-  // click on the cedar logo
   this.clickLogo = function () {
     browser.wait(EC.visibilityOf(createLogo));
     browser.wait(EC.elementToBeClickable(createLogo));
     createLogo.click();
   };
 
-  // logout from the account currently logged in to
   this.logout = function () {
     browser.wait(EC.visibilityOf(createUserDropdownButton), 2000);
     browser.wait(EC.elementToBeClickable(createUserDropdownButton), 2000);
@@ -711,19 +744,20 @@ var WorkspacePage = function () {
     createLogoutMenuItem.click();
   };
 
-  // login as the specified user with the given password
   this.login = function (username, password) {
     browser.driver.findElement(by.id('username')).sendKeys(username).then(function () {
       browser.driver.findElement(by.id('password')).sendKeys(password).then(function () {
         browser.driver.findElement(by.id('kc-login')).click().then(function () {
-          browser.driver.wait(browser.driver.isElementPresent(by.id('top-navigation')));
-          browser.driver.wait(browser.driver.isElementPresent(by.className('ng-app')));
+          browser.driver.findElements(By.id('top-navigation')).then(function (found) {
+            browser.driver.findElements(By.id('ng-app')).then(function (found) {
+              return true;
+            });
+          });
         });
       });
     });
   };
 
-  // navigate to the home folder of the specified user
   this.navigateToUserFolder = function (username) {
     this.clickBreadcrumb(1);
     var userFolder = createCenterPanel.element(by.cssContainingText('.folderTitle.ng-binding', username));
@@ -731,7 +765,6 @@ var WorkspacePage = function () {
     browser.actions().doubleClick(userFolder).perform();
   };
 
-  // right-click on a resource
   this.rightClickResource = function (name, type) {
     var element = this.selectResource(name, type);
     browser.actions().mouseMove(element).perform();

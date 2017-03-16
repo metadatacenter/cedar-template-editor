@@ -27,7 +27,7 @@ define([
 
         cedarMoveModalController.$inject = [
           '$scope',
-          '$modal',
+          '$uibModal',
           'CedarUser',
           '$timeout',
           'resourceService',
@@ -35,7 +35,7 @@ define([
           'CONST'
         ];
 
-        function cedarMoveModalController($scope, $modal, CedarUser, $timeout,
+        function cedarMoveModalController($scope, $uibModal, CedarUser, $timeout,
                                           resourceService,
                                           UIMessageService,
                                           CONST) {

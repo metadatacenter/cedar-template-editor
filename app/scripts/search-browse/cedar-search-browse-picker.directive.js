@@ -235,7 +235,6 @@ define([
                 function (response) {
 
                   $timeout(function () {
-                    console.log('got details');
                     vm.selectedResource = response;
                     vm.canNotWrite = !vm.canWrite();
                     vm.canNotPopulate = !vm.isTemplate();

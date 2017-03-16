@@ -7,7 +7,7 @@ var _ = require('../libs/lodash.min.js');
  * clean up the workspace by resetting the default user permisisons and deleting any leftover resources
  *
  */
-xdescribe('clean-up', function () {
+describe('clean-up', function () {
   var EC = protractor.ExpectedConditions;
   var workspacePage;
 
@@ -23,18 +23,20 @@ xdescribe('clean-up', function () {
   });
 
   // reset user selections to defaults
-  // TODO turn this on once we have updated staging
   it('should default user selections', function () {
+    workspacePage.onWorkspace();
     workspacePage.resetFiltering();
     workspacePage.closeInfoPanel();
     workspacePage.setSortOrder('sortCreated');
   });
 
 
+  // TODO this does not work if folders contain files which are not deleted first. Those
+  // files can belong to other users and are not visible to the logged in user
   // turn this on if you need to clean up the workspace
   // this deletes by searching for resources by type
   // this fails if we have resource inside folders that we cannot write
-  it('should delete any Protractor resource from the user workspace by searching', function () {
+  xit('should delete any Protractor resource from the user workspace by searching', function () {
     workspacePage.resourceTypes().forEach(function(type) {
       workspacePage.deleteAllBySearching(workspacePage.defaultTitle(), type);
     });
