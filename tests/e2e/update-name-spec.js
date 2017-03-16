@@ -6,7 +6,7 @@ var RenameModal = require('../modals/rename-modal.js');
 var SweetAlertModal = require('../modals/sweet-alert-modal.js');
 var testConfig = require('../config/test-env.js');
 
-describe('update-name', function () {
+xdescribe('update-name', function () {
   var workspacePage;
   var toastyModal;
   var shareModal;
