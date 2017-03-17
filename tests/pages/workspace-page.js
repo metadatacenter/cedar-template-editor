@@ -737,8 +737,8 @@ var WorkspacePage = function () {
   };
 
   this.logout = function () {
-    browser.wait(EC.visibilityOf(createUserDropdownButton), 2000);
-    browser.wait(EC.elementToBeClickable(createUserDropdownButton), 2000);
+    browser.wait(EC.visibilityOf(createUserDropdownButton));
+    browser.wait(EC.elementToBeClickable(createUserDropdownButton));
     createUserDropdownButton.click();
     browser.wait(EC.elementToBeClickable(createLogoutMenuItem));
     createLogoutMenuItem.click();

@@ -5,7 +5,7 @@ var ShareModal = require('../modals/share-modal.js');
 var SweetAlertModal = require('../modals/sweet-alert-modal.js');
 var testConfig = require('../config/test-env.js');
 
-xdescribe('delete-resource', function () {
+describe('delete-resource', function () {
   var workspacePage;
   var toastyModal;
   var shareModal;
