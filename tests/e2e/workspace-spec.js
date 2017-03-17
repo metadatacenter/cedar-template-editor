@@ -38,8 +38,8 @@ describe('workspace', function () {
   });
 
   it("should have a logo", function () {
-    workspacePage.hasLogo();
     workspacePage.onWorkspace();
+    workspacePage.hasLogo();
   });
 
   for (var j = 0; j < 1; j++) {
