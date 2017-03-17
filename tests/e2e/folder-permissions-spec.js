@@ -7,7 +7,7 @@ var ShareModal = require('../modals/share-modal.js');
 var SweetAlertModal = require('../modals/sweet-alert-modal.js');
 var testConfig = require('../config/test-env.js');
 
-xdescribe('folder-permissions', function () {
+describe('folder-permissions', function () {
   var workspacePage;
   var toastyModal;
   var moveModal;
