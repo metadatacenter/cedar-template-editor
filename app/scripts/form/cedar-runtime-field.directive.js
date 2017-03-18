@@ -140,10 +140,92 @@ define([
         return DataManipulationService.isDateRange($scope.field);
       };
 
-      // This function initializes the value field to null (either @id or @value) if it has not been initialized yet
+      // This function initializes the value field (or fields) to null (either @id or @value) if it has not been initialized yet
       $scope.initializeValue = function (field) {
-        DataManipulationService.initializeValue(field, $scope.model);
+        if ($rootScope.isRuntime()) {
+          // Initialize UI values
+          $scope.optionsUI = {};
+          // Initialize values to store null
+          DataManipulationService.initializeValue(field, $scope.model);
+          // Load values from the model to the UI, if any
+          $scope.updateUIFromModel(field);
+        }
       };
+
+      // Sets the instance @value fields based on the options selected at the UI
+      $scope.updateModelFromUI = function (field) {
+        if (field._ui.inputType == 'checkbox') {
+          var fieldValue = DataManipulationService.getFieldValue(field);
+          if (!$scope.model || !$rootScope.isArray($scope.model)) {
+            $scope.model = [];
+          }
+          else {
+            // Remove all elements from the 'model' array if not empty. Note that using $scope.model = []
+            // is dangerous because there are references to the original array
+            $scope.model.splice(0);
+          }
+          if (field._ui.inputType == 'checkbox') {
+            // Insert the value at the right position in the model. optionsUI is an object, not an array,
+            // so the right order in the model is not ensured.
+            // The following lines ensure that each option is inserted into the right place
+            var orderedOptions = DataManipulationService.getLiterals(field);
+            for (var i = 0; i < orderedOptions.length; i++) {
+              var option = orderedOptions[i].label;
+              if ($scope.optionsUI[option]) {
+                var newValue = {};
+                newValue[fieldValue] = $scope.optionsUI[option];
+                $scope.model.push(newValue);
+              }
+            }
+            // Default value
+            if ($scope.model.length == 0) {
+              DataManipulationService.initializeValue(field, $scope.model);
+            }
+          }
+          // else if (field._ui.inputType == 'radio') {
+          //   // If 'updateModelFromUI' was invoked from the UI (option is not null)
+          //   if ($scope.optionsUI.option != null) {
+          //     $scope.model.push({'@value': $scope.optionsUI.option});
+          //   }
+          // }
+          // else if (field._ui.inputType == 'list') {
+          //   // Update model
+          //   for (var i = 0; i < $scope.optionsUI.options.length; i++) {
+          //     $scope.model.push({'@value': $scope.optionsUI.options[i]});
+          //   }
+          // }
+          // // Default value
+          // if ($scope.model.length == 0) {
+          //   $scope.model.push({'@value': null});
+          // }
+        }
+      }
+
+      // Set the UI with the values from the model
+      $scope.updateUIFromModel = function (field) {
+        var fieldValue = DataManipulationService.getFieldValue(field);
+        if (field._ui.inputType == 'checkbox') {
+          $scope.optionsUI = {}
+          for (var i=0; i<$scope.model.length; i++) {
+            var value = $scope.model[i][fieldValue];
+            $scope.optionsUI[value] = value;
+          }
+        }
+        // else if (field._ui.inputType == 'radio') {
+        //   $scope.optionsUI = {option: null};
+        //   // Note that for this element only one selected option is possible
+        //   if ($scope.model[0]['@value'] != null) {
+        //     $scope.optionsUI.option = $scope.model[0]['@value'];
+        //   }
+        // }
+        // else if (field._ui.inputType == 'list') {
+        //   $scope.optionsUI = {options: []};
+        //   for (var item in $scope.model) {
+        //     var valueLabel = $scope.model[item]['@value'];
+        //     $scope.optionsUI.options.push(valueLabel);
+        //   }
+        // }
+      }
 
       // This function initializes the value @type field if it has not been initialized yet
       $scope.initializeValueType = function(field) {
@@ -256,8 +338,7 @@ define([
 
       // string together the values for a checkbox, list or radio item
       $scope.getValueString = function (valueElement) {
-
-        var result = ' ';
+        var result = '';
         if (valueElement) {
           for (var i = 0; i < valueElement.length; i++) {
             var fieldValueLabel = null;
@@ -271,12 +352,12 @@ define([
               result += valueElement[i][fieldValueLabel];
               if (i < valueElement.length - 1) {
                 result += ', ';
-
               }
             }
           }
+          result = result.trim().replace(/,\s*$/, "");
         }
-        return result.trim().replace(/,\s*$/, "");
+        return result
       };
 
       // watch for a request to set this field active
@@ -304,7 +385,9 @@ define([
 
 
       // set this field and index active
-      $scope.setActive = function (index, value, other) {
+      $scope.setActive = function (index, value) {
+
+
 
 
 
@@ -365,7 +448,7 @@ define([
           var windowHeight = $(window).height();
           var target = jQuery("#" + locator);
           if (target) {
-            console.log('scrollToLocator found target' + locator + ' ' + tag);
+            // console.log('scrollToLocator found target' + locator + ' ' + tag);
 
             var targetTop = target.offset().top;
             var targetHeight = target.outerHeight(true);
@@ -373,8 +456,8 @@ define([
             var newTop = scrollTop + targetTop - ( windowHeight - targetHeight ) / 2;
 
 
-            console.log('scroll from ' + scrollTop + ' to ' + newTop);
-            console.log('targetHeight ' + targetHeight + ' targetTop ' + targetTop +  ' windowHeight ' + windowHeight) ;
+            // console.log('scroll from ' + scrollTop + ' to ' + newTop);
+            // console.log('targetHeight ' + targetHeight + ' targetTop ' + targetTop +  ' windowHeight ' + windowHeight) ;
 
             jQuery('.template-container').animate({scrollTop: newTop}, 'fast');
 
@@ -454,27 +537,19 @@ define([
       };
 
       // an array of model values
-      $scope.valueArray;
+      //$scope.valueArray;
       $scope.setValueArray = function () {
-
         $scope.valueArray = [];
         if ($scope.isMultiAnswer()) {
-
           $scope.valueArray.push($scope.model);
-
         } else if ($scope.model instanceof Array) {
-
           $scope.valueArray = $scope.model;
-
         } else {
-
           if (!$scope.model) {
             $scope.model = {};
           }
-
           $scope.valueArray = [];
           $scope.valueArray.push($scope.model);
-
         }
       };
       $scope.setValueArray();

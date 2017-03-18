@@ -162,27 +162,35 @@ define([
       }
     }
 
-    // This function initializes the value field to null (either @id or @value) if it has not been initialized yet.
-    // It only applies to non-selection fields (i.e., text, paragraph, date, email, numeric, phone)
+    // This function initializes the value field (in the model) to null (either @id or @value) if it has not been initialized yet.
     service.initializeValue = function (field, model) {
-      console.log('Model')
-      console.log(model)
-      if ($rootScope.isRuntime()) {
-        var fieldValue = service.getFieldValue(field);
-        if (!$rootScope.isArray(model)) {
-          if (!model) {
-            model = {};
-          }
-          if (model.hasOwnProperty(fieldValue)) {
-            // If empty string
-            if ((model[fieldValue] != null) && (model[fieldValue].length == 0)) {
-              model[fieldValue] = null;
-            }
-          }
-          else {
+
+      var fieldValue = service.getFieldValue(field);
+      // Not an array
+      if (!$rootScope.isArray(model)) {
+        if (!model) {
+          model = {};
+        }
+        // Value field has been defined
+        if (model.hasOwnProperty(fieldValue)) {
+          // If empty string
+          if ((model[fieldValue] != null) && (model[fieldValue].length == 0)) {
             model[fieldValue] = null;
           }
         }
+        // Value field has not been defined
+        else {
+          model[fieldValue] = null;
+        }
+      }
+      // An array
+      else {
+        // Length is 0
+        if (model.length == 0) {
+          model.push({});
+          model[0][fieldValue] = null;
+        }
+        // If length > 0
         else {
           for (var i = 0; i < model.length; i++) {
             service.initializeValue(field, model[i]);
@@ -773,6 +781,17 @@ define([
     service.getLiterals = function (fieldOrElement) {
       return $rootScope.schemaOf(fieldOrElement)._valueConstraints.literals;
     };
+
+    // returns the position of a particular literal in the literals array
+    service.indexOfLiteral = function(field, literal) {
+      var literals = service.getLiterals(field);
+      for (var i=0; i<literals.length; i++) {
+        if (literals[i] == literal) {
+          return i;
+        }
+      }
+      return null;
+    }
 
     service.isMultipleChoice = function (fieldOrElement) {
       return $rootScope.schemaOf(fieldOrElement)._valueConstraints.multipleChoice;

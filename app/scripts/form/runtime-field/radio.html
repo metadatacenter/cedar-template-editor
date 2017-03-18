@@ -1,6 +1,5 @@
 <div ng-init="initializeValue(field)">
   <div ng-if="isActive(index)" class="form-group radio-item" ng-repeat="(i, value) in getLiterals() ">
-
     <div class="radio radio-primary">
       <input
           type="radio"
@@ -11,14 +10,12 @@
           ng-value="value.label"/>
       <label for="radio-{{uuid}}-{{index}}-{{i}}">{{getLiterals()[i]['label']}}</label>
     </div>
-
   </div>
-
 
   <div ng-if="!isActive(index)" class="value">
     <div
         ng-click="setActive(index,true)"
-        aria-label="{{getDescription(field)}}">{{valueElement[0]['@value']}} &nbsp;</div>
+        aria-label="{{getDescription(field)}}">{{getValueString(valueArray)}}</div>
 
   </div>
 
