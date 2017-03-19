@@ -143,14 +143,71 @@ define([
       // This function initializes the value field (or fields) to null (either @id or @value) if it has not been initialized yet
       $scope.initializeValue = function (field) {
         if ($rootScope.isRuntime()) {
-          // Initialize UI values
-          $scope.optionsUI = {};
-          // Initialize values to store null
-          DataManipulationService.initializeValue(field, $scope.model);
-          // Load values from the model to the UI, if any
-          $scope.updateUIFromModel(field);
+          if (!$scope.hasBeenInitialized) {
+            // If we are creating a new instance, the model is still completely empty. We set the default values, if there are any
+            if (field._ui.inputType == 'checkbox') {
+              if ($scope.model.length == 0) {
+                $scope.optionsUI = {};
+                $scope.defaultOptionsToUI(field);
+                $scope.updateModelFromUI(field);
+              }
+            }
+            // Initialize values to store null, if the model has not been initialized by setting default values
+            DataManipulationService.initializeValue(field, $scope.model);
+            // Load values from the model to the UI, if any
+            $scope.updateUIFromModel(field);
+          }
+          $scope.hasBeenInitialized = true;
         }
       };
+
+      // Sets UI selections based on the default options
+      $scope.defaultOptionsToUI = function (field) {
+        if (field._ui.inputType == 'checkbox') {
+          var literals = DataManipulationService.getLiterals(field);
+          $scope.optionsUI = {};
+          for (var i = 0; i < literals.length; i++) {
+            if (literals[i].selectedByDefault) {
+              var value = literals[i].label;
+              $scope.optionsUI[value] = value;
+            }
+          }
+        }
+        // else if (field._ui.inputType == 'radio') {
+        //   $scope.optionsUI = {option: null};
+        //   for (var i = 0; i < field._valueConstraints.literals.length; i++) {
+        //     var literal = field._valueConstraints.literals[i];
+        //     if (literal.selectedByDefault == true) {
+        //       $scope.optionsUI.option = literal.label;
+        //     }
+        //   }
+        // }
+        // else if (field._ui.inputType == 'list') {
+        //   // We use an object here instead of a primitive to ensure two-way data binding with the UI element (ng-model)
+        //   $scope.optionsUI = {options: []};
+        //   for (var i = 0; i < field._valueConstraints.literals.length; i++) {
+        //     var literal = field._valueConstraints.literals[i];
+        //     if (literal.selectedByDefault == true) {
+        //       $scope.optionsUI.options.push(literal.label);
+        //     }
+        //   }
+        // }
+      };
+
+      // $scope.loadDefaultValuesToModel = function(field) {
+      //   var literals = DataManipulationService.getLiterals(field);
+      //   var fieldValue = DataManipulationService.getFieldValue(field);
+      //   // Load default values to model
+      //   for (var i = 0; i < literals.length; i++) {
+      //     // Default option
+      //     if (literals[i].selectedByDefault) {
+      //       var literal = literals[i].label;
+      //       var newValue = {};
+      //       newValue[fieldValue] = $scope.optionsUI[literal];
+      //       $scope.model.push(newValue);
+      //     }
+      //   }
+      // }
 
       // Sets the instance @value fields based on the options selected at the UI
       $scope.updateModelFromUI = function (field) {

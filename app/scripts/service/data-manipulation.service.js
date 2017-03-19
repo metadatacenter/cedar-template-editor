@@ -164,7 +164,6 @@ define([
 
     // This function initializes the value field (in the model) to null (either @id or @value) if it has not been initialized yet.
     service.initializeValue = function (field, model) {
-
       var fieldValue = service.getFieldValue(field);
       // Not an array
       if (!$rootScope.isArray(model)) {
