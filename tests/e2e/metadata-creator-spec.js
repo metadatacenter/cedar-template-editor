@@ -12,11 +12,6 @@ var sampleElementTitle;
 // TODO turned off so we do not run out of time on Travis
 describe('metadata-creator', function () {
   var EC = protractor.ExpectedConditions;
-  //var metadataPage;
-  //var workspacePage;
-  //var templatePage;
-  //var toastyModal;
-  //var sweetAlertModal;
 
   var workspacePage = WorkspacePage;
   var metadataPage = MetadataPage;
@@ -28,13 +23,6 @@ describe('metadata-creator', function () {
   // before each test
   // maximize the window area for clicking
   beforeEach(function () {
-
-    //workspacePage = WorkspacePage;
-    //metadataPage = MetadataPage;
-    //templatePage = TemplatePage;
-    //toastyModal = ToastyModal;
-    //sweetAlertModal = SweetAlertModal;
-    //browser.driver.manage().window().maximize();
   });
 
   afterEach(function () {

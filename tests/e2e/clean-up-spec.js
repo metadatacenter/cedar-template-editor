@@ -15,16 +15,11 @@ describe('clean-up', function () {
   var workspacePage = WorkspacePage;
   var toastyModal = ToastyModal;
   var resourceTypes = [  'folder','template','metadata', 'element'];
-  var max = 10;
-  browser.driver.manage().window().maximize();
+  var max = 0;
 
 
   // before each test maximize the window area for clicking
   beforeEach(function () {
-    //workspacePage = WorkspacePage;
-    //toastyModal = ToastyModal;
-    //browser.driver.manage().window().maximize();
-
   });
 
   afterEach(function () {
@@ -64,7 +59,7 @@ describe('clean-up', function () {
   });
 
 
-  // try to delete some number of files
+  // try to delete some number of files of each type
   for (var i = 0; i < max; i++) {
     (function () {
 
