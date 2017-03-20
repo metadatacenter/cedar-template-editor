@@ -6875,8 +6875,17 @@ table.apiKey {
       height: 300px;
       cursor: pointer;
       .box-row {
+
         &.disabled {
           opacity: 0.5;
+        }
+        &.selected {
+          a,a:hover {
+            color:@white;
+          }
+        }
+        a,a:hover {
+          color:@brand-primary;;
         }
       }
     }

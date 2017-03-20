@@ -15295,6 +15295,18 @@ table.apiKey td {
 #copy-modal .modal-content .modal-body .box-row.disabled {
   opacity: 0.5;
 }
+#move-modal .modal-content .modal-body .box-row.selected a,
+#copy-modal .modal-content .modal-body .box-row.selected a,
+#move-modal .modal-content .modal-body .box-row.selected a:hover,
+#copy-modal .modal-content .modal-body .box-row.selected a:hover {
+  color: #ffffff;
+}
+#move-modal .modal-content .modal-body .box-row a,
+#copy-modal .modal-content .modal-body .box-row a,
+#move-modal .modal-content .modal-body .box-row a:hover,
+#copy-modal .modal-content .modal-body .box-row a:hover {
+  color: #5795ba;
+}
 @media (max-width: 768px) {
   #airr-submission-modal .modal-content {
     width: calc(100% - 10px);
