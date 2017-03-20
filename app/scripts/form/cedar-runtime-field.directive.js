@@ -11,13 +11,13 @@ define([
                                "$window", '$timeout',
                                "SpreadsheetService",
                                "DataManipulationService", "controlledTermDataService",
-                               "StringUtilsService", 'UISettingsService'];
+                               "StringUtilsService", 'UISettingsService', 'UIModelService'];
 
   function cedarRuntimeField($rootScope, $sce, $document, $translate, $filter, $location, $window,
                              $timeout,
                              SpreadsheetService,
                              DataManipulationService,
-                             controlledTermDataService, StringUtilsService, UISettingsService) {
+                             controlledTermDataService, StringUtilsService, UISettingsService, UIModelService) {
 
 
     var linker = function ($scope, $element, attrs) {
@@ -144,7 +144,9 @@ define([
       $scope.initializeValue = function (field) {
         if ($rootScope.isRuntime()) {
           if (!$scope.hasBeenInitialized) {
-            // If we are creating a new instance, the model is still completely empty. We set the default values, if there are any
+            // If we are creating a new instance, the model is still completely empty. If there are any default values,
+            // we set them. It's important to do this only if the model is empty to avoid overriding values of existing
+            // instances with default values
             if (field._ui.inputType == 'checkbox') {
               if ($scope.model.length == 0) {
                 $scope.optionsUI = {};
@@ -152,9 +154,23 @@ define([
                 $scope.updateModelFromUI(field);
               }
             }
+            else if (field._ui.inputType == 'list') {
+              if ($scope.model.length == 0) {
+                // We use an object here instead of a primitive to ensure two-way data binding with the UI element (ng-model)
+                $scope.optionsUI = {};
+                if (DataManipulationService.isMultipleChoice(field)) {
+                  $scope.optionsUI.listMultiSelect=[];
+                }
+                else {
+                  $scope.optionsUI.listSingleSelect = null;
+                }
+                $scope.defaultOptionsToUI(field);
+                $scope.updateModelFromUI(field);
+              }
+            }
             // Initialize values to store null, if the model has not been initialized by setting default values
             DataManipulationService.initializeValue(field, $scope.model);
-            // Load values from the model to the UI, if any
+            // Load selected values from the model to the UI, if any
             $scope.updateUIFromModel(field);
           }
           $scope.hasBeenInitialized = true;
@@ -182,37 +198,35 @@ define([
         //     }
         //   }
         // }
-        // else if (field._ui.inputType == 'list') {
-        //   // We use an object here instead of a primitive to ensure two-way data binding with the UI element (ng-model)
-        //   $scope.optionsUI = {options: []};
-        //   for (var i = 0; i < field._valueConstraints.literals.length; i++) {
-        //     var literal = field._valueConstraints.literals[i];
-        //     if (literal.selectedByDefault == true) {
-        //       $scope.optionsUI.options.push(literal.label);
-        //     }
-        //   }
-        // }
+        else if (field._ui.inputType == 'list') {
+          var literals = DataManipulationService.getLiterals(field);
+          $scope.optionsUI = {};
+          // Multiple-choice list
+          if (DataManipulationService.isMultipleChoice(field)) {
+            $scope.optionsUI.listMultiSelect=[];
+            for (var i = 0; i < literals.length; i++) {
+              if (literals[i].selectedByDefault) {
+                $scope.optionsUI.listMultiSelect.push(literals[i].label);
+              }
+            }
+          }
+          // Single-choice list
+          else {
+            for (var i = 0; i < literals.length; i++) {
+              if (literals[i].selectedByDefault) {
+                $scope.optionsUI.listSingleSelect = literals[i].label;
+                // break for loop
+                break;
+              }
+            }
+          }
+        }
       };
-
-      // $scope.loadDefaultValuesToModel = function(field) {
-      //   var literals = DataManipulationService.getLiterals(field);
-      //   var fieldValue = DataManipulationService.getFieldValue(field);
-      //   // Load default values to model
-      //   for (var i = 0; i < literals.length; i++) {
-      //     // Default option
-      //     if (literals[i].selectedByDefault) {
-      //       var literal = literals[i].label;
-      //       var newValue = {};
-      //       newValue[fieldValue] = $scope.optionsUI[literal];
-      //       $scope.model.push(newValue);
-      //     }
-      //   }
-      // }
 
       // Sets the instance @value fields based on the options selected at the UI
       $scope.updateModelFromUI = function (field) {
-        if (field._ui.inputType == 'checkbox') {
-          var fieldValue = DataManipulationService.getFieldValue(field);
+        var fieldValue = DataManipulationService.getFieldValue(field);
+        if ((field._ui.inputType == 'checkbox') || (field._ui.inputType == 'list')) {
           if (!$scope.model || !$rootScope.isArray($scope.model)) {
             $scope.model = [];
           }
@@ -221,41 +235,55 @@ define([
             // is dangerous because there are references to the original array
             $scope.model.splice(0);
           }
-          if (field._ui.inputType == 'checkbox') {
-            // Insert the value at the right position in the model. optionsUI is an object, not an array,
-            // so the right order in the model is not ensured.
-            // The following lines ensure that each option is inserted into the right place
-            var orderedOptions = DataManipulationService.getLiterals(field);
-            for (var i = 0; i < orderedOptions.length; i++) {
-              var option = orderedOptions[i].label;
-              if ($scope.optionsUI[option]) {
-                var newValue = {};
-                newValue[fieldValue] = $scope.optionsUI[option];
-                $scope.model.push(newValue);
-              }
-            }
-            // Default value
-            if ($scope.model.length == 0) {
-              DataManipulationService.initializeValue(field, $scope.model);
+        }
+        if (field._ui.inputType == 'checkbox') {
+          // Insert the value at the right position in the model. optionsUI is an object, not an array,
+          // so the right order in the model is not ensured.
+          // The following lines ensure that each option is inserted into the right place
+          var orderedOptions = DataManipulationService.getLiterals(field);
+          for (var i = 0; i < orderedOptions.length; i++) {
+            var option = orderedOptions[i].label;
+            if ($scope.optionsUI[option]) {
+              var newValue = {};
+              newValue[fieldValue] = $scope.optionsUI[option];
+              $scope.model.push(newValue);
             }
           }
-          // else if (field._ui.inputType == 'radio') {
-          //   // If 'updateModelFromUI' was invoked from the UI (option is not null)
-          //   if ($scope.optionsUI.option != null) {
-          //     $scope.model.push({'@value': $scope.optionsUI.option});
-          //   }
-          // }
-          // else if (field._ui.inputType == 'list') {
-          //   // Update model
-          //   for (var i = 0; i < $scope.optionsUI.options.length; i++) {
-          //     $scope.model.push({'@value': $scope.optionsUI.options[i]});
-          //   }
-          // }
-          // // Default value
-          // if ($scope.model.length == 0) {
-          //   $scope.model.push({'@value': null});
-          // }
+          // Default value
+          if ($scope.model.length == 0) {
+            DataManipulationService.initializeValue(field, $scope.model);
+          }
         }
+        // else if (field._ui.inputType == 'radio') {
+        //   // If 'updateModelFromUI' was invoked from the UI (option is not null)
+        //   if ($scope.optionsUI.option != null) {
+        //     $scope.model.push({'@value': $scope.optionsUI.option});
+        //   }
+        // }
+        else if (field._ui.inputType == 'list') {
+          if (DataManipulationService.isMultipleChoice(field)) {
+            for (var i = 0; i < $scope.optionsUI.listMultiSelect.length; i++) {
+              var newValue = {};
+              newValue[fieldValue] = $scope.optionsUI.listMultiSelect[i];
+              $scope.model.push(newValue);
+            }
+          }
+          else {
+            var newValue = {};
+            newValue[fieldValue] = $scope.optionsUI.listSingleSelect;
+            $scope.model.push(newValue);
+          }
+          // Remove the empty string created by the "Nothing selected" option (if it exists)
+          DataManipulationService.removeEmptyStrings(field, $scope.model);
+          // If the model is empty, set default value
+          if ($scope.model.length == 0) {
+            DataManipulationService.initializeValue(field, $scope.model);
+          }
+        }
+        // // Default value
+        // if ($scope.model.length == 0) {
+        //   $scope.model.push({'@value': null});
+        // }
       }
 
       // Set the UI with the values from the model
@@ -275,13 +303,23 @@ define([
         //     $scope.optionsUI.option = $scope.model[0]['@value'];
         //   }
         // }
-        // else if (field._ui.inputType == 'list') {
-        //   $scope.optionsUI = {options: []};
-        //   for (var item in $scope.model) {
-        //     var valueLabel = $scope.model[item]['@value'];
-        //     $scope.optionsUI.options.push(valueLabel);
-        //   }
-        // }
+        else if (field._ui.inputType == 'list') {
+          $scope.optionsUI = {};
+          // Multi-choice list
+          if (DataManipulationService.isMultipleChoice(field)) {
+            $scope.optionsUI.listMultiSelect=[];
+            for (var i=0; i<$scope.model.length; i++) {
+              $scope.optionsUI.listMultiSelect.push($scope.model[i][fieldValue]);
+            }
+          }
+          // Single-choice list
+          else {
+            $scope.optionsUI.listSingleSelect={};
+            if ($scope.model.length > 0) {
+              $scope.optionsUI.listSingleSelect = $scope.model[0][fieldValue];
+            }
+          }
+        }
       }
 
       // This function initializes the value @type field if it has not been initialized yet
@@ -443,10 +481,6 @@ define([
 
       // set this field and index active
       $scope.setActive = function (index, value) {
-
-
-
-
 
         // off or on
         var active = (typeof value === "undefined") ? true : value;
@@ -612,51 +646,51 @@ define([
       $scope.setValueArray();
 
       // handle the multiple option list by using data.model for its model
-      $scope.initMultiple = function () {
-
-        $scope.data.model = [];
-        if ($scope.model[0] && Array.isArray($scope.model[0])) {
-
-          for (var i = 0; i < $scope.model[0].length; i++) {
-            $scope.data.model.push($scope.model[0][i]['@value']);
-          }
-        }
-
-      };
+      // $scope.initMultiple = function () {
+      //
+      //   $scope.data.model = [];
+      //   if ($scope.model[0] && Array.isArray($scope.model[0])) {
+      //
+      //     for (var i = 0; i < $scope.model[0].length; i++) {
+      //       $scope.data.model.push($scope.model[0][i]['@value']);
+      //     }
+      //   }
+      //
+      // };
 
       // put the multiple selections into our model
-      $scope.updateMultiple = function () {
-
-        $scope.model[0] = [];
-
-        for (var i = 0; i < $scope.data.model.length; i++) {
-          var obj = {};
-          obj["@value"] = $scope.data.model[i];
-          $scope.model[0].push(obj);
-        }
-      };
+      // $scope.updateMultiple = function () {
+      //
+      //   $scope.model[0] = [];
+      //
+      //   for (var i = 0; i < $scope.data.model.length; i++) {
+      //     var obj = {};
+      //     obj["@value"] = $scope.data.model[i];
+      //     $scope.model[0].push(obj);
+      //   }
+      // };
 
       // get the printable list of selections
-      $scope.getMultiple = function () {
-        var result = '';
-
-        var value = $scope.model[0];
-
-        if (Array.isArray(value)) {
-          for (var i = 0; i < value.length; i++) {
-
-            result += value[i]['@value'];
-            if (i < value.length - 1) {
-              result += ', ';
-            }
-          }
-
-        } else {
-          result = value;
-        }
-
-        return result;
-      };
+      // $scope.getMultiple = function () {
+      //   var result = '';
+      //
+      //   var value = $scope.model[0];
+      //
+      //   if (Array.isArray(value)) {
+      //     for (var i = 0; i < value.length; i++) {
+      //
+      //       result += value[i]['@value'];
+      //       if (i < value.length - 1) {
+      //         result += ', ';
+      //       }
+      //     }
+      //
+      //   } else {
+      //     result = value;
+      //   }
+      //
+      //   return result;
+      // };
 
 
       $scope.showMultiple = function (state) {

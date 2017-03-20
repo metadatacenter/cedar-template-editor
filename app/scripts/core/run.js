@@ -9,7 +9,7 @@ define([
       .run(cedarTemplateEditorCoreRun);
 
   cedarTemplateEditorCoreRun.$inject = ['$rootScope', '$window', '$sce', '$translate', 'DataTemplateService',
-                                        'DataManipulationService', 'FieldTypeService', 'UrlService', 'UIUtilService',
+                                        'DataManipulationService', 'FieldTypeService', 'UrlService', 'UIUtilService', 'UIModelService',
                                         'UserService', 'RichTextConfigService', 'CONST', 'controlledTermService', 'controlledTermDataService',
                                         'provisionalClassService', 'CedarUser', 'UISettingsService',
                                         'ValueRecommenderService', 'DataUtilService', 'TrackingService',
@@ -17,7 +17,7 @@ define([
 
 
   function cedarTemplateEditorCoreRun($rootScope, $window, $sce, $translate, DataTemplateService,
-                                      DataManipulationService, FieldTypeService, UrlService, UIUtilService, UserService,
+                                      DataManipulationService, FieldTypeService, UrlService, UIUtilService, UIModelService, UserService,
                                       RichTextConfigService, CONST, ControlledTermService, controlledTermDataService, provisionalClassService,
                                       CedarUser, UISettingsService, ValueRecommenderService, DataUtilService,
                                       TrackingService, $httpParamSerializer, $location) {
