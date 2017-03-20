@@ -147,17 +147,23 @@ define([
             // If we are creating a new instance, the model is still completely empty. If there are any default values,
             // we set them. It's important to do this only if the model is empty to avoid overriding values of existing
             // instances with default values
+            $scope.optionsUI = {};
             if (field._ui.inputType == 'checkbox') {
               if ($scope.model.length == 0) {
-                $scope.optionsUI = {};
+                $scope.defaultOptionsToUI(field);
+                $scope.updateModelFromUI(field);
+              }
+            }
+            else if (field._ui.inputType == 'radio') {
+              if ($scope.model.length == 0) {
+                $scope.optionsUI.radioOption = null;
+                $scope.optionsUI.radioPreviousOption = null;
                 $scope.defaultOptionsToUI(field);
                 $scope.updateModelFromUI(field);
               }
             }
             else if (field._ui.inputType == 'list') {
               if ($scope.model.length == 0) {
-                // We use an object here instead of a primitive to ensure two-way data binding with the UI element (ng-model)
-                $scope.optionsUI = {};
                 if (DataManipulationService.isMultipleChoice(field)) {
                   $scope.optionsUI.listMultiSelect=[];
                 }
@@ -179,9 +185,11 @@ define([
 
       // Sets UI selections based on the default options
       $scope.defaultOptionsToUI = function (field) {
-        if (field._ui.inputType == 'checkbox') {
-          var literals = DataManipulationService.getLiterals(field);
+        if (DataManipulationService.isMultiAnswer(field)) {
           $scope.optionsUI = {};
+          var literals = DataManipulationService.getLiterals(field);
+        }
+        if (field._ui.inputType == 'checkbox') {
           for (var i = 0; i < literals.length; i++) {
             if (literals[i].selectedByDefault) {
               var value = literals[i].label;
@@ -189,18 +197,15 @@ define([
             }
           }
         }
-        // else if (field._ui.inputType == 'radio') {
-        //   $scope.optionsUI = {option: null};
-        //   for (var i = 0; i < field._valueConstraints.literals.length; i++) {
-        //     var literal = field._valueConstraints.literals[i];
-        //     if (literal.selectedByDefault == true) {
-        //       $scope.optionsUI.option = literal.label;
-        //     }
-        //   }
-        // }
+        else if (field._ui.inputType == 'radio') {
+          for (var i = 0; i < literals.length; i++) {
+            if (literals[i].selectedByDefault) {
+              var value = literals[i].label;
+              $scope.optionsUI.radioOption = value;
+            }
+          }
+        }
         else if (field._ui.inputType == 'list') {
-          var literals = DataManipulationService.getLiterals(field);
-          $scope.optionsUI = {};
           // Multiple-choice list
           if (DataManipulationService.isMultipleChoice(field)) {
             $scope.optionsUI.listMultiSelect=[];
@@ -223,10 +228,25 @@ define([
         }
       };
 
+      // This function is used to uncheck radio buttons
+      $scope.uncheck = function (field, label) {
+        if (field._ui.inputType == 'radio') {
+          if ($scope.optionsUI.radioPreviousOption == label) {
+            // Uncheck
+            $scope.optionsUI.radioOption = null;
+            $scope.optionsUI.radioPreviousOption = null;
+            $scope.updateModelFromUI(field);
+          }
+          else {
+            $scope.optionsUI.radioPreviousOption = label;
+          }
+        }
+      };
+
       // Sets the instance @value fields based on the options selected at the UI
       $scope.updateModelFromUI = function (field) {
         var fieldValue = DataManipulationService.getFieldValue(field);
-        if ((field._ui.inputType == 'checkbox') || (field._ui.inputType == 'list')) {
+        if (DataManipulationService.isMultiAnswer(field)) {
           if (!$scope.model || !$rootScope.isArray($scope.model)) {
             $scope.model = [];
           }
@@ -235,76 +255,71 @@ define([
             // is dangerous because there are references to the original array
             $scope.model.splice(0);
           }
-        }
-        if (field._ui.inputType == 'checkbox') {
-          // Insert the value at the right position in the model. optionsUI is an object, not an array,
-          // so the right order in the model is not ensured.
-          // The following lines ensure that each option is inserted into the right place
-          var orderedOptions = DataManipulationService.getLiterals(field);
-          for (var i = 0; i < orderedOptions.length; i++) {
-            var option = orderedOptions[i].label;
-            if ($scope.optionsUI[option]) {
-              var newValue = {};
-              newValue[fieldValue] = $scope.optionsUI[option];
-              $scope.model.push(newValue);
+          if (field._ui.inputType == 'checkbox') {
+            // Insert the value at the right position in the model. optionsUI is an object, not an array,
+            // so the right order in the model is not ensured.
+            // The following lines ensure that each option is inserted into the right place
+            var orderedOptions = DataManipulationService.getLiterals(field);
+            for (var i = 0; i < orderedOptions.length; i++) {
+              var option = orderedOptions[i].label;
+              if ($scope.optionsUI[option]) {
+                var newValue = {};
+                newValue[fieldValue] = $scope.optionsUI[option];
+                $scope.model.push(newValue);
+              }
+            }
+            // Default value
+            if ($scope.model.length == 0) {
+              DataManipulationService.initializeValue(field, $scope.model);
             }
           }
-          // Default value
-          if ($scope.model.length == 0) {
-            DataManipulationService.initializeValue(field, $scope.model);
-          }
-        }
-        // else if (field._ui.inputType == 'radio') {
-        //   // If 'updateModelFromUI' was invoked from the UI (option is not null)
-        //   if ($scope.optionsUI.option != null) {
-        //     $scope.model.push({'@value': $scope.optionsUI.option});
-        //   }
-        // }
-        else if (field._ui.inputType == 'list') {
-          if (DataManipulationService.isMultipleChoice(field)) {
-            for (var i = 0; i < $scope.optionsUI.listMultiSelect.length; i++) {
-              var newValue = {};
-              newValue[fieldValue] = $scope.optionsUI.listMultiSelect[i];
-              $scope.model.push(newValue);
-            }
-          }
-          else {
+          else if (field._ui.inputType == 'radio') {
             var newValue = {};
-            newValue[fieldValue] = $scope.optionsUI.listSingleSelect;
+            newValue[fieldValue] = $scope.optionsUI.radioOption;
             $scope.model.push(newValue);
           }
-          // Remove the empty string created by the "Nothing selected" option (if it exists)
-          DataManipulationService.removeEmptyStrings(field, $scope.model);
-          // If the model is empty, set default value
-          if ($scope.model.length == 0) {
-            DataManipulationService.initializeValue(field, $scope.model);
+          else if (field._ui.inputType == 'list') {
+            if (DataManipulationService.isMultipleChoice(field)) {
+              for (var i = 0; i < $scope.optionsUI.listMultiSelect.length; i++) {
+                var newValue = {};
+                newValue[fieldValue] = $scope.optionsUI.listMultiSelect[i];
+                $scope.model.push(newValue);
+              }
+            }
+            else {
+              var newValue = {};
+              newValue[fieldValue] = $scope.optionsUI.listSingleSelect;
+              $scope.model.push(newValue);
+            }
+            // Remove the empty string created by the "Nothing selected" option (if it exists)
+            DataManipulationService.removeEmptyStrings(field, $scope.model);
+            // If the model is empty, set default value
+            if ($scope.model.length == 0) {
+              DataManipulationService.initializeValue(field, $scope.model);
+            }
           }
         }
-        // // Default value
-        // if ($scope.model.length == 0) {
-        //   $scope.model.push({'@value': null});
-        // }
-      }
+      };
 
       // Set the UI with the values from the model
       $scope.updateUIFromModel = function (field) {
-        var fieldValue = DataManipulationService.getFieldValue(field);
-        if (field._ui.inputType == 'checkbox') {
+        if (DataManipulationService.isMultiAnswer(field)) {
+          var fieldValue = DataManipulationService.getFieldValue(field);
           $scope.optionsUI = {}
+        }
+        if (field._ui.inputType == 'checkbox') {
           for (var i=0; i<$scope.model.length; i++) {
             var value = $scope.model[i][fieldValue];
             $scope.optionsUI[value] = value;
           }
         }
-        // else if (field._ui.inputType == 'radio') {
-        //   $scope.optionsUI = {option: null};
-        //   // Note that for this element only one selected option is possible
-        //   if ($scope.model[0]['@value'] != null) {
-        //     $scope.optionsUI.option = $scope.model[0]['@value'];
-        //   }
-        // }
+        else if (field._ui.inputType == 'radio') {
+          // For this field type only one selected option is possible
+          if ($scope.model.length > 0) {
+            $scope.optionsUI.radioOption = $scope.model[0][fieldValue];
+          }
+        }
         else if (field._ui.inputType == 'list') {
-          $scope.optionsUI = {};
           // Multi-choice list
           if (DataManipulationService.isMultipleChoice(field)) {
             $scope.optionsUI.listMultiSelect=[];
@@ -314,13 +329,13 @@ define([
           }
           // Single-choice list
           else {
-            $scope.optionsUI.listSingleSelect={};
+            // For this field type only one selected option is possible
             if ($scope.model.length > 0) {
               $scope.optionsUI.listSingleSelect = $scope.model[0][fieldValue];
             }
           }
         }
-      }
+      };
 
       // This function initializes the value @type field if it has not been initialized yet
       $scope.initializeValueType = function(field) {

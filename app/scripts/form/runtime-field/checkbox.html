@@ -1,13 +1,6 @@
 <div ng-init="initializeValue(field)">
-  <div ng-if="isActive(index)" class="checkbox-item" ng-repeat="(i, value) in getLiterals()">
 
-    <!--<div class="checkbox checkbox-primary">-->
-      <!--<input class='select' type="checkbox"-->
-          <!--ng-click="setActive(index, true)"-->
-          <!--id="checkbox-{{uuid}}-{{index}}-{{i}}"-->
-          <!--ng-model="valueElement[i]['@value']"-->
-          <!--ng-true-value="'{{value.label}}'"-->
-          <!--ng-false-value="{{ null }}"/>-->
+  <div ng-if="isActive(index)" class="checkbox-item" ng-repeat="(i, value) in getLiterals()">
       <div class="checkbox checkbox-primary">
         <input class='select' type="checkbox"
             ng-click="setActive(index, true)"
