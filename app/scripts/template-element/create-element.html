@@ -32,10 +32,10 @@
               <i class="cedar-svg-controll-term collapsed" style="padding-bottom:10px"></i>
             </button>
             <div class="btn-group dropdown">
-              <button  data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="background:transparent;color: white;"><i
-                  class="fa fa-caret-down  inline "></i></button>
-              <div class="dropdown-menu dropdown-menu-right" >
-                <class-list field="element"></class-list>
+              <button  data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="background:transparent;color: white;" class="show-type">
+                <i class="fa fa-caret-down  inline "></i></button>
+              <div class="dropdown-menu dropdown-menu-right"  class="class-list"  >
+                <class-list field="element" view-type="viewType"></class-list>
               </div>
             </div>
       </div>
@@ -142,8 +142,8 @@
                   src="/img/close_modal.png" width="22"/></span></button>
             </div>
             <div class="modal-body">
-              <div controlled-term field="form"
-                  options='{"filterSelection":"field", "modalId":"control-options-template-field"}'></div>
+              <div controlled-term field="element"
+                  options='{"filterSelection":"field", "modalId":"control-options-element-field"}'></div>
             </div>
           </div>
         </div>

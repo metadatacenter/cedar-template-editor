@@ -34,6 +34,7 @@ define([
         $scope.saveButtonDisabled = false;
         //$scope.addedFieldKeys = [];
         //$scope.addedFields = new Map();
+        $scope.viewType = 'popup';
 
         var getTemplate = function () {
           // Load existing form if $routeParams.id parameter is supplied
@@ -108,8 +109,7 @@ define([
         $scope.moreIsOpen = false;
         $scope.toggleMore = function() {
           $scope.moreIsOpen = !$scope.moreIsOpen;
-          console.log('toggleMore ' + $scope.moreIsOpen);
-        }
+        };
 
         $scope.getTitle = function (element) {
           return $rootScope.schemaOf(element)._ui.title;

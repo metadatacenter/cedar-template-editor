@@ -21,7 +21,8 @@ define([
     return {
       restrict: 'E',
       scope   : {
-        field         : '='
+        field         : '=',
+        viewType      : '='
       },
       templateUrl     : 'scripts/controlled-term/class-list.directive.html',
       link    : function (scope, element, attrs) {
@@ -157,6 +158,11 @@ define([
         scope.parseOntologyName = function (dataItemsId) {
           return DataManipulationService.parseOntologyName(dataItemsId);
         };
+
+        // table or popup view
+        scope.isTableView = function() {
+          return scope.viewType && scope.viewType !== 'popup'
+        }
       }
     }
   }

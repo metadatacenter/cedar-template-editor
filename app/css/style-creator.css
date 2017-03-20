@@ -10475,6 +10475,11 @@ body.search-browse-modal a.navbar-brand {
   background: transparent;
   color: white;
 }
+.template-header .show-type .class-list {
+  border-radius: 0;
+  margin: 0;
+  padding: 0;
+}
 .template-header .show-type i.fa-caret-down {
   margin-left: -12px;
 }

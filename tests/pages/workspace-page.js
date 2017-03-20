@@ -424,9 +424,11 @@ var WorkspacePage = function () {
   this.deleteResourceViaRightClick = function (name, type) {
     this.rightClickResource(name, type);
     browser.wait(EC.visibilityOf(createRightClickDeleteMenuItem));
+    // is delete enabled?
     browser.wait(EC.elementToBeClickable(createRightClickDeleteMenuItem));
     createRightClickDeleteMenuItem.click();
     sweetAlertModal.confirm();
+    return true;
   };
 
   this.setSortOrder = function (order) {
@@ -737,8 +739,8 @@ var WorkspacePage = function () {
   };
 
   this.logout = function () {
-    browser.wait(EC.visibilityOf(createUserDropdownButton));
-    browser.wait(EC.elementToBeClickable(createUserDropdownButton));
+    browser.wait(EC.visibilityOf(createUserDropdownButton), 2000);
+    browser.wait(EC.elementToBeClickable(createUserDropdownButton), 2000);
     createUserDropdownButton.click();
     browser.wait(EC.elementToBeClickable(createLogoutMenuItem));
     createLogoutMenuItem.click();

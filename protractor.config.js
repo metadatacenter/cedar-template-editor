@@ -10,11 +10,10 @@ exports.config = {
     maxInstances:12
   },
 
- // allScriptsTimeout: 100000,
-  allScriptsTimeout: 200000,
+  allScriptsTimeout: 100000,
   jasmineNodeOpts: {
     showColors: true,
-    defaultTimeoutInterval: 200000,
+    defaultTimeoutInterval: 100000,
     isVerbose: true
   },
 
@@ -22,6 +21,7 @@ exports.config = {
     // implicit and page load timeouts
     browser.manage().timeouts().pageLoadTimeout(100000);
     browser.manage().timeouts().implicitlyWait(5000);
+    browser.driver.manage().window().maximize();
 
     browser.ignoreSynchronization = true;
 

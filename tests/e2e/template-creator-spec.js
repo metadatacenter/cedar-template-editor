@@ -6,7 +6,7 @@ var SweetAlertModal = require('../modals/sweet-alert-modal.js');
 var _ = require('../libs/lodash.min.js');
 
 // TODO turned off so we do not run out of time on Travis
-describe('template-creator', function () {
+xdescribe('template-creator', function () {
   var EC = protractor.ExpectedConditions;
 
 
