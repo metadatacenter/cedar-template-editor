@@ -22,7 +22,6 @@ describe('update-name', function () {
     shareModal = ShareModal;
     renameModal = RenameModal;
     sweetAlertModal = SweetAlertModal;
-    browser.driver.manage().window().maximize();
   });
 
   afterEach(function () {

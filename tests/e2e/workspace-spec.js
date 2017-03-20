@@ -30,7 +30,6 @@ describe('workspace', function () {
     toastyModal = ToastyModal;
     sweetAlertModal = SweetAlertModal;
     moveModal = MoveModal;
-    browser.driver.manage().window().maximize();
 
   });
 

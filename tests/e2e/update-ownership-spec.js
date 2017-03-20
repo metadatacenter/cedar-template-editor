@@ -15,7 +15,6 @@ describe('update-ownership', function () {
     workspacePage = WorkspacePage;
     toastyModal = ToastyModal;
     shareModal = ShareModal;
-    browser.driver.manage().window().maximize();
   });
 
   afterEach(function () {

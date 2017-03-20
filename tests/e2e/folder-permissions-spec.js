@@ -25,7 +25,6 @@ describe('folder-permissions', function () {
     copyModal = CopyModal;
     shareModal = ShareModal;
     sweetAlertModal = SweetAlertModal;
-    browser.driver.manage().window().maximize();
   });
 
   afterEach(function () {

@@ -18,7 +18,6 @@ describe('delete-resource', function () {
     toastyModal = ToastyModal;
     shareModal = ShareModal;
     sweetAlertModal = SweetAlertModal;
-    browser.driver.manage().window().maximize();
   });
 
   afterEach(function () {

@@ -14,14 +14,15 @@ exports.config = {
     isVerbose: true
   },
 
-  multiCapabilities: [{
-    'browserName': 'chrome',
+  capabilities: {
+    browserName: 'chrome',
     shardTestFiles: true,
-    maxInstances: 10,
-    splitTestsBetweenCapabilities: true
-  }],
+    maxInstances: 12
+  },
 
   onPrepare: function () {
+    browser.driver.manage().window().maximize();
+
     // implicit and page load timeouts
     browser.manage().timeouts().pageLoadTimeout(100000);
     browser.manage().timeouts().implicitlyWait(5000);

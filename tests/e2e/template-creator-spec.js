@@ -140,7 +140,6 @@ describe('template-creator', function () {
     templatePage = TemplatePage;
     toastyModal = ToastyModal;
     sweetAlertModal = SweetAlertModal;
-    browser.driver.manage().window().maximize();
   });
 
   afterEach(function () {
