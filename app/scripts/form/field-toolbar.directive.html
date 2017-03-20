@@ -2,7 +2,7 @@
 
   <button type="button" class="delete pull-right" ng-click="remove(index)"
       ng-if="model.length > field.minItems"
-      tooltip="{{'GENERIC.Remove' | translate}}"
+      uib-tooltip="{{'GENERIC.Remove' | translate}}"
       tooltip-trigger
       tooltip-animation="false"
       tooltip-placement="top"
@@ -12,20 +12,20 @@
 
   <button type="button" class=" expand-all pull-right"
       ng-if="isExpandable()"
-      tooltip="{{'GENERIC.ExpandAll' | translate}}"
+      uib-tooltip="{{'GENERIC.ExpandAll' | translate}}"
       ng-click="expandAll(index);$event.stopPropagation()">
     <i class="fa fa-expand "></i>
   </button>
 
   <button type="button" class=" remove pull-right"
       ng-if="isField"
-      tooltip="{{'GENERIC.Close' | translate}}"
+      uib-tooltip="{{'GENERIC.Close' | translate}}"
       ng-click="close(index);$event.stopPropagation()">
     <i class="fa fa-remove "></i>
   </button>
 
   <button ng-if="description(field).length > 0" type="button" class=" question  pull-right"
-      tooltip="{{(description(field) || 'GENERIC.Help') | translate}}"
+      uib-tooltip="{{(description(field) || 'GENERIC.Help') | translate}}"
       tooltip-trigger
       tooltip-animation="true"
       tooltip-placement="top"
@@ -36,7 +36,7 @@
   <button type="button" class=" add  pull-right"
       ng-click="add();$event.stopPropagation()"
       ng-if="isMultiple() && (!field.maxItems || model.length < field.maxItems )"
-      tooltip="{{'GENERIC.Add' | translate}}"
+      uib-tooltip="{{'GENERIC.Add' | translate}}"
       tooltip-trigger
       tooltip-animation="false"
       tooltip-placement="top"
@@ -47,7 +47,7 @@
 
   <button ng-if="isMultiple()" type="button" class=" remove pull-right"
       ng-if="isActive(index)"
-      tooltip="{{cardinality()}}"
+      uib-tooltip="{{cardinality()}}"
       ng-click="toggle();$event.stopPropagation()">
 
     <i ng-if="showMultiple('paged')" class="fa fa-sort  fa-rotate-90 "></i>
@@ -56,7 +56,7 @@
   </button>
 
 
-  <cedar-pager ng-click="$event.stopPropagation()" class="pull-right" style="padding-right:20px" ng-if="isMultiple()" values="values" index="index" min="min" max="max" select="select"
+  <cedar-pager ng-click="$event.stopPropagation()" class="pull-right" style="padding-right:20px;" ng-if="isMultiple()" values="values" index="index" min="min" max="max" select="select"
       range="range">
   </cedar-pager>
 

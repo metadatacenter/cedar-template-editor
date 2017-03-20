@@ -28,7 +28,7 @@
                   <td>
                     {{parseOntologyName(key)}}
                   </td>
-                  <td tooltip="{{getShortId(getClassId(key))}}" tooltip-append-to-body="true">{{getShortId(getClassId(key), 16)}}</td>
+                  <td uib-tooltip="{{getShortId(getClassId(key))}}" tooltip-append-to-body="true">{{getShortId(getClassId(key), 16)}}</td>
                   <td>
                     <div class="class-delete" ng-click="deleteFieldAddedItem(key);  $event.stopPropagation();">
                       <i class="fa fa-times-circle"></i>
