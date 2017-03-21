@@ -1600,119 +1600,9 @@ body.search-browse-modal {
   }
 }
 
-.other-elements {
-  width: 465px;
-  background: @white;
-  color: @graytxt;
-  position: absolute;
-  top: 0;
-  right: -1%;
 
-  .pull-left, .pull-right {
-    width: 45%;
-    text-transform: uppercase;
-  }
 
-  .list-unstyled {
 
-    li {
-      margin-bottom: 15px;
-
-      a {
-        color: @graytxt;
-        font-weight: 500;
-        i {
-          color: @brand-primary;
-          padding-right: 10px;
-        }
-      }
-    }
-  }
-
-  .top-half, .bottom-half {
-    padding: 30px;
-    border-bottom: 1px solid @graybg;
-  }
-  .search-part {
-    border: none;
-
-    a {
-      display: block;
-      padding: 30px 35px;
-      color: @graytxt;
-      text-transform: uppercase;
-      font-weight: 500;
-      width: 100%;
-
-      i {
-        color: @brand-primary;
-        padding-right: 10px;
-        text-align: right;
-      }
-    }
-  }
-  .top-half:after, .bottom-half:after, .top-half:before, .bottom-half:before, {
-    clear: both;
-    content: '';
-  }
-}
-
-.other-elements {
-  width: 465px;
-  background: @white;
-  color: @graytxt;
-  position: absolute;
-  top: 0;
-  right: -1%;
-
-  .pull-left, .pull-right {
-    width: 45%;
-    text-transform: uppercase;
-  }
-
-  .list-unstyled {
-
-    li {
-      margin-bottom: 15px;
-
-      a {
-        color: @graytxt;
-        font-weight: 500;
-        i {
-          color: @brand-primary;
-          padding-right: 10px;
-        }
-      }
-    }
-  }
-
-  .top-half, .bottom-half {
-    padding: 30px;
-    border-bottom: 1px solid @graybg;
-  }
-  .search-part {
-    border: none;
-
-    a {
-      display: block;
-      padding: 30px 35px;
-      color: @graytxt;
-      text-transform: uppercase;
-      font-weight: 500;
-      width: 100%;
-
-      i {
-        color: @brand-primary;
-        padding-right: 10px;
-        text-align: right;
-      }
-    }
-  }
-  .top-half:after, .bottom-half:after, .top-half:before, .bottom-half:before, {
-    clear: both;
-    content: '';
-  }
-}
 
 .template-header {
   width: 100%;
@@ -1778,6 +1668,9 @@ body.search-browse-modal {
   .show-type {
     background: transparent;
     color: white;
+    .class-list {
+      border-radius: 0;margin:0;padding:0
+    }
     i.fa-caret-down {
       margin-left: -12px;
     }
@@ -6985,8 +6878,17 @@ table.apiKey {
       height: 300px;
       cursor: pointer;
       .box-row {
+
         &.disabled {
           opacity: 0.5;
+        }
+        &.selected {
+          a,a:hover {
+            color:@white;
+          }
+        }
+        a,a:hover {
+          color:@brand-primary;;
         }
       }
     }

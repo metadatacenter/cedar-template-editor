@@ -34,6 +34,7 @@ define([
         $scope.saveButtonDisabled = false;
         //$scope.addedFieldKeys = [];
         //$scope.addedFields = new Map();
+        $scope.viewType = 'popup';
 
         var getTemplate = function () {
           // Load existing form if $routeParams.id parameter is supplied
@@ -99,8 +100,15 @@ define([
               // now we are sure that the element was successfully added
               $rootScope.scrollToDomId(domId);
               $rootScope.$broadcast("form:dirty");
+              $scope.toggleMore();
             });
           }
+        };
+
+
+        $scope.moreIsOpen = false;
+        $scope.toggleMore = function() {
+          $scope.moreIsOpen = !$scope.moreIsOpen;
         };
 
         $scope.getTitle = function (element) {

@@ -10416,110 +10416,6 @@ body.search-browse-modal a.navbar-brand {
       -ms-transform: rotate(180deg);
           transform: rotate(180deg);
 }
-.other-elements {
-  width: 465px;
-  background: #ffffff;
-  color: #666666;
-  position: absolute;
-  top: 0;
-  right: -1%;
-}
-.other-elements .pull-left,
-.other-elements .pull-right {
-  width: 45%;
-  text-transform: uppercase;
-}
-.other-elements .list-unstyled li {
-  margin-bottom: 15px;
-}
-.other-elements .list-unstyled li a {
-  color: #666666;
-  font-weight: 500;
-}
-.other-elements .list-unstyled li a i {
-  color: #5795ba;
-  padding-right: 10px;
-}
-.other-elements .top-half,
-.other-elements .bottom-half {
-  padding: 30px;
-  border-bottom: 1px solid #eaeaea;
-}
-.other-elements .search-part {
-  border: none;
-}
-.other-elements .search-part a {
-  display: block;
-  padding: 30px 35px;
-  color: #666666;
-  text-transform: uppercase;
-  font-weight: 500;
-  width: 100%;
-}
-.other-elements .search-part a i {
-  color: #5795ba;
-  padding-right: 10px;
-  text-align: right;
-}
-.other-elements .top-half:after,
-.other-elements .bottom-half:after,
-.other-elements .top-half:before,
-.other-elements .bottom-half:before {
-  clear: both;
-  content: '';
-}
-.other-elements {
-  width: 465px;
-  background: #ffffff;
-  color: #666666;
-  position: absolute;
-  top: 0;
-  right: -1%;
-}
-.other-elements .pull-left,
-.other-elements .pull-right {
-  width: 45%;
-  text-transform: uppercase;
-}
-.other-elements .list-unstyled li {
-  margin-bottom: 15px;
-}
-.other-elements .list-unstyled li a {
-  color: #666666;
-  font-weight: 500;
-}
-.other-elements .list-unstyled li a i {
-  color: #5795ba;
-  padding-right: 10px;
-}
-.other-elements .top-half,
-.other-elements .bottom-half {
-  padding: 30px;
-  border-bottom: 1px solid #eaeaea;
-}
-.other-elements .search-part {
-  border: none;
-}
-.other-elements .search-part a {
-  display: block;
-  padding: 30px 35px;
-  color: #666666;
-  text-transform: uppercase;
-  font-weight: 500;
-  width: 100%;
-}
-.other-elements .search-part a i {
-  color: #5795ba;
-  padding-right: 10px;
-  text-align: right;
-}
-.other-elements .top-half:after,
-.other-elements .bottom-half:after,
-.other-elements .top-half:before,
-.other-elements .bottom-half:before {
-  clear: both;
-  content: '';
-}
 .template-header {
   width: 100%;
   background-color: #2e5365;
@@ -10578,6 +10474,11 @@ body.search-browse-modal a.navbar-brand {
 .template-header .show-type {
   background: transparent;
   color: white;
+}
+.template-header .show-type .class-list {
+  border-radius: 0;
+  margin: 0;
+  padding: 0;
 }
 .template-header .show-type i.fa-caret-down {
   margin-left: -12px;
@@ -15399,6 +15300,18 @@ table.apiKey td {
 #copy-modal .modal-content .modal-body .box-row.disabled {
   opacity: 0.5;
 }
+#move-modal .modal-content .modal-body .box-row.selected a,
+#copy-modal .modal-content .modal-body .box-row.selected a,
+#move-modal .modal-content .modal-body .box-row.selected a:hover,
+#copy-modal .modal-content .modal-body .box-row.selected a:hover {
+  color: #ffffff;
+}
+#move-modal .modal-content .modal-body .box-row a,
+#copy-modal .modal-content .modal-body .box-row a,
+#move-modal .modal-content .modal-body .box-row a:hover,
+#copy-modal .modal-content .modal-body .box-row a:hover {
+  color: #5795ba;
+}
 @media (max-width: 768px) {
   #airr-submission-modal .modal-content {
     width: calc(100% - 10px);
@@ -16163,17 +16076,19 @@ div.errorTechnicalDetails textarea {
   margin: 0;
 }
 #toolbar .other-elements {
+  width: 465px;
   position: absolute;
   right: 70px;
   border: 1px solid #d2d2d2;
   background: #fff;
-  top: -3px;
+  top: -193px;
   left: auto;
   border-radius: 0;
   box-shadow: none;
   background: #ffffff;
   color: #666666;
   padding: 10px;
+  z-index: 10;
 }
 #toolbar .other-elements .pull-left,
 #toolbar .other-elements .pull-right {

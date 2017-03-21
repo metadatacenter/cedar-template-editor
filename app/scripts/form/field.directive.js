@@ -22,6 +22,8 @@ define([
     var linker = function ($scope, $element, attrs) {
 
       var MIN_OPTIONS = 2;
+      $scope.viewType = 'table';
+
 
       var setDirectory = function () {
         var p = $rootScope.propertiesOf($scope.field);
@@ -266,7 +268,7 @@ define([
             delete field._valueConstraints.literals[i].selectedByDefault;
           }
         }
-      }
+      };
 
       // Sets UI selections based on the default options
       $scope.defaultOptionsToUI = function () {
@@ -301,7 +303,7 @@ define([
             }
           }
         }
-      }
+      };
 
       // Sets the instance @value fields based on the options selected at the UI
       $scope.updateModelFromUI = function () {
@@ -549,7 +551,6 @@ define([
 
       // try to select this field
       $scope.canSelect = function (select) {
-        console.log('canSelect ' + select);
         var result = select;
         if (select) {
           result = DataManipulationService.canSelect($scope.field);

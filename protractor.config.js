@@ -5,26 +5,24 @@ exports.config = {
   specs            : ['tests/e2e/**/*.js'],
   rootElement: 'html',
 
+  capabilities: {
+    browserName: 'chrome',
+    shardTestFiles: true,
+    maxInstances:12
+  },
+
   allScriptsTimeout: 100000,
   jasmineNodeOpts: {
     showColors: true,
     defaultTimeoutInterval: 100000,
-    isVerbose: true,
-    includeStackTrace: true
-  },
-
-  capabilities: {
-    browserName: 'chrome',
-    shardTestFiles: true,
-    maxInstances: 12
+    isVerbose: true
   },
 
   onPrepare: function () {
-    browser.driver.manage().window().maximize();
-
     // implicit and page load timeouts
     browser.manage().timeouts().pageLoadTimeout(100000);
     browser.manage().timeouts().implicitlyWait(5000);
+    browser.driver.manage().window().maximize();
 
     browser.ignoreSynchronization = true;
 
@@ -74,6 +72,7 @@ exports.config = {
     browser.driver.findElement(by.id('username')).sendKeys(testConfig.testUser1).then(function () {
       browser.driver.findElement(by.id('password')).sendKeys(testConfig.testPassword1).then(function () {
         browser.driver.findElement(by.id('kc-login')).click().then(function () {
+          //browser.driver.wait(browser.driver.isElementPresent(by.id('top-navigation')));
           browser.driver.findElements(By.id('top-navigation')).then(function (found) {
                 console.log(found.length);
           });
@@ -88,6 +87,7 @@ exports.config = {
           browser.ignoreSynchronization = false;
           return true;
         });
+
       });
     });
 

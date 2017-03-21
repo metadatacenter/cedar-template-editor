@@ -27,7 +27,7 @@ define([
 
         cedarCopyModalController.$inject = [
           '$scope',
-          '$modal',
+          '$uibModal',
           'CedarUser',
           '$timeout',
           '$translate',
@@ -36,7 +36,7 @@ define([
           'CONST'
         ];
 
-        function cedarCopyModalController($scope, $modal, CedarUser, $timeout, $translate,
+        function cedarCopyModalController($scope, $uibModal, CedarUser, $timeout, $translate,
                                           resourceService,
                                           UIMessageService,
                                           CONST) {

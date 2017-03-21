@@ -31,6 +31,7 @@ define([
     $scope.volatile = {};
     // Setting form preview setting to false by default
     //$scope.form = {};
+    $scope.viewType = 'popup';
 
     $scope.showCreateEditForm = true;
 
@@ -116,8 +117,16 @@ define([
       if (dontHaveCreatingFieldOrElement()) {
         StagingService.addFieldToElement($scope.element, fieldType);
         $scope.$broadcast("form:dirty");
+        $scope.toggleMore();
       }
       $scope.showMenuPopover = false;
+    };
+
+
+    $scope.moreIsOpen = false;
+    $scope.toggleMore = function() {
+      $scope.moreIsOpen = !$scope.moreIsOpen;
+      console.log('toggleMore ' + $scope.moreIsOpen);
     };
 
     $scope.addElementToElement = function (element) {
@@ -366,6 +375,7 @@ define([
     };
 
     $scope.showModal = function (id) {
+      console.log('showModal ' + id);
       jQuery("#" + id).modal('show');
     };
 

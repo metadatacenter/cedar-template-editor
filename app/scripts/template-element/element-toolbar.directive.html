@@ -4,7 +4,7 @@
        <button type="button"
            ng-click="remove(index);$event.stopPropagation()"
            class="remove pull-right"
-           tooltip="{{'GENERIC.Remove' | translate}}"
+           uib-tooltip="{{'GENERIC.Remove' | translate}}"
            tooltip-trigger
            tooltip-animation="false"
            tooltip-placement="top"
@@ -15,7 +15,7 @@
 
   <button type="button" class=" remove pull-right"
       ng-if="isActive(index)"
-      tooltip="{{'GENERIC.Close' | translate}}"
+      uib-tooltip="{{'GENERIC.Close' | translate}}"
       ng-click="setActive(index, false);$event.stopPropagation()">
     <i class="fa fa-remove "></i>
   </button>
@@ -24,7 +24,7 @@
        <button type="button"
            ng-click="add();$event.stopPropagation()"
            class="add pull-right"
-           tooltip="{{'GENERIC.Add' | translate}}"
+           uib-tooltip="{{'GENERIC.Add' | translate}}"
            tooltip-trigger
            tooltip-animation="false"
            tooltip-placement="top"
@@ -36,7 +36,7 @@
 
   <button ng-if="$root.isArray(model)" type="button" class=" remove pull-right"
       ng-if="isActive(index)"
-      tooltip="{{cardinality()}}"
+      uib-tooltip="{{cardinality()}}"
       ng-click="toggle();$event.stopPropagation()">
     <i ng-if="showMultiple('paged')" class="fa   fa-sort  fa-rotate-90 "></i>
     <i ng-if="showMultiple('expanded')" class="fa fa-list-ol "></i>
