@@ -716,11 +716,27 @@ var WorkspacePage = function () {
     browser.driver.findElement(by.id('username')).sendKeys(username).then(function () {
       browser.driver.findElement(by.id('password')).sendKeys(password).then(function () {
         browser.driver.findElement(by.id('kc-login')).click().then(function () {
-          browser.driver.wait(browser.driver.isElementPresent(by.id('top-navigation')));
-          browser.driver.wait(browser.driver.isElementPresent(by.className('ng-app')));
+          browser.driver.findElements(By.id('top-navigation')).then(function () {
+            browser.driver.findElements(By.id('ng-app')).then(function (found) {
+            });
+          });
         });
       });
     });
+  };
+
+  // check whether the given username corresponds to the currently logged in user
+  this.isUserLoggedIn = function (username) {
+    this.clickLogo();
+    return createBreadcrumbUserName.getText() === username;
+  };
+
+
+  this.loginIfNecessary = function (username, password) {
+    if(!this.isUserLoggedIn(username)) {
+      this.logout();
+      this.login(username, password);
+    }
   };
 
   // navigate to the home folder of the specified user
