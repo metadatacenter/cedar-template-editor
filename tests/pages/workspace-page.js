@@ -424,9 +424,11 @@ var WorkspacePage = function () {
   this.deleteResourceViaRightClick = function (name, type) {
     this.rightClickResource(name, type);
     browser.wait(EC.visibilityOf(createRightClickDeleteMenuItem));
+    // is delete enabled?
     browser.wait(EC.elementToBeClickable(createRightClickDeleteMenuItem));
     createRightClickDeleteMenuItem.click();
     sweetAlertModal.confirm();
+    return true;
   };
 
   this.setSortOrder = function (order) {

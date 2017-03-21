@@ -31,6 +31,7 @@ define([
     $scope.volatile = {};
     // Setting form preview setting to false by default
     //$scope.form = {};
+    $scope.viewType = 'popup';
 
     $scope.showCreateEditForm = true;
 
@@ -374,6 +375,7 @@ define([
     };
 
     $scope.showModal = function (id) {
+      console.log('showModal ' + id);
       jQuery("#" + id).modal('show');
     };
 

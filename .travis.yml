@@ -24,7 +24,7 @@ branches:
     - develop
     - master
     - testing/permissions
-    - feature/update-bootstrap
+    - feature/sharding
 
 # Notify the CEDAR core developer mailing list on failures
 notifications:

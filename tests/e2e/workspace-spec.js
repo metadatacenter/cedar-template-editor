@@ -10,36 +10,27 @@ var _ = require('../libs/lodash.min.js');
 var sampleFolderTitle;
 var sampleTemplateTitle;
 
-// TODO turned off so we do not run out of time on Travis
-xdescribe('workspace', function () {
+describe('workspace', function () {
   var EC = protractor.ExpectedConditions;
-  var metadataPage;
-  var workspacePage;
-  var templatePage;
-  var toastyModal;
-  var sweetAlertModal;
-  var moveModal;
+
+  var workspacePage = WorkspacePage;
+  var metadataPage = MetadataPage;
+  var templatePage = TemplatePage;
+  var toastyModal = ToastyModal;
+  var sweetAlertModal = SweetAlertModal;
+  var moveModal = MoveModal;
 
   // before each test, load a new page and create a template
   // maximize the window area for clicking
   beforeEach(function () {
-
-    workspacePage = WorkspacePage;
-    metadataPage = MetadataPage;
-    templatePage = TemplatePage;
-    toastyModal = ToastyModal;
-    sweetAlertModal = SweetAlertModal;
-    moveModal = MoveModal;
-    browser.driver.manage().window().maximize();
-
   });
 
   afterEach(function () {
   });
 
   it("should have a logo", function () {
-    workspacePage.hasLogo();
     workspacePage.onWorkspace();
+    workspacePage.hasLogo();
   });
 
   for (var j = 0; j < 1; j++) {
@@ -100,7 +91,7 @@ xdescribe('workspace', function () {
       });
 
       // TODO does not work for some reason
-      xit("should delete the sample folder", function () {
+      it("should delete the sample folder", function () {
         workspacePage.deleteResource(sampleFolderTitle, 'folder');
         workspacePage.onWorkspace();
       });
