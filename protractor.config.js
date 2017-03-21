@@ -1,17 +1,16 @@
 var testConfig = require('./tests/config/test-env.js');
 
 exports.config = {
-  // seleniumAddress: 'http://localhost:4444/wd/hub',
-  directConnect    : true,
-  seleniumServerJar: './node_modules/selenium-standalone/.selenium/selenium-server/' + testConfig.seleniumServerJar,
-  chromeDriver     : './node_modules/selenium-standalone/.selenium/chromedriver/' + testConfig.chromeDriver,
+  seleniumAddress: 'http://localhost:4444/wd/hub',
   specs            : ['tests/e2e/**/*.js'],
+  rootElement: 'html',
 
   allScriptsTimeout: 100000,
   jasmineNodeOpts: {
     showColors: true,
     defaultTimeoutInterval: 100000,
-    isVerbose: true
+    isVerbose: true,
+    includeStackTrace: true
   },
 
   capabilities: {
@@ -60,11 +59,24 @@ exports.config = {
     browser.addMockModule('disableNgAnimate', disableNgAnimate);
     browser.addMockModule('disableCssAnimate', disableCssAnimate);
 
+    browser.manage().logs().get('browser').then(function(browserLogs) {
+      // browserLogs is an array of objects with level and message fields
+      browserLogs.forEach(function(log){
+        //if (log.level.value > 900) { // it's an error log
+          console.log('Browser console error!');
+          console.log(log.message);
+        //}
+      });
+    });
+
+
+
     browser.driver.findElement(by.id('username')).sendKeys(testConfig.testUser1).then(function () {
       browser.driver.findElement(by.id('password')).sendKeys(testConfig.testPassword1).then(function () {
         browser.driver.findElement(by.id('kc-login')).click().then(function () {
-          browser.driver.wait(browser.driver.isElementPresent(by.id('top-navigation')));
-
+          browser.driver.findElements(By.id('top-navigation')).then(function (found) {
+                console.log(found.length);
+          });
         });
       });
     });
@@ -72,9 +84,8 @@ exports.config = {
     // wait for new page
     return browser.driver.wait(function () {
       return browser.driver.getCurrentUrl().then(function (url) {
-        return browser.driver.isElementPresent(by.className('ng-app')).then(function () {
+        return browser.driver.findElements(by.className('ng-app')).then(function () {
           browser.ignoreSynchronization = false;
-          //return url === testConfig.baseUrl + '/';
           return true;
         });
       });
