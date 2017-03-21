@@ -112,8 +112,17 @@ define([
 
             // Assign empty field instance model to $scope.model only if it does not exist
             if (!parentModel[name]) {
+              // Not multiple instance
               if (!DataManipulationService.isCardinalElement(value)) {
-                parentModel[name] = {};
+                // Multiple choice fields (checkbox and multi-choice list) store an array of values
+                if (DataManipulationService.isMultipleChoiceField(value)) {
+                  parentModel[name] = [];
+                }
+                // All other fields, including the radio field and the list field with single option
+                else {
+                  parentModel[name] = {};
+                }
+              // Multiple instance
               } else {
                 parentModel[name] = [];
                 for (i = 0; i < min; i++) {

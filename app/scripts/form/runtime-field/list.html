@@ -33,8 +33,15 @@
     </option>
   </select>
 
-  <!-- Inactive (both Single and Multiple choice) -->
-  <div ng-if="!isActive(index)">
+  <!-- Single choice (Inactive) -->
+  <div ng-if="!isActive(index) && !isMultipleChoice()">
+    <div class=" value" ng-click="setActive(index,true)"
+        aria-label="{{getDescription(field)}}">{{model['@value']}}
+    </div>
+  </div>
+
+  <!-- Multiple choice (Inactive) -->
+  <div ng-if="!isActive(index) && isMultipleChoice()">
     <div class=" value" ng-click="setActive(index,true)"
         aria-label="{{getDescription(field)}}">{{getValueString(valueArray[index])}}
     </div>

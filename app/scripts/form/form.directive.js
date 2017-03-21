@@ -259,11 +259,11 @@ define([
                   if (parentModel[name] == undefined) {
                     // Not multiple instance
                     if (!DataManipulationService.isCardinalElement(value)) {
-                      // Selection fields store an array of values
-                      if ((value._ui.inputType == 'radio') || (value._ui.inputType == 'checkbox') || (value._ui.inputType == 'list')) {
+                      // Multiple choice fields (checkbox and multi-choice list) store an array of values
+                      if (DataManipulationService.isMultipleChoiceField(value)) {
                         parentModel[name] = [];
                       }
-                      // All other fields
+                      // All other fields, including the radio field and the list field with single option
                       else {
                         parentModel[name] = {};
                       }
