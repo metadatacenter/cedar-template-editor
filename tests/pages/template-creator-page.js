@@ -593,6 +593,8 @@ var TemplateCreatorPage = function () {
 
   this.setTitle = function (type, text) {
     if (type === 'template') {
+      browser.wait(EC.visibilityOf(templateTitle));
+      browser.wait(EC.elementToBeClickable(templateTitle));
       browser.actions().doubleClick(templateTitle).perform();
       templateTitle.sendKeys(text);
       templateTitle.submit();
@@ -600,6 +602,8 @@ var TemplateCreatorPage = function () {
         expect(value === text).toBe(true);
       });
     } else {
+      browser.wait(EC.visibilityOf(elementTitle));
+      browser.wait(EC.elementToBeClickable(elementTitle));
       browser.actions().doubleClick(elementTitle).perform();
       elementTitle.sendKeys(text);
       elementTitle.submit();
@@ -625,6 +629,8 @@ var TemplateCreatorPage = function () {
 
   this.setDescription = function (type, text) {
     if (type === 'template') {
+      browser.wait(EC.visibilityOf(templateDescription));
+      browser.wait(EC.elementToBeClickable(templateDescription));
       browser.actions().doubleClick(templateDescription).perform();
       templateDescription.sendKeys(text);
       templateDescription.submit();
@@ -632,6 +638,8 @@ var TemplateCreatorPage = function () {
         expect(value === text).toBe(true);
       });
     } else {
+      browser.wait(EC.visibilityOf(elementDescription));
+      browser.wait(EC.elementToBeClickable(elementDescription));
       browser.actions().doubleClick(elementDescription).perform();
       elementDescription.sendKeys(text);
       elementDescription.submit();

@@ -6,14 +6,13 @@ var SweetAlertModal = require('../modals/sweet-alert-modal.js');
 var _ = require('../libs/lodash.min.js');
 
 // TODO turned off so we do not run out of time on Travis
-xdescribe('template-creator', function () {
+describe('template-creator', function () {
   var EC = protractor.ExpectedConditions;
 
-
-  var workspacePage;
-  var templatePage;
-  var toastyModal;
-  var sweetAlertModal;
+  var workspacePage = WorkspacePage;
+  var templatePage = TemplatePage;
+  var toastyModal = ToastyModal;
+  var sweetAlertModal = SweetAlertModal;
 
   var cleanJson;
   var dirtyJson;
@@ -135,11 +134,6 @@ xdescribe('template-creator', function () {
   // before each test, load a new page and create a template
   // maximize the window area for clicking
   beforeEach(function () {
-    workspacePage = WorkspacePage;
-    templatePage = TemplatePage;
-    toastyModal = ToastyModal;
-    sweetAlertModal = SweetAlertModal;
-    browser.driver.manage().window().maximize();
   });
 
   afterEach(function () {

@@ -1,12 +1,15 @@
 var testConfig = require('./tests/config/test-env.js');
 
 exports.config = {
-  //framework: 'jasmine',
   seleniumAddress: 'http://localhost:4444/wd/hub',
-  //directConnect    : true,
-  //seleniumServerJar: './node_modules/selenium-standalone/.selenium/selenium-server/' + testConfig.seleniumServerJar,
-  //chromeDriver     : './node_modules/selenium-standalone/.selenium/chromedriver/' + testConfig.chromeDriver,
   specs            : ['tests/e2e/**/*.js'],
+  rootElement: 'html',
+
+  capabilities: {
+    browserName: 'chrome',
+    shardTestFiles: true,
+    maxInstances:12
+  },
 
   allScriptsTimeout: 100000,
   jasmineNodeOpts: {
@@ -15,14 +18,11 @@ exports.config = {
     isVerbose: true
   },
 
-  capabilities: {
-    'browserName': 'chrome'
-  },
-
   onPrepare: function () {
     // implicit and page load timeouts
     browser.manage().timeouts().pageLoadTimeout(100000);
     browser.manage().timeouts().implicitlyWait(5000);
+    browser.driver.manage().window().maximize();
 
     browser.ignoreSynchronization = true;
 

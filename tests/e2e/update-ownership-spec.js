@@ -4,7 +4,7 @@ var ToastyModal = require('../modals/toasty-modal.js');
 var ShareModal = require('../modals/share-modal.js');
 var testConfig = require('../config/test-env.js');
 
-describe('update-ownership', function () {
+xdescribe('update-ownership', function () {
   var workspacePage;
   var toastyModal;
   var shareModal;

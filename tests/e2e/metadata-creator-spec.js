@@ -10,24 +10,19 @@ var sampleTitle;
 var sampleElementTitle;
 
 // TODO turned off so we do not run out of time on Travis
-xdescribe('metadata-creator', function () {
+describe('metadata-creator', function () {
   var EC = protractor.ExpectedConditions;
-  var metadataPage;
-  var workspacePage;
-  var templatePage;
-  var toastyModal;
-  var sweetAlertModal;
+
+  var workspacePage = WorkspacePage;
+  var metadataPage = MetadataPage;
+  var templatePage = TemplatePage;
+  var  toastyModal = ToastyModal;
+  var sweetAlertModal = SweetAlertModal;
+  browser.driver.manage().window().maximize();
 
   // before each test
   // maximize the window area for clicking
   beforeEach(function () {
-
-    workspacePage = WorkspacePage;
-    metadataPage = MetadataPage;
-    templatePage = TemplatePage;
-    toastyModal = ToastyModal;
-    sweetAlertModal = SweetAlertModal;
-    browser.driver.manage().window().maximize();
   });
 
   afterEach(function () {
