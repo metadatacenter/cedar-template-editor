@@ -10,7 +10,6 @@ var _ = require('../libs/lodash.min.js');
 var sampleFolderTitle;
 var sampleTemplateTitle;
 
-// TODO turned off so we do not run out of time on Travis
 describe('workspace', function () {
   var EC = protractor.ExpectedConditions;
 

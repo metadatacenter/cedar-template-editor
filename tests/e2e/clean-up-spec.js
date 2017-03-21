@@ -59,7 +59,8 @@ describe('clean-up', function () {
   });
 
 
-  // try to delete some number of files of each type
+  // delete some number of files of each type
+  // turn this on to delete left over stuff from staging
   for (var i = 0; i < max; i++) {
     (function () {
 
