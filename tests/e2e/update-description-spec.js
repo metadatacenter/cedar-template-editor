@@ -15,12 +15,11 @@ describe('update-description', function () {
   });
 
   afterEach(function () {
-    workspacePage.clickLogo();
   });
 
 
   it("should fail to update description of a resource shared as readable with Everybody group", function () {
-    workspacePage.loginIfNecessary(testConfig.testUser1, testConfig.testPassword1);
+    workspacePage.loginIfNecessary(testConfig.testUserName1, testConfig.testUser1, testConfig.testPassword1);
     workspacePage.closeInfoPanel();
 
     var template = workspacePage.createTemplate('Readable');
@@ -39,7 +38,7 @@ describe('update-description', function () {
 
 
   it("should update description of a resource shared as writable with Everybody group", function () {
-    workspacePage.loginIfNecessary(testConfig.testUser2, testConfig.testPassword2);
+    workspacePage.loginIfNecessary(testConfig.testUserName2, testConfig.testUser2, testConfig.testPassword2);
 
     var template = workspacePage.createTemplate('Writable');
     resources.push(template);
@@ -60,7 +59,7 @@ describe('update-description', function () {
 
 
   it("should fail to update description of a resource shared as readable with a user", function () {
-    workspacePage.loginIfNecessary(testConfig.testUser1, testConfig.testPassword1);
+    workspacePage.loginIfNecessary(testConfig.testUserName1, testConfig.testUser1, testConfig.testPassword1);
 
     var template = workspacePage.createTemplate('Readable');
     resources.push(template);
@@ -79,7 +78,7 @@ describe('update-description', function () {
 
 
   it("should update description of a resource shared as writable with a user", function () {
-    workspacePage.loginIfNecessary(testConfig.testUser2, testConfig.testPassword2);
+    workspacePage.loginIfNecessary(testConfig.testUserName2, testConfig.testUser2, testConfig.testPassword2);
 
     var template = workspacePage.createTemplate('Writable');
     resources.push(template);
@@ -100,13 +99,13 @@ describe('update-description', function () {
 
 
   it("should delete the test resources created", function () {
-    workspacePage.loginIfNecessary(testConfig.testUser1, testConfig.testPassword1);
+    workspacePage.loginIfNecessary(testConfig.testUserName1, testConfig.testUser1, testConfig.testPassword1);
     for (var i = 0; i < resources.length; i++) {
       workspacePage.deleteResourceViaRightClick(resources[i], 'template');
       toastyModal.isSuccess();
       workspacePage.clearSearch();
     }
-  });
+  }, 200000);
 
 
 });

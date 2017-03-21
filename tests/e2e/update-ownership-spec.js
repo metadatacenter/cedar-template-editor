@@ -15,12 +15,11 @@ describe('update-ownership', function () {
   });
 
   afterEach(function () {
-    workspacePage.clickLogo();
   });
 
 
   it("should give ownership of a folder owned by current user to another user", function () {
-    workspacePage.loginIfNecessary(testConfig.testUser1, testConfig.testPassword1);
+    workspacePage.loginIfNecessary(testConfig.testUserName1, testConfig.testUser1, testConfig.testPassword1);
 
     var folder = workspacePage.createFolder('Owned');
     resources.push(folder);
@@ -42,7 +41,7 @@ describe('update-ownership', function () {
 
 
   it("should fail to change ownership of a folder shared as readable with current user", function () {
-    workspacePage.loginIfNecessary(testConfig.testUser1, testConfig.testPassword1);
+    workspacePage.loginIfNecessary(testConfig.testUserName1, testConfig.testUser1, testConfig.testPassword1);
 
     var folder = workspacePage.createFolder('Readable');
     resources.push(folder);
@@ -60,7 +59,7 @@ describe('update-ownership', function () {
 
 
   it("should fail to change ownership of a folder shared as writable with current user", function () {
-    workspacePage.loginIfNecessary(testConfig.testUser2, testConfig.testPassword2);
+    workspacePage.loginIfNecessary(testConfig.testUserName2, testConfig.testUser2, testConfig.testPassword2);
 
     var folder = workspacePage.createFolder('Writable');
     resources.push(folder);
@@ -80,7 +79,7 @@ describe('update-ownership', function () {
 
 
   it("should fail to change ownership of a folder shared as readable with Everybody group", function () {
-    workspacePage.loginIfNecessary(testConfig.testUser1, testConfig.testPassword1);
+    workspacePage.loginIfNecessary(testConfig.testUserName1, testConfig.testUser1, testConfig.testPassword1);
 
     var folder = workspacePage.createFolder('Readable');
     resources.push(folder);
@@ -98,7 +97,7 @@ describe('update-ownership', function () {
 
 
   it("should fail to change ownership of a folder shared as writable with Everybody group", function () {
-    workspacePage.loginIfNecessary(testConfig.testUser2, testConfig.testPassword2);
+    workspacePage.loginIfNecessary(testConfig.testUserName2, testConfig.testUser2, testConfig.testPassword2);
 
     var folder = workspacePage.createFolder('Writable');
     resources.push(folder);
@@ -118,7 +117,7 @@ describe('update-ownership', function () {
 
 
   it("should delete the test resources created", function () {
-    workspacePage.loginIfNecessary(testConfig.testUser1, testConfig.testPassword1);
+    workspacePage.loginIfNecessary(testConfig.testUserName1, testConfig.testUser1, testConfig.testPassword1);
     for (var i = 0; i < resources.length; i++) {
       workspacePage.deleteResourceViaRightClick(resources[i], 'folder');
       toastyModal.isSuccess();
