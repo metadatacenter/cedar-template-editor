@@ -3,6 +3,7 @@ var testConfig = require('./tests/config/test-env.js');
 exports.config = {
   seleniumAddress: 'http://localhost:4444/wd/hub',
   specs            : ['tests/e2e/**/*.js'],
+  rootElement: 'div',
 
   capabilities: {
     browserName: 'chrome',
@@ -19,7 +20,7 @@ exports.config = {
 
   onPrepare: function () {
     // implicit and page load timeouts
-    browser.manage().timeouts().pageLoadTimeout(1000000);
+    browser.manage().timeouts().pageLoadTimeout(100000);
     browser.manage().timeouts().implicitlyWait(5000);
     browser.driver.manage().window().maximize();
 

@@ -26,6 +26,11 @@ describe('clean-up', function () {
   });
 
   // reset user selections to defaults
+  it('should be on the workspace', function () {
+    workspacePage.onWorkspace();
+  });
+
+  // reset user selections to defaults
   it('should default user selections', function () {
     workspacePage.onWorkspace();
     workspacePage.resetFiltering();
