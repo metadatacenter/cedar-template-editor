@@ -282,6 +282,7 @@ define([
                         (value._ui.inputType == 'date') || (value._ui.inputType == 'numeric'))) {
                       DataManipulationService.initializeValueType(value, parentModel[name]);
                     }
+                    DataManipulationService.defaultOptionsToModel(value, parentModel[name]);
                   }
 
                   //var p = $rootScope.propertiesOf(value);
