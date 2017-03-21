@@ -143,39 +143,43 @@ define([
             // If we are creating a new instance, the model is still completely empty. If there are any default values,
             // we set them. It's important to do this only if the model is empty to avoid overriding values of existing
             // instances with default values
-            $scope.optionsUI = {};
-            if (field._ui.inputType == 'checkbox') {
-              if (!$scope.model || $scope.model.length == 0) {
-                $scope.defaultOptionsToUI(field);
-                $scope.updateModelFromUI(field);
-              }
-            }
-            else if (field._ui.inputType == 'radio') {
-              if (!$scope.model || angular.equals($scope.model, {})) {
-                $scope.optionsUI.radioOption = null;
-                $scope.optionsUI.radioPreviousOption = null;
-                $scope.defaultOptionsToUI(field);
-                $scope.updateModelFromUI(field);
-              }
-            }
-            else if (field._ui.inputType == 'list') {
-              if (DataManipulationService.isMultipleChoice(field)) {
+            if (DataManipulationService.isMultiAnswer(field)) {
+              $scope.optionsUI = {};
+              if (field._ui.inputType == 'checkbox') {
                 if (!$scope.model || $scope.model.length == 0) {
                   $scope.defaultOptionsToUI(field);
                   $scope.updateModelFromUI(field);
                 }
               }
-              else {
+              else if (field._ui.inputType == 'radio') {
                 if (!$scope.model || angular.equals($scope.model, {})) {
+                  $scope.optionsUI.radioOption = null;
+                  $scope.optionsUI.radioPreviousOption = null;
                   $scope.defaultOptionsToUI(field);
                   $scope.updateModelFromUI(field);
+                }
+              }
+              else if (field._ui.inputType == 'list') {
+                if (DataManipulationService.isMultipleChoice(field)) {
+                  if (!$scope.model || $scope.model.length == 0) {
+                    $scope.defaultOptionsToUI(field);
+                    $scope.updateModelFromUI(field);
+                  }
+                }
+                else {
+                  if (!$scope.model || angular.equals($scope.model, {})) {
+                    $scope.defaultOptionsToUI(field);
+                    $scope.updateModelFromUI(field);
+                  }
                 }
               }
             }
             // Initialize values to store null, if the model has not been initialized yet by setting default values
             DataManipulationService.initializeValue(field, $scope.model);
-            // Load selected values from the model to the UI, if any
-            $scope.updateUIFromModel(field);
+            if (DataManipulationService.isMultiAnswer(field)) {
+              // Load selected values from the model to the UI, if any
+              $scope.updateUIFromModel(field);
+            }
           }
           $scope.hasBeenInitialized = true;
         }

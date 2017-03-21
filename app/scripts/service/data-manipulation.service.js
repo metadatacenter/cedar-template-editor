@@ -177,7 +177,7 @@ define([
         }
       }
       // Radio or single-choice list. They store only one value.
-      else {
+      else if (service.isSingleChoiceListField(field)) {
         if (!model || $rootScope.isArray(model)) {
           model = {};
         }
@@ -793,6 +793,12 @@ define([
     service.isMultipleChoiceField = function (fieldOrElement) {
       var inputType = service.getInputType(fieldOrElement);
       return ((inputType == 'checkbox') || (service.isMultipleChoice(fieldOrElement)));
+    };
+
+    // is this a radio, or a sigle-choice ?
+    service.isSingleChoiceListField = function (fieldOrElement) {
+      var inputType = service.getInputType(fieldOrElement);
+      return ((inputType == 'radio') || ((inputType == 'list') && !service.isMultipleChoice(fieldOrElement)));
     };
 
     // is this a youTube field?
