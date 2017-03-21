@@ -232,6 +232,11 @@ define([
           }
         }
       }
+      else {
+        if (model[fieldValue] == "") {
+          delete model[fieldValue];
+        }
+      }
     }
 
     // This function initializes the value @type field if it has not been initialized yet

@@ -10,14 +10,10 @@ define([
   cedarRuntimeField.$inject = ["$rootScope", "$sce", "$document", "$translate", "$filter", "$location",
                                "$window", '$timeout',
                                "SpreadsheetService",
-                               "DataManipulationService", "controlledTermDataService",
-                               "StringUtilsService", 'UISettingsService', 'UIModelService'];
+                               "DataManipulationService"];
 
   function cedarRuntimeField($rootScope, $sce, $document, $translate, $filter, $location, $window,
-                             $timeout,
-                             SpreadsheetService,
-                             DataManipulationService,
-                             controlledTermDataService, StringUtilsService, UISettingsService, UIModelService) {
+                             $timeout, SpreadsheetService, DataManipulationService) {
 
 
     var linker = function ($scope, $element, attrs) {
@@ -28,14 +24,12 @@ define([
       $scope.data = {
         model: null
       };
-      //$scope.multipleStates = ['expanded', 'paged','spreadsheet'];
       $scope.multipleStates = ['expanded', 'paged'];
       $scope.multipleState = 'paged';
       $scope.index = 0;
       $scope.pageMin = 0;
       $scope.pageMax = 0;
       $scope.pageRange = 6;
-
 
       // get the field title
       $scope.getTitle = function (field) {
@@ -277,6 +271,7 @@ define([
             $scope.model[fieldValue] = $scope.optionsUI.radioOption;
           }
           else if (field._ui.inputType == 'list') {
+            // Multiple-choice list
             if (DataManipulationService.isMultipleChoice(field)) {
               for (var i = 0; i < $scope.optionsUI.listMultiSelect.length; i++) {
                 var newValue = {};
@@ -284,6 +279,7 @@ define([
                 $scope.model.push(newValue);
               }
             }
+            // Single-choice list
             else {
               var newValue = {};
               $scope.model[fieldValue] = $scope.optionsUI.listSingleSelect;
@@ -291,9 +287,7 @@ define([
             // Remove the empty string created by the "Nothing selected" option (if it exists)
             DataManipulationService.removeEmptyStrings(field, $scope.model);
             // If the model is empty, set default value
-            if ($scope.model.length == 0) {
-              DataManipulationService.initializeValue(field, $scope.model);
-            }
+            DataManipulationService.initializeValue(field, $scope.model);
           }
         }
       };
@@ -302,7 +296,7 @@ define([
       $scope.updateUIFromModel = function (field) {
         if (DataManipulationService.isMultiAnswer(field)) {
           var fieldValue = DataManipulationService.getFieldValue(field);
-          $scope.optionsUI = {}
+          $scope.optionsUI = {};
         }
         if (field._ui.inputType == 'checkbox') {
           for (var i=0; i<$scope.model.length; i++) {
@@ -347,7 +341,6 @@ define([
 
           // add another instance in the model
           $scope.model.push({'@value': null});
-
 
           // activate the new instance
           $timeout($scope.setActive($scope.model.length - 1, true), 100);
@@ -655,54 +648,6 @@ define([
       };
       $scope.setValueArray();
 
-      // handle the multiple option list by using data.model for its model
-      // $scope.initMultiple = function () {
-      //
-      //   $scope.data.model = [];
-      //   if ($scope.model[0] && Array.isArray($scope.model[0])) {
-      //
-      //     for (var i = 0; i < $scope.model[0].length; i++) {
-      //       $scope.data.model.push($scope.model[0][i]['@value']);
-      //     }
-      //   }
-      //
-      // };
-
-      // put the multiple selections into our model
-      // $scope.updateMultiple = function () {
-      //
-      //   $scope.model[0] = [];
-      //
-      //   for (var i = 0; i < $scope.data.model.length; i++) {
-      //     var obj = {};
-      //     obj["@value"] = $scope.data.model[i];
-      //     $scope.model[0].push(obj);
-      //   }
-      // };
-
-      // get the printable list of selections
-      // $scope.getMultiple = function () {
-      //   var result = '';
-      //
-      //   var value = $scope.model[0];
-      //
-      //   if (Array.isArray(value)) {
-      //     for (var i = 0; i < value.length; i++) {
-      //
-      //       result += value[i]['@value'];
-      //       if (i < value.length - 1) {
-      //         result += ', ';
-      //       }
-      //     }
-      //
-      //   } else {
-      //     result = value;
-      //   }
-      //
-      //   return result;
-      // };
-
-
       $scope.showMultiple = function (state) {
         return ($scope.multipleState === state);
       };
@@ -951,5 +896,4 @@ define([
 
   }
 
-})
-;
+});
