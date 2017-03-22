@@ -4,23 +4,27 @@ var ToastyModal = require('../modals/toasty-modal.js');
 var ShareModal = require('../modals/share-modal.js');
 var testConfig = require('../config/test-env.js');
 
-describe('update-permissions', function () {
-  var workspacePage = WorkspacePage;
-  var toastyModal = ToastyModal;
-  var shareModal = ShareModal;
+xdescribe('update-permissions', function () {
+  var workspacePage;
+  var toastyModal;
+  var shareModal;
 
   var resources = [];
 
   beforeEach(function () {
+    workspacePage = WorkspacePage;
+    toastyModal = ToastyModal;
+    shareModal = ShareModal;
+    browser.driver.manage().window().maximize();
   });
 
   afterEach(function () {
+    workspacePage.clickLogo();
   });
 
 
   it("should fail to change permissions of a folder shared as readable with current user", function () {
-    workspacePage.loginIfNecessary(testConfig.testUserName1, testConfig.testUser1, testConfig.testPassword1);
-
+    workspacePage.onWorkspace();
     var folder = workspacePage.createFolder('Readable');
     resources.push(folder);
     shareModal.shareResource(folder, 'folder', testConfig.testUserName2, false, false);
@@ -37,8 +41,6 @@ describe('update-permissions', function () {
 
 
   it("should be able to change permissions of a folder shared as writable with current user", function () {
-    workspacePage.loginIfNecessary(testConfig.testUserName2, testConfig.testUser2, testConfig.testPassword2);
-
     var folder = workspacePage.createFolder('Writable');
     resources.push(folder);
     shareModal.shareResource(folder, 'folder', testConfig.testUserName1, true, false);
@@ -55,8 +57,6 @@ describe('update-permissions', function () {
 
 
   it("should fail to change permissions of a folder shared as readable with Everybody group", function () {
-    workspacePage.loginIfNecessary(testConfig.testUserName1, testConfig.testUser1, testConfig.testPassword1);
-
     var folder = workspacePage.createFolder('Readable');
     resources.push(folder);
     shareModal.shareResourceWithGroup(folder, 'folder', testConfig.everybodyGroup, false, false);
@@ -73,8 +73,6 @@ describe('update-permissions', function () {
 
 
   it("should be able to change permissions of a folder shared as writable with Everybody group", function () {
-    workspacePage.loginIfNecessary(testConfig.testUserName2, testConfig.testUser2, testConfig.testPassword2);
-
     var folder = workspacePage.createFolder('Writable');
     resources.push(folder);
     shareModal.shareResourceWithGroup(folder, 'folder', testConfig.everybodyGroup, true, false);
@@ -91,13 +89,12 @@ describe('update-permissions', function () {
 
 
   it("should delete the test resources created", function () {
-    workspacePage.loginIfNecessary(testConfig.testUserName1, testConfig.testUser1, testConfig.testPassword1);
     for(var i = 0; i < resources.length; i++) {
       workspacePage.deleteResourceViaRightClick(resources[i], 'folder');
       toastyModal.isSuccess();
       workspacePage.clearSearch();
     }
-  }, 200000);
+  });
 
 
 });

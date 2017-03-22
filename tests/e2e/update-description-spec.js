@@ -4,24 +4,27 @@ var ToastyModal = require('../modals/toasty-modal.js');
 var ShareModal = require('../modals/share-modal.js');
 var testConfig = require('../config/test-env.js');
 
-describe('update-description', function () {
-  var workspacePage = WorkspacePage;
-  var toastyModal = ToastyModal;
-  var shareModal = ShareModal;
+xdescribe('update-description', function () {
+  var workspacePage;
+  var toastyModal;
+  var shareModal;
 
   var resources = [];
 
   beforeEach(function () {
+    workspacePage = WorkspacePage;
+    toastyModal = ToastyModal;
+    shareModal = ShareModal;
+    browser.driver.manage().window().maximize();
   });
 
   afterEach(function () {
+    workspacePage.clickLogo();
   });
 
 
   it("should fail to update description of a resource shared as readable with Everybody group", function () {
-    workspacePage.loginIfNecessary(testConfig.testUserName1, testConfig.testUser1, testConfig.testPassword1);
     workspacePage.closeInfoPanel();
-
     var template = workspacePage.createTemplate('Readable');
     resources.push(template);
     shareModal.shareResourceWithGroup(template, 'template', testConfig.everybodyGroup, false, false);
@@ -38,8 +41,6 @@ describe('update-description', function () {
 
 
   it("should update description of a resource shared as writable with Everybody group", function () {
-    workspacePage.loginIfNecessary(testConfig.testUserName2, testConfig.testUser2, testConfig.testPassword2);
-
     var template = workspacePage.createTemplate('Writable');
     resources.push(template);
     shareModal.shareResourceWithGroup(template, 'template', testConfig.everybodyGroup, true, false);
@@ -59,8 +60,6 @@ describe('update-description', function () {
 
 
   it("should fail to update description of a resource shared as readable with a user", function () {
-    workspacePage.loginIfNecessary(testConfig.testUserName1, testConfig.testUser1, testConfig.testPassword1);
-
     var template = workspacePage.createTemplate('Readable');
     resources.push(template);
     shareModal.shareResource(template, 'template', testConfig.testUserName2, false, false);
@@ -78,8 +77,6 @@ describe('update-description', function () {
 
 
   it("should update description of a resource shared as writable with a user", function () {
-    workspacePage.loginIfNecessary(testConfig.testUserName2, testConfig.testUser2, testConfig.testPassword2);
-
     var template = workspacePage.createTemplate('Writable');
     resources.push(template);
     shareModal.shareResource(template, 'template', testConfig.testUserName1, true, false);
@@ -99,13 +96,12 @@ describe('update-description', function () {
 
 
   it("should delete the test resources created", function () {
-    workspacePage.loginIfNecessary(testConfig.testUserName1, testConfig.testUser1, testConfig.testPassword1);
     for (var i = 0; i < resources.length; i++) {
       workspacePage.deleteResourceViaRightClick(resources[i], 'template');
       toastyModal.isSuccess();
       workspacePage.clearSearch();
     }
-  }, 200000);
+  });
 
 
 });
