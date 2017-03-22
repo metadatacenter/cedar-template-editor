@@ -4,27 +4,23 @@ var ToastyModal = require('../modals/toasty-modal.js');
 var ShareModal = require('../modals/share-modal.js');
 var testConfig = require('../config/test-env.js');
 
-xdescribe('update-ownership', function () {
-  var workspacePage;
-  var toastyModal;
-  var shareModal;
+describe('update-ownership', function () {
+  var workspacePage = WorkspacePage;
+  var toastyModal = ToastyModal;
+  var shareModal = ShareModal;
 
   var resources = [];
 
   beforeEach(function () {
-    workspacePage = WorkspacePage;
-    toastyModal = ToastyModal;
-    shareModal = ShareModal;
-    browser.driver.manage().window().maximize();
   });
 
   afterEach(function () {
-    workspacePage.clickLogo();
   });
 
 
   it("should give ownership of a folder owned by current user to another user", function () {
-    workspacePage.onWorkspace();
+    workspacePage.loginIfNecessary(testConfig.testUserName1, testConfig.testUser1, testConfig.testPassword1);
+
     var folder = workspacePage.createFolder('Owned');
     resources.push(folder);
 
@@ -40,10 +36,13 @@ xdescribe('update-ownership', function () {
     workspacePage.createDetailsPanelOwnerValue().getText().then(function(text) {
       expect(text).toBe(testConfig.testUserName2);
     });
+    workspacePage.closeInfoPanel();
   });
 
 
   it("should fail to change ownership of a folder shared as readable with current user", function () {
+    workspacePage.loginIfNecessary(testConfig.testUserName1, testConfig.testUser1, testConfig.testPassword1);
+
     var folder = workspacePage.createFolder('Readable');
     resources.push(folder);
     shareModal.shareResource(folder, 'folder', testConfig.testUserName2, false, false);
@@ -60,6 +59,8 @@ xdescribe('update-ownership', function () {
 
 
   it("should fail to change ownership of a folder shared as writable with current user", function () {
+    workspacePage.loginIfNecessary(testConfig.testUserName2, testConfig.testUser2, testConfig.testPassword2);
+
     var folder = workspacePage.createFolder('Writable');
     resources.push(folder);
     shareModal.shareResource(folder, 'folder', testConfig.testUserName1, true, false);
@@ -78,6 +79,8 @@ xdescribe('update-ownership', function () {
 
 
   it("should fail to change ownership of a folder shared as readable with Everybody group", function () {
+    workspacePage.loginIfNecessary(testConfig.testUserName1, testConfig.testUser1, testConfig.testPassword1);
+
     var folder = workspacePage.createFolder('Readable');
     resources.push(folder);
     shareModal.shareResourceWithGroup(folder, 'folder', testConfig.everybodyGroup, false, false);
@@ -94,6 +97,8 @@ xdescribe('update-ownership', function () {
 
 
   it("should fail to change ownership of a folder shared as writable with Everybody group", function () {
+    workspacePage.loginIfNecessary(testConfig.testUserName2, testConfig.testUser2, testConfig.testPassword2);
+
     var folder = workspacePage.createFolder('Writable');
     resources.push(folder);
     shareModal.shareResourceWithGroup(folder, 'folder', testConfig.everybodyGroup, true, false);
@@ -112,6 +117,7 @@ xdescribe('update-ownership', function () {
 
 
   it("should delete the test resources created", function () {
+    workspacePage.loginIfNecessary(testConfig.testUserName1, testConfig.testUser1, testConfig.testPassword1);
     for (var i = 0; i < resources.length; i++) {
       workspacePage.deleteResourceViaRightClick(resources[i], 'folder');
       toastyModal.isSuccess();

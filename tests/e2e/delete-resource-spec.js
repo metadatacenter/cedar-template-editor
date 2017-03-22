@@ -2,32 +2,25 @@
 var WorkspacePage = require('../pages/workspace-page.js');
 var ToastyModal = require('../modals/toasty-modal.js');
 var ShareModal = require('../modals/share-modal.js');
-var SweetAlertModal = require('../modals/sweet-alert-modal.js');
 var testConfig = require('../config/test-env.js');
 
-xdescribe('delete-resource', function () {
-  var workspacePage;
-  var toastyModal;
-  var shareModal;
-  var sweetAlertModal;
+describe('delete-resource', function () {
+  var workspacePage = WorkspacePage;
+  var toastyModal = ToastyModal;
+  var shareModal = ShareModal;
 
   var resources = [];
 
   beforeEach(function () {
-    workspacePage = WorkspacePage;
-    toastyModal = ToastyModal;
-    shareModal = ShareModal;
-    sweetAlertModal = SweetAlertModal;
-    browser.driver.manage().window().maximize();
   });
 
   afterEach(function () {
-    workspacePage.clickLogo();
   });
 
 
   it("should fail to delete (via more-options button) a resource shared as readable with Everybody group", function () {
-    workspacePage.onWorkspace();
+    workspacePage.loginIfNecessary(testConfig.testUserName1, testConfig.testUser1, testConfig.testPassword1);
+
     var folder = workspacePage.createFolder('Readable');
     resources.push(folder);
     shareModal.shareResourceWithGroup(folder, 'folder', testConfig.everybodyGroup, false, false);
@@ -43,6 +36,8 @@ xdescribe('delete-resource', function () {
 
 
   it("should delete (via more-options button) a resource shared as writable with Everybody group", function () {
+    workspacePage.loginIfNecessary(testConfig.testUserName2, testConfig.testUser2, testConfig.testPassword2);
+
     var folder = workspacePage.createFolder('Writable');
     shareModal.shareResourceWithGroup(folder, 'folder', testConfig.everybodyGroup, true, false);
 
@@ -55,6 +50,8 @@ xdescribe('delete-resource', function () {
 
 
   it("should fail to delete (via more-options button) a resource shared as readable with a user", function () {
+    workspacePage.loginIfNecessary(testConfig.testUserName1, testConfig.testUser1, testConfig.testPassword1);
+
     var folder = workspacePage.createFolder('Readable');
     resources.push(folder);
     shareModal.shareResource(folder, 'folder', testConfig.testUserName2, false, false);
@@ -70,6 +67,8 @@ xdescribe('delete-resource', function () {
 
 
   it("should delete (via more-options button) a resource shared as writable with a user", function () {
+    workspacePage.loginIfNecessary(testConfig.testUserName2, testConfig.testUser2, testConfig.testPassword2);
+
     var folder = workspacePage.createFolder('Writable');
     shareModal.shareResource(folder, 'folder', testConfig.testUserName1, true, false);
 
@@ -84,6 +83,8 @@ xdescribe('delete-resource', function () {
   /* use right-click */
 
   it("should fail to delete (via right-click) a resource shared as readable with Everybody group", function () {
+    workspacePage.loginIfNecessary(testConfig.testUserName1, testConfig.testUser1, testConfig.testPassword1);
+
     var folder = workspacePage.createFolder('Readable');
     resources.push(folder);
     shareModal.shareResourceWithGroup(folder, 'folder', testConfig.everybodyGroup, false, false);
@@ -98,6 +99,8 @@ xdescribe('delete-resource', function () {
 
 
   it("should delete (via right-click) a resource shared as writable with Everybody group", function () {
+    workspacePage.loginIfNecessary(testConfig.testUserName2, testConfig.testUser2, testConfig.testPassword2);
+
     var folder = workspacePage.createFolder('Writable');
     shareModal.shareResourceWithGroup(folder, 'folder', testConfig.everybodyGroup, true, false);
 
@@ -112,6 +115,8 @@ xdescribe('delete-resource', function () {
 
 
   it("should fail to delete (via right-click) a resource shared as readable with a user", function () {
+    workspacePage.loginIfNecessary(testConfig.testUserName1, testConfig.testUser1, testConfig.testPassword1);
+
     var folder = workspacePage.createFolder('Readable');
     resources.push(folder);
     shareModal.shareResource(folder, 'folder', testConfig.testUserName2, false, false);
@@ -126,6 +131,8 @@ xdescribe('delete-resource', function () {
 
 
   it("should delete (via right-click) a resource shared as writable with a user", function () {
+    workspacePage.loginIfNecessary(testConfig.testUserName2, testConfig.testUser2, testConfig.testPassword2);
+
     var folder = workspacePage.createFolder('Writable');
     shareModal.shareResource(folder, 'folder', testConfig.testUserName1, true, false);
 
@@ -140,7 +147,8 @@ xdescribe('delete-resource', function () {
 
 
   it("should delete the test resources created", function () {
-    for(var i = 0; i < resources.length; i++) {
+    workspacePage.loginIfNecessary(testConfig.testUserName1, testConfig.testUser1, testConfig.testPassword1);
+    for (var i = 0; i < resources.length; i++) {
       workspacePage.deleteResourceViaRightClick(resources[i], 'folder');
       toastyModal.isSuccess();
       workspacePage.clearSearch();
