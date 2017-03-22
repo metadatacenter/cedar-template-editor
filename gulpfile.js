@@ -186,9 +186,6 @@ var envConfig = {
   'CEDAR_TEST_USER2'         : null,
   'CEDAR_TEST_USER2_NAME'    : null,
   'CEDAR_TEST_USER2_PASSWORD': null,
-  'CEDAR_TEST_USER3'         : null,
-  'CEDAR_TEST_USER3_NAME'    : null,
-  'CEDAR_TEST_USER3_PASSWORD': null,
   'CEDAR_EVERYBODY_GROUP'    : null
 
 };
