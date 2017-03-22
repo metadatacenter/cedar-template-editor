@@ -226,7 +226,7 @@ define([
             // }
 
             if (!DataUtilService.isSpecialKey(name)) {
-              // We can tell we've reached an element level by its '@type' property
+              // Template Element
               if ($rootScope.schemaOf(value)['@type'] == 'https://schema.metadatacenter.org/core/TemplateElement') {
                 var min = value.minItems || 0;
 
@@ -248,9 +248,9 @@ define([
                 } else {
                   $scope.parseForm($rootScope.propertiesOf(value), parentModel[name], name);
                 }
-                // If it is a template field
+              // Template Field
               } else {
-                // If it is not a static field
+                // Not a Static Field
                 if (!value._ui || !value._ui.inputType || !FieldTypeService.isStaticField(value._ui.inputType)) {
 
                   var min = value.minItems || 0;
@@ -259,11 +259,11 @@ define([
                   if (parentModel[name] == undefined) {
                     // Not multiple instance
                     if (!DataManipulationService.isCardinalElement(value)) {
-                      // Selection fields store an array of values
-                      if ((value._ui.inputType == 'radio') || (value._ui.inputType == 'checkbox') || (value._ui.inputType == 'list')) {
+                      // Multiple choice fields (checkbox and multi-choice list) store an array of values
+                      if (DataManipulationService.isMultipleChoiceField(value)) {
                         parentModel[name] = [];
                       }
-                      // All other fields
+                      // All other fields, including the radio field and the list field with single option
                       else {
                         parentModel[name] = {};
                       }
@@ -275,10 +275,17 @@ define([
                         parentModel[name].push(obj);
                       }
                     }
+                    // Set default values and types for element fields
+                    DataManipulationService.initializeValue(value, parentModel[name]);
+                    // Initialize value type for those fields that have it
+                    if ((value) && (value._ui) && (value._ui.inputType) && ((value._ui.inputType == 'textfield') ||
+                        (value._ui.inputType == 'date') || (value._ui.inputType == 'numeric'))) {
+                      DataManipulationService.initializeValueType(value, parentModel[name]);
+                    }
+                    DataManipulationService.defaultOptionsToModel(value, parentModel[name]);
                   }
 
-                  var p = $rootScope.propertiesOf(value);
-
+                  //var p = $rootScope.propertiesOf(value);
                   // Add @type information to instance at the field level
                   // if (p && !angular.isUndefined(p['@type'])) {
                   //   var type = DataManipulationService.generateInstanceType(p['@type']);
