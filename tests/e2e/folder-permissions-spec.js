@@ -7,18 +7,25 @@ var ShareModal = require('../modals/share-modal.js');
 var SweetAlertModal = require('../modals/sweet-alert-modal.js');
 var testConfig = require('../config/test-env.js');
 
-describe('folder-permissions', function () {
-  var workspacePage = WorkspacePage;
-  var toastyModal = ToastyModal;
-  var moveModal = MoveModal;
-  var copyModal = CopyModal;
-  var shareModal = ShareModal;
-  var sweetAlertModal = SweetAlertModal;
+xdescribe('folder-permissions', function () {
+  var workspacePage;
+  var toastyModal;
+  var moveModal;
+  var copyModal;
+  var shareModal;
+  var sweetAlertModal;
 
   var resourcesUser1 = [];
   var resourcesUser2 = [];
 
   beforeEach(function () {
+    workspacePage = WorkspacePage;
+    toastyModal = ToastyModal;
+    moveModal = MoveModal;
+    copyModal = CopyModal;
+    shareModal = ShareModal;
+    sweetAlertModal = SweetAlertModal;
+    browser.driver.manage().window().maximize();
   });
 
   afterEach(function () {
@@ -28,8 +35,6 @@ describe('folder-permissions', function () {
   /* move tests */
 
   it("should move a folder owned by current user to a writable folder", function () {
-    workspacePage.loginIfNecessary(testConfig.testUserName1, testConfig.testUser1, testConfig.testPassword1);
-
     // create source and target folders
     var sourceFolder = workspacePage.createFolder('Source');
     var targetFolder = workspacePage.createFolder('Target');
@@ -45,8 +50,6 @@ describe('folder-permissions', function () {
 
 
   it("should move a folder owned by current user to an unwritable folder", function () {
-    workspacePage.loginIfNecessary(testConfig.testUserName1, testConfig.testUser1, testConfig.testPassword1);
-
     // create a folder to share with another user
     var sharedFolderTitle = workspacePage.createFolder('Shared');
     resourcesUser1.push(sharedFolderTitle);
@@ -72,8 +75,6 @@ describe('folder-permissions', function () {
 
 
   it("should move a writable folder not owned by current user to a writable folder", function () {
-    workspacePage.loginIfNecessary(testConfig.testUserName2, testConfig.testUser2, testConfig.testPassword2);
-
     // create source and target shared folders
     var sourceFolder = workspacePage.createFolder('Source');
     var targetFolder = workspacePage.createFolder('Target');
@@ -100,8 +101,6 @@ describe('folder-permissions', function () {
 
 
   it("should move a writable folder not owned by current user to an unwritable folder", function () {
-    workspacePage.loginIfNecessary(testConfig.testUserName1, testConfig.testUser1, testConfig.testPassword1);
-
     // create source and target shared folders
     var sourceFolder = workspacePage.createFolder('Source');
     var targetFolder = workspacePage.createFolder('Target');
@@ -125,8 +124,6 @@ describe('folder-permissions', function () {
 
 
   it("should move an unwritable folder not owned by current user to an unwritable folder", function () {
-    workspacePage.loginIfNecessary(testConfig.testUserName2, testConfig.testUser2, testConfig.testPassword2);
-
     // create source and target shared folders
     var sourceFolder = workspacePage.createFolder('Source');
     var targetFolder = workspacePage.createFolder('Target');
@@ -154,8 +151,6 @@ describe('folder-permissions', function () {
   /* copy tests */
 
   xit("should copy a folder owned by current user to a writable folder", function () {
-    workspacePage.loginIfNecessary(testConfig.testUserName1, testConfig.testUser1, testConfig.testPassword1);
-
     // create source and target folders
     var sourceFolder = workspacePage.createFolder('Source');
     var targetFolder = workspacePage.createFolder('Target');
@@ -172,8 +167,6 @@ describe('folder-permissions', function () {
 
 
   xit("should copy a folder owned by current user to an unwritable folder", function () {
-    workspacePage.loginIfNecessary(testConfig.testUserName1, testConfig.testUser1, testConfig.testPassword1);
-
     // create a folder to share with another user
     var sharedFolderTitle = workspacePage.createFolder('Shared');
     resourcesUser1.push(sharedFolderTitle);
@@ -199,8 +192,6 @@ describe('folder-permissions', function () {
 
 
   xit("should copy a writable folder not owned by current user to a writable folder", function () {
-    workspacePage.loginIfNecessary(testConfig.testUserName2, testConfig.testUser2, testConfig.testPassword2);
-
     // create source and target shared folders
     var sourceFolder = workspacePage.createFolder('Source');
     var targetFolder = workspacePage.createFolder('Target');
@@ -228,8 +219,6 @@ describe('folder-permissions', function () {
 
 
   xit("should copy a writable folder not owned by current user to an unwritable folder", function () {
-    workspacePage.loginIfNecessary(testConfig.testUserName1, testConfig.testUser1, testConfig.testPassword1);
-
     // create source and target shared folders
     var sourceFolder = workspacePage.createFolder('Source');
     var targetFolder = workspacePage.createFolder('Target');
@@ -253,8 +242,6 @@ describe('folder-permissions', function () {
 
 
   xit("should copy an unwritable folder not owned by current user to an unwritable folder", function () {
-    workspacePage.loginIfNecessary(testConfig.testUserName2, testConfig.testUser2, testConfig.testPassword2);
-
     // create source and target shared folders
     var sourceFolder = workspacePage.createFolder('Source');
     var targetFolder = workspacePage.createFolder('Target');
@@ -280,7 +267,6 @@ describe('folder-permissions', function () {
 
 
   it("should delete the test resources created by " + testConfig.testUserName1, function () {
-    workspacePage.loginIfNecessary(testConfig.testUserName1, testConfig.testUser1, testConfig.testPassword1);
     for (var i = 0; i < resourcesUser1.length; i++) {
       workspacePage.deleteResourceViaRightClick(resourcesUser1[i], 'folder');
       toastyModal.isSuccess();
@@ -290,12 +276,15 @@ describe('folder-permissions', function () {
 
 
   it("should delete the test resources created by " + testConfig.testUserName2, function () {
-    workspacePage.loginIfNecessary(testConfig.testUserName2, testConfig.testUser2, testConfig.testPassword2);
+    workspacePage.logout();
+    workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
+
     for(var j = 0; j < resourcesUser2.length; j++) {
       workspacePage.deleteResourceViaRightClick(resourcesUser2[j], 'folder');
       toastyModal.isSuccess();
       workspacePage.clearSearch();
     }
+
     workspacePage.logout();
     workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
   });
