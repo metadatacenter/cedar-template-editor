@@ -585,7 +585,6 @@ var WorkspacePage = function () {
   // clear any ongoing search
   var clearSearch = function () {
 
-    browser.wait(EC.visibilityOf(createSearchNavClearButton));
     browser.wait(EC.elementToBeClickable(createSearchNavClearButton));
     createSearchNavClearButton.click();
     browser.wait(EC.visibilityOf(createBreadcrumbFirstFolder));

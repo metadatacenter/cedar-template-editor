@@ -28,8 +28,7 @@ var MoveModal = function () {
     browser.wait(EC.elementToBeClickable(folder));
     folder.click();
 
-    browser.wait(EC.elementToBeClickable(createMoveButton));
-    createMoveButton.click();
+    this.clickMoveButton();
   };
 
 
@@ -52,9 +51,16 @@ var MoveModal = function () {
     browser.wait(EC.elementToBeClickable(folder));
     folder.click();
 
+    this.clickMoveButton();
+  };
+
+
+  this.clickMoveButton = function () {
     browser.wait(EC.elementToBeClickable(createMoveButton));
     createMoveButton.click();
-  };
+    // wait for modal to disappear
+    browser.wait(EC.stalenessOf(createMoveButton));
+  }
 
 };
 module.exports = new MoveModal(); 
