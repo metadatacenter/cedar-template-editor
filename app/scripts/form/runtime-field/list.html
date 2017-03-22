@@ -11,7 +11,7 @@
       ng-model="optionsUI.listSingleSelect"
       ng-change="updateModelFromUI(field)"
       select-picker="">
-    <option value="">Nothing selected</option>
+    <option style="color:gray" value="">Nothing selected</option>
     <option ng-keypress="isSubmit($event, index)" ng-click="setActive(index,true)" ng-repeat="(i, v) in getLiterals()"
         value="{{v.label}}">
       {{v.label}}
