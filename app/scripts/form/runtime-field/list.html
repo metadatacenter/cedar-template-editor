@@ -2,7 +2,7 @@
 
   <!-- Single Choice (Active) -->
   <select ng-if="isActive(index) && !isMultipleChoice()"
-      class="form-control select"
+      class="form-control select show-tick"
       ng-class="{'isActive' : isActive(index), 'required': isRequired()}"
       ng-click="setActive(index, true)"
       data-max-options="1"
@@ -23,6 +23,8 @@
       ng-click="setActive(index)"
       class="form-control select "
       multiple="true"
+      data-actions-box="true"
+      title="Nothing selected"
       field="field"
       ng-change="updateModelFromUI(field)"
       ng-model="optionsUI.listMultiSelect"
