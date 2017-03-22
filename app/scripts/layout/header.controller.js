@@ -13,10 +13,11 @@ define([
     '$timeout',
     '$document',
     'QueryParamUtilsService',
-    'UIMessageService'
+    'UIMessageService',
+    'UIProgressService'
   ];
 
-  function HeaderController($rootScope, $location, $window, $timeout, $document, QueryParamUtilsService, UIMessageService) {
+  function HeaderController($rootScope, $location, $window, $timeout, $document, QueryParamUtilsService, UIMessageService, UIProgressService) {
 
     var vm = this;
 
@@ -81,6 +82,9 @@ define([
         queryParams['search'] = searchTerm;
         var url = $rootScope.util.buildUrl(baseUrl, queryParams);
         $location.url(url);
+        if (searchTerm) {
+          UIProgressService.start();
+        }
       }
     };
 
