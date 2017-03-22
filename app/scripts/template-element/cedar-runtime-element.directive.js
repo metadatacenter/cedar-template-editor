@@ -164,19 +164,14 @@ define([
 
 
       scope.addElement = function () {
-
         if ((!scope.element.maxItems || scope.model.length < scope.element.maxItems)) {
           var seed = {};
-
           if (scope.model.length > 0) {
-
             seed = angular.copy(scope.model[0]);
-            resetElement(seed, scope.element);
+            //resetElement(seed, scope.element);
             scope.model.push(seed);
-
-
-          } else {
-
+          }
+          else {
             scope.model.push(seed);
             if (angular.isArray(scope.model)) {
               angular.forEach(scope.model, function (m) {
@@ -191,10 +186,6 @@ define([
           var index = scope.model.length - 1;
           scope.setActive(index, true);
           scope.toggleExpanded(index);
-
-          // select the first field in the element
-
-
         }
       };
 
@@ -404,25 +395,18 @@ define([
       // allows us to look a the model as an array
       scope.valueArray;
       scope.setValueArray = function () {
-
         scope.valueArray = [];
         if (scope.model instanceof Array) {
-
           scope.valueArray = scope.model;
-
         } else {
-
           if (!scope.model) {
             scope.model = {};
           }
-
           scope.valueArray = [];
           scope.valueArray.push(scope.model);
-
         }
       };
       scope.setValueArray();
-
 
       // watch for this field's next sibling
       scope.$on('nextSibling', function (event, args) {

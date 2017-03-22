@@ -22,7 +22,7 @@
   <!-- not editing --->
   <div ng-if="!isActive(index)" class="form-group  has-feedback value">
     <div ng-click="setActive(index,true)"
-        aria-label="{{getDescription(field)}}">{{valueElement['@value']}} &nbsp;</div>
+        aria-label="{{getDescription(field)}}">{{getValueString((valueArray))}}</div>
   </div>
 
 </div>

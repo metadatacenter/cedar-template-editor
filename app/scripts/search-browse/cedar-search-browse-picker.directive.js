@@ -43,6 +43,7 @@ define([
           'TemplateElementService',
           'TemplateService',
           'FrontendUrlService',
+          'UIProgressService',
           'CONST'
         ];
 
@@ -50,7 +51,7 @@ define([
                                                    resourceService,
                                                    UIMessageService, UISettingsService, QueryParamUtilsService,
                                                    AuthorizedBackendService, TemplateInstanceService,
-                                                   TemplateElementService, TemplateService, FrontendUrlService, CONST) {
+                                                   TemplateElementService, TemplateService, FrontendUrlService, UIProgressService,CONST) {
           var vm = this;
 
           vm.breadcrumbName = breadcrumbName;
@@ -535,6 +536,7 @@ define([
                   vm.totalCount = response.totalCount;
                   vm.nodeListQueryType = response.nodeListQueryType;
                   vm.breadcrumbTitle = vm.buildBreadcrumbTitle(response.request.q);
+                  UIProgressService.complete();
                 },
                 function (error) {
                   UIMessageService.showBackendError('SERVER.SEARCH.error', error);
