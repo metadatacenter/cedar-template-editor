@@ -1,60 +1,39 @@
-# Instructions on setting up Travis CI for the CEDAR Template Editor:
-#
-# https://github.com/metadatacenter/cedar-conf/wiki/Setting-up-CEDAR-E2E-tests-on-Travis
-
-# Ensure that we are using Ubuntu 14.04, which comes pre-installed with Chrome
 sudo: required
 dist: trusty
-
 addons:
   apt:
     sources:
     - google-chrome
     packages:
     - google-chrome-stable
-
-# When deployed for testing the Template Editor is effectively a Node application
 language: node_js
 node_js:
-  - '6'
-
-# Do CI only on the develop and master branches
+- '6'
 branches:
   only:
-    - develop
-    - master
-    - testing/permissions
-    - feature/sharding
-
-# Notify the CEDAR core developer mailing list on failures
+  - develop
+  - master
+  - testing/permissions
+  - feature/sharding
 notifications:
-  email:
-    recipients:
-      - cedar-core-developers@lists.stanford.edu
-    on_success: never
+  slack:
+    on_success: change
     on_failure: always
-
-# Set variables needed by the Template Editor and then start the Xvfb frame buffer
+    secure: xQQEo+EtbJkzgG8peEhrIkXvq96RWsWQ3HSZTNrS/k11DEjp1//8m1yHk7JrM1sCz8rdEbvyQz79LQvAqN2UwQCIiExRs9NGh+tgHPfNrCk0pXRHNqaCrSSbcZGIXLaxDddUKXbOFqfOxjs7PhyFNjzcVN81GQ7E7fRLqfF75YYG1IY2kzMz7uuPYVB/uZ+EfWgJtoXNZy3vbLu8g5be6PHLj3nQGDU46IGUFLXxuANRzUC73EfKWNWaRRDw34Q7ThH767fvQkmX7CcO4v1EeHfvPMMXBAhyCF7kTQPkXXB+dmuirJKGNfD/7LX5/hSKBwvNKE5ZBLkCPVvLy7M627JuP61v87P9udLPcmrGeUBnfPq6s1oIHE+ihkeJGyGjKaFnOkVYx2B/3L+rHSk14cepsnhnP3dXgs2DPVsKZbilkstFQWbaGnpk3DMFpBGvh4GI/TPYXupNVn01Y5huNG5KITe7nEwO5nhow8L5gxZmLsHLI0W4bM+0SZmIdD3rfmz/jdfgUbfk9noXKP21q1Gf9+qlFqgE36yYqzzYq4xjyQus93wHxEaV7UqUz7Ici/PQE1o2yIQifa1tMQJvx7rhr+paToX95LrRF+4xRXL9+5iTwQDbRvKgUUB8cDi5d7RMyhn9upBfnEWAgDHCqgLb9M2rqU1yq2oi6HS16cM=
 before_install:
-  - export CEDAR_HOST=staging.metadatacenter.net
-  - export CEDAR_PROFILE=server 
-  - export CEDAR_ANALYTICS_KEY=false
-  - export DISPLAY=:99.0
-  - sh -e /etc/init.d/xvfb start
-
-# Install all dependencies and then install  gulp, protractor, and Selenium
+- export CEDAR_HOST=staging.metadatacenter.net
+- export CEDAR_PROFILE=server
+- export CEDAR_ANALYTICS_KEY=false
+- export DISPLAY=:99.0
+- sh -e /etc/init.d/xvfb start
 install:
-  - npm install
-  - npm install -g gulp
-  - npm install -g protractor
-  - webdriver-manager update
-  - nohup bash -c "webdriver-manager start 2>&1 &"
-
-# Run the end-to-end tests
+- npm install
+- npm install -g gulp
+- npm install -g protractor
+- webdriver-manager update
+- nohup bash -c "webdriver-manager start 2>&1 &"
 script:
-  - gulp e2e
-
-# Variables containing CEDAR test users and passwords
+- gulp e2e
 env:
   global:
   - secure: brXMQHBMf0pZ69imCY/kN62AdkOG+B11C1wmNQOoEWNLsjWlxpjgWeBcwwY4pHMuK56bX7wpEbblHhj6WE8qbM3pSrUjjsEAi8x0xly3cVfTrFrxMS6F0ZLjzq9D05OH+lVTrbr+a1SXLWO0GSfWxcGDWY/IR7Mz3cX/jPaKcbI4SSJLon8w1KcNCRYYMK+m9FJS0cmjhkRRVkWdzjXoJdViP0vokqEvAMBMyQLb7AmffGDLlwbXOrPLXpNxELN1ALlgUsi81WhQJ7bENsJDV6LM8QAC6vnbAD8dwPgkAyQRpo1xS6tpXiuEeNeQjuTJ+V5m3IOfdwaEO1cEA56LnzQ+yf4CK0waDIi/iKrjYzkzH9GHOG1vEVHftbG9Z7whyqHq9UZya0yyvKzIK/z9oDOMUljycu3mwxG8uKOFoxfulkecadQNbiTZEXkHqfHv/tdAF+MkX4Jyg3d1h0lxyJ/k2POksLrEIQO140h4s7na8R/iyXFAv2IEuRGoJzAzBsODw4u+q84J3tmlfgVTezf/9fDxes+fK5V9KVcor8FQUigppE/aWAmHfpgzVFf9RsT0OXWh64lA0wVxFX3NrWCJdhU7iFg+Z/lRlLDT33TRCrvOIxkCY1NUYxCIHBEfVtMOr3souEAFdClkr56vtJTDVRhbgvEZNWtQcbB1QOk=
