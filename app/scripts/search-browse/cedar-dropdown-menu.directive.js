@@ -27,7 +27,8 @@ define([
         copy      : '=',
         rename    : '=',
         canNotPopulate: '=',
-        canNotWrite  : '='
+        canNotWrite  : '=',
+        isFolder: '='
       },
       controller : function ($scope, $element) {
       },
