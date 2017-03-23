@@ -19,16 +19,17 @@ define([
       templateUrl: 'scripts/search-browse/cedar-dropdown-menu.directive.html',
       restrict   : 'EA',
       scope      : {
-        resource  : '=',
-        goTo      : '=',
-        share     : '=',
-        move      : '=',
-        delete    : '=',
-        copy      : '=',
-        rename    : '=',
+        resource      : '=',
+        goTo          : '=',
+        share         : '=',
+        move          : '=',
+        delete        : '=',
+        copy          : '=',
+        rename        : '=',
         canNotPopulate: '=',
-        canNotWrite  : '=',
-        isFolder: '='
+        canNotWrite   : '=',
+        canNotShare   : '=',
+        isFolder      : '='
       },
       controller : function ($scope, $element) {
       },

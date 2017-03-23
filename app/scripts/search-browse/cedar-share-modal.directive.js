@@ -55,6 +55,7 @@ define([
           vm.canRead = canRead;
           vm.canWrite = canWrite;
           vm.canChangeOwner = canChangeOwner;
+          vm.canChangePermissions = canChangePermissions;
           vm.canBeOwner = canBeOwner;
           vm.saveShare = saveShare;
           vm.getNode = getNode;
@@ -138,6 +139,11 @@ define([
           // can this user change the owner of the selected resource
           function canChangeOwner() {
             return resourceService.canChangeOwner(getSelectedNode());
+          }
+
+          // can this user change the permissions of the selected resource
+          function canChangePermissions() {
+            return resourceService.canChangePermissions(getSelectedNode());
           }
 
           // is this user the owner of the selected resource
