@@ -43,6 +43,7 @@ define([
           'TemplateElementService',
           'TemplateService',
           'FrontendUrlService',
+          'UIProgressService',
           'CONST'
         ];
 
@@ -50,7 +51,7 @@ define([
                                                    resourceService,
                                                    UIMessageService, UISettingsService, QueryParamUtilsService,
                                                    AuthorizedBackendService, TemplateInstanceService,
-                                                   TemplateElementService, TemplateService, FrontendUrlService, CONST) {
+                                                   TemplateElementService, TemplateService, FrontendUrlService, UIProgressService,CONST) {
           var vm = this;
 
           vm.breadcrumbName = breadcrumbName;
@@ -102,6 +103,7 @@ define([
           vm.resources = [];
           vm.selectedResource = null;
           vm.canNotWrite = false;
+          vm.canNotShare = false;
           vm.canNotPopulate = false;
           vm.currentFolder = null;
           vm.hasSelection = hasSelection;
@@ -172,6 +174,7 @@ define([
             vm.cancelDescriptionEditing();
             vm.selectedResource = resource;
             vm.canNotWrite = !vm.canWrite();
+            vm.canNotShare = !vm.canShare();
             vm.canNotPopulate = !vm.isTemplate();
 
             // TODO this makes the hash work but messes up the right click context menu
@@ -237,6 +240,7 @@ define([
                   $timeout(function () {
                     vm.selectedResource = response;
                     vm.canNotWrite = !vm.canWrite();
+                    vm.canNotShare = !vm.canShare();
                     vm.canNotPopulate = !vm.isTemplate();
                   }, 0);
 
@@ -257,6 +261,10 @@ define([
 
           vm.canChangeOwner = function () {
             return resourceService.canChangeOwner(vm.getSelectedNode());
+          };
+
+          vm.canShare = function () {
+            return resourceService.canShare(vm.getSelectedNode());
           };
 
           vm.canWriteToCurrentFolder = function () {
@@ -535,6 +543,7 @@ define([
                   vm.totalCount = response.totalCount;
                   vm.nodeListQueryType = response.nodeListQueryType;
                   vm.breadcrumbTitle = vm.buildBreadcrumbTitle(response.request.q);
+                  UIProgressService.complete();
                 },
                 function (error) {
                   UIMessageService.showBackendError('SERVER.SEARCH.error', error);

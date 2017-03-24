@@ -39,7 +39,6 @@ var SweetAlertModal = function () {
     browser.sleep(1000);  // TODO seems to need this
     browser.wait(EC.elementToBeClickable(createSweetAlertConfirmButton));
     createSweetAlertConfirmButton.click();
-    browser.wait(EC.stalenessOf(createSweetAlertConfirmButton));
 
   };
 
@@ -49,7 +48,6 @@ var SweetAlertModal = function () {
     browser.sleep(1000);  // TODO seems to need this
     browser.wait(EC.elementToBeClickable(createSweetAlertConfirmButton));
     createSweetAlertCancelButton.click();
-    browser.wait(EC.stalenessOf(createSweetAlertCancelButton));
 
   };
 

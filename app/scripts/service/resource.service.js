@@ -44,7 +44,8 @@ define([
           updateGroupMembers     : updateGroupMembers,
           canRead                : canRead,
           canWrite               : canWrite,
-          canChangeOwner         : canChangeOwner
+          canChangeOwner         : canChangeOwner,
+          canShare               : canShare
 
         };
         return service;
@@ -244,7 +245,7 @@ define([
               },
               errorCallback
           );
-        };
+        }
 
         function getResources(options, successCallback, errorCallback) {
           if (options == null) {
@@ -503,7 +504,7 @@ define([
               },
               errorCallback
           );
-        };
+        }
 
         function deleteGroup(id, successCallback, errorCallback) {
           var url = urlService.getGroup(id);
@@ -515,7 +516,7 @@ define([
               },
               errorCallback
           );
-        };
+        }
 
         function getGroupMembers(id, successCallback, errorCallback) {
           var url = urlService.getGroupMembers(id);
@@ -527,7 +528,7 @@ define([
               },
               errorCallback
           );
-        };
+        }
 
         function updateGroupMembers(group, successCallback, errorCallback) {
           var url = urlService.getGroupMembers(group.id);
@@ -542,7 +543,7 @@ define([
               },
               errorCallback
           );
-        };
+        }
 
         /* permissions */
 
@@ -554,7 +555,7 @@ define([
             }
           }
           return false;
-        };
+        }
 
         function canWrite(resource) {
           if (resource != null) {
@@ -574,7 +575,17 @@ define([
             }
           }
           return false;
-        };
+        }
+
+        function canShare(resource) {
+          if (resource != null) {
+            var perms = resource.currentUserPermissions;
+            if (perms != null) {
+              return perms.indexOf("changepermissions") != -1;
+            }
+          }
+          return false;
+        }
 
       }
 

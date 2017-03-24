@@ -159,6 +159,7 @@ var WorkspacePage = function () {
     return createButton;
   };
 
+
   this.createTemplateButton = function () {
     return createTemplateButton;
   };
@@ -199,6 +200,7 @@ var WorkspacePage = function () {
   this.createHideDetailsButton = function () {
     return createHideDetailsButton;
   };
+
 
   this.createDetailsPanel = function () {
     return createDetailsPanel;
@@ -424,9 +426,11 @@ var WorkspacePage = function () {
   this.deleteResourceViaRightClick = function (name, type) {
     this.rightClickResource(name, type);
     browser.wait(EC.visibilityOf(createRightClickDeleteMenuItem));
+    // is delete enabled?
     browser.wait(EC.elementToBeClickable(createRightClickDeleteMenuItem));
     createRightClickDeleteMenuItem.click();
     sweetAlertModal.confirm();
+    return true;
   };
 
   this.setSortOrder = function (order) {
@@ -589,6 +593,7 @@ var WorkspacePage = function () {
   // clear any ongoing search
   var clearSearch = function () {
 
+    browser.wait(EC.visibilityOf(createSearchNavClearButton));
     browser.wait(EC.elementToBeClickable(createSearchNavClearButton));
     createSearchNavClearButton.click();
     browser.wait(EC.visibilityOf(createBreadcrumbFirstFolder));
@@ -738,6 +743,7 @@ var WorkspacePage = function () {
 
   // click on the cedar logo
   this.clickLogo = function () {
+    browser.wait(EC.visibilityOf(createLogo));
     browser.wait(EC.elementToBeClickable(createLogo));
     createLogo.click();
   };

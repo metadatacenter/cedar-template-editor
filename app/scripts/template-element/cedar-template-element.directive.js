@@ -18,6 +18,7 @@ define([
         element      : '=',
         delete       : '&',
         model        : '=',
+        labels        : '=',
         isRootElement: "@",
         isEditData   : "=",
         nested       : '@'
@@ -31,6 +32,8 @@ define([
 
 
     function linker(scope, element, attrs) {
+
+      console.log('cedarTemplateElement.directive');
 
       scope.elementId = DataManipulationService.idOf(scope.element) || DataManipulationService.generateGUID();
 
@@ -156,6 +159,7 @@ define([
       // add a multiple cardinality element
       scope.selectedTab = 0;
       scope.addElement = function () {
+        console.log('addElement');
         if ($rootScope.isRuntime()) {
           if ((!scope.element.maxItems || scope.model.length < scope.element.maxItems)) {
             var seed = {};
@@ -218,6 +222,9 @@ define([
           var idx = $rootScope.schemaOf(scope.element)._ui.order.indexOf(selectedKey);
           $rootScope.schemaOf(scope.element)._ui.order.splice(idx, 1);
 
+          // remove property label for this element
+          delete $rootScope.schemaOf(scope.element)._ui.propertyLabels[selectedKey];
+
           if ($rootScope.isElement(fieldOrElement)) {
             scope.$emit("invalidElementState",
                 ["remove", $rootScope.schemaOf(fieldOrElement)._ui.title, fieldOrElement["@id"]]);
@@ -242,7 +249,6 @@ define([
 
       // try to select this element
       scope.canSelect = function (select) {
-        console.log('canSelect ' + select);
         if (select) {
           DataManipulationService.canSelect(scope.element);
         }
@@ -297,7 +303,7 @@ define([
             }
           });
         }
-      }
+      };
 
 
       // try to deselect this field

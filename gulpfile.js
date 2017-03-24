@@ -143,7 +143,19 @@ gulp.task('test-env', function () {
 });
 
 gulp.task('e2e', ['test-env'], function () {
-  return gulp.src(['./tests/e2e/**/*.js'])
+  return gulp.src([
+    './tests/e2e/clean-up-spec.js',
+    './tests/e2e/delete-resource-spec.js',
+    './tests/e2e/folder-permissions-spec.js',
+    './tests/e2e/metadata-creator-spec.js',
+    './tests/e2e/resource-permissions-spec.js',
+    './tests/e2e/template-creator-spec.js',
+    './tests/e2e/update-description-spec.js',
+    './tests/e2e/update-name-spec.js',
+    './tests/e2e/update-ownership-spec.js',
+    './tests/e2e/update-permissions-spec.js',
+    './tests/e2e/workspace-spec.js'
+  ])
       .pipe(protractor({
         configFile: "protractor.config.js"
       }))
@@ -154,7 +166,8 @@ gulp.task('e2e', ['test-env'], function () {
 
 function exitWithError(msg) {
   onError(msg);
-  console.log("Please see: https://github.com/metadatacenter/cedar-docs/wiki/Configure-environment-variables-on-OS-X".yellow);
+  console.log(
+      "Please see: https://github.com/metadatacenter/cedar-docs/wiki/Configure-environment-variables-on-OS-X".yellow);
   console.log("Please restart the application after setting the variables!".green);
   console.log();
   console.log();
@@ -186,15 +199,13 @@ var envConfig = {
   'CEDAR_TEST_USER2'         : null,
   'CEDAR_TEST_USER2_NAME'    : null,
   'CEDAR_TEST_USER2_PASSWORD': null,
-  'CEDAR_TEST_USER3'         : null,
-  'CEDAR_TEST_USER3_NAME'    : null,
-  'CEDAR_TEST_USER3_PASSWORD': null,
   'CEDAR_EVERYBODY_GROUP'    : null
 
 };
 console.log();
 console.log();
-console.log("-------------------------------------------- ************* --------------------------------------------".red);
+console.log(
+    "-------------------------------------------- ************* --------------------------------------------".red);
 console.log("- Starting CEDAR front end server...".green);
 readAllEnvVarsOrFail();
 var cedarProfile = envConfig['CEDAR_PROFILE'];
@@ -211,7 +222,8 @@ var cedarTestUserName3 = envConfig['CEDAR_TEST_USER3_NAME'];
 var cedarTestPassword3 = envConfig['CEDAR_TEST_USER3_PASSWORD'];
 var cedarEverybodyGroup = envConfig['CEDAR_EVERYBODY_GROUP'];
 
-console.log("-------------------------------------------- ************* --------------------------------------------".red);
+console.log(
+    "-------------------------------------------- ************* --------------------------------------------".red);
 console.log();
 
 // Prepare task list
