@@ -384,17 +384,16 @@ var WorkspacePage = function () {
   this.createFolder = function (name) {
     var folderTitle = this.createTitle(name);
     this.createResource('folder', folderTitle);
-    toastyModal.isSuccess();
     return folderTitle;
   };
 
-      // create an element
-      this.createElement = function (name) {
-        var elementTitle = this.createTitle(name);
-        var elementDescription = this.createDescription(name);
-        this.createResource('element', elementTitle, elementDescription);
-        return elementTitle;
-      };
+  // create an element
+  this.createElement = function (name) {
+    var elementTitle = this.createTitle(name);
+    var elementDescription = this.createDescription(name);
+    this.createResource('element', elementTitle, elementDescription);
+    return elementTitle;
+  };
 
   // create a template
   this.createTemplate = function (name) {
@@ -425,11 +424,9 @@ var WorkspacePage = function () {
   this.deleteResourceViaRightClick = function (name, type) {
     this.rightClickResource(name, type);
     browser.wait(EC.visibilityOf(createRightClickDeleteMenuItem));
-    // is delete enabled?
     browser.wait(EC.elementToBeClickable(createRightClickDeleteMenuItem));
     createRightClickDeleteMenuItem.click();
     sweetAlertModal.confirm();
-    return true;
   };
 
   this.setSortOrder = function (order) {
@@ -572,6 +569,13 @@ var WorkspacePage = function () {
     });
   };
   this.deleteAll = deleteAll;
+
+  // delete all the items in the given array of resources of the specified type
+  this.deleteArray = function (resourceArray, resourceType) {
+    for(var i = 0; i < resourceArray.length; i++) {
+      this.deleteResource(resourceArray[i], resourceType);
+    }
+  };
 
   // search for a particular resource
   this.searchForResource = function (name, type) {
@@ -786,7 +790,7 @@ var WorkspacePage = function () {
   // login with the specified userid and password, if the given username is not the one currently logged in
   this.loginIfNecessary = function (username, userid, password) {
     this.clickLogo();
-    browser.wait(EC.visibilityOf(createFirstFolder));
+    browser.wait(EC.visibilityOf(createBreadcrumbFirstFolder));
     createBreadcrumbUserName.getText().then(function (text) {
       if (text !== username) {
         var page = new WorkspacePage();
