@@ -22,7 +22,8 @@
           <input ng-if="!$root.isRuntime()  && !isNested()  && $root.propertiesOf(element)._tmp.state == 'creating'" type="text" auto-focus
               placeholder="{{'CREATOR.enterElementTitle' | translate}}"
               aria-label="{{'CREATOR.enterElementTitle' | translate}}"
-              ng-model="labels[key]">
+              ng-model="labels[key]"
+              style="outline:none;width:300px;padding:5px">
         </p>
 
          <span ng-if="!isNested(element)" ng-show="$root.isArray(model) && $root.isRuntime()" class="spreadsheetSwitch element">
