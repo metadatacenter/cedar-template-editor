@@ -6,3 +6,4 @@ exports.testUser2 = 'protractorTestUser2';
 exports.testUserName2 = "Test User 2";
 exports.testPassword2 = 'protractorTestPassword2';
 exports.everybodyGroup = "Everybody";
+exports.cedarVersion = 'protractorCedarVersion';
