@@ -29,6 +29,8 @@ define([
       },
       controller : function ($scope) {
 
+        console.log('form.directive');
+
 
         $scope.model = $scope.model || {};
 
@@ -97,6 +99,10 @@ define([
             // remove it from the order array
             var id1 = $scope.form._ui.order.indexOf(selectedKey);
             $scope.form._ui.order.splice(id1, 1);
+
+            // remove property label for this element
+            delete $rootScope.schemaOf($scope.form)._ui.propertyLabels[selectedKey];
+
             $scope.$emit("invalidElementState", ["remove", title, id]);
             // remove it from @context.properties
             delete props['@context'].properties[selectedKey];

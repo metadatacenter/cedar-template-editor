@@ -17,6 +17,7 @@ define([
         key           : "=",
         field         : '=',
         model         : '=',
+        label         : "=",
         preview       : "=",
         removeChild   : '=',
         ngDisabled    : "=",
@@ -36,7 +37,7 @@ define([
       var nestElement = function () {
 
         setNested(scope.field);
-        var template = '<div ng-if="$root.schemaOf(field)._ui.inputType" > <cedar-runtime-field field="field" model="model" delete="removeChild(field)" preview="false" rename-child-key="renameChildKey" is-edit-data="isEditData" path="path"></cedar-runtime-field></div><div ng-if="!$root.schemaOf(field)._ui.inputType" class="nested-element"><cedar-runtime-element key="key" model="model" element="field" preview="preview" delete="removeChild(field)" depth="depth" path="path"></cedar-runtime-element></div>';
+        var template = '<div ng-if="$root.schemaOf(field)._ui.inputType" > <cedar-runtime-field field="field" model="model" delete="removeChild(field)" preview="false" rename-child-key="renameChildKey" is-edit-data="isEditData" path="path"></cedar-runtime-field></div><div ng-if="!$root.schemaOf(field)._ui.inputType" class="nested-element"><cedar-runtime-element labels="labels" key="key" model="model" element="field" preview="preview" delete="removeChild(field)" depth="depth" path="path"></cedar-runtime-element></div>';
         $compile(template)(scope, function (cloned, scope) {
           element.html(cloned);
         });

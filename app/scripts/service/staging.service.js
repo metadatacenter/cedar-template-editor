@@ -149,6 +149,8 @@ define([
       form._ui.order = form._ui.order || [];
       form._ui.order.push(fieldName);
 
+      form._ui.propertyLabels = form._ui.propertyLabels || {};
+
       DataManipulationService.addDomIdIfNotPresent(field, divId);
       callback(field);
 
@@ -156,6 +158,7 @@ define([
     };
 
     service.addElementToForm = function (form, elementId, divId, callback) {
+      console.log('addElementToform');
       AuthorizedBackendService.doCall(
           TemplateElementService.getTemplateElement(elementId),
           function (response) {
@@ -183,6 +186,10 @@ define([
             form.properties[elName] = clonedElement;
             form._ui.order = form._ui.order || [];
             form._ui.order.push(elName);
+
+            form._ui.propertyLabels = form._ui.propertyLabels || {};
+            form._ui.propertyLabels[elName] = elName;
+
 
             DataManipulationService.addDomIdIfNotPresent(clonedElement, divId);
             callback(clonedElement);
@@ -223,9 +230,12 @@ define([
       // Adding field to the element.properties object
       element.properties[fieldName] = field;
       element._ui.order.push(fieldName);
+
+      element._ui.propertyLabels = element._ui.propertyLabels || {};
     };
 
     service.addElementToElement = function (element, elementId) {
+      console.log('addElementToElement');
       AuthorizedBackendService.doCall(
           TemplateElementService.getTemplateElement(elementId),
           function (response) {
@@ -250,6 +260,9 @@ define([
             // Adding field to the element.properties object
             element.properties[elName] = el;
             element._ui.order.push(elName);
+
+            element._ui.propertyLabels = element._ui.propertyLabels || {};
+            element._ui.propertyLabels[elName] = elName;
 
            DataManipulationService.createDomIds(element);
           },
