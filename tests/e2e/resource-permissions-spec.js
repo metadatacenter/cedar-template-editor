@@ -273,42 +273,25 @@ describe('resource-permissions', function () {
 
   it("should delete the test templates created by " + testConfig.testUserName1, function () {
     workspacePage.loginIfNecessary(testConfig.testUserName1, testConfig.testUser1, testConfig.testPassword1);
-    for (var i = 0; i < templatesUser1.length; i++) {
-      workspacePage.deleteResourceViaRightClick(templatesUser1[i], 'template');
-      toastyModal.isSuccess();
-      workspacePage.clearSearch();
-    }
+    workspacePage.deleteArray(templatesUser1, 'template');
   }, 200000); // increase timeout as the cleanup can take longer than the default
 
 
   it("should delete the test templates created by " + testConfig.testUserName2, function () {
     workspacePage.loginIfNecessary(testConfig.testUserName2, testConfig.testUser2, testConfig.testPassword2);
-    for (var i = 0; i < templatesUser2.length; i++) {
-      workspacePage.deleteResourceViaRightClick(templatesUser2[i], 'template');
-      toastyModal.isSuccess();
-      workspacePage.clearSearch();
-    }
+    workspacePage.deleteArray(templatesUser2, 'template');
   }, 200000); // increase timeout as the cleanup can take longer than the default
 
 
   it("should delete the test folders created by " + testConfig.testUserName1, function () {
     workspacePage.loginIfNecessary(testConfig.testUserName1, testConfig.testUser1, testConfig.testPassword1);
-    for (var i = 0; i < foldersUser1.length; i++) {
-      workspacePage.deleteResourceViaRightClick(foldersUser1[i], 'folder');
-      toastyModal.isSuccess();
-      workspacePage.clearSearch();
-    }
+    workspacePage.deleteArray(foldersUser1, 'folder');
   }, 200000); // increase timeout as the cleanup can take longer than the default
 
 
   it("should delete the test folders created by " + testConfig.testUserName2, function () {
     workspacePage.loginIfNecessary(testConfig.testUserName2, testConfig.testUser2, testConfig.testPassword2);
-    for(var j = 0; j < foldersUser2.length; j++) {
-      workspacePage.deleteResourceViaRightClick(foldersUser2[j], 'folder');
-      toastyModal.isSuccess();
-      workspacePage.clearSearch();
-    }
-
+    workspacePage.deleteArray(foldersUser1, 'folder');
     workspacePage.logout();
     workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
   }, 200000); // increase timeout as the cleanup can take longer than the default

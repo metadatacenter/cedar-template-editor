@@ -100,11 +100,7 @@ describe('update-description', function () {
 
   it("should delete the test resources created", function () {
     workspacePage.loginIfNecessary(testConfig.testUserName1, testConfig.testUser1, testConfig.testPassword1);
-    for (var i = 0; i < resources.length; i++) {
-      workspacePage.deleteResourceViaRightClick(resources[i], 'template');
-      toastyModal.isSuccess();
-      workspacePage.clearSearch();
-    }
+    workspacePage.deleteArray(resources, 'template');
   }, 200000);
 
 

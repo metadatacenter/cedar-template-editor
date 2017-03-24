@@ -420,7 +420,7 @@ var WorkspacePage = function () {
 
     sweetAlertModal.confirm();
     toastyModal.isSuccess();
-    this.clearSearch();
+    clearSearch();
   };
 
   this.deleteResourceViaRightClick = function (name, type) {

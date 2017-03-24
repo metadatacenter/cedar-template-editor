@@ -97,21 +97,13 @@ describe('update-name', function () {
 
   it("should delete the test resources created by " + testConfig.testUserName1, function () {
     workspacePage.loginIfNecessary(testConfig.testUserName1, testConfig.testUser1, testConfig.testPassword1);
-    for (var i = 0; i < resourcesUser1.length; i++) {
-      workspacePage.deleteResourceViaRightClick(resourcesUser1[i], 'folder');
-      toastyModal.isSuccess();
-      workspacePage.clearSearch();
-    }
+    workspacePage.deleteArray(resourcesUser1, 'folder');
   }, 200000);
 
 
   it("should delete the test resources created by " + testConfig.testUserName2, function () {
     workspacePage.loginIfNecessary(testConfig.testUserName2, testConfig.testUser2, testConfig.testPassword2);
-    for(var j = 0; j < resourcesUser2.length; j++) {
-      workspacePage.deleteResourceViaRightClick(resourcesUser2[j], 'folder');
-      toastyModal.isSuccess();
-      workspacePage.clearSearch();
-    }
+    workspacePage.deleteArray(resourcesUser2, 'folder');
   }, 200000);
 
 

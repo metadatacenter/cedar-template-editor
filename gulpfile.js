@@ -154,7 +154,9 @@ gulp.task('e2e', ['test-env'], function () {
     './tests/e2e/update-name-spec.js',
     './tests/e2e/update-ownership-spec.js',
     './tests/e2e/update-permissions-spec.js',
-    './tests/e2e/workspace-spec.js'
+    './tests/e2e/workspace-spec.js',
+    './tests/e2e/sidebar-spec.js'
+
   ])
       .pipe(protractor({
         configFile: "protractor.config.js"
