@@ -17,7 +17,7 @@ define([
         key           : "=",
         field         : '=',
         model         : '=',
-        label         : "=",
+        labels         : "=",
         preview       : "=",
         removeChild   : '=',
         ngDisabled    : "=",
