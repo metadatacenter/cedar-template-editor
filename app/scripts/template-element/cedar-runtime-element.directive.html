@@ -7,7 +7,7 @@
       <div class="element " id="{{getLocator(0)}}" style="position:relative">
         <div class="row isInactive myhover" ng-click="toggleExpanded(i);addElement()">
           <div class="col-sm-12">
-            <a class="element title" ng-class="{'isInactive' : isInactive(0)}"> {{getTitle()}} </a>
+            <a class="element title" ng-class="{'isInactive' : isInactive(0)}"> {{getPropertyLabel()}} </a>
           </div>
         </div>
       </div>
@@ -18,7 +18,7 @@
       <div class="element expand" id="{{getLocator(index)}}" style="position:relative">
         <div class="row isInactive">
           <div class="col-sm-10">
-            <a class="element title" ng-class="{'isInactive' : isInactive(index)}">{{getTitle()}} <span
+            <a class="element title" ng-class="{'isInactive' : isInactive(index)}">{{getPropertyLabel()}} <span
                 ng-if="valueArray.length-1" class="count">({{index+1}})</span></a>
           </div>
           <field-toolbar class="col-xs-2 " model="model" index="index"
@@ -47,7 +47,7 @@
               <i class="fa " ng-class="{'fa-caret-down': isExpanded(index),'fa-caret-right':!isExpanded(index)}"></i>
             </button>
 
-            {{getTitle()}} <span ng-if="valueArray.length-1" class="count">({{index+1}})</span>
+            {{getPropertyLabel()}} <span ng-if="valueArray.length-1" class="count">({{index+1}})</span>
           </div>
 
         </div>
@@ -75,9 +75,11 @@
           </div>
           <div ng-if="isExpanded(index) && index === i">
 
+
             <cedar-runtime-nested-element key="key"
                 field="$root.propertiesOf(element)[key]"
                 model="valueArray[i][key]"
+                labels="$root.schemaOf(element)['_ui']['propertyLabels']"
                 remove-child="removeChild"
                 rename-child-key="renameChildKey"
                 is-edit-data="isEditData"
@@ -101,7 +103,7 @@
                 <i class="fa " ng-class="{'fa-caret-down': isExpanded(index),'fa-caret-right':!isExpanded(index)}"></i>
               </button>
 
-              {{getTitle()}} <span ng-if="valueArray.length-1" class="count">({{i+1}})</span></a>
+              {{getPropertyLabel()}} <span ng-if="valueArray.length-1" class="count">({{i+1}})</span></a>
           </div>
           <field-toolbar class="col-xs-4 " field="element" model="valueArray" index="index"
               remove="removeElement" add="addElement" is-active="isActive" set-active="setActive"
@@ -116,6 +118,7 @@
               <cedar-runtime-nested-element key="key"
                   field="$root.propertiesOf(element)[key]"
                   model="valueElement[key]"
+                  labels="$root.schemaOf(element)['_ui']['propertyLabels']"
                   remove-child="removeChild"
                   rename-child-key="renameChildKey"
                   is-edit-data="isEditData"

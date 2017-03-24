@@ -18,7 +18,12 @@
             class="sortable-icon"></span></div>
 
         <p class="element-name-label " ng-class="{'nested': isNested(element)}">
-          {{$root.schemaOf(element)._ui.title}}
+          <span ng-if="$root.isRuntime()  || isNested()  || $root.propertiesOf(element)._tmp.state !== 'creating'" >{{labels[key]}}</span>
+          <input ng-if="!$root.isRuntime()  && !isNested()  && $root.propertiesOf(element)._tmp.state == 'creating'" type="text" auto-focus
+              placeholder="{{'CREATOR.enterElementTitle' | translate}}"
+              aria-label="{{'CREATOR.enterElementTitle' | translate}}"
+              ng-model="labels[key]"
+              style="outline:none;width:300px;padding:5px">
         </p>
 
          <span ng-if="!isNested(element)" ng-show="$root.isArray(model) && $root.isRuntime()" class="spreadsheetSwitch element">
@@ -84,6 +89,19 @@
     </div>
   </div>
 
+  <!--&lt;!&ndash; property labels -&ndash;&gt;-->
+  <!--<div ng-if="!$root.isRuntime()  && !isNested()  && $root.propertiesOf(element)._tmp.state == 'creating'">-->
+    <!--<div class="form-group floating-label-wrapper">-->
+      <!--<input type="text" auto-focus-->
+          <!--class="form-control field-title-definition"-->
+          <!--id="placeholder-{{$root.schemaOf(element)['@id'].substring($root.schemaOf(element)['@id'].lastIndexOf('/')+1)}}"-->
+          <!--placeholder="{{'CREATOR.enterElementTitle' | translate}}"-->
+          <!--aria-label="{{'CREATOR.enterElementTitle' | translate}}"-->
+          <!--ng-model="labels[key]"-->
+          <!--with-floating-label>-->
+    <!--</div>-->
+  <!--</div>-->
+
   <div class="elementTotalContent visible">
     <div ng-show="$root.isArray(model)">
       <div class="spreadsheetViewDetector"></div>
@@ -132,12 +150,15 @@
             class="sortable-container">
           <div ng-repeat="key in $root.schemaOf(element)['_ui']['order']">
             <div ng-if="$root.propertiesOf(element)[key]">
+
               <cedar-nested-template-element key="key"
                   field="$root.propertiesOf(element)[key]"
                   model="m[key]"
+                  labels="$root.schemaOf(element)._ui.propertyLabels"
                   remove-child="removeChild"
                   rename-child-key="renameChildKey"
-                  is-edit-data="isEditData">
+                  is-edit-data="isEditData"
+                  is-root-element="false">
               </cedar-nested-template-element>
             </div>
           </div>
@@ -154,10 +175,12 @@
               <cedar-nested-template-element key="key"
                   field="$root.propertiesOf(element)[key]"
                   model="m[key]"
+                  labels="$root.schemaOf(element)._ui.propertyLabels"
                   preview="preview"
                   remove-child="removeChild"
                   rename-child-key="renameChildKey"
-                  is-edit-data="isEditData">
+                  is-edit-data="isEditData"
+                  is-root-element="false">
               </cedar-nested-template-element>
             </div>
           </div>
@@ -169,12 +192,15 @@
           ng-model="element._ui.order">
         <div ng-repeat="key in $root.schemaOf(element)['_ui']['order']">
           <div ng-if="$root.propertiesOf(element)[key]">
+
             <cedar-nested-template-element key="key"
                 field="$root.propertiesOf(element)[key]"
                 model="model[key]"
+                labels="$root.schemaOf(element)._ui.propertyLabels"
                 remove-child="removeChild"
                 rename-child-key="renameChildKey"
-                is-edit-data="isEditData">
+                is-edit-data="isEditData"
+                is-root-element="false">
             </cedar-nested-template-element>
           </div>
         </div>

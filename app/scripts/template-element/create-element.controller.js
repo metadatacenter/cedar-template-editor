@@ -64,6 +64,9 @@ define([
               $scope.form._ui = $scope.form._ui || {};
               $scope.form._ui.order = $scope.form._ui.order || [];
               $scope.form._ui.order.push(key);
+
+              $scope.form._ui.propertyLabels = $scope.form._ui.propertyLabels || {};
+
               $rootScope.jsonToSave = $scope.element;
               $rootScope.documentTitle = $scope.form._ui.title;
               DataManipulationService.createDomIds($scope.element);
@@ -87,6 +90,9 @@ define([
         $scope.form._ui = $scope.form._ui || {};
         $scope.form._ui.order = $scope.form._ui.order || [];
         $scope.form._ui.order.push(key);
+
+        $scope.form._ui.propertyLabels = $scope.form._ui.propertyLabels || {};
+
         $rootScope.jsonToSave = $scope.element;
         DataManipulationService.createDomIds($scope.element);
 
@@ -130,6 +136,7 @@ define([
     };
 
     $scope.addElementToElement = function (element) {
+      console.log('addElementToElement');
       populateCreatingFieldOrElement();
       if (dontHaveCreatingFieldOrElement()) {
         DataManipulationService.createDomIds(element);
@@ -375,13 +382,11 @@ define([
     };
 
     $scope.showModal = function (id) {
-      console.log('showModal ' + id);
       jQuery("#" + id).modal('show');
     };
 
     //TODO this event resets modal state and closes modal
     $scope.$on("field:controlledTermAdded", function () {
-      console.log('field:controlledTermAdded');
       jQuery("#control-options-element-field").modal('hide');
     });
 

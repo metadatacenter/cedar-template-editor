@@ -19,6 +19,7 @@ define([
         element      : '=',
         delete       : '&',
         model        : '=',
+        labels        : "=",
         isRootElement: "=",
         depth        : '=',
         path         : '='
@@ -160,6 +161,15 @@ define([
 
       scope.getTitle = function () {
         return DataManipulationService.getFieldSchema(scope.element)._ui.title;
+      };
+
+      scope.getPropertyLabel = function () {
+        if (scope.labels && scope.key) {
+          return scope.labels[scope.key];
+        } else {
+          console.log("error: no propertyLabels");
+          return scope.getTitle();
+        }
       };
 
 
@@ -309,8 +319,14 @@ define([
         if (selectedKey) {
           delete props[selectedKey];
 
+          // remove it from the order array
           var idx = $rootScope.schemaOf(scope.element)._ui.order.indexOf(selectedKey);
           $rootScope.schemaOf(scope.element)._ui.order.splice(idx, 1);
+
+          // remove it from the property Labels?
+          console.log('delete property labels?');
+          console.log($rootScope.schemaOf(scope.element)._ui.propertyLabels[selectedKey]);
+          //delete $rootScope.schemaOf(scope.element)._ui.propertyLabels[selectedKey];
 
           if ($rootScope.isElement(fieldOrElement)) {
             scope.$emit("invalidElementState",

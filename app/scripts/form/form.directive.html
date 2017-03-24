@@ -18,9 +18,11 @@
         <!--If Template Element-->
         <div class=" element-group full "
             ng-if="form.properties[item]['@type']=='https://schema.metadatacenter.org/core/TemplateElement' || form.properties[item].items['@type']=='https://schema.metadatacenter.org/core/TemplateElement'">
+
           <cedar-template-element nested="false" element="form.properties[item]"
               key="item"
               model="model[item]"
+              labels="$root.schemaOf(form)._ui.propertyLabels"
               delete="removeChild(form.properties[item])"
               is-edit-data="isEditData">
           </cedar-template-element>
@@ -73,6 +75,7 @@
           <cedar-runtime-element nested="false" element="form.properties[item]"
               key="item"
               model="model[item]"
+              labels="form._ui.propertyLabels"
               delete="removeChild(form.properties[item])"
               is-edit-data="isEditData"
               depth="1"
@@ -109,9 +112,11 @@
         <div ng-if="$root.schemaOf(form.properties[item])['@type'] === 'https://schema.metadatacenter.org/core/Template'">
           <div class="element-group full"
               ng-if="form.properties[item]['@type']=='https://schema.metadatacenter.org/core/TemplateElement' || form.properties[item].items['@type']=='https://schema.metadatacenter.org/core/TemplateElement'">
+
             <cedar-template-element   element="form.properties[item]"
                 key="item"
                 model="model[item]"
+                labels="$root.schemaOf(form)._ui.propertyLabels"
                 delete="removeChild(form.properties[item])"
                 nested="false"
                 is-root-element="false"
@@ -128,9 +133,11 @@
            <div class="element-group full"
                ng-if="$root.schemaOf(form.properties[item])['@id'] == $root.keyOfRootElement">
 
+
              <cedar-template-element   element="form.properties[item]"
                  key="item"
                  model="model[item]"
+                 labels="$root.schemaOf(form)._ui.propertyLabels"
                  delete="removeChild(form.properties[item])"
                  nested="true"
                  is-root-element="false"
@@ -142,9 +149,11 @@
            <div class="element-group full"
                ng-if="$root.schemaOf(form.properties[item])['@id'] !== $root.keyOfRootElement">
 
+
              <cedar-template-element   element="form.properties[item]"
                  key="item"
                  model="model[item]"
+                 labels="$root.schemaOf(form)._ui.propertyLabels"
                  delete="removeChild(form.properties[item])"
                  nested="false"
                  is-root-element="false"
