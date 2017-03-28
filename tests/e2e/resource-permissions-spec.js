@@ -271,25 +271,25 @@ describe('resource-permissions', function () {
   });
 
 
-  it("should delete the test templates created by " + testConfig.testUserName1, function () {
+  xit("should delete the test templates created by " + testConfig.testUserName1, function () {
     workspacePage.loginIfNecessary(testConfig.testUserName1, testConfig.testUser1, testConfig.testPassword1);
     workspacePage.deleteArray(templatesUser1, 'template');
   }, 200000); // increase timeout as the cleanup can take longer than the default
 
 
-  it("should delete the test templates created by " + testConfig.testUserName2, function () {
+  xit("should delete the test templates created by " + testConfig.testUserName2, function () {
     workspacePage.loginIfNecessary(testConfig.testUserName2, testConfig.testUser2, testConfig.testPassword2);
     workspacePage.deleteArray(templatesUser2, 'template');
   }, 200000); // increase timeout as the cleanup can take longer than the default
 
 
-  it("should delete the test folders created by " + testConfig.testUserName1, function () {
+  xit("should delete the test folders created by " + testConfig.testUserName1, function () {
     workspacePage.loginIfNecessary(testConfig.testUserName1, testConfig.testUser1, testConfig.testPassword1);
     workspacePage.deleteArray(foldersUser1, 'folder');
   }, 200000); // increase timeout as the cleanup can take longer than the default
 
 
-  it("should delete the test folders created by " + testConfig.testUserName2, function () {
+  xit("should delete the test folders created by " + testConfig.testUserName2, function () {
     workspacePage.loginIfNecessary(testConfig.testUserName2, testConfig.testUser2, testConfig.testPassword2);
     workspacePage.deleteArray(foldersUser1, 'folder');
     workspacePage.logout();

@@ -146,7 +146,7 @@ describe('delete-resource', function () {
   });
 
 
-  it("should delete the test resources created", function () {
+  xit("should delete the test resources created", function () {
     workspacePage.loginIfNecessary(testConfig.testUserName1, testConfig.testUser1, testConfig.testPassword1);
     workspacePage.deleteArray(resources, 'folder');
   });

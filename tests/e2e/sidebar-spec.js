@@ -44,7 +44,7 @@ describe('workspace-sidebar', function () {
   });
 
 
-  it("should delete the test resources created", function () {
+  xit("should delete the test resources created", function () {
     page.deleteResource(folder, 'folder');
   });
 

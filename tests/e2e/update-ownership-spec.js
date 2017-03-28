@@ -1,12 +1,10 @@
 'use strict';
 var WorkspacePage = require('../pages/workspace-page.js');
-var ToastyModal = require('../modals/toasty-modal.js');
 var ShareModal = require('../modals/share-modal.js');
 var testConfig = require('../config/test-env.js');
 
 describe('update-ownership', function () {
   var workspacePage = WorkspacePage;
-  var toastyModal = ToastyModal;
   var shareModal = ShareModal;
 
   var resources = [];
@@ -116,7 +114,7 @@ describe('update-ownership', function () {
   });
 
 
-  it("should delete the test resources created", function () {
+  xit("should delete the test resources created", function () {
     workspacePage.loginIfNecessary(testConfig.testUserName1, testConfig.testUser1, testConfig.testPassword1);
     workspacePage.deleteArray(resources, 'folder');
   }, 200000);

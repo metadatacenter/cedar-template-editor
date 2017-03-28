@@ -58,8 +58,6 @@ var MoveModal = function () {
   this.clickMoveButton = function () {
     browser.wait(EC.elementToBeClickable(createMoveButton));
     createMoveButton.click();
-    // wait for modal to disappear
-    browser.wait(EC.stalenessOf(createMoveButton));
   }
 
 };

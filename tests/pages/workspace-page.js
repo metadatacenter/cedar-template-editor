@@ -377,6 +377,7 @@ var WorkspacePage = function () {
         }
         browser.wait(EC.elementToBeClickable(createFolderSubmitButton));
         createFolderSubmitButton.click();
+        toastyModal.isSuccess();
         break;
     }
   };
