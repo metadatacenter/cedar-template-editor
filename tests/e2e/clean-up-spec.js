@@ -14,7 +14,7 @@ describe('clean-up', function () {
   var EC = protractor.ExpectedConditions;
   var workspacePage = WorkspacePage;
   var toastyModal = ToastyModal;
-  var resourceTypes = [  'folder','template','metadata', 'element'];
+  var resourceTypes = [ 'template', 'element','metadata',  'folder'];
   var max = 0;
 
 

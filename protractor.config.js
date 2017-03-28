@@ -11,10 +11,10 @@ exports.config = {
     maxInstances:11
   },
 
-  allScriptsTimeout: 100000,
+  allScriptsTimeout: 500000,
   jasmineNodeOpts: {
     showColors: true,
-    defaultTimeoutInterval: 100000,
+    defaultTimeoutInterval: 500000,
     isVerbose: true
   },
 
