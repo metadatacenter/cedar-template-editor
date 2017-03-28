@@ -1,0 +1,12 @@
+<ul class="dropdown" on-toggle="toggled(open)">
+  <li><a  href="#" class="open" ng-click="goTo(resource)">Open</a></li>
+  <li><a ng-cloak class="populate" ng-class="{'link-disabled': canNotPopulate}"  href="#" ng-click="goTo(resource, 'populate')">Populate</a></li>
+  <li role="separator" class="divider"></li>
+  <li><a ng-cloak class="share" ng-class="{'link-disabled': canNotShare}" href="#" ng-click="share(resource)">Share...</a></li>
+  <li><a href="#" class="copy" ng-class="{'link-disabled': isFolder}" ng-click="copy(resource)">Copy to...</a></li>
+  <li><a ng-cloak class="move" ng-class="{'link-disabled': canNotWrite}"   href="#" ng-click="move(resource)">Move to...</a></li>
+  <li><a ng-cloak class="rename" ng-class="{'link-disabled': canNotWrite}"  href="#" ng-click="rename(resource)">Rename...</a></li>
+  <li  role="separator" class="divider"></li>
+  <li><a ng-cloak class="delete" ng-class="{'link-disabled': canNotWrite}"  href="#"  ng-click="delete(resource)">Delete </a></li>
+</ul>
+

@@ -1,19 +1,18 @@
 'use strict';
 var TemplatePage = require('../pages/template-creator-page.js');
-var WorkspacePage = require('../pages/workspace-new-page.js');
+var WorkspacePage = require('../pages/workspace-page.js');
 var ToastyModal = require('../modals/toasty-modal.js');
 var SweetAlertModal = require('../modals/sweet-alert-modal.js');
 var _ = require('../libs/lodash.min.js');
 
-
+// TODO turned off so we do not run out of time on Travis
 describe('template-creator', function () {
   var EC = protractor.ExpectedConditions;
 
-
-  var workspacePage;
-  var templatePage;
-  var toastyModal;
-  var sweetAlertModal;
+  var workspacePage = WorkspacePage;
+  var templatePage = TemplatePage;
+  var toastyModal = ToastyModal;
+  var sweetAlertModal = SweetAlertModal;
 
   var cleanJson;
   var dirtyJson;
@@ -60,7 +59,7 @@ describe('template-creator', function () {
       "iconClass"                : "cedar-svg-numeric",
       "allowedInElement"         : true,
       "primaryField"             : true,
-      "Label"                    : "Number",
+      "label"                    : "Number",
       "hasControlledTerms"       : false,
       "staticField"              : false,
       "allowsMultiple"           : true,
@@ -123,7 +122,6 @@ describe('template-creator', function () {
     }
   ];
 
-
   var fieldType = fieldTypes[0];
   var field = element(by.css('.field-root .' + fieldType.iconClass));
   var isMore = !fieldType.primaryField;
@@ -136,23 +134,18 @@ describe('template-creator', function () {
   // before each test, load a new page and create a template
   // maximize the window area for clicking
   beforeEach(function () {
-
-    workspacePage = WorkspacePage;
-    templatePage = TemplatePage;
-    toastyModal = ToastyModal;
-    sweetAlertModal = SweetAlertModal;
-
-    browser.driver.manage().window().maximize();
   });
 
   afterEach(function () {
   });
 
+  // repeat tests for both template and element editors
   for (var j = 0; j < pageTypes.length; j++) {
     (function (pageType) {
 
-      it("should have a logo", function () {
-        browser.wait(EC.visibilityOf(workspacePage.createLogo()));
+      it("should have a logo on the workspace page", function () {
+        workspacePage.hasLogo();
+        workspacePage.onWorkspace();
       });
 
       it("should create the sample template " + pageType, function () {
@@ -185,11 +178,10 @@ describe('template-creator', function () {
           if (!fieldType.staticField) {
 
 
-            it("should add and delete a " + type + " in " + pageType + ' isMore ' + isMore, function () {
+            it("should add and delete a " + type + " in " + pageType , function () {
 
               templatePage.createPage(pageType);
               templatePage.addField(type, isMore, title, description);
-              //templatePage.addField(type, isMore, title, description);
               browser.wait(EC.visibilityOf(field));
 
 
@@ -290,6 +282,7 @@ describe('template-creator', function () {
         workspacePage.onWorkspace();
       });
 
+      // TODO turn this on once staging has been updated
       xit("should have the correct json for an empty " + pageType, function () {
 
         templatePage.createPage(pageType);
@@ -354,7 +347,7 @@ describe('template-creator', function () {
         templatePage.jsonPreview().getText().then(function (value) {
           var json = JSON.parse(value);
           delete json._tmp;
-          console.log(json);
+          //console.log(json);
           if (pageType === 'template') {
             expect(_.isEqual(templatePage.emptyTemplateJson, json)).toBe(false);
           } else {

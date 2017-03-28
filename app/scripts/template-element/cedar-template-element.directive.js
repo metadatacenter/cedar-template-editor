@@ -18,6 +18,8 @@ define([
         element      : '=',
         delete       : '&',
         model        : '=',
+        labels       : '=',
+        relabel      : '=',
         isRootElement: "@",
         isEditData   : "=",
         nested       : '@'
@@ -31,6 +33,42 @@ define([
 
 
     function linker(scope, element, attrs) {
+
+
+      scope.isRoot =function() {
+        return scope.isRootElement == 'true';
+      };
+
+      scope.isNested =function() {
+        return scope.nested == 'true';
+      };
+
+      scope.isEditState = function() {
+        return DataManipulationService.isEditState(scope.element);
+      };
+
+      scope.isSelectable = function() {
+        return !scope.isRoot() && !$rootScope.isRuntime() && !scope.isNested();
+      };
+
+      // try to select this element
+      scope.canSelect = function (select) {
+        if (select) {
+          DataManipulationService.canSelect(scope.element);
+        }
+      };
+
+      scope.canEditProperty =function() {
+
+        var result  =
+            !scope.isRoot() &&
+            !$rootScope.isRuntime() &&
+            !scope.isNested() &&
+            DataManipulationService.isEditState(scope.element);
+
+        return result;
+      };
+
 
       scope.elementId = DataManipulationService.idOf(scope.element) || DataManipulationService.generateGUID();
 
@@ -149,13 +187,11 @@ define([
         return (DataManipulationService.isEditState(scope.element));
       };
 
-      scope.isNested = function () {
-        return  (scope.nested === 'true');
-      };
 
       // add a multiple cardinality element
       scope.selectedTab = 0;
       scope.addElement = function () {
+        console.log('addElement');
         if ($rootScope.isRuntime()) {
           if ((!scope.element.maxItems || scope.model.length < scope.element.maxItems)) {
             var seed = {};
@@ -218,6 +254,9 @@ define([
           var idx = $rootScope.schemaOf(scope.element)._ui.order.indexOf(selectedKey);
           $rootScope.schemaOf(scope.element)._ui.order.splice(idx, 1);
 
+          // remove property label for this element
+          delete $rootScope.schemaOf(scope.element)._ui.propertyLabels[selectedKey];
+
           if ($rootScope.isElement(fieldOrElement)) {
             scope.$emit("invalidElementState",
                 ["remove", $rootScope.schemaOf(fieldOrElement)._ui.title, fieldOrElement["@id"]]);
@@ -240,13 +279,7 @@ define([
         return DataManipulationService.canDeselect(element);
       };
 
-      // try to select this element
-      scope.canSelect = function (select) {
-        console.log('canSelect ' + select);
-        if (select) {
-          DataManipulationService.canSelect(scope.element);
-        }
-      };
+
 
       // when element is deseleted, look at errors and parse if none
       scope.$on('deselect', function (event, element, errorMessages) {
@@ -297,7 +330,7 @@ define([
             }
           });
         }
-      }
+      };
 
 
       // try to deselect this field

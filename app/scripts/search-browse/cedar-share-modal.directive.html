@@ -27,7 +27,7 @@
                     ng-change="share.updateGroupPermission(share.typeaheadGroup.id)"
                     ng-model="share.typeaheadGroup"
                     typeahead-editable="false"
-                    typeahead="group as group.displayName for group in share.resourceGroups | filter:{displayName:$viewValue} | limitTo:8 "
+                    uib-typeahead="group as group.displayName for group in share.resourceGroups | filter:{displayName:$viewValue} | limitTo:8 "
                     typeahead-on-select="share.groupTypeaheadOnSelect($item, $model, $label)"
                     typeahead-select-on-exact="true"
                     class="form-control group-name">
@@ -47,7 +47,7 @@
                     class="btn btn-sm btn-info btn-circle btn-plus share-with-group" ng-if="share.canWrite()"
                     ng-model="share.resourcePermissions"
                     type="button"
-                    tooltip="{{'HELP.shareWithGroup' | translate}}"
+                    uib-tooltip="{{'HELP.shareWithGroup' | translate}}"
                     tooltip-trigger
                     tooltip-animation="false"
                     tooltip-placement="top"
@@ -72,7 +72,7 @@
                 <button
                     class="btn btn-sm btn-info btn-circle btn-plus create-new-group"
                     type="button"
-                    tooltip="{{'HELP.createNewGroup' | translate}}"
+                    uib-tooltip="{{'HELP.createNewGroup' | translate}}"
                     tooltip-trigger
                     tooltip-animation="false"
                     tooltip-placement="top"
@@ -97,7 +97,7 @@
                     ng-change="share.updateUserPermission(share.typeaheadUser.id)"
                     ng-model="share.typeaheadUser"
                     typeahead-editable="false"
-                    typeahead="user as user.name for user in share.resourceUsers | filter:{name:$viewValue} | limitTo:8 "
+                    uib-typeahead="user as user.name for user in share.resourceUsers | filter:{name:$viewValue} | limitTo:8 "
                     typeahead-select-on-exact="true"
                     class="form-control user-name"></div>
 
@@ -116,7 +116,7 @@
                     class="btn btn-sm btn-info btn-circle btn-plus share-with-user" ng-if="share.canWrite()"
                     ng-model="share.resourcePermissions"
                     type="button"
-                    tooltip="{{'HELP.shareWithPerson' | translate}}"
+                    uib-tooltip="{{'HELP.shareWithPerson' | translate}}"
                     tooltip-trigger
                     tooltip-animation="false"
                     tooltip-placement="top"
@@ -178,7 +178,7 @@
                 <button class=" col-sm-1  btn  btn-info btn-circle btn-sm btn-delete" ng-if="share.canWrite()"
                     ng-model="share.resourcePermissions"
                     type="button"
-                    tooltip="{{'HELP.removeShare' | translate}}"
+                    uib-tooltip="{{'HELP.removeShare' | translate}}"
                     tooltip-trigger
                     tooltip-animation="false"
                     tooltip-placement="top"
@@ -214,7 +214,7 @@
                     ng-change="share.updateGroupPermission(share.typeaheadGroup.id)"
                     ng-model="share.typeaheadGroup"
                     typeahead-editable="false"
-                    typeahead="group as group.displayName for group in share.resourceGroups | filter:{displayName:$viewValue} | limitTo:8 "
+                    uib-typeahead="group as group.displayName for group in share.resourceGroups | filter:{displayName:$viewValue} | limitTo:8 "
                     typeahead-select-on-exact="true"
                     typeahead-on-select="share.groupTypeaheadOnSelect($item, $model, $label)"
                     class="form-control group-name">
@@ -224,7 +224,7 @@
                     class="btn btn-sm btn-info btn-circle btn-delete delete-group" ng-if="share.canWriteGroup()"
                     ng-model="share.resourcePermissions"
                     type="button"
-                    tooltip="{{'HELP.removeGroup' | translate}}"
+                    uib-tooltip="{{'HELP.removeGroup' | translate}}"
                     tooltip-trigger
                     tooltip-animation="false"
                     tooltip-placement="top"
@@ -243,7 +243,7 @@
                     class="btn btn-save confirm" translate>No
                 </button>
                 <button type="button"
-                    ng-click="share.deleteGroup(share.typeaheadGroup);share.showRemoveGroupConfirm=false;"
+                    ng-click="share.deleteGroup(share.typeaheadGroup, resource);share.showRemoveGroupConfirm=false;"
                     aria-label="Remove"
                     class="btn btn-save confirm" translate>Yes
                 </button>
@@ -286,7 +286,7 @@
                     ng-change="share.updateUserPermission(share.typeaheadUser.id)"
                     ng-model="share.typeaheadUser"
                     typeahead-editable="false"
-                    typeahead="user as user.name for user in share.resourceUsers | filter:{name:$viewValue} | limitTo:8 "
+                    uib-typeahead="user as user.name for user in share.resourceUsers | filter:{name:$viewValue} | limitTo:8 "
                     typeahead-select-on-exact="true"
                     ng-disabled="!share.typeaheadGroup"
                     class="form-control user-name"></div>
@@ -297,7 +297,7 @@
                     class="btn btn-sm btn-info btn-circle btn-plus add-user" ng-if="share.canWriteGroup()"
                     ng-model="share.resourcePermissions"
                     type="button"
-                    tooltip="{{'HELP.addToGroup' | translate}}"
+                    uib-tooltip="{{'HELP.addToGroup' | translate}}"
                     tooltip-trigger
                     tooltip-animation="false"
                     tooltip-placement="top"
@@ -350,7 +350,7 @@
                   <button class=" col-sm-1  btn  btn-info btn-circle btn-sm btn-delete" ng-if="share.canWriteGroup()"
                       ng-model="share.resourcePermissions"
                       type="button"
-                      tooltip="{{'HELP.removeFromGroup' | translate}}"
+                      uib-tooltip="{{'HELP.removeFromGroup' | translate}}"
                       tooltip-trigger
                       tooltip-animation="false"
                       tooltip-placement="top"
@@ -449,7 +449,7 @@
     <!-- footer closes the dialog -->
     <div class="modal-footer actions">
       <div class="clear-save">
-        <button type="button" ng-click="dc.shareModalVisible=false;"
+        <button type="button" ng-click="dc.shareModalVisible=false;dc.refreshWorkspace(dc.selectedResource);"
             data-dismiss="modal" aria-label="Done"
             class="btn btn-save confirm" translate>GENERIC.Done
         </button>

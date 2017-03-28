@@ -143,8 +143,8 @@
             <td width="15%">{{result.prefLabel}}</td>
             <td width="32%" style="font-size:0.9em">{{tsc.getShortText(result.details.definition, 120, '...', '-')}}</td>
             <td width="11%">{{tsc.getTypeForUi(result.details.type)}}</td>
-            <td width="14%" tooltip="{{result.source.name}}" tooltip-append-to-body="true">{{result.source.id}}</td>
-            <td width="14%" tooltip="{{tsc.getShortId(result.details.id, null)}}" tooltip-append-to-body="true">
+            <td width="14%" uib-tooltip="{{result.source.name}}" tooltip-append-to-body="true">{{result.source.id}}</td>
+            <td width="14%" uib-tooltip="{{tsc.getShortId(result.details.id, null)}}" tooltip-append-to-body="true">
               {{tsc.getShortId(result.details.id, 16)}}
             </td>
             <td width="13%">
@@ -358,7 +358,7 @@
       </button>
       <!--<div class="input-indicator-icons">-->
       <i class="cedar-svg-help-circle help-icon"
-          tooltip="The term will be created in the CEDARPC (CEDAR Provisional Classes) BioPortal ontology and added to your template"></i>
+          uib-tooltip="The term will be created in the CEDARPC (CEDAR Provisional Classes) BioPortal ontology and added to your template"></i>
       <!--</div>-->
     </div>
   </div>
@@ -397,7 +397,7 @@
         </button>
         <!--<div class="input-indicator-icons">-->
         <i class="cedar-svg-help-circle help-icon"
-            tooltip="The term will be created in the (CEDAR Provisional Classes) BioPortal ontology and added to your template"></i>
+            uib-tooltip="The term will be created in the (CEDAR Provisional Classes) BioPortal ontology and added to your template"></i>
         <!--</div>-->
       </div>
     </div>
@@ -412,7 +412,7 @@
             ng-disabled="!pcc.isValid() || pcc.provisionalValueSetValues.length == 0 || pcc.showCreateVsLoader">Create Value Set
         </button>
         <i class="cedar-svg-help-circle help-icon"
-            tooltip="The value set will be created in the (CEDAR Value Sets) BioPortal ontology and added to your template"></i>
+            uib-tooltip="The value set will be created in the (CEDAR Value Sets) BioPortal ontology and added to your template"></i>
       </div>
       <!--Create value set loader-->
       <div ng-if="pcc.showCreateVsLoader">

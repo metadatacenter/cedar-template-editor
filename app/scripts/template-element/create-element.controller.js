@@ -31,6 +31,7 @@ define([
     $scope.volatile = {};
     // Setting form preview setting to false by default
     //$scope.form = {};
+    $scope.viewType = 'popup';
 
     $scope.showCreateEditForm = true;
 
@@ -63,6 +64,9 @@ define([
               $scope.form._ui = $scope.form._ui || {};
               $scope.form._ui.order = $scope.form._ui.order || [];
               $scope.form._ui.order.push(key);
+
+              $scope.form._ui.propertyLabels = $scope.form._ui.propertyLabels || {};
+
               $rootScope.jsonToSave = $scope.element;
               $rootScope.documentTitle = $scope.form._ui.title;
               DataManipulationService.createDomIds($scope.element);
@@ -86,6 +90,9 @@ define([
         $scope.form._ui = $scope.form._ui || {};
         $scope.form._ui.order = $scope.form._ui.order || [];
         $scope.form._ui.order.push(key);
+
+        $scope.form._ui.propertyLabels = $scope.form._ui.propertyLabels || {};
+
         $rootScope.jsonToSave = $scope.element;
         DataManipulationService.createDomIds($scope.element);
 
@@ -116,11 +123,20 @@ define([
       if (dontHaveCreatingFieldOrElement()) {
         StagingService.addFieldToElement($scope.element, fieldType);
         $scope.$broadcast("form:dirty");
+        $scope.toggleMore();
       }
       $scope.showMenuPopover = false;
     };
 
+
+    $scope.moreIsOpen = false;
+    $scope.toggleMore = function() {
+      $scope.moreIsOpen = !$scope.moreIsOpen;
+      console.log('toggleMore ' + $scope.moreIsOpen);
+    };
+
     $scope.addElementToElement = function (element) {
+      console.log('addElementToElement');
       populateCreatingFieldOrElement();
       if (dontHaveCreatingFieldOrElement()) {
         DataManipulationService.createDomIds(element);
@@ -294,7 +310,7 @@ define([
 
     // create a copy of the form with the _tmp fields stripped out
     $scope.stripTmpFields = function () {
-      var copiedForm = jQuery.extend(true, {}, $scope.form);
+      var copiedForm = jQuery.extend(true, {}, $rootScope.jsonToSave);
       if (copiedForm) {
         DataManipulationService.stripTmps(copiedForm);
       }
@@ -364,6 +380,15 @@ define([
     $scope.disableSaveButton = function () {
       $scope.saveButtonDisabled = true;
     };
+
+    $scope.showModal = function (id) {
+      jQuery("#" + id).modal('show');
+    };
+
+    //TODO this event resets modal state and closes modal
+    $scope.$on("field:controlledTermAdded", function () {
+      jQuery("#control-options-element-field").modal('hide');
+    });
 
   }
 

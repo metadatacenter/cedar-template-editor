@@ -18,9 +18,12 @@
         <!--If Template Element-->
         <div class=" element-group full "
             ng-if="form.properties[item]['@type']=='https://schema.metadatacenter.org/core/TemplateElement' || form.properties[item].items['@type']=='https://schema.metadatacenter.org/core/TemplateElement'">
-          <cedar-template-element nested="false" element="form.properties[item]"
+
+          <cedar-template-element  nested="false" element="form.properties[item]"
               key="item"
               model="model[item]"
+              labels="$root.schemaOf(form)._ui.propertyLabels"
+              relabel="relabel"
               delete="removeChild(form.properties[item])"
               is-edit-data="isEditData">
           </cedar-template-element>
@@ -70,9 +73,11 @@
 
         <!--If element-->
         <div ng-if="isElement(item)" class=" element-group full">
-          <cedar-runtime-element nested="false" element="form.properties[item]"
+          <cedar-runtime-element  nested="false" element="form.properties[item]"
               key="item"
               model="model[item]"
+              labels="form._ui.propertyLabels"
+              relabel="relabel"
               delete="removeChild(form.properties[item])"
               is-edit-data="isEditData"
               depth="1"
@@ -109,9 +114,12 @@
         <div ng-if="$root.schemaOf(form.properties[item])['@type'] === 'https://schema.metadatacenter.org/core/Template'">
           <div class="element-group full"
               ng-if="form.properties[item]['@type']=='https://schema.metadatacenter.org/core/TemplateElement' || form.properties[item].items['@type']=='https://schema.metadatacenter.org/core/TemplateElement'">
+
+            never gets called
             <cedar-template-element   element="form.properties[item]"
                 key="item"
                 model="model[item]"
+                labels="$root.schemaOf(form)._ui.propertyLabels"
                 delete="removeChild(form.properties[item])"
                 nested="false"
                 is-root-element="false"
@@ -131,6 +139,7 @@
              <cedar-template-element   element="form.properties[item]"
                  key="item"
                  model="model[item]"
+                 labels="$root.schemaOf(form)._ui.propertyLabels"
                  delete="removeChild(form.properties[item])"
                  nested="true"
                  is-root-element="false"
@@ -145,9 +154,11 @@
              <cedar-template-element   element="form.properties[item]"
                  key="item"
                  model="model[item]"
+                 labels="$root.schemaOf(form)._ui.propertyLabels"
+                 relabel="relabel"
                  delete="removeChild(form.properties[item])"
                  nested="false"
-                 is-root-element="false"
+                 is-root-element="{{$root.schemaOf(form)['@type'] == undefined }}"
                  is-edit-data="isEditData"
                  depth="1">
              </cedar-template-element>
@@ -172,5 +183,5 @@
 </div><!-- /.pagination-container -->
 
 <div ng-if="$root.isRuntime()">
-  <ng-include src="'scripts/layout/json_preview.html'"></ng-include>
+  <ng-include src="'scripts/layout/metadata-json-preview.html'"></ng-include>
 </div>

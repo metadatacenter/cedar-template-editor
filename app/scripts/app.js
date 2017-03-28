@@ -34,6 +34,7 @@ define([
   '3rdparty/angular-fitvids/angular-fitvids',
   'lib/angulartics/dist/angulartics.min',
   'lib/angulartics-google-analytics/dist/angulartics-google-analytics.min',
+  'lib/ngprogress/build/ngprogress.min',
 
   // custom libraries
   'cedar/template-editor/handsontable/SpreadsheetContext',
@@ -69,6 +70,7 @@ define([
     'fitVids',
     'angulartics',
     'angulartics.google.analytics',
+    'ngProgress',
 
     'cedar.templateEditor.core',
     'cedar.templateEditor.dashboard',

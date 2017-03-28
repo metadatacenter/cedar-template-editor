@@ -47,6 +47,10 @@ var FinderModal = function () {
     return createDoSearch;
   };
 
+  this.createClearSearch = function() {
+    return createClearSearch;
+  };
+
   this.createFirstElementGridView = function() {
     return createFirstElementGridView;
   };

@@ -127,10 +127,11 @@
     "createTemplate": "Create template",
     "createElement": "Create element",
     "viewDetails": "View details",
+    "hideDetails": "Hide details",
+    "toggleDetails": "{{toggle}} details",
     "deleteSelection": "Delete selection",
     "viewAsGrid": "View as grid",
     "viewAsList": "View as list",
-    "hideDetails": "Hide details",
     "editDescription": "Edit description",
     "backToParent": "Back to parent",
     "openFolder": "Open folder",
@@ -420,7 +421,8 @@
   "CREATOR": {
     "addElementToStagingMsg": "Add an existing element or create a new item.",
     "enterFieldTitle": "Enter Field Title",
-    "enterFieldDescription": "Enter Field Description (Help Text)"
+    "enterFieldDescription": "Enter Field Description (Help Text)",
+    "enterElementTitle": "Enter Element Title"
   },
   "AUTHORIZATION-ERROR": {
     "suggestedAction": {
@@ -445,7 +447,8 @@
     "groupAlreadyPresent": "There is already a group with the same name present in the system!<br>Please choose a different name.",
     "folderPermissionsCanNotBeChanged": "The permissions of the selected folder can not be changed!",
     "templateNotDeleted": "The template was not deleted!",
-    "folderNotFound": "Folder not found!<br>Please use the UI elements to navigate to an existing folder!"
+    "folderNotFound": "Folder not found!<br>Please use the UI elements to navigate to an existing folder!",
+    "folderCopyNotAllowed": "Copying folders is not allowed"
   },
   "REST_ERROR_REASON": {
     "userHomeFolder": "The selected folder is a user home folder.",

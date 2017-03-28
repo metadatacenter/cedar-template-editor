@@ -114,6 +114,9 @@ define([
     }
 
     function addClass(selection, ontology) {
+      //console.log('addClass');
+      //console.log(selection);
+      //console.log(ontology);
 
       // has this selection been added yet?
       var alreadyAdded = false;

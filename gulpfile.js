@@ -111,6 +111,14 @@ gulp.task('replace-tracking', function () {
       .pipe(gulp.dest('app/config/'));
 });
 
+// Task to set up version numbers in included js file
+gulp.task('replace-version', function () {
+  gulp.src(['app/config/src/version.js'])
+      .pipe(replace('cedarVersionValue', cedarVersion))
+      .pipe(replace('cedarVersionModifierValue', cedarVersionModifier))
+      .pipe(gulp.dest('app/config/'));
+});
+
 // Watch files for changes
 gulp.task('watch', function () {
   gulp.watch('app/scripts/*.js', ['lint']);
@@ -131,17 +139,32 @@ gulp.task('test-env', function () {
       .pipe(replace('protractorBaseUrl', 'https://cedar.' + cedarHost))
       .pipe(replace('protractorTestUser1', cedarTestUser1))
       .pipe(replace('protractorTestPassword1', cedarTestPassword1))
+      .pipe(replace('protractorTestUserName1', cedarTestUserName1))
       .pipe(replace('protractorTestUser2', cedarTestUser2))
       .pipe(replace('protractorTestPassword2', cedarTestPassword2))
+      .pipe(replace('protractorTestUserName2', cedarTestUserName2))
       .pipe(replace('protractorTestUser3', cedarTestUser3))
       .pipe(replace('protractorTestPassword3', cedarTestPassword3))
-      .pipe(replace('protractorSeleniumServerJar', cedarSeleniumServerJar))
-      .pipe(replace('protractorChromeDriver', cedarChromeDriver))
+      .pipe(replace('protractorTestUserName3', cedarTestUserName3))
+      .pipe(replace('protractorEverybodyGroup', cedarEverybodyGroup))
+      .pipe(replace('protractorCedarVersion', cedarVersion))
       .pipe(gulp.dest('tests/config/'));
 });
 
 gulp.task('e2e', ['test-env'], function () {
-  return gulp.src(['./tests/e2e/**/*.js'])
+  return gulp.src([
+    './tests/e2e/clean-up-spec.js',
+    './tests/e2e/delete-resource-spec.js',
+    './tests/e2e/folder-permissions-spec.js',
+    './tests/e2e/metadata-creator-spec.js',
+    './tests/e2e/resource-permissions-spec.js',
+    './tests/e2e/template-creator-spec.js',
+    './tests/e2e/update-description-spec.js',
+    './tests/e2e/update-name-spec.js',
+    './tests/e2e/update-ownership-spec.js',
+    './tests/e2e/update-permissions-spec.js',
+    './tests/e2e/workspace-spec.js'
+  ])
       .pipe(protractor({
         configFile: "protractor.config.js"
       }))
@@ -152,7 +175,8 @@ gulp.task('e2e', ['test-env'], function () {
 
 function exitWithError(msg) {
   onError(msg);
-  console.log("Please see: https://github.com/metadatacenter/cedar-docs/wiki/Configure-environment-variables-on-OS-X".yellow);
+  console.log(
+      "Please see: https://github.com/metadatacenter/cedar-docs/wiki/Configure-environment-variables-on-OS-X".yellow);
   console.log("Please restart the application after setting the variables!".green);
   console.log();
   console.log();
@@ -161,10 +185,10 @@ function exitWithError(msg) {
 
 function readAllEnvVarsOrFail() {
   for (var key  in envConfig) {
-    var value = process.env[key];
-    if (!value) {
+    if (!process.env.hasOwnProperty(key)) {
       exitWithError('You need to set the following environment variable: ' + key);
     } else {
+      var value = process.env[key];
       envConfig[key] = value;
       if (key.indexOf('PASSWORD') <= -1) {
         console.log(("- Environment variable " + key + " found: ").green + value.bold);
@@ -179,31 +203,39 @@ var envConfig = {
   'CEDAR_HOST'               : null,
   'CEDAR_ANALYTICS_KEY'      : null,
   'CEDAR_TEST_USER1'         : null,
+  'CEDAR_TEST_USER1_NAME'    : null,
   'CEDAR_TEST_USER1_PASSWORD': null,
   'CEDAR_TEST_USER2'         : null,
+  'CEDAR_TEST_USER2_NAME'    : null,
   'CEDAR_TEST_USER2_PASSWORD': null,
-  'CEDAR_TEST_USER3'         : null,
-  'CEDAR_TEST_USER3_PASSWORD': null,
-  'CEDAR_SELENIUM_SERVER_JAR': null,
-  'CEDAR_CHROME_DRIVER'      : null
+  'CEDAR_EVERYBODY_GROUP'    : null,
+  'CEDAR_VERSION'            : null,
+  'CEDAR_VERSION_MODIFIER'   : null
 };
 console.log();
 console.log();
-console.log("-------------------------------------------- ************* --------------------------------------------".red);
+console.log(
+    "-------------------------------------------- ************* --------------------------------------------".red);
 console.log("- Starting CEDAR front end server...".green);
 readAllEnvVarsOrFail();
 var cedarProfile = envConfig['CEDAR_PROFILE'];
 var cedarHost = envConfig['CEDAR_HOST'];
 var cedarAnalyticsKey = envConfig['CEDAR_ANALYTICS_KEY'];
 var cedarTestUser1 = envConfig['CEDAR_TEST_USER1'];
+var cedarTestUserName1 = envConfig['CEDAR_TEST_USER1_NAME'];
 var cedarTestPassword1 = envConfig['CEDAR_TEST_USER1_PASSWORD'];
 var cedarTestUser2 = envConfig['CEDAR_TEST_USER2'];
+var cedarTestUserName2 = envConfig['CEDAR_TEST_USER2_NAME'];
 var cedarTestPassword2 = envConfig['CEDAR_TEST_USER2_PASSWORD'];
 var cedarTestUser3 = envConfig['CEDAR_TEST_USER3'];
+var cedarTestUserName3 = envConfig['CEDAR_TEST_USER3_NAME'];
 var cedarTestPassword3 = envConfig['CEDAR_TEST_USER3_PASSWORD'];
-var cedarSeleniumServerJar = envConfig['CEDAR_SELENIUM_SERVER_JAR'];
-var cedarChromeDriver = envConfig['CEDAR_CHROME_DRIVER'];
-console.log("-------------------------------------------- ************* --------------------------------------------".red);
+var cedarEverybodyGroup = envConfig['CEDAR_EVERYBODY_GROUP'];
+var cedarVersion = envConfig['CEDAR_VERSION'];
+var cedarVersionModifier = envConfig['CEDAR_VERSION_MODIFIER'];
+
+console.log(
+    "-------------------------------------------- ************* --------------------------------------------".red);
 console.log();
 
 // Prepare task list
@@ -217,6 +249,6 @@ if (cedarProfile === 'local') {
   exitWithError("Invalid CEDAR_PROFILE value. Please set to 'local' or 'server'");
 }
 
-taskNameList.push('lint', 'less', 'copy:resources', 'replace-url', 'replace-tracking', 'test-env');
+taskNameList.push('lint', 'less', 'copy:resources', 'replace-url', 'replace-tracking', 'replace-version', 'test-env');
 // Launch tasks
 gulp.task('default', taskNameList);

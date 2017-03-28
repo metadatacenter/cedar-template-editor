@@ -1,7 +1,5 @@
 <div class="template-container scrollable-content">
 
-
-
   <div class="template-header template" id="template-header">
     <div class="container">
       <div class="row">
@@ -17,7 +15,6 @@
             </form>
           </div>
         </div>
-        <!-- /.left-sidebar -->
         <div class="right-body col-sm-6">
           <div id="element-description-container">
             <form>
@@ -26,6 +23,17 @@
                     aria-label="Template Description" ng-model="form._ui.description" with-floating-label>
               </div>
             </form>
+          </div>
+        </div>
+        <button type="button" class="show-type"
+            ng-click="showModal('control-options-template-field');$root.finalTitle=form._ui.title">
+          <i class="cedar-svg-controll-term collapsed" style="padding-bottom:10px"></i>
+        </button>
+        <div class="btn-group dropdown">
+          <button  data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" class="show-type"><i
+              class="fa fa-caret-down  inline "></i></button>
+          <div class="dropdown-menu dropdown-menu-right" class="class-list" >
+            <class-list field="form" view-type="viewType"></class-list>
           </div>
         </div>
       </div>
@@ -40,7 +48,7 @@
             <div class="form-preview collapse in">
               <form-directive form="form" page="page" model="instance" page-index="0"
                   ng-if="!isPropertiesEmpty()"></form-directive>
-              <ng-include src="'scripts/layout/json_preview.html'"></ng-include>
+              <ng-include src="'scripts/layout/template-json-preview.html'"></ng-include>
             </div>
           </div>
 
@@ -86,7 +94,8 @@
               <button id="button-cancel-template" type="button" class="btn btn-clear template"
                   ng-click="cancelTemplate()" translate>GENERIC.Cancel
               </button>
-              <button id="button-save-template"  ng-disabled="saveButtonDisabled" type="button" class="btn btn-save template" ng-click="saveTemplate()"
+              <button id="button-save-template" ng-disabled="saveButtonDisabled" type="button"
+                  class="btn btn-save template" ng-click="saveTemplate()"
                   translate>
                 GENERIC.SaveTemplate
               </button>
@@ -108,6 +117,23 @@
         pick-resource-callback="pickElementFromPicker"
         mode="'modal'">
     </cedar-finder>
+
+    <!-- field modal -->
+    <div class="modal fade controlled-terms-modal" id="control-options-template-field" data-backdrop="static">
+      <div class="modal-dialog">
+        <div class="modal-content" style="overflow:auto">
+          <div class="modal-header">
+            <button type="button" class="close controlled-terms-modal-field-close" data-dismiss="modal"
+                aria-label="Close"><span aria-hidden="true"><img
+                src="/img/close_modal.png" width="22"/></span></button>
+          </div>
+          <div class="modal-body">
+            <div controlled-term field="form"
+                options='{"filterSelection":"field", "modalId":"control-options-template-field"}'></div>
+          </div>
+        </div>
+      </div>
+    </div>
 
   </div>
 </div>

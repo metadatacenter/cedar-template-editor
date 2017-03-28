@@ -13,10 +13,11 @@ define([
     '$timeout',
     '$document',
     'QueryParamUtilsService',
-    'UIMessageService'
+    'UIMessageService',
+    'UIProgressService'
   ];
 
-  function HeaderController($rootScope, $location, $window, $timeout, $document, QueryParamUtilsService, UIMessageService) {
+  function HeaderController($rootScope, $location, $window, $timeout, $document, QueryParamUtilsService, UIMessageService, UIProgressService) {
 
     var vm = this;
 
@@ -48,6 +49,7 @@ define([
     vm.goToDashboardOrBack = function () {
       vm.searchTerm = null;
       var path = $location.path();
+      var hash = $location.hash();
       var baseUrl = '/dashboard';
       if (path != baseUrl) {
         var queryParams = {};
@@ -60,13 +62,15 @@ define([
          }*/
       }
       var url = $rootScope.util.buildUrl(baseUrl, queryParams);
+      if (hash) {
+        url += '#' + hash;
+      }
       $location.url(url);
       $window.scrollTo(0, 0);
 
     };
 
     vm.search = function (searchTerm) {
-      console.log('searchTerm ' + searchTerm);
       if (vm.isDashboard()) {
         vm.searchTerm = searchTerm;
         var baseUrl = '/dashboard';
@@ -78,6 +82,9 @@ define([
         queryParams['search'] = searchTerm;
         var url = $rootScope.util.buildUrl(baseUrl, queryParams);
         $location.url(url);
+        if (searchTerm) {
+          UIProgressService.start();
+        }
       }
     };
 
@@ -98,7 +105,6 @@ define([
     };
 
     vm.isTemplate = function () {
-      //console.log('isTemplate' + ($location.path() === "/templates"));
       return (vm.path === "/templates");
     };
 

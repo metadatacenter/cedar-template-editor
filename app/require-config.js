@@ -50,7 +50,7 @@ require.config({
     'lib/angular-ui-select/dist/select.min'                                              : ['angular'],
     'lib/angular-ui-sortable/sortable.min'                                               : ['angular'],
     'lib/angulartics/dist/angulartics.min'                                               : ['angular'],
-    'lib/angulartics-google-analytics/dist/angulartics-google-analytics.min'             : ['angular'],
+
 
     '3rdparty/angular-fitvids/angular-fitvids': {
       deps   : ['angular', 'jquery'],
@@ -70,6 +70,7 @@ require.config({
     'lib/bootstrap-select/dist/js/bootstrap-select.min'                          : ['lib/bootstrap/dist/js/bootstrap.min'],
     'cedar/template-editor/handsontable/SpreadsheetContext'                      : ['lib/handsontable/dist/handsontable.full.min'],
     'cedar/template-editor/handsontable/MultiCheckboxEditor'                     : ['lib/handsontable/dist/handsontable.full.min'],
+    'lib/ngprogress/build/ngprogress.min'                                        : ['angular'],
   },
   priority: [
     'jquery',
@@ -78,7 +79,7 @@ require.config({
   deps    : window.__karma__ ? allTestFiles : [],
   callback: window.__karma__ ? window.__karma__.start : null,
   baseUrl : window.__karma__ ? '/base' : '',
-  urlArgs : "v=" + window.cedarVersion
+  urlArgs : "v=" + window.cedarCacheControl
 });
 
 // do not load the full app here.

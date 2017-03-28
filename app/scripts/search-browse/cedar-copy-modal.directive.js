@@ -27,7 +27,7 @@ define([
 
         cedarCopyModalController.$inject = [
           '$scope',
-          '$modal',
+          '$uibModal',
           'CedarUser',
           '$timeout',
           '$translate',
@@ -36,7 +36,7 @@ define([
           'CONST'
         ];
 
-        function cedarCopyModalController($scope, $modal, CedarUser, $timeout, $translate,
+        function cedarCopyModalController($scope, $uibModal, CedarUser, $timeout, $translate,
                                           resourceService,
                                           UIMessageService,
                                           CONST) {
@@ -139,7 +139,7 @@ define([
           }
 
           function currentTitle() {
-            return  vm.currentDestination ? vm.currentDestination.displayName : '';
+            return vm.currentDestination ? vm.currentDestination.displayName : '';
           }
 
           function selectDestination(resource) {
@@ -279,6 +279,5 @@ define([
 
         }
       }
-
     }
 );

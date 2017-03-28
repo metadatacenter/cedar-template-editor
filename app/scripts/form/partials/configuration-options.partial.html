@@ -13,10 +13,11 @@
         <span><i class="cedar-svg-controll-term collapsed" style="padding-bottom:10px"></i>Values</span>
       </div>
       <!--<div ng-if="hasDateRange()" class="element-toggle table-cell-style date-range-tab" ng-class="{active: isTabActive('range')}"-->
-          <!--ng-click="toggleControlledTerm('range');  $event.stopPropagation();">-->
-        <!--<span>Range</span>-->
+      <!--ng-click="toggleControlledTerm('range');  $event.stopPropagation();">-->
+      <!--<span>Range</span>-->
       <!--</div>-->
-      <div ng-if="allowsMultiple()" class="element-toggle table-cell-style cardinality-tab" ng-class="{active: isTabActive('cardinality')}"
+      <div ng-if="allowsMultiple()" class="element-toggle table-cell-style cardinality-tab"
+          ng-class="{active: isTabActive('cardinality')}"
           ng-click="toggleControlledTerm('cardinality');  $event.stopPropagation();">
         <span>Multiple</span>
       </div>
@@ -24,7 +25,8 @@
           ng-click="toggleControlledTerm('required');  $event.stopPropagation();">
         <span>Required</span>
       </div>
-      <div ng-if="allowsValueRecommendation()" class="element-toggle table-cell-style value-recommendation-tab" ng-class="{active: isTabActive('value-recommendation')}"
+      <div ng-if="allowsValueRecommendation()" class="element-toggle table-cell-style value-recommendation-tab"
+          ng-class="{active: isTabActive('value-recommendation')}"
           ng-click="toggleControlledTerm('value-recommendation');  $event.stopPropagation();">
         <span>Suggestions</span>
       </div>
@@ -33,11 +35,13 @@
 
   <!-- date range -->
   <div id="range" class="type-toggle date" ng-init="initDateSingle()" ng-show="isTabActive('range')">
-    <div class="single-date d-option" ng-click="$root.schemaOf(field)._ui.dateType = 'single-date'; $event.stopPropagation();"
+    <div class="single-date d-option"
+        ng-click="$root.schemaOf(field)._ui.dateType = 'single-date'; $event.stopPropagation();"
         ng-class="{active: $root.schemaOf(field)._ui.dateType == 'single-date'}">
       <span>Date</span>
     </div>
-    <div class="date-range d-option" ng-click="$root.schemaOf(field)._ui.dateType = 'date-range'; $event.stopPropagation();"
+    <div class="date-range d-option"
+        ng-click="$root.schemaOf(field)._ui.dateType = 'date-range'; $event.stopPropagation();"
         ng-class="{active: $root.schemaOf(field)._ui.dateType == 'date-range'}">
       <span>Date Range</span>
     </div>
@@ -45,13 +49,15 @@
   <!-- /.date-type-toggle -->
 
   <!-- Required tab  -->
-  <div id="required" class="cardinality-options" ng-show="isTabActive('required')"  >
+  <div id="required" class="cardinality-options" ng-show="isTabActive('required')">
     <div class="type-toggle date">
-      <div class="single-date d-option" ng-click="$root.schemaOf(field)._valueConstraints.requiredValue = false;  $event.stopPropagation();"
+      <div class="single-date d-option"
+          ng-click="$root.schemaOf(field)._valueConstraints.requiredValue = false;  $event.stopPropagation();"
           ng-class="{active: !$root.schemaOf(field)._valueConstraints.requiredValue}">
         <span>No</span>
       </div>
-      <div class="date-range d-option" ng-click="$root.schemaOf(field)._valueConstraints.requiredValue = true;  $event.stopPropagation();"
+      <div class="date-range d-option"
+          ng-click="$root.schemaOf(field)._valueConstraints.requiredValue = true;  $event.stopPropagation();"
           ng-class="{active: $root.schemaOf(field)._valueConstraints.requiredValue}">
         <span>Yes</span>
       </div>
@@ -59,13 +65,15 @@
   </div>
 
   <!-- Value Recommendation tab  -->
-  <div id="value-recommendation" class="value-recommendation-options" ng-show="isTabActive('value-recommendation')"  >
+  <div id="value-recommendation" class="value-recommendation-options" ng-show="isTabActive('value-recommendation')">
     <div class="type-toggle date">
-      <div class="single-date d-option" ng-click="removeValueRecommendationField($root.schemaOf(field));  $event.stopPropagation();"
+      <div class="single-date d-option"
+          ng-click="removeValueRecommendationField($root.schemaOf(field));  $event.stopPropagation();"
           ng-class="{active: $root.schemaOf(field)._ui.valueRecommendationEnabled == undefined}">
         <span>No</span>
       </div>
-      <div class="date-range d-option" ng-click="$root.schemaOf(field)._ui.valueRecommendationEnabled = true;  $event.stopPropagation();"
+      <div class="date-range d-option"
+          ng-click="$root.schemaOf(field)._ui.valueRecommendationEnabled = true;  $event.stopPropagation();"
           ng-class="{active: $root.schemaOf(field)._ui.valueRecommendationEnabled}">
         <span>Yes</span>
       </div>
@@ -76,24 +84,25 @@
   <div id="cardinality-options" class="cardinality-options " ng-show="isTabActive('cardinality')" ng-init="xxx()">
 
     <div class="type-toggle date">
-      <div class="d-option"  ng-class="{active: !isMultiple()}" ng-click="clearMinMax()">
+      <div class="d-option" ng-class="{active: !isMultiple()}" ng-click="clearMinMax()">
         <span translate>GENERIC.No</span>
       </div>
-      <div class="d-option"  ng-class="{active: isMultiple()}" ng-click="defaultMinMax()">
+      <div class="d-option" ng-class="{active: isMultiple()}" ng-click="defaultMinMax()">
         <span translate>GENERIC.Yes</span>
       </div>
     </div>
 
-    <div class="cardinality-selectors" ng-if="field.minItems > -1" >
-      <span  class=" form-group validation-pattern  min-items-option" >
-        <span  translate>GENERIC.Min</span>
-        <select class="center" select-picker ng-model="cardinality.min" ng-init="initMultiple()" ng-change="updateMultiple()">
+    <div class="cardinality-selectors" ng-if="field.minItems > -1">
+      <span class=" form-group validation-pattern  min-items-option">
+        <span translate>GENERIC.Min</span>
+        <select class="center" select-picker ng-model="cardinality.min" ng-init="initMultiple()"
+            ng-change="updateMultiple()">
           <option ng-repeat="i in cardinality.mins" value="{{ i.value }}">{{ i.label }}</option>
         </select>
       </span>
-      <span  class=" form-group validation-pattern  max-items-option" >
-        <span  translate>GENERIC.Max</span>
-        <select  select-picker ng-model="cardinality.max"  ng-init="initMultiple()" ng-change="updateMultiple()">
+      <span class=" form-group validation-pattern  max-items-option">
+        <span translate>GENERIC.Max</span>
+        <select select-picker ng-model="cardinality.max" ng-init="initMultiple()" ng-change="updateMultiple()">
           <option ng-repeat="i in cardinality.maxes" value="{{ i.value }}">{{ i.label }}</option>
         </select>
       </span>
@@ -102,58 +111,13 @@
   </div>
 
   <!-- Field tab -->
-  <div id="field-type-options" class="cardinality-options" ng-show="isTabActive('field')">
-    <div class="form-group ">
-      <div class="controlled-terms controlled-term-options">
-        <div class="class-container">
-
-          <!-- field type table -->
-          <div class="added-field-classes">
-            <div class="class-list-container">
-              <div class="class-list-table">
-                <table class="table table-hover table-striped " >
-                  <thead>
-                  <tr>
-                    <th>Name</th>
-                    <th width="250px">Description</th>
-                    <th>Source</th>
-                    <th>Identifier</th>
-                    <th>&nbsp;</th>
-                  </tr>
-                  </thead>
-                  <tbody>
-                  <tr ng-repeat="key in addedFieldKeys">
-                    <td>
-                      {{getPrefLabel(key)}}
-                    </td>
-                    <td style="font-size:0.9em">
-                      {{getShortText(getClassDescription(key), 120, '...', '-')}}
-                    </td>
-                    <td>
-                      {{parseOntologyName(key)}}
-                    </td>
-                    <td tooltip="{{getShortId(getClassId(key))}}" tooltip-append-to-body="true">{{getShortId(getClassId(key), 16)}}</td>
-                    <td>
-                      <div class="class-delete" ng-click="deleteFieldAddedItem(key);  $event.stopPropagation();">
-                        <i class="fa fa-times-circle"></i>
-                      </div>
-                    </td>
-                  </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="clear-save">
-          <!-- The field.finalTitle variable is used to store the final title assigned to the field, which will be shown
-          in the modal and used to perform a BioPortal initial search automatically -->
-          <button type="button" class="std-button btn search-ontologies-button" ng-click="showModal(getModalId(true)); $event.stopPropagation();
-          $root.finalTitle = $root.schemaOf(field)._ui.title">Search
-          </button>
-          <!--<button type="button" class="std-button btn search-ontologies-button">Create</button>-->
-        </div>
-      </div>
+  <div ng-show="isTabActive('field')">
+    <class-list field="field" view-type="viewType"></class-list>
+    <div class="clear-save" style="float:right;margin:5px 0;">
+      <!-- The field.finalTitle variable is used to store the final title assigned to the field, which will be shown
+      in the modal and used to perform a BioPortal initial search automatically -->
+      <button type="button" class="std-button btn search-ontologies-button" ng-click="showModal(getModalId(true));$root.finalTitle = $root.schemaOf(field)._ui.title" translate>GENERIC.Search
+      </button>
     </div>
   </div>
 
@@ -165,8 +129,8 @@
           <!-- value table -->
           <div class="added-field-classes">
             <div class="class-list-container">
-              <div class="class-list-table"  >
-                <table class="table table-hover" >
+              <div class="class-list-table">
+                <table class="table table-hover">
                   <thead>
                   <tr>
                     <th>Name</th>
@@ -184,7 +148,9 @@
                     <td>
                       {{class.source}}
                     </td>
-                    <td tooltip="{{getShortId(class.uri)}}" tooltip-append-to-body="true">{{getShortId(class.uri, 16)}}</td>
+                    <td uib-tooltip="{{getShortId(class.uri)}}" tooltip-append-to-body="true">{{getShortId(class.uri,
+                      16)}}
+                    </td>
                     <td>1</td>
                     <td>
                       <div class="class-delete" ng-click="deleteFieldAddedClass(class); $event.stopPropagation();">
@@ -196,10 +162,13 @@
                     <td>{{valueSet.name}}</td>
                     <td>Value Set</td>
                     <td>{{valueSet.vsCollection}}</td>
-                    <td tooltip="{{getShortId(valueSet.uri)}}" tooltip-append-to-body="true">{{getShortId(valueSet.uri, 16)}}</td>
+                    <td uib-tooltip="{{getShortId(valueSet.uri)}}" tooltip-append-to-body="true">{{getShortId(valueSet.uri,
+                      16)}}
+                    </td>
                     <td>{{valueSet.numTerms}}</td>
                     <td>
-                      <div class="class-delete" ng-click="deleteFieldAddedValueSet(valueSet);  $event.stopPropagation();">
+                      <div class="class-delete"
+                          ng-click="deleteFieldAddedValueSet(valueSet);  $event.stopPropagation();">
                         <i class="fa fa-times-circle"></i>
                       </div>
                     </td>
@@ -211,7 +180,8 @@
                     <td>{{ontology.acronym}}</td>
                     <td>{{ontology.numTerms}}</td>
                     <td>
-                      <div class="class-delete" ng-click="deleteFieldAddedOntology(ontology); $event.stopPropagation();">
+                      <div class="class-delete"
+                          ng-click="deleteFieldAddedOntology(ontology); $event.stopPropagation();">
                         <i class="fa fa-times-circle"></i>
                       </div>
                     </td>
@@ -220,7 +190,9 @@
                     <td>{{branch.name}}</td>
                     <td>Branch</td>
                     <td>{{branch.acronym}}</td>
-                    <td tooltip="{{getShortId(branch.uri)}}" tooltip-append-to-body="true">{{getShortId(branch.uri, 16)}}</td>
+                    <td uib-tooltip="{{getShortId(branch.uri)}}" tooltip-append-to-body="true">{{getShortId(branch.uri,
+                      16)}}
+                    </td>
                     <td>-</td>
                     <td>
                       <div class="class-delete" ng-click="deleteFieldAddedBranch(branch); $event.stopPropagation();">
@@ -233,7 +205,7 @@
               </div>
             </div>
           </div>
-          <div class="clear-save" >
+          <div class="clear-save">
             <!-- The field.finalTitle variable is used to store the final title assigned to the field, which will be shown
           in the modal -->
             <button type="button" class="std-button btn search-ontologies-button" ng-click="showModal(getModalId(false)); $event.stopPropagation();
@@ -267,7 +239,7 @@
 <!-- value modal -->
 <div class="modal fade controlled-terms-modal" id="{{getModalId(false)}}" data-backdrop="static">
   <div class="modal-dialog">
-    <div class="modal-content"  style="overflow:auto">
+    <div class="modal-content" style="overflow:auto">
       <div class="modal-header">
         <button type="button" class="close controlled-terms-modal-value-close" data-dismiss="modal"
             aria-label="Close"><span aria-hidden="true"><img

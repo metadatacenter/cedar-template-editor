@@ -19,6 +19,8 @@ define([
         element      : '=',
         delete       : '&',
         model        : '=',
+        labels       : "=",
+        relabel      : '=',
         isRootElement: "=",
         depth        : '=',
         path         : '='
@@ -162,21 +164,25 @@ define([
         return DataManipulationService.getFieldSchema(scope.element)._ui.title;
       };
 
+      scope.getPropertyLabel = function () {
+        if (scope.labels && scope.key) {
+          return scope.labels[scope.key];
+        } else {
+          console.log("error: no propertyLabels");
+          return scope.getTitle();
+        }
+      };
+
 
       scope.addElement = function () {
-
         if ((!scope.element.maxItems || scope.model.length < scope.element.maxItems)) {
           var seed = {};
-
           if (scope.model.length > 0) {
-
             seed = angular.copy(scope.model[0]);
-            resetElement(seed, scope.element);
+            //resetElement(seed, scope.element);
             scope.model.push(seed);
-
-
-          } else {
-
+          }
+          else {
             scope.model.push(seed);
             if (angular.isArray(scope.model)) {
               angular.forEach(scope.model, function (m) {
@@ -191,10 +197,6 @@ define([
           var index = scope.model.length - 1;
           scope.setActive(index, true);
           scope.toggleExpanded(index);
-
-          // select the first field in the element
-
-
         }
       };
 
@@ -318,8 +320,14 @@ define([
         if (selectedKey) {
           delete props[selectedKey];
 
+          // remove it from the order array
           var idx = $rootScope.schemaOf(scope.element)._ui.order.indexOf(selectedKey);
           $rootScope.schemaOf(scope.element)._ui.order.splice(idx, 1);
+
+          // remove it from the property Labels?
+          console.log('delete property labels?');
+          console.log($rootScope.schemaOf(scope.element)._ui.propertyLabels[selectedKey]);
+          //delete $rootScope.schemaOf(scope.element)._ui.propertyLabels[selectedKey];
 
           if ($rootScope.isElement(fieldOrElement)) {
             scope.$emit("invalidElementState",
@@ -404,25 +412,18 @@ define([
       // allows us to look a the model as an array
       scope.valueArray;
       scope.setValueArray = function () {
-
         scope.valueArray = [];
         if (scope.model instanceof Array) {
-
           scope.valueArray = scope.model;
-
         } else {
-
           if (!scope.model) {
             scope.model = {};
           }
-
           scope.valueArray = [];
           scope.valueArray.push(scope.model);
-
         }
       };
       scope.setValueArray();
-
 
       // watch for this field's next sibling
       scope.$on('nextSibling', function (event, args) {

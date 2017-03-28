@@ -4,6 +4,7 @@ define([
   'angular',
   'cedar/template-editor/controlled-term/cedar-child-tree.directive',
   'cedar/template-editor/controlled-term/cedar-class-tree.directive',
+  'cedar/template-editor/controlled-term/class-list.directive',
   'cedar/template-editor/controlled-term/controlled-term.directive',
   'cedar/template-editor/controlled-term/controlled-term-search.directive',
   'cedar/template-editor/controlled-term/provisional-class.service',
@@ -15,6 +16,7 @@ define([
   angular.module('cedar.templateEditor.controlledTerm', [
     'cedar.templateEditor.controlledTerm.cedarChildTreeDirective',
     'cedar.templateEditor.controlledTerm.cedarClassTreeDirective',
+    'cedar.templateEditor.controlledTerm.classListDirective',
     'cedar.templateEditor.controlledTerm.controlledTermDirective',
     'cedar.templateEditor.controlledTerm.controlledTermSearchDirective',
     'cedar.templateEditor.controlledTerm.provisionalClassService',

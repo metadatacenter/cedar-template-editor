@@ -1,12 +1,13 @@
 'use strict';
 
-var WorkspacePage = require('../pages/workspace-new-page.js');
+var WorkspacePage = require('../pages/workspace-page.js');
 
 var ShareModal = function () {
   var EC = protractor.ExpectedConditions;
 
   var shareModal = element(by.id('share-modal'));
   var shareModalBody = shareModal.element(by.css('div > div > div.modal-body '));
+  var shareColumn = shareModalBody.element(by.css('div [ng-show="!share.showGroups"] > div > div.col-sm-6.ng-scope'));
   var shareWithGroupRow = shareModalBody.element(by.css('div > div > div.col-sm-6.ng-scope > div:nth-child(2)'));
   var shareWithUserRow = shareModalBody.element(by.css('div > div > div.col-sm-6.ng-scope > div:nth-child(5)'));
   var shareModalUserName = shareWithUserRow.element(by.css('div.col-sm-7.typeaheadDropUp > input'));
@@ -87,6 +88,7 @@ var ShareModal = function () {
   };
 
 
+  // open the share dialog of the given resource via the more-options button
   this.openDialogViaMoreOptions = function (name, type) {
     WorkspacePage.selectResource(name, type);
 
@@ -102,6 +104,7 @@ var ShareModal = function () {
   };
 
 
+  // open the share dialog of the given resource via the right-click menu item
   this.openDialogViaRightClick = function (name, type) {
     WorkspacePage.rightClickResource(name, type);
     var shareMenuItem = WorkspacePage.createRightClickShareMenuItem();
@@ -111,20 +114,23 @@ var ShareModal = function () {
   };
 
 
+  // share the given resource with the specified user name with or without write and ownership permissions
   this.shareResource = function(name, type, username, canWrite, isOwner) {
     this.openDialogViaRightClick(name, type);
     this.shareWithUser(username, canWrite, isOwner);
-    browser.wait(EC.stalenessOf(shareModalBody));
+    browser.wait(EC.stalenessOf(shareModalBody), 1500);
   };
 
 
+  // share the given resource with the specified group name with or without write and ownership permissions
   this.shareResourceWithGroup = function(name, type, groupname, canWrite, isOwner) {
     this.openDialogViaRightClick(name, type);
     this.shareWithGroup(groupname, canWrite, isOwner);
-    browser.wait(EC.stalenessOf(shareModalBody));
+    browser.wait(EC.stalenessOf(shareModalBody), 1500);
   };
 
 
+  // share with a user given a user name, whether user has write permissions, and whether user is owner
   this.shareWithUser = function (username, canWrite, isOwner) {
     var usernameField = this.createShareModalUserName();
     browser.wait(EC.visibilityOf(usernameField));
@@ -156,6 +162,7 @@ var ShareModal = function () {
   };
 
 
+  // share with a group given its name, whether group has write permissions, and whether group is owner
   this.shareWithGroup = function(groupName, canWrite, isOwner) {
     var groupnameField = this.createShareModalGroupName();
     browser.wait(EC.visibilityOf(groupnameField));
@@ -189,8 +196,7 @@ var ShareModal = function () {
 
   // checks whether the current user can share the selected item
   this.canShare = function() {
-    var usernameField = this.createShareModalUserName();
-    return usernameField.isPresent();
+    return shareColumn.isPresent();
   };
 
 
@@ -208,11 +214,11 @@ var ShareModal = function () {
   };
 
 
+  // click on the done button of the share dialog
   this.clickDone = function() {
     var doneButton = this.createShareModalDoneButton();
-    browser.wait(EC.visibilityOf(doneButton));
-    browser.wait(EC.elementToBeClickable(doneButton));
     doneButton.click();
+    browser.wait(EC.stalenessOf(doneButton));
   }
 
 

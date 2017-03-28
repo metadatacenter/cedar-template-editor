@@ -29,54 +29,52 @@
     <div class="  pull-right no-wrap" id="workspace-toolbar">
       <ul class="list-inline">
 
-        <li ng-if="dc.onDashboard() " id="more-options-tool">
+        <li ng-if="dc.onDashboard() " class="more-options">
           <div class="btn-group dropdown">
             <button class="{'disabled': !dc.hasSelection()}"
                 ng-disabled="!dc.hasSelection()" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><i
                 class="fa fa-ellipsis-v  inline "></i></button>
-            <ul class="dropdown-menu dropdown-menu-right">
 
-              <li ng-if="dc.isFolder()"><a href="#" ng-click="dc.goToResource()">Open</a></li>
-              <li ng-if="dc.isTemplate()"><a class="populate" href="#" ng-click="dc.launchInstance()">Populate</a></li>
-              <li ng-if="!dc.isFolder() && dc.canWrite()"><a href="#" ng-click="dc.editResource()">Edit</a></li>
-              <li role="separator" class="divider"></li>
-              <li><a href="#" ng-click="dc.showShareModal(resource)">Share...</a></li>
-              <li><a href="#" ng-click="dc.showCopyModal(resource)">Copy to...</a></li>
-              <li ng-if="dc.canWrite()"><a href="#" ng-click="dc.showMoveModal(resource)">Move to...</a></li>
-              <li ng-if="dc.canWrite()"><a href="#" ng-click="dc.showRenameModal(resource)">Rename...</a></li>
-              <li ng-if="dc.canWrite()" role="separator" class="divider"></li>
-              <li ng-if="dc.canWrite()"><a href="#" class="deleteResource" ng-click="dc.deleteResource(resource)">Delete</a></li>
-            </ul>
+            <cedar-dropdown-menu class="dropdown-menu dropdown-menu-right" resource="resource" go-to="dc.goToResource"
+                share="dc.showShareModal"
+                move="dc.showMoveModal" delete="dc.deleteResource" copy="dc.showCopyModal" rename="dc.showRenameModal"
+                can-not-populate="dc.canNotPopulate" can-not-write="dc.canNotWrite"
+                can-not-share="dc.canNotShare" is-folder="dc.isFolder()">
+            </cedar-dropdown-menu>
+
           </div>
         </li>
 
-        <li ng-show="dc.onDashboard() && dc.resourceViewMode != 'grid'" id="grid-view-tool">
-          <button
-              type="button"
-              tooltip='{{"HELP.viewAsGrid" | translate}}'
+        <!--<li ng-show="dc.onDashboard() && dc.resourceViewMode != 'grid'" id="grid-view-tool">-->
+        <!--<button-->
+        <!--type="button"-->
+        <!--tooltip='{{"HELP.viewAsGrid" | translate}}'-->
+        <!--tooltip-trigger-->
+        <!--tooltip-animation="false"-->
+        <!--tooltip-placement="bottom"-->
+        <!--data-toggle="tooltip"-->
+        <!--ng-click="dc.setResourceViewMode('grid')"><i-->
+        <!--class="fa fa-th inline"></i></button>-->
+        <!--</li>-->
+
+        <li ng-show="dc.onDashboard()" id="grid-view-tool">
+          <button type="button"
+              uib-tooltip='{{"HELP.viewAsList" | translate}}'
               tooltip-trigger
               tooltip-animation="false"
               tooltip-placement="bottom"
               data-toggle="tooltip"
-              ng-click="dc.setResourceViewMode('grid')"><i
-              class="fa fa-th inline"></i></button>
-        </li>
-
-        <li ng-show="dc.onDashboard() && dc.resourceViewMode != 'list'" id="list-view-tool">
-          <button type="button"
-              tooltip='{{"HELP.viewAsList" | translate}}'
-              tooltip-trigger
-              tooltip-animation="false"
-              tooltip-placement="bottom"
-              data-toggle="tooltip"
-              ng-click="dc.setResourceViewMode('list')"><i
-              class="fa fa-list-ul inline "></i></button>
+              ng-click="dc.toggleViewMode()">
+            <i class="inline fa "
+                ng-class="{'fa-list-ul': dc.resourceViewMode === 'grid', 'fa-th': dc.resourceViewMode === 'list'}"></i>
+          </button>
         </li>
 
 
-        <li ng-show="!dc.infoShowing()" ng-if="dc.onDashboard()" id="details-view-tool">
+        <li ng-if="dc.onDashboard()" class="toggleDetails"
+            ng-class="{'hidePanel':dc.infoShowing(), 'showPanel':!dc.infoShowing()}">
           <button type="button"
-              tooltip='{{"HELP.viewDetails" | translate}}'
+              uib-tooltip="{{ dc.toggleDirection() | translate  }}"
               tooltip-trigger
               tooltip-animation="false"
               tooltip-placement="bottom"
@@ -84,32 +82,24 @@
               ng-click="dc.toggleInfoPanel()"><i class="fa fa-info "></i></button>
         </li>
 
-        <li ng-show="dc.infoShowing()" ng-if="dc.onDashboard()" id="details-hide-tool">
-          <button type="button"
-              tooltip='{{"HELP.hideDetails" | translate}}'
-              tooltip-trigger
-              tooltip-animation="false"
-              tooltip-placement="bottom"
-              data-toggle="tooltip"
-              ng-click="dc.toggleInfoPanel()"><i class="fa fa-info "></i></button>
-        </li>
 
         <li ng-if="dc.onDashboard()" id="workspace-sort-tool">
           <div class="btn-group dropdown">
             <button type="button"
-                tooltip='{{"HELP.sortBy" | translate}}'
+                uib-tooltip='{{"HELP.sortBy" | translate}}'
                 tooltip-trigger
                 tooltip-animation="false"
                 tooltip-placement="bottom"
-                data-toggle="tooltip"><i class="fa fa-sort-amount-asc " ></i></button>
-            <button  class="menu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><i
-                class="fa fa-caret-down  " ></i></button>
+                data-toggle="tooltip"><i class="fa fa-sort-amount-asc "></i></button>
+            <button class="menu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><i
+                class="fa fa-caret-down  "></i></button>
             <ul class="dropdown-menu dropdown-menu-right">
-              <li><a ng-click="dc.setSortOption('name')"><i class="fa fa-check" ng-class="dc.sortName()"></i><span
+              <li><a class="sortName" ng-click="dc.setSortOption('name')"><i class="fa fa-check"
+                  ng-class="dc.sortName()"></i><span
                   translate="DASHBOARD.sort.name"></span></a></li>
-              <li><a ng-click="dc.setSortOption('createdOnTS')"><i class="fa fa-check"
+              <li><a class="sortCreated" ng-click="dc.setSortOption('createdOnTS')"><i class="fa fa-check"
                   ng-class="dc.sortCreated()"></i><span translate="DASHBOARD.sort.createdOnTS"></span></a></li>
-              <li><a ng-click="dc.setSortOption('lastUpdatedOnTS')"><i class="fa fa-check"
+              <li><a class="sortUpdated" ng-click="dc.setSortOption('lastUpdatedOnTS')"><i class="fa fa-check"
                   ng-class="dc.sortUpdated()"></i><span
                   translate="DASHBOARD.sort.lastUpdatedOnTS"></span></a>
               </li>
@@ -137,94 +127,6 @@
 
   </div>
 </div>
-
-
-<!--gray populate a form modal slide up/down section -->
-<!--<section ng-if="dc.onDashboard()" class="form-populate collapse in" id="favorites">-->
-<!--&lt;!&ndash; container &ndash;&gt;-->
-<!--<div class="container">-->
-<!--<div class="row">-->
-<!--<div class="col-sm-12 clearfix">-->
-<!--<div class="pull-left">-->
-<!--<h4>Populate a form</h4>-->
-<!--</div>-->
-<!--<div class="pull-right">-->
-<!--<p><a href="#fsModal" data-toggle="modal">More <i class="fa fa-arrow-down"></i></a></p>-->
-<!--</div>-->
-<!--</div>-->
-<!--</div>-->
-<!--&lt;!&ndash; template boxes (4 columns) &ndash;&gt;-->
-<!--<div class="row populate-form-boxes">-->
-<!--<div class="col-md-3 col-sm-6" ng-repeat="(key, form) in dc.forms" ng-show="key < 4">-->
-<!--<div rightclick offsetX="30" offsetY="5" dropdownId="{{getId(form, 'minipopulate')}}"-->
-<!--ng-click="dc.launchInstance(form)" class="form-box">-->
-<!--<a href="#n" class="box-content text-center">-->
-<!--<i ng-class="dc.getResourceIconClass(form)" class="fa"></i>-->
-
-<!--<p>{{ form.name }}</p>-->
-
-<!--<p>{{ form.description }}</p>-->
-<!--</a>-->
-<!--</div>-->
-<!--</div>-->
-<!--</div>-->
-<!--&lt;!&ndash; template boxes (4 columns) &ndash;&gt;-->
-<!--</div>-->
-<!--&lt;!&ndash; container &ndash;&gt;-->
-<!--&lt;!&ndash; modal &ndash;&gt;-->
-<!--<div id="fsModal" class="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">-->
-<!--&lt;!&ndash; dialog &ndash;&gt;-->
-<!--<div class="modal-dialog">-->
-<!--&lt;!&ndash; content &ndash;&gt;-->
-<!--<div class="modal-content">-->
-<!--&lt;!&ndash; header &ndash;&gt;-->
-<!--<div class="modal-header">-->
-<!--<div class="container" style="height:200px">-->
-<!--<div class="row">-->
-<!--<div class="col-sm-12 clearfix">-->
-<!--<div class="pull-left">-->
-<!--<h4>Populate a form</h4>-->
-<!--</div>-->
-<!--<div class="pull-right">-->
-<!--<p><a href="#n" data-dismiss="modal">Less <i class="fa fa-arrow-up"></i></a></p>-->
-<!--</div>-->
-<!--</div>-->
-<!--</div>-->
-<!--</div>-->
-<!--</div>-->
-<!--&lt;!&ndash; header &ndash;&gt;-->
-<!--&lt;!&ndash; body &ndash;&gt;-->
-<!--<div class="modal-body">-->
-<!--<div class="container">-->
-<!--<div class="row populate-form-boxes">-->
-<!--<div class="col-md-3 col-sm-6" ng-repeat="(key, form) in dc.forms">-->
-<!--<div ng-click="dc.selectResource(form)" ng-dblclick="dc.launchInstance(form)" class="form-box">-->
-<!--<div ng-click="dc.launchInstance(form); hideModal('fsModal')">-->
-<!--<a href="#n" rightclick offsetX="30" offsetY="5" dropdownId="{{getId(form,'fullpopulate')}}"-->
-<!--class="box-content text-center">-->
-<!--<i ng-class="dc.getResourceIconClass(form)" class="fa"></i>-->
-
-<!--<p>{{ form.name }}</p>-->
-<!--</a>-->
-<!--</div>-->
-<!--</div>-->
-<!--</div>-->
-<!--</div>-->
-<!--</div>-->
-<!--</div>-->
-<!--&lt;!&ndash; body &ndash;&gt;-->
-<!--&lt;!&ndash; footer &ndash;&gt;-->
-<!--<div class="modal-footer"></div>-->
-<!--&lt;!&ndash;<div class="modal-footer"></div>&ndash;&gt;-->
-<!--&lt;!&ndash; footer &ndash;&gt;-->
-<!--</div>-->
-<!--&lt;!&ndash; content &ndash;&gt;-->
-<!--</div>-->
-<!--&lt;!&ndash; dialog &ndash;&gt;-->
-<!--</div>-->
-<!--&lt;!&ndash; modal &ndash;&gt;-->
-<!--</section>-->
-<!--gray populate a form modal slide up/down section -->
 
 <!--all items view -->
 <section class="all-items-view " ng-class="{'as-modal': !dc.onDashboard()}">
@@ -267,33 +169,36 @@
 
                 <ul ng-if="dc.isFilterSection('type')" class="list-inline ">
                   <li>
-                    <button tooltip="{{dc.showOrHide('template')}} {{'GENERIC.Template' | translate}}"
+                    <button uib-tooltip="{{dc.showOrHide('template')}} {{'GENERIC.Template' | translate}}"
                         tooltip-trigger
                         tooltip-animation="false"
                         tooltip-placement="top"
                         data-toggle="tooltip"
+                        class="template"
                         ng-click="dc.toggleResourceType('template')"><i
                         class="btn btn-sm btn-info btn-circle fa large-icon fa-file-text template"
                         ng-class="{ active: dc.isResourceTypeActive('template') }"></i></button>
 
                   </li>
                   <li>
-                    <button tooltip="{{dc.showOrHide('element')}} {{'GENERIC.Element' | translate}}"
+                    <button uib-tooltip="{{dc.showOrHide('element')}} {{'GENERIC.Element' | translate}}"
                         tooltip-trigger
                         tooltip-animation="false"
                         tooltip-placement="top"
                         data-toggle="tooltip"
+                        class="element"
                         ng-click="dc.toggleResourceType('element')"><i
                         class="btn btn-sm btn-info btn-circle fa large-icon  fa-sitemap element"
-                        ng-class="{ active: dc.isResourceTypeActive('element') }" ></i></button>
+                        ng-class="{ active: dc.isResourceTypeActive('element') }"></i></button>
 
                   </li>
                   <li>
-                    <button tooltip="{{dc.showOrHide('instance')}} {{'GENERIC.Metadata' | translate}}"
+                    <button uib-tooltip="{{dc.showOrHide('instance')}} {{'GENERIC.Metadata' | translate}}"
                         tooltip-trigger
                         tooltip-animation="false"
                         tooltip-placement="top"
                         data-toggle="tooltip"
+                        class="metadata"
                         ng-click="dc.toggleResourceType('instance')"><i
                         class="btn btn-sm btn-info btn-circle fa large-icon  fa-tag metadata"
                         ng-class="{ active: dc.isResourceTypeActive('instance') }"></i></button>
@@ -331,7 +236,6 @@
         <div style="height:auto;">
 
 
-
           <div class="no-selection" ng-if="!dc.hasResources()">
             <div class="row no-file">
               <div class="col-sm-12 center"><i class="fa fa-file"></i></div>
@@ -367,17 +271,15 @@
                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><i
                             class="fa fa-ellipsis-v"></i>
                         </button>
-                        <ul class="dropdown-menu" aria-labelledby="{{getId(resource, 'populate')}}">
 
-                          <li><a href="#" ng-click="dc.editResource()">Open</a></li>
-                          <li><a href="#" ng-click="dc.showInfoPanel()">Info</a></li>
-                          <li role="separator" class="divider"></li>
-                          <li><a href="#" ng-click="dc.showShareModal(resource)">Share...</a></li>
-                          <li><a href="#" ng-click="dc.showMoveModal(resource)">Move to...</a></li>
-                          <li><a href="#" ng-click="dc.showRenameModal(resource)">Rename...</a></li>
-                          <li role="separator" class="divider"></li>
-                          <li><a href="#" class="deleteResource" ng-click="dc.deleteResource(resource)">Delete</a></li>
-                        </ul>
+                        <cedar-dropdown-menu class="dropdown-menu " aria-labelledby="{{getId(resource, 'populate')}}"
+                            resource="resource" go-to="dc.goToResource" share="dc.showShareModal"
+                            move="dc.showMoveModal" copy="dc.showCopyModal" delete="dc.deleteResource"
+                            copy="dc.showCopyModal" rename="dc.showRenameModal"
+                            can-not-populate="dc.canNotPopulate" can-not-write="dc.canNotWrite"
+                            can-not-share="dc.canNotShare" is-folder="dc.isFolder()">
+                        </cedar-dropdown-menu>
+
                       </div>
                     </div>
                   </div>
@@ -416,33 +318,15 @@
                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><i
                             class="fa fa-ellipsis-v"></i>
                         </button>
-                        <!-- need to duplicate these blocks because otherwise the popup flickers --->
-                        <ul ng-if="dc.isTemplate()" class="dropdown-menu"
-                            aria-labelledby="{{getId(resource, 'populate')}}">
-                          <li><a href="#" class="populate" ng-click="dc.launchInstance(resource)">Populate</a></li>
-                          <li ng-if="dc.canWrite()"><a href="#" ng-click="dc.editResource(resource)">Edit</a></li>
-                          <li><a href="#" ng-click="dc.showInfoPanel()">Info</a></li>
-                          <li role="separator" class="divider"></li>
-                          <li><a href="#" ng-click="dc.showShareModal(resource)">Share...</a></li>
-                          <li><a href="#" ng-click="dc.showCopyModal(resource)">Copy to...</a></li>
-                          <li ng-if="dc.canWrite()"><a href="#" ng-click="dc.showMoveModal(resource)">Move to...</a></li>
-                          <li ng-if="dc.canWrite()"><a href="#" ng-click="dc.showRenameModal(resource)">Rename...</a></li>
-                          <li role="separator" class="divider"></li>
-                          <li ng-if="dc.canWrite()"><a href="#" class="deleteResource" ng-click="dc.deleteResource(resource)">Delete</a></li>
-                        </ul>
-                        <!-- need to duplicate these blocks because otherwise the popup flickers --->
-                        <ul ng-if="!dc.isTemplate()" class="dropdown-menu"
-                            aria-labelledby="{{getId(resource, 'populate')}}">
-                          <li ng-if="dc.canWrite()"><a href="#" ng-click="dc.editResource(resource)">Edit</a></li>
-                          <li><a href="#" ng-click="dc.showInfoPanel()">Info</a></li>
-                          <li role="separator" class="divider"></li>
-                          <li><a href="#" ng-click="dc.showShareModal(resource)">Share...</a></li>
-                          <li><a href="#" ng-click="dc.showCopyModal(resource)">Copy to...</a></li>
-                          <li ng-if="dc.canWrite()"><a href="#" ng-click="dc.showMoveModal(resource)">Move to...</a></li>
-                          <li ng-if="dc.canWrite()"><a href="#" ng-click="dc.showRenameModal(resource)">Rename...</a></li>
-                          <li role="separator" class="divider"></li>
-                          <li ng-if="dc.canWrite()"><a href="#" class="deleteResource" ng-click="dc.deleteResource(resource)">Delete</a></li>
-                        </ul>
+
+                        <cedar-dropdown-menu class="dropdown-menu " aria-labelledby="{{getId(resource, 'populate')}}"
+                            resource="resource" go-to="dc.goToResource" share="dc.showShareModal"
+                            move="dc.showMoveModal" delete="dc.deleteResource" copy="dc.showCopyModal"
+                            rename="dc.showRenameModal"
+                            can-not-populate="dc.canNotPopulate" can-not-write="dc.canNotWrite"
+                            can-not-share="dc.canNotShare" is-folder="dc.isFolder()">
+                        </cedar-dropdown-menu>
+
                       </div>
                     </div>
                   </div>
@@ -481,16 +365,14 @@
                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><i
                           class="btn btn-sm btn-circle fa fa-ellipsis-v"></i>
                       </button>
-                      <ul class="dropdown-menu" aria-labelledby="{{getId(resource, 'list')}}">
-                        <li ng-if="dc.canWrite()"><a href="#" ng-click="dc.editResource()">Open</a></li>
-                        <li><a href="#" ng-click="dc.showInfoPanel()">Info</a></li>
-                        <li role="separator" class="divider"></li>
-                        <li><a href="#" ng-click="dc.showShareModal(resource)">Share...</a></li>
-                        <li ng-if="dc.canWrite()"><a href="#" ng-click="dc.showMoveModal(resource)">Move to...</a></li>
-                        <li ng-if="dc.canWrite()"><a href="#" ng-click="dc.showRenameModal(resource)">Rename...</a></li>
-                        <li ng-if="dc.canWrite()" role="separator" class="divider"></li>
-                        <li ng-if="dc.canWrite()"><a href="#" class="deleteResource" ng-click="dc.deleteResource(resource)">Delete</a></li>
-                      </ul>
+
+                      <cedar-dropdown-menu class="dropdown-menu " aria-labelledby="{{getId(resource, 'populate')}}"
+                          resource="resource" go-to="dc.goToResource" share="dc.showShareModal"
+                          move="dc.showMoveModal" delete="dc.deleteResource" copy="dc.showCopyModal"
+                          rename="dc.showRenameModal"
+                          can-not-populate="dc.canNotPopulate" can-not-write="dc.canNotWrite"
+                          can-not-share="dc.canNotShare" is-folder="dc.isFolder()">
+                      </cedar-dropdown-menu>
                     </div>
                   </div>
                 </div>
@@ -516,20 +398,14 @@
                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><i
                           class="btn btn-sm btn-circle fa fa-ellipsis-v"></i>
                       </button>
-                      <ul class="dropdown-menu" aria-labelledby="{{getId(resource, 'list')}}">
-                        <li ng-if="dc.isTemplate()"><a class="populate" href="#" ng-click="dc.launchInstance(resource)">Populate
-                        </a></li>
-                        <li ng-if="dc.canWrite()"><a href="#" ng-click="dc.editResource(resource)">Edit</a></li>
 
-                        <li><a href="#" ng-click="dc.showInfoPanel()">Info</a></li>
-                        <li role="separator" class="divider"></li>
-                        <li><a href="#" ng-click="dc.showShareModal(resource)">Share...</a></li>
-                        <li><a href="#" ng-click="dc.showCopyModal(resource)">Copy to...</a></li>
-                        <li ng-if="dc.canWrite()"><a href="#" ng-click="dc.showMoveModal(resource)">Move to...</a></li>
-                        <li ng-if="dc.canWrite()"><a href="#" ng-click="dc.showRenameModal(resource)">Rename...</a></li>
-                        <li ng-if="dc.canWrite()" role="separator" class="divider"></li>
-                        <li ng-if="dc.canWrite()"><a href="#" class="deleteResource" ng-click="dc.deleteResource(resource)">Delete</a></li>
-                      </ul>
+                      <cedar-dropdown-menu class="dropdown-menu " aria-labelledby="{{getId(resource, 'populate')}}"
+                          resource="resource" go-to="dc.goToResource" share="dc.showShareModal"
+                          move="dc.showMoveModal" delete="dc.deleteResource" copy="dc.showCopyModal"
+                          rename="dc.showRenameModal"
+                          can-not-populate="dc.canNotPopulate" can-not-write="dc.canNotWrite"
+                          can-not-share="dc.canNotShare" is-folder="dc.isFolder()">
+                      </cedar-dropdown-menu>
                     </div>
                   </div>
                 </div>
@@ -543,7 +419,11 @@
                 {{dc.totalCount}}
               </div>
             </div>
+
+
+
           </div>
+
 
         </div>
 
@@ -651,7 +531,7 @@
           <div ng-if="!dc.editingDescription" class="edit pull-right">
             <button
                 type="button"
-                tooltip='{{"HELP.editDescription" | translate}}'
+                uib-tooltip='{{"HELP.editDescription" | translate}}'
                 tooltip-trigger
                 tooltip-animation="false"
                 tooltip-placement="left"
@@ -671,7 +551,7 @@
         <li ng-show="dc.showFloatingMenu">
           <button type="button"
               id="button-create-folder"
-              tooltip='{{"HELP.createFolder" | translate}}'
+              uib-tooltip='{{"HELP.createFolder" | translate}}'
               tooltip-trigger
               tooltip-animation="false"
               tooltip-placement="left"
@@ -686,7 +566,7 @@
 
             <button type="button"
                 id="button-create-element"
-                tooltip='{{"HELP.createElement" | translate}}'
+                uib-tooltip='{{"HELP.createElement" | translate}}'
                 tooltip-trigger
                 tooltip-animation="false"
                 tooltip-placement="left"
@@ -699,7 +579,7 @@
           <a ng-href="/templates/create?folderId={{dc.currentFolderId | encodeURIComponent}}">
             <button type="button"
                 id="button-create-template"
-                tooltip='{{"HELP.createTemplate" | translate}}'
+                uib-tooltip='{{"HELP.createTemplate" | translate}}'
                 tooltip-trigger
                 tooltip-animation="false"
                 tooltip-placement="left"
@@ -767,6 +647,21 @@
       data-keyboard="true" data-backdrop="static" share-resource="resource">
   </cedar-share-modal>
 </section>
+
+<!--<section>-->
+  <!--<div class="row">-->
+    <!--<div class="col-sm-4">-->
+      <!--<uib-progressbar value="55"></uib-progressbar>-->
+    <!--</div>-->
+    <!--<div class="col-sm-4">-->
+      <!--<uib-progressbar class="progress-striped" value="22" type="warning">22%</uib-progressbar>-->
+    <!--</div>-->
+    <!--<div class="col-sm-4">-->
+      <!--<uib-progressbar class="progress-striped active" max="200" value="166" type="danger"><i>166 / 200</i>-->
+      <!--</uib-progressbar>-->
+    <!--</div>-->
+  <!--</div>-->
+<!--</section>-->
 
 
 

@@ -1,49 +1,52 @@
 <div ng-init="initializeValue(field)" class="form-group has-feedback" ng-click="setActive(index)">
 
-  <select ng-if="isActive(index) && isMultipleChoice()" ng-init="initMultiple()"
-      ng-click="setActive(index)"
-      class="form-control select "
-      multiple="true"
-      field="field"
-      ng-change="updateMultiple(valueElement[0])"
-      ng-model="data.model"
-      select-picker="">
-
-    <option ng-keypress="isSubmit($event, index)" ng-click="setActive(index,true)" ng-repeat="(i, v) in getLiterals()"
-        value="{{v.label}}">
-      {{v.label}}
-    </option>
-
-  </select>
-
-
+  <!-- Single Choice (Active) -->
   <select ng-if="isActive(index) && !isMultipleChoice()"
-      class="form-control select"
+      class="form-control select show-tick"
       ng-class="{'isActive' : isActive(index), 'required': isRequired()}"
       ng-click="setActive(index, true)"
       data-max-options="1"
       field="field"
       close-on-select="true"
-      ng-model="valueElement[0]['@value']"
+      ng-model="optionsUI.listSingleSelect"
+      ng-change="updateModelFromUI(field)"
       select-picker="">
-
+    <option style="color:gray" value="">Nothing selected</option>
     <option ng-keypress="isSubmit($event, index)" ng-click="setActive(index,true)" ng-repeat="(i, v) in getLiterals()"
         value="{{v.label}}">
       {{v.label}}
     </option>
-
   </select>
 
-  <!--- not active --->
-  <div ng-if="!isActive(index)">
-    <div ng-if="isMultipleChoice()" class=" value" ng-click="setActive(index,true)"
-          aria-label="{{getDescription(field)}}">{{getMultiple()}}
-    </div>
+  <!-- Multiple choice (Active) -->
+  <select ng-if="isActive(index) && isMultipleChoice()"
+      ng-click="setActive(index)"
+      class="form-control select "
+      multiple="true"
+      data-actions-box="true"
+      title="Nothing selected"
+      field="field"
+      ng-change="updateModelFromUI(field)"
+      ng-model="optionsUI.listMultiSelect"
+      select-picker="">
+    <option ng-keypress="isSubmit($event, index)" ng-click="setActive(index,true)" ng-repeat="(i, v) in getLiterals()"
+        value="{{v.label}}">
+      {{v.label}}
+    </option>
+  </select>
 
-    <div ng-if="!isMultipleChoice()" class="value" ng-click="setActive(index,true)" aria-label="{{getDescription(field)}}">
-      {{valueArray[index][0]['@value']}}
+  <!-- Single choice (Inactive) -->
+  <div ng-if="!isActive(index) && !isMultipleChoice()">
+    <div class=" value" ng-click="setActive(index,true)"
+        aria-label="{{getDescription(field)}}">{{model['@value']}}
     </div>
   </div>
+
+  <!-- Multiple choice (Inactive) -->
+  <div ng-if="!isActive(index) && isMultipleChoice()">
+    <div class=" value" ng-click="setActive(index,true)"
+        aria-label="{{getDescription(field)}}">{{getValueString(valueArray[index])}}
+    </div>
+  </div>
+
 </div>
-
-
