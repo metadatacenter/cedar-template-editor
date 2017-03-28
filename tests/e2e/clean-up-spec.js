@@ -32,7 +32,7 @@ describe('clean-up', function () {
   });
 
   // reset user selections to defaults
-  it('should default user selections', function () {
+  xit('should default user selections', function () {
     workspacePage.onWorkspace();
     workspacePage.resetFiltering();
     workspacePage.closeInfoPanel();
