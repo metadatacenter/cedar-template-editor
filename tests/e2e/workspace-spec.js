@@ -23,6 +23,7 @@ describe('workspace', function () {
   // before each test, load a new page and create a template
   // maximize the window area for clicking
   beforeEach(function () {
+    workspacePage.appLoaded();
   });
 
   afterEach(function () {

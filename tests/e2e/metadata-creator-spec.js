@@ -23,6 +23,7 @@ describe('metadata-creator', function () {
   // before each test
   // maximize the window area for clicking
   beforeEach(function () {
+    workspacePage.appLoaded();
   });
 
   afterEach(function () {

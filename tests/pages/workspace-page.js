@@ -8,6 +8,7 @@ var WorkspacePage = function () {
   var toastyModal = require('../modals/toasty-modal.js');
   var sweetAlertModal = require('../modals/sweet-alert-modal.js');
   var templateCreatorPage = require('../pages/template-creator-page.js');
+  var createRootElement = element(by.css('body#rootElement'));
 
   var url = testConfig.baseUrl + '/dashboard';
   var EC = protractor.ExpectedConditions;
@@ -307,6 +308,11 @@ var WorkspacePage = function () {
   // create a unique resource description
   this.createDescription = function (type) {
     return type + getRandomInt(1, 9999999999);
+  };
+
+  // are we on the workspace page?
+  this.appLoaded = function () {
+    browser.wait(EC.presenceOf(createRootElement),500000);
   };
 
   // are we on the workspace page?
