@@ -644,6 +644,7 @@ define([
       if (!obj || !obj[currentKey]) {
         return;
       }
+      newKey = service.getAcceptableKey(obj, newKey);
       Object.defineProperty(obj, newKey, Object.getOwnPropertyDescriptor(obj, currentKey));
       delete obj[currentKey];
 
@@ -1281,15 +1282,21 @@ define([
     service.relabel = function(node, key) {
 
       var schema = $rootScope.schemaOf(node);
+      var p = $rootScope.propertiesOf(node);
+
+      // make sure label is not empty
+      if (schema._ui.propertyLabels[key].length == 0) {
+        schema._ui.propertyLabels[key] = 'default';
+      }
+
       var newLabel = schema._ui.propertyLabels[key];
       var newKey = service.getFieldName(newLabel);
-      console.log('relabel ' + key + ' newLabel= '+newLabel + ' newKey= ' + newKey);
+      newKey = service.getAcceptableKey(p, newKey);
 
       // update propertyLabels
       delete schema._ui.propertyLabels[key];
       schema._ui.propertyLabels[newKey] = newLabel;
 
-      var p = $rootScope.propertiesOf(node);
       var child = p[key];
       var childId = service.idOf(child);
 
@@ -1301,7 +1308,6 @@ define([
         //var idOfValue = service.idOf(value);
         //if (idOfValue && idOfValue == childId) {
         if (key == k) {
-
 
           service.renameKeyOfObjectNew(p, key, newKey);
 

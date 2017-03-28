@@ -35,6 +35,7 @@ define([
           // operates on templates and elements, so use the root scope json which
           // is element or form
           console.log('relabel ' + key);
+
           DataManipulationService.relabel($rootScope.jsonToSave, key);
         };
 
