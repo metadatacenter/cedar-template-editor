@@ -29,8 +29,15 @@ define([
       },
       controller : function ($scope) {
 
-        console.log('form.directive');
+        console.log($scope.form);
 
+        $scope.relabel = function(key) {
+          // operates on templates and elements, so use the root scope json which
+          // is element or form
+          console.log('relabel ' + key);
+
+          DataManipulationService.relabel($rootScope.jsonToSave, key);
+        };
 
         $scope.model = $scope.model || {};
 

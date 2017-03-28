@@ -1197,9 +1197,8 @@ define([
         renameChildKey: "=",
         preview       : "=",
         delete        : '&',
-        ngDisabled    : "=",
         isEditData    : "=",
-        nested:'='
+        nested        : '='
       },
       controller : function ($scope, $element) {
         var addPopover = function ($scope) {

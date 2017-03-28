@@ -116,7 +116,6 @@ define([
         };
 
         $scope.addElementToTemplate = function (element) {
-          console.log('addElementToTemplate');
           populateCreatingFieldOrElement();
           if (dontHaveCreatingFieldOrElement()) {
 
@@ -326,7 +325,7 @@ define([
 
         // create a copy of the form with the _tmp fields stripped out
         $scope.stripTmpFields = function () {
-          var copiedForm = jQuery.extend(true, {}, $scope.form);
+          var copiedForm = jQuery.extend(true, {}, $rootScope.jsonToSave);
           if (copiedForm) {
             DataManipulationService.stripTmps(copiedForm);
           }

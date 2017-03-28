@@ -1,32 +1,31 @@
 <div ng-if="model !== undefined" class="item-root element-root" id="{{$root.getDomId(element)}}"
-    ng-click="canSelect(!isNested(element) && !$root.isRuntime()); $event.preventDefault();">
+    ng-click="canSelect(isSelectable()); $event.preventDefault();">
 
   <div class="element-header input-type-container" style="position:relative;"  ng-class="{'sortable-handler': !$root.isRuntime() && !isNested(element)}">
     <div class="row" >
 
       <div class="col-lg-6 pull-left">
 
-        <a  ng-if="!isNested(element)" ng-click="switchExpandedState($root.getDomId(element)); $event.preventDefault();"
+        <a  ng-if="canEditProperty()" ng-click="switchExpandedState($root.getDomId(element)); $event.preventDefault();"
             class="visibilitySwitch"><i
             class="cedar-svg-collapse"></i></a>
-        <a  ng-if="!isNested(element)" ng-click="switchExpandedState($root.getDomId(element)); $event.preventDefault();" class="visibilitySwitch"
+        <a  ng-if="canEditProperty()" ng-click="switchExpandedState($root.getDomId(element)); $event.preventDefault();" class="visibilitySwitch"
             style="display:none;"><i
             class="cedar-svg-expand"></i></a>
 
-        <div  ng-if="!isNested(element)" class="sortable-handler " style="padding-top:5px; display:inline-block"
-            ng-if="!isRootElement && !$root.isRuntime() && !preview "><span
-            class="sortable-icon"></span></div>
+        <div  ng-if="isSelectable()" class="sortable-handler " style="padding-top:5px; display:inline-block"><span class="sortable-icon"></span></div>
 
-        <p class="element-name-label " ng-class="{'nested': isNested(element)}">
-          <span ng-if="$root.isRuntime()  || isNested()  || $root.propertiesOf(element)._tmp.state !== 'creating'" >{{labels[key]}}</span>
-          <input ng-if="!$root.isRuntime()  && !isNested()  && $root.propertiesOf(element)._tmp.state == 'creating'" type="text" auto-focus
+        <p class="element-name-label " ng-class="{'nested': isNested()}">
+          <span ng-if="!canEditProperty()" >{{labels[key]}}</span>
+          <input ng-model-options="{ debounce: 1000 }" ng-if="canEditProperty()" type="text" auto-focus
               placeholder="{{'CREATOR.enterElementTitle' | translate}}"
               aria-label="{{'CREATOR.enterElementTitle' | translate}}"
               ng-model="labels[key]"
+              ng-change="relabel(key);"
               style="outline:none;width:300px;padding:5px">
         </p>
 
-         <span ng-if="!isNested(element)" ng-show="$root.isArray(model) && $root.isRuntime()" class="spreadsheetSwitch element">
+         <span ng-if="!isNested()" ng-show="$root.isArray(model) && $root.isRuntime()" class="spreadsheetSwitch element">
             <button type="button"
                 uib-tooltip="{{'HELP.showAsSpreadsheet' | translate}}"
                 tooltip-trigger
@@ -75,7 +74,7 @@
         </div>
       </div>
 
-      <div ng-if="!$root.isRuntime() &&   !isNested(element)" class="preview-container">
+      <div ng-if="canEditProperty()" class="preview-container">
         <div class="row preview-edit-options pull-right">
           <div class="toggle-options col-lg-12 pull-right">
             <div class="save-options">
@@ -155,10 +154,12 @@
                   field="$root.propertiesOf(element)[key]"
                   model="m[key]"
                   labels="$root.schemaOf(element)._ui.propertyLabels"
+                  relabel="relabel"
                   remove-child="removeChild"
                   rename-child-key="renameChildKey"
                   is-edit-data="isEditData"
-                  is-root-element="false">
+                  is-root-element="false"
+                  nested="true">
               </cedar-nested-template-element>
             </div>
           </div>
@@ -176,11 +177,13 @@
                   field="$root.propertiesOf(element)[key]"
                   model="m[key]"
                   labels="$root.schemaOf(element)._ui.propertyLabels"
+                  relabel="relabel"
                   preview="preview"
                   remove-child="removeChild"
                   rename-child-key="renameChildKey"
                   is-edit-data="isEditData"
-                  is-root-element="false">
+                  is-root-element="false"
+                  nested="true">
               </cedar-nested-template-element>
             </div>
           </div>
@@ -197,10 +200,12 @@
                 field="$root.propertiesOf(element)[key]"
                 model="model[key]"
                 labels="$root.schemaOf(element)._ui.propertyLabels"
+                relabel="relabel"
                 remove-child="removeChild"
                 rename-child-key="renameChildKey"
                 is-edit-data="isEditData"
-                is-root-element="false">
+                is-root-element="false"
+                nested="true">
             </cedar-nested-template-element>
           </div>
         </div>

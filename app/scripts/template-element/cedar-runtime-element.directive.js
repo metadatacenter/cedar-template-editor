@@ -19,7 +19,8 @@ define([
         element      : '=',
         delete       : '&',
         model        : '=',
-        labels        : "=",
+        labels       : "=",
+        relabel      : '=',
         isRootElement: "=",
         depth        : '=',
         path         : '='
