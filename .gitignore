@@ -19,5 +19,6 @@ keycloak.json
 app/config/url-service.conf.json
 app/config/controlled-term-data-service.conf.json
 app/config/tracking-service.conf.json
+app/config/version.js
 tests/env.js
 tests/config/test-env.js
