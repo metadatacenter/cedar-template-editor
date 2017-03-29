@@ -18,7 +18,8 @@ define([
         element      : '=',
         delete       : '&',
         model        : '=',
-        labels        : '=',
+        labels       : '=',
+        relabel      : '=',
         isRootElement: "@",
         isEditData   : "=",
         nested       : '@'
@@ -33,7 +34,41 @@ define([
 
     function linker(scope, element, attrs) {
 
-      console.log('cedarTemplateElement.directive');
+
+      scope.isRoot =function() {
+        return scope.isRootElement == 'true';
+      };
+
+      scope.isNested =function() {
+        return scope.nested == 'true';
+      };
+
+      scope.isEditState = function() {
+        return DataManipulationService.isEditState(scope.element);
+      };
+
+      scope.isSelectable = function() {
+        return !scope.isRoot() && !$rootScope.isRuntime() && !scope.isNested();
+      };
+
+      // try to select this element
+      scope.canSelect = function (select) {
+        if (select) {
+          DataManipulationService.canSelect(scope.element);
+        }
+      };
+
+      scope.canEditProperty =function() {
+
+        var result  =
+            !scope.isRoot() &&
+            !$rootScope.isRuntime() &&
+            !scope.isNested() &&
+            DataManipulationService.isEditState(scope.element);
+
+        return result;
+      };
+
 
       scope.elementId = DataManipulationService.idOf(scope.element) || DataManipulationService.generateGUID();
 
@@ -152,9 +187,6 @@ define([
         return (DataManipulationService.isEditState(scope.element));
       };
 
-      scope.isNested = function () {
-        return  (scope.nested === 'true');
-      };
 
       // add a multiple cardinality element
       scope.selectedTab = 0;
@@ -247,12 +279,7 @@ define([
         return DataManipulationService.canDeselect(element);
       };
 
-      // try to select this element
-      scope.canSelect = function (select) {
-        if (select) {
-          DataManipulationService.canSelect(scope.element);
-        }
-      };
+
 
       // when element is deseleted, look at errors and parse if none
       scope.$on('deselect', function (event, element, errorMessages) {

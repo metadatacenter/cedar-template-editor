@@ -111,6 +111,14 @@ gulp.task('replace-tracking', function () {
       .pipe(gulp.dest('app/config/'));
 });
 
+// Task to set up version numbers in included js file
+gulp.task('replace-version', function () {
+  gulp.src(['app/config/src/version.js'])
+      .pipe(replace('cedarVersionValue', cedarVersion))
+      .pipe(replace('cedarVersionModifierValue', cedarVersionModifier))
+      .pipe(gulp.dest('app/config/'));
+});
+
 // Watch files for changes
 gulp.task('watch', function () {
   gulp.watch('app/scripts/*.js', ['lint']);
@@ -139,6 +147,7 @@ gulp.task('test-env', function () {
       .pipe(replace('protractorTestPassword3', cedarTestPassword3))
       .pipe(replace('protractorTestUserName3', cedarTestUserName3))
       .pipe(replace('protractorEverybodyGroup', cedarEverybodyGroup))
+      .pipe(replace('protractorCedarVersion', cedarVersion))
       .pipe(gulp.dest('tests/config/'));
 });
 
@@ -178,10 +187,10 @@ function exitWithError(msg) {
 
 function readAllEnvVarsOrFail() {
   for (var key  in envConfig) {
-    var value = process.env[key];
-    if (!value) {
+    if (!process.env.hasOwnProperty(key)) {
       exitWithError('You need to set the following environment variable: ' + key);
     } else {
+      var value = process.env[key];
       envConfig[key] = value;
       if (key.indexOf('PASSWORD') <= -1) {
         console.log(("- Environment variable " + key + " found: ").green + value.bold);
@@ -201,8 +210,9 @@ var envConfig = {
   'CEDAR_TEST_USER2'         : null,
   'CEDAR_TEST_USER2_NAME'    : null,
   'CEDAR_TEST_USER2_PASSWORD': null,
-  'CEDAR_EVERYBODY_GROUP'    : null
-
+  'CEDAR_EVERYBODY_GROUP'    : null,
+  'CEDAR_VERSION'            : null,
+  'CEDAR_VERSION_MODIFIER'   : null
 };
 console.log();
 console.log();
@@ -223,6 +233,8 @@ var cedarTestUser3 = envConfig['CEDAR_TEST_USER3'];
 var cedarTestUserName3 = envConfig['CEDAR_TEST_USER3_NAME'];
 var cedarTestPassword3 = envConfig['CEDAR_TEST_USER3_PASSWORD'];
 var cedarEverybodyGroup = envConfig['CEDAR_EVERYBODY_GROUP'];
+var cedarVersion = envConfig['CEDAR_VERSION'];
+var cedarVersionModifier = envConfig['CEDAR_VERSION_MODIFIER'];
 
 console.log(
     "-------------------------------------------- ************* --------------------------------------------".red);
@@ -239,6 +251,6 @@ if (cedarProfile === 'local') {
   exitWithError("Invalid CEDAR_PROFILE value. Please set to 'local' or 'server'");
 }
 
-taskNameList.push('lint', 'less', 'copy:resources', 'replace-url', 'replace-tracking', 'test-env');
+taskNameList.push('lint', 'less', 'copy:resources', 'replace-url', 'replace-tracking', 'replace-version', 'test-env');
 // Launch tasks
 gulp.task('default', taskNameList);

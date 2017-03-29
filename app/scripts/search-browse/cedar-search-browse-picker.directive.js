@@ -170,22 +170,16 @@ define([
           };
 
           vm.selectResource = function (resource) {
-
             vm.cancelDescriptionEditing();
             vm.selectedResource = resource;
-            vm.canNotWrite = !vm.canWrite();
-            vm.canNotShare = !vm.canShare();
-            vm.canNotPopulate = !vm.isTemplate();
+            //TODO: hide the write/read/share boolean vars in the info panel
 
-            // TODO this makes the hash work but messes up the right click context menu
-            //var id = resource['@id'];
-            //$location.hash(id);
-            //vm.hash = id;
-
-            vm.getResourceDetails(resource);
-            if (typeof vm.selectResourceCallback === 'function') {
-              vm.selectResourceCallback(resource);
-            }
+            $timeout(function () {
+              vm.getResourceDetails(resource);
+              if (typeof vm.selectResourceCallback === 'function') {
+                vm.selectResourceCallback(resource);
+              }
+            }, 0);
           };
 
           // show the info panel with this resource or find one
@@ -236,14 +230,12 @@ define([
             resourceService.getResourceDetail(
                 resource,
                 function (response) {
-
-                  $timeout(function () {
+                  if (vm.selectedResource == null || vm.selectedResource['@id'] == response['@id']) {
                     vm.selectedResource = response;
                     vm.canNotWrite = !vm.canWrite();
                     vm.canNotShare = !vm.canShare();
                     vm.canNotPopulate = !vm.isTemplate();
-                  }, 0);
-
+                  }
                 },
                 function (error) {
                   UIMessageService.showBackendError('SERVER.' + resource.nodeType.toUpperCase() + '.load.error', error);

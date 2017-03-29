@@ -85,7 +85,6 @@ define([
 
     // Add new field into $scope.staging object
     service.addFieldToStaging = function ($scope, fieldType) {
-      console.debug('addFieldToStaging' + fieldType);
       this.addField();
       var field = DataManipulationService.generateField(fieldType);
       field.minItems = 0;
@@ -158,7 +157,6 @@ define([
     };
 
     service.addElementToForm = function (form, elementId, divId, callback) {
-      console.log('addElementToform');
       AuthorizedBackendService.doCall(
           TemplateElementService.getTemplateElement(elementId),
           function (response) {
@@ -235,7 +233,6 @@ define([
     };
 
     service.addElementToElement = function (element, elementId) {
-      console.log('addElementToElement');
       AuthorizedBackendService.doCall(
           TemplateElementService.getTemplateElement(elementId),
           function (response) {
@@ -263,6 +260,8 @@ define([
 
             element._ui.propertyLabels = element._ui.propertyLabels || {};
             element._ui.propertyLabels[elName] = elName;
+
+            console.log(element._ui);
 
            DataManipulationService.createDomIds(element);
           },

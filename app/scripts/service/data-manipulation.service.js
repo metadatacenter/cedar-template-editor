@@ -640,6 +640,17 @@ define([
       return obj;
     };
 
+    service.renameKeyOfObjectNew = function (obj, currentKey, newKey) {
+      if (!obj || !obj[currentKey]) {
+        return;
+      }
+      newKey = service.getAcceptableKey(obj, newKey);
+      Object.defineProperty(obj, newKey, Object.getOwnPropertyDescriptor(obj, currentKey));
+      delete obj[currentKey];
+
+      return obj;
+    };
+
     service.idOf = function (fieldOrElement) {
       if (fieldOrElement) {
         return service.getFieldSchema(fieldOrElement)['@id'];
@@ -875,10 +886,9 @@ define([
         }
       }
       return null;
-    }
+    };
 
     service.nextSibling = function (field, parent) {
-      console.log('nextSibling');
 
       if (field && parent) {
 
@@ -899,7 +909,6 @@ define([
           }
         });
 
-        console.log('selectedKey ' + selectedKey);
 
         if (selectedKey) {
           var idx = order.indexOf(selectedKey);
@@ -961,13 +970,10 @@ define([
      * @param node
      */
     service.getDomId = function (node) {
-
       var domId = null;
-
-      if (node.hasOwnProperty("_tmp")) {
+      if (node && node.hasOwnProperty("_tmp")) {
         domId = node._tmp.domId;
-      }
-
+      };
       return domId;
     };
 
@@ -1270,6 +1276,58 @@ define([
       else {
         return false;
       }
+    };
+
+    // relabel the key with a new value from the propertyLabels
+    service.relabel = function(node, key) {
+
+      var schema = $rootScope.schemaOf(node);
+      var p = $rootScope.propertiesOf(node);
+
+      // make sure label is not empty
+      if (schema._ui.propertyLabels[key].length == 0) {
+        schema._ui.propertyLabels[key] = 'default';
+      }
+
+      var newLabel = schema._ui.propertyLabels[key];
+      var newKey = service.getFieldName(newLabel);
+      newKey = service.getAcceptableKey(p, newKey);
+
+      // update propertyLabels
+      delete schema._ui.propertyLabels[key];
+      schema._ui.propertyLabels[newKey] = newLabel;
+
+      var child = p[key];
+      var childId = service.idOf(child);
+
+      angular.forEach(p, function (value, k) {
+        if (!value) {
+          return;
+        }
+
+        //var idOfValue = service.idOf(value);
+        //if (idOfValue && idOfValue == childId) {
+        if (key == k) {
+
+          service.renameKeyOfObjectNew(p, key, newKey);
+
+          if (p["@context"] && p["@context"].properties) {
+            service.renameKeyOfObjectNew(p["@context"].properties, key, newKey);
+
+            if (p["@context"].properties[newKey] && p["@context"].properties[newKey].enum) {
+              p["@context"].properties[newKey].enum[0] = service.getEnumOf(newKey);
+            }
+          }
+
+          if (p["@context"].required) {
+            var idx = p["@context"].required.indexOf(key);
+            p["@context"].required[idx] = newKey;
+          }
+
+          var idx = schema._ui.order.indexOf(key);
+          schema._ui.order[idx] = newKey;
+        }
+      });
     };
 
     return service;

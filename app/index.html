@@ -30,6 +30,7 @@
   <link rel="stylesheet" href="bower_components/angular-ui-tree/dist/angular-ui-tree.min.css"/>
   <link rel="stylesheet" href="bower_components/angular-ui-switch/angular-ui-switch.min.css"/>
   <link rel="stylesheet" href="bower_components//ngprogress/ngProgress.css">
+  <script src="config/version.js" type="text/javascript"></script>
 </head>
 <body cedar-switch-navbar="true" ng-cloak>
 <!--[if lt IE 8]>
@@ -103,8 +104,7 @@
 <script src="bower_components/requirejs/require.js" type="text/javascript"></script>
 
 <script>
-  window.cedarVersion="1.0.1-SNAPSHOT";
-  require(['require-config.js?v=' + window.cedarVersion]);
+  require(['require-config.js?v=' + window.cedarCacheControl]);
 </script>
 
 <script type="text/javascript">

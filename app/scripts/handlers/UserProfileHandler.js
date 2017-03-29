@@ -14,7 +14,7 @@ function UserProfileHandler() {
 
   this.loadUrlServiceConf = function (userId, success) {
     var service = this;
-    jQuery.get('config/url-service.conf.json?v=' + window.cedarVersion, function (urlConfigData) {
+    jQuery.get('config/url-service.conf.json?v=' + window.cedarCacheControl, function (urlConfigData) {
       service.usersUrl = urlConfigData.userRestAPI + '/users';
       service.userUrl = service.usersUrl + '/' + userId;
       success();
