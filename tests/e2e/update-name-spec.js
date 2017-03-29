@@ -95,13 +95,13 @@ describe('update-name', function () {
   });
 
 
-  it("should delete the test resources created by " + testConfig.testUserName1, function () {
+  xit("should delete the test resources created by " + testConfig.testUserName1, function () {
     workspacePage.loginIfNecessary(testConfig.testUserName1, testConfig.testUser1, testConfig.testPassword1);
     workspacePage.deleteArray(resourcesUser1, 'folder');
   }, 200000);
 
 
-  it("should delete the test resources created by " + testConfig.testUserName2, function () {
+  xit("should delete the test resources created by " + testConfig.testUserName2, function () {
     workspacePage.loginIfNecessary(testConfig.testUserName2, testConfig.testUser2, testConfig.testPassword2);
     workspacePage.deleteArray(resourcesUser2, 'folder');
   }, 200000);

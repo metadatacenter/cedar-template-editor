@@ -58,7 +58,8 @@ var MoveModal = function () {
   this.clickMoveButton = function () {
     browser.wait(EC.elementToBeClickable(createMoveButton));
     createMoveButton.click();
-  }
+  };
+
 
 };
 module.exports = new MoveModal(); 
