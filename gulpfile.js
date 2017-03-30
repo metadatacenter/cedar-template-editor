@@ -173,6 +173,18 @@ gulp.task('e2e', ['test-env'], function () {
       });
 });
 
+gulp.task('b2b', ['test-env'], function () {
+  return gulp.src([
+    './tests/e2e/folder-permissions-spec.js'
+  ])
+      .pipe(protractor({
+        configFile: "protractor.config.js"
+      }))
+      .on('error', function (e) {
+        throw e
+      });
+});
+
 function exitWithError(msg) {
   onError(msg);
   console.log(

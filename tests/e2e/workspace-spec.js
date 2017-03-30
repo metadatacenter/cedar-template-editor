@@ -10,7 +10,7 @@ var _ = require('../libs/lodash.min.js');
 var sampleFolderTitle;
 var sampleTemplateTitle;
 
-describe('workspace', function () {
+xdescribe('workspace', function () {
   var EC = protractor.ExpectedConditions;
 
   var workspacePage = WorkspacePage;

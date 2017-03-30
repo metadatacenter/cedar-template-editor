@@ -683,6 +683,26 @@ var WorkspacePage = function () {
 
   // copy a resource using the right-click menu item
   this.copyResource = function (name, type) {
+    // search for the resource
+    createSearchNavInput.sendKeys(name + protractor.Key.ENTER);
+    var createFirst = element.all(by.css(createFirstCss + type)).first();
+    browser.wait(EC.visibilityOf(createFirst));
+    browser.wait(EC.elementToBeClickable(createFirst));
+    createFirst.click();
+
+    // create more on the toolbar
+    browser.wait(EC.visibilityOf(createMoreOptionsButton));
+    browser.wait(EC.elementToBeClickable(createMoreOptionsButton));
+    createMoreOptionsButton.click();
+
+    // move menu item
+    browser.wait(EC.visibilityOf(createCopyResourceButton));
+    browser.wait(EC.elementToBeClickable(createCopyResourceButton));
+    createCopyResourceButton.click();
+  };
+
+  // copy a resource using the right-click menu item
+  this.copyResourceViaRightClick = function (name, type) {
     this.rightClickResource(name, type);
     browser.wait(EC.elementToBeClickable(createRightClickCopyToMenuItem));
     createRightClickCopyToMenuItem.click();

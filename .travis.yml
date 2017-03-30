@@ -14,7 +14,7 @@ branches:
   - develop
   - master
   - testing/permissions
-  - feature/issue-357-again
+  - feature/debugging-tests
 notifications:
   slack:
     on_success: change

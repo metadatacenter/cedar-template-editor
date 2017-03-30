@@ -10,7 +10,7 @@ var sampleTitle;
 var sampleElementTitle;
 
 // TODO turned off so we do not run out of time on Travis
-describe('metadata-creator', function () {
+xdescribe('metadata-creator', function () {
   var EC = protractor.ExpectedConditions;
 
   var workspacePage = WorkspacePage;

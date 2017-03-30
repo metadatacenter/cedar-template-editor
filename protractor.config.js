@@ -7,9 +7,10 @@ exports.config = {
 
   capabilities: {
     browserName: 'chrome',
-    shardTestFiles: true,
-    maxInstances:11
+    shardTestFiles: false,
+    maxInstances:1
   },
+
 
   allScriptsTimeout: 500000,
   jasmineNodeOpts: {

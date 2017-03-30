@@ -119,6 +119,7 @@ var ShareModal = function () {
     this.openDialogViaRightClick(name, type);
     this.shareWithUser(username, canWrite, isOwner);
     browser.wait(EC.stalenessOf(shareModalBody), 1500);
+    workspacePage.clearSearch(); // reset search
   };
 
 
@@ -127,6 +128,7 @@ var ShareModal = function () {
     this.openDialogViaRightClick(name, type);
     this.shareWithGroup(groupname, canWrite, isOwner);
     browser.wait(EC.stalenessOf(shareModalBody), 1500);
+    workspacePage.clearSearch(); // reset search
   };
 
 
