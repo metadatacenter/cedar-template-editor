@@ -33,7 +33,7 @@ install:
 - webdriver-manager update
 - nohup bash -c "webdriver-manager start 2>&1 &"
 script:
-- gulp e2e
+- gulp b2b
 env:
   global:
   - CEDAR_TEST_USER1="test1@test.com"
