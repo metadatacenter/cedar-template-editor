@@ -35,20 +35,14 @@ describe('clean-up', function () {
   it('should default user selections for user 2', function () {
     workspacePage.logout();
     workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
-    workspacePage.onWorkspace();
-    workspacePage.resetFiltering();
-    workspacePage.closeInfoPanel();
-    workspacePage.setSortOrder('sortCreated');
+    workspacePage.initPreferences();
   });
 
   // reset user selections to defaults
-  it('should default user selections', function () {
+  it('should default user selections for user 1', function () {
     workspacePage.logout();
     workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
-    workspacePage.onWorkspace();
-    workspacePage.resetFiltering();
-    workspacePage.closeInfoPanel();
-    workspacePage.setSortOrder('sortCreated');
+    workspacePage.initPreferences();
   });
 
 

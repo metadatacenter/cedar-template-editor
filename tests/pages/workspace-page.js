@@ -311,18 +311,13 @@ var WorkspacePage = function () {
   };
 
   // are we on the workspace page?
-  this.appLoaded = function () {
-    browser.wait(EC.presenceOf(createRootElement),500000);
-  };
-
-  // are we on the workspace page?
   this.onWorkspace = function () {
     browser.wait(EC.presenceOf(createNavbarWorkspace));
   };
 
-      this.topNavigation = function () {
-        return createTopNavigation;
-      };
+  this.topNavigation = function () {
+    return createTopNavigation;
+  };
 
   // are we on the metadata page
   this.onMetadata = function () {
@@ -393,13 +388,13 @@ var WorkspacePage = function () {
     return folderTitle;
   };
 
-      // create an element
-      this.createElement = function (name) {
-        var elementTitle = this.createTitle(name);
-        var elementDescription = this.createDescription(name);
-        this.createResource('element', elementTitle, elementDescription);
-        return elementTitle;
-      };
+  // create an element
+  this.createElement = function (name) {
+    var elementTitle = this.createTitle(name);
+    var elementDescription = this.createDescription(name);
+    this.createResource('element', elementTitle, elementDescription);
+    return elementTitle;
+  };
 
   // create a template
   this.createTemplate = function (name) {
@@ -474,6 +469,17 @@ var WorkspacePage = function () {
     });
   };
 
+  this.setGridView = function () {
+
+    createListView.isPresent().then(function (result) {
+      if (result) {
+        browser.wait(EC.visibilityOf(createGridView));
+        browser.wait(EC.elementToBeClickable(createGridView));
+        createGridView.click();
+      }
+    });
+  };
+
   this.isInfoPanelOpen = function () {
     return createSidebarRight.isPresent();
   };
@@ -490,6 +496,14 @@ var WorkspacePage = function () {
         }
       });
     });
+  };
+
+  this.initPreferences = function () {
+    this.onWorkspace();
+    this.resetFiltering();
+    this.closeInfoPanel();
+    this.setSortOrder('sortCreated');
+    this.setGridView();
   };
 
   // delete a resource whose name contains this string if possible

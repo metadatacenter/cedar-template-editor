@@ -38,7 +38,7 @@ describe('resource-permissions', function () {
     workspacePage.onWorkspace();
   });
 
-  describe('move tests', function () {
+  xdescribe('move tests', function () {
 
     it("should move a resource owned by current user to a writable folder", function () {
       workspacePage.logout();
@@ -316,6 +316,7 @@ describe('resource-permissions', function () {
     it('should delete resource from the user workspace', function () {
       for (var i = 0; i < resources.length; i++) {
         (function (resource) {
+          console.log('delete ' + resource.title + ' ' + resource.type);
           workspacePage.logout();
           workspacePage.login(resource.username, resource.password);
 
