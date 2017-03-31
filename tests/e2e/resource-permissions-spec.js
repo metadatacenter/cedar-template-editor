@@ -316,7 +316,6 @@ describe('resource-permissions', function () {
     it('should delete resource from the user workspace', function () {
       for (var i = 0; i < resources.length; i++) {
         (function (resource) {
-          console.log('delete ' + resource.title + ' ' + resource.type);
           workspacePage.logout();
           workspacePage.login(resource.username, resource.password);
 

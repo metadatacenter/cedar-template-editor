@@ -1,40 +1,48 @@
 'use strict';
 var WorkspacePage = require('../pages/workspace-page.js');
 var ToastyModal = require('../modals/toasty-modal.js');
-var ShareModal = require('../modals/share-modal.js');
-var RenameModal = require('../modals/rename-modal.js');
-var SweetAlertModal = require('../modals/sweet-alert-modal.js');
 var testConfig = require('../config/test-env.js');
+var ShareModal = require('../modals/share-modal.js');
+var SweetAlertModal = require('../modals/sweet-alert-modal.js');
+var _ = require('../libs/lodash.min.js');
 
-xdescribe('update-name', function () {
-  var workspacePage;
-  var toastyModal;
-  var shareModal;
-  var renameModal;
-  var sweetAlertModal;
+describe('update-name', function () {
+  var EC = protractor.ExpectedConditions;
+  var workspacePage = WorkspacePage;
+  var toastyModal = ToastyModal;
+  var shareModal = ShareModal;
+  var sweetAlertModal = SweetAlertModal;
 
-  var resourcesUser1 = [];
-  var resourcesUser2 = [];
+  var resources = [];
+  var createResource = function (title, type, username, password) {
+    var result = new Object;
+    result.title = title;
+    result.type = type;
+    result.username = username;
+    result.password = password;
+    return result;
+  };
 
   beforeEach(function () {
-    workspacePage = WorkspacePage;
-    toastyModal = ToastyModal;
-    shareModal = ShareModal;
-    renameModal = RenameModal;
-    sweetAlertModal = SweetAlertModal;
-    browser.driver.manage().window().maximize();
   });
 
   afterEach(function () {
-    workspacePage.clickLogo();
+  });
+
+  // reset user selections to defaults
+  it('should be on the workspace', function () {
+    workspacePage.onWorkspace();
   });
 
 
   it("should fail to update name of a resource shared as readable with Everybody group", function () {
-    workspacePage.onWorkspace();
+    workspacePage.logout();
+    workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
+
     var folder = workspacePage.createFolder('Readable');
-    resourcesUser1.push(folder);
+
     shareModal.shareResourceWithGroup(folder, 'folder', testConfig.everybodyGroup, false, false);
+    workspacePage.clearSearch();
 
     workspacePage.logout();
     workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
@@ -42,13 +50,19 @@ xdescribe('update-name', function () {
     workspacePage.selectResource(folder, 'folder');
     workspacePage.createMoreOptionsButton().click();
     expect(workspacePage.createRenameResourceButton().getAttribute('class')).toMatch('link-disabled');
+
+    resources.push(createResource(folder, 'folder', testConfig.testUser1, testConfig.testPassword1));
   });
 
 
   it("should fail to update name of a resource shared as readable with a user", function () {
+    workspacePage.logout();
+    workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
+
     var folder = workspacePage.createFolder('Readable');
-    resourcesUser2.push(folder);
+
     shareModal.shareResource(folder, 'folder', testConfig.testUserName1, false, false);
+    workspacePage.clearSearch();
 
     workspacePage.logout();
     workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
@@ -56,12 +70,19 @@ xdescribe('update-name', function () {
     workspacePage.selectResource(folder, 'folder');
     workspacePage.createMoreOptionsButton().click();
     expect(workspacePage.createRenameResourceButton().getAttribute('class')).toMatch('link-disabled');
+
+    resources.push(createResource(folder, 'folder', testConfig.testUser2, testConfig.testPassword2));
   });
 
 
   it("should update name of a resource shared as writable with Everybody group", function () {
+    workspacePage.logout();
+    workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
+
     var folder = workspacePage.createFolder('Writable');
+
     shareModal.shareResourceWithGroup(folder, 'folder', testConfig.everybodyGroup, true, false);
+    workspacePage.clearSearch();
 
     workspacePage.logout();
     workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
@@ -71,10 +92,11 @@ xdescribe('update-name', function () {
 
     // change name
     var newFolderName = workspacePage.createTitle('NewWritable');
-    resourcesUser1.push(newFolderName);
     workspacePage.createRightClickRenameMenuItem().click();
     renameModal.renameTo(newFolderName);
     toastyModal.isSuccess();
+
+    resources.push(createResource(newFolderName, 'folder', testConfig.testUser1, testConfig.testPassword1));
   });
 
 
