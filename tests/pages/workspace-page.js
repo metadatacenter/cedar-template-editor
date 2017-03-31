@@ -788,6 +788,7 @@ var WorkspacePage = function () {
   };
 
   this.login = function (username, password) {
+    this.logout();
     browser.driver.findElement(by.id('username')).sendKeys(username).then(function () {
       browser.driver.findElement(by.id('password')).sendKeys(password).then(function () {
         browser.driver.findElement(by.id('kc-login')).click().then(function () {

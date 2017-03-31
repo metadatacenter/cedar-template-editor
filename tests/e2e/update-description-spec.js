@@ -85,14 +85,12 @@ describe('update-description', function () {
     });
 
     it("should fail to update description of a resource shared as readable with a user", function () {
-      workspacePage.logout();
       workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
 
       var template = workspacePage.createTemplate('Readable');
       shareModal.shareResource(template, 'template', testConfig.testUserName2, false, false);
       workspacePage.clearSearch();
 
-      workspacePage.logout();
       workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
 
       workspacePage.navigateToUserFolder(testConfig.testUserName1);
@@ -107,14 +105,12 @@ describe('update-description', function () {
     });
 
     it("should update description of a resource shared as writable with a user", function () {
-      workspacePage.logout();
       workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
 
       var template = workspacePage.createTemplate('Writable');
       shareModal.shareResource(template, 'template', testConfig.testUserName1, true, false);
       workspacePage.clearSearch();
 
-      workspacePage.logout();
       workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
 
       workspacePage.navigateToUserFolder(testConfig.testUserName2);
@@ -135,9 +131,7 @@ describe('update-description', function () {
     it('should delete resource from the user workspace', function () {
       for (var i = 0; i < resources.length; i++) {
         (function (resource) {
-          workspacePage.logout();
           workspacePage.login(resource.username, resource.password);
-
           workspacePage.deleteResourceViaRightClick(resource.title, resource.type);
           toastyModal.isSuccess();
           workspacePage.clearSearch();

@@ -163,7 +163,6 @@ describe('folder-permissions', function () {
       shareModal.shareResource(targetFolder, 'folder', testConfig.testUserName1, false, false);
       workspacePage.clearSearch(); // reset search
 
-      workspacePage.logout();
       workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
 
       // go to Test User 2's folder to see the shared folders
@@ -185,7 +184,6 @@ describe('folder-permissions', function () {
   xdescribe('copy folders', function () {
 
     it("should copy a folder owned by current user to a writable folder", function () {
-      workspacePage.logout();
       workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
 
       // create source and target folders
@@ -204,7 +202,6 @@ describe('folder-permissions', function () {
     });
 
     it("should copy a folder owned by current user to an unwritable folder", function () {
-      workspacePage.logout();
       workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
 
       // create a folder to share with another user
@@ -213,7 +210,6 @@ describe('folder-permissions', function () {
       workspacePage.clearSearch(); // reset search
 
       // logout current user and login as the user with whom the folder was shared
-      workspacePage.logout();
       workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
 
       // create a folder to move to the shared folder
@@ -231,7 +227,6 @@ describe('folder-permissions', function () {
 
     it("should copy a writable folder not owned by current user to a writable folder", function () {
       // logout current user and login as the user with whom the folder was shared
-      workspacePage.logout();
       workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
 
       // create source and target shared folders
@@ -244,7 +239,6 @@ describe('folder-permissions', function () {
       shareModal.shareResource(targetFolder, 'folder', testConfig.testUserName1, true, false);
       workspacePage.clearSearch(); // reset search
 
-      workspacePage.logout();
       workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
 
       // go to Test User 2's folder to see the shared folders
@@ -262,7 +256,6 @@ describe('folder-permissions', function () {
     });
 
     it("should copy a writable folder not owned by current user to an unwritable folder", function () {
-      workspacePage.logout();
       workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
 
       // create source and target shared folders
@@ -274,7 +267,6 @@ describe('folder-permissions', function () {
       shareModal.shareResource(targetFolder, 'folder', testConfig.testUserName2, false, false);
       workspacePage.clearSearch(); // reset search
 
-      workspacePage.logout();
       workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
       workspacePage.navigateToUserFolder(testConfig.testUserName1);
 
@@ -300,7 +292,6 @@ describe('folder-permissions', function () {
       shareModal.shareResource(targetFolder, 'folder', testConfig.testUserName1, false, false);
       workspacePage.clearSearch(); // reset search
 
-      workspacePage.logout();
       workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
 
       // go to Test User 2's folder to see the shared folders
@@ -322,9 +313,7 @@ describe('folder-permissions', function () {
     it('should delete resource from the user workspace', function () {
       for (var i = 0; i < resources.length; i++) {
         (function (resource) {
-          workspacePage.logout();
           workspacePage.login(resource.username, resource.password);
-
           workspacePage.deleteResourceViaRightClick(resource.title, resource.type);
           toastyModal.isSuccess();
           workspacePage.clearSearch();

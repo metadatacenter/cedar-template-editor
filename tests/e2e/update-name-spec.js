@@ -39,7 +39,6 @@ describe('update-name', function () {
   describe('in info panel', function () {
 
     it("should fail to update name of a resource shared as readable with Everybody group", function () {
-      workspacePage.logout();
       workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
 
       var folder = workspacePage.createFolder('Readable');
@@ -47,7 +46,6 @@ describe('update-name', function () {
       shareModal.shareResourceWithGroup(folder, 'folder', testConfig.everybodyGroup, false, false);
       workspacePage.clearSearch();
 
-      workspacePage.logout();
       workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
 
       workspacePage.selectResource(folder, 'folder');
@@ -59,7 +57,6 @@ describe('update-name', function () {
 
 
     it("should fail to update name of a resource shared as readable with a user", function () {
-      workspacePage.logout();
       workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
 
       var folder = workspacePage.createFolder('Readable');
@@ -67,7 +64,6 @@ describe('update-name', function () {
       shareModal.shareResource(folder, 'folder', testConfig.testUserName1, false, false);
       workspacePage.clearSearch();
 
-      workspacePage.logout();
       workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
 
       workspacePage.selectResource(folder, 'folder');
@@ -79,7 +75,6 @@ describe('update-name', function () {
 
 
     it("should update name of a resource shared as writable with Everybody group", function () {
-      workspacePage.logout();
       workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
 
       var folder = workspacePage.createFolder('Writable');
@@ -87,7 +82,6 @@ describe('update-name', function () {
       shareModal.shareResourceWithGroup(folder, 'folder', testConfig.everybodyGroup, true, false);
       workspacePage.clearSearch();
 
-      workspacePage.logout();
       workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
 
       workspacePage.navigateToUserFolder(testConfig.testUserName1);
@@ -104,14 +98,12 @@ describe('update-name', function () {
 
 
     it("should update name of a resource shared as writable with a user", function () {
-      workspacePage.logout();
       workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
 
       var folder = workspacePage.createFolder('Writable');
       shareModal.shareResource(folder, 'folder', testConfig.testUserName1, true, false);
       workspacePage.clearSearch();
 
-      workspacePage.logout();
       workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
 
       workspacePage.navigateToUserFolder(testConfig.testUserName2);
@@ -132,9 +124,7 @@ describe('update-name', function () {
     it('should delete resource from the user workspace', function () {
       for (var i = 0; i < resources.length; i++) {
         (function (resource) {
-          workspacePage.logout();
           workspacePage.login(resource.username, resource.password);
-
           workspacePage.deleteResourceViaRightClick(resource.title, resource.type);
           toastyModal.isSuccess();
           workspacePage.clearSearch();

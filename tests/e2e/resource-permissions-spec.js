@@ -41,7 +41,6 @@ describe('resource-permissions', function () {
   xdescribe('move tests', function () {
 
     it("should move a resource owned by current user to a writable folder", function () {
-      workspacePage.logout();
       workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
 
       // create template and target folder
@@ -60,7 +59,6 @@ describe('resource-permissions', function () {
     });
 
     it("should move a resource owned by current user to an unwritable folder", function () {
-      workspacePage.logout();
       workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
 
       // create a folder to share with another user
@@ -71,7 +69,6 @@ describe('resource-permissions', function () {
       workspacePage.clearSearch();
 
       // logout current user and login as the user with whom the folder was shared
-      workspacePage.logout();
       workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
 
       // create a template to move to the shared folder
@@ -101,7 +98,6 @@ describe('resource-permissions', function () {
       shareModal.shareResource(targetFolder, 'folder', testConfig.testUserName1, true, false);
       workspacePage.clearSearch();
 
-      workspacePage.logout();
       workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
 
       // go to Test User 2's folder to see the shared folders
@@ -118,7 +114,6 @@ describe('resource-permissions', function () {
     });
 
     it("should move a writable resource not owned by current user to an unwritable folder", function () {
-      workspacePage.logout();
       workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
 
       // create source template and target shared folder
@@ -130,7 +125,6 @@ describe('resource-permissions', function () {
       shareModal.shareResource(targetFolder, 'folder', testConfig.testUserName2, false, false);
       workspacePage.clearSearch();
 
-      workspacePage.logout();
       workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
 
       workspacePage.navigateToUserFolder(testConfig.testUserName1);
@@ -146,7 +140,6 @@ describe('resource-permissions', function () {
     });
 
     it("should move an unwritable resource not owned by current user to an unwritable folder", function () {
-      workspacePage.logout();
       workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
 
       // create source template and target shared folder
@@ -159,7 +152,6 @@ describe('resource-permissions', function () {
       shareModal.shareResource(targetFolder, 'folder', testConfig.testUserName1, false, false);
       workspacePage.clearSearch();
 
-      workspacePage.logout();
       workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
 
       // go to Test User 2's folder to see the shared folders
@@ -177,7 +169,6 @@ describe('resource-permissions', function () {
   describe('copy tests', function () {
 
     it("should copy a resource owned by current user to a writable folder", function () {
-      workspacePage.logout();
       workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
 
       // create template and target folder
@@ -196,7 +187,6 @@ describe('resource-permissions', function () {
     });
 
     it("should copy a resource owned by current user to an unwritable folder", function () {
-      workspacePage.logout();
       workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
 
       // create a folder to share with another user
@@ -207,7 +197,6 @@ describe('resource-permissions', function () {
       workspacePage.clearSearch();
 
       // logout current user and login as the user with whom the folder was shared
-      workspacePage.logout();
       workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
 
       // create a template to copy to the shared folder
@@ -225,7 +214,6 @@ describe('resource-permissions', function () {
     });
 
     it("should copy a writable resource not owned by current user to a writable folder", function () {
-      workspacePage.logout();
       workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
 
       // create source template and target shared folder
@@ -238,7 +226,6 @@ describe('resource-permissions', function () {
       shareModal.shareResource(targetFolder, 'folder', testConfig.testUserName1, true, false);
       workspacePage.clearSearch();
 
-      workspacePage.logout();
       workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
 
       // go to Test User 2's folder to see the shared folders
@@ -255,7 +242,6 @@ describe('resource-permissions', function () {
     });
 
     it("should copy a writable resource not owned by current user to an unwritable folder", function () {
-      workspacePage.logout();
       workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
 
       // create source template and target shared folder
@@ -267,7 +253,6 @@ describe('resource-permissions', function () {
       shareModal.shareResource(targetFolder, 'folder', testConfig.testUserName2, false, false);
       workspacePage.clearSearch();
 
-      workspacePage.logout();
       workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
 
       workspacePage.navigateToUserFolder(testConfig.testUserName1);
@@ -282,7 +267,6 @@ describe('resource-permissions', function () {
     });
 
     it("should copy an unwritable resource not owned by current user to an unwritable folder", function () {
-      workspacePage.logout();
       workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
 
       // create source template and target shared folder
@@ -295,7 +279,6 @@ describe('resource-permissions', function () {
       shareModal.shareResource(targetFolder, 'folder', testConfig.testUserName1, false, false);
       workspacePage.clearSearch();
 
-      workspacePage.logout();
       workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
 
       // go to Test User 2's folder to see the shared folders
@@ -316,9 +299,7 @@ describe('resource-permissions', function () {
     it('should delete resource from the user workspace', function () {
       for (var i = 0; i < resources.length; i++) {
         (function (resource) {
-          workspacePage.logout();
           workspacePage.login(resource.username, resource.password);
-
           workspacePage.deleteResourceViaRightClick(resource.title, resource.type);
           toastyModal.isSuccess();
           workspacePage.clearSearch();

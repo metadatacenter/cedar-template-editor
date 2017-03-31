@@ -173,7 +173,7 @@ gulp.task('e2e', ['test-env'], function () {
 gulp.task('b2b', ['test-env'], function () {
   return gulp.src([
     './tests/e2e/clean-up-spec.js',
-    './tests/e2e/update-ownership-spec.js'
+    './tests/e2e/delete-resource-spec.js'
   ])
       .pipe(protractor({
         configFile: "protractor.config.js"

@@ -6,9 +6,8 @@ var SweetAlertModal = require('../modals/sweet-alert-modal.js');
 var _ = require('../libs/lodash.min.js');
 
 // TODO turned off so we do not run out of time on Travis
-xdescribe('template-creator', function () {
+describe('template-creator', function () {
   var EC = protractor.ExpectedConditions;
-
   var workspacePage = WorkspacePage;
   var templatePage = TemplatePage;
   var toastyModal = ToastyModal;
@@ -16,9 +15,8 @@ xdescribe('template-creator', function () {
 
   var cleanJson;
   var dirtyJson;
-  var sampleTitle;
+  var templateOrElement;
   var sampleDescription;
-  var sampleUrl;
   var sampleJson;
   var fieldTypes = [
     {
@@ -130,11 +128,20 @@ xdescribe('template-creator', function () {
 
   var pageTypes = ['template', 'element'];
 
+  var resources = [];
+  var createResource = function (title, type, username, password) {
+    var result = new Object;
+    result.title = title;
+    result.type = type;
+    result.username = username;
+    result.password = password;
+    return result;
+  };
+
 
   // before each test, load a new page and create a template
   // maximize the window area for clicking
   beforeEach(function () {
-    workspacePage.appLoaded();
   });
 
   afterEach(function () {
@@ -144,21 +151,24 @@ xdescribe('template-creator', function () {
   for (var j = 0; j < pageTypes.length; j++) {
     (function (pageType) {
 
-      it("should have a logo on the workspace page", function () {
-        workspacePage.hasLogo();
+      it("should be on the workspace page", function () {
         workspacePage.onWorkspace();
       });
 
-      it("should create the sample template " + pageType, function () {
-        sampleTitle = workspacePage.createTitle(pageType);
+      it("should have a logo", function () {
+        workspacePage.hasLogo();
+      });
+
+      it("should create the sample " + pageType, function () {
+        templateOrElement = workspacePage.createTitle(pageType);
         sampleDescription = workspacePage.createDescription(pageType);
-        workspacePage.createResource(pageType, sampleTitle, sampleDescription);
-        workspacePage.onWorkspace();
+        workspacePage.createResource(pageType, templateOrElement, sampleDescription);
+        resources.push(createResource(templateOrElement, pagetype, testConfig.testUser1, testConfig.testPassword1));
       });
 
       it("should have editable title and description", function () {
-        workspacePage.editResource(sampleTitle, pageType);
-        templatePage.isTitle(pageType, sampleTitle);
+        workspacePage.editResource(templateOrElement, pageType);
+        templatePage.isTitle(pageType, templateOrElement);
         templatePage.isDescription(pageType, sampleDescription);
       });
 
@@ -260,7 +270,7 @@ xdescribe('template-creator', function () {
       });
 
       it("should show and hide the JSON preview ", function () {
-        workspacePage.editResource(sampleTitle, pageType);
+        workspacePage.editResource(templateOrElement, pageType);
         templatePage.showJson();
         templatePage.hideJson();
         templatePage.topNavBackArrow().click();
@@ -268,7 +278,7 @@ xdescribe('template-creator', function () {
       });
 
       it("should hang on to the sample template json " + pageType, function () {
-        workspacePage.editResource(sampleTitle, pageType);
+        workspacePage.editResource(templateOrElement, pageType);
         templatePage.showJson();
 
         // get the template json
@@ -466,14 +476,27 @@ xdescribe('template-creator', function () {
         workspacePage.onWorkspace();
       });
 
-      it("should delete the sample " + pageType, function () {
-        workspacePage.deleteResource(sampleTitle, pageType);
-        workspacePage.onWorkspace();
-      });
 
     })
     (pageTypes[j]);
   }
+
+  describe('remove created resources', function () {
+
+    it('should delete resource from the user workspace', function () {
+      for (var i = 0; i < resources.length; i++) {
+        (function (resource) {
+          workspacePage.logout();
+          workspacePage.login(resource.username, resource.password);
+
+          workspacePage.deleteResourceViaRightClick(resource.title, resource.type);
+          toastyModal.isSuccess();
+          workspacePage.clearSearch();
+        })
+        (resources[i]);
+      }
+    });
+  });
 });
 
 
