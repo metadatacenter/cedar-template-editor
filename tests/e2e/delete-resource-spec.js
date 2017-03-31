@@ -99,7 +99,6 @@ describe('delete-resource', function () {
     });
   });
 
-
   describe('via right-click', function () {
 
     it("should fail to delete a resource shared as readable with Everybody", function () {

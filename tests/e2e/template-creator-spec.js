@@ -3,6 +3,7 @@ var TemplatePage = require('../pages/template-creator-page.js');
 var WorkspacePage = require('../pages/workspace-page.js');
 var ToastyModal = require('../modals/toasty-modal.js');
 var SweetAlertModal = require('../modals/sweet-alert-modal.js');
+var testConfig = require('../config/test-env.js');
 var _ = require('../libs/lodash.min.js');
 
 // TODO turned off so we do not run out of time on Travis
@@ -147,23 +148,22 @@ describe('template-creator', function () {
   afterEach(function () {
   });
 
+  it("should be on the workspace page", function () {
+    workspacePage.onWorkspace();
+    workspacePage.hasLogo();
+  });
+
+  describe('create resource', function () {
+
   // repeat tests for both template and element editors
   for (var j = 0; j < pageTypes.length; j++) {
     (function (pageType) {
-
-      it("should be on the workspace page", function () {
-        workspacePage.onWorkspace();
-      });
-
-      it("should have a logo", function () {
-        workspacePage.hasLogo();
-      });
 
       it("should create the sample " + pageType, function () {
         templateOrElement = workspacePage.createTitle(pageType);
         sampleDescription = workspacePage.createDescription(pageType);
         workspacePage.createResource(pageType, templateOrElement, sampleDescription);
-        resources.push(createResource(templateOrElement, pagetype, testConfig.testUser1, testConfig.testPassword1));
+        resources.push(createResource(templateOrElement, pageType, testConfig.testUser1, testConfig.testPassword1));
       });
 
       it("should have editable title and description", function () {
@@ -480,13 +480,13 @@ describe('template-creator', function () {
     })
     (pageTypes[j]);
   }
+  });
 
   describe('remove created resources', function () {
 
     it('should delete resource from the user workspace', function () {
       for (var i = 0; i < resources.length; i++) {
         (function (resource) {
-          workspacePage.logout();
           workspacePage.login(resource.username, resource.password);
 
           workspacePage.deleteResourceViaRightClick(resource.title, resource.type);

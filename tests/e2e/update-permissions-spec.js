@@ -32,7 +32,7 @@ describe('update-permissions', function () {
     workspacePage.onWorkspace();
   });
 
-  describe('update-permissions', function () {
+  describe('with permissions', function () {
 
     it("should fail to change permissions of a folder shared as readable with current user", function () {
       workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
@@ -53,7 +53,6 @@ describe('update-permissions', function () {
       resources.push(createResource(folder, 'folder', testConfig.testUser1, testConfig.testPassword1));
     });
 
-
     it("should be able to change permissions of a folder shared as writable with current user", function () {
       workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
 
@@ -73,7 +72,6 @@ describe('update-permissions', function () {
       resources.push(createResource(folder, 'folder', testConfig.testUser2, testConfig.testPassword2));
     });
 
-
     it("should fail to change permissions of a folder shared as readable with Everybody group", function () {
       workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
 
@@ -92,7 +90,6 @@ describe('update-permissions', function () {
 
       resources.push(createResource(folder, 'folder', testConfig.testUser1, testConfig.testPassword1));
     });
-
 
     it("should be able to change permissions of a folder shared as writable with Everybody group", function () {
       workspacePage.login(testConfig.testUser2, testConfig.testPassword2);

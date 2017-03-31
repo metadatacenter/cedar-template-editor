@@ -38,7 +38,7 @@ describe('resource-permissions', function () {
     workspacePage.onWorkspace();
   });
 
-  xdescribe('move tests', function () {
+  describe('move tests', function () {
 
     it("should move a resource owned by current user to a writable folder", function () {
       workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
@@ -87,6 +87,8 @@ describe('resource-permissions', function () {
     });
 
     it("should move a writable resource not owned by current user to a writable folder", function () {
+      workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
+
       // create source template and target shared folder
       var sourceTemplate = workspacePage.createTemplate('Source');
       var targetFolder = workspacePage.createFolder('Target');

@@ -4,19 +4,22 @@ var MetadataPage = require('../pages/metadata-page.js');
 var TemplatePage = require('../pages/template-creator-page.js');
 var ToastyModal = require('../modals/toasty-modal.js');
 var SweetAlertModal = require('../modals/sweet-alert-modal.js');
+var testConfig = require('../config/test-env.js');
 var _ = require('../libs/lodash.min.js');
 
-var template;
-var element;
-var folder;
 
-xdescribe('metadata-creator', function () {
+
+describe('metadata-creator', function () {
   var EC = protractor.ExpectedConditions;
   var workspacePage = WorkspacePage;
   var metadataPage = MetadataPage;
   var templatePage = TemplatePage;
   var toastyModal = ToastyModal;
   var sweetAlertModal = SweetAlertModal;
+
+  var template;
+  var element;
+  var folder;
 
   var resources = [];
   var createResource = function (title, type, username, password) {
@@ -27,6 +30,7 @@ xdescribe('metadata-creator', function () {
     result.password = password;
     return result;
   };
+
 
   beforeEach(function () {
   });
@@ -40,16 +44,15 @@ xdescribe('metadata-creator', function () {
 
   describe('create metadata', function () {
 
-    it("should create the sample template", function () {
-      template = workspacePage.createTitle('template');
-      workspacePage.createResource('template', template);
-      resources.push(createResource(template, 'template', testConfig.testUser1, testConfig.testPassword1));
-    });
-
     // put a test between the creation of a resource and the search for it
     // it may take two seconds to index the new resource
     it("should have a logo", function () {
       workspacePage.hasLogo();
+    });
+
+    it("should create the sample template", function () {
+      template = workspacePage.createTemplate('Source');
+      resources.push(createResource(template, 'template', testConfig.testUser1, testConfig.testPassword1));
     });
 
     it("should have a control bar", function () {
@@ -73,13 +76,12 @@ xdescribe('metadata-creator', function () {
     });
 
     it("should create a folder", function () {
-      folder = workspacePage.createTitle('folder');
-      workspacePage.createResource('folder', folder);
+      folder = workspacePage.createFolder('folder');
       resources.push(createResource(folder, 'folder', testConfig.testUser1, testConfig.testPassword1));
     });
 
     it("should create an element", function () {
-      element = workspacePage.createElement('');
+      element = workspacePage.createElement('element');
       resources.push(createResource(element, 'element', testConfig.testUser1, testConfig.testPassword1));
     });
 
@@ -107,12 +109,12 @@ xdescribe('metadata-creator', function () {
 
     it("should create an instance from our sample template", function () {
       workspacePage.populateResource(template, 'template');
-      resources.push(createResource(template, 'metadata', testConfig.testUser1, testConfig.testPassword1));
+      resources.unshift(createResource(template, 'metadata', testConfig.testUser1, testConfig.testPassword1));
     });
 
     it("should create another instance from our sample template", function () {
       workspacePage.populateResource(template, 'template');
-      resources.push(createResource(template, 'metadata', testConfig.testUser1, testConfig.testPassword1));
+      resources.unshift(createResource(template, 'metadata', testConfig.testUser1, testConfig.testPassword1));
     });
 
     it("should show instance header, back arrow, title, and json preview", function () {
@@ -126,7 +128,7 @@ xdescribe('metadata-creator', function () {
     it("should have the correct document title", function () {
       browser.wait(EC.presenceOf(metadataPage.documentTitle()));
       metadataPage.documentTitle().getText().then(function (text) {
-        expect(text === sampleTitle + ' metadata').toBe(true);
+        expect(text === template + ' metadata').toBe(true);
       });
     });
 
@@ -146,7 +148,7 @@ xdescribe('metadata-creator', function () {
     });
 
     it("should open existing metadata with a double click", function () {
-      workspacePage.doubleClickResource(sampleTitle, 'metadata');
+      workspacePage.doubleClickResource(template, 'metadata');
       workspacePage.onMetadata();
     });
 
