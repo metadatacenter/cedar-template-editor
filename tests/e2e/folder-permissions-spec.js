@@ -27,6 +27,11 @@ describe('folder-permissions', function () {
   afterEach(function () {
   });
 
+  // reset user selections to defaults
+  it('should be on the workspace', function () {
+    workspacePage.onWorkspace();
+  });
+
   describe('moving folders', function () {
 
     it("should move a folder owned by current user to a writable folder", function () {
