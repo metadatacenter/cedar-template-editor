@@ -55,6 +55,7 @@ describe('folder-permissions', function () {
       // share folder with user 2
       var sharedFolderTitle = workspacePage.createFolder('Shared');
       shareModal.shareResource(sharedFolderTitle, 'folder', testConfig.testUserName2, false, false);
+      workspacePage.clearSearch(); // reset search
 
       // login as user 2
       workspacePage.logout();
@@ -85,9 +86,9 @@ describe('folder-permissions', function () {
 
       // share both folders
       shareModal.shareResource(sourceFolder, 'folder', testConfig.testUserName1, true, false);
-      //workspacePage.clearSearch(); // reset search
+      workspacePage.clearSearch(); // reset search
       shareModal.shareResource(targetFolder, 'folder', testConfig.testUserName1, true, false);
-      //workspacePage.clearSearch(); // reset search
+      workspacePage.clearSearch(); // reset search
 
       workspacePage.logout();
       workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
@@ -114,8 +115,9 @@ describe('folder-permissions', function () {
       var targetFolder = workspacePage.createFolder('Target');
 
       shareModal.shareResource(sourceFolder, 'folder', testConfig.testUserName2, true, false);
-      //workspacePage.clearSearch(); // reset search
+      workspacePage.clearSearch(); // reset search
       shareModal.shareResource(targetFolder, 'folder', testConfig.testUserName2, false, false);
+      workspacePage.clearSearch(); // reset search
 
       workspacePage.logout();
       workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
@@ -141,8 +143,9 @@ describe('folder-permissions', function () {
 
       // share both folders
       shareModal.shareResource(sourceFolder, 'folder', testConfig.testUserName1, false, false);
-      //workspacePage.clearSearch(); // reset search
+      workspacePage.clearSearch(); // reset search
       shareModal.shareResource(targetFolder, 'folder', testConfig.testUserName1, false, false);
+      workspacePage.clearSearch(); // reset search
 
       workspacePage.logout();
       workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
@@ -189,6 +192,7 @@ describe('folder-permissions', function () {
       // create a folder to share with another user
       var sharedFolderTitle = workspacePage.createFolder('Shared');
       shareModal.shareResource(sharedFolderTitle, 'folder', testConfig.testUserName2, false, false);
+      workspacePage.clearSearch(); // reset search
 
       // logout current user and login as the user with whom the folder was shared
       workspacePage.logout();
@@ -219,6 +223,7 @@ describe('folder-permissions', function () {
       shareModal.shareResource(sourceFolder, 'folder', testConfig.testUserName1, true, false);
       workspacePage.clearSearch(); // reset search
       shareModal.shareResource(targetFolder, 'folder', testConfig.testUserName1, true, false);
+      workspacePage.clearSearch(); // reset search
 
       workspacePage.logout();
       workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
@@ -272,6 +277,7 @@ describe('folder-permissions', function () {
       shareModal.shareResource(sourceFolder, 'folder', testConfig.testUserName1, false, false);
       workspacePage.clearSearch(); // reset search
       shareModal.shareResource(targetFolder, 'folder', testConfig.testUserName1, false, false);
+      workspacePage.clearSearch(); // reset search
 
       workspacePage.logout();
       workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
