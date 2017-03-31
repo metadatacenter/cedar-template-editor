@@ -419,6 +419,7 @@ var WorkspacePage = function () {
 
     // delete menu item
     browser.wait(EC.visibilityOf(createDeleteResourceButton));
+    var availableElement = by.css('.some-class:not(.disabled)');
     browser.wait(EC.elementToBeClickable(createDeleteResourceButton));
     createDeleteResourceButton.click();
 

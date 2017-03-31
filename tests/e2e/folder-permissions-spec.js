@@ -18,8 +18,16 @@ describe('folder-permissions', function () {
   var shareModal = ShareModal;
   var copyModal = CopyModal;
   var sweetAlertModal = SweetAlertModal;
-  var resources = {'user1': [], 'user2': []};
 
+  var resources = [];
+  var createResource = function (title, type, username, password) {
+    var result = new Object;
+    result.title = title;
+    result.type = type;
+    result.username = username;
+    result.password = password;
+    return result;
+  };
 
   beforeEach(function () {
   });
@@ -49,8 +57,9 @@ describe('folder-permissions', function () {
       workspacePage.clearSearch();
 
       // delete these at the end
-      resources['user1'].push(sourceFolder);
-      resources['user1'].push(targetFolder);
+      resources.push(createResource(sourceFolder, 'folder', testConfig.testUser1, testConfig.testPassword1));
+      resources.push(createResource(targetFolder, 'folder', testConfig.testUser1, testConfig.testPassword1));
+
     });
 
     it("should move a folder owned by current user to an unwritable folder", function () {
@@ -75,8 +84,8 @@ describe('folder-permissions', function () {
       workspacePage.clearSearch();
 
       // delete these at the end
-      resources['user1'].push(sharedFolderTitle);
-      resources['user2'].push(folderTitle);
+      resources.push(createResource(sharedFolderTitle, 'folder', testConfig.testUser1, testConfig.testPassword1));
+      resources.push(createResource(folderTitle, 'folder', testConfig.testUser2, testConfig.testPassword2));
     });
 
 
@@ -107,8 +116,9 @@ describe('folder-permissions', function () {
       toastyModal.isSuccess();
       workspacePage.clearSearch();
 
-      resources['user2'].push(sourceFolder);
-      resources['user2'].push(targetFolder);
+      // delete these at the end
+      resources.push(createResource(sourceFolder, 'folder', testConfig.testUser2, testConfig.testPassword2));
+      resources.push(createResource(targetFolder, 'folder', testConfig.testUser2, testConfig.testPassword2));
     });
 
     it("should move a writable folder not owned by current user to an unwritable folder", function () {
@@ -134,8 +144,9 @@ describe('folder-permissions', function () {
       sweetAlertModal.confirm();
       workspacePage.clearSearch();
 
-      resources['user1'].push(sourceFolder);
-      resources['user1'].push(targetFolder);
+      // delete these at the end
+      resources.push(createResource(sourceFolder, 'folder', testConfig.testUser1, testConfig.testPassword1));
+      resources.push(createResource(targetFolder, 'folder', testConfig.testUser1, testConfig.testPassword1));
     });
 
     it("should move an unwritable folder not owned by current user to an unwritable folder", function () {
@@ -163,8 +174,9 @@ describe('folder-permissions', function () {
       expect(workspacePage.createRightClickMoveToMenuItem().getAttribute('class')).toMatch('link-disabled');
       workspacePage.clearSearch();
 
-      resources['user2'].push(sourceFolder);
-      resources['user2'].push(targetFolder);
+      // delete these at the end
+      resources.push(createResource(sourceFolder, 'folder', testConfig.testUser2, testConfig.testPassword2));
+      resources.push(createResource(targetFolder, 'folder', testConfig.testUser2, testConfig.testPassword2));
     });
 
   });
@@ -186,8 +198,9 @@ describe('folder-permissions', function () {
       toastyModal.isSuccess();
       workspacePage.clearSearch();
 
-      resources['user1'].push(sourceFolder);
-      resources['user1'].push(targetFolder);
+      // delete these at the end
+      resources.push(createResource(sourceFolder, 'folder', testConfig.testUser1, testConfig.testPassword1));
+      resources.push(createResource(targetFolder, 'folder', testConfig.testUser1, testConfig.testPassword1));
     });
 
     it("should copy a folder owned by current user to an unwritable folder", function () {
@@ -211,8 +224,9 @@ describe('folder-permissions', function () {
       sweetAlertModal.confirm();
       workspacePage.clearSearch();
 
-      resources['user1'].push(sharedFolderTitle);
-      resources['user2'].push(folderTitle);
+      // delete these at the end
+      resources.push(createResource(sharedFolderTitle, 'folder', testConfig.testUser1, testConfig.testPassword1));
+      resources.push(createResource(folderTitle, 'folder', testConfig.testUser2, testConfig.testPassword2));
     });
 
     it("should copy a writable folder not owned by current user to a writable folder", function () {
@@ -242,8 +256,9 @@ describe('folder-permissions', function () {
       toastyModal.isSuccess();
       workspacePage.clearSearch();
 
-      resources['user2'].push(sourceFolder);
-      resources['user2'].push(targetFolder);
+      // delete these at the end
+      resources.push(createResource(sourceFolder, 'folder', testConfig.testUser2, testConfig.testPassword2));
+      resources.push(createResource(targetFolder, 'folder', testConfig.testUser2, testConfig.testPassword2));
     });
 
     it("should copy a writable folder not owned by current user to an unwritable folder", function () {
@@ -269,8 +284,9 @@ describe('folder-permissions', function () {
       sweetAlertModal.confirm();
       workspacePage.clearSearch();
 
-      resources['user1'].push(sourceFolder);
-      resources['user1'].push(targetFolder);
+      // delete these at the end
+      resources.push(createResource(sourceFolder, 'folder', testConfig.testUser1, testConfig.testPassword1));
+      resources.push(createResource(targetFolder, 'folder', testConfig.testUser1, testConfig.testPassword1));
     });
 
     it("should copy an unwritable folder not owned by current user to an unwritable folder", function () {
@@ -295,48 +311,26 @@ describe('folder-permissions', function () {
       expect(workspacePage.createRightClickCopyToMenuItem().getAttribute('class')).toMatch('link-disabled');
       workspacePage.clearSearch();
 
-      resources['user2'].push(sourceFolder);
-      resources['user2'].push(targetFolder);
+      // delete these at the end
+      resources.push(createResource(sourceFolder, 'folder', testConfig.testUser2, testConfig.testPassword2));
+      resources.push(createResource(targetFolder, 'folder', testConfig.testUser2, testConfig.testPassword2));
     });
   });
 
   describe('remove created resources', function () {
 
-    it("should login as " + testConfig.testUserName1, function () {
-      workspacePage.logout();
-      workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
-    });
-
-    it('should delete any template from the user workspace', function () {
-      for (var i = 0; i < resources['user1'].length; i++) {
+    it('should delete resource from the user workspace', function () {
+      for (var i = 0; i < resources.length; i++) {
         (function (resource) {
-          workspacePage.deleteResourceViaRightClick(resource, 'folder');
+          workspacePage.logout();
+          workspacePage.login(resource.username, resource.password);
+
+          workspacePage.deleteResourceViaRightClick(resource.title, resource.type);
           toastyModal.isSuccess();
           workspacePage.clearSearch();
         })
-        (resources['user1'][i]);
+        (resources[i]);
       }
-    });
-
-    it("should login as " + testConfig.testUserName2, function () {
-      workspacePage.logout();
-      workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
-    });
-
-    it('should delete any template from the user workspace', function () {
-      for (var i = 0; i < resources['user2'].length; i++) {
-        (function (resource) {
-          workspacePage.deleteResourceViaRightClick(resource, 'folder');
-          toastyModal.isSuccess();
-          workspacePage.clearSearch();
-        })
-        (resources['user2'][i]);
-      }
-    });
-
-    it("should login as " + testConfig.testUserName1, function () {
-      workspacePage.logout();
-      workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
     });
   });
 
