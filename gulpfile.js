@@ -143,9 +143,6 @@ gulp.task('test-env', function () {
       .pipe(replace('protractorTestUser2', cedarTestUser2))
       .pipe(replace('protractorTestPassword2', cedarTestPassword2))
       .pipe(replace('protractorTestUserName2', cedarTestUserName2))
-      .pipe(replace('protractorTestUser3', cedarTestUser3))
-      .pipe(replace('protractorTestPassword3', cedarTestPassword3))
-      .pipe(replace('protractorTestUserName3', cedarTestUserName3))
       .pipe(replace('protractorEverybodyGroup', cedarEverybodyGroup))
       .pipe(replace('protractorCedarVersion', cedarVersion))
       .pipe(gulp.dest('tests/config/'));
@@ -154,16 +151,15 @@ gulp.task('test-env', function () {
 gulp.task('e2e', ['test-env'], function () {
   return gulp.src([
     './tests/e2e/clean-up-spec.js',
+    './tests/e2e/metadata-creator-spec.js',
+    './tests/e2e/template-creator-spec.js',
     './tests/e2e/delete-resource-spec.js',
     './tests/e2e/folder-permissions-spec.js',
-    './tests/e2e/metadata-creator-spec.js',
     './tests/e2e/resource-permissions-spec.js',
-    './tests/e2e/template-creator-spec.js',
     './tests/e2e/update-description-spec.js',
     './tests/e2e/update-name-spec.js',
     './tests/e2e/update-ownership-spec.js',
-    './tests/e2e/update-permissions-spec.js',
-    './tests/e2e/workspace-spec.js'
+    './tests/e2e/update-permissions-spec.js'
   ])
       .pipe(protractor({
         configFile: "protractor.config.js"
@@ -172,6 +168,40 @@ gulp.task('e2e', ['test-env'], function () {
         throw e
       });
 });
+
+gulp.task('test-workspace', ['test-env'], function () {
+  return gulp.src([
+    './tests/e2e/clean-up-spec.js',
+    './tests/e2e/delete-resource-spec.js',
+    './tests/e2e/folder-permissions-spec.js',
+    './tests/e2e/resource-permissions-spec.js',
+    './tests/e2e/update-description-spec.js',
+    './tests/e2e/update-name-spec.js',
+    './tests/e2e/update-ownership-spec.js',
+    './tests/e2e/update-permissions-spec.js'
+  ])
+      .pipe(protractor({
+        configFile: "protractor.config.js"
+      }))
+      .on('error', function (e) {
+        throw e
+      });
+});
+
+gulp.task('test-form', ['test-env'], function () {
+  return gulp.src([
+    './tests/e2e/clean-up-spec.js',
+    './tests/e2e/metadata-creator-spec.js',
+    './tests/e2e/template-creator-spec.js'
+  ])
+      .pipe(protractor({
+        configFile: "protractor.config.js"
+      }))
+      .on('error', function (e) {
+        throw e
+      });
+});
+
 
 function exitWithError(msg) {
   onError(msg);
@@ -227,9 +257,6 @@ var cedarTestPassword1 = envConfig['CEDAR_TEST_USER1_PASSWORD'];
 var cedarTestUser2 = envConfig['CEDAR_TEST_USER2'];
 var cedarTestUserName2 = envConfig['CEDAR_TEST_USER2_NAME'];
 var cedarTestPassword2 = envConfig['CEDAR_TEST_USER2_PASSWORD'];
-var cedarTestUser3 = envConfig['CEDAR_TEST_USER3'];
-var cedarTestUserName3 = envConfig['CEDAR_TEST_USER3_NAME'];
-var cedarTestPassword3 = envConfig['CEDAR_TEST_USER3_PASSWORD'];
 var cedarEverybodyGroup = envConfig['CEDAR_EVERYBODY_GROUP'];
 var cedarVersion = envConfig['CEDAR_VERSION'];
 var cedarVersionModifier = envConfig['CEDAR_VERSION_MODIFIER'];

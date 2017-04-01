@@ -2,14 +2,14 @@ var testConfig = require('./tests/config/test-env.js');
 
 exports.config = {
   seleniumAddress: 'http://localhost:4444/wd/hub',
-  specs            : ['tests/e2e/**/*.js'],
+  specs            :
+      ['tests/e2e/**/*.js'],
   rootElement: 'html',
 
   capabilities: {
     browserName: 'chrome',
-    shardTestFiles: false,
-    maxInstances:11
   },
+
 
   allScriptsTimeout: 500000,
   jasmineNodeOpts: {

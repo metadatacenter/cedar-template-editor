@@ -14,7 +14,7 @@ branches:
   - develop
   - master
   - testing/permissions
-  - feature/sharding
+  - feature/debugging-tests
 notifications:
   slack:
     on_success: change
@@ -33,7 +33,7 @@ install:
 - webdriver-manager update
 - nohup bash -c "webdriver-manager start 2>&1 &"
 script:
-- gulp e2e
+- gulp test-workspace
 env:
   global:
   - CEDAR_TEST_USER1="test1@test.com"

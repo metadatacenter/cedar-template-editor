@@ -36,7 +36,7 @@ var SweetAlertModal = function () {
   this.confirm = function() {
 
     browser.wait(EC.visibilityOf(createSweetAlertConfirmButton));
-    browser.sleep(1000);  // TODO seems to need this
+    browser.sleep(1000);  // TODO seems to need to wait for animation
     browser.wait(EC.elementToBeClickable(createSweetAlertConfirmButton));
     createSweetAlertConfirmButton.click();
 
@@ -45,7 +45,7 @@ var SweetAlertModal = function () {
   this.cancel = function() {
 
     browser.wait(EC.visibilityOf(createSweetAlertConfirmButton));
-    browser.sleep(1000);  // TODO seems to need this
+    browser.sleep(1000);  // TODO seems to need to wait for animation
     browser.wait(EC.elementToBeClickable(createSweetAlertConfirmButton));
     createSweetAlertCancelButton.click();
 

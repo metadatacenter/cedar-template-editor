@@ -1,126 +1,138 @@
 'use strict';
 var WorkspacePage = require('../pages/workspace-page.js');
 var ToastyModal = require('../modals/toasty-modal.js');
+var testConfig = require('../config/test-env.js');
 var ShareModal = require('../modals/share-modal.js');
 var RenameModal = require('../modals/rename-modal.js');
 var SweetAlertModal = require('../modals/sweet-alert-modal.js');
-var testConfig = require('../config/test-env.js');
+var _ = require('../libs/lodash.min.js');
 
-xdescribe('update-name', function () {
-  var workspacePage;
-  var toastyModal;
-  var shareModal;
-  var renameModal;
-  var sweetAlertModal;
+describe('update-name', function () {
+  var EC = protractor.ExpectedConditions;
+  var workspacePage = WorkspacePage;
+  var toastyModal = ToastyModal;
+  var shareModal = ShareModal;
+  var renameModal = RenameModal;
+  var sweetAlertModal = SweetAlertModal;
 
-  var resourcesUser1 = [];
-  var resourcesUser2 = [];
+  var resources = [];
+  var createResource = function (title, type, username, password) {
+    var result = new Object;
+    result.title = title;
+    result.type = type;
+    result.username = username;
+    result.password = password;
+    return result;
+  };
 
   beforeEach(function () {
-    workspacePage = WorkspacePage;
-    toastyModal = ToastyModal;
-    shareModal = ShareModal;
-    renameModal = RenameModal;
-    sweetAlertModal = SweetAlertModal;
-    browser.driver.manage().window().maximize();
   });
 
   afterEach(function () {
-    workspacePage.clickLogo();
   });
 
-
-  it("should fail to update name of a resource shared as readable with Everybody group", function () {
+  // reset user selections to defaults
+  it('should be on the workspace', function () {
     workspacePage.onWorkspace();
-    var folder = workspacePage.createFolder('Readable');
-    resourcesUser1.push(folder);
-    shareModal.shareResourceWithGroup(folder, 'folder', testConfig.everybodyGroup, false, false);
-
-    workspacePage.logout();
-    workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
-
-    workspacePage.selectResource(folder, 'folder');
-    workspacePage.createMoreOptionsButton().click();
-    expect(workspacePage.createRenameResourceButton().getAttribute('class')).toMatch('link-disabled');
   });
 
+  describe('in info panel', function () {
 
-  it("should fail to update name of a resource shared as readable with a user", function () {
-    var folder = workspacePage.createFolder('Readable');
-    resourcesUser2.push(folder);
-    shareModal.shareResource(folder, 'folder', testConfig.testUserName1, false, false);
+    it("should fail to update name of a resource shared as readable with Everybody group", function () {
+      workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
 
-    workspacePage.logout();
-    workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
+      var folder = workspacePage.createFolder('Readable');
 
-    workspacePage.selectResource(folder, 'folder');
-    workspacePage.createMoreOptionsButton().click();
-    expect(workspacePage.createRenameResourceButton().getAttribute('class')).toMatch('link-disabled');
-  });
-
-
-  it("should update name of a resource shared as writable with Everybody group", function () {
-    var folder = workspacePage.createFolder('Writable');
-    shareModal.shareResourceWithGroup(folder, 'folder', testConfig.everybodyGroup, true, false);
-
-    workspacePage.logout();
-    workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
-
-    workspacePage.navigateToUserFolder(testConfig.testUserName1);
-    workspacePage.rightClickResource(folder, 'folder');
-
-    // change name
-    var newFolderName = workspacePage.createTitle('NewWritable');
-    resourcesUser1.push(newFolderName);
-    workspacePage.createRightClickRenameMenuItem().click();
-    renameModal.renameTo(newFolderName);
-    toastyModal.isSuccess();
-  });
-
-
-  it("should update name of a resource shared as writable with a user", function () {
-    var folder = workspacePage.createFolder('Writable');
-    shareModal.shareResource(folder, 'folder', testConfig.testUserName1, true, false);
-
-    workspacePage.logout();
-    workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
-
-    workspacePage.navigateToUserFolder(testConfig.testUserName2);
-    workspacePage.rightClickResource(folder, 'folder');
-
-    // change name
-    var newFolderName = workspacePage.createTitle('NewWritable');
-    resourcesUser2.push(newFolderName);
-    workspacePage.createRightClickRenameMenuItem().click();
-    renameModal.renameTo(newFolderName);
-    toastyModal.isSuccess();
-  });
-
-
-  it("should delete the test resources created by " + testConfig.testUserName1, function () {
-    for (var i = 0; i < resourcesUser1.length; i++) {
-      workspacePage.deleteResourceViaRightClick(resourcesUser1[i], 'folder');
-      toastyModal.isSuccess();
+      shareModal.shareResourceWithGroup(folder, 'folder', testConfig.everybodyGroup, false, false);
       workspacePage.clearSearch();
-    }
-  });
+
+      workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
+
+      workspacePage.selectResource(folder, 'folder');
+      workspacePage.createMoreOptionsButton().click();
+      expect(workspacePage.createRenameResourceButton().getAttribute('class')).toMatch('link-disabled');
+
+      resources.push(createResource(folder, 'folder', testConfig.testUser1, testConfig.testPassword1));
+    });
 
 
-  it("should delete the test resources created by " + testConfig.testUserName2, function () {
-    workspacePage.logout();
-    workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
+    it("should fail to update name of a resource shared as readable with a user", function () {
+      workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
 
-    for(var j = 0; j < resourcesUser2.length; j++) {
-      workspacePage.deleteResourceViaRightClick(resourcesUser2[j], 'folder');
-      toastyModal.isSuccess();
+      var folder = workspacePage.createFolder('Readable');
+
+      shareModal.shareResource(folder, 'folder', testConfig.testUserName1, false, false);
       workspacePage.clearSearch();
-    }
 
-    workspacePage.logout();
-    workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
+      workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
+
+      workspacePage.selectResource(folder, 'folder');
+      workspacePage.createMoreOptionsButton().click();
+      expect(workspacePage.createRenameResourceButton().getAttribute('class')).toMatch('link-disabled');
+
+      resources.push(createResource(folder, 'folder', testConfig.testUser2, testConfig.testPassword2));
+    });
+
+
+    it("should update name of a resource shared as writable with Everybody group", function () {
+      workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
+
+      var folder = workspacePage.createFolder('Writable');
+
+      shareModal.shareResourceWithGroup(folder, 'folder', testConfig.everybodyGroup, true, false);
+      workspacePage.clearSearch();
+
+      workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
+
+      workspacePage.navigateToUserFolder(testConfig.testUserName1);
+      workspacePage.rightClickResource(folder, 'folder');
+
+      // change name
+      var newFolderName = workspacePage.createTitle('NewWritable');
+      workspacePage.createRightClickRenameMenuItem().click();
+      renameModal.renameTo(newFolderName);
+      toastyModal.isSuccess();
+
+      resources.push(createResource(newFolderName, 'folder', testConfig.testUser1, testConfig.testPassword1));
+    });
+
+
+    it("should update name of a resource shared as writable with a user", function () {
+      workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
+
+      var folder = workspacePage.createFolder('Writable');
+      shareModal.shareResource(folder, 'folder', testConfig.testUserName1, true, false);
+      workspacePage.clearSearch();
+
+      workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
+
+      workspacePage.navigateToUserFolder(testConfig.testUserName2);
+      workspacePage.rightClickResource(folder, 'folder');
+
+      // change name
+      var newFolderName = workspacePage.createTitle('NewWritable');
+      workspacePage.createRightClickRenameMenuItem().click();
+      renameModal.renameTo(newFolderName);
+      toastyModal.isSuccess();
+
+      resources.push(createResource(newFolderName, 'folder', testConfig.testUser1, testConfig.testPassword1));
+    });
   });
 
+  describe('remove created resources', function () {
 
+    it('should delete resource from the user workspace', function () {
+      for (var i = 0; i < resources.length; i++) {
+        (function (resource) {
+          workspacePage.login(resource.username, resource.password);
+          workspacePage.deleteResourceViaRightClick(resource.title, resource.type);
+          toastyModal.isSuccess();
+          workspacePage.clearSearch();
+        })
+        (resources[i]);
+      }
+    });
+  });
 });
 
 
