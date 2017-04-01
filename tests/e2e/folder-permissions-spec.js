@@ -10,7 +10,8 @@ var SweetAlertModal = require('../modals/sweet-alert-modal.js');
 
 var _ = require('../libs/lodash.min.js');
 
-describe('folder-permissions', function () {
+// TODO this is similar to resource-permissions so turn turn this off to save time
+xdescribe('folder-permissions', function () {
   var EC = protractor.ExpectedConditions;
   var workspacePage = WorkspacePage;
   var toastyModal = ToastyModal;

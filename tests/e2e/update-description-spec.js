@@ -37,7 +37,6 @@ describe('update-description', function () {
   describe('in info panel', function () {
 
     it("should fail to update description of a resource shared as readable with Everybody group", function () {
-      workspacePage.logout();
       workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
 
       workspacePage.closeInfoPanel();
@@ -46,7 +45,6 @@ describe('update-description', function () {
       shareModal.shareResourceWithGroup(template, 'template', testConfig.everybodyGroup, false, false);
       workspacePage.clearSearch();
 
-      workspacePage.logout();
       workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
 
       workspacePage.navigateToUserFolder(testConfig.testUserName1);
@@ -61,7 +59,6 @@ describe('update-description', function () {
     });
 
     it("should update description of a resource shared as writable with Everybody group", function () {
-      workspacePage.logout();
       workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
 
       var template = workspacePage.createTemplate('Writable');
@@ -69,7 +66,6 @@ describe('update-description', function () {
       shareModal.shareResourceWithGroup(template, 'template', testConfig.everybodyGroup, true, false);
       workspacePage.clearSearch();
 
-      workspacePage.logout();
       workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
 
       workspacePage.navigateToUserFolder(testConfig.testUserName2);

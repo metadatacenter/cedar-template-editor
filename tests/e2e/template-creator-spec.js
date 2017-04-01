@@ -127,7 +127,9 @@ describe('template-creator', function () {
   var title = fieldType.label;
   var description = fieldType.label + ' description';
 
-  var pageTypes = ['template', 'element'];
+  // TODO including the element will perform all tests on element builder as well as template builder
+  //var pageTypes = ['template', 'element'];
+  var pageTypes = ['template'];
 
   var resources = [];
   var createResource = function (title, type, username, password) {
