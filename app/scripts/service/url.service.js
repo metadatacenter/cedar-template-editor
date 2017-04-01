@@ -342,7 +342,7 @@ define([
         url += '/ontologies/' + acronym + '/classes/' + encodeURIComponent(subtree_root_id)
             + '/descendants?page=1&page_size=500';
       } else {
-        url = '/search?q=' + encodeURIComponent(query) + '&scope=classes' + '&source=' + acronym +
+        url += '/search?q=' + encodeURIComponent(query) + '&scope=classes' + '&source=' + acronym +
             '&subtree_root_id=' + encodeURIComponent(subtree_root_id) + '&max_depth=' + max_depth +
             "&suggest=true&page=1&page_size=500";
       }
