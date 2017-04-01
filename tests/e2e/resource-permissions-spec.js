@@ -95,7 +95,7 @@ describe('resource-permissions', function () {
       sweetAlertModal.confirm();
       workspacePage.clearSearch();
 
-      // move created template to shared folder
+      // move created template to user 1's shared folder
       workspacePage.moveResource(sourceTemplate, 'template');
       moveModal.moveToUserFolder(testConfig.testUserName1, target1Folder);
       sweetAlertModal.hasInsufficientPermissions();
@@ -111,7 +111,7 @@ describe('resource-permissions', function () {
       // create source template and target shared folder
       var sourceTemplate = workspacePage.createTemplate('Source');
 
-      // share the template and folder
+      // share the template and folder as writable
       shareModal.shareResource(sourceTemplate, 'template', testConfig.testUserName1, true, false);
       workspacePage.clearSearch();
 
