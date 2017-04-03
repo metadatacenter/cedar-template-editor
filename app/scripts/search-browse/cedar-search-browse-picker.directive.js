@@ -94,7 +94,7 @@ define([
           vm.launchInstance = launchInstance;
           vm.copyToWorkspace = copyToWorkspace;
           vm.copyResource = copyResource;
-          vm.setResourceInfoVisibility = setResourceInfoVisibility;
+
           vm.onDashboard = onDashboard;
           vm.narrowContent = narrowContent;
           vm.pathInfo = [];
@@ -108,32 +108,37 @@ define([
           vm.currentFolder = null;
           vm.hasSelection = hasSelection;
           vm.getSelection = getSelection;
-          vm.setSortOption = setSortOption;
-          vm.sortName = sortName;
-          vm.sortCreated = sortCreated;
-          vm.sortUpdated = sortUpdated;
+
           vm.showFilters = true;
           vm.filterShowing = filterShowing;
           vm.resetFilters = resetFilters;
           vm.filterSections = {};
           vm.isFilterSection = isFilterSection;
+
           vm.getArrowIcon = getArrowIcon;
           vm.showFloatingMenu = false;
-          vm.infoShowing = infoShowing;
+
           vm.showOrHide = showOrHide;
-          vm.sortOptionLabel = $translate.instant('DASHBOARD.sort.name');
           vm.toggleFavorites = toggleFavorites;
           vm.toggleFilters = toggleFilters;
           vm.workspaceClass = workspaceClass;
-          vm.showResourceInfo = false;
-          vm.resourceViewMode = 'grid';
 
+          vm.isGridView = isGridView;
+          vm.isListView = isListView;
+          vm.toggleView = toggleView;
 
-          vm.toggleResourceInfo = toggleResourceInfo;
-          vm.setResourceInfo = setResourceInfo;
+          vm.setSortByName = setSortByName;
+          vm.setSortByCreated = setSortByCreated;
+          vm.setSortByUpdated = setSortByUpdated;
+          vm.sortName = sortName;
+          vm.sortCreated = sortCreated;
+          vm.sortUpdated = sortUpdated;
+
+          vm.isInfoOpen = isInfoOpen;
+          vm.toggleInfo = toggleInfo;
+
           vm.toggleResourceType = toggleResourceType;
-          vm.setResourceViewMode = setResourceViewMode;
-          vm.toggleViewMode = toggleViewMode;
+
           vm.isTemplate = isTemplate;
           vm.isElement = isElement;
           vm.isFolder = isFolder;
@@ -207,14 +212,6 @@ define([
             }
           };
 
-          // toggle the info panel with this resource or find one
-          vm.toggleInfoPanel = function () {
-            if (!vm.showResourceInfo) {
-              vm.showInfoPanel();
-            } else {
-              vm.setResourceInfoVisibility(false);
-            }
-          };
 
           // toggle the info panel with this resource or find one
           vm.toggleDirection = function () {
@@ -415,12 +412,12 @@ define([
 
           //*********** ENTRY POINT
 
-          setUIPreferences();
+          getPreferences();
           init();
 
-          function setUIPreferences() {
+          function getPreferences() {
             var uip = CedarUser.getUIPreferences();
-            //vm.showFavorites = CedarUser.getUIPreferences().populateATemplate.opened;
+
             vm.resourceTypes = {
               element : uip.resourceTypeFilters.element,
               field   : uip.resourceTypeFilters.field,
@@ -433,21 +430,6 @@ define([
               status: false,
               term  : false
             };
-            var option = CedarUser.getUIPreferences().folderView.sortBy;
-            setSortOptionUI(option);
-            if (uip.hasOwnProperty('folderView') && uip.folderView.hasOwnProperty('viewMode')) {
-                vm.resourceViewMode = uip.folderView.viewMode;
-            }
-            if (uip.hasOwnProperty('infoPanel')) {
-              vm.showResourceInfo = uip.infoPanel.opened;
-            } else {
-              vm.showResourceInfo = false;
-            }
-          }
-
-          function updateResourceInfoPanel() {
-            var uip = CedarUser.getUIPreferences();
-            vm.showResourceInfo = (uip.hasOwnProperty('infoPanel') && uip.infoPanel.opened );
           }
 
           function init() {
@@ -485,7 +467,6 @@ define([
               getForms();
             }
             updateFavorites(false);
-            updateResourceInfoPanel();
           }
 
           function breadcrumbName(folderName) {
@@ -936,22 +917,12 @@ define([
             return vm.showFilters || vm.showResourceInfo || !onDashboard();
           }
 
-          function setResourceInfoVisibility(b) {
-            vm.showResourceInfo = b;
-            CedarUser.saveUIPreference('infoPanel', 'opened', vm.showResourceInfo);
-            UISettingsService.saveUIPreference('infoPanel.opened', vm.showResourceInfo);
+
+          function setInfo(value) {
+            CedarUser.setInfo(value);
+            UISettingsService.saveInfo(value);
           }
 
-          function setSortOptionUI(option) {
-            vm.sortOptionLabel = $translate.instant('DASHBOARD.sort.' + option);
-            vm.sortOptionField = option;
-          }
-
-          function setSortOption(option) {
-            setSortOptionUI(option);
-            UISettingsService.saveUIPreference('folderView.sortBy', vm.sortOptionField);
-            init();
-          }
 
           function toggleFavorites() {
             vm.showFavorites = !vm.showFavorites;
@@ -999,13 +970,7 @@ define([
             return result;
           }
 
-          function setResourceInfo(value) {
-            vm.setResourceInfoVisibility(value);
-          }
 
-          function toggleResourceInfo() {
-            vm.setResourceInfoVisibility(!vm.showResourceInfo);
-          }
 
           function toggleResourceType(type) {
             vm.resourceTypes[type] = !vm.resourceTypes[type];
@@ -1084,25 +1049,37 @@ define([
             return vm.selectedResource != null;
           }
 
+
+          function setSortByCreated() {
+            UISettingsService.saveSortByCreated(CedarUser.setSortByCreated());
+            init();
+          }
+
+          function setSortByName() {
+            UISettingsService.saveSortByName(CedarUser.setSortByName());
+            init();
+          }
+
+          function setSortByUpdated() {
+            UISettingsService.saveSort(CedarUser.setSortByUpdated());
+            init();
+          }
+
           function sortField() {
-            if (vm.sortOptionField == 'name') {
-              return 'name';
-            } else {
-              return '-' + vm.sortOptionField;
-            }
+            return (CedarUser.isSortByName() ? '' : '-') + CedarUser.getSort();
           }
 
           function sortName() {
-            return (vm.sortOptionField == 'name') ? "" : 'invisible';
-          };
+            return CedarUser.isSortByName() ? "" : 'invisible';
+          }
 
           function sortCreated() {
-            return (vm.sortOptionField == 'createdOnTS') ? "" : 'invisible';
-          };
+            return CedarUser.isSortByCreated() ? "" : 'invisible';
+          }
 
           function sortUpdated() {
-            return (vm.sortOptionField == 'lastUpdatedOnTS') ? "" : 'invisible';
-          };
+            return CedarUser.isSortByUpdated() ? "" : 'invisible';
+          }
 
 
           function updateFavorites(saveData) {
@@ -1119,16 +1096,26 @@ define([
             }
           }
 
-          function toggleViewMode() {
-            console.log('toggleViewMode' + vm.resourceViewMode);
-            var mode = vm.resourceViewMode === 'grid' ? 'list': 'grid';
-            vm.resourceViewMode = mode;
-            UISettingsService.saveUIPreference('folderView.viewMode', mode);
+          function isGridView() {
+            return CedarUser.isGridView();
           }
 
-          function setResourceViewMode(mode) {
-            vm.resourceViewMode = mode;
-            UISettingsService.saveUIPreference('folderView.viewMode', mode);
+          function isListView() {
+            return CedarUser.isListView();
+          }
+
+          function toggleView() {
+            UISettingsService.saveView(CedarUser.toggleView());
+          }
+
+          // is the info panel open or closed
+          function isInfoOpen() {
+            return CedarUser.isInfoOpen();
+          }
+
+          // toggle the state of the info panel
+          function toggleInfo() {
+            UISettingsService.saveInfo(CedarUser.toggleInfo());
           }
 
           // open the move modal
@@ -1142,7 +1129,7 @@ define([
             vm.copyModalVisible = true;
             $scope.$broadcast('copyModalVisible',
                 [vm.copyModalVisible, resource, vm.currentPath, folderId, vm.resourceTypes,
-                 vm.sortOptionField]);
+                 CedarUser.getSort()]);
           }
 
           // open the move modal
@@ -1157,7 +1144,7 @@ define([
               vm.moveModalVisible = true;
               $scope.$broadcast('moveModalVisible',
                   [vm.moveModalVisible, r, vm.currentPath, vm.currentFolderId, vm.resourceTypes,
-                   vm.sortOptionField]);
+                   CedarUser.getSort()]);
             }
           }
 
@@ -1215,10 +1202,6 @@ define([
           vm.goToSharedWithMe = function () {
             var url = FrontendUrlService.getSharedWithMe(vm.getFolderId());
             $location.url(url);
-
-            //if (vm.infoShowing) {
-            //vm.showInfoPanel();
-            //}
           };
 
           vm.getVisibleCount = function () {

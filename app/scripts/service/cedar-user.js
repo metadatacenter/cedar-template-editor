@@ -8,6 +8,13 @@ define([
 
   CedarUser.$inject = ["$rootScope"];
 
+  /**
+   * manage the user preferences singleton object
+   *
+   * @param $rootScope
+   * @returns {{}}
+   * @constructor
+   */
   function CedarUser($rootScope) {
 
     var service = {};
@@ -33,7 +40,7 @@ define([
 
     service.isCedarProfileAvailable = function () {
       return getAppData().cedarUserProfile != null;
-    }
+    };
 
     service.getUserId = function () {
       return getAppData().authUserProfile.id;
@@ -93,6 +100,81 @@ define([
 
     service.saveUIPreference = function (name, property ,value) {
       getAppData().cedarUserProfile.uiPreferences[name][property] = value;
+    };
+
+    service.getInfo = function () {
+      return service.getUIPreferences().infoPanel.opened;
+    };
+
+    service.getView = function () {
+      return service.getUIPreferences().folderView.viewMode;
+    };
+
+    service.isGridView = function () {
+      return service.getUIPreferences().folderView.viewMode === 'grid';
+    };
+
+    service.isListView = function () {
+      return service.getUIPreferences().folderView.viewMode === 'list';
+    };
+
+    service.toggleView = function () {
+      var value = service.isGridView() ? 'list' : 'grid';
+      service.saveUIPreference('folderView', 'viewMode', value);
+      return value;
+    };
+
+    service.isInfoOpen = function () {
+      return service.getUIPreferences().infoPanel.opened;
+    };
+
+    service.toggleInfo = function () {
+      service.saveUIPreference('infoPanel', 'opened', !service.isInfoOpen());
+      return service.isInfoOpen();
+    };
+
+    service.isGridView = function () {
+      return service.getUIPreferences().folderView.viewMode === 'grid';
+    };
+
+    service.getSort = function () {
+      return service.getUIPreferences().folderView.sortBy;
+    };
+
+    service.isSortByName = function () {
+      return service.getSort() === 'name';
+    };
+
+    service.isSortByUpdated = function () {
+      return service.getSort() === 'lastUpdatedOnTS';
+    };
+
+    service.isSortByCreated = function () {
+      return service.getSort() === 'createdOnTS';
+    };
+
+    service.getSort = function () {
+      return service.getUIPreferences().folderView.sortBy;
+    };
+
+    service.setSort = function (prefValue) {
+      service.saveUIPreference('folderView', 'sortBy', prefValue);
+      return service.getSort();
+    };
+
+    service.setSortByName = function () {
+      service.saveUIPreference('folderView', 'sortBy', 'name');
+      return service.getSort();
+    };
+
+    service.setSortByCreated = function () {
+      service.saveUIPreference('folderView', 'sortBy', 'createdOnTS');
+      return service.getSort();
+    };
+
+    service.setSortByUpdated = function () {
+      service.saveUIPreference('folderView', 'sortBy', 'lastUpdatedOnTS');
+      return service.getSort();
     };
 
     return service;
