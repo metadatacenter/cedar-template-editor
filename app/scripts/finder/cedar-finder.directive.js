@@ -70,13 +70,20 @@ define([
           vm.selectedResource = null;
           vm.hasSelection = hasSelection;
           vm.getSelection = getSelection;
-          vm.setSortOption = setSortOption;
+
+
+
+          vm.setSortByName = setSortByName;
+          vm.setSortByCreated = setSortByCreated;
+          vm.setSortByUpdated = setSortByUpdated;
           vm.sortName = sortName;
           vm.sortCreated = sortCreated;
           vm.sortUpdated = sortUpdated;
-          vm.sortOptionLabel = $translate.instant('DASHBOARD.sort.name');
-          vm.setResourceViewMode = setResourceViewMode;
-          vm.isResourceViewMode = isResourceViewMode;
+
+          vm.isGridView = isGridView;
+          vm.isListView = isListView;
+          vm.toggleView = toggleView;
+
           vm.isTemplate = isTemplate;
           vm.isElement = isElement;
           vm.isFolder = isFolder;
@@ -108,14 +115,6 @@ define([
             }
           };
 
-          // toggle the info panel with this resource or find one
-          vm.toggleInfoPanel = function (resource) {
-            if (!vm.showResourceInfo) {
-              vm.showInfoPanel(resource);
-            } else {
-              vm.setResourceInfoVisibility(false);
-            }
-          };
 
 
           vm.getResourceDetails = function (resource) {
@@ -246,10 +245,10 @@ define([
 
           //*********** ENTRY POINT
 
-          setUIPreferences();
+          getPreferences();
           init();
 
-          function setUIPreferences() {
+          function getPreferences() {
             var uip = CedarUser.getUIPreferences();
             vm.resourceTypes = {
               element : uip.resourceTypeFilters.element,
@@ -257,9 +256,8 @@ define([
               instance: uip.resourceTypeFilters.instance,
               template: uip.resourceTypeFilters.template
             };
-            var option = CedarUser.getUIPreferences().folderView.sortBy;
-            setSortOptionUI(option);
-            vm.resourceViewMode = uip.folderView.viewMode;
+
+
           }
 
           function init() {
@@ -463,24 +461,13 @@ define([
             if (vm.params.folderId) {
               getFolderContentsById(decodeURIComponent(vm.params.folderId));
             }
-
-          };
+          }
 
           function isResourceTypeActive(type) {
             return vm.resourceTypes[type];
           }
 
 
-          function setSortOptionUI(option) {
-            vm.sortOptionLabel = $translate.instant('DASHBOARD.sort.' + option);
-            vm.sortOptionField = option;
-          }
-
-          function setSortOption(option) {
-            setSortOptionUI(option);
-            UISettingsService.saveUIPreference('folderView.sortBy', vm.sortOptionField);
-            init();
-          }
 
 
           /**
@@ -488,9 +475,6 @@ define([
            */
 
           $scope.$on('$routeUpdate', function () {
-            console.log('watch routeUpdate')
-            //vm.params = $location.search();
-            //init();
           });
 
           $scope.$on('search-finder', function (event, searchTerm) {
@@ -542,34 +526,60 @@ define([
           }
 
           function sortField() {
-            if (vm.sortOptionField == 'name') {
-              return 'name';
-            } else {
-              return '-' + vm.sortOptionField;
+            var result = '';
+            if (CedarUser.isSortByName()) {
+              result += '-';
             }
+            return result += CedarUser.getSort();
+          }
+
+          function setSortByCreated() {
+            UISettingsService.saveSort(CedarUser.setSortByCreated());
+            init();
+          }
+
+          function setSortByName() {
+            UISettingsService.saveSort(CedarUser.setSortByName());
+            init();
+          }
+
+          function setSortByUpdated() {
+            UISettingsService.saveSort(CedarUser.setSortByUpdated());
+            init();
           }
 
           function sortName() {
-            return (vm.sortOptionField == 'name') ? "" : 'invisible';
-          };
-
-          function sortCreated() {
-            return (vm.sortOptionField == 'createdOnTS') ? "" : 'invisible';
-          };
-
-          function sortUpdated() {
-            return (vm.sortOptionField == 'lastUpdatedOnTS') ? "" : 'invisible';
-          };
-
-          function setResourceViewMode(mode) {
-            vm.resourceViewMode = mode;
-            if (mode === 'list' || mode === 'grid') {
-              UISettingsService.saveUIPreference('folderView.viewMode', mode);
-            }
+            return CedarUser.isSortByName() ? "" : 'invisible';
           }
 
-          function isResourceViewMode(mode) {
-            return mode === vm.resourceViewMode;
+          function sortCreated() {
+            return CedarUser.isSortByCreated() ? "" : 'invisible';
+          }
+
+          function sortUpdated() {
+            return CedarUser.isSortByUpdated() ? "" : 'invisible';
+          }
+
+          function isGridView() {
+            return CedarUser.isGridView();
+          }
+
+          function isListView() {
+            return CedarUser.isListView();
+          }
+
+          function toggleView() {
+            UISettingsService.saveView(CedarUser.toggleView());
+          }
+
+          // is the info panel open or closed
+          function isInfoOpen() {
+            return CedarUser.isInfoOpen();
+          }
+
+          // toggle the state of the info panel
+          function toggleInfo() {
+            UISettingsService.saveInfo(CedarUser.toggleInfo());
           }
 
           function hideFinder() {

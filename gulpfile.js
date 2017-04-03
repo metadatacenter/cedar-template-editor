@@ -162,7 +162,7 @@ gulp.task('e2e', ['test-env'], function () {
     './tests/e2e/update-permissions-spec.js'
   ])
       .pipe(protractor({
-        configFile: "protractor.config.js"
+        configFile: "protractor-sharding.config.js"
       }))
       .on('error', function (e) {
         throw e
