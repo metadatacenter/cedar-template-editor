@@ -9,8 +9,8 @@ exports.config = {
 
   capabilities: {
     browserName   : 'chrome',
-    shardTestFiles: false,
-    maxInstances  : 1
+    shardTestFiles: true,
+    maxInstances  : 10
   },
 
   allScriptsTimeout: 500000,

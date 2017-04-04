@@ -44,8 +44,8 @@
                   tooltip-animation="false"
                   tooltip-placement="bottom"
                   data-toggle="tooltip"
-                  ng-if="finder.isResourceViewMode('list')"
-                  ng-click="finder.setResourceViewMode('grid')"><i class="fa fa-th"></i></button>
+                  ng-if="finder.isListView()"
+                  ng-click="finder.toggleView()"><i class="fa fa-th"></i></button>
             </li>
             <li>
               <button type="button"
@@ -55,8 +55,8 @@
                   tooltip-animation="false"
                   tooltip-placement="bottom"
                   data-toggle="tooltip"
-                  ng-if="finder.isResourceViewMode('grid')"
-                  ng-click="finder.setResourceViewMode('list')"><i
+                  ng-if="finder.isGridView()"
+                  ng-click="finder.toggleView()"><i
                   class="fa fa-list-ul"></i></button>
             </li>
             <li>
@@ -64,12 +64,12 @@
                 <button data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><i
                     class="fa fa-sort  inline "></i></button>
                 <ul class="dropdown-menu dropdown-menu-left">
-                  <li><a ng-click="finder.setSortOption('name')"><i class="fa fa-check"
+                  <li><a ng-click="finder.setSortByName()"><i class="fa fa-check"
                       ng-class="finder.sortName()"></i><span
                       translate="DASHBOARD.sort.name"></span></a></li>
-                  <li><a ng-click="finder.setSortOption('createdOnTS')"><i class="fa fa-check"
+                  <li><a ng-click="finder.setSortByCreated()"><i class="fa fa-check"
                       ng-class="finder.sortCreated()"></i><span translate="DASHBOARD.sort.createdOnTS"></span></a></li>
-                  <li><a ng-click="finder.setSortOption('lastUpdatedOnTS')"><i class="fa fa-check"
+                  <li><a ng-click="finder.setSortByUpdated()"><i class="fa fa-check"
                       ng-class="finder.sortUpdated()"></i><span
                       translate="DASHBOARD.sort.lastUpdatedOnTS"></span></a>
                   </li>
@@ -99,7 +99,7 @@
       </div>
     </div>
   </div>
-  <div ng-if="finder.resourceViewMode == 'grid'" cedar-infinite-scroll load-more="finder.loadMore()"
+  <div ng-if="finder.isGridView()" cedar-infinite-scroll load-more="finder.loadMore()"
       class="modal-body scrollable-content">
     <section class="all-items-view " ng-class="as-modal">
       <div class="container-fluid">
@@ -159,7 +159,7 @@
       </div>
     </section>
   </div>
-  <div cedar-infinite-scroll load-more="finder.loadMore()" ng-if="finder.resourceViewMode == 'list'" class="modal-body scrollable-content" >
+  <div cedar-infinite-scroll load-more="finder.loadMore()" ng-if="finder.isListView()" class="modal-body scrollable-content" >
     <section class="all-items-view " ng-class="as-modal">
         <div class="populate-form-boxes">
           <div class="list-view">

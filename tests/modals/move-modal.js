@@ -16,20 +16,24 @@ var MoveModal = function () {
   var createOpenFolderArrowButton = createMoveToBody.element(by.css('div.box-row.row.ng-scope.selected > div.col-sm-1.arrow-click > i'));
 
 
+
   // is it a open?
   this.isOpen = function () {
-
     expect(createMoveToModalOpen.isPresent()).toBe(true);
   };
 
 
   this.moveToDestination = function(title) {
     var folder = createMoveToModal.element(by.linkText(title));
+    browser.wait(EC.visibilityOf(folder));
     browser.wait(EC.elementToBeClickable(folder));
     folder.click();
 
-    this.clickMoveButton();
+    browser.wait(EC.visibilityOf(createMoveButton));
+    browser.wait(EC.elementToBeClickable(createMoveButton));
+    createMoveButton.click();
   };
+
 
 
   this.moveToUserFolder = function(userName, title) {
@@ -51,15 +55,9 @@ var MoveModal = function () {
     browser.wait(EC.elementToBeClickable(folder));
     folder.click();
 
-    this.clickMoveButton();
-  };
-
-
-  this.clickMoveButton = function () {
     browser.wait(EC.elementToBeClickable(createMoveButton));
     createMoveButton.click();
   };
-
 
 };
 module.exports = new MoveModal(); 

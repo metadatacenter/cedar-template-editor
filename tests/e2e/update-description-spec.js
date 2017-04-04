@@ -1,15 +1,27 @@
 'use strict';
 var WorkspacePage = require('../pages/workspace-page.js');
 var ToastyModal = require('../modals/toasty-modal.js');
-var ShareModal = require('../modals/share-modal.js');
 var testConfig = require('../config/test-env.js');
+var ShareModal = require('../modals/share-modal.js');
+var SweetAlertModal = require('../modals/sweet-alert-modal.js');
+var _ = require('../libs/lodash.min.js');
 
 describe('update-description', function () {
+  var EC = protractor.ExpectedConditions;
   var workspacePage = WorkspacePage;
   var toastyModal = ToastyModal;
   var shareModal = ShareModal;
+  var sweetAlertModal = SweetAlertModal;
 
   var resources = [];
+  var createResource = function (title, type, username, password) {
+    var result = new Object;
+    result.title = title;
+    result.type = type;
+    result.username = username;
+    result.password = password;
+    return result;
+  };
 
   beforeEach(function () {
   });
@@ -17,92 +29,113 @@ describe('update-description', function () {
   afterEach(function () {
   });
 
-
-  it("should fail to update description of a resource shared as readable with Everybody group", function () {
-    workspacePage.loginIfNecessary(testConfig.testUserName1, testConfig.testUser1, testConfig.testPassword1);
-    workspacePage.closeInfoPanel();
-
-    var template = workspacePage.createTemplate('Readable');
-    resources.push(template);
-    shareModal.shareResourceWithGroup(template, 'template', testConfig.everybodyGroup, false, false);
-
-    workspacePage.logout();
-    workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
-
-    workspacePage.navigateToUserFolder(testConfig.testUserName1);
-    workspacePage.selectResource(template, 'template');
-    workspacePage.openInfoPanel();
-    expect(workspacePage.createDetailsPanelDescriptionEditButton().isDisplayed()).toBe(false);
-    workspacePage.closeInfoPanel();
+  // reset user selections to defaults
+  it('should be on the workspace', function () {
+    workspacePage.onWorkspace();
   });
 
+  describe('in info panel', function () {
 
-  it("should update description of a resource shared as writable with Everybody group", function () {
-    workspacePage.loginIfNecessary(testConfig.testUserName2, testConfig.testUser2, testConfig.testPassword2);
+    it("should fail to update description of a resource shared as readable with Everybody group", function () {
+      workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
 
-    var template = workspacePage.createTemplate('Writable');
-    resources.push(template);
-    shareModal.shareResourceWithGroup(template, 'template', testConfig.everybodyGroup, true, false);
+      workspacePage.closeInfoPanel();
+      var template = workspacePage.createTemplate('Readable');
 
-    workspacePage.logout();
-    workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
+      shareModal.shareResourceWithGroup(template, 'template', testConfig.everybodyGroup, false, false);
+      workspacePage.clearSearch();
 
-    workspacePage.navigateToUserFolder(testConfig.testUserName2);
-    workspacePage.selectResource(template, 'template');
-    workspacePage.openInfoPanel();
+      workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
 
-    workspacePage.createDetailsPanelDescriptionEditButton().click();
-    workspacePage.createDetailsPanelDescription().sendKeys(workspacePage.createTitle('New description') + protractor.Key.ENTER);
-    toastyModal.isSuccess();
-    workspacePage.closeInfoPanel();
+      workspacePage.navigateToUserFolder(testConfig.testUserName1);
+      workspacePage.selectResource(template, 'template');
+      workspacePage.clearSearch();
+
+      workspacePage.openInfoPanel();
+      expect(workspacePage.createDetailsPanelDescriptionEditButton().isDisplayed()).toBe(false);
+      workspacePage.closeInfoPanel();
+
+      resources.push(createResource(template, 'template', testConfig.testUser1, testConfig.testPassword1));
+    });
+
+    it("should update description of a resource shared as writable with Everybody group", function () {
+      workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
+
+      var template = workspacePage.createTemplate('Writable');
+
+      shareModal.shareResourceWithGroup(template, 'template', testConfig.everybodyGroup, true, false);
+      workspacePage.clearSearch();
+
+      workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
+
+      workspacePage.navigateToUserFolder(testConfig.testUserName2);
+      workspacePage.selectResource(template, 'template');
+      workspacePage.openInfoPanel();
+
+      workspacePage.createDetailsPanelDescriptionEditButton().click();
+      workspacePage.createDetailsPanelDescription().sendKeys(workspacePage.createTitle('New description') + protractor.Key.ENTER);
+      toastyModal.isSuccess();
+      workspacePage.closeInfoPanel();
+
+      resources.push(createResource(template, 'template', testConfig.testUser2, testConfig.testPassword2));
+    });
+
+    it("should fail to update description of a resource shared as readable with a user", function () {
+      workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
+
+      var template = workspacePage.createTemplate('Readable');
+      shareModal.shareResource(template, 'template', testConfig.testUserName2, false, false);
+      workspacePage.clearSearch();
+
+      workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
+
+      workspacePage.navigateToUserFolder(testConfig.testUserName1);
+      workspacePage.selectResource(template, 'template');
+      workspacePage.clearSearch();
+      workspacePage.openInfoPanel();
+
+      expect(workspacePage.createDetailsPanelDescriptionEditButton().isDisplayed()).toBe(false);
+      workspacePage.closeInfoPanel();
+
+      resources.push(createResource(template, 'template', testConfig.testUser1, testConfig.testPassword1));
+    });
+
+    it("should update description of a resource shared as writable with a user", function () {
+      workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
+
+      var template = workspacePage.createTemplate('Writable');
+      shareModal.shareResource(template, 'template', testConfig.testUserName1, true, false);
+      workspacePage.clearSearch();
+
+      workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
+
+      workspacePage.navigateToUserFolder(testConfig.testUserName2);
+      workspacePage.selectResource(template, 'template');
+      workspacePage.openInfoPanel();
+
+      workspacePage.createDetailsPanelDescriptionEditButton().click();
+      workspacePage.createDetailsPanelDescription().sendKeys(workspacePage.createTitle('New description') + protractor.Key.ENTER);
+      toastyModal.isSuccess();
+      workspacePage.closeInfoPanel();
+
+      resources.push(createResource(template, 'template', testConfig.testUser2, testConfig.testPassword2));
+    });
   });
 
+  describe('remove created resources', function () {
 
-  it("should fail to update description of a resource shared as readable with a user", function () {
-    workspacePage.loginIfNecessary(testConfig.testUserName1, testConfig.testUser1, testConfig.testPassword1);
-
-    var template = workspacePage.createTemplate('Readable');
-    resources.push(template);
-    shareModal.shareResource(template, 'template', testConfig.testUserName2, false, false);
-
-    workspacePage.logout();
-    workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
-
-    workspacePage.navigateToUserFolder(testConfig.testUserName1);
-    workspacePage.selectResource(template, 'template');
-    workspacePage.openInfoPanel();
-
-    expect(workspacePage.createDetailsPanelDescriptionEditButton().isDisplayed()).toBe(false);
-    workspacePage.closeInfoPanel();
+    it('should delete resource from the user workspace', function () {
+      for (var i = 0; i < resources.length; i++) {
+        (function (resource) {
+          workspacePage.login(resource.username, resource.password);
+          workspacePage.deleteResourceViaRightClick(resource.title, resource.type);
+          toastyModal.isSuccess();
+          workspacePage.clearSearch();
+        })
+        (resources[i]);
+      }
+    });
   });
-
-
-  it("should update description of a resource shared as writable with a user", function () {
-    workspacePage.loginIfNecessary(testConfig.testUserName2, testConfig.testUser2, testConfig.testPassword2);
-
-    var template = workspacePage.createTemplate('Writable');
-    resources.push(template);
-    shareModal.shareResource(template, 'template', testConfig.testUserName1, true, false);
-
-    workspacePage.logout();
-    workspacePage.login(testConfig.testUser1, testConfig.testPassword1);
-
-    workspacePage.navigateToUserFolder(testConfig.testUserName2);
-    workspacePage.selectResource(template, 'template');
-    workspacePage.openInfoPanel();
-
-    workspacePage.createDetailsPanelDescriptionEditButton().click();
-    workspacePage.createDetailsPanelDescription().sendKeys(workspacePage.createTitle('New description') + protractor.Key.ENTER);
-    toastyModal.isSuccess();
-    workspacePage.closeInfoPanel();
-  });
-
-
-  xit("should delete the test resources created", function () {
-    workspacePage.loginIfNecessary(testConfig.testUserName1, testConfig.testUser1, testConfig.testPassword1);
-    workspacePage.deleteArray(resources, 'template');
-  }, 200000);
-
 
 });
 

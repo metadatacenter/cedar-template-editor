@@ -100,6 +100,30 @@ define([
       );
     };
 
+    service.saveView = function(prefValue) {
+      service.saveUIPreference('folderView.viewMode', prefValue);
+    };
+
+    service.saveInfo = function(prefValue) {
+      service.saveUIPreference('infoPanel.opened', prefValue);
+    };
+
+    service.saveSort = function(prefValue) {
+      service.saveUIPreference('folderView.sortBy', prefValue);
+    };
+
+    service.saveSortByName = function() {
+      service.saveUIPreference('folderView.sortBy', 'name');
+    };
+
+    service.saveSortByCreated = function() {
+      service.saveUIPreference('folderView.sortBy', 'createdOnTS');
+    };
+
+    service.saveSortByUpdated = function() {
+      service.saveUIPreference('folderView.sortBy', 'lastUpdatedOnTS');
+    };
+
     return service;
 
   };
