@@ -596,13 +596,6 @@ var WorkspacePage = function () {
   };
   this.deleteAll = deleteAll;
 
-  // delete all the items in the given array of resources of the specified type
-  this.deleteArray = function (resourceArray, resourceType) {
-    for(var i = 0; i < resourceArray.length; i++) {
-      this.deleteResource(resourceArray[i], resourceType);
-    }
-  };
-
   // search for a particular resource
   this.searchForResource = function (name, type) {
 
