@@ -45,18 +45,6 @@
           </div>
         </li>
 
-        <!--<li ng-show="dc.onDashboard() && dc.resourceViewMode != 'grid'" id="grid-view-tool">-->
-        <!--<button-->
-        <!--type="button"-->
-        <!--tooltip='{{"HELP.viewAsGrid" | translate}}'-->
-        <!--tooltip-trigger-->
-        <!--tooltip-animation="false"-->
-        <!--tooltip-placement="bottom"-->
-        <!--data-toggle="tooltip"-->
-        <!--ng-click="dc.setResourceViewMode('grid')"><i-->
-        <!--class="fa fa-th inline"></i></button>-->
-        <!--</li>-->
-
         <li ng-show="dc.onDashboard()" id="grid-view-tool">
           <button type="button"
               uib-tooltip='{{"HELP.viewAsList" | translate}}'
@@ -64,22 +52,22 @@
               tooltip-animation="false"
               tooltip-placement="bottom"
               data-toggle="tooltip"
-              ng-click="dc.toggleViewMode()">
+              ng-click="dc.toggleView()">
             <i class="inline fa "
-                ng-class="{'fa-list-ul': dc.resourceViewMode === 'grid', 'fa-th': dc.resourceViewMode === 'list'}"></i>
+                ng-class="{'fa-list-ul': dc.isGridView(), 'fa-th': dc.isListView()}"></i>
           </button>
         </li>
 
 
         <li ng-if="dc.onDashboard()" class="toggleDetails"
-            ng-class="{'hidePanel':dc.infoShowing(), 'showPanel':!dc.infoShowing()}">
+            ng-class="{'hidePanel':dc.isInfoOpen(), 'showPanel':!dc.isInfoOpen()}">
           <button type="button"
               uib-tooltip="{{ dc.toggleDirection() | translate  }}"
               tooltip-trigger
               tooltip-animation="false"
               tooltip-placement="bottom"
               data-toggle="tooltip"
-              ng-click="dc.toggleInfoPanel()"><i class="fa fa-info "></i></button>
+              ng-click="dc.toggleInfo()"><i class="fa fa-info "></i></button>
         </li>
 
 
@@ -94,12 +82,12 @@
             <button class="menu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><i
                 class="fa fa-caret-down  "></i></button>
             <ul class="dropdown-menu dropdown-menu-right">
-              <li><a class="sortName" ng-click="dc.setSortOption('name')"><i class="fa fa-check"
+              <li><a class="sortName" ng-click="dc.setSortByName()"><i class="fa fa-check"
                   ng-class="dc.sortName()"></i><span
                   translate="DASHBOARD.sort.name"></span></a></li>
-              <li><a class="sortCreated" ng-click="dc.setSortOption('createdOnTS')"><i class="fa fa-check"
+              <li><a class="sortCreated" ng-click="dc.setSortByCreated()"><i class="fa fa-check"
                   ng-class="dc.sortCreated()"></i><span translate="DASHBOARD.sort.createdOnTS"></span></a></li>
-              <li><a class="sortUpdated" ng-click="dc.setSortOption('lastUpdatedOnTS')"><i class="fa fa-check"
+              <li><a class="sortUpdated" ng-click="dc.setSortByUpdated()"><i class="fa fa-check"
                   ng-class="dc.sortUpdated()"></i><span
                   translate="DASHBOARD.sort.lastUpdatedOnTS"></span></a>
               </li>
@@ -232,7 +220,7 @@
 
       <!-- center panel -->
       <div cedar-infinite-scroll load-more="dc.loadMore()" class=" center-panel scrollable-content"
-          ng-class="{ 'col-sm-7': dc.infoShowing() , 'without-info': !dc.infoShowing()}" id="center-panel">
+          ng-class="{ 'col-sm-7': dc.isInfoOpen() , 'without-info': !dc.isInfoOpen()}" id="center-panel">
         <div style="height:auto;">
 
 
@@ -247,7 +235,7 @@
 
           <div ng-if="dc.hasResources()">
             <div class="row populate-form-boxes">
-              <div class="grid-view" style="height:auto" ng-if="dc.resourceViewMode == 'grid'">
+              <div class="grid-view" style="height:auto" ng-if="dc.isGridView()">
 
                 <!-- show the folders first -->
                 <div ng-if="dc.isFolder(resource)"
@@ -285,7 +273,7 @@
                   </div>
                 </div>
               </div>
-              <div class="grid-view" style="height:auto" ng-if="dc.resourceViewMode == 'grid'">
+              <div class="grid-view" style="height:auto" ng-if="dc.isGridView()">
 
 
                 <div ng-if="!dc.isFolder(resource)"
@@ -333,7 +321,7 @@
                 </div>
               </div>
 
-              <div class="list-view" ng-if="dc.resourceViewMode == 'list' && dc.resources.length > 0"
+              <div class="list-view" ng-if="dc.isListView() && dc.resources.length > 0"
                   style="height:auto">
 
                 <div class="box-title">
@@ -431,7 +419,7 @@
       <!-- end of center panel -->
 
       <!-- RIGHT SIDE -->
-      <div class="col-sm-3 row-offcanvas-right" id="sidebar-right" ng-if="dc.infoShowing()">
+      <div class="col-sm-3 row-offcanvas-right" id="sidebar-right" ng-if="dc.isInfoOpen()">
 
         <div class="header">
           <div class="row">
@@ -439,7 +427,7 @@
             <div class="col-sm-2 pull-right ">
               <div class="goaway">
                 <button
-                    ng-click="dc.setResourceInfo(false)"
+                    ng-click="dc.toggleInfo()"
                     type="button"
                     class="close"
                     aria-label="Close"

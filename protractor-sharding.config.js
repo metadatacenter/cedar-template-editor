@@ -8,13 +8,11 @@ exports.config = {
   directConnect: true,
   troubleshoot: true,
 
-
   capabilities: {
     browserName: 'chrome',
-    shardTestFiles:false,
-    maxInstances:2
+    shardTestFiles:true,
+    maxInstances:10git s
   },
-
 
   allScriptsTimeout: 500000,
   jasmineNodeOpts: {
@@ -66,8 +64,8 @@ exports.config = {
       // browserLogs is an array of objects with level and message fields
       browserLogs.forEach(function(log){
         //if (log.level.value > 900) { // it's an error log
-          console.log('Browser console error!');
-          console.log(log.message);
+        console.log('Browser console error!');
+        console.log(log.message);
         //}
       });
     });
@@ -79,7 +77,7 @@ exports.config = {
         browser.driver.findElement(by.id('kc-login')).click().then(function () {
           //browser.driver.wait(browser.driver.isElementPresent(by.id('top-navigation')));
           browser.driver.findElements(By.id('top-navigation')).then(function (found) {
-                console.log(found.length);
+            console.log(found.length);
           });
         });
       });
