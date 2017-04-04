@@ -14,7 +14,13 @@ describe('workspace-sidebar', function () {
 
   it("should show the details sidebar", function () {
     page.onWorkspace();
-    page.createViewDetailsButton().click();
+    page.isInfoPanelOpen().then(function(result) {
+      if(result) {
+        page.closeInfoPanel();
+      }
+    });
+    expect(page.createDetailsPanel().isPresent()).toBe(false);
+    page.openInfoPanel();
     expect(page.createDetailsPanel().isDisplayed()).toBe(true);
   });
 
@@ -44,7 +50,7 @@ describe('workspace-sidebar', function () {
   });
 
 
-  xit("should delete the test resources created", function () {
+  it("should delete the test folder created", function () {
     page.deleteResource(folder, 'folder');
   });
 
