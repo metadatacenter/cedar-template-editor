@@ -70,6 +70,7 @@ define([
       vm.getTypeForUi = getTypeForUi;
       vm.isCreating = isCreating;
       vm.isEmptySearchQuery = isEmptySearchQuery;
+      vm.isPropertiesMode = isPropertiesMode;
       vm.isFieldTypesMode = isFieldTypesMode;
       vm.isFieldValuesMode = isFieldValuesMode;
       vm.isSearching = isSearching;
@@ -81,6 +82,7 @@ define([
       vm.isSearchingClasses = isSearchingClasses;
       vm.isSearchingOntologies = isSearchingOntologies;
       vm.isSearchingValueSets = isSearchingValueSets;
+      vm.isSearchingProperties = isSearchingProperties;
       vm.onTextClick = onTextClick;
       vm.reset = reset;
       vm.search = search;
@@ -105,23 +107,34 @@ define([
        */
 
       function search(event) {
+        console.log('search');
         reset(true, true, true, true, true);
         if (isEmptySearchQuery() == false) {
           vm.showEmptyQueryMsg = false;
+          var searchProperties = true;
           var searchClasses = true;
           var searchValues = true;
           var searchValueSets = false;
+          if (isPropertiesMode()) {
+            searchProperties = true;
+            searchClasses = true;
+            searchValues = false;
+            searchValueSets = false;
+          }
           if (isFieldTypesMode()) {
+            searchProperties = false;
             searchClasses = true;
             searchValues = false;
             searchValueSets = false;
           }
           else if ((isFieldValuesMode()) && (!isSearchingValueSets())) {
+            searchProperties = false;
             searchClasses = true;
             searchValues = true;
             searchValueSets = false;
           }
           else if ((isFieldValuesMode()) && (isSearchingValueSets())) {
+            searchProperties = false;
             searchClasses = false;
             searchValues = false;
             searchValueSets = true;
@@ -265,6 +278,11 @@ define([
        * Other useful functions
        */
 
+
+      function isPropertiesMode() {
+        return vm.searchMode == 'properties';
+      }
+
       function isFieldTypesMode() {
         return vm.searchMode == 'field';
       }
@@ -287,6 +305,10 @@ define([
 
       function isSearchingValueSets() {
         return (vm.action == 'search' && vm.searchScope == 'value-sets');
+      }
+
+      function isSearchingProperties() {
+        return (vm.action == 'search' && vm.searchScope == 'properties');
       }
 
       function isCreating() {

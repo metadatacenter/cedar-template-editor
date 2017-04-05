@@ -7,6 +7,11 @@
     ng-click="tsc.switchToCreate()">Create New Terms</button> to constrain the values of the <span
     class="highlighted">'{{tsc.fieldName}}'</span> field</span>
 
+<!-- Property types -->
+<span ng-show="tsc.isSearching() && tsc.isPropertiesMode() && !tsc.isCreatingMappings && !tsc.isCreatingVs">Find properties in BioPortal or <button type="button" class="btn btn-create-term"
+    ng-click="tsc.switchToCreate()">Create New Property</button></span>
+
+<!-- searching -->
 <div ng-if="tsc.isSearching()" class="form-group floating-label-wrapper clearfix">
 
   <div class="form-group form-group-actions clearfix">
@@ -115,6 +120,7 @@
 
   <!-- Terms and Value Sets results -->
   <div ng-if="(tsc.isSearchingClasses() || tsc.isSearchingValueSets) && tsc.resultsFound && tsc.searchFinished">
+    terms and value sets results
     <div class="search-results-headers">
       <table class="table table-condensed results-headers-table search-results-headers-table">
         <thead>
@@ -167,6 +173,7 @@
 
   <!-- Ontologies results -->
   <div ng-if="tsc.isSearchingOntologies() && tsc.ontologiesFound.length > 0 && tsc.searchFinished">
+    ontology results
     <div class="search-results-headers">
       <table class="table table-condensed results-headers-table browse-results-headers-table">
         <thead>
@@ -200,6 +207,8 @@
 
   <div class="field-tree clear"
       ng-show="tsc.treeVisible && !tsc.isLoadingClassDetails && !tsc.isLoadingOntologyDetails">
+
+    field tree and details
     <div class="field-tree-header table-style">
       <!-- Ontology Tree header -->
       <div class="ontology-tree-header table-cell-style" ng-if="tsc.isCurrentOntology()">
@@ -209,6 +218,7 @@
           {{tsc.currentOntology.vs.prefLabel}}</h4>
       </div>
       <!-- Term and Ontology/Value Set Details header -->
+      details
       <div class="field-details-view table-cell-style" ng-if="tsc.isCurrentOntology()">
         <ul class="nav nav-tabs" role="tablist">
           <li role="presentation" class="detail-view-tab active">
@@ -230,6 +240,7 @@
       <!--Note: the ng-if below forces to render again the cedar-class-tree directive and to scroll to the right place-->
       <div class="ontology-tree pull-left" ng-if="tsc.isCurrentOntology() && tsc.treeVisible && !tsc.isLoadingClassDetails">
         <div class="tree tree-view-ul tree-view list-unstyled class-tree-container" ng-if="!tsc.currentOntology.info.flat">
+          cedar-class-tree
           <cedar-class-tree
               tree="tsc.currentOntology.tree"
               selected-node="tsc.selectedClass"
@@ -337,6 +348,29 @@
         <div class="clearfix"></div>
       </div>
       <div class="clearfix"></div>
+    </div>
+  </div>
+</div>
+
+<!-- property types - Create property -->
+<div ng-if="tsc.isCreating() && tsc.isPropertiesMode()" class="creation-container">
+<span>Please, provide the following information for the term you want to create or
+  <button type="button" class="btn btn-create-term" ng-click="tsc.switchToSearch()">Go Back to Term Search
+  </button></span>
+
+  <div class="clear form-group add-ontology-class"
+      ng-controller="provisionalClassController as pcc">
+    <ng-include src="'scripts/controlled-term/create-ontology-class.html'"></ng-include>
+    <div class="clear btn-create-term">
+      <button type="button"
+          class="std-button btn"
+          ng-click="pcc.saveAsFieldItem(pcc.provisionalClass)"
+          ng-disabled="!pcc.isValid()">Create Term
+      </button>
+      <!--<div class="input-indicator-icons">-->
+      <i class="cedar-svg-help-circle help-icon"
+          uib-tooltip="The term will be created in the CEDARPC (CEDAR Provisional Classes) BioPortal ontology and added to your template"></i>
+      <!--</div>-->
     </div>
   </div>
 </div>
