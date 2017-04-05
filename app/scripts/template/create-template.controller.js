@@ -407,6 +407,11 @@ define([
           jQuery("#control-options-template-field").modal('hide');
         });
 
+        //TODO this event resets modal state and closes modal
+        $scope.$on("property:propertyAdded", function () {
+          jQuery("#control-options-property").modal('hide');
+        });
+
 
       }
 

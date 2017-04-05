@@ -626,6 +626,11 @@ define([
         return (inputType === "date");
       };
 
+      $scope.isStatic = function () {
+        var inputType = $rootScope.schemaOf($scope.field)._ui.inputType;
+        return FieldTypeService.isStaticField(inputType);
+      };
+
       /**
        * Turn my field into a youtube iframe.
        * @param field

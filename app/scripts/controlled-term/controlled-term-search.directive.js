@@ -97,6 +97,9 @@ define([
       vm.switchToCreateValueSet = switchToCreateValueSet;
       vm.endSearch = endSearch;
 
+      vm.propertyUri = '';
+      vm.addPropertyUri = addPropertyUri;
+
       // Reset search options when closing the modal
       jQuery("#" + vm.modalId).on('hidden.bs.modal', function () {
         reset(false, false, false, false, false);
@@ -107,7 +110,6 @@ define([
        */
 
       function search(event) {
-        console.log('search');
         reset(true, true, true, true, true);
         if (isEmptySearchQuery() == false) {
           vm.showEmptyQueryMsg = false;
@@ -272,6 +274,7 @@ define([
         if (typeof vm.resetCallback === "function") {
           vm.resetCallback();
         }
+        vm.propertyUri = '';
       }
 
       /**
@@ -507,6 +510,12 @@ define([
 
       function onTextClick(event) {
         event.target.select();
+      }
+
+      function addPropertyUri() {
+        //TODO add the property at vm.propertyUri
+        // close the dialog
+        $rootScope.$broadcast("property:propertyAdded");
       }
     }
   }

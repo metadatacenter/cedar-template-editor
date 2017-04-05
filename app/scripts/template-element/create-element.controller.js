@@ -390,6 +390,11 @@ define([
       jQuery("#control-options-element-field").modal('hide');
     });
 
+    //TODO this event resets modal state and closes modal
+    $scope.$on("property:propertyAdded", function () {
+      jQuery("#control-options-property").modal('hide');
+    });
+
   }
 
 });

@@ -4,7 +4,8 @@
     <div class="sortable-handler ">
 
       <p class="type-label"><span class="sortable-icon"></span>
-        <button type="button" class="show-type" style="background:transparent;" ng-click="showModal('control-options-template-property');$root.finalTitle=form._ui.title">
+        <!-- allow non-static field to have properties -->
+        <button ng-if="!isStatic()" type="button" class="show-type" style="background:transparent;" ng-click="showModal('control-options-property');$root.finalTitle=form._ui.title">
           <i class="cedar-svg-controll-term collapsed" style="padding-bottom:10px"></i>
         </button>
         <i class="{{fieldIconClass}}"></i>

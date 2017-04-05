@@ -12,7 +12,6 @@ define([
   'cedar/template-editor/controlled-term/controlled-term-data.service',
   'cedar/template-editor/controlled-term/html-to-plain-text.filter',
   'cedar/template-editor/controlled-term/return-null-if-empty.filter',
-  'cedar/template-editor/controlled-term/property-wizard.directive',
 ], function(angular) {
   angular.module('cedar.templateEditor.controlledTerm', [
     'cedar.templateEditor.controlledTerm.cedarChildTreeDirective',
@@ -25,6 +24,5 @@ define([
     'cedar.templateEditor.controlledTerm.controlledTermDataService',
     'cedar.templateEditor.controlledTerm.htmlToPlainTextFilter',
     'cedar.templateEditor.controlledTerm.returnNullIfEmptyFilter',
-    'cedar.templateEditor.controlledTerm.propertyWizardDirective',
   ]);
 });

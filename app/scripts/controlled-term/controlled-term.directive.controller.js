@@ -26,6 +26,7 @@ define([
     var vm = this;
 
     vm.addBranchToValueConstraint = addBranchToValueConstraint;
+    vm.addProperty = addProperty;
     vm.addClass = addClass;
     vm.addedFieldItems = [];
     vm.addOntologyClassesToValueConstraint = addOntologyClassesToValueConstraint;
@@ -111,6 +112,12 @@ define([
 
     function closeDialog() {
 
+    }
+
+    //TODO  add the property to JSON
+    function addProperty() {
+      console.log('addProperty');
+      $rootScope.$broadcast('property:propertyAdded');
     }
 
     function addClass(selection, ontology) {
