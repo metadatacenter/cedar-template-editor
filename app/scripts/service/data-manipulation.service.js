@@ -640,17 +640,6 @@ define([
       return obj;
     };
 
-    service.renameKeyOfObjectNew = function (obj, currentKey, newKey) {
-      if (!obj || !obj[currentKey]) {
-        return;
-      }
-      newKey = service.getAcceptableKey(obj, newKey);
-      Object.defineProperty(obj, newKey, Object.getOwnPropertyDescriptor(obj, currentKey));
-      delete obj[currentKey];
-
-      return obj;
-    };
-
     service.idOf = function (fieldOrElement) {
       if (fieldOrElement) {
         return service.getFieldSchema(fieldOrElement)['@id'];
@@ -1309,13 +1298,17 @@ define([
         //if (idOfValue && idOfValue == childId) {
         if (key == k) {
 
-          service.renameKeyOfObjectNew(p, key, newKey);
+          service.renameKeyOfObject(p, key, newKey);
 
           if (p["@context"] && p["@context"].properties) {
-            service.renameKeyOfObjectNew(p["@context"].properties, key, newKey);
+            service.renameKeyOfObject(p["@context"].properties, key, newKey);
 
-            if (p["@context"].properties[newKey] && p["@context"].properties[newKey].enum) {
-              p["@context"].properties[newKey].enum[0] = service.getEnumOf(newKey);
+            // update enum only if it is using one of our made up property URIs
+            var prop = p["@context"].properties[newKey];
+            if (prop && prop.enum) {
+              if (prop.enum[0].indexOf(UrlService.schemaProperties()) > -1) {
+                prop.enum[0] = service.getEnumOf(newKey);
+              }
             }
           }
 

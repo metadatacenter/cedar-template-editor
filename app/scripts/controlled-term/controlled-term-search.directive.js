@@ -37,10 +37,11 @@ define([
       '$q',
       '$rootScope',
       '$scope',
+      '$timeout',
       'controlledTermDataService'
     ];
 
-    function controlledTermSearchDirectiveController($q, $rootScope, $scope, controlledTermService,
+    function controlledTermSearchDirectiveController($q, $rootScope, $scope, $timeout,controlledTermService,
                                                      controlledTermDataService) {
       /* Variable declarations */
       var vm = this;
@@ -414,15 +415,18 @@ define([
         vm.treeVisible = !vm.treeVisible;
       }
 
-      function switchToCreate() {
+      function switchToCreate(mode) {
         reset(false, false, false, false, false);
+
         vm.action = 'create';
+        vm.searchScope = mode;
       }
 
       function switchToSearch() {
         reset(false, false, false, false, false);
         vm.action = 'search';
       }
+
 
       function switchToCreateValue() {
         vm.isCreatingValue = true;
@@ -513,9 +517,8 @@ define([
       }
 
       function addPropertyUri() {
-        //TODO add the property at vm.propertyUri
-        // close the dialog
-        $rootScope.$broadcast("property:propertyAdded");
+        // tell parent to update the property for this field
+        $rootScope.$broadcast("cedar.templateEditor.controlledTerm.propertyCreated", [vm.propertyUri]);
       }
     }
   }

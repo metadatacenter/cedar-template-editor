@@ -407,11 +407,24 @@ define([
           jQuery("#control-options-template-field").modal('hide');
         });
 
-        //TODO this event resets modal state and closes modal
-        $scope.$on("property:propertyAdded", function () {
-          jQuery("#control-options-property").modal('hide');
-        });
 
+        // update the property for a field
+        $scope.$on("property:propertyAdded", function (event, args) {
+          console.log('property:propertyAdded');
+          var property = args[0];
+          var id = args[1];
+          var props = $scope.form.properties;
+          var fieldProp;
+          for (var prop in props) {
+            if (props[prop]['@id'] === id) {
+              var fieldProp = prop;
+              break;
+            }
+          }
+          if (fieldProp) {
+            $scope.form.properties['@context'].properties[fieldProp]['enum'][0] = property;
+          }
+        });
 
       }
 

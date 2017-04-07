@@ -1,17 +1,51 @@
 <!-- Field types -->
-<span ng-show="tsc.isSearching() && tsc.isFieldTypesMode() && !tsc.isCreatingMappings && !tsc.isCreatingVs">Find a term in BioPortal or <button type="button" class="btn btn-create-term" ng-click="tsc.switchToCreate()">Create a New Term</button> to annotate the <span class="highlighted">'{{tsc.fieldName}}'</span> field
+<span ng-show="tsc.isSearching() && tsc.isFieldTypesMode() && !tsc.isCreatingMappings && !tsc.isCreatingVs">Find a term in BioPortal or <button
+    type="button" class="btn btn-create-term" ng-click="tsc.switchToCreate()">Create a New Term
+</button> to annotate the <span class="highlighted">'{{tsc.fieldName}}'</span> field
 </span>
 
 <!-- Field values -->
-<span ng-show="tsc.isSearching() && tsc.isFieldValuesMode() && !tsc.isCreatingMappings && !tsc.isCreatingVs">Find terms in BioPortal or <button type="button" class="btn btn-create-term"
-    ng-click="tsc.switchToCreate()">Create New Terms</button> to constrain the values of the <span
+<span ng-show="tsc.isSearching() && tsc.isFieldValuesMode() && !tsc.isCreatingMappings && !tsc.isCreatingVs"
+    class="creation-container">Find terms in BioPortal or <button type="button" class="btn btn-create-term"
+    ng-click="tsc.switchToCreate('classes')">Create New Terms
+</button> to constrain the values of the <span
     class="highlighted">'{{tsc.fieldName}}'</span> field</span>
 
 <!-- Property types -->
-<span ng-show="tsc.isSearching() && tsc.isPropertiesMode() && !tsc.isCreatingMappings && !tsc.isCreatingVs">Find a property in BioPortal or <button type="button" class="btn btn-create-term"
-    ng-click="tsc.switchToCreate()">Create New Property</button></span>
+<div ng-if="tsc.isPropertiesMode()">
 
-<!-- searching -->
+  <!-- searching header only -->
+  <div ng-if="tsc.isSearching()">
+    <span ng-if="!tsc.isCreatingMappings && !tsc.isCreatingVs">
+      Find a property in BioPortal or <button type="button" class="btn btn-create-term" ng-click="tsc.switchToCreate('properties')">Enter Property URI</button>
+    </span>
+  </div>
+
+  <!--- creating header and body -->
+  <div ng-if="tsc.isCreating()">
+    <span>Please provide the following information for the property you want to create or
+    <button type="button" class="btn btn-create-term" ng-click="tsc.switchToSearch()">Go Back to Property Search</button></span>
+
+    <div class="clear form-group add-ontology-class">
+      <form name="propertyForm">
+        <div class="floating-label-wrapper " style="margin:28px 80px ">
+          <input type="url" class="form-control required" name="propertyURI" placeholder="property URI"
+              ng-model="tsc.propertyUri" with-floating-label=""/>
+        </div>
+        <div class="clear btn-create-term">
+          <button type="button"
+              class="std-button btn"
+              ng-click="tsc.addPropertyUri()"
+              ng-disabled="!tsc.propertyUri || !propertyForm.$valid">Create Property
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+</div>
+
+<!-- searching body -->
 <div ng-if="tsc.isSearching()" class="form-group floating-label-wrapper clearfix">
 
   <div class="form-group form-group-actions clearfix">
@@ -119,8 +153,7 @@
 <div class="clear search-results-section">
 
   <!-- Terms and Value Sets results -->
-  <div ng-if="(tsc.isSearchingClasses() || tsc.isSearchingValueSets) && tsc.resultsFound && tsc.searchFinished">
-    terms and value sets results
+  <div ng-if="(tsc.isSearchingClasses() || tsc.isSearchingValueSets()) && tsc.resultsFound && tsc.searchFinished">
     <div class="search-results-headers">
       <table class="table table-condensed results-headers-table search-results-headers-table">
         <thead>
@@ -147,7 +180,8 @@
           <tr ng-repeat="result in tsc.searchResults" ng-click="tsc.selectResult(result, result.resultId)"
               ng-class="{'selected-row':  (result.resultId == tsc.selectedResultId) && (result.details.id == tsc.selectedClass.id)}">
             <td width="15%">{{result.prefLabel}}</td>
-            <td width="32%" style="font-size:0.9em">{{tsc.getShortText(result.details.definition, 120, '...', '-')}}</td>
+            <td width="32%" style="font-size:0.9em">{{tsc.getShortText(result.details.definition, 120, '...', '-')}}
+            </td>
             <td width="11%">{{tsc.getTypeForUi(result.details.type)}}</td>
             <td width="14%" uib-tooltip="{{result.source.name}}" tooltip-append-to-body="true">{{result.source.id}}</td>
             <td width="14%" uib-tooltip="{{tsc.getShortId(result.details.id, null)}}" tooltip-append-to-body="true">
@@ -237,8 +271,10 @@
     <div class="field-tree-details">
       <!-- Ontology Tree content -->
       <!--Note: the ng-if below forces to render again the cedar-class-tree directive and to scroll to the right place-->
-      <div class="ontology-tree pull-left" ng-if="tsc.isCurrentOntology() && tsc.treeVisible && !tsc.isLoadingClassDetails">
-        <div class="tree tree-view-ul tree-view list-unstyled class-tree-container" ng-if="!tsc.currentOntology.info.flat">
+      <div class="ontology-tree pull-left"
+          ng-if="tsc.isCurrentOntology() && tsc.treeVisible && !tsc.isLoadingClassDetails">
+        <div class="tree tree-view-ul tree-view list-unstyled class-tree-container"
+            ng-if="!tsc.currentOntology.info.flat">
           cedar-class-tree
           <cedar-class-tree
               tree="tsc.currentOntology.tree"
@@ -351,29 +387,6 @@
   </div>
 </div>
 
-<!-- property types - Create property -->
-<div ng-if="tsc.isCreating() && tsc.isPropertiesMode()" class="creation-container">
-<span>Please provide the following information for the property you want to create or
-  <button type="button" class="btn btn-create-term" ng-click="tsc.switchToSearch()">Go Back to Property Search
-  </button></span>
-
-  <div class="clear form-group add-ontology-class">
-    <form name="propertyForm">
-    <div class="floating-label-wrapper " style="margin:28px 80px ">
-      <input type="url" class="form-control required" name="propertyURI" placeholder="property URI"
-          ng-model="tsc.propertyUri" with-floating-label=""/>
-    </div>
-    <div class="clear btn-create-term">
-      <button type="button"
-          class="std-button btn"
-          ng-click="tsc.addPropertyUri()"
-          ng-disabled="!tsc.propertyUri || !propertyForm.$valid">Create Property
-      </button>
-    </div>
-   </form>
-  </div>
-</div>
-
 <!-- Field types - Create term -->
 <div ng-if="tsc.isCreating() && tsc.isFieldTypesMode()" class="creation-container">
 <span>Please provide the following information for the term you want to create or
@@ -442,7 +455,8 @@
         <button type="button"
             class="std-button btn"
             ng-click="pcc.saveAsValueSetConstraint(pcc.provisionalClass, pcc.provisionalValueSetValues)"
-            ng-disabled="!pcc.isValid() || pcc.provisionalValueSetValues.length == 0 || pcc.showCreateVsLoader">Create Value Set
+            ng-disabled="!pcc.isValid() || pcc.provisionalValueSetValues.length == 0 || pcc.showCreateVsLoader">Create
+          Value Set
         </button>
         <i class="cedar-svg-help-circle help-icon"
             uib-tooltip="The value set will be created in the (CEDAR Value Sets) BioPortal ontology and added to your template"></i>
@@ -451,7 +465,7 @@
       <div ng-if="pcc.showCreateVsLoader">
         <div class="loader2"></div>
       </div>
-      <br />
+      <br/>
     </div>
   </div>
 </div>

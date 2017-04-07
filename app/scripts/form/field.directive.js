@@ -1020,13 +1020,20 @@ define([
       //TODO this event resets modal state and closes modal
       $scope.$on("field:controlledTermAdded", function () {
 
-        jQuery("#" + $scope.getModalId(true)).modal('hide');
-        jQuery("#" + $scope.getModalId(false)).modal('hide');
+        jQuery("#" + $scope.getModalId('field')).modal('hide');
+        jQuery("#" + $scope.getModalId('value')).modal('hide');
 
         // build the added fields map in this case
         $scope.setAddedFieldMap();
 
       });
+
+      $scope.$on("property:propertyAdded", function () {
+        console.log('property:propertyAdded')
+        jQuery("#" + $scope.getPropertyModalId()).modal('hide');
+      });
+
+
 
       // which details tab is open?
       $scope.showControlledTermsValues = false;
@@ -1076,6 +1083,13 @@ define([
         var fieldId = $scope.field['@id'] || $scope.field.items['@id'];
         var id = fieldId.substring(fieldId.lastIndexOf('/') + 1);
         return "control-options-" + id + "-" + fieldOrValue;
+      };
+
+
+      $scope.getPropertyModalId = function () {
+        var fieldId = $scope.field['@id'] || $scope.field.items['@id'];
+        var id = fieldId.substring(fieldId.lastIndexOf('/') + 1);
+        return "control-options-" + id + "-" + 'property';
       };
 
       /* end of controlled terms functionality */
@@ -1189,6 +1203,8 @@ define([
         $scope.field.minItems = 1;
         $scope.field.maxItems = 0;
       };
+
+
 
 
     };

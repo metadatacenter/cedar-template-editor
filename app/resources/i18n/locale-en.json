@@ -146,7 +146,8 @@
     "addMore": "Add more",
     "deleteTerm": "Delete term",
     "deleteMapping": "Delete mapping",
-    "sortBy": "Sort by"
+    "sortBy": "Sort by",
+    "addProperty": "Add property"
   },
   "SERVER": {
     "FOLDER": {

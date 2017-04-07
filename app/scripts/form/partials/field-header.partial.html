@@ -3,16 +3,26 @@
   <div class=" col-lg-9 pull-left type-label">
     <div class="sortable-handler ">
 
-      <p class="type-label"><span class="sortable-icon"></span>
+      <p class="type-label" style="text-transform:none;padding-left:10px"><span class="sortable-icon"></span>
+
         <!-- allow non-static field to have properties -->
-        <button ng-if="!isStatic()" type="button" class="show-type" style="background:transparent;" ng-click="showModal('control-options-property');$root.finalTitle=form._ui.title">
+        <button ng-if="!isStatic()"
+            type="button"
+            class="show-type"
+            style="background:transparent;"
+            ng-click="showModal(getPropertyModalId());$root.finalTitle=form._ui.title"
+            uib-tooltip="{{'HELP.addProperty' | translate}}"
+            >
           <i class="cedar-svg-controll-term collapsed" style="padding-bottom:10px"></i>
         </button>
-        <i class="{{fieldIconClass}}"></i>
+
+        <i style="color:#9E9E9E" class="{{fieldIconClass}}"></i>
+
       <span class="multiple-instance-cardinality"
           ng-show="$parent.field.hasOwnProperty('minItems')">
            {{$parent.field.minItems}} .. {{$parent.field.maxItems || "N"}}
        </span>
+
         <span style="color:red;" ng-show="$root.schemaOf($parent.field)._valueConstraints.requiredValue">*</span>
       </p>
     </div>
