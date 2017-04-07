@@ -707,12 +707,12 @@ define([
 
       // Load values when opening an instance
       if ($scope.model) {
-        var fieldValue = DataManipulationService.getFieldValue(field);
+        var fieldValue = DataManipulationService.getValueLocation(field);
         $scope.modelValueRecommendation = {valueInfo: {'value': $scope.model[fieldValue]}}
       }
 
       $scope.initializeValueRecommendationField = function () {
-        var fieldValue = DataManipulationService.getFieldValue(field);
+        var fieldValue = DataManipulationService.getValueLocation(field);
         $scope.modelValueRecommendation = {};
         if ($scope.model) {
           if ($scope.model['_valueLabel']) {
@@ -730,7 +730,7 @@ define([
       };
 
       $scope.updateModelWhenChangeSelection = function (modelvr) {
-        var fieldValue = DataManipulationService.getFieldValue(field);
+        var fieldValue = DataManipulationService.getValueLocation(field);
         // This variable will be used at textfield.html
         $scope.modelValueRecommendation = modelvr;
         if ($rootScope.isArray($scope.model)) {
@@ -762,7 +762,7 @@ define([
       };
 
       $scope.updateModelWhenRefresh = function (select, modelvr) {
-        var fieldValue = DataManipulationService.getFieldValue(field);
+        var fieldValue = DataManipulationService.getValueLocation(field);
         if (!$scope.isFirstRefresh) {
           // Check that there are no controlled terms selected
           if (select.selected.valueUri == null) {
@@ -799,7 +799,7 @@ define([
       };
 
       $scope.clearSelection = function ($event, select) {
-        var fieldValue = DataManipulationService.getFieldValue(field);
+        var fieldValue = DataManipulationService.getValueLocation(field);
         $event.stopPropagation();
         $scope.modelValueRecommendation = {
           valueInfo: {'value': null, 'valueUri': null},

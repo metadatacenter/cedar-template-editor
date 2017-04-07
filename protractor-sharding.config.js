@@ -11,7 +11,7 @@ exports.config = {
   capabilities: {
     browserName: 'chrome',
     shardTestFiles:true,
-    maxInstances:10git s
+    maxInstances:10
   },
 
   allScriptsTimeout: 500000,

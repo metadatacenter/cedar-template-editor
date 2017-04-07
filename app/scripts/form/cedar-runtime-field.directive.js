@@ -251,7 +251,7 @@ define([
 
       // Sets the instance @value fields based on the options selected at the UI
       $scope.updateModelFromUI = function (field) {
-        var fieldValue = DataManipulationService.getFieldValue(field);
+        var fieldValue = DataManipulationService.getValueLocation(field);
 
         if (DataManipulationService.isMultiAnswer(field)) {
           // Reset model
@@ -302,6 +302,8 @@ define([
 
       // Set the UI with the values from the model
       $scope.updateUIFromModel = function (field) {
+        var fieldValue = DataManipulationService.getValueLocation(field);
+
         if (DataManipulationService.isMultiAnswer(field)) {
           $scope.optionsUI = {};
         }
@@ -443,27 +445,22 @@ define([
 
       // string together field values
       $scope.getValueString = function (valueElement) {
+        var location = DataManipulationService.getValueLabelLocation($scope.field);
         var result = '';
         if (valueElement) {
           for (var i = 0; i < valueElement.length; i++) {
-            var fieldValueLabel = null;
-            if (valueElement[i]['@value'] && valueElement[i]['@value'] != null) {
-              fieldValueLabel = '@value';
-            }
-            else if (valueElement[i]['@id'] && valueElement[i]['@id'] != null) {
-              fieldValueLabel = '_valueLabel';
-            }
-            if (fieldValueLabel != null) {
-              result += valueElement[i][fieldValueLabel];
-              if (i < valueElement.length - 1) {
-                result += ', ';
-              }
+            if (valueElement[i][location]) {
+              result += valueElement[i][location] + ', ';
+              //if (i < valueElement.length - 1) {
+              //  result += ', ';
+              //}
             }
           }
-          result = result.trim().replace(/,\s*$/, "");
         }
-        return result;
+        return result.trim().replace(/,\s*$/, "");
       };
+
+
 
       // watch for a request to set this field active
       $scope.$on('setActive', function (event, args) {

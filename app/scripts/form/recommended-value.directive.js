@@ -48,10 +48,7 @@ define([
 
       }, true);
 
-      // if ($scope.model) {
-      //   var fieldValue = DataManipulationService.getFieldValue($scope.field);
-      //   $scope.modelValueRecommendation = {valueInfo: {'value': $scope.model[fieldValue]}}
-      // }
+
 
       $scope.updateModelWhenChangeSelection = function (modelvr, index) {
         if (modelvr[index] && modelvr[index].valueInfo && modelvr[index].valueInfo.valueUri) {
@@ -79,7 +76,7 @@ define([
       };
 
       $scope.initializeValueRecommendationField = function () {
-        var fieldValue = DataManipulationService.getFieldValue($scope.field);
+        var fieldValue = DataManipulationService.getValueLocation($scope.field);
         $scope.isFirstRefresh = true;
         $scope.modelValueRecommendation = [];
         // If $scope.model is an Array

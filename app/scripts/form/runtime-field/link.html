@@ -5,7 +5,7 @@
 
     <div ng-if="isRegular() && showMultiple('expanded')"
         aria-label="{{getDescription(field)}}"
-        class="isInactive ">{{valueArray[index]['@value']}} &nbsp;</div>
+        class="isInactive ">{{valueArray[index]['@id']}} &nbsp;</div>
 
     <div ng-if="isRegular() && showMultiple('paged')"
         aria-label="{{getDescription(field)}}"
@@ -24,7 +24,7 @@
           placeholder="{{isActive(index) ? 'enter answer' : ''}}"
           aria-label="{{getDescription(field)}}"
           ng-required="isRequired()"
-          ng-model="valueElement['@value']">
+          ng-model="valueElement['@id']">
       </input>
       <div class="input-indicator-icons" ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
     </div>
