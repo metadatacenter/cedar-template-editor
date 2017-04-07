@@ -1,4 +1,5 @@
 <div ng-init="initializeValue(field)">
+
   <!-- actively editing the field -->
   <div ng-if="isActive(index)" class="form-group  has-feedback">
     <input type="text"
@@ -24,6 +25,7 @@
         class="isInactive"
         aria-label="{{getDescription(field)}}">{{getValueString((valueArray))}}</div>
   </div>
+
 </div>
 
 

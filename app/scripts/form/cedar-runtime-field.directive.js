@@ -303,7 +303,6 @@ define([
       // Set the UI with the values from the model
       $scope.updateUIFromModel = function (field) {
         if (DataManipulationService.isMultiAnswer(field)) {
-          var fieldValue = DataManipulationService.getFieldValue(field);
           $scope.optionsUI = {};
         }
         if (field._ui.inputType == 'checkbox') {

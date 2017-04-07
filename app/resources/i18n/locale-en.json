@@ -4,6 +4,9 @@
       "textfield": {
         "NAME": "Text"
       },
+      "link": {
+        "NAME": "Link"
+      },
       "textarea": {
         "NAME": "Paragraph"
       },
