@@ -2,9 +2,7 @@
 
 
 var MoveModal = function () {
-
   var EC = protractor.ExpectedConditions;
-
 
   var createMoveToModal = element(by.id('move-modal'));
   var createMoveToModalOpen = element(by.css('#move-modal .in'));
@@ -16,8 +14,7 @@ var MoveModal = function () {
   var createOpenFolderArrowButton = createMoveToBody.element(by.css('div.box-row.row.ng-scope.selected > div.col-sm-1.arrow-click > i'));
 
 
-
-  // is it a open?
+  // is it open?
   this.isOpen = function () {
     expect(createMoveToModalOpen.isPresent()).toBe(true);
   };
@@ -29,11 +26,8 @@ var MoveModal = function () {
     browser.wait(EC.elementToBeClickable(folder));
     folder.click();
 
-    browser.wait(EC.visibilityOf(createMoveButton));
-    browser.wait(EC.elementToBeClickable(createMoveButton));
-    createMoveButton.click();
+    this.clickMoveButton();
   };
-
 
 
   this.moveToUserFolder = function(userName, title) {
@@ -54,10 +48,16 @@ var MoveModal = function () {
     var folder = createMoveToModal.element(by.linkText(title));
     browser.wait(EC.elementToBeClickable(folder));
     folder.click();
+    
+    this.clickMoveButton();
+  };
 
+
+  this.clickMoveButton = function () {
     browser.wait(EC.elementToBeClickable(createMoveButton));
     createMoveButton.click();
   };
+
 
 };
 module.exports = new MoveModal(); 
