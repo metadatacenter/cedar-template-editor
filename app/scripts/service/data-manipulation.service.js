@@ -106,19 +106,12 @@ define([
         enumeration = schemaType.oneOf[0].enum;
         format = schemaType.oneOf[0].format;
       }
-      // If there is no type defined at the schema level
-      if (angular.isUndefined(enumeration)) {
-        if (format == 'uri') {
-          // If the value has been constrained to ontology terms, @type must be set to @id
-          if ($rootScope.hasValueConstraint(valueConstraints)) {
-            instanceType = '@id';
-          }
-        }
-      } else {
+      // If the type is defined at the schema level
+      if (angular.isDefined(enumeration)) {
           // If only one type has been defined, it is returned
         if (enumeration.length == 1) {
           instanceType = enumeration[0];
-          // If more than one types have been defined for the template/element/field, an array is returned
+          // If more than one type have been defined for the template/element/field, an array is returned
         } else {
           instanceType =  enumeration;
         }

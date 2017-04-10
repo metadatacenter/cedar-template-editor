@@ -41,7 +41,6 @@ xdescribe('workspace', function () {
       it("should create a folder", function () {
         sampleFolderTitle = workspacePage.createTitle('folder');
         workspacePage.createResource('folder', sampleFolderTitle);
-        toastyModal.isSuccess();
       });
 
       it("should have search visible and empty", function () {

@@ -26,6 +26,9 @@ var WorkspacePage = function () {
 
   // page content
   var createSidebarRight = element(by.css('#sidebar-right'));
+  var createSidebarLeft = element(by.css('#sidebar-left'));
+  var createWorkspaceLink = createSidebarLeft.element(by.css('div > div.shared > a [ng-click="dc.goToMyWorkspace()"]'));
+  var createSharedWithMeLink = element(by.css('div > div.shared > a [ng-click="dc.goToSharedWithMe()"]'));
 
 
   // search navigation
@@ -375,6 +378,7 @@ var WorkspacePage = function () {
         }
         browser.wait(EC.elementToBeClickable(createFolderSubmitButton));
         createFolderSubmitButton.click();
+        toastyModal.isSuccess();
         break;
     }
   };
@@ -384,7 +388,6 @@ var WorkspacePage = function () {
   this.createFolder = function (name) {
     var folderTitle = this.createTitle(name);
     this.createResource('folder', folderTitle);
-    toastyModal.isSuccess();
     return folderTitle;
   };
 
@@ -420,7 +423,7 @@ var WorkspacePage = function () {
 
     sweetAlertModal.confirm();
     toastyModal.isSuccess();
-    this.clearSearch();
+    clearSearch();
   };
 
   this.deleteResourceViaRightClick = function (name, type) {
@@ -773,12 +776,26 @@ var WorkspacePage = function () {
 
   };
 
+  // click on the cedar logo
   this.clickLogo = function () {
     browser.wait(EC.visibilityOf(createLogo));
     browser.wait(EC.elementToBeClickable(createLogo));
     createLogo.click();
   };
 
+  // click on the workspace link
+  this.clickWorkspace = function () {
+    browser.wait(EC.elementToBeClickable(createWorkspaceLink));
+    createWorkspaceLink.click();
+  };
+
+  // click on the shared-with-me link
+  this.clickSharedWithMe = function () {
+    browser.wait(EC.elementToBeClickable(createSharedWithMeLink));
+    createSharedWithMeLink.click();
+  };
+
+  // logout from the account currently logged in to
   this.logout = function () {
     browser.wait(EC.visibilityOf(createUserDropdownButton), 2000);
     browser.wait(EC.elementToBeClickable(createUserDropdownButton), 2000);
@@ -787,6 +804,7 @@ var WorkspacePage = function () {
     createLogoutMenuItem.click();
   };
 
+  // login as the specified user with the given password
   this.login = function (username, password) {
     this.logout();
     browser.driver.findElement(by.id('username')).sendKeys(username).then(function () {
@@ -802,6 +820,29 @@ var WorkspacePage = function () {
     });
   };
 
+  // check whether the given username corresponds to the currently logged in user
+  this.isUserLoggedIn = function (username) {
+    this.clickLogo();
+    browser.wait(EC.visibilityOf(createFirstFolder));
+    createBreadcrumbUserName.getText().then(function (text) {
+      return text === username;
+    });
+  };
+
+  // login with the specified userid and password, if the given username is not the one currently logged in
+  this.loginIfNecessary = function (username, userid, password) {
+    this.clickLogo();
+    browser.wait(EC.visibilityOf(createBreadcrumbFirstFolder));
+    createBreadcrumbUserName.getText().then(function (text) {
+      if (text !== username) {
+        var page = new WorkspacePage();
+        page.logout();
+        page.login(userid, password);
+      }
+    });
+  };
+
+  // navigate to the home folder of the specified user
   this.navigateToUserFolder = function (username) {
     this.clickBreadcrumb(1);
     var userFolder = createCenterPanel.element(by.cssContainingText('.folderTitle.ng-binding', username));
@@ -809,6 +850,7 @@ var WorkspacePage = function () {
     browser.actions().doubleClick(userFolder).perform();
   };
 
+  // right-click on a resource
   this.rightClickResource = function (name, type) {
     var element = this.selectResource(name, type);
     browser.actions().mouseMove(element).perform();
