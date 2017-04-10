@@ -130,9 +130,9 @@ define([
       };
 
       // is the previous field static?
-      $scope.isDateRange = function () {
-        return DataManipulationService.isDateRange($scope.field);
-      };
+      // $scope.isDateRange = function () {
+      //   return DataManipulationService.isDateRange($scope.field);
+      // };
 
       // This function initializes the value field (or fields) to null (either @id or @value) if it has not been initialized yet.
       // It also initializes optionsUI
@@ -729,11 +729,13 @@ define([
                 } else if (angular.isObject(valueElement['@value'])) {
                   if ($rootScope.isEmpty(valueElement['@value'])) {
                     allRequiredFieldsAreFilledIn = false;
-                  } else if (DataManipulationService.getFieldSchema($scope.field)._ui.dateType == "date-range") {
-                    if (!valueElement['@value'].start || !valueElement['@value'].end) {
-                      allRequiredFieldsAreFilledIn = false;
-                    }
-                  } else {
+                  }
+                  // else if (DataManipulationService.getFieldSchema($scope.field)._ui.dateType == "date-range") {
+                  //   if (!valueElement['@value'].start || !valueElement['@value'].end) {
+                  //     allRequiredFieldsAreFilledIn = false;
+                  //   }
+                  // }
+                  else {
                     // Require at least one checkbox is checked.
                     var hasValue = false;
                     angular.forEach(valueElement['@value'], function (value, key) {
@@ -763,11 +765,13 @@ define([
             } else if (angular.isObject($scope.model['@value'])) {
               if ($rootScope.isEmpty($scope.model['@value'])) {
                 allRequiredFieldsAreFilledIn = false;
-              } else if (DataManipulationService.getFieldSchema($scope.field)._ui.dateType == "date-range") {
-                if (!$scope.model['@value'].start || !$scope.model['@value'].end) {
-                  allRequiredFieldsAreFilledIn = false;
-                }
-              } else {
+              }
+              // else if (DataManipulationService.getFieldSchema($scope.field)._ui.dateType == "date-range") {
+              //   if (!$scope.model['@value'].start || !$scope.model['@value'].end) {
+              //     allRequiredFieldsAreFilledIn = false;
+              //   }
+              // }
+              else {
                 // Require at least one checkbox is checked.
                 var hasValue = false;
                 angular.forEach($scope.model['@value'], function (value, key) {
