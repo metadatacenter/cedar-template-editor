@@ -264,6 +264,9 @@ define([
             scope.$emit("invalidFieldState",
                 ["remove", $rootScope.schemaOf(fieldOrElement)._ui.title, fieldOrElement["@id"]]);
           }
+
+          // Remove it from the top-level 'required' array
+          scope.element = DataManipulationService.removeKeyFromRequired(scope.element, selectedKey);
         }
       };
 
@@ -278,8 +281,6 @@ define([
       scope.canDeselect = function (element) {
         return DataManipulationService.canDeselect(element);
       };
-
-
 
       // when element is deseleted, look at errors and parse if none
       scope.$on('deselect', function (event, element, errorMessages) {
@@ -325,8 +326,11 @@ define([
                 p["@context"].required[idx] = newKey;
               }
 
-              var idx = $rootScope.schemaOf(scope.element)._ui.order.indexOf(key);
-              $rootScope.schemaOf(scope.element)._ui.order[idx] = newKey;
+              // Rename key in the 'order' array
+              scope.element._ui.order = DataManipulationService.renameItemInArray(scope.element._ui.order, key, newKey);
+
+              // Rename key in the 'required' array
+              scope.element.required = DataManipulationService.renameItemInArray(scope.element.required, key, newKey);
             }
           });
         }

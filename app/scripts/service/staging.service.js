@@ -143,8 +143,12 @@ define([
       // Evaluate cardinality
       DataManipulationService.cardinalizeField(field);
 
-      // Adding field to the element.properties object
+      // Add field to the form.properties object
       form.properties[fieldName] = field;
+
+      // Add field to the form.required array
+      form = DataManipulationService.addKeyToRequired(form, fieldName);
+
       form._ui.order = form._ui.order || [];
       form._ui.order.push(fieldName);
 
@@ -161,13 +165,7 @@ define([
           TemplateElementService.getTemplateElement(elementId),
           function (response) {
             var clonedElement = response.data;
-            //clonedElement.minItems = 1;
-            //clonedElement.maxItems = 1;
-
-            var elProperties = DataManipulationService.getFieldProperties(clonedElement);
             DataManipulationService.setSelected(clonedElement);
-            //elProperties._tmp = elProperties._tmp || {};
-            //elProperties._tmp.state = "creating";
 
             // Converting title for irregular character handling
             var elName = DataManipulationService.getFieldName(clonedElement._ui.title);
@@ -180,8 +178,12 @@ define([
             // Evaluate cardinality
             DataManipulationService.cardinalizeField(clonedElement);
 
-            // Adding field to the element.properties object
+            // Add field to the element.properties object
             form.properties[elName] = clonedElement;
+
+            // Add element to the form.required array
+            form = DataManipulationService.addKeyToRequired(form, elName);
+
             form._ui.order = form._ui.order || [];
             form._ui.order.push(elName);
 
@@ -202,8 +204,6 @@ define([
     service.addFieldToElement = function (element, fieldType) {
       var field = DataManipulationService.generateField(fieldType);
       DataManipulationService.setSelected(field);
-      //field.properties._tmp = field.properties._tmp || {};
-      //field.properties._tmp.state = "creating";
 
       var optionInputs = ["radio", "checkbox", "list"];
       if (optionInputs.indexOf(fieldType) > -1) {
@@ -227,6 +227,10 @@ define([
 
       // Adding field to the element.properties object
       element.properties[fieldName] = field;
+
+      // Add field to the element.required array
+      element = DataManipulationService.addKeyToRequired(element, fieldName);
+
       element._ui.order.push(fieldName);
 
       element._ui.propertyLabels = element._ui.propertyLabels || {};
@@ -237,13 +241,7 @@ define([
           TemplateElementService.getTemplateElement(elementId),
           function (response) {
             var el = response.data;
-            //el.minItems = 0;
-            //el.maxItems = 1;
-
-            var elProperties = DataManipulationService.getFieldProperties(el);
             DataManipulationService.setSelected(el);
-            //elProperties._tmp = elProperties._tmp || {};
-            //elProperties._tmp.state = "creating";
 
             var elName = DataManipulationService.getFieldName(el._ui.title);
             elName = DataManipulationService.getAcceptableKey(element.properties, elName);
@@ -254,14 +252,16 @@ define([
             // Evaluate cardinality
             DataManipulationService.cardinalizeField(el);
 
-            // Adding field to the element.properties object
+            // Add field to the element.properties object
             element.properties[elName] = el;
+
+            // Add element to the element.required array
+            element = DataManipulationService.addKeyToRequired(element, elName);
+
             element._ui.order.push(elName);
 
             element._ui.propertyLabels = element._ui.propertyLabels || {};
             element._ui.propertyLabels[elName] = elName;
-
-            console.log(element._ui);
 
            DataManipulationService.createDomIds(element);
           },
@@ -272,32 +272,32 @@ define([
     }
 
     // Add newly configured field to the the $scope.form or $scope.element
-    service.addFieldToScopeAndStaging = function ($scope, targetObject, field) {
-      // Setting return value from $scope.checkFieldConditions to array which will display error messages if any
-      $scope.stagingErrorMessages = ClientSideValidationService.checkFieldConditions(field);
-      $scope.stagingErrorMessages = jQuery.merge($scope.stagingErrorMessages,
-          ClientSideValidationService.checkFieldCardinalityOptions(field));
-
-      if ($scope.stagingErrorMessages.length == 0) {
-        // Converting title for irregular character handling
-        var fieldName = DataManipulationService.getFieldName($rootScope.schemaOf(field)._ui.title);
-        // Adding corresponding property type to @context
-        targetObject.properties["@context"].properties[fieldName] = DataManipulationService.generateFieldContextProperties(
-            fieldName);
-        targetObject.properties["@context"].required.push(fieldName);
-        targetObject.required.push(fieldName);
-
-        // Evaluate cardinality
-        DataManipulationService.cardinalizeField(field);
-
-        // Adding field to the element.properties object
-        targetObject.properties[fieldName] = field;
-
-        // Lastly, remove this field from the $scope.staging object
-        $scope.staging = {};
-        this.moveIntoPlace();
-      }
-    };
+    // service.addFieldToScopeAndStaging = function ($scope, targetObject, field) {
+    //   // Setting return value from $scope.checkFieldConditions to array which will display error messages if any
+    //   $scope.stagingErrorMessages = ClientSideValidationService.checkFieldConditions(field);
+    //   $scope.stagingErrorMessages = jQuery.merge($scope.stagingErrorMessages,
+    //       ClientSideValidationService.checkFieldCardinalityOptions(field));
+    //
+    //   if ($scope.stagingErrorMessages.length == 0) {
+    //     // Converting title for irregular character handling
+    //     var fieldName = DataManipulationService.getFieldName($rootScope.schemaOf(field)._ui.title);
+    //     // Adding corresponding property type to @context
+    //     targetObject.properties["@context"].properties[fieldName] = DataManipulationService.generateFieldContextProperties(
+    //         fieldName);
+    //     targetObject.properties["@context"].required.push(fieldName);
+    //     targetObject.required.push(fieldName);
+    //
+    //     // Evaluate cardinality
+    //     DataManipulationService.cardinalizeField(field);
+    //
+    //     // Adding field to the element.properties object
+    //     targetObject.properties[fieldName] = field;
+    //
+    //     // Lastly, remove this field from the $scope.staging object
+    //     $scope.staging = {};
+    //     this.moveIntoPlace();
+    //   }
+    // };
 
     return service;
   };
