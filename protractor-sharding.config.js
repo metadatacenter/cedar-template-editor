@@ -8,9 +8,9 @@ exports.config = {
   troubleshoot   : true,
 
   capabilities: {
-    browserName   : 'chrome',
-    shardTestFiles: true,
-    maxInstances  : 10
+    browserName: 'chrome',
+    shardTestFiles:true,
+    maxInstances:10
   },
 
   allScriptsTimeout: 500000,

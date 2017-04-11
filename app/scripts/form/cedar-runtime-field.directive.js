@@ -251,7 +251,7 @@ define([
 
       // Sets the instance @value fields based on the options selected at the UI
       $scope.updateModelFromUI = function (field) {
-        var fieldValue = DataManipulationService.getFieldValue(field);
+        var fieldValue = DataManipulationService.getValueLocation(field);
 
         if (DataManipulationService.isMultiAnswer(field)) {
           // Reset model
@@ -302,8 +302,9 @@ define([
 
       // Set the UI with the values from the model
       $scope.updateUIFromModel = function (field) {
+        var fieldValue = DataManipulationService.getValueLocation(field);
+
         if (DataManipulationService.isMultiAnswer(field)) {
-          var fieldValue = DataManipulationService.getFieldValue(field);
           $scope.optionsUI = {};
         }
         if (field._ui.inputType == 'checkbox') {
@@ -341,14 +342,26 @@ define([
         DataManipulationService.initializeValueType(field, $scope.model);
       };
 
+      // if the field is empty, fill it with null
+      $scope.checkForEmpty = function() {
+        var location = DataManipulationService.getValueLocation($scope.field);
+        var obj = $scope.valueArray[$scope.index];
+        if (!obj[location] || obj[location].length === 0) {
+          obj[location] = null;
+        }
+      };
+
       // add more instances to a multiple cardinality field if possible
       $scope.addMoreInput = function () {
+        var fieldValue = DataManipulationService.getValueLocation($scope.field);
 
         var maxItems = DataManipulationService.getMaxItems($scope.field);
         if ((!maxItems || $scope.model.length < maxItems)) {
 
           // add another instance in the model
-          $scope.model.push({'@value': null});
+          var obj = {};
+          obj[fieldValue] = null;
+          $scope.model.push(obj);
 
           // activate the new instance
           $timeout($scope.setActive($scope.model.length - 1, true), 100);
@@ -444,27 +457,22 @@ define([
 
       // string together field values
       $scope.getValueString = function (valueElement) {
+        var location = DataManipulationService.getValueLabelLocation($scope.field);
         var result = '';
         if (valueElement) {
           for (var i = 0; i < valueElement.length; i++) {
-            var fieldValueLabel = null;
-            if (valueElement[i]['@value'] && valueElement[i]['@value'] != null) {
-              fieldValueLabel = '@value';
-            }
-            else if (valueElement[i]['@id'] && valueElement[i]['@id'] != null) {
-              fieldValueLabel = '_valueLabel';
-            }
-            if (fieldValueLabel != null) {
-              result += valueElement[i][fieldValueLabel];
-              if (i < valueElement.length - 1) {
-                result += ', ';
-              }
+            if (valueElement[i][location]) {
+              result += valueElement[i][location] + ', ';
+              //if (i < valueElement.length - 1) {
+              //  result += ', ';
+              //}
             }
           }
-          result = result.trim().replace(/,\s*$/, "");
         }
-        return result;
+        return result.trim().replace(/,\s*$/, "");
       };
+
+
 
       // watch for a request to set this field active
       $scope.$on('setActive', function (event, args) {
@@ -704,6 +712,8 @@ define([
 
       // form has been submitted, look for errors
       $scope.$on('submitForm', function (event) {
+        // where is the value
+        var location = DataManipulationService.getValueLocation($scope.field);
 
         // If field is required and is empty, emit failed emptyRequiredField event
         if ($rootScope.schemaOf($scope.field)._valueConstraints && $rootScope.schemaOf($scope.field)._valueConstraints.requiredValue) {
@@ -715,28 +725,30 @@ define([
               allRequiredFieldsAreFilledIn = false;
             } else {
               angular.forEach($scope.model, function (valueElement) {
-                if (!valueElement || !valueElement['@value']) {
+
+
+                if (!valueElement || !valueElement[location]) {
                   allRequiredFieldsAreFilledIn = false;
-                } else if (angular.isArray(valueElement['@value'])) {
+                } else if (angular.isArray(valueElement[location])) {
                   var hasValue = false;
-                  angular.forEach(valueElement['@value'], function (ve) {
+                  angular.forEach(valueElement[location], function (ve) {
                     hasValue = hasValue || !!ve;
                   });
 
                   if (!hasValue) {
                     allRequiredFieldsAreFilledIn = false;
                   }
-                } else if (angular.isObject(valueElement['@value'])) {
-                  if ($rootScope.isEmpty(valueElement['@value'])) {
+                } else if (angular.isObject(valueElement[location])) {
+                  if ($rootScope.isEmpty(valueElement[location])) {
                     allRequiredFieldsAreFilledIn = false;
                   } else if (DataManipulationService.getFieldSchema($scope.field)._ui.dateType == "date-range") {
-                    if (!valueElement['@value'].start || !valueElement['@value'].end) {
+                    if (!valueElement[location].start || !valueElement[location].end) {
                       allRequiredFieldsAreFilledIn = false;
                     }
                   } else {
                     // Require at least one checkbox is checked.
                     var hasValue = false;
-                    angular.forEach(valueElement['@value'], function (value, key) {
+                    angular.forEach(valueElement[location], function (value, key) {
                       hasValue = hasValue || value;
                     });
 
@@ -749,28 +761,28 @@ define([
             }
           } else {
             // allRequiredFieldsAreFilledIn = false;
-            if (!$scope.model || !$scope.model['@value']) {
+            if (!$scope.model || !$scope.model[location]) {
               allRequiredFieldsAreFilledIn = false;
-            } else if (angular.isArray($scope.model['@value'])) {
+            } else if (angular.isArray($scope.model[location])) {
               var hasValue = false;
-              angular.forEach($scope.model['@value'], function (ve) {
+              angular.forEach($scope.model[location], function (ve) {
                 hasValue = hasValue || !!ve;
               });
 
               if (!hasValue) {
                 allRequiredFieldsAreFilledIn = false;
               }
-            } else if (angular.isObject($scope.model['@value'])) {
-              if ($rootScope.isEmpty($scope.model['@value'])) {
+            } else if (angular.isObject($scope.model[location])) {
+              if ($rootScope.isEmpty($scope.model[location])) {
                 allRequiredFieldsAreFilledIn = false;
               } else if (DataManipulationService.getFieldSchema($scope.field)._ui.dateType == "date-range") {
-                if (!$scope.model['@value'].start || !$scope.model['@value'].end) {
+                if (!$scope.model[location].start || !$scope.model[location].end) {
                   allRequiredFieldsAreFilledIn = false;
                 }
               } else {
                 // Require at least one checkbox is checked.
                 var hasValue = false;
-                angular.forEach($scope.model['@value'], function (value, key) {
+                angular.forEach($scope.model[location], function (value, key) {
                   hasValue = hasValue || value;
                 });
 
@@ -783,6 +795,7 @@ define([
 
           if (!allRequiredFieldsAreFilledIn) {
             // add this field instance the the emptyRequiredField array
+            console.log('emptyRequiredField  1');
             $scope.$emit('emptyRequiredField',
                 ['add', DataManipulationService.getFieldSchema($scope.field)._ui.title, $scope.uuid]);
           }
@@ -801,16 +814,15 @@ define([
         if (angular.isArray($scope.model)) {
           for (var i = 0; i < $scope.model.length; i++) {
             if (!DataManipulationService.isValidPattern($scope.field, i)) {
-              $scope.model[i]['@value'] = DataManipulationService.getDomValue($scope.field, i);
+              $scope.model[i][location] = DataManipulationService.getDomValue($scope.field, i);
               allFieldsAreValid = false;
             }
           }
 
         } else {
           if (!DataManipulationService.isValidPattern($scope.field, 0)) {
-            $scope.model['@value'] = DataManipulationService.getDomValue($scope.field, 0);
+            $scope.model[location] = DataManipulationService.getDomValue($scope.field, 0);
             allFieldsAreValid = false;
-
           }
         }
 
