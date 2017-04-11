@@ -110,11 +110,13 @@ define([
                 } else if (angular.isObject(valueElement['@value'])) {
                   if ($rootScope.isEmpty(valueElement['@value'])) {
                     allRequiredFieldsAreFilledIn = false;
-                  } else if (DataManipulationService.getFieldSchema($scope.field)._ui.dateType == "date-range") {
-                    if (!valueElement['@value'].start || !valueElement['@value'].end) {
-                      allRequiredFieldsAreFilledIn = false;
-                    }
-                  } else {
+                  }
+                  // else if (DataManipulationService.getFieldSchema($scope.field)._ui.dateType == "date-range") {
+                  //   if (!valueElement['@value'].start || !valueElement['@value'].end) {
+                  //     allRequiredFieldsAreFilledIn = false;
+                  //   }
+                  // }
+                  else {
                     // Require at least one checkbox is checked.
                     var hasValue = false;
                     angular.forEach(valueElement['@value'], function (value, key) {
@@ -144,11 +146,13 @@ define([
             } else if (angular.isObject($scope.model['@value'])) {
               if ($rootScope.isEmpty($scope.model['@value'])) {
                 allRequiredFieldsAreFilledIn = false;
-              } else if (DataManipulationService.getFieldSchema($scope.field)._ui.dateType == "date-range") {
-                if (!$scope.model['@value'].start || !$scope.model['@value'].end) {
-                  allRequiredFieldsAreFilledIn = false;
-                }
-              } else {
+              }
+              // else if (DataManipulationService.getFieldSchema($scope.field)._ui.dateType == "date-range") {
+              //   if (!$scope.model['@value'].start || !$scope.model['@value'].end) {
+              //     allRequiredFieldsAreFilledIn = false;
+              //   }
+              // }
+              else {
                 // Require at least one checkbox is checked.
                 var hasValue = false;
                 angular.forEach($scope.model['@value'], function (value, key) {
@@ -1040,14 +1044,14 @@ define([
             ;
       };
 
-      $scope.initDateSingle = function () {
-        if ($rootScope.schemaOf($scope.field)._ui.inputType == 'date') {
-          $rootScope.schemaOf($scope.field)._ui.dateType = 'single-date';
-        }
-        else {
-          delete $rootScope.schemaOf($scope.field)._ui.dateType;
-        }
-      };
+      // $scope.initDateSingle = function () {
+      //   if ($rootScope.schemaOf($scope.field)._ui.inputType == 'date') {
+      //     $rootScope.schemaOf($scope.field)._ui.dateType = 'single-date';
+      //   }
+      //   else {
+      //     delete $rootScope.schemaOf($scope.field)._ui.dateType;
+      //   }
+      // };
 
       /**
        * only have one of these three divs open at a time

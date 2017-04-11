@@ -525,11 +525,9 @@ define([
     };
 
     // is the previous field static?
-    service.isDateRange = function (fieldOrElement) {
-      return DataManipulationService.getFieldSchema(fieldOrElement)._ui.dateType == "date-range";
-    };
-
-
+    // service.isDateRange = function (fieldOrElement) {
+    //   return DataManipulationService.getFieldSchema(fieldOrElement)._ui.dateType == "date-range";
+    // };
 
     service.hasNext = function (fieldOrElement) {
       return true;
