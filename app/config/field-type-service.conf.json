@@ -11,6 +11,17 @@
     "allowsValueRecommendation": true
   },
   {
+    "cedarType": "link",
+    "iconClass": "cedar-svg-link",
+    "label": "link",
+    "allowedInElement": true,
+    "primaryField": false,
+    "hasControlledTerms": false,
+    "staticField": false,
+    "allowsMultiple": true,
+    "allowsValueRecommendation": false
+  },
+  {
     "cedarType": "textarea",
     "iconClass": "cedar-svg-paragraph",
     "label": "Text Area",

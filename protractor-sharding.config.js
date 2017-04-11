@@ -8,7 +8,6 @@ exports.config = {
   troubleshoot   : true,
 
   capabilities: {
-
     browserName: 'chrome',
     shardTestFiles:true,
     maxInstances:10
