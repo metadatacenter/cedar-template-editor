@@ -243,12 +243,13 @@ define([
             if (name == '@context') {
               parentModel['@context'] = DataManipulationService.generateInstanceContext(value);
             }
-            // Add @type information to instance
-            // else if (name == '@type') {
-            //   var type = DataManipulationService.generateInstanceType(value);
-            //   if (type != null)
-            //     parentModel['@type'] = type;
-            // }
+            // Add @type information to template/element instance
+            else if (name == '@type') {
+              var type = DataManipulationService.generateInstanceType(value);
+              if (type) {
+                parentModel['@type'] = type;
+              }
+            }
 
             if (!DataUtilService.isSpecialKey(name)) {
               // Template Element
