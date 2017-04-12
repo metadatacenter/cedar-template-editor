@@ -94,17 +94,14 @@ define([
     };
 
     // Function that generates the @type for a field in an instance, based on the schema @type definition
-    service.generateInstanceType = function (schemaType, valueConstraints) {
+    service.generateInstanceType = function (schemaType) {
       var enumeration = {};
-      var format = null;
       var instanceType = null;
       if (angular.isUndefined(schemaType.oneOf)) {
         enumeration = schemaType.enum;
-        format = schemaType.format;
       }
       else {
         enumeration = schemaType.oneOf[0].enum;
-        format = schemaType.oneOf[0].format;
       }
       // If the type is defined at the schema level
       if (angular.isDefined(enumeration)) {
@@ -263,8 +260,7 @@ define([
       var fieldSchema = $rootScope.schemaOf(field);
       var properties = fieldSchema.properties;
       if (properties && !angular.isUndefined(properties['@type'])) {
-        var fieldType = service.generateInstanceType(properties['@type'],
-            fieldSchema._valueConstraints);
+        var fieldType = service.generateInstanceType(properties['@type']);
         if (fieldType) {
           // It is not an array
           if (field.type == 'object') {
@@ -600,9 +596,22 @@ define([
       return UrlService.schemaProperty(fieldName);
     };
 
+    // don't modify the property unless it contains the Cedar schema base url
+    // a user might have defined a specific property for this field
+    service.getPropertyOf = function (fieldName, property) {
+      if (property.indexOf(UrlService.schemaBase()) > -1) {
+        return UrlService.schemaProperty(fieldName);
+      } else {
+        return property;
+      }
+
+    };
+
     service.generateFieldContextProperties = function (fieldName) {
+
       var c = {};
       c.enum = new Array(service.getEnumOf(fieldName));
+      console.log('generateFieldContextProperties ' + fieldName + ' ' + c.enum);
       return c;
     };
 
@@ -639,17 +648,6 @@ define([
         return;
       }
 
-      newKey = service.getAcceptableKey(obj, newKey);
-      Object.defineProperty(obj, newKey, Object.getOwnPropertyDescriptor(obj, currentKey));
-      delete obj[currentKey];
-
-      return obj;
-    };
-
-    service.renameKeyOfObjectNew = function (obj, currentKey, newKey) {
-      if (!obj || !obj[currentKey]) {
-        return;
-      }
       newKey = service.getAcceptableKey(obj, newKey);
       Object.defineProperty(obj, newKey, Object.getOwnPropertyDescriptor(obj, currentKey));
       delete obj[currentKey];
@@ -1373,13 +1371,17 @@ define([
         //if (idOfValue && idOfValue == childId) {
         if (key == k) {
 
-          service.renameKeyOfObjectNew(p, key, newKey);
+          service.renameKeyOfObject(p, key, newKey);
 
           if (p["@context"] && p["@context"].properties) {
-            service.renameKeyOfObjectNew(p["@context"].properties, key, newKey);
+            service.renameKeyOfObject(p["@context"].properties, key, newKey);
 
-            if (p["@context"].properties[newKey] && p["@context"].properties[newKey].enum) {
-              p["@context"].properties[newKey].enum[0] = service.getEnumOf(newKey);
+            // update enum only if it is using one of our made up property URIs
+            var prop = p["@context"].properties[newKey];
+            if (prop && prop.enum) {
+              if (prop.enum[0].indexOf(UrlService.schemaProperties()) > -1) {
+                prop.enum[0] = service.getEnumOf(newKey);
+              }
             }
           }
 

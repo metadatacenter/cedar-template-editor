@@ -289,6 +289,15 @@ define([
       return url;
     };
 
+    service.searchProperties = function (query, sources, size) {
+      var url = this.controlledTerm() + "/property_search?q=" + encodeURIComponent(query)
+          + "&page=1&page_size=" + size;
+      if (sources) {
+        url += "&sources=" + sources;
+      }
+      return url;
+    };
+
     service.searchClassesAndValues = function (query, sources, size) {
       var url = this.controlledTerm() + "/search?q=" + encodeURIComponent(query)
           + "&scope=classes,values" + "&page=1&page_size=" + size;

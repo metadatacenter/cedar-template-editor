@@ -191,6 +191,8 @@ define([
 
         // Stores the template into the database
         $scope.doSaveTemplate = function () {
+          console.log($scope.form);
+
           this.disableSaveButton();
           var owner = this;
 
@@ -231,6 +233,7 @@ define([
                     $location.path(FrontendUrlService.getTemplateEdit(newId));
 
                     $scope.$broadcast('form:clean');
+                    console.log($scope.form);
                   },
                   function (err) {
                     UIMessageService.showBackendError('SERVER.TEMPLATE.create.error', err);
@@ -407,6 +410,27 @@ define([
           jQuery("#control-options-template-field").modal('hide');
         });
 
+
+
+        // update the property for a field
+        $scope.$on("property:propertyAdded", function (event, args) {
+
+          var property = args[0];
+          var id = args[1];
+
+          var props = $rootScope.propertiesOf($scope.form);
+
+          var fieldProp;
+          for (var prop in props) {
+            if ($rootScope.schemaOf(props[prop])['@id'] === id) {
+              fieldProp = prop;
+              break;
+            }
+          }
+          if (fieldProp) {
+            $scope.form.properties['@context'].properties[fieldProp]['enum'][0] = property;
+          }
+        });
 
       }
 

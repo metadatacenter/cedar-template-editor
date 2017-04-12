@@ -630,6 +630,11 @@ define([
         return (inputType === "date");
       };
 
+      $scope.isStatic = function () {
+        var inputType = $rootScope.schemaOf($scope.field)._ui.inputType;
+        return FieldTypeService.isStaticField(inputType);
+      };
+
       /**
        * Turn my field into a youtube iframe.
        * @param field
@@ -1027,6 +1032,13 @@ define([
 
       });
 
+      $scope.$on("property:propertyAdded", function () {
+        console.log('property:propertyAdded')
+        jQuery("#" + $scope.getPropertyModalId()).modal('hide');
+      });
+
+
+
       // which details tab is open?
       $scope.showControlledTermsValues = false;
       $scope.showControlledTermsField = false;
@@ -1075,6 +1087,13 @@ define([
         var fieldId = $scope.field['@id'] || $scope.field.items['@id'];
         var id = fieldId.substring(fieldId.lastIndexOf('/') + 1);
         return "control-options-" + id + "-" + fieldOrValue;
+      };
+
+
+      $scope.getPropertyModalId = function () {
+        var fieldId = $scope.field['@id'] || $scope.field.items['@id'];
+        var id = fieldId.substring(fieldId.lastIndexOf('/') + 1);
+        return "control-options-" + id + "-" + 'property';
       };
 
       /* end of controlled terms functionality */
@@ -1188,6 +1207,8 @@ define([
         $scope.field.minItems = 1;
         $scope.field.maxItems = 0;
       };
+
+
 
 
     };

@@ -46,6 +46,7 @@ define([
       getAcronym                     : getAcronym,
       init                           : init,
       searchClasses                  : searchClasses,
+      searchProperties               : searchProperties,
       searchClassesAndValues         : searchClassesAndValues,
       searchClassesValueSetsAndValues: searchClassesValueSetsAndValues,
       searchValueSetsAndValues       : searchValueSetsAndValues,
@@ -425,6 +426,19 @@ define([
       }
       var acronym = ontologyUri.substr(ontologyUri.lastIndexOf('/') + 1);
       return acronym;
+    }
+
+    function searchProperties(query, sources, size) {
+      init();
+      return AuthorizedBackendService.doCall(
+          ControlledTermHttpService.searchProperties(query, sources, size),
+          function (response) {
+            return response.data;
+          },
+          function (err) {
+            return handleServerError(err);
+          }
+      );
     }
 
     function searchClasses(query, sources, size) {

@@ -1,20 +1,30 @@
 <div ng-if="model !== undefined" class="item-root element-root" id="{{$root.getDomId(element)}}"
     ng-click="canSelect(isSelectable()); $event.preventDefault();">
 
+  <!-- element header -->
   <div class="element-header input-type-container" style="position:relative;"  ng-class="{'sortable-handler': !$root.isRuntime() && !isNested(element)}">
     <div class="row" >
 
+      <!-- left side of header -->
       <div class="col-lg-6 pull-left">
 
-        <a  ng-if="canEditProperty()" ng-click="switchExpandedState($root.getDomId(element)); $event.preventDefault();"
-            class="visibilitySwitch"><i
-            class="cedar-svg-collapse"></i></a>
-        <a  ng-if="canEditProperty()" ng-click="switchExpandedState($root.getDomId(element)); $event.preventDefault();" class="visibilitySwitch"
-            style="display:none;"><i
-            class="cedar-svg-expand"></i></a>
+        <!-- toggle visibility of element contents -->
+        <a ng-click="switchExpandedState($root.getDomId(element)); $event.preventDefault();" class="visibilitySwitch">
+          <i class="cedar-svg-collapse"></i>
+        </a>
+        <a ng-click="switchExpandedState($root.getDomId(element)); $event.preventDefault();" class="visibilitySwitch" style="display:none;">
+          <i class="cedar-svg-expand"></i>
+        </a>
 
+        <!-- sort icon -->
         <div  ng-if="isSelectable()" class="sortable-handler " style="padding-top:5px; display:inline-block"><span class="sortable-icon"></span></div>
 
+        <!-- allow elements to have properties -->
+        <button ng-if="isSelectable()" type="button" class="show-type" style="background:transparent;color:#5795ba" ng-click="showModal(getPropertyModalId());$root.finalTitle=element._ui.title" uib-tooltip="Add property">
+          <i class="cedar-svg-controll-term collapsed" style="padding-bottom:10px"></i>
+        </button>
+
+        <!-- element label -->
         <p class="element-name-label " ng-class="{'nested': isNested()}">
           <span ng-if="!canEditProperty()" >{{labels[key]}}</span>
           <input ng-model-options="{ debounce: 1000 }" ng-if="canEditProperty()" type="text" auto-focus
@@ -25,7 +35,8 @@
               style="outline:none;width:300px;padding:5px">
         </p>
 
-         <span ng-if="!isNested()" ng-show="$root.isArray(model) && $root.isRuntime()" class="spreadsheetSwitch element">
+        <!-- switch to spreadsheet view -->
+        <span ng-if="!isNested()" ng-show="$root.isArray(model) && $root.isRuntime()" class="spreadsheetSwitch element">
             <button type="button"
                 uib-tooltip="{{'HELP.showAsSpreadsheet' | translate}}"
                 tooltip-trigger
@@ -40,12 +51,15 @@
             </button>
          </span>
 
-          <span class="multiple-instance-cardinality"
-              ng-show="!$root.isRuntime() && $root.elementIsMultiInstance(element)">
+        <!-- cardinality -->
+        <span class="multiple-instance-cardinality" ng-show="!$root.isRuntime() && $root.elementIsMultiInstance(element)">
            {{element.minItems}} .. {{element.maxItems || "N"}}
-          </span>
+        </span>
+
       </div>
-      <div class="col-lg-5">
+
+      <!-- right side of header -->
+      <div class="col-lg-5" >
         <div class="element-toggles list" ng-if="$root.isRuntime() && $root.elementIsMultiInstance(element)">
 
           <div class="element-toggle"
@@ -74,7 +88,8 @@
         </div>
       </div>
 
-      <div ng-if="canEditProperty()" class="preview-container">
+      <!-- delete element -->
+      <div ng-if="canEditProperty()" class="preview-container col-lg-1">
         <div class="row preview-edit-options pull-right">
           <div class="toggle-options col-lg-12 pull-right">
             <div class="save-options">
@@ -85,22 +100,11 @@
           </div>
         </div>
       </div>
+
     </div>
   </div>
 
-  <!--&lt;!&ndash; property labels -&ndash;&gt;-->
-  <!--<div ng-if="!$root.isRuntime()  && !isNested()  && $root.propertiesOf(element)._tmp.state == 'creating'">-->
-    <!--<div class="form-group floating-label-wrapper">-->
-      <!--<input type="text" auto-focus-->
-          <!--class="form-control field-title-definition"-->
-          <!--id="placeholder-{{$root.schemaOf(element)['@id'].substring($root.schemaOf(element)['@id'].lastIndexOf('/')+1)}}"-->
-          <!--placeholder="{{'CREATOR.enterElementTitle' | translate}}"-->
-          <!--aria-label="{{'CREATOR.enterElementTitle' | translate}}"-->
-          <!--ng-model="labels[key]"-->
-          <!--with-floating-label>-->
-    <!--</div>-->
-  <!--</div>-->
-
+  <!-- element content -->
   <div class="elementTotalContent visible">
     <div ng-show="$root.isArray(model)">
       <div class="spreadsheetViewDetector"></div>
@@ -108,33 +112,6 @@
     </div>
 
     <div class="elements originalContent">
-      <!--<div class="element-toggles list" ng-if="$root.isRuntime() && $root.elementIsMultiInstance(element)">-->
-
-      <!--<div class="element-toggle"-->
-      <!--ng-class="{active: selectedTab == $index}"-->
-      <!--ng-repeat="m in model"-->
-      <!--ng-click="selectTab($index)"-->
-      <!--ng-if="$root.isArray(model) && model.length > 0">-->
-      <!--<span>{{$index + 1}}</span>-->
-      <!--</div>-->
-      <!--<div class="add-element">-->
-      <!--<button type="button"-->
-      <!--tooltip="add a {{$root.schemaOf(element)._ui.title}}"-->
-      <!--tooltip-trigger-->
-      <!--tooltip-animation="false"-->
-      <!--tooltip-placement="top"-->
-      <!--data-toggle="tooltip"-->
-      <!--ng-click="addElement(); $event.stopPropagation();"-->
-      <!--class="add zero noOutline"-->
-      <!--ng-show="true"-->
-      <!--ng-disabled="preview"-->
-      <!--style="outline:none">-->
-      <!--<i class="fa fa-plus"></i>-->
-      <!--</button>-->
-      <!--</div>-->
-      <!--<div class="clearfix"></div>-->
-      <!--</div>-->
-      <!-- /.date-type-toggle -->
 
       <!-- have an array with at least one element -->
       <div ng-if="$root.isArray(model) && selectedTab == $index" class="element" ng-repeat="m in model"
@@ -212,9 +189,7 @@
       </div>
     </div>
 
-
-    <div class=""
-        ng-if="!$root.isRuntime()  && !isNested() && $root.propertiesOf(element)._tmp.state == 'creating'">
+    <div class="" ng-if="!$root.isRuntime()  && !isNested() && $root.propertiesOf(element)._tmp.state == 'creating'">
       <div class="detail-options">
         <div class="element-toggles list table-style">
           <div class="element-toggle table-cell-style" ng-class="{active: showCardinality}"
@@ -254,6 +229,22 @@
 
       </div>
       <div class="clearfix"></div>
+    </div>
+  </div>
+
+  <!-- property modal -->
+  <div class="modal fade controlled-terms-modal" id="{{getPropertyModalId()}}" data-backdrop="static">
+    <div class="modal-dialog">
+      <div class="modal-content" style="overflow:auto">
+        <div class="modal-header">
+          <button type="button" class="close controlled-terms-modal-value-close" data-dismiss="modal"
+              aria-label="Close"><span aria-hidden="true"><img
+              src="/img/close_modal.png" width="22"/></span></button>
+        </div>
+        <div class="modal-body">
+          <div controlled-term field="element" options='{"filterSelection":"properties", "modalId":getPropertyModalId()}'></div>
+        </div>
+      </div>
     </div>
   </div>
 

@@ -390,6 +390,24 @@ define([
       jQuery("#control-options-element-field").modal('hide');
     });
 
+    // update the property for a field in the element
+    $scope.$on("property:propertyAdded", function (event, args) {
+      console.log('property:propertyAdded');
+      var property = args[0];   // property value
+      var id = args[1];         // field id
+
+      var props = $scope.element.properties;
+      var fieldProp;
+      for (var prop in props) {
+        if (props[prop]['@id'] === id) {
+          var fieldProp = prop;
+          break;
+        }
+      }
+      if (fieldProp) {
+        $scope.element.properties['@context'].properties[fieldProp]['enum'][0] = property;
+      }
+    });
   }
 
 });

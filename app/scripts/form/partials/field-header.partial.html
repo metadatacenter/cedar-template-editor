@@ -2,13 +2,41 @@
 
   <div class=" col-lg-9 pull-left type-label">
     <div class="sortable-handler ">
-      <p class="type-label"><span class="sortable-icon"></span><i class="{{fieldIconClass}}"></i>
+
+      <div class="type-label" style="text-transform:none;padding-left:10px;">
+
+        <span class="sortable-icon"></span>
+
+        <!-- allow non-static field to have properties -->
+        <button ng-if="!isStatic()"
+            type="button"
+            class="show-type"
+            style="background:transparent;color:#5795ba"
+            ng-click="showModal(getPropertyModalId());$root.finalTitle=form._ui.title"
+            uib-tooltip="{{'HELP.addProperty' | translate}}"
+            >
+          <i class="cedar-svg-controll-term collapsed" style="padding-bottom:10px"></i>
+        </button>
+
+        <!--TODO  hide for the moment because it is not done -->
+      <!--<div ng-if="!isStatic()"   uib-dropdown  style="display:inline-block;color:#5795ba" >-->
+        <!--&lt;!&ndash; TODO needs ng-disabled="!isActive()"  but this breaks the uib-dropdown-toggle &ndash;&gt;-->
+        <!--<button   uib-dropdown-toggle  aria-haspopup="true" aria-expanded="false" class="show-type" style="background:transparent;position:relative;left:-12px" >-->
+          <!--<i class="fa fa-caret-down  inline " ></i></button>-->
+        <!--<div uib-dropdown-menu class="class-list"  >-->
+          <!--<property-list field="field" view-type="viewType"></property-list>-->
+        <!--</div>-->
+      <!--</div>-->
+
+        <i style="color:#9E9E9E" class="{{fieldIconClass}}"></i>
+
       <span class="multiple-instance-cardinality"
           ng-show="$parent.field.hasOwnProperty('minItems')">
            {{$parent.field.minItems}} .. {{$parent.field.maxItems || "N"}}
        </span>
+
         <span style="color:red;" ng-show="$root.schemaOf($parent.field)._valueConstraints.requiredValue">*</span>
-      </p>
+      </div>
     </div>
   </div>
   <div class="col-lg-3 pull-right configuration-actions" ng-include="'scripts/form/partials/edit-options.partial.html'"

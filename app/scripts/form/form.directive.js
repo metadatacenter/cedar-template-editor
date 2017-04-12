@@ -29,13 +29,9 @@ define([
       },
       controller : function ($scope) {
 
-        console.log($scope.form);
-
         $scope.relabel = function(key) {
           // operates on templates and elements, so use the root scope json which
           // is element or form
-          console.log('relabel ' + key);
-
           DataManipulationService.relabel($rootScope.jsonToSave, key);
         };
 
@@ -125,6 +121,7 @@ define([
         };
 
         $scope.renameChildKey = function (child, newKey) {
+          console.log('renameChildKey ' + newKey);
           if (!child) {
             return;
           }
@@ -150,7 +147,15 @@ define([
                   DataManipulationService.renameKeyOfObject(p["@context"].properties, key, newKey);
 
                   if (p["@context"].properties[newKey] && p["@context"].properties[newKey].enum) {
-                    p["@context"].properties[newKey].enum[0] = DataManipulationService.getEnumOf(newKey);
+
+                    console.log(p["@context"].properties[newKey].enum[0]);
+
+
+
+                    //p["@context"].properties[newKey].enum[0] = DataManipulationService.getEnumOf(newKey);
+                    p["@context"].properties[newKey].enum[0] = DataManipulationService.getPropertyOf(newKey, p["@context"].properties[newKey].enum[0]);
+
+                    console.log(p["@context"].properties[newKey].enum[0]);
                   }
                 }
 
@@ -238,12 +243,13 @@ define([
             if (name == '@context') {
               parentModel['@context'] = DataManipulationService.generateInstanceContext(value);
             }
-            // Add @type information to instance
-            // else if (name == '@type') {
-            //   var type = DataManipulationService.generateInstanceType(value);
-            //   if (type != null)
-            //     parentModel['@type'] = type;
-            // }
+            // Add @type information to template/element instance
+            else if (name == '@type') {
+              var type = DataManipulationService.generateInstanceType(value);
+              if (type) {
+                parentModel['@type'] = type;
+              }
+            }
 
             if (!DataUtilService.isSpecialKey(name)) {
               // Template Element
