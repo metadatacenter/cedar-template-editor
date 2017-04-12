@@ -94,7 +94,7 @@ define([
     };
 
     // Function that generates the @type for a field in an instance, based on the schema @type definition
-    service.generateInstanceFieldType = function (schemaType) {
+    service.generateInstanceType = function (schemaType) {
       var enumeration = {};
       var instanceType = null;
       if (angular.isUndefined(schemaType.oneOf)) {
@@ -260,7 +260,7 @@ define([
       var fieldSchema = $rootScope.schemaOf(field);
       var properties = fieldSchema.properties;
       if (properties && !angular.isUndefined(properties['@type'])) {
-        var fieldType = service.generateInstanceFieldType(properties['@type']);
+        var fieldType = service.generateInstanceType(properties['@type']);
         if (fieldType) {
           // It is not an array
           if (field.type == 'object') {
