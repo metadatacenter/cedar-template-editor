@@ -18,10 +18,11 @@
           <i class="cedar-svg-controll-term collapsed" style="padding-bottom:10px"></i>
         </button>
 
-      <div  ng-if="!isStatic()" uib-dropdown style="display:inline-block;color:#5795ba">
-        <button ng-disabled="!isActive()"  uib-dropdown-toggle  aria-haspopup="true" aria-expanded="false" class="show-type" style="background:transparent;position:relative;left:-12px">
+      <div ng-if="!isStatic()"   uib-dropdown  style="display:inline-block;color:#5795ba" >
+        <!-- TODO needs ng-disabled="!isActive()"  but this breaks the uib-dropdown-toggle -->
+        <button   uib-dropdown-toggle  aria-haspopup="true" aria-expanded="false" class="show-type" style="background:transparent;position:relative;left:-12px" >
           <i class="fa fa-caret-down  inline " ></i></button>
-        <div uib-dropdown-menu class="class-list" >
+        <div uib-dropdown-menu class="class-list"  >
           <property-list field="field" view-type="viewType"></property-list>
         </div>
       </div>
