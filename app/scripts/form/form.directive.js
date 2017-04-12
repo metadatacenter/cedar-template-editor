@@ -113,7 +113,11 @@ define([
             delete props['@context'].properties[selectedKey];
             var id2 = props['@context'].required.indexOf(selectedKey);
             props['@context'].required.splice(id2, 1);
+
+            // Remove it from the top-level 'required' array
+            $scope.form = DataManipulationService.removeKeyFromRequired($scope.form, selectedKey);
           }
+
         };
 
         $scope.renameChildKey = function (child, newKey) {
@@ -160,8 +164,11 @@ define([
                   p["@context"].required[idx] = newKey;
                 }
 
-                var idx = $scope.form._ui.order.indexOf(key);
-                $scope.form._ui.order[idx] = newKey;
+                // Rename key in the 'order' array
+                $scope.form._ui.order = DataManipulationService.renameItemInArray($scope.form._ui.order, key, newKey);
+
+                // Rename key in the 'required' array
+                $scope.form.required = DataManipulationService.renameItemInArray($scope.form.required, key, newKey);
               }
             });
           }

@@ -737,7 +737,6 @@ define([
 
     };
 
-
     service.createOrder = function (node, order) {
 
       if (node.hasOwnProperty("@id")) {
@@ -750,6 +749,59 @@ define([
         }
       });
       return order;
+    };
+
+    /**
+     * Add a field or element name to the top-level 'required' array in a template or element
+     * @param {Object} templateOrElement - template or element
+     * @param {String} key - name of the field or element to be added
+     */
+    service.addKeyToRequired = function(templateOrElement, key) {
+      // Initialize schema.required if it's undefined
+      if (angular.isUndefined(templateOrElement.required)) {
+        templateOrElement.required = [];
+      }
+      // Check that the key is not already present in the required array
+      if (templateOrElement.required.indexOf(key) == -1) {
+        templateOrElement.required.push(key);
+      }
+      return templateOrElement;
+    };
+
+    /**
+     * Remove a field or element name from the top-level 'required' array in a template or element
+     * @param {Object} templateOrElement - template or element
+     * @param {String} key - name of the field or element to the removed
+     */
+    service.removeKeyFromRequired = function(templateOrElement, key) {
+      // If the required field is undefined, there is nothing to remove
+      if (angular.isUndefined(templateOrElement.required)) {
+        return templateOrElement;
+      }
+      // Remove element from the array
+      var index = templateOrElement.required.indexOf(key);
+      if (index > -1) {
+        templateOrElement.required.splice(index, 1);
+      }
+      // If the required field is empty, delete it. Empty 'required' fields are not valid in JSON schema
+      if (templateOrElement.required.length == 0) {
+        delete templateOrElement.required;
+      }
+      return templateOrElement;
+    };
+
+    /**
+     * Rename an array item
+     * @param {Array} array
+     * @param {String} name
+     * @param {String} newName
+     */
+    service.renameItemInArray = function(array, name, newName) {
+      var index = array.indexOf(name);
+      if (index > -1) {
+        array[index] = newName;
+      }
+      return array;
     };
 
     /**
@@ -1342,8 +1394,12 @@ define([
             p["@context"].required[idx] = newKey;
           }
 
-          var idx = schema._ui.order.indexOf(key);
-          schema._ui.order[idx] = newKey;
+          // Rename key in the 'order' array
+          schema._ui.order = service.renameItemInArray(schema._ui.order, key, newKey);
+
+          // Rename key in the 'required' array
+          schema.required = service.renameItemInArray(schema.required, key, newKey);
+
         }
       });
     };
