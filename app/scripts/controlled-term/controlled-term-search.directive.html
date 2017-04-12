@@ -36,7 +36,7 @@
           <button type="button"
               class="std-button btn"
               ng-click="tsc.addPropertyUri()"
-              ng-disabled="!tsc.propertyUri || !propertyForm.$valid">Create Property
+              ng-disabled="!tsc.propertyUri || !propertyForm.$valid">Enter Property
           </button>
         </div>
       </form>
@@ -163,11 +163,11 @@
       <table class="table table-condensed results-headers-table search-results-headers-table">
         <thead>
         <tr>
-          <th width="15%">Property</th>
-          <th width="15%">Definition</th>
-          <th width="15%">Type</th>
-          <th width="15%">Source</th>
-          <th width="15%">Id</th>
+          <th>Property</th>
+          <th>Definition</th>
+          <th>Type</th>
+          <th>Source</th>
+          <th>Id</th>
           <th></th>
         </tr>
         </thead>
@@ -181,11 +181,13 @@
           <tbody>
           <tr ng-repeat="result in tsc.searchResults" ng-click="tsc.selectResult(result, result.resultId)"
               ng-class="{'selected-row':  (result.resultId == tsc.selectedResultId)}">
-            <td width="15%">{{tsc.getLabels(result.details.labels)}}</td>
-            <td width="15%">definition </td>
-            <td width="15%">{{result.details.type}} </td>
-            <td width="15%">{{result.source.fullName}}</td>
-            <td width="15%">{{result.source.id}} </td>
+
+
+            <td>{{result.details.labels[0]}}</td>
+            <td>{{result.details.definitions[0] || '-'}}</td>
+            <td >Property</td>
+            <td>{{result.source.id}}</td>
+            <td>{{tsc.getShortId(result.details.id, 60)}} </td>
             <td width="15%">
 
               <span class="fa fa-sitemap"
