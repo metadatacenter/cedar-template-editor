@@ -417,19 +417,16 @@ define([
           var property = args[0];
           var id = args[1];
 
-
           var props = $rootScope.propertiesOf($scope.form);
+
           var fieldProp;
           for (var prop in props) {
-            if (props[prop]['@id'] === id) {
-              var fieldProp = prop;
+            if ($rootScope.schemaOf(props[prop])['@id'] === id) {
+              fieldProp = prop;
               break;
             }
           }
           if (fieldProp) {
-
-            console.log('property:propertyAdded ' + property + ' '  + id + ' '  + fieldProp);
-            console.log($scope.form);
             $scope.form.properties['@context'].properties[fieldProp]['enum'][0] = property;
           }
         });

@@ -10475,7 +10475,8 @@ body.search-browse-modal a.navbar-brand {
   background: transparent;
   color: white;
 }
-.template-header .show-type .class-list {
+.template-header .show-type .class-list,
+.template-header .show-type .property-list {
   border-radius: 0;
   margin: 0;
   padding: 0;

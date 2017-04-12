@@ -2,8 +2,45 @@
 <div class="form-group " style="margin:10px 0">
   <div class="controlled-terms controlled-term-options">
     <div class="class-container">
-      <div style="background:red;width:200px;height:200px"></div>
+
+      <!-- field type table -->
+      <div class="added-field-classes">
+        <div class="class-list-container" >
+          <div class="class-list-table">
+            <div ng-if="addedFieldKeys.length == 0" class="center" style="color:#ccc">
+              Empty
+            </div>
+            <table ng-if="addedFieldKeys.length" class="table table-hover table-striped " >
+              <thead>
+              <tr>
+                <th>Property</th>
+                <th>Definition</th>
+                <th>Type</th>
+                <th>Source</th>
+                <th>Id</th>
+                <td>&nbsp;</td>
+              </tr>
+              </thead>
+              <tbody>
+              <tr >
+                <td>{{result.details.labels[0]}}</td>
+                <td>{{result.details.definitions[0] || '-'}}</td>
+                <td >Property</td>
+                <td>{{result.source.id}}</td>
+                <td>{{tsc.getShortId(result.details.id, 60)}} </td>
+                <td>
+                  <div class="class-delete" ng-click="deleteProperty(); $event.stopPropagation();">
+                    <i class="fa fa-times-circle"></i>
+                  </div>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
     </div>
+
   </div>
 </div>
 
