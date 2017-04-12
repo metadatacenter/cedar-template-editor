@@ -110,11 +110,13 @@ define([
                 } else if (angular.isObject(valueElement['@value'])) {
                   if ($rootScope.isEmpty(valueElement['@value'])) {
                     allRequiredFieldsAreFilledIn = false;
-                  } else if (DataManipulationService.getFieldSchema($scope.field)._ui.dateType == "date-range") {
-                    if (!valueElement['@value'].start || !valueElement['@value'].end) {
-                      allRequiredFieldsAreFilledIn = false;
-                    }
-                  } else {
+                  }
+                  // else if (DataManipulationService.getFieldSchema($scope.field)._ui.dateType == "date-range") {
+                  //   if (!valueElement['@value'].start || !valueElement['@value'].end) {
+                  //     allRequiredFieldsAreFilledIn = false;
+                  //   }
+                  // }
+                  else {
                     // Require at least one checkbox is checked.
                     var hasValue = false;
                     angular.forEach(valueElement['@value'], function (value, key) {
@@ -144,11 +146,13 @@ define([
             } else if (angular.isObject($scope.model['@value'])) {
               if ($rootScope.isEmpty($scope.model['@value'])) {
                 allRequiredFieldsAreFilledIn = false;
-              } else if (DataManipulationService.getFieldSchema($scope.field)._ui.dateType == "date-range") {
-                if (!$scope.model['@value'].start || !$scope.model['@value'].end) {
-                  allRequiredFieldsAreFilledIn = false;
-                }
-              } else {
+              }
+              // else if (DataManipulationService.getFieldSchema($scope.field)._ui.dateType == "date-range") {
+              //   if (!$scope.model['@value'].start || !$scope.model['@value'].end) {
+              //     allRequiredFieldsAreFilledIn = false;
+              //   }
+              // }
+              else {
                 // Require at least one checkbox is checked.
                 var hasValue = false;
                 angular.forEach($scope.model['@value'], function (value, key) {
@@ -712,12 +716,12 @@ define([
 
       // Load values when opening an instance
       if ($scope.model) {
-        var fieldValue = DataManipulationService.getFieldValue(field);
+        var fieldValue = DataManipulationService.getValueLocation(field);
         $scope.modelValueRecommendation = {valueInfo: {'value': $scope.model[fieldValue]}}
       }
 
       $scope.initializeValueRecommendationField = function () {
-        var fieldValue = DataManipulationService.getFieldValue(field);
+        var fieldValue = DataManipulationService.getValueLocation(field);
         $scope.modelValueRecommendation = {};
         if ($scope.model) {
           if ($scope.model['_valueLabel']) {
@@ -735,7 +739,7 @@ define([
       };
 
       $scope.updateModelWhenChangeSelection = function (modelvr) {
-        var fieldValue = DataManipulationService.getFieldValue(field);
+        var fieldValue = DataManipulationService.getValueLocation(field);
         // This variable will be used at textfield.html
         $scope.modelValueRecommendation = modelvr;
         if ($rootScope.isArray($scope.model)) {
@@ -767,7 +771,7 @@ define([
       };
 
       $scope.updateModelWhenRefresh = function (select, modelvr) {
-        var fieldValue = DataManipulationService.getFieldValue(field);
+        var fieldValue = DataManipulationService.getValueLocation(field);
         if (!$scope.isFirstRefresh) {
           // Check that there are no controlled terms selected
           if (select.selected.valueUri == null) {
@@ -804,7 +808,7 @@ define([
       };
 
       $scope.clearSelection = function ($event, select) {
-        var fieldValue = DataManipulationService.getFieldValue(field);
+        var fieldValue = DataManipulationService.getValueLocation(field);
         $event.stopPropagation();
         $scope.modelValueRecommendation = {
           valueInfo: {'value': null, 'valueUri': null},
@@ -1052,14 +1056,14 @@ define([
             ;
       };
 
-      $scope.initDateSingle = function () {
-        if ($rootScope.schemaOf($scope.field)._ui.inputType == 'date') {
-          $rootScope.schemaOf($scope.field)._ui.dateType = 'single-date';
-        }
-        else {
-          delete $rootScope.schemaOf($scope.field)._ui.dateType;
-        }
-      };
+      // $scope.initDateSingle = function () {
+      //   if ($rootScope.schemaOf($scope.field)._ui.inputType == 'date') {
+      //     $rootScope.schemaOf($scope.field)._ui.dateType = 'single-date';
+      //   }
+      //   else {
+      //     delete $rootScope.schemaOf($scope.field)._ui.dateType;
+      //   }
+      // };
 
       /**
        * only have one of these three divs open at a time

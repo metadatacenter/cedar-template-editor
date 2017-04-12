@@ -225,6 +225,7 @@
     }
   },
   "required": [
+    "@context",
     "@id",
     "schema:isBasedOn",
     "schema:name",

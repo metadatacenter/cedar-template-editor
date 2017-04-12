@@ -11,10 +11,10 @@
                 Empty
               </div>
               <table ng-if="addedFieldKeys.length" class="table table-hover table-striped " >
-                <thead ng-if="isTableView()">
+                <thead>
                 <tr>
                   <th>Name</th>
-                  <th  width="250px">Description</th>
+                  <th  width="250px" >Description</th>
                   <th>Source</th>
                   <th>Identifier</th>
                   <th>&nbsp;</th>
@@ -25,7 +25,7 @@
                   <td>
                     {{getPrefLabel(key)}}
                   </td>
-                  <td ng-if="isTableView()" style="font-size:0.9em">
+                  <td  style="font-size:0.9em">
                     {{getShortText(getClassDescription(key), 120, '...', '-')}}
                   </td>
                   <td>

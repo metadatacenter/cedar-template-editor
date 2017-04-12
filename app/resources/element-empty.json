@@ -80,7 +80,7 @@
       "format": "uri"
     }
   },
-  "required": [],
+  "required": [ "@context" ],
   "pav:createdOn": null,
   "pav:createdBy": null,
   "pav:lastUpdatedOn": null,

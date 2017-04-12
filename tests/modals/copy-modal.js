@@ -17,8 +17,7 @@ var CopyModal = function () {
     browser.wait(EC.elementToBeClickable(folder));
     folder.click();
 
-    browser.wait(EC.elementToBeClickable(copyButton));
-    copyButton.click();
+    this.clickCopyButton();
   };
 
 
@@ -41,6 +40,11 @@ var CopyModal = function () {
     browser.wait(EC.elementToBeClickable(folder));
     folder.click();
 
+    this.clickCopyButton();
+  };
+
+
+  this.clickCopyButton = function () {
     browser.wait(EC.elementToBeClickable(copyButton));
     copyButton.click();
   };
