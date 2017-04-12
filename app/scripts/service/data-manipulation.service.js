@@ -600,9 +600,22 @@ define([
       return UrlService.schemaProperty(fieldName);
     };
 
+    // don't modify the property unless it contains the Cedar schema base url
+    // a user might have defined a specific property for this field
+    service.getPropertyOf = function (fieldName, property) {
+      if (property.indexOf(UrlService.schemaBase()) > -1) {
+        return UrlService.schemaProperty(fieldName);
+      } else {
+        return property;
+      }
+
+    };
+
     service.generateFieldContextProperties = function (fieldName) {
+
       var c = {};
       c.enum = new Array(service.getEnumOf(fieldName));
+      console.log('generateFieldContextProperties ' + fieldName + ' ' + c.enum);
       return c;
     };
 

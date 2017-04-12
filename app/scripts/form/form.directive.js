@@ -121,6 +121,7 @@ define([
         };
 
         $scope.renameChildKey = function (child, newKey) {
+          console.log('renameChildKey ' + newKey);
           if (!child) {
             return;
           }
@@ -146,7 +147,15 @@ define([
                   DataManipulationService.renameKeyOfObject(p["@context"].properties, key, newKey);
 
                   if (p["@context"].properties[newKey] && p["@context"].properties[newKey].enum) {
-                    p["@context"].properties[newKey].enum[0] = DataManipulationService.getEnumOf(newKey);
+
+                    console.log(p["@context"].properties[newKey].enum[0]);
+
+
+
+                    //p["@context"].properties[newKey].enum[0] = DataManipulationService.getEnumOf(newKey);
+                    p["@context"].properties[newKey].enum[0] = DataManipulationService.getPropertyOf(newKey, p["@context"].properties[newKey].enum[0]);
+
+                    console.log(p["@context"].properties[newKey].enum[0]);
                   }
                 }
 

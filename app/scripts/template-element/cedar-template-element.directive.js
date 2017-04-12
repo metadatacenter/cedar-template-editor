@@ -462,9 +462,14 @@ define([
       };
 
       scope.getPropertyModalId = function () {
-        var fieldId = scope.element['@id'] || scope.element.items['@id'];
-        var id = fieldId.substring(fieldId.lastIndexOf('/') + 1);
-        return "control-options-" + id + "-" + 'property';
+        var result = '';
+        var id = '';
+        var fieldId = DataManipulationService.getId(scope.element);
+        if (fieldId) {
+          id = fieldId.substring(fieldId.lastIndexOf('/') + 1);
+        }
+        result = "control-options-" + id + "-" + 'property';
+        return result;
       };
 
       scope.showModal = function (id) {

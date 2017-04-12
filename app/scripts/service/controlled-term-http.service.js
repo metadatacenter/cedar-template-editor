@@ -94,6 +94,10 @@ define([
       return HttpBuilderService.get(UrlService.searchClasses(query, sources, size));
     };
 
+    service.searchProperties = function (query, sources, size) {
+      return HttpBuilderService.get(UrlService.searchProperties(query, sources, size));
+    };
+
     service.searchClassesAndValues = function (query, sources, size) {
       return HttpBuilderService.get(UrlService.searchClassesAndValues(query, sources, size));
     };
