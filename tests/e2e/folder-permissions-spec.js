@@ -11,7 +11,7 @@ var SweetAlertModal = require('../modals/sweet-alert-modal.js');
 var _ = require('../libs/lodash.min.js');
 
 // TODO this is similar to resource-permissions so turn turn this off to save time
-xdescribe('folder-permissions', function () {
+describe('folder-permissions', function () {
   var EC = protractor.ExpectedConditions;
   var workspacePage = WorkspacePage;
   var toastyModal = ToastyModal;
@@ -85,7 +85,6 @@ xdescribe('folder-permissions', function () {
       resources.push(createResource(sharedFolderTitle, 'folder', testConfig.testUser1, testConfig.testPassword1));
       resources.push(createResource(folderTitle, 'folder', testConfig.testUser2, testConfig.testPassword2));
     });
-
 
     it("should move a writable folder not owned by current user to a writable folder", function () {
       // login as user 2

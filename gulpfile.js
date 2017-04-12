@@ -162,7 +162,7 @@ gulp.task('e2e', ['test-env'], function () {
     './tests/e2e/update-permissions-spec.js'
   ])
       .pipe(protractor({
-        configFile: "protractor-sharding.config.js"
+        configFile: "protractor-sharded.config.js"
       }))
       .on('error', function (e) {
         throw e
@@ -179,7 +179,7 @@ gulp.task('test-workspace', ['test-env'], function () {
     './tests/e2e/update-permissions-spec.js'
   ])
       .pipe(protractor({
-        configFile: "protractor.config.js"
+        configFile: "protractor-sequential.config.js"
       }))
       .on('error', function (e) {
         throw e
@@ -194,7 +194,7 @@ gulp.task('test-permissions', ['test-env'], function () {
     './tests/e2e/resource-permissions-spec.js'
   ])
       .pipe(protractor({
-        configFile: "protractor.config.js"
+        configFile: "protractor-sequential.config.js"
       }))
       .on('error', function (e) {
         throw e
@@ -208,7 +208,7 @@ gulp.task('test-form', ['test-env'], function () {
     './tests/e2e/template-creator-spec.js'
   ])
       .pipe(protractor({
-        configFile: "protractor.config.js"
+        configFile: "protractor-sequential.config.js"
       }))
       .on('error', function (e) {
         throw e

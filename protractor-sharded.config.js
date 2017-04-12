@@ -5,12 +5,11 @@ exports.config = {
   specs          : ['tests/e2e/**/*.js'],
   rootElement    : 'html',
   directConnect  : true,
-  troubleshoot   : true,
 
   capabilities: {
-    browserName   : 'chrome',
-    shardTestFiles: false,
-    maxInstances  : 1
+    browserName: 'chrome',
+    shardTestFiles:true,
+    maxInstances:10
   },
 
   allScriptsTimeout: 500000,
