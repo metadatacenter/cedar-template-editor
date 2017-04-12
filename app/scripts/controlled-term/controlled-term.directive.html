@@ -8,21 +8,37 @@
         reset-callback="ctdc.startOver"
         current-ontology="ctdc.currentOntology"
         selected-class="ctdc.selectedClass"
+        selected-property="ctdc.selectedProperty"
         is-loading-class-details="ctdc.isLoadingClassDetails"
         is-creating-mappings="false"
         is-creating-vs="false"
         tree-visible="ctdc.treeVisible"
-        modal-id="ctdc.modalId">
+        modal-id="ctdc.modalId"
+        search-for="properties">
     </controlled-term-search>
 
+
+    <!--<div class="class-actions">-->
+      <!--<div class="class-action" ng-if="ctdc.selectedProperty.prefLabel">-->
+        <!--<div class="action-msg">-->
+          <!--<span>Click OK to select the property <span class="highlighted">'{{ctdc.selectedProperty.prefLabel}}'</span> from {{ctdc.currentOntology.info.id}}</span>-->
+        <!--</div>-->
+        <!--<div>-->
+          <!--<button type="button" class="std-button btn btn-add-term"-->
+              <!--ng-click="ctdc.addPropertyUri(ctdc.selectedProperty, ctdc.currentOntology); ctdc.startOver()">OK-->
+          <!--</button>-->
+        <!--</div>-->
+      <!--</div>-->
+    <!--</div>-->
+
     <div class="class-actions">
-      <div class="class-action" ng-if="ctdc.selectedClass.prefLabel">
+      <div class="class-action" ng-if="ctdc.selectedProperty.prefLabel">
         <div class="action-msg">
-          <span>Click OK to select the property <span class="highlighted">'{{ctdc.selectedClass.prefLabel}}'</span> from {{ctdc.currentOntology.info.id}}</span>
+          <span>Click OK to select the property <span class="highlighted">'{{ctdc.selectedProperty.prefLabel}}'</span> from {{ctdc.currentOntology.info.id}}</span>
         </div>
         <div>
           <button type="button" class="std-button btn btn-add-term"
-              ng-click="ctdc.addProperty(ctdc.selectedClass, ctdc.currentOntology); ctdc.startOver()">OK
+              ng-click="ctdc.addProperty(ctdc.selectedProperty.id); ctdc.startOver()">OK
           </button>
         </div>
       </div>
@@ -37,11 +53,13 @@
         reset-callback="ctdc.startOver"
         current-ontology="ctdc.currentOntology"
         selected-class="ctdc.selectedClass"
+        selected-property="ctdc.selectedProperty"
         is-loading-class-details="ctdc.isLoadingClassDetails"
         is-creating-mappings="false"
         is-creating-vs="false"
         tree-visible="ctdc.treeVisible"
         modal-id="ctdc.modalId"
+        search-for="classes"
         >
     </controlled-term-search>
 
@@ -71,11 +89,13 @@
         reset-callback="ctdc.startOver"
         current-ontology="ctdc.currentOntology"
         selected-class="ctdc.selectedClass"
+        selected-property="ctdc.selectedProperty"
         is-loading-class-details="ctdc.isLoadingClassDetails"
         is-creating-mappings="false"
         is-creating-vs="false"
         tree-visible="ctdc.treeVisible"
         modal-id="ctdc.modalId"
+        search-for="classes"
         >
     </controlled-term-search>
 

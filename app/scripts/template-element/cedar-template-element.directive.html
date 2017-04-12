@@ -20,7 +20,7 @@
         <div  ng-if="isSelectable()" class="sortable-handler " style="padding-top:5px; display:inline-block"><span class="sortable-icon"></span></div>
 
         <!-- allow elements to have properties -->
-        <button  type="button" class="show-type" style="background:transparent;color:#5795ba" ng-click="showModal(getPropertyModalId());$root.finalTitle=element._ui.title" uib-tooltip="Add property">
+        <button ng-if="!isRootElement()" type="button" class="show-type" style="background:transparent;color:#5795ba" ng-click="showModal(getPropertyModalId());$root.finalTitle=element._ui.title" uib-tooltip="Add property">
           <i class="cedar-svg-controll-term collapsed" style="padding-bottom:10px"></i>
         </button>
 

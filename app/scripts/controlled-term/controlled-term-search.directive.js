@@ -16,13 +16,15 @@ define([
         fieldName            : '=',
         searchMode           : '=', // Search modes: field, values
         selectedClass        : '=',
+        selectedProperty     : '=',
         currentOntology      : '=',
         resetCallback        : '=?',
         isLoadingClassDetails: '=',
         isCreatingMappings   : '=',
         isCreatingVs         : '=',
         treeVisible          : '=',
-        modalId              : '='
+        modalId              : '=',
+        searchFor            : '@'
       },
       controller      : controlledTermSearchDirectiveController,
       controllerAs    : 'tsc',
@@ -45,6 +47,7 @@ define([
                                                      controlledTermDataService) {
       /* Variable declarations */
       var vm = this;
+
       vm.action = 'search'; // Possible actions: search, create
       vm.allOntologies = [];
       vm.isCreatingValue = true;
@@ -55,7 +58,7 @@ define([
       vm.ontologySearchRegexp = null;
       vm.resultsFound = null;
       vm.searchFinished = null;
-      vm.searchScope = 'classes'; // Default search scope
+      vm.searchScope = vm.searchFor;
       vm.searchOptionsVisible = false;
       vm.selectedResultId = null;
       vm.selectedOntologies = [];
@@ -97,6 +100,8 @@ define([
       vm.switchToCreateValue = switchToCreateValue;
       vm.switchToCreateValueSet = switchToCreateValueSet;
       vm.endSearch = endSearch;
+      vm.getLabels = getLabels;
+
 
       vm.propertyUri = '';
       vm.addPropertyUri = addPropertyUri;
@@ -111,16 +116,18 @@ define([
        */
 
       function search(event) {
+        console.log('search ' + isPropertiesMode() + " " + isSearchingProperties() + ' ' +vm.searchFor +' ' + vm.searchScope);
         reset(true, true, true, true, true);
         if (isEmptySearchQuery() == false) {
           vm.showEmptyQueryMsg = false;
-          var searchProperties = true;
+          var searchProperties = false;
           var searchClasses = true;
           var searchValues = true;
           var searchValueSets = false;
           if (isPropertiesMode()) {
+
             searchProperties = true;
-            searchClasses = true;
+            searchClasses = false;
             searchValues = false;
             searchValueSets = false;
           }
@@ -154,12 +161,15 @@ define([
             sources = selectedOntologiesIds.join(",");
           }
           bioportalSearch(vm.searchQuery, sources, maxResults, searchClasses, searchValues,
-              searchValueSets).then(function (response) {
+              searchValueSets,searchProperties).then(function (response) {
             if (response.collection && response.collection.length > 0) {
               var tArry = [], i;
               for (var i = 0; i < response.collection.length; i += 1) {
                 var source = null;
-                if (response.collection[i].type == "OntologyClass") {
+                if (response.collection[i].type == "ObjectProperty") {
+                  source = controlledTermDataService.getOntologyByLdId(response.collection[i].source);
+                }
+                 else if (response.collection[i].type == "OntologyClass") {
                   source = controlledTermDataService.getOntologyByLdId(response.collection[i].source);
                 }
                 else if (response.collection[i].type == "Value" || response.collection[i].type == "ValueSet") {
@@ -202,7 +212,20 @@ define([
         vm.searchFinished = true;
       }
 
-      function bioportalSearch(query, sources, maxResults, searchClasses, searchValues, searchValueSets) {
+      function getLabels(arr) {
+        var result = '';
+        for (var i = 0;i<arr.length;i++) {
+          result += (arr[i] + ', ');
+        }
+        return result.trim().replace(/,\s*$/, "");
+      }
+
+      function bioportalSearch(query, sources, maxResults, searchClasses, searchValues, searchValueSets, searchProperties) {
+        if ((searchProperties)) {
+          return controlledTermDataService.searchProperties(query, sources, maxResults).then(function (response) {
+            return response;
+          });
+        }
         if ((searchClasses) && (!searchValues) && (!searchValueSets)) {
           return controlledTermDataService.searchClasses(query, sources, maxResults).then(function (response) {
             return response;
@@ -229,9 +252,8 @@ define([
         reset(true, true, true, true, true);
         if (isSearchingOntologies()) {
           loadOntologies(vm.searchQuery);
-          //searchRegexp(vm.searchQuery);
         }
-        else if (isSearchingClasses() || isSearchingValueSets()) {
+        else if (isSearchingProperties() || isSearchingClasses() || isSearchingValueSets()) {
           search();
         }
       }
@@ -241,7 +263,8 @@ define([
        */
       function reset(keepSearchScope, keepCreationMode, keepSearchQuery, keepOntologies, keepSelectedOntologies) {
         if (!keepSearchScope) {
-          vm.searchScope = 'classes'; // Default search scope
+
+          vm.searchScope = vm.searchFor;
           vm.searchOptionsVisible = false;
         }
         if (!keepCreationMode) {
@@ -352,24 +375,36 @@ define([
         return vm.ontologiesFound;
       }
 
+
       function selectResult(selection, resultId) {
 
         // Set the basic fields for the selected class and ontology in order to show the info of the selected class while the rest of details are being loaded
+        vm.selectedProperty = {};
         vm.selectedClass = {};
         vm.currentOntology = {};
         vm.currentOntology.info = {};
-        vm.selectedClass.prefLabel = selection.prefLabel;
-        vm.currentOntology.info.id = selection.source.id;
-        vm.selectedResultId = resultId;
-        if (selection.details.type == 'OntologyClass') {
-          controlledTermService.loadTreeOfClass(selection.details, vm);
+
+        if (vm.isSearchingClasses()) {
+          vm.selectedClass.prefLabel = selection.prefLabel;
+          vm.currentOntology.info.id = selection.source.id;
+          vm.selectedResultId = resultId;
+
+          if (selection.details.type == 'OntologyClass') {
+            controlledTermService.loadTreeOfClass(selection.details, vm);
+          }
+          else if (selection.details.type == 'Value') {
+            controlledTermService.loadTreeOfValue(selection.details, vm);
+          }
+          else if (selection.details.type == 'ValueSet') {
+            controlledTermService.loadTreeOfValueSet(selection.details, vm);
+          }
+        } else if (vm.isSearchingProperties()) {
+          vm.selectedProperty.id = selection.details.id;
+          vm.selectedProperty.prefLabel = vm.getLabels(selection.details.labels);
+          vm.currentOntology.info.id = selection.source.id;
+          vm.selectedResultId = resultId;
         }
-        else if (selection.details.type == 'Value') {
-          controlledTermService.loadTreeOfValue(selection.details, vm);
-        }
-        else if (selection.details.type == 'ValueSet') {
-          controlledTermService.loadTreeOfValueSet(selection.details, vm);
-        }
+
       }
 
       function selectOntology(selection) {
@@ -416,16 +451,21 @@ define([
       }
 
       function switchToCreate(mode) {
+
         reset(false, false, false, false, false);
 
         vm.action = 'create';
         vm.searchScope = mode;
+
       }
 
-      function switchToSearch() {
+      function switchToSearch(mode) {
         reset(false, false, false, false, false);
         vm.action = 'search';
+        vm.searchScope = mode;
       }
+
+
 
 
       function switchToCreateValue() {
@@ -479,7 +519,7 @@ define([
             return vm.searchQuery;
           },
           function () {
-            if (isSearchingClasses() || isSearchingValueSets()) {
+            if (isSearchingProperties() || isSearchingClasses() || isSearchingValueSets()) {
               search();
             }
             else if (isSearchingOntologies()) {

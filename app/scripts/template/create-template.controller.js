@@ -191,6 +191,8 @@ define([
 
         // Stores the template into the database
         $scope.doSaveTemplate = function () {
+          console.log($scope.form);
+
           this.disableSaveButton();
           var owner = this;
 
@@ -231,6 +233,7 @@ define([
                     $location.path(FrontendUrlService.getTemplateEdit(newId));
 
                     $scope.$broadcast('form:clean');
+                    console.log($scope.form);
                   },
                   function (err) {
                     UIMessageService.showBackendError('SERVER.TEMPLATE.create.error', err);
@@ -410,10 +413,12 @@ define([
 
         // update the property for a field
         $scope.$on("property:propertyAdded", function (event, args) {
-          console.log('property:propertyAdded');
+
           var property = args[0];
           var id = args[1];
-          var props = $scope.form.properties;
+
+
+          var props = $rootScope.propertiesOf($scope.form);
           var fieldProp;
           for (var prop in props) {
             if (props[prop]['@id'] === id) {
@@ -422,6 +427,9 @@ define([
             }
           }
           if (fieldProp) {
+
+            console.log('property:propertyAdded ' + property + ' '  + id + ' '  + fieldProp);
+            console.log($scope.form);
             $scope.form.properties['@context'].properties[fieldProp]['enum'][0] = property;
           }
         });

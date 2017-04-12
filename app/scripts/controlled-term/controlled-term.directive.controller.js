@@ -30,6 +30,7 @@ define([
 
     vm.addBranchToValueConstraint = addBranchToValueConstraint;
     vm.addClass = addClass;
+    vm.addProperty = addProperty;
     vm.addedFieldItems = [];
     vm.addOntologyClassesToValueConstraint = addOntologyClassesToValueConstraint;
     vm.addOntologyClassToValueConstraint = addOntologyClassToValueConstraint;
@@ -85,6 +86,20 @@ define([
      * Scope functions.
      */
 
+     function addProperty(property) {
+
+
+      if (vm.filterSelection === 'properties') {
+
+        var id = DataManipulationService.getId(vm.field);
+        console.log('addProperty ' + property + ' '  + id);
+
+        // tell the form to update the property for this field
+        $rootScope.$broadcast('property:propertyAdded', [property, id]);
+      }
+
+    };
+
     function addBranchToValueConstraint() {
       var alreadyAdded, constraint, i, j;
       for (i = 0; i < vm.stagedBranchesValueConstraints.length; i++) {
@@ -117,7 +132,11 @@ define([
     }
 
 
+
+
     function addClass(selection, ontology) {
+      console.log('addClass');
+      console.log(selection);
       //console.log('addClass');
       //console.log(selection);
       //console.log(ontology);
@@ -157,6 +176,8 @@ define([
          */
         var properties = $rootScope.propertiesOf(vm.field);
         var selfUrl = controlledTermService.getSelfUrl(selection);
+        //var selfUrl = selection['@id'];
+        console.log(selfUrl);
         if (angular.isArray(properties['@type'].oneOf[0].enum)) {
           properties['@type'].oneOf[0].enum.push(selfUrl);
           properties['@type'].oneOf[1].items.enum.push(selfUrl);
@@ -389,6 +410,8 @@ define([
       vm.stageValueConstraintAction = null;
       vm.selectedClass = null;
       vm.classDetails = null;
+      vm.selectedProperty = null;
+      vm.propertyDetails = null;
 
       //Init field/value tooltip
       setTimeout(function () {
@@ -530,11 +553,15 @@ define([
 
             // tell the form to update the property for this field
             var property = args[0];
-            var id = vm.field['@id'];
+            var id = DataManipulationService.getId(vm.field);
+
+            console.log('addProperty ' + property + ' '  + id);
             $rootScope.$broadcast('property:propertyAdded', [property, id]);
           }
         }
     );
+
+
 
     $scope.$on(
         'cedar.templateEditor.controlledTerm.provisionalClassController.provisionalClassSavedAsOntologyValueConstraint',
@@ -663,6 +690,26 @@ define([
               vm.stageValueConstraintAction = 'add_entire_value_set';
             }
           }
+        });
+
+    // If the selected property changes, the constraints need to be updated
+    $scope.$watch(function () {
+          return vm.selectedProperty;
+        },
+        function (value) {
+          //if (!value) {
+          //  // 'add class' selected by default
+          //  vm.stageValueConstraintAction = 'add_class';
+          //}
+          //else {
+          //  if (value.type == "OntologyClass" || value.type == "Value") {
+          //    vm.stageValueConstraintAction = 'add_class';
+          //    vm.stageOntologyClassValueConstraint(value);
+          //  }
+          //  else if (value.type == "ValueSet") {
+          //    vm.stageValueConstraintAction = 'add_entire_value_set';
+          //  }
+          //}
         });
 
     // If the selected ontology changes, the constraints need to be updated
