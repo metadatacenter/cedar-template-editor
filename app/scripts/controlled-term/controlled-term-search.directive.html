@@ -8,8 +8,7 @@
 <span ng-show="tsc.isSearching() && tsc.isFieldValuesMode() && !tsc.isCreatingMappings && !tsc.isCreatingVs"
     class="creation-container">Find terms in BioPortal or <button type="button" class="btn btn-create-term"
     ng-click="tsc.switchToCreate('classes')">Create New Terms
-</button> to constrain the values of the <span
-    class="highlighted">'{{tsc.fieldName}}'</span> field</span>
+</button> to constrain the values of the <span ng-if="tsc.fieldName.trim().length > 0" class="highlighted">'{{tsc.fieldName}}'</span> field</span>
 
 <!-- Property types -->
 <div ng-if="tsc.isPropertiesMode()">
@@ -44,8 +43,6 @@
   </div>
 
 </div>
-
-
 
 <!-- searching body -->
 <div ng-if="tsc.isSearching()" class="form-group floating-label-wrapper clearfix">
