@@ -242,18 +242,18 @@ function readAllEnvVarsOrFail() {
 
 // Get environment variables
 var envConfig = {
-  'CEDAR_PROFILE'            : null,
-  'CEDAR_HOST'               : null,
-  'CEDAR_ANALYTICS_KEY'      : null,
-  'CEDAR_TEST_USER1'         : null,
-  'CEDAR_TEST_USER1_NAME'    : null,
-  'CEDAR_TEST_USER1_PASSWORD': null,
-  'CEDAR_TEST_USER2'         : null,
-  'CEDAR_TEST_USER2_NAME'    : null,
-  'CEDAR_TEST_USER2_PASSWORD': null,
-  'CEDAR_EVERYBODY_GROUP'    : null,
-  'CEDAR_VERSION'            : null,
-  'CEDAR_VERSION_MODIFIER'   : null
+  'CEDAR_PROFILE'             : null,
+  'CEDAR_HOST'                : null,
+  'CEDAR_ANALYTICS_KEY'       : null,
+  'CEDAR_TEST_USER1_EMAIL'    : null,
+  'CEDAR_TEST_USER1_NAME'     : null,
+  'CEDAR_TEST_USER1_PASSWORD' : null,
+  'CEDAR_TEST_USER2_EMAIL'    : null,
+  'CEDAR_TEST_USER2_NAME'     : null,
+  'CEDAR_TEST_USER2_PASSWORD' : null,
+  'CEDAR_EVERYBODY_GROUP_NAME': null,
+  'CEDAR_VERSION'             : null,
+  'CEDAR_VERSION_MODIFIER'    : null
 };
 console.log();
 console.log();
@@ -264,13 +264,13 @@ readAllEnvVarsOrFail();
 var cedarProfile = envConfig['CEDAR_PROFILE'];
 var cedarHost = envConfig['CEDAR_HOST'];
 var cedarAnalyticsKey = envConfig['CEDAR_ANALYTICS_KEY'];
-var cedarTestUser1 = envConfig['CEDAR_TEST_USER1'];
+var cedarTestUser1 = envConfig['CEDAR_TEST_USER1_EMAIL'];
 var cedarTestUserName1 = envConfig['CEDAR_TEST_USER1_NAME'];
 var cedarTestPassword1 = envConfig['CEDAR_TEST_USER1_PASSWORD'];
-var cedarTestUser2 = envConfig['CEDAR_TEST_USER2'];
+var cedarTestUser2 = envConfig['CEDAR_TEST_USER2_EMAIL'];
 var cedarTestUserName2 = envConfig['CEDAR_TEST_USER2_NAME'];
 var cedarTestPassword2 = envConfig['CEDAR_TEST_USER2_PASSWORD'];
-var cedarEverybodyGroup = envConfig['CEDAR_EVERYBODY_GROUP'];
+var cedarEverybodyGroup = envConfig['CEDAR_EVERYBODY_GROUP_NAME'];
 var cedarVersion = envConfig['CEDAR_VERSION'];
 var cedarVersionModifier = envConfig['CEDAR_VERSION_MODIFIER'];
 
