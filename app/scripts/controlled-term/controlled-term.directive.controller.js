@@ -135,11 +135,6 @@ define([
 
 
     function addClass(selection, ontology) {
-      console.log('addClass');
-      console.log(selection);
-      //console.log('addClass');
-      //console.log(selection);
-      //console.log(ontology);
 
       // has this selection been added yet?
       var alreadyAdded = false;
@@ -177,7 +172,6 @@ define([
         var properties = $rootScope.propertiesOf(vm.field);
         var selfUrl = controlledTermService.getSelfUrl(selection);
         //var selfUrl = selection['@id'];
-        console.log(selfUrl);
         if (angular.isArray(properties['@type'].oneOf[0].enum)) {
           properties['@type'].oneOf[0].enum.push(selfUrl);
           properties['@type'].oneOf[1].items.enum.push(selfUrl);

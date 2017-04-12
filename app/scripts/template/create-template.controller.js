@@ -411,6 +411,7 @@ define([
         });
 
 
+
         // update the property for a field
         $scope.$on("property:propertyAdded", function (event, args) {
 

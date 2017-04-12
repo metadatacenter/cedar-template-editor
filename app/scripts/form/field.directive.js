@@ -1024,8 +1024,8 @@ define([
       //TODO this event resets modal state and closes modal
       $scope.$on("field:controlledTermAdded", function () {
 
-        jQuery("#" + $scope.getModalId('field')).modal('hide');
-        jQuery("#" + $scope.getModalId('value')).modal('hide');
+        jQuery("#" + $scope.getModalId(true)).modal('hide');
+        jQuery("#" + $scope.getModalId(false)).modal('hide');
 
         // build the added fields map in this case
         $scope.setAddedFieldMap();
