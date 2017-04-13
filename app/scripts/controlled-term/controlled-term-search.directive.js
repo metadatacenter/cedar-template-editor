@@ -116,7 +116,6 @@ define([
        */
 
       function search(event) {
-        console.log('search ' + isPropertiesMode() + " " + isSearchingProperties() + ' ' +vm.searchFor +' ' + vm.searchScope);
         reset(true, true, true, true, true);
         if (isEmptySearchQuery() == false) {
           vm.showEmptyQueryMsg = false;
@@ -166,13 +165,10 @@ define([
               var tArry = [], i;
               for (var i = 0; i < response.collection.length; i += 1) {
                 var source = null;
-                if (response.collection[i].type == "ObjectProperty") {
+                if (isTypeClass(response.collection[i].type) || isTypeProperty(response.collection[i].type)) {
                   source = controlledTermDataService.getOntologyByLdId(response.collection[i].source);
                 }
-                 else if (response.collection[i].type == "OntologyClass") {
-                  source = controlledTermDataService.getOntologyByLdId(response.collection[i].source);
-                }
-                else if (response.collection[i].type == "Value" || response.collection[i].type == "ValueSet") {
+                else if (isTypeValue(response.collection[i].type) || isTypeValueSet(response.collection[i].type)) {
                   source = controlledTermDataService.getVsCollectionByLdId(response.collection[i].source);
                 }
                 // Ignore results for which the ontology or value set collection was not found in the cache
@@ -377,7 +373,6 @@ define([
 
 
       function selectResult(selection, resultId) {
-
         // Set the basic fields for the selected class and ontology in order to show the info of the selected class while the rest of details are being loaded
         vm.selectedProperty = {};
         vm.selectedClass = {};
@@ -400,7 +395,7 @@ define([
           }
         } else if (vm.isSearchingProperties()) {
           vm.selectedProperty.id = selection.details.id;
-          vm.selectedProperty.prefLabel = vm.getLabels(selection.details.labels);
+          vm.selectedProperty.prefLabel = selection.prefLabel;
           vm.currentOntology.info.id = selection.source.id;
           vm.selectedResultId = resultId;
         }
@@ -428,13 +423,11 @@ define([
         if (!subtree) {
           return false;
         }
-
         var spl = subtree["@id"];
         var st;
         if (vm.selectedClass && vm.selectedClass["@id"]) {
           st = vm.selectedClass["@id"];
         }
-
         return spl == st;
       }
 
@@ -464,9 +457,6 @@ define([
         vm.action = 'search';
         vm.searchScope = mode;
       }
-
-
-
 
       function switchToCreateValue() {
         vm.isCreatingValue = true;
@@ -537,6 +527,26 @@ define([
         return StringUtilsService.getShortId(uri, maxLength);
       }
 
+      function isTypeClass(type) {
+        if (type == "OntologyClass") return true;
+        else return false;
+      }
+
+      function isTypeValueSet(type) {
+        if (type == "ValueSet") return true;
+        else return false;
+      }
+
+      function isTypeValue(type) {
+        if (type == "Value") return true;
+        else return false;
+      }
+
+      function isTypeProperty(type) {
+        if ((type == "ObjectProperty") || (type == "DatatypeProperty") || (type == "AnnotationProperty")) return true;
+        else return false;
+      }
+
       function getTypeForUi(type) {
         if (type == 'OntologyClass') {
           return ('Class');
@@ -549,6 +559,15 @@ define([
         }
         else if (type == 'Value') {
           return ('Value');
+        }
+        else if (type == 'DatatypeProperty') {
+          return('Datatype Property');
+        }
+        else if (type == 'ObjectProperty') {
+          return('Object Property');
+        }
+        else if (type == 'AnnotationProperty') {
+          return('Annotation Property');
         }
       }
 

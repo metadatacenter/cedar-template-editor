@@ -16,7 +16,8 @@
   <!-- searching header only -->
   <div ng-if="tsc.isSearching()">
     <span ng-if="!tsc.isCreatingMappings && !tsc.isCreatingVs">
-      Find a property in BioPortal or <button type="button" class="btn btn-create-term" ng-click="tsc.switchToCreate('properties')">Enter Property URI</button>
+      Find a property in BioPortal or <button type="button" class="btn btn-create-term"
+        ng-click="tsc.switchToCreate('properties')">Enter Property URI</button>
     </span>
   </div>
 
@@ -81,11 +82,11 @@
         <div class="search-options">
           <div class="radio radio-primary radio-controlled-terms-search">
             <div ng-if="tsc.isPropertiesMode()" class="radio-option">
-              <input  id="search-scope-0" class="radio-option" type="radio" ng-model="tsc.searchScope" value="properties"
+              <input id="search-scope-0" class="radio-option" type="radio" ng-model="tsc.searchScope" value="properties"
                   ng-click="$event.stopPropagation()" ng-change="tsc.changeSearchScope()"/>
               <label>Search for a property in BioPortal </label></div>
             <div ng-if="tsc.isClassesMode()" class="radio-option">
-              <input  id="search-scope-1" class="radio-option" type="radio" ng-model="tsc.searchScope" value="classes"
+              <input id="search-scope-1" class="radio-option" type="radio" ng-model="tsc.searchScope" value="classes"
                   ng-click="$event.stopPropagation()" ng-change="tsc.changeSearchScope()"/>
               <label>Search for a term in BioPortal (e.g. 'microarray analysis') </label></div>
             <div class="radio-option">
@@ -129,7 +130,8 @@
     <div class="loader2"></div>
   </div>
 
-  <div class="search-messages" ng-if="tsc.isSearchingProperties()  || tsc.isSearchingClasses() || tsc.isSearchingValueSets()">
+  <div class="search-messages"
+      ng-if="tsc.isSearchingProperties()  || tsc.isSearchingClasses() || tsc.isSearchingValueSets()">
     <span class="search-msg" ng-if="tsc.showEmptyQueryMsg">Please enter a search query</span>
     <div ng-if="tsc.searchFinished">
       <div ng-if="tsc.resultsFound">
@@ -155,7 +157,7 @@
 <!-- Search Results and Ontology Tree -->
 <div class="clear search-results-section">
 
-    <div ng-if="(tsc.isSearchingProperties()) && tsc.resultsFound && tsc.searchFinished">
+  <div ng-if="(tsc.isSearchingProperties()) && tsc.resultsFound && tsc.searchFinished">
     <div class="search-results-headers">
       <table class="table table-condensed results-headers-table search-results-headers-table">
         <thead>
@@ -178,15 +180,12 @@
           <tbody>
           <tr ng-repeat="result in tsc.searchResults" ng-click="tsc.selectResult(result, result.resultId)"
               ng-class="{'selected-row':  (result.resultId == tsc.selectedResultId)}">
-
-
-            <td>{{result.details.labels[0]}}</td>
+            <td>{{result.prefLabel}}</td>
             <td>{{result.details.definitions[0] || '-'}}</td>
-            <td >Property</td>
+            <td>{{tsc.getTypeForUi(result.details.type) || '-'}}</td>
             <td>{{result.source.id}}</td>
-            <td>{{tsc.getShortId(result.details.id, 60)}} </td>
+            <td>{{tsc.getShortId(result.details.id, 60)}}</td>
             <td>
-
               <span class="fa fa-sitemap"
                   ng-if="(result.resultId == tsc.selectedResultId) "
                   ng-click="tsc.changeTreeVisibility(); $event.stopPropagation()"></span>
