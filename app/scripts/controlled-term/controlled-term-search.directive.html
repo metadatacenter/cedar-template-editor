@@ -1,7 +1,7 @@
 <!-- Field types -->
 <span ng-show="tsc.isSearching() && tsc.isFieldTypesMode() && !tsc.isCreatingMappings && !tsc.isCreatingVs">Find a term in BioPortal or <button
     type="button" class="btn btn-create-term" ng-click="tsc.switchToCreate()">Create a New Term
-</button> to annotate <span class="highlighted">'{{tsc.fieldName}}'</span>
+</button> <span ng-if="tsc.fieldName.trim().length > 0">to annotate <span class="highlighted">'{{tsc.fieldName}}'</span></span>
 </span>
 
 <!-- Field values -->
