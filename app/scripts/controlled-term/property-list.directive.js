@@ -6,59 +6,46 @@ define([
   angular.module('cedar.templateEditor.controlledTerm.propertyListDirective', [])
       .directive('propertyList', propertyListDirective);
 
-  propertyListDirective.$inject = ["DataManipulationService","controlledTermDataService", "StringUtilsService"];
+  propertyListDirective.$inject = ["$rootScope", "DataManipulationService","controlledTermDataService", "StringUtilsService"];
 
   /**
-   * display a list of properties
+   * display a list of assigned properties for the field
    *
    */
-  function propertyListDirective( DataManipulationService, controlledTermDataService, StringUtilsService) {
+  function propertyListDirective( $rootScope, DataManipulationService, controlledTermDataService, StringUtilsService) {
 
     return {
       restrict: 'E',
       scope   : {
-        field         : '='
+        field         : '=',
+        isOpen        : '='
       },
       templateUrl     : 'scripts/controlled-term/property-list.directive.html',
       link    : function (scope, element, attrs) {
 
 
-        scope.property = null;
+        scope.property;
+        console.log("isOpen  " + scope.isOpen);
 
-        //// new property added
-        //scope.$on("property:propertyAdded", function () {
-        //  console.log('property:propertyAdded');
-        //  scope.property = scope.getProperties();
-        //});
-
-
-        scope.getProperties = function () {
-          //return DataManipulationService.getProperty(scope.field);
+        scope.getProperty = function () {
+          scope.isOpen = false;
+          return DataManipulationService.getProperty($rootScope.jsonToSave, scope.field);
         };
 
         scope.deleteProperty = function () {
          // DataManipulationService.deleteProperty(scope.field);
         };
 
-        scope.getShortText = function (text, maxLength, finalString, emptyString) {
-          return StringUtilsService.getShortText(text, maxLength, finalString, emptyString);
-        };
+        // update terms when field changes
+        scope.$watch("isOpen", function(newValue, oldValue) {
+          console.log("isOpen changed " + scope.isOpen);
+        });
 
-        scope.getShortId = function (uri, maxLength) {
-          return StringUtilsService.getShortId(uri, maxLength);
-        };
-
-        scope.getDescription = function () {
-        };
-
-        scope.getId = function () {
-        };
-
-        // table or popup view
-        scope.isTableView = function() {
-          return true;
-        }
-
+        // // update terms when field changes
+        // scope.$watch("field", function(newValue, oldValue) {
+        //   scope.property = scope.getProperty();
+        //   console.log("field changed " + scope.property);
+        // });
 
       }
     }

@@ -24,6 +24,19 @@ define([
       var MIN_OPTIONS = 2;
       $scope.viewType = 'table';
 
+      $scope.status = {
+        isopen: false
+      };
+      console.log('init status.isopen ' + $scope.status.isopen);
+
+      $scope.toggled = function(open) {
+        console.log('Dropdown is now: ', open);
+        $scope.status.isopen = open;
+        console.log('Dropdown is now: ', $scope.status.isopen);
+      };
+
+
+
 
       var setDirectory = function () {
         var p = $rootScope.propertiesOf($scope.field);

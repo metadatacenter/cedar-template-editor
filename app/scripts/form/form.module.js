@@ -22,7 +22,8 @@ define([
   'cedar/template-editor/search-browse/cedar-infinite-scroll.directive',
   'cedar/template-editor/search-browse/cedar-modal-show.directive',
   'cedar/template-editor/form/airr-submission-modal.directive',
-  'cedar/template-editor/form/file-upload.directive'
+  'cedar/template-editor/form/file-upload.directive',
+
 ], function(angular) {
   angular.module('cedar.templateEditor.form', [
     'cedar.templateEditor.controlledTerm',
@@ -45,6 +46,7 @@ define([
     'cedar.templateEditor.searchBrowse.cedarInfiniteScrollDirective',
     'cedar.templateEditor.searchBrowse.cedarModalShowDirective',
     'cedar.templateEditor.form.airrSubmissionModal',
-    'cedar.templateEditor.form.fileUpload',
+    'cedar.templateEditor.form.fileUpload'
+
   ]);
 });

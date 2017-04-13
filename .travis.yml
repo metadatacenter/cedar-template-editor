@@ -14,7 +14,6 @@ branches:
   - develop
   - master
   - testing/permissions
-  - feature/debugging-tests
 notifications:
   slack:
     on_success: change
@@ -33,7 +32,7 @@ install:
 - webdriver-manager update
 - nohup bash -c "webdriver-manager start 2>&1 &"
 script:
-- gulp test-permissions2
+- gulp test-permissions
 env:
   global:
   - secure: upSQEvtBEuKEu8lZlgwfIImNIvnK3I5djNu439Z122smtS9jjmqvUiYbn+nF8og+B5wL+SHcE7lgaPEza7m5seWB6nRjNMKieAP+AoS66h1zOBychVwzgGTyBv7UYwv0WyMmpSflrt8tUf0ohXgaDgkXgS0TzKUlPuYEbjRNemduHN51xCDFUCfa/sd0KV8xgJ2eYOGE0CnDDeG+xQZSUODbWGpKvzUAsH0Yl4F1aXpo7q7aROqmhw28N4Tmk8boWpsmyyK6q8UXpQb0wa147UGbLZ5yE7TqFUt6O66LMIBPIYwRxX5GxTvCpwRR80uTWuzgAZjH1RZuiiQih1+HdlJBzOM/RD0C9z5zkoXo6r0oqcuPaRNzApAlCWjBGliEZ4nNreixOVlzbJ70vPnje18JvprETcw5aPoF3Mnmw3vt6kiCL5sQnQ8R2O8jx6uRL3ZSeIm4U5ixxaF4uCAToMduXNoSFI36ivGAkin9uNm5zh0O+y9SWVwv0HH7goUKknlQxhx7KktDaEy+Fn5s1i+Yo67TYhD1l47I36DlxYtivj9IB4mx4KmHzN23wHQC1AZbB0zUo2qKvKVA4X1aZ+AqNtWQAoqTZVV3Rp5QOTrTNf5gxAvnhyESBpEVf+ZADCAjbmH+3nsgDUEUvtef+FupEQ5baVGMaq/GPFzbIFM=

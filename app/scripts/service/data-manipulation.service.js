@@ -1340,6 +1340,24 @@ define([
       }
     };
 
+    service.getProperty = function(form, node) {
+     var id = service.getId(node);
+     var result;
+
+      var props = $rootScope.propertiesOf(form);
+      var fieldProp;
+      for (var prop in props) {
+        if ($rootScope.schemaOf(props[prop])['@id'] === id) {
+          fieldProp = prop;
+          break;
+        }
+      }
+      if (fieldProp) {
+        result = form.properties['@context'].properties[fieldProp]['enum'][0];
+      }
+      return result;
+    };
+
     // relabel the key with a new value from the propertyLabels
     service.relabel = function(node, key) {
 
