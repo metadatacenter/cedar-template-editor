@@ -137,12 +137,12 @@ gulp.task('test', function (done) {
 gulp.task('test-env', function () {
   gulp.src(['tests/config/src/test-env.js'])
       .pipe(replace('protractorBaseUrl', 'https://cedar.' + cedarHost))
-      .pipe(replace('protractorTestUser1', cedarTestUser1))
-      .pipe(replace('protractorTestPassword1', cedarTestPassword1))
-      .pipe(replace('protractorTestUserName1', cedarTestUserName1))
-      .pipe(replace('protractorTestUser2', cedarTestUser2))
-      .pipe(replace('protractorTestPassword2', cedarTestPassword2))
-      .pipe(replace('protractorTestUserName2', cedarTestUserName2))
+      .pipe(replace('protractorTestUser1Login', cedarTestUser1Login))
+      .pipe(replace('protractorTestUser1Password', cedarTestUser1Password))
+      .pipe(replace('protractorTestUser1Name', cedarTestUser1Name))
+      .pipe(replace('protractorTestUser2Login', cedarTestUser2Login))
+      .pipe(replace('protractorTestUser2Password', cedarTestUser2Password))
+      .pipe(replace('protractorTestUser2Name', cedarTestUser2Name))
       .pipe(replace('protractorEverybodyGroup', cedarEverybodyGroup))
       .pipe(replace('protractorCedarVersion', cedarVersion))
       .pipe(gulp.dest('tests/config/'));
@@ -227,6 +227,7 @@ function exitWithError(msg) {
 }
 
 function readAllEnvVarsOrFail() {
+  console.log("- Environment variables used:".yellow);
   for (var key  in envConfig) {
     if (!process.env.hasOwnProperty(key)) {
       exitWithError('You need to set the following environment variable: ' + key);
@@ -235,23 +236,23 @@ function readAllEnvVarsOrFail() {
       envConfig[key] = value;
       if (key.indexOf('PASSWORD') <= -1) {
         console.log(("- Environment variable " + key + " found: ").green + value.bold);
+      } else {
+        console.log(("- Environment variable " + key + " found: ").green + "*******".bold);
       }
     }
   }
 }
 
+function getFrontendEnvVar(varNameSuffix) {
+  return 'CEDAR_FRONTEND_' + cedarFrontendTarget + '_' + varNameSuffix;
+}
+
 // Get environment variables
 var envConfig = {
-  'CEDAR_PROFILE'             : null,
-  'CEDAR_HOST'                : null,
   'CEDAR_ANALYTICS_KEY'       : null,
-  'CEDAR_TEST_USER1_EMAIL'    : null,
-  'CEDAR_TEST_USER1_NAME'     : null,
-  'CEDAR_TEST_USER1_PASSWORD' : null,
-  'CEDAR_TEST_USER2_EMAIL'    : null,
-  'CEDAR_TEST_USER2_NAME'     : null,
-  'CEDAR_TEST_USER2_PASSWORD' : null,
   'CEDAR_EVERYBODY_GROUP_NAME': null,
+  'CEDAR_FRONTEND_BEHAVIOR'   : null,
+  'CEDAR_FRONTEND_TARGET'     : null,
   'CEDAR_VERSION'             : null,
   'CEDAR_VERSION_MODIFIER'    : null
 };
@@ -261,18 +262,41 @@ console.log(
     "-------------------------------------------- ************* --------------------------------------------".red);
 console.log("- Starting CEDAR front end server...".green);
 readAllEnvVarsOrFail();
-var cedarProfile = envConfig['CEDAR_PROFILE'];
-var cedarHost = envConfig['CEDAR_HOST'];
 var cedarAnalyticsKey = envConfig['CEDAR_ANALYTICS_KEY'];
-var cedarTestUser1 = envConfig['CEDAR_TEST_USER1_EMAIL'];
-var cedarTestUserName1 = envConfig['CEDAR_TEST_USER1_NAME'];
-var cedarTestPassword1 = envConfig['CEDAR_TEST_USER1_PASSWORD'];
-var cedarTestUser2 = envConfig['CEDAR_TEST_USER2_EMAIL'];
-var cedarTestUserName2 = envConfig['CEDAR_TEST_USER2_NAME'];
-var cedarTestPassword2 = envConfig['CEDAR_TEST_USER2_PASSWORD'];
 var cedarEverybodyGroup = envConfig['CEDAR_EVERYBODY_GROUP_NAME'];
+var cedarFrontendBehavior = envConfig['CEDAR_FRONTEND_BEHAVIOR'];
+var cedarFrontendTarget = envConfig['CEDAR_FRONTEND_TARGET'];
 var cedarVersion = envConfig['CEDAR_VERSION'];
 var cedarVersionModifier = envConfig['CEDAR_VERSION_MODIFIER'];
+
+var cedarHostVarName = getFrontendEnvVar('HOST');
+envConfig[cedarHostVarName] = null;
+
+var cedarUser1LoginVarName = getFrontendEnvVar('USER1_LOGIN');
+envConfig[cedarUser1LoginVarName] = null;
+var cedarUser1PasswordVarName = getFrontendEnvVar('USER1_PASSWORD');
+envConfig[cedarUser1PasswordVarName] = null;
+var cedarUser1NameVarName = getFrontendEnvVar('USER1_NAME');
+envConfig[cedarUser1NameVarName] = null;
+
+var cedarUser2LoginVarName = getFrontendEnvVar('USER2_LOGIN');
+envConfig[cedarUser2LoginVarName] = null;
+var cedarUser2PasswordVarName = getFrontendEnvVar('USER2_PASSWORD');
+envConfig[cedarUser2PasswordVarName] = null;
+var cedarUser2NameVarName = getFrontendEnvVar('USER2_NAME');
+envConfig[cedarUser2NameVarName] = null;
+
+readAllEnvVarsOrFail();
+
+var cedarHost = envConfig[cedarHostVarName];
+
+var cedarTestUser1Login = envConfig[cedarUser1LoginVarName];
+var cedarTestUser1Password = envConfig[cedarUser1PasswordVarName];
+var cedarTestUser1Name = envConfig[cedarUser1NameVarName];
+
+var cedarTestUser2Login = envConfig[cedarUser2LoginVarName];
+var cedarTestUser2Name = envConfig[cedarUser2NameVarName];
+var cedarTestUser2Password = envConfig[cedarUser2PasswordVarName];
 
 console.log(
     "-------------------------------------------- ************* --------------------------------------------".red);
@@ -280,13 +304,13 @@ console.log();
 
 // Prepare task list
 var taskNameList = [];
-if (cedarProfile === 'local') {
+if (cedarFrontendBehavior === 'develop') {
   taskNameList.push('server-development');
   taskNameList.push('watch');
-} else if (cedarProfile === 'server') {
+} else if (cedarFrontendBehavior === 'server') {
   console.log("Editor is configuring URLs, and exiting. The frontend content will be served by nginx");
 } else {
-  exitWithError("Invalid CEDAR_PROFILE value. Please set to 'local' or 'server'");
+  exitWithError("Invalid CEDAR_FRONTEND_BEHAVIOR value. Please set to 'develop' or 'server'!");
 }
 
 taskNameList.push('lint', 'less', 'copy:resources', 'replace-url', 'replace-tracking', 'replace-version', 'test-env');

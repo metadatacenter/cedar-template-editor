@@ -1,9 +1,9 @@
 exports.baseUrl = "protractorBaseUrl";
-exports.testUser1 = 'protractorTestUser1';
-exports.testUserName1 = "Test User 1";
-exports.testPassword1 = 'protractorTestPassword1';
-exports.testUser2 = 'protractorTestUser2';
-exports.testUserName2 = "Test User 2";
-exports.testPassword2 = 'protractorTestPassword2';
-exports.everybodyGroup = "Everybody";
+exports.testUser1 = 'protractorTestUser1Login';
+exports.testPassword1 = 'protractorTestUser1Password';
+exports.testUserName1 = 'protractorTestUser1Name';
+exports.testUser2 = 'protractorTestUser2Login';
+exports.testPassword2 = 'protractorTestUser2Password';
+exports.testUserName2 = 'protractorTestUser2Name';
+exports.everybodyGroup = 'protractorEverybodyGroup';
 exports.cedarVersion = 'protractorCedarVersion';
