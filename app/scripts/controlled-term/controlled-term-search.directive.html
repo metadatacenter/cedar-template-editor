@@ -85,7 +85,7 @@
               <input id="search-scope-0" class="radio-option" type="radio" ng-model="tsc.searchScope" value="properties"
                   ng-click="$event.stopPropagation()" ng-change="tsc.changeSearchScope()"/>
               <label>Search for a property in BioPortal </label></div>
-            <div ng-if="tsc.isSearchingClasses()" class="radio-option">
+            <div ng-if="!tsc.isSearchingProperties()" class="radio-option">
               <input id="search-scope-1" class="radio-option" type="radio" ng-model="tsc.searchScope" value="classes"
                   ng-click="$event.stopPropagation()" ng-change="tsc.changeSearchScope()"/>
               <label>Search for a term in BioPortal (e.g. 'microarray analysis') </label></div>

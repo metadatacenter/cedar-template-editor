@@ -257,7 +257,6 @@ define([
        */
       function reset(keepSearchScope, keepCreationMode, keepSearchQuery, keepOntologies, keepSelectedOntologies) {
         if (!keepSearchScope) {
-
           vm.searchScope = vm.searchFor;
           vm.searchOptionsVisible = false;
         }
@@ -437,12 +436,9 @@ define([
       }
 
       function switchToCreate(mode) {
-
         reset(false, false, false, false, false);
-
         vm.action = 'create';
         vm.searchScope = mode;
-
       }
 
       function switchToSearch(mode) {
