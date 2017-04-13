@@ -11,7 +11,7 @@
 </button> to constrain the values of the <span ng-if="tsc.fieldName.trim().length > 0" class="highlighted">'{{tsc.fieldName}}'</span> field</span>
 
 <!-- Property types -->
-<div ng-if="tsc.isPropertiesMode()">
+<div ng-if="tsc.isSearchingProperties()">
 
   <!-- searching header only -->
   <div ng-if="tsc.isSearching()">
@@ -81,11 +81,11 @@
 
         <div class="search-options">
           <div class="radio radio-primary radio-controlled-terms-search">
-            <div ng-if="tsc.isPropertiesMode()" class="radio-option">
+            <div ng-if="tsc.isSearchingProperties()" class="radio-option">
               <input id="search-scope-0" class="radio-option" type="radio" ng-model="tsc.searchScope" value="properties"
                   ng-click="$event.stopPropagation()" ng-change="tsc.changeSearchScope()"/>
               <label>Search for a property in BioPortal </label></div>
-            <div ng-if="tsc.isClassesMode()" class="radio-option">
+            <div ng-if="tsc.isSearchingClasses()" class="radio-option">
               <input id="search-scope-1" class="radio-option" type="radio" ng-model="tsc.searchScope" value="classes"
                   ng-click="$event.stopPropagation()" ng-change="tsc.changeSearchScope()"/>
               <label>Search for a term in BioPortal (e.g. 'microarray analysis') </label></div>
@@ -523,10 +523,8 @@
             ng-click="pcc.saveAsOntologyClassValueConstraint(pcc.provisionalClass)"
             ng-disabled="!pcc.isValid()">Create Term
         </button>
-        <!--<div class="input-indicator-icons">-->
         <i class="cedar-svg-help-circle help-icon"
             uib-tooltip="The term will be created in the (CEDAR Provisional Classes) BioPortal ontology and added to your template"></i>
-        <!--</div>-->
       </div>
     </div>
     <!-- Create Value Set (Tab Content) -->

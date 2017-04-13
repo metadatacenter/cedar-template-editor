@@ -409,9 +409,7 @@ define([
         $scope.$on("field:controlledTermAdded", function () {
           jQuery("#control-options-template-field").modal('hide');
         });
-
-
-
+        
         // update the property for a field
         $scope.$on("property:propertyAdded", function (event, args) {
 

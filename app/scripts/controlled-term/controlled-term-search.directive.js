@@ -74,7 +74,6 @@ define([
       vm.getTypeForUi = getTypeForUi;
       vm.isCreating = isCreating;
       vm.isEmptySearchQuery = isEmptySearchQuery;
-      vm.isPropertiesMode = isPropertiesMode;
       vm.isFieldTypesMode = isFieldTypesMode;
       vm.isFieldValuesMode = isFieldValuesMode;
       vm.isSearching = isSearching;
@@ -123,8 +122,7 @@ define([
           var searchClasses = true;
           var searchValues = true;
           var searchValueSets = false;
-          if (isPropertiesMode()) {
-
+          if (isSearchingProperties()) {
             searchProperties = true;
             searchClasses = false;
             searchValues = false;
@@ -300,11 +298,6 @@ define([
       /**
        * Other useful functions
        */
-
-
-      function isPropertiesMode() {
-        return vm.searchMode == 'properties';
-      }
 
       function isFieldTypesMode() {
         return vm.searchMode == 'field';

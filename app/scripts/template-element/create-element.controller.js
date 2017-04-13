@@ -408,6 +408,7 @@ define([
         $scope.element.properties['@context'].properties[fieldProp]['enum'][0] = property;
       }
     });
+
   }
 
 });
