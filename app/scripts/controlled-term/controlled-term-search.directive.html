@@ -92,18 +92,17 @@
             <div class="radio-option">
               <input id="search-scope-2" class="radio-option" type="radio" ng-model="tsc.searchScope" value="ontologies"
                   ng-click="$event.stopPropagation()" ng-change="tsc.changeSearchScope()"/>
-              <label>Search for an ontology in BioPortal (e.g. OBI) and explore it to find specific terms</label>
+              <label>Search for an ontology in BioPortal (e.g. OBI) and explore it</label>
             </div>
             <div ng-if="tsc.isFieldValuesMode()" class="radio-option">
               <input id="search-scope-3" class="radio-option" type="radio" ng-model="tsc.searchScope" value="value-sets"
                   ng-click="$event.stopPropagation()" ng-change="tsc.changeSearchScope()"/>
-              <label>Search for a value set in BioPortal (e.g. 'Delivery Procedures') and explore it to find specific
-                terms</label>
+              <label>Search for a value set in BioPortal (e.g. 'Delivery Procedures') and explore it</label>
             </div>
           </div>
         </div>
         <div ng-show="tsc.isSearchingClasses() || tsc.isSearchingProperties()">
-          <b>Narrow your term search to specific ontologies</b>
+          <b>Narrow your search to specific ontologies</b>
 
           <div class="field-ontologies">
             <tags-input class="custom-tags-input" ng-model="tsc.selectedOntologies" display-property="id"
