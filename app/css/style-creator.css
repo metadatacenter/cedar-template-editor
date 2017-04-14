@@ -12322,6 +12322,26 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
 === Field Definition Partials
 ================================================
 */
+.field-header .field-icon {
+  color: #9E9E9E;
+}
+.field-header .type-label {
+  text-transform: none;
+  padding-left: 10px;
+}
+.field-header .show-type {
+  background: transparent;
+  color: #5795ba;
+}
+.field-header .property-dropdown {
+  display: inline-block;
+  color: #5795ba;
+}
+.field-header .property-dropdown button {
+  background: transparent;
+  position: relative;
+  left: -12px;
+}
 .input-type-container {
   clear: both;
   padding-top: 0px;
@@ -12336,7 +12356,7 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   margin-bottom: 20px;
 }
 .input-type-container p.type-label i {
-  color: #5795ba;
+  color: #9E9E9E;
 }
 .input-type-container .configuration-options {
   padding-top: 20px;

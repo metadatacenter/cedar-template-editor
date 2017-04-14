@@ -1677,6 +1677,7 @@ body.search-browse-modal {
     }
   }
 
+
   #element-name-container,
   #element-controlled-term-container {
 
@@ -3570,6 +3571,28 @@ section.dashboard-elements {
 === Field Definition Partials
 ================================================
 */
+
+.field-header {
+  .field-icon {
+    color:@med-gray;
+  }
+  .type-label {
+    text-transform:none;
+    padding-left:10px;
+  }
+  .show-type {
+    background:transparent;
+    color:#5795ba
+  }
+  .property-dropdown {
+    display:inline-block;
+    color:#5795ba;
+    button {
+      background:transparent;position:relative;left:-12px
+    }
+  }
+}
+
 .input-type-container {
   clear: both;
   padding-top: 0px;
@@ -3583,7 +3606,7 @@ section.dashboard-elements {
     margin-bottom: 20px;
 
     i {
-      color: @brand-primary;
+      color: @med-gray;
     }
   }
 
@@ -7267,5 +7290,8 @@ textarea.curlSample {
   font-family: Courier;
   font-size: 11px
 }
+
+
+
 
 

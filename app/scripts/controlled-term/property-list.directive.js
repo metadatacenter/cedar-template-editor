@@ -25,7 +25,6 @@ define([
 
 
         scope.property;
-        console.log("isOpen  " + scope.isOpen);
 
         scope.getProperty = function () {
           scope.isOpen = false;
@@ -36,10 +35,10 @@ define([
          // DataManipulationService.deleteProperty(scope.field);
         };
 
-        // update terms when field changes
-        scope.$watch("isOpen", function(newValue, oldValue) {
-          console.log("isOpen changed " + scope.isOpen);
-        });
+        // // update terms when field changes
+        // scope.$watch("isOpen", function(newValue, oldValue) {
+        //   console.log("isOpen changed " + scope.isOpen);
+        // });
 
         // // update terms when field changes
         // scope.$watch("field", function(newValue, oldValue) {

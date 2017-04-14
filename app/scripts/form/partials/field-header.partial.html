@@ -1,31 +1,29 @@
-<div class="row configuration-options sortable-handler"
+<div class="row configuration-options field-header sortable-handler"
     ng-if="!$root.isRuntime() && !isNested() && !ngDisabled && !preview">
 
   <div class=" col-lg-9 pull-left type-label">
 
-    <div class="type-label" style="text-transform:none;padding-left:10px;">
+    <div class="type-label" >
 
       <!-- sort icon -->
       <span class="sortable-icon"></span>
 
       <!-- field type -->
-      <i style="color:#9E9E9E" class="{{fieldIconClass}}"></i>
+      <i class="{{fieldIconClass}} field-icon"></i>
 
       <!-- select properties -->
       <button ng-if="!isStatic() && isEditState()"
           type="button"
           class="show-type"
-          style="background:transparent;color:#5795ba"
           ng-click="showModal(getPropertyModalId());$root.finalTitle=form._ui.title"
           uib-tooltip="{{'HELP.addProperty' | translate}}">
         <i class="cedar-svg-controll-term collapsed" style="padding-bottom:10px"></i>
       </button>
 
       <!-- assigned properties -->
-      <div ng-if="!isStatic() && isEditState()" style="display:inline-block;color:#5795ba">
-        <div uib-dropdown dropdown-append-to-body on-toggle="$parent.toggled(open); isopen=open">
-          <button uib-dropdown-toggle  aria-haspopup="true" aria-expanded="true" class="show-type"
-              style="background:transparent;position:relative;left:-12px">
+      <div ng-if="!isStatic() && isEditState()" class="property-dropdown" >
+        <div uib-dropdown dropdown-append-to-body on-toggle="$parent.toggled(open); ">
+          <button type="button" uib-dropdown-toggle  ng-click="$parent.toggle()" aria-haspopup="true" aria-expanded="true" class="show-type">
             <i class="fa fa-caret-down  inline "></i></button>
           <div uib-dropdown-menu class="class-list">
             <property-list field="$parent.field" is-open="$parent.scope.isopen"></property-list>
@@ -42,8 +40,6 @@
 
       <!-- required -->
       <span style="color:red;" ng-show="$root.schemaOf($parent.field)._valueConstraints.requiredValue">*</span>
-
-
 
   </div>
   <div class="col-lg-3 pull-right configuration-actions" ng-include="'scripts/form/partials/edit-options.partial.html'"

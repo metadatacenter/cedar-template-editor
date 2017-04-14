@@ -32,11 +32,7 @@ define([
       $scope.toggled = function(open) {
         console.log('Dropdown is now: ', open);
         $scope.status.isopen = open;
-        console.log('Dropdown is now: ', $scope.status.isopen);
       };
-
-
-
 
       var setDirectory = function () {
         var p = $rootScope.propertiesOf($scope.field);
