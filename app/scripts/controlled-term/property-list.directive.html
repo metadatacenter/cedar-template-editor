@@ -1,11 +1,35 @@
-
 <div class="form-group " style="margin:10px 0">
   <div class="controlled-terms controlled-term-options">
-    <div class="class-container" >
-      <div class="form-group" style="padding:20px">
-        {{getProperty()}}
+    <div class="class-container">
+      <div class="added-field-classes">
+        <div class="class-list-container">
+        <div class="class-list-table">
+          <div ng-if="getProperty().length == 0" class="center" style="color:#ccc">
+            Empty
+          </div>
+          <div ng-if="getProperty().length > 0" >
+            <table class="table table-hover table-striped ">
+              <thead>
+              <tr><th>Property</th><th></th></tr>
+              </thead>
+              <tbody>
+              <tr>
+                <td>{{getProperty()}}</td>
+                <td>
+                  <div class="class-delete" ng-click="deleteProperty();">
+                    <i class="fa fa-times-circle"></i>
+                  </div>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+
+          </div>
+        </div>
+      </div>
       </div>
     </div>
   </div>
 </div>
+
 

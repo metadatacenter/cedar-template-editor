@@ -11,6 +11,15 @@
       <!-- field type -->
       <i class="{{fieldIconClass}} field-icon"></i>
 
+      <!-- cardinality -->
+      <span  class="multiple-instance-cardinality"
+          ng-show="$parent.field.hasOwnProperty('minItems')">
+           {{$parent.field.minItems}} .. {{$parent.field.maxItems || "N"}}
+       </span>
+
+      <!-- required -->
+      <span  style="color:red;" ng-show="$root.schemaOf($parent.field)._valueConstraints.requiredValue">*</span>
+
       <!-- select properties -->
       <button ng-if="!isStatic() && isEditState()"
           type="button"
@@ -30,16 +39,9 @@
           </div>
         </div>
       </div>
+
+
     </div>
-
-      <!-- cardinality -->
-      <span class="multiple-instance-cardinality"
-          ng-show="$parent.field.hasOwnProperty('minItems')">
-           {{$parent.field.minItems}} .. {{$parent.field.maxItems || "N"}}
-       </span>
-
-      <!-- required -->
-      <span style="color:red;" ng-show="$root.schemaOf($parent.field)._valueConstraints.requiredValue">*</span>
 
   </div>
   <div class="col-lg-3 pull-right configuration-actions" ng-include="'scripts/form/partials/edit-options.partial.html'"

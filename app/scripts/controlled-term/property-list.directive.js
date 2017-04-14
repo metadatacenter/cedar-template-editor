@@ -32,7 +32,7 @@ define([
         };
 
         scope.deleteProperty = function () {
-         // DataManipulationService.deleteProperty(scope.field);
+         DataManipulationService.deleteProperty($rootScope.jsonToSave, scope.field);
         };
 
         // // update terms when field changes
