@@ -32,16 +32,17 @@ var onError = function (err) {
 };
 
 // Lint task
-gulp.task('lint', function () {
+gulp.task('lint', function (done) {
   return gulp.src('app/scripts/*.js')
       .pipe(jshint())
       .pipe(jshint.reporter(stylish))
       .pipe(connect.reload());
+  done();
 });
 
 // Compile LESS files
-gulp.task('less', function () {
-  return gulp.src(['app/less/style-default.less', 'app/less/style-creator.less', 'app/less/style-runtime.less'])
+gulp.task('less', function (done) {
+  return gulp.src(['app/less/style-creator.less'])
       .pipe(plumber({
         errorHandler: onError
       }))
@@ -52,21 +53,8 @@ gulp.task('less', function () {
       }))
       .pipe(gulp.dest('app/css'))
       .pipe(connect.reload());
+  done();
 });
-
-// Minify CSS files
-// gulp.task('minifyCSS', function() {
-//  return gulp.src('css/*')
-//    .pipe(minifyCSS())
-//   .pipe(gulp.dest('build/style.min.css'));
-// });
-
-// Support AngularJS dependency injection for minified file
-// gulp.task('angular', function () {
-//  return gulp.src('app/scripts/app.js')
-//    .pipe(ngAnnotate())
-//    .pipe(gulp.dest('dist/js'));
-// });
 
 gulp.task('copy:resources', function () {
   var glyphiconsGlob = 'app/bower_components/bootstrap/fonts/*.*';
@@ -74,7 +62,7 @@ gulp.task('copy:resources', function () {
 });
 
 
-gulp.task('server-development', function () {
+gulp.task('server-development', function (done) {
   console.log("Server development");
   connect.server({
     root      : 'app',
@@ -82,15 +70,17 @@ gulp.task('server-development', function () {
     livereload: true,
     fallback  : 'app/index.html'
   });
+  done();
 });
 
-gulp.task('html', function () {
+gulp.task('html', function (done) {
   return gulp.src('/app/views/*.html')
       .pipe(connect.reload());
+  done();
 });
 
 // Task to replace service URLs
-gulp.task('replace-url', function () {
+gulp.task('replace-url', function (done) {
   gulp.src(['app/config/src/url-service.conf.json'])
       .pipe(replace('templateServerUrl', 'https://template.' + cedarHost))
       .pipe(replace('resourceServerUrl', 'https://resource.' + cedarHost))
@@ -102,28 +92,32 @@ gulp.task('replace-url', function () {
       .pipe(replace('schemaServerUrl', 'https://schema.' + cedarHost))
       .pipe(replace('submissionServerUrl', 'https://submission.' + cedarHost))
       .pipe(gulp.dest('app/config/'));
+  done();
 });
 
 // Task to set up tracking
-gulp.task('replace-tracking', function () {
+gulp.task('replace-tracking', function (done) {
   gulp.src(['app/config/src/tracking-service.conf.json'])
       .pipe(replace('googleAnalyticsKey', cedarAnalyticsKey))
       .pipe(gulp.dest('app/config/'));
+  done();
 });
 
 // Task to set up version numbers in included js file
-gulp.task('replace-version', function () {
+gulp.task('replace-version', function (done) {
   gulp.src(['app/config/src/version.js'])
       .pipe(replace('cedarVersionValue', cedarVersion))
       .pipe(replace('cedarVersionModifierValue', cedarVersionModifier))
       .pipe(gulp.dest('app/config/'));
+  done();
 });
 
 // Watch files for changes
-gulp.task('watch', function () {
-  gulp.watch('app/scripts/*.js', ['lint']);
-  gulp.watch('app/less/*.less', ['less']);
-  gulp.watch('app/views/*.html', ['html']);
+gulp.task('watch', function (done) {
+  gulp.watch('app/scripts/*.js', gulp.series('lint'));
+  gulp.watch('app/less/*.less', gulp.series('less'));
+  gulp.watch('app/views/*.html', gulp.series('html'));
+  done();
 });
 
 // Tasks for tests
@@ -134,7 +128,7 @@ gulp.task('test', function (done) {
   }, done).start();
 });
 
-gulp.task('test-env', function () {
+gulp.task('test-env', function (done) {
   gulp.src(['tests/config/src/test-env.js'])
       .pipe(replace('protractorBaseUrl', 'https://cedar.' + cedarHost))
       .pipe(replace('protractorTestUser1Login', cedarTestUser1Login))
@@ -146,9 +140,10 @@ gulp.task('test-env', function () {
       .pipe(replace('protractorEverybodyGroup', cedarEverybodyGroup))
       .pipe(replace('protractorCedarVersion', cedarVersion))
       .pipe(gulp.dest('tests/config/'));
+  done();
 });
 
-gulp.task('e2e', ['test-env'], function () {
+gulp.task('e2e', gulp.series('test-env', function () {
   return gulp.src([
     './tests/e2e/clean-up-spec.js',
     './tests/e2e/metadata-creator-spec.js',
@@ -167,9 +162,9 @@ gulp.task('e2e', ['test-env'], function () {
       .on('error', function (e) {
         throw e
       });
-});
+}));
 
-gulp.task('test-workspace', ['test-env'], function () {
+gulp.task('test-workspace', gulp.series('test-env', function () {
   return gulp.src([
     './tests/e2e/clean-up-spec.js',
     './tests/e2e/sidebar-spec.js',
@@ -184,9 +179,9 @@ gulp.task('test-workspace', ['test-env'], function () {
       .on('error', function (e) {
         throw e
       });
-});
+}));
 
-gulp.task('test-permissions', ['test-env'], function () {
+gulp.task('test-permissions', gulp.series('test-env', function () {
   return gulp.src([
     './tests/e2e/clean-up-spec.js',
     './tests/e2e/delete-resource-spec.js',
@@ -199,9 +194,9 @@ gulp.task('test-permissions', ['test-env'], function () {
       .on('error', function (e) {
         throw e
       });
-});
+}));
 
-gulp.task('test-form', ['test-env'], function () {
+gulp.task('test-form', gulp.series('test-env', function () {
   return gulp.src([
     './tests/e2e/clean-up-spec.js',
     './tests/e2e/metadata-creator-spec.js',
@@ -213,7 +208,7 @@ gulp.task('test-form', ['test-env'], function () {
       .on('error', function (e) {
         throw e
       });
-});
+}));
 
 
 function exitWithError(msg) {
@@ -315,4 +310,6 @@ if (cedarFrontendBehavior === 'develop') {
 
 taskNameList.push('lint', 'less', 'copy:resources', 'replace-url', 'replace-tracking', 'replace-version', 'test-env');
 // Launch tasks
-gulp.task('default', taskNameList);
+gulp.task('default', gulp.series(taskNameList, function (done) {
+  done();
+}));
