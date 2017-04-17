@@ -10473,7 +10473,7 @@ body.search-browse-modal a.navbar-brand {
 }
 .template-header .show-type {
   background: transparent;
-  color: white;
+  color: #ffffff;
 }
 .template-header .show-type .class-list,
 .template-header .show-type .property-list {
@@ -10481,8 +10481,22 @@ body.search-browse-modal a.navbar-brand {
   margin: 0;
   padding: 0;
 }
-.template-header .show-type i.fa-caret-down {
-  margin-left: -12px;
+.template-header .class-dropdown {
+  display: inline-block;
+}
+.template-header .class-dropdown button {
+  background: transparent;
+  position: relative;
+  left: -12px;
+  color: #ffffff;
+}
+.template-header .pull-right .dropdown-menu:after {
+  left: auto;
+  right: 13px;
+}
+.template-header .pull-right .dropdown-menu {
+  left: auto;
+  right: 0;
 }
 .template-header #element-name-container .cedar-svg-element,
 .template-header #element-controlled-term-container .cedar-svg-element,
@@ -12333,14 +12347,22 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   background: transparent;
   color: #5795ba;
 }
-.field-header .property-dropdown {
+.field-header .property-dropdown,
+.field-header .class_dropdown {
   display: inline-block;
   color: #5795ba;
 }
-.field-header .property-dropdown button {
+.field-header .property-dropdown button,
+.field-header .class_dropdown button {
   background: transparent;
   position: relative;
   left: -12px;
+}
+.class-list,
+.property-list {
+  border-radius: 0;
+  margin: 0;
+  padding: 0;
 }
 .input-type-container {
   clear: both;
@@ -13997,6 +14019,17 @@ p.instructions {
 .class-list-container table > thead > tr > th,
 .many-classes-list table > thead > tr > th {
   border-bottom: none;
+}
+.menu-form {
+  margin: 0;
+  padding: 0;
+  margin-bottom: 0;
+}
+.menu-form .class-list-container {
+  margin-bottom: 0;
+}
+.menu-form .class-list-container .empty {
+  color: #ccc;
 }
 .item-edit,
 .item-delete {

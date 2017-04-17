@@ -1194,9 +1194,9 @@ define([
         $scope.field.maxItems = 0;
       };
 
-
-
-
+      $scope.getForm = function () {
+        return $rootScope.jsonToSave;
+      };
     };
 
     return {

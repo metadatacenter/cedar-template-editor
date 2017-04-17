@@ -1668,15 +1668,30 @@ body.search-browse-modal {
 
   .show-type {
     background: transparent;
-    color: white;
+    color: @white;
     .class-list,.property-list {
       border-radius: 0;margin:0;padding:0
     }
-    i.fa-caret-down {
-      margin-left: -12px;
+  }
+
+  .class-dropdown {
+    display:inline-block;
+    button {
+      background:transparent;
+      position:relative;
+      left:-12px;
+      color:@white;
     }
   }
 
+  .pull-right .dropdown-menu:after {
+    left: auto;
+    right: 13px;
+  }
+  .pull-right .dropdown-menu {
+    left: auto;
+    right: 0;
+  }
 
   #element-name-container,
   #element-controlled-term-container {
@@ -3584,13 +3599,17 @@ section.dashboard-elements {
     background:transparent;
     color:#5795ba
   }
-  .property-dropdown {
+  .property-dropdown,.class_dropdown {
     display:inline-block;
     color:#5795ba;
     button {
       background:transparent;position:relative;left:-12px
     }
   }
+}
+
+.class-list,.property-list {
+  border-radius: 0;margin:0;padding:0;
 }
 
 .input-type-container {
@@ -5381,6 +5400,8 @@ p.instructions {
   }
 }
 
+
+
 .class-list-container, .many-classes-list {
 
   margin-bottom: 10px;
@@ -5419,6 +5440,18 @@ p.instructions {
 
     > thead > tr > th {
       border-bottom: none;
+    }
+  }
+}
+
+.menu-form {
+  margin:0;
+  padding:0;
+  margin-bottom:0;
+  .class-list-container {
+    margin-bottom:0;
+    .empty {
+      color:#ccc;
     }
   }
 }
@@ -7290,6 +7323,8 @@ textarea.curlSample {
   font-family: Courier;
   font-size: 11px
 }
+
+
 
 
 

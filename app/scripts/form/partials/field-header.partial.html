@@ -31,11 +31,11 @@
 
       <!-- assigned properties -->
       <div ng-if="!isStatic() && isEditState()" class="property-dropdown" >
-        <div uib-dropdown dropdown-append-to-body on-toggle="$parent.toggled(open); ">
+        <div uib-dropdown dropdown-append-to-body on-toggle="$parent.toggled(open)">
           <button type="button" uib-dropdown-toggle  ng-click="$parent.toggle()" aria-haspopup="true" aria-expanded="true" class="show-type">
             <i class="fa fa-caret-down  inline "></i></button>
-          <div uib-dropdown-menu class="class-list">
-            <property-list field="$parent.field" is-open="$parent.scope.isopen"></property-list>
+          <div uib-dropdown-menu class="property-list">
+            <property-list field="$parent.field" form="$parent.getForm()" ></property-list>
           </div>
         </div>
       </div>
