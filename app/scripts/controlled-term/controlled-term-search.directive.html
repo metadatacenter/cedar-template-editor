@@ -65,7 +65,8 @@
             with-floating-label=""
             ng-model-options="{debounce: 700}"
             ng-submit="tsc.search($event)"
-            ng-click="tsc.onTextClick($event)"/>
+            ng-click="tsc.onTextClick($event)"
+            autocomplete="off"/>
         <span class="input-group-addon" ng-click="tsc.changeSearchOptionsVisibility()">
           <i ng-class="{'fa fa-cog': !tsc.searchOptionsVisible, 'fa fa-cog selected': tsc.searchOptionsVisible}"></i>
         </span>

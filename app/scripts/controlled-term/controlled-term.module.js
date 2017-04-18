@@ -17,14 +17,14 @@ define([
   angular.module('cedar.templateEditor.controlledTerm', [
     'cedar.templateEditor.controlledTerm.cedarChildTreeDirective',
     'cedar.templateEditor.controlledTerm.cedarClassTreeDirective',
-    'cedar.templateEditor.controlledTerm.classListDirective',
     'cedar.templateEditor.controlledTerm.propertyListDirective',
+    'cedar.templateEditor.controlledTerm.classListDirective',
     'cedar.templateEditor.controlledTerm.controlledTermDirective',
     'cedar.templateEditor.controlledTerm.controlledTermSearchDirective',
     'cedar.templateEditor.controlledTerm.provisionalClassService',
     'cedar.templateEditor.controlledTerm.controlledTermService',
     'cedar.templateEditor.controlledTerm.controlledTermDataService',
     'cedar.templateEditor.controlledTerm.htmlToPlainTextFilter',
-    'cedar.templateEditor.controlledTerm.returnNullIfEmptyFilter',
+    'cedar.templateEditor.controlledTerm.returnNullIfEmptyFilter'
   ]);
 });
