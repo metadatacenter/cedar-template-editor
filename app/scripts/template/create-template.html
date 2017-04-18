@@ -29,10 +29,10 @@
             ng-click="showModal('control-options-template-field');$root.finalTitle=form._ui.title">
           <i class="cedar-svg-controll-term collapsed" style="padding-bottom:10px"></i>
         </button>
-        <div class="class-dropdown"   uib-dropdown on-toggle="toggled(open)" >
-          <button  type="button" uib-dropdown-toggle   ng-click="toggle()" aria-haspopup="true" aria-expanded="true" >
+        <div class="class-dropdown" uib-dropdown on-toggle="toggled(open)">
+          <button type="button" uib-dropdown-toggle ng-click="toggle()" aria-haspopup="true" aria-expanded="true">
             <i class="fa fa-caret-down  inline "></i></button>
-          <div uib-dropdown-menu  class="class-list pull-right dropdown-menu" >
+          <div uib-dropdown-menu class="class-list pull-right dropdown-menu">
             <class-list field="form" view-type="viewType"></class-list>
           </div>
         </div>
@@ -41,6 +41,7 @@
   </div>
 
   <div class="template-body create-template-body template">
+
     <div class="container">
       <div class="row">
         <div class="right-body col-sm-10 col-sm-offset-1">
@@ -119,7 +120,7 @@
         mode="'modal'">
     </cedar-finder>
 
-    <!-- field modal -->
+    <!-- controlled terms modal for fields -->
     <div class="modal fade controlled-terms-modal" id="control-options-template-field" data-backdrop="static">
       <div class="modal-dialog">
         <div class="modal-content" style="overflow:auto">
@@ -136,6 +137,6 @@
       </div>
     </div>
 
-
   </div>
+
 </div>
