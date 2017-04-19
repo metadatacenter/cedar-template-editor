@@ -1,4 +1,28 @@
 <div ng-show="$root.showRender" id="templateJSON" ng-if="stripTmpFields() | json">
   <h5>Document Preview</h5>
-  <pre id='form-json-preview'>{{ stripTmpFields() | json }}</pre>
+  <uib-tabset active="active">
+
+    <uib-tab index="0">
+      <uib-tab-heading>JSON-LD</uib-tab-heading>
+      <pre id='form-json-preview'>{{ stripTmpFields() | json }}</pre>
+    </uib-tab>
+
+    <uib-tab index="1">
+      <uib-tab-heading>
+        JSON
+      </uib-tab-heading>
+      JSON
+    </uib-tab>
+
+    <uib-tab index="2">
+      <uib-tab-heading>
+        RDF
+      </uib-tab-heading>
+      RDF
+    </uib-tab>
+
+  </uib-tabset>
+  
+</div>
+
 </div>
