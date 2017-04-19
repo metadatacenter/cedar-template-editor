@@ -12541,7 +12541,6 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
 .controlled-term-options {
   float: none;
   width: 100%;
-  /****************/
 }
 .controlled-term-options #field-value-tooltip {
   color: #cacacb;
@@ -12723,7 +12722,7 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   width: 100%;
   height: 300px;
   background-color: white;
-  overflow: auto;
+  overflow: hidden;
 }
 .controlled-term-options .additional-details .selection-details-container {
   width: 63%;
@@ -12803,6 +12802,9 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
 .controlled-term-options .tab-content .table-responsive .no-selected-class,
 .controlled-term-options .tab-content .tab-pane .no-selected-class {
   padding-top: 30px;
+}
+.controlled-term-options .ontology-tree {
+  width: 100%;
 }
 .controlled-term-options .ontology-tree > h4 {
   margin-top: 0px;
