@@ -3966,6 +3966,72 @@ section.dashboard-elements {
     }
   }
 
+  .additional-details {
+    width: 100%;
+    margin-top: 0.8em;
+    //background-color: yellow;
+
+    .terminology-tree-container {
+      width: 35%;
+      height: 330px;
+      float: left;
+      //background-color: pink;
+
+      .tree-header {
+        width: 100%;
+        height: 38px;
+        //background-color: orange;
+
+        h4 {
+          margin-right: 4%;
+          color: @brand-primary;
+        }
+      }
+
+      .tree-content {
+        width: 100%;
+        height: 300px;
+        background-color: white;
+        overflow: auto;
+      }
+
+    }
+
+    .selection-details-container {
+      width: 63%;
+      height: 330px;
+      float: right;
+
+
+      .nav-tabs {
+        border-color: @brand-primary;
+        text-transform: uppercase;
+
+        li {
+          a {
+            border: none;
+            border-bottom: solid 1px @brand-primary;
+            border-radius: 0px;
+            margin-right: 6px;
+            background: @gray3;
+            color: grey;
+          }
+
+          &.active {
+            a {
+              border-color: @brand-primary;
+              background: @brand-primary;
+              color: #FFFFFF;
+              font-weight: normal;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  /****************/
+
   .field-tree {
     .class-actions {
       margin-top: 30px;
@@ -5275,81 +5341,6 @@ p.instructions {
 
 .tree-view-ul > .tree > li {
   padding-left: 0;
-}
-
-.field-tree {
-  margin-top: 20px;
-  .ontology-tree {
-
-    margin: 0;
-    width: 40%;
-    padding: 4px 4px 0;
-    background: @white;
-
-    .class-tree-container {
-      padding: 0 5px 5px 5px;
-      background: #FFF;
-    }
-  }
-
-  .ontology-class-children {
-    width: 40%;
-  }
-
-  .field-details-view {
-    width: 58%;
-
-    .nav-tabs {
-      border-color: @brand-primary;
-      text-transform: uppercase;
-
-      .detail-view-tab {
-        a {
-          border: none;
-          border-bottom: solid 1px @brand-primary;
-          border-radius: 0px;
-          margin-right: 6px;
-          background: @gray3;
-          color: grey;
-        }
-
-        &.active {
-          a {
-            border-color: @brand-primary;
-            background: @brand-primary;
-            color: #FFFFFF;
-            font-weight: normal;
-          }
-        }
-      }
-    }
-
-    .tab-content {
-      table {
-        th {
-          padding: 8px 8px;
-          color: @brand-primary;
-          font-weight: bold;
-
-          border: none;
-          border-bottom: 1px solid #DDD;
-
-          &:first-child {
-            width: 100px;
-          }
-        }
-        tbody {
-          border-bottom: 1px solid #DDD;
-        }
-
-        td {
-          border: none;
-          border-bottom: 1px solid #DDD;
-          padding: 8px 8px;
-        }
-      }
-    }
-  }
 }
 
 .selected-field-class {
