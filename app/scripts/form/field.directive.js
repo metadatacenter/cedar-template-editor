@@ -27,10 +27,8 @@ define([
       $scope.status = {
         isopen: false
       };
-      console.log('init status.isopen ' + $scope.status.isopen);
 
       $scope.toggled = function(open) {
-        console.log('Dropdown is now: ', open);
         $scope.status.isopen = open;
       };
 
@@ -1019,7 +1017,6 @@ define([
       });
 
       $scope.$on("property:propertyAdded", function () {
-        console.log('property:propertyAdded')
         jQuery("#" + $scope.getPropertyModalId()).modal('hide');
       });
 
@@ -1090,7 +1087,6 @@ define([
       };
 
       $scope.selectField = function () {
-        console.log('selectField');
       };
 
       $scope.getShortText = function (text, maxLength, finalString, emptyString) {
