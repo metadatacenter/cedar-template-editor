@@ -333,11 +333,11 @@
           {{tsc.currentOntology.vs.prefLabel}}</h4>
       </div>
       <!-- Term and Ontology/Value Set Details header -->
-
       <div class="field-details-view table-cell-style" ng-if="tsc.isCurrentOntology()">
         <ul class="nav nav-tabs" role="tablist">
           <li role="presentation" class="detail-view-tab active">
-            <a href="#class-details" aria-controls="class-details" role="tab" data-toggle="tab">Term Details</a>
+            <a ng-if="!tsc.isSearchingProperties()" href="#class-details" aria-controls="class-details" role="tab" data-toggle="tab">Term Details</a>
+            <a ng-if="tsc.isSearchingProperties()" href="#class-details" aria-controls="class-details" role="tab" data-toggle="tab">Property Details</a>
           </li>
           <li role="presentation" class="detail-view-tab">
             <a ng-if="tsc.selectedClass.type=='OntologyClass' || (!tsc.selectedClass.type && tsc.isCurrentOntology())"
