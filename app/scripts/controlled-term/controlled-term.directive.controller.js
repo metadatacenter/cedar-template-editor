@@ -87,9 +87,7 @@ define([
      */
 
      function addProperty(property) {
-       console.log('addProperty');
       if (vm.filterSelection === 'properties') {
-
         var id = DataManipulationService.getId(vm.field);
 
         // tell the form to update the property for this field
