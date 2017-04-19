@@ -60,10 +60,8 @@ define([
 
         // build the map of terms
         scope.getType = function() {
-          console.log('getType');
 
           scope.terms = DataManipulationService.getFieldControlledTerms(scope.field);
-          console.log(scope.terms);
 
           if (scope.terms) {
 
@@ -108,7 +106,6 @@ define([
 
             // hang on to the new map
             scope.addedFields = myMap;
-            console.log(scope.addedFields);
 
           }
           else {

@@ -5,6 +5,7 @@
     <controlled-term-search
         field-name="$root.finalTitle"
         search-mode="ctdc.filterSelection"
+        add-callback="ctdc.addProperty"
         reset-callback="ctdc.startOver"
         current-ontology="ctdc.currentOntology"
         selected-class="ctdc.selectedClass"
@@ -14,7 +15,8 @@
         is-creating-vs="false"
         tree-visible="ctdc.treeVisible"
         modal-id="ctdc.modalId"
-        search-for="properties">
+        search-for="properties"
+        >
     </controlled-term-search>
 
     <div class="class-actions">
@@ -36,6 +38,7 @@
     <controlled-term-search
         field-name="$root.finalTitle"
         search-mode="ctdc.filterSelection"
+        add-callback="ctdc.addClass"
         reset-callback="ctdc.startOver"
         current-ontology="ctdc.currentOntology"
         selected-class="ctdc.selectedClass"
@@ -72,6 +75,7 @@
     <controlled-term-search
         field-name="$root.finalTitle"
         search-mode="ctdc.filterSelection"
+        add-callback="ctdc.addValueConstraint"
         reset-callback="ctdc.startOver"
         current-ontology="ctdc.currentOntology"
         selected-class="ctdc.selectedClass"

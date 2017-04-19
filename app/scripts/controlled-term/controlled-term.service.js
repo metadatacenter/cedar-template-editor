@@ -169,7 +169,9 @@ define([
       // Get class details
       controlledTermDataService.getClassById(ontologyAcronym, selection["@id"]).then(function (response) {
         $scope.classDetails = response;
-        $scope.selectedClass.hasChildren = $scope.classDetails.hasChildren;
+        if ($scope.selectedClass) {
+          $scope.selectedClass.hasChildren = $scope.classDetails.hasChildren;
+        }
       });
 
       $q.all({
@@ -192,7 +194,9 @@ define([
       controlledTermDataService.getValueById(ontologyAcronym, selection["@id"]).then(function (response) {
         $scope.classDetails = response;
         // Values do not have children
-        $scope.selectedClass.hasChildren = false;
+        if ($scope.selectedClass) {
+          $scope.selectedClass.hasChildren = false;
+        }
       });
       $q.all({
         info: controlledTermDataService.getVsCollectionById(ontologyAcronym),

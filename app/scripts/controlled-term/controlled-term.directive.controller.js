@@ -87,12 +87,8 @@ define([
      */
 
      function addProperty(property) {
-
-
       if (vm.filterSelection === 'properties') {
-
         var id = DataManipulationService.getId(vm.field);
-        console.log('addProperty ' + property + ' '  + id);
 
         // tell the form to update the property for this field
         $rootScope.$broadcast('property:propertyAdded', [property, id]);
@@ -185,6 +181,7 @@ define([
       //$element.parents("#" + vm.modalId).modal({show: false, backdrop: "static"});
       //$element.parents(".controlled-terms-modal-vm.filterSelector").hide();
 
+
       // TODO broadcast the action for now because parent scope is not working
       $rootScope.$broadcast('field:controlledTermAdded');
 
@@ -194,7 +191,7 @@ define([
      * Add value constraint depending on enabled action
      */
     function addValueConstraint(action) {
-      if (action == 'add_class') {
+      if (!action || action == 'add_class') {
         addOntologyClassToValueConstraint(vm.stagedOntologyClassValueConstraints[0]);
       }
       else if (action == 'add_children') {
@@ -251,7 +248,7 @@ define([
         }
       }
 
-      if (!alreadyAdded) {
+      if (!alreadyAdded && constraint) {
         if (constraint.label == '' && !constraint.provisionalClass) {
           var i = vm.stagedOntologyClassValueConstraints.indexOf(constraint);
           constraint.label = vm.stagedOntologyClassValueConstraintData[i].label;
@@ -485,7 +482,7 @@ define([
     };
 
     function stageOntologyClass(selection, type) {
-      if (selection) {
+      if (selection && vm.currentOntology) {
         if (type === undefined) {
           type = 'OntologyClass';
         }
@@ -549,7 +546,6 @@ define([
             var property = args[0];
             var id = DataManipulationService.getId(vm.field);
 
-            console.log('addProperty ' + property + ' '  + id);
             $rootScope.$broadcast('property:propertyAdded', [property, id]);
           }
         }
