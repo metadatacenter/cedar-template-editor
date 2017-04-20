@@ -12701,6 +12701,52 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
 .controlled-term-options .search-results-section .results-headers-table th {
   border: none;
 }
+.controlled-term-options .additional-details {
+  width: 100%;
+  margin-top: 0.8em;
+}
+.controlled-term-options .additional-details .terminology-tree-container {
+  width: 35%;
+  height: 330px;
+  float: left;
+}
+.controlled-term-options .additional-details .terminology-tree-container .tree-header {
+  width: 100%;
+  height: 38px;
+}
+.controlled-term-options .additional-details .terminology-tree-container .tree-header h4 {
+  margin-right: 4%;
+  color: #5795ba;
+}
+.controlled-term-options .additional-details .terminology-tree-container .tree-content {
+  width: 100%;
+  height: 300px;
+  background-color: white;
+  overflow: hidden;
+}
+.controlled-term-options .additional-details .selection-details-container {
+  width: 63%;
+  height: 330px;
+  float: right;
+}
+.controlled-term-options .additional-details .selection-details-container .nav-tabs {
+  border-color: #5795ba;
+  text-transform: uppercase;
+}
+.controlled-term-options .additional-details .selection-details-container .nav-tabs li a {
+  border: none;
+  border-bottom: solid 1px #5795ba;
+  border-radius: 0px;
+  margin-right: 6px;
+  background: #d2d2d2;
+  color: grey;
+}
+.controlled-term-options .additional-details .selection-details-container .nav-tabs li.active a {
+  border-color: #5795ba;
+  background: #5795ba;
+  color: #FFFFFF;
+  font-weight: normal;
+}
 .controlled-term-options .field-tree .class-actions {
   margin-top: 30px;
   text-align: center;
@@ -12756,6 +12802,9 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
 .controlled-term-options .tab-content .table-responsive .no-selected-class,
 .controlled-term-options .tab-content .tab-pane .no-selected-class {
   padding-top: 30px;
+}
+.controlled-term-options .ontology-tree {
+  width: 100%;
 }
 .controlled-term-options .ontology-tree > h4 {
   margin-top: 0px;
@@ -13873,61 +13922,6 @@ p.instructions {
 }
 .tree-view-ul > .tree > li {
   padding-left: 0;
-}
-.field-tree {
-  margin-top: 20px;
-}
-.field-tree .ontology-tree {
-  margin: 0;
-  width: 40%;
-  padding: 4px 4px 0;
-  background: #ffffff;
-}
-.field-tree .ontology-tree .class-tree-container {
-  padding: 0 5px 5px 5px;
-  background: #FFF;
-}
-.field-tree .ontology-class-children {
-  width: 40%;
-}
-.field-tree .field-details-view {
-  width: 58%;
-}
-.field-tree .field-details-view .nav-tabs {
-  border-color: #5795ba;
-  text-transform: uppercase;
-}
-.field-tree .field-details-view .nav-tabs .detail-view-tab a {
-  border: none;
-  border-bottom: solid 1px #5795ba;
-  border-radius: 0px;
-  margin-right: 6px;
-  background: #d2d2d2;
-  color: grey;
-}
-.field-tree .field-details-view .nav-tabs .detail-view-tab.active a {
-  border-color: #5795ba;
-  background: #5795ba;
-  color: #FFFFFF;
-  font-weight: normal;
-}
-.field-tree .field-details-view .tab-content table th {
-  padding: 8px 8px;
-  color: #5795ba;
-  font-weight: bold;
-  border: none;
-  border-bottom: 1px solid #DDD;
-}
-.field-tree .field-details-view .tab-content table th:first-child {
-  width: 100px;
-}
-.field-tree .field-details-view .tab-content table tbody {
-  border-bottom: 1px solid #DDD;
-}
-.field-tree .field-details-view .tab-content table td {
-  border: none;
-  border-bottom: 1px solid #DDD;
-  padding: 8px 8px;
 }
 .selected-field-class {
   margin-left: -28px;

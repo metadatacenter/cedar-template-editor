@@ -243,7 +243,7 @@
       <table class="table table-condensed results-headers-table search-results-headers-table">
         <thead>
         <tr>
-          <th width="15%" ng-if="tsc.isSearchingClasses()">Term (field or value classes)</th>
+          <th width="15%" ng-if="tsc.isSearchingClasses()">Term</th>
           <th width="15%" ng-if="tsc.isSearchingValueSets()">Value Set</th>
           <th width="32%" ng-if="tsc.isSearchingClasses()">Definition</th>
           <th width="32%" ng-if="tsc.isSearchingValueSets()">Description</th>
@@ -376,57 +376,42 @@
     <div class="loader2"></div>
   </div>
 
-  <div class="field-tree clear"
+  <!--Start new tree-->
+  <div class="additional-details clear"
       ng-show="tsc.treeVisible && !tsc.isLoadingClassDetails && !tsc.isLoadingOntologyDetails">
-
-    <div class="field-tree-header table-style">
-      <!-- Ontology Tree header -->
-      <div class="ontology-tree-header table-cell-style" ng-if="tsc.isCurrentOntology()">
+    <!-- Ontology tree -->
+    <div class="terminology-tree-container">
+      <!-- Ontology tree header -->
+      <div class="tree-header" ng-if="tsc.isCurrentOntology()">
         <h4 ng-if="tsc.selectedClass.type=='OntologyClass' || !tsc.selectedClass">Ontology:
           {{tsc.currentOntology.info.id}}</h4>
         <h4 ng-if="tsc.selectedClass.type=='Value' || tsc.selectedClass.type=='ValueSet'">Value Set:
           {{tsc.currentOntology.vs.prefLabel}}</h4>
       </div>
-      <!-- Term and Ontology/Value Set Details header -->
-
-      <div class="field-details-view table-cell-style" ng-if="tsc.isCurrentOntology()">
-        <ul class="nav nav-tabs" role="tablist">
-          <li role="presentation" class="detail-view-tab active">
-            <a href="#class-details" aria-controls="class-details" role="tab" data-toggle="tab">Term Details</a>
-          </li>
-          <li role="presentation" class="detail-view-tab">
-            <a ng-if="tsc.selectedClass.type=='OntologyClass' || (!tsc.selectedClass.type && tsc.isCurrentOntology())"
-                href="#ontology-details" aria-controls="ontology-details" role="tab" data-toggle="tab">Ontology
-              Details</a>
-            <a ng-if="tsc.selectedClass.type=='Value' || tsc.selectedClass.type=='ValueSet'" href="#ontology-details"
-                aria-controls="ontology-details" role="tab" data-toggle="tab">Value Set Details</a>
-          </li>
-        </ul>
+      <!-- Ontology tree content -->
+      <div class="tree-content">
+        <!-- Ontology Tree content -->
+        <!--Note: the ng-if below forces to render again the cedar-class-tree directive and to scroll to the right place-->
+        <div class="ontology-tree pull-left"
+            ng-if="tsc.isCurrentOntology() && tsc.treeVisible && !tsc.isLoadingClassDetails">
+          <div class="tree tree-view-ul tree-view list-unstyled class-tree-container"
+              ng-if="!tsc.currentOntology.info.flat">
+            <cedar-class-tree
+                tree="tsc.currentOntology.tree"
+                selected-node="tsc.selectedClass"
+                is-selected-callback="tsc.checkIfSelected"
+                get-class-details-callback="tsc.getClassDetails">
+            </cedar-class-tree>
+          </div>
+          <div class="tree tree-view-message" ng-if="tsc.currentOntology.info.flat">Tree browsing not supported for this
+            ontology
+          </div>
+        </div>
       </div>
-      <div class="clearfix"></div>
     </div>
-    <div class="field-tree-details">
-      <!-- Ontology Tree content -->
-      <!--Note: the ng-if below forces to render again the cedar-class-tree directive and to scroll to the right place-->
-      <div class="ontology-tree pull-left"
-          ng-if="tsc.isCurrentOntology() && tsc.treeVisible && !tsc.isLoadingClassDetails">
-        <div class="tree tree-view-ul tree-view list-unstyled class-tree-container"
-            ng-if="!tsc.currentOntology.info.flat">
-          <cedar-class-tree
-              tree="tsc.currentOntology.tree"
-              selected-node="tsc.selectedClass"
-              is-selected-callback="tsc.checkIfSelected"
-              get-class-details-callback="tsc.getClassDetails">
-          </cedar-class-tree>
-        </div>
-        <div class="tree tree-view-message" ng-if="tsc.currentOntology.info.flat">Tree browsing not supported for this
-          ontology
-        </div>
-      </div>
-      <!-- Term and Ontology/Value Set Details content -->
-      <div class="field-details-view pull-right" ng-if="tsc.isCurrentOntology()">
-        <div class="tab-content">
-          <div id="class-details" class="tab-pane active" role="tabpanel">
+    <div class="selection-details-container" ng-if="tsc.isCurrentOntology()">
+      <uib-tabset>
+        <uib-tab ng-if="!tsc.isSearchingProperties()" index="0" heading="Term Details">
             <div class="no-selected-class text-center" ng-hide="tsc.classDetails">Click on a term on the left to view
               details
             </div>
@@ -448,8 +433,12 @@
                 </tbody>
               </table>
             </div>
-          </div>
-          <!--Ontology details-->
+        </uib-tab>
+        <uib-tab ng-if="tsc.isSearchingProperties()" index="0" heading="Property Details">
+          <div class="no-selected-class text-center">-</div>
+        </uib-tab>
+        <uib-tab ng-if="tsc.selectedClass.type=='OntologyClass' || (!tsc.selectedClass.type && tsc.isCurrentOntology())"
+            index="1" heading="Ontology Details">
           <div ng-if="tsc.selectedClass.type=='OntologyClass' || (!tsc.selectedClass.type && tsc.isCurrentOntology())"
               id="ontology-details" class="tab-pane" role="tabpanel">
             <div class="table-responsive">
@@ -482,44 +471,45 @@
               </table>
             </div>
           </div>
-          <!--Value Set details-->
-          <div ng-if="tsc.selectedClass.type=='Value' || tsc.selectedClass.type=='ValueSet'" id="ontology-details"
-              class="tab-pane" role="tabpanel">
-            <div class="table-responsive">
-              <table class="table table-striped">
-                <tbody>
-                <tr>
-                  <th>Value Set</th>
-                  <td>{{tsc.currentOntology.vs.prefLabel}}</td>
-                </tr>
-                <tr>
-                  <th>Id</th>
-                  <td>
-                    <a ng-href="{{tsc.currentOntology.vs['@id']}}"
-                        target="_blank">{{tsc.currentOntology.vs['@id']}}</a>
-                  </td>
-                </tr>
-                <tr>
-                  <th>Collection</th>
-                  <td>{{tsc.currentOntology.info.id}}</td>
-                </tr>
-                <tr ng-if="tsc.classDetails.definitions[0]">
-                  <th>Description</th>
-                  <td>{{(tsc.currentOntology.vs.definitions[0] | htmlToPlainText) || '-'}}</td>
-                </tr>
-                <tr>
-                  <th>No. Values</th>
-                  <td>{{tsc.currentOntology.tree.length | number}}</td>
-                </tr>
-                </tbody>
-              </table>
-            </div>
+        </uib-tab>
+        <uib-tab ng-if="tsc.selectedClass.type=='Value' || tsc.selectedClass.type=='ValueSet'" index="1"
+            heading="Value Set Details">
+          <div class="table-responsive">
+            <table class="table table-striped">
+              <tbody>
+              <tr>
+                <th>Value Set</th>
+                <td>{{tsc.currentOntology.vs.prefLabel}}</td>
+              </tr>
+              <tr>
+                <th>Id</th>
+                <td>
+                  <a ng-href="{{tsc.currentOntology.vs['@id']}}"
+                      target="_blank">{{tsc.currentOntology.vs['@id']}}</a>
+                </td>
+              </tr>
+              <tr>
+                <th>Collection</th>
+                <td>{{tsc.currentOntology.info.id}}</td>
+              </tr>
+              <tr ng-if="tsc.classDetails.definitions[0]">
+                <th>Description</th>
+                <td>{{(tsc.currentOntology.vs.definitions[0] | htmlToPlainText) || '-'}}</td>
+              </tr>
+              <tr>
+                <th>No. Values</th>
+                <td>{{tsc.currentOntology.tree.length | number}}</td>
+              </tr>
+              </tbody>
+            </table>
           </div>
-        </div>
-        <div class="clearfix"></div>
-      </div>
-      <div class="clearfix"></div>
+        </uib-tab>
+      </uib-tabset>
     </div>
+  </div>
+
+  <div class="clearfix"></div>
+
   </div>
 </div>
 
