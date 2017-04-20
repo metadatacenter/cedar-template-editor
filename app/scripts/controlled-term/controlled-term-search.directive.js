@@ -432,6 +432,7 @@ define([
               vm.selectedProperty.prefLabel = selection.prefLabel;
               vm.currentOntology.info.id = selection.source.id;
               vm.selectedResultId = resultId;
+              controlledTermService.loadTreeOfProperty(selection.details, vm);
               handleClose(close);
             }
 

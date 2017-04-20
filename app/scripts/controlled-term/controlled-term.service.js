@@ -16,6 +16,7 @@ define([
       getSelfUrl             : getSelfUrl,
       loadOntologyRootClasses: loadOntologyRootClasses,
       loadTreeOfClass        : loadTreeOfClass,
+      loadTreeOfProperty     : loadTreeOfProperty,
       loadTreeOfValue        : loadTreeOfValue,
       loadTreeOfValueSet     : loadTreeOfValueSet,
       sortBrowseResults      : sortBrowseResults,
@@ -177,6 +178,31 @@ define([
       $q.all({
         info: controlledTermDataService.getOntologyById(ontologyAcronym),
         tree: controlledTermDataService.getClassTree(ontologyAcronym, selection['@id']),
+      }).then(function (values) {
+        $scope.currentOntology = values;
+        $scope.searchPreloader = false;
+        $scope.isLoadingClassDetails = false;
+      });
+    }
+
+    function loadTreeOfProperty(selection, $scope) {
+      $scope.searchPreloader = true;
+      $scope.selectedClass = null;
+      $scope.isLoadingClassDetails = true;
+      var ontologyAcronym = getLastFragmentOfUri(selection.source);
+      $scope.selectedClass = selection;
+
+      // Get property details
+      controlledTermDataService.getPropertyById(ontologyAcronym, selection["@id"]).then(function (response) {
+        $scope.classDetails = response;
+        if ($scope.selectedClass) {
+          $scope.selectedClass.hasChildren = $scope.classDetails.hasChildren;
+        }
+      });
+
+      $q.all({
+        info: controlledTermDataService.getOntologyById(ontologyAcronym),
+        tree: controlledTermDataService.getPropertyTree(ontologyAcronym, selection['@id']),
       }).then(function (values) {
         $scope.currentOntology = values;
         $scope.searchPreloader = false;

@@ -434,7 +434,27 @@
             </div>
         </uib-tab>
         <uib-tab ng-if="tsc.isSearchingProperties()" index="0" heading="Property Details">
-          <div class="no-selected-class text-center">-</div>
+          <div class="no-selected-class text-center" ng-hide="tsc.classDetails">Click on a term on the left to view
+            details
+          </div>
+          <div class="table-responsive">
+            <table class="table table-striped">
+              <tbody ng-show="tsc.classDetails">
+              <tr>
+                <th>Name</th>
+                <td>{{tsc.classDetails.prefLabel}}</td>
+              </tr>
+              <tr>
+                <th>Id</th>
+                <td>{{tsc.classDetails['@id']}}</td>
+              </tr>
+              <tr ng-if="tsc.classDetails.definitions[0]">
+                <th>Definition</th>
+                <td>{{tsc.classDetails.definitions[0]}}</td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
         </uib-tab>
         <uib-tab ng-if="tsc.selectedClass.type=='OntologyClass' || (!tsc.selectedClass.type && tsc.isCurrentOntology())"
             index="1" heading="Ontology Details">
