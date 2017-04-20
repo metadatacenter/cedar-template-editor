@@ -15703,6 +15703,15 @@ textarea.curlSample {
   border-radius: 0px;
   min-height: 100px;
 }
+#outputJSON .warning,
+#templateJSON .warning {
+  font-size: 16px;
+  padding: 40px 0;
+  color: #ccc;
+  background-color: #ffffff;
+  border-width: 0px;
+  min-height: 100px;
+}
 @font-face {
   font-family: "project-cedar";
   src: url("../media/fonts/project-cedar.eot");
