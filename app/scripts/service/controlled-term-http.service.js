@@ -74,6 +74,10 @@ define([
       return HttpBuilderService.get(UrlService.getClassById(acronym, classId));
     };
 
+    service.getPropertyById = function (acronym, propertyId) {
+      return HttpBuilderService.get(UrlService.getPropertyById(acronym, propertyId));
+    };
+
     service.getValueById = function (acronym, valueId) {
       return HttpBuilderService.get(UrlService.getValueById(acronym, valueId));
     };
@@ -84,6 +88,10 @@ define([
 
     service.getClassTree = function (acronym, classId) {
       return HttpBuilderService.get(UrlService.getClassTree(acronym, classId));
+    };
+
+    service.getPropertyTree = function (acronym, propertyId) {
+      return HttpBuilderService.get(UrlService.getPropertyTree(acronym, propertyId));
     };
 
     service.getValuesInValueSet = function (vsCollection, vsId) {
