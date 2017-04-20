@@ -27,7 +27,8 @@ require.config({
     'app'                  : 'scripts/app',
     'cedar/template-editor': 'scripts',
 
-    'ckeditor': 'bower_components/ng-ckeditor/libs/ckeditor/ckeditor'
+    'ckeditor': 'bower_components/ng-ckeditor/libs/ckeditor/ckeditor',
+    'jsonld': 'bower_components/jsonld/js/jsonld'
   },
   shim    : {
     'angular'                                                                            : {

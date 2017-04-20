@@ -15687,6 +15687,22 @@ textarea.curlSample {
   font-family: Courier;
   font-size: 11px;
 }
+#outputJSON .nav-tabs > li > a,
+#templateJSON .nav-tabs > li > a {
+  border: 0px solid #ccc;
+  border-radius: 0;
+}
+#outputJSON .nav-tabs > li > a i.cedar-svg-rdf,
+#templateJSON .nav-tabs > li > a i.cedar-svg-rdf {
+  padding-right: 10px;
+}
+#outputJSON pre,
+#templateJSON pre {
+  background: white;
+  border: 0px;
+  border-radius: 0px;
+  min-height: 100px;
+}
 @font-face {
   font-family: "project-cedar";
   src: url("../media/fonts/project-cedar.eot");
@@ -15839,6 +15855,12 @@ textarea.curlSample {
 }
 .cedar-svg-link:before {
   content: "Z";
+}
+.cedar-svg-rdf:before {
+  content: "0";
+}
+.cedar-svg-rdf1:before {
+  content: "1";
 }
 /*
 ================================================

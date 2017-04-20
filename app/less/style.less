@@ -318,7 +318,6 @@ button {
     color: black;
   }
 
-
   #element-name-container,
   #element-controlled-term-container {
 
@@ -1601,10 +1600,6 @@ body.search-browse-modal {
   }
 }
 
-
-
-
-
 .template-header {
   width: 100%;
   background-color: @header-bg-color;
@@ -1669,18 +1664,20 @@ body.search-browse-modal {
   .show-type {
     background: transparent;
     color: @white;
-    .class-list,.property-list {
-      border-radius: 0;margin:0;padding:0
+    .class-list, .property-list {
+      border-radius: 0;
+      margin: 0;
+      padding: 0
     }
   }
 
   .class-dropdown {
-    display:inline-block;
+    display: inline-block;
     button {
-      background:transparent;
-      position:relative;
-      left:-12px;
-      color:@white;
+      background: transparent;
+      position: relative;
+      left: -12px;
+      color: @white;
     }
   }
 
@@ -3589,27 +3586,31 @@ section.dashboard-elements {
 
 .field-header {
   .field-icon {
-    color:@med-gray;
+    color: @med-gray;
   }
   .type-label {
-    text-transform:none;
-    padding-left:10px;
+    text-transform: none;
+    padding-left: 10px;
   }
   .show-type {
-    background:transparent;
-    color:#5795ba
+    background: transparent;
+    color: #5795ba
   }
-  .property-dropdown,.class_dropdown {
-    display:inline-block;
-    color:#5795ba;
+  .property-dropdown, .class_dropdown {
+    display: inline-block;
+    color: #5795ba;
     button {
-      background:transparent;position:relative;left:-12px
+      background: transparent;
+      position: relative;
+      left: -12px
     }
   }
 }
 
-.class-list,.property-list {
-  border-radius: 0;margin:0;padding:0;
+.class-list, .property-list {
+  border-radius: 0;
+  margin: 0;
+  padding: 0;
 }
 
 .input-type-container {
@@ -5400,8 +5401,6 @@ p.instructions {
   }
 }
 
-
-
 .class-list-container, .many-classes-list {
 
   margin-bottom: 10px;
@@ -5445,13 +5444,13 @@ p.instructions {
 }
 
 .menu-form {
-  margin:0;
-  padding:0;
-  margin-bottom:0;
+  margin: 0;
+  padding: 0;
+  margin-bottom: 0;
   .class-list-container {
-    margin-bottom:0;
+    margin-bottom: 0;
     .empty {
-      color:#ccc;
+      color: #ccc;
     }
   }
 }
@@ -6941,12 +6940,12 @@ table.apiKey {
           opacity: 0.5;
         }
         &.selected {
-          a,a:hover {
-            color:@white;
+          a, a:hover {
+            color: @white;
           }
         }
-        a,a:hover {
-          color:@brand-primary;;
+        a, a:hover {
+          color: @brand-primary;;
         }
       }
     }
@@ -7323,6 +7322,24 @@ textarea.curlSample {
   font-family: Courier;
   font-size: 11px
 }
+
+// document preview in json-ld or rdf
+#outputJSON, #templateJSON {
+  .nav-tabs > li > a {
+    border: 0px solid #ccc;
+    border-radius: 0;
+    i.cedar-svg-rdf {
+      padding-right:10px;
+    }
+  }
+  .nav-tabs > li.active > a {
+  }
+  pre {
+    background:white;border:0px;border-radius: 0px;
+    min-height:100px;
+  }
+}
+
 
 
 
