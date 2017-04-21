@@ -112,7 +112,7 @@ define([
 
           // Reset search options when closing the modal
           jQuery("#" + vm.modalId).on('hidden.bs.modal', function () {
-            reset(false, false, false, false, false);
+            reset(false, false, false, false, true);
           });
 
           /**
@@ -497,13 +497,13 @@ define([
           }
 
           function switchToCreate(mode) {
-            reset(false, false, false, false, false);
+            reset(false, false, false, false, true);
             vm.action = 'create';
             vm.searchScope = mode;
           }
 
           function switchToSearch(mode) {
-            reset(false, false, false, false, false);
+            reset(false, false, false, false, true);
             vm.action = 'search';
             vm.searchScope = mode;
           }
