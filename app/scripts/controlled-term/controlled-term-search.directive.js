@@ -83,6 +83,7 @@ define([
           vm.isTypeProperty = isTypeProperty;
           vm.getDefaultSearchQuery = getDefaultSearchQuery;
           vm.getClassDetails = getClassDetails;
+
           vm.getShortText = getShortText;
           vm.hideTree = hideTree;
           vm.isCurrentOntology = isCurrentOntology;
@@ -526,6 +527,32 @@ define([
             vm.selectedClass = subtree;
 
             controlledTermDataService.getClassById(acronym, classId).then(function (response) {
+              vm.classDetails = response;
+              console.log(vm.classDetails);
+            });
+          }
+
+          function getShortText(text, maxLength, finalString, emptyString) {
+            return StringUtilsService.getShortText(text, maxLength, finalString, emptyString);
+          }
+
+          /* Hide Ontology Tree and Details */
+          function hideTree() {
+            vm.treeVisible = false;
+            vm.currentOntology = '';
+            vm.classDetails = '';
+          }
+
+          /* This function is passed as a callback down through class tree and child tree directives */
+          // TODO: update names to say 'property' instead of 'class'.
+          function getPropertyDetails(subtree) {
+            var acronym = controlledTermService.getAcronym(subtree);
+            var classId = subtree['@id'];
+
+            // Get selected class details from the links.self endpoint provided.
+            vm.selectedClass = subtree;
+
+            controlledTermDataService.getPropertyById(acronym, classId).then(function (response) {
               vm.classDetails = response;
               console.log(vm.classDetails);
             });

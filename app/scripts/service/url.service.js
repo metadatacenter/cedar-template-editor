@@ -262,6 +262,11 @@ define([
       return this.controlledTerm() + '/ontologies/' + acronym + '/classes/' + encodeURIComponent(classId);
     };
 
+    service.getPropertyChildren = function (acronym, propertyId) {
+      return this.controlledTerm() + '/ontologies/' + acronym + '/properties/' + encodeURIComponent(propertyId)
+          + "/children";
+    };
+
     service.getPropertyById = function (acronym, propertyId) {
       return this.controlledTerm() + '/ontologies/' + acronym + '/properties/' + encodeURIComponent(propertyId);
     };

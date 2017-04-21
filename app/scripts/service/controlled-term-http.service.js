@@ -78,6 +78,10 @@ define([
       return HttpBuilderService.get(UrlService.getPropertyById(acronym, propertyId));
     };
 
+    service.getPropertyChildren = function (acronym, propertyId) {
+      return HttpBuilderService.get(UrlService.getPropertyChildren(acronym, propertyId));
+    };
+
     service.getValueById = function (acronym, valueId) {
       return HttpBuilderService.get(UrlService.getValueById(acronym, valueId));
     };

@@ -38,6 +38,7 @@ define([
       getRootClasses                 : getRootClasses,
       getClassChildren               : getClassChildren,
       getClassById                   : getClassById,
+      getPropertyChildren            : getPropertyChildren,
       getPropertyById                : getPropertyById,
       getClassDescendants            : getClassDescendants,
       getClassParents                : getClassParents,
@@ -352,6 +353,19 @@ define([
       init();
       return AuthorizedBackendService.doCall(
           ControlledTermHttpService.getClassById(acronym, classId),
+          function (response) {
+            return response.data;
+          },
+          function (err) {
+            return handleServerError(err);
+          }
+      );
+    }
+
+    function getPropertyChildren(acronym, propertyId) {
+      init();
+      return AuthorizedBackendService.doCall(
+          ControlledTermHttpService.getPropertyChildren(acronym, propertyId),
           function (response) {
             return response.data;
           },
