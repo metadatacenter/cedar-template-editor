@@ -165,12 +165,18 @@ define([
       $scope.isLoadingClassDetails = true;
       var ontologyAcronym = getLastFragmentOfUri(selection.source);
       $scope.selectedClass = selection;
+      console.log('loadTreeOfClass  '  + $scope.stageValueConstraintAction);
 
       // Get class details
       controlledTermDataService.getClassById(ontologyAcronym, selection["@id"]).then(function (response) {
         $scope.classDetails = response;
         if ($scope.selectedClass) {
           $scope.selectedClass.hasChildren = $scope.classDetails.hasChildren;
+
+          if ($scope.selectedClass.hasChildren) {
+            $scope.stageValueConstraintAction = 'add_children';
+            console.log('loadTreeOfClass hasChildren ' + $scope.selectedClass.hasChildren + ' ' + $scope.stageValueConstraintAction);
+          }
         }
       });
 

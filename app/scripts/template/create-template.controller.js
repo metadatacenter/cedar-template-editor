@@ -335,6 +335,24 @@ define([
           return copiedForm;
         };
 
+
+
+        $scope.toRDF = function () {
+          var jsonld = require('jsonld');
+          var copiedForm = jQuery.extend(true, {}, $rootScope.jsonToSave);
+          if (copiedForm) {
+            jsonld.toRDF(copiedForm, {format: 'application/nquads'}, function(err, nquads) {
+              $rootScope.jsonToRDF = nquads;
+              return nquads;
+            });
+          }
+        };
+
+        // keep our rdf display up-to-date
+        $scope.$watch('form', function (v) {
+          $scope.toRDF();
+        });
+
         // cancel the form and go back to the current folder
         $scope.cancelTemplate = function () {
           $location.url(FrontendUrlService.getFolderContents(QueryParamUtilsService.getFolderId()));

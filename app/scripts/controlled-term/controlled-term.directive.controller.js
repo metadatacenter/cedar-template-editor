@@ -191,7 +191,7 @@ define([
      * Add value constraint depending on enabled action
      */
     function addValueConstraint(action) {
-      if (!action || action == 'add_class') {
+      if (!action ||  action == 'add_class') {
         addOntologyClassToValueConstraint(vm.stagedOntologyClassValueConstraints[0]);
       }
       else if (action == 'add_children') {
@@ -434,6 +434,7 @@ define([
     ]
 
     function stageBranchValueConstraint(selection) {
+      console.log('stageBranchValueConstraint');
       vm.stagedBranchesValueConstraints = [];
       var existed = false;
       angular.forEach(vm.stagedBranchesValueConstraints, function (branchValueConstraint) {
@@ -476,7 +477,9 @@ define([
     };
 
     function stageOntologyClassValueConstraint(selection, type) {
+      console.log('stageOntologyClassValueConstraint ' + vm.stageValueConstraintAction);
       vm.stageValueConstraintAction = "add_class";
+      console.log('stageOntologyClassValueConstraint updated ' + vm.stageValueConstraintAction);
       vm.stagedOntologyClassValueConstraints = [];
       stageOntologyClass(selection, type);
     };
@@ -668,12 +671,13 @@ define([
         },
         function (value) {
           if (!value) {
-            // 'add class' selected by default
             vm.stageValueConstraintAction = 'add_class';
+            console.log('vm.selectedClass sets add_cass');
           }
           else {
             if (value.type == "OntologyClass" || value.type == "Value") {
-              vm.stageValueConstraintAction = 'add_class';
+              console.log('vm.selectedClass sets add_class');
+                vm.stageValueConstraintAction = 'add_class';
               vm.stageOntologyClassValueConstraint(value);
             }
             else if (value.type == "ValueSet") {

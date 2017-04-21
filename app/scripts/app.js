@@ -35,6 +35,7 @@ define([
   'lib/angulartics/dist/angulartics.min',
   'lib/angulartics-google-analytics/dist/angulartics-google-analytics.min',
   'lib/ngprogress/build/ngprogress.min',
+  'jsonld',
 
   // custom libraries
   'cedar/template-editor/handsontable/SpreadsheetContext',
@@ -55,7 +56,7 @@ define([
 
   // classic javascript, app data
   'cedar/template-editor/classic/app-data'
-], function (angular) {
+], function (angular, jsonld) {
   return angular.module('cedar.templateEditor', [
     'ui.bootstrap',
     'ui.keypress',

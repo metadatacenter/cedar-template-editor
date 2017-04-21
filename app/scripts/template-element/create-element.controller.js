@@ -308,6 +308,17 @@ define([
       }
     });
 
+    $scope.toRDF = function () {
+      var jsonld = require('jsonld');
+      var copiedForm = jQuery.extend(true, {}, $rootScope.jsonToSave);
+      if (copiedForm) {
+        jsonld.toRDF(copiedForm, {format: 'application/nquads'}, function(err, nquads) {
+          $rootScope.jsonToRDF = nquads;
+          return nquads;
+        });
+      }
+    };
+
     // create a copy of the form with the _tmp fields stripped out
     $scope.stripTmpFields = function () {
       var copiedForm = jQuery.extend(true, {}, $rootScope.jsonToSave);
