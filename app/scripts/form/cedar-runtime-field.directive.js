@@ -795,7 +795,6 @@ define([
 
           if (!allRequiredFieldsAreFilledIn) {
             // add this field instance the the emptyRequiredField array
-            console.log('emptyRequiredField  1');
             $scope.$emit('emptyRequiredField',
                 ['add', DataManipulationService.getFieldSchema($scope.field)._ui.title, $scope.uuid]);
           }

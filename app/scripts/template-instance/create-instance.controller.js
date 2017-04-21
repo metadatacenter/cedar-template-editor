@@ -120,7 +120,7 @@ define([
               UIMessageService.flashSuccess('SERVER.INSTANCE.update.success', null, 'GENERIC.Updated');
               owner.enableSaveButton();
               $rootScope.$broadcast("form:clean");
-              $rootcope.$broadcast('submitForm');
+              $rootScope.$broadcast('submitForm');
             },
             function (err) {
               UIMessageService.showBackendError('SERVER.INSTANCE.update.error', err);
