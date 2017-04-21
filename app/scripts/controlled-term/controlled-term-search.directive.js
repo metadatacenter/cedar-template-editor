@@ -83,7 +83,7 @@ define([
           vm.isTypeProperty = isTypeProperty;
           vm.getDefaultSearchQuery = getDefaultSearchQuery;
           vm.getClassDetails = getClassDetails;
-
+          vm.getPropertyDetails = getPropertyDetails;
           vm.getShortText = getShortText;
           vm.hideTree = hideTree;
           vm.isCurrentOntology = isCurrentOntology;
@@ -420,17 +420,11 @@ define([
               vm.selectedClass.prefLabel = selection.prefLabel;
               vm.currentOntology.info.id = selection.source.id;
               vm.selectedResultId = resultId;
-
               if (selection.details.type == 'OntologyClass') {
                 controlledTermService.loadTreeOfClass(selection.details, vm);
-
-                console.log(selection.details + ' ' + vm.stageValueConstraintAction);
-
-
                 handleClose(close);
               } else if (selection.details.type == 'Value') {
                 controlledTermService.loadTreeOfValue(selection.details, vm);
-
                 handleClose(close);
               }
             }
@@ -525,10 +519,8 @@ define([
 
             // Get selected class details from the links.self endpoint provided.
             vm.selectedClass = subtree;
-
             controlledTermDataService.getClassById(acronym, classId).then(function (response) {
               vm.classDetails = response;
-              console.log(vm.classDetails);
             });
           }
 
@@ -554,7 +546,6 @@ define([
 
             controlledTermDataService.getPropertyById(acronym, classId).then(function (response) {
               vm.classDetails = response;
-              console.log(vm.classDetails);
             });
           }
 

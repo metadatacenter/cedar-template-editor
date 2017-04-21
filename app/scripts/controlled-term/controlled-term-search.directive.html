@@ -159,7 +159,7 @@
 <!-- Search Results and Ontology Tree -->
 <div class="clear search-results-section">
 
-  <!-- properties -->
+  <!-- Property results -->
   <div ng-if="(tsc.isSearchingProperties()) && tsc.resultsFound && tsc.searchFinished">
     <div class="search-results-headers">
       <table class="table table-condensed results-headers-table search-results-headers-table">
@@ -184,7 +184,7 @@
           <tr ng-repeat="result in tsc.searchResults" ng-click="tsc.selectResult(result, result.resultId, false)"   ng-dblclick="tsc.selectResult(result, result.resultId, true)"
               ng-class="{'selected-row':  (result.resultId == tsc.selectedResultId)}">
             <td>{{result.prefLabel}}</td>
-            <td>{{result.details.definitions[0] || '-'}}</td>
+            <td>{{result.details.definition || '-'}}</td>
             <td>{{tsc.getTypeForUi(result.details.type) || '-'}}</td>
             <td>{{result.source.id}}</td>
             <td>{{tsc.getShortId(result.details.id, 60)}}</td>
@@ -397,6 +397,7 @@
             ng-if="tsc.isCurrentOntology() && tsc.treeVisible && !tsc.isLoadingClassDetails">
           <div class="tree tree-view-ul tree-view list-unstyled class-tree-container"
               ng-if="!tsc.currentOntology.info.flat">
+            <!--Class Tree-->
             <cedar-class-tree ng-if="!tsc.isSearchingProperties()"
                 tree="tsc.currentOntology.tree"
                 selected-node="tsc.selectedClass"
@@ -404,6 +405,7 @@
                 get-class-details-callback="tsc.getClassDetails"
                 is-property-tree="false">
             </cedar-class-tree>
+            <!--Property tree-->
             <cedar-class-tree ng-if="tsc.isSearchingProperties()"
                 tree="tsc.currentOntology.tree"
                 selected-node="tsc.selectedClass"
