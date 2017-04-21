@@ -52,7 +52,7 @@
     <!-- Start over -->
     <div class="btn-start-over-group clearfix">
       <!--<button type="button" class="btn btn-start-over" ng-click="tsc.reset(false, false)"><span class="fa fa-refresh primary-color"></span> Start Over</button>-->
-      <button type="button" class="btn btn-start-over" ng-click="tsc.reset(false, false, false, false, false)"><span
+      <button type="button" class="btn btn-start-over" ng-click="tsc.reset(false, false, false, false, true)"><span
           class="primary-color"></span> Start Over
       </button>
     </div>
@@ -102,7 +102,8 @@
             </div>
           </div>
         </div>
-        <div ng-show="tsc.isSearchingClasses() || tsc.isSearchingProperties()">
+
+        <div  ng-show="tsc.isSearchingClasses() || tsc.isSearchingProperties() || tsc.isSearchingValueSets()">
           <b>Narrow your search to specific ontologies</b>
 
           <div class="field-ontologies">
@@ -122,6 +123,8 @@
             </tags-input>
           </div>
         </div>
+
+
       </div>
     </div>
   </div>
