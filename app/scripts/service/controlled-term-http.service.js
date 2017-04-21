@@ -30,6 +30,10 @@ define([
       return HttpBuilderService.get(UrlService.getRootClasses(ontology));
     };
 
+    service.getRootProperties = function (ontology) {
+      return HttpBuilderService.get(UrlService.getRootProperties(ontology));
+    };
+
     service.createClass = function(newClass) {
       return HttpBuilderService.post(UrlService.createClass(), angular.toJson(newClass));
     };
@@ -74,6 +78,14 @@ define([
       return HttpBuilderService.get(UrlService.getClassById(acronym, classId));
     };
 
+    service.getPropertyById = function (acronym, propertyId) {
+      return HttpBuilderService.get(UrlService.getPropertyById(acronym, propertyId));
+    };
+
+    service.getPropertyChildren = function (acronym, propertyId) {
+      return HttpBuilderService.get(UrlService.getPropertyChildren(acronym, propertyId));
+    };
+
     service.getValueById = function (acronym, valueId) {
       return HttpBuilderService.get(UrlService.getValueById(acronym, valueId));
     };
@@ -84,6 +96,10 @@ define([
 
     service.getClassTree = function (acronym, classId) {
       return HttpBuilderService.get(UrlService.getClassTree(acronym, classId));
+    };
+
+    service.getPropertyTree = function (acronym, propertyId) {
+      return HttpBuilderService.get(UrlService.getPropertyTree(acronym, propertyId));
     };
 
     service.getValuesInValueSet = function (vsCollection, vsId) {

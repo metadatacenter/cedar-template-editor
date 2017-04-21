@@ -221,6 +221,10 @@ define([
       return this.controlledTerm() + "/ontologies/" + ontology + "/classes/roots";
     };
 
+    service.getRootProperties = function (ontology) {
+      return this.controlledTerm() + "/ontologies/" + ontology + "/properties/roots";
+    };
+
     service.createClass = function () {
       return this.controlledTerm() + '/ontologies/CEDARPC/classes';
     };
@@ -262,6 +266,15 @@ define([
       return this.controlledTerm() + '/ontologies/' + acronym + '/classes/' + encodeURIComponent(classId);
     };
 
+    service.getPropertyChildren = function (acronym, propertyId) {
+      return this.controlledTerm() + '/ontologies/' + acronym + '/properties/' + encodeURIComponent(propertyId)
+          + "/children";
+    };
+
+    service.getPropertyById = function (acronym, propertyId) {
+      return this.controlledTerm() + '/ontologies/' + acronym + '/properties/' + encodeURIComponent(propertyId);
+    };
+
     service.getValueById = function (acronym, valueId) {
       return this.controlledTerm() + '/vs-collections/' + acronym + '/values/' + encodeURIComponent(valueId);
     };
@@ -273,6 +286,10 @@ define([
 
     service.getClassTree = function (acronym, classId) {
       return this.controlledTerm() + '/ontologies/' + acronym + '/classes/' + encodeURIComponent(classId) + '/tree';
+    };
+
+    service.getPropertyTree = function (acronym, propertyId) {
+      return this.controlledTerm() + '/ontologies/' + acronym + '/properties/' + encodeURIComponent(propertyId) + '/tree';
     };
 
     service.getValuesInValueSet = function (vsCollection, vsId) {

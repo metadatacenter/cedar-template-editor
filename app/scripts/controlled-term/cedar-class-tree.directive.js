@@ -22,6 +22,7 @@ define([
         selectedNode           : '=',
         isSelectedCallback     : '=',  // why won't this work with & ?
         getClassDetailsCallback: '=', // why won't this work with & ?
+        isPropertyTree         : '='
       },
       templateUrl: 'scripts/controlled-term/cedar-class-tree.directive.html',
       replace    : true,
