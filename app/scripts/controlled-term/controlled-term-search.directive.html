@@ -105,7 +105,6 @@
 
         <div  ng-show="tsc.isSearchingClasses() || tsc.isSearchingProperties() || tsc.isSearchingValueSets()">
           <b>Narrow your search to specific ontologies</b>
-
           <div class="field-ontologies">
             <tags-input class="custom-tags-input" ng-model="tsc.selectedOntologies" display-property="id"
                 placeholder="Add ontologies" replace-spaces-with-dashes="false"
@@ -160,7 +159,7 @@
 <!-- Search Results and Ontology Tree -->
 <div class="clear search-results-section">
 
-  <!-- properties -->
+  <!-- Property results -->
   <div ng-if="(tsc.isSearchingProperties()) && tsc.resultsFound && tsc.searchFinished">
     <div class="search-results-headers">
       <table class="table table-condensed results-headers-table search-results-headers-table">
@@ -185,7 +184,7 @@
           <tr ng-repeat="result in tsc.searchResults" ng-click="tsc.selectResult(result, result.resultId, false)"   ng-dblclick="tsc.selectResult(result, result.resultId, true)"
               ng-class="{'selected-row':  (result.resultId == tsc.selectedResultId)}">
             <td>{{result.prefLabel}}</td>
-            <td>{{result.details.definitions[0] || '-'}}</td>
+            <td>{{result.details.definition || '-'}}</td>
             <td>{{tsc.getTypeForUi(result.details.type) || '-'}}</td>
             <td>{{result.source.id}}</td>
             <td>{{tsc.getShortId(result.details.id, 60)}}</td>
@@ -385,8 +384,8 @@
     <div class="terminology-tree-container">
       <!-- Ontology tree header -->
       <div class="tree-header" ng-if="tsc.isCurrentOntology()">
-        <h4 ng-if="tsc.selectedClass.type=='OntologyClass' || !tsc.selectedClass">Ontology:
-          {{tsc.currentOntology.info.id}}</h4>
+        <h4 ng-if="(tsc.selectedClass.type=='OntologyClass' || !tsc.selectedClass) && !tsc.isFieldPropertiesMode()">{{tsc.currentOntology.info.id}} classes:</h4>
+        <h4 ng-if="tsc.isFieldPropertiesMode()">{{tsc.currentOntology.info.id}} properties:</h4>
         <h4 ng-if="tsc.selectedClass.type=='Value' || tsc.selectedClass.type=='ValueSet'">Value Set:
           {{tsc.currentOntology.vs.prefLabel}}</h4>
       </div>
@@ -398,11 +397,21 @@
             ng-if="tsc.isCurrentOntology() && tsc.treeVisible && !tsc.isLoadingClassDetails">
           <div class="tree tree-view-ul tree-view list-unstyled class-tree-container"
               ng-if="!tsc.currentOntology.info.flat">
-            <cedar-class-tree
+            <!--Class Tree-->
+            <cedar-class-tree ng-if="!tsc.isFieldPropertiesMode()"
                 tree="tsc.currentOntology.tree"
                 selected-node="tsc.selectedClass"
                 is-selected-callback="tsc.checkIfSelected"
-                get-class-details-callback="tsc.getClassDetails">
+                get-class-details-callback="tsc.getClassDetails"
+                is-property-tree="false">
+            </cedar-class-tree>
+            <!--Property tree-->
+            <cedar-class-tree ng-if="tsc.isFieldPropertiesMode()"
+                tree="tsc.currentOntology.tree"
+                selected-node="tsc.selectedClass"
+                is-selected-callback="tsc.checkIfSelected"
+                get-class-details-callback="tsc.getPropertyDetails"
+                is-property-tree="true">
             </cedar-class-tree>
           </div>
           <div class="tree tree-view-message" ng-if="tsc.currentOntology.info.flat">Tree browsing not supported for this
@@ -413,7 +422,7 @@
     </div>
     <div class="selection-details-container" ng-if="tsc.isCurrentOntology()">
       <uib-tabset>
-        <uib-tab ng-if="!tsc.isSearchingProperties()" index="0" heading="Term Details">
+        <uib-tab ng-if="!tsc.isFieldPropertiesMode()" index="0" heading="Term Details">
             <div class="no-selected-class text-center" ng-hide="tsc.classDetails">Click on a term on the left to view
               details
             </div>
@@ -436,13 +445,29 @@
               </table>
             </div>
         </uib-tab>
-        <uib-tab ng-if="tsc.isSearchingProperties()" index="0" heading="Property Details">
-          <div class="no-selected-class text-center">-</div>
+        <uib-tab ng-if="tsc.isFieldPropertiesMode()" index="0" heading="Property Details">
+          <div class="no-selected-class text-center" ng-hide="tsc.classDetails">Click on a term on the left to view details</div>
+          <div class="table-responsive">
+            <table class="table table-striped">
+              <tbody ng-show="tsc.classDetails">
+              <tr>
+                <th>Name</th>
+                <td>{{tsc.classDetails.prefLabel}}</td>
+              </tr>
+              <tr>
+                <th>Id</th>
+                <td>{{tsc.classDetails['@id']}}</td>
+              </tr>
+              <tr ng-if="tsc.classDetails.definitions[0]">
+                <th>Definition</th>
+                <td>{{tsc.classDetails.definitions[0]}}</td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
         </uib-tab>
-        <uib-tab ng-if="tsc.selectedClass.type=='OntologyClass' || (!tsc.selectedClass.type && tsc.isCurrentOntology())"
+        <uib-tab ng-if="tsc.isTypeClass(tsc.selectedClass.type) || tsc.isTypeProperty(tsc.selectedClass.type) || (!tsc.selectedClass.type && tsc.isCurrentOntology())"
             index="1" heading="Ontology Details">
-          <div ng-if="tsc.selectedClass.type=='OntologyClass' || (!tsc.selectedClass.type && tsc.isCurrentOntology())"
-              id="ontology-details" class="tab-pane" role="tabpanel">
             <div class="table-responsive">
               <table class="table table-striped">
                 <tbody>
@@ -472,7 +497,6 @@
                 </tbody>
               </table>
             </div>
-          </div>
         </uib-tab>
         <uib-tab ng-if="tsc.selectedClass.type=='Value' || tsc.selectedClass.type=='ValueSet'" index="1"
             heading="Value Set Details">

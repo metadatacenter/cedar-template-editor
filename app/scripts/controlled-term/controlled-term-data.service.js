@@ -36,11 +36,15 @@ define([
       getValueSetTree                : getValueSetTree,
       createClass                    : createClass,
       getRootClasses                 : getRootClasses,
+      getRootProperties              : getRootProperties,
       getClassChildren               : getClassChildren,
       getClassById                   : getClassById,
+      getPropertyChildren            : getPropertyChildren,
+      getPropertyById                : getPropertyById,
       getClassDescendants            : getClassDescendants,
       getClassParents                : getClassParents,
       getClassTree                   : getClassTree,
+      getPropertyTree                : getPropertyTree,
       getValuesInValueSet            : getValuesInValueSet,
       getValueById                   : getValueById,
       getAcronym                     : getAcronym,
@@ -255,6 +259,19 @@ define([
       );
     }
 
+    function getRootProperties(ontology) {
+      init();
+      return AuthorizedBackendService.doCall(
+          ControlledTermHttpService.getRootProperties(ontology),
+          function (response) {
+            return response.data;
+          },
+          function (err) {
+            return handleServerError(err);
+          }
+      );
+    }
+
     function getClassById(acronym, classId) {
       init();
       return AuthorizedBackendService.doCall(
@@ -359,6 +376,32 @@ define([
       );
     }
 
+    function getPropertyChildren(acronym, propertyId) {
+      init();
+      return AuthorizedBackendService.doCall(
+          ControlledTermHttpService.getPropertyChildren(acronym, propertyId),
+          function (response) {
+            return response.data;
+          },
+          function (err) {
+            return handleServerError(err);
+          }
+      );
+    }
+
+    function getPropertyById(acronym, propertyId) {
+      init();
+      return AuthorizedBackendService.doCall(
+          ControlledTermHttpService.getPropertyById(acronym, propertyId),
+          function (response) {
+            return response.data;
+          },
+          function (err) {
+            return handleServerError(err);
+          }
+      );
+    }
+
     function getValueById(acronym, valueId) {
       init();
       return AuthorizedBackendService.doCall(
@@ -389,6 +432,19 @@ define([
       init();
       return AuthorizedBackendService.doCall(
           ControlledTermHttpService.getClassTree(acronym, classId),
+          function (response) {
+            return response.data;
+          },
+          function (err) {
+            return handleServerError(err);
+          }
+      );
+    }
+
+    function getPropertyTree(acronym, propertyId) {
+      init();
+      return AuthorizedBackendService.doCall(
+          ControlledTermHttpService.getPropertyTree(acronym, propertyId),
           function (response) {
             return response.data;
           },

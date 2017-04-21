@@ -16,7 +16,6 @@ define([
             fieldName            : '=',
             searchMode           : '=', // Search modes: properties, field, values
             selectedClass        : '=',
-            selectedProperty     : '=',
             currentOntology      : '=',
             resetCallback        : '=?',
             addCallback          : '=?',
@@ -79,8 +78,11 @@ define([
           vm.isFieldTypesMode = isFieldTypesMode;
           vm.isFieldValuesMode = isFieldValuesMode;
           vm.isSearching = isSearching;
+          vm.isTypeClass = isTypeClass;
+          vm.isTypeProperty = isTypeProperty;
           vm.getDefaultSearchQuery = getDefaultSearchQuery;
           vm.getClassDetails = getClassDetails;
+          vm.getPropertyDetails = getPropertyDetails;
           vm.getShortText = getShortText;
           vm.hideTree = hideTree;
           vm.isCurrentOntology = isCurrentOntology;
@@ -388,7 +390,7 @@ define([
               }
               if (vm.isSearchingProperties()) {
                 if (typeof vm.addCallback === "function") {
-                  vm.addCallback(vm.selectedProperty.id);
+                  vm.addCallback(vm.selectedClass.id);
                 }
                 if (typeof vm.resetCallback === "function") {
                   vm.resetCallback();
@@ -408,7 +410,6 @@ define([
           // select this thingy, then optionally close(clear) the dialog
           function selectResult(selection, resultId, close) {
             // Set the basic fields for the selected class and ontology in order to show the info of the selected class while the rest of details are being loaded
-            vm.selectedProperty = {};
             vm.selectedClass = {};
             vm.currentOntology = {};
             vm.currentOntology.info = {};
@@ -417,26 +418,21 @@ define([
               vm.selectedClass.prefLabel = selection.prefLabel;
               vm.currentOntology.info.id = selection.source.id;
               vm.selectedResultId = resultId;
-
               if (selection.details.type == 'OntologyClass') {
                 controlledTermService.loadTreeOfClass(selection.details, vm);
-
-                console.log(selection.details + ' ' + vm.stageValueConstraintAction);
-
-
                 handleClose(close);
               } else if (selection.details.type == 'Value') {
                 controlledTermService.loadTreeOfValue(selection.details, vm);
-
                 handleClose(close);
               }
             }
 
             if (vm.isSearchingProperties()) {
-              vm.selectedProperty.id = selection.details.id;
-              vm.selectedProperty.prefLabel = selection.prefLabel;
+              vm.selectedClass.id = selection.details.id;
+              vm.selectedClass.prefLabel = selection.prefLabel;
               vm.currentOntology.info.id = selection.source.id;
               vm.selectedResultId = resultId;
+              controlledTermService.loadTreeOfProperty(selection.details, vm);
               handleClose(close);
             }
 
@@ -457,9 +453,16 @@ define([
             vm.selectedClass = null;
             vm.classDetails = null;
             vm.treeVisible = true;
-            controlledTermService.loadOntologyRootClasses(selection, vm).then(function (response) {
-              vm.isLoadingOntologyDetails = false;
-            });
+            if (!isFieldPropertiesMode()) {
+              controlledTermService.loadOntologyRootClasses(selection, vm).then(function (response) {
+                vm.isLoadingOntologyDetails = false;
+              });
+            }
+            else {
+              controlledTermService.loadOntologyRootProperties(selection, vm).then(function (response) {
+                vm.isLoadingOntologyDetails = false;
+              });
+            }
           }
 
           function isCurrentOntology() {
@@ -521,10 +524,34 @@ define([
 
             // Get selected class details from the links.self endpoint provided.
             vm.selectedClass = subtree;
-
             controlledTermDataService.getClassById(acronym, classId).then(function (response) {
               vm.classDetails = response;
-              console.log(vm.classDetails);
+            });
+          }
+
+          function getShortText(text, maxLength, finalString, emptyString) {
+            return StringUtilsService.getShortText(text, maxLength, finalString, emptyString);
+          }
+
+          /* Hide Ontology Tree and Details */
+          function hideTree() {
+            vm.treeVisible = false;
+            vm.currentOntology = '';
+            vm.classDetails = '';
+          }
+
+          /* This function is passed as a callback down through class tree and child tree directives */
+          // TODO: update names to say 'property' instead of 'class'.
+          function getPropertyDetails(subtree) {
+            var acronym = controlledTermService.getAcronym(subtree);
+            var classId = subtree['@id'];
+
+            // Get selected class details from the links.self endpoint provided.
+            // TODO: fix naming of variables. We are using class in some places where we should use property. An example is the following line
+            vm.selectedClass = subtree;
+
+            controlledTermDataService.getPropertyById(acronym, classId).then(function (response) {
+              vm.classDetails = response;
             });
           }
 
