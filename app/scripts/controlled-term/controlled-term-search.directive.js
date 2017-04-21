@@ -422,9 +422,14 @@ define([
 
               if (selection.details.type == 'OntologyClass') {
                 controlledTermService.loadTreeOfClass(selection.details, vm);
+
+                console.log(selection.details + ' ' + vm.stageValueConstraintAction);
+
+
                 handleClose(close);
               } else if (selection.details.type == 'Value') {
                 controlledTermService.loadTreeOfValue(selection.details, vm);
+
                 handleClose(close);
               }
             }
@@ -522,6 +527,7 @@ define([
 
             controlledTermDataService.getClassById(acronym, classId).then(function (response) {
               vm.classDetails = response;
+              console.log(vm.classDetails);
             });
           }
 

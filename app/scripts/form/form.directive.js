@@ -47,6 +47,7 @@ define([
 
         $scope.expanded = true;
 
+        $scope.metaToRDF = null;
 
         var paginate = function () {
           if ($scope.form) {
@@ -371,6 +372,11 @@ define([
           $scope.addPopover();
         });
 
+        // keep our rdf up-to-date
+        $scope.$watch('model', function() {
+          $scope.toRDF();
+        }, true);
+
         $scope.isBiosampleTemplate = function () {
           return ($rootScope.documentTitle && $rootScope.documentTitle.toLowerCase().indexOf('biosample') > -1);
         };
@@ -519,6 +525,16 @@ define([
           return copiedForm;
         };
 
+        $scope.toRDF = function () {
+          var jsonld = require('jsonld');
+          var copiedForm = jQuery.extend(true, {}, $scope.model);
+          if (copiedForm) {
+            jsonld.toRDF(copiedForm, {format: 'application/nquads'}, function(err, nquads) {
+              $scope.metaToRDF = nquads;
+              return nquads;
+            });
+          }
+        };
 
         $scope.isField = function (item) {
           return ($scope.getType(item) === 'https://schema.metadatacenter.org/core/TemplateField');
