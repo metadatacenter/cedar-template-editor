@@ -221,6 +221,10 @@ define([
       return this.controlledTerm() + "/ontologies/" + ontology + "/classes/roots";
     };
 
+    service.getRootProperties = function (ontology) {
+      return this.controlledTerm() + "/ontologies/" + ontology + "/properties/roots";
+    };
+
     service.createClass = function () {
       return this.controlledTerm() + '/ontologies/CEDARPC/classes';
     };

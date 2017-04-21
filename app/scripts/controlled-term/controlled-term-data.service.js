@@ -36,6 +36,7 @@ define([
       getValueSetTree                : getValueSetTree,
       createClass                    : createClass,
       getRootClasses                 : getRootClasses,
+      getRootProperties              : getRootProperties,
       getClassChildren               : getClassChildren,
       getClassById                   : getClassById,
       getPropertyChildren            : getPropertyChildren,
@@ -249,6 +250,19 @@ define([
       init();
       return AuthorizedBackendService.doCall(
           ControlledTermHttpService.getRootClasses(ontology),
+          function (response) {
+            return response.data;
+          },
+          function (err) {
+            return handleServerError(err);
+          }
+      );
+    }
+
+    function getRootProperties(ontology) {
+      init();
+      return AuthorizedBackendService.doCall(
+          ControlledTermHttpService.getRootProperties(ontology),
           function (response) {
             return response.data;
           },

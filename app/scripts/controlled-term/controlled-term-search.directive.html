@@ -384,8 +384,8 @@
     <div class="terminology-tree-container">
       <!-- Ontology tree header -->
       <div class="tree-header" ng-if="tsc.isCurrentOntology()">
-        <h4 ng-if="tsc.selectedClass.type=='OntologyClass' || !tsc.selectedClass">Ontology:
-          {{tsc.currentOntology.info.id}}</h4>
+        <h4 ng-if="(tsc.selectedClass.type=='OntologyClass' || !tsc.selectedClass) && !tsc.isFieldPropertiesMode()">{{tsc.currentOntology.info.id}} classes:</h4>
+        <h4 ng-if="tsc.isFieldPropertiesMode()">{{tsc.currentOntology.info.id}} properties:</h4>
         <h4 ng-if="tsc.selectedClass.type=='Value' || tsc.selectedClass.type=='ValueSet'">Value Set:
           {{tsc.currentOntology.vs.prefLabel}}</h4>
       </div>
@@ -398,7 +398,7 @@
           <div class="tree tree-view-ul tree-view list-unstyled class-tree-container"
               ng-if="!tsc.currentOntology.info.flat">
             <!--Class Tree-->
-            <cedar-class-tree ng-if="!tsc.isSearchingProperties()"
+            <cedar-class-tree ng-if="!tsc.isFieldPropertiesMode()"
                 tree="tsc.currentOntology.tree"
                 selected-node="tsc.selectedClass"
                 is-selected-callback="tsc.checkIfSelected"
@@ -406,7 +406,7 @@
                 is-property-tree="false">
             </cedar-class-tree>
             <!--Property tree-->
-            <cedar-class-tree ng-if="tsc.isSearchingProperties()"
+            <cedar-class-tree ng-if="tsc.isFieldPropertiesMode()"
                 tree="tsc.currentOntology.tree"
                 selected-node="tsc.selectedClass"
                 is-selected-callback="tsc.checkIfSelected"
@@ -422,7 +422,7 @@
     </div>
     <div class="selection-details-container" ng-if="tsc.isCurrentOntology()">
       <uib-tabset>
-        <uib-tab ng-if="!tsc.isSearchingProperties()" index="0" heading="Term Details">
+        <uib-tab ng-if="!tsc.isFieldPropertiesMode()" index="0" heading="Term Details">
             <div class="no-selected-class text-center" ng-hide="tsc.classDetails">Click on a term on the left to view
               details
             </div>
@@ -445,7 +445,7 @@
               </table>
             </div>
         </uib-tab>
-        <uib-tab ng-if="tsc.isSearchingProperties()" index="0" heading="Property Details">
+        <uib-tab ng-if="tsc.isFieldPropertiesMode()" index="0" heading="Property Details">
           <div class="no-selected-class text-center" ng-hide="tsc.classDetails">Click on a term on the left to view
             details
           </div>

@@ -15,6 +15,7 @@ define([
       getAcronymFromTermUri  : getAcronymFromTermUri,
       getSelfUrl             : getSelfUrl,
       loadOntologyRootClasses: loadOntologyRootClasses,
+      loadOntologyRootProperties: loadOntologyRootProperties,
       loadTreeOfClass        : loadTreeOfClass,
       loadTreeOfProperty     : loadTreeOfProperty,
       loadTreeOfValue        : loadTreeOfValue,
@@ -152,6 +153,28 @@ define([
             }
           }
         //}
+        $scope.searchPreloader = false;
+        return values;
+      });
+    }
+
+    function loadOntologyRootProperties(ontology, $scope) {
+      $scope.searchPreloader = true;
+      return $q.all({
+        info: ontology,
+        tree: controlledTermDataService.getRootProperties(ontology.id)
+      }).then(function (values) {
+        if (values.tree && angular.isArray(values.tree)) {
+          values.tree.sort(controlledTermService.sortOntologyTree);
+          $scope.currentOntology = values;
+        } else {
+          // TODO: Handle error
+          if (values.tree.status == 404) {
+            alert("No submissions available");
+          } else {
+            alert(values.tree.statusText);
+          }
+        }
         $scope.searchPreloader = false;
         return values;
       });

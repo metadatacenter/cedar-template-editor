@@ -30,6 +30,10 @@ define([
       return HttpBuilderService.get(UrlService.getRootClasses(ontology));
     };
 
+    service.getRootProperties = function (ontology) {
+      return HttpBuilderService.get(UrlService.getRootProperties(ontology));
+    };
+
     service.createClass = function(newClass) {
       return HttpBuilderService.post(UrlService.createClass(), angular.toJson(newClass));
     };

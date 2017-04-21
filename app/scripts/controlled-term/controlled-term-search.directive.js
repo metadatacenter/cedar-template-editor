@@ -16,7 +16,6 @@ define([
             fieldName            : '=',
             searchMode           : '=', // Search modes: properties, field, values
             selectedClass        : '=',
-            selectedProperty     : '=',
             currentOntology      : '=',
             resetCallback        : '=?',
             addCallback          : '=?',
@@ -391,7 +390,7 @@ define([
               }
               if (vm.isSearchingProperties()) {
                 if (typeof vm.addCallback === "function") {
-                  vm.addCallback(vm.selectedProperty.id);
+                  vm.addCallback(vm.selectedClass.id);
                 }
                 if (typeof vm.resetCallback === "function") {
                   vm.resetCallback();
@@ -411,7 +410,6 @@ define([
           // select this thingy, then optionally close(clear) the dialog
           function selectResult(selection, resultId, close) {
             // Set the basic fields for the selected class and ontology in order to show the info of the selected class while the rest of details are being loaded
-            vm.selectedProperty = {};
             vm.selectedClass = {};
             vm.currentOntology = {};
             vm.currentOntology.info = {};
@@ -430,8 +428,8 @@ define([
             }
 
             if (vm.isSearchingProperties()) {
-              vm.selectedProperty.id = selection.details.id;
-              vm.selectedProperty.prefLabel = selection.prefLabel;
+              vm.selectedClass.id = selection.details.id;
+              vm.selectedClass.prefLabel = selection.prefLabel;
               vm.currentOntology.info.id = selection.source.id;
               vm.selectedResultId = resultId;
               controlledTermService.loadTreeOfProperty(selection.details, vm);
@@ -455,9 +453,16 @@ define([
             vm.selectedClass = null;
             vm.classDetails = null;
             vm.treeVisible = true;
-            controlledTermService.loadOntologyRootClasses(selection, vm).then(function (response) {
-              vm.isLoadingOntologyDetails = false;
-            });
+            if (!isFieldPropertiesMode()) {
+              controlledTermService.loadOntologyRootClasses(selection, vm).then(function (response) {
+                vm.isLoadingOntologyDetails = false;
+              });
+            }
+            else {
+              controlledTermService.loadOntologyRootProperties(selection, vm).then(function (response) {
+                vm.isLoadingOntologyDetails = false;
+              });
+            }
           }
 
           function isCurrentOntology() {
@@ -542,6 +547,7 @@ define([
             var classId = subtree['@id'];
 
             // Get selected class details from the links.self endpoint provided.
+            // TODO: fix naming of variables. We are using class in some places where we should use property. An example is the following line
             vm.selectedClass = subtree;
 
             controlledTermDataService.getPropertyById(acronym, classId).then(function (response) {
