@@ -19,7 +19,7 @@
         <div class=" element-group full "
             ng-if="form.properties[item]['@type']=='https://schema.metadatacenter.org/core/TemplateElement' || form.properties[item].items['@type']=='https://schema.metadatacenter.org/core/TemplateElement'">
 
-          <cedar-template-element  nested="false" element="form.properties[item]"
+          <cedar-template-element nested="false" element="form.properties[item]"
               key="item"
               model="model[item]"
               labels="$root.schemaOf(form)._ui.propertyLabels"
@@ -36,29 +36,31 @@
   <div class=" page runtime" ng-class="{'not-expanded': !isExpanded()}"
       ng-if="$root.isRuntime() && $root.useNewForm " ng-repeat="page in pagesArray">
 
-      <div class="row">
-        <div class="col-xs-9 ">
-          <div ng-click="toggleExpanded()">
-            <!--<button type="button" class="xxx">-->
-              <!--<i ng-class="{'fa fa-caret-down' : isExpanded(), 'fa fa-caret-right' : !isExpanded()}"></i></button>-->
-            <span class="title form">
+    <div class="row">
+      <div class="col-xs-9 ">
+        <div ng-click="toggleExpanded()">
+          <!--<button type="button" class="xxx">-->
+          <!--<i ng-class="{'fa fa-caret-down' : isExpanded(), 'fa fa-caret-right' : !isExpanded()}"></i></button>-->
+          <span class="title form">
               <button type="button" class="expand">
-                <i  class="fa " ng-class="{'fa-caret-down': isExpanded(),'fa-caret-right':!isExpanded()}"></i>
+                <i class="fa " ng-class="{'fa-caret-down': isExpanded(),'fa-caret-right':!isExpanded()}"></i>
               </button>
               {{$root.schemaOf(form)._ui.title}}</span>
-          </div>
-        </div>
-
-        <div class="col-xs-3 pull-right tools " style="visibility:hidden">
-          <field-toolbar field="form"
-              close="close" is-active="isActive"
-              expand-all="expandAll" is-expandable="isExpandable">
-          </field-toolbar>
         </div>
       </div>
 
+      <div class="col-xs-3 pull-right tools " style="visibility:hidden">
+        <field-toolbar field="form"
+            close="close" is-active="isActive"
+            expand-all="expandAll" is-expandable="isExpandable">
+        </field-toolbar>
+      </div>
+    </div>
+
     <ul class="treeview tv">
-      <li ng-repeat="item in page" class="animate-fade tv"  ng-class="{'last':$last, 'first':$first, 'element':isElement(item)}"  ng-if="pageIndex == $parent.$index && isExpanded() && (isField(item) || isElement(item))">
+      <li ng-repeat="item in page" class="animate-fade tv"
+          ng-class="{'last':$last, 'first':$first, 'element':isElement(item)}"
+          ng-if="pageIndex == $parent.$index && isExpanded() && (isField(item) || isElement(item))">
 
         <!--If field-->
         <div ng-if="isField(item)" class="field-instance">
@@ -73,7 +75,7 @@
 
         <!--If element-->
         <div ng-if="isElement(item)" class=" element-group full">
-          <cedar-runtime-element  nested="false" element="form.properties[item]"
+          <cedar-runtime-element nested="false" element="form.properties[item]"
               key="item"
               model="model[item]"
               labels="form._ui.propertyLabels"
@@ -111,12 +113,13 @@
         </div>
 
         <!--If  Element with a template root-->
-        <div ng-if="$root.schemaOf(form.properties[item])['@type'] === 'https://schema.metadatacenter.org/core/Template'">
+        <div
+            ng-if="$root.schemaOf(form.properties[item])['@type'] === 'https://schema.metadatacenter.org/core/Template'">
           <div class="element-group full"
               ng-if="form.properties[item]['@type']=='https://schema.metadatacenter.org/core/TemplateElement' || form.properties[item].items['@type']=='https://schema.metadatacenter.org/core/TemplateElement'">
 
             never gets called
-            <cedar-template-element   element="form.properties[item]"
+            <cedar-template-element element="form.properties[item]"
                 key="item"
                 model="model[item]"
                 labels="$root.schemaOf(form)._ui.propertyLabels"
@@ -132,11 +135,12 @@
 
         <!-- if element with element root -->
 
-         <div ng-if="$root.schemaOf(form.properties[item])['@type'] === 'https://schema.metadatacenter.org/core/TemplateElement'">
+         <div
+             ng-if="$root.schemaOf(form.properties[item])['@type'] === 'https://schema.metadatacenter.org/core/TemplateElement'">
            <div class="element-group full"
                ng-if="$root.schemaOf(form.properties[item])['@id'] == $root.keyOfRootElement">
 
-             <cedar-template-element   element="form.properties[item]"
+             <cedar-template-element element="form.properties[item]"
                  key="item"
                  model="model[item]"
                  labels="$root.schemaOf(form)._ui.propertyLabels"
@@ -151,7 +155,7 @@
            <div class="element-group full"
                ng-if="$root.schemaOf(form.properties[item])['@id'] !== $root.keyOfRootElement">
 
-             <cedar-template-element   element="form.properties[item]"
+             <cedar-template-element element="form.properties[item]"
                  key="item"
                  model="model[item]"
                  labels="$root.schemaOf(form)._ui.propertyLabels"
@@ -183,32 +187,34 @@
 </div><!-- /.pagination-container -->
 
 
+<!-- document preview -->
 <div ng-if="$root.isRuntime()" ng-model="metaToRDF">
-  <!--<ng-include src="'scripts/layout/metadata-json-preview.html'"></ng-include>-->
   <div ng-show="$root.showOutput" id="outputJSON" ng-if="stripTmpFields() | json" style="margin-top:40px">
-    <!--<h5 class="center">Document Preview</h5>-->
-    <uib-tabset active="active">
+    <uib-tabset active="$root.showOutputTab">
 
-      <uib-tab index="0" >
-        <uib-tab-heading><i class="cedar-svg-rdf1" ></i> JSON-LD </uib-tab-heading>
-        <pre id='form-json-preview' >{{ stripTmpFields() | json }}</pre>
+      <uib-tab index="0" ng-click="$root.showOutputTab=0">
+        <uib-tab-heading><i class="cedar-svg-rdf1"></i> JSON-LD</uib-tab-heading>
+        <pre id='form-json-preview'>{{ stripTmpFields() | json }}</pre>
       </uib-tab>
 
-      <uib-tab index="1" ng-click="toRDF()">
-        <uib-tab-heading >
-          <div ><i class="cedar-svg-rdf" ></i> RDF </div>
-        </uib-tab-heading >
-        <div ng-if="metaToRDF" >
-          <pre id='form-json-preview'> {{metaToRDF}} </pre>
+      <uib-tab index="1" ng-click="toRDF();$root.showOutputTab=1">
+        <uib-tab-heading>
+          <div><i class="cedar-svg-rdf"></i> RDF</div>
+        </uib-tab-heading>
+        <div ng-if="metaToRDFError">
+
         </div>
-        <div ng-if="!metaToRDF" >
-          <div class="center warning" >
-             Please save your document to view RDF
+        <div ng-if="metaToRDF">
+          <pre id='form-json-preview-rdf'>{{getRDF()}}</pre>
+        </div>
+
+        <div ng-if="!metaToRDF">
+          <div class="center warning">
+            {{getRDFError()}}
           </div>
         </div>
 
       </uib-tab>
-
     </uib-tabset>
   </div>
 </div>
