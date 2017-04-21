@@ -184,26 +184,28 @@
 
 
 <div ng-if="$root.isRuntime()" ng-model="metaToRDF">
-  <!--<ng-include src="'scripts/layout/metadata-json-preview.html'"></ng-include>-->
   <div ng-show="$root.showOutput" id="outputJSON" ng-if="stripTmpFields() | json" style="margin-top:40px">
-    <!--<h5 class="center">Document Preview</h5>-->
-    <uib-tabset active="active">
+    <uib-tabset active="$root.showOutputTab">
 
-      <uib-tab index="0" >
+      <uib-tab index="0" ng-click="$root.showOutputTab=0">
         <uib-tab-heading><i class="cedar-svg-rdf1" ></i> JSON-LD </uib-tab-heading>
         <pre id='form-json-preview' >{{ stripTmpFields() | json }}</pre>
       </uib-tab>
 
-      <uib-tab index="1" ng-click="toRDF()">
+      <uib-tab index="1" ng-click="toRDF();ng-click="$root.showOutputTab=1"">
         <uib-tab-heading >
           <div ><i class="cedar-svg-rdf" ></i> RDF </div>
         </uib-tab-heading >
-        <div ng-if="metaToRDF" >
-          <pre id='form-json-preview'> {{metaToRDF}} </pre>
+        <div ng-if="metaToRDFError" >
+
         </div>
+        <div ng-if="metaToRDF" >
+          <pre id='form-json-preview'>{{getRDF()}}</pre>
+        </div>
+
         <div ng-if="!metaToRDF" >
           <div class="center warning" >
-             Please save your document to view RDF
+            {{getRDFError()}}
           </div>
         </div>
 

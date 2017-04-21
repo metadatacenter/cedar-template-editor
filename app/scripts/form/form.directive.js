@@ -9,12 +9,12 @@ define([
   // TODO: refactor to cedarFormDirective <cedar-form-directive>
 
 
-  formDirective.$inject = ['$rootScope', '$document', '$timeout', '$http', 'DataManipulationService',
+  formDirective.$inject = ['$rootScope', '$document', '$timeout', '$translate', '$http', 'DataManipulationService',
                            'FieldTypeService', 'DataUtilService', 'SubmissionService',
                            'UIMessageService', 'UrlService'];
 
 
-  function formDirective($rootScope, $document, $timeout, $http, DataManipulationService, FieldTypeService,
+  function formDirective($rootScope, $document, $timeout, $translate, $http, DataManipulationService, FieldTypeService,
                          DataUtilService, SubmissionService, UIMessageService, UrlService) {
     return {
       templateUrl: 'scripts/form/form.directive.html',
@@ -29,7 +29,7 @@ define([
       },
       controller : function ($scope) {
 
-        $scope.relabel = function(key) {
+        $scope.relabel = function (key) {
           // operates on templates and elements, so use the root scope json which
           // is element or form
           DataManipulationService.relabel($rootScope.jsonToSave, key);
@@ -48,6 +48,7 @@ define([
         $scope.expanded = true;
 
         $scope.metaToRDF = null;
+        $scope.metaToRDFError = null;
 
         var paginate = function () {
           if ($scope.form) {
@@ -152,9 +153,9 @@ define([
                     console.log(p["@context"].properties[newKey].enum[0]);
 
 
-
                     //p["@context"].properties[newKey].enum[0] = DataManipulationService.getEnumOf(newKey);
-                    p["@context"].properties[newKey].enum[0] = DataManipulationService.getPropertyOf(newKey, p["@context"].properties[newKey].enum[0]);
+                    p["@context"].properties[newKey].enum[0] = DataManipulationService.getPropertyOf(newKey,
+                        p["@context"].properties[newKey].enum[0]);
 
                     console.log(p["@context"].properties[newKey].enum[0]);
                   }
@@ -275,7 +276,7 @@ define([
                 } else {
                   $scope.parseForm($rootScope.propertiesOf(value), parentModel[name], name);
                 }
-              // Template Field
+                // Template Field
               } else {
                 // Not a Static Field
                 if (!value._ui || !value._ui.inputType || !FieldTypeService.isStaticField(value._ui.inputType)) {
@@ -373,7 +374,7 @@ define([
         });
 
         // keep our rdf up-to-date
-        $scope.$watch('model', function() {
+        $scope.$watch('model', function () {
           $scope.toRDF();
         }, true);
 
@@ -441,7 +442,7 @@ define([
         // validate a AIRR template
         $scope.checkAirr = function (instance) {
 
-          if ( $scope.isAIRRTemplate()) {
+          if ($scope.isAIRRTemplate()) {
 
             // one way to make the call
             var config = {};
@@ -510,7 +511,6 @@ define([
         });
 
         $scope.$on('formHasRequiredFields', function (event) {
-          console.log('on formHasRequiredFields');
           $scope.form.requiredFields = true;
         });
 
@@ -529,11 +529,24 @@ define([
           var jsonld = require('jsonld');
           var copiedForm = jQuery.extend(true, {}, $scope.model);
           if (copiedForm) {
-            jsonld.toRDF(copiedForm, {format: 'application/nquads'}, function(err, nquads) {
+            jsonld.toRDF(copiedForm, {format: 'application/nquads'}, function (err, nquads) {
+              $scope.metaToRDFError = err;
               $scope.metaToRDF = nquads;
               return nquads;
             });
           }
+        };
+
+        $scope.getRDF = function () {
+          return $scope.metaToRDF;
+        };
+
+        $scope.getRDFError = function () {
+          var result = $translate.instant('SERVER.RDF.SaveFirst');
+          if ($scope.metaToRDFError) {
+            result = $scope.metaToRDFError.details.cause.message;
+          }
+          return result;
         };
 
         $scope.isField = function (item) {
