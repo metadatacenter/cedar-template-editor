@@ -101,8 +101,8 @@ define([
               $timeout(function () {
                 // don't show validation errors until after any redraws are done
                 // thus, call this within a timeout
-                $scope.$broadcast('submitForm');
-              }, 0);
+                $rootScope.$broadcast('submitForm');
+              }, 1000);
 
             },
             function (err) {
@@ -120,7 +120,7 @@ define([
               UIMessageService.flashSuccess('SERVER.INSTANCE.update.success', null, 'GENERIC.Updated');
               owner.enableSaveButton();
               $rootScope.$broadcast("form:clean");
-              $scope.$broadcast('submitForm');
+              $rootcope.$broadcast('submitForm');
             },
             function (err) {
               UIMessageService.showBackendError('SERVER.INSTANCE.update.error', err);
