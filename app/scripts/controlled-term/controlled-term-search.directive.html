@@ -104,7 +104,6 @@
         </div>
         <div ng-show="tsc.isSearchingClasses() || tsc.isSearchingProperties()">
           <b>Narrow your search to specific ontologies</b>
-
           <div class="field-ontologies">
             <tags-input class="custom-tags-input" ng-model="tsc.selectedOntologies" display-property="id"
                 placeholder="Add ontologies" replace-spaces-with-dashes="false"
@@ -456,10 +455,8 @@
             </table>
           </div>
         </uib-tab>
-        <uib-tab ng-if="tsc.selectedClass.type=='OntologyClass' || (!tsc.selectedClass.type && tsc.isCurrentOntology())"
+        <uib-tab ng-if="tsc.isTypeClass(tsc.selectedClass.type) || tsc.isTypeProperty(tsc.selectedClass.type) || (!tsc.selectedClass.type && tsc.isCurrentOntology())"
             index="1" heading="Ontology Details">
-          <div ng-if="tsc.selectedClass.type=='OntologyClass' || (!tsc.selectedClass.type && tsc.isCurrentOntology())"
-              id="ontology-details" class="tab-pane" role="tabpanel">
             <div class="table-responsive">
               <table class="table table-striped">
                 <tbody>
@@ -489,7 +486,6 @@
                 </tbody>
               </table>
             </div>
-          </div>
         </uib-tab>
         <uib-tab ng-if="tsc.selectedClass.type=='Value' || tsc.selectedClass.type=='ValueSet'" index="1"
             heading="Value Set Details">

@@ -79,6 +79,8 @@ define([
           vm.isFieldTypesMode = isFieldTypesMode;
           vm.isFieldValuesMode = isFieldValuesMode;
           vm.isSearching = isSearching;
+          vm.isTypeClass = isTypeClass;
+          vm.isTypeProperty = isTypeProperty;
           vm.getDefaultSearchQuery = getDefaultSearchQuery;
           vm.getClassDetails = getClassDetails;
           vm.getShortText = getShortText;
