@@ -31,6 +31,8 @@ define([
       $scope.pageMax = 0;
       $scope.pageRange = 6;
 
+      $scope.urlRegex = '^((https?|ftp)://)?([a-z]+[.])?[a-z0-9-]+([.][a-z]{1,4}){1,2}(/.*[?].*)?$';
+
       // get the field title
       $scope.getTitle = function (field) {
         return DataManipulationService.getTitle(field);
