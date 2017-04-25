@@ -36,7 +36,7 @@ define([
 
     // configure toasty messaging
     toastyConfigProvider.setConfig({
-      limit       : 10,                // {int} Maximum number of toasties to show at once
+      limit       : 1,                // {int} Maximum number of toasties to show at once
       clickToClose: false,      // {bool} Whether clicking the toasty closes it
       position    : 'top-right', // {string:bottom-right,bottom-left,top-right,top-left} The window position where the toast pops up
       timeout     : 10000,            // {int} How long (in miliseconds) the toasty shows before it's removed. Set to false to disable.

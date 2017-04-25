@@ -82,7 +82,8 @@ define([
       if (err.status == 502) {
         UIMessageService.showBackendError($translate.instant("TERMINOLOGY.errorTerminology"), err);
       } else {
-        UIMessageService.showBackendError($translate.instant("TERMINOLOGY.errorBioPortal"), err);
+        UIMessageService.flashWarning("TERMINOLOGY.errorBioPortal")
+        //UIMessageService.showBackendError($translate.instant("TERMINOLOGY.errorBioPortal"), err);
       }
       return err;
     }
