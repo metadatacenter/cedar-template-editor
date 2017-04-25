@@ -799,7 +799,7 @@ define([
         }
         select.selected = undefined;
         select.search = "";
-        $scope.model[fieldValue] = null;
+        $scope.model[fieldValue] = DataManipulationService.getDefaultValue(fieldValue);
         delete $scope.model['_valueLabel'];
       };
 

@@ -311,21 +311,6 @@ define([
                     }
                     DataManipulationService.defaultOptionsToModel(value, parentModel[name]);
                   }
-
-                  //var p = $rootScope.propertiesOf(value);
-                  // Add @type information to instance at the field level
-                  // if (p && !angular.isUndefined(p['@type'])) {
-                  //   var type = DataManipulationService.generateInstanceType(p['@type']);
-                  //   if (type) {
-                  //     if (angular.isArray(parentModel[name])) {
-                  //       for (var i = 0; i < min; i++) {
-                  //         parentModel[name][i]["@type"] = type || "";
-                  //       }
-                  //     } else {
-                  //       parentModel[name]["@type"] = type || "";
-                  //     }
-                  //   }
-                  // }
                 }
               }
             }
