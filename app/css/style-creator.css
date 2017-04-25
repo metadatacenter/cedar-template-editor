@@ -13240,6 +13240,15 @@ p.instructions {
 .pick-list .multiple-container .checkbox input[type="checkbox"] {
   cursor: pointer;
 }
+#cardinality-options .cardinality-selector {
+  padding: 0 10px;
+}
+#cardinality-options button {
+  width: 130px;
+}
+#cardinality-options .cardinality-selectors i.check {
+  float: right;
+}
 /*
 ================================================
 === Element Builder Actions
@@ -13267,6 +13276,9 @@ p.instructions {
 }
 .element-actions .favorite.true i {
   color: #5795ba;
+}
+.element-actions .search {
+  margin: 10px;
 }
 .element-actions .clear-save {
   float: right;
@@ -13328,6 +13340,9 @@ p.instructions {
 }
 .template-actions .favorite.true i {
   color: #5795ba;
+}
+.template-actions .search {
+  margin: 10px;
 }
 .template-actions .clear-save {
   float: right;

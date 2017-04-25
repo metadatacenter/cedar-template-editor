@@ -35,16 +35,16 @@
 
   <!-- date range -->
   <!--<div id="range" class="type-toggle date" ng-init="initDateSingle()" ng-show="isTabActive('range')">-->
-    <!--<div class="single-date d-option"-->
-        <!--ng-click="$root.schemaOf(field)._ui.dateType = 'single-date'; $event.stopPropagation();"-->
-        <!--ng-class="{active: $root.schemaOf(field)._ui.dateType == 'single-date'}">-->
-      <!--<span>Date</span>-->
-    <!--</div>-->
-    <!--<div class="date-range d-option"-->
-        <!--ng-click="$root.schemaOf(field)._ui.dateType = 'date-range'; $event.stopPropagation();"-->
-        <!--ng-class="{active: $root.schemaOf(field)._ui.dateType == 'date-range'}">-->
-      <!--<span>Date Range</span>-->
-    <!--</div>-->
+  <!--<div class="single-date d-option"-->
+  <!--ng-click="$root.schemaOf(field)._ui.dateType = 'single-date'; $event.stopPropagation();"-->
+  <!--ng-class="{active: $root.schemaOf(field)._ui.dateType == 'single-date'}">-->
+  <!--<span>Date</span>-->
+  <!--</div>-->
+  <!--<div class="date-range d-option"-->
+  <!--ng-click="$root.schemaOf(field)._ui.dateType = 'date-range'; $event.stopPropagation();"-->
+  <!--ng-class="{active: $root.schemaOf(field)._ui.dateType == 'date-range'}">-->
+  <!--<span>Date Range</span>-->
+  <!--</div>-->
   <!--</div>-->
   <!-- /.date-type-toggle -->
 
@@ -93,30 +93,20 @@
     </div>
 
     <div class="cardinality-selectors" ng-if="field.minItems > -1">
-      <span class=" form-group validation-pattern  min-items-option">
-        <span translate>GENERIC.Min</span>
-        <select class="center" select-picker ng-model="cardinality.min" ng-init="initMultiple()"
-            ng-change="updateMultiple()">
-          <option ng-repeat="i in cardinality.mins" value="{{ i.value }}">{{ i.label }}</option>
-        </select>
-      </span>
-      <span class=" form-group validation-pattern  max-items-option">
-        <span translate>GENERIC.Max</span>
-        <select select-picker ng-model="cardinality.max" ng-init="initMultiple()" ng-change="updateMultiple()">
-          <option ng-repeat="i in cardinality.maxes" value="{{ i.value }}">{{ i.label }}</option>
-        </select>
-      </span>
+      <cardinality-selector min-or-max="'min'"  min-items="field.minItems" max-items="field.maxItems"></cardinality-selector>
+      <cardinality-selector min-or-max="'max'"  min-items="field.minItems" max-items="field.maxItems"></cardinality-selector>
     </div>
-    <!-- /.form-group -->
   </div>
 
   <!-- Field tab -->
   <div ng-show="isTabActive('field')">
     <class-list field="field" view-type="viewType"></class-list>
-    <div class="clear-save" style="float:right;margin:5px 0;">
+    <div class="center search">
       <!-- The field.finalTitle variable is used to store the final title assigned to the field, which will be shown
       in the modal and used to perform a BioPortal initial search automatically -->
-      <button type="button" class="std-button btn search-ontologies-button" ng-click="showModal(getModalId(true));$root.finalTitle = $root.schemaOf(field)._ui.title" translate>GENERIC.Search
+      <button type="button" class="std-button btn search-ontologies-button"
+          ng-click="showModal(getModalId(true));$root.finalTitle = $root.schemaOf(field)._ui.title" translate>
+        GENERIC.Search
       </button>
     </div>
   </div>
@@ -162,7 +152,8 @@
                     <td>{{valueSet.name}}</td>
                     <td>Value Set</td>
                     <td>{{valueSet.vsCollection}}</td>
-                    <td uib-tooltip="{{getShortId(valueSet.uri)}}" tooltip-append-to-body="true">{{getShortId(valueSet.uri,
+                    <td uib-tooltip="{{getShortId(valueSet.uri)}}" tooltip-append-to-body="true">
+                      {{getShortId(valueSet.uri,
                       16)}}
                     </td>
                     <td>{{valueSet.numTerms}}</td>
@@ -190,7 +181,8 @@
                     <td>{{branch.name}}</td>
                     <td>Branch</td>
                     <td>{{branch.acronym}}</td>
-                    <td uib-tooltip="{{getShortId(branch.uri)}}" tooltip-append-to-body="true">{{getShortId(branch.uri,
+                    <td uib-tooltip="{{getShortId(branch.uri)}}" tooltip-append-to-body="true">
+                      {{getShortId(branch.uri,
                       16)}}
                     </td>
                     <td>-</td>
@@ -205,7 +197,7 @@
               </div>
             </div>
           </div>
-          <div class="clear-save">
+          <div class="center search">
             <!-- The field.finalTitle variable is used to store the final title assigned to the field, which will be shown
           in the modal -->
             <button type="button" class="std-button btn search-ontologies-button" ng-click="showModal(getModalId(false)); $event.stopPropagation();
@@ -262,7 +254,8 @@
             src="/img/close_modal.png" width="22"/></span></button>
       </div>
       <div class="modal-body">
-        <div controlled-term field="field" options='{"filterSelection":"properties", "modalId":getPropertyModalId()}'></div>
+        <div controlled-term field="field"
+            options='{"filterSelection":"properties", "modalId":getPropertyModalId()}'></div>
       </div>
     </div>
   </div>

@@ -4000,7 +4000,6 @@ section.dashboard-elements {
       height: 330px;
       float: right;
 
-
       .nav-tabs {
         border-color: @brand-primary;
         text-transform: uppercase;
@@ -4586,11 +4585,29 @@ p.instructions {
   }
 }
 
+#cardinality-options {
+
+  .cardinality-selector {
+    padding: 0 10px;
+  }
+
+  button {
+    width: 130px;
+  }
+
+  .cardinality-selectors {
+    i.check {
+      float: right;
+    }
+  }
+}
+
 /*
 ================================================
 === Element Builder Actions
 ================================================
 */
+
 .element-actions {
   padding-top: 40px;
   border-top: 0px solid #ddd;
@@ -4617,6 +4634,10 @@ p.instructions {
         color: @brand-primary;
       }
     }
+  }
+
+  .search {
+    margin: 10px;
   }
 
   .clear-save {
@@ -4689,6 +4710,10 @@ p.instructions {
         color: @brand-primary;
       }
     }
+  }
+
+  .search {
+    margin: 10px;
   }
 
   .clear-save {
@@ -7316,22 +7341,24 @@ textarea.curlSample {
     border: 0px solid #ccc;
     border-radius: 0;
     i.cedar-svg-rdf {
-      padding-right:10px;
+      padding-right: 10px;
     }
   }
   .nav-tabs > li.active > a {
   }
   pre {
-    background:white;border:0px;border-radius: 0px;
-    min-height:100px;
+    background: white;
+    border: 0px;
+    border-radius: 0px;
+    min-height: 100px;
   }
   .warning {
-    font-size:16px;
-    padding:40px 0;
+    font-size: 16px;
+    padding: 40px 0;
     color: #ccc;
     background-color: @white;
     border-width: 0px;
-    min-height:100px;
+    min-height: 100px;
   }
 }
 

@@ -28,7 +28,7 @@ define([
         isopen: false
       };
 
-      $scope.toggled = function(open) {
+      $scope.toggled = function (open) {
         $scope.status.isopen = open;
       };
 
@@ -94,7 +94,8 @@ define([
       $scope.$on('submitForm', function (event) {
 
         // If field is required and is empty, emit failed emptyRequiredField event
-        if ($rootScope.schemaOf($scope.field)._valueConstraints && $rootScope.schemaOf($scope.field)._valueConstraints.requiredValue) {
+        if ($rootScope.schemaOf($scope.field)._valueConstraints && $rootScope.schemaOf(
+                $scope.field)._valueConstraints.requiredValue) {
           var allRequiredFieldsAreFilledIn = true;
           var min = $scope.field.minItems || 0;
 
@@ -653,15 +654,18 @@ define([
         var height = 315;
         var content = $rootScope.propertiesOf(field)._content.replace(/<(?:.|\n)*?>/gm, '');
 
-        if ($rootScope.propertiesOf(field)._size && $rootScope.propertiesOf(field)._size.width && Number.isInteger($rootScope.propertiesOf(field)._size.width)) {
+        if ($rootScope.propertiesOf(field)._size && $rootScope.propertiesOf(field)._size.width && Number.isInteger(
+                $rootScope.propertiesOf(field)._size.width)) {
           width = $rootScope.propertiesOf(field)._size.width;
         }
-        if ($rootScope.propertiesOf(field)._size && $rootScope.propertiesOf(field)._size.height && Number.isInteger($rootScope.propertiesOf(field)._size.height)) {
+        if ($rootScope.propertiesOf(field)._size && $rootScope.propertiesOf(field)._size.height && Number.isInteger(
+                $rootScope.propertiesOf(field)._size.height)) {
           height = $rootScope.propertiesOf(field)._size.height;
         }
 
         // if I say trust as html, then better make sure it is safe first
-        return $sce.trustAsHtml('<iframe width="' + width + '" height="' + height + '" src="https://www.youtube.com/embed/' + content + '" frameborder="0" allowfullscreen></iframe>');
+        return $sce.trustAsHtml(
+            '<iframe width="' + width + '" height="' + height + '" src="https://www.youtube.com/embed/' + content + '" frameborder="0" allowfullscreen></iframe>');
 
       };
 
@@ -672,7 +676,8 @@ define([
           if (newField._ui.title != oldField._ui.title) {
             var capitalizedTitle = $filter('capitalizeFirst')(newField._ui.title);
             newField.title = $translate.instant("GENERATEDVALUE.fieldTitle", {title: capitalizedTitle}).trim();
-            newField.description = $translate.instant("GENERATEDVALUE.fieldDescription", {title: capitalizedTitle}).trim();
+            newField.description = $translate.instant("GENERATEDVALUE.fieldDescription",
+                {title: capitalizedTitle}).trim();
           }
         }
         setDirectory();
@@ -1021,7 +1026,6 @@ define([
       });
 
 
-
       // which details tab is open?
       $scope.showControlledTermsValues = false;
       $scope.showControlledTermsField = false;
@@ -1101,88 +1105,8 @@ define([
         return DataManipulationService.getLocator($scope.field, 0, index);
       };
 
-
-      // for cardinality selectors
-      $scope.cardinality = {
-        min  : null,
-        max  : null,
-        mins : [{
-          value: '0',
-          label: 'none'
-        }, {
-          value: '1',
-          label: 'one'
-        }, {
-          value: '2',
-          label: 'two'
-        }, {
-          value: '3',
-          label: 'three'
-        }, {
-          value: '4',
-          label: 'four'
-        }, {
-          value: '5',
-          label: 'five'
-        }, {
-          value: '6',
-          label: 'six'
-        }, {
-          value: '7',
-          label: 'seven'
-        }, {
-          value: '8',
-          label: 'eight'
-        }],
-        maxes: [{
-          value: '1',
-          label: 'one'
-        }, {
-          value: '2',
-          label: 'two'
-        }, {
-          value: '3',
-          label: 'three'
-        }, {
-          value: '4',
-          label: 'four'
-        }, {
-          value: '5',
-          label: 'five'
-        }, {
-          value: '6',
-          label: 'six'
-        }, {
-          value: '7',
-          label: 'seven'
-        }, {
-          value: '8',
-          label: 'eight'
-        }, {
-          value: '0',
-          label: 'unlimited'
-        }]
-      };
-
-
       $scope.isMultiple = function () {
         return $scope.field.minItems != null;
-      };
-
-      $scope.initMultiple = function () {
-        if ($scope.isMultiple()) {
-          $scope.cardinality.min = $scope.field.minItems.toString();
-          $scope.cardinality.max = typeof $scope.field.maxItems === 'undefined' ? '0' : $scope.field.maxItems.toString();
-        }
-      };
-
-      $scope.updateMultiple = function () {
-        $scope.field.minItems = parseInt($scope.cardinality.min);
-        $scope.field.maxItems = parseInt($scope.cardinality.max);
-        if ($scope.field.maxItems && $scope.field.maxItems < $scope.field.minItems) {
-          $scope.field.maxItems = 0;
-          $scope.cardinality.max = '0';
-        }
       };
 
       $scope.defaultMinMax = function () {
@@ -1193,6 +1117,115 @@ define([
       $scope.getForm = function () {
         return $rootScope.jsonToSave;
       };
+
+      //
+      // cardinality selectors begin
+      //
+      $scope.cardinality = {
+        min : {
+          isopen: false,
+          value: null,
+          arr: [{
+            value: '0',
+            label: 'none'
+          }, {
+            value: '1',
+            label: 'one'
+          }, {
+            value: '2',
+            label: 'two'
+          }, {
+            value: '3',
+            label: 'three'
+          }, {
+            value: '4',
+            label: 'four'
+          }, {
+            value: '5',
+            label: 'five'
+          }, {
+            value: '6',
+            label: 'six'
+          }, {
+            value: '7',
+            label: 'seven'
+          }, {
+            value: '8',
+            label: 'eight'
+          }]
+        },
+        max : {
+          isopen: false,
+          value: null,
+          arr: [{
+            value: '0',
+            label: 'unlimited'
+          }, {
+            value: '1',
+            label: 'one'
+          }, {
+            value: '2',
+            label: 'two'
+          }, {
+            value: '3',
+            label: 'three'
+          }, {
+            value: '4',
+            label: 'four'
+          }, {
+            value: '5',
+            label: 'five'
+          }, {
+            value: '6',
+            label: 'six'
+          }, {
+            value: '7',
+            label: 'seven'
+          }, {
+            value: '8',
+            label: 'eight'
+          }]
+        }
+      };
+
+      $scope.getCardinalityLabel = function (minOrMax) {
+        var result = '';
+        if ($scope.cardinality[minOrMax].value !== null) {
+          var obj = $scope.cardinality[minOrMax].arr.map(function (a) {
+            return a.label;
+          });
+          return $translate.instant(obj[$scope.cardinality[minOrMax].value]);
+        }
+        return result;
+      };
+
+      $scope.initMultiple = function () {
+        if ($scope.isMultiple()) {
+          $scope.cardinality.min.value = $scope.field.minItems.toString();
+          $scope.cardinality.max.value = typeof $scope.field.maxItems === 'undefined' ? '0' : $scope.field.maxItems.toString();
+        }
+      };
+
+      $scope.updateMultiple = function () {
+        $scope.field.minItems = parseInt($scope.cardinality.min.value);
+        $scope.field.maxItems = parseInt($scope.cardinality.max.value);
+        if ($scope.field.maxItems && $scope.field.maxItems < $scope.field.minItems) {
+          $scope.field.maxItems = 0;
+          $scope.cardinality.max.value = '0';
+        }
+      };
+
+      $scope.setCardinality = function (minOrMax, value) {
+        $scope.cardinality[minOrMax].value = value;
+        $scope.cardinality[minOrMax].isopen = false;
+        $scope.updateMultiple();
+      };
+
+      //
+      // cardinality selectors end
+      //
+
+
     };
 
     return {

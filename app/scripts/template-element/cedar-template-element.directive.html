@@ -212,19 +212,8 @@
         </div>
 
         <div class="cardinality-selectors" ng-if="element.minItems > -1">
-      <span class=" form-group validation-pattern  min-items-option">
-        <span translate>GENERIC.Min</span>
-        <select class="center" select-picker ng-model="cardinality.min" ng-init="initMultiple()"
-            ng-change="updateMultiple()">
-          <option ng-repeat="i in cardinality.mins" value="{{ i.value }}">{{ i.label }}</option>
-        </select>
-      </span>
-      <span class=" form-group validation-pattern  max-items-option">
-        <span translate>GENERIC.Max</span>
-        <select select-picker ng-model="cardinality.max" ng-init="initMultiple()" ng-change="updateMultiple()">
-          <option ng-repeat="i in cardinality.maxes" value="{{ i.value }}">{{ i.label }}</option>
-        </select>
-      </span>
+          <cardinality-selector min-or-max="'min'"  min-items="element.minItems" max-items="element.maxItems"></cardinality-selector>
+          <cardinality-selector min-or-max="'max'"  min-items="element.minItems" max-items="element.maxItems"></cardinality-selector>
         </div>
 
       </div>
