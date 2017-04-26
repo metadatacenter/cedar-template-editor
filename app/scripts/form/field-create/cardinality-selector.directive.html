@@ -1,0 +1,10 @@
+<div class="btn-group cardinality-selector"  uib-dropdown is-open="cardinality[minOrMax].isopen" auto-close="always" >
+  <button type="button" class="btn btn-primary" uib-dropdown-toggle ng-disabled="disabled">
+    <span translate>{{getCardinalityLabel()}}</span>  <span class="caret"></span>
+  </button>
+  <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="single-button">
+    <li ng-repeat="obj in cardinality[minOrMax].arr" role="menuitem"><a href="#"
+        ng-click="update(obj.value)">{{obj.label}}<i ng-if="obj.value == cardinality[minOrMax].value"
+        class="fa fa-check check"></i></a></li>
+  </ul>
+</div>
