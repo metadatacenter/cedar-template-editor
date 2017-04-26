@@ -130,6 +130,17 @@ define([
       return ($location.path() === "/privacy");
     };
 
+    // clear the modal fade on location change
+    $rootScope.$on('$locationChangeStart', function(event, newUrl, oldUrl) {
+      // Select open modal(s)
+      var $openModalSelector = $(".modal.fade.in");
+      if( ($openModalSelector.data('bs.modal') || {}).isShown == true){
+        // Close open modal(s)
+        $openModalSelector.modal("hide");
+        // Prevent page transition
+        event.preventDefault();
+      }
+    });
 
     $rootScope.$on('$locationChangeSuccess', function (event, next, current) {
 
