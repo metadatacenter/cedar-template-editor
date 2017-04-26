@@ -164,6 +164,30 @@ gulp.task('e2e', gulp.series('test-env', function () {
       });
 }));
 
+gulp.task('update-permissions', gulp.series('test-env', function () {
+  return gulp.src([
+    './tests/e2e/update-permissions-spec.js'
+  ])
+      .pipe(protractor({
+        configFile: "protractor-sequential.config.js"
+      }))
+      .on('error', function (e) {
+        throw e
+      });
+}));
+
+gulp.task('resource-permissions', gulp.series('test-env', function () {
+  return gulp.src([
+    './tests/e2e/resource-permissions-spec.js'
+  ])
+      .pipe(protractor({
+        configFile: "protractor-sequential.config.js"
+      }))
+      .on('error', function (e) {
+        throw e
+      });
+}));
+
 gulp.task('test-workspace', gulp.series('test-env', function () {
   return gulp.src([
     './tests/e2e/clean-up-spec.js',
