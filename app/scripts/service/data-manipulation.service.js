@@ -819,7 +819,8 @@ define([
 
           service.addDomIdIfNotPresent(node, service.createDomId());
 
-          angular.forEach(node.properties, function (value, key) {
+          var prop = $rootScope.propertiesOf(node);
+          angular.forEach(prop, function (value, key) {
             if (!DataUtilService.isSpecialKey(key)) {
               service.createDomIds(value);
             }
@@ -970,8 +971,6 @@ define([
             var order = service.getFieldSchema(parent)._ui.order;
             var selectedKey;
 
-            console.log('id' + id);
-
 
             angular.forEach(props, function (value, key) {
               var valueId = service.getFieldSchema(value)["@id"];
@@ -1046,8 +1045,7 @@ define([
           var domId = null;
           if (node && node.hasOwnProperty("_tmp")) {
             domId = node._tmp.domId;
-          }
-          ;
+          };
           return domId;
         };
 

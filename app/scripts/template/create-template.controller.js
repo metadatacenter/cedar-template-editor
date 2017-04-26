@@ -147,7 +147,6 @@ define([
 
         // Reverts to empty form and removes all previously added fields/elements
         $scope.reset = function () {
-          console.log('reset')
           UIMessageService.confirmedExecution(
               function () {
                 $timeout(function () {
@@ -191,7 +190,6 @@ define([
 
         // Stores the template into the database
         $scope.doSaveTemplate = function () {
-          console.log($scope.form);
 
           this.disableSaveButton();
           var owner = this;
@@ -233,7 +231,6 @@ define([
                     $location.path(FrontendUrlService.getTemplateEdit(newId));
 
                     $scope.$broadcast('form:clean');
-                    console.log($scope.form);
                   },
                   function (err) {
                     UIMessageService.showBackendError('SERVER.TEMPLATE.create.error', err);
