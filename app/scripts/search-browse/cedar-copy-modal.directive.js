@@ -129,7 +129,6 @@ define([
                       UIMessageService.showBackendError('SERVER.RESOURCE.copyToResource.error', response);
                     }
                 );
-
               }
             }
           }
@@ -184,7 +183,7 @@ define([
               var resourceTypes = activeResourceTypes();
               if (resourceTypes.length > 0) {
                 return resourceService.getResources(
-                    {folderId: folderId, resourceTypes: resourceTypes, sort: sortField(), limit: 100, offset: 0},
+                    {folderId: folderId, resourceTypes: resourceTypes, sort: sortField(), limit: 500, offset: 0},
                     function (response) {
                       vm.currentDestinationID = folderId;
                       vm.destinationResources = response.resources;
@@ -214,7 +213,6 @@ define([
             return activeResourceTypes;
           }
 
-
           function getResourceIconClass(resource) {
             var result = "";
             if (resource) {
@@ -238,7 +236,6 @@ define([
                   break;
                   result += "fa-sitemap";
                   break;
-
               }
             }
             return result;
@@ -251,7 +248,6 @@ define([
             }
             return result;
           }
-
 
           // modal open or closed
           $scope.$on('copyModalVisible', function (event, params) {
@@ -273,10 +269,8 @@ define([
               vm.sortOptionField = sortOptionField;
               vm.selectedDestination = null;
               getDestinationById(vm.currentFolderId);
-
             }
           });
-
         }
       }
     }
