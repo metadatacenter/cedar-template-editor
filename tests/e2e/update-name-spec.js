@@ -46,7 +46,7 @@ describe('update-name', function () {
       shareModal.shareResourceWithGroup(folder, 'folder', testConfig.everybodyGroup, false, false);
       workspacePage.clearSearch();
 
-      workspacePage.login(testConfig.testUser2, testConfig.testPassword2);
+      workspacePage.login(testConfig.testUser2, testConfig.testPassword2);git s
 
       workspacePage.selectResource(folder, 'folder');
       workspacePage.createMoreOptionsButton().click();

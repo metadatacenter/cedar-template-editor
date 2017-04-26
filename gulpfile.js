@@ -176,6 +176,18 @@ gulp.task('update-permissions', gulp.series('test-env', function () {
       });
 }));
 
+gulp.task('update-ownership', gulp.series('test-env', function () {
+  return gulp.src([
+    './tests/e2e/update-ownership-spec.js'
+  ])
+      .pipe(protractor({
+        configFile: "protractor-sequential.config.js"
+      }))
+      .on('error', function (e) {
+        throw e
+      });
+}));
+
 gulp.task('resource-permissions', gulp.series('test-env', function () {
   return gulp.src([
     './tests/e2e/resource-permissions-spec.js'

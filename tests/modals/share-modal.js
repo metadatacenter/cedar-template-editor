@@ -118,7 +118,7 @@ var ShareModal = function () {
   this.shareResource = function(name, type, username, canWrite, isOwner) {
     this.openDialogViaRightClick(name, type);
     this.shareWithUser(username, canWrite, isOwner);
-    browser.wait(EC.stalenessOf(shareModalBody), 1500);
+    //browser.wait(EC.stalenessOf(shareModalBody), 1500);
   };
 
 
@@ -126,7 +126,7 @@ var ShareModal = function () {
   this.shareResourceWithGroup = function(name, type, groupname, canWrite, isOwner) {
     this.openDialogViaRightClick(name, type);
     this.shareWithGroup(groupname, canWrite, isOwner);
-    browser.wait(EC.stalenessOf(shareModalBody), 1500);
+    //browser.wait(EC.stalenessOf(shareModalBody), 1500);
   };
 
 
@@ -217,6 +217,7 @@ var ShareModal = function () {
   // click on the done button of the share dialog
   this.clickDone = function() {
     var doneButton = this.createShareModalDoneButton();
+    browser.wait(EC.elementToBeClickable(doneButton));
     doneButton.click();
     browser.wait(EC.stalenessOf(doneButton));
   }
