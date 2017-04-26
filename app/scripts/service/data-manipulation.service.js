@@ -153,7 +153,7 @@ define([
         };
 
         // This function initializes the model to array or object, depending on the field type. The 'force' parameter forces
-        // the initialization even if the model is well defined and contains items
+        // the initialization even if the model is defined and contains items
         service.initializeModel = function (field, model, force) {
           // Checkbox or multiple-choice list
           if (service.isMultipleChoiceField(field)) {
@@ -175,42 +175,54 @@ define([
           return model;
         };
 
-        // This function initializes the value field (in the model) to null (either @id or @value) if it has not been initialized yet.
+        // This function initializes the @value field (in the model) to null if it has not been initialized yet. Note that
+        // the @id field can't be initialized to null. In JSON-LD, @id must be a string, so we don't initialize it.
         service.initializeValue = function (field, model) {
           var fieldValue = service.getValueLocation(field);
-          // Not an array
-          if (!$rootScope.isArray(model)) {
-            if (!model) {
-              model = {};
-            }
-            // Value field has been defined
-            if (model.hasOwnProperty(fieldValue)) {
-              // If undefined value or empty string
-              if ((angular.isUndefined(model[fieldValue])) || ((model[fieldValue]) && (model[fieldValue].length == 0))) {
+          if (fieldValue == "@value") {
+            // Not an array
+            if (!$rootScope.isArray(model)) {
+              if (!model) {
+                model = {};
+              }
+              // Value field has been defined
+              if (model.hasOwnProperty(fieldValue)) {
+                // If undefined value or empty string
+                if ((angular.isUndefined(
+                        model[fieldValue])) || ((model[fieldValue]) && (model[fieldValue].length == 0))) {
+                  model[fieldValue] = null;
+                }
+              }
+              // Value field has not been defined
+              else {
                 model[fieldValue] = null;
               }
             }
-            // Value field has not been defined
+            // An array
             else {
-              model[fieldValue] = null;
-            }
-          }
-          // An array
-          else {
-            // Length is 0
-            if (model.length == 0) {
-              model.push({});
-              model[0][fieldValue] = null;
-            }
-            // If length > 0
-            else {
-              for (var i = 0; i < model.length; i++) {
-                service.initializeValue(field, model[i]);
+              // Length is 0
+              if (model.length == 0) {
+                model.push({});
+                model[0][fieldValue] = null;
+              }
+              // If length > 0
+              else {
+                for (var i = 0; i < model.length; i++) {
+                  service.initializeValue(field, model[i]);
+                }
               }
             }
           }
         };
 
+        service.getDefaultValue = function(fieldValue) {
+          if (fieldValue == "@value") {
+            return null;
+          }
+          // Otherwise don't return anything because the @id field can't be initialized to null
+        }
+
+        // Sets the default selections for multi-answer fields
         service.defaultOptionsToModel = function (field, model) {
           if (service.isMultiAnswer(field)) {
             var literals = service.getLiterals(field);
@@ -312,7 +324,6 @@ define([
           }
           return location;
         };
-
 
         // resolve min or max as necessary and cardinalize or uncardinalize field
         service.setMinMax = function (field) {

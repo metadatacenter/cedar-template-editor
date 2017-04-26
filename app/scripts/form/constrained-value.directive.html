@@ -1,7 +1,7 @@
 <div class="has-constraint " ng-class="{'has-selected': (valueElement['@value'].label || valueElement['_valueLabel'])}">
 
   <ui-select
-      ng-change="updateModelFromUIControlledField()"
+      ng-change="updateModelFromUIControlledField(modelValue, index)"
       ng-model="modelValue[index].termInfo"
       theme="bootstrap"
       close-on-select="true"
