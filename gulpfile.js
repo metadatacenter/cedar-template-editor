@@ -186,7 +186,8 @@ gulp.task('test-permissions', gulp.series('test-env', function () {
     './tests/e2e/clean-up-spec.js',
     './tests/e2e/delete-resource-spec.js',
     './tests/e2e/folder-permissions-spec.js',
-    './tests/e2e/resource-permissions-spec.js'
+    './tests/e2e/resource-permissions-spec.js',
+    './tests/e2e/update-permissions-spec.js'
   ])
       .pipe(protractor({
         configFile: "protractor-sequential.config.js"
