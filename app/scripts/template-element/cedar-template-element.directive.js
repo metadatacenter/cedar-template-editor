@@ -191,7 +191,6 @@ define([
       // add a multiple cardinality element
       scope.selectedTab = 0;
       scope.addElement = function () {
-        console.log('addElement');
         if ($rootScope.isRuntime()) {
           if ((!scope.element.maxItems || scope.model.length < scope.element.maxItems)) {
             var seed = {};

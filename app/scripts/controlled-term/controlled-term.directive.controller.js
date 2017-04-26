@@ -434,7 +434,6 @@ define([
     ]
 
     function stageBranchValueConstraint(selection) {
-      console.log('stageBranchValueConstraint');
       vm.stagedBranchesValueConstraints = [];
       var existed = false;
       angular.forEach(vm.stagedBranchesValueConstraints, function (branchValueConstraint) {
@@ -477,9 +476,7 @@ define([
     };
 
     function stageOntologyClassValueConstraint(selection, type) {
-      console.log('stageOntologyClassValueConstraint ' + vm.stageValueConstraintAction);
       vm.stageValueConstraintAction = "add_class";
-      console.log('stageOntologyClassValueConstraint updated ' + vm.stageValueConstraintAction);
       vm.stagedOntologyClassValueConstraints = [];
       stageOntologyClass(selection, type);
     };
@@ -672,11 +669,9 @@ define([
         function (value) {
           if (!value) {
             vm.stageValueConstraintAction = 'add_class';
-            console.log('vm.selectedClass sets add_cass');
           }
           else {
             if (value.type == "OntologyClass" || value.type == "Value") {
-              console.log('vm.selectedClass sets add_class');
                 vm.stageValueConstraintAction = 'add_class';
               vm.stageOntologyClassValueConstraint(value);
             }
