@@ -626,9 +626,9 @@ define([
             }
 
             if (found) {
-              $rootScope.$broadcast("setActive", [DataManipulationService.getId(next), 0, $scope.path, true]);
+              $rootScope.$broadcast("setActive", [DataManipulationService.getId(next), 0, $scope.path,  true]);
             } else {
-              $rootScope.$broadcast("setActive", [id, 0, $scope.path, false]);
+              $rootScope.$broadcast("setActive", [id, 0, $scope.path,  false]);
             }
           }
         };

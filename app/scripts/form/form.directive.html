@@ -58,22 +58,26 @@
     </div>
 
     <ul class="treeview tv">
+
       <li ng-repeat="item in page" class="animate-fade tv"
           ng-class="{'last':$last, 'first':$first, 'element':isElement(item)}"
           ng-if="pageIndex == $parent.$index && isExpanded() && (isField(item) || isElement(item))">
 
         <!--If field-->
         <div ng-if="isField(item)" class="field-instance">
+
           <cedar-runtime-field nested="false" field="form.properties[item]" model="model[item]"
               delete="removeChild(form.properties[item]);"
               rename-child-key="renameChildKey"
               is-edit-data="isEditData"
               depth="1"
               path="0"
+              uid="item"
               previous="form.properties[page[$index-1]]"></cedar-runtime-field>
         </div>
 
         <!--If element-->
+
         <div ng-if="isElement(item)" class=" element-group full">
           <cedar-runtime-element nested="false" element="form.properties[item]"
               key="item"
@@ -83,7 +87,8 @@
               delete="removeChild(form.properties[item])"
               is-edit-data="isEditData"
               depth="1"
-              path="0">
+              path="0"
+              uid="item">
           </cedar-runtime-element>
         </div>
 

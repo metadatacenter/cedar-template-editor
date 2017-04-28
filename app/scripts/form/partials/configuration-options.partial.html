@@ -4,30 +4,26 @@
     <div class="element-toggles list table-style">
       <div ng-if="hasControlledTerms()" class="element-toggle table-cell-style field-controlled-terms-tab"
           ng-class="{active: isTabActive('field')}"
-          ng-click="toggleControlledTerm('field');  $event.stopPropagation();">
+          ng-click="setTab('field');  $event.stopPropagation();">
         <span><i class="cedar-svg-controll-term collapsed" style="padding-bottom:10px"></i>Field Type</span>
       </div>
       <div ng-if="hasControlledTerms()" class="element-toggle table-cell-style value-controlled-terms-tab"
           ng-class="{active: isTabActive('values')}"
-          ng-click="toggleControlledTerm('values');  $event.stopPropagation();">
+          ng-click="setTab('values');  $event.stopPropagation();">
         <span><i class="cedar-svg-controll-term collapsed" style="padding-bottom:10px"></i>Values</span>
       </div>
-      <!--<div ng-if="hasDateRange()" class="element-toggle table-cell-style date-range-tab" ng-class="{active: isTabActive('range')}"-->
-      <!--ng-click="toggleControlledTerm('range');  $event.stopPropagation();">-->
-      <!--<span>Range</span>-->
-      <!--</div>-->
       <div ng-if="allowsMultiple()" class="element-toggle table-cell-style cardinality-tab"
           ng-class="{active: isTabActive('cardinality')}"
-          ng-click="toggleControlledTerm('cardinality');  $event.stopPropagation();">
+          ng-click="setTab('cardinality');  $event.stopPropagation();">
         <span>Multiple</span>
       </div>
       <div class="element-toggle table-cell-style required-tab" ng-class="{active: isTabActive('required')}"
-          ng-click="toggleControlledTerm('required');  $event.stopPropagation();">
+          ng-click="setTab('required');  $event.stopPropagation();">
         <span>Required</span>
       </div>
       <div ng-if="allowsValueRecommendation()" class="element-toggle table-cell-style value-recommendation-tab"
           ng-class="{active: isTabActive('value-recommendation')}"
-          ng-click="toggleControlledTerm('value-recommendation');  $event.stopPropagation();">
+          ng-click="setTab('value-recommendation');  $event.stopPropagation();">
         <span>Suggestions</span>
       </div>
     </div>
@@ -105,7 +101,7 @@
       <!-- The field.finalTitle variable is used to store the final title assigned to the field, which will be shown
       in the modal and used to perform a BioPortal initial search automatically -->
       <button type="button" class="std-button btn search-ontologies-button"
-          ng-click="showModal(getModalId(true));$root.finalTitle = $root.schemaOf(field)._ui.title" translate>
+          ng-click="showModal('field');$root.finalTitle = $root.schemaOf(field)._ui.title" translate>
         GENERIC.Search
       </button>
     </div>
@@ -200,7 +196,7 @@
           <div class="center search">
             <!-- The field.finalTitle variable is used to store the final title assigned to the field, which will be shown
           in the modal -->
-            <button type="button" class="std-button btn search-ontologies-button" ng-click="showModal(getModalId(false)); $event.stopPropagation();
+            <button type="button" class="std-button btn search-ontologies-button" ng-click="showModal('values'); $event.stopPropagation();
                 $root.finalTitle = $root.schemaOf(field)._ui.title">Search
             </button>
           </div>
@@ -213,7 +209,7 @@
 <div class="clearfix"></div>
 
 <!-- field modal -->
-<div class="modal fade controlled-terms-modal" id="{{getModalId(true)}}" data-backdrop="static">
+<div class="modal fade controlled-terms-modal" id="{{getModalId('field')}}" data-backdrop="static">
   <div class="modal-dialog">
     <div class="modal-content" style="overflow:auto">
       <div class="modal-header">
@@ -222,14 +218,14 @@
             src="/img/close_modal.png" width="22"/></span></button>
       </div>
       <div class="modal-body">
-        <div controlled-term field="field" options='{"filterSelection":"field", "modalId":getModalId(true)}'></div>
+        <div controlled-term field="field" options='{"filterSelection":"field", "modalId":getModalId("field")}'></div>
       </div>
     </div>
   </div>
 </div>
 
 <!-- value modal -->
-<div class="modal fade controlled-terms-modal" id="{{getModalId(false)}}" data-backdrop="static">
+<div class="modal fade controlled-terms-modal" id="{{getModalId('values')}}" data-backdrop="static">
   <div class="modal-dialog">
     <div class="modal-content" style="overflow:auto">
       <div class="modal-header">
@@ -238,14 +234,14 @@
             src="/img/close_modal.png" width="22"/></span></button>
       </div>
       <div class="modal-body">
-        <div controlled-term field="field" options='{"filterSelection":"values", "modalId":getModalId(false)}'></div>
+        <div controlled-term field="field" options='{"filterSelection":"values", "modalId":getModalId("values")}'></div>
       </div>
     </div>
   </div>
 </div>
 
 <!-- property modal -->
-<div class="modal fade controlled-terms-modal" id="{{getPropertyModalId()}}" data-backdrop="static">
+<div class="modal fade controlled-terms-modal" id="{{getModalId('property')}}" data-backdrop="static">
   <div class="modal-dialog">
     <div class="modal-content" style="overflow:auto">
       <div class="modal-header">
@@ -255,7 +251,7 @@
       </div>
       <div class="modal-body">
         <div controlled-term field="field"
-            options='{"filterSelection":"properties", "modalId":getPropertyModalId()}'></div>
+            options='{"filterSelection":"properties", "modalId":getModalId("property")}'></div>
       </div>
     </div>
   </div>

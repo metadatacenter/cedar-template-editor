@@ -1,4 +1,4 @@
-<div ng-if="model !== undefined" class="item-root element-root">
+<div ng-if="model !== undefined" class="item-root element-root" >
 
   <div class="elementTotalContent">
 
@@ -63,7 +63,7 @@
         </field-toolbar>
 
       </div>
-      <ul class="tv" ng-show="isExpanded(index) && index === i" ng-repeat="(i, valueElement) in valueArray"
+      <ul class="tv" ng-if="isExpanded(index) && index === i" ng-repeat="(i, valueElement) in valueArray"
           id="{{getLocator(i)}}">
         <li class="tv"
             ng-class="{'last':$last, 'first':$first, 'element' : $root.isElement($root.schemaOf($root.propertiesOf(element)[key]))}"
@@ -74,9 +74,8 @@
 
           </div>
           <div ng-if="isExpanded(index) && index === i">
-
-
-            <cedar-runtime-nested-element key="key"
+            <cedar-runtime-nested-element
+                key="key"
                 field="$root.propertiesOf(element)[key]"
                 model="valueArray[i][key]"
                 labels="$root.schemaOf(element)['_ui']['propertyLabels']"
@@ -85,7 +84,8 @@
                 rename-child-key="renameChildKey"
                 is-edit-data="isEditData"
                 depth="depth+1"
-                path="path+'-'+i">
+                path="path+'-'+i"
+                uid="uid+'-'+key">
             </cedar-runtime-nested-element>
           </div>
         </li>
@@ -116,6 +116,8 @@
         <div ng-if="isExpanded(i)">
           <ul class="tv" ng-repeat="key in $root.schemaOf(element)['_ui']['order']">
             <li class="tv" ng-if="$root.propertiesOf(element)[key]" ng-class="{'last':$last, 'first':$first, 'element' : $root.isElement($root.schemaOf($root.propertiesOf(element)[key]))}">
+
+              key {{key}}
               <cedar-runtime-nested-element key="key"
                   field="$root.propertiesOf(element)[key]"
                   model="valueElement[key]"
@@ -126,7 +128,8 @@
                   is-edit-data="isEditData"
                   depth="depth+1"
                   path="path+'-'+i"
-                  index="i">
+                  index="i"
+              uid="">
               </cedar-runtime-nested-element>
             </li>
           </ul>

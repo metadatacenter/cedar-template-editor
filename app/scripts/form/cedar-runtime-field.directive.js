@@ -10,10 +10,10 @@ define([
   cedarRuntimeField.$inject = ["$rootScope", "$sce", "$document", "$translate", "$filter", "$location",
                                "$window", '$timeout',
                                "SpreadsheetService",
-                               "DataManipulationService"];
+                               "DataManipulationService", "UIUtilService"];
 
   function cedarRuntimeField($rootScope, $sce, $document, $translate, $filter, $location, $window,
-                             $timeout, SpreadsheetService, DataManipulationService) {
+                             $timeout, SpreadsheetService, DataManipulationService, UIUtilService) {
 
 
     var linker = function ($scope, $element, attrs) {
@@ -30,8 +30,12 @@ define([
       $scope.pageMin = 0;
       $scope.pageMax = 0;
       $scope.pageRange = 6;
-
+      $scope.valueArray;
       $scope.urlRegex = '^((https?|ftp)://)?([a-z]+[.])?[a-z0-9-]+([.][a-z]{1,4}){1,2}(/.*[?].*)?$';
+
+      //
+      // model support and manipulation
+      //
 
       // get the field title
       $scope.getTitle = function (field) {
@@ -43,14 +47,13 @@ define([
         return DataManipulationService.getDescription($scope.field);
       };
 
-      // get the field id?
+      // get the field id
       $scope.getId = function () {
         return DataManipulationService.getId($scope.field);
       };
 
-      // what type?  static, field or element
-      $scope.getType = function (field) {
-        return DataManipulationService.getId($scope.field);
+      $scope.cardinalityString = function () {
+        return DataManipulationService.cardinalityString($scope.field);
       };
 
       // what is the content
@@ -99,16 +102,16 @@ define([
 
       // what is the dom id for this field?
       $scope.getLocator = function (index) {
-        return DataManipulationService.getLocator($scope.field, index, $scope.path);
+        return DataManipulationService.getLocator($scope.field, index, $scope.path, $scope.uid);
       };
 
       // is this field actively being edited?
       $scope.isActive = function (index) {
-        return DataManipulationService.isActive(DataManipulationService.getLocator($scope.field, index, $scope.path));
+        return DataManipulationService.isActive($scope.getLocator(index));
       };
 
       $scope.isInactive = function (index) {
-        return DataManipulationService.isInactive(DataManipulationService.getLocator($scope.field, index, $scope.path));
+        return DataManipulationService.isInactive($scope.getLocator(index));
       };
 
       // is this a youTube field?
@@ -131,9 +134,126 @@ define([
         return $scope.previous && DataManipulationService.isStaticField($scope.previous);
       };
 
-      // is the previous field static?
-      $scope.isDateRange = function () {
-        return DataManipulationService.isDateRange($scope.field);
+      // has recommendations?
+      $scope.isRecommended = function () {
+        return $rootScope.vrs.getIsValueRecommendationEnabled($rootScope.schemaOf($scope.field));
+      };
+
+      // has value constraints?
+      $scope.isConstrained = function () {
+        return $scope.hasValueConstraint() && !$scope.isRecommended();
+      };
+
+      // has neither recommendations or value constraints
+      $scope.isRegular = function () {
+        return !$scope.isConstrained() && !$scope.isRecommended();
+      };
+
+      $scope.getYouTubeEmbedFrame = function (field) {
+        return UIUtilService.getYouTubeEmbedFrame(field);
+      };
+
+      // string together field values
+      $scope.getValueString = function (valueElement) {
+        var location = DataManipulationService.getValueLabelLocation($scope.field);
+        var result = '';
+        if (valueElement) {
+          for (var i = 0; i < valueElement.length; i++) {
+            if (valueElement[i][location]) {
+              result += valueElement[i][location] + ', ';
+            }
+          }
+        }
+        return result.trim().replace(/,\s*$/, "");
+      };
+
+      // strip midnight off the date time string
+      $scope.formatDateTime = function (value) {
+
+        var result = value;
+        if (value) {
+
+          var index = value.indexOf($scope.midnight);
+          if (index != -1) {
+            result = value.substring(0, index);
+          }
+        }
+        return result;
+      };
+
+      // can this be expanded
+      $scope.isExpandable = function () {
+        return false;
+      };
+
+      // is this a field
+      $scope.isField = function () {
+        return true;
+      };
+
+      // is this an element
+      $scope.isElement = function () {
+        return false;
+      };
+
+      //
+      // field display
+      //
+
+      $scope.pageMinMax = function () {
+        $scope.pageMax = Math.min($scope.valueArray.length, $scope.index + $scope.pageRange);
+        $scope.pageMin = Math.max(0, $scope.pageMax - $scope.pageRange);
+      };
+
+      $scope.selectPage = function (i) {
+
+        $scope.onSubmit($scope.index, i);
+      };
+
+      // expand all nested values
+      $scope.expandAll = function () {
+      };
+
+      // show this field as a spreadsheet
+      $scope.switchToSpreadsheet = function () {
+
+        SpreadsheetService.switchToSpreadsheetField($scope, $element);
+      };
+
+      $scope.showMultiple = function (state) {
+        return ($scope.multipleState === state);
+      };
+
+      $scope.toggleMultiple = function () {
+        var index = $scope.multipleStates.indexOf($scope.multipleState);
+        index = (index + 1) % $scope.multipleStates.length;
+        $scope.multipleState = $scope.multipleStates[index];
+        if ($scope.multipleState === 'spreadsheet') {
+          setTimeout(function () {
+            $scope.switchToSpreadsheet();
+          }, 0);
+        }
+        return $scope.multipleState;
+      };
+
+      //
+      // model values
+      //
+
+      // and array of values for multi-instance fields
+      $scope.setValueArray = function () {
+        $scope.valueArray = [];
+        if ($scope.isMultiAnswer()) {
+          $scope.valueArray.push($scope.model);
+        } else if ($scope.model instanceof Array) {
+          $scope.valueArray = $scope.model;
+        } else {
+          if (!$scope.model) {
+            $scope.model = {};
+          }
+          $scope.valueArray = [];
+          $scope.valueArray.push($scope.model);
+        }
       };
 
       // This function initializes the value field (or fields) to null (either @id or @value) if it has not been initialized yet.
@@ -292,43 +412,12 @@ define([
         }
       };
 
-      $scope.pageMinMax = function () {
-        $scope.pageMax = Math.min($scope.valueArray.length, $scope.index + $scope.pageRange);
-        $scope.pageMin = Math.max(0, $scope.pageMax - $scope.pageRange);
-      };
-
-      $scope.selectPage = function (i) {
-
-        $scope.onSubmit($scope.index, i);
-      };
-
       // remove the value of field at index
       $scope.removeInput = function (index) {
         var minItems = DataManipulationService.getMinItems($scope.field) || 0;
         if ($scope.model.length > minItems) {
           $scope.model.splice(index, 1);
         }
-      };
-
-      $scope.isExpandable = function () {
-        return false;
-      };
-
-      $scope.isField = function () {
-        return true;
-      };
-
-      $scope.isElement = function () {
-        return false;
-      };
-
-      $scope.expandAll = function () {
-      };
-
-      // show this field as a spreadsheet
-      $scope.switchToSpreadsheet = function () {
-
-        SpreadsheetService.switchToSpreadsheetField($scope, $element);
       };
 
       // look for errors
@@ -361,63 +450,6 @@ define([
         return unmetConditions;
       };
 
-      $scope.getYouTubeEmbedFrame = function (field) {
-
-        var width = 560;
-        var height = 315;
-        var content = $rootScope.propertiesOf(field)._content.replace(/<(?:.|\n)*?>/gm, '');
-
-        if ($rootScope.propertiesOf(field)._size && $rootScope.propertiesOf(field)._size.width && Number.isInteger($rootScope.propertiesOf(field)._size.width)) {
-          width = $rootScope.propertiesOf(field)._size.width;
-        }
-        if ($rootScope.propertiesOf(field)._size && $rootScope.propertiesOf(field)._size.height && Number.isInteger($rootScope.propertiesOf(field)._size.height)) {
-          height = $rootScope.propertiesOf(field)._size.height;
-        }
-
-        // if I say trust as html, then better make sure it is safe first
-        return $sce.trustAsHtml('<iframe width="' + width + '" height="' + height + '" src="https://www.youtube.com/embed/' + content + '" frameborder="0" allowfullscreen></iframe>');
-
-      };
-
-      // string together field values
-      $scope.getValueString = function (valueElement) {
-        var location = DataManipulationService.getValueLabelLocation($scope.field);
-        var result = '';
-        if (valueElement) {
-          for (var i = 0; i < valueElement.length; i++) {
-            if (valueElement[i][location]) {
-              result += valueElement[i][location] + ', ';
-            }
-          }
-        }
-        return result.trim().replace(/,\s*$/, "");
-      };
-
-
-      // watch for a request to set this field active
-      $scope.$on('setActive', function (event, args) {
-        var id = args[0];
-        var index = args[1];
-        var path = args[2];
-        var value = args[3];
-
-        if (id === $scope.getId() && path == $scope.path) {
-          $scope.setActive(index, value);
-        }
-      });
-
-      $scope.setInactive = function (index) {
-        $scope.setActive(index, false);
-      };
-
-      $scope.setActiveMaybe = function (index) {
-        if (!$scope.isActive(index)) {
-          $scope.setActive(index, true);
-        }
-      };
-
-
-
       // set this field and index active
       $scope.setActive = function (index, value) {
 
@@ -434,7 +466,7 @@ define([
           }
 
           // set it active or inactive
-          DataManipulationService.setActive($scope.field, index, $scope.path, active);
+          DataManipulationService.setActive($scope.field, index, $scope.path, $scope.uid, active);
 
           if (active) {
 
@@ -508,28 +540,6 @@ define([
 
       };
 
-      $scope.getPageWidth = function () {
-        var result = '100%';
-        var e = jQuery('.right-body');
-        if (e.length > 0) {
-          result = e[0].clientWidth + 'px';
-        }
-        return result;
-      };
-
-      // how deeply is this this field nested in the template?
-      $scope.getNestingCount = function () {
-
-        var path = $scope.path || '';
-        var arr = path.split('-');
-        return arr.length;
-      };
-
-      // turn the nesting into a px amount
-      $scope.getNestingStyle = function () {
-        return (-16 * ($scope.getNestingCount() - 2) - 1) + 'px';
-      };
-
       // submit this edit
       $scope.onSubmit = function (index, next) {
 
@@ -566,69 +576,10 @@ define([
         }
       };
 
-      // an array of model values
-      $scope.valueArray;
-      $scope.setValueArray = function () {
-        $scope.valueArray = [];
-        if ($scope.isMultiAnswer()) {
-          $scope.valueArray.push($scope.model);
-        } else if ($scope.model instanceof Array) {
-          $scope.valueArray = $scope.model;
-        } else {
-          if (!$scope.model) {
-            $scope.model = {};
-          }
-          $scope.valueArray = [];
-          $scope.valueArray.push($scope.model);
-        }
-      };
-      $scope.setValueArray();
 
-      $scope.showMultiple = function (state) {
-        return ($scope.multipleState === state);
-      };
-
-      $scope.cardinalityString = function () {
-        return DataManipulationService.cardinalityString($scope.field);
-      };
-
-      $scope.toggleMultiple = function () {
-        var index = $scope.multipleStates.indexOf($scope.multipleState);
-        index = (index + 1) % $scope.multipleStates.length;
-        $scope.multipleState = $scope.multipleStates[index];
-        if ($scope.multipleState === 'spreadsheet') {
-          setTimeout(function () {
-            $scope.switchToSpreadsheet();
-          }, 0);
-        }
-        return $scope.multipleState;
-      };
-
-      $scope.isRecommended = function () {
-        return $rootScope.vrs.getIsValueRecommendationEnabled($rootScope.schemaOf($scope.field));
-      };
-
-      $scope.isConstrained = function () {
-        return $scope.hasValueConstraint() && !$scope.isRecommended();
-      };
-
-      $scope.isRegular = function () {
-        return !$scope.isConstrained() && !$scope.isRecommended();
-      };
-
-      // strip midnight off the date time string
-      $scope.formatDateTime = function (value) {
-
-        var result = value;
-        if (value) {
-
-          var index = value.indexOf($scope.midnight);
-          if (index != -1) {
-            result = value.substring(0, index);
-          }
-        }
-        return result;
-      };
+      //
+      // watches
+      //
 
       // form has been submitted, look for errors
       $scope.$on('submitForm', function (event) {
@@ -732,15 +683,15 @@ define([
         var allFieldsAreValid = true;
         if (angular.isArray($scope.model)) {
           for (var i = 0; i < $scope.model.length; i++) {
-            if (!DataManipulationService.isValidPattern($scope.field, i)) {
-              $scope.model[i][location] = DataManipulationService.getDomValue($scope.field, i);
+            if (!DataManipulationService.isValidPattern($scope.field, i, $scope.path, $scope.uid)) {
+              $scope.model[i][location] = DataManipulationService.getDomValue($scope.field, i, $scope.path, $scope.uid);
               allFieldsAreValid = false;
             }
           }
 
         } else {
-          if (!DataManipulationService.isValidPattern($scope.field, 0)) {
-            $scope.model[location] = DataManipulationService.getDomValue($scope.field, 0);
+          if (!DataManipulationService.isValidPattern($scope.field, 0, $scope.path, $scope.uid)) {
+            $scope.model[location] = DataManipulationService.getDomValue($scope.field, 0, $scope.path, $scope.uid);
             allFieldsAreValid = false;
           }
         }
@@ -797,6 +748,39 @@ define([
 
       });
 
+      // watch for a request to set this field active
+      $scope.$on('setActive', function (event, args) {
+
+        var id = args[0];
+        var index = args[1];
+        var path = args[2];
+        var value = args[3];
+
+        console.log('on setActive ' + id + ' ' + index + ' ' + path  + ' '  + value);
+
+        if (id === $scope.getId() && path == $scope.path) {
+          $scope.setActive(index, value);
+        }
+      });
+
+      $scope.setInactive = function (index) {
+        $scope.setActive(index, false);
+      };
+
+      $scope.setActiveMaybe = function (index) {
+        if (!$scope.isActive(index)) {
+          $scope.setActive(index, true);
+        }
+      };
+
+      //
+      // initialization
+      //
+
+      $scope.setValueArray();
+
+
+
 
     };
 
@@ -811,7 +795,8 @@ define([
         delete        : '&',
         ngDisabled    : "=",
         path          : '=',
-        previous      : '='
+        previous      : '=',
+        uid           : '='
 
       },
       controller : function ($scope, $element) {
