@@ -599,36 +599,23 @@ define([
           }
         };
 
-        $scope.nextChild = function (fieldOrElement) {
-
-          var id = DataManipulationService.getId(fieldOrElement);
-          var selectedKey;
+        $scope.nextChild = function (fieldOrElement, index, path, fieldKey) {
           var props = $scope.form.properties;
+          var order = $scope.form._ui.order;
 
-          // find the field or element in the form's properties
-          angular.forEach(props, function (value, key) {
-            if (DataManipulationService.getId(value) == id) {
-              selectedKey = key;
-            }
-          });
-
-
-          if (selectedKey) {
-            var idx = $scope.form._ui.order.indexOf(selectedKey);
+          if (fieldKey) {
+            var idx = order.indexOf(fieldKey);
 
             idx += 1;
             var found = false;
-            while (idx < $scope.form._ui.order.length && !found) {
-              var nextKey = $scope.form._ui.order[idx];
+            while (idx < order.length && !found) {
+              var nextKey = order[idx];
               var next = props[nextKey];
               found = !$scope.isStaticField(next);
               idx += 1;
             }
-
             if (found) {
-              $rootScope.$broadcast("setActive", [DataManipulationService.getId(next), 0, $scope.path,  true]);
-            } else {
-              $rootScope.$broadcast("setActive", [id, 0, $scope.path,  false]);
+              $rootScope.$broadcast("setActive", [DataManipulationService.getId(next), 0, $scope.path, nextKey, true]);
             }
           }
         };
@@ -696,6 +683,29 @@ define([
             });
 
           }, 0);
+        };
+
+        $scope.activateNextSiblingOf = function(fieldKey) {
+          var index = 0;
+          var order = $rootScope.schemaOf($scope.form)._ui.order;
+          var props = $rootScope.schemaOf($scope.form).properties;
+          var idx = order.indexOf(fieldKey);
+
+          idx += 1;
+          var found = false;
+          while (idx < order.length && !found) {
+            var nextKey = order[idx];
+            var next = props[nextKey];
+            found = !DataManipulationService.isStaticField(next);
+            idx += 1;
+          }
+          if (found) {
+            var next = props[nextKey];
+            $rootScope.$broadcast("setActive",
+                [DataManipulationService.getId(next), 0, $scope.path, nextKey, true]);
+            return next;
+          }
+
         };
 
 

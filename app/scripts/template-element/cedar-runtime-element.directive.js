@@ -9,13 +9,14 @@ define([
   cedarRuntimeElement.$inject = ['$rootScope', '$timeout', '$window', 'DataManipulationService', 'DataUtilService',
                                  'SpreadsheetService'];
 
-  function cedarRuntimeElement($rootScope, $timeout, $window, DataManipulationService, DataUtilService,
+  function cedarRuntimeElement($rootScope, $timeout, $window,  DataManipulationService, DataUtilService,
                                SpreadsheetService) {
 
     var directive = {
       restrict   : 'EA',
       scope      : {
-        key          : '=',
+        parentKey    : '=',
+        fieldKey     : '=',
         element      : '=',
         delete       : '&',
         model        : '=',
@@ -45,7 +46,8 @@ define([
       scope.pageRange = 6;
 
 
-      console.log('element key ' + scope.key);
+      console.log('element parentKey ' + scope.parentKey);
+      console.log('element fieldKey ' + scope.fieldKey);
       console.log('element uid ' + scope.uid);
 
 
@@ -185,8 +187,8 @@ define([
       };
 
       scope.getPropertyLabel = function () {
-        if (scope.labels && scope.key) {
-          return scope.labels[scope.key];
+        if (scope.labels && scope.fieldKey) {
+          return scope.labels[scope.fieldKey];
         } else {
           console.log("error: no propertyLabels");
           return scope.getTitle();
@@ -427,9 +429,12 @@ define([
         var id = args[0];
         var index = args[1];
         var path = args[2];
-        var value = args[3];
+        var key = args[3];
+        var value = args[4];
+        console.log('on setActive ' + id + ' ' + scope.getId() + ' ' + path + ' ' + scope.path + ' ' + key + ' ' + scope.fieldKey);
 
-        if (id === scope.getId() && path == scope.path) {
+        if (id === scope.getId() && path == scope.path && key == scope.fieldKey) {
+          console.log('on setActive found match');
 
           scope.setActive(index,value);
           scope.expanded[index] = true;
@@ -443,7 +448,7 @@ define([
             var nextKey = order[0];
             var next = props[nextKey];
             $rootScope.$broadcast("setActive",
-                [DataManipulationService.getId(next), 0, scope.path + '-' + index, true]);
+                [DataManipulationService.getId(next), 0, scope.path + '-' + index, nextKey, true]);
 
           }, 0);
         }
@@ -499,6 +504,36 @@ define([
         //}, 100);
         return scope.multipleState;
       };
+
+      scope.activateNextSiblingOf = function(fieldKey) {
+        console.log('activateNextSiblingOf ' + fieldKey);
+        var order = $rootScope.schemaOf(scope.element)._ui.order;
+        var props = $rootScope.schemaOf(scope.element).properties;
+        var idx = order.indexOf(fieldKey);
+
+        idx += 1;
+        var found = false;
+        while (idx < order.length && !found) {
+          var nextKey = order[idx];
+          var next = props[nextKey];
+          found = !DataManipulationService.isStaticField(next);
+          idx += 1;
+        }
+        if (found) {
+          console.log('found ' + nextKey);
+          var next = props[nextKey];
+          $rootScope.$broadcast("setActive",
+              [DataManipulationService.getId(next), 0, scope.path + '-' + index, nextKey, true]);
+          return next;
+        } else {
+          console.log('not found ');
+          // look for next sibling of parent
+          console.log(scope.$parent.activateNextSiblingOf(scope.fieldKey));
+
+
+        }
+
+      }
 
 
     }

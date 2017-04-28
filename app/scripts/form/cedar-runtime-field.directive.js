@@ -33,6 +33,8 @@ define([
       $scope.valueArray;
       $scope.urlRegex = '^((https?|ftp)://)?([a-z]+[.])?[a-z0-9-]+([.][a-z]{1,4}){1,2}(/.*[?].*)?$';
 
+      console.log('$scope.fieldKey ' + $scope.fieldKey);
+
       //
       // model support and manipulation
       //
@@ -557,7 +559,8 @@ define([
               }
             }
           } else {
-            $scope.$parent.nextChild($scope.field, index, $scope.path);
+            console.log('find next child' + $scope.fieldKey);
+            $scope.$parent.nextChild($scope.field, index, $scope.path, $scope.fieldKey);
 
           }
         } else {
@@ -754,11 +757,12 @@ define([
         var id = args[0];
         var index = args[1];
         var path = args[2];
-        var value = args[3];
+        var key = args[3];
+        var value = args[4];
 
-        console.log('on setActive ' + id + ' ' + index + ' ' + path  + ' '  + value);
+        console.log('on setActive ' + id +' '+ $scope.getId() +' '+ path +' '+ $scope.path +' '+ key +' '+ $scope.fieldKey);
 
-        if (id === $scope.getId() && path == $scope.path) {
+        if (id === $scope.getId() && path == $scope.path && key == $scope.fieldKey) {
           $scope.setActive(index, value);
         }
       });
@@ -796,7 +800,9 @@ define([
         ngDisabled    : "=",
         path          : '=',
         previous      : '=',
-        uid           : '='
+        uid           : '=',
+        fieldKey: '=',
+        parentKey: '='
 
       },
       controller : function ($scope, $element) {

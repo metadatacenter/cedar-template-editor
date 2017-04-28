@@ -45,7 +45,7 @@ define([
 
       // is this multiple cardinality?
       $scope.isMultiple = function () {
-        return DataManipulationService.isMultiple($scope.field);
+        return $scope.field.minItems != null;
       };
 
       // default the cardinality to 1..N
@@ -55,7 +55,9 @@ define([
 
       // clear any current cardinality
       $scope.clearMinMax = function () {
+        console.log('clearMinMax');
         DataManipulationService.clearMinMax($scope.field);
+        console.log($scope.field);
       };
 
       // is this a static field?

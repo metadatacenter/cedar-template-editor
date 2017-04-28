@@ -561,6 +561,7 @@ define([
           } else {
             $rootScope.activeLocator = null;
           }
+          console.log($rootScope.activeLocator + service.isActive(service.getLocator(field, index, path, uid)));
 
         };
 
@@ -984,9 +985,10 @@ define([
           return null;
         };
 
-        service.nextSibling = function (field, parent) {
+        service.nextSibling = function (field, parent, parentKey) {
+          console.log('nextSibling ' )
 
-          if (field && parent) {
+          if (field && parent && key) {
 
             var id = service.getFieldSchema(field)["@id"];
             var props = service.getFieldSchema(parent).properties;
@@ -1003,6 +1005,8 @@ define([
               }
             });
 
+            console.log('nextSibling ' + selectedKey);
+
 
             if (selectedKey) {
               var idx = order.indexOf(selectedKey);
@@ -1015,7 +1019,7 @@ define([
                 idx += 1;
               }
               if (found) {
-                console.log('found');
+                console.log('found ' + nextKey);
                 return next;
               } else {
                 console.log('not found');

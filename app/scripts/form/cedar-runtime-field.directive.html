@@ -7,7 +7,6 @@
 
       <!-- show zero cardinality   -->
       <div ng-if="valueArray.length == 0">
-        {{getLocator(0)}}
         <div class="row isRowInactive" ng-click="addMoreInput()" id="{{getLocator(0)}}">
           <div class="col-xs-12">
             <div class="leader"></div>
@@ -82,7 +81,6 @@
       <!-- show a paged list of fields  -->
       <div ng-if="showMultiple('paged') && valueArray.length > 0">
 
-        {{getLocator(index)}}
         <div class="row" id="{{getLocator(index)}}"
             ng-class="{'isRowInactive' : !isActive(index), 'isActive': isActive(index)}">
 

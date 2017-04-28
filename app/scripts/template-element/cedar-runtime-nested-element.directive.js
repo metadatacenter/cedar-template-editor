@@ -14,11 +14,12 @@ define([
       template: '<div></div>',
       restrict: 'EA',
       scope   : {
-        key           : "=",
+        fieldKey      : "=",
+        parentKey     : "=",
         field         : '=',
         model         : '=',
-        labels         : "=",
-        relabel  : '=',
+        labels        : "=",
+        relabel       : '=',
         preview       : "=",
         removeChild   : '=',
         ngDisabled    : "=",
@@ -41,7 +42,7 @@ define([
       var nestElement = function () {
 
         setNested(scope.field);
-        var template = '<div ng-if="$root.schemaOf(field)._ui.inputType" > <cedar-runtime-field field="field" model="model" delete="removeChild(field)" preview="false" rename-child-key="renameChildKey" is-edit-data="isEditData" uid="uid" path="path" uid="key"></cedar-runtime-field></div><div ng-if="!$root.schemaOf(field)._ui.inputType" class="nested-element"><cedar-runtime-element labels="labels" relabel="relable" key="key" model="model" element="field" preview="preview" delete="removeChild(field)" depth="depth" uid="uid"  path="path" ></cedar-runtime-element></div>';
+        var template = '<div ng-if="$root.schemaOf(field)._ui.inputType" > <cedar-runtime-field field="field" model="model" delete="removeChild(field)" preview="false" rename-child-key="renameChildKey" is-edit-data="isEditData" uid="uid" path="path" parent-key="parentKey" field-key="fieldKey"></cedar-runtime-field></div><div ng-if="!$root.schemaOf(field)._ui.inputType" class="nested-element"><cedar-runtime-element labels="labels" relabel="relable"  model="model" element="field" preview="preview" delete="removeChild(field)" depth="depth" uid="uid"  path="path" parent-key="parentKey" field-key="fieldKey"></cedar-runtime-element></div>';
         $compile(template)(scope, function (cloned, scope) {
           element.html(cloned);
         });
@@ -97,41 +98,61 @@ define([
       };
 
 
-      scope.nextChild = function (field, index, path) {
-        console.log('nextChild ' + index + ' ' + path);
-        console.log(field);
-        console.log(scope.$parent.element);
+      // find the next child of a field
+      scope.nextChild = function (field, index, path, fieldKey) {
+        console.log('nextChild ' + fieldKey);
 
-        var next = DataManipulationService.nextSibling(field, scope.$parent.element);
+        if (fieldKey) {
+
+          var props = DataManipulationService.getFieldSchema(scope.$parent.element).properties;
+          var order = DataManipulationService.getFieldSchema(scope.$parent.element)._ui.order;
+
+          var idx = order.indexOf(fieldKey);
+          idx += 1;
+          var found = false;
+          while (idx < order.length && !found) {
+            var nextKey = order[idx];
+            var next = props[nextKey];
+            found = !DataManipulationService.isStaticField(next);
+            idx += 1;
+          }
+          if (found) {
+            console.log('found ' + nextKey);
+            $rootScope.$broadcast("setActive", [DataManipulationService.getId(next), index, scope.path, nextKey, true]);
+            return next;
+          } else {
+            console.log('not found');
+          }
+        }
+
+
+        //var next = DataManipulationService.nextSibling(scope.$parent.element, fieldKey);
         var parentIndex = parseInt(scope.lastIndex(path)) || 0;
         var parentPath = path.substring(0, path.lastIndexOf('-'));
 
-        console.log(next);
-        console.log('parentIndex ' + parentIndex);
-        console.log('parentPath ' + parentPath);
-        console.log(scope.$parent.isMultiple());
-        console.log(parentIndex + 1 < scope.$parent.model.length);
-
         if (next) {
+          console.log('found next');
+
 
           // field's next sibling
-          $rootScope.$broadcast("setActive", [DataManipulationService.getId(next), index, scope.path, true]);
+          //$rootScope.$broadcast("setActive", [DataManipulationService.getId(next), index, scope.path, true]);
           return;
         }
 
         if (scope.$parent.isMultiple() && (parentIndex + 1 < scope.$parent.model.length)) {
 
-          console.log('broadcast ' +DataManipulationService.getId(scope.$parent.element) + ' ' + scope.$parent.path + ' '  + (parentIndex+1));
+          console.log('broadcast for multiple ' +DataManipulationService.getId(scope.$parent.element) + ' ' + scope.$parent.path + ' '  + (parentIndex+1));
           // next parent index if multiple
-          $rootScope.$broadcast("setActive",
-              [DataManipulationService.getId(scope.$parent.element), parentIndex + 1, scope.$parent.path, true]);
+          //$rootScope.$broadcast("setActive",
+          //    [DataManipulationService.getId(scope.$parent.element), parentIndex + 1, scope.$parent.path, true]);
           return;
         }
 
-        console.log('broadcast for nextSibling of parent' + DataManipulationService.getId(scope.$parent.element) + ' '  + parentIndex + ' ' + parentPath);
+        console.log('broadcast for nextSibling of parent' );
         // look for the next sibling of the parent
-        $rootScope.$broadcast("nextSibling",
-            [DataManipulationService.getId(scope.$parent.element), parentIndex, parentPath, true]);
+        //$rootScope.$broadcast("nextSibling",
+            //[DataManipulationService.getId(scope.$parent.element), parentIndex, parentPath, true]);
+        scope.$parent.activateNextSiblingOf(fieldKey);
       };
 
       // watch for this field's next sibling
