@@ -156,7 +156,6 @@ define([
       // };
 
       scope.activateNextSiblingOf = function(fieldKey, parentKey) {
-        console.log('activateNextSiblingOf ' + fieldKey + ' in ' + parentKey);
         scope.$parent.activateNextSiblingOf(fieldKey, parentKey);
       };
 

@@ -509,7 +509,6 @@ define([
           var windowHeight = $(window).height();
           var target = jQuery("#" + locator);
           if (target) {
-            // console.log('scrollToLocator found target' + locator + ' ' + tag);
 
             var targetTop = target.offset().top;
             var targetHeight = target.outerHeight(true);

@@ -633,10 +633,8 @@ define([
         };
 
         service.generateFieldContextProperties = function (fieldName) {
-
           var c = {};
           c.enum = new Array(service.getEnumOf(fieldName));
-          console.log('generateFieldContextProperties ' + fieldName + ' ' + c.enum);
           return c;
         };
 
@@ -695,7 +693,6 @@ define([
             if (!DataUtilService.isSpecialKey(name)) {
               // We can tell we've reached an element level by its '@type' property
               if ($rootScope.schemaOf(value)['@type'] == 'https://schema.metadatacenter.org/core/TemplateElement') {
-                //console.log(name);
                 if (path == null) {
                   service.addPathInfo(value, name);
                 }
@@ -984,49 +981,49 @@ define([
           return null;
         };
 
-        service.nextSibling = function (field, parent, parentKey) {
-          console.log('nextSibling ' )
-
-          if (field && parent && key) {
-
-            var id = service.getFieldSchema(field)["@id"];
-            var props = service.getFieldSchema(parent).properties;
-            var order = service.getFieldSchema(parent)._ui.order;
-            var selectedKey;
-
-
-            angular.forEach(props, function (value, key) {
-              var valueId = service.getFieldSchema(value)["@id"];
-              if (valueId) {
-                if (service.getFieldSchema(value)["@id"] == id) {
-                  selectedKey = key;
-                }
-              }
-            });
-
-            console.log('nextSibling ' + selectedKey);
-
-
-            if (selectedKey) {
-              var idx = order.indexOf(selectedKey);
-              idx += 1;
-              var found = false;
-              while (idx < order.length && !found) {
-                var nextKey = order[idx];
-                var next = props[nextKey];
-                found = !service.isStaticField(next);
-                idx += 1;
-              }
-              if (found) {
-                console.log('found ' + nextKey);
-                return next;
-              } else {
-                console.log('not found');
-
-              }
-            }
-          }
-        };
+        // service.nextSibling = function (field, parent, parentKey) {
+        //   console.log('nextSibling ' )
+        //
+        //   if (field && parent && key) {
+        //
+        //     var id = service.getFieldSchema(field)["@id"];
+        //     var props = service.getFieldSchema(parent).properties;
+        //     var order = service.getFieldSchema(parent)._ui.order;
+        //     var selectedKey;
+        //
+        //
+        //     angular.forEach(props, function (value, key) {
+        //       var valueId = service.getFieldSchema(value)["@id"];
+        //       if (valueId) {
+        //         if (service.getFieldSchema(value)["@id"] == id) {
+        //           selectedKey = key;
+        //         }
+        //       }
+        //     });
+        //
+        //     console.log('nextSibling ' + selectedKey);
+        //
+        //
+        //     if (selectedKey) {
+        //       var idx = order.indexOf(selectedKey);
+        //       idx += 1;
+        //       var found = false;
+        //       while (idx < order.length && !found) {
+        //         var nextKey = order[idx];
+        //         var next = props[nextKey];
+        //         found = !service.isStaticField(next);
+        //         idx += 1;
+        //       }
+        //       if (found) {
+        //         console.log('found ' + nextKey);
+        //         return next;
+        //       } else {
+        //         console.log('not found');
+        //
+        //       }
+        //     }
+        //   }
+        // };
 
         // get the locator for the node's dom object
         service.getLocator = function (node, index, path, id) {
@@ -1035,7 +1032,6 @@ define([
 
         // look to see if this node has been identified by angular as an invalid pattern
         service.isValidPattern = function (node, index, path, id) {
-          console.log('isValidPattern ' + id);
           var locator = service.getLocator(node, index, path, id) + '.ng-invalid';
           var target = jQuery('#' + locator);
           return (target.length == 0);
@@ -1043,7 +1039,6 @@ define([
 
         // get the value of the dom object for this node
         service.getDomValue = function (node, index, path, id) {
-          console.log('getDomValue ' + id);
           var result;
           var locator = service.getLocator(node, index, path, id);
           var target = jQuery('#' + locator);

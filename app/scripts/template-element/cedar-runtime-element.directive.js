@@ -406,8 +406,6 @@ define([
         var parentKey = args[4];
         var value = args[5];
 
-        console.log('looking to setActive ' + fieldKey + ' in ' + parentKey);
-
         if (id === scope.getId() && path == scope.path && fieldKey == scope.fieldKey && parentKey == scope.parentKey) {
           scope.setActive(index, value);
           //scope.expanded[index] = true;
@@ -436,11 +434,7 @@ define([
         var parentKey = scope.parentKey;
         var value = true;
 
-        console.log('looking to setActive ' + fieldKey + ' in ' + parentKey);
-
-        //if (id === scope.getId() && path == scope.path && fieldKey == scope.fieldKey && parentKey == scope.parentKey) {
           scope.setActive(index, value);
-          //scope.expanded[index] = true;
 
           $timeout(function () {
 
@@ -454,7 +448,6 @@ define([
                 [DataManipulationService.getId(next), 0, scope.path + '-' + index, nextKey, scope.fieldKey, true]);
 
           }, 0);
-        //}
       };
 
       scope.pageMinMax = function () {
@@ -470,7 +463,6 @@ define([
       };
 
       scope.setActive = function (index, value) {
-        console.log('setActive ' + index);
         DataManipulationService.setActive(scope.element, index, scope.path, scope.uid, value);
         if (value) {
           scope.index = index;
@@ -509,23 +501,19 @@ define([
       };
 
       scope.activateNextSiblingOf = function (fieldKey, parentKey, i) {
-        console.log('activateNextSiblingOf ' + fieldKey + ' in ' + parentKey);
         var found = false;
 
         // is there a next one to set active
         if (scope.isMultiple()) {
-          console.log('multiple ' + i + ' ' + scope.index + ' ' + scope.model.length);
 
           if (typeof(i) == 'undefined') {
             if (scope.index + 1 < scope.model.length) {
-              //scope.setActive(scope.index + 1, true);
               scope.onSetActive(scope.index + 1, true);
-
               found = true;
             }
           } else {
             if (i < scope.model.length) {
-              scope.setActive(i, true);
+              //scope.setActive(i, true);
               scope.onSetActive(i, true);
               found = true;
             }
@@ -545,14 +533,11 @@ define([
             idx += 1;
           }
           if (found) {
-            console.log('found ' + nextKey + ' in ' + parentKey);
             var next = props[nextKey];
             $rootScope.$broadcast("setActive",
                 [DataManipulationService.getId(next), 0, scope.path + '-' + 0, nextKey, parentKey, true]);
             return next;
           } else {
-            console.log('not found activate next sibling of field ' + parentKey + ' in parent ' + scope.parentKey);
-            // look for next sibling of parent
             scope.$parent.activateNextSiblingOf(parentKey, scope.parentKey);
           }
           scope.$parent.activateNextSiblingOf(scope.fieldKey, scope.parentKey);
