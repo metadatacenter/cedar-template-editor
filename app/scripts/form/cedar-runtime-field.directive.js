@@ -33,7 +33,6 @@ define([
       $scope.valueArray;
       $scope.urlRegex = '^((https?|ftp)://)?([a-z]+[.])?[a-z0-9-]+([.][a-z]{1,4}){1,2}(/.*[?].*)?$';
 
-      console.log('$scope.fieldKey ' + $scope.fieldKey);
 
       //
       // model support and manipulation
@@ -475,7 +474,6 @@ define([
             $scope.index = index;
             $scope.pageMinMax();
 
-
             // scroll it into the center of the screen and listen for shift-enter
             $scope.scrollToLocator(locator, ' .select');
             $document.unbind('keypress');
@@ -504,7 +502,6 @@ define([
 
         $scope.setHeight = function () {
 
-
           // apply any changes first before examining dom elements
           $scope.$apply();
 
@@ -518,10 +515,6 @@ define([
             var targetHeight = target.outerHeight(true);
             var scrollTop = jQuery('.template-container').scrollTop();
             var newTop = scrollTop + targetTop - ( windowHeight - targetHeight ) / 2;
-
-
-            // console.log('scroll from ' + scrollTop + ' to ' + newTop);
-            // console.log('targetHeight ' + targetHeight + ' targetTop ' + targetTop +  ' windowHeight ' + windowHeight) ;
 
             jQuery('.template-container').animate({scrollTop: newTop}, 'fast');
 
@@ -544,27 +537,32 @@ define([
 
       // submit this edit
       $scope.onSubmit = function (index, next) {
+        console.log('onSubmit ' + $scope.fieldKey + ' ' + $scope.parentKey)
+        var found = false;
 
         if ($scope.isActive(index)) {
 
           DataManipulationService.setActive($scope.field, index, $scope.path, false);
 
-          // is there a next one to set active, go to the next index,  or go to parent's next field
+          // is there a next one to set active
           if ($scope.isMultipleCardinality()) {
-            if (next != null) {
-              $scope.setActive(next, true);
-            } else {
+
+            if (typeof(next) == 'undefined') {
               if (index + 1 < $scope.model.length) {
                 $scope.setActive(index + 1, true);
+                found = true;
+              }
+            } else {
+              if (next < $scope.model.length) {
+                $scope.setActive(next, true);
+                found = true;
               }
             }
-          } else {
-            console.log('find next child' + $scope.fieldKey);
-            $scope.$parent.nextChild($scope.field, index, $scope.path, $scope.fieldKey);
-
           }
-        } else {
-          //console.log("error: not active");
+
+          if (!found) {
+            $scope.$parent.activateNextSiblingOf($scope.fieldKey, $scope.parentKey);
+          }
         }
       };
 
@@ -757,12 +755,11 @@ define([
         var id = args[0];
         var index = args[1];
         var path = args[2];
-        var key = args[3];
-        var value = args[4];
+        var fieldKey = args[3];
+        var parentKey = args[4];
+        var value = args[5];
 
-        console.log('on setActive ' + id +' '+ $scope.getId() +' '+ path +' '+ $scope.path +' '+ key +' '+ $scope.fieldKey);
-
-        if (id === $scope.getId() && path == $scope.path && key == $scope.fieldKey) {
+        if (id === $scope.getId() && path == $scope.path && fieldKey == $scope.fieldKey && parentKey == $scope.parentKey) {
           $scope.setActive(index, value);
         }
       });

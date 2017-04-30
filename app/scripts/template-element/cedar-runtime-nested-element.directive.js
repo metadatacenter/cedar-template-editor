@@ -37,7 +37,6 @@ define([
 
     function linker(scope, element, attrs) {
 
-      console.log('runtime nested element init');
 
       var nestElement = function () {
 
@@ -98,93 +97,68 @@ define([
       };
 
 
-      // find the next child of a field
-      scope.nextChild = function (field, index, path, fieldKey) {
-        console.log('nextChild ' + fieldKey);
+      // // find the next child of a field
+      // scope.nextChild = function (field, index, path, fieldKey, parentKey) {
+      //   console.log('nextChild of ' + fieldKey + ' in ' + parentKey);
+      //
+      //   if (fieldKey && parentKey) {
+      //
+      //     var props = DataManipulationService.getFieldSchema(scope.$parent.element).properties;
+      //     var order = DataManipulationService.getFieldSchema(scope.$parent.element)._ui.order;
+      //
+      //     var idx = order.indexOf(fieldKey);
+      //     idx += 1;
+      //     var found = false;
+      //     while (idx < order.length && !found) {
+      //       var nextKey = order[idx];
+      //       var next = props[nextKey];
+      //       found = !DataManipulationService.isStaticField(next);
+      //       idx += 1;
+      //     }
+      //     if (found) {
+      //       console.log('found ' + nextKey);
+      //       $rootScope.$broadcast("setActive", [DataManipulationService.getId(next), index, scope.path, nextKey, scope.parentKey,  true]);
+      //       return next;
+      //     } else {
+      //       console.log('not found');
+      //     }
+      //   }
+      //
+      //
+      //   //var next = DataManipulationService.nextSibling(scope.$parent.element, fieldKey);
+      //   var parentIndex = parseInt(scope.lastIndex(path)) || 0;
+      //   var parentPath = path.substring(0, path.lastIndexOf('-'));
+      //
+      //   // if (next) {
+      //   //   console.log('found next');
+      //   //
+      //   //
+      //   //   // field's next sibling
+      //   //   //$rootScope.$broadcast("setActive", [DataManipulationService.getId(next), index, scope.path, true]);
+      //   //   return;
+      //   // }
+      //
+      //   if (scope.$parent.isMultiple() && (parentIndex + 1 < scope.$parent.model.length)) {
+      //
+      //     console.log('broadcast for multiple ' +DataManipulationService.getId(scope.$parent.element) + ' ' + scope.$parent.path + ' '  + (parentIndex+1));
+      //     // next parent index if multiple
+      //     //$rootScope.$broadcast("setActive",
+      //     //    [DataManipulationService.getId(scope.$parent.element), parentIndex + 1, scope.$parent.path, true]);
+      //     return;
+      //   }
+      //
+      //   // look for the next sibling of the parent
+      //   //$rootScope.$broadcast("nextSibling",
+      //       //[DataManipulationService.getId(scope.$parent.element), parentIndex, parentPath, true]);
+      //   console.log(scope.$parent);
+      //   var elem = scope.$parent.element;
+      //   scope.$parent.activateNextSiblingOf(parentKey, grandparentKey);
+      // };
 
-        if (fieldKey) {
-
-          var props = DataManipulationService.getFieldSchema(scope.$parent.element).properties;
-          var order = DataManipulationService.getFieldSchema(scope.$parent.element)._ui.order;
-
-          var idx = order.indexOf(fieldKey);
-          idx += 1;
-          var found = false;
-          while (idx < order.length && !found) {
-            var nextKey = order[idx];
-            var next = props[nextKey];
-            found = !DataManipulationService.isStaticField(next);
-            idx += 1;
-          }
-          if (found) {
-            console.log('found ' + nextKey);
-            $rootScope.$broadcast("setActive", [DataManipulationService.getId(next), index, scope.path, nextKey, true]);
-            return next;
-          } else {
-            console.log('not found');
-          }
-        }
-
-
-        //var next = DataManipulationService.nextSibling(scope.$parent.element, fieldKey);
-        var parentIndex = parseInt(scope.lastIndex(path)) || 0;
-        var parentPath = path.substring(0, path.lastIndexOf('-'));
-
-        if (next) {
-          console.log('found next');
-
-
-          // field's next sibling
-          //$rootScope.$broadcast("setActive", [DataManipulationService.getId(next), index, scope.path, true]);
-          return;
-        }
-
-        if (scope.$parent.isMultiple() && (parentIndex + 1 < scope.$parent.model.length)) {
-
-          console.log('broadcast for multiple ' +DataManipulationService.getId(scope.$parent.element) + ' ' + scope.$parent.path + ' '  + (parentIndex+1));
-          // next parent index if multiple
-          //$rootScope.$broadcast("setActive",
-          //    [DataManipulationService.getId(scope.$parent.element), parentIndex + 1, scope.$parent.path, true]);
-          return;
-        }
-
-        console.log('broadcast for nextSibling of parent' );
-        // look for the next sibling of the parent
-        //$rootScope.$broadcast("nextSibling",
-            //[DataManipulationService.getId(scope.$parent.element), parentIndex, parentPath, true]);
-        scope.$parent.activateNextSiblingOf(fieldKey);
+      scope.activateNextSiblingOf = function(fieldKey, parentKey) {
+        console.log('activateNextSiblingOf ' + fieldKey + ' in ' + parentKey);
+        scope.$parent.activateNextSiblingOf(fieldKey, parentKey);
       };
-
-      // watch for this field's next sibling
-      scope.$on('nextSibling', function (event, args) {
-        var id = args[0];
-        var index = args[1];
-        var path = args[2];
-        var value = args[3];
-
-        if (id === scope.getId() && path === scope.path) {
-            console.log('on nextSibling of ' + DataManipulationService.getTitle(scope.field));
-
-
-            var next = DataManipulationService.nextSibling(scope.field, scope.$parent.element);
-            var parentIndex = parseInt(scope.lastIndex(path)) || 0;
-            var parentPath = path.substring(0, path.lastIndexOf('-'));
-            if (next) {
-
-              console.log('got parent next sibling');
-              $rootScope.$broadcast("setActive", [DataManipulationService.getId(next), 0, path, true]);
-
-            } else {
-
-              console.log('broadcast nextSibling of ' + DataManipulationService.getTitle(scope.$parent.element) + ' ' +  parentPath);
-
-              // look for the next sibling of the parent
-              $rootScope.$broadcast("nextSibling",
-                  [DataManipulationService.getId(scope.$parent.element), parentIndex, parentPath, true]);
-            }
-
-        }
-      });
 
 
       if (scope.field) {

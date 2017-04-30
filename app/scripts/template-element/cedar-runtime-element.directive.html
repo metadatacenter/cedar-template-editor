@@ -118,8 +118,7 @@
           <ul class="tv" ng-repeat="key in $root.schemaOf(element)['_ui']['order']">
             <li class="tv" ng-if="$root.propertiesOf(element)[key]" ng-class="{'last':$last, 'first':$first, 'element' : $root.isElement($root.schemaOf($root.propertiesOf(element)[key]))}">
 
-              key {{key}}
-              <cedar-runtime-nested-element key="key"
+              <cedar-runtime-nested-element
                   field="$root.propertiesOf(element)[key]"
                   model="valueElement[key]"
                   labels="$root.schemaOf(element)['_ui']['propertyLabels']"
@@ -130,7 +129,9 @@
                   depth="depth+1"
                   path="path+'-'+i"
                   index="i"
-              uid="">
+                  parent-key="fieldKey"
+                  field-key="key"
+                  uid="uid+'-'+key">
               </cedar-runtime-nested-element>
             </li>
           </ul>

@@ -561,7 +561,6 @@ define([
           } else {
             $rootScope.activeLocator = null;
           }
-          console.log($rootScope.activeLocator + service.isActive(service.getLocator(field, index, path, uid)));
 
         };
 
