@@ -23,7 +23,6 @@ define([
         labels       : "=",
         relabel      : '=',
         isRootElement: "=",
-        depth        : '=',
         path         : '=',
         uid          : '='
       },
@@ -514,7 +513,10 @@ define([
             idx += 1;
           }
           if (found) {
+            console.log('next ' + scope.path + '-' + scope.index);
             var next = props[nextKey];
+            // $rootScope.$broadcast("setActive",
+            //     [DataManipulationService.getId(next), 0, scope.path + '-' + 0, nextKey, parentKey, true]);
             $rootScope.$broadcast("setActive",
                 [DataManipulationService.getId(next), 0, scope.path + '-' + scope.index, nextKey, parentKey, true]);
           }

@@ -71,7 +71,6 @@
               delete="removeChild(form.properties[item]);"
               rename-child-key="renameChildKey"
               is-edit-data="isEditData"
-              depth="1"
               path="0"
               uid="item"
               parent-key="'form'"
@@ -91,7 +90,6 @@
               relabel="relabel"
               delete="removeChild(form.properties[item])"
               is-edit-data="isEditData"
-              depth="1"
               path="0"
               uid="item">
           </cedar-runtime-element>
@@ -136,8 +134,7 @@
                 delete="removeChild(form.properties[item])"
                 nested="false"
                 is-root-element="false"
-                is-edit-data="isEditData"
-                depth="1">
+                is-edit-data="isEditData">
             </cedar-template-element>
           </div>
 
@@ -157,8 +154,7 @@
                  delete="removeChild(form.properties[item])"
                  nested="true"
                  is-root-element="false"
-                 is-edit-data="isEditData"
-                 depth="1">
+                 is-edit-data="isEditData">
              </cedar-template-element>
            </div>
 
@@ -173,8 +169,7 @@
                  delete="removeChild(form.properties[item])"
                  nested="false"
                  is-root-element="{{$root.schemaOf(form)['@type'] == undefined }}"
-                 is-edit-data="isEditData"
-                 depth="1">
+                 is-edit-data="isEditData">
              </cedar-template-element>
            </div>
          </div>
