@@ -468,8 +468,14 @@ define([
         scope.expanded[index] = value;
       };
 
+      // set the index active
       scope.selectPage = function (i) {
         scope.setActive(i, true);
+      };
+
+      // set the active index
+      scope.setIndex = function (value) {
+        scope.index = value;
       };
 
       scope.showMultiple = function (state) {
@@ -496,6 +502,7 @@ define([
         return scope.multipleState;
       };
 
+      // find the next sibling to activate
       scope.activateNextSiblingOf = function (fieldKey, parentKey, i) {
         var found = false;
 
@@ -513,10 +520,7 @@ define([
             idx += 1;
           }
           if (found) {
-            console.log('next ' + scope.path + '-' + scope.index);
             var next = props[nextKey];
-            // $rootScope.$broadcast("setActive",
-            //     [DataManipulationService.getId(next), 0, scope.path + '-' + 0, nextKey, parentKey, true]);
             $rootScope.$broadcast("setActive",
                 [DataManipulationService.getId(next), 0, scope.path + '-' + scope.index, nextKey, parentKey, true]);
           }
