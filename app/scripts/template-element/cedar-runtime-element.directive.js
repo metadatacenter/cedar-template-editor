@@ -210,9 +210,9 @@ define([
             resetElement(seed, scope.element);
           }
           // activate the new instance
-          var index = scope.model.length - 1;
-          scope.setActive(index, true);
-          scope.toggleExpanded(index);
+          // var index = scope.model.length - 1;
+          // scope.setActive(index, true);
+          // scope.toggleExpanded(index);
         }
       };
 
@@ -425,7 +425,6 @@ define([
         }
       });
 
-
       scope.onSetActive = function (i) {
         var id = scope.getId();
         var index = i;
@@ -434,20 +433,20 @@ define([
         var parentKey = scope.parentKey;
         var value = true;
 
-          scope.setActive(index, value);
+        scope.setActive(index, value);
 
-          $timeout(function () {
+        $timeout(function () {
 
-            scope.$apply();
+          scope.$apply();
 
-            var props = $rootScope.schemaOf(scope.element).properties;
-            var order = $rootScope.schemaOf(scope.element)._ui.order;
-            var nextKey = order[0];
-            var next = props[nextKey];
-            $rootScope.$broadcast("setActive",
-                [DataManipulationService.getId(next), 0, scope.path + '-' + index, nextKey, scope.fieldKey, true]);
+          var props = $rootScope.schemaOf(scope.element).properties;
+          var order = $rootScope.schemaOf(scope.element)._ui.order;
+          var nextKey = order[0];
+          var next = props[nextKey];
+          $rootScope.$broadcast("setActive",
+              [DataManipulationService.getId(next), 0, scope.path + '-' + index, nextKey, scope.fieldKey, true]);
 
-          }, 0);
+        }, 0);
       };
 
       scope.pageMinMax = function () {
@@ -455,7 +454,6 @@ define([
         scope.pageMin = Math.max(0, scope.pageMax - scope.pageRange);
       };
       scope.pageMinMax();
-
 
       scope.addMoreInput = function () {
         scope.addElement();
@@ -473,7 +471,6 @@ define([
 
       scope.selectPage = function (i) {
         scope.setActive(i, true);
-        //scope.expanded[i] = true;
       };
 
       scope.showMultiple = function (state) {
@@ -503,23 +500,7 @@ define([
       scope.activateNextSiblingOf = function (fieldKey, parentKey, i) {
         var found = false;
 
-        // is there a next one to set active
-        if (scope.isMultiple()) {
-
-          if (typeof(i) == 'undefined') {
-            if (scope.index + 1 < scope.model.length) {
-              scope.onSetActive(scope.index + 1, true);
-              found = true;
-            }
-          } else {
-            if (i < scope.model.length) {
-              //scope.setActive(i, true);
-              scope.onSetActive(i, true);
-              found = true;
-            }
-          }
-        }
-
+        // is there another sibling
         if (!found) {
           var order = $rootScope.schemaOf(scope.element)._ui.order;
           var props = $rootScope.schemaOf(scope.element).properties;
@@ -535,11 +516,29 @@ define([
           if (found) {
             var next = props[nextKey];
             $rootScope.$broadcast("setActive",
-                [DataManipulationService.getId(next), 0, scope.path + '-' + 0, nextKey, parentKey, true]);
-            return next;
-          } else {
-            scope.$parent.activateNextSiblingOf(parentKey, scope.parentKey);
+                [DataManipulationService.getId(next), 0, scope.path + '-' + scope.index, nextKey, parentKey, true]);
           }
+        }
+
+        // is the element multiple
+        if (!found) {
+          if (scope.isMultiple()) {
+            if (typeof(i) == 'undefined') {
+              if (scope.index + 1 < scope.model.length) {
+                scope.onSetActive(scope.index + 1, true);
+                found = true;
+              }
+            } else {
+              if (i < scope.model.length) {
+                scope.onSetActive(i, true);
+                found = true;
+              }
+            }
+          }
+        }
+
+        // does the element have a sibling
+        if (!found) {
           scope.$parent.activateNextSiblingOf(scope.fieldKey, scope.parentKey);
         }
       }

@@ -536,7 +536,7 @@ define([
 
       // submit this edit
       $scope.onSubmit = function (index, next) {
-        console.log('onSubmit ' + $scope.fieldKey + ' ' + $scope.parentKey)
+        console.log('onSubmit ' + $scope.fieldKey + ' ' + $scope.parentKey);
         var found = false;
 
         if ($scope.isActive(index)) {
