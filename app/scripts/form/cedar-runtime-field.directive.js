@@ -353,7 +353,7 @@ define([
           $scope.optionsUI = {};
         }
         if (field._ui.inputType == 'checkbox') {
-          for (var i=0; i<$scope.model.length; i++) {
+          for (var i = 0; i < $scope.model.length; i++) {
             var value = $scope.model[i][fieldValue];
             $scope.optionsUI[value] = value;
           }
@@ -367,8 +367,8 @@ define([
         else if (field._ui.inputType == 'list') {
           // Multi-choice list
           if (DataManipulationService.isMultipleChoice(field)) {
-            $scope.optionsUI.listMultiSelect=[];
-            for (var i=0; i<$scope.model.length; i++) {
+            $scope.optionsUI.listMultiSelect = [];
+            for (var i = 0; i < $scope.model.length; i++) {
               $scope.optionsUI.listMultiSelect.push($scope.model[i][fieldValue]);
             }
           }
@@ -383,12 +383,12 @@ define([
       };
 
       // This function initializes the value @type field if it has not been initialized yet
-      $scope.initializeValueType = function(field) {
+      $scope.initializeValueType = function (field) {
         DataManipulationService.initializeValueType(field, $scope.model);
       };
 
       // if the field is empty, delete the @id field. Note that in JSON-LD @id cannot be null.
-      $scope.checkForEmpty = function() {
+      $scope.checkForEmpty = function () {
         var location = DataManipulationService.getValueLocation($scope.field);
         var obj = $scope.valueArray[$scope.index];
         if (!obj[location] || obj[location].length === 0) {
@@ -473,6 +473,13 @@ define([
 
             $scope.index = index;
             $scope.pageMinMax();
+
+            // set the parent active index
+            if ($scope.path) {
+              var indices = $scope.path.split('-');
+              var last = indices[indices.length - 1];
+              $scope.$parent.setIndex(parseInt(last));
+            }
 
             // scroll it into the center of the screen and listen for shift-enter
             $scope.scrollToLocator(locator, ' .select');
@@ -587,7 +594,8 @@ define([
         var location = DataManipulationService.getValueLocation($scope.field);
 
         // If field is required and is empty, emit failed emptyRequiredField event
-        if ($rootScope.schemaOf($scope.field)._valueConstraints && $rootScope.schemaOf($scope.field)._valueConstraints.requiredValue) {
+        if ($rootScope.schemaOf($scope.field)._valueConstraints && $rootScope.schemaOf(
+                $scope.field)._valueConstraints.requiredValue) {
           var allRequiredFieldsAreFilledIn = true;
           var min = $scope.field.minItems || 0;
 
@@ -780,8 +788,6 @@ define([
       $scope.setValueArray();
 
 
-
-
     };
 
     return {
@@ -797,8 +803,8 @@ define([
         path          : '=',
         previous      : '=',
         uid           : '=',
-        fieldKey: '=',
-        parentKey: '='
+        fieldKey      : '=',
+        parentKey     : '='
 
       },
       controller : function ($scope, $element) {

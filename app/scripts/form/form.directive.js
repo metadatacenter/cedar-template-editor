@@ -590,27 +590,6 @@ define([
           }
         };
 
-        $scope.nextChild = function (fieldOrElement, index, path, fieldKey) {
-          var props = $scope.form.properties;
-          var order = $scope.form._ui.order;
-
-          if (fieldKey) {
-            var idx = order.indexOf(fieldKey);
-
-            idx += 1;
-            var found = false;
-            while (idx < order.length && !found) {
-              var nextKey = order[idx];
-              var next = props[nextKey];
-              found = !$scope.isStaticField(next);
-              idx += 1;
-            }
-            if (found) {
-              $rootScope.$broadcast("setActive", [DataManipulationService.getId(next), 0, $scope.path, $scope.parentKey, nextKey, true]);
-            }
-          }
-        };
-
         $scope.lastIndex = function (path) {
           if (path) {
             var indices = path.split('-');
@@ -654,8 +633,8 @@ define([
           }, 0);
         };
 
+        // find the next sibling to activate
         $scope.activateNextSiblingOf = function(fieldKey, parentKey) {
-          console.log('activateNextSiblingOf ' + fieldKey + ' in ' + parentKey);
           var index = 0;
           var order = $rootScope.schemaOf($scope.form)._ui.order;
           var props = $rootScope.schemaOf($scope.form).properties;
@@ -670,17 +649,12 @@ define([
             idx += 1;
           }
           if (found) {
-            console.log('found ' + nextKey);
             var next = props[nextKey];
             $rootScope.$broadcast("setActive",
                 [DataManipulationService.getId(next), 0, $scope.path, nextKey, parentKey, true]);
             return next;
-          } else {
-            console.log('not found');
           }
-
         };
-
 
       }
     };
