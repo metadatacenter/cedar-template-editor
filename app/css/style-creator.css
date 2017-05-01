@@ -11556,9 +11556,6 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
 */
 .template-body form .runtime {
   font-size: 16px;
-  /* lower line on list items from the first level because they don't have parents */
-  /* hide line from the last of the first level list items */
-  /*  very first field or element */
 }
 .template-body form .runtime .treeview,
 .template-body form .runtime .treeview ul.tv {
@@ -11572,12 +11569,12 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   /* horizontal line on inner list items */
   /* horizontal line on inner list items */
   /* vertical line on list items */
-  /* first field */
 }
 .template-body form .runtime .treeview li.tv {
   margin: 0;
   padding: 0 0 0 12px;
   position: relative;
+  border-left: 1px solid #9E9E9E;
 }
 .template-body form .runtime .treeview li.tv::before,
 .template-body form .runtime .treeview li.tv::after {
@@ -11586,44 +11583,46 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   left: 0;
 }
 .template-body form .runtime .treeview li.tv::before {
-  border-top: 1px solid #9E9E9E;
   top: 15px;
   width: 10px;
   height: 0;
+  border-top: 1px solid #9E9E9E;
 }
-.template-body form .runtime .treeview li.tv::before {
-  width: 10px;
+.template-body form .runtime .treeview li.last.tv {
+  border-left-width: 0px;
 }
 .template-body form .runtime .treeview li.tv.element::before {
   width: 10px;
 }
-.template-body form .runtime .treeview li.tv::after {
-  border-left: 1px solid #9E9E9E;
+.template-body form .runtime .treeview li.tv.last.element::before {
+  border-top-width: 0px;
+}
+.template-body form .runtime .treeview li.tv.last::after {
   height: 100%;
   width: 0px;
   top: -20px;
-}
-.template-body form .runtime .treeview li.tv.first::after {
-  top: 0;
-  height: 100%;
+  border-left: 1px solid #9E9E9E;
 }
 .template-body form .runtime .treeview li.tv.first.last::after {
   top: 0;
   height: 15px;
+  border-left: 1px solid #9E9E9E;
 }
-.template-body form .runtime .treeview li.tv.first.element::after {
+.template-body form .runtime .treeview li.tv.last.element::before {
+  border-left: 1px solid #9E9E9E;
+}
+.template-body form .runtime .treeview li.tv.element::after,
+.template-body form .runtime .treeview li.tv.last.element::after,
+.template-body form .runtime .treeview ul li.last.element::after {
   top: 0;
   height: 16px;
 }
-.template-body form .runtime .treeview > li.tv::after {
-  top: 15px;
-}
-.template-body form .runtime .treeview > li.tv:last-child::after {
-  display: none;
-}
-.template-body form .runtime .treeview > li.tv.first::after {
-  top: 15px;
-  height: 100%;
+.template-body form .runtime .treeview li.tv.last.element::before {
+  border-left: 1px solid #9E9E9E;
+  height: 16px;
+  top: 0;
+  border-bottom: 1px solid #9E9E9E;
+  width: 10px;
 }
 .template-body form .runtime .paging {
   max-height: 17px;

@@ -6,89 +6,231 @@ define([
   angular.module('cedar.templateEditor.form.fieldDirective', [])
       .directive('fieldDirective', fieldDirective);
 
-  // TODO: refactor to cedarFieldDirective <cedar-field-directive>
 
-
-  fieldDirective.$inject = ["$rootScope", "$sce", "$document", "$translate", "$filter", "$timeout",
+  fieldDirective.$inject = ["$rootScope", "$sce", "$translate", "$filter",
                             "SpreadsheetService",
                             "DataManipulationService", "FieldTypeService", "controlledTermDataService",
-                            "StringUtilsService"];
+                            "StringUtilsService", "UIUtilService"];
 
-  function fieldDirective($rootScope, $sce, $document, $translate, $filter, $timeout, SpreadsheetService,
+  function fieldDirective($rootScope, $sce,  $translate, $filter,  SpreadsheetService,
                           DataManipulationService,
-                          FieldTypeService, controlledTermDataService, StringUtilsService) {
+                          FieldTypeService, controlledTermDataService, StringUtilsService, UIUtilService) {
 
 
     var linker = function ($scope, $element, attrs) {
 
-      var MIN_OPTIONS = 2;
+      $scope.errorMessages;
+      var tabSet = ["field", "values", "cardinality", "range", "required", "value-recommendation"];
+      $scope.activeTab;
       $scope.viewType = 'table';
-
+      $scope.uuid = DataManipulationService.generateTempGUID();
+      $scope.isFirstRefresh = true;
       $scope.status = {
         isopen: false
       };
 
+
+
+      //
+      // model and ui support
+      //
+
+      $scope.getShortText = function (text, maxLength, finalString, emptyString) {
+        return StringUtilsService.getShortText(text, maxLength, finalString, emptyString);
+      };
+
+      $scope.getShortId = function (uri, maxLength) {
+        return StringUtilsService.getShortId(uri, maxLength);
+      };
+
+      // is this multiple cardinality?
+      $scope.isMultiple = function () {
+        return $scope.field.minItems != null;
+      };
+
+      // default the cardinality to 1..N
+      $scope.defaultMinMax = function () {
+        DataManipulationService.defaultMinMax($scope.field);
+      };
+
+      // clear any current cardinality
+      $scope.clearMinMax = function () {
+        console.log('clearMinMax');
+        DataManipulationService.clearMinMax($scope.field);
+        console.log($scope.field);
+      };
+
+      // is this a static field?
+      $scope.isStatic = function () {
+        return FieldTypeService.isStaticField(DataManipulationService.getInputType($scope.field));
+      };
+
+      // try to select this field
+      $scope.canSelect = function (select) {
+        var result = select;
+        if (select) {
+          result = DataManipulationService.canSelect($scope.field);
+        }
+        return result;
+      };
+
+      // try to deselect this field
+      $scope.canDeselect = function (field) {
+        return DataManipulationService.canDeselect(field, $scope.renameChildKey);
+      };
+
+      $scope.getForm = function () {
+        return $rootScope.jsonToSave;
+      };
+
+      // is the field toggled open?
       $scope.toggled = function (open) {
         $scope.status.isopen = open;
       };
 
-      var setDirectory = function () {
-        var p = $rootScope.propertiesOf($scope.field);
-        var state = p._tmp && p._tmp.state || "completed";
-        if ((state == "creating") && !$scope.preview && !$rootScope.isRuntime()) {
-          $scope.directory = "create";
-        } else {
-          $scope.directory = "render";
+      // does this field allow multiple cardinality?
+      $scope.allowsMultiple = function () {
+        var result = FieldTypeService.getFieldTypes().filter(function (obj) {
+          return obj.cedarType == DataManipulationService.getInputType($scope.field);
+        });
+        return result.length > 0 && result[0].allowsMultiple;
+      };
+
+      // does the field support value recommendation?
+      $scope.allowsValueRecommendation = function () {
+        var result = FieldTypeService.getFieldTypes().filter(function (obj) {
+          return obj.cedarType == DataManipulationService.getInputType($scope.field);
+        });
+        return result.length > 0 && result[0].allowsValueRecommendation;
+      };
+
+      // does the field support using controlled terms
+      $scope.hasControlledTerms = function () {
+        var result = FieldTypeService.getFieldTypes().filter(function (obj) {
+          return obj.cedarType == DataManipulationService.getInputType($scope.field);
+        });
+        return result.length > 0 && result[0].hasControlledTerms;
+      };
+
+      // Retrieve appropriate field templates
+      $scope.getTemplateUrl = function () {
+        return 'scripts/form/field-' + $scope.directory + '/' + DataManipulationService.getInputType(
+                $scope.field) + '.html';
+      };
+
+      $scope.switchToSpreadsheet = function () {
+        SpreadsheetService.switchToSpreadsheetField($scope, $element);
+      };
+
+      $scope.getYouTubeEmbedFrame = function (field) {
+        return UIUtilService.getYouTubeEmbedFrame(field);
+      };
+
+      $scope.isTabActive = function (item) {
+        return $scope.activeTab === item;
+      };
+
+      $scope.setTab = function (item) {
+        if (tabSet.indexOf(item) > -1) {
+          $scope.activeTab = item;
+          $scope.setAddedFieldMap();
         }
       };
 
-      setDirectory();
-
-      $scope.console = function (value) {
-        console.log(value);
-      };
-
-      $scope.setValueType = function () {
-        var properties = $rootScope.propertiesOf($scope.field);
-        var typeEnum = properties['@type'].oneOf[0].enum;
-        if (angular.isDefined(typeEnum) && angular.isArray(typeEnum)) {
-          if (typeEnum.length == 1) {
-            $scope.model['@type'] = properties['@type'].oneOf[0].enum[0];
-          } else {
-            $scope.model['@type'] = properties['@type'].oneOf[0].enum;
-          }
+      $scope.addMoreInput = function () {
+        if ((!$scope.field.maxItems || $scope.model.length < $scope.field.maxItems)) {
+          $scope.model.push({'@value': null});
         }
       };
 
-      var parseField = function () {
-        if (!$rootScope.isRuntime() && $scope.field) {
-          var min = $scope.field.minItems || 0;
-          if (!DataManipulationService.isCardinalElement($scope.field)) {
-            $scope.model = {};
-          } else {
-            $scope.model = [];
-            for (var i = 0; i < min; i++) {
-              var obj = {};
-              $scope.model.push(obj);
-            }
-          }
-          var p = $rootScope.propertiesOf($scope.field);
-          // Add @type information to instance at the field level
-          // if (p && !angular.isUndefined(p['@type'])) {
-          //   var type = DataManipulationService.generateInstanceType(p['@type']);
-          //
-          //   if (type) {
-          //     if (angular.isArray($scope.model)) {
-          //       for (var i = 0; i < min; i++) {
-          //         $scope.model[i]["@type"] = type || "";
-          //       }
-          //     } else {
-          //       $scope.model["@type"] = type || "";
-          //     }
-          //   }
-          // }
+      $scope.removeInput = function (index) {
+        var min = $scope.field.minItems || 0;
+        if ($scope.model.length > min) {
+          $scope.model.splice(index, 1);
         }
       };
+
+      //
+      // controlled terms modal
+      //
+
+      // create an id for the controlled terms modal
+      $scope.getModalId = function (type) {
+        return UIUtilService.getModalId(DataManipulationService.getId($scope.field), type);
+      };
+
+      // show the controlled terms modal
+      $scope.showModal = function (type) {
+        UIUtilService.showModal(DataManipulationService.getId($scope.field), type);
+      };
+
+      // show the controlled terms modal
+      $scope.hideModal = function (type) {
+        UIUtilService.hideModal(DataManipulationService.getId($scope.field), type);
+      };
+
+      // controlled terms modal has an outcome
+      $scope.$on("field:controlledTermAdded", function () {
+
+        UIUtilService.hideModal(DataManipulationService.getId($scope.field), 'field');
+        UIUtilService.hideModal(DataManipulationService.getId($scope.field), 'values');
+
+        // build the added fields map in this case
+        $scope.setAddedFieldMap();
+
+      });
+
+      // controlled terms modal has an outcome
+      $scope.$on("property:propertyAdded", function () {
+        UIUtilService.hideModal(DataManipulationService.getId($scope.field), type);
+      });
+
+      //
+      // watches
+      //
+
+      // watch for this field's deselect
+      $scope.$on('deselect', function (event, args) {
+        var field = args[0];
+        var errors = args[1];
+
+        if (field == $scope.field) {
+          $scope.errorMessages = errors;
+          if ($scope.errorMessages.length == 0) parseField();
+        }
+      });
+
+      // update schema title and description if necessary
+      $scope.$watch("field", function (newField, oldField) {
+
+        if (DataManipulationService.getTitle(newField) != DataManipulationService.getTitle(oldField)) {
+          var capitalizedTitle = $filter('capitalizeFirst')(DataManipulationService.getTitle(newField));
+          DataManipulationService.setSchemaTitle(newField,
+              $translate.instant("GENERATEDVALUE.fieldTitle", {title: capitalizedTitle}).trim());
+          DataManipulationService.setSchemaDescription(newField,
+              $translate.instant("GENERATEDVALUE.fieldDescription", {title: capitalizedTitle}).trim());
+        }
+
+        setDirectory();
+      }, true);
+
+      // Used just for text fields whose values have been constrained using controlled terms
+      $scope.$watch("model", function () {
+
+        $scope.isEditState = function () {
+          return (DataManipulationService.isEditState($scope.field));
+        };
+
+        $scope.isNested = function () {
+          return $scope.nested;
+          //return (DataManipulationService.isNested($scope.field));
+        };
+
+        $scope.addOption = function () {
+          return (DataManipulationService.addOption($scope.field));
+        };
+
+      }, true);
 
       // When form submit event is fired, check field for simple validation
       $scope.$on('submitForm', function (event) {
@@ -248,16 +390,27 @@ define([
 
       });
 
+      // try to deselect the field if it is active
       $scope.$on("saveForm", function () {
-        //var p = $rootScope.propertiesOf($scope.field);
-        if ($scope.isEditState() && !$scope.canDeselect($scope.field)) {
-          $scope.$emit("invalidFieldState",
-              ["add", DataManipulationService.getFieldSchema($scope.field)._ui.title, $scope.field["@id"]]);
-        } else {
-          $scope.$emit("invalidFieldState",
-              ["remove", DataManipulationService.getFieldSchema($scope.field)._ui.title, $scope.field["@id"]]);
-        }
+        var action = $scope.isEditState() && !$scope.canDeselect($scope.field) ? 'add' : 'remove';
+        $scope.$emit("invalidFieldState",
+            [action, DataManipulationService.getTitle($scope.field), DataManipulationService.getId($scope.field)]);
       });
+
+      //
+      // initialization
+      //
+
+      var setDirectory = function () {
+        var p = $rootScope.propertiesOf($scope.field);
+        var state = p._tmp && p._tmp.state || "completed";
+        if ((state == "creating") && !$scope.preview && !$rootScope.isRuntime()) {
+          $scope.directory = "create";
+        } else {
+          $scope.directory = "render";
+        }
+      };
+      setDirectory();
 
       var field = DataManipulationService.getFieldSchema($scope.field);
 
@@ -265,6 +418,28 @@ define([
       if (field._valueConstraints && field._valueConstraints.requiredValue) {
         $scope.$emit('formHasRequiredfield._uis');
       }
+
+      // Load values when opening an instance
+      if ($scope.model) {
+        var fieldValue = DataManipulationService.getValueLocation(field);
+        $scope.modelValueRecommendation = {valueInfo: {'value': $scope.model[fieldValue]}}
+      }
+
+      var parseField = function () {
+        if (!$rootScope.isRuntime() && $scope.field) {
+          var min = $scope.field.minItems || 0;
+          if (!DataManipulationService.isCardinalElement($scope.field)) {
+            $scope.model = {};
+          } else {
+            $scope.model = [];
+            for (var i = 0; i < min; i++) {
+              var obj = {};
+              $scope.model.push(obj);
+            }
+          }
+        }
+      };
+
 
       // If selectedByDefault is false, it is removed from the model
       $scope.cleanSelectedByDefault = function (index) {
@@ -501,213 +676,40 @@ define([
         }
       }
 
-      $scope.uuid = DataManipulationService.generateTempGUID();
-
-      // Retrieve appropriate field template file
-      $scope.getTemplateUrl = function () {
-        var inputType = 'element';
-        var schema = $rootScope.schemaOf($scope.field);
-
-        if (schema._ui.inputType) {
-          inputType = schema._ui.inputType;
-        }
-        return 'scripts/form/field-' + $scope.directory + '/' + inputType + '.html';
-      };
-
-      $scope.addMoreInput = function () {
-        if ((!$scope.field.maxItems || $scope.model.length < $scope.field.maxItems)) {
-          $scope.model.push({'@value': null});
-        }
-      };
-
-      $scope.removeInput = function (index) {
-        var min = $scope.field.minItems || 0;
-        if ($scope.model.length > min) {
-          $scope.model.splice(index, 1);
-        }
-      };
-
-      $scope.switchToSpreadsheet = function () {
-        SpreadsheetService.switchToSpreadsheetField($scope, $element);
-      };
-
       // look for errors
-      $scope.checkFieldConditions = function (field) {
-        field = $rootScope.schemaOf(field);
-
-        var unmetConditions = [],
-            extraConditionInputs = ['checkbox', 'radio', 'list'];
-
-        // Field title is required, if it's empty create error message
-        if (!field._ui.title) {
-          unmetConditions.push('"Enter Field Title" input cannot be left empty.');
-        }
-
-        // If field is within multiple choice field types
-        if (extraConditionInputs.indexOf(field._ui.inputType) !== -1) {
-          var optionMessage = '"Enter Option" input cannot be left empty.';
-          angular.forEach(field._valueConstraints.literals, function (value, index) {
-            // If any 'option' title text is left empty, create error message
-            if (!value.label.length && unmetConditions.indexOf(optionMessage) == -1) {
-              unmetConditions.push(optionMessage);
-            }
-          });
-        }
-        // If field type is 'radio' or 'pick from a list' there must be more than one option created
-        if ((field._ui.inputType == 'radio' || field._ui.inputType == 'list') && field._valueConstraints.literals && (field._valueConstraints.literals.length <= 1)) {
-          unmetConditions.push('Multiple Choice fields must have at least two possible options');
-        }
-        // Return array of error messages
-        return unmetConditions;
-      };
-
-      // try to select this field
-      $scope.canSelect = function (select) {
-        var result = select;
-        if (select) {
-          result = DataManipulationService.canSelect($scope.field);
-          //$scope.toggleControlledTerm('none');
-        }
-        return result;
-      };
-
-      // try to deselect this field
-      $scope.canDeselect = function (field) {
-        return DataManipulationService.canDeselect(field, $scope.renameChildKey);
-      };
-
-      // watch for this field's deselect
-      $scope.$on('deselect', function (event, args) {
-        var field = args[0];
-        var errors = args[1];
-
-        if (field == $scope.field) {
-          $scope.errorMessages = errors;
-          if ($scope.errorMessages.length == 0) parseField();
-        }
-      });
-
-      /**
-       * Use the fieldType to determine if the field supports using controlled terms
-       * @returns {boolean} hasControlledTerms
-       */
-      $scope.hasControlledTerms = function () {
-        var fieldTypes = FieldTypeService.getFieldTypes();
-        var inputType = 'element';
-        if (DataManipulationService.getFieldSchema($scope.field)._ui.inputType) {
-          inputType = DataManipulationService.getFieldSchema($scope.field)._ui.inputType;
-          for (var i = 0; i < fieldTypes.length; i++) {
-            if (fieldTypes[i].cedarType === inputType) {
-              return fieldTypes[i].hasControlledTerms;
-            }
-          }
-        }
-        return false;
-      };
-
-      /**
-       * Use the fieldType to determine if the field supports multiple instances
-       * @returns {boolean} allowsMultiple
-       */
-      $scope.allowsMultiple = function () {
-        var inputType = $rootScope.schemaOf($scope.field)._ui.inputType;
-        var fieldTypes = FieldTypeService.getFieldTypes();
-        for (var i = 0; i < fieldTypes.length; i++) {
-          if (fieldTypes[i].cedarType === inputType) {
-            return fieldTypes[i].allowsMultiple;
-          }
-        }
-      };
-
-      /**
-       * Use the fieldType to determine if the field supports value recommendation
-       * @returns {boolean} allowsValueRecommendation
-       */
-      $scope.allowsValueRecommendation = function () {
-        var inputType = $rootScope.schemaOf($scope.field)._ui.inputType;
-        var fieldTypes = FieldTypeService.getFieldTypes();
-        for (var i = 0; i < fieldTypes.length; i++) {
-          if (fieldTypes[i].cedarType === inputType) {
-            return fieldTypes[i].allowsValueRecommendation;
-          }
-        }
-      };
-
-      $scope.hasDateRange = function () {
-        var inputType = $rootScope.schemaOf($scope.field)._ui.inputType;
-        return (inputType === "date");
-      };
-
-      $scope.isStatic = function () {
-        var inputType = $rootScope.schemaOf($scope.field)._ui.inputType;
-        return FieldTypeService.isStaticField(inputType);
-      };
-
-      /**
-       * Turn my field into a youtube iframe.
-       * @param field
-       * @returns {string} html
-       */
-      $scope.getYouTubeEmbedFrame = function (field) {
-
-        var width = 560;
-        var height = 315;
-        var content = $rootScope.propertiesOf(field)._content.replace(/<(?:.|\n)*?>/gm, '');
-
-        if ($rootScope.propertiesOf(field)._size && $rootScope.propertiesOf(field)._size.width && Number.isInteger(
-                $rootScope.propertiesOf(field)._size.width)) {
-          width = $rootScope.propertiesOf(field)._size.width;
-        }
-        if ($rootScope.propertiesOf(field)._size && $rootScope.propertiesOf(field)._size.height && Number.isInteger(
-                $rootScope.propertiesOf(field)._size.height)) {
-          height = $rootScope.propertiesOf(field)._size.height;
-        }
-
-        // if I say trust as html, then better make sure it is safe first
-        return $sce.trustAsHtml(
-            '<iframe width="' + width + '" height="' + height + '" src="https://www.youtube.com/embed/' + content + '" frameborder="0" allowfullscreen></iframe>');
-
-      };
+      // $scope.checkFieldConditions = function (field) {
+      //   console.log('checkFieldConditions')
+      //   field = $rootScope.schemaOf(field);
+      //
+      //   var unmetConditions = [],
+      //       extraConditionInputs = ['checkbox', 'radio', 'list'];
+      //
+      //   // Field title is required, if it's empty create error message
+      //   if (!field._ui.title) {
+      //     unmetConditions.push('"Enter Field Title" input cannot be left empty.');
+      //   }
+      //
+      //   // If field is within multiple choice field types
+      //   if (extraConditionInputs.indexOf(field._ui.inputType) !== -1) {
+      //     var optionMessage = '"Enter Option" input cannot be left empty.';
+      //     angular.forEach(field._valueConstraints.literals, function (value, index) {
+      //       // If any 'option' title text is left empty, create error message
+      //       if (!value.label.length && unmetConditions.indexOf(optionMessage) == -1) {
+      //         unmetConditions.push(optionMessage);
+      //       }
+      //     });
+      //   }
+      //   // If field type is 'radio' or 'pick from a list' there must be more than one option created
+      //   if ((field._ui.inputType == 'radio' || field._ui.inputType == 'list') && field._valueConstraints.literals && (field._valueConstraints.literals.length <= 1)) {
+      //     unmetConditions.push('Multiple Choice fields must have at least two possible options');
+      //   }
+      //   // Return array of error messages
+      //   return unmetConditions;
+      // };
 
 
-      $scope.$watch("field", function (newField, oldField) {
-        // Update schema title and description if necessary
-        if (oldField.type == 'object' && newField.type == 'object') {
-          if (newField._ui.title != oldField._ui.title) {
-            var capitalizedTitle = $filter('capitalizeFirst')(newField._ui.title);
-            newField.title = $translate.instant("GENERATEDVALUE.fieldTitle", {title: capitalizedTitle}).trim();
-            newField.description = $translate.instant("GENERATEDVALUE.fieldDescription",
-                {title: capitalizedTitle}).trim();
-          }
-        }
-        setDirectory();
-      }, true);
 
-      // Used just for text fields whose values have been constrained using controlled terms
-      $scope.$watch("model", function () {
 
-        $scope.isEditState = function () {
-          return (DataManipulationService.isEditState($scope.field));
-        };
-
-        $scope.isNested = function () {
-          return $scope.nested;
-          //return (DataManipulationService.isNested($scope.field));
-        };
-
-        $scope.addOption = function () {
-          return (DataManipulationService.addOption($scope.field));
-        };
-
-      }, true);
-
-      /* Value Recommendation functionality */
-
-      // Load values when opening an instance
-      if ($scope.model) {
-        var fieldValue = DataManipulationService.getValueLocation(field);
-        $scope.modelValueRecommendation = {valueInfo: {'value': $scope.model[fieldValue]}}
-      }
 
       $scope.initializeValueRecommendationField = function () {
         var fieldValue = DataManipulationService.getValueLocation(field);
@@ -754,7 +756,6 @@ define([
         }
       };
 
-      $scope.isFirstRefresh = true;
       $scope.setIsFirstRefresh = function (isFirstRefresh) {
         $scope.isFirstRefresh = isFirstRefresh;
       };
@@ -784,13 +785,6 @@ define([
           }
         }
       };
-
-      // Updates the search using the selected value
-      //$scope.updateSearch = function (select) {
-      //  if (select.selected.value) {
-      //    select.search = select.selected.value;
-      //  }
-      //};
 
       $scope.clearSearch = function (select) {
         select.search = '';
@@ -941,15 +935,7 @@ define([
         return result;
       };
 
-      $scope.showModal = function (id) {
-        jQuery("#" + id).modal('show');
-      };
-
-      /**
-       * get the class description from the the addedFields map
-       * @param item
-       * @returns {string}
-       */
+      // get the class description from the the addedFields map
       $scope.getClassDescription = function (item) {
         var result = "";
         if ($scope.addedFields && $scope.addedFields.has(item)) {
@@ -969,7 +955,6 @@ define([
         }
         return result;
       };
-
 
       $scope.deleteFieldAddedItem = function (itemDataId) {
         DataManipulationService.deleteFieldControlledTerm(itemDataId, $scope.field);
@@ -1005,226 +990,8 @@ define([
         var ontologyDetails = controlledTermDataService.getOntologyByLdId(ontology);
       };
 
-      // use the document height as the modal height
-      $scope.getModalHeight = function () {
-        return "height: " + $document.height() + 'px';
-      };
-
-      //TODO this event resets modal state and closes modal
-      $scope.$on("field:controlledTermAdded", function () {
-
-        jQuery("#" + $scope.getModalId(true)).modal('hide');
-        jQuery("#" + $scope.getModalId(false)).modal('hide');
-
-        // build the added fields map in this case
-        $scope.setAddedFieldMap();
-
-      });
-
-      $scope.$on("property:propertyAdded", function () {
-        jQuery("#" + $scope.getPropertyModalId()).modal('hide');
-      });
-
-
-      // which details tab is open?
-      $scope.showControlledTermsValues = false;
-      $scope.showControlledTermsField = false;
-      $scope.showCardinality = false;
-      $scope.showRequired = false;
-      $scope.showRange = false;
-      $scope.showValueRecommendation = false;
-      $scope.isTabActive = function (item) {
-        return ($scope.showControlledTermsField && item == "field") ||
-            ($scope.showControlledTermsValues && item == "values") ||
-            ($scope.showCardinality && item == "cardinality") ||
-            ($scope.showRange && item == "range") ||
-            ($scope.showRequired && item == "required") ||
-            ($scope.showValueRecommendation && item == "value-recommendation")
-            ;
-      };
-
-      // $scope.initDateSingle = function () {
-      //   if ($rootScope.schemaOf($scope.field)._ui.inputType == 'date') {
-      //     $rootScope.schemaOf($scope.field)._ui.dateType = 'single-date';
-      //   }
-      //   else {
-      //     delete $rootScope.schemaOf($scope.field)._ui.dateType;
-      //   }
-      // };
-
-      /**
-       * only have one of these three divs open at a time
-       * @param item
-       */
-      $scope.toggleControlledTerm = function (item) {
-
-        $scope.showControlledTermsValues = (item === 'values') ? !$scope.showControlledTermsValues : false;
-        $scope.showControlledTermsField = (item === 'field') ? !$scope.showControlledTermsField : false;
-        $scope.showCardinality = (item === 'cardinality') ? !$scope.showCardinality : false;
-        $scope.showRequired = (item === 'required') ? !$scope.showRequired : false;
-        $scope.showRange = (item === 'range') ? !$scope.showRange : false;
-        $scope.showValueRecommendation = (item === 'value-recommendation') ? !$scope.showValueRecommendation : false;
-        //$rootScope.schemaOf($scope.field)._ui.is_cardinal_field = $scope.showCardinality;
-
-        $scope.setAddedFieldMap();
-      };
-
-      $scope.getModalId = function (isField) {
-        var fieldOrValue = isField ? "field" : "values";
-        var fieldId = $scope.field['@id'] || $scope.field.items['@id'];
-        var id = fieldId.substring(fieldId.lastIndexOf('/') + 1);
-        return "control-options-" + id + "-" + fieldOrValue;
-      };
-
-
-      $scope.getPropertyModalId = function () {
-        var fieldId = $scope.field['@id'] || $scope.field.items['@id'];
-        var id = fieldId.substring(fieldId.lastIndexOf('/') + 1);
-        return "control-options-" + id + "-" + 'property';
-      };
 
       /* end of controlled terms functionality */
-
-      $scope.clearMinMax = function () {
-        delete $scope.field.minItems;
-        delete $scope.field.maxItems;
-      };
-
-      $scope.selectField = function () {
-      };
-
-      $scope.getShortText = function (text, maxLength, finalString, emptyString) {
-        return StringUtilsService.getShortText(text, maxLength, finalString, emptyString);
-      };
-
-      $scope.getShortId = function (uri, maxLength) {
-        return StringUtilsService.getShortId(uri, maxLength);
-      };
-
-      $scope.getId = function (index) {
-        return DataManipulationService.getLocator($scope.field, 0, index);
-      };
-
-      $scope.isMultiple = function () {
-        return $scope.field.minItems != null;
-      };
-
-      $scope.defaultMinMax = function () {
-        $scope.field.minItems = 1;
-        $scope.field.maxItems = 0;
-      };
-
-      $scope.getForm = function () {
-        return $rootScope.jsonToSave;
-      };
-
-      //
-      // cardinality selectors begin
-      //
-      $scope.cardinality = {
-        min : {
-          isopen: false,
-          value: null,
-          arr: [{
-            value: '0',
-            label: 'none'
-          }, {
-            value: '1',
-            label: 'one'
-          }, {
-            value: '2',
-            label: 'two'
-          }, {
-            value: '3',
-            label: 'three'
-          }, {
-            value: '4',
-            label: 'four'
-          }, {
-            value: '5',
-            label: 'five'
-          }, {
-            value: '6',
-            label: 'six'
-          }, {
-            value: '7',
-            label: 'seven'
-          }, {
-            value: '8',
-            label: 'eight'
-          }]
-        },
-        max : {
-          isopen: false,
-          value: null,
-          arr: [{
-            value: '0',
-            label: 'unlimited'
-          }, {
-            value: '1',
-            label: 'one'
-          }, {
-            value: '2',
-            label: 'two'
-          }, {
-            value: '3',
-            label: 'three'
-          }, {
-            value: '4',
-            label: 'four'
-          }, {
-            value: '5',
-            label: 'five'
-          }, {
-            value: '6',
-            label: 'six'
-          }, {
-            value: '7',
-            label: 'seven'
-          }, {
-            value: '8',
-            label: 'eight'
-          }]
-        }
-      };
-
-      $scope.getCardinalityLabel = function (minOrMax) {
-        var result = '';
-        if ($scope.cardinality[minOrMax].value !== null) {
-          var obj = $scope.cardinality[minOrMax].arr.map(function (a) {
-            return a.label;
-          });
-          return $translate.instant(obj[$scope.cardinality[minOrMax].value]);
-        }
-        return result;
-      };
-
-      $scope.initMultiple = function () {
-        if ($scope.isMultiple()) {
-          $scope.cardinality.min.value = $scope.field.minItems.toString();
-          $scope.cardinality.max.value = typeof $scope.field.maxItems === 'undefined' ? '0' : $scope.field.maxItems.toString();
-        }
-      };
-
-      $scope.updateMultiple = function () {
-        $scope.field.minItems = parseInt($scope.cardinality.min.value);
-        $scope.field.maxItems = parseInt($scope.cardinality.max.value);
-        if ($scope.field.maxItems && $scope.field.maxItems < $scope.field.minItems) {
-          $scope.field.maxItems = 0;
-          $scope.cardinality.max.value = '0';
-        }
-      };
-
-      $scope.setCardinality = function (minOrMax, value) {
-        $scope.cardinality[minOrMax].value = value;
-        $scope.cardinality[minOrMax].isopen = false;
-        $scope.updateMultiple();
-      };
-
-      //
-      // cardinality selectors end
-      //
-
 
     };
 

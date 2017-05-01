@@ -352,7 +352,6 @@ define([
           $rootScope.setDirty($scope.forms.templateForm.$dirty);
         });
 
-
         // Angular $watch function to run the Bootstrap Popover initialization on new form elements when they load
         $scope.$watch('page', function () {
           $scope.addPopover();
@@ -370,7 +369,6 @@ define([
         $scope.isAIRRTemplate = function () {
           return ($rootScope.documentTitle && $rootScope.documentTitle.toLowerCase().indexOf('airr') > -1);
         };
-
 
         // validate a biosample template
         $scope.checkBiosample = function (instance) {
@@ -476,7 +474,6 @@ define([
 
         };
 
-
         $scope.$on('biosampleValidation', function (event) {
           $scope.checkBiosample($scope.model);
         });
@@ -484,7 +481,6 @@ define([
         $scope.$on('airrValidation', function (event) {
           $scope.checkAirr($scope.model);
         });
-
 
         // Watching for the 'submitForm' event to be $broadcast from parent 'RuntimeController'
         $scope.$on('submitForm', function (event) {
@@ -498,7 +494,6 @@ define([
         $scope.$on('formHasRequiredFields', function (event) {
           $scope.form.requiredFields = true;
         });
-
 
         // create a copy of the form with the _tmp fields stripped out
         $scope.stripTmpFields = function () {
@@ -538,7 +533,6 @@ define([
           return ($scope.getType(item) === 'https://schema.metadatacenter.org/core/TemplateField');
         };
 
-
         $scope.getPreviousItem = function (index) {
           if (index) {
             return $scope.pagesArray[$scope.pageIndex][index];
@@ -566,11 +560,9 @@ define([
           return null;
         };
 
-
         $scope.isElement = function (item) {
           return ($scope.getType(item) === 'https://schema.metadatacenter.org/core/TemplateElement');
         };
-
 
         $scope.toggleExpanded = function () {
           $scope.expanded = !$scope.expanded;
@@ -583,7 +575,6 @@ define([
         $scope.isExpanded = function () {
           return $scope.expanded;
         };
-
 
         $scope.getType = function (item) {
           var obj = $scope.form.properties[item];
@@ -599,36 +590,23 @@ define([
           }
         };
 
-        $scope.nextChild = function (fieldOrElement) {
-
-          var id = DataManipulationService.getId(fieldOrElement);
-          var selectedKey;
+        $scope.nextChild = function (fieldOrElement, index, path, fieldKey) {
           var props = $scope.form.properties;
+          var order = $scope.form._ui.order;
 
-          // find the field or element in the form's properties
-          angular.forEach(props, function (value, key) {
-            if (DataManipulationService.getId(value) == id) {
-              selectedKey = key;
-            }
-          });
-
-
-          if (selectedKey) {
-            var idx = $scope.form._ui.order.indexOf(selectedKey);
+          if (fieldKey) {
+            var idx = order.indexOf(fieldKey);
 
             idx += 1;
             var found = false;
-            while (idx < $scope.form._ui.order.length && !found) {
-              var nextKey = $scope.form._ui.order[idx];
+            while (idx < order.length && !found) {
+              var nextKey = order[idx];
               var next = props[nextKey];
               found = !$scope.isStaticField(next);
               idx += 1;
             }
-
             if (found) {
-              $rootScope.$broadcast("setActive", [DataManipulationService.getId(next), 0, $scope.path, true]);
-            } else {
-              $rootScope.$broadcast("setActive", [id, 0, $scope.path, false]);
+              $rootScope.$broadcast("setActive", [DataManipulationService.getId(next), 0, $scope.path, $scope.parentKey, nextKey, true]);
             }
           }
         };
@@ -639,28 +617,6 @@ define([
             return indices[indices.length - 1];
           }
         };
-
-        // watch for this field's next sibling
-        $scope.$on('nextSibling', function (event, args) {
-          var id = args[0];
-          var index = args[1];
-          var path = args[2];
-          var value = args[3];
-
-
-          if (id === DataManipulationService.getId($scope.form)) {
-
-            var next = DataManipulationService.nextSibling($scope.field, $scope.form);
-            var parentIndex = 0;
-            var parentPath = '0';
-            if (next) {
-
-              $rootScope.$broadcast("setActive", [DataManipulationService.getId(next), 0, path, true]);
-
-
-            }
-          }
-        });
 
         $scope.isActive = function () {
           return true;
@@ -696,6 +652,33 @@ define([
             });
 
           }, 0);
+        };
+
+        $scope.activateNextSiblingOf = function(fieldKey, parentKey) {
+          console.log('activateNextSiblingOf ' + fieldKey + ' in ' + parentKey);
+          var index = 0;
+          var order = $rootScope.schemaOf($scope.form)._ui.order;
+          var props = $rootScope.schemaOf($scope.form).properties;
+          var idx = order.indexOf(fieldKey);
+
+          idx += 1;
+          var found = false;
+          while (idx < order.length && !found) {
+            var nextKey = order[idx];
+            var next = props[nextKey];
+            found = !DataManipulationService.isStaticField(next);
+            idx += 1;
+          }
+          if (found) {
+            console.log('found ' + nextKey);
+            var next = props[nextKey];
+            $rootScope.$broadcast("setActive",
+                [DataManipulationService.getId(next), 0, $scope.path, nextKey, parentKey, true]);
+            return next;
+          } else {
+            console.log('not found');
+          }
+
         };
 
 

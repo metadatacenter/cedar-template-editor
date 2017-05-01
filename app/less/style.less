@@ -2720,7 +2720,6 @@ section.dashboard-elements {
     margin-left: 0 0 0 10px;
     padding: 0;
     position: relative;
-
   }
 
   .treeview {
@@ -2729,6 +2728,7 @@ section.dashboard-elements {
       margin: 0;
       padding: 0 0 0 12px;
       position: relative;
+      border-left:1px solid @med-gray;
     }
 
     li.tv::before, li.tv::after {
@@ -2739,62 +2739,58 @@ section.dashboard-elements {
 
     /* horizontal line on inner list items */
     li.tv::before {
-      border-top: 1px solid @med-gray;
       top: 15px;
       width: 10px;
       height: 0;
+      border-top: 1px solid @med-gray;
     }
 
-    /* horizontal line on inner list items */
-    li.tv::before {
-      width: 10px;
+    li.last.tv {
+      border-left-width:0px;
     }
-
     /* horizontal line on inner list items */
     li.tv.element::before {
       width: 10px;
     }
 
+    /* horizontal line on inner list items */
+    li.tv.last.element::before {
+      border-top-width: 0px;
+    }
+
     /* vertical line on list items */
-    li.tv::after {
-      border-left: 1px solid @med-gray;
+    li.tv.last::after {
       height: 100%;
       width: 0px;
       top: -20px;
+      border-left: 1px solid @med-gray;
     }
 
-    /* first field */
-    li.tv.first::after {
-      top: 0;
-      height: 100%;
-    }
-
+    // horizontal line for single items
     li.tv.first.last::after {
       top: 0;
       height: 15px;
+      border-left: 1px solid @med-gray;
     }
 
-    li.tv.first.element::after {
+    li.tv.last.element::before {
+      border-left:1px solid @med-gray;
+    }
+
+    li.tv.element::after, li.tv.last.element::after, ul li.last.element::after {
       top: 0;
       height: 16px;
     }
+
+    li.tv.last.element::before {
+      border-left:1px solid @med-gray;
+      height:16px;
+      top:0;
+      border-bottom:1px solid @med-gray;
+      width:10px;
+    }
   }
 
-  /* lower line on list items from the first level because they don't have parents */
-  .treeview > li.tv::after {
-    top: 15px;
-  }
-
-  /* hide line from the last of the first level list items */
-  .treeview > li.tv:last-child::after {
-    display: none;
-  }
-
-  /*  very first field or element */
-  .treeview > li.tv.first::after {
-    top: 15px;
-    height: 100%;
-  }
 
   .paging {
     max-height: 17px;

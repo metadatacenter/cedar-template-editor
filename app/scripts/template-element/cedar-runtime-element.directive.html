@@ -1,4 +1,4 @@
-<div ng-if="model !== undefined" class="item-root element-root">
+<div ng-if="model !== undefined" class="item-root element-root" >
 
   <div class="elementTotalContent">
 
@@ -63,10 +63,10 @@
         </field-toolbar>
 
       </div>
-      <ul class="tv" ng-show="isExpanded(index) && index === i" ng-repeat="(i, valueElement) in valueArray"
+      <ul class="tv" ng-if="isExpanded(index) && index === i" ng-repeat="(i, valueElement) in valueArray"
           id="{{getLocator(i)}}">
         <li class="tv"
-            ng-class="{'last':$last, 'first':$first, 'element' : $root.isElement($root.schemaOf($root.propertiesOf(element)[key]))}"
+            ng-class="{'last':$last, 'first':$first, 'element' : $root.isElement($root.schemaOf($root.propertiesOf(element)[fieldKey]))}"
             ng-repeat="key in $root.schemaOf(element)['_ui']['order']" ng-if="$root.propertiesOf(element)[key]">
 
           <div ng-click="toggleExpanded(index)" class="col-xs-6" ng-if="!isExpanded(index)"
@@ -74,9 +74,7 @@
 
           </div>
           <div ng-if="isExpanded(index) && index === i">
-
-
-            <cedar-runtime-nested-element key="key"
+            <cedar-runtime-nested-element
                 field="$root.propertiesOf(element)[key]"
                 model="valueArray[i][key]"
                 labels="$root.schemaOf(element)['_ui']['propertyLabels']"
@@ -84,8 +82,10 @@
                 remove-child="removeChild"
                 rename-child-key="renameChildKey"
                 is-edit-data="isEditData"
-                depth="depth+1"
-                path="path+'-'+i">
+                parent-key="fieldKey"
+                field-key="key"
+                path="path+'-'+i"
+                uid="uid+'-'+key">
             </cedar-runtime-nested-element>
           </div>
         </li>
@@ -116,7 +116,8 @@
         <div ng-if="isExpanded(i)">
           <ul class="tv" ng-repeat="key in $root.schemaOf(element)['_ui']['order']">
             <li class="tv" ng-if="$root.propertiesOf(element)[key]" ng-class="{'last':$last, 'first':$first, 'element' : $root.isElement($root.schemaOf($root.propertiesOf(element)[key]))}">
-              <cedar-runtime-nested-element key="key"
+
+              <cedar-runtime-nested-element
                   field="$root.propertiesOf(element)[key]"
                   model="valueElement[key]"
                   labels="$root.schemaOf(element)['_ui']['propertyLabels']"
@@ -124,9 +125,10 @@
                   remove-child="removeChild"
                   rename-child-key="renameChildKey"
                   is-edit-data="isEditData"
-                  depth="depth+1"
                   path="path+'-'+i"
-                  index="i">
+                  parent-key="fieldKey"
+                  field-key="key"
+                  uid="uid+'-'+key">
               </cedar-runtime-nested-element>
             </li>
           </ul>

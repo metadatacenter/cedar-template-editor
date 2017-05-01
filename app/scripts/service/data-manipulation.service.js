@@ -514,6 +514,20 @@ define([
           return result;
         };
 
+        // what is the field type?
+        service.getInputType = function(field) {
+          return $rootScope.schemaOf(field)._ui.inputType;
+        };
+
+        service.defaultMinMax = function (fieldOrElement) {
+          fieldOrElement.minItems = 1;
+          fieldOrElement.maxItems = 0;
+        };
+
+        service.clearMinMax = function (fieldOrElement) {
+          delete fieldOrElement.minItems;
+          delete fieldOrElement.maxItems;
+        };
 
         // what is the max cardinality?
         service.getMaxItems = function (fieldOrElement) {
@@ -541,9 +555,9 @@ define([
         };
 
         // set this field instance active
-        service.setActive = function (field, index, path, value) {
+        service.setActive = function (field, index, path, uid, value) {
           if (value) {
-            $rootScope.activeLocator = service.getLocator(field, index, path);
+            $rootScope.activeLocator = service.getLocator(field, index, path, uid);
           } else {
             $rootScope.activeLocator = null;
           }
@@ -619,10 +633,8 @@ define([
         };
 
         service.generateFieldContextProperties = function (fieldName) {
-
           var c = {};
           c.enum = new Array(service.getEnumOf(fieldName));
-          console.log('generateFieldContextProperties ' + fieldName + ' ' + c.enum);
           return c;
         };
 
@@ -681,7 +693,6 @@ define([
             if (!DataUtilService.isSpecialKey(name)) {
               // We can tell we've reached an element level by its '@type' property
               if ($rootScope.schemaOf(value)['@type'] == 'https://schema.metadatacenter.org/core/TemplateElement') {
-                //console.log(name);
                 if (path == null) {
                   service.addPathInfo(value, name);
                 }
@@ -941,6 +952,14 @@ define([
           return service.getFieldSchema(fieldOrElement)._ui.description;
         };
 
+        service.setSchemaTitle = function (fieldOrElement, value) {
+          service.getFieldSchema(fieldOrElement).title = value;
+        };
+
+        service.setSchemaDescription = function (fieldOrElement, value) {
+          service.getFieldSchema(fieldOrElement).description = value;
+        };
+
         // does this field have a value constraint?
         service.hasValueConstraint = function (fieldOrElement) {
           return $rootScope.hasValueConstraint($rootScope.schemaOf(fieldOrElement)._valueConstraints);
@@ -962,63 +981,66 @@ define([
           return null;
         };
 
-        service.nextSibling = function (field, parent) {
-
-          if (field && parent) {
-
-            var id = service.getFieldSchema(field)["@id"];
-            var props = service.getFieldSchema(parent).properties;
-            var order = service.getFieldSchema(parent)._ui.order;
-            var selectedKey;
-
-
-            angular.forEach(props, function (value, key) {
-              var valueId = service.getFieldSchema(value)["@id"];
-              if (valueId) {
-                if (service.getFieldSchema(value)["@id"] == id) {
-                  selectedKey = key;
-                }
-              }
-            });
-
-
-            if (selectedKey) {
-              var idx = order.indexOf(selectedKey);
-              idx += 1;
-              var found = false;
-              while (idx < order.length && !found) {
-                var nextKey = order[idx];
-                var next = props[nextKey];
-                found = !service.isStaticField(next);
-                idx += 1;
-              }
-              if (found) {
-                console.log('found');
-                return next;
-              } else {
-                console.log('not found');
-
-              }
-            }
-          }
-        };
+        // service.nextSibling = function (field, parent, parentKey) {
+        //   console.log('nextSibling ' )
+        //
+        //   if (field && parent && key) {
+        //
+        //     var id = service.getFieldSchema(field)["@id"];
+        //     var props = service.getFieldSchema(parent).properties;
+        //     var order = service.getFieldSchema(parent)._ui.order;
+        //     var selectedKey;
+        //
+        //
+        //     angular.forEach(props, function (value, key) {
+        //       var valueId = service.getFieldSchema(value)["@id"];
+        //       if (valueId) {
+        //         if (service.getFieldSchema(value)["@id"] == id) {
+        //           selectedKey = key;
+        //         }
+        //       }
+        //     });
+        //
+        //     console.log('nextSibling ' + selectedKey);
+        //
+        //
+        //     if (selectedKey) {
+        //       var idx = order.indexOf(selectedKey);
+        //       idx += 1;
+        //       var found = false;
+        //       while (idx < order.length && !found) {
+        //         var nextKey = order[idx];
+        //         var next = props[nextKey];
+        //         found = !service.isStaticField(next);
+        //         idx += 1;
+        //       }
+        //       if (found) {
+        //         console.log('found ' + nextKey);
+        //         return next;
+        //       } else {
+        //         console.log('not found');
+        //
+        //       }
+        //     }
+        //   }
+        // };
 
         // get the locator for the node's dom object
-        service.getLocator = function (node, index, path) {
-          return 'dom-' + service.getNodeId(node) + '-' + (path || 0).toString() + '-' + (index || 0).toString();
+        service.getLocator = function (node, index, path, id) {
+          return 'dom-' + id + '-' + (path || 0).toString() + '-' + (index || 0).toString();
         };
 
         // look to see if this node has been identified by angular as an invalid pattern
-        service.isValidPattern = function (node, index, path) {
-          var locator = service.getLocator(node, index, path) + '.ng-invalid';
+        service.isValidPattern = function (node, index, path, id) {
+          var locator = service.getLocator(node, index, path, id) + '.ng-invalid';
           var target = jQuery('#' + locator);
           return (target.length == 0);
         };
 
         // get the value of the dom object for this node
-        service.getDomValue = function (node, index, path) {
+        service.getDomValue = function (node, index, path, id) {
           var result;
-          var locator = service.getLocator(node, index, path);
+          var locator = service.getLocator(node, index, path, id);
           var target = jQuery('#' + locator);
           if (target.length > 0) {
             result = target[0].value;
