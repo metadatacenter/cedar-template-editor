@@ -423,7 +423,7 @@ define([
 
     // Used in richtext.html
     $rootScope.getUnescapedContent = function (field) {
-      return $sce.trustAsHtml($rootScope.propertiesOf(field)._content);
+      return $sce.trustAsHtml($rootScope.schemaOf(field)._ui._content);
     };
 
     CedarUser.init();

@@ -909,7 +909,9 @@ define([
 
         // is this a multiple choice list?
         service.isMultipleChoice = function (fieldOrElement) {
-          return $rootScope.schemaOf(fieldOrElement)._valueConstraints.multipleChoice;
+          if ($rootScope.schemaOf(fieldOrElement)._valueConstraints) {
+            return $rootScope.schemaOf(fieldOrElement)._valueConstraints.multipleChoice;
+          }
         };
 
         // is this a checkbox, or a multiple choice list field?
@@ -941,7 +943,14 @@ define([
 
         service.getContent = function (fieldOrElement) {
           var schema = $rootScope.schemaOf(fieldOrElement);
-          return schema.properties['_content'];
+          console.log('content:');
+          console.log(schema._ui._content);
+          return schema._ui._content;
+        };
+
+        service.getSize = function (fieldOrElement) {
+          var schema = $rootScope.schemaOf(fieldOrElement);
+          return schema._ui._size;
         };
 
         service.getTitle = function (fieldOrElement) {

@@ -13,7 +13,8 @@
   "_ui": {
     "title": "",
     "description": "",
-    "inputType": null
+    "inputType": null,
+    "_content": null
   },
   "properties": {
     "@id": {
@@ -52,12 +53,8 @@
     "oslc:modifiedBy": {
       "type" : ["string", "null"],
       "format": "uri"
-    },
-    "_content": null
+    }
   },
-  "required": [
-    "_content"
-  ],
   "pav:createdOn": null,
   "pav:createdBy": null,
   "pav:lastUpdatedOn": null,
