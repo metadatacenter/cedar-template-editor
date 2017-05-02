@@ -29,15 +29,8 @@ define([
       },
       controller : function ($scope) {
 
-        $scope.relabel = function (key) {
-          // operates on templates and elements, so use the root scope json which
-          // is element or form
-          DataManipulationService.relabel($rootScope.jsonToSave, key);
-        };
-
+        $scope.forms = {};
         $scope.model = $scope.model || {};
-
-        // Initializing checkSubmission as false
         $scope.checkSubmission = false;
         $scope.pageIndex = $scope.pageIndex || 0;
 
@@ -49,6 +42,15 @@ define([
 
         $scope.metaToRDF = null;
         $scope.metaToRDFError = null;
+
+        $scope.relabel = function (key) {
+          // operates on templates and elements, so use the root scope json which
+          // is element or form
+          DataManipulationService.relabel($rootScope.jsonToSave, key);
+        };
+
+
+
 
         var paginate = function () {
           if ($scope.form) {
@@ -318,14 +320,6 @@ define([
           });
         };
 
-        // Angular's $watch function to call $scope.parseForm on form.properties initial population and on update
-        $scope.$watch('form.properties', function () {
-          startParseForm();
-        });
-
-
-        $scope.forms = {};
-
         //
         // custom external validation
         //
@@ -369,21 +363,30 @@ define([
               });
         };
 
-        $scope.$on('biosample-validation', function (event) {
-          $scope.doValidation($scope.model, UrlService.biosampleValidation(), 'biosample');
-        });
-
-        $scope.$on('airr-validation', function (event) {
-          $scope.doValidation($scope.model, UrlService.airrValidation(), 'airr');
-        });
-
-        $scope.$on('lincs-validation', function (event) {
-          $scope.doValidation($scope.model , UrlService.lincsValidation(), 'lincs');
+        $scope.$on('external-validation', function (event, params) {
+          if (params && params[0]) {
+            switch (params[0]) {
+              case 'biosample':
+                $scope.doValidation($scope.model, UrlService.biosampleValidation(), 'biosample');
+                break;
+              case 'airr':
+                $scope.doValidation($scope.model, UrlService.biosampleValidation(), 'biosample');
+                break;
+              case 'lincs':
+                $scope.doValidation($scope.model, UrlService.lincsValidation(), 'lincs');
+                break;
+            }
+          }
         });
 
         //
         // watches
         //
+
+        // Angular's $watch function to call $scope.parseForm on form.properties initial population and on update
+        $scope.$watch('form.properties', function () {
+          startParseForm();
+        });
 
         // watch the dirty flag on the form
         $scope.$watch('forms.templateForm.$dirty', function () {
@@ -430,7 +433,6 @@ define([
           if (type) {
             $scope.doValidation($scope.$parent.instance, ValidationService.getUrl(type), type);
           }
-
         });
 
         $scope.$on('formHasRequiredFields', function (event) {

@@ -229,7 +229,7 @@ define([
     $scope.doValidation = function () {
       var type = ValidationService.isValidationTemplate($rootScope.documentTitle, 'validation')
       if (type) {
-        $scope.$broadcast(type + '-' + 'validation');
+        $scope.$broadcast('external-validation', [type]);
       }
     };
 
