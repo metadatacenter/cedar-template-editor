@@ -404,8 +404,9 @@ define([
         var fieldKey = args[3];
         var parentKey = args[4];
         var value = args[5];
+        var uid = args[6];
 
-        if (id === scope.getId() && path == scope.path && fieldKey == scope.fieldKey && parentKey == scope.parentKey) {
+        if (id === scope.getId() && path == scope.path && fieldKey == scope.fieldKey && parentKey == scope.parentKey && uid == scope.uid) {
           scope.setActive(index, value);
           //scope.expanded[index] = true;
 
@@ -418,7 +419,7 @@ define([
             var nextKey = order[0];
             var next = props[nextKey];
             $rootScope.$broadcast("setActive",
-                [DataManipulationService.getId(next), 0, scope.path + '-' + index, nextKey, scope.fieldKey, true]);
+                [DataManipulationService.getId(next), 0, scope.path + '-' + index, nextKey, scope.fieldKey, true, scope.uid + '-' + nextKey]);
 
           }, 0);
         }
@@ -443,7 +444,7 @@ define([
           var nextKey = order[0];
           var next = props[nextKey];
           $rootScope.$broadcast("setActive",
-              [DataManipulationService.getId(next), 0, scope.path + '-' + index, nextKey, scope.fieldKey, true]);
+              [DataManipulationService.getId(next), 0, scope.path + '-' + index, nextKey, scope.fieldKey, true, scope.uid + '-' + nextKey]);
 
         }, 0);
       };
@@ -522,7 +523,7 @@ define([
           if (found) {
             var next = props[nextKey];
             $rootScope.$broadcast("setActive",
-                [DataManipulationService.getId(next), 0, scope.path + '-' + scope.index, nextKey, parentKey, true]);
+                [DataManipulationService.getId(next), 0, scope.path + '-' + scope.index, nextKey, parentKey,  true, scope.uid + '-' + nextKey]);
           }
         }
 
