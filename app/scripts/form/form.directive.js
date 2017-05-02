@@ -11,11 +11,11 @@ define([
 
   formDirective.$inject = ['$rootScope', '$document', '$timeout', '$translate', '$http', 'DataManipulationService',
                            'FieldTypeService', 'DataUtilService', 'SubmissionService',
-                           'UIMessageService', 'UrlService'];
+                           'UIMessageService', 'UrlService','AuthorizedBackendService','HttpBuilderService'];
 
 
   function formDirective($rootScope, $document, $timeout, $translate, $http, DataManipulationService, FieldTypeService,
-                         DataUtilService, SubmissionService, UIMessageService, UrlService) {
+                         DataUtilService, SubmissionService, UIMessageService, UrlService, AuthorizedBackendService,HttpBuilderService) {
     return {
       templateUrl: 'scripts/form/form.directive.html',
       restrict   : 'E',
@@ -324,12 +324,11 @@ define([
         // custom external validation
         //
 
-        // call validation with an instance
+        // Get/read template with given id from $routeParams
         $scope.doValidation = function (instance, url, type) {
-
-          var config = {};
-          $http.post(url, instance, config).then(
-              function successCallback(response) {
+          AuthorizedBackendService.doCall(
+              HttpBuilderService.post(url, angular.toJson(instance)),
+              function (response) {
 
                 var data = response.data;
                 if (!data.isValid) {
@@ -358,10 +357,51 @@ define([
                 }
 
               },
-              function errorCallback(err) {
-                UIMessageService.showBackendError('Server Error', err);
-              });
+              function (err) {
+                UIMessageService.showBackendError($translate.instant('VALIDATION.externalValidation'), err);
+              }
+          );
         };
+
+        // call validation with an instance
+        // $scope.doValidation = function (instance, url, type) {
+        //   console.log(url);
+        //
+        //   var config = {};
+        //   $http.post(url, instance, config).then(
+        //       function successCallback(response) {
+        //
+        //         var data = response.data;
+        //         if (!data.isValid) {
+        //
+        //           $scope.$emit('validationError',
+        //               ['remove', '', type]);
+        //
+        //           var errors = data.messages;
+        //           for (var i = 0; i < errors.length; i++) {
+        //
+        //             console.log(errors[i]);
+        //
+        //
+        //             $scope.$emit('validationError',
+        //                 ['add', errors[i], type + i]);
+        //
+        //
+        //           }
+        //         } else {
+        //
+        //           $scope.$emit('validationError',
+        //               ['remove', '', type]);
+        //
+        //           UIMessageService.flashSuccess('Submission Validated', {"title": "title"},
+        //               'Success');
+        //         }
+        //
+        //       },
+        //       function errorCallback(err) {
+        //         UIMessageService.showBackendError('Server Error', err);
+        //       });
+        // };
 
         $scope.$on('external-validation', function (event, params) {
           if (params && params[0]) {
