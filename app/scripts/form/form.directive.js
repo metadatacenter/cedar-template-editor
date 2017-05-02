@@ -11,11 +11,11 @@ define([
 
   formDirective.$inject = ['$rootScope', '$document', '$timeout', '$translate', '$http', 'DataManipulationService',
                            'FieldTypeService', 'DataUtilService', 'SubmissionService',
-                           'UIMessageService', 'UrlService','AuthorizedBackendService','HttpBuilderService'];
+                           'UIMessageService', 'UrlService','AuthorizedBackendService','HttpBuilderService',"ValidationService"];
 
 
   function formDirective($rootScope, $document, $timeout, $translate, $http, DataManipulationService, FieldTypeService,
-                         DataUtilService, SubmissionService, UIMessageService, UrlService, AuthorizedBackendService,HttpBuilderService) {
+                         DataUtilService, SubmissionService, UIMessageService, UrlService, AuthorizedBackendService,HttpBuilderService,ValidationService) {
     return {
       templateUrl: 'scripts/form/form.directive.html',
       restrict   : 'E',
@@ -125,7 +125,6 @@ define([
         };
 
         $scope.renameChildKey = function (child, newKey) {
-          console.log('renameChildKey ' + newKey);
           if (!child) {
             return;
           }
@@ -152,14 +151,10 @@ define([
 
                   if (p["@context"].properties[newKey] && p["@context"].properties[newKey].enum) {
 
-                    console.log(p["@context"].properties[newKey].enum[0]);
-
 
                     //p["@context"].properties[newKey].enum[0] = DataManipulationService.getEnumOf(newKey);
                     p["@context"].properties[newKey].enum[0] = DataManipulationService.getPropertyOf(newKey,
                         p["@context"].properties[newKey].enum[0]);
-
-                    console.log(p["@context"].properties[newKey].enum[0]);
                   }
                 }
 
@@ -621,6 +616,8 @@ define([
           }, 0);
         };
 
+        $scope.uid = 'form';
+
         // find the next sibling to activate
         $scope.activateNextSiblingOf = function (fieldKey, parentKey) {
           var index = 0;
@@ -639,7 +636,7 @@ define([
           if (found) {
             var next = props[nextKey];
             $rootScope.$broadcast("setActive",
-                [DataManipulationService.getId(next), 0, $scope.path, nextKey, parentKey, true]);
+                [DataManipulationService.getId(next), 0, $scope.path, nextKey, parentKey, true, $scope.uid + '-' + nextKey]);
             return next;
           }
         };

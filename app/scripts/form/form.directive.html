@@ -77,7 +77,6 @@
         </div>
 
         <!--If element-->
-
         <div ng-if="isElement(item)" class=" element-group full">
           <cedar-runtime-element nested="false" element="form.properties[item]"
               key="item"
@@ -89,7 +88,8 @@
               delete="removeChild(form.properties[item])"
               is-edit-data="isEditData"
               path="0"
-              uid="item">
+
+              uid="uid+'-'+item">
           </cedar-runtime-element>
         </div>
 
