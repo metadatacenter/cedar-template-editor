@@ -543,7 +543,6 @@ define([
 
       // submit this edit
       $scope.onSubmit = function (index, next) {
-        console.log('onSubmit ' + $scope.fieldKey + ' ' + $scope.parentKey);
         var found = false;
 
         if ($scope.isActive(index)) {
@@ -765,8 +764,9 @@ define([
         var fieldKey = args[3];
         var parentKey = args[4];
         var value = args[5];
+        var uid = args[6];
 
-        if (id === $scope.getId() && path == $scope.path && fieldKey == $scope.fieldKey && parentKey == $scope.parentKey) {
+        if (id === $scope.getId() && path == $scope.path && fieldKey == $scope.fieldKey && parentKey == $scope.parentKey && uid == $scope.uid) {
           $scope.setActive(index, value);
         }
       });
