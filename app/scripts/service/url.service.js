@@ -185,6 +185,10 @@ define([
       return this.getGroups() + '/' + encodeURIComponent(id) + "/users";
     };
 
+    service.lincsValidation = function () {
+      return submissionService + '/command/validate-lincs';
+    };
+
     service.biosampleValidation = function () {
       return submissionService + '/command/validate-biosample';
     };

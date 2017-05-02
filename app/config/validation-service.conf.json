@@ -1,0 +1,17 @@
+[
+  {
+    "type": "biosample",
+    "template": "biosample",
+    "action": ["validation"]
+  },
+  {
+    "type": "airr",
+    "template": "airr template",
+    "action": ["validation", "submission"]
+  },
+  {
+    "type": "lincs",
+    "template": "dsgc dataset template 1.0",
+    "action": ["validation"]
+  }
+]

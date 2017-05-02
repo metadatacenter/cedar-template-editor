@@ -31,7 +31,8 @@ define([
   'cedar/template-editor/service/submission.service',
   'cedar/template-editor/service/controlled-term-http.service',
   'cedar/template-editor/service/query-param-utils.service',
-  'cedar/template-editor/service/frontend-url.service'
+  'cedar/template-editor/service/frontend-url.service',
+  'cedar/template-editor/service/validation.service'
 
 ], function(angular) {
   angular.module('cedar.templateEditor.service', [
@@ -64,6 +65,7 @@ define([
     'cedar.templateEditor.service.submissionService',
     'cedar.templateEditor.service.controlledTermHttpService',
     'cedar.templateEditor.service.queryParamUtilsService',
-    'cedar.templateEditor.service.frontendUrlService'
+    'cedar.templateEditor.service.frontendUrlService',
+    'cedar.templateEditor.service.validationService'
   ]);
 });

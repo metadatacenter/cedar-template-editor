@@ -326,6 +326,65 @@ define([
 
         $scope.forms = {};
 
+        //
+        // custom external validation
+        //
+
+        // call validation with an instance
+        $scope.doValidation = function (instance, url, type) {
+
+          var config = {};
+          $http.post(url, instance, config).then(
+              function successCallback(response) {
+
+                var data = response.data;
+                if (!data.isValid) {
+
+                  $scope.$emit('validationError',
+                      ['remove', '', type]);
+
+                  var errors = data.messages;
+                  for (var i = 0; i < errors.length; i++) {
+
+                    console.log(errors[i]);
+
+
+                    $scope.$emit('validationError',
+                        ['add', errors[i], type + i]);
+
+
+                  }
+                } else {
+
+                  $scope.$emit('validationError',
+                      ['remove', '', type]);
+
+                  UIMessageService.flashSuccess('Submission Validated', {"title": "title"},
+                      'Success');
+                }
+
+              },
+              function errorCallback(err) {
+                UIMessageService.showBackendError('Server Error', err);
+              });
+        };
+
+        $scope.$on('biosample-validation', function (event) {
+          $scope.doValidation($scope.model, UrlService.biosampleValidation(), 'biosample');
+        });
+
+        $scope.$on('airr-validation', function (event) {
+          $scope.doValidation($scope.model, UrlService.airrValidation(), 'airr');
+        });
+
+        $scope.$on('lincs-validation', function (event) {
+          $scope.doValidation($scope.model , UrlService.lincsValidation(), 'lincs');
+        });
+
+        //
+        // watches
+        //
+
         // watch the dirty flag on the form
         $scope.$watch('forms.templateForm.$dirty', function () {
           $rootScope.setDirty($scope.forms.templateForm.$dirty);
@@ -362,138 +421,25 @@ define([
           $scope.toRDF();
         }, true);
 
-        $scope.isBiosampleTemplate = function () {
-          return ($rootScope.documentTitle && $rootScope.documentTitle.toLowerCase().indexOf('biosample') > -1);
-        };
-
-        $scope.isAIRRTemplate = function () {
-          return ($rootScope.documentTitle && $rootScope.documentTitle.toLowerCase().indexOf('airr') > -1);
-        };
-
-        // validate a biosample template
-        $scope.checkBiosample = function (instance) {
-
-          if ($scope.isBiosampleTemplate() || $scope.isAIRRTemplate()) {
-
-            // one way to make the call
-            var config = {};
-            var url = UrlService.biosampleValidation();
-            $http.post(url, instance, config).then(
-                function successCallback(response) {
-
-                  var data = response.data;
-                  console.log(data);
-
-
-                  if (!data.isValid) {
-
-                    $scope.$emit('validationError',
-                        ['remove', '', 'biosample']);
-
-                    var errors = data.messages;
-                    for (var i = 0; i < errors.length; i++) {
-
-                      console.log(errors[i]);
-
-
-                      $scope.$emit('validationError',
-                          ['add', errors[i], 'biosample' + i]);
-
-
-                    }
-                  } else {
-
-                    $scope.$emit('validationError',
-                        ['remove', '', 'biosample']);
-
-                    UIMessageService.flashSuccess('BioSample Submission Validated', {"title": "title"},
-                        'Success');
-                  }
-
-                },
-                function errorCallback(err) {
-
-                  UIMessageService.showBackendError('BioSample Server Error', err);
-
-
-                });
-
-          }
-
-        };
-
-        // validate a AIRR template
-        $scope.checkAirr = function (instance) {
-
-          if ($scope.isAIRRTemplate()) {
-
-            // one way to make the call
-            var config = {};
-            var url = UrlService.airrValidation();
-            $http.post(url, instance, config).then(
-                function successCallback(response) {
-
-                  var data = response.data;
-                  console.log(data);
-
-
-                  if (!data.isValid) {
-
-                    $scope.$emit('validationError',
-                        ['remove', '', 'airr']);
-
-                    var errors = data.messages;
-                    for (var i = 0; i < errors.length; i++) {
-
-                      console.log(errors[i]);
-
-
-                      $scope.$emit('validationError',
-                          ['add', errors[i], 'airr' + i]);
-
-
-                    }
-                  } else {
-
-                    $scope.$emit('validationError',
-                        ['remove', '', 'biosample']);
-
-                    UIMessageService.flashSuccess('AIRR Submission Validated', {"title": "title"},
-                        'Success');
-                  }
-
-                },
-                function errorCallback(err) {
-
-                  UIMessageService.showBackendError('AIRR Server Error', err);
-
-
-                });
-
-          }
-
-        };
-
-        $scope.$on('biosampleValidation', function (event) {
-          $scope.checkBiosample($scope.model);
-        });
-
-        $scope.$on('airrValidation', function (event) {
-          $scope.checkAirr($scope.model);
-        });
-
         // Watching for the 'submitForm' event to be $broadcast from parent 'RuntimeController'
         $scope.$on('submitForm', function (event) {
           // Make the model (populated template) available to the parent
           $scope.$parent.instance = $scope.model;
           $scope.checkSubmission = true;
-          $scope.checkBiosample($scope.$parent.instance);
+          var type = ValidationService.isValidationTemplate($rootScope.documentTitle, 'validation')
+          if (type) {
+            $scope.doValidation($scope.$parent.instance, ValidationService.getUrl(type), type);
+          }
 
         });
 
         $scope.$on('formHasRequiredFields', function (event) {
           $scope.form.requiredFields = true;
         });
+
+        //
+        //
+        //
 
         // create a copy of the form with the _tmp fields stripped out
         $scope.stripTmpFields = function () {
@@ -634,7 +580,7 @@ define([
         };
 
         // find the next sibling to activate
-        $scope.activateNextSiblingOf = function(fieldKey, parentKey) {
+        $scope.activateNextSiblingOf = function (fieldKey, parentKey) {
           var index = 0;
           var order = $rootScope.schemaOf($scope.form)._ui.order;
           var props = $rootScope.schemaOf($scope.form).properties;
