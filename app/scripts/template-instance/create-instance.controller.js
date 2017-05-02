@@ -9,12 +9,12 @@ define([
   CreateInstanceController.$inject = ["$translate", "$rootScope", "$scope", "$routeParams", "$location",
                                       "HeaderService", "TemplateService", "TemplateInstanceService",
                                       "UIMessageService", "AuthorizedBackendService", "CONST", "$timeout",
-                                      "QueryParamUtilsService", "FrontendUrlService"];
+                                      "QueryParamUtilsService", "FrontendUrlService", "ValidationService"];
 
   function CreateInstanceController($translate, $rootScope, $scope, $routeParams, $location,
                                     HeaderService, TemplateService, TemplateInstanceService,
                                     UIMessageService, AuthorizedBackendService, CONST, $timeout,
-                                    QueryParamUtilsService, FrontendUrlService) {
+                                    QueryParamUtilsService, FrontendUrlService, ValidationService) {
 
     // Get/read template with given id from $routeParams
     $scope.getTemplate = function () {
@@ -214,25 +214,27 @@ define([
       $scope.saveButtonDisabled = true;
     };
 
-    $scope.isBiosampleTemplate = function () {
-      return ($rootScope.documentTitle && $rootScope.documentTitle.toLowerCase().indexOf('biosample') > -1);
+    //
+    // custom validation services
+    //
+
+    $scope.isValidationTemplate = function (action) {
+      var result;
+      if ($rootScope.documentTitle) {
+        result = ValidationService.isValidationTemplate($rootScope.documentTitle, action);
+      }
+      return result;
     };
 
-    $scope.isAIRRTemplate = function () {
-      return ($rootScope.documentTitle && $rootScope.documentTitle.toLowerCase().indexOf('airr template') > -1);
-    };
-
-    $scope.airrValidation = function () {
-      $scope.$broadcast('airrValidation');
-    };
-
-    $scope.biosampleValidation = function () {
-      $scope.$broadcast('biosampleValidation');
+    $scope.doValidation = function () {
+      var type = ValidationService.isValidationTemplate($rootScope.documentTitle, 'validation')
+      if (type) {
+        $scope.$broadcast('external-validation', [type]);
+      }
     };
 
     // open the airr submission modal
     $scope.airrSubmissionModalVisible = false;
-
     $scope.showAirrSubmissionModal = function () {
       $scope.airrSubmissionModalVisible = true;
       $scope.$broadcast('airrSubmissionModalVisible', [$scope.airrSubmissionModalVisible, $rootScope.instanceToSave]);
