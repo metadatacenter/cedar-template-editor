@@ -41,14 +41,16 @@ define([
       return result;
     };
 
-    service.getUrl = function (type) {
-      var result = validationTypes.filter(function (e) {
-        if (e.type == type) {
-          return e.url;
-        }
-      });
-      return result;
-    };
+    // service.getUrl = function (type) {
+    //   var result = validationTypes.filter(function (e) {
+    //     console.log(e.type + ' ' + type);
+    //     if (e.type == type) {
+    //       console.log(e.url);
+    //       return e.url;
+    //     }
+    //   });
+    //   return result;
+    // };
 
 
   service.init();

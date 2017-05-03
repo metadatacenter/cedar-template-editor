@@ -71,7 +71,7 @@ define([
 
     // Stores the data (instance) into the databases
     $scope.saveInstance = function () {
-      console.log('saveInstance');
+ 
       this.disableSaveButton();
       var owner = this;
 
@@ -228,7 +228,7 @@ define([
     };
 
     $scope.doValidation = function () {
-      var type = ValidationService.isValidationTemplate($rootScope.documentTitle, 'validation')
+      var type = ValidationService.isValidationTemplate($rootScope.documentTitle, 'validation');
       if (type) {
         $scope.$broadcast('external-validation', [type]);
       }
