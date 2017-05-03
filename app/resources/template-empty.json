@@ -27,7 +27,8 @@
     "title": "",
     "description": "",
     "pages": [],
-    "order": []
+    "order": [],
+    "propertyLabels": {}
   },
   "properties": {
     "@context": {
