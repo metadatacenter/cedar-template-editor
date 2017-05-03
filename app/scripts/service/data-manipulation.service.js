@@ -771,7 +771,7 @@ define([
 
         /**
          * Add a field or element name to the top-level 'required' array in a template or element
-         * @param {Object} templateOrElement - template or element
+         * @param {Object} templateOrElement - template or element to which the field will be added
          * @param {String} key - name of the field or element to be added
          */
         service.addKeyToRequired = function (templateOrElement, key) {
@@ -943,8 +943,6 @@ define([
 
         service.getContent = function (fieldOrElement) {
           var schema = $rootScope.schemaOf(fieldOrElement);
-          console.log('content:');
-          console.log(schema._ui._content);
           return schema._ui._content;
         };
 
