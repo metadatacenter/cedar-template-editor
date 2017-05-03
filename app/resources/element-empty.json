@@ -85,5 +85,6 @@
   "pav:createdBy": null,
   "pav:lastUpdatedOn": null,
   "oslc:modifiedBy": null,
+  "schema:schemaVersion": null,
   "additionalProperties": false
 }

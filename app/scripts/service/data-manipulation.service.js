@@ -359,7 +359,8 @@ define([
               'pav:createdOn'       : field['pav:createdOn'],
               'pav:createdBy'       : field['pav:createdBy'],
               'pav:lastUpdatedOn'   : field['pav:lastUpdatedOn'],
-              'oslc:modifiedBy'     : field['oslc:modifiedBy']
+              'oslc:modifiedBy'     : field['oslc:modifiedBy'],
+              'schema:schemaVersion': field['schema:schemaVersion']
             };
             field.type = 'array';
 
@@ -378,6 +379,7 @@ define([
             delete field['pav:createdBy'];
             delete field['pav:lastUpdatedOn'];
             delete field['oslc:modifiedBy'];
+            delete field['schema:schemaVersion'];
 
             return true;
           } else {
@@ -404,6 +406,7 @@ define([
             field['pav:createdBy'] = field.items['pav:createdBy'];
             field['pav:lastUpdatedOn'] = field.items['pav:lastUpdatedOn'];
             field['oslc:modifiedBy'] = field.items['oslc:modifiedBy'];
+            field['schema:schemaVersion'] = field.items['schema:schemaVersion'];
 
             delete field.items;
             delete field.maxItems;
