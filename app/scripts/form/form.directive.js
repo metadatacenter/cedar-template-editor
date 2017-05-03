@@ -11,11 +11,13 @@ define([
 
   formDirective.$inject = ['$rootScope', '$document', '$timeout', '$translate', '$http', 'DataManipulationService',
                            'FieldTypeService', 'DataUtilService', 'SubmissionService',
-                           'UIMessageService', 'UrlService','AuthorizedBackendService','HttpBuilderService',"ValidationService"];
+                           'UIMessageService', 'UrlService', 'AuthorizedBackendService', 'HttpBuilderService',
+                           "ValidationService"];
 
 
   function formDirective($rootScope, $document, $timeout, $translate, $http, DataManipulationService, FieldTypeService,
-                         DataUtilService, SubmissionService, UIMessageService, UrlService, AuthorizedBackendService,HttpBuilderService,ValidationService) {
+                         DataUtilService, SubmissionService, UIMessageService, UrlService, AuthorizedBackendService,
+                         HttpBuilderService, ValidationService) {
     return {
       templateUrl: 'scripts/form/form.directive.html',
       restrict   : 'E',
@@ -48,8 +50,6 @@ define([
           // is element or form
           DataManipulationService.relabel($rootScope.jsonToSave, key);
         };
-
-
 
 
         var paginate = function () {
@@ -321,6 +321,7 @@ define([
 
         // Get/read template with given id from $routeParams
         $scope.doValidation = function (instance, url, type) {
+
           AuthorizedBackendService.doCall(
               HttpBuilderService.post(url, angular.toJson(instance)),
               function (response) {
@@ -350,7 +351,6 @@ define([
                   UIMessageService.flashSuccess('Submission Validated', {"title": "title"},
                       'Success');
                 }
-
               },
               function (err) {
                 UIMessageService.showBackendError($translate.instant('VALIDATION.externalValidation'), err);
@@ -358,72 +358,37 @@ define([
           );
         };
 
-        // call validation with an instance
-        // $scope.doValidation = function (instance, url, type) {
-        //   console.log(url);
-        //
-        //   var config = {};
-        //   $http.post(url, instance, config).then(
-        //       function successCallback(response) {
-        //
-        //         var data = response.data;
-        //         if (!data.isValid) {
-        //
-        //           $scope.$emit('validationError',
-        //               ['remove', '', type]);
-        //
-        //           var errors = data.messages;
-        //           for (var i = 0; i < errors.length; i++) {
-        //
-        //             console.log(errors[i]);
-        //
-        //
-        //             $scope.$emit('validationError',
-        //                 ['add', errors[i], type + i]);
-        //
-        //
-        //           }
-        //         } else {
-        //
-        //           $scope.$emit('validationError',
-        //               ['remove', '', type]);
-        //
-        //           UIMessageService.flashSuccess('Submission Validated', {"title": "title"},
-        //               'Success');
-        //         }
-        //
-        //       },
-        //       function errorCallback(err) {
-        //         UIMessageService.showBackendError('Server Error', err);
-        //       });
-        // };
+        $scope.validateInstance = function (instance, type) {
+          switch (type) {
+            case 'biosample':
+              $scope.doValidation(instance, UrlService.biosampleValidation(), 'biosample');
+              break;
+            case 'airr':
+              $scope.doValidation(instance, UrlService.biosampleValidation(), 'biosample');
+              break;
+            case 'lincs':
+              $scope.doValidation(instance, UrlService.lincsValidation(), 'lincs');
+              break;
+          }
+        };
 
         $scope.$on('external-validation', function (event, params) {
           if (params && params[0]) {
-            switch (params[0]) {
-              case 'biosample':
-                $scope.doValidation($scope.model, UrlService.biosampleValidation(), 'biosample');
-                break;
-              case 'airr':
-                $scope.doValidation($scope.model, UrlService.biosampleValidation(), 'biosample');
-                break;
-              case 'lincs':
-                $scope.doValidation($scope.model, UrlService.lincsValidation(), 'lincs');
-                break;
-            }
+            $scope.validateInstance($scope.model, params[0]);
           }
         });
 
-        //
-        // watches
-        //
 
-        // Angular's $watch function to call $scope.parseForm on form.properties initial population and on update
+//
+// watches
+//
+
+// Angular's $watch function to call $scope.parseForm on form.properties initial population and on update
         $scope.$watch('form.properties', function () {
           startParseForm();
         });
 
-        // watch the dirty flag on the form
+// watch the dirty flag on the form
         $scope.$watch('forms.templateForm.$dirty', function () {
           $rootScope.setDirty($scope.forms.templateForm.$dirty);
         });
@@ -449,24 +414,24 @@ define([
           $rootScope.setDirty($scope.forms.templateForm.$dirty);
         });
 
-        // Angular $watch function to run the Bootstrap Popover initialization on new form elements when they load
+// Angular $watch function to run the Bootstrap Popover initialization on new form elements when they load
         $scope.$watch('page', function () {
           $scope.addPopover();
         });
 
-        // keep our rdf up-to-date
+// keep our rdf up-to-date
         $scope.$watch('model', function () {
           $scope.toRDF();
         }, true);
 
-        // Watching for the 'submitForm' event to be $broadcast from parent 'RuntimeController'
+// Watching for the 'submitForm' event to be $broadcast from parent 'RuntimeController'
         $scope.$on('submitForm', function (event) {
           // Make the model (populated template) available to the parent
           $scope.$parent.instance = $scope.model;
           $scope.checkSubmission = true;
-          var type = ValidationService.isValidationTemplate($rootScope.documentTitle, 'validation')
+          var type = ValidationService.isValidationTemplate($rootScope.documentTitle, 'validation');
           if (type) {
-            $scope.doValidation($scope.$parent.instance, ValidationService.getUrl(type), type);
+            $scope.validateInstance($scope.$parent.instance, type);
           }
         });
 
@@ -474,11 +439,11 @@ define([
           $scope.form.requiredFields = true;
         });
 
-        //
-        //
-        //
+//
+//
+//
 
-        // create a copy of the form with the _tmp fields stripped out
+// create a copy of the form with the _tmp fields stripped out
         $scope.stripTmpFields = function () {
 
           var copiedForm = jQuery.extend(true, {}, $scope.model);
@@ -592,7 +557,7 @@ define([
           return true;
         };
 
-        // expand all the elements nested inside the form
+// expand all the elements nested inside the form
         $scope.expandAll = function () {
 
           // expand the form
@@ -618,7 +583,7 @@ define([
 
         $scope.uid = 'form';
 
-        // find the next sibling to activate
+// find the next sibling to activate
         $scope.activateNextSiblingOf = function (fieldKey, parentKey) {
           var index = 0;
           var order = $rootScope.schemaOf($scope.form)._ui.order;
@@ -636,13 +601,17 @@ define([
           if (found) {
             var next = props[nextKey];
             $rootScope.$broadcast("setActive",
-                [DataManipulationService.getId(next), 0, $scope.path, nextKey, parentKey, true, $scope.uid + '-' + nextKey]);
+                [DataManipulationService.getId(next), 0, $scope.path, nextKey, parentKey, true,
+                 $scope.uid + '-' + nextKey]);
             return next;
           }
         };
 
       }
-    };
-  };
+    }
+        ;
+  }
+  ;
 
-});
+})
+;

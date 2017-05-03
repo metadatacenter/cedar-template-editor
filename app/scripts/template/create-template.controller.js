@@ -9,14 +9,16 @@ define([
       CreateTemplateController.$inject = ["$rootScope", "$scope", "$routeParams", "$timeout", "$location", "$translate",
                                           "$filter", "TrackingService", "HeaderService", "StagingService",
                                           "DataTemplateService", "FieldTypeService",
-                                          "TemplateService", "UIMessageService", "DataManipulationService","controlledTermDataService", "StringUtilsService",
+                                          "TemplateService", "UIMessageService", "DataManipulationService",
+                                          "controlledTermDataService", "StringUtilsService",
                                           "DataUtilService", "AuthorizedBackendService",
                                           "FrontendUrlService", "QueryParamUtilsService", "CONST"];
 
       function CreateTemplateController($rootScope, $scope, $routeParams, $timeout, $location, $translate, $filter,
                                         TrackingService, HeaderService, StagingService, DataTemplateService,
                                         FieldTypeService, TemplateService, UIMessageService,
-                                        DataManipulationService, controlledTermDataService, StringUtilsService, DataUtilService, AuthorizedBackendService,
+                                        DataManipulationService, controlledTermDataService, StringUtilsService,
+                                        DataUtilService, AuthorizedBackendService,
                                         FrontendUrlService, QueryParamUtilsService, CONST) {
 
         $rootScope.showSearch = false;
@@ -107,7 +109,7 @@ define([
 
 
         $scope.moreIsOpen = false;
-        $scope.toggleMore = function() {
+        $scope.toggleMore = function () {
           $scope.moreIsOpen = !$scope.moreIsOpen;
         };
 
@@ -188,6 +190,18 @@ define([
           }
         };
 
+        $scope.logValidation = function (validationStatus, validationReport) {
+
+          var report = JSON.parse(validationReport);
+          for (var i = 0; i < report.warnings.length; i++) {
+            console.log(
+                'Validation Warning: ' + report.warnings[i].message + ' at location ' + report.warnings[i].location);
+          }
+          for (var i = 0; i < report.errors.length; i++) {
+            console.log('Validation Error: ' + report.errors[i].message + ' at location ' + report.errors[i].location);
+          }
+        };
+
         // Stores the template into the database
         $scope.doSaveTemplate = function () {
 
@@ -221,6 +235,10 @@ define([
               AuthorizedBackendService.doCall(
                   TemplateService.saveTemplate(QueryParamUtilsService.getFolderId(), $scope.form),
                   function (response) {
+
+                    $scope.logValidation(response.headers("CEDAR-Validation-Status"),
+                        response.headers("CEDAR-Validation-Report"));
+
                     // confirm message
                     UIMessageService.flashSuccess('SERVER.TEMPLATE.create.success', {"title": response.data._ui.title},
                         'GENERIC.Created');
@@ -246,6 +264,9 @@ define([
               AuthorizedBackendService.doCall(
                   TemplateService.updateTemplate(id, $scope.form),
                   function (response) {
+
+                    $scope.logValidation(response.headers("CEDAR-Validation-Status"),
+                        response.headers("CEDAR-Validation-Report"));
 
                     $rootScope.jsonToSave = response.data;
                     DataManipulationService.createDomIds(response.data);
@@ -302,7 +323,7 @@ define([
               var capitalizedTitle = $filter('capitalizeFirst')(title);
               $scope.form.title = $translate.instant("GENERATEDVALUE.templateTitle", {title: capitalizedTitle});
               $scope.form.description = $translate.instant("GENERATEDVALUE.templateDescription",
-                  {title: capitalizedTitle, version:window.cedarVersion});
+                  {title: capitalizedTitle, version: window.cedarVersion});
             } else {
               $scope.form._ui.title = "";
               $scope.form._ui.description = "";
@@ -333,12 +354,11 @@ define([
         };
 
 
-
         $scope.toRDF = function () {
           var jsonld = require('jsonld');
           var copiedForm = jQuery.extend(true, {}, $rootScope.jsonToSave);
           if (copiedForm) {
-            jsonld.toRDF(copiedForm, {format: 'application/nquads'}, function(err, nquads) {
+            jsonld.toRDF(copiedForm, {format: 'application/nquads'}, function (err, nquads) {
               $rootScope.jsonToRDF = nquads;
               return nquads;
             });
@@ -424,7 +444,7 @@ define([
         $scope.$on("field:controlledTermAdded", function () {
           jQuery("#control-options-template-field").modal('hide');
         });
-        
+
         // update the property for a field
         $scope.$on("property:propertyAdded", function (event, args) {
 
