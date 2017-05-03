@@ -387,6 +387,7 @@ define([
       // controlled terms modal
       //
 
+      scope.modalType;
       // create an id for the controlled terms modal
       scope.getModalId = function (type) {
         return UIUtilService.getModalId(DataManipulationService.getId(scope.element), type);
@@ -394,12 +395,17 @@ define([
 
       // show the controlled terms modal
       scope.showModal = function (type) {
-        UIUtilService.showModal(DataManipulationService.getId(scope.element), type);
+        if (type) {
+          scope.modalType = type;
+          UIUtilService.showModal(DataManipulationService.getId(scope.element), type);
+        }
       };
 
       // show the controlled terms modal
-      scope.hideModal = function (type) {
-        UIUtilService.hideModal(DataManipulationService.getId(scope.element), type);
+      scope.hideModal = function () {
+        if ($scope.modalType) {
+          UIUtilService.hideModal(DataManipulationService.getId(scope.element), scope.modalType);
+        }
       };
 
       // update the property for a field in the element
@@ -420,7 +426,7 @@ define([
         }
 
         // hide the modal
-        scope.hideModal('property');
+        scope.hideModal();
       });
 
 
