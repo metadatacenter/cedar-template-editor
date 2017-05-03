@@ -154,6 +154,7 @@ define([
       // controlled terms modal
       //
 
+      $scope.modalType;
       // create an id for the controlled terms modal
       $scope.getModalId = function (type) {
         return UIUtilService.getModalId(DataManipulationService.getId($scope.field), type);
@@ -161,19 +162,25 @@ define([
 
       // show the controlled terms modal
       $scope.showModal = function (type) {
-        UIUtilService.showModal(DataManipulationService.getId($scope.field), type);
+        if (type) {
+          $scope.modalType = type;
+          UIUtilService.showModal(DataManipulationService.getId($scope.field), type);
+        }
       };
 
       // show the controlled terms modal
-      $scope.hideModal = function (type) {
-        UIUtilService.hideModal(DataManipulationService.getId($scope.field), type);
+      $scope.hideModal = function () {
+        if ($scope.modalType) {
+          UIUtilService.hideModal(DataManipulationService.getId($scope.field), $scope.modalType);
+        }
       };
 
       // controlled terms modal has an outcome
       $scope.$on("field:controlledTermAdded", function () {
 
-        UIUtilService.hideModal(DataManipulationService.getId($scope.field), 'field');
-        UIUtilService.hideModal(DataManipulationService.getId($scope.field), 'values');
+        // UIUtilService.hideModal(DataManipulationService.getId($scope.field), 'field');
+        // UIUtilService.hideModal(DataManipulationService.getId($scope.field), 'values');
+        $scope.hideModal();
 
         // build the added fields map in this case
         $scope.setAddedFieldMap();
@@ -182,7 +189,7 @@ define([
 
       // controlled terms modal has an outcome
       $scope.$on("property:propertyAdded", function () {
-        UIUtilService.hideModal(DataManipulationService.getId($scope.field), type);
+        $scope.hideModal();
       });
 
       //
