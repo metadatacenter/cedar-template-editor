@@ -6,9 +6,9 @@ define([
   angular.module('cedar.templateEditor.service.uIUtilService', [])
       .service('UIUtilService', UIUtilService);
 
-  UIUtilService.$inject = ["$window", "$timeout"];
+  UIUtilService.$inject = ["$window", "$timeout", "$rootScope", "$sce", "DataManipulationService"];
 
-  function UIUtilService($window, $timeout) {
+  function UIUtilService($window, $timeout, $rootScope, $sce, DataManipulationService) {
 
     var service = {
       serviceId: "UIUtilService"
@@ -38,7 +38,7 @@ define([
               var center = $window.height/2;
               $window.scrollTo(0, y - 95);
             } else {
-              console.log('not found' + target );
+              console.log('not found' + target);
             }
           }, 250
       );
@@ -85,13 +85,14 @@ define([
 
       var width = 560;
       var height = 315;
-      var content = $rootScope.propertiesOf(field)._content.replace(/<(?:.|\n)*?>/gm, '');
+      var content = DataManipulationService.getContent(field).replace(/<(?:.|\n)*?>/gm, '');
+      var size = DataManipulationService.getSize(field);
 
-      if ($rootScope.propertiesOf(field)._size && $rootScope.propertiesOf(field)._size.width && Number.isInteger($rootScope.propertiesOf(field)._size.width)) {
-        width = $rootScope.propertiesOf(field)._size.width;
+      if (size && size.width && Number.isInteger(size.width)) {
+        width = size.width;
       }
-      if ($rootScope.propertiesOf(field)._size && $rootScope.propertiesOf(field)._size.height && Number.isInteger($rootScope.propertiesOf(field)._size.height)) {
-        height = $rootScope.propertiesOf(field)._size.height;
+      if (size && size.height && Number.isInteger(size.height)) {
+        height = size.height;
       }
 
       // if I say trust as html, then better make sure it is safe first

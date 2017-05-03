@@ -359,7 +359,8 @@ define([
               'pav:createdOn'       : field['pav:createdOn'],
               'pav:createdBy'       : field['pav:createdBy'],
               'pav:lastUpdatedOn'   : field['pav:lastUpdatedOn'],
-              'oslc:modifiedBy'     : field['oslc:modifiedBy']
+              'oslc:modifiedBy'     : field['oslc:modifiedBy'],
+              'schema:schemaVersion': field['schema:schemaVersion']
             };
             field.type = 'array';
 
@@ -378,6 +379,7 @@ define([
             delete field['pav:createdBy'];
             delete field['pav:lastUpdatedOn'];
             delete field['oslc:modifiedBy'];
+            delete field['schema:schemaVersion'];
 
             return true;
           } else {
@@ -404,6 +406,7 @@ define([
             field['pav:createdBy'] = field.items['pav:createdBy'];
             field['pav:lastUpdatedOn'] = field.items['pav:lastUpdatedOn'];
             field['oslc:modifiedBy'] = field.items['oslc:modifiedBy'];
+            field['schema:schemaVersion'] = field.items['schema:schemaVersion'];
 
             delete field.items;
             delete field.maxItems;
@@ -771,7 +774,7 @@ define([
 
         /**
          * Add a field or element name to the top-level 'required' array in a template or element
-         * @param {Object} templateOrElement - template or element
+         * @param {Object} templateOrElement - template or element to which the field will be added
          * @param {String} key - name of the field or element to be added
          */
         service.addKeyToRequired = function (templateOrElement, key) {
@@ -909,7 +912,9 @@ define([
 
         // is this a multiple choice list?
         service.isMultipleChoice = function (fieldOrElement) {
-          return $rootScope.schemaOf(fieldOrElement)._valueConstraints.multipleChoice;
+          if ($rootScope.schemaOf(fieldOrElement)._valueConstraints) {
+            return $rootScope.schemaOf(fieldOrElement)._valueConstraints.multipleChoice;
+          }
         };
 
         // is this a checkbox, or a multiple choice list field?
@@ -941,7 +946,12 @@ define([
 
         service.getContent = function (fieldOrElement) {
           var schema = $rootScope.schemaOf(fieldOrElement);
-          return schema.properties['_content'];
+          return schema._ui._content;
+        };
+
+        service.getSize = function (fieldOrElement) {
+          var schema = $rootScope.schemaOf(fieldOrElement);
+          return schema._ui._size;
         };
 
         service.getTitle = function (fieldOrElement) {

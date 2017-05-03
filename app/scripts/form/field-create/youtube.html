@@ -21,21 +21,21 @@
   <div class="form-group floating-label-wrapper">
     <input type="text" class="form-control" id="youtube-src-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}"
         placeholder="YouTube Video Identifier" aria-label="YouTube Video Identifier"
-        ng-model="$root.propertiesOf(field)._content" with-floating-label>
+        ng-model="$root.schemaOf(field)._ui._content" with-floating-label>
   </div>
   <!-- /.form-group -->
   <div class="form-group floating-label-wrapper">
     <input type="number" class="form-control"
         id="youtube-width-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}"
         placeholder="Video Width (Optional)" aria-label="Video Width (Optional)"
-        ng-model="$root.propertiesOf(field)._size.width" with-floating-label>
+        ng-model="$root.schemaOf(field)._ui._size.width" with-floating-label>
   </div>
   <!-- /.form-group -->
   <div class="form-group floating-label-wrapper">
     <input type="number" class="form-control"
         id="youtube-height-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}"
         placeholder="Video Height (Optional)" aria-label="Video Height (Optional)"
-        ng-model="$root.propertiesOf(field)._size.height" with-floating-label>
+        ng-model="$root.schemaOf(field)._ui._size.height" with-floating-label>
   </div>
   <!-- /.form-group -->
 </div><!-- /.input-type-container -->

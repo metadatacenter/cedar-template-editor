@@ -12,7 +12,7 @@
     <textarea ckeditor="editorOptions" rows="5" type="text" class="form-control"
         id="richtext-description-{{field['@id'].substring(field['@id'].lastIndexOf('/')+1)}}"
         placeholder="Rich Text Description (Optional)" aria-label="Rich Text Description (Optional)"
-        ng-model="$root.propertiesOf(field)._content"></textarea>
+        ng-model="$root.schemaOf(field)._ui._content"></textarea>
   </div>
   <!-- /.form-group -->
 

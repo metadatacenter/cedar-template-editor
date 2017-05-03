@@ -146,8 +146,10 @@ define([
       // Add field to the form.properties object
       form.properties[fieldName] = field;
 
-      // Add field to the form.required array
-      form = DataManipulationService.addKeyToRequired(form, fieldName);
+      // Add field to the form.required array if it's not static
+      if (!DataManipulationService.isStaticField(field)) {
+        form = DataManipulationService.addKeyToRequired(form, fieldName);
+      }
 
       form._ui.order = form._ui.order || [];
       form._ui.order.push(fieldName);
@@ -228,8 +230,10 @@ define([
       // Adding field to the element.properties object
       element.properties[fieldName] = field;
 
-      // Add field to the element.required array
-      element = DataManipulationService.addKeyToRequired(element, fieldName);
+      // Add field to the element.required array it it's not static
+      if (!DataManipulationService.isStaticField(field)) {
+        element = DataManipulationService.addKeyToRequired(element, fieldName);
+      }
 
       element._ui.order.push(fieldName);
 

@@ -27,7 +27,8 @@
     "title": "",
     "description": "",
     "pages": [],
-    "order": []
+    "order": [],
+    "propertyLabels": {}
   },
   "properties": {
     "@context": {
@@ -239,5 +240,6 @@
   "pav:createdBy": null,
   "pav:lastUpdatedOn": null,
   "oslc:modifiedBy": null,
+  "schema:schemaVersion": null,
   "additionalProperties": false
 }
