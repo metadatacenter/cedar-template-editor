@@ -49,12 +49,12 @@ define([
             valueAtType = {};
             valueAtType.type = 'string';
             if (fieldType == 'date') {
-              valueAtType.enum = ['xsd:dateTime'];
+              //valueAtType.enum = ['xsd:dateTime'];
               // Make @type required
               field.required.push('@type');
             }
             else if (fieldType == 'numeric') {
-              valueAtType.enum = ['xsd:decimal'];
+              //valueAtType.enum = ['xsd:decimal'];
               // Make @type required
               field.required.push('@type');
             }
@@ -95,8 +95,8 @@ define([
 
         // Function that generates the @type for a field in an instance, based on the schema @type definition
         service.generateInstanceType = function (schemaType) {
-          var enumeration = {};
           var instanceType = null;
+          var enumeration = {};
           if (angular.isUndefined(schemaType.oneOf)) {
             enumeration = schemaType.enum;
           }
@@ -114,6 +114,22 @@ define([
             }
           }
           return instanceType;
+        };
+
+        // For 'date' and 'numeric' fields, the field schema is flexible, allowing any string as a type. Users may want to
+        // manually create instances that use different date or numeric types (e.g., xsd:integer). As a consequence, we
+        // cannot use the @type definition to generate the @type for the instance field. We generate those types as follows:
+        service.generateInstanceTypeForDateField = function() {
+          return "xsd:date";
+        };
+
+        service.generateInstanceTypeForNumericField = function() {
+          return "xsd:decimal";
+        };
+
+        // returns the properties of a template, element, or field schema
+        service.getProperties = function(schema) {
+          return $rootScope.schemaOf(schema).properties;
         };
 
         // If necessary, updates the field schema according to whether the field is controlled or not
@@ -267,32 +283,40 @@ define([
           }
         }
 
-        // This function initializes the value @type field if it has not been initialized yet
+        // Initializes the value @type field
         service.initializeValueType = function (field, model) {
-          var fieldSchema = $rootScope.schemaOf(field);
-          var properties = fieldSchema.properties;
-          if (properties && !angular.isUndefined(properties['@type'])) {
-            var fieldType = service.generateInstanceType(properties['@type']);
-            if (fieldType) {
-              // It is not an array
-              if (field.type == 'object') {
-                // If the @type has not been defined yet, define it
-                if (angular.isUndefined(model['@type'])) {
-                  // No need to set the type if it is xsd:string. It is the type by default
-                  if (fieldType != "xsd:string") {
-                    model['@type'] = fieldType;
-                  }
+          var fieldType;
+          if (service.isNumericField(field)) {
+            fieldType = service.generateInstanceTypeForNumericField();
+          }
+          else if (service.isDateField(field)) {
+            fieldType = service.generateInstanceTypeForDateField();
+          }
+          else {
+            var properties = service.getProperties(field);
+            if (properties && !angular.isUndefined(properties['@type'])) {
+              fieldType = service.generateInstanceType(properties['@type']);
+            }
+          }
+          if (fieldType) {
+            // It is not an array
+            if (field.type == 'object') {
+              // If the @type has not been defined yet, define it
+              if (angular.isUndefined(model['@type'])) {
+                // No need to set the type if it is xsd:string. It is the type by default
+                if (fieldType != "xsd:string") {
+                  model['@type'] = fieldType;
                 }
               }
-              // It is an array
-              else if (field.type == 'array') {
-                for (var i = 0; i < model.length; i++) {
-                  // If there is an item in the array for which the @type has not been defined, define it
-                  if (angular.isUndefined(model[i]['@type'])) {
-                    // No need to set the type if it is xsd:string. It is the type by default
-                    if (fieldType != "xsd:string") {
-                      model[i]['@type'] = fieldType;
-                    }
+            }
+            // It is an array
+            else if (field.type == 'array') {
+              for (var i = 0; i < model.length; i++) {
+                // If there is an item in the array for which the @type has not been defined, define it
+                if (angular.isUndefined(model[i]['@type'])) {
+                  // No need to set the type if it is xsd:string. It is the type by default
+                  if (fieldType != "xsd:string") {
+                    model[i]['@type'] = fieldType;
                   }
                 }
               }
@@ -481,6 +505,28 @@ define([
           var p = $rootScope.propertiesOf(field);
           p._tmp = p._tmp || {};
           return (p._tmp.nested || false);
+        };
+
+        // is this a numeric field?
+        service.isNumericField = function(field) {
+          var inputType = service.getInputType(field);
+          if (inputType == 'numeric') {
+            return true;
+          }
+          else {
+            return false;
+          }
+        };
+
+        // is this a date field?
+        service.isDateField = function(field) {
+          var inputType = service.getInputType(field);
+          if (inputType == 'date') {
+            return true;
+          }
+          else {
+            return false;
+          }
         };
 
         // are we editing this field?
