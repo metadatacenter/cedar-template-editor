@@ -116,9 +116,6 @@ define([
           return instanceType;
         };
 
-        // For 'date' and 'numeric' fields, the field schema is flexible, allowing any string as a type. Users may want to
-        // manually create instances that use different date or numeric types (e.g., xsd:integer). As a consequence, we
-        // cannot use the @type definition to generate the @type for the instance field. We generate those types as follows:
         service.generateInstanceTypeForDateField = function() {
           return "xsd:date";
         };
@@ -283,7 +280,11 @@ define([
           }
         }
 
-        // Initializes the value @type field
+        // Initializes the value @type field.
+        // Note that for 'date' and 'numeric' fields, the field schema is flexible, allowing any string as a type.
+        // Users may want to manually create instances that use different date or numeric types (e.g., xsd:integer).
+        // As a consequence, we cannot use the @type definition from the schema to generate the @type for the instance
+        // field. We 'manually' generate those types.
         service.initializeValueType = function (field, model) {
           var fieldType;
           if (service.isNumericField(field)) {
