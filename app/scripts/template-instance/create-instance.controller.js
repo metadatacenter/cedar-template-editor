@@ -71,6 +71,7 @@ define([
 
     // Stores the data (instance) into the databases
     $scope.saveInstance = function () {
+      console.log('saveInstance');
       this.disableSaveButton();
       var owner = this;
 

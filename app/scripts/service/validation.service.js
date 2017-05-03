@@ -42,7 +42,7 @@ define([
     };
 
     service.getUrl = function (type) {
-      result = validationTypes.filter(function (e) {
+      var result = validationTypes.filter(function (e) {
         if (e.type == type) {
           return e.url;
         }

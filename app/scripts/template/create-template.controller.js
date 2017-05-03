@@ -221,6 +221,7 @@ define([
               AuthorizedBackendService.doCall(
                   TemplateService.saveTemplate(QueryParamUtilsService.getFolderId(), $scope.form),
                   function (response) {
+                    console.log(response.headers());
                     // confirm message
                     UIMessageService.flashSuccess('SERVER.TEMPLATE.create.success', {"title": response.data._ui.title},
                         'GENERIC.Created');
@@ -246,6 +247,7 @@ define([
               AuthorizedBackendService.doCall(
                   TemplateService.updateTemplate(id, $scope.form),
                   function (response) {
+                    console.log(response.headers());
 
                     $rootScope.jsonToSave = response.data;
                     DataManipulationService.createDomIds(response.data);
