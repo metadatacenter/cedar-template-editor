@@ -194,6 +194,8 @@ define([
           var seed = {};
           if (scope.model.length > 0) {
             seed = angular.copy(scope.model[0]);
+            // delete the @id field of the template-element-instance. The backend will need to generate a new one
+            delete seed['@id'];
             //resetElement(seed, scope.element);
             scope.model.push(seed);
           }
