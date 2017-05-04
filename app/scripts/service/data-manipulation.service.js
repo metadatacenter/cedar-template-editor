@@ -48,6 +48,7 @@ define([
           if (fieldType == 'date' || fieldType == 'numeric') {
             valueAtType = {};
             valueAtType.type = 'string';
+            valueAtType.format = 'uri';
             if (fieldType == 'date') {
               //valueAtType.enum = ['xsd:dateTime'];
               // Make @type required
