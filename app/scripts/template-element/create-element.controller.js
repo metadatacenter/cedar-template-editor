@@ -170,6 +170,18 @@ define([
       $scope.$broadcast('form:reset');
     };
 
+    $scope.logValidation = function (validationStatus, validationReport) {
+
+      var report = JSON.parse(validationReport);
+      for (var i = 0; i < report.warnings.length; i++) {
+        console.log(
+            'Validation Warning: ' + report.warnings[i].message + ' at location ' + report.warnings[i].location);
+      }
+      for (var i = 0; i < report.errors.length; i++) {
+        console.log('Validation Error: ' + report.errors[i].message + ' at location ' + report.errors[i].location);
+      }
+    };
+
     $scope.saveElement = function () {
       populateCreatingFieldOrElement();
       if (dontHaveCreatingFieldOrElement()) {
@@ -209,6 +221,10 @@ define([
           AuthorizedBackendService.doCall(
               TemplateElementService.saveTemplateElement(QueryParamUtilsService.getFolderId(), $scope.element),
               function (response) {
+
+                $scope.logValidation(response.headers("CEDAR-Validation-Status"),
+                    response.headers("CEDAR-Validation-Report"));
+
                 // confirm message
                 UIMessageService.flashSuccess('SERVER.ELEMENT.create.success',
                     {"title": response.data._ui.title},
@@ -234,6 +250,10 @@ define([
           AuthorizedBackendService.doCall(
               TemplateElementService.updateTemplateElement(id, $scope.element),
               function (response) {
+
+                $scope.logValidation(response.headers("CEDAR-Validation-Status"),
+                    response.headers("CEDAR-Validation-Report"));
+
                 DataManipulationService.createDomIds(response.data);
                 angular.extend($scope.element, response.data);
                 $rootScope.jsonToSave = $scope.element;

@@ -69,6 +69,18 @@ define([
       );
     };
 
+    $scope.logValidation = function (validationStatus, validationReport) {
+
+      var report = JSON.parse(validationReport);
+      for (var i = 0; i < report.warnings.length; i++) {
+        console.log(
+            'Validation Warning: ' + report.warnings[i].message + ' at location ' + report.warnings[i].location);
+      }
+      for (var i = 0; i < report.errors.length; i++) {
+        console.log('Validation Error: ' + report.errors[i].message + ' at location ' + report.errors[i].location);
+      }
+    };
+
     // Stores the data (instance) into the databases
     $scope.saveInstance = function () {
  
@@ -93,6 +105,10 @@ define([
         AuthorizedBackendService.doCall(
             TemplateInstanceService.saveTemplateInstance(QueryParamUtilsService.getFolderId(), $scope.instance),
             function (response) {
+
+              $scope.logValidation(response.headers("CEDAR-Validation-Status"),
+                  response.headers("CEDAR-Validation-Report"));
+
               UIMessageService.flashSuccess('SERVER.INSTANCE.create.success', null, 'GENERIC.Created');
               // Reload page with element id
               var newId = response.data['@id'];
@@ -118,6 +134,10 @@ define([
         AuthorizedBackendService.doCall(
             TemplateInstanceService.updateTemplateInstance($scope.instance['@id'], $scope.instance),
             function (response) {
+
+              $scope.logValidation(response.headers("CEDAR-Validation-Status"),
+                  response.headers("CEDAR-Validation-Report"));
+
               UIMessageService.flashSuccess('SERVER.INSTANCE.update.success', null, 'GENERIC.Updated');
               owner.enableSaveButton();
               $rootScope.$broadcast("form:clean");
@@ -228,6 +248,7 @@ define([
     };
 
     $scope.doValidation = function () {
+      console.log('doValidation');
       var type = ValidationService.isValidationTemplate($rootScope.documentTitle, 'validation');
       if (type) {
         $scope.$broadcast('external-validation', [type]);
