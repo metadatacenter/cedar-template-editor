@@ -1,11 +1,12 @@
 <div ng-init="initializeValue(field)">
+
   <!-- actively editing the field -->
   <div ng-if="isActive(index)" class="form-group  has-feedback">
     <input type="text"
         ng-click="setActive(index, true)"
         class="form-control isActive select"
         ng-class="{'required': isRequired()}"
-        placeholder="{{isActive(index) ? 'enter answer' : ''}}"
+        placeholder="{{isActive(index) ? 'enter phone number' : ''}}"
         aria-label="{{getDescription(field)}}"
         ng-model-options="{allowInvalid:true}"
         validate-on="blur"
@@ -24,6 +25,7 @@
         class="isInactive"
         aria-label="{{getDescription(field)}}">{{getValueString((valueArray))}}</div>
   </div>
+
 </div>
 
 

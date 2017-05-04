@@ -9,12 +9,12 @@ define([
   CreateInstanceController.$inject = ["$translate", "$rootScope", "$scope", "$routeParams", "$location",
                                       "HeaderService", "TemplateService", "TemplateInstanceService",
                                       "UIMessageService", "AuthorizedBackendService", "CONST", "$timeout",
-                                      "QueryParamUtilsService", "FrontendUrlService"];
+                                      "QueryParamUtilsService", "FrontendUrlService", "ValidationService"];
 
   function CreateInstanceController($translate, $rootScope, $scope, $routeParams, $location,
                                     HeaderService, TemplateService, TemplateInstanceService,
                                     UIMessageService, AuthorizedBackendService, CONST, $timeout,
-                                    QueryParamUtilsService, FrontendUrlService) {
+                                    QueryParamUtilsService, FrontendUrlService, ValidationService) {
 
     // Get/read template with given id from $routeParams
     $scope.getTemplate = function () {
@@ -69,8 +69,21 @@ define([
       );
     };
 
+    $scope.logValidation = function (validationStatus, validationReport) {
+
+      var report = JSON.parse(validationReport);
+      for (var i = 0; i < report.warnings.length; i++) {
+        console.log(
+            'Validation Warning: ' + report.warnings[i].message + ' at location ' + report.warnings[i].location);
+      }
+      for (var i = 0; i < report.errors.length; i++) {
+        console.log('Validation Error: ' + report.errors[i].message + ' at location ' + report.errors[i].location);
+      }
+    };
+
     // Stores the data (instance) into the databases
     $scope.saveInstance = function () {
+ 
       this.disableSaveButton();
       var owner = this;
 
@@ -92,6 +105,10 @@ define([
         AuthorizedBackendService.doCall(
             TemplateInstanceService.saveTemplateInstance(QueryParamUtilsService.getFolderId(), $scope.instance),
             function (response) {
+
+              $scope.logValidation(response.headers("CEDAR-Validation-Status"),
+                  response.headers("CEDAR-Validation-Report"));
+
               UIMessageService.flashSuccess('SERVER.INSTANCE.create.success', null, 'GENERIC.Created');
               // Reload page with element id
               var newId = response.data['@id'];
@@ -101,8 +118,8 @@ define([
               $timeout(function () {
                 // don't show validation errors until after any redraws are done
                 // thus, call this within a timeout
-                $scope.$broadcast('submitForm');
-              }, 0);
+                $rootScope.$broadcast('submitForm');
+              }, 1000);
 
             },
             function (err) {
@@ -117,10 +134,14 @@ define([
         AuthorizedBackendService.doCall(
             TemplateInstanceService.updateTemplateInstance($scope.instance['@id'], $scope.instance),
             function (response) {
+
+              $scope.logValidation(response.headers("CEDAR-Validation-Status"),
+                  response.headers("CEDAR-Validation-Report"));
+
               UIMessageService.flashSuccess('SERVER.INSTANCE.update.success', null, 'GENERIC.Updated');
               owner.enableSaveButton();
               $rootScope.$broadcast("form:clean");
-              $scope.$broadcast('submitForm');
+              $rootScope.$broadcast('submitForm');
             },
             function (err) {
               UIMessageService.showBackendError('SERVER.INSTANCE.update.error', err);
@@ -214,25 +235,28 @@ define([
       $scope.saveButtonDisabled = true;
     };
 
-    $scope.isBiosampleTemplate = function () {
-      return ($rootScope.documentTitle && $rootScope.documentTitle.toLowerCase().indexOf('biosample') > -1);
+    //
+    // custom validation services
+    //
+
+    $scope.isValidationTemplate = function (action) {
+      var result;
+      if ($rootScope.documentTitle) {
+        result = ValidationService.isValidationTemplate($rootScope.documentTitle, action);
+      }
+      return result;
     };
 
-    $scope.isAIRRTemplate = function () {
-      return ($rootScope.documentTitle && $rootScope.documentTitle.toLowerCase().indexOf('airr template') > -1);
-    };
-
-    $scope.airrValidation = function () {
-      $scope.$broadcast('airrValidation');
-    };
-
-    $scope.biosampleValidation = function () {
-      $scope.$broadcast('biosampleValidation');
+    $scope.doValidation = function () {
+      console.log('doValidation');
+      var type = ValidationService.isValidationTemplate($rootScope.documentTitle, 'validation');
+      if (type) {
+        $scope.$broadcast('external-validation', [type]);
+      }
     };
 
     // open the airr submission modal
     $scope.airrSubmissionModalVisible = false;
-
     $scope.showAirrSubmissionModal = function () {
       $scope.airrSubmissionModalVisible = true;
       $scope.$broadcast('airrSubmissionModalVisible', [$scope.airrSubmissionModalVisible, $rootScope.instanceToSave]);

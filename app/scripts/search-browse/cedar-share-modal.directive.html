@@ -106,9 +106,9 @@
                   data-dropup-auto="false" class="dropdown col-sm-4 select-picker user-permission" select-picker
                   select-model="share.typeaheadUser.id"
                   cedar-live-search="true">
-                <option value="read">can read</option>
-                <option value="write">can write</option>
-                <option ng-show="share.canBeOwner(share.typeaheadUser.id)" value="own">is owner</option>
+                <option value="read" translate>GENERIC.canRead</option>
+                <option value="write" translate>GENERIC.canWrite</option>
+                <option ng-show="share.canBeOwner(share.typeaheadUser.id)" value="own" translate>GENERIC.isOwner</option>
               </select>
 
               <div class="col-sm-1 pull-right">

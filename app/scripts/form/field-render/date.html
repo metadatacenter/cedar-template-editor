@@ -18,8 +18,7 @@
 
   <div ng-if="$root.isArray(model)" class="field field-date" ng-repeat="valueElement in model">
 
-    <div class="form-group form-group-narrow date-group floating-label-wrapper"
-        ng-if="$root.schemaOf(field)._ui.dateType == 'single-date'">
+    <div class="form-group form-group-narrow date-group floating-label-wrapper">
 
       <div class='input-group' date-time-picker>
         <input type="text"
@@ -87,8 +86,7 @@
   <div ng-if="$root.isArray(model) && model.length == 0 && !$root.isRuntime()" class="field field-date">
 
 
-    <div class="form-group form-group-narrow date-group floating-label-wrapper"
-        ng-if="$root.schemaOf(field)._ui.dateType == 'single-date'">
+    <div class="form-group form-group-narrow date-group floating-label-wrapper">
 
       <div class='input-group' date-time-picker>
         <input type="text"
@@ -144,8 +142,7 @@
   <div ng-if="!$root.isArray(model)" class="field field-date">
 
 
-    <div class="form-group form-group-narrow date-group floating-label-wrapper"
-        ng-if="$root.schemaOf(field)._ui.dateType == 'single-date'">
+    <div class="form-group form-group-narrow date-group floating-label-wrapper">
 
       <div class='input-group' date-time-picker>
         <input type="text"

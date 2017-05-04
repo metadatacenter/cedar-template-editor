@@ -9,13 +9,15 @@ define([
   // TODO: refactor to cedarFormDirective <cedar-form-directive>
 
 
-  formDirective.$inject = ['$rootScope', '$document', '$timeout', '$http', 'DataManipulationService',
+  formDirective.$inject = ['$rootScope', '$document', '$timeout', '$translate', '$http', 'DataManipulationService',
                            'FieldTypeService', 'DataUtilService', 'SubmissionService',
-                           'UIMessageService', 'UrlService'];
+                           'UIMessageService', 'UrlService', 'AuthorizedBackendService', 'HttpBuilderService',
+                           "ValidationService"];
 
 
-  function formDirective($rootScope, $document, $timeout, $http, DataManipulationService, FieldTypeService,
-                         DataUtilService, SubmissionService, UIMessageService, UrlService) {
+  function formDirective($rootScope, $document, $timeout, $translate, $http, DataManipulationService, FieldTypeService,
+                         DataUtilService, SubmissionService, UIMessageService, UrlService, AuthorizedBackendService,
+                         HttpBuilderService, ValidationService) {
     return {
       templateUrl: 'scripts/form/form.directive.html',
       restrict   : 'E',
@@ -29,19 +31,8 @@ define([
       },
       controller : function ($scope) {
 
-        console.log($scope.form);
-
-        $scope.relabel = function(key) {
-          // operates on templates and elements, so use the root scope json which
-          // is element or form
-          console.log('relabel ' + key);
-
-          DataManipulationService.relabel($rootScope.jsonToSave, key);
-        };
-
+        $scope.forms = {};
         $scope.model = $scope.model || {};
-
-        // Initializing checkSubmission as false
         $scope.checkSubmission = false;
         $scope.pageIndex = $scope.pageIndex || 0;
 
@@ -50,6 +41,15 @@ define([
             $scope.pagesArray = [];
 
         $scope.expanded = true;
+
+        $scope.metaToRDF = null;
+        $scope.metaToRDFError = null;
+
+        $scope.relabel = function (key) {
+          // operates on templates and elements, so use the root scope json which
+          // is element or form
+          DataManipulationService.relabel($rootScope.jsonToSave, key);
+        };
 
 
         var paginate = function () {
@@ -117,7 +117,11 @@ define([
             delete props['@context'].properties[selectedKey];
             var id2 = props['@context'].required.indexOf(selectedKey);
             props['@context'].required.splice(id2, 1);
+
+            // Remove it from the top-level 'required' array
+            $scope.form = DataManipulationService.removeKeyFromRequired($scope.form, selectedKey);
           }
+
         };
 
         $scope.renameChildKey = function (child, newKey) {
@@ -146,7 +150,11 @@ define([
                   DataManipulationService.renameKeyOfObject(p["@context"].properties, key, newKey);
 
                   if (p["@context"].properties[newKey] && p["@context"].properties[newKey].enum) {
-                    p["@context"].properties[newKey].enum[0] = DataManipulationService.getEnumOf(newKey);
+
+
+                    //p["@context"].properties[newKey].enum[0] = DataManipulationService.getEnumOf(newKey);
+                    p["@context"].properties[newKey].enum[0] = DataManipulationService.getPropertyOf(newKey,
+                        p["@context"].properties[newKey].enum[0]);
                   }
                 }
 
@@ -155,8 +163,11 @@ define([
                   p["@context"].required[idx] = newKey;
                 }
 
-                var idx = $scope.form._ui.order.indexOf(key);
-                $scope.form._ui.order[idx] = newKey;
+                // Rename key in the 'order' array
+                $scope.form._ui.order = DataManipulationService.renameItemInArray($scope.form._ui.order, key, newKey);
+
+                // Rename key in the 'required' array
+                $scope.form.required = DataManipulationService.renameItemInArray($scope.form.required, key, newKey);
               }
             });
           }
@@ -231,12 +242,13 @@ define([
             if (name == '@context') {
               parentModel['@context'] = DataManipulationService.generateInstanceContext(value);
             }
-            // Add @type information to instance
-            // else if (name == '@type') {
-            //   var type = DataManipulationService.generateInstanceType(value);
-            //   if (type != null)
-            //     parentModel['@type'] = type;
-            // }
+            // Add @type information to template/element instance
+            else if (name == '@type') {
+              var type = DataManipulationService.generateInstanceType(value);
+              if (type) {
+                parentModel['@type'] = type;
+              }
+            }
 
             if (!DataUtilService.isSpecialKey(name)) {
               // Template Element
@@ -261,7 +273,7 @@ define([
                 } else {
                   $scope.parseForm($rootScope.propertiesOf(value), parentModel[name], name);
                 }
-              // Template Field
+                // Template Field
               } else {
                 // Not a Static Field
                 if (!value._ui || !value._ui.inputType || !FieldTypeService.isStaticField(value._ui.inputType)) {
@@ -297,36 +309,86 @@ define([
                     }
                     DataManipulationService.defaultOptionsToModel(value, parentModel[name]);
                   }
-
-                  //var p = $rootScope.propertiesOf(value);
-                  // Add @type information to instance at the field level
-                  // if (p && !angular.isUndefined(p['@type'])) {
-                  //   var type = DataManipulationService.generateInstanceType(p['@type']);
-                  //   if (type) {
-                  //     if (angular.isArray(parentModel[name])) {
-                  //       for (var i = 0; i < min; i++) {
-                  //         parentModel[name][i]["@type"] = type || "";
-                  //       }
-                  //     } else {
-                  //       parentModel[name]["@type"] = type || "";
-                  //     }
-                  //   }
-                  // }
                 }
               }
             }
           });
         };
 
-        // Angular's $watch function to call $scope.parseForm on form.properties initial population and on update
+        //
+        // custom external validation
+        //
+
+        // Get/read template with given id from $routeParams
+        $scope.doValidation = function (instance, url, type) {
+
+          AuthorizedBackendService.doCall(
+              HttpBuilderService.post(url, angular.toJson(instance)),
+              function (response) {
+
+                var data = response.data;
+                if (!data.isValid) {
+
+                  $scope.$emit('validationError',
+                      ['remove', '', type]);
+
+                  var errors = data.messages;
+                  for (var i = 0; i < errors.length; i++) {
+
+                    console.log(errors[i]);
+
+
+                    $scope.$emit('validationError',
+                        ['add', errors[i], type + i]);
+
+
+                  }
+                } else {
+
+                  $scope.$emit('validationError',
+                      ['remove', '', type]);
+
+                  UIMessageService.flashSuccess('Submission Validated', {"title": "title"},
+                      'Success');
+                }
+              },
+              function (err) {
+                UIMessageService.showBackendError($translate.instant('VALIDATION.externalValidation'), err);
+              }
+          );
+        };
+
+        $scope.validateInstance = function (instance, type) {
+          switch (type) {
+            case 'biosample':
+              $scope.doValidation(instance, UrlService.biosampleValidation(), 'biosample');
+              break;
+            case 'airr':
+              $scope.doValidation(instance, UrlService.biosampleValidation(), 'biosample');
+              break;
+            case 'lincs':
+              $scope.doValidation(instance, UrlService.lincsValidation(), 'lincs');
+              break;
+          }
+        };
+
+        $scope.$on('external-validation', function (event, params) {
+          if (params && params[0]) {
+            $scope.validateInstance($scope.model, params[0]);
+          }
+        });
+
+
+//
+// watches
+//
+
+// Angular's $watch function to call $scope.parseForm on form.properties initial population and on update
         $scope.$watch('form.properties', function () {
           startParseForm();
         });
 
-
-        $scope.forms = {};
-
-        // watch the dirty flag on the form
+// watch the dirty flag on the form
         $scope.$watch('forms.templateForm.$dirty', function () {
           $rootScope.setDirty($scope.forms.templateForm.$dirty);
         });
@@ -352,151 +414,36 @@ define([
           $rootScope.setDirty($scope.forms.templateForm.$dirty);
         });
 
-
-        // Angular $watch function to run the Bootstrap Popover initialization on new form elements when they load
+// Angular $watch function to run the Bootstrap Popover initialization on new form elements when they load
         $scope.$watch('page', function () {
           $scope.addPopover();
         });
 
-        $scope.isBiosampleTemplate = function () {
-          return ($rootScope.documentTitle && $rootScope.documentTitle.toLowerCase().indexOf('biosample') > -1);
-        };
+// keep our rdf up-to-date
+        $scope.$watch('model', function () {
+          $scope.toRDF();
+        }, true);
 
-        $scope.isAIRRTemplate = function () {
-          return ($rootScope.documentTitle && $rootScope.documentTitle.toLowerCase().indexOf('airr') > -1);
-        };
-
-
-        // validate a biosample template
-        $scope.checkBiosample = function (instance) {
-
-          if ($scope.isBiosampleTemplate() || $scope.isAIRRTemplate()) {
-
-            // one way to make the call
-            var config = {};
-            var url = UrlService.biosampleValidation();
-            $http.post(url, instance, config).then(
-                function successCallback(response) {
-
-                  var data = response.data;
-                  console.log(data);
-
-
-                  if (!data.isValid) {
-
-                    $scope.$emit('validationError',
-                        ['remove', '', 'biosample']);
-
-                    var errors = data.messages;
-                    for (var i = 0; i < errors.length; i++) {
-
-                      console.log(errors[i]);
-
-
-                      $scope.$emit('validationError',
-                          ['add', errors[i], 'biosample' + i]);
-
-
-                    }
-                  } else {
-
-                    $scope.$emit('validationError',
-                        ['remove', '', 'biosample']);
-
-                    UIMessageService.flashSuccess('BioSample Submission Validated', {"title": "title"},
-                        'Success');
-                  }
-
-                },
-                function errorCallback(err) {
-
-                  UIMessageService.showBackendError('BioSample Server Error', err);
-
-
-                });
-
-          }
-
-        };
-
-        // validate a AIRR template
-        $scope.checkAirr = function (instance) {
-
-          if ( $scope.isAIRRTemplate()) {
-
-            // one way to make the call
-            var config = {};
-            var url = UrlService.airrValidation();
-            $http.post(url, instance, config).then(
-                function successCallback(response) {
-
-                  var data = response.data;
-                  console.log(data);
-
-
-                  if (!data.isValid) {
-
-                    $scope.$emit('validationError',
-                        ['remove', '', 'airr']);
-
-                    var errors = data.messages;
-                    for (var i = 0; i < errors.length; i++) {
-
-                      console.log(errors[i]);
-
-
-                      $scope.$emit('validationError',
-                          ['add', errors[i], 'airr' + i]);
-
-
-                    }
-                  } else {
-
-                    $scope.$emit('validationError',
-                        ['remove', '', 'biosample']);
-
-                    UIMessageService.flashSuccess('AIRR Submission Validated', {"title": "title"},
-                        'Success');
-                  }
-
-                },
-                function errorCallback(err) {
-
-                  UIMessageService.showBackendError('AIRR Server Error', err);
-
-
-                });
-
-          }
-
-        };
-
-
-        $scope.$on('biosampleValidation', function (event) {
-          $scope.checkBiosample($scope.model);
-        });
-
-        $scope.$on('airrValidation', function (event) {
-          $scope.checkAirr($scope.model);
-        });
-
-
-        // Watching for the 'submitForm' event to be $broadcast from parent 'RuntimeController'
+// Watching for the 'submitForm' event to be $broadcast from parent 'RuntimeController'
         $scope.$on('submitForm', function (event) {
           // Make the model (populated template) available to the parent
           $scope.$parent.instance = $scope.model;
           $scope.checkSubmission = true;
-          $scope.checkBiosample($scope.$parent.instance);
-
+          var type = ValidationService.isValidationTemplate($rootScope.documentTitle, 'validation');
+          if (type) {
+            $scope.validateInstance($scope.$parent.instance, type);
+          }
         });
 
         $scope.$on('formHasRequiredFields', function (event) {
-          console.log('on formHasRequiredFields');
           $scope.form.requiredFields = true;
         });
 
+//
+//
+//
 
-        // create a copy of the form with the _tmp fields stripped out
+// create a copy of the form with the _tmp fields stripped out
         $scope.stripTmpFields = function () {
 
           var copiedForm = jQuery.extend(true, {}, $scope.model);
@@ -506,11 +453,33 @@ define([
           return copiedForm;
         };
 
+        $scope.toRDF = function () {
+          var jsonld = require('jsonld');
+          var copiedForm = jQuery.extend(true, {}, $scope.model);
+          if (copiedForm) {
+            jsonld.toRDF(copiedForm, {format: 'application/nquads'}, function (err, nquads) {
+              $scope.metaToRDFError = err;
+              $scope.metaToRDF = nquads;
+              return nquads;
+            });
+          }
+        };
+
+        $scope.getRDF = function () {
+          return $scope.metaToRDF;
+        };
+
+        $scope.getRDFError = function () {
+          var result = $translate.instant('SERVER.RDF.SaveFirst');
+          if ($scope.metaToRDFError) {
+            result = $scope.metaToRDFError.details.cause.message;
+          }
+          return result;
+        };
 
         $scope.isField = function (item) {
           return ($scope.getType(item) === 'https://schema.metadatacenter.org/core/TemplateField');
         };
-
 
         $scope.getPreviousItem = function (index) {
           if (index) {
@@ -539,11 +508,9 @@ define([
           return null;
         };
 
-
         $scope.isElement = function (item) {
           return ($scope.getType(item) === 'https://schema.metadatacenter.org/core/TemplateElement');
         };
-
 
         $scope.toggleExpanded = function () {
           $scope.expanded = !$scope.expanded;
@@ -556,7 +523,6 @@ define([
         $scope.isExpanded = function () {
           return $scope.expanded;
         };
-
 
         $scope.getType = function (item) {
           var obj = $scope.form.properties[item];
@@ -572,68 +538,12 @@ define([
           }
         };
 
-        $scope.nextChild = function (fieldOrElement) {
-
-          var id = DataManipulationService.getId(fieldOrElement);
-          var selectedKey;
-          var props = $scope.form.properties;
-
-          // find the field or element in the form's properties
-          angular.forEach(props, function (value, key) {
-            if (DataManipulationService.getId(value) == id) {
-              selectedKey = key;
-            }
-          });
-
-
-          if (selectedKey) {
-            var idx = $scope.form._ui.order.indexOf(selectedKey);
-
-            idx += 1;
-            var found = false;
-            while (idx < $scope.form._ui.order.length && !found) {
-              var nextKey = $scope.form._ui.order[idx];
-              var next = props[nextKey];
-              found = !$scope.isStaticField(next);
-              idx += 1;
-            }
-
-            if (found) {
-              $rootScope.$broadcast("setActive", [DataManipulationService.getId(next), 0, $scope.path, true]);
-            } else {
-              $rootScope.$broadcast("setActive", [id, 0, $scope.path, false]);
-            }
-          }
-        };
-
         $scope.lastIndex = function (path) {
           if (path) {
             var indices = path.split('-');
             return indices[indices.length - 1];
           }
         };
-
-        // watch for this field's next sibling
-        $scope.$on('nextSibling', function (event, args) {
-          var id = args[0];
-          var index = args[1];
-          var path = args[2];
-          var value = args[3];
-
-
-          if (id === DataManipulationService.getId($scope.form)) {
-
-            var next = DataManipulationService.nextSibling($scope.field, $scope.form);
-            var parentIndex = 0;
-            var parentPath = '0';
-            if (next) {
-
-              $rootScope.$broadcast("setActive", [DataManipulationService.getId(next), 0, path, true]);
-
-
-            }
-          }
-        });
 
         $scope.isActive = function () {
           return true;
@@ -647,7 +557,7 @@ define([
           return true;
         };
 
-        // expand all the elements nested inside the form
+// expand all the elements nested inside the form
         $scope.expandAll = function () {
 
           // expand the form
@@ -671,9 +581,37 @@ define([
           }, 0);
         };
 
+        $scope.uid = 'form';
+
+// find the next sibling to activate
+        $scope.activateNextSiblingOf = function (fieldKey, parentKey) {
+          var index = 0;
+          var order = $rootScope.schemaOf($scope.form)._ui.order;
+          var props = $rootScope.schemaOf($scope.form).properties;
+          var idx = order.indexOf(fieldKey);
+
+          idx += 1;
+          var found = false;
+          while (idx < order.length && !found) {
+            var nextKey = order[idx];
+            var next = props[nextKey];
+            found = !DataManipulationService.isStaticField(next);
+            idx += 1;
+          }
+          if (found) {
+            var next = props[nextKey];
+            $rootScope.$broadcast("setActive",
+                [DataManipulationService.getId(next), 0, $scope.path, nextKey, parentKey, true,
+                 $scope.uid + '-' + nextKey]);
+            return next;
+          }
+        };
 
       }
-    };
-  };
+    }
+        ;
+  }
+  ;
 
-});
+})
+;

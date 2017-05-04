@@ -10473,15 +10473,30 @@ body.search-browse-modal a.navbar-brand {
 }
 .template-header .show-type {
   background: transparent;
-  color: white;
+  color: #ffffff;
 }
-.template-header .show-type .class-list {
+.template-header .show-type .class-list,
+.template-header .show-type .property-list {
   border-radius: 0;
   margin: 0;
   padding: 0;
 }
-.template-header .show-type i.fa-caret-down {
-  margin-left: -12px;
+.template-header .class-dropdown {
+  display: inline-block;
+}
+.template-header .class-dropdown button {
+  background: transparent;
+  position: relative;
+  left: -12px;
+  color: #ffffff;
+}
+.template-header .pull-right .dropdown-menu:after {
+  left: auto;
+  right: 13px;
+}
+.template-header .pull-right .dropdown-menu {
+  left: auto;
+  right: 0;
 }
 .template-header #element-name-container .cedar-svg-element,
 .template-header #element-controlled-term-container .cedar-svg-element,
@@ -11541,9 +11556,6 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
 */
 .template-body form .runtime {
   font-size: 16px;
-  /* lower line on list items from the first level because they don't have parents */
-  /* hide line from the last of the first level list items */
-  /*  very first field or element */
 }
 .template-body form .runtime .treeview,
 .template-body form .runtime .treeview ul.tv {
@@ -11557,12 +11569,12 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   /* horizontal line on inner list items */
   /* horizontal line on inner list items */
   /* vertical line on list items */
-  /* first field */
 }
 .template-body form .runtime .treeview li.tv {
   margin: 0;
   padding: 0 0 0 12px;
   position: relative;
+  border-left: 1px solid #9E9E9E;
 }
 .template-body form .runtime .treeview li.tv::before,
 .template-body form .runtime .treeview li.tv::after {
@@ -11571,44 +11583,46 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   left: 0;
 }
 .template-body form .runtime .treeview li.tv::before {
-  border-top: 1px solid #9E9E9E;
   top: 15px;
   width: 10px;
   height: 0;
+  border-top: 1px solid #9E9E9E;
 }
-.template-body form .runtime .treeview li.tv::before {
-  width: 10px;
+.template-body form .runtime .treeview li.last.tv {
+  border-left-width: 0px;
 }
 .template-body form .runtime .treeview li.tv.element::before {
   width: 10px;
 }
-.template-body form .runtime .treeview li.tv::after {
-  border-left: 1px solid #9E9E9E;
+.template-body form .runtime .treeview li.tv.last.element::before {
+  border-top-width: 0px;
+}
+.template-body form .runtime .treeview li.tv.last::after {
   height: 100%;
   width: 0px;
   top: -20px;
-}
-.template-body form .runtime .treeview li.tv.first::after {
-  top: 0;
-  height: 100%;
+  border-left: 1px solid #9E9E9E;
 }
 .template-body form .runtime .treeview li.tv.first.last::after {
   top: 0;
   height: 15px;
+  border-left: 1px solid #9E9E9E;
 }
-.template-body form .runtime .treeview li.tv.first.element::after {
+.template-body form .runtime .treeview li.tv.last.element::before {
+  border-left: 1px solid #9E9E9E;
+}
+.template-body form .runtime .treeview li.tv.element::after,
+.template-body form .runtime .treeview li.tv.last.element::after,
+.template-body form .runtime .treeview ul li.last.element::after {
   top: 0;
   height: 16px;
 }
-.template-body form .runtime .treeview > li.tv::after {
-  top: 15px;
-}
-.template-body form .runtime .treeview > li.tv:last-child::after {
-  display: none;
-}
-.template-body form .runtime .treeview > li.tv.first::after {
-  top: 15px;
-  height: 100%;
+.template-body form .runtime .treeview li.tv.last.element::before {
+  border-left: 1px solid #9E9E9E;
+  height: 16px;
+  top: 0;
+  border-bottom: 1px solid #9E9E9E;
+  width: 10px;
 }
 .template-body form .runtime .paging {
   max-height: 17px;
@@ -11769,6 +11783,9 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
 }
 .template-body form .runtime button:disabled {
   color: rgba(87, 149, 186, 0.35);
+}
+.template-body form .runtime button.form-title {
+  margin-left: -6px;
 }
 .template-body form .runtime .btn.btn-save.active {
   margin: 20px 0;
@@ -12321,6 +12338,34 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
 === Field Definition Partials
 ================================================
 */
+.field-header .field-icon {
+  color: #9E9E9E;
+}
+.field-header .type-label {
+  text-transform: none;
+  padding-left: 10px;
+}
+.field-header .show-type {
+  background: transparent;
+  color: #5795ba;
+}
+.field-header .property-dropdown,
+.field-header .class_dropdown {
+  display: inline-block;
+  color: #5795ba;
+}
+.field-header .property-dropdown button,
+.field-header .class_dropdown button {
+  background: transparent;
+  position: relative;
+  left: -12px;
+}
+.class-list,
+.property-list {
+  border-radius: 0;
+  margin: 0;
+  padding: 0;
+}
 .input-type-container {
   clear: both;
   padding-top: 0px;
@@ -12335,7 +12380,7 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
   margin-bottom: 20px;
 }
 .input-type-container p.type-label i {
-  color: #5795ba;
+  color: #9E9E9E;
 }
 .input-type-container .configuration-options {
   padding-top: 20px;
@@ -12658,6 +12703,52 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
 .controlled-term-options .search-results-section .results-headers-table th {
   border: none;
 }
+.controlled-term-options .additional-details {
+  width: 100%;
+  margin-top: 0.8em;
+}
+.controlled-term-options .additional-details .terminology-tree-container {
+  width: 35%;
+  height: 330px;
+  float: left;
+}
+.controlled-term-options .additional-details .terminology-tree-container .tree-header {
+  width: 100%;
+  height: 38px;
+}
+.controlled-term-options .additional-details .terminology-tree-container .tree-header h4 {
+  margin-right: 4%;
+  color: #5795ba;
+}
+.controlled-term-options .additional-details .terminology-tree-container .tree-content {
+  width: 100%;
+  height: 300px;
+  background-color: white;
+  overflow: hidden;
+}
+.controlled-term-options .additional-details .selection-details-container {
+  width: 63%;
+  height: 330px;
+  float: right;
+}
+.controlled-term-options .additional-details .selection-details-container .nav-tabs {
+  border-color: #5795ba;
+  text-transform: uppercase;
+}
+.controlled-term-options .additional-details .selection-details-container .nav-tabs li a {
+  border: none;
+  border-bottom: solid 1px #5795ba;
+  border-radius: 0px;
+  margin-right: 6px;
+  background: #d2d2d2;
+  color: grey;
+}
+.controlled-term-options .additional-details .selection-details-container .nav-tabs li.active a {
+  border-color: #5795ba;
+  background: #5795ba;
+  color: #FFFFFF;
+  font-weight: normal;
+}
 .controlled-term-options .field-tree .class-actions {
   margin-top: 30px;
   text-align: center;
@@ -12713,6 +12804,9 @@ section.dashboard-elements .margin-reset-row .template-item:hover .back-panel {
 .controlled-term-options .tab-content .table-responsive .no-selected-class,
 .controlled-term-options .tab-content .tab-pane .no-selected-class {
   padding-top: 30px;
+}
+.controlled-term-options .ontology-tree {
+  width: 100%;
 }
 .controlled-term-options .ontology-tree > h4 {
   margin-top: 0px;
@@ -13148,6 +13242,15 @@ p.instructions {
 .pick-list .multiple-container .checkbox input[type="checkbox"] {
   cursor: pointer;
 }
+#cardinality-options .cardinality-selector {
+  padding: 0 10px;
+}
+#cardinality-options button {
+  width: 130px;
+}
+#cardinality-options .cardinality-selectors i.check {
+  float: right;
+}
 /*
 ================================================
 === Element Builder Actions
@@ -13175,6 +13278,9 @@ p.instructions {
 }
 .element-actions .favorite.true i {
   color: #5795ba;
+}
+.element-actions .search {
+  margin: 10px;
 }
 .element-actions .clear-save {
   float: right;
@@ -13236,6 +13342,9 @@ p.instructions {
 }
 .template-actions .favorite.true i {
   color: #5795ba;
+}
+.template-actions .search {
+  margin: 10px;
 }
 .template-actions .clear-save {
   float: right;
@@ -13831,61 +13940,6 @@ p.instructions {
 .tree-view-ul > .tree > li {
   padding-left: 0;
 }
-.field-tree {
-  margin-top: 20px;
-}
-.field-tree .ontology-tree {
-  margin: 0;
-  width: 40%;
-  padding: 4px 4px 0;
-  background: #ffffff;
-}
-.field-tree .ontology-tree .class-tree-container {
-  padding: 0 5px 5px 5px;
-  background: #FFF;
-}
-.field-tree .ontology-class-children {
-  width: 40%;
-}
-.field-tree .field-details-view {
-  width: 58%;
-}
-.field-tree .field-details-view .nav-tabs {
-  border-color: #5795ba;
-  text-transform: uppercase;
-}
-.field-tree .field-details-view .nav-tabs .detail-view-tab a {
-  border: none;
-  border-bottom: solid 1px #5795ba;
-  border-radius: 0px;
-  margin-right: 6px;
-  background: #d2d2d2;
-  color: grey;
-}
-.field-tree .field-details-view .nav-tabs .detail-view-tab.active a {
-  border-color: #5795ba;
-  background: #5795ba;
-  color: #FFFFFF;
-  font-weight: normal;
-}
-.field-tree .field-details-view .tab-content table th {
-  padding: 8px 8px;
-  color: #5795ba;
-  font-weight: bold;
-  border: none;
-  border-bottom: 1px solid #DDD;
-}
-.field-tree .field-details-view .tab-content table th:first-child {
-  width: 100px;
-}
-.field-tree .field-details-view .tab-content table tbody {
-  border-bottom: 1px solid #DDD;
-}
-.field-tree .field-details-view .tab-content table td {
-  border: none;
-  border-bottom: 1px solid #DDD;
-  padding: 8px 8px;
-}
 .selected-field-class {
   margin-left: -28px;
   border: 1px solid #DDD;
@@ -13976,6 +14030,17 @@ p.instructions {
 .class-list-container table > thead > tr > th,
 .many-classes-list table > thead > tr > th {
   border-bottom: none;
+}
+.menu-form {
+  margin: 0;
+  padding: 0;
+  margin-bottom: 0;
+}
+.menu-form .class-list-container {
+  margin-bottom: 0;
+}
+.menu-form .class-list-container .empty {
+  color: #ccc;
 }
 .item-edit,
 .item-delete {
@@ -14589,7 +14654,7 @@ body .template-header .controlled-terms-modal {
   text-indent: -1000px;
   width: 0;
   height: 20px;
-  padding: 0 10px 0 20px;
+  padding: 0 12px;
 }
 .ibl {
   display: inline-block;
@@ -15633,6 +15698,31 @@ textarea.curlSample {
   font-family: Courier;
   font-size: 11px;
 }
+#outputJSON .nav-tabs > li > a,
+#templateJSON .nav-tabs > li > a {
+  border: 0px solid #ccc;
+  border-radius: 0;
+}
+#outputJSON .nav-tabs > li > a i.cedar-svg-rdf,
+#templateJSON .nav-tabs > li > a i.cedar-svg-rdf {
+  padding-right: 10px;
+}
+#outputJSON pre,
+#templateJSON pre {
+  background: white;
+  border: 0px;
+  border-radius: 0px;
+  min-height: 100px;
+}
+#outputJSON .warning,
+#templateJSON .warning {
+  font-size: 16px;
+  padding: 40px 0;
+  color: #ccc;
+  background-color: #ffffff;
+  border-width: 0px;
+  min-height: 100px;
+}
 @font-face {
   font-family: "project-cedar";
   src: url("../media/fonts/project-cedar.eot");
@@ -15782,6 +15872,18 @@ textarea.curlSample {
 }
 .cedar-svg-image:before {
   content: "K";
+}
+.cedar-svg-link:before {
+  content: "Z";
+}
+.cedar-svg-rdf:before {
+  content: "0";
+}
+.cedar-svg-rdf1:before {
+  content: "1";
+}
+.cedar-svg-json-schema:before {
+  content: "2";
 }
 /*
 ================================================

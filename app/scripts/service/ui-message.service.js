@@ -18,6 +18,10 @@ define([
       this.flash('success', messageKey, messageParameters, title);
     };
 
+    service.flashWarning = function (messageKey, messageParameters, title) {
+      this.flash('warning', messageKey, messageParameters, title);
+    };
+
     service.flash = function (type, messageKey, messageParameters, titleKey) {
       toasty[type]({
         title: $translate.instant(titleKey),

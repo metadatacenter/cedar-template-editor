@@ -13,54 +13,14 @@
   "_ui": {
     "title": "",
     "description": "",
-    "inputType": null
-  },
-  "properties": {
-    "@id": {
-      "type": [ "string", "null" ],
-      "format": "uri"
-    },
-    "@type": {
-      "oneOf": [
-        {
-          "type": "string",
-          "format": "uri"
-        },
-        {
-          "type": "array",
-          "minItems": 1,
-          "items": {
-            "type": "string",
-            "format": "uri"
-          },
-          "uniqueItems": true
-        }
-      ]
-    },
-    "pav:createdOn": {
-      "type" : ["string", "null"],
-      "format": "date-time"
-    },
-    "pav:createdBy": {
-      "type" : ["string", "null"],
-      "format": "uri"
-    },
-    "pav:lastUpdatedOn": {
-      "type" : ["string", "null"],
-      "format": "date-time"
-    },
-    "oslc:modifiedBy": {
-      "type" : ["string", "null"],
-      "format": "uri"
-    },
+    "inputType": null,
     "_content": null
   },
-  "required": [
-    "_content"
-  ],
+  "properties": {},
   "pav:createdOn": null,
   "pav:createdBy": null,
   "pav:lastUpdatedOn": null,
   "oslc:modifiedBy": null,
+  "schema:schemaVersion": null,
   "additionalProperties": false
 }

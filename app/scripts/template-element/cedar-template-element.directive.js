@@ -7,9 +7,9 @@ define([
       .directive('cedarTemplateElement', cedarTemplateElementDirective);
 
   cedarTemplateElementDirective.$inject = ['$rootScope', 'DataManipulationService', 'DataUtilService',
-                                           'SpreadsheetService'];
+                                           'SpreadsheetService','UIUtilService'];
 
-  function cedarTemplateElementDirective($rootScope, DataManipulationService, DataUtilService, SpreadsheetService) {
+  function cedarTemplateElementDirective($rootScope, DataManipulationService, DataUtilService, SpreadsheetService, UIUtilService) {
 
     var directive = {
       restrict   : 'EA',
@@ -191,7 +191,6 @@ define([
       // add a multiple cardinality element
       scope.selectedTab = 0;
       scope.addElement = function () {
-        console.log('addElement');
         if ($rootScope.isRuntime()) {
           if ((!scope.element.maxItems || scope.model.length < scope.element.maxItems)) {
             var seed = {};
@@ -264,6 +263,9 @@ define([
             scope.$emit("invalidFieldState",
                 ["remove", $rootScope.schemaOf(fieldOrElement)._ui.title, fieldOrElement["@id"]]);
           }
+
+          // Remove it from the top-level 'required' array
+          scope.element = DataManipulationService.removeKeyFromRequired(scope.element, selectedKey);
         }
       };
 
@@ -278,8 +280,6 @@ define([
       scope.canDeselect = function (element) {
         return DataManipulationService.canDeselect(element);
       };
-
-
 
       // when element is deseleted, look at errors and parse if none
       scope.$on('deselect', function (event, element, errorMessages) {
@@ -325,8 +325,11 @@ define([
                 p["@context"].required[idx] = newKey;
               }
 
-              var idx = $rootScope.schemaOf(scope.element)._ui.order.indexOf(key);
-              $rootScope.schemaOf(scope.element)._ui.order[idx] = newKey;
+              // Rename key in the 'order' array
+              scope.element._ui.order = DataManipulationService.renameItemInArray(scope.element._ui.order, key, newKey);
+
+              // Rename key in the 'required' array
+              scope.element.required = DataManipulationService.renameItemInArray(scope.element.required, key, newKey);
             }
           });
         }
@@ -362,67 +365,6 @@ define([
       });
 
 
-      // for cardinality selectors
-      scope.cardinality = {
-        min  : null,
-        max  : null,
-        mins : [{
-          value: '0',
-          label: 'none'
-        }, {
-          value: '1',
-          label: 'one'
-        }, {
-          value: '2',
-          label: 'two'
-        }, {
-          value: '3',
-          label: 'three'
-        }, {
-          value: '4',
-          label: 'four'
-        }, {
-          value: '5',
-          label: 'five'
-        }, {
-          value: '6',
-          label: 'six'
-        }, {
-          value: '7',
-          label: 'seven'
-        }, {
-          value: '8',
-          label: 'eight'
-        }],
-        maxes: [{
-          value: '1',
-          label: 'one'
-        }, {
-          value: '2',
-          label: 'two'
-        }, {
-          value: '3',
-          label: 'three'
-        }, {
-          value: '4',
-          label: 'four'
-        }, {
-          value: '5',
-          label: 'five'
-        }, {
-          value: '6',
-          label: 'six'
-        }, {
-          value: '7',
-          label: 'seven'
-        }, {
-          value: '8',
-          label: 'eight'
-        }, {
-          value: '0',
-          label: 'unlimited'
-        }]
-      };
 
 
       scope.defaultMinMax = function () {
@@ -436,26 +378,56 @@ define([
         delete scope.element.maxItems;
       };
 
-
       scope.isMultiple = function () {
         return scope.element.minItems != null;
       };
 
-      scope.initMultiple = function () {
-        if (scope.isMultiple()) {
-          scope.cardinality.min = scope.element.minItems.toString();
-          scope.cardinality.max = typeof scope.element.maxItems === 'undefined' ? '0' : scope.element.maxItems.toString();
+
+      //
+      // controlled terms modal
+      //
+
+      scope.modalType;
+      // create an id for the controlled terms modal
+      scope.getModalId = function (type) {
+        return UIUtilService.getModalId(DataManipulationService.getId(scope.element), type);
+      };
+
+      // show the controlled terms modal
+      scope.showModal = function (type) {
+        if (type) {
+          scope.modalType = type;
+          UIUtilService.showModal(DataManipulationService.getId(scope.element), type);
         }
       };
 
-      scope.updateMultiple = function () {
-        scope.element.minItems = parseInt(scope.cardinality.min);
-        scope.element.maxItems = parseInt(scope.cardinality.max);
-        if (scope.element.maxItems && scope.element.maxItems < scope.element.minItems) {
-          scope.element.maxItems = 0;
-          scope.cardinality.max = '0';
+      // show the controlled terms modal
+      scope.hideModal = function () {
+        if ($scope.modalType) {
+          UIUtilService.hideModal(DataManipulationService.getId(scope.element), scope.modalType);
         }
       };
+
+      // update the property for a field in the element
+      scope.$on("property:propertyAdded", function (event, args) {
+        var property = args[0];   // property value
+        var id = args[1];         // field id
+
+        var props = scope.element.properties;
+        var fieldProp;
+        for (var prop in props) {
+          if (props[prop]['@id'] === id) {
+            var fieldProp = prop;
+            break;
+          }
+        }
+        if (fieldProp) {
+          scope.element.properties['@context'].properties[fieldProp]['enum'][0] = property;
+        }
+
+        // hide the modal
+        scope.hideModal();
+      });
 
 
     }

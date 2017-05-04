@@ -1,0 +1,38 @@
+<div class="form-group menu-form">
+  <div class="controlled-terms controlled-term-options">
+    <div class="class-container">
+      <div class="added-field-classes">
+        <div class="class-list-container">
+          <div class="class-list-table">
+            <table class="table table-hover table-striped ">
+              <thead>
+              <tr>
+                <th>Property</th>
+                <th></th>
+              </tr>
+              </thead>
+              <tbody>
+              <!-- has non-CEDAR property assigned to field -->
+              <tr ng-if="hasProperty()">
+                <td>{{getProperty()}}</td>
+                <td>
+                  <div class="class-delete" ng-click="deleteProperty();$event.stopPropagation();">
+                    <i class="fa fa-times-circle"></i>
+                  </div>
+                </td>
+              </tr>
+              <!-- has CEDAR property assigned to field so don't display this -->
+              <tr ng-if="!hasProperty()">
+                <td class="center empty">Empty</td>
+                <td></td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+

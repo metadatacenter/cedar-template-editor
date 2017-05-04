@@ -15,7 +15,9 @@ define([
       getAcronymFromTermUri  : getAcronymFromTermUri,
       getSelfUrl             : getSelfUrl,
       loadOntologyRootClasses: loadOntologyRootClasses,
+      loadOntologyRootProperties: loadOntologyRootProperties,
       loadTreeOfClass        : loadTreeOfClass,
+      loadTreeOfProperty     : loadTreeOfProperty,
       loadTreeOfValue        : loadTreeOfValue,
       loadTreeOfValueSet     : loadTreeOfValueSet,
       sortBrowseResults      : sortBrowseResults,
@@ -156,6 +158,28 @@ define([
       });
     }
 
+    function loadOntologyRootProperties(ontology, $scope) {
+      $scope.searchPreloader = true;
+      return $q.all({
+        info: ontology,
+        tree: controlledTermDataService.getRootProperties(ontology.id)
+      }).then(function (values) {
+        if (values.tree && angular.isArray(values.tree)) {
+          values.tree.sort(controlledTermService.sortOntologyTree);
+          $scope.currentOntology = values;
+        } else {
+          // TODO: Handle error
+          if (values.tree.status == 404) {
+            alert("No submissions available");
+          } else {
+            alert(values.tree.statusText);
+          }
+        }
+        $scope.searchPreloader = false;
+        return values;
+      });
+    }
+
     /**
      * Show ontology tree and details screen.
      */
@@ -165,16 +189,49 @@ define([
       $scope.isLoadingClassDetails = true;
       var ontologyAcronym = getLastFragmentOfUri(selection.source);
       $scope.selectedClass = selection;
+      console.log('loadTreeOfClass  '  + $scope.stageValueConstraintAction);
 
       // Get class details
       controlledTermDataService.getClassById(ontologyAcronym, selection["@id"]).then(function (response) {
         $scope.classDetails = response;
-        $scope.selectedClass.hasChildren = $scope.classDetails.hasChildren;
+        if ($scope.selectedClass) {
+          $scope.selectedClass.hasChildren = $scope.classDetails.hasChildren;
+
+          if ($scope.selectedClass.hasChildren) {
+            $scope.stageValueConstraintAction = 'add_children';
+            console.log('loadTreeOfClass hasChildren ' + $scope.selectedClass.hasChildren + ' ' + $scope.stageValueConstraintAction);
+          }
+        }
       });
 
       $q.all({
         info: controlledTermDataService.getOntologyById(ontologyAcronym),
         tree: controlledTermDataService.getClassTree(ontologyAcronym, selection['@id']),
+      }).then(function (values) {
+        $scope.currentOntology = values;
+        $scope.searchPreloader = false;
+        $scope.isLoadingClassDetails = false;
+      });
+    }
+
+    function loadTreeOfProperty(selection, $scope) {
+      $scope.searchPreloader = true;
+      $scope.selectedClass = null;
+      $scope.isLoadingClassDetails = true;
+      var ontologyAcronym = getLastFragmentOfUri(selection.source);
+      $scope.selectedClass = selection;
+
+      // Get property details
+      controlledTermDataService.getPropertyById(ontologyAcronym, selection["@id"]).then(function (response) {
+        $scope.classDetails = response;
+        if ($scope.selectedClass) {
+          $scope.selectedClass.hasChildren = $scope.classDetails.hasChildren;
+        }
+      });
+
+      $q.all({
+        info: controlledTermDataService.getOntologyById(ontologyAcronym),
+        tree: controlledTermDataService.getPropertyTree(ontologyAcronym, selection['@id']),
       }).then(function (values) {
         $scope.currentOntology = values;
         $scope.searchPreloader = false;
@@ -192,7 +249,9 @@ define([
       controlledTermDataService.getValueById(ontologyAcronym, selection["@id"]).then(function (response) {
         $scope.classDetails = response;
         // Values do not have children
-        $scope.selectedClass.hasChildren = false;
+        if ($scope.selectedClass) {
+          $scope.selectedClass.hasChildren = false;
+        }
       });
       $q.all({
         info: controlledTermDataService.getVsCollectionById(ontologyAcronym),

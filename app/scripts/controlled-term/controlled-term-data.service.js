@@ -36,16 +36,21 @@ define([
       getValueSetTree                : getValueSetTree,
       createClass                    : createClass,
       getRootClasses                 : getRootClasses,
+      getRootProperties              : getRootProperties,
       getClassChildren               : getClassChildren,
       getClassById                   : getClassById,
+      getPropertyChildren            : getPropertyChildren,
+      getPropertyById                : getPropertyById,
       getClassDescendants            : getClassDescendants,
       getClassParents                : getClassParents,
       getClassTree                   : getClassTree,
+      getPropertyTree                : getPropertyTree,
       getValuesInValueSet            : getValuesInValueSet,
       getValueById                   : getValueById,
       getAcronym                     : getAcronym,
       init                           : init,
       searchClasses                  : searchClasses,
+      searchProperties               : searchProperties,
       searchClassesAndValues         : searchClassesAndValues,
       searchClassesValueSetsAndValues: searchClassesValueSetsAndValues,
       searchValueSetsAndValues       : searchValueSetsAndValues,
@@ -77,7 +82,8 @@ define([
       if (err.status == 502) {
         UIMessageService.showBackendError($translate.instant("TERMINOLOGY.errorTerminology"), err);
       } else {
-        UIMessageService.showBackendError($translate.instant("TERMINOLOGY.errorBioPortal"), err);
+        UIMessageService.flashWarning("TERMINOLOGY.errorBioPortal")
+        //UIMessageService.showBackendError($translate.instant("TERMINOLOGY.errorBioPortal"), err);
       }
       return err;
     }
@@ -254,6 +260,19 @@ define([
       );
     }
 
+    function getRootProperties(ontology) {
+      init();
+      return AuthorizedBackendService.doCall(
+          ControlledTermHttpService.getRootProperties(ontology),
+          function (response) {
+            return response.data;
+          },
+          function (err) {
+            return handleServerError(err);
+          }
+      );
+    }
+
     function getClassById(acronym, classId) {
       init();
       return AuthorizedBackendService.doCall(
@@ -358,6 +377,32 @@ define([
       );
     }
 
+    function getPropertyChildren(acronym, propertyId) {
+      init();
+      return AuthorizedBackendService.doCall(
+          ControlledTermHttpService.getPropertyChildren(acronym, propertyId),
+          function (response) {
+            return response.data;
+          },
+          function (err) {
+            return handleServerError(err);
+          }
+      );
+    }
+
+    function getPropertyById(acronym, propertyId) {
+      init();
+      return AuthorizedBackendService.doCall(
+          ControlledTermHttpService.getPropertyById(acronym, propertyId),
+          function (response) {
+            return response.data;
+          },
+          function (err) {
+            return handleServerError(err);
+          }
+      );
+    }
+
     function getValueById(acronym, valueId) {
       init();
       return AuthorizedBackendService.doCall(
@@ -397,6 +442,19 @@ define([
       );
     }
 
+    function getPropertyTree(acronym, propertyId) {
+      init();
+      return AuthorizedBackendService.doCall(
+          ControlledTermHttpService.getPropertyTree(acronym, propertyId),
+          function (response) {
+            return response.data;
+          },
+          function (err) {
+            return handleServerError(err);
+          }
+      );
+    }
+
     function getValuesInValueSet(vsCollection, vsId) {
       init();
       return AuthorizedBackendService.doCall(
@@ -425,6 +483,19 @@ define([
       }
       var acronym = ontologyUri.substr(ontologyUri.lastIndexOf('/') + 1);
       return acronym;
+    }
+
+    function searchProperties(query, sources, size) {
+      init();
+      return AuthorizedBackendService.doCall(
+          ControlledTermHttpService.searchProperties(query, sources, size),
+          function (response) {
+            return response.data;
+          },
+          function (err) {
+            return handleServerError(err);
+          }
+      );
     }
 
     function searchClasses(query, sources, size) {

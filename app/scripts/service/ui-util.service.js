@@ -6,9 +6,9 @@ define([
   angular.module('cedar.templateEditor.service.uIUtilService', [])
       .service('UIUtilService', UIUtilService);
 
-  UIUtilService.$inject = ["$window", "$timeout"];
+  UIUtilService.$inject = ["$window", "$timeout", "$rootScope", "$sce", "DataManipulationService"];
 
-  function UIUtilService($window, $timeout) {
+  function UIUtilService($window, $timeout, $rootScope, $sce, DataManipulationService) {
 
     var service = {
       serviceId: "UIUtilService"
@@ -38,7 +38,7 @@ define([
               var center = $window.height/2;
               $window.scrollTo(0, y - 95);
             } else {
-              console.log('not found' + target );
+              console.log('not found' + target);
             }
           }, 250
       );
@@ -62,6 +62,43 @@ define([
       );
     };
 
+    // create a modal id for the controlled terms modals
+    service.getModalId = function (id, type) {
+      if (id) {
+        id = id.substring(id.lastIndexOf('/') + 1);
+      }
+      return "control-options-" + id + "-" + type;
+    };
+
+    // show the controlled terms modal
+    service.showModal = function (id, type) {
+      jQuery("#" + service.getModalId(id, type)).modal('show');
+    };
+
+    // hide the controlled terms modal
+    service.hideModal = function (id, type) {
+      jQuery("#" + service.getModalId(id, type)).modal('hide');
+    };
+
+
+    service.getYouTubeEmbedFrame = function (field) {
+
+      var width = 560;
+      var height = 315;
+      var content = DataManipulationService.getContent(field).replace(/<(?:.|\n)*?>/gm, '');
+      var size = DataManipulationService.getSize(field);
+
+      if (size && size.width && Number.isInteger(size.width)) {
+        width = size.width;
+      }
+      if (size && size.height && Number.isInteger(size.height)) {
+        height = size.height;
+      }
+
+      // if I say trust as html, then better make sure it is safe first
+      return $sce.trustAsHtml('<iframe width="' + width + '" height="' + height + '" src="https://www.youtube.com/embed/' + content + '" frameborder="0" allowfullscreen></iframe>');
+
+    };
 
     service.console = function (txt, label) {
       console.log(label + ' ' + JSON.stringify(txt, null, 2));

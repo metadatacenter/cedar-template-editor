@@ -170,6 +170,18 @@ define([
       $scope.$broadcast('form:reset');
     };
 
+    $scope.logValidation = function (validationStatus, validationReport) {
+
+      var report = JSON.parse(validationReport);
+      for (var i = 0; i < report.warnings.length; i++) {
+        console.log(
+            'Validation Warning: ' + report.warnings[i].message + ' at location ' + report.warnings[i].location);
+      }
+      for (var i = 0; i < report.errors.length; i++) {
+        console.log('Validation Error: ' + report.errors[i].message + ' at location ' + report.errors[i].location);
+      }
+    };
+
     $scope.saveElement = function () {
       populateCreatingFieldOrElement();
       if (dontHaveCreatingFieldOrElement()) {
@@ -209,6 +221,10 @@ define([
           AuthorizedBackendService.doCall(
               TemplateElementService.saveTemplateElement(QueryParamUtilsService.getFolderId(), $scope.element),
               function (response) {
+
+                $scope.logValidation(response.headers("CEDAR-Validation-Status"),
+                    response.headers("CEDAR-Validation-Report"));
+
                 // confirm message
                 UIMessageService.flashSuccess('SERVER.ELEMENT.create.success',
                     {"title": response.data._ui.title},
@@ -234,6 +250,10 @@ define([
           AuthorizedBackendService.doCall(
               TemplateElementService.updateTemplateElement(id, $scope.element),
               function (response) {
+
+                $scope.logValidation(response.headers("CEDAR-Validation-Status"),
+                    response.headers("CEDAR-Validation-Report"));
+
                 DataManipulationService.createDomIds(response.data);
                 angular.extend($scope.element, response.data);
                 $rootScope.jsonToSave = $scope.element;
@@ -307,6 +327,17 @@ define([
         }
       }
     });
+
+    $scope.toRDF = function () {
+      var jsonld = require('jsonld');
+      var copiedForm = jQuery.extend(true, {}, $rootScope.jsonToSave);
+      if (copiedForm) {
+        jsonld.toRDF(copiedForm, {format: 'application/nquads'}, function(err, nquads) {
+          $rootScope.jsonToRDF = nquads;
+          return nquads;
+        });
+      }
+    };
 
     // create a copy of the form with the _tmp fields stripped out
     $scope.stripTmpFields = function () {
@@ -388,6 +419,25 @@ define([
     //TODO this event resets modal state and closes modal
     $scope.$on("field:controlledTermAdded", function () {
       jQuery("#control-options-element-field").modal('hide');
+    });
+
+    // update the property for a field in the element
+    $scope.$on("property:propertyAdded", function (event, args) {
+      console.log('property:propertyAdded');
+      var property = args[0];   // property value
+      var id = args[1];         // field id
+
+      var props = $scope.element.properties;
+      var fieldProp;
+      for (var prop in props) {
+        if (props[prop]['@id'] === id) {
+          var fieldProp = prop;
+          break;
+        }
+      }
+      if (fieldProp) {
+        $scope.element.properties['@context'].properties[fieldProp]['enum'][0] = property;
+      }
     });
 
   }

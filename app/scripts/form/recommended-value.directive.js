@@ -48,38 +48,56 @@ define([
 
       }, true);
 
-      // if ($scope.model) {
-      //   var fieldValue = DataManipulationService.getFieldValue($scope.field);
-      //   $scope.modelValueRecommendation = {valueInfo: {'value': $scope.model[fieldValue]}}
-      // }
-
       $scope.updateModelWhenChangeSelection = function (modelvr, index) {
-        if (modelvr[index] && modelvr[index].valueInfo && modelvr[index].valueInfo.valueUri) {
-          if ($rootScope.isArray($scope.model)) {
-            $scope.model[index]['@id'] = modelvr[index].valueInfo.valueUri;
-            $scope.model[index]['_valueLabel'] = modelvr[index].valueInfo.value;
-            delete $scope.model[index]['@value'];
+        if (modelvr[index] && modelvr[index].valueInfo) {
+          // URI
+          if (modelvr[index].valueInfo.valueUri) {
+            // Array
+            if ($rootScope.isArray($scope.model)) {
+              $scope.model[index]['@id'] = modelvr[index].valueInfo.valueUri;
+              $scope.model[index]['_valueLabel'] = modelvr[index].valueInfo.value;
+              delete $scope.model[index]['@value'];
+            }
+            // Single object
+            else {
+              $scope.model['@id'] = modelvr[index].valueInfo.valueUri;
+              $scope.model['_valueLabel'] = modelvr[index].valueInfo.value;
+              delete $scope.model['@value'];
+            }
           }
+          // Free text
           else {
-            $scope.model['@id'] = modelvr[index].valueInfo.valueUri;
-            $scope.model['_valueLabel'] = modelvr[index].valueInfo.value;
-            delete $scope.model['@value'];
+            // Array
+            if ($rootScope.isArray($scope.model)) {
+              $scope.model[index]['@value'] = modelvr[index].valueInfo.value;
+              delete $scope.model[index]['_valueLabel'];
+            }
+            // Single object
+            else {
+              $scope.model['@value'] = modelvr[index].valueInfo.value;
+              delete $scope.model['_valueLabel'];
+            }
           }
         }
+        // Value is undefined
         else {
+          // Array
           if ($rootScope.isArray($scope.model)) {
-            $scope.model[index]['@value'] = modelvr[index].valueInfo.value;
+            delete $scope.model[index]['@id'];
+            delete $scope.model[index]['@value'];
             delete $scope.model[index]['_valueLabel'];
           }
+          // Single object
           else {
-            $scope.model['@value'] = modelvr[index].valueInfo.value;
+            delete $scope.model['@id'];
+            delete $scope.model['@value'];
             delete $scope.model['_valueLabel'];
           }
         }
       };
 
       $scope.initializeValueRecommendationField = function () {
-        var fieldValue = DataManipulationService.getFieldValue($scope.field);
+        var fieldValue = DataManipulationService.getValueLocation($scope.field);
         $scope.isFirstRefresh = true;
         $scope.modelValueRecommendation = [];
         // If $scope.model is an Array
@@ -156,18 +174,6 @@ define([
           }
         }
       };
-
-      // $scope.clearSelection = function ($event, select) {
-      //   var fieldValue = DataManipulationService.getFieldValue($scope.field);
-      //   $event.stopPropagation();
-      //   $scope.modelValueRecommendation = {
-      //     valueInfo: {'value': null, 'valueUri': null},
-      //   }
-      //   select.selected = undefined;
-      //   select.search = "";
-      //   $scope.model[fieldValue] = null;
-      //   delete $scope.model['_valueLabel'];
-      // };
 
       $scope.calculateUIScore = function (score) {
         var s = Math.floor(score * 100);

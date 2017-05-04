@@ -2,20 +2,21 @@ var testConfig = require('./tests/config/test-env.js');
 
 exports.config = {
   seleniumAddress: 'http://localhost:4444/wd/hub',
-  specs            : ['tests/e2e/**/*.js'],
-  rootElement: 'html',
+  specs          : ['tests/e2e/**/*.js'],
+  rootElement    : 'html',
+  directConnect  : true,
 
   capabilities: {
-    browserName: 'chrome',
+    browserName   : 'chrome',
     shardTestFiles: false,
-    maxInstances:11
+    maxInstances  : 1
   },
 
   allScriptsTimeout: 500000,
-  jasmineNodeOpts: {
-    showColors: true,
+  jasmineNodeOpts  : {
+    showColors            : true,
     defaultTimeoutInterval: 500000,
-    isVerbose: true
+    isVerbose             : true
   },
 
   onPrepare: function () {
@@ -57,16 +58,15 @@ exports.config = {
     browser.addMockModule('disableNgAnimate', disableNgAnimate);
     browser.addMockModule('disableCssAnimate', disableCssAnimate);
 
-    browser.manage().logs().get('browser').then(function(browserLogs) {
+    browser.manage().logs().get('browser').then(function (browserLogs) {
       // browserLogs is an array of objects with level and message fields
-      browserLogs.forEach(function(log){
+      browserLogs.forEach(function (log) {
         //if (log.level.value > 900) { // it's an error log
-          console.log('Browser console error!');
-          console.log(log.message);
+        console.log('Browser console error!');
+        console.log(log.message);
         //}
       });
     });
-
 
 
     browser.driver.findElement(by.id('username')).sendKeys(testConfig.testUser1).then(function () {
@@ -74,7 +74,7 @@ exports.config = {
         browser.driver.findElement(by.id('kc-login')).click().then(function () {
           //browser.driver.wait(browser.driver.isElementPresent(by.id('top-navigation')));
           browser.driver.findElements(By.id('top-navigation')).then(function (found) {
-                console.log(found.length);
+            console.log(found.length);
           });
         });
       });
@@ -90,7 +90,6 @@ exports.config = {
 
       });
     });
-
 
 
   }

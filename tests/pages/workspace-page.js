@@ -8,6 +8,7 @@ var WorkspacePage = function () {
   var toastyModal = require('../modals/toasty-modal.js');
   var sweetAlertModal = require('../modals/sweet-alert-modal.js');
   var templateCreatorPage = require('../pages/template-creator-page.js');
+  var createRootElement = element(by.css('body#rootElement'));
 
   var url = testConfig.baseUrl + '/dashboard';
   var EC = protractor.ExpectedConditions;
@@ -25,6 +26,9 @@ var WorkspacePage = function () {
 
   // page content
   var createSidebarRight = element(by.css('#sidebar-right'));
+  var createSidebarLeft = element(by.css('#sidebar-left'));
+  var createWorkspaceLink = createSidebarLeft.element(by.css('div > div.shared > a [ng-click="dc.goToMyWorkspace()"]'));
+  var createSharedWithMeLink = element(by.css('div > div.shared > a [ng-click="dc.goToSharedWithMe()"]'));
 
 
   // search navigation
@@ -314,9 +318,9 @@ var WorkspacePage = function () {
     browser.wait(EC.presenceOf(createNavbarWorkspace));
   };
 
-      this.topNavigation = function () {
-        return createTopNavigation;
-      };
+  this.topNavigation = function () {
+    return createTopNavigation;
+  };
 
   // are we on the metadata page
   this.onMetadata = function () {
@@ -374,6 +378,7 @@ var WorkspacePage = function () {
         }
         browser.wait(EC.elementToBeClickable(createFolderSubmitButton));
         createFolderSubmitButton.click();
+        toastyModal.isSuccess();
         break;
     }
   };
@@ -383,17 +388,16 @@ var WorkspacePage = function () {
   this.createFolder = function (name) {
     var folderTitle = this.createTitle(name);
     this.createResource('folder', folderTitle);
-    toastyModal.isSuccess();
     return folderTitle;
   };
 
-      // create an element
-      this.createElement = function (name) {
-        var elementTitle = this.createTitle(name);
-        var elementDescription = this.createDescription(name);
-        this.createResource('element', elementTitle, elementDescription);
-        return elementTitle;
-      };
+  // create an element
+  this.createElement = function (name) {
+    var elementTitle = this.createTitle(name);
+    var elementDescription = this.createDescription(name);
+    this.createResource('element', elementTitle, elementDescription);
+    return elementTitle;
+  };
 
   // create a template
   this.createTemplate = function (name) {
@@ -413,12 +417,13 @@ var WorkspacePage = function () {
 
     // delete menu item
     browser.wait(EC.visibilityOf(createDeleteResourceButton));
+    var availableElement = by.css('.some-class:not(.disabled)');
     browser.wait(EC.elementToBeClickable(createDeleteResourceButton));
     createDeleteResourceButton.click();
 
     sweetAlertModal.confirm();
     toastyModal.isSuccess();
-    this.clearSearch();
+    clearSearch();
   };
 
   this.deleteResourceViaRightClick = function (name, type) {
@@ -467,6 +472,17 @@ var WorkspacePage = function () {
     });
   };
 
+  this.setGridView = function () {
+
+    createListView.isPresent().then(function (result) {
+      if (result) {
+        browser.wait(EC.visibilityOf(createGridView));
+        browser.wait(EC.elementToBeClickable(createGridView));
+        createGridView.click();
+      }
+    });
+  };
+
   this.isInfoPanelOpen = function () {
     return createSidebarRight.isPresent();
   };
@@ -483,6 +499,14 @@ var WorkspacePage = function () {
         }
       });
     });
+  };
+
+  this.initPreferences = function () {
+    this.onWorkspace();
+    this.resetFiltering();
+    this.closeInfoPanel();
+    this.setSortOrder('sortCreated');
+    this.setGridView();
   };
 
   // delete a resource whose name contains this string if possible
@@ -677,6 +701,26 @@ var WorkspacePage = function () {
 
   // copy a resource using the right-click menu item
   this.copyResource = function (name, type) {
+    // search for the resource
+    createSearchNavInput.sendKeys(name + protractor.Key.ENTER);
+    var createFirst = element.all(by.css(createFirstCss + type)).first();
+    browser.wait(EC.visibilityOf(createFirst));
+    browser.wait(EC.elementToBeClickable(createFirst));
+    createFirst.click();
+
+    // create more on the toolbar
+    browser.wait(EC.visibilityOf(createMoreOptionsButton));
+    browser.wait(EC.elementToBeClickable(createMoreOptionsButton));
+    createMoreOptionsButton.click();
+
+    // move menu item
+    browser.wait(EC.visibilityOf(createCopyResourceButton));
+    browser.wait(EC.elementToBeClickable(createCopyResourceButton));
+    createCopyResourceButton.click();
+  };
+
+  // copy a resource using the right-click menu item
+  this.copyResourceViaRightClick = function (name, type) {
     this.rightClickResource(name, type);
     browser.wait(EC.elementToBeClickable(createRightClickCopyToMenuItem));
     createRightClickCopyToMenuItem.click();
@@ -732,12 +776,26 @@ var WorkspacePage = function () {
 
   };
 
+  // click on the cedar logo
   this.clickLogo = function () {
     browser.wait(EC.visibilityOf(createLogo));
     browser.wait(EC.elementToBeClickable(createLogo));
     createLogo.click();
   };
 
+  // click on the workspace link
+  this.clickWorkspace = function () {
+    browser.wait(EC.elementToBeClickable(createWorkspaceLink));
+    createWorkspaceLink.click();
+  };
+
+  // click on the shared-with-me link
+  this.clickSharedWithMe = function () {
+    browser.wait(EC.elementToBeClickable(createSharedWithMeLink));
+    createSharedWithMeLink.click();
+  };
+
+  // logout from the account currently logged in to
   this.logout = function () {
     browser.wait(EC.visibilityOf(createUserDropdownButton), 2000);
     browser.wait(EC.elementToBeClickable(createUserDropdownButton), 2000);
@@ -746,7 +804,9 @@ var WorkspacePage = function () {
     createLogoutMenuItem.click();
   };
 
+  // login as the specified user with the given password
   this.login = function (username, password) {
+    this.logout();
     browser.driver.findElement(by.id('username')).sendKeys(username).then(function () {
       browser.driver.findElement(by.id('password')).sendKeys(password).then(function () {
         browser.driver.findElement(by.id('kc-login')).click().then(function () {
@@ -760,6 +820,29 @@ var WorkspacePage = function () {
     });
   };
 
+  // check whether the given username corresponds to the currently logged in user
+  this.isUserLoggedIn = function (username) {
+    this.clickLogo();
+    browser.wait(EC.visibilityOf(createFirstFolder));
+    createBreadcrumbUserName.getText().then(function (text) {
+      return text === username;
+    });
+  };
+
+  // login with the specified userid and password, if the given username is not the one currently logged in
+  this.loginIfNecessary = function (username, userid, password) {
+    this.clickLogo();
+    browser.wait(EC.visibilityOf(createBreadcrumbFirstFolder));
+    createBreadcrumbUserName.getText().then(function (text) {
+      if (text !== username) {
+        var page = new WorkspacePage();
+        page.logout();
+        page.login(userid, password);
+      }
+    });
+  };
+
+  // navigate to the home folder of the specified user
   this.navigateToUserFolder = function (username) {
     this.clickBreadcrumb(1);
     var userFolder = createCenterPanel.element(by.cssContainingText('.folderTitle.ng-binding', username));
@@ -767,6 +850,7 @@ var WorkspacePage = function () {
     browser.actions().doubleClick(userFolder).perform();
   };
 
+  // right-click on a resource
   this.rightClickResource = function (name, type) {
     var element = this.selectResource(name, type);
     browser.actions().mouseMove(element).perform();

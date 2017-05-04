@@ -1,15 +1,49 @@
-<div class="row configuration-options" ng-if="!$root.isRuntime() && !isNested() && !ngDisabled && !preview">
+<div class="row configuration-options field-header sortable-handler"
+    ng-if="!$root.isRuntime() && !isNested() && !ngDisabled && !preview">
 
   <div class=" col-lg-9 pull-left type-label">
-    <div class="sortable-handler ">
-      <p class="type-label"><span class="sortable-icon"></span><i class="{{fieldIconClass}}"></i>
-      <span class="multiple-instance-cardinality"
+
+    <div class="type-label" >
+
+      <!-- sort icon -->
+      <span class="sortable-icon"></span>
+
+      <!-- field type -->
+      <i class="{{fieldIconClass}} field-icon"></i>
+
+      <!-- cardinality -->
+      <span  class="multiple-instance-cardinality"
           ng-show="$parent.field.hasOwnProperty('minItems')">
+
            {{$parent.field.minItems}} .. {{$parent.field.maxItems || "N"}}
        </span>
-        <span style="color:red;" ng-show="$root.schemaOf($parent.field)._valueConstraints.requiredValue">*</span>
-      </p>
+
+      <!-- required -->
+      <span  style="color:red;" ng-show="$root.schemaOf($parent.field)._valueConstraints.requiredValue">*</span>
+
+      <!-- select properties -->
+      <button ng-if="!isStatic() && isEditState()"
+          type="button"
+          class="show-type"
+          ng-click="showModal('property');$root.finalTitle=$root.schemaOf($parent.field)._ui.title"
+          uib-tooltip="{{'HELP.addProperty' | translate}}">
+        <i class="cedar-svg-controll-term collapsed" style="padding-bottom:10px"></i>
+      </button>
+
+      <!-- assigned properties -->
+      <div ng-if="!isStatic() && isEditState()" class="property-dropdown" >
+        <div uib-dropdown dropdown-append-to-body on-toggle="$parent.toggled(open)">
+          <button type="button" uib-dropdown-toggle  ng-click="$parent.toggle()" aria-haspopup="true" aria-expanded="true" class="show-type">
+            <i class="fa fa-caret-down  inline "></i></button>
+          <div uib-dropdown-menu class="property-list">
+            <property-list field="$parent.field" form="$parent.getForm()" ></property-list>
+          </div>
+        </div>
+      </div>
+
+
     </div>
+
   </div>
   <div class="col-lg-3 pull-right configuration-actions" ng-include="'scripts/form/partials/edit-options.partial.html'"
       ng-init="childType='field'"></div>

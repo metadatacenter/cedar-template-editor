@@ -2,7 +2,7 @@
   <!--- not active --->
   <div ng-if="!isActive(index)" ng-click="setActive(index,true)" class="form-group  has-feedback value">
 
-
+    <!-- Regular field -->
     <div ng-if="isRegular() && showMultiple('expanded')"
         aria-label="{{getDescription(field)}}"
         class="isInactive ">{{valueArray[index]['@value']}} &nbsp;</div>
@@ -12,22 +12,38 @@
         class="isInactive "> {{getValueString(valueArray)}} &nbsp;</span>
     </div>
 
-    <div ng-if="!isRegular()"
+    <!-- Field with values have been constrained using controlled terms -->
+    <div ng-if="isConstrained() && showMultiple('expanded')"
         aria-label="{{getDescription(field)}}"
-        class="isInactive ">{{getValueString(valueArray)}} &nbsp;</div>
+        class="isInactive ">{{valueArray[index]['_valueLabel']}} &nbsp;</div>
 
+    <div ng-if="isConstrained() && showMultiple('paged')"
+        aria-label="{{getDescription(field)}}"
+        class="isInactive "> {{getValueString(valueArray)}} &nbsp;</span>
+    </div>
+
+    <!-- Field with value recommendation functionality -->
+    <!--TODO: pick _valueLabel or @value depending on the existing field value-->
+    <div ng-if="isRecommended() && showMultiple('expanded')"
+        aria-label="{{getDescription(field)}}"
+        class="isInactive ">{{valueArray[index]['_valueLabel']}} &nbsp;</div>
+
+    <div ng-if="isRecommended() && showMultiple('paged')"
+        aria-label="{{getDescription(field)}}"
+        class="isInactive "> {{getValueString(valueArray)}} &nbsp;</span>
+    </div>
 
   </div>
 
   <!-- actively being edited -->
   <div ng-if="isActive(index)">
 
-    <!--Regular field-->
+    <!-- Regular field -->
     <div ng-if="isRegular()" class="form-group has-success has-feedback">
       <input type="text"
           class="form-control select"
           ng-class="{'isActive' : isActive(index), 'required': isRequired()}"
-          placeholder="{{isActive(index) ? 'enter answer' : ''}}"
+          placeholder="{{isActive(index) ? 'enter value' : ''}}"
           aria-label="{{getDescription(field)}}"
           ng-required="isRequired()"
           ng-model="valueElement['@value']">
@@ -35,7 +51,7 @@
       <div class="input-indicator-icons" ng-include="'scripts/form/partials/indicator-icons.partial.html'"></div>
     </div>
 
-    <!--Field with values have been constrained using controlled terms -->
+    <!-- Field with values have been constrained using controlled terms -->
     <constrained-value ng-if="isConstrained()" class="form-group  has-feedback" model="model" index="index"
         field="field"></constrained-value>
 

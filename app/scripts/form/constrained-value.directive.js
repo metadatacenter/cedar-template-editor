@@ -51,34 +51,29 @@ define([
       }, true);
 
       // Updates the model for fields whose values have been constrained using controlled terms
-      $scope.updateModelFromUIControlledField = function () {
-        // Multiple fields
-        if ($scope.isMultipleCardinality()) {
-          if ($scope.modelValue.length > 0) {
-            angular.forEach($scope.modelValue, function (m, i) {
-              if (m && m['termInfo'] && m['termInfo']['@id']) {
-                $scope.model[i] = {
-                  "@id"      : m['termInfo']['@id'],
-                  _valueLabel: m['termInfo'].label
-                };
-              } else {
-                delete $scope.model[i]['termInfo']
-              }
-            });
+      $scope.updateModelFromUIControlledField = function (modelValue, index) {
+        if (modelValue[index] && modelValue[index].termInfo) {
+          // Array
+          if ($rootScope.isArray($scope.model)) {
+            $scope.model[index]['@id'] = modelValue[index].termInfo['@id'];
+            $scope.model[index]['_valueLabel'] = modelValue[index].termInfo.label;
           }
+          // Single object
           else {
-            // Default value
-            $scope.model = [{'@id': null}];
+            $scope.model['@id'] = modelValue[index].termInfo['@id'];
+            $scope.model['_valueLabel'] = modelValue[index].termInfo.label;
           }
-
         }
-        // Single fields
+        // Value is undefined
         else {
-          if ($scope.modelValue[0]['termInfo']) {
-            $scope.model['@id'] = $scope.modelValue[0]['termInfo']['@id'];
-            $scope.model._valueLabel = $scope.modelValue[0]['termInfo']['label'];
-          } else {
-            $scope.model['@id'] = null;
+          // Array
+          if ($rootScope.isArray($scope.model)) {
+            delete $scope.model[index]['@id'];
+            delete $scope.model[index]['_valueLabel'];
+          }
+          // Single object
+          else {
+            delete $scope.model['@id'];
             delete $scope.model['_valueLabel'];
           }
         }
@@ -107,11 +102,6 @@ define([
 
       // Initializes model for fields constrained using controlled terms
       $scope.updateUIFromModelControlledField();
-
-      // Load values when opening an instance
-      // if ($scope.model) {
-      //   $scope.modelValueRecommendation = {'@id': {'value': $scope.model['termInfo']}}
-      // }
     };
 
     return {

@@ -26,13 +26,13 @@
           </div>
         </div>
         <button type="button" class="show-type"
-            ng-click="showModal('control-options-template-field');$root.finalTitle=form._ui.title">
+            ng-click="showModal('control-options-template-field'); $root.finalTitle=form._ui.title">
           <i class="cedar-svg-controll-term collapsed" style="padding-bottom:10px"></i>
         </button>
-        <div class="btn-group dropdown">
-          <button  data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" class="show-type"><i
-              class="fa fa-caret-down  inline "></i></button>
-          <div class="dropdown-menu dropdown-menu-right" class="class-list" >
+        <div class="class-dropdown" uib-dropdown on-toggle="toggled(open)">
+          <button type="button" uib-dropdown-toggle ng-click="toggle()" aria-haspopup="true" aria-expanded="true">
+            <i class="fa fa-caret-down  inline "></i></button>
+          <div uib-dropdown-menu class="class-list pull-right dropdown-menu">
             <class-list field="form" view-type="viewType"></class-list>
           </div>
         </div>
@@ -41,6 +41,7 @@
   </div>
 
   <div class="template-body create-template-body template">
+
     <div class="container">
       <div class="row">
         <div class="right-body col-sm-10 col-sm-offset-1">
@@ -112,13 +113,14 @@
       </div>
     </div>
 
+    <!-- finder modal -->
     <cedar-finder class="modal finder-modal fade" tabindex="-1" id="finder-modal" role="dialog" data-keyboard="true"
         data-backdrop="static" select-resource-callback="selectElementFromPicker"
         pick-resource-callback="pickElementFromPicker"
         mode="'modal'">
     </cedar-finder>
 
-    <!-- field modal -->
+    <!-- controlled terms modal for fields -->
     <div class="modal fade controlled-terms-modal" id="control-options-template-field" data-backdrop="static">
       <div class="modal-dialog">
         <div class="modal-content" style="overflow:auto">
@@ -136,4 +138,5 @@
     </div>
 
   </div>
+
 </div>

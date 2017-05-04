@@ -1600,10 +1600,6 @@ body.search-browse-modal {
   }
 }
 
-
-
-
-
 .template-header {
   width: 100%;
   background-color: @header-bg-color;
@@ -1667,13 +1663,31 @@ body.search-browse-modal {
 
   .show-type {
     background: transparent;
-    color: white;
-    .class-list {
-      border-radius: 0;margin:0;padding:0
+    color: @white;
+    .class-list, .property-list {
+      border-radius: 0;
+      margin: 0;
+      padding: 0
     }
-    i.fa-caret-down {
-      margin-left: -12px;
+  }
+
+  .class-dropdown {
+    display: inline-block;
+    button {
+      background: transparent;
+      position: relative;
+      left: -12px;
+      color: @white;
     }
+  }
+
+  .pull-right .dropdown-menu:after {
+    left: auto;
+    right: 13px;
+  }
+  .pull-right .dropdown-menu {
+    left: auto;
+    right: 0;
   }
 
   #element-name-container,
@@ -2714,6 +2728,7 @@ section.dashboard-elements {
       margin: 0;
       padding: 0 0 0 12px;
       position: relative;
+      border-left:1px solid @med-gray;
     }
 
     li.tv::before, li.tv::after {
@@ -2724,62 +2739,58 @@ section.dashboard-elements {
 
     /* horizontal line on inner list items */
     li.tv::before {
-      border-top: 1px solid @med-gray;
       top: 15px;
       width: 10px;
       height: 0;
+      border-top: 1px solid @med-gray;
     }
 
-    /* horizontal line on inner list items */
-    li.tv::before {
-      width: 10px;
+    li.last.tv {
+      border-left-width:0px;
     }
-
     /* horizontal line on inner list items */
     li.tv.element::before {
       width: 10px;
     }
 
+    /* horizontal line on inner list items */
+    li.tv.last.element::before {
+      border-top-width: 0px;
+    }
+
     /* vertical line on list items */
-    li.tv::after {
-      border-left: 1px solid @med-gray;
+    li.tv.last::after {
       height: 100%;
       width: 0px;
       top: -20px;
+      border-left: 1px solid @med-gray;
     }
 
-    /* first field */
-    li.tv.first::after {
-      top: 0;
-      height: 100%;
-    }
-
+    // horizontal line for single items
     li.tv.first.last::after {
       top: 0;
       height: 15px;
+      border-left: 1px solid @med-gray;
     }
 
-    li.tv.first.element::after {
+    li.tv.last.element::before {
+      border-left:1px solid @med-gray;
+    }
+
+    li.tv.element::after, li.tv.last.element::after, ul li.last.element::after {
       top: 0;
       height: 16px;
     }
+
+    li.tv.last.element::before {
+      border-left:1px solid @med-gray;
+      height:16px;
+      top:0;
+      border-bottom:1px solid @med-gray;
+      width:10px;
+    }
   }
 
-  /* lower line on list items from the first level because they don't have parents */
-  .treeview > li.tv::after {
-    top: 15px;
-  }
-
-  /* hide line from the last of the first level list items */
-  .treeview > li.tv:last-child::after {
-    display: none;
-  }
-
-  /*  very first field or element */
-  .treeview > li.tv.first::after {
-    top: 15px;
-    height: 100%;
-  }
 
   .paging {
     max-height: 17px;
@@ -2954,6 +2965,9 @@ section.dashboard-elements {
 
     &:disabled {
       color: @brand-primary-disabled;
+    }
+    &.form-title {
+      margin-left: -6px;
     }
 
   }
@@ -3568,6 +3582,36 @@ section.dashboard-elements {
 === Field Definition Partials
 ================================================
 */
+
+.field-header {
+  .field-icon {
+    color: @med-gray;
+  }
+  .type-label {
+    text-transform: none;
+    padding-left: 10px;
+  }
+  .show-type {
+    background: transparent;
+    color: #5795ba
+  }
+  .property-dropdown, .class_dropdown {
+    display: inline-block;
+    color: #5795ba;
+    button {
+      background: transparent;
+      position: relative;
+      left: -12px
+    }
+  }
+}
+
+.class-list, .property-list {
+  border-radius: 0;
+  margin: 0;
+  padding: 0;
+}
+
 .input-type-container {
   clear: both;
   padding-top: 0px;
@@ -3581,7 +3625,7 @@ section.dashboard-elements {
     margin-bottom: 20px;
 
     i {
-      color: @brand-primary;
+      color: @med-gray;
     }
   }
 
@@ -3922,6 +3966,66 @@ section.dashboard-elements {
     }
   }
 
+  .additional-details {
+    width: 100%;
+    margin-top: 0.8em;
+
+    .terminology-tree-container {
+      width: 35%;
+      height: 330px;
+      float: left;
+
+      .tree-header {
+        width: 100%;
+        height: 38px;
+
+        h4 {
+          margin-right: 4%;
+          color: @brand-primary;
+        }
+      }
+
+      .tree-content {
+        width: 100%;
+        height: 300px;
+        background-color: white;
+        overflow: hidden;
+      }
+
+    }
+
+    .selection-details-container {
+      width: 63%;
+      height: 330px;
+      float: right;
+
+      .nav-tabs {
+        border-color: @brand-primary;
+        text-transform: uppercase;
+
+        li {
+          a {
+            border: none;
+            border-bottom: solid 1px @brand-primary;
+            border-radius: 0px;
+            margin-right: 6px;
+            background: @gray3;
+            color: grey;
+          }
+
+          &.active {
+            a {
+              border-color: @brand-primary;
+              background: @brand-primary;
+              color: #FFFFFF;
+              font-weight: normal;
+            }
+          }
+        }
+      }
+    }
+  }
+
   .field-tree {
     .class-actions {
       margin-top: 30px;
@@ -3990,6 +4094,7 @@ section.dashboard-elements {
   }
 
   .ontology-tree {
+    width: 100%;
     & > h4 {
       margin-top: 0px;
     }
@@ -4479,11 +4584,29 @@ p.instructions {
   }
 }
 
+#cardinality-options {
+
+  .cardinality-selector {
+    padding: 0 10px;
+  }
+
+  button {
+    width: 130px;
+  }
+
+  .cardinality-selectors {
+    i.check {
+      float: right;
+    }
+  }
+}
+
 /*
 ================================================
 === Element Builder Actions
 ================================================
 */
+
 .element-actions {
   padding-top: 40px;
   border-top: 0px solid #ddd;
@@ -4510,6 +4633,10 @@ p.instructions {
         color: @brand-primary;
       }
     }
+  }
+
+  .search {
+    margin: 10px;
   }
 
   .clear-save {
@@ -4582,6 +4709,10 @@ p.instructions {
         color: @brand-primary;
       }
     }
+  }
+
+  .search {
+    margin: 10px;
   }
 
   .clear-save {
@@ -5233,81 +5364,6 @@ p.instructions {
   padding-left: 0;
 }
 
-.field-tree {
-  margin-top: 20px;
-  .ontology-tree {
-
-    margin: 0;
-    width: 40%;
-    padding: 4px 4px 0;
-    background: @white;
-
-    .class-tree-container {
-      padding: 0 5px 5px 5px;
-      background: #FFF;
-    }
-  }
-
-  .ontology-class-children {
-    width: 40%;
-  }
-
-  .field-details-view {
-    width: 58%;
-
-    .nav-tabs {
-      border-color: @brand-primary;
-      text-transform: uppercase;
-
-      .detail-view-tab {
-        a {
-          border: none;
-          border-bottom: solid 1px @brand-primary;
-          border-radius: 0px;
-          margin-right: 6px;
-          background: @gray3;
-          color: grey;
-        }
-
-        &.active {
-          a {
-            border-color: @brand-primary;
-            background: @brand-primary;
-            color: #FFFFFF;
-            font-weight: normal;
-          }
-        }
-      }
-    }
-
-    .tab-content {
-      table {
-        th {
-          padding: 8px 8px;
-          color: @brand-primary;
-          font-weight: bold;
-
-          border: none;
-          border-bottom: 1px solid #DDD;
-
-          &:first-child {
-            width: 100px;
-          }
-        }
-        tbody {
-          border-bottom: 1px solid #DDD;
-        }
-
-        td {
-          border: none;
-          border-bottom: 1px solid #DDD;
-          padding: 8px 8px;
-        }
-      }
-    }
-  }
-}
-
 .selected-field-class {
   margin-left: -28px;
   border: 1px solid #DDD;
@@ -5394,6 +5450,18 @@ p.instructions {
 
     > thead > tr > th {
       border-bottom: none;
+    }
+  }
+}
+
+.menu-form {
+  margin: 0;
+  padding: 0;
+  margin-bottom: 0;
+  .class-list-container {
+    margin-bottom: 0;
+    .empty {
+      color: #ccc;
     }
   }
 }
@@ -6150,7 +6218,7 @@ body .template-header .controlled-terms-modal {
   text-indent: -1000px;
   width: 0;
   height: 20px;
-  padding: 0 10px 0 20px;
+  padding: 0 12px;
 }
 
 .ibl {
@@ -6883,12 +6951,12 @@ table.apiKey {
           opacity: 0.5;
         }
         &.selected {
-          a,a:hover {
-            color:@white;
+          a, a:hover {
+            color: @white;
           }
         }
-        a,a:hover {
-          color:@brand-primary;;
+        a, a:hover {
+          color: @brand-primary;;
         }
       }
     }
@@ -7265,5 +7333,38 @@ textarea.curlSample {
   font-family: Courier;
   font-size: 11px
 }
+
+// document preview in json-ld or rdf
+#outputJSON, #templateJSON {
+  .nav-tabs > li > a {
+    border: 0px solid #ccc;
+    border-radius: 0;
+    i.cedar-svg-rdf {
+      padding-right: 10px;
+    }
+  }
+  .nav-tabs > li.active > a {
+  }
+  pre {
+    background: white;
+    border: 0px;
+    border-radius: 0px;
+    min-height: 100px;
+  }
+  .warning {
+    font-size: 16px;
+    padding: 40px 0;
+    color: #ccc;
+    background-color: @white;
+    border-width: 0px;
+    min-height: 100px;
+  }
+}
+
+
+
+
+
+
 
 

@@ -1,10 +1,11 @@
 <div class="controlled-terms controlled-term-options">
 
-  <div class="form-group floating-label-wrapper field-filter clearfix" ng-if="ctdc.filterSelection == 'field'">
-
+  <div class="form-group floating-label-wrapper field-filter clearfix" ng-if="ctdc.filterSelection == 'properties'">
+    
     <controlled-term-search
         field-name="$root.finalTitle"
         search-mode="ctdc.filterSelection"
+        add-callback="ctdc.addProperty"
         reset-callback="ctdc.startOver"
         current-ontology="ctdc.currentOntology"
         selected-class="ctdc.selectedClass"
@@ -13,6 +14,38 @@
         is-creating-vs="false"
         tree-visible="ctdc.treeVisible"
         modal-id="ctdc.modalId"
+        search-for="properties">
+    </controlled-term-search>
+
+    <div class="class-actions">
+      <div class="class-action" ng-if="ctdc.selectedClass.prefLabel">
+        <div class="action-msg">
+          <span>Click OK to select the property <span class="highlighted">'{{ctdc.selectedClass.prefLabel}}'</span> from {{ctdc.currentOntology.info.id}}</span>
+        </div>
+        <div>
+          <button type="button" class="std-button btn btn-add-term"
+              ng-click="ctdc.addProperty(ctdc.selectedClass.id); ctdc.startOver()">OK
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-group floating-label-wrapper field-filter clearfix" ng-if="ctdc.filterSelection == 'field'">
+
+    <controlled-term-search
+        field-name="$root.finalTitle"
+        search-mode="ctdc.filterSelection"
+        add-callback="ctdc.addClass"
+        reset-callback="ctdc.startOver"
+        current-ontology="ctdc.currentOntology"
+        selected-class="ctdc.selectedClass"
+        is-loading-class-details="ctdc.isLoadingClassDetails"
+        is-creating-mappings="false"
+        is-creating-vs="false"
+        tree-visible="ctdc.treeVisible"
+        modal-id="ctdc.modalId"
+        search-for="classes"
         >
     </controlled-term-search>
 
@@ -26,8 +59,8 @@
               ng-click="ctdc.addClass(ctdc.selectedClass, ctdc.currentOntology); ctdc.startOver()">OK
           </button>
           <!--<button type="button" class="std-button btn btn-add-term"-->
-              <!--ng-click="ctdc.addClass(ctdc.selectedClass, ctdc.currentOntology); ctdc.startOver()" data-dismiss="modal">-->
-            <!--Cancel-->
+          <!--ng-click="ctdc.addClass(ctdc.selectedClass, ctdc.currentOntology); ctdc.startOver()" data-dismiss="modal">-->
+          <!--Cancel-->
           <!--</button>-->
         </div>
       </div>
@@ -39,6 +72,7 @@
     <controlled-term-search
         field-name="$root.finalTitle"
         search-mode="ctdc.filterSelection"
+        add-callback="ctdc.addValueConstraint"
         reset-callback="ctdc.startOver"
         current-ontology="ctdc.currentOntology"
         selected-class="ctdc.selectedClass"
@@ -47,6 +81,7 @@
         is-creating-vs="false"
         tree-visible="ctdc.treeVisible"
         modal-id="ctdc.modalId"
+        search-for="classes"
         >
     </controlled-term-search>
 
