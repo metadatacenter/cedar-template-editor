@@ -120,7 +120,7 @@ gulp.task('watch', function (done) {
   done();
 });
 
-// Tasks for tests
+// Karma tests
 gulp.task('test', function (done) {
   new Server({
     configFile: __dirname + '/karma.conf.js',
@@ -143,6 +143,7 @@ gulp.task('test-env', function (done) {
   done();
 });
 
+// Protractor tests
 gulp.task('e2e', gulp.series('test-env', function () {
   return gulp.src([
     // './tests/e2e/clean-up-spec.js',
