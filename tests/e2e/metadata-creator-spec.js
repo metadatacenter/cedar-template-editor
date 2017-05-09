@@ -7,8 +7,6 @@ var SweetAlertModal = require('../modals/sweet-alert-modal.js');
 var testConfig = require('../config/test-env.js');
 var _ = require('../libs/lodash.min.js');
 
-
-
 describe('metadata-creator', function () {
   var EC = protractor.ExpectedConditions;
   var workspacePage = WorkspacePage;
@@ -30,7 +28,6 @@ describe('metadata-creator', function () {
     result.password = password;
     return result;
   };
-
 
   beforeEach(function () {
   });
@@ -172,7 +169,6 @@ describe('metadata-creator', function () {
       }
     });
   });
-
 
 });
 
