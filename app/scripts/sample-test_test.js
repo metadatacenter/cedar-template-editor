@@ -1,7 +1,14 @@
-// Be descriptive with titles here. The describe and it titles combined read like a sentence.
-describe('sample test', function () {
-  it('has a dummy spec to test 2 + 2', function () {
-    // An intentionally failing test. No code within expect() will never equal 4.
-    expect(2 + 2).toEqual(4);
+'use strict';
+
+// a very basic test suite (group of tests)
+describe('sample component test', function() {
+  // a single test
+  it('ensure addition is correct', function() {
+    // sample expectation
+    expect(1+1).toEqual(2);
+  });
+  // another test
+  it('ensure substraction is correct', function() {
+    expect(1-1).toEqual(0);
   });
 });

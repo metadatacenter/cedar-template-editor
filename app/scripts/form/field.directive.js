@@ -29,8 +29,6 @@ define([
         isopen: false
       };
 
-
-
       //
       // model and ui support
       //
