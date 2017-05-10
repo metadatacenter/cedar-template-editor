@@ -1,6 +1,19 @@
 /**
- * RequireJS configuration file
+ * Karma-RequireJS configuration file - Used for unit testing
  */
+
+if (window.__karma__) {
+  var allTestFiles = [];
+  var TEST_REGEXP = /_test\.js$/;
+
+  Object.keys(window.__karma__.files).forEach(function (file) {
+    if (TEST_REGEXP.test(file)) {
+      // Normalize paths to RequireJS module names.
+      allTestFiles.push(file);
+    }
+  });
+}
+console.log('Tests found: ' + allTestFiles);
 
 require.config({
   paths   : {
@@ -20,17 +33,18 @@ require.config({
     'cedar/template-editor': 'scripts',
 
     'ckeditor': 'bower_components/ng-ckeditor/libs/ckeditor/ckeditor',
-    'jsonld': 'bower_components/jsonld/js/jsonld'
+    'jsonld'  : 'bower_components/jsonld/js/jsonld'
   },
   shim    : {
-    'angular'                                                                            : {
-      'deps'   : ['jquery'],
-      'exports': 'angular'
+    'angular'     : {
+      deps   : ['jquery'],
+      exports: 'angular'
     },
-    'angularMocks'                                                                       : {
-      deps     : ['angular'],
-      'exports': 'angular.mock'
+    'angularMocks': {
+      deps   : ['angular'],
+      exports: 'angular.mock'
     },
+
     'lib/angucomplete-alt/angulcomplete-alt'                                             : ['angular'],
     'lib/angular-animate/angular-animate.min'                                            : ['angular'],
     'lib/angular-bootstrap/ui-bootstrap.min'                                             : ['angular'],
@@ -43,7 +57,11 @@ require.config({
     'lib/angular-ui-select/dist/select.min'                                              : ['angular'],
     'lib/angular-ui-sortable/sortable.min'                                               : ['angular'],
     'lib/angulartics/dist/angulartics.min'                                               : ['angular'],
-
+    'lib/angular-ui-switch/angular-ui-switch.min'                                        : ['angular'],
+    'lib/ng-tags-input/ng-tags-input.min'                                                : ['angular'],
+    'lib/angular-ui-keypress/keypress.min'                                               : ['angular'],
+    'lib/angulartics-google-analytics/dist/angulartics-google-analytics.min'             : ['angular'],
+    'lib/angular-ui-tree/dist/angular-ui-tree'                                           : ['angular'],
 
     '3rdparty/angular-fitvids/angular-fitvids': {
       deps   : ['angular', 'jquery'],
@@ -52,7 +70,7 @@ require.config({
 
     'lib/ng-ckeditor/ng-ckeditor.min': ['angular', 'ckeditor'],
     'ckeditor'                       : {
-      'exports': 'CKEDITOR'
+      exports: 'CKEDITOR'
     },
 
     'lib/ngHandsontable/dist/ngHandsontable.min'                                 : ['angular',
@@ -72,11 +90,11 @@ require.config({
   deps    : window.__karma__ ? allTestFiles : [],
   callback: window.__karma__ ? window.__karma__.start : null,
   baseUrl : window.__karma__ ? '/base' : '',
-  urlArgs : "v=" + window.cedarCacheControl
+  //urlArgs : "v=" + window.cedarCacheControl
 });
 
 // do not load the full app here.
-// maybe we will be redirected to Keycloak for authentication
+// maybe we will be redirected for authentication
 require([
   'angular',
 ], function (angular) {
@@ -90,11 +108,6 @@ require([
         'app',
       ], function (angular, app) {
         angular.bootstrap(document, ['cedar.templateEditor']);
-
-        // Set the ng-app class for Angular Protractor tests
-        var root = document.documentElement;
-
-        angular.element(root).addClass('ng-app');
 
       });
     }
@@ -113,7 +126,9 @@ require([
       alert("There was an error initializing the application!");
     }
 
-    window.bootstrapUserHandler = new KeycloakUserHandler();
+    // use this for unauthorized access during the execution of the Karma tests
+    window.bootstrapUserHandler = new NoauthUserHandler();
+
     window.bootstrapUserHandler.initUserHandler(successInitUserHandler, failInitUserHandler);
   });
 

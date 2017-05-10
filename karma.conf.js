@@ -8,19 +8,26 @@ module.exports = function(config) {
 
     // frameworks to use
     // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
-    frameworks: ['jasmine'],
+    frameworks: ['jasmine', 'requirejs'],
 
     // list of files / patterns to load in the browser
     files: [
-      'scripts/**/*_test.js',
+      // bower
       { pattern: 'bower_components/**/*.js', included: false },
+      // config files
       { pattern: 'config/*.json', included: false },
       { pattern: 'resources/*.json', included: false },
+      // custom libraries
+      //{ pattern: 'cedar/scripts/**/*.js', included: false },
+      // third party libraries
+      { pattern: 'third_party_components/**/*.js', included: false },
+
+      { pattern: 'scripts/**/*.js', included: false },
       { pattern: 'scripts/app.js', included: false },
-      // 'scripts/keycloak/keycloak.min.js',
-      // 'scripts/handlers/KeycloakUserHandler.js',
-      // 'scripts/handlers/UserProfileHandler.js',
-      // 'require-config.js',
+      'scripts/keycloak/keycloak.min.js',
+      'scripts/handlers/*.js',
+      // RequireJS config for Karma tests
+      'test-require-config.js'
     ],
 
     // list of files to exclude
