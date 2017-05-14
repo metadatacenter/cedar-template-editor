@@ -1,7 +1,7 @@
 'use strict';
 
 define(['app', 'angularMocks'], function(app) {
-  describe('CreateElementController', function() {
+  describe('create-element.controller_test.js', function() {
     beforeEach(module('cedar.templateEditor'));
 
     var $controller;

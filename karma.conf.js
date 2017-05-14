@@ -1,6 +1,6 @@
 // Karma configuration
 
-module.exports = function(config) {
+module.exports = function (config) {
   config.set({
 
     // base path that will be used to resolve all patterns (eg. files, exclude)
@@ -13,21 +13,38 @@ module.exports = function(config) {
     // list of files / patterns to load in the browser
     files: [
       // bower
-      { pattern: 'bower_components/**/*.js', included: false },
+      {pattern: 'bower_components/**/*.js', included: false},
+
+      // This line is required to load html templates using the html2js preprocessor, but it generates a 'WARNING: Tried
+      // to load angular more than once.' message
+      'bower_components/angular/angular.js',
+
       // config files
-      { pattern: 'config/*.json', included: false },
-      { pattern: 'resources/*.json', included: false },
+      {pattern: 'config/**/*.json', included: false},
+      //{pattern: 'config/*.json', included: false},
+      {pattern: 'resources/**/*.json', included: false},
       // custom libraries
       //{ pattern: 'cedar/scripts/**/*.js', included: false },
       // third party libraries
-      { pattern: 'third_party_components/**/*.js', included: false },
+      {pattern: 'third_party_components/**/*.js', included: false},
 
-      { pattern: 'scripts/**/*.js', included: false },
-      { pattern: 'scripts/app.js', included: false },
+      {pattern: 'scripts/**/*.js', included: false},
+      {pattern: 'scripts/app.js', included: false},
       'scripts/keycloak/keycloak.min.js',
       'scripts/handlers/*.js',
       // RequireJS config for Karma tests
-      'test-require-config.js'
+      'test-require-config.js',
+
+      // templates
+      'scripts/form/form.directive.html',
+      'scripts/form/field.directive.html',
+      'scripts/form/field-create/checkbox.html',
+      'scripts/form/field-render/checkbox.html',
+      'scripts/form/partials/*.html',
+      'scripts/controlled-term/class-list.directive.html',
+      'scripts/controlled-term/controlled-term.directive.html',
+      'scripts/controlled-term/property-list.directive.html',
+      'scripts/dashboard/dashboard.html'
     ],
 
     // list of files to exclude
@@ -37,12 +54,19 @@ module.exports = function(config) {
 
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
-    preprocessors: {},
+    preprocessors: {
+      'scripts/**/*.html': ['ng-html2js'], // alternative: "path/to/templates/**/*.html": ["ng-html2js"]
+    },
 
-    // test results reporter to use
-    // possible values: 'dots', 'progress'
-    // available reporters: https://npmjs.org/browse/keyword/karma-reporter
-    reporters: ['progress'],
+    ngHtml2JsPreprocessor: {
+      // the name of the Angular module to create
+      moduleName: "my.templates"
+    },
+
+    // Available reporters: https://npmjs.org/browse/keyword/karma-reporter
+    // - default reporters: dots, progress
+    // - other installed reporters: spec
+    reporters: ['mocha'],
 
     // web server port
     port: 9876,
@@ -74,7 +98,7 @@ module.exports = function(config) {
     //   }
     // }
   });
-  
+
   // Custom configuration for Travis-CI
   // if(process.env.TRAVIS) {
   //   config.browsers = ['chromeTravisCI'];

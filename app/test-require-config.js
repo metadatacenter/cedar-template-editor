@@ -33,7 +33,7 @@ require.config({
     'cedar/template-editor': 'scripts',
 
     'ckeditor': 'bower_components/ng-ckeditor/libs/ckeditor/ckeditor',
-    'jsonld'  : 'bower_components/jsonld/js/jsonld'
+    'jsonld'  : 'bower_components/jsonld/js/jsonld',
   },
   shim    : {
     'angular'     : {
