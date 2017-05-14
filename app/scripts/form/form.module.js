@@ -25,8 +25,6 @@ define([
   'cedar/template-editor/form/file-upload.directive',
   'cedar/template-editor/form/field-create/cardinality-selector.directive',
 
-  'cedar/template-editor/form/sample-directive-and-test/hello-world.directive'
-
 
 ], function(angular) {
   angular.module('cedar.templateEditor.form', [
@@ -51,9 +49,7 @@ define([
     'cedar.templateEditor.searchBrowse.cedarModalShowDirective',
     'cedar.templateEditor.form.airrSubmissionModal',
     'cedar.templateEditor.form.fileUpload',
-    'cedar.templateEditor.form.fieldCreate.cardinalitySelector',
-
-    'cedar.templateEditor.form.helloWorldDirective'
+    'cedar.templateEditor.form.fieldCreate.cardinalitySelector'
 
   ]);
 });

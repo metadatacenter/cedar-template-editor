@@ -34,9 +34,17 @@ module.exports = function (config) {
       'scripts/handlers/*.js',
       // RequireJS config for Karma tests
       'test-require-config.js',
+
       // templates
-      'scripts/form/sample-directive-and-test/hello-world.directive.html',
-      'scripts/form/form.directive.html'
+      'scripts/form/form.directive.html',
+      'scripts/form/field.directive.html',
+      'scripts/form/field-create/checkbox.html',
+      'scripts/form/field-render/checkbox.html',
+      'scripts/form/partials/*.html',
+      'scripts/controlled-term/class-list.directive.html',
+      'scripts/controlled-term/controlled-term.directive.html',
+      'scripts/controlled-term/property-list.directive.html',
+      'scripts/dashboard/dashboard.html'
     ],
 
     // list of files to exclude
@@ -47,11 +55,7 @@ module.exports = function (config) {
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     preprocessors: {
-      // alternative: "path/to/templates/**/*.html": ["ng-html2js"]
-      'scripts/**/*.html': ['ng-html2js'],
-      // 'config/**/*.json': ['ng-html2js'],
-      // 'config/*.json': ['ng-html2js']
-      //'scripts/form/sample-directive-and-test/hello-world.directive.html': ['ng-html2js']
+      'scripts/**/*.html': ['ng-html2js'], // alternative: "path/to/templates/**/*.html": ["ng-html2js"]
     },
 
     ngHtml2JsPreprocessor: {
@@ -59,10 +63,10 @@ module.exports = function (config) {
       moduleName: "my.templates"
     },
 
-    // test results reporter to use
-    // possible values: 'dots', 'progress'
-    // available reporters: https://npmjs.org/browse/keyword/karma-reporter
-    reporters: ['progress'],
+    // Available reporters: https://npmjs.org/browse/keyword/karma-reporter
+    // - default reporters: dots, progress
+    // - other installed reporters: spec
+    reporters: ['mocha'],
 
     // web server port
     port: 9876,
