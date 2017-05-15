@@ -1028,6 +1028,16 @@ define([
           return $rootScope.schemaOf(fieldOrElement)._valueConstraints.literals;
         };
 
+        // checks if the literal has been set to 'selected by default'
+        service.isSelectedByDefault = function (literal) {
+          if (literal.selectedByDefault) {
+            return true;
+          }
+          else {
+            return false;
+          }
+        };
+
         // returns the position of a particular literal in the literals array
         service.indexOfLiteral = function (field, literal) {
           var literals = service.getLiterals(field);
