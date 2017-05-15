@@ -13,7 +13,7 @@ define(['app', 'angularMocks'], function(app) {
       $rootScope = _$rootScope_;
     }));
 
-    describe('$scope.pageTitle', function() {
+    describe('CreateElementController', function() {
       it('sets the pageTitle to "Element Designer"', function() {
         var $scope = $rootScope.$new();
         var controller = $controller('CreateElementController', { $scope: $scope });
