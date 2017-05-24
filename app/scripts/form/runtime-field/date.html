@@ -19,10 +19,19 @@
   </div>
 
   <!--- not active --->
-  <div ng-if="!isActive(index)" class="form-group  has-feedback value">
-    <div
-        ng-click="setActive(index,true)"
-        aria-label="{{getDescription(field)}}">{{getValueString((valueArray))}}</div>
+  <div ng-if="!isActive(index)" class="form-group  has-feedback value" ng-click="setActive(index,true)">
+
+    <!-- expanded view -->
+    <div ng-if="showMultiple('expanded')"
+        aria-label="{{getDescription(field)}}"
+        class="isInactive ">{{valueArray[index]['@value']}} &nbsp;
+    </div>
+
+    <!-- paged view -->
+    <div ng-if="showMultiple('paged')"
+        aria-label="{{getDescription(field)}}"
+        class="isInactive "> {{getValueString(valueArray)}} &nbsp;</span>
+    </div>
   </div>
 
 </div>

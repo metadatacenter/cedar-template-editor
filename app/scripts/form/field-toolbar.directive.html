@@ -56,7 +56,7 @@
   </button>
 
 
-  <cedar-pager ng-click="$event.stopPropagation()" class="pull-right" style="padding-right:20px;" ng-if="isMultiple()" values="values" index="index" min="min" max="max" select="select"
+  <cedar-pager ng-click="$event.stopPropagation()" class="pull-right" style="padding-right:20px;" ng-if="isMultiple() && showMultiple('paged')" values="values" index="index" min="min" max="max" select="select"
       range="range">
   </cedar-pager>
 
