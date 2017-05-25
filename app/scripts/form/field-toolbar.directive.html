@@ -44,6 +44,17 @@
     <i class="fa fa-plus-circle"></i>
   </button>
 
+  <button  type="button" class=" add  pull-right"
+      ng-click="copy(index);$event.stopPropagation()"
+      ng-if="isMultiple() && (!field.maxItems || model.length < field.maxItems )"
+      uib-tooltip="{{'GENERIC.Copy' | translate}}"
+      tooltip-trigger
+      tooltip-animation="false"
+      tooltip-placement="top"
+      data-toggle="tooltip">
+    <i class="fa fa-copy"></i>
+  </button>
+
 
   <button ng-if="isMultiple()" type="button" class=" remove pull-right"
       ng-if="isActive(index)"
