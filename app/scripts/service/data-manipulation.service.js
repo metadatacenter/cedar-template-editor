@@ -1538,7 +1538,7 @@ define([
           });
         };
 
-        // TODO this clears the @value fields, but does not work if the values are elsewhere as they are for some field types
+        // TODO this clears the @value fields, but does not work if the values are elsewhere as they are for some field types, but this is not being called currently
         // reset the element by removing the current values
         service.resetElement = function (el, settings) {
           angular.forEach(el, function (model, key) {
