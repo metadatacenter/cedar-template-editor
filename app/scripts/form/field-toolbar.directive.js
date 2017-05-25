@@ -28,6 +28,7 @@ define([
         index       : '=',
         remove      : "=",
         add         : "=",
+        copy        : "=",
         close       : "=",
         isActive    : '=',
         setActive   : '=',

@@ -326,6 +326,12 @@ define([
           }
         };
 
+        service.resetValue = function (field) {
+          // get the location of the value and clear it
+          var fieldValue = service.getValueLocation(field);
+          field[fieldValue] = null;
+        };
+
         // where is the value of this field, @id or @value?
         service.getValueLocation = function (field) {
           // usually it is in  @value
@@ -1531,6 +1537,79 @@ define([
             }
           });
         };
+
+        // TODO this clears the @value fields, but does not work if the values are elsewhere as they are for some field types, but this is not being called currently
+        // reset the element by removing the current values
+        service.resetElement = function (el, settings) {
+          angular.forEach(el, function (model, key) {
+            if (settings[key] && settings[key].minItems && angular.isArray(model)) {
+              model.splice(settings[key].minItems, model.length);
+            }
+            if (!DataUtilService.isSpecialKey(key)) {
+              if (key == '@value') {
+                if (angular.isArray(model)) {
+                  if ($rootScope.schemaOf(settings)._ui.inputType == "list") {
+                    model.splice(0, model.length);
+                  } else {
+                    for (var i = 0; i < model.length; i++) {
+                      if (typeof(model[i]['@value']) == "string") {
+                        model[i]['@value'] = "";
+                      } else if (angular.isArray(model[i]['@value'])) {
+                        model[i]['@value'] = [];
+                      } else if (angular.isObject(model[i]['@value'])) {
+                        model[i]['@value'] = {};
+                      }
+                    }
+                  }
+                } else if (typeof(model) == "string") {
+                  el[key] = "";
+                } else if (angular.isArray(model)) {
+                  el[key] = [];
+                } else if (angular.isObject(model)) {
+                  el[key] = {};
+                }
+              } else {
+                if (settings[key]) {
+                  service.resetElement(model, settings[key]);
+                } else {
+                  // This case el is an array
+                  angular.forEach(model, function (v, k) {
+                    if (k == '@value') {
+                      if (angular.isArray(v)) {
+                        if ($rootScope.schemaOf(settings)._ui.inputType == "list") {
+                          v.splice(0, v.length);
+                        } else {
+                          for (var i = 0; i < v.length; i++) {
+
+                            if (typeof(v[i]['@value']) == "string") {
+                              v[i]['@value'] = "";
+                            } else if (angular.isArray(v[i]['@value'])) {
+                              v[i]['@value'] = [];
+                            } else if (angular.isObject(v[i]['@value'])) {
+                              v[i]['@value'] = {};
+                            }
+
+                          }
+                        }
+                      } else if (typeof(v) == "string") {
+                        model[k] = "";
+                      } else if (angular.isArray(v)) {
+                        model[k] = [];
+                      } else if (angular.isObject(v)) {
+                        model[k] = {};
+                      }
+                    } else if (k !== '@type') {
+                      if (settings[k]) {
+                        service.resetElement(v, settings[k]);
+                      }
+                    }
+                  });
+                }
+              }
+            }
+          });
+        };
+
 
         return service;
       }

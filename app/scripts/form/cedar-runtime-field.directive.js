@@ -396,10 +396,25 @@ define([
         }
       };
 
+      // add more instances to a multiple cardinality field if possible by copying the selected instance
+      $scope.copyField = function () {
+        var fieldValue = DataManipulationService.getValueLocation($scope.field);
+        var maxItems = DataManipulationService.getMaxItems($scope.field);
+        if ((!maxItems || $scope.model.length < maxItems)) {
+
+          // copy selected instance in the model and insert immediately after
+          var obj = {};
+          obj[fieldValue] = $scope.valueArray[$scope.index][fieldValue];
+          $scope.model.splice($scope.index + 1, 0, obj);
+
+          // activate the new instance
+          $timeout($scope.setActive($scope.index + 1, true), 100);
+        }
+      };
+
       // add more instances to a multiple cardinality field if possible
       $scope.addMoreInput = function () {
         var fieldValue = DataManipulationService.getValueLocation($scope.field);
-
         var maxItems = DataManipulationService.getMaxItems($scope.field);
         if ((!maxItems || $scope.model.length < maxItems)) {
 
