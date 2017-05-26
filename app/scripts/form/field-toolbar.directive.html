@@ -1,6 +1,6 @@
 <div class="toolbar">
 
-  <button type="button" class="delete pull-right" ng-click="remove(index)"
+  <button type="button" class="delete pull-right" ng-click="remove(index);$event.stopPropagation()"
       ng-if="model.length > field.minItems"
       uib-tooltip="{{'GENERIC.Remove' | translate}}"
       tooltip-trigger
