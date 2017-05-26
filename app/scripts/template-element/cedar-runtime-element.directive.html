@@ -6,8 +6,13 @@
     <div ng-if="valueArray.length == 0">
       <div class="element " id="{{getLocator(0)}}" style="position:relative">
         <div class="row isInactive myhover" ng-click="toggleExpanded(i);addElement()">
-          <div class="col-sm-12">
-            <a class="element title" ng-class="{'isInactive' : isInactive(0)}"> {{getPropertyLabel()}} </a>
+          <div class="col-xs-6" ng-click="toggleExpanded(i);addElement()">
+            <div class="element title" ng-class="{'isInactive' : isInactive(0)}">
+              <button type="button" class="expand">
+                <i class="fa " ng-class="{'fa-caret-down': isExpanded(0),'fa-caret-right':!isExpanded(0)}"></i>
+              </button>
+              {{getPropertyLabel()}}
+            </div>
           </div>
         </div>
       </div>

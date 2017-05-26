@@ -142,6 +142,7 @@ define([
       };
 
       $scope.removeInput = function (index) {
+        console.log('removeInput');
         var min = $scope.field.minItems || 0;
         if ($scope.model.length > min) {
           $scope.model.splice(index, 1);

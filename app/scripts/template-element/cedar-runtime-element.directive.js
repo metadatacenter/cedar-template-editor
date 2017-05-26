@@ -146,6 +146,9 @@ define([
       scope.removeElement = function (index) {
         if (scope.model.length > scope.element.minItems) {
           scope.model.splice(index, 1);
+          if (scope.model.length === 0) {
+            scope.toggleExpanded(0);
+          }
         }
       };
 
