@@ -399,7 +399,7 @@
       "invalidFields": "Values of the following fields are invalid:",
       "invalidFieldState": "The following fields are still not finished editing:",
       "invalidElementState": "The following elements are still not finished editing:",
-      "validationErrors": "BioSample validation errors:"
+      "validationErrors": "Validation errors:"
     },
     "AIRRsubmission": "AIRR Submisssion"
   },

@@ -319,7 +319,7 @@ define([
         // custom external validation
         //
 
-        // Get/read template with given id from $routeParams
+        // get the validation errors from the different validation services
         $scope.doValidation = function (instance, url, type) {
 
           AuthorizedBackendService.doCall(
@@ -327,20 +327,19 @@ define([
               function (response) {
 
                 var data = response.data;
-                if (!data.isValid) {
+                if (!data.isValid || !data.validates) {
 
                   $scope.$emit('validationError',
                       ['remove', '', type]);
 
-                  var errors = data.messages;
+                  var errors = data.messages || data.errors;
                   for (var i = 0; i < errors.length; i++) {
 
+                    // log to the console always
                     console.log(errors[i]);
-
 
                     $scope.$emit('validationError',
                         ['add', errors[i], type + i]);
-
 
                   }
                 } else {
@@ -364,7 +363,7 @@ define([
               $scope.doValidation(instance, UrlService.biosampleValidation(), 'biosample');
               break;
             case 'airr':
-              $scope.doValidation(instance, UrlService.biosampleValidation(), 'biosample');
+              $scope.doValidation(instance, UrlService.airrValidation(), 'airr');
               break;
             case 'lincs':
               $scope.doValidation(instance, UrlService.lincsValidation(), 'lincs');
