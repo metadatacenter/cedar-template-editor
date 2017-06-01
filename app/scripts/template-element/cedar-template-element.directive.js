@@ -22,7 +22,8 @@ define([
         relabel      : '=',
         isRootElement: "@",
         isEditData   : "=",
-        nested       : '@'
+        nested       : '@',
+        elem         : '=',
       },
       templateUrl: 'scripts/template-element/cedar-template-element.directive.html',
       link       : linker
