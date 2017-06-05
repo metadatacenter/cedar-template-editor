@@ -7,9 +7,10 @@ define([
       .directive('cedarTemplateElement', cedarTemplateElementDirective);
 
   cedarTemplateElementDirective.$inject = ['$rootScope', 'DataManipulationService', 'DataUtilService',
-                                           'SpreadsheetService','UIUtilService'];
+                                           'SpreadsheetService', 'UIUtilService'];
 
-  function cedarTemplateElementDirective($rootScope, DataManipulationService, DataUtilService, SpreadsheetService, UIUtilService) {
+  function cedarTemplateElementDirective($rootScope, DataManipulationService, DataUtilService, SpreadsheetService,
+                                         UIUtilService) {
 
     var directive = {
       restrict   : 'EA',
@@ -18,12 +19,8 @@ define([
         element      : '=',
         delete       : '&',
         model        : '=',
-        labels       : '=',
-        relabel      : '=',
-        isRootElement: "@",
         isEditData   : "=",
-        nested       : '@',
-        elem         : '=',
+        parentElement: '='
       },
       templateUrl: 'scripts/template-element/cedar-template-element.directive.html',
       link       : linker
@@ -32,23 +29,38 @@ define([
     return directive;
 
 
-
     function linker(scope, element, attrs) {
 
+      scope.directiveName = 'cedarTemplateElement';
 
-      scope.isRoot =function() {
-        return scope.isRootElement == 'true';
+      scope.isFirstLevel = function () {
+        return (scope.$parent.directiveName === 'form');
       };
 
-      scope.isNested =function() {
+      scope.isRoot = function () {
+        return ($rootScope.schemaOf(scope.element)['@id'] === $rootScope.keyOfRootElement);
+      };
+
+      scope.getTitle = function () {
+        return $rootScope.schemaOf(scope.element)._ui.title;
+      };
+
+      scope.isNested = function () {
         return scope.nested == 'true';
       };
 
-      scope.isEditState = function() {
+      scope.relabel = function (key) {
+        DataManipulationService.relabel(scope.parentElement, key);
+      };
+
+
+
+
+      scope.isEditState = function () {
         return DataManipulationService.isEditState(scope.element);
       };
 
-      scope.isSelectable = function() {
+      scope.isSelectable = function () {
         return !scope.isRoot() && !$rootScope.isRuntime() && !scope.isNested();
       };
 
@@ -59,9 +71,9 @@ define([
         }
       };
 
-      scope.canEditProperty =function() {
+      scope.canEditProperty = function () {
 
-        var result  =
+        var result =
             !scope.isRoot() &&
             !$rootScope.isRuntime() &&
             !scope.isNested() &&
@@ -147,6 +159,12 @@ define([
         });
       };
 
+      var setLabels = function() {
+        if (scope.parentElement) {
+          scope.labels = $rootScope.schemaOf(scope.parentElement)._ui.propertyLabels;
+        }
+      };
+
       var parseElement = function () {
         if (!$rootScope.isRuntime() && scope.element) {
           if (angular.isArray(scope.model)) {
@@ -169,6 +187,7 @@ define([
         }
 
         parseElement();
+        setLabels();
       }
 
       if (!scope.state) {
@@ -183,6 +202,8 @@ define([
       scope.selectTab = function (index) {
         scope.selectedTab = index;
       };
+
+
 
       scope.isEditState = function () {
         return (DataManipulationService.isEditState(scope.element));
@@ -236,38 +257,12 @@ define([
       };
 
 
-      scope.removeChild = function (fieldOrElement) {
-        // fieldOrElement must contain the schema level
-        fieldOrElement = $rootScope.schemaOf(fieldOrElement);
+      scope.removeChild = function () {
 
-        var selectedKey;
-        var props = $rootScope.propertiesOf(scope.element);
-        angular.forEach(props, function (value, key) {
-          if (value["@id"] == fieldOrElement["@id"]) {
-            selectedKey = key;
-          }
-        });
+        DataManipulationService.removeChild(scope.parentElement, scope.element);
+        scope.$emit("invalidElementState",
+            ["remove", scope.getTitle(), DataManipulationService.getId(scope.element)]);
 
-        if (selectedKey) {
-          delete props[selectedKey];
-
-          var idx = $rootScope.schemaOf(scope.element)._ui.order.indexOf(selectedKey);
-          $rootScope.schemaOf(scope.element)._ui.order.splice(idx, 1);
-
-          // remove property label for this element
-          delete $rootScope.schemaOf(scope.element)._ui.propertyLabels[selectedKey];
-
-          if ($rootScope.isElement(fieldOrElement)) {
-            scope.$emit("invalidElementState",
-                ["remove", $rootScope.schemaOf(fieldOrElement)._ui.title, fieldOrElement["@id"]]);
-          } else {
-            scope.$emit("invalidFieldState",
-                ["remove", $rootScope.schemaOf(fieldOrElement)._ui.title, fieldOrElement["@id"]]);
-          }
-
-          // Remove it from the top-level 'required' array
-          scope.element = DataManipulationService.removeKeyFromRequired(scope.element, selectedKey);
-        }
       };
 
       // is the cardinality details table open?
@@ -364,8 +359,6 @@ define([
       scope.$watchCollection("element.items.properties", function () {
         parseElement();
       });
-
-
 
 
       scope.defaultMinMax = function () {

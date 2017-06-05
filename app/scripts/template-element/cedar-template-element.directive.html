@@ -93,7 +93,7 @@
         <div class="row preview-edit-options pull-right">
           <div class="toggle-options col-lg-12 pull-right">
             <div class="save-options">
-              <div class="trash" ng-click="delete()" title="Delete element">
+              <div class="trash" ng-click="removeChild()" title="Delete element">
                 <i class="fa fa-times-circle"></i>
               </div>
             </div>
@@ -130,9 +130,8 @@
               <cedar-nested-template-element key="key"
                   field="$root.propertiesOf(element)[key]"
                   model="m[key]"
-                  labels="$root.schemaOf(element)._ui.propertyLabels"
-                  relabel="relabel"
-                  remove-child="removeChild"
+                  parent-element="element"
+
                   rename-child-key="renameChildKey"
                   is-edit-data="isEditData"
                   is-root-element="false"
@@ -153,10 +152,9 @@
               <cedar-nested-template-element key="key"
                   field="$root.propertiesOf(element)[key]"
                   model="m[key]"
-                  labels="$root.schemaOf(element)._ui.propertyLabels"
-                  relabel="relabel"
+                  parent-element="element"
                   preview="preview"
-                  remove-child="removeChild"
+
                   rename-child-key="renameChildKey"
                   is-edit-data="isEditData"
                   is-root-element="false"
@@ -176,9 +174,8 @@
             <cedar-nested-template-element key="key"
                 field="$root.propertiesOf(element)[key]"
                 model="model[key]"
-                labels="$root.schemaOf(element)._ui.propertyLabels"
-                relabel="relabel"
-                remove-child="removeChild"
+                parent-element="element"
+
                 rename-child-key="renameChildKey"
                 is-edit-data="isEditData"
                 is-root-element="false"
@@ -203,10 +200,10 @@
       <div id="cardinality-options" class="cardinality-options cardinality-selectors" ng-show="showCardinality">
 
         <div class="type-toggle date">
-          <div class="d-option" ng-class="{active: !isMultiple()}" ng-click="clearMinMax()">
+          <div class="d-option clear-value" ng-class="{active: !isMultiple()}" ng-click="clearMinMax()">
             <span translate>GENERIC.No</span>
           </div>
-          <div class="d-option" ng-class="{active: isMultiple()}" ng-click="defaultMinMax()">
+          <div class="d-option set-value" ng-class="{active: isMultiple()}" ng-click="defaultMinMax()">
             <span translate>GENERIC.Yes</span>
           </div>
         </div>

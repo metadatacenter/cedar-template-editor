@@ -26,11 +26,11 @@ define([
         form           : '=',
         isEditData     : "=",
         model          : '=',
-        hideRootElement: "=",
         path           : '='
       },
       controller : function ($scope) {
 
+        $scope.directiveName = 'form';
         $scope.forms = {};
         $scope.model = $scope.model || {};
         $scope.checkSubmission = false;
@@ -87,41 +87,13 @@ define([
         };
 
         $scope.removeChild = function (fieldOrElement) {
-          var id = $rootScope.schemaOf(fieldOrElement)["@id"];
-          var title = $rootScope.schemaOf(fieldOrElement)._ui.title;
-          var selectedKey;
-          var props = $scope.form.properties;
 
-          // find the field or element in the form's properties
-          angular.forEach(props, function (value, key) {
-            if ($rootScope.schemaOf(value)["@id"] == id) {
-              selectedKey = key;
-            }
-          });
+          DataManipulationService.removeChild($scope.form, fieldOrElement);
 
-          // if it is there, delete it
-          if (selectedKey) {
-            // remove it from the template's properties
-            delete props[selectedKey];
-            // remove it from the order array
-            var id1 = $scope.form._ui.order.indexOf(selectedKey);
-            $scope.form._ui.order.splice(id1, 1);
-
-            // remove property label for this element
-            delete $rootScope.schemaOf($scope.form)._ui.propertyLabels[selectedKey];
-
-            $scope.$emit("invalidElementState", ["remove", title, id]);
-            // remove it from @context.properties
-            delete props['@context'].properties[selectedKey];
-            // remove it from @context.required
-            delete props['@context'].properties[selectedKey];
-            var id2 = props['@context'].required.indexOf(selectedKey);
-            props['@context'].required.splice(id2, 1);
-
-            // Remove it from the top-level 'required' array
-            $scope.form = DataManipulationService.removeKeyFromRequired($scope.form, selectedKey);
-          }
-
+          var schema = $rootScope.schemaOf(fieldOrElement);
+          var isElement = $rootScope.isElement(schema);
+          var state = isElement ? 'invalidElementState' : 'invalidFieldState';
+          $scope.$emit(state, ["remove", DataManipulationService.getTitle(fieldOrElement), DataManipulationService.getId(fieldOrElement)]);
         };
 
         $scope.renameChildKey = function (child, newKey) {

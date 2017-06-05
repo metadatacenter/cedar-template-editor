@@ -41,7 +41,7 @@ define([
 
     $scope.primaryFieldTypes = FieldTypeService.getPrimaryFieldTypes();
     $scope.otherFieldTypes = FieldTypeService.getOtherFieldTypes();
-    $scope.hideRootElement = true;
+
 
     $scope.saveButtonDisabled = false;
 

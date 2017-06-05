@@ -9,7 +9,7 @@ define(['app', 'angular'], function (app) {
     var $controller; // responsible for instantiating controllers
     var $httpBackend;
     var $templateCache;
-
+    var $timeout;
 
 
     var DataManipulationService;
@@ -19,10 +19,10 @@ define(['app', 'angular'], function (app) {
     var SpreadsheetService;
     var UIUtilService;
 
+
     var createdTemplate;
     var createdModel;
     var createdTemplateElement;
-
 
 
     // Load the module that contains the templates that were loaded with html2js
@@ -32,6 +32,7 @@ define(['app', 'angular'], function (app) {
     beforeEach(module('cedar.templateEditor.template.createTemplateController'));
     beforeEach(module('cedar.templateEditor.templateElement.createElementController'));
     beforeEach(module('cedar.templateEditor.templateElement.cedarTemplateElementDirective'));
+    beforeEach(module('cedar.templateEditor.form.fieldCreate.cardinalitySelector'));
     beforeEach(module('cedar.templateEditor.form.fieldDirective'));
     beforeEach(module('cedar.templateEditor.service.stagingService'));
     beforeEach(module('cedar.templateEditor.service.dataManipulationService'));
@@ -53,7 +54,7 @@ define(['app', 'angular'], function (app) {
 
 
     beforeEach(inject(
-        function (_$rootScope_, _$compile_, _$controller_, _$httpBackend_, _$templateCache_,
+        function (_$rootScope_, _$compile_, _$controller_, _$httpBackend_, _$templateCache_, _$timeout_,
                   _StagingService_, _DataManipulationService_, _DataUtilService_, _SpreadsheetService_, _UIUtilService_,
                   _TemplateElementService_) {
           $rootScope = _$rootScope_.$new(); // create new scope
@@ -61,6 +62,7 @@ define(['app', 'angular'], function (app) {
           $controller = _$controller_;
           $httpBackend = _$httpBackend_;
           $templateCache = _$templateCache_;
+          $timeout = _$timeout_;
 
           StagingService = _StagingService_;
           DataManipulationService = _DataManipulationService_;
@@ -80,6 +82,13 @@ define(['app', 'angular'], function (app) {
         return [request.status, request.response, {}];
       });
 
+      // returns the appropriate file content when requested
+      $httpBackend.whenGET('scripts/form/field-create/cardinality-selector.directive.html').respond(function (method, url, data) {
+        var request = new XMLHttpRequest();
+        request.open('GET', 'scripts/form/field-create/cardinality-selector.directive.html', false);
+        request.send(null);
+        return [request.status, request.response, {}];
+      });
 
       $httpBackend.whenGET(
           'https://resource.metadatacenter.orgx/template-elements/https%3A%2F%2Frepo.metadatacenter.orgx%2Ftemplate-elements%2F7ce9f613-ff0b-427b-a007-4d3b0cbe1fbb').respond(
@@ -223,11 +232,12 @@ define(['app', 'angular'], function (app) {
         var cedarTemplateElementDirective;
         var compiledDirective;
         var clonedElement;
+        var elementNameLabelSelector = "p.element-name-label input";
 
         beforeEach(function () {
 
           // create a templateController scope
-          $createTemplateControllerScope = $rootScope.$new(true) ;
+          $createTemplateControllerScope = $rootScope.$new(true);
           // Initialize the CreateTemplateController
           $controller('CreateTemplateController', {
             $rootScope: $rootScope,
@@ -240,7 +250,7 @@ define(['app', 'angular'], function (app) {
           var callback = function () {
           };
 
-          // Create the element and add it to the template
+          // Create an element and add it to the template
           clonedElement = {
             "@id"                 : "https://repo.metadatacenter.orgx/template-elements/7ce9f613-ff0b-427b-a007-4d3b0cbe1fbb",
             "@type"               : "https://schema.metadatacenter.org/core/TemplateElement",
@@ -363,28 +373,101 @@ define(['app', 'angular'], function (app) {
             "additionalProperties": false,
             "$schema"             : "http://json-schema.org/draft-04/schema#"
           };
-          $cedarTemplateElementScope.element = StagingService.addClonedElementToForm($createTemplateControllerScope.form, elementId, clonedElement, domId, callback);
-          var elementId = $cedarTemplateElementScope.element['@id'];
+          var elementId = "https://repo.metadatacenter.orgx/template-elements/7ce9f613-ff0b-427b-a007-4d3b0cbe1fbb";
+          $cedarTemplateElementScope.element = StagingService.addClonedElementToForm(
+              $createTemplateControllerScope.form, elementId, clonedElement, domId, callback);
 
-          // Compile field directive
-          cedarTemplateElementDirective = "<cedar-template-element  element='element' model='model'> </cedar-template-element>";
+
+          // Compile element directive
+          cedarTemplateElementDirective = "<cedar-template-element  key='key' element='element' model='model'  parent-element='parentElement' > </cedar-template-element>";
+          $cedarTemplateElementScope.key = 'test';
+          $cedarTemplateElementScope.parentElement = $createTemplateControllerScope.form;
+          $cedarTemplateElementScope.element = clonedElement;
+          $cedarTemplateElementScope.model = null;
           compiledDirective = $compile(cedarTemplateElementDirective)($cedarTemplateElementScope);
-
-          // Now run a $digest cycle
           $cedarTemplateElementScope.$digest();
 
         });
 
-        it("should have one element ", function () {
-
-          // should contain the cloned element
-          expect(compiledDirective.isolateScope().element).toEqual(clonedElement);
+        it("should accept and retain new property value ", function () {
+          var value = 'some text';
+          var key = 'someText';
 
           // should have an element-name-label
           var elm = compiledDirective[0];
-          expect(elm.querySelector('.element-name-label')).toBeDefined();
+          var name = elm.querySelector('p.element-name-label input');
+          var nameElm = angular.element(name);
+          nameElm.triggerHandler('click');
+          nameElm.val(value);
+          nameElm.triggerHandler('change');
+          $timeout.flush();
+
+          // check an object's value for a key
+          function hasValue(obj, key, value) {
+            return obj.hasOwnProperty(key) && obj[key] === value;
+          }
+
+          // does it have the new value in the property labels?
+          var test = [];
+          test.push($cedarTemplateElementScope.parentElement["_ui"]["propertyLabels"]);
+          expect(test.some(function (propertyLabels) {
+            return hasValue(propertyLabels, key, value);
+          })).toEqual(true);
+        });
+
+        it("should switch between expanded and paged views", function () {
+
+
+
+          // first just try to set this element multiple
+          var elm = compiledDirective[0];
+          var multiple = elm.querySelector('.detail-options');
+          var multipleElm = angular.element(multiple);
+          multipleElm.triggerHandler('click');
+
+          var noActiveBefore = elm.querySelector('.d-option.clear-value.active');
+          var yesActiveBefore = elm.querySelector('.d-option.set-value.active');
+          expect(noActiveBefore == null).toBe(false);
+          expect(yesActiveBefore == null).toBe(true);
+
+
+          $cedarTemplateElementScope.$apply();
+          $cedarTemplateElementScope.$digest();
+
+          var yesOption = elm.querySelector('#cardinality-options .set-value');
+          var yesElm = angular.element(yesOption);
+          yesElm.triggerHandler('click');
+
+          var noActiveAfter = elm.querySelector('.d-option.clear-value.active');
+          var yesActiveAfter = elm.querySelector('.d-option.set-value.active');
+          expect(noActiveAfter == null).toBe(true);
+          expect(yesActiveAfter == null).toBe(false);
+
+
+          //
+          // expect( $(compiledDirective).find('div.d-option.set-value.active')).toBeDefined();
+          // expect($(compiledDirective).find('div.d-option.set-value.active').is(':visible')).toBe(false);
+          // expect( $(compiledDirective).find('div.d-option.clear-value.active')).toBeDefined();
+          // expect($(compiledDirective).find('div.d-option.clear-value.active').is(':visible')).toBe(true);
+          //
+          //
+          //
+          // var options = elm.querySelectorAll('#cardinality-options .type-toggle .d-option');
+          // console.log(options[1]);
+          //
+          // var yesOption = angular.element(options[1]);
+          // console.log(yesOption);
+          //yesOption.trigger('click');
+
 
         });
+
+        it("should create element instance when min cardinality is 0", function () {
+
+          //element(by.css('[ng-click="myFunction()"]'))
+        });
+
+
       });
     });
 
