@@ -400,6 +400,7 @@ define(['app', 'angular'], function (app) {
           nameElm.triggerHandler('click');
           nameElm.val(value);
           nameElm.triggerHandler('change');
+          // to flush the debounce
           $timeout.flush();
 
           // check an object's value for a key
@@ -415,7 +416,7 @@ define(['app', 'angular'], function (app) {
           })).toEqual(true);
         });
 
-        it("should allow cardinality to be set to multiple", function () {
+        it("should allow cardinality to be set to multiple and default is 1..N", function () {
 
           // first just set this element multiple
           var elm = compiledDirective[0];
@@ -447,6 +448,34 @@ define(['app', 'angular'], function (app) {
           // make sure the range is 1..N by default
           var range = elm.querySelector('span.multiple-instance-cardinality');
           expect(range.innerHTML.trim() == '1 .. N').toBe(true);
+
+        });
+
+        // TODO I don't get the nested cardinalitySelector directive compiled so I don't have the dom elements to click
+        xit("should allow cardinality to be set to 0..N", function () {
+
+          // first just set this element multiple
+          var elm = compiledDirective[0];
+          var multipleElm = angular.element(elm.querySelector('.detail-options'));
+          multipleElm.triggerHandler('click');
+
+          // now turn on multiple
+          var yesElm = angular.element(elm.querySelector('#cardinality-options .set-value'));
+          yesElm.triggerHandler('click');
+
+          var minDropdown = elm.querySelector('.dropdown.min');
+          var minDropdownElm = angular.element(minDropdown);
+          minDropdownElm.triggerHandler('click');
+
+          var minDropdownOpen = angular.element(elm.querySelector('.dropdown.min.open'));
+          // expect this to be there
+
+          var noneElm = angular.element(elm.querySelector('li a.none'));
+          noneElm.triggerHandler('click');
+
+          // make sure the range is now 0..N
+          var range = elm.querySelector('span.multiple-instance-cardinality');
+          expect(range.innerHTML.trim() == '0 .. N').toBe(true);
 
         });
 
