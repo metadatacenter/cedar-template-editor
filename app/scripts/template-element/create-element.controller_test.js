@@ -1,8 +1,7 @@
-/*global module, inject */
 'use strict';
 
 define(['app', 'angularMocks'], function(app) {
-  describe('CreateElementController', function() {
+  describe('create-element.controller_test.js', function() {
     beforeEach(module('cedar.templateEditor'));
 
     var $controller;
@@ -14,7 +13,7 @@ define(['app', 'angularMocks'], function(app) {
       $rootScope = _$rootScope_;
     }));
 
-    describe('$scope.pageTitle', function() {
+    describe('CreateElementController', function() {
       it('sets the pageTitle to "Element Designer"', function() {
         var $scope = $rootScope.$new();
         var controller = $controller('CreateElementController', { $scope: $scope });
@@ -22,6 +21,4 @@ define(['app', 'angularMocks'], function(app) {
       });
     });
   });
-
-
 });

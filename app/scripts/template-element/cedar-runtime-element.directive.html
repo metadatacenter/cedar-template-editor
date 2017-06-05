@@ -6,8 +6,13 @@
     <div ng-if="valueArray.length == 0">
       <div class="element " id="{{getLocator(0)}}" style="position:relative">
         <div class="row isInactive myhover" ng-click="toggleExpanded(i);addElement()">
-          <div class="col-sm-12">
-            <a class="element title" ng-class="{'isInactive' : isInactive(0)}"> {{getPropertyLabel()}} </a>
+          <div class="col-xs-6" ng-click="toggleExpanded(i);addElement()">
+            <div class="element title" ng-class="{'isInactive' : isInactive(0)}">
+              <button type="button" class="expand">
+                <i class="fa " ng-class="{'fa-caret-down': isExpanded(0),'fa-caret-right':!isExpanded(0)}"></i>
+              </button>
+              {{getPropertyLabel()}}
+            </div>
           </div>
         </div>
       </div>
@@ -55,7 +60,7 @@
         <field-toolbar ng-click="toggleExpanded(index)" class="col-xs-6" style="min-height:30px;min-width:30px;" ng-if="isExpanded(index)" values="valueArray" index="index"
             min="pageMin" max="pageMax" range="pageRange" field="element" model="valueArray"
             index="index"
-            remove="removeElement" add="addElement" is-active="isActive" set-active="setActive"
+            remove="removeElement" add="addElement" copy="copyElement"  is-active="isActive" set-active="setActive"
             toggle="toggleMultiple"
             show-multiple="showMultiple" is-multiple="isMultiple" cardinality="cardinalityString"
             spreadsheet="switchToSpreadsheet" toggle-expanded="toggleExpanded" close="unExpand"
@@ -106,8 +111,8 @@
 
               {{getPropertyLabel()}} <span ng-if="valueArray.length-1" class="count">({{i+1}})</span></a>
           </div>
-          <field-toolbar class="col-xs-4 " field="element" model="valueArray" index="index"
-              remove="removeElement" add="addElement" is-active="isActive" set-active="setActive"
+          <field-toolbar class="col-xs-4 " field="element" model="valueArray" index="i"
+              remove="removeElement" add="addElement" copy="copyElement" is-active="isActive" set-active="setActive"
               toggle="toggleMultiple"
               show-multiple="showMultiple" is-multiple="isMultiple" cardinality="cardinalityString"
               spreadsheet="switchToSpreadsheet" close="unExpand" expand-all="expandAll" is-expandable="isExpandable">

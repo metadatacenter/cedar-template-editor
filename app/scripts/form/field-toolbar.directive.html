@@ -1,6 +1,6 @@
 <div class="toolbar">
 
-  <button type="button" class="delete pull-right" ng-click="remove(index)"
+  <button type="button" class="delete pull-right" ng-click="remove(index);$event.stopPropagation()"
       ng-if="model.length > field.minItems"
       uib-tooltip="{{'GENERIC.Remove' | translate}}"
       tooltip-trigger
@@ -44,6 +44,17 @@
     <i class="fa fa-plus-circle"></i>
   </button>
 
+  <button  type="button" class=" add  pull-right"
+      ng-click="copy(index);$event.stopPropagation()"
+      ng-if="isMultiple() && (!field.maxItems || model.length < field.maxItems )"
+      uib-tooltip="{{'GENERIC.Copy' | translate}}"
+      tooltip-trigger
+      tooltip-animation="false"
+      tooltip-placement="top"
+      data-toggle="tooltip">
+    <i class="fa fa-copy"></i>
+  </button>
+
 
   <button ng-if="isMultiple()" type="button" class=" remove pull-right"
       ng-if="isActive(index)"
@@ -56,7 +67,7 @@
   </button>
 
 
-  <cedar-pager ng-click="$event.stopPropagation()" class="pull-right" style="padding-right:20px;" ng-if="isMultiple()" values="values" index="index" min="min" max="max" select="select"
+  <cedar-pager ng-click="$event.stopPropagation()" class="pull-right" style="padding-right:20px;" ng-if="isMultiple() && showMultiple('paged')" values="values" index="index" min="min" max="max" select="select"
       range="range">
   </cedar-pager>
 

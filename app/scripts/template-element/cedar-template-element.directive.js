@@ -403,7 +403,7 @@ define([
 
       // show the controlled terms modal
       scope.hideModal = function () {
-        if ($scope.modalType) {
+        if (scope.modalType) {
           UIUtilService.hideModal(DataManipulationService.getId(scope.element), scope.modalType);
         }
       };

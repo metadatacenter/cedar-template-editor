@@ -99,87 +99,6 @@ define([
         return DataManipulationService.cardinalityString(scope.element);
       };
 
-      var resetElement = function (el, settings) {
-        angular.forEach(el, function (model, key) {
-          if (settings[key] && settings[key].minItems && angular.isArray(model)) {
-            model.splice(settings[key].minItems, model.length);
-          }
-          if (!DataUtilService.isSpecialKey(key)) {
-            if (key == '@value') {
-              if (angular.isArray(model)) {
-                if ($rootScope.schemaOf(settings)._ui.inputType == "list") {
-                  model.splice(0, model.length);
-                } else {
-                  for (var i = 0; i < model.length; i++) {
-                    if (typeof(model[i]['@value']) == "string") {
-                      model[i]['@value'] = "";
-                    } else if (angular.isArray(model[i]['@value'])) {
-                      model[i]['@value'] = [];
-                    } else if (angular.isObject(model[i]['@value'])) {
-                      model[i]['@value'] = {};
-                    }
-                  }
-                }
-              } else if (typeof(model) == "string") {
-                el[key] = "";
-              } else if (angular.isArray(model)) {
-                el[key] = [];
-              } else if (angular.isObject(model)) {
-                el[key] = {};
-              }
-            } else {
-              if (settings[key]) {
-                resetElement(model, settings[key]);
-              } else {
-                // This case el is an array
-                angular.forEach(model, function (v, k) {
-                  if (k == '@value') {
-                    if (angular.isArray(v)) {
-                      if ($rootScope.schemaOf(settings)._ui.inputType == "list") {
-                        v.splice(0, v.length);
-                      } else {
-                        for (var i = 0; i < v.length; i++) {
-
-                          if (typeof(v[i]['@value']) == "string") {
-                            v[i]['@value'] = "";
-                          } else if (angular.isArray(v[i]['@value'])) {
-                            v[i]['@value'] = [];
-                          } else if (angular.isObject(v[i]['@value'])) {
-                            v[i]['@value'] = {};
-                          }
-
-                        }
-                      }
-                    } else if (typeof(v) == "string") {
-                      model[k] = "";
-                    } else if (angular.isArray(v)) {
-                      model[k] = [];
-                    } else if (angular.isObject(v)) {
-                      model[k] = {};
-                    }
-                  } else if (k !== '@type') {
-                    if (settings[k]) {
-                      resetElement(v, settings[k]);
-                    }
-                  }
-                });
-              }
-            }
-          }
-        });
-      };
-
-      scope.getNesting = function () {
-
-        var path = scope.path || '';
-        var arr = path.split('-');
-        var result = [];
-        for (var i = 0; i < arr.length; i++) {
-          result.push(i);
-        }
-        return result;
-      };
-
       scope.getPropertyLabel = function () {
         if (scope.labels && scope.fieldKey) {
           return scope.labels[scope.fieldKey];
@@ -189,37 +108,47 @@ define([
         }
       };
 
-      scope.addElement = function () {
+      // make a copy of element at index, insert it after index
+      scope.copyElement = function (index) {
+        var fromIndex = (typeof index === 'undefined') ? scope.index : index;
         if ((!scope.element.maxItems || scope.model.length < scope.element.maxItems)) {
-          var seed = {};
           if (scope.model.length > 0) {
-            seed = angular.copy(scope.model[0]);
+            var seed = {};
+            seed = angular.copy(scope.model[fromIndex]);
             // delete the @id field of the template-element-instance. The backend will need to generate a new one
             delete seed['@id'];
-            //resetElement(seed, scope.element);
-            scope.model.push(seed);
-          }
-          else {
-            scope.model.push(seed);
-            if (angular.isArray(scope.model)) {
-              angular.forEach(scope.model, function (m) {
-                $rootScope.findChildren($rootScope.propertiesOf(scope.element), m);
-              });
-            } else {
-              $rootScope.findChildren($rootScope.propertiesOf(scope.element), scope.model);
-            }
-            resetElement(seed, scope.element);
+            scope.model.splice(fromIndex + 1, 0, seed);
           }
           // activate the new instance
-          // var index = scope.model.length - 1;
-          // scope.setActive(index, true);
-          // scope.toggleExpanded(index);
+          scope.setActive(fromIndex + 1, true);
         }
       };
 
+      // add a new empty element at the end of the array
+      scope.addElement = function () {
+        if ((!scope.element.maxItems || scope.model.length < scope.element.maxItems)) {
+          var seed = {};
+          scope.model.push(seed);
+          if (angular.isArray(scope.model)) {
+            angular.forEach(scope.model, function (m) {
+              $rootScope.findChildren($rootScope.propertiesOf(scope.element), m);
+            });
+          } else {
+            $rootScope.findChildren($rootScope.propertiesOf(scope.element), scope.model);
+          }
+          // activate the new instance
+          var index = scope.model.length - 1;
+          scope.setActive(index, true);
+        }
+      };
+
+      // remove the element at index
       scope.removeElement = function (index) {
         if (scope.model.length > scope.element.minItems) {
           scope.model.splice(index, 1);
+          if (scope.model.length === 0) {
+            scope.toggleExpanded(0);
+          }
         }
       };
 
@@ -421,7 +350,8 @@ define([
             var nextKey = order[0];
             var next = props[nextKey];
             $rootScope.$broadcast("setActive",
-                [DataManipulationService.getId(next), 0, scope.path + '-' + index, nextKey, scope.fieldKey, true, scope.uid + '-' + nextKey]);
+                [DataManipulationService.getId(next), 0, scope.path + '-' + index, nextKey, scope.fieldKey, true,
+                 scope.uid + '-' + nextKey]);
 
           }, 0);
         }
@@ -446,7 +376,8 @@ define([
           var nextKey = order[0];
           var next = props[nextKey];
           $rootScope.$broadcast("setActive",
-              [DataManipulationService.getId(next), 0, scope.path + '-' + index, nextKey, scope.fieldKey, true, scope.uid + '-' + nextKey]);
+              [DataManipulationService.getId(next), 0, scope.path + '-' + index, nextKey, scope.fieldKey, true,
+               scope.uid + '-' + nextKey]);
 
         }, 0);
       };
@@ -525,7 +456,8 @@ define([
           if (found) {
             var next = props[nextKey];
             $rootScope.$broadcast("setActive",
-                [DataManipulationService.getId(next), 0, scope.path + '-' + scope.index, nextKey, parentKey,  true, scope.uid + '-' + nextKey]);
+                [DataManipulationService.getId(next), 0, scope.path + '-' + scope.index, nextKey, parentKey, true,
+                 scope.uid + '-' + nextKey]);
           }
         }
 

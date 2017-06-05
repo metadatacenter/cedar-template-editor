@@ -38,8 +38,8 @@ define([
   'jsonld',
 
   // custom libraries
-  'cedar/template-editor/handsontable/SpreadsheetContext',
-  'cedar/template-editor/handsontable/MultiCheckboxEditor',
+  //'cedar/template-editor/handsontable/SpreadsheetContext',
+  //'cedar/template-editor/handsontable/MultiCheckboxEditor',
 
   // cedar template editor modules
   'cedar/template-editor/core/core.module',

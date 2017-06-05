@@ -238,6 +238,8 @@ define([
       element._ui.order.push(fieldName);
 
       element._ui.propertyLabels = element._ui.propertyLabels || {};
+
+      return field;
     };
 
     service.addElementToElement = function (element, elementId) {
