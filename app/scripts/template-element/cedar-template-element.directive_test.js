@@ -415,56 +415,39 @@ define(['app', 'angular'], function (app) {
           })).toEqual(true);
         });
 
-        it("should switch between expanded and paged views", function () {
+        it("should allow cardinality to be set to multiple", function () {
 
-
-
-          // first just try to set this element multiple
+          // first just set this element multiple
           var elm = compiledDirective[0];
           var multiple = elm.querySelector('.detail-options');
           var multipleElm = angular.element(multiple);
           multipleElm.triggerHandler('click');
 
+          // make sure it is not multi-instance at first
+          var rangeBefore = elm.querySelector('.multiple-instance-cardinality.ng-hide');
           var noActiveBefore = elm.querySelector('.d-option.clear-value.active');
           var yesActiveBefore = elm.querySelector('.d-option.set-value.active');
           expect(noActiveBefore == null).toBe(false);
           expect(yesActiveBefore == null).toBe(true);
 
-
-          $cedarTemplateElementScope.$apply();
-          $cedarTemplateElementScope.$digest();
-
+          // now turn on multiple
           var yesOption = elm.querySelector('#cardinality-options .set-value');
           var yesElm = angular.element(yesOption);
           yesElm.triggerHandler('click');
 
+          // make sure yes and no are correct before and after turning on cardinality
           var noActiveAfter = elm.querySelector('.d-option.clear-value.active');
           var yesActiveAfter = elm.querySelector('.d-option.set-value.active');
           expect(noActiveAfter == null).toBe(true);
           expect(yesActiveAfter == null).toBe(false);
+          var rangeAfter = elm.querySelector('.multiple-instance-cardinality.ng-hide');
+          expect(rangeBefore != null).toBe(true);
+          expect(rangeAfter == null).toBe(true);
 
+          // make sure the range is 1..N by default
+          var range = elm.querySelector('span.multiple-instance-cardinality');
+          expect(range.innerHTML.trim() == '1 .. N').toBe(true);
 
-          //
-          // expect( $(compiledDirective).find('div.d-option.set-value.active')).toBeDefined();
-          // expect($(compiledDirective).find('div.d-option.set-value.active').is(':visible')).toBe(false);
-          // expect( $(compiledDirective).find('div.d-option.clear-value.active')).toBeDefined();
-          // expect($(compiledDirective).find('div.d-option.clear-value.active').is(':visible')).toBe(true);
-          //
-          //
-          //
-          // var options = elm.querySelectorAll('#cardinality-options .type-toggle .d-option');
-          // console.log(options[1]);
-          //
-          // var yesOption = angular.element(options[1]);
-          // console.log(yesOption);
-          //yesOption.trigger('click');
-
-
-        });
-
-        it("should create element instance when min cardinality is 0", function () {
-
-          //element(by.css('[ng-click="myFunction()"]'))
         });
 
 
