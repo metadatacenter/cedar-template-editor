@@ -1,13 +1,14 @@
 'use strict';
 
 //require('../pages/workspace-page.js');
-require('../modals/finder-modal.js');
+//require('../modals/finder-modal.js');
 var testConfig = require('../config/test-env.js');
 
 var TemplateCreatorPage = function () {
 
   var EC = protractor.ExpectedConditions;
-  var toastyModal = require('../modals/toasty-modal.js');
+  // var toastyModal = require('../modals/toasty-modal.js');
+  // var finderModal = require('../modals/finder-modal.js');
 
   var testConfig = require('../config/test-env.js');
   var url = testConfig.baseUrl + '/dashboard';
@@ -993,25 +994,9 @@ var TemplateCreatorPage = function () {
     //browser.sleep(1000);
   };
 
+
   this.openFinder = function () {
     createSearchElement.click();
-    return require('../modals/finder-modal.js');
-  };
-
-  this.addFirstElement = function (title) {
-    var finderPage = this.openFinder();
-
-    // TODO search is filled with template name
-    var clearSearch = finderPage.createClearSearch()();
-    browser.wait(EC.visibilityOf(clearSearch));
-    browser.wait(EC.elementToBeClickable(clearSearch));
-    clearSearch.click();
-
-    var first = finderPage.createFirstElementGridView();
-    browser.wait(EC.visibilityOf(first));
-    browser.wait(EC.elementToBeClickable(first));
-    browser.actions().doubleClick(first).perform();
-
   };
 
   this.getRandomInt = function (min, max) {
@@ -1019,6 +1004,19 @@ var TemplateCreatorPage = function () {
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min)) + min;
   };
+
+  this.setMultiple = function() {
+    var multiple = element(by.css('.detail-options .element-toggle'));
+    browser.wait(EC.visibilityOf(multiple));
+    browser.wait(EC.elementToBeClickable(multiple));
+    multiple.click();
+
+    var yesOption = element(by.css('.d-option.set-value'));
+    browser.wait(EC.visibilityOf(yesOption));
+    browser.wait(EC.elementToBeClickable(yesOption));
+    yesOption.click();
+
+  }
 
 
 };

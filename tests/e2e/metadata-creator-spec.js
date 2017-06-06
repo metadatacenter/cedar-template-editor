@@ -3,6 +3,7 @@ var WorkspacePage = require('../pages/workspace-page.js');
 var MetadataPage = require('../pages/metadata-page.js');
 var TemplatePage = require('../pages/template-creator-page.js');
 var ToastyModal = require('../modals/toasty-modal.js');
+var FinderModal = require('../modals/finder-modal.js');
 var SweetAlertModal = require('../modals/sweet-alert-modal.js');
 var testConfig = require('../config/test-env.js');
 var _ = require('../libs/lodash.min.js');
@@ -13,6 +14,7 @@ describe('metadata-creator', function () {
   var metadataPage = MetadataPage;
   var templatePage = TemplatePage;
   var toastyModal = ToastyModal;
+  var finderModal = FinderModal;
   var sweetAlertModal = SweetAlertModal;
 
   var template;
@@ -95,10 +97,18 @@ describe('metadata-creator', function () {
       sweetAlertModal.isHidden();
     });
 
-    // TODO not working
-    xit("should add the element to our template", function () {
+    it("should edit the test template", function () {
       workspacePage.editResource(template, 'template');
-      templatePage.addFirstElement(element);
+      templatePage.topNavBackArrow().click();
+
+    });
+
+    it("should add the element and make it multiple", function () {
+      workspacePage.editResource(template, 'template');
+      templatePage.openFinder();
+      finderModal.clearSearch();
+      finderModal.addFirstElement(element);
+      templatePage.setMultiple();
       templatePage.clickSave('template');
       toastyModal.isSuccess();
       templatePage.topNavBackArrow().click();
