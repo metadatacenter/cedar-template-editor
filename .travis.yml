@@ -14,6 +14,7 @@ branches:
   - develop
   - master
   - testing/permissions
+  - metadatacenter/cedar-template-editor/issues/642
 notifications:
   slack:
     on_success: change
@@ -29,7 +30,8 @@ install:
 - webdriver-manager update
 - nohup bash -c "webdriver-manager start 2>&1 &"
 script:
-- gulp test-permissions
+#- gulp test-permissions
+gulp karma-tests
 env:
   global:
   - CEDAR_ANALYTICS_KEY=false

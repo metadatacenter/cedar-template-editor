@@ -120,15 +120,20 @@ gulp.task('watch', function (done) {
   done();
 });
 
+/**************************************************************/
+
 // Karma tests
-gulp.task('test', function (done) {
+gulp.task('karma-tests', gulp.series(['replace-url', 'replace-tracking',
+                                      'replace-version', 'lint', 'less', 'copy:resources'], function (done) {
   new Server({
     configFile: __dirname + '/karma.conf.js',
     //action: 'watch',
     //showStack: true,
     singleRun : true
-  }, done).start();
-});
+  }, done()).start();
+}));
+
+/**************************************************************/
 
 gulp.task('test-env', function (done) {
   gulp.src(['tests/config/src/test-env.js'])
