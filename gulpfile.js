@@ -120,8 +120,6 @@ gulp.task('watch', function (done) {
   done();
 });
 
-/**************************************************************/
-
 // Karma tests
 gulp.task('karma-tests', gulp.series(['replace-url', 'replace-tracking',
                                       'replace-version', 'lint', 'less', 'copy:resources'], function (done) {
@@ -132,8 +130,6 @@ gulp.task('karma-tests', gulp.series(['replace-url', 'replace-tracking',
     singleRun : true
   }, done()).start();
 }));
-
-/**************************************************************/
 
 gulp.task('test-env', function (done) {
   gulp.src(['tests/config/src/test-env.js'])
@@ -254,7 +250,6 @@ gulp.task('test-form', gulp.series('test-env', function () {
         throw e
       });
 }));
-
 
 function exitWithError(msg) {
   onError(msg);

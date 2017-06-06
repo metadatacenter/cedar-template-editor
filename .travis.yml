@@ -30,8 +30,8 @@ install:
 - webdriver-manager update
 - nohup bash -c "webdriver-manager start 2>&1 &"
 script:
-# - gulp test-permissions
-  - gulp karma-tests
+  - gulp test-permissions # Protractor tests
+  - gulp karma-tests # Karma tests
 env:
   global:
   - CEDAR_ANALYTICS_KEY=false
