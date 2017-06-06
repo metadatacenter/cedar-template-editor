@@ -479,6 +479,28 @@ define(['app', 'angular'], function (app) {
 
         });
 
+        // TODO doesn't update dom or form to show the deleted element
+        xit("should delete the newly added element", function () {
+
+          var elm = compiledDirective[0];
+
+          var name = elm.querySelector('p.element-name-label input');
+          console.log(name);
+          expect(name != null).toBe(true);
+
+          var trash = elm.querySelector('div.trash');
+          console.log('trash');console.log(trash);
+          var trashElm = angular.element(trash);
+          trashElm.on('click', function(e) {
+            $cedarTemplateElementScope.$apply(function() {
+             var nameAfter = compiledDirective[0].querySelector('p.element-name-label input');
+             console.log('nameAfter');console.log(nameAfter);
+             expect(nameAfter == null).toBe(true);
+            });
+          });
+          trashElm.triggerHandler('click');
+        });
+
 
       });
     });

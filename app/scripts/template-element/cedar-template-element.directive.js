@@ -258,6 +258,7 @@ define([
 
 
       scope.removeChild = function () {
+        console.log('removeChild');
 
         DataManipulationService.removeChild(scope.parentElement, scope.element);
         scope.$emit("invalidElementState",
