@@ -82,7 +82,7 @@ define(['app', 'angular'], function (app) {
         return [request.status, request.response, {}];
       });
 
-      // returns the appropriate file content when requested
+      // TODO this should not be required
       $httpBackend.whenGET('scripts/form/field-create/cardinality-selector.directive.html').respond(
           function (method, url, data) {
             var request = new XMLHttpRequest();
