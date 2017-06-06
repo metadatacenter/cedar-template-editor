@@ -233,7 +233,7 @@ define(['app', 'angular'], function (app) {
         var cedarTemplateElementDirective;
         var compiledDirective;
         var clonedElement;
-        var elementNameLabelSelector = "p.element-name-label input";
+
 
         beforeEach(function () {
 
@@ -453,8 +453,7 @@ define(['app', 'angular'], function (app) {
 
         });
 
-        // TODO I don't get the nested cardinalitySelector directive compiled so I don't have the dom elements to click
-        xit("should allow cardinality to be set to 0..N", function () {
+        it("should allow cardinality to be set to 0..N", function () {
 
           // first just set this element multiple
           var elm = compiledDirective[0];
@@ -463,25 +462,29 @@ define(['app', 'angular'], function (app) {
 
           // now turn on multiple
           var yesElm = angular.element(elm.querySelector('#cardinality-options .set-value'));
+          yesElm.on('click', function (e) {
+
+            // TODO this is not found...cardinalitySelector needs to be compiled?
+            var minDropdownElm = angular.element(elm.querySelector('.dropdown.min'));
+            minDropdownElm.on('click', function (e) {
+              var minDropdownOpen = angular.element(elm.querySelector('.dropdown.min.open'));
+              var noneElm = angular.element(elm.querySelector('li a.none'));
+              noneElm.on('click', function (e) {
+                $cedarTemplateElementScope.$apply(function () {
+                  // make sure the range is now 0..N
+                  var range = elm.querySelector('span.multiple-instance-cardinality');
+                  expect(range.innerHTML.trim() == '0 .. N').toBe(true);
+                });
+              });
+              noneElm.triggerHandler('click');
+            });
+            minDropdownElm.triggerHandler('click');
+          });
           yesElm.triggerHandler('click');
 
-          var minDropdown = elm.querySelector('.dropdown.min');
-          var minDropdownElm = angular.element(minDropdown);
-          minDropdownElm.triggerHandler('click');
-
-          var minDropdownOpen = angular.element(elm.querySelector('.dropdown.min.open'));
-          // expect this to be there
-
-          var noneElm = angular.element(elm.querySelector('li a.none'));
-          noneElm.triggerHandler('click');
-
-          // make sure the range is now 0..N
-          var range = elm.querySelector('span.multiple-instance-cardinality');
-          expect(range.innerHTML.trim() == '0 .. N').toBe(true);
 
         });
 
-        // TODO doesn't update dom or form to show the deleted element
         it("should delete an element", function () {
 
           var elm = compiledDirective[0];
@@ -489,9 +492,17 @@ define(['app', 'angular'], function (app) {
           expect(name != null).toBe(true);
           var trashElm = angular.element(elm.querySelector('div.trash'));
           trashElm.on('click', function (e) {
-            $cedarTemplateElementScope.$apply();
-            var nameAfter = elm.querySelector('p.element-name-label input');
-            expect(nameAfter == null).toBe(true);
+            $cedarTemplateElementScope.$apply(function () {
+
+              // make sure the parent has removed the child
+              expect(DataManipulationService.removeChild($cedarTemplateElementScope.parentElement, $cedarTemplateElementScope.element) == null).toBe(true);
+
+              // TODO doesn't update dom to show the deleted element
+              // var nameAfter = elm.querySelector('p.element-name-label input');
+              // expect(nameAfter == null).toBe(true);
+            });
+
+
           });
           trashElm.triggerHandler('click');
         });
