@@ -83,12 +83,13 @@ define(['app', 'angular'], function (app) {
       });
 
       // returns the appropriate file content when requested
-      $httpBackend.whenGET('scripts/form/field-create/cardinality-selector.directive.html').respond(function (method, url, data) {
-        var request = new XMLHttpRequest();
-        request.open('GET', 'scripts/form/field-create/cardinality-selector.directive.html', false);
-        request.send(null);
-        return [request.status, request.response, {}];
-      });
+      $httpBackend.whenGET('scripts/form/field-create/cardinality-selector.directive.html').respond(
+          function (method, url, data) {
+            var request = new XMLHttpRequest();
+            request.open('GET', 'scripts/form/field-create/cardinality-selector.directive.html', false);
+            request.send(null);
+            return [request.status, request.response, {}];
+          });
 
       $httpBackend.whenGET(
           'https://resource.metadatacenter.orgx/template-elements/https%3A%2F%2Frepo.metadatacenter.orgx%2Ftemplate-elements%2F7ce9f613-ff0b-427b-a007-4d3b0cbe1fbb').respond(
@@ -376,6 +377,7 @@ define(['app', 'angular'], function (app) {
           var elementId = "https://repo.metadatacenter.orgx/template-elements/7ce9f613-ff0b-427b-a007-4d3b0cbe1fbb";
           $cedarTemplateElementScope.element = StagingService.addClonedElementToForm(
               $createTemplateControllerScope.form, elementId, clonedElement, domId, callback);
+          var model = null;
 
 
           // Compile element directive
@@ -383,7 +385,7 @@ define(['app', 'angular'], function (app) {
           $cedarTemplateElementScope.key = 'test';
           $cedarTemplateElementScope.parentElement = $createTemplateControllerScope.form;
           $cedarTemplateElementScope.element = clonedElement;
-          $cedarTemplateElementScope.model = null;
+          $cedarTemplateElementScope.model = model;
           compiledDirective = $compile(cedarTemplateElementDirective)($cedarTemplateElementScope);
           $cedarTemplateElementScope.$digest();
 
@@ -480,23 +482,16 @@ define(['app', 'angular'], function (app) {
         });
 
         // TODO doesn't update dom or form to show the deleted element
-        xit("should delete the newly added element", function () {
+        it("should delete an element", function () {
 
           var elm = compiledDirective[0];
-
           var name = elm.querySelector('p.element-name-label input');
-          console.log(name);
           expect(name != null).toBe(true);
-
-          var trash = elm.querySelector('div.trash');
-          console.log('trash');console.log(trash);
-          var trashElm = angular.element(trash);
-          trashElm.on('click', function(e) {
-            $cedarTemplateElementScope.$apply(function() {
-             var nameAfter = compiledDirective[0].querySelector('p.element-name-label input');
-             console.log('nameAfter');console.log(nameAfter);
-             expect(nameAfter == null).toBe(true);
-            });
+          var trashElm = angular.element(elm.querySelector('div.trash'));
+          trashElm.on('click', function (e) {
+            $cedarTemplateElementScope.$apply();
+            var nameAfter = elm.querySelector('p.element-name-label input');
+            expect(nameAfter == null).toBe(true);
           });
           trashElm.triggerHandler('click');
         });
