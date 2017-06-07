@@ -31,6 +31,8 @@ install:
 - nohup bash -c "webdriver-manager start 2>&1 &"
 jobs:
   include:
+  - stage: unit tests (Karma)
+    script: gulp karma-tests
   - stage: e2e tests (Protractor)
     env:
     #- TEST_SUITE=PROTRACTOR_FORM
@@ -40,8 +42,6 @@ jobs:
     #- if [ "$TEST_SUITE" = "PROTRACTOR_FORM" ]; then gulp test-form; fi # Protractor form tests
     - if [ "$TEST_SUITE" = "PROTRACTOR_PERMISSIONS" ]; then gulp test-permissions; fi # Protractor permission tests
     #- if [ "$TEST_SUITE" = "PROTRACTOR_WORKSPACE" ]; then gulp test-workspace; fi # Protractor workspace tests
-  - stage: unit tests (Karma)
-    script: gulp karma-tests
 env:
   global:
   - CEDAR_ANALYTICS_KEY=false
