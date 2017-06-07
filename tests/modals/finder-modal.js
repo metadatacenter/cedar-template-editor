@@ -5,13 +5,16 @@
 var FinderModal = function () {
 
 
+  var EC = protractor.ExpectedConditions;
+
   var createFinder = element(by.id('finder-modal'));
   var createToolbar = createFinder.element(by.css('.toolbar'));
   var createActions = createFinder.element(by.css('.finder-actions'));
   var createSearchInput =  createFinder.element(by.id('finder-search-input'));
   var createDoSearch =  createFinder.element(by.css('.do-search'));
   var createClearSearch =  createFinder.element(by.css('.clear-search'));
-  var createFirstElementGridView = element.all(by.css('#finder-modal .form-box')).first();
+  var createFirstElementGridView = element.all(by.css('#finder-modal  .grid-view  .form-box-container  .form-box')).first();
+  var searchField = element(by.css('#finder-modal .modal-header input.form-control.search-input'));
   var createFirstElementListView = element.all(by.css('#finder-modal .list-side .box-row')).first();
   var createFirstSelectedElementGridView = createFinder.element(by.css('.form-box-container.selected .form-box'));
   var createFirstSelectedElementListView = createFinder.element(by.css('.list-side .box-row.selected'));
@@ -106,6 +109,27 @@ var FinderModal = function () {
       }
     });
   };
+
+  // look for the first toast to be a success
+  this.clearSearch = function () {
+
+    browser.wait(EC.visibilityOf(createClearSearch));
+    browser.wait(EC.elementToBeClickable(createClearSearch));
+    createClearSearch.click();
+
+  };
+
+
+  // look for the first toast to be a success
+  this.addFirstElement = function (name) {
+
+    searchField.sendKeys(name + protractor.Key.ENTER);
+    browser.wait(EC.visibilityOf(createFirstElementGridView));
+    browser.wait(EC.elementToBeClickable(createFirstElementGridView));
+    browser.actions().doubleClick(createFirstElementGridView).perform();
+
+  };
+
 
 
 };

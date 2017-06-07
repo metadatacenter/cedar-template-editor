@@ -1611,6 +1611,35 @@ define([
         };
 
 
+        service.removeChild = function (parent, child) {
+          // child must contain the schema level
+          child = $rootScope.schemaOf(child);
+
+          var selectedKey;
+          var props = $rootScope.propertiesOf(parent);
+          angular.forEach(props, function (value, key) {
+            if (value["@id"] == child["@id"]) {
+              selectedKey = key;
+            }
+          });
+
+          if (selectedKey) {
+            delete props[selectedKey];
+
+            var idx = $rootScope.schemaOf(parent)._ui.order.indexOf(selectedKey);
+            $rootScope.schemaOf(parent)._ui.order.splice(idx, 1);
+
+            // remove property label for this element
+            delete $rootScope.schemaOf(parent)._ui.propertyLabels[selectedKey];
+
+            // Remove it from the top-level 'required' array
+            parent = service.removeKeyFromRequired(parent, selectedKey);
+
+          }
+          return selectedKey;
+        };
+
+
         return service;
       }
       ;

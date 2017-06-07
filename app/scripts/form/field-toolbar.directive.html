@@ -44,7 +44,7 @@
     <i class="fa fa-plus-circle"></i>
   </button>
 
-  <button  type="button" class=" add  pull-right"
+  <button  type="button" class=" copy  pull-right"
       ng-click="copy(index);$event.stopPropagation()"
       ng-if="isMultiple() && (!field.maxItems || model.length < field.maxItems )"
       uib-tooltip="{{'GENERIC.Copy' | translate}}"
@@ -56,7 +56,7 @@
   </button>
 
 
-  <button ng-if="isMultiple()" type="button" class=" remove pull-right"
+  <button ng-if="isMultiple()" type="button" class=" view-toggle pull-right"
       ng-if="isActive(index)"
       uib-tooltip="{{cardinality()}}"
       ng-click="toggle();$event.stopPropagation()">

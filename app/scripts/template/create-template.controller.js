@@ -118,6 +118,7 @@ define([
         };
 
         $scope.addElementToTemplate = function (element) {
+          console.log('addElementToTemplate');console.log(element);
           populateCreatingFieldOrElement();
           if (dontHaveCreatingFieldOrElement()) {
 
