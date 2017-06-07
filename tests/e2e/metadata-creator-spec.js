@@ -45,42 +45,51 @@ describe('metadata-creator', function () {
 
     // put a test between the creation of a resource and the search for it
     // it may take two seconds to index the new resource
-    it("should have a logo", function () {
+    it("should have a logo and control bar", function () {
       workspacePage.hasLogo();
+      workspacePage.hasControlBar();
+      workspacePage.onWorkspace();
     });
 
     it("should create the sample template", function () {
       template = workspacePage.createTemplate('Source');
-      resources.push(createResource(template, 'template', testConfig.testUser1, testConfig.testPassword1));
-    });
+      workspacePage.onWorkspace();
 
-    it("should have a control bar", function () {
-      workspacePage.hasControlBar();
+      // save file for deletion later
+      resources.push(createResource(template, 'template', testConfig.testUser1, testConfig.testPassword1));
     });
 
     it("should search for the sample template in the workspace ", function () {
       workspacePage.searchForResource(template, 'template');
       workspacePage.clearSearch();
+      workspacePage.onWorkspace();
     });
 
-    it("should add some fields to our template", function () {
+    it("should add  fields to our template", function () {
       workspacePage.editResource(template, 'template');
       templatePage.addField('textfield', false, 'one', 'one');
       templatePage.addField('textfield', false, 'two', 'two');
       templatePage.clickSave('template');
       toastyModal.isSuccess();
 
+      // return to workspace
       templatePage.topNavBackArrow().click();
       workspacePage.onWorkspace();
     });
 
     it("should create a folder", function () {
       folder = workspacePage.createFolder('folder');
+      workspacePage.onWorkspace();
+
+      // save file for deletion later
       resources.push(createResource(folder, 'folder', testConfig.testUser1, testConfig.testPassword1));
     });
 
     it("should create an element", function () {
       element = workspacePage.createElement('element');
+      workspacePage.onWorkspace();
+
+      // save file for deletion later
       resources.push(createResource(element, 'element', testConfig.testUser1, testConfig.testPassword1));
     });
 
@@ -90,82 +99,69 @@ describe('metadata-creator', function () {
       templatePage.addField('textfield', false, 'two', 'two');
       templatePage.clickSave('element');
       toastyModal.isSuccess();
-      templatePage.topNavBackArrow().click();
 
+      // return to workspace
+      templatePage.topNavBackArrow().click();
       //TODO confirm should not be required but it is here
       sweetAlertModal.confirm();
       sweetAlertModal.isHidden();
+      workspacePage.onWorkspace();
     });
 
-    it("should edit the test template", function () {
-      workspacePage.editResource(template, 'template');
-      templatePage.topNavBackArrow().click();
-
-    });
-
-    it("should add the element and make it multiple", function () {
+    it("should add the element to the template and make the element multiple with min cardinality 0, max unlimited", function () {
       workspacePage.editResource(template, 'template');
       templatePage.openFinder();
       finderModal.clearSearch();
       finderModal.addFirstElement(element);
+      // set to min 0 max unlimited
       templatePage.setMultiple();
       templatePage.clickSave('template');
       toastyModal.isSuccess();
+
+      // return to workspace
       templatePage.topNavBackArrow().click();
+      workspacePage.onWorkspace();
     });
 
-    it("should create an instance from our sample template", function () {
+    it("should populate the sample template", function () {
       workspacePage.populateResource(template, 'template');
+
+      // save file for deletion later, delete this first
       resources.unshift(createResource(template, 'metadata', testConfig.testUser1, testConfig.testPassword1));
     });
 
-    it("should create another instance from our sample template", function () {
-      workspacePage.populateResource(template, 'template');
-      resources.unshift(createResource(template, 'metadata', testConfig.testUser1, testConfig.testPassword1));
+    it("should open metadata with open menu", function () {
+      workspacePage.editResource(template, 'metadata');
+      workspacePage.onMetadata();
+
+      // return to workspace
+      metadataPage.topNavBackArrow().click();
+      workspacePage.onWorkspace();
     });
 
-    it("should show instance header, back arrow, title, and json preview", function () {
+    it("should open metadata with double-click showing header, back arrow, title, json preview and first instance of the multi-instance element", function () {
       workspacePage.doubleClickResource(template, 'metadata');
       expect(metadataPage.topNavigation().isDisplayed()).toBe(true);
       expect(metadataPage.topNavBackArrow().isDisplayed()).toBe(true);
-      expect(metadataPage.documentTitle().isDisplayed()).toBe(true);
       expect(metadataPage.metadataJson().isDisplayed()).toBe(true);
-    });
+      expect(metadataPage.documentTitle().isDisplayed()).toBe(true);
 
-    it("should have the correct document title", function () {
+      // look at the value of the document title
       browser.wait(EC.presenceOf(metadataPage.documentTitle()));
       metadataPage.documentTitle().getText().then(function (text) {
         expect(text === template + ' metadata').toBe(true);
       });
-    });
 
-    it("should return to workspace by clicking back arrow", function () {
-      metadataPage.topNavBackArrow().click();
-      workspacePage.onWorkspace();
-    });
+      // make sure the element is multi-instance and is clickable
+      metadataPage.checkMultiple();
 
-    it("should open existing metadata with open menu", function () {
-      workspacePage.editResource(template, 'metadata');
-      workspacePage.onMetadata();
-    });
-
-    it("should return to workspace by clicking back arrow", function () {
-      metadataPage.topNavBackArrow().click();
-      workspacePage.onWorkspace();
-    });
-
-    it("should open existing metadata with a double click", function () {
-      workspacePage.doubleClickResource(template, 'metadata');
-      workspacePage.onMetadata();
-    });
-
-    it("should return to workspace by clicking back arrow", function () {
+      // return to workspace
       metadataPage.topNavBackArrow().click();
       workspacePage.onWorkspace();
     });
   });
 
-  describe('remove created resources', function () {
+  describe('remove all created resources', function () {
 
     it('should delete resource from the user workspace', function () {
       for (var i = 0; i < resources.length; i++) {

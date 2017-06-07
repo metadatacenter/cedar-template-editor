@@ -1005,6 +1005,7 @@ var TemplateCreatorPage = function () {
     return Math.floor(Math.random() * (max - min)) + min;
   };
 
+  // set multiple to min 0 max unlimited which is generally the more difficult case
   this.setMultiple = function() {
     var multiple = element(by.css('.detail-options .element-toggle'));
     browser.wait(EC.visibilityOf(multiple));
@@ -1015,6 +1016,16 @@ var TemplateCreatorPage = function () {
     browser.wait(EC.visibilityOf(yesOption));
     browser.wait(EC.elementToBeClickable(yesOption));
     yesOption.click();
+
+    var dropdownToggle = element(by.css('.cardinality-selector.min  button.dropdown-toggle'));
+    browser.wait(EC.visibilityOf(dropdownToggle));
+    browser.wait(EC.elementToBeClickable(dropdownToggle));
+    dropdownToggle.click();
+
+    var noneOption = element(by.css('.dropdown-selector.ng-binding.none'));
+    browser.wait(EC.visibilityOf(noneOption));
+    browser.wait(EC.elementToBeClickable(noneOption));
+    noneOption.click();
 
   }
 

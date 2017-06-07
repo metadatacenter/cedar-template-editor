@@ -145,6 +145,22 @@ var MetadataPage = function () {
     element(by.css(sweetAlertConfirmAttribute)).click();
   };
 
+  // make sure the element is multiple instance and has fields in it
+  this.checkMultiple = function() {
+    // open the element
+    var createElement = element(by.css('.elementTotalContent .element  .col-xs-6'));
+    browser.wait(EC.visibilityOf(createElement));
+    browser.wait(EC.elementToBeClickable(createElement));
+    createElement.click();
+
+    // open the first field within the element
+    var createField = element.all(by.css('.elementTotalContent .element  .title.field')).first();
+    browser.wait(EC.visibilityOf(createField));
+    browser.wait(EC.elementToBeClickable(createField));
+    createField.click();
+
+    browser.sleep(5000);
+  }
 
 };
 module.exports = new MetadataPage(); 
