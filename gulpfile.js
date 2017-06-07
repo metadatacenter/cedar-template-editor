@@ -121,14 +121,15 @@ gulp.task('watch', function (done) {
 });
 
 // Karma tests
-gulp.task('test', function (done) {
+gulp.task('karma-tests', gulp.series(['replace-url', 'replace-tracking',
+                                      'replace-version', 'lint', 'less', 'copy:resources'], function (done) {
   new Server({
     configFile: __dirname + '/karma.conf.js',
     //action: 'watch',
     //showStack: true,
     singleRun : true
-  }, done).start();
-});
+  }, done()).start();
+}));
 
 gulp.task('test-env', function (done) {
   gulp.src(['tests/config/src/test-env.js'])
@@ -249,19 +250,6 @@ gulp.task('test-form', gulp.series('test-env', function () {
         throw e
       });
 }));
-
-gulp.task('test-metadata', gulp.series('test-env', function () {
-  return gulp.src([
-    './tests/e2e/metadata-creator-spec.js'
-  ])
-      .pipe(protractor({
-        configFile: "protractor-sequential.config.js"
-      }))
-      .on('error', function (e) {
-        throw e
-      });
-}));
-
 
 function exitWithError(msg) {
   onError(msg);
