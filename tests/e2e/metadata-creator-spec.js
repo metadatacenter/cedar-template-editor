@@ -41,6 +41,13 @@ describe('metadata-creator', function () {
     workspacePage.onWorkspace();
   });
 
+  /**
+   * Test the metadata editor by first creating some test data,
+   * then opening it to manipulate items in the metadata editor.
+   *
+   * Everything that is created is deleted at the end of the spec.
+   *
+   */
   describe('create metadata', function () {
 
     // put a test between the creation of a resource and the search for it
@@ -75,14 +82,6 @@ describe('metadata-creator', function () {
       // return to workspace
       templatePage.topNavBackArrow().click();
       workspacePage.onWorkspace();
-    });
-
-    it("should create a folder", function () {
-      folder = workspacePage.createFolder('folder');
-      workspacePage.onWorkspace();
-
-      // save file for deletion later
-      resources.push(createResource(folder, 'folder', testConfig.testUser1, testConfig.testPassword1));
     });
 
     it("should create an element", function () {
@@ -154,6 +153,7 @@ describe('metadata-creator', function () {
 
       // make sure the element is multi-instance and is clickable
       metadataPage.checkMultiple();
+      metadataPage.addInstance();
 
       // return to workspace
       metadataPage.topNavBackArrow().click();
