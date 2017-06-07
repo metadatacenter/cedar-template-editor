@@ -91,16 +91,16 @@ module.exports = function (config) {
     singleRun: false,
 
     //  Custom launcher for Travis-CI
-    //  customLaunchers: {
-    //   chromeTravisCI: {
-    //     base: 'Chrome',
-    //     flags: ['--no-sandbox']
-    //   }
-    // }
+     customLaunchers: {
+      chromeTravisCI: {
+        base: 'Chrome',
+        flags: ['--no-sandbox']
+      }
+    }
   });
 
   // Custom configuration for Travis-CI
-  // if(process.env.TRAVIS) {
-  //   config.browsers = ['chromeTravisCI'];
-  // }
+  if(process.env.TRAVIS) {
+    config.browsers = ['chromeTravisCI'];
+  }
 }
