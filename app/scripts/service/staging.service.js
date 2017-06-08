@@ -203,6 +203,41 @@ define([
       );
     };
 
+    service.addClonedElementToForm = function (form, elementId, clonedElement, divId, callback) {
+
+            DataManipulationService.setSelected(clonedElement);
+
+            // Converting title for irregular character handling
+            var elName = DataManipulationService.getFieldName(clonedElement._ui.title);
+            elName = DataManipulationService.getAcceptableKey(form.properties, elName);
+
+            // Adding corresponding property type to @context
+            form.properties["@context"].properties[elName] = DataManipulationService.generateFieldContextProperties(elName);
+            form.properties["@context"].required.push(elName);
+
+            // Evaluate cardinality
+            DataManipulationService.cardinalizeField(clonedElement);
+
+            // Add field to the element.properties object
+            form.properties[elName] = clonedElement;
+
+            // Add element to the form.required array
+            form = DataManipulationService.addKeyToRequired(form, elName);
+
+            form._ui.order = form._ui.order || [];
+            form._ui.order.push(elName);
+
+            form._ui.propertyLabels = form._ui.propertyLabels || {};
+            form._ui.propertyLabels[elName] = elName;
+
+
+            DataManipulationService.addDomIdIfNotPresent(clonedElement, divId);
+            callback(clonedElement);
+
+            return clonedElement;
+
+    };
+
     service.addFieldToElement = function (element, fieldType) {
       var field = DataManipulationService.generateField(fieldType);
       DataManipulationService.setSelected(field);

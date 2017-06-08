@@ -63,6 +63,14 @@ define([
         return FieldTypeService.isStaticField(DataManipulationService.getInputType($scope.field));
       };
 
+      $scope.removeChild = function () {
+
+        DataManipulationService.removeChild($scope.parentElement, $scope.field);
+        $scope.$emit("invalidFieldState",
+            ["remove", DataManipulationService.getTitle($scope.field), DataManipulationService.getId($scope.field)]);
+
+      };
+
       // try to select this field
       $scope.canSelect = function (select) {
         var result = select;

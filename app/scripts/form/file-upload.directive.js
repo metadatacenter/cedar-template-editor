@@ -6,12 +6,12 @@ define([
   angular.module('cedar.templateEditor.form.fileUpload', [])
       .directive('fileUpload', fileUpload);
 
-  fileUpload.$inject = ['$timeout', '$http', 'UIMessageService'];
+  fileUpload.$inject = [ '$http', 'UIMessageService'];
 
   /**
    * focus and select all input
    */
-  function fileUpload($timeout, $http, UIMessageService) {
+  function fileUpload( $http, UIMessageService) {
 
 
     // make the timeout 500;  0 doesn't work for template and element titles

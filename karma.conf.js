@@ -36,6 +36,8 @@ module.exports = function (config) {
       'test-require-config.js',
 
       // templates
+      'scripts/form/file-upload.directive.html',
+      'scripts/template-element/cedar-template-element.directive.html',
       'scripts/form/form.directive.html',
       'scripts/form/field.directive.html',
       'scripts/form/field-create/checkbox.html',
@@ -91,16 +93,16 @@ module.exports = function (config) {
     singleRun: false,
 
     //  Custom launcher for Travis-CI
-    //  customLaunchers: {
-    //   chromeTravisCI: {
-    //     base: 'Chrome',
-    //     flags: ['--no-sandbox']
-    //   }
-    // }
+     customLaunchers: {
+      chromeTravisCI: {
+        base: 'Chrome',
+        flags: ['--no-sandbox']
+      }
+    }
   });
 
   // Custom configuration for Travis-CI
-  // if(process.env.TRAVIS) {
-  //   config.browsers = ['chromeTravisCI'];
-  // }
+  if(process.env.TRAVIS) {
+    config.browsers = ['chromeTravisCI'];
+  }
 }
