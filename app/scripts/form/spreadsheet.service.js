@@ -9,359 +9,484 @@ define([
   SpreadsheetService.$inject = ['$rootScope', '$filter'];
 
   function SpreadsheetService($rootScope, $filter) {
-    return {
-      serviceId: "SpreadsheetService",
 
-      validators: {
-        email: /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i
-      },
 
-      customRenderer: {
-        checkboxes: function (instance, td, row, col, prop, value, cellProperties) {
-          var objValue = JSON.parse(value);
-          var s = "";
-          var sep = "";
-          for (var name in objValue) {
-            if (objValue[name]) {
-              s += sep + name;
-              sep = ", ";
+    var service = {
+      serviceId: "SpreadsheetService"
+    };
+
+
+    service.validators = function () {
+      email: /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i
+    };
+
+    service.customRendererCheckboxes = function (instance, td, row, col, prop, value, cellProperties) {
+      var objValue = JSON.parse(value);
+      var s = "";
+      var sep = "";
+      for (var name in objValue) {
+        if (objValue[name]) {
+          s += sep + name;
+          sep = ", ";
+        }
+      }
+      var escaped = Handsontable.helper.stringify(s);
+      td.innerHTML = escaped;
+      return td;
+    };
+
+    service.customRendererDeepObject = function (instance, td, row, col, prop, value, cellProperties) {
+      var s = value + '<i class="cedar-svg-element inSpreadsheetCell"></i>';
+      var escaped = Handsontable.helper.stringify(s);
+      td.innerHTML = escaped;
+      td.className = 'htDimmed';
+      return td;
+    };
+
+    // copy table data to source table
+    service.updateRowDataModel = function ($scope) {
+      var sds = $scope.spreadsheetDataScope;
+      for (var row in sds.tableData) {
+
+        // do we have this row in the source?
+        if (row >= sds.tableDataSource.length) {
+          sds.tableDataSource.push([]);
+          for (var i = 0; i < $scope.config.columns.length; i++) {
+            var obj = {};
+            obj['@value'] = '';
+            sds.tableDataSource[row].push(obj);
+          }
+        }
+
+        for (var col in sds.tableData[row]) {
+          var inputType = sds.columnDescriptors[col].type;
+          var cedarType = sds.columnDescriptors[col].cedarType;
+          if (inputType == 'dropdown') {
+            var containerArray = [];
+            containerArray.push(sds.tableData[row][col]);
+            sds.tableDataSource[row][col]['@value'] = containerArray;
+          } else if (cedarType == 'checkboxes') {
+            var valueObject = JSON.parse(sds.tableData[row][col]);
+            var value = {};
+            for (var key in valueObject) {
+              value[key] = true;
             }
-          }
-          var escaped = Handsontable.helper.stringify(s);
-          td.innerHTML = escaped;
-          return td;
-        },
-        deepObject: function (instance, td, row, col, prop, value, cellProperties) {
-          var s = value + '<i class="cedar-svg-element inSpreadsheetCell"></i>';
-          var escaped = Handsontable.helper.stringify(s);
-          td.innerHTML = escaped;
-          td.className = 'htDimmed';
-          return td;
-        }
-      },
-
-      updateDataModel: function ($scope) {
-        var sds = $scope.spreadsheetDataScope;
-        for (var row in sds.tableData) {
-          for (var col in sds.tableData[row]) {
-            var inputType = sds.columnDescriptors[col].type;
-            var cedarType = sds.columnDescriptors[col].cedarType;
-            if (inputType == 'dropdown') {
-              var containerArray = [];
-              containerArray.push(sds.tableData[row][col]);
-              sds.tableDataSource[row][col]['@value'] = containerArray;
-            } else if (cedarType == 'checkboxes') {
-              var valueObject = JSON.parse(sds.tableData[row][col]);
-              var value = {};
-              for (var key in valueObject) {
-                value[key] = true;
-              }
-              sds.tableDataSource[row][col]['@value'] = value;
-            } else {
-              sds.tableDataSource[row][col]['@value'] = sds.tableData[row][col];
-            }
-          }
-        }
-      },
-
-      getMinItems: function (scopeElement) {
-        var minItems = 0;
-        if (scopeElement.hasOwnProperty("minItems")) {
-          minItems = scopeElement.minItems;
-        }
-        return minItems;
-      },
-
-      getMaxItems: function (scopeElement) {
-        var maxItems = Number.POSITIVE_INFINITY;
-        if (scopeElement.hasOwnProperty("maxItems")) {
-          maxItems = scopeElement.maxItems;
-        }
-        return maxItems;
-      },
-
-      getColumnHeaderOrder: function (context, scopeElement) {
-        var headerOrder = [];
-        if (context.isField()) {
-          headerOrder.push('value');
-        } else {
-          var itemOrder = $rootScope.schemaOf(scopeElement)._ui.order;
-          for (var i in itemOrder) {
-            headerOrder.push(itemOrder[i]);
-          }
-        }
-        return headerOrder;
-      },
-
-      extractOptionsForList: function (options) {
-        var list = [];
-        for (var i in options) {
-          list.push(options[i].label);
-        }
-        return list;
-      },
-
-      extractOptionsForCheckboxes: function (options) {
-        var list = [];
-        for (var i in options) {
-          list.push(options[i].label);
-        }
-        return list;
-      },
-
-      getColumnDescriptors: function (context, scopeElement, columnHeaderOrder, originalScope) {
-        var colDescriptors = [];
-
-        for (var i in columnHeaderOrder) {
-          var desc = {};
-          desc.type = 'text';
-          desc.cedarType = null;
-          var name = columnHeaderOrder[i];
-          var field = null;
-
-          if (context.isField()) {
-            field = scopeElement;
+            sds.tableDataSource[row][col]['@value'] = value;
           } else {
-            field = scopeElement;
-          }
-
-          if (field.hasOwnProperty("items")) {
-
-            var items = field.items;
-            if (items != null && items.hasOwnProperty('properties')) {
-
-              var _ui = field.items._ui;
-              var inputType = _ui.inputType;
-
-              if (inputType == 'date') {
-                // http://docs.handsontable.com/0.19.0/demo-date.html
-                desc.type = 'date';
-                desc.dateFormat = 'MM/DD/YYYY HH:mm';
-                desc.correctFormat = true;
-              } else if (inputType == 'email') {
-                // http://docs.handsontable.com/0.19.0/demo-data-validation.html
-                desc.allowInvalid = true;
-                desc.validator = this.validators.email;
-              } else if (inputType == 'numeric') {
-                // http://docs.handsontable.com/0.19.0/demo-numeric.html
-                // http://numeraljs.com/
-                desc.type = 'numeric';
-              } else if (inputType == 'list') {
-                if (_valueConstraints.multipleChoice == false) {
-                  desc.type = 'dropdown';
-                  var listOptions = this.extractOptionsForList(_valueConstraints.literals);
-                  desc.source = listOptions;
-                }
-              } else if (inputType == 'checkbox') {
-                desc.renderer = this.customRenderer.checkboxes;
-                desc.editor = 'checkboxes';//MultiCheckboxEditor;
-                var checkboxOptions = this.extractOptionsForCheckboxes(_valueConstraints.literals);
-                desc.source = checkboxOptions;
-                desc.cedarType = 'checkboxes';
-              }
-            } else {
-              desc.cedarType = 'deepObject';
-              desc.cedarLabel = $filter('keyToTitle')(name);
-              desc.readOnly = true;
-              desc.renderer = this.customRenderer.deepObject;
-            }
-
-            colDescriptors.push(desc);
+            sds.tableDataSource[row][col]['@value'] = sds.tableData[row][col];
           }
         }
-        console.log(colDescriptors);
-        return colDescriptors;
-      },
+      }
+      $scope.spreadsheetDataScope.callback(sds.tableDataSource);
+    };
 
-      extractAndStoreCellData: function (cellDataObject, rowData, columnDescriptor) {
-        var inputType = columnDescriptor.type;
-        var cedarType = columnDescriptor.cedarType;
-        if (inputType == 'dropdown') {
-          rowData.push(cellDataObject['@value'][0]);
-        } else if (cedarType == 'checkboxes') {
-          rowData.push(JSON.stringify(cellDataObject['@value']));
-        } else if (cedarType == 'deepObject') {
-          rowData.push(columnDescriptor.cedarLabel);
-        } else {
-          rowData.push(cellDataObject._valueLabel || cellDataObject['@value']);
-        }
-      },
+    // copy table data to source table
+    service.updateDataModel = function ($scope) {
+      var sds = $scope.spreadsheetDataScope;
+      for (var row in sds.tableData) {
+        for (var col in sds.tableData[row]) {
 
-      getTableData: function (context, $scope, headerOrder, columnDescriptors) {
-        var tableData = [];
-        for (var i in $scope.model) {
-          var row = $scope.model[i];
-          var rowData = [];
-          if (context.isField()) {
-            this.extractAndStoreCellData(row, rowData, columnDescriptors[0]);
-          } else {
-            for (var col in headerOrder) {
-              var colName = headerOrder[col];
-              var cellDataObject = row[colName];
-              this.extractAndStoreCellData(cellDataObject, rowData, columnDescriptors[col]);
+          // do we have this row in the source?
+          if (row >= sds.tableDataSource.length) {
+            sds.tableDataSource.push([]);
+            for (var i = 0; i < $scope.config.columns.length; i++) {
+              var obj = {};
+              obj['@value'] = '';
+              sds.tableDataSource[row].push(obj);
             }
           }
-          tableData.push(rowData);
-        }
-        return tableData;
-      },
 
-      getTableDataSource: function (context, $scope, headerOrder) {
-        var tableDataSource = [];
-        for (var i in $scope.model) {
-          var row = $scope.model[i];
-          var rowDataSource = [];
-          if (context.isField()) {
-            rowDataSource.push(row);
-          } else {
-            for (var col in headerOrder) {
-              var colName = headerOrder[col];
-              var cellDataObject = row[colName];
-              rowDataSource.push(cellDataObject);
+          var inputType = sds.columnDescriptors[col].type;
+          var cedarType = sds.columnDescriptors[col].cedarType;
+          if (inputType == 'dropdown') {
+            var containerArray = [];
+            containerArray.push(sds.tableData[row][col]);
+            sds.tableDataSource[row][col]['@value'] = containerArray;
+          } else if (cedarType == 'checkboxes') {
+            var valueObject = JSON.parse(sds.tableData[row][col]);
+            var value = {};
+            for (var key in valueObject) {
+              value[key] = true;
             }
-          }
-          tableDataSource.push(rowDataSource);
-        }
-        return tableDataSource;
-      },
-
-      switchToSpreadsheetField: function ($scope, $element) {
-        console.log("Switch to spreadsheet on FIELD");
-        console.log($scope);
-        console.log($element);
-        var context = new SpreadsheetContext("field", $element);
-        this.switchToSpreadsheet(context, $scope, $element);
-      },
-
-      switchToSpreadsheetElement: function ($scope, $element) {
-        console.log("Switch to spreadsheet on ELEMENT");
-        console.log($scope);
-        console.log($element);
-        var context = new SpreadsheetContext("element", $element);
-        this.switchToSpreadsheet(context, $scope, $element);
-      },
-
-      applyVisibility: function ($scope) {
-        var context = $scope.spreadsheetContext;
-        var ov = context.isOriginalContentVisible();
-        jQuery(context.getOriginalContentContainer()).toggleClass("visible", ov);
-        jQuery(context.getOriginalContentContainer()).toggleClass("hidden", !ov);
-        jQuery(context.getSpreadsheetContainer()).toggleClass("visible", !ov);
-        //var elementDirective = jQuery(context.getSpreadsheetContainer()).parent().parent();
-        //jQuery(".spreadsheetSwitch.element.spreadsheet", elementDirective).toggleClass("visible", !ov);
-
-      },
-
-      switchToSpreadsheet: function (ctx, $scope, $element) {
-        console.log('switchToSpreadsheet');
-        var context = ctx;
-        if ($scope.hasOwnProperty('spreadsheetContext')) {
-          console.log('hasOwnProperty');
-          context = $scope.spreadsheetContext;
-          context.switchVisibility();
-          if (context.isOriginalContentVisible()) {
-            console.log('already visible');
-            context.getTable().destroy();
-            jQuery(context.getSpreadsheetContainer()).html("");
-            console.log('apply visibility to existing container')
-            this.applyVisibility($scope);
-            return;
+            sds.tableDataSource[row][col]['@value'] = value;
           } else {
-            console.log('switchvisibility');
-            context.switchVisibility();
+            sds.tableDataSource[row][col]['@value'] = sds.tableData[row][col];
           }
-        } else {
-          $scope.spreadsheetContext = context;
         }
-
-        var owner = this;
-        console.log($scope);
-        var scopeElement = (context.isField() ? $scope.field : $scope.element);
-        console.log("scopeElement:");
-        console.log(scopeElement);
-        console.log(context);
-
-
-        // handsOnTable config object
-        var hotConfig = {};
-
-        // column names
-        var columnHeaderOrder = this.getColumnHeaderOrder(context, scopeElement);
-
-        // column descriptors (type, constraint, ...)
-        var columnDescriptors = this.getColumnDescriptors(context, scopeElement, columnHeaderOrder, $scope);
-        hotConfig.columns = columnDescriptors;
-
-        // min and max rows
-        hotConfig.minRows = this.getMinItems(scopeElement);
-        hotConfig.maxRows = this.getMaxItems(scopeElement);
-
-        // table data
-        var tableData = this.getTableData(context, $scope, columnHeaderOrder, columnDescriptors);
-        hotConfig.data = tableData;
-
-        var tableDataSource = this.getTableDataSource(context, $scope, columnHeaderOrder);
-
-
-        // static config
-        //hotConfig.height = 200;
-        hotConfig.rowHeaders = true;
-        hotConfig.stretchH = 'all';
-        hotConfig.trimWhitespace = false;
-        hotConfig.manualRowResize = true;
-
-        var colHeaders = [];
-        for (var i in columnHeaderOrder) {
-          colHeaders.push($filter('keyToTitle')(columnHeaderOrder[i]));
-        }
-        hotConfig.colHeaders = colHeaders;
-
-       console.log(hotConfig);
-
-        // DOM detector element
-        var detectorElement = angular.element('.spreadsheetViewDetector', context.getPlaceholderContext());
-        // DOM element that contains the part to be replaced with HOT
-        var container = angular.element('.spreadsheetViewContainer', context.getPlaceholderContext())[0];
-        console.log(container);
-        context.setSpreadsheetContainer(container);
-
-
-
-        // Compute size based on available width and number of rows
-        var spreadsheetRowCount = tableData.length;
-        var spreadsheetContainerHeight = 30 + spreadsheetRowCount * 30 + 20;
-        var spreadsheetContainerWidth = detectorElement.width() - 5;
-        //console.log("HEIGHT:" + spreadsheetContainerHeight);
-
-        angular.element(container).css("height", spreadsheetContainerHeight + "px");
-        angular.element(container).css("width", spreadsheetContainerWidth + "px");
-        context.setOriginalContentContainer(angular.element('.originalContent', context.getPlaceholderContext())[0]);
-        context.switchVisibility();
-        this.applyVisibility($scope);
-
-        console.log(context);
-
-
-        // launch hot
-        var hot = new Handsontable(container, hotConfig);
-
-        // push data to scope
-        $scope.spreadsheetDataScope = {
-          tableData        : tableData,
-          tableDataSource  : tableDataSource,
-          columnDescriptors: columnDescriptors
-        };
-
-        hot.addHook('afterChange', function () {
-          console.log("After change");
-          owner.updateDataModel($scope, $element);
-        });
-
-        context.setTable(hot);
-
-
       }
     };
+
+    service.getMinItems = function (scopeElement) {
+      var minItems = 0;
+      if (scopeElement.hasOwnProperty("minItems")) {
+        minItems = scopeElement.minItems;
+      }
+      return minItems;
+    };
+
+    service.getMaxItems = function (scopeElement) {
+      var maxItems = Number.POSITIVE_INFINITY;
+      if (scopeElement.hasOwnProperty("maxItems")) {
+        maxItems = scopeElement.maxItems;
+      }
+      return maxItems;
+    };
+
+    service.getColumnHeaderOrder = function (context, scopeElement) {
+      var headerOrder = [];
+      if (context.isField()) {
+        headerOrder.push('value');
+      } else {
+        var itemOrder = $rootScope.schemaOf(scopeElement)._ui.order;
+        for (var i in itemOrder) {
+          headerOrder.push(itemOrder[i]);
+        }
+      }
+      return headerOrder;
+    };
+
+    service.extractOptionsForList = function (options) {
+      var list = [];
+      for (var i in options) {
+        list.push(options[i].label);
+      }
+      return list;
+    };
+
+    service.extractOptionsForCheckboxes = function (options) {
+      var list = [];
+      for (var i in options) {
+        list.push(options[i].label);
+      }
+      return list;
+    };
+
+    service.getColumnDescriptors = function (context, scopeElement, columnHeaderOrder, originalScope) {
+      var colDescriptors = [];
+
+      for (var i in columnHeaderOrder) {
+        var desc = {};
+        desc.type = 'text';
+        desc.cedarType = null;
+        var name = columnHeaderOrder[i];
+        var field = null;
+
+        if (context.isField()) {
+          field = scopeElement;
+        } else {
+          field = scopeElement;
+        }
+
+        if (field.hasOwnProperty("items")) {
+
+          var items = field.items;
+          if (items != null && items.hasOwnProperty('properties')) {
+
+            var _ui = field.items._ui;
+            var inputType = _ui.inputType;
+
+            if (inputType == 'date') {
+              // http://docs.handsontable.com/0.19.0/demo-date.html
+              desc.type = 'date';
+              desc.dateFormat = 'MM/DD/YYYY HH:mm';
+              desc.correctFormat = true;
+            } else if (inputType == 'email') {
+              // http://docs.handsontable.com/0.19.0/demo-data-validation.html
+              desc.allowInvalid = true;
+              desc.validator = service.validators.email;
+            } else if (inputType == 'numeric') {
+              // http://docs.handsontable.com/0.19.0/demo-numeric.html
+              // http://numeraljs.com/
+              desc.type = 'numeric';
+            } else if (inputType == 'list') {
+              if (_valueConstraints.multipleChoice == false) {
+                desc.type = 'dropdown';
+                var listOptions = service.extractOptionsForList(_valueConstraints.literals);
+                desc.source = listOptions;
+              }
+            } else if (inputType == 'checkbox') {
+              desc.renderer = service.customRenderer.checkboxes;
+              desc.editor = 'checkboxes';//MultiCheckboxEditor;
+              var checkboxOptions = service.extractOptionsForCheckboxes(_valueConstraints.literals);
+              desc.source = checkboxOptions;
+              desc.cedarType = 'checkboxes';
+            }
+          } else {
+            desc.cedarType = 'deepObject';
+            desc.cedarLabel = $filter('keyToTitle')(name);
+            desc.readOnly = true;
+            desc.renderer = service.customRendererDeepObject;
+          }
+
+          colDescriptors.push(desc);
+        }
+      }
+      console.log(colDescriptors);
+      return colDescriptors;
+    };
+
+    service.extractAndStoreCellData = function (cellDataObject, rowData, columnDescriptor) {
+      var inputType = columnDescriptor.type;
+      var cedarType = columnDescriptor.cedarType;
+      if (inputType == 'dropdown') {
+        rowData.push(cellDataObject['@value'][0]);
+      } else if (cedarType == 'checkboxes') {
+        rowData.push(JSON.stringify(cellDataObject['@value']));
+      } else if (cedarType == 'deepObject') {
+        rowData.push(columnDescriptor.cedarLabel);
+      } else {
+        rowData.push(cellDataObject._valueLabel || cellDataObject['@value']);
+      }
+    };
+
+    service.getTableData = function (context, $scope, headerOrder, columnDescriptors) {
+      var tableData = [];
+      for (var i in $scope.model) {
+        var row = $scope.model[i];
+        var rowData = [];
+        if (context.isField()) {
+          service.extractAndStoreCellData(row, rowData, columnDescriptors[0]);
+        } else {
+          for (var col in headerOrder) {
+            var colName = headerOrder[col];
+            var cellDataObject = row[colName];
+            service.extractAndStoreCellData(cellDataObject, rowData, columnDescriptors[col]);
+          }
+        }
+        tableData.push(rowData);
+      }
+      return tableData;
+    };
+
+
+    service.getTableDataSource = function (context, $scope, headerOrder) {
+      var tableDataSource = [];
+      for (var i in $scope.model) {
+        var row = $scope.model[i];
+        var rowDataSource = [];
+        if (context.isField()) {
+          rowDataSource.push(row);
+        } else {
+          for (var col in headerOrder) {
+            var colName = headerOrder[col];
+            var cellDataObject = row[colName];
+            rowDataSource.push(cellDataObject);
+          }
+        }
+        tableDataSource.push(rowDataSource);
+      }
+      return tableDataSource;
+    };
+
+    service.applyVisibility = function ($scope) {
+      var context = $scope.spreadsheetContext;
+      var ov = context.isOriginalContentVisible();
+      jQuery(context.getOriginalContentContainer()).toggleClass("visible", ov);
+      jQuery(context.getOriginalContentContainer()).toggleClass("hidden", !ov);
+      jQuery(context.getSpreadsheetContainer()).toggleClass("visible", !ov);
+      //var elementDirective = jQuery(context.getSpreadsheetContainer()).parent().parent();
+      //jQuery(".spreadsheetSwitch.element.spreadsheet", elementDirective).toggleClass("visible", !ov);
+
+    };
+
+    service.switchToSpreadsheet = function (ctx, $scope, $element, callback) {
+      var context = ctx;
+      if ($scope.hasOwnProperty('spreadsheetContext')) {
+        context = $scope.spreadsheetContext;
+        context.switchVisibility();
+        if (context.isOriginalContentVisible()) {
+          context.getTable().destroy();
+          jQuery(context.getSpreadsheetContainer()).html("");
+          service.applyVisibility($scope);
+          return;
+        } else {
+          context.switchVisibility();
+        }
+      } else {
+        $scope.spreadsheetContext = context;
+      }
+
+
+      var owner = this;
+      var scopeElement = (context.isField() ? $scope.field : $scope.element);
+      var columnHeaderOrder = service.getColumnHeaderOrder(context, scopeElement);
+      var columnDescriptors = service.getColumnDescriptors(context, scopeElement, columnHeaderOrder, $scope);
+      var tableData = service.getTableData(context, $scope, columnHeaderOrder, columnDescriptors);
+      var tableDataSource = service.getTableDataSource(context, $scope, columnHeaderOrder);
+      var colHeaders = [];
+      for (var i in columnHeaderOrder) {
+        colHeaders.push($filter('keyToTitle')(columnHeaderOrder[i]));
+      }
+      var config = {
+        data           : tableData,
+        minSpareRows   : 1,
+        autoWrapRow    : true,
+        contextMenu    : true,
+        minRows        : this.getMinItems(scopeElement),
+        maxRows        : this.getMaxItems(scopeElement),
+        rowHeaders     : true,
+        stretchH       : 'all',
+        trimWhitespace : false,
+        manualRowResize: true,
+        columns        : columnDescriptors,
+        colHeaders     : colHeaders
+      };
+
+
+      // detector and container elements
+      var detectorElement = angular.element(document.querySelector('.spreadsheetViewDetector'),
+          context.getPlaceholderContext());
+      var container = angular.element(document.querySelector('.spreadsheetViewContainer'),
+          context.getPlaceholderContext())[0];
+
+      context.setSpreadsheetContainer(container);
+
+      // Compute size based on available width and number of rows
+      var spreadsheetRowCount = tableData.length;
+      var spreadsheetContainerHeight = 30 + spreadsheetRowCount * 30 + 20;
+      var spreadsheetContainerWidth = detectorElement.width() - 5;
+
+
+      angular.element(container).css("height", spreadsheetContainerHeight + "px");
+      angular.element(container).css("width", spreadsheetContainerWidth + "px");
+      context.setOriginalContentContainer(angular.element('.originalContent', context.getPlaceholderContext())[0]);
+      context.switchVisibility();
+      service.applyVisibility($scope);
+
+
+      var hot = new Handsontable(container, config);
+
+      // push data to spreadsheetService scope
+      $scope.spreadsheetDataScope = {
+        tableData        : tableData,
+        tableDataSource  : tableDataSource,
+        columnDescriptors: columnDescriptors,
+        callback         : callback
+      };
+      $scope.config = config;
+
+
+      var $hooksList = $('#hooksList');
+      var hooks = Handsontable.hooks.getRegistered();
+      var example1_events = document.getElementById("spreadsheetViewLogs");
+      var log_events = function (event, data) {
+
+        if (document.getElementById('check_' + event).checked) {
+          var now = (new Date()).getTime(),
+              diff = now - start,
+              vals, str, div, text;
+
+          vals = [
+            i,
+            "@" + numbro(diff / 1000).format('0.000'),
+            "[" + event + "]"
+          ];
+
+          for (var d = 0; d < data.length; d++) {
+            try {
+              str = JSON.stringify(data[d]);
+            }
+            catch (e) {
+              str = data[d].toString(); // JSON.stringify breaks on circular reference to a HTML node
+            }
+
+            if (str === void 0) {
+              continue;
+            }
+
+            if (str.length > 20) {
+              str = Object.prototype.toString.call(data[d]);
+            }
+            if (d < data.length - 1) {
+              str += ',';
+            }
+            vals.push(str);
+          }
+
+          if (window.console) {
+            console.log(i,
+                "@" + numbro(diff / 1000).format('0.000'),
+                "[" + event + "]",
+                data);
+          }
+          div = document.createElement("DIV");
+          text = document.createTextNode(vals.join(" "));
+
+          div.appendChild(text);
+          example1_events.appendChild(div);
+
+          var timer = setTimeout(function () {
+            example1_events.scrollTop = example1_events.scrollHeight;
+          }, 10);
+          clearTimeout(timer);
+
+          i++;
+        }
+      };
+
+      //console.log('hooks'); console.log(hooks);
+      hooks.forEach(function (hook) {
+        var checked = '';
+
+        if (hook === 'beforePaste' || hook === 'afterChange' || hook === 'afterSelection' || hook === 'afterCreateRow' || hook === 'afterRemoveRow' || hook === 'afterCreateRow' ||
+            hook === 'afterCreateCol' || hook === 'afterRemoveCol') {
+          checked = 'checked';
+        }
+        // $hooksList.append(
+        //     '<li><label><input type="checkbox" ' + checked + ' id="check_' + hook + '"> ' + hook + '</label></li>');
+        // config[hook] = function () {
+        //   log_events(hook, arguments);
+        // };
+        hot.addHook(hook, function () {
+
+          //log_events(hook, arguments);
+          if (hook === 'afterChange') {
+            console.log(hook);
+            service.updateDataModel($scope, $element);
+            console.log('$scope.spreadsheetDataScope.tableDataSource');console.log($scope.spreadsheetDataScope.tableDataSource);
+            console.log('$scope.spreadsheetDataScope.tableData');console.log($scope.spreadsheetDataScope.tableData);
+            console.log('$scope.model');console.log($scope.model);
+          }
+
+          if (hook === 'afterCreateRow') {
+            console.log(hook + ' ' + 'three tables');
+
+            $scope.spreadsheetDataScope.callback();
+            console.log('$scope.model');console.log($scope.model);
+
+            $scope.spreadsheetDataScope.tableDataSource = service.getTableDataSource(context, $scope, columnHeaderOrder);
+            console.log('$scope.spreadsheetDataScope.tableDataSource');console.log($scope.spreadsheetDataScope.tableDataSource);
+
+            service.updateDataModel($scope, $element);
+            console.log('$scope.spreadsheetDataScope.tableData');console.log($scope.spreadsheetDataScope.tableData);
+
+
+          }
+
+
+        });
+      });
+
+
+      // and finally set the table in the context
+      context.setTable(hot);
+
+    };
+
+    service.switchToSpreadsheetField = function ($scope, $element, callback) {
+      console.log("Switch to spreadsheet on FIELD");
+      console.log($scope);
+      console.log($element);
+      var context = new SpreadsheetContext("field", $element);
+      service.switchToSpreadsheet(context, $scope, $element, callback);
+    };
+
+    service.switchToSpreadsheetElement = function ($scope, $element, callback) {
+      var context = new SpreadsheetContext("element", $element);
+      service.switchToSpreadsheet(context, $scope, $element, callback);
+    };
+
+    return service;
   };
 
 });

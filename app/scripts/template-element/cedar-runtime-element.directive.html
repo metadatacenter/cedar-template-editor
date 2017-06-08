@@ -18,24 +18,41 @@
       </div>
     </div>
 
-    <!-- a speadsheet list of elements -->
+    <!-- a spreadsheet list of elements -->
     <div ng-if="showMultiple('spreadsheet') && valueArray.length > 0">
       <div class="element expand" id="{{getLocator(index)}}" style="position:relative">
-        <div class="row isInactive">
-          <div class="col-sm-10">
-            <a class="element title" ng-class="{'isInactive' : isInactive(index)}">{{getPropertyLabel()}} <span
-                ng-if="valueArray.length-1" class="count">({{index+1}})</span></a>
+        <div class="row " style="cursor:pointer" ng-class="{'isInactive': !isActive()}">
+
+          <div class="col-xs-6" ng-click="toggleExpanded(index)">
+
+            <div class="element title" ng-class="{'isInactive' : isInactive(index)}">
+              <button type="button" class="expand">
+                <i class="fa " ng-class="{'fa-caret-down': isExpanded(index),'fa-caret-right':!isExpanded(index)}"></i>
+              </button>
+
+              {{getPropertyLabel()}} <span ng-if="valueArray.length-1" class="count">({{index+1}})</span>
+            </div>
+
           </div>
-          <field-toolbar class="col-xs-2 " model="model" index="index"
-              remove="removeElement" add="addElement" active="isActive" toggle="toggleMultiple"
-              show-multiple="showMultiple" cardinality="cardinalityString" spreadsheet="switchToSpreadsheet"
-              expand-all="expandAll" is-expandable="isExpandable">
+
+          <field-toolbar ng-click="toggleExpanded(index)" class="col-xs-6" style="min-height:30px;min-width:30px;" ng-if="isExpanded(index)" values="valueArray" index="index"
+              min="pageMin" max="pageMax" range="pageRange" field="element" model="valueArray"
+              index="index"
+              remove="removeElement" add="addElement" copy="copyElement"  is-active="isActive" set-active="setActive"
+              toggle="toggleMultiple"
+              show-multiple="showMultiple" is-multiple="isMultiple" cardinality="cardinalityString"
+              spreadsheet="switchToSpreadsheet" toggle-expanded="toggleExpanded" close="unExpand"
+              expand-all="expandAll" is-expandable="isExpandable" is-field="false" select="selectPage">
           </field-toolbar>
+
         </div>
         <div class="row">
           <div class="col-sm-12">
             <div class="spreadsheetViewDetector"></div>
             <div class="spreadsheetViewContainer"></div>
+            <div id="spreadsheetViewLogs"></div>
+            <div id="hooksList" ></div>
+
           </div>
         </div>
       </div>

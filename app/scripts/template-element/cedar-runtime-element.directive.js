@@ -37,7 +37,7 @@ define([
       scope.elementId = DataManipulationService.idOf(scope.element) || DataManipulationService.generateGUID();
       scope.uuid = DataManipulationService.generateTempGUID();
       scope.expanded = [];
-      scope.multipleStates = ['expanded', 'paged'];
+      scope.multipleStates = ['expanded', 'paged', 'spreadsheet'];
       scope.multipleState = 'paged';
       scope.index = 0;
       scope.pageMin = 0;
@@ -153,10 +153,13 @@ define([
       };
 
       scope.switchToSpreadsheet = function () {
-        SpreadsheetService.switchToSpreadsheetElement(scope, scope.element);
+        SpreadsheetService.switchToSpreadsheetElement(scope, scope.element, function () {
+          scope.addMoreInput();
+        });
       };
 
       scope.toggleExpanded = function (index) {
+        console.log('toggleExpanded');
         scope.expanded[index] = !scope.expanded[index];
         if (scope.expanded[index]) {
           scope.setActive(index, true);
@@ -418,12 +421,14 @@ define([
 
       scope.toggleMultiple = function () {
         var i = scope.multipleStates.indexOf(scope.multipleState);
+        var oldState = scope.multipleState;
         i = (i + 1) % scope.multipleStates.length;
         scope.multipleState = scope.multipleStates[i];
 
-        if (scope.multipleState === 'spreadsheet') {
+        if (scope.multipleState === 'spreadsheet' || oldState === 'spreadsheet') {
 
           $timeout(function () {
+            // create or destroy the spreadsheet
             scope.switchToSpreadsheet();
             scope.$apply();
           }, 0);
