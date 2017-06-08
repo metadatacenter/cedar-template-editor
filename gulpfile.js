@@ -121,8 +121,7 @@ gulp.task('watch', function (done) {
 });
 
 // Karma tests
-gulp.task('karma-tests', gulp.series(['replace-url', 'replace-tracking',
-                                      'replace-version', 'lint', 'less', 'copy:resources'], function (done) {
+gulp.task('karma-tests', gulp.series(['lint', 'less', 'copy:resources', 'replace-url', 'replace-tracking', 'replace-version'], function (done) {
   new Server({
     configFile: __dirname + '/karma.conf.js',
     //action: 'watch',
