@@ -34,9 +34,9 @@ jobs:
     script: gulp karma-tests
   - stage: e2e tests (Protractor)
     env:
-    #- TEST_SUITE=PROTRACTOR_FORM
+    - TEST_SUITE=PROTRACTOR_FORM
     - TEST_SUITE=PROTRACTOR_PERMISSIONS
-    #- TEST_SUITE=PROTRACTOR_WORKSPACE
+    - TEST_SUITE=PROTRACTOR_WORKSPACE
     script:
     - if [ "$TEST_SUITE" = "PROTRACTOR_FORM" ]; then gulp test-form; fi # Protractor form tests
     - if [ "$TEST_SUITE" = "PROTRACTOR_PERMISSIONS" ]; then gulp test-permissions; fi # Protractor permission tests
