@@ -16,6 +16,7 @@ var gulp = require('gulp'),
     Server = require('karma').Server,
     protractor = require('gulp-protractor').protractor,
     replace = require('gulp-replace'),
+    wait = require('gulp-wait'),
     colors = require('colors'),
     Proxy = require('gulp-connect-proxy',
         request = require('sync-request'),
@@ -120,16 +121,20 @@ gulp.task('watch', function (done) {
   done();
 });
 
-// Karma tests
-gulp.task('karma-tests', gulp.series(['replace-url', 'replace-tracking',
-                                      'replace-version', 'lint', 'less', 'copy:resources'], function (done) {
+// Sets up the environment required to run the Karma tests in Travis
+gulp.task('karma-travis-env', gulp.series(['replace-url', 'replace-tracking', 'replace-version', 'lint', 'less', 'copy:resources'], function (done) {
+  done();
+}));
+
+gulp.task('karma-tests', function (done) {
   new Server({
     configFile: __dirname + '/karma.conf.js',
-    //action: 'watch',
-    //showStack: true,
-    singleRun : true
-  }, done()).start();
-}));
+    singleRun: true
+  }, function (exitCode) {
+    done();
+    process.exit(exitCode);
+  }).start();
+});
 
 gulp.task('test-env', function (done) {
   gulp.src(['tests/config/src/test-env.js'])
