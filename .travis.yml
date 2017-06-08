@@ -14,7 +14,6 @@ branches:
   - develop
   - master
   - testing/permissions
-  - metadatacenter/cedar-template-editor/issues/642
 notifications:
   slack:
     on_success: change
@@ -39,7 +38,7 @@ jobs:
     - TEST_SUITE=PROTRACTOR_PERMISSIONS
     #- TEST_SUITE=PROTRACTOR_WORKSPACE
     script:
-    #- if [ "$TEST_SUITE" = "PROTRACTOR_FORM" ]; then gulp test-form; fi # Protractor form tests
+    - if [ "$TEST_SUITE" = "PROTRACTOR_FORM" ]; then gulp test-form; fi # Protractor form tests
     - if [ "$TEST_SUITE" = "PROTRACTOR_PERMISSIONS" ]; then gulp test-permissions; fi # Protractor permission tests
     #- if [ "$TEST_SUITE" = "PROTRACTOR_WORKSPACE" ]; then gulp test-workspace; fi # Protractor workspace tests
 env:
