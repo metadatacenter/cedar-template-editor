@@ -139,7 +139,6 @@ gulp.task('test-env', function (done) {
       .pipe(replace('protractorTestUser2Login', cedarTestUser2Login))
       .pipe(replace('protractorTestUser2Password', cedarTestUser2Password))
       .pipe(replace('protractorTestUser2Name', cedarTestUser2Name))
-      .pipe(replace('protractorEverybodyGroup', cedarEverybodyGroup))
       .pipe(replace('protractorCedarVersion', cedarVersion))
       .pipe(gulp.dest('tests/config/'));
   done();
@@ -285,7 +284,6 @@ function getFrontendEnvVar(varNameSuffix) {
 // Get environment variables
 var envConfig = {
   'CEDAR_ANALYTICS_KEY'       : null,
-  'CEDAR_EVERYBODY_GROUP_NAME': null,
   'CEDAR_FRONTEND_BEHAVIOR'   : null,
   'CEDAR_FRONTEND_TARGET'     : null,
   'CEDAR_VERSION'             : null,
@@ -298,7 +296,6 @@ console.log(
 console.log("- Starting CEDAR front end server...".green);
 readAllEnvVarsOrFail();
 var cedarAnalyticsKey = envConfig['CEDAR_ANALYTICS_KEY'];
-var cedarEverybodyGroup = envConfig['CEDAR_EVERYBODY_GROUP_NAME'];
 var cedarFrontendBehavior = envConfig['CEDAR_FRONTEND_BEHAVIOR'];
 var cedarFrontendTarget = envConfig['CEDAR_FRONTEND_TARGET'];
 var cedarVersion = envConfig['CEDAR_VERSION'];
