@@ -31,9 +31,9 @@ define([
         service.generateField = function (fieldType) {
           var valueType = ["string", "null"];
           if ((fieldType == "checkbox") || (fieldType == "list") || (fieldType == "radio")) {
-            valueType = ["array", "null"];
+            valueType = ["string", "null"];
           }
-
+          
           var field;
           if (FieldTypeService.isStaticField(fieldType)) {
             field = DataTemplateService.getStaticField(this.generateTempGUID());
